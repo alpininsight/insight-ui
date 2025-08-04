@@ -5,13 +5,12 @@
     {% trans 'Zum Hauptinhalt springen' %}
 </a>
 
-<nav role="navigation" aria-label="{% trans 'Hauptnavigation' %}" class="fixed w-full z-50 bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700 px-24" {% if id %}id="{{ id }}"{% endif %}>
-  <div class="w-full px-0">
-    <div class="flex justify-between items-center h-16">
-      <!-- Brand Logo - Links positioniert -->
-      {% if brand %}
+<nav role="navigation" aria-label="{% trans 'Hauptnavigation' %}" class="fixed w-full h-16 z-50 bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700 px-24 py-3">
+  <div class="flex justify-between items-center h-full">
+    <!-- Brand Logo - Links positioniert -->
+    {% if brand %}
       <div class="flex items-center">
-        <a href="{% if brand_url %}{% url brand_url %}{% else %}#{% endif %}" class="flex items-center gap-2 text-xl font-bold text-insight-text-primary dark:text-white">
+        <a href="{% if brand_url %}{% url brand_url %}{% endif %}" class="flex items-center gap-2 text-xl font-bold text-insight-text-primary dark:text-white">
           {% if brand.logo_url %}
             <img src="{% static brand.logo_url %}" alt="{{ brand.logo_alt }}" class="size-8 rounded-full dark:bg-white" />
           {% else %}
@@ -21,15 +20,15 @@
           <span>{{ brand.title }}</span>
         </a>
       </div>
-      {% endif %}
+    {% endif %}
 
-      <!-- Desktop Navigation Links - Zentriert -->
-      {% if links %}
+    <!-- Desktop Navigation Links - Zentriert -->
+    {% if links %}
       <div class="hidden md:flex justify-center">
         <ul class="flex gap-6">
           {% for link in links %}
             <li>
-              {% if not link.need_auth or user.is_authenticated and not link.staff_only or user.is_staff %}
+              {% if not link.need_auth or options.user.is_authenticated and not link.staff_only or options.user.is_staff %}
                 <a
                   href="{% url link.view_name %}"
                   class="{% if link.active %}text-insight-text-link dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400{% else %}text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link dark:hover:text-blue-400{% endif %} px-4 py-2 text-sm font-medium transition-colors duration-200"
@@ -44,47 +43,47 @@
           {% endfor %}
         </ul>
       </div>
-      {% endif %}
+    {% endif %}
 
-      <!-- Mobile menu button -->
-      <div class="md:hidden flex items-center gap-2">
-        <!-- Mobile Menu Toggle -->
-        <button
-          type="button"
-          class="inline-flex items-center justify-center p-2 rounded-md text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
-          aria-expanded="false"
-          aria-controls="mobile-menu"
-          aria-label="{% trans 'Menü öffnen' %}"
-          data-insight-toggle="navbar">
-          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
-      </div>
-
-      {% if show_searchbar %}
-        <!-- Searchbar -->
-        <div class="flex-1 max-w-72">
-          {% include "insight_ui/components/searchbar.html" with simple=True %}
-        </div>
-      {% endif%}
-
-      <!-- Language Selector and Theme Toggle -->
-      <div class="hidden md:flex items-center gap-4">
-        {% if show_usermenu %}
-          {% include "insight_ui/components/user_dropdown.html" with user=options.user show_login=options.show_login %}
-        {% endif %}
-        {% if show_language_selector %}
-          {% include "insight_ui/components/toggle_language.html" with options=options %}
-        {% endif %}
-        {% if show_theme_toggle %}
-          {% include "insight_ui/components/toggle_theme.html" %}
-        {% endif %}
-      </div>
+    <!-- Mobile menu button -->
+    <div class="md:hidden flex items-center gap-2">
+      <!-- Mobile Menu Toggle -->
+      <button
+        type="button"
+        class="inline-flex items-center justify-center p-2 rounded-md text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="{% trans 'Menü öffnen' %}"
+        data-insight-toggle="navbar">
+        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
     </div>
 
-    <!-- Mobile menu -->
-    {% if links %}
+    {% if show_searchbar %}
+      <!-- Searchbar -->
+      <div class="flex-1 max-w-72">
+        {% include "insight_ui/components/searchbar.html" with simple=True %}
+      </div>
+    {% endif%}
+
+    <!-- Language Selector and Theme Toggle -->
+    <div class="hidden md:flex items-center gap-2 h-full">
+      {% if show_usermenu %}
+        {% include "insight_ui/components/user_dropdown.html" with user=options.user show_login=options.show_login user_dropdown_links=options.user_dropdown_links %}
+      {% endif %}
+      {% if show_language_selector %}
+        {% include "insight_ui/components/toggle_language.html" with options=options %}
+      {% endif %}
+      {% if show_theme_toggle %}
+        {% include "insight_ui/components/toggle_theme.html" %}
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  {% if links %}
     <div id="mobile-menu" class="md:hidden hidden">
       <div class="px-2 pt-2 pb-3 space-y-1 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
         {% for link in links %}
@@ -102,6 +101,5 @@
         {% endfor %}
       </div>
     </div>
-    {% endif %}
-  </div>
+  {% endif %}
 </nav>

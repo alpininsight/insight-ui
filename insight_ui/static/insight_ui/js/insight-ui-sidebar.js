@@ -43,16 +43,21 @@ InsightUI.Sidebar = {
       {
         // Öffnen, wenn Maus nahe an der Fenster Seite ist
         document.addEventListener('mousemove', (e) => {
-          const threshold = 50; // Pixel Abstand vom Rand
-          if (document.documentElement.dir === "rtl")
+          const xThreshold = 50; // Pixel Abstand vom Rand
+          const yThreshold = 64 // Pixel Abstand vom oberen Rand (wird durch Navbar bestimmt)
+
+          if (e.clientY > yThreshold)
           {
-            if (side == "right" && e.clientX < threshold) { openSidebar(); }
-            else if (side == "left" && window.innerWidth - e.clientX < threshold) { openSidebar(); }
-          }
-          else
-          {
-            if (side == "right" && window.innerWidth - e.clientX < threshold) { openSidebar(); }
-            else if (side == "left" && e.clientX < threshold) { openSidebar(); }
+            if (document.documentElement.dir === "rtl")
+            {
+              if (side == "right" && e.clientX < xThreshold) { openSidebar(); }
+              else if (side == "left" && window.innerWidth - e.clientX < xThreshold) { openSidebar(); }
+            }
+            else
+            {
+              if (side == "right" && window.innerWidth - e.clientX < xThreshold) { openSidebar(); }
+              else if (side == "left" && e.clientX < xThreshold) { openSidebar(); }
+            }
           }
         });
 

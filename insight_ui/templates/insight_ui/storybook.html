@@ -11,7 +11,7 @@
 {% endblock sidebar_left %}
 
 {% block navbar %}
-    {% navbar brand=nav_brand links=nav_links show_searchbar=True show_usermenu=True user=user show_login=True %}
+    {% navbar brand=nav_brand links=nav_links show_searchbar=True show_usermenu=True user=user show_login=True user_dropdown_links=user_dropdown_links %}
 {% endblock navbar %}
 
 {% block background_image %}
@@ -20,7 +20,7 @@
 
 {% block content %}
 <!-- Hauptcontainer für alle Demo-Abschnitte -->
-<div class="w-full pt-16">
+<div class="w-full pt-16 px-24">
     <!-- Willkommenstext -->
     <section class="mb-8">
         <h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">{% trans 'Django Insight UI Storybook' %}</h1>
@@ -125,7 +125,7 @@
     <!-- HTMX Websocket Content Demo (Pushing) -->
     <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
         <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans "WebSocket Live-Demo (Push-Verfahren)" %}</h2>
-        {% insight_websocket html_tag_id="demo-websocket" ws_url="ws://localhost:8765" initial_content="<p>Verbinde zu WebSocket…</p>" %}
+        {% comment %} {% insight_websocket html_tag_id="demo-websocket" ws_url="ws://localhost:8765" initial_content="<p>Verbinde zu WebSocket…</p>" %} {% endcomment %}
     </section>
 
     <!-- Table Demo -->

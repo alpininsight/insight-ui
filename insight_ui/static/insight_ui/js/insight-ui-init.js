@@ -37,8 +37,8 @@ document.addEventListener('DOMContentLoaded', function () {
   InsightUI.Form?.init?.();
   console.log('📝 Form initialisiert');
 
-  InsightUI.WebSocket?.init?.();
-  console.log('🔌 WebSocket initialisiert');
+  // InsightUI.WebSocket?.init?.();
+  // console.log('🔌 WebSocket initialisiert');
 
   console.log('✅ Alle InsightUI Komponenten erfolgreich initialisiert');
 });

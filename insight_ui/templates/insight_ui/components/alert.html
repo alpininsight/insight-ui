@@ -2,10 +2,10 @@
 
 <div
   role="alert"
-  class="flex justify-between w-full shadow p-4 rounded {% if type == "info" %}bg-insight-info{% elif type == "success" %}bg-insight-success{% elif type == "warning" %}bg-insight-warning{% elif type == "error" %}bg-insight-error{% endif %}"
+  class="flex justify-between w-full shadow p-4 rounded {% if type == "info" %}bg-insight-info/10{% elif type == "success" %}bg-insight-success/10{% elif type == "warning" %}bg-insight-warning/10{% elif type == "error" %}bg-insight-error/10{% endif %}"
   {% if options.id %}id="{{ options.id }}"{% endif %}
 >
-  <div class="flex items-center gap-2 text-white">
+  <div class="flex items-center gap-2 {% if type == "info" %}text-insight-info{% elif type == "success" %}text-insight-success{% elif type == "warning" %}text-insight-warning{% elif type == "error" %}text-insight-error{% endif %}">
     <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" class="size-6" viewBox="0 0 24 24">
       {% if type == 'info' %}
         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path>

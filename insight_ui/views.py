@@ -16,7 +16,7 @@ logger = structlog.get_logger(__name__)
 
 def get_nav_and_footer_context() -> dict:
     """Stellt Inhalt für die Navigation und den Footer bereit."""
-    return {
+    return config.get_config() | {
         "nav_brand": {
             "title": "Django Insight UI NavBar",
             "logo_url": "insight_ui/svg/ai-logo.svg",
@@ -31,18 +31,33 @@ def get_nav_and_footer_context() -> dict:
                 "staff_only": False,
             },
             {
-                "text": _("Storybook"),
-                "view_name": "storybook_view",
-                "active": False,
-                "need_auth": False,
-                "staff_only": False,
-            },
-            {
                 "text": _("Dokumentation"),
                 "view_name": "storybook_view",
                 "active": False,
                 "need_auth": False,
                 "staff_only": False,
+            },
+            {"text": _("Test"), "view_name": "storybook_view", "active": False, "need_auth": True, "staff_only": False},
+            {"text": _("Test2"), "view_name": "storybook_view", "active": False, "need_auth": True, "staff_only": True},
+        ],
+        "user_dropdown_links": [
+            {
+                "text": _("Einstellungen"),
+                "view_name": "storybook_view",
+                "staff_only": False,
+                "icon": {"name": "cog", "size": "small"},
+            },
+            {
+                "text": _("Administration"),
+                "view_name": "admin:index",
+                "staff_only": True,
+                "icon": {"name": "home", "size": "small"},
+            },
+            {
+                "text": _("Übersetzung"),
+                "view_name": "storybook_view",  # rosetta-home
+                "staff_only": True,
+                "icon": {"name": "globe", "size": "small"},
             },
         ],
         "footer": {
@@ -63,143 +78,139 @@ def get_storybook_context() -> dict:
     """Hilfsfunktion für Index-Seiten Context."""
     page_obj, surrounding_pages = get_page(generate_payload(100))
 
-    return (
-        config.get_config()
-        | get_nav_and_footer_context()
-        | {
-            "code_block_code": """
+    return get_nav_and_footer_context() | {
+        "code_block_code": """
 function greet(name) {
     return `Hello, ${name}!`;
 }
 """,
-            "breadcrumb_items": [
-                {"text": _("Startseite"), "url": "storybook_view"},
-                {"text": _("Demo"), "url": "storybook_view"},
-                {"text": _("Komponenten"), "url": None, "active": True},
+        "breadcrumb_items": [
+            {"text": _("Startseite"), "url": "storybook_view", "icon": {"name": "home", "size": "small"}},
+            {"text": _("Demo"), "url": "storybook_view"},
+            {"text": _("Komponenten"), "url": None, "active": True},
+        ],
+        "table_headers": [_("Name"), _("E-Mail"), _("Status"), _("Aktionen")],
+        "table_rows": [
+            [
+                "Max Mustermann",
+                "max@example.com",
+                _("Aktiv"),
+                format_html(
+                    '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
+                ),
             ],
-            "table_headers": [_("Name"), _("E-Mail"), _("Status"), _("Aktionen")],
-            "table_rows": [
-                [
-                    "Max Mustermann",
-                    "max@example.com",
-                    _("Aktiv"),
-                    format_html(
-                        '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
-                    ),
+            [
+                "Anna Schmidt",
+                "anna@example.com",
+                _("Inaktiv"),
+                format_html(
+                    '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
+                ),
+            ],
+            [
+                "Tom Weber",
+                "tom@example.com",
+                _("Aktiv"),
+                format_html(
+                    '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
+                ),
+            ],
+        ],
+        "cards": [
+            {
+                "title": "Beispiel-Karte",
+                "subtitle": "Untertitel",
+                "content": "Dies ist der Inhalt einer Karte.",
+                "actions": [
+                    {"text": _("Mehr erfahren"), "url": "#", "type": "secondary"},
+                    {"text": _("Teilen"), "url": "#", "type": "primary"},
                 ],
-                [
-                    "Anna Schmidt",
-                    "anna@example.com",
-                    _("Inaktiv"),
-                    format_html(
-                        '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
-                    ),
+            },
+            {
+                "title": "Karte mit Aktionen",
+                "content": "Diese Karte hat Aktions-Buttons.",
+                "actions": [
+                    {"text": _("Mehr erfahren"), "url": "#", "type": "secondary"},
+                    {"text": _("Teilen"), "url": "#", "type": "primary"},
                 ],
-                [
-                    "Tom Weber",
-                    "tom@example.com",
-                    _("Aktiv"),
-                    format_html(
-                        '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
-                    ),
+            },
+        ],
+        "horizontale_cards": [
+            {
+                "title": "Horizontale Karte",
+                "content": "Eine Karte dessen Inhalt horizontal angeordnet ist.",
+                "image": "insight_ui/img/thumbnail.png",
+                "tags": ["Test", "Test2", "Test3"],
+                "actions": [
+                    {"text": _("Mehr erfahren"), "url": "#", "type": "secondary"},
+                    {"text": _("Teilen"), "url": "#", "type": "primary"},
                 ],
-            ],
-            "cards": [
-                {
-                    "title": "Beispiel-Karte",
-                    "subtitle": "Untertitel",
-                    "content": "Dies ist der Inhalt einer Karte.",
-                    "actions": [
-                        {"text": _("Mehr erfahren"), "url": "#", "type": "secondary"},
-                        {"text": _("Teilen"), "url": "#", "type": "primary"},
-                    ],
-                },
-                {
-                    "title": "Karte mit Aktionen",
-                    "content": "Diese Karte hat Aktions-Buttons.",
-                    "actions": [
-                        {"text": _("Mehr erfahren"), "url": "#", "type": "secondary"},
-                        {"text": _("Teilen"), "url": "#", "type": "primary"},
-                    ],
-                },
-            ],
-            "horizontale_cards": [
-                {
-                    "title": "Horizontale Karte",
-                    "content": "Eine Karte dessen Inhalt horizontal angeordnet ist.",
-                    "image": "insight_ui/img/thumbnail.png",
-                    "tags": ["Test", "Test2", "Test3"],
-                    "actions": [
-                        {"text": _("Mehr erfahren"), "url": "#", "type": "secondary"},
-                        {"text": _("Teilen"), "url": "#", "type": "primary"},
-                    ],
-                }
-            ],
-            "form_fields": [
-                {
-                    "type": "text",
-                    "name": "name",
-                    "label": _("Name"),
-                    "placeholder": _("Ihr vollständiger Name"),
-                    "required": True,
-                },
-                {
-                    "type": "email",
-                    "name": "email",
-                    "label": _("E-Mail"),
-                    "placeholder": _("ihre.email@example.com"),
-                    "required": True,
-                },
-                {
-                    "type": "textarea",
-                    "name": "message",
-                    "label": _("Nachricht"),
-                    "placeholder": _("Ihre Nachricht..."),
-                    "rows": 4,
-                },
-            ],
-            "form_actions": [
-                {"text": _("Absenden"), "type": "submit", "style": "primary"},
-                {"text": _("Zurücksetzen"), "type": "reset", "style": "secondary"},
-            ],
-            "confirm_modal_actions": [
-                {"text": _("Ja, fortfahren"), "type": "primary", "onclick": 'alert("Aktion bestätigt!")'},
-                {"text": _("Abbrechen"), "type": "cancel", "dismiss": True},
-            ],
-            "right_sidebar_items": [
-                {"text": _("Benachrichtigungen"), "icon": "🔔", "badge": "3"},
-                {"text": _("Nachrichten"), "icon": "💬", "badge": "12"},
-                {"text": _("Aufgaben"), "icon": "✅", "badge": "5"},
-                {"text": _("Kalender"), "icon": "📅"},
-                {"text": _("Einstellungen"), "icon": "⚙️"},
-                {"text": _("Profil"), "icon": "👤"},
-            ],
-            "left_sidebar_items": [
-                {"text": _("Dashboard"), "url": "/", "icon": "📊"},
-                {"text": _("Benutzer"), "url": "/users/", "icon": "👥"},
-                {"text": _("Einstellungen"), "url": "/settings/", "icon": "⚙️"},
-                {"text": _("Hilfe"), "url": "/help/", "icon": "❓"},
-            ],
-            "scroll_items": [{"title": f"Element {i}", "content": f"Inhalt für Element {i}"} for i in range(1, 11)],
-            "htmx_config": {"url": "/api/form-submit/", "method": "post", "target": "#htmx-form", "swap": "innerHTML"},
-            "available_languages": [
-                {"code": "de", "name": "Deutsch"},
-                {"code": "en", "name": "English"},
-                {"code": "es", "name": "Español"},
-                {"code": "fr", "name": "Français"},
-                {"code": "ar", "name": "العربية"},
-                {"code": "zh", "name": "中文"},
-            ],
-            "carousel_items": map_payload_to_cards(generate_payload()),
-            "image_carousel_items": [
-                {"title": "Test Bild 1", "url": "insight_ui/img/text-services-main.png"},
-                {"title": "Test Bild 2", "url": "insight_ui/img/text-services-response.png"},
-                {"title": "Test Bild 3", "url": "insight_ui/img/text-services-response2.png"},
-            ],
-            "range_total_slides": range(3),
-            "start_page": {"page_obj": page_obj, "surrounding_pages": surrounding_pages},
-        }
-    )
+            }
+        ],
+        "form_fields": [
+            {
+                "type": "text",
+                "name": "name",
+                "label": _("Name"),
+                "placeholder": _("Ihr vollständiger Name"),
+                "required": True,
+            },
+            {
+                "type": "email",
+                "name": "email",
+                "label": _("E-Mail"),
+                "placeholder": _("ihre.email@example.com"),
+                "required": True,
+            },
+            {
+                "type": "textarea",
+                "name": "message",
+                "label": _("Nachricht"),
+                "placeholder": _("Ihre Nachricht..."),
+                "rows": 4,
+            },
+        ],
+        "form_actions": [
+            {"text": _("Absenden"), "type": "submit", "style": "primary"},
+            {"text": _("Zurücksetzen"), "type": "reset", "style": "secondary"},
+        ],
+        "confirm_modal_actions": [
+            {"text": _("Ja, fortfahren"), "type": "primary", "onclick": 'alert("Aktion bestätigt!")'},
+            {"text": _("Abbrechen"), "type": "cancel", "dismiss": True},
+        ],
+        "right_sidebar_items": [
+            {"text": _("Benachrichtigungen"), "icon": "🔔", "badge": "3"},
+            {"text": _("Nachrichten"), "icon": "💬", "badge": "12"},
+            {"text": _("Aufgaben"), "icon": "✅", "badge": "5"},
+            {"text": _("Kalender"), "icon": "📅"},
+            {"text": _("Einstellungen"), "icon": "⚙️"},
+            {"text": _("Profil"), "icon": "👤"},
+        ],
+        "left_sidebar_items": [
+            {"text": _("Dashboard"), "url": "/", "icon": "📊"},
+            {"text": _("Benutzer"), "url": "/users/", "icon": "👥"},
+            {"text": _("Einstellungen"), "url": "/settings/", "icon": "⚙️"},
+            {"text": _("Hilfe"), "url": "/help/", "icon": "❓"},
+        ],
+        "scroll_items": [{"title": f"Element {i}", "content": f"Inhalt für Element {i}"} for i in range(1, 11)],
+        "htmx_config": {"url": "/api/form-submit/", "method": "post", "target": "#htmx-form", "swap": "innerHTML"},
+        "available_languages": [
+            {"code": "de", "name": "Deutsch"},
+            {"code": "en", "name": "English"},
+            {"code": "es", "name": "Español"},
+            {"code": "fr", "name": "Français"},
+            {"code": "ar", "name": "العربية"},
+            {"code": "zh", "name": "中文"},
+        ],
+        "carousel_items": map_payload_to_cards(generate_payload()),
+        "image_carousel_items": [
+            {"title": "Test Bild 1", "url": "insight_ui/img/text-services-main.png"},
+            {"title": "Test Bild 2", "url": "insight_ui/img/text-services-response.png"},
+            {"title": "Test Bild 3", "url": "insight_ui/img/text-services-response2.png"},
+        ],
+        "range_total_slides": range(3),
+        "start_page": {"page_obj": page_obj, "surrounding_pages": surrounding_pages},
+    }
 
 
 def get_page(data: list, page: int = 1, max_neighbor_pages: int = 6) -> tuple[Page, list[str]]:
