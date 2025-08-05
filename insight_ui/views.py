@@ -37,6 +37,7 @@ def get_nav_and_footer_context() -> dict:
                 "need_auth": False,
                 "staff_only": False,
             },
+            {"text": _("Über"), "open_modal": "about-modal", "active": False, "need_auth": False, "staff_only": False},
             {"text": _("Test"), "view_name": "storybook_view", "active": False, "need_auth": True, "staff_only": False},
             {"text": _("Test2"), "view_name": "storybook_view", "active": False, "need_auth": True, "staff_only": True},
         ],

@@ -2,11 +2,11 @@
 {% load i18n insight_tags %}
 
 {% block navbar %}
-  {% navbar brand=nav_brand links=nav_links show_searchbar=True show_usermenu=True user=user show_login=False %}
+  {% navbar brand=nav_brand links=nav_links show_searchbar=show_searchbar show_usermenu=True user=user show_login=False %}
 {% endblock navbar %}
 
 {% block content %}
-  <div class="flex w-96 flex-col justify-center bg-white dark:bg-gray-800 border dark:border-0 border-gray-200 rounded shadow px-6 py-12 lg:px-8 my-16 mx-auto">
+  <div class="flex max-w-96 flex-col justify-center bg-white dark:bg-gray-800 border dark:border-0 border-gray-200 rounded shadow px-6 py-12 lg:px-8 my-16 mx-auto">
     <h2 class="text-center text-3xl font-bold leading-9 tracking-tight">
       {% trans "Login" %}
     </h2>

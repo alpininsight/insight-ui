@@ -5,7 +5,7 @@
     {% trans 'Zum Hauptinhalt springen' %}
 </a>
 
-<nav role="navigation" aria-label="{% trans 'Hauptnavigation' %}" class="fixed w-full h-16 z-50 bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700 px-24 py-3">
+<nav role="navigation" aria-label="{% trans 'Hauptnavigation' %}" class="fixed w-full h-16 z-50 bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700 px-4 md:px-24 py-3">
   <div class="flex justify-between items-center h-full">
     <!-- Brand Logo - Links positioniert -->
     {% if brand %}
@@ -25,51 +25,44 @@
     <!-- Desktop Navigation Links - Zentriert -->
     {% if links %}
       <div class="hidden md:flex justify-center">
-        <ul class="flex gap-6">
+        <ul class="flex gap-2 items-center">
           {% for link in links %}
-            <li>
-              {% if not link.need_auth or options.user.is_authenticated and not link.staff_only or options.user.is_staff %}
-                <a
-                  href="{% url link.view_name %}"
-                  class="{% if link.active %}text-insight-text-link dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400{% else %}text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link dark:hover:text-blue-400{% endif %} px-4 py-2 text-sm font-medium transition-colors duration-200"
-                  {% if link.active %}aria-current="page"{% endif %}
-                  {% if link.external %}target="_blank" rel="noopener"{% endif %}
-                >
-                  {% if link.icon %}<span class="inline-block mr-2">{{ link.icon|safe }}</span>{% endif %}
-                  {{ link.text }}
-                </a>
-              {% endif %}
-            </li>
+            {% if not link.need_auth or options.user.is_authenticated and not link.staff_only or options.user.is_staff %}
+              <li>
+                {% if link.view_name %}
+                  <a
+                    href="{% url link.view_name %}"
+                    class="{% if link.active %}text-insight-text-link dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400{% else %}text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link dark:hover:text-blue-400{% endif %} px-4 py-2 text-sm font-medium transition-colors duration-200"
+                    {% if link.active %}aria-current="page"{% endif %}
+                    {% if link.external %}target="_blank" rel="noopener"{% endif %}
+                  >
+                    {% if link.icon %}<span class="inline-block mr-2">{{ link.icon|safe }}</span>{% endif %}
+                    {{ link.text }}
+                  </a>
+                {% elif link.open_modal %}
+                  <button
+                    class="text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link dark:hover:text-blue-400 px-4 py-2 text-sm font-medium transition-colors duration-200"
+                    data-insight-toggle="modal"
+                    data-insight-target="{{ link.open_modal }}">
+                    {{ link.text }}
+                  </button>
+                  {% modal html_tag_id=link.open_modal title=_("Insight-UI") description=_("Lorem ipsum...") %}
+                {% endif %}
+              </li>
+            {% endif %}
           {% endfor %}
         </ul>
       </div>
     {% endif %}
 
-    <!-- Mobile menu button -->
-    <div class="md:hidden flex items-center gap-2">
-      <!-- Mobile Menu Toggle -->
-      <button
-        type="button"
-        class="inline-flex items-center justify-center p-2 rounded-md text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
-        aria-expanded="false"
-        aria-controls="mobile-menu"
-        aria-label="{% trans 'Menü öffnen' %}"
-        data-insight-toggle="navbar">
-        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-      </button>
-    </div>
-
-    {% if show_searchbar %}
-      <!-- Searchbar -->
-      <div class="flex-1 max-w-72">
-        {% include "insight_ui/components/searchbar.html" with simple=True %}
-      </div>
-    {% endif%}
-
     <!-- Language Selector and Theme Toggle -->
     <div class="hidden md:flex items-center gap-2 h-full">
+      {% if show_searchbar %}
+        <!-- Searchbar -->
+        <div class="flex-1 max-w-72">
+          {% include "insight_ui/components/searchbar.html" with simple=True %}
+        </div>
+      {% endif%}
       {% if show_usermenu %}
         {% include "insight_ui/components/user_dropdown.html" with user=options.user show_login=options.show_login user_dropdown_links=options.user_dropdown_links %}
       {% endif %}
@@ -80,25 +73,73 @@
         {% include "insight_ui/components/toggle_theme.html" %}
       {% endif %}
     </div>
+
+    <!-- Mobile menu button -->
+    <div class="md:hidden flex items-center gap-2">
+      <!-- Mobile Menu Toggle -->
+      <button
+        class="inline-flex items-center justify-center p-2 rounded-md text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="{% trans 'Menü öffnen' %}"
+        data-insight-toggle="collapsible"
+        data-insight-target="mobile-menu"
+      >
+        <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
   </div>
 
   <!-- Mobile menu -->
   {% if links %}
-    <div id="mobile-menu" class="md:hidden hidden">
-      <div class="px-2 pt-2 pb-3 space-y-1 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+    <div id="mobile-menu" class="md:hidden hidden z-50 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-sm p-2 mt-4">
+      <ul class="space-y-1">
         {% for link in links %}
-          {% if not link.need_auth or user.is_authenticated and not link.staff_only or user.is_staff %}
-            <a
-              href="{% url link.view_name %}"
-              class="{% if link.active %}bg-blue-50 dark:bg-blue-900 text-insight-text-link dark:text-blue-400{% else %}text-insight-text-secondary dark:text-insight-text-secondary-dark hover:bg-gray-50 dark:hover:bg-gray-700{% endif %} block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
-              {% if link.active %}aria-current="page"{% endif %}
-              {% if link.external %}target="_blank" rel="noopener"{% endif %}
-            >
-              {% if link.icon %}<span class="inline-block mr-2">{{ link.icon|safe }}</span>{% endif %}
-              {{ link.text }}
-            </a>
+          {% if not link.need_auth or options.user.is_authenticated and not link.staff_only or options.user.is_staff %}
+            <li>
+              {% if link.view_name %}
+                <a
+                  href="{% url link.view_name %}"
+                  class="block text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link dark:hover:text-blue-400 px-4 py-2 text-sm font-medium transition-colors duration-200"
+                  {% if link.active %}aria-current="page"{% endif %}
+                  {% if link.external %}target="_blank" rel="noopener"{% endif %}
+                >
+                  {% if link.icon %}<span class="inline-block mr-2">{{ link.icon|safe }}</span>{% endif %}
+                  {{ link.text }}
+                </a>
+              {% elif link.open_modal %}
+                <button
+                  class="text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link dark:hover:text-blue-400 px-4 py-2 text-sm font-medium transition-colors duration-200"
+                  data-insight-toggle="modal"
+                  data-insight-target="{{ link.open_modal }}">
+                  {{ link.text }}
+                </button>
+              {% endif %}
+            </li>
           {% endif %}
         {% endfor %}
+      </ul>
+      <div class="space-y-2 mt-2">
+        {% if show_searchbar or show_usermenu %}
+          <div class="w-full space-y-2">
+            {% if show_searchbar or show_usermenu %}
+              {% include "insight_ui/components/searchbar.html" with simple=True %}
+            {% endif %}
+            {% if show_usermenu %}
+              {% include "insight_ui/components/user_dropdown.html" with user=options.user show_login=options.show_login user_dropdown_links=options.user_dropdown_links %}
+            {% endif %}
+          </div>
+        {% endif%}
+        <div class="flex gap-2">
+          {% if show_language_selector %}
+            {% include "insight_ui/components/toggle_language.html" with options=options %}
+          {% endif %}
+          {% if show_theme_toggle %}
+            {% include "insight_ui/components/toggle_theme.html" %}
+          {% endif %}
+        </div>
       </div>
     </div>
   {% endif %}

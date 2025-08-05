@@ -11,12 +11,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Prüfe ob alle Module verfügbar sind
   console.log('🔍 Verfügbare Module:');
-  console.log('  - Navbar:', typeof InsightUI.Navbar);
-  console.log('  - Alert:', typeof InsightUI.Alert);
-  console.log('  - ThemeToggle:', typeof InsightUI.ThemeToggle);
+  console.log('  - Collapsible:', typeof InsightUI.Collapsible);
+  console.log('  - Dropdown:', typeof InsightUI.Dropdown);
   console.log('  - Modal:', typeof InsightUI.Modal);
   console.log('  - Sidebar:', typeof InsightUI.Sidebar);
-  console.log('  - Form:', typeof InsightUI.Form);
+  console.log('  - ThemeToggle:', typeof InsightUI.ThemeToggle);
   console.log('  - WebSocket:', typeof InsightUI.WebSocket);
 
   InsightUI.Navbar?.init?.();
