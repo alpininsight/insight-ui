@@ -4,16 +4,16 @@
 
 {% block carousel_content %}
     <div class="relative">
-        {% if item.title %}
+        {% if item.description %}
             <!-- Description overlay -->
             <div class="absolute z-30 top-4 w-full flex justify-center px-2">
                 <div class="bg-neutral-700 bg-opacity-95 px-4 py-1 w-fit rounded-lg">
-                    <p class="text-white text-lg font-semibold">{{ item.title }}</p>
+                    <p class="text-white text-lg font-semibold">{{ item.description }}</p>
                 </div>
             </div>
         {% endif %}
         <div class="flex justify-center h-full bg-neutral-100">
-            <img src="{% static item.url %}" alt="Image" class="p-2 max-h-full m-auto">
+            <img src="{{ item.url }}" alt="{{ item.alt }}" class="p-2 max-h-full m-auto">
         </div>
     </div>
 {% endblock carousel_content %}

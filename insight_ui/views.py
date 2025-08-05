@@ -5,6 +5,7 @@ from django.core.paginator import Page, Paginator
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
+from django.templatetags.static import static
 from django.utils.html import format_html
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_GET, require_http_methods
@@ -140,7 +141,7 @@ function greet(name) {
             {
                 "title": "Horizontale Karte",
                 "content": "Eine Karte dessen Inhalt horizontal angeordnet ist.",
-                "image": "insight_ui/img/thumbnail.png",
+                "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": "Card-Image"},
                 "tags": ["Test", "Test2", "Test3"],
                 "actions": [
                     {"text": _("Mehr erfahren"), "url": "#", "type": "secondary"},
@@ -205,9 +206,17 @@ function greet(name) {
         ],
         "carousel_items": map_payload_to_cards(generate_payload()),
         "image_carousel_items": [
-            {"title": "Test Bild 1", "url": "insight_ui/img/text-services-main.png"},
-            {"title": "Test Bild 2", "url": "insight_ui/img/text-services-response.png"},
-            {"title": "Test Bild 3", "url": "insight_ui/img/text-services-response2.png"},
+            {"description": "Test Bild 1", "url": static("insight_ui/img/text-services-main.png"), "alt": "Image 1"},
+            {
+                "description": "Test Bild 2",
+                "url": static("insight_ui/img/text-services-response.png"),
+                "alt": "Image 2",
+            },
+            {
+                "description": "Test Bild 3",
+                "url": static("insight_ui/img/text-services-response2.png"),
+                "alt": "Image 3",
+            },
         ],
         "range_total_slides": range(3),
         "start_page": {"page_obj": page_obj, "surrounding_pages": surrounding_pages},
