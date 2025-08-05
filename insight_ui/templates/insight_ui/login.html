@@ -2,7 +2,7 @@
 {% load i18n insight_tags %}
 
 {% block navbar %}
-  {% navbar brand=nav_brand links=nav_links show_searchbar=show_searchbar show_usermenu=True user=user show_login=False %}
+  {% navbar config=nav_config user=user show_login=False %}
 {% endblock navbar %}
 
 {% block content %}

@@ -18,30 +18,54 @@ logger = structlog.get_logger(__name__)
 def get_nav_and_footer_context() -> dict:
     """Stellt Inhalt für die Navigation und den Footer bereit."""
     return config.get_config() | {
-        "nav_brand": {
-            "title": "Django Insight UI NavBar",
-            "logo_url": "insight_ui/svg/ai-logo.svg",
-            "logo_alt": "Insight UI Logo",
+        "nav_config": {
+            "brand": {
+                "title": "Django Insight UI NavBar",
+                "logo_url": "insight_ui/svg/ai-logo.svg",
+                "logo_alt": "Insight UI Logo",
+            },
+            "links": [
+                {
+                    "text": _("Startseite"),
+                    "view_name": "storybook_view",
+                    "active": True,
+                    "need_auth": False,
+                    "staff_only": False,
+                },
+                {
+                    "text": _("Dokumentation"),
+                    "view_name": "storybook_view",
+                    "active": False,
+                    "need_auth": False,
+                    "staff_only": False,
+                },
+                {
+                    "text": _("Über"),
+                    "open_modal": "about-modal",
+                    "active": False,
+                    "need_auth": False,
+                    "staff_only": False,
+                },
+                {
+                    "text": _("Test"),
+                    "view_name": "storybook_view",
+                    "active": False,
+                    "need_auth": True,
+                    "staff_only": False,
+                },
+                {
+                    "text": _("Test2"),
+                    "view_name": "storybook_view",
+                    "active": False,
+                    "need_auth": True,
+                    "staff_only": True,
+                },
+            ],
+            "show_searchbar": True,
+            "show_usermenu": True,
+            "show_language_selector": True,
+            "show_theme_toggle": True,
         },
-        "nav_links": [
-            {
-                "text": _("Startseite"),
-                "view_name": "storybook_view",
-                "active": True,
-                "need_auth": False,
-                "staff_only": False,
-            },
-            {
-                "text": _("Dokumentation"),
-                "view_name": "storybook_view",
-                "active": False,
-                "need_auth": False,
-                "staff_only": False,
-            },
-            {"text": _("Über"), "open_modal": "about-modal", "active": False, "need_auth": False, "staff_only": False},
-            {"text": _("Test"), "view_name": "storybook_view", "active": False, "need_auth": True, "staff_only": False},
-            {"text": _("Test2"), "view_name": "storybook_view", "active": False, "need_auth": True, "staff_only": True},
-        ],
         "user_dropdown_links": [
             {
                 "text": _("Einstellungen"),

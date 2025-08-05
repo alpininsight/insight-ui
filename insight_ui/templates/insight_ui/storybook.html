@@ -11,7 +11,7 @@
 {% endblock sidebar_left %}
 
 {% block navbar %}
-    {% navbar brand=nav_brand links=nav_links show_searchbar=True show_usermenu=True user=user show_login=True user_dropdown_links=user_dropdown_links %}
+    {% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links %}
 {% endblock navbar %}
 
 {% block background_image %}

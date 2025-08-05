@@ -8,43 +8,40 @@ register = template.Library()
 
 
 @register.inclusion_tag("insight_ui/components/navbar.html")
-def navbar(  # noqa: PLR0913 (too many args)
-    brand: dict[str, str] = {},
-    links: list[dict[str, str]] = [],
-    show_searchbar: bool = False,
-    show_usermenu: bool = False,
-    show_language_selector: bool = True,
-    show_theme_toggle: bool = True,
-    **kwargs,
-) -> dict[str, Any]:
+def navbar(config: dict, **kwargs) -> dict[str, Any]:
     """
-    Rendert eine Navigationsleiste.
+    Rendert eine konfigurierbare Navigationsleiste.
+
+    Die folgenden Einstellungen können über das "config" Dictionary angepasst werden.
+
+    brand (dict[str, str]): Title der Anwendung und Logo Informationen
+    links (dict[str, str]): Eine Liste von Dictionaries mit Link-Informationen
+    show_searchbar (bool):  'True' wenn eine Suchzeile angezeigt werden soll
+    show_usermenu (bool): 'True' wenn ein Login/Usermenü angezeigt werden soll
+    show_language_selector (bool): 'True' wenn ein Menü zum wechseln der Sprache angezeigt werden soll
+    show_theme_toggle (bool): 'True' wenn ein Button zum wechseln Des Themes (Hell/Dunkel) angezeigt werden soll
+
+    Beispiel Branding:
+        {
+            "title": "Insight UI",
+            "logo_url": "path/to/logo.svg or png",
+            "logo_alt": "Unser Logo"
+        }
+
+    Beispiel Links:
+        {
+            "text": _("Startseite"),
+            "view_name": "storybook_view",  # Wenn eine separate Seite geöffnet werden soll
+            "open_modal": "modal-tag-id",  # Wenn ein Modal-Dialog geöffnet werden soll (nur eins von beiden verwenden)
+            "active": True,
+            "need_auth": False,
+            "staff_only": False
+        }
 
     Args:
     ----
-        brand: Title der Anwendung und Logo Informationen
-        links: Eine Liste von Dictionaries mit Link-Informationen
-        show_searchbar:  'True' wenn eine Suchzeile angezeigt werden soll
-        show_usermenu: 'True' wenn ein Login/Usermenü angezeigt werden soll
-        show_language_selector: 'True' wenn ein Menü zum wechseln der Sprache angezeigt werden soll
-        show_theme_toggle: 'True' wenn ein Button zum wechseln Des Themes (Hell/Dunkel) angezeigt werden soll
+        config (dict): Navbar Konfiguration
         **kwargs: Zusätzliche Optionen für die Navbar
-
-        Beispiel Branding:
-            {
-                "title": "Insight UI",
-                "logo_url": "path/to/logo.svg or png",
-                "logo_alt": "Unser Logo"
-            }
-
-        Beispiel Links:
-            {
-                "text": _("Startseite"),
-                "view_name": "storybook_view",
-                "active": True,
-                "need_auth": False,
-                "staff_only": False
-            }
 
     Returns:
     -------
@@ -52,12 +49,12 @@ def navbar(  # noqa: PLR0913 (too many args)
 
     """
     return {
-        "brand": brand,
-        "links": links,
-        "show_searchbar": show_searchbar,
-        "show_usermenu": show_usermenu,
-        "show_language_selector": show_language_selector,
-        "show_theme_toggle": show_theme_toggle,
+        "brand": config.get("brand"),
+        "links": config.get("links"),
+        "show_searchbar": config.get("show_searchbar"),
+        "show_usermenu": config.get("show_usermenu"),
+        "show_language_selector": config.get("show_language_selector"),
+        "show_theme_toggle": config.get("show_theme_toggle"),
         "options": {**kwargs},
     }
 
