@@ -21,6 +21,7 @@ def get_nav_and_footer_context() -> dict:
         "nav_config": {
             "brand": {
                 "title": "Django Insight UI NavBar",
+                "view_name": "storybook_view",
                 "logo_url": "insight_ui/svg/ai-logo.svg",
                 "logo_alt": "Insight UI Logo",
             },

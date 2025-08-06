@@ -10,7 +10,7 @@
     <!-- Brand Logo - Links positioniert -->
     {% if brand %}
       <div class="flex items-center">
-        <a href="{% if brand_url %}{% url brand_url %}{% endif %}" class="flex items-center gap-2 text-xl font-bold text-insight-text-primary dark:text-white">
+        <a href="{% if brand.view_name %}{% url brand.view_name %}{% endif %}" class="flex items-center gap-2 text-xl font-bold text-insight-text-primary dark:text-white">
           {% if brand.logo_url %}
             <img src="{% static brand.logo_url %}" alt="{{ brand.logo_alt }}" class="size-8 rounded-full dark:bg-white" />
           {% else %}
