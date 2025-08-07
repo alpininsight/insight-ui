@@ -11,6 +11,7 @@ from django.utils.translation import gettext as _
 from django.views.decorators.http import require_GET, require_http_methods
 
 from insight_ui import config
+from insight_ui.forms import ChatForm
 
 logger = structlog.get_logger(__name__)
 
@@ -106,11 +107,6 @@ def get_storybook_context() -> dict:
     page_obj, surrounding_pages = get_page(generate_payload(100))
 
     return get_nav_and_footer_context() | {
-        "code_block_code": """
-function greet(name) {
-    return `Hello, ${name}!`;
-}
-""",
         "breadcrumb_items": [
             {"text": _("Startseite"), "url": "storybook_view", "icon": {"name": "home", "size": "small"}},
             {"text": _("Demo"), "url": "storybook_view"},
@@ -246,6 +242,16 @@ function greet(name) {
         "range_total_slides": range(3),
         "start_page": {"page_obj": page_obj, "surrounding_pages": surrounding_pages},
     }
+
+
+def chat_response(request: HttpRequest) -> HttpResponse:
+    """Chat request endpoint to answer on chat messages."""
+    form = ChatForm(request.POST)
+
+    if form.is_valid():
+        return render(request, "insight_ui/components/chat_response.html", {"msg": form.cleaned_data["msg"]})
+
+    return HttpResponse(status=204)  # no content
 
 
 def get_page(data: list, page: int = 1, max_neighbor_pages: int = 6) -> tuple[Page, list[str]]:

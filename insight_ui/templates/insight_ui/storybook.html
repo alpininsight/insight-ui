@@ -48,7 +48,21 @@
     <!-- Code-Block -->
     <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
         <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Code Block' %}</h2>
-        {% include "insight_ui/components/code_block.html" with code=code_block_code %}
+        <div id="code" data-insight-code-block="javascript">
+            function greet(name) {
+                return `Hello, ${name}!`;
+            }
+        </div>
+        <div id="code2" data-insight-code-block="python">
+            def greet(name: str) -> str:
+                return f"Hello, {name}";
+        </div>
+    </section>
+
+    <!-- Chat -->
+    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Chat' %}</h2>
+        {% include "insight_ui/components/chat.html" %}
     </section>
 
     <!-- Alert Demo -->
