@@ -16,19 +16,7 @@ CONFIG_DEFAULTS = {
             "description": "An Alpin Insight AI application",
             "keywords": "Django, Alpin Insight, AI, Webapp",
             "author": "Alpin Insight AI Dev-Team",
-        },
-        "open_graph": {
-            "title": "Alpin Insight AI App",
-            "description": "An Alpin Insight AI application",
-            "site_name": "Django Insight UI",
-            "url": "",
-        },
-        "twitter": {
-            "title": "Alpin Insight AI App",
-            "description": "An Alpin Insight AI application",
-            "site": "Django Insight UI",
-            "author": "Alpin Insight AI Dev-Team",
-        },
+        }
     },
 }
 

@@ -22,22 +22,6 @@
     <meta name="description" content="{% block meta_description %}{{ INSIGHT_UI.meta.seo.description }}{% endblock meta_description %}">
     <meta name="keywords" content="{% block meta_keywords %}{{ INSIGHT_UI.meta.seo.keywords }}{% endblock meta_keywords %}">
     <meta name="author" content="{% block meta_author %}{{ INSIGHT_UI.meta.seo.author }}{% endblock meta_author %}">
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="{% block og_title %}{{ INSIGHT_UI.meta.open_graph.title }}{% endblock og_title %}">
-    <meta property="og:description" content="{% block og_description %}{{ INSIGHT_UI.meta.open_graph.description }}{% endblock og_description %}">
-    <meta property="og:image" content="{% static 'insight_ui/favicon/og-image.png' %}">
-    <meta property="og:url" content="{% block og_url %}{{ INSIGHT_UI.meta.open_graph.url }}{% endblock og_url %}">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="{% block og_site_name %}{{ INSIGHT_UI.meta.open_graph.site_name }}{% endblock og_site_name %}">
-    <meta property="og:locale" content="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}">
-    <meta property="og:locale:alternate" content="{% get_available_languages as LANGUAGES %}{% for lang in LANGUAGES %}{{ lang.0 }}{% if not forloop.last %},{% endif %}{% endfor %}">
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{% block twitter_title %}{{ INSIGHT_UI.meta.twitter.title }}{% endblock twitter_title %}">
-    <meta name="twitter:description" content="{% block twitter_description %}{{ INSIGHT_UI.meta.twitter.description }}{% endblock twitter_description %}">
-    <meta name="twitter:image" content="{% static 'insight_ui/favicon/twitter-image.png' %}">
-    <meta name="twitter:site" content="{% block twitter_site %}{{ INSIGHT_UI.meta.twitter.site }}{% endblock twitter_site %}">
-    <meta name="twitter:creator" content="{% block twitter_author %}{{ INSIGHT_UI.meta.twitter.author }}{% endblock twitter_author %}">
 
     <!-- HTMX CDN -->
     <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" crossorigin="anonymous"></script>
@@ -53,8 +37,6 @@
 
     <!-- Main stylesheet -->
     <link rel="stylesheet" href="{% static INSIGHT_UI.stylesheet %}">
-
-    {% tailwind_css %}
 
     <!-- prism stylesheet (Syntax-Highlighting) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css">

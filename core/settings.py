@@ -125,18 +125,6 @@ INSIGHT_UI = {
             "description": PROJECT_DESCRIPTION,
             "keywords": "Django, Insight UI, base template",
             "author": PROJECT_AUTHOR,
-        },
-        "open_graph": {
-            "title": PROJECT_NAME,
-            "description": PROJECT_DESCRIPTION,
-            "site_name": "Django Insight UI",
-            "url": "",
-        },
-        "twitter": {
-            "title": PROJECT_NAME,
-            "description": PROJECT_DESCRIPTION,
-            "site": "Django Insight UI",
-            "author": PROJECT_AUTHOR,
-        },
+        }
     },
 }
