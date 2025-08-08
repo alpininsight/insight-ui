@@ -47,7 +47,10 @@
 
     <!-- Code-Block -->
     <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Code Block' %}</h2>
+        <h2 class="font-mono text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">
+            {% trans 'Code Block' %}<span class="animate-blink">_</span>
+        </h2>
+
         <div id="code" data-insight-code-block="javascript">
             function greet(name) {
                 return `Hello, ${name}!`;

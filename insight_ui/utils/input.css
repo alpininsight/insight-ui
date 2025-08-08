@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
-@source "../../../templates/insight_ui/";
+@source "../templates/insight_ui/";
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @font-face {
     font-family: "Inter";
-    src: url("../font/Inter.ttf");
+    src: url("../insight_ui/font/Inter.ttf"), url("../font/Inter.ttf");
 }
 
 @theme {

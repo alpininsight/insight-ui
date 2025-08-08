@@ -107,6 +107,7 @@
     --color-insight-text-secondary-dark: #94a3b8;
     --color-insight-text-link: #3b82f6;
     --color-insight-text-link-hover: #93c5fd;
+    --animate-blink: blink 2s step-start infinite;
   }
 }
 @layer base {
@@ -599,6 +600,9 @@
   .transform {
     transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);
   }
+  .animate-blink {
+    animation: var(--animate-blink);
+  }
   .animate-spin {
     animation: var(--animate-spin);
   }
@@ -988,6 +992,9 @@
   }
   .text-start {
     text-align: start;
+  }
+  .font-mono {
+    font-family: var(--font-mono);
   }
   .text-2xl {
     font-size: var(--text-2xl);
@@ -1967,7 +1974,7 @@
 }
 @font-face {
   font-family: "Inter";
-  src: url("../font/Inter.ttf");
+  src: url("../insight_ui/font/Inter.ttf"), url("../font/Inter.ttf");
 }
 @layer base {
   button:not(:disabled), [role="button"]:not(:disabled) {
@@ -2601,6 +2608,14 @@
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+@keyframes blink {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 100;
   }
 }
 @layer properties {
