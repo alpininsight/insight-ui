@@ -30,9 +30,6 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 
-[tool.uv]
-default-groups = ["dev"]
-
 dependencies = [
     "django>=5.2,<6.0",
     "django-htmx>=1.17.0",
@@ -42,6 +39,9 @@ dependencies = [
     "structlog>=25.4.0",
     "psutil>=7.0.0",
 ]
+
+[tool.uv]
+default-groups = ["dev"]
 
 [dependency-groups]
 dev = [
