@@ -1326,6 +1326,13 @@
       }
     }
   }
+  .hover\:bg-blue-500 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-blue-500);
+      }
+    }
+  }
   .hover\:bg-gray-50 {
     &:hover {
       @media (hover: hover) {
@@ -1960,7 +1967,7 @@
 }
 @font-face {
   font-family: "Inter";
-  src: url("Inter.ttf");
+  src: url("../font/Inter.ttf");
 }
 @layer base {
   button:not(:disabled), [role="button"]:not(:disabled) {
