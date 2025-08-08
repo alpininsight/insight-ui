@@ -88,7 +88,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_DIRS = [BASE_DIR / "insight_ui/static/insight_ui/"]
 
 # Tailwind source file
-TAILWIND_CLI_SRC_CSS = os.path.join(BASE_DIR, "insight_ui/static/insight_ui/css/input.css")
+TAILWIND_CLI_SRC_CSS = os.path.join(BASE_DIR, "insight_ui/utils/input.css")
 
 # WhiteNoise configuration
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
