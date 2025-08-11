@@ -6,7 +6,7 @@
 
 @font-face {
     font-family: "Inter";
-    src: url("../insight_ui/font/Inter.ttf"), url("../font/Inter.ttf");
+    src: url("../font/Inter.ttf");
 }
 
 @theme {
