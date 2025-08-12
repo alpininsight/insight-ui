@@ -1,6 +1,8 @@
 # Barrierefreiheit
 
-Django Insight UI wurde mit Barrierefreiheit als Kernprinzip entwickelt. Alle Komponenten entsprechen den WCAG 2.1 AA-Richtlinien und bieten eine optimale Benutzererfahrung für alle Benutzer, unabhängig von ihren Fähigkeiten oder der verwendeten Technologie.
+**_STOP_**: Der Inhalt ist momentan als Guide für Entwickler zu verstehen, da leider viele Komponenten noch bei weitem nicht komplett Barrierefrei sind.
+
+Insight UI unter der Beachtung der Barrierefreiheit entwickelt. Alle Komponenten entsprechen den WCAG 2.1 AA-Richtlinien und bieten eine optimale Benutzererfahrung für alle Benutzer, unabhängig von ihren Fähigkeiten oder der verwendeten Technologie.
 
 ## Barrierefreiheitsfunktionen
 

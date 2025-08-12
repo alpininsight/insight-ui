@@ -1,22 +1,31 @@
-# UI-Komponenten
+# UI-Komponenten (Version 0.1.0)
 
-Django Insight UI bietet eine Reihe von barrierefreien, responsiven UI-Komponenten, die Sie in Ihren Django-Projekten verwenden können.
+Das UI-Framework bietet für den schnellen Start in ein neues Projekt, vorgefertigte UI-Elemente sog. Komponenten. Diese können über Template-Tags direkt in den Projekt-Templates eingebunden werden.
 
 ## Verfügbare Komponenten
 
-- [Navbar](navbar.md): Eine responsive Navigationsleiste mit Unterstützung für Markenlogo, Links und Aktionen
+- [Navbar](navbar.md): Eine Navigationsleiste mit Branding (Name, Logo), Links, einer Suchzeile, Sprachauswahl und Theme-Toggle
+- [Usermenu](usermenu.md): Ein Dropdown-Menü mit Benutzer spezifischen Navigationselementen 
 - [Alert](alert.md): Benachrichtigungen und Warnmeldungen in verschiedenen Stilen
+- [Breadcrumbs](breadcrumbs.md): Eine Art Mini-Navigation, um dem Nutzer zu zeigen, wo er sich grade befindet
+- [Carousel](carousel.md): Ein Karussell für Kacheln (Später auch für Bilder und andere Container, etc.)
+- [Footer](footer.md): Ein einfacher Footer, mit einem Beschreibungstext, Links, Kontaktinformationen und Copyright Angabe
+- [Form](form.md): Beispiele für Form-Elemente
+- [Infinite Scroll](infinite_scroll): Eine sich kontinuierlich erweiternde Liste
+- [Inputs](inputs.md): Eine Sammlung einfacher Input-Elemente wie Buttons, Checkboxen, etc.
+- [Modal](modal.md): Dialoge
+- [Searchbar](searchbar.md): Eine einfache Suchzeile
 
 Jede Komponente ist:
 
 - **Barrierefrei**: Entspricht den WCAG 2.1 AA-Richtlinien
-- **Responsiv**: Funktioniert auf allen Bildschirmgrößen
-- **Themenfähig**: Unterstützt helles, dunkles und kontrastarmes Farbschema
-- **Anpassbar**: Kann über Template-Tags und CSS-Variablen angepasst werden
+- **Responsiv**: Passt sich der Bildschirmgröße an und funktioniert auch auf mobilen Endgeräten
+- **Themenfähig**: Unterstützt ein helles und dunkles Farbschema
+- **Anpassbar**: Kann über die Parameter der Template-Tags angepasst
 
 ## Verwendung
 
-Alle Komponenten können über Template-Tags verwendet werden:
+Alle Komponenten können über Template-Tags verwendet werden oder mittels des `{% include %}` Tags eingefügt werden:
 
 ```django
 {% load insight_tags %}
@@ -26,6 +35,6 @@ Alle Komponenten können über Template-Tags verwendet werden:
 {% alert message="Operation erfolgreich!" type="success" %}
 ```
 
-## Eigene Komponenten erstellen
+## Komponenten anpassen
 
-Sie können eigene Komponenten erstellen, indem Sie die vorhandenen Komponenten als Basis verwenden oder neue Komponenten von Grund auf entwickeln. Weitere Informationen finden Sie im Abschnitt [Anpassung](../customization.md).
+Es besteht die Möglichkeit die vorgefertigten Komponenten anzupassen. Weitere Informationen dazu befinden sich im Abschnitt [Anpassung](../guides/customization.md).

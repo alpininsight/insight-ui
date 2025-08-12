@@ -1,26 +1,34 @@
-# Django Insight UI
+# Insight UI (Version 0.1.0)
 
-Willkommen zur Dokumentation von Django Insight UI, einem modernen, erweiterbaren und hochgradig zugänglichen UI-Framework für Django-Projekte.
+Willkommen in der Dokumentation von **Insight UI**, einem modernen, erweiterbaren und unseren Gestaltungsprinzipien entsprechendes UI-Framework für Django-Projekte.
 
 ## Überblick
 
-Django Insight UI bietet eine umfassende Sammlung von UI-Komponenten und Hilfsmitteln, die speziell für die Entwicklung von barrierefreien Webanwendungen konzipiert sind. Das Paket legt besonderen Wert auf:
+Das Insight UI Framework bietet eine Sammlung von UI-Komponenten und Hilfsmitteln, welche speziell für die Entwicklung von Django Webanwendungen konzipiert sind. 
 
-- **Barrierefreiheit**: Alle Komponenten entsprechen den WCAG 2.1 AA-Richtlinien
-- **Moderne Technologien**: Integration mit HTMX, TailwindCSS und Alpine.js
-- **Internationalisierung**: Mehrsprachige Unterstützung und RTL-Layout
-- **Leistung**: Optimierte Komponenten für schnelle Ladezeiten
-- **Sicherheit**: Best Practices für CSRF, XSS und mehr
+Die Komponenten des Frameworks unterstützen sind unter Beachtung der **Barrierefreiheit** implementiert und bieten in Bezug auf **Internationalisierung** eine Unterstützung für ein **RTL-Layout** für Sprachen, welche von rechts nach links gelesen werden.
+
+Für Performance unterstützen entsprechende Komponenten die Verwendung von **HTMX** Requests, um nur einzelne ausschnitte des _DOM_ zzu ändern, ohne einen kompletten Seiten-Reload.
 
 ## Installation
 
 ```bash
-uv add django-insight-ui
+uv add insight-ui
+
+# or
+
+uv add "git+https://alpin-bot:a205f27ce1045d607e4cdaa7426f3b3fe5a3d5d8@git.alpininsight.com/AlpinInsight/insight-ui@fix"
+```
+
+Es kann passieren das Änderungen nicht sofort bemerkt werden, in dem Fall kann folgenden Befehl aushelfen:
+
+```bash
+uv pip install --force-reinstall "git+https://alpin-bot:a205f27ce1045d607e4cdaa7426f3b3fe5a3d5d8@git.alpininsight.com/AlpinInsight/insight-ui@fix"
 ```
 
 ## Schnellstart
 
-1. Fügen Sie 'insight_ui' zu Ihren INSTALLED_APPS in settings.py hinzu:
+1. 'insight_ui' zu INSTALLED_APPS in settings.py hinzufügen:
 
 ```python
 INSTALLED_APPS = [
@@ -30,13 +38,41 @@ INSTALLED_APPS = [
 ]
 ```
 
-2. Laden Sie die Template-Tags in Ihren Templates:
+2. Konfiguration in settings.py hinzufügen und anpassen (siehe Konfiguration)
+
+3. (A) Projekt starten ohne Änderungen am Frontend vornehmen zu wollen
+    - `python manage.py collectstatic` um das vorkompilierte insight-ui Stylesheet einzusammeln
+    - `python manage.py runserver` Startet den development Server
+
+3. (B) Projekt aufsetzen und starten, wenn das Frontend weiter entwickelt werden soll
+    - Django-Tailwind-CLI zu Projekt hinzufügen (`uv add django-tailwind-cli`)
+    - Zu `INSTALLED_APPS` hinzufügen, `STATICFILES_DIRS`, `TAILWIND_CLI_SRC_CSS` und `TAILWIND_CLI_DIST_CSS` definieren
+    ```py
+        INSTALLED_APPS = [
+            # ... 
+            "django_tailwind_cli",
+            # ...
+        ]
+
+        # Configure static files directory
+        STATICFILES_DIRS = [BASE_DIR / "assets"]
+		
+		# Tailwind source file
+		TAILWIND_CLI_SRC_CSS = BASE_DIR / ".venv/Lib/site-packages/insight_ui/static/insight_ui/css/input.css"
+
+        # Tailwind dist file
+        TAILWIND_CLI_DIST_CSS = "insight_ui/css/tailwind.css"
+    ```
+    - `python manage.py tailwind setup` Für initiales Setup von Tailwind ausführen (lädt u.a. das Tailwind-CLI runter ~120MB)
+    - `python manage.py tailwind runserver` Startet den development Server mit hot reload
+
+## Template-Tags in den Templates aktivieren
 
 ```django
 {% load insight_tags %}
 ```
 
-3. Verwenden Sie die Komponenten in Ihren Templates:
+## Komponenten in den Templates einfügen
 
 ```django
 {% navbar brand="Meine App" %}
@@ -44,27 +80,82 @@ INSTALLED_APPS = [
 {% alert message="Willkommen bei Insight UI!" type="success" %}
 ```
 
+## Beispiel Template
+
+Der folgende Code-Ausschnitt zeigt ein typisches Template-Gerüst für eine Webseite:
+
+```django
+{% extends "insight_ui/base.html" %} {% comment %} Always extend "insight_ui/base.html" {% endcomment %}
+{% load static i18n insight_tags %} {% comment %} Load tags for static files, translation and ui-elements {% endcomment %}
+
+{% block title %}{% trans 'Project-Title' %}{% endblock %}
+
+{% comment %} Define the navigation in the "navbar" block {% endcomment %}
+{% block navbar %}
+    {% navbar brand=nav_brand links=nav_links show_searchbar=True show_usermenu=True user=user show_login=True %}
+{% endblock navbar %}
+
+{% comment %} Main content of the webpage {% endcomment %}
+{% block content %}
+    {% comment %} Your content {% endcomment %}
+{% endblock content %}
+
+{% comment %} Define the footer in the "footer" block {% endcomment %}
+{% block footer %}
+    {% include "insight_ui/components/footer.html" with data=footer %}
+{% endblock footer %}
+```
+
 ## Konfiguration
 
-Sie können das Verhalten und Aussehen von Insight UI über die INSIGHT_UI-Einstellung in Ihrer settings.py anpassen:
+Es gibt einige Einstellungen für die Insight UI, welche über die settings.py angepasst werden können:
 
 ```python
+# Insight UI Einstellungen
 INSIGHT_UI = {
-    "theme": "light",  # 'light', 'dark', oder 'high-contrast'
-    "branding": {
-        "name": "Meine App",
-        "logo": "path/to/logo.svg",
-    },
-    "features": {
-        "theme_toggle": True,
-        "language_selector": True,
+    "theme": "light",
+    "favicon": "insight_ui/favicon/favicon.ico",
+    "favicon_32": "insight_ui/favicon/favicon-32x32.png",
+    "favicon_16": "insight_ui/favicon/favicon-16x16.png",
+    "apple_touch_icon": "insight_ui/favicon/apple-touch-icon.png",
+    "safari_mask_icon": "insight_ui/svg/logo.svg",  # Used by Safari pinned tab
+    "msapplication_TileColor": "#da532c",  # Sets the background color for a live tile (MS Edge only)
+    "theme_color": "#ffffff",
+    "stylesheet": "insight_ui/css/tailwind.css",
+    "branding": {"name": "Insight UI", "logo": None},
+    "meta": {
+        "seo": {
+            "description": "Schnellstart UI-Framework für Django-Projekte",
+            "keywords": "Django, Insight UI, base template",
+            "author": "Alpin Insight AI",
+        }
     },
 }
 ```
 
+## Login Screen
+
+Das Framework stell bereits ein standard Login-Screen bereit. Um diesen zu verwenden müssen jedoch ein paar Dinge eingestellt werden.
+
+Die build-in Views von Django's Authentication-Systems müssen zu den Projekt URL's hinzugefügt werden. Anschließend, muss um den Login Screen verwenden zu können, eine weitere URL hinzugefügt werden. Diese kann auf einen beliebigen Endpunkt zeigen, sinnvollerweise sollte es aber irgendetwas wie **login/** sein. Das Template, welches verwendet werden soll, muss **insight_ui/login.html** lauten und damit die navigation und der Footer korrekt gefüllt werden können, müssen die entsprechenden Kontext-Variablen übergeben werden.
+
+```py
+from django.urls import include, path
+
+urlpatterns = [
+    # ...
+    path("accounts/", include("django.contrib.auth.urls")),
+    path(
+        "login/",
+        auth_views.LoginView.as_view(template_name="insight_ui/login.html", extra_context=get_nav_and_footer_context()),
+        name="login",
+    ),
+    # ...
+]
+```
+
 ## Nächste Schritte
 
-- [Komponenten](components/index.md): Entdecken Sie alle verfügbaren UI-Komponenten
-- [Template-Tags](template-tags.md): Lernen Sie die Template-Tags kennen
-- [Anpassung](customization.md): Erfahren Sie, wie Sie das Aussehen anpassen können
-- [Barrierefreiheit](accessibility.md): Verstehen Sie die Barrierefreiheitsfunktionen
+- [Komponenten](components/index.md): Eine Übersicht über alle UI-Komponenten
+- [Anpassung](guides/customization.md): Eine Anleitung zum Konfigurieren und Anpassen des Erscheinungsbildes
+- [Barrierefreiheit](guides/accessibility.md): Hilfreiche Informationen zum Thema Barrierefreiheit

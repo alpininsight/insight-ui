@@ -1,106 +1,95 @@
-# Navbar-Komponente
+# Navbar-Komponente (Version 0.1.0)
 
-Die Navbar-Komponente bietet eine vollständig responsive, barrierefreie Navigationsleiste für Ihre Django-Anwendung.
+Die Navbar-Komponente stellt eine anpassbare Navigationsleiste mit verschiedenen Komponenten zur Verfügung. Die Navigation ist fixiert am oberen Rand des Browserfenstern und bewegt sich beim nach unten Scrollen mit. Die Navigationsleiste besteht aus den folgenden Komponenten:
 
-## Funktionen
-
-- Responsive Design mit Mobile-First-Ansatz
-- Unterstützung für Markenlogo und -text
-- Navigationslinks mit aktiven Zuständen
-- Optionale Aktionen wie Sprachumschalter und Themenwechsler
-- Vollständige Tastaturnavigation
-- ARIA-Attribute für Screenreader
+- **Logo und Titel**
+- **Navigationslinks**
+- **Suchleiste**
+- **Login/Benutzermenü**
+- **Sprachauswahl**
+- **Theme-Toggle Button**
 
 ## Verwendung
+
+Eingebunden wird die Navbar am einfachsten über das entsprechende _Template-Tag_. Für die Navbar ist ein entsprechender Block definiert, in welchem diese platziert werden sollte.
 
 ```django
 {% load insight_tags %}
 
-{% navbar
-   brand="Meine App"
-   links=nav_links
-   theme="light"
-   show_theme_toggle=True
-   show_language_selector=True
-%}
+{% block navbar %}
+    {% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links show_login=True %}
+{% endblock navbar %}
 ```
 
 ## Parameter
 
-| Parameter | Typ | Standard | Beschreibung |
-|-----------|-----|----------|--------------|
-| `brand` | `str` | `""` | Der Name oder Titel der Anwendung |
-| `links` | `List[Dict]` | `[]` | Eine Liste von Dictionaries mit Link-Informationen |
-| `theme` | `str` | `"light"` | Das Farbschema (`"light"`, `"dark"`, `"high-contrast"`) |
-| `show_theme_toggle` | `bool` | `False` | Ob der Themenwechsler angezeigt werden soll |
-| `show_language_selector` | `bool` | `False` | Ob der Sprachumschalter angezeigt werden soll |
-| `brand_url` | `str` | `"#"` | Die URL, zu der der Markenname/das Logo verlinkt |
-| `brand_logo` | `str` | `None` | Der Pfad zum Markenlogo |
-| `id` | `str` | `None` | Eine optionale ID für das Navbar-Element |
+Die Navbar bekommt bis zu vier Parameter.
 
-## Link-Format
+- **navbar**: Ein Dictionary mit der gesamten Konfiguration der Navigationsleiste (mehr dazu gleich).
+- **user**: Das *user* Objekt des Requests (sollte eigentlich immer verfügbar sein).
+- **user_dropdown_links**: Eine Liste mit den Links welche in dem Benutzermenü angezeigt werden sollen.
+    - siehe [Benutzermenü](usermenu.md)
+- **show_login**: _True_ wenn ein Button zum Anmelden angezeigt werden soll (standardmäßig aus, also `False`).
 
-Die `links`-Parameter erwartet eine Liste von Dictionaries mit folgenden Schlüsseln:
+### Konfiguration
 
-```python
-links = [
-    {
-        "url": "/",             # URL des Links
-        "text": "Home",         # Anzeigetext
-        "active": True,         # Ob der Link aktiv ist
-        "icon": "<svg>...</svg>", # Optionales Icon (HTML/SVG)
-        "external": False,      # Ob der Link extern ist
+Das Dictionary mit der Navbar Konfiguration ist etwas größer und wird hier einmal näher erläutert.
+
+Eine komplette Konfiguration sieht folgendermaßen aus:
+
+```py
+"nav_config": {
+    "brand": {
+        "title": "Django Insight UI NavBar",
+        "view_name": "storybook_view",
+        "logo_url": "insight_ui/svg/ai-logo.svg",
+        "logo_alt": "Insight UI Logo",
     },
-    # Weitere Links...
-]
+    "links": [
+        {
+            "text": _("Startseite"),
+            "icon": {"name": "home", "size": "small"},
+            "view_name": "storybook_view",
+            "active": True,
+            "need_auth": False,
+            "staff_only": False,
+        },
+        {
+            "text": _("Über"),
+            "open_modal": "about-modal",
+            "active": False,
+            "need_auth": False,
+            "staff_only": False,
+        },
+    ],
+    "show_searchbar": True,
+    "show_usermenu": True,
+    "show_language_selector": True,
+    "show_theme_toggle": True,
+},
 ```
 
-## Beispiele
+#### brand
 
-### Einfache Navbar
+Beinhaltet die Einstellungen für den Titel und das daneben stehende Logo. Das Logo ist optional und wenn kein Pfad angegeben werden sollte, wird das standard Logo verwendet. Die Variable **view_name** wird verwendet, um den Nutzer auf die entsprechende Seite zu schicken, sollte dieser auf den Titel klicken. Erwartet wird der Name der View keine URL, da der Wert intern mit `{% url view_name %}` aufgelöst wird.
 
-```django
-{% navbar brand="Meine App" %}
-```
+#### links
 
-### Navbar mit Links
+- siehe [Links](links.md)
 
-```django
-{% load insight_tags %}
+#### show_...
 
-{% navbar
-   brand="Meine App"
-   links=nav_links
-%}
-```
-
-In Ihrer View:
-
-```python
-def my_view(request):
-    nav_links = [
-        {"url": "/", "text": "Home", "active": True},
-        {"url": "/about/", "text": "Über uns"},
-        {"url": "/contact/", "text": "Kontakt"},
-    ]
-    return render(request, "my_template.html", {"nav_links": nav_links})
-```
-
-### Navbar mit Themenwechsler
-
-```django
-{% navbar
-   brand="Meine App"
-   links=nav_links
-   show_theme_toggle=True
-%}
-```
+- `"show_searchbar"`: _True_ wenn eine Suchleiste nach den Links angezeigt werden soll
+- `"show_usermenu"`: _True_ wenn ein Benutzermenü/Login an der rechten Seite angezeigt werden soll (der externe Parameter **show_login** wird nur zum verstecken des Login's auf bestimmten Seiten verwendet)
+- `"show_language_selector"`: _True_ wenn eine Sprachauswahl an der rechten Seite angezeigt werden soll
+- `"show_theme_toggle"`: _True_ wenn der Theme-Toggle (hell/dunkel) an der rechten Seite angezeigt werden soll
 
 ## Barrierefreiheit
 
-Die Navbar-Komponente enthält:
+Die Navbar-Komponente enthält einen **Skip-Link** zum *Hauptinhalt*.
 
-- Einen Skip-Link zum Hauptinhalt
-- ARIA-Attribute für Screenreader
-- Vollständige Tastaturunterstützung
-- Semantisches HTML
+## Verwandte Themen
+
+- [Benutzermenü](usermenu.md)
+- [Footer](footer.md)
+- [Links](links.md)
