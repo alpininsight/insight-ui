@@ -121,7 +121,7 @@ def insight_websocket(
 
 @register.inclusion_tag("insight_ui/components/infinite_scroll.html")
 def infinite_scroll(
-    items: list[Any] = [], next_url: str = "", has_next: bool = True, threshold: int = 100, **kwargs
+    items: list[Any] = [], request_view: str = "", page: int = 1, has_next: bool = True, threshold: int = 100, **kwargs
 ) -> dict[str, Any]:
     """
     Rendert einen Container für Infinite Scroll.
@@ -129,7 +129,8 @@ def infinite_scroll(
     Args:
     ----
         items: Liste der aktuellen Elemente
-        next_url: URL für das Laden weiterer Elemente
+        request_view: View-Name für das Laden weiterer Elemente
+        page: Die aktuelle "Seite" die geladen werden soll
         has_next: Ob weitere Elemente verfügbar sind
         threshold: Pixel-Schwellenwert für das Laden
         **kwargs: Zusätzliche Optionen
@@ -139,7 +140,14 @@ def infinite_scroll(
         Dict mit Kontext-Variablen für das Template
 
     """
-    return {"items": items, "next_url": next_url, "has_next": has_next, "threshold": threshold, "options": kwargs}
+    return {
+        "items": items,
+        "request_view": request_view,
+        "page": page,
+        "has_next": has_next,
+        "threshold": threshold,
+        "options": kwargs,
+    }
 
 
 @register.inclusion_tag("insight_ui/components/toggle_language.html")
@@ -396,6 +404,35 @@ def card_horizontale(  # noqa: PLR0913
     return {"title": title, "content": content, "tags": tags, "url": url, "image": image, "actions": actions}
 
 
+@register.inclusion_tag("insight_ui/components/cards/flip_card.html")
+def card_flip(  # noqa: PLR0913
+    title: str,
+    content: str,
+    tags: list[str] = [],
+    url: str = "",
+    image: dict[str, str] = {},
+    actions: list[dict[str, str]] = [],
+) -> dict[str, Any]:
+    """
+    Rendert eine Karte welche sich um 180° drehen kann und auf der Rückseite weitere Informationen enthält.
+
+    Args:
+    ----
+        title (str): Title der Karte
+        content (str): Inhalt der Karte
+        tags (list[str]): Eine Liste von Buttons
+        url (str): Eine URL
+        image (dict[url: str, alt: str]): Informationen über das Bild der Karte
+        actions (list[dict[text: str, url: str, type: str]]): Eine Liste von Aktionsbuttons
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template
+
+    """
+    return {"title": title, "content": content, "tags": tags, "url": url, "image": image, "actions": actions}
+
+
 @register.inclusion_tag("insight_ui/components/form.html")
 def form(  # noqa: PLR0913 (too many args)
     fields: list[dict[str, Any]] = [],
@@ -457,13 +494,13 @@ def form(  # noqa: PLR0913 (too many args)
 
 
 @register.inclusion_tag("insight_ui/components/footer.html")
-def footer(theme: str = "light", **kwargs) -> dict[str, Any]:
+def footer(data: dict, **kwargs) -> dict[str, Any]:
     """
-    Rendert einen barrierefreien Footer.
+    Rendert einen Footer mit optionaler Beschreibung, Links und einer Copyright Zeile.
 
     Args:
     ----
-        theme: Das Farbschema ('light', 'dark', 'high-contrast')
+        data: Inhalt des Footers
         **kwargs: Zusätzliche Optionen für den Footer
 
     Returns:
@@ -471,4 +508,4 @@ def footer(theme: str = "light", **kwargs) -> dict[str, Any]:
         Dict mit Kontext-Variablen für das Template
 
     """
-    return {"theme": theme, "options": kwargs}
+    return {"data": data, "options": kwargs}

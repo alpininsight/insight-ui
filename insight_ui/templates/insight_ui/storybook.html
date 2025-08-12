@@ -90,19 +90,13 @@
         <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans "Modal-Dialoge" %}</h2>
         <div class="flex gap-4">
             <!-- Standard -->
-            <button type="button"
-                    class="bg-insight-primary w-72 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active transition"
-                    data-insight-toggle="modal"
-                    data-insight-target="demo-modal">
+            <button class="btn btn-primary w-72" data-insight-toggle="modal" data-insight-target="demo-modal">
                 {% trans "Standard Modal" %}
             </button>
             {% modal html_tag_id="demo-modal" title=_("Demo Modal") description=_("Dies ist ein Beispiel-Modal mit Standard-Styling!") %}
 
             <!-- Action-Buttons -->
-            <button type="button"
-                class="bg-insight-error w-72 rounded-sm text-white px-6 py-2 hover:bg-insight-error-hover active:bg-insight-error-active transition"
-                data-insight-toggle="modal"
-                data-insight-target="delete-modal">
+            <button class="btn btn-error w-72" data-insight-toggle="modal" data-insight-target="delete-modal">
                 {% trans "Modal mit Action-Buttons" %}
             </button>
             {% modal html_tag_id="delete-modal" title=_("Löschen?") description="Bitte bestätigen Sie die Löschung!" actions=confirm_modal_actions %}
@@ -169,6 +163,9 @@
             {% for card in horizontale_cards %}
                 {% card_horizontale title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
             {% endfor %}
+            {% for card in flip_cards %}
+                {% card_flip title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
+            {% endfor %}
         </div>
     </section>
 
@@ -193,11 +190,11 @@
     <!-- Infinite Scroll Demo -->
     <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
         <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Infinite Scroll' %}</h2>
-        {% infinite_scroll items=scroll_items next_url="/api/more-items/" has_next=True %}
+        {% infinite_scroll items=scroll_items request_view="more_items" %}
     </section>
 </div>
 {% endblock content %}
 
 {% block footer %}
-    {% include "insight_ui/components/footer.html" with data=footer %}
+    {% footer data=footer_data %}
 {% endblock footer %}

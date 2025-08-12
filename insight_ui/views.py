@@ -29,6 +29,7 @@ def get_nav_and_footer_context() -> dict:
             "links": [
                 {
                     "text": _("Startseite"),
+                    "icon": {"name": "home", "size": "small"},
                     "view_name": "storybook_view",
                     "active": True,
                     "need_auth": False,
@@ -88,15 +89,15 @@ def get_nav_and_footer_context() -> dict:
                 "icon": {"name": "globe", "size": "small"},
             },
         ],
-        "footer": {
+        "footer_data": {
             "description": {
                 "title": "Django Insight UI",
                 "text": "Eine moderne UI-Bibliothek für Django-Anwendungen mit Fokus auf Barrierefreiheit und Benutzerfreundlichkeit.",  # noqa: E501
             },
             "links": [
-                {"text": _("Startseite"), "url": "storybook_view"},
-                {"text": _("Storybook"), "url": "storybook_view"},
-                {"text": _("Dokumentation"), "url": "storybook_view"},
+                {"text": _("Startseite"), "icon": {"name": "home", "size": "small"}, "view_name": "storybook_view"},
+                {"text": _("Storybook"), "view_name": "storybook_view"},
+                {"text": _("Dokumentation"), "view_name": "storybook_view"},
             ],
         },
     }
@@ -162,6 +163,18 @@ def get_storybook_context() -> dict:
             {
                 "title": "Horizontale Karte",
                 "content": "Eine Karte dessen Inhalt horizontal angeordnet ist.",
+                "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": "Card-Image"},
+                "tags": ["Test", "Test2", "Test3"],
+                "actions": [
+                    {"text": _("Mehr erfahren"), "url": "#", "type": "secondary"},
+                    {"text": _("Teilen"), "url": "#", "type": "primary"},
+                ],
+            }
+        ],
+        "flip_cards": [
+            {
+                "title": "Flip Karte",
+                "content": "Eine Karte die sich um 180° dreht und weiteren Inhalt auf der Rückseite bereit hält.",
                 "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": "Card-Image"},
                 "tags": ["Test", "Test2", "Test3"],
                 "actions": [
@@ -354,16 +367,16 @@ def more_items_view(request: HttpRequest) -> HttpResponse | JsonResponse:
     ]
 
     has_next = page < 5  # noqa: PLR2004 Simuliere max 5 Seiten
-    next_url = f"/api/more-items/?page={page + 1}" if has_next else ""
+    request_view = "more_items" if has_next else ""
 
     if request.headers.get("HX-Request"):
         html = render_to_string(
             "insight_ui/components/infinite_scroll_items.html",
-            {"items": new_items, "next_url": next_url, "has_next": has_next, "page": page + 1},
+            {"items": new_items, "request_view": request_view, "has_next": has_next, "page": page + 1},
         )
         return HttpResponse(html)
 
-    return JsonResponse({"items": new_items, "has_next": has_next, "next_url": next_url})
+    return JsonResponse({"items": new_items, "has_next": has_next, "request_view": request_view})
 
 
 @require_http_methods(["POST"])

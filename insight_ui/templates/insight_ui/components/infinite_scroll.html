@@ -3,36 +3,29 @@
 <div
   class="insight-infinite-scroll"
   {% if options.id %}id="{{ options.id }}"{% endif %}
-  hx-get="{{ next_url }}"
+  hx-get="{% url request_view %}?page={{ page }}"
   hx-trigger="revealed"
   hx-swap="afterend"
   hx-infinite-scroll
   data-threshold="{{ threshold|default:100 }}"
-  data-next-url="{{ next_url }}"
-  hx-ext="infinite-scroll,progressive-enhancement">
-
+  data-next-url="{% url request_view %}?page={{ page }}"
+  hx-ext="infinite-scroll,progressive-enhancement"
+>
   <!-- Existing Content -->
-  <div class="insight-infinite-scroll__content">
+  <div>
     {% for item in items %}
       <div class="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4 mb-4">
         <h3 class="text-lg font-semibold text-insight-text-primary dark:text-white mb-2">{{ item.title }}</h3>
         <p class="text-insight-text-secondary dark:text-insight-text-secondary-dark">{{ item.content }}</p>
-    </div>
+      </div>
     {% endfor %}
   </div>
 
   <!-- Loading Indicator -->
-  <div class="insight-infinite-scroll__loading htmx-spinner" style="display: none;">
+  <div class="htmx-spinner" style="display: none;">
     <div class="flex items-center justify-center py-4">
       <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-insight-primary"></div>
       <span class="ml-2 text-sm text-insight-text-secondary">{% trans 'Weitere Inhalte werden geladen...' %}</span>
     </div>
   </div>
-
-  <!-- End Indicator -->
-  {% if not has_next %}
-    <div class="insight-infinite-scroll__end">
-      <p class="text-center text-insight-text-secondary py-4">{% trans 'Alle Inhalte geladen' %}</p>
-    </div>
-  {% endif %}
 </div>
