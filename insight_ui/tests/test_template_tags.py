@@ -11,7 +11,7 @@ class TemplateTagsTestCase(TestCase):
     """Basis-Testklasse für Template Tags."""
 
     def setUp(self) -> None:
-        """Setup für Tests."""
+        """Setup für Tests."""  # noqa: D401 (It's not in imperative mood o_O)
         self.user = User.objects.create_user(username="testuser", email="test@example.com", password="testpass123")  # noqa: S106
         activate("de")
 
@@ -24,38 +24,32 @@ class TemplateTagsTestCase(TestCase):
 class NavbarTemplateTagTest(TemplateTagsTestCase):
     """Tests für den navbar Template Tag."""
 
-    def test_navbar_basic(self) -> None:
+    def test_navbar(self) -> None:
         """Test für grundlegende navbar Funktionalität."""
+        nav_config = {
+            "brand": {"title": "Django Insight UI NavBar"},
+            "links": [
+                {
+                    "text": "Startseite",
+                    "view_name": "storybook_view",
+                    "active": True,
+                    "need_auth": False,
+                    "staff_only": False,
+                }
+            ],
+            "show_searchbar": True,
+            "show_usermenu": True,
+            "show_language_selector": True,
+            "show_theme_toggle": True,
+        }
+
         template_string = """
         {% load insight_tags %}
-        {% navbar brand="Test App" %}
+        {% navbar config=nav_config %}
         """
-        rendered = self.render_template(template_string)
-        assert "Test App" in rendered
 
-    def test_navbar_with_links(self) -> None:
-        """Test für navbar mit Links."""
-        links = [
-            {"url": "/home/", "title": "Home", "active": True},
-            {"url": "/about/", "title": "About", "active": False},
-        ]
-        template_string = """
-        {% load insight_tags %}
-        {% navbar brand="Test App" links=links %}
-        """
-        rendered = self.render_template(template_string, {"links": links})
-        assert "Test App" in rendered
-
-    def test_navbar_themes(self) -> None:
-        """Test für verschiedene navbar Themes."""
-        for theme in ["light", "dark", "high-contrast"]:
-            with self.subTest(theme=theme):
-                template_string = f"""
-                {{% load insight_tags %}}
-                {{% navbar brand="Test App" theme="{theme}" %}}
-                """
-                rendered = self.render_template(template_string)
-                assert "Test App" in rendered
+        rendered = self.render_template(template_string, context={"nav_config": nav_config})
+        assert "Django Insight UI NavBar" in rendered
 
 
 class LiveContentTemplateTagTest(TemplateTagsTestCase):
@@ -100,7 +94,7 @@ class InfiniteScrollTemplateTagTest(TemplateTagsTestCase):
         """Test für grundlegende infinite_scroll Funktionalität."""
         template_string = """
         {% load insight_tags %}
-        {% infinite_scroll next_url="/api/more-items/" %}
+        {% infinite_scroll request_view="more_items" %}
         """
         rendered = self.render_template(template_string)
         assert "/api/more-items/" in rendered
@@ -203,7 +197,7 @@ class CardTemplateTagTest(TemplateTagsTestCase):
         """Test für grundlegende card Funktionalität."""
         template_string = """
         {% load insight_tags %}
-        {% card title="Test Card" %}
+        {% card title="Test Card" content="Test Card Content" %}
         """
         rendered = self.render_template(template_string)
         assert "Test Card" in rendered
@@ -227,9 +221,14 @@ class FooterTemplateTagTest(TemplateTagsTestCase):
 
     def test_footer_basic(self) -> None:
         """Test für grundlegende footer Funktionalität."""
+        footer_data = {
+            "description": {"title": "Django Insight UI", "text": "-"},
+            "links": [{"text": "Startseite", "view_name": "storybook_view"}],
+        }
+
         template_string = """
         {% load insight_tags %}
-        {% footer %}
+        {% footer data=footer_data %}
         """
-        rendered = self.render_template(template_string)
+        rendered = self.render_template(template_string, context={"footer_data": footer_data})
         assert rendered is not None
