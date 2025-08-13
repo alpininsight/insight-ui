@@ -11,7 +11,7 @@
 {% endblock sidebar_left %}
 
 {% block navbar %}
-    {% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links show_login=True %}
+    {% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links show_login=True search_query=search_query %}
 {% endblock navbar %}
 
 {% block background_image %}
@@ -41,7 +41,7 @@
     <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
         <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Prominente Suchzeile' %}</h2>
         <div class="space-y-4">
-            {% include "insight_ui/components/searchbar.html" %}
+            {% include "insight_ui/components/searchbar.html" with request_view="storybook_view" %}
         </div>
     </section>
 
@@ -142,7 +142,7 @@
     <!-- Table Demo -->
     <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
         <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Tabelle' %}</h2>
-        {% table headers=table_headers rows=table_rows caption="Beispiel-Tabelle" %}
+        {% table table_data=table %}
     </section>
 
     <!-- Pagination Demo -->
@@ -184,7 +184,7 @@
     <!--Toggle View Demo -->
     <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
         <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white">{% trans 'Ansicht wechseln' %}</h2>
-        {% include "insight_ui/components/toggle_view.html" with table_headers=toggle_table_headers table_rows=toggle_table_rows current_view=toggle_current_view %}
+        {% include "insight_ui/components/toggle_view.html" with id="test" table_data=toggle_table view_options=view_options current_view=toggle_start_view %}
     </section>
 
     <!-- Infinite Scroll Demo -->

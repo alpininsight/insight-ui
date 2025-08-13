@@ -1,73 +1,18 @@
-{% load i18n %}
-{% load insight_tags %}
+{% load i18n insight_tags %}
 
-<!-- Insight UI Toggle View Component -->
-<!-- This component allows users to switch between different views (table or card) -->
-{% comment %}
-  This template provides a toggle view functionality for the Insight UI.
-  It allows users to switch between a table view and a card view.
-  The current view is determined by the `current_view` context variable.
-{% endcomment %}
-
-
-  <div id="switchable-view">
-    <div class="flex justify-end rtl:justify-start rtl:flex-row-reverse mb-4">
-      <div>
-        <input
-          type="radio" id="card_view" name="view" value="card" {% if current_view == 'card' %}checked="true"{% endif %}
-          hx-get="{% url 'toggle_view' %}?view=card"
-          hx-target="#switchable-view"
-          hx-swap="outerHTML"
-          class="peer hidden"
-        >
-        <label for="card_view" class="flex peer-checked:bg-insight-primary-active peer-checked:border-insight-primary-active bg-insight-primary border-insight-primary border-2 rounded-l-sm text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-            <path fill-rule="evenodd" d="M3 6a3 3 0 0 1 3-3h2.25a3 3 0 0 1 3 3v2.25a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6Zm9.75 0a3 3 0 0 1 3-3H18a3 3 0 0 1 3 3v2.25a3 3 0 0 1-3 3h-2.25a3 3 0 0 1-3-3V6ZM3 15.75a3 3 0 0 1 3-3h2.25a3 3 0 0 1 3 3V18a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-2.25Zm9.75 0a3 3 0 0 1 3-3H18a3 3 0 0 1 3 3V18a3 3 0 0 1-3 3h-2.25a3 3 0 0 1-3-3v-2.25Z" clip-rule="evenodd" />
-          </svg>
-        </label>
-      </div>
-      <div>
-        <input
-          type="radio" id="carousel_view" name="view" value="carousel" {% if current_view == 'carousel' %}checked="true"{% endif %}
-          hx-get="{% url 'toggle_view' %}?view=carousel"
-          hx-target="#switchable-view"
-          hx-swap="outerHTML"
-          class="peer hidden">
-        <label for="carousel_view" class="flex peer-checked:bg-insight-primary-active peer-checked:border-insight-primary-active bg-insight-primary border-insight-primary border-y-2 text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-            <path d="M11.644 1.59a.75.75 0 0 1 .712 0l9.75 5.25a.75.75 0 0 1 0 1.32l-9.75 5.25a.75.75 0 0 1-.712 0l-9.75-5.25a.75.75 0 0 1 0-1.32l9.75-5.25Z" />
-            <path d="m3.265 10.602 7.668 4.129a2.25 2.25 0 0 0 2.134 0l7.668-4.13 1.37.739a.75.75 0 0 1 0 1.32l-9.75 5.25a.75.75 0 0 1-.71 0l-9.75-5.25a.75.75 0 0 1 0-1.32l1.37-.738Z" />
-            <path d="m10.933 19.231-7.668-4.13-1.37.739a.75.75 0 0 0 0 1.32l9.75 5.25c.221.12.489.12.71 0l9.75-5.25a.75.75 0 0 0 0-1.32l-1.37-.738-7.668 4.13a2.25 2.25 0 0 1-2.134-.001Z" />
-          </svg>
-        </label>
-      </div>
-      <div>
-        <input
-          type="radio" id="table_view" name="view" value="table" {% if current_view == 'table' %}checked="true"{% endif %}
-          hx-get="{% url 'toggle_view' %}?view=table"
-          hx-target="#switchable-view"
-          hx-swap="outerHTML"
-          class="peer hidden"
-        >
-        <label for="table_view" class="flex peer-checked:bg-insight-primary-active peer-checked:border-insight-primary-active bg-insight-primary border-insight-primary border-2 rounded-r-sm text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-          </svg>
-        </label>
-      </div>
+<div id="switchable-view-{{ id }}">
+  {% with "switchable-view-"|add:id as target_id %}
+    {% include "insight_ui/components/radio_group.html" with radio_group=view_options current_value=current_view view_name="toggle_view" target_id=target_id %}
+  {% endwith %}
+  {% if current_view == 'carousel' %}
+    {% carousel carousel_items=cards show_index=True slides_count=range_total_slides items_per_slide=2 %}
+  {% elif current_view == 'card' %}
+    <div class="flex flex-wrap gap-6">
+      {% for card in cards %}
+        {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
+      {% endfor %}
     </div>
-
-    <div>
-      {% if current_view == 'carousel' %}
-        {% carousel carousel_items=cards show_index=True slides_count=range_total_slides items_per_slide=2 %}
-      {% elif current_view == 'card' %}
-        <div class="flex flex-wrap gap-6">
-          {% for card in cards %}
-            {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
-          {% endfor %}
-        </div>
-      {% else %}
-        {% table headers=table_headers rows=table_rows caption="Beispiel-Tabelle" actions=table.actions %}
-      {% endif %}
-    </div>
-  </div>
+  {% else %}
+    {% table table_data=table_data %}
+  {% endif %}
+</div>

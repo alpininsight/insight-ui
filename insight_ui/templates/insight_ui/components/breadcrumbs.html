@@ -1,15 +1,15 @@
 {% load i18n %}
 
 <nav role="navigation" aria-label="{% trans 'Breadcrumb-Navigation' %}">
-  <ol class="flex gap-2">
+  <ol class="flex gap-1">
     {% for item in items %}
       <li class="flex items-center">
         {% if not forloop.last %}
-          <a href="{% url item.url %}" class="inline-flex gap-1 text-insight-text-link hover:text-insight-text-link-hover">
+          <a href="{% url item.view_name %}" class="inline-flex gap-1 text-insight-text-link hover:text-insight-text-link-hover">
             {% include "insight_ui/components/icons.html" with icon=item.icon %}
             {{ item.text }}
           </a>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="text-gray-300 dark:text-gray-500 size-5 ms-1 inline-block">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="text-gray-300 dark:text-gray-500 size-4 ms-1 inline-block">
             <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z" clip-rule="evenodd" />
           </svg>
         {% else %}

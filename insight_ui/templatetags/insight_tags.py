@@ -51,7 +51,7 @@ def navbar(config: dict, **kwargs) -> dict[str, Any]:
     return {
         "brand": config.get("brand"),
         "links": config.get("links"),
-        "show_searchbar": config.get("show_searchbar"),
+        "searchbar_request_view": config.get("searchbar_request_view"),
         "show_usermenu": config.get("show_usermenu"),
         "show_language_selector": config.get("show_language_selector"),
         "show_theme_toggle": config.get("show_theme_toggle"),
@@ -150,43 +150,6 @@ def infinite_scroll(
     }
 
 
-@register.inclusion_tag("insight_ui/components/toggle_language.html")
-def language_selector(
-    current_language: str = "", available_languages: list[dict[str, str]] = [], theme: str = "light", **kwargs
-) -> dict[str, Any]:
-    """
-    Rendert einen barrierefreien Sprachauswähler.
-
-    Args:
-    ----
-        current_language: Der aktuelle Sprachcode
-        available_languages: Eine Liste verfügbarer Sprachen
-        theme: Das Farbschema ('light', 'dark', 'high-contrast')
-        **kwargs: Zusätzliche Optionen
-
-    Returns:
-    -------
-        Dict mit Kontext-Variablen für das Template
-
-    """
-    if not available_languages:
-        available_languages = [
-            {"code": "de", "name": "Deutsch", "native": "Deutsch"},
-            {"code": "en", "name": "English", "native": "English"},
-            {"code": "es", "name": "Spanish", "native": "Español"},
-            {"code": "fr", "name": "French", "native": "Français"},
-            {"code": "ar", "name": "Arabic", "native": "العربية"},
-            {"code": "zh", "name": "Chinese", "native": "中文"},
-        ]
-
-    return {
-        "current_language": current_language,
-        "available_languages": available_languages,
-        "theme": theme,
-        "options": kwargs,
-    }
-
-
 @register.inclusion_tag("insight_ui/components/alert.html")
 def alert(message: str, alert_type: str = "info", dismissible: bool = True, **kwargs) -> dict[str, Any]:
     """
@@ -249,26 +212,29 @@ def breadcrumbs(items: list[dict[str, Any]] = [], **kwargs) -> dict[str, Any]:
 
 
 @register.inclusion_tag("insight_ui/components/table.html")
-def table(
-    headers: list[str] = [], rows: list[list[Any]] = [], caption: str = "", theme: str = "light", **kwargs
-) -> dict[str, Any]:
+def table(table_data: dict, **kwargs) -> dict[str, Any]:
     """
-    Rendert eine barrierefreie Tabelle.
+    Rendert eine einfache Tabelle.
 
     Args:
     ----
-        headers: Eine Liste von Spaltenüberschriften
-        rows: Eine Liste von Listen mit Zellendaten
-        caption: Eine Beschreibung der Tabelle
-        theme: Das Farbschema ('light', 'dark', 'high-contrast')
+        table_data: Ein Dictionary mit den Headern, den Rows und einer Überschrift
         **kwargs: Zusätzliche Optionen für die Tabelle
+
+        Beispiel der Tabellen-Daten:
+
+        "table": {
+            "caption": _("Ein Beispiel einer Tabellen-Komponente."),
+            "empty_msg": _("Keine Daten vorhanden!"),
+            "headers": [...],
+            "rows": [...],
 
     Returns:
     -------
         Dict mit Kontext-Variablen für das Template
 
     """
-    return {"headers": headers, "rows": rows, "caption": caption, "theme": theme, "options": kwargs}
+    return {"table_data": table_data, "options": kwargs}
 
 
 @register.inclusion_tag("insight_ui/components/modal.html")

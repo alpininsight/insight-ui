@@ -2,14 +2,14 @@
 
 <div class="bg-white dark:bg-gray-800 rounded overflow-y-scroll">
   <table class="table-auto w-full" {% if options.id %}id="{{ options.id }}"{% endif %}>
-    {% if caption %}
+    {% if table_data.caption %}
       <caption class="text-xs text-insight-text-secondary dark:text-insight-text-secondary-dark">{{ caption }}</caption>
     {% endif %}
 
-    {% if headers %}
+    {% if table_data.headers %}
       <thead class="text-insight-text-primary dark:text-insight-text-primary-dark">
         <tr class="border-b border-gray-400 dark:border-gray-500">
-          {% for header in headers %}
+          {% for header in table_data.headers %}
             <th class="text-start text-xs px-4 py-2" scope="col">{{ header }}</th>
           {% endfor %}
         </tr>
@@ -17,7 +17,7 @@
     {% endif %}
 
     <tbody class="text-insight-text-primary dark:text-insight-text-primary-dark">
-      {% for row in rows %}
+      {% for row in table_data.rows %}
         <tr class="border-b border-gray-200 dark:border-gray-600">
           {% for cell in row %}
             <td class="text-start text-xs px-4 py-3">{{ cell|safe }}</td>
@@ -26,8 +26,8 @@
       {% empty %}
         <tfoot>
           <tr>
-            <td colspan="{{ headers|length }}" class="w-full border-t border-gray-400 dark:border-gray-500 text-insight-text-secondary dark:text-insight-text-secondary-dark text-center pt-16">
-              {% trans "Keine Daten vorhanden!" %}
+            <td colspan="{{ table_data.headers|length }}" class="w-full border-t border-gray-400 dark:border-gray-500 text-insight-text-secondary dark:text-insight-text-secondary-dark text-center pt-16">
+              {{ table_data.empty_msg }}
             </td>
           </tr>
         </tfoot>

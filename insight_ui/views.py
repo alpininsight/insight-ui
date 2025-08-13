@@ -64,7 +64,7 @@ def get_nav_and_footer_context() -> dict:
                     "staff_only": True,
                 },
             ],
-            "show_searchbar": True,
+            "searchbar_request_view": "storybook_view",
             "show_usermenu": True,
             "show_language_selector": True,
             "show_theme_toggle": True,
@@ -107,39 +107,47 @@ def get_storybook_context() -> dict:
     """Hilfsfunktion für Index-Seiten Context."""
     page_obj, surrounding_pages = get_page(generate_payload(100))
 
+    # Toggle-View: Initiale Tabellendaten für das Storybook bereitstellen
+    payload = generate_payload()
+    headers, rows = map_payload_to_table(payload)
+
     return get_nav_and_footer_context() | {
         "breadcrumb_items": [
-            {"text": _("Startseite"), "url": "storybook_view", "icon": {"name": "home", "size": "small"}},
-            {"text": _("Demo"), "url": "storybook_view"},
-            {"text": _("Komponenten"), "url": None, "active": True},
+            {"text": _("Startseite"), "view_name": "storybook_view", "icon": {"name": "home", "size": "small"}},
+            {"text": _("Demo"), "view_name": "storybook_view"},
+            {"text": _("Komponenten")},
         ],
-        "table_headers": [_("Name"), _("E-Mail"), _("Status"), _("Aktionen")],
-        "table_rows": [
-            [
-                "Max Mustermann",
-                "max@example.com",
-                _("Aktiv"),
-                format_html(
-                    '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
-                ),
+        "table": {
+            "caption": _("Ein Beispiel einer Tabellen-Komponente."),
+            "empty_msg": _("Keine Daten vorhanden!"),
+            "headers": [_("Name"), _("E-Mail"), _("Status"), _("Aktionen")],
+            "rows": [
+                [
+                    "Max Mustermann",
+                    "max@example.com",
+                    _("Aktiv"),
+                    format_html(
+                        '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
+                    ),
+                ],
+                [
+                    "Anna Schmidt",
+                    "anna@example.com",
+                    _("Inaktiv"),
+                    format_html(
+                        '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
+                    ),
+                ],
+                [
+                    "Tom Weber",
+                    "tom@example.com",
+                    _("Aktiv"),
+                    format_html(
+                        '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
+                    ),
+                ],
             ],
-            [
-                "Anna Schmidt",
-                "anna@example.com",
-                _("Inaktiv"),
-                format_html(
-                    '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
-                ),
-            ],
-            [
-                "Tom Weber",
-                "tom@example.com",
-                _("Aktiv"),
-                format_html(
-                    '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
-                ),
-            ],
-        ],
+        },
         "cards": [
             {
                 "title": "Beispiel-Karte",
@@ -230,14 +238,6 @@ def get_storybook_context() -> dict:
         ],
         "scroll_items": [{"title": f"Element {i}", "content": f"Inhalt für Element {i}"} for i in range(1, 11)],
         "htmx_config": {"url": "/api/form-submit/", "method": "post", "target": "#htmx-form", "swap": "innerHTML"},
-        "available_languages": [
-            {"code": "de", "name": "Deutsch"},
-            {"code": "en", "name": "English"},
-            {"code": "es", "name": "Español"},
-            {"code": "fr", "name": "Français"},
-            {"code": "ar", "name": "العربية"},
-            {"code": "zh", "name": "中文"},
-        ],
         "carousel_items": map_payload_to_cards(generate_payload()),
         "image_carousel_items": [
             {"description": "Test Bild 1", "url": static("insight_ui/img/text-services-main.png"), "alt": "Image 1"},
@@ -254,6 +254,17 @@ def get_storybook_context() -> dict:
         ],
         "range_total_slides": range(3),
         "start_page": {"page_obj": page_obj, "surrounding_pages": surrounding_pages},
+        "toggle_table": {"empty_msg": "Keine Daten vorhanden!", "headers": headers, "rows": rows},
+        "toggle_start_view": "table",
+        "view_options": {
+            "name": "view-options",
+            "param_name": "view",
+            "options": [
+                {"id": "card-view", "value": "card", "icon": {"name": "card"}},
+                {"id": "table-view", "value": "table", "icon": {"name": "list"}},
+                {"id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},
+            ],
+        },
     }
 
 
@@ -445,15 +456,8 @@ def form_submit(request: HttpRequest) -> HttpResponse | JsonResponse:
 
 def storybook_view(request: HttpRequest) -> HttpResponse:
     """Hauptseite mit allen Insight UI Komponenten."""
-    # Beispieldaten für die Komponenten
     context = get_storybook_context()
-
-    # Toggle-View: Initiale Tabellendaten für das Storybook bereitstellen
-    payload = generate_payload()
-    headers, rows = map_payload_to_table(payload)
-    context["toggle_table_headers"] = headers
-    context["toggle_table_rows"] = rows
-    context["toggle_current_view"] = "table"
+    context["search_query"] = request.GET.get("search", "")
 
     return render(request, "insight_ui/storybook.html", context)
 
@@ -506,7 +510,16 @@ def toggle_view(request: HttpRequest) -> HttpResponse:
 
     # Generate the base payload
     payload = generate_payload()
-    context = {"current_view": view}
+    context = {"current_view": view, "id": request.GET.get("id", "")}
+    context["view_options"] = {
+        "name": "view-options",
+        "param_name": "view",
+        "options": [
+            {"id": "card-view", "value": "card", "icon": {"name": "card"}},
+            {"id": "table-view", "value": "table", "icon": {"name": "list"}},
+            {"id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},
+        ],
+    }
 
     if view == "card":
         context["cards"] = map_payload_to_cards(payload)
@@ -517,8 +530,7 @@ def toggle_view(request: HttpRequest) -> HttpResponse:
     else:
         # default: table view
         headers, rows = map_payload_to_table(payload)
-        context["table_headers"] = headers
-        context["table_rows"] = rows
+        context["table_data"] = {"empty_msg": "Keine Daten vorhanden!", "headers": headers, "rows": rows}
         logger.info("log: toggle_view - Tabellenansicht ausgewählt")
 
     return render(request, "insight_ui/components/toggle_view.html", context)

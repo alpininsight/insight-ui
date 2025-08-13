@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<form action="#" method="get" class="">
+<form action="{% url request_view %}" method="get">
     <label for="search" class="sr-only">{% trans "Suche" %}</label>
     <div class="relative">
         <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">

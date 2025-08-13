@@ -61,17 +61,16 @@
 
     <!-- Language Selector and Theme Toggle -->
     <div class="hidden md:flex items-center gap-2 h-full">
-      {% if show_searchbar %}
-        <!-- Searchbar -->
+      {% if searchbar_request_view %}
         <div class="flex-1 max-w-72">
-          {% include "insight_ui/components/searchbar.html" with simple=True %}
+          {% include "insight_ui/components/searchbar.html" with request_view=searchbar_request_view simple=True search_query=options.search_query %}
         </div>
       {% endif%}
       {% if show_usermenu %}
         {% include "insight_ui/components/user_dropdown.html" with user=options.user show_login=options.show_login user_dropdown_links=options.user_dropdown_links %}
       {% endif %}
       {% if show_language_selector %}
-        {% include "insight_ui/components/toggle_language.html" with options=options %}
+        {% include "insight_ui/components/toggle_language.html" %}
       {% endif %}
       {% if show_theme_toggle %}
         {% include "insight_ui/components/toggle_theme.html" %}
@@ -130,10 +129,10 @@
         {% endfor %}
       </ul>
       <div class="space-y-2 mt-2">
-        {% if show_searchbar or show_usermenu %}
+        {% if searchbar_request_view or show_usermenu %}
           <div class="w-full space-y-2">
-            {% if show_searchbar or show_usermenu %}
-              {% include "insight_ui/components/searchbar.html" with simple=True %}
+            {% if searchbar_request_view %}
+              {% include "insight_ui/components/searchbar.html" with request_view=searchbar_request_view simple=True search_query=options.search_query %}
             {% endif %}
             {% if show_usermenu %}
               {% include "insight_ui/components/user_dropdown.html" with user=options.user show_login=options.show_login user_dropdown_links=options.user_dropdown_links %}

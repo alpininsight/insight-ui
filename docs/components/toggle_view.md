@@ -7,12 +7,15 @@ Diese Komponente kombiniert die Tabellen und die Karten-Ansicht, sowie die Karus
 Die Toggle-View wird direkt über das `{% include "insight_ui/components/toggle_view.html" %}` eingebunden. Diese Komponente erwartet unterschiedliche Parameter, je nach dem, welche View initial eingestellt wird.
 
 ```django
-{% include "insight_ui/components/toggle_view.html" with table_headers=toggle_table_headers table_rows=toggle_table_rows current_view=toggle_current_view %}
+{% include "insight_ui/components/toggle_view.html" with id="test" table_data=toggle_table view_options=view_options current_view=toggle_start_view %}
 ```
 
 ## Parameter
 
-- _Todo_
+- **id**: Eine eindeutige ID um Konflikte mit den Radio-Buttons der View-Auswahl zu vermeiden (optional, aber empfohlen).
+- **table_data**: Die Daten für die Tabellen-Ansicht sofern diese als current_view_ eingestellt ist.
+- **view_options**: Eine Liste der View-Varianten welche ausgewählt werden können.
+- **current_view**: Die anzuzeigende View-Variante (Start-View).
 
 ## Verwandte Themen
 
