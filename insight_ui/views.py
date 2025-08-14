@@ -6,6 +6,7 @@ from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.templatetags.static import static
+from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_GET, require_http_methods
@@ -223,18 +224,21 @@ def get_storybook_context() -> dict:
             {"text": _("Abbrechen"), "type": "cancel", "dismiss": True},
         ],
         "right_sidebar_items": [
-            {"text": _("Benachrichtigungen"), "icon": "🔔", "badge": "3"},
-            {"text": _("Nachrichten"), "icon": "💬", "badge": "12"},
-            {"text": _("Aufgaben"), "icon": "✅", "badge": "5"},
-            {"text": _("Kalender"), "icon": "📅"},
-            {"text": _("Einstellungen"), "icon": "⚙️"},
-            {"text": _("Profil"), "icon": "👤"},
+            {
+                "text": _("Benachrichtigungen"),
+                "icon": {"name": "home", "size": "small"},
+                "url": reverse("storybook_view"),
+            },
+            {"text": _("Nachrichten"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
+            {"text": _("Aufgaben"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
+            {"text": _("Kalender"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
+            {"text": _("Profil"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
         ],
         "left_sidebar_items": [
-            {"text": _("Dashboard"), "url": "/", "icon": "📊"},
-            {"text": _("Benutzer"), "url": "/users/", "icon": "👥"},
-            {"text": _("Einstellungen"), "url": "/settings/", "icon": "⚙️"},
-            {"text": _("Hilfe"), "url": "/help/", "icon": "❓"},
+            {"text": _("Dashboard"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
+            {"text": _("Benutzer"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
+            {"text": _("Einstellungen"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
+            {"text": _("Hilfe"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
         ],
         "scroll_items": [{"title": f"Element {i}", "content": f"Inhalt für Element {i}"} for i in range(1, 11)],
         "htmx_config": {"url": "/api/form-submit/", "method": "post", "target": "#htmx-form", "swap": "innerHTML"},

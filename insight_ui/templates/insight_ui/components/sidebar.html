@@ -1,69 +1,62 @@
 {% load static i18n insight_tags %}
 
 {% if not auto_close %}
-  <button data-sidebar-target="{{ side }}" class="open-btn fixed top-20 ltr:left-4 rtl:right-4 z-40 text-white bg-insight-primary rounded-full shadow p-2 hover:bg-insight-primary-hover active:bg-insight-primary-active">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 rtl:rotate-180">
+  <button data-sidebar-target="{{ side }}" class="open-btn fixed top-20 {% if side == "right" %}ltr:right-4 rtl:left-4{% else %}ltr:left-4 rtl:right-4{% endif %} z-40 text-white bg-insight-primary rounded-full shadow p-2 hover:bg-insight-primary-hover active:bg-insight-primary-active">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 {% if side == "right" %}rotate-180 rtl:rotate-0{% else %}rtl:rotate-180{% endif %}">
       <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
     </svg>
   </button>
 {% endif %}
 
-<aside
-  id="{{ side }}-sidebar"
-  role="complementary"
-  aria-label="{% trans 'Seitennavigation' %}"
-  class="fixed top-16 {% if side == "right" %}ltr:right-0 ltr:translate-x-full ltr:border-l rtl:left-0 rtl:-translate-x-full rtl:border-r{% else %}ltr:left-0 ltr:-translate-x-full ltr:border-r rtl:right-0 rtl:translate-x-full rtl:border-l{% endif %} z-40 overflow-y-auto bg-white dark:bg-gray-800 dark:border-gray-600 border-gray-200 h-screen w-72 shadow-md transition"
-  data-insight-sidebar="{{ side }}"
-  data-auto-close="{{ auto_close|yesno:'true,false' }}"
->
-  <div class="flex flex-col px-4">
-    <!-- Sidebar Header -->
-    {% if title %}
-      <div class="flex justify-between items-center h-16 border-b mb-4">
-        <h2 class="text-lg font-semibold text-insight-text-primary dark:text-white">{{ title }}</h2>
-      </div>
-    {% endif %}
+<div id="{{ side }}-sidebar" data-insight-sidebar="{{ side }}" class="fixed inset-0 z-50 overflow-y-auto hidden">
+  <div class="fixed inset-0 bg-black/50 transition-opacity" data-insight-dismiss="sidebar"></div>
+  <aside
+    role="complementary"
+    aria-label="{% trans 'Seitennavigation' %}"
+    class="fixed top-16 {% if side == "right" %}ltr:right-0 ltr:border-l rtl:left-0 rtl:border-r{% else %}ltr:left-0 ltr:border-r rtl:right-0 rtl:border-l{% endif %} overflow-y-auto bg-white dark:bg-gray-800 dark:border-gray-600 border-gray-200 h-screen w-72 shadow-md transition"
+    data-auto-close="{{ auto_close|yesno:'true,false' }}"
+  >
 
-    <!-- Schnellzugriff -->
-    <div class="mb-6">
-      <h3 class="text-sm font-semibold text-insight-text-primary dark:text-white mb-2">{% trans 'Schnellzugriff' %}</h3>
-      <nav class="space-y-3">
-        {% for item in sidebar_items %}
-          <div class="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 cursor-pointer">
-            <div class="flex items-center">
-              <span class="me-3 text-lg">{{ item.icon|safe }}</span>
-              <span class="text-sm font-medium text-insight-text-secondary dark:text-insight-text-secondary-dark">{{ item.text }}</span>
-            </div>
-            {% if item.badge %}
-              <span class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-500 rounded-full">{{ item.badge }}</span>
-            {% endif %}
-          </div>
-        {% endfor %}
-      </nav>
+    <div class="flex flex-col px-4">
+      <!-- Sidebar Header -->
+      <div class="flex justify-between items-center h-16 border-b border-gray-300 dark:border-gray-500 mb-4">
+        {% if title %}
+          <h2 class="text-lg font-semibold text-insight-text-primary dark:text-white mb-0">{{ title }}</h2>
+        {% endif %}
+        {% if not auto_close %}
+          <button
+            id="{{ side }}-sidebar-close"
+            class="text-insight-text-secondary hover:text-insight-text-primary dark:text-insight-text-secondary-dark dark:hover:text-insight-text-primary-dark p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 text-sm"
+            aria-label="{% trans 'Sidebar schließen' %}"
+            data-insight-dismiss="sidebar"
+          >
+            <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        {% endif %}
+      </div>
+
+      <!-- Sidebar Content -->
+      {% block sidebar_content %}
+        <div class="mb-6">
+          <nav class="space-y-2">
+            {% for item in sidebar_items %}
+            <a
+              href="{{ item.url }}"
+              class="flex gap-2 p-2 rounded-sm text-sm hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200"
+            >
+              {% if item.icon %}
+                <span class="text-gray-500 inline-block">
+                  {% include "insight_ui/components/icons.html" with icon=item.icon %}
+                </span>
+              {% endif %}
+              {{ item.text }}
+            </a>
+            {% endfor %}
+          </nav>
+        </div>
+      {% endblock sidebar_content %}
     </div>
-
-    <!-- Zusätzlicher Inhalt -->
-    <div class="mt-auto">
-      <div class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg mb-4">
-        <h4 class="text-sm font-semibold text-blue-900 dark:text-blue-200 mb-2">{% trans 'Tipp des Tages' %}</h4>
-        <p class="text-xs text-blue-700 dark:text-blue-300">
-          {% trans 'Verwenden Sie Tastenkombinationen für eine schnellere Navigation durch die Anwendung.' %}
-        </p>
-      </div>
-
-      <!-- Schließen-Button -->
-      <div class="pt-4 border-t border-gray-200 dark:border-gray-600">
-        <button
-          id="{{ side }}-sidebar-close"
-          class="close-btn flex items-center text-insight-text-secondary hover:text-insight-text-primary dark:text-insight-text-secondary-dark dark:hover:text-insight-text-primary-dark p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 text-sm"
-          aria-label="{% trans 'Sidebar schließen' %}"
-        >
-          <svg class="w-4 h-4 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-          {% trans 'Schließen' %}
-        </button>
-      </div>
-    </div>
-  </div>
-</aside>
+  </aside>
+</div>

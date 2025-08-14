@@ -9,20 +9,19 @@ Eingebunden wird die Sidebar am einfachsten über das entsprechende _Template-Ta
 
 ```django
 {% block sidebar_right %}
-    {% include "insight_ui/components/sidebar.html" with title="Sekundäre Sidebar" side="right" auto_close=True collapsible=True sidebar_items=right_sidebar_items %}
+    {% include "insight_ui/components/sidebar.html" with title="Sekundäre Sidebar" side="right" auto_close=True sidebar_items=right_sidebar_items %}
 {% endblock sidebar_right %}
 {% block sidebar_left %}
-    {% include "insight_ui/components/sidebar.html" with title="Primäre Sidebar" side="left" auto_close=False collapsible=True sidebar_items=left_sidebar_items %}
+    {% include "insight_ui/components/sidebar.html" with title="Primäre Sidebar" side="left" auto_close=False sidebar_items=left_sidebar_items %}
 {% endblock sidebar_left %}
 ```
 
 ## Parameter
 
-- **title**:
-- **side**:
-- **auto_close**:
-- **collapsible**:
-- **sidebar_items**:
+- **title**: Ein optionaler Titel am oberen Rand der Sidebar.
+- **side**: Die Seite an welcher die Sidebar positioniert werden soll ("right" oder "left")
+- **auto_close**: True wenn sich die Sidebar automatisch öffnen und schließen soll.
+- **sidebar_items**: Eine Liste von Links, welche in der Sidebar angezeigt werden.
 
 ## Verwandte Themen
 
