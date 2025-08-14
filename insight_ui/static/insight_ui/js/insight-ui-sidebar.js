@@ -2,23 +2,42 @@ window.InsightUI = window.InsightUI || {};
 
 InsightUI.Sidebar = {
   init: function () {
-    const sidebars = document.querySelectorAll('[data-insight-sidebar]');
-    if (!sidebars) return;
+    const sidebar_wrappers = document.querySelectorAll('[data-insight-sidebar]');
+    if (!sidebar_wrappers) return;
 
-    for (let sidebar of sidebars)
+    for (let wrapper of sidebar_wrappers)
     {
-      const side = sidebar.getAttribute("data-insight-sidebar");
+      const side = wrapper.getAttribute("data-insight-sidebar");
+      const sidebar = wrapper.getElementsByTagName("aside")[0];
       const openBtn = document.querySelector(`.open-btn[data-sidebar-target="${side}"]`);
-      const closeBtn = sidebar.querySelector(".close-btn");
+      wrapper.querySelectorAll('[data-insight-dismiss="sidebar"]').forEach(closeButton => {
+        closeButton.addEventListener('click', function () {
+          closeSidebar();
+        });
+      });
 
       // Sidebar closes automatically when the mouse leaves the sidebar
       const autoClose = sidebar.getAttribute("data-auto-close") === "true";
 
-      // These classes were added so that the sidebar initially appears closed, but they prevent the sidebar from opening.
-      sidebar.classList.remove("ltr:translate-x-full", "rtl:-translate-x-full", "ltr:-translate-x-full", "rtl:translate-x-full");
+      // Sidebar initial verstecken
+      initSidebar();
+      function initSidebar() {
+        if (document.documentElement.dir === "rtl")
+        {
+          if (side == "right") sidebar.style.transform = 'translateX(-100%)';
+          else if (side == "left") sidebar.style.transform = 'translateX(100%)';
+        }
+        else
+        {
+          if (side == "right") sidebar.style.transform = 'translateX(100%)';
+          else if (side == "left") sidebar.style.transform = 'translateX(-100%)';
+        }
+      }
 
       // Funktion zum Öffnen der Sidebar
       function openSidebar() {
+        wrapper.classList.remove("hidden");
+        InsightUI.utils.trapFocus(wrapper);
         sidebar.style.transform = 'translateX(0)';
       }
 
@@ -34,10 +53,19 @@ InsightUI.Sidebar = {
           if (side == "right") sidebar.style.transform = 'translateX(100%)';
           else if (side == "left") sidebar.style.transform = 'translateX(-100%)';
         }
-      }
 
-      // Sidebar initial verstecken
-      closeSidebar();
+        sidebar.addEventListener('transitionend', function(event) {
+          // Todo: sometimes the transformation gets skipped, find fix
+          // if (event.propertyName === 'transform' && sidebar.style.transform === 'translateX(-100%)') {
+          //   // Wenn die Transformation abgeschlossen ist und der Wert stimmt, den Button sichtbar machen
+          // }
+
+          wrapper.classList.add("hidden");
+
+          if (openBtn)
+            openBtn.classList.toggle("hidden", false);
+        }, { once: true });
+      }
 
       if (autoClose)
       {
@@ -61,7 +89,7 @@ InsightUI.Sidebar = {
           }
         });
 
-        // Optional: Schließen, wenn Maus die Sidebar verlässt
+        // Schließen, wenn Maus die Sidebar verlässt
         sidebar.addEventListener('mouseleave', () => { closeSidebar(); });
       }
 
@@ -71,14 +99,6 @@ InsightUI.Sidebar = {
           openSidebar();
           openBtn.classList.toggle("hidden", true);
         });
-
-        if (closeBtn)
-        {
-          closeBtn.addEventListener('click', () => {
-            closeSidebar();
-            openBtn.classList.toggle("hidden", false);
-          });
-        }
       }
     }
   }
