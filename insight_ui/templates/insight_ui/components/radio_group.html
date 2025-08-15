@@ -4,7 +4,7 @@
             <input
             type="radio" id="{{ option.id }}" name="{{ radio_group.name }}" value="{{ option.value }}" {% if current_value == option.value %}checked="true"{% endif %}
             {% if view_name and target_id %}
-                hx-get="{% url view_name %}?{{ radio_group.param_name }}={{ option.value }}{% if id %}&id={{ id }}{% endif %}"
+                hx-get="{% url view_name %}?{{ radio_group.param_name }}={{ option.value }}{%if query_params %}&{{ query_params }}{% endif %}{% if id %}&id={{ id }}{% endif %}"
                 hx-target="#{{ target_id }}"
                 hx-swap="{{ swap_method|default:"outerHTML" }}"
             {% endif %}

@@ -2,7 +2,7 @@
 
 <div id="switchable-view-{{ id }}">
   {% with "switchable-view-"|add:id as target_id %}
-    {% include "insight_ui/components/radio_group.html" with radio_group=view_options current_value=current_view view_name="toggle_view" target_id=target_id %}
+    {% include "insight_ui/components/radio_group.html" with radio_group=view_options current_value=current_view view_name="toggle_view" query_params="test=123" target_id=target_id %}
   {% endwith %}
   {% if current_view == 'carousel' %}
     {% carousel carousel_items=cards show_index=True slides_count=range_total_slides items_per_slide=2 %}

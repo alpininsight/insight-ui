@@ -115,9 +115,10 @@ def get_storybook_context() -> dict:
     return get_nav_and_footer_context() | {
         "breadcrumb_items": [
             {"text": _("Startseite"), "view_name": "storybook_view", "icon": {"name": "home", "size": "small"}},
-            {"text": _("Demo"), "view_name": "storybook_view"},
+            {"text": _("Demo"), "view_name": "storybook_view", "query_params": "?test=123"},
             {"text": _("Komponenten")},
         ],
+        "single_breadcrumb_item": [{"text": _("Startseite"), "icon": {"name": "home", "size": "small"}}],
         "table": {
             "caption": _("Ein Beispiel einer Tabellen-Komponente."),
             "empty_msg": _("Keine Daten vorhanden!"),
