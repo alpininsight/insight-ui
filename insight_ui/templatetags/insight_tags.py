@@ -1,10 +1,57 @@
 """Template-Tags für Insight UI-Komponenten."""
 
+from difflib import HtmlDiff, ndiff, unified_diff
 from typing import Any
 
 from django import template
 
+from insight_ui.utils.diff import file_template, styles
+
 register = template.Library()
+
+
+@register.filter
+def get_item(dictionary: dict, key: str) -> Any:  # noqa: ANN401
+    """Get the specified item of a dictionary."""
+    return dictionary.get(key)
+
+
+@register.filter
+def diff(text1: str, text2: str) -> str:
+    """Generate a visualization of the differences between to texts."""
+    diff = ndiff(text1.split(), text2.split())
+    html = ""
+
+    for word in diff:
+        if word.startswith("  "):
+            html += f"{word[2:]} "
+        elif word.startswith("- "):
+            html += f"<span class='del'>{word[2:]}</span> "
+        elif word.startswith("+ "):
+            html += f"<span class='ins'>{word[2:]}</span> "
+
+    return f"""
+    <html>
+    <head>
+        <style>
+            body {{ font-family: sans-serif; line-height: 1.6; }}
+            .del {{ background-color: #f8d7da; color: #721c24; text-decoration: line-through; }}
+            .ins {{ background-color: #d4edda; color: #155724; }}
+        </style>
+    </head>
+    <body>
+        <h2>Textvergleich</h2>
+        <p>{html}</p>
+    </body>
+    </html>
+    """
+
+    differentiator = HtmlDiff()
+    differentiator._file_template = file_template
+    differentiator._styles = styles
+    diff = unified_diff(text1.splitlines(), text2.splitlines(), lineterm="")
+    return "\n".join(list(diff))
+    return differentiator.make_file(text1.splitlines(), text2.splitlines())
 
 
 @register.inclusion_tag("insight_ui/components/navbar.html")

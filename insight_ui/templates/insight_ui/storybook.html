@@ -1,7 +1,7 @@
 {% extends "insight_ui/base.html" %}
 {% load static insight_tags i18n %}
 
-{% block title %}{% trans 'Django Insight UI storybook.html' %}{% endblock %}
+{% block title %}{% trans 'Insight UI Storybook' %}{% endblock %}
 
 {% block sidebar_right %}
     {% include "insight_ui/components/sidebar.html" with title="Sekundäre Sidebar" side="right" auto_close=False sidebar_items=right_sidebar_items %}
@@ -19,181 +19,100 @@
 {% endblock background_image %}
 
 {% block content %}
-<!-- Hauptcontainer für alle Demo-Abschnitte -->
-<div class="w-full pt-16 px-4 md:px-24">
-    <!-- Willkommenstext -->
-    <section class="mb-8">
-        <h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">{% trans 'Django Insight UI Storybook' %}</h1>
-        <p class="text-lg text-insight-text-secondary dark:text-insight-text-secondary-dark">
-            {% trans 'Eine moderne, barrierefreie und responsive UI-Bibliothek für Django-Projekte.' %}
-        </p>
-    </section>
+    <div class="w-full space-y-8 py-8 px-4 md:px-24">
+        <!-- Welcome -->
+        <section>
+            <h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">{% trans 'Insight UI Storybook' %}</h1>
+            <p class="text-lg text-insight-text-secondary dark:text-insight-text-secondary-dark">
+                {% trans 'A modern, accessible, and responsive UI library for Django projects.' %}
+            </p>
+        </section>
 
-    <!-- Input Elements -->
-    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Input Elemente' %}</h2>
-        <div class="space-y-4">
-            {% include "insight_ui/components/inputs.html" %}
-        </div>
-    </section>
+        <!-- Input Elements -->
+        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Input Elemente' %}</h2>
+            <div class="space-y-4">
+                {% include "insight_ui/components/inputs.html" %}
+            </div>
+        </section>
 
-    <!-- Searchbox -->
-    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Prominente Suchzeile' %}</h2>
-        <div class="space-y-4">
-            {% include "insight_ui/components/searchbar.html" with request_view="storybook_view" %}
-        </div>
-    </section>
+        <!-- Code-Block -->
+        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h2 class="font-mono text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">
+                {% trans 'Code Block' %}<span class="animate-blink">_</span>
+            </h2>
 
-    <!-- Code-Block -->
-    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="font-mono text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">
-            {% trans 'Code Block' %}<span class="animate-blink">_</span>
-        </h2>
+            <div id="code" data-insight-code-block="javascript">
+                function greet(name) {
+                    return `Hello, ${name}!`;
+                }
+            </div>
+            <div id="code2" data-insight-code-block="python">
+                def greet(name: str) -> str:
+                    return f"Hello, {name}";
+            </div>
+        </section>
 
-        <div id="code" data-insight-code-block="javascript">
-            function greet(name) {
-                return `Hello, ${name}!`;
-            }
-        </div>
-        <div id="code2" data-insight-code-block="python">
-            def greet(name: str) -> str:
-                return f"Hello, {name}";
-        </div>
-    </section>
+        <!-- Chat -->
+        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Chat' %}</h2>
+            {% include "insight_ui/components/chat.html" %}
+        </section>
 
-    <!-- Chat -->
-    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Chat' %}</h2>
-        {% include "insight_ui/components/chat.html" %}
-    </section>
+        <!-- Alert Demo -->
+        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Benachrichtigungen' %}</h2>
+            <div class="space-y-4">
+                {% alert message="Dies ist eine Informationsmeldung" alert_type="info" %}
+                {% alert message="Erfolgreich gespeichert!" alert_type="success" %}
+                {% alert message="Überprüfen Sie Ihre Eingaben" alert_type="warning" %}
+                {% alert message="Fehler beim Laden der Daten" alert_type="error" %}
+            </div>
+        </section>
 
-    <!-- Alert Demo -->
-    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Benachrichtigungen' %}</h2>
-        <div class="space-y-4">
-            {% alert message="Dies ist eine Informationsmeldung" alert_type="info" %}
-            {% alert message="Erfolgreich gespeichert!" alert_type="success" %}
-            {% alert message="Überprüfen Sie Ihre Eingaben" alert_type="warning" %}
-            {% alert message="Fehler beim Laden der Daten" alert_type="error" %}
-        </div>
-    </section>
+        <!-- Breadcrumbs Demo -->
+        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Breadcrumb-Navigation' %}</h2>
+            {% breadcrumbs items=breadcrumb_items %}
+            {% breadcrumbs items=single_breadcrumb_item %}
+        </section>
 
-    <!--  Breadcrumbs Demo -->
-    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Breadcrumb-Navigation' %}</h2>
-        {% breadcrumbs items=breadcrumb_items %}
-        {% breadcrumbs items=single_breadcrumb_item %}
-    </section>
+        <!-- Modal Demo -->
+        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans "Modal-Dialoge" %}</h2>
+            <div class="flex gap-4">
+                <!-- Standard -->
+                <button class="btn btn-primary w-72" data-insight-toggle="modal" data-insight-target="demo-modal">
+                    {% trans "Standard Modal" %}
+                </button>
+                {% modal html_tag_id="demo-modal" title=_("Demo Modal") description=_("Dies ist ein Beispiel-Modal mit Standard-Styling!") %}
 
-    <!-- Modal Demo -->
-    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans "Modal-Dialoge" %}</h2>
-        <div class="flex gap-4">
-            <!-- Standard -->
-            <button class="btn btn-primary w-72" data-insight-toggle="modal" data-insight-target="demo-modal">
-                {% trans "Standard Modal" %}
-            </button>
-            {% modal html_tag_id="demo-modal" title=_("Demo Modal") description=_("Dies ist ein Beispiel-Modal mit Standard-Styling!") %}
+                <!-- Action-Buttons -->
+                <button class="btn btn-error w-72" data-insight-toggle="modal" data-insight-target="delete-modal">
+                    {% trans "Modal mit Action-Buttons" %}
+                </button>
+                {% modal html_tag_id="delete-modal" title=_("Löschen?") description="Bitte bestätigen Sie die Löschung!" actions=confirm_modal_actions %}
+            </div>
+        </section>
 
-            <!-- Action-Buttons -->
-            <button class="btn btn-error w-72" data-insight-toggle="modal" data-insight-target="delete-modal">
-                {% trans "Modal mit Action-Buttons" %}
-            </button>
-            {% modal html_tag_id="delete-modal" title=_("Löschen?") description="Bitte bestätigen Sie die Löschung!" actions=confirm_modal_actions %}
-        </div>
-    </section>
+        <!-- Differentiator Demo -->
+        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Differentiator' %}</h2>
+            {{ textA|diff:textB|safe }}
+        </section>
 
-    <!-- Form Demo -->
-    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Formular' %}</h2>
-        {% form title="Kontaktformular" description="Füllen Sie das Formular aus" fields=form_fields actions=form_actions action="api/form-submit/" id="standard-form" %}
-    </section>
+        <!-- HTMX Live Content Demo (Pulling)-->
+        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Live-Inhalte (Pull-Verfahren)' %}</h2>
+            {% live_content url="/api/live-data/" interval=10 id="live-content" %}
+        </section>
 
-    <!-- HTMX Form Demo -->
-    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Formular, mit hx-post' %}</h2>
-        {% form title="Kontaktformular" description="Füllen Sie das Formular aus" fields=form_fields actions=form_actions htmx=htmx_config id="htmx-form" %}
-    </section>
-
-    <!-- Filter Demo -->
-    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Generische Filterung' %}</h2>
-        <span class="text-neutral-400 italic">Todo</span>
-    </section>
-
-    <!-- SQL-Like Filter Demo -->
-    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'SQL-Like Filterung' %}</h2>
-        <span class="text-neutral-400 italic">Todo</span>
-    </section>
-
-    <!-- HTMX Live Content Demo (Pulling)-->
-    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Live-Inhalte (Pull-Verfahren)' %}</h2>
-        {% live_content url="/api/live-data/" interval=10 id="live-content" %}
-    </section>
-
-    <!-- HTMX Websocket Content Demo (Pushing) -->
-    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans "WebSocket Live-Demo (Push-Verfahren)" %}</h2>
-        <!-- {% insight_websocket html_tag_id="demo-websocket" ws_url="ws://localhost:8765" initial_content="<p>Verbinde zu WebSocket…</p>" %} -->
-    </section>
-
-    <!-- Table Demo -->
-    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Tabelle' %}</h2>
-        {% table table_data=table %}
-    </section>
-
-    <!-- Pagination Demo -->
-    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Listen/Tabellen Pagination' %}</h2>
-        <div id="list-container">
-            {% include 'insight_ui/components/list_partial.html' with pagination=start_page %}
-        </div>
-    </section>
-
-    <!-- Card Demo -->
-    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Karten/Kacheln' %}</h2>
-        <div class="flex gap-6">
-            {% for card in cards %}
-                {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
-            {% endfor %}
-            {% for card in horizontale_cards %}
-                {% card_horizontale title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
-            {% endfor %}
-            {% for card in flip_cards %}
-                {% card_flip title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
-            {% endfor %}
-        </div>
-    </section>
-
-    <!-- Card Carousel Demo -->
-    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Karten/Kachel Karussell' %}</h2>
-        {% carousel carousel_items=carousel_items show_index=True slides_count=range_total_slides items_per_slide=2 %}
-    </section>
-
-    <!-- Image Carousel Demo -->
-    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Bilder Karussell' %}</h2>
-        {% include "insight_ui/components/carousels/image_carousel.html" with carousel_items=image_carousel_items show_dots=True show_index=True slides_count=range_total_slides items_per_slide=1 %}
-    </section>
-
-    <!--Toggle View Demo -->
-    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white">{% trans 'Ansicht wechseln' %}</h2>
-        {% include "insight_ui/components/toggle_view.html" with id="test" table_data=toggle_table view_options=view_options current_view=toggle_start_view %}
-    </section>
-
-    <!-- Infinite Scroll Demo -->
-    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Infinite Scroll' %}</h2>
-        {% infinite_scroll items=scroll_items request_view="more_items" %}
-    </section>
-</div>
+        <!-- HTMX Websocket Content Demo (Pushing) -->
+        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans "WebSocket Live-Demo (Push-Verfahren)" %}</h2>
+            <!-- {% insight_websocket html_tag_id="demo-websocket" ws_url="ws://localhost:8765" initial_content="<p>Verbinde zu WebSocket…</p>" %} -->
+        </section>
+    </div>
 {% endblock content %}
 
 {% block footer %}

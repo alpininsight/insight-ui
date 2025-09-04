@@ -1,276 +1,38 @@
 from datetime import UTC, datetime
 
 import structlog
-from django.core.paginator import Page, Paginator
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
-from django.templatetags.static import static
-from django.urls import reverse
-from django.utils.html import format_html
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_GET, require_http_methods
 
-from insight_ui import config
+from insight_ui.demo_context import (
+    DEMO_FIELDS,
+    get_card_storybook_data,
+    get_filter_storybook_data,
+    get_form_storybook_data,
+    get_storybook_context,
+    get_table_storybook_data,
+)
+from insight_ui.demo_utils import generate_payload, map_payload_to_cards, map_payload_to_table
 from insight_ui.forms import ChatForm
+from insight_ui.utils.pagination import get_page
+from insight_ui.utils.query_builder_utils import get_filter_settings_for_field
 
 logger = structlog.get_logger(__name__)
 
 
-def get_nav_and_footer_context() -> dict:
-    """Stellt Inhalt für die Navigation und den Footer bereit."""
-    return config.get_config() | {
-        "nav_config": {
-            "brand": {
-                "title": "Django Insight UI NavBar",
-                "view_name": "storybook_view",
-                "logo_url": "insight_ui/svg/ai-logo.svg",
-                "logo_alt": "Insight UI Logo",
-            },
-            "links": [
-                {
-                    "text": _("Startseite"),
-                    "icon": {"name": "home", "size": "small"},
-                    "view_name": "storybook_view",
-                    "active": True,
-                    "need_auth": False,
-                    "staff_only": False,
-                },
-                {
-                    "text": _("Dokumentation"),
-                    "view_name": "storybook_view",
-                    "active": False,
-                    "need_auth": False,
-                    "staff_only": False,
-                },
-                {
-                    "text": _("Über"),
-                    "open_modal": "about-modal",
-                    "active": False,
-                    "need_auth": False,
-                    "staff_only": False,
-                },
-                {
-                    "text": _("Test"),
-                    "view_name": "storybook_view",
-                    "active": False,
-                    "need_auth": True,
-                    "staff_only": False,
-                },
-                {
-                    "text": _("Test2"),
-                    "view_name": "storybook_view",
-                    "active": False,
-                    "need_auth": True,
-                    "staff_only": True,
-                },
-            ],
-            "searchbar_request_view": "storybook_view",
-            "show_usermenu": True,
-            "show_language_selector": True,
-            "show_theme_toggle": True,
-        },
-        "user_dropdown_links": [
-            {
-                "text": _("Einstellungen"),
-                "view_name": "storybook_view",
-                "staff_only": False,
-                "icon": {"name": "cog", "size": "small"},
-            },
-            {
-                "text": _("Administration"),
-                "view_name": "admin:index",
-                "staff_only": True,
-                "icon": {"name": "home", "size": "small"},
-            },
-            {
-                "text": _("Übersetzung"),
-                "view_name": "storybook_view",  # rosetta-home
-                "staff_only": True,
-                "icon": {"name": "globe", "size": "small"},
-            },
-        ],
-        "footer_data": {
-            "description": {
-                "title": "Django Insight UI",
-                "text": "Eine moderne UI-Bibliothek für Django-Anwendungen mit Fokus auf Barrierefreiheit und Benutzerfreundlichkeit.",  # noqa: E501
-            },
-            "links": [
-                {"text": _("Startseite"), "icon": {"name": "home", "size": "small"}, "view_name": "storybook_view"},
-                {"text": _("Storybook"), "view_name": "storybook_view"},
-                {"text": _("Dokumentation"), "view_name": "storybook_view"},
-            ],
-        },
-    }
+@require_GET
+def get_allowed_operators(request: HttpRequest) -> JsonResponse:
+    """Retrieve all allowed operator of the given model field."""
+    field = request.GET.get("field")
 
+    if not field:
+        return JsonResponse({"error": "Field is required!"}, status=400)
 
-def get_storybook_context() -> dict:
-    """Hilfsfunktion für Index-Seiten Context."""
-    page_obj, surrounding_pages = get_page(generate_payload(100))
-
-    # Toggle-View: Initiale Tabellendaten für das Storybook bereitstellen
-    payload = generate_payload()
-    headers, rows = map_payload_to_table(payload)
-
-    return get_nav_and_footer_context() | {
-        "breadcrumb_items": [
-            {"text": _("Startseite"), "view_name": "storybook_view", "icon": {"name": "home", "size": "small"}},
-            {"text": _("Demo"), "view_name": "storybook_view", "query_params": "?test=123"},
-            {"text": _("Komponenten")},
-        ],
-        "single_breadcrumb_item": [{"text": _("Startseite"), "icon": {"name": "home", "size": "small"}}],
-        "table": {
-            "caption": _("Ein Beispiel einer Tabellen-Komponente."),
-            "empty_msg": _("Keine Daten vorhanden!"),
-            "headers": [_("Name"), _("E-Mail"), _("Status"), _("Aktionen")],
-            "rows": [
-                [
-                    "Max Mustermann",
-                    "max@example.com",
-                    _("Aktiv"),
-                    format_html(
-                        '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
-                    ),
-                ],
-                [
-                    "Anna Schmidt",
-                    "anna@example.com",
-                    _("Inaktiv"),
-                    format_html(
-                        '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
-                    ),
-                ],
-                [
-                    "Tom Weber",
-                    "tom@example.com",
-                    _("Aktiv"),
-                    format_html(
-                        '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
-                    ),
-                ],
-            ],
-        },
-        "cards": [
-            {
-                "title": "Beispiel-Karte",
-                "subtitle": "Untertitel",
-                "content": "Dies ist der Inhalt einer Karte.",
-                "actions": [
-                    {"text": _("Mehr erfahren"), "url": "#", "type": "secondary"},
-                    {"text": _("Teilen"), "url": "#", "type": "primary"},
-                ],
-            },
-            {
-                "title": "Karte mit Aktionen",
-                "content": "Diese Karte hat Aktions-Buttons.",
-                "actions": [
-                    {"text": _("Mehr erfahren"), "url": "#", "type": "secondary"},
-                    {"text": _("Teilen"), "url": "#", "type": "primary"},
-                ],
-            },
-        ],
-        "horizontale_cards": [
-            {
-                "title": "Horizontale Karte",
-                "content": "Eine Karte dessen Inhalt horizontal angeordnet ist.",
-                "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": "Card-Image"},
-                "tags": ["Test", "Test2", "Test3"],
-                "actions": [
-                    {"text": _("Mehr erfahren"), "url": "#", "type": "secondary"},
-                    {"text": _("Teilen"), "url": "#", "type": "primary"},
-                ],
-            }
-        ],
-        "flip_cards": [
-            {
-                "title": "Flip Karte",
-                "content": "Eine Karte die sich um 180° dreht und weiteren Inhalt auf der Rückseite bereit hält.",
-                "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": "Card-Image"},
-                "tags": ["Test", "Test2", "Test3"],
-                "actions": [
-                    {"text": _("Mehr erfahren"), "url": "#", "type": "secondary"},
-                    {"text": _("Teilen"), "url": "#", "type": "primary"},
-                ],
-            }
-        ],
-        "form_fields": [
-            {
-                "type": "text",
-                "name": "name",
-                "label": _("Name"),
-                "placeholder": _("Ihr vollständiger Name"),
-                "required": True,
-            },
-            {
-                "type": "email",
-                "name": "email",
-                "label": _("E-Mail"),
-                "placeholder": _("ihre.email@example.com"),
-                "required": True,
-            },
-            {
-                "type": "textarea",
-                "name": "message",
-                "label": _("Nachricht"),
-                "placeholder": _("Ihre Nachricht..."),
-                "rows": 4,
-            },
-        ],
-        "form_actions": [
-            {"text": _("Absenden"), "type": "submit", "style": "primary"},
-            {"text": _("Zurücksetzen"), "type": "reset", "style": "secondary"},
-        ],
-        "confirm_modal_actions": [
-            {"text": _("Ja, fortfahren"), "type": "primary", "onclick": 'alert("Aktion bestätigt!")'},
-            {"text": _("Abbrechen"), "type": "cancel", "dismiss": True},
-        ],
-        "right_sidebar_items": [
-            {
-                "text": _("Benachrichtigungen"),
-                "icon": {"name": "home", "size": "small"},
-                "url": reverse("storybook_view"),
-            },
-            {"text": _("Nachrichten"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
-            {"text": _("Aufgaben"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
-            {"text": _("Kalender"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
-            {"text": _("Profil"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
-        ],
-        "left_sidebar_items": [
-            {"text": _("Dashboard"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
-            {"text": _("Benutzer"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
-            {"text": _("Einstellungen"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
-            {"text": _("Hilfe"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
-        ],
-        "scroll_items": [{"title": f"Element {i}", "content": f"Inhalt für Element {i}"} for i in range(1, 11)],
-        "htmx_config": {"url": "/api/form-submit/", "method": "post", "target": "#htmx-form", "swap": "innerHTML"},
-        "carousel_items": map_payload_to_cards(generate_payload()),
-        "image_carousel_items": [
-            {"description": "Test Bild 1", "url": static("insight_ui/img/text-services-main.png"), "alt": "Image 1"},
-            {
-                "description": "Test Bild 2",
-                "url": static("insight_ui/img/text-services-response.png"),
-                "alt": "Image 2",
-            },
-            {
-                "description": "Test Bild 3",
-                "url": static("insight_ui/img/text-services-response2.png"),
-                "alt": "Image 3",
-            },
-        ],
-        "range_total_slides": range(3),
-        "start_page": {"page_obj": page_obj, "surrounding_pages": surrounding_pages},
-        "toggle_table": {"empty_msg": "Keine Daten vorhanden!", "headers": headers, "rows": rows},
-        "toggle_start_view": "table",
-        "view_options": {
-            "name": "view-options",
-            "param_name": "view",
-            "options": [
-                {"id": "card-view", "value": "card", "icon": {"name": "card"}},
-                {"id": "table-view", "value": "table", "icon": {"name": "list"}},
-                {"id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},
-            ],
-        },
-    }
+    input_type, allowed_operators, possible_values = get_filter_settings_for_field(DEMO_FIELDS, field)
+    return JsonResponse({"operators": allowed_operators, "values": possible_values, "inputType": input_type})
 
 
 def chat_response(request: HttpRequest) -> HttpResponse:
@@ -281,54 +43,6 @@ def chat_response(request: HttpRequest) -> HttpResponse:
         return render(request, "insight_ui/components/chat_response.html", {"msg": form.cleaned_data["msg"]})
 
     return HttpResponse(status=204)  # no content
-
-
-def get_page(data: list, page: int = 1, max_neighbor_pages: int = 6) -> tuple[Page, list[str]]:
-    """
-    Create pagination for given data.
-
-    Retrieve data of the desired page and calculate page number of neighboring pages.
-
-    Arguments:
-    ---------
-        data (list): data to create pagination for.
-        page (int): desired page number.
-        max_neighbor_pages (int): the maximal amount of pages, next to the desired page.
-
-    Returns:
-    -------
-        page, neighbor_pages (Page, List[str]): the desired page and a list of neighboring pages.
-
-    """
-    paginator = Paginator(data, 10)
-
-    # Calculate neighboring pages
-    surrounding_pages = []
-    half = max_neighbor_pages // 2
-
-    # Calculate start page and end page
-    start = max(1, page - half)
-    end = min(paginator.num_pages, page + half)
-
-    # Adjust if there are not enough pages before the current page
-    if page - start < half:
-        end = min(paginator.num_pages, end + (half - (page - start)))
-
-    # Adjust if there are not enough pages after the current page
-    if end - page < half:
-        start = max(1, start - (half - (end - page)))
-
-    # Create list of neighboring pages
-    surrounding_pages = list(range(start, end + 1))
-
-    page_links = []
-    for i in range(1, paginator.num_pages + 1):
-        if i in surrounding_pages:
-            page_links.append(i)
-        elif i == 1 or i == paginator.num_pages or (i in surrounding_pages and i not in page_links[-1:]):
-            page_links.append("...")
-
-    return paginator.get_page(page), page_links
 
 
 def pagination(request: HttpRequest) -> HttpResponse:
@@ -349,7 +63,7 @@ def pagination(request: HttpRequest) -> HttpResponse:
 
 @require_http_methods(["GET"])
 def live_data_view(request: HttpRequest) -> HttpResponse | JsonResponse:
-    """HTMX Endpoint für Live-Daten."""
+    """HTMX endpoint for live data feed."""
     current_time = datetime.now(tz=UTC).strftime("%H:%M:%S")
     data = {
         "time": current_time,
@@ -358,19 +72,17 @@ def live_data_view(request: HttpRequest) -> HttpResponse | JsonResponse:
     }
 
     if request.headers.get("HX-Request"):
-        # HTMX Request - nur den Inhalt zurückgeben
         html = render_to_string(
             "insight_ui/components/live_content_partial.html", {"data": data, "timestamp": current_time}
         )
         return HttpResponse(html)
 
-    # Normale Request - JSON zurückgeben
     return JsonResponse(data)
 
 
 @require_http_methods(["GET"])
 def more_items_view(request: HttpRequest) -> HttpResponse | JsonResponse:
-    """HTMX Endpoint für Infinite Scroll."""
+    """HTMX endpoint for infinite scroll."""
     page = int(request.GET.get("page", 1))
     items_per_page = 5
 
@@ -403,18 +115,16 @@ def form_submit(request: HttpRequest) -> HttpResponse | JsonResponse:
     Works with standard and htmx requests. Handle form issues and return either
     partial template data if this is a htmx request or do a whole page reload.
     """
-    # Debug: Alle POST-Daten loggen
     logger.debug("Empfangene POST-Daten: %s", request.POST)
     logger.debug("Content-Type: %s", request.content_type)
 
-    # Eingabedaten extrahieren
     name = request.POST.get("name", "")
     email = request.POST.get("email", "")
     message = request.POST.get("message", "")
 
     logger.info("Extrahierte Werte - Name: '%s', Email: '%s', Message: '%s'", name, email, message)
 
-    # Einfache Validierung
+    # Simple validation
     errors = {}
     if not name:
         errors["name"] = _("Name ist erforderlich")
@@ -460,43 +170,43 @@ def form_submit(request: HttpRequest) -> HttpResponse | JsonResponse:
 
 
 def storybook_view(request: HttpRequest) -> HttpResponse:
-    """Hauptseite mit allen Insight UI Komponenten."""
+    """Start page with base ui-components."""
     context = get_storybook_context()
     context["search_query"] = request.GET.get("search", "")
 
     return render(request, "insight_ui/storybook.html", context)
 
 
-def generate_payload(count: int = 5) -> list:
-    """Erstellt eine zufällige Anzahl von Einträgen als Payload-Daten."""
-    return [
-        {
-            "title": f"Element {i}",
-            "content": f"Dies ist der Inhalt von Eintrag {i}.",
-            "status": "Aktiv" if i % 2 == 0 else "Inaktiv",
-            "actions": [
-                {"text": "Mehr erfahren", "url": "#", "type": "primary"},
-                {"text": "Teilen", "url": "#", "type": "secondary"},
-            ],
-            "action_link": f"<a href='#' class='underline text-insight-text-link hover:text-insight-text-link-hover'>Details {i}</a>",  # noqa: E501
-        }
-        for i in range(1, count + 1)
-    ]
+def filter_storybook_view(request: HttpRequest) -> HttpResponse:
+    """Dedicated page for filters and search functionality."""
+    context = get_filter_storybook_data()
+    context["search_query"] = request.GET.get("search", "")
+
+    return render(request, "insight_ui/filter_storybook.html", context)
 
 
-def map_payload_to_cards(payload: list) -> list:
-    """Mappt Payload-Daten auf Karten-Darstellung."""
-    return [
-        {"title": item["title"], "subtitle": item["status"], "content": item["content"], "actions": item["actions"]}
-        for item in payload
-    ]
+def card_storybook_view(request: HttpRequest) -> HttpResponse:
+    """Dedicated page for cards."""
+    context = get_card_storybook_data()
+    context["search_query"] = request.GET.get("search", "")
+
+    return render(request, "insight_ui/card_storybook.html", context)
 
 
-def map_payload_to_table(payload: list) -> tuple[list[str], list]:
-    """Mappt Payload-Daten auf Tabellen-Darstellung."""
-    headers = ["Title", "Status", "Content", "URL"]
-    rows = [[item["title"], item["status"], item["content"], item["action_link"]] for item in payload]
-    return headers, rows
+def form_storybook_view(request: HttpRequest) -> HttpResponse:
+    """Dedicated page for forms."""
+    context = get_form_storybook_data()
+    context["search_query"] = request.GET.get("search", "")
+
+    return render(request, "insight_ui/form_storybook.html", context)
+
+
+def table_storybook_view(request: HttpRequest) -> HttpResponse:
+    """Dedicated page for lists and tables."""
+    context = get_table_storybook_data()
+    context["search_query"] = request.GET.get("search", "")
+
+    return render(request, "insight_ui/table_storybook.html", context)
 
 
 @require_GET

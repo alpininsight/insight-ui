@@ -1,0 +1,55 @@
+{% extends "insight_ui/base.html" %}
+{% load static insight_tags i18n %}
+
+{% block title %}{% trans 'Insight UI Filters Storybook' %}{% endblock %}
+
+{% block sidebar_right %}
+    {% include "insight_ui/components/sidebar.html" with title="Sekundäre Sidebar" side="right" auto_close=False sidebar_items=right_sidebar_items %}
+{% endblock sidebar_right %}
+{% block sidebar_left %}
+    {% include "insight_ui/components/sidebar.html" with title="Primäre Sidebar" side="left" auto_close=True sidebar_items=left_sidebar_items %}
+{% endblock sidebar_left %}
+
+{% block navbar %}
+    {% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links show_login=True search_query=search_query %}
+{% endblock navbar %}
+
+{% block background_image %}
+    <img src="{% static "img/hubble-fiction.webp" %}" alt="Hubble Telescope" class="fixed -z-10 w-full h-dvh object-cover opacity-25">
+{% endblock background_image %}
+
+{% block content %}
+    <div class="w-full space-y-8 py-8 px-4 md:px-24">
+        <!-- Welcome -->
+        <section>
+            <h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">{% trans 'Insight UI Filters &amp; Search' %}</h1>
+            <p class="text-lg text-insight-text-secondary dark:text-insight-text-secondary-dark">
+                {% trans 'Filter and search components for big data.' %}
+            </p>
+        </section>
+
+        <!-- Searchbox -->
+        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Prominente Suchzeile' %}</h2>
+            <div class="space-y-4">
+                {% include "insight_ui/components/searchbar.html" with request_view="filter_storybook_view" %}
+            </div>
+        </section>
+
+        <!-- Filter Demo -->
+        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Generische Filterung' %}</h2>
+            {% include "insight_ui/components/filter.html" %}
+        </section>
+
+        <!-- SQL-Like Filter Demo -->
+        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'SQL-Like Filterung' %}</h2>
+            {% include "insight_ui/components/search_query_builder/sq_builder.html" %}
+        </section>
+    </div>
+{% endblock content %}
+
+{% block footer %}
+    {% footer data=footer_data %}
+{% endblock footer %}
