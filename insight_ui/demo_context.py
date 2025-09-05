@@ -358,29 +358,29 @@ def get_form_storybook_data() -> dict:
 def get_filter_storybook_data() -> dict:
     """Serve data for filter example."""
     return get_nav_and_footer_context() | {
-        "filters": {
-            _("Issue Date"): {
+        "filters": [
+            {
+                "text": _("Issue Date"),
                 "icon": {"name": "home", "size": "small"},
                 "name": "issuedate_filter",
                 "values": issuedate_filters,
-                "mock": "False",
                 "explanation": _("To filter by the issue date."),
             },
-            _("Deadline"): {
+            {
+                "text": _("Deadline"),
                 "icon": {"name": "home", "size": "small"},
                 "name": "expiration_filter",
                 "values": expiration_filters,
-                "mock": "False",
                 "explanation": _("To filter by the deadline."),
             },
-            _("Reward in €"): {
+            {
+                "text": _("Reward in €"),
                 "icon": {"name": "home", "size": "small"},
                 "name": "reward_filter",
                 "values": reward_filters,
-                "mock": "False",
                 "explanation": _("To filter by the reward."),
             },
-        },
+        ],
         "view_name": "filter_storybook_view",
         "model_fields": DEMO_FIELDS,
     }

@@ -1,26 +1,14 @@
-# Django Insight UI
+# Insight UI (Version 0.1.0)
 
-Ein modernes, erweiterbares und hochgradig zugängliches Django UI-Framework, das wiederverwendbare, WCAG 2.1 AA-konforme Komponenten und Entwicklungs-Best-Practices bietet.
+Ein modernes und erweiterbares UI-Framework für Django Projekte, das wiederverwendbare, WCAG 2.1 AA-konforme Komponenten und Entwicklungs-Best-Practices bietet.
 
 ## Überblick
 
-Django Insight UI ist ein umfassendes UI-Paket für Django-Projekte mit Fokus auf:
+Das Insight UI Framework bietet eine Sammlung von UI-Komponenten und Hilfsmitteln, welche speziell für die Entwicklung von Django Webanwendungen konzipiert sind.
 
-- **Barrierefreiheit**: WCAG 2.1 AA-Konformität für alle Komponenten
-- **Moderne Technologien**: Integration mit HTMX, TailwindCSS und Alpine.js
-- **Internationalisierung**: Mehrsprachige Unterstützung und RTL-Layout
-- **Leistung**: Optimierte Komponenten für schnelle Ladezeiten
-- **Sicherheit**: Best Practices für CSRF, XSS und mehr
+Die Komponenten des Frameworks sind unter Beachtung der **Barrierefreiheit** implementiert und bieten im Bezug auf **Internationalisierung** eine Unterstützung für ein **RTL-Layout** für Sprachen, welche von rechts nach links gelesen werden.
 
-## Hauptfunktionen
-
-- Responsive UI-Komponenten (Navbar, Sidebar, Tabellen, Formulare, etc.)
-- Template-Tags für alle UI-Elemente
-- Dunkler/Heller/Kontrastreicher Modus
-- Vollständige Tastaturnavigation
-- ARIA-Rollen und semantisches Markup
-- Internationalisierung und RTL-Unterstützung
-- HTMX-Integration für dynamische Updates
+Für Performance unterstützen entsprechende Komponenten die Verwendung von **HTMX** Requests, um nur einzelne ausschnitte des _DOM_ zzu ändern, ohne einen kompletten Seiten-Reload.
 
 ## Entwicklung
 
@@ -41,21 +29,17 @@ uv run ./utils/main.py
 
 In dem Verzeichnis _/utils_ gibt es eine extra Readme mit weiteren Informationen.
 
-### Styling
-
-Für das Styling der Frontend Komponenten kann bzw. sollte TailwindCSS verwendet werden. Dazu muss **npm** bzw. **node.js** installiert sein. Der Tailwind-Compiler muss in einem separaten Konsolenfenster ausgeführt werden, um neue CSS-Klassen dynamisch hinzuzufügen. Der Compiler läuft am besten während der Entwicklung in einer separaten Kommandozeile.
-
-```bash
-npx tailwindcss@3 -i ./src/input.css -o ./insight_ui/static/insight_ui/css/tailwind.css --watch
-```
-
 ## Installation (in externes Projekt)
 
 ```bash
-uv add django-insight-ui
+uv add "git+https://alpin-bot:a205f27ce1045d607e4cdaa7426f3b3fe5a3d5d8@git.alpininsight.com/AlpinInsight/insight-ui@fix"
+
+# or later with
+
+uv add insight-ui
 ```
 
-Fügen Sie 'insight_ui' zu Ihren INSTALLED_APPS in settings.py hinzu:
+1. 'insight_ui' zu INSTALLED_APPS in settings.py hinzufügen:
 
 ```python
 INSTALLED_APPS = [
@@ -65,46 +49,50 @@ INSTALLED_APPS = [
 ]
 ```
 
+2. Konfiguration in settings.py hinzufügen und anpassen (siehe Konfiguration)
+
+3. (A) Projekt starten ohne Änderungen am Frontend vornehmen zu wollen
+    - `python manage.py collectstatic` um das vorkompilierte insight-ui Stylesheet einzusammeln
+    - `python manage.py runserver` Startet den development Server
+
+3. (B) Projekt aufsetzen und starten, wenn das Frontend weiter entwickelt werden soll
+    - Django-Tailwind-CLI zu Projekt hinzufügen (`uv add django-tailwind-cli`)
+    - Zu `INSTALLED_APPS` hinzufügen, `STATICFILES_DIRS`, `TAILWIND_CLI_SRC_CSS` und `TAILWIND_CLI_DIST_CSS` definieren
+    ```py
+        INSTALLED_APPS = [
+            # ...
+            "django_tailwind_cli",
+            # ...
+        ]
+
+        # Configure static files directory
+        STATICFILES_DIRS = [BASE_DIR / "assets"]
+
+		# Tailwind source file
+		TAILWIND_CLI_SRC_CSS = BASE_DIR / ".venv/Lib/site-packages/insight_ui/static/insight_ui/css/input.css"
+
+        # Tailwind dist file
+        TAILWIND_CLI_DIST_CSS = "insight_ui/css/tailwind.css"
+    ```
+    - `python manage.py tailwind setup` Für initiales Setup von Tailwind ausführen (lädt u.a. das Tailwind-CLI runter ~120MB)
+    - `python manage.py tailwind runserver` Startet den development Server mit hot reload
+
 ## Komponenten
 
-### Implementiert
+Eine Liste aller Komponenten befindet sich in der Documentation [docs/components](docs/components).
 
-- Navigation (Navbar)
-- Alerts (Notifications)
-- Breadcrumbs
-- Dialoge (Modals)
-- HTML-Formular
-- HTMX-Formular (ohne Seiten-Reload)
-- Live-Update (Polling mit HTMX)
-- WebSockets
-- Tabellen/Listen-Ansicht (umschaltbar)
-- Karten/Kachel-Ansicht (umschaltbar)
-- Infinite Scroll
-- Sidebar (Rechts)
-- Footer
+### Geplant Verbesserungen und neue Komponenten
 
-### Geplant
-
-- Mehr Input-Elemente (Buttons, Dropdown-Menüs, Radio-Buttons, Radio-Groups)
 - Mehr Varianten für Karten/Kacheln
-- SQL like Filterung (Dynamische Filterung)
-- Standard Listen-Filterung (Dropdowns mit festen Werten)
-- Suchleiste (auch für die Navbar)
 - Layout: Text + Tags
-- KI-Chat
-- Anbindung einer Charts Library (bspw. Apache Echarts)
-- Karussell (für Karten Ansicht)
-- Pagination (für Tabellen/Listen Ansicht)
 - Sortierung
     - Einfach (nur eine Parameter)
     - Komplex (nach mehreren Parametern)
-- Differentiator (GitHub like Diff-Ansicht)
-- Geo-Karten Einbindung (leaflet)
 - Tabellenspaltengröße vom Nutzer anpassbar
 
 ## Dokumentation
 
-Ausführliche Dokumentation finden Sie unter [docs/](docs/).
+Ausführliche Dokumentation befindet sich unter [docs/](docs/).
 
 ## Lizenz
 

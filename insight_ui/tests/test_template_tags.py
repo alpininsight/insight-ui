@@ -106,8 +106,7 @@ class LanguageSelectorTemplateTagTest(TemplateTagsTestCase):
     def test_language_selector_basic(self) -> None:
         """Test für grundlegende language_selector Funktionalität."""
         template_string = """
-        {% load insight_tags %}
-        {% language_selector current_language="de" %}
+        {% include "insight_ui/components/toggle_language.html" %}
         """
         rendered = self.render_template(template_string)
         assert "de" in rendered
@@ -168,11 +167,18 @@ class TableTemplateTagTest(TemplateTagsTestCase):
 
     def test_table_basic(self) -> None:
         """Test für grundlegende table Funktionalität."""
+        table = {
+            "caption": "Ein Beispiel einer Tabellen-Komponente.",
+            "empty_msg": "Keine Daten vorhanden!",
+            "headers": ["Name", "E-Mail", "Status"],
+            "rows": [["Max Mustermann", "max@example.com", "Aktiv"]],
+        }
+
         template_string = """
         {% load insight_tags %}
-        {% table %}
+        {% table table_data=table_data %}
         """
-        rendered = self.render_template(template_string)
+        rendered = self.render_template(template_string, context={"table_data": table})
         assert rendered is not None
 
 

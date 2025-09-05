@@ -107,18 +107,15 @@ def navbar(config: dict, **kwargs) -> dict[str, Any]:
 
 
 @register.inclusion_tag("insight_ui/components/live_content.html")
-def live_content(
-    url: str = "", theme: str = "light", interval: int = 0, initial_content: str = "", **kwargs
-) -> dict[str, Any]:
+def live_content(url: str = "", interval: int = 0, initial_content: str = "", **kwargs) -> dict[str, Any]:
     """
     Rendert einen Container für Live-Updates via HTMX.
 
     Args:
     ----
-        url: Die URL für HTMX-Updates
-        theme: Das Farbschema ('light', 'dark', 'high-contrast')
-        interval: Intervall für automatische Updates in Millisekunden
-        initial_content: Initialer Inhalt
+        url (str): Die URL für HTMX-Updates
+        interval (int): Intervall für automatische Updates in Millisekunden
+        initial_content (str): Initialer Inhalt
         **kwargs: Zusätzliche Optionen
 
     Returns:
@@ -137,11 +134,7 @@ def live_content(
         if interval != 0:
             htmx_config["interval"] = interval
 
-    return {
-        "theme": theme,
-        "initial_content": initial_content,
-        "options": {**kwargs, "htmx": htmx_config if htmx_config else None},
-    }
+    return {"initial_content": initial_content, "options": {**kwargs, "htmx": htmx_config if htmx_config else None}}
 
 
 @register.inclusion_tag("insight_ui/components/websocket.html")
@@ -218,54 +211,49 @@ def alert(message: str, alert_type: str = "info", dismissible: bool = True, **kw
 
 
 @register.inclusion_tag("insight_ui/components/sidebar.html")
-def sidebar(
-    title: str = "", items: list[dict[str, Any]] = [], theme: str = "light", collapsible: bool = False, **kwargs
-) -> dict[str, Any]:
+def sidebar(title: str = "", items: list[dict[str, Any]] = [], collapsible: bool = False) -> dict[str, Any]:
     """
     Rendert eine barrierefreie Seitennavigation.
 
     Args:
     ----
-        title: Der Titel der Sidebar
-        items: Eine Liste von Dictionaries mit Navigation-Elementen
-        theme: Das Farbschema ('light', 'dark', 'high-contrast')
-        collapsible: Ob die Sidebar einklappbar sein soll
-        **kwargs: Zusätzliche Optionen für die Sidebar
+        title (str): Der Titel der Sidebar
+        items (list): Eine Liste von Dictionaries mit Navigation-Elementen
+        collapsible (bool): Ob die Sidebar einklappbar sein soll
 
     Returns:
     -------
         Dict mit Kontext-Variablen für das Template
 
     """
-    return {"title": title, "items": items, "theme": theme, "collapsible": collapsible, "options": kwargs}
+    return {"title": title, "items": items, "collapsible": collapsible}
 
 
 @register.inclusion_tag("insight_ui/components/breadcrumbs.html")
-def breadcrumbs(items: list[dict[str, Any]] = [], **kwargs) -> dict[str, Any]:
+def breadcrumbs(items: list[dict[str, Any]] = []) -> dict[str, Any]:
     """
-    Rendert eine barrierefreie Breadcrumb-Navigation.
+    Rendert eine Breadcrumb-Navigation.
 
     Args:
     ----
-        items: Eine Liste von Dictionaries mit Breadcrumb-Elementen
-        **kwargs: Zusätzliche Optionen für die Breadcrumbs
+        items (list): Eine Liste von Dictionaries mit Breadcrumb-Elementen
 
     Returns:
     -------
         Dict mit Kontext-Variablen für das Template
 
     """
-    return {"items": items, "options": kwargs}
+    return {"items": items}
 
 
 @register.inclusion_tag("insight_ui/components/table.html")
-def table(table_data: dict, **kwargs) -> dict[str, Any]:
+def table(table_data: dict) -> dict[str, Any]:
     """
     Rendert eine einfache Tabelle.
 
     Args:
     ----
-        table_data: Ein Dictionary mit den Headern, den Rows und einer Überschrift
+        table_data (dict): Ein Dictionary mit den Headern, den Rows und einer Überschrift
         **kwargs: Zusätzliche Optionen für die Tabelle
 
         Beispiel der Tabellen-Daten:
@@ -281,46 +269,30 @@ def table(table_data: dict, **kwargs) -> dict[str, Any]:
         Dict mit Kontext-Variablen für das Template
 
     """
-    return {"table_data": table_data, "options": kwargs}
+    return {"table_data": table_data}
 
 
 @register.inclusion_tag("insight_ui/components/modal.html")
 def modal(  # noqa: PLR0913 (too many args)
-    html_tag_id: str,
-    title: str,
-    content: str = "",
-    description: str = "",
-    theme: str = "light",
-    actions: list[dict[str, Any]] = [],
-    **kwargs,
+    html_tag_id: str, title: str, content: str = "", description: str = "", actions: list[dict[str, Any]] = []
 ) -> dict[str, Any]:
     """
     Rendert ein barrierefreies Modal-Dialog.
 
     Args:
     ----
-        html_tag_id: Die eindeutige ID des Modals
-        title: Der Titel des Modals
-        content: Der Inhalt des Modals
-        description: Eine optionale Beschreibung
-        theme: Das Farbschema ('light', 'dark', 'high-contrast')
-        actions: Eine Liste von Aktions-Buttons
-        **kwargs: Zusätzliche Optionen für das Modal
+        html_tag_id (str): Die eindeutige ID des Modals
+        title (str): Der Titel des Modals
+        content (str): Der Inhalt des Modals
+        description (str): Eine optionale Beschreibung
+        actions (list): Eine Liste von Aktions-Buttons
 
     Returns:
     -------
         Dict mit Kontext-Variablen für das Template
 
     """
-    return {
-        "id": html_tag_id,
-        "title": title,
-        "content": content,
-        "description": description,
-        "theme": theme,
-        "actions": actions,
-        "options": kwargs,
-    }
+    return {"id": html_tag_id, "title": title, "content": content, "description": description, "actions": actions}
 
 
 @register.inclusion_tag("insight_ui/components/carousels/card_carousel.html")
@@ -331,20 +303,18 @@ def carousel(  # noqa: PLR0913 (too many args)
     show_index: bool = False,
     slides_count: range = [],
     items_per_slide: int = 1,
-    **kwargs,
 ) -> dict[str, Any]:
     """
     Rendert ein Karussell.
 
     Args:
     ----
-        carousel_items: Darzustellender Inhalt (Karten)
-        autoplay: Wechsle automatisch nach einer bestimmten Zeit (5s) zur nächsten Seite
-        show_dots: Zeige Pagination Dots unter dem Inhalt
-        show_index: Zeige Anzahl und aktuelle Seite in der unteren rechten Ecke
-        slides_count: Anzahl der Seiten als Iterable
-        items_per_slide: Anzahl der Items pro Seite
-        **kwargs: Zusätzliche Optionen für die Karte
+        carousel_items (list): Darzustellender Inhalt (Karten)
+        autoplay (bool): Wechsle automatisch nach einer bestimmten Zeit (5s) zur nächsten Seite
+        show_dots (bool): Zeige Pagination Dots unter dem Inhalt
+        show_index (bool): Zeige Anzahl und aktuelle Seite in der unteren rechten Ecke
+        slides_count (range): Anzahl der Seiten als Iterable
+        items_per_slide (int): Anzahl der Items pro Seite
 
     Returns:
     -------
@@ -358,7 +328,6 @@ def carousel(  # noqa: PLR0913 (too many args)
         "show_index": show_index,
         "slides_count": slides_count,
         "items_per_slide": items_per_slide,
-        "options": kwargs,
     }
 
 
@@ -451,26 +420,24 @@ def form(  # noqa: PLR0913 (too many args)
     fields: list[dict[str, Any]] = [],
     title: str = "",
     description: str = "",
-    action: str = "",
+    view_name: str = "",
     method: str = "post",
-    theme: str = "light",
     actions: list[dict[str, Any]] = [],
     htmx: dict[str, Any] = {},
     **kwargs,
 ) -> dict[str, Any]:
     """
-    Rendert ein barrierefreies Formular mit HTMX-Unterstützung.
+    Rendert ein Formular mit HTMX-Unterstützung.
 
     Args:
     ----
-        fields: Eine Liste von Formularfeldern
-        title: Der Titel des Formulars
-        description: Eine optionale Beschreibung
-        action: Die URL für die Formular-Übermittlung
-        method: Die HTTP-Methode ('post', 'get')
-        theme: Das Farbschema ('light', 'dark', 'high-contrast')
-        actions: Eine Liste von Aktions-Buttons
-        htmx: HTMX Konfiguration für AJAX-Requests
+        fields (list): Eine Liste von Formularfeldern
+        title (str): Der Titel des Formulars
+        description (str): Eine optionale Beschreibung
+        view_name (str): Die Name des Endpunktes für die Formular-Übermittlung
+        method (str): Die HTTP-Methode ('post', 'get')
+        actions (list): Eine Liste von Aktions-Buttons
+        htmx (dict): HTMX Konfiguration für AJAX-Requests
         **kwargs: Zusätzliche Optionen für das Formular
 
     Returns:
@@ -497,9 +464,8 @@ def form(  # noqa: PLR0913 (too many args)
         "fields": fields,
         "title": title,
         "description": description,
-        "action": action,
+        "action": view_name,
         "method": method,
-        "theme": theme,
         "actions": actions,
         "htmx": htmx_config,
         "options": {**kwargs},
@@ -507,18 +473,17 @@ def form(  # noqa: PLR0913 (too many args)
 
 
 @register.inclusion_tag("insight_ui/components/footer.html")
-def footer(data: dict, **kwargs) -> dict[str, Any]:
+def footer(data: dict) -> dict[str, Any]:
     """
     Rendert einen Footer mit optionaler Beschreibung, Links und einer Copyright Zeile.
 
     Args:
     ----
-        data: Inhalt des Footers
-        **kwargs: Zusätzliche Optionen für den Footer
+        data (dict): Inhalt des Footers
 
     Returns:
     -------
         Dict mit Kontext-Variablen für das Template
 
     """
-    return {"data": data, "options": kwargs}
+    return {"data": data}

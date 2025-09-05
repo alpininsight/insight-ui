@@ -5,42 +5,6 @@ Unser Framework bietet verschiedene Möglichkeiten zur Anpassung, von einfachen 
 ## Konfiguration über settings.py
 
 - _Todo_
-  
-**_Info_**: Das hier beschriebene ist nicht im Framework momentan nicht enthalten, soll aber noch ergänzt werden!
-
-Die einfachste Methode zur Anpassung ist die Konfiguration über die INSIGHT_UI-Einstellung in Ihrer settings.py:
-
-```python
-INSIGHT_UI = {
-    # Allgemeine Einstellungen
-    "theme": "light",  # 'light', 'dark', oder 'high-contrast'
-
-    # Branding
-    "branding": {
-        "name": "Meine App",
-        "logo": "path/to/logo.svg",
-        "favicon": "path/to/favicon.ico",
-    },
-
-    # Funktionen
-    "features": {
-        "theme_toggle": True,
-        "language_selector": True,
-        "skip_links": True,
-    },
-
-    # Komponenten-Überschreibungen
-    "components": {
-        "navbar": {
-            "fixed": True,
-            "container_class": "container-fluid",
-        },
-        "alert": {
-            "auto_dismiss": 5000,  # Automatisches Ausblenden nach 5 Sekunden
-        },
-    },
-}
-```
 
 ## Theming (anpassen ans Corporate Design)
 

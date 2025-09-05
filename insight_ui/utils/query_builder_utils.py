@@ -2,7 +2,19 @@ from django.db.models import Q
 
 
 def get_filter_settings_for_field(fields: list[dict], field: object) -> tuple[str, list[str], dict[str, str]]:
-    """Return the allowed operators based on the type of field."""
+    """
+    Retrieve the allowed operators based on the type of field.
+
+    Arguments:
+    ---------
+        fields (list): A list of all available fields.
+        field (object): The field to get the desired information from.
+
+    Return:
+    ------
+        information (tuple): The desired information.
+
+    """
     for f in fields:
         if f.get("field") == field:
             return f.get("type"), f.get("operations"), f.get("values")
@@ -11,7 +23,18 @@ def get_filter_settings_for_field(fields: list[dict], field: object) -> tuple[st
 
 
 def build_dynamic_query(filters: dict) -> tuple[Q, dict, dict]:
-    """Build django query by the given filters."""
+    """
+    Build django query by the given filters.
+
+    Arguments:
+    ---------
+        filters (dict): A dictionaries of filters used to generate the query.
+
+    Returns:
+    -------
+        query (tuple): The generated query, a Dict with annotations and a Dict with the annotation filters.
+
+    """
     if not filters:
         return Q(), {}, {}
 

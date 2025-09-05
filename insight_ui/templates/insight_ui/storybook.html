@@ -112,6 +112,12 @@
             <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans "WebSocket Live-Demo (Push-Verfahren)" %}</h2>
             <!-- {% insight_websocket html_tag_id="demo-websocket" ws_url="ws://localhost:8765" initial_content="<p>Verbinde zu WebSocket…</p>" %} -->
         </section>
+
+        <!-- Geo-Map -->
+        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Geo Map' %}</h2>
+            {% include "insight_ui/components/geo_map.html" %}
+        </section>
     </div>
 {% endblock content %}
 

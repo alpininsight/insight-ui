@@ -1,7 +1,7 @@
 {% load i18n %}
 
 <div
-  class="insight-live-content insight-live-content--{{ theme }}"
+  class="insight-live-content"
   {% if options.id %}id="{{ options.id }}"{% endif %}
   {% if options.htmx %}
     hx-get="{{ options.htmx.url }}"
@@ -12,7 +12,7 @@
   {% endif %}
 >
   <!-- Loading Spinner -->
-  <div class="htmx-spinner insight-live-content__spinner" style="display: none;">
+  <div class="htmx-spinner" style="display: none;">
     <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-insight-primary"></div>
     <span class="ml-2 text-sm text-insight-text-secondary">{% trans 'Wird geladen...' %}</span>
   </div>
@@ -21,7 +21,7 @@
   {% if initial_content %}
     {{ initial_content|safe }}
   {% else %}
-    <div class="insight-live-content__placeholder">
+    <div>
       <p class="text-insight-text-secondary">{% trans 'Inhalte werden geladen...' %}</p>
     </div>
   {% endif %}
