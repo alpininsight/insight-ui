@@ -8,7 +8,7 @@
     hx-target="{{ htmx.target }}"
     hx-swap="{{ htmx.swap|default:'innerHTML' }}"
     hx-trigger="submit"
-    hx-ext="form-validation,progressive-enhancement"
+    hx-ext="progressive-enhancement"
   {% else %}
     action="{{ action }}"
     method="{{ method|default:'post' }}"

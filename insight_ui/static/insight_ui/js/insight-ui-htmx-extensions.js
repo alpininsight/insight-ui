@@ -1,19 +1,12 @@
 /**
- * Django Insight UI – HTMX Extensions
- *
- * Erweiterte HTMX-Funktionalität für:
- * - Infinite Scroll
- * - Form Validation
- * - Live Updates
- * - Progressive Enhancement
- * - WebSocket Support
+ * Insight UI – HTMX Extensions
  */
 
 (function () {
   'use strict';
 
   if (typeof htmx === 'undefined') {
-    console.warn('HTMX not found; InsightUI extensions will not be initialized.');
+    console.warn('HTMX not found; InsightUI extensions will not be initialized!');
     return;
   }
 
@@ -21,7 +14,7 @@
   window.InsightUI = window.InsightUI || {};
 
   // ----------------------------------------
-  // 🔁 HTMX Extension: Infinite Scroll
+  // HTMX Extension: Infinite Scroll
   // ----------------------------------------
   htmx.defineExtension('infinite-scroll', {
     onEvent: function (name, evt) {
@@ -43,39 +36,7 @@
   });
 
   // ----------------------------------------
-  // ✅ HTMX Extension: Form Validation
-  // ----------------------------------------
-  htmx.defineExtension('form-validation', {
-    onEvent: function (name, evt) {
-      const form = evt.detail.elt;
-      if (form.tagName !== 'FORM' || !form.hasAttribute('hx-validate')) return;
-
-      if (name === 'htmx:beforeRequest') {
-        const isValid = InsightUI.Form?.validate?.(form);
-        if (!isValid) {
-          evt.preventDefault();
-          return false;
-        }
-      }
-
-      if (name === 'htmx:afterRequest' && evt.detail.xhr?.status === 422) {
-        try {
-          const response = JSON.parse(evt.detail.xhr.responseText);
-          InsightUI.Form?.showErrors?.(form, response.errors);
-        } catch (e) {
-          console.error('Validation response parse error:', e);
-        }
-      }
-    }
-  });
-
-  // ----------------------------------------
-  // 🔄 HTMX Extension: Live Updates (Polling)
-  // ----------------------------------------
-  // Entfernt: Da HTMX mit "every <interval>s" eine build-in Logik für Polling hat.
-
-  // ----------------------------------------
-  // 🚀 HTMX Extension: Progressive Enhancement
+  // HTMX Extension: Progressive Enhancement
   // ----------------------------------------
   htmx.defineExtension('progressive-enhancement', {
     onEvent: function (name, evt) {
@@ -99,14 +60,9 @@
   });
 
   // ----------------------------------------
-  // 🛠️ HTMX Extension: WebSocket Support
-  // ----------------------------------------
-  // Entfernt: Eigene WebSocket-Extension, da jetzt die offizielle htmx ws-Extension genutzt wird.
-
-  // ----------------------------------------
-  // 🛠️ Auto-Init All Extensions
+  // Auto-Init All Extensions
   // ----------------------------------------
   document.addEventListener('DOMContentLoaded', function () {
-    htmx.config.extensions = ['infinite-scroll', 'form-validation', 'live-updates', 'progressive-enhancement', 'ws'];
+    htmx.config.extensions = ['infinite-scroll', 'progressive-enhancement', 'ws'];
   });
 })();

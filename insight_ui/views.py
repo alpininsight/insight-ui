@@ -95,16 +95,23 @@ def more_items_view(request: HttpRequest) -> HttpResponse | JsonResponse:
     ]
 
     has_next = page < 5  # noqa: PLR2004 Simuliere max 5 Seiten
-    request_view = "more_items" if has_next else ""
+    view_name = "more_items" if has_next else ""
+    auto_fetch = request.GET.get("auto_fetch", True)
 
     if request.headers.get("HX-Request"):
         html = render_to_string(
             "insight_ui/components/infinite_scroll_items.html",
-            {"items": new_items, "request_view": request_view, "has_next": has_next, "page": page + 1},
+            {
+                "items": new_items,
+                "view_name": view_name,
+                "has_next": has_next,
+                "auto_fetch": auto_fetch,
+                "page": page + 1,
+            },
         )
         return HttpResponse(html)
 
-    return JsonResponse({"items": new_items, "has_next": has_next, "request_view": request_view})
+    return JsonResponse({"items": new_items, "has_next": has_next, "auto_fetch": auto_fetch, "view_name": view_name})
 
 
 @require_http_methods(["POST"])

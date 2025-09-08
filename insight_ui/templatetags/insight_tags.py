@@ -160,19 +160,26 @@ def insight_websocket(
 
 
 @register.inclusion_tag("insight_ui/components/infinite_scroll.html")
-def infinite_scroll(
-    items: list[Any] = [], request_view: str = "", page: int = 1, has_next: bool = True, threshold: int = 100, **kwargs
+def infinite_scroll(  # noqa: PLR0913 (Too many arguments)
+    items: list[Any] = [],
+    view_name: str = "",
+    page: int = 1,
+    has_next: bool = True,
+    auto_fetch: bool = True,
+    threshold: int = 100,
+    **kwargs,
 ) -> dict[str, Any]:
     """
     Rendert einen Container für Infinite Scroll.
 
     Args:
     ----
-        items: Liste der aktuellen Elemente
-        request_view: View-Name für das Laden weiterer Elemente
-        page: Die aktuelle "Seite" die geladen werden soll
-        has_next: Ob weitere Elemente verfügbar sind
-        threshold: Pixel-Schwellenwert für das Laden
+        items (list): Liste der aktuellen Elemente
+        view_name (str): Name der View für das Laden weiterer Elemente
+        page (int): Die aktuelle "Seite" die geladen werden soll
+        has_next (bool): Ob weitere Elemente verfügbar sind
+        auto_fetch (bool): 'False' wenn der Nutzer aktiv weitere Elemente per Button anfordern soll.
+        threshold (int): Pixel-Schwellenwert für das Laden
         **kwargs: Zusätzliche Optionen
 
     Returns:
@@ -182,9 +189,10 @@ def infinite_scroll(
     """
     return {
         "items": items,
-        "request_view": request_view,
+        "view_name": view_name,
         "page": page,
         "has_next": has_next,
+        "auto_fetch": auto_fetch,
         "threshold": threshold,
         "options": kwargs,
     }

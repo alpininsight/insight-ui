@@ -1,15 +1,16 @@
 {% load i18n %}
 
 <div
-  class="insight-infinite-scroll"
   {% if options.id %}id="{{ options.id }}"{% endif %}
-  hx-get="{% url request_view %}?page={{ page }}"
-  hx-trigger="revealed"
-  hx-swap="afterend"
-  hx-infinite-scroll
-  data-threshold="{{ threshold|default:100 }}"
-  data-next-url="{% url request_view %}?page={{ page }}"
-  hx-ext="infinite-scroll,progressive-enhancement"
+  {% if auto_fetch %}
+    hx-get="{% url view_name %}?page={{ page }}"
+    hx-swap="afterend"
+    hx-trigger="revealed"
+    hx-infinite-scroll
+    data-threshold="{{ threshold|default:100 }}"
+    data-next-url="{% url view_name %}?page={{ page }}"
+    hx-ext="infinite-scroll,progressive-enhancement"
+  {% endif %}
 >
   <!-- Existing Content -->
   <div>
@@ -20,6 +21,18 @@
       </div>
     {% endfor %}
   </div>
+
+  {% if not auto_fetch %}
+    <button
+      class="btn btn-primary btn-big mx-auto"
+      hx-get="{% url view_name %}?page={{ page }}&auto_fetch={{ auto_fetch }}"
+      hx-swap="outerHTML"
+      hx-trigger="click"
+      hx-ext="progressive-enhancement"
+    >
+      {% trans "Load more" %}
+    </button>
+  {% endif %}
 
   <!-- Loading Indicator -->
   <div class="htmx-spinner" style="display: none;">
