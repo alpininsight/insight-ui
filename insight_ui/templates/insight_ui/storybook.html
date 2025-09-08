@@ -36,6 +36,15 @@
             </div>
         </section>
 
+        <!-- Progress bar -->
+        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Progress Bars' %}</h2>
+            <div class="space-y-8">
+                {% include "insight_ui/components/progress_bar.html" with items=progress_bar_items %}
+                {% include "insight_ui/components/progress_indicator.html" %}
+            </div>
+        </section>
+
         <!-- Tooltips and Popovers -->
         <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
             <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Tooltips &amp; Popovers' %}</h2>

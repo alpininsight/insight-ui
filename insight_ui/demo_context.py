@@ -419,4 +419,9 @@ def get_storybook_context() -> dict:
         "htmx_config": {"url": "/api/form-submit/", "method": "post", "target": "#htmx-form", "swap": "innerHTML"},
         "textA": "The cat is sleeping on the red sofa.",
         "textB": "This is a completely different sentence!",
+        "progress_bar_items": [
+            {"title": "Test", "description": "Test", "completed": True},
+            {"title": "Test 2", "description": "Test 2", "completed": False, "current": True},
+            {"title": "Test 3", "description": "Test 3", "completed": False},
+        ],
     }

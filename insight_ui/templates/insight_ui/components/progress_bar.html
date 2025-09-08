@@ -1,0 +1,30 @@
+<div class="flex items-center w-full border bg-gray-100 dark:bg-gray-900 border-gray-300 dark:border-gray-700 rounded-sm h-20">
+    {% for item in items %}
+        <div class="flex items-center gap-4 w-full px-6">
+            {% if item.completed %}
+                <div class="flex items-center justify-center size-12 rounded-full bg-insight-primary text-white">
+                    {% include "insight_ui/components/icons.html" with name="tick" size="big" %}
+                </div>
+            {% else %}
+                <div class="flex items-center justify-center size-12 rounded-full border-2 {% if not item.completed and not item.current %}border-gray-300 dark:border-gray-700 text-gray-300 dark:text-gray-700{% elif item.current %}text-insight-primary animate-pulse{% else %}border-insight-primary{% endif %}">
+                    {% if item.icon %}
+                        {% include "insight_ui/components/icons.html" with icon=item.icon %}
+                    {% else %}
+                        <span>0{{ forloop.counter }}</span>
+                    {% endif %}
+                </div>
+            {% endif %}
+            <div>
+                <span class="block font-semibold {% if not item.completed and not item.current %}text-gray-300 dark:text-gray-700{% elif item.current %}text-insight-primary{% endif %}">{{ item.title }}</span>
+                <span class="block text-sm {% if not item.completed and not item.current %}text-gray-300 dark:text-gray-700{% else %}text-insight-text-secondary dark:text-insight-text-secondary-dark{% endif %}">{{ item.description }}</span>
+            </div>
+        </div>
+        {%if not forloop.last %}
+            <div class="text-gray-300 dark:text-gray-700">
+                <svg viewBox="0 0 22 80" fill="none" preserveAspectRatio="none" class="h-20 w-6">
+                    <path d="M0 -2L20 40L0 82" stroke="currentcolor" vector-effect="non-scaling-stroke" stroke-linejoin="round"></path>
+                </svg>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
