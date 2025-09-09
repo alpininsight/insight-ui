@@ -29,9 +29,9 @@
         </section>
 
         <!-- Card Demo -->
-        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <section class="component-container">
             <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Karten/Kacheln' %}</h2>
-            <div class="flex gap-6">
+            <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
                 {% for card in cards %}
                     {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
                 {% endfor %}
@@ -45,19 +45,19 @@
         </section>
 
         <!-- Card Carousel Demo -->
-        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <section class="component-container">
             <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Karten/Kachel Karussell' %}</h2>
             {% carousel carousel_items=carousel_items show_index=True slides_count=range_total_slides items_per_slide=2 %}
         </section>
 
         <!-- Image Carousel Demo -->
-        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <section class="component-container">
             <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Bilder Karussell' %}</h2>
             {% include "insight_ui/components/carousels/image_carousel.html" with carousel_items=image_carousel_items show_dots=True show_index=True slides_count=range_total_slides items_per_slide=1 %}
         </section>
 
         <!--Toggle View Demo -->
-        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <section class="component-container">
             <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white">{% trans 'Ansicht wechseln' %}</h2>
             {% include "insight_ui/components/toggle_view.html" with id="test" table_data=toggle_table view_options=view_options current_view=toggle_start_view %}
         </section>

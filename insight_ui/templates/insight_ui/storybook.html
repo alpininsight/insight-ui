@@ -29,7 +29,7 @@
         </section>
 
         <!-- Input Elements -->
-        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <section class="component-container">
             <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Input Elemente' %}</h2>
             <div class="space-y-4">
                 {% include "insight_ui/components/inputs.html" %}
@@ -37,7 +37,7 @@
         </section>
 
         <!-- Progress bar -->
-        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <section class="component-container">
             <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Progress Bars' %}</h2>
             <div class="space-y-8">
                 {% include "insight_ui/components/progress_bar.html" with items=progress_bar_items %}
@@ -46,9 +46,9 @@
         </section>
 
         <!-- Tooltips and Popovers -->
-        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <section class="component-container">
             <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Tooltips &amp; Popovers' %}</h2>
-            <div class="flex gap-12">
+            <div class="flex flex-col md:flex-row gap-12">
                 <button data-tooltip-trigger="demo-tooltip-top" data-position="top" class="btn btn-primary">Top</button>
                 <span id="demo-tooltip-top" class="bg-white dark:bg-gray-600 px-3 py-1 border border-gray-300 dark:border-0 rounded-sm whitespace-nowrap">
                     <!-- Arrow -->
@@ -89,7 +89,7 @@
         </section>
 
         <!-- Code-Block -->
-        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <section class="component-container">
             <h2 class="font-mono text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">
                 {% trans 'Code Block' %}<span class="animate-blink">_</span>
             </h2>
@@ -106,13 +106,13 @@
         </section>
 
         <!-- Chat -->
-        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <section class="component-container">
             <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Chat' %}</h2>
             {% include "insight_ui/components/chat.html" %}
         </section>
 
         <!-- Alert Demo -->
-        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <section class="component-container">
             <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Benachrichtigungen' %}</h2>
             <div class="space-y-4">
                 {% alert message="Dies ist eine Informationsmeldung" alert_type="info" %}
@@ -123,16 +123,16 @@
         </section>
 
         <!-- Breadcrumbs Demo -->
-        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <section class="component-container">
             <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Breadcrumb-Navigation' %}</h2>
             {% breadcrumbs items=breadcrumb_items %}
             {% breadcrumbs items=single_breadcrumb_item %}
         </section>
 
         <!-- Modal Demo -->
-        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <section class="component-container">
             <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans "Modal-Dialoge" %}</h2>
-            <div class="flex gap-4">
+            <div class="flex flex-col md:flex-row gap-4">
                 <!-- Standard -->
                 <button class="btn btn-primary w-72" data-insight-toggle="modal" data-insight-target="demo-modal">
                     {% trans "Standard Modal" %}
@@ -140,7 +140,7 @@
                 {% modal html_tag_id="demo-modal" title=_("Demo Modal") description=_("Dies ist ein Beispiel-Modal mit Standard-Styling!") %}
 
                 <!-- Action-Buttons -->
-                <button class="btn btn-error w-72" data-insight-toggle="modal" data-insight-target="delete-modal">
+                <button class="btn btn-danger w-72" data-insight-toggle="modal" data-insight-target="delete-modal">
                     {% trans "Modal mit Action-Buttons" %}
                 </button>
                 {% modal html_tag_id="delete-modal" title=_("Löschen?") description="Bitte bestätigen Sie die Löschung!" actions=confirm_modal_actions %}
@@ -148,25 +148,25 @@
         </section>
 
         <!-- Differentiator Demo -->
-        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <section class="component-container">
             <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Differentiator' %}</h2>
             {{ textA|diff:textB|safe }}
         </section>
 
         <!-- HTMX Live Content Demo (Pulling)-->
-        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <section class="component-container">
             <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Live-Inhalte (Pull-Verfahren)' %}</h2>
             {% live_content url="/api/live-data/" interval=10 id="live-content" %}
         </section>
 
         <!-- HTMX Websocket Content Demo (Pushing) -->
-        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <section class="component-container">
             <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans "WebSocket Live-Demo (Push-Verfahren)" %}</h2>
             <!-- {% insight_websocket html_tag_id="demo-websocket" ws_url="ws://localhost:8765" initial_content="<p>Verbinde zu WebSocket…</p>" %} -->
         </section>
 
         <!-- Geo-Map -->
-        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <section class="component-container">
             <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Geo Map' %}</h2>
             {% include "insight_ui/components/geo_map.html" %}
         </section>

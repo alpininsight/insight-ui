@@ -1,6 +1,6 @@
-<div class="flex items-center w-full border bg-gray-100 dark:bg-gray-900 border-gray-300 dark:border-gray-700 rounded-sm h-20">
+<div class="flex flex-col md:flex-row divide-y md:divide-y-0 divide-gray-300 dark:divide-gray-700 w-full border bg-gray-100 dark:bg-gray-900 border-gray-300 dark:border-gray-700 rounded-md">
     {% for item in items %}
-        <div class="flex items-center gap-4 w-full px-6">
+        <div class="flex items-center gap-4 w-full h-20 px-6">
             {% if item.completed %}
                 <div class="flex items-center justify-center size-12 rounded-full bg-insight-primary text-white">
                     {% include "insight_ui/components/icons.html" with name="tick" size="big" %}
@@ -20,7 +20,7 @@
             </div>
         </div>
         {%if not forloop.last %}
-            <div class="text-gray-300 dark:text-gray-700">
+            <div class="text-gray-300 dark:text-gray-700 hidden md:block">
                 <svg viewBox="0 0 22 80" fill="none" preserveAspectRatio="none" class="h-20 w-6">
                     <path d="M0 -2L20 40L0 82" stroke="currentcolor" vector-effect="non-scaling-stroke" stroke-linejoin="round"></path>
                 </svg>

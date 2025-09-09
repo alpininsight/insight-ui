@@ -31,19 +31,12 @@ def diff(text1: str, text2: str) -> str:
             html += f"<span class='ins'>{word[2:]}</span> "
 
     return f"""
-    <html>
-    <head>
         <style>
             body {{ font-family: sans-serif; line-height: 1.6; }}
             .del {{ background-color: #f8d7da; color: #721c24; text-decoration: line-through; }}
             .ins {{ background-color: #d4edda; color: #155724; }}
         </style>
-    </head>
-    <body>
-        <h2>Textvergleich</h2>
         <p>{html}</p>
-    </body>
-    </html>
     """
 
     differentiator = HtmlDiff()

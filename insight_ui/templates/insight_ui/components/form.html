@@ -70,7 +70,7 @@
         {% if field.errors %}
           <div class="space-y-1" role="alert" aria-live="assertive" aria-atomic="true">
             {% for error in field.errors %}
-              <p class="text-sm text-insight-error">{{ error }}</p>
+              <p class="text-sm text-insight-danger">{{ error }}</p>
             {% endfor %}
           </div>
         {% endif %}

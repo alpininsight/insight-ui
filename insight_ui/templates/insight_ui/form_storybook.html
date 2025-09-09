@@ -29,13 +29,13 @@
         </section>
 
         <!-- Form Demo -->
-        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <section class="component-container">
             <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Formular' %}</h2>
             {% form title="Kontaktformular" description="Füllen Sie das Formular aus" fields=form_fields actions=form_actions action="api/form-submit/" id="standard-form" %}
         </section>
 
         <!-- HTMX Form Demo -->
-        <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <section class="component-container">
             <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Formular, mit hx-post' %}</h2>
             {% form title="Kontaktformular" description="Füllen Sie das Formular aus" fields=form_fields actions=form_actions htmx=htmx_config id="htmx-form" %}
         </section>

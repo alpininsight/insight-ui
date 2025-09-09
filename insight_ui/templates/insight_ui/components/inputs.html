@@ -3,7 +3,7 @@
 <!-- Buttons -->
 <div class="space-y-4">
     <h3>{% trans "Buttons" %}</h3>
-    <div class="flex items-center gap-1">
+    <div class="flex flex-col md:flex-row items-stretch flex-wrap gap-1">
         <button class="btn btn-primary">
             {% trans "Primary" %}
         </button>
@@ -16,8 +16,8 @@
         <button class="btn btn-warning">
             {% trans "Warning" %}
         </button>
-        <button class="btn btn-error">
-            {% trans "Error" %}
+        <button class="btn btn-danger">
+            {% trans "Danger" %}
         </button>
         <button class="btn btn-info">
             {% trans "Info" %}
@@ -35,7 +35,7 @@
         </a>
     </div>
     <h3>{% trans "Outline Buttons" %}</h3>
-    <div class="flex gap-1">
+    <div class="flex flex-col md:flex-row items-stretch flex-wrap gap-1">
         <button class="btn btn-outline-primary">
             {% trans "Primary" %}
         </button>
@@ -48,8 +48,8 @@
         <button class="btn btn-outline-warning">
             {% trans "Warning" %}
         </button>
-        <button class="btn btn-outline-error">
-            {% trans "Error" %}
+        <button class="btn btn-outline-danger">
+            {% trans "Danger" %}
         </button>
         <button class="btn btn-outline-info">
             {% trans "Info" %}
@@ -59,7 +59,7 @@
         </button>
     </div>
     <h3>{% trans "Button Größen" %}</h3>
-    <div class="flex items-end gap-1">
+    <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
         <button class="btn btn-primary btn-large">
             {% trans "Klick mich!" %}
         </button>

@@ -201,204 +201,9 @@ def get_nav_and_footer_context() -> dict:
     }
 
 
-def get_table_storybook_data() -> dict:
-    """Serve data for table examples."""
-    # Generate data for pagination example
-    page_obj, surrounding_pages = get_page(generate_payload(100))
-
-    return get_nav_and_footer_context() | {
-        "table": {
-            "caption": _("Ein Beispiel einer Tabellen-Komponente."),
-            "empty_msg": _("Keine Daten vorhanden!"),
-            "headers": [_("Name"), _("E-Mail"), _("Status"), _("Aktionen")],
-            "rows": [
-                [
-                    "Max Mustermann",
-                    "max@example.com",
-                    _("Aktiv"),
-                    format_html(
-                        '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
-                    ),
-                ],
-                [
-                    "Anna Schmidt",
-                    "anna@example.com",
-                    _("Inaktiv"),
-                    format_html(
-                        '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
-                    ),
-                ],
-                [
-                    "Tom Weber",
-                    "tom@example.com",
-                    _("Aktiv"),
-                    format_html(
-                        '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
-                    ),
-                ],
-            ],
-        },
-        "start_page": {"page_obj": page_obj, "surrounding_pages": surrounding_pages},
-        "scroll_items": [{"title": f"Element {i}", "content": f"Inhalt für Element {i}"} for i in range(1, 11)],
-    }
-
-
-def get_card_storybook_data() -> dict:
-    """Serve data for card examples."""
-    # Generate data for examples
-    payload = generate_payload()
-    headers, rows = map_payload_to_table(payload)
-
-    return get_nav_and_footer_context() | {
-        "cards": [
-            {
-                "title": "Beispiel-Karte",
-                "subtitle": "Untertitel",
-                "content": "Dies ist der Inhalt einer Karte.",
-                "actions": [
-                    {"text": _("Mehr erfahren"), "url": "#", "type": "secondary"},
-                    {"text": _("Teilen"), "url": "#", "type": "primary"},
-                ],
-            },
-            {
-                "title": "Karte mit Aktionen",
-                "content": "Diese Karte hat Aktions-Buttons.",
-                "actions": [
-                    {"text": _("Mehr erfahren"), "url": "#", "type": "secondary"},
-                    {"text": _("Teilen"), "url": "#", "type": "primary"},
-                ],
-            },
-        ],
-        "horizontale_cards": [
-            {
-                "title": "Horizontale Karte",
-                "content": "Eine Karte dessen Inhalt horizontal angeordnet ist.",
-                "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": "Card-Image"},
-                "tags": ["Test", "Test2", "Test3"],
-                "actions": [
-                    {"text": _("Mehr erfahren"), "url": "#", "type": "secondary"},
-                    {"text": _("Teilen"), "url": "#", "type": "primary"},
-                ],
-            }
-        ],
-        "flip_cards": [
-            {
-                "title": "Flip Karte",
-                "content": "Eine Karte die sich um 180° dreht und weiteren Inhalt auf der Rückseite bereit hält.",
-                "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": "Card-Image"},
-                "tags": ["Test", "Test2", "Test3"],
-                "actions": [
-                    {"text": _("Mehr erfahren"), "url": "#", "type": "secondary"},
-                    {"text": _("Teilen"), "url": "#", "type": "primary"},
-                ],
-            }
-        ],
-        "carousel_items": map_payload_to_cards(generate_payload()),
-        "image_carousel_items": [
-            {"description": "Test Bild 1", "url": static("insight_ui/img/text-services-main.png"), "alt": "Image 1"},
-            {
-                "description": "Test Bild 2",
-                "url": static("insight_ui/img/text-services-response.png"),
-                "alt": "Image 2",
-            },
-            {
-                "description": "Test Bild 3",
-                "url": static("insight_ui/img/text-services-response2.png"),
-                "alt": "Image 3",
-            },
-        ],
-        "range_total_slides": range(3),
-        "toggle_table": {"empty_msg": "Keine Daten vorhanden!", "headers": headers, "rows": rows},
-        "toggle_start_view": "table",
-        "view_options": {
-            "name": "view-options",
-            "param_name": "view",
-            "options": [
-                {"id": "card-view", "value": "card", "icon": {"name": "card"}},
-                {"id": "table-view", "value": "table", "icon": {"name": "list"}},
-                {"id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},
-            ],
-        },
-    }
-
-
-def get_form_storybook_data() -> dict:
-    """Serve data for form examples."""
-    return get_nav_and_footer_context() | {
-        "form_fields": [
-            {
-                "type": "text",
-                "name": "name",
-                "label": _("Name"),
-                "placeholder": _("Ihr vollständiger Name"),
-                "required": True,
-            },
-            {
-                "type": "email",
-                "name": "email",
-                "label": _("E-Mail"),
-                "placeholder": _("ihre.email@example.com"),
-                "required": True,
-            },
-            {
-                "type": "textarea",
-                "name": "message",
-                "label": _("Nachricht"),
-                "placeholder": _("Ihre Nachricht..."),
-                "rows": 4,
-            },
-        ],
-        "form_actions": [
-            {"text": _("Absenden"), "type": "submit", "style": "primary"},
-            {"text": _("Zurücksetzen"), "type": "reset", "style": "secondary"},
-        ],
-    }
-
-
-def get_filter_storybook_data() -> dict:
-    """Serve data for filter example."""
-    return get_nav_and_footer_context() | {
-        "filters": [
-            {
-                "text": _("Issue Date"),
-                "icon": {"name": "home", "size": "small"},
-                "name": "issuedate_filter",
-                "values": issuedate_filters,
-                "explanation": _("To filter by the issue date."),
-            },
-            {
-                "text": _("Deadline"),
-                "icon": {"name": "home", "size": "small"},
-                "name": "expiration_filter",
-                "values": expiration_filters,
-                "explanation": _("To filter by the deadline."),
-            },
-            {
-                "text": _("Reward in €"),
-                "icon": {"name": "home", "size": "small"},
-                "name": "reward_filter",
-                "values": reward_filters,
-                "explanation": _("To filter by the reward."),
-            },
-        ],
-        "view_name": "filter_storybook_view",
-        "model_fields": DEMO_FIELDS,
-    }
-
-
-def get_storybook_context() -> dict:
-    """Serve data for main storybook."""
-    return get_nav_and_footer_context() | {
-        "breadcrumb_items": [
-            {"text": _("Startseite"), "view_name": "storybook_view", "icon": {"name": "home", "size": "small"}},
-            {"text": _("Demo"), "view_name": "storybook_view", "query_params": "?test=123"},
-            {"text": _("Komponenten")},
-        ],
-        "single_breadcrumb_item": [{"text": _("Startseite"), "icon": {"name": "home", "size": "small"}}],
-        "confirm_modal_actions": [
-            {"text": _("Ja, fortfahren"), "type": "primary", "onclick": 'alert("Aktion bestätigt!")'},
-            {"text": _("Abbrechen"), "type": "cancel", "dismiss": True},
-        ],
+def get_sidebar_data() -> dict:
+    """Serve data for the sidebars."""
+    return {
         "right_sidebar_items": [
             {
                 "text": _("Benachrichtigungen"),
@@ -416,12 +221,237 @@ def get_storybook_context() -> dict:
             {"text": _("Einstellungen"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
             {"text": _("Hilfe"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
         ],
-        "htmx_config": {"url": "/api/form-submit/", "method": "post", "target": "#htmx-form", "swap": "innerHTML"},
-        "textA": "The cat is sleeping on the red sofa.",
-        "textB": "This is a completely different sentence!",
-        "progress_bar_items": [
-            {"title": "Test", "description": "Test", "completed": True},
-            {"title": "Test 2", "description": "Test 2", "completed": False, "current": True},
-            {"title": "Test 3", "description": "Test 3", "completed": False},
-        ],
     }
+
+
+def get_table_storybook_data() -> dict:
+    """Serve data for table examples."""
+    # Generate data for pagination example
+    page_obj, surrounding_pages = get_page(generate_payload(100))
+
+    return (
+        get_nav_and_footer_context()
+        | get_sidebar_data()
+        | {
+            "table": {
+                "caption": _("Ein Beispiel einer Tabellen-Komponente."),
+                "empty_msg": _("Keine Daten vorhanden!"),
+                "headers": [_("Name"), _("E-Mail"), _("Status"), _("Aktionen")],
+                "rows": [
+                    [
+                        "Max Mustermann",
+                        "max@example.com",
+                        _("Aktiv"),
+                        format_html(
+                            '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
+                        ),
+                    ],
+                    [
+                        "Anna Schmidt",
+                        "anna@example.com",
+                        _("Inaktiv"),
+                        format_html(
+                            '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
+                        ),
+                    ],
+                    [
+                        "Tom Weber",
+                        "tom@example.com",
+                        _("Aktiv"),
+                        format_html(
+                            '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
+                        ),
+                    ],
+                ],
+            },
+            "start_page": {"page_obj": page_obj, "surrounding_pages": surrounding_pages},
+            "scroll_items": [{"title": f"Element {i}", "content": f"Inhalt für Element {i}"} for i in range(1, 11)],
+        }
+    )
+
+
+def get_card_storybook_data() -> dict:
+    """Serve data for card examples."""
+    # Generate data for examples
+    payload = generate_payload()
+    headers, rows = map_payload_to_table(payload)
+
+    return (
+        get_nav_and_footer_context()
+        | get_sidebar_data()
+        | {
+            "cards": [
+                {
+                    "title": "Beispiel-Karte",
+                    "subtitle": "Untertitel",
+                    "content": "Dies ist der Inhalt einer Karte.",
+                    "actions": [
+                        {"text": _("Mehr erfahren"), "url": "#", "type": "secondary"},
+                        {"text": _("Teilen"), "url": "#", "type": "primary"},
+                    ],
+                },
+                {
+                    "title": "Karte mit Aktionen",
+                    "content": "Diese Karte hat Aktions-Buttons.",
+                    "actions": [
+                        {"text": _("Mehr erfahren"), "url": "#", "type": "secondary"},
+                        {"text": _("Teilen"), "url": "#", "type": "primary"},
+                    ],
+                },
+            ],
+            "horizontale_cards": [
+                {
+                    "title": "Horizontale Karte",
+                    "content": "Eine Karte dessen Inhalt horizontal angeordnet ist.",
+                    "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": "Card-Image"},
+                    "tags": ["Test", "Test2", "Test3"],
+                    "actions": [
+                        {"text": _("Mehr erfahren"), "url": "#", "type": "secondary"},
+                        {"text": _("Teilen"), "url": "#", "type": "primary"},
+                    ],
+                }
+            ],
+            "flip_cards": [
+                {
+                    "title": "Flip Karte",
+                    "content": "Eine Karte die sich um 180° dreht und weiteren Inhalt auf der Rückseite bereit hält.",
+                    "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": "Card-Image"},
+                    "tags": ["Test", "Test2", "Test3"],
+                    "actions": [
+                        {"text": _("Mehr erfahren"), "url": "#", "type": "secondary"},
+                        {"text": _("Teilen"), "url": "#", "type": "primary"},
+                    ],
+                }
+            ],
+            "carousel_items": map_payload_to_cards(generate_payload()),
+            "image_carousel_items": [
+                {
+                    "description": "Das berühmte Schloss war Vorbild für viele weitere Bauten, darunter auch die Schlösser der Disneyland Ressorts in Kalifornien und Paris.",  # noqa: E501
+                    "url": static("insight_ui/img/neuschwanstein.jpg"),
+                    "alt": "Schloss Neuschwanstein im Winter",
+                },
+                {
+                    "description": "Bevor Berlin die Hauptstadt Deutschlands wurde, war die Stadt bereits zweimal Hauptstadt. Von der Mark-Brandenburg und von Preußen.",  # noqa: E501
+                    "url": static("insight_ui/img/berlin.jpg"),
+                    "alt": "Berlin bei Nacht",
+                },
+                {
+                    "description": "Die Freie und Hansestadt Hamburg ist das führende Mitglied des Handelsbundes der Hanse.",  # noqa: E501
+                    "url": static("insight_ui/img/hamburg.jpg"),
+                    "alt": "Hamburg und eine einfahrende S-Bahn",
+                },
+            ],
+            "range_total_slides": range(3),
+            "toggle_table": {"empty_msg": "Keine Daten vorhanden!", "headers": headers, "rows": rows},
+            "toggle_start_view": "table",
+            "view_options": {
+                "name": "view-options",
+                "param_name": "view",
+                "options": [
+                    {"id": "card-view", "value": "card", "icon": {"name": "card"}},
+                    {"id": "table-view", "value": "table", "icon": {"name": "list"}},
+                    {"id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},
+                ],
+            },
+        }
+    )
+
+
+def get_form_storybook_data() -> dict:
+    """Serve data for form examples."""
+    return (
+        get_nav_and_footer_context()
+        | get_sidebar_data()
+        | {
+            "form_fields": [
+                {
+                    "type": "text",
+                    "name": "name",
+                    "label": _("Name"),
+                    "placeholder": _("Ihr vollständiger Name"),
+                    "required": True,
+                },
+                {
+                    "type": "email",
+                    "name": "email",
+                    "label": _("E-Mail"),
+                    "placeholder": _("ihre.email@example.com"),
+                    "required": True,
+                },
+                {
+                    "type": "textarea",
+                    "name": "message",
+                    "label": _("Nachricht"),
+                    "placeholder": _("Ihre Nachricht..."),
+                    "rows": 4,
+                },
+            ],
+            "form_actions": [
+                {"text": _("Absenden"), "type": "submit", "style": "primary"},
+                {"text": _("Zurücksetzen"), "type": "reset", "style": "secondary"},
+            ],
+        }
+    )
+
+
+def get_filter_storybook_data() -> dict:
+    """Serve data for filter example."""
+    return (
+        get_nav_and_footer_context()
+        | get_sidebar_data()
+        | {
+            "filters": [
+                {
+                    "text": _("Issue Date"),
+                    "icon": {"name": "home", "size": "small"},
+                    "name": "issuedate_filter",
+                    "values": issuedate_filters,
+                    "explanation": _("To filter by the issue date."),
+                },
+                {
+                    "text": _("Deadline"),
+                    "icon": {"name": "home", "size": "small"},
+                    "name": "expiration_filter",
+                    "values": expiration_filters,
+                    "explanation": _("To filter by the deadline."),
+                },
+                {
+                    "text": _("Reward in €"),
+                    "icon": {"name": "home", "size": "small"},
+                    "name": "reward_filter",
+                    "values": reward_filters,
+                    "explanation": _("To filter by the reward."),
+                },
+            ],
+            "view_name": "filter_storybook_view",
+            "model_fields": DEMO_FIELDS,
+        }
+    )
+
+
+def get_storybook_context() -> dict:
+    """Serve data for main storybook."""
+    return (
+        get_nav_and_footer_context()
+        | get_sidebar_data()
+        | {
+            "breadcrumb_items": [
+                {"text": _("Startseite"), "view_name": "storybook_view", "icon": {"name": "home", "size": "small"}},
+                {"text": _("Demo"), "view_name": "storybook_view", "query_params": "?test=123"},
+                {"text": _("Komponenten")},
+            ],
+            "single_breadcrumb_item": [{"text": _("Startseite"), "icon": {"name": "home", "size": "small"}}],
+            "confirm_modal_actions": [
+                {"text": _("Ja, fortfahren"), "type": "primary", "onclick": 'alert("Aktion bestätigt!")'},
+                {"text": _("Abbrechen"), "type": "cancel", "dismiss": True},
+            ],
+            "htmx_config": {"url": "/api/form-submit/", "method": "post", "target": "#htmx-form", "swap": "innerHTML"},
+            "textA": "The cat is sleeping on the red sofa.",
+            "textB": "This is a completely different sentence!",
+            "progress_bar_items": [
+                {"title": "Test", "description": "Test", "completed": True},
+                {"title": "Test 2", "description": "Test 2", "completed": False, "current": True},
+                {"title": "Test 3", "description": "Test 3", "completed": False},
+            ],
+        }
+    )
