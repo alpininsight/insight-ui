@@ -2,7 +2,7 @@
 
 <!-- Filter -->
 <div class="flex flex-col gap-6">
-	<form id="filter-form" class="w-full md:w-2/3">
+	<form id="filter-form" class="w-full">
         <p class="pb-2">{% trans "The following conditions must be met:" %}</p>
 		<div id="filters" class="flex flex-col gap-2">
 			{% for filter in custom_filters %}
@@ -69,7 +69,7 @@
                         newSelect.id ="value";
                         newSelect.name = "value";
                         newSelect.value = valueField.value;
-                        newSelect.classList.add("value-field", "block", "w-full", "md:w-64", "h-9", "px-3", "border", "border-gray-300", "dark:border-gray-600", "rounded-sm", "shadow-sm", "text-sm", "focus:ring-2", "focus:ring-blue-500", "focus:border-blue-500", "dark:bg-gray-700", "dark:text-white", "transition-colors", "duration-200");
+                        newSelect.classList.add("value-field", "block", "w-full", "h-9", "px-3", "border", "border-gray-300", "dark:border-gray-600", "rounded-sm", "shadow-sm", "text-sm", "focus:ring-2", "focus:ring-blue-500", "focus:border-blue-500", "dark:bg-gray-700", "dark:text-white", "transition-colors", "duration-200");
                         // Load available values
                         for (const [key, value] of Object.entries(data.values)) {
                             const option = document.createElement('option');
@@ -98,7 +98,7 @@
                         }
                         newInput.value = valueField.value;
                         newInput.placeholder = "{% trans 'Value' %}";
-                        newInput.classList.add("value-field", "block", "w-full", "md:w-64", "h-9", "px-3", "border", "border-gray-300", "dark:border-gray-600", "rounded-sm", "shadow-sm", "text-sm", "focus:ring-2", "focus:ring-blue-500", "focus:border-blue-500", "dark:bg-gray-700", "dark:text-white", "transition-colors", "duration-200");
+                        newInput.classList.add("value-field", "block", "w-full", "h-9", "px-3", "border", "border-gray-300", "dark:border-gray-600", "rounded-sm", "shadow-sm", "text-sm", "focus:ring-2", "focus:ring-blue-500", "focus:border-blue-500", "dark:bg-gray-700", "dark:text-white", "transition-colors", "duration-200");
                         valueField.parentNode.replaceChild(newInput, valueField);
                     }
                 });

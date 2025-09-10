@@ -6,8 +6,9 @@
 </a>
 
 <nav role="navigation" aria-label="{% trans 'Hauptnavigation' %}" class="fixed w-full h-16 z-50 bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700 px-4 md:px-24 py-3">
-  <div class="flex justify-between items-center h-full">
-    <!-- Brand Logo - Links positioniert -->
+  <!--- Desktop Navigation -->
+  <div class="flex flex-wrap justify-between items-center gap-4 lg:gap-16 h-full">
+    <!-- Brand Logo -->
     {% if brand %}
       <div class="flex items-center">
         <a href="{% if brand.view_name %}{% url brand.view_name %}{% endif %}" class="flex items-center gap-2 text-xl font-bold text-insight-text-primary dark:text-white">
@@ -22,87 +23,8 @@
       </div>
     {% endif %}
 
-    <!-- Desktop Navigation Links - Zentriert -->
-    {% if links %}
-      <div class="hidden md:flex justify-center">
-        <ul class="flex items-center">
-          {% for link in links %}
-            {% if not link.need_auth or options.user.is_authenticated and not link.staff_only or options.user.is_staff %}
-              <li>
-                {% if link.view_name %}
-                  <a
-                    href="{% url link.view_name %}"
-                    class="flex items-center gap-2 h-full border-b-2 {% if link.active %}text-insight-text-link border-insight-text-link{% else %}text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link border-transparent{% endif %} px-4 py-2 text-sm font-medium transition-colors duration-200"
-                    {% if link.active %}aria-current="page"{% endif %}
-                    {% if link.external %}target="_blank" rel="noopener"{% endif %}
-                  >
-                    {% if link.icon %}
-                      <span class="inline-block">
-                        {% include "insight_ui/components/icons.html" with icon=link.icon %}
-                      </span>
-                    {% endif %}
-                    {{ link.text }}
-                  </a>
-                {% elif link.open_dropdown %}
-                  <div class="relative">
-                    <button data-dropdown-toggle="{{ link.open_dropdown }}" class="flex items-center gap-2 h-full border-b-2 {% if link.active %}text-insight-text-link border-insight-text-link{% else %}text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link border-transparent{% endif %} px-4 py-2 text-sm font-medium transition-colors duration-200">
-                      {% if link.icon %}
-                        <span class="inline-block">
-                          {% include "insight_ui/components/icons.html" with icon=link.icon %}
-                        </span>
-                      {% endif %}
-                      {{ link.text }}
-                      {% if link.chevron %}
-                        <span class="inline-block">
-                          {% include "insight_ui/components/icons.html" with icon=link.chevron %}
-                        </span>
-                      {% endif %}
-                    </button>
-
-                    <div id="{{ link.open_dropdown }}" class="bg-white border border-gray-300 dark:border-0 rounded-sm shadow-lg">
-                      <div class="py-1">
-                        {% for item in link.items %}
-                          <a href="{% url item.view_name %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">{{ item.text }}</a>
-                        {% endfor %}
-                      </div>
-                    </div>
-                  </div>
-                {% elif link.open_modal %}
-                  <button
-                    class="text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link px-4 py-2 text-sm font-medium transition-colors duration-200"
-                    data-insight-toggle="modal"
-                    data-insight-target="{{ link.open_modal }}">
-                    {{ link.text }}
-                  </button>
-                  {% modal html_tag_id=link.open_modal title=_("Insight-UI") description=_("Lorem ipsum...") %}
-                {% endif %}
-              </li>
-            {% endif %}
-          {% endfor %}
-        </ul>
-      </div>
-    {% endif %}
-
-    <!-- Language Selector and Theme Toggle -->
-    <div class="hidden md:flex items-center gap-2 h-full">
-      {% if searchbar_request_view %}
-        <div class="flex-1 max-w-72">
-          {% include "insight_ui/components/searchbar.html" with request_view=searchbar_request_view simple=True search_query=options.search_query %}
-        </div>
-      {% endif%}
-      {% if show_usermenu %}
-        {% include "insight_ui/components/user_dropdown.html" with user=options.user show_login=options.show_login user_dropdown_links=options.user_dropdown_links %}
-      {% endif %}
-      {% if show_language_selector %}
-        {% include "insight_ui/components/toggle_language.html" %}
-      {% endif %}
-      {% if show_theme_toggle %}
-        {% include "insight_ui/components/toggle_theme.html" %}
-      {% endif %}
-    </div>
-
     <!-- Mobile menu button -->
-    <div class="md:hidden flex items-center gap-2">
+    <div class="lg:hidden flex items-center gap-2">
       <!-- Mobile Menu Toggle -->
       <button
         class="inline-flex items-center justify-center p-2 rounded-md text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
@@ -117,85 +39,87 @@
         </svg>
       </button>
     </div>
-  </div>
 
-  <!-- Mobile menu -->
-  {% if links %}
-    <div id="mobile-menu" class="md:hidden hidden z-50 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-sm p-2 mt-4">
-      <ul class="space-y-1">
-        {% for link in links %}
-          {% if not link.need_auth or options.user.is_authenticated and not link.staff_only or options.user.is_staff %}
-            <li>
-              {% if link.view_name %}
-                <a
-                  href="{% url link.view_name %}"
-                  class="flex items-center gap-2 text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link dark:hover:text-blue-400 px-4 py-2 text-sm font-medium transition-colors duration-200"
-                  {% if link.active %}aria-current="page"{% endif %}
-                  {% if link.external %}target="_blank" rel="noopener"{% endif %}
-                >
-                  {% if link.icon %}
-                    <span class="inline-block">
-                      {% include "insight_ui/components/icons.html" with icon=link.icon %}
-                    </span>
+    <div id="mobile-menu" class="hidden lg:block h-full w-full lg:w-fit grow">
+      <div class="flex flex-col lg:flex-row lg:justify-between gap-2 w-full lg:h-full p-2 lg:p-0 bg-gray-800 border border-gray-600 shadow-lg lg:shadow-none lg:bg-none lg:border-none rounded">
+        <!-- Main-Navigation -->
+        {% if links %}
+            <ul class="flex flex-col lg:flex-row justify-items-stretch lg:items-center w-full lg:w-fit">
+              {% for link in links %}
+                  {% if not link.need_auth or options.user.is_authenticated and not link.staff_only or options.user.is_staff %}
+                    <li>
+                      {% if link.view_name %}
+                        <a
+                          href="{% url link.view_name %}"
+                          class="flex items-center gap-2 h-full border-b-2 {% if link.active %}text-insight-text-link border-insight-text-link{% else %}text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link border-transparent{% endif %} px-4 py-2 text-sm font-medium transition-colors duration-200"
+                          {% if link.active %}aria-current="page"{% endif %}
+                          {% if link.external %}target="_blank" rel="noopener"{% endif %}
+                        >
+                          {% if link.icon %}
+                            <span class="inline-block">
+                              {% include "insight_ui/components/icons.html" with icon=link.icon %}
+                            </span>
+                          {% endif %}
+                          {{ link.text }}
+                        </a>
+                      {% elif link.open_dropdown %}
+                        <div class="relative">
+                          <button data-dropdown-toggle="{{ link.open_dropdown }}" class="flex items-center gap-2 h-full border-b-2 {% if link.active %}text-insight-text-link border-insight-text-link{% else %}text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link border-transparent{% endif %} px-4 py-2 text-sm font-medium transition-colors duration-200">
+                            {% if link.icon %}
+                              <span class="inline-block">
+                                {% include "insight_ui/components/icons.html" with icon=link.icon %}
+                              </span>
+                            {% endif %}
+                            {{ link.text }}
+                            {% if link.chevron %}
+                              <span class="inline-block">
+                                {% include "insight_ui/components/icons.html" with icon=link.chevron %}
+                              </span>
+                            {% endif %}
+                          </button>
+                          <div id="{{ link.open_dropdown }}" class="bg-white border border-gray-300 dark:border-0 rounded-sm shadow-lg">
+                            <div class="py-1">
+                              {% for item in link.items %}
+                                <a href="{% url item.view_name %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">{{ item.text }}</a>
+                              {% endfor %}
+                            </div>
+                          </div>
+                        </div>
+                      {% elif link.open_modal %}
+                        <button
+                          class="text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link px-4 py-2 text-sm font-medium transition-colors duration-200"
+                          data-insight-toggle="modal"
+                          data-insight-target="{{ link.open_modal }}">
+                          {{ link.text }}
+                        </button>
+                        {% modal html_tag_id=link.open_modal title=_("Insight-UI") description=_("Lorem ipsum...") %}
+                      {% endif %}
+                    </li>
                   {% endif %}
-                  {{ link.text }}
-                </a>
-              {% elif link.open_dropdown %}
-                <div class="relative">
-                  <button data-dropdown-toggle="{{ link.open_dropdown }}" class="flex items-center gap-2 h-full border-b-2 {% if link.active %}text-insight-text-link border-insight-text-link{% else %}text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link border-transparent{% endif %} px-4 py-2 text-sm font-medium transition-colors duration-200">
-                    {% if link.icon %}
-                      <span class="inline-block">
-                        {% include "insight_ui/components/icons.html" with icon=link.icon %}
-                      </span>
-                    {% endif %}
-                    {{ link.text }}
-                    {% if link.chevron %}
-                      <span class="inline-block">
-                        {% include "insight_ui/components/icons.html" with icon=link.chevron %}
-                      </span>
-                    {% endif %}
-                  </button>
+              {% endfor %}
+            </ul>
+        {% endif %}
 
-                  <div id="{{ link.open_dropdown }}" class="bg-white border border-gray-300 dark:border-0 rounded-sm shadow-lg">
-                    <div class="py-1">
-                      {% for item in link.items %}
-                        <a href="{% url item.view_name %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">{{ item.text }}</a>
-                      {% endfor %}
-                    </div>
-                  </div>
-                </div>
-              {% elif link.open_modal %}
-                <button
-                  class="text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link dark:hover:text-blue-400 px-4 py-2 text-sm font-medium transition-colors duration-200"
-                  data-insight-toggle="modal"
-                  data-insight-target="{{ link.open_modal }}">
-                  {{ link.text }}
-                </button>
-              {% endif %}
-            </li>
-          {% endif %}
-        {% endfor %}
-      </ul>
-      <div class="space-y-2 mt-2">
-        {% if searchbar_request_view or show_usermenu %}
-          <div class="w-full space-y-2">
-            {% if searchbar_request_view %}
+        <!-- Other Nav-Elements -->
+        <div class="flex flex-col lg:flex-row gap-2 w-full lg:w-fit">
+          {% if searchbar_request_view %}
+            <div class="flex-1 lg:max-w-72">
               {% include "insight_ui/components/searchbar.html" with request_view=searchbar_request_view simple=True search_query=options.search_query %}
-            {% endif %}
+            </div>
+          {% endif%}
+          <div class="flex gap-2 h-10">
             {% if show_usermenu %}
               {% include "insight_ui/components/user_dropdown.html" with user=options.user show_login=options.show_login user_dropdown_links=options.user_dropdown_links %}
             {% endif %}
+            {% if show_language_selector %}
+              {% include "insight_ui/components/toggle_language.html" %}
+            {% endif %}
+            {% if show_theme_toggle %}
+              {% include "insight_ui/components/toggle_theme.html" %}
+            {% endif %}
           </div>
-        {% endif%}
-        <div class="flex gap-2">
-          {% if show_language_selector %}
-            {% include "insight_ui/components/toggle_language.html" with options=options %}
-          {% endif %}
-          {% if show_theme_toggle %}
-            {% include "insight_ui/components/toggle_theme.html" %}
-          {% endif %}
         </div>
       </div>
     </div>
-  {% endif %}
+  </div>
 </nav>

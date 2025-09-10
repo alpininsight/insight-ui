@@ -30,7 +30,7 @@
             <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}
                 <button type="submit" class="flex items-center gap-2 text-sm text-red-500 text-start w-full rounded-b px-6 py-2 hover:bg-gray-200 dark:hover:bg-gray-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="size-5">
                         <path fill-rule="evenodd" d="M16.5 3.75a1.5 1.5 0 0 1 1.5 1.5v13.5a1.5 1.5 0 0 1-1.5 1.5h-6a1.5 1.5 0 0 1-1.5-1.5V15a.75.75 0 0 0-1.5 0v3.75a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V5.25a3 3 0 0 0-3-3h-6a3 3 0 0 0-3 3V9A.75.75 0 1 0 9 9V5.25a1.5 1.5 0 0 1 1.5-1.5h6ZM5.78 8.47a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 0 0 0 1.06l3 3a.75.75 0 0 0 1.06-1.06l-1.72-1.72H15a.75.75 0 0 0 0-1.5H4.06l1.72-1.72a.75.75 0 0 0 0-1.06Z" clip-rule="evenodd" />
                     </svg>
                     {% trans "Logout" %}
@@ -40,18 +40,14 @@
     </div>
 {% elif show_login %}
     <!-- Login btn -->
-    <a href="{% url 'login' %}" data-popover-target="login-popover" class="btn btn-subtil btn-sm h-full">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5">
+    <a href="{% url 'login' %}" data-tooltip-trigger="login-hint" data-position="bottom" class="btn btn-subtil btn-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="size-5">
             <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z" clip-rule="evenodd" />
         </svg>
-        {% trans "Anmelden" %}
+        <span class="lg:hidden xl:inline-block">{% trans "Anmelden" %}</span>
     </a>
-    {% comment %}
-    <div data-popover id="login-popover" role="tooltip" class="absolute z-30 invisible inline-block text-sm text-white transition-opacity duration-300 bg-neutral-700 border border-gray-500 rounded shadow-sm opacity-0">
-        <div class="px-3 py-2">
-            <p>{% trans "Login" %}</p>
-        </div>
-        <div data-popper-arrow></div>
+    <div id="login-hint" role="tooltip" class="bg-white dark:bg-gray-600 px-3 py-1 border border-gray-300 dark:border-0 rounded-sm whitespace-nowrap">
+        <div class="tooltip-arrow absolute left-1/2 -top-2 -translate-x-1/2 w-0 h-0 border-10 border-t-0 border-transparent border-b-white dark:border-b-gray-600"></div>
+        <p class="text-xs">{% trans "Login" %}</p>
     </div>
-    {% endcomment %}
 {% endif %}

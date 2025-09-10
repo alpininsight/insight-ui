@@ -48,42 +48,45 @@
         <!-- Tooltips and Popovers -->
         <section class="component-container">
             <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Tooltips &amp; Popovers' %}</h2>
-            <div class="flex flex-col md:flex-row gap-12">
-                <button data-tooltip-trigger="demo-tooltip-top" data-position="top" class="btn btn-primary">Top</button>
-                <span id="demo-tooltip-top" class="bg-white dark:bg-gray-600 px-3 py-1 border border-gray-300 dark:border-0 rounded-sm whitespace-nowrap">
-                    <!-- Arrow -->
-                    <div class="tooltip-arrow absolute left-1/2 -top-2 -translate-x-1/2 w-0 h-0 border-10 border-t-0 border-transparent border-b-white dark:border-b-gray-600"></div>
-                    This is a tooltip.
-                </span>
-
-                <button data-tooltip-trigger="demo-tooltip" data-position="bottom" class="btn btn-primary">Bottom</button>
-                <span id="demo-tooltip" class="bg-white dark:bg-gray-600 px-3 py-1 border border-gray-300 dark:border-0 rounded-sm whitespace-nowrap">
-                    <!-- Arrow -->
-                    <div class="tooltip-arrow absolute left-1/2 -top-2 -translate-x-1/2 w-0 h-0 border-10 border-t-0 border-transparent border-b-white dark:border-b-gray-600"></div>
-                    This is a tooltip.
-                </span>
-
-                <button data-tooltip-trigger="demo-tooltip-right" data-position="right" class="btn btn-primary">Right</button>
-                <span id="demo-tooltip-right" class="bg-white dark:bg-gray-600 px-3 py-1 border border-gray-300 dark:border-0 rounded-sm whitespace-nowrap">
-                    <!-- Arrow -->
-                    <div class="tooltip-arrow absolute left-1/2 -top-2 -translate-x-1/2 w-0 h-0 border-10 border-t-0 border-transparent border-b-white dark:border-b-gray-600"></div>
-                    This is a tooltip.
-                </span>
-
-                <button data-tooltip-trigger="demo-tooltip-left" data-position="left" class="btn btn-primary">Left</button>
-                <span id="demo-tooltip-left" class="bg-white dark:bg-gray-600 px-3 py-1 border border-gray-300 dark:border-0 rounded-sm whitespace-nowrap">
-                    <!-- Arrow -->
-                    <div class="tooltip-arrow absolute left-1/2 -top-2 -translate-x-1/2 w-0 h-0 border-10 border-t-0 border-transparent border-b-white dark:border-b-gray-600"></div>
-                    This is a tooltip.
-                </span>
-
-                <button data-popover-trigger="demo-popover" class="btn btn-primary">Hover me!</button>
-                <div id="demo-popover" class="bg-white dark:bg-gray-600 px-3 py-1 border border-gray-300 dark:border-0 rounded-sm whitespace-nowrap">
-                    <!-- Arrow -->
-                    <div class="popover-arrow absolute left-1/2 -top-2 -translate-x-1/2 w-0 h-0 border-10 border-t-0 border-transparent border-b-white dark:border-b-gray-600"></div>
-                    <span>
-                        This is a Popover.
+            <div class="flex flex-col gap-12">
+                <div class="flex flex-col md:flex-row gap-12">
+                    <button data-tooltip-trigger="demo-tooltip-top" data-position="top" class="btn btn-primary">Top</button>
+                    <span id="demo-tooltip-top" class="bg-white dark:bg-gray-600 px-3 py-1 border border-gray-300 dark:border-0 rounded-sm whitespace-nowrap">
+                        <!-- Arrow -->
+                        <div class="tooltip-arrow absolute left-1/2 -top-2 -translate-x-1/2 w-0 h-0 border-10 border-t-0 border-transparent border-b-white dark:border-b-gray-600"></div>
+                        This is a tooltip.
                     </span>
+
+                    <button data-tooltip-trigger="demo-tooltip" data-position="bottom" class="btn btn-primary">Bottom</button>
+                    <span id="demo-tooltip" class="bg-white dark:bg-gray-600 px-3 py-1 border border-gray-300 dark:border-0 rounded-sm whitespace-nowrap">
+                        <!-- Arrow -->
+                        <div class="tooltip-arrow absolute left-1/2 -top-2 -translate-x-1/2 w-0 h-0 border-10 border-t-0 border-transparent border-b-white dark:border-b-gray-600"></div>
+                        This is a tooltip.
+                    </span>
+
+                    <button data-tooltip-trigger="demo-tooltip-right" data-position="right" class="btn btn-primary">Right</button>
+                    <span id="demo-tooltip-right" class="bg-white dark:bg-gray-600 px-3 py-1 border border-gray-300 dark:border-0 rounded-sm whitespace-nowrap">
+                        <!-- Arrow -->
+                        <div class="tooltip-arrow absolute left-1/2 -top-2 -translate-x-1/2 w-0 h-0 border-10 border-t-0 border-transparent border-b-white dark:border-b-gray-600"></div>
+                        This is a tooltip.
+                    </span>
+
+                    <button data-tooltip-trigger="demo-tooltip-left" data-position="left" class="btn btn-primary">Left</button>
+                    <span id="demo-tooltip-left" class="bg-white dark:bg-gray-600 px-3 py-1 border border-gray-300 dark:border-0 rounded-sm whitespace-nowrap">
+                        <!-- Arrow -->
+                        <div class="tooltip-arrow absolute left-1/2 -top-2 -translate-x-1/2 w-0 h-0 border-10 border-t-0 border-transparent border-b-white dark:border-b-gray-600"></div>
+                        This is a tooltip.
+                    </span>
+                </div>
+                <div class="flex flex-col md:flex-row gap-12">
+                    <button data-popover-trigger="demo-popover" class="btn btn-primary">Hover me!</button>
+                    <div id="demo-popover" class="bg-white dark:bg-gray-600 px-3 py-1 border border-gray-300 dark:border-0 rounded-sm whitespace-nowrap">
+                        <!-- Arrow -->
+                        <div class="popover-arrow absolute left-1/2 -top-2 -translate-x-1/2 w-0 h-0 border-10 border-t-0 border-transparent border-b-white dark:border-b-gray-600"></div>
+                        <span>
+                            This is a Popover.
+                        </span>
+                    </div>
                 </div>
             </div>
         </section>
