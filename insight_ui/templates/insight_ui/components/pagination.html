@@ -94,6 +94,6 @@
 
     <!-- Current Page -->
     <span class="block mt-2 md:mt-0">
-        Seite {{ pagination.page_obj.number }} von {{ pagination.page_obj.paginator.num_pages }}.
+        {% trans "Page" %} {{ pagination.page_obj.number }} {% trans "of" %} {{ pagination.page_obj.paginator.num_pages }}.
     </span>
 </div>

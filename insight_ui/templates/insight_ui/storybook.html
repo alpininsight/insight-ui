@@ -4,10 +4,10 @@
 {% block title %}{% trans 'Insight UI Storybook' %}{% endblock %}
 
 {% block sidebar_right %}
-    {% include "insight_ui/components/sidebar.html" with title="Sekundäre Sidebar" side="right" auto_close=False sidebar_items=right_sidebar_items %}
+    {% include "insight_ui/components/sidebar.html" with title="Secondary Sidebar" side="right" auto_close=False sidebar_items=right_sidebar_items %}
 {% endblock sidebar_right %}
 {% block sidebar_left %}
-    {% include "insight_ui/components/sidebar.html" with title="Primäre Sidebar" side="left" auto_close=True sidebar_items=left_sidebar_items %}
+    {% include "insight_ui/components/sidebar.html" with title="Primary Sidebar" side="left" auto_close=True sidebar_items=left_sidebar_items %}
 {% endblock sidebar_left %}
 
 {% block navbar %}
@@ -30,13 +30,13 @@
 
         <!-- Input Elements -->
         <section class="component-container">
-            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Input Elemente' %}</h2>
+            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Input Elements' %}</h2>
             <div class="space-y-4">
                 {% include "insight_ui/components/inputs.html" %}
             </div>
         </section>
 
-        <!-- Progress bar -->
+        <!-- Progress bar Demo -->
         <section class="component-container">
             <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Progress Bars' %}</h2>
             <div class="space-y-8">
@@ -45,37 +45,37 @@
             </div>
         </section>
 
-        <!-- Tooltips and Popovers -->
+        <!-- Tooltips and Popovers Demo -->
         <section class="component-container">
             <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Tooltips &amp; Popovers' %}</h2>
             <div class="flex flex-col gap-12">
                 <div class="flex flex-col md:flex-row gap-12">
-                    <button data-tooltip-trigger="demo-tooltip-top" data-position="top" class="btn btn-primary">Top</button>
+                    <button data-tooltip-trigger="demo-tooltip-top" data-position="top" class="btn btn-primary">{% trans "Top" %}</button>
                     <span id="demo-tooltip-top" class="bg-white dark:bg-gray-600 px-3 py-1 border border-gray-300 dark:border-0 rounded-sm whitespace-nowrap">
                         <!-- Arrow -->
                         <div class="tooltip-arrow absolute left-1/2 -top-2 -translate-x-1/2 w-0 h-0 border-10 border-t-0 border-transparent border-b-white dark:border-b-gray-600"></div>
-                        This is a tooltip.
+                        {% trans "This is a tooltip." %}
                     </span>
 
-                    <button data-tooltip-trigger="demo-tooltip" data-position="bottom" class="btn btn-primary">Bottom</button>
+                    <button data-tooltip-trigger="demo-tooltip" data-position="bottom" class="btn btn-primary">{% trans "Bottom" %}</button>
                     <span id="demo-tooltip" class="bg-white dark:bg-gray-600 px-3 py-1 border border-gray-300 dark:border-0 rounded-sm whitespace-nowrap">
                         <!-- Arrow -->
                         <div class="tooltip-arrow absolute left-1/2 -top-2 -translate-x-1/2 w-0 h-0 border-10 border-t-0 border-transparent border-b-white dark:border-b-gray-600"></div>
-                        This is a tooltip.
+                        {% trans "This is a tooltip." %}
                     </span>
 
-                    <button data-tooltip-trigger="demo-tooltip-right" data-position="right" class="btn btn-primary">Right</button>
+                    <button data-tooltip-trigger="demo-tooltip-right" data-position="right" class="btn btn-primary">{% trans "Right" %}</button>
                     <span id="demo-tooltip-right" class="bg-white dark:bg-gray-600 px-3 py-1 border border-gray-300 dark:border-0 rounded-sm whitespace-nowrap">
                         <!-- Arrow -->
                         <div class="tooltip-arrow absolute left-1/2 -top-2 -translate-x-1/2 w-0 h-0 border-10 border-t-0 border-transparent border-b-white dark:border-b-gray-600"></div>
-                        This is a tooltip.
+                        {% trans "This is a tooltip." %}
                     </span>
 
-                    <button data-tooltip-trigger="demo-tooltip-left" data-position="left" class="btn btn-primary">Left</button>
+                    <button data-tooltip-trigger="demo-tooltip-left" data-position="left" class="btn btn-primary">{% trans "Left" %}</button>
                     <span id="demo-tooltip-left" class="bg-white dark:bg-gray-600 px-3 py-1 border border-gray-300 dark:border-0 rounded-sm whitespace-nowrap">
                         <!-- Arrow -->
                         <div class="tooltip-arrow absolute left-1/2 -top-2 -translate-x-1/2 w-0 h-0 border-10 border-t-0 border-transparent border-b-white dark:border-b-gray-600"></div>
-                        This is a tooltip.
+                        {% trans "This is a tooltip." %}
                     </span>
                 </div>
                 <div class="flex flex-col md:flex-row gap-12">
@@ -84,14 +84,14 @@
                         <!-- Arrow -->
                         <div class="popover-arrow absolute left-1/2 -top-2 -translate-x-1/2 w-0 h-0 border-10 border-t-0 border-transparent border-b-white dark:border-b-gray-600"></div>
                         <span>
-                            This is a Popover.
+                            {% trans "This is a Popover." %}
                         </span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Code-Block -->
+        <!-- Code-Block Demo -->
         <section class="component-container">
             <h2 class="font-mono text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">
                 {% trans 'Code Block' %}<span class="animate-blink">_</span>
@@ -108,20 +108,20 @@
             </div>
         </section>
 
-        <!-- Chat -->
+        <!-- Chat Demo -->
         <section class="component-container">
             <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Chat' %}</h2>
             {% include "insight_ui/components/chat.html" %}
         </section>
 
-        <!-- Alert Demo -->
+        <!-- Alerts Demo -->
         <section class="component-container">
-            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Benachrichtigungen' %}</h2>
+            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Alerts' %}</h2>
             <div class="space-y-4">
-                {% alert message="Dies ist eine Informationsmeldung" alert_type="info" %}
-                {% alert message="Erfolgreich gespeichert!" alert_type="success" %}
-                {% alert message="Überprüfen Sie Ihre Eingaben" alert_type="warning" %}
-                {% alert message="Fehler beim Laden der Daten" alert_type="error" %}
+                {% alert message="This is just an information." alert_type="info" %}
+                {% alert message="Saved successfully!" alert_type="success" %}
+                {% alert message="Please review your entries!" alert_type="warning" %}
+                {% alert message="Error while loading data!" alert_type="error" %}
             </div>
         </section>
 
@@ -134,19 +134,19 @@
 
         <!-- Modal Demo -->
         <section class="component-container">
-            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans "Modal-Dialoge" %}</h2>
+            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans "Modal-Dialogs" %}</h2>
             <div class="flex flex-col md:flex-row gap-4">
                 <!-- Standard -->
                 <button class="btn btn-primary w-72" data-insight-toggle="modal" data-insight-target="demo-modal">
                     {% trans "Standard Modal" %}
                 </button>
-                {% modal html_tag_id="demo-modal" title=_("Demo Modal") description=_("Dies ist ein Beispiel-Modal mit Standard-Styling!") %}
+                {% modal html_tag_id="demo-modal" title=_("Demo Modal") description=_("This is an example of a standard modal.") %}
 
                 <!-- Action-Buttons -->
                 <button class="btn btn-danger w-72" data-insight-toggle="modal" data-insight-target="delete-modal">
-                    {% trans "Modal mit Action-Buttons" %}
+                    {% trans "Modal with Action-Buttons" %}
                 </button>
-                {% modal html_tag_id="delete-modal" title=_("Löschen?") description="Bitte bestätigen Sie die Löschung!" actions=confirm_modal_actions %}
+                {% modal html_tag_id="delete-modal" title=_("Delete?") description="Please conform deletion!" actions=confirm_modal_actions %}
             </div>
         </section>
 
@@ -158,17 +158,17 @@
 
         <!-- HTMX Live Content Demo (Pulling)-->
         <section class="component-container">
-            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Live-Inhalte (Pull-Verfahren)' %}</h2>
+            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Live-Content (Pull)' %}</h2>
             {% live_content url="/api/live-data/" interval=10 id="live-content" %}
         </section>
 
         <!-- HTMX Websocket Content Demo (Pushing) -->
         <section class="component-container">
-            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans "WebSocket Live-Demo (Push-Verfahren)" %}</h2>
+            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans "WebSocket Live-Demo (Push)" %}</h2>
             <!-- {% insight_websocket html_tag_id="demo-websocket" ws_url="ws://localhost:8765" initial_content="<p>Verbinde zu WebSocket…</p>" %} -->
         </section>
 
-        <!-- Geo-Map -->
+        <!-- Geo-Map Demo -->
         <section class="component-container">
             <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Geo Map' %}</h2>
             {% include "insight_ui/components/geo_map.html" %}

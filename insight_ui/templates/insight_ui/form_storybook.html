@@ -4,10 +4,10 @@
 {% block title %}{% trans 'Insight UI Forms Storybook' %}{% endblock %}
 
 {% block sidebar_right %}
-    {% include "insight_ui/components/sidebar.html" with title="Sekundäre Sidebar" side="right" auto_close=False sidebar_items=right_sidebar_items %}
+    {% include "insight_ui/components/sidebar.html" with title="Secondary Sidebar" side="right" auto_close=False sidebar_items=right_sidebar_items %}
 {% endblock sidebar_right %}
 {% block sidebar_left %}
-    {% include "insight_ui/components/sidebar.html" with title="Primäre Sidebar" side="left" auto_close=True sidebar_items=left_sidebar_items %}
+    {% include "insight_ui/components/sidebar.html" with title="Primary Sidebar" side="left" auto_close=True sidebar_items=left_sidebar_items %}
 {% endblock sidebar_left %}
 
 {% block navbar %}
@@ -30,14 +30,14 @@
 
         <!-- Form Demo -->
         <section class="component-container">
-            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Formular' %}</h2>
-            {% form title="Kontaktformular" description="Füllen Sie das Formular aus" fields=form_fields actions=form_actions action="api/form-submit/" id="standard-form" %}
+            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Form' %}</h2>
+            {% form title="Contact Form" description="Please fill out the form" fields=form_fields actions=form_actions action="api/form-submit/" id="standard-form" %}
         </section>
 
         <!-- HTMX Form Demo -->
         <section class="component-container">
-            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Formular, mit hx-post' %}</h2>
-            {% form title="Kontaktformular" description="Füllen Sie das Formular aus" fields=form_fields actions=form_actions htmx=htmx_config id="htmx-form" %}
+            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'HTMX Form' %}</h2>
+            {% form title="Contact Form" description="Please fill out the form" fields=form_fields actions=form_actions htmx=htmx_config id="htmx-form" %}
         </section>
     </div>
 {% endblock content %}

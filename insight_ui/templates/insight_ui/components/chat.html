@@ -1,9 +1,7 @@
 {% load i18n %}
 
 <!-- Response-container -->
-<div class="my-2 grow" id="response">
-    <!-- some place for some response -->
-</div>
+<div class="my-2 grow" id="response"></div>
 
 <!-- Input-container -->
 <form hx-post="{% url 'chat_response' %}" hx-swap="beforeend" hx-target="#response" class="mt-16 space-y-2">

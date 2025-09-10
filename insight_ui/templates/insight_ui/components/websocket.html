@@ -8,16 +8,16 @@
     {% if options.initial_content %}
       {{ options.initial_content|safe }}
     {% else %}
-      <p class="text-insight-text-secondary dark:text-insight-text-secondary-dark">{% trans "Warten auf WebSocket-Nachrichten..." %}</p>
+      <p class="text-insight-text-secondary dark:text-insight-text-secondary-dark">{% trans "Wait for messages..." %}</p>
     {% endif %}
   </div>
   <span class="block text-sm text-insight-text-primary dark:text-insight-text-primary-dark mt-4">
-    {% trans "Status:" %} <span id="{{ options.id|default:'insight-websocket' }}-status"><b>{% trans "Verbindung wird hergestellt..." %}</b></span>
+    {% trans "Status:" %} <span id="{{ options.id|default:'insight-websocket' }}-status"><b>{% trans "Establishing connection..." %}</b></span>
   </span>
   <span class="block text-xs text-insight-text-secondary dark:text-insight-text-secondary-dark mt-2">
     {% trans "URL:" %} {{ options.ws_url }}
   </span>
   <span class="block text-xs text-insight-text-secondary dark:text-insight-text-secondary-dark">
-    {% trans "Mode: HTMX WebSocket Extension (erwartet HTML)" %}
+    {% trans "Mode: HTMX WebSocket Extension (expects HTML)" %}
   </span>
 </div>

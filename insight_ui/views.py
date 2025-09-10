@@ -67,7 +67,7 @@ def live_data_view(request: HttpRequest) -> HttpResponse | JsonResponse:
     current_time = datetime.now(tz=UTC).strftime("%H:%M:%S")
     data = {
         "time": current_time,
-        "message": _("Daten aktualisiert um %(time)s") % {"time": current_time},
+        "message": _("Data updated at %(time)s") % {"time": current_time},
         "status": "success",
     }
 

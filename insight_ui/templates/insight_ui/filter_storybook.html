@@ -4,10 +4,10 @@
 {% block title %}{% trans 'Insight UI Filters Storybook' %}{% endblock %}
 
 {% block sidebar_right %}
-    {% include "insight_ui/components/sidebar.html" with title="Sekundäre Sidebar" side="right" auto_close=False sidebar_items=right_sidebar_items %}
+    {% include "insight_ui/components/sidebar.html" with title="Secondary Sidebar" side="right" auto_close=False sidebar_items=right_sidebar_items %}
 {% endblock sidebar_right %}
 {% block sidebar_left %}
-    {% include "insight_ui/components/sidebar.html" with title="Primäre Sidebar" side="left" auto_close=True sidebar_items=left_sidebar_items %}
+    {% include "insight_ui/components/sidebar.html" with title="Primary Sidebar" side="left" auto_close=True sidebar_items=left_sidebar_items %}
 {% endblock sidebar_left %}
 
 {% block navbar %}
@@ -28,9 +28,9 @@
             </p>
         </section>
 
-        <!-- Searchbox -->
+        <!-- Searchbox Demo -->
         <section class="component-container">
-            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Prominente Suchzeile' %}</h2>
+            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Primary Search Bar' %}</h2>
             <div class="space-y-4">
                 {% include "insight_ui/components/searchbar.html" with request_view="filter_storybook_view" %}
             </div>
@@ -38,13 +38,13 @@
 
         <!-- Filter Demo -->
         <section class="component-container">
-            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Generische Filterung' %}</h2>
+            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Generic Filters' %}</h2>
             {% include "insight_ui/components/filter.html" %}
         </section>
 
         <!-- SQL-Like Filter Demo -->
         <section class="component-container">
-            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'SQL-Like Filterung' %}</h2>
+            <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'SQL-Like Filter' %}</h2>
             {% include "insight_ui/components/search_query_builder/sq_builder.html" %}
         </section>
     </div>

@@ -119,7 +119,7 @@ def get_nav_and_footer_context() -> dict:
             },
             "links": [
                 {
-                    "text": _("Startseite"),
+                    "text": _("Startpage"),
                     "icon": {"name": "home", "size": "small"},
                     "view_name": "storybook_view",
                     "active": True,
@@ -127,13 +127,13 @@ def get_nav_and_footer_context() -> dict:
                     "staff_only": False,
                 },
                 {
-                    "text": _("Komponenten"),
+                    "text": _("Components"),
                     "open_dropdown": "components-menu",
                     "items": [
-                        {"text": "Tabellen", "view_name": "table_storybook_view"},
-                        {"text": "Kacheln", "view_name": "card_storybook_view"},
-                        {"text": "Formulare", "view_name": "form_storybook_view"},
-                        {"text": "Filter", "view_name": "filter_storybook_view"},
+                        {"text": "List & Tables", "view_name": "table_storybook_view"},
+                        {"text": "Cards", "view_name": "card_storybook_view"},
+                        {"text": "Forms", "view_name": "form_storybook_view"},
+                        {"text": "Search & Filters", "view_name": "filter_storybook_view"},
                     ],
                     "chevron": {"name": "chevron_down", "size": "small"},
                     "active": False,
@@ -141,7 +141,7 @@ def get_nav_and_footer_context() -> dict:
                     "staff_only": False,
                 },
                 {
-                    "text": _("Über"),
+                    "text": _("About"),
                     "open_modal": "about-modal",
                     "active": False,
                     "need_auth": False,
@@ -169,7 +169,7 @@ def get_nav_and_footer_context() -> dict:
         },
         "user_dropdown_links": [
             {
-                "text": _("Einstellungen"),
+                "text": _("Settings"),
                 "view_name": "storybook_view",
                 "staff_only": False,
                 "icon": {"name": "cog", "size": "small"},
@@ -181,7 +181,7 @@ def get_nav_and_footer_context() -> dict:
                 "icon": {"name": "home", "size": "small"},
             },
             {
-                "text": _("Übersetzung"),
+                "text": _("Translation"),
                 "view_name": "storybook_view",
                 "staff_only": True,
                 "icon": {"name": "globe", "size": "small"},
@@ -189,13 +189,13 @@ def get_nav_and_footer_context() -> dict:
         ],
         "footer_data": {
             "description": {
-                "title": "Django Insight UI",
-                "text": "Eine moderne UI-Bibliothek für Django-Anwendungen mit Fokus auf Barrierefreiheit und Benutzerfreundlichkeit.",  # noqa: E501
+                "title": "Insight UI",
+                "text": "A modern, accessible, and responsive UI library for Django projects.",
             },
             "links": [
-                {"text": _("Startseite"), "icon": {"name": "home", "size": "small"}, "view_name": "storybook_view"},
+                {"text": _("Startpage"), "icon": {"name": "home", "size": "small"}, "view_name": "storybook_view"},
                 {"text": _("Storybook"), "view_name": "storybook_view"},
-                {"text": _("Dokumentation"), "view_name": "storybook_view"},
+                {"text": _("Documentation"), "view_name": "storybook_view"},
             ],
         },
     }
@@ -205,21 +205,17 @@ def get_sidebar_data() -> dict:
     """Serve data for the sidebars."""
     return {
         "right_sidebar_items": [
-            {
-                "text": _("Benachrichtigungen"),
-                "icon": {"name": "home", "size": "small"},
-                "url": reverse("storybook_view"),
-            },
-            {"text": _("Nachrichten"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
-            {"text": _("Aufgaben"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
-            {"text": _("Kalender"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
-            {"text": _("Profil"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
+            {"text": _("Notifications"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
+            {"text": _("Messages"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
+            {"text": _("Tasks"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
+            {"text": _("Calender"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
+            {"text": _("Profile"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
         ],
         "left_sidebar_items": [
             {"text": _("Dashboard"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
-            {"text": _("Benutzer"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
-            {"text": _("Einstellungen"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
-            {"text": _("Hilfe"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
+            {"text": _("User"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
+            {"text": _("Settings"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
+            {"text": _("Help"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
         ],
     }
 
@@ -234,14 +230,14 @@ def get_table_storybook_data() -> dict:
         | get_sidebar_data()
         | {
             "table": {
-                "caption": _("Ein Beispiel einer Tabellen-Komponente."),
-                "empty_msg": _("Keine Daten vorhanden!"),
-                "headers": [_("Name"), _("E-Mail"), _("Status"), _("Aktionen")],
+                "caption": _("Example of a table component."),
+                "empty_msg": _("No data available!"),
+                "headers": [_("Name"), _("E-Mail"), _("Status"), _("Actions")],
                 "rows": [
                     [
                         "Max Mustermann",
                         "max@example.com",
-                        _("Aktiv"),
+                        _("Active"),
                         format_html(
                             '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
                         ),
@@ -249,7 +245,7 @@ def get_table_storybook_data() -> dict:
                     [
                         "Anna Schmidt",
                         "anna@example.com",
-                        _("Inaktiv"),
+                        _("Inactive"),
                         format_html(
                             '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
                         ),
@@ -257,7 +253,7 @@ def get_table_storybook_data() -> dict:
                     [
                         "Tom Weber",
                         "tom@example.com",
-                        _("Aktiv"),
+                        _("Active"),
                         format_html(
                             '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
                         ),
@@ -282,67 +278,67 @@ def get_card_storybook_data() -> dict:
         | {
             "cards": [
                 {
-                    "title": "Beispiel-Karte",
-                    "subtitle": "Untertitel",
-                    "content": "Dies ist der Inhalt einer Karte.",
+                    "title": _("Example Card"),
+                    "subtitle": _("Subtitle"),
+                    "content": _("This is the card content."),
                     "actions": [
-                        {"text": _("Mehr erfahren"), "url": "#", "type": "secondary"},
-                        {"text": _("Teilen"), "url": "#", "type": "primary"},
+                        {"text": _("Learn more"), "url": "#", "type": "secondary"},
+                        {"text": _("Share"), "url": "#", "type": "primary"},
                     ],
                 },
                 {
-                    "title": "Karte mit Aktionen",
-                    "content": "Diese Karte hat Aktions-Buttons.",
+                    "title": "Card with actions",
+                    "content": "This card has some action buttons.",
                     "actions": [
-                        {"text": _("Mehr erfahren"), "url": "#", "type": "secondary"},
-                        {"text": _("Teilen"), "url": "#", "type": "primary"},
+                        {"text": _("Learn more"), "url": "#", "type": "secondary"},
+                        {"text": _("Share"), "url": "#", "type": "primary"},
                     ],
                 },
             ],
             "horizontale_cards": [
                 {
-                    "title": "Horizontale Karte",
-                    "content": "Eine Karte dessen Inhalt horizontal angeordnet ist.",
+                    "title": "Horizontale Cards",
+                    "content": "A card with its content arranged horizontally.",
                     "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": "Card-Image"},
                     "tags": ["Test", "Test2", "Test3"],
                     "actions": [
-                        {"text": _("Mehr erfahren"), "url": "#", "type": "secondary"},
-                        {"text": _("Teilen"), "url": "#", "type": "primary"},
+                        {"text": _("Learn more"), "url": "#", "type": "secondary"},
+                        {"text": _("Share"), "url": "#", "type": "primary"},
                     ],
                 }
             ],
             "flip_cards": [
                 {
-                    "title": "Flip Karte",
-                    "content": "Eine Karte die sich um 180° dreht und weiteren Inhalt auf der Rückseite bereit hält.",
+                    "title": "Flip Card",
+                    "content": "A card that rotates 180° and has additional content on the back.",
                     "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": "Card-Image"},
                     "tags": ["Test", "Test2", "Test3"],
                     "actions": [
-                        {"text": _("Mehr erfahren"), "url": "#", "type": "secondary"},
-                        {"text": _("Teilen"), "url": "#", "type": "primary"},
+                        {"text": _("Learn more"), "url": "#", "type": "secondary"},
+                        {"text": _("Share"), "url": "#", "type": "primary"},
                     ],
                 }
             ],
             "carousel_items": map_payload_to_cards(generate_payload()),
             "image_carousel_items": [
                 {
-                    "description": "Das berühmte Schloss war Vorbild für viele weitere Bauten, darunter auch die Schlösser der Disneyland Ressorts in Kalifornien und Paris.",  # noqa: E501
+                    "description": "The famous castle served as a model for many other buildings, including the castles at the Disneyland resorts in California and Paris.",  # noqa: E501
                     "url": static("insight_ui/img/neuschwanstein.jpg"),
-                    "alt": "Schloss Neuschwanstein im Winter",
+                    "alt": "Neuschwanstein Castle in winter.",
                 },
                 {
-                    "description": "Bevor Berlin die Hauptstadt Deutschlands wurde, war die Stadt bereits zweimal Hauptstadt. Von der Mark-Brandenburg und von Preußen.",  # noqa: E501
+                    "description": "Before Berlin became the capital of Germany, the city had already been the capital twice: of the Mark-Brandenburg and of Prussia.",  # noqa: E501
                     "url": static("insight_ui/img/berlin.jpg"),
-                    "alt": "Berlin bei Nacht",
+                    "alt": "Berlin at night.",
                 },
                 {
-                    "description": "Die Freie und Hansestadt Hamburg ist das führende Mitglied des Handelsbundes der Hanse.",  # noqa: E501
+                    "description": "The Free and Hanseatic City of Hamburg is the leading member of the Hanseatic League.",  # noqa: E501
                     "url": static("insight_ui/img/hamburg.jpg"),
-                    "alt": "Hamburg und eine einfahrende S-Bahn",
+                    "alt": "Hamburg and an arriving S-Bahn train.",
                 },
             ],
             "range_total_slides": range(3),
-            "toggle_table": {"empty_msg": "Keine Daten vorhanden!", "headers": headers, "rows": rows},
+            "toggle_table": {"empty_msg": "No data available!", "headers": headers, "rows": rows},
             "toggle_start_view": "table",
             "view_options": {
                 "name": "view-options",
@@ -436,14 +432,14 @@ def get_storybook_context() -> dict:
         | get_sidebar_data()
         | {
             "breadcrumb_items": [
-                {"text": _("Startseite"), "view_name": "storybook_view", "icon": {"name": "home", "size": "small"}},
+                {"text": _("Startpage"), "view_name": "storybook_view", "icon": {"name": "home", "size": "small"}},
                 {"text": _("Demo"), "view_name": "storybook_view", "query_params": "?test=123"},
-                {"text": _("Komponenten")},
+                {"text": _("Components")},
             ],
-            "single_breadcrumb_item": [{"text": _("Startseite"), "icon": {"name": "home", "size": "small"}}],
+            "single_breadcrumb_item": [{"text": _("Startpage"), "icon": {"name": "home", "size": "small"}}],
             "confirm_modal_actions": [
-                {"text": _("Ja, fortfahren"), "type": "primary", "onclick": 'alert("Aktion bestätigt!")'},
-                {"text": _("Abbrechen"), "type": "cancel", "dismiss": True},
+                {"text": _("Yes, confirm"), "type": "primary", "onclick": 'alert("Confirmed!")'},
+                {"text": _("Abort"), "type": "cancel", "dismiss": True},
             ],
             "htmx_config": {"url": "/api/form-submit/", "method": "post", "target": "#htmx-form", "swap": "innerHTML"},
             "textA": "The cat is sleeping on the red sofa.",

@@ -1,74 +1,74 @@
 /**
- * Insight UI WebSocket Handler mit detailliertem Logging
+ * Insight UI WebSocket Handler
  */
 window.InsightUI = window.InsightUI || {};
 
 InsightUI.WebSocket = {
   init: function() {
-    console.log('🔌 InsightUI.WebSocket.init() - Starte WebSocket Handler Initialisierung');
-    console.log('🔍 Aktueller Zeitstempel:', new Date().toISOString());
+    console.log('🔌 InsightUI.WebSocket.init() - Start WebSocket handler initialization');
+    console.log('🔍 Current timestamp:', new Date().toISOString());
 
-    // Warte bis HTMX vollständig geladen ist
+    // Wait until HTMX is fully loaded
     if (typeof htmx === 'undefined') {
-      console.warn('⚠️ HTMX noch nicht geladen, warte 100ms...');
+      console.warn('⚠️ HTMX not loaded yet, wait 100ms...');
       setTimeout(() => this.init(), 100);
       return;
     }
-    console.log('✅ HTMX gefunden, Version:', htmx.version || 'unbekannt');
-    console.log('🔍 HTMX Objekt:', htmx);
-    console.log('🔍 HTMX Config:', htmx.config);
+    console.log('✅ HTMX found, Version:', htmx.version || 'unknown');
+    console.log('🔍 HTMX object:', htmx);
+    console.log('🔍 HTMX config:', htmx.config);
 
     // Detaillierte Extension-Prüfung
     if (!htmx.config.extensions) {
-      console.warn('⚠️ HTMX  Extensions nicht verfügbar, re-initialisiere in 200ms...');
+      console.warn('⚠️ HTMX extensions not available, re-initialize in 200ms...');
       setTimeout(() => this.init(), 200);
       return;
     } else {
-      console.log('✅ HTMX Extensions erkannt');
+      console.log('✅ HTMX extensions detected');
       console.log('🔍 HTMX Extensions:', htmx.config.extensions);
     }
 
-    // Prüfe ob WebSocket im Browser verfügbar ist
+    // Check if WebSocket is available in the browser
     if (typeof WebSocket === 'undefined') {
-      console.error('❌ WebSocket API nicht verfügbar im Browser');
+      console.error('❌ WebSocket API not available!');
       return;
     }
-    console.log('✅ WebSocket API verfügbar');
+    console.log('✅ WebSocket API available!');
 
-    // Prüfe WebSocket-Komponenten auf der Seite
+    // Check WebSocket components on the site
     const wsComponents = document.querySelectorAll('[hx-ext*="ws"]');
-    console.log(`📊 ${wsComponents.length} WebSocket-Komponente(n) gefunden:`);
+    console.log(`📊 ${wsComponents.length} WebSocket-component(s) found:`);
 
     wsComponents.forEach((component, index) => {
       const id = component.id || `ws-component-${index}`;
-      const wsUrl = component.getAttribute('ws-connect') || 'nicht gesetzt';
+      const wsUrl = component.getAttribute('ws-connect') || 'not set';
       console.log(`  ${index + 1}. ID: ${id}, URL: ${wsUrl}`);
       console.log(`     Element:`, component);
     });
 
     // Test: Manueller WebSocket-Verbindungstest
-    console.log('🧪 Teste direkte WebSocket-Verbindung...');
+    console.log('🧪 Test direct WebSocket connection...');
     try {
       const testWs = new WebSocket('ws://localhost:8765');
       testWs.onopen = () => {
-        console.log('✅ Direkte WebSocket-Verbindung erfolgreich');
+        console.log('✅ Direct WebSocket connection successful:');
         testWs.close();
       };
       testWs.onerror = (e) => {
-        console.error('❌ Direkte WebSocket-Verbindung fehlgeschlagen:', e);
+        console.error('❌ Direct WebSocket connection failed:', e);
       };
       testWs.onclose = (e) => {
-        console.log('🔴 Test-WebSocket geschlossen, Code:', e.code, 'Reason:', e.reason);
+        console.log('🔴 Test-WebSocket closed, Code:', e.code, 'Reason:', e.reason);
       };
     } catch (error) {
-      console.error('❌ Fehler beim Erstellen der Test-WebSocket:', error);
+      console.error('❌ Error creating test WebSocket:', error);
     }
 
-    // WebSocket Verbindung erfolgreich geöffnet
+    // WebSocket connection established
     document.body.addEventListener('htmx:wsOpen', function(evt) {
-      console.log('🟢 WebSocket Verbindung geöffnet:', {
-        target: evt.target.id || 'unbekannt',
-        url: evt.detail?.socketWrapper?.socket?.url || 'unbekannt',
+      console.log('🟢 WebSocket connection established:', {
+        target: evt.target.id || 'unknown',
+        url: evt.detail?.socketWrapper?.socket?.url || 'unknown',
         timestamp: new Date().toISOString()
       });
 
@@ -77,18 +77,18 @@ InsightUI.WebSocket = {
       if (statusElement) {
         statusElement.textContent = 'Verbunden';
         statusElement.className = 'insight-websocket__status-text insight-websocket__status-text--connected';
-        console.log('✅ Status-Element aktualisiert: Verbunden');
+        console.log('✅ Status-Element updated: Verbunden');
       } else {
-        console.warn('⚠️ Status-Element nicht gefunden für WebSocket:', wsElement.id);
+        console.warn('⚠️ Status element not found for WebSocket:', wsElement.id);
       }
     });
 
-    // WebSocket Verbindung geschlossen
+    // WebSocket connection closed
     document.body.addEventListener('htmx:wsClose', function(evt) {
-      console.log('🔴 WebSocket Verbindung geschlossen:', {
-        target: evt.target.id || 'unbekannt',
-        code: evt.detail?.code || 'unbekannt',
-        reason: evt.detail?.reason || 'unbekannt',
+      console.log('🔴 WebSocket connection closed:', {
+        target: evt.target.id || 'unknown',
+        code: evt.detail?.code || 'unknown',
+        reason: evt.detail?.reason || 'unknown',
         wasClean: evt.detail?.wasClean || false,
         timestamp: new Date().toISOString()
       });
@@ -96,46 +96,46 @@ InsightUI.WebSocket = {
       const wsElement = evt.target;
       const statusElement = wsElement.querySelector('[id$="-status"]');
       if (statusElement) {
-        statusElement.textContent = 'Verbindung getrennt';
+        statusElement.textContent = 'Disconnected';
         statusElement.className = 'insight-websocket__status-text insight-websocket__status-text--disconnected';
-        console.log('✅ Status-Element aktualisiert: Verbindung getrennt');
+        console.log('✅ Status-Element updated: disconnected');
       }
     });
 
     // WebSocket Fehler
     document.body.addEventListener('htmx:wsError', function(evt) {
-      console.error('❌ WebSocket Fehler:', {
-        target: evt.target.id || 'unbekannt',
-        error: evt.detail?.error || 'unbekannt',
-        message: evt.detail?.message || 'unbekannt',
+      console.error('❌ WebSocket error:', {
+        target: evt.target.id || 'unknown',
+        error: evt.detail?.error || 'unknown',
+        message: evt.detail?.message || 'unknown',
         timestamp: new Date().toISOString()
       });
 
       const wsElement = evt.target;
       const statusElement = wsElement.querySelector('[id$="-status"]');
       if (statusElement) {
-        statusElement.textContent = 'Verbindungsfehler';
+        statusElement.textContent = 'Connection error';
         statusElement.className = 'insight-websocket__status-text insight-websocket__status-text--error';
-        console.log('✅ Status-Element aktualisiert: Verbindungsfehler');
+        console.log('✅ Status-Element updated: Connection error');
       }
     });
 
-    // WebSocket Nachricht empfangen - HTMX v2 WebSocket Extension
+    // WebSocket received message - HTMX v2 WebSocket Extension
     document.body.addEventListener('htmx:wsAfterMessage', function(evt) {
-      console.log('📨 WebSocket Nachricht empfangen:', {
-        target: evt.target.id || 'unbekannt',
+      console.log('📨 WebSocket received message:', {
+        target: evt.target.id || 'unknown',
         messageLength: evt.detail?.message?.length || 0,
-        message: evt.detail?.message || 'keine Nachricht',
+        message: evt.detail?.message || 'no message',
         timestamp: new Date().toISOString()
       });
 
-      // Prüfe ob die Nachricht HTML enthält (für HTMX OOB Swaps)
+      // Check if the message contains HTML (for HTMX OOB swaps)
       if (evt.detail?.message && evt.detail.message.trim().startsWith('<')) {
-        console.log('📄 HTML-Nachricht erkannt, HTMX verarbeitet automatisch');
-        return; // HTMX verarbeitet HTML automatisch
+        console.log('📄 HTML message detected, HTMX processed automatically');
+        return; // HTMX automatically processes HTML
       }
 
-      // Verarbeite JSON-Nachrichten manuell
+      // Process JSON messages manually
       try {
         const wsElement = evt.target;
         const outputElement = wsElement.querySelector('[id$="-output"]');
@@ -153,48 +153,48 @@ InsightUI.WebSocket = {
             </div>
           `;
 
-          // Füge neue Nachricht am Anfang hinzu
+          // Add new message at the beginning
           const tempDiv = document.createElement('div');
           tempDiv.innerHTML = formattedData;
           outputElement.insertBefore(tempDiv.firstElementChild, outputElement.firstElementChild);
 
-          // Begrenze die Anzahl der angezeigten Nachrichten
+          // Limit the number of messages displayed
           const messages = outputElement.querySelectorAll('div.mb-2');
           if (messages.length > 10) {
             messages[messages.length - 1].remove();
           }
         }
       } catch (error) {
-        console.error('❌ Fehler beim Verarbeiten der WebSocket-Nachricht:', error);
-        console.log('📝 Rohe Nachricht:', evt.detail?.message);
+        console.error('❌ Error processing WebSocket message:', error);
+        console.log('📝 Raw message:', evt.detail?.message);
       }
     });
 
-    // WebSocket Nachricht gesendet
+    // WebSocket send message
     document.body.addEventListener('htmx:wsBeforeSend', function(evt) {
-      console.log('📤 WebSocket Nachricht wird gesendet:', {
-        target: evt.target.id || 'unbekannt',
+      console.log('📤 WebSocket send message:', {
+        target: evt.target.id || 'unknown',
         messageLength: evt.detail?.message?.length || 0,
         timestamp: new Date().toISOString()
       });
     });
 
-    // WebSocket Reconnect Versuch
+    // WebSocket try to reconnect
     document.body.addEventListener('htmx:wsConnecting', function(evt) {
       console.log('🔄 WebSocket Reconnect-Versuch:', {
-        target: evt.target.id || 'unbekannt',
-        attempt: evt.detail?.attempt || 'unbekannt',
+        target: evt.target.id || 'unknown',
+        attempt: evt.detail?.attempt || 'unknown',
         timestamp: new Date().toISOString()
       });
 
       const wsElement = evt.target;
       const statusElement = wsElement.querySelector('[id$="-status"]');
       if (statusElement) {
-        statusElement.textContent = 'Verbindung wird wiederhergestellt...';
+        statusElement.textContent = 'Establish connection...';
         statusElement.className = 'insight-websocket__status-text insight-websocket__status-text--connecting';
       }
     });
 
-    console.log('✅ InsightUI WebSocket Handler erfolgreich initialisiert');
+    console.log('✅ InsightUI WebSocket Handler initialized successfully');
   }
 };

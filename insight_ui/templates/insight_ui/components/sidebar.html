@@ -12,7 +12,7 @@
   <div class="fixed inset-0 bg-black/50 transition-opacity" data-insight-dismiss="sidebar"></div>
   <aside
     role="complementary"
-    aria-label="{% trans 'Seitennavigation' %}"
+    aria-label="{% trans 'Side navigation' %}"
     class="fixed top-16 {% if side == "right" %}ltr:right-0 ltr:border-l rtl:left-0 rtl:border-r{% else %}ltr:left-0 ltr:border-r rtl:right-0 rtl:border-l{% endif %} overflow-y-auto bg-white dark:bg-gray-800 dark:border-gray-600 border-gray-200 h-screen w-72 shadow-md transition"
     data-auto-close="{{ auto_close|yesno:'true,false' }}"
   >
@@ -27,7 +27,7 @@
           <button
             id="{{ side }}-sidebar-close"
             class="text-insight-text-secondary hover:text-insight-text-primary dark:text-insight-text-secondary-dark dark:hover:text-insight-text-primary-dark p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 text-sm"
-            aria-label="{% trans 'Sidebar schließen' %}"
+            aria-label="{% trans 'Close sidebar' %}"
             data-insight-dismiss="sidebar"
           >
             <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

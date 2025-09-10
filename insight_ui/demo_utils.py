@@ -14,11 +14,11 @@ def generate_payload(count: int = 5) -> list:
     return [
         {
             "title": f"Element {i}",
-            "content": f"Dies ist der Inhalt von Eintrag {i}.",
-            "status": "Aktiv" if i % 2 == 0 else "Inaktiv",
+            "content": f"This is the content of entry {i}.",
+            "status": "Active" if i % 2 == 0 else "Inactive",
             "actions": [
-                {"text": "Mehr erfahren", "url": "#", "type": "primary"},
-                {"text": "Teilen", "url": "#", "type": "secondary"},
+                {"text": "Learn more", "url": "#", "type": "primary"},
+                {"text": "Share", "url": "#", "type": "secondary"},
             ],
             "action_link": f"<a href='#' class='underline text-insight-text-link hover:text-insight-text-link-hover'>Details {i}</a>",  # noqa: E501
         }

@@ -1,7 +1,7 @@
 {% load i18n %}
 
 <ul>
-    <!-- Loading Indicator für den Container -->
+    <!-- Loading Indicator -->
     {% include "insight_ui/components/htmx_loading_indicator.html" %}
     {% for item in pagination.page_obj.object_list %}
         <li class="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4 mb-4">
@@ -9,7 +9,7 @@
             <p class="text-insight-text-secondary dark:text-insight-text-secondary-dark">{{ item.content }}</p>
         </li>
     {% empty %}
-        <li>{% trans "Keine Elemente gefunden." %}</li>
+        <li>{% trans "No elements found!" %}</li>
     {% endfor %}
 </ul>
 
