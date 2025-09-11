@@ -1,0 +1,22 @@
+<div class="relative">
+    <button data-dropdown-toggle="{{ dropdown.tag_id }}" class="btn btn-primary">
+        {{ dropdown.title }}
+        {% if dropdown.show_arrow %}
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" class="size-5">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+        {% endif %}
+    </button>
+    <div id="{{ dropdown.tag_id }}" class="border border-gray-300 dark:border-0 rounded-sm shadow-lg">
+        {% for item in dropdown.items %}
+            <a href="{% url item.view_name %}" class="block px-4 py-2 text-sm text-insight-text-primary dark:text-insight-text-primary-dark bg-gray-100 dark:bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 {% if forloop.first %}rounded-t{% elif forloop.last %}rounded-b{% endif %}">
+                {% if link.icon %}
+                    <span class="inline-block">
+                        {% include "insight_ui/components/icons.html" with icon=item.icon %}
+                    </span>
+                {% endif %}
+                {{ item.text }}
+            </a>
+        {% endfor %}
+    </div>
+</div>

@@ -431,6 +431,29 @@ def get_storybook_context() -> dict:
         get_nav_and_footer_context()
         | get_sidebar_data()
         | {
+            "user_dropdown": {
+                "tag_id": "DD_user",
+                "title": _("User"),
+                "show_arrow": True,
+                "items": [
+                    {"text": _("Profile"), "view_name": "storybook_view", "icon": {"name": "user", "size": "small"}},
+                    {"text": _("Settings"), "view_name": "storybook_view", "icon": {"name": "cog", "size": "small"}},
+                    {"text": _("Logout"), "view_name": "storybook_view", "icon": {"name": "got-out", "size": "small"}},
+                ],
+            },
+            "settings_dropdown": {
+                "tag_id": "DD_settings",
+                "title": _("Settings"),
+                "show_arrow": False,
+                "items": [
+                    {
+                        "text": _("Personal Information"),
+                        "view_name": "storybook_view",
+                        "icon": {"name": "user", "size": "small"},
+                    },
+                    {"text": _("Appearance"), "view_name": "storybook_view", "icon": {"name": "cog", "size": "small"}},
+                ],
+            },
             "breadcrumb_items": [
                 {"text": _("Startpage"), "view_name": "storybook_view", "icon": {"name": "home", "size": "small"}},
                 {"text": _("Demo"), "view_name": "storybook_view", "query_params": "?test=123"},
@@ -444,10 +467,10 @@ def get_storybook_context() -> dict:
             "htmx_config": {"url": "/api/form-submit/", "method": "post", "target": "#htmx-form", "swap": "innerHTML"},
             "textA": "The cat is sleeping on the red sofa.",
             "textB": "This is a completely different sentence!",
-            "progress_bar_items": [
-                {"title": "Test", "description": "Test", "completed": True},
-                {"title": "Test 2", "description": "Test 2", "completed": False, "current": True},
-                {"title": "Test 3", "description": "Test 3", "completed": False},
+            "steps_bar_items": [
+                {"title": "Kontaktdaten", "description": "Informationen zur Person und Anschrift.", "completed": True},
+                {"title": "Zahlungsmethode", "description": "Art der Bezahlung.", "completed": False, "current": True},
+                {"title": "Überprüfen", "description": "Prüfen der Angaben und Bezahlen.", "completed": False},
             ],
         }
     )

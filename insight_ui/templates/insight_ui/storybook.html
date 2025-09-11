@@ -40,7 +40,7 @@
         <section class="component-container">
             <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Progress Bars' %}</h2>
             <div class="space-y-8">
-                {% include "insight_ui/components/progress_bar.html" with items=progress_bar_items %}
+                {% include "insight_ui/components/steps_bar.html" with items=steps_bar_items %}
                 {% include "insight_ui/components/progress_indicator.html" %}
             </div>
         </section>
@@ -50,42 +50,34 @@
             <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Tooltips &amp; Popovers' %}</h2>
             <div class="flex flex-col gap-12">
                 <div class="flex flex-col md:flex-row gap-12">
-                    <button data-tooltip-trigger="demo-tooltip-top" data-position="top" class="btn btn-primary">{% trans "Top" %}</button>
-                    <span id="demo-tooltip-top" class="bg-white dark:bg-gray-600 px-3 py-1 border border-gray-300 dark:border-0 rounded-sm whitespace-nowrap">
-                        <!-- Arrow -->
-                        <div class="tooltip-arrow absolute left-1/2 -top-2 -translate-x-1/2 w-0 h-0 border-10 border-t-0 border-transparent border-b-white dark:border-b-gray-600"></div>
-                        {% trans "This is a tooltip." %}
-                    </span>
+                    <button data-tooltip-trigger="tt-demo-top" data-position="top" class="btn btn-primary">{% trans "Top" %}</button>
+                    {% include "insight_ui/components/tooltip.html" with text=_("This is a tooltip.") show_arrow="True" tag_id="tt-demo-top" %}
 
-                    <button data-tooltip-trigger="demo-tooltip" data-position="bottom" class="btn btn-primary">{% trans "Bottom" %}</button>
-                    <span id="demo-tooltip" class="bg-white dark:bg-gray-600 px-3 py-1 border border-gray-300 dark:border-0 rounded-sm whitespace-nowrap">
-                        <!-- Arrow -->
-                        <div class="tooltip-arrow absolute left-1/2 -top-2 -translate-x-1/2 w-0 h-0 border-10 border-t-0 border-transparent border-b-white dark:border-b-gray-600"></div>
-                        {% trans "This is a tooltip." %}
-                    </span>
+                    <button data-tooltip-trigger="tt-demo-bottom" data-position="bottom" class="btn btn-primary">{% trans "Bottom" %}</button>
+                    {% include "insight_ui/components/tooltip.html" with text=_("This is a tooltip.") tag_id="tt-demo-bottom" %}
 
-                    <button data-tooltip-trigger="demo-tooltip-right" data-position="right" class="btn btn-primary">{% trans "Right" %}</button>
-                    <span id="demo-tooltip-right" class="bg-white dark:bg-gray-600 px-3 py-1 border border-gray-300 dark:border-0 rounded-sm whitespace-nowrap">
-                        <!-- Arrow -->
-                        <div class="tooltip-arrow absolute left-1/2 -top-2 -translate-x-1/2 w-0 h-0 border-10 border-t-0 border-transparent border-b-white dark:border-b-gray-600"></div>
-                        {% trans "This is a tooltip." %}
-                    </span>
+                    <button data-tooltip-trigger="tt-demo-right" data-position="right" class="btn btn-primary">{% trans "Right" %}</button>
+                    {% include "insight_ui/components/tooltip.html" with text=_("This is a tooltip.") show_arrow="True" tag_id="tt-demo-right" %}
 
-                    <button data-tooltip-trigger="demo-tooltip-left" data-position="left" class="btn btn-primary">{% trans "Left" %}</button>
-                    <span id="demo-tooltip-left" class="bg-white dark:bg-gray-600 px-3 py-1 border border-gray-300 dark:border-0 rounded-sm whitespace-nowrap">
-                        <!-- Arrow -->
-                        <div class="tooltip-arrow absolute left-1/2 -top-2 -translate-x-1/2 w-0 h-0 border-10 border-t-0 border-transparent border-b-white dark:border-b-gray-600"></div>
-                        {% trans "This is a tooltip." %}
-                    </span>
+                    <button data-tooltip-trigger="tt-demo-left" data-position="left" class="btn btn-primary">{% trans "Left" %}</button>
+                    {% include "insight_ui/components/tooltip.html" with text=_("This is a tooltip.") tag_id="tt-demo-left" %}
                 </div>
                 <div class="flex flex-col md:flex-row gap-12">
                     <button data-popover-trigger="demo-popover" class="btn btn-primary">Hover me!</button>
-                    <div id="demo-popover" class="bg-white dark:bg-gray-600 px-3 py-1 border border-gray-300 dark:border-0 rounded-sm whitespace-nowrap">
+                    <div id="demo-popover" class="bg-white dark:bg-gray-500 w-64 border border-gray-300 dark:border-0 rounded-sm shadow">
                         <!-- Arrow -->
                         <div class="popover-arrow absolute left-1/2 -top-2 -translate-x-1/2 w-0 h-0 border-10 border-t-0 border-transparent border-b-white dark:border-b-gray-600"></div>
-                        <span>
-                            {% trans "This is a Popover." %}
-                        </span>
+                        <div class="p-4">
+                            <span class="block font-semibold w-full border-b-2 border-gray-300 pb-2">
+                                {% trans "This is a Popover." %}
+                            </span>
+                            <p class="text-sm mt-4">
+                                {% trans "A popover could have more content than a tooltip and it can also have interactive elements like buttons" %}
+                            </p>
+                        </div>
+                        <div class="bg-gray-100 dark:bg-gray-600 p-4 rounded-b-sm">
+                            <button class="btn btn-primary btn-sm">{% trans "Learn more" %}</button>
+                        </div>
                     </div>
                 </div>
             </div>

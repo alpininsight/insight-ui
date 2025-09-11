@@ -8,6 +8,7 @@ InsightUI.Popover = {
         triggers.forEach((trigger) => {
             const popoverId = trigger.getAttribute("data-popover-trigger");
             const popover = document.getElementById(popoverId);
+            const popoverArrow = popover.querySelector('.popover-arrow');
 
             if (!popover) return;
 
@@ -21,34 +22,43 @@ InsightUI.Popover = {
 
                 switch (position) {
                     case 'top':
-                    popover.style.top = `${rect.top + scrollY - popover.offsetHeight - 8}px`;
-                    popover.style.left = `${rect.left + rect.width / 2 - popover.offsetWidth / 2}px`;
-                    popover.querySelector('.popover-arrow').classList.add('rotate-180');
-                    popover.querySelector('.popover-arrow').style.top = `${popover.offsetHeight - 2}px`;
-                    break;
-
+                        popover.style.top = `${rect.top + scrollY - popover.offsetHeight - 8}px`;
+                        popover.style.left = `${rect.left + rect.width / 2 - popover.offsetWidth / 2}px`;
+                        if (popoverArrow)
+                        {
+                            popoverArrow.classList.add('rotate-180');
+                            popoverArrow.style.top = `${popover.offsetHeight - 2}px`;
+                        }
+                        break;
                     case 'bottom':
-                    popover.style.top = `${rect.bottom + scrollY + 8}px`;
-                    popover.style.left = `${rect.left + rect.width / 2 - popover.offsetWidth / 2}px`;
-                    popover.querySelector('.popover-arrow').classList.remove('rotate-180');
-                    popover.querySelector('.popover-arrow').style.top = '';
-                    break;
-
+                        popover.style.top = `${rect.bottom + scrollY + 8}px`;
+                        popover.style.left = `${rect.left + rect.width / 2 - popover.offsetWidth / 2}px`;
+                        if (popoverArrow)
+                        {
+                            popoverArrow.classList.remove('rotate-180');
+                            popoverArrow.style.top = '';
+                        }
+                        break;
                     case 'left':
-                    popover.style.top = `${rect.top + rect.height / 2 - popover.offsetHeight / 2 + scrollY}px`;
-                    popover.style.left = `${rect.left - popover.offsetWidth - 8}px`;
-                    popover.querySelector('.popover-arrow').classList.add('rotate-90');
-                    popover.querySelector('.popover-arrow').style.top = `${popover.offsetHeight / 2 - 5}px`;
-                    popover.querySelector('.popover-arrow').style.left = `${popover.offsetWidth + 3}px`;
-                    break;
-
+                        popover.style.top = `${rect.top + rect.height / 2 - popover.offsetHeight / 2 + scrollY}px`;
+                        popover.style.left = `${rect.left - popover.offsetWidth - 8}px`;
+                        if (popoverArrow)
+                        {
+                            popoverArrow.classList.add('rotate-90');
+                            popoverArrow.style.top = `${popover.offsetHeight / 2 - 5}px`;
+                            popoverArrow.style.left = `${popover.offsetWidth + 3}px`;
+                        }
+                        break;
                     case 'right':
-                    popover.style.top = `${rect.top + rect.height / 2 - popover.offsetHeight / 2 + scrollY}px`;
-                    popover.style.left = `${rect.right + 8}px`;
-                    popover.querySelector('.popover-arrow').classList.add('-rotate-90');
-                    popover.querySelector('.popover-arrow').style.top = `${popover.offsetHeight / 2 - 5}px`;
-                    popover.querySelector('.popover-arrow').style.left = `${-3}px`;
-                    break;
+                        popover.style.top = `${rect.top + rect.height / 2 - popover.offsetHeight / 2 + scrollY}px`;
+                        popover.style.left = `${rect.right + 8}px`;
+                        if (popoverArrow)
+                        {
+                            popoverArrow.classList.add('-rotate-90');
+                            popoverArrow.style.top = `${popover.offsetHeight / 2 - 5}px`;
+                            popoverArrow.style.left = `${-3}px`;
+                        }
+                        break;
                 }
             }
 

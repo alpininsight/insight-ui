@@ -166,34 +166,7 @@
 <div class="flex flex-col space-y-2">
     <h3>{% trans "Dropdown menus" %}</h3>
     <div class="flex gap-2">
-        <div class="relative">
-            <button data-dropdown-toggle="example-menu1" class="btn btn-primary">
-                {% trans "User" %}
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" class="size-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
-            </button>
-
-            <div id="example-menu1" class="bg-white border border-gray-300 dark:border-0 rounded-sm shadow-lg">
-                <div class="py-1">
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">{% trans "Profil" %}</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">{% trans "Settings" %}</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">{% trans "Logout" %}</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="relative">
-            <button data-dropdown-toggle="example-menu2" class="btn btn-secondary">
-                {% trans "Settings" %}
-            </button>
-
-            <div id="example-menu2" class="bg-white border border-gray-300 dark:border-0 rounded-sm shadow-lg">
-                <div class="py-1">
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">{% trans "Option A" %}</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">{% trans "Option B" %}</a>
-                </div>
-            </div>
-        </div>
+        {% include "insight_ui/components/dropdown.html" with dropdown=user_dropdown %}
+        {% include "insight_ui/components/dropdown.html" with dropdown=settings_dropdown %}
     </div>
 </div>
