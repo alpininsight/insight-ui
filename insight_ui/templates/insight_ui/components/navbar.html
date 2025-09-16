@@ -5,7 +5,7 @@
     {% trans 'Jump to main content' %}
 </a>
 
-<nav role="navigation" aria-label="{% trans 'Main navigation' %}" class="fixed w-full h-16 z-50 bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700 px-4 md:px-24 py-3">
+<nav role="navigation" aria-label="{% trans 'Main navigation' %}" class="fixed w-full h-16 z-50 bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700 px-4 md:px-16 py-3">
   <!--- Desktop Navigation -->
   <div class="flex flex-wrap justify-between items-center gap-4 lg:gap-16 h-full">
     <!-- Brand Logo -->
@@ -41,7 +41,7 @@
     </div>
 
     <div id="mobile-menu" class="hidden lg:block h-full w-full lg:w-fit grow">
-      <div class="flex flex-col lg:flex-row lg:justify-between gap-2 w-full lg:h-full p-2 lg:p-0 bg-gray-800 border border-gray-600 shadow-lg lg:shadow-none lg:bg-none lg:border-none rounded">
+      <div class="flex flex-col lg:flex-row lg:justify-between gap-2 w-full lg:h-full p-2 lg:p-0 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 shadow-lg lg:shadow-none lg:bg-transparent lg:border-none rounded">
         <!-- Main-Navigation -->
         {% if links %}
             <ul class="flex flex-col lg:flex-row justify-items-stretch lg:items-center w-full lg:w-fit">
@@ -51,30 +51,24 @@
                       {% if link.view_name %}
                         <a
                           href="{% url link.view_name %}"
-                          class="flex items-center gap-2 h-full border-b-2 {% if link.active %}text-insight-text-link border-insight-text-link{% else %}text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link border-transparent{% endif %} px-4 py-2 text-sm font-medium transition-colors duration-200"
+                          class="flex gap-2 h-full border-b-2 {% if link.active %}text-insight-text-link border-insight-text-link{% else %}text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link border-transparent{% endif %} px-4 py-2 text-sm transition-colors duration-200"
                           {% if link.active %}aria-current="page"{% endif %}
                           {% if link.external %}target="_blank" rel="noopener"{% endif %}
                         >
                           {% if link.icon %}
-                            <span class="inline-block">
-                              {% include "insight_ui/components/icons.html" with icon=link.icon %}
-                            </span>
+                            {% icon link.icon %}
                           {% endif %}
                           {{ link.text }}
                         </a>
                       {% elif link.open_dropdown %}
                         <div class="relative">
-                          <button data-dropdown-toggle="{{ link.open_dropdown }}" class="flex items-center gap-2 h-full border-b-2 {% if link.active %}text-insight-text-link border-insight-text-link{% else %}text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link border-transparent{% endif %} px-4 py-2 text-sm font-medium transition-colors duration-200">
+                          <button data-dropdown-toggle="{{ link.open_dropdown }}" class="flex gap-2 h-full border-b-2 {% if link.active %}text-insight-text-link border-insight-text-link{% else %}text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link border-transparent{% endif %} px-4 py-2 text-sm transition-colors duration-200">
                             {% if link.icon %}
-                              <span class="inline-block">
-                                {% include "insight_ui/components/icons.html" with icon=link.icon %}
-                              </span>
+                              {% icon link.icon %}
                             {% endif %}
                             {{ link.text }}
                             {% if link.chevron %}
-                              <span class="inline-block">
-                                {% include "insight_ui/components/icons.html" with icon=link.chevron %}
-                              </span>
+                              {% icon name="chevron_down" size="small" %}
                             {% endif %}
                           </button>
                           <div id="{{ link.open_dropdown }}" class="bg-white border border-gray-300 dark:border-0 rounded-sm shadow-lg">
@@ -87,7 +81,7 @@
                         </div>
                       {% elif link.open_modal %}
                         <button
-                          class="text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link px-4 py-2 text-sm font-medium transition-colors duration-200"
+                          class="text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link px-4 py-2 text-sm transition-colors duration-200"
                           data-insight-toggle="modal"
                           data-insight-target="{{ link.open_modal }}">
                           {{ link.text }}

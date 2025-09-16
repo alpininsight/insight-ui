@@ -1,7 +1,6 @@
 /**
  * Insight UI - Component Initializer
  */
-console.log('📄 insight-ui-init.js wird geladen...');
 
 document.addEventListener('DOMContentLoaded', function () {
   console.log('🚀 InsightUI Initialisierung gestartet');
@@ -9,37 +8,46 @@ document.addEventListener('DOMContentLoaded', function () {
   console.log('🔍 HTMX verfügbar:', typeof htmx !== 'undefined');
   console.log('🔍 WebSocket API verfügbar:', typeof WebSocket !== 'undefined');
 
-  // Prüfe ob alle Module verfügbar sind
-  console.log('🔍 Verfügbare Module:');
+  // Check if all modules available
+  console.log('🔍 Available modules:');
+  console.log('  - Code Block:', typeof InsightUI.CodeBlock);
   console.log('  - Collapsible:', typeof InsightUI.Collapsible);
   console.log('  - Dropdown:', typeof InsightUI.Dropdown);
   console.log('  - Modal:', typeof InsightUI.Modal);
+  console.log('  - Popover:', typeof InsightUI.Popover);
+  console.log('  - Language Select:', typeof InsightUI.SelectLanguage);
   console.log('  - Sidebar:', typeof InsightUI.Sidebar);
-  console.log('  - ThemeToggle:', typeof InsightUI.ThemeToggle);
+  console.log('  - Theme Toggle:', typeof InsightUI.ThemeToggle);
+  console.log('  - Tooltip:', typeof InsightUI.Tooltip);
   console.log('  - WebSocket:', typeof InsightUI.WebSocket);
 
-  InsightUI.Navbar?.init?.();
-  console.log('📊 Navbar initialisiert');
-
-  InsightUI.Alert?.init?.();
-  console.log('🚨 Alert initialisiert');
-
-  InsightUI.ThemeToggle?.init?.();
-  console.log('🌓 ThemeToggle initialisiert');
-
-  InsightUI.Modal?.init?.();
-  console.log('📋 Modal initialisiert');
-
-  InsightUI.Sidebar?.init?.();
-  console.log('📂 Sidebar initialisiert');
-
-  InsightUI.Form?.init?.();
-  console.log('📝 Form initialisiert');
-
-  // InsightUI.WebSocket?.init?.();
+  // Initialize all modules
+  window.initCarousels();
+  InsightUI.CodeBlock.init();
+  InsightUI.Collapsible.init();
+  InsightUI.Dropdown.init();
+  InsightUI.Modal.init();
+  InsightUI.Popover.init();
+  InsightUI.SelectLanguage.init();
+  InsightUI.Sidebar.init();
+  InsightUI.ThemeToggle.init();
+  InsightUI.Tooltip.init();
+  // InsightUI.WebSocket.init();
   // console.log('🔌 WebSocket initialisiert');
+
+  // Re-Init off all (new) objects
+  htmx.on("htmx:load", function(evt) {
+    window.initCarousels();
+    InsightUI.CodeBlock.init();
+    InsightUI.Collapsible.init();
+    InsightUI.Dropdown.init();
+    InsightUI.Modal.init();
+    InsightUI.Popover.init();
+    InsightUI.SelectLanguage.init();
+    InsightUI.Sidebar.init();
+    // InsightUI.ThemeToggle.init();
+    InsightUI.Tooltip.init();
+  });
 
   console.log('✅ Alle InsightUI Komponenten erfolgreich initialisiert');
 });
-
-console.log('📄 insight-ui-init.js vollständig geladen');

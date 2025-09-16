@@ -8,7 +8,7 @@ Das Insight UI Framework bietet eine Sammlung von UI-Komponenten und Hilfsmittel
 
 Die Komponenten des Frameworks sind unter Beachtung der **Barrierefreiheit** implementiert und bieten im Bezug auf **Internationalisierung** eine Unterstützung für ein **RTL-Layout** für Sprachen, welche von rechts nach links gelesen werden.
 
-Für Performance unterstützen entsprechende Komponenten die Verwendung von **HTMX** Requests, um nur einzelne ausschnitte des _DOM_ zzu ändern, ohne einen kompletten Seiten-Reload.
+Für Performance unterstützen entsprechende Komponenten die Verwendung von **HTMX** Requests, um nur einzelne ausschnitte des _DOM_ zu ändern, ohne einen kompletten Seiten-Reload.
 
 ## Installation
 

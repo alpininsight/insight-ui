@@ -17,6 +17,7 @@ InsightUI.Modal = {
         }
       });
     });
+
+    console.log("Modals initialized!");
   }
 };
-document.addEventListener('DOMContentLoaded', InsightUI.Modal.init);

@@ -4,6 +4,8 @@ Manchmal ist die Beschriftung oder das Icon eines Buttons o.ä. nicht eindeutig 
 
 Ein Tooltip sollte nur für kurze Informationstexte (meist nur ein Wort) verwendet werden, wenn mehr Informationen angezeigt werden sollen, sollte stattdessen die [Popover-Komponente](popover.md) verwendet werden.
 
+## Verwendung
+
 ```django
 <button data-tooltip-trigger="tt-demo-bottom" data-position="bottom" class="btn btn-primary">{% trans "Click me!" %}</button>
 {% include "insight_ui/components/tooltip.html" with text=_("This is a tooltip.") tag_id="tt-demo-bottom" %}

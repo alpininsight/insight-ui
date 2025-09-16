@@ -17,8 +17,6 @@ Die Alert-Komponente bietet eine Möglichkeit, Benutzern wichtige Informationen,
 | `message` | `str` | `""` | Die Hauptnachricht der Benachrichtigung |
 | `type` | `str` | `"info"` | Der Typ der Benachrichtigung (`"info"`, `"success"`, `"warning"`, `"error"`) |
 | `dismissible` | `bool` | `True` | Ob die Benachrichtigung schließbar sein soll |
-| `details` | `str` | `""` | Zusätzliche Details zur Hauptnachricht |
-| `id` | `str` | `""` | Eine optionale ID für das Alert-Element |
 
 ## Beispiel
 

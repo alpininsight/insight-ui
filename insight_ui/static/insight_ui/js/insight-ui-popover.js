@@ -120,7 +120,8 @@ InsightUI.Popover = {
                 popover.classList.add("hidden");
             });
         }
+
+        console.log("Popover triggers: ", triggers);
+        console.log("Popovers initialized!");
     }
 };
-
-document.addEventListener('DOMContentLoaded', InsightUI.Popover.init);

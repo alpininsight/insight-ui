@@ -30,10 +30,10 @@
     --color-insight-info: #06b6d4;
     --color-insight-info-hover: #22d3ee;
     --color-insight-info-active: #67e8f9;
-    --color-insight-text-primary: #262626;
-    --color-insight-text-secondary: #737373;
-    --color-insight-text-primary-dark: #e5e7eb;
-    --color-insight-text-secondary-dark: #94a3b8;
+    --color-insight-text-primary: oklch(26.9% 0 0);
+    --color-insight-text-secondary: oklch(55.6% 0 0);
+    --color-insight-text-primary-dark: oklch(92.2% 0 0);
+    --color-insight-text-secondary-dark: oklch(70.8% 0 0);
     --color-insight-text-link: #3b82f6;
     --color-insight-text-link-hover: #93c5fd;
 
@@ -61,9 +61,22 @@
     h3 {
         @apply text-xl font-semibold text-insight-text-primary dark:text-white mb-2;
     }
+    h4 {
+        @apply text-lg font-semibold text-insight-text-primary dark:text-white mb-1;
+    }
 }
 
 @layer components {
+    .text-primary {
+        @apply text-insight-text-primary dark:text-insight-text-primary-dark;
+    }
+    .text-secondary {
+        @apply text-insight-text-secondary dark:text-insight-text-secondary-dark;
+    }
+    .text-link {
+        @apply text-insight-text-link hover:text-insight-text-link-hover underline;
+    }
+
     .btn {
         @apply flex gap-2 items-center justify-center border-2 rounded-sm text-white px-5 py-1.5;
     }
@@ -129,6 +142,10 @@
     }
 
     .component-container {
-        @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md p-4 md:p-6
+        @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md p-4 md:p-6;
+    }
+
+    .inline-tag {
+        @apply bg-gray-200 dark:bg-gray-800 rounded px-2 py-px;
     }
 }

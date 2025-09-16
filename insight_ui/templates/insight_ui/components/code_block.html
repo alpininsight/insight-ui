@@ -1,7 +1,7 @@
 {% load i18n %}
 
-<div class="max-w-2xl">
-    <div class="flex justify-end">
+<div class="bg-[#f5f2f0] max-w-7xl rounded border border-gray-300 dark:border-0">
+    <div class="flex justify-end bg-gray-300 rounded-t p-2">
         <button class="btn btn-secondary btn-xs {{ id }}" data-clipboard-target="#{{ id }}">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5">
                 <path fill-rule="evenodd" d="M7.502 6h7.128A3.375 3.375 0 0 1 18 9.375v9.375a3 3 0 0 0 3-3V6.108c0-1.505-1.125-2.811-2.664-2.94a48.972 48.972 0 0 0-.673-.05A3 3 0 0 0 15 1.5h-1.5a3 3 0 0 0-2.663 1.618c-.225.015-.45.032-.673.05C8.662 3.295 7.554 4.542 7.502 6ZM13.5 3A1.5 1.5 0 0 0 12 4.5h4.5A1.5 1.5 0 0 0 15 3h-1.5Z" clip-rule="evenodd" />
@@ -10,8 +10,8 @@
             {% trans "Copy" %}
         </button>
     </div>
-    <div class="overflow-x-auto">
-        <pre id="{{ id }}" class="language-{{ lang }} rounded border border-gray-300 dark:border-0"><code>{{ code }}</code></pre>
+    <div class="max-w-5xl overflow-x-auto">
+        <pre id="{{ id }}" class="language-{{ lang }}"><code>{{ code }}</code></pre>
     </div>
 </div>
 

@@ -1,0 +1,68 @@
+{% load static insight_tags i18n %}
+
+<h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">Insight UI Tooltip</h1>
+
+<!-- Component Demo -->
+<section>
+    <p class="text-secondary leading-loose">
+        {% trans 'Manchmal ist die Beschriftung oder das Icon eines Buttons o.ä. nicht eindeutig genug und lässt Raum für Interpretationen, was im schlimmsten Fall zu Verwirrung führen kann. In solchen Fällen ist es hilfreich und wichtig, zusätzliche Informationen anzuzeigen. Um nicht den Fluss der Weboberfläche zu stören, eignen sich _Tooltips_. Diese werden nur angezeigt, wenn der Nutzer sich mit dem Mauszeiger über dem entsprechenden Element befindet. Der Tooltip wird getrennt wom restlichen Layout über allen anderen Elementen angezeigt und ist damit immer sichtbar und stört nicht das gesamtbild.' %}
+    </p>
+    <p class="text-secondary leading-loose">
+        {% trans "Ein Tooltip sollte nur für kurze Informationstexte (meist nur ein Wort) verwendet werden, wenn mehr Informationen angezeigt werden sollen, sollte stattdessen die [Popover-Komponente](popover.md) verwendet werden." %}
+    </p>
+
+    <div class="bg-gray-100 dark:bg-gray-950 dark:border dark:border-gray-800 rounded-sm px-8 py-16 my-12">
+        <div class="flex flex-col md:flex-row gap-12">
+            <button data-tooltip-trigger="tt-demo-top" data-position="top" class="btn btn-primary">{% trans "Top" %}</button>
+            {% include "insight_ui/components/tooltip.html" with text=_("This is a tooltip.") show_arrow="True" tag_id="tt-demo-top" %}
+
+            <button data-tooltip-trigger="tt-demo-bottom" data-position="bottom" class="btn btn-primary">{% trans "Bottom" %}</button>
+            {% include "insight_ui/components/tooltip.html" with text=_("This is a tooltip.") tag_id="tt-demo-bottom" %}
+
+            <button data-tooltip-trigger="tt-demo-right" data-position="right" class="btn btn-primary">{% trans "Right" %}</button>
+            {% include "insight_ui/components/tooltip.html" with text=_("This is a tooltip.") show_arrow="True" tag_id="tt-demo-right" %}
+
+            <button data-tooltip-trigger="tt-demo-left" data-position="left" class="btn btn-primary">{% trans "Left" %}</button>
+            {% include "insight_ui/components/tooltip.html" with text=_("This is a tooltip.") tag_id="tt-demo-left" %}
+        </div>
+    </div>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h3>{% trans "Verwendung" %}</h3>
+
+    <div id="Step_Bar_Usage" data-insight-code-block="Django">
+        &lt;button data-tooltip-trigger="tt-demo-bottom" data-position="bottom" class="btn btn-primary"&gt;{% trans "Click me!" %}&lt;/button&gt;
+        &lcub;% include "insight_ui/components/tooltip.html" with text=_("This is a tooltip.") tag_id="tt-demo-bottom" %&rcub;
+    </div>
+
+    <p>
+        {% trans "> **_Info_**: Der Pfeil kann ausgeschaltet werden, indem der `<div>`-Container unter dem `<!-- Arrow -->` Kommentar entfernt wird." %}
+    </p>
+</section>
+
+<section class="mt-16">
+    <h3>{% trans "data-* Attribute" %}</h3>
+    <ol>
+        <li><span class="bg-gray-100 dark:bg-gray-800 rounded px-2 py-0.5 text-primary font-semibold">data-tooltip-trigger=&lt;tooltip_ID&gt;</span>: {% trans "Setzt den Auslöser für den Tooltip auf das Element mit der entsprechenden ID." %}</li>
+        <li><span class="bg-gray-100 dark:bg-gray-800 rounded px-2 py-0.5 text-primary font-semibold">data-position</span>: {% trans "Bestimmt wo im Bezug auf das Element, der Tooltip angezeigt werden soll. Mögliche Werte sind: 'top', 'bottom', 'right' und 'left'." %}</li>
+    </ol>
+</section>
+
+<section class="mt-16">
+    <h3>{% trans "Parameter" %}</h3>
+    <ol>
+        <li><span class="bg-gray-100 dark:bg-gray-800 rounded px-2 py-0.5 text-primary font-semibold">text</span>: {% trans "Der anzuzeigende Text." %}</li>
+        <li><span class="bg-gray-100 dark:bg-gray-800 rounded px-2 py-0.5 text-primary font-semibold">tag_id</span>: {% trans "Eine einzigartige ID für den Tooltip, diese muss bei dem auslösenden Element ebenfalls angegeben werden." %}</li>
+    </ol>
+</section>
+
+<section>
+    <h3>{% trans "Related topics" %}</h3>
+    <ol>
+        <li><a>{% trans "Popover" %}</a></li>
+    </ol>
+</section>

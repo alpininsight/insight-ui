@@ -1,0 +1,38 @@
+{% load static insight_tags i18n %}
+
+<h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">Insight UI Chat</h1>
+
+<!-- Component Demo -->
+<section>
+    <p class="text-secondary leading-loose">
+        {% trans 'Die Chat Komponente bietet ein einfaches Frontend für eine Chat-Anwendung. Die Komponente besteht aus einem Text-Input und einem Bereich für die Nachrichten. Der Inhalt des Nachrichtenbereichs wird mittels HTMX bei jedem Response erweitert, ohne dass die Seite neu geladen wird.' %}
+    </p>
+
+    <div class="bg-gray-100 dark:bg-gray-950 dark:border dark:border-gray-800 rounded-sm px-8 py-16 my-12">
+        {% include "insight_ui/components/chat.html" %}
+    </div>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h3>{% trans "Verwendung" %}</h3>
+    <div id="Step_Bar_Usage" data-insight-code-block="Django">
+        &lcub;% include "insight_ui/components/chat.html" %&rcub;
+    </div>
+</section>
+
+<section class="mt-16">
+    <h3>{% trans "Parameter" %}</h3>
+
+    <p class="text-secondary italic">Todo</p>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<section>
+    <h3>{% trans "Related topics" %}</h3>
+
+    <p class="text-secondary italic">Todo</p>
+</section>

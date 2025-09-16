@@ -16,6 +16,27 @@ def get_item(dictionary: dict, key: str) -> Any:  # noqa: ANN401
     return dictionary.get(key)
 
 
+@register.inclusion_tag("insight_ui/components/icons.html")
+def icon(name: str = "", size: str = "") -> dict[str, Any]:
+    """
+    Render specified icon with given size.
+
+    Arguments:
+    ---------
+        name (str or dict): name of the icon or a dict with "name" and "size".
+        size (str): size of the icon.
+
+    Returns:
+    -------
+        icon_dict (dict): a dictionary with the information about the icon.
+
+    """
+    if isinstance(name, dict):
+        return {"name": name.get("name", ""), "size": name.get("size", "")}
+
+    return {"name": name, "size": size}
+
+
 @register.filter
 def diff(text1: str, text2: str) -> str:
     """Generate a visualization of the differences between to texts."""

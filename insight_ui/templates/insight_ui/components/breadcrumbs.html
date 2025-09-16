@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n insight_tags %}
 
 <nav role="navigation" aria-label="{% trans 'Breadcrumb-Navigation' %}">
   <ol class="flex gap-1">
@@ -6,7 +6,9 @@
       <li class="flex items-center">
         {% if not forloop.last %}
           <a href="{% url item.view_name %}{{ item.query_params }}" class="inline-flex gap-1 text-insight-text-link hover:text-insight-text-link-hover">
-            {% include "insight_ui/components/icons.html" with icon=item.icon %}
+            {% if item.icon %}
+              {% icon item.icon %}
+            {% endif %}
             {{ item.text }}
           </a>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="text-gray-300 dark:text-gray-500 size-4 ms-1 inline-block rtl:rotate-180">
@@ -14,7 +16,9 @@
           </svg>
         {% else %}
           <span aria-current="page" class="inline-flex gap-1 text-neutral-400">
-            {% include "insight_ui/components/icons.html" with icon=item.icon %}
+            {% if item.icon %}
+              {% icon item.icon %}
+            {% endif %}
             {{ item.text }}
           </span>
         {% endif %}

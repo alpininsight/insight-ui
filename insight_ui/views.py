@@ -9,9 +9,17 @@ from django.views.decorators.http import require_GET, require_http_methods
 
 from insight_ui.demo_context import (
     DEMO_FIELDS,
+    get_alert_context,
+    get_breadcrumb_context,
     get_card_storybook_data,
+    get_differentiator_context,
     get_filter_storybook_data,
     get_form_storybook_data,
+    get_input_element_context,
+    get_modal_context,
+    get_nav_and_footer_context,
+    get_sidebar_data,
+    get_step_bar_context,
     get_storybook_context,
     get_table_storybook_data,
 )
@@ -176,12 +184,168 @@ def form_submit(request: HttpRequest) -> HttpResponse | JsonResponse:
     return render(request, "insight_ui/storybook.html", context)
 
 
+def alert_detailpage_view(request: HttpRequest) -> HttpResponse:
+    """Render detailpage of the alert component."""
+    if request.headers.get("HX-Request"):
+        context = get_alert_context()
+        context["search_query"] = request.GET.get("search", "")
+        return render(request, "insight_ui/docs/partial/alert_detailpage.html", context)
+
+    context = get_nav_and_footer_context() | get_sidebar_data() | get_alert_context()
+    context["template_name"] = "alert_detailpage"
+    return render(request, "insight_ui/docs/component_detailpage.html", context)
+
+
+def breadcrumbs_detailpage_view(request: HttpRequest) -> HttpResponse:
+    """Render detailpage of the breadcrumb component."""
+    if request.headers.get("HX-Request"):
+        context = get_breadcrumb_context()
+        context["search_query"] = request.GET.get("search", "")
+        return render(request, "insight_ui/docs/partial/breadcrumb_detailpage.html", context)
+
+    context = get_nav_and_footer_context() | get_sidebar_data() | get_breadcrumb_context()
+    context["template_name"] = "breadcrumb_detailpage"
+    return render(request, "insight_ui/docs/component_detailpage.html", context)
+
+
+def chat_detailpage_view(request: HttpRequest) -> HttpResponse:
+    """Render detailpage of the chat component."""
+    if request.headers.get("HX-Request"):
+        context = {}
+        context["search_query"] = request.GET.get("search", "")
+        return render(request, "insight_ui/docs/partial/chat_detailpage.html", context)
+
+    context = get_nav_and_footer_context() | get_sidebar_data()
+    context["template_name"] = "chat_detailpage"
+    return render(request, "insight_ui/docs/component_detailpage.html", context)
+
+
+def code_block_detailpage_view(request: HttpRequest) -> HttpResponse:
+    """Render detailpage of the code block component."""
+    if request.headers.get("HX-Request"):
+        context = {}
+        context["search_query"] = request.GET.get("search", "")
+        return render(request, "insight_ui/docs/partial/code_block_detailpage.html", context)
+
+    context = get_nav_and_footer_context() | get_sidebar_data()
+    context["template_name"] = "code_block_detailpage"
+    return render(request, "insight_ui/docs/component_detailpage.html", context)
+
+
+def differentiator_detailpage_view(request: HttpRequest) -> HttpResponse:
+    """Render detailpage of the differentiator component."""
+    if request.headers.get("HX-Request"):
+        context = get_differentiator_context()
+        context["search_query"] = request.GET.get("search", "")
+        return render(request, "insight_ui/docs/partial/differentiator_detailpage.html", context)
+
+    context = get_nav_and_footer_context() | get_sidebar_data() | get_differentiator_context()
+    context["template_name"] = "differentiator_detailpage"
+    return render(request, "insight_ui/docs/component_detailpage.html", context)
+
+
+def geo_map_detailpage_view(request: HttpRequest) -> HttpResponse:
+    """Render detailpage of the geo map component."""
+    if request.headers.get("HX-Request"):
+        context = {}
+        context["search_query"] = request.GET.get("search", "")
+        return render(request, "insight_ui/docs/partial/geo_maps_detailpage.html", context)
+
+    context = get_nav_and_footer_context() | get_sidebar_data()
+    context["template_name"] = "geo_maps_detailpage"
+    return render(request, "insight_ui/docs/component_detailpage.html", context)
+
+
+def input_elements_detailpage_view(request: HttpRequest) -> HttpResponse:
+    """Render detailpage of the input elements."""
+    if request.headers.get("HX-Request"):
+        context = get_input_element_context()
+        context["search_query"] = request.GET.get("search", "")
+        return render(request, "insight_ui/docs/partial/input_elements_detailpage.html", context)
+
+    context = get_nav_and_footer_context() | get_sidebar_data() | get_input_element_context()
+    context["template_name"] = "input_elements_detailpage"
+    return render(request, "insight_ui/docs/component_detailpage.html", context)
+
+
+def live_content_detailpage_view(request: HttpRequest) -> HttpResponse:
+    """Render detailpage of the live content component."""
+    if request.headers.get("HX-Request"):
+        context = {}
+        context["search_query"] = request.GET.get("search", "")
+        return render(request, "insight_ui/docs/partial/live_content_detailpage.html", context)
+
+    context = get_nav_and_footer_context() | get_sidebar_data()
+    context["template_name"] = "live_content_detailpage"
+    return render(request, "insight_ui/docs/component_detailpage.html", context)
+
+
+def modal_detailpage_view(request: HttpRequest) -> HttpResponse:
+    """Render detailpage of the modal component."""
+    if request.headers.get("HX-Request"):
+        context = get_modal_context()
+        context["search_query"] = request.GET.get("search", "")
+        return render(request, "insight_ui/docs/partial/modal_detailpage.html", context)
+
+    context = get_nav_and_footer_context() | get_sidebar_data() | get_modal_context()
+    context["template_name"] = "modal_detailpage"
+    return render(request, "insight_ui/docs/component_detailpage.html", context)
+
+
+def popover_detailpage_view(request: HttpRequest) -> HttpResponse:
+    """Render detailpage of the popover component."""
+    if request.headers.get("HX-Request"):
+        context = {}
+        context["search_query"] = request.GET.get("search", "")
+        return render(request, "insight_ui/docs/partial/popover_detailpage.html", context)
+
+    context = get_nav_and_footer_context() | get_sidebar_data()
+    context["template_name"] = "popover_detailpage"
+    return render(request, "insight_ui/docs/component_detailpage.html", context)
+
+
+def steps_bar_detailpage_view(request: HttpRequest) -> HttpResponse:
+    """Render detailpage of the steps bar component."""
+    if request.headers.get("HX-Request"):
+        context = get_step_bar_context()
+        context["search_query"] = request.GET.get("search", "")
+        return render(request, "insight_ui/docs/partial/step_bar_detailpage.html", context)
+
+    context = get_nav_and_footer_context() | get_sidebar_data() | get_step_bar_context()
+    context["template_name"] = "step_bar_detailpage"
+    return render(request, "insight_ui/docs/component_detailpage.html", context)
+
+
+def tooltip_detailpage_view(request: HttpRequest) -> HttpResponse:
+    """Render detailpage of the tooltip component."""
+    if request.headers.get("HX-Request"):
+        context = {}
+        context["search_query"] = request.GET.get("search", "")
+        return render(request, "insight_ui/docs/partial/tooltip_detailpage.html", context)
+
+    context = get_nav_and_footer_context() | get_sidebar_data()
+    context["template_name"] = "tooltip_detailpage"
+    return render(request, "insight_ui/docs/component_detailpage.html", context)
+
+
+def web_socket_detailpage_view(request: HttpRequest) -> HttpResponse:
+    """Render detailpage of the web socket component."""
+    if request.headers.get("HX-Request"):
+        context = {}
+        context["search_query"] = request.GET.get("search", "")
+        return render(request, "insight_ui/docs/partial/web_socket_detailpage.html", context)
+
+    context = get_nav_and_footer_context() | get_sidebar_data()
+    context["template_name"] = "web_socket_detailpage"
+    return render(request, "insight_ui/docs/component_detailpage.html", context)
+
+
 def storybook_view(request: HttpRequest) -> HttpResponse:
     """Start page with base ui-components."""
     context = get_storybook_context()
     context["search_query"] = request.GET.get("search", "")
 
-    return render(request, "insight_ui/storybook.html", context)
+    return render(request, "insight_ui/index.html", context)
 
 
 def filter_storybook_view(request: HttpRequest) -> HttpResponse:

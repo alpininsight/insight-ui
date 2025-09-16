@@ -133,6 +133,3 @@ window.initCarousels = function () {
     }
   });
 };
-
-// Initialize carousels on page load
-document.addEventListener("DOMContentLoaded", window.initCarousels);

@@ -37,7 +37,8 @@ InsightUI.Dropdown = {
                 menu.classList.add("hidden");
             });
         }
+
+        console.log("Dropdowns: ", toggleButtons);
+        console.log("Dropdowns initialized!");
     }
 };
-
-document.addEventListener('DOMContentLoaded', InsightUI.Dropdown.init);

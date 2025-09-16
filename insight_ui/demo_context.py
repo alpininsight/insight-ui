@@ -193,7 +193,7 @@ def get_nav_and_footer_context() -> dict:
                 "text": "A modern, accessible, and responsive UI library for Django projects.",
             },
             "links": [
-                {"text": _("Startpage"), "icon": {"name": "home", "size": "small"}, "view_name": "storybook_view"},
+                {"text": _("Startpage"), "icon": {"name": "home", "size": "xs"}, "view_name": "storybook_view"},
                 {"text": _("Storybook"), "view_name": "storybook_view"},
                 {"text": _("Documentation"), "view_name": "storybook_view"},
             ],
@@ -204,19 +204,144 @@ def get_nav_and_footer_context() -> dict:
 def get_sidebar_data() -> dict:
     """Serve data for the sidebars."""
     return {
-        "right_sidebar_items": [
-            {"text": _("Notifications"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
-            {"text": _("Messages"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
-            {"text": _("Tasks"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
-            {"text": _("Calender"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
-            {"text": _("Profile"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
-        ],
-        "left_sidebar_items": [
-            {"text": _("Dashboard"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
-            {"text": _("User"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
-            {"text": _("Settings"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
-            {"text": _("Help"), "icon": {"name": "home", "size": "small"}, "url": reverse("storybook_view")},
-        ],
+        "right_sidebar": {
+            "title": _("Secondary Sidebar"),
+            "icon": {"name": "home", "size": "small"},
+            "categories": [
+                {
+                    "caption": "Main",
+                    "icon": {"name": "home", "size": "small"},
+                    "items": [
+                        {
+                            "text": _("Notifications"),
+                            "icon": {"name": "home", "size": "small"},
+                            "url": reverse("storybook_view"),
+                        },
+                        {
+                            "text": _("Messages"),
+                            "icon": {"name": "home", "size": "small"},
+                            "url": reverse("storybook_view"),
+                        },
+                        {
+                            "text": _("Tasks"),
+                            "icon": {"name": "home", "size": "small"},
+                            "url": reverse("storybook_view"),
+                        },
+                        {
+                            "text": _("Calender"),
+                            "icon": {"name": "home", "size": "small"},
+                            "url": reverse("storybook_view"),
+                        },
+                        {
+                            "text": _("Profile"),
+                            "icon": {"name": "home", "size": "small"},
+                            "url": reverse("storybook_view"),
+                        },
+                    ],
+                }
+            ],
+        },
+        "left_sidebar": {
+            "title": _("Insight UI Components"),
+            "icon": {"name": "cards", "size": "small"},
+            "categories": [
+                {
+                    "caption": _("Main"),
+                    "icon": {"name": "sparks", "size": "small"},
+                    "items": [
+                        {"text": _("Alerts"), "url": reverse("alert_detailpage_view"), "htmx": {"target": "#content"}},
+                        {
+                            "text": _("Breadcrumb-Navigation"),
+                            "url": reverse("breadcrumbs_detailpage_view"),
+                            "htmx": {"target": "#content"},
+                        },
+                        {"text": _("Chat"), "url": reverse("chat_detailpage_view"), "htmx": {"target": "#content"}},
+                        {
+                            "text": _("Code Blocks"),
+                            "url": reverse("code_block_detailpage_view"),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Differentiator"),
+                            "url": reverse("differentiator_detailpage_view"),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Geo-Maps"),
+                            "url": reverse("geo_map_detailpage_view"),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Input Elements"),
+                            "url": reverse("input_elements_detailpage_view"),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Live-Content (Pull)"),
+                            "url": reverse("live_content_detailpage_view"),
+                            "htmx": {"target": "#content"},
+                        },
+                        {"text": _("Modals"), "url": reverse("modal_detailpage_view"), "htmx": {"target": "#content"}},
+                        {
+                            "text": _("Popovers"),
+                            "url": reverse("popover_detailpage_view"),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Step Bars"),
+                            "url": reverse("step_bar_detailpage_view"),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Tooltips"),
+                            "url": reverse("tooltip_detailpage_view"),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Web-Sockets (Push)"),
+                            "url": reverse("web_socket_detailpage_view"),
+                            "htmx": {"target": "#content"},
+                        },
+                    ],
+                },
+                {
+                    "caption": _("Lists & Tables"),
+                    "icon": {"name": "sparks", "size": "small"},
+                    "items": [
+                        {"text": _("Tables"), "url": reverse("storybook_view")},
+                        {"text": _("Pagination"), "url": reverse("storybook_view")},
+                        {"text": _("Infinite  Scroll"), "url": reverse("storybook_view")},
+                    ],
+                },
+                {
+                    "caption": _("Search & Filters"),
+                    "icon": {"name": "sparks", "size": "small"},
+                    "items": [
+                        {"text": _("Search Bar"), "url": reverse("storybook_view")},
+                        {"text": _("Generic Filter"), "url": reverse("storybook_view")},
+                        {"text": _("SQL-Like Filter"), "url": reverse("storybook_view")},
+                    ],
+                },
+                {
+                    "caption": _("Cards"),
+                    "icon": {"name": "sparks", "size": "small"},
+                    "items": [
+                        {"text": _("Cards"), "url": reverse("storybook_view")},
+                        {"text": _("Card Carousel"), "url": reverse("storybook_view")},
+                        {"text": _("Image Carousel"), "url": reverse("storybook_view")},
+                        {"text": _("Toggle View"), "url": reverse("storybook_view")},
+                    ],
+                },
+                {
+                    "caption": _("Forms"),
+                    "icon": {"name": "sparks", "size": "small"},
+                    "items": [
+                        {"text": _("Standard Forms"), "url": reverse("storybook_view")},
+                        {"text": _("HTMX Forms"), "url": reverse("storybook_view")},
+                    ],
+                },
+            ],
+        },
     }
 
 
@@ -431,46 +556,107 @@ def get_storybook_context() -> dict:
         get_nav_and_footer_context()
         | get_sidebar_data()
         | {
-            "user_dropdown": {
-                "tag_id": "DD_user",
-                "title": _("User"),
-                "show_arrow": True,
-                "items": [
-                    {"text": _("Profile"), "view_name": "storybook_view", "icon": {"name": "user", "size": "small"}},
-                    {"text": _("Settings"), "view_name": "storybook_view", "icon": {"name": "cog", "size": "small"}},
-                    {"text": _("Logout"), "view_name": "storybook_view", "icon": {"name": "got-out", "size": "small"}},
-                ],
-            },
-            "settings_dropdown": {
-                "tag_id": "DD_settings",
-                "title": _("Settings"),
-                "show_arrow": False,
-                "items": [
-                    {
-                        "text": _("Personal Information"),
-                        "view_name": "storybook_view",
-                        "icon": {"name": "user", "size": "small"},
-                    },
-                    {"text": _("Appearance"), "view_name": "storybook_view", "icon": {"name": "cog", "size": "small"}},
-                ],
-            },
-            "breadcrumb_items": [
-                {"text": _("Startpage"), "view_name": "storybook_view", "icon": {"name": "home", "size": "small"}},
-                {"text": _("Demo"), "view_name": "storybook_view", "query_params": "?test=123"},
-                {"text": _("Components")},
-            ],
-            "single_breadcrumb_item": [{"text": _("Startpage"), "icon": {"name": "home", "size": "small"}}],
-            "confirm_modal_actions": [
-                {"text": _("Yes, confirm"), "type": "primary", "onclick": 'alert("Confirmed!")'},
-                {"text": _("Abort"), "type": "cancel", "dismiss": True},
-            ],
             "htmx_config": {"url": "/api/form-submit/", "method": "post", "target": "#htmx-form", "swap": "innerHTML"},
-            "textA": "The cat is sleeping on the red sofa.",
-            "textB": "This is a completely different sentence!",
-            "steps_bar_items": [
-                {"title": "Kontaktdaten", "description": "Informationen zur Person und Anschrift.", "completed": True},
-                {"title": "Zahlungsmethode", "description": "Art der Bezahlung.", "completed": False, "current": True},
-                {"title": "Überprüfen", "description": "Prüfen der Angaben und Bezahlen.", "completed": False},
+            "bulletpoints": [
+                {
+                    "title": _("Kontaktdaten"),
+                    "description": _("Informationen zur Person und Anschrift."),
+                    "completed": True,
+                },
+                {"title": _("Zahlungsmethode"), "description": _("Art der Bezahlung auswählen."), "current": True},
+                {"title": _("Überprüfen"), "description": _("Prüfen der Angaben und Bezahlen.")},
             ],
         }
     )
+
+
+def get_alert_context() -> dict:
+    """Serve data for alert detailpage."""
+    return {
+        "params": {
+            "caption": _("Parameter of the alert component."),
+            "empty_msg": _("No data available!"),
+            "headers": [_("Parameter"), _("Type"), _("Default"), _("Description")],
+            "rows": [
+                ["message", "str", "''", _("Die Hauptnachricht der Benachrichtigung.")],
+                ["type", "str", "info", _("Der Typ der Benachrichtigung ('info', 'success', 'warning', 'error')")],
+                ["dismissible", "bool", "True", _("Ob die Benachrichtigung schließbar sein soll.")],
+            ],
+        }
+    }
+
+
+def get_breadcrumb_context() -> dict:
+    """Serve data for breadcrumb detailpage."""
+    return {
+        "breadcrumb_items": [
+            {"text": _("Startpage"), "view_name": "storybook_view", "icon": {"name": "home", "size": "small"}},
+            {"text": _("Demo"), "view_name": "storybook_view", "query_params": "?test=123"},
+            {"text": _("Components")},
+        ],
+        "single_breadcrumb_item": [{"text": _("Startpage"), "icon": {"name": "home", "size": "small"}}],
+    }
+
+
+def get_differentiator_context() -> dict:
+    """Serve data for differentiator detailpage."""
+    return {"textA": "The cat is sleeping on the red sofa.", "textB": "This is a completely different sentence!"}
+
+
+def get_input_element_context() -> dict:
+    """Serve data for input element detailpage."""
+    return {
+        "user_dropdown": {
+            "tag_id": "DD_user",
+            "title": _("User"),
+            "show_arrow": True,
+            "items": [
+                {"text": _("Profile"), "view_name": "storybook_view", "icon": {"name": "user", "size": "small"}},
+                {"text": _("Settings"), "view_name": "storybook_view", "icon": {"name": "cog", "size": "small"}},
+                {"text": _("Logout"), "view_name": "storybook_view", "icon": {"name": "got-out", "size": "small"}},
+            ],
+        },
+        "settings_dropdown": {
+            "tag_id": "DD_settings",
+            "title": _("Settings"),
+            "show_arrow": False,
+            "items": [
+                {
+                    "text": _("Personal Information"),
+                    "view_name": "storybook_view",
+                    "icon": {"name": "user", "size": "small"},
+                },
+                {"text": _("Appearance"), "view_name": "storybook_view", "icon": {"name": "cog", "size": "small"}},
+            ],
+        },
+    }
+
+
+def get_modal_context() -> dict:
+    """Serve data for the modal detailpage."""
+    return {
+        "confirm_modal_actions": [
+            {"text": _("Yes, confirm"), "type": "primary", "onclick": 'alert("Confirmed!")'},
+            {"text": _("Abort"), "type": "cancel", "dismiss": True},
+        ]
+    }
+
+
+def get_step_bar_context() -> dict:
+    """Serve data for step bar detailpage."""
+    return {
+        "steps_bar_items": [
+            {
+                "title": _("Kontaktdaten"),
+                "description": _("Informationen zur Person und Anschrift."),
+                "completed": True,
+            },
+            {
+                "title": _("Zahlungsmethode"),
+                "description": _("Art der Bezahlung auswählen."),
+                "completed": False,
+                "current": True,
+            },
+            {"title": _("Überprüfen"), "description": _("Prüfen der Angaben und Bezahlen."), "completed": False},
+        ]
+    }

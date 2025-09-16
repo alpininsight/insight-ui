@@ -11,6 +11,7 @@ InsightUI.Collapsible = {
         }
       });
     });
+
+    console.log("Collapsible initialized!");
   }
 };
-document.addEventListener('DOMContentLoaded', InsightUI.Collapsible.init);

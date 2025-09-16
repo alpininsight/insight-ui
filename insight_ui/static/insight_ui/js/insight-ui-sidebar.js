@@ -7,6 +7,10 @@ InsightUI.Sidebar = {
 
     for (let wrapper of sidebar_wrappers)
     {
+      const static = wrapper.getAttribute("data-insight-sidebar-static")
+      if (static == "True")
+        continue;
+
       const side = wrapper.getAttribute("data-insight-sidebar");
       const sidebar = wrapper.getElementsByTagName("aside")[0];
       const openBtn = document.querySelector(`.open-btn[data-sidebar-target="${side}"]`);
@@ -72,7 +76,7 @@ InsightUI.Sidebar = {
         // Öffnen, wenn Maus nahe an der Fenster Seite ist
         document.addEventListener('mousemove', (e) => {
           const xThreshold = 50; // Pixel Abstand vom Rand
-          const yThreshold = 64 // Pixel Abstand vom oberen Rand (wird durch Navbar bestimmt)
+          const yThreshold = 0 // 64 Pixel Abstand vom oberen Rand (wird durch Navbar bestimmt)
 
           if (e.clientY > yThreshold)
           {
@@ -101,7 +105,8 @@ InsightUI.Sidebar = {
         });
       }
     }
+
+    console.log("Drawers: ", sidebar_wrappers);
+    console.log("Drawers initialized!");
   }
 };
-
-document.addEventListener('DOMContentLoaded', InsightUI.Sidebar.init);

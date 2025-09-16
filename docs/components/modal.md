@@ -1,6 +1,6 @@
 # Modal-Komponente (Version 0.1.0)
 
-- _Todo_
+Mit der Modal Komponente lassen sich anpassbare Dialoge einbauen. Diese können verwendet werden um dem Nutzer zusätzliche Informationen anzuzeigen oder als Bestätigungsdialoge für diverse Aktionen verwendet werden.
 
 ## Verwendung
 
@@ -15,10 +15,10 @@
 
 ## Parameter
 
-- **html_tag_id**:
-- **title**:
-- **description**:
+- **html_tag_id** _(str)_: Eine eindeutige ID für das Modal-Element.
+- **title** _(str)_: Ein aussagekräftiger Titel für das Dialogfenster.
+- **description** _(str)_: Der hauptinhalt des Dialogs.
 
 ## Verwandte Themen
 
-- _Todo_
+- [Popover](popover.md)

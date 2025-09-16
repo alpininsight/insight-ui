@@ -1,0 +1,59 @@
+{% load static insight_tags i18n %}
+
+<h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">Insight UI Modal</h1>
+
+<!-- Component Demo -->
+<section>
+    <p class="text-secondary leading-loose">
+        {% trans "Mit der Modal Komponente lassen sich anpassbare Dialoge einbauen. Diese können verwendet werden um dem Nutzer zusätzliche Informationen anzuzeigen oder als Bestätigungsdialoge für diverse Aktionen verwendet werden." %}
+    </p>
+
+    <div class="bg-gray-100 dark:bg-gray-950 dark:border dark:border-gray-800 rounded-sm px-8 py-16 my-12">
+        <div class="flex flex-col md:flex-row gap-4">
+            <!-- Standard -->
+            <button class="btn btn-primary w-72" data-insight-toggle="modal" data-insight-target="demo-modal">
+                {% trans "Standard Modal" %}
+            </button>
+            {% modal html_tag_id="demo-modal" title=_("Demo Modal") description=_("This is an example of a standard modal.") %}
+
+            <!-- Action-Buttons -->
+            <button class="btn btn-danger w-72" data-insight-toggle="modal" data-insight-target="delete-modal">
+                {% trans "Modal with Action-Buttons" %}
+            </button>
+            {% modal html_tag_id="delete-modal" title=_("Delete?") description="Please conform deletion!" actions=confirm_modal_actions %}
+        </div>
+    </div>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h3>{% trans "Verwendung" %}</h3>
+    <div id="Step_Bar_Usage" data-insight-code-block="Django">
+        &lcub;% load insight_tags %&rcub;
+
+        &lt;button class="btn btn-primary" data-insight-toggle="modal" data-insight-target="demo-modal"&gt;
+            &lcub;% trans "Open Modal" %&rcub;
+        &lt;/button&gt;
+        &lcub;% modal html_tag_id="demo-modal" title=_("Demo Modal") description=_("Dies ist ein Beispiel-Modal mit Standard-Styling!") %&rcub;
+    </div>
+</section>
+
+<section class="mt-16">
+    <h3>{% trans "Parameter" %}</h3>
+    <ol class="text-secondary space-y-1 mt-12">
+        <li><span class="bg-gray-100 dark:bg-gray-800 rounded px-2 py-0.5 text-primary font-semibold">html_tag_id</span> <span class="italic">(str)</span>: {% trans "Eine eindeutige ID für das Modal-Element." %}</li>
+        <li><span class="bg-gray-100 dark:bg-gray-800 rounded px-2 py-0.5 text-primary font-semibold">title</span> <span class="italic">(str)</span>: {% trans "Ein aussagekräftiger Titel für das Dialogfenster." %}</li>
+        <li><span class="bg-gray-100 dark:bg-gray-800 rounded px-2 py-0.5 text-primary font-semibold">description</span> <span class="italic">(str)</span>: {% trans "Der hauptinhalt des Dialogs." %}</li>
+    </ol>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<section>
+    <h3>{% trans "Related topics" %}</h3>
+    <ol>
+        <li><a>{% trans "Popover" %}</a></li>
+    </ol>
+</section>

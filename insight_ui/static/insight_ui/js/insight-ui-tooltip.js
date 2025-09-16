@@ -95,7 +95,8 @@ InsightUI.Tooltip = {
                 tooltip.classList.add("hidden");
             });
         }
+
+        console.log("Tooltip triggers: ", triggers);
+        console.log("Tooltips initialized!");
     }
 };
-
-document.addEventListener('DOMContentLoaded', InsightUI.Tooltip.init);

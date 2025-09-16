@@ -3,12 +3,9 @@
 
 {% block title %}{% trans 'Insight UI Storybook' %}{% endblock %}
 
-{% block sidebar_right %}
-    {% include "insight_ui/components/sidebar.html" with title="Secondary Sidebar" side="right" auto_close=False sidebar_items=right_sidebar_items %}
-{% endblock sidebar_right %}
-{% block sidebar_left %}
-    {% include "insight_ui/components/sidebar.html" with title="Primary Sidebar" side="left" auto_close=True sidebar_items=left_sidebar_items %}
-{% endblock sidebar_left %}
+{% block drawers %}
+    {% include "insight_ui/components/sidebar.html" with sidebar_data=right_sidebar side="right" auto_close=False %}
+{% endblock drawers %}
 
 {% block navbar %}
     {% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links show_login=True search_query=search_query %}
@@ -18,8 +15,11 @@
     <img src="{% static "img/hubble-fiction.webp" %}" alt="Hubble Telescope" class="fixed -z-10 w-full h-dvh object-cover opacity-25">
 {% endblock background_image %}
 
+{% block sidebar_left %}
+    {% include "insight_ui/components/sidebar.html" with sidebar_data=left_sidebar side="left" static=True %}
+{% endblock sidebar_left %}
 {% block content %}
-    <div class="w-full space-y-8 py-8 px-4 md:px-24">
+    <div class="space-y-8 py-8 px-4 md:px-24">
         <!-- Welcome -->
         <section>
             <h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">{% trans 'Insight UI Storybook' %}</h1>
@@ -42,6 +42,7 @@
             <div class="space-y-8">
                 {% include "insight_ui/components/steps_bar.html" with items=steps_bar_items %}
                 {% include "insight_ui/components/progress_indicator.html" %}
+                {% include "insight_ui/components/bulletpoints.html" with items=bulletpoints %}
             </div>
         </section>
 

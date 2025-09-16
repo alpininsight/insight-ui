@@ -1,8 +1,8 @@
 # Popover-Komponente (Version 0.1.0)
 
-In manchen Fällen ist es notwendig weitere jedoch eher optionale Informationen anzuzeigen, welche jedoch das gesamtbild stören würden oder für welche einfach nicht genug Platz vorhanden ist. Für diesen Fall sind _Popover_ eine nützliche Komponente. Ähnlich wie ein _Tooltip_ werden auch Popover getrennt vom restlichen Layout dargestellt und stören insofern nicht den Fluss des Layouts. Bei einem Popover handelt es sich um eine Bereich für zusätzliche Informationen, welcher nur angezeigt wird, wenn der Nutzer sich mit dem Mauszeiger über einem bestimmten Element befindet. Im gegensatz zum Tooltip, kann der Nutzer mit dem Mauszeiger auf das Popover gehen, ohne das dieses sich schließt. Dadurch können mit einem Popover auch interaktive Elemente angezeigt werden. 
+In manchen Fällen ist es notwendig weitere jedoch eher optionale Informationen anzuzeigen, welche jedoch das gesamtbild stören würden oder für welche einfach nicht genug Platz vorhanden ist. Für diesen Fall sind _Popover_ eine nützliche Komponente. Ähnlich wie ein _Tooltip_ werden auch Popover getrennt vom restlichen Layout dargestellt und stören insofern nicht den Fluss des Layouts. Bei einem Popover handelt es sich um eine Bereich für zusätzliche Informationen, welcher nur angezeigt wird, wenn der Nutzer sich mit dem Mauszeiger über einem bestimmten Element befindet. Im gegensatz zum Tooltip, kann der Nutzer mit dem Mauszeiger auf das Popover gehen, ohne das dieses sich schließt. Dadurch können mit einem Popover auch interaktive Elemente angezeigt werden.
 
-wenn nur ein kurzer Informationstext angezeigt werden soll, um ein Element mit ein, zwei Wörter zu erklären, sollte stattdessen die [Tooltip-Komponente](tooltip.md) verwendet werden.
+Wenn nur ein kurzer Informationstext angezeigt werden soll, um ein Element mit ein, zwei Wörter zu erklären, sollte stattdessen die [Tooltip-Komponente](tooltip.md) verwendet werden.
 
 ## Verwendung
 

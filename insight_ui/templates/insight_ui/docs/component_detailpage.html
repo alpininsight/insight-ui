@@ -1,0 +1,30 @@
+{% extends "insight_ui/base.html" %}
+{% load static insight_tags i18n %}
+
+{% block drawers %}
+    {% include "insight_ui/components/sidebar.html" with side="right" auto_close=False sidebar_items=right_sidebar %}
+{% endblock drawers %}
+
+{% block navbar %}
+    {% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links show_login=True search_query=search_query %}
+{% endblock navbar %}
+
+{% block background_image %}
+    <img src="{% static "img/hubble-fiction.webp" %}" alt="Hubble Telescope" class="fixed left-1/3 -z-10 w-full h-dvh object-cover opacity-25">
+{% endblock background_image %}
+
+{% block sidebar_left %}
+    {% include "insight_ui/components/sidebar.html" with sidebar_data=left_sidebar side="left" static=True %}
+{% endblock sidebar_left %}
+
+{% block content %}
+    <div id="content" class="bg-linear-to-r from-white from-30% to-white/60 dark:from-gray-900 dark:to-gray-900/75 w-full space-y-8 py-16 px-4 md:px-24">
+        {% with "insight_ui/docs/partial/"|add:template_name|add:".html" as include_template %}
+            {% include include_template %}
+        {% endwith %}
+    </div>
+{% endblock content %}
+
+{% block footer %}
+    {% footer data=footer_data %}
+{% endblock footer %}

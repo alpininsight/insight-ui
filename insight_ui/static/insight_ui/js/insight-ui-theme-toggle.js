@@ -32,8 +32,8 @@ InsightUI.ThemeToggle = {
 
     // Alle Theme-Toggle-Buttons initialisieren
     document.querySelectorAll('[data-theme-toggle]').forEach(function(toggleButton) {
-      toggleButton.addEventListener('click', function (e) {
-        e.stopPropagation(); // verhindert Event-Bubbling
+      toggleButton.addEventListener('click', (event) => {
+        event.stopPropagation();
         const isDark = root.classList.contains('dark');
         setTheme(isDark ? 'light' : 'dark');
       });
@@ -42,5 +42,7 @@ InsightUI.ThemeToggle = {
     if (!root.hasAttribute('data-theme')) {
       root.setAttribute('data-theme', root.classList.contains('dark') ? 'dark' : 'light');
     }
+
+    console.log("Theme Toggles initialized!");
   }
 };

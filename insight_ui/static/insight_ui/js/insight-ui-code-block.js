@@ -21,11 +21,11 @@ function cleanIndentation(code) {
 function generateCodeBlock(id, lang, code) {
     // Erstelle das Wrapper-Div
     const wrapper = document.createElement('div');
-    wrapper.classList.add('max-w-2xl');
+    wrapper.classList.add('bg-[#f5f2f0]', 'rounded', 'border', 'border-gray-300', 'dark:border-0');
 
     // Erstelle die Flex-Box für den Button
     const flexContainer = document.createElement('div');
-    flexContainer.classList.add('flex', 'justify-end');
+    flexContainer.classList.add('flex', 'justify-end', 'bg-gray-300', 'rounded-t', 'p-2');
 
     // Erstelle den Button
     const button = document.createElement('button');
@@ -58,11 +58,11 @@ function generateCodeBlock(id, lang, code) {
 
     // Erstelle den Code-Block
     const codeWrapper = document.createElement('div');
-    codeWrapper.classList.add('overflow-x-auto');
+    codeWrapper.classList.add('max-w-5xl', 'overflow-x-scroll');
 
     const pre = document.createElement('pre');
     pre.id = id;
-    pre.classList.add(`language-${lang}`, 'rounded', 'border', 'border-gray-300', 'dark:border-0');
+    pre.classList.add(`language-${lang}`);
 
     const codeElement = document.createElement('code');
     const cleanCode = cleanIndentation(code).trim();
@@ -102,7 +102,8 @@ InsightUI.CodeBlock = {
 
       codeBlock.replaceWith(wrapper);
     }
+
+    console.log("Code Blocks: ", codeBlocks);
+    console.log("Code Blocks initialized!");
   }
 }
-
-document.addEventListener('DOMContentLoaded', InsightUI.CodeBlock.init);

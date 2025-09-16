@@ -1,3 +1,5 @@
+{% load insight_tags %}
+
 <form class="flex justify-end rtl:justify-start rtl:flex-row-reverse mb-4">
     {% for option in radio_group.options %}
         <div>
@@ -11,7 +13,9 @@
             class="peer hidden"
             >
             <label for="{{ option.id }}" class="flex peer-checked:bg-insight-primary-active peer-checked:border-insight-primary-active bg-insight-primary border-insight-primary {% if forloop.first %}border-2 rounded-l-sm{% elif forloop.last %}border-2 rounded-r-sm{% else %}border-y-2{% endif %} text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">
-                {% include "insight_ui/components/icons.html" with icon=option.icon %}
+                {% if option.id %}
+                    {% icon option.icon %}
+                {% endif %}
                 {{ option.text }}
             </label>
         </div>

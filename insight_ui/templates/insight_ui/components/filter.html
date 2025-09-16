@@ -9,9 +9,7 @@
                 <div class="flex flex-col w-full">
                     <label for={{ filter.name }} class="flex gap-1 text-sm font-bold text-nowrap mb-1">
                         {% if filter.icon %}
-                            <span class="inline-block mb-0.5">
-                                {% include "insight_ui/components/icons.html" with icon=filter.icon %}
-                            </span>
+                            {% icon filter.icon %}
                         {% endif %}
                         <span class="self-end">{{ filter.text }}</span>
                         {% if filter.explanation %}
