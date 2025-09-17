@@ -61,12 +61,13 @@
                       hx-get="{{ item.url }}"
                       hx-target="{{ item.htmx.target }}"
                       hx-swap="{{ item.htmx.swap|default:'innerHTML' }}"
+                      hx-push-url="true"
                     {% endif %}
                     href="{{ item.url }}"
                     class="flex gap-2 px-2 py-1 border-s text-sm text-insight-text-primary dark:text-insight-text-primary-dark border-gray-200 hover:border-gray-400 hover:text-gray-400"
                   >
                     {% if item.icon %}
-                      {% include "insight_ui/components/icons.html" with icon=item.icon %}
+                      {% icon item.icon %}
                     {% endif %}
                     {{ item.text }}
                   </a>

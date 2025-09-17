@@ -8,7 +8,7 @@
         {% trans 'Die Alert-Komponente bietet eine Möglichkeit, Benutzern wichtige Informationen, Warnungen oder Erfolgsmeldungen anzuzeigen.' %}
     </p>
 
-    <div class="bg-gray-100 dark:bg-gray-950 dark:border dark:border-gray-800 rounded-sm px-8 py-16 my-12">
+    <div class="example-container">
         <div class="space-y-4">
             {% alert message="This is just an information." alert_type="info" %}
             {% alert message="Saved successfully!" alert_type="success" %}
@@ -22,26 +22,15 @@
 
 <!-- Component Documentation -->
 <section>
-    <h3>{% trans "Verwendung" %}</h3>
-    <div id="Step_Bar_Usage" data-insight-code-block="Django">
+    <h2>{% trans "Verwendung" %}</h2>
+    <div id="Alert_Usage" data-insight-code-block="Django">
         &lcub;% load insight_tags %&rcub;
 
         &lcub;% alert message="Ihre Änderungen wurden gespeichert." type="success" dismissible=True %&rcub;
     </div>
 </section>
 
-<section class="mt-16">
-    <h3>{% trans "Parameter" %}</h3>
-
-    {% table table_data=params %}
-
-    <div class="mt-8">
-
-    </div>
-</section>
-
-<hr class="text-gray-300 dark:text-gray-600">
-
 <section>
-    <h3>{% trans "Related topics" %}</h3>
+    <h3>{% trans "Parameter" %}</h3>
+    {% table table_data=params %}
 </section>

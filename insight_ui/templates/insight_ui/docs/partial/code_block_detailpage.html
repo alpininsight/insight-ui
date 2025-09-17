@@ -8,7 +8,7 @@
         {% trans 'Diese Komponente bietet die Möglichkeit, Quellcode mit Syntax-Highlighting darzustellen. Darüber hinaus gibt es Möglichkeit, den dargestellten Quellcode, über einen Button in den Zwischenspeicher zu kopieren. Das Syntax-Highlighting umfasst so ziemlich alle gängigen und auch die meisten nicht sehr geläufigen Programmiersprachen.' %}
     </p>
 
-    <div class="bg-gray-100 dark:bg-gray-950 dark:border dark:border-gray-800 rounded-sm px-8 py-16 my-12">
+    <div class="example-container">
         <div id="code" data-insight-code-block="javascript">
             function greet(name) {
                 return `Hello, ${name}!`;
@@ -21,12 +21,12 @@
 
 <!-- Component Documentation -->
 <section>
-    <h3>{% trans "Verwendung" %}</h3>
+    <h2>{% trans "Verwendung" %}</h2>
     <p class="text-secondary leading-loose">
         {% trans "Diese Komponente wird ohne ein Template einzubinden, verwendet. Es muss lediglich ein HTML-Tag vorzugsweise ein `<div>` eingefügt werden. Dieses braucht eine Eindeutige `id`, diese ist für das Kopieren wichtig. Zum anderen muss das Tag den _data-Attribute_ ` data-insight-code-block` besitzen. Der Wert des _data-Attributes_ ist die gewünschte Programmiersprache. Innerhalb des Tags befindet sich dann ausschließlich der darzustellende Quellcode." %}
     </p>
 
-    <div id="Step_Bar_Usage" data-insight-code-block="Django">
+    <div id="Code_Block_Usage" data-insight-code-block="Django">
         &lt;div id="code" data-insight-code-block="javascript"&gt;
             function greet(name) {
                 return `Hello, ${name}!`;
@@ -34,7 +34,10 @@
         &lt;/div&gt;
     </div>
 
-    <p>
-        {% trans "**_Info_**: Beim klick auf den **Copy** Button wird der Quellcode hervorgehoben und gleichzeitig in den Zwischenspeicher kopiert. Ein erneutes kopieren ist nicht notwendig." %}
+    <p class="info-container text-base mt-4">
+        <span class="block font-bold italic text-lg">Info:</span>
+        {% blocktrans with copy='<b>Copy</b>'|safe %}
+        Beim klick auf den {{ copy }} Button wird der Quellcode hervorgehoben und gleichzeitig in den Zwischenspeicher kopiert. Ein erneutes kopieren ist nicht notwendig.
+        {% endblocktrans %}
     </p>
 </section>

@@ -1,6 +1,6 @@
 # Carousel-Komponente (Version 0.1.0)
 
-Bei dieser Komponente handelt es sich um eine spezielle Art Daten aber vor allem Bilder, Platzsparend und interaktiv anzuzeigen.
+Mit einem Karussell können Daten aber vor allem Bilder auf eine spezielle Art, Platzsparend und interaktiv angezeigt werden.
 
 ## Verwendung
 
@@ -12,12 +12,12 @@ Bei dieser Komponente handelt es sich um eine spezielle Art Daten aber vor allem
 
 ## Parameter
 
-- **carousel_items**: Daten welche innerhalb des Karussell angezeigt werden sollen (frei definierbar).
-- **show_index**: 'True' wenn in der unteren rechten Ecke die aktuelle Seite angezeigt werden soll.
-- **show_dots**: 'True' wenn unter dem Karussell-Inhalt eine einfache Pagination angezeigt werden soll.
-- **autoplay**: 'True' wenn das Karussell von alleine durch den Inhalt iterieren soll.
-- **slides_count**: Die Anzahl der Seiten.
-- **items_per_slide**: Die Anzahl an Objekten pro Seite.
+- **carousel_items** (_list_): Daten welche innerhalb des Karussell angezeigt werden sollen (frei definierbar).
+- **show_index** (_bool_): 'True' wenn in der unteren rechten Ecke die aktuelle Seite angezeigt werden soll.
+- **show_dots** (_bool_): 'True' wenn unter dem Karussell-Inhalt eine einfache Pagination angezeigt werden soll.
+- **autoplay** (_bool_): 'True' wenn das Karussell von alleine durch den Inhalt iterieren soll.
+- **slides_count** (_range_): Die Anzahl der Seiten.
+- **items_per_slide** (_int_): Die Anzahl an Objekten pro Seite.
 
 ## Eigener Inhalt
 

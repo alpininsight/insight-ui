@@ -38,7 +38,7 @@ Das Dictionary mit der Navbar Konfiguration ist etwas größer und wird hier ein
 Eine komplette Konfiguration sieht folgendermaßen aus:
 
 ```py
-"nav_config": {
+{
     "brand": {
         "title": "Django Insight UI NavBar",
         "view_name": "storybook_view",
@@ -66,7 +66,7 @@ Eine komplette Konfiguration sieht folgendermaßen aus:
     "show_usermenu": True,
     "show_language_selector": True,
     "show_theme_toggle": True,
-},
+}
 ```
 
 #### brand

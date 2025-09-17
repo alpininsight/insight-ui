@@ -8,7 +8,7 @@
         {% trans 'Mit dieser Komponente kann dem Nutzer der Fortschritt eines Prozesses visuell dargestellt werden, welcher dieser selbst durchführt.  Damit sind Prozesse gemeint, wie zum Beispiel ein typischer Bezahlvorgang. Dieser besteht i.d.R. aus mehreren Schritten, wie die Adresse anzugeben, eine Zahlungsmethode auszuwählen und im Anschluss nochmal die Eingaben zu überprüfen. In diesem Fall muss der Nutzer aktiv werden, damit der Prozess voranschreitet.' %}
     </p>
 
-    <div class="bg-gray-100 dark:bg-gray-950 dark:border dark:border-gray-800 rounded-sm px-8 py-16 my-12">
+    <div class="example-container">
         {% include "insight_ui/components/steps_bar.html" with items=steps_bar_items %}
     </div>
 </section>
@@ -17,7 +17,7 @@
 
 <!-- Component Documentation -->
 <section>
-    <h3>{% trans "Verwendung" %}</h3>
+    <h2>{% trans "Verwendung" %}</h2>
     <div id="Step_Bar_Usage" data-insight-code-block="Django">
         &lcub;% load insight_tags %&rcub;
 
@@ -25,7 +25,7 @@
     </div>
 </section>
 
-<section class="mt-16">
+<section>
     <h3>Parameter</h3>
     <ol class="text-secondary">
         <li><span class="bg-gray-100 dark:bg-gray-800 rounded px-2 py-0.5 text-primary font-semibold">items</span>: Eine Liste der einzelnen Schritte des Prozesses.</li>
@@ -44,10 +44,10 @@
         </div>
 
         <ol class="text-secondary space-y-1 mt-12">
-            <li><span class="bg-gray-100 dark:bg-gray-800 rounded px-2 py-0.5 text-primary font-semibold">title</span>: Der Titel des jeweiligen Schritts.</li>
-            <li><span class="bg-gray-100 dark:bg-gray-800 rounded px-2 py-0.5 text-primary font-semibold">description</span>: Eine kurze Beschreibung des jeweiligen Schritts.</li>
-            <li><span class="bg-gray-100 dark:bg-gray-800 rounded px-2 py-0.5 text-primary font-semibold">completed</span>: <span class="text-blue-400 font-semibold">True</span> wenn dieser Schritt bereits absolviert wurde.</li>
-            <li><span class="bg-gray-100 dark:bg-gray-800 rounded px-2 py-0.5 text-primary font-semibold">current</span>: <span class="text-blue-400 font-semibold">True</span> wenn es sich um den aktuellen Schritt handelt.</li>
+            <li><span class="inline-tag">title</span>(<i>str</i>): Der Titel des jeweiligen Schritts.</li>
+            <li><span class="inline-tag">description</span>(<i>str</i>): Eine kurze Beschreibung des jeweiligen Schritts.</li>
+            <li><span class="inline-tag">completed</span>(<i>bool</i>): <span class="text-blue-400 font-semibold">True</span> wenn dieser Schritt bereits absolviert wurde.</li>
+            <li><span class="inline-tag">current</span>(<i>bool</i>): <span class="text-blue-400 font-semibold">True</span> wenn es sich um den aktuellen Schritt handelt.</li>
         </ol>
     </div>
 </section>

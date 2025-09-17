@@ -1,0 +1,81 @@
+{% load static insight_tags i18n %}
+
+<h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">Insight UI Dropdown</h1>
+
+<!-- Component Demo -->
+<section>
+    <p class="text-secondary leading-loose">
+        {% trans "Ein Dropdown-Menü bietet die Möglichkeit eine Gruppe von Buttons in einem sich ein- und ausklappbaren Menü zu verstauen. Das ist immer dann sehr nützlich, wenn entweder nur wenig Platz zu Verfügung steht oder die Anzahl der Elemente sonst zu groß und unübersichtlich wäre." %}
+    </p>
+    <p class="text-secondary leading-loose">
+        {% trans "Bei der Verwendung von Dropdown-Menüs ist dennoch zu beachten, das diese nicht überladen werden. In der Regel sollte ein Menü nicht mehr als _sieben_ Elemente besitzen und auch verschachtelte Menüs, also ein Dropdown-Menü in einem Dropdown-Menü sollten vermieden werden." %}
+    </p>
+
+    <div class="example-container">
+        <div class="flex gap-2">
+            {% include "insight_ui/components/dropdown.html" with dropdown=user_dropdown %}
+            {% include "insight_ui/components/dropdown.html" with dropdown=settings_dropdown %}
+        </div>
+    </div>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h2>{% trans "Verwendung" %}</h2>
+    <div id="Dropdown_Usage" data-insight-code-block="Django">
+        &lcub;% include "insight_ui/components/dropdown.html" with dropdown=user_dropdown %&rcub;
+    </div>
+</section>
+
+<section>
+    <h3>{% trans "Parameter" %}</h3>
+
+    <ol class="text-secondary leading-loose">
+        <li><span class="inline-tag">user_dropdown</span>: {% trans "Ein Dictionary welches das Dropdown beschreibt." %}</li>
+    </ol>
+
+    <div class="mt-8">
+        <h4>dropdown</h4>
+        <p class="text-secondary leading-loose mb-6">{% trans "Ein Dictionary welches das Dropdown beschreibt." %}</p>
+
+        <div id="Dropdown_Params" data-insight-code-block="python">
+            {
+                "tag_id": "DD_user",
+                "title": _("User"),
+                "show_arrow": True,
+                "items": [
+                    {
+                        "text": _("Profile"),
+                        "view_name": "storybook_view",
+                        "icon": {"name": "user", "size": "small"},
+                    },
+                    {
+                        "text": _("Settings"),
+                        "view_name": "storybook_view",
+                        "icon": {"name": "cog", "size": "small"},
+                    },
+                    {
+                        "text": _("Logout"),
+                        "view_name": "storybook_view",
+                        "icon": {"name": "got-out", "size": "small"},
+                    },
+                ],
+            }
+        </div>
+
+        <ol class="text-secondary space-y-1 mt-12">
+            <li><span class="inline-tag">tag_id</span>(<i>str</i>): {% trans "Eine eindeutige ID für das HTML-Tag des Dropdown-Containers." %}</li>
+            <li><span class="inline-tag">title</span>(<i>str</i>): {% trans "Die Beschriftung des Dropdown-Buttons." %}</li>
+            <li><span class="inline-tag">show_arrow</span>(<i>bool</i>): _True_ {% trans "wenn ein Pfeil neben dem Titel angezeigt werden soll." %}</li>
+            <li><span class="inline-tag">item</span>(<i>list</i>): {% trans "Eine Liste der Dropdown-Elemente." %}
+                <ol>
+                    <li><span class="inline-tag">text</span>(<i>str</i>): {% trans "Der angezeigte Text des jeweiligen Elements." %}</li>
+                    <li><span class="inline-tag">view_name</span>(<i>str</i>): {% trans "Der Name der View zu wessen Endpunkt der Request gesendet werden soll." %}</li>
+                    <li><span class="inline-tag">icon</span>(<i>dict</i>): {% trans "Ein optionales Icon welches vor dem Text angezeigt wird." %}</li>
+                </ol>
+            </li>
+        </ol>
+    </div>
+</section>

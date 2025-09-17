@@ -5,11 +5,13 @@
 <!-- Component Demo -->
 <section>
     <p class="text-secondary leading-loose">
-        {% trans 'Todo' %}
+        {% trans 'Mit einem Karussell können Daten aber vor allem Bilder auf eine spezielle Art, Platzsparend und interaktiv angezeigt werden.' %}
     </p>
 
-    <div class="bg-gray-100 dark:bg-gray-950 dark:border dark:border-gray-800 rounded-sm px-8 py-16 my-12">
-        {% trans 'Todo' %}
+    <div class="example-container">
+        {% load insight_tags %}
+
+        {% carousel carousel_items=carousel_items show_index=True slides_count=range_total_slides items_per_slide=2 %}
     </div>
 </section>
 
@@ -17,8 +19,8 @@
 
 <!-- Component Documentation -->
 <section>
-    <h3>{% trans "Verwendung" %}</h3>
-    <div id="Step_Bar_Usage" data-insight-code-block="Django">
+    <h2>{% trans "Verwendung" %}</h2>
+    <div id="Card_Carousel_Usage" data-insight-code-block="Django">
         {% trans 'Todo' %}
     </div>
 </section>

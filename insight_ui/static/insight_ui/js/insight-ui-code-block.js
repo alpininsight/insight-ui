@@ -25,7 +25,7 @@ function generateCodeBlock(id, lang, code) {
 
     // Erstelle die Flex-Box für den Button
     const flexContainer = document.createElement('div');
-    flexContainer.classList.add('flex', 'justify-end', 'bg-gray-300', 'rounded-t', 'p-2');
+    flexContainer.classList.add('flex', 'justify-end', 'bg-blue-200/75', 'dark:bg-blue-900/75', 'rounded-t', 'p-2');
 
     // Erstelle den Button
     const button = document.createElement('button');

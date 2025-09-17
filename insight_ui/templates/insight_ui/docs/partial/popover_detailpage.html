@@ -13,7 +13,7 @@
         {% endblocktrans %}
     </p>
 
-    <div class="bg-gray-100 dark:bg-gray-950 dark:border dark:border-gray-800 rounded-sm px-8 py-16 my-12">
+    <div class="example-container">
         <div class="flex flex-col md:flex-row gap-12">
             <button data-popover-trigger="demo-popover" class="btn btn-primary">Hover me!</button>
             <div id="demo-popover" class="bg-white dark:bg-gray-500 w-64 border border-gray-300 dark:border-0 rounded-sm shadow">
@@ -39,7 +39,7 @@
 
 <!-- Component Documentation -->
 <section>
-    <h3>{% trans "Verwendung" %}</h3>
+    <h2>{% trans "Verwendung" %}</h2>
 
     <p class="text-secondary leading-loose">
         {% blocktrans with insight_tag='<span class="inline-tag">insight_tag</span>'|safe tag_id='<b>Tag-ID</b>'|safe %}
@@ -47,7 +47,7 @@
         {% endblocktrans %}
     </p>
 
-    <div id="Step_Bar_Usage" data-insight-code-block="Django">
+    <div id="Popover_Usage" data-insight-code-block="Django">
         &lt;button data-popover-trigger="demo-popover" data-position="top" class="btn btn-primary"&gt;{% trans "Hover me!" %}&lt;/button&gt;
         &lt;div id="demo-popover" class="bg-white dark:bg-gray-500 w-64 border border-gray-300 dark:border-0 rounded-sm shadow"&gt;
             &lt;!-- Arrow --&gt;
@@ -56,22 +56,34 @@
         &lt;/div&gt;
     </div>
 
-    <p>
-        {% trans "> **_Info_**: Der Pfeil kann ausgeschaltet werden, indem der `<div>`-Container unter dem `<!-- Arrow -->` Kommentar entfernt wird." %}
+    <p class="info-container text-base mt-4">
+        <span class="block font-bold italic text-lg">Info:</span>
+        {% blocktrans with div='<div>'|safe comment='<!-- Arrow -->'|safe %}
+        Der Pfeil kann ausgeschaltet werden, indem der {{ div }}-Container unter dem {{ comment }} Kommentar entfernt wird.
+        {% endblocktrans %}
     </p>
 </section>
 
-<section class="mt-16">
+<section>
     <h3>data-* Attribute</h3>
-    <ol>
+    <ol class="list-disc text-secondary leading-loose ms-8">
         <li><span class="inline-tag">data-popover-trigger=&lt;tooltip_ID&gt;</span>: {% trans "Setzt den Auslöser für den Popover auf das Element mit der entsprechenden ID." %}</li>
-        <li><span class="inline-tag">data-position</span>: {% trans "Bestimmt wo im Bezug auf das Element, der Popover angezeigt werden soll. Mögliche Werte sind: 'top', 'bottom', 'right' und 'left'." %}</li>
+        <li><span class="inline-tag">data-position</span>: {% trans "Bestimmt wo im Bezug auf das Element, der Popover angezeigt werden soll. Mögliche Werte sind:" %}
+            <ol class="list-disc leading-relaxed ms-8">
+                <li><span class="inline-tag w-fit">top</span></li>
+                <li><span class="inline-tag w-fit">bottom</span></li>
+                <li><span class="inline-tag w-fit">right</span></li>
+                <li><span class="inline-tag w-fit">left</span></li>
+            </ol>
+        </li>
     </ol>
 </section>
 
+<hr class="text-gray-300 dark:text-gray-600">
+
 <section>
-    <h3>{% trans "Related topics" %}</h3>
-    <ol>
-        <li><a>{% trans "Tooltip" %}</a></li>
+    <h2>{% trans "Related topics" %}</h2>
+    <ol class="list-disc ms-8">
+        <li><a href="#" class="text-link">{% trans "Tooltip" %}</a></li>
     </ol>
 </section>

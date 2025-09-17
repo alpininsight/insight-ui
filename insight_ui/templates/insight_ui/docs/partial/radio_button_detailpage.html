@@ -1,0 +1,59 @@
+{% load static insight_tags i18n %}
+
+<h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">Insight UI Radio Buttons</h1>
+
+<!-- Component Demo -->
+<section>
+    <p class="text-secondary leading-loose mb-4">
+        {% trans 'Todo' %}
+    </p>
+
+    <h2>{% trans "Radio Buttons" %}</h2>
+    <div class="example-container mt-3 mb-6">
+        <div class="flex flex-col space-y-2">
+            <label class="flex items-center gap-1">
+                <input type="radio" id="model1" name="radio-example1" value="BERT">
+                <span class="text-sm">{% trans "BERT" %}</span>
+            </label>
+            <label class="flex items-center gap-1">
+                <input type="radio" id="model2" name="radio-example1" value="PaLM 2">
+                <span class="text-sm">{% trans "PaLM 2" %}</span>
+            </label>
+            <label class="flex items-center gap-1">
+                <input type="radio" id="model3" name="radio-example1" value="LLaMA 2" disabled>
+                <span class="text-sm text-neutral-500">{% trans "LLaMA 2 (currently not available)" %}</span>
+            </label>
+        </div>
+    </div>
+    <h2>{% trans "Block Radio Buttons" %}</h2>
+    <div class="example-container mt-3 mb-6">
+        {% include "insight_ui/components/radio_group.html" with radio_group=view_options current_value=current_view view_name="toggle_view" target_id=target_id %}
+    </div>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h2>{% trans "Verwendung" %}</h2>
+    <div id="Radio_Button_Usage" data-insight-code-block="Django">
+        &lt;!-- Radio Buttons --&gt;
+        &lt;div class="flex flex-col space-y-2"&gt;
+            &lt;label class="flex items-center gap-1"&gt;
+                &lt;input type="radio" id="model1" name="radio-example1" value="BERT"&gt;
+                &lt;span class="text-sm"&gt;&lcub;% trans "BERT" %&rcub;&lt;/span&gt;
+            &lt;/label&gt;
+            &lt;label class="flex items-center gap-1"&gt;
+                &lt;input type="radio" id="model2" name="radio-example1" value="PaLM 2"&gt;
+                &lt;span class="text-sm"&gt;&lcub;% trans "PaLM 2" %&rcub;&lt;/span&gt;
+            &lt;/label&gt;
+            &lt;label class="flex items-center gap-1"&gt;
+                &lt;input type="radio" id="model3" name="radio-example1" value="LLaMA 2" disabled&gt;
+                &lt;span class="text-sm text-neutral-500"&gt;&lcub;% trans "LLaMA 2 (currently not available)" %&rcub;&lt;/span&gt;
+            &lt;/label&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Block Radio-Buttons --&gt;
+        &lcub;% include "insight_ui/components/radio_group.html" with radio_group=view_options current_value=current_view view_name="toggle_view" target_id=target_id %&rcub;
+    </div>
+</section>

@@ -8,10 +8,8 @@
         Todo
     </p>
 
-    <div class="bg-gray-100 dark:bg-gray-950 dark:border dark:border-gray-800 rounded-sm px-8 py-16 my-12">
-        <div id="code" data-insight-code-block="Django">
-            &lcub;&lcub; textA|diff:textB|safe &rcub;&rcub;
-        </div>
+    <div class="example-container">
+        {{ textA|diff:textB|safe }}
     </div>
 </section>
 
@@ -19,22 +17,20 @@
 
 <!-- Component Documentation -->
 <section>
-    <h3>{% trans "Verwendung" %}</h3>
-    <div id="Step_Bar_Usage" data-insight-code-block="Django">
+    <h2>{% trans "Verwendung" %}</h2>
+    <div id="Differentiator_Usage" data-insight-code-block="Django">
         &lcub;&lcub; textA|diff:textB|safe &rcub;&rcub;
     </div>
 </section>
 
-<section class="mt-16">
+<section>
     <h3>{% trans "Parameter" %}</h3>
-
     <p class="text-secondary italic">Todo</p>
 </section>
 
 <hr class="text-gray-300 dark:text-gray-600">
 
 <section>
-    <h3>{% trans "Related topics" %}</h3>
-
+    <h2>{% trans "Related topics" %}</h2>
     <p class="text-secondary italic">Todo</p>
 </section>

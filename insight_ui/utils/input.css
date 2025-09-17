@@ -145,6 +145,14 @@
         @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md p-4 md:p-6;
     }
 
+    .example-container {
+        @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow px-8 py-16 my-12;
+    }
+
+    .info-container {
+        @apply bg-gray-100 border border-gray-200 border-s-4 border-s-insight-info rounded-e px-4 py-1;
+    }
+
     .inline-tag {
         @apply bg-gray-200 dark:bg-gray-800 rounded px-2 py-px;
     }

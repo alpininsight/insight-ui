@@ -11,10 +11,11 @@
         {% trans "Für eine gute Konsistenz sollten Breadcrumbs, wenn sie verwendet werden, überall verwendet werden und nicht nur sporadisch." %}
     </p>
 
-    <div class="bg-gray-100 dark:bg-gray-950 dark:border dark:border-gray-800 rounded-sm px-8 py-16 my-12">
+    <div class="example-container">
         {% load insight_tags %}
 
         {% breadcrumbs items=breadcrumb_items %}
+        {% breadcrumbs items=single_breadcrumb_item %}
     </div>
 </section>
 
@@ -22,15 +23,15 @@
 
 <!-- Component Documentation -->
 <section>
-    <h3>{% trans "Verwendung" %}</h3>
-    <div id="Step_Bar_Usage" data-insight-code-block="Django">
+    <h2>{% trans "Verwendung" %}</h2>
+    <div id="Breadcrumb_Usage" data-insight-code-block="Django">
         &lcub;% load insight_tags %&rcub;
 
         &lcub;% breadcrumbs items=breadcrumb_items %&rcub;
     </div>
 </section>
 
-<section class="mt-16">
+<section>
     <h3>{% trans "Parameter" %}</h3>
     <ol class="text-secondary">
         <li><span class="bg-gray-100 dark:bg-gray-800 rounded px-2 py-0.5 text-primary font-semibold">items</span>: {% trans "Eine Liste mit Links." %}</li>
@@ -40,7 +41,7 @@
         <h4>items</h4>
         <p class="text-secondary mb-6">{% trans "Eine Liste von Links für eine mögliche Breadcrumb Anzeige sieht folgendermaßen aus:" %}</p>
 
-        <div id="Step_Bar_Params" data-insight-code-block="python">
+        <div id="Breadcrumb_Params" data-insight-code-block="python">
             "breadcrumb_items": [
                 {"text": _("Startseite"), "url": "storybook_view", "icon": {"name": "home", "size": "small"}},
                 {"text": _("Demo"), "url": "storybook_view"},

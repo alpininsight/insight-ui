@@ -1,0 +1,50 @@
+{% load static insight_tags i18n %}
+
+<h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">Insight UI Checkbox</h1>
+
+<!-- Component Demo -->
+<section>
+    <p class="text-secondary leading-loose">
+        {% trans 'Todo' %}
+    </p>
+
+    <div class="example-container">
+        <div class="flex flex-col space-y-2">
+            <label class="flex items-center gap-1">
+                <input type="checkbox" id="english" name="lang" value="english">
+                <span class="text-sm">{% trans "English" %}</span>
+            </label>
+            <label class="flex items-center gap-1">
+                <input type="checkbox" id="german" name="lang" value="german">
+                <span class="text-sm">{% trans "German" %}</span>
+            </label>
+            <label class="flex items-center gap-1">
+                <input type="checkbox" id="italian" name="lang" value="italian">
+                <span class="text-sm">{% trans "Italian" %}</span>
+            </label>
+        </div>
+    </div>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h2>{% trans "Verwendung" %}</h2>
+    <div id="Checkbox_Usage" data-insight-code-block="Django">
+        &lt;div class="flex flex-col space-y-2"&gt;
+            &lt;label class="flex items-center gap-1"&gt;
+                &lt;input type="checkbox" id="english" name="lang" value="english"&gt;
+                &lt;span class="text-sm"&gt;&lcub;% trans "English" %&rcub;&lt;/span&gt;
+            &lt;/label&gt;
+            &lt;label class="flex items-center gap-1"&gt;
+                &lt;input type="checkbox" id="german" name="lang" value="german"&gt;
+                &lt;span class="text-sm"&gt;&lcub;% trans "German" %&rcub;&lt;/span&gt;
+            &lt;/label&gt;
+            &lt;label class="flex items-center gap-1"&gt;
+                &lt;input type="checkbox" id="italian" name="lang" value="italian"&gt;
+                &lt;span class="text-sm"&gt;&lcub;% trans "Italian" %&rcub;&lt;/span&gt;
+            &lt;/label&gt;
+        &lt;/div&gt;
+    </div>
+</section>

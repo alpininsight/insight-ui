@@ -1,0 +1,32 @@
+{% load static insight_tags i18n %}
+
+<h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">Insight UI Toggle Button</h1>
+
+<!-- Component Demo -->
+<section>
+    <p class="text-secondary leading-loose">
+        {% trans 'Todo' %}
+    </p>
+
+    <div class="example-container">
+        <label class="inline-flex items-center cursor-pointer w-fit">
+            <input type="checkbox" value="" class="peer sr-only">
+            <div class="relative w-10 h-3 bg-gray-300 rounded-full peer peer-focus:outline-2 outline-gray-400 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full after:content-[''] after:absolute after:top-[-6px] after:start-[-3px] after:bg-white after:border-gray-300 after:dark:border-gray-700 after:border after:rounded-full after:size-6 after:transition-all peer-checked:bg-insight-primary transition"></div>
+            <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">{% trans "Click me!" %}</span>
+        </label>
+    </div>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h2>{% trans "Verwendung" %}</h2>
+    <div id="Toggle_Button_Usage" data-insight-code-block="Django">
+        &lt;label class="inline-flex items-center cursor-pointer w-fit"&gt;
+            &lt;input type="checkbox" value="" class="peer sr-only"&gt;
+            &lt;div class="relative w-10 h-3 bg-gray-300 rounded-full peer peer-focus:outline-2 outline-gray-400 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full after:content-[''] after:absolute after:top-[-6px] after:start-[-3px] after:bg-white after:border-gray-300 after:dark:border-gray-700 after:border after:rounded-full after:size-6 after:transition-all peer-checked:bg-insight-primary transition"&gt;&lt;/div&gt;
+            &lt;span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300"&gt;&lcub;% trans "Click me!" %&rcub;&lt;/span&gt;
+        &lt;/label&gt;
+    </div>
+</section>

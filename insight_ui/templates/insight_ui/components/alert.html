@@ -2,7 +2,7 @@
 
 <div
   role="alert"
-  class="flex justify-between w-full shadow p-4 rounded {% if type == "info" %}bg-insight-info/10{% elif type == "success" %}bg-insight-success/10{% elif type == "warning" %}bg-insight-warning/10{% elif type == "error" %}bg-insight-danger/10{% endif %}"
+  class="flex justify-between w-full shadow p-4 rounded {% if type == "info" %}bg-insight-info/25{% elif type == "success" %}bg-insight-success/25{% elif type == "warning" %}bg-insight-warning/25{% elif type == "error" %}bg-insight-danger/25{% endif %}"
   {% if options.id %}id="{{ options.id }}"{% endif %}
 >
   <div class="flex items-center gap-2 {% if type == "info" %}text-insight-info{% elif type == "success" %}text-insight-success{% elif type == "warning" %}text-insight-warning{% elif type == "error" %}text-insight-danger{% endif %}">

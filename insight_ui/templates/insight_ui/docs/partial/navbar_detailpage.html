@@ -1,0 +1,123 @@
+{% load static insight_tags i18n %}
+
+<h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">Insight UI Navbar</h1>
+
+<!-- Component Demo -->
+<section>
+    <p class="text-secondary leading-loose">
+        {% trans "Die Navbar-Komponente stellt eine anpassbare Navigationsleiste mit verschiedenen Komponenten zur Verfügung. Die Navigation ist fixiert am oberen Rand des Browserfenstern und bewegt sich beim nach unten Scrollen mit. Die Navigationsleiste besteht aus den folgenden Komponenten:" %}
+    </p>
+
+    <ul>
+        <li class="inline-tag">Logo und Titel</li>
+        <li class="inline-tag">Navigationslinks</li>
+        <li class="inline-tag">Suchleiste</li>
+        <li class="inline-tag">Login/Benutzermenü</li>
+        <li class="inline-tag">Sprachauswahl</li>
+        <li class="inline-tag">Theme-Toggle Button</li>
+    </ul>
+
+    <div class="bg-gray-100 dark:bg-gray-950 dark:border dark:border-gray-800 rounded-sm px-8 py-16 my-12">
+        {% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links show_login=True %}
+    </div>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h2>{% trans "Verwendung" %}</h2>
+    <p class="text-secondary leading-loose">
+        {% trans "Eingebunden wird die Navbar am einfachsten über das entsprechende _Template-Tag_. Für die Navbar ist ein entsprechender Block definiert, in welchem diese platziert werden sollte." %}
+    </p>
+
+    <div id="Navbar_Usage" data-insight-code-block="Django">
+        &lcub;% load insight_tags %&rcub;
+
+        &lcub;% block navbar %&rcub;
+            &lcub;% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links show_login=True %&rcub;
+        &lcub;% endblock navbar %&rcub;
+    </div>
+</section>
+
+<section>
+    <h3>Parameter</h3>
+    <p class="text-secondary leading-loose">Die Navbar bekommt bis zu vier Parameter.</p>
+
+    <ol>
+        <li><span class="inline-tag">navbar<span>: Ein Dictionary mit der gesamten Konfiguration der Navigationsleiste (mehr dazu gleich).</li>
+        <li><span class="inline-tag">user<span>: Das *user* Objekt des Requests (sollte eigentlich immer verfügbar sein).</li>
+        <li><span class="inline-tag">user_dropdown_links<span>: Eine Liste mit den Links welche in dem Benutzermenü angezeigt werden sollen.</li>
+            <ol>
+                <li><a href="#">siehe [Benutzermenü](usermenu.md)</a></li>
+            </ol>
+        <li><span class="inline-tag">show_login<span>: _True_ wenn ein Button zum Anmelden angezeigt werden soll (standardmäßig aus, also `False`).</li>
+    </ol>
+
+    <h3>Konfiguration</h3>
+    <p class="text-secondary leading-loose">Das Dictionary mit der Navbar Konfiguration ist etwas größer und wird hier einmal näher erläutert.</p>
+
+    <p class="text-secondary leading-loose">Eine komplette Konfiguration sieht folgendermaßen aus:</p>
+
+    <div id="Navbar_Params" data-insight-code-block="python">
+        {
+            "brand": {
+                "title": "Django Insight UI NavBar",
+                "view_name": "storybook_view",
+                "logo_url": "insight_ui/svg/ai-logo.svg",
+                "logo_alt": "Insight UI Logo",
+            },
+            "links": [
+                {
+                    "text": _("Startseite"),
+                    "icon": {"name": "home", "size": "small"},
+                    "view_name": "storybook_view",
+                    "active": True,
+                    "need_auth": False,
+                    "staff_only": False,
+                },
+                {
+                    "text": _("Über"),
+                    "open_modal": "about-modal",
+                    "active": False,
+                    "need_auth": False,
+                    "staff_only": False,
+                },
+            ],
+            "show_searchbar": True,
+            "show_usermenu": True,
+            "show_language_selector": True,
+            "show_theme_toggle": True,
+        }
+    </div>
+
+    <h4>brand</h4>
+    <p class="text-secondary leading-loose">Beinhaltet die Einstellungen für den Titel und das daneben stehende Logo. Das Logo ist optional und wenn kein Pfad angegeben werden sollte, wird das standard Logo verwendet. Die Variable **view_name** wird verwendet, um den Nutzer auf die entsprechende Seite zu schicken, sollte dieser auf den Titel klicken. Erwartet wird der Name der View keine URL, da der Wert intern mit `{% url view_name %}` aufgelöst wird.</p>
+
+    <h4>links</h4>
+    <a href="#">siehe [Links](links.md)</a>
+
+    <h4>show_...</h4>
+    <ol>
+        <li><span class="inline-tag">show_searchbar</span>: _True_ wenn eine Suchleiste nach den Links angezeigt werden soll</li>
+        <li><span class="inline-tag">show_usermenu</span>: _True_ wenn ein Benutzermenü/Login an der rechten Seite angezeigt werden soll (der externe Parameter **show_login** wird nur zum verstecken des Login's auf bestimmten Seiten verwendet)</li>
+        <li><span class="inline-tag">show_language_selector</span>: _True_ wenn eine Sprachauswahl an der rechten Seite angezeigt werden soll</li>
+        <li><span class="inline-tag">show_theme_toggle</span>: _True_ wenn der Theme-Toggle (hell/dunkel) an der rechten Seite angezeigt werden soll</li>
+    </ol>
+</section>
+
+<section>
+    <h2>Barrierefreiheit</h2>
+
+    <p class="text-secondary leading-loose">Die Navbar-Komponente enthält einen **Skip-Link** zum *Hauptinhalt*.</p>
+</section>
+
+<section>
+    <h2>Verwandte Themen</h2>
+
+    <ol>
+        <li><a href="#">Benutzermenü</a></li>
+        <li><a href="#">Footer</a></li>
+        <li><a href="#">Links</a></li>
+    </ol>
+</section>

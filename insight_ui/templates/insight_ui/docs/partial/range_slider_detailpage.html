@@ -1,0 +1,44 @@
+{% load static insight_tags i18n %}
+
+<h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">Insight UI Range Slider</h1>
+
+<!-- Component Demo -->
+<section>
+    <p class="text-secondary leading-loose">
+        {% trans 'Todo' %}
+    </p>
+
+    <div class="example-container">
+        <div class="relative">
+            <label for="range-input" class="sr-only">{% trans "Range Title" %}</label>
+            <input id="range-input" type="range" value="1000" min="100" max="1500" class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-sm appearance-none cursor-pointer">
+            <div class="flex justify-between w-full text-sm text-insight-text-secondary dark:text-insight-text-secondary-dark">
+                <span>Min ($100)</span>
+                <span>$500</span>
+                <span>$750</span>
+                <span>$1000</span>
+                <span>Max ($1500)</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h2>{% trans "Verwendung" %}</h2>
+    <div id="Range_Slider_Usage" data-insight-code-block="Django">
+        &lt;div class="relative"&gt;
+            &lt;label for="range-input" class="sr-only"&gt;&lcub;% trans "Range Title" %&rcub;&lt;/label&gt;
+            &lt;input id="range-input" type="range" value="1000" min="100" max="1500" class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-sm appearance-none cursor-pointer"&gt;
+            &lt;div class="flex justify-between w-full text-sm text-insight-text-secondary dark:text-insight-text-secondary-dark"&gt;
+                &lt;span&gt;Min ($100)&lt;/span&gt;
+                &lt;span&gt;$500&lt;/span&gt;
+                &lt;span&gt;$750&lt;/span&gt;
+                &lt;span&gt;$1000&lt;/span&gt;
+                &lt;span&gt;Max ($1500)&lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    </div>
+</section>

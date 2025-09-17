@@ -112,7 +112,7 @@ def get_nav_and_footer_context() -> dict:
     return config.get_config() | {
         "nav_config": {
             "brand": {
-                "title": "Insight UI NavBar",
+                "title": "Insight UI",
                 "view_name": "storybook_view",
                 "logo_url": "insight_ui/svg/ai-logo.svg",
                 "logo_alt": "Insight UI Logo",
@@ -246,17 +246,76 @@ def get_sidebar_data() -> dict:
             "icon": {"name": "cards", "size": "small"},
             "categories": [
                 {
-                    "caption": _("Main"),
+                    "caption": _("Navigation / Main"),
                     "icon": {"name": "sparks", "size": "small"},
                     "items": [
                         {
-                            "text": _("Alerts"),
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "alert"}),
+                            "text": _("Navbar"),
+                            "icon": {"name": "tools", "size": "xs"},
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "navbar"}),
                             "htmx": {"target": "#content"},
                         },
                         {
-                            "text": _("Breadcrumb-Navigation"),
+                            "text": _("Sidebar"),
+                            "icon": {"name": "tools", "size": "xs"},
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "sidebar"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Footer"),
+                            "icon": {"name": "tools", "size": "xs"},
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "footer"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Breadcrumb Navigation"),
                             "url": reverse("component_detail_page_view", kwargs={"page_name": "breadcrumb"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Step Bars"),
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "step_bar"}),
+                            "htmx": {"target": "#content"},
+                        },
+                    ],
+                },
+                {
+                    "caption": _("Input Elements"),
+                    "icon": {"name": "sparks", "size": "small"},
+                    "items": [
+                        {
+                            "text": _("Buttons"),
+                            "icon": {"name": "tools", "size": "xs"},
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "button"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Checkboxes"),
+                            "icon": {"name": "tools", "size": "xs"},
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "checkbox"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Dropdown"),
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "dropdown"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Radio-Buttons"),
+                            "icon": {"name": "tools", "size": "xs"},
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "radio_button"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Range Slider"),
+                            "icon": {"name": "tools", "size": "xs"},
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "range_slider"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Toggle-Buttons"),
+                            "icon": {"name": "tools", "size": "xs"},
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "toggle_button"}),
                             "htmx": {"target": "#content"},
                         },
                         {
@@ -264,29 +323,15 @@ def get_sidebar_data() -> dict:
                             "url": reverse("component_detail_page_view", kwargs={"page_name": "chat"}),
                             "htmx": {"target": "#content"},
                         },
+                    ],
+                },
+                {
+                    "caption": _("Popups"),
+                    "icon": {"name": "sparks", "size": "small"},
+                    "items": [
                         {
-                            "text": _("Code Blocks"),
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "code_block"}),
-                            "htmx": {"target": "#content"},
-                        },
-                        {
-                            "text": _("Differentiator"),
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "differentiator"}),
-                            "htmx": {"target": "#content"},
-                        },
-                        {
-                            "text": _("Geo-Maps"),
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "geo_map"}),
-                            "htmx": {"target": "#content"},
-                        },
-                        {
-                            "text": _("Input Elements"),
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "input_elements"}),
-                            "htmx": {"target": "#content"},
-                        },
-                        {
-                            "text": _("Live-Content (Pull)"),
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "live_content"}),
+                            "text": _("Alerts"),
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "alert"}),
                             "htmx": {"target": "#content"},
                         },
                         {
@@ -300,17 +345,41 @@ def get_sidebar_data() -> dict:
                             "htmx": {"target": "#content"},
                         },
                         {
-                            "text": _("Step Bars"),
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "step_bar"}),
-                            "htmx": {"target": "#content"},
-                        },
-                        {
                             "text": _("Tooltips"),
                             "url": reverse("component_detail_page_view", kwargs={"page_name": "tooltip"}),
                             "htmx": {"target": "#content"},
                         },
+                    ],
+                },
+                {
+                    "caption": _("Utils"),
+                    "icon": {"name": "sparks", "size": "small"},
+                    "items": [
+                        {
+                            "text": _("Code Blocks"),
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "code_block"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Differentiator"),
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "differentiator"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Geo-Maps"),
+                            "icon": {"name": "tools", "size": "xs"},
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "geo_map"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Live-Content (Pull)"),
+                            "icon": {"name": "tools", "size": "xs"},
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "live_content"}),
+                            "htmx": {"target": "#content"},
+                        },
                         {
                             "text": _("Web-Sockets (Push)"),
+                            "icon": {"name": "tools", "size": "xs"},
                             "url": reverse("component_detail_page_view", kwargs={"page_name": "web_socket"}),
                             "htmx": {"target": "#content"},
                         },
@@ -321,17 +390,20 @@ def get_sidebar_data() -> dict:
                     "icon": {"name": "sparks", "size": "small"},
                     "items": [
                         {
-                            "text": _("Infinite Scroll)"),
+                            "text": _("Infinite Scroll"),
+                            "icon": {"name": "tools", "size": "xs"},
                             "url": reverse("component_detail_page_view", kwargs={"page_name": "infinite_scroll"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Pagination"),
+                            "icon": {"name": "tools", "size": "xs"},
                             "url": reverse("component_detail_page_view", kwargs={"page_name": "pagination"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Tables"),
+                            "icon": {"name": "tools", "size": "xs"},
                             "url": reverse("component_detail_page_view", kwargs={"page_name": "table"}),
                             "htmx": {"target": "#content"},
                         },
@@ -343,16 +415,19 @@ def get_sidebar_data() -> dict:
                     "items": [
                         {
                             "text": _("Generic Filter"),
+                            "icon": {"name": "tools", "size": "xs"},
                             "url": reverse("component_detail_page_view", kwargs={"page_name": "generic_filter"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Search Bar"),
+                            "icon": {"name": "tools", "size": "xs"},
                             "url": reverse("component_detail_page_view", kwargs={"page_name": "search_bar"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("SQL-Like Filter"),
+                            "icon": {"name": "tools", "size": "xs"},
                             "url": reverse("component_detail_page_view", kwargs={"page_name": "sql_like_filter"}),
                             "htmx": {"target": "#content"},
                         },
@@ -364,21 +439,25 @@ def get_sidebar_data() -> dict:
                     "items": [
                         {
                             "text": _("Cards"),
+                            "icon": {"name": "tools", "size": "xs"},
                             "url": reverse("component_detail_page_view", kwargs={"page_name": "card"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Card Carousel"),
+                            "icon": {"name": "tools", "size": "xs"},
                             "url": reverse("component_detail_page_view", kwargs={"page_name": "card_carousel"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Image Carousel"),
+                            "icon": {"name": "tools", "size": "xs"},
                             "url": reverse("component_detail_page_view", kwargs={"page_name": "image_carousel"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Toggle-View"),
+                            "icon": {"name": "tools", "size": "xs"},
                             "url": reverse("component_detail_page_view", kwargs={"page_name": "toggle_view"}),
                             "htmx": {"target": "#content"},
                         },
@@ -390,6 +469,7 @@ def get_sidebar_data() -> dict:
                     "items": [
                         {
                             "text": _("Forms"),
+                            "icon": {"name": "tools", "size": "xs"},
                             "url": reverse("component_detail_page_view", kwargs={"page_name": "form"}),
                             "htmx": {"target": "#content"},
                         }
@@ -658,8 +738,8 @@ def get_differentiator_context() -> dict:
     return {"textA": "The cat is sleeping on the red sofa.", "textB": "This is a completely different sentence!"}
 
 
-def get_input_element_context() -> dict:
-    """Serve data for input element detailpage."""
+def get_dropdown_context() -> dict:
+    """Serve data for dropdown detailpage."""
     return {
         "user_dropdown": {
             "tag_id": "DD_user",
