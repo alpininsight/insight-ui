@@ -249,57 +249,69 @@ def get_sidebar_data() -> dict:
                     "caption": _("Main"),
                     "icon": {"name": "sparks", "size": "small"},
                     "items": [
-                        {"text": _("Alerts"), "url": reverse("alert_detailpage_view"), "htmx": {"target": "#content"}},
                         {
-                            "text": _("Breadcrumb-Navigation"),
-                            "url": reverse("breadcrumbs_detailpage_view"),
+                            "text": _("Alerts"),
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "alert"}),
                             "htmx": {"target": "#content"},
                         },
-                        {"text": _("Chat"), "url": reverse("chat_detailpage_view"), "htmx": {"target": "#content"}},
+                        {
+                            "text": _("Breadcrumb-Navigation"),
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "breadcrumb"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Chat"),
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "chat"}),
+                            "htmx": {"target": "#content"},
+                        },
                         {
                             "text": _("Code Blocks"),
-                            "url": reverse("code_block_detailpage_view"),
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "code_block"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Differentiator"),
-                            "url": reverse("differentiator_detailpage_view"),
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "differentiator"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Geo-Maps"),
-                            "url": reverse("geo_map_detailpage_view"),
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "geo_map"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Input Elements"),
-                            "url": reverse("input_elements_detailpage_view"),
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "input_elements"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Live-Content (Pull)"),
-                            "url": reverse("live_content_detailpage_view"),
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "live_content"}),
                             "htmx": {"target": "#content"},
                         },
-                        {"text": _("Modals"), "url": reverse("modal_detailpage_view"), "htmx": {"target": "#content"}},
+                        {
+                            "text": _("Modals"),
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "modal"}),
+                            "htmx": {"target": "#content"},
+                        },
                         {
                             "text": _("Popovers"),
-                            "url": reverse("popover_detailpage_view"),
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "popover"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Step Bars"),
-                            "url": reverse("step_bar_detailpage_view"),
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "step_bar"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Tooltips"),
-                            "url": reverse("tooltip_detailpage_view"),
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "tooltip"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Web-Sockets (Push)"),
-                            "url": reverse("web_socket_detailpage_view"),
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "web_socket"}),
                             "htmx": {"target": "#content"},
                         },
                     ],
@@ -308,36 +320,79 @@ def get_sidebar_data() -> dict:
                     "caption": _("Lists & Tables"),
                     "icon": {"name": "sparks", "size": "small"},
                     "items": [
-                        {"text": _("Tables"), "url": reverse("storybook_view")},
-                        {"text": _("Pagination"), "url": reverse("storybook_view")},
-                        {"text": _("Infinite  Scroll"), "url": reverse("storybook_view")},
+                        {
+                            "text": _("Infinite Scroll)"),
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "infinite_scroll"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Pagination"),
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "pagination"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Tables"),
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "table"}),
+                            "htmx": {"target": "#content"},
+                        },
                     ],
                 },
                 {
                     "caption": _("Search & Filters"),
                     "icon": {"name": "sparks", "size": "small"},
                     "items": [
-                        {"text": _("Search Bar"), "url": reverse("storybook_view")},
-                        {"text": _("Generic Filter"), "url": reverse("storybook_view")},
-                        {"text": _("SQL-Like Filter"), "url": reverse("storybook_view")},
+                        {
+                            "text": _("Generic Filter"),
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "generic_filter"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Search Bar"),
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "search_bar"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("SQL-Like Filter"),
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "sql_like_filter"}),
+                            "htmx": {"target": "#content"},
+                        },
                     ],
                 },
                 {
                     "caption": _("Cards"),
                     "icon": {"name": "sparks", "size": "small"},
                     "items": [
-                        {"text": _("Cards"), "url": reverse("storybook_view")},
-                        {"text": _("Card Carousel"), "url": reverse("storybook_view")},
-                        {"text": _("Image Carousel"), "url": reverse("storybook_view")},
-                        {"text": _("Toggle View"), "url": reverse("storybook_view")},
+                        {
+                            "text": _("Cards"),
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "card"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Card Carousel"),
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "card_carousel"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Image Carousel"),
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "image_carousel"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Toggle-View"),
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "toggle_view"}),
+                            "htmx": {"target": "#content"},
+                        },
                     ],
                 },
                 {
                     "caption": _("Forms"),
                     "icon": {"name": "sparks", "size": "small"},
                     "items": [
-                        {"text": _("Standard Forms"), "url": reverse("storybook_view")},
-                        {"text": _("HTMX Forms"), "url": reverse("storybook_view")},
+                        {
+                            "text": _("Forms"),
+                            "url": reverse("component_detail_page_view", kwargs={"page_name": "form"}),
+                            "htmx": {"target": "#content"},
+                        }
                     ],
                 },
             ],
@@ -660,3 +715,8 @@ def get_step_bar_context() -> dict:
             {"title": _("Überprüfen"), "description": _("Prüfen der Angaben und Bezahlen."), "completed": False},
         ]
     }
+
+
+def get_empty_context() -> dict:
+    """Serve an empty dictionary."""
+    return {}
