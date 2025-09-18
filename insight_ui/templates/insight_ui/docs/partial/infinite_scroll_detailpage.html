@@ -9,7 +9,7 @@
     </p>
 
     <div class="example-container">
-        {% trans 'Todo' %}
+        {% infinite_scroll items=scroll_items view_name="more_items" auto_fetch=False %}
     </div>
 </section>
 
@@ -19,6 +19,8 @@
 <section>
     <h2>{% trans "Verwendung" %}</h2>
     <div id="Infinite_scroll_Usage" data-insight-code-block="Django">
-        {% trans 'Todo' %}
+        &lcub;% load insight_tags %&rcub;
+
+        &lcub;% infinite_scroll items=scroll_items view_name="more_items" auto_fetch=False %&rcub;
     </div>
 </section>

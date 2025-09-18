@@ -53,7 +53,6 @@ def diff(text1: str, text2: str) -> str:
 
     return f"""
         <style>
-            body {{ font-family: sans-serif; line-height: 1.6; }}
             .del {{ background-color: #f8d7da; color: #721c24; text-decoration: line-through; }}
             .ins {{ background-color: #d4edda; color: #155724; }}
         </style>

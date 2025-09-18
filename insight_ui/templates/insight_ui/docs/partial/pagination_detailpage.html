@@ -9,7 +9,9 @@
     </p>
 
     <div class="example-container">
-        {% trans 'Todo' %}
+        <div id="list-container">
+            {% include 'insight_ui/components/list_partial.html' with pagination=start_page %}
+        </div>
     </div>
 </section>
 
@@ -19,6 +21,8 @@
 <section>
     <h2>{% trans "Verwendung" %}</h2>
     <div id="Pagination_Usage" data-insight-code-block="Django">
-        {% trans 'Todo' %}
+        &lt;div id="list-container"&gt;
+            &lcub;% include 'insight_ui/components/list_partial.html' with pagination=start_page %&rcub;
+        &lt;/div&gt;
     </div>
 </section>

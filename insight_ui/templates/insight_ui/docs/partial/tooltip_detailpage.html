@@ -43,7 +43,7 @@
 
     <p class="info-container text-base mt-4">
         <span class="block font-bold italic text-lg">Info:</span>
-        {% blocktrans with div='<div>'|safe comment='<!-- Arrow -->'|safe %}
+        {% blocktrans with div='&lt;div&gt;' comment='&lt;!-- Arrow --&gt;' %}
         Der Pfeil kann ausgeschaltet werden, indem der {{ div }}-Container unter dem {{ comment }} Kommentar entfernt wird.
         {% endblocktrans %}
     </p>
@@ -67,8 +67,8 @@
 <section>
     <h3>{% trans "Parameter" %}</h3>
     <ol class="list-disc text-secondary leading-loose ms-8">
-        <li><span class="inline-tag">text</span>: {% trans "Der anzuzeigende Text." %}</li>
-        <li><span class="inline-tag">tag_id</span>: {% trans "Eine einzigartige ID für den Tooltip, diese muss bei dem auslösenden Element ebenfalls angegeben werden." %}</li>
+        <li><span class="inline-tag">text</span>(<i>str</i>): {% trans "Der anzuzeigende Text." %}</li>
+        <li><span class="inline-tag">tag_id</span>(<i>str</i>): {% trans "Eine einzigartige ID für den Tooltip, diese muss bei dem auslösenden Element ebenfalls angegeben werden." %}</li>
     </ol>
 </section>
 

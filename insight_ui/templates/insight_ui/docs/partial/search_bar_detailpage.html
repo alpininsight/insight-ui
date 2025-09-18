@@ -9,7 +9,7 @@
     </p>
 
     <div class="example-container">
-        {% trans 'Todo' %}
+        {% include "insight_ui/components/searchbar.html" with request_view="index_view" %}
     </div>
 </section>
 
@@ -19,6 +19,6 @@
 <section>
     <h2>{% trans "Verwendung" %}</h2>
     <div id="Search_Bar_Usage" data-insight-code-block="Django">
-        {% trans 'Todo' %}
+        &lcub;% include "insight_ui/components/searchbar.html" with request_view="index_view" %&rcub;
     </div>
 </section>

@@ -12,10 +12,7 @@ urlpatterns = [
     path("toggle_view/", views.toggle_view, name="toggle_view"),
     path("pagination/", views.pagination, name="pagination"),
     path("i18n/setlang/", set_language, name="set_language"),
-    path("filters", views.filter_storybook_view, name="filter_storybook_view"),
-    path("cards", views.card_storybook_view, name="card_storybook_view"),
-    path("forms", views.form_storybook_view, name="form_storybook_view"),
-    path("tables", views.table_storybook_view, name="table_storybook_view"),
-    path("docs/<str:page_name>/", views.component_detail_page_view, name="component_detail_page_view"),
-    path("", views.storybook_view, name="storybook_view"),
+    path("docs/components/<str:component_name>/", views.component_detail_page_view, name="component_detail_page_view"),
+    path("docs/<str:storybook_name>/", views.storybook_view, name="storybook_view"),
+    path("", views.index_view, name="index_view"),
 ]

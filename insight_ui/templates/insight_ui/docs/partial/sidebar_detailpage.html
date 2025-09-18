@@ -9,7 +9,7 @@
     </p>
 
     <div class="example-container">
-        {% trans 'Todo' %}
+        {% include "insight_ui/components/sidebar.html" with sidebar_data=right_sidebar side="right" auto_close=False %}
     </div>
 </section>
 
@@ -19,6 +19,8 @@
 <section>
     <h2>{% trans "Verwendung" %}</h2>
     <div id="Sidebar_Usage" data-insight-code-block="Django">
-        {% trans 'Todo' %}
+        &lcub;% block drawers %&rcub;
+            &lcub;% include "insight_ui/components/sidebar.html" with sidebar_data=right_sidebar side="right" auto_close=False %&rcub;
+        &lcub;% endblock drawers %&rcub;
     </div>
 </section>

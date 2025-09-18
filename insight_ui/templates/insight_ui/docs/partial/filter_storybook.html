@@ -1,0 +1,29 @@
+{% load i18n insight_tags %}
+
+<!-- Welcome -->
+<section>
+    <h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">{% trans 'Insight UI Filters &amp; Search' %}</h1>
+    <p class="text-lg text-insight-text-secondary dark:text-insight-text-secondary-dark">
+        {% trans 'Filter and search components for big data.' %}
+    </p>
+</section>
+
+<!-- Searchbox Demo -->
+<section class="component-container">
+    <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Primary Search Bar' %}</h2>
+    <div class="space-y-4">
+        {% include "insight_ui/components/searchbar.html" with request_view="index_view" %}
+    </div>
+</section>
+
+<!-- Filter Demo -->
+<section class="component-container">
+    <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Generic Filters' %}</h2>
+    {% include "insight_ui/components/filter.html" %}
+</section>
+
+<!-- SQL-Like Filter Demo -->
+<section class="component-container">
+    <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'SQL-Like Filter' %}</h2>
+    {% include "insight_ui/components/search_query_builder/sq_builder.html" %}
+</section>

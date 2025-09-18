@@ -52,7 +52,7 @@
 
             <ol class="text-secondary leading-loose space-y-4">
                 <li>
-                    <p class="text-secondary leading-loose">1. <span class="inline-tag">insight_ui</span> zu <span class="inline-tag">INSTALLED_APPS</span> in <b>settings.py</b> hinzufügen:</p>
+                    <p class="text-secondary leading-loose mb-4">1. <span class="inline-tag">insight_ui</span> zu <span class="inline-tag">INSTALLED_APPS</span> in <b>settings.py</b> hinzufügen:</p>
 
                     <div id="install2" data-insight-code-block="python">
                         INSTALLED_APPS = [
@@ -75,21 +75,23 @@
                     <ul class="list-disc ms-8">
                         <li>Django-Tailwind-CLI zu Projekt hinzufügen (<span class="inline-tag">uv add django-tailwind-cli</span>)</li>
                         <li>Zu <span class="inline-tag">INSTALLED_APPS</span> hinzufügen, <span class="inline-tag">STATICFILES_DIRS</span>, <span class="inline-tag">TAILWIND_CLI_SRC_CSS</span> und <span class="inline-tag">TAILWIND_CLI_DIST_CSS</span> definieren</li>
-                        <div id="install3" data-insight-code-block="python">
-                            INSTALLED_APPS = [
-                                # ...
-                                "django_tailwind_cli",
-                                # ...
-                            ]
+                        <div class="my-4">
+                            <div id="install3" data-insight-code-block="python">
+                                INSTALLED_APPS = [
+                                    # ...
+                                    "django_tailwind_cli",
+                                    # ...
+                                ]
 
-                            # Configure static files directory
-                            STATICFILES_DIRS = [BASE_DIR / "assets"]
+                                # Configure static files directory
+                                STATICFILES_DIRS = [BASE_DIR / "assets"]
 
-                            # Tailwind source file
-                            TAILWIND_CLI_SRC_CSS = BASE_DIR / ".venv/Lib/site-packages/insight_ui/static/insight_ui/css/input.css"
+                                # Tailwind source file
+                                TAILWIND_CLI_SRC_CSS = BASE_DIR / ".venv/Lib/site-packages/insight_ui/static/insight_ui/css/input.css"
 
-                            # Tailwind dist file
-                            TAILWIND_CLI_DIST_CSS = "insight_ui/css/tailwind.css"
+                                # Tailwind dist file
+                                TAILWIND_CLI_DIST_CSS = "insight_ui/css/tailwind.css"
+                            </div>
                         </div>
                         <li><span class="inline-tag">python manage.py tailwind setup</span> Für initiales Setup von Tailwind ausführen (lädt u.a. das Tailwind-CLI runter ~120MB)</li>
                         <li><span class="inline-tag">python manage.py tailwind runserver</span> Startet den development Server mit hot reload</li>

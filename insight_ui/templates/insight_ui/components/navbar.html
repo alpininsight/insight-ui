@@ -74,7 +74,24 @@
                           <div id="{{ link.open_dropdown }}" class="bg-white border border-gray-300 dark:border-0 rounded-sm shadow-lg">
                             <div class="py-1">
                               {% for item in link.items %}
-                                <a href="{% url item.view_name %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">{{ item.text }}</a>
+                                <a
+                                  {% if item.htmx %}
+                                    {% if item.view_arg %}
+                                      hx-get="{% url item.view_name item.view_arg %}"
+                                    {% else %}
+                                      hx-get="{% url item.view_name %}"
+                                    {% endif %}
+                                    hx-target="{{ item.htmx.target }}"
+                                    hx-swap="{{ item.htmx.swap|default:'innerHTML' }} show:window:top"
+                                    hx-push-url="true"
+                                  {% endif %}
+                                  {% if item.view_arg %}
+                                    href="{% url item.view_name item.view_arg %}"
+                                  {% else %}
+                                    href="{% url item.view_name %}"
+                                  {% endif %}
+                                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                  >{{ item.text }}</a>
                               {% endfor %}
                             </div>
                           </div>

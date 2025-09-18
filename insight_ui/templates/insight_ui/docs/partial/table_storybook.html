@@ -1,0 +1,29 @@
+{% load i18n insight_tags %}
+
+<!-- Welcome -->
+<section>
+    <h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">{% trans 'Insight UI Lists &amp; Tables' %}</h1>
+    <p class="text-lg text-insight-text-secondary dark:text-insight-text-secondary-dark">
+        {% trans 'List and table components for big data.' %}
+    </p>
+</section>
+
+<!-- Table Demo -->
+<section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+    <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Tables' %}</h2>
+    {% table table_data=table %}
+</section>
+
+<!-- Pagination Demo -->
+<section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+    <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Pagination for lists &amp; tables' %}</h2>
+    <div id="list-container">
+        {% include 'insight_ui/components/list_partial.html' with pagination=start_page %}
+    </div>
+</section>
+
+<!-- Infinite Scroll Demo -->
+<section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+    <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Infinite Scroll' %}</h2>
+    {% infinite_scroll items=scroll_items view_name="more_items" auto_fetch=False %}
+</section>

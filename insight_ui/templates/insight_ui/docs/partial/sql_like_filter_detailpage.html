@@ -9,7 +9,7 @@
     </p>
 
     <div class="example-container">
-        {% trans 'Todo' %}
+        {% include "insight_ui/components/search_query_builder/sq_builder.html" with model_fields=model_fields %}
     </div>
 </section>
 
@@ -19,6 +19,6 @@
 <section>
     <h2>{% trans "Verwendung" %}</h2>
     <div id="SQL_Like_Filter_Usage" data-insight-code-block="Django">
-        {% trans 'Todo' %}
+        &lcub;% include "insight_ui/components/search_query_builder/sq_builder.html" with model_fields=model_fields %&rcub;
     </div>
 </section>

@@ -9,7 +9,7 @@
     </p>
 
     <div class="example-container">
-        {% trans 'Todo' %}
+        {% table table_data=table %}
     </div>
 </section>
 
@@ -19,6 +19,8 @@
 <section>
     <h2>{% trans "Verwendung" %}</h2>
     <div id="Table_Usage" data-insight-code-block="Django">
-        {% trans 'Todo' %}
+        &lcub;% load insight_tags %&rcub;
+
+        &lcub;% table table_data=table %&rcub;
     </div>
 </section>

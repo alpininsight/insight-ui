@@ -1,6 +1,6 @@
 {% load static insight_tags i18n %}
 
-<h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">Insight UI Card</h1>
+<h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">Insight UI Cards</h1>
 
 <!-- Component Demo -->
 <section>
@@ -9,7 +9,17 @@
     </p>
 
     <div class="example-container">
-        {% trans 'Todo' %}
+        <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
+            {% for card in cards %}
+                {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
+            {% endfor %}
+            {% for card in horizontale_cards %}
+                {% card_horizontale title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
+            {% endfor %}
+            {% for card in flip_cards %}
+                {% card_flip title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
+            {% endfor %}
+        </div>
     </div>
 </section>
 
@@ -19,6 +29,14 @@
 <section>
     <h2>{% trans "Verwendung" %}</h2>
     <div id="Card_Usage" data-insight-code-block="Django">
-        {% trans 'Todo' %}
+        &lcub;% for card in cards %&rcub;
+            &lcub;% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %&rcub;
+        &lcub;% endfor %&rcub;
+        &lcub;% for card in horizontale_cards %&rcub;
+            &lcub;% card_horizontale title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %&rcub;
+        &lcub;% endfor %&rcub;
+        &lcub;% for card in flip_cards %&rcub;
+            &lcub;% card_flip title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %&rcub;
+        &lcub;% endfor %&rcub;
     </div>
 </section>

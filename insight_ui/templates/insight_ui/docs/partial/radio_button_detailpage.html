@@ -27,7 +27,9 @@
     </div>
     <h2>{% trans "Block Radio Buttons" %}</h2>
     <div class="example-container mt-3 mb-6">
-        {% include "insight_ui/components/radio_group.html" with radio_group=view_options current_value=current_view view_name="toggle_view" target_id=target_id %}
+        <div class="w-fit">
+            {% include "insight_ui/components/radio_group.html" with radio_group=view_options current_value=current_view %}
+        </div>
     </div>
 </section>
 

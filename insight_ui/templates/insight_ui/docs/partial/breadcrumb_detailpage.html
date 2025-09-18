@@ -33,8 +33,8 @@
 
 <section>
     <h3>{% trans "Parameter" %}</h3>
-    <ol class="text-secondary">
-        <li><span class="bg-gray-100 dark:bg-gray-800 rounded px-2 py-0.5 text-primary font-semibold">items</span>: {% trans "Eine Liste mit Links." %}</li>
+    <ol class="list-disc text-secondary ms-8">
+        <li><span class="bg-gray-100 dark:bg-gray-800 rounded px-2 py-0.5 text-primary font-semibold">items</span>(<i>list</i>): {% trans "Eine Liste mit Links." %}</li>
     </ol>
 
     <div class="mt-8">
@@ -49,10 +49,10 @@
             ],
         </div>
 
-        <ol class="text-secondary space-y-1 mt-12">
-            <li><span class="inline-tag">text</span>: {% trans "Der Titel des jeweiligen Schritts." %}</li>
-            <li><span class="inline-tag">url</span>: {% trans "Die URL auf welche der Link führen soll." %}</li>
-            <li><span class="inline-tag">icon</span>: {% trans "Ein optional Icon welches vor dem Text angezeigt wird." %}</li>
+        <ol class="list-disc text-secondary leading-relaxed ms-8 mt-6">
+            <li><span class="inline-tag">text</span>(<i>str</i>): {% trans "Der Titel des jeweiligen Schritts." %}</li>
+            <li><span class="inline-tag">url</span>(<i>str</i>): {% trans "Die URL auf welche der Link führen soll." %}</li>
+            <li><span class="inline-tag">icon</span>(<i>dict</i>): {% trans "Ein optional Icon welches vor dem Text angezeigt wird." %}</li>
         </ol>
     </div>
 </section>

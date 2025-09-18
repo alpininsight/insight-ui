@@ -1,0 +1,21 @@
+{% load i18n insight_tags %}
+
+<!-- Welcome -->
+<section>
+    <h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">{% trans 'Insight UI Forms' %}</h1>
+    <p class="text-lg text-insight-text-secondary dark:text-insight-text-secondary-dark">
+        {% trans 'Form components with various input fields and different request methods.' %}
+    </p>
+</section>
+
+<!-- Form Demo -->
+<section class="component-container">
+    <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Form' %}</h2>
+    {% form title="Contact Form" description="Please fill out the form" fields=form_fields actions=form_actions action="api/form-submit/" id="standard-form" %}
+</section>
+
+<!-- HTMX Form Demo -->
+<section class="component-container">
+    <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'HTMX Form' %}</h2>
+    {% form title="Contact Form" description="Please fill out the form" fields=form_fields actions=form_actions htmx=htmx_config id="htmx-form" %}
+</section>

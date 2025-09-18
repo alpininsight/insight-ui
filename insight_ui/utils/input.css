@@ -150,10 +150,10 @@
     }
 
     .info-container {
-        @apply bg-gray-100 border border-gray-200 border-s-4 border-s-insight-info rounded-e px-4 py-1;
+        @apply bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 border-s-4 border-s-insight-info dark:border-s-insight-info rounded-e px-4 py-1;
     }
 
     .inline-tag {
-        @apply bg-gray-200 dark:bg-gray-800 rounded px-2 py-px;
+        @apply bg-gray-200 dark:bg-gray-800 text-insight-primary rounded px-2 py-0.5;
     }
 }

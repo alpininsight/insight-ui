@@ -9,7 +9,7 @@
     </p>
 
     <div class="example-container">
-        {% trans 'Todo' %}
+        {% live_content url="/api/live-data/" interval=10 id="live-content" %}
     </div>
 </section>
 
@@ -19,6 +19,8 @@
 <section>
     <h2>{% trans "Verwendung" %}</h2>
     <div id="Live_Content_Usage" data-insight-code-block="Django">
-        {% trans 'Todo' %}
+        &lcub;% load insight_tags %&rcub;
+
+        &lcub;% live_content url="/api/live-data/" interval=10 id="live-content" %&rcub;
     </div>
 </section>

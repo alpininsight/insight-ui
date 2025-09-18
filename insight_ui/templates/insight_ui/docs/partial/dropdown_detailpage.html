@@ -32,8 +32,8 @@
 <section>
     <h3>{% trans "Parameter" %}</h3>
 
-    <ol class="text-secondary leading-loose">
-        <li><span class="inline-tag">user_dropdown</span>: {% trans "Ein Dictionary welches das Dropdown beschreibt." %}</li>
+    <ol class="list-disc text-secondary leading-loose ms-8">
+        <li><span class="inline-tag">user_dropdown</span>(<i>dict</i>): {% trans "Ein Dictionary welches das Dropdown beschreibt." %}</li>
     </ol>
 
     <div class="mt-8">
@@ -65,12 +65,12 @@
             }
         </div>
 
-        <ol class="text-secondary space-y-1 mt-12">
+        <ol class="list-disc text-secondary leading-relaxed ms-8 mt-6">
             <li><span class="inline-tag">tag_id</span>(<i>str</i>): {% trans "Eine eindeutige ID für das HTML-Tag des Dropdown-Containers." %}</li>
             <li><span class="inline-tag">title</span>(<i>str</i>): {% trans "Die Beschriftung des Dropdown-Buttons." %}</li>
-            <li><span class="inline-tag">show_arrow</span>(<i>bool</i>): _True_ {% trans "wenn ein Pfeil neben dem Titel angezeigt werden soll." %}</li>
+            <li><span class="inline-tag">show_arrow</span>(<i>bool</i>): <span class="text-blue-400 font-semibold">True</span> {% trans "wenn ein Pfeil neben dem Titel angezeigt werden soll." %}</li>
             <li><span class="inline-tag">item</span>(<i>list</i>): {% trans "Eine Liste der Dropdown-Elemente." %}
-                <ol>
+                <ol class="list-disc ms-8">
                     <li><span class="inline-tag">text</span>(<i>str</i>): {% trans "Der angezeigte Text des jeweiligen Elements." %}</li>
                     <li><span class="inline-tag">view_name</span>(<i>str</i>): {% trans "Der Name der View zu wessen Endpunkt der Request gesendet werden soll." %}</li>
                     <li><span class="inline-tag">icon</span>(<i>dict</i>): {% trans "Ein optionales Icon welches vor dem Text angezeigt wird." %}</li>

@@ -9,7 +9,7 @@
     </button>
     <div id="{{ dropdown.tag_id }}" class="border border-gray-300 dark:border-0 rounded-sm shadow-lg">
         {% for item in dropdown.items %}
-            <a href="{% url item.view_name %}" class="block px-4 py-2 text-sm text-insight-text-primary dark:text-insight-text-primary-dark bg-gray-100 dark:bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 {% if forloop.first %}rounded-t{% elif forloop.last %}rounded-b{% endif %}">
+            <a {% if item.view_arg %}href="{% url item.view_name item.view_arg %}"{% else %}href="{% url item.view_name %}"{% endif %} class="block px-4 py-2 text-sm text-insight-text-primary dark:text-insight-text-primary-dark bg-gray-100 dark:bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 {% if forloop.first %}rounded-t{% elif forloop.last %}rounded-b{% endif %}">
                 {% if link.icon %}
                     <span class="inline-block">
                         {% include "insight_ui/components/icons.html" with icon=item.icon %}

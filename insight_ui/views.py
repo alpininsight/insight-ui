@@ -10,19 +10,37 @@ from django.views.decorators.http import require_GET, require_http_methods
 from insight_ui.demo_context import (
     DEMO_FIELDS,
     get_alert_context,
+    get_base_context,
     get_breadcrumb_context,
-    get_card_storybook_data,
+    get_bullet_point_list_context,
+    get_card_carousel_context,
+    get_card_storybook_context,
+    get_cards_context,
     get_differentiator_context,
+    get_drawer_context,
     get_dropdown_context,
     get_empty_context,
-    get_filter_storybook_data,
-    get_form_storybook_data,
+    get_filter_storybook_context,
+    get_footer_context,
+    get_form_context,
+    get_form_storybook_context,
+    get_generic_filter_context,
+    get_image_carousel_context,
+    get_infinite_scroll_context,
+    get_inputs_storybook_context,
+    get_main_storybook_context,
     get_modal_context,
-    get_nav_and_footer_context,
-    get_sidebar_data,
+    get_navbar_context,
+    get_pagination_context,
+    get_popup_storybook_context,
+    get_radio_button_context,
+    get_sidebar_context,
+    get_sql_like_filter_context,
     get_step_bar_context,
-    get_storybook_context,
-    get_table_storybook_data,
+    get_table_context,
+    get_table_storybook_context,
+    get_toggle_view_context,
+    get_utils_storybook_context,
 )
 from insight_ui.demo_utils import generate_payload, map_payload_to_cards, map_payload_to_table
 from insight_ui.forms import ChatForm
@@ -65,7 +83,7 @@ def pagination(request: HttpRequest) -> HttpResponse:
             {"pagination": {"page_obj": page_obj, "surrounding_pages": surrounding_pages}},
         )
 
-    context = get_storybook_context()
+    context = get_table_storybook_context()
     context["page_obj"] = {"page_obj": page_obj, "surrounding_pages": surrounding_pages}
     return render(request, "insight_ui/storybook.html", context)
 
@@ -158,7 +176,7 @@ def form_submit(request: HttpRequest) -> HttpResponse | JsonResponse:
             return HttpResponse(html, status=400)
 
         # Retrieve necessary context data and perform a whole page reload to present form issues
-        context = get_storybook_context()
+        context = get_form_storybook_context()
         context["form_errors"] = errors
         context["form_data"] = {"name": name, "email": email, "message": message}
         return render(request, "insight_ui/storybook.html", context)
@@ -174,7 +192,7 @@ def form_submit(request: HttpRequest) -> HttpResponse | JsonResponse:
         return HttpResponse(success_html)
 
     # Retrieve necessary context data and perform a whole page reload to present form success
-    context = get_storybook_context()
+    context = get_form_storybook_context()
     context["form_success"] = {
         "message": _("Normales Formular erfolgreich übermittelt!"),
         "name": name,
@@ -185,14 +203,20 @@ def form_submit(request: HttpRequest) -> HttpResponse | JsonResponse:
     return render(request, "insight_ui/storybook.html", context)
 
 
-def component_detail_page_view(request: HttpRequest, page_name: str) -> HttpResponse:
+def index_view(request: HttpRequest) -> HttpResponse:
+    """Render index page."""
+    context = get_base_context() | get_sidebar_context()
+    return render(request, "insight_ui/index.html", context)
+
+
+def component_detail_page_view(request: HttpRequest, component_name: str) -> HttpResponse:
     """
-    Render detailpage of the a component.
+    Render detailpage of the specified component.
 
     Arguments:
     ---------
         request (HttpRequest): request object.
-        page_name (str): name of the component.
+        component_name (str): name of the component.
 
     Returns:
     -------
@@ -209,7 +233,7 @@ def component_detail_page_view(request: HttpRequest, page_name: str) -> HttpResp
         "button": get_empty_context,
         "checkbox": get_empty_context,
         "dropdown": get_dropdown_context,
-        "radio_button": get_empty_context,
+        "radio_button": get_radio_button_context,
         "range_slider": get_empty_context,
         "toggle_button": get_empty_context,
         "live_content": get_empty_context,
@@ -218,23 +242,24 @@ def component_detail_page_view(request: HttpRequest, page_name: str) -> HttpResp
         "step_bar": get_step_bar_context,
         "tooltip": get_empty_context,
         "web_socket": get_empty_context,
-        "infinite_scroll": get_empty_context,
-        "pagination": get_empty_context,
-        "table": get_empty_context,
-        "generic_filter": get_empty_context,
+        "infinite_scroll": get_infinite_scroll_context,
+        "pagination": get_pagination_context,
+        "table": get_table_context,
+        "generic_filter": get_generic_filter_context,
         "search_bar": get_empty_context,
-        "sql_like_filter": get_empty_context,
-        "card": get_empty_context,
-        "card_carousel": get_empty_context,
-        "image_carousel": get_empty_context,
-        "toggle_view": get_empty_context,
-        "form": get_empty_context,
-        "navbar": get_empty_context,
-        "sidebar": get_empty_context,
-        "footer": get_empty_context,
+        "sql_like_filter": get_sql_like_filter_context,
+        "card": get_cards_context,
+        "card_carousel": get_card_carousel_context,
+        "image_carousel": get_image_carousel_context,
+        "toggle_view": get_toggle_view_context,
+        "form": get_form_context,
+        "navbar": get_navbar_context,
+        "sidebar": get_drawer_context,
+        "footer": get_footer_context,
+        "bullet_point_list": get_bullet_point_list_context,
     }
 
-    context_func = context_func_map.get(page_name)
+    context_func = context_func_map.get(component_name)
 
     if not context_func:
         return HttpResponse("Page not found", status=404)
@@ -242,51 +267,51 @@ def component_detail_page_view(request: HttpRequest, page_name: str) -> HttpResp
     if request.headers.get("HX-Request"):
         context = context_func()
         context["search_query"] = request.GET.get("search", "")
-        return render(request, f"insight_ui/docs/partial/{page_name}_detailpage.html", context)
+        return render(request, f"insight_ui/docs/partial/{component_name}_detailpage.html", context)
 
-    context = get_nav_and_footer_context() | get_sidebar_data() | context_func()
-    context["template_name"] = f"{page_name}_detailpage"
+    context = get_base_context() | get_sidebar_context() | context_func()
+    context["template_name"] = f"{component_name}_detailpage"
     return render(request, "insight_ui/docs/component_detailpage.html", context)
 
 
-def storybook_view(request: HttpRequest) -> HttpResponse:
-    """Start page with base ui-components."""
-    context = get_storybook_context()
-    context["search_query"] = request.GET.get("search", "")
+def storybook_view(request: HttpRequest, storybook_name: str) -> HttpResponse:
+    """
+    Render all components of the specified storybook.
 
-    return render(request, "insight_ui/index.html", context)
+    Arguments:
+    ---------
+        request (HttpRequest): request object.
+        storybook_name (str): name of the storybook.
 
+    Returns:
+    -------
+        response (HttpResponse): response object.
 
-def filter_storybook_view(request: HttpRequest) -> HttpResponse:
-    """Dedicated page for filters and search functionality."""
-    context = get_filter_storybook_data()
-    context["search_query"] = request.GET.get("search", "")
+    """
+    context_func_map = {
+        "main": get_main_storybook_context,
+        "input": get_inputs_storybook_context,
+        "popup": get_popup_storybook_context,
+        "util": get_utils_storybook_context,
+        "table": get_table_storybook_context,
+        "card": get_card_storybook_context,
+        "form": get_form_storybook_context,
+        "filter": get_filter_storybook_context,
+    }
 
-    return render(request, "insight_ui/filter_storybook.html", context)
+    context_func = context_func_map.get(storybook_name)
 
+    if not context_func:
+        return HttpResponse("Page not found", status=404)
 
-def card_storybook_view(request: HttpRequest) -> HttpResponse:
-    """Dedicated page for cards."""
-    context = get_card_storybook_data()
-    context["search_query"] = request.GET.get("search", "")
+    if request.headers.get("HX-Request"):
+        context = context_func()
+        context["search_query"] = request.GET.get("search", "")
+        return render(request, f"insight_ui/docs/partial/{storybook_name}_storybook.html", context)
 
-    return render(request, "insight_ui/card_storybook.html", context)
-
-
-def form_storybook_view(request: HttpRequest) -> HttpResponse:
-    """Dedicated page for forms."""
-    context = get_form_storybook_data()
-    context["search_query"] = request.GET.get("search", "")
-
-    return render(request, "insight_ui/form_storybook.html", context)
-
-
-def table_storybook_view(request: HttpRequest) -> HttpResponse:
-    """Dedicated page for lists and tables."""
-    context = get_table_storybook_data()
-    context["search_query"] = request.GET.get("search", "")
-
-    return render(request, "insight_ui/table_storybook.html", context)
+    context = context_func()
+    context["template_name"] = f"{storybook_name}_storybook"
+    return render(request, "insight_ui/docs/component_detailpage.html", context)
 
 
 @require_GET

@@ -107,13 +107,18 @@ DEMO_FIELDS = [
 ]
 
 
-def get_nav_and_footer_context() -> dict:
-    """Serve content for navigation and footer."""
-    return config.get_config() | {
+def get_base_context() -> dict:
+    """Serve basic context data, like navbar, footer and settings."""
+    return config.get_config() | get_navbar_context() | get_footer_context()
+
+
+def get_navbar_context() -> dict:
+    """Serve data for navbar detailpage."""
+    return {
         "nav_config": {
             "brand": {
                 "title": "Insight UI",
-                "view_name": "storybook_view",
+                "view_name": "index_view",
                 "logo_url": "insight_ui/svg/ai-logo.svg",
                 "logo_alt": "Insight UI Logo",
             },
@@ -121,7 +126,7 @@ def get_nav_and_footer_context() -> dict:
                 {
                     "text": _("Startpage"),
                     "icon": {"name": "home", "size": "small"},
-                    "view_name": "storybook_view",
+                    "view_name": "index_view",
                     "active": True,
                     "need_auth": False,
                     "staff_only": False,
@@ -130,10 +135,54 @@ def get_nav_and_footer_context() -> dict:
                     "text": _("Components"),
                     "open_dropdown": "components-menu",
                     "items": [
-                        {"text": "List & Tables", "view_name": "table_storybook_view"},
-                        {"text": "Cards", "view_name": "card_storybook_view"},
-                        {"text": "Forms", "view_name": "form_storybook_view"},
-                        {"text": "Search & Filters", "view_name": "filter_storybook_view"},
+                        {
+                            "text": "Main / Navigation",
+                            "view_name": "storybook_view",
+                            "view_arg": "main",
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": "Input Elements",
+                            "view_name": "storybook_view",
+                            "view_arg": "input",
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": "Popups",
+                            "view_name": "storybook_view",
+                            "view_arg": "popup",
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": "Utils",
+                            "view_name": "storybook_view",
+                            "view_arg": "util",
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": "List & Tables",
+                            "view_name": "storybook_view",
+                            "view_arg": "table",
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": "Cards",
+                            "view_name": "storybook_view",
+                            "view_arg": "card",
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": "Forms",
+                            "view_name": "storybook_view",
+                            "view_arg": "form",
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": "Search & Filters",
+                            "view_name": "storybook_view",
+                            "view_arg": "filter",
+                            "htmx": {"target": "#content"},
+                        },
                     ],
                     "chevron": {"name": "chevron_down", "size": "small"},
                     "active": False,
@@ -147,22 +196,10 @@ def get_nav_and_footer_context() -> dict:
                     "need_auth": False,
                     "staff_only": False,
                 },
-                {
-                    "text": _("Test"),
-                    "view_name": "storybook_view",
-                    "active": False,
-                    "need_auth": True,
-                    "staff_only": False,
-                },
-                {
-                    "text": _("Test2"),
-                    "view_name": "storybook_view",
-                    "active": False,
-                    "need_auth": True,
-                    "staff_only": True,
-                },
+                {"text": _("Test"), "view_name": "index_view", "active": False, "need_auth": True, "staff_only": False},
+                {"text": _("Test2"), "view_name": "index_view", "active": False, "need_auth": True, "staff_only": True},
             ],
-            "searchbar_request_view": "storybook_view",
+            "searchbar_request_view": "index_view",
             "show_usermenu": True,
             "show_language_selector": True,
             "show_theme_toggle": True,
@@ -170,7 +207,7 @@ def get_nav_and_footer_context() -> dict:
         "user_dropdown_links": [
             {
                 "text": _("Settings"),
-                "view_name": "storybook_view",
+                "view_name": "index_view",
                 "staff_only": False,
                 "icon": {"name": "cog", "size": "small"},
             },
@@ -182,27 +219,16 @@ def get_nav_and_footer_context() -> dict:
             },
             {
                 "text": _("Translation"),
-                "view_name": "storybook_view",
+                "view_name": "index_view",
                 "staff_only": True,
                 "icon": {"name": "globe", "size": "small"},
             },
         ],
-        "footer_data": {
-            "description": {
-                "title": "Insight UI",
-                "text": "A modern, accessible, and responsive UI library for Django projects.",
-            },
-            "links": [
-                {"text": _("Startpage"), "icon": {"name": "home", "size": "xs"}, "view_name": "storybook_view"},
-                {"text": _("Storybook"), "view_name": "storybook_view"},
-                {"text": _("Documentation"), "view_name": "storybook_view"},
-            ],
-        },
     }
 
 
-def get_sidebar_data() -> dict:
-    """Serve data for the sidebars."""
+def get_drawer_context() -> dict:
+    """Serve data for sidebar detailpage."""
     return {
         "right_sidebar": {
             "title": _("Secondary Sidebar"),
@@ -215,32 +241,47 @@ def get_sidebar_data() -> dict:
                         {
                             "text": _("Notifications"),
                             "icon": {"name": "home", "size": "small"},
-                            "url": reverse("storybook_view"),
+                            "url": reverse("index_view"),
                         },
                         {
                             "text": _("Messages"),
                             "icon": {"name": "home", "size": "small"},
-                            "url": reverse("storybook_view"),
+                            "url": reverse("index_view"),
                         },
-                        {
-                            "text": _("Tasks"),
-                            "icon": {"name": "home", "size": "small"},
-                            "url": reverse("storybook_view"),
-                        },
+                        {"text": _("Tasks"), "icon": {"name": "home", "size": "small"}, "url": reverse("index_view")},
                         {
                             "text": _("Calender"),
                             "icon": {"name": "home", "size": "small"},
-                            "url": reverse("storybook_view"),
+                            "url": reverse("index_view"),
                         },
-                        {
-                            "text": _("Profile"),
-                            "icon": {"name": "home", "size": "small"},
-                            "url": reverse("storybook_view"),
-                        },
+                        {"text": _("Profile"), "icon": {"name": "home", "size": "small"}, "url": reverse("index_view")},
                     ],
                 }
             ],
-        },
+        }
+    }
+
+
+def get_footer_context() -> dict:
+    """Server data for footer detailpage."""
+    return {
+        "footer_data": {
+            "description": {
+                "title": "Insight UI",
+                "text": "A modern, accessible, and responsive UI library for Django projects.",
+            },
+            "links": [
+                {"text": _("Startpage"), "icon": {"name": "home", "size": "xs"}, "view_name": "index_view"},
+                {"text": _("Storybook"), "view_name": "index_view"},
+                {"text": _("Documentation"), "view_name": "index_view"},
+            ],
+        }
+    }
+
+
+def get_sidebar_context() -> dict:
+    """Serve data for the main sidebar."""
+    return {
         "left_sidebar": {
             "title": _("Insight UI Components"),
             "icon": {"name": "cards", "size": "small"},
@@ -252,29 +293,35 @@ def get_sidebar_data() -> dict:
                         {
                             "text": _("Navbar"),
                             "icon": {"name": "tools", "size": "xs"},
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "navbar"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "navbar"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Sidebar"),
                             "icon": {"name": "tools", "size": "xs"},
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "sidebar"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "sidebar"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Footer"),
-                            "icon": {"name": "tools", "size": "xs"},
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "footer"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "footer"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Breadcrumb Navigation"),
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "breadcrumb"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "breadcrumb"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Step Bars"),
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "step_bar"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "step_bar"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Bullet Point List"),
+                            "url": reverse(
+                                "component_detail_page_view", kwargs={"component_name": "bullet_point_list"}
+                            ),
                             "htmx": {"target": "#content"},
                         },
                     ],
@@ -285,42 +332,37 @@ def get_sidebar_data() -> dict:
                     "items": [
                         {
                             "text": _("Buttons"),
-                            "icon": {"name": "tools", "size": "xs"},
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "button"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "button"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Checkboxes"),
-                            "icon": {"name": "tools", "size": "xs"},
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "checkbox"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "checkbox"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Dropdown"),
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "dropdown"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "dropdown"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Radio-Buttons"),
-                            "icon": {"name": "tools", "size": "xs"},
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "radio_button"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "radio_button"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Range Slider"),
-                            "icon": {"name": "tools", "size": "xs"},
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "range_slider"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "range_slider"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Toggle-Buttons"),
-                            "icon": {"name": "tools", "size": "xs"},
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "toggle_button"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "toggle_button"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Chat"),
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "chat"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "chat"}),
                             "htmx": {"target": "#content"},
                         },
                     ],
@@ -331,22 +373,22 @@ def get_sidebar_data() -> dict:
                     "items": [
                         {
                             "text": _("Alerts"),
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "alert"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "alert"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Modals"),
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "modal"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "modal"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Popovers"),
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "popover"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "popover"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Tooltips"),
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "tooltip"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "tooltip"}),
                             "htmx": {"target": "#content"},
                         },
                     ],
@@ -357,30 +399,29 @@ def get_sidebar_data() -> dict:
                     "items": [
                         {
                             "text": _("Code Blocks"),
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "code_block"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "code_block"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Differentiator"),
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "differentiator"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "differentiator"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Geo-Maps"),
                             "icon": {"name": "tools", "size": "xs"},
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "geo_map"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "geo_map"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Live-Content (Pull)"),
-                            "icon": {"name": "tools", "size": "xs"},
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "live_content"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "live_content"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Web-Sockets (Push)"),
                             "icon": {"name": "tools", "size": "xs"},
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "web_socket"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "web_socket"}),
                             "htmx": {"target": "#content"},
                         },
                     ],
@@ -391,20 +432,17 @@ def get_sidebar_data() -> dict:
                     "items": [
                         {
                             "text": _("Infinite Scroll"),
-                            "icon": {"name": "tools", "size": "xs"},
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "infinite_scroll"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "infinite_scroll"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Pagination"),
-                            "icon": {"name": "tools", "size": "xs"},
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "pagination"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "pagination"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Tables"),
-                            "icon": {"name": "tools", "size": "xs"},
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "table"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "table"}),
                             "htmx": {"target": "#content"},
                         },
                     ],
@@ -415,20 +453,17 @@ def get_sidebar_data() -> dict:
                     "items": [
                         {
                             "text": _("Generic Filter"),
-                            "icon": {"name": "tools", "size": "xs"},
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "generic_filter"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "generic_filter"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Search Bar"),
-                            "icon": {"name": "tools", "size": "xs"},
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "search_bar"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "search_bar"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("SQL-Like Filter"),
-                            "icon": {"name": "tools", "size": "xs"},
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "sql_like_filter"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "sql_like_filter"}),
                             "htmx": {"target": "#content"},
                         },
                     ],
@@ -439,26 +474,22 @@ def get_sidebar_data() -> dict:
                     "items": [
                         {
                             "text": _("Cards"),
-                            "icon": {"name": "tools", "size": "xs"},
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "card"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "card"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Card Carousel"),
-                            "icon": {"name": "tools", "size": "xs"},
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "card_carousel"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "card_carousel"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Image Carousel"),
-                            "icon": {"name": "tools", "size": "xs"},
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "image_carousel"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "image_carousel"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Toggle-View"),
-                            "icon": {"name": "tools", "size": "xs"},
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "toggle_view"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "toggle_view"}),
                             "htmx": {"target": "#content"},
                         },
                     ],
@@ -469,240 +500,76 @@ def get_sidebar_data() -> dict:
                     "items": [
                         {
                             "text": _("Forms"),
-                            "icon": {"name": "tools", "size": "xs"},
-                            "url": reverse("component_detail_page_view", kwargs={"page_name": "form"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "form"}),
                             "htmx": {"target": "#content"},
                         }
                     ],
                 },
             ],
-        },
+        }
     }
 
 
-def get_table_storybook_data() -> dict:
-    """Serve data for table examples."""
-    # Generate data for pagination example
-    page_obj, surrounding_pages = get_page(generate_payload(100))
-
-    return (
-        get_nav_and_footer_context()
-        | get_sidebar_data()
-        | {
-            "table": {
-                "caption": _("Example of a table component."),
-                "empty_msg": _("No data available!"),
-                "headers": [_("Name"), _("E-Mail"), _("Status"), _("Actions")],
-                "rows": [
-                    [
-                        "Max Mustermann",
-                        "max@example.com",
-                        _("Active"),
-                        format_html(
-                            '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
-                        ),
-                    ],
-                    [
-                        "Anna Schmidt",
-                        "anna@example.com",
-                        _("Inactive"),
-                        format_html(
-                            '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
-                        ),
-                    ],
-                    [
-                        "Tom Weber",
-                        "tom@example.com",
-                        _("Active"),
-                        format_html(
-                            '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
-                        ),
-                    ],
-                ],
-            },
-            "start_page": {"page_obj": page_obj, "surrounding_pages": surrounding_pages},
-            "scroll_items": [{"title": f"Element {i}", "content": f"Inhalt für Element {i}"} for i in range(1, 11)],
-        }
-    )
-
-
-def get_card_storybook_data() -> dict:
-    """Serve data for card examples."""
-    # Generate data for examples
-    payload = generate_payload()
-    headers, rows = map_payload_to_table(payload)
-
-    return (
-        get_nav_and_footer_context()
-        | get_sidebar_data()
-        | {
-            "cards": [
-                {
-                    "title": _("Example Card"),
-                    "subtitle": _("Subtitle"),
-                    "content": _("This is the card content."),
-                    "actions": [
-                        {"text": _("Learn more"), "url": "#", "type": "secondary"},
-                        {"text": _("Share"), "url": "#", "type": "primary"},
-                    ],
-                },
-                {
-                    "title": "Card with actions",
-                    "content": "This card has some action buttons.",
-                    "actions": [
-                        {"text": _("Learn more"), "url": "#", "type": "secondary"},
-                        {"text": _("Share"), "url": "#", "type": "primary"},
-                    ],
-                },
-            ],
-            "horizontale_cards": [
-                {
-                    "title": "Horizontale Cards",
-                    "content": "A card with its content arranged horizontally.",
-                    "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": "Card-Image"},
-                    "tags": ["Test", "Test2", "Test3"],
-                    "actions": [
-                        {"text": _("Learn more"), "url": "#", "type": "secondary"},
-                        {"text": _("Share"), "url": "#", "type": "primary"},
-                    ],
-                }
-            ],
-            "flip_cards": [
-                {
-                    "title": "Flip Card",
-                    "content": "A card that rotates 180° and has additional content on the back.",
-                    "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": "Card-Image"},
-                    "tags": ["Test", "Test2", "Test3"],
-                    "actions": [
-                        {"text": _("Learn more"), "url": "#", "type": "secondary"},
-                        {"text": _("Share"), "url": "#", "type": "primary"},
-                    ],
-                }
-            ],
-            "carousel_items": map_payload_to_cards(generate_payload()),
-            "image_carousel_items": [
-                {
-                    "description": "The famous castle served as a model for many other buildings, including the castles at the Disneyland resorts in California and Paris.",  # noqa: E501
-                    "url": static("insight_ui/img/neuschwanstein.jpg"),
-                    "alt": "Neuschwanstein Castle in winter.",
-                },
-                {
-                    "description": "Before Berlin became the capital of Germany, the city had already been the capital twice: of the Mark-Brandenburg and of Prussia.",  # noqa: E501
-                    "url": static("insight_ui/img/berlin.jpg"),
-                    "alt": "Berlin at night.",
-                },
-                {
-                    "description": "The Free and Hanseatic City of Hamburg is the leading member of the Hanseatic League.",  # noqa: E501
-                    "url": static("insight_ui/img/hamburg.jpg"),
-                    "alt": "Hamburg and an arriving S-Bahn train.",
-                },
-            ],
-            "range_total_slides": range(3),
-            "toggle_table": {"empty_msg": "No data available!", "headers": headers, "rows": rows},
-            "toggle_start_view": "table",
-            "view_options": {
-                "name": "view-options",
-                "param_name": "view",
-                "options": [
-                    {"id": "card-view", "value": "card", "icon": {"name": "card"}},
-                    {"id": "table-view", "value": "table", "icon": {"name": "list"}},
-                    {"id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},
-                ],
-            },
-        }
-    )
-
-
-def get_form_storybook_data() -> dict:
-    """Serve data for form examples."""
-    return (
-        get_nav_and_footer_context()
-        | get_sidebar_data()
-        | {
-            "form_fields": [
-                {
-                    "type": "text",
-                    "name": "name",
-                    "label": _("Name"),
-                    "placeholder": _("Ihr vollständiger Name"),
-                    "required": True,
-                },
-                {
-                    "type": "email",
-                    "name": "email",
-                    "label": _("E-Mail"),
-                    "placeholder": _("ihre.email@example.com"),
-                    "required": True,
-                },
-                {
-                    "type": "textarea",
-                    "name": "message",
-                    "label": _("Nachricht"),
-                    "placeholder": _("Ihre Nachricht..."),
-                    "rows": 4,
-                },
-            ],
-            "form_actions": [
-                {"text": _("Absenden"), "type": "submit", "style": "primary"},
-                {"text": _("Zurücksetzen"), "type": "reset", "style": "secondary"},
-            ],
-        }
-    )
-
-
-def get_filter_storybook_data() -> dict:
-    """Serve data for filter example."""
-    return (
-        get_nav_and_footer_context()
-        | get_sidebar_data()
-        | {
-            "filters": [
-                {
-                    "text": _("Issue Date"),
-                    "icon": {"name": "home", "size": "small"},
-                    "name": "issuedate_filter",
-                    "values": issuedate_filters,
-                    "explanation": _("To filter by the issue date."),
-                },
-                {
-                    "text": _("Deadline"),
-                    "icon": {"name": "home", "size": "small"},
-                    "name": "expiration_filter",
-                    "values": expiration_filters,
-                    "explanation": _("To filter by the deadline."),
-                },
-                {
-                    "text": _("Reward in €"),
-                    "icon": {"name": "home", "size": "small"},
-                    "name": "reward_filter",
-                    "values": reward_filters,
-                    "explanation": _("To filter by the reward."),
-                },
-            ],
-            "view_name": "filter_storybook_view",
-            "model_fields": DEMO_FIELDS,
-        }
-    )
-
-
-def get_storybook_context() -> dict:
+def get_main_storybook_context() -> dict:
     """Serve data for main storybook."""
     return (
-        get_nav_and_footer_context()
-        | get_sidebar_data()
-        | {
-            "htmx_config": {"url": "/api/form-submit/", "method": "post", "target": "#htmx-form", "swap": "innerHTML"},
-            "bulletpoints": [
-                {
-                    "title": _("Kontaktdaten"),
-                    "description": _("Informationen zur Person und Anschrift."),
-                    "completed": True,
-                },
-                {"title": _("Zahlungsmethode"), "description": _("Art der Bezahlung auswählen."), "current": True},
-                {"title": _("Überprüfen"), "description": _("Prüfen der Angaben und Bezahlen.")},
-            ],
-        }
+        get_base_context()
+        | get_sidebar_context()
+        | get_breadcrumb_context()
+        | get_step_bar_context()
+        | get_bullet_point_list_context()
+        | {"htmx_config": {"url": "/api/form-submit/", "method": "post", "target": "#htmx-form", "swap": "innerHTML"}}
     )
+
+
+def get_inputs_storybook_context() -> dict:
+    """Serve data for input elements storybook."""
+    return get_base_context() | get_sidebar_context() | get_dropdown_context() | get_radio_button_context()
+
+
+def get_popup_storybook_context() -> dict:
+    """Serve data for popup storybook."""
+    return get_base_context() | get_sidebar_context() | get_alert_context() | get_modal_context()
+
+
+def get_utils_storybook_context() -> dict:
+    """Serve data for utils storybook."""
+    return get_base_context() | get_sidebar_context() | get_differentiator_context()
+
+
+def get_table_storybook_context() -> dict:
+    """Serve data for table examples."""
+    # Generate data for pagination example
+    return (
+        get_base_context()
+        | get_sidebar_context()
+        | get_table_context()
+        | get_pagination_context()
+        | get_infinite_scroll_context()
+    )
+
+
+def get_card_storybook_context() -> dict:
+    """Serve data for card examples."""
+    # Generate data for examples
+    return (
+        get_base_context()
+        | get_sidebar_context()
+        | get_cards_context()
+        | get_image_carousel_context()
+        | get_toggle_view_context()
+        | {"carousel_items": map_payload_to_cards(generate_payload())}
+    )
+
+
+def get_form_storybook_context() -> dict:
+    """Serve data for form examples."""
+    return get_base_context() | get_sidebar_context() | get_form_context()
+
+
+def get_filter_storybook_context() -> dict:
+    """Serve data for filter example."""
+    return get_base_context() | get_sidebar_context() | get_generic_filter_context() | get_sql_like_filter_context()
 
 
 def get_alert_context() -> dict:
@@ -725,8 +592,8 @@ def get_breadcrumb_context() -> dict:
     """Serve data for breadcrumb detailpage."""
     return {
         "breadcrumb_items": [
-            {"text": _("Startpage"), "view_name": "storybook_view", "icon": {"name": "home", "size": "small"}},
-            {"text": _("Demo"), "view_name": "storybook_view", "query_params": "?test=123"},
+            {"text": _("Startpage"), "view_name": "index_view", "icon": {"name": "home", "size": "small"}},
+            {"text": _("Demo"), "view_name": "index_view", "query_params": "?test=123"},
             {"text": _("Components")},
         ],
         "single_breadcrumb_item": [{"text": _("Startpage"), "icon": {"name": "home", "size": "small"}}],
@@ -746,9 +613,9 @@ def get_dropdown_context() -> dict:
             "title": _("User"),
             "show_arrow": True,
             "items": [
-                {"text": _("Profile"), "view_name": "storybook_view", "icon": {"name": "user", "size": "small"}},
-                {"text": _("Settings"), "view_name": "storybook_view", "icon": {"name": "cog", "size": "small"}},
-                {"text": _("Logout"), "view_name": "storybook_view", "icon": {"name": "got-out", "size": "small"}},
+                {"text": _("Profile"), "view_name": "index_view", "icon": {"name": "user", "size": "small"}},
+                {"text": _("Settings"), "view_name": "index_view", "icon": {"name": "cog", "size": "small"}},
+                {"text": _("Logout"), "view_name": "index_view", "icon": {"name": "got-out", "size": "small"}},
             ],
         },
         "settings_dropdown": {
@@ -758,10 +625,10 @@ def get_dropdown_context() -> dict:
             "items": [
                 {
                     "text": _("Personal Information"),
-                    "view_name": "storybook_view",
+                    "view_name": "index_view",
                     "icon": {"name": "user", "size": "small"},
                 },
-                {"text": _("Appearance"), "view_name": "storybook_view", "icon": {"name": "cog", "size": "small"}},
+                {"text": _("Appearance"), "view_name": "index_view", "icon": {"name": "cog", "size": "small"}},
             ],
         },
     }
@@ -793,6 +660,251 @@ def get_step_bar_context() -> dict:
                 "current": True,
             },
             {"title": _("Überprüfen"), "description": _("Prüfen der Angaben und Bezahlen."), "completed": False},
+        ]
+    }
+
+
+def get_radio_button_context() -> dict:
+    """Serve data for radio button detailpage."""
+    return {
+        "view_options": {
+            "name": "view-options",
+            "param_name": "view",
+            "options": [
+                {"id": "card-view", "value": "card", "icon": {"name": "card"}},
+                {"id": "table-view", "value": "table", "icon": {"name": "list"}},
+                {"id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},
+            ],
+        }
+    }
+
+
+def get_infinite_scroll_context() -> dict:
+    """Serve data for infinite scroll detailpage."""
+    return {"scroll_items": [{"title": f"Element {i}", "content": f"Inhalt für Element {i}"} for i in range(1, 11)]}
+
+
+def get_pagination_context() -> dict:
+    """Serve data for pagination detailpage."""
+    page_obj, surrounding_pages = get_page(generate_payload(100))
+
+    return {"start_page": {"page_obj": page_obj, "surrounding_pages": surrounding_pages}}
+
+
+def get_table_context() -> dict:
+    """Serve data for table detailpage."""
+    return {
+        "table": {
+            "caption": _("Example of a table component."),
+            "empty_msg": _("No data available!"),
+            "headers": [_("Name"), _("E-Mail"), _("Status"), _("Actions")],
+            "rows": [
+                [
+                    "Max Mustermann",
+                    "max@example.com",
+                    _("Active"),
+                    format_html(
+                        '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
+                    ),
+                ],
+                [
+                    "Anna Schmidt",
+                    "anna@example.com",
+                    _("Inactive"),
+                    format_html(
+                        '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
+                    ),
+                ],
+                [
+                    "Tom Weber",
+                    "tom@example.com",
+                    _("Active"),
+                    format_html(
+                        '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
+                    ),
+                ],
+            ],
+        }
+    }
+
+
+def get_generic_filter_context() -> dict:
+    """Serve data for generic filter detailpage."""
+    return {
+        "filters": [
+            {
+                "text": _("Issue Date"),
+                "icon": {"name": "home", "size": "small"},
+                "name": "issuedate_filter",
+                "values": issuedate_filters,
+                "explanation": _("To filter by the issue date."),
+            },
+            {
+                "text": _("Deadline"),
+                "icon": {"name": "home", "size": "small"},
+                "name": "expiration_filter",
+                "values": expiration_filters,
+                "explanation": _("To filter by the deadline."),
+            },
+            {
+                "text": _("Reward in €"),
+                "icon": {"name": "home", "size": "small"},
+                "name": "reward_filter",
+                "values": reward_filters,
+                "explanation": _("To filter by the reward."),
+            },
+        ],
+        "view_name": "index_view",
+    }
+
+
+def get_sql_like_filter_context() -> dict:
+    """Serve data for the SQL-Like filter detailpage."""
+    return {"model_fields": DEMO_FIELDS}
+
+
+def get_cards_context() -> dict:
+    """Serve data for cards detailpage."""
+    return {
+        "cards": [
+            {
+                "title": _("Example Card"),
+                "subtitle": _("Subtitle"),
+                "content": _("This is the card content."),
+                "actions": [
+                    {"text": _("Learn more"), "url": "#", "type": "secondary"},
+                    {"text": _("Share"), "url": "#", "type": "primary"},
+                ],
+            },
+            {
+                "title": "Card with actions",
+                "content": "This card has some action buttons.",
+                "actions": [
+                    {"text": _("Learn more"), "url": "#", "type": "secondary"},
+                    {"text": _("Share"), "url": "#", "type": "primary"},
+                ],
+            },
+        ],
+        "horizontale_cards": [
+            {
+                "title": "Horizontale Cards",
+                "content": "A card with its content arranged horizontally.",
+                "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": "Card-Image"},
+                "tags": ["Test", "Test2", "Test3"],
+                "actions": [
+                    {"text": _("Learn more"), "url": "#", "type": "secondary"},
+                    {"text": _("Share"), "url": "#", "type": "primary"},
+                ],
+            }
+        ],
+        "flip_cards": [
+            {
+                "title": "Flip Card",
+                "content": "A card that rotates 180° and has additional content on the back.",
+                "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": "Card-Image"},
+                "tags": ["Test", "Test2", "Test3"],
+                "actions": [
+                    {"text": _("Learn more"), "url": "#", "type": "secondary"},
+                    {"text": _("Share"), "url": "#", "type": "primary"},
+                ],
+            }
+        ],
+    }
+
+
+def get_card_carousel_context() -> dict:
+    """Serve data for card carousel detailpage."""
+    return {"carousel_items": map_payload_to_cards(generate_payload()), "range_total_slides": range(3)}
+
+
+def get_image_carousel_context() -> dict:
+    """Serve data for image carousel detailpage."""
+    return {
+        "image_carousel_items": [
+            {
+                "description": "The famous castle served as a model for many other buildings, including the castles at the Disneyland resorts in California and Paris.",  # noqa: E501
+                "url": static("insight_ui/img/neuschwanstein.jpg"),
+                "alt": "Neuschwanstein Castle in winter.",
+            },
+            {
+                "description": "Before Berlin became the capital of Germany, the city had already been the capital twice: of the Mark-Brandenburg and of Prussia.",  # noqa: E501
+                "url": static("insight_ui/img/berlin.jpg"),
+                "alt": "Berlin at night.",
+            },
+            {
+                "description": "The Free and Hanseatic City of Hamburg is the leading member of the Hanseatic League.",  # noqa: E501
+                "url": static("insight_ui/img/hamburg.jpg"),
+                "alt": "Hamburg and an arriving S-Bahn train.",
+            },
+        ],
+        "range_total_slides": range(3),
+    }
+
+
+def get_toggle_view_context() -> dict:
+    """Serve data for toggle-view detailpage."""
+    payload = generate_payload()
+    headers, rows = map_payload_to_table(payload)
+
+    return {
+        "toggle_table": {"empty_msg": "No data available!", "headers": headers, "rows": rows},
+        "toggle_start_view": "table",
+        "view_options": {
+            "name": "view-options",
+            "param_name": "view",
+            "options": [
+                {"id": "card-view", "value": "card", "icon": {"name": "card"}},
+                {"id": "table-view", "value": "table", "icon": {"name": "list"}},
+                {"id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},
+            ],
+        },
+    }
+
+
+def get_form_context() -> dict:
+    """Serve data for form detailpage."""
+    return {
+        "form_fields": [
+            {
+                "type": "text",
+                "name": "name",
+                "label": _("Name"),
+                "placeholder": _("Ihr vollständiger Name"),
+                "required": True,
+            },
+            {
+                "type": "email",
+                "name": "email",
+                "label": _("E-Mail"),
+                "placeholder": _("ihre.email@example.com"),
+                "required": True,
+            },
+            {
+                "type": "textarea",
+                "name": "message",
+                "label": _("Nachricht"),
+                "placeholder": _("Ihre Nachricht..."),
+                "rows": 4,
+            },
+        ],
+        "form_actions": [
+            {"text": _("Absenden"), "type": "submit", "style": "primary"},
+            {"text": _("Zurücksetzen"), "type": "reset", "style": "secondary"},
+        ],
+    }
+
+
+def get_bullet_point_list_context() -> dict:
+    """Server data for bullet point list detailpage."""
+    return {
+        "bulletpoints": [
+            {
+                "title": _("Kontaktdaten"),
+                "description": _("Informationen zur Person und Anschrift."),
+                "completed": True,
+            },
+            {"title": _("Zahlungsmethode"), "description": _("Art der Bezahlung auswählen."), "current": True},
+            {"title": _("Überprüfen"), "description": _("Prüfen der Angaben und Bezahlen.")},
         ]
     }
 

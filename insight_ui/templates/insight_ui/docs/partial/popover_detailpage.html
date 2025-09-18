@@ -41,7 +41,7 @@
 <section>
     <h2>{% trans "Verwendung" %}</h2>
 
-    <p class="text-secondary leading-loose">
+    <p class="text-secondary leading-loose mb-4">
         {% blocktrans with insight_tag='<span class="inline-tag">insight_tag</span>'|safe tag_id='<b>Tag-ID</b>'|safe %}
         Dieses Element besitzt kein {{ insight_tag }}, da es lediglich ein Auslöser braucht und ein Ziel-Element. Das Ziel-Element kann komplett selbst definiert werden, lediglich die Verbindung durch die {{ tag_id }} ist zu beachten.
         {% endblocktrans %}
@@ -58,7 +58,7 @@
 
     <p class="info-container text-base mt-4">
         <span class="block font-bold italic text-lg">Info:</span>
-        {% blocktrans with div='<div>'|safe comment='<!-- Arrow -->'|safe %}
+        {% blocktrans with div='&lt;div&gt;' comment='&lt;!-- Arrow --&gt;' %}
         Der Pfeil kann ausgeschaltet werden, indem der {{ div }}-Container unter dem {{ comment }} Kommentar entfernt wird.
         {% endblocktrans %}
     </p>

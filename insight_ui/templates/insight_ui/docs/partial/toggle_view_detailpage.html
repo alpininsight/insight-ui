@@ -9,7 +9,7 @@
     </p>
 
     <div class="example-container">
-        {% trans 'Todo' %}
+        {% include "insight_ui/components/toggle_view.html" with id="test" table_data=toggle_table view_options=view_options current_view=toggle_start_view %}
     </div>
 </section>
 
@@ -19,6 +19,6 @@
 <section>
     <h2>{% trans "Verwendung" %}</h2>
     <div id="Toggle_View_Usage" data-insight-code-block="Django">
-        {% trans 'Todo' %}
+        &lcub;% include "insight_ui/components/toggle_view.html" with id="test" table_data=toggle_table view_options=view_options current_view=toggle_start_view %&rcub;
     </div>
 </section>

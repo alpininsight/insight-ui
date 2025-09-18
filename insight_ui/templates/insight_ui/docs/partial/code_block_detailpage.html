@@ -22,8 +22,10 @@
 <!-- Component Documentation -->
 <section>
     <h2>{% trans "Verwendung" %}</h2>
-    <p class="text-secondary leading-loose">
-        {% trans "Diese Komponente wird ohne ein Template einzubinden, verwendet. Es muss lediglich ein HTML-Tag vorzugsweise ein `<div>` eingefügt werden. Dieses braucht eine Eindeutige `id`, diese ist für das Kopieren wichtig. Zum anderen muss das Tag den _data-Attribute_ ` data-insight-code-block` besitzen. Der Wert des _data-Attributes_ ist die gewünschte Programmiersprache. Innerhalb des Tags befindet sich dann ausschließlich der darzustellende Quellcode." %}
+    <p class="text-secondary leading-loose mb-4">
+        {% blocktrans with div='&lt;div&gt;' tag_id='<b>Tag-ID</b>'|safe data_attr='<i>data-Attribute</i>'|safe data_attr_value='<span class="inline-tag">data-insight-code-block</span>'|safe %}
+        Diese Komponente wird ohne ein Template einzubinden, verwendet. Es muss lediglich ein HTML-Tag vorzugsweise ein {{ div }} eingefügt werden. Dieses braucht eine Eindeutige {{ tag_id }}, diese ist für das Kopieren wichtig. Zum anderen muss das Tag den {{ data_attr }} {{ data_attr_value }} besitzen. Der Wert des {{ data_attr }} ist die gewünschte Programmiersprache. Innerhalb des Tags befindet sich dann ausschließlich der darzustellende Quellcode.
+        {% endblocktrans %}
     </p>
 
     <div id="Code_Block_Usage" data-insight-code-block="Django">

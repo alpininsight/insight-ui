@@ -1,6 +1,6 @@
 {% load static insight_tags i18n %}
 
-<h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">Insight UI Footer</h1>
+<h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">Insight UI Bullet Point List</h1>
 
 <!-- Component Demo -->
 <section>
@@ -9,7 +9,7 @@
     </p>
 
     <div class="example-container">
-        {% footer data=footer_data %}
+        {% include "insight_ui/components/bulletpoints.html" with items=bulletpoints %}
     </div>
 </section>
 
@@ -18,9 +18,7 @@
 <!-- Component Documentation -->
 <section>
     <h2>{% trans "Verwendung" %}</h2>
-    <div id="Footer_Usage" data-insight-code-block="Django">
-        &lcub;% block footer %&rcub;
-            &lcub;% footer data=footer_data %&rcub;
-        &lcub;% endblock footer %&rcub;
+    <div id="Web_Socket_Usage" data-insight-code-block="Django">
+        &lcub;% include "insight_ui/components/bulletpoints.html" with items=bulletpoints %&rcub;
     </div>
 </section>
