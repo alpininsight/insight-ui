@@ -4,7 +4,7 @@
 <section>
     <h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">{% trans 'Insight UI Navigation' %}</h1>
     <p class="text-lg text-insight-text-secondary dark:text-insight-text-secondary-dark">
-        {% trans 'A modern, accessible, and responsive UI library for Django projects.' %}
+        {% trans 'Main layout elements like navigation, footer and sidebars.' %}
     </p>
 </section>
 
@@ -18,11 +18,11 @@
 <!-- Step Bar Demo -->
 <section class="component-container">
     <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Step Bar' %}</h2>
-    {% include "insight_ui/components/steps_bar.html" with items=steps_bar_items %}
+    {% step_bar items=steps_bar_items %}
 </section>
 
 <!-- Bullet Point List Demo -->
 <section class="component-container">
     <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Bullet Point List' %}</h2>
-    {% include "insight_ui/components/bulletpoints.html" with items=bulletpoints %}
+    {% bullet_point_list items=bulletpoints %}
 </section>

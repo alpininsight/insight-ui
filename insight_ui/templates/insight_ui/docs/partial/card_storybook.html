@@ -45,5 +45,5 @@
 <!--Toggle View Demo -->
 <section class="component-container">
     <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white">{% trans 'Toggle View' %}</h2>
-    {% include "insight_ui/components/toggle_view.html" with id="test" table_data=toggle_table view_options=view_options current_view=toggle_start_view %}
+    {% toggle_view tag_id="test" table_data=toggle_table view_options=view_options current_view=toggle_start_view %}
 </section>

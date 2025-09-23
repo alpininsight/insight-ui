@@ -80,11 +80,12 @@ def pagination(request: HttpRequest) -> HttpResponse:
         return render(
             request,
             "insight_ui/components/list_partial.html",
-            {"pagination": {"page_obj": page_obj, "surrounding_pages": surrounding_pages}},
+            {"current_page": page_obj, "surrounding_pages": surrounding_pages},
         )
 
     context = get_table_storybook_context()
-    context["page_obj"] = {"page_obj": page_obj, "surrounding_pages": surrounding_pages}
+    context["current_page"] = page_obj
+    context["surrounding_pages"] = surrounding_pages
     return render(request, "insight_ui/storybook.html", context)
 
 
@@ -330,12 +331,12 @@ def toggle_view(request: HttpRequest) -> HttpResponse:
 
     # Generate the base payload
     payload = generate_payload()
-    context = {"current_view": view, "id": request.GET.get("id", "")}
+    context = {"current_view": view, "tag_id": request.GET.get("tag_id", "")}
     context["view_options"] = {
         "name": "view-options",
         "param_name": "view",
         "options": [
-            {"id": "card-view", "value": "card", "icon": {"name": "card"}},
+            {"id": "card-view", "value": "card", "icon": {"name": "cards"}},
             {"id": "table-view", "value": "table", "icon": {"name": "list"}},
             {"id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},
         ],

@@ -7,14 +7,16 @@ Bei der Verwendung von Dropdown-Menüs ist dennoch zu beachten, das diese nicht 
 ## Verwendung
 
 ```django
-{% include "insight_ui/components/dropdown.html" with dropdown=user_dropdown %}
+{% dropdown dropdown_menu=user_dropdown %}
 ```
 
 ## Parameter
 
-- **user_dropdown**: Ein Dictionary welches das Dropdown beschreibt.
+- **dropdown_menu**: Ein Dictionary welches das Dropdown Menü beschreibt.
 
-### user_dropdown
+### dropdown
+
+Ein Dictionary welches das Dropdown Menü beschreibt.
 
 ```py
 {

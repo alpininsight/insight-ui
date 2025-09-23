@@ -1,10 +1,10 @@
 # Footer-Komponente (Version 0.1.0)
 
-- Ein Footer sollte immer vorhanden sein, da er eine Webseite optisch abschließt und i.d.R. das Impressum enthält. 
+Ein einfacher Footer mit anpassbaren Inhalt. Der Footer ist ein wichtiger Bestandteil einer jeden Webseite, er dient jedoch nicht nur dazu, die Webseite optisch abzuschließen. Er enthält i.d.R. mindestens eine Verlinkung zum Impressum und der Datenschutzerklärung. Oft befindet sich im Footer noch einmal eine Navigation zu den wichtigsten Seiten der Webseite und eine Copyright Angabe.
 
 ## Verwendung
 
-Eingebunden wird die Navbar am einfachsten über das `{% footer %}` Tag. Für den Footer ist ein entsprechender Block definiert, in welchem dieser platziert werden sollte.
+Die Footer-komponente wird am einfachsten über das `{% footer %}` Tag eingebunden. Für den Footer ist ein entsprechender Block definiert, in welchem dieser platziert werden sollte, damit diese auch garantiert immer am Ende der Webseite erscheint.
 
 ```django
 {% load insight_tags %}
@@ -25,8 +25,8 @@ Das _data_ Dictionary besteht aus zwei Komponenten. Der _description_ und den Fo
 ```py
 "footer_data": {
     "description": {
-        "title": "Django Insight UI",
-        "text": "Eine moderne UI-Bibliothek für Django-Anwendungen mit Fokus auf Barrierefreiheit und Benutzerfreundlichkeit.",
+        "title": "Insight UI",
+        "text": "Eine moderne UI-Bibliothek für Django-Anwendungen um schnell zu durchzustarten.",
     },
     "links": [
         {"text": _("Startseite"), "icon": {"name": "home", "size": "small"}, "view_name": "storybook_view"},

@@ -1,4 +1,4 @@
-{% load static insight_tags i18n %}
+{% load i18n insight_tags %}
 
 <h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">Insight UI Popover</h1>
 
@@ -65,7 +65,7 @@
 </section>
 
 <section>
-    <h3>data-* Attribute</h3>
+    <h3>data-* {% trans "Attribute" %}</h3>
     <ol class="list-disc text-secondary leading-loose ms-8">
         <li><span class="inline-tag">data-popover-trigger=&lt;tooltip_ID&gt;</span>: {% trans "Setzt den Auslöser für den Popover auf das Element mit der entsprechenden ID." %}</li>
         <li><span class="inline-tag">data-position</span>: {% trans "Bestimmt wo im Bezug auf das Element, der Popover angezeigt werden soll. Mögliche Werte sind:" %}

@@ -1,4 +1,4 @@
-{% load static insight_tags i18n %}
+{% load i18n insight_tags %}
 
 <h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">Insight UI Generic Filter</h1>
 
@@ -9,7 +9,7 @@
     </p>
 
     <div class="example-container">
-        {% include "insight_ui/components/filter.html" with filter=filter %}
+        {% generic_filter filters=filters view_name=filter_view_name %}
     </div>
 </section>
 
@@ -19,6 +19,6 @@
 <section>
     <h2>{% trans "Verwendung" %}</h2>
     <div id="Generic_Filter_Usage" data-insight-code-block="Django">
-        &lcub;% include "insight_ui/components/filter.html" with filter=filter %&rcub;
+        &lcub;% generic_filter filters=filters view_name=filter_view_name %&rcub;
     </div>
 </section>

@@ -5,7 +5,7 @@ Die Chat Komponente bietet ein einfaches Frontend für eine Chat-Anwendung. Die 
 ## Verwendung
 
 ```django
-{% include "insight_ui/components/chat.html" %}
+{% chat view_name=view_name %}
 ```
 
 ## Parameter

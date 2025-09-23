@@ -9,7 +9,7 @@
     </p>
 
     <div class="example-container">
-        {% include "insight_ui/components/chat.html" %}
+        {% chat view_name="chat_response" %}
     </div>
 </section>
 
@@ -19,7 +19,7 @@
 <section>
     <h2>{% trans "Verwendung" %}</h2>
     <div id="Chat_Usage" data-insight-code-block="Django">
-        &lcub;% include "insight_ui/components/chat.html" %&rcub;
+        &lcub;% chat view_name=view_name %&rcub;
     </div>
 </section>
 

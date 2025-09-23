@@ -4,7 +4,7 @@
 <div class="pagination" hx-indicator="#loading-indicator">
     <div class="flex gap-1 justify-center w-full">
         <!-- Previous and first -->
-        {% if pagination.page_obj.has_previous %}
+        {% if current_page.has_previous %}
             <a
               href="{% url 'pagination' %}?page=1"
               hx-get="{% url 'pagination' %}?page=1"
@@ -16,8 +16,8 @@
                 </svg>
             </a>
             <a
-              href="{% url 'pagination' %}?page={{ pagination.page_obj.previous_page_number }}"
-              hx-get="{% url 'pagination' %}?page={{ pagination.page_obj.previous_page_number }}"
+              href="{% url 'pagination' %}?page={{ current_page.previous_page_number }}"
+              hx-get="{% url 'pagination' %}?page={{ current_page.previous_page_number }}"
               hx-target="#list-container"
               class="flex items-center bg-insight-primary rounded-sm text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active transition"
             >
@@ -40,8 +40,8 @@
 
         <!-- Neighbor Pages -->
         <div class="hidden md:flex gap-1 justify-center w-96">
-            {% for num in pagination.surrounding_pages %}
-                {% if num == pagination.page_obj.number %}
+            {% for num in surrounding_pages %}
+                {% if num == current_page.number %}
                     <span class="bg-insight-primary-active rounded-sm text-white px-4 py-1">{{ num }}</span>
                 {% elif num == "..." %}
                     {% comment %} <span class="text-neutral-400 px-4 py-1">{{ num }}</span> {% endcomment %}
@@ -59,10 +59,10 @@
         </div>
 
         <!-- Next and last -->
-        {% if pagination.page_obj.has_next %}
+        {% if current_page.has_next %}
             <a
-              href="{% url 'pagination' %}?page={{ pagination.page_obj.next_page_number }}"
-              hx-get="{% url 'pagination' %}?page={{ pagination.page_obj.next_page_number }}"
+              href="{% url 'pagination' %}?page={{ current_page.next_page_number }}"
+              hx-get="{% url 'pagination' %}?page={{ current_page.next_page_number }}"
               hx-target="#list-container"
               class="flex items-center bg-insight-primary rounded-sm text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active transition"
             >
@@ -71,8 +71,8 @@
                 </svg>
             </a>
             <a
-              href="{% url 'pagination' %}?page={{ pagination.page_obj.paginator.num_pages }}"
-              hx-get="{% url 'pagination' %}?page={{ pagination.page_obj.paginator.num_pages }}"
+              href="{% url 'pagination' %}?page={{ current_page.paginator.num_pages }}"
+              hx-get="{% url 'pagination' %}?page={{ current_page.paginator.num_pages }}"
               hx-target="#list-container"
               class="flex items-center bg-insight-primary rounded-sm text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active transition"
             >
@@ -96,6 +96,6 @@
 
     <!-- Current Page -->
     <span class="block mt-2 md:mt-0">
-        {% trans "Page" %} {{ pagination.page_obj.number }} {% trans "of" %} {{ pagination.page_obj.paginator.num_pages }}.
+        {% trans "Page" %} {{ current_page.number }} {% trans "of" %} {{ current_page.paginator.num_pages }}.
     </span>
 </div>

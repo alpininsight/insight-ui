@@ -1,4 +1,4 @@
-{% load static insight_tags i18n %}
+{% load i18n insight_tags %}
 
 <h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">Insight UI Radio Buttons</h1>
 
@@ -28,7 +28,7 @@
     <h2>{% trans "Block Radio Buttons" %}</h2>
     <div class="example-container mt-3 mb-6">
         <div class="w-fit">
-            {% include "insight_ui/components/radio_group.html" with radio_group=view_options current_value=current_view %}
+            {% radio_group radio_group=view_options current_value=current_view %}
         </div>
     </div>
 </section>
@@ -56,6 +56,6 @@
         &lt;/div&gt;
 
         &lt;!-- Block Radio-Buttons --&gt;
-        &lcub;% include "insight_ui/components/radio_group.html" with radio_group=view_options current_value=current_view view_name="toggle_view" target_id=target_id %&rcub;
+        &lcub;% radio_group radio_group=view_options current_value=current_view view_name="toggle_view" target_id=target_id %&rcub;
     </div>
 </section>

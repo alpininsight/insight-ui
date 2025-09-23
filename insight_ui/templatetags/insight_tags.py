@@ -4,6 +4,7 @@ from difflib import HtmlDiff, ndiff, unified_diff
 from typing import Any
 
 from django import template
+from django.core.paginator import Page
 
 from insight_ui.utils.diff import file_template, styles
 
@@ -117,6 +118,213 @@ def navbar(config: dict, **kwargs) -> dict[str, Any]:
         "show_theme_toggle": config.get("show_theme_toggle"),
         "options": {**kwargs},
     }
+
+
+@register.inclusion_tag("insight_ui/components/steps_bar.html")
+def step_bar(items: list) -> dict:
+    """
+    Rendert eine grafische Darstellung von Prozessschritten.
+
+    Arguments:
+    ---------
+        items (list): Eine Liste der einzelnen Schritte.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template.
+
+    """
+    return {"items": items}
+
+
+@register.inclusion_tag("insight_ui/components/bullet_point_list.html")
+def bullet_point_list(items: list) -> dict:
+    """
+    Rendert eine grafische Darstellung einer Bullet-Point Liste.
+
+    Arguments:
+    ---------
+        items (list): Eine Liste der einzelnen Bullet-Points.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template.
+
+    """
+    return {"items": items}
+
+
+@register.inclusion_tag("insight_ui/components/dropdown.html")
+def dropdown(dropdown_menu: list) -> dict:
+    """
+    Rendert ein Dropdown Menü.
+
+    Arguments:
+    ---------
+        dropdown_menu (dict): Ein Dictionary welches das Dropdown Menü beschreibt.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template.
+
+    """
+    return {"dropdown_menu": dropdown_menu}
+
+
+@register.inclusion_tag("insight_ui/components/radio_group.html")
+def radio_group(
+    radio_group: list, current_value: str, view_name: str = "", query_params: str = "", target_id: str = ""
+) -> dict:
+    """
+    Rendert ein Gruppe von Radio-Buttons.
+
+    Arguments:
+    ---------
+        radio_group (list): Ein Dictionary welches das Dropdown Menü beschreibt.
+        current_value (str): Der Name der aktuell ausgewählten Wertes.
+        view_name (str): (Optional) Der Name der View an welchen der Request beim wechseln, gesendet werden soll.
+        query_params (str): (Optional) Ein String von Query-Parametern
+        target_id (str): (Optional) Die ID des HTML-Tags, welches bei wechseln des Wertes ausgetauscht werden soll.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template.
+
+    """
+    return {
+        "radio_group": radio_group,
+        "current_value": current_value,
+        "view_name": view_name,
+        "query_params": query_params,
+        "target_id": target_id,
+    }
+
+
+@register.inclusion_tag("insight_ui/components/chat.html")
+def chat(view_name: str) -> dict:
+    """
+    Rendert ein Chat mit Input Zeile und ein Platz für den Response.
+
+    Arguments:
+    ---------
+        view_name (str): Der Name der View an welchen der Request gesendet werden soll.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template.
+
+    """
+    return {"view_name": view_name}
+
+
+@register.inclusion_tag("insight_ui/components/geo_map.html")
+def geo_map(data: list = []) -> dict:
+    """
+    Rendert eine integrierte geografische Karte.
+
+    Arguments:
+    ---------
+        data (list): Eine Liste von Objekten, welche auf der Karte dargestellt werden sollen.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template.
+
+    """
+    return {"data": data}
+
+
+@register.inclusion_tag("insight_ui/components/list_partial.html")
+def paginated_list(current_page: Page, surrounding_pages: list) -> dict:
+    """
+    Rendert ein Liste mit einer integrierten Pagination.
+
+    Arguments:
+    ---------
+        current_page (Page): Ein von Django erzeugtes Pagination-Objekt.
+        surrounding_pages (list): Eine liste der benachbarten Seiten.
+            Siehe: from insight_ui.utils.pagination import get_page
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template.
+
+    """
+    return {"current_page": current_page, "surrounding_pages": surrounding_pages}
+
+
+@register.inclusion_tag("insight_ui/components/generic_filter.html")
+def generic_filter(filters: list, view_name: str) -> dict:
+    """
+    Rendert eine generische Filterung, bestehend aus einem oder mehreren <select> Feldern.
+
+    Arguments:
+    ---------
+        filters (list): Eine Liste der einzelnen Filter (<select> Feldern).
+        view_name (str): Der Name der View an welche der Request gesendet werden soll.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template.
+
+    """
+    return {"filters": filters, "view_name": view_name}
+
+
+@register.inclusion_tag("insight_ui/components/search_bar.html")
+def search_bar(request_view: str, simple: bool = False, search_query: str = "") -> dict:
+    """
+    Rendert eine Texteingabe für eine beispielsweise eine Suchfunktion.
+
+    Arguments:
+    ---------
+        request_view (str): Der Name der View an welche der Request gesendet werden soll.
+        simple (bool): True wenn die Suchleiste ohne Button und kleiner angezeigt werden soll.
+        search_query (str): Ein optionaler Wert der automatisch in dem Textfeld steht.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template.
+
+    """
+    return {"request_view": request_view, "simple": simple, "search_query": search_query}
+
+
+@register.inclusion_tag("insight_ui/components/search_query_builder/sq_builder.html")
+def sq_builder(model_fields: list) -> dict:
+    """
+    Rendert eine Filterung mit welcher sich angelehnt an SQL Queries bauen lassen.
+
+    Arguments:
+    ---------
+        model_fields (list): Eine Liste der Modell Felder mit möglichen Operatoren, etc.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template.
+
+    """
+    return {"model_fields": model_fields}
+
+
+@register.inclusion_tag("insight_ui/components/toggle_view.html")
+def toggle_view(tag_id: str, table_data: list, view_options: list, current_view: str) -> dict:
+    """
+    Rendert eine Ansicht von Daten, welche auf verschiedene Arten dargestellt werden kann.
+
+    Arguments:
+    ---------
+        tag_id (str):Eine einzigartige ID für die Komponente. (Wird für den wechsel der Ansicht benötigt).
+        table_data (list): Die Daten, welche angezeigt werden sollen.
+        view_options (list): Eine Liste aller möglichen Ansichtsarten (Möglichkeiten: "card", "list", "carousel").
+        current_view (str): Der name der aktuellen Ansichtsart.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template.
+
+    """
+    return {"tag_id": tag_id, "table_data": table_data, "view_options": view_options, "current_view": current_view}
 
 
 @register.inclusion_tag("insight_ui/components/live_content.html")

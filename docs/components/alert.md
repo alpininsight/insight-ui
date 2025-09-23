@@ -12,25 +12,9 @@ Die Alert-Komponente bietet eine Möglichkeit, Benutzern wichtige Informationen,
 
 ## Parameter
 
-| Parameter | Typ | Standard | Beschreibung |
-|-----------|-----|----------|--------------|
-| `message` | `str` | `""` | Die Hauptnachricht der Benachrichtigung |
-| `type` | `str` | `"info"` | Der Typ der Benachrichtigung (`"info"`, `"success"`, `"warning"`, `"error"`) |
-| `dismissible` | `bool` | `True` | Ob die Benachrichtigung schließbar sein soll |
-
-## Beispiel
-
-```django
-{% alert
-   message="Es ist ein Fehler aufgetreten."
-   type="error"
-   details="Bitte versuchen Sie es später erneut oder kontaktieren Sie den Support."
-%}
-```
-
-## JavaScript-Integration
-
-- _Todo_
+- **message** (_str_): Die Hauptnachricht der Benachrichtigung.
+- **type** (_str_): Der Typ der Benachrichtigung. Mögliche Werte: (`"info"`, `"success"`, `"warning"`, `"error"`).
+- **dismissible** (_bool_): _True_ wenn die Benachrichtigung schließbar sein soll.
 
 ## Barrierefreiheit
 

@@ -1,4 +1,4 @@
-{% load static insight_tags i18n %}
+{% load i18n insight_tags %}
 
 <h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">Insight UI Bullet Point List</h1>
 
@@ -9,7 +9,7 @@
     </p>
 
     <div class="example-container">
-        {% include "insight_ui/components/bulletpoints.html" with items=bulletpoints %}
+        {% bullet_point_list items=bulletpoints %}
     </div>
 </section>
 
@@ -19,6 +19,39 @@
 <section>
     <h2>{% trans "Verwendung" %}</h2>
     <div id="Web_Socket_Usage" data-insight-code-block="Django">
-        &lcub;% include "insight_ui/components/bulletpoints.html" with items=bulletpoints %&rcub;
+        &lcub;% bullet_point_list items=bulletpoints %&rcub;
     </div>
+</section>
+
+<section>
+    <h3>{% trans "Parameter" %}</h3>
+    <ol class="list-disc text-secondary ms-8">
+        <li><span class="bg-gray-100 dark:bg-gray-800 rounded px-2 py-0.5 text-primary font-semibold">items</span>(<i>list</i>): {% trans "Ein Liste der einzelnen Punkte der Bullet Point Liste." %}</li>
+    </ol>
+
+    <div class="mt-8">
+        <h4>items</h4>
+        <p class="text-secondary mb-6">{% trans "Ein Liste der einzelnen Punkte der Bullet Point Liste." %}</p>
+
+        <div id="Step_Bar_Params" data-insight-code-block="python">
+            [
+                {
+                    "title": _("Kontaktdaten"),
+                    "description": _("Informationen zur Person und Anschrift."),
+                    "completed": True,
+                },
+                {"title": _("Zahlungsmethode"), "description": _("Art der Bezahlung auswählen."), "current": True},
+                {"title": _("Überprüfen"), "description": _("Prüfen der Angaben und Bezahlen.")},
+            ]
+        </div>
+    </div>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<section>
+    <h2>{% trans "Related topics" %}</h2>
+    <ol class="list-disc ms-8">
+        <li><a href="#" class="text-link">{% trans "Step Bar" %}</a></li>
+    </ol>
 </section>

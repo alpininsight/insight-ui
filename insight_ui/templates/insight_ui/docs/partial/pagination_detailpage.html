@@ -1,4 +1,4 @@
-{% load static insight_tags i18n %}
+{% load i18n insight_tags %}
 
 <h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">Insight UI Pagination</h1>
 
@@ -10,7 +10,7 @@
 
     <div class="example-container">
         <div id="list-container">
-            {% include 'insight_ui/components/list_partial.html' with pagination=start_page %}
+            {% paginated_list current_page=start_page surrounding_pages=surrounding_pages %}
         </div>
     </div>
 </section>
@@ -22,7 +22,7 @@
     <h2>{% trans "Verwendung" %}</h2>
     <div id="Pagination_Usage" data-insight-code-block="Django">
         &lt;div id="list-container"&gt;
-            &lcub;% include 'insight_ui/components/list_partial.html' with pagination=start_page %&rcub;
+            &lcub;% paginated_list with current_page=start_page surrounding_pages=surrounding_pages %&rcub;
         &lt;/div&gt;
     </div>
 </section>

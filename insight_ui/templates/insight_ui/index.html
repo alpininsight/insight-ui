@@ -1,6 +1,8 @@
 {% extends "insight_ui/base.html" %}
 {% load static insight_tags i18n %}
 
+{% block title %}{% trans "Insight UI" %}{% endblock title %}
+
 {% block drawers %}
     {% include "insight_ui/components/sidebar.html" with side="right" auto_close=False sidebar_items=right_sidebar %}
 {% endblock drawers %}
@@ -10,7 +12,7 @@
 {% endblock navbar %}
 
 {% block background_image %}
-    <img src="{% static "img/hubble-fiction.webp" %}" alt="Hubble Telescope" class="fixed left-1/3 -z-10 w-full h-dvh object-cover opacity-25">
+    <img src="{% static "img/hubble-fiction.webp" %}" alt="Hubble Telescope" class="fixed left-1/4 -z-10 w-full h-dvh object-cover opacity-25">
 {% endblock background_image %}
 
 {% block sidebar_left %}
@@ -18,7 +20,7 @@
 {% endblock sidebar_left %}
 
 {% block content %}
-    <div id="content" class="bg-linear-to-r from-white from-30% to-white/60 dark:from-gray-900 dark:to-gray-900/75 w-full space-y-8 py-16 px-4 md:px-24">
+    <div id="content" class="bg-linear-to-r from-white from-30% to-white/60 dark:from-gray-900 dark:to-gray-900/75 w-full space-y-8 py-16 px-4 md:px-16">
         <h1>Insight UI</h1>
 
         <section>
@@ -36,7 +38,7 @@
                 Die Komponenten des Frameworks sind unter Beachtung der <b>Barrierefreiheit</b> implementiert und bieten im Bezug auf <b>Internationalisierung</b> eine Unterstützung für ein <b>RTL-Layout</b> für Sprachen, welche von rechts nach links gelesen werden.
             </p>
             <p class="text-secondary leading-loose mt-4">
-                Für Performance unterstützen entsprechende Komponenten die Verwendung von <b>HTMX</b> Requests, um nur einzelne ausschnitte des <b>DOM</b> zu ändern, ohne einen kompletten Seiten-Reload.
+                Für Performance unterstützen entsprechende Komponenten die Verwendung von <b>HTMX</b> Requests, um nur einzelne ausschnitte des DOM zu ändern, ohne einen kompletten Seiten-Reload.
             </p>
         </section>
 

@@ -1,4 +1,4 @@
-{% load static insight_tags i18n %}
+{% load i18n insight_tags %}
 
 <h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">Insight UI Search Bar</h1>
 
@@ -8,8 +8,10 @@
         {% trans 'Todo' %}
     </p>
 
-    <div class="example-container">
-        {% include "insight_ui/components/searchbar.html" with request_view="index_view" %}
+    <div class="example-container space-y-8">
+        {% search_bar request_view="index_view" %}
+        {% search_bar request_view="index_view" simple="True" %}
+        {% search_bar request_view="index_view" simple="True" search_query="Test 123" %}
     </div>
 </section>
 
@@ -19,6 +21,6 @@
 <section>
     <h2>{% trans "Verwendung" %}</h2>
     <div id="Search_Bar_Usage" data-insight-code-block="Django">
-        &lcub;% include "insight_ui/components/searchbar.html" with request_view="index_view" %&rcub;
+        &lcub;% search_bar request_view="index_view" simple=True search_query="Test 123" %&rcub;
     </div>
 </section>

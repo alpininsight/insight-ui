@@ -7,7 +7,7 @@ Diese Komponente stell eine alternative für die [Filter](filter.md) Komponente 
 ## Verwendung
 
 ```django
-{% include "insight_ui/components/search_query_builder/sq_builder.html" with custom_filters=custom_filters %}
+{% sq_builder custom_filters=custom_filters %}
 ```
 
 ## Parameter

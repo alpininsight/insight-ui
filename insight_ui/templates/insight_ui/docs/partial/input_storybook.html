@@ -20,13 +20,13 @@
 <section class="component-container">
     <h2>{% trans "Dropdown menus" %}</h2>
     <div class="flex gap-2">
-        {% include "insight_ui/components/dropdown.html" with dropdown=user_dropdown %}
-        {% include "insight_ui/components/dropdown.html" with dropdown=settings_dropdown %}
+        {% dropdown dropdown_menu=user_dropdown %}
+        {% dropdown dropdown_menu=settings_dropdown %}
     </div>
 </section>
 
 <!-- Chat Demo -->
 <section class="component-container">
     <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Chat' %}</h2>
-    {% include "insight_ui/components/chat.html" %}
+    {% chat view_name="chat_response" %}
 </section>

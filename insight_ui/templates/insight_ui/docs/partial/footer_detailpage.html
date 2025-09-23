@@ -1,11 +1,11 @@
-{% load static insight_tags i18n %}
+{% load i18n insight_tags %}
 
 <h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">Insight UI Footer</h1>
 
 <!-- Component Demo -->
 <section>
     <p class="text-secondary leading-loose">
-        {% trans 'Todo' %}
+        {% trans 'Ein einfacher Footer mit anpassbaren Inhalt. Der Footer ist ein wichtiger Bestandteil einer jeden Webseite, er dient jedoch nicht nur dazu, die Webseite optisch abzuschließen. Er enthält i.d.R. mindestens eine Verlinkung zum Impressum und der Datenschutzerklärung. Oft befindet sich im Footer noch einmal eine Navigation zu den wichtigsten Seiten der Webseite und eine Copyright Angabe.' %}
     </p>
 
     <div class="example-container">
@@ -18,9 +18,52 @@
 <!-- Component Documentation -->
 <section>
     <h2>{% trans "Verwendung" %}</h2>
+    <p class="text-secondary leading-loose mb-4">
+        {% blocktrans with footer='<span class="inline-tag">&lcub;% footer %&rcub;</span>'|safe %}
+            Die Footer-komponente wird am einfachsten über das {{ footer }} Tag eingebunden. Für den Footer ist ein entsprechender Block definiert, in welchem dieser platziert werden sollte, damit diese auch garantiert immer am Ende der Webseite erscheint.
+        {% endblocktrans %}
+    </p>
     <div id="Footer_Usage" data-insight-code-block="Django">
+        &lcub;% load insight_tags %&rcub;
+
         &lcub;% block footer %&rcub;
             &lcub;% footer data=footer_data %&rcub;
         &lcub;% endblock footer %&rcub;
     </div>
+</section>
+
+<section>
+    <h3>Parameter</h3>
+    <ol class="list-disc text-secondary ms-8">
+        <li><span class="bg-gray-100 dark:bg-gray-800 rounded px-2 py-0.5 text-primary font-semibold">data</span>(<i>list</i>): {% trans "Ein Dictionary mit den Daten, welche im Footer angezeigt werden sollen." %}</li>
+    </ol>
+
+    <div class="mt-8">
+        <h4>items</h4>
+        <p class="text-secondary mb-6">{% trans "Ein Dictionary mit den Daten, welche im Footer angezeigt werden sollen." %}</p>
+
+        <div id="Step_Bar_Params" data-insight-code-block="python">
+            {
+                "description": {
+                    "title": "Insight UI",
+                    "text": "Eine moderne UI-Bibliothek für Django-Anwendungen um schnell zu durchzustarten.",
+                },
+                "links": [
+                    {"text": _("Startseite"), "icon": {"name": "home", "size": "small"}, "view_name": "storybook_view"},
+                    {"text": _("Storybook"), "view_name": "storybook_view"},
+                    {"text": _("Dokumentation"), "view_name": "storybook_view"},
+                ],
+            },
+        </div>
+    </div>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<section>
+    <h2>{% trans "Related topics" %}</h2>
+    <ol class="list-disc ms-8">
+        <li><a href="#" class="text-link">{% trans "Navbar" %}</a></li>
+        <li><a href="#" class="text-link">{% trans "Links" %}</a></li>
+    </ol>
 </section>

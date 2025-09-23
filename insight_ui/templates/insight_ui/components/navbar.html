@@ -115,7 +115,7 @@
         <div class="flex flex-col lg:flex-row gap-2 w-full lg:w-fit">
           {% if searchbar_request_view %}
             <div class="flex-1 lg:max-w-72">
-              {% include "insight_ui/components/searchbar.html" with request_view=searchbar_request_view simple=True search_query=options.search_query %}
+              {% search_bar request_view=searchbar_request_view simple=True search_query=options.search_query %}
             </div>
           {% endif%}
           <div class="flex gap-2 h-10">

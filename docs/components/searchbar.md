@@ -5,7 +5,7 @@ Eine einfaches Text-Input Feld mit einem großen Button am rechten Ende.
 ## Verwendung
 
 ```django
-{% include "insight_ui/components/searchbar.html" %}
+{% search_bar request_view=view_name simple=True %}
 ```
 
 ## Parameter

@@ -3,7 +3,7 @@
 <ul>
     <!-- Loading Indicator -->
     {% include "insight_ui/components/htmx_loading_indicator.html" %}
-    {% for item in pagination.page_obj.object_list %}
+    {% for item in current_page.object_list %}
         <li class="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4 mb-4">
             <h3 class="text-lg font-semibold text-insight-text-primary dark:text-white mb-2">{{ item.title }}</h3>
             <p class="text-insight-text-secondary dark:text-insight-text-secondary-dark">{{ item.content }}</p>

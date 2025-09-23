@@ -1,4 +1,4 @@
-{% load static insight_tags i18n %}
+{% load i18n insight_tags %}
 
 <h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">Insight UI SQL-Like Filter</h1>
 
@@ -9,7 +9,7 @@
     </p>
 
     <div class="example-container">
-        {% include "insight_ui/components/search_query_builder/sq_builder.html" with model_fields=model_fields %}
+        {% sq_builder model_fields=model_fields %}
     </div>
 </section>
 
@@ -19,6 +19,6 @@
 <section>
     <h2>{% trans "Verwendung" %}</h2>
     <div id="SQL_Like_Filter_Usage" data-insight-code-block="Django">
-        &lcub;% include "insight_ui/components/search_query_builder/sq_builder.html" with model_fields=model_fields %&rcub;
+        &lcub;% sq_builder model_fields=model_fields %&rcub;
     </div>
 </section>

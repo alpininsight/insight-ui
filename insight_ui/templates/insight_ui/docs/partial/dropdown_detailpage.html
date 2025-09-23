@@ -1,4 +1,4 @@
-{% load static insight_tags i18n %}
+{% load i18n insight_tags %}
 
 <h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">Insight UI Dropdown</h1>
 
@@ -13,8 +13,8 @@
 
     <div class="example-container">
         <div class="flex gap-2">
-            {% include "insight_ui/components/dropdown.html" with dropdown=user_dropdown %}
-            {% include "insight_ui/components/dropdown.html" with dropdown=settings_dropdown %}
+            {% dropdown dropdown_menu=user_dropdown %}
+            {% dropdown dropdown_menu=settings_dropdown %}
         </div>
     </div>
 </section>
@@ -25,7 +25,7 @@
 <section>
     <h2>{% trans "Verwendung" %}</h2>
     <div id="Dropdown_Usage" data-insight-code-block="Django">
-        &lcub;% include "insight_ui/components/dropdown.html" with dropdown=user_dropdown %&rcub;
+        &lcub;% dropdown dropdown_menu=user_dropdown %&rcub;
     </div>
 </section>
 
@@ -33,11 +33,11 @@
     <h3>{% trans "Parameter" %}</h3>
 
     <ol class="list-disc text-secondary leading-loose ms-8">
-        <li><span class="inline-tag">user_dropdown</span>(<i>dict</i>): {% trans "Ein Dictionary welches das Dropdown beschreibt." %}</li>
+        <li><span class="inline-tag">dropdown_menu</span>(<i>dict</i>): {% trans "Ein Dictionary welches das Dropdown beschreibt." %}</li>
     </ol>
 
     <div class="mt-8">
-        <h4>dropdown</h4>
+        <h4>dropdown_menu</h4>
         <p class="text-secondary leading-loose mb-6">{% trans "Ein Dictionary welches das Dropdown beschreibt." %}</p>
 
         <div id="Dropdown_Params" data-insight-code-block="python">

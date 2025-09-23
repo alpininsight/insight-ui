@@ -14,12 +14,12 @@
                     {% endif %}
                 </div>
             {% endif %}
-            <div>
+            <div class="flex-1">
                 <span class="block font-semibold {% if not item.completed and not item.current %}text-gray-300 dark:text-gray-700{% elif item.current %}text-insight-primary{% endif %}">{{ item.title }}</span>
                 <span class="block text-sm {% if not item.completed and not item.current %}text-gray-300 dark:text-gray-700{% else %}text-insight-text-secondary dark:text-insight-text-secondary-dark{% endif %}">{{ item.description }}</span>
             </div>
         </div>
-        {%if not forloop.last %}
+        {% if not forloop.last %}
             <div class="text-gray-300 dark:text-gray-700 hidden md:block">
                 <svg viewBox="0 0 22 80" fill="none" preserveAspectRatio="none" aria-hidden="true" class="h-20 w-6 rtl:rotate-180">
                     <path d="M0 -2L20 40L0 82" stroke="currentcolor" vector-effect="non-scaling-stroke" stroke-linejoin="round"></path>

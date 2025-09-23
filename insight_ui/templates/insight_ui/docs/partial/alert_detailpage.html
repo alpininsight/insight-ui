@@ -32,5 +32,17 @@
 
 <section>
     <h3>{% trans "Parameter" %}</h3>
-    {% table table_data=params %}
+    <ol class="list-disc text-secondary leading-loose ms-8">
+        <li><span class="inline-tag">message</span> (<i>str</i>): {% trans "Die Hauptnachricht der Benachrichtigung" %}</li>
+        <li>
+            <span class="inline-tag">type</span> (<i>str</i>): {% trans "Der Typ der Benachrichtigung. Mögliche Werte:" %}
+            <ol class="list-disc leading-relaxed ms-8">
+                <li><span class="inline-tag w-fit">info</span></li>
+                <li><span class="inline-tag w-fit">success</span></li>
+                <li><span class="inline-tag w-fit">warning</span></li>
+                <li><span class="inline-tag w-fit">error</span></li>
+            </ol>
+        </li>
+        <li><span class="inline-tag">dismissible</span> (<i>bool</i>): {% blocktrans with true='<span class="text-blue-400 font-semibold">True</span>'|safe %}{{ true }} wenn die Benachrichtigung schließbar sein soll. {% endblocktrans %}</li>
+    </ol>
 </section>
