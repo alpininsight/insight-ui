@@ -7,7 +7,7 @@ Mit dieser Komponente kann dem Nutzer der Fortschritt eines Prozesses visuell da
 ```django
 {% load insight_tags %}
 
-{% include "insight_ui/components/steps_bar.html" with items=steps_bar_items %}
+{% steps_bar steps_bar_items %}
 ```
 
 ## Parameter

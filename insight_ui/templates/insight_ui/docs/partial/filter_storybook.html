@@ -2,15 +2,15 @@
 
 <!-- Welcome -->
 <section>
-    <h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">{% trans 'Insight UI Filters &amp; Search' %}</h1>
-    <p class="text-lg text-insight-text-secondary dark:text-insight-text-secondary-dark">
+    <h1>{% trans 'Insight UI Filters &amp; Search' %}</h1>
+    <p class="text-lg text-secondary">
         {% trans 'Filter and search components for big data.' %}
     </p>
 </section>
 
 <!-- Searchbox Demo -->
 <section class="component-container">
-    <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Primary Search Bar' %}</h2>
+    <h2>{% trans 'Primary Search Bar' %}</h2>
     <div class="space-y-4">
         {% search_bar request_view="index_view" %}
     </div>
@@ -18,12 +18,12 @@
 
 <!-- Filter Demo -->
 <section class="component-container">
-    <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Generic Filters' %}</h2>
+    <h2>{% trans 'Generic Filters' %}</h2>
     {% generic_filter filters=filters view_name=filter_view_name %}
 </section>
 
 <!-- SQL-Like Filter Demo -->
 <section class="component-container">
-    <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'SQL-Like Filter' %}</h2>
+    <h2>{% trans 'SQL-Like Filter' %}</h2>
     {% sq_builder model_fields=model_fields %}
 </section>

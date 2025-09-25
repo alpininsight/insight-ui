@@ -5,7 +5,7 @@ Mit dieser Komponente lassen sich relativ einfach Filter generieren, indem diese
 ## Verwendung
 
 ```django
-{% include "insight_ui/components/filter.html" with view_name="filter_view" filters=filters %}
+{% generic_filter view_name="filter_view" filters=filters %}
 ```
 
 ## Parameter

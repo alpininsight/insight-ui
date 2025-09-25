@@ -2,15 +2,15 @@
 
 <!-- Welcome -->
 <section>
-    <h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">{% trans 'Insight UI Input Elements' %}</h1>
-    <p class="text-lg text-insight-text-secondary dark:text-insight-text-secondary-dark">
+    <h1>{% trans 'Insight UI Input Elements' %}</h1>
+    <p class="text-lg text-secondary">
         {% trans 'Standard input elements like Buttons.' %}
     </p>
 </section>
 
 <!-- Input Elements -->
 <section class="component-container">
-    <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Input Elements' %}</h2>
+    <h2>{% trans 'Input Elements' %}</h2>
     <div class="space-y-4">
         {% include "insight_ui/components/inputs.html" %}
     </div>
@@ -27,6 +27,6 @@
 
 <!-- Chat Demo -->
 <section class="component-container">
-    <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Chat' %}</h2>
+    <h2>{% trans 'Chat' %}</h2>
     {% chat view_name="chat_response" %}
 </section>

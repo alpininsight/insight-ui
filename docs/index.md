@@ -102,7 +102,7 @@ Der folgende Code-Ausschnitt zeigt ein typisches Template-Gerüst für eine Webs
 
 {% comment %} Define the footer in the "footer" block {% endcomment %}
 {% block footer %}
-    {% include "insight_ui/components/footer.html" with data=footer %}
+    {% footer data=footer %}
 {% endblock footer %}
 ```
 

@@ -5,7 +5,7 @@
     {% for item in items %}
       <li class="flex items-center">
         {% if not forloop.last %}
-          <a href="{% url item.view_name %}{{ item.query_params }}" class="inline-flex gap-1 text-insight-text-link hover:text-insight-text-link-hover">
+          <a href="{% url item.view_name %}{{ item.query_params }}" class="inline-flex gap-1 text-link">
             {% if item.icon %}
               {% icon item.icon %}
             {% endif %}

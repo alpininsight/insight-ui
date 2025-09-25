@@ -143,7 +143,7 @@ InsightUI.WebSocket = {
           const data = JSON.parse(evt.detail.message);
           const formattedData = `
             <div class="mb-2 p-2 border-l-4 border-blue-500 bg-white dark:bg-gray-600 rounded">
-              <div class="text-xs text-insight-text-secondary dark:text-insight-text-secondary-dark">${new Date().toLocaleTimeString()}</div>
+              <div class="text-xs text-secondary">${new Date().toLocaleTimeString()}</div>
               <div class="font-semibold text-blue-600 dark:text-blue-400">Connection: ${data.connection_id?.substring(0, 8) || 'unknown'}</div>
               <div class="text-sm space-y-1">
                 <div>💾 Disk: ${data.content?.disk?.used_gb || 0}GB / ${data.content?.disk?.total_gb || 0}GB</div>

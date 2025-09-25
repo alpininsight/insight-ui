@@ -14,7 +14,7 @@
   <!-- Loading Spinner -->
   <div class="htmx-spinner" style="display: none;">
     <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-insight-primary"></div>
-    <span class="ml-2 text-sm text-insight-text-secondary">{% trans 'Loading...' %}</span>
+    <span class="ml-2 text-sm text-secondary">{% trans 'Loading...' %}</span>
   </div>
 
   <!-- Content is loaded here -->
@@ -22,7 +22,7 @@
     {{ initial_content|safe }}
   {% else %}
     <div>
-      <p class="text-insight-text-secondary">{% trans 'Content is loading...' %}</p>
+      <p class="text-secondary">{% trans 'Content is loading...' %}</p>
     </div>
   {% endif %}
 </div>

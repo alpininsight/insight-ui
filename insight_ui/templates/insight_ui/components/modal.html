@@ -18,7 +18,7 @@
 
       <!-- Modal Header -->
       <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-        <h2 id="{{ id }}-title" class="text-xl font-semibold text-insight-text-primary dark:text-white">{{ title }}</h2>
+        <h2 id="{{ id }}-title" class="text-xl font-semibold text-primary">{{ title }}</h2>
         <button
           aria-label="{% trans 'Close' %}"
           class="bg-white h-fit rounded-sm p-2 text-insight-text-primary hover:bg-neutral-300 transition"
@@ -33,12 +33,12 @@
       <!-- Modal Body -->
       <div class="p-6 space-y-4">
         {% if description %}
-          <p id="{{ id }}-description" class="text-insight-text-secondary dark:text-insight-text-secondary-dark mb-4 flex items-center">
+          <p id="{{ id }}-description" class="text-secondary mb-4 flex items-center">
             {{ description }}
           </p>
         {% endif %}
 
-        <div class="text-insight-text-primary dark:text-white">
+        <div class="text-primary">
           {% block modal_content %}
             {{ content|safe }}
           {% endblock %}

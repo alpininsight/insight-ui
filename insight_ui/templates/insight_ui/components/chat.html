@@ -7,7 +7,7 @@
     <!-- Input-container -->
     <form hx-post="{% url view_name %}" hx-swap="beforeend" hx-target="#response" class="mt-16 space-y-2">
         {% csrf_token %}
-        <label class="block text-sm font-medium text-insight-text-secondary dark:text-insight-text-secondary-dark" for="msg">
+        <label class="block text-sm font-medium text-secondary" for="msg">
             {% trans "Message" %}
         </label>
         <div class="flex gap-2">

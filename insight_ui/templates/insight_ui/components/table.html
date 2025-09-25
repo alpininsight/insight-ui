@@ -3,11 +3,11 @@
 <div class="bg-white dark:bg-gray-800 rounded overflow-y-scroll">
   <table class="table-auto w-full" {% if options.id %}id="{{ options.id }}"{% endif %}>
     {% if table_data.caption %}
-      <caption class="text-xs text-insight-text-secondary dark:text-insight-text-secondary-dark">{{ caption }}</caption>
+      <caption class="text-xs text-secondary">{{ caption }}</caption>
     {% endif %}
 
     {% if table_data.headers %}
-      <thead class="text-insight-text-primary dark:text-insight-text-primary-dark">
+      <thead class="text-primary">
         <tr class="border-b border-gray-400 dark:border-gray-500">
           {% for header in table_data.headers %}
             <th class="text-start text-xs px-4 py-2" scope="col">{{ header }}</th>
@@ -16,7 +16,7 @@
       </thead>
     {% endif %}
 
-    <tbody class="text-insight-text-primary dark:text-insight-text-primary-dark">
+    <tbody class="text-primary">
       {% for row in table_data.rows %}
         <tr class="border-b border-gray-200 dark:border-gray-600">
           {% for cell in row %}
@@ -26,7 +26,7 @@
       {% empty %}
         <tfoot>
           <tr>
-            <td colspan="{{ table_data.headers|length }}" class="w-full border-t border-gray-400 dark:border-gray-500 text-insight-text-secondary dark:text-insight-text-secondary-dark text-center pt-16">
+            <td colspan="{{ table_data.headers|length }}" class="w-full border-t border-gray-400 dark:border-gray-500 text-secondary text-center pt-16">
               {{ table_data.empty_msg }}
             </td>
           </tr>

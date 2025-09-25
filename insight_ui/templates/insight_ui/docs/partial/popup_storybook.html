@@ -2,15 +2,15 @@
 
 <!-- Welcome -->
 <section>
-    <h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">{% trans 'Insight UI Popups' %}</h1>
-    <p class="text-lg text-insight-text-secondary dark:text-insight-text-secondary-dark">
+    <h1>{% trans 'Insight UI Popups' %}</h1>
+    <p class="text-lg text-secondary">
         {% trans 'Popover, Tooltips, Modal and everything that pops up with additional information.' %}
     </p>
 </section>
 
 <!-- Alerts Demo -->
 <section class="component-container">
-    <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Alerts' %}</h2>
+    <h2>{% trans 'Alerts' %}</h2>
     <div class="space-y-4">
         {% alert message="This is just an information." alert_type="info" %}
         {% alert message="Saved successfully!" alert_type="success" %}
@@ -21,7 +21,7 @@
 
 <!-- Tooltips and Popovers Demo -->
 <section class="component-container">
-    <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Tooltips &amp; Popovers' %}</h2>
+    <h2>{% trans 'Tooltips &amp; Popovers' %}</h2>
     <div class="flex flex-col gap-12">
         <div class="flex flex-col md:flex-row gap-12">
             <button data-tooltip-trigger="tt-demo-top" data-position="top" class="btn btn-primary">{% trans "Top" %}</button>
@@ -59,7 +59,7 @@
 
 <!-- Modal Demo -->
 <section class="component-container">
-    <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans "Modal-Dialogs" %}</h2>
+    <h2>{% trans "Modal-Dialogs" %}</h2>
     <div class="flex flex-col md:flex-row gap-4">
         <!-- Standard -->
         <button class="btn btn-primary w-72" data-insight-toggle="modal" data-insight-target="demo-modal">

@@ -508,22 +508,25 @@ def alert(message: str, alert_type: str = "info", dismissible: bool = True, **kw
 
 
 @register.inclusion_tag("insight_ui/components/sidebar.html")
-def sidebar(title: str = "", items: list[dict[str, Any]] = [], collapsible: bool = False) -> dict[str, Any]:
+def sidebar(
+    sidebar_data: dict = {}, side: str = "right", static: bool = True, auto_close: bool = False
+) -> dict[str, Any]:
     """
-    Rendert eine barrierefreie Seitennavigation.
+    Rendert eine konfigurierbare Seitennavigation.
 
     Args:
     ----
-        title (str): Der Titel der Sidebar
-        items (list): Eine Liste von Dictionaries mit Navigation-Elementen
-        collapsible (bool): Ob die Sidebar einklappbar sein soll
+        sidebar_data (dict): Der Inhalt der Sidebar (Titel und Navigations-Elemente).
+        side (str): Gibt an, an welcher Seite die Sidebar dargestellt werden soll.
+        static (bool): True wenn die Sidebar nicht einklappbar sein soll.
+        auto_close (bool): True wenn die Sidebar sich automatisch schließen soll, wenn der Cursor sie verlässt.
 
     Returns:
     -------
         Dict mit Kontext-Variablen für das Template
 
     """
-    return {"title": title, "items": items, "collapsible": collapsible}
+    return {"sidebar_data": sidebar_data, "side": side, "static": static, "auto_close": auto_close}
 
 
 @register.inclusion_tag("insight_ui/components/breadcrumbs.html")

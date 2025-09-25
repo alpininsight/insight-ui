@@ -16,8 +16,8 @@
   <div>
     {% for item in items %}
       <div class="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4 mb-4">
-        <h3 class="text-lg font-semibold text-insight-text-primary dark:text-white mb-2">{{ item.title }}</h3>
-        <p class="text-insight-text-secondary dark:text-insight-text-secondary-dark">{{ item.content }}</p>
+        <h3>{{ item.title }}</h3>
+        <p class="text-secondary">{{ item.content }}</p>
       </div>
     {% endfor %}
   </div>
@@ -38,7 +38,7 @@
   <div class="htmx-spinner" style="display: none;">
     <div class="flex items-center justify-center py-4">
       <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-insight-primary"></div>
-      <span class="ml-2 text-sm text-insight-text-secondary">{% trans 'More content is loading...' %}</span>
+      <span class="ml-2 text-sm text-secondary">{% trans 'More content is loading...' %}</span>
     </div>
   </div>
 </div>

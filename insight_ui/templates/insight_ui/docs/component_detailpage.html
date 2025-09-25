@@ -4,7 +4,7 @@
 {% block title %}{% trans "Insight UI Components" %}{% endblock title %}
 
 {% block drawers %}
-    {% include "insight_ui/components/sidebar.html" with side="right" auto_close=False sidebar_items=right_sidebar %}
+    {% sidebar side="right" static=False %}
 {% endblock drawers %}
 
 {% block navbar %}
@@ -16,7 +16,7 @@
 {% endblock background_image %}
 
 {% block sidebar_left %}
-    {% include "insight_ui/components/sidebar.html" with sidebar_data=left_sidebar side="left" static=True %}
+    {% sidebar sidebar_data=left_sidebar side="left" %}
 {% endblock sidebar_left %}
 
 {% block content %}

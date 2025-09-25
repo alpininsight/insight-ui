@@ -7,7 +7,7 @@ Es gibt noch nicht für alle größeren Themen, passende Icons in diesem Guide, 
 ## Verwendung
 
 ```django
-{% include "insight_ui/components/icons.html" with icon=icon %}
+{% icon icon %}
 ```
 
 ## Parameter

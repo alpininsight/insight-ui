@@ -17,9 +17,9 @@
   {% csrf_token %}
   {% if title %}
     <div class="mb-6">
-      <h2 class="text-2xl font-bold text-insight-text-primary dark:text-white">{{ title }}</h2>
+      <h2 class="text-2xl font-bold text-primary">{{ title }}</h2>
       {% if description %}
-        <p class="mt-2 text-insight-text-secondary dark:text-insight-text-secondary-dark">{{ description }}</p>
+        <p class="mt-2 text-secondary">{{ description }}</p>
       {% endif %}
     </div>
   {% endif %}
@@ -27,7 +27,7 @@
   <div class="space-y-4">
     {% for field in fields %}
       <div class="space-y-2">
-        <label for="{{ field.name }}" class="block text-sm font-medium text-insight-text-secondary dark:text-insight-text-secondary-dark">
+        <label for="{{ field.name }}" class="block text-sm font-medium text-secondary">
           {{ field.label }}
           {% if field.required %}<span class="text-red-500" aria-label="{% trans 'Required' %}">*</span>{% endif %}
         </label>
@@ -64,7 +64,7 @@
         {% endif %}
 
         {% if field.help_text %}
-          <p class="text-sm text-insight-text-secondary dark:text-insight-text-secondary-dark">{{ field.help_text }}</p>
+          <p class="text-sm text-secondary">{{ field.help_text }}</p>
         {% endif %}
 
         {% if field.errors %}

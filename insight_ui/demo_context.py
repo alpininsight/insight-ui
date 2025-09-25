@@ -731,7 +731,16 @@ def get_radio_group_context() -> dict:
                 {"id": "table-view", "value": "table", "icon": {"name": "list"}},
                 {"id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},
             ],
-        }
+        },
+        "size_options": {
+            "name": "size-options",
+            "param_name": "size",
+            "options": [
+                {"id": "small-size", "value": "small", "text": "sm"},
+                {"id": "medium-size", "value": "medium", "text": "md"},
+                {"id": "large-size", "value": "large", "text": "lg"},
+            ],
+        },
     }
 
 

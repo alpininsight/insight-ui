@@ -2,21 +2,21 @@
 
 <!-- Welcome -->
 <section>
-    <h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">{% trans 'Insight UI Lists &amp; Tables' %}</h1>
-    <p class="text-lg text-insight-text-secondary dark:text-insight-text-secondary-dark">
+    <h1>{% trans 'Insight UI Lists &amp; Tables' %}</h1>
+    <p class="text-lg text-secondary">
         {% trans 'List and table components for big data.' %}
     </p>
 </section>
 
 <!-- Table Demo -->
 <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-    <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Tables' %}</h2>
+    <h2>{% trans 'Tables' %}</h2>
     {% table table_data=table %}
 </section>
 
 <!-- Pagination Demo -->
 <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-    <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Pagination for lists &amp; tables' %}</h2>
+    <h2>{% trans 'Pagination for lists &amp; tables' %}</h2>
     <div id="list-container">
         {% paginated_list current_page=start_page surrounding_pages=surrounding_pages %}
     </div>
@@ -24,6 +24,6 @@
 
 <!-- Infinite Scroll Demo -->
 <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-    <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Infinite Scroll' %}</h2>
+    <h2>{% trans 'Infinite Scroll' %}</h2>
     {% infinite_scroll items=scroll_items view_name="more_items" auto_fetch=False %}
 </section>

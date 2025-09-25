@@ -7,12 +7,12 @@
     <div class="h-full px-4 py-2">
         {% if url %}
             <a href="{% url url %}">
-                <p id="card-title" class="text-insight-text-primary dark:text-insight-text-primary-dark font-bold text-xl hover:text-insight-text-link-hover mb-2">{{ title }}</p>
+                <p id="card-title" class="text-primary font-bold text-xl hover:text-insight-text-link-hover mb-2">{{ title }}</p>
             </a>
         {% else %}
-            <p id="card-title" class="text-insight-text-primary dark:text-insight-text-primary-dark font-bold text-xl mb-2">{{ title }}</p>
+            <p id="card-title" class="text-primary font-bold text-xl mb-2">{{ title }}</p>
         {% endif %}
-        <p id="card-description" class="text-insight-text-secondary dark:text-insight-text-secondary-dark text-base text-justify hyphens-auto" lang="de">{{ content }}</p>
+        <p id="card-description" class="text-secondary text-base text-justify hyphens-auto" lang="de">{{ content }}</p>
     </div>
 
     <!-- Tags -->

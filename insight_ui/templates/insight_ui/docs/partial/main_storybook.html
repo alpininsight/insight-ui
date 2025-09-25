@@ -2,27 +2,27 @@
 
 <!-- Welcome -->
 <section>
-    <h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">{% trans 'Insight UI Navigation' %}</h1>
-    <p class="text-lg text-insight-text-secondary dark:text-insight-text-secondary-dark">
+    <h1>{% trans 'Insight UI Navigation' %}</h1>
+    <p class="text-lg text-secondary">
         {% trans 'Main layout elements like navigation, footer and sidebars.' %}
     </p>
 </section>
 
 <!-- Breadcrumbs Demo -->
 <section class="component-container">
-    <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Breadcrumb-Navigation' %}</h2>
+    <h2>{% trans 'Breadcrumb-Navigation' %}</h2>
     {% breadcrumbs items=breadcrumb_items %}
     {% breadcrumbs items=single_breadcrumb_item %}
 </section>
 
 <!-- Step Bar Demo -->
 <section class="component-container">
-    <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Step Bar' %}</h2>
+    <h2>{% trans 'Step Bar' %}</h2>
     {% step_bar items=steps_bar_items %}
 </section>
 
 <!-- Bullet Point List Demo -->
 <section class="component-container">
-    <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Bullet Point List' %}</h2>
+    <h2>{% trans 'Bullet Point List' %}</h2>
     {% bullet_point_list items=bulletpoints %}
 </section>

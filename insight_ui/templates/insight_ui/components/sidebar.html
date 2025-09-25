@@ -27,12 +27,12 @@
       <!-- Sidebar Header -->
       <div class="flex justify-between items-center h-16 border-b border-gray-300 dark:border-gray-500 mb-4">
         {% if sidebar_data.title %}
-          <h2 class="text-lg font-semibold text-insight-text-primary dark:text-white mb-0">{{ sidebar_data.title }}</h2>
+          <h2 class="text-lg font-semibold text-primary mb-0">{{ sidebar_data.title }}</h2>
         {% endif %}
         {% if not auto_close and not static %}
           <button
             id="{{ side }}-sidebar-close"
-            class="text-insight-text-secondary hover:text-insight-text-primary dark:text-insight-text-secondary-dark dark:hover:text-insight-text-primary-dark p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 text-sm"
+            class="text-secondary hover:text-insight-text-primary dark:hover:text-insight-text-primary-dark p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 text-sm"
             aria-label="{% trans 'Close sidebar' %}"
             data-insight-dismiss="sidebar"
           >
@@ -49,7 +49,7 @@
           <nav class="space-y-2">
             {% for category in sidebar_data.categories %}
               <div>
-                <div class="flex gap-1 pt-4 pb-2 text-insight-text-secondary">
+                <div class="flex gap-1 pt-4 pb-2 text-secondary">
                   {% if category.icon %}
                     {% icon category.icon %}
                   {% endif %}
@@ -64,7 +64,7 @@
                       hx-push-url="true"
                     {% endif %}
                     href="{{ item.url }}"
-                    class="flex gap-2 px-2 py-1 border-s text-sm text-insight-text-primary dark:text-insight-text-primary-dark border-gray-200 hover:border-gray-400 hover:text-gray-400"
+                    class="flex gap-2 px-2 py-1 border-s text-sm text-primary border-gray-200 hover:border-gray-400 hover:text-gray-400"
                   >
                     {% if item.icon %}
                       {% icon item.icon %}
