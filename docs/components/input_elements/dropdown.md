@@ -14,7 +14,7 @@ Bei der Verwendung von Dropdown-Menüs ist dennoch zu beachten, das diese nicht 
 
 - **dropdown_menu**: Ein Dictionary welches das Dropdown Menü beschreibt.
 
-### dropdown
+### dropdown_menu
 
 Ein Dictionary welches das Dropdown Menü beschreibt.
 

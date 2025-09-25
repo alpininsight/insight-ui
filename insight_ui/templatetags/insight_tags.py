@@ -171,6 +171,74 @@ def dropdown(dropdown_menu: list) -> dict:
     return {"dropdown_menu": dropdown_menu}
 
 
+@register.inclusion_tag("insight_ui/components/checkbox.html")
+def checkbox(checkbox: dict) -> dict:
+    """
+    Rendert ein oder mehrere Checkbox.
+
+    Arguments:
+    ---------
+        checkbox (dict): Ein Dictionary welches das Checkbox Komponente beschreibt.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template.
+
+    """
+    return {"checkbox": checkbox}
+
+
+@register.inclusion_tag("insight_ui/components/radio_button.html")
+def radio(radio: dict) -> dict:
+    """
+    Rendert ein oder mehrere Radio-Buttons.
+
+    Arguments:
+    ---------
+        radio (dict): Ein Dictionary welches das Radio Komponente beschreibt.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template.
+
+    """
+    return {"radio": radio}
+
+
+@register.inclusion_tag("insight_ui/components/toggle_button.html")
+def toggle(toggle: dict) -> dict:
+    """
+    Rendert ein Toggle-Button.
+
+    Arguments:
+    ---------
+        toggle (dict): Ein Dictionary welches den Toggle-Button beschreibt.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template.
+
+    """
+    return {"toggle": toggle}
+
+
+@register.inclusion_tag("insight_ui/components/range_slider.html")
+def slider(slider: dict) -> dict:
+    """
+    Rendert ein Range-Slider.
+
+    Arguments:
+    ---------
+        slider (dict): Ein Dictionary welches den Range-Slider beschreibt.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template.
+
+    """
+    return {"slider": slider}
+
+
 @register.inclusion_tag("insight_ui/components/radio_group.html")
 def radio_group(
     radio_group: list, current_value: str, view_name: str = "", query_params: str = "", target_id: str = ""

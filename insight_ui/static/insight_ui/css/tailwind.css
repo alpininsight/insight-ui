@@ -1318,9 +1318,6 @@
   .text-neutral-400 {
     color: var(--color-neutral-400);
   }
-  .text-neutral-500 {
-    color: var(--color-neutral-500);
-  }
   .text-neutral-700 {
     color: var(--color-neutral-700);
   }
@@ -1999,11 +1996,6 @@
   .rtl\:flex-row-reverse {
     &:where(:dir(rtl), [dir="rtl"], [dir="rtl"] *) {
       flex-direction: row-reverse;
-    }
-  }
-  .rtl\:justify-start {
-    &:where(:dir(rtl), [dir="rtl"], [dir="rtl"] *) {
-      justify-content: flex-start;
     }
   }
   .rtl\:border-r {

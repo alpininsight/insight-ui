@@ -525,7 +525,15 @@ def get_main_storybook_context() -> dict:
 
 def get_inputs_storybook_context() -> dict:
     """Serve data for input elements storybook."""
-    return get_base_context() | get_sidebar_context() | get_dropdown_context() | get_radio_button_context()
+    return (
+        get_base_context()
+        | get_sidebar_context()
+        | get_checkbox_context()
+        | get_radio_button_context()
+        | get_toggle_button_context()
+        | get_range_slider_context()
+        | get_dropdown_context()
+    )
 
 
 def get_popup_storybook_context() -> dict:
@@ -665,8 +673,55 @@ def get_step_bar_context() -> dict:
     }
 
 
+def get_checkbox_context() -> dict:
+    """Serve data for checkbox detailpage."""
+    return {
+        "example_checkbox": {
+            "name": "checkbox-example1",
+            "items": [
+                {"id": "english", "value": "english", "text": _("English"), "disabled": False},
+                {"id": "german", "value": "german", "text": _("German"), "disabled": False},
+                {"id": "italian", "value": "italian", "text": _("Italian (currently not available)"), "disabled": True},
+            ],
+        }
+    }
+
+
 def get_radio_button_context() -> dict:
     """Serve data for radio button detailpage."""
+    return get_radio_group_context() | {
+        "example_radio": {
+            "name": "radio-example1",
+            "items": [
+                {"id": "model1", "value": "BERT", "text": _("BERT"), "disabled": False},
+                {"id": "model2", "value": "PaLM 2", "text": _("PaLM 2"), "disabled": False},
+                {"id": "model3", "value": "LLaMA 2", "text": _("LLaMA 2 (currently not available)"), "disabled": True},
+            ],
+        }
+    }
+
+
+def get_toggle_button_context() -> dict:
+    """Serve data for toggle-button detailpage."""
+    return {"example_toggle": {"id": "toggle_button_example1", "text": _("Click me!")}}
+
+
+def get_range_slider_context() -> dict:
+    """Serve data for range-slider detailpage."""
+    return {
+        "example_slider": {
+            "id": "range_slider_example1",
+            "title": "Range Slider Title",
+            "value": 1000,
+            "min": 100,
+            "max": 1500,
+            "items": [_("100€ (minimum)"), "500€", "750€", "1000€", _("1500€ (maximum)")],
+        }
+    }
+
+
+def get_radio_group_context() -> dict:
+    """Serve data for radio group detailpage."""
     return {
         "view_options": {
             "name": "view-options",
