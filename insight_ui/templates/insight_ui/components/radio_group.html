@@ -13,7 +13,7 @@
                 class="peer hidden"
             >
             <label for="{{ option.id }}" class="flex peer-checked:bg-insight-primary-active peer-checked:border-insight-primary-active bg-insight-primary border-insight-primary {% if forloop.first %}border-2 rounded-l-sm{% elif forloop.last %}border-2 rounded-r-sm{% else %}border-y-2{% endif %} text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">
-                {% if option.id %}
+                {% if option.icon %}
                     {% icon option.icon %}
                 {% endif %}
                 {{ option.text }}
