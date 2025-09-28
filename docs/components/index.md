@@ -11,10 +11,10 @@ Das UI-Framework bietet für den schnellen Start in ein neues Projekt, vorgefert
 - [Carousel](carousel.md): Ein Karussell für Kacheln (Später auch für Bilder und andere Container, etc.)
 - [Footer](footer.md): Ein einfacher Footer, mit einem Beschreibungstext, Links, Kontaktinformationen und Copyright Angabe
 - [Form](form.md): Beispiele für Form-Elemente
-- [Infinite Scroll](infinite_scroll): Eine sich kontinuierlich erweiternde Liste
-- [Inputs](inputs.md): Eine Sammlung einfacher Input-Elemente wie Buttons, Checkboxen, etc.
+- [Infinite Scroll](infinite_scroll.md): Eine sich kontinuierlich erweiternde Liste
+- [Eingabeelemente](inputs.md): Eine Sammlung einfacher Input-Elemente wie Buttons, Checkboxen, etc.
 - [Modal](modal.md): Dialoge
-- [Searchbar](searchbar.md): Eine einfache Suchzeile
+- [Searchbar](search_bar.md): Eine einfache Suchzeile
 
 Jede Komponente ist:
 

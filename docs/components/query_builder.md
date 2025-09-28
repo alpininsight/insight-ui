@@ -1,6 +1,6 @@
 # Query Builder Komponente (Version 0.1.0)
 
-Diese Komponente stell eine alternative für die [Filter](filter.md) Komponente dar. Der Unterschied zwischen den beiden ist, dass diese Variante ähnlich funktioniert wie eine Suche mit SQL. Dieser Filter bekommt eine Liste der Modell-Felder in welchen gesucht werden kann und zu jedem Feld eine Liste der erlaubten Operationen. In speziellen Fällen können auch wie bei der anderen Variante, vordefinierte Werte angegeben werden. Dieser Aspekt macht diese Art der Filterung, u.u. wesentlich flexibler, da auf fest definierte Werte verzichtet wird.
+Diese Komponente stellt eine Alternative zur [Generic Filter](generic_filter.md) Komponente dar. Der Unterschied zwischen den beiden ist, dass diese Variante ähnlich funktioniert wie eine Suche mit SQL. Dieser Filter bekommt eine Liste der Modell-Felder in welchen gesucht werden kann und zu jedem Feld eine Liste der erlaubten Operationen. In speziellen Fällen können auch wie bei der anderen Variante, vordefinierte Werte angegeben werden. Dieser Aspekt macht diese Art der Filterung, u.u. wesentlich flexibler, da auf fest definierte Werte verzichtet wird.
 
 Ähnlich wie bei der anderen Filter Variante, wird hier auch lediglich ein Dictionary mit den gewünschten Eigenschaften benötigt.
 
@@ -78,4 +78,4 @@ Dieser Parameter beschreibt alle Filter, welche mit dem Query Builder gebaut wer
 
 ## Verwandte Themen
 
-- [Filter](filter.md)
+- [Generic Filter](generic_filter.md)

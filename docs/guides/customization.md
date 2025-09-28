@@ -10,7 +10,7 @@ Unser Framework bietet verschiedene Möglichkeiten zur Anpassung, von einfachen 
 
 Unser UI Framework verwendet TailwindCSS für das Styling. Tailwind verwendet eine sog. _input.css_ Datei in welcher sich ein Theme aufbauen lässt, darunter fällt die Definition von grundlegenden Eigenschaften wie Farben, Schriftgrößen oder Fonts. Aber auch komplexere Dinge lassen sich dort definieren, wie zum Beispiel lassen sich dort Custom-CSS-Klassen erstellen oder Animationen definieren. Es lassen sich auch standard definieren, wodurch bestimmte Elemente zum Beispiel Überschriften immer gleich aussehen ohne das dafür überhaupt eine Klasse im HTML-Code angegeben werden muss.
 
-Das Standard-Theme des Insight-UI Frameworks befindet sich hier: [insight_ui/utils/input.css](../../insight_ui/utils/input.css).
+Das Standard-Theme des Insight-UI Frameworks befindet sich in der Datei `insight_ui/utils/input.css`.
 
 Die Datei enthält die folgenden Komponenten, alle zusammen ergeben das Theme.
 

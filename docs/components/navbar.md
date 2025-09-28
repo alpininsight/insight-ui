@@ -42,7 +42,7 @@ Eine komplette Konfiguration sieht folgendermaßen aus:
     "brand": {
         "title": "Django Insight UI NavBar",
         "view_name": "storybook_view",
-        "logo_url": "insight_ui/svg/ai-logo.svg",
+        "logo_url": "insight_ui/svg/logo.svg",
         "logo_alt": "Insight UI Logo",
     },
     "links": [

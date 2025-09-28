@@ -1,48 +1,63 @@
+"""Simple WebSocket client for manual testing of the demo server."""
+
+from __future__ import annotations
+
 import asyncio
 import json
 import logging
 import signal
+from typing import Any
 
 import websockets
+from websockets.client import WebSocketClientProtocol
 
-URL = "ws://localhost:8765"
-logging.basicConfig(level=logging.INFO, format="[%(asctime)s] %(levelname)s - %(message)s")
+LOGGER = logging.getLogger(__name__)
+if not LOGGER.handlers:
+    logging.basicConfig(level=logging.INFO, format="[%(asctime)s] %(levelname)s - %(message)s")
 
-is_running = True
-
-
-def shutdown_handler(signum, frame) -> None:  # noqa: ANN001
-    global is_running
-    is_running = False
-    logging.info("Client wird beendet (Signal empfangen)")
+WEBSOCKET_URL = "ws://localhost:8765"
+_SHUTDOWN_EVENT = asyncio.Event()
 
 
-signal.signal(signal.SIGINT, shutdown_handler)  # CTRL+C
-signal.signal(signal.SIGTERM, shutdown_handler)  # kill
+def _shutdown_handler(signum: int, frame: Any) -> None:  # noqa: D401, ANN401
+    """Set the shutdown flag when the process receives a termination signal."""
+    LOGGER.info("Client wird beendet (Signal %s empfangen)", signum)
+    _SHUTDOWN_EVENT.set()
 
 
-async def main() -> None:
-    global is_running
+signal.signal(signal.SIGINT, _shutdown_handler)
+signal.signal(signal.SIGTERM, _shutdown_handler)
+
+
+async def _log_message(message: str) -> None:
+    """Parse a WebSocket message and log a prettified representation."""
     try:
-        async with websockets.connect(URL) as websocket:
-            logging.info("Verbunden mit %s", URL)
-            while is_running:
-                try:
-                    message = await asyncio.wait_for(websocket.recv(), timeout=10)
-                    try:
-                        data = json.loads(message)
-                        logging.info(
-                            "[%s] Daten empfangen:\n%s",
-                            data.get("connection_id"),
-                            json.dumps(data["content"], indent=2),
-                        )
-                    except json.JSONDecodeError:
-                        logging.warning("Ungültige Nachricht:\n%s", message)
-                except TimeoutError:
-                    logging.debug("Timeout – keine Nachricht empfangen")
-    except Exception as e:
-        logging.exception("Verbindungsfehler: %s", e)
+        data = json.loads(message)
+        pretty_payload = json.dumps(data.get("content"), indent=2)
+        LOGGER.info("[%s] Daten empfangen:\n%s", data.get("connection_id", "?"), pretty_payload)
+    except json.JSONDecodeError:
+        LOGGER.warning("Ungültige Nachricht:\n%s", message)
+
+
+async def run_client() -> None:
+    """Connect to the demo WebSocket and stream messages until stopped."""
+    try:
+        async with websockets.connect(WEBSOCKET_URL) as websocket:
+            await _consume_messages(websocket)
+    except Exception:  # noqa: BLE001
+        LOGGER.exception("Verbindungsfehler beim Aufbau der WebSocket-Verbindung")
+
+
+async def _consume_messages(websocket: WebSocketClientProtocol) -> None:
+    """Receive messages until the shutdown event is triggered."""
+    LOGGER.info("Verbunden mit %s", WEBSOCKET_URL)
+    while not _SHUTDOWN_EVENT.is_set():
+        try:
+            message = await asyncio.wait_for(websocket.recv(), timeout=10)
+            await _log_message(message)
+        except TimeoutError:
+            LOGGER.debug("Timeout – keine Nachricht empfangen")
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(run_client())

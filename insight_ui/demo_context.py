@@ -1,6 +1,7 @@
 from django.templatetags.static import static
 from django.urls import reverse
 from django.utils.html import format_html
+from django.utils.lorem_ipsum import paragraphs
 from django.utils.translation import gettext as _
 
 from insight_ui import config
@@ -119,7 +120,7 @@ def get_navbar_context() -> dict:
             "brand": {
                 "title": "Insight UI",
                 "view_name": "index_view",
-                "logo_url": "insight_ui/svg/ai-logo.svg",
+                "logo_url": "insight_ui/svg/logo.svg",
                 "logo_alt": "Insight UI Logo",
             },
             "links": [
@@ -884,26 +885,19 @@ def get_card_carousel_context() -> dict:
 
 def get_image_carousel_context() -> dict:
     """Serve data for image carousel detailpage."""
-    return {
-        "image_carousel_items": [
-            {
-                "description": "The famous castle served as a model for many other buildings, including the castles at the Disneyland resorts in California and Paris.",  # noqa: E501
-                "url": static("insight_ui/img/neuschwanstein.jpg"),
-                "alt": "Neuschwanstein Castle in winter.",
-            },
-            {
-                "description": "Before Berlin became the capital of Germany, the city had already been the capital twice: of the Mark-Brandenburg and of Prussia.",  # noqa: E501
-                "url": static("insight_ui/img/berlin.jpg"),
-                "alt": "Berlin at night.",
-            },
-            {
-                "description": "The Free and Hanseatic City of Hamburg is the leading member of the Hanseatic League.",  # noqa: E501
-                "url": static("insight_ui/img/hamburg.jpg"),
-                "alt": "Hamburg and an arriving S-Bahn train.",
-            },
-        ],
-        "range_total_slides": range(3),
-    }
+    seeds = ["neuschwanstein", "berlin-night", "hamburg-harbour"]
+    lorem_blocks = paragraphs(len(seeds), common=False)
+
+    image_carousel_items = [
+        {
+            "description": lorem_blocks[index],
+            "url": f"https://picsum.photos/seed/{seed}/1200/675",
+            "alt": _("Placeholder image %(index)s") % {"index": index + 1},
+        }
+        for index, seed in enumerate(seeds)
+    ]
+
+    return {"image_carousel_items": image_carousel_items, "range_total_slides": range(len(image_carousel_items))}
 
 
 def get_toggle_view_context() -> dict:

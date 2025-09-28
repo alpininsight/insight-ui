@@ -35,6 +35,7 @@ dependencies = [
     "django-htmx>=1.17.0",
     "whitenoise>=6.9.0",
     "structlog>=25.4.0",
+    "mkdocs>=1.6.1",
 ]
 
 [tool.uv]
@@ -48,6 +49,17 @@ dev = [
     "pre-commit",
     "django-tailwind-cli>=4.3.0",
 ]
+pytest = [
+    "pytest",
+    "pytest-django",
+    "pytest-cov",
+]
+docs = [
+    "mkdocs",
+    "mkdocs-material",
+    "mkdocs-static-i18n",
+    "mkdocstrings[python]",
+]
 
 [project.optional-dependencies]
 test = [
@@ -59,6 +71,7 @@ docs = [
     "mkdocs",
     "mkdocs-material",
     "mkdocstrings[python]",
+    "mkdocs-static-i18n",
 ]
 
 [project.urls]
@@ -186,20 +199,20 @@ select = [
 ]
 
 ignore = [
-  "S101",     # (Bandit) Use of `assert` detected,
+  "ANN101",   # Missing type annotation for `self` in method (deprecated)
+  "ANN002",   # Missing type annotation for `*args`
+  "ANN003",   # Missing type annotation for `**kwargs`
+  "S101",     # (Bandit) Use of `assert` detected
   "S113",     # (Bandit) Probable use of requests call without timeout
-  "ARG001",   # Unused function argument (too many results for pytest fixtures)
-  "F811",     # Redefinition of unused `xxx` from (fixtures)
+  "ARG001",   # Unused function argument (common for fixtures)
+  "F811",     # Redefinition of unused `xxx` from fixtures
   "D203",     # incorrect-blank-line-before-class (incompatible with D211)
   "D212",     # multi-line-summary-first-line (incompatible with D213)
   "D100",     # Missing docstring in public module (maybe later)
   "D104",     # Missing docstring in public package (maybe later)
   "D400",     # First line should end with a period (unnecessary because of D415)
-  "PTH118",   # avoid os-path-join use / to combine paths instead
-  "ANN101",   # Missing type annotation for `self` in method (deprecated)
-  "ANN002",   # Missing type annotation for `*args`
-  "ANN003",   # Missing type annotation for `*kwargs`
-  "T201",     # Print statements (temporary disabled)
+  "PTH118",   # prefer pathlib over os.path join (existing code uses os.path)
+  "T201",     # Print statements (temporarily disabled)
 ]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.

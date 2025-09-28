@@ -25,7 +25,7 @@ Es sind zwei Varianten für Karussell Komponente vorgefertigt. Eine für die Dar
 
 In dem neuen Template muss der Block `{% block carousel_content %}` definiert werden. In diesem Block kann dann der gewünschte Inhalt des Karussells definiert werden.
 
-Das Basis-Template des Karussell durchläuft bereits die Schleife, welche durch die `items` iteriert. Daher muss bzw. sollte dies nicht nochmal in dem abgeleiteten Template gemacht werden. Das einzelne Daten-Objekt steht als `item` zur Verfügung. Für mehr Details siehe [Karussell-Template](../../insight_ui/templates/insight_ui/components/carousel.html).
+Das Basis-Template des Karussell durchläuft bereits die Schleife, welche durch die `items` iteriert. Daher muss bzw. sollte dies nicht nochmal in dem abgeleiteten Template gemacht werden. Das einzelne Daten-Objekt steht als `item` zur Verfügung. Für mehr Details siehe `insight_ui/templates/insight_ui/components/carousel.html`.
 
 So könnte ein Karussell mit eigenen Inhalt aussehen:
 
@@ -52,7 +52,7 @@ Und so kann anschließend das Karussell eingebunden werden. Über die Parameter 
 
 ## Template Datei
 
-- [Template](../../insight_ui/templates/insight_ui/components/carousel.html)
+- `insight_ui/templates/insight_ui/components/carousel.html`
 
 ## Verwandte Themen
 

@@ -11,7 +11,7 @@
     <!-- Brand Logo -->
     {% if brand %}
       <div class="flex items-center">
-        <a href="{% if brand.view_name %}{% url brand.view_name %}{% endif %}" class="flex items-center gap-2 text-xl font-bold text-primary">
+        <a href="{{ brand.href }}" class="flex items-center gap-2 text-xl font-bold text-primary">
           {% if brand.logo_url %}
             <img src="{% static brand.logo_url %}" alt="{{ brand.logo_alt }}" class="size-8 rounded-full dark:bg-white" />
           {% else %}
@@ -48,9 +48,9 @@
               {% for link in links %}
                   {% if not link.need_auth or options.user.is_authenticated and not link.staff_only or options.user.is_staff %}
                     <li>
-                      {% if link.view_name %}
+                      {% if link.view_name or link.href %}
                         <a
-                          href="{% url link.view_name %}"
+                          href="{{ link.href }}"
                           class="flex gap-2 h-full border-b-2 {% if link.active %}text-insight-text-link border-insight-text-link{% else %}text-secondary hover:text-insight-text-link border-transparent{% endif %} px-4 py-2 text-sm transition-colors duration-200"
                           {% if link.active %}aria-current="page"{% endif %}
                           {% if link.external %}target="_blank" rel="noopener"{% endif %}
@@ -74,24 +74,18 @@
                           <div id="{{ link.open_dropdown }}" class="bg-white border border-gray-300 dark:border-0 rounded-sm shadow-lg">
                             <div class="py-1">
                               {% for item in link.items %}
+                                {% with item_url=item.href %}
                                 <a
-                                  {% if item.htmx %}
-                                    {% if item.view_arg %}
-                                      hx-get="{% url item.view_name item.view_arg %}"
-                                    {% else %}
-                                      hx-get="{% url item.view_name %}"
-                                    {% endif %}
+                                  {% if item.htmx and item_url %}
+                                    hx-get="{{ item_url }}"
                                     hx-target="{{ item.htmx.target }}"
                                     hx-swap="{{ item.htmx.swap|default:'innerHTML' }} show:window:top"
                                     hx-push-url="true"
                                   {% endif %}
-                                  {% if item.view_arg %}
-                                    href="{% url item.view_name item.view_arg %}"
-                                  {% else %}
-                                    href="{% url item.view_name %}"
-                                  {% endif %}
+                                  href="{{ item_url|default:'' }}"
                                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                   >{{ item.text }}</a>
+                                {% endwith %}
                               {% endfor %}
                             </div>
                           </div>

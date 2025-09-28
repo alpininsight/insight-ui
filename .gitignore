@@ -158,6 +158,11 @@ dmypy.json
 .pytype/
 
 # Cython debug symbols
+
+# Local AI helper artifacts (never commit)
+AGENTS.md
+AGENT*.md
+ai-notes/
 cython_debug/
 
 # PyCharm

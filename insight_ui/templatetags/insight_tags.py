@@ -1,14 +1,69 @@
 """Template-Tags für Insight UI-Komponenten."""
 
+from copy import deepcopy
 from difflib import HtmlDiff, ndiff, unified_diff
 from typing import Any
 
 from django import template
 from django.core.paginator import Page
+from django.urls import NoReverseMatch, reverse
 
 from insight_ui.utils.diff import file_template, styles
 
 register = template.Library()
+
+JsonPrimitive = str | int | float | bool | None
+type JsonMapping = dict[str, "JsonValue"]
+type JsonSequence = list["JsonValue"]
+type JsonValue = JsonPrimitive | JsonMapping | JsonSequence
+
+
+def _resolve_view_urls(value: JsonValue) -> JsonValue:
+    """Resolve `view_name` entries within nested structures to concrete URLs."""
+    if isinstance(value, list):
+        return [_resolve_view_urls(item) for item in value]
+
+    if isinstance(value, dict):
+        return _resolve_mapping(value)
+
+    return value
+
+
+def _resolve_mapping(mapping: JsonMapping) -> JsonMapping:
+    """Return a copy of the given mapping with resolved view-based URLs."""
+    result: JsonMapping = deepcopy(mapping)
+    _ensure_resolved_url(result)
+
+    for key, nested_value in list(result.items()):
+        if isinstance(nested_value, list | dict):
+            result[key] = _resolve_view_urls(nested_value)
+
+    href_value = result.get("href") or result.get("url") or ""
+    result["href"] = href_value
+    return result
+
+
+def _ensure_resolved_url(mapping: JsonMapping) -> None:
+    """Populate the `url` field when a `view_name` (and optional args) are provided."""
+    view_name = mapping.get("view_name")
+    if not isinstance(view_name, str) or not view_name:
+        return
+
+    view_args = mapping.get("view_args")
+    view_arg = mapping.get("view_arg")
+    view_kwargs = mapping.get("view_kwargs")
+
+    try:
+        if isinstance(view_args, list | tuple):
+            mapping["url"] = reverse(view_name, args=list(view_args))
+        elif view_arg is not None:
+            mapping["url"] = reverse(view_name, args=[view_arg])
+        elif isinstance(view_kwargs, dict):
+            mapping["url"] = reverse(view_name, kwargs=view_kwargs)
+        else:
+            mapping["url"] = reverse(view_name)
+    except NoReverseMatch:
+        mapping["url"] = None
 
 
 @register.filter
@@ -109,9 +164,12 @@ def navbar(config: dict, **kwargs) -> dict[str, Any]:
         Dict mit Kontext-Variablen für das Template
 
     """
+    brand = _resolve_view_urls(config.get("brand")) if config.get("brand") else None
+    links = _resolve_view_urls(config.get("links", []))
+
     return {
-        "brand": config.get("brand"),
-        "links": config.get("links"),
+        "brand": brand,
+        "links": links,
         "searchbar_request_view": config.get("searchbar_request_view"),
         "show_usermenu": config.get("show_usermenu"),
         "show_language_selector": config.get("show_language_selector"),
@@ -452,6 +510,7 @@ def insight_websocket(
 def infinite_scroll(  # noqa: PLR0913 (Too many arguments)
     items: list[Any] = [],
     view_name: str = "",
+    request_view: str = "",
     page: int = 1,
     has_next: bool = True,
     auto_fetch: bool = True,
@@ -465,6 +524,7 @@ def infinite_scroll(  # noqa: PLR0913 (Too many arguments)
     ----
         items (list): Liste der aktuellen Elemente
         view_name (str): Name der View für das Laden weiterer Elemente
+        request_view (str): Veralteter Alias für `view_name` (wird weiterhin unterstützt)
         page (int): Die aktuelle "Seite" die geladen werden soll
         has_next (bool): Ob weitere Elemente verfügbar sind
         auto_fetch (bool): 'False' wenn der Nutzer aktiv weitere Elemente per Button anfordern soll.
@@ -476,9 +536,11 @@ def infinite_scroll(  # noqa: PLR0913 (Too many arguments)
         Dict mit Kontext-Variablen für das Template
 
     """
+    resolved_view = view_name or request_view
+
     return {
         "items": items,
-        "view_name": view_name,
+        "view_name": resolved_view,
         "page": page,
         "has_next": has_next,
         "auto_fetch": auto_fetch,
@@ -526,7 +588,9 @@ def sidebar(
         Dict mit Kontext-Variablen für das Template
 
     """
-    return {"sidebar_data": sidebar_data, "side": side, "static": static, "auto_close": auto_close}
+    resolved_sidebar = _resolve_view_urls(sidebar_data) if sidebar_data else {}
+
+    return {"sidebar_data": resolved_sidebar, "side": side, "static": static, "auto_close": auto_close}
 
 
 @register.inclusion_tag("insight_ui/components/breadcrumbs.html")
@@ -786,4 +850,4 @@ def footer(data: dict) -> dict[str, Any]:
         Dict mit Kontext-Variablen für das Template
 
     """
-    return {"data": data}
+    return {"data": _resolve_view_urls(data)}

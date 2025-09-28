@@ -32,6 +32,7 @@ class NavbarTemplateTagTest(TemplateTagsTestCase):
                 {
                     "text": "Startseite",
                     "view_name": "storybook_view",
+                    "view_kwargs": {"storybook_name": "components"},
                     "active": True,
                     "need_auth": False,
                     "staff_only": False,
@@ -141,11 +142,12 @@ class SidebarTemplateTagTest(TemplateTagsTestCase):
 
     def test_sidebar_basic(self) -> None:
         """Test für grundlegende sidebar Funktionalität."""
+        sidebar_data = {"title": "Navigation", "categories": []}
         template_string = """
         {% load insight_tags %}
-        {% sidebar title="Navigation" %}
+        {% sidebar sidebar_data=sidebar_data %}
         """
-        rendered = self.render_template(template_string)
+        rendered = self.render_template(template_string, context={"sidebar_data": sidebar_data})
         assert "Navigation" in rendered
 
 
@@ -229,7 +231,9 @@ class FooterTemplateTagTest(TemplateTagsTestCase):
         """Test für grundlegende footer Funktionalität."""
         footer_data = {
             "description": {"title": "Django Insight UI", "text": "-"},
-            "links": [{"text": "Startseite", "view_name": "storybook_view"}],
+            "links": [
+                {"text": "Startseite", "view_name": "storybook_view", "view_kwargs": {"storybook_name": "components"}}
+            ],
         }
 
         template_string = """

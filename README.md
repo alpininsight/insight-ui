@@ -1,99 +1,55 @@
 # Insight UI (Version 0.1.0)
 
-Ein modernes und erweiterbares UI-Framework für Django Projekte, das wiederverwendbare, WCAG 2.1 AA-konforme Komponenten und Entwicklungs-Best-Practices bietet.
+Insight UI is a modern, extensible UI framework for Django. It ships with reusable, WCAG 2.1 AA compliant components, live HTMX integrations, and a Tailwind-based design system so teams can bootstrap projects quickly.
 
-## Überblick
+## Highlights
+- **Accessible components**: ready-made navigation, forms, tables, alerts, carousels, and more.
+- **Internationalisation**: RTL layouts, language switchers, and localisation helpers.
+- **Performance minded**: HTMX-powered partial updates reduce full page reloads.
+- **Theming**: customisable Tailwind tokens and component layers for fast brand alignment.
 
-Das Insight UI Framework bietet eine Sammlung von UI-Komponenten und Hilfsmitteln, welche speziell für die Entwicklung von Django Webanwendungen konzipiert sind.
-
-Die Komponenten des Frameworks sind unter Beachtung der **Barrierefreiheit** implementiert und bieten im Bezug auf **Internationalisierung** eine Unterstützung für ein **RTL-Layout** für Sprachen, welche von rechts nach links gelesen werden.
-
-Für Performance unterstützen entsprechende Komponenten die Verwendung von **HTMX** Requests, um nur einzelne ausschnitte des _DOM_ zzu ändern, ohne einen kompletten Seiten-Reload.
-
-## Entwicklung
-
+## Installation
 ```bash
-uv sync --all-groups
-
-python manage.py migrate
-python manage.py runserver
-```
-
-### Websocket
-
-Um das Beispiel der Websocket Kommunikation zu verwenden muss ein weiterer Prozess gestartet werden. Dieser befindet sich in dem Verzeichnis _/utils_.
-
-```bash
-uv run ./utils/main.py
-```
-
-In dem Verzeichnis _/utils_ gibt es eine extra Readme mit weiteren Informationen.
-
-## Installation (in externes Projekt)
-
-```bash
-uv add "git+https://alpin-bot:a205f27ce1045d607e4cdaa7426f3b3fe5a3d5d8@git.alpininsight.com/AlpinInsight/insight-ui@fix"
-
-# or later with
-
 uv add insight-ui
+
+# or install from Git
+uv add "git+https://github.com/alpininsight/insight-ui@main"
 ```
 
-1. 'insight_ui' zu INSTALLED_APPS in settings.py hinzufügen:
-
+Add the app to your Django project:
 ```python
 INSTALLED_APPS = [
     # ...
-    'insight_ui',
+    "insight_ui",
     # ...
 ]
 ```
 
-2. Konfiguration in settings.py hinzufügen und anpassen (siehe Konfiguration)
+See the [Installation guide](docs/en/installation.md) for configuration details and Tailwind workflows.
 
-3. (A) Projekt starten ohne Änderungen am Frontend vornehmen zu wollen
-    - `python manage.py collectstatic` um das vorkompilierte insight-ui Stylesheet einzusammeln
-    - `python manage.py runserver` Startet den development Server
+## Local Development
+```bash
+uv sync --all-groups
+uv run python manage.py migrate
+uv run python manage.py runserver
+```
 
-3. (B) Projekt aufsetzen und starten, wenn das Frontend weiter entwickelt werden soll
-    - Django-Tailwind-CLI zu Projekt hinzufügen (`uv add django-tailwind-cli`)
-    - Zu `INSTALLED_APPS` hinzufügen, `STATICFILES_DIRS`, `TAILWIND_CLI_SRC_CSS` und `TAILWIND_CLI_DIST_CSS` definieren
-    ```py
-        INSTALLED_APPS = [
-            # ...
-            "django_tailwind_cli",
-            # ...
-        ]
+The WebSocket demo lives in `utils/main.py`:
+```bash
+uv run ./utils/main.py
+```
 
-        # Configure static files directory
-        STATICFILES_DIRS = [BASE_DIR / "assets"]
+## Documentation
+- English: `docs/en/` (served via MkDocs)
+- Deutsch: `docs/de/`
 
-		# Tailwind source file
-		TAILWIND_CLI_SRC_CSS = BASE_DIR / ".venv/Lib/site-packages/insight_ui/static/insight_ui/css/input.css"
+Run the site locally:
+```bash
+uv run mkdocs serve
+```
 
-        # Tailwind dist file
-        TAILWIND_CLI_DIST_CSS = "insight_ui/css/tailwind.css"
-    ```
-    - `python manage.py tailwind setup` Für initiales Setup von Tailwind ausführen (lädt u.a. das Tailwind-CLI runter ~120MB)
-    - `python manage.py tailwind runserver` Startet den development Server mit hot reload
+## Contributing
+We welcome improvements! Please read the [Contributor Guide](docs/en/contributing.md) alongside the [naming conventions](docs/en/guides/naming_conventions.md) before opening a pull request. Remember to mirror changes in both language trees.
 
-## Komponenten
-
-Eine Liste aller Komponenten befindet sich in der Documentation [docs/components](docs/components).
-
-### Geplant Verbesserungen und neue Komponenten
-
-- Mehr Varianten für Karten/Kacheln
-- Layout: Text + Tags
-- Sortierung
-    - Einfach (nur eine Parameter)
-    - Komplex (nach mehreren Parametern)
-- Tabellenspaltengröße vom Nutzer anpassbar
-
-## Dokumentation
-
-Ausführliche Dokumentation befindet sich unter [docs/](docs/).
-
-## Lizenz
-
-Dieses Projekt steht unter der MIT-Lizenz.
+## License
+Insight UI is released under the MIT License.
