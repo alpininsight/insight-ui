@@ -1,0 +1,26 @@
+{% load i18n insight_tags %}
+
+<h1>Insight UI Search Bar</h1>
+
+<!-- Component Demo -->
+<section>
+    <p class="text-secondary leading-loose">
+        {% trans 'Todo' %}
+    </p>
+
+    <div class="example-container space-y-8">
+        {% search_bar request_view="index_view" %}
+        {% search_bar request_view="index_view" simple="True" %}
+        {% search_bar request_view="index_view" simple="True" search_query="Test 123" %}
+    </div>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h2>{% trans "Verwendung" %}</h2>
+    <div id="Search_Bar_Usage" data-insight-code-block="Django">
+        &lcub;% search_bar request_view="index_view" simple=True search_query="Test 123" %&rcub;
+    </div>
+</section>

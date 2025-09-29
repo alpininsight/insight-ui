@@ -1,32 +1,28 @@
 {% load i18n %}
 
-<div 
-  class="insight-live-content insight-live-content--{{ theme }}"
+<div
+  class="insight-live-content"
   {% if options.id %}id="{{ options.id }}"{% endif %}
   {% if options.htmx %}
     hx-get="{{ options.htmx.url }}"
-    {% if options.htmx.trigger %}hx-trigger="{{ options.htmx.trigger }}"{% else %}hx-trigger="load"{% endif %}
+    {% if options.htmx.trigger %}hx-trigger="{{ options.htmx.trigger }}"{% else %}hx-trigger="load, every 20s"{% endif %}
     {% if options.htmx.swap %}hx-swap="{{ options.htmx.swap }}"{% else %}hx-swap="innerHTML"{% endif %}
-    {% if options.htmx.interval %}
-      hx-live-update
-      data-interval="{{ options.htmx.interval }}"
-    {% endif %}
-    hx-ext="live-updates,progressive-enhancement"
+    hx-ext="progressive-enhancement"
     data-loading-class="insight-live-content--loading"
   {% endif %}
-  
+>
   <!-- Loading Spinner -->
-  <div class="htmx-spinner insight-live-content__spinner" style="display: none;">
+  <div class="htmx-spinner" style="display: none;">
     <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-insight-primary"></div>
-    <span class="ml-2 text-sm text-gray-600">{% trans 'Wird geladen...' %}</span>
+    <span class="ml-2 text-sm text-secondary">{% trans 'Loading...' %}</span>
   </div>
-  
-  <!-- Content wird hier geladen -->
+
+  <!-- Content is loaded here -->
   {% if initial_content %}
     {{ initial_content|safe }}
   {% else %}
-    <div class="insight-live-content__placeholder">
-      <p class="text-gray-500">{% trans 'Inhalte werden geladen...' %}</p>
+    <div>
+      <p class="text-secondary">{% trans 'Content is loading...' %}</p>
     </div>
   {% endif %}
 </div>

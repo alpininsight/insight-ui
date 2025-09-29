@@ -1,0 +1,59 @@
+{% load i18n insight_tags %}
+
+<h1>Insight UI Modal</h1>
+
+<!-- Component Demo -->
+<section>
+    <p class="text-secondary leading-loose">
+        {% trans "Mit der Modal Komponente lassen sich anpassbare Dialoge einbauen. Diese können verwendet werden um dem Nutzer zusätzliche Informationen anzuzeigen oder als Bestätigungsdialoge für diverse Aktionen verwendet werden." %}
+    </p>
+
+    <div class="example-container">
+        <div class="flex flex-col md:flex-row gap-4">
+            <!-- Standard -->
+            <button class="btn btn-primary w-72" data-insight-toggle="modal" data-insight-target="demo-modal">
+                {% trans "Standard Modal" %}
+            </button>
+            {% modal html_tag_id="demo-modal" title=_("Demo Modal") description=_("This is an example of a standard modal.") %}
+
+            <!-- Action-Buttons -->
+            <button class="btn btn-danger w-72" data-insight-toggle="modal" data-insight-target="delete-modal">
+                {% trans "Modal with Action-Buttons" %}
+            </button>
+            {% modal html_tag_id="delete-modal" title=_("Delete?") description="Please conform deletion!" actions=confirm_modal_actions %}
+        </div>
+    </div>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h2>{% trans "Verwendung" %}</h2>
+    <div id="Modal_Usage" data-insight-code-block="Django">
+        &lcub;% load insight_tags %&rcub;
+
+        &lt;button class="btn btn-primary" data-insight-toggle="modal" data-insight-target="demo-modal"&gt;
+            &lcub;% trans "Open Modal" %&rcub;
+        &lt;/button&gt;
+        &lcub;% modal html_tag_id="demo-modal" title=_("Demo Modal") description=_("Dies ist ein Beispiel-Modal mit Standard-Styling!") %&rcub;
+    </div>
+</section>
+
+<section>
+    <h3>{% trans "Parameter" %}</h3>
+    <ol class="list-disc text-secondary space-y-1 ms-8">
+        <li><span class="inline-tag">html_tag_id</span> <span class="italic">(str)</span>: {% trans "Eine eindeutige ID für das Modal-Element." %}</li>
+        <li><span class="inline-tag">title</span> <span class="italic">(str)</span>: {% trans "Ein aussagekräftiger Titel für das Dialogfenster." %}</li>
+        <li><span class="inline-tag">description</span> <span class="italic">(str)</span>: {% trans "Der hauptinhalt des Dialogs." %}</li>
+    </ol>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<section>
+    <h2>{% trans "Related topics" %}</h2>
+    <ol class="list-disc ms-8">
+        <li><a href="#" class="text-link">{% trans "Popover" %}</a></li>
+    </ol>
+</section>

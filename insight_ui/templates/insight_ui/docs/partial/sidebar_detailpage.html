@@ -1,0 +1,26 @@
+{% load i18n insight_tags %}
+
+<h1>Insight UI Sidebar</h1>
+
+<!-- Component Demo -->
+<section>
+    <p class="text-secondary leading-loose">
+        {% trans 'Todo' %}
+    </p>
+
+    <div class="example-container">
+        {% include "insight_ui/components/sidebar.html" with sidebar_data=right_sidebar side="right" auto_close=False %}
+    </div>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h2>{% trans "Verwendung" %}</h2>
+    <div id="Sidebar_Usage" data-insight-code-block="Django">
+        &lcub;% block drawers %&rcub;
+            &lcub;% include "insight_ui/components/sidebar.html" with sidebar_data=right_sidebar side="right" auto_close=False %&rcub;
+        &lcub;% endblock drawers %&rcub;
+    </div>
+</section>

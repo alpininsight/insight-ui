@@ -1,0 +1,24 @@
+{% load i18n insight_tags %}
+
+<h1>Insight UI Toggle Button</h1>
+
+<!-- Component Demo -->
+<section>
+    <p class="text-secondary leading-loose">
+        {% trans 'Todo' %}
+    </p>
+
+    <div class="example-container">
+        {% toggle toggle=example_toggle %}
+    </div>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h2>{% trans "Verwendung" %}</h2>
+    <div id="Toggle_Button_Usage" data-insight-code-block="Django">
+        &lcub;% toggle toggle=example_toggle %&rcub;
+    </div>
+</section>

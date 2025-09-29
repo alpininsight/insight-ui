@@ -1,0 +1,24 @@
+{% load i18n insight_tags %}
+
+<h1>Insight UI SQL-Like Filter</h1>
+
+<!-- Component Demo -->
+<section>
+    <p class="text-secondary leading-loose">
+        {% trans 'Todo' %}
+    </p>
+
+    <div class="example-container">
+        {% sq_builder model_fields=model_fields %}
+    </div>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h2>{% trans "Verwendung" %}</h2>
+    <div id="SQL_Like_Filter_Usage" data-insight-code-block="Django">
+        &lcub;% sq_builder model_fields=model_fields %&rcub;
+    </div>
+</section>

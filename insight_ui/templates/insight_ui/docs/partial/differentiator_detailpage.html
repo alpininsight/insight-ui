@@ -1,0 +1,36 @@
+{% load i18n insight_tags %}
+
+<h1>Insight UI Differentiator</h1>
+
+<!-- Component Demo -->
+<section>
+    <p class="text-secondary leading-loose">
+        Todo
+    </p>
+
+    <div class="example-container">
+        {{ textA|diff:textB|safe }}
+    </div>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h2>{% trans "Verwendung" %}</h2>
+    <div id="Differentiator_Usage" data-insight-code-block="Django">
+        &lcub;&lcub; textA|diff:textB|safe &rcub;&rcub;
+    </div>
+</section>
+
+<section>
+    <h3>{% trans "Parameter" %}</h3>
+    <p class="text-secondary italic">Todo</p>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<section>
+    <h2>{% trans "Related topics" %}</h2>
+    <p class="text-secondary italic">Todo</p>
+</section>

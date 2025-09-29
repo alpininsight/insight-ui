@@ -1,0 +1,36 @@
+{% load static insight_tags i18n %}
+
+<h1>Insight UI Chat</h1>
+
+<!-- Component Demo -->
+<section>
+    <p class="text-secondary leading-loose">
+        {% trans 'Die Chat Komponente bietet ein einfaches Frontend für eine Chat-Anwendung. Die Komponente besteht aus einem Text-Input und einem Bereich für die Nachrichten. Der Inhalt des Nachrichtenbereichs wird mittels HTMX bei jedem Response erweitert, ohne dass die Seite neu geladen wird.' %}
+    </p>
+
+    <div class="example-container">
+        {% chat view_name="chat_response" %}
+    </div>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h2>{% trans "Verwendung" %}</h2>
+    <div id="Chat_Usage" data-insight-code-block="Django">
+        &lcub;% chat view_name=view_name %&rcub;
+    </div>
+</section>
+
+<section>
+    <h3>{% trans "Parameter" %}</h3>
+    <p class="text-secondary italic">Todo</p>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<section>
+    <h2>{% trans "Related topics" %}</h2>
+    <p class="text-secondary italic">Todo</p>
+</section>

@@ -1,0 +1,973 @@
+from django.templatetags.static import static
+from django.urls import reverse
+from django.utils.html import format_html
+from django.utils.lorem_ipsum import paragraphs
+from django.utils.translation import gettext as _
+
+from insight_ui import config
+from insight_ui.demo_utils import generate_payload, map_payload_to_cards, map_payload_to_table
+from insight_ui.utils.pagination import get_page
+
+# Some example filters for the filter example
+issuedate_filters = {
+    _("All"): "all",
+    _("Today & Yesterday"): "newest",
+    _("Last 7 days"): "7days",
+    _("Last 14 days"): "14days",
+    _("Last 30 days"): "30days",
+    _("Last 60 days"): "60days",
+    _("Without release date"): "missing",
+    "-----": "-",  # no actual value, used as a divider
+    "2020": "2020",
+    "2021": "2021",
+    "2022": "2022",
+    "2023": "2023",
+    "2024": "2024",
+    "2025": "2025",
+}
+expiration_filters = {
+    _("All"): "all",
+    _("Expires today"): "today",
+    _("Expires in 7 days at the earliest"): "7days",
+    _("Expires in 14 days at the earliest"): "14days",
+    _("Expires in 30 days at the earliest"): "30days",
+    _("Expires in 60 days at the earliest"): "60days",
+    _("Expires in 120 days at the earliest"): "120days",
+    _("Without deadline"): "missing",
+    "-----": "-",  # no actual value, used as a divider
+    "2020": "2020",
+    "2021": "2021",
+    "2022": "2022",
+    "2023": "2023",
+    "2024": "2024",
+    "2025": "2025",
+}
+reward_filters = {
+    _("All"): "all",
+    "> 200.000€": "gt_200",
+    "> 100.000€": "gt_100",
+    "> 50.000€": "gt_50",
+    "<= 1,0€": "lt_one",
+}
+
+# Some example data for the query builder filter
+DEMO_FIELDS = [
+    {
+        "field": "title",
+        "name": _("Title"),
+        "type": "text",
+        "operations": {
+            "iexact": _("is exact"),
+            "icontains": _("contains"),
+            "contains": _("contains (case sensitive)"),
+            "istartswith": _("starts with"),
+            "iendswith": _("ends with"),
+        },
+        "values": {},
+    },
+    {
+        "field": "description",
+        "name": _("Description"),
+        "type": "text",
+        "operations": {"icontains": _("contains"), "contains": _("contains (case sensitive)")},
+        "values": {},
+    },
+    {
+        "field": "short_description",
+        "name": _("Short Description"),
+        "type": "text",
+        "operations": {"icontains": _("contains"), "contains": _("contains (case sensitive)")},
+        "values": {},
+    },
+    {
+        "field": "release_date",
+        "name": _("Release Date"),
+        "type": "date",
+        "operations": {"date": _("is exact"), "date__gte": _("is not before"), "date__lte": _("is not after")},
+        "values": {},
+    },
+    {
+        "field": "deadline",
+        "name": _("Deadline"),
+        "type": "date",
+        "operations": {"date": _("is exact"), "date__gte": _("is not before"), "date__lte": _("is not after")},
+        "values": {},
+    },
+    {
+        "field": "client__name",
+        "name": _("Client"),
+        "type": "text",
+        "operations": {
+            "iexact": _("is exact"),
+            "icontains": _("contains"),
+            "istartswith": _("starts with"),
+            "iendswith": _("ends with"),
+        },
+        "values": {},
+    },
+]
+
+
+def get_base_context() -> dict:
+    """Serve basic context data, like navbar, footer and settings."""
+    return config.get_config() | get_navbar_context() | get_footer_context()
+
+
+def get_navbar_context() -> dict:
+    """Serve data for navbar detailpage."""
+    return {
+        "nav_config": {
+            "brand": {
+                "title": "Insight UI",
+                "view_name": "index_view",
+                "logo_url": "insight_ui/svg/logo.svg",
+                "logo_alt": "Insight UI Logo",
+            },
+            "links": [
+                {
+                    "text": _("Startpage"),
+                    "icon": {"name": "home", "size": "small"},
+                    "view_name": "index_view",
+                    "active": True,
+                    "need_auth": False,
+                    "staff_only": False,
+                },
+                {
+                    "text": _("Components"),
+                    "open_dropdown": "components-menu",
+                    "items": [
+                        {
+                            "text": "Main / Navigation",
+                            "view_name": "storybook_view",
+                            "view_arg": "main",
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": "Input Elements",
+                            "view_name": "storybook_view",
+                            "view_arg": "input",
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": "Popups",
+                            "view_name": "storybook_view",
+                            "view_arg": "popup",
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": "Utils",
+                            "view_name": "storybook_view",
+                            "view_arg": "util",
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": "List & Tables",
+                            "view_name": "storybook_view",
+                            "view_arg": "table",
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": "Cards",
+                            "view_name": "storybook_view",
+                            "view_arg": "card",
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": "Forms",
+                            "view_name": "storybook_view",
+                            "view_arg": "form",
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": "Search & Filters",
+                            "view_name": "storybook_view",
+                            "view_arg": "filter",
+                            "htmx": {"target": "#content"},
+                        },
+                    ],
+                    "chevron": {"name": "chevron_down", "size": "small"},
+                    "active": False,
+                    "need_auth": False,
+                    "staff_only": False,
+                },
+                {
+                    "text": _("About"),
+                    "open_modal": "about-modal",
+                    "active": False,
+                    "need_auth": False,
+                    "staff_only": False,
+                },
+                {"text": _("Test"), "view_name": "index_view", "active": False, "need_auth": True, "staff_only": False},
+                {"text": _("Test2"), "view_name": "index_view", "active": False, "need_auth": True, "staff_only": True},
+            ],
+            "searchbar_request_view": "index_view",
+            "show_usermenu": True,
+            "show_language_selector": True,
+            "show_theme_toggle": True,
+        },
+        "user_dropdown_links": [
+            {
+                "text": _("Settings"),
+                "view_name": "index_view",
+                "staff_only": False,
+                "icon": {"name": "cog", "size": "small"},
+            },
+            {
+                "text": _("Administration"),
+                "view_name": "admin:index",
+                "staff_only": True,
+                "icon": {"name": "home", "size": "small"},
+            },
+            {
+                "text": _("Translation"),
+                "view_name": "index_view",
+                "staff_only": True,
+                "icon": {"name": "globe", "size": "small"},
+            },
+        ],
+    }
+
+
+def get_drawer_context() -> dict:
+    """Serve data for sidebar detailpage."""
+    return {
+        "right_sidebar": {
+            "title": _("Secondary Sidebar"),
+            "icon": {"name": "home", "size": "small"},
+            "categories": [
+                {
+                    "caption": "Main",
+                    "icon": {"name": "home", "size": "small"},
+                    "items": [
+                        {
+                            "text": _("Notifications"),
+                            "icon": {"name": "home", "size": "small"},
+                            "url": reverse("index_view"),
+                        },
+                        {
+                            "text": _("Messages"),
+                            "icon": {"name": "home", "size": "small"},
+                            "url": reverse("index_view"),
+                        },
+                        {"text": _("Tasks"), "icon": {"name": "home", "size": "small"}, "url": reverse("index_view")},
+                        {
+                            "text": _("Calender"),
+                            "icon": {"name": "home", "size": "small"},
+                            "url": reverse("index_view"),
+                        },
+                        {"text": _("Profile"), "icon": {"name": "home", "size": "small"}, "url": reverse("index_view")},
+                    ],
+                }
+            ],
+        }
+    }
+
+
+def get_footer_context() -> dict:
+    """Server data for footer detailpage."""
+    return {
+        "footer_data": {
+            "description": {
+                "title": "Insight UI",
+                "text": "A modern, accessible, and responsive UI library for Django projects.",
+            },
+            "links": [
+                {"text": _("Startpage"), "icon": {"name": "home", "size": "xs"}, "view_name": "index_view"},
+                {"text": _("Storybook"), "view_name": "index_view"},
+                {"text": _("Documentation"), "view_name": "index_view"},
+            ],
+        }
+    }
+
+
+def get_sidebar_context() -> dict:
+    """Serve data for the main sidebar."""
+    return {
+        "left_sidebar": {
+            "title": _("Insight UI Components"),
+            "icon": {"name": "cards", "size": "small"},
+            "categories": [
+                {
+                    "caption": _("Navigation / Main"),
+                    "icon": {"name": "app", "size": "small"},
+                    "items": [
+                        {
+                            "text": _("Navbar"),
+                            "icon": {"name": "tools", "size": "xs"},
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "navbar"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Sidebar"),
+                            "icon": {"name": "tools", "size": "xs"},
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "sidebar"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Footer"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "footer"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Breadcrumb Navigation"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "breadcrumb"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Step Bars"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "step_bar"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Bullet Point List"),
+                            "url": reverse(
+                                "component_detail_page_view", kwargs={"component_name": "bullet_point_list"}
+                            ),
+                            "htmx": {"target": "#content"},
+                        },
+                    ],
+                },
+                {
+                    "caption": _("Input Elements"),
+                    "icon": {"name": "cursor-click", "size": "small"},
+                    "items": [
+                        {
+                            "text": _("Buttons"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "button"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Checkboxes"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "checkbox"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Dropdown"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "dropdown"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Radio-Buttons"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "radio_button"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Range Slider"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "range_slider"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Toggle-Buttons"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "toggle_button"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Chat"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "chat"}),
+                            "htmx": {"target": "#content"},
+                        },
+                    ],
+                },
+                {
+                    "caption": _("Popups"),
+                    "icon": {"name": "rectangles", "size": "small"},
+                    "items": [
+                        {
+                            "text": _("Alerts"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "alert"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Modals"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "modal"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Popovers"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "popover"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Tooltips"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "tooltip"}),
+                            "htmx": {"target": "#content"},
+                        },
+                    ],
+                },
+                {
+                    "caption": _("Utils"),
+                    "icon": {"name": "tools", "size": "small"},
+                    "items": [
+                        {
+                            "text": _("Code Blocks"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "code_block"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Differentiator"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "differentiator"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Geo-Maps"),
+                            "icon": {"name": "tools", "size": "xs"},
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "geo_map"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Live-Content (Pull)"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "live_content"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Web-Sockets (Push)"),
+                            "icon": {"name": "tools", "size": "xs"},
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "web_socket"}),
+                            "htmx": {"target": "#content"},
+                        },
+                    ],
+                },
+                {
+                    "caption": _("Lists & Tables"),
+                    "icon": {"name": "list", "size": "small"},
+                    "items": [
+                        {
+                            "text": _("Infinite Scroll"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "infinite_scroll"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Pagination"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "pagination"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Tables"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "table"}),
+                            "htmx": {"target": "#content"},
+                        },
+                    ],
+                },
+                {
+                    "caption": _("Search & Filters"),
+                    "icon": {"name": "search", "size": "small"},
+                    "items": [
+                        {
+                            "text": _("Generic Filter"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "generic_filter"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Search Bar"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "search_bar"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("SQL-Like Filter"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "sql_like_filter"}),
+                            "htmx": {"target": "#content"},
+                        },
+                    ],
+                },
+                {
+                    "caption": _("Cards"),
+                    "icon": {"name": "cards", "size": "small"},
+                    "items": [
+                        {
+                            "text": _("Cards"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "card"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Card Carousel"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "card_carousel"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Image Carousel"),
+                            "icon": {"name": "tools", "size": "xs"},
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "image_carousel"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Toggle-View"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "toggle_view"}),
+                            "htmx": {"target": "#content"},
+                        },
+                    ],
+                },
+                {
+                    "caption": _("Forms"),
+                    "icon": {"name": "doc", "size": "small"},
+                    "items": [
+                        {
+                            "text": _("Forms"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "form"}),
+                            "htmx": {"target": "#content"},
+                        }
+                    ],
+                },
+            ],
+        }
+    }
+
+
+def get_main_storybook_context() -> dict:
+    """Serve data for main storybook."""
+    return (
+        get_base_context()
+        | get_sidebar_context()
+        | get_breadcrumb_context()
+        | get_step_bar_context()
+        | get_bullet_point_list_context()
+        | {"htmx_config": {"url": "/api/form-submit/", "method": "post", "target": "#htmx-form", "swap": "innerHTML"}}
+    )
+
+
+def get_inputs_storybook_context() -> dict:
+    """Serve data for input elements storybook."""
+    return (
+        get_base_context()
+        | get_sidebar_context()
+        | get_checkbox_context()
+        | get_radio_button_context()
+        | get_toggle_button_context()
+        | get_range_slider_context()
+        | get_dropdown_context()
+    )
+
+
+def get_popup_storybook_context() -> dict:
+    """Serve data for popup storybook."""
+    return get_base_context() | get_sidebar_context() | get_alert_context() | get_modal_context()
+
+
+def get_utils_storybook_context() -> dict:
+    """Serve data for utils storybook."""
+    return get_base_context() | get_sidebar_context() | get_differentiator_context()
+
+
+def get_table_storybook_context() -> dict:
+    """Serve data for table examples."""
+    # Generate data for pagination example
+    return (
+        get_base_context()
+        | get_sidebar_context()
+        | get_table_context()
+        | get_pagination_context()
+        | get_infinite_scroll_context()
+    )
+
+
+def get_card_storybook_context() -> dict:
+    """Serve data for card examples."""
+    # Generate data for examples
+    return (
+        get_base_context()
+        | get_sidebar_context()
+        | get_cards_context()
+        | get_image_carousel_context()
+        | get_toggle_view_context()
+        | {"carousel_items": map_payload_to_cards(generate_payload())}
+    )
+
+
+def get_form_storybook_context() -> dict:
+    """Serve data for form examples."""
+    return get_base_context() | get_sidebar_context() | get_form_context()
+
+
+def get_filter_storybook_context() -> dict:
+    """Serve data for filter example."""
+    return get_base_context() | get_sidebar_context() | get_generic_filter_context() | get_sql_like_filter_context()
+
+
+def get_alert_context() -> dict:
+    """Serve data for alert detailpage."""
+    return {
+        "params": {
+            "caption": _("Parameter of the alert component."),
+            "empty_msg": _("No data available!"),
+            "headers": [_("Parameter"), _("Type"), _("Default"), _("Description")],
+            "rows": [
+                ["message", "str", "''", _("Die Hauptnachricht der Benachrichtigung.")],
+                ["type", "str", "info", _("Der Typ der Benachrichtigung ('info', 'success', 'warning', 'error')")],
+                ["dismissible", "bool", "True", _("Ob die Benachrichtigung schließbar sein soll.")],
+            ],
+        }
+    }
+
+
+def get_breadcrumb_context() -> dict:
+    """Serve data for breadcrumb detailpage."""
+    return {
+        "breadcrumb_items": [
+            {"text": _("Startpage"), "view_name": "index_view", "icon": {"name": "home", "size": "small"}},
+            {"text": _("Demo"), "view_name": "index_view", "query_params": "?test=123"},
+            {"text": _("Components")},
+        ],
+        "single_breadcrumb_item": [{"text": _("Startpage"), "icon": {"name": "home", "size": "small"}}],
+    }
+
+
+def get_differentiator_context() -> dict:
+    """Serve data for differentiator detailpage."""
+    return {"textA": "The cat is sleeping on the red sofa.", "textB": "This is a completely different sentence!"}
+
+
+def get_dropdown_context() -> dict:
+    """Serve data for dropdown detailpage."""
+    return {
+        "user_dropdown": {
+            "tag_id": "DD_user",
+            "title": _("User"),
+            "show_arrow": True,
+            "items": [
+                {"text": _("Profile"), "view_name": "index_view", "icon": {"name": "user", "size": "small"}},
+                {"text": _("Settings"), "view_name": "index_view", "icon": {"name": "cog", "size": "small"}},
+                {"text": _("Logout"), "view_name": "index_view", "icon": {"name": "got-out", "size": "small"}},
+            ],
+        },
+        "settings_dropdown": {
+            "tag_id": "DD_settings",
+            "title": _("Settings"),
+            "show_arrow": False,
+            "items": [
+                {
+                    "text": _("Personal Information"),
+                    "view_name": "index_view",
+                    "icon": {"name": "user", "size": "small"},
+                },
+                {"text": _("Appearance"), "view_name": "index_view", "icon": {"name": "cog", "size": "small"}},
+            ],
+        },
+    }
+
+
+def get_modal_context() -> dict:
+    """Serve data for the modal detailpage."""
+    return {
+        "confirm_modal_actions": [
+            {"text": _("Yes, confirm"), "type": "primary", "onclick": 'alert("Confirmed!")'},
+            {"text": _("Abort"), "type": "cancel", "dismiss": True},
+        ]
+    }
+
+
+def get_step_bar_context() -> dict:
+    """Serve data for step bar detailpage."""
+    return {
+        "steps_bar_items": [
+            {
+                "title": _("Kontaktdaten"),
+                "description": _("Informationen zur Person und Anschrift."),
+                "completed": True,
+            },
+            {
+                "title": _("Zahlungsmethode"),
+                "description": _("Art der Bezahlung auswählen."),
+                "completed": False,
+                "current": True,
+            },
+            {"title": _("Überprüfen"), "description": _("Prüfen der Angaben und Bezahlen."), "completed": False},
+        ]
+    }
+
+
+def get_checkbox_context() -> dict:
+    """Serve data for checkbox detailpage."""
+    return {
+        "example_checkbox": {
+            "name": "checkbox-example1",
+            "items": [
+                {"id": "english", "value": "english", "text": _("English"), "disabled": False},
+                {"id": "german", "value": "german", "text": _("German"), "disabled": False},
+                {"id": "italian", "value": "italian", "text": _("Italian (currently not available)"), "disabled": True},
+            ],
+        }
+    }
+
+
+def get_radio_button_context() -> dict:
+    """Serve data for radio button detailpage."""
+    return get_radio_group_context() | {
+        "example_radio": {
+            "name": "radio-example1",
+            "items": [
+                {"id": "model1", "value": "BERT", "text": _("BERT"), "disabled": False},
+                {"id": "model2", "value": "PaLM 2", "text": _("PaLM 2"), "disabled": False},
+                {"id": "model3", "value": "LLaMA 2", "text": _("LLaMA 2 (currently not available)"), "disabled": True},
+            ],
+        }
+    }
+
+
+def get_toggle_button_context() -> dict:
+    """Serve data for toggle-button detailpage."""
+    return {"example_toggle": {"id": "toggle_button_example1", "text": _("Click me!")}}
+
+
+def get_range_slider_context() -> dict:
+    """Serve data for range-slider detailpage."""
+    return {
+        "example_slider": {
+            "id": "range_slider_example1",
+            "title": "Range Slider Title",
+            "value": 1000,
+            "min": 100,
+            "max": 1500,
+            "items": [_("100€ (minimum)"), "500€", "750€", "1000€", _("1500€ (maximum)")],
+        }
+    }
+
+
+def get_radio_group_context() -> dict:
+    """Serve data for radio group detailpage."""
+    return {
+        "view_options": {
+            "name": "view-options",
+            "param_name": "view",
+            "options": [
+                {"id": "card-view", "value": "card", "icon": {"name": "cards"}},
+                {"id": "table-view", "value": "table", "icon": {"name": "list"}},
+                {"id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},
+            ],
+        },
+        "size_options": {
+            "name": "size-options",
+            "param_name": "size",
+            "options": [
+                {"id": "small-size", "value": "small", "text": "sm"},
+                {"id": "medium-size", "value": "medium", "text": "md"},
+                {"id": "large-size", "value": "large", "text": "lg"},
+            ],
+        },
+    }
+
+
+def get_infinite_scroll_context() -> dict:
+    """Serve data for infinite scroll detailpage."""
+    return {"scroll_items": [{"title": f"Element {i}", "content": f"Inhalt für Element {i}"} for i in range(1, 11)]}
+
+
+def get_pagination_context() -> dict:
+    """Serve data for pagination detailpage."""
+    page_obj, surrounding_pages = get_page(generate_payload(100))
+
+    return {"start_page": page_obj, "surrounding_pages": surrounding_pages}
+
+
+def get_table_context() -> dict:
+    """Serve data for table detailpage."""
+    return {
+        "table": {
+            "caption": _("Example of a table component."),
+            "empty_msg": _("No data available!"),
+            "headers": [_("Name"), _("E-Mail"), _("Status"), _("Actions")],
+            "rows": [
+                [
+                    "Max Mustermann",
+                    "max@example.com",
+                    _("Active"),
+                    format_html(
+                        '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
+                    ),
+                ],
+                [
+                    "Anna Schmidt",
+                    "anna@example.com",
+                    _("Inactive"),
+                    format_html(
+                        '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
+                    ),
+                ],
+                [
+                    "Tom Weber",
+                    "tom@example.com",
+                    _("Active"),
+                    format_html(
+                        '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
+                    ),
+                ],
+            ],
+        }
+    }
+
+
+def get_generic_filter_context() -> dict:
+    """Serve data for generic filter detailpage."""
+    return {
+        "filters": [
+            {
+                "text": _("Issue Date"),
+                "icon": {"name": "home", "size": "small"},
+                "name": "issuedate_filter",
+                "values": issuedate_filters,
+                "explanation": _("To filter by the issue date."),
+            },
+            {
+                "text": _("Deadline"),
+                "icon": {"name": "home", "size": "small"},
+                "name": "expiration_filter",
+                "values": expiration_filters,
+                "explanation": _("To filter by the deadline."),
+            },
+            {
+                "text": _("Reward in €"),
+                "icon": {"name": "home", "size": "small"},
+                "name": "reward_filter",
+                "values": reward_filters,
+                "explanation": _("To filter by the reward."),
+            },
+        ],
+        "filter_view_name": "index_view",
+    }
+
+
+def get_sql_like_filter_context() -> dict:
+    """Serve data for the SQL-Like filter detailpage."""
+    return {"model_fields": DEMO_FIELDS}
+
+
+def get_cards_context() -> dict:
+    """Serve data for cards detailpage."""
+    return {
+        "cards": [
+            {
+                "title": _("Example Card"),
+                "subtitle": _("Subtitle"),
+                "content": _("This is the card content."),
+                "actions": [
+                    {"text": _("Learn more"), "url": "#", "type": "secondary"},
+                    {"text": _("Share"), "url": "#", "type": "primary"},
+                ],
+            },
+            {
+                "title": "Card with actions",
+                "content": "This card has some action buttons.",
+                "actions": [
+                    {"text": _("Learn more"), "url": "#", "type": "secondary"},
+                    {"text": _("Share"), "url": "#", "type": "primary"},
+                ],
+            },
+        ],
+        "horizontale_cards": [
+            {
+                "title": "Horizontale Cards",
+                "content": "A card with its content arranged horizontally.",
+                "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": "Card-Image"},
+                "tags": ["Test", "Test2", "Test3"],
+                "actions": [
+                    {"text": _("Learn more"), "url": "#", "type": "secondary"},
+                    {"text": _("Share"), "url": "#", "type": "primary"},
+                ],
+            }
+        ],
+        "flip_cards": [
+            {
+                "title": "Flip Card",
+                "content": "A card that rotates 180° and has additional content on the back.",
+                "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": "Card-Image"},
+                "tags": ["Test", "Test2", "Test3"],
+                "actions": [
+                    {"text": _("Learn more"), "url": "#", "type": "secondary"},
+                    {"text": _("Share"), "url": "#", "type": "primary"},
+                ],
+            }
+        ],
+    }
+
+
+def get_card_carousel_context() -> dict:
+    """Serve data for card carousel detailpage."""
+    return {"carousel_items": map_payload_to_cards(generate_payload()), "range_total_slides": range(3)}
+
+
+def get_image_carousel_context() -> dict:
+    """Serve data for image carousel detailpage."""
+    seeds = ["neuschwanstein", "berlin-night", "hamburg-harbour"]
+    lorem_blocks = paragraphs(len(seeds), common=False)
+
+    image_carousel_items = [
+        {
+            "description": lorem_blocks[index],
+            "url": f"https://picsum.photos/seed/{seed}/1200/675",
+            "alt": _("Placeholder image %(index)s") % {"index": index + 1},
+        }
+        for index, seed in enumerate(seeds)
+    ]
+
+    return {"image_carousel_items": image_carousel_items, "range_total_slides": range(len(image_carousel_items))}
+
+
+def get_toggle_view_context() -> dict:
+    """Serve data for toggle-view detailpage."""
+    payload = generate_payload()
+    headers, rows = map_payload_to_table(payload)
+
+    return {
+        "toggle_table": {"empty_msg": "No data available!", "headers": headers, "rows": rows},
+        "toggle_start_view": "table",
+        "view_options": {
+            "name": "view-options",
+            "param_name": "view",
+            "options": [
+                {"id": "card-view", "value": "card", "icon": {"name": "cards"}},
+                {"id": "table-view", "value": "table", "icon": {"name": "list"}},
+                {"id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},
+            ],
+        },
+    }
+
+
+def get_form_context() -> dict:
+    """Serve data for form detailpage."""
+    return {
+        "form_fields": [
+            {
+                "type": "text",
+                "name": "name",
+                "label": _("Name"),
+                "placeholder": _("Ihr vollständiger Name"),
+                "required": True,
+            },
+            {
+                "type": "email",
+                "name": "email",
+                "label": _("E-Mail"),
+                "placeholder": _("ihre.email@example.com"),
+                "required": True,
+            },
+            {
+                "type": "textarea",
+                "name": "message",
+                "label": _("Nachricht"),
+                "placeholder": _("Ihre Nachricht..."),
+                "rows": 4,
+            },
+        ],
+        "form_actions": [
+            {"text": _("Absenden"), "type": "submit", "style": "primary"},
+            {"text": _("Zurücksetzen"), "type": "reset", "style": "secondary"},
+        ],
+    }
+
+
+def get_bullet_point_list_context() -> dict:
+    """Server data for bullet point list detailpage."""
+    return {
+        "bulletpoints": [
+            {
+                "title": _("Kontaktdaten"),
+                "description": _("Informationen zur Person und Anschrift."),
+                "completed": True,
+            },
+            {"title": _("Zahlungsmethode"), "description": _("Art der Bezahlung auswählen."), "current": True},
+            {"title": _("Überprüfen"), "description": _("Prüfen der Angaben und Bezahlen.")},
+        ]
+    }
+
+
+def get_empty_context() -> dict:
+    """Serve an empty dictionary."""
+    return {}

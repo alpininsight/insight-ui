@@ -1,0 +1,76 @@
+{% load i18n insight_tags %}
+
+<!-- Welcome -->
+<section>
+    <h1>{% trans 'Insight UI Popups' %}</h1>
+    <p class="text-lg text-secondary">
+        {% trans 'Popover, Tooltips, Modal and everything that pops up with additional information.' %}
+    </p>
+</section>
+
+<!-- Alerts Demo -->
+<section class="component-container">
+    <h2>{% trans 'Alerts' %}</h2>
+    <div class="space-y-4">
+        {% alert message="This is just an information." alert_type="info" %}
+        {% alert message="Saved successfully!" alert_type="success" %}
+        {% alert message="Please review your entries!" alert_type="warning" %}
+        {% alert message="Error while loading data!" alert_type="error" %}
+    </div>
+</section>
+
+<!-- Tooltips and Popovers Demo -->
+<section class="component-container">
+    <h2>{% trans 'Tooltips &amp; Popovers' %}</h2>
+    <div class="flex flex-col gap-12">
+        <div class="flex flex-col md:flex-row gap-12">
+            <button data-tooltip-trigger="tt-demo-top" data-position="top" class="btn btn-primary">{% trans "Top" %}</button>
+            {% include "insight_ui/components/tooltip.html" with text=_("This is a tooltip.") show_arrow="True" tag_id="tt-demo-top" %}
+
+            <button data-tooltip-trigger="tt-demo-bottom" data-position="bottom" class="btn btn-primary">{% trans "Bottom" %}</button>
+            {% include "insight_ui/components/tooltip.html" with text=_("This is a tooltip.") tag_id="tt-demo-bottom" %}
+
+            <button data-tooltip-trigger="tt-demo-right" data-position="right" class="btn btn-primary">{% trans "Right" %}</button>
+            {% include "insight_ui/components/tooltip.html" with text=_("This is a tooltip.") show_arrow="True" tag_id="tt-demo-right" %}
+
+            <button data-tooltip-trigger="tt-demo-left" data-position="left" class="btn btn-primary">{% trans "Left" %}</button>
+            {% include "insight_ui/components/tooltip.html" with text=_("This is a tooltip.") tag_id="tt-demo-left" %}
+        </div>
+        <div class="flex flex-col md:flex-row gap-12">
+            <button data-popover-trigger="demo-popover" class="btn btn-primary">Hover me!</button>
+            <div id="demo-popover" class="bg-white dark:bg-gray-500 w-64 border border-gray-300 dark:border-0 rounded-sm shadow">
+                <!-- Arrow -->
+                <div class="popover-arrow absolute left-1/2 -top-2 -translate-x-1/2 w-0 h-0 border-10 border-t-0 border-transparent border-b-white dark:border-b-gray-600"></div>
+                <div class="p-4">
+                    <span class="block font-semibold w-full border-b-2 border-gray-300 pb-2">
+                        {% trans "This is a Popover." %}
+                    </span>
+                    <p class="text-sm mt-4">
+                        {% trans "A popover could have more content than a tooltip and it can also have interactive elements like buttons" %}
+                    </p>
+                </div>
+                <div class="bg-gray-100 dark:bg-gray-600 p-4 rounded-b-sm">
+                    <button class="btn btn-primary btn-sm">{% trans "Learn more" %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal Demo -->
+<section class="component-container">
+    <h2>{% trans "Modal-Dialogs" %}</h2>
+    <div class="flex flex-col md:flex-row gap-4">
+        <!-- Standard -->
+        <button class="btn btn-primary w-72" data-insight-toggle="modal" data-insight-target="demo-modal">
+            {% trans "Standard Modal" %}
+        </button>
+        {% modal html_tag_id="demo-modal" title=_("Demo Modal") description=_("This is an example of a standard modal.") %}
+
+        <!-- Action-Buttons -->
+        <button class="btn btn-danger w-72" data-insight-toggle="modal" data-insight-target="delete-modal">
+            {% trans "Modal with Action-Buttons" %}
+        </button>
+        {% modal html_tag_id="delete-modal" title=_("Delete?") description="Please conform deletion!" actions=confirm_modal_actions %}
+    </div>
+</section>

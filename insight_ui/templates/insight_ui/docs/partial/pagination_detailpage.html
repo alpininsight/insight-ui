@@ -1,0 +1,28 @@
+{% load i18n insight_tags %}
+
+<h1>Insight UI Pagination</h1>
+
+<!-- Component Demo -->
+<section>
+    <p class="text-secondary leading-loose">
+        {% trans 'Todo' %}
+    </p>
+
+    <div class="example-container">
+        <div id="list-container">
+            {% paginated_list current_page=start_page surrounding_pages=surrounding_pages %}
+        </div>
+    </div>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h2>{% trans "Verwendung" %}</h2>
+    <div id="Pagination_Usage" data-insight-code-block="Django">
+        &lt;div id="list-container"&gt;
+            &lcub;% paginated_list with current_page=start_page surrounding_pages=surrounding_pages %&rcub;
+        &lt;/div&gt;
+    </div>
+</section>

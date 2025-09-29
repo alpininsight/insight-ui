@@ -1,0 +1,32 @@
+{% load i18n insight_tags %}
+
+<!-- Welcome -->
+<section>
+    <h1>{% trans 'Insight UI Input Elements' %}</h1>
+    <p class="text-lg text-secondary">
+        {% trans 'Standard input elements like Buttons.' %}
+    </p>
+</section>
+
+<!-- Input Elements -->
+<section class="component-container">
+    <h2>{% trans 'Input Elements' %}</h2>
+    <div class="space-y-4">
+        {% include "insight_ui/components/inputs.html" %}
+    </div>
+</section>
+
+<!-- Dropdown menus -->
+<section class="component-container">
+    <h2>{% trans "Dropdown menus" %}</h2>
+    <div class="flex gap-2">
+        {% dropdown dropdown_menu=user_dropdown %}
+        {% dropdown dropdown_menu=settings_dropdown %}
+    </div>
+</section>
+
+<!-- Chat Demo -->
+<section class="component-container">
+    <h2>{% trans 'Chat' %}</h2>
+    {% chat view_name="chat_response" %}
+</section>

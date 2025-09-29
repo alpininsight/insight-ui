@@ -1,0 +1,24 @@
+{% load i18n insight_tags %}
+
+<h1>Insight UI Image Carousel</h1>
+
+<!-- Component Demo -->
+<section>
+    <p class="text-secondary leading-loose">
+        {% trans 'Todo' %}
+    </p>
+
+    <div class="example-container">
+        {% include "insight_ui/components/carousels/image_carousel.html" with carousel_items=image_carousel_items show_dots=True show_index=True slides_count=range_total_slides items_per_slide=1 %}
+    </div>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h2>{% trans "Verwendung" %}</h2>
+    <div id="Image_Carousel_Usage" data-insight-code-block="Django">
+        &lcub;% include "insight_ui/components/carousels/image_carousel.html" with carousel_items=image_carousel_items show_dots=True show_index=True slides_count=range_total_slides items_per_slide=1 %&rcub;
+    </div>
+</section>

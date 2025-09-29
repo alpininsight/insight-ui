@@ -1,0 +1,24 @@
+{% load i18n insight_tags %}
+
+<h1>Insight UI Form</h1>
+
+<!-- Component Demo -->
+<section>
+    <p class="text-secondary leading-loose">
+        {% trans 'Todo' %}
+    </p>
+
+    <div class="example-container">
+        {% form title="Contact Form" description="Please fill out the form" fields=form_fields actions=form_actions htmx=htmx_config id="htmx-form" %}
+    </div>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h2>{% trans "Verwendung" %}</h2>
+    <div id="Form_Usage" data-insight-code-block="Django">
+        &lcub;% form title="Contact Form" description="Please fill out the form" fields=form_fields actions=form_actions htmx=htmx_config id="htmx-form" %&rcub;
+    </div>
+</section>

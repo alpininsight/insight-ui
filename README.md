@@ -1,49 +1,55 @@
-# Django Insight UI
+# Insight UI (Version 0.1.0)
 
-Ein modernes, erweiterbares und hochgradig zugängliches Django UI-Framework, das wiederverwendbare, WCAG 2.1 AA-konforme Komponenten und Entwicklungs-Best-Practices bietet.
+Insight UI is a modern, extensible UI framework for Django. It ships with reusable, WCAG 2.1 AA compliant components, live HTMX integrations, and a Tailwind-based design system so teams can bootstrap projects quickly.
 
-## Überblick
-
-Django Insight UI ist ein umfassendes UI-Paket für Django-Projekte mit Fokus auf:
-
-- **Barrierefreiheit**: WCAG 2.1 AA-Konformität für alle Komponenten
-- **Moderne Technologien**: Integration mit HTMX, TailwindCSS und Alpine.js
-- **Internationalisierung**: Mehrsprachige Unterstützung und RTL-Layout
-- **Leistung**: Optimierte Komponenten für schnelle Ladezeiten
-- **Sicherheit**: Best Practices für CSRF, XSS und mehr
-
-## Hauptfunktionen
-
-- Responsive UI-Komponenten (Navbar, Sidebar, Tabellen, Formulare, etc.)
-- Template-Tags für alle UI-Elemente
-- Dunkler/Heller/Kontrastreicher Modus
-- Vollständige Tastaturnavigation
-- ARIA-Rollen und semantisches Markup
-- Internationalisierung und RTL-Unterstützung
-- HTMX-Integration für dynamische Updates
+## Highlights
+- **Accessible components**: ready-made navigation, forms, tables, alerts, carousels, and more.
+- **Internationalisation**: RTL layouts, language switchers, and localisation helpers.
+- **Performance minded**: HTMX-powered partial updates reduce full page reloads.
+- **Theming**: customisable Tailwind tokens and component layers for fast brand alignment.
 
 ## Installation
-
 ```bash
-uv add django-insight-ui
+uv add insight-ui
+
+# or install from Git
+uv add "git+https://github.com/alpininsight/insight-ui@main"
 ```
 
-## Schnellstart
-
-Fügen Sie 'insight_ui' zu Ihren INSTALLED_APPS in settings.py hinzu:
-
+Add the app to your Django project:
 ```python
 INSTALLED_APPS = [
     # ...
-    'insight_ui',
+    "insight_ui",
     # ...
 ]
 ```
 
-## Dokumentation
+See the [Installation guide](docs/en/installation.md) for configuration details and Tailwind workflows.
 
-Ausführliche Dokumentation finden Sie unter [docs/](docs/).
+## Local Development
+```bash
+uv sync --all-groups
+uv run python manage.py migrate
+uv run python manage.py runserver
+```
 
-## Lizenz
+The WebSocket demo lives in `utils/main.py`:
+```bash
+uv run ./utils/main.py
+```
 
-Dieses Projekt steht unter der MIT-Lizenz.
+## Documentation
+- English: `docs/en/` (served via MkDocs)
+- Deutsch: `docs/de/`
+
+Run the site locally:
+```bash
+uv run mkdocs serve
+```
+
+## Contributing
+We welcome improvements! Please read the [Contributor Guide](docs/en/contributing.md) alongside the [naming conventions](docs/en/guides/naming_conventions.md) before opening a pull request. Remember to mirror changes in both language trees.
+
+## License
+Insight UI is released under the MIT License.

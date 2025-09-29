@@ -1,0 +1,24 @@
+{% load i18n insight_tags %}
+
+<h1>Insight UI Range Slider</h1>
+
+<!-- Component Demo -->
+<section>
+    <p class="text-secondary leading-loose">
+        {% trans 'Todo' %}
+    </p>
+
+    <div class="example-container">
+        {% slider slider=example_slider %}
+    </div>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h2>{% trans "Verwendung" %}</h2>
+    <div id="Range_Slider_Usage" data-insight-code-block="Django">
+        &lcub;% slider slider=example_slider %&rcub;
+    </div>
+</section>

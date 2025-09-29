@@ -1,1 +1,0 @@
-InsightUI.Navbar = { init: function () { /* Navbar logic here */ } };

@@ -1,0 +1,24 @@
+{% load i18n insight_tags %}
+
+<h1>Insight UI Generic Filter</h1>
+
+<!-- Component Demo -->
+<section>
+    <p class="text-secondary leading-loose">
+        {% trans 'Todo' %}
+    </p>
+
+    <div class="example-container">
+        {% generic_filter filters=filters view_name=filter_view_name %}
+    </div>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h2>{% trans "Verwendung" %}</h2>
+    <div id="Generic_Filter_Usage" data-insight-code-block="Django">
+        &lcub;% generic_filter filters=filters view_name=filter_view_name %&rcub;
+    </div>
+</section>

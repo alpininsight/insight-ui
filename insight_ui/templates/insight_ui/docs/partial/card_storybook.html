@@ -1,0 +1,49 @@
+{% load i18n insight_tags %}
+
+<!-- Welcome -->
+<section>
+    <h1>{% trans 'Insight UI Cards' %}</h1>
+    <p class="text-lg text-secondary">
+        {% trans 'Card components and different presentation types.' %}
+    </p>
+</section>
+
+<!-- Card Demo -->
+<section class="component-container">
+    <h2>{% trans 'Cards' %}</h2>
+    <div class="flex flex-wrap flex-col md:flex-row items-center md:items-start gap-6">
+        {% for card in cards %}
+            {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
+        {% endfor %}
+    </div>
+</section>
+
+<section class="component-container">
+    <h2>{% trans 'More Cards' %}</h2>
+    <div class="flex flex-wrap flex-col md:flex-row items-center md:items-start gap-6">
+        {% for card in horizontale_cards %}
+            {% card_horizontale title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
+        {% endfor %}
+        {% for card in flip_cards %}
+            {% card_flip title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Card Carousel Demo -->
+<section class="component-container">
+    <h2>{% trans 'Card Carousel' %}</h2>
+    {% carousel carousel_items=carousel_items show_index=True slides_count=range_total_slides items_per_slide=2 %}
+</section>
+
+<!-- Image Carousel Demo -->
+<section class="component-container">
+    <h2>{% trans 'Image Carousel' %}</h2>
+    {% include "insight_ui/components/carousels/image_carousel.html" with carousel_items=image_carousel_items show_dots=True show_index=True slides_count=range_total_slides items_per_slide=1 %}
+</section>
+
+<!--Toggle View Demo -->
+<section class="component-container">
+    <h2>{% trans 'Toggle View' %}</h2>
+    {% toggle_view tag_id="test" table_data=toggle_table view_options=view_options current_view=toggle_start_view %}
+</section>

@@ -1,6 +1,6 @@
 /**
  * Django Insight UI - RTL (Right-to-Left) Support
- * 
+ *
  * Zusätzliche Stile für RTL-Sprachen wie Arabisch und Hebräisch
  */
 
@@ -101,7 +101,7 @@
   [dir="rtl"] .insight-sidebar {
     transform: translateX(100%);
   }
-  
+
   [dir="rtl"] .insight-sidebar--open {
     transform: translateX(0);
   }

@@ -1,120 +1,107 @@
-{% load insight_tags %}
-{% load i18n %}
-{% load static %}
+{% load static i18n tailwind_cli insight_tags %}
+
 <!DOCTYPE html>
 <html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Django Insight UI base.html{% endblock %}</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}{{ PROJECT_NAME }}{% endblock %}</title>
 
-    <!-- Webmanifest für Favicon -->                                                                                                                           
-    <link rel="manifest" href="{% static 'insight_ui/favicon/site.webmanifest' %}">                                                                            
-    <link rel="icon" href="{% static 'insight_ui/favicon/favicon.ico' %}" type="image/x-icon">
-    <link rel="apple-touch-icon" href="{% static 'insight_ui/favicon/apple-touch-icon.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'insight_ui/favicon/favicon-32x32.png' %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'insight_ui/favicon/favicon-16x16.png' %}">
-    <link rel="mask-icon" href="{% static 'insight_ui/svg/logo.svg' %}" color="#5bbad5"> <!-- used by Safari pinned tab -->
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="theme-color" content="#ffffff">
-    <!-- CSRF Token for Django -->
-    <meta name="csrf-token" content="{{ csrf_token }}">
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="{% block meta_description %}Django Insight UI base template{% endblock meta_description %}">
-    <meta name="keywords" content="{% block meta_keywords %}Django, Insight UI, base template{% endblock meta_keywords %}">
-    <meta name="author" content="{% block meta_author %}Peter Rosemann{% endblock meta_author %}">
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="{% block og_title %}Django Insight UI base template{% endblock og_title %}">
-    <meta property="og:description" content="{% block og_description %}Django Insight UI base template{% endblock og_description %}">
-    <meta property="og:image" content="{% static 'insight_ui/favicon/og-image.png' %}">
-    <meta property="og:url" content="{% block og_url %}{% endblock og_url %}">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="{% block og_site_name %}Django Insight UI{% endblock og_site_name %}">
-    <meta property="og:locale" content="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}">
-    <meta property="og:locale:alternate" content="{% get_available_languages as LANGUAGES %}{% for lang in LANGUAGES %}{{ lang.0 }}{% if not forloop.last %},{% endif %}{% endfor %}">
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{% block twitter_title %}Django Insight UI base template{% endblock twitter_title %}">
-    <meta name="twitter:description" content="{% block twitter_description %}Django Insight UI base template{% endblock twitter_description %}">
-    <meta name="twitter:image" content="{% static 'insight_ui/favicon/twitter-image.png' %}">
-    <meta name="twitter:site" content="@dkdndes">
-    <meta name="twitter:creator" content="@dkdndes">
+        <!-- Favicon -->
+        <link rel="manifest" href="{% static 'insight_ui/favicon/site.webmanifest' %}">
+        <link rel="icon" href="{% static INSIGHT_UI.favicon %}" type="image/x-icon">
+        <link rel="apple-touch-icon" href="{% static INSIGHT_UI.apple_touch_icon %}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{% static INSIGHT_UI.favicon_32 %}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{% static INSIGHT_UI.favicon_16 %}">
+        <link rel="mask-icon" href="{% static INSIGHT_UI.safari_mask_icon %}" color="#5bbad5">
+        <meta name="msapplication-TileColor" content="{{ INSIGHT_UI.msapplication_TileColor }}">
+        <meta name="theme-color" content="{{ INSIGHT_UI.theme_color }}">
+        <!-- CSRF Token for Django -->
+        <meta name="csrf-token" content="{{ csrf_token }}">
+        <!-- SEO Meta Tags -->
+        <meta name="description" content="{% block meta_description %}{{ INSIGHT_UI.meta.seo.description }}{% endblock meta_description %}">
+        <meta name="keywords" content="{% block meta_keywords %}{{ INSIGHT_UI.meta.seo.keywords }}{% endblock meta_keywords %}">
+        <meta name="author" content="{% block meta_author %}{{ INSIGHT_UI.meta.seo.author }}{% endblock meta_author %}">
 
-    <!-- TailwindCSS CDN and colour palette for all Insight UI -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        'insight-primary': '#3b82f6',
-                        'insight-secondary': '#6b7280',
-                        'insight-success': '#10b981',
-                        'insight-warning': '#f59e0b',
-                        'insight-error': '#ef4444',
-                        'insight-info': '#06b6d4',
-                    }
-                }
-            }
-        }
-    </script>
+        <!-- HTMX CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/htmx-ext-ws@2.0.2" crossorigin="anonymous"></script>
 
-    <!-- Alpine.js CDN -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        <!-- prism (Syntax-Highlighting) and clipboard (Copy to clipboard) CDN -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/prism.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/plugins/autoloader/prism-autoloader.min.js"></script>
 
-    <!-- HTMX CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"  crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/htmx-ext-ws@2.0.2" crossorigin="anonymous"></script>
+        <!-- leaflet (geo) -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
-    <!-- Insight UI Modular Utils  -->
-    <script defer src="{% static 'insight_ui/js/insight-ui-utils.js' %}"></script>
+        <!-- Apache echarts -->
+        <script defer src="https://cdnjs.cloudflare.com/ajax/libs/echarts/6.0.0/echarts.min.js" integrity="sha512-4/g9GAdOdTpUP2mKClpKsEzaK7FQNgMjq+No0rX8XZlfrCGtbi4r+T/p5fnacsEC3zIAmHKLJUL7sh3/yVA4OQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <!-- Insight UI CSS -->
-    <link rel="stylesheet" href="{% static 'insight_ui/css/insight-ui.css' %}">
-    {% if LANGUAGE_BIDI %}
-        <link rel="stylesheet" href="{% static 'insight_ui/css/insight-ui-rtl.css' %}">
-    {% endif %}
+        <!-- Insight UI Modular Utils  -->
+        <script defer src="{% static 'insight_ui/js/insight-ui-utils.js' %}"></script>
 
-    {% block extra_head %}{% endblock %}
-</head>
-<body {% if not request.COOKIES.insight_ui_theme %} data-theme="light"{% endif %} 
-    class="w-full h-full min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-200 min-h-screen flex flex-col"
-    hx-ext="ws">
+        <!-- prism stylesheet (Syntax-Highlighting) -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css">
 
-    <div class="navbar-container">
-    {% block navbar %}
-    {% endblock navbar %}
-    </div>
+        <!-- Main stylesheet -->
+        <link rel="stylesheet" href="{% static INSIGHT_UI.stylesheet %}">
 
-    <div class="sidebar-container">
-        {% block sidebar_right %}{% endblock sidebar_right %}
-        {% block sidebar_left %}{% endblock sidebar_left %}
-    </div>
+        {% block extra_head %}{% endblock %}
+    </head>
+    <body {% if not request.COOKIES.insight_ui_theme %} data-theme="{{ INSIGHT_UI.theme }}"{% endif %}
+        class="size-full min-h-screen bg-gray-50 dark:bg-gray-900 text-neutral-700 dark:text-neutral-100 transition-colors duration-200 flex flex-col"
+        hx-ext="ws">
 
-    <div class="flex flex-1 relative">
-        <main id="main-content" class="flex-1 p-6 max-w-7xl mx-auto">
-            {% block content %}{% endblock %}
+        {% block background_image %}
+        {% endblock background_image %}
+
+        <header>
+            {% block navbar %}
+            {% endblock navbar %}
+        </header>
+
+        {% block drawers %}
+        {% endblock drawers %}
+
+        <main id="main-content" class="flex pt-16">
+            {% block sidebar_left %}{% endblock sidebar_left %}
+            <div class="grow">
+                {% block content %}{% endblock content %}
+            </div>
+            {% block sidebar_right %}{% endblock sidebar_right %}
         </main>
-    </div>
 
-    {% block footer %}
-    {% endblock footer %}
+        {% block footer %}
+        {% endblock footer %}
 
-    <!-- Insight UI Modular JavaScript -->
-    <script defer src="{% static 'insight_ui/js/insight-ui-utils.js' %}"></script>
-    <script defer src="{% static 'insight_ui/js/insight-ui-navbar.js' %}"></script>
-    <script defer src="{% static 'insight_ui/js/insight-ui-alert.js' %}"></script>
-    <script defer src="{% static 'insight_ui/js/insight-ui-theme-toggle.js' %}"></script>
-    <script defer src="{% static 'insight_ui/js/insight-ui-modal.js' %}"></script>
-    <script defer src="{% static 'insight_ui/js/insight-ui-sidebar.js' %}"></script>
-    <script defer src="{% static 'insight_ui/js/insight-ui-form.js' %}"></script>
-    <script defer src="{% static 'insight_ui/js/insight-ui-select-language.js' %}"></script>
-    <script defer src="{% static 'insight_ui/js/insight-ui-websocket.js' %}"></script>
-    <script defer src="{% static 'insight_ui/js/insight-ui-init.js' %}"></script>
-    <!-- HTMX Extensions -->
-    <script defer src="{% static 'insight_ui/js/insight-ui-htmx-extensions.js' %}"></script>
+        <!-- Helper to visualize media breakpoints -->
+        <div class="fixed flex items-center z-30 bottom-2 left-2 bg-gray-900 rounded-full size-10 text-white text-xs">
+            <span class="w-full text-center sm:hidden">-</span>
+            <span class="w-full text-center hidden sm:block md:hidden">sm</span>
+            <span class="w-full text-center hidden md:block lg:hidden">md</span>
+            <span class="w-full text-center hidden lg:block xl:hidden">lg</span>
+            <span class="w-full text-center hidden xl:block 2xl:hidden">xl</span>
+            <span class="w-full text-center hidden 2xl:block">2xl</span>
+        </div>
 
-    {% block extra_scripts %}{% endblock %}
-</body>
+        <!-- Insight UI Modular JavaScript -->
+        <script defer src="{% static 'insight_ui/js/insight-ui-utils.js' %}"></script>
+        <script defer src="{% static 'insight_ui/js/insight-ui-code-block.js' %}"></script>
+        <script defer src="{% static 'insight_ui/js/insight-ui-collapsible.js' %}"></script>
+        <script defer src="{% static 'insight_ui/js/insight-ui-dropdown.js' %}"></script>
+        <script defer src="{% static 'insight_ui/js/insight-ui-theme-toggle.js' %}"></script>
+        <script defer src="{% static 'insight_ui/js/insight-ui-modal.js' %}"></script>
+        <script defer src="{% static 'insight_ui/js/insight-ui-sidebar.js' %}"></script>
+        <script defer src="{% static 'insight_ui/js/insight-ui-select-language.js' %}"></script>
+        <script defer src="{% static 'insight_ui/js/insight-ui-websocket.js' %}"></script>
+        <script defer src="{% static 'insight_ui/js/insight-ui-carousel.js' %}"></script>
+        <script defer src="{% static 'insight_ui/js/insight-ui-popover.js' %}"></script>
+        <script defer src="{% static 'insight_ui/js/insight-ui-tooltip.js' %}"></script>
+        <script defer src="{% static 'insight_ui/js/insight-ui-init.js' %}"></script>
+        <!-- HTMX Extensions -->
+        <script defer src="{% static 'insight_ui/js/insight-ui-htmx-extensions.js' %}"></script>
+
+        {% block extra_scripts %}{% endblock %}
+    </body>
 </html>

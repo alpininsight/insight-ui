@@ -2,11 +2,11 @@ import os
 
 import django
 import pytest
+from _pytest.config import Config
 from django.conf import settings
-from django.core.management import call_command
 
 
-def pytest_configure(config) -> None:
+def pytest_configure(config: Config) -> None:
     """Configure Django settings for pytest."""
     if not settings.configured:
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")
@@ -14,14 +14,7 @@ def pytest_configure(config) -> None:
 
 
 @pytest.fixture(scope="session")
-def django_db_setup(django_db_setup, django_db_blocker) -> None:
-    """Setup für Django-Datenbank in Tests."""
-    with django_db_blocker.unblock():
-        call_command("migrate", "--run-syncdb", verbosity=0)
-
-
-@pytest.fixture(scope="session")
-def live_server_class():
+def live_server_class():  # noqa: ANN201
     """Use Django's StaticLiveServerTestCase for serving static files."""
     from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
@@ -29,11 +22,6 @@ def live_server_class():
 
 
 @pytest.fixture
-def live_server_url(live_server):
+def live_server_url(live_server) -> None:  # noqa: ANN001
     """Fixture für Live-Server-URL."""
     return live_server.url
-
-
-@pytest.fixture(autouse=True)
-def enable_db_access_for_all_tests(db) -> None:
-    """Enable database access for all tests."""

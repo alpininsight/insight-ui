@@ -1,0 +1,85 @@
+{% load i18n insight_tags %}
+
+<h1>Insight UI Button</h1>
+
+<!-- Component Demo -->
+<section>
+    <p class="text-secondary leading-loose mb-4">
+        {% trans 'Das Framework bietet vorgefertigte Designs für einfache Buttons in unterschiedlichen Größen und Farben. Damit lassen sich Buttons im Hand umdrehen mittels weniger CSS-Klassen anspruchsvoll darstellen.' %}
+    </p>
+
+    <h2>{% trans "Standard Buttons" %}</h2>
+    <div class="example-container mt-3 mb-6">
+        <div class="flex flex-col md:flex-row items-stretch flex-wrap gap-1">
+            <button class="btn btn-primary">{% trans "Primary" %}</button>
+            <button class="btn btn-secondary">{% trans "Secondary" %}</button>
+            <button class="btn btn-success">{% trans "Success" %}</button>
+            <button class="btn btn-warning">{% trans "Warning" %}</button>
+            <button class="btn btn-danger">{% trans "Danger" %}</button>
+            <button class="btn btn-info">{% trans "Info" %}</button>
+            <button disabled class="btn btn-disabled">{% trans "Disabled" %}</button>
+            <button aria-label="{% trans 'Close' %}" class="bg-white h-fit rounded-sm shadow p-3 text-insight-text-primary hover:bg-neutral-200 active:bg-neutral-400 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+                    <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z" />
+                </svg>
+            </button>
+            <a href="#" class="btn-link">{% trans "Link" %}</a>
+        </div>
+    </div>
+    <h2>{% trans "Outline Buttons" %}</h2>
+    <div class="example-container mt-3 mb-6">
+        <div class="flex flex-col md:flex-row items-stretch flex-wrap gap-1">
+            <button class="btn btn-outline-primary">{% trans "Primary" %}</button>
+            <button class="btn btn-outline-secondary">{% trans "Secondary" %}</button>
+            <button class="btn btn-outline-success">{% trans "Success" %}</button>
+            <button class="btn btn-outline-warning">{% trans "Warning" %}</button>
+            <button class="btn btn-outline-danger">{% trans "Danger" %}</button>
+            <button class="btn btn-outline-info">{% trans "Info" %}</button>
+            <button disabled class="btn btn-outline-disabled">{% trans "Disabled" %}</button>
+        </div>
+    </div>
+    <h2>{% trans "Button sizes" %}</h2>
+    <div class="example-container mt-3 mb-6">
+        <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
+            <button class="btn btn-primary btn-large">{% trans "Click me!" %}</button>
+            <button class="btn btn-primary">{% trans "Click me!" %}</button>
+            <button class="btn btn-primary btn-sm">{% trans "Click me!" %}</button>
+            <button class="btn btn-primary btn-xs">{% trans "Click me!" %}</button>
+        </div>
+    </div>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h2>{% trans "Verwendung" %}</h2>
+    <div id="Button_Usage" data-insight-code-block="Django">
+        &lt;button class="btn btn-primary"&gt;&lcub;% trans "Primary" %&rcub;&lt;/button&gt;
+        &lt;button class="btn btn-secondary"&gt;&lcub;% trans "Secondary" %&rcub;&lt;/button&gt;
+        &lt;button class="btn btn-success"&gt;&lcub;% trans "Success" %&rcub;&lt;/button&gt;
+        &lt;button class="btn btn-warning"&gt;&lcub;% trans "Warning" %&rcub;&lt;/button&gt;
+        &lt;button class="btn btn-danger"&gt;&lcub;% trans "Danger" %&rcub;&lt;/button&gt;
+        &lt;button class="btn btn-info"&gt;&lcub;% trans "Info" %&rcub;&lt;/button&gt;
+        &lt;button disabled class="btn btn-disabled"&gt;&lcub;% trans "Disabled" %&rcub;&lt;/button&gt;
+        &lt;button aria-label="&lcub;% trans 'Close' %&rcub;" class="bg-white h-fit rounded-sm shadow p-3 text-insight-text-primary hover:bg-neutral-200 active:bg-neutral-400 transition"&gt;
+            &lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4"&gt;
+                &lt;path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z" /&gt;
+            &lt;/svg&gt;
+        &lt;/button&gt;
+        &lt;a href="#" class="btn-link"&gt;&lcub;% trans "Link" %&rcub;&lt;/a&gt;
+
+        &lt;button class="btn btn-outline-primary"&gt;&lcub;% trans "Primary" %&rcub;&lt;/button&gt;
+        &lt;button class="btn btn-outline-secondary"&gt;&lcub;% trans "Secondary" %&rcub;&lt;/button&gt;
+        &lt;button class="btn btn-outline-success"&gt;&lcub;% trans "Success" %&rcub;&lt;/button&gt;
+        &lt;button class="btn btn-outline-warning"&gt;&lcub;% trans "Warning" %&rcub;&lt;/button&gt;
+        &lt;button class="btn btn-outline-danger"&gt;&lcub;% trans "Danger" %&rcub;&lt;/button&gt;
+        &lt;button class="btn btn-outline-info"&gt;&lcub;% trans "Info" %&rcub;&lt;/button&gt;
+        &lt;button disabled class="btn btn-outline-disabled"&gt;&lcub;% trans "Disabled" %&rcub;&lt;/button&gt;
+
+        &lt;button class="btn btn-primary btn-large"&gt;&lcub;% trans "Click me!" %&rcub;&lt;/button&gt;
+        &lt;button class="btn btn-primary"&gt;&lcub;% trans "Click me!" %&rcub;&lt;/button&gt;
+        &lt;button class="btn btn-primary btn-sm"&gt;&lcub;% trans "Click me!" %&rcub;&lt;/button&gt;
+        &lt;button class="btn btn-primary btn-xs"&gt;&lcub;% trans "Click me!" %&rcub;&lt;/button&gt;
+    </div>
+</section>

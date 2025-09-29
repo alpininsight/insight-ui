@@ -1,28 +1,36 @@
 {% load i18n %}
 
-<div class="insight-table-wrapper">
-  <table class="insight-table insight-table--{{ theme }}" {% if options.id %}id="{{ options.id }}"{% endif %}>
-    {% if caption %}
-      <caption class="insight-table__caption">{{ caption }}</caption>
+<div class="bg-white dark:bg-gray-800 rounded overflow-y-scroll">
+  <table class="table-auto w-full" {% if options.id %}id="{{ options.id }}"{% endif %}>
+    {% if table_data.caption %}
+      <caption class="text-xs text-secondary">{{ caption }}</caption>
     {% endif %}
-    
-    {% if headers %}
-      <thead class="insight-table__head">
-        <tr class="insight-table__row">
-          {% for header in headers %}
-            <th class="insight-table__header" scope="col">{{ header }}</th>
+
+    {% if table_data.headers %}
+      <thead class="text-primary">
+        <tr class="border-b border-gray-400 dark:border-gray-500">
+          {% for header in table_data.headers %}
+            <th class="text-start text-xs px-4 py-2" scope="col">{{ header }}</th>
           {% endfor %}
         </tr>
       </thead>
     {% endif %}
-    
-    <tbody class="insight-table__body">
-      {% for row in rows %}
-        <tr class="insight-table__row">
+
+    <tbody class="text-primary">
+      {% for row in table_data.rows %}
+        <tr class="border-b border-gray-200 dark:border-gray-600">
           {% for cell in row %}
-            <td class="insight-table__cell">{{ cell }}</td>
+            <td class="text-start text-xs px-4 py-3">{{ cell|safe }}</td>
           {% endfor %}
         </tr>
+      {% empty %}
+        <tfoot>
+          <tr>
+            <td colspan="{{ table_data.headers|length }}" class="w-full border-t border-gray-400 dark:border-gray-500 text-secondary text-center pt-16">
+              {{ table_data.empty_msg }}
+            </td>
+          </tr>
+        </tfoot>
       {% endfor %}
     </tbody>
   </table>

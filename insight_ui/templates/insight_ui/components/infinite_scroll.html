@@ -1,37 +1,44 @@
 {% load i18n %}
 
-<div 
-  class="insight-infinite-scroll"
+<div
   {% if options.id %}id="{{ options.id }}"{% endif %}
-  hx-get="{{ next_url }}"
-  hx-trigger="revealed"
-  hx-swap="afterend"
-  hx-infinite-scroll
-  data-threshold="{{ threshold|default:100 }}"
-  data-next-url="{{ next_url }}"
-  hx-ext="infinite-scroll,progressive-enhancement">
-  
+  {% if auto_fetch %}
+    hx-get="{% url view_name %}?page={{ page }}"
+    hx-swap="afterend"
+    hx-trigger="revealed"
+    hx-infinite-scroll
+    data-threshold="{{ threshold|default:100 }}"
+    data-next-url="{% url view_name %}?page={{ page }}"
+    hx-ext="infinite-scroll,progressive-enhancement"
+  {% endif %}
+>
   <!-- Existing Content -->
-  <div class="insight-infinite-scroll__content">
+  <div>
     {% for item in items %}
-      <div class="insight-infinite-scroll__item">
-        {{ item|safe }}
+      <div class="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4 mb-4">
+        <h3>{{ item.title }}</h3>
+        <p class="text-secondary">{{ item.content }}</p>
       </div>
     {% endfor %}
   </div>
-  
+
+  {% if not auto_fetch %}
+    <button
+      class="btn btn-primary btn-big mx-auto"
+      hx-get="{% url view_name %}?page={{ page }}&auto_fetch={{ auto_fetch }}"
+      hx-swap="outerHTML"
+      hx-trigger="click"
+      hx-ext="progressive-enhancement"
+    >
+      {% trans "Load more" %}
+    </button>
+  {% endif %}
+
   <!-- Loading Indicator -->
-  <div class="insight-infinite-scroll__loading htmx-spinner" style="display: none;">
+  <div class="htmx-spinner" style="display: none;">
     <div class="flex items-center justify-center py-4">
       <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-insight-primary"></div>
-      <span class="ml-2 text-sm text-gray-600">{% trans 'Weitere Inhalte werden geladen...' %}</span>
+      <span class="ml-2 text-sm text-secondary">{% trans 'More content is loading...' %}</span>
     </div>
   </div>
-  
-  <!-- End Indicator -->
-  {% if not has_next %}
-    <div class="insight-infinite-scroll__end">
-      <p class="text-center text-gray-500 py-4">{% trans 'Alle Inhalte geladen' %}</p>
-    </div>
-  {% endif %}
 </div>

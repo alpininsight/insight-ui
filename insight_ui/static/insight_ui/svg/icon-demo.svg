@@ -1,6 +1,0 @@
-<!-- Pacman Icon (Yellow) -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2">
-  <circle cx="12" cy="12" r="10" />
-  <path d="M12 6 A6 6 0 0 1 12 18 L12 12 Z" fill="#FBBF24" stroke="#D97706" stroke-width="1.5" />
-  <circle cx="10" cy="9" r="1" fill="#D97706" />
-</svg>

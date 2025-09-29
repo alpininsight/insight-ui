@@ -2,114 +2,129 @@
 
 <!-- Skip-Link for Accessibility, placed BEFORE nav -->
 <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-blue-600 text-white p-2 rounded">
-    {% trans 'Zum Hauptinhalt springen' %}
+    {% trans 'Jump to main content' %}
 </a>
 
-<nav role="navigation" aria-label="{% trans 'Hauptnavigation' %}" 
-  class="bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700" {% if id %}id="{{ id }}"{% endif %}>
-  <div class="w-full px-0">
-    <div class="flex justify-between items-center h-16">
-      
-      <!-- Brand Logo - Links positioniert -->
-      {% if brand %}
-      <div class="flex items-center space-x-4">
-        <a href="{% if brand_url %}{{ brand_url }}{% else %}#{% endif %}" class="flex items-center space-x-2 text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
-          {% if brand_logo %}
-            <img src="{{ brand_logo }}" alt="{{ brand }}" class="h-8 w-8 rounded-full" />
+<nav role="navigation" aria-label="{% trans 'Main navigation' %}" class="fixed w-full h-16 z-50 bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700 px-4 md:px-16 py-3">
+  <!--- Desktop Navigation -->
+  <div class="flex flex-wrap justify-between items-center gap-4 lg:gap-16 h-full">
+    <!-- Brand Logo -->
+    {% if brand %}
+      <div class="flex items-center">
+        <a href="{{ brand.href }}" class="flex items-center gap-2 text-xl font-bold text-primary">
+          {% if brand.logo_url %}
+            <img src="{% static brand.logo_url %}" alt="{{ brand.logo_alt }}" class="size-8 rounded-full dark:bg-white" />
           {% else %}
             <!-- Platzhalter brand_logo, not Profile_Head -->
-            <img src="{% static 'insight_ui/svg/logo.svg' %}" class="h-8 w-8 rounded-full text-gray-400 dark:text-gray-600" alt="Brand Icon" aria-hidden="true" />
+            <img src="{% static 'insight_ui/svg/logo.svg' %}" class="size-8 rounded-full dark:bg-white" alt="Brand Icon" />
           {% endif %}
-          <span>{{ brand }}</span>
+          <span>{{ brand.title }}</span>
         </a>
       </div>
-      {% endif %}
-
-      <!-- Desktop Navigation Links - Zentriert -->
-      {% if links %}
-      <div class="hidden md:flex flex-1 justify-center">
-        <ul class="flex space-x-6">
-          {% for link in links %}
-            <li>
-              {% if link.type == 'button' %}
-                <button 
-                  type="button"
-                  {% if link.id %}id="{{ link.id }}"{% endif %}
-                  class="{% if link.active %}text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400{% else %}text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400{% endif %} px-4 py-2 text-sm font-medium transition-colors duration-200 rounded-md"
-                  {% if link.active %}aria-current="page"{% endif %}>
-                  {% if link.icon %}<span class="inline-block mr-2">{{ link.icon|safe }}</span>{% endif %}
-                  {{ link.text }}
-                </button>
-              {% else %}
-                <a 
-                  href="{{ link.url }}" 
-                  {% if link.id %}id="{{ link.id }}"{% endif %}
-                  class="{% if link.active %}text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400{% else %}text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400{% endif %} px-4 py-2 text-sm font-medium transition-colors duration-200 rounded-md"
-                  {% if link.active %}aria-current="page"{% endif %}
-                  {% if link.external %}target="_blank" rel="noopener"{% endif %}>
-                  {% if link.icon %}<span class="inline-block mr-2">{{ link.icon|safe }}</span>{% endif %}
-                  {{ link.text }}
-                </a>
-              {% endif %}
-            </li>
-          {% endfor %}
-        </ul>
-      </div>
-      {% endif %}
-
-      <!-- Mobile menu button -->
-      <div class="md:hidden flex items-center space-x-2">
-        <!-- Mobile Menu Toggle -->
-        <button 
-          type="button" 
-          class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500" 
-          aria-expanded="false" 
-          aria-controls="mobile-menu"
-          aria-label="{% trans 'Menü öffnen' %}"
-          data-insight-toggle="navbar">
-          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
-      </div>
-
-      <!-- Language Selector and Theme Toggle -->
-      <div class="hidden md:flex items-center space-x-4">
-        {% if options.show_language_selector %}
-          {% include "insight_ui/components/toggle_language.html" with options=options %}
-        {% endif %}
-        {% include "insight_ui/components/toggle_theme.html" %}
-      </div>
-    </div>
-
-    <!-- Mobile menu -->
-    {% if links %}
-    <div id="mobile-menu" class="md:hidden hidden">
-      <div class="px-2 pt-2 pb-3 space-y-1 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
-        {% for link in links %}
-          {% if link.type == 'button' %}
-            <button 
-              type="button"
-              {% if link.id %}id="{{ link.id }}"{% endif %}
-              class="{% if link.active %}bg-blue-50 dark:bg-blue-900 text-blue-600 dark:text-blue-400{% else %}text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700{% endif %} block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 w-full text-left"
-              {% if link.active %}aria-current="page"{% endif %}>
-              {% if link.icon %}<span class="inline-block mr-2">{{ link.icon|safe }}</span>{% endif %}
-              {{ link.text }}
-            </button>
-          {% else %}
-            <a 
-              href="{{ link.url }}" 
-              {% if link.id %}id="{{ link.id }}"{% endif %}
-              class="{% if link.active %}bg-blue-50 dark:bg-blue-900 text-blue-600 dark:text-blue-400{% else %}text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700{% endif %} block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
-              {% if link.active %}aria-current="page"{% endif %}
-              {% if link.external %}target="_blank" rel="noopener"{% endif %}>
-              {% if link.icon %}<span class="inline-block mr-2">{{ link.icon|safe }}</span>{% endif %}
-              {{ link.text }}
-            </a>
-          {% endif %}
-        {% endfor %}
-      </div>
-    </div>
     {% endif %}
+
+    <!-- Mobile menu button -->
+    <div class="lg:hidden flex items-center gap-2">
+      <!-- Mobile Menu Toggle -->
+      <button
+        class="inline-flex items-center justify-center p-2 rounded-md text-secondary hover:text-insight-text-link dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="{% trans 'Open menu' %}"
+        data-insight-toggle="collapsible"
+        data-insight-target="mobile-menu"
+      >
+        <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+
+    <div id="mobile-menu" class="hidden lg:block h-full w-full lg:w-fit grow">
+      <div class="flex flex-col lg:flex-row lg:justify-between gap-2 w-full lg:h-full p-2 lg:p-0 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 shadow-lg lg:shadow-none lg:bg-transparent lg:border-none rounded">
+        <!-- Main-Navigation -->
+        {% if links %}
+            <ul class="flex flex-col lg:flex-row justify-items-stretch lg:items-center w-full lg:w-fit">
+              {% for link in links %}
+                  {% if not link.need_auth or options.user.is_authenticated and not link.staff_only or options.user.is_staff %}
+                    <li>
+                      {% if link.view_name or link.href %}
+                        <a
+                          href="{{ link.href }}"
+                          class="flex gap-2 h-full border-b-2 {% if link.active %}text-insight-text-link border-insight-text-link{% else %}text-secondary hover:text-insight-text-link border-transparent{% endif %} px-4 py-2 text-sm transition-colors duration-200"
+                          {% if link.active %}aria-current="page"{% endif %}
+                          {% if link.external %}target="_blank" rel="noopener"{% endif %}
+                        >
+                          {% if link.icon %}
+                            {% icon link.icon %}
+                          {% endif %}
+                          {{ link.text }}
+                        </a>
+                      {% elif link.open_dropdown %}
+                        <div class="relative">
+                          <button data-dropdown-toggle="{{ link.open_dropdown }}" class="flex gap-2 h-full border-b-2 {% if link.active %}text-insight-text-link border-insight-text-link{% else %}text-secondary hover:text-insight-text-link border-transparent{% endif %} px-4 py-2 text-sm transition-colors duration-200">
+                            {% if link.icon %}
+                              {% icon link.icon %}
+                            {% endif %}
+                            {{ link.text }}
+                            {% if link.chevron %}
+                              {% icon name="chevron_down" size="small" %}
+                            {% endif %}
+                          </button>
+                          <div id="{{ link.open_dropdown }}" class="bg-white border border-gray-300 dark:border-0 rounded-sm shadow-lg">
+                            <div class="py-1">
+                              {% for item in link.items %}
+                                {% with item_url=item.href %}
+                                <a
+                                  {% if item.htmx and item_url %}
+                                    hx-get="{{ item_url }}"
+                                    hx-target="{{ item.htmx.target }}"
+                                    hx-swap="{{ item.htmx.swap|default:'innerHTML' }} show:window:top"
+                                    hx-push-url="true"
+                                  {% endif %}
+                                  href="{{ item_url|default:'' }}"
+                                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                  >{{ item.text }}</a>
+                                {% endwith %}
+                              {% endfor %}
+                            </div>
+                          </div>
+                        </div>
+                      {% elif link.open_modal %}
+                        <button
+                          class="text-secondary hover:text-insight-text-link px-4 py-2 text-sm transition-colors duration-200"
+                          data-insight-toggle="modal"
+                          data-insight-target="{{ link.open_modal }}">
+                          {{ link.text }}
+                        </button>
+                        {% modal html_tag_id=link.open_modal title=_("Insight-UI") description=_("Lorem ipsum...") %}
+                      {% endif %}
+                    </li>
+                  {% endif %}
+              {% endfor %}
+            </ul>
+        {% endif %}
+
+        <!-- Other Nav-Elements -->
+        <div class="flex flex-col lg:flex-row gap-2 w-full lg:w-fit">
+          {% if searchbar_request_view %}
+            <div class="flex-1 lg:max-w-72">
+              {% search_bar request_view=searchbar_request_view simple=True search_query=options.search_query %}
+            </div>
+          {% endif%}
+          <div class="flex gap-2 h-10">
+            {% if show_usermenu %}
+              {% include "insight_ui/components/user_dropdown.html" with user=options.user show_login=options.show_login user_dropdown_links=options.user_dropdown_links %}
+            {% endif %}
+            {% if show_language_selector %}
+              {% include "insight_ui/components/toggle_language.html" %}
+            {% endif %}
+            {% if show_theme_toggle %}
+              {% include "insight_ui/components/toggle_theme.html" %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </nav>
