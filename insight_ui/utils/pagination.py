@@ -1,7 +1,14 @@
+from collections.abc import Sequence
+from typing import TypeVar, cast
+
 from django.core.paginator import Page, Paginator
 
+T = TypeVar("T")
 
-def get_page(data: list, page: int = 1, max_neighbor_pages: int = 6) -> tuple[Page, list[str]]:
+
+def get_page(
+    data: Sequence[T], page: int = 1, max_neighbor_pages: int = 6
+) -> tuple[Page[T], list[str]]:
     """
     Create pagination for given data.
 
@@ -21,7 +28,7 @@ def get_page(data: list, page: int = 1, max_neighbor_pages: int = 6) -> tuple[Pa
     paginator = Paginator(data, 10)
 
     # Calculate neighboring pages
-    surrounding_pages = []
+    surrounding_pages: list[int] = []
     half = max_neighbor_pages // 2
 
     # Calculate start page and end page
@@ -39,11 +46,12 @@ def get_page(data: list, page: int = 1, max_neighbor_pages: int = 6) -> tuple[Pa
     # Create list of neighboring pages
     surrounding_pages = list(range(start, end + 1))
 
-    page_links = []
+    page_links: list[str] = []
     for i in range(1, paginator.num_pages + 1):
         if i in surrounding_pages or i in {1, paginator.num_pages}:
-            page_links.append(i)
+            page_links.append(str(i))
         elif not page_links or page_links[-1] != "...":
             page_links.append("...")
 
-    return paginator.get_page(page), page_links
+    page_obj = cast(Page[T], paginator.get_page(page))
+    return page_obj, page_links

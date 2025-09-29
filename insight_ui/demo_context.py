@@ -5,7 +5,11 @@ from django.utils.lorem_ipsum import paragraphs
 from django.utils.translation import gettext as _
 
 from insight_ui import config
-from insight_ui.demo_utils import generate_payload, map_payload_to_cards, map_payload_to_table
+from insight_ui.demo_utils import (
+    generate_payload,
+    map_payload_to_cards,
+    map_payload_to_table,
+)
 from insight_ui.utils.pagination import get_page
 
 # Some example filters for the filter example

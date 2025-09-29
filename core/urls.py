@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import include, path
+
 from insight_ui.demo_context import get_base_context
 
 urlpatterns = [
