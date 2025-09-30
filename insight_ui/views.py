@@ -1,4 +1,5 @@
 from datetime import UTC, datetime
+from typing import Any, cast
 
 import structlog
 from django.http import HttpRequest, HttpResponse, JsonResponse
@@ -48,7 +49,7 @@ from insight_ui.demo_context import (
 from insight_ui.demo_utils import generate_payload, map_payload_to_cards, map_payload_to_table
 from insight_ui.forms import ChatForm
 from insight_ui.utils.pagination import get_page
-from insight_ui.utils.query_builder_utils import get_filter_settings_for_field
+from insight_ui.utils.query_builder_utils import FilterFieldConfig, get_filter_settings_for_field
 
 logger = structlog.get_logger(__name__)
 
@@ -61,7 +62,8 @@ def get_allowed_operators(request: HttpRequest) -> JsonResponse:
     if not field:
         return JsonResponse({"error": "Field is required!"}, status=400)
 
-    input_type, allowed_operators, possible_values = get_filter_settings_for_field(DEMO_FIELDS, field)
+    field_config = cast(list[FilterFieldConfig], DEMO_FIELDS)
+    input_type, allowed_operators, possible_values = get_filter_settings_for_field(field_config, field)
     return JsonResponse({"operators": allowed_operators, "values": possible_values, "inputType": input_type})
 
 
@@ -77,9 +79,15 @@ def chat_response(request: HttpRequest) -> HttpResponse:
 
 def pagination(request: HttpRequest) -> HttpResponse:
     """Pagination endpoint to retrieve data of the desired page."""
-    page_obj, surrounding_pages = get_page(generate_payload(100), int(request.GET.get("page")))
+    page_param = request.GET.get("page")
+    try:
+        page_number = int(page_param) if page_param is not None else 1
+    except (TypeError, ValueError):
+        page_number = 1
 
-    if request.htmx:
+    page_obj, surrounding_pages = get_page(generate_payload(100), page_number)
+
+    if request.headers.get("HX-Request"):
         return render(
             request,
             "insight_ui/components/list_partial.html",
@@ -334,7 +342,7 @@ def toggle_view(request: HttpRequest) -> HttpResponse:
 
     # Generate the base payload
     payload = generate_payload()
-    context = {"current_view": view, "tag_id": request.GET.get("tag_id", "")}
+    context: dict[str, Any] = {"current_view": view, "tag_id": request.GET.get("tag_id", "")}
     context["view_options"] = {
         "name": "view-options",
         "param_name": "view",

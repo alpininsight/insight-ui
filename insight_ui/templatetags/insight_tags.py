@@ -1,5 +1,6 @@
 """Template-Tags für Insight UI-Komponenten."""
 
+from collections.abc import Mapping, Sequence
 from copy import deepcopy
 from difflib import HtmlDiff, ndiff, unified_diff
 from typing import Any
@@ -124,7 +125,7 @@ def diff(text1: str, text2: str) -> str:
 
 
 @register.inclusion_tag("insight_ui/components/navbar.html")
-def navbar(config: dict, **kwargs) -> dict[str, Any]:
+def navbar(config: Mapping[str, Any], **kwargs: JsonValue) -> dict[str, Any]:
     """
     Rendert eine konfigurierbare Navigationsleiste.
 
@@ -454,7 +455,7 @@ def toggle_view(tag_id: str, table_data: list, view_options: list, current_view:
 
 
 @register.inclusion_tag("insight_ui/components/live_content.html")
-def live_content(url: str = "", interval: int = 0, initial_content: str = "", **kwargs) -> dict[str, Any]:
+def live_content(url: str = "", interval: int = 0, initial_content: str = "", **kwargs: JsonValue) -> dict[str, Any]:
     """
     Rendert einen Container für Live-Updates via HTMX.
 
@@ -486,7 +487,7 @@ def live_content(url: str = "", interval: int = 0, initial_content: str = "", **
 
 @register.inclusion_tag("insight_ui/components/websocket.html")
 def insight_websocket(
-    html_tag_id: str = "insight-websocket", ws_url: str = "", initial_content: str = "", **kwargs
+    html_tag_id: str = "insight-websocket", ws_url: str = "", initial_content: str = "", **kwargs: JsonValue
 ) -> dict[str, Any]:
     """
     Rendert eine WebSocket-Komponente als Wrapper für die htmx v2 ws-Extension.
@@ -508,14 +509,14 @@ def insight_websocket(
 
 @register.inclusion_tag("insight_ui/components/infinite_scroll.html")
 def infinite_scroll(  # noqa: PLR0913 (Too many arguments)
-    items: list[Any] = [],
+    items: Sequence[Any] | None = None,
     view_name: str = "",
     request_view: str = "",
     page: int = 1,
     has_next: bool = True,
     auto_fetch: bool = True,
     threshold: int = 100,
-    **kwargs,
+    **kwargs: JsonValue,
 ) -> dict[str, Any]:
     """
     Rendert einen Container für Infinite Scroll.
@@ -538,8 +539,10 @@ def infinite_scroll(  # noqa: PLR0913 (Too many arguments)
     """
     resolved_view = view_name or request_view
 
+    resolved_items = list(items) if items is not None else []
+
     return {
-        "items": items,
+        "items": resolved_items,
         "view_name": resolved_view,
         "page": page,
         "has_next": has_next,
@@ -550,7 +553,7 @@ def infinite_scroll(  # noqa: PLR0913 (Too many arguments)
 
 
 @register.inclusion_tag("insight_ui/components/alert.html")
-def alert(message: str, alert_type: str = "info", dismissible: bool = True, **kwargs) -> dict[str, Any]:
+def alert(message: str, alert_type: str = "info", dismissible: bool = True, **kwargs: JsonValue) -> dict[str, Any]:
     """
     Rendert eine barrierefreie Benachrichtigung.
 
@@ -571,7 +574,7 @@ def alert(message: str, alert_type: str = "info", dismissible: bool = True, **kw
 
 @register.inclusion_tag("insight_ui/components/sidebar.html")
 def sidebar(
-    sidebar_data: dict = {}, side: str = "right", static: bool = True, auto_close: bool = False
+    sidebar_data: Mapping[str, Any] | None = None, side: str = "right", static: bool = True, auto_close: bool = False
 ) -> dict[str, Any]:
     """
     Rendert eine konfigurierbare Seitennavigation.
@@ -588,13 +591,13 @@ def sidebar(
         Dict mit Kontext-Variablen für das Template
 
     """
-    resolved_sidebar = _resolve_view_urls(sidebar_data) if sidebar_data else {}
+    resolved_sidebar = _resolve_view_urls(dict(sidebar_data)) if sidebar_data else {}
 
     return {"sidebar_data": resolved_sidebar, "side": side, "static": static, "auto_close": auto_close}
 
 
 @register.inclusion_tag("insight_ui/components/breadcrumbs.html")
-def breadcrumbs(items: list[dict[str, Any]] = []) -> dict[str, Any]:
+def breadcrumbs(items: Sequence[Mapping[str, Any]] | None = None) -> dict[str, Any]:
     """
     Rendert eine Breadcrumb-Navigation.
 
@@ -607,7 +610,8 @@ def breadcrumbs(items: list[dict[str, Any]] = []) -> dict[str, Any]:
         Dict mit Kontext-Variablen für das Template
 
     """
-    return {"items": items}
+    resolved_items = [dict(item) for item in items] if items is not None else []
+    return {"items": resolved_items}
 
 
 @register.inclusion_tag("insight_ui/components/table.html")
@@ -638,7 +642,11 @@ def table(table_data: dict) -> dict[str, Any]:
 
 @register.inclusion_tag("insight_ui/components/modal.html")
 def modal(  # noqa: PLR0913 (too many args)
-    html_tag_id: str, title: str, content: str = "", description: str = "", actions: list[dict[str, Any]] = []
+    html_tag_id: str,
+    title: str,
+    content: str = "",
+    description: str = "",
+    actions: Sequence[Mapping[str, Any]] | None = None,
 ) -> dict[str, Any]:
     """
     Rendert ein barrierefreies Modal-Dialog.
@@ -656,16 +664,22 @@ def modal(  # noqa: PLR0913 (too many args)
         Dict mit Kontext-Variablen für das Template
 
     """
-    return {"id": html_tag_id, "title": title, "content": content, "description": description, "actions": actions}
+    return {
+        "id": html_tag_id,
+        "title": title,
+        "content": content,
+        "description": description,
+        "actions": [dict(action) for action in actions] if actions is not None else [],
+    }
 
 
 @register.inclusion_tag("insight_ui/components/carousels/card_carousel.html")
 def carousel(  # noqa: PLR0913 (too many args)
-    carousel_items: list = [],
+    carousel_items: Sequence[Mapping[str, Any]] | None = None,
     autoplay: bool = False,
     show_dots: bool = True,
     show_index: bool = False,
-    slides_count: range = [],
+    slides_count: Sequence[int] | None = None,
     items_per_slide: int = 1,
 ) -> dict[str, Any]:
     """
@@ -686,11 +700,11 @@ def carousel(  # noqa: PLR0913 (too many args)
 
     """
     return {
-        "carousel_items": carousel_items,
+        "carousel_items": [dict(item) for item in carousel_items] if carousel_items is not None else [],
         "autoplay": autoplay,
         "show_dots": show_dots,
         "show_index": show_index,
-        "slides_count": slides_count,
+        "slides_count": list(slides_count) if slides_count is not None else [],
         "items_per_slide": items_per_slide,
     }
 
@@ -781,14 +795,14 @@ def card_flip(  # noqa: PLR0913
 
 @register.inclusion_tag("insight_ui/components/form.html")
 def form(  # noqa: PLR0913 (too many args)
-    fields: list[dict[str, Any]] = [],
+    fields: Sequence[Mapping[str, Any]] | None = None,
     title: str = "",
     description: str = "",
     view_name: str = "",
     method: str = "post",
-    actions: list[dict[str, Any]] = [],
-    htmx: dict[str, Any] = {},
-    **kwargs,
+    actions: Sequence[Mapping[str, Any]] | None = None,
+    htmx: Mapping[str, Any] | None = None,
+    **kwargs: JsonValue,
 ) -> dict[str, Any]:
     """
     Rendert ein Formular mit HTMX-Unterstützung.
@@ -825,12 +839,12 @@ def form(  # noqa: PLR0913 (too many args)
         }
 
     return {
-        "fields": fields,
+        "fields": [dict(field) for field in fields] if fields is not None else [],
         "title": title,
         "description": description,
         "action": view_name,
         "method": method,
-        "actions": actions,
+        "actions": [dict(action) for action in actions] if actions is not None else [],
         "htmx": htmx_config,
         "options": {**kwargs},
     }

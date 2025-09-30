@@ -1,6 +1,9 @@
+from collections.abc import Mapping
+from typing import Any, cast
+
 from django.conf import settings
 
-CONFIG_DEFAULTS = {
+CONFIG_DEFAULTS: dict[str, Any] = {
     "theme": "light",
     "favicon": "insight_ui/favicon/favicon.ico",
     "favicon_32": "insight_ui/favicon/favicon-32x32.png",
@@ -21,9 +24,9 @@ CONFIG_DEFAULTS = {
 }
 
 
-def get_config(settings_name: str = None) -> dict:
+def get_config(settings_name: str | None = None) -> dict[str, Any]:
     """Get insight-ui configuration."""
-    if settings_name is None:
-        settings_name = "INSIGHT_UI"
+    config_attribute = settings_name or "INSIGHT_UI"
+    user_config = cast(Mapping[str, Any], getattr(settings, config_attribute, {}))
 
-    return {"INSIGHT_UI": {**CONFIG_DEFAULTS, **getattr(settings, settings_name, {})}}
+    return {"INSIGHT_UI": {**CONFIG_DEFAULTS, **dict(user_config)}}

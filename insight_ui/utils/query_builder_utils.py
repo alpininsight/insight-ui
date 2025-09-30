@@ -1,7 +1,35 @@
+from collections.abc import Iterable, Mapping
+from typing import Any, TypedDict
+
 from django.db.models import Q
 
 
-def get_filter_settings_for_field(fields: list[dict], field: object) -> tuple[str, list[str], dict[str, str]]:
+class FilterFieldConfig(TypedDict, total=False):
+    """Typed configuration describing a filterable field."""
+
+    field: str
+    type: str
+    operations: list[str]
+    values: dict[str, str]
+
+
+def _coerce_operations(operations: object) -> list[str]:
+    if isinstance(operations, Iterable) and not isinstance(operations, str | bytes):
+        return [op for op in operations if isinstance(op, str)]
+    return []
+
+
+def _coerce_values(values: object) -> dict[str, str]:
+    if isinstance(values, Mapping):
+        return {
+            str(key): str(value) for key, value in values.items() if isinstance(key, str) and isinstance(value, str)
+        }
+    return {}
+
+
+def get_filter_settings_for_field(
+    fields: list[FilterFieldConfig], field: object
+) -> tuple[str, list[str], dict[str, str]]:
     """
     Retrieve the allowed operators based on the type of field.
 
@@ -15,14 +43,21 @@ def get_filter_settings_for_field(fields: list[dict], field: object) -> tuple[st
         information (tuple): The desired information.
 
     """
-    for f in fields:
-        if f.get("field") == field:
-            return f.get("type"), f.get("operations"), f.get("values")
+    for config in fields:
+        if config.get("field") == field:
+            field_type = config.get("type")
+            if not isinstance(field_type, str):
+                field_type = "text"
+
+            operations = _coerce_operations(config.get("operations"))
+            values = _coerce_values(config.get("values"))
+
+            return field_type, operations, values
 
     return "text", [], {}
 
 
-def build_dynamic_query(filters: dict) -> tuple[Q, dict, dict]:
+def build_dynamic_query(filters: list[Mapping[str, Any]]) -> tuple[Q, dict[str, Any], dict[str, Any]]:
     """
     Build django query by the given filters.
 
@@ -39,24 +74,33 @@ def build_dynamic_query(filters: dict) -> tuple[Q, dict, dict]:
         return Q(), {}, {}
 
     base_query = Q()
-    annotations = {}
-    annotation_filters = {}
+    annotations: dict[str, Any] = {}
+    annotation_filters: dict[str, Any] = {}
 
     # Group filters by model field
-    grouped_filters = {}
-    for f in filters:
-        field = f.get("field")
+    grouped_filters: dict[str, list[Mapping[str, Any]]] = {}
+    for filter_config in filters:
+        field = filter_config.get("field")
         # Ignore empty filters
         if field == "":
             continue
-        grouped_filters.setdefault(field, []).append(f)
+        if not isinstance(field, str):
+            continue
+        grouped_filters.setdefault(field, []).append(filter_config)
 
     for field, group in grouped_filters.items():
         # Normal fields
-        for f in group:
-            operator = f.get("operator", "exact")
-            value = f.get("value")
-            logic = f.get("logic", "AND")
+        for filter_config in group:
+            operator = filter_config.get("operator", "exact")
+            if not isinstance(operator, str):
+                operator = "exact"
+
+            value = filter_config.get("value")
+
+            logic = filter_config.get("logic", "AND")
+            if not isinstance(logic, str):
+                logic = "AND"
+
             q = Q(**{f"{field}__{operator}": value})
             base_query = base_query & q if logic == "AND" else base_query | q
 

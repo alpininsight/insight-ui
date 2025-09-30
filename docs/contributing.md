@@ -3,7 +3,7 @@
 Danke, dass du Insight UI weiterentwickelst. Dieses Dokument fasst zusammen, wie neue Komponenten, Dokumentation und Tests nach unseren Richtlinien erstellt werden.
 
 ## Voraussetzungen
-- Python 3.10+
+- Python 3.12+
 - [`uv`](https://github.com/astral-sh/uv) für das Abhängigkeitsmanagement
 - Node.js, falls du Tailwind anpassen möchtest
 
