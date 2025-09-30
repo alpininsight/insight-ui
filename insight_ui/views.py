@@ -46,17 +46,10 @@ from insight_ui.demo_context import (
     get_toggle_view_context,
     get_utils_storybook_context,
 )
-from insight_ui.demo_utils import (
-    generate_payload,
-    map_payload_to_cards,
-    map_payload_to_table,
-)
+from insight_ui.demo_utils import generate_payload, map_payload_to_cards, map_payload_to_table
 from insight_ui.forms import ChatForm
 from insight_ui.utils.pagination import get_page
-from insight_ui.utils.query_builder_utils import (
-    FilterFieldConfig,
-    get_filter_settings_for_field,
-)
+from insight_ui.utils.query_builder_utils import FilterFieldConfig, get_filter_settings_for_field
 
 logger = structlog.get_logger(__name__)
 

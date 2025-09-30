@@ -455,9 +455,7 @@ def toggle_view(tag_id: str, table_data: list, view_options: list, current_view:
 
 
 @register.inclusion_tag("insight_ui/components/live_content.html")
-def live_content(
-    url: str = "", interval: int = 0, initial_content: str = "", **kwargs: JsonValue
-) -> dict[str, Any]:
+def live_content(url: str = "", interval: int = 0, initial_content: str = "", **kwargs: JsonValue) -> dict[str, Any]:
     """
     Rendert einen Container für Live-Updates via HTMX.
 
@@ -489,10 +487,7 @@ def live_content(
 
 @register.inclusion_tag("insight_ui/components/websocket.html")
 def insight_websocket(
-    html_tag_id: str = "insight-websocket",
-    ws_url: str = "",
-    initial_content: str = "",
-    **kwargs: JsonValue,
+    html_tag_id: str = "insight-websocket", ws_url: str = "", initial_content: str = "", **kwargs: JsonValue
 ) -> dict[str, Any]:
     """
     Rendert eine WebSocket-Komponente als Wrapper für die htmx v2 ws-Extension.
@@ -558,12 +553,7 @@ def infinite_scroll(  # noqa: PLR0913 (Too many arguments)
 
 
 @register.inclusion_tag("insight_ui/components/alert.html")
-def alert(
-    message: str,
-    alert_type: str = "info",
-    dismissible: bool = True,
-    **kwargs: JsonValue,
-) -> dict[str, Any]:
+def alert(message: str, alert_type: str = "info", dismissible: bool = True, **kwargs: JsonValue) -> dict[str, Any]:
     """
     Rendert eine barrierefreie Benachrichtigung.
 
@@ -584,10 +574,7 @@ def alert(
 
 @register.inclusion_tag("insight_ui/components/sidebar.html")
 def sidebar(
-    sidebar_data: Mapping[str, Any] | None = None,
-    side: str = "right",
-    static: bool = True,
-    auto_close: bool = False,
+    sidebar_data: Mapping[str, Any] | None = None, side: str = "right", static: bool = True, auto_close: bool = False
 ) -> dict[str, Any]:
     """
     Rendert eine konfigurierbare Seitennavigation.
