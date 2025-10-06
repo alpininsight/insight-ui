@@ -1,0 +1,121 @@
+{% load i18n insight_tags %}
+
+<!-- Welcome -->
+<section>
+    <h1>{% trans 'Insight UI Cards' %}</h1>
+    <p class="text-lg text-secondary">
+        {% trans 'Card components and different presentation types.' %}
+    </p>
+</section>
+
+<!-- Card Demo -->
+<section class="component-container">
+    <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-t p-4 py-2 md:px-6 md:py-3">
+        <h2 class="text-xl mb-0">
+            <a
+                href="{% url 'component_detail_page_view' 'card' %}"
+                hx-get="{% url 'component_detail_page_view' 'card' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="inline-flex items-center gap-1 hover:text-blue-300"
+            >
+                {% trans 'Cards' %} {% icon name="open-link" size="small" %}
+            </a>
+        </h2>
+    </div>
+    <div class="flex flex-wrap flex-col md:flex-row items-center md:items-start gap-6 p-4 md:p-6">
+        {% for card in cards %}
+            {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
+        {% endfor %}
+    </div>
+</section>
+
+<!-- More Card Demos -->
+<section class="component-container">
+    <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-t p-4 py-2 md:px-6 md:py-3">
+        <h2 class="text-xl mb-0">
+            <a
+                href="{% url 'component_detail_page_view' 'card' %}"
+                hx-get="{% url 'component_detail_page_view' 'card' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="inline-flex items-center gap-1 hover:text-blue-300"
+            >
+                {% trans 'More Cards' %} {% icon name="open-link" size="small" %}
+            </a>
+        </h2>
+    </div>
+    <div class="flex flex-wrap flex-col md:flex-row items-center md:items-start gap-6 p-4 md:p-6">
+        {% for card in horizontale_cards %}
+            {% card_horizontale title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
+        {% endfor %}
+        {% for card in flip_cards %}
+            {% card_flip title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Card Carousel Demo -->
+<section class="component-container">
+    <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-t p-4 py-2 md:px-6 md:py-3">
+        <h2 class="text-xl mb-0">
+            <a
+                href="{% url 'component_detail_page_view' 'card_carousel' %}"
+                hx-get="{% url 'component_detail_page_view' 'card_carousel' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="inline-flex items-center gap-1 hover:text-blue-300"
+            >
+                {% trans 'Card Carousel' %} {% icon name="open-link" size="small" %}
+            </a>
+        </h2>
+    </div>
+    <div class="p-4 md:p-6">
+        {% carousel carousel_items=carousel_items show_index=True slides_count=range_total_slides items_per_slide=2 %}
+    </div>
+</section>
+
+<!-- Image Carousel Demo -->
+<section class="component-container">
+    <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-t p-4 py-2 md:px-6 md:py-3">
+        <h2 class="text-xl mb-0">
+            <a
+                href="{% url 'component_detail_page_view' 'image_carousel' %}"
+                hx-get="{% url 'component_detail_page_view' 'image_carousel' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="inline-flex items-center gap-1 hover:text-blue-300"
+            >
+                {% trans 'Image Carousel' %} {% icon name="open-link" size="small" %}
+            </a>
+        </h2>
+    </div>
+    <div class="p-4 md:p-6">
+        {% include "insight_ui/components/carousels/image_carousel.html" with carousel_items=image_carousel_items show_dots=True show_index=True slides_count=range_total_slides items_per_slide=1 %}
+    </div>
+</section>
+
+<!--Toggle View Demo -->
+<section class="component-container">
+    <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-t p-4 py-2 md:px-6 md:py-3">
+        <h2 class="text-xl mb-0">
+            <a
+                href="{% url 'component_detail_page_view' 'toggle_view' %}"
+                hx-get="{% url 'component_detail_page_view' 'toggle_view' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="inline-flex items-center gap-1 hover:text-blue-300"
+            >
+                {% trans 'Toggle View' %} {% icon name="open-link" size="small" %}
+            </a>
+        </h2>
+    </div>
+    <div class="p-4 md:p-6">
+        {% toggle_view tag_id="test" table_data=toggle_table view_options=view_options current_view=toggle_start_view %}
+    </div>
+</section>

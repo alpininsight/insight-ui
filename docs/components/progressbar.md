@@ -7,12 +7,12 @@ Das Insight-UI Framework bietet eine Komponente an um einen solchen Fortschritt 
 ## Verwendung
 
 ```django
-
+{% include "insight_ui/components/progress_bar.html" %}
 ```
 
 ## Parameter
 
-- _Todo_
+- N.a.
 
 ## Verwandte Themen
 

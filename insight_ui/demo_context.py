@@ -477,8 +477,10 @@ def get_sidebar_context() -> dict:
                             "htmx": {"target": "#content"},
                         },
                         {
-                            "text": _("SQL-Like Filter"),
-                            "url": reverse("component_detail_page_view", kwargs={"component_name": "sql_like_filter"}),
+                            "text": _("Query-Builder"),
+                            "url": reverse(
+                                "component_detail_page_view", kwargs={"component_name": "query_builder_filter"}
+                            ),
                             "htmx": {"target": "#content"},
                         },
                     ],
@@ -599,7 +601,7 @@ def get_form_storybook_context() -> dict:
 
 def get_filter_storybook_context() -> dict:
     """Serve data for filter example."""
-    return get_base_context() | get_sidebar_context() | get_generic_filter_context() | get_sql_like_filter_context()
+    return get_base_context() | get_sidebar_context() | get_generic_filter_context() | get_query_builder_context()
 
 
 def get_alert_context() -> dict:
@@ -722,6 +724,30 @@ def get_radio_button_context() -> dict:
     }
 
 
+def get_radio_group_context() -> dict:
+    """Serve data for radio group detailpage."""
+    return {
+        "view_options": {
+            "name": "view-options",
+            "param_name": "view",
+            "items": [
+                {"id": "card-view", "value": "card", "icon": {"name": "cards"}},
+                {"id": "table-view", "value": "table", "icon": {"name": "list"}},
+                {"id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},
+            ],
+        },
+        "size_options": {
+            "name": "size-options",
+            "param_name": "size",
+            "items": [
+                {"id": "small-size", "value": "small", "text": "sm"},
+                {"id": "medium-size", "value": "medium", "text": "md"},
+                {"id": "large-size", "value": "large", "text": "lg"},
+            ],
+        },
+    }
+
+
 def get_toggle_button_context() -> dict:
     """Serve data for toggle-button detailpage."""
     return {"example_toggle": {"id": "toggle_button_example1", "text": _("Click me!")}}
@@ -738,30 +764,6 @@ def get_range_slider_context() -> dict:
             "max": 1500,
             "items": [_("100€ (minimum)"), "500€", "750€", "1000€", _("1500€ (maximum)")],
         }
-    }
-
-
-def get_radio_group_context() -> dict:
-    """Serve data for radio group detailpage."""
-    return {
-        "view_options": {
-            "name": "view-options",
-            "param_name": "view",
-            "options": [
-                {"id": "card-view", "value": "card", "icon": {"name": "cards"}},
-                {"id": "table-view", "value": "table", "icon": {"name": "list"}},
-                {"id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},
-            ],
-        },
-        "size_options": {
-            "name": "size-options",
-            "param_name": "size",
-            "options": [
-                {"id": "small-size", "value": "small", "text": "sm"},
-                {"id": "medium-size", "value": "medium", "text": "md"},
-                {"id": "large-size", "value": "large", "text": "lg"},
-            ],
-        },
     }
 
 
@@ -844,8 +846,8 @@ def get_generic_filter_context() -> dict:
     }
 
 
-def get_sql_like_filter_context() -> dict:
-    """Serve data for the SQL-Like filter detailpage."""
+def get_query_builder_context() -> dict:
+    """Serve data for the query-builder detailpage."""
     return {"model_fields": DEMO_FIELDS}
 
 

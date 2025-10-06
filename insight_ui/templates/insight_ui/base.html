@@ -50,9 +50,7 @@
 
         {% block extra_head %}{% endblock %}
     </head>
-    <body {% if not request.COOKIES.insight_ui_theme %} data-theme="{{ INSIGHT_UI.theme }}"{% endif %}
-        class="size-full min-h-screen bg-gray-50 dark:bg-gray-900 text-neutral-700 dark:text-neutral-100 transition-colors duration-200 flex flex-col"
-        hx-ext="ws">
+    <body class="size-full min-h-screen bg-gray-50 dark:bg-gray-900 text-neutral-700 dark:text-neutral-100 transition-colors duration-200 flex flex-col" hx-ext="ws">
 
         {% block background_image %}
         {% endblock background_image %}

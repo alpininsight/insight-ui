@@ -31,28 +31,59 @@
     </div>
 </section>
 
+<!-- Parameters -->
 <section>
     <h3>{% trans "Parameter" %}</h3>
-    <ol class="list-disc text-secondary ms-8">
-        <li><span class="bg-gray-100 dark:bg-gray-800 rounded px-2 py-0.5 text-primary font-semibold">items</span>(<i>list</i>): {% trans "Eine Liste mit Links." %}</li>
-    </ol>
+    <ul class="list-disc text-secondary ms-8">
+        <li><span class="inline-tag">items</span>(<i>list</i>): {% trans "Eine Liste mit Links." %}</li>
+    </ul>
 
     <div class="mt-8">
         <h4>items</h4>
         <p class="text-secondary mb-6">{% trans "Eine Liste von Links für eine mögliche Breadcrumb Anzeige sieht folgendermaßen aus:" %}</p>
 
         <div id="Breadcrumb_Params" data-insight-code-block="python">
-            "breadcrumb_items": [
+            [
                 {"text": _("Startseite"), "url": "storybook_view", "icon": {"name": "home", "size": "small"}},
                 {"text": _("Demo"), "url": "storybook_view"},
                 {"text": _("Komponenten"), "url": None, "active": True},
-            ],
+            ]
         </div>
 
-        <ol class="list-disc text-secondary leading-relaxed ms-8 mt-6">
+        <ul class="list-disc text-secondary leading-relaxed ms-8 mt-6">
             <li><span class="inline-tag">text</span>(<i>str</i>): {% trans "Der Titel des jeweiligen Schritts." %}</li>
             <li><span class="inline-tag">url</span>(<i>str</i>): {% trans "Die URL auf welche der Link führen soll." %}</li>
             <li><span class="inline-tag">icon</span>(<i>dict</i>): {% trans "Ein optional Icon welches vor dem Text angezeigt wird." %}</li>
-        </ol>
+        </ul>
     </div>
+</section>
+
+<!-- Customization -->
+<section>
+    <h2>{% trans "Customization" %}</h2>
+    <p class="text-secondary leading-loose">
+        Das Design der Breadcrumb Komponente befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/breadcrumb.html</span>.
+    </p>
+    <p class="text-secondary leading-loose mt-4">
+        Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad <span class="inline-tag">templates/insight_ui/components/</span> vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+    </p>
+</section>
+
+<!-- A11y -->
+<section>
+    <h2>{% trans "Accessability" %}</h2>
+    <ul class="list-disc text-secondary leading-relaxed ms-8 mt-6">
+        <li>Die Komponente verwendet ein <span class="inline-tag">&lt;nav&gt;</span>-Tag mit dem entsprechenden <span class="inline-tag">aria-label="Breadcrumb"</span>.</li>
+        <li>Das aktive Element besitzt das Attribute <span class="inline-tag">aria-current="page"</span>.</li>
+    </ul>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Related -->
+<section>
+    <h2>{% trans "Related Topics" %}</h2>
+    <ul class="list-disc text-secondary leading-relaxed ms-8 mt-6">
+        <li><a href="#" class="text-link">Links</a> <i>(Todo!)</i></li>
+    </ul>
 </section>

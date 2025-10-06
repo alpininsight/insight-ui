@@ -1,6 +1,6 @@
 {% load insight_tags %}
 
-<ol role="list">
+<ul role="list">
     {% for item in items %}
         <li class="relative {% if not forloop.last %}pb-10{% endif %}">
             {% if not forloop.last %}
@@ -31,4 +31,4 @@
             </a>
         </li>
     {% endfor %}
-</ol>
+</ul>

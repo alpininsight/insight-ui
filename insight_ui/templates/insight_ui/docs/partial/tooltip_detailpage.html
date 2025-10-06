@@ -4,10 +4,10 @@
 
 <!-- Component Demo -->
 <section>
-    <p class="text-secondary leading-loose">
+    <p>
         {% trans 'Manchmal ist die Beschriftung oder das Icon eines Buttons o.ä. nicht eindeutig genug und lässt Raum für Interpretationen, was im schlimmsten Fall zu Verwirrung führen kann. In solchen Fällen ist es hilfreich und wichtig, zusätzliche Informationen anzuzeigen. Um nicht den Fluss der Weboberfläche zu stören, eignen sich _Tooltips_. Diese werden nur angezeigt, wenn der Nutzer sich mit dem Mauszeiger über dem entsprechenden Element befindet. Der Tooltip wird getrennt wom restlichen Layout über allen anderen Elementen angezeigt und ist damit immer sichtbar und stört nicht das gesamtbild.' %}
     </p>
-    <p class="text-secondary leading-loose mt-4">
+    <p class="mt-4">
         {% blocktrans with popover_url='<a href="#" class="text-link">Popover-Komponente</a>'|safe %}
         Ein Tooltip sollte nur für kurze Informationstexte (meist nur ein Wort) verwendet werden, wenn mehr Informationen angezeigt werden sollen, sollte stattdessen die {{ popover_url }} verwendet werden.
         {% endblocktrans %}
@@ -51,32 +51,63 @@
 
 <section>
     <h3>{% trans "data-* Attribute" %}</h3>
-    <ol class="list-disc text-secondary leading-loose ms-8">
+    <ul class="list-disc leading-relaxed ms-8">
         <li><span class="inline-tag">data-tooltip-trigger=&lt;tooltip_ID&gt;</span>: {% trans "Setzt den Auslöser für den Tooltip auf das Element mit der entsprechenden ID." %}</li>
         <li><span class="inline-tag">data-position</span>: {% trans "Bestimmt wo im Bezug auf das Element, der Tooltip angezeigt werden soll. Mögliche Werte sind:" %}
-            <ol class="list-disc leading-relaxed ms-8">
+            <ul class="list-disc leading-relaxed ms-8">
                 <li><span class="inline-tag w-fit">top</span></li>
                 <li><span class="inline-tag w-fit">bottom</span></li>
                 <li><span class="inline-tag w-fit">right</span></li>
                 <li><span class="inline-tag w-fit">left</span></li>
-            </ol>
+            </ul>
         </li>
-    </ol>
+    </ul>
 </section>
 
 <section>
     <h3>{% trans "Parameter" %}</h3>
-    <ol class="list-disc text-secondary leading-loose ms-8">
+    <ul class="list-disc leading-relaxed ms-8">
         <li><span class="inline-tag">text</span>(<i>str</i>): {% trans "Der anzuzeigende Text." %}</li>
         <li><span class="inline-tag">tag_id</span>(<i>str</i>): {% trans "Eine einzigartige ID für den Tooltip, diese muss bei dem auslösenden Element ebenfalls angegeben werden." %}</li>
-    </ol>
+    </ul>
+</section>
+
+<!-- Customization -->
+<section>
+    <h2>{% trans "Customization" %}</h2>
+    <p>
+        Das Design der Tooltip Komponente befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/tooltip.html</span>.
+    </p>
+    <p class="mt-4">
+        Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad <span class="inline-tag">templates/insight_ui/components/</span> vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+    </p>
+</section>
+
+<!-- A11y -->
+<section>
+    <h2>{% trans "Accessability" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li><i>Todo</i></li>
+    </ul>
 </section>
 
 <hr class="text-gray-300 dark:text-gray-600">
 
+<!-- Related -->
 <section>
-    <h2>{% trans "Related topics" %}</h2>
-    <ol class="list-disc ms-8">
-        <li><a href="#" class="text-link">{% trans "Popover" %}</a></li>
-    </ol>
+    <h2>{% trans "Related Topics" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'tooltip' %}"
+                hx-get="{% url 'component_detail_page_view' 'tooltip' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Tooltip" %}
+            </a>
+        </li>
+    </ul>
 </section>

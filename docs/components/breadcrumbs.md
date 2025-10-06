@@ -14,11 +14,11 @@ Für eine gute Konsistenz sollten Breadcrumbs, wenn sie verwendet werden, übera
 
 ## Parameter
 
-- **items**: Eine Liste mit Links.
+- **items** (_list_): Eine Liste von Dictionaries mit den Breadcrumb-Elementen.
 
 ### items
 
-Eine Liste von Links für eine mögliche Breadcrumb Anzeige sieht folgendermaßen aus:
+Eine Liste von Dictionaries mit den Breadcrumb-Elementen.
 
 ```py
 "breadcrumb_items": [
@@ -29,6 +29,17 @@ Eine Liste von Links für eine mögliche Breadcrumb Anzeige sieht folgendermaße
 ```
 
 - Für mehr Details siehe [Links](links.md)
+
+## Customization
+
+Das Design der Breadcrumb Komponente befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/breadcrumb.html`.
+
+Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+
+## Barrierefreiheit
+
+- Die Komponente verwendet ein `<nav>`-Tag mit dem entsprechenden `aria-label="Breadcrumb"`.
+- Das aktive Element besitzt das Attribute `aria-current="page"`.
 
 ## Verwandte Themen
 

@@ -4,8 +4,8 @@
 
 <!-- Component Demo -->
 <section>
-    <p class="text-secondary leading-loose">
-        {% trans 'Todo' %}
+    <p>
+        Mit der <span class="inline-tag">toggle</span> Komponente lässt sich ein Toggle-Button einbauen. Dieser funktioniert im Grunde wie eine einzelne Checkbox.
     </p>
 
     <div class="example-container">
@@ -21,4 +21,64 @@
     <div id="Toggle_Button_Usage" data-insight-code-block="Django">
         &lcub;% toggle toggle=example_toggle %&rcub;
     </div>
+</section>
+
+<section>
+    <h3>{% trans "Parameter" %}</h3>
+
+    <ul class="list-disc leading-relaxed ms-8">
+        <li><span class="inline-tag">toggle</span> (<i>dict</i>): Beschreibt den Toggle-Button.</li>
+    </ul>
+
+    <div class="mt-8">
+        <h4>toggle</h4>
+        <p>Beschreibt den Toggle-Button.</p>
+
+        <div id="Radio_Group_Params" data-insight-code-block="python">
+            {
+                "id": "toggle_button_example1",
+                "text": _("Click me!")
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Customization -->
+<section>
+    <h2>{% trans "Customization" %}</h2>
+    <p>
+        Das Design des Toggle-Buttons befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/toggle_button.html</span>.
+    </p>
+    <p class="mt-4">
+        Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad <span class="inline-tag">templates/insight_ui/components/</span> vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+    </p>
+</section>
+
+<!-- A11y -->
+<section>
+    <h2>{% trans "Accessability" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li><i>Todo</i></li>
+    </ul>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Related -->
+<section>
+    <h2>{% trans "Related Topics" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'checkbox' %}"
+                hx-get="{% url 'component_detail_page_view' 'checkbox' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Checkbox" %}
+            </a>
+        </li>
+    </ul>
 </section>

@@ -1,24 +1,25 @@
 # Differentiator-Komponente (Version 0.1.0)
 
-_Todo_
+Mit dem Differentiator lassen sich Unterschiede zwischen zwei Texten grafisch darstellen, was vor allem bei längeren Texten mit nur kleinen Änderungen, eine sehr gute Hilfe bieten kann. Für Texte welche sich mehr oder weniger komplett voneinander unterscheiden, ist diese Komponente wahrscheinlich weniger nützlich.
 
 ## Verwendung
 
 ```django
-    Todo
+    {{ textA|diff:textB|safe }}
 ```
 
 ## Parameter
 
-- **Todo**:
+- **textA** (_str_): Die ursprüngliche Version des Textes.
+- **textB** (_str_): Die veränderte Version des Textes.
 
-### _Todo_
+## Customization
 
-```py
-{
+- _Todo_
 
-}
-```
+## Barrierefreiheit
+
+- _Todo_
 
 ## Verwandte Themen
 

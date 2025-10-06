@@ -4,8 +4,8 @@
 
 <!-- Component Demo -->
 <section>
-    <p class="text-secondary leading-loose">
-        {% trans 'Todo' %}
+    <p>
+        Mit der <span class="inline-tag">paginated_list</span> Komponente lässt sich eine Liste auf mehrere Seiten aufteilen, welche mittels der durch diese Komponente dargestellte Pagination am Ende der Liste gewechselt werden kann. Dies ist praktisch für große Datenmengen und bietet eine alternative zur <span class="inline-tag">infinite_scroll</span> Komponente.
     </p>
 
     <div class="example-container">
@@ -25,4 +25,68 @@
             &lcub;% paginated_list with current_page=start_page surrounding_pages=surrounding_pages %&rcub;
         &lt;/div&gt;
     </div>
+</section>
+
+<section>
+    <h3>{% trans "Parameter" %}</h3>
+    <ul class="list-disc leading-relaxed ms-8">
+        <li><span class="inline-tag">current_page</span> (<i>Page</i>): Ein von Django erzeugtes Pagination-Objekt der aktuellen Seite.</li>
+        <li><span class="inline-tag">surrounding_pages</span> (<i>list</i>): Eine liste der benachbarten Seiten.</li>
+    </ul>
+
+    <div class="mt-8">
+        <h4>current_page</h4>
+        <p class="mb-6">Ein von Django erzeugtes Pagination-Objekt der aktuellen Seite.</p>
+
+        <div id="Pagination_Params1" data-insight-code-block="python">
+            <i>Todo</i>
+        </div>
+
+        <h4 class="mt-6">surrounding_pages</h4>
+        <p class="mb-6">Eine liste der benachbarten Seiten.</p>
+
+        <div id="Pagination_Params2" data-insight-code-block="python">
+            <i>Todo</i>
+        </div>
+    </div>
+</section>
+
+<!-- Customization -->
+<section>
+    <h2>{% trans "Customization" %}</h2>
+    <p>
+        Das Design der Pagination befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/pagination.html</span>.
+    </p>
+    <p class="mt-4">
+        Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad <span class="inline-tag">templates/insight_ui/components/</span> vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+    </p>
+</section>
+
+<!-- A11y -->
+<section>
+    <h2>{% trans "Accessability" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li><i>Todo</i></li>
+    </ul>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Related -->
+<section>
+    <h2>{% trans "Related Topics" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'infinite_scroll' %}"
+                hx-get="{% url 'component_detail_page_view' 'infinite_scroll' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Infinite Scroll" %}
+            </a>
+        </li>
+    </ul>
 </section>

@@ -51,6 +51,16 @@ Ein Dictionary welches das Dropdown Menü beschreibt.
     - **view_name**: Der Name der View zu wessen Endpunkt der Request gesendet werden soll.
     - **icon**: Ein optionales Icon welches vor dem Text angezeigt wird.
 
+## Customization
+
+Das Design des Dropdown Menüs befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/dropdown.html`.
+
+Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+
+## Barrierefreiheit
+
+- _Todo_
+
 ## Verwandte Themen
 
 - _Todo_

@@ -4,8 +4,11 @@
 
 <!-- Component Demo -->
 <section>
-    <p class="text-secondary leading-loose">
-        {% trans 'Todo' %}
+    <p>
+        Die <span class="inline-tag">infinite_scroll</span> Komponente stellt eine Alternative zu einer Pagination dar und kann dazu verwendet werden, eine große Menge Daten darzustellen. Anstatt von Seite zu Seite zu wechseln, lädt der Infinite Scroll nach dem ein bestimmter Schwellwert beim Scrollen erreicht wurde, weitere Daten aus dem Backend und fügt diese mittels HTMX an das Ende an.
+    </p>
+    <p class="mt-4">
+        Die Komponente wird in zwei Varianten zur Verfügung gestellt, eine mit automatischer Erweiterung und eine zweite, wobei zum Laden neuer Elemente aktiv ein Button <i>Lade weitere</i> geklickt werden muss.
     </p>
 
     <div class="example-container">
@@ -23,4 +26,55 @@
 
         &lcub;% infinite_scroll items=scroll_items view_name="more_items" auto_fetch=False %&rcub;
     </div>
+</section>
+
+<section>
+    <h3>{% trans "Parameter" %}</h3>
+    <ul class="list-disc leading-relaxed ms-8">
+        <li><span class="inline-tag">items</span> (<i>list</i>): Eine Liste der bereits geladenen Elemente.
+        <li><span class="inline-tag">view_name</span> (<i>str</i>): Der Name der View vom welcher die Daten abgefragt werden sollen.
+        <li><span class="inline-tag">auto_fetch</span> (<i>bool</i>): False wenn der Nutzer aktiv weitere Elemente per Button anfordern soll.
+        <li><span class="inline-tag">threshold</span> (<i>int</i>): Der Pixel-Schwellenwert für das Laden weiterer Elemente (nur wenn **auto_fetch=False**).
+        <li><span class="inline-tag">kwargs</span>: Zusätzliche Optionen (<span class="inline-tag">id</span> = Tag-ID).
+    </ul>
+</section>
+
+<!-- Customization -->
+<section>
+    <h2>{% trans "Customization" %}</h2>
+    <p>
+        Das Design der Infinite Scroll Komponente befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/infinite_scroll.html</span>. Das Design der Elemente befindet sich in einer separaten Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/infinite_scroll_items</span>.
+    </p>
+    <p class="mt-4">
+        Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad <span class="inline-tag">templates/insight_ui/components/</span> vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+    </p>
+</section>
+
+<!-- A11y -->
+<section>
+    <h2>{% trans "Accessability" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li><i>Todo</i></li>
+    </ul>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Related -->
+<section>
+    <h2>{% trans "Related Topics" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'pagination' %}"
+                hx-get="{% url 'component_detail_page_view' 'pagination' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Pagination" %}
+            </a>
+        </li>
+    </ul>
 </section>

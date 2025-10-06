@@ -12,10 +12,10 @@ Die Toggle-View wird direkt über das `{% toggle_view %}` Tag eingebunden. Diese
 
 ## Parameter
 
-- **tag_id**: Eine eindeutige ID um Konflikte mit den Radio-Buttons der View-Auswahl zu vermeiden (optional, aber empfohlen).
-- **table_data**: Die Daten für die Tabellen-Ansicht sofern diese als current_view_ eingestellt ist.
-- **view_options**: Eine Liste der View-Varianten welche ausgewählt werden können.
-- **current_view**: Die anzuzeigende View-Variante (Start-View).
+- **tag_id** (_str_): Eine eindeutige ID um Konflikte mit den Radio-Buttons der View-Auswahl zu vermeiden (optional, aber empfohlen).
+- **table_data** (_list_): Die Daten für die Tabellen-Ansicht sofern diese als **current_view** eingestellt ist.
+- **view_options** (_list_): Eine Liste der View-Varianten welche ausgewählt werden können.
+- **current_view** (_str_): Die anzuzeigende View-Variante (Start-View).
 
 ## Verwandte Themen
 

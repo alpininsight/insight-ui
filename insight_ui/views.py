@@ -39,10 +39,10 @@ from insight_ui.demo_context import (
     get_navbar_context,
     get_pagination_context,
     get_popup_storybook_context,
+    get_query_builder_context,
     get_radio_button_context,
     get_range_slider_context,
     get_sidebar_context,
-    get_sql_like_filter_context,
     get_step_bar_context,
     get_table_context,
     get_table_storybook_context,
@@ -264,7 +264,7 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
         "table": get_table_context,
         "generic_filter": get_generic_filter_context,
         "search_bar": get_empty_context,
-        "sql_like_filter": get_sql_like_filter_context,
+        "query_builder": get_query_builder_context,
         "card": get_cards_context,
         "card_carousel": get_card_carousel_context,
         "image_carousel": get_image_carousel_context,
@@ -291,7 +291,7 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
         return render(request, f"insight_ui/docs/partial/{component_name}_detailpage.html", context)
 
     context = get_base_context() | get_sidebar_context() | context_func()
-    context["template_name"] = f"{component_name}_detailpage"
+    context["template_name"] = f"insight_ui/docs/partial/{component_name}_detailpage.html"
     return render(request, "insight_ui/docs/component_detailpage.html", context)
 
 
@@ -328,10 +328,10 @@ def storybook_view(request: HttpRequest, storybook_name: str) -> HttpResponse:
     if request.headers.get("HX-Request"):
         context = context_func()
         context["search_query"] = request.GET.get("search", "")
-        return render(request, f"insight_ui/docs/partial/{storybook_name}_storybook.html", context)
+        return render(request, f"insight_ui/docs/partial/storybooks/{storybook_name}_storybook.html", context)
 
     context = context_func()
-    context["template_name"] = f"{storybook_name}_storybook"
+    context["template_name"] = f"insight_ui/docs/partial/storybooks/{storybook_name}_storybook.html"
     return render(request, "insight_ui/docs/component_detailpage.html", context)
 
 
