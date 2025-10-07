@@ -4,11 +4,11 @@
 
 <!-- Component Demo -->
 <section>
-    <p class="text-secondary leading-loose mb-4">
+    <p>
         {% trans 'Für einen gewöhnlichen Button stellt unser UI-Framework eine Reihe von CSS-Klassen zur Verfügung. Damit lassen sich Buttons für unterschiedliche Szenarien ohne großen Aufwand mit gängigen CSS-Klassen einbauen.' %}
     </p>
 
-    <h2>{% trans "Standard Buttons" %}</h2>
+    <h2 class="mt-4">{% trans "Standard Buttons" %}</h2>
     <div class="example-container mt-3 mb-6">
         <div class="flex flex-col md:flex-row items-stretch flex-wrap gap-1">
             <button class="btn btn-primary">{% trans "Primary" %}</button>
@@ -83,11 +83,11 @@
         &lt;button class="btn btn-primary btn-xs"&gt;&lcub;% trans "Click me!" %&rcub;&lt;/button&gt;
     </div>
 
-    <p class="text-secondary leading-loose mt-6">Die Klasse <span class="inline-tag">btn</span> gibt dem Button seine Form, aber weder Farbe noch Effekte.</p>
+    <p class="mt-6">Die Klasse <span class="inline-tag">btn</span> gibt dem Button seine Form, aber weder Farbe noch Effekte.</p>
 
     <h3 class="mt-8">Farbe / Hover-Effekte</h3>
-    <p class="text-secondary leading-loose">Für die Auswahl der Farbe, gibt es die folgenden Varianten:</p>
-    <ul class="list-disc text-secondary leading-relaxed ms-8">
+    <p>Für die Auswahl der Farbe, gibt es die folgenden Varianten:</p>
+    <ul class="list-disc leading-relaxed ms-8">
         <li><span class="inline-tag">btn-primary</span>: Für die primären und damit wichtigsten Buttons.</li>
         <li><span class="inline-tag">btn-secondary</span>: Für die etwas weniger wichtigen Buttons.</li>
         <li><span class="inline-tag">btn-info</span>: Für rein informative Buttons.</li>
@@ -97,19 +97,19 @@
     </ul>
 
     <h3 class="mt-8">Outline</h3>
-    <p class="text-secondary leading-loose">Für Buttons ohne Füllung gibt es die gleichen Varianten mit **outline** in der Mitte, also bspw. **btn-outline-primary**.</p>
+    <p>Für Buttons ohne Füllung gibt es die gleichen Varianten mit <span class="inline-tag">outline</span> in der Mitte, also bspw. <span class="inline-tag">btn-outline-primary</span>.</p>
 
     <h3 class="mt-8">Größe</h3>
-    <p class="text-secondary leading-loose">Um die Größe eines Buttons anzupassen, kann eine der folgende Klassen hinzugefügt werden:</p>
-    <ul class="list-disc text-secondary leading-relaxed ms-8">
+    <p>Um die Größe eines Buttons anzupassen, kann eine der folgende Klassen hinzugefügt werden:</p>
+    <ul class="list-disc leading-relaxed ms-8">
         <li><span class="inline-tag">btn-large</span>: Groß.</li>
         <li><span class="inline-tag">btn-sm</span>: Klein.</li>
         <li><span class="inline-tag">btn-xs</span>: Sehr Klein.</li>
     </ul>
 
     <h3 class="mt-8">Icon</h3>
-    <p class="text-secondary leading-loose">Für ein Button ohne Text gibt es eine extra Klasse, welche einen quadratischen Button darstellt:</p>
-    <ul class="list-disc text-secondary leading-relaxed ms-8">
+    <p>Für ein Button ohne Text gibt es eine extra Klasse, welche einen quadratischen Button darstellt:</p>
+    <ul class="list-disc leading-relaxed ms-8">
         <li><span class="inline-tag">btn-icon</span>: Quadratisch und enthält nur ein Icon.</li>
     </ul>
 </section>
@@ -117,7 +117,7 @@
 <!-- Customization -->
 <section>
     <h2>{% trans "Customization" %}</h2>
-    <p class="text-secondary leading-loose">
+    <p>
         Alle <span class="inline-tag">btn-*</span>-Klassen sind in der Datei <span class="inline-tag">insight_ui/utils/input.css</span> innerhalb des <span class="inline-tag">@layer components</span> Bereichs definiert und können dort nach belieben angepasst werden.</p>
     </p>
 </section>
@@ -126,7 +126,7 @@
 <section>
     <h2>{% trans "Accessability" %}</h2>
     <h3>{% trans "Tipps" %}</h3>
-    <ul class="list-disc text-secondary leading-relaxed ms-8 mt-6">
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
         <li>Buttons welche lediglich ein Icon besitzen und keinen Text, sollten ein beschreibendes <span class="inline-tag">aria-label</span> besitzen.</li>
         <li>Ein Button sollte so wie der Rest der Webseite, immer auch mit der Tastatur ansteuer- und bedienbar sein.</li>
         <li>Für die korrekten Einhaltung der Semantik, ist ein <span class="inline-tag">&lt;button&gt;</span> einem interaktivem <span class="inline-tag">&lt;div&gt;</span>-Container immer vorzuziehen.</li>
@@ -138,7 +138,7 @@
 <!-- Related -->
 <section>
     <h2>{% trans "Related Topics" %}</h2>
-    <ul class="list-disc text-secondary leading-relaxed ms-8 mt-6">
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
         <li><a href="#" class="text-link">Links</a> <i>(Todo!)</i></li>
     </ul>
 </section>

@@ -274,6 +274,7 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
         "sidebar": get_drawer_context,
         "footer": get_footer_context,
         "bullet_point_list": get_bullet_point_list_context,
+        "progress_bar": get_empty_context,
         "tabs": get_tabs_context,
         "accordion": get_accordion_context,
         "3D_carousel": get_3d_carousel_context,

@@ -1,6 +1,6 @@
 # Carousel-Komponente (Version 0.1.0)
 
-Mit einem Karussell können Daten aber vor allem Bilder auf eine spezielle Art, Platzsparend und interaktiv angezeigt werden.
+Mit der `carousel` Komponente können Bilder, aber auch alle möglichen anderen Sachen, Platzsparend und interaktiv angezeigt werden und es befindet sich immer ein Objekt im Fokus. Daher eignet sich die Komponente vor allem für Bilder.
 
 ## Verwendung
 

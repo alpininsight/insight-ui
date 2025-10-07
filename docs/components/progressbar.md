@@ -1,8 +1,10 @@
 # Progressbar-Komponente (Version 0.1.0)
 
-Mit der Progressbar kann dem Nutzer der Fortschritt eines im Hintergrund laufenden Prozesses visuell dargestellt werden. Beispielsweise ein Download bei welchem der Nutzer bis auf das Auslösen, nicht aktiv an der Fortführung des Prozesses beteiligt ist.
+> **_Info_**: Diese Komponente befindet sich noch in Bearbeitung!
 
-Das Insight-UI Framework bietet eine Komponente an um einen solchen Fortschritt ohne großen Aufwand anzeigen zu können.
+Die `progress_bar` Komponente wird dafür verwendet dem Nutzer den Fortschritt eines im Hintergrund laufenden Prozesses visuell darzustellen. Ein gängiges Szenario für solche Komponenten sind zum Beispiel Downloads.
+
+Für eine Fortschrittsanzeige wo der Fortschritt durch aktives Zutun des Nutzers entsteht, eignet sich unsere [Step Bar](step_bar.md) Komponente.
 
 ## Verwendung
 
@@ -14,6 +16,16 @@ Das Insight-UI Framework bietet eine Komponente an um einen solchen Fortschritt 
 
 - N.a.
 
-## Verwandte Themen
+## Customization
+
+Das Design der Progressbar Komponente befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/progress_bar.html`.
+
+Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+
+## Barrierefreiheit
 
 - _Todo_
+
+## Verwandte Themen
+
+- [Step Bar](step_bar.md)

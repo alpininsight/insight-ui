@@ -64,6 +64,9 @@
     h4 {
         @apply text-lg font-semibold text-insight-text-primary dark:text-white mb-1;
     }
+    h5 {
+        @apply text-base font-semibold text-insight-text-primary dark:text-white mb-1;
+    }
 }
 
 @layer components {

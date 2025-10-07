@@ -36,12 +36,10 @@
         <li><span class="inline-tag">message</span> (<i>str</i>): {% trans "Die Hauptnachricht der Benachrichtigung" %}</li>
         <li>
             <span class="inline-tag">type</span> (<i>str</i>): {% trans "Der Typ der Benachrichtigung. Mögliche Werte:" %}
-            <ul class="list-disc leading-relaxed ms-8">
-                <li><span class="inline-tag w-fit">info</span></li>
-                <li><span class="inline-tag w-fit">success</span></li>
-                <li><span class="inline-tag w-fit">warning</span></li>
-                <li><span class="inline-tag w-fit">error</span></li>
-            </ul>
+            <span class="inline-tag">info</span>
+            <span class="inline-tag">success</span>
+            <span class="inline-tag">warning</span>
+            <span class="inline-tag">error</span>
         </li>
         <li><span class="inline-tag">dismissible</span> (<i>bool</i>): {% blocktrans with true='<span class="text-blue-400 font-semibold">True</span>'|safe %}{{ true }} wenn die Benachrichtigung schließbar sein soll. {% endblocktrans %}</li>
     </ul>

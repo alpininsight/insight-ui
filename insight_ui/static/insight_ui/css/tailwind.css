@@ -424,9 +424,6 @@
   .my-4 {
     margin-block: calc(var(--spacing) * 4);
   }
-  .my-12 {
-    margin-block: calc(var(--spacing) * 12);
-  }
   .my-16 {
     margin-block: calc(var(--spacing) * 16);
   }
@@ -489,6 +486,9 @@
   }
   .mb-6 {
     margin-bottom: calc(var(--spacing) * 6);
+  }
+  .mb-8 {
+    margin-bottom: calc(var(--spacing) * 8);
   }
   .-ml-1 {
     margin-left: calc(var(--spacing) * -1);
@@ -2248,12 +2248,6 @@
       }
     }
   }
-  .dark\:border {
-    &:where([data-theme=dark], [data-theme=dark] *) {
-      border-style: var(--tw-border-style);
-      border-width: 1px;
-    }
-  }
   .dark\:border-0 {
     &:where([data-theme=dark], [data-theme=dark] *) {
       border-style: var(--tw-border-style);
@@ -2284,11 +2278,6 @@
   .dark\:border-gray-700 {
     &:where([data-theme=dark], [data-theme=dark] *) {
       border-color: var(--color-gray-700);
-    }
-  }
-  .dark\:border-gray-800 {
-    &:where([data-theme=dark], [data-theme=dark] *) {
-      border-color: var(--color-gray-800);
     }
   }
   .dark\:border-green-800 {
@@ -2347,11 +2336,6 @@
   .dark\:bg-gray-900 {
     &:where([data-theme=dark], [data-theme=dark] *) {
       background-color: var(--color-gray-900);
-    }
-  }
-  .dark\:bg-gray-950 {
-    &:where([data-theme=dark], [data-theme=dark] *) {
-      background-color: var(--color-gray-950);
     }
   }
   .dark\:bg-green-900\/20 {
@@ -2606,6 +2590,17 @@
     margin-bottom: calc(var(--spacing) * 1);
     font-size: var(--text-lg);
     line-height: var(--tw-leading, var(--text-lg--line-height));
+    --tw-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-insight-text-primary);
+    &:where([data-theme=dark], [data-theme=dark] *) {
+      color: var(--color-white);
+    }
+  }
+  h5 {
+    margin-bottom: calc(var(--spacing) * 1);
+    font-size: var(--text-base);
+    line-height: var(--tw-leading, var(--text-base--line-height));
     --tw-font-weight: var(--font-weight-semibold);
     font-weight: var(--font-weight-semibold);
     color: var(--color-insight-text-primary);

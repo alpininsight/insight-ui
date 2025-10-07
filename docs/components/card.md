@@ -1,6 +1,6 @@
 # Card-Komponente (Version 0.1.0)
 
-Karten werden dazu verwendet Informationsgruppen zu erstellen. Jede Karte besteht aus einer Überschrift und ihren Hauptinhalt. Dazu gibt es noch weitere Optionen, wie ein Hintergrundbild oder ein Untertitel und Aktion-Buttons.
+Die `card` Komponenten werden dazu verwendet Informationsgruppen zu erstellen. Jede Karte besteht aus einer Überschrift und ihren Hauptinhalt. Dazu gibt es noch weitere Optionen, wie ein Hintergrundbild oder ein Untertitel und Aktion-Buttons.
 
 Für die Card Komponente gibt es unterschiedliche Varianten zur Auswahl:
 

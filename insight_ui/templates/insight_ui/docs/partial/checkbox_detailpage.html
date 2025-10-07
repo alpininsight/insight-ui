@@ -4,7 +4,7 @@
 
 <!-- Component Demo -->
 <section>
-    <p class="text-secondary leading-loose">
+    <p>
         Mit der <span class="inline-tag">checkbox</span> Komponente lassen sich einzelne oder Gruppen von Checkbox-Elementen einbauen.
     </p>
 
@@ -23,13 +23,13 @@
     </div>
 
     <h3 class="mt-8">{% trans "Parameter" %}</h3>
-    <ul class="list-disc text-secondary leading-loose ms-8">
+    <ul class="list-disc leading-relaxed ms-8">
         <li><span class="inline-tag">checkbox</span> (<i>dict</i>): Beschreibt die Checkbox Komponente.</li>
     </ul>
 
     <div class="mt-8">
         <h4>checkbox</h4>
-        <p class="text-secondary mb-6">{% trans "Beschreibt die Checkbox Komponente." %}</p>
+        <p class="mb-6">{% trans "Beschreibt die Checkbox Komponente." %}</p>
 
         <div id="Checkbox_Params" data-insight-code-block="python">
             {
@@ -47,10 +47,10 @@
 <!-- Customization -->
 <section>
     <h2>{% trans "Customization" %}</h2>
-    <p class="text-secondary leading-loose">
+    <p>
         Das Design der Checkbox Komponente befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/checkbox.html</span>.
     </p>
-    <p class="text-secondary leading-loose mt-4">
+    <p class="mt-4">
         Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad <span class="inline-tag">templates/insight_ui/components/</span> vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
     </p>
 </section>
@@ -58,7 +58,7 @@
 <!-- A11y -->
 <section>
     <h2>{% trans "Accessability" %}</h2>
-    <ul class="list-disc text-secondary leading-relaxed ms-8 mt-6">
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
         <li>Das <span class="inline-tag">&lt;label&gt;</span> und der dazugehörige <span class="inline-tag">&lt;input&gt;</span> sind mit <span class="inline-tag">for</span> / <span class="inline-tag">id</span> miteinander verknüpft.</li>
     </ul>
 </section>
@@ -68,7 +68,7 @@
 <!-- Related -->
 <section>
     <h2>{% trans "Related Topics" %}</h2>
-    <ul class="list-disc text-secondary leading-relaxed ms-8 mt-6">
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
         <li>
             <a
                 href="{% url 'component_detail_page_view' 'radio_button' %}"
@@ -78,7 +78,7 @@
                 hx-push-url="true"
                 class="text-link"
             >
-                Radio-Button
+                {% trans "Radio-Button" %}
             </a>
         </li>
         <li>
@@ -90,7 +90,7 @@
                 hx-push-url="true"
                 class="text-link"
             >
-                Toggle-Button
+                {% trans "Toggle-Button" %}
             </a>
         </li>
     </ul>

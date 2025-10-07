@@ -419,6 +419,11 @@ def get_sidebar_context() -> dict:
                             "htmx": {"target": "#content"},
                         },
                         {
+                            "text": _("Progress Bar"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "progress_bar"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
                             "text": _("Geo-Maps"),
                             "url": reverse("component_detail_page_view", kwargs={"component_name": "geo_map"}),
                             "htmx": {"target": "#content"},
@@ -478,9 +483,7 @@ def get_sidebar_context() -> dict:
                         },
                         {
                             "text": _("Query-Builder"),
-                            "url": reverse(
-                                "component_detail_page_view", kwargs={"component_name": "query_builder_filter"}
-                            ),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "query_builder"}),
                             "htmx": {"target": "#content"},
                         },
                     ],

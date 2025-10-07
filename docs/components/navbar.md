@@ -1,13 +1,13 @@
 # Navbar-Komponente (Version 0.1.0)
 
-Die Navbar-Komponente stellt eine anpassbare Navigationsleiste mit verschiedenen Komponenten zur Verfügung. Die Navigation ist fixiert am oberen Rand des Browserfenstern und bewegt sich beim nach unten Scrollen mit. Die Navigationsleiste besteht aus den folgenden Komponenten:
+Die `navbar` Komponente stellt eine anpassbare Navigationsleiste mit verschiedenen Komponenten zur Verfügung. Die Navigation ist fixiert am oberen Rand des Browserfenstern und bewegt sich beim nach unten Scrollen mit. Die Navigationsleiste besteht aus den folgenden Komponenten:
 
-- **Logo und Titel**
-- **Navigationslinks**
-- **Suchleiste**
-- **Login/Benutzermenü**
-- **Sprachauswahl**
-- **Theme-Toggle Button**
+- **Brand**: Logo und Titel am linken Rand.
+- **Navigationslinks**: Hauptnavigation, rechts neben dem Logo und Titel.
+- **Suchleiste**: Eine optionale Suchleiste, rechts neben der Hauptnavigation.
+- **Login/Benutzermenü**: Ein optionales, anpassbares Benutzermenü bzw. ein Anmeldebutton wenn der Nutzer nicht angemeldet ist.
+- **Sprachauswahl**: Ein optionales Menü zum auswählen der Sprache, in welcher die Webseite angezeigt werden soll.
+- **Theme-Toggle Button**: Ein optionaler Button zum wechseln wischen dem hellen und dem dunklen Design.
 
 ## Verwendung
 
@@ -23,15 +23,12 @@ Eingebunden wird die Navbar am einfachsten über das entsprechende _Template-Tag
 
 ## Parameter
 
-Die Navbar bekommt bis zu vier Parameter.
+- **config** (_dict_): Ein Dictionary mit der gesamten Konfiguration der Navigationsleiste.
+- **user** (_User_): Das *user* Objekt des Requests (sollte eigentlich immer verfügbar sein).
+- **user_dropdown_links** (_list_): Eine Liste mit den Links welche in dem Benutzermenü angezeigt werden sollen.
+- **show_login** (_bool_): _True_ wenn ein Button zum Anmelden angezeigt werden soll (standardmäßig aus, also `False`).
 
-- **navbar**: Ein Dictionary mit der gesamten Konfiguration der Navigationsleiste (mehr dazu gleich).
-- **user**: Das *user* Objekt des Requests (sollte eigentlich immer verfügbar sein).
-- **user_dropdown_links**: Eine Liste mit den Links welche in dem Benutzermenü angezeigt werden sollen.
-    - siehe [Benutzermenü](usermenu.md)
-- **show_login**: _True_ wenn ein Button zum Anmelden angezeigt werden soll (standardmäßig aus, also `False`).
-
-### Konfiguration
+### config
 
 Das Dictionary mit der Navbar Konfiguration ist etwas größer und wird hier einmal näher erläutert.
 
@@ -79,14 +76,22 @@ Beinhaltet die Einstellungen für den Titel und das daneben stehende Logo. Das L
 
 #### show_...
 
-- `"show_searchbar"`: _True_ wenn eine Suchleiste nach den Links angezeigt werden soll
-- `"show_usermenu"`: _True_ wenn ein Benutzermenü/Login an der rechten Seite angezeigt werden soll (der externe Parameter **show_login** wird nur zum verstecken des Login's auf bestimmten Seiten verwendet)
-- `"show_language_selector"`: _True_ wenn eine Sprachauswahl an der rechten Seite angezeigt werden soll
-- `"show_theme_toggle"`: _True_ wenn der Theme-Toggle (hell/dunkel) an der rechten Seite angezeigt werden soll
+- **show_searchbar** (_bool_): _True_ wenn eine Suchleiste nach den Links angezeigt werden soll.
+- **show_usermenu** (_bool_): _True_ wenn ein Benutzermenü/Login an der rechten Seite angezeigt werden soll.
+- **show_language_selector** (_bool_): _True_ wenn eine Sprachauswahl an der rechten Seite angezeigt werden soll.
+- **show_theme_toggle** (_bool_): _True_ wenn der Theme-Toggle (hell/dunkel) an der rechten Seite angezeigt werden soll.
+
+> **_Info_**: Der externe Parameter **show_login** wird zum verstecken des Anmeldebutton auf bestimmten Seiten bspw. der Anmeldeseite verwendet.
+
+## Customization
+
+Das Design der Navbar Komponente befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/navbar.html`.
+
+Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
 
 ## Barrierefreiheit
 
-Die Navbar-Komponente enthält einen **Skip-Link** zum *Hauptinhalt*.
+- Die Navbar-Komponente enthält einen **Skip-Link** zum *Hauptinhalt*.
 
 ## Verwandte Themen
 
