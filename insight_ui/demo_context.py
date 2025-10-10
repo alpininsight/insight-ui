@@ -325,6 +325,16 @@ def get_sidebar_context() -> dict:
                             ),
                             "htmx": {"target": "#content"},
                         },
+                        {
+                            "text": _("Accordion"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "accordion"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Tabs"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "tabs"}),
+                            "htmx": {"target": "#content"},
+                        },
                     ],
                 },
                 {
@@ -415,6 +425,12 @@ def get_sidebar_context() -> dict:
                             "htmx": {"target": "#content"},
                         },
                         {
+                            "text": _("Charts"),
+                            "icon": {"name": "tools", "size": "xs"},
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "chart"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
                             "text": _("Live-Content (Pull)"),
                             "url": reverse("component_detail_page_view", kwargs={"component_name": "live_content"}),
                             "htmx": {"target": "#content"},
@@ -490,6 +506,11 @@ def get_sidebar_context() -> dict:
                             "htmx": {"target": "#content"},
                         },
                         {
+                            "text": _("3D Carousel"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "3D_carousel"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
                             "text": _("Toggle-View"),
                             "url": reverse("component_detail_page_view", kwargs={"component_name": "toggle_view"}),
                             "htmx": {"target": "#content"},
@@ -520,6 +541,7 @@ def get_main_storybook_context() -> dict:
         | get_breadcrumb_context()
         | get_step_bar_context()
         | get_bullet_point_list_context()
+        | get_accordion_context()
         | {"htmx_config": {"url": "/api/form-submit/", "method": "post", "target": "#htmx-form", "swap": "innerHTML"}}
     )
 
@@ -966,6 +988,33 @@ def get_bullet_point_list_context() -> dict:
             {"title": _("Überprüfen"), "description": _("Prüfen der Angaben und Bezahlen.")},
         ]
     }
+
+
+def get_accordion_context() -> dict:
+    """Serve data for accordion detailpage."""
+    return {
+        "accordion_items": [
+            {"question": "Was ist Django?", "answer": "Django ist ein Webframework für Python."},
+            {"question": "Was ist Tailwind?", "answer": "Tailwind ist ein CSS-Utility-Framework."},
+            {"question": "Was ist ARIA?", "answer": "ARIA steht für Accessible Rich Internet Applications."},
+        ]
+    }
+
+
+def get_tabs_context() -> dict:
+    """Serve data for tabs detailpage."""
+    return {
+        "tabs_config": {
+            "id": "example_tabs",
+            "label": "Tabs Example",
+            "tabs": [{"id": "First", "view_name": "index", "title": _("First Tab")}],
+        }
+    }
+
+
+def get_3d_carousel_context() -> dict:
+    """Serve data for 3D carousel detailpage."""
+    return {"3D_carousel": {"items": map_payload_to_cards(generate_payload()), "range_total_slides": range(5)}}
 
 
 def get_empty_context() -> dict:

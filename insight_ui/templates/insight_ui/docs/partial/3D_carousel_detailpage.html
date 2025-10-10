@@ -1,0 +1,77 @@
+{% load i18n insight_tags %}
+
+<h1>Insight UI 3D Carousel</h1>
+
+<!-- Component Demo -->
+<section>
+    <p>
+        Todo
+    </p>
+
+    <div class="example-container h-screen">
+        {% three_d_carousel carousel_items=3D_carousel.items show_dots=True show_index=True slides_count=3D_carousel.range_total_slides %}
+    </div>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h2>{% trans "Verwendung" %}</h2>
+    <div id="3D_Carousel_Usage" data-insight-code-block="Django">
+        &lcub;% load insight_tags %&rcub;
+
+        &lcub;% three_d_carousel carousel_items=3D_carousel.items show_dots=True show_index=True slides_count=3D_carousel.range_total_slides %&rcub;
+    </div>
+</section>
+
+<section>
+    <h3>{% trans "Parameter" %}</h3>
+    <ul class="list-disc leading-relaxed ms-8">
+        <li><span class="inline-tag">items</span> (<i>list</i>): Die einzelnen Bereiche des Accordion.</li>
+        <li><span class="inline-tag">id</span> (<i>str</i>): Eine eindeutige ID für das Accordion.</li>
+        <li><span class="inline-tag">exclusive</span> (<i>bool</i>): <i>True</i> wenn nur ein Element zur selben Zeit geöffnet sein darf.</li>
+    </ul>
+
+    <div class="mt-8">
+        <h4>items</h4>
+        <p class="mb-6">Die einzelnen Bereiche des Accordion.</p>
+
+        <div id="Accordion_Params" data-insight-code-block="python">
+            [
+                {"question": "Was ist Django?", "answer": "Django ist ein Webframework für Python."},
+                {"question": "Was ist Tailwind?", "answer": "Tailwind ist ein CSS-Utility-Framework."},
+                {"question": "Was ist ARIA?", "answer": "ARIA steht für Accessible Rich Internet Applications."},
+            ]
+        </div>
+    </div>
+</section>
+
+<!-- Customization -->
+<section>
+    <h2>{% trans "Customization" %}</h2>
+    <p>
+        Das Design der Accordion Komponente befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/accordion.html</span>.
+    </p>
+    <p class="mt-4">
+        Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad <span class="inline-tag">templates/insight_ui/components/</span> vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+    </p>
+</section>
+
+<!-- A11y -->
+<section>
+    <h2>{% trans "Accessability" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li><i>Todo</i></li>
+    </ul>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Related -->
+<section>
+    <h2>{% trans "Related Topics" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li><i>Todo</i></li>
+    </ul>
+</section>

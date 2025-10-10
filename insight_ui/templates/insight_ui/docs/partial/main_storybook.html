@@ -26,3 +26,21 @@
     <h2>{% trans 'Bullet Point List' %}</h2>
     {% bullet_point_list items=bulletpoints %}
 </section>
+
+<!-- Collapsible Demo -->
+<section class="component-container">
+    <h2>{% trans 'Accordion (Collapsible)' %}</h2>
+    <div class="space-y-4">
+        <!-- Multiple items open at the same time -->
+        {% accordion accordion_items "faq-multiple" False %}
+
+        <!-- Only one single item open at the same time -->
+        {% accordion accordion_items "faq-exclusive" True %}
+    </div>
+</section>
+
+<!-- Tabs Demo -->
+<section class="component-container">
+    <h2>{% trans 'Tabs' %}</h2>
+    {% tabs tabs_config %}
+</section>

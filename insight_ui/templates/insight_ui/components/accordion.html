@@ -1,0 +1,143 @@
+<div class="rounded-sm overflow-hidden" id="{{ group_id }}">
+  {% for item in items %}
+    {% with forloop.counter0|stringformat:"s" as idx %}
+      {% with group_id|add:"-panel-"|add:idx as panel_id %}
+        <div class="bg-white dark:bg-gray-800">
+          <h3 class="mb-1">
+            <button
+              class="flex justify-between items-center bg-gray-100 dark:bg-gray-900 w-full px-4 py-3 scroll-mt-24 focus:outline-none focus-visible:ring-2 ring-insight-primary"
+              aria-expanded="false"
+              aria-controls="{{ panel_id }}"
+              id="{{ panel_id }}-header"
+            >
+              <span>{{ item.question }}</span>
+              <svg class="size-4 ml-2 transform transition-transform duration-300" aria-hidden="true" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 011.08 1.04l-4.25 4.25a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          </h3>
+          <div
+            id="{{ panel_id }}"
+            class="accordion-content border-x-2 {% if forloop.last %}border-b-2{% endif %} border-gray-100 dark:border-gray-900 px-4 overflow-hidden transition-all duration-300 ease-in-out"
+            role="region"
+            aria-labelledby="{{ panel_id }}-header"
+            style="height: 0; opacity: 0;"
+          >
+            <div class="py-4">
+              {{ item.answer }}
+            </div>
+          </div>
+        </div>
+      {% endwith %}
+    {% endwith %}
+  {% endfor %}
+</div>
+
+<script>
+  (function () {
+    const container = document.getElementById("{{ group_id }}");
+    const buttons = Array.from(container.querySelectorAll("button[aria-controls]"));
+    const exclusive = {{ exclusive|yesno:"true,false" }};
+
+    function closePanel(button, panel) {
+      button.setAttribute('aria-expanded', 'false');
+      panel.style.height = panel.scrollHeight + 'px';
+      requestAnimationFrame(() => {
+        panel.style.height = '0';
+        panel.style.opacity = '0';
+      });
+      button.querySelector('svg')?.classList.remove('rotate-180');
+    }
+
+    function openPanel(button, panel, scroll = true) {
+      button.setAttribute('aria-expanded', 'true');
+      panel.style.height = panel.scrollHeight + 'px';
+      panel.style.opacity = '1';
+      button.querySelector('svg')?.classList.add('rotate-180');
+
+      panel.addEventListener('transitionend', function handler(event) {
+        if (event.propertyName === 'height') {
+          panel.style.height = 'auto';
+          panel.removeEventListener('transitionend', handler);
+
+          if (scroll) {
+            const rect = panel.getBoundingClientRect();
+            const isOutOfView =
+              rect.top < 0 || rect.bottom > (window.innerHeight || document.documentElement.clientHeight);
+            if (isOutOfView) {
+              button.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }
+        }
+      });
+    }
+
+    function updateURL(id) {
+      const url = new URL(window.location);
+      url.searchParams.set('open', id);
+      window.history.replaceState({}, '', url);
+    }
+
+    buttons.forEach((button, index) => {
+      const panelId = button.getAttribute('aria-controls');
+      const panel = document.getElementById(panelId);
+
+      button.addEventListener('click', () => {
+        const isExpanded = button.getAttribute('aria-expanded') === 'true';
+
+        if (exclusive) {
+          buttons.forEach((btn) => {
+            const pid = btn.getAttribute('aria-controls');
+            const p = document.getElementById(pid);
+            if (btn !== button) {
+                closePanel(btn, p);
+            }
+          });
+        }
+
+        if (isExpanded) {
+          closePanel(button, panel);
+        } else {
+          openPanel(button, panel);
+          updateURL(panelId);
+        }
+      });
+
+      button.addEventListener('keydown', (event) => {
+        let targetIndex = null;
+        if (event.key === 'ArrowDown') {
+          targetIndex = (index + 1) % buttons.length;
+        } else if (event.key === 'ArrowUp') {
+          targetIndex = (index - 1 + buttons.length) % buttons.length;
+        } else if (event.key === 'Home') {
+          targetIndex = 0;
+        } else if (event.key === 'End') {
+          targetIndex = buttons.length - 1;
+        }
+
+        if (targetIndex !== null) {
+          event.preventDefault();
+          buttons[targetIndex].focus();
+        }
+      });
+    });
+
+    const params = new URLSearchParams(window.location.search);
+    const openId = params.get('open');
+    if (openId) {
+      const buttonToOpen = buttons.find(btn => btn.getAttribute('aria-controls') === openId);
+      const panelToOpen = document.getElementById(openId);
+
+      if (buttonToOpen && panelToOpen) {
+        if (exclusive) {
+          buttons.forEach((btn) => {
+            const pid = btn.getAttribute('aria-controls');
+            const p = document.getElementById(pid);
+            closePanel(btn, p);
+          });
+        }
+        openPanel(buttonToOpen, panelToOpen, true);
+      }
+    }
+  })();
+</script>

@@ -1,0 +1,83 @@
+{% load i18n %}
+
+<div
+  id="{{ id }}"
+  role="tablist"
+  aria-label="{{ label }}"
+  class="flex border-b border-gray-300 mb-4"
+>
+  {% for tab in tabs %}
+    <button
+      id="{{ tab.id }}"
+      role="tab"
+      aria-selected="true"
+      aria-controls="panel1"
+      tabindex="0"
+      hx-get="{{ tab.view_name }}"
+      hx-target="#tab-content"
+      hx-swap="innerHTML"
+      class="px-4 py-2 border-b-2 border-insight-primary-500 font-semibold text-primary focus:outline-none focus:ring"
+    >
+      {{ tab.title }}
+    </button>
+  {% endfor %}
+</div>
+<div
+  id="tab-content"
+  role="tabpanel"
+  aria-labelledby="{% trans 'Tab content' %}"
+>
+  Content
+</div>
+
+<script>
+  const tabs = document.querySelectorAll('[role="tab"]');
+  const tabContent = document.getElementById('tab-content');
+
+  document.body.addEventListener('htmx:afterSwap', (event) => {
+    if(event.detail.target.id === 'tab-content'){
+      tabContent.focus();
+    }
+  });
+
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('keydown', (e) => {
+      let newIndex = null;
+      if (e.key === 'ArrowRight') {
+        newIndex = (index + 1) % tabs.length;
+      } else if (e.key === 'ArrowLeft') {
+        newIndex = (index - 1 + tabs.length) % tabs.length;
+      } else if (e.key === 'Home') {
+        newIndex = 0;
+      } else if (e.key === 'End') {
+        newIndex = tabs.length - 1;
+      }
+
+      if (newIndex !== null) {
+        e.preventDefault();
+        tabs[newIndex].focus();
+      }
+    });
+
+    tab.addEventListener('click', () => {
+      activateTab(tab);
+    });
+  });
+
+  function activateTab(selectedTab) {
+    tabs.forEach(tab => {
+      if (tab === selectedTab) {
+        tab.setAttribute('aria-selected', 'true');
+        tab.removeAttribute('tabindex');
+        tab.classList.add('border-blue-500', 'font-semibold', 'text-blue-600');
+        tab.classList.remove('border-transparent');
+        tabContent.setAttribute('aria-labelledby', tab.id);
+      } else {
+        tab.setAttribute('aria-selected', 'false');
+        tab.setAttribute('tabindex', '-1');
+        tab.classList.remove('border-blue-500', 'font-semibold', 'text-blue-600');
+        tab.classList.add('border-transparent');
+      }
+    });
+  }
+</script>

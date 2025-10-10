@@ -10,6 +10,8 @@ from django.views.decorators.http import require_GET, require_http_methods
 
 from insight_ui.demo_context import (
     DEMO_FIELDS,
+    get_3d_carousel_context,
+    get_accordion_context,
     get_alert_context,
     get_base_context,
     get_breadcrumb_context,
@@ -42,6 +44,7 @@ from insight_ui.demo_context import (
     get_step_bar_context,
     get_table_context,
     get_table_storybook_context,
+    get_tabs_context,
     get_toggle_button_context,
     get_toggle_view_context,
     get_utils_storybook_context,
@@ -269,6 +272,10 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
         "sidebar": get_drawer_context,
         "footer": get_footer_context,
         "bullet_point_list": get_bullet_point_list_context,
+        "tabs": get_tabs_context,
+        "accordion": get_accordion_context,
+        "3D_carousel": get_3d_carousel_context,
+        "chart": get_empty_context,
     }
 
     context_func = context_func_map.get(component_name)

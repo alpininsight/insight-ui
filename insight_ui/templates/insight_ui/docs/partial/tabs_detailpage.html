@@ -1,0 +1,91 @@
+{% load i18n insight_tags %}
+
+<h1>Insight UI Tabs</h1>
+
+<!-- Component Demo -->
+<section>
+    <p>
+        Mit der <span class="inline-tag">tabs</span> Komponente lassen sich Tabs bzw. Registrierkarten hinzufügen. Diese Komponente besteht aus einer Reihe von Buttons, welche per HTMX-Request den Hauptinhalt der Komponente austauschen. Dadurch kann der Inhalt flexibel ausgetauscht werden, ohne das die Seite neu geladen werden muss.
+    </p>
+
+    <div class="example-container">
+        {% tabs tabs_config %}
+    </div>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h2>{% trans "Verwendung" %}</h2>
+    <div id="Tabs_Usage" data-insight-code-block="Django">
+        &lcub;% load insight_tags %&rcub;
+
+        &lcub;% tabs config %&rcub;
+    </div>
+</section>
+
+<section>
+    <h3>{% trans "Parameter" %}</h3>
+    <ul class="list-disc leading-relaxed ms-8">
+        <li><span class="inline-tag">config</span>(<i>dict</i>): Enthält die einzelnen Tabs und ein paar allgemeine Informationen über die Komponente.</li>
+    </ul>
+
+    <div class="mt-8">
+        <h4>config</h4>
+        <p class="mb-6">Enthält die einzelnen Tabs und ein paar allgemeine Informationen über die Komponente.</p>
+
+        <div id="Tabs_Params" data-insight-code-block="python">
+            {
+                "id": "example_tabs",
+                "label": "Tabs Example",
+                "tabs": [
+                    {
+                        "id": "First",
+                        "view_name": "index",
+                        "title": _("First Tab"),
+                    }
+                ]
+            }
+        </div>
+
+        <ul class="list-disc leading-relaxed ms-8 mt-6">
+            <li><span class="inline-tag">title</span>(<i>str</i>): {% trans "Der Titel des jeweiligen Schritts." %}</li>
+            <li><span class="inline-tag">description</span>(<i>str</i>): {% trans "Eine kurze Beschreibung des jeweiligen Schritts." %}</li>
+            <li><span class="inline-tag">completed</span>(<i>bool</i>): {% blocktrans with true='<span class="text-blue-400 font-semibold">True</span>'|safe %}{{ true }} wenn dieser Schritt bereits absolviert wurde.{% endblocktrans %}</li>
+            <li><span class="inline-tag">current</span>(<i>bool</i>): {% blocktrans with true='<span class="text-blue-400 font-semibold">True</span>'|safe %}{{ true }} wenn es sich um den aktuellen Schritt handelt.{% endblocktrans %}</li>
+        </ul>
+    </div>
+</section>
+
+<!-- Customization -->
+<section>
+    <h2>{% trans "Customization" %}</h2>
+    <p>
+        Das Design der Tabs Komponente befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/tabs.html</span>.
+    </p>
+    <p class="mt-4">
+        Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad <span class="inline-tag">templates/insight_ui/components/</span> vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+    </p>
+</section>
+
+<!-- A11y -->
+<section>
+    <h2>{% trans "Accessability" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li>Die Komponente Unterstützt Screenreader durch die entsprechenden Rollen: <span class="inline-tag">role="tablist"</span>, <span class="inline-tag">role="tab"</span>, <span class="inline-tag">role="tabpanel"</span>.</li>
+        <li>Zusätzlich werden die Tabs und deren Inhalte mittels <span class="inline-tag">aria-selected</span>, <span class="inline-tag">aria-controls</span>, <span class="inline-tag">aria-labelledby</span> miteinander Verbunden.</li>
+        <li>Der aktuell fokussierte Tab besitzt das Attribute <span class="inline-tag">tabindex="0"</span> alle anderen <span class="inline-tag">tabindex="-1"</span>.</li>
+        <li>Die Komponente unterstützt die Navigation über die Tastatur mittels der Pfeil- (links/rechts) und Home/End-Tasten.</li>
+    </ul>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Related -->
+<section>
+    <h2>{% trans "Related Topics" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li><i>Todo</i></li>
+    </ul>
+</section>

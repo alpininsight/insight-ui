@@ -865,3 +865,72 @@ def footer(data: dict) -> dict[str, Any]:
 
     """
     return {"data": _resolve_view_urls(data)}
+
+
+@register.inclusion_tag("insight_ui/components/accordion.html")
+def accordion(items: list, group_id: str = "accordion", exclusive: bool = True) -> dict:
+    """
+    Rendert ein Accordion welches ein oder mehrere Bereiche geöffnet haben kann.
+
+    Args:
+    ----
+        items (list): Die einzelnen Bereiche mit Caption und Content.
+        group_id (str): Eine eindeutige ID für das Accordion.
+        exclusive (bool): True wenn nur ein Bereich gleichzeitig offen sein darf.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template
+
+    """
+    return {"items": items, "group_id": group_id, "exclusive": exclusive}
+
+
+@register.inclusion_tag("insight_ui/components/tabs.html")
+def tabs(config: dict) -> dict:
+    """
+    Rendert eine Gruppe von Tabs/Registrierkarten und einen Container für den Inhalt des jeweiligen Tabs.
+
+    Args:
+    ----
+        config (dict): Enthält die einzelnen Tabs und ein paar allgemeine Informationen über die Komponente.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template
+
+    """
+    return {"config": config}
+
+
+@register.inclusion_tag("insight_ui/components/carousels/3D_carousel.html")
+def three_d_carousel(  # noqa: PLR0913 (too many args)
+    carousel_items: Sequence[Mapping[str, Any]] | None = None,
+    autoplay: bool = False,
+    show_dots: bool = True,
+    show_index: bool = False,
+    slides_count: Sequence[int] | None = None,
+) -> dict[str, Any]:
+    """
+    Rendert eine 3D Variante der Karussell Komponente.
+
+    Args:
+    ----
+        carousel_items (list): Darzustellender Inhalt (Karten)
+        autoplay (bool): Wechsle automatisch nach einer bestimmten Zeit (5s) zur nächsten Seite
+        show_dots (bool): Zeige Pagination Dots unter dem Inhalt
+        show_index (bool): Zeige Anzahl und aktuelle Seite in der unteren rechten Ecke
+        slides_count (range): Anzahl der Seiten als Iterable
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template
+
+    """
+    return {
+        "carousel_items": [dict(item) for item in carousel_items] if carousel_items is not None else [],
+        "autoplay": autoplay,
+        "show_dots": show_dots,
+        "show_index": show_index,
+        "slides_count": list(slides_count) if slides_count is not None else [],
+    }

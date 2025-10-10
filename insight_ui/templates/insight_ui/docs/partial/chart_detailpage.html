@@ -1,0 +1,195 @@
+{% load i18n insight_tags %}
+
+<h1>Insight UI Apache Echarts Integration</h1>
+
+<!-- Component Demo -->
+<section>
+    <p>
+        Todo
+    </p>
+
+    <div class="example-container">
+        <div id="chart-example1" class="h-96"></div>
+        <div id="chart-example2" class="h-96"></div>
+    </div>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h2>{% trans "Verwendung" %}</h2>
+    <div id="3D_Carousel_Usage" data-insight-code-block="Django">
+        &lcub;% load insight_tags %&rcub;
+
+        &lcub;% ? %&rcub;
+    </div>
+</section>
+
+<section>
+    <h3>{% trans "Parameter" %}</h3>
+    <ul class="list-disc leading-relaxed ms-8">
+        <li><span class="inline-tag">data</span> (<i>list</i>): Die Daten welche in dem Diagramm dargestellt werden sollen.</li>
+    </ul>
+
+    <div class="mt-8">
+        <h4>data</h4>
+        <p class="mb-6">Die Daten welche in dem Diagramm dargestellt werden sollen.</p>
+
+        <div id="Chart_Params" data-insight-code-block="python">
+
+        </div>
+    </div>
+</section>
+
+<!-- Customization -->
+<section>
+    <h2>{% trans "Customization" %}</h2>
+    <p>
+        <i>Todo</i>
+    </p>
+</section>
+
+<!-- A11y -->
+<section>
+    <h2>{% trans "Accessability" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li><i>Todo</i></li>
+    </ul>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Related -->
+<section>
+    <h2>{% trans "Related Topics" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li><i>Todo</i></li>
+    </ul>
+</section>
+
+<script type="module">
+    var chartDom = document.getElementById('chart-example1');
+    var myChart = echarts.init(chartDom);
+    var option;
+
+    option = {
+        title: {
+            text: 'Stacked Line'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data: ['Email', 'Union Ads', 'Video Ads', 'Direct', 'Search Engine']
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                name: 'Email',
+                type: 'line',
+                stack: 'Total',
+                data: [120, 132, 101, 134, 90, 230, 210]
+            },
+            {
+                name: 'Union Ads',
+                type: 'line',
+                stack: 'Total',
+                data: [220, 182, 191, 234, 290, 330, 310]
+            },
+            {
+                name: 'Video Ads',
+                type: 'line',
+                stack: 'Total',
+                data: [150, 232, 201, 154, 190, 330, 410]
+            },
+            {
+                name: 'Direct',
+                type: 'line',
+                stack: 'Total',
+                data: [320, 332, 301, 334, 390, 330, 320]
+            },
+            {
+                name: 'Search Engine',
+                type: 'line',
+                stack: 'Total',
+                data: [820, 932, 901, 934, 1290, 1330, 1320]
+            }
+        ]
+    };
+
+    option && myChart.setOption(option);
+
+    var chartDom = document.getElementById('chart-example2');
+    var myChart = echarts.init(chartDom);
+    var option;
+
+    // There should not be negative values in rawData
+    const rawData = [
+        [100, 302, 301, 334, 390, 330, 320],
+        [320, 132, 101, 134, 90, 230, 210],
+        [220, 182, 191, 234, 290, 330, 310],
+        [150, 212, 201, 154, 190, 330, 410],
+        [820, 832, 901, 934, 1290, 1330, 1320]
+    ];
+
+    const totalData = [];
+    for (let i = 0; i < rawData[0].length; ++i) {
+        let sum = 0;
+        for (let j = 0; j < rawData.length; ++j) {
+            sum += rawData[j][i];
+        }
+        totalData.push(sum);
+    }
+
+    const series = [
+        'Direct',
+        'Mail Ad',
+        'Affiliate Ad',
+        'Video Ad',
+        'Search Engine'
+    ].map((name, sid) => {
+        return {
+            name,
+            type: 'bar',
+            stack: 'total',
+            barWidth: '60%',
+            label: {
+            show: true,
+            formatter: (params) => Math.round(params.value * 1000) / 10 + '%'
+            },
+            data: rawData[sid].map((d, did) =>
+            totalData[did] <= 0 ? 0 : d / totalData[did]
+            )
+        };
+    });
+
+    option = {
+        legend: {
+            selectedMode: false
+        },
+        yAxis: {
+            type: 'value'
+        },
+        xAxis: {
+            type: 'category',
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        },
+        series
+    };
+
+    option && myChart.setOption(option);
+</script>
