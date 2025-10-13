@@ -9,7 +9,7 @@
     </p>
 
     <div class="example-container">
-        {% tabs tabs_config %}
+        {% tabs config=tabs_config %}
     </div>
 </section>
 
@@ -21,7 +21,7 @@
     <div id="Tabs_Usage" data-insight-code-block="Django">
         &lcub;% load insight_tags %&rcub;
 
-        &lcub;% tabs config %&rcub;
+        &lcub;% tabs config=tabs_config %&rcub;
     </div>
 </section>
 
@@ -42,18 +42,24 @@
                 "tabs": [
                     {
                         "id": "First",
-                        "view_name": "index",
+                        "url": reverse("tabs_view", kwargs={"tab_id": "first"}),
                         "title": _("First Tab"),
                     }
+                    ...
                 ]
             }
         </div>
 
         <ul class="list-disc leading-relaxed ms-8 mt-6">
-            <li><span class="inline-tag">title</span>(<i>str</i>): {% trans "Der Titel des jeweiligen Schritts." %}</li>
-            <li><span class="inline-tag">description</span>(<i>str</i>): {% trans "Eine kurze Beschreibung des jeweiligen Schritts." %}</li>
-            <li><span class="inline-tag">completed</span>(<i>bool</i>): {% blocktrans with true='<span class="text-blue-400 font-semibold">True</span>'|safe %}{{ true }} wenn dieser Schritt bereits absolviert wurde.{% endblocktrans %}</li>
-            <li><span class="inline-tag">current</span>(<i>bool</i>): {% blocktrans with true='<span class="text-blue-400 font-semibold">True</span>'|safe %}{{ true }} wenn es sich um den aktuellen Schritt handelt.{% endblocktrans %}</li>
+            <li><span class="inline-tag">id</span> (<i>str</i>): Eine eindeutige ID für das Element.</li>
+            <li><span class="inline-tag">label</span> (<i>str</i>): Ein Label für Screenreader.</li>
+            <li><span class="inline-tag">tabs</span> (<i>list</i>): Die Tabs.
+                <ul class="list-disc leading-relaxed ms-8">
+                    <li><span class="inline-tag">id</span> (<i>str</i>): Eine eindeutige ID für den Tab.</li>
+                    <li><span class="inline-tag">url</span> (<i>str</i>): Die URL an welche der Request gesendet werden soll.</li>
+                    <li><span class="inline-tag">title</span> (<i>str</i>): Die Titel des Tabs.</li>
+                </ul>
+            </li>
         </ul>
     </div>
 </section>

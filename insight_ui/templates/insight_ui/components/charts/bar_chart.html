@@ -1,0 +1,54 @@
+<div id="{{ chart_id }}" class="h-96"></div>
+
+<script type="module">
+    var chartDom = document.getElementById("{{ chart_id }}");
+    var myChart = echarts.init(chartDom);
+    var option;
+
+    const rawData = {{ chart.data }};
+    const totalData = [];
+    for (let i = 0; i < rawData[0].length; ++i)
+    {
+        let sum = 0;
+        for (let j = 0; j < rawData.length; ++j)
+        {
+            sum += rawData[j][i];
+        }
+        totalData.push(sum);
+    }
+
+    const series = {{ chart.series|safe }}.map((name, sid) => {
+        return {
+            name,
+            type: 'bar',
+            stack: 'total',
+            barWidth: '60%',
+            label:{
+                show: true,
+                formatter: (params) => Math.round(params.value * 1000) / 10 + '%'
+            },
+            data: rawData[sid].map((d, did) =>
+                totalData[did] <= 0 ? 0 : d / totalData[did]
+            )
+        };
+    });
+
+    option = {
+        title: {
+            text: "{{ chart.title }}"
+        },
+        legend: {
+            selectedMode: false
+        },
+        yAxis: {
+            type: 'value'
+        },
+        xAxis: {
+            type: 'category',
+            data: {{ chart.x_axis_legend|safe }}
+        },
+        series
+    };
+
+    option && myChart.setOption(option);
+</script>

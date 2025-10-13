@@ -1,36 +1,22 @@
-{% load i18n %}
+{% load i18n insight_tags %}
 
-<div class="carousel_wrapper">
-    <div id="threeD_carousel" style="--quantity: 5" class="threeD_carousel w-full sm:w-4/5 md:w-3/5 xl:w-1/2 3xl:w-1/3">
+<div class="carousel_wrapper relative size-full overflow-hidden">
+    <div id="threeD_carousel" style="--quantity: {{ carousel_items|length }}" class="threeD_carousel absolute top-5 left-1/2 h-[35vh] w-full">
       {% for item in carousel_items %}
-        <div style="--position: {{ forloop.counter }}" class="item">
-            <dl class="bg-cyan-950/95 p-4 md:p-8 rounded-2xl shadow-cyan-700 border border-primary-light/75 shadow-md h-[33rem] lg:h-[24.5rem]">
-                <dt class="flex flex-col md:flex-row gap-6 md:gap-8 items-center mb-6">
-                    <div class="bg-primary rounded-full p-4 lg:p-6 mt-4 md:mt-0">
-                        <svg class="size-16 lg:size-24 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4 1 8l4 4m10-8 4 4-4 4M11 1 9 15"/>
-                        </svg>
-                    </div>
-                    <span class="text-xl md:text-2xl font-bold text-white">
-                      Test
-                    </span>
-                </dt>
-                <dd class="mt-2 text-lg md:text-xl text-neutral-100 text-justify hyphens-auto" lang="de">
-                  Test
-                </dd>
-            </dl>
+        <div style="--position: {{ forloop.counter }}" class="item absolute inset-0 flex justify-center">
+            {% card title=item.title subtitle=item.subtitle content=item.content actions=item.actions %}
         </div>
       {% endfor %}
     </div>
     <!-- Controls -->
     <div class="absolute flex justify-between gap-4 bottom-10 sm:bottom-10 left-1/2 -translate-x-1/2 px-8 lg:px-0">
-        <button id="previous" class="flex justify-center gap-2 bg-cyan-950 rounded w-36 px-3.5 py-2.5 text-center font-semibold text-white shadow-sm hover:bg-primary transition-colors duration-300">
+        <button id="previous" class="btn btn-primary">
             <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
             </svg>
             {% trans 'Zurück' %}
         </button>
-        <button id="next" class="flex justify-center gap-2 bg-cyan-950 rounded w-36 px-3.5 py-2.5 text-center font-semibold text-white shadow-sm hover:bg-primary transition-colors duration-300">
+        <button id="next" class="btn btn-primary">
             {% trans 'Weiter' %}
             <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
@@ -40,25 +26,23 @@
 </div>
 
 <style>
-    .carousel_wrapper
-    {
-        width: 100%;
-        height: 100%;
-        text-align: center;
-        overflow: hidden;
-        position: relative;
-    }
 
-    .carousel_wrapper .threeD_carousel
+    .threeD_carousel
     {
-        position: absolute;
-        height: 35vh;
-        top: 5%;
-        left: 50%;
         transform-style: preserve-3d;
         transform: translateX(-50%) perspective(1000px) translateZ(-850px) rotateX(-20deg);
         {% comment %} translateZ defines how big (how far away) the screens are (lg: 750 3xl: 550)
         {% comment %} animation: spin 60s linear infinite; {% endcomment %}
+    }
+
+    .threeD_carousel .item
+    {
+        /* outline: 1px solid transparent; */ /* fake antialiasing */
+        /* -webkit-backface-visibility: hidden; */ /* backface culling */
+        transform:
+            rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg))
+            translateZ(500px) /* defines how far away the screens are from the center of the carousel */
+            rotateX(20deg);
     }
 
     /* NOT IN USE */
@@ -72,18 +56,6 @@
         {
             transform: translateX(-50%) perspective(1000px) translateZ(-1000px) rotateX(-20deg) rotateY(360deg);
         }
-    }
-
-    .carousel_wrapper .threeD_carousel .item
-    {
-        position: absolute;
-        inset: 0 0 0 0;
-        outline: 1px solid transparent; /* fake antialiasing */
-        /* -webkit-backface-visibility: hidden; */ /* backface culling */
-        transform:
-            rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg))
-            translateZ(500px) /* defines how far away the screens are from the center of the carousel */
-            rotateX(20deg);
     }
 
     @media screen and (min-width: 640px)

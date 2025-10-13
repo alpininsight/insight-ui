@@ -25,12 +25,20 @@ Enthält die einzelnen Tabs und ein paar allgemeine Informationen über die Komp
     "tabs": [
         {
             "id": "First",
-            "view_name": "index",
+            "url": reverse("tabs_view", kwargs={"tab_id": "first"}),
             "title": _("First Tab"),
         }
+        ...
     ]
 }
 ```
+
+- **id** (_str_): Eine eindeutige ID für das Element.
+- **label** (_str_): Ein Label für Screenreader.
+- **tabs** (_list_): Die Tabs.
+    - **id** (_str_): Eine eindeutige ID für den Tab.
+    - **url** (_str_): Die URL an welche der Request gesendet werden soll.
+    - **title** (_str_): Die Titel des Tabs.
 
 ## Customization
 

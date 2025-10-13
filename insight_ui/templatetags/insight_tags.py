@@ -345,13 +345,13 @@ def chat(view_name: str) -> dict:
 
 
 @register.inclusion_tag("insight_ui/components/geo_map.html")
-def geo_map(data: list = []) -> dict:
+def geo_map(data: dict = {}) -> dict:
     """
     Rendert eine integrierte geografische Karte.
 
     Arguments:
     ---------
-        data (list): Eine Liste von Objekten, welche auf der Karte dargestellt werden sollen.
+        data (dict): Einstellungen für die Karte und Daten welche auf der Karte dargestellt werden sollen.
 
     Returns:
     -------
@@ -934,3 +934,39 @@ def three_d_carousel(  # noqa: PLR0913 (too many args)
         "show_index": show_index,
         "slides_count": list(slides_count) if slides_count is not None else [],
     }
+
+
+@register.inclusion_tag("insight_ui/components/charts/bar_chart.html")
+def bar_chart(chart_id: str, chart: dict) -> dict:
+    """
+    Rendert ein Bar-Chart mit Apache Echarts.
+
+    Args:
+    ----
+        chart_id (str): Eine eindeutige ID für das Diagramm.
+        chart (dict): Enthält die Informationen und die Daten des Diagramms.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template
+
+    """
+    return {"chart_id": chart_id, "chart": chart}
+
+
+@register.inclusion_tag("insight_ui/components/charts/line_chart.html")
+def line_chart(chart_id: str, chart: dict) -> dict:
+    """
+    Rendert ein Line-Chart mit Apache Echarts.
+
+    Args:
+    ----
+        chart_id (str): Eine eindeutige ID für das Diagramm.
+        chart (dict): Enthält die Informationen und die Daten des Diagramms.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template
+
+    """
+    return {"chart_id": chart_id, "chart": chart}

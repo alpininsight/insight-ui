@@ -1,0 +1,46 @@
+<div id="{{ chart_id }}" class="h-96"></div>
+
+<script type="module">
+    var chartDom = document.getElementById("{{ chart_id }}");
+    var myChart = echarts.init(chartDom);
+    var option;
+
+    const rawData = {{ chart.data }};
+    const series = {{ chart.series|safe }}.map((name, sid) => {
+        return {
+            name,
+            type: 'line',
+            stack: 'total',
+            data: rawData[sid]
+        };
+    });
+
+    option = {
+        title: {
+            text: "{{ chart.title }}"
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data: {{ chart.series|safe }}
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '15%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: {{ chart.x_axis_legend|safe }}
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series
+    };
+
+    option && myChart.setOption(option);
+</script>

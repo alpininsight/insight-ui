@@ -1,23 +1,24 @@
-{% load i18n %}
+{% load i18n insight_tags %}
 
 <div
-  id="{{ id }}"
+  id="{{ config.id }}"
   role="tablist"
-  aria-label="{{ label }}"
-  class="flex border-b border-gray-300 mb-4"
+  aria-label="{{ config.label }}"
+  class="flex border-b border-gray-200"
 >
-  {% for tab in tabs %}
+  {% for tab in config.tabs %}
     <button
       id="{{ tab.id }}"
       role="tab"
-      aria-selected="true"
-      aria-controls="panel1"
-      tabindex="0"
-      hx-get="{{ tab.view_name }}"
+      aria-controls="panel-{{ forloop.counter }}"
+      hx-get="{{ tab.url }}"
       hx-target="#tab-content"
       hx-swap="innerHTML"
-      class="px-4 py-2 border-b-2 border-insight-primary-500 font-semibold text-primary focus:outline-none focus:ring"
+      class="px-4 py-2 -mb-px border-b border-gray-200 font-semibold text-primary hover:border-insight-primary-hover hover:text-insight-primary-hover focus:outline-none focus:border-insight-primary-active focus:text-insight-primary-active transition-colors duration-300"
     >
+      {% if tab.icon %}
+        {% icon tab.icon %}
+      {% endif %}
       {{ tab.title }}
     </button>
   {% endfor %}
@@ -27,7 +28,7 @@
   role="tabpanel"
   aria-labelledby="{% trans 'Tab content' %}"
 >
-  Content
+  <!-- Content -->
 </div>
 
 <script>
@@ -68,15 +69,13 @@
     tabs.forEach(tab => {
       if (tab === selectedTab) {
         tab.setAttribute('aria-selected', 'true');
-        tab.removeAttribute('tabindex');
-        tab.classList.add('border-blue-500', 'font-semibold', 'text-blue-600');
-        tab.classList.remove('border-transparent');
+        tab.classList.remove('border-gray-300', 'text-primary', 'border-b');
+        tab.classList.add('border-insight-primary', 'text-insight-primary', 'border-b-3');
         tabContent.setAttribute('aria-labelledby', tab.id);
       } else {
         tab.setAttribute('aria-selected', 'false');
-        tab.setAttribute('tabindex', '-1');
-        tab.classList.remove('border-blue-500', 'font-semibold', 'text-blue-600');
-        tab.classList.add('border-transparent');
+        tab.classList.remove('border-insight-primary', 'text-insight-primary', 'border-b-3');
+        tab.classList.add('border-gray-300', 'text-primary', 'border-b');
       }
     });
   }

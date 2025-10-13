@@ -19,6 +19,7 @@ from insight_ui.demo_context import (
     get_card_carousel_context,
     get_card_storybook_context,
     get_cards_context,
+    get_charts_context,
     get_checkbox_context,
     get_differentiator_context,
     get_drawer_context,
@@ -29,6 +30,7 @@ from insight_ui.demo_context import (
     get_form_context,
     get_form_storybook_context,
     get_generic_filter_context,
+    get_geo_map_context,
     get_image_carousel_context,
     get_infinite_scroll_context,
     get_inputs_storybook_context,
@@ -244,7 +246,7 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
         "chat": get_empty_context,
         "code_block": get_empty_context,
         "differentiator": get_differentiator_context,
-        "geo_map": get_empty_context,
+        "geo_map": get_geo_map_context,
         "button": get_empty_context,
         "checkbox": get_checkbox_context,
         "dropdown": get_dropdown_context,
@@ -275,7 +277,7 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
         "tabs": get_tabs_context,
         "accordion": get_accordion_context,
         "3D_carousel": get_3d_carousel_context,
-        "chart": get_empty_context,
+        "chart": get_charts_context,
     }
 
     context_func = context_func_map.get(component_name)
@@ -373,3 +375,16 @@ def toggle_view(request: HttpRequest) -> HttpResponse:
         logger.info("log: toggle_view - Tabellenansicht ausgewählt")
 
     return render(request, "insight_ui/components/toggle_view.html", context)
+
+
+@require_GET
+def tabs_view(request: HttpRequest, tab_id: str) -> HttpResponse:
+    """Switch content of the Tabs-Component corresponding to the given 'tab_id'."""
+    msg = "This is the content of the first tab!"
+    match tab_id:
+        case "second":
+            msg = "This is the content of the second tab!"
+        case "third":
+            msg = "This is the content of the third tab!"
+
+    return render(request, "insight_ui/components/tabs_content.html", {"message": msg})

@@ -426,7 +426,6 @@ def get_sidebar_context() -> dict:
                         },
                         {
                             "text": _("Charts"),
-                            "icon": {"name": "tools", "size": "xs"},
                             "url": reverse("component_detail_page_view", kwargs={"component_name": "chart"}),
                             "htmx": {"target": "#content"},
                         },
@@ -501,7 +500,6 @@ def get_sidebar_context() -> dict:
                         },
                         {
                             "text": _("Image Carousel"),
-                            "icon": {"name": "tools", "size": "xs"},
                             "url": reverse("component_detail_page_view", kwargs={"component_name": "image_carousel"}),
                             "htmx": {"target": "#content"},
                         },
@@ -542,6 +540,7 @@ def get_main_storybook_context() -> dict:
         | get_step_bar_context()
         | get_bullet_point_list_context()
         | get_accordion_context()
+        | get_tabs_context()
         | {"htmx_config": {"url": "/api/form-submit/", "method": "post", "target": "#htmx-form", "swap": "innerHTML"}}
     )
 
@@ -1007,7 +1006,11 @@ def get_tabs_context() -> dict:
         "tabs_config": {
             "id": "example_tabs",
             "label": "Tabs Example",
-            "tabs": [{"id": "First", "view_name": "index", "title": _("First Tab")}],
+            "tabs": [
+                {"id": "first", "url": reverse("tabs_view", kwargs={"tab_id": "first"}), "title": _("First Tab")},
+                {"id": "second", "url": reverse("tabs_view", kwargs={"tab_id": "second"}), "title": _("Second Tab")},
+                {"id": "third", "url": reverse("tabs_view", kwargs={"tab_id": "third"}), "title": _("Third Tab")},
+            ],
         }
     }
 
@@ -1015,6 +1018,140 @@ def get_tabs_context() -> dict:
 def get_3d_carousel_context() -> dict:
     """Serve data for 3D carousel detailpage."""
     return {"3D_carousel": {"items": map_payload_to_cards(generate_payload()), "range_total_slides": range(5)}}
+
+
+def get_charts_context() -> dict:
+    """Serve data for charts detailpage."""
+    return {
+        "chart_data": {
+            "title": "Chart Example",
+            "x_axis_legend": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+            "series": ["Email", "Union Ads", "Video Ads", "Direct", "Search Engine"],
+            "data": [
+                [100, 302, 301, 334, 390, 330, 320],
+                [320, 132, 101, 134, 90, 230, 210],
+                [220, 182, 191, 234, 290, 330, 310],
+                [150, 212, 201, 154, 190, 330, 410],
+                [820, 832, 901, 934, 1290, 1330, 1320],
+            ],
+        }
+    }
+
+
+def get_geo_map_context() -> dict:
+    """Serve data for geo-map detailpage."""
+    return {
+        "geo_map_data": {
+            "initial_coords": [52.5200, 13.4050],
+            "initial_zoom": 8,
+            "datasets": [
+                {
+                    "name": "population",
+                    "type": "circle",
+                    "data": [
+                        {"title": "Berlin", "value": 3769000, "lat": 52.5200, "lon": 13.4050},
+                        {"title": "Hamburg", "value": 1850000, "lat": 53.5511, "lon": 9.9937},
+                        {"title": "München", "value": 1488000, "lat": 48.1351, "lon": 11.5820},
+                        {"title": "Köln", "value": 1086000, "lat": 50.9375, "lon": 6.9603},
+                        {"title": "Frankfurt am Main", "value": 763000, "lat": 50.1109, "lon": 8.6821},
+                        {"title": "Stuttgart", "value": 635000, "lat": 48.7758, "lon": 9.1829},
+                        {"title": "Düsseldorf", "value": 620000, "lat": 51.2277, "lon": 6.7735},
+                        {"title": "Leipzig", "value": 612000, "lat": 51.3397, "lon": 12.3731},
+                        {"title": "Dortmund", "value": 588000, "lat": 51.5136, "lon": 7.4653},
+                        {"title": "Essen", "value": 582000, "lat": 51.4556, "lon": 7.0116},
+                        {"title": "Bremen", "value": 569000, "lat": 53.0793, "lon": 8.8017},
+                        {"title": "Dresden", "value": 558000, "lat": 51.0504, "lon": 13.7373},
+                        {"title": "Hannover", "value": 540000, "lat": 52.3759, "lon": 9.7320},
+                        {"title": "Nürnberg", "value": 523000, "lat": 49.4521, "lon": 11.0767},
+                        {"title": "Duisburg", "value": 499000, "lat": 51.4344, "lon": 6.7623},
+                        {"title": "Bochum", "value": 363000, "lat": 51.4818, "lon": 7.2162},
+                        {"title": "Wuppertal", "value": 361000, "lat": 51.2562, "lon": 7.1508},
+                        {"title": "Bielefeld", "value": 341000, "lat": 52.0302, "lon": 8.5325},
+                        {"title": "Bonn", "value": 330000, "lat": 50.7374, "lon": 7.0982},
+                        {"title": "Münster", "value": 323000, "lat": 51.9607, "lon": 7.6261},
+                    ],
+                },
+                {
+                    "name": "hanseatic_cities",
+                    "type": "marker",
+                    "data": [
+                        {
+                            "title": "Lübeck",
+                            "lat": 53.8655,
+                            "lon": 10.6866,
+                            "description": "Hauptstadt der Hanse („Königin der Hanse“); Sitz der Hansetage und Zentrum des Ostseehandels.",  # noqa: E501
+                        },
+                        {
+                            "title": "Hamburg",
+                            "lat": 53.5511,
+                            "lon": 9.9937,
+                            "description": "Wichtiger Nordseehafen; Umschlagplatz für den England- und Nordseehandel.",
+                        },
+                        {
+                            "title": "Bremen",
+                            "lat": 53.0793,
+                            "lon": 8.8017,
+                            "description": "Bedeutend im England- und Skandinavienhandel; Nordseezugang der Hanse.",
+                        },
+                        {
+                            "title": "Köln",
+                            "lat": 50.9375,
+                            "lon": 6.9603,
+                            "description": "Größte Stadt der Hanse; zentraler Binnenhandelsknoten am Rhein.",
+                        },
+                        {
+                            "title": "Danzig (Gdańsk)",
+                            "lat": 54.3520,
+                            "lon": 18.6466,
+                            "description": "Wichtigster Hafen im Ostseeraum; Export von Getreide, Holz und Bernstein.",
+                        },
+                        {
+                            "title": "Riga",
+                            "lat": 56.9496,
+                            "lon": 24.1052,
+                            "description": "Zentrum des Hansehandels im Baltikum; Umschlagplatz für Waren aus Russland und Skandinavien.",  # noqa: E501
+                        },
+                        {
+                            "title": "Reval (Tallinn)",
+                            "lat": 59.4370,
+                            "lon": 24.7536,
+                            "description": "Wichtige Zwischenstation für Russland- und Skandinavienhandel.",
+                        },
+                        {
+                            "title": "Visby",
+                            "lat": 57.6409,
+                            "lon": 18.2960,
+                            "description": "Frühes Hansezentrum auf Gotland; Knotenpunkt des Ostseehandels.",
+                        },
+                        {
+                            "title": "Bergen",
+                            "lat": 60.3913,
+                            "lon": 5.3221,
+                            "description": "Kontorstadt der Hanse in Norwegen; Handel mit Stockfisch und Pelzen.",
+                        },
+                        {
+                            "title": "Brügge",
+                            "lat": 51.2093,
+                            "lon": 3.2247,
+                            "description": "Zentrale für Tuchhandel in Flandern; wichtiges westliches Handelszentrum.",
+                        },
+                        {
+                            "title": "London (Stalhof)",
+                            "lat": 51.5074,
+                            "lon": -0.1278,
+                            "description": "Hanse-Kontor für den Englandhandel; Sitz des „Stalhofs“ im Mittelalter.",
+                        },
+                        {
+                            "title": "Nowgorod",
+                            "lat": 58.5215,
+                            "lon": 31.2755,
+                            "description": "Östlichstes Hansekontor; Handel mit Fellen, Wachs und Honig im Russlandgeschäft.",  # noqa: E501
+                        },
+                    ],
+                },
+            ],
+        }
+    }
 
 
 def get_empty_context() -> dict:
