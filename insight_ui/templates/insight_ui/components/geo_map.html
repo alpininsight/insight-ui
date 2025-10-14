@@ -1,8 +1,7 @@
 {% load static %}
 
-<div id="map" class="z-0 h-[36rem]"></div>
+<div id="map" class="z-0" style="height: {{ map_height|default:36 }}rem"></div>
 
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
   /**
    * Calculates a color bases on the given value and the min and max values.
@@ -38,7 +37,7 @@
    *
    * @returns A new leaflet layer with the markers.
   */
-  function addCircles(dataset)
+  function addCircles(dataset, min, max)
   {
     const newLayer = L.layerGroup();
     for (const entry of dataset)
@@ -46,7 +45,7 @@
       L.circleMarker([entry.lat, entry.lon], {
           radius: Math.sqrt(entry.value) * 0.05,
           color: "#003366",
-          fillColor: color(entry.value, 300000, 3800000),
+          fillColor: color(entry.value, min, max),
           fillOpacity: 0.7,
           weight: 1
       })
@@ -62,8 +61,8 @@
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
 
-  let overlayMaps = {};
-  const datasets = {{ data.datasets|safe }};
+  var overlayMaps = {};
+  var datasets = {{ data.datasets|safe }};
   for (let dataset of datasets)
   {
     let newLayer = null;
@@ -74,7 +73,7 @@
     }
     else if (dataset.type == "circle")
     {
-      newLayer = addCircles(dataset.data);
+      newLayer = addCircles(dataset.data, dataset.min, dataset.max);
       newLayer.addTo(map);
     }
 

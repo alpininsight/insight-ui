@@ -345,20 +345,21 @@ def chat(view_name: str) -> dict:
 
 
 @register.inclusion_tag("insight_ui/components/geo_map.html")
-def geo_map(data: dict = {}) -> dict:
+def geo_map(data: dict = {}, map_height: int = 36) -> dict:
     """
     Rendert eine integrierte geografische Karte.
 
     Arguments:
     ---------
         data (dict): Einstellungen für die Karte und Daten welche auf der Karte dargestellt werden sollen.
+        map_height (int): Die Höhe der Karte in 'rem'.
 
     Returns:
     -------
         Dict mit Kontext-Variablen für das Template.
 
     """
-    return {"data": data}
+    return {"data": data, "map_height": map_height}
 
 
 @register.inclusion_tag("insight_ui/components/list_partial.html")
@@ -904,12 +905,8 @@ def tabs(config: dict) -> dict:
 
 
 @register.inclusion_tag("insight_ui/components/carousels/3D_carousel.html")
-def three_d_carousel(  # noqa: PLR0913 (too many args)
-    carousel_items: Sequence[Mapping[str, Any]] | None = None,
-    autoplay: bool = False,
-    show_dots: bool = True,
-    show_index: bool = False,
-    slides_count: Sequence[int] | None = None,
+def three_d_carousel(
+    carousel_items: Sequence[Mapping[str, Any]] | None = None, slides_count: Sequence[int] | None = None
 ) -> dict[str, Any]:
     """
     Rendert eine 3D Variante der Karussell Komponente.
@@ -917,9 +914,6 @@ def three_d_carousel(  # noqa: PLR0913 (too many args)
     Args:
     ----
         carousel_items (list): Darzustellender Inhalt (Karten)
-        autoplay (bool): Wechsle automatisch nach einer bestimmten Zeit (5s) zur nächsten Seite
-        show_dots (bool): Zeige Pagination Dots unter dem Inhalt
-        show_index (bool): Zeige Anzahl und aktuelle Seite in der unteren rechten Ecke
         slides_count (range): Anzahl der Seiten als Iterable
 
     Returns:
@@ -929,15 +923,12 @@ def three_d_carousel(  # noqa: PLR0913 (too many args)
     """
     return {
         "carousel_items": [dict(item) for item in carousel_items] if carousel_items is not None else [],
-        "autoplay": autoplay,
-        "show_dots": show_dots,
-        "show_index": show_index,
         "slides_count": list(slides_count) if slides_count is not None else [],
     }
 
 
 @register.inclusion_tag("insight_ui/components/charts/bar_chart.html")
-def bar_chart(chart_id: str, chart: dict) -> dict:
+def bar_chart(chart_id: str, chart: dict, chart_height: int = 24) -> dict:
     """
     Rendert ein Bar-Chart mit Apache Echarts.
 
@@ -945,17 +936,18 @@ def bar_chart(chart_id: str, chart: dict) -> dict:
     ----
         chart_id (str): Eine eindeutige ID für das Diagramm.
         chart (dict): Enthält die Informationen und die Daten des Diagramms.
+        chart_height (int): Die Höhe des Diagramms in 'rem'.
 
     Returns:
     -------
         Dict mit Kontext-Variablen für das Template
 
     """
-    return {"chart_id": chart_id, "chart": chart}
+    return {"chart_id": chart_id, "chart": chart, "chart_height": chart_height}
 
 
 @register.inclusion_tag("insight_ui/components/charts/line_chart.html")
-def line_chart(chart_id: str, chart: dict) -> dict:
+def line_chart(chart_id: str, chart: dict, chart_height: int = 24) -> dict:
     """
     Rendert ein Line-Chart mit Apache Echarts.
 
@@ -963,10 +955,11 @@ def line_chart(chart_id: str, chart: dict) -> dict:
     ----
         chart_id (str): Eine eindeutige ID für das Diagramm.
         chart (dict): Enthält die Informationen und die Daten des Diagramms.
+        chart_height (int): Die Höhe des Diagramms in 'rem'.
 
     Returns:
     -------
         Dict mit Kontext-Variablen für das Template
 
     """
-    return {"chart_id": chart_id, "chart": chart}
+    return {"chart_id": chart_id, "chart": chart, "chart_height": chart_height}

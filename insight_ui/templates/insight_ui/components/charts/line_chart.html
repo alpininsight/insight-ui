@@ -1,4 +1,4 @@
-<div id="{{ chart_id }}" class="h-96"></div>
+<div id="{{ chart_id }}" style="height: {{ chart_height|default:24 }}rem"></div>
 
 <script type="module">
     var chartDom = document.getElementById("{{ chart_id }}");

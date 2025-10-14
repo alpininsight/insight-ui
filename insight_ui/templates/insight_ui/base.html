@@ -33,6 +33,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/plugins/autoloader/prism-autoloader.min.js"></script>
 
         <!-- leaflet (geo) -->
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
         <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
         <!-- Apache echarts -->
@@ -98,9 +99,13 @@
         <script defer src="{% static 'insight_ui/js/insight-ui-carousel.js' %}"></script>
         <script defer src="{% static 'insight_ui/js/insight-ui-popover.js' %}"></script>
         <script defer src="{% static 'insight_ui/js/insight-ui-tooltip.js' %}"></script>
+        <script defer src="{% static 'insight_ui/js/insight-ui-accordion.js' %}"></script>
+        <script defer src="{% static 'insight_ui/js/insight-ui-tabs.js' %}"></script>
+        <script defer src="{% static 'insight_ui/js/insight-ui-3D-carousel.js' %}"></script>
         <script defer src="{% static 'insight_ui/js/insight-ui-init.js' %}"></script>
         <!-- HTMX Extensions -->
         <script defer src="{% static 'insight_ui/js/insight-ui-htmx-extensions.js' %}"></script>
+
 
         {% block extra_scripts %}{% endblock %}
     </body>

@@ -8,8 +8,13 @@
         Mit der <span class="inline-tag">accordion</span> Komponente lassen sich ausklappbare Bereiche für weitere Informationen hinzufügen. Ein Accordion kann entweder ein oder mehrere Bereiche gleichzeitig geöffnet haben. Es besteht die Möglichkeit, dass beim öffnen eines Bereich, ein Anker gesetzt wird. Dadurch lassen sich über die URL bestimmte Bereiche beim aufrufen der Seite aufklappen und die Ansicht scrollt automatisch bis zu dem geöffneten Bereich.
     </p>
 
-    <div class="example-container space-y-4">
+    <h2 class="mt-4">Standard Accordion</h2>
+    <div class="example-container mt-3 mb-6">
         {% accordion accordion_items "faq-multiple" False %}
+    </div>
+
+    <h2>Exclusive Accordion (nur ein Bereich gleichzeitig offen)</h2>
+    <div class="example-container mt-3 mb-6">
         {% accordion accordion_items "faq-exclusive" True %}
     </div>
 </section>

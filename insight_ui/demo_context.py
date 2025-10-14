@@ -1048,6 +1048,8 @@ def get_geo_map_context() -> dict:
                 {
                     "name": "population",
                     "type": "circle",
+                    "min": 300000,
+                    "max": 3800000,
                     "data": [
                         {"title": "Berlin", "value": 3769000, "lat": 52.5200, "lon": 13.4050},
                         {"title": "Hamburg", "value": 1850000, "lat": 53.5511, "lon": 9.9937},

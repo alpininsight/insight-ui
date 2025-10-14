@@ -1,11 +1,16 @@
-<div class="rounded-sm overflow-hidden" id="{{ group_id }}">
+<div
+  id="{{ group_id }}"
+  data-accordion="{{ group_id }}"
+  data-accordion-exclusive="{{ exclusive|yesno:"true,false" }}"
+  class="rounded-sm overflow-hidden"
+>
   {% for item in items %}
     {% with forloop.counter0|stringformat:"s" as idx %}
       {% with group_id|add:"-panel-"|add:idx as panel_id %}
         <div class="bg-white dark:bg-gray-800">
           <h3 class="mb-1">
             <button
-              class="flex justify-between items-center bg-gray-100 dark:bg-gray-900 w-full px-4 py-3 scroll-mt-24 focus:outline-none focus-visible:ring-2 ring-insight-primary"
+              class="flex justify-between items-center w-full border-b border-gray-300 px-4 py-3 scroll-mt-24 focus:outline-none focus-visible:ring-2 ring-insight-primary"
               aria-expanded="false"
               aria-controls="{{ panel_id }}"
               id="{{ panel_id }}-header"
@@ -18,7 +23,7 @@
           </h3>
           <div
             id="{{ panel_id }}"
-            class="accordion-content border-x-2 {% if forloop.last %}border-b-2{% endif %} border-gray-100 dark:border-gray-900 px-4 overflow-hidden transition-all duration-300 ease-in-out"
+            class="accordion-content px-4 overflow-hidden transition-all duration-300 ease-in-out"
             role="region"
             aria-labelledby="{{ panel_id }}-header"
             style="height: 0; opacity: 0;"
@@ -37,7 +42,7 @@
   (function () {
     const container = document.getElementById("{{ group_id }}");
     const buttons = Array.from(container.querySelectorAll("button[aria-controls]"));
-    const exclusive = {{ exclusive|yesno:"true,false" }};
+    const exclusive = container.getAttribute("data-accordion-exclusive");
 
     function closePanel(button, panel) {
       button.setAttribute('aria-expanded', 'false');
@@ -84,8 +89,7 @@
 
       button.addEventListener('click', () => {
         const isExpanded = button.getAttribute('aria-expanded') === 'true';
-
-        if (exclusive) {
+        if (exclusive === "true") {
           buttons.forEach((btn) => {
             const pid = btn.getAttribute('aria-controls');
             const p = document.getElementById(pid);
@@ -129,11 +133,13 @@
       const panelToOpen = document.getElementById(openId);
 
       if (buttonToOpen && panelToOpen) {
-        if (exclusive) {
+        if (exclusive === "true") {
           buttons.forEach((btn) => {
             const pid = btn.getAttribute('aria-controls');
             const p = document.getElementById(pid);
-            closePanel(btn, p);
+            if (btn !== buttonToOpen) {
+              closePanel(btn, p);
+            }
           });
         }
         openPanel(buttonToOpen, panelToOpen, true);

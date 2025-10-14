@@ -125,7 +125,7 @@
 
 <script>
     // Media-Queries
-    const screens = [
+    var screens = [
         window.matchMedia('(min-width: 640px)'),
         window.matchMedia('(min-width: 1024px)'),
         window.matchMedia('(min-width: 1536px)'),
@@ -133,15 +133,15 @@
     ]
 
     // Distances: first -> smallest screen, last -> biggest screen
-    const distances = [-1100, -750, -750, -550];
-    const angle = 360 / 5;
+    var distances = [-1100, -750, -750, -550];
+    var angle = 360 / 5;
 
     previous = document.getElementById("previous");
     next = document.getElementById("next");
 
     carousel = document.getElementById("threeD_carousel");
 
-    let currentIndex = 0;
+    var currentIndex = 0;
 
     function spin(index, toRight)
     {
@@ -169,7 +169,7 @@
         ];
     }
 
-    const spinSettings = {
+    var spinSettings = {
         duration: 1000,
         fill: "forwards",
     };
