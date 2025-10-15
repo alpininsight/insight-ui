@@ -51,4 +51,43 @@
     };
 
     option && myChart.setOption(option);
+
+    // Establish WebSocket connection...
+    const ws = new WebSocket("wss://example.com/live-data");
+
+    ws.onopen = () => {
+        console.log("WebSocket verbunden.");
+    };
+
+    ws.onmessage = (event) => {
+        const message = JSON.parse(event.data);
+
+        // Format e.g..:
+        // { "timestamp": "2025-10-15T12:00:00", "value": 42 }
+
+        const xData = chart.getOption().xAxis[0].data;
+        const yData = chart.getOption().series[0].data;
+
+        xData.push(message.timestamp);
+        yData.push(message.value);
+
+        // Optional: Just keep the last 20 entries
+        if (xData.length > 20) {
+            xData.shift();
+            yData.shift();
+        }
+
+        chart.setOption({
+            xAxis: { data: xData },
+            series: [{ data: yData }]
+        });
+    };
+
+    ws.onerror = (error) => {
+        console.error("WebSocket-Error:", error);
+    };
+
+    ws.onclose = () => {
+        console.warn("WebSocket disconnected.");
+    };
 </script>

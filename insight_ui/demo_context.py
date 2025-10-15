@@ -420,7 +420,6 @@ def get_sidebar_context() -> dict:
                         },
                         {
                             "text": _("Geo-Maps"),
-                            "icon": {"name": "tools", "size": "xs"},
                             "url": reverse("component_detail_page_view", kwargs={"component_name": "geo_map"}),
                             "htmx": {"target": "#content"},
                         },

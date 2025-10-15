@@ -3,41 +3,57 @@ window.InsightUI = window.InsightUI || {};
 InsightUI.Accordion = {
     init: function () {
         // Collect all elements with 'data-accordion=<target_ID>'
-        const accordions = []; // document.querySelectorAll("[data-accordion]");
+        const accordions = document.querySelectorAll("[data-accordion]");
 
         accordions.forEach((accordion) => {
+            if (accordion.dataset.initialized === "true") {
+                return;
+            }
+
+            accordion.dataset.initialized = "true";
+
             const buttons = Array.from(accordion.querySelectorAll("button[aria-controls]"));
             const exclusive = accordion.getAttribute("data-accordion-exclusive");
 
             function closePanel(button, panel) {
                 button.setAttribute('aria-expanded', 'false');
-                panel.style.height = panel.scrollHeight + 'px';
-                requestAnimationFrame(() => {
-                    panel.style.height = '0';
-                    panel.style.opacity = '0';
-                });
                 button.querySelector('svg')?.classList.remove('rotate-180');
+
+                panel.style.height = panel.scrollHeight + 'px';
+                panel.offsetHeight;
+
+                panel.style.transition = 'height 0.3s ease, opacity 0.3s ease';
+                panel.style.height = '0px';
+                panel.style.opacity = '0';
+
+                panel.addEventListener('transitionend', function handler(event) {
+                    if (event.propertyName === 'height') {
+                        panel.removeEventListener('transitionend', handler);
+                        panel.style.transition = '';
+                        panel.style.height = '0px';
+                    }
+                });
             }
 
             function openPanel(button, panel, scroll = true) {
                 button.setAttribute('aria-expanded', 'true');
-                panel.style.height = panel.scrollHeight + 'px';
-                panel.style.opacity = '1';
                 button.querySelector('svg')?.classList.add('rotate-180');
+
+                panel.style.transition = 'none';
+                panel.style.height = 'auto';
+                const height = panel.scrollHeight + 'px';
+                panel.style.height = '0px';
+                panel.offsetHeight;
+
+                panel.style.transition = 'height 0.3s ease, opacity 0.3s ease';
+                panel.style.height = height;
+                panel.style.opacity = '1';
 
                 panel.addEventListener('transitionend', function handler(event) {
                     if (event.propertyName === 'height') {
-                        panel.style.height = 'auto';
                         panel.removeEventListener('transitionend', handler);
-
-                        if (scroll) {
-                            const rect = panel.getBoundingClientRect();
-                            const isOutOfView =
-                                rect.top < 0 || rect.bottom > (window.innerHeight || document.documentElement.clientHeight);
-                            if (isOutOfView) {
-                                button.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                            }
-                        }
+                        panel.style.transition = '';
+                        panel.style.height = 'auto';
                     }
                 });
             }
@@ -110,5 +126,8 @@ InsightUI.Accordion = {
                 }
             }
         });
+
+        console.log("Accordions: ", accordions);
+        console.log("Accordions initialized!");
     }
 };

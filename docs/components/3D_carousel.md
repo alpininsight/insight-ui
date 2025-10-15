@@ -7,13 +7,15 @@ Mit der `three_d_carousel` Komponente können beliebige Inhalte auf einzigartige
 ```django
 {% load insight_tags %}
 
-{% three_d_carousel carousel_items=3D_carousel.items slides_count=3D_carousel.range_total_slides %}
+{% three_d_carousel tag_id="threeD_carousel" velocity=300 carousel_items=3D_carousel.items %}
 ```
 
 ## Parameter
 
+- **tag_id** (_str_): Eine eindeutige ID für das Karussell.
+- **velocity** (_int_): Die Geschwindigkeit mit welcher sich das Karussell drehen soll.
+- **face_camera** (_bool_): _True_ wenn die Karten immer in Richtung der Kamera ausgerichtet sein sollen.
 - **carousel_items** (_list_): Daten welche innerhalb des Karussell angezeigt werden sollen (frei definierbar).
-- **slides_count** (_range_): Die Anzahl der Seiten.
 
 ## Customization
 

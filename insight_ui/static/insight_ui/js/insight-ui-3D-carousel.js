@@ -3,9 +3,9 @@ window.InsightUI = window.InsightUI || {};
 InsightUI.ThreeDCarousel = {
     init: function () {
         // Collect all elements with 'data-3D-carousel=<target_ID>'
-        const threeDCarousels = []; // document.querySelectorAll("[data-3D-carousel]");
+        const threeDCarousels = document.querySelectorAll("[data-3D-carousel]");
 
-        threeDCarousels.forEach((carousel) => {
+        threeDCarousels.forEach((carouselWrapper) => {
             // Media-Queries
             const screens = [
                 window.matchMedia('(min-width: 640px)'),
@@ -14,15 +14,15 @@ InsightUI.ThreeDCarousel = {
                 window.matchMedia('(min-width: 1920px)')
             ]
 
+            const face_camera = carouselWrapper.getAttribute("data-carousel-face-camera") === 'true';
+            const carousel = carouselWrapper.firstElementChild;
+            const previous = carouselWrapper.lastElementChild.firstElementChild;
+            const next = carouselWrapper.lastElementChild.lastElementChild;
+
             // Distances: first -> smallest screen, last -> biggest screen
             const distances = [-1100, -750, -750, -550];
-            const angle = 360 / 5;
-
-            previous = document.getElementById("previous");
-            next = document.getElementById("next");
-
-            carousel = document.getElementById("threeD_carousel");
-
+            const itemsCount = carousel.children.length;
+            const angle = 360 / itemsCount;
             let currentIndex = 0;
 
             function spin(index, toRight) {
@@ -43,28 +43,44 @@ InsightUI.ThreeDCarousel = {
 
                 /* apply animation */
                 return [
-                    { transform: "translateX(-50%) perspective(1000px) translateZ(" + distance + "px) rotateX(-20deg) rotateY(" + (fromIndex * angle) + "deg)" },
-                    { transform: "translateX(-50%) perspective(1000px) translateZ(" + distance + "px) rotateX(-20deg) rotateY(" + (index * angle) + "deg)" },
+                    { transform: "translateX(-50%) perspective(1000px) translateZ(" + distance + "px) rotateX(var(--carousel-tilt)) rotateY(" + (fromIndex * angle) + "deg)" },
+                    { transform: "translateX(-50%) perspective(1000px) translateZ(" + distance + "px) rotateX(var(--carousel-tilt)) rotateY(" + (index * angle) + "deg)" },
                 ];
             }
 
             const spinSettings = {
-                duration: 1000,
+                duration: parseInt(carouselWrapper.getAttribute("data-carousel-velocity")),
                 fill: "forwards",
             };
 
             function gotoPrevious(event) {
                 currentIndex++;
-                if (currentIndex > 4) currentIndex = 0;
+                if (currentIndex > itemsCount - 1) currentIndex = 0;
 
                 carousel.animate(spin(currentIndex, false), spinSettings);
+
+                if (face_camera)
+                {
+                    for (let item of carousel.children)
+                    {
+                        item.firstElementChild.animate([{ transform: "rotateY(calc((var(--position) + " + currentIndex + " - 1) * (360 / var(--quantity)) * -1deg))" }], spinSettings);
+                    }
+                }
             }
 
             function gotoNext(event) {
                 currentIndex--;
-                if (currentIndex < 0) currentIndex = 4;
+                if (currentIndex < 0) currentIndex = itemsCount - 1;
 
                 carousel.animate(spin(currentIndex, true), spinSettings);
+
+                if (face_camera)
+                {
+                    for (let item of carousel.children)
+                    {
+                        item.firstElementChild.animate([{ transform: "rotateY(calc((var(--position) + " + currentIndex + " - 1) * (360 / var(--quantity)) * -1deg))" }], spinSettings);
+                    }
+                }
             }
 
             previous.addEventListener("click", gotoPrevious);
