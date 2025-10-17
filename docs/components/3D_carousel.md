@@ -14,6 +14,7 @@ Mit der `three_d_carousel` Komponente können beliebige Inhalte auf einzigartige
 
 - **tag_id** (_str_): Eine eindeutige ID für das Karussell.
 - **velocity** (_int_): Die Geschwindigkeit mit welcher sich das Karussell drehen soll.
+- **tilt** (_int_): Die Neigung des Karussell zur Kamera.
 - **face_camera** (_bool_): _True_ wenn die Karten immer in Richtung der Kamera ausgerichtet sein sollen.
 - **carousel_items** (_list_): Daten welche innerhalb des Karussell angezeigt werden sollen (frei definierbar).
 

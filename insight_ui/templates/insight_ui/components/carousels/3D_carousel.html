@@ -6,12 +6,11 @@
     data-carousel-face-camera="{{ face_camera|yesno:'true,false' }}"
     class="carousel_wrapper relative size-full overflow-hidden"
 >
-    <div style="--quantity: {{ carousel_items|length }}; --carousel-tilt: -10deg" class="threeD_carousel absolute top-5 left-1/2 h-[35vh] w-full">
+    <div style="--quantity: {{ carousel_items|length }}; --carousel-tilt: {{ tilt }}deg" class="threeD_carousel absolute top-5 left-1/2 h-[35vh] w-full">
       {% for item in carousel_items %}
-        <div style="--position: {{ forloop.counter }}; --item-tilt: {% if face_camera %}0deg{% else %}20deg{% endif %}" class="item_wrapper absolute inset-0 flex justify-center">
-            <div {% if face_camera %}class="item"{% endif %}>
+        <div style="--position: {{ forloop.counter }}; --item-tilt: {% if face_camera %}0deg{% else %}{{ tilt }}deg{% endif %}" class="item_wrapper absolute inset-0">
+            <div class="{% if face_camera %}item{% endif %} flex justify-center size-full">
                 {% card title=item.title subtitle=item.subtitle content=item.content actions=item.actions %}
-                {% comment %} <div class="absolute bg-gray-100 dark:bg-gray-700 h-56 w-full max-w-96 border border-gray-200 dark:border-gray-600 shadow-lg rounded rotate-y-180"></div> {% endcomment %}
             </div>
         </div>
       {% endfor %}
@@ -45,13 +44,13 @@
         transform-style: preserve-3d;
         transform:
             rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg))
-            translateZ(600px) /* distance to center */
-            rotateX(var(--item-tilt));
+            translateZ(500px) /* distance to center */
+            rotateX(calc(var(--item-tilt) * -1));
     }
 
     .threeD_carousel .item_wrapper .item
     {
-        transform: rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * -1deg))
+        transform: rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * -1deg)) rotateX(calc(var(--carousel-tilt) * -1));
     }
 
     /* CURRENTLY NOT IN USE! */

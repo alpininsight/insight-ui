@@ -906,7 +906,11 @@ def tabs(config: dict) -> dict:
 
 @register.inclusion_tag("insight_ui/components/carousels/3D_carousel.html")
 def three_d_carousel(
-    tag_id: str, velocity: int = 1000, face_camera: bool = False, carousel_items: Sequence[Mapping[str, Any]] = []
+    tag_id: str,
+    velocity: int = 1000,
+    tilt: int = 0,
+    face_camera: bool = False,
+    carousel_items: Sequence[Mapping[str, Any]] = [],
 ) -> dict[str, Any]:
     """
     Rendert eine 3D Variante der Karussell Komponente.
@@ -915,6 +919,7 @@ def three_d_carousel(
     ----
         tag_id (str): Eine eindeutige ID für das Karussell.
         velocity (int): Die Geschwindigkeit mit welcher sich das Karussell drehen soll.
+        tilt (int): Die Neigung des Karussell zur Kamera.
         face_camera (bool): True wenn die Karten immer in Richtung der Kamera ausgerichtet sein sollen.
         carousel_items (list): Darzustellender Inhalt (Karten)
 
@@ -926,6 +931,7 @@ def three_d_carousel(
     return {
         "id": tag_id,
         "velocity": velocity,
+        "tilt": tilt,
         "face_camera": face_camera,
         "carousel_items": [dict(item) for item in carousel_items],
     }

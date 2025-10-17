@@ -55,30 +55,26 @@ InsightUI.ThreeDCarousel = {
 
             function gotoPrevious(event) {
                 currentIndex++;
-                if (currentIndex > itemsCount - 1) currentIndex = 0;
-
                 carousel.animate(spin(currentIndex, false), spinSettings);
 
                 if (face_camera)
                 {
                     for (let item of carousel.children)
                     {
-                        item.firstElementChild.animate([{ transform: "rotateY(calc((var(--position) + " + currentIndex + " - 1) * (360 / var(--quantity)) * -1deg))" }], spinSettings);
+                        item.firstElementChild.animate([{ transform: "rotateY(calc((var(--position) + " + currentIndex + " - 1) * (360 / var(--quantity)) * -1deg)) rotateX(calc(var(--carousel-tilt) * -1))" }], spinSettings);
                     }
                 }
             }
 
             function gotoNext(event) {
                 currentIndex--;
-                if (currentIndex < 0) currentIndex = itemsCount - 1;
-
                 carousel.animate(spin(currentIndex, true), spinSettings);
 
                 if (face_camera)
                 {
                     for (let item of carousel.children)
                     {
-                        item.firstElementChild.animate([{ transform: "rotateY(calc((var(--position) + " + currentIndex + " - 1) * (360 / var(--quantity)) * -1deg))" }], spinSettings);
+                        item.firstElementChild.animate([{ transform: "rotateY(calc((var(--position) + " + currentIndex + " - 1) * (360 / var(--quantity)) * -1deg)) rotateX(calc(var(--carousel-tilt) * -1))" }], spinSettings);
                     }
                 }
             }
