@@ -1,0 +1,102 @@
+{% load i18n insight_tags %}
+
+<h1>Insight UI Charts</h1>
+
+<!-- Component Demo -->
+<section>
+    <p>
+        Mit der <span class="inline-tag">chart</span> Komponente können ohne JavaScript anpassen zu müssen, Diagramme dargestellt werden. Die Komponente verwendet intern Apache ECharts.
+    </p>
+    <p class="mt-4">
+        Die Komponente steht bisher in den folgenden Ausführungen zu Verfügung:
+    </p>
+    <ul class="list-disc leading-relaxed ms-8">
+        <li><span class="inline-tag">line_chart</span>: Ein Linien-Diagramm.</li>
+        <li><span class="inline-tag">bar_chart</span>: Ein Stacked Balken-Diagramm.</li>
+    </ul>
+
+    <div class="example-container">
+        {% bar_chart chart_id="bar_chart_example" chart=chart_data %}
+        {% line_chart chart_id="line_chart_example" chart=chart_data %}
+    </div>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h2>{% trans "Verwendung" %}</h2>
+    <div id="Chart_Usage" data-insight-code-block="Django">
+        &lcub;% load insight_tags %&rcub;
+
+        &lcub;% bar_chart chart_id="bar_chart_example" chart=chart_data %&rcub;
+        &lcub;% line_cart chart_id="line_chart_example" chart=chart_data %&rcub;
+    </div>
+</section>
+
+<section>
+    <h3>{% trans "Parameter" %}</h3>
+    <ul class="list-disc leading-relaxed ms-8">
+        <li><span class="inline-tag">chart_id</span> (<i>str</i>): Eine eindeutige ID für das Diagramm.</li>
+        <li><span class="inline-tag">chart</span> (<i>dict</i>): Die Informationen und Daten des Diagramms.</li>
+    </ul>
+
+    <div class="mt-8">
+        <h4>chart</h4>
+        <p class="mb-6">Die Informationen und Daten des Diagramms.</p>
+
+        <div id="Chart_Params" data-insight-code-block="python">
+            {
+                "title": "Chart Example",
+                "x_axis_legend": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+                "series": ["Email", "Union Ads", "Video Ads", "Direct", "Search Engine"],
+                "data": [
+                    [100, 302, 301, 334, 390, 330, 320],
+                    [320, 132, 101, 134, 90, 230, 210],
+                    [220, 182, 191, 234, 290, 330, 310],
+                    [150, 212, 201, 154, 190, 330, 410],
+                    [820, 832, 901, 934, 1290, 1330, 1320],
+                ],
+            }
+        </div>
+    </div>
+
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li><span class="inline-tag">title</span> (<i>str</i>): Der Titel des Diagramms.</li>
+        <li><span class="inline-tag">x_axis_legend</span> (<i>list</i>): Die Beschriftung der X-Achse.</li>
+        <li><span class="inline-tag">series</span> (<i>list</i>): Die Namen der einzelnen Datensätze.</li>
+        <li><span class="inline-tag">data</span> (<i>list</i>): Die Daten der einzelnen Datensätze.</li>
+    </ul>
+</section>
+
+<!-- Customization -->
+<section>
+    <h2>{% trans "Customization" %}</h2>
+    <p>
+        Das Design der Line-Chart Komponente befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/charts/line_chart.html</span>.
+    </p>
+    <p class="mt-4">
+        Der Quellcode der Bar-Chart Komponente befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/charts/bar_chart.html</span>.
+    </p>
+    <p class="mt-4">
+        Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad <span class="inline-tag">templates/insight_ui/components/</span> vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+    </p>
+</section>
+
+<!-- A11y -->
+<section>
+    <h2>{% trans "Accessability" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li><i>Todo</i></li>
+    </ul>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Related -->
+<section>
+    <h2>{% trans "Related Topics" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li><i>Todo</i></li>
+    </ul>
+</section>

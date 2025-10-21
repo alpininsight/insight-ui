@@ -1,12 +1,83 @@
 {% load static %}
 
-<div id="map" class="z-0 h-96"></div>
+<div id="map" class="z-0" style="height: {{ map_height|default:36 }}rem"></div>
 
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-  var map = L.map('map').setView([52.5163, 13.3777], 6);
+  /**
+   * Calculates a color bases on the given value and the min and max values.
+   *
+   * @returns The calculated color as String e.g.: 'rgb(100, 120, 234)'.
+  */
+  function color(value, min, max)
+  {
+    const t = (value - min) / (max - min);
+    const r = Math.round(168 + (0 - 168) * t);
+    const g = Math.round(207 + (51 - 207) * t);
+    const b = Math.round(255 + (102 - 255) * t);
+    return `rgb(${r}, ${g}, ${b})`;
+  }
+
+  /**
+   * Creates a set of geographic markers form the given dataset.
+   *
+   * @returns A new leaflet layer with the markers.
+  */
+  function addMarkers(dataset)
+  {
+    const newLayer = L.layerGroup();
+    for (const entry of dataset)
+    {
+      L.marker([entry.lat, entry.lon]).bindPopup("<b>" + entry.title + "</b><br>" + entry.description).addTo(newLayer);
+    }
+    return newLayer;
+  }
+
+  /**
+   * Creates a set of circles form the given dataset.
+   *
+   * @returns A new leaflet layer with the markers.
+  */
+  function addCircles(dataset, min, max)
+  {
+    const newLayer = L.layerGroup();
+    for (const entry of dataset)
+    {
+      L.circleMarker([entry.lat, entry.lon], {
+          radius: Math.sqrt(entry.value) * 0.05,
+          color: "#003366",
+          fillColor: color(entry.value, min, max),
+          fillOpacity: 0.7,
+          weight: 1
+      })
+      .bindPopup("<b>" + entry.title + "</b><br>" + entry.description)
+      .addTo(newLayer);
+    }
+    return newLayer;
+  }
+
+  var map = L.map('map').setView({{ data.initial_coords }}, {{ data.initial_zoom }});
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 18,
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
+
+  var overlayMaps = {};
+  var datasets = {{ data.datasets|safe }};
+  for (let dataset of datasets)
+  {
+    let newLayer = null;
+    if (dataset.type == "marker")
+    {
+      newLayer = addMarkers(dataset.data);
+      newLayer.addTo(map);
+    }
+    else if (dataset.type == "circle")
+    {
+      newLayer = addCircles(dataset.data, dataset.min, dataset.max);
+      newLayer.addTo(map);
+    }
+
+    overlayMaps[dataset.name] = newLayer;
+  }
+  L.control.layers(null, overlayMaps, { collapsed: false }).addTo(map);
 </script>

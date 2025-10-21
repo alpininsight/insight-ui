@@ -1,0 +1,93 @@
+<div id="{{ chart_id }}" style="height: {{ chart_height|default:24 }}rem"></div>
+
+<script type="module">
+    var chartDom = document.getElementById("{{ chart_id }}");
+    var myChart = echarts.init(chartDom);
+    var option;
+
+    const rawData = {{ chart.data }};
+    const totalData = [];
+    for (let i = 0; i < rawData[0].length; ++i)
+    {
+        let sum = 0;
+        for (let j = 0; j < rawData.length; ++j)
+        {
+            sum += rawData[j][i];
+        }
+        totalData.push(sum);
+    }
+
+    const series = {{ chart.series|safe }}.map((name, sid) => {
+        return {
+            name,
+            type: 'bar',
+            stack: 'total',
+            barWidth: '60%',
+            label:{
+                show: true,
+                formatter: (params) => Math.round(params.value * 1000) / 10 + '%'
+            },
+            data: rawData[sid].map((d, did) =>
+                totalData[did] <= 0 ? 0 : d / totalData[did]
+            )
+        };
+    });
+
+    option = {
+        title: {
+            text: "{{ chart.title }}"
+        },
+        legend: {
+            selectedMode: false
+        },
+        yAxis: {
+            type: 'value'
+        },
+        xAxis: {
+            type: 'category',
+            data: {{ chart.x_axis_legend|safe }}
+        },
+        series
+    };
+
+    option && myChart.setOption(option);
+
+    // Establish WebSocket connection...
+    const ws = new WebSocket("wss://example.com/live-data");
+
+    ws.onopen = () => {
+        console.log("WebSocket verbunden.");
+    };
+
+    ws.onmessage = (event) => {
+        const message = JSON.parse(event.data);
+
+        // Format e.g..:
+        // { "timestamp": "2025-10-15T12:00:00", "value": 42 }
+
+        const xData = chart.getOption().xAxis[0].data;
+        const yData = chart.getOption().series[0].data;
+
+        xData.push(message.timestamp);
+        yData.push(message.value);
+
+        // Optional: Just keep the last 20 entries
+        if (xData.length > 20) {
+            xData.shift();
+            yData.shift();
+        }
+
+        chart.setOption({
+            xAxis: { data: xData },
+            series: [{ data: yData }]
+        });
+    };
+
+    ws.onerror = (error) => {
+        console.error("WebSocket-Error:", error);
+    };
+
+    ws.onclose = () => {
+        console.warn("WebSocket disconnected.");
+    };
+</script>

@@ -1,0 +1,68 @@
+{% load i18n insight_tags %}
+
+<div
+    data-3D-carousel="{{ id }}"
+    data-carousel-velocity="{{ velocity|default:1000 }}"
+    data-carousel-face-camera="{{ face_camera|yesno:'true,false' }}"
+    class="carousel_wrapper relative size-full overflow-hidden"
+>
+    <div style="--quantity: {{ carousel_items|length }}; --carousel-tilt: {{ tilt }}deg" class="threeD_carousel absolute top-5 left-1/2 h-[35vh] w-full">
+      {% for item in carousel_items %}
+        <div style="--position: {{ forloop.counter }}; --item-tilt: {% if face_camera %}0deg{% else %}{{ tilt }}deg{% endif %}" class="item_wrapper absolute inset-0">
+            <div class="{% if face_camera %}item{% endif %} flex justify-center size-full">
+                {% card title=item.title subtitle=item.subtitle content=item.content actions=item.actions %}
+            </div>
+        </div>
+      {% endfor %}
+    </div>
+    <!-- Controls -->
+    <div class="absolute flex justify-between gap-4 bottom-10 sm:bottom-10 left-1/2 -translate-x-1/2 px-8 lg:px-0">
+        <button class="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+            </svg>
+            {% trans 'Zurück' %}
+        </button>
+        <button class="btn btn-primary">
+            {% trans 'Weiter' %}
+            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+            </svg>
+        </button>
+    </div>
+</div>
+
+<style>
+    .threeD_carousel
+    {
+        transform-style: preserve-3d;
+        transform: translateX(-50%) perspective(1000px) translateZ(-750px) rotateX(var(--carousel-tilt));
+    }
+
+    .threeD_carousel .item_wrapper
+    {
+        transform-style: preserve-3d;
+        transform:
+            rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg))
+            translateZ(500px) /* distance to center */
+            rotateX(calc(var(--item-tilt) * -1));
+    }
+
+    .threeD_carousel .item_wrapper .item
+    {
+        transform: rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * -1deg)) rotateX(calc(var(--carousel-tilt) * -1));
+    }
+
+    /* CURRENTLY NOT IN USE! */
+    @keyframes spin
+    {
+        from
+        {
+            transform: translateX(-50%) perspective(1000px) translateZ(-1000px) rotateX(-20deg) rotateY(0deg);
+        }
+        to
+        {
+            transform: translateX(-50%) perspective(1000px) translateZ(-1000px) rotateX(-20deg) rotateY(360deg);
+        }
+    }
+</style>

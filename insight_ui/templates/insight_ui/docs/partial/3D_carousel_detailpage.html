@@ -1,0 +1,75 @@
+{% load i18n insight_tags %}
+
+<h1>Insight UI 3D Carousel</h1>
+
+<!-- Component Demo -->
+<section>
+    <p>
+        Mit der <span class="inline-tag">three_d_carousel</span> Komponente können beliebige Inhalte auf einzigartige Weise dargestellt werden. Die Inhalte werden in einem Kreis angeordnet dargestellt.
+    </p>
+
+    <div class="example-container h-[36rem]">
+        {% three_d_carousel tag_id="threeD_carousel" velocity=300 tilt=-15 face_camera=False carousel_items=3D_carousel.items %}
+    </div>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h2>{% trans "Verwendung" %}</h2>
+    <div id="ThreeD_Carousel_Usage" data-insight-code-block="Django">
+        &lcub;% load insight_tags %&rcub;
+
+        &lcub;% three_d_carousel tag_id="threeD_carousel" velocity=300 face_camera=True carousel_items=3D_carousel.items %&rcub;
+    </div>
+</section>
+
+<section>
+    <h3>{% trans "Parameter" %}</h3>
+    <ul class="list-disc leading-relaxed ms-8">
+        <li><span class="inline-tag">tag_id</span> (<i>str</i>): Eine eindeutige ID für das Karussell.</li>
+        <li><span class="inline-tag">velocity</span> (<i>int</i>): Die Geschwindigkeit mit welcher sich das Karussell drehen soll.</li>
+        <li><span class="inline-tag">tilt</span> (<i>int</i>): Die Neigung des Karussell zur Camera.</li>
+        <li><span class="inline-tag">face_camera</span> (<i>bool</i>): <span class="font-semibold text-blue-500">True</span> wenn die Karten immer in Richtung der Kamera ausgerichtet sein sollen.</li>
+        <li><span class="inline-tag">carousel_items</span> (<i>list</i>): Daten welche innerhalb des Karussell angezeigt werden sollen (frei definierbar).</li>
+    </ul>
+
+    <div class="mt-8">
+        <h4>carousel_items</h4>
+        <p class="mb-6">Daten welche innerhalb des Karussell angezeigt werden sollen (frei definierbar).</p>
+
+        <div id="ThreeD_Carousel_Params" data-insight-code-block="python">
+            Todo
+        </div>
+    </div>
+</section>
+
+<!-- Customization -->
+<section>
+    <h2>{% trans "Customization" %}</h2>
+    <p>
+        Das Design das Basis-Design der 3D Karussell Komponente befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/carousel/3D_carousel.html</span>.
+    </p>
+    <p class="mt-4">
+        Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad <span class="inline-tag">templates/insight_ui/components/</span> vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+    </p>
+</section>
+
+<!-- A11y -->
+<section>
+    <h2>{% trans "Accessability" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li><i>Todo</i></li>
+    </ul>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Related -->
+<section>
+    <h2>{% trans "Related Topics" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li><i>Todo</i></li>
+    </ul>
+</section>

@@ -345,20 +345,21 @@ def chat(view_name: str) -> dict:
 
 
 @register.inclusion_tag("insight_ui/components/geo_map.html")
-def geo_map(data: list = []) -> dict:
+def geo_map(data: dict = {}, map_height: int = 36) -> dict:
     """
     Rendert eine integrierte geografische Karte.
 
     Arguments:
     ---------
-        data (list): Eine Liste von Objekten, welche auf der Karte dargestellt werden sollen.
+        data (dict): Einstellungen für die Karte und Daten welche auf der Karte dargestellt werden sollen.
+        map_height (int): Die Höhe der Karte in 'rem'.
 
     Returns:
     -------
         Dict mit Kontext-Variablen für das Template.
 
     """
-    return {"data": data}
+    return {"data": data, "map_height": map_height}
 
 
 @register.inclusion_tag("insight_ui/components/list_partial.html")
@@ -865,3 +866,110 @@ def footer(data: dict) -> dict[str, Any]:
 
     """
     return {"data": _resolve_view_urls(data)}
+
+
+@register.inclusion_tag("insight_ui/components/accordion.html")
+def accordion(items: list, group_id: str = "accordion", exclusive: bool = True) -> dict:
+    """
+    Rendert ein Accordion welches ein oder mehrere Bereiche geöffnet haben kann.
+
+    Args:
+    ----
+        items (list): Die einzelnen Bereiche mit Caption und Content.
+        group_id (str): Eine eindeutige ID für das Accordion.
+        exclusive (bool): True wenn nur ein Bereich gleichzeitig offen sein darf.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template
+
+    """
+    return {"items": items, "group_id": group_id, "exclusive": exclusive}
+
+
+@register.inclusion_tag("insight_ui/components/tabs.html")
+def tabs(config: dict) -> dict:
+    """
+    Rendert eine Gruppe von Tabs/Registrierkarten und einen Container für den Inhalt des jeweiligen Tabs.
+
+    Args:
+    ----
+        config (dict): Enthält die einzelnen Tabs und ein paar allgemeine Informationen über die Komponente.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template
+
+    """
+    return {"config": config}
+
+
+@register.inclusion_tag("insight_ui/components/carousels/3D_carousel.html")
+def three_d_carousel(
+    tag_id: str,
+    velocity: int = 1000,
+    tilt: int = 0,
+    face_camera: bool = False,
+    carousel_items: Sequence[Mapping[str, Any]] = [],
+) -> dict[str, Any]:
+    """
+    Rendert eine 3D Variante der Karussell Komponente.
+
+    Args:
+    ----
+        tag_id (str): Eine eindeutige ID für das Karussell.
+        velocity (int): Die Geschwindigkeit mit welcher sich das Karussell drehen soll.
+        tilt (int): Die Neigung des Karussell zur Kamera.
+        face_camera (bool): True wenn die Karten immer in Richtung der Kamera ausgerichtet sein sollen.
+        carousel_items (list): Darzustellender Inhalt (Karten)
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template
+
+    """
+    return {
+        "id": tag_id,
+        "velocity": velocity,
+        "tilt": tilt,
+        "face_camera": face_camera,
+        "carousel_items": [dict(item) for item in carousel_items],
+    }
+
+
+@register.inclusion_tag("insight_ui/components/charts/bar_chart.html")
+def bar_chart(chart_id: str, chart: dict, chart_height: int = 24) -> dict:
+    """
+    Rendert ein Bar-Chart mit Apache Echarts.
+
+    Args:
+    ----
+        chart_id (str): Eine eindeutige ID für das Diagramm.
+        chart (dict): Enthält die Informationen und die Daten des Diagramms.
+        chart_height (int): Die Höhe des Diagramms in 'rem'.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template
+
+    """
+    return {"chart_id": chart_id, "chart": chart, "chart_height": chart_height}
+
+
+@register.inclusion_tag("insight_ui/components/charts/line_chart.html")
+def line_chart(chart_id: str, chart: dict, chart_height: int = 24) -> dict:
+    """
+    Rendert ein Line-Chart mit Apache Echarts.
+
+    Args:
+    ----
+        chart_id (str): Eine eindeutige ID für das Diagramm.
+        chart (dict): Enthält die Informationen und die Daten des Diagramms.
+        chart_height (int): Die Höhe des Diagramms in 'rem'.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template
+
+    """
+    return {"chart_id": chart_id, "chart": chart, "chart_height": chart_height}
