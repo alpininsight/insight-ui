@@ -1,6 +1,6 @@
 # Insight UI (Version 0.1.0)
 
-Insight UI is a modern, extensible UI framework for Django. It ships with reusable, WCAG 2.1 AA compliant components, live HTMX integrations, and a Tailwind-based design system so teams can bootstrap projects quickly.
+Insight UI is a modern, extensible UI framework for Django. It ships with reusable, WCAG 2.1 AA-compliant components, live HTMX integrations, and a Tailwind-based design system so teams can bootstrap projects quickly.
 
 ## Highlights
 - **Accessible components**: ready-made navigation, forms, tables, alerts, carousels, and more.
@@ -52,4 +52,4 @@ uv run mkdocs serve
 We welcome improvements! Please read the [Contributor Guide](docs/en/contributing.md) alongside the [naming conventions](docs/en/guides/naming_conventions.md) before opening a pull request. Remember to mirror changes in both language trees.
 
 ## License
-Insight UI is released under the MIT License.
+Insight UI is released under the GNU Affero General Public License v3.0.
