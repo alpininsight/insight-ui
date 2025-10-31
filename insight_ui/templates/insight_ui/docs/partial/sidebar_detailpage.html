@@ -8,10 +8,7 @@
         Die <span class="inline-tag">sidebar</span> Komponente fügt einen Bereich an der Fensterseite hinzu. Die Sidebar kann sowohl auf der linken oder auf der rechten Seite sowie auch auf beiden Seiten gleichzeitig angewendet werden. Die Sidebar kann auch als <i>Drawer</i> verwendet werden, in diesem Fall kann sie geschlossen werden.
     </p>
 
-    <div class="example-container">
-        <i>Work in progress...</i>
-        {% comment %} {% include "insight_ui/components/sidebar.html" with sidebar_data=right_sidebar side="right" auto_close=False %} {% endcomment %}
-    </div>
+    {% include "insight_ui/docs/demo_container.html" %}
 </section>
 
 <hr class="text-gray-300 dark:text-gray-600">
@@ -23,7 +20,7 @@
 
     <div id="Sidebar_Usage" data-insight-code-block="Django">
         &lcub;% block drawers %&rcub;
-            &lcub;% include "insight_ui/components/sidebar.html" with sidebar_data=right_sidebar side="right" auto_close=False %&rcub;
+            &lcub;% sidebar sidebar_data=right_sidebar side="right" auto_close=False %&rcub;
         &lcub;% endblock drawers %&rcub;
     </div>
 </section>

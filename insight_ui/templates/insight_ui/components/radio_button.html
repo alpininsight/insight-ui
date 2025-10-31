@@ -8,7 +8,7 @@
                 {% if item.disabled %}disabled{% endif %}
                 {% if current_value == item.value %}checked="true"{% endif %}
             >
-            <span class="text-sm">{{ item.text }}</span>
+            <span class="{% if item.disabled %}text-secondary{% else %}text-primary{% endif %} text-sm">{{ item.text }}</span>
         </label>
     {% endfor %}
 </div>

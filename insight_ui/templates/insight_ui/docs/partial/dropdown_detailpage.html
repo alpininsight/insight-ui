@@ -11,12 +11,7 @@
         {% trans "Bei der Verwendung von Dropdown-Menüs ist dennoch zu beachten, das diese nicht überladen werden. In der Regel sollte ein Menü nicht mehr als sieben Elemente besitzen und auch verschachtelte Menüs, also ein Dropdown-Menü in einem Dropdown-Menü sollten vermieden werden." %}
     </p>
 
-    <div class="example-container">
-        <div class="flex gap-2">
-            {% dropdown dropdown_menu=user_dropdown %}
-            {% dropdown dropdown_menu=settings_dropdown %}
-        </div>
-    </div>
+    {% include "insight_ui/docs/demo_container.html" %}
 </section>
 
 <hr class="text-gray-300 dark:text-gray-600">

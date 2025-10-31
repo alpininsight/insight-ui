@@ -8,9 +8,7 @@
         Die <span class="inline-tag">live_content</span> Komponente aktualisiert ein Fragment regelmäßig mithilfe von HTMX-Abfragen. Sie eignet sich ideal für Dashboards oder Statusansichten, die häufig aktualisiert werden müssen, ohne dass die gesamte Seite neu geladen werden muss.
     </p>
 
-    <div class="example-container">
-        {% live_content url="/api/live-data/" interval=10 id="live-content" %}
-    </div>
+    {% include "insight_ui/docs/demo_container.html" %}
 </section>
 
 <hr class="text-gray-300 dark:text-gray-600">

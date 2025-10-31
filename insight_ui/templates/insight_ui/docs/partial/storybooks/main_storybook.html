@@ -71,3 +71,49 @@
         {% bullet_point_list items=bulletpoints %}
     </div>
 </section>
+
+<!-- Collapsible Demo -->
+<section class="component-container">
+    <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-t p-4 py-2 md:px-6 md:py-3">
+        <h2 class="text-xl mb-0">
+            <a
+                href="{% url 'component_detail_page_view' 'accordion' %}"
+                hx-get="{% url 'component_detail_page_view' 'accordion' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="inline-flex items-center gap-1 hover:text-blue-300"
+            >
+                {% trans 'Accordion (Collapsible)' %} {% icon name="open-link" size="small" %}
+            </a>
+        </h2>
+    </div>
+    <div class="space-y-4 p-4 md:p-6">
+        <!-- Multiple items open at the same time -->
+        {% accordion accordion_items "faq-multiple" False %}
+
+        <!-- Only one single item open at the same time -->
+        {% accordion accordion_items "faq-exclusive" True %}
+    </div>
+</section>
+
+<!-- Tabs Demo -->
+<section class="component-container">
+    <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-t p-4 py-2 md:px-6 md:py-3">
+        <h2 class="text-xl mb-0">
+            <a
+                href="{% url 'component_detail_page_view' 'tabs' %}"
+                hx-get="{% url 'component_detail_page_view' 'tabs' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="inline-flex items-center gap-1 hover:text-blue-300"
+            >
+                {% trans 'Tabs' %} {% icon name="open-link" size="small" %}
+            </a>
+        </h2>
+    </div>
+    <div class="p-4 md:p-6">
+        {% tabs config=tabs_config %}
+    </div>
+</section>

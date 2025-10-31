@@ -113,6 +113,22 @@ def get_base_context() -> dict:
     return config.get_config() | get_navbar_context() | get_footer_context()
 
 
+def get_component_demo_context() -> dict:
+    """Serve data of the device switch, etc. for component demos."""
+    return {
+        "device_options": {
+            "name": "device-options",
+            "items": [
+                {"id": "mobile", "value": "mobile", "icon": {"name": "smartphone"}, "disabled": False},
+                {"id": "tablet", "value": "tablet", "icon": {"name": "tablet"}, "disabled": False},
+                {"id": "desktop", "value": "desktop", "icon": {"name": "desktop"}, "disabled": False},
+            ],
+        },
+        "dir_toggle": {"id": "toggle_dir", "text": _("RTL")},
+        "theme_toggle": {"id": "toggle_theme", "icon": {"name": "moon"}},
+    }
+
+
 def get_navbar_context() -> dict:
     """Serve data for navbar detailpage."""
     return {
@@ -289,7 +305,6 @@ def get_sidebar_context() -> dict:
             "categories": [
                 {
                     "caption": _("Navigation / Main"),
-                    "icon": {"name": "app", "size": "small"},
                     "items": [
                         {
                             "text": _("Navbar"),
@@ -339,7 +354,6 @@ def get_sidebar_context() -> dict:
                 },
                 {
                     "caption": _("Input Elements"),
-                    "icon": {"name": "cursor-click", "size": "small"},
                     "items": [
                         {
                             "text": _("Buttons"),
@@ -380,7 +394,6 @@ def get_sidebar_context() -> dict:
                 },
                 {
                     "caption": _("Popups"),
-                    "icon": {"name": "rectangles", "size": "small"},
                     "items": [
                         {
                             "text": _("Alerts"),
@@ -406,7 +419,6 @@ def get_sidebar_context() -> dict:
                 },
                 {
                     "caption": _("Utils"),
-                    "icon": {"name": "tools", "size": "small"},
                     "items": [
                         {
                             "text": _("Code Blocks"),
@@ -448,7 +460,6 @@ def get_sidebar_context() -> dict:
                 },
                 {
                     "caption": _("Lists & Tables"),
-                    "icon": {"name": "list", "size": "small"},
                     "items": [
                         {
                             "text": _("Infinite Scroll"),
@@ -469,7 +480,6 @@ def get_sidebar_context() -> dict:
                 },
                 {
                     "caption": _("Search & Filters"),
-                    "icon": {"name": "search", "size": "small"},
                     "items": [
                         {
                             "text": _("Generic Filter"),
@@ -490,7 +500,6 @@ def get_sidebar_context() -> dict:
                 },
                 {
                     "caption": _("Cards"),
-                    "icon": {"name": "cards", "size": "small"},
                     "items": [
                         {
                             "text": _("Cards"),
@@ -521,7 +530,6 @@ def get_sidebar_context() -> dict:
                 },
                 {
                     "caption": _("Forms"),
-                    "icon": {"name": "doc", "size": "small"},
                     "items": [
                         {
                             "text": _("Forms"),
@@ -569,7 +577,7 @@ def get_popup_storybook_context() -> dict:
 
 def get_utils_storybook_context() -> dict:
     """Serve data for utils storybook."""
-    return get_base_context() | get_sidebar_context() | get_differentiator_context()
+    return get_base_context() | get_sidebar_context() | get_differentiator_context() | get_geo_map_context()
 
 
 def get_table_storybook_context() -> dict:
@@ -593,6 +601,7 @@ def get_card_storybook_context() -> dict:
         | get_cards_context()
         | get_image_carousel_context()
         | get_toggle_view_context()
+        | get_3d_carousel_context()
         | {"carousel_items": map_payload_to_cards(generate_payload())}
     )
 
@@ -753,7 +762,7 @@ def get_radio_group_context() -> dict:
 
 def get_toggle_button_context() -> dict:
     """Serve data for toggle-button detailpage."""
-    return {"example_toggle": {"id": "toggle_button_example1", "text": _("Click me!")}}
+    return {"example_toggle": {"id": "toggle_button_example1", "text": _("Click me!"), "switch": True}}
 
 
 def get_range_slider_context() -> dict:
@@ -842,7 +851,6 @@ def get_generic_filter_context() -> dict:
                 "icon": {"name": "home", "size": "small"},
                 "name": "reward_filter",
                 "values": reward_filters,
-                "explanation": _("To filter by the reward."),
             },
         ],
         "filter_view_name": "index_view",
@@ -936,7 +944,7 @@ def get_toggle_view_context() -> dict:
         "view_options": {
             "name": "view-options",
             "param_name": "view",
-            "options": [
+            "items": [
                 {"id": "card-view", "value": "card", "icon": {"name": "cards"}},
                 {"id": "table-view", "value": "table", "icon": {"name": "list"}},
                 {"id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},

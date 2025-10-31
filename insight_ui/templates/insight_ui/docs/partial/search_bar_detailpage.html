@@ -8,11 +8,7 @@
         Ein einfaches Textinput-Feld mit einem großen Button am rechten Ende. Beim absenden wird ein Request an den angegebenen Endpunkt geschickt. Die <span class="inline-tag">search_bar</span> Komponente unterstützt auch HTMX Requests.
     </p>
 
-    <div class="example-container space-y-8">
-        {% search_bar request_view="index_view" %}
-        {% search_bar request_view="index_view" simple="True" %}
-        {% search_bar request_view="index_view" simple="True" search_query="Test 123" %}
-    </div>
+    {% include "insight_ui/docs/demo_container.html" %}
 </section>
 
 <hr class="text-gray-300 dark:text-gray-600">

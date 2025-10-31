@@ -8,9 +8,7 @@
         Mit der <span class="inline-tag">toggle</span> Komponente lässt sich ein Toggle-Button einbauen. Dieser funktioniert im Grunde wie eine einzelne Checkbox.
     </p>
 
-    <div class="example-container">
-        {% toggle toggle=example_toggle %}
-    </div>
+    {% include "insight_ui/docs/demo_container.html" %}
 </section>
 
 <hr class="text-gray-300 dark:text-gray-600">
@@ -37,7 +35,9 @@
         <div id="Radio_Group_Params" data-insight-code-block="python">
             {
                 "id": "toggle_button_example1",
-                "text": _("Click me!")
+                "text": _("Click me!"),
+                "switch": True,
+                "method": "toggleTheme",
             }
         </div>
     </div>

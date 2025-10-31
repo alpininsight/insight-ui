@@ -5,18 +5,13 @@
 <!-- Component Demo -->
 <section>
     <p>
-        {% trans "Breadcrumbs sind eine sekundäre Navigation, welche dazu verwendet werden, dem Nutzer Klarheit über die hierarchische Struktur einer Webseite zu verschaffen. Dies ist vor allem bei Webseiten mit einer tiefen Struktur, also mit vielen Unterseiten sinnvoll. Webseiten mit einer Tiefe von maximal zwei Stufen bspw. _Übersicht -> Produkt Details_ sollten auf Breadcrumbs verzichten." %}
+        Breadcrumbs sind eine sekundäre Navigation, welche dazu verwendet werden, dem Nutzer Klarheit über die hierarchische Struktur einer Webseite zu verschaffen. Dies ist vor allem bei Webseiten mit einer tiefen Struktur, also mit vielen Unterseiten sinnvoll. Webseiten mit einer Tiefe von maximal zwei Stufen bspw. <i>Übersicht -&gt; Produkt Details</i> sollten auf Breadcrumbs verzichten.
     </p>
     <p class="mt-4">
         {% trans "Für eine gute Konsistenz sollten Breadcrumbs, wenn sie verwendet werden, überall verwendet werden und nicht nur sporadisch." %}
     </p>
 
-    <div class="example-container">
-        {% load insight_tags %}
-
-        {% breadcrumbs items=breadcrumb_items %}
-        {% breadcrumbs items=single_breadcrumb_item %}
-    </div>
+    {% include "insight_ui/docs/demo_container.html" %}
 </section>
 
 <hr class="text-gray-300 dark:text-gray-600">

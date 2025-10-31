@@ -8,21 +8,7 @@
         {% trans "Mit der Modal Komponente lassen sich anpassbare Dialoge einbauen. Diese können verwendet werden um dem Nutzer zusätzliche Informationen anzuzeigen oder als Bestätigungsdialoge für diverse Aktionen verwendet werden." %}
     </p>
 
-    <div class="example-container">
-        <div class="flex flex-col md:flex-row gap-4">
-            <!-- Standard -->
-            <button class="btn btn-primary w-72" data-insight-toggle="modal" data-insight-target="demo-modal">
-                {% trans "Standard Modal" %}
-            </button>
-            {% modal html_tag_id="demo-modal" title=_("Demo Modal") description=_("This is an example of a standard modal.") %}
-
-            <!-- Action-Buttons -->
-            <button class="btn btn-danger w-72" data-insight-toggle="modal" data-insight-target="delete-modal">
-                {% trans "Modal with Action-Buttons" %}
-            </button>
-            {% modal html_tag_id="delete-modal" title=_("Delete?") description="Please conform deletion!" actions=confirm_modal_actions %}
-        </div>
-    </div>
+    {% include "insight_ui/docs/demo_container.html" %}
 </section>
 
 <hr class="text-gray-300 dark:text-gray-600">

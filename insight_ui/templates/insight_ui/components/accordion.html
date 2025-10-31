@@ -7,9 +7,9 @@
     {% with forloop.counter0|stringformat:"s" as idx %}
       {% with group_id|add:"-panel-"|add:idx as panel_id %}
         <div class="bg-white dark:bg-gray-800">
-          <h3 class="mb-1">
+          <h3 class="text-primary mb-1">
             <button
-              class="flex justify-between items-center w-full border-b border-gray-300 px-4 py-3 scroll-mt-24 focus:outline-none focus-visible:ring-2 ring-insight-primary"
+              class="flex justify-between items-center w-full border-b border-gray-300 dark:border-gray-600 px-4 py-3 scroll-mt-24 focus:outline-none focus-visible:ring-2 ring-insight-primary"
               aria-expanded="false"
               aria-controls="{{ panel_id }}"
               id="{{ panel_id }}-header"
@@ -28,7 +28,7 @@
             style="height: 0; opacity: 0;"
           >
             <div class="py-4">
-              {{ item.answer }}
+              <p class="text-secondary">{{ item.answer }}</p>
             </div>
           </div>
         </div>

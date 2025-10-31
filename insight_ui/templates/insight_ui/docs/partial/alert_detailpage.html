@@ -8,14 +8,7 @@
         {% trans 'Die Alert-Komponente bietet eine Möglichkeit, Benutzern wichtige Informationen, Warnungen oder Erfolgsmeldungen anzuzeigen.' %}
     </p>
 
-    <div class="example-container">
-        <div class="space-y-4">
-            {% alert message="This is just an information." alert_type="info" %}
-            {% alert message="Saved successfully!" alert_type="success" %}
-            {% alert message="Please review your entries!" alert_type="warning" %}
-            {% alert message="Error while loading data!" alert_type="error" %}
-        </div>
-    </div>
+    {% include "insight_ui/docs/demo_container.html" %}
 </section>
 
 <hr class="text-gray-300 dark:text-gray-600">

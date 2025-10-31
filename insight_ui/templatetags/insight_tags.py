@@ -125,7 +125,7 @@ def diff(textA: str, textB: str) -> str:  # noqa: N803 (Should be lowercase)
             .del {{ background-color: #f8d7da; color: #721c24; text-decoration: line-through; }}
             .ins {{ background-color: #d4edda; color: #155724; }}
         </style>
-        <p>{html}</p>
+        <p class='text-primary'>{html}</p>
     """
 
     differentiator = HtmlDiff()
@@ -278,8 +278,13 @@ def radio(radio_group: dict, current_value: str) -> dict:
 
 
 @register.inclusion_tag("insight_ui/components/radio_group.html")
-def radio_group(
-    radio_group: dict, current_value: str, view_name: str = "", query_params: str = "", target_id: str = ""
+def radio_group(  # noqa: PLR0913 (too many arguments)
+    radio_group: dict,
+    current_value: str,
+    view_name: str = "",
+    query_params: str = "",
+    target_id: str = "",
+    method: str = "",
 ) -> dict:
     """
     Rendert ein Gruppe von Radio-Buttons.
@@ -291,6 +296,7 @@ def radio_group(
         view_name (str): (Optional) Der Name der View an welchen der Request beim wechseln, gesendet werden soll.
         query_params (str): (Optional) Ein String von Query-Parametern
         target_id (str): (Optional) Die ID des HTML-Tags, welches bei wechseln des Wertes ausgetauscht werden soll.
+        method (str): Der Name der JavaScript Methode welche ausgeführt werden soll.
 
     Returns:
     -------
@@ -303,24 +309,26 @@ def radio_group(
         "view_name": view_name,
         "query_params": query_params,
         "target_id": target_id,
+        "method": method,
     }
 
 
 @register.inclusion_tag("insight_ui/components/toggle_button.html")
-def toggle(toggle: dict) -> dict:
+def toggle(toggle: dict, method: str = "") -> dict:
     """
     Rendert ein Toggle-Button.
 
     Arguments:
     ---------
         toggle (dict): Beschreibt den Toggle-Button.
+        method (str): Der Name der JavaScript Methode welche ausgeführt werden soll.
 
     Returns:
     -------
         Dict mit Kontext-Variablen für das Template.
 
     """
-    return {"toggle": toggle}
+    return {"toggle": toggle, "method": method}
 
 
 @register.inclusion_tag("insight_ui/components/range_slider.html")

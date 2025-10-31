@@ -9,17 +9,10 @@
     </p>
 
     <h2>{% trans "Radio Buttons" %}</h2>
-    <div class="example-container mt-3 mb-6">
-        {% radio radio_group=example_radio current_value="PaLM 2" %}
-    </div>
+    {% include "insight_ui/docs/demo_container.html" %}
 
     <h2>{% trans "Block Radio Buttons" %}</h2>
-    <div class="example-container mt-3 mb-6">
-        <div class="w-fit space-y-4">
-            {% radio_group radio_group=view_options current_value=current_view %}
-            {% radio_group radio_group=size_options current_value=current_size %}
-        </div>
-    </div>
+    {% include "insight_ui/docs/demo_container.html" %}
 </section>
 
 <hr class="text-gray-300 dark:text-gray-600">

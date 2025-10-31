@@ -2,7 +2,7 @@
     {% for item in checkbox.items %}
         <label class="flex items-center gap-1">
             <input type="checkbox" id="{{ item.id }}" name="{{ checkbox.name }}" value="{{ item.value }}" {% if item.disabled %}disabled{% endif %}>
-            <span class="text-sm">{{ item.text }}</span>
+            <span class="{% if item.disabled %}text-secondary{% else %}text-primary{% endif %} text-sm">{{ item.text }}</span>
         </label>
     {% endfor %}
 </div>

@@ -8,13 +8,7 @@
         {% trans 'Diese Komponente bietet die Möglichkeit, Quellcode mit Syntax-Highlighting darzustellen. Darüber hinaus gibt es Möglichkeit, den dargestellten Quellcode, über einen Button in den Zwischenspeicher zu kopieren. Das Syntax-Highlighting umfasst so ziemlich alle gängigen und auch die meisten nicht sehr geläufigen Programmiersprachen.' %}
     </p>
 
-    <div class="example-container">
-        <div id="code" data-insight-code-block="javascript">
-            function greet(name) {
-                return `Hello, ${name}!`;
-            }
-        </div>
-    </div>
+    {% include "insight_ui/docs/demo_container.html" %}
 </section>
 
 <hr class="text-gray-300 dark:text-gray-600">
