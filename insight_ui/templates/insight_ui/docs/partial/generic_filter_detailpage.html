@@ -22,7 +22,7 @@
     <div id="Generic_Filter_Usage" data-insight-code-block="Django">
         &lcub;% load insight_tags %&rcub;
 
-        &lcub;% generic_filter filters=filters view_name=filter_view_name %&rcub;
+        &lcub;% generic_filter filters=filters view_name=filter_view_name hx_target="#data" vertical=False %&rcub;
     </div>
 </section>
 
@@ -30,7 +30,9 @@
     <h3>{% trans "Parameter" %}</h3>
     <ul class="list-disc leading-relaxed ms-8">
         <li><span class="inline-tag">view_name</span> (<i>str</i>): Der Name der View an welche der Request gesendet werden soll.</li>
+        <li><span class="inline-tag">hx_target</span> (<i>str</i>): Die ID des Containers, dessen Inhalt vom Response ausgetauscht werden soll.</li>
         <li><span class="inline-tag">filters</span> (<i>list</i>): Definitionen der einzelnen Filter.</li>
+        <li><span class="inline-tag">vertical</span> (<i>bool</i>): <span class="inline-tag">True</span> wenn die Filter übereinander angeordnet sein sollen.</li>
     </ul>
 
     <div class="mt-8">
@@ -40,66 +42,55 @@
         <div id="Generic_Filter_Params" data-insight-code-block="python">
             [
                 {
-                    "text": _("Issue Date"),
-                    "icon": {"name": "home", "size": "small"},
-                    "name": "issuedate_filter",
+                    "text": _("AI model type"),
+                    "icon": {"name": "rocket", "size": "small"},
+                    "name": "model_type_filter",
                     "values": {
-                        _("All"): "all",
-                        _("Today & Yesterday"): "newest",
-                        _("Last 7 days"): "7days",
-                        _("Last 14 days"): "14days",
-                        _("Last 30 days"): "30days",
-                        _("Last 60 days"): "60days",
-                        _("Without release date"): "missing",
-                        "-----": "-",  # no actual value, used as a divider
-                        "2020": "2020",
-                        "2021": "2021",
-                        "2022": "2022",
-                        "2023": "2023",
-                        "2024": "2024",
-                        "2025": "2025",
+                        "placeholder": "-- Select model --",
+                        "language": "Language Model",
+                        "vision": "Vision Model",
+                        "multimodal": "Multimodal Model",
+                        "audio": "Audio / Speech Processing",
+                        "recommendation": "Recommendation System",
+                        "generative": "Generative Model",
                     },
-                    "explanation": _("To filter by the issue date."),
+                    "explanation": _("To filter by the type of AI-Model."),
                 },
                 {
-                    "text": _("Deadline"),
-                    "icon": {"name": "home", "size": "small"},
-                    "name": "expiration_filter",
+                    "text": _("Runtime"),
+                    "icon": {"name": "clock", "size": "small"},
+                    "name": "runtime_filter",
                     "values": {
-                        _("All"): "all",
-                        _("Expires today"): "today",
-                        _("Expires in 7 days at the earliest"): "7days",
-                        _("Expires in 14 days at the earliest"): "14days",
-                        _("Expires in 30 days at the earliest"): "30days",
-                        _("Expires in 60 days at the earliest"): "60days",
-                        _("Expires in 120 days at the earliest"): "120days",
-                        _("Without deadline"): "missing",
-                        "-----": "-",  # no actual value, used as a divider
-                        "2020": "2020",
-                        "2021": "2021",
-                        "2022": "2022",
-                        "2023": "2023",
-                        "2024": "2024",
-                        "2025": "2025",
+                        "placeholder": "-- Select runtime --",
+                        "cloud": "Cloud (API-based)",
+                        "edge": "Edge / On-Device",
+                        "local": "Local (Self-hosted)",
+                        "hybrid": "Hybrid (Cloud + Local)",
+                        "serverless": "Serverless Deployment",
                     },
-                    "explanation": _("To filter by the deadline."),
+                    "explanation": _("To filter by the runtime."),
                 },
                 {
-                    "text": _("Reward in €"),
-                    "icon": {"name": "home", "size": "small"},
-                    "name": "reward_filter",
+                    "text": _("License"),
+                    "icon": {"name": "doc", "size": "small"},
+                    "name": "license_filter",
                     "values": {
-                        _("All"): "all",
-                        "> 200.000€": "gt_200",
-                        "> 100.000€": "gt_100",
-                        "> 50.000€": "gt_50",
-                        "<= 1,0€": "lt_one",
+                        "placeholder": "-- Select license --",
+                        "free": "Free / Open Source",
+                        "freemium": "Freemium",
+                        "subscription": "Subscription",
+                        "pay_per_use": "Pay per Use",
+                        "enterprise": "Enterprise License",
                     },
-                    "explanation": _("To filter by the reward."),
                 },
             ]
         </div>
     </div>
+
+    <p class="info-container text-base mt-4">
+        <span class="block font-bold italic text-lg">Info:</span>
+        Bei den Filter <span class="inline-tag">values</span> dient der Wert <span class="inline-tag">-</span> als Trennlinie, welche nicht anklickbar ist. Der Wert <span class="inline-tag">placeholder</span> dient als Platzhalter.
+    </p>
 </section>
 
 <!-- Customization -->

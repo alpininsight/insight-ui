@@ -403,7 +403,7 @@ def paginated_list(current_page: Page, surrounding_pages: list) -> dict:
 
 
 @register.inclusion_tag("insight_ui/components/generic_filter.html")
-def generic_filter(filters: list, view_name: str) -> dict:
+def generic_filter(filters: list, view_name: str, hx_target: str, vertical: bool) -> dict:
     """
     Rendert eine generische Filterung, bestehend aus einem oder mehreren <select> Feldern.
 
@@ -411,13 +411,15 @@ def generic_filter(filters: list, view_name: str) -> dict:
     ---------
         filters (list): Eine Liste der einzelnen Filter (<select> Feldern).
         view_name (str): Der Name der View an welche der Request gesendet werden soll.
+        hx_target (str): Die ID des Containers, dessen Inhalt vom Response ausgetauscht werden soll.
+        vertical (bool): 'True' wenn die Filter übereinander angeordnet sein sollen.
 
     Returns:
     -------
         Dict mit Kontext-Variablen für das Template.
 
     """
-    return {"filters": filters, "view_name": view_name}
+    return {"filters": filters, "view_name": view_name, "hx_target": hx_target, "vertical": vertical}
 
 
 @register.inclusion_tag("insight_ui/components/search_bar.html")

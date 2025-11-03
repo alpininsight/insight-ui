@@ -1,4 +1,4 @@
-# Filter Komponente (Version 0.1.0)
+# Filter Komponente (Version 0.2.0)
 
 Mit der `generic_filter` Komponente lassen sich relativ einfach standard Filter, bestehend aus `<select>`-Tags, bauen. Der Filter macht bei einer Änderung automatisch einen Request an den entsprechenden Endpunkt und aktualisiert den Datenbereich mittels HTMX.
 
@@ -13,7 +13,9 @@ Eine alternative hierzu stellt der flexiblere, aber auch kompliziertere [Query B
 ## Parameter
 
 - **view_name** (_str_): Der Name der View an welche der Request gesendet werden soll.
+- **hx_target**: (_str_): Die ID des Containers, dessen Inhalt vom Response ausgetauscht werden soll.
 - **filters** (_list_): Definitionen der einzelnen Filter.
+- **vertical** (_bool_): _True_ wenn die Filter übereinander angeordnet sein sollen.
 
 ### filters
 
@@ -22,65 +24,51 @@ Mit diesem Parameter werden die einzelnen Filter definiert. Jeder Filter hat zun
 ```py
 [
     {
-        "text": _("Issue Date"),
-        "icon": {"name": "home", "size": "small"},
-        "name": "issuedate_filter",
+        "text": _("AI model type"),
+        "icon": {"name": "rocket", "size": "small"},
+        "name": "model_type_filter",
         "values": {
-            _("All"): "all",
-            _("Today & Yesterday"): "newest",
-            _("Last 7 days"): "7days",
-            _("Last 14 days"): "14days",
-            _("Last 30 days"): "30days",
-            _("Last 60 days"): "60days",
-            _("Without release date"): "missing",
-            "-----": "-",  # no actual value, used as a divider
-            "2020": "2020",
-            "2021": "2021",
-            "2022": "2022",
-            "2023": "2023",
-            "2024": "2024",
-            "2025": "2025",
+            "placeholder": "-- Select model --",
+            "language": "Language Model",
+            "vision": "Vision Model",
+            "multimodal": "Multimodal Model",
+            "audio": "Audio / Speech Processing",
+            "recommendation": "Recommendation System",
+            "generative": "Generative Model",
         },
-        "explanation": _("To filter by the issue date."),
+        "explanation": _("To filter by the type of AI-Model."),
     },
     {
-        "text": _("Deadline"),
-        "icon": {"name": "home", "size": "small"},
-        "name": "expiration_filter",
+        "text": _("Runtime"),
+        "icon": {"name": "clock", "size": "small"},
+        "name": "runtime_filter",
         "values": {
-            _("All"): "all",
-            _("Expires today"): "today",
-            _("Expires in 7 days at the earliest"): "7days",
-            _("Expires in 14 days at the earliest"): "14days",
-            _("Expires in 30 days at the earliest"): "30days",
-            _("Expires in 60 days at the earliest"): "60days",
-            _("Expires in 120 days at the earliest"): "120days",
-            _("Without deadline"): "missing",
-            "-----": "-",  # no actual value, used as a divider
-            "2020": "2020",
-            "2021": "2021",
-            "2022": "2022",
-            "2023": "2023",
-            "2024": "2024",
-            "2025": "2025",
+            "placeholder": "-- Select runtime --",
+            "cloud": "Cloud (API-based)",
+            "edge": "Edge / On-Device",
+            "local": "Local (Self-hosted)",
+            "hybrid": "Hybrid (Cloud + Local)",
+            "serverless": "Serverless Deployment",
         },
-        "explanation": _("To filter by the deadline."),
+        "explanation": _("To filter by the runtime."),
     },
     {
-        "text": _("Reward in €"),
-        "icon": {"name": "home", "size": "small"},
-        "name": "reward_filter",
+        "text": _("License"),
+        "icon": {"name": "doc", "size": "small"},
+        "name": "license_filter",
         "values": {
-            _("All"): "all",
-            "> 200.000€": "gt_200",
-            "> 100.000€": "gt_100",
-            "> 50.000€": "gt_50",
-            "<= 1,0€": "lt_one",
+            "placeholder": "-- Select license --",
+            "free": "Free / Open Source",
+            "freemium": "Freemium",
+            "subscription": "Subscription",
+            "pay_per_use": "Pay per Use",
+            "enterprise": "Enterprise License",
         },
-        "explanation": _("To filter by the reward."),
     },
 ]
 ```
+
+> **_Info_**: Bei den Filter `values` dient der Wert `-` als Trennlinie, welche nicht anklickbar ist. Der Wert `placeholder` dient als Platzhalter.
 
 ## Customization
 

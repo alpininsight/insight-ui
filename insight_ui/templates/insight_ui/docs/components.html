@@ -193,7 +193,7 @@
         {% elif component == "table" %}
             {% table table_data=table %}
         {% elif component == "generic_filter" %}
-            {% generic_filter filters=filters view_name=filter_view_name %}
+            {% generic_filter filters=filters view_name=filter_view_name hx_target="#data" vertical=False %}
         {% elif component == "search_bar" %}
             <div class="space-y-6">
                 {% search_bar request_view="index_view" %}
