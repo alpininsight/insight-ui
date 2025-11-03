@@ -5,7 +5,9 @@ import structlog
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
+from django.urls import reverse
 from django.utils.translation import gettext as _
+from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.decorators.http import require_GET, require_http_methods
 
 from insight_ui.demo_context import (
@@ -21,6 +23,7 @@ from insight_ui.demo_context import (
     get_cards_context,
     get_charts_context,
     get_checkbox_context,
+    get_component_demo_context,
     get_differentiator_context,
     get_drawer_context,
     get_dropdown_context,
@@ -39,10 +42,10 @@ from insight_ui.demo_context import (
     get_navbar_context,
     get_pagination_context,
     get_popup_storybook_context,
+    get_query_builder_context,
     get_radio_button_context,
     get_range_slider_context,
     get_sidebar_context,
-    get_sql_like_filter_context,
     get_step_bar_context,
     get_table_context,
     get_table_storybook_context,
@@ -240,44 +243,81 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
         response (HttpResponse): response object.
 
     """
+    demo_info = {
+        "url": reverse("component_demo_view", kwargs={"component_name": component_name}),
+        "title": component_name,
+        "id": component_name,
+    }
+
+    if request.headers.get("HX-Request"):
+        context = get_component_demo_context()
+        context["demo"] = demo_info
+        return render(request, f"insight_ui/docs/partial/{component_name}_detailpage.html", context)
+
+    context = get_base_context() | get_component_demo_context() | get_sidebar_context()
+    context["template_name"] = f"insight_ui/docs/partial/{component_name}_detailpage.html"
+    context["demo"] = demo_info
+    return render(request, "insight_ui/docs/component_detailpage.html", context)
+
+
+@xframe_options_exempt
+def component_demo_view(request: HttpRequest, component_name: str) -> HttpResponse:
+    """
+    Render a demo of the specified component.
+
+    Arguments:
+    ---------
+        request (HttpRequest): request object.
+        component_name (str): name of the component.
+
+    Returns:
+    -------
+        response (HttpResponse): response object.
+
+    """
     context_func_map = {
-        "alert": get_alert_context,
+        "navbar": get_navbar_context,
+        "sidebar": get_drawer_context,
+        "footer": get_footer_context,
         "breadcrumb": get_breadcrumb_context,
-        "chat": get_empty_context,
-        "code_block": get_empty_context,
-        "differentiator": get_differentiator_context,
-        "geo_map": get_geo_map_context,
+        "step_bar": get_step_bar_context,
+        "bullet_point_list": get_bullet_point_list_context,
+        "accordion": get_accordion_context,
+        "accordion_exclusive": get_accordion_context,
+        "tabs": get_tabs_context,
         "button": get_empty_context,
+        "outline_button": get_empty_context,
+        "button_sizes": get_empty_context,
         "checkbox": get_checkbox_context,
         "dropdown": get_dropdown_context,
         "radio_button": get_radio_button_context,
+        "radio_group": get_radio_button_context,
         "range_slider": get_range_slider_context,
         "toggle_button": get_toggle_button_context,
-        "live_content": get_empty_context,
+        "chat": get_empty_context,
+        "alert": get_alert_context,
         "modal": get_modal_context,
         "popover": get_empty_context,
-        "step_bar": get_step_bar_context,
         "tooltip": get_empty_context,
+        "code_block": get_empty_context,
+        "differentiator": get_differentiator_context,
+        "progress_bar": get_empty_context,
+        "geo_map": get_geo_map_context,
+        "chart": get_charts_context,
+        "live_content": get_empty_context,
         "web_socket": get_empty_context,
         "infinite_scroll": get_infinite_scroll_context,
         "pagination": get_pagination_context,
         "table": get_table_context,
         "generic_filter": get_generic_filter_context,
         "search_bar": get_empty_context,
-        "sql_like_filter": get_sql_like_filter_context,
+        "query_builder": get_query_builder_context,
         "card": get_cards_context,
         "card_carousel": get_card_carousel_context,
         "image_carousel": get_image_carousel_context,
+        "3D_carousel": get_3d_carousel_context,
         "toggle_view": get_toggle_view_context,
         "form": get_form_context,
-        "navbar": get_navbar_context,
-        "sidebar": get_drawer_context,
-        "footer": get_footer_context,
-        "bullet_point_list": get_bullet_point_list_context,
-        "tabs": get_tabs_context,
-        "accordion": get_accordion_context,
-        "3D_carousel": get_3d_carousel_context,
-        "chart": get_charts_context,
     }
 
     context_func = context_func_map.get(component_name)
@@ -285,14 +325,13 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
     if not context_func:
         return HttpResponse("Page not found", status=404)
 
-    if request.headers.get("HX-Request"):
-        context = context_func()
-        context["search_query"] = request.GET.get("search", "")
-        return render(request, f"insight_ui/docs/partial/{component_name}_detailpage.html", context)
+    context = get_base_context() | context_func()
+    context["component"] = component_name
 
-    context = get_base_context() | get_sidebar_context() | context_func()
-    context["template_name"] = f"{component_name}_detailpage"
-    return render(request, "insight_ui/docs/component_detailpage.html", context)
+    if component_name in ["navbar", "sidebar", "footer"]:
+        context["no_padding"] = True
+
+    return render(request, "insight_ui/docs/components.html", context)
 
 
 def storybook_view(request: HttpRequest, storybook_name: str) -> HttpResponse:
@@ -328,10 +367,10 @@ def storybook_view(request: HttpRequest, storybook_name: str) -> HttpResponse:
     if request.headers.get("HX-Request"):
         context = context_func()
         context["search_query"] = request.GET.get("search", "")
-        return render(request, f"insight_ui/docs/partial/{storybook_name}_storybook.html", context)
+        return render(request, f"insight_ui/docs/partial/storybooks/{storybook_name}_storybook.html", context)
 
     context = context_func()
-    context["template_name"] = f"{storybook_name}_storybook"
+    context["template_name"] = f"insight_ui/docs/partial/storybooks/{storybook_name}_storybook.html"
     return render(request, "insight_ui/docs/component_detailpage.html", context)
 
 
@@ -355,7 +394,7 @@ def toggle_view(request: HttpRequest) -> HttpResponse:
     context["view_options"] = {
         "name": "view-options",
         "param_name": "view",
-        "options": [
+        "items": [
             {"id": "card-view", "value": "card", "icon": {"name": "cards"}},
             {"id": "table-view", "value": "table", "icon": {"name": "list"}},
             {"id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},

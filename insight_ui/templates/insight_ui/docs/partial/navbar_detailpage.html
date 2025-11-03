@@ -4,22 +4,19 @@
 
 <!-- Component Demo -->
 <section>
-    <p class="text-secondary leading-loose">
-        {% trans "Die Navbar-Komponente stellt eine anpassbare Navigationsleiste mit verschiedenen Komponenten zur Verfügung. Die Navigation ist fixiert am oberen Rand des Browserfenstern und bewegt sich beim nach unten Scrollen mit. Die Navigationsleiste besteht aus den folgenden Komponenten:" %}
+    <p>
+        Die <span class="inline-tag">navbar</span> Komponente stellt eine anpassbare Navigationsleiste mit verschiedenen Komponenten zur Verfügung. Die Navigation ist fixiert am oberen Rand des Browserfenstern und bewegt sich beim nach unten Scrollen mit. Die Navigationsleiste besteht aus den folgenden Komponenten:
     </p>
-
-    <ul>
-        <li class="inline-tag">Logo und Titel</li>
-        <li class="inline-tag">Navigationslinks</li>
-        <li class="inline-tag">Suchleiste</li>
-        <li class="inline-tag">Login/Benutzermenü</li>
-        <li class="inline-tag">Sprachauswahl</li>
-        <li class="inline-tag">Theme-Toggle Button</li>
+    <ul class="list-disc leading-relaxed ms-8 mt-4">
+        <li><span class="inline-tag">Brand</span>: Logo und Titel am linken Rand.</li>
+        <li><span class="inline-tag">Navigationslinks</span>: Hauptnavigation, rechts neben dem Logo und Titel.</li>
+        <li><span class="inline-tag">Suchleiste</span>: Eine optionale Suchleiste, rechts neben der Hauptnavigation.</li>
+        <li><span class="inline-tag">Login/Benutzermenü</span>: Ein optionales, anpassbares Benutzermenü bzw. ein Anmeldebutton wenn der Nutzer nicht angemeldet ist.</li>
+        <li><span class="inline-tag">Sprachauswahl</span>: Ein optionales Menü zum auswählen der Sprache, in welcher die Webseite angezeigt werden soll.</li>
+        <li><span class="inline-tag">Theme-Toggle Button</span>: Ein optionaler Button zum wechseln wischen dem hellen und dem dunklen Design.</li>
     </ul>
 
-    <div class="bg-gray-100 dark:bg-gray-950 dark:border dark:border-gray-800 rounded-sm px-8 py-16 my-12">
-        {% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links show_login=True %}
-    </div>
+    {% include "insight_ui/docs/demo_container.html" %}
 </section>
 
 <hr class="text-gray-300 dark:text-gray-600">
@@ -27,8 +24,8 @@
 <!-- Component Documentation -->
 <section>
     <h2>{% trans "Verwendung" %}</h2>
-    <p class="text-secondary leading-loose">
-        {% trans "Eingebunden wird die Navbar am einfachsten über das entsprechende _Template-Tag_. Für die Navbar ist ein entsprechender Block definiert, in welchem diese platziert werden sollte." %}
+    <p>
+       Eingebunden wird die Navbar am einfachsten über das entsprechende <i>Template-Tag</i>. Für die Navbar ist ein entsprechender Block definiert, in welchem diese platziert werden sollte.
     </p>
 
     <div id="Navbar_Usage" data-insight-code-block="Django">
@@ -41,83 +38,133 @@
 </section>
 
 <section>
-    <h3>Parameter</h3>
-    <p class="text-secondary leading-loose">Die Navbar bekommt bis zu vier Parameter.</p>
+    <h3>{% trans "Parameter" %}</h3>
+    <ul class="list-disc leading-relaxed ms-8">
+        <li><span class="inline-tag">config</span> (<i>dict</i>): Ein Dictionary mit der gesamten Konfiguration der Navigationsleiste.</li>
+        <li><span class="inline-tag">user</span> (<i>User</i>): Das <i>user</i> Objekt des Requests (sollte eigentlich immer verfügbar sein).</li>
+        <li><span class="inline-tag">user_dropdown_links</span> (<i>list</i>): Eine Liste mit den Links welche in dem Benutzermenü angezeigt werden sollen.</li>
+        <li><span class="inline-tag">show_login</span> (<i>bool</i>): <span class="text-blue-400 font-semibold">True</span> wenn ein Button zum Anmelden angezeigt werden soll (standardmäßig aus, also <span class="inline-tag">False</span>).</li>
+    </ul>
 
-    <ol>
-        <li><span class="inline-tag">navbar<span>: Ein Dictionary mit der gesamten Konfiguration der Navigationsleiste (mehr dazu gleich).</li>
-        <li><span class="inline-tag">user<span>: Das *user* Objekt des Requests (sollte eigentlich immer verfügbar sein).</li>
-        <li><span class="inline-tag">user_dropdown_links<span>: Eine Liste mit den Links welche in dem Benutzermenü angezeigt werden sollen.</li>
-            <ol>
-                <li><a href="#">siehe [Benutzermenü](usermenu.md)</a></li>
-            </ol>
-        <li><span class="inline-tag">show_login<span>: _True_ wenn ein Button zum Anmelden angezeigt werden soll (standardmäßig aus, also `False`).</li>
-    </ol>
+    <div class="mt-8">
+        <h4>config</h4>
+        <p class="mb-4">Ein Dictionary mit der gesamten Konfiguration der Navigationsleiste.</p>
 
-    <h3>Konfiguration</h3>
-    <p class="text-secondary leading-loose">Das Dictionary mit der Navbar Konfiguration ist etwas größer und wird hier einmal näher erläutert.</p>
-
-    <p class="text-secondary leading-loose">Eine komplette Konfiguration sieht folgendermaßen aus:</p>
-
-    <div id="Navbar_Params" data-insight-code-block="python">
-        {
-            "brand": {
-                "title": "Django Insight UI NavBar",
-                "view_name": "storybook_view",
-                    "logo_url": "insight_ui/svg/logo.svg",
-                "logo_alt": "Insight UI Logo",
-            },
-            "links": [
-                {
-                    "text": _("Startseite"),
-                    "icon": {"name": "home", "size": "small"},
+        <div id="Navbar_Params" data-insight-code-block="python">
+            {
+                "brand": {
+                    "title": "Django Insight UI NavBar",
                     "view_name": "storybook_view",
-                    "active": True,
-                    "need_auth": False,
-                    "staff_only": False,
+                        "logo_url": "insight_ui/svg/logo.svg",
+                    "logo_alt": "Insight UI Logo",
                 },
-                {
-                    "text": _("Über"),
-                    "open_modal": "about-modal",
-                    "active": False,
-                    "need_auth": False,
-                    "staff_only": False,
-                },
-            ],
-            "show_searchbar": True,
-            "show_usermenu": True,
-            "show_language_selector": True,
-            "show_theme_toggle": True,
-        }
+                "links": [
+                    {
+                        "text": _("Startseite"),
+                        "icon": {"name": "home", "size": "small"},
+                        "view_name": "storybook_view",
+                        "active": True,
+                        "need_auth": False,
+                        "staff_only": False,
+                    },
+                    {
+                        "text": _("Über"),
+                        "open_modal": "about-modal",
+                        "active": False,
+                        "need_auth": False,
+                        "staff_only": False,
+                    },
+                ],
+                "show_searchbar": True,
+                "show_usermenu": True,
+                "show_language_selector": True,
+                "show_theme_toggle": True,
+            }
+        </div>
+
+        <h5 class="mt-4">brand</h5>
+        <p>Beinhaltet die Einstellungen für den Titel und das daneben stehende Logo. Das Logo ist optional und wenn kein Pfad angegeben werden sollte, wird das standard Logo verwendet. Die Variable <b>view_name</b> wird verwendet, um den Nutzer auf die entsprechende Seite zu schicken, sollte dieser auf den Titel klicken. Erwartet wird der Name der View keine URL, da der Wert intern mit <span class="inline-tag">&lcub;% url view_name %&rcub;</span> aufgelöst wird.</p>
+
+        <h5 class="mt-2">links</h5>
+        <i>Todo</i>
+
+        <h5 class="mt-2">show_...</h5>
+        <ul class="list-disc leading-relaxed ms-8">
+            <li><span class="inline-tag">show_searchbar</span> (<i>bool</i>): <span class="text-blue-400 font-semibold">True</span> wenn eine Suchleiste nach den Links angezeigt werden soll.</li>
+            <li><span class="inline-tag">show_usermenu</span> (<i>bool</i>): <span class="text-blue-400 font-semibold">True</span> wenn ein Benutzermenü/Login an der rechten Seite angezeigt werden soll.</li>
+            <li><span class="inline-tag">show_language_selector</span> (<i>bool</i>): <span class="text-blue-400 font-semibold">True</span> wenn eine Sprachauswahl an der rechten Seite angezeigt werden soll.</li>
+            <li><span class="inline-tag">show_theme_toggle</span> (<i>bool</i>): <span class="text-blue-400 font-semibold">True</span> wenn der Theme-Toggle (hell/dunkel) an der rechten Seite angezeigt werden soll.</li>
+        </ul>
+
+        <p class="info-container text-base mt-4">
+            <span class="block font-bold italic text-lg">Info:</span>
+            {% blocktrans with bold_text='<b>show_login</b>'|safe %}
+            Der externe Parameter {{ bold_text }} wird zum verstecken des Anmeldebutton auf bestimmten Seiten bspw. der Anmeldeseite verwendet.
+            {% endblocktrans %}
+        </p>
     </div>
-
-    <h4>brand</h4>
-    <p class="text-secondary leading-loose">Beinhaltet die Einstellungen für den Titel und das daneben stehende Logo. Das Logo ist optional und wenn kein Pfad angegeben werden sollte, wird das standard Logo verwendet. Die Variable **view_name** wird verwendet, um den Nutzer auf die entsprechende Seite zu schicken, sollte dieser auf den Titel klicken. Erwartet wird der Name der View keine URL, da der Wert intern mit `{% url view_name %}` aufgelöst wird.</p>
-
-    <h4>links</h4>
-    <a href="#">siehe [Links](links.md)</a>
-
-    <h4>show_...</h4>
-    <ol>
-        <li><span class="inline-tag">show_searchbar</span>: _True_ wenn eine Suchleiste nach den Links angezeigt werden soll</li>
-        <li><span class="inline-tag">show_usermenu</span>: _True_ wenn ein Benutzermenü/Login an der rechten Seite angezeigt werden soll (der externe Parameter **show_login** wird nur zum verstecken des Login's auf bestimmten Seiten verwendet)</li>
-        <li><span class="inline-tag">show_language_selector</span>: _True_ wenn eine Sprachauswahl an der rechten Seite angezeigt werden soll</li>
-        <li><span class="inline-tag">show_theme_toggle</span>: _True_ wenn der Theme-Toggle (hell/dunkel) an der rechten Seite angezeigt werden soll</li>
-    </ol>
 </section>
 
+<!-- Customization -->
 <section>
-    <h2>Barrierefreiheit</h2>
-
-    <p class="text-secondary leading-loose">Die Navbar-Komponente enthält einen **Skip-Link** zum *Hauptinhalt*.</p>
+    <h2>{% trans "Customization" %}</h2>
+    <p>
+        Das Design der Navbar befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/navbar.html</span>.
+    </p>
+    <p class="mt-4">
+        Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad <span class="inline-tag">templates/insight_ui/components/</span> vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+    </p>
 </section>
 
+<!-- A11y -->
 <section>
-    <h2>Verwandte Themen</h2>
+    <h2>{% trans "Accessability" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li>Die Navbar-Komponente enthält einen <b>Skip-Link</b> zum <i>Hauptinhalt</i>.</li>
+    </ul>
+</section>
 
-    <ol>
-        <li><a href="#">Benutzermenü</a></li>
-        <li><a href="#">Footer</a></li>
-        <li><a href="#">Links</a></li>
-    </ol>
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Related -->
+<section>
+    <h2>{% trans "Related Topics" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'usermenu' %}"
+                hx-get="{% url 'component_detail_page_view' 'usermenu' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Benutzermenü" %} (Todo!)
+            </a>
+        </li>
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'footer' %}"
+                hx-get="{% url 'component_detail_page_view' 'footer' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Footer" %}
+            </a>
+        </li>
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'links' %}"
+                hx-get="{% url 'component_detail_page_view' 'links' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Links" %} (Todo!)
+            </a>
+        </li>
+    </ul>
 </section>

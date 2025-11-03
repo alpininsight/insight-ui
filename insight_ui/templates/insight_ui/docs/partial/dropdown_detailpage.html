@@ -4,19 +4,14 @@
 
 <!-- Component Demo -->
 <section>
-    <p class="text-secondary leading-loose">
+    <p>
         {% trans "Ein Dropdown-Menü bietet die Möglichkeit eine Gruppe von Buttons in einem sich ein- und ausklappbaren Menü zu verstauen. Das ist immer dann sehr nützlich, wenn entweder nur wenig Platz zu Verfügung steht oder die Anzahl der Elemente sonst zu groß und unübersichtlich wäre." %}
     </p>
-    <p class="text-secondary leading-loose">
-        {% trans "Bei der Verwendung von Dropdown-Menüs ist dennoch zu beachten, das diese nicht überladen werden. In der Regel sollte ein Menü nicht mehr als _sieben_ Elemente besitzen und auch verschachtelte Menüs, also ein Dropdown-Menü in einem Dropdown-Menü sollten vermieden werden." %}
+    <p>
+        {% trans "Bei der Verwendung von Dropdown-Menüs ist dennoch zu beachten, das diese nicht überladen werden. In der Regel sollte ein Menü nicht mehr als sieben Elemente besitzen und auch verschachtelte Menüs, also ein Dropdown-Menü in einem Dropdown-Menü sollten vermieden werden." %}
     </p>
 
-    <div class="example-container">
-        <div class="flex gap-2">
-            {% dropdown dropdown_menu=user_dropdown %}
-            {% dropdown dropdown_menu=settings_dropdown %}
-        </div>
-    </div>
+    {% include "insight_ui/docs/demo_container.html" %}
 </section>
 
 <hr class="text-gray-300 dark:text-gray-600">
@@ -32,13 +27,13 @@
 <section>
     <h3>{% trans "Parameter" %}</h3>
 
-    <ol class="list-disc text-secondary leading-loose ms-8">
+    <ul class="list-disc leading-relaxed ms-8">
         <li><span class="inline-tag">dropdown_menu</span>(<i>dict</i>): {% trans "Ein Dictionary welches das Dropdown beschreibt." %}</li>
-    </ol>
+    </ul>
 
     <div class="mt-8">
         <h4>dropdown_menu</h4>
-        <p class="text-secondary leading-loose mb-6">{% trans "Ein Dictionary welches das Dropdown beschreibt." %}</p>
+        <p class="mb-6">{% trans "Ein Dictionary welches das Dropdown beschreibt." %}</p>
 
         <div id="Dropdown_Params" data-insight-code-block="python">
             {
@@ -65,17 +60,17 @@
             }
         </div>
 
-        <ol class="list-disc text-secondary leading-relaxed ms-8 mt-6">
+        <ul class="list-disc leading-relaxed ms-8 mt-6">
             <li><span class="inline-tag">tag_id</span>(<i>str</i>): {% trans "Eine eindeutige ID für das HTML-Tag des Dropdown-Containers." %}</li>
             <li><span class="inline-tag">title</span>(<i>str</i>): {% trans "Die Beschriftung des Dropdown-Buttons." %}</li>
             <li><span class="inline-tag">show_arrow</span>(<i>bool</i>): <span class="text-blue-400 font-semibold">True</span> {% trans "wenn ein Pfeil neben dem Titel angezeigt werden soll." %}</li>
             <li><span class="inline-tag">item</span>(<i>list</i>): {% trans "Eine Liste der Dropdown-Elemente." %}
-                <ol class="list-disc ms-8">
+                <ul class="list-disc leading-relaxed ms-8">
                     <li><span class="inline-tag">text</span>(<i>str</i>): {% trans "Der angezeigte Text des jeweiligen Elements." %}</li>
                     <li><span class="inline-tag">view_name</span>(<i>str</i>): {% trans "Der Name der View zu wessen Endpunkt der Request gesendet werden soll." %}</li>
                     <li><span class="inline-tag">icon</span>(<i>dict</i>): {% trans "Ein optionales Icon welches vor dem Text angezeigt wird." %}</li>
-                </ol>
+                </ul>
             </li>
-        </ol>
+        </ul>
     </div>
 </section>

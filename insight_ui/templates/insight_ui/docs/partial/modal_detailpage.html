@@ -4,25 +4,11 @@
 
 <!-- Component Demo -->
 <section>
-    <p class="text-secondary leading-loose">
+    <p>
         {% trans "Mit der Modal Komponente lassen sich anpassbare Dialoge einbauen. Diese können verwendet werden um dem Nutzer zusätzliche Informationen anzuzeigen oder als Bestätigungsdialoge für diverse Aktionen verwendet werden." %}
     </p>
 
-    <div class="example-container">
-        <div class="flex flex-col md:flex-row gap-4">
-            <!-- Standard -->
-            <button class="btn btn-primary w-72" data-insight-toggle="modal" data-insight-target="demo-modal">
-                {% trans "Standard Modal" %}
-            </button>
-            {% modal html_tag_id="demo-modal" title=_("Demo Modal") description=_("This is an example of a standard modal.") %}
-
-            <!-- Action-Buttons -->
-            <button class="btn btn-danger w-72" data-insight-toggle="modal" data-insight-target="delete-modal">
-                {% trans "Modal with Action-Buttons" %}
-            </button>
-            {% modal html_tag_id="delete-modal" title=_("Delete?") description="Please conform deletion!" actions=confirm_modal_actions %}
-        </div>
-    </div>
+    {% include "insight_ui/docs/demo_container.html" %}
 </section>
 
 <hr class="text-gray-300 dark:text-gray-600">
@@ -42,18 +28,64 @@
 
 <section>
     <h3>{% trans "Parameter" %}</h3>
-    <ol class="list-disc text-secondary space-y-1 ms-8">
-        <li><span class="inline-tag">html_tag_id</span> <span class="italic">(str)</span>: {% trans "Eine eindeutige ID für das Modal-Element." %}</li>
-        <li><span class="inline-tag">title</span> <span class="italic">(str)</span>: {% trans "Ein aussagekräftiger Titel für das Dialogfenster." %}</li>
-        <li><span class="inline-tag">description</span> <span class="italic">(str)</span>: {% trans "Der hauptinhalt des Dialogs." %}</li>
-    </ol>
+    <ul class="list-disc leading-relaxed ms-8">
+        <li><span class="inline-tag">html_tag_id</span> <i>(str)</i>: {% trans "Eine eindeutige ID für das Modal." %}</li>
+        <li><span class="inline-tag">title</span> <i>(str)</i>: {% trans "Der Titel des Modals." %}</li>
+        <li><span class="inline-tag">description</span> <i>(str)</i>: {% trans "Eine optionale Beschreibung des Modals." %}</li>
+        <li><span class="inline-tag">content</span> <i>(str)</i>: {% trans "Der Inhalt des Modals (frei definierbarer HTML-Code)." %}</li>
+        <li><span class="inline-tag">actions</span> <i>(list)</i>: {% trans "Eine Liste von Aktion-Buttons." %}</li>
+    </ul>
+
+    <div class="mt-8">
+        <h4>actions</h4>
+        <p class="mb-6">Eine Liste von Aktion-Buttons.</p>
+
+        <div id="Modal_Params" data-insight-code-block="python">
+            {
+                {"text": _("Learn more"), "url": "#", "type": "secondary"},
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Customization -->
+<section>
+    <h2>{% trans "Customization" %}</h2>
+    <p>
+        Das Design der Modal Komponente befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/modal.html</span>.
+    </p>
+    <p class="mt-4">
+        Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad <span class="inline-tag">templates/insight_ui/components/</span> vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+    </p>
+</section>
+
+<!-- A11y -->
+<section>
+    <h2>{% trans "Accessability" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li>Das Modal wird semantisch korrekt als Dialogfenster definiert, durch die Attribute <span class="inline-tag">role="dialog"</span> und <span class="inline-tag">aria-modal="true"</span>.
+        <li>Für Screenreader bietet das Modal einen Titel und eine (jedoch optionale) Beschreibung, welche mit <span class="inline-tag">aria-labelledby</span> und <span class="inline-tag">aria-describedby</span> verlinkt werden
+        <li>Das Dialogfenster verwendet Focus-Trapping und besitzt ein <i>Schließen</i>-Button, um dieses auch per Tastatur verwenden zu können.
+    </ul>
 </section>
 
 <hr class="text-gray-300 dark:text-gray-600">
 
+<!-- Related -->
 <section>
-    <h2>{% trans "Related topics" %}</h2>
-    <ol class="list-disc ms-8">
-        <li><a href="#" class="text-link">{% trans "Popover" %}</a></li>
-    </ol>
+    <h2>{% trans "Related Topics" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'popover' %}"
+                hx-get="{% url 'component_detail_page_view' 'popover' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Popover" %}
+            </a>
+        </li>
+    </ul>
 </section>

@@ -4,18 +4,11 @@
 
 <!-- Component Demo -->
 <section>
-    <p class="text-secondary leading-loose">
+    <p>
         {% trans 'Die Alert-Komponente bietet eine Möglichkeit, Benutzern wichtige Informationen, Warnungen oder Erfolgsmeldungen anzuzeigen.' %}
     </p>
 
-    <div class="example-container">
-        <div class="space-y-4">
-            {% alert message="This is just an information." alert_type="info" %}
-            {% alert message="Saved successfully!" alert_type="success" %}
-            {% alert message="Please review your entries!" alert_type="warning" %}
-            {% alert message="Error while loading data!" alert_type="error" %}
-        </div>
-    </div>
+    {% include "insight_ui/docs/demo_container.html" %}
 </section>
 
 <hr class="text-gray-300 dark:text-gray-600">
@@ -32,17 +25,45 @@
 
 <section>
     <h3>{% trans "Parameter" %}</h3>
-    <ol class="list-disc text-secondary leading-loose ms-8">
+    <ul class="list-disc leading-relaxed ms-8">
         <li><span class="inline-tag">message</span> (<i>str</i>): {% trans "Die Hauptnachricht der Benachrichtigung" %}</li>
         <li>
             <span class="inline-tag">type</span> (<i>str</i>): {% trans "Der Typ der Benachrichtigung. Mögliche Werte:" %}
-            <ol class="list-disc leading-relaxed ms-8">
-                <li><span class="inline-tag w-fit">info</span></li>
-                <li><span class="inline-tag w-fit">success</span></li>
-                <li><span class="inline-tag w-fit">warning</span></li>
-                <li><span class="inline-tag w-fit">error</span></li>
-            </ol>
+            <span class="inline-tag">info</span>
+            <span class="inline-tag">success</span>
+            <span class="inline-tag">warning</span>
+            <span class="inline-tag">error</span>
         </li>
         <li><span class="inline-tag">dismissible</span> (<i>bool</i>): {% blocktrans with true='<span class="text-blue-400 font-semibold">True</span>'|safe %}{{ true }} wenn die Benachrichtigung schließbar sein soll. {% endblocktrans %}</li>
-    </ol>
+    </ul>
+</section>
+
+<!-- Customization -->
+<section>
+    <h2>{% trans "Customization" %}</h2>
+    <p>
+        Das Design der Alert Komponente befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/alert.html</span>.
+    </p>
+    <p class="mt-4">
+        Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad <span class="inline-tag">templates/insight_ui/components/</span> vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+    </p>
+</section>
+
+<!-- A11y -->
+<section>
+    <h2>{% trans "Accessability" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li>Die Alert-Box besitzt das Attribute <span class="inline-tag">role="alert"</span> für die Unterstützung eines Screenreader.</li>
+        <li>Der Button zum Schließen ist mit der Tastatur ansteuerbar und besitzt ein entsprechendes <span class="inline-tag">aria-label</span>.</li>
+    </ul>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Related -->
+<section>
+    <h2>{% trans "Related Topics" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li><i>Todo</i></li>
+    </ul>
 </section>

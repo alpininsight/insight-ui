@@ -4,35 +4,16 @@
 
 <!-- Component Demo -->
 <section>
-    <p class="text-secondary leading-loose">
+    <p>
         {% trans 'In manchen Fällen ist es notwendig weitere jedoch eher optionale Informationen anzuzeigen, welche jedoch das gesamtbild stören würden oder für welche einfach nicht genug Platz vorhanden ist. Für diesen Fall sind _Popover_ eine nützliche Komponente. Ähnlich wie ein _Tooltip_ werden auch Popover getrennt vom restlichen Layout dargestellt und stören insofern nicht den Fluss des Layouts. Bei einem Popover handelt es sich um eine Bereich für zusätzliche Informationen, welcher nur angezeigt wird, wenn der Nutzer sich mit dem Mauszeiger über einem bestimmten Element befindet. Im gegensatz zum Tooltip, kann der Nutzer mit dem Mauszeiger auf das Popover gehen, ohne das dieses sich schließt. Dadurch können mit einem Popover auch interaktive Elemente angezeigt werden.' %}
     </p>
-    <p class="text-secondary leading-loose pt-4">
+    <p class="pt-4">
         {% blocktrans with tooltip_url='<a href="#" class="text-link">Tooltip-Komponente</a>'|safe %}
         Wenn nur ein kurzer Informationstext angezeigt werden soll, um ein Element mit ein, zwei Wörter zu erklären, sollte stattdessen die {{ tooltip_url }} verwendet werden.
         {% endblocktrans %}
     </p>
 
-    <div class="example-container">
-        <div class="flex flex-col md:flex-row gap-12">
-            <button data-popover-trigger="demo-popover" class="btn btn-primary">Hover me!</button>
-            <div id="demo-popover" class="bg-white dark:bg-gray-500 w-64 border border-gray-300 dark:border-0 rounded-sm shadow">
-                <!-- Arrow -->
-                <div class="popover-arrow absolute left-1/2 -top-2 -translate-x-1/2 w-0 h-0 border-10 border-t-0 border-transparent border-b-white dark:border-b-gray-600"></div>
-                <div class="p-4">
-                    <span class="block font-semibold w-full border-b-2 border-gray-300 pb-2">
-                        {% trans "This is a Popover." %}
-                    </span>
-                    <p class="text-sm mt-4">
-                        {% trans "A popover could have more content than a tooltip and it can also have interactive elements like buttons" %}
-                    </p>
-                </div>
-                <div class="bg-gray-100 dark:bg-gray-600 p-4 rounded-b-sm">
-                    <button class="btn btn-primary btn-sm">{% trans "Learn more" %}</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% include "insight_ui/docs/demo_container.html" %}
 </section>
 
 <hr class="text-gray-300 dark:text-gray-600">
@@ -41,7 +22,7 @@
 <section>
     <h2>{% trans "Verwendung" %}</h2>
 
-    <p class="text-secondary leading-loose mb-4">
+    <p class="mb-4">
         {% blocktrans with insight_tag='<span class="inline-tag">insight_tag</span>'|safe tag_id='<b>Tag-ID</b>'|safe %}
         Dieses Element besitzt kein {{ insight_tag }}, da es lediglich ein Auslöser braucht und ein Ziel-Element. Das Ziel-Element kann komplett selbst definiert werden, lediglich die Verbindung durch die {{ tag_id }} ist zu beachten.
         {% endblocktrans %}
@@ -66,24 +47,53 @@
 
 <section>
     <h3>data-* {% trans "Attribute" %}</h3>
-    <ol class="list-disc text-secondary leading-loose ms-8">
+    <ul class="list-disc leading-relaxed ms-8">
         <li><span class="inline-tag">data-popover-trigger=&lt;tooltip_ID&gt;</span>: {% trans "Setzt den Auslöser für den Popover auf das Element mit der entsprechenden ID." %}</li>
         <li><span class="inline-tag">data-position</span>: {% trans "Bestimmt wo im Bezug auf das Element, der Popover angezeigt werden soll. Mögliche Werte sind:" %}
-            <ol class="list-disc leading-relaxed ms-8">
-                <li><span class="inline-tag w-fit">top</span></li>
-                <li><span class="inline-tag w-fit">bottom</span></li>
-                <li><span class="inline-tag w-fit">right</span></li>
-                <li><span class="inline-tag w-fit">left</span></li>
-            </ol>
+            <span class="inline-tag w-fit">top</span>
+            <span class="inline-tag w-fit">bottom</span>
+            <span class="inline-tag w-fit">right</span>
+            <span class="inline-tag w-fit">left</span>
         </li>
-    </ol>
+    </ul>
+</section>
+
+<!-- Customization -->
+<section>
+    <h2>{% trans "Customization" %}</h2>
+    <p>
+        Das Design der Popover Komponente befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/popover.html</span>.
+    </p>
+    <p class="mt-4">
+        Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad <span class="inline-tag">templates/insight_ui/components/</span> vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+    </p>
+</section>
+
+<!-- A11y -->
+<section>
+    <h2>{% trans "Accessability" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li><i>Todo</i></li>
+    </ul>
 </section>
 
 <hr class="text-gray-300 dark:text-gray-600">
 
+<!-- Related -->
 <section>
-    <h2>{% trans "Related topics" %}</h2>
-    <ol class="list-disc ms-8">
-        <li><a href="#" class="text-link">{% trans "Tooltip" %}</a></li>
-    </ol>
+    <h2>{% trans "Related Topics" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'popover' %}"
+                hx-get="{% url 'component_detail_page_view' 'popover' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Popover" %}
+            </a>
+        </li>
+    </ul>
 </section>

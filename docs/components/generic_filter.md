@@ -1,6 +1,8 @@
 # Filter Komponente (Version 0.1.0)
 
-Mit dieser Komponente lassen sich relativ einfach Filter generieren, indem diese lediglich im Backend definiert werden. Eine alternative hierzu stellt der [Query Builder](query_builder.md) dar. Der Filter macht bei einer Änderung automatisch einen Request an den entsprechenden Endpunkt und aktualisiert den Datenbereich mittels HTMX.
+Mit der `generic_filter` Komponente lassen sich relativ einfach standard Filter, bestehend aus `<select>`-Tags, bauen. Der Filter macht bei einer Änderung automatisch einen Request an den entsprechenden Endpunkt und aktualisiert den Datenbereich mittels HTMX.
+
+Eine alternative hierzu stellt der flexiblere, aber auch kompliziertere [Query Builder](query_builder.md) dar.
 
 ## Verwendung
 
@@ -10,8 +12,8 @@ Mit dieser Komponente lassen sich relativ einfach Filter generieren, indem diese
 
 ## Parameter
 
-- **view_name**: Der Name der View an welche der Request gesendet werden soll.
-- **filters**: Eine Liste mit Dictionaries welche die Filter definieren.
+- **view_name** (_str_): Der Name der View an welche der Request gesendet werden soll.
+- **filters** (_list_): Definitionen der einzelnen Filter.
 
 ### filters
 
@@ -79,6 +81,16 @@ Mit diesem Parameter werden die einzelnen Filter definiert. Jeder Filter hat zun
     },
 ]
 ```
+
+## Customization
+
+Das Design der Filter-Komponente befindet sich in dieser Datei: `insight_ui/templates/insight_ui/generic_filter.html`.
+
+Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+
+## Barrierefreiheit
+
+- _Todo_
 
 ## Verwandte Themen
 

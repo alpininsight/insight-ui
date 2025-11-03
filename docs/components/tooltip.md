@@ -21,6 +21,16 @@ Ein Tooltip sollte nur für kurze Informationstexte (meist nur ein Wort) verwend
 - **text**: Der anzuzeigende Text.
 - **tag_id**: Eine einzigartige ID für den Tooltip, diese muss bei dem auslösenden Element ebenfalls angegeben werden.
 
+## Customization
+
+Das Design der Tooltip Komponente befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/tooltip.html`.
+
+Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+
+## Barrierefreiheit
+
+- _Todo_
+
 ## Verwandte Themen
 
 - [Popover](popover.md)

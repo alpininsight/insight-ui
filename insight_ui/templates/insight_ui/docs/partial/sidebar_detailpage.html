@@ -4,13 +4,11 @@
 
 <!-- Component Demo -->
 <section>
-    <p class="text-secondary leading-loose">
-        {% trans 'Todo' %}
+    <p>
+        Die <span class="inline-tag">sidebar</span> Komponente fügt einen Bereich an der Fensterseite hinzu. Die Sidebar kann sowohl auf der linken oder auf der rechten Seite sowie auch auf beiden Seiten gleichzeitig angewendet werden. Die Sidebar kann auch als <i>Drawer</i> verwendet werden, in diesem Fall kann sie geschlossen werden.
     </p>
 
-    <div class="example-container">
-        {% include "insight_ui/components/sidebar.html" with sidebar_data=right_sidebar side="right" auto_close=False %}
-    </div>
+    {% include "insight_ui/docs/demo_container.html" %}
 </section>
 
 <hr class="text-gray-300 dark:text-gray-600">
@@ -18,9 +16,99 @@
 <!-- Component Documentation -->
 <section>
     <h2>{% trans "Verwendung" %}</h2>
+    <p class="mb-4">Eingebunden wird die Sidebar am einfachsten über das entsprechende <i>Template-Tag</i>. Für die Sidebar sind für jede Seite entsprechende Blöcke definiert, in welchem diese platziert werden sollten.</p>
+
     <div id="Sidebar_Usage" data-insight-code-block="Django">
         &lcub;% block drawers %&rcub;
-            &lcub;% include "insight_ui/components/sidebar.html" with sidebar_data=right_sidebar side="right" auto_close=False %&rcub;
+            &lcub;% sidebar sidebar_data=right_sidebar side="right" auto_close=False %&rcub;
         &lcub;% endblock drawers %&rcub;
     </div>
+</section>
+
+<section>
+    <h3>{% trans "Parameter" %}</h3>
+    <ul class="list-disc leading-relaxed ms-8">
+        <li><span class="inline-tag">sidebar_data</span> (<i>dict</i>): Der Inhalt der Sidebar (Titel und Navigations-Elemente).</li>
+        <li><span class="inline-tag">side</span> (<i>str</i>):  Gibt an, an welcher Seite die Sidebar dargestellt werden soll.</li>
+        <li><span class="inline-tag">static</span> (<i>bool</i>): <span class="inline-tag">True</span> wenn die Sidebar nicht einklappbar sein soll.</li>
+        <li><span class="inline-tag">auto_close</span> (<i>bool</i>): <span class="inline-tag">True</span> wenn die Sidebar sich automatisch schließen soll, wenn der Cursor sie verlässt.</li>
+    </ul>
+
+    <div class="mt-8">
+        <h4>sidebar_data</h4>
+        <p class="mb-6">Der Inhalt der Sidebar (Titel und Navigations-Elemente).</p>
+
+        <div id="Sidebar_Params" data-insight-code-block="python">
+            {
+                "title": _("Secondary Sidebar"),
+                "icon": {"name": "home", "size": "small"},
+                "categories": [
+                    {
+                        "caption": "Main",
+                        "icon": {"name": "home", "size": "small"},
+                        "items": [
+                            {
+                                "text": _("Notifications"),
+                                "icon": {"name": "home", "size": "small"},
+                                "url": reverse("index_view"),
+                            },
+                            {
+                                "text": _("Messages"),
+                                "icon": {"name": "home", "size": "small"},
+                                "url": reverse("index_view"),
+                            },
+                            {"text": _("Tasks"), "icon": {"name": "home", "size": "small"}, "url": reverse("index_view")},
+                            {
+                                "text": _("Calender"),
+                                "icon": {"name": "home", "size": "small"},
+                                "url": reverse("index_view"),
+                            },
+                            {"text": _("Profile"), "icon": {"name": "home", "size": "small"}, "url": reverse("index_view")},
+                        ],
+                    }
+                ],
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Customization -->
+<section>
+    <h2>{% trans "Customization" %}</h2>
+    <p>
+        Das Design der Step Bar Komponente befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/step_bar.html</span>.
+    </p>
+    <p class="mt-4">
+        Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad <span class="inline-tag">templates/insight_ui/components/</span> vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+    </p>
+</section>
+
+<!-- A11y -->
+<section>
+    <h2>{% trans "Accessability" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li>Die Sidebar verwendet für eine semantische Korrektheit das <span class="inline-tag">&lt;aside&gt;</span>-Tag und das Attribute <span class="inline-tag">role="complementary"</span>.</li>
+        <li>Die Drawer Variante verwendet Focus-Trapping und besitzt ein <i>Schließen</i>-Button, um diese auch per Tastatur verwenden zu können.</li>
+    </ul>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Related -->
+<section>
+    <h2>{% trans "Related Topics" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'bullet_point_list' %}"
+                hx-get="{% url 'component_detail_page_view' 'bullet_point_list' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Bullet Point List" %}
+            </a>
+        </li>
+    </ul>
 </section>

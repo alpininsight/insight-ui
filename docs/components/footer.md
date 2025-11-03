@@ -1,6 +1,6 @@
 # Footer-Komponente (Version 0.1.0)
 
-Ein einfacher Footer mit anpassbaren Inhalt. Der Footer ist ein wichtiger Bestandteil einer jeden Webseite, er dient jedoch nicht nur dazu, die Webseite optisch abzuschließen. Er enthält i.d.R. mindestens eine Verlinkung zum Impressum und der Datenschutzerklärung. Oft befindet sich im Footer noch einmal eine Navigation zu den wichtigsten Seiten der Webseite und eine Copyright Angabe.
+Ein einfacher Footer bestehend aus drei Spalten mit anpassbaren Inhalt. Der Footer ist ein wichtiger Bestandteil einer jeden Webseite, er dient jedoch nicht nur dazu, die Webseite optisch abzuschließen. Er enthält i.d.R. mindestens eine Verlinkung zum Impressum und der Datenschutzerklärung. Oft befindet sich im Footer noch einmal eine Navigation zu den wichtigsten Seiten der Webseite und eine Copyright Angabe.
 
 ## Verwendung
 
@@ -16,7 +16,7 @@ Die Footer-komponente wird am einfachsten über das `{% footer %}` Tag eingebund
 
 ## Parameter
 
-- **data**: Ein Dictionary mit den Daten, welche im Footer angezeigt werden sollen.
+- **data** (_dict_): Die Daten welche im Footer angezeigt werden sollen.
 
 ### data
 
@@ -35,6 +35,17 @@ Das _data_ Dictionary besteht aus zwei Komponenten. Der _description_ und den Fo
     ],
 },
 ```
+
+## Customization
+
+Das Design des Footers befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/footer.html`.
+
+Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+
+## Barrierefreiheit
+
+- Die Überschriften der drei Spalten verwenden `<h4>`-Tags wodurch ein Screenreader zwischen den Spalten wechseln kann.
+- Die Auflistung der Links verwendet ein semantisch korrektes `<ul>`-Tag mit entsprechenden `<li>`-Tags.
 
 ## Verwandte Themen
 

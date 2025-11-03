@@ -21,6 +21,16 @@ Diese Komponente wird ohne ein Template einzubinden, verwendet. Es muss lediglic
 
 **_Info_**: Beim klick auf den **Copy** Button wird der Quellcode hervorgehoben und gleichzeitig in den Zwischenspeicher kopiert. Ein erneutes kopieren ist nicht notwendig.
 
+## Customization
+
+Das Design des Code-Blocks befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/code_block.html`.
+
+Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+
+## Barrierefreiheit
+
+- _Todo_
+
 ## Verwandte Themen
 
-- n.A.
+- _Todo_

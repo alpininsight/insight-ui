@@ -1,6 +1,6 @@
 # Carousel-Komponente (Version 0.1.0)
 
-Mit einem Karussell können Daten aber vor allem Bilder auf eine spezielle Art, Platzsparend und interaktiv angezeigt werden.
+Mit der `carousel` Komponente können Bilder, aber auch alle möglichen anderen Sachen, Platzsparend und interaktiv angezeigt werden und es befindet sich immer ein Objekt im Fokus. Daher eignet sich die Komponente vor allem für Bilder.
 
 ## Verwendung
 
@@ -50,9 +50,15 @@ Und so kann anschließend das Karussell eingebunden werden. Über die Parameter 
 {% include "my_carousel.html" with carousel_items=image_carousel_items show_dots=True show_index=True slides_count=range_total_slides items_per_slide=1 %}
 ```
 
-## Template Datei
+## Customization
 
-- `insight_ui/templates/insight_ui/components/carousel.html`
+Das Basisdesign der Carousel Komponente befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/carousel.html`. Das Design des Card-Carousels befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/carousels/card_carousel.html` und für das Image-Carousel in dieser `insight_ui/templates/insight_ui/components/carousels/image_carousel.html`.
+
+Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+
+## Barrierefreiheit
+
+- _Todo_
 
 ## Verwandte Themen
 

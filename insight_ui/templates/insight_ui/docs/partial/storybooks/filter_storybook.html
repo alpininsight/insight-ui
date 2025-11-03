@@ -1,0 +1,72 @@
+{% load i18n insight_tags %}
+
+<!-- Welcome -->
+<section>
+    <h1>{% trans 'Insight UI Filters &amp; Search' %}</h1>
+    <p class="text-lg text-secondary">
+        {% trans 'Filter and search components for big data.' %}
+    </p>
+</section>
+
+<!-- Searchbox Demo -->
+<section class="component-container">
+    <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-t p-4 py-2 md:px-6 md:py-3">
+        <h2 class="text-xl mb-0">
+            <a
+                href="{% url 'component_detail_page_view' 'search_bar' %}"
+                hx-get="{% url 'component_detail_page_view' 'search_bar' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="inline-flex items-center gap-1 hover:text-blue-300"
+            >
+                {% trans 'Primary Search Bar' %} {% icon name="open-link" size="small" %}
+            </a>
+        </h2>
+    </div>
+    <div class="p-4 md:p-6">
+        {% search_bar request_view="index_view" %}
+    </div>
+</section>
+
+<!-- Filter Demo -->
+<section class="component-container">
+    <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-t p-4 py-2 md:px-6 md:py-3">
+        <h2 class="text-xl mb-0">
+            <a
+                href="{% url 'component_detail_page_view' 'generic_filter' %}"
+                hx-get="{% url 'component_detail_page_view' 'generic_filter' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="inline-flex items-center gap-1 hover:text-blue-300"
+            >
+                {% trans 'Generic Filters' %} {% icon name="open-link" size="small" %}
+            </a>
+        </h2>
+    </div>
+    <div class="p-4 md:p-6">
+        {% generic_filter filters=filters view_name=filter_view_name %}
+    </div>
+</section>
+
+<!-- Query-Builder Demo -->
+<section class="component-container">
+    <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-t p-4 py-2 md:px-6 md:py-3">
+        <h2 class="text-xl mb-0">
+            <a
+                href="{% url 'component_detail_page_view' 'query_builder' %}"
+                hx-get="{% url 'component_detail_page_view' 'query_builder' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="inline-flex items-center gap-1 hover:text-blue-300"
+            >
+                {% trans 'Query-Builder' %} {% icon name="open-link" size="small" %}
+            </a>
+        </h2>
+    </div>
+    <div class="p-4 md:p-6">
+        {% sq_builder model_fields=model_fields %}
+    </div>
+</section>

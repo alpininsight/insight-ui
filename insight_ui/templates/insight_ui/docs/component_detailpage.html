@@ -20,10 +20,8 @@
 {% endblock sidebar_left %}
 
 {% block content %}
-    <div id="content" class="bg-linear-to-r from-white from-30% to-white/60 dark:from-gray-900 dark:to-gray-900/75 w-full space-y-8 py-16 px-4 md:px-16">
-        {% with "insight_ui/docs/partial/"|add:template_name|add:".html" as include_template %}
-            {% include include_template %}
-        {% endwith %}
+    <div id="content" class="bg-linear-to-r from-white from-30% to-white/60 dark:from-gray-900 dark:to-gray-900/75 w-full space-y-8 text-secondary leading-loose py-16 px-4 md:px-16">
+        {% include template_name %}
     </div>
 {% endblock content %}
 

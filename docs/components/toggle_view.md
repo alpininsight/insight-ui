@@ -1,6 +1,6 @@
 # Toggle-View-Komponente (Version 0.1.0)
 
-Diese Komponente kombiniert die Tabellen und die Karten-Ansicht, sowie die Karussell-Komponente. Diese Komponente wird dazu verwendet, die selben Daten auf komplett unterschiedliche Art und Weise darzustellen.
+Die `toggle-view` Komponente kombiniert die Tabellen und die Karten-Ansicht, sowie die Karussell-Komponente. Die Komponente wird dazu verwendet, die selben Daten auf komplett unterschiedliche Art und Weise darzustellen.
 
 ## Verwendung
 
@@ -12,10 +12,20 @@ Die Toggle-View wird direkt über das `{% toggle_view %}` Tag eingebunden. Diese
 
 ## Parameter
 
-- **tag_id**: Eine eindeutige ID um Konflikte mit den Radio-Buttons der View-Auswahl zu vermeiden (optional, aber empfohlen).
-- **table_data**: Die Daten für die Tabellen-Ansicht sofern diese als current_view_ eingestellt ist.
-- **view_options**: Eine Liste der View-Varianten welche ausgewählt werden können.
-- **current_view**: Die anzuzeigende View-Variante (Start-View).
+- **tag_id** (_str_): Eine eindeutige ID um Konflikte mit den Radio-Buttons der View-Auswahl zu vermeiden (optional, aber empfohlen).
+- **table_data** (_list_): Die Daten für die Tabellen-Ansicht sofern diese als **current_view** eingestellt ist.
+- **view_options** (_list_): Eine Liste der View-Varianten welche ausgewählt werden können.
+- **current_view** (_str_): Die anzuzeigende View-Variante (Start-View).
+
+## Customization
+
+Das Design der Toggle-View Komponente befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/toggle_view.html`.
+
+Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+
+## Barrierefreiheit
+
+- _Todo_
 
 ## Verwandte Themen
 
