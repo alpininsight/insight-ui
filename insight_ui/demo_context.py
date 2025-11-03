@@ -121,8 +121,13 @@ def get_navbar_context() -> dict:
             "brand": {
                 "title": "Insight UI",
                 "view_name": "index_view",
-                "logo_url": "insight_ui/svg/logo.svg",
-                "logo_alt": "Insight UI Logo",
+                "logo": {
+                    "url": "insight_ui/svg/ai-logo.svg",
+                    "alt": "Insight UI Logo",
+                    "height": "h-8",
+                    "padding": 0,
+                    "rounded": True,
+                },
             },
             "links": [
                 {
