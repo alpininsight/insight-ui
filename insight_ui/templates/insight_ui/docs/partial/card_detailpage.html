@@ -17,25 +17,10 @@
     </ul>
 
     <h2 class="mt-6">{% trans "Standard Karten" %}</h2>
-    <div class="example-container mt-3 mb-6">
-        <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
-            {% for card in cards %}
-                {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
-            {% endfor %}
-        </div>
-    </div>
+    {% include "insight_ui/docs/demo_container.html" %}
 
-    <h2>{% trans "Karten mit Effekten" %}</h2>
-    <div class="example-container mt-3 mb-6">
-        <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
-            {% for card in horizontale_cards %}
-                {% card_horizontale title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
-            {% endfor %}
-            {% for card in flip_cards %}
-                {% card_flip title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
-            {% endfor %}
-        </div>
-    </div>
+    <h2 class="mt-8">{% trans "Karten mit Effekten" %}</h2>
+    {% include "insight_ui/docs/demo_container.html" %}
 </section>
 
 <hr class="text-gray-300 dark:text-gray-600">

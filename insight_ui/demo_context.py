@@ -253,7 +253,6 @@ def get_drawer_context() -> dict:
             "categories": [
                 {
                     "caption": "Main",
-                    "icon": {"name": "home", "size": "small"},
                     "items": [
                         {
                             "text": _("Notifications"),
@@ -308,13 +307,11 @@ def get_sidebar_context() -> dict:
                     "items": [
                         {
                             "text": _("Navbar"),
-                            "icon": {"name": "tools", "size": "xs"},
                             "url": reverse("component_detail_page_view", kwargs={"component_name": "navbar"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Sidebar"),
-                            "icon": {"name": "tools", "size": "xs"},
                             "url": reverse("component_detail_page_view", kwargs={"component_name": "sidebar"}),
                             "htmx": {"target": "#content"},
                         },
@@ -432,6 +429,7 @@ def get_sidebar_context() -> dict:
                         },
                         {
                             "text": _("Progress Bar"),
+                            "icon": {"name": "tools", "size": "xs"},
                             "url": reverse("component_detail_page_view", kwargs={"component_name": "progress_bar"}),
                             "htmx": {"target": "#content"},
                         },
@@ -659,7 +657,7 @@ def get_dropdown_context() -> dict:
             "items": [
                 {"text": _("Profile"), "view_name": "index_view", "icon": {"name": "user", "size": "small"}},
                 {"text": _("Settings"), "view_name": "index_view", "icon": {"name": "cog", "size": "small"}},
-                {"text": _("Logout"), "view_name": "index_view", "icon": {"name": "got-out", "size": "small"}},
+                {"text": _("Logout"), "view_name": "index_view", "icon": {"name": "leave", "size": "small"}},
             ],
         },
         "settings_dropdown": {

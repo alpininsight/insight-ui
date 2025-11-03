@@ -30,12 +30,15 @@
     </head>
     <body class="bg-white dark:bg-gray-800 {{ body_height }} {% if not no_padding %}p-8{% endif %}">
         {% if component == "navbar" %}
-            <div class="h-72">
+            <div class="bg-gray-50 dark:bg-gray-700 h-72">
                 {% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links show_login=True %}
             </div>
         {% elif component == "sidebar" %}
-            {% sidebar sidebar_data=right_sidebar side="right" auto_close=False %}
+            <div class="bg-gray-50 dark:bg-gray-700 h-72">
+                {% sidebar sidebar_data=right_sidebar side="left" auto_close=False %}
+            </div>
         {% elif component == "footer" %}
+            <div class="bg-gray-50 dark:bg-gray-700 h-24"></div>
             {% footer data=footer_data %}
         {% elif component == "breadcrumb" %}
             <div class="space-y-4">
@@ -88,7 +91,7 @@
         {% elif component == "checkbox" %}
             {% checkbox checkbox=example_checkbox %}
         {% elif component == "dropdown" %}
-            <div class="flex gap-2">
+            <div class="flex gap-2 h-64">
                 {% dropdown dropdown_menu=user_dropdown %}
                 {% dropdown dropdown_menu=settings_dropdown %}
             </div>
@@ -113,22 +116,24 @@
                 {% alert message="Error while loading data!" alert_type="error" %}
             </div>
         {% elif component == "modal" %}
-            <div class="flex flex-col md:flex-row gap-4">
-                <!-- Standard -->
-                <button class="btn btn-primary w-72" data-insight-toggle="modal" data-insight-target="demo-modal">
-                    {% trans "Standard Modal" %}
-                </button>
-                {% modal html_tag_id="demo-modal" title=_("Demo Modal") description=_("This is an example of a standard modal.") %}
+            <div class="h-72">
+                <div class="flex flex-col items-center gap-4">
+                    <!-- Standard -->
+                    <button class="btn btn-primary w-72" data-insight-toggle="modal" data-insight-target="demo-modal">
+                        {% trans "Standard Modal" %}
+                    </button>
+                    {% modal html_tag_id="demo-modal" title=_("Demo Modal") description=_("This is an example of a standard modal.") %}
 
-                <!-- Action-Buttons -->
-                <button class="btn btn-danger w-72" data-insight-toggle="modal" data-insight-target="delete-modal">
-                    {% trans "Modal with Action-Buttons" %}
-                </button>
-                {% modal html_tag_id="delete-modal" title=_("Delete?") description="Please conform deletion!" actions=confirm_modal_actions %}
+                    <!-- Action-Buttons -->
+                    <button class="btn btn-danger w-72" data-insight-toggle="modal" data-insight-target="delete-modal">
+                        {% trans "Modal with Action-Buttons" %}
+                    </button>
+                    {% modal html_tag_id="delete-modal" title=_("Delete?") description="Please conform deletion!" actions=confirm_modal_actions %}
+                </div>
             </div>
         {% elif component == "popover" %}
-            <div class="flex flex-col md:flex-row gap-12">
-                <button data-popover-trigger="demo-popover" class="btn btn-primary">Hover me!</button>
+            <div class="flex items-end justify-center gap-12 h-64">
+                <button data-popover-trigger="demo-popover" class="btn btn-primary h-fit">Hover me!</button>
                 <div id="demo-popover" class="bg-white dark:bg-gray-500 w-64 border border-gray-300 dark:border-0 rounded-sm shadow">
                     <!-- Arrow -->
                     <div class="popover-arrow absolute left-1/2 -top-2 -translate-x-1/2 w-0 h-0 border-10 border-t-0 border-transparent border-b-white dark:border-b-gray-600"></div>
@@ -146,7 +151,7 @@
                 </div>
             </div>
         {% elif component == "tooltip" %}
-            <div class="flex flex-col md:flex-row gap-12">
+            <div class="flex flex-col md:flex-row items-center justify-center gap-12 py-8">
                 <button data-tooltip-trigger="tt-demo-top" data-position="top" class="btn btn-primary">{% trans "Top" %}</button>
                 {% include "insight_ui/components/tooltip.html" with text=_("This is a tooltip.") show_arrow="True" tag_id="tt-demo-top" %}
 
@@ -198,7 +203,20 @@
         {% elif component == "query_builder" %}
             {% sq_builder model_fields=model_fields %}
         {% elif component == "card" %}
-
+            <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
+                {% for card in cards %}
+                    {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
+                {% endfor %}
+            </div>
+        {% elif component == "effect_cards" %}
+            <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
+                {% for card in horizontale_cards %}
+                    {% card_horizontale title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
+                {% endfor %}
+                {% for card in flip_cards %}
+                    {% card_flip title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
+                {% endfor %}
+            </div>
         {% elif component == "card_carousel" %}
             {% carousel carousel_items=carousel_items show_index=True slides_count=range_total_slides items_per_slide=2 %}
         {% elif component == "image_carousel" %}

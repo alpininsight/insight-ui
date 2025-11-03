@@ -327,6 +327,10 @@ def component_demo_view(request: HttpRequest, component_name: str) -> HttpRespon
 
     context = get_base_context() | context_func()
     context["component"] = component_name
+
+    if component_name in ["navbar", "sidebar", "footer"]:
+        context["no_padding"] = True
+
     return render(request, "insight_ui/docs/components.html", context)
 
 
