@@ -1,4 +1,4 @@
-# Navbar-Komponente (Version 0.1.0)
+# Navbar-Komponente (Version 0.1.1)
 
 Die `navbar` Komponente stellt eine anpassbare Navigationsleiste mit verschiedenen Komponenten zur Verfügung. Die Navigation ist fixiert am oberen Rand des Browserfenstern und bewegt sich beim nach unten Scrollen mit. Die Navigationsleiste besteht aus den folgenden Komponenten:
 
@@ -37,10 +37,15 @@ Eine komplette Konfiguration sieht folgendermaßen aus:
 ```py
 {
     "brand": {
-        "title": "Django Insight UI NavBar",
+        "title": "Insight UI",
         "view_name": "storybook_view",
-        "logo_url": "insight_ui/svg/logo.svg",
-        "logo_alt": "Insight UI Logo",
+        "logo": {
+            "url": "insight_ui/svg/logo.svg",
+            "alt": "Insight UI Logo",
+            "height": "h-8",
+            "padding": 0,
+            "rounded": True,
+        },
     },
     "links": [
         {

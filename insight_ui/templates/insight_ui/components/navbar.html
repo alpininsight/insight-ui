@@ -5,34 +5,32 @@
     {% trans 'Jump to main content' %}
 </a>
 
-<nav role="navigation" aria-label="{% trans 'Main navigation' %}" class="fixed w-full h-16 z-50 bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700 px-4 md:px-16 py-3">
+<nav role="navigation" aria-label="{% trans 'Main navigation' %}" class="fixed w-full h-16 z-50 bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700 px-4 md:px-16">
   <!--- Desktop Navigation -->
-  <div class="flex flex-wrap justify-between items-center gap-4 lg:gap-16 h-full">
+  <div class="flex flex-wrap justify-between items-center gap-1 lg:gap-16 h-full">
     <!-- Brand Logo -->
     {% if brand %}
-      <div class="flex items-center">
-        <a href="{{ brand.href }}" class="flex items-center gap-2 text-xl font-bold text-primary">
-          {% if brand.logo_url %}
-            <img src="{% static brand.logo_url %}" alt="{{ brand.logo_alt }}" class="size-8 rounded-full dark:bg-white" />
-          {% else %}
-            <!-- Platzhalter brand_logo, not Profile_Head -->
-            <img src="{% static 'insight_ui/svg/logo.svg' %}" class="size-8 rounded-full dark:bg-white" alt="Brand Icon" />
-          {% endif %}
-          <span>{{ brand.title }}</span>
-        </a>
-      </div>
+      <a href="{{ brand.href }}" class="flex items-center gap-2 text-xl font-bold text-primary">
+        {% if brand.logo.url %}
+          <img src="{% static brand.logo.url %}" alt="{{ brand.logo.alt }}" class="{{ brand.logo.height|default:'h-8' }} {% if brand.logo.rounded %}rounded-full{% else %}rounded-xs{% endif %} p-{{ brand.logo.padding|default:"0" }} dark:bg-white" />
+        {% else %}
+          <!-- Platzhalter brand_logo, not Profile_Head -->
+          <img src="{% static 'insight_ui/svg/logo.svg' %}" class="size-8 rounded-full dark:bg-white" alt="Brand Icon" />
+        {% endif %}
+        <span>{{ brand.title }}</span>
+      </a>
     {% endif %}
 
     <!-- Mobile menu button -->
-    <div class="lg:hidden flex items-center gap-2">
+    <div class="lg:hidden flex items-center gap-2 py-3">
       <!-- Mobile Menu Toggle -->
       <button
         class="inline-flex items-center justify-center p-2 rounded-md text-secondary hover:text-insight-text-link dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
         aria-expanded="false"
-        aria-controls="mobile-menu"
+        aria-controls="navigation-menu"
         aria-label="{% trans 'Open menu' %}"
         data-insight-toggle="collapsible"
-        data-insight-target="mobile-menu"
+        data-insight-target="navigation-menu"
       >
         <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -40,7 +38,7 @@
       </button>
     </div>
 
-    <div id="mobile-menu" class="hidden lg:block h-full w-full lg:w-fit grow">
+    <div id="navigation-menu" class="hidden lg:block h-full w-full lg:w-fit grow lg:py-3">
       <div class="flex flex-col lg:flex-row lg:justify-between gap-2 w-full lg:h-full p-2 lg:p-0 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 shadow-lg lg:shadow-none lg:bg-transparent lg:border-none rounded">
         <!-- Main-Navigation -->
         {% if links %}

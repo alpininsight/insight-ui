@@ -58,7 +58,7 @@ function generateCodeBlock(id, lang, code) {
 
     // Erstelle den Code-Block
     const codeWrapper = document.createElement('div');
-    codeWrapper.classList.add('max-w-5xl', 'overflow-x-scroll');
+    codeWrapper.classList.add('max-w-2xs', 'md:max-w-2xl', 'lg:max-w-5xl', 'overflow-x-scroll');
 
     const pre = document.createElement('pre');
     pre.id = id;
