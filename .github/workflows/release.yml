@@ -1,0 +1,42 @@
+name: Release & Versioning
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  semantic-release:
+    name: Semantic Release (tags, changelog)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7.1.2
+
+      - name: Install deps (dev)
+        run: uv sync --all-groups --upgrade
+
+      - name: Run Semantic Release
+        uses: python-semantic-release/python-semantic-release@v9.8.8
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
+
+      - name: Build to verify dynamic version (hatch-vcs)
+        run: |
+          uv build
+          tar -tf dist/*.tar.gz | head -n 20
