@@ -8,6 +8,6 @@ except Exception:  # pragma: no cover - fallback for editable installs
     try:
         from importlib.metadata import PackageNotFoundError, version
 
-        __version__ = version("django-insight-ui")
+        __version__ = version("insight-ui")
     except Exception:
         __version__ = "0.0.0"
