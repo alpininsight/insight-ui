@@ -9,45 +9,30 @@ from insight_ui.demo_utils import generate_payload, map_payload_to_cards, map_pa
 from insight_ui.utils.pagination import get_page
 
 # Some example filters for the filter example
-issuedate_filters = {
-    _("All"): "all",
-    _("Today & Yesterday"): "newest",
-    _("Last 7 days"): "7days",
-    _("Last 14 days"): "14days",
-    _("Last 30 days"): "30days",
-    _("Last 60 days"): "60days",
-    _("Without release date"): "missing",
-    "-----": "-",  # no actual value, used as a divider
-    "2020": "2020",
-    "2021": "2021",
-    "2022": "2022",
-    "2023": "2023",
-    "2024": "2024",
-    "2025": "2025",
+model_type_options = {
+    "placeholder": "-- Select model --",
+    "language": "Language Model",
+    "vision": "Vision Model",
+    "multimodal": "Multimodal Model",
+    "audio": "Audio / Speech Processing",
+    "recommendation": "Recommendation System",
+    "generative": "Generative Model",
 }
-expiration_filters = {
-    _("All"): "all",
-    _("Expires today"): "today",
-    _("Expires in 7 days at the earliest"): "7days",
-    _("Expires in 14 days at the earliest"): "14days",
-    _("Expires in 30 days at the earliest"): "30days",
-    _("Expires in 60 days at the earliest"): "60days",
-    _("Expires in 120 days at the earliest"): "120days",
-    _("Without deadline"): "missing",
-    "-----": "-",  # no actual value, used as a divider
-    "2020": "2020",
-    "2021": "2021",
-    "2022": "2022",
-    "2023": "2023",
-    "2024": "2024",
-    "2025": "2025",
+runtime_options = {
+    "placeholder": "-- Select runtime --",
+    "cloud": "Cloud (API-based)",
+    "edge": "Edge / On-Device",
+    "local": "Local (Self-hosted)",
+    "hybrid": "Hybrid (Cloud + Local)",
+    "serverless": "Serverless Deployment",
 }
-reward_filters = {
-    _("All"): "all",
-    "> 200.000€": "gt_200",
-    "> 100.000€": "gt_100",
-    "> 50.000€": "gt_50",
-    "<= 1,0€": "lt_one",
+license_options = {
+    "placeholder": "-- Select license --",
+    "free": "Free / Open Source",
+    "freemium": "Freemium",
+    "subscription": "Subscription",
+    "pay_per_use": "Pay per Use",
+    "enterprise": "Enterprise License",
 }
 
 # Some example data for the query builder filter
@@ -831,24 +816,24 @@ def get_generic_filter_context() -> dict:
     return {
         "filters": [
             {
-                "text": _("Issue Date"),
-                "icon": {"name": "home", "size": "small"},
-                "name": "issuedate_filter",
-                "values": issuedate_filters,
-                "explanation": _("To filter by the issue date."),
+                "text": _("AI model type"),
+                "icon": {"name": "rocket", "size": "small"},
+                "name": "model_type_filter",
+                "values": model_type_options,
+                "explanation": _("To filter by the type of AI-Model."),
             },
             {
-                "text": _("Deadline"),
-                "icon": {"name": "home", "size": "small"},
-                "name": "expiration_filter",
-                "values": expiration_filters,
-                "explanation": _("To filter by the deadline."),
+                "text": _("Runtime"),
+                "icon": {"name": "clock", "size": "small"},
+                "name": "runtime_filter",
+                "values": runtime_options,
+                "explanation": _("To filter by the runtime."),
             },
             {
-                "text": _("Reward in €"),
-                "icon": {"name": "home", "size": "small"},
-                "name": "reward_filter",
-                "values": reward_filters,
+                "text": _("License"),
+                "icon": {"name": "doc", "size": "small"},
+                "name": "license_filter",
+                "values": license_options,
             },
         ],
         "filter_view_name": "index_view",
