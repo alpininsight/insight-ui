@@ -2,17 +2,19 @@
 
 Ein Dropdown-Menü bietet die Möglichkeit eine Gruppe von Buttons in einem sich ein- und ausklappbaren Menü zu verstauen. Das ist immer dann sehr nützlich, wenn entweder nur wenig Platz zu Verfügung steht oder die Anzahl der Elemente sonst zu groß und unübersichtlich wäre.
 
-Bei der Verwendung von Dropdown-Menüs ist dennoch zu beachten, das diese nicht überladen werden. In der Regel sollte ein Menü nicht mehr als _sieben_ Elemente besitzen und auch verschachtelte Menüs, also ein Dropdown-Menü in einem Dropdown-Menü sollten vermieden werden.
+Bei der Verwendung von Dropdown-Menüs ist dennoch zu beachten, das diese nicht überladen werden. In der Regel sollte ein Menü nicht mehr als sieben Elemente besitzen und auch verschachtelte Menüs, also ein Dropdown-Menü in einem Dropdown-Menü sollten vermieden werden.
 
 ## Verwendung
 
 ```django
+{% load insight_tags %}
+
 {% dropdown dropdown_menu=user_dropdown %}
 ```
 
 ## Parameter
 
-- **dropdown_menu**: Ein Dictionary welches das Dropdown Menü beschreibt.
+- **dropdown_menu** (_dict_): Ein Dictionary welches das Dropdown Menü beschreibt.
 
 ### dropdown_menu
 
@@ -50,6 +52,16 @@ Ein Dictionary welches das Dropdown Menü beschreibt.
     - **text**: Der angezeigte Text des jeweiligen Elements.
     - **view_name**: Der Name der View zu wessen Endpunkt der Request gesendet werden soll.
     - **icon**: Ein optionales Icon welches vor dem Text angezeigt wird.
+
+## Customization
+
+Das Design des Dropdown Menüs befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/dropdown.html`.
+
+Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+
+## Barrierefreiheit
+
+- _Todo_
 
 ## Verwandte Themen
 

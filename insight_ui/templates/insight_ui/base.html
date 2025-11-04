@@ -33,6 +33,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/plugins/autoloader/prism-autoloader.min.js"></script>
 
         <!-- leaflet (geo) -->
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
         <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
         <!-- Apache echarts -->
@@ -49,9 +50,7 @@
 
         {% block extra_head %}{% endblock %}
     </head>
-    <body {% if not request.COOKIES.insight_ui_theme %} data-theme="{{ INSIGHT_UI.theme }}"{% endif %}
-        class="size-full min-h-screen bg-gray-50 dark:bg-gray-900 text-neutral-700 dark:text-neutral-100 transition-colors duration-200 flex flex-col"
-        hx-ext="ws">
+    <body class="size-full min-h-screen bg-gray-50 dark:bg-gray-900 text-neutral-700 dark:text-neutral-100 transition-colors duration-200 flex flex-col" hx-ext="ws">
 
         {% block background_image %}
         {% endblock background_image %}
@@ -76,6 +75,7 @@
         {% endblock footer %}
 
         <!-- Helper to visualize media breakpoints -->
+        {% comment %}
         <div class="fixed flex items-center z-30 bottom-2 left-2 bg-gray-900 rounded-full size-10 text-white text-xs">
             <span class="w-full text-center sm:hidden">-</span>
             <span class="w-full text-center hidden sm:block md:hidden">sm</span>
@@ -84,6 +84,7 @@
             <span class="w-full text-center hidden xl:block 2xl:hidden">xl</span>
             <span class="w-full text-center hidden 2xl:block">2xl</span>
         </div>
+        {% endcomment %}
 
         <!-- Insight UI Modular JavaScript -->
         <script defer src="{% static 'insight_ui/js/insight-ui-utils.js' %}"></script>
@@ -98,6 +99,9 @@
         <script defer src="{% static 'insight_ui/js/insight-ui-carousel.js' %}"></script>
         <script defer src="{% static 'insight_ui/js/insight-ui-popover.js' %}"></script>
         <script defer src="{% static 'insight_ui/js/insight-ui-tooltip.js' %}"></script>
+        <script defer src="{% static 'insight_ui/js/insight-ui-accordion.js' %}"></script>
+        <script defer src="{% static 'insight_ui/js/insight-ui-tabs.js' %}"></script>
+        <script defer src="{% static 'insight_ui/js/insight-ui-3D-carousel.js' %}"></script>
         <script defer src="{% static 'insight_ui/js/insight-ui-init.js' %}"></script>
         <!-- HTMX Extensions -->
         <script defer src="{% static 'insight_ui/js/insight-ui-htmx-extensions.js' %}"></script>

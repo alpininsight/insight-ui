@@ -14,12 +14,12 @@ Das UI-Framework bietet für den schnellen Start in ein neues Projekt, vorgefert
 - [Infinite Scroll](infinite_scroll.md): Eine sich kontinuierlich erweiternde Liste
 - [Eingabeelemente](inputs.md): Eine Sammlung einfacher Input-Elemente wie Buttons, Checkboxen, etc.
 - [Modal](modal.md): Dialoge
-- [Searchbar](search_bar.md): Eine einfache Suchzeile
+- [Search Bar](search_bar.md): Eine einfache Suchzeile
 
 Jede Komponente ist:
 
 - **Barrierefrei**: Entspricht den WCAG 2.1 AA-Richtlinien
-- **Responsiv**: Passt sich der Bildschirmgröße an und funktioniert auch auf mobilen Endgeräten
+- **Responsive**: Passt sich der Bildschirmgröße an und funktioniert auch auf mobilen Endgeräten
 - **Themenfähig**: Unterstützt ein helles und dunkles Farbschema
 - **Anpassbar**: Kann über die Parameter der Template-Tags angepasst
 

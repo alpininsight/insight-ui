@@ -11,7 +11,7 @@
               hx-target="#list-container"
               class="flex items-center bg-insight-primary rounded-sm text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active transition"
             >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 rtl:rotate-180">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5" />
                 </svg>
             </a>
@@ -21,18 +21,18 @@
               hx-target="#list-container"
               class="flex items-center bg-insight-primary rounded-sm text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active transition"
             >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 rtl:rotate-180">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
                 </svg>
             </a>
         {% else %}
             <a class="flex items-center bg-neutral-300 dark:bg-neutral-600 rounded-sm text-neutral-400 px-4 py-1">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 rtl:rotate-180">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5" />
                 </svg>
             </a>
             <a class="flex items-center bg-neutral-300 dark:bg-neutral-600 rounded-sm text-neutral-400 px-4 py-1">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 rtl:rotate-180">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
                 </svg>
             </a>
@@ -66,7 +66,7 @@
               hx-target="#list-container"
               class="flex items-center bg-insight-primary rounded-sm text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active transition"
             >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 rtl:rotate-180">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                 </svg>
             </a>
@@ -76,18 +76,18 @@
               hx-target="#list-container"
               class="flex items-center bg-insight-primary rounded-sm text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active transition"
             >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 rtl:rotate-180">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
                 </svg>
             </a>
         {% else %}
         <a class="flex items-center bg-neutral-300 dark:bg-neutral-600 rounded-sm text-neutral-400 px-4 py-1">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 rtl:rotate-180">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                 </svg>
             </a>
             <a class="flex items-center bg-neutral-300 dark:bg-neutral-600 rounded-sm text-neutral-400 px-4 py-1">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 rtl:rotate-180">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
                 </svg>
             </a>
@@ -95,7 +95,7 @@
     </div>
 
     <!-- Current Page -->
-    <span class="block mt-2 md:mt-0">
+    <span class="block text-secondary mt-2 md:mt-0">
         {% trans "Page" %} {{ current_page.number }} {% trans "of" %} {{ current_page.paginator.num_pages }}.
     </span>
 </div>

@@ -5,53 +5,34 @@ from django.utils.lorem_ipsum import paragraphs
 from django.utils.translation import gettext as _
 
 from insight_ui import config
-from insight_ui.demo_utils import (
-    generate_payload,
-    map_payload_to_cards,
-    map_payload_to_table,
-)
+from insight_ui.demo_utils import generate_payload, map_payload_to_cards, map_payload_to_table
 from insight_ui.utils.pagination import get_page
 
 # Some example filters for the filter example
-issuedate_filters = {
-    _("All"): "all",
-    _("Today & Yesterday"): "newest",
-    _("Last 7 days"): "7days",
-    _("Last 14 days"): "14days",
-    _("Last 30 days"): "30days",
-    _("Last 60 days"): "60days",
-    _("Without release date"): "missing",
-    "-----": "-",  # no actual value, used as a divider
-    "2020": "2020",
-    "2021": "2021",
-    "2022": "2022",
-    "2023": "2023",
-    "2024": "2024",
-    "2025": "2025",
+model_type_options = {
+    "placeholder": "-- Select model --",
+    "language": "Language Model",
+    "vision": "Vision Model",
+    "multimodal": "Multimodal Model",
+    "audio": "Audio / Speech Processing",
+    "recommendation": "Recommendation System",
+    "generative": "Generative Model",
 }
-expiration_filters = {
-    _("All"): "all",
-    _("Expires today"): "today",
-    _("Expires in 7 days at the earliest"): "7days",
-    _("Expires in 14 days at the earliest"): "14days",
-    _("Expires in 30 days at the earliest"): "30days",
-    _("Expires in 60 days at the earliest"): "60days",
-    _("Expires in 120 days at the earliest"): "120days",
-    _("Without deadline"): "missing",
-    "-----": "-",  # no actual value, used as a divider
-    "2020": "2020",
-    "2021": "2021",
-    "2022": "2022",
-    "2023": "2023",
-    "2024": "2024",
-    "2025": "2025",
+runtime_options = {
+    "placeholder": "-- Select runtime --",
+    "cloud": "Cloud (API-based)",
+    "edge": "Edge / On-Device",
+    "local": "Local (Self-hosted)",
+    "hybrid": "Hybrid (Cloud + Local)",
+    "serverless": "Serverless Deployment",
 }
-reward_filters = {
-    _("All"): "all",
-    "> 200.000€": "gt_200",
-    "> 100.000€": "gt_100",
-    "> 50.000€": "gt_50",
-    "<= 1,0€": "lt_one",
+license_options = {
+    "placeholder": "-- Select license --",
+    "free": "Free / Open Source",
+    "freemium": "Freemium",
+    "subscription": "Subscription",
+    "pay_per_use": "Pay per Use",
+    "enterprise": "Enterprise License",
 }
 
 # Some example data for the query builder filter
@@ -117,6 +98,22 @@ def get_base_context() -> dict:
     return config.get_config() | get_navbar_context() | get_footer_context()
 
 
+def get_component_demo_context() -> dict:
+    """Serve data of the device switch, etc. for component demos."""
+    return {
+        "device_options": {
+            "name": "device-options",
+            "items": [
+                {"id": "mobile", "value": "mobile", "icon": {"name": "smartphone"}, "disabled": False},
+                {"id": "tablet", "value": "tablet", "icon": {"name": "tablet"}, "disabled": False},
+                {"id": "desktop", "value": "desktop", "icon": {"name": "desktop"}, "disabled": False},
+            ],
+        },
+        "dir_toggle": {"id": "toggle_dir", "text": _("RTL")},
+        "theme_toggle": {"id": "toggle_theme", "icon": {"name": "moon"}},
+    }
+
+
 def get_navbar_context() -> dict:
     """Serve data for navbar detailpage."""
     return {
@@ -124,8 +121,13 @@ def get_navbar_context() -> dict:
             "brand": {
                 "title": "Insight UI",
                 "view_name": "index_view",
-                "logo_url": "insight_ui/svg/logo.svg",
-                "logo_alt": "Insight UI Logo",
+                "logo": {
+                    "url": "insight_ui/svg/ai-logo.svg",
+                    "alt": "Insight UI Logo",
+                    "height": "h-8",
+                    "padding": 0,
+                    "rounded": True,
+                },
             },
             "links": [
                 {
@@ -241,7 +243,6 @@ def get_drawer_context() -> dict:
             "categories": [
                 {
                     "caption": "Main",
-                    "icon": {"name": "home", "size": "small"},
                     "items": [
                         {
                             "text": _("Notifications"),
@@ -293,17 +294,14 @@ def get_sidebar_context() -> dict:
             "categories": [
                 {
                     "caption": _("Navigation / Main"),
-                    "icon": {"name": "app", "size": "small"},
                     "items": [
                         {
                             "text": _("Navbar"),
-                            "icon": {"name": "tools", "size": "xs"},
                             "url": reverse("component_detail_page_view", kwargs={"component_name": "navbar"}),
                             "htmx": {"target": "#content"},
                         },
                         {
                             "text": _("Sidebar"),
-                            "icon": {"name": "tools", "size": "xs"},
                             "url": reverse("component_detail_page_view", kwargs={"component_name": "sidebar"}),
                             "htmx": {"target": "#content"},
                         },
@@ -329,11 +327,20 @@ def get_sidebar_context() -> dict:
                             ),
                             "htmx": {"target": "#content"},
                         },
+                        {
+                            "text": _("Accordion"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "accordion"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Tabs"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "tabs"}),
+                            "htmx": {"target": "#content"},
+                        },
                     ],
                 },
                 {
                     "caption": _("Input Elements"),
-                    "icon": {"name": "cursor-click", "size": "small"},
                     "items": [
                         {
                             "text": _("Buttons"),
@@ -374,7 +381,6 @@ def get_sidebar_context() -> dict:
                 },
                 {
                     "caption": _("Popups"),
-                    "icon": {"name": "rectangles", "size": "small"},
                     "items": [
                         {
                             "text": _("Alerts"),
@@ -400,7 +406,6 @@ def get_sidebar_context() -> dict:
                 },
                 {
                     "caption": _("Utils"),
-                    "icon": {"name": "tools", "size": "small"},
                     "items": [
                         {
                             "text": _("Code Blocks"),
@@ -413,9 +418,19 @@ def get_sidebar_context() -> dict:
                             "htmx": {"target": "#content"},
                         },
                         {
-                            "text": _("Geo-Maps"),
+                            "text": _("Progress Bar"),
                             "icon": {"name": "tools", "size": "xs"},
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "progress_bar"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Geo-Maps"),
                             "url": reverse("component_detail_page_view", kwargs={"component_name": "geo_map"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Charts"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "chart"}),
                             "htmx": {"target": "#content"},
                         },
                         {
@@ -433,7 +448,6 @@ def get_sidebar_context() -> dict:
                 },
                 {
                     "caption": _("Lists & Tables"),
-                    "icon": {"name": "list", "size": "small"},
                     "items": [
                         {
                             "text": _("Infinite Scroll"),
@@ -454,7 +468,6 @@ def get_sidebar_context() -> dict:
                 },
                 {
                     "caption": _("Search & Filters"),
-                    "icon": {"name": "search", "size": "small"},
                     "items": [
                         {
                             "text": _("Generic Filter"),
@@ -467,15 +480,14 @@ def get_sidebar_context() -> dict:
                             "htmx": {"target": "#content"},
                         },
                         {
-                            "text": _("SQL-Like Filter"),
-                            "url": reverse("component_detail_page_view", kwargs={"component_name": "sql_like_filter"}),
+                            "text": _("Query-Builder"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "query_builder"}),
                             "htmx": {"target": "#content"},
                         },
                     ],
                 },
                 {
                     "caption": _("Cards"),
-                    "icon": {"name": "cards", "size": "small"},
                     "items": [
                         {
                             "text": _("Cards"),
@@ -489,8 +501,12 @@ def get_sidebar_context() -> dict:
                         },
                         {
                             "text": _("Image Carousel"),
-                            "icon": {"name": "tools", "size": "xs"},
                             "url": reverse("component_detail_page_view", kwargs={"component_name": "image_carousel"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("3D Carousel"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "3D_carousel"}),
                             "htmx": {"target": "#content"},
                         },
                         {
@@ -502,7 +518,6 @@ def get_sidebar_context() -> dict:
                 },
                 {
                     "caption": _("Forms"),
-                    "icon": {"name": "doc", "size": "small"},
                     "items": [
                         {
                             "text": _("Forms"),
@@ -524,6 +539,8 @@ def get_main_storybook_context() -> dict:
         | get_breadcrumb_context()
         | get_step_bar_context()
         | get_bullet_point_list_context()
+        | get_accordion_context()
+        | get_tabs_context()
         | {"htmx_config": {"url": "/api/form-submit/", "method": "post", "target": "#htmx-form", "swap": "innerHTML"}}
     )
 
@@ -548,7 +565,7 @@ def get_popup_storybook_context() -> dict:
 
 def get_utils_storybook_context() -> dict:
     """Serve data for utils storybook."""
-    return get_base_context() | get_sidebar_context() | get_differentiator_context()
+    return get_base_context() | get_sidebar_context() | get_differentiator_context() | get_geo_map_context()
 
 
 def get_table_storybook_context() -> dict:
@@ -572,6 +589,7 @@ def get_card_storybook_context() -> dict:
         | get_cards_context()
         | get_image_carousel_context()
         | get_toggle_view_context()
+        | get_3d_carousel_context()
         | {"carousel_items": map_payload_to_cards(generate_payload())}
     )
 
@@ -583,7 +601,7 @@ def get_form_storybook_context() -> dict:
 
 def get_filter_storybook_context() -> dict:
     """Serve data for filter example."""
-    return get_base_context() | get_sidebar_context() | get_generic_filter_context() | get_sql_like_filter_context()
+    return get_base_context() | get_sidebar_context() | get_generic_filter_context() | get_query_builder_context()
 
 
 def get_alert_context() -> dict:
@@ -629,7 +647,7 @@ def get_dropdown_context() -> dict:
             "items": [
                 {"text": _("Profile"), "view_name": "index_view", "icon": {"name": "user", "size": "small"}},
                 {"text": _("Settings"), "view_name": "index_view", "icon": {"name": "cog", "size": "small"}},
-                {"text": _("Logout"), "view_name": "index_view", "icon": {"name": "got-out", "size": "small"}},
+                {"text": _("Logout"), "view_name": "index_view", "icon": {"name": "leave", "size": "small"}},
             ],
         },
         "settings_dropdown": {
@@ -706,9 +724,33 @@ def get_radio_button_context() -> dict:
     }
 
 
+def get_radio_group_context() -> dict:
+    """Serve data for radio group detailpage."""
+    return {
+        "view_options": {
+            "name": "view-options",
+            "param_name": "view",
+            "items": [
+                {"id": "card-view", "value": "card", "icon": {"name": "cards"}},
+                {"id": "table-view", "value": "table", "icon": {"name": "list"}},
+                {"id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},
+            ],
+        },
+        "size_options": {
+            "name": "size-options",
+            "param_name": "size",
+            "items": [
+                {"id": "small-size", "value": "small", "text": "sm"},
+                {"id": "medium-size", "value": "medium", "text": "md"},
+                {"id": "large-size", "value": "large", "text": "lg"},
+            ],
+        },
+    }
+
+
 def get_toggle_button_context() -> dict:
     """Serve data for toggle-button detailpage."""
-    return {"example_toggle": {"id": "toggle_button_example1", "text": _("Click me!")}}
+    return {"example_toggle": {"id": "toggle_button_example1", "text": _("Click me!"), "switch": True}}
 
 
 def get_range_slider_context() -> dict:
@@ -722,30 +764,6 @@ def get_range_slider_context() -> dict:
             "max": 1500,
             "items": [_("100€ (minimum)"), "500€", "750€", "1000€", _("1500€ (maximum)")],
         }
-    }
-
-
-def get_radio_group_context() -> dict:
-    """Serve data for radio group detailpage."""
-    return {
-        "view_options": {
-            "name": "view-options",
-            "param_name": "view",
-            "options": [
-                {"id": "card-view", "value": "card", "icon": {"name": "cards"}},
-                {"id": "table-view", "value": "table", "icon": {"name": "list"}},
-                {"id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},
-            ],
-        },
-        "size_options": {
-            "name": "size-options",
-            "param_name": "size",
-            "options": [
-                {"id": "small-size", "value": "small", "text": "sm"},
-                {"id": "medium-size", "value": "medium", "text": "md"},
-                {"id": "large-size", "value": "large", "text": "lg"},
-            ],
-        },
     }
 
 
@@ -803,33 +821,32 @@ def get_generic_filter_context() -> dict:
     return {
         "filters": [
             {
-                "text": _("Issue Date"),
-                "icon": {"name": "home", "size": "small"},
-                "name": "issuedate_filter",
-                "values": issuedate_filters,
-                "explanation": _("To filter by the issue date."),
+                "text": _("AI model type"),
+                "icon": {"name": "rocket", "size": "small"},
+                "name": "model_type_filter",
+                "values": model_type_options,
+                "explanation": _("To filter by the type of AI-Model."),
             },
             {
-                "text": _("Deadline"),
-                "icon": {"name": "home", "size": "small"},
-                "name": "expiration_filter",
-                "values": expiration_filters,
-                "explanation": _("To filter by the deadline."),
+                "text": _("Runtime"),
+                "icon": {"name": "clock", "size": "small"},
+                "name": "runtime_filter",
+                "values": runtime_options,
+                "explanation": _("To filter by the runtime."),
             },
             {
-                "text": _("Reward in €"),
-                "icon": {"name": "home", "size": "small"},
-                "name": "reward_filter",
-                "values": reward_filters,
-                "explanation": _("To filter by the reward."),
+                "text": _("License"),
+                "icon": {"name": "doc", "size": "small"},
+                "name": "license_filter",
+                "values": license_options,
             },
         ],
         "filter_view_name": "index_view",
     }
 
 
-def get_sql_like_filter_context() -> dict:
-    """Serve data for the SQL-Like filter detailpage."""
+def get_query_builder_context() -> dict:
+    """Serve data for the query-builder detailpage."""
     return {"model_fields": DEMO_FIELDS}
 
 
@@ -915,7 +932,7 @@ def get_toggle_view_context() -> dict:
         "view_options": {
             "name": "view-options",
             "param_name": "view",
-            "options": [
+            "items": [
                 {"id": "card-view", "value": "card", "icon": {"name": "cards"}},
                 {"id": "table-view", "value": "table", "icon": {"name": "list"}},
                 {"id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},
@@ -969,6 +986,173 @@ def get_bullet_point_list_context() -> dict:
             {"title": _("Zahlungsmethode"), "description": _("Art der Bezahlung auswählen."), "current": True},
             {"title": _("Überprüfen"), "description": _("Prüfen der Angaben und Bezahlen.")},
         ]
+    }
+
+
+def get_accordion_context() -> dict:
+    """Serve data for accordion detailpage."""
+    return {
+        "accordion_items": [
+            {"question": "Was ist Django?", "answer": "Django ist ein Webframework für Python."},
+            {"question": "Was ist Tailwind?", "answer": "Tailwind ist ein CSS-Utility-Framework."},
+            {"question": "Was ist ARIA?", "answer": "ARIA steht für Accessible Rich Internet Applications."},
+        ]
+    }
+
+
+def get_tabs_context() -> dict:
+    """Serve data for tabs detailpage."""
+    return {
+        "tabs_config": {
+            "id": "example_tabs",
+            "label": "Tabs Example",
+            "tabs": [
+                {"id": "first", "url": reverse("tabs_view", kwargs={"tab_id": "first"}), "title": _("First Tab")},
+                {"id": "second", "url": reverse("tabs_view", kwargs={"tab_id": "second"}), "title": _("Second Tab")},
+                {"id": "third", "url": reverse("tabs_view", kwargs={"tab_id": "third"}), "title": _("Third Tab")},
+            ],
+        }
+    }
+
+
+def get_3d_carousel_context() -> dict:
+    """Serve data for 3D carousel detailpage."""
+    return {"3D_carousel": {"items": map_payload_to_cards(generate_payload()), "range_total_slides": range(5)}}
+
+
+def get_charts_context() -> dict:
+    """Serve data for charts detailpage."""
+    return {
+        "chart_data": {
+            "title": "Chart Example",
+            "x_axis_legend": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+            "series": ["Email", "Union Ads", "Video Ads", "Direct", "Search Engine"],
+            "data": [
+                [100, 302, 301, 334, 390, 330, 320],
+                [320, 132, 101, 134, 90, 230, 210],
+                [220, 182, 191, 234, 290, 330, 310],
+                [150, 212, 201, 154, 190, 330, 410],
+                [820, 832, 901, 934, 1290, 1330, 1320],
+            ],
+        }
+    }
+
+
+def get_geo_map_context() -> dict:
+    """Serve data for geo-map detailpage."""
+    return {
+        "geo_map_data": {
+            "initial_coords": [52.5200, 13.4050],
+            "initial_zoom": 8,
+            "datasets": [
+                {
+                    "name": "population",
+                    "type": "circle",
+                    "min": 300000,
+                    "max": 3800000,
+                    "data": [
+                        {"title": "Berlin", "value": 3769000, "lat": 52.5200, "lon": 13.4050},
+                        {"title": "Hamburg", "value": 1850000, "lat": 53.5511, "lon": 9.9937},
+                        {"title": "München", "value": 1488000, "lat": 48.1351, "lon": 11.5820},
+                        {"title": "Köln", "value": 1086000, "lat": 50.9375, "lon": 6.9603},
+                        {"title": "Frankfurt am Main", "value": 763000, "lat": 50.1109, "lon": 8.6821},
+                        {"title": "Stuttgart", "value": 635000, "lat": 48.7758, "lon": 9.1829},
+                        {"title": "Düsseldorf", "value": 620000, "lat": 51.2277, "lon": 6.7735},
+                        {"title": "Leipzig", "value": 612000, "lat": 51.3397, "lon": 12.3731},
+                        {"title": "Dortmund", "value": 588000, "lat": 51.5136, "lon": 7.4653},
+                        {"title": "Essen", "value": 582000, "lat": 51.4556, "lon": 7.0116},
+                        {"title": "Bremen", "value": 569000, "lat": 53.0793, "lon": 8.8017},
+                        {"title": "Dresden", "value": 558000, "lat": 51.0504, "lon": 13.7373},
+                        {"title": "Hannover", "value": 540000, "lat": 52.3759, "lon": 9.7320},
+                        {"title": "Nürnberg", "value": 523000, "lat": 49.4521, "lon": 11.0767},
+                        {"title": "Duisburg", "value": 499000, "lat": 51.4344, "lon": 6.7623},
+                        {"title": "Bochum", "value": 363000, "lat": 51.4818, "lon": 7.2162},
+                        {"title": "Wuppertal", "value": 361000, "lat": 51.2562, "lon": 7.1508},
+                        {"title": "Bielefeld", "value": 341000, "lat": 52.0302, "lon": 8.5325},
+                        {"title": "Bonn", "value": 330000, "lat": 50.7374, "lon": 7.0982},
+                        {"title": "Münster", "value": 323000, "lat": 51.9607, "lon": 7.6261},
+                    ],
+                },
+                {
+                    "name": "hanseatic_cities",
+                    "type": "marker",
+                    "data": [
+                        {
+                            "title": "Lübeck",
+                            "lat": 53.8655,
+                            "lon": 10.6866,
+                            "description": "Hauptstadt der Hanse („Königin der Hanse“); Sitz der Hansetage und Zentrum des Ostseehandels.",  # noqa: E501
+                        },
+                        {
+                            "title": "Hamburg",
+                            "lat": 53.5511,
+                            "lon": 9.9937,
+                            "description": "Wichtiger Nordseehafen; Umschlagplatz für den England- und Nordseehandel.",
+                        },
+                        {
+                            "title": "Bremen",
+                            "lat": 53.0793,
+                            "lon": 8.8017,
+                            "description": "Bedeutend im England- und Skandinavienhandel; Nordseezugang der Hanse.",
+                        },
+                        {
+                            "title": "Köln",
+                            "lat": 50.9375,
+                            "lon": 6.9603,
+                            "description": "Größte Stadt der Hanse; zentraler Binnenhandelsknoten am Rhein.",
+                        },
+                        {
+                            "title": "Danzig (Gdańsk)",
+                            "lat": 54.3520,
+                            "lon": 18.6466,
+                            "description": "Wichtigster Hafen im Ostseeraum; Export von Getreide, Holz und Bernstein.",
+                        },
+                        {
+                            "title": "Riga",
+                            "lat": 56.9496,
+                            "lon": 24.1052,
+                            "description": "Zentrum des Hansehandels im Baltikum; Umschlagplatz für Waren aus Russland und Skandinavien.",  # noqa: E501
+                        },
+                        {
+                            "title": "Reval (Tallinn)",
+                            "lat": 59.4370,
+                            "lon": 24.7536,
+                            "description": "Wichtige Zwischenstation für Russland- und Skandinavienhandel.",
+                        },
+                        {
+                            "title": "Visby",
+                            "lat": 57.6409,
+                            "lon": 18.2960,
+                            "description": "Frühes Hansezentrum auf Gotland; Knotenpunkt des Ostseehandels.",
+                        },
+                        {
+                            "title": "Bergen",
+                            "lat": 60.3913,
+                            "lon": 5.3221,
+                            "description": "Kontorstadt der Hanse in Norwegen; Handel mit Stockfisch und Pelzen.",
+                        },
+                        {
+                            "title": "Brügge",
+                            "lat": 51.2093,
+                            "lon": 3.2247,
+                            "description": "Zentrale für Tuchhandel in Flandern; wichtiges westliches Handelszentrum.",
+                        },
+                        {
+                            "title": "London (Stalhof)",
+                            "lat": 51.5074,
+                            "lon": -0.1278,
+                            "description": "Hanse-Kontor für den Englandhandel; Sitz des „Stalhofs“ im Mittelalter.",
+                        },
+                        {
+                            "title": "Nowgorod",
+                            "lat": 58.5215,
+                            "lon": 31.2755,
+                            "description": "Östlichstes Hansekontor; Handel mit Fellen, Wachs und Honig im Russlandgeschäft.",  # noqa: E501
+                        },
+                    ],
+                },
+            ],
+        }
     }
 
 

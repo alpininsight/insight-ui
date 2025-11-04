@@ -1,0 +1,254 @@
+{% load static i18n insight_tags %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- HTMX CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/htmx-ext-ws@2.0.2" crossorigin="anonymous"></script>
+
+        <!-- prism (Syntax-Highlighting) and clipboard (Copy to clipboard) CDN -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/prism.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+        <!-- leaflet (geo) -->
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+        <!-- Apache ECharts -->
+        <script defer src="https://cdnjs.cloudflare.com/ajax/libs/echarts/6.0.0/echarts.min.js" integrity="sha512-4/g9GAdOdTpUP2mKClpKsEzaK7FQNgMjq+No0rX8XZlfrCGtbi4r+T/p5fnacsEC3zIAmHKLJUL7sh3/yVA4OQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+        <!-- Insight UI Modular Utils  -->
+        <script defer src="{% static 'insight_ui/js/insight-ui-utils.js' %}"></script>
+
+        <!-- prism stylesheet (Syntax-Highlighting) -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css">
+
+        <!-- Main stylesheet -->
+        <link rel="stylesheet" href="{% static INSIGHT_UI.stylesheet %}">
+    </head>
+    <body class="bg-white dark:bg-gray-800 {{ body_height }} {% if not no_padding %}p-8{% endif %}">
+        {% if component == "navbar" %}
+            <div class="bg-gray-50 dark:bg-gray-700 h-80">
+                {% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links show_login=True %}
+            </div>
+        {% elif component == "sidebar" %}
+            <div class="bg-gray-50 dark:bg-gray-700 h-72">
+                {% sidebar sidebar_data=right_sidebar side="left" auto_close=False %}
+            </div>
+        {% elif component == "footer" %}
+            <div class="bg-gray-50 dark:bg-gray-700 h-24"></div>
+            {% footer data=footer_data %}
+        {% elif component == "breadcrumb" %}
+            <div class="space-y-4">
+                {% breadcrumbs items=breadcrumb_items %}
+                {% breadcrumbs items=single_breadcrumb_item %}
+            </div>
+        {% elif component == "step_bar" %}
+            {% step_bar items=steps_bar_items %}
+        {% elif component == "bullet_point_list" %}
+            {% bullet_point_list items=bulletpoints %}
+        {% elif component == "accordion" %}
+            {% accordion accordion_items "faq-multiple" False %}
+        {% elif component == "accordion_exclusive" %}
+            {% accordion accordion_items "faq-exclusive" True %}
+        {% elif component == "tabs" %}
+            {% tabs config=tabs_config %}
+        {% elif component == "button" %}
+            <div class="flex flex-col md:flex-row items-stretch flex-wrap gap-1">
+                <button class="btn btn-primary">{% trans "Primary" %}</button>
+                <button class="btn btn-secondary">{% trans "Secondary" %}</button>
+                <button class="btn btn-success">{% trans "Success" %}</button>
+                <button class="btn btn-warning">{% trans "Warning" %}</button>
+                <button class="btn btn-danger">{% trans "Danger" %}</button>
+                <button class="btn btn-info">{% trans "Info" %}</button>
+                <button disabled class="btn btn-disabled">{% trans "Disabled" %}</button>
+                <button aria-label="{% trans 'Close' %}" class="bg-white h-fit rounded-sm shadow p-3 text-insight-text-primary hover:bg-neutral-200 active:bg-neutral-400 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+                        <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z" />
+                    </svg>
+                </button>
+                <a href="#" class="btn-link">{% trans "Link" %}</a>
+            </div>
+        {% elif component == "outline_button" %}
+            <div class="flex flex-col md:flex-row items-stretch flex-wrap gap-1">
+                <button class="btn btn-outline-primary">{% trans "Primary" %}</button>
+                <button class="btn btn-outline-secondary">{% trans "Secondary" %}</button>
+                <button class="btn btn-outline-success">{% trans "Success" %}</button>
+                <button class="btn btn-outline-warning">{% trans "Warning" %}</button>
+                <button class="btn btn-outline-danger">{% trans "Danger" %}</button>
+                <button class="btn btn-outline-info">{% trans "Info" %}</button>
+                <button disabled class="btn btn-outline-disabled">{% trans "Disabled" %}</button>
+            </div>
+        {% elif component == "button_sizes" %}
+            <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
+                <button class="btn btn-primary btn-large">{% trans "Click me!" %}</button>
+                <button class="btn btn-primary">{% trans "Click me!" %}</button>
+                <button class="btn btn-primary btn-sm">{% trans "Click me!" %}</button>
+                <button class="btn btn-primary btn-xs">{% trans "Click me!" %}</button>
+            </div>
+        {% elif component == "checkbox" %}
+            {% checkbox checkbox=example_checkbox %}
+        {% elif component == "dropdown" %}
+            <div class="flex gap-2 h-64">
+                {% dropdown dropdown_menu=user_dropdown %}
+                {% dropdown dropdown_menu=settings_dropdown %}
+            </div>
+        {% elif component == "radio_button" %}
+            {% radio radio_group=example_radio current_value="PaLM 2" %}
+        {% elif component == "radio_group" %}
+            <div class="w-fit space-y-4">
+                {% radio_group radio_group=view_options current_value=current_view %}
+                {% radio_group radio_group=size_options current_value=current_size %}
+            </div>
+        {% elif component == "range_slider" %}
+            {% slider slider=example_slider %}
+        {% elif component == "toggle_button" %}
+            {% toggle toggle=example_toggle %}
+        {% elif component == "chat" %}
+            {% chat view_name="chat_response" %}
+        {% elif component == "alert" %}
+            <div class="space-y-4">
+                {% alert message="This is just an information." alert_type="info" %}
+                {% alert message="Saved successfully!" alert_type="success" %}
+                {% alert message="Please review your entries!" alert_type="warning" %}
+                {% alert message="Error while loading data!" alert_type="error" %}
+            </div>
+        {% elif component == "modal" %}
+            <div class="h-72">
+                <div class="flex flex-col items-center gap-4">
+                    <!-- Standard -->
+                    <button class="btn btn-primary w-72" data-insight-toggle="modal" data-insight-target="demo-modal">
+                        {% trans "Standard Modal" %}
+                    </button>
+                    {% modal html_tag_id="demo-modal" title=_("Demo Modal") description=_("This is an example of a standard modal.") %}
+
+                    <!-- Action-Buttons -->
+                    <button class="btn btn-danger w-72" data-insight-toggle="modal" data-insight-target="delete-modal">
+                        {% trans "Modal with Action-Buttons" %}
+                    </button>
+                    {% modal html_tag_id="delete-modal" title=_("Delete?") description="Please conform deletion!" actions=confirm_modal_actions %}
+                </div>
+            </div>
+        {% elif component == "popover" %}
+            <div class="flex items-end justify-center gap-12 h-64">
+                <button data-popover-trigger="demo-popover" class="btn btn-primary h-fit">Hover me!</button>
+                <div id="demo-popover" class="bg-white dark:bg-gray-500 w-64 border border-gray-300 dark:border-0 rounded-sm shadow">
+                    <!-- Arrow -->
+                    <div class="popover-arrow absolute left-1/2 -top-2 -translate-x-1/2 w-0 h-0 border-10 border-t-0 border-transparent border-b-white dark:border-b-gray-600"></div>
+                    <div class="p-4">
+                        <span class="block font-semibold w-full border-b-2 border-gray-300 pb-2">
+                            {% trans "This is a Popover." %}
+                        </span>
+                        <p class="text-sm mt-4">
+                            {% trans "A popover could have more content than a tooltip and it can also have interactive elements like buttons" %}
+                        </p>
+                    </div>
+                    <div class="bg-gray-100 dark:bg-gray-600 p-4 rounded-b-sm">
+                        <button class="btn btn-primary btn-sm">{% trans "Learn more" %}</button>
+                    </div>
+                </div>
+            </div>
+        {% elif component == "tooltip" %}
+            <div class="flex flex-col md:flex-row items-center justify-center gap-12 py-8">
+                <button data-tooltip-trigger="tt-demo-top" data-position="top" class="btn btn-primary">{% trans "Top" %}</button>
+                {% include "insight_ui/components/tooltip.html" with text=_("This is a tooltip.") show_arrow="True" tag_id="tt-demo-top" %}
+
+                <button data-tooltip-trigger="tt-demo-bottom" data-position="bottom" class="btn btn-primary">{% trans "Bottom" %}</button>
+                {% include "insight_ui/components/tooltip.html" with text=_("This is a tooltip.") tag_id="tt-demo-bottom" %}
+
+                <button data-tooltip-trigger="tt-demo-right" data-position="right" class="btn btn-primary">{% trans "Right" %}</button>
+                {% include "insight_ui/components/tooltip.html" with text=_("This is a tooltip.") show_arrow="True" tag_id="tt-demo-right" %}
+
+                <button data-tooltip-trigger="tt-demo-left" data-position="left" class="btn btn-primary">{% trans "Left" %}</button>
+                {% include "insight_ui/components/tooltip.html" with text=_("This is a tooltip.") tag_id="tt-demo-left" %}
+            </div>
+        {% elif component == "code_block" %}
+            <div id="code" data-insight-code-block="javascript">
+                function greet(name) {
+                    return `Hello, ${name}!`;
+                }
+            </div>
+        {% elif component == "differentiator" %}
+            {{ textA|diff:textB|safe }}
+        {% elif component == "progress_bar" %}
+            {% include "insight_ui/components/progress_bar.html" %}
+        {% elif component == "geo_map" %}
+            {% geo_map data=geo_map_data map_height=40 %}
+        {% elif component == "chart" %}
+            {% bar_chart chart_id="bar_chart_example" chart=chart_data %}
+            {% line_chart chart_id="line_chart_example" chart=chart_data %}
+        {% elif component == "live_content" %}
+            {% live_content url="/api/live-data/" interval=10 id="live-content" %}
+        {% elif component == "web_socket" %}
+            <i>Work in progress...</i>
+            <!-- {% insight_websocket html_tag_id="demo-websocket" ws_url="ws://localhost:8765" initial_content="<p>Connect to Web-Socket…</p>" %} -->
+        {% elif component == "infinite_scroll" %}
+            {% infinite_scroll items=scroll_items view_name="more_items" auto_fetch=False %}
+        {% elif component == "pagination" %}
+            <div id="list-container">
+                {% paginated_list current_page=start_page surrounding_pages=surrounding_pages %}
+            </div>
+        {% elif component == "table" %}
+            {% table table_data=table %}
+        {% elif component == "generic_filter" %}
+            {% generic_filter filters=filters view_name=filter_view_name hx_target="#data" vertical=False %}
+        {% elif component == "search_bar" %}
+            <div class="space-y-6">
+                {% search_bar request_view="index_view" %}
+                {% search_bar request_view="index_view" simple="True" %}
+                {% search_bar request_view="index_view" simple="True" search_query="Test 123" %}
+            </div>
+        {% elif component == "query_builder" %}
+            {% sq_builder model_fields=model_fields %}
+        {% elif component == "card" %}
+            <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
+                {% for card in cards %}
+                    {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
+                {% endfor %}
+            </div>
+        {% elif component == "effect_cards" %}
+            <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
+                {% for card in horizontale_cards %}
+                    {% card_horizontale title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
+                {% endfor %}
+                {% for card in flip_cards %}
+                    {% card_flip title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
+                {% endfor %}
+            </div>
+        {% elif component == "card_carousel" %}
+            {% carousel carousel_items=carousel_items show_index=True slides_count=range_total_slides items_per_slide=2 %}
+        {% elif component == "image_carousel" %}
+            {% include "insight_ui/components/carousels/image_carousel.html" with carousel_items=image_carousel_items show_dots=True show_index=True slides_count=range_total_slides items_per_slide=1 %}
+        {% elif component == "3D_carousel" %}
+            <div class="h-144">
+                {% three_d_carousel tag_id="threeD_carousel" velocity=300 tilt=-15 face_camera=False carousel_items=3D_carousel.items %}
+            </div>
+        {% elif component == "toggle_view" %}
+            {% toggle_view tag_id="test" table_data=toggle_table view_options=view_options current_view=toggle_start_view %}
+        {% elif component == "form" %}
+            {% form title="Contact Form" description="Please fill out the form" fields=form_fields actions=form_actions htmx=htmx_config id="htmx-form" %}
+        {% endif %}
+    </body>
+
+    <!-- Insight UI Modular JavaScript -->
+    <script defer src="{% static 'insight_ui/js/insight-ui-utils.js' %}"></script>
+    <script defer src="{% static 'insight_ui/js/insight-ui-code-block.js' %}"></script>
+    <script defer src="{% static 'insight_ui/js/insight-ui-collapsible.js' %}"></script>
+    <script defer src="{% static 'insight_ui/js/insight-ui-dropdown.js' %}"></script>
+    <script defer src="{% static 'insight_ui/js/insight-ui-theme-toggle.js' %}"></script>
+    <script defer src="{% static 'insight_ui/js/insight-ui-modal.js' %}"></script>
+    <script defer src="{% static 'insight_ui/js/insight-ui-sidebar.js' %}"></script>
+    <script defer src="{% static 'insight_ui/js/insight-ui-select-language.js' %}"></script>
+    <script defer src="{% static 'insight_ui/js/insight-ui-websocket.js' %}"></script>
+    <script defer src="{% static 'insight_ui/js/insight-ui-carousel.js' %}"></script>
+    <script defer src="{% static 'insight_ui/js/insight-ui-popover.js' %}"></script>
+    <script defer src="{% static 'insight_ui/js/insight-ui-tooltip.js' %}"></script>
+    <script defer src="{% static 'insight_ui/js/insight-ui-accordion.js' %}"></script>
+    <script defer src="{% static 'insight_ui/js/insight-ui-tabs.js' %}"></script>
+    <script defer src="{% static 'insight_ui/js/insight-ui-3D-carousel.js' %}"></script>
+    <script defer src="{% static 'insight_ui/js/insight-ui-init.js' %}"></script>
+    <!-- HTMX Extensions -->
+    <script defer src="{% static 'insight_ui/js/insight-ui-htmx-extensions.js' %}"></script>
+</html>

@@ -4,13 +4,11 @@
 
 <!-- Component Demo -->
 <section>
-    <p class="text-secondary leading-loose">
-        {% trans 'Todo' %}
+    <p>
+        Die <span class="inline-tag">bullet_point_list</span> Komponente stellt eine Liste dar, welche mit deutlichen <i>Bullet</i> und Linien welche diese Verbinden dargestellt wird. Diese Liste ist vor allem für chronologische Listen gedacht, kann aber auch für ungeordnete Listen verwendet werden.
     </p>
 
-    <div class="example-container">
-        {% bullet_point_list items=bulletpoints %}
-    </div>
+    {% include "insight_ui/docs/demo_container.html" %}
 </section>
 
 <hr class="text-gray-300 dark:text-gray-600">
@@ -25,15 +23,15 @@
 
 <section>
     <h3>{% trans "Parameter" %}</h3>
-    <ol class="list-disc text-secondary ms-8">
-        <li><span class="bg-gray-100 dark:bg-gray-800 rounded px-2 py-0.5 text-primary font-semibold">items</span>(<i>list</i>): {% trans "Ein Liste der einzelnen Punkte der Bullet Point Liste." %}</li>
-    </ol>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li><span class="inline-tag">items</span>(<i>list</i>): {% trans "Ein Liste der einzelnen Punkte der Bullet Point Liste." %}</li>
+    </ul>
 
     <div class="mt-8">
         <h4>items</h4>
-        <p class="text-secondary mb-6">{% trans "Ein Liste der einzelnen Punkte der Bullet Point Liste." %}</p>
+        <p class="mb-6">{% trans "Ein Liste der einzelnen Punkte der Bullet Point Liste." %}</p>
 
-        <div id="Step_Bar_Params" data-insight-code-block="python">
+        <div id="Bullet_Point_Params" data-insight-code-block="python">
             [
                 {
                     "title": _("Kontaktdaten"),
@@ -47,11 +45,42 @@
     </div>
 </section>
 
+<!-- Customization -->
+<section>
+    <h2>{% trans "Customization" %}</h2>
+    <p>
+        Das Design der Bullet-Point List befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/bullet_point_list.html</span>.
+    </p>
+    <p class="mt-4">
+        Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad <span class="inline-tag">templates/insight_ui/components/</span> vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+    </p>
+</section>
+
+<!-- A11y -->
+<section>
+    <h2>{% trans "Accessability" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li><i>Todo</i></li>
+    </ul>
+</section>
+
 <hr class="text-gray-300 dark:text-gray-600">
 
+<!-- Related -->
 <section>
     <h2>{% trans "Related topics" %}</h2>
-    <ol class="list-disc ms-8">
-        <li><a href="#" class="text-link">{% trans "Step Bar" %}</a></li>
-    </ol>
+    <ul class="list-disc ms-8">
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'step_bar' %}"
+                hx-get="{% url 'component_detail_page_view' 'step_bar' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Step Bar" %}
+            </a>
+        </li>
+    </ul>
 </section>

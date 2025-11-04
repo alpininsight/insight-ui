@@ -10,9 +10,11 @@ urlpatterns = [
     path("api/chat-response/", views.chat_response, name="chat_response"),
     path("get-allowed-operators/", views.get_allowed_operators, name="get_allowed_operators"),
     path("toggle_view/", views.toggle_view, name="toggle_view"),
+    path("tabs_view/<str:tab_id>", views.tabs_view, name="tabs_view"),
     path("pagination/", views.pagination, name="pagination"),
     path("i18n/setlang/", set_language, name="set_language"),
     path("docs/components/<str:component_name>/", views.component_detail_page_view, name="component_detail_page_view"),
+    path("docs/components/demo/<str:component_name>/", views.component_demo_view, name="component_demo_view"),
     path("docs/<str:storybook_name>/", views.storybook_view, name="storybook_view"),
     path("", views.index_view, name="index_view"),
 ]

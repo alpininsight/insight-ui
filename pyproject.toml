@@ -3,7 +3,7 @@ requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
 [project]
-name = "django-insight-ui"
+name = "insight-ui"
 dynamic = ["version"]
 description = "Ein modernes, barrierefreies UI-Framework für Django"
 readme = "README.md"

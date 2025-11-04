@@ -3,13 +3,11 @@
 <div
   class="insight-live-content"
   {% if options.id %}id="{{ options.id }}"{% endif %}
-  {% if options.htmx %}
-    hx-get="{{ options.htmx.url }}"
-    {% if options.htmx.trigger %}hx-trigger="{{ options.htmx.trigger }}"{% else %}hx-trigger="load, every 20s"{% endif %}
-    {% if options.htmx.swap %}hx-swap="{{ options.htmx.swap }}"{% else %}hx-swap="innerHTML"{% endif %}
-    hx-ext="progressive-enhancement"
-    data-loading-class="insight-live-content--loading"
-  {% endif %}
+  hx-get="{{ htmx.url }}"
+  hx-trigger="{{ htmx.trigger }}"
+  hx-swap="{{ htmx.swap }}"
+  hx-ext="progressive-enhancement"
+  data-loading-class="insight-live-content--loading"
 >
   <!-- Loading Spinner -->
   <div class="htmx-spinner" style="display: none;">

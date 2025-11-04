@@ -27,9 +27,6 @@ CONFIG_DEFAULTS: dict[str, Any] = {
 def get_config(settings_name: str | None = None) -> dict[str, Any]:
     """Get insight-ui configuration."""
     config_attribute = settings_name or "INSIGHT_UI"
-    user_config = cast(
-        Mapping[str, Any],
-        getattr(settings, config_attribute, {}),
-    )
+    user_config = cast(Mapping[str, Any], getattr(settings, config_attribute, {}))
 
     return {"INSIGHT_UI": {**CONFIG_DEFAULTS, **dict(user_config)}}

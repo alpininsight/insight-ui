@@ -4,15 +4,11 @@
 
 <!-- Component Demo -->
 <section>
-    <p class="text-secondary leading-loose">
-        {% trans 'Todo' %}
+    <p>
+        Ein einfaches Textinput-Feld mit einem großen Button am rechten Ende. Beim absenden wird ein Request an den angegebenen Endpunkt geschickt. Die <span class="inline-tag">search_bar</span> Komponente unterstützt auch HTMX Requests.
     </p>
 
-    <div class="example-container space-y-8">
-        {% search_bar request_view="index_view" %}
-        {% search_bar request_view="index_view" simple="True" %}
-        {% search_bar request_view="index_view" simple="True" search_query="Test 123" %}
-    </div>
+    {% include "insight_ui/docs/demo_container.html" %}
 </section>
 
 <hr class="text-gray-300 dark:text-gray-600">
@@ -23,4 +19,42 @@
     <div id="Search_Bar_Usage" data-insight-code-block="Django">
         &lcub;% search_bar request_view="index_view" simple=True search_query="Test 123" %&rcub;
     </div>
+</section>
+
+<section>
+    <h3>{% trans "Parameter" %}</h3>
+    <ul class="list-disc leading-relaxed ms-8">
+        <li><span class="inline-tag">request_view</span> (<i>str</i>): Der Name der View an welche der Request gesendet werden soll.</li>
+        <li><span class="inline-tag">simple</span> (<i>bool</i>): <span class="inline-tag">True</span> wenn die Suchleiste ohne Button und kleiner angezeigt werden soll.</li>
+        <li><span class="inline-tag">search_query</span> (<i>str</i>): Ein optionaler Wert der automatisch in dem Textfeld steht.</li>
+    </ul>
+</section>
+
+<!-- Customization -->
+<section>
+    <h2>{% trans "Customization" %}</h2>
+    <p>
+        Das Design der Search Bar befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/search_bar.html</span>.
+    </p>
+    <p class="mt-4">
+        Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad <span class="inline-tag">templates/insight_ui/components/</span> vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+    </p>
+</section>
+
+<!-- A11y -->
+<section>
+    <h2>{% trans "Accessability" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li>Das Textinput-Feld besitzt ein extra Title ("Suche") für Screenreader.</li>
+    </ul>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Related -->
+<section>
+    <h2>{% trans "Related Topics" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li><i>Todo</i></li>
+    </ul>
 </section>

@@ -4,13 +4,11 @@
 
 <!-- Component Demo -->
 <section>
-    <p class="text-secondary leading-loose">
-        {% trans 'Todo' %}
+    <p>
+        Mit der <span class="inline-tag">table</span> Komponente lässt sich eine einfache Tabelle für beliebige Daten darstellen. Das Layout ist responsive Gestaltet, sollte der Platz nicht ausreichen wird eine horizontale Scrollbar eingeblendet.
     </p>
 
-    <div class="example-container">
-        {% table table_data=table %}
-    </div>
+    {% include "insight_ui/docs/demo_container.html" %}
 </section>
 
 <hr class="text-gray-300 dark:text-gray-600">
@@ -23,4 +21,84 @@
 
         &lcub;% table table_data=table %&rcub;
     </div>
+</section>
+
+<section>
+    <h3>{% trans "Parameter" %}</h3>
+    <ul class="list-disc leading-relaxed ms-8">
+        <li><span class="inline-tag">table_data</span>(<i>dict</i>): Enthält die Daten für die Header und Rows der Tabelle.</li>
+    </ul>
+
+    <div class="mt-8">
+        <h4>table_data</h4>
+        <p class="mb-6">Enthält die Daten für die Header und Rows der Tabelle.</p>
+
+        <div id="Table_Params" data-insight-code-block="python">
+            {
+                "caption": _("Ein Beispiel einer Tabellen-Komponente."),
+                "empty_msg": _("Keine Daten vorhanden!"),
+                "headers": [_("Name"), _("E-Mail"), _("Status")],
+                "rows": [
+                    [
+                        "Max Mustermann",
+                        "max@example.com",
+                        _("Aktiv"),
+                    ],
+                    ...
+                ],
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Customization -->
+<section>
+    <h2>{% trans "Customization" %}</h2>
+    <p>
+        Das Design der Tabelle befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/table.html</span>.
+    </p>
+    <p class="mt-4">
+        Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad <span class="inline-tag">templates/insight_ui/components/</span> vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+    </p>
+</section>
+
+<!-- A11y -->
+<section>
+    <h2>{% trans "Accessability" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li><i>Todo</i></li>
+    </ul>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Related -->
+<section>
+    <h2>{% trans "Related Topics" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'pagination' %}"
+                hx-get="{% url 'component_detail_page_view' 'pagination' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Liste" %}
+            </a>
+        </li>
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'card_carousel' %}"
+                hx-get="{% url 'component_detail_page_view' 'card_carousel' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Karussell" %}
+            </a>
+        </li>
+    </ul>
 </section>

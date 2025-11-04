@@ -1,6 +1,6 @@
 # Table-Komponente (Version 0.1.0)
 
-Eine einfache Tabelle zum Darstellen von Daten.
+Mit der `table` Komponente lässt sich eine einfache Tabelle für beliebige Daten darstellen. Das Layout ist responsive Gestaltet, sollte der Platz nicht ausreichen wird eine horizontale Scrollbar eingeblendet.
 
 ## Verwendung
 
@@ -12,14 +12,14 @@ Eine einfache Tabelle zum Darstellen von Daten.
 
 ## Parameter
 
-- **table_data**: Ein Dictionary welches alle relevanten Daten wie die Header und Rows enthält.
+- **table_data** (_dict_): Enthält die Daten für die Header und Rows der Tabelle.
 
 ### table_data
 
-Das Dictionary einer Tabelle ist folgendermaßen aufgebaut:
+Enthält die Daten für die Header und Rows der Tabelle.
 
 ```py
-"table": {
+{
     "caption": _("Ein Beispiel einer Tabellen-Komponente."),
     "empty_msg": _("Keine Daten vorhanden!"),
     "headers": [_("Name"), _("E-Mail"), _("Status")],
@@ -31,9 +31,20 @@ Das Dictionary einer Tabelle ist folgendermaßen aufgebaut:
         ],
         ...
     ],
-},
+}
 ```
+
+## Customization
+
+Das Design der Tabelle befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/table.html`.
+
+Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+
+## Barrierefreiheit
+
+- _Todo_
 
 ## Verwandte Themen
 
-- _Todo_
+- [List](pagination.md)
+- [Carousel](carousel.md)

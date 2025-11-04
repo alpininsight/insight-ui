@@ -6,9 +6,7 @@ from django.core.paginator import Page, Paginator
 T = TypeVar("T")
 
 
-def get_page(
-    data: Sequence[T], page: int = 1, max_neighbor_pages: int = 6
-) -> tuple[Page[T], list[str]]:
+def get_page(data: Sequence[T], page: int = 1, max_neighbor_pages: int = 6) -> tuple[Page[T], list[str]]:
     """
     Create pagination for given data.
 

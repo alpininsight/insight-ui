@@ -22,9 +22,7 @@ def _coerce_operations(operations: object) -> list[str]:
 def _coerce_values(values: object) -> dict[str, str]:
     if isinstance(values, Mapping):
         return {
-            str(key): str(value)
-            for key, value in values.items()
-            if isinstance(key, str) and isinstance(value, str)
+            str(key): str(value) for key, value in values.items() if isinstance(key, str) and isinstance(value, str)
         }
     return {}
 
@@ -59,9 +57,7 @@ def get_filter_settings_for_field(
     return "text", [], {}
 
 
-def build_dynamic_query(
-    filters: list[Mapping[str, Any]],
-) -> tuple[Q, dict[str, Any], dict[str, Any]]:
+def build_dynamic_query(filters: list[Mapping[str, Any]]) -> tuple[Q, dict[str, Any], dict[str, Any]]:
     """
     Build django query by the given filters.
 

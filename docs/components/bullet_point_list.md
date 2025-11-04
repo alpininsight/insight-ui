@@ -1,6 +1,6 @@
 # Bullet Point List-Komponente (Version 0.1.0)
 
-- Todo
+Die Bullet-Point List Komponente stellt eine Liste dar, welche mit deutlichen _Bullet_ und Linien welche diese Verbinden dargestellt wird. Diese Liste ist vor allem für chronologische Listen gedacht, kann aber auch für ungeordnete Listen verwendet werden.
 
 ## Verwendung
 
@@ -18,6 +18,8 @@
 
 ### items
 
+Ein Liste der einzelnen Punkte der Bullet Point Liste.
+
 ```py
 [
     {
@@ -30,6 +32,16 @@
 ]
 ```
 
+## Customization
+
+Das Design der Bullet-Point List befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/bullet_point_list.html`.
+
+Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+
+## Barrierefreiheit
+
+- _Todo_
+
 ## Verwandte Themen
 
-- [Navbar](step_bar.md)
+- [Step Bar](step_bar.md)
