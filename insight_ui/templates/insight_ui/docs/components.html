@@ -16,7 +16,7 @@
         <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
         <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
-        <!-- Apache echarts -->
+        <!-- Apache ECharts -->
         <script defer src="https://cdnjs.cloudflare.com/ajax/libs/echarts/6.0.0/echarts.min.js" integrity="sha512-4/g9GAdOdTpUP2mKClpKsEzaK7FQNgMjq+No0rX8XZlfrCGtbi4r+T/p5fnacsEC3zIAmHKLJUL7sh3/yVA4OQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
         <!-- Insight UI Modular Utils  -->
@@ -30,7 +30,7 @@
     </head>
     <body class="bg-white dark:bg-gray-800 {{ body_height }} {% if not no_padding %}p-8{% endif %}">
         {% if component == "navbar" %}
-            <div class="bg-gray-50 dark:bg-gray-700 h-72">
+            <div class="bg-gray-50 dark:bg-gray-700 h-80">
                 {% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links show_login=True %}
             </div>
         {% elif component == "sidebar" %}
