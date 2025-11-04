@@ -3,7 +3,7 @@
 Thank you for improving Insight UI. This guide explains how to add components, documentation, and tests while staying consistent with the project’s conventions.
 
 ## Prerequisites
-- Python 3.12+
+- Python 3.13+
 - [`uv`](https://github.com/astral-sh/uv) for dependency management
 - Node.js if you plan to extend the Tailwind build
 

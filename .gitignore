@@ -164,6 +164,9 @@ AGENTS.md
 AGENT*.md
 ai-notes/
 cython_debug/
+.act-cache/
+.xdg-cache/
+.home/
 
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can

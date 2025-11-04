@@ -1,13 +1,13 @@
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
 [project]
 name = "django-insight-ui"
-version = "0.1.0"
+dynamic = ["version"]
 description = "Ein modernes, barrierefreies UI-Framework für Django"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.13"
 license = {file = "LICENSE"}
 authors = [
     {name = "Django Insight UI Team"},
@@ -22,7 +22,6 @@ classifiers = [
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Topic :: Internet :: WWW/HTTP",
     "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
@@ -48,6 +47,7 @@ dev = [
     "ruff",
     "pre-commit",
     "django-tailwind-cli>=4.3.0",
+    "python-semantic-release>=9.8.0",
 ]
 pytest = [
     "pytest",
@@ -80,12 +80,21 @@ Documentation = "https://yourusername.github.io/django-insight-ui"
 Issues = "https://github.com/yourusername/django-insight-ui/issues"
 
 
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+# Match tags like "v1.2.3" and write a version file for runtime
+tag-pattern = "v(?P<version>.*)"
+version-file = "insight_ui/_version.py"
+
+
 [tool.isort]
 profile = "black"
 line_length = 88
 
 [tool.mypy]
-python_version = "3.12"
+python_version = "3.13"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
@@ -150,8 +159,8 @@ extend-exclude = [
 line-length = 120
 indent-width = 4
 
-# Assume Python 3.12
-target-version = "py312"
+# Assume Python 3.13
+target-version = "py313"
 
 [tool.ruff.lint]
 # Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
@@ -265,6 +274,27 @@ mark-parentheses  = false
 
 [tool.hatch.build.targets.wheel]
 packages = ["insight_ui"]
+
+[tool.semantic_release]
+version_source = "tag"
+tag_format = "v{version}"
+commit_parser = "angular"
+changelog_file = "CHANGELOG.md"
+build_command = "uv build"
+branch = "main"
+upload_to_repository = true
+upload_to_release = true
+
+[[tool.semantic_release.branches]]
+name = "main"
+match = "main"
+prerelease = false
+
+[[tool.semantic_release.branches]]
+name = "dev"
+match = "dev"
+prerelease = true
+prerelease_token = "rc"
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "core.settings"
