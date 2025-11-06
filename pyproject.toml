@@ -41,11 +41,11 @@ default-groups = ["dev"]
 
 [dependency-groups]
 dev = [
-    "isort",
-    "mypy",
-    "django-stubs",
-    "ruff",
-    "pre-commit",
+    "isort>=7.0.0",
+    "mypy>=1.18.2",
+    "django-stubs>=1.2.0",
+    "ruff>=0.14.3",
+    "pre-commit>=4.3.0",
     "django-tailwind-cli>=4.3.0",
     "python-semantic-release>=9.8.0",
 ]
@@ -160,7 +160,7 @@ line-length = 120
 indent-width = 4
 
 # Assume Python 3.13
-target-version = "py313"
+target-version = "py312"  # As temporary workaround use "py312" because "py313" is currently not recognized by ruff
 
 [tool.ruff.lint]
 # Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
