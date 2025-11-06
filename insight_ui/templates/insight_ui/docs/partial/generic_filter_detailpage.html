@@ -22,7 +22,7 @@
     <div id="Generic_Filter_Usage" data-insight-code-block="Django">
         &lcub;% load insight_tags %&rcub;
 
-        &lcub;% generic_filter filters=filters view_name=filter_view_name hx_target="#data" vertical=False %&rcub;
+        &lcub;% generic_filter filters=filters view_name=filter_view_name hx_target="#data" hx_push_url="true" vertical=False query_params=request.GET %&rcub;
     </div>
 </section>
 
@@ -31,8 +31,10 @@
     <ul class="list-disc leading-relaxed ms-8">
         <li><span class="inline-tag">view_name</span> (<i>str</i>): Der Name der View an welche der Request gesendet werden soll.</li>
         <li><span class="inline-tag">hx_target</span> (<i>str</i>): Die ID des Containers, dessen Inhalt vom Response ausgetauscht werden soll.</li>
+        <li><span class="inline-tag">hx_push_url</span> (<i>str</i>): <span class="inline-tag">"true"</span> wenn die ausgewählten Filterwerte in der URL abgebildet werden sollen, ansonsten <span class="inline-tag">"false"</span>.</li>
         <li><span class="inline-tag">filters</span> (<i>list</i>): Definitionen der einzelnen Filter.</li>
         <li><span class="inline-tag">vertical</span> (<i>bool</i>): <span class="inline-tag">True</span> wenn die Filter übereinander angeordnet sein sollen.</li>
+        <li><span class="inline-tag">query_params</span> (<i>dict</i>): Ein Dictionary um die Werte der Filter zu setzen.</li>
     </ul>
 
     <div class="mt-8">

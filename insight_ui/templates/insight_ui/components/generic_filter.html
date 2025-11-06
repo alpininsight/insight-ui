@@ -1,6 +1,6 @@
 {% load insight_tags %}
 
-<form hx-get="{% url view_name %}" hx-trigger="submit, change" hx-target="{{ hx_target }}" hx-swap="outerHTML" hx-indicator="#loading-indicator" class="w-full">
+<form hx-get="{% url view_name %}" hx-trigger="submit, change" hx-target="{{ hx_target }}" hx-swap="outerHTML" hx-indicator="#loading-indicator" hx-push-url="{{ push_url|default:"true" }}" class="w-full">
     <!-- Filters -->
     <div class="flex flex-col {% if not vertical %}lg:flex-row{% endif %} gap-2 space-y-4">
         {% for filter in filters %}
@@ -24,7 +24,7 @@
                 <!-- Options -->
                 <select id="{{ filter.name }}" name="{{ filter.name }}" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm shadow-sm text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-colors duration-200">
                     {% for option, text in filter.values.items %}
-                        <option value={{ option }} {% if filter.name in qparams and option == qparams|get_item:filter.name %}selected{% endif %} {% if option == "-" %}disabled{% elif option == "placeholder" %}class="text-gray-400"{% endif %}>
+                        <option value={{ option }} {% if filter.name in query_params and option == query_params|get_item:filter.name %}selected{% endif %} {% if option == "-" %}disabled{% elif option == "placeholder" %}class="text-gray-400"{% endif %}>
                             {{ text }}
                         </option>
                     {% endfor %}

@@ -7,15 +7,17 @@ Eine alternative hierzu stellt der flexiblere, aber auch kompliziertere [Query B
 ## Verwendung
 
 ```django
-{% generic_filter view_name="filter_view" filters=filters %}
+{% generic_filter filters=filters view_name=filter_view_name hx_target="#data" hx_push_url="true" vertical=False query_params=request.GET %}
 ```
 
 ## Parameter
 
 - **view_name** (_str_): Der Name der View an welche der Request gesendet werden soll.
-- **hx_target**: (_str_): Die ID des Containers, dessen Inhalt vom Response ausgetauscht werden soll.
+- **hx_target** (_str_): Die ID des Containers, dessen Inhalt vom Response ausgetauscht werden soll.
+- **hx_push_url** (_str_): "true" wenn die ausgewählten Filterwerte in der URL abgebildet werden sollen, ansonsten "false".
 - **filters** (_list_): Definitionen der einzelnen Filter.
 - **vertical** (_bool_): _True_ wenn die Filter übereinander angeordnet sein sollen.
+- **query_params** (dict): Ein Dictionary um die Werte der Filter zu setzen.
 
 ### filters
 
