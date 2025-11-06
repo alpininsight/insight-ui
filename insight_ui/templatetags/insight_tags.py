@@ -403,7 +403,14 @@ def paginated_list(current_page: Page, surrounding_pages: list) -> dict:
 
 
 @register.inclusion_tag("insight_ui/components/generic_filter.html")
-def generic_filter(filters: list, view_name: str, hx_target: str, vertical: bool) -> dict:
+def generic_filter(  # noqa: PLR0913 (too many arguments)
+    filters: list,
+    view_name: str,
+    hx_target: str,
+    hx_push_url: str = "true",
+    vertical: bool = False,
+    query_params: dict[str, str] = {},
+) -> dict:
     """
     Rendert eine generische Filterung, bestehend aus einem oder mehreren <select> Feldern.
 
@@ -412,14 +419,23 @@ def generic_filter(filters: list, view_name: str, hx_target: str, vertical: bool
         filters (list): Eine Liste der einzelnen Filter (<select> Feldern).
         view_name (str): Der Name der View an welche der Request gesendet werden soll.
         hx_target (str): Die ID des Containers, dessen Inhalt vom Response ausgetauscht werden soll.
+        hx_push_url (str): "true" wenn die ausgewählten Filterwerte in der URL abgebildet werden sollen.
         vertical (bool): 'True' wenn die Filter übereinander angeordnet sein sollen.
+        query_params (dict): Ein Dictionary um die Werte der Filter zu setzen.
 
     Returns:
     -------
         Dict mit Kontext-Variablen für das Template.
 
     """
-    return {"filters": filters, "view_name": view_name, "hx_target": hx_target, "vertical": vertical}
+    return {
+        "filters": filters,
+        "view_name": view_name,
+        "hx_target": hx_target,
+        "hx_push_url": hx_push_url,
+        "vertical": vertical,
+        "query_params": query_params,
+    }
 
 
 @register.inclusion_tag("insight_ui/components/search_bar.html")
