@@ -93,6 +93,26 @@ DEMO_FIELDS = [
 ]
 
 
+def get_login_screen_context() -> dict:
+    """Serve context data for the login screen."""
+    return (
+        config.get_config()
+        | get_footer_context()
+        | {
+            "logo": {
+                "url": "svg/ai-logo.svg",
+                "url_dark": "svg/ai-logo.svg",
+                "alt": "Unser Logo",
+                "height": "h-32",
+                "position": "center",
+            },
+            "forgot_password": {"url": "#"},
+            "alt_login": {"url": "#", "title": "Login with OIDC"},
+            "sign_up": {"url": "#"},
+        }
+    )
+
+
 def get_base_context() -> dict:
     """Serve basic context data, like navbar, footer and settings."""
     return config.get_config() | get_navbar_context() | get_footer_context()
@@ -121,12 +141,12 @@ def get_navbar_context() -> dict:
             "brand": {
                 "title": "Insight UI",
                 "view_name": "index_view",
+                "gap": "gap-2",
                 "logo": {
                     "url": "insight_ui/svg/ai-logo.svg",
+                    "url_dark": "insight_ui/svg/ai-logo.svg",
                     "alt": "Insight UI Logo",
                     "height": "h-8",
-                    "padding": 0,
-                    "rounded": True,
                 },
             },
             "links": [
