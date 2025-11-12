@@ -1,6 +1,6 @@
 {% load insight_tags %}
 
-<form hx-get="{% url view_name %}" hx-trigger="submit, change" hx-target="{{ hx_target }}" hx-swap="outerHTML" hx-indicator="#loading-indicator" hx-push-url="{{ push_url|default:"true" }}" class="w-full">
+<form hx-get="{% url view_name %}" hx-trigger="submit, change" hx-target="{{ hx_target }}" hx-swap="outerHTML" hx-indicator="#loading-indicator" hx-push-url="{{ hx_push_url|default:"true" }}" class="w-full">
     <!-- Filters -->
     <div class="flex flex-col {% if not vertical %}lg:flex-row{% endif %} gap-2 space-y-4">
         {% for filter in filters %}
