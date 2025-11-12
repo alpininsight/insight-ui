@@ -10,12 +10,32 @@
   <div class="flex flex-wrap justify-between items-center gap-1 lg:gap-16 h-full">
     <!-- Brand Logo -->
     {% if brand %}
-      <a href="{{ brand.href }}" class="flex items-center gap-2 text-xl font-bold text-primary">
+      <a href="{{ brand.href }}" class="flex items-center {{ brand.gap|default:"2" }} text-xl font-bold text-primary">
         {% if brand.logo.url %}
-          <img src="{% static brand.logo.url %}" alt="{{ brand.logo.alt }}" class="{{ brand.logo.height|default:'h-8' }} {% if brand.logo.rounded %}rounded-full{% else %}rounded-xs{% endif %} p-{{ brand.logo.padding|default:"0" }} dark:bg-white" />
-        {% else %}
-          <!-- Platzhalter brand_logo, not Profile_Head -->
-          <img src="{% static 'insight_ui/svg/logo.svg' %}" class="size-8 rounded-full dark:bg-white" alt="Brand Icon" />
+          <img
+            id="brand-logo"
+            src="{% static brand.logo.url %}"
+            data-light-src="{% static brand.logo.url %}"
+            data-dark-src="{% static brand.logo.url_dark %}"
+            alt="{{ brand.logo.alt }}"
+            class="{{ brand.logo.height|default:'h-8' }}"
+          >
+          <script>
+          document.addEventListener("DOMContentLoaded", function() {
+            const root = document.documentElement;
+            const logo = document.getElementById("brand-logo");
+
+            function updateLogo() {
+              const theme = root.getAttribute("data-theme") || "light";
+              logo.src = theme === "dark" ? logo.dataset.darkSrc : logo.dataset.lightSrc;
+            }
+
+            updateLogo();
+
+            const observer = new MutationObserver(updateLogo);
+            observer.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+          });
+          </script>
         {% endif %}
         <span>{{ brand.title }}</span>
       </a>

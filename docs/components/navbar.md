@@ -1,4 +1,4 @@
-# Navbar-Komponente (Version 0.1.1)
+# Navbar-Komponente (Version 0.1.2)
 
 Die `navbar` Komponente stellt eine anpassbare Navigationsleiste mit verschiedenen Komponenten zur Verfügung. Die Navigation ist fixiert am oberen Rand des Browserfenstern und bewegt sich beim nach unten Scrollen mit. Die Navigationsleiste besteht aus den folgenden Komponenten:
 
@@ -39,12 +39,12 @@ Eine komplette Konfiguration sieht folgendermaßen aus:
     "brand": {
         "title": "Insight UI",
         "view_name": "storybook_view",
+        "gap": "gap-2",
         "logo": {
-            "url": "insight_ui/svg/logo.svg",
+            "url": "insight_ui/svg/ai-logo.svg",
+            "url_dark": "insight_ui/svg/ai-logo-dark.svg",
             "alt": "Insight UI Logo",
             "height": "h-8",
-            "padding": 0,
-            "rounded": True,
         },
     },
     "links": [
