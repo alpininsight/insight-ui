@@ -127,4 +127,7 @@ INSIGHT_UI = {
             "author": PROJECT_AUTHOR,
         }
     },
+    "load_prism": True,
+    "load_leaflet": True,
+    "load_echarts": True,
 }

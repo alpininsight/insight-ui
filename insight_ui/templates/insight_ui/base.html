@@ -27,23 +27,27 @@
         <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/htmx-ext-ws@2.0.2" crossorigin="anonymous"></script>
 
-        <!-- prism (Syntax-Highlighting) and clipboard (Copy to clipboard) CDN -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/prism.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/plugins/autoloader/prism-autoloader.min.js"></script>
+        {% if INSIGHT_UI.load_prism %}
+            <!-- prism (Syntax-Highlighting) and clipboard (Copy to clipboard) CDN -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/prism.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/plugins/autoloader/prism-autoloader.min.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css">
+        {% endif %}
 
-        <!-- leaflet (geo) -->
-        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+        {% if INSIGHT_UI.load_leaflet %}
+            <!-- leaflet (geo) CDN -->
+            <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+            <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+        {% endif %}
 
-        <!-- Apache echarts -->
-        <script defer src="https://cdnjs.cloudflare.com/ajax/libs/echarts/6.0.0/echarts.min.js" integrity="sha512-4/g9GAdOdTpUP2mKClpKsEzaK7FQNgMjq+No0rX8XZlfrCGtbi4r+T/p5fnacsEC3zIAmHKLJUL7sh3/yVA4OQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        {% if INSIGHT_UI.load_echarts %}
+            <!-- Apache echarts CDN -->
+            <script defer src="https://cdnjs.cloudflare.com/ajax/libs/echarts/6.0.0/echarts.min.js" integrity="sha512-4/g9GAdOdTpUP2mKClpKsEzaK7FQNgMjq+No0rX8XZlfrCGtbi4r+T/p5fnacsEC3zIAmHKLJUL7sh3/yVA4OQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        {% endif %}
 
         <!-- Insight UI Modular Utils  -->
         <script defer src="{% static 'insight_ui/js/insight-ui-utils.js' %}"></script>
-
-        <!-- prism stylesheet (Syntax-Highlighting) -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css">
 
         <!-- Main stylesheet -->
         <link rel="stylesheet" href="{% static INSIGHT_UI.stylesheet %}">
