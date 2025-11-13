@@ -130,6 +130,9 @@ INSIGHT_UI = {
             "author": "Alpin Insight AI",
         }
     },
+    "load_prism": True,
+    "load_leaflet": True,
+    "load_echarts": True,
 }
 ```
 
