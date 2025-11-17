@@ -1,6 +1,26 @@
-window.InsightUI = window.InsightUI || {};
+class CodeBlock {
+  // Manages all CodeBlock instances of the DOM
+  static instances = new WeakMap();
 
-function cleanIndentation(code) {
+  constructor(element) {
+    // If an instance for this element already exists, return it
+    if (CodeBlock.instances.has(element)) {
+      return CodeBlock.instances.get(element);
+    }
+
+    this.element = element;
+    this.id = element.id;
+    this.lang = element.getAttribute('data-insight-code-block');
+    this.code = element.textContent;
+    this.wrapper = this.generateCodeBlock(this.id, this.lang, this.code);
+    this.element.replaceWith(this.wrapper);
+
+    CodeBlock.instances.set(element, this);
+
+    debugLog("New code block created: ", this.element);
+  }
+
+  cleanIndentation(code) {
     // Zuerst teilen wir den Code in Zeilen auf
     const lines = code.split('\n');
 
@@ -10,15 +30,15 @@ function cleanIndentation(code) {
 
     // Entferne die gleiche Anzahl an führenden Leerzeichen oder Tabs aus jeder Zeile
     const cleanedLines = lines.map(line => {
-        // Entferne nur die führenden Leerzeichen/Tabs, die der Anzahl in der ersten Zeile entsprechen
-        return line.slice(indentLength);
+      // Entferne nur die führenden Leerzeichen/Tabs, die der Anzahl in der ersten Zeile entsprechen
+      return line.slice(indentLength);
     });
 
     // Setze den Code wieder zusammen
     return cleanedLines.join('\n');
-}
+  }
 
-function generateCodeBlock(id, lang, code) {
+  generateCodeBlock(id, lang, code) {
     // Erstelle das Wrapper-Div
     const wrapper = document.createElement('div');
     wrapper.classList.add('bg-[#f5f2f0]', 'rounded', 'border', 'border-gray-300', 'dark:border-0');
@@ -65,7 +85,7 @@ function generateCodeBlock(id, lang, code) {
     pre.classList.add(`language-${lang}`);
 
     const codeElement = document.createElement('code');
-    const cleanCode = cleanIndentation(code).trim();
+    const cleanCode = this.cleanIndentation(code).trim();
     codeElement.textContent = cleanCode;
 
     pre.appendChild(codeElement);
@@ -85,25 +105,18 @@ function generateCodeBlock(id, lang, code) {
     Prism.highlightElement(pre);
 
     return wrapper;
-}
+  }
 
-InsightUI.CodeBlock = {
-  init: function () {
-    const codeBlocks = document.querySelectorAll('[data-insight-code-block]');
-    if (!codeBlocks) return;
-
-    for (let codeBlock of codeBlocks)
-    {
-      const id = codeBlock.id;
-      const lang = codeBlock.getAttribute('data-insight-code-block');
-      const code = codeBlock.textContent;
-
-      const wrapper = generateCodeBlock(id, lang, code);
-
-      codeBlock.replaceWith(wrapper);
-    }
-
-    console.log("Code Blocks: ", codeBlocks);
-    console.log("Code Blocks initialized!");
+  // Static method for initializing all code blocks
+  static initAll() {
+    const codeBlocks = document.querySelectorAll("[data-insight-code-block]");
+    codeBlocks.forEach((el) => {
+      if (!CodeBlock.instances.has(el)) {
+        new CodeBlock(el);
+      }
+    });
   }
 }
+
+window.InsightUI = window.InsightUI || {};
+window.InsightUI.CodeBlock = CodeBlock;
