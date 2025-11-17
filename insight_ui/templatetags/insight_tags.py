@@ -967,10 +967,57 @@ def three_d_carousel(
     }
 
 
+@register.inclusion_tag("insight_ui/components/multiselect.html")
+def multiselect(  # noqa: PLR0913 (too many arguments)
+    name: str = None,
+    label: str = None,
+    maximum: int = None,
+    show_buttons: bool = None,
+    values: list[str] = None,
+    selected_values: list[str] = None,
+    config: dict[str, Any] = None,
+) -> dict[str, Any]:
+    """
+    Rendert eine Auswahlbox, welche mehrere ausgewählte Werte zulässt und eine integrierte Suchzeile hat.
+
+    Args:
+    ----
+        name (str): Der Name des Multiselect Elements.
+        label (str): Ein kurzer Titel, welche rüber dem Multiselect angezeigt wird.
+        maximum (int): Gibt an wie viele Werte maximal ausgewählt sein dürfen.
+        show_buttons (bool): 'True' zeigt zusätzlich "Alle Auswählen" und "Alle Abwählen" Buttons an.
+        values (list[str]): Alle Werte welche ausgewählt werden können.
+        selected_values (list[str]): Alle Werte welche bereits ausgewählt sein sollen.
+        config (dict[str, Any]): Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template
+
+    """
+    print(config)
+    if config is not None:
+        name = config.get("name", name)
+        label = config.get("label", label)
+        maximum = config.get("maximum", maximum)
+        show_buttons = config.get("show_buttons", show_buttons)
+        values = config.get("values", values)
+        selected_values = config.get("selected_values", selected_values)
+
+    return {
+        "name": name,
+        "label": label,
+        "maximum": maximum,
+        "show_buttons": show_buttons,
+        "values": values,
+        "selected_values": selected_values,
+    }
+
+
 @register.inclusion_tag("insight_ui/components/charts/bar_chart.html")
 def bar_chart(chart_id: str, chart: dict, chart_height: int = 24) -> dict:
     """
-    Rendert ein Bar-Chart mit Apache Echarts.
+    Rendert ein Bar-Chart mit Apache ECharts.
 
     Args:
     ----
@@ -989,7 +1036,7 @@ def bar_chart(chart_id: str, chart: dict, chart_height: int = 24) -> dict:
 @register.inclusion_tag("insight_ui/components/charts/line_chart.html")
 def line_chart(chart_id: str, chart: dict, chart_height: int = 24) -> dict:
     """
-    Rendert ein Line-Chart mit Apache Echarts.
+    Rendert ein Line-Chart mit Apache ECharts.
 
     Args:
     ----

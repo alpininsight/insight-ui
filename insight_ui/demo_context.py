@@ -393,6 +393,11 @@ def get_sidebar_context() -> dict:
                             "htmx": {"target": "#content"},
                         },
                         {
+                            "text": _("Multiselect"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "multiselect"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
                             "text": _("Chat"),
                             "url": reverse("component_detail_page_view", kwargs={"component_name": "chat"}),
                             "htmx": {"target": "#content"},
@@ -575,6 +580,7 @@ def get_inputs_storybook_context() -> dict:
         | get_toggle_button_context()
         | get_range_slider_context()
         | get_dropdown_context()
+        | get_multiselect_context()
     )
 
 
@@ -771,6 +777,19 @@ def get_radio_group_context() -> dict:
 def get_toggle_button_context() -> dict:
     """Serve data for toggle-button detailpage."""
     return {"example_toggle": {"id": "toggle_button_example1", "text": _("Click me!"), "switch": True}}
+
+
+def get_multiselect_context() -> dict:
+    """Serve data for multiselect detailpage."""
+    return {
+        "multiselect_config": {
+            "name": "test",
+            "label": "Test",
+            "max": 0,
+            "show_buttons": True,
+            "values": ["A", "B", "C"],
+        }
+    }
 
 
 def get_range_slider_context() -> dict:
