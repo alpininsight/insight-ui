@@ -1,44 +1,58 @@
-window.InsightUI = window.InsightUI || {};
+class Dropdown {
+    static instances = new WeakMap();
+    static currentOpen = null;
 
-InsightUI.Dropdown = {
-    init: function () {
-        const toggleButtons = document.querySelectorAll("[data-dropdown-toggle]");
-
-        toggleButtons.forEach((button) => {
-            const targetId = button.getAttribute("data-dropdown-toggle");
-            const menu = document.getElementById(targetId);
-
-            if (!menu) return;
-
-            menu.classList.add("absolute", "hidden", "z-50", "mt-2");
-
-            button.addEventListener("click", (event) => {
-                event.stopPropagation();
-                closeAllDropdowns(); // Close all (other) menus
-                menu.classList.toggle("hidden"); // Open current menu
-            });
-        });
-
-        /* Close all menus on click everywhere */
-        document.addEventListener("click", () => {
-            closeAllDropdowns();
-        });
-
-        /* Close all menus */
-        function closeAllDropdowns() {
-            const toggleButtons = document.querySelectorAll("[data-dropdown-toggle]");
-            toggleButtons.forEach((button) => {
-                const targetId = button.getAttribute("data-dropdown-toggle");
-                const menu = document.getElementById(targetId);
-
-                if (!menu) return;
-
-                if (menu.classList.contains("hidden")) return;
-                menu.classList.add("hidden");
-            });
+    constructor(toggleButton) {
+        if (Dropdown.instances.has(toggleButton)) {
+            return Dropdown.instances.get(toggleButton);
         }
 
-        console.log("Dropdowns: ", toggleButtons);
-        console.log("Dropdowns initialized!");
+        this.toggleButton = toggleButton;
+        this.targetId = toggleButton.getAttribute("data-dropdown-toggle");
+        this.menu = document.getElementById(this.targetId);
+
+        if (!this.menu) return;
+
+        this.menu.classList.add("absolute", "hidden", "z-50", "mt-2");
+
+        this.bindEvents();
+
+        Dropdown.instances.set(toggleButton, this);
+
+        debugLog("New dropdown created: ", this.toggleButton, this.menu);
     }
-};
+
+    bindEvents() {
+        this.toggleButton.addEventListener("click", e => {
+            e.stopPropagation();
+            if (Dropdown.currentOpen && Dropdown.currentOpen !== this) {
+                Dropdown.currentOpen.hide();
+            }
+            this.menu.classList.toggle("hidden");
+            Dropdown.currentOpen = this.menu.classList.contains("hidden") ? null : this;
+        });
+
+        // Close when clicking outside
+        document.addEventListener("click", () => {
+            this.hide();
+        });
+    }
+
+    hide() {
+        if (!this.menu.classList.contains("hidden")) {
+            this.menu.classList.add("hidden");
+            if (Dropdown.currentOpen === this) {
+                Dropdown.currentOpen = null;
+            }
+        }
+    }
+
+    // Static method for initializing all dropdown menus
+    static initAll() {
+        const buttons = document.querySelectorAll("[data-dropdown-toggle]");
+        buttons.forEach(btn => new Dropdown(btn));
+    }
+}
+
+window.InsightUI = window.InsightUI || {};
+window.InsightUI.Dropdown = Dropdown;

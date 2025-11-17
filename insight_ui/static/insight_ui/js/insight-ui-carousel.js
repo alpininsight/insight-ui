@@ -120,7 +120,7 @@ class Carousel {
       this.indexText.textContent = `Seite ${this.index + 1} / ${this.totalSlides}`;
     }
   }
-}
+};
 
 // Global initialization method - Use after adding new carousel
 // Sets an init flag so that each carousel is only initialized once,

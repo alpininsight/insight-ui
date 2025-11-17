@@ -1,58 +1,83 @@
-window.InsightUI = window.InsightUI || {};
+class Tabs {
+    static instances = new WeakMap();
 
-InsightUI.Tabs = {
-    init: function () {
-        // Collect all elements with 'data-tabs=<target_ID>'
-        const tabs = document.querySelectorAll("[data-tabs]");
+    constructor(tabBar) {
+        if (Tabs.instances.has(tabBar)) {
+            return Tabs.instances.get(tabBar);
+        }
 
-        tabs.forEach((tabBar) => {
-            const tabs = Array.from(tabBar.children[0].children);
-            const tabContent = tabBar.children[1];
+        this.tabBar = tabBar;
+        this.tabs = Array.from(tabBar.children[0].children);
+        this.tabContent = tabBar.children[1];
 
-            document.body.addEventListener('htmx:afterSwap', (event) => {
-                if (event.detail.target.id === 'tab-content') {
-                    tabContent.focus();
-                }
-            });
+        this.bindEvents();
+        Tabs.instances.set(tabBar, this);
 
-            tabs.forEach((tab, index) => {
-                tab.addEventListener('keydown', (e) => {
-                    let newIndex = null;
-                    if (e.key === 'ArrowRight') {
-                        newIndex = (index + 1) % tabs.length;
-                    } else if (e.key === 'ArrowLeft') {
-                        newIndex = (index - 1 + tabs.length) % tabs.length;
-                    } else if (e.key === 'Home') {
-                        newIndex = 0;
-                    } else if (e.key === 'End') {
-                        newIndex = tabs.length - 1;
-                    }
+        debugLog("New tab bar created: ", this.tabBar);
+    }
 
-                    if (newIndex !== null) {
-                        e.preventDefault();
-                        tabs[newIndex].focus();
-                    }
-                });
+    bindEvents() {
+        // Keyboard control
+        this.tabs.forEach((tab, index) => {
+            tab.addEventListener('keydown', e => this.handleKeyDown(e, index));
+            tab.addEventListener('click', () => this.activateTab(tab));
+        });
 
-                tab.addEventListener('click', () => {
-                    activateTab(tab);
-                });
-            });
-
-            function activateTab(selectedTab) {
-                tabs.forEach(tab => {
-                    if (tab === selectedTab) {
-                        tab.setAttribute('aria-selected', 'true');
-                        tab.classList.remove('border-gray-300', 'text-primary', 'border-b');
-                        tab.classList.add('border-insight-primary', 'text-insight-primary', 'border-b-3');
-                        tabContent.setAttribute('aria-label', tab.id);
-                    } else {
-                        tab.setAttribute('aria-selected', 'false');
-                        tab.classList.remove('border-insight-primary', 'text-insight-primary', 'border-b-3');
-                        tab.classList.add('border-gray-300', 'text-primary', 'border-b');
-                    }
-                });
+        // HTMX-Focus
+        document.body.addEventListener('htmx:afterSwap', event => {
+            if (event.detail.target.id === 'tab-content') {
+                this.tabContent.focus();
             }
         });
     }
-};
+
+    handleKeyDown(e, index) {
+        let newIndex = null;
+        const length = this.tabs.length;
+
+        switch (e.key) {
+            case 'ArrowRight':
+                newIndex = (index + 1) % length;
+                break;
+            case 'ArrowLeft':
+                newIndex = (index - 1 + length) % length;
+                break;
+            case 'Home':
+                newIndex = 0;
+                break;
+            case 'End':
+                newIndex = length - 1;
+                break;
+        }
+
+        if (newIndex !== null) {
+            e.preventDefault();
+            this.tabs[newIndex].focus();
+        }
+    }
+
+    activateTab(selectedTab) {
+        this.tabs.forEach(tab => {
+            const isSelected = tab === selectedTab;
+            tab.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+
+            if (isSelected) {
+                tab.classList.remove('border-gray-300', 'text-primary', 'border-b');
+                tab.classList.add('border-insight-primary', 'text-insight-primary', 'border-b-3');
+                this.tabContent.setAttribute('aria-label', tab.id);
+            } else {
+                tab.classList.remove('border-insight-primary', 'text-insight-primary', 'border-b-3');
+                tab.classList.add('border-gray-300', 'text-primary', 'border-b');
+            }
+        });
+    }
+
+    // Static method for initializing all tabs
+    static initAll() {
+        const tabBars = document.querySelectorAll("[data-tabs]");
+        tabBars.forEach(bar => new Tabs(bar));
+    }
+}
+
+window.InsightUI = window.InsightUI || {};
+window.InsightUI.Tabs = Tabs;
