@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.1.0](https://github.com/alpininsight/insight-ui/compare/v1.0.0...v1.1.0) (2025-11-17)
+
+
+### Features
+
+* add JavaScript classes and improve browser logging ([e063516](https://github.com/alpininsight/insight-ui/commit/e063516aec04ce4dae43a63ade9c45d949d7c54a))
+* add multiselect and improve JavaScript ([84190a5](https://github.com/alpininsight/insight-ui/commit/84190a52ebd5bd0eaff6b70000e299215f83327a))
+* add multiselect component ([8e05b24](https://github.com/alpininsight/insight-ui/commit/8e05b2431fc4ed250447e3d4e1e7029616bc0ea3))
+* improve multiselect ([70a0eb2](https://github.com/alpininsight/insight-ui/commit/70a0eb204021a6e34f58742bde47520a09449c4b))
+
 ## 1.0.0 (2025-11-17)
 
 
