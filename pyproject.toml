@@ -47,7 +47,6 @@ dev = [
     "ruff>=0.14.3",
     "pre-commit>=4.3.0",
     "django-tailwind-cli>=4.3.0",
-    "python-semantic-release>=9.8.0",
 ]
 pytest = [
     "pytest",
@@ -281,7 +280,6 @@ tag_format = "v{version}"
 commit_parser = "angular"
 changelog_file = "CHANGELOG.md"
 build_command = "uv build"
-branch = "main"
 upload_to_repository = true
 upload_to_release = true
 
