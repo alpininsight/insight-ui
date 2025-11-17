@@ -1,3 +1,12 @@
+/**
+ * A select field which allows multiple selected values.
+ *
+ * The multiselect has an integrated searchfield to search for specific values.
+ * Selected values are shows as badges in the searchfield and can be easily removed.
+ *
+ * There are optional buttons to select or deselect all values at once and the maximum amount
+ * of selected values is customizable.
+ */
 class Multiselect {
     static instances = new WeakMap();
 
@@ -34,6 +43,9 @@ class Multiselect {
         debugLog("New multiselect created: ", this.container, this.name);
     }
 
+    /**
+     * Bind all EventListener to the searchfield, buttons and options.
+     */
     bindEvents() {
         this.search.addEventListener('input', () => { this.filterOptions(this.search.value); this.toggleDropdown(true); });
         this.search.addEventListener('focus', () => { this.toggleDropdown(true); });
@@ -42,12 +54,30 @@ class Multiselect {
 
         this.search.addEventListener('keydown', e => {
             const visible = this.optionItems.filter(o => o.style.display !== 'none');
-            if (e.key === 'ArrowDown') { e.preventDefault(); if (!visible.length) return; this.focusedIndex = (this.focusedIndex + 1) % visible.length; this.focusOption(visible[this.focusedIndex]); }
-            else if (e.key === 'ArrowUp') { e.preventDefault(); if (!visible.length) return; this.focusedIndex = (this.focusedIndex - 1 + visible.length) % visible.length; this.focusOption(visible[this.focusedIndex]); }
-            else if (e.key === 'Enter') { e.preventDefault(); if (!visible.length) return; if (this.search.value.trim() === '' && this.focusedIndex === -1) return; const opt = this.focusedIndex >= 0 ? visible[this.focusedIndex] : visible[0]; this.toggleSelect(opt); }
-            else if (e.key === 'Escape') { this.toggleDropdown(false); }
-            else if (e.key === 'Backspace' && this.search.value === '') { if (this.selectedValues.length > 0) this.deselectValue(this.selectedValues[this.selectedValues.length - 1]); }
-            else if (e.key === 'Tab') this.toggleDropdown(false);
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (!visible.length) return;
+                this.focusedIndex = (this.focusedIndex + 1) % visible.length;
+                this.focusOption(visible[this.focusedIndex]);
+            }
+            else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (!visible.length) return;
+                this.focusedIndex = (this.focusedIndex - 1 + visible.length) % visible.length;
+                this.focusOption(visible[this.focusedIndex]);
+            }
+            else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (!visible.length) return;
+                if (this.search.value.trim() === '' && this.focusedIndex === -1) return;
+                const opt = this.focusedIndex >= 0 ? visible[this.focusedIndex] : visible[0];
+                this.toggleSelect(opt);
+            }
+            else if (e.key === 'Backspace' && this.search.value === '') {
+                if (this.selectedValues.length > 0)
+                    this.deselectValue(this.selectedValues[this.selectedValues.length - 1]);
+            }
+            else if (e.key === 'Escape' || e.key === 'Tab') this.toggleDropdown(false);
         });
 
         this.optionItems.forEach(opt => opt.addEventListener('click', () => this.toggleSelect(opt)));
@@ -57,29 +87,94 @@ class Multiselect {
         if (this.deselectAllBtn) this.deselectAllBtn.addEventListener('click', () => { this.deselectAll(); });
     }
 
-    toggleDropdown(show) { if (show) { this.options.classList.remove('hidden'); this.combobox.setAttribute('aria-expanded', 'true'); } else { this.options.classList.add('hidden'); this.combobox.setAttribute('aria-expanded', 'false'); this.focusedIndex = -1; } }
-    focusOption(opt) { this.optionItems.forEach(o => o.classList.remove('bg-blue-50')); if (!opt) return; opt.classList.add('bg-blue-50'); this.combobox.setAttribute('aria-activedescendant', opt.id); }
+    /**
+     * Show or hide the list of options.
+     *
+     * Toggle the 'hidden' class and set 'aria-expanded' to 'true' or 'false'.
+     * Set 'focusedIndex' to -1 if the list is shown.
+     *
+     * @param {boolean} show 'true' to show the list of options, otherwise 'false'.
+     */
+    toggleDropdown(show) {
+        if (show) {
+            this.options.classList.remove('hidden');
+            this.combobox.setAttribute('aria-expanded', 'true');
+        } else {
+            this.options.classList.add('hidden');
+            this.combobox.setAttribute('aria-expanded', 'false');
+            this.focusedIndex = -1;
+        }
+    }
 
+    /**
+     * Highlight the focused option in the list.
+     *
+     * @param {HTMLElement} opt The option element.
+     * @returns null If the option ist empty.
+     */
+    focusOption(opt) {
+        this.optionItems.forEach(o => o.classList.remove('bg-blue-50'));
+        if (!opt) return;
+
+        opt.classList.add('bg-blue-50');
+        this.combobox.setAttribute('aria-activedescendant', opt.id);
+    }
+
+    /**
+     * Select or deselect the given option.
+     *
+     * @param {HTMLElement} opt The option element.
+     * @returns null If the maximum amount of selected values is reached.
+     */
     toggleSelect(opt) {
         const value = opt.textContent.trim();
-        if (this.selectedValues.includes(value)) this.deselectValue(value);
+        if (this.selectedValues.includes(value))
+            this.deselectValue(value);
         else {
-            if (this.selectedValues.length >= this.max) { this.selected.classList.add('animate-shake', 'border-red-500'); setTimeout(() => this.selected.classList.remove('animate-shake', 'border-red-500'), 300); return; }
+            if (this.selectedValues.length >= this.max) {
+                this.selected.classList.add('animate-shake', 'border-red-500');
+                setTimeout(() => this.selected.classList.remove('animate-shake', 'border-red-500'), 300);
+                return;
+            }
             this.selectedValues.push(value);
-            opt.classList.add('bg-blue-100', 'text-blue-700'); opt.setAttribute('aria-selected', 'true'); opt.style.display = 'none';
+            opt.setAttribute('aria-selected', 'true');
+            opt.style.display = 'none';
             this.renderSelected();
         }
-        this.search.value = ''; this.filterOptions('');
+        this.search.value = '';
+        this.filterOptions('');
         this.search.focus();
     }
 
+    /**
+     * Deselect the option with the given value.
+     *
+     * Remove the corresponding option from the list of selected options,
+     * set 'aria-selected' to 'false' and 'display' to 'block' for the option.
+     * Update DOM and open search field.
+     *
+     * @param {String} value Text of the option.
+     */
     deselectValue(value) {
         this.selectedValues = this.selectedValues.filter(v => v !== value);
-        this.optionItems.forEach(o => { if (o.textContent.trim() === value) { o.classList.remove('bg-blue-100', 'text-blue-700'); o.setAttribute('aria-selected', 'false'); o.style.display = 'block'; } });
+        this.optionItems.forEach(o => {
+            if (o.textContent.trim() === value) {
+                o.setAttribute('aria-selected', 'false');
+                o.style.display = 'block';
+            }
+        });
         this.renderSelected();
-        this.toggleDropdown(true); this.search.focus();
+        // this.toggleDropdown(true);
+        this.search.focus();
     }
 
+    /**
+     * Create badges for the selected options.
+     *
+     * Create a badge with the value of the option and a remove button for each selected option.
+     * The badges are placed at the begin of the search field.
+     * Update information and 'aria-status' for each option.
+     */
     renderSelected() {
         this.tags.innerHTML = '';
         this.container.querySelectorAll('input[type=hidden]').forEach(i => i.remove());
@@ -102,6 +197,14 @@ class Multiselect {
         this.updateAriaStatus();
     }
 
+    /**
+     * Filter option in relation to the given term.
+     *
+     * Hide all option whose value does not contain the given term (not case sensitive).
+     * Set 'focusedIndex' to -1.
+     *
+     * @param {String} term Search input.
+     */
     filterOptions(term) {
         const lower = term.toLowerCase();
         this.optionItems.forEach(opt => {
@@ -112,29 +215,48 @@ class Multiselect {
         this.focusedIndex = -1;
     }
 
-    updateInfo() { this.info.textContent = this.max === Infinity ? '' : `${this.selectedValues.length}/${this.max} ausgewählt`; }
+    /**
+     * Update the info text.
+     */
+    updateInfo() {this.info.textContent = this.max === Infinity ? '' : `${this.selectedValues.length}/${this.max} ausgewählt`; }
+
+    /**
+     * Update the 'aria-status'.
+     */
     updateAriaStatus() { this.ariaStatus.textContent = `${this.selectedValues.length} Option${this.selectedValues.length !== 1 ? 'en' : ''} ausgewählt`; }
 
+    /**
+     * Select every option, so that all is selected.
+     *
+     * Add every option to the list of selected values, set 'aria-selected' to 'true' and
+     * 'display' to 'none' for every option. Update DOM.
+     */
     selectAll() {
         this.optionItems.forEach(opt => {
             const value = opt.textContent.trim();
             if (!this.selectedValues.includes(value)) {
                 this.selectedValues.push(value);
-                opt.classList.add('bg-blue-100', 'text-blue-700');
                 opt.setAttribute('aria-selected', 'true');
                 opt.style.display = 'none';
             }
         });
-        this.renderSelected(); this.search.focus();
+        this.renderSelected();
     }
 
+    /**
+     * Deselect every option, so that nothing is selected.
+     *
+     * Clear list of selected values, set 'aria-selected' to 'false' and
+     * 'display' to 'block' for every option. Update DOM and open search field.
+     */
     deselectAll() {
         this.selectedValues = [];
         this.optionItems.forEach(opt => {
-            opt.classList.remove('bg-blue-100', 'text-blue-700');
-            opt.setAttribute('aria-selected', 'false'); opt.style.display = 'block';
+            opt.setAttribute('aria-selected', 'false');
+            opt.style.display = 'block';
         });
-        this.renderSelected(); this.search.focus();
+        this.renderSelected();
+        this.search.focus();
     }
 
     // Static method for initializing all multiselect elements

@@ -995,7 +995,6 @@ def multiselect(  # noqa: PLR0913 (too many arguments)
         Dict mit Kontext-Variablen für das Template
 
     """
-    print(config)
     if config is not None:
         name = config.get("name", name)
         label = config.get("label", label)

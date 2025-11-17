@@ -106,8 +106,10 @@
             {% slider slider=example_slider %}
         {% elif component == "toggle_button" %}
             {% toggle toggle=example_toggle %}
-        {% elif component == multiselect %}
-            {% multiselect config=multiselect_options %}
+        {% elif component == "multiselect" %}
+            <div class="h-64">
+                {% multiselect config=multiselect_config %}
+            </div>
         {% elif component == "chat" %}
             {% chat view_name="chat_response" %}
         {% elif component == "alert" %}
