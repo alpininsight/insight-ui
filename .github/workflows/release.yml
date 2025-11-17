@@ -1,42 +1,31 @@
-name: Release & Versioning
-
+name: Release (main)
 on:
   push:
-    branches:
-      - main
-      - develop
-
+    branches: [ main ]
 permissions:
   contents: write
-  id-token: write
-
+  pull-requests: write
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
-  semantic-release:
-    name: Semantic Release (tags, changelog)
+  release:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: googleapis/release-please-action@v4
         with:
-          python-version: '3.13'
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v7.1.2
-
-      - name: Install deps (dev)
-        run: uv sync --all-groups --upgrade
-
-      - name: Run Semantic Release
-        uses: python-semantic-release/python-semantic-release@v9.8.8
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-        env:
-          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
-
-      - name: Build to verify dynamic version (hatch-vcs)
-        run: |
-          uv build
-          tar -tf dist/*.tar.gz | head -n 20
+          release-type: simple
+          target-branch: main
+          include-v-in-tag: true
+          bump-minor-pre-major: true
+          bump-patch-for-minor-pre-major: false
+          changelog-types: >
+            [
+              {"type":"feat","section":"Features","hidden":false},
+              {"type":"fix","section":"Bug Fixes","hidden":false},
+              {"type":"perf","section":"Performance","hidden":false},
+              {"type":"refactor","section":"Refactor","hidden":false},
+              {"type":"docs","section":"Docs","hidden":false},
+              {"type":"ci","section":"CI/CD","hidden":false},
+              {"type":"chore","section":"Chores","hidden":false}
+            ]
