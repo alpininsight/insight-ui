@@ -64,5 +64,7 @@ uv run mkdocs serve
 ## Contributing
 We welcome improvements! Please read the [Contributor Guide](docs/en/contributing.md) alongside the [naming conventions](docs/en/guides/naming_conventions.md) before opening a pull request. Remember to mirror changes in both language trees.
 
+Code ownership and review for this repository are managed via `.github/CODEOWNERS`. By default, changes are owned by the `@alpininsight` organization, with CI/CD workflows under `.github/workflows/` explicitly covered.
+
 ## License
 Insight UI is released under the GNU Affero General Public License v3.0.
