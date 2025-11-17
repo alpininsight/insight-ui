@@ -1,1 +1,0 @@
-"""Tests für Insight UI."""

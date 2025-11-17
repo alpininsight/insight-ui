@@ -1,1 +1,0 @@
-InsightUI.Alert = { init: function () { /* Alert logic here */ } };

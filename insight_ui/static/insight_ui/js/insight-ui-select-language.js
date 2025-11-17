@@ -9,6 +9,8 @@ InsightUI.SelectLanguage = {
       const selectedLanguage = this.value;
       InsightUI.SelectLanguage.changeLanguage(selectedLanguage);
     });
+
+    console.log("Language Select initialized!");
   },
 
   changeLanguage: function (languageCode) {
@@ -40,7 +42,3 @@ InsightUI.SelectLanguage = {
     form.submit();
   }
 };
-
-document.addEventListener('DOMContentLoaded', function () {
-  InsightUI.SelectLanguage.init();
-});

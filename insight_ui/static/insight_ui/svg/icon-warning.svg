@@ -1,5 +1,0 @@
-<!-- Warning Modal Icon (Yellow/Orange) -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2">
-  <circle cx="12" cy="12" r="10" />
-  <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01" stroke="#D97706" />
-</svg>

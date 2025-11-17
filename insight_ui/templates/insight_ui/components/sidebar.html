@@ -1,8 +1,82 @@
-{% comment %}
-Diese Datei dient als Basis-Template für Sidebars.
-Verwenden Sie stattdessen:
-- left_sidebar.html für linke Sidebars
-- right_sidebar.html für rechte Sidebars
-{% endcomment %}
+{% load static i18n insight_tags %}
 
-{% include "insight_ui/components/sidebar_right.html" %}
+{% if not auto_close and not static %}
+  <button data-sidebar-target="{{ side }}" class="open-btn fixed top-20 {% if side == "right" %}ltr:right-4 rtl:left-4{% else %}ltr:left-4 rtl:right-4{% endif %} z-40 text-white bg-insight-primary rounded-full shadow p-2 hover:bg-insight-primary-hover active:bg-insight-primary-active">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 {% if side == "right" %}rotate-180 rtl:rotate-0{% else %}rtl:rotate-180{% endif %}">
+      <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+    </svg>
+  </button>
+{% endif %}
+
+<div
+  id="{{ side }}-sidebar"
+  data-insight-sidebar="{{ side }}"
+  data-insight-sidebar-static="{{ static }}"
+  class="{% if static %}w-72{% else %}fixed inset-0 z-50 hidden{% endif %}"
+>
+  {% if not static %}
+    <div class="fixed inset-0 bg-black/50 transition-opacity" data-insight-dismiss="sidebar"></div>
+  {% endif %}
+  <aside
+    role="complementary"
+    aria-label="{% trans 'Side navigation' %}"
+    class="{% if static %}sticky top-16 h-[calc(100vh-4rem)]{% else %}fixed h-screen{% endif %} {% if side == "right" %}ltr:right-0 ltr:border-l rtl:left-0 rtl:border-r{% else %}ltr:left-0 ltr:border-r rtl:right-0 rtl:border-l{% endif %} overflow-y-auto bg-white dark:bg-gray-800 dark:border-gray-600 border-gray-200 w-72 shadow-md transition"
+    data-auto-close="{{ auto_close|yesno:'true,false' }}"
+  >
+    <div class="flex flex-col {% if side == "right" %}ps-4 pe-16{% else %}ps-16 pe-4{% endif %}">
+      <!-- Sidebar Header -->
+      <div class="flex justify-between items-center h-16 border-b border-gray-300 dark:border-gray-500 mb-4">
+        {% if sidebar_data.title %}
+          <h2 class="text-lg font-semibold text-primary mb-0">{{ sidebar_data.title }}</h2>
+        {% endif %}
+        {% if not auto_close and not static %}
+          <button
+            id="{{ side }}-sidebar-close"
+            class="text-secondary hover:text-insight-text-primary dark:hover:text-insight-text-primary-dark p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 text-sm"
+            aria-label="{% trans 'Close sidebar' %}"
+            data-insight-dismiss="sidebar"
+          >
+            <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        {% endif %}
+      </div>
+
+      <!-- Sidebar Content -->
+      {% block sidebar_content %}
+        <div class="mb-6">
+          <nav class="space-y-2">
+            {% for category in sidebar_data.categories %}
+              <div>
+                <div class="flex gap-1 pt-4 pb-2 text-secondary">
+                  {% if category.icon %}
+                    {% icon category.icon %}
+                  {% endif %}
+                  <span class="font-semibold">{{ category.caption }}</span>
+                </div>
+                {% for item in category.items %}
+                  <a
+                    {% if item.htmx %}
+                      hx-get="{{ item.url }}"
+                      hx-target="{{ item.htmx.target }}"
+                      hx-swap="{{ item.htmx.swap|default:'innerHTML' }} show:window:top"
+                      hx-push-url="true"
+                    {% endif %}
+                    href="{{ item.url }}"
+                    class="flex gap-2 px-2 py-1 border-s text-sm text-primary border-gray-200 hover:border-gray-400 hover:text-gray-400"
+                  >
+                    {% if item.icon %}
+                      {% icon item.icon %}
+                    {% endif %}
+                    {{ item.text }}
+                  </a>
+                {% endfor %}
+              </div>
+            {% endfor %}
+          </nav>
+        </div>
+      {% endblock sidebar_content %}
+    </div>
+  </aside>
+</div>

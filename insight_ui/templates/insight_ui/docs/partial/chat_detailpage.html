@@ -1,0 +1,58 @@
+{% load static insight_tags i18n %}
+
+<h1>Insight UI Chat</h1>
+
+<!-- Component Demo -->
+<section>
+    <p>
+        {% trans 'Die Chat Komponente bietet ein einfaches Frontend für eine Chat-Anwendung. Die Komponente besteht aus einem Text-Input und einem Bereich für die Nachrichten. Der Inhalt des Nachrichtenbereichs wird mittels HTMX bei jedem Response erweitert, ohne dass die Seite neu geladen wird.' %}
+    </p>
+
+    {% include "insight_ui/docs/demo_container.html" %}
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h2>{% trans "Verwendung" %}</h2>
+    <div id="Chat_Usage" data-insight-code-block="Django">
+        &lcub;% chat view_name=view_name %&rcub;
+    </div>
+</section>
+
+<section>
+    <h3>{% trans "Parameter" %}</h3>
+    <ul class="list-disc leading-relaxed ms-8">
+        <li><span class="inline-tag">view_name</span> (<i>str</i>): Der Name der View an welchen der Request gesendet werden soll.</li>
+    </ul>
+</section>
+
+<!-- Customization -->
+<section>
+    <h2>{% trans "Customization" %}</h2>
+    <p>
+        Das Design des Chat Komponente befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/chat.html</span>.
+    </p>
+    <p class="mt-4">
+        Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad <span class="inline-tag">templates/insight_ui/components/</span> vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+    </p>
+</section>
+
+<!-- A11y -->
+<section>
+    <h2>{% trans "Accessability" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li><i>Todo</i></li>
+    </ul>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Related -->
+<section>
+    <h2>{% trans "Related Topics" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li><i>Todo</i></li>
+    </ul>
+</section>

@@ -2,27 +2,15 @@
  * Insight UI - Shared Utilities
  */
 window.InsightUI = window.InsightUI || {};
-window.InsightUI.utils = window.InsightUI.utils || {
-  on: function(el, evt, selectorOrHandler, handler) {
-    if (typeof selectorOrHandler === "function") {
-      el.addEventListener(evt, selectorOrHandler);
-    } else {
-      el.addEventListener(evt, function (e) {
-        if (e.target.closest(selectorOrHandler)) {
-          handler.call(e.target.closest(selectorOrHandler), e);
-        }
-      });
-    }
-  },
-  hasClass: (el, cls) => el.classList.contains(cls),
-  addClass: (el, cls) => el.classList.add(cls),
-  removeClass: (el, cls) => el.classList.remove(cls),
-  toggleClass: (el, cls) => el.classList.toggle(cls),
-  onEscape: (callback) => {
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") callback(e);
-    });
-  },
+
+window.InsightUI.utils = {
+  /**
+   * This function is used to lock the keyboard focus within a modal dialog,
+   * i.e., to implement what is known as focus trapping.
+   * This is particularly important for accessibility,
+   * so that users who navigate with the keyboard (e.g., using the tab key)
+   * cannot accidentally move the focus out of the open modal.
+   */
   trapFocus: (modal) => {
     const focusableEls = modal.querySelectorAll('a[href], button, textarea, input, select, [tabindex]:not([tabindex="-1"])');
     const first = focusableEls[0];

@@ -1,76 +1,33 @@
-# Installation
+# Installation (Version 0.1.0)
 
-Django Insight UI kann einfach mit UV installiert werden, dem empfohlenen Paketmanager für Python-Projekte.
+Folge diesen Schritten, um Insight UI in ein bestehendes Django-Projekt einzubinden.
 
-## Voraussetzungen
-
-- Python 3.8 oder höher
-- Django 4.2 oder höher
-- UV als Paketmanager
-
-## Installation mit UV
+## Paket installieren
 
 ```bash
-uv add django-insight-ui
+uv add insight-ui
+
+# oder die Git-Quelle verwenden
+uv add "git+https://github.com/alpininsight/insight-ui@main"
 ```
 
-## Manuelle Installation
-
-Alternativ können Sie das Paket auch manuell installieren:
-
-1. Klonen Sie das Repository:
+Falls lokale Änderungen nicht erkannt werden:
 
 ```bash
-git clone https://github.com/yourusername/django-insight-ui.git
-```
-
-2. Installieren Sie das Paket im Entwicklungsmodus:
-
-```bash
-cd django-insight-ui
-uv add -e .
+uv pip install --force-reinstall "git+https://github.com/alpininsight/insight-ui@main"
 ```
 
 ## Django-Konfiguration
 
-1. Fügen Sie 'insight_ui' zu Ihren INSTALLED_APPS in settings.py hinzu:
+1. App aktivieren:
+   ```python
+   INSTALLED_APPS = [
+       # ...
+       "insight_ui",
+       # ...
+   ]
+   ```
+2. Einstellungen ergänzen (siehe `INSIGHT_UI`-Beispiel in der Übersicht).
+3. Staticfiles sammeln (`python manage.py collectstatic`) oder Tailwind-Workflow einrichten.
 
-```python
-INSTALLED_APPS = [
-    # ...
-    'insight_ui',
-    # ...
-]
-```
-
-2. Fügen Sie die Insight UI-Einstellungen zu Ihrer settings.py hinzu (optional):
-
-```python
-INSIGHT_UI = {
-    "theme": "light",  # 'light', 'dark', oder 'high-contrast'
-    "branding": {
-        "name": "Meine App",
-        "logo": "path/to/logo.svg",
-    },
-    "features": {
-        "theme_toggle": True,
-        "language_selector": True,
-    },
-}
-```
-
-3. Führen Sie die Migrationen aus:
-
-```bash
-python manage.py migrate
-```
-
-4. Sammeln Sie die statischen Dateien:
-
-```bash
-python manage.py collectstatic
-```
-
-## Nächste Schritte
-
-Nachdem Sie Django Insight UI installiert haben, können Sie mit dem [Schnellstart](quickstart.md) fortfahren, um zu erfahren, wie Sie die Komponenten in Ihren Templates verwenden können.
+Weiterführende Hinweise findest du im [Schnellstart](quickstart.md) sowie im [Customizing-Guide](guides/customization.md).

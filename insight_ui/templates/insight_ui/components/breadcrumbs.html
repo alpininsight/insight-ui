@@ -1,16 +1,28 @@
-{% load i18n %}
+{% load i18n insight_tags %}
 
-<nav role="navigation" aria-label="{% trans 'Breadcrumb-Navigation' %}" class="insight-breadcrumbs">
-  <ol class="insight-breadcrumbs__list">
+<nav role="navigation" aria-label="{% trans 'Breadcrumb-Navigation' %}">
+  <ul class="flex gap-1">
     {% for item in items %}
-      <li class="insight-breadcrumbs__item{% if forloop.last %} insight-breadcrumbs__item--current{% endif %}">
+      <li class="flex items-center">
         {% if not forloop.last %}
-          <a href="{{ item.url }}" class="insight-breadcrumbs__link">{{ item.text }}</a>
-          <span class="insight-breadcrumbs__separator" aria-hidden="true">/</span>
+          <a href="{% url item.view_name %}{{ item.query_params }}" class="inline-flex gap-1 text-link">
+            {% if item.icon %}
+              {% icon item.icon %}
+            {% endif %}
+            {{ item.text }}
+          </a>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="text-gray-300 dark:text-gray-500 size-4 ms-1 inline-block rtl:rotate-180">
+            <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z" clip-rule="evenodd" />
+          </svg>
         {% else %}
-          <span class="insight-breadcrumbs__current" aria-current="page">{{ item.text }}</span>
+          <span aria-current="page" class="inline-flex gap-1 text-neutral-400">
+            {% if item.icon %}
+              {% icon item.icon %}
+            {% endif %}
+            {{ item.text }}
+          </span>
         {% endif %}
       </li>
     {% endfor %}
-  </ol>
+  </ul>
 </nav>

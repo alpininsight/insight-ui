@@ -1,13 +1,13 @@
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
 [project]
-name = "django-insight-ui"
-version = "0.1.0"
+name = "insight-ui"
+dynamic = ["version"]
 description = "Ein modernes, barrierefreies UI-Framework für Django"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.13"
 license = {file = "LICENSE"}
 authors = [
     {name = "Django Insight UI Team"},
@@ -22,41 +22,55 @@ classifiers = [
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Internet :: WWW/HTTP",
     "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
+
 dependencies = [
     "django>=5.2,<6.0",
     "django-htmx>=1.17.0",
-    "playwright>=1.52.0",
-    "pytest-django>=4.11.1",
-    "pytest-playwright>=0.7.0",
-    "websockets>=15.0.1",
     "whitenoise>=6.9.0",
+    "structlog>=25.4.0",
+    "mkdocs>=1.6.1",
+]
+
+[tool.uv]
+default-groups = ["dev"]
+
+[dependency-groups]
+dev = [
+    "isort>=7.0.0",
+    "mypy>=1.18.2",
+    "django-stubs>=1.2.0",
+    "ruff>=0.14.3",
+    "pre-commit>=4.3.0",
+    "django-tailwind-cli>=4.3.0",
+]
+pytest = [
+    "pytest",
+    "pytest-django",
+    "pytest-cov",
+]
+docs = [
+    "mkdocs",
+    "mkdocs-material",
+    "mkdocs-static-i18n",
+    "mkdocstrings[python]",
 ]
 
 [project.optional-dependencies]
-dev = [
-    "isort",
-    "mypy",
-    "ruff",
-    "pre-commit",
-]
 test = [
     "pytest",
     "pytest-django",
     "pytest-cov",
-    "playwright",
-    "axe-playwright-python",
 ]
 docs = [
     "mkdocs",
     "mkdocs-material",
     "mkdocstrings[python]",
+    "mkdocs-static-i18n",
 ]
 
 [project.urls]
@@ -65,12 +79,21 @@ Documentation = "https://yourusername.github.io/django-insight-ui"
 Issues = "https://github.com/yourusername/django-insight-ui/issues"
 
 
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+# Match tags like "v1.2.3" and write a version file for runtime
+tag-pattern = "v(?P<version>.*)"
+version-file = "insight_ui/_version.py"
+
+
 [tool.isort]
 profile = "black"
 line_length = 88
 
 [tool.mypy]
-python_version = "3.10"
+python_version = "3.13"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
@@ -86,15 +109,190 @@ disallow_untyped_defs = false
 disallow_incomplete_defs = false
 
 [tool.ruff]
-line-length = 88
-target-version = "py310"
+fix = true
+
+src = ["app"]
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".data",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "__pycache__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "staticfiles",
+    "venv",
+    "site",
+    "htmlcov",
+    "docs",
+    "*/migrations/*.py"
+]
+
+extend-exclude = [
+  "docs/index.md"   # Ignored because of MD007/ul-indent: Unordered list indentation
+]
+
+# Same as Black.
+line-length = 120
+indent-width = 4
+
+# Assume Python 3.13
+target-version = "py312"  # As temporary workaround use "py312" because "py313" is currently not recognized by ruff
 
 [tool.ruff.lint]
-select = ["E", "F", "B", "I", "N", "UP", "ANN", "S", "A", "C4", "DTZ", "T10", "EM", "ICN", "G", "PIE", "PT", "RSE", "RET", "SIM", "TID", "ARG", "PD", "PGH", "PL", "TRY", "RUF"]
-ignore = ["ANN401"]
+# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
+# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
+
+select = [
+    "I",        # isort
+    "N",        # pep8-naming
+    "C90",      # mccabe
+    "F",        # Pyflakes
+    "E",        # Pycodestyle (Errors)
+    "W",        # Pycodestyle (Warnings)
+    "UP",       # pyupgrade
+    "ASYNC",    # flake8-async
+    "S",        # flake8-bandit
+    "BLE",      # flake8-blind-except
+    "A",        # flake8-builtins
+    "C4",       # flake8-comprehensions
+    "DTZ",      # flake8-datetimez
+    "EXE",      # flake8-executable
+    "ICN",      # flake8-import-conventions
+    "G",        # flake8-logging-format
+    "INP",      # flake8-no-pep420
+    "T20",      # flake8-print
+    "PT",       # flake8-pytest-style
+    "Q",        # flake8-quotes
+    "RSE",      # flake8-raise
+    "RET",      # flake8-return
+    "SIM",      # flake8-simplify
+    "ARG",      # flake8-unused-arguments
+    "PTH",      # flake8-use-pathlib
+    "TD",       # flake8-todos
+    "PGH",      # pygrep-hooks
+    "ERA",      # eradicate (commented-out-code)
+    "PD",       # pandas-vet
+    "PL",       # Pylint
+    "TRY",      # tryceratops
+    "NPY",      # NumPy
+    "PERF",     # Perflint
+    "LOG",      # flake8-logging
+    "D",        # pydocstyle
+    "ANN",      # flake8-annotations
+    "DJ",       # flake8-django
+    # "FBT",      # flake8-boolean-trap
+]
+
+ignore = [
+  "ANN101",   # Missing type annotation for `self` in method (deprecated)
+  "ANN002",   # Missing type annotation for `*args`
+  "ANN003",   # Missing type annotation for `**kwargs`
+  "S101",     # (Bandit) Use of `assert` detected
+  "S113",     # (Bandit) Probable use of requests call without timeout
+  "ARG001",   # Unused function argument (common for fixtures)
+  "F811",     # Redefinition of unused `xxx` from fixtures
+  "D203",     # incorrect-blank-line-before-class (incompatible with D211)
+  "D212",     # multi-line-summary-first-line (incompatible with D213)
+  "D100",     # Missing docstring in public module (maybe later)
+  "D104",     # Missing docstring in public package (maybe later)
+  "D400",     # First line should end with a period (unnecessary because of D415)
+  "PTH118",   # prefer pathlib over os.path join (existing code uses os.path)
+  "T201",     # Print statements (temporarily disabled)
+]
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = true
+
+# Keep test(a, b)
+line-ending = "auto"
+
+# Enable auto-formatting of code examples in docstrings. Markdown,
+# reStructuredText code/literal blocks and doctests are all supported.
+#
+# This is currently disabled by default, but it is planned for this
+# to be opt-out in the future.
+docstring-code-format = false
+
+# Set the line length limit used when formatting code snippets in
+# docstrings.
+#
+# This only has an effect when the `docstring-code-format` setting is
+# enabled.
+docstring-code-line-length = "dynamic"
+
+[tool.ruff.lint.flake8-import-conventions.aliases]
+numpy = "np"
+pandas = "pd"
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+#include-trailing-comma = true
+split-on-trailing-comma = false
+
+
+[tool.ruff.lint.flake8-pytest-style]
+fixture-parentheses = false
+mark-parentheses  = false
 
 [tool.hatch.build.targets.wheel]
 packages = ["insight_ui"]
+
+[tool.semantic_release]
+version_source = "tag"
+tag_format = "v{version}"
+commit_parser = "angular"
+changelog_file = "CHANGELOG.md"
+build_command = "uv build"
+upload_to_repository = true
+upload_to_release = true
+
+[[tool.semantic_release.branches]]
+name = "main"
+match = "main"
+prerelease = false
+
+[[tool.semantic_release.branches]]
+name = "develop"
+match = "develop"
+prerelease = true
+prerelease_token = "rc"
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "core.settings"
@@ -105,4 +303,3 @@ testpaths = ["core"]
 members = [
     "utils",
 ]
-

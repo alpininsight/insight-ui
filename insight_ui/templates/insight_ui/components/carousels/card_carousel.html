@@ -1,0 +1,7 @@
+{% extends "insight_ui/components/carousel.html" %}
+
+{% load insight_tags %}
+
+{% block carousel_content %}
+    {% card title=item.title subtitle=item.subtitle content=item.content actions=item.actions %}
+{% endblock carousel_content %}

@@ -1,0 +1,5 @@
+--container-architecture linux/amd64
+-P ubuntu-latest=catthehacker/ubuntu:act-latest
+--no-cache-server
+--action-cache-path .act-cache
+

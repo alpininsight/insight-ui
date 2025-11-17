@@ -1,0 +1,143 @@
+{% load i18n insight_tags %}
+
+<!-- Welcome -->
+<section>
+    <h1>{% trans 'Insight UI Utils' %}</h1>
+    <p class="text-lg text-secondary">
+        {% trans 'Utility components.' %}
+    </p>
+</section>
+
+<!-- Code-Block Demo -->
+<section class="component-container">
+    <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-t p-4 py-2 md:px-6 md:py-3">
+        <h2 class="text-xl mb-0">
+            <a
+                href="{% url 'component_detail_page_view' 'code_block' %}"
+                hx-get="{% url 'component_detail_page_view' 'code_block' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="inline-flex items-center gap-1 hover:text-blue-300"
+            >
+                {% trans 'Code Block' %}<span class="animate-blink">_</span> {% icon name="open-link" size="small" %}
+            </a>
+        </h2>
+    </div>
+    <div class="p-4 md:p-6 space-y-6">
+        <div id="code" data-insight-code-block="javascript">
+            function greet(name) {
+                return `Hello, ${name}!`;
+            }
+        </div>
+        <div id="code2" data-insight-code-block="python">
+            def greet(name: str) -> str:
+                return f"Hello, {name}";
+        </div>
+    </div>
+</section>
+
+<!-- Differentiator Demo -->
+<section class="component-container">
+    <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-t p-4 py-2 md:px-6 md:py-3">
+        <h2 class="text-xl mb-0">
+            <a
+                href="{% url 'component_detail_page_view' 'differentiator' %}"
+                hx-get="{% url 'component_detail_page_view' 'differentiator' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="inline-flex items-center gap-1 hover:text-blue-300"
+            >
+                {% trans 'Differentiator' %} {% icon name="open-link" size="small" %}
+            </a>
+        </h2>
+    </div>
+    <div class="p-4 md:p-6">
+        {{ textA|diff:textB|safe }}
+    </div>
+</section>
+
+<!-- Progress Bar Demo -->
+<section class="component-container">
+    <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-t p-4 py-2 md:px-6 md:py-3">
+        <h2 class="text-xl mb-0">
+            <a
+                href="{% url 'component_detail_page_view' 'progress_bar' %}"
+                hx-get="{% url 'component_detail_page_view' 'progress_bar' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="inline-flex items-center gap-1 hover:text-blue-300"
+            >
+                {% trans 'Progress Bar' %} {% icon name="open-link" size="small" %}
+            </a>
+        </h2>
+    </div>
+    <div class="p-4 md:p-6">
+        {% include "insight_ui/components/progress_bar.html" %}
+    </div>
+</section>
+
+<!-- HTMX Live Content Demo (Pulling)-->
+<section class="component-container">
+    <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-t p-4 py-2 md:px-6 md:py-3">
+        <h2 class="text-xl mb-0">
+            <a
+                href="{% url 'component_detail_page_view' 'live_content' %}"
+                hx-get="{% url 'component_detail_page_view' 'live_content' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="inline-flex items-center gap-1 hover:text-blue-300"
+            >
+                {% trans 'Live-Content (Pull)' %} {% icon name="open-link" size="small" %}
+            </a>
+        </h2>
+    </div>
+    <div class="p-4 md:p-6">
+        {% live_content url="/api/live-data/" interval=10 id="live-content" %}
+    </div>
+</section>
+
+<!-- HTMX Websocket Content Demo (Pushing) -->
+<section class="component-container">
+    <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-t p-4 py-2 md:px-6 md:py-3">
+        <h2 class="text-xl mb-0">
+            <a
+                href="{% url 'component_detail_page_view' 'web_socket' %}"
+                hx-get="{% url 'component_detail_page_view' 'web_socket' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="inline-flex items-center gap-1 hover:text-blue-300"
+            >
+                {% trans 'WebSocket Live-Demo (Push)' %} {% icon name="open-link" size="small" %}
+            </a>
+        </h2>
+    </div>
+    <div class="p-4 md:p-6">
+        <!-- {% insight_websocket html_tag_id="demo-websocket" ws_url="ws://localhost:8765" initial_content="<p>Verbinde zu WebSocket…</p>" %} -->
+    <div>
+</section>
+
+<!-- Geo-Map Demo -->
+<section class="component-container">
+    <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-t p-4 py-2 md:px-6 md:py-3">
+        <h2 class="text-xl mb-0">
+            <a
+                href="{% url 'component_detail_page_view' 'geo_map' %}"
+                hx-get="{% url 'component_detail_page_view' 'geo_map' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="inline-flex items-center gap-1 hover:text-blue-300"
+            >
+                {% trans 'Geo Map' %} {% icon name="open-link" size="small" %}
+            </a>
+        </h2>
+    </div>
+    <div class="p-4 md:p-6">
+        {% geo_map data=geo_map_data map_height=40 %}
+    </div>
+</section>

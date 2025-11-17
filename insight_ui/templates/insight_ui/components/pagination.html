@@ -1,0 +1,101 @@
+{% load i18n %}
+
+<!-- Pagination -->
+<div class="pagination" hx-indicator="#loading-indicator">
+    <div class="flex gap-1 justify-center w-full">
+        <!-- Previous and first -->
+        {% if current_page.has_previous %}
+            <a
+              href="{% url 'pagination' %}?page=1"
+              hx-get="{% url 'pagination' %}?page=1"
+              hx-target="#list-container"
+              class="flex items-center bg-insight-primary rounded-sm text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active transition"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 rtl:rotate-180">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5" />
+                </svg>
+            </a>
+            <a
+              href="{% url 'pagination' %}?page={{ current_page.previous_page_number }}"
+              hx-get="{% url 'pagination' %}?page={{ current_page.previous_page_number }}"
+              hx-target="#list-container"
+              class="flex items-center bg-insight-primary rounded-sm text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active transition"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 rtl:rotate-180">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                </svg>
+            </a>
+        {% else %}
+            <a class="flex items-center bg-neutral-300 dark:bg-neutral-600 rounded-sm text-neutral-400 px-4 py-1">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 rtl:rotate-180">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5" />
+                </svg>
+            </a>
+            <a class="flex items-center bg-neutral-300 dark:bg-neutral-600 rounded-sm text-neutral-400 px-4 py-1">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 rtl:rotate-180">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                </svg>
+            </a>
+        {% endif %}
+
+        <!-- Neighbor Pages -->
+        <div class="hidden md:flex gap-1 justify-center w-96">
+            {% for num in surrounding_pages %}
+                {% if num == current_page.number %}
+                    <span class="bg-insight-primary-active rounded-sm text-white px-4 py-1">{{ num }}</span>
+                {% elif num == "..." %}
+                    {% comment %} <span class="text-neutral-400 px-4 py-1">{{ num }}</span> {% endcomment %}
+                {% else %}
+                    <a
+                    href="{% url 'pagination' %}?page={{ num }}"
+                    hx-get="{% url 'pagination' %}?page={{ num }}"
+                    hx-target="#list-container"
+                    class="bg-insight-primary rounded-sm text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active transition"
+                    >
+                        {{ num }}
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <!-- Next and last -->
+        {% if current_page.has_next %}
+            <a
+              href="{% url 'pagination' %}?page={{ current_page.next_page_number }}"
+              hx-get="{% url 'pagination' %}?page={{ current_page.next_page_number }}"
+              hx-target="#list-container"
+              class="flex items-center bg-insight-primary rounded-sm text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active transition"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 rtl:rotate-180">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                </svg>
+            </a>
+            <a
+              href="{% url 'pagination' %}?page={{ current_page.paginator.num_pages }}"
+              hx-get="{% url 'pagination' %}?page={{ current_page.paginator.num_pages }}"
+              hx-target="#list-container"
+              class="flex items-center bg-insight-primary rounded-sm text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active transition"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 rtl:rotate-180">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
+                </svg>
+            </a>
+        {% else %}
+        <a class="flex items-center bg-neutral-300 dark:bg-neutral-600 rounded-sm text-neutral-400 px-4 py-1">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 rtl:rotate-180">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                </svg>
+            </a>
+            <a class="flex items-center bg-neutral-300 dark:bg-neutral-600 rounded-sm text-neutral-400 px-4 py-1">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 rtl:rotate-180">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
+                </svg>
+            </a>
+        {% endif %}
+    </div>
+
+    <!-- Current Page -->
+    <span class="block text-secondary mt-2 md:mt-0">
+        {% trans "Page" %} {{ current_page.number }} {% trans "of" %} {{ current_page.paginator.num_pages }}.
+    </span>
+</div>

@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+@source "../templates/insight_ui/";
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+@font-face {
+    font-family: "Inter";
+    src: url("../font/Inter.ttf");
+}
+
+@theme {
+    --font-sans: "Inter", sans-serif;
+
+    --color-insight-primary: #3b82f6;
+    --color-insight-primary-hover: #60a5fa;
+    --color-insight-primary-active: #93c5fd;
+    --color-insight-secondary: #0d9488;
+    --color-insight-secondary-hover: #14b8a6;
+    --color-insight-secondary-active: #2dd4bf;
+    --color-insight-success: #10b981;
+    --color-insight-success-hover: #34d399;
+    --color-insight-success-active: #6ee7b7;
+    --color-insight-warning: #f59e0b;
+    --color-insight-warning-hover: #fbbf24;
+    --color-insight-warning-active: #fcd34d;
+    --color-insight-danger: #ef4444;
+    --color-insight-danger-hover: #f87171;
+    --color-insight-danger-active: #fca5a5;
+    --color-insight-info: #06b6d4;
+    --color-insight-info-hover: #22d3ee;
+    --color-insight-info-active: #67e8f9;
+    --color-insight-text-primary: oklch(26.9% 0 0);
+    --color-insight-text-secondary: oklch(55.6% 0 0);
+    --color-insight-text-primary-dark: oklch(92.2% 0 0);
+    --color-insight-text-secondary-dark: oklch(70.8% 0 0);
+    --color-insight-text-link: #3b82f6;
+    --color-insight-text-link-hover: #93c5fd;
+
+    --animate-blink: blink 2s step-start infinite;
+
+    @keyframes blink {
+        0%, 100% {
+            opacity: 0;
+        }
+        50% {
+            opacity: 100;
+        }
+    }
+}
+
+@layer base {
+    button:not(:disabled), [role="button"]:not(:disabled) { cursor: pointer; }
+
+    h1 {
+        @apply text-3xl font-bold text-insight-text-primary dark:text-white mb-4;
+    }
+    h2 {
+        @apply text-2xl font-semibold text-insight-text-primary dark:text-white mb-4;
+    }
+    h3 {
+        @apply text-xl font-semibold text-insight-text-primary dark:text-white mb-2;
+    }
+    h4 {
+        @apply text-lg font-semibold text-insight-text-primary dark:text-white mb-1;
+    }
+    h5 {
+        @apply text-base font-semibold text-insight-text-primary dark:text-white mb-1;
+    }
+}
+
+@layer components {
+    .text-primary {
+        @apply text-insight-text-primary dark:text-insight-text-primary-dark;
+    }
+    .text-secondary {
+        @apply text-insight-text-secondary dark:text-insight-text-secondary-dark;
+    }
+    .text-link {
+        @apply text-insight-text-link hover:text-insight-text-link-hover underline;
+    }
+
+    .btn {
+        @apply flex gap-2 items-center justify-center border-2 rounded-sm text-white px-5 py-1.5;
+    }
+    .btn-xs {
+        @apply text-xs px-2 py-0.5;
+    }
+    .btn-sm {
+        @apply text-sm px-4 py-1;
+    }
+    .btn-large {
+        @apply text-lg px-6 py-2;
+    }
+    .btn-square {
+        @apply p-2 border-0;
+    }
+    .btn-subtil2 {
+        @apply text-insight-text-secondary dark:text-insight-text-secondary-dark hover:bg-gray-200 dark:hover:bg-gray-600 active:bg-gray-300 dark:active:bg-gray-500 hover:border-gray-200 dark:hover:border-gray-600 active:border-gray-300 dark:active:border-gray-500 transition-colors;
+    }
+    .btn-subtil {
+        @apply text-insight-text-secondary dark:text-insight-text-secondary-dark bg-gray-100 dark:bg-gray-700 border-gray-100 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 active:bg-gray-300 dark:active:bg-gray-500 hover:border-gray-200 dark:hover:border-gray-600 active:border-gray-300 dark:active:border-gray-500 transition-colors;
+    }
+    .btn-primary {
+        @apply bg-insight-primary border-insight-primary hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition-colors;
+    }
+    .btn-secondary {
+        @apply bg-insight-secondary border-insight-secondary hover:bg-insight-secondary-hover active:bg-insight-secondary-active hover:border-insight-secondary-hover active:border-insight-secondary-active transition-colors;
+    }
+    .btn-success {
+        @apply bg-insight-success border-insight-success hover:bg-insight-success-hover active:bg-insight-success-active hover:border-insight-success-hover active:border-insight-success-active transition-colors;
+    }
+    .btn-warning {
+        @apply bg-insight-warning border-insight-warning hover:bg-insight-warning-hover active:bg-insight-warning-active hover:border-insight-warning-hover active:border-insight-warning-active transition-colors;
+    }
+    .btn-danger {
+        @apply bg-insight-danger border-insight-danger hover:bg-insight-danger-hover active:bg-insight-danger-active hover:border-insight-danger-hover active:border-insight-danger-active transition-colors;
+    }
+    .btn-info {
+        @apply bg-insight-info border-insight-info hover:bg-insight-info-hover active:bg-insight-info-active hover:border-insight-info-hover active:border-insight-info-active transition-colors;
+    }
+    .btn-link {
+        @apply border-0 underline text-insight-text-link px-6 py-2 hover:text-insight-text-link-hover;
+    }
+    .btn-disabled {
+        @apply bg-neutral-300 dark:bg-neutral-600 border-neutral-300 dark:border-neutral-600 text-neutral-400;
+    }
+    .btn-outline-primary {
+        @apply border-insight-primary text-insight-primary hover:text-white hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition-colors;
+    }
+    .btn-outline-secondary {
+        @apply border-insight-secondary text-insight-secondary hover:text-white hover:bg-insight-secondary-hover active:bg-insight-secondary-active hover:border-insight-secondary-hover active:border-insight-secondary-active transition-colors;
+    }
+    .btn-outline-success {
+        @apply border-insight-success text-insight-success hover:text-white hover:bg-insight-success-hover active:bg-insight-success-active hover:border-insight-success-hover active:border-insight-success-active transition-colors;
+    }
+    .btn-outline-warning {
+        @apply border-insight-warning text-insight-warning hover:text-white hover:bg-insight-warning-hover active:bg-insight-warning-active hover:border-insight-warning-hover active:border-insight-warning-active transition-colors;
+    }
+    .btn-outline-danger {
+        @apply border-insight-danger text-insight-danger hover:text-white hover:bg-insight-danger-hover active:bg-insight-danger-active hover:border-insight-danger-hover active:border-insight-danger-active transition-colors;
+    }
+    .btn-outline-info {
+        @apply border-insight-info text-insight-info hover:text-white hover:bg-insight-info-hover active:bg-insight-info-active hover:border-insight-info-hover active:border-insight-info-active transition-colors;
+    }
+    .btn-outline-disabled {
+        @apply border-neutral-300 dark:border-neutral-600 text-neutral-400;
+    }
+
+    .component-container {
+        @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded shadow-md;
+    }
+
+    .example-container {
+        @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow px-8 py-16 my-12;
+    }
+
+    .info-container {
+        @apply bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 border-s-4 border-s-insight-info dark:border-s-insight-info rounded-e px-4 py-1;
+    }
+
+    .inline-tag {
+        @apply bg-gray-200 dark:bg-gray-800 text-insight-primary rounded px-2 py-0.5;
+    }
+}

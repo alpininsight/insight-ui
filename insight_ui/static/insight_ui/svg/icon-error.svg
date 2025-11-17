@@ -1,5 +1,0 @@
-<!-- Error Modal Icon (Red) -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FEE2E2" stroke="#EF4444" stroke-width="2">
-  <circle cx="12" cy="12" r="10" />
-  <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6m0-6l6 6" stroke="#DC2626" />
-</svg>

@@ -1,0 +1,46 @@
+{% load static i18n %}
+
+<div class="group relative w-72 perspective-distant">
+    <div class="relative size-full transform-3d group-hover:rotate-y-180 transition-transform duration-500">
+        <div class="flex flex-col overflow-hidden size-full bg-gray-50 dark:bg-gray-700 border-gray-100 dark:border-none shadow-lg rounded backface-hidden">
+            <img class="w-full backface-hidden" src="{{ image.url }}" alt="{{ image.alt }}">
+
+            <!-- Title and description -->
+            <div class="h-full px-4 py-2">
+                {% if url %}
+                    <a href="{% url url %}">
+                        <p id="card-title" class="text-primary font-bold text-xl hover:text-insight-text-link-hover mb-2">{{ title }}</p>
+                    </a>
+                {% else %}
+                    <p id="card-title" class="text-primary font-bold text-xl mb-2">{{ title }}</p>
+                {% endif %}
+                <p id="card-description" class="text-secondary text-base text-justify hyphens-auto" lang="de">{{ content }}</p>
+            </div>
+
+            <!-- Tags -->
+            {% if tags %}
+                <div id="card-tags" class="flex gap-1 px-4">
+                    {% for tag in tags %}
+                        <button class="btn btn-primary btn-xs">
+                            {{ tag }}
+                        </button>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <!-- Start and more -->
+            <div class="flex flex-col gap-2 pt-4 m-4 border-t border-insight-text-secondary dark:border-insight-text-secondary-dark">
+                {% for action in actions %}
+                    <a href="{{ action.url }}" class="btn btn-{{ action.type }}" {% if action.external %}target="_blank" rel="noopener"{% endif %}>
+                        {{ action.text }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="absolute inset-0 flex flex-col overflow-hidden size-full bg-gray-50 dark:bg-gray-700 border-gray-100 dark:border-none shadow-lg rounded rotate-y-180 backface-hidden">
+            <div class="flex justify-center items-center h-full p-4">
+                <p class="text-lg">Rückseite</p>
+            </div>
+        </div>
+    </div>
+</div>

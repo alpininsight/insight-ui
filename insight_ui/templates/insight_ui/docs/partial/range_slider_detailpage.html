@@ -1,0 +1,75 @@
+{% load i18n insight_tags %}
+
+<h1>Insight UI Range Slider</h1>
+
+<!-- Component Demo -->
+<section>
+    <p>
+        Mit der <span class="inline-tag">slider</span>-Komponente kann ein Range-Slider in das Frontend eingebaut werden, mit welchem sich ein Wert innerhalb eines begrenzten Intervall auswählen lässt.
+    </p>
+
+    {% include "insight_ui/docs/demo_container.html" %}
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h2>{% trans "Verwendung" %}</h2>
+    <div id="Range_Slider_Usage" data-insight-code-block="Django">
+        &lcub;% slider slider=example_slider %&rcub;
+    </div>
+</section>
+
+<section>
+    <h3>{% trans "Parameter" %}</h3>
+
+    <ul class="list-disc leading-relaxed ms-8">
+        <li><span class="inline-tag">slider</span> (<i>dict</i>): Beschreibt den Range-Slider.</li>
+    </ul>
+
+    <div class="mt-8">
+        <h4>slider</h4>
+        <p>Beschreibt den Range-Slider.</p>
+
+        <div id="Radio_Group_Params" data-insight-code-block="python">
+            {
+                "id": "range_slider_example1",
+                "title": "Range Slider Title",
+                "value": 1000,
+                "min": 100,
+                "max": 1500,
+                "items": [_("100€ (minimum)"), "500€", "750€", "1000€", _("1500€ (maximum)")],
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Customization -->
+<section>
+    <h2>{% trans "Customization" %}</h2>
+    <p>
+        Das Design des Range-Sliders befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/range_slider.html</span>.
+    </p>
+    <p class="mt-4">
+        Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad <span class="inline-tag">templates/insight_ui/components/</span> vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+    </p>
+</section>
+
+<!-- A11y -->
+<section>
+    <h2>{% trans "Accessability" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li><i>Todo</i></li>
+    </ul>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Related -->
+<section>
+    <h2>{% trans "Related Topics" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li><i>Todo</i></li>
+    </ul>
+</section>

@@ -1,0 +1,31 @@
+name: Release (main)
+on:
+  push:
+    branches: [ main ]
+permissions:
+  contents: write
+  pull-requests: write
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v4
+        with:
+          release-type: simple
+          target-branch: main
+          include-v-in-tag: true
+          bump-minor-pre-major: true
+          bump-patch-for-minor-pre-major: false
+          changelog-types: >
+            [
+              {"type":"feat","section":"Features","hidden":false},
+              {"type":"fix","section":"Bug Fixes","hidden":false},
+              {"type":"perf","section":"Performance","hidden":false},
+              {"type":"refactor","section":"Refactor","hidden":false},
+              {"type":"docs","section":"Docs","hidden":false},
+              {"type":"ci","section":"CI/CD","hidden":false},
+              {"type":"chore","section":"Chores","hidden":false}
+            ]

@@ -1,28 +1,23 @@
 {% load i18n %}
-<div 
+<div
   id="{{ options.id|default:'insight-websocket' }}"
-  class="insight-websocket"
   hx-ext="ws"
   ws-connect="{{ options.ws_url }}"
 >
-  <h3 class="insight-websocket__title">
-    {% trans "WebSocket Live-Komponente" %}
-  </h3>
-  <div id="{{ options.id|default:'insight-websocket' }}-output" 
-       class="insight-websocket__output">
+  <div id="{{ options.id|default:'insight-websocket' }}-output" class="bg-gray-100 dark:bg-gray-900 rounded shadow px-4 py-2 mt-4">
     {% if options.initial_content %}
       {{ options.initial_content|safe }}
     {% else %}
-      <p class="insight-websocket__placeholder">{% trans "Warten auf WebSocket-Nachrichten..." %}</p>
+      <p class="text-secondary">{% trans "Wait for messages..." %}</p>
     {% endif %}
   </div>
-  <div class="insight-websocket__status">
-    Status: <span id="{{ options.id|default:'insight-websocket' }}-status" class="insight-websocket__status-text">{% trans "Verbindung wird hergestellt..." %}</span>
-  </div>
-  <div class="insight-websocket__url">
-    URL: {{ options.ws_url }}
-  </div>
-  <div class="insight-websocket__mode">
-    Mode: HTMX WebSocket Extension (erwartet HTML)
-  </div>
+  <span class="block text-sm text-primary mt-4">
+    {% trans "Status:" %} <span id="{{ options.id|default:'insight-websocket' }}-status"><b>{% trans "Establishing connection..." %}</b></span>
+  </span>
+  <span class="block text-xs text-secondary mt-2">
+    {% trans "URL:" %} {{ options.ws_url }}
+  </span>
+  <span class="block text-xs text-secondary">
+    {% trans "Mode: HTMX WebSocket Extension (expects HTML)" %}
+  </span>
 </div>

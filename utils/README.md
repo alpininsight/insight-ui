@@ -22,19 +22,23 @@ This package provides a simple WebSocket-based system monitoring utility used in
 
 ```bash
 uv pip install -e .
+```
 
-Usage
+## Usage
 
 Start the WebSocket server:
 
+```bash
 uv run main.py
+```
 
 By default, it runs on:
 
-ws://localhost:8765
+`ws://localhost:8765`
 
-Example Output
+## Example Output
 
+```py
 {
   "timestamp": "2025-06-23T10:45:31.812496",
   "disk": {
@@ -48,7 +52,8 @@ Example Output
     "percent_used": 23.4
   }
 }
+```
 
-License
+## License
 
 MIT License © 2025 Alpin Insight AI

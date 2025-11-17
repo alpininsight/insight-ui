@@ -1,3 +1,5 @@
+window.InsightUI = window.InsightUI || {};
+
 InsightUI.Modal = {
   init: function () {
     document.querySelectorAll('[data-insight-toggle="modal"]').forEach(button => {
@@ -15,6 +17,7 @@ InsightUI.Modal = {
         }
       });
     });
+
+    console.log("Modals initialized!");
   }
 };
-document.addEventListener('DOMContentLoaded', InsightUI.Modal.init);

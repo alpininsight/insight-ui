@@ -1,0 +1,68 @@
+{% load i18n insight_tags %}
+
+<h1>Insight UI Code Block</h1>
+
+<!-- Component Demo -->
+<section>
+    <p>
+        {% trans 'Diese Komponente bietet die Möglichkeit, Quellcode mit Syntax-Highlighting darzustellen. Darüber hinaus gibt es Möglichkeit, den dargestellten Quellcode, über einen Button in den Zwischenspeicher zu kopieren. Das Syntax-Highlighting umfasst so ziemlich alle gängigen und auch die meisten nicht sehr geläufigen Programmiersprachen.' %}
+    </p>
+
+    {% include "insight_ui/docs/demo_container.html" %}
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h2>{% trans "Verwendung" %}</h2>
+    <p class="mb-4">
+        {% blocktrans with div='&lt;div&gt;' tag_id='<b>Tag-ID</b>'|safe data_attr='<i>data-Attribute</i>'|safe data_attr_value='<span class="inline-tag">data-insight-code-block</span>'|safe %}
+        Diese Komponente wird ohne ein Template einzubinden, verwendet. Es muss lediglich ein HTML-Tag vorzugsweise ein {{ div }} eingefügt werden. Dieses braucht eine Eindeutige {{ tag_id }}, diese ist für das Kopieren wichtig. Zum anderen muss das Tag den {{ data_attr }} {{ data_attr_value }} besitzen. Der Wert des {{ data_attr }} ist die gewünschte Programmiersprache. Innerhalb des Tags befindet sich dann ausschließlich der darzustellende Quellcode.
+        {% endblocktrans %}
+    </p>
+
+    <div id="Code_Block_Usage" data-insight-code-block="Django">
+        &lt;div id="code" data-insight-code-block="javascript"&gt;
+            function greet(name) {
+                return `Hello, ${name}!`;
+            }
+        &lt;/div&gt;
+    </div>
+
+    <p class="info-container text-base mt-4">
+        <span class="block font-bold italic text-lg">Info:</span>
+        {% blocktrans with copy='<b>Copy</b>'|safe %}
+        Beim klick auf den {{ copy }} Button wird der Quellcode hervorgehoben und gleichzeitig in den Zwischenspeicher kopiert. Ein erneutes kopieren ist nicht notwendig.
+        {% endblocktrans %}
+    </p>
+</section>
+
+<!-- Customization -->
+<section>
+    <h2>{% trans "Customization" %}</h2>
+    <p>
+        Das Design des Code-Blocks befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/code_block.html</span>.
+    </p>
+    <p class="mt-4">
+        Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad <span class="inline-tag">templates/insight_ui/components/</span> vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+    </p>
+</section>
+
+<!-- A11y -->
+<section>
+    <h2>{% trans "Accessability" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li><i>Todo</i></li>
+    </ul>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Related -->
+<section>
+    <h2>{% trans "Related Topics" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li><i>Todo</i></li>
+    </ul>
+</section>

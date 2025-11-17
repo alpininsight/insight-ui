@@ -158,7 +158,15 @@ dmypy.json
 .pytype/
 
 # Cython debug symbols
+
+# Local AI helper artifacts (never commit)
+AGENTS.md
+AGENT*.md
+ai-notes/
 cython_debug/
+.act-cache/
+.xdg-cache/
+.home/
 
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
@@ -174,9 +182,9 @@ cython_debug/
 .abstra/
 
 # Visual Studio Code
-#  Visual Studio Code specific template is maintained in a separate VisualStudioCode.gitignore 
+#  Visual Studio Code specific template is maintained in a separate VisualStudioCode.gitignore
 #  that can be found at https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore
-#  and can be added to the global gitignore or merged into this file. However, if you prefer, 
+#  and can be added to the global gitignore or merged into this file. However, if you prefer,
 #  you could uncomment the following to ignore the enitre vscode folder
 # .vscode/
 
@@ -194,3 +202,9 @@ cython_debug/
 .cursorindexingignore
 
 .aider*
+uv.lock
+
+.django_tailwind_cli/
+
+img/
+management/

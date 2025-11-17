@@ -1,0 +1,91 @@
+{% load i18n insight_tags %}
+
+<h1>Insight UI Step Bar</h1>
+
+<!-- Component Demo -->
+<section>
+    <p>
+        {% trans 'Mit dieser Komponente kann dem Nutzer der Fortschritt eines Prozesses visuell dargestellt werden, welcher dieser selbst durchführt.  Damit sind Prozesse gemeint, wie zum Beispiel ein typischer Bezahlvorgang. Dieser besteht i.d.R. aus mehreren Schritten, wie die Adresse anzugeben, eine Zahlungsmethode auszuwählen und im Anschluss nochmal die Eingaben zu überprüfen. In diesem Fall muss der Nutzer aktiv werden, damit der Prozess voranschreitet.' %}
+    </p>
+
+    {% include "insight_ui/docs/demo_container.html" %}
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h2>{% trans "Verwendung" %}</h2>
+    <div id="Step_Bar_Usage" data-insight-code-block="Django">
+        &lcub;% load insight_tags %&rcub;
+
+        &lcub;% step_bar items=steps_bar_items %&rcub;
+    </div>
+</section>
+
+<section>
+    <h3>{% trans "Parameter" %}</h3>
+    <ul class="list-disc leading-relaxed ms-8">
+        <li><span class="inline-tag">items</span>(<i>list</i>): Eine Liste der einzelnen Schritte des Prozesses.</li>
+    </ul>
+
+    <div class="mt-8">
+        <h4>items</h4>
+        <p class="mb-6">Die Liste der einzelnen Schritte, besteht aus Dictionaries welche den jeweiligen Schritt beschreiben.</p>
+
+        <div id="Step_Bar_Params" data-insight-code-block="python">
+            [
+                {"title": "Kontaktdaten", "description": "Informationen zur Person und Anschrift.", "completed": True},
+                {"title": "Zahlungsmethode", "description": "Art der Bezahlung.", "completed": False, "current": True},
+                {"title": "Überprüfen", "description": "Prüfen der Angaben und Bezahlen.", "completed": False},
+            ]
+        </div>
+
+        <ul class="list-disc leading-relaxed ms-8 mt-6">
+            <li><span class="inline-tag">title</span>(<i>str</i>): {% trans "Der Titel des jeweiligen Schritts." %}</li>
+            <li><span class="inline-tag">description</span>(<i>str</i>): {% trans "Eine kurze Beschreibung des jeweiligen Schritts." %}</li>
+            <li><span class="inline-tag">completed</span>(<i>bool</i>): {% blocktrans with true='<span class="text-blue-400 font-semibold">True</span>'|safe %}{{ true }} wenn dieser Schritt bereits absolviert wurde.{% endblocktrans %}</li>
+            <li><span class="inline-tag">current</span>(<i>bool</i>): {% blocktrans with true='<span class="text-blue-400 font-semibold">True</span>'|safe %}{{ true }} wenn es sich um den aktuellen Schritt handelt.{% endblocktrans %}</li>
+        </ul>
+    </div>
+</section>
+
+<!-- Customization -->
+<section>
+    <h2>{% trans "Customization" %}</h2>
+    <p>
+        Das Design der Step Bar Komponente befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/step_bar.html</span>.
+    </p>
+    <p class="mt-4">
+        Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad <span class="inline-tag">templates/insight_ui/components/</span> vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
+    </p>
+</section>
+
+<!-- A11y -->
+<section>
+    <h2>{% trans "Accessability" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li><i>Todo</i></li>
+    </ul>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Related -->
+<section>
+    <h2>{% trans "Related Topics" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'bullet_point_list' %}"
+                hx-get="{% url 'component_detail_page_view' 'bullet_point_list' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Bullet Point List" %}
+            </a>
+        </li>
+    </ul>
+</section>

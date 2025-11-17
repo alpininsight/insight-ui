@@ -1,6 +1,6 @@
 /**
  * Django Insight UI - Vollständiges CSS Framework
- * 
+ *
  * Dieses Stylesheet enthält die grundlegenden Stile für alle UI-Komponenten
  * mit Fokus auf Barrierefreiheit, Responsivität und Themenfähigkeit.
  */
@@ -18,7 +18,7 @@
   --insight-color-warning: #f59e0b;
   --insight-color-error: #ef4444;
   --insight-color-info: #3b82f6;
-  
+
   /* Neutrale Farben */
   --insight-color-white: #ffffff;
   --insight-color-gray-50: #f9fafb;
@@ -31,7 +31,7 @@
   --insight-color-gray-700: #374151;
   --insight-color-gray-800: #1f2937;
   --insight-color-gray-900: #111827;
-  
+
   /* Typografie */
   --insight-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --insight-font-size-xs: 0.75rem;
@@ -41,7 +41,7 @@
   --insight-font-size-xl: 1.25rem;
   --insight-font-size-2xl: 1.5rem;
   --insight-font-size-3xl: 1.875rem;
-  
+
   /* Abstände */
   --insight-spacing-1: 0.25rem;
   --insight-spacing-2: 0.5rem;
@@ -52,26 +52,26 @@
   --insight-spacing-8: 2rem;
   --insight-spacing-10: 2.5rem;
   --insight-spacing-12: 3rem;
-  
+
   /* Border Radius */
   --insight-radius-sm: 0.125rem;
   --insight-radius: 0.25rem;
   --insight-radius-md: 0.375rem;
   --insight-radius-lg: 0.5rem;
   --insight-radius-xl: 0.75rem;
-  
+
   /* Schatten */
   --insight-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --insight-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   --insight-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --insight-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   --insight-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  
+
   /* Übergänge */
   --insight-transition: all 0.15s ease-in-out;
   --insight-transition-fast: all 0.1s ease-in-out;
   --insight-transition-slow: all 0.3s ease-in-out;
-  
+
   /* Z-Index */
   --insight-z-dropdown: 1000;
   --insight-z-sticky: 1020;
@@ -1025,7 +1025,7 @@ body {
   .insight-navbar__toggle {
     display: block;
   }
-  
+
   .insight-navbar__menu {
     display: none;
     position: absolute;
@@ -1038,26 +1038,26 @@ body {
     flex-direction: column;
     padding: var(--insight-spacing-4);
   }
-  
+
   .insight-navbar__menu--open {
     display: flex;
   }
-  
+
   .insight-navbar__nav {
     flex-direction: column;
     width: 100%;
   }
-  
+
   .insight-sidebar {
     position: fixed;
     z-index: var(--insight-z-fixed);
     transform: translateX(-100%);
   }
-  
+
   .insight-sidebar--open {
     transform: translateX(0);
   }
-  
+
   .insight-modal__dialog {
     margin: var(--insight-spacing-4);
   }
@@ -1074,7 +1074,7 @@ body {
   .insight-btn {
     display: none !important;
   }
-  
+
   .insight-alert {
     border: 2px solid #000;
     background: #fff !important;
@@ -1096,7 +1096,7 @@ body {
   #main-content {
     margin-left: var(--insight-spacing-4);
   }
-  
+
   /* Wenn die Sidebar eingeklappt ist, mehr Platz für den Hauptinhalt */
   .insight-sidebar--collapsed + #main-content {
     margin-left: var(--insight-spacing-8);
@@ -1156,7 +1156,7 @@ body.right-sidebar-open #main-content {
   body.right-sidebar-open #main-content {
     margin-right: 0;
   }
-  
+
   #right-sidebar {
     width: 100%;
     max-width: 300px;

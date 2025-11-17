@@ -4,8 +4,12 @@
 import os
 import sys
 
+from logging_config import setup_structlog
+
 if __name__ == "__main__":
     """Run administrative tasks."""
+    setup_structlog()
+
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")
     try:
         from django.core.management import execute_from_command_line

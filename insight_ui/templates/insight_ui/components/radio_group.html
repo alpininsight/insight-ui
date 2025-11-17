@@ -1,0 +1,29 @@
+{% load insight_tags %}
+
+<form class="flex rtl:flex-row-reverse">
+    {% for item in radio_group.items %}
+        <div>
+            <input
+                type="radio" id="{{ item.id }}"
+                name="{{ radio_group.name }}"
+                value="{{ item.value }}"
+                {% if current_value == item.value %}checked="true"{% endif %}
+                {% if view_name and target_id %}
+                    hx-get="{% url view_name %}?{{ radio_group.param_name }}={{ item.value }}{%if query_params %}&{{ query_params }}{% endif %}{% if id %}&id={{ id }}{% endif %}"
+                    hx-target="#{{ target_id }}"
+                    hx-swap="{{ swap_method|default:"outerHTML" }}"
+                {% endif %}
+                {% if method %}
+                    onclick="{{ method }}('{{ item.value }}')"
+                {% endif %}
+                class="peer hidden"
+            >
+            <label for="{{ item.id }}" class="flex items-center peer-checked:bg-insight-primary-active peer-checked:border-insight-primary-active bg-insight-primary border-insight-primary {% if forloop.first %}border-2 rounded-l-sm{% elif forloop.last %}border-2 rounded-r-sm{% else %}border-y-2{% endif %} text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">
+                {% if item.icon %}
+                    {% icon item.icon %}
+                {% endif %}
+                {{ item.text }}
+            </label>
+        </div>
+    {% endfor %}
+</form>
