@@ -13,7 +13,7 @@
                         type="radio" id="{{ item.id }}"
                         name="{{ radio_group.name }}"
                         value="{{ item.value }}"
-                        {% if current_value == item.value %}checked="true"{% endif %}
+                        {% if current_value == item.value or not current_value and forloop.first %}checked="true"{% endif %}
                         {% if method %}
                             onclick="{{ method }}('{{ item.value }}')"
                         {% endif %}
@@ -36,7 +36,7 @@
                         type="radio" id="{{ item.id }}"
                         name="{{ radio_group.name }}"
                         value="{{ item.value }}"
-                        {% if current_value == item.value %}checked="true"{% endif %}
+                        {% if current_value == item.value or not current_value and forloop.first %}checked="true"{% endif %}
                         {% if view_name and target_id %}
                             hx-get="{% url view_name %}?{{ radio_group.param_name }}={{ item.value }}{%if query_params %}&{{ query_params }}{% endif %}{% if id %}&id={{ id }}{% endif %}"
                             hx-target="#{{ target_id }}"
