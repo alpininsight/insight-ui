@@ -969,13 +969,13 @@ def three_d_carousel(
 
 @register.inclusion_tag("insight_ui/components/multiselect.html")
 def multiselect(  # noqa: PLR0913 (too many arguments)
-    name: str = None,
-    label: str = None,
-    maximum: int = None,
-    show_buttons: bool = None,
-    values: list[str] = None,
-    selected_values: list[str] = None,
-    config: dict[str, Any] = None,
+    name: str | None = None,
+    label: str | None = None,
+    maximum: int | None = None,
+    show_buttons: bool | None = None,
+    values: list[str] | None = None,
+    selected_values: list[str] | None = None,
+    config: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """
     Rendert eine Auswahlbox, welche mehrere ausgewählte Werte zulässt und eine integrierte Suchzeile hat.

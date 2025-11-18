@@ -1,4 +1,5 @@
-"""Smoke tests for the Insight UI demo project.
+"""
+Smoke tests for the Insight UI demo project.
 
 These tests are intentionally small and fast. They answer the question:
 "Does the main app basically start and render key pages?"
