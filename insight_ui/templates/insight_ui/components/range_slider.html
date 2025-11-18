@@ -1,6 +1,6 @@
 <div class="relative">
     <label class="flex gap-1 text-sm font-bold text-primary" for="{{ slider.id }}">{{ slider.title }}</label>
-    <input id="{{ slider.id }}" type="range" value="{{ slider.value }}" min="{{ slider.min }}" max="{{ slider.max }}" class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-sm appearance-none cursor-pointer">
+    <input id="{{ slider.id }}" name="{{ slider.id }}" type="range" value="{{ slider.value }}" min="{{ slider.min }}" max="{{ slider.max }}" class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-sm appearance-none cursor-pointer">
     <div class="flex justify-between w-full text-sm text-secondary">
         {% for item in slider.items %}
             <span>{{ item }}</span>

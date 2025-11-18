@@ -1,21 +1,23 @@
 {% load insight_tags %}
 
 {% if toggle.switch %}
-        <label class="inline-flex flex-col cursor-pointer w-fit">
-            <span class="flex gap-1 text-sm font-bold text-primary mb-2">{{ toggle.text }}</span>
-            <input
-                id="{{ toggle.id }}"
-                type="checkbox"
-                {% if toggle.checked %}checked{% endif %}
-                {% if method %}onclick="{{ method }}()"{% endif %}
-                class="peer sr-only"
-            >
-            <div class="relative w-10 h-3 bg-gray-300 rounded-full peer peer-focus:outline-2 outline-gray-400 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full after:content-[''] after:absolute after:-top-1.5 after:start-[-3px] after:bg-white after:border-gray-300 after:dark:border-gray-700 after:border after:rounded-full after:size-6 after:transition-all peer-checked:bg-insight-primary transition"></div>
-        </label>
+    <label class="inline-flex flex-col cursor-pointer w-fit">
+        <span class="flex gap-1 text-sm font-bold text-primary mb-2">{{ toggle.text }}</span>
+        <input
+            id="{{ toggle.id }}"
+            name="{{ toggle.id }}"
+            type="checkbox"
+            {% if toggle.checked %}checked{% endif %}
+            {% if method %}onclick="{{ method }}()"{% endif %}
+            class="peer sr-only"
+        >
+        <div class="relative w-10 h-3 bg-gray-300 rounded-full peer peer-focus:outline-2 outline-gray-400 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full after:content-[''] after:absolute after:-top-1.5 after:start-[-3px] after:bg-white after:border-gray-300 after:dark:border-gray-700 after:border after:rounded-full after:size-6 after:transition-all peer-checked:bg-insight-primary transition"></div>
+    </label>
 {% else %}
     <div class="inline-block h-full w-fit">
         <input
             id="{{ toggle.id }}"
+            name="{{ toggle.id }}"
             type="checkbox"
             {% if toggle.checked %}checked{% endif %}
             {% if method %}onclick="{{ method }}()"{% endif %}
