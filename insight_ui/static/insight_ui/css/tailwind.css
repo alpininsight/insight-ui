@@ -599,9 +599,6 @@
   .h-24 {
     height: calc(var(--spacing) * 24);
   }
-  .h-32 {
-    height: calc(var(--spacing) * 32);
-  }
   .h-48 {
     height: calc(var(--spacing) * 48);
   }
@@ -1351,9 +1348,6 @@
   .text-gray-700 {
     color: var(--color-gray-700);
   }
-  .text-gray-900 {
-    color: var(--color-gray-900);
-  }
   .text-green-400 {
     color: var(--color-green-400);
   }
@@ -1571,10 +1565,10 @@
       inset-inline-start: -3px;
     }
   }
-  .after\:top-\[-6px\] {
+  .after\:-top-1\.5 {
     &::after {
       content: var(--tw-content);
-      top: -6px;
+      top: calc(var(--spacing) * -1.5);
     }
   }
   .after\:size-6 {
@@ -1685,13 +1679,6 @@
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-gray-200);
-      }
-    }
-  }
-  .hover\:bg-gray-300 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--color-gray-300);
       }
     }
   }
@@ -1854,11 +1841,6 @@
     &:focus {
       --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
       box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-    }
-  }
-  .focus\:ring-blue-400 {
-    &:focus {
-      --tw-ring-color: var(--color-blue-400);
     }
   }
   .focus\:ring-blue-500 {
@@ -2407,11 +2389,6 @@
   .dark\:text-blue-400 {
     &:where([data-theme=dark], [data-theme=dark] *) {
       color: var(--color-blue-400);
-    }
-  }
-  .dark\:text-gray-300 {
-    &:where([data-theme=dark], [data-theme=dark] *) {
-      color: var(--color-gray-300);
     }
   }
   .dark\:text-gray-500 {

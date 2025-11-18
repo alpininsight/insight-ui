@@ -18,9 +18,14 @@ Oder als Block
 
 - **radio_group** (_dict_): Beschreibt die Radio Komponente und deren Items.
 - **current_value** (_str_): Der Name der aktuell ausgewählten Wertes.
-- **view_name** (_str_): (Optional) Der Name der View an welchen der Request beim wechseln, gesendet werden soll (nur radio_group).
-- **query_params** (_str_): (Optional) Ein String von Query-Parametern (nur radio_group).
-- **target_id** (_str_): (Optional) Die ID des HTML-Tags, welches bei wechseln des Wertes ausgetauscht werden soll (nur radio_group).
+
+### Nur radio_group
+
+- **view_name** (_str_): (Optional) Der Name der View an welchen der Request beim wechseln, gesendet werden soll.
+- **query_params** (_str_): (Optional) Ein String von Query-Parametern.
+- **target_id** (_str_): (Optional) Die ID des HTML-Tags, welches bei wechseln des Wertes ausgetauscht werden soll.
+- **method** (_str_): (Optional) Der Name der JavaScript Methode welche ausgeführt werden soll.
+- **integrated** (_bool_): _False_ wenn die Komponente ihr eigenes <form> Element haben soll.
 
 ### radio_group
 
@@ -29,6 +34,7 @@ Beschreibt die Radio Komponente und deren Items.
 ```py
 {
     "name": "radio-example1",
+    "label": "Model auswählen",
     "items": [
         {"id": "model1", "value": "BERT", "text": _("BERT"), "disabled": False},
         {"id": "model2", "value": "PaLM 2", "text": _("PaLM 2"), "disabled": False},

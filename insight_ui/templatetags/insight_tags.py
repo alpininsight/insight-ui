@@ -285,6 +285,7 @@ def radio_group(  # noqa: PLR0913 (too many arguments)
     query_params: str = "",
     target_id: str = "",
     method: str = "",
+    integrated: bool = False,
 ) -> dict:
     """
     Rendert ein Gruppe von Radio-Buttons.
@@ -297,6 +298,7 @@ def radio_group(  # noqa: PLR0913 (too many arguments)
         query_params (str): (Optional) Ein String von Query-Parametern
         target_id (str): (Optional) Die ID des HTML-Tags, welches bei wechseln des Wertes ausgetauscht werden soll.
         method (str): Der Name der JavaScript Methode welche ausgeführt werden soll.
+        integrated (bool): 'False' wenn die Komponente ihr eigenes <form> Element haben soll.
 
     Returns:
     -------
@@ -310,6 +312,7 @@ def radio_group(  # noqa: PLR0913 (too many arguments)
         "query_params": query_params,
         "target_id": target_id,
         "method": method,
+        "integrated": integrated,
     }
 
 
