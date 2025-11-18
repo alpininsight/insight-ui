@@ -1,4 +1,7 @@
-<div class="flex flex-col space-y-2">
+<div class="flex flex-col space-y-1">
+    {% if radio_group.label %}
+        <span class="flex gap-1 text-sm font-bold text-primary mb-1">{{ radio_group.label }}</span>
+    {% endif %}
     {% for item in radio_group.items %}
         <label class="flex items-center gap-1">
             <input
