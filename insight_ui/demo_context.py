@@ -103,7 +103,7 @@ def get_login_screen_context() -> dict:
                 "url": "svg/ai-logo.svg",
                 "url_dark": "svg/ai-logo.svg",
                 "alt": "Unser Logo",
-                "height": "h-32",
+                "height": "8rem",
                 "position": "center",
             },
             "forgot_password": {"url": "#"},
@@ -141,12 +141,12 @@ def get_navbar_context() -> dict:
             "brand": {
                 "title": "Insight UI",
                 "view_name": "index_view",
-                "gap": "gap-2",
+                "gap": "0.5rem",
                 "logo": {
                     "url": "insight_ui/svg/ai-logo.svg",
                     "url_dark": "insight_ui/svg/ai-logo.svg",
                     "alt": "Insight UI Logo",
-                    "height": "h-8",
+                    "height": "2rem",
                 },
             },
             "links": [

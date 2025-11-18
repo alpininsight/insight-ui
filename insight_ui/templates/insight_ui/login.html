@@ -11,7 +11,8 @@
           data-light-src="{% static logo.url %}"
           data-dark-src="{% static logo.url_dark %}"
           alt="{{ logo.alt }}"
-          class="{{ logo.height|default:"h-48" }} w-fit mb-4"
+          class="w-fit mb-4"
+          style="height: {{ logo.height|default:'12rem' }}"
         >
         <script>
           document.addEventListener("DOMContentLoaded", function() {
