@@ -1,133 +1,162 @@
-window.InsightUI = window.InsightUI || {};
+class Accordion {
+    // Manages all accordion instances of the DOM
+    static instances = new WeakMap();
 
-InsightUI.Accordion = {
-    init: function () {
-        // Collect all elements with 'data-accordion=<target_ID>'
-        const accordions = document.querySelectorAll("[data-accordion]");
+    constructor(element) {
+        // If an instance for this element already exists, return it
+        if (Accordion.instances.has(element)) {
+            return Accordion.instances.get(element);
+        }
 
-        accordions.forEach((accordion) => {
-            if (accordion.dataset.initialized === "true") {
-                return;
-            }
+        this.element = element;
+        this.buttons = Array.from(element.querySelectorAll("button[aria-controls]"));
+        this.exclusive = element.getAttribute("data-accordion-exclusive") === "true";
 
-            accordion.dataset.initialized = "true";
+        this.bindEvents();
+        this.handleInitialOpen();
 
-            const buttons = Array.from(accordion.querySelectorAll("button[aria-controls]"));
-            const exclusive = accordion.getAttribute("data-accordion-exclusive");
+        Accordion.instances.set(element, this);
 
-            function closePanel(button, panel) {
-                button.setAttribute('aria-expanded', 'false');
-                button.querySelector('svg')?.classList.remove('rotate-180');
+        debugLog("New accordion created: ", this.element);
+    }
 
-                panel.style.height = panel.scrollHeight + 'px';
-                panel.offsetHeight;
+    bindEvents() {
+        this.buttons.forEach((button, index) => {
+            const panelId = button.getAttribute("aria-controls");
+            const panel = document.getElementById(panelId);
 
-                panel.style.transition = 'height 0.3s ease, opacity 0.3s ease';
-                panel.style.height = '0px';
-                panel.style.opacity = '0';
+            // Click-Event
+            button.addEventListener("click", () => {
+                const isExpanded = button.getAttribute("aria-expanded") === "true";
 
-                panel.addEventListener('transitionend', function handler(event) {
-                    if (event.propertyName === 'height') {
-                        panel.removeEventListener('transitionend', handler);
-                        panel.style.transition = '';
-                        panel.style.height = '0px';
-                    }
-                });
-            }
+                if (this.exclusive) {
+                    this.buttons.forEach((btn) => {
+                        const pid = btn.getAttribute("aria-controls");
+                        const p = document.getElementById(pid);
+                        if (btn !== button) this.closePanel(btn, p);
+                    });
+                }
 
-            function openPanel(button, panel, scroll = true) {
-                button.setAttribute('aria-expanded', 'true');
-                button.querySelector('svg')?.classList.add('rotate-180');
-
-                panel.style.transition = 'none';
-                panel.style.height = 'auto';
-                const height = panel.scrollHeight + 'px';
-                panel.style.height = '0px';
-                panel.offsetHeight;
-
-                panel.style.transition = 'height 0.3s ease, opacity 0.3s ease';
-                panel.style.height = height;
-                panel.style.opacity = '1';
-
-                panel.addEventListener('transitionend', function handler(event) {
-                    if (event.propertyName === 'height') {
-                        panel.removeEventListener('transitionend', handler);
-                        panel.style.transition = '';
-                        panel.style.height = 'auto';
-                    }
-                });
-            }
-
-            function updateURL(id) {
-                const url = new URL(window.location);
-                url.searchParams.set('open', id);
-                window.history.replaceState({}, '', url);
-            }
-
-            buttons.forEach((button, index) => {
-                const panelId = button.getAttribute('aria-controls');
-                const panel = document.getElementById(panelId);
-
-                button.addEventListener('click', () => {
-                    const isExpanded = button.getAttribute('aria-expanded') === 'true';
-
-                    if (exclusive === "true") {
-                        buttons.forEach((btn) => {
-                            const pid = btn.getAttribute('aria-controls');
-                            const p = document.getElementById(pid);
-                            if (btn !== button) {
-                                closePanel(btn, p);
-                            }
-                        });
-                    }
-
-                    if (isExpanded) {
-                        closePanel(button, panel);
-                    } else {
-                        openPanel(button, panel);
-                        updateURL(panelId);
-                    }
-                });
-
-                button.addEventListener('keydown', (event) => {
-                    let targetIndex = null;
-                    if (event.key === 'ArrowDown') {
-                        targetIndex = (index + 1) % buttons.length;
-                    } else if (event.key === 'ArrowUp') {
-                        targetIndex = (index - 1 + buttons.length) % buttons.length;
-                    } else if (event.key === 'Home') {
-                        targetIndex = 0;
-                    } else if (event.key === 'End') {
-                        targetIndex = buttons.length - 1;
-                    }
-
-                    if (targetIndex !== null) {
-                        event.preventDefault();
-                        buttons[targetIndex].focus();
-                    }
-                });
+                if (isExpanded) {
+                    this.closePanel(button, panel);
+                } else {
+                    this.openPanel(button, panel);
+                    this.updateURL(panelId);
+                }
             });
 
-            const params = new URLSearchParams(window.location.search);
-            const openId = params.get('open');
-            if (openId) {
-                const buttonToOpen = buttons.find(btn => btn.getAttribute('aria-controls') === openId);
-                const panelToOpen = document.getElementById(openId);
+            // Keyboard navigation
+            button.addEventListener("keydown", (event) => {
+                let targetIndex = null;
 
-                if (buttonToOpen && panelToOpen) {
-                    if (exclusive === "true") {
-                        buttons.forEach((btn) => {
-                            const pid = btn.getAttribute('aria-controls');
-                            const p = document.getElementById(pid);
-                            closePanel(btn, p);
-                        });
-                    }
-                    openPanel(buttonToOpen, panelToOpen, true);
+                switch (event.key) {
+                    case "ArrowDown":
+                        targetIndex = (index + 1) % this.buttons.length;
+                        break;
+                    case "ArrowUp":
+                        targetIndex = (index - 1 + this.buttons.length) % this.buttons.length;
+                        break;
+                    case "Home":
+                        targetIndex = 0;
+                        break;
+                    case "End":
+                        targetIndex = this.buttons.length - 1;
+                        break;
                 }
+
+                if (targetIndex !== null) {
+                    event.preventDefault();
+                    this.buttons[targetIndex].focus();
+                }
+            });
+        });
+    }
+
+    closePanel(button, panel) {
+        button.setAttribute("aria-expanded", "false");
+        button.querySelector("svg")?.classList.remove("rotate-180");
+
+        panel.style.height = panel.scrollHeight + "px";
+        panel.offsetHeight; // Force reflow
+
+        panel.style.transition = "height 0.3s ease, opacity 0.3s ease";
+        panel.style.height = "0px";
+        panel.style.opacity = "0";
+
+        const handler = (event) => {
+            if (event.propertyName === "height") {
+                panel.removeEventListener("transitionend", handler);
+                panel.style.transition = "";
+                panel.style.height = "0px";
+            }
+        };
+
+        panel.addEventListener("transitionend", handler);
+    }
+
+    openPanel(button, panel, scroll = true) {
+        button.setAttribute("aria-expanded", "true");
+        button.querySelector("svg")?.classList.add("rotate-180");
+
+        panel.style.transition = "none";
+        panel.style.height = "auto";
+        const height = panel.scrollHeight + "px";
+        panel.style.height = "0px";
+        panel.offsetHeight;
+
+        panel.style.transition = "height 0.3s ease, opacity 0.3s ease";
+        panel.style.height = height;
+        panel.style.opacity = "1";
+
+        const handler = (event) => {
+            if (event.propertyName === "height") {
+                panel.removeEventListener("transitionend", handler);
+                panel.style.transition = "";
+                panel.style.height = "auto";
+            }
+        };
+
+        panel.addEventListener("transitionend", handler);
+    }
+
+    updateURL(id) {
+        const url = new URL(window.location);
+        url.searchParams.set("open", id);
+        window.history.replaceState({}, "", url);
+    }
+
+    handleInitialOpen() {
+        const params = new URLSearchParams(window.location.search);
+        const openId = params.get("open");
+        if (!openId) return;
+
+        const buttonToOpen = this.buttons.find(
+            (btn) => btn.getAttribute("aria-controls") === openId
+        );
+        const panelToOpen = document.getElementById(openId);
+
+        if (buttonToOpen && panelToOpen) {
+            if (this.exclusive) {
+                this.buttons.forEach((btn) => {
+                    const pid = btn.getAttribute("aria-controls");
+                    const p = document.getElementById(pid);
+                    this.closePanel(btn, p);
+                });
+            }
+            this.openPanel(buttonToOpen, panelToOpen, true);
+        }
+    }
+
+    // Static method for initializing all accordions
+    static initAll() {
+        const accordions = document.querySelectorAll("[data-accordion]");
+        accordions.forEach((el) => {
+            if (!Accordion.instances.has(el)) {
+                new Accordion(el);
             }
         });
-
-        console.log("Accordions: ", accordions);
-        console.log("Accordions initialized!");
     }
-};
+}
+
+window.InsightUI = window.InsightUI || {};
+window.InsightUI.Accordion = Accordion;

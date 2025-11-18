@@ -17,7 +17,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: googleapis/release-please-action@v4
-        id: release
         with:
           release-type: simple
           target-branch: develop
@@ -26,12 +25,3 @@ jobs:
           prerelease-type: dev
           bump-minor-pre-major: true
           bump-patch-for-minor-pre-major: false
-
-      - name: Enable auto-merge for release PR (develop)
-        if: steps.release.outputs.pr
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh pr merge ${{ fromJson(steps.release.outputs.pr).number }} --squash --auto
-

@@ -13,9 +13,9 @@
         {% for item in dropdown_menu.items %}
             <a {% if item.view_arg %}href="{% url item.view_name item.view_arg %}"{% else %}href="{% url item.view_name %}"{% endif %} class="flex items-center gap-1 px-4 py-2 text-sm text-primary bg-gray-100 dark:bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 {% if forloop.first %}rounded-t{% elif forloop.last %}rounded-b{% endif %}">
                 {% if item.icon %}
-                <div>
-                {% icon item.icon %}
-                </div>
+                    <div>
+                        {% icon item.icon %}
+                    </div>
                 {% endif %}
                 {{ item.text }}
             </a>

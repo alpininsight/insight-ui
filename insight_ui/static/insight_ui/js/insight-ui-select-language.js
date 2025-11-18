@@ -10,7 +10,7 @@ InsightUI.SelectLanguage = {
       InsightUI.SelectLanguage.changeLanguage(selectedLanguage);
     });
 
-    console.log("Language Select initialized!");
+    debugLog("Language Select initialized!");
   },
 
   changeLanguage: function (languageCode) {

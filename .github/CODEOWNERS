@@ -1,0 +1,16 @@
+# CODEOWNERS for insight-ui
+#
+# Paths in this file map to GitHub users or teams that are
+# responsible for reviewing and maintaining those parts of
+# the codebase.
+#
+# Syntax:
+#   path  @github-username
+#   path  @org/team-name
+
+# Default owners for the entire repository
+*       @alpininsight
+
+# CI/CD and automation
+.github/workflows/   @alpininsight
+

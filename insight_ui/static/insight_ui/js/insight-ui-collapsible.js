@@ -1,23 +1,40 @@
-window.InsightUI = window.InsightUI || {};
+class Collapsible {
+  // Manages all collapsible instances of the DOM
+  static instances = new WeakMap();
 
-InsightUI.Collapsible = {
-  init: function () {
-    const toggleButtons = document.querySelectorAll('[data-insight-toggle="collapsible"]')
-    toggleButtons.forEach(button => {
-      if (!button.dataset.initialized) {
-        button.addEventListener('click', function () {
-          const targetId = this.getAttribute('data-insight-target');
-          const targetEl = document.getElementById(targetId);
-          if (targetEl) {
-            targetEl.classList.toggle("hidden");
-          }
-        });
+  constructor(element) {
+    // If an instance for this element already exists, return it
+    if (Collapsible.instances.has(element)) {
+      return Collapsible.instances.get(element);
+    }
 
-        button.dataset.initialized = "true";
+    this.element = element;
+    this.targetID = this.element.getAttribute('data-insight-target');
+    this.targetElement = document.getElementById(this.targetID);
+
+    this.bindEvents();
+
+    Collapsible.instances.set(element, this);
+
+    debugLog("New collapsible created: ", this.element, this.targetElement);
+  }
+
+  bindEvents() {
+    this.element.addEventListener("click", () => {
+        this.targetElement.classList.toggle("hidden");
+    });
+  }
+
+  // Static method for initializing all collapsible
+  static initAll() {
+    const collapsible = document.querySelectorAll('[data-insight-toggle="collapsible"]');
+    collapsible.forEach((el) => {
+      if (!Collapsible.instances.has(el)) {
+        new Collapsible(el);
       }
     });
-
-    console.log("Collapsible: ", toggleButtons);
-    console.log("Collapsible initialized!");
   }
-};
+}
+
+window.InsightUI = window.InsightUI || {};
+window.InsightUI.Collapsible = Collapsible;
