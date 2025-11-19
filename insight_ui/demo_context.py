@@ -311,7 +311,6 @@ def get_sidebar_context() -> dict:
     return {
         "left_sidebar": {
             "title": _("Insight UI Components"),
-            "icon": {"name": "cards", "size": "small"},
             "categories": [
                 {
                     "caption": _("Navigation / Main"),

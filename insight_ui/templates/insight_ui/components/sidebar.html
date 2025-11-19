@@ -28,7 +28,14 @@
       <!-- Sidebar Header -->
       <div class="flex justify-between items-center h-16 border-b border-gray-300 dark:border-gray-500 mb-4">
         {% if sidebar_data.title %}
-          <h2 class="text-lg font-semibold text-primary mb-0">{{ sidebar_data.title }}</h2>
+          <h2 class="flex items-center gap-1 text-lg mb-0">
+            {% if sidebar_data.icon %}
+              <div>
+                {% icon sidebar_data.icon %}
+              </div>
+            {% endif %}
+            {{ sidebar_data.title }}
+          </h2>
         {% endif %}
         {% if not auto_close and not static %}
           <button
