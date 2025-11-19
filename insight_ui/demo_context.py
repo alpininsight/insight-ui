@@ -260,6 +260,7 @@ def get_drawer_context() -> dict:
         "right_sidebar": {
             "title": _("Secondary Sidebar"),
             "icon": {"name": "home", "size": "small"},
+            "width": "24rem",
             "categories": [
                 {
                     "caption": "Main",
