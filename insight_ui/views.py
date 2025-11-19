@@ -46,6 +46,7 @@ from insight_ui.demo_context import (
     get_query_builder_context,
     get_radio_button_context,
     get_range_slider_context,
+    get_select_context,
     get_sidebar_context,
     get_step_bar_context,
     get_table_context,
@@ -226,7 +227,7 @@ def form_submit(request: HttpRequest) -> HttpResponse | JsonResponse:
 
 def index_view(request: HttpRequest) -> HttpResponse:
     """Render index page."""
-    context = get_base_context() | get_sidebar_context()
+    context = get_base_context() | get_sidebar_context() | get_drawer_context()
     return render(request, "insight_ui/index.html", context)
 
 
@@ -295,6 +296,7 @@ def component_demo_view(request: HttpRequest, component_name: str) -> HttpRespon
         "radio_group": get_radio_button_context,
         "range_slider": get_range_slider_context,
         "toggle_button": get_toggle_button_context,
+        "select": get_select_context,
         "multiselect": get_multiselect_context,
         "chat": get_empty_context,
         "alert": get_alert_context,
