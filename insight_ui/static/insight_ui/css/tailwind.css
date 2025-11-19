@@ -1512,9 +1512,6 @@
     -webkit-user-select: none;
     user-select: none;
   }
-  .\[tool\:pytest\] {
-    tool: pytest;
-  }
   .backface-hidden {
     backface-visibility: hidden;
   }
