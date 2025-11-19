@@ -6,11 +6,12 @@
     {% endif %}
     {% if integrated %}
         {% comment %} To use with other elements in a extern <form> {% endcomment %}
-        <div class="flex rtl:flex-row-reverse">
+        <div class="flex rtl:flex-row-reverse" id="{{ radio_group.name }}">
             {% for item in radio_group.items %}
                 <div>
                     <input
-                        type="radio" id="{{ item.id }}"
+                        type="radio"
+                        id="{{ item.id }}"
                         name="{{ radio_group.name }}"
                         value="{{ item.value }}"
                         {% if current_value == item.value or not current_value and forloop.first %}checked="true"{% endif %}
@@ -29,11 +30,12 @@
             {% endfor %}
         </div>
     {% else %}
-        <form class="flex rtl:flex-row-reverse">
+        <form class="flex rtl:flex-row-reverse" id="{{ radio_group.name }}">
             {% for item in radio_group.items %}
                 <div>
                     <input
-                        type="radio" id="{{ item.id }}"
+                        type="radio"
+                        id="{{ item.id }}"
                         name="{{ radio_group.name }}"
                         value="{{ item.value }}"
                         {% if current_value == item.value or not current_value and forloop.first %}checked="true"{% endif %}
