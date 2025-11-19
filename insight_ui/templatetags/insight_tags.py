@@ -285,6 +285,7 @@ def radio_group(  # noqa: PLR0913 (too many arguments)
     query_params: str = "",
     target_id: str = "",
     method: str = "",
+    integrated: bool = False,
 ) -> dict:
     """
     Rendert ein Gruppe von Radio-Buttons.
@@ -297,6 +298,7 @@ def radio_group(  # noqa: PLR0913 (too many arguments)
         query_params (str): (Optional) Ein String von Query-Parametern
         target_id (str): (Optional) Die ID des HTML-Tags, welches bei wechseln des Wertes ausgetauscht werden soll.
         method (str): Der Name der JavaScript Methode welche ausgeführt werden soll.
+        integrated (bool): 'False' wenn die Komponente ihr eigenes <form> Element haben soll.
 
     Returns:
     -------
@@ -310,6 +312,7 @@ def radio_group(  # noqa: PLR0913 (too many arguments)
         "query_params": query_params,
         "target_id": target_id,
         "method": method,
+        "integrated": integrated,
     }
 
 
@@ -967,13 +970,49 @@ def three_d_carousel(
     }
 
 
+@register.inclusion_tag("insight_ui/components/select.html")
+def select(
+    name: str | None = None,
+    label: str | None = None,
+    values: list[str] | dict[str, str] | None = None,
+    selected_value: str | None = None,
+    config: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """
+    Rendert eine Auswahlbox.
+
+    Args:
+    ----
+        name (str): Der Name des <select> Elements.
+        label (str): Ein kurzer Titel, welche rüber dem Select angezeigt wird.
+        values (list[str] or dict[str, str]): Alle Werte welche ausgewählt werden können.
+        selected_value (str): Ein bereits ausgewählter Wert.
+        config (dict[str, Any]): Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template
+
+    """
+    if config is not None:
+        name = config.get("name", name)
+        label = config.get("label", label)
+        values = config.get("values", values)
+        selected_value = config.get("selected_value", selected_value)
+
+    if isinstance(values, list):
+        values = dict(zip(values, values))
+
+    return {"name": name, "label": label, "values": values, "selected_value": selected_value}
+
+
 @register.inclusion_tag("insight_ui/components/multiselect.html")
 def multiselect(  # noqa: PLR0913 (too many arguments)
     name: str | None = None,
     label: str | None = None,
     maximum: int | None = None,
     show_buttons: bool | None = None,
-    values: list[str] | None = None,
+    values: list[str] | dict[str, str] | None = None,
     selected_values: list[str] | None = None,
     config: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
@@ -986,7 +1025,7 @@ def multiselect(  # noqa: PLR0913 (too many arguments)
         label (str): Ein kurzer Titel, welche rüber dem Multiselect angezeigt wird.
         maximum (int): Gibt an wie viele Werte maximal ausgewählt sein dürfen.
         show_buttons (bool): 'True' zeigt zusätzlich "Alle Auswählen" und "Alle Abwählen" Buttons an.
-        values (list[str]): Alle Werte welche ausgewählt werden können.
+        values (list[str] or dict[str, str]): Alle Werte welche ausgewählt werden können.
         selected_values (list[str]): Alle Werte welche bereits ausgewählt sein sollen.
         config (dict[str, Any]): Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
 
@@ -1002,6 +1041,9 @@ def multiselect(  # noqa: PLR0913 (too many arguments)
         show_buttons = config.get("show_buttons", show_buttons)
         values = config.get("values", values)
         selected_values = config.get("selected_values", selected_values)
+
+    if isinstance(values, list):
+        values = dict(zip(values, values))
 
     return {
         "name": name,

@@ -106,6 +106,10 @@
             {% slider slider=example_slider %}
         {% elif component == "toggle_button" %}
             {% toggle toggle=example_toggle %}
+        {% elif component == "select" %}
+            <div class="h-64">
+                {% select config=select_config %}
+            </div>
         {% elif component == "multiselect" %}
             <div class="h-64">
                 {% multiselect config=multiselect_config %}

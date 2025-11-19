@@ -20,9 +20,11 @@ Die `multiselect` Komponente stellt eine Auswahlbox zur Verfügung, welche die A
 - **label** (_str_): Ein kurzer Titel, welche rüber dem Multiselect angezeigt wird.
 - **maximum** (_int_): Gibt an wie viele Werte maximal ausgewählt sein dürfen.
 - **show_buttons** (_bool_): _True_ zeigt zusätzlich "Alle Auswählen" und "Alle Abwählen" Buttons an.
-- **values** (_list[str]_): Alle Werte welche ausgewählt werden können.
+- **values** (_list[str]_ oder _dict[str, str]_): Alle Werte welche ausgewählt werden können.
 - **selected_values** (_list[str]_): Alle Werte welche bereits ausgewählt sein sollen.
 - **config** (_dict[str, Any]_): Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
+
+> **_Info_**: Wenn **values** eine Liste ist, dann wird die automatisch in ein _Dictionary_ umgewandelt, in welchem der _Key_ und der _Value_ identisch sind.
 
 ### config
 
@@ -34,7 +36,7 @@ Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
     "label": "Test",
     "maximum": 0,
     "show_buttons": True,
-    "values": ["A", "B", "C"],
+    "values": ["A", "B", "C"],  # alt { "A": "A", "B": "B", "C": "C"}
 }
 ```
 
@@ -51,4 +53,5 @@ Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in d
 
 ## Verwandte Themen
 
+- [Select](select.md)
 - [Generic Filter](generic_filter.md)

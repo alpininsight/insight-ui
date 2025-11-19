@@ -1,14 +1,20 @@
-<div class="flex flex-col space-y-2">
-    {% for item in radio_group.items %}
-        <label class="flex items-center gap-1">
-            <input
-                type="radio" id="{{ item.id }}"
-                name="{{ radio_group.name }}"
-                value="{{ item.value }}"
-                {% if item.disabled %}disabled{% endif %}
-                {% if current_value == item.value %}checked="true"{% endif %}
-            >
-            <span class="{% if item.disabled %}text-secondary{% else %}text-primary{% endif %} text-sm">{{ item.text }}</span>
-        </label>
-    {% endfor %}
+<div>
+    {% if radio_group.label %}
+        <span class="flex gap-1 text-sm font-bold text-primary mb-1">{{ radio_group.label }}</span>
+    {% endif %}
+    <div class="flex {% if not radio_group.as_row %}flex-col space-y-1{% else %}space-x-4{% endif %}">
+        {% for item in radio_group.items %}
+            <label class="flex items-center gap-1">
+                <input
+                    type="radio"
+                    id="{{ item.id }}"
+                    name="{{ radio_group.name }}"
+                    value="{{ item.value }}"
+                    {% if item.disabled %}disabled{% endif %}
+                    {% if current_value == item.value %}checked="true"{% endif %}
+                >
+                <span class="{% if item.disabled %}text-secondary{% else %}text-primary{% endif %} text-sm">{{ item.text }}</span>
+            </label>
+        {% endfor %}
+    </div>
 </div>

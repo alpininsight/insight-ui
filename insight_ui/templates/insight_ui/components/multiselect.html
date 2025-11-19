@@ -1,7 +1,7 @@
 {% load i18n %}
 
 <div data-multiselect data-name="{{ name }}" data-max="{{ maximum }}" data-selected="{{ selected_values|default:"" }}">
-    <label id="{{ name }}-label" class="block text-sm font-medium text-primary mb-1">{{ label }}</label>
+    <label id="{{ name }}-label" class="block text-sm font-bold text-primary mb-1">{{ label }}</label>
     <div class="flex gap-2 mb-1">
         <button type="button" class="select-all btn btn-primary btn-sm">{% trans "Alle auswählen" %}</button>
         <button type="button" class="deselect-all btn btn-primary btn-sm">{% trans "Alle abwählen" %}</button>
