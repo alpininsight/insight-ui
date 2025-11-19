@@ -24,9 +24,9 @@
     style="width: {{ sidebar_data.width|default:'18rem' }}"
     data-auto-close="{{ auto_close|yesno:'true,false' }}"
   >
-    <div class="flex flex-col {% if side == "right" %}ps-4 pe-16{% else %}ps-16 pe-4{% endif %}">
+    <div class="flex flex-col {% if side == "right" %}ps-4 pe-16{% else %}ps-16 pe-4{% endif %} {% if static %}pt-8{% else %}pb-8{% endif %}">
       <!-- Sidebar Header -->
-      <div class="flex justify-between items-center h-16 border-b border-gray-300 dark:border-gray-500 mb-4">
+      <div class="flex justify-between items-center {% if not static %}h-16{% else %}pb-4{% endif %} border-b border-gray-300 dark:border-gray-500">
         {% if sidebar_data.title %}
           <h2 class="flex items-center gap-1 text-lg mb-0">
             {% if sidebar_data.icon %}
