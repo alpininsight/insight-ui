@@ -15,7 +15,15 @@ def pytest_configure(config: Config) -> None:
 
     # Override staticfiles storage for tests to avoid manifest requirement
     # Tests don't run collectstatic, so we use the simple storage backend
-    settings.STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+    # Django 4.2+ uses STORAGES dict instead of STATICFILES_STORAGE
+    settings.STORAGES = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        },
+    }
 
 
 @pytest.fixture(scope="session")
