@@ -13,6 +13,10 @@ def pytest_configure(config: Config) -> None:
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")
         django.setup()
 
+    # Override staticfiles storage for tests to avoid manifest requirement
+    # Tests don't run collectstatic, so we use the simple storage backend
+    settings.STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+
 
 @pytest.fixture(scope="session")
 def live_server_class() -> type[StaticLiveServerTestCase]:
