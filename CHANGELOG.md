@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.1](https://github.com/alpininsight/insight-ui/compare/v1.2.0...v1.2.1) (2025-11-20)
+
+
+### Bug Fixes
+
+* satisfy Ruff and CI test layout ([b1d231d](https://github.com/alpininsight/insight-ui/commit/b1d231d0faf5efb40a903d533372d9e06ff06857))
+* satisfy Ruff and test package layout for CI ([ccaf921](https://github.com/alpininsight/insight-ui/commit/ccaf921e2ee40ba065603c584dc9090ada1dc150))
+
 ## [1.2.0](https://github.com/alpininsight/insight-ui/compare/v1.1.0...v1.2.0) (2025-11-19)
 
 
