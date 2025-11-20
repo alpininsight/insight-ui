@@ -4,6 +4,7 @@ import django
 import pytest
 from _pytest.config import Config
 from django.conf import settings
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
 
 def pytest_configure(config: Config) -> None:
@@ -14,10 +15,8 @@ def pytest_configure(config: Config) -> None:
 
 
 @pytest.fixture(scope="session")
-def live_server_class():  # noqa: ANN201
+def live_server_class() -> type[StaticLiveServerTestCase]:
     """Use Django's StaticLiveServerTestCase for serving static files."""
-    from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-
     return StaticLiveServerTestCase
 
 
