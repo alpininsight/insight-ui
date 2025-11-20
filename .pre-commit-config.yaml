@@ -1,60 +1,112 @@
 exclude: '^docs/|/migrations/|staticfiles|bin|.data|.venv|htmlcov|site|node_modules'
 
+default_language_version:
+  python: python3
+
 repos:
+  # Lightweight general hygiene
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-case-conflict
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+        args: ["--allow-multiple-documents"]
+      - id: check-toml
+      - id: check-json
+      - id: fix-byte-order-marker
+      - id: debug-statements
+      - id: detect-private-key
+      - id: check-merge-conflict
+      - id: mixed-line-ending
+      - id: check-added-large-files
+        args: ["--maxkb=1024"]
+      - id: no-commit-to-branch
+        stages: [commit]
+        args: ["--branch", "main", "--branch", "develop"]
+
+  # Ruff lint + format
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.14.5
+    hooks:
+      - id: ruff
+        args: ["--fix"]
+        stages: [pre-commit, pre-push]
+      - id: ruff-format
+        stages: [pre-commit, pre-push]
+
+  # Modernize Python syntax
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.15.1
+    rev: v3.21.1
     hooks:
       - id: pyupgrade
-        args: [--py312-plus]
+        args: ["--py312-plus"]
 
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+  # Modernize Django code (optional but useful)
+  - repo: https://github.com/adamchainz/django-upgrade
+    rev: 1.29.1
     hooks:
-      - id: check-added-large-files
-        args: ['--maxkb=1000']
-      - id: check-builtin-literals
-      - id: check-case-conflict
-      - id: check-shebang-scripts-are-executable
-      - id: check-symlinks
-      - id: check-executables-have-shebangs
-      - id: check-json
-      - id: check-merge-conflict
-      - id: check-symlinks
-      - id: check-toml
-      - id: check-yaml
-        args: ["--unsafe"]
-      - id: check-docstring-first
-      - id: check-xml
-      - id: debug-statements
-      - id: detect-private-key
-      - id: debug-statements
-      - id: detect-private-key
-      - id: end-of-file-fixer
-      - id: fix-byte-order-marker
-      - id: forbid-submodules
-      - id: no-commit-to-branch
-      - id: trailing-whitespace
-      - id: pretty-format-json
-        args: ['--autofix']
-        exclude: 'package.json|package-lock.json|pyrightconfig.json'
+      - id: django-upgrade
+        args: ["--target-version", "5.2"]
 
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    # Ruff version.
-    rev: v0.2.2
+  # Security scan (lightweight; consider moving to pre-push if slow)
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.9.0
     hooks:
-      # Run the linter.
-      - id: ruff
-      # Run the formatter.
-      - id: ruff-format
+      - id: bandit
+        args: ["-q", "-r", "insight_ui"]
 
-  - repo: https://github.com/wemake-services/dotenv-linter
-    rev: 0.4.0
+  # Secret scanning (Gitleaks)
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.29.0
     hooks:
-      - id: dotenv-linter
+      - id: gitleaks
 
-  - repo: https://github.com/compilerla/conventional-pre-commit
-    rev: v3.3.0
+  # Conventional Commits (commit-msg validation)
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v4.10.0
     hooks:
-      - id: conventional-pre-commit
+      - id: commitizen
         stages: [commit-msg]
-        args: [--strict]
+
+  # Format Django HTML templates (runs only when templates exist)
+  - repo: https://github.com/rtts/djhtml
+    rev: "3.0.10"
+    hooks:
+      - id: djhtml
+        files: '(^|/)templates/.*\.html$'
+
+  # Lint Makefile (runs only if a Makefile exists)
+  - repo: https://github.com/mrtazz/checkmake.git
+    rev: 0.2.2
+    hooks:
+      - id: checkmake
+        files: '^Makefile$'
+
+  # Optional: pytest, migrations, and system checks for the demo Django project
+  - repo: local
+    hooks:
+      - id: pytest
+        name: Run pytest (pre-push)
+        entry: bash
+        args: ["-lc", "PYTHONPATH=. uv run pytest -q"]
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
+
+      - id: django-migrations-check
+        name: Check for missing migrations
+        entry: bash
+        args: ["-lc", "PYTHONPATH=. uv run python manage.py makemigrations --check --dry-run"]
+        language: system
+        pass_filenames: false
+
+      - id: django-system-check
+        name: Django system check (pre-push)
+        entry: bash
+        args: ["-lc", "PYTHONPATH=. uv run python manage.py check --deploy --fail-level ERROR"]
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
+
