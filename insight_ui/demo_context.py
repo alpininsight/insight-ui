@@ -103,7 +103,7 @@ def get_login_screen_context() -> dict:
                 "url": "svg/ai-logo.svg",
                 "url_dark": "svg/ai-logo.svg",
                 "alt": "Unser Logo",
-                "height": "h-32",
+                "height": "8rem",
                 "position": "center",
             },
             "forgot_password": {"url": "#"},
@@ -141,12 +141,12 @@ def get_navbar_context() -> dict:
             "brand": {
                 "title": "Insight UI",
                 "view_name": "index_view",
-                "gap": "gap-2",
+                "gap": "0.5rem",
                 "logo": {
                     "url": "insight_ui/svg/ai-logo.svg",
                     "url_dark": "insight_ui/svg/ai-logo.svg",
                     "alt": "Insight UI Logo",
-                    "height": "h-8",
+                    "height": "2rem",
                 },
             },
             "links": [
@@ -260,6 +260,7 @@ def get_drawer_context() -> dict:
         "right_sidebar": {
             "title": _("Secondary Sidebar"),
             "icon": {"name": "home", "size": "small"},
+            "width": "24rem",
             "categories": [
                 {
                     "caption": "Main",
@@ -310,7 +311,6 @@ def get_sidebar_context() -> dict:
     return {
         "left_sidebar": {
             "title": _("Insight UI Components"),
-            "icon": {"name": "cards", "size": "small"},
             "categories": [
                 {
                     "caption": _("Navigation / Main"),
@@ -390,6 +390,11 @@ def get_sidebar_context() -> dict:
                         {
                             "text": _("Toggle-Buttons"),
                             "url": reverse("component_detail_page_view", kwargs={"component_name": "toggle_button"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Select"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "select"}),
                             "htmx": {"target": "#content"},
                         },
                         {
@@ -580,6 +585,7 @@ def get_inputs_storybook_context() -> dict:
         | get_toggle_button_context()
         | get_range_slider_context()
         | get_dropdown_context()
+        | get_select_context()
         | get_multiselect_context()
     )
 
@@ -777,6 +783,11 @@ def get_radio_group_context() -> dict:
 def get_toggle_button_context() -> dict:
     """Serve data for toggle-button detailpage."""
     return {"example_toggle": {"id": "toggle_button_example1", "text": _("Click me!"), "switch": True}}
+
+
+def get_select_context() -> dict:
+    """Serve data for select detailpage."""
+    return {"select_config": {"name": "test", "label": "Test", "values": ["A", "B", "C"]}}
 
 
 def get_multiselect_context() -> dict:

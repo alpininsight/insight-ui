@@ -10,7 +10,7 @@
   <div class="flex flex-wrap justify-between items-center gap-1 lg:gap-16 h-full">
     <!-- Brand Logo -->
     {% if brand %}
-      <a href="{{ brand.href }}" class="flex items-center {{ brand.gap|default:"2" }} text-xl font-bold text-primary">
+      <a href="{{ brand.href }}" class="flex items-center text-xl font-bold text-primary" style="gap: {{ brand.gap|default:'0.5rem' }}">
         {% if brand.logo.url %}
           <img
             id="brand-logo"
@@ -18,7 +18,7 @@
             data-light-src="{% static brand.logo.url %}"
             data-dark-src="{% static brand.logo.url_dark %}"
             alt="{{ brand.logo.alt }}"
-            class="{{ brand.logo.height|default:'h-8' }}"
+            style="height: {{ brand.logo.height|default:'2rem' }}"
           >
           <script>
           document.addEventListener("DOMContentLoaded", function() {

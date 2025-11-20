@@ -12,7 +12,7 @@
   id="{{ side }}-sidebar"
   data-insight-sidebar="{{ side }}"
   data-insight-sidebar-static="{{ static }}"
-  class="{% if static %}w-72{% else %}fixed inset-0 z-50 hidden{% endif %}"
+  class="{% if not static %}fixed inset-0 z-50 hidden{% endif %}"
 >
   {% if not static %}
     <div class="fixed inset-0 bg-black/50 transition-opacity" data-insight-dismiss="sidebar"></div>
@@ -20,14 +20,22 @@
   <aside
     role="complementary"
     aria-label="{% trans 'Side navigation' %}"
-    class="{% if static %}sticky top-16 h-[calc(100vh-4rem)]{% else %}fixed h-screen{% endif %} {% if side == "right" %}ltr:right-0 ltr:border-l rtl:left-0 rtl:border-r{% else %}ltr:left-0 ltr:border-r rtl:right-0 rtl:border-l{% endif %} overflow-y-auto bg-white dark:bg-gray-800 dark:border-gray-600 border-gray-200 w-72 shadow-md transition"
+    class="{% if static %}sticky top-16 h-[calc(100vh-4rem)]{% else %}fixed h-screen{% endif %} {% if side == "right" %}ltr:right-0 ltr:border-l rtl:left-0 rtl:border-r{% else %}ltr:left-0 ltr:border-r rtl:right-0 rtl:border-l{% endif %} overflow-y-auto bg-white dark:bg-gray-800 dark:border-gray-600 border-gray-200 shadow-md transition"
+    style="width: {{ sidebar_data.width|default:'18rem' }}"
     data-auto-close="{{ auto_close|yesno:'true,false' }}"
   >
-    <div class="flex flex-col {% if side == "right" %}ps-4 pe-16{% else %}ps-16 pe-4{% endif %}">
+    <div class="flex flex-col {% if side == "right" %}ps-4 pe-16{% else %}ps-16 pe-4{% endif %} {% if static %}pt-8{% else %}pb-8{% endif %}">
       <!-- Sidebar Header -->
-      <div class="flex justify-between items-center h-16 border-b border-gray-300 dark:border-gray-500 mb-4">
+      <div class="flex justify-between items-center {% if not static %}h-16{% else %}pb-4{% endif %} border-b border-gray-300 dark:border-gray-500 mb-4">
         {% if sidebar_data.title %}
-          <h2 class="text-lg font-semibold text-primary mb-0">{{ sidebar_data.title }}</h2>
+          <h2 class="flex items-center gap-1 text-lg mb-0">
+            {% if sidebar_data.icon %}
+              <div>
+                {% icon sidebar_data.icon %}
+              </div>
+            {% endif %}
+            {{ sidebar_data.title }}
+          </h2>
         {% endif %}
         {% if not auto_close and not static %}
           <button

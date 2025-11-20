@@ -1,5 +1,35 @@
 # Changelog
 
+## [1.2.1](https://github.com/alpininsight/insight-ui/compare/v1.2.0...v1.2.1) (2025-11-20)
+
+
+### Bug Fixes
+
+* satisfy Ruff and CI test layout ([b1d231d](https://github.com/alpininsight/insight-ui/commit/b1d231d0faf5efb40a903d533372d9e06ff06857))
+* satisfy Ruff and test package layout for CI ([ccaf921](https://github.com/alpininsight/insight-ui/commit/ccaf921e2ee40ba065603c584dc9090ada1dc150))
+
+## [1.2.0](https://github.com/alpininsight/insight-ui/compare/v1.1.0...v1.2.0) (2025-11-19)
+
+
+### Features
+
+* add defalt value to radio_group component ([1209eb2](https://github.com/alpininsight/insight-ui/commit/1209eb2edb7a9384896ebe76e5a6a0d31938e58f))
+* add id to radio_group component ([330d9df](https://github.com/alpininsight/insight-ui/commit/330d9df6dcef0fa7fc377d61a668456bc11a0c4b))
+* add integrable radio_group component ([64ab5c1](https://github.com/alpininsight/insight-ui/commit/64ab5c1de7c900fe0bd2c4e3b6d095d1cedc9441))
+* add labels to input components ([663f949](https://github.com/alpininsight/insight-ui/commit/663f9491e3c158d66a9a60ce544a3adbb868f93c))
+* add name property to toggle button and range slider ([b93286d](https://github.com/alpininsight/insight-ui/commit/b93286d51f7b198f54e188fb2cc240aa4b83126d))
+* add new component 'select' ([ee596f0](https://github.com/alpininsight/insight-ui/commit/ee596f058144f670308b6726617d6c8212a9a776))
+* add new select component ([1f4350c](https://github.com/alpininsight/insight-ui/commit/1f4350ca7f5f4112dc242fdcd46f636a0413cffd))
+* add option to show radio_buttons and checkboxes in a row ([7be9b0b](https://github.com/alpininsight/insight-ui/commit/7be9b0b30e51ead2bcf4f97c8a87ded9099fec99))
+* add optional icon to sidebar title ([0bccab3](https://github.com/alpininsight/insight-ui/commit/0bccab3e5d418d24d9cd36736119162982f15a10))
+* add padding to sidebar and adjust title area ([bd05b5c](https://github.com/alpininsight/insight-ui/commit/bd05b5cc1df896a146979837d394d765a7183bf7))
+* add selected values option to checkbox and select component ([891c824](https://github.com/alpininsight/insight-ui/commit/891c8246317f7c8e0df321756f0b32432dbd48ee))
+* change height and gap settings for brand logo ([0fd59fc](https://github.com/alpininsight/insight-ui/commit/0fd59fcee5807172f411fb0c0b55a2f2a826c4ad))
+* improve inputs ([a82232e](https://github.com/alpininsight/insight-ui/commit/a82232e816e344981672b542232f6ba3933c3233))
+* make loginform labels optional ([f95b987](https://github.com/alpininsight/insight-ui/commit/f95b987382e60a13eb1ee8ef358f628ca2ff3b4e))
+* make width of sidebar component customizable ([ee40854](https://github.com/alpininsight/insight-ui/commit/ee408546028fc4c377dc7556dc28b02f240efa7f))
+* show filled track of range slider component ([3bd9d71](https://github.com/alpininsight/insight-ui/commit/3bd9d71815c92d4b1155cc7f743d0a4cc8631a1a))
+
 ## [1.1.0](https://github.com/alpininsight/insight-ui/compare/v1.0.0...v1.1.0) (2025-11-17)
 
 

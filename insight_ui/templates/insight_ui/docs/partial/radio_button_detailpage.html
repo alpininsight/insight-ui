@@ -34,9 +34,14 @@
     <ul class="list-disc leading-relaxed ms-8">
         <li><span class="inline-tag">radio_group</span> (<i>dict</i>): Beschreibt die Radio Komponente und deren Items.</li>
         <li><span class="inline-tag">current_value</span> (<i>str</i>): Der Name der aktuell ausgewählten Wertes.</li>
-        <li><span class="inline-tag">view_name</span> (<i>str</i>): (Optional) Der Name der View an welchen der Request beim wechseln, gesendet werden soll (nur radio_group).</li>
-        <li><span class="inline-tag">query_params</span> (<i>str</i>): (Optional) Ein String von Query-Parametern (nur radio_group).</li>
-        <li><span class="inline-tag">target_id</span> (<i>str</i>): (Optional) Die ID des HTML-Tags, welches bei wechseln des Wertes ausgetauscht werden soll (nur radio_group).</li>
+    </ul>
+    <h4 class="text-base mt-4 mb-2">Nur <span class="inline-tag">radio_group</span></h4>
+    <ul class="list-disc leading-relaxed ms-8">
+        <li><span class="inline-tag">view_name</span> (<i>str</i>): (Optional) Der Name der View an welchen der Request beim wechseln, gesendet werden soll.</li>
+        <li><span class="inline-tag">query_params</span> (<i>str</i>): (Optional) Ein String von Query-Parametern.</li>
+        <li><span class="inline-tag">target_id</span> (<i>str</i>): (Optional) Die ID des HTML-Tags, welches bei wechseln des Wertes ausgetauscht werden soll.</li>
+        <li><span class="inline-tag">method</span> (<i>str</i>): (Optional) Der Name der JavaScript Methode welche ausgeführt werden soll.
+        <li><span class="inline-tag">integrated</span> (<i>bool</i>): <span class="inline-tag">False</span> wenn die Komponente ihr eigenes <span class="inline-tag">integrated</span>&lt;form&gt;</span> Element haben soll.
     </ul>
 
     <div class="mt-8">
@@ -46,6 +51,7 @@
         <div id="Radio_Group_Params" data-insight-code-block="python">
             {
                 "name": "radio-example1",
+                "label": "Model auswählen",
                 "items": [
                     {"id": "model1", "value": "BERT", "text": _("BERT"), "disabled": False},
                     {"id": "model2", "value": "PaLM 2", "text": _("PaLM 2"), "disabled": False},

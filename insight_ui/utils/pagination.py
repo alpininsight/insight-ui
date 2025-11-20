@@ -1,12 +1,9 @@
 from collections.abc import Sequence
-from typing import TypeVar, cast
 
 from django.core.paginator import Page, Paginator
 
-T = TypeVar("T")
 
-
-def get_page(data: Sequence[T], page: int = 1, max_neighbor_pages: int = 6) -> tuple[Page[T], list[str]]:
+def get_page(data: Sequence[object], page: int = 1, max_neighbor_pages: int = 6) -> tuple[Page[object], list[str]]:
     """
     Create pagination for given data.
 
@@ -51,5 +48,5 @@ def get_page(data: Sequence[T], page: int = 1, max_neighbor_pages: int = 6) -> t
         elif not page_links or page_links[-1] != "...":
             page_links.append("...")
 
-    page_obj = cast(Page[T], paginator.get_page(page))
+    page_obj: Page[object] = paginator.get_page(page)
     return page_obj, page_links

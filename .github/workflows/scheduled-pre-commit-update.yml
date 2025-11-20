@@ -1,0 +1,43 @@
+name: Scheduled pre-commit update
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 1"  # Mondays at 06:00 UTC
+
+jobs:
+  autoupdate:
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: astral-sh/setup-uv@v7
+
+      - name: Run pre-commit autoupdate
+        run: uvx pre-commit autoupdate
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet .pre-commit-config.yaml; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create Pull Request
+        if: steps.changes.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "chore(pre-commit): autoupdate hooks"
+          title: "chore(pre-commit): autoupdate hooks"
+          body: |
+            Automated update of pre-commit hook versions.
+          branch: chore/pre-commit-autoupdate
+          labels: chore, ci
+
