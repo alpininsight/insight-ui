@@ -34,11 +34,13 @@ dependencies = [
     "whitenoise>=6.9.0",
     "structlog>=25.4.0",
     "mkdocs>=1.6.1",
+    "python-decouple==3.8",
 ]
 
 [tool.uv]
 default-groups = ["dev"]
 
+# For uv and poetry
 [dependency-groups]
 dev = [
     "isort>=7.0.0",
@@ -60,6 +62,7 @@ docs = [
     "mkdocstrings[python]",
 ]
 
+# For pip
 [project.optional-dependencies]
 test = [
     "pytest",
@@ -159,7 +162,7 @@ line-length = 120
 indent-width = 4
 
 # Assume Python 3.13
-target-version = "py312"  # As temporary workaround use "py312" because "py313" is currently not recognized by ruff
+target-version = "py313"
 
 [tool.ruff.lint]
 # Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.

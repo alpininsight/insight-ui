@@ -19,9 +19,11 @@
     <p class="mb-4">Eingebunden wird die Sidebar am einfachsten über das entsprechende <i>Template-Tag</i>. Für die Sidebar sind für jede Seite entsprechende Blöcke definiert, in welchem diese platziert werden sollten.</p>
 
     <div id="Sidebar_Usage" data-insight-code-block="Django">
+        {# fmt:off #}
         &lcub;% block drawers %&rcub;
             &lcub;% sidebar sidebar_data=right_sidebar side="right" auto_close=False %&rcub;
         &lcub;% endblock drawers %&rcub;
+        {# fmt:on #}
     </div>
 </section>
 
@@ -39,6 +41,7 @@
         <p class="mb-6">Der Inhalt der Sidebar (Titel und Navigations-Elemente).</p>
 
         <div id="Sidebar_Params" data-insight-code-block="python">
+            {# fmt:off #}
             {
                 "title": _("Secondary Sidebar"),
                 "icon": {"name": "home", "size": "small"},
@@ -68,6 +71,7 @@
                     }
                 ],
             }
+            {# fmt:on #}
         </div>
     </div>
 </section>

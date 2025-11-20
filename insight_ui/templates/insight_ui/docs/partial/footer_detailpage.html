@@ -22,11 +22,13 @@
         {% endblocktrans %}
     </p>
     <div id="Footer_Usage" data-insight-code-block="Django">
+        {# fmt:off #}
         &lcub;% load insight_tags %&rcub;
 
         &lcub;% block footer %&rcub;
             &lcub;% footer data=footer_data %&rcub;
         &lcub;% endblock footer %&rcub;
+        {# fmt:on #}
     </div>
 </section>
 
@@ -41,17 +43,19 @@
         <p class="text-secondary mb-6">{% trans "Die Daten welche im Footer angezeigt werden sollen." %}</p>
 
         <div id="Footer_Params" data-insight-code-block="python">
-            {
-                "description": {
+            {# fmt:off #}
+            &lcub;
+                "description": &lcub;
                     "title": "Insight UI",
                     "text": "Eine moderne UI-Bibliothek für Django-Anwendungen um schnell zu durchzustarten.",
-                },
+                &rcub;,
                 "links": [
-                    {"text": _("Startseite"), "icon": {"name": "home", "size": "small"}, "view_name": "storybook_view"},
-                    {"text": _("Storybook"), "view_name": "storybook_view"},
-                    {"text": _("Dokumentation"), "view_name": "storybook_view"},
+                    &lcub;"text": _("Startseite"), "icon": &lcub;"name": "home", "size": "small"&rcub;, "view_name": "storybook_view"&rcub;,
+                    &lcub;"text": _("Storybook"), "view_name": "storybook_view"&rcub;,
+                    &lcub;"text": _("Dokumentation"), "view_name": "storybook_view"&rcub;,
                 ],
-            },
+            &rcub;
+            {# fmt:on #}
         </div>
     </div>
 </section>

@@ -19,10 +19,12 @@
             {% trans "Load more" %}
         </button>
     {% else %}
-        <div hx-get="{% url view_name %}?page={{ page }}&auto_fetch={{ auto_fetch }}"
+        <div
+            hx-get="{% url view_name %}?page={{ page }}&auto_fetch={{ auto_fetch }}"
             hx-trigger="revealed"
             hx-swap="outerHTML"
-            class="text-center py-4">
+            class="text-center py-4"
+        >
             <div class="inline-flex items-center px-4 py-2 text-sm text-secondary">
                 <svg class="animate-spin -ml-1 mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

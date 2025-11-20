@@ -26,13 +26,17 @@
     </div>
     <div class="p-4 md:p-6 space-y-6">
         <div id="code" data-insight-code-block="javascript">
+            {# fmt:off #}
             function greet(name) {
                 return `Hello, ${name}!`;
             }
+            {# fmt:on #}
         </div>
         <div id="code2" data-insight-code-block="python">
+            {# fmt:off #}
             def greet(name: str) -> str:
                 return f"Hello, {name}";
+            {# fmt:on #}
         </div>
     </div>
 </section>
@@ -118,7 +122,7 @@
     </div>
     <div class="p-4 md:p-6">
         <!-- {% insight_websocket html_tag_id="demo-websocket" ws_url="ws://localhost:8765" initial_content="<p>Verbinde zu WebSocket…</p>" %} -->
-    <div>
+    </div>
 </section>
 
 <!-- Geo-Map Demo -->

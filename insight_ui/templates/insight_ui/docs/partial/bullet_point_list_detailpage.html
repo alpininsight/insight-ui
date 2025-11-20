@@ -32,15 +32,17 @@
         <p class="mb-6">{% trans "Ein Liste der einzelnen Punkte der Bullet Point Liste." %}</p>
 
         <div id="Bullet_Point_Params" data-insight-code-block="python">
+            {# fmt:off #}
             [
-                {
+                &lcub;
                     "title": _("Kontaktdaten"),
                     "description": _("Informationen zur Person und Anschrift."),
                     "completed": True,
-                },
-                {"title": _("Zahlungsmethode"), "description": _("Art der Bezahlung auswählen."), "current": True},
-                {"title": _("Überprüfen"), "description": _("Prüfen der Angaben und Bezahlen.")},
+                &rcub;,
+                &lcub;"title": _("Zahlungsmethode"), "description": _("Art der Bezahlung auswählen."), "current": True&rcub;,
+                &lcub;"title": _("Überprüfen"), "description": _("Prüfen der Angaben und Bezahlen.")&rcub;,
             ]
+            {# fmt:on #}
         </div>
     </div>
 </section>

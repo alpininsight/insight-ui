@@ -174,9 +174,11 @@
             </div>
         {% elif component == "code_block" %}
             <div id="code" data-insight-code-block="javascript">
+                {# fmt:off #}
                 function greet(name) {
                     return `Hello, ${name}!`;
                 }
+                {# fmt:on #}
             </div>
         {% elif component == "differentiator" %}
             {{ textA|diff:textB|safe }}

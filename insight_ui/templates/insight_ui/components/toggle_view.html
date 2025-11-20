@@ -2,9 +2,9 @@
 
 <div id="switchable-view-{{ tag_id }}">
   <div class="flex justify-end w-full mb-2">
-  {% with "switchable-view-"|add:tag_id as target_id %}
-    {% radio_group radio_group=view_options current_value=current_view view_name="toggle_view" query_params="test=123" target_id=target_id %}
-  {% endwith %}
+    {% with "switchable-view-"|add:tag_id as target_id %}
+      {% radio_group radio_group=view_options current_value=current_view view_name="toggle_view" query_params="test=123" target_id=target_id %}
+    {% endwith %}
   </div>
   {% if current_view == 'carousel' %}
     {% carousel carousel_items=cards show_index=True slides_count=range_total_slides items_per_slide=2 %}

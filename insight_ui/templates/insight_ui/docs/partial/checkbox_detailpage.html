@@ -30,14 +30,16 @@
         <p class="mb-6">{% trans "Beschreibt die Checkbox Komponente." %}</p>
 
         <div id="Checkbox_Params" data-insight-code-block="python">
-            {
+            {# fmt:off #}
+            &lcub;
                 "name": "checkbox-example1",
                 "items": [
-                    {"id": "english", "value": "english", "text": _("English"), "disabled": False},
-                    {"id": "german", "value": "german", "text": _("German"), "disabled": False},
-                    {"id": "italian", "value": "italian", "text": _("Italian (currently not available)"), "disabled": True},
+                    &lcub;"id": "english", "value": "english", "text": _("English"), "disabled": False&rcub;,
+                    &lcub;"id": "german", "value": "german", "text": _("German"), "disabled": False&rcub;,
+                    &lcub;"id": "italian", "value": "italian", "text": _("Italian (currently not available)"), "disabled": True&rcub;,
                 ],
-            }
+            &rcub;
+            {# fmt:on #}
         </div>
     </div>
 </section>
