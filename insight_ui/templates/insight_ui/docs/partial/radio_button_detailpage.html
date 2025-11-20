@@ -40,8 +40,8 @@
         <li><span class="inline-tag">view_name</span> (<i>str</i>): (Optional) Der Name der View an welchen der Request beim wechseln, gesendet werden soll.</li>
         <li><span class="inline-tag">query_params</span> (<i>str</i>): (Optional) Ein String von Query-Parametern.</li>
         <li><span class="inline-tag">target_id</span> (<i>str</i>): (Optional) Die ID des HTML-Tags, welches bei wechseln des Wertes ausgetauscht werden soll.</li>
-        <li><span class="inline-tag">method</span> (<i>str</i>): (Optional) Der Name der JavaScript Methode welche ausgeführt werden soll.
-        <li><span class="inline-tag">integrated</span> (<i>bool</i>): <span class="inline-tag">False</span> wenn die Komponente ihr eigenes <span class="inline-tag">integrated</span>&lt;form&gt;</span> Element haben soll.
+        <li><span class="inline-tag">method</span> (<i>str</i>): (Optional) Der Name der JavaScript Methode welche ausgeführt werden soll.</li>
+        <li><span class="inline-tag">integrated</span> (<i>bool</i>): <span class="inline-tag">False</span> wenn die Komponente ihr eigenes <span class="inline-tag">&lt;form&gt;</span> Element haben soll.</li>
     </ul>
 
     <div class="mt-8">
@@ -49,6 +49,7 @@
         <p class="mb-4">Beschreibt die Radio Komponente und deren Items.</p>
 
         <div id="Radio_Group_Params" data-insight-code-block="python">
+            {# fmt:off #}
             {
                 "name": "radio-example1",
                 "label": "Model auswählen",
@@ -58,6 +59,7 @@
                     {"id": "model3", "value": "LLaMA 2", "text": _("LLaMA 2 (currently not available)"), "disabled": True},
                 ],
             }
+            {# fmt:on #}
         </div>
     </div>
 </section>

@@ -22,6 +22,7 @@
 <section>
     <h2>{% trans "Verwendung" %}</h2>
     <div id="Button_Usage" data-insight-code-block="Django">
+        {# fmt:off #}
         &lt;button class="btn btn-primary"&gt;&lcub;% trans "Primary" %&rcub;&lt;/button&gt;
         &lt;button class="btn btn-secondary"&gt;&lcub;% trans "Secondary" %&rcub;&lt;/button&gt;
         &lt;button class="btn btn-success"&gt;&lcub;% trans "Success" %&rcub;&lt;/button&gt;
@@ -48,6 +49,7 @@
         &lt;button class="btn btn-primary"&gt;&lcub;% trans "Click me!" %&rcub;&lt;/button&gt;
         &lt;button class="btn btn-primary btn-sm"&gt;&lcub;% trans "Click me!" %&rcub;&lt;/button&gt;
         &lt;button class="btn btn-primary btn-xs"&gt;&lcub;% trans "Click me!" %&rcub;&lt;/button&gt;
+        {# fmt:on #}
     </div>
 
     <p class="mt-6">Die Klasse <span class="inline-tag">btn</span> gibt dem Button seine Form, aber weder Farbe noch Effekte.</p>
@@ -86,7 +88,7 @@
     <h2>{% trans "Customization" %}</h2>
     <p>
         Alle <span class="inline-tag">btn-*</span>-Klassen sind in der Datei <span class="inline-tag">insight_ui/utils/input.css</span> innerhalb des <span class="inline-tag">@layer components</span> Bereichs definiert und können dort nach belieben angepasst werden.</p>
-    </p>
+</p>
 </section>
 
 <!-- A11y -->

@@ -17,9 +17,11 @@
 <section>
     <h2>{% trans "Verwendung" %}</h2>
     <div id="Pagination_Usage" data-insight-code-block="Django">
+        {# fmt:off #}
         &lt;div id="list-container"&gt;
             &lcub;% paginated_list with current_page=start_page surrounding_pages=surrounding_pages %&rcub;
         &lt;/div&gt;
+        {# fmt:on #}
     </div>
 </section>
 

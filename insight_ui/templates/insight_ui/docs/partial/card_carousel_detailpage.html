@@ -53,6 +53,7 @@
     </p>
 
     <div id="Custom_Card_Carousel_Example" data-insight-code-block="Django">
+        {# fmt:off #}
         &lcub;% extends "insight_ui/components/carousel.html" %&rcub;
 
         &lcub;% load insight_tags %&rcub;
@@ -65,6 +66,7 @@
                 &lt;p&gt;&lcub;&lcub; item.content &rcub;&rcub;&lt;/p&gt;
             &lt;/div&gt;
         &lcub;% endblock carousel_content %&rcub;
+        {# fmt:on #}
     </div>
 
     <p class="mt-6 mb-4">

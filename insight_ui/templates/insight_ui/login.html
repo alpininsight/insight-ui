@@ -29,7 +29,7 @@
             const observer = new MutationObserver(updateLogo);
             observer.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
           });
-          </script>
+        </script>
       </div>
     {% endif %}
     <h2 class="text-primary text-center text-3xl font-bold leading-9">{% trans "Login" %}</h2>
@@ -75,7 +75,7 @@
     {% if sign_up %}
       <!-- Sign up section -->
       <div class="mt-4">
-        <p class="text-secondary text-sm">{% trans "You do not have an account yet?" %}
+        <p class="text-secondary text-sm">{% trans "You do not have an account yet?" %}</p>
         <a href="{{ sign_up.url }}" class="text-link text-sm">{% trans "Sign up here" %}</a>
       </div>
     {% endif %}

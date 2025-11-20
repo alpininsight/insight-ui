@@ -39,4 +39,3 @@ jobs:
 
       - name: Tests (pytest)
         run: uv run pytest
-

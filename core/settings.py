@@ -3,16 +3,18 @@
 import os
 from pathlib import Path
 
+from decouple import config
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-test-key-not-for-production"  # noqa: S105
+SECRET_KEY = config("SECRET_KEY", default="django-insecure-test-key-not-for-production")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DEBUG", default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=lambda v: [s.strip() for s in v.split(",")], default="*")
 
 # Application definition
 INSTALLED_APPS = [
@@ -68,7 +70,6 @@ DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": os.path
 LANGUAGE_CODE = "de-de"
 TIME_ZONE = "Europe/Berlin"
 USE_I18N = True
-USE_L10N = True
 USE_TZ = True
 
 LANGUAGES = [
@@ -91,7 +92,10 @@ STATICFILES_DIRS = [BASE_DIR / "insight_ui/static/insight_ui/"]
 TAILWIND_CLI_SRC_CSS = os.path.join(BASE_DIR, "insight_ui/utils/input.css")
 
 # WhiteNoise configuration
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
+}
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -103,10 +107,10 @@ LOGIN_URL = "/accounts/login/"
 LOGIN_REDIRECT_URL_FAILURE = "/login/failure"
 
 # Env-Variables
-PROJECT_NAME = "Insight UI"
-PROJECT_DESCRIPTION = "Our base template to build Web UI's for our applications"
-PROJECT_AUTHOR = "Alpin Insight AI"
-VERSION = "0.1.0"
+PROJECT_NAME = config("PROJECT_NAME", default="Insight UI")
+PROJECT_DESCRIPTION = config("PROJECT_DESCRIPTION", default="Our base template to build Web UI's for our applications.")
+PROJECT_AUTHOR = config("PROJECT_AUTHOR", default="Alpin Insight AI")
+VERSION = "0.0.0"
 
 # Insight UI Einstellungen
 INSIGHT_UI = {

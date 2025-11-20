@@ -2,7 +2,7 @@
 
 <!-- Skip-Link for Accessibility, placed BEFORE nav -->
 <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-blue-600 text-white p-2 rounded">
-    {% trans 'Jump to main content' %}
+  {% trans 'Jump to main content' %}
 </a>
 
 <nav role="navigation" aria-label="{% trans 'Main navigation' %}" class="fixed w-full h-16 z-50 bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700 px-4 md:px-16">
@@ -21,20 +21,20 @@
             style="height: {{ brand.logo.height|default:'2rem' }}"
           >
           <script>
-          document.addEventListener("DOMContentLoaded", function() {
-            const root = document.documentElement;
-            const logo = document.getElementById("brand-logo");
+            document.addEventListener("DOMContentLoaded", function() {
+              const root = document.documentElement;
+              const logo = document.getElementById("brand-logo");
 
-            function updateLogo() {
-              const theme = root.getAttribute("data-theme") || "light";
-              logo.src = theme === "dark" ? logo.dataset.darkSrc : logo.dataset.lightSrc;
-            }
+              function updateLogo() {
+                const theme = root.getAttribute("data-theme") || "light";
+                logo.src = theme === "dark" ? logo.dataset.darkSrc : logo.dataset.lightSrc;
+              }
 
-            updateLogo();
+              updateLogo();
 
-            const observer = new MutationObserver(updateLogo);
-            observer.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
-          });
+              const observer = new MutationObserver(updateLogo);
+              observer.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+            });
           </script>
         {% endif %}
         <span>{{ brand.title }}</span>
@@ -62,65 +62,65 @@
       <div class="flex flex-col lg:flex-row lg:justify-between gap-2 w-full lg:h-full p-2 lg:p-0 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 shadow-lg lg:shadow-none lg:bg-transparent lg:border-none rounded">
         <!-- Main-Navigation -->
         {% if links %}
-            <ul class="flex flex-col lg:flex-row justify-items-stretch lg:items-center w-full lg:w-fit">
-              {% for link in links %}
-                  {% if not link.need_auth or options.user.is_authenticated and not link.staff_only or options.user.is_staff %}
-                    <li>
-                      {% if link.view_name or link.href %}
-                        <a
-                          href="{{ link.href }}"
-                          class="flex gap-2 h-full border-b-2 {% if link.active %}text-insight-text-link border-insight-text-link{% else %}text-secondary hover:text-insight-text-link border-transparent{% endif %} px-4 py-2 text-sm transition-colors duration-200"
-                          {% if link.active %}aria-current="page"{% endif %}
-                          {% if link.external %}target="_blank" rel="noopener"{% endif %}
-                        >
-                          {% if link.icon %}
-                            {% icon link.icon %}
-                          {% endif %}
-                          {{ link.text }}
-                        </a>
-                      {% elif link.open_dropdown %}
-                        <div class="relative">
-                          <button data-dropdown-toggle="{{ link.open_dropdown }}" class="flex gap-2 h-full border-b-2 {% if link.active %}text-insight-text-link border-insight-text-link{% else %}text-secondary hover:text-insight-text-link border-transparent{% endif %} px-4 py-2 text-sm transition-colors duration-200">
-                            {% if link.icon %}
-                              {% icon link.icon %}
-                            {% endif %}
-                            {{ link.text }}
-                            {% if link.chevron %}
-                              {% icon name="chevron_down" size="small" %}
-                            {% endif %}
-                          </button>
-                          <div id="{{ link.open_dropdown }}" class="bg-white border border-gray-300 dark:border-0 rounded-sm shadow-lg">
-                            <div class="py-1">
-                              {% for item in link.items %}
-                                {% with item_url=item.href %}
-                                <a
-                                  {% if item.htmx and item_url %}
-                                    hx-get="{{ item_url }}"
-                                    hx-target="{{ item.htmx.target }}"
-                                    hx-swap="{{ item.htmx.swap|default:'innerHTML' }} show:window:top"
-                                    hx-push-url="true"
-                                  {% endif %}
-                                  href="{{ item_url|default:'' }}"
-                                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                  >{{ item.text }}</a>
-                                {% endwith %}
-                              {% endfor %}
-                            </div>
-                          </div>
-                        </div>
-                      {% elif link.open_modal %}
-                        <button
-                          class="text-secondary hover:text-insight-text-link px-4 py-2 text-sm transition-colors duration-200"
-                          data-insight-toggle="modal"
-                          data-insight-target="{{ link.open_modal }}">
-                          {{ link.text }}
-                        </button>
-                        {% modal html_tag_id=link.open_modal title=_("Insight-UI") description=_("Lorem ipsum...") %}
+          <ul class="flex flex-col lg:flex-row justify-items-stretch lg:items-center w-full lg:w-fit">
+            {% for link in links %}
+              {% if not link.need_auth or options.user.is_authenticated and not link.staff_only or options.user.is_staff %}
+                <li>
+                  {% if link.view_name or link.href %}
+                    <a
+                      href="{{ link.href }}"
+                      class="flex gap-2 h-full border-b-2 {% if link.active %}text-insight-text-link border-insight-text-link{% else %}text-secondary hover:text-insight-text-link border-transparent{% endif %} px-4 py-2 text-sm transition-colors duration-200"
+                      {% if link.active %}aria-current="page"{% endif %}
+                      {% if link.external %}target="_blank" rel="noopener"{% endif %}
+                    >
+                      {% if link.icon %}
+                        {% icon link.icon %}
                       {% endif %}
-                    </li>
+                      {{ link.text }}
+                    </a>
+                  {% elif link.open_dropdown %}
+                    <div class="relative">
+                      <button data-dropdown-toggle="{{ link.open_dropdown }}" class="flex gap-2 h-full border-b-2 {% if link.active %}text-insight-text-link border-insight-text-link{% else %}text-secondary hover:text-insight-text-link border-transparent{% endif %} px-4 py-2 text-sm transition-colors duration-200">
+                        {% if link.icon %}
+                          {% icon link.icon %}
+                        {% endif %}
+                        {{ link.text }}
+                        {% if link.chevron %}
+                          {% icon name="chevron_down" size="small" %}
+                        {% endif %}
+                      </button>
+                      <div id="{{ link.open_dropdown }}" class="bg-white border border-gray-300 dark:border-0 rounded-sm shadow-lg">
+                        <div class="py-1">
+                          {% for item in link.items %}
+                            {% with item_url=item.href %}
+                              <a
+                                {% if item.htmx and item_url %}
+                                  hx-get="{{ item_url }}"
+                                  hx-target="{{ item.htmx.target }}"
+                                  hx-swap="{{ item.htmx.swap|default:'innerHTML' }} show:window:top"
+                                  hx-push-url="true"
+                                {% endif %}
+                                href="{{ item_url|default:'' }}"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                              >{{ item.text }}</a>
+                            {% endwith %}
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                  {% elif link.open_modal %}
+                    <button
+                      class="text-secondary hover:text-insight-text-link px-4 py-2 text-sm transition-colors duration-200"
+                      data-insight-toggle="modal"
+                      data-insight-target="{{ link.open_modal }}">
+                      {{ link.text }}
+                    </button>
+                    {% modal html_tag_id=link.open_modal title=_("Insight-UI") description=_("Lorem ipsum...") %}
                   {% endif %}
-              {% endfor %}
-            </ul>
+                </li>
+              {% endif %}
+            {% endfor %}
+          </ul>
         {% endif %}
 
         <!-- Other Nav-Elements -->

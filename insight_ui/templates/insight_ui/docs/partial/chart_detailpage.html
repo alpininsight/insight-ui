@@ -43,7 +43,8 @@
         <p class="mb-6">Die Informationen und Daten des Diagramms.</p>
 
         <div id="Chart_Params" data-insight-code-block="python">
-            {
+            {# fmt:off #}
+            &lcub;
                 "title": "Chart Example",
                 "x_axis_legend": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
                 "series": ["Email", "Union Ads", "Video Ads", "Direct", "Search Engine"],
@@ -54,7 +55,8 @@
                     [150, 212, 201, 154, 190, 330, 410],
                     [820, 832, 901, 934, 1290, 1330, 1320],
                 ],
-            }
+            &rcub;
+            {# fmt:on #}
         </div>
     </div>
 

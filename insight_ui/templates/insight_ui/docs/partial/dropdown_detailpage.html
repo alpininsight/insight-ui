@@ -36,28 +36,30 @@
         <p class="mb-6">{% trans "Ein Dictionary welches das Dropdown beschreibt." %}</p>
 
         <div id="Dropdown_Params" data-insight-code-block="python">
-            {
+            {# fmt:off #}
+            &lcub;
                 "tag_id": "DD_user",
                 "title": _("User"),
                 "show_arrow": True,
                 "items": [
-                    {
+                    &lcub;
                         "text": _("Profile"),
                         "view_name": "storybook_view",
-                        "icon": {"name": "user", "size": "small"},
-                    },
-                    {
+                        "icon": &lcub;"name": "user", "size": "small"&rcub;,
+                    &rcub;,
+                    &lcub;
                         "text": _("Settings"),
                         "view_name": "storybook_view",
-                        "icon": {"name": "cog", "size": "small"},
-                    },
-                    {
+                        "icon": &lcub;"name": "cog", "size": "small"&rcub;,
+                    &rcub;,
+                    &lcub;
                         "text": _("Logout"),
                         "view_name": "storybook_view",
-                        "icon": {"name": "got-out", "size": "small"},
-                    },
+                        "icon": &lcub;"name": "got-out", "size": "small"&rcub;,
+                    &rcub;,
                 ],
-            }
+            &rcub;
+            {# fmt:on #}
         </div>
 
         <ul class="list-disc leading-relaxed ms-8 mt-6">

@@ -23,11 +23,7 @@ def test_login_screen_with_logo() -> None:
     """Check login screen has a logo with a specific height."""
     html = render_to_string(
         "insight_ui/login.html",
-        {
-            "logo": {"url": "images/logo.png", "alt": "Test Logo", "height": "6rem"},
-            "app_path": "/login/",
-            "form": {},
-        },
+        {"logo": {"url": "images/logo.png", "alt": "Test Logo", "height": "6rem"}, "app_path": "/login/", "form": {}},
     )
 
     assert "<img" in html

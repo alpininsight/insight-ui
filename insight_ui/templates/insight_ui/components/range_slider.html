@@ -29,48 +29,48 @@
     updateSlider(document.getElementById("{{ slider.id }}"));
 </script>
 <style>
-.range-custom {
-  --range-progress: 0%;
-}
+    .range-custom {
+        --range-progress: 0%;
+    }
 
 /* Track */
-.range-custom::-webkit-slider-runnable-track {
-  height: 0.5rem;
-  border-radius: 4px;
-  background: linear-gradient(
-      to right,
-      #3b82f6 var(--range-progress), /* Tailwind: blue-500 */
-      #e5e7eb var(--range-progress)   /* gray-200 */
-  );
-}
-.range-custom::-moz-range-track {
-  height: 0.5rem;
-  border-radius: 4px;
-  background: linear-gradient(
-      to right,
-      #3b82f6 var(--range-progress),
-      #e5e7eb var(--range-progress)
-  );
-}
+    .range-custom::-webkit-slider-runnable-track {
+        height: 0.5rem;
+        border-radius: 4px;
+        background: linear-gradient(
+            to right,
+            #3b82f6 var(--range-progress), /* Tailwind: blue-500 */
+            #e5e7eb var(--range-progress)   /* gray-200 */
+        );
+    }
+    .range-custom::-moz-range-track {
+        height: 0.5rem;
+        border-radius: 4px;
+        background: linear-gradient(
+            to right,
+            #3b82f6 var(--range-progress),
+            #e5e7eb var(--range-progress)
+        );
+    }
 
 /* Thumb */
-.range-custom::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 1rem;
-  height: 1rem;
-  background: #fff;
-  border: 2px solid #3b82f6;
-  border-radius: 9999px;
-  cursor: pointer;
-  margin-top: -0.25rem; /* Zentriert den Daumen */
-}
-.range-custom::-moz-range-thumb {
-  width: 1rem;
-  height: 1rem;
-  background: #fff;
-  border: 2px solid #3b82f6;
-  border-radius: 9999px;
-  cursor: pointer;
-}
+    .range-custom::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 1rem;
+        height: 1rem;
+        background: #fff;
+        border: 2px solid #3b82f6;
+        border-radius: 9999px;
+        cursor: pointer;
+        margin-top: -0.25rem; /* Zentriert den Daumen */
+    }
+    .range-custom::-moz-range-thumb {
+        width: 1rem;
+        height: 1rem;
+        background: #fff;
+        border: 2px solid #3b82f6;
+        border-radius: 9999px;
+        cursor: pointer;
+    }
 </style>
