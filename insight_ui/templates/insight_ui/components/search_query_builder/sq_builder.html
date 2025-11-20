@@ -2,40 +2,40 @@
 
 <!-- Filter -->
 <div class="flex flex-col gap-6">
-	<form id="filter-form" class="w-full">
+    <form id="filter-form" class="w-full">
         <p class="text-secondary pb-2">{% trans "The following conditions must be met:" %}</p>
-		<div id="filters" class="flex flex-col gap-2">
-			{% for filter in custom_filters %}
+        <div id="filters" class="flex flex-col gap-2">
+            {% for filter in custom_filters %}
                 <div class="filter flex flex-col gap-2">
-				    {% include "insight_ui/components/search_query_builder/sq_builder_filter.html" with index=forloop.counter0 selected_field=filter.field filter_operator=filter.operator filter_value=filter.value selected_logic=filter.logic %}
-			    </div>
-                {% empty %}
-                <div class="filter flex flex-col gap-2">
-				    {% include "insight_ui/components/search_query_builder/sq_builder_filter.html" with index=0 %}
+                    {% include "insight_ui/components/search_query_builder/sq_builder_filter.html" with index=forloop.counter0 selected_field=filter.field filter_operator=filter.operator filter_value=filter.value selected_logic=filter.logic %}
                 </div>
-			{% endfor %}
-		</div>
-		<div class="flex gap-1 mt-6">
+            {% empty %}
+                <div class="filter flex flex-col gap-2">
+                    {% include "insight_ui/components/search_query_builder/sq_builder_filter.html" with index=0 %}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="flex gap-1 mt-6">
             <button id="add-filter-btn" onclick="addFilter()" type="button" class="btn btn-outline-primary">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                 </svg>
             </button>
-			<button type="submit" class="btn btn-primary">
-				{% trans "Apply" %}
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5">
-					<path fill-rule="evenodd" d="M4.755 10.059a7.5 7.5 0 0 1 12.548-3.364l1.903 1.903h-3.183a.75.75 0 1 0 0 1.5h4.992a.75.75 0 0 0 .75-.75V4.356a.75.75 0 0 0-1.5 0v3.18l-1.9-1.9A9 9 0 0 0 3.306 9.67a.75.75 0 1 0 1.45.388Zm15.408 3.352a.75.75 0 0 0-.919.53 7.5 7.5 0 0 1-12.548 3.364l-1.902-1.903h3.183a.75.75 0 0 0 0-1.5H2.984a.75.75 0 0 0-.75.75v4.992a.75.75 0 0 0 1.5 0v-3.18l1.9 1.9a9 9 0 0 0 15.059-4.035.75.75 0 0 0-.53-.918Z" clip-rule="evenodd" />
-				</svg>
-			</button>
-		</div>
-	</form>
+            <button type="submit" class="btn btn-primary">
+                {% trans "Apply" %}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5">
+                    <path fill-rule="evenodd" d="M4.755 10.059a7.5 7.5 0 0 1 12.548-3.364l1.903 1.903h-3.183a.75.75 0 1 0 0 1.5h4.992a.75.75 0 0 0 .75-.75V4.356a.75.75 0 0 0-1.5 0v3.18l-1.9-1.9A9 9 0 0 0 3.306 9.67a.75.75 0 1 0 1.45.388Zm15.408 3.352a.75.75 0 0 0-.919.53 7.5 7.5 0 0 1-12.548 3.364l-1.902-1.903h3.183a.75.75 0 0 0 0-1.5H2.984a.75.75 0 0 0-.75.75v4.992a.75.75 0 0 0 1.5 0v-3.18l1.9 1.9a9 9 0 0 0 15.059-4.035.75.75 0 0 0-.53-.918Z" clip-rule="evenodd" />
+                </svg>
+            </button>
+        </div>
+    </form>
 </div>
 <script>
     // AJAX request to load the permitted operators and related values from the backend
     function updateOperators(fieldSelect, clearInput = true) {
         // Get related operator selection and input field
         const operatorSelect = fieldSelect.closest('.filter').querySelector('.operator-select');
-		const valueField = fieldSelect.closest('.filter').querySelector('.value-field');
+        const valueField = fieldSelect.closest('.filter').querySelector('.value-field');
 
         // Clear input
         if (clearInput)	valueField.value = "";
@@ -132,7 +132,7 @@
     });
 
     // Add Filter Button
-	function addFilter() {
+    function addFilter() {
         const uniqueGroupId = crypto.randomUUID();
 
         // Create a new filter
@@ -147,7 +147,7 @@
         updateOperators(fieldSelect);
 
 		// Add event listener for the new dropdown
-		fieldSelect.addEventListener('change', function() {
+        fieldSelect.addEventListener('change', function() {
             updateOperators(fieldSelect);
         });
     };

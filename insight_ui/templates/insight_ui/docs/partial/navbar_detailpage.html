@@ -25,15 +25,17 @@
 <section>
     <h2>{% trans "Verwendung" %}</h2>
     <p>
-       Eingebunden wird die Navbar am einfachsten über das entsprechende <i>Template-Tag</i>. Für die Navbar ist ein entsprechender Block definiert, in welchem diese platziert werden sollte.
+        Eingebunden wird die Navbar am einfachsten über das entsprechende <i>Template-Tag</i>. Für die Navbar ist ein entsprechender Block definiert, in welchem diese platziert werden sollte.
     </p>
 
     <div id="Navbar_Usage" data-insight-code-block="Django">
+        {# fmt:off #}
         &lcub;% load insight_tags %&rcub;
 
         &lcub;% block navbar %&rcub;
             &lcub;% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links show_login=True %&rcub;
         &lcub;% endblock navbar %&rcub;
+        {# fmt:on #}
     </div>
 </section>
 
@@ -51,6 +53,7 @@
         <p class="mb-4">Ein Dictionary mit der gesamten Konfiguration der Navigationsleiste.</p>
 
         <div id="Navbar_Params" data-insight-code-block="python">
+            {# fmt:off #}
             {
                 "brand": {
                     "title": "Insight UI",
@@ -85,6 +88,7 @@
                 "show_language_selector": True,
                 "show_theme_toggle": True,
             }
+            {# fmt:on #}
         </div>
 
         <h5 class="mt-4">brand</h5>
@@ -104,7 +108,7 @@
         <p class="info-container text-base mt-4">
             <span class="block font-bold italic text-lg">Info:</span>
             {% blocktrans with bold_text='<b>show_login</b>'|safe %}
-            Der externe Parameter {{ bold_text }} wird zum verstecken des Anmeldebutton auf bestimmten Seiten bspw. der Anmeldeseite verwendet.
+                Der externe Parameter {{ bold_text }} wird zum verstecken des Anmeldebutton auf bestimmten Seiten bspw. der Anmeldeseite verwendet.
             {% endblocktrans %}
         </p>
     </div>

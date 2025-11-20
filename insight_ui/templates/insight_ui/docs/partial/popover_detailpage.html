@@ -9,7 +9,7 @@
     </p>
     <p class="pt-4">
         {% blocktrans with tooltip_url='<a href="#" class="text-link">Tooltip-Komponente</a>'|safe %}
-        Wenn nur ein kurzer Informationstext angezeigt werden soll, um ein Element mit ein, zwei Wörter zu erklären, sollte stattdessen die {{ tooltip_url }} verwendet werden.
+            Wenn nur ein kurzer Informationstext angezeigt werden soll, um ein Element mit ein, zwei Wörter zu erklären, sollte stattdessen die {{ tooltip_url }} verwendet werden.
         {% endblocktrans %}
     </p>
 
@@ -24,23 +24,25 @@
 
     <p class="mb-4">
         {% blocktrans with insight_tag='<span class="inline-tag">insight_tag</span>'|safe tag_id='<b>Tag-ID</b>'|safe %}
-        Dieses Element besitzt kein {{ insight_tag }}, da es lediglich ein Auslöser braucht und ein Ziel-Element. Das Ziel-Element kann komplett selbst definiert werden, lediglich die Verbindung durch die {{ tag_id }} ist zu beachten.
+            Dieses Element besitzt kein {{ insight_tag }}, da es lediglich ein Auslöser braucht und ein Ziel-Element. Das Ziel-Element kann komplett selbst definiert werden, lediglich die Verbindung durch die {{ tag_id }} ist zu beachten.
         {% endblocktrans %}
     </p>
 
     <div id="Popover_Usage" data-insight-code-block="Django">
+        {# fmt:off #}
         &lt;button data-popover-trigger="demo-popover" data-position="top" class="btn btn-primary"&gt;{% trans "Hover me!" %}&lt;/button&gt;
         &lt;div id="demo-popover" class="bg-white dark:bg-gray-500 w-64 border border-gray-300 dark:border-0 rounded-sm shadow"&gt;
             &lt;!-- Arrow --&gt;
             &lt;div class="popover-arrow absolute left-1/2 -top-2 -translate-x-1/2 w-0 h-0 border-10 border-t-0 border-transparent border-b-white dark:border-b-gray-600"&gt;&lt;/div&gt;
             &lt;!-- Content --&gt;
         &lt;/div&gt;
+        {# fmt:on #}
     </div>
 
     <p class="info-container text-base mt-4">
         <span class="block font-bold italic text-lg">Info:</span>
         {% blocktrans with div='&lt;div&gt;' comment='&lt;!-- Arrow --&gt;' %}
-        Der Pfeil kann ausgeschaltet werden, indem der {{ div }}-Container unter dem {{ comment }} Kommentar entfernt wird.
+            Der Pfeil kann ausgeschaltet werden, indem der {{ div }}-Container unter dem {{ comment }} Kommentar entfernt wird.
         {% endblocktrans %}
     </p>
 </section>
