@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.2.3](https://github.com/alpininsight/insight-ui/compare/v1.2.2...v1.2.3) (2025-11-20)
+
+
+### Bug Fixes
+
+* blank lines and remove makefile hook ([243492f](https://github.com/alpininsight/insight-ui/commit/243492fcb40c9dbb41fc28b56c66b74c4cfc57dd))
+* default SECRET_KEY ([b509127](https://github.com/alpininsight/insight-ui/commit/b509127187ea2cce3b77302e82dde9fd1dc6b6a1))
+* lint settings ([963c114](https://github.com/alpininsight/insight-ui/commit/963c11468f5807d079e5f28b7a3284f268690d49))
+* linting ([b834556](https://github.com/alpininsight/insight-ui/commit/b834556503ac87029222d75f260191db59a91df0))
+* override staticfiles storage in test configuration ([bc51c7b](https://github.com/alpininsight/insight-ui/commit/bc51c7b1ccd7eff1a3fb6b851344cda6d3cdc699))
+* override staticfiles storage in test configuration ([632a95c](https://github.com/alpininsight/insight-ui/commit/632a95c79b16d2aca773c98f675040dc4b89433e))
+* template indentation and missing closing tags ([d1a8db7](https://github.com/alpininsight/insight-ui/commit/d1a8db7a21b38f3b34953f595c942a3923eb29b2))
+* use STORAGES dict for Django 5.2 compatibility ([d37ebd1](https://github.com/alpininsight/insight-ui/commit/d37ebd1eb5ffbb9539d3152e077ec9beec5da210))
+* use STORAGES dict for Django 5.2 compatibility ([0175e7b](https://github.com/alpininsight/insight-ui/commit/0175e7b67576e864ea8747f3d2bcb108967dd3ca))
+
 ## [1.2.2](https://github.com/alpininsight/insight-ui/compare/v1.2.1...v1.2.2) (2025-11-20)
 
 
