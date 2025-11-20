@@ -23,7 +23,7 @@ repos:
       - id: check-added-large-files
         args: ["--maxkb=1024"]
       - id: no-commit-to-branch
-        stages: [commit]
+        stages: [pre-commit]
         args: ["--branch", "main", "--branch", "develop"]
 
   # Ruff lint + format
@@ -77,13 +77,6 @@ repos:
       - id: djhtml
         files: '(^|/)templates/.*\.html$'
 
-  # Lint Makefile (runs only if a Makefile exists)
-  - repo: https://github.com/mrtazz/checkmake.git
-    rev: 0.2.2
-    hooks:
-      - id: checkmake
-        files: '^Makefile$'
-
   # Optional: pytest, migrations, and system checks for the demo Django project
   - repo: local
     hooks:
@@ -109,4 +102,3 @@ repos:
         language: system
         pass_filenames: false
         stages: [pre-push]
-
