@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.2.2](https://github.com/alpininsight/insight-ui/compare/v1.2.1...v1.2.2) (2025-11-20)
+
+
+### Bug Fixes
+
+* align login tests with updated template ([8c8446e](https://github.com/alpininsight/insight-ui/commit/8c8446e92cd6fdffa2aedcdc6a584e1b28e320d5))
+* align login tests with updated template ([f70781c](https://github.com/alpininsight/insight-ui/commit/f70781c9a973dcf0239d67b2331f2b8f3e43d4c9))
+* align pre-commit hooks with template ([062e68c](https://github.com/alpininsight/insight-ui/commit/062e68c186cb3d8dacc635e686129cefbb8e36a4))
+* align pre-commit hooks with template ([1a43c1d](https://github.com/alpininsight/insight-ui/commit/1a43c1da3952ece152c721fd60b22ff30d3ffa64))
+
 ## [1.2.1](https://github.com/alpininsight/insight-ui/compare/v1.2.0...v1.2.1) (2025-11-20)
 
 
