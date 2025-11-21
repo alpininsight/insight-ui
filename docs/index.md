@@ -62,9 +62,13 @@ INSTALLED_APPS = [
 
         # Tailwind dist file
         TAILWIND_CLI_DIST_CSS = "insight_ui/css/tailwind.css"
+		
+		# Prevent automatic updating (recommended)
+		# This is a silent process that can lead to silent problems if the process is terminated too quickly.
+		TAILWIND_CLI_AUTOMATIC_DOWNLOAD = False
     ```
     - `python manage.py tailwind setup` Für initiales Setup von Tailwind ausführen (lädt u.a. das Tailwind-CLI runter ~120MB)
-    - `python manage.py tailwind runserver` Startet den development Server mit hot reload
+    - `python manage.py tailwind runserver` Startet den development Server und aktualisiert automatisch das Stylesheet (ACHTUNG: eventuelle Fehler der Tailwind-CLI werden nicht geloggt!)
 
 ## Template-Tags in den Templates aktivieren
 
