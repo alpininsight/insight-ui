@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.3.0](https://github.com/alpininsight/insight-ui/compare/v1.2.3...v1.3.0) (2025-11-24)
+
+
+### Features
+
+* add switch to not use tailwind_cli tag ([7f3e3e8](https://github.com/alpininsight/insight-ui/commit/7f3e3e8f2cb861537cc0d49027cb4377fee3230a))
+* deployability ([3c2fa15](https://github.com/alpininsight/insight-ui/commit/3c2fa1589e38832cdef9b25746adae326d4d6220))
+
+
+### Bug Fixes
+
+* dependencies ([de0928f](https://github.com/alpininsight/insight-ui/commit/de0928f3fa2a1da36f852041079db13959bdf0a3))
+
 ## [1.2.3](https://github.com/alpininsight/insight-ui/compare/v1.2.2...v1.2.3) (2025-11-20)
 
 
