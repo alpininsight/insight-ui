@@ -4,7 +4,7 @@
 {% block title %}{% trans "Insight UI" %}{% endblock title %}
 
 {% block drawers %}
-    {% sidebar side="right" static=False %}
+    {% sidebar sidebar_data=right_sidebar side="right" static=False %}
 {% endblock drawers %}
 
 {% block navbar %}
@@ -57,11 +57,13 @@
                     <p class="text-secondary leading-loose mb-4">1. <span class="inline-tag">insight_ui</span> zu <span class="inline-tag">INSTALLED_APPS</span> in <b>settings.py</b> hinzufügen:</p>
 
                     <div id="install2" data-insight-code-block="python">
+                        {# fmt:off #}
                         INSTALLED_APPS = [
                             # ...
                             'insight_ui',
                             # ...
                         ]
+                        {# fmt:on #}
                     </div>
                 </li>
                 <li>
@@ -79,6 +81,7 @@
                         <li>Zu <span class="inline-tag">INSTALLED_APPS</span> hinzufügen, <span class="inline-tag">STATICFILES_DIRS</span>, <span class="inline-tag">TAILWIND_CLI_SRC_CSS</span> und <span class="inline-tag">TAILWIND_CLI_DIST_CSS</span> definieren</li>
                         <div class="my-4">
                             <div id="install3" data-insight-code-block="python">
+                                {# fmt:off #}
                                 INSTALLED_APPS = [
                                     # ...
                                     "django_tailwind_cli",
@@ -93,10 +96,15 @@
 
                                 # Tailwind dist file
                                 TAILWIND_CLI_DIST_CSS = "insight_ui/css/tailwind.css"
+
+                                # Prevent automatic updating (recommended)
+                                # This is a silent process that can lead to silent problems if the process is terminated too quickly.
+                                TAILWIND_CLI_AUTOMATIC_DOWNLOAD = False
+                                {# fmt:on #}
                             </div>
                         </div>
                         <li><span class="inline-tag">python manage.py tailwind setup</span> Für initiales Setup von Tailwind ausführen (lädt u.a. das Tailwind-CLI runter ~120MB)</li>
-                        <li><span class="inline-tag">python manage.py tailwind runserver</span> Startet den development Server mit hot reload</li>
+                        <li><span class="inline-tag">python manage.py tailwind runserver</span> Startet den development Server und aktualisiert automatisch das Stylesheet (ACHTUNG: eventuelle Fehler der Tailwind-CLI werden nicht geloggt!)</li>
                     </ul>
                 </li>
             </ul>
