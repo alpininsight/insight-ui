@@ -1,7 +1,6 @@
-{% if productive %}
-    {% load static i18n insight_tags %}
-{% else %}
-    {% load static i18n tailwind_cli insight_tags %}
+{% load static i18n insight_tags %}
+{% if not productive %}
+    {% include "insight_ui/tailwind_cli.html" %}
 {% endif %}
 
 <!DOCTYPE html>
