@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.1](https://github.com/alpininsight/insight-ui/compare/v1.3.0...v1.3.1) (2025-11-25)
+
+
+### Bug Fixes
+
+* loading of the tailwind_cli tag ([f23cfba](https://github.com/alpininsight/insight-ui/commit/f23cfba95ae41e943a831ea1b04d9718b3e05a50))
+* loading of the tailwind_cli tag ([f8ec04b](https://github.com/alpininsight/insight-ui/commit/f8ec04bb7bfb423e88037fd00f5f8d4efc1a1e7b))
+
 ## [1.3.0](https://github.com/alpininsight/insight-ui/compare/v1.2.3...v1.3.0) (2025-11-24)
 
 
