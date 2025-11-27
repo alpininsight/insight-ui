@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.4.0](https://github.com/alpininsight/insight-ui/compare/v1.3.1...v1.4.0) (2025-11-27)
+
+
+### Features
+
+* add initial check to checkbox_group and maximum checked restriction ([8ee5ef8](https://github.com/alpininsight/insight-ui/commit/8ee5ef80c73100092b467143070c5870d9d63a9e))
+* add input_field docu and detailpage ([d7d07cb](https://github.com/alpininsight/insight-ui/commit/d7d07cbb2b558e065416c01eba6ed489c1f0bdc9))
+* add iterm_per_page parameter to pagination method ([642bb38](https://github.com/alpininsight/insight-ui/commit/642bb38fea39d57b781dec611c458897086973fd))
+* add new input_field component ([5fb1c26](https://github.com/alpininsight/insight-ui/commit/5fb1c26d6b0ebb3d73d0922f1cb0274be546e95f))
+* add RTL support for range slider ([4e3ce1f](https://github.com/alpininsight/insight-ui/commit/4e3ce1f6eadeaa63474b2cf712605573b3ee341f))
+* improve components and component detailpages ([2c34222](https://github.com/alpininsight/insight-ui/commit/2c3422248a25c6b7e7f6cd855ea69095fbd81b76))
+* improvements ([1c8f196](https://github.com/alpininsight/insight-ui/commit/1c8f196392cb6fd81121a29f35857bc8c20179a6))
+* rename radio component ([6dbb6a8](https://github.com/alpininsight/insight-ui/commit/6dbb6a8f520f006fc866bdfc6bd1964bce5f4b0a))
+
+
+### Bug Fixes
+
+* detailpages with more than one demo containers ([4d1c879](https://github.com/alpininsight/insight-ui/commit/4d1c8790b18b4a9acf98b26dcd7c8298595d2c2e))
+* rename id to tag_id for several components ([4284a56](https://github.com/alpininsight/insight-ui/commit/4284a562869b8fb27aa21f7a0a6fb6b22ff995ab))
+* typos ([c270b91](https://github.com/alpininsight/insight-ui/commit/c270b9192431dfcc50a5a04c330a0dd99ee6aef2))
+
 ## [1.3.1](https://github.com/alpininsight/insight-ui/compare/v1.3.0...v1.3.1) (2025-11-25)
 
 
