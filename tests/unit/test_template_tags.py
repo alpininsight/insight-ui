@@ -449,10 +449,10 @@ class RadioGroupTemplateTagTest(TemplateTagsTestCase):
                 "label": "Choose model:",
                 "as_row": True,
                 "items": [
-                    {"id": "model1", "value": "BERT", "label": "BERT", "disabled": False},
-                    {"id": "model2", "value": "PaLM 2", "label": "PaLM 2", "disabled": False},
+                    {"tag_id": "model1", "value": "BERT", "label": "BERT", "disabled": False},
+                    {"tag_id": "model2", "value": "PaLM 2", "label": "PaLM 2", "disabled": False},
                     {
-                        "id": "model3",
+                        "tag_id": "model3",
                         "value": "LLaMA 2",
                         "label": "LLaMA 2 (currently not available)",
                         "disabled": True,

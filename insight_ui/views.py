@@ -422,7 +422,7 @@ def toggle_view(request: HttpRequest) -> HttpResponse:
     # Generate the base payload
     payload = generate_payload()
     context: dict[str, Any] = {"current_view": view, "tag_id": request.GET.get("tag_id", "")}
-    context["radio_view_config"] = {
+    context["view_radio_config"] = {
         "name": "view",
         "param_name": "view",
         "items": [

@@ -120,12 +120,12 @@ def get_base_context() -> dict:
 def get_component_demo_context() -> dict:
     """Serve data of the device switch, etc. for component demos."""
     return {
-        "device_options": {
-            "name": "device-options",
+        "device_radio_config": {
+            "name": "device",
             "items": [
-                {"id": "mobile", "value": "mobile", "icon": {"name": "smartphone"}, "disabled": False},
-                {"id": "tablet", "value": "tablet", "icon": {"name": "tablet"}, "disabled": False},
-                {"id": "desktop", "value": "desktop", "icon": {"name": "desktop"}, "disabled": False},
+                {"tag_id": "mobile", "value": "mobile", "icon": {"name": "smartphone"}, "disabled": False},
+                {"tag_id": "tablet", "value": "tablet", "icon": {"name": "tablet"}, "disabled": False},
+                {"tag_id": "desktop", "value": "desktop", "icon": {"name": "desktop"}, "disabled": False},
             ],
         },
         "dir_toggle": {"tag_id": "toggle_dir", "label": _("RTL")},
@@ -731,7 +731,7 @@ def get_checkbox_context() -> dict:
     """Serve data for checkbox detailpage."""
     return {
         "example_checkbox": {
-            "id": "accept-agbs",
+            "tag_id": "accept-agbs",
             "name": "accept_agbs",
             "value": "AGB",
             "label": _("Accept AGBs"),
@@ -742,10 +742,10 @@ def get_checkbox_context() -> dict:
             "label": "Choose languages:",
             "as_row": True,
             "items": [
-                {"id": "english", "value": "english", "label": _("English"), "disabled": False},
-                {"id": "german", "value": "german", "label": _("German"), "disabled": False},
+                {"tag_id": "english", "value": "english", "label": _("English"), "disabled": False},
+                {"tag_id": "german", "value": "german", "label": _("German"), "disabled": False},
                 {
-                    "id": "italian",
+                    "tag_id": "italian",
                     "value": "italian",
                     "label": _("Italian (currently not available)"),
                     "disabled": True,
@@ -761,9 +761,14 @@ def get_radio_group_context() -> dict:
         "example_radio": {
             "name": "radio-example1",
             "items": [
-                {"id": "model1", "value": "BERT", "label": _("BERT"), "disabled": False},
-                {"id": "model2", "value": "PaLM 2", "label": _("PaLM 2"), "disabled": False},
-                {"id": "model3", "value": "LLaMA 2", "label": _("LLaMA 2 (currently not available)"), "disabled": True},
+                {"tag_id": "model1", "value": "BERT", "label": _("BERT"), "disabled": False},
+                {"tag_id": "model2", "value": "PaLM 2", "label": _("PaLM 2"), "disabled": False},
+                {
+                    "tag_id": "model3",
+                    "value": "LLaMA 2",
+                    "label": _("LLaMA 2 (currently not available)"),
+                    "disabled": True,
+                },
             ],
         }
     }
@@ -772,22 +777,22 @@ def get_radio_group_context() -> dict:
 def get_radio_block_context() -> dict:
     """Serve data for radio block detailpage."""
     return {
-        "radio_view_config": {
+        "view_radio_config": {
             "name": "view",
             "param_name": "view",
             "items": [
-                {"id": "card-view", "value": "card", "icon": {"name": "cards"}},
-                {"id": "table-view", "value": "table", "icon": {"name": "list"}},
-                {"id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},
+                {"tag_id": "card-view", "value": "card", "icon": {"name": "cards"}},
+                {"tag_id": "table-view", "value": "table", "icon": {"name": "list"}},
+                {"tag_id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},
             ],
         },
-        "radio_size_config": {
+        "size_radio_config": {
             "name": "size",
             "param_name": "size",
             "items": [
-                {"id": "small-size", "value": "small", "label": "sm"},
-                {"id": "medium-size", "value": "medium", "label": "md"},
-                {"id": "large-size", "value": "large", "label": "lg"},
+                {"tag_id": "small-size", "value": "small", "label": "sm"},
+                {"tag_id": "medium-size", "value": "medium", "label": "md"},
+                {"tag_id": "large-size", "value": "large", "label": "lg"},
             ],
         },
     }
@@ -795,7 +800,7 @@ def get_radio_block_context() -> dict:
 
 def get_toggle_button_context() -> dict:
     """Serve data for toggle-button detailpage."""
-    return {"example_toggle": {"id": "toggle_button_example1", "label": _("Click me!"), "switch": True}}
+    return {"example_toggle": {"tag_id": "toggle_button_example1", "label": _("Click me!"), "switch": True}}
 
 
 def get_select_context() -> dict:
@@ -820,7 +825,7 @@ def get_range_slider_context() -> dict:
     """Serve data for range-slider detailpage."""
     return {
         "example_slider": {
-            "id": "range_slider_example",
+            "tag_id": "range_slider_example",
             "name": "range_slider_example",
             "label": "Range Slider Title",
             "value": 1000,
@@ -987,13 +992,13 @@ def get_toggle_view_context() -> dict:
     return {
         "toggle_table": {"empty_msg": "No data available!", "headers": headers, "rows": rows},
         "toggle_start_view": "table",
-        "radio_view_config": {
+        "view_radio_config": {
             "name": "view",
             "param_name": "view",
             "items": [
-                {"id": "card-view", "value": "card", "icon": {"name": "cards"}},
-                {"id": "table-view", "value": "table", "icon": {"name": "list"}},
-                {"id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},
+                {"tag_id": "card-view", "value": "card", "icon": {"name": "cards"}},
+                {"tag_id": "table-view", "value": "table", "icon": {"name": "list"}},
+                {"tag_id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},
             ],
         },
     }
@@ -1062,12 +1067,16 @@ def get_tabs_context() -> dict:
     """Serve data for tabs detailpage."""
     return {
         "tabs_config": {
-            "id": "example_tabs",
+            "tag_id": "example_tabs",
             "label": "Tabs Example",
             "tabs": [
-                {"id": "first", "url": reverse("tabs_view", kwargs={"tab_id": "first"}), "title": _("First Tab")},
-                {"id": "second", "url": reverse("tabs_view", kwargs={"tab_id": "second"}), "title": _("Second Tab")},
-                {"id": "third", "url": reverse("tabs_view", kwargs={"tab_id": "third"}), "title": _("Third Tab")},
+                {"tag_id": "first", "url": reverse("tabs_view", kwargs={"tab_id": "first"}), "title": _("First Tab")},
+                {
+                    "tag_id": "second",
+                    "url": reverse("tabs_view", kwargs={"tab_id": "second"}),
+                    "title": _("Second Tab"),
+                },
+                {"tag_id": "third", "url": reverse("tabs_view", kwargs={"tab_id": "third"}), "title": _("Third Tab")},
             ],
         }
     }

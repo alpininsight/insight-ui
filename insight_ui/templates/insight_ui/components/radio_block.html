@@ -11,7 +11,7 @@
                 <div>
                     <input
                         type="radio"
-                        id="{{ item.id }}"
+                        {% if item.tag_id %}id="{{ item.tag_id }}"{% endif %}
                         name="{{ name }}"
                         value="{{ item.value }}"
                         {% if current_value == item.value or not current_value and forloop.first %}checked{% endif %}
@@ -36,7 +36,7 @@
                 <div>
                     <input
                         type="radio"
-                        id="{{ item.id }}"
+                        {% if item.tag_id %}id="{{ item.tag_id }}"{% endif %}
                         name="{{ name }}"
                         value="{{ item.value }}"
                         {% if current_value == item.value or not current_value and forloop.first %}checked{% endif %}

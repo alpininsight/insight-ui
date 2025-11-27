@@ -674,7 +674,7 @@ def sq_builder(model_fields: list) -> dict:
 
 
 @register.inclusion_tag("insight_ui/components/toggle_view.html")
-def toggle_view(tag_id: str, data: list, radio_view_config: dict, current_view: str) -> dict:
+def toggle_view(tag_id: str, data: list, view_radio_config: dict, current_view: str) -> dict:
     """
     Rendert eine Ansicht von Daten, welche auf verschiedene Arten dargestellt werden kann.
 
@@ -682,7 +682,7 @@ def toggle_view(tag_id: str, data: list, radio_view_config: dict, current_view: 
     ---------
         tag_id (str): Eine einzigartige ID für die Komponente. (Wird für den wechsel der Ansicht benötigt).
         data (list): Die Daten, welche angezeigt werden sollen.
-        radio_view_config (dict): Die Konfiguration der Radio-Group, zum wechseln der Ansichtsart.
+        view_radio_config (dict): Die Konfiguration der Radio-Group, zum wechseln der Ansichtsart.
         current_view (str): Der name der aktuellen Ansichtsart.
 
     Returns:
@@ -690,7 +690,7 @@ def toggle_view(tag_id: str, data: list, radio_view_config: dict, current_view: 
         Dict mit Kontext-Variablen für das Template.
 
     """
-    return {"tag_id": tag_id, "data": data, "radio_view_config": radio_view_config, "current_view": current_view}
+    return {"tag_id": tag_id, "data": data, "view_radio_config": view_radio_config, "current_view": current_view}
 
 
 @register.inclusion_tag("insight_ui/components/live_content.html")

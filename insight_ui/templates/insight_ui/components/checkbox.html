@@ -1,7 +1,7 @@
 <label class="flex items-center gap-1">
     <input
         type="checkbox"
-        id="{{ tag_id }}"
+        {% if tag_id %}id="{{ tag_id }}"{% endif %}
         name="{{ name }}"
         value="{{ value }}"
         {% if checked %}checked{% endif %}

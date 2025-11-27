@@ -3,7 +3,7 @@
 <div id="switchable-view-{{ tag_id }}">
   <div class="flex justify-end w-full mb-2">
     {% with "switchable-view-"|add:tag_id as hx_target_id %}
-      {% radio_block config=radio_view_config current_value=current_view view_name="toggle_view" hx_target_id=hx_target_id %}
+      {% radio_block config=view_radio_config current_value=current_view view_name="toggle_view" hx_target_id=hx_target_id %}
     {% endwith %}
   </div>
   {% if current_view == 'carousel' %}

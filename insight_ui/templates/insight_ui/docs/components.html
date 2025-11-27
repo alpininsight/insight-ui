@@ -99,8 +99,8 @@
             {% radio_group config=example_radio current_value="PaLM 2" %}
         {% elif component == "radio_block" %}
             <div class="w-fit space-y-4">
-                {% radio_block config=radio_view_config current_value=current_view %}
-                {% radio_block config=radio_size_config current_value=current_size %}
+                {% radio_block config=view_radio_config current_value=current_view %}
+                {% radio_block config=size_radio_config current_value=current_size %}
             </div>
         {% elif component == "range_slider" %}
             {% slider config=example_slider %}
@@ -236,7 +236,7 @@
                 {% three_d_carousel tag_id="threeD_carousel" velocity=300 tilt=-15 face_camera=False carousel_items=3D_carousel.items %}
             </div>
         {% elif component == "toggle_view" %}
-            {% toggle_view tag_id="test" data=toggle_table radio_view_config=radio_view_config current_view=toggle_start_view %}
+            {% toggle_view tag_id="test" data=toggle_table view_radio_config=view_radio_config current_view=toggle_start_view %}
         {% elif component == "form" %}
             {% form title="Contact Form" description="Please fill out the form" fields=form_fields actions=form_actions htmx=htmx_config id="htmx-form" %}
         {% endif %}
