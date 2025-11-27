@@ -52,6 +52,7 @@ pytest = [
     "pytest",
     "pytest-django",
     "pytest-cov",
+    "beautifulsoup4>=4.14.2",
 ]
 docs = [
     "mkdocs",
@@ -108,6 +109,14 @@ strict_optional = true
 module = "core.*"
 disallow_untyped_defs = false
 disallow_incomplete_defs = false
+
+[tool.coverage.run]
+omit = [
+    "*/migrations/*",
+    "*/tests/*",
+    "insight_ui/_version.py",
+    "manage.py",
+]
 
 [tool.ruff]
 fix = true
@@ -294,11 +303,6 @@ name = "develop"
 match = "develop"
 prerelease = true
 prerelease_token = "rc"
-
-[tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "core.settings"
-python_files = "test_*.py"
-testpaths = ["core"]
 
 [tool.uv.workspace]
 members = [

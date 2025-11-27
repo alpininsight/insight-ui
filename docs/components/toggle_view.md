@@ -7,14 +7,14 @@ Die `toggle-view` Komponente kombiniert die Tabellen und die Karten-Ansicht, sow
 Die Toggle-View wird direkt über das `{% toggle_view %}` Tag eingebunden. Diese Komponente erwartet unterschiedliche Parameter, je nach dem, welche View initial eingestellt wird.
 
 ```django
-{% toggle_view tag_id="test" table_data=toggle_table view_options=view_options current_view=toggle_start_view %}
+{% toggle_view tag_id="test" data=toggle_table view_radio_config=view_radio_config current_view=toggle_start_view %}
 ```
 
 ## Parameter
 
-- **tag_id** (_str_): Eine eindeutige ID um Konflikte mit den Radio-Buttons der View-Auswahl zu vermeiden (optional, aber empfohlen).
-- **table_data** (_list_): Die Daten für die Tabellen-Ansicht sofern diese als **current_view** eingestellt ist.
-- **view_options** (_list_): Eine Liste der View-Varianten welche ausgewählt werden können.
+- **tag_id** (_str_): Eine einzigartige ID für die Komponente. (Wird für den wechsel der Ansicht benötigt).
+- **data** (_list_): Die Daten, welche angezeigt werden sollen.
+- **view_radio_config** (_dict_): Die Konfiguration der Radio-Group, zum wechseln der Ansichtsart.
 - **current_view** (_str_): Die anzuzeigende View-Variante (Start-View).
 
 ## Customization

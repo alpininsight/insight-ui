@@ -1,0 +1,16 @@
+{% load insight_tags %}
+
+<div
+    data-insight-checkbox-group
+    data-minimum-checked="{{ config.minimum_checked|default:-1 }}"
+    data-maximum-checked="{{ config.maximum_checked|default:-1 }}"
+>
+    {% if config.label %}
+        <span class="flex gap-1 text-sm font-bold text-primary mb-1">{{ config.label }}</span>
+    {% endif %}
+    <div class="flex {% if not config.as_row %}flex-col space-y-1{% else %}space-x-4{% endif %}">
+        {% for item in config.items %}
+            {% checkbox tag_id=item.id name=config.name value=item.value checked=item.checked disabled=item.disabled label=item.label %}
+        {% endfor %}
+    </div>
+</div>

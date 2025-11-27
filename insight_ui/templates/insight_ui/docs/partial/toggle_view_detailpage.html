@@ -21,16 +21,16 @@
     </p>
 
     <div id="Toggle_View_Usage" data-insight-code-block="Django">
-        &lcub;% toggle_view tag_id="test" table_data=toggle_table view_options=view_options current_view=toggle_start_view %&rcub;
+        &lcub;% toggle_view tag_id="test" data=toggle_table view_radio_config=view_radio_config current_view=toggle_start_view %&rcub;
     </div>
 </section>
 
 <section>
     <h3>{% trans "Parameter" %}</h3>
     <ul class="list-disc leading-relaxed ms-8">
-        <li><span class="inline-tag">tag_id</span> (<i>str</i>): Eine eindeutige ID um Konflikte mit den Radio-Buttons der View-Auswahl zu vermeiden (optional, aber empfohlen).</li>
-        <li><span class="inline-tag">table_data</span> (<i>list</i>): Die Daten für die Tabellen-Ansicht sofern diese als <span class="inline-tag">current_view</span> eingestellt ist.</li>
-        <li><span class="inline-tag">view_options</span> (<i>list</i>): Eine Liste der View-Varianten welche ausgewählt werden können.</li>
+        <li><span class="inline-tag">tag_id</span> (<i>str</i>): Eine einzigartige ID für die Komponente. (Wird für den wechsel der Ansicht benötigt).</li>
+        <li><span class="inline-tag">data</span> (<i>list</i>): Die Daten, welche angezeigt werden sollen.</li>
+        <li><span class="inline-tag">view_radio_config</span> (<i>dict</i>): Die Konfiguration der Radio-Group, zum wechseln der Ansichtsart.</li>
         <li><span class="inline-tag">current_view</span> (<i>str</i>): Die anzuzeigende View-Variante (Start-View).</li>
     </ul>
 </section>

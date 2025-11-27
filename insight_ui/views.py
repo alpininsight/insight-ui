@@ -44,7 +44,7 @@ from insight_ui.demo_context import (
     get_pagination_context,
     get_popup_storybook_context,
     get_query_builder_context,
-    get_radio_button_context,
+    get_radio_group_context,
     get_range_slider_context,
     get_select_context,
     get_sidebar_context,
@@ -251,12 +251,38 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
         "id": component_name,
     }
 
+    context = get_component_demo_context()
+
+    if component_name == "button":
+        context["outline_button_demo"] = {
+            "url": reverse("component_demo_view", kwargs={"component_name": "outline_button"}),
+            "title": "outline_button",
+            "id": "outline_button",
+        }
+
+        context["button_sizes_demo"] = {
+            "url": reverse("component_demo_view", kwargs={"component_name": "button_sizes"}),
+            "title": "button_sizes",
+            "id": "button_sizes",
+        }
+    elif component_name == "radio_group":
+        context["radio_block_demo"] = {
+            "url": reverse("component_demo_view", kwargs={"component_name": "radio_block"}),
+            "title": "radio_block",
+            "id": "radio_block",
+        }
+    elif component_name == "card":
+        context["effect_cards_demo"] = {
+            "url": reverse("component_demo_view", kwargs={"component_name": "effect_cards"}),
+            "title": "effect_cards",
+            "id": "effect_cards",
+        }
+
     if request.headers.get("HX-Request"):
-        context = get_component_demo_context()
         context["demo"] = demo_info
         return render(request, f"insight_ui/docs/partial/{component_name}_detailpage.html", context)
 
-    context = get_base_context() | get_component_demo_context() | get_sidebar_context()
+    context |= get_base_context() | get_sidebar_context()
     context["template_name"] = f"insight_ui/docs/partial/{component_name}_detailpage.html"
     context["demo"] = demo_info
     return render(request, "insight_ui/docs/component_detailpage.html", context)
@@ -290,10 +316,12 @@ def component_demo_view(request: HttpRequest, component_name: str) -> HttpRespon
         "button": get_empty_context,
         "outline_button": get_empty_context,
         "button_sizes": get_empty_context,
+        "input_field": get_empty_context,
         "checkbox": get_checkbox_context,
+        "checkbox_group": get_checkbox_context,
         "dropdown": get_dropdown_context,
-        "radio_button": get_radio_button_context,
-        "radio_group": get_radio_button_context,
+        "radio_group": get_radio_group_context,
+        "radio_block": get_radio_group_context,
         "range_slider": get_range_slider_context,
         "toggle_button": get_toggle_button_context,
         "select": get_select_context,
@@ -317,6 +345,7 @@ def component_demo_view(request: HttpRequest, component_name: str) -> HttpRespon
         "search_bar": get_empty_context,
         "query_builder": get_query_builder_context,
         "card": get_cards_context,
+        "effect_cards": get_cards_context,
         "card_carousel": get_card_carousel_context,
         "image_carousel": get_image_carousel_context,
         "3D_carousel": get_3d_carousel_context,
@@ -395,8 +424,8 @@ def toggle_view(request: HttpRequest) -> HttpResponse:
     # Generate the base payload
     payload = generate_payload()
     context: dict[str, Any] = {"current_view": view, "tag_id": request.GET.get("tag_id", "")}
-    context["view_options"] = {
-        "name": "view-options",
+    context["view_radio_config"] = {
+        "name": "view",
         "param_name": "view",
         "items": [
             {"id": "card-view", "value": "card", "icon": {"name": "cards"}},
@@ -414,7 +443,7 @@ def toggle_view(request: HttpRequest) -> HttpResponse:
     else:
         # default: table view
         headers, rows = map_payload_to_table(payload)
-        context["table_data"] = {"empty_msg": "Keine Daten vorhanden!", "headers": headers, "rows": rows}
+        context["data"] = {"empty_msg": "Keine Daten vorhanden!", "headers": headers, "rows": rows}
         logger.info("log: toggle_view - Tabellenansicht ausgewählt")
 
     return render(request, "insight_ui/components/toggle_view.html", context)

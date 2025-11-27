@@ -96,6 +96,29 @@
     </div>
 </section>
 
+<!-- Input Demo -->
+<section class="component-container">
+    <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-t p-4 py-2 md:px-6 md:py-3">
+        <h2 class="text-xl mb-0">
+            <a
+                href="{% url 'component_detail_page_view' 'checkbox' %}"
+                hx-get="{% url 'component_detail_page_view' 'checkbox' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="inline-flex items-center gap-1 hover:text-blue-300"
+            >
+                {% trans 'Inputs' %} {% icon name="open-link" size="small" %}
+            </a>
+        </h2>
+    </div>
+    <div class="p-4 md:p-6 space-y-6">
+        {% input_field tag_id="date" name="date_input" input_type="date" label="Choose date:" %}
+        {% input_field tag_id="text" name="text_input" input_type="text" placeholder="Type your name" label="Name:" %}
+        {% input_field tag_id="password" name="password_input" input_type="password" placeholder="Type your password" label="Password" %}
+    </div>
+</section>
+
 <!-- Checkbox Demo -->
 <section class="component-container">
     <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-t p-4 py-2 md:px-6 md:py-3">
@@ -112,31 +135,32 @@
             </a>
         </h2>
     </div>
-    <div class="p-4 md:p-6">
-        {% checkbox checkbox=example_checkbox %}
+    <div class="p-4 md:p-6 space-y-6">
+        {% checkbox config=example_checkbox %}
+        {% checkbox_group config=example_checkbox_group %}
     </div>
 </section>
 
-<!-- Radio-Button Demo -->
+<!-- Radio-Group Demo -->
 <section class="component-container">
     <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-t p-4 py-2 md:px-6 md:py-3">
         <h2 class="text-xl mb-0">
             <a
-                href="{% url 'component_detail_page_view' 'radio_button' %}"
-                hx-get="{% url 'component_detail_page_view' 'radio_button' %}"
+                href="{% url 'component_detail_page_view' 'radio_group' %}"
+                hx-get="{% url 'component_detail_page_view' 'radio_group' %}"
                 hx-target="#content"
                 hx-swap="innerHTML show:window:top"
                 hx-push-url="true"
                 class="inline-flex items-center gap-1 hover:text-blue-300"
             >
-                {% trans 'Radio-Buttons' %} {% icon name="open-link" size="small" %}
+                {% trans 'Radio-Groups' %} {% icon name="open-link" size="small" %}
             </a>
         </h2>
     </div>
     <div class="p-4 md:p-6 space-y-6">
-        {% radio radio_group=example_radio current_value="PaLM 2" %}
+        {% radio_group config=example_radio current_value="PaLM 2" %}
 
-        {% radio_group radio_group=view_options current_value="card" %}
+        {% radio_block config=view_radio_config current_value="card" %}
     </div>
 </section>
 
@@ -157,7 +181,7 @@
         </h2>
     </div>
     <div class="p-4 md:p-6">
-        {% toggle toggle=example_toggle %}
+        {% toggle config=example_toggle %}
     </div>
 </section>
 
@@ -178,7 +202,7 @@
         </h2>
     </div>
     <div class="p-4 md:p-6">
-        {% slider slider=example_slider %}
+        {% slider config=example_slider %}
     </div>
 </section>
 
@@ -199,8 +223,8 @@
         </h2>
     </div>
     <div class="flex gap-2 p-4 md:p-6">
-        {% dropdown dropdown_menu=user_dropdown %}
-        {% dropdown dropdown_menu=settings_dropdown %}
+        {% dropdown config=user_dropdown %}
+        {% dropdown config=settings_dropdown %}
     </div>
 </section>
 

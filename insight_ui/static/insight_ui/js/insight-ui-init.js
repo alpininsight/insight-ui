@@ -5,6 +5,7 @@
 function initAll() {
 	window.initCarousels();
 	InsightUI.Accordion.initAll();
+	InsightUI.Checkbox.initAll();
 	InsightUI.CodeBlock.initAll();
 	InsightUI.Collapsible.initAll();
 	InsightUI.Dropdown.initAll();

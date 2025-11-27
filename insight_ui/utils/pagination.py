@@ -3,7 +3,9 @@ from collections.abc import Sequence
 from django.core.paginator import Page, Paginator
 
 
-def get_page(data: Sequence[object], page: int = 1, max_neighbor_pages: int = 6) -> tuple[Page[object], list[str]]:
+def get_page(
+    data: Sequence[object], page: int = 1, items_per_page: int = 10, max_neighbor_pages: int = 6
+) -> tuple[Page[object], list[str]]:
     """
     Create pagination for given data.
 
@@ -13,6 +15,7 @@ def get_page(data: Sequence[object], page: int = 1, max_neighbor_pages: int = 6)
     ---------
         data (list): data to create pagination for.
         page (int): desired page number.
+        items_per_page (int): the amount of items per page.
         max_neighbor_pages (int): the maximal amount of pages, next to the desired page.
 
     Returns:
@@ -20,7 +23,7 @@ def get_page(data: Sequence[object], page: int = 1, max_neighbor_pages: int = 6)
         page, neighbor_pages (Page, List[str]): the desired page and a list of neighboring pages.
 
     """
-    paginator = Paginator(data, 10)
+    paginator = Paginator(data, items_per_page)
 
     # Calculate neighboring pages
     surrounding_pages: list[int] = []

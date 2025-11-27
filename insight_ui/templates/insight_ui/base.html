@@ -57,7 +57,7 @@
 
         {% block extra_head %}{% endblock %}
     </head>
-    <body class="size-full min-h-screen bg-gray-50 dark:bg-gray-900 text-neutral-700 dark:text-neutral-100 transition-colors duration-200 flex flex-col" hx-indicator="loading-indicator" hx-ext="ws">
+    <body class="size-full min-h-screen bg-gray-50 dark:bg-gray-900 text-neutral-700 dark:text-neutral-100 transition-colors duration-200 flex flex-col" hx-indicator="loading-indicator">
 
         {% block background_image %}
         {% endblock background_image %}
@@ -102,6 +102,7 @@
         <script defer src="{% static 'insight_ui/js/insight-ui-3D-carousel.js' %}"></script>
         <script defer src="{% static 'insight_ui/js/insight-ui-accordion.js' %}"></script>
         <script defer src="{% static 'insight_ui/js/insight-ui-carousel.js' %}"></script>
+        <script defer src="{% static 'insight_ui/js/insight-ui-checkbox.js' %}"></script>
         <script defer src="{% static 'insight_ui/js/insight-ui-code-block.js' %}"></script>
         <script defer src="{% static 'insight_ui/js/insight-ui-collapsible.js' %}"></script>
         <script defer src="{% static 'insight_ui/js/insight-ui-dropdown.js' %}"></script>

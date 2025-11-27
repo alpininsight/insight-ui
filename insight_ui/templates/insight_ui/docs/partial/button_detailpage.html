@@ -11,9 +11,9 @@
     <h2 class="mt-4">{% trans "Standard Buttons" %}</h2>
     {% include "insight_ui/docs/demo_container.html" %}
     <h2 class="mt-8">{% trans "Outline Buttons" %}</h2>
-    {% include "insight_ui/docs/demo_container.html" %}
+    {% include "insight_ui/docs/demo_container.html" with demo=outline_button_demo %}
     <h2 class="mt-8">{% trans "Button sizes" %}</h2>
-    {% include "insight_ui/docs/demo_container.html" %}
+    {% include "insight_ui/docs/demo_container.html" with demo=button_sizes_demo %}
 </section>
 
 <hr class="text-gray-300 dark:text-gray-600">

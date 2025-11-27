@@ -115,7 +115,9 @@
     --color-insight-text-secondary-dark: oklch(70.8% 0 0);
     --color-insight-text-link: #3b82f6;
     --color-insight-text-link-hover: #93c5fd;
+    --range-progress: 0%;
     --animate-blink: blink 2s step-start infinite;
+    --animate-shake: shake 0.3s;
   }
 }
 @layer base {
@@ -745,6 +747,9 @@
   }
   .animate-pulse {
     animation: var(--animate-pulse);
+  }
+  .animate-shake {
+    animation: var(--animate-shake);
   }
   .animate-spin {
     animation: var(--animate-spin);
@@ -3176,6 +3181,43 @@
       background-color: var(--color-gray-800);
     }
   }
+  .range-custom::-webkit-slider-runnable-track {
+    height: calc(var(--spacing) * 2);
+    border-radius: var(--radius-md);
+    background: linear-gradient(to right, #3b82f6 var(--range-progress), #e5e7eb var(--range-progress));
+  }
+  .range-custom::-moz-range-track {
+    height: calc(var(--spacing) * 2);
+    border-radius: var(--radius-md);
+    background: linear-gradient(to right, #3b82f6 var(--range-progress), #e5e7eb var(--range-progress));
+  }
+  html[dir='rtl'] .range-custom::-webkit-slider-runnable-track {
+    background: linear-gradient(to left, #3b82f6 var(--range-progress), #e5e7eb var(--range-progress));
+  }
+  html[dir='rtl'] .range-custom::-moz-range-track {
+    background: linear-gradient(to left, #3b82f6 var(--range-progress), #e5e7eb var(--range-progress));
+  }
+  .range-custom::-webkit-slider-thumb {
+    margin-top: calc(var(--spacing) * -1);
+    height: calc(var(--spacing) * 4);
+    width: calc(var(--spacing) * 4);
+    cursor: pointer;
+    border-radius: calc(infinity * 1px);
+    border-style: var(--tw-border-style);
+    border-width: 2px;
+    border-color: var(--color-blue-500);
+    background-color: var(--color-white);
+  }
+  .range-custom::-moz-range-thumb {
+    height: calc(var(--spacing) * 4);
+    width: calc(var(--spacing) * 4);
+    cursor: pointer;
+    border-radius: calc(infinity * 1px);
+    border-style: var(--tw-border-style);
+    border-width: 2px;
+    border-color: var(--color-blue-500);
+    background-color: var(--color-white);
+  }
 }
 @property --tw-translate-x {
   syntax: "*";
@@ -3449,6 +3491,17 @@
   }
   50% {
     opacity: 100;
+  }
+}
+@keyframes shake {
+  0%,100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
   }
 }
 @layer properties {

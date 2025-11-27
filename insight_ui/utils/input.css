@@ -37,6 +37,8 @@
     --color-insight-text-link: #3b82f6;
     --color-insight-text-link-hover: #93c5fd;
 
+    --range-progress: 0%;
+
     --animate-blink: blink 2s step-start infinite;
 
     @keyframes blink {
@@ -46,6 +48,14 @@
         50% {
             opacity: 100;
         }
+    }
+
+    --animate-shake: shake 0.3s;
+
+    @keyframes shake {
+        0%,100% { transform: translateX(0); }
+        25% { transform: translateX(-4px); }
+        75% { transform: translateX(4px); }
     }
 }
 
@@ -161,5 +171,31 @@
 
     .inline-tag {
         @apply bg-gray-200 dark:bg-gray-800 text-insight-primary rounded px-2 py-0.5;
+    }
+
+    .range-custom::-webkit-slider-runnable-track {
+        @apply h-2 rounded-md;
+        background: linear-gradient(to right, #3b82f6 var(--range-progress), #e5e7eb var(--range-progress));
+    }
+
+    .range-custom::-moz-range-track {
+        @apply h-2 rounded-md;
+        background: linear-gradient(to right, #3b82f6 var(--range-progress), #e5e7eb var(--range-progress));
+    }
+
+    html[dir='rtl'] .range-custom::-webkit-slider-runnable-track {
+        background: linear-gradient(to left, #3b82f6 var(--range-progress), #e5e7eb var(--range-progress));
+    }
+
+      html[dir='rtl'] .range-custom::-moz-range-track {
+        background: linear-gradient(to left, #3b82f6 var(--range-progress), #e5e7eb var(--range-progress));
+    }
+
+    .range-custom::-webkit-slider-thumb {
+        @apply w-4 h-4 bg-white border-2 border-blue-500 rounded-full cursor-pointer -mt-1;
+    }
+
+    .range-custom::-moz-range-thumb {
+        @apply w-4 h-4 bg-white border-2 border-blue-500 rounded-full cursor-pointer;
     }
 }
