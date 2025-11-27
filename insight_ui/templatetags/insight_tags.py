@@ -224,6 +224,60 @@ def bullet_point_list(items: list = []) -> dict:
     return {"items": items}
 
 
+@register.inclusion_tag("insight_ui/components/input.html")
+def input_field(  # noqa: PLR0913 (too many arguments)
+    tag_id: str | None = None,
+    name: str | None = None,
+    input_type: str | None = None,
+    placeholder: str | None = None,
+    value: str | None = None,
+    checked: bool | None = None,
+    disabled: bool | None = None,
+    label: str | None = None,
+    config: dict | None = None,
+) -> dict:
+    """
+    Rendert ein beliebiges <input> Feld.
+
+    Arguments:
+    ---------
+        tag_id (str): Eine optionale, eindeutige ID für JavaScript.
+        name (str): Wird für eine <form> benötigt, als Name des Request-Parameters.
+        input_type (str): Der Type des <input> Feldes bspw.: "text", "password", "date", etc..
+        placeholder (str): Ein platzhalter Text.
+        value (str): Der Wert der Checkbox (Das ist nicht der Zustand, siehe dafür 'checked').
+        checked (bool): 'True', wenn die Checkbox ausgewählt sein soll, andernfalls 'False'.
+        disabled (bool): 'True', wenn die Checkbox deaktiviert sein soll, andernfalls 'False'.
+        label (str): Ein Label-Text welcher über der Checkbox angezeigt wird.
+        config (dict[str, Any]): Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template.
+
+    """
+    if config is not None:
+        tag_id = config.get("tag_id", tag_id)
+        name = config.get("name", name)
+        input_type = config.get("input_type", input_type)
+        placeholder = (config.get("placeholder", placeholder),)
+        value = config.get("value", value)
+        label = config.get("label", label)
+        checked = config.get("checked", checked)
+        disabled = config.get("disabled", disabled)
+
+    return {
+        "tag_id": tag_id,
+        "name": name,
+        "input_type": input_type,
+        "placeholder": placeholder,
+        "value": value,
+        "label": label,
+        "checked": checked,
+        "disabled": disabled,
+    }
+
+
 @register.inclusion_tag("insight_ui/components/dropdown.html")
 def dropdown(config: dict) -> dict:
     """
