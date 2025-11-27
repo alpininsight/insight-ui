@@ -88,8 +88,16 @@
                 <button class="btn btn-primary btn-sm">{% trans "Click me!" %}</button>
                 <button class="btn btn-primary btn-xs">{% trans "Click me!" %}</button>
             </div>
+        {% elif component == "input_field" %}
+            <div class="space-y-6">
+                {% input_field tag_id="date" name="date_input" input_type="date" label="Choose date:" %}
+                {% input_field tag_id="text" name="text_input" input_type="text" placeholder="Type your name" label="Name:" %}
+                {% input_field tag_id="password" name="password_input" input_type="password" placeholder="Type your password" label="Password" %}
+            </div>
         {% elif component == "checkbox" %}
             {% checkbox config=example_checkbox %}
+        {% elif component == "checkbox_group" %}
+            {% checkbox_group config=example_checkbox_group %}
         {% elif component == "dropdown" %}
             <div class="flex gap-2 h-64">
                 {% dropdown config=user_dropdown %}

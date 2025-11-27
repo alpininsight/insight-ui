@@ -367,8 +367,18 @@ def get_sidebar_context() -> dict:
                             "htmx": {"target": "#content"},
                         },
                         {
+                            "text": _("Input Fields"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "input_field"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
                             "text": _("Checkboxes"),
                             "url": reverse("component_detail_page_view", kwargs={"component_name": "checkbox"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Checkbox-Group"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "checkbox_group"}),
                             "htmx": {"target": "#content"},
                         },
                         {

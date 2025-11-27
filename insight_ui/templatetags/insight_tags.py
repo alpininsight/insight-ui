@@ -243,12 +243,12 @@ def input_field(  # noqa: PLR0913 (too many arguments)
     ---------
         tag_id (str): Eine optionale, eindeutige ID für JavaScript.
         name (str): Wird für eine <form> benötigt, als Name des Request-Parameters.
-        input_type (str): Der Type des <input> Feldes bspw.: "text", "password", "date", etc..
+        input_type (str): Der Type des Input-Feldes bspw.: "text", "password", "date", etc..
         placeholder (str): Ein platzhalter Text.
-        value (str): Der Wert der Checkbox (Das ist nicht der Zustand, siehe dafür 'checked').
-        checked (bool): 'True', wenn die Checkbox ausgewählt sein soll, andernfalls 'False'.
-        disabled (bool): 'True', wenn die Checkbox deaktiviert sein soll, andernfalls 'False'.
-        label (str): Ein Label-Text welcher über der Checkbox angezeigt wird.
+        value (str): Der Wert des Input-Feldes (Bei type="checkbox", siehe 'checked').
+        checked (bool): 'True', wenn type="checkbox" und die Checkbox ausgewählt sein soll.
+        disabled (bool): 'True', wenn das Feld deaktiviert sein soll, andernfalls 'False'.
+        label (str): Ein Label-Text welcher über dem Input-Feld angezeigt wird.
         config (dict[str, Any]): Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
 
     Returns:

@@ -1,27 +1,29 @@
-# Checkbox-Komponente (Version 0.1.0)
+# Input-Field-Komponente (Version 0.1.0)
 
-Mit der `checkbox` Komponente lassen sich einzelne Checkbox-Elemente einbauen. Für eine Gruppe von miteinander Verbundenen Checkbox-Elementen siehe [Checkbox-Gruppe](checkbox_group.md).
+Mit der `input_field` Komponente lassen sich einzelne `<input>`-Elemente einbauen.
 
 ## Verwendung
 
 ```django
     {% load insight_tags %}
-
-    {% checkbox tag_id="agb-box" name="accept_agb" value="accept_agb" checked=False disabled=False label="Accept AGBs" %}
+    
+    {% input_field tag_id="expiration-date" name="expiration_date" input_type="date" value="expiration_date" label="Choose expiration date:" %}
 
     # or
 
-    {% checkbox config=checkbox_config %}
+    {% input_field config=input_config %}
 ```
 
 ## Parameter
 
 - **tag_id** (_str_): Eine optionale, eindeutige ID für JavaScript.
 - **name** (_str_): Wird für eine `<form>` benötigt, als Name des Request-Parameters.
-- **value** (_str_): Der Wert der Checkbox (Das ist nicht der Zustand, siehe dafür 'checked').
-- **label** (_str_): Ein Label-Text welcher über der Checkbox angezeigt wird.
-- **checked** (_bool_): 'True', wenn die Checkbox ausgewählt sein soll, andernfalls 'False'.
-- **disabled** (_bool_): 'True', wenn die Checkbox deaktiviert sein soll, andernfalls 'False'.
+- **input_type** (_str_): Der Type des Input-Feldes bspw.: "text", "password", "date", etc..
+- **placeholder** (_str_): Ein platzhalter Text.
+- **value** (_str_): Der Wert des Input-Feldes (Bei type="checkbox", siehe 'checked').
+- **checked** (_bool_): 'True', wenn type="checkbox" und die Checkbox ausgewählt sein soll.
+- **disabled** (_bool_): 'True', wenn das Feld deaktiviert sein soll, andernfalls 'False'.
+- **label** (_str_): Ein Label-Text welcher über dem Input-Feld angezeigt wird.
 - **config** (_dict[str, Any]_): Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
 
 ### config
@@ -30,18 +32,19 @@ Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
 
 ```py
 {
-    "id": "agb-box",
-    "name": "accept_agb",
-    "value": "accept_agb",
+    "id": "expiration-date",
+    "name": "expiration_date",
+    "input_type": "date",
+    "value": "01.01.2026",
     "checked": False,
     "disabled": False,
-    "label": "Accept AGBs",
+    "label": "Choose expiration date:",
 }
 ```
 
 ## Customization
 
-Das Design der Checkbox Komponente befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/checkbox.html`.
+Das Design der Input Komponente befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/input.html`.
 
 Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
 
@@ -55,7 +58,7 @@ Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in d
 
 ## Verwandte Themen
 
-- [Input-Feld](input_field.md)
+- [Checkbox](checkbox.md)
 - [Checkbox-Gruppe](checkbox_group.md)
 - [Radio-Gruppe](radio_group.md)
 - [Toggle-Button](toggle_button.md)
