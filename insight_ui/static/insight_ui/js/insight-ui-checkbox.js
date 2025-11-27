@@ -8,7 +8,9 @@ class Checkbox {
 
         this.checkboxes = element.getElementsByTagName('input');
         this.minChecked = element.dataset.minimumChecked;
+        this.maxChecked = element.dataset.maximumChecked;
 
+        this.init();
         this.bindEvents();
 
         Checkbox.instances.set(element, this);
@@ -16,11 +18,31 @@ class Checkbox {
         debugLog("New checkbox group created: ", element);
     }
 
+    init() {
+        const checkedCount = [...this.checkboxes].filter(b => b.checked).length;
+        if (checkedCount < this.minChecked) {
+            // Too few checkboxes are selected, so select the first missing ones.
+            let missingCount = this.minChecked - checkedCount;
+            let checkboxesToCheck = [...this.checkboxes].filter(b => !b.checked);
+            for (let i = 0; i < missingCount; i++) {
+                checkboxesToCheck[i].checked = true;
+            }
+        } else if (checkedCount > this.maxChecked) {
+            // Too many checkboxes are selected, so deselect the last few that are unnecessary.
+            let excessCount = checkedCount - this.maxChecked;
+            let checkboxesToUncheck = [...this.checkboxes].filter(b => b.checked);
+            for (let i = 0; i < excessCount; i++) {
+                checkboxesToUncheck[checkboxesToUncheck.length - 1 - i].checked = false;
+            }
+        }
+    }
+
     bindEvents() {
         for (let box of this.checkboxes) {
             box.addEventListener('change', () => {
                 const checkedCount = [...this.checkboxes].filter(b => b.checked).length;
                 if (checkedCount < this.minChecked) { box.checked = true; }
+                else if (checkedCount > this.maxChecked) { box.checked = false; }
             });
         }
     }

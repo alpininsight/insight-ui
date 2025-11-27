@@ -751,9 +751,13 @@ def get_checkbox_context() -> dict:
             "name": "language_select",
             "label": "Choose languages:",
             "as_row": True,
+            "minimum_checked": 1,
+            "maximum_checked": 3,
             "items": [
                 {"tag_id": "english", "value": "english", "label": _("English"), "disabled": False},
                 {"tag_id": "german", "value": "german", "label": _("German"), "disabled": False},
+                {"tag_id": "french", "value": "french", "label": _("French"), "disabled": False},
+                {"tag_id": "spanish", "value": "spanish", "label": _("Spanish"), "disabled": False},
                 {
                     "tag_id": "italian",
                     "value": "italian",
