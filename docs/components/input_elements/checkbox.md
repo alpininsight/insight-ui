@@ -1,29 +1,40 @@
 # Checkbox-Komponente (Version 0.1.0)
 
-Mit der `checkbox` Komponente lassen sich einzelne oder Gruppen von Checkbox-Elementen einbauen.
+Mit der `checkbox` Komponente lassen sich einzelne Checkbox-Elemente einbauen. Für eine Gruppe von miteinander Verbundenen Checkbox-Elementen siehe [Checkbox-Gruppe](checkbox_group.md).
 
 ## Verwendung
 
 ```django
-    {% checkbox checkbox=example_checkbox %}
+    {% load insight_tags %}
+    {% checkbox tag_id="agb-box" name="accept_agb" value="accept_agb" checked=False disabled=False label="Accept AGBs" %}
+
+    # or
+
+    {% checkbox config=checkbox_config %}
 ```
 
 ## Parameter
 
-- **checkbox** (_dict_): Beschreibt die Checkbox Komponente.
+- **tag_id** (_str_): Eine optionale, eindeutige ID für JavaScript.
+- **name** (_str_): Wird für eine `<form>` benötigt, als Name des Request-Parameters.
+- **value** (_str_): Der Wert der Checkbox (Das ist nicht der Zustand, siehe dafür 'checked').
+- **label** (_str_): Ein Label-Text welcher über der Checkbox angezeigt wird.
+- **checked** (_bool_): 'True', wenn die Checkbox ausgewählt sein soll, andernfalls 'False'.
+- **disabled** (_bool_): 'True', wenn die Checkbox deaktiviert sein soll, andernfalls 'False'.
+- **config** (_dict[str, Any]_): Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
 
-### checkbox
+### config
 
-Beschreibt die Checkbox Komponente.
+Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
 
 ```py
 {
-    "name": "checkbox-example1",
-    "items": [
-        {"id": "english", "value": "english", "text": _("English"), "disabled": False},
-        {"id": "german", "value": "german", "text": _("German"), "disabled": False},
-        {"id": "italian", "value": "italian", "text": _("Italian (currently not available)"), "disabled": True},
-    ],
+    "id": "agb-box",
+    "name": "accept_agb",
+    "value": "accept_agb",
+    "checked": False,
+    "disabled": False,
+    "label": "Accept AGBs",
 }
 ```
 
@@ -43,5 +54,6 @@ Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in d
 
 ## Verwandte Themen
 
+- [Checkbox-Gruppe](checkbox_group.md)
 - [Radio-Button](radio_button.md)
 - [Toggle-Button](toggle_button.md)

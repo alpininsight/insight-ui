@@ -46,8 +46,8 @@
         <ul class="list-disc leading-relaxed ms-8 mt-6">
             <li><span class="inline-tag">title</span>(<i>str</i>): {% trans "Der Titel des jeweiligen Schritts." %}</li>
             <li><span class="inline-tag">description</span>(<i>str</i>): {% trans "Eine kurze Beschreibung des jeweiligen Schritts." %}</li>
-            <li><span class="inline-tag">completed</span>(<i>bool</i>): {% blocktrans with true='<span class="text-blue-400 font-semibold">True</span>'|safe %}{{ true }} wenn dieser Schritt bereits absolviert wurde.{% endblocktrans %}</li>
-            <li><span class="inline-tag">current</span>(<i>bool</i>): {% blocktrans with true='<span class="text-blue-400 font-semibold">True</span>'|safe %}{{ true }} wenn es sich um den aktuellen Schritt handelt.{% endblocktrans %}</li>
+            <li><span class="inline-tag">completed</span>(<i>bool</i>): {% blocktrans with true='<b>True</b>'|safe %}{{ true }} wenn dieser Schritt bereits absolviert wurde.{% endblocktrans %}</li>
+            <li><span class="inline-tag">current</span>(<i>bool</i>): {% blocktrans with true='<b>True</b>'|safe %}{{ true }} wenn es sich um den aktuellen Schritt handelt.{% endblocktrans %}</li>
         </ul>
     </div>
 </section>

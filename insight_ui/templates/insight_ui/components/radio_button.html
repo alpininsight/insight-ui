@@ -11,9 +11,9 @@
                     name="{{ radio_group.name }}"
                     value="{{ item.value }}"
                     {% if item.disabled %}disabled{% endif %}
-                    {% if current_value == item.value %}checked="true"{% endif %}
+                    {% if current_value == item.value %}checked{% endif %}
                 >
-                <span class="{% if item.disabled %}text-secondary{% else %}text-primary{% endif %} text-sm">{{ item.text }}</span>
+                <span class="{% if item.disabled %}text-secondary{% else %}text-primary{% endif %} text-sm">{{ item.label }}</span>
             </label>
         {% endfor %}
     </div>

@@ -25,7 +25,7 @@ Oder als Block
 - **query_params** (_str_): (Optional) Ein String von Query-Parametern.
 - **target_id** (_str_): (Optional) Die ID des HTML-Tags, welches bei wechseln des Wertes ausgetauscht werden soll.
 - **method** (_str_): (Optional) Der Name der JavaScript Methode welche ausgeführt werden soll.
-- **integrated** (_bool_): _False_ wenn die Komponente ihr eigenes <form> Element haben soll.
+- **integrated** (_bool_): _False_ wenn die Komponente ihr eigenes `<form>` Element haben soll.
 
 ### radio_group
 

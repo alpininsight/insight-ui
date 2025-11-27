@@ -89,11 +89,11 @@
                 <button class="btn btn-primary btn-xs">{% trans "Click me!" %}</button>
             </div>
         {% elif component == "checkbox" %}
-            {% checkbox checkbox=example_checkbox %}
+            {% checkbox config=example_checkbox %}
         {% elif component == "dropdown" %}
             <div class="flex gap-2 h-64">
-                {% dropdown dropdown_menu=user_dropdown %}
-                {% dropdown dropdown_menu=settings_dropdown %}
+                {% dropdown config=user_dropdown %}
+                {% dropdown config=settings_dropdown %}
             </div>
         {% elif component == "radio_button" %}
             {% radio radio_group=example_radio current_value="PaLM 2" %}
@@ -103,9 +103,9 @@
                 {% radio_group radio_group=size_options current_value=current_size %}
             </div>
         {% elif component == "range_slider" %}
-            {% slider slider=example_slider %}
+            {% slider config=example_slider %}
         {% elif component == "toggle_button" %}
-            {% toggle toggle=example_toggle %}
+            {% toggle config=example_toggle %}
         {% elif component == "select" %}
             <div class="h-64">
                 {% select config=select_config %}
@@ -251,6 +251,7 @@
     <script defer src="{% static 'insight_ui/js/insight-ui-3D-carousel.js' %}"></script>
     <script defer src="{% static 'insight_ui/js/insight-ui-accordion.js' %}"></script>
     <script defer src="{% static 'insight_ui/js/insight-ui-carousel.js' %}"></script>
+    <script defer src="{% static 'insight_ui/js/insight-ui-checkbox.js' %}"></script>
     <script defer src="{% static 'insight_ui/js/insight-ui-code-block.js' %}"></script>
     <script defer src="{% static 'insight_ui/js/insight-ui-collapsible.js' %}"></script>
     <script defer src="{% static 'insight_ui/js/insight-ui-dropdown.js' %}"></script>

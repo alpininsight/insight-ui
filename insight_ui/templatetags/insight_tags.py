@@ -95,21 +95,21 @@ def icon(name: str = "", size: str = "") -> dict[str, Any]:
 
 
 @register.filter
-def diff(textA: str, textB: str) -> str:  # noqa: N803 (Should be lowercase)
+def diff(a: str, b: str) -> str:
     """
     Generate a visualization of the differences between to texts.
 
     Arguments:
     ---------
-        textA (str): Die ursprüngliche Version des Textes.
-        textB (str): Die veränderte Version des Textes.
+        a (str): Die ursprüngliche Version des Textes.
+        b (str): Die veränderte Version des Textes.
 
     Returns:
     -------
         diff (str): Ein HTML Ausschnitt zur grafischen Darstellung der Unterschiede.
 
     """
-    diff = ndiff(textA.split(), textB.split())
+    diff = ndiff(a.split(), b.split())
     html = ""
 
     for word in diff:
@@ -131,9 +131,9 @@ def diff(textA: str, textB: str) -> str:  # noqa: N803 (Should be lowercase)
     differentiator = HtmlDiff()
     differentiator._file_template = file_template
     differentiator._styles = styles
-    diff = unified_diff(textA.splitlines(), textB.splitlines(), lineterm="")
+    diff = unified_diff(a.splitlines(), b.splitlines(), lineterm="")
     return "\n".join(list(diff))
-    return differentiator.make_file(textA.splitlines(), textB.splitlines())
+    return differentiator.make_file(a.splitlines(), b.splitlines())
 
 
 @register.inclusion_tag("insight_ui/components/navbar.html")
@@ -226,37 +226,89 @@ def bullet_point_list(items: list = []) -> dict:
 
 
 @register.inclusion_tag("insight_ui/components/dropdown.html")
-def dropdown(dropdown_menu: list) -> dict:
+def dropdown(config: dict) -> dict:
     """
     Rendert ein Dropdown Menü.
 
     Arguments:
     ---------
-        dropdown_menu (dict): Ein Dictionary welches das Dropdown Menü beschreibt.
+        config (dict): Ein Dictionary welches das Dropdown Menü beschreibt:
+        config = {
+            "tag_id": "user-menu",
+            "title": _("User"),
+            "show_arrow": True,
+            "items": [
+                {
+                    "text": _("Profile"),
+                    "view_name": "user_profile_view",
+                    "icon": {"name": "user", "size": "small"},
+                },
+                ...
+            ],
+        }
 
     Returns:
     -------
         Dict mit Kontext-Variablen für das Template.
 
     """
-    return {"dropdown_menu": dropdown_menu}
+    return config
 
 
 @register.inclusion_tag("insight_ui/components/checkbox.html")
-def checkbox(checkbox: dict) -> dict:
+def checkbox(  # noqa: PLR0913 (too many arguments)
+    tag_id: str | None = None,
+    name: str | None = None,
+    value: str | None = None,
+    label: str | None = None,
+    checked: bool | None = None,
+    disabled: bool | None = None,
+    config: dict | None = None,
+) -> dict:
     """
-    Rendert ein oder mehrere Checkbox.
+    Rendert eine Checkbox mit einem Label-Text.
 
     Arguments:
     ---------
-        checkbox (dict): Beschreibt die Checkbox Komponente.
+        tag_id (str): Eine optionale, eindeutige ID für JavaScript.
+        name (str): Wird für eine <form> benötigt, als Name des Request-Parameters.
+        value (str): Der Wert der Checkbox (Das ist nicht der Zustand, siehe dafür 'checked').
+        label (str): Ein Label-Text welcher über der Checkbox angezeigt wird.
+        checked (bool): 'True', wenn die Checkbox ausgewählt sein soll, andernfalls 'False'.
+        disabled (bool): 'True', wenn die Checkbox deaktiviert sein soll, andernfalls 'False'.
+        config (dict[str, Any]): Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
 
     Returns:
     -------
         Dict mit Kontext-Variablen für das Template.
 
     """
-    return {"checkbox": checkbox}
+    if config is not None:
+        tag_id = config.get("tag_id", tag_id)
+        name = config.get("name", name)
+        value = config.get("value", value)
+        label = config.get("label", label)
+        checked = config.get("checked", checked)
+        disabled = config.get("disabled", disabled)
+
+    return {"tag_id": tag_id, "name": name, "value": value, "label": label, "checked": checked, "disabled": disabled}
+
+
+@register.inclusion_tag("insight_ui/components/checkbox_group.html")
+def checkbox_group(config: dict) -> dict:
+    """
+    Rendert eine Gruppe von Checkbox-Elementen.
+
+    Arguments:
+    ---------
+        config (dict): Beschreibt die Checkbox-Gruppen Komponente.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template.
+
+    """
+    return {"config": config}
 
 
 @register.inclusion_tag("insight_ui/components/radio_button.html")
@@ -317,13 +369,32 @@ def radio_group(  # noqa: PLR0913 (too many arguments)
 
 
 @register.inclusion_tag("insight_ui/components/toggle_button.html")
-def toggle(toggle: dict, method: str = "") -> dict:
+def toggle(  # noqa: PLR0913 (too many arguments)
+    tag_id: str | None = None,
+    name: str | None = None,
+    value: str | None = None,
+    label: str | None = None,
+    icon: dict[str, str] | None = None,
+    checked: bool | None = None,
+    disabled: bool | None = None,
+    switch: bool | None = None,
+    config: dict | None = None,
+    method: str = "",
+) -> dict:
     """
     Rendert ein Toggle-Button.
 
     Arguments:
     ---------
-        toggle (dict): Beschreibt den Toggle-Button.
+        tag_id (str): Eine eindeutige ID für die Verknüpfung von <input> und <label>, sowie JavaScript.
+        name (str): Wird für eine <form> benötigt, als Name des Request-Parameters.
+        value (str): Der Wert des Toggles (Das ist nicht der Zustand, siehe dafür 'checked').
+        label (str): Ein Label-Text welcher über dem Toggle angezeigt wird.
+        icon (dict[str, str]): Ein Icon welches neben dem Text angezeigt wird.
+        checked (bool): 'True', wenn der Toggle ausgewählt sein soll, andernfalls 'False'.
+        disabled (bool): 'True', wenn der Toggle deaktiviert sein soll, andernfalls 'False'.
+        switch (bool): 'True', wenn der Toggle-Button wie ein typischer Switch-Select aussehen soll.
+        config (dict[str, Any]): Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
         method (str): Der Name der JavaScript Methode welche ausgeführt werden soll.
 
     Returns:
@@ -331,24 +402,85 @@ def toggle(toggle: dict, method: str = "") -> dict:
         Dict mit Kontext-Variablen für das Template.
 
     """
-    return {"toggle": toggle, "method": method}
+    if config is not None:
+        tag_id = config.get("tag_id", tag_id)
+        name = config.get("name", name)
+        value = config.get("value", value)
+        label = config.get("label", label)
+        icon = config.get("icon", icon)
+        checked = config.get("checked", checked)
+        disabled = config.get("disabled", disabled)
+        switch = config.get("switch", switch)
+
+    return {
+        "tag_id": tag_id,
+        "name": name,
+        "value": value,
+        "label": label,
+        "icon": icon,
+        "checked": checked,
+        "disabled": disabled,
+        "switch": switch,
+        "method": method,
+    }
 
 
 @register.inclusion_tag("insight_ui/components/range_slider.html")
-def slider(slider: dict) -> dict:
+def slider(  # noqa: PLR0913 (too many arguments)
+    tag_id: str | None = None,
+    name: str | None = None,
+    value: int | None = None,
+    minimum: int | None = None,
+    maximum: int | None = None,
+    step_size: int | None = None,
+    label: str | None = None,
+    disabled: bool | None = None,
+    items: list[str] | None = None,
+    config: dict | None = None,
+) -> dict:
     """
     Rendert ein Range-Slider.
 
     Arguments:
     ---------
-        slider (dict): Beschreibt den Range-Slider.
+        tag_id (str): Eine eindeutige ID für die Verknüpfung von <input> und <label>, sowie JavaScript.
+        name (str): Wird für eine <form> benötigt, als Name des Request-Parameters.
+        value (int): Der Wert des Sliders.
+        minimum (int): Der kleinste Wert des Sliders.
+        maximum (int): Der größte Wert des Sliders.
+        step_size (int): Die Größe der Schritte des Sliders.
+        label (str): Ein Label-Text welcher über dem Toggle angezeigt wird.
+        disabled (bool): 'True', wenn der Toggle deaktiviert sein soll, andernfalls 'False'.
+        items (list[str]): Eine Liste von Texten, welche als Legende unter dem Slider angezeigt werden.
+        config (dict[str, Any]): Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
 
     Returns:
     -------
         Dict mit Kontext-Variablen für das Template.
 
     """
-    return {"slider": slider}
+    if config is not None:
+        tag_id = config.get("tag_id", tag_id)
+        name = config.get("name", name)
+        value = config.get("value", value)
+        minimum = config.get("minimum", minimum)
+        maximum = config.get("maximum", maximum)
+        step_size = config.get("step_size", step_size)
+        label = config.get("label", label)
+        disabled = config.get("disabled", disabled)
+        items = config.get("items", items)
+
+    return {
+        "tag_id": tag_id,
+        "name": name,
+        "value": value,
+        "minimum": minimum,
+        "maximum": maximum,
+        "step_size": step_size,
+        "label": label,
+        "disabled": disabled,
+        "items": items,
+    }
 
 
 @register.inclusion_tag("insight_ui/components/chat.html")
@@ -409,7 +541,7 @@ def paginated_list(current_page: Page, surrounding_pages: list) -> dict:
 def generic_filter(  # noqa: PLR0913 (too many arguments)
     filters: list,
     view_name: str,
-    hx_target: str,
+    hx_target: str = "",
     hx_push_url: str = "true",
     vertical: bool = False,
     query_params: dict[str, str] = {},
@@ -484,7 +616,7 @@ def toggle_view(tag_id: str, table_data: list, view_options: list, current_view:
 
     Arguments:
     ---------
-        tag_id (str):Eine einzigartige ID für die Komponente. (Wird für den wechsel der Ansicht benötigt).
+        tag_id (str): Eine einzigartige ID für die Komponente. (Wird für den wechsel der Ansicht benötigt).
         table_data (list): Die Daten, welche angezeigt werden sollen.
         view_options (list): Eine Liste aller möglichen Ansichtsarten (Möglichkeiten: "card", "list", "carousel").
         current_view (str): Der name der aktuellen Ansichtsart.

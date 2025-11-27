@@ -9,8 +9,8 @@
         </a>
         {% radio_group radio_group=device_options current_value="desktop" method="setWidth" %}
         <div class="flex items-center justify-center gap-1 h-full">
-            {% toggle toggle=dir_toggle method="toggleRTL" %}
-            {% toggle toggle=theme_toggle method="toggleTheme" %}
+            {% toggle config=dir_toggle method="toggleRTL" %}
+            {% toggle config=theme_toggle method="toggleTheme" %}
         </div>
     </div>
     <div class="w-full">

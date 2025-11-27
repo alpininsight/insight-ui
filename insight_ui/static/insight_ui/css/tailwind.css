@@ -116,6 +116,7 @@
     --color-insight-text-link: #3b82f6;
     --color-insight-text-link-hover: #93c5fd;
     --animate-blink: blink 2s step-start infinite;
+    --animate-shake: shake 0.3s;
   }
 }
 @layer base {
@@ -745,6 +746,9 @@
   }
   .animate-pulse {
     animation: var(--animate-pulse);
+  }
+  .animate-shake {
+    animation: var(--animate-shake);
   }
   .animate-spin {
     animation: var(--animate-spin);
@@ -3449,6 +3453,17 @@
   }
   50% {
     opacity: 100;
+  }
+}
+@keyframes shake {
+  0%,100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
   }
 }
 @layer properties {

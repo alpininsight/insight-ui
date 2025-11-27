@@ -1,13 +1,15 @@
 {% load insight_tags %}
 
-{% if toggle.switch %}
+{% if switch %}
     <label class="inline-flex flex-col cursor-pointer w-fit">
-        <span class="flex gap-1 text-sm font-bold text-primary mb-2">{{ toggle.text }}</span>
+        <span class="flex gap-1 text-sm font-bold text-primary mb-2">{{ label }}</span>
         <input
-            id="{{ toggle.id }}"
-            name="{{ toggle.id }}"
             type="checkbox"
-            {% if toggle.checked %}checked{% endif %}
+            {% if tag_id %}id="{{ tag_id }}"{% endif %}
+            {% if name %}name="{{ name }}"{% endif %}
+            {% if value %}value="{{ value }}"{% endif %}
+            {% if checked %}checked{% endif %}
+            {% if disabled %}disabled{% endif %}
             {% if method %}onclick="{{ method }}()"{% endif %}
             class="peer sr-only"
         >
@@ -16,21 +18,23 @@
 {% else %}
     <div class="inline-block h-full w-fit">
         <input
-            id="{{ toggle.id }}"
-            name="{{ toggle.id }}"
             type="checkbox"
-            {% if toggle.checked %}checked{% endif %}
+            {% if tag_id %}id="{{ tag_id }}"{% endif %}
+            {% if name %}name="{{ name }}"{% endif %}
+            {% if value %}value="{{ value }}"{% endif %}
+            {% if checked %}checked{% endif %}
+            {% if disabled %}disabled{% endif %}
             {% if method %}onclick="{{ method }}()"{% endif %}
             class="peer hidden"
         >
         <label
-            for="{{ toggle.id }}"
+            for="{{ tag_id }}"
             class="btn btn-sm btn-primary h-full cursor-pointer select-none peer-checked:bg-insight-primary-active peer-checked:border-insight-primary-active"
         >
-            {% if toggle.icon %}
-                {% icon toggle.icon %}
+            {% if icon %}
+                {% icon icon %}
             {% endif %}
-            {{ toggle.text }}
+            {{ label|default:"" }}
         </label>
     </div>
 {% endif %}

@@ -112,8 +112,9 @@
             </a>
         </h2>
     </div>
-    <div class="p-4 md:p-6">
-        {% checkbox checkbox=example_checkbox %}
+    <div class="p-4 md:p-6 space-y-6">
+        {% checkbox config=example_checkbox %}
+        {% checkbox_group config=example_checkbox_group %}
     </div>
 </section>
 
@@ -157,7 +158,7 @@
         </h2>
     </div>
     <div class="p-4 md:p-6">
-        {% toggle toggle=example_toggle %}
+        {% toggle config=example_toggle %}
     </div>
 </section>
 
@@ -178,7 +179,7 @@
         </h2>
     </div>
     <div class="p-4 md:p-6">
-        {% slider slider=example_slider %}
+        {% slider config=example_slider %}
     </div>
 </section>
 
@@ -199,8 +200,8 @@
         </h2>
     </div>
     <div class="flex gap-2 p-4 md:p-6">
-        {% dropdown dropdown_menu=user_dropdown %}
-        {% dropdown dropdown_menu=settings_dropdown %}
+        {% dropdown config=user_dropdown %}
+        {% dropdown config=settings_dropdown %}
     </div>
 </section>
 

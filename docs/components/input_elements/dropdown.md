@@ -9,38 +9,29 @@ Bei der Verwendung von Dropdown-Menüs ist dennoch zu beachten, das diese nicht 
 ```django
 {% load insight_tags %}
 
-{% dropdown dropdown_menu=user_dropdown %}
+{% dropdown config=user_dropdown %}
 ```
 
 ## Parameter
 
-- **dropdown_menu** (_dict_): Ein Dictionary welches das Dropdown Menü beschreibt.
+- **config** (_dict_): Ein Dictionary welches das Dropdown Menü beschreibt.
 
-### dropdown_menu
+### config
 
 Ein Dictionary welches das Dropdown Menü beschreibt.
 
 ```py
 {
-    "tag_id": "DD_user",
+    "tag_id": "user-menu",
     "title": _("User"),
     "show_arrow": True,
     "items": [
         {
             "text": _("Profile"),
-            "view_name": "storybook_view",
+            "view_name": "user_profile_view",
             "icon": {"name": "user", "size": "small"},
         },
-        {
-            "text": _("Settings"),
-            "view_name": "storybook_view",
-            "icon": {"name": "cog", "size": "small"},
-        },
-        {
-            "text": _("Logout"),
-            "view_name": "storybook_view",
-            "icon": {"name": "got-out", "size": "small"},
-        },
+        ...
     ],
 }
 ```

@@ -1,6 +1,5 @@
 from django.templatetags.static import static
 from django.urls import reverse
-from django.utils.html import format_html
 from django.utils.lorem_ipsum import paragraphs
 from django.utils.translation import gettext as _
 
@@ -129,8 +128,8 @@ def get_component_demo_context() -> dict:
                 {"id": "desktop", "value": "desktop", "icon": {"name": "desktop"}, "disabled": False},
             ],
         },
-        "dir_toggle": {"id": "toggle_dir", "text": _("RTL")},
-        "theme_toggle": {"id": "toggle_theme", "icon": {"name": "moon"}},
+        "dir_toggle": {"tag_id": "toggle_dir", "label": _("RTL")},
+        "theme_toggle": {"tag_id": "toggle_theme", "icon": {"name": "moon"}},
     }
 
 
@@ -732,13 +731,27 @@ def get_checkbox_context() -> dict:
     """Serve data for checkbox detailpage."""
     return {
         "example_checkbox": {
-            "name": "checkbox-example1",
+            "id": "accept-agbs",
+            "name": "accept_agbs",
+            "value": "AGB",
+            "label": _("Accept AGBs"),
+            "disabled": False,
+        },
+        "example_checkbox_group": {
+            "name": "language_select",
+            "label": "Choose languages:",
+            "as_row": True,
             "items": [
-                {"id": "english", "value": "english", "text": _("English"), "disabled": False},
-                {"id": "german", "value": "german", "text": _("German"), "disabled": False},
-                {"id": "italian", "value": "italian", "text": _("Italian (currently not available)"), "disabled": True},
+                {"id": "english", "value": "english", "label": _("English"), "disabled": False},
+                {"id": "german", "value": "german", "label": _("German"), "disabled": False},
+                {
+                    "id": "italian",
+                    "value": "italian",
+                    "label": _("Italian (currently not available)"),
+                    "disabled": True,
+                },
             ],
-        }
+        },
     }
 
 
@@ -748,9 +761,9 @@ def get_radio_button_context() -> dict:
         "example_radio": {
             "name": "radio-example1",
             "items": [
-                {"id": "model1", "value": "BERT", "text": _("BERT"), "disabled": False},
-                {"id": "model2", "value": "PaLM 2", "text": _("PaLM 2"), "disabled": False},
-                {"id": "model3", "value": "LLaMA 2", "text": _("LLaMA 2 (currently not available)"), "disabled": True},
+                {"id": "model1", "value": "BERT", "label": _("BERT"), "disabled": False},
+                {"id": "model2", "value": "PaLM 2", "label": _("PaLM 2"), "disabled": False},
+                {"id": "model3", "value": "LLaMA 2", "label": _("LLaMA 2 (currently not available)"), "disabled": True},
             ],
         }
     }
@@ -772,9 +785,9 @@ def get_radio_group_context() -> dict:
             "name": "size-options",
             "param_name": "size",
             "items": [
-                {"id": "small-size", "value": "small", "text": "sm"},
-                {"id": "medium-size", "value": "medium", "text": "md"},
-                {"id": "large-size", "value": "large", "text": "lg"},
+                {"id": "small-size", "value": "small", "label": "sm"},
+                {"id": "medium-size", "value": "medium", "label": "md"},
+                {"id": "large-size", "value": "large", "label": "lg"},
             ],
         },
     }
@@ -782,7 +795,7 @@ def get_radio_group_context() -> dict:
 
 def get_toggle_button_context() -> dict:
     """Serve data for toggle-button detailpage."""
-    return {"example_toggle": {"id": "toggle_button_example1", "text": _("Click me!"), "switch": True}}
+    return {"example_toggle": {"id": "toggle_button_example1", "label": _("Click me!"), "switch": True}}
 
 
 def get_select_context() -> dict:
@@ -796,8 +809,8 @@ def get_multiselect_context() -> dict:
         "multiselect_config": {
             "name": "test",
             "label": "Test",
-            "max": 0,
-            "show_buttons": True,
+            "maximum": 1,
+            "show_buttons": False,
             "values": ["A", "B", "C"],
         }
     }
@@ -807,11 +820,12 @@ def get_range_slider_context() -> dict:
     """Serve data for range-slider detailpage."""
     return {
         "example_slider": {
-            "id": "range_slider_example1",
-            "title": "Range Slider Title",
+            "id": "range_slider_example",
+            "name": "range_slider_example",
+            "label": "Range Slider Title",
             "value": 1000,
-            "min": 100,
-            "max": 1500,
+            "minimum": 100,
+            "maximum": 1500,
             "items": [_("100€ (minimum)"), "500€", "750€", "1000€", _("1500€ (maximum)")],
         }
     }
@@ -841,25 +855,19 @@ def get_table_context() -> dict:
                     "Max Mustermann",
                     "max@example.com",
                     _("Active"),
-                    format_html(
-                        '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
-                    ),
+                    '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>',  # noqa: E501
                 ],
                 [
                     "Anna Schmidt",
                     "anna@example.com",
                     _("Inactive"),
-                    format_html(
-                        '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
-                    ),
+                    '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>',  # noqa: E501
                 ],
                 [
                     "Tom Weber",
                     "tom@example.com",
                     _("Active"),
-                    format_html(
-                        '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
-                    ),
+                    '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>',  # noqa: E501
                 ],
             ],
         }

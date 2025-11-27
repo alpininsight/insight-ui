@@ -2,10 +2,12 @@
 
 <div data-multiselect data-name="{{ name }}" data-max="{{ maximum }}" data-selected="{{ selected_values|default:"" }}">
     <label id="{{ name }}-label" class="block text-sm font-bold text-primary mb-1">{{ label }}</label>
-    <div class="flex gap-2 mb-1">
-        <button type="button" class="select-all btn btn-primary btn-sm">{% trans "Alle auswählen" %}</button>
-        <button type="button" class="deselect-all btn btn-primary btn-sm">{% trans "Alle abwählen" %}</button>
-    </div>
+    {% if show_buttons %}
+        <div class="flex gap-2 mb-1">
+            <button type="button" class="select-all btn btn-primary btn-sm">{% trans "Alle auswählen" %}</button>
+            <button type="button" class="deselect-all btn btn-primary btn-sm">{% trans "Alle abwählen" %}</button>
+        </div>
+    {% endif %}
     <div class="relative" role="combobox" aria-labelledby="{{ name }}-label" aria-haspopup="listbox" aria-expanded="false" aria-owns="{{ name }}-listbox">
         <div class="selected flex flex-wrap items-center gap-1 px-2 py-2 border border-gray-300 rounded-md bg-white cursor-text focus-within:ring-2 focus-within:ring-blue-500" aria-controls="{{ name }}-listbox" aria-activedescendant="" aria-autocomplete="list" aria-multiselectable="true">
             <span class="tags flex flex-wrap gap-1"></span>
@@ -20,12 +22,3 @@
     </div>
     <div class="sr-only" aria-live="polite" id="{{ name }}-aria-status"></div>
 </div>
-
-<style>
-    @keyframes shake {
-        0%,100% { transform: translateX(0); }
-        25% { transform: translateX(-4px); }
-        75% { transform: translateX(4px); }
-    }
-    .animate-shake { animation: shake 0.3s; }
-</style>

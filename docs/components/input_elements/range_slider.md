@@ -5,24 +5,42 @@ Mit der `slider`-Komponente kann ein Range-Slider in das Frontend eingebaut werd
 ## Verwendung
 
 ```django
-    {% slider slider=example_slider %}
+    {% load insight-tags %}
+
+    {% slider tag_id="cpu-cores" name="cpu_core_count" value=4 minimum=2 maximum=8 step_size=2 disabled=False label="Choose amount of CPU-Cores:" items=labels %}
+
+    # or
+
+    {% slider config=slider_config %}
 ```
 
 ## Parameter
 
-- **slider** (_dict_): Beschreibt den Range-Slider.
+- **tag_id** (_str_): Eine eindeutige ID für die Verknüpfung von `<input>` und `<label>`, sowie JavaScript.
+- **name** (_str_): Wird für eine `<form>` benötigt, als Name des Request-Parameters.
+- **value** (_int_): Der Wert des Sliders.
+- **minimum** (_int_): Der kleinste Wert des Sliders.
+- **maximum** (_int_): Der größte Wert des Sliders.
+- **step_size** (_int_): Die Größe der Schritte des Sliders.
+- **label** (_str_): Ein Label-Text welcher über dem Toggle angezeigt wird.
+- **disabled** (_bool_): 'True', wenn der Toggle deaktiviert sein soll, andernfalls 'False'.
+- **items** (_list[str]_): Eine Liste von Texten, welche als Legende unter dem Slider angezeigt werden. 
+- **config** (_dict[str, Any]_): Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
 
-### slider
+### config
 
-Beschreibt den Range-Slider.
+Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
 
 ```py
 {
-    "id": "range_slider_example1",
-    "title": "Range Slider Title",
-    "value": 1000,
-    "min": 100,
-    "max": 1500,
+    "tag_id": "cpu-cores",
+    "name": "cpu_core_count",
+    "value": 4,
+    "minimum": 2,
+    "maximum": 8,
+    "step_size": 2
+    "label": "Choose amount of CPU-Cores:,
+    "disabled": False,
     "items": [_("100€ (minimum)"), "500€", "750€", "1000€", _("1500€ (maximum)")],
 }
 ```

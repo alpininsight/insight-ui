@@ -1,17 +1,19 @@
 <div class="relative">
-    <label class="flex gap-1 text-sm font-bold text-primary" for="{{ slider.id }}">{{ slider.title }}</label>
+    <label class="flex gap-1 text-sm font-bold text-primary" for="{{ tag_id }}">{{ label }}</label>
     <input
-        id="{{ slider.id }}"
-        name="{{ slider.id }}"
         type="range"
-        value="{{ slider.value }}"
-        min="{{ slider.min }}"
-        max="{{ slider.max }}"
+        id="{{ tag_id }}"
+        name="{{ name }}"
+        value="{{ value }}"
+        min="{{ minimum }}"
+        max="{{ maximum }}"
+        step="{{ step_size|default:1 }}"
+        {% if disabled %}disabled{% endif %}
         class="range-custom w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-sm appearance-none cursor-pointer"
         oninput="updateSlider(this)"
     >
     <div class="flex justify-between w-full text-sm text-secondary">
-        {% for item in slider.items %}
+        {% for item in items %}
             <span>{{ item }}</span>
         {% endfor %}
     </div>
@@ -26,7 +28,7 @@
         slider.style.setProperty('--range-progress', `${percent}%`);
     }
 
-    updateSlider(document.getElementById("{{ slider.id }}"));
+    updateSlider(document.getElementById("{{ tag_id }}"));
 </script>
 <style>
     .range-custom {
