@@ -251,12 +251,38 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
         "id": component_name,
     }
 
+    context = get_component_demo_context()
+
+    if component_name == "button":
+        context["outline_button_demo"] = {
+            "url": reverse("component_demo_view", kwargs={"component_name": "outline_button"}),
+            "title": "outline_button",
+            "id": "outline_button",
+        }
+
+        context["button_sizes_demo"] = {
+            "url": reverse("component_demo_view", kwargs={"component_name": "button_sizes"}),
+            "title": "button_sizes",
+            "id": "button_sizes",
+        }
+    elif component_name == "radio_button":
+        context["radio_block_demo"] = {
+            "url": reverse("component_demo_view", kwargs={"component_name": "radio_group"}),
+            "title": "radio_group",
+            "id": "radio_group",
+        }
+    elif component_name == "card":
+        context["effect_cards_demo"] = {
+            "url": reverse("component_demo_view", kwargs={"component_name": "effect_cards"}),
+            "title": "effect_cards",
+            "id": "effect_cards",
+        }
+
     if request.headers.get("HX-Request"):
-        context = get_component_demo_context()
         context["demo"] = demo_info
         return render(request, f"insight_ui/docs/partial/{component_name}_detailpage.html", context)
 
-    context = get_base_context() | get_component_demo_context() | get_sidebar_context()
+    context |= get_base_context() | get_sidebar_context()
     context["template_name"] = f"insight_ui/docs/partial/{component_name}_detailpage.html"
     context["demo"] = demo_info
     return render(request, "insight_ui/docs/component_detailpage.html", context)
@@ -317,6 +343,7 @@ def component_demo_view(request: HttpRequest, component_name: str) -> HttpRespon
         "search_bar": get_empty_context,
         "query_builder": get_query_builder_context,
         "card": get_cards_context,
+        "effect_cards": get_cards_context,
         "card_carousel": get_card_carousel_context,
         "image_carousel": get_image_carousel_context,
         "3D_carousel": get_3d_carousel_context,

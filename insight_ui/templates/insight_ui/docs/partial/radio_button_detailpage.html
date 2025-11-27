@@ -11,8 +11,8 @@
     <h2>{% trans "Radio Buttons" %}</h2>
     {% include "insight_ui/docs/demo_container.html" %}
 
-    <h2>{% trans "Block Radio Buttons" %}</h2>
-    {% include "insight_ui/docs/demo_container.html" %}
+    <h2 class="mt-8">{% trans "Block Radio Buttons" %}</h2>
+    {% include "insight_ui/docs/demo_container.html" with demo=radio_block_demo %}
 </section>
 
 <hr class="text-gray-300 dark:text-gray-600">
@@ -41,7 +41,7 @@
         <li><span class="inline-tag">query_params</span> (<i>str</i>): (Optional) Ein String von Query-Parametern.</li>
         <li><span class="inline-tag">target_id</span> (<i>str</i>): (Optional) Die ID des HTML-Tags, welches bei wechseln des Wertes ausgetauscht werden soll.</li>
         <li><span class="inline-tag">method</span> (<i>str</i>): (Optional) Der Name der JavaScript Methode welche ausgeführt werden soll.</li>
-        <li><span class="inline-tag">integrated</span> (<i>bool</i>): <span class="inline-tag">False</span> wenn die Komponente ihr eigenes <span class="inline-tag">&lt;form&gt;</span> Element haben soll.</li>
+        <li><span class="inline-tag">integrated</span> (<i>bool</i>): <b>False</b> wenn die Komponente ihr eigenes <span class="inline-tag">&lt;form&gt;</span> Element haben soll.</li>
     </ul>
 
     <div class="mt-8">
