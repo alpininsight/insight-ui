@@ -53,5 +53,5 @@ Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in d
 ## Verwandte Themen
 
 - [Checkbox](checkbox.md)
-- [Radio-Button](radio_button.md)
+- [Radio-Gruppe](radio_group.md)
 - [Toggle-Button](toggle_button.md)
