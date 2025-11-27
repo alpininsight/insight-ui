@@ -359,11 +359,11 @@ class CheckboxTemplateTagTest(TemplateTagsTestCase):
 
 
 class RadioGroupTemplateTagTest(TemplateTagsTestCase):
-    """Tests for the {% radio %} component."""
+    """Tests for the {% radio_group %} component."""
 
     @pytest.mark.skip(reason="Needs to be finished!")
-    def test_radio_group_block(self) -> None:
-        """Test the {% radio_group %} tag."""
+    def test_radio_block_block(self) -> None:
+        """Test the {% radio_block %} tag."""
         context = {
             "current_value": "BERT",
             "view_name": "index",
@@ -389,7 +389,7 @@ class RadioGroupTemplateTagTest(TemplateTagsTestCase):
 
         template_string = """
         {% load insight_tags %}
-        {% radio_group radio_group_config current_value=current_value %}
+        {% radio_block radio_group_config current_value=current_value %}
         """
 
         rendered = self.render_template(template_string, context)
@@ -441,7 +441,7 @@ class RadioGroupTemplateTagTest(TemplateTagsTestCase):
         assert labels[2].get_text() == "LLaMA 2 (currently not available)"
 
     def test_radio_group(self) -> None:
-        """Test the {% radio %} tag."""
+        """Test the {% radio_group %} tag."""
         context = {
             "current_value": "BERT",
             "radio_group_config": {
@@ -463,7 +463,7 @@ class RadioGroupTemplateTagTest(TemplateTagsTestCase):
 
         template_string = """
         {% load insight_tags %}
-        {% radio radio_group_config current_value=current_value %}
+        {% radio_group radio_group_config current_value=current_value %}
         """
 
         rendered = self.render_template(template_string, context)

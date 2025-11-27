@@ -118,26 +118,26 @@
     </div>
 </section>
 
-<!-- Radio-Button Demo -->
+<!-- Radio-Group Demo -->
 <section class="component-container">
     <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-t p-4 py-2 md:px-6 md:py-3">
         <h2 class="text-xl mb-0">
             <a
-                href="{% url 'component_detail_page_view' 'radio_button' %}"
-                hx-get="{% url 'component_detail_page_view' 'radio_button' %}"
+                href="{% url 'component_detail_page_view' 'radio_group' %}"
+                hx-get="{% url 'component_detail_page_view' 'radio_group' %}"
                 hx-target="#content"
                 hx-swap="innerHTML show:window:top"
                 hx-push-url="true"
                 class="inline-flex items-center gap-1 hover:text-blue-300"
             >
-                {% trans 'Radio-Buttons' %} {% icon name="open-link" size="small" %}
+                {% trans 'Radio-Group' %} {% icon name="open-link" size="small" %}
             </a>
         </h2>
     </div>
     <div class="p-4 md:p-6 space-y-6">
-        {% radio radio_group=example_radio current_value="PaLM 2" %}
+        {% radio_group config=example_radio current_value="PaLM 2" %}
 
-        {% radio_group radio_group=view_options current_value="card" %}
+        {% radio_block config=radio_view_config current_value="card" %}
     </div>
 </section>
 

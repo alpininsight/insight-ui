@@ -7,7 +7,7 @@ from typing import Any
 
 from django import template
 from django.core.paginator import Page
-from django.urls import NoReverseMatch, reverse
+from django.urls import reverse
 
 from insight_ui.utils.diff import file_template, styles
 
@@ -54,17 +54,14 @@ def _ensure_resolved_url(mapping: JsonMapping) -> None:
     view_arg = mapping.get("view_arg")
     view_kwargs = mapping.get("view_kwargs")
 
-    try:
-        if isinstance(view_args, list | tuple):
-            mapping["url"] = reverse(view_name, args=list(view_args))
-        elif view_arg is not None:
-            mapping["url"] = reverse(view_name, args=[view_arg])
-        elif isinstance(view_kwargs, dict):
-            mapping["url"] = reverse(view_name, kwargs=view_kwargs)
-        else:
-            mapping["url"] = reverse(view_name)
-    except NoReverseMatch:
-        mapping["url"] = None
+    if isinstance(view_args, list | tuple):
+        mapping["url"] = reverse(view_name, args=list(view_args))
+    elif view_arg is not None:
+        mapping["url"] = reverse(view_name, args=[view_arg])
+    elif isinstance(view_kwargs, dict):
+        mapping["url"] = reverse(view_name, kwargs=view_kwargs)
+    else:
+        mapping["url"] = reverse(view_name)
 
 
 @register.filter
@@ -95,7 +92,7 @@ def icon(name: str = "", size: str = "") -> dict[str, Any]:
 
 
 @register.filter
-def diff(a: str, b: str) -> str:
+def diff(a: str, b: str, simple: bool = True) -> str:
     """
     Generate a visualization of the differences between to texts.
 
@@ -103,12 +100,21 @@ def diff(a: str, b: str) -> str:
     ---------
         a (str): Die ursprüngliche Version des Textes.
         b (str): Die veränderte Version des Textes.
+        simple (bool): 'True' für eine vereinfachte Darstellung.
 
     Returns:
     -------
         diff (str): Ein HTML Ausschnitt zur grafischen Darstellung der Unterschiede.
 
     """
+    if not simple:
+        differentiator = HtmlDiff()
+        differentiator._file_template = file_template
+        differentiator._styles = styles
+        diff = unified_diff(a.splitlines(), b.splitlines(), lineterm="")
+        return "\n".join(list(diff))
+        return differentiator.make_file(a.splitlines(), b.splitlines())
+
     diff = ndiff(a.split(), b.split())
     html = ""
 
@@ -127,13 +133,6 @@ def diff(a: str, b: str) -> str:
         </style>
         <p class='text-primary'>{html}</p>
     """
-
-    differentiator = HtmlDiff()
-    differentiator._file_template = file_template
-    differentiator._styles = styles
-    diff = unified_diff(a.splitlines(), b.splitlines(), lineterm="")
-    return "\n".join(list(diff))
-    return differentiator.make_file(a.splitlines(), b.splitlines())
 
 
 @register.inclusion_tag("insight_ui/components/navbar.html")
@@ -311,31 +310,38 @@ def checkbox_group(config: dict) -> dict:
     return {"config": config}
 
 
-@register.inclusion_tag("insight_ui/components/radio_button.html")
-def radio(radio_group: dict, current_value: str) -> dict:
+@register.inclusion_tag("insight_ui/components/radio_group.html")
+def radio_group(config: dict, current_value: str) -> dict:
     """
-    Rendert ein oder mehrere Radio-Buttons.
+    Rendert eine Gruppe von Radio-Buttons.
 
     Arguments:
     ---------
-        radio_group (dict): Beschreibt die Radio Komponente und deren Items.
-        current_value (str): Der Name der aktuell ausgewählten Wertes.
+        config (dict): Beschreibt die Radio Komponente und deren Items.
+        current_value (str): Der Name des aktuell ausgewählten Radio-Buttons.
 
     Returns:
     -------
         Dict mit Kontext-Variablen für das Template.
 
     """
-    return {"radio_group": radio_group, "current_value": current_value}
+    return {
+        "name": config.get("name"),
+        "label": config.get("label"),
+        "as_row": config.get("as_row"),
+        "items": config.get("items"),
+        "current_value": current_value,
+    }
 
 
-@register.inclusion_tag("insight_ui/components/radio_group.html")
-def radio_group(  # noqa: PLR0913 (too many arguments)
-    radio_group: dict,
+@register.inclusion_tag("insight_ui/components/radio_block.html")
+def radio_block(  # noqa: PLR0913 (too many arguments)
+    config: dict,
     current_value: str,
     view_name: str = "",
     query_params: str = "",
-    target_id: str = "",
+    hx_target_id: str = "",
+    hx_swap_method: str = "",
     method: str = "",
     integrated: bool = False,
 ) -> dict:
@@ -344,11 +350,12 @@ def radio_group(  # noqa: PLR0913 (too many arguments)
 
     Arguments:
     ---------
-        radio_group (dict): Beschreibt die Radio Komponente und deren Items.
-        current_value (str): Der Name der aktuell ausgewählten Wertes.
-        view_name (str): (Optional) Der Name der View an welchen der Request beim wechseln, gesendet werden soll.
-        query_params (str): (Optional) Ein String von Query-Parametern
-        target_id (str): (Optional) Die ID des HTML-Tags, welches bei wechseln des Wertes ausgetauscht werden soll.
+        config (dict): Beschreibt die Radio Komponente und deren Items.
+        current_value (str): Der Name des aktuell ausgewählten Radio-Buttons.
+        view_name (str): Der Name der View an welchen der Request beim wechseln, gesendet werden soll.
+        query_params (str): Ein String von Query-Parametern
+        hx_target_id (str): Die ID des HTML-Tags, welches bei wechseln des Wertes ausgetauscht werden soll.
+        hx_swap_method (str): Die Art wie das Target ausgetauscht werden soll (siehe: https://htmx.org/attributes/hx-swap/).
         method (str): Der Name der JavaScript Methode welche ausgeführt werden soll.
         integrated (bool): 'False' wenn die Komponente ihr eigenes <form> Element haben soll.
 
@@ -358,11 +365,14 @@ def radio_group(  # noqa: PLR0913 (too many arguments)
 
     """
     return {
-        "radio_group": radio_group,
+        "name": config.get("name"),
+        "label": config.get("label"),
+        "items": config.get("items"),
         "current_value": current_value,
         "view_name": view_name,
         "query_params": query_params,
-        "target_id": target_id,
+        "hx_target_id": hx_target_id,
+        "hx_swap_method": hx_swap_method,
         "method": method,
         "integrated": integrated,
     }
@@ -610,15 +620,15 @@ def sq_builder(model_fields: list) -> dict:
 
 
 @register.inclusion_tag("insight_ui/components/toggle_view.html")
-def toggle_view(tag_id: str, table_data: list, view_options: list, current_view: str) -> dict:
+def toggle_view(tag_id: str, data: list, radio_view_config: dict, current_view: str) -> dict:
     """
     Rendert eine Ansicht von Daten, welche auf verschiedene Arten dargestellt werden kann.
 
     Arguments:
     ---------
         tag_id (str): Eine einzigartige ID für die Komponente. (Wird für den wechsel der Ansicht benötigt).
-        table_data (list): Die Daten, welche angezeigt werden sollen.
-        view_options (list): Eine Liste aller möglichen Ansichtsarten (Möglichkeiten: "card", "list", "carousel").
+        data (list): Die Daten, welche angezeigt werden sollen.
+        radio_view_config (dict): Die Konfiguration der Radio-Group, zum wechseln der Ansichtsart.
         current_view (str): Der name der aktuellen Ansichtsart.
 
     Returns:
@@ -626,7 +636,7 @@ def toggle_view(tag_id: str, table_data: list, view_options: list, current_view:
         Dict mit Kontext-Variablen für das Template.
 
     """
-    return {"tag_id": tag_id, "table_data": table_data, "view_options": view_options, "current_view": current_view}
+    return {"tag_id": tag_id, "data": data, "radio_view_config": radio_view_config, "current_view": current_view}
 
 
 @register.inclusion_tag("insight_ui/components/live_content.html")

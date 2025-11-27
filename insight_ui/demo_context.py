@@ -377,8 +377,8 @@ def get_sidebar_context() -> dict:
                             "htmx": {"target": "#content"},
                         },
                         {
-                            "text": _("Radio-Buttons"),
-                            "url": reverse("component_detail_page_view", kwargs={"component_name": "radio_button"}),
+                            "text": _("Radio-Group"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "radio_group"}),
                             "htmx": {"target": "#content"},
                         },
                         {
@@ -580,7 +580,7 @@ def get_inputs_storybook_context() -> dict:
         get_base_context()
         | get_sidebar_context()
         | get_checkbox_context()
-        | get_radio_button_context()
+        | get_radio_group_context()
         | get_toggle_button_context()
         | get_range_slider_context()
         | get_dropdown_context()
@@ -755,9 +755,9 @@ def get_checkbox_context() -> dict:
     }
 
 
-def get_radio_button_context() -> dict:
-    """Serve data for radio button detailpage."""
-    return get_radio_group_context() | {
+def get_radio_group_context() -> dict:
+    """Serve data for radio group detailpage."""
+    return get_radio_block_context() | {
         "example_radio": {
             "name": "radio-example1",
             "items": [
@@ -769,11 +769,11 @@ def get_radio_button_context() -> dict:
     }
 
 
-def get_radio_group_context() -> dict:
-    """Serve data for radio group detailpage."""
+def get_radio_block_context() -> dict:
+    """Serve data for radio block detailpage."""
     return {
-        "view_options": {
-            "name": "view-options",
+        "radio_view_config": {
+            "name": "view",
             "param_name": "view",
             "items": [
                 {"id": "card-view", "value": "card", "icon": {"name": "cards"}},
@@ -781,8 +781,8 @@ def get_radio_group_context() -> dict:
                 {"id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},
             ],
         },
-        "size_options": {
-            "name": "size-options",
+        "radio_size_config": {
+            "name": "size",
             "param_name": "size",
             "items": [
                 {"id": "small-size", "value": "small", "label": "sm"},
@@ -987,8 +987,8 @@ def get_toggle_view_context() -> dict:
     return {
         "toggle_table": {"empty_msg": "No data available!", "headers": headers, "rows": rows},
         "toggle_start_view": "table",
-        "view_options": {
-            "name": "view-options",
+        "radio_view_config": {
+            "name": "view",
             "param_name": "view",
             "items": [
                 {"id": "card-view", "value": "card", "icon": {"name": "cards"}},

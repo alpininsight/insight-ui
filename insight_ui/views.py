@@ -44,7 +44,7 @@ from insight_ui.demo_context import (
     get_pagination_context,
     get_popup_storybook_context,
     get_query_builder_context,
-    get_radio_button_context,
+    get_radio_group_context,
     get_range_slider_context,
     get_select_context,
     get_sidebar_context,
@@ -265,11 +265,11 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
             "title": "button_sizes",
             "id": "button_sizes",
         }
-    elif component_name == "radio_button":
+    elif component_name == "radio_group":
         context["radio_block_demo"] = {
-            "url": reverse("component_demo_view", kwargs={"component_name": "radio_group"}),
-            "title": "radio_group",
-            "id": "radio_group",
+            "url": reverse("component_demo_view", kwargs={"component_name": "radio_block"}),
+            "title": "radio_block",
+            "id": "radio_block",
         }
     elif component_name == "card":
         context["effect_cards_demo"] = {
@@ -318,8 +318,8 @@ def component_demo_view(request: HttpRequest, component_name: str) -> HttpRespon
         "button_sizes": get_empty_context,
         "checkbox": get_checkbox_context,
         "dropdown": get_dropdown_context,
-        "radio_button": get_radio_button_context,
-        "radio_group": get_radio_button_context,
+        "radio_group": get_radio_group_context,
+        "radio_block": get_radio_group_context,
         "range_slider": get_range_slider_context,
         "toggle_button": get_toggle_button_context,
         "select": get_select_context,
@@ -422,8 +422,8 @@ def toggle_view(request: HttpRequest) -> HttpResponse:
     # Generate the base payload
     payload = generate_payload()
     context: dict[str, Any] = {"current_view": view, "tag_id": request.GET.get("tag_id", "")}
-    context["view_options"] = {
-        "name": "view-options",
+    context["radio_view_config"] = {
+        "name": "view",
         "param_name": "view",
         "items": [
             {"id": "card-view", "value": "card", "icon": {"name": "cards"}},
@@ -441,7 +441,7 @@ def toggle_view(request: HttpRequest) -> HttpResponse:
     else:
         # default: table view
         headers, rows = map_payload_to_table(payload)
-        context["table_data"] = {"empty_msg": "Keine Daten vorhanden!", "headers": headers, "rows": rows}
+        context["data"] = {"empty_msg": "Keine Daten vorhanden!", "headers": headers, "rows": rows}
         logger.info("log: toggle_view - Tabellenansicht ausgewählt")
 
     return render(request, "insight_ui/components/toggle_view.html", context)
