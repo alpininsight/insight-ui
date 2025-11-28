@@ -35,8 +35,10 @@
             {# fmt:off #}
             {
                 "name": "language_select",
-                "label": "Choose languages:",
+                "label": "Choose languages: (max. 3)",
                 "as_row": True,
+                "minimum_checked": 1,
+                "maximum_checked": 3,
                 "items": [
                     {"id": "english", "value": "english", "text": _("English"), "disabled": False},
                     {"id": "german", "value": "german", "text": _("German"), "disabled": False},
@@ -51,6 +53,8 @@
         <li><span class="inline-tag">name</span> (<i>str</i>): Wird für eine <span class="inline-tag">&lt;form&gt;</span> benötigt, als Name des Request-Parameters.</li>
         <li><span class="inline-tag">label</span> (<i>str</i>): Ein Label-Text welcher über den Checkbox-Elementen angezeigt wird.</li>
         <li><span class="inline-tag">as_row</span> (<i>bool</i>): <b>True</b>, wenn die Checkbox-Elemente nebeneinander angezeigt werden sollen.</li>
+        <li><span class="inline-tag">minimum_checked</span> (<i>int</i>): Die Anzahl der Checkbox-Elemente welche mindestens ausgewählt sein müssen.</li>
+        <li><span class="inline-tag">maximum_checked</span> (<i>int</i>): Die Anzahl der Checkbox-Elemente welche gleichzeitig ausgewählt sein dürfen.</li>
         <li><span class="inline-tag">items</span>: (<i>list[dict]</i>): Eine Liste der Checkbox-Elemente (siehe [Checkbox](checkbox.md)).</li>
     </ul>
 </section>

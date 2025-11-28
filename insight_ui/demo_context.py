@@ -749,7 +749,7 @@ def get_checkbox_context() -> dict:
         },
         "example_checkbox_group": {
             "name": "language_select",
-            "label": "Choose languages:",
+            "label": "Choose languages: (max. 3)",
             "as_row": True,
             "minimum_checked": 1,
             "maximum_checked": 3,
