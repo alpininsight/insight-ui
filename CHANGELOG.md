@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.4.1](https://github.com/alpininsight/insight-ui/compare/v1.4.0...v1.4.1) (2025-11-28)
+
+
+### Bug Fixes
+
+* adjust padding of the sidebar to match navbar ([5984b1c](https://github.com/alpininsight/insight-ui/commit/5984b1c68ab9d42f2c89d407aabc6b1f22d5ed4f))
+* bottom padding of the sidebar ([5b33ee0](https://github.com/alpininsight/insight-ui/commit/5b33ee06864f81e86d614f681dd42ec84a5d11f0))
+* default value for maximal_checked of the checkbox_group component ([cad48a7](https://github.com/alpininsight/insight-ui/commit/cad48a7a1e71e04f0d99b24a470b24ab8e088f17))
+* htmx loading indicator ([f22ad0f](https://github.com/alpininsight/insight-ui/commit/f22ad0f50b8122a0cb4d00c52f0c041b72b38dfc))
+* issues ([06018c6](https://github.com/alpininsight/insight-ui/commit/06018c60e9a878bed0c1b5baf501d0478e213187))
+* missing renaming of id to tag_id in the radio_block component ([9b5aff8](https://github.com/alpininsight/insight-ui/commit/9b5aff8e9b17b404f819fac5063b47dba54e04c5))
+* range slider progress in htmx requests ([db22e72](https://github.com/alpininsight/insight-ui/commit/db22e721d24c06632130bb535d5017ad4f8c86d1))
+* toggle component detailpage ([added8f](https://github.com/alpininsight/insight-ui/commit/added8ff670516dae14a3c43da4e2666552b39e4))
+
 ## [1.4.0](https://github.com/alpininsight/insight-ui/compare/v1.3.1...v1.4.0) (2025-11-27)
 
 
