@@ -1,4 +1,4 @@
-<div class="relative">
+<div class="relative slider-wrapper">
     <label class="flex gap-1 text-sm font-bold text-primary" for="{{ tag_id }}">{{ label }}</label>
     <input
         type="range"
@@ -20,12 +20,13 @@
 </div>
 <script>
     function updateSlider(slider) {
-        const min = slider.min ? slider.min : 0;
-        const max = slider.max ? slider.max : 100;
-        const val = slider.value;
+        const wrapper = slider.closest(".slider-wrapper");
+        const min = Number(slider.min || 0);
+        const max = Number(slider.max || 100);
+        const val = Number(slider.value);
 
         const percent = ((val - min) / (max - min)) * 100;
-        slider.style.setProperty('--range-progress', `${percent}%`);
+        wrapper.style.setProperty("--range-progress", `${percent}%`);
     }
 
     updateSlider(document.getElementById("{{ tag_id }}"));
