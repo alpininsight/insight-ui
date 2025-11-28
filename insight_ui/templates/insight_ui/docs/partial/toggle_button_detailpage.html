@@ -18,8 +18,11 @@
     <h2>{% trans "Verwendung" %}</h2>
     <div id="Toggle_Button_Usage" data-insight-code-block="Django">
         &lcub;% load insight-tags %&rcub;
+
         &lcub;% toggle tag_id="theme-toggle" name="toggle_theme" value="toggle_theme" checked=False disabled=False label="Dark" method="changeTheme" switch=True %&rcub;
+
         # or
+
         &lcub;% toggle config=toggle_config method="changeTheme" %&rcub;
     </div>
 </section>
