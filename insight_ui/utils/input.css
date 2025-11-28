@@ -173,6 +173,10 @@
         @apply bg-gray-200 dark:bg-gray-800 text-insight-primary rounded px-2 py-0.5;
     }
 
+    .slider-wrapper {
+        --range-progress: 0%;
+    }
+
     .range-custom::-webkit-slider-runnable-track {
         @apply h-2 rounded-md;
         background: linear-gradient(to right, #3b82f6 var(--range-progress), #e5e7eb var(--range-progress));
