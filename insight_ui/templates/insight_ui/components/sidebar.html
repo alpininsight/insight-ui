@@ -1,8 +1,12 @@
 {% load static i18n insight_tags %}
 
 {% if not auto_close and not static %}
-  <button data-sidebar-target="{{ side }}" class="open-btn fixed top-20 {% if side == "right" %}ltr:right-4 rtl:left-4{% else %}ltr:left-4 rtl:right-4{% endif %} z-40 text-white bg-insight-primary rounded-full shadow p-2 hover:bg-insight-primary-hover active:bg-insight-primary-active">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 {% if side == "right" %}rotate-180 rtl:rotate-0{% else %}rtl:rotate-180{% endif %}">
+  <button
+    data-sidebar-target="{{ side }}"
+    aria-label="{% trans 'Open sidebar' %}"
+    class="open-btn fixed top-20 {% if side == "right" %}ltr:right-4 rtl:left-4{% else %}ltr:left-4 rtl:right-4{% endif %} z-40 text-white bg-insight-primary rounded-full shadow p-2 hover:bg-insight-primary-hover active:bg-insight-primary-active"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true" class="size-5 {% if side == "right" %}rotate-180 rtl:rotate-0{% else %}rtl:rotate-180{% endif %}">
       <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
     </svg>
   </button>
