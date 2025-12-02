@@ -845,29 +845,25 @@ def breadcrumbs(items: Sequence[Mapping[str, Any]] | None = None) -> dict[str, A
 
 
 @register.inclusion_tag("insight_ui/components/table.html")
-def table(table_data: dict) -> dict[str, Any]:
+def table(data: dict) -> dict[str, Any]:
     """
     Rendert eine einfache Tabelle.
 
     Args:
     ----
-        table_data (dict): Ein Dictionary mit den Headern, den Rows und einer Überschrift
-        **kwargs: Zusätzliche Optionen für die Tabelle
-
-        Beispiel der Tabellen-Daten:
-
-        "table": {
-            "caption": _("Ein Beispiel einer Tabellen-Komponente."),
-            "empty_msg": _("Keine Daten vorhanden!"),
-            "headers": [...],
-            "rows": [...],
+        data (dict): Ein Dictionary mit den Headern, den Rows und einer Überschrift.
 
     Returns:
     -------
         Dict mit Kontext-Variablen für das Template
 
     """
-    return {"table_data": table_data}
+    return {
+        "caption": data.get("caption"),
+        "empty_msg": data.get("empty_msg"),
+        "headers": data.get("headers"),
+        "rows": data.get("rows"),
+    }
 
 
 @register.inclusion_tag("insight_ui/components/modal.html")
@@ -1094,7 +1090,12 @@ def footer(data: dict) -> dict[str, Any]:
         Dict mit Kontext-Variablen für das Template.
 
     """
-    return {"data": _resolve_view_urls(data)}
+    return {
+        "description": data.get("description"),
+        "links": data.get("links"),
+        "contact": data.get("contact"),
+        "copyright": data.get("copyright"),
+    }
 
 
 @register.inclusion_tag("insight_ui/components/accordion.html")

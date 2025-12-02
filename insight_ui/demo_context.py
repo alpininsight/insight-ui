@@ -301,6 +301,8 @@ def get_footer_context() -> dict:
                 {"text": _("Storybook"), "view_name": "index_view"},
                 {"text": _("Documentation"), "view_name": "index_view"},
             ],
+            "contact": {"mail": {"url": "support@alpininsight.com"}, "imprint": "https://alpininsight.com/imprint/"},
+            "copyright": {"year": 2025, "app_name": "Insight UI"},
         }
     }
 
