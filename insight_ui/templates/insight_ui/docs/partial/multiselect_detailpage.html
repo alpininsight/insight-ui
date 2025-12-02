@@ -19,7 +19,7 @@
     <div id="Multiselect_Usage" data-insight-code-block="Django">
         &lcub;% load insight_tags %&rcub;
 
-        &lcub;% multiselect name="test" label="Test" maximum=0 show_buttons=True values=["A", "B", "C"] %&rcub;
+        &lcub;% multiselect name="test" label="Test" maximum=0 show_buttons=True options=["A", "B", "C"] %&rcub;
 
         &lt;!-- Oder --&gt;
 
@@ -35,14 +35,14 @@
         <li><span class="inline-tag">label</span> (<i>str</i>): Ein kurzer Titel, welche rüber dem Multiselect angezeigt wird.</li>
         <li><span class="inline-tag">maximum</span> (<i>int</i>): Gibt an wie viele Werte maximal ausgewählt sein dürfen.</li>
         <li><span class="inline-tag">show_buttons</span> (<i>bool</i>): <b>True</b> zeigt zusätzlich "Alle Auswählen" und "Alle Abwählen" Buttons an.</li>
-        <li><span class="inline-tag">values</span> (<i>list[str]</i> oder <i>dict[str, str]</i>): Alle Werte welche ausgewählt werden können.</li>
-        <li><span class="inline-tag">selected_values</span> (<i>list[str]</i>): Alle Werte welche bereits ausgewählt sein sollen.</li>
+        <li><span class="inline-tag">options</span> (<i>list[str]</i> oder <i>dict[str, str]</i>): Alle Werte welche ausgewählt werden können.</li>
+        <li><span class="inline-tag">selected_options</span> (<i>list[str]</i>): Alle Werte welche bereits ausgewählt sein sollen.</li>
         <li><span class="inline-tag">config</span> (<i>dict[str, Any]</i>): Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.</li>
     </ul>
 
     <p class="info-container text-base mt-4">
         <span class="block font-bold italic text-lg">Info:</span>
-        Wenn <span class="inline-tag">values</span> eine Liste ist, dann wird die automatisch in ein <i>Dictionary</i> umgewandelt, in welchem der <i>Key</i> und der <i>Value</i> identisch sind.
+        Wenn <span class="inline-tag">options</span> eine Liste ist, dann wird die automatisch in ein <i>Dictionary</i> umgewandelt, in welchem der <i>Key</i> und der <i>Value</i> identisch sind.
     </p>
 
     <div class="mt-8">
@@ -56,7 +56,7 @@
                 "label": "Test",
                 "maximum": 0,
                 "show_buttons": True,
-                "values": ["A", "B", "C"],  # alt &lcub;"A": "A", "B": "B", "C": "C"&rcub;
+                "options": ["A", "B", "C"],  # or as dict: &lcub;"A": "A", "B": "B", "C": "C"&rcub;
             }
             {# fmt:on #}
         </div>

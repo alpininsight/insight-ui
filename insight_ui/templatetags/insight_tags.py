@@ -231,7 +231,12 @@ def input_field(  # noqa: PLR0913 (too many arguments)
     input_type: str | None = None,
     placeholder: str | None = None,
     value: str | None = None,
+    minimum: int | None = None,
+    maximum: int | None = None,
+    min_length: int | None = None,
+    max_length: int | None = None,
     checked: bool | None = None,
+    required: bool | None = None,
     disabled: bool | None = None,
     label: str | None = None,
     config: dict | None = None,
@@ -246,7 +251,12 @@ def input_field(  # noqa: PLR0913 (too many arguments)
         input_type (str): Der Type des Input-Feldes bspw.: "text", "password", "date", etc..
         placeholder (str): Ein platzhalter Text.
         value (str): Der Wert des Input-Feldes (Bei type="checkbox", siehe 'checked').
+        minimum (int): Bestimmt den minimalen Wert der Eingabe.
+        maximum (int): Bestimmt den maximalen Wert der Eingabe.
+        min_length (int): Bestimmt die minimale Anzahl an Zeichen in einem Textfeld.
+        max_length (int): Bestimmt die maximale Anzahl an Zeichen in einem Textfeld.
         checked (bool): 'True', wenn type="checkbox" und die Checkbox ausgewählt sein soll.
+        required (bool): 'True' wenn das Feld ausgefüllt werden muss.
         disabled (bool): 'True', wenn das Feld deaktiviert sein soll, andernfalls 'False'.
         label (str): Ein Label-Text welcher über dem Input-Feld angezeigt wird.
         config (dict[str, Any]): Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
@@ -260,10 +270,15 @@ def input_field(  # noqa: PLR0913 (too many arguments)
         tag_id = config.get("tag_id", tag_id)
         name = config.get("name", name)
         input_type = config.get("input_type", input_type)
-        placeholder = (config.get("placeholder", placeholder),)
+        placeholder = config.get("placeholder", placeholder)
         value = config.get("value", value)
+        minimum = config.get("minimum", minimum)
+        maximum = config.get("maximum", maximum)
+        min_length = config.get("min_length", min_length)
+        max_length = config.get("max_length", max_length)
         label = config.get("label", label)
         checked = config.get("checked", checked)
+        required = config.get("required", required)
         disabled = config.get("disabled", disabled)
 
     return {
@@ -272,8 +287,73 @@ def input_field(  # noqa: PLR0913 (too many arguments)
         "input_type": input_type,
         "placeholder": placeholder,
         "value": value,
+        "minimum": minimum,
+        "maximum": maximum,
+        "min_length": min_length,
+        "max_length": max_length,
         "label": label,
         "checked": checked,
+        "required": required,
+        "disabled": disabled,
+    }
+
+
+@register.inclusion_tag("insight_ui/components/textarea.html")
+def textarea(  # noqa: PLR0913 (too many arguments)
+    tag_id: str | None = None,
+    name: str | None = None,
+    placeholder: str | None = None,
+    value: str | None = None,
+    rows: int | None = None,
+    cols: int | None = None,
+    required: bool | None = None,
+    disabled: bool | None = None,
+    label: str | None = None,
+    config: dict | None = None,
+) -> dict:
+    """
+    Rendert ein <textarea> Feld.
+
+    Arguments:
+    ---------
+        tag_id (str): Eine optionale, eindeutige ID für JavaScript.
+        name (str): Wird für eine <form> benötigt, als Name des Request-Parameters.
+        input_type (str): Der Type des Input-Feldes bspw.: "text", "password", "date", etc..
+        placeholder (str): Ein platzhalter Text.
+        value (str): Der Wert des Input-Feldes (Bei type="checkbox", siehe 'checked').
+        rows (int): Bestimmt die Anzahl an Zeilen.
+        cols (int): Bestimmt die Anzahl an Zeichen in einer Zeile.
+        checked (bool): 'True', wenn type="checkbox" und die Checkbox ausgewählt sein soll.
+        required (bool): 'True' wenn das Feld ausgefüllt werden muss.
+        disabled (bool): 'True', wenn das Feld deaktiviert sein soll, andernfalls 'False'.
+        label (str): Ein Label-Text welcher über dem Input-Feld angezeigt wird.
+        config (dict[str, Any]): Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template.
+
+    """
+    if config is not None:
+        tag_id = config.get("tag_id", tag_id)
+        name = config.get("name", name)
+        placeholder = config.get("placeholder", placeholder)
+        value = config.get("value", value)
+        rows = config.get("rows", rows)
+        cols = config.get("cols", cols)
+        label = config.get("label", label)
+        required = config.get("required", required)
+        disabled = config.get("disabled", disabled)
+
+    return {
+        "tag_id": tag_id,
+        "name": name,
+        "placeholder": placeholder,
+        "value": value,
+        "rows": rows,
+        "cols": cols,
+        "label": label,
+        "required": required,
         "disabled": disabled,
     }
 
@@ -1171,8 +1251,8 @@ def three_d_carousel(
 def select(
     name: str | None = None,
     label: str | None = None,
-    values: list[str] | dict[str, str] | None = None,
-    selected_value: str | None = None,
+    options: list[str] | dict[str, str] | None = None,
+    selected_option: str | None = None,
     config: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """
@@ -1182,8 +1262,8 @@ def select(
     ----
         name (str): Der Name des <select> Elements.
         label (str): Ein kurzer Titel, welche rüber dem Select angezeigt wird.
-        values (list[str] or dict[str, str]): Alle Werte welche ausgewählt werden können.
-        selected_value (str): Ein bereits ausgewählter Wert.
+        options (list[str] or dict[str, str]): Alle Werte welche ausgewählt werden können.
+        selected_option (str): Ein bereits ausgewählter Wert.
         config (dict[str, Any]): Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
 
     Returns:
@@ -1194,13 +1274,13 @@ def select(
     if config is not None:
         name = config.get("name", name)
         label = config.get("label", label)
-        values = config.get("values", values)
-        selected_value = config.get("selected_value", selected_value)
+        options = config.get("options", options)
+        selected_option = config.get("selected_option", selected_option)
 
-    if isinstance(values, list):
-        values = dict(zip(values, values))
+    if isinstance(options, list):
+        options = dict(zip(options, options))
 
-    return {"name": name, "label": label, "values": values, "selected_value": selected_value}
+    return {"name": name, "label": label, "options": options, "selected_option": selected_option}
 
 
 @register.inclusion_tag("insight_ui/components/multiselect.html")
@@ -1209,8 +1289,8 @@ def multiselect(  # noqa: PLR0913 (too many arguments)
     label: str | None = None,
     maximum: int | None = None,
     show_buttons: bool | None = None,
-    values: list[str] | dict[str, str] | None = None,
-    selected_values: list[str] | None = None,
+    options: list[str] | dict[str, str] | None = None,
+    selected_options: list[str] | None = None,
     config: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """
@@ -1222,8 +1302,8 @@ def multiselect(  # noqa: PLR0913 (too many arguments)
         label (str): Ein kurzer Titel, welche rüber dem Multiselect angezeigt wird.
         maximum (int): Gibt an wie viele Werte maximal ausgewählt sein dürfen.
         show_buttons (bool): 'True' zeigt zusätzlich "Alle Auswählen" und "Alle Abwählen" Buttons an.
-        values (list[str] or dict[str, str]): Alle Werte welche ausgewählt werden können.
-        selected_values (list[str]): Alle Werte welche bereits ausgewählt sein sollen.
+        options (list[str] or dict[str, str]): Alle Werte welche ausgewählt werden können.
+        selected_options (list[str]): Alle Werte welche bereits ausgewählt sein sollen.
         config (dict[str, Any]): Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
 
     Returns:
@@ -1236,19 +1316,19 @@ def multiselect(  # noqa: PLR0913 (too many arguments)
         label = config.get("label", label)
         maximum = config.get("maximum", maximum)
         show_buttons = config.get("show_buttons", show_buttons)
-        values = config.get("values", values)
-        selected_values = config.get("selected_values", selected_values)
+        options = config.get("options", options)
+        selected_options = config.get("selected_options", selected_options)
 
-    if isinstance(values, list):
-        values = dict(zip(values, values))
+    if isinstance(options, list):
+        options = dict(zip(options, options))
 
     return {
         "name": name,
         "label": label,
         "maximum": maximum,
         "show_buttons": show_buttons,
-        "values": values,
-        "selected_values": selected_values,
+        "options": options,
+        "selected_options": selected_options,
     }
 
 

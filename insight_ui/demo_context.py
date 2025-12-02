@@ -821,7 +821,7 @@ def get_toggle_button_context() -> dict:
 
 def get_select_context() -> dict:
     """Serve data for select detailpage."""
-    return {"select_config": {"name": "test", "label": "Test", "values": ["A", "B", "C"]}}
+    return {"select_config": {"name": "test", "label": "Test", "options": ["A", "B", "C"]}}
 
 
 def get_multiselect_context() -> dict:
@@ -832,7 +832,7 @@ def get_multiselect_context() -> dict:
             "label": "Test",
             "maximum": 1,
             "show_buttons": False,
-            "values": ["A", "B", "C"],
+            "options": ["A", "B", "C"],
         }
     }
 
@@ -1025,25 +1025,52 @@ def get_form_context() -> dict:
     return {
         "form_fields": [
             {
-                "type": "text",
-                "name": "name",
-                "label": _("Name"),
-                "placeholder": _("Ihr vollständiger Name"),
+                "input_type": "select",
+                "tag_id": "title",
+                "name": "title",
+                "label": _("Title"),
+                "placeholder": _("Your title"),
+                "options": ["No title", "Prof.", "Dr.", "King"],
+            },
+            {
+                "input_type": "text",
+                "tag_id": "firstname",
+                "name": "firstname",
+                "label": _("Firstname"),
+                "placeholder": _("Type in your firstname"),
                 "required": True,
             },
             {
-                "type": "email",
+                "input_type": "text",
+                "tag_id": "lastname",
+                "name": "lastname",
+                "label": _("Lastname"),
+                "placeholder": _("Type in your lastname"),
+                "required": True,
+            },
+            {
+                "input_type": "email",
+                "tag_id": "email",
                 "name": "email",
                 "label": _("E-Mail"),
-                "placeholder": _("ihre.email@example.com"),
+                "placeholder": _("Type in your.email@example.com"),
                 "required": True,
             },
             {
-                "type": "textarea",
+                "input_type": "password",
+                "tag_id": "password",
+                "name": "password",
+                "label": _("Password"),
+                "placeholder": _("Type in your password"),
+                "required": True,
+            },
+            {
+                "input_type": "textarea",
+                "tag_id": "message",
                 "name": "message",
-                "label": _("Nachricht"),
-                "placeholder": _("Ihre Nachricht..."),
-                "rows": 4,
+                "label": _("Message"),
+                "placeholder": _("Do you want to tell us something?..."),
+                "rows": 3,
             },
         ],
         "form_actions": [
