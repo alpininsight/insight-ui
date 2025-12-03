@@ -18,7 +18,8 @@ class Multiselect {
         this.container = container;
         this.name = container.dataset.name || "multiselect";
         this.max = parseInt(container.dataset.max) || Infinity;
-        this.selectedValues = (container.dataset.selected || "").split(',').map(v => v.trim()).filter(Boolean);
+        if (!container.dataset.selected || !container.dataset.selected.trim()) this.selectedValues = [];
+        else this.selectedValues = JSON.parse(container.dataset.selected.replace(/'/g, '"'));
         this.focusedIndex = -1;
 
         this.combobox = this.container.querySelector('[role="combobox"]');
@@ -140,6 +141,7 @@ class Multiselect {
             opt.setAttribute('aria-selected', 'true');
             opt.style.display = 'none';
             this.renderSelected();
+            this.dispatchEvent();
         }
         this.search.value = '';
         this.filterOptions('');
@@ -164,6 +166,7 @@ class Multiselect {
             }
         });
         this.renderSelected();
+        this.dispatchEvent();
         // this.toggleDropdown(true);
         this.search.focus();
     }
@@ -241,6 +244,7 @@ class Multiselect {
             }
         });
         this.renderSelected();
+        this.dispatchEvent();
     }
 
     /**
@@ -256,7 +260,20 @@ class Multiselect {
             opt.style.display = 'block';
         });
         this.renderSelected();
+        this.dispatchEvent();
         this.search.focus();
+    }
+
+    /**
+     * Dispatch a "change" event with a list of the selected values.
+     *
+     * Because this is a custom input-element the event has to be dispatched manually.
+     */
+    dispatchEvent() {
+        this.container.dispatchEvent(new CustomEvent("change", {
+            detail: { value: this.selectedValues },
+            bubbles: true
+        }));
     }
 
     // Static method for initializing all multiselect elements

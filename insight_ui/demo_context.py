@@ -821,18 +821,19 @@ def get_toggle_button_context() -> dict:
 
 def get_select_context() -> dict:
     """Serve data for select detailpage."""
-    return {"select_config": {"name": "test", "label": "Test", "options": ["A", "B", "C"]}}
+    return {"select_config": {"name": "capital", "label": "Capitals:", "options": ["Berlin", "Rom", "London"]}}
 
 
 def get_multiselect_context() -> dict:
     """Serve data for multiselect detailpage."""
     return {
         "multiselect_config": {
-            "name": "test",
-            "label": "Test",
-            "maximum": 1,
+            "name": "capital",
+            "label": "Capitals:",
+            "maximum": 3,
             "show_buttons": False,
-            "options": ["A", "B", "C"],
+            "options": ["Berlin", "Rom", "London", "Brüssel", "Paris", "Warschau"],
+            "selected_options": ["Rom", "Paris", "Berlin"],
         }
     }
 
