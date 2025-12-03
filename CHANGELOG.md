@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.5.0](https://github.com/alpininsight/insight-ui/compare/v1.4.1...v1.5.0) (2025-12-03)
+
+
+### Features
+
+* accessability ([21ae294](https://github.com/alpininsight/insight-ui/commit/21ae2941430a955886fa02da051bd58127de81e8))
+* add accent color to checkbox and range slider ([173cca7](https://github.com/alpininsight/insight-ui/commit/173cca7fa50a420d793849a7e38058213de3d989))
+* extend form example ([43a9df2](https://github.com/alpininsight/insight-ui/commit/43a9df292aa1ca683af13de1ab1902f3ad08b9ec))
+* improve a11y for icon based buttons ([daa6b8a](https://github.com/alpininsight/insight-ui/commit/daa6b8ab30ee7ef5be09602fcdf69ceb27df6a40))
+* improve input and select elements ([24e6f57](https://github.com/alpininsight/insight-ui/commit/24e6f574bc162c3ff83f073e4719f98c43856f55))
+* improve tests for footer and table ([84474a8](https://github.com/alpininsight/insight-ui/commit/84474a8686db979338f6bd5329928391347432d2))
+* increase text size in table component ([09fa914](https://github.com/alpininsight/insight-ui/commit/09fa914816a07c49ca9c863ef9228703bd828a7e))
+* multiselect dispatch event on change ([2c2e965](https://github.com/alpininsight/insight-ui/commit/2c2e965d55eddb1c48719337d97f13942d36aa62))
+
+
+### Bug Fixes
+
+* footer and table component ([5cc469e](https://github.com/alpininsight/insight-ui/commit/5cc469ea88811a86f8b338344be78a007ecbe7b1))
+
 ## [1.4.1](https://github.com/alpininsight/insight-ui/compare/v1.4.0...v1.4.1) (2025-11-28)
 
 
