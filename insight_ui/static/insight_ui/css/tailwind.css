@@ -891,6 +891,9 @@
   .self-end {
     align-self: flex-end;
   }
+  .overflow-auto {
+    overflow: auto;
+  }
   .overflow-hidden {
     overflow: hidden;
   }
@@ -902,9 +905,6 @@
   }
   .overflow-y-auto {
     overflow-y: auto;
-  }
-  .overflow-y-scroll {
-    overflow-y: scroll;
   }
   .rounded {
     border-radius: 0.25rem;
@@ -1421,6 +1421,9 @@
     &::placeholder {
       color: var(--color-gray-400);
     }
+  }
+  .accent-insight-primary {
+    accent-color: var(--color-insight-primary);
   }
   .opacity-25 {
     opacity: 25%;
@@ -3209,7 +3212,7 @@
     border-radius: calc(infinity * 1px);
     border-style: var(--tw-border-style);
     border-width: 2px;
-    border-color: var(--color-blue-500);
+    border-color: var(--color-insight-primary);
     background-color: var(--color-white);
   }
   .range-custom::-moz-range-thumb {
@@ -3219,7 +3222,7 @@
     border-radius: calc(infinity * 1px);
     border-style: var(--tw-border-style);
     border-width: 2px;
-    border-color: var(--color-blue-500);
+    border-color: var(--color-insight-primary);
     background-color: var(--color-white);
   }
 }

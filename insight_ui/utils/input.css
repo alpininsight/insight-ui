@@ -196,10 +196,10 @@
     }
 
     .range-custom::-webkit-slider-thumb {
-        @apply w-4 h-4 bg-white border-2 border-blue-500 rounded-full cursor-pointer -mt-1;
+        @apply w-4 h-4 bg-white border-2 border-insight-primary rounded-full cursor-pointer -mt-1;
     }
 
     .range-custom::-moz-range-thumb {
-        @apply w-4 h-4 bg-white border-2 border-blue-500 rounded-full cursor-pointer;
+        @apply w-4 h-4 bg-white border-2 border-insight-primary rounded-full cursor-pointer;
     }
 }
