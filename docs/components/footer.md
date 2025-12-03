@@ -33,6 +33,8 @@ Das _data_ Dictionary besteht aus zwei Komponenten. Der _description_ und den Fo
         {"text": _("Storybook"), "view_name": "storybook_view"},
         {"text": _("Dokumentation"), "view_name": "storybook_view"},
     ],
+    "contact": {"mail": {"url": "support@alpininsight.com"}, "imprint": "https://alpininsight.com/imprint/"},
+    "copyright": {"year": 2025, "app_name": "Insight UI"},
 },
 ```
 

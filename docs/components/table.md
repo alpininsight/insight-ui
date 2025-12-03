@@ -7,20 +7,20 @@ Mit der `table` Komponente lässt sich eine einfache Tabelle für beliebige Date
 ```django
 {% load insight_tags %}
 
-{% table table_data=table %}
+{% table data=user_data %}
 ```
 
 ## Parameter
 
-- **table_data** (_dict_): Enthält die Daten für die Header und Rows der Tabelle.
+- **data** (_dict_): Enthält die Daten für die Header und Rows, sowie einer Überschrift und einer Nachricht für den Fall, dass keine Daten vorhanden sind.
 
-### table_data
+### data
 
-Enthält die Daten für die Header und Rows der Tabelle.
+Enthält die Daten für die Header und Rows, sowie einer Überschrift und einer Nachricht für den Fall, dass keine Daten vorhanden sind.
 
 ```py
 {
-    "caption": _("Ein Beispiel einer Tabellen-Komponente."),
+    "caption": _("Alle registrierten Nutzer und ihr aktueller Status."),
     "empty_msg": _("Keine Daten vorhanden!"),
     "headers": [_("Name"), _("E-Mail"), _("Status")],
     "rows": [

@@ -175,18 +175,36 @@ class TableTemplateTagTest(TemplateTagsTestCase):
     def test_table_basic(self) -> None:
         """Test für grundlegende table Funktionalität."""
         table = {
-            "caption": "Ein Beispiel einer Tabellen-Komponente.",
+            "caption": "Alle registrierten Nutzer und ihr aktueller Status.",
             "empty_msg": "Keine Daten vorhanden!",
             "headers": ["Name", "E-Mail", "Status"],
-            "rows": [["Max Mustermann", "max@example.com", "Aktiv"]],
+            "rows": [
+                ["Max Mustermann", "max@example.com", "Aktiv"],
+                ["Max Mustermann", "max@example.com", "Aktiv"],
+                ["Max Mustermann", "max@example.com", "Aktiv"],
+            ],
         }
 
         template_string = """
         {% load insight_tags %}
-        {% table table_data=table_data %}
+        {% table data=user_data %}
         """
-        rendered = self.render_template(template_string, context={"table_data": table})
-        assert rendered is not None
+        rendered = self.render_template(template_string, context={"user_data": table})
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        table = soup.find("table")
+
+        assert table.find("caption") is not None
+
+        header_row = table.find("thead").find("tr")
+        headers = [th.get_text(strip=True) for th in header_row.find_all("th")]
+        assert headers == ["Name", "E-Mail", "Status"]
+
+        rows = table.find("tbody").find_all("tr")
+        assert len(rows) == 3  # noqa: PLR2004
+
+        first_row = [td.get_text(strip=True) for td in rows[0].find_all("td")]
+        assert first_row == ["Max Mustermann", "max@example.com", "Aktiv"]
 
 
 class ModalTemplateTagTest(TemplateTagsTestCase):
@@ -235,10 +253,17 @@ class FooterTemplateTagTest(TemplateTagsTestCase):
     def test_footer_basic(self) -> None:
         """Test für grundlegende footer Funktionalität."""
         footer_data = {
-            "description": {"title": "Django Insight UI", "text": "-"},
+            "description": {
+                "title": "Insight UI",
+                "text": "A modern, accessible, and responsive UI library for Django projects.",
+            },
             "links": [
-                {"text": "Startseite", "view_name": "storybook_view", "view_kwargs": {"storybook_name": "components"}}
+                {"text": "Startpage", "icon": {"name": "home", "size": "xs"}, "view_name": "index_view"},
+                {"text": "Storybook", "view_name": "index_view"},
+                {"text": "Documentation", "view_name": "index_view"},
             ],
+            "contact": {"mail": {"url": "support@alpininsight.com"}, "imprint": "https://alpininsight.com/imprint/"},
+            "copyright": {"year": 2025, "app_name": "Insight UI"},
         }
 
         template_string = """
@@ -246,7 +271,35 @@ class FooterTemplateTagTest(TemplateTagsTestCase):
         {% footer data=footer_data %}
         """
         rendered = self.render_template(template_string, context={"footer_data": footer_data})
-        assert rendered is not None
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        # --- Assert: description ---
+        desc_title = soup.find("h4")
+        assert desc_title.get_text() == "Insight UI"
+
+        desc_text = soup.find("p")
+        assert desc_text.get_text() == "A modern, accessible, and responsive UI library for Django projects."
+
+        # --- Assert: links ---
+        link_elements = soup.select("ul li a")
+        assert len(link_elements) == 3  # noqa: PLR2004
+        for link, el in zip(footer_data["links"], link_elements):
+            assert el.get("href") == ""
+            assert link["text"] in el.text
+
+        # --- Assert: contact imprint ---
+        imprint_el = soup.find("a", href="https://alpininsight.com/imprint/")
+        assert imprint_el is not None
+
+        # --- Assert: contact mail ---
+        mail_el = soup.find("a", href="mailto:support@alpininsight.com")
+        assert mail_el is not None
+        assert "support@alpininsight.com" in mail_el.text
+
+        # --- Assert: copyright ---
+        copyright_p = soup.find("p", string=lambda t: t and str(2025) in t)
+        assert copyright_p is not None
+        assert "Insight UI" in copyright_p.text
 
 
 class CheckboxTemplateTagTest(TemplateTagsTestCase):

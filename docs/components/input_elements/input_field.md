@@ -21,7 +21,12 @@ Mit der `input_field` Komponente lassen sich einzelne `<input>`-Elemente einbaue
 - **input_type** (_str_): Der Type des Input-Feldes bspw.: "text", "password", "date", etc..
 - **placeholder** (_str_): Ein platzhalter Text.
 - **value** (_str_): Der Wert des Input-Feldes (Bei type="checkbox", siehe 'checked').
+- **minimum** (_int_): Bestimmt den minimalen Wert der Eingabe.
+- **maximum** (_int_): Bestimmt den maximalen Wert der Eingabe.
+- **min_length** (_int_): Bestimmt die minimale Anzahl an Zeichen in einem Textfeld.
+- **max_length** (_int_): Bestimmt die maximale Anzahl an Zeichen in einem Textfeld.
 - **checked** (_bool_): 'True', wenn type="checkbox" und die Checkbox ausgewählt sein soll.
+- **required** (_bool_): 'True' wenn das Feld ausgefüllt werden muss.
 - **disabled** (_bool_): 'True', wenn das Feld deaktiviert sein soll, andernfalls 'False'.
 - **label** (_str_): Ein Label-Text welcher über dem Input-Feld angezeigt wird.
 - **config** (_dict[str, Any]_): Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.

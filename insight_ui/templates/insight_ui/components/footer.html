@@ -3,18 +3,16 @@
 <footer class="z-10 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 px-4 md:px-16 mt-auto">
     <div class="mx-auto py-6">
         <div class="flex flex-col md:flex-row justify-stretch gap-6">
-            {% if data.description %}
+            {% if description %}
                 <div class="flex-1">
-                    <h4>{{ data.description.title }}</h4>
-                    <p class="text-secondary text-sm">
-                        {{ data.description.text }}
-                    </p>
+                    <h4>{{ description.title }}</h4>
+                    <p class="text-secondary text-sm">{{ description.text }}</p>
                 </div>
             {% endif %}
             <div class="flex-1">
                 <h4>{% trans 'Links' %}</h4>
                 <ul>
-                    {% for link in data.links %}
+                    {% for link in links %}
                         <li>
                             <a href="{{ link.href }}" class="inline-flex gap-1 text-secondary hover:text-insight-text-link-hover dark:hover:text-insight-text-link-hover text-sm">
                                 {% if link.icon %}
@@ -35,10 +33,12 @@
                 </p>
             </div>
         </div>
-        <div class="border-t border-gray-200 dark:border-gray-700 mt-6 pt-4 text-center">
-            <p class="text-secondary text-sm">
-                © 2025 {{ PROJECT_NAME }}. {% trans 'All rights reserved.' %}
-            </p>
-        </div>
+        {% if copyright %}
+            <div class="border-t border-gray-200 dark:border-gray-700 mt-6 pt-4 text-center">
+                <p class="text-secondary text-sm">
+                    © {{ copyright.year }} {{ copyright.app_name }}. {% trans 'All rights reserved.' %}
+                </p>
+            </div>
+        {% endif %}
     </div>
 </footer>

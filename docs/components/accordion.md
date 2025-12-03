@@ -7,13 +7,13 @@ Mit der `accordion` Komponente lassen sich ausklappbare Bereiche für weitere In
 ```django
 {% load insight_tags %}
 
-{% accordion items "faq-exclusive" True %}
+{% accordion id="faq-exclusive" items=accordion_items exclusive=True %}
 ```
 
 ## Parameter
 
-- **items** (_list_): Die einzelnen Bereiche des Accordion.
 - **id** (_str_): Eine eindeutige ID für das Accordion.
+- **items** (_list_): Die einzelnen Bereiche des Accordion.
 - **exclusive** (_bool_): _True_ wenn nur ein Element zur selben Zeit geöffnet sein darf.
 
 ### items

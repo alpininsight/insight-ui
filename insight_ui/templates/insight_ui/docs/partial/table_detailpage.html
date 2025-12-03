@@ -19,24 +19,24 @@
     <div id="Table_Usage" data-insight-code-block="Django">
         &lcub;% load insight_tags %&rcub;
 
-        &lcub;% table table_data=table %&rcub;
+        &lcub;% table data=user_data %&rcub;
     </div>
 </section>
 
 <section>
     <h3>{% trans "Parameter" %}</h3>
     <ul class="list-disc leading-relaxed ms-8">
-        <li><span class="inline-tag">table_data</span>(<i>dict</i>): Enthält die Daten für die Header und Rows der Tabelle.</li>
+        <li><span class="inline-tag">data</span>(<i>dict</i>): Enthält die Daten für die Header und Rows, sowie einer Überschrift und einer Nachricht für den Fall, dass keine Daten vorhanden sind.</li>
     </ul>
 
     <div class="mt-8">
-        <h4>table_data</h4>
-        <p class="mb-6">Enthält die Daten für die Header und Rows der Tabelle.</p>
+        <h4>data</h4>
+        <p class="mb-6">Enthält die Daten für die Header und Rows, sowie einer Überschrift und einer Nachricht für den Fall, dass keine Daten vorhanden sind.</p>
 
         <div id="Table_Params" data-insight-code-block="python">
             {# fmt:off #}
             {
-                "caption": _("Ein Beispiel einer Tabellen-Komponente."),
+                "caption": _("Alle registrierten Nutzer und ihr aktueller Status."),
                 "empty_msg": _("Keine Daten vorhanden!"),
                 "headers": [_("Name"), _("E-Mail"), _("Status")],
                 "rows": [

@@ -20,44 +20,56 @@ class CodeBlock {
     debugLog("New code block created: ", this.element);
   }
 
+  /**
+   * Remove the indentation of the HTML-Tag, measured by the indentation of the first line.
+   *
+   * @param {string} code The code to clean the indentation from.
+   * @returns The cleaned code.
+   */
   cleanIndentation(code) {
-    // Zuerst teilen wir den Code in Zeilen auf
     const lines = code.split('\n');
 
-    // Bestimme die Anzahl der führenden Leerzeichen oder Tabs in der ersten Zeile
-    const indentMatch = lines[1].match(/^\s*/); // Führende Leerzeichen/Tabs der ersten Zeile
+    // Measure the indentation of the first line
+    const indentMatch = lines[1].match(/^\s*/);
     const indentLength = indentMatch ? indentMatch[0].length : 0;
 
-    // Entferne die gleiche Anzahl an führenden Leerzeichen oder Tabs aus jeder Zeile
+    // Remove the measured number of spaces in all lines.
     const cleanedLines = lines.map(line => {
-      // Entferne nur die führenden Leerzeichen/Tabs, die der Anzahl in der ersten Zeile entsprechen
       return line.slice(indentLength);
     });
 
-    // Setze den Code wieder zusammen
     return cleanedLines.join('\n');
   }
 
+  /**
+   * Create the HTML structure of the code block component.
+   *
+   * @param {string} id The id of the code block.
+   * @param {string} lang The langauge of the code.
+   * @param {string} code The code.
+   * @returns The wrapper element of the created HTML structure.
+   */
   generateCodeBlock(id, lang, code) {
-    // Erstelle das Wrapper-Div
+    // Create wrapper-div
     const wrapper = document.createElement('div');
     wrapper.classList.add('bg-[#f5f2f0]', 'rounded', 'border', 'border-gray-300', 'dark:border-0');
 
-    // Erstelle die Flex-Box für den Button
+    // Create flex-box for the copy button
     const flexContainer = document.createElement('div');
     flexContainer.classList.add('flex', 'justify-end', 'bg-blue-200/75', 'dark:bg-blue-900/75', 'rounded-t', 'p-2');
 
-    // Erstelle den Button
+    // Create copy button
     const button = document.createElement('button');
     button.classList.add('btn', 'btn-secondary', 'btn-xs');
-    button.classList.add(id); // Dynamischer ID hinzufügen
+    button.classList.add(id);
     button.setAttribute('data-clipboard-target', `#${id}`);
 
-    // SVG-Icon für den Button
+    // SVG-Icon of the button
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
     svg.setAttribute('viewBox', '0 0 24 24');
     svg.setAttribute('fill', 'currentColor');
+    svg.setAttribute('aria-hidden', "true");
     svg.classList.add('size-5');
 
     const path1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -72,11 +84,11 @@ class CodeBlock {
     svg.appendChild(path2);
 
     button.appendChild(svg);
-    button.appendChild(document.createTextNode('Copy')); // Text "Copy" hinzufügen
+    button.appendChild(document.createTextNode('Copy'));
 
     flexContainer.appendChild(button);
 
-    // Erstelle den Code-Block
+    // Create actual code block
     const codeWrapper = document.createElement('div');
     codeWrapper.classList.add('max-w-2xs', 'md:max-w-2xl', 'lg:max-w-5xl', 'overflow-x-scroll');
 
@@ -91,17 +103,17 @@ class CodeBlock {
     pre.appendChild(codeElement);
     codeWrapper.appendChild(pre);
 
-    // Füge beide Teile zusammen
+    // Connect both parts (Head with button and code block)
     wrapper.appendChild(flexContainer);
     wrapper.appendChild(codeWrapper);
 
-    // Füge die generierte Struktur zum DOM hinzu
+    // Add to DOM
     document.body.appendChild(wrapper);
 
-    // Initialisiere ClipboardJS
+    // Init ClipboardJS for the newly created code block
     new ClipboardJS(`.${id}`);
 
-    // Wende Prism.js an
+    // Apply Prism.js syntax highlighting
     Prism.highlightElement(pre);
 
     return wrapper;

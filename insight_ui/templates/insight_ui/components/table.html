@@ -1,33 +1,33 @@
 {% load i18n %}
 
-<div class="bg-white dark:bg-gray-800 rounded overflow-y-scroll">
-  <table class="table-auto w-full" {% if options.id %}id="{{ options.id }}"{% endif %}>
-    {% if table_data.caption %}
-      <caption class="text-xs text-secondary">{{ caption }}</caption>
+<div class="bg-white dark:bg-gray-800 rounded overflow-auto">
+  <table class="table-auto w-full">
+    {% if caption %}
+      <caption class="text-sm text-secondary">{{ caption }}</caption>
     {% endif %}
 
-    {% if table_data.headers %}
+    {% if headers %}
       <thead class="text-primary">
         <tr class="border-b border-gray-400 dark:border-gray-500">
-          {% for header in table_data.headers %}
-            <th class="text-start text-xs px-4 py-2" scope="col">{{ header }}</th>
+          {% for header in headers %}
+            <th class="text-start text-sm px-4 py-2" scope="col">{{ header }}</th>
           {% endfor %}
         </tr>
       </thead>
     {% endif %}
 
     <tbody class="text-primary">
-      {% for row in table_data.rows %}
+      {% for row in rows %}
         <tr class="border-b border-gray-200 dark:border-gray-600">
           {% for cell in row %}
-            <td class="text-start text-xs px-4 py-3">{{ cell|safe }}</td>
+            <td class="text-start text-sm px-4 py-3">{{ cell|safe }}</td>
           {% endfor %}
         </tr>
       {% empty %}
         <tfoot>
           <tr>
-            <td colspan="{{ table_data.headers|length }}" class="w-full border-t border-gray-400 dark:border-gray-500 text-secondary text-center pt-16">
-              {{ table_data.empty_msg }}
+            <td colspan="{{ headers|length }}" class="w-full border-t border-gray-400 dark:border-gray-500 text-secondary text-center pt-16">
+              {{ empty_msg }}
             </td>
           </tr>
         </tfoot>

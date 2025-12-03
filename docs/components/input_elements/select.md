@@ -7,7 +7,7 @@ Die `Select` Komponente stellt eine einfache Auswahlbox zur Verfügung.
 ```django
 {% load insight_tags %}
 
-{% select name="test" label="Test" values=["A", "B", "C"] %}
+{% select name="test" label="Test" options=["A", "B", "C"] %}
 
 <!-- Oder -->
 
@@ -18,11 +18,11 @@ Die `Select` Komponente stellt eine einfache Auswahlbox zur Verfügung.
 
 - **name** (_str_): Der Name des `<select>` Elements.
 - **label** (_str_): Ein kurzer Titel, welche rüber dem Select angezeigt wird.
-- **values** (_list[str]_ oder _dict[str, str]_): Alle Werte welche ausgewählt werden können.
-- **selected_value** (_str_): Ein bereits ausgewählter Wert.
+- **options** (_list[str]_ oder _dict[str, str]_): Alle Werte welche ausgewählt werden können.
+- **selected_option** (_str_): Ein bereits ausgewählter Wert.
 - **config** (_dict[str, Any]_): Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
 
-> **_Info_**: Wenn **values** eine Liste ist, dann wird die automatisch in ein _Dictionary_ umgewandelt, in welchem der _Key_ und der _Value_ identisch sind.
+> **_Info_**: Wenn **options** eine Liste ist, dann wird die automatisch in ein _Dictionary_ umgewandelt, in welchem der _Key_ und der _Value_ identisch sind.
 
 ### config
 
@@ -32,7 +32,7 @@ Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
 {
     "name": "test",
     "label": "Test",
-    "values": ["A", "B", "C"],  # alt { "A": "A", "B": "B", "C": "C"}
+    "options": ["A", "B", "C"],  # or as dict: { "A": "A", "B": "B", "C": "C"}
 }
 ```
 

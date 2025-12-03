@@ -19,15 +19,15 @@
     <div id="Accordion_Usage" data-insight-code-block="Django">
         &lcub;% load insight_tags %&rcub;
 
-        &lcub;% accordion items=accordion_items id="faq-exclusive" exclusive=True %&rcub;
+        &lcub;% accordion id="faq-exclusive" items=accordion_items exclusive=True %&rcub;
     </div>
 </section>
 
 <section>
     <h3>{% trans "Parameter" %}</h3>
     <ul class="list-disc leading-relaxed ms-8">
-        <li><span class="inline-tag">items</span> (<i>list</i>): Die einzelnen Bereiche des Accordion.</li>
         <li><span class="inline-tag">id</span> (<i>str</i>): Eine eindeutige ID für das Accordion.</li>
+        <li><span class="inline-tag">items</span> (<i>list</i>): Die einzelnen Bereiche des Accordion.</li>
         <li><span class="inline-tag">exclusive</span> (<i>bool</i>): <b>True</b> wenn nur ein Element zur selben Zeit geöffnet sein darf.</li>
     </ul>
 
