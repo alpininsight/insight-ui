@@ -1,0 +1,73 @@
+# Git
+.git/
+.gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Testing
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+.hypothesis/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Local AI helper artifacts
+AGENTS.md
+AGENT*.md
+ai-notes/
+.claude/
+.claude*
+.cursorrules
+.cursorignore
+.cursorindexingignore
+.github/copilot*
+copilot-instructions.md
+.aider*
+
+# Documentation
+docs/_build/
+*.md
+!README.md
+!COMMERCIAL_LICENSE.md
+
+# Misc
+*.log
+.DS_Store
+Thumbs.db
+img/
+staticfiles/
