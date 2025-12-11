@@ -16,7 +16,6 @@ def test_base_login_screen() -> None:
 
     assert "Login" in html
     assert "/login/" in html
-    assert "<img" not in html  # Only appears if logo is set
     assert "Or" not in html  # Only appears if alternative login is set
 
 

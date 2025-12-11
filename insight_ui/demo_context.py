@@ -295,6 +295,12 @@ def get_footer_context() -> dict:
             "description": {
                 "title": "Insight UI",
                 "text": "A modern, accessible, and responsive UI library for Django projects.",
+                "image": {
+                    "url": "img/thumbnail.png",
+                    "url_dark": "img/thumbnail.png",
+                    "alt": "Footer image",
+                    "height": "6rem",
+                },
             },
             "links": [
                 {"text": _("Startpage"), "icon": {"name": "home", "size": "xs"}, "view_name": "index_view"},
