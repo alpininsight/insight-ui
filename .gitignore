@@ -163,6 +163,11 @@ dmypy.json
 AGENTS.md
 AGENT*.md
 ai-notes/
+.claude/
+.claude*
+.cursorrules
+.github/copilot*
+copilot-instructions.md
 cython_debug/
 .act-cache/
 .xdg-cache/
