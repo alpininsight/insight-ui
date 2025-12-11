@@ -9,7 +9,7 @@
         </div>
     {% endif %}
     <div class="relative" role="combobox" aria-labelledby="{{ name }}-label" aria-haspopup="listbox" aria-expanded="false" aria-owns="{{ name }}-listbox">
-        <div class="selected flex flex-wrap items-center gap-1 px-2 py-2 border border-gray-300 rounded-md bg-white cursor-text focus-within:ring-2 focus-within:ring-blue-500" aria-controls="{{ name }}-listbox" aria-activedescendant="" aria-autocomplete="list" aria-multiselectable="true">
+        <div class="selected flex flex-wrap items-center gap-1 input" aria-controls="{{ name }}-listbox" aria-activedescendant="" aria-autocomplete="list" aria-multiselectable="true">
             <span class="tags flex flex-wrap gap-1"></span>
             <input id="{{ name }}-search" type="text" class="search flex-1 outline-none text-sm min-w-[60px] placeholder-gray-400" placeholder="Tippen zum Suchen..." aria-label="Suche {{ label }}" />
         </div>
