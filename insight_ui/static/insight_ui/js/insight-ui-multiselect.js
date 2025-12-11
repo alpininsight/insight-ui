@@ -183,7 +183,7 @@ class Multiselect {
         this.container.querySelectorAll('input[type=hidden]').forEach(i => i.remove());
         this.selectedValues.forEach(value => {
             const tag = document.createElement('span');
-            tag.className = 'bg-blue-100 text-blue-700 text-sm px-2 py-0.5 rounded flex items-center gap-1';
+            tag.className = 'inline-tag me-1';
             tag.textContent = value;
             const remove = document.createElement('button');
             remove.innerHTML = '&times;';

@@ -430,6 +430,9 @@
   .ms-8 {
     margin-inline-start: calc(var(--spacing) * 8);
   }
+  .me-1 {
+    margin-inline-end: calc(var(--spacing) * 1);
+  }
   .mt-0\.5 {
     margin-top: calc(var(--spacing) * 0.5);
   }
