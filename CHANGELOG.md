@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.6.0](https://github.com/alpininsight/insight-ui/compare/v1.5.0...v1.6.0) (2025-12-11)
+
+
+### Features
+
+* add custom css class for input elements ([9ea9a0e](https://github.com/alpininsight/insight-ui/commit/9ea9a0e52c8d76dc589f3a89eb70ad85a885052e))
+* add image to the description section of the footer ([23d226e](https://github.com/alpininsight/insight-ui/commit/23d226efee53788bae0df372ae28b63732d3c172))
+* footer img ([4102d60](https://github.com/alpininsight/insight-ui/commit/4102d6017f481c682cf427ec35a17d5427d27fd5))
+* use inline-tag class for multiselect tags ([f929f36](https://github.com/alpininsight/insight-ui/commit/f929f365463b197f13a4aab2e30873123eada427))
+* use input class for all components with an suitable input element ([cd40be7](https://github.com/alpininsight/insight-ui/commit/cd40be74826262df057a5dcaeb3198cc6cb20c6f))
+
 ## [1.5.0](https://github.com/alpininsight/insight-ui/compare/v1.4.1...v1.5.0) (2025-12-03)
 
 
