@@ -1,4 +1,4 @@
-{% load i18n insight_tags %}
+{% load static i18n insight_tags %}
 
 <footer class="z-10 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 px-4 md:px-16 mt-auto">
     <div class="mx-auto py-6">
@@ -7,6 +7,31 @@
                 <div class="flex-1">
                     <h4>{{ description.title }}</h4>
                     <p class="text-secondary text-sm">{{ description.text }}</p>
+                    <img
+                        id="footer-img"
+                        src="{% static description.image.url %}"
+                        data-light-src="{% static description.image.url %}"
+                        data-dark-src="{% static description.image.url_dark %}"
+                        alt="{{ description.image.alt }}"
+                        class="mt-4"
+                        style="height: {{ description.image.height|default:'8rem' }}"
+                    >
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            const root = document.documentElement;
+                            const logo = document.getElementById("footer-img");
+
+                            function updateLogo() {
+                                const theme = root.getAttribute("data-theme") || "light";
+                                logo.src = theme === "dark" ? logo.dataset.darkSrc : logo.dataset.lightSrc;
+                            }
+
+                            updateLogo();
+
+                            const observer = new MutationObserver(updateLogo);
+                            observer.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+                        });
+                    </script>
                 </div>
             {% endif %}
             <div class="flex-1">
