@@ -8,7 +8,7 @@
 ![Publish](https://github.com/alpininsight/insight-ui/actions/workflows/main-publish-pypi.yml/badge.svg?branch=main)
 
 [![Ruff](https://img.shields.io/badge/ruff-checked-5D3FD3?logo=python&logoColor=white)](https://github.com/astral-sh/ruff)
-[![Python](https://img.shields.io/badge/python-3.13%2B-blue?logo=python&logoColor=white)](pyproject.toml)
+[![Python](https://img.shields.io/badge/python-3.12%2B-blue?logo=python&logoColor=white)](pyproject.toml)
 [![Django](https://img.shields.io/badge/django-5.2-092E20?logo=django&logoColor=white)](https://www.djangoproject.com/)
 [![PyPI - Version](https://img.shields.io/pypi/v/insight-ui.svg)](https://pypi.org/project/insight-ui/)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
@@ -51,6 +51,13 @@ The WebSocket demo lives in `utils/main.py`:
 ```bash
 uv run ./utils/main.py
 ```
+
+## Testing
+```bash
+uv run pytest
+```
+
+CI runs tests against Python 3.12, 3.13, and 3.14. Note that Python 3.14 is still in development, so some third-party packages may not fully support it yet. The CI matrix uses `fail-fast: false` to ensure all versions report results independently.
 
 ## Documentation
 - English: `docs/en/` (served via MkDocs)
