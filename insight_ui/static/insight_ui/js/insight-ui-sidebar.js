@@ -121,6 +121,8 @@ export class Sidebar {
 	 * Call this before removing the element from DOM.
 	 */
 	destroy() {
+		debugLog("Destroy sidebar: ", this.sidebar, this.side);
+
 		// Remove close button handlers
 		this.boundCloseButtons.forEach(({ element, handler }) => {
 			element.removeEventListener('click', handler);

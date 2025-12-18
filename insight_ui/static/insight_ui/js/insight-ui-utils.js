@@ -16,6 +16,8 @@ window.InsightUI.lifecycle = {
     destroyAllIn: function(container) {
         if (!container) return;
 
+        debugLog("Cleanup: ", container);
+
         const components = [
             { Class: window.InsightUI.Dropdown, selector: '[data-dropdown-toggle]' },
             { Class: window.InsightUI.Floater, selector: '[data-popover-trigger], [data-tooltip-trigger]' },
@@ -66,6 +68,8 @@ window.InsightUI.handlers = {
      * Call this once during initialization.
      */
     init: function() {
+        debugLog("Register event listeners...");
+
         // Radio block callback handler
         document.addEventListener('change', function(e) {
             const target = e.target;
@@ -102,6 +106,8 @@ window.InsightUI.handlers = {
                 }
             }
         });
+
+        debugLog("Event listeners registered.");
     }
 };
 

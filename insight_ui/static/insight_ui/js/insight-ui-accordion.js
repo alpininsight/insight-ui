@@ -164,6 +164,8 @@ export class Accordion {
      * Call this before removing the element from DOM.
      */
     destroy() {
+        debugLog("Destroy accordion: ", this.element);
+
         this.boundButtonHandlers.forEach(({ element, clickHandler, keydownHandler }) => {
             element.removeEventListener("click", clickHandler);
             element.removeEventListener("keydown", keydownHandler);

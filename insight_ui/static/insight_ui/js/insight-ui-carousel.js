@@ -189,10 +189,12 @@ export class Carousel {
     }
 
     /**
-   * Destroys the carousel instance and removes all event listeners.
-   * Call this before removing the element from DOM.
-   */
+     * Destroys the carousel instance and removes all event listeners.
+     * Call this before removing the element from DOM.
+     */
     destroy() {
+        debugLog("Destroy carousel: ", this.root);
+
         // Stop autoplay interval
         this.stopAutoplay();
 
