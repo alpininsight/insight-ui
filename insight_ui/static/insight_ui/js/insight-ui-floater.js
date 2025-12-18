@@ -39,6 +39,15 @@ export class Floater {
         this.autoClose = trigger.dataset.autoClose === "true";  // optional for click
         this.hideTimeout = null;
 
+        // Bind handlers for proper cleanup
+        this.boundTriggerMouseover = this.handleTriggerMouseover.bind(this);
+        this.boundTriggerMouseout = this.handleTriggerMouseout.bind(this);
+        this.boundTargetMouseover = this.handleTargetMouseover.bind(this);
+        this.boundTargetMouseout = this.handleTargetMouseout.bind(this);
+        this.boundTriggerClick = this.handleTriggerClick.bind(this);
+        this.boundDocumentClick = this.handleDocumentClick.bind(this);
+        this.boundWindowScroll = this.handleWindowScroll.bind(this);
+
         this.bindEvents();
 
         Floater.instances.set(trigger, this);
@@ -47,29 +56,35 @@ export class Floater {
         else debugLog("New tooltip created: ", this.trigger, this.target);
     }
 
+    handleTriggerMouseover(e) { e.stopPropagation(); this.show(); }
+    handleTriggerMouseout(e) { e.stopPropagation(); this.hideWithDelay(); }
+    handleTargetMouseover(e) { e.stopPropagation(); this.show(); }
+    handleTargetMouseout(e) { e.stopPropagation(); this.hideWithDelay(); }
+    handleTriggerClick(e) {
+        e.stopPropagation();
+        this.target.classList.contains("hidden") ? this.show() : this.hide();
+    }
+    handleDocumentClick(e) {
+        if (!this.target.contains(e.target) && !this.trigger.contains(e.target)) {
+            this.hide();
+        }
+    }
+    handleWindowScroll() { this.updatePosition(); }
+
     bindEvents() {
         if (this.triggerType === 'hover') {
-            this.trigger.addEventListener("mouseover", e => { e.stopPropagation(); this.show(); });
-            this.trigger.addEventListener("mouseout", e => { e.stopPropagation(); this.hideWithDelay(); });
-
-            this.target.addEventListener("mouseover", e => { e.stopPropagation(); this.show(); });
-            this.target.addEventListener("mouseout", e => { e.stopPropagation(); this.hideWithDelay(); });
+            this.trigger.addEventListener("mouseover", this.boundTriggerMouseover);
+            this.trigger.addEventListener("mouseout", this.boundTriggerMouseout);
+            this.target.addEventListener("mouseover", this.boundTargetMouseover);
+            this.target.addEventListener("mouseout", this.boundTargetMouseout);
         } else if (this.triggerType === 'click') {
-            this.trigger.addEventListener("click", e => {
-                e.stopPropagation();
-                this.target.classList.contains("hidden") ? this.show() : this.hide();
-            });
-
+            this.trigger.addEventListener("click", this.boundTriggerClick);
             if (this.autoClose) {
-                document.addEventListener("click", (e) => {
-                    if (!this.target.contains(e.target) && !this.trigger.contains(e.target)) {
-                        this.hide();
-                    }
-                });
+                document.addEventListener("click", this.boundDocumentClick);
             }
         }
 
-        window.addEventListener("scroll", () => this.updatePosition());
+        window.addEventListener("scroll", this.boundWindowScroll);
     }
 
     show() {
@@ -126,6 +141,41 @@ export class Floater {
                 if (this.arrow) { this.arrow.classList.add('-rotate-90'); this.arrow.style.top = `${this.target.offsetHeight / 2 - 5}px`; this.arrow.style.left = `-3px`; }
                 break;
         }
+    }
+
+    /**
+     * Destroys the floater instance and removes all event listeners.
+     * Call this before removing the element from DOM.
+     */
+    destroy() {
+        // Clear any pending timeout
+        if (this.hideTimeout) {
+            clearTimeout(this.hideTimeout);
+            this.hideTimeout = null;
+        }
+
+        // Remove event listeners based on trigger type
+        if (this.triggerType === 'hover') {
+            this.trigger.removeEventListener("mouseover", this.boundTriggerMouseover);
+            this.trigger.removeEventListener("mouseout", this.boundTriggerMouseout);
+            this.target.removeEventListener("mouseover", this.boundTargetMouseover);
+            this.target.removeEventListener("mouseout", this.boundTargetMouseout);
+        } else if (this.triggerType === 'click') {
+            this.trigger.removeEventListener("click", this.boundTriggerClick);
+            if (this.autoClose) {
+                document.removeEventListener("click", this.boundDocumentClick);
+            }
+        }
+
+        window.removeEventListener("scroll", this.boundWindowScroll);
+
+        if (Floater.currentOpen === this) {
+            Floater.currentOpen = null;
+        }
+
+        Floater.instances.delete(this.trigger);
+        this.trigger = null;
+        this.target = null;
     }
 
     // Static method for initializing all popovers and tooltips

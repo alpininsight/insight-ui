@@ -39,6 +39,9 @@ document.addEventListener('DOMContentLoaded', function () {
 	debugLog('InsightUI initializing...');
 	debugLog('InsightUI components found:', window.InsightUI);
 
+	// Register HTMX cleanup hooks to prevent memory leaks
+	InsightUI.lifecycle.registerHTMXHooks();
+
 	// Initialize all instances
 	initAll();
 

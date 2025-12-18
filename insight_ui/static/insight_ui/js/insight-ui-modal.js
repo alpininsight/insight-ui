@@ -17,6 +17,11 @@ export class Modal {
 
         if (!this.modal) return;
 
+        // Store bound handlers for cleanup
+        this.boundButtonClick = null;
+        this.boundCloseButtons = [];
+        this.boundModalClick = null;
+
         this.bindEvents();
         Modal.instances.set(button, this);
 
@@ -24,21 +29,25 @@ export class Modal {
     }
 
     bindEvents() {
-        this.button.addEventListener('click', e => {
+        this.boundButtonClick = (e) => {
             e.preventDefault();
             this.open();
-        });
+        };
+        this.button.addEventListener('click', this.boundButtonClick);
 
         this.modal.querySelectorAll('[data-insight-dismiss="modal"]').forEach(closeBtn => {
-            closeBtn.addEventListener('click', e => {
+            const handler = (e) => {
                 e.preventDefault();
                 this.close();
-            });
+            };
+            this.boundCloseButtons.push({ element: closeBtn, handler });
+            closeBtn.addEventListener('click', handler);
         });
 
-        this.modal.addEventListener('click', e => {
+        this.boundModalClick = (e) => {
             if (e.target === this.modal) this.close();
-        });
+        };
+        this.modal.addEventListener('click', this.boundModalClick);
     }
 
     open() {
@@ -60,6 +69,37 @@ export class Modal {
         }
 
         InsightUI.utils.unblockScroll();
+    }
+
+    /**
+     * Destroys the modal instance and removes all event listeners.
+     * Call this before removing the element from DOM.
+     */
+    destroy() {
+        // Close modal if open
+        if (Modal.currentOpen === this) {
+            this.close();
+        }
+
+        // Remove button click handler
+        if (this.boundButtonClick) {
+            this.button.removeEventListener('click', this.boundButtonClick);
+        }
+
+        // Remove close button handlers
+        this.boundCloseButtons.forEach(({ element, handler }) => {
+            element.removeEventListener('click', handler);
+        });
+        this.boundCloseButtons = [];
+
+        // Remove modal backdrop click handler
+        if (this.boundModalClick) {
+            this.modal.removeEventListener('click', this.boundModalClick);
+        }
+
+        Modal.instances.delete(this.button);
+        this.button = null;
+        this.modal = null;
     }
 
     // Static method for initializing all modals
