@@ -218,3 +218,4 @@ uv.lock
 img/
 management/
 staticfiles/
+node_modules/
