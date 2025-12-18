@@ -162,6 +162,7 @@ dmypy.json
 # Local AI helper artifacts (never commit)
 AGENTS.md
 AGENT*.md
+CLAUDE.md
 ai-notes/
 .claude/
 .claude*
