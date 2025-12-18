@@ -33,6 +33,9 @@ document.addEventListener('DOMContentLoaded', function () {
     //     }
     // }
 
+	// Register HTMX cleanup hooks to prevent memory leaks
+	InsightUI.lifecycle.registerHTMXHooks();
+
 	// Initialize all instances
 	initAll();
 

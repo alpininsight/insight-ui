@@ -48,44 +48,66 @@ class Multiselect {
      * Bind all EventListener to the searchfield, buttons and options.
      */
     bindEvents() {
-        this.search.addEventListener('input', () => { this.filterOptions(this.search.value); this.toggleDropdown(true); });
-        this.search.addEventListener('focus', () => { this.toggleDropdown(true); });
-        this.search.addEventListener('blur', () => { this.search.value = ''; this.filterOptions(''); });
-        this.selected.addEventListener('click', () => { this.toggleDropdown(true); this.search.focus(); });
+        // Bind handlers for proper cleanup
+        this.boundSearchInput = () => { this.filterOptions(this.search.value); this.toggleDropdown(true); };
+        this.boundSearchFocus = () => { this.toggleDropdown(true); };
+        this.boundSearchBlur = () => { this.search.value = ''; this.filterOptions(''); };
+        this.boundSelectedClick = () => { this.toggleDropdown(true); this.search.focus(); };
+        this.boundSearchKeydown = this.handleSearchKeydown.bind(this);
+        this.boundDocumentClick = this.handleDocumentClick.bind(this);
+        this.boundSelectAll = () => { this.selectAll(); };
+        this.boundDeselectAll = () => { this.deselectAll(); };
 
-        this.search.addEventListener('keydown', e => {
-            const visible = this.optionItems.filter(o => o.style.display !== 'none');
-            if (e.key === 'ArrowDown') {
-                e.preventDefault();
-                if (!visible.length) return;
-                this.focusedIndex = (this.focusedIndex + 1) % visible.length;
-                this.focusOption(visible[this.focusedIndex]);
-            }
-            else if (e.key === 'ArrowUp') {
-                e.preventDefault();
-                if (!visible.length) return;
-                this.focusedIndex = (this.focusedIndex - 1 + visible.length) % visible.length;
-                this.focusOption(visible[this.focusedIndex]);
-            }
-            else if (e.key === 'Enter') {
-                e.preventDefault();
-                if (!visible.length) return;
-                if (this.search.value.trim() === '' && this.focusedIndex === -1) return;
-                const opt = this.focusedIndex >= 0 ? visible[this.focusedIndex] : visible[0];
-                this.toggleSelect(opt);
-            }
-            else if (e.key === 'Backspace' && this.search.value === '') {
-                if (this.selectedValues.length > 0)
-                    this.deselectValue(this.selectedValues[this.selectedValues.length - 1]);
-            }
-            else if (e.key === 'Escape' || e.key === 'Tab') this.toggleDropdown(false);
+        this.search.addEventListener('input', this.boundSearchInput);
+        this.search.addEventListener('focus', this.boundSearchFocus);
+        this.search.addEventListener('blur', this.boundSearchBlur);
+        this.selected.addEventListener('click', this.boundSelectedClick);
+        this.search.addEventListener('keydown', this.boundSearchKeydown);
+
+        // Store bound option click handlers for cleanup
+        this.boundOptionClicks = [];
+        this.optionItems.forEach(opt => {
+            const handler = () => this.toggleSelect(opt);
+            this.boundOptionClicks.push({ element: opt, handler });
+            opt.addEventListener('click', handler);
         });
 
-        this.optionItems.forEach(opt => opt.addEventListener('click', () => this.toggleSelect(opt)));
-        document.addEventListener('click', e => { if (!this.container.contains(e.target)) this.toggleDropdown(false); });
+        document.addEventListener('click', this.boundDocumentClick);
 
-        if (this.selectAllBtn) this.selectAllBtn.addEventListener('click', () => { this.selectAll(); });
-        if (this.deselectAllBtn) this.deselectAllBtn.addEventListener('click', () => { this.deselectAll(); });
+        if (this.selectAllBtn) this.selectAllBtn.addEventListener('click', this.boundSelectAll);
+        if (this.deselectAllBtn) this.deselectAllBtn.addEventListener('click', this.boundDeselectAll);
+    }
+
+    handleSearchKeydown(e) {
+        const visible = this.optionItems.filter(o => o.style.display !== 'none');
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            if (!visible.length) return;
+            this.focusedIndex = (this.focusedIndex + 1) % visible.length;
+            this.focusOption(visible[this.focusedIndex]);
+        }
+        else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            if (!visible.length) return;
+            this.focusedIndex = (this.focusedIndex - 1 + visible.length) % visible.length;
+            this.focusOption(visible[this.focusedIndex]);
+        }
+        else if (e.key === 'Enter') {
+            e.preventDefault();
+            if (!visible.length) return;
+            if (this.search.value.trim() === '' && this.focusedIndex === -1) return;
+            const opt = this.focusedIndex >= 0 ? visible[this.focusedIndex] : visible[0];
+            this.toggleSelect(opt);
+        }
+        else if (e.key === 'Backspace' && this.search.value === '') {
+            if (this.selectedValues.length > 0)
+                this.deselectValue(this.selectedValues[this.selectedValues.length - 1]);
+        }
+        else if (e.key === 'Escape' || e.key === 'Tab') this.toggleDropdown(false);
+    }
+
+    handleDocumentClick(e) {
+        if (!this.container.contains(e.target)) this.toggleDropdown(false);
     }
 
     /**
@@ -274,6 +296,35 @@ class Multiselect {
             detail: { value: this.selectedValues },
             bubbles: true
         }));
+    }
+
+    /**
+     * Destroys the multiselect instance and removes all event listeners.
+     * Call this before removing the element from DOM.
+     */
+    destroy() {
+        // Remove search and selected listeners
+        this.search.removeEventListener('input', this.boundSearchInput);
+        this.search.removeEventListener('focus', this.boundSearchFocus);
+        this.search.removeEventListener('blur', this.boundSearchBlur);
+        this.selected.removeEventListener('click', this.boundSelectedClick);
+        this.search.removeEventListener('keydown', this.boundSearchKeydown);
+
+        // Remove option click handlers
+        this.boundOptionClicks.forEach(({ element, handler }) => {
+            element.removeEventListener('click', handler);
+        });
+        this.boundOptionClicks = [];
+
+        // Remove document click handler
+        document.removeEventListener('click', this.boundDocumentClick);
+
+        // Remove button handlers
+        if (this.selectAllBtn) this.selectAllBtn.removeEventListener('click', this.boundSelectAll);
+        if (this.deselectAllBtn) this.deselectAllBtn.removeEventListener('click', this.boundDeselectAll);
+
+        Multiselect.instances.delete(this.container);
+        this.container = null;
     }
 
     // Static method for initializing all multiselect elements

@@ -15,6 +15,10 @@ class Dropdown {
 
         this.menu.classList.add("absolute", "hidden", "z-50", "mt-2");
 
+        // Bind handlers for proper cleanup
+        this.boundToggleClick = this.handleToggleClick.bind(this);
+        this.boundDocumentClick = this.handleDocumentClick.bind(this);
+
         this.bindEvents();
 
         Dropdown.instances.set(toggleButton, this);
@@ -22,20 +26,22 @@ class Dropdown {
         debugLog("New dropdown created: ", this.toggleButton, this.menu);
     }
 
-    bindEvents() {
-        this.toggleButton.addEventListener("click", e => {
-            e.stopPropagation();
-            if (Dropdown.currentOpen && Dropdown.currentOpen !== this) {
-                Dropdown.currentOpen.hide();
-            }
-            this.menu.classList.toggle("hidden");
-            Dropdown.currentOpen = this.menu.classList.contains("hidden") ? null : this;
-        });
+    handleToggleClick(e) {
+        e.stopPropagation();
+        if (Dropdown.currentOpen && Dropdown.currentOpen !== this) {
+            Dropdown.currentOpen.hide();
+        }
+        this.menu.classList.toggle("hidden");
+        Dropdown.currentOpen = this.menu.classList.contains("hidden") ? null : this;
+    }
 
-        // Close when clicking outside
-        document.addEventListener("click", () => {
-            this.hide();
-        });
+    handleDocumentClick() {
+        this.hide();
+    }
+
+    bindEvents() {
+        this.toggleButton.addEventListener("click", this.boundToggleClick);
+        document.addEventListener("click", this.boundDocumentClick);
     }
 
     hide() {
@@ -45,6 +51,23 @@ class Dropdown {
                 Dropdown.currentOpen = null;
             }
         }
+    }
+
+    /**
+     * Destroys the dropdown instance and removes all event listeners.
+     * Call this before removing the element from DOM.
+     */
+    destroy() {
+        this.toggleButton.removeEventListener("click", this.boundToggleClick);
+        document.removeEventListener("click", this.boundDocumentClick);
+
+        if (Dropdown.currentOpen === this) {
+            Dropdown.currentOpen = null;
+        }
+
+        Dropdown.instances.delete(this.toggleButton);
+        this.toggleButton = null;
+        this.menu = null;
     }
 
     // Static method for initializing all dropdown menus

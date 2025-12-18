@@ -10,6 +10,10 @@ class Tabs {
         this.tabs = Array.from(tabBar.children[0].children);
         this.tabContent = tabBar.children[1];
 
+        // Store bound handlers for cleanup
+        this.boundTabHandlers = [];
+        this.boundHTMXAfterSwap = null;
+
         this.bindEvents();
         Tabs.instances.set(tabBar, this);
 
@@ -19,16 +23,20 @@ class Tabs {
     bindEvents() {
         // Keyboard control
         this.tabs.forEach((tab, index) => {
-            tab.addEventListener('keydown', e => this.handleKeyDown(e, index));
-            tab.addEventListener('click', () => this.activateTab(tab));
+            const keydownHandler = (e) => this.handleKeyDown(e, index);
+            const clickHandler = () => this.activateTab(tab);
+            tab.addEventListener('keydown', keydownHandler);
+            tab.addEventListener('click', clickHandler);
+            this.boundTabHandlers.push({ element: tab, keydownHandler, clickHandler });
         });
 
         // HTMX-Focus
-        document.body.addEventListener('htmx:afterSwap', event => {
+        this.boundHTMXAfterSwap = (event) => {
             if (event.detail.target.id === 'tab-content') {
                 this.tabContent.focus();
             }
-        });
+        };
+        document.body.addEventListener('htmx:afterSwap', this.boundHTMXAfterSwap);
     }
 
     handleKeyDown(e, index) {
@@ -70,6 +78,28 @@ class Tabs {
                 tab.classList.add('border-gray-300', 'text-primary', 'border-b');
             }
         });
+    }
+
+    /**
+     * Destroys the tabs instance and removes all event listeners.
+     * Call this before removing the element from DOM.
+     */
+    destroy() {
+        // Remove tab keydown and click handlers
+        this.boundTabHandlers.forEach(({ element, keydownHandler, clickHandler }) => {
+            element.removeEventListener('keydown', keydownHandler);
+            element.removeEventListener('click', clickHandler);
+        });
+        this.boundTabHandlers = [];
+
+        // Remove global HTMX handler
+        if (this.boundHTMXAfterSwap) {
+            document.body.removeEventListener('htmx:afterSwap', this.boundHTMXAfterSwap);
+        }
+
+        Tabs.instances.delete(this.tabBar);
+        this.tabBar = null;
+        this.tabContent = null;
     }
 
     // Static method for initializing all tabs
