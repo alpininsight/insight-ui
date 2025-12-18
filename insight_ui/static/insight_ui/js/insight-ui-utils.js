@@ -26,6 +26,7 @@ window.InsightUI.lifecycle = {
             { Class: window.InsightUI.Multiselect, selector: '[data-multiselect]' },
             { Class: window.InsightUI.Sidebar, selector: '[data-insight-sidebar]' },
             { Class: window.InsightUI.Carousel, selector: '.carousel' },
+            { Class: window.InsightUI.ThreeDCarousel, selector: '[data-3D-carousel]' },
         ];
 
         components.forEach(({ Class, selector }) => {

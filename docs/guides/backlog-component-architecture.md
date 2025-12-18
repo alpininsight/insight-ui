@@ -136,14 +136,15 @@ Improve the JavaScript component architecture to eliminate memory leaks, enhance
 
 ---
 
-## Sprint 3: Standardization (P2) 🔜 READY
+## Sprint 3: Standardization (P2) ✅ COMPLETED
 
 **Goal:** Establish consistent patterns across all components
-**Status:** Ready to start
+
+**Completed:** 2025-12-18
 
 ### User Stories
 
-#### ARCH-001-05: Singleton Pattern Standardization
+#### ARCH-001-05: Singleton Pattern Standardization ✅
 **As a** developer
 **I want** all stateful components to use WeakMap singleton
 **So that** component instance management is consistent
@@ -152,11 +153,11 @@ Improve the JavaScript component architecture to eliminate memory leaks, enhance
 | ID | Task | File | Story Points | Status |
 |----|------|------|--------------|--------|
 | 3.1 | Convert Carousel to WeakMap singleton | `insight-ui-carousel.js` | 2 | ✅ Done (Sprint 1) |
-| 3.2 | Add instance tracking to 3D-Carousel | `insight-ui-3D-carousel.js` | 2 | Backlog |
+| 3.2 | Add instance tracking to 3D-Carousel | `insight-ui-3D-carousel.js` | 2 | ✅ Done |
 
-**Sprint Points:** 4 (2 remaining)
+**Sprint Points:** 4 ✅
 
-#### ARCH-001-06: Data Attribute Convention
+#### ARCH-001-06: Data Attribute Convention ✅
 **As a** developer
 **I want** consistent data attribute naming
 **So that** component APIs are predictable
@@ -164,21 +165,39 @@ Improve the JavaScript component architecture to eliminate memory leaks, enhance
 **Tasks:**
 | ID | Task | File | Story Points | Status |
 |----|------|------|--------------|--------|
-| 3.3 | Standardize dropdown data attributes | `dropdown.html` + JS | 2 | Backlog |
-| 3.4 | Standardize accordion data attributes | `accordion.html` + JS | 2 | Backlog |
-| 3.5 | Standardize multiselect data attributes | `multiselect.html` + JS | 2 | Backlog |
-| 3.6 | Fix radio button `checked` attribute | `radio_button.html` | 1 | Backlog |
-| 3.7 | Document convention in naming guide | `naming_conventions.md` | 2 | Backlog |
+| 3.3 | Standardize dropdown data attributes | `dropdown.html` + JS | 2 | ✅ Reviewed (no changes needed) |
+| 3.4 | Standardize accordion data attributes | `accordion.html` + JS | 2 | ✅ Reviewed (no changes needed) |
+| 3.5 | Standardize multiselect data attributes | `multiselect.html` + JS | 2 | ✅ Reviewed (no changes needed) |
+| 3.6 | Fix radio button `checked` attribute | `radio_button.html` | 1 | ✅ Done |
+| 3.7 | Document convention in naming guide | `naming_conventions.md` | 2 | ✅ Done |
 
-**Sprint Points:** 9
+**Sprint Points:** 9 ✅
 
-**Sprint 3 Total:** 13 points
+**Sprint 3 Total:** 13 points ✅
+
+### Sprint 3 Notes
+
+**3D-Carousel Refactoring:**
+- Converted from object literal to class-based pattern
+- Added WeakMap singleton for instance tracking
+- Added `destroy()` method with proper event listener cleanup
+- Added to lifecycle cleanup in `insight-ui-utils.js`
+
+**Data Attribute Review:**
+- Tasks 3.3-3.5: Current naming patterns are consistent within each component
+- Changing attributes would be breaking changes with no significant benefit
+- Decision: Document existing patterns rather than force unnecessary changes
+
+**Documentation:**
+- Added comprehensive "Data-Attribute (HTML)" section to `naming_conventions.md`
+- Documents component identification, options, actions, and boolean attribute conventions
 
 ---
 
-## Sprint 4: Testing Infrastructure (P2)
+## Sprint 4: Testing Infrastructure (P2) 🔜 READY
 
 **Goal:** Establish JavaScript testing to prevent regressions
+**Status:** Ready to start
 
 ### User Stories
 
@@ -208,13 +227,13 @@ Improve the JavaScript component architecture to eliminate memory leaks, enhance
 |--------|-------|--------------|--------|
 | Sprint 1 | Critical Foundation (P0) | 29 | ✅ Completed |
 | Sprint 2 | Security Hardening (P1) | 10/14 | ✅ Completed (4 deferred) |
-| Sprint 3 | Standardization (P2) | 11 | 🔜 Ready |
-| Sprint 4 | Testing Infrastructure (P2) | 13 | Backlog |
-| **Total** | | **67** | **39 completed** |
+| Sprint 3 | Standardization (P2) | 13 | ✅ Completed |
+| Sprint 4 | Testing Infrastructure (P2) | 13 | 🔜 Ready |
+| **Total** | | **67** | **52 completed** |
 
 *Notes:*
-- *Sprint 3 reduced by 2 points (Task 3.1 completed early in Sprint 1)*
 - *Sprint 2: 4 points deferred (modal.html tasks 2.1 and 2.8)*
+- *Sprint 3: Tasks 3.3-3.5 reviewed but no changes made (avoiding breaking changes)*
 
 ## Definition of Done
 
