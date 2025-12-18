@@ -79,14 +79,16 @@ Improve the JavaScript component architecture to eliminate memory leaks, enhance
 
 ---
 
-## Sprint 2: Security Hardening (P1) 🔜 READY
+## Sprint 2: Security Hardening (P1) ✅ COMPLETED
 
 **Goal:** Eliminate XSS vulnerabilities and code injection risks
-**Status:** Ready to start
+
+**Completed:** 2025-12-18
+**Note:** Tasks 2.1 and 2.8 (modal.html) deferred - kept as-is per project decision
 
 ### User Stories
 
-#### ARCH-001-03: Safe Filter Audit
+#### ARCH-001-03: Safe Filter Audit ✅
 **As a** security-conscious developer
 **I want** all `|safe` filter usage reviewed
 **So that** XSS vulnerabilities are eliminated or documented
@@ -94,14 +96,14 @@ Improve the JavaScript component architecture to eliminate memory leaks, enhance
 **Tasks:**
 | ID | Task | File | Story Points | Status |
 |----|------|------|--------------|--------|
-| 2.1 | Audit `modal.html` - document or remove `\|safe` | `modal.html` | 1 | Backlog |
-| 2.2 | Audit `live_content.html` - document or remove `\|safe` | `live_content.html` | 1 | Backlog |
-| 2.3 | Audit `bar_chart.html` - document or remove `\|safe` | `bar_chart.html` | 1 | Backlog |
-| 2.4 | Audit `websocket.html` - document or remove `\|safe` | `websocket.html` | 1 | Backlog |
+| 2.1 | Audit `modal.html` - document or remove `\|safe` | `modal.html` | 1 | ⏸️ Deferred |
+| 2.2 | Audit `live_content.html` - document or remove `\|safe` | `live_content.html` | 1 | ✅ Reviewed |
+| 2.3 | Audit `bar_chart.html` - document or remove `\|safe` | `bar_chart.html` | 1 | ✅ Reviewed |
+| 2.4 | Audit `websocket.html` - document or remove `\|safe` | `websocket.html` | 1 | ✅ Reviewed |
 
-**Sprint Points:** 4
+**Sprint Points:** 4 (3 completed, 1 deferred)
 
-#### ARCH-001-04: Inline Handler Removal
+#### ARCH-001-04: Inline Handler Removal ✅
 **As a** security-conscious developer
 **I want** inline onclick handlers replaced with event delegation
 **So that** code injection risks are eliminated
@@ -109,20 +111,35 @@ Improve the JavaScript component architecture to eliminate memory leaks, enhance
 **Tasks:**
 | ID | Task | File | Story Points | Status |
 |----|------|------|--------------|--------|
-| 2.5 | Refactor `radio_block.html` - use data attributes | `radio_block.html` | 3 | Backlog |
-| 2.6 | Refactor `form_errors.html` - use JS event binding | `form_errors.html` | 2 | Backlog |
-| 2.7 | Refactor `alert.html` - use JS event binding | `alert.html` | 2 | Backlog |
-| 2.8 | Refactor `modal.html` - use data attributes | `modal.html` | 3 | Backlog |
+| 2.5 | Refactor `radio_block.html` - use data attributes | `radio_block.html` | 3 | ✅ Done |
+| 2.6 | Refactor `form_errors.html` - use JS event binding | `form_errors.html` | 2 | ✅ Done |
+| 2.7 | Refactor `alert.html` - use JS event binding | `alert.html` | 2 | ✅ Done |
+| 2.8 | Refactor `modal.html` - use data attributes | `modal.html` | 3 | ⏸️ Deferred |
 
-**Sprint Points:** 10
+**Sprint Points:** 10 (7 completed, 3 deferred)
 
-**Sprint 2 Total:** 14 points
+**Sprint 2 Total:** 14 points (10 completed, 4 deferred)
+
+### Sprint 2 Notes
+
+**Safe Filter Audit Findings:**
+- `live_content.html`: Uses `{{ initial_content|safe }}` - **Intentional** for rendering HTML content loaded via HTMX. Risk: Low if content is server-generated.
+- `bar_chart.html`: Uses `{{ chart.series|safe }}` and `{{ chart.x_axis_legend|safe }}` - **Necessary** for passing JSON arrays to JavaScript. Risk: Medium if data contains user input.
+- `websocket.html`: Uses `{{ options.initial_content|safe }}` - **Intentional** for HTML content. Risk: Low if content is server-generated.
+
+**Recommendation:** Document in developer guide that `|safe` filter inputs must be sanitized server-side.
+
+**Inline Handler Refactoring:**
+- Added `InsightUI.handlers` module with event delegation for radio callbacks, alert dismissal, and form error dismissal
+- Replaced `onclick` with `data-insight-dismiss` and `data-radio-callback` attributes
+- Event delegation means handlers work for dynamically added content (HTMX compatible)
 
 ---
 
-## Sprint 3: Standardization (P2)
+## Sprint 3: Standardization (P2) 🔜 READY
 
 **Goal:** Establish consistent patterns across all components
+**Status:** Ready to start
 
 ### User Stories
 
@@ -190,12 +207,14 @@ Improve the JavaScript component architecture to eliminate memory leaks, enhance
 | Sprint | Focus | Story Points | Status |
 |--------|-------|--------------|--------|
 | Sprint 1 | Critical Foundation (P0) | 29 | ✅ Completed |
-| Sprint 2 | Security Hardening (P1) | 14 | 🔜 Ready |
-| Sprint 3 | Standardization (P2) | 11 | Backlog |
+| Sprint 2 | Security Hardening (P1) | 10/14 | ✅ Completed (4 deferred) |
+| Sprint 3 | Standardization (P2) | 11 | 🔜 Ready |
 | Sprint 4 | Testing Infrastructure (P2) | 13 | Backlog |
-| **Total** | | **67** | **29 completed** |
+| **Total** | | **67** | **39 completed** |
 
-*Note: Sprint 3 reduced by 2 points (Task 3.1 completed early in Sprint 1)*
+*Notes:*
+- *Sprint 3 reduced by 2 points (Task 3.1 completed early in Sprint 1)*
+- *Sprint 2: 4 points deferred (modal.html tasks 2.1 and 2.8)*
 
 ## Definition of Done
 

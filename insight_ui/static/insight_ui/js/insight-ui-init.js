@@ -36,6 +36,9 @@ document.addEventListener('DOMContentLoaded', function () {
 	// Register HTMX cleanup hooks to prevent memory leaks
 	InsightUI.lifecycle.registerHTMXHooks();
 
+	// Initialize delegated event handlers (security hardening)
+	InsightUI.handlers.init();
+
 	// Initialize all instances
 	initAll();
 

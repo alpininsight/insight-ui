@@ -55,6 +55,55 @@ window.InsightUI.lifecycle = {
     }
 };
 
+/**
+ * Event delegation handlers for components that use data attributes
+ * instead of inline onclick handlers (security hardening).
+ */
+window.InsightUI.handlers = {
+    /**
+     * Initialize delegated event handlers.
+     * Call this once during initialization.
+     */
+    init: function() {
+        // Radio block callback handler
+        document.addEventListener('change', function(e) {
+            const target = e.target;
+            if (target.type === 'radio' && target.dataset.radioCallback) {
+                const methodName = target.dataset.radioCallback;
+                const value = target.value;
+                // Call the method if it exists on window
+                if (typeof window[methodName] === 'function') {
+                    window[methodName](value);
+                } else {
+                    console.warn(`InsightUI: Radio callback "${methodName}" is not defined`);
+                }
+            }
+        });
+
+        // Alert/notification dismiss handler
+        document.addEventListener('click', function(e) {
+            const dismissBtn = e.target.closest('[data-insight-dismiss="alert"]');
+            if (dismissBtn) {
+                const alert = dismissBtn.closest('[role="alert"]');
+                if (alert) {
+                    alert.remove();
+                }
+            }
+        });
+
+        // Form errors dismiss handler
+        document.addEventListener('click', function(e) {
+            const dismissBtn = e.target.closest('[data-insight-dismiss="form-errors"]');
+            if (dismissBtn) {
+                const formResult = dismissBtn.closest('#form-result');
+                if (formResult) {
+                    formResult.innerHTML = '';
+                }
+            }
+        });
+    }
+};
+
 window.InsightUI.utils = {
     /**
      * This function is used to lock the keyboard focus within a modal dialog,

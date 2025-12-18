@@ -17,7 +17,7 @@
                         {% if current_value == item.value or not current_value and forloop.first %}checked{% endif %}
                         {% if item.disabled %}disabled{% endif %}
                         {% if method %}
-                            onclick="{{ method }}('{{ item.value }}')"
+                            data-radio-callback="{{ method }}"
                         {% endif %}
                         class="peer hidden"
                     >
@@ -51,7 +51,7 @@
                             hx-swap="{{ hx_swap_method|default:"outerHTML" }}"
                         {% endif %}
                         {% if method %}
-                            onclick="{{ method }}('{{ item.value }}')"
+                            data-radio-callback="{{ method }}"
                         {% endif %}
                         class="peer sr-only"
                     >
