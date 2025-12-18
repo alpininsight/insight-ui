@@ -49,6 +49,8 @@ class Carousel {
     this.init();
 
     Carousel.instances.set(root, this);
+
+    debugLog("New carousel created: ", this.root);
   }
 
   handleTouchEnd(e) {
@@ -135,6 +137,8 @@ class Carousel {
    * Call this before removing the element from DOM.
    */
   destroy() {
+    debugLog("Destroy carousel: ", this.root);
+
     // Stop autoplay interval
     this.stopAutoplay();
 
@@ -168,11 +172,6 @@ class Carousel {
     });
   }
 }
-
-// Global initialization method for backwards compatibility
-window.initCarousels = function () {
-  Carousel.initAll();
-};
 
 window.InsightUI = window.InsightUI || {};
 window.InsightUI.Carousel = Carousel;

@@ -303,6 +303,8 @@ class Multiselect {
      * Call this before removing the element from DOM.
      */
     destroy() {
+        debugLog("Destroy multiselect: ", this.container, this.name);
+
         // Remove search and selected listeners
         this.search.removeEventListener('input', this.boundSearchInput);
         this.search.removeEventListener('focus', this.boundSearchFocus);

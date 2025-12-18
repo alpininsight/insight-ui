@@ -72,6 +72,8 @@ class Modal {
      * Call this before removing the element from DOM.
      */
     destroy() {
+        debugLog("Destroy modal: ", this.button, this.modal);
+
         // Close modal if open
         if (Modal.currentOpen === this) {
             this.close();

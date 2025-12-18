@@ -3,8 +3,9 @@
  */
 
 function initAll() {
-	window.initCarousels();
+	InsightUI.ThreeDCarousel.initAll();
 	InsightUI.Accordion.initAll();
+	InsightUI.Carousel.initAll();
 	InsightUI.Checkbox.initAll();
 	InsightUI.CodeBlock.initAll();
 	InsightUI.Collapsible.initAll();
@@ -17,7 +18,6 @@ function initAll() {
 	InsightUI.Sidebar.initAll();
 	InsightUI.Tabs.initAll();
 	InsightUI.ThemeToggle.initAll();
-	InsightUI.ThreeDCarousel.init();
 	// InsightUI.WebSocket.init();
 }
 

@@ -58,6 +58,8 @@ class Dropdown {
      * Call this before removing the element from DOM.
      */
     destroy() {
+        debugLog("Destroy dropdown: ", this.toggleButton, this.menu);
+
         this.toggleButton.removeEventListener("click", this.boundToggleClick);
         document.removeEventListener("click", this.boundDocumentClick);
 

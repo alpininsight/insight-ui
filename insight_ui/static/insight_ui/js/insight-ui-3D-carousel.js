@@ -98,6 +98,8 @@ class ThreeDCarousel {
      * Call this before removing the element from DOM.
      */
     destroy() {
+        debugLog("Destroy 3D carousel: ", this.carouselWrapper);
+
         this.previous.removeEventListener("click", this.boundGotoPrevious);
         this.next.removeEventListener("click", this.boundGotoNext);
 
@@ -113,11 +115,6 @@ class ThreeDCarousel {
                 new ThreeDCarousel(el);
             }
         });
-    }
-
-    // Backwards compatibility
-    static init() {
-        ThreeDCarousel.initAll();
     }
 }
 

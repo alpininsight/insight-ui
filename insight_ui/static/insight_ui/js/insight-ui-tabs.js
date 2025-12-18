@@ -85,6 +85,8 @@ class Tabs {
      * Call this before removing the element from DOM.
      */
     destroy() {
+        debugLog("Destroy tab bar: ", this.tabBar);
+
         // Remove tab keydown and click handlers
         this.boundTabHandlers.forEach(({ element, keydownHandler, clickHandler }) => {
             element.removeEventListener('keydown', keydownHandler);

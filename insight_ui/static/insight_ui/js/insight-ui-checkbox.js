@@ -19,7 +19,7 @@ class Checkbox {
 
         Checkbox.instances.set(element, this);
 
-        debugLog("New checkbox group created: ", element);
+        debugLog("New checkbox group created: ", this.element);
     }
 
     init() {
@@ -58,6 +58,8 @@ class Checkbox {
      * Call this before removing the element from DOM.
      */
     destroy() {
+        debugLog("Destroy checkbox group: ", this.element);
+
         this.boundChangeHandlers.forEach(({ element, handler }) => {
             element.removeEventListener('change', handler);
         });

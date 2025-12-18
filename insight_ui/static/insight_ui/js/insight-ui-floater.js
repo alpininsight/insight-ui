@@ -144,6 +144,8 @@ class Floater {
      * Call this before removing the element from DOM.
      */
     destroy() {
+        debugLog("Destroy floater: ", this.trigger, this.target);
+
         // Clear any pending timeout
         if (this.hideTimeout) {
             clearTimeout(this.hideTimeout);
