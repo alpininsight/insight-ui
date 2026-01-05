@@ -5,13 +5,13 @@
   {% trans 'Jump to main content' %}
 </a>
 
-<nav role="navigation" aria-label="{% trans 'Main navigation' %}" class="fixed w-full h-16 z-50 bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700 px-4 md:px-16">
+<nav role="navigation" aria-label="{% trans 'Main navigation' %}" class="{% if fixed %}fixed{% else %}absolute{% endif %} w-full h-16 z-50 bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700 px-4 md:px-16">
   <!--- Desktop Navigation -->
   <div class="flex flex-wrap justify-between items-center gap-1 lg:gap-16 h-full">
     <!-- Brand Logo -->
     {% if brand %}
       <a href="{{ brand.href }}" class="flex items-center text-xl font-bold text-primary" style="gap: {{ brand.gap|default:'0.5rem' }}">
-        {% if brand.logo.url %}
+        {% if brand.logo %}
           <img
             id="brand-logo"
             src="{% static brand.logo.url %}"
