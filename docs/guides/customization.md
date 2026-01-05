@@ -1,6 +1,6 @@
 # Anpassung
 
-Unser Framework bietet verschiedene Möglichkeiten zur Anpassung, von einfachen Konfigurationsoptionen bis hin zu tiefgreifenden Anpassungen. Im Grunde ist das Insight UI Framework vor allem als Starthilfe für neue Projekte zu verstehen. Es lässt sich mit wenig Aufwand integrieren und verwenden um schnell ein Grundlegendes Layout aufzubauen. Wenn es dann zu konkreten Aufgaben kommt, wofür keine Komponente vorgefertigt wurde, müssen wieder eigene Lösungen her. Um diesen Schritt zu leichter zu gestalten, bietet unser Framework unterschiedliche Möglichkeiten, der Anpassung und Erweiterung.
+Unser Framework bietet verschiedene Möglichkeiten zur Anpassung, von einfachen Konfigurationsoptionen bis hin zu tiefgreifenden Anpassungen. Im Grunde ist das Insight UI Framework vor allem als Starthilfe für neue Projekte zu verstehen. Es lässt sich mit wenig Aufwand integrieren und verwenden um schnell ein Grundlegendes Layout aufzubauen. Wenn es dann zu konkreten Aufgaben kommt, wofür keine Komponente vorgefertigt wurde, müssen wieder eigene Lösungen her. Um diesen Schritt leichter zu gestalten, bietet unser Framework unterschiedliche Möglichkeiten, der Anpassung und Erweiterung.
 
 ## Konfiguration über settings.py
 
@@ -12,9 +12,33 @@ Unser UI Framework verwendet TailwindCSS für das Styling. Tailwind verwendet ei
 
 Das Standard-Theme des Insight-UI Frameworks befindet sich in der Datei `insight_ui/utils/input.css`.
 
+### Customization
+
+Um das Theming anzupassen muss diese Datei kopiert werden und anschließend in der Konfiguration von _Insight-UI_ in den `settings.py` angeben werden.
+
+```py
+TAILWIND_CLI_SRC_CSS = "my-path/to/input.css"
+```
+
+In dieser muss der Pfad zu den _Insight-UI_ Templates angepasst werden:
+
+```css
+@source "../templates/insight_ui/";
+```
+
+ersetzen durch:
+
+```css
+@source ".venv/Lib/site-packages/insight_ui/templates/insight_ui";
+```
+
+Anschließend muss `python manage.py tailwind setup` ausgeführt werden.
+
+### Inhalt der input.css
+
 Die Datei enthält die folgenden Komponenten, alle zusammen ergeben das Theme.
 
-DÍn der ersten Zeile befindet sich der `@import` für Tailwind, dieser wird benötigt, damit Tailwind aus dieser Datei, später das entsprechende Stylesheet generieren kann.
+In der ersten Zeile befindet sich der `@import` für Tailwind, dieser wird benötigt, damit Tailwind aus dieser Datei, später das entsprechende Stylesheet generieren kann.
 
 ```css
 @import "tailwindcss";
