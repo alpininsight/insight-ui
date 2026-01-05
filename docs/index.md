@@ -1,6 +1,18 @@
-# Insight UI (Version 0.1.0)
+# Insight UI
 
-Willkommen in der Dokumentation von **Insight UI**, einem modernen, erweiterbaren und unseren Gestaltungsprinzipien entsprechendes UI-Framework für Django-Projekte.
+Willkommen in der Dokumentation von **Insight UI**, einem modernen, erweiterbaren und nach dem WCAG Prinzipien gestaltetes UI-Framework für Django-Projekte.
+
+## Warum sollte ich das brauchen?
+
+Nun...
+
+Du möchtest deiner Django Anwendung ein möglichst hübsches und modernes Frontend verpassen, aber hast keine Lust auf:
+- JavaScript und CSS
+- das Basteln von Utilities wie Dropdowns oder Accordions, etc.
+- das Design auch für Smartphones anzupassen
+- und vor allem, sich mit den Grundlagen der Barrierefreiheit zu beschäftigen?
+
+Dann ist das die Antwort, denn alle diese Sachen erledigt unser Framework für dich. Das einziege was du tun musst, ist dein Layout zusammenbasteln und deinen Inhalt einbauen. Sorry, aber das bisschen HTML können wir dir leider echt nicht ersparen.
 
 ## Überblick
 
@@ -14,21 +26,11 @@ Für Performance unterstützen entsprechende Komponenten die Verwendung von **HT
 
 ```bash
 uv add insight-ui
-
-# or
-
-uv add "git+https://alpin-bot:a205f27ce1045d607e4cdaa7426f3b3fe5a3d5d8@git.alpininsight.com/AlpinInsight/insight-ui@fix"
-```
-
-Es kann passieren das Änderungen nicht sofort bemerkt werden, in dem Fall kann folgenden Befehl aushelfen:
-
-```bash
-uv pip install --force-reinstall "git+https://alpin-bot:a205f27ce1045d607e4cdaa7426f3b3fe5a3d5d8@git.alpininsight.com/AlpinInsight/insight-ui@fix"
 ```
 
 ## Schnellstart
 
-1. 'insight_ui' zu INSTALLED_APPS in settings.py hinzufügen:
+1. 'insight_ui' zu INSTALLED_APPS in der settings.py hinzufügen:
 
 ```python
 INSTALLED_APPS = [
@@ -39,9 +41,10 @@ INSTALLED_APPS = [
 ```
 
 2. Konfiguration in settings.py hinzufügen und anpassen (siehe Konfiguration)
+	- Die Konfiguration muss über `from insight_ui.config import get_config` an den `Context` der View übergeben werden.
 
 3. (A) Projekt starten ohne Änderungen am Frontend vornehmen zu wollen
-    - `python manage.py collectstatic` um das vorkompilierte insight-ui Stylesheet einzusammeln
+    - `python manage.py collectstatic` um das u.a. das insight-ui Stylesheet einzusammeln
     - `python manage.py runserver` Startet den development Server
 
 3. (B) Projekt aufsetzen und starten, wenn das Frontend weiter entwickelt werden soll
@@ -55,28 +58,41 @@ INSTALLED_APPS = [
         ]
 
         # Configure static files directory
-        STATICFILES_DIRS = [BASE_DIR / "assets"]
+        STATICFILES_DIRS = [BASE_DIR / "static"]
 		
 		# Tailwind source file
-		TAILWIND_CLI_SRC_CSS = BASE_DIR / ".venv/Lib/site-packages/insight_ui/static/insight_ui/css/input.css"
+		TAILWIND_CLI_SRC_CSS = BASE_DIR / ".venv/Lib/site-packages/insight_ui/utils/input.css"
 
         # Tailwind dist file
         TAILWIND_CLI_DIST_CSS = "insight_ui/css/tailwind.css"
 		
 		# Prevent automatic updating (recommended)
-		# This is a silent process that can lead to silent problems if the process is terminated too quickly.
+		# Why? Because this is a silent process that can lead to silent problems if the process is terminated too quickly.
 		TAILWIND_CLI_AUTOMATIC_DOWNLOAD = False
     ```
     - `python manage.py tailwind setup` Für initiales Setup von Tailwind ausführen (lädt u.a. das Tailwind-CLI runter ~120MB)
     - `python manage.py tailwind runserver` Startet den development Server und aktualisiert automatisch das Stylesheet (ACHTUNG: eventuelle Fehler der Tailwind-CLI werden nicht geloggt!)
 
-## Template-Tags in den Templates aktivieren
+## Änderungen der Konfiguration
+
+Die Konfiguration von `STATICFILES_DIRS`, `TAILWIND_CLI_SRC_CSS` und `TAILWIND_CLI_DIST_CSS` kann im Nachhinein angepasst werden,
+jedoch muss anschließend `python manage.py tailwind setup` erneut ausgeführt werden.
+
+## Verwendung
+
+Nach der Installation und Konfiguration können einzelne **Komponenten** und das **Basis-Template** verwendet werden.
+
+### Zugriff auf Komponenten
+
+> Bevor die Komponenten verwendet werden können, muss das **Insight-UI Stylesheet** geladen werden.
+
+Um eine der Frontend Komponenten verwenden zu können, müssen zuvor die `insight_tags` geladen werden:
 
 ```django
 {% load insight_tags %}
 ```
 
-## Komponenten in den Templates einfügen
+Anschließend können einige Komponenten direkt verwendet werden:
 
 ```django
 {% navbar brand="Meine App" %}
@@ -84,59 +100,45 @@ INSTALLED_APPS = [
 {% alert message="Willkommen bei Insight UI!" type="success" %}
 ```
 
-## Beispiel Template
+Manche Komponenten benötigen jedoch das laden weiterer JavaScript Dateien. Am einfachsten ist die Verwendung des **Basis Templates**.
 
-Der folgende Code-Ausschnitt zeigt ein typisches Template-Gerüst für eine Webseite:
+### Basis Template
+
+Das Basis Template bietet eine Strukturierte Vorlage, welche sämtliche Scripte und Stylesheets bereits lädt.
+
+Die Verwendung erfolgt einfach über `{% extends %}`:
 
 ```django
-{% extends "insight_ui/base.html" %} {% comment %} Always extend "insight_ui/base.html" {% endcomment %}
-{% load static i18n insight_tags %} {% comment %} Load tags for static files, translation and ui-elements {% endcomment %}
-
-{% block title %}{% trans 'Project-Title' %}{% endblock %}
-
-{% comment %} Define the navigation in the "navbar" block {% endcomment %}
-{% block navbar %}
-    {% navbar brand=nav_brand links=nav_links show_searchbar=True show_usermenu=True user=user show_login=True %}
-{% endblock navbar %}
-
-{% comment %} Main content of the webpage {% endcomment %}
-{% block content %}
-    {% comment %} Your content {% endcomment %}
-{% endblock content %}
-
-{% comment %} Define the footer in the "footer" block {% endcomment %}
-{% block footer %}
-    {% footer data=footer %}
-{% endblock footer %}
+{% extends "insight_ui/base.html" %}
 ```
+
+Für eine detaillierte Erklärung, siehe [Basis Template](base_template.md).
 
 ## Konfiguration
 
-Es gibt einige Einstellungen für die Insight UI, welche über die settings.py angepasst werden können:
+Es gibt eine Reihe von Einstellungen, welche über die `settings.py` definiert werden können.
 
 ```python
-# Insight UI Einstellungen
 INSIGHT_UI = {
-    "theme": "light",
     "favicon": "insight_ui/favicon/favicon.ico",
     "favicon_32": "insight_ui/favicon/favicon-32x32.png",
     "favicon_16": "insight_ui/favicon/favicon-16x16.png",
     "apple_touch_icon": "insight_ui/favicon/apple-touch-icon.png",
     "safari_mask_icon": "insight_ui/svg/logo.svg",  # Used by Safari pinned tab
     "msapplication_TileColor": "#da532c",  # Sets the background color for a live tile (MS Edge only)
-    "theme_color": "#ffffff",
-    "stylesheet": "insight_ui/css/tailwind.css",
-    "branding": {"name": "Insight UI", "logo": None},
+    "theme_color": "#ffffff",  # For the search bar on mobile devices
+    "stylesheet": "insight_ui/css/tailwind.css",  # Only change in case of using alternative stylesheet (currently not supported)
     "meta": {
         "seo": {
-            "description": "Schnellstart UI-Framework für Django-Projekte",
-            "keywords": "Django, Insight UI, base template",
-            "author": "Alpin Insight AI",
+            "description": "My indispensable app",
+            "keywords": "Django, Insight UI",
+            "author": "It's me",
         }
     },
-    "load_prism": True,
-    "load_leaflet": True,
-    "load_echarts": True,
+    "load_prism": False,  # Turn to 'True' to use syntax highlighting
+    "load_leaflet": False,  # Turn to 'True' to use geo-maps
+    "load_echarts": False,  # Turn to 'True' to use Charts and Chart-Components
+	"JS_DEBUG": False,  # Turn to 'True' to enable build in browser console logging
 }
 ```
 
