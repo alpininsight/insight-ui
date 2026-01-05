@@ -5,13 +5,17 @@ Mit der `radio_group` oder alternativ mit der `radio_block` Komponente lassen si
 ## Verwendung
 
 ```django
-    {% radio_group config=example_radio current_value=current_view %}
+{% load insight_tags %}
+
+{% radio_group config=example_radio current_value=current_view %}
 ```
 
 Oder als Block
 
 ```django
-    {% radio_block config=example_radio current_value=current_view %}
+{% load insight_tags %}
+
+{% radio_block config=example_radio current_value=current_view %}
 ```
 
 ## Parameter

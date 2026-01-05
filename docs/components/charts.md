@@ -13,8 +13,10 @@ Die Komponente steht bisher in den folgenden Ausführungen zu Verfügung:
 ## Verwendung
 
 ```django
-    {% bar_chart chart_id="bar_chart_example" chart=chart_data %}
-    {% line_chart chart_id="line_chart_example" chart=chart_data %}
+{% load insight_tags %}
+
+{% bar_chart chart_id="bar_chart_example" chart=chart_data %}
+{% line_chart chart_id="line_chart_example" chart=chart_data %}
 ```
 
 ## Parameter

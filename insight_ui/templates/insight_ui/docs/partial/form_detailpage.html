@@ -17,6 +17,8 @@
 <section>
     <h2>{% trans "Verwendung" %}</h2>
     <div id="Form_Usage" data-insight-code-block="Django">
+        &lcub;% load insight_tags %&rcub;
+
         &lcub;% form title="Contact Form" description="Please fill out the form" fields=form_fields actions=form_actions htmx=htmx_config id="htmx-form" %&rcub;
     </div>
 </section>

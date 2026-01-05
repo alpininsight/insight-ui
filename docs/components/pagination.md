@@ -5,6 +5,8 @@ Mit der 'paginated_list' Komponente lässt sich eine Liste auf mehrere Seiten au
 ## Verwendung
 
 ```django
+{% load insight_tags %}
+
 {% paginated_list current_page=start_page surrounding_pages=surrounding_pages %}
 ```
 

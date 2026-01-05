@@ -5,13 +5,13 @@ Mit der `slider`-Komponente kann ein Range-Slider in das Frontend eingebaut werd
 ## Verwendung
 
 ```django
-    {% load insight-tags %}
+{% load insight-tags %}
 
-    {% slider tag_id="cpu-cores" name="cpu_core_count" value=4 minimum=2 maximum=8 step_size=2 disabled=False label="Choose amount of CPU-Cores:" items=labels %}
+{% slider tag_id="cpu-cores" name="cpu_core_count" value=4 minimum=2 maximum=8 step_size=2 disabled=False label="Choose amount of CPU-Cores:" items=labels %}
 
-    # or
+# or
 
-    {% slider config=slider_config %}
+{% slider config=slider_config %}
 ```
 
 ## Parameter

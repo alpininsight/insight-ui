@@ -11,6 +11,8 @@ In speziellen Fällen können auch wie bei der anderen Variante, vordefinierte W
 ## Verwendung
 
 ```django
+{% load insight_tags %}
+
 {% sq_builder custom_filters=custom_filters %}
 ```
 

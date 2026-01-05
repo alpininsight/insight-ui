@@ -5,13 +5,13 @@ Mit der `input_field` Komponente lassen sich einzelne `<input>`-Elemente einbaue
 ## Verwendung
 
 ```django
-    {% load insight_tags %}
+{% load insight_tags %}
     
-    {% input_field tag_id="expiration-date" name="expiration_date" input_type="date" value="expiration_date" label="Choose expiration date:" %}
+{% input_field tag_id="expiration-date" name="expiration_date" input_type="date" value="expiration_date" label="Choose expiration date:" %}
 
-    # or
+# or
 
-    {% input_field config=input_config %}
+{% input_field config=input_config %}
 ```
 
 ## Parameter

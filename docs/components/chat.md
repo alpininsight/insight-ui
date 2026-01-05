@@ -5,6 +5,8 @@ Die Chat Komponente bietet ein einfaches Frontend für eine Chat-Anwendung. Die 
 ## Verwendung
 
 ```django
+{% load insight_tags %}
+
 {% chat view_name=view_name %}
 ```
 

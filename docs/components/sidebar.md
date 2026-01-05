@@ -7,6 +7,8 @@ Die `sidebar` Komponente fügt einen Bereich an der Fensterseite hinzu. Die Side
 Eingebunden wird die Sidebar am einfachsten über das entsprechende _Template-Tag_. Für die Sidebar sind für jede Seite entsprechende Blöcke definiert, in welchem diese platziert werden sollten.
 
 ```django
+{% load insight_tags %}
+
 {% block sidebar %}
     {% sidebar sidebar_data=left_sidebar_data side="left" %}
 {% endblock sidebar %}
@@ -15,6 +17,8 @@ Eingebunden wird die Sidebar am einfachsten über das entsprechende _Template-Ta
 Oder als _Drawer_
 
 ```django
+{% load insight_tags %}
+
 {% block drawers %}
     {% sidebar sidebar_data=right_sidebar_data side="right" static=False auto_close=True %}
 {% endblock drawers %}

@@ -9,7 +9,9 @@ Mit der `geo_map` Komponente wird eine geografische Karte mittels [leaflet](http
 ## Verwendung
 
 ```django
-    {% geo_map data=geo_map_data %}
+{% load insight_tags %}
+
+{% geo_map data=geo_map_data %}
 ```
 
 ## Parameter

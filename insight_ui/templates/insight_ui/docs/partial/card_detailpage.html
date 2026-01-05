@@ -30,6 +30,8 @@
     <h2>{% trans "Verwendung" %}</h2>
     <div id="Card_Usage" data-insight-code-block="Django">
         {# fmt:off #}
+        &lcub;% load insight_tags %&rcub;
+
         &lcub;% for card in cards %&rcub;
             &lcub;% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %&rcub;
         &lcub;% endfor %&rcub;

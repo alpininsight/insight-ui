@@ -11,9 +11,11 @@ Für die Card Komponente gibt es unterschiedliche Varianten zur Auswahl:
 ## Verwendung
 
 ```django
-    {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
-    {% horizontale_card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
-    {% flip_card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
+{% load insight_tags %}
+
+{% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
+{% horizontale_card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
+{% flip_card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
 ```
 
 ## Parameter

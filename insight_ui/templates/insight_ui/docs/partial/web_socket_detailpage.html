@@ -17,6 +17,8 @@
 <section>
     <h2>{% trans "Verwendung" %}</h2>
     <div id="Web_Socket_Usage" data-insight-code-block="Django">
+        &lcub;% load insight_tags %&rcub;
+
         &lcub;% insight_websocket html_tag_id="demo-websocket" ws_url="ws://localhost:8765" initial_content="<p>Connect to Web-Socket…</p>" %&rcub;
     </div>
 </section>

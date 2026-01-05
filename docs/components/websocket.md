@@ -5,9 +5,9 @@ Mit der `websocket` kann eine Verbindung mit einem anderen Websocket aufgebaut w
 ## Verwendung
 
 ```django
-    {% load insight_tags %}
+{% load insight_tags %}
 
-    {% websocket html_tag_id="websocket" ws_url="/websocket-service/" initial_content="" %}
+{% websocket html_tag_id="websocket" ws_url="/websocket-service/" initial_content="" %}
 ```
 
 ## Parameter

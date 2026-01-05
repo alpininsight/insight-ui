@@ -7,6 +7,8 @@ Eine alternative hierzu stellt der flexiblere, aber auch kompliziertere [Query B
 ## Verwendung
 
 ```django
+{% load insight_tags %}
+
 {% generic_filter filters=filters view_name=filter_view_name hx_target="#data" hx_push_url="true" vertical=False query_params=request.GET %}
 ```
 

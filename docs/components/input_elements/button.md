@@ -5,7 +5,7 @@ Für einen gewöhnlichen Button stellt unser UI-Framework eine Reihe von CSS-Kla
 ## Verwendung
 
 ```django
-    <button class="btn btn-primary">{% trans "Primary" %}</button>
+<button class="btn btn-primary">{% trans "Primary" %}</button>
 ```
 
 Die Klasse **btn** gibt dem Button seine Form, aber weder Farbe noch Effekte.

@@ -5,13 +5,13 @@ Mit der `checkbox` Komponente lassen sich einzelne Checkbox-Elemente einbauen. F
 ## Verwendung
 
 ```django
-    {% load insight_tags %}
+{% load insight_tags %}
 
-    {% checkbox tag_id="agb-box" name="accept_agb" value="accept_agb" checked=False disabled=False label="Accept AGBs" %}
+{% checkbox tag_id="agb-box" name="accept_agb" value="accept_agb" checked=False disabled=False label="Accept AGBs" %}
 
-    # or
+# or
 
-    {% checkbox config=checkbox_config %}
+{% checkbox config=checkbox_config %}
 ```
 
 ## Parameter

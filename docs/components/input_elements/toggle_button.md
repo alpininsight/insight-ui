@@ -5,13 +5,13 @@ Mit der `toggle` Komponente lässt sich ein Toggle-Button einbauen. Dieser funkt
 ## Verwendung
 
 ```django
-    {% load insight-tags %}
+{% load insight-tags %}
 
-    {% toggle tag_id="theme-toggle" name="toggle_theme" value="toggle_theme" checked=False disabled=False label="Dark" method="changeTheme" switch=True %}
+{% toggle tag_id="theme-toggle" name="toggle_theme" value="toggle_theme" checked=False disabled=False label="Dark" method="changeTheme" switch=True %}
 
-    # or
+# or
     
-    {% toggle config=toggle_config method="changeTheme" %}
+{% toggle config=toggle_config method="changeTheme" %}
 ```
 
 ## Parameter

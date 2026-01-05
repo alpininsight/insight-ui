@@ -5,9 +5,9 @@ Mit der `checkbox_group` Komponente lassen sich Gruppen von Checkbox-Elementen e
 ## Verwendung
 
 ```django
-    {% load insight_tags %}
+{% load insight_tags %}
     
-    {% checkbox_group config=checkbox_config %}
+{% checkbox_group config=checkbox_config %}
 ```
 
 ## Parameter

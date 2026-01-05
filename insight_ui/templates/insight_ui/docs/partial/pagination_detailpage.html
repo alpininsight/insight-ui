@@ -18,6 +18,8 @@
     <h2>{% trans "Verwendung" %}</h2>
     <div id="Pagination_Usage" data-insight-code-block="Django">
         {# fmt:off #}
+        &lcub;% load insight_tags %&rcub;
+
         &lt;div id="list-container"&gt;
             &lcub;% paginated_list with current_page=start_page surrounding_pages=surrounding_pages %&rcub;
         &lt;/div&gt;

@@ -5,9 +5,9 @@ Die `live_content` Komponente aktualisiert ein Fragment regelmäßig mithilfe vo
 ## Verwendung
 
 ```django
-    {% load insight_tags %}
+{% load insight_tags %}
 
-    {% live_content url="/api/live-data/" interval=10 id="live-content" %}
+{% live_content url="/api/live-data/" interval=10 id="live-content" %}
 ```
 
 ## Parameter
