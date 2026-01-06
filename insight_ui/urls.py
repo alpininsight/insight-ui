@@ -17,4 +17,5 @@ urlpatterns = [
     path("docs/components/demo/<str:component_name>/", views.component_demo_view, name="component_demo_view"),
     path("docs/<str:storybook_name>/", views.storybook_view, name="storybook_view"),
     path("", views.index_view, name="index_view"),
+    path("docs/customization", views.customization_view, name="customization"),
 ]

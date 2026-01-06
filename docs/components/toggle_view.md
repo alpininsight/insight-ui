@@ -19,12 +19,6 @@ Die Toggle-View wird direkt über das `{% toggle_view %}` Tag eingebunden. Diese
 - **view_radio_config** (_dict_): Die Konfiguration der Radio-Group, zum wechseln der Ansichtsart.
 - **current_view** (_str_): Die anzuzeigende View-Variante (Start-View).
 
-## Customization
-
-Das Design der Toggle-View Komponente befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/toggle_view.html`.
-
-Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
-
 ## Barrierefreiheit
 
 - _Todo_

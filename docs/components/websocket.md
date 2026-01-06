@@ -17,12 +17,6 @@ Mit der `websocket` kann eine Verbindung mit einem anderen Websocket aufgebaut w
 - **initial_content** (_str_): Initialer Inhalt.
 - **kwargs**: Zusätzliche Optionen ('id' = Tag-ID).
 
-## Customization
-
-Das Design des Websocket Wrapper Containers befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/web_socket.html`. Der eigentliche Inhalt wird vom Websocket-Service ausgeliefert und ist komplett frei definierbar und wird innerhalb des Containers eingefügt.
-
-Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
-
 ## Barrierefreiheit
 
 - _Todo_

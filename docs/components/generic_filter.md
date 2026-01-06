@@ -74,12 +74,6 @@ Mit diesem Parameter werden die einzelnen Filter definiert. Jeder Filter hat zun
 
 > **_Info_**: Bei den Filter `values` dient der Wert `-` als Trennlinie, welche nicht anklickbar ist. Der Wert `placeholder` dient als Platzhalter.
 
-## Customization
-
-Das Design der Filter-Komponente befindet sich in dieser Datei: `insight_ui/templates/insight_ui/generic_filter.html`.
-
-Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
-
 ## Barrierefreiheit
 
 - _Todo_

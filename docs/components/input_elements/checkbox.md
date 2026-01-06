@@ -38,13 +38,6 @@ Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
     "label": "Accept AGBs",
 }
 ```
-
-## Customization
-
-Das Design der Checkbox Komponente befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/checkbox.html`.
-
-Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
-
 ## Barrierefreiheit
 
 - Das `<label>` und der dazugehörige `<input>` sind mit `for` / `id` miteinander verknüpft.

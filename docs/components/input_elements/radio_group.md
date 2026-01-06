@@ -48,12 +48,6 @@ Beschreibt die Radio Komponente und deren Items.
 }
 ```
 
-## Customization
-
-Das Design der Radio-Group befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/radio_group.html`, das der Radio-Blocks in dieser Datei: `insight_ui/templates/insight_ui/components/radio_block.html`.
-
-Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
-
 ## Barrierefreiheit
 
 - _Todo_

@@ -26,6 +26,10 @@ Für Performance unterstützen entsprechende Komponenten die Verwendung von **HT
 
 ```bash
 uv add insight-ui
+
+# oder die Git-Quelle verwenden
+
+uv add "git+https://github.com/alpininsight/insight-ui@main"
 ```
 
 ## Schnellstart
@@ -137,7 +141,7 @@ INSIGHT_UI = {
     },
     "load_prism": False,  # Turn to 'True' to use syntax highlighting
     "load_leaflet": False,  # Turn to 'True' to use geo-maps
-    "load_echarts": False,  # Turn to 'True' to use Charts and Chart-Components
+    "load_echarts": False,  # Turn to 'True' to use Chart-Components
 	"JS_DEBUG": False,  # Turn to 'True' to enable build in browser console logging
 }
 ```

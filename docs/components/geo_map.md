@@ -61,12 +61,6 @@ Die Daten welche auf der Karte dargestellt werden sollen.
     - **type** (_str_): Die Art und Weise wie die Daten dargestellt werden sollen ("marker", "circle")
     - **data** (_list_): Die eigentlichen Daten. Jeder Eintrage braucht folgende Werte "lat", "lon", "title" und "description". Daten welche mittels "circle" dargestellt werden sollen, benötigen noch einen Wert "value".
 
-## Customization
-
-Der Quellcode der Geo-Map Komponente befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/geo_map.html`.
-
-Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
-
 ## Barrierefreiheit
 
 - _Todo_

@@ -82,12 +82,6 @@ Dieser Parameter beschreibt alle Filter, welche mit dem Query Builder gebaut wer
 ]
 ```
 
-## Customization
-
-Das Design des Query Builder befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/search_query_builder/sq_builder.html`. Das Design der Filterzeile befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/search_query_builder/sq_builder_filter.html`.
-
-Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
-
 ## Barrierefreiheit
 
 - _Todo_

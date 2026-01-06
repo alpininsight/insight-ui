@@ -32,15 +32,9 @@
         {# fmt:off #}
         &lcub;% load insight_tags %&rcub;
 
-        &lcub;% for card in cards %&rcub;
-            &lcub;% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %&rcub;
-        &lcub;% endfor %&rcub;
-        &lcub;% for card in horizontale_cards %&rcub;
-            &lcub;% card_horizontale title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %&rcub;
-        &lcub;% endfor %&rcub;
-        &lcub;% for card in flip_cards %&rcub;
-            &lcub;% card_flip title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %&rcub;
-        &lcub;% endfor %&rcub;
+        &lcub;% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %&rcub;
+        &lcub;% card_horizontale title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %&rcub;
+        &lcub;% card_flip title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %&rcub;
         {# fmt:on #}
     </div>
 </section>
@@ -79,17 +73,6 @@
             {# fmt:on #}
         </div>
     </div>
-</section>
-
-<!-- Customization -->
-<section>
-    <h2>{% trans "Customization" %}</h2>
-    <p>
-        Das Design der Card Komponente befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/cards/card.html</span>.
-    </p>
-    <p class="mt-4">
-        Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad <span class="inline-tag">templates/insight_ui/components/</span> vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
-    </p>
 </section>
 
 <!-- A11y -->

@@ -67,12 +67,6 @@ Der Inhalt der Sidebar (Titel und Navigations-Elemente).
 }
 ```
 
-## Customization
-
-Das Design der Sidebar befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/sidebar.html`.
-
-Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
-
 ## Barrierefreiheit
 
 - Die Sidebar verwendet für eine semantische Korrektheit das `<aside>`-Tag und das Attribute `role="complementary"`.

@@ -17,12 +17,6 @@ Die `live_content` Komponente aktualisiert ein Fragment regelmäßig mithilfe vo
 - **initial_content** (_str_): Initialer Inhalt.
 - **kwargs**: Zusätzliche Optionen ('id' = Tag-ID).
 
-## Customization
-
-Das Design der Live-Content Komponente befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/live_content.html`.
-
-Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
-
 ## Barrierefreiheit
 
 - _Todo_

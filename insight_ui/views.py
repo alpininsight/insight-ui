@@ -231,6 +231,12 @@ def index_view(request: HttpRequest) -> HttpResponse:
     return render(request, "insight_ui/index.html", context)
 
 
+def customization_view(request: HttpRequest) -> HttpResponse:
+    """Render customization page."""
+    context = get_base_context() | get_sidebar_context() | get_drawer_context()
+    return render(request, "insight_ui/docs/customization.html", context)
+
+
 def component_detail_page_view(request: HttpRequest, component_name: str) -> HttpResponse:
     """
     Render detailpage of the specified component.

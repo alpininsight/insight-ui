@@ -54,8 +54,6 @@ Und so kann anschließend das Karussell eingebunden werden. Über die Parameter 
 
 Das Basisdesign der Carousel Komponente befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/carousel.html`. Das Design des Card-Carousels befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/carousels/card_carousel.html` und für das Image-Carousel in dieser `insight_ui/templates/insight_ui/components/carousels/image_carousel.html`.
 
-Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
-
 ## Barrierefreiheit
 
 - _Todo_
