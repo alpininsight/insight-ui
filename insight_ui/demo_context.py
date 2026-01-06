@@ -4,6 +4,7 @@ from django.utils.lorem_ipsum import paragraphs
 from django.utils.translation import gettext as _
 
 from insight_ui import config
+from insight_ui.context import get_base_context
 from insight_ui.demo_utils import generate_payload, map_payload_to_cards, map_payload_to_table
 from insight_ui.utils.pagination import get_page
 
@@ -110,11 +111,6 @@ def get_login_screen_context() -> dict:
             "sign_up": {"url": "#"},
         }
     )
-
-
-def get_base_context() -> dict:
-    """Serve basic context data, like navbar, footer and settings."""
-    return config.get_config() | get_navbar_context() | get_footer_context()
 
 
 def get_component_demo_context() -> dict:
