@@ -1019,9 +1019,6 @@
   .border-insight-primary {
     border-color: var(--color-insight-primary);
   }
-  .border-insight-text-link {
-    border-color: var(--color-insight-text-link);
-  }
   .border-insight-text-secondary {
     border-color: var(--color-insight-text-secondary);
   }
@@ -2056,14 +2053,9 @@
       align-items: center;
     }
   }
-  .lg\:justify-between {
+  .lg\:justify-end {
     @media (width >= 64rem) {
-      justify-content: space-between;
-    }
-  }
-  .lg\:gap-16 {
-    @media (width >= 64rem) {
-      gap: calc(var(--spacing) * 16);
+      justify-content: flex-end;
     }
   }
   .lg\:border-none {

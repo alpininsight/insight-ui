@@ -577,7 +577,7 @@ def get_sidebar_context() -> dict:
 def get_main_storybook_context() -> dict:
     """Serve data for main storybook."""
     return (
-        get_base_context()
+        get_base_context("storybook_view")
         | get_sidebar_context()
         | get_breadcrumb_context()
         | get_step_bar_context()
@@ -591,7 +591,7 @@ def get_main_storybook_context() -> dict:
 def get_inputs_storybook_context() -> dict:
     """Serve data for input elements storybook."""
     return (
-        get_base_context()
+        get_base_context("storybook_view")
         | get_sidebar_context()
         | get_checkbox_context()
         | get_radio_group_context()
@@ -605,19 +605,24 @@ def get_inputs_storybook_context() -> dict:
 
 def get_popup_storybook_context() -> dict:
     """Serve data for popup storybook."""
-    return get_base_context() | get_sidebar_context() | get_alert_context() | get_modal_context()
+    return get_base_context("storybook_view") | get_sidebar_context() | get_alert_context() | get_modal_context()
 
 
 def get_utils_storybook_context() -> dict:
     """Serve data for utils storybook."""
-    return get_base_context() | get_sidebar_context() | get_differentiator_context() | get_geo_map_context()
+    return (
+        get_base_context("storybook_view")
+        | get_sidebar_context()
+        | get_differentiator_context()
+        | get_geo_map_context()
+    )
 
 
 def get_table_storybook_context() -> dict:
     """Serve data for table examples."""
     # Generate data for pagination example
     return (
-        get_base_context()
+        get_base_context("storybook_view")
         | get_sidebar_context()
         | get_table_context()
         | get_pagination_context()
@@ -629,7 +634,7 @@ def get_card_storybook_context() -> dict:
     """Serve data for card examples."""
     # Generate data for examples
     return (
-        get_base_context()
+        get_base_context("storybook_view")
         | get_sidebar_context()
         | get_cards_context()
         | get_image_carousel_context()
@@ -641,12 +646,17 @@ def get_card_storybook_context() -> dict:
 
 def get_form_storybook_context() -> dict:
     """Serve data for form examples."""
-    return get_base_context() | get_sidebar_context() | get_form_context()
+    return get_base_context("storybook_view") | get_sidebar_context() | get_form_context()
 
 
 def get_filter_storybook_context() -> dict:
     """Serve data for filter example."""
-    return get_base_context() | get_sidebar_context() | get_generic_filter_context() | get_query_builder_context()
+    return (
+        get_base_context("storybook_view")
+        | get_sidebar_context()
+        | get_generic_filter_context()
+        | get_query_builder_context()
+    )
 
 
 def get_alert_context() -> dict:

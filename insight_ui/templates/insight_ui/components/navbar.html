@@ -7,7 +7,7 @@
 
 <nav role="navigation" aria-label="{% trans 'Main navigation' %}" class="{% if fixed %}fixed{% else %}absolute{% endif %} w-full h-16 z-50 bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700 px-4 md:px-16">
   <!--- Desktop Navigation -->
-  <div class="flex flex-wrap justify-between items-center gap-1 lg:gap-16 h-full">
+  <div class="flex flex-wrap justify-between items-center gap-1 h-full">
     <!-- Brand Logo -->
     {% if brand %}
       <a href="{{ brand.href }}" class="flex items-center text-xl font-bold text-primary" style="gap: {{ brand.gap|default:'0.5rem' }}">
@@ -59,7 +59,7 @@
     </div>
 
     <div id="navigation-menu" class="hidden lg:block h-full w-full lg:w-fit grow lg:py-3">
-      <div class="flex flex-col lg:flex-row lg:justify-between gap-2 w-full lg:h-full p-2 lg:p-0 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 shadow-lg lg:shadow-none lg:bg-transparent lg:border-none rounded">
+      <div class="flex flex-col lg:flex-row lg:justify-end gap-6 w-full lg:h-full p-2 lg:p-0 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 shadow-lg lg:shadow-none lg:bg-transparent lg:border-none rounded">
         <!-- Main-Navigation -->
         {% if links %}
           <ul class="flex flex-col lg:flex-row justify-items-stretch lg:items-center w-full lg:w-fit">
@@ -69,7 +69,7 @@
                   {% if link.view_name or link.href %}
                     <a
                       href="{{ link.href }}"
-                      class="flex gap-2 h-full border-b-2 {% if link.active %}text-insight-text-link border-insight-text-link{% else %}text-secondary hover:text-insight-text-link border-transparent{% endif %} px-4 py-2 text-sm transition-colors duration-200"
+                      class="flex gap-2 h-full {% if link.active %}text-insight-text-link{% else %}text-secondary hover:text-insight-text-link{% endif %} px-4 py-2 text-sm transition-colors duration-200"
                       {% if link.active %}aria-current="page"{% endif %}
                       {% if link.external %}target="_blank" rel="noopener"{% endif %}
                     >
@@ -80,7 +80,7 @@
                     </a>
                   {% elif link.open_dropdown %}
                     <div class="relative">
-                      <button data-dropdown-toggle="{{ link.open_dropdown }}" class="flex gap-2 h-full border-b-2 {% if link.active %}text-insight-text-link border-insight-text-link{% else %}text-secondary hover:text-insight-text-link border-transparent{% endif %} px-4 py-2 text-sm transition-colors duration-200">
+                      <button data-dropdown-toggle="{{ link.open_dropdown }}" class="flex gap-2 h-full {% if link.active %}text-insight-text-link{% else %}text-secondary hover:text-insight-text-link{% endif %} px-4 py-2 text-sm transition-colors duration-200">
                         {% if link.icon %}
                           {% icon link.icon %}
                         {% endif %}

@@ -233,7 +233,7 @@ def index_view(request: HttpRequest) -> HttpResponse:
 
 def customization_view(request: HttpRequest) -> HttpResponse:
     """Render customization page."""
-    context = get_base_context() | get_sidebar_context() | get_drawer_context()
+    context = get_base_context("customization_view") | get_sidebar_context() | get_drawer_context()
     return render(request, "insight_ui/docs/customization.html", context)
 
 
@@ -288,7 +288,7 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
         context["demo"] = demo_info
         return render(request, f"insight_ui/docs/partial/{component_name}_detailpage.html", context)
 
-    context |= get_base_context() | get_sidebar_context()
+    context |= get_base_context("component_detail_page_view") | get_sidebar_context()
     context["template_name"] = f"insight_ui/docs/partial/{component_name}_detailpage.html"
     context["demo"] = demo_info
     return render(request, "insight_ui/docs/component_detailpage.html", context)
