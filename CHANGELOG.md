@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.7.0](https://github.com/alpininsight/insight-ui/compare/v1.6.0...v1.7.0) (2026-01-12)
+
+
+### Features
+
+* add support for python 3.12 and 3.14 ([df0e670](https://github.com/alpininsight/insight-ui/commit/df0e670fe993538c8e05ea55c2f7c8b50efea502))
+* add support for python 3.12 and 3.14 ([9ea69ae](https://github.com/alpininsight/insight-ui/commit/9ea69aee2a9132cea96410f1a4e92120fffbb40f))
+
 ## [1.6.0](https://github.com/alpininsight/insight-ui/compare/v1.5.0...v1.6.0) (2025-12-11)
 
 
