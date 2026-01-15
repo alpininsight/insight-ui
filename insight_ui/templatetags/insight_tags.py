@@ -148,6 +148,7 @@ def navbar(config: Mapping[str, Any], **kwargs: JsonValue) -> dict[str, Any]:
     show_usermenu (bool): 'True' wenn ein Login/Usermenü angezeigt werden soll
     show_language_selector (bool): 'True' wenn ein Menü zum wechseln der Sprache angezeigt werden soll
     show_theme_toggle (bool): 'True' wenn ein Button zum wechseln Des Themes (Hell/Dunkel) angezeigt werden soll
+    fixed (bool): 'True' wenn die Navbar beim scrollen mit wandern soll.
 
     Beispiel Branding:
         {
@@ -186,6 +187,7 @@ def navbar(config: Mapping[str, Any], **kwargs: JsonValue) -> dict[str, Any]:
         "show_usermenu": config.get("show_usermenu"),
         "show_language_selector": config.get("show_language_selector"),
         "show_theme_toggle": config.get("show_theme_toggle"),
+        "fixed": config.get("fixed"),
         "options": {**kwargs},
     }
 
@@ -472,6 +474,7 @@ def radio_group(config: dict, current_value: str) -> dict:
 def radio_block(  # noqa: PLR0913 (too many arguments)
     config: dict,
     current_value: str,
+    name: str = "",
     view_name: str = "",
     query_params: str = "",
     hx_target_id: str = "",
@@ -486,6 +489,7 @@ def radio_block(  # noqa: PLR0913 (too many arguments)
     ---------
         config (dict): Beschreibt die Radio Komponente und deren Items.
         current_value (str): Der Name des aktuell ausgewählten Radio-Buttons.
+        name (str): Der Name des gesamten Radio-Blocks, benötigt zur Referenzierung im JavaScript Code.
         view_name (str): Der Name der View an welchen der Request beim wechseln, gesendet werden soll.
         query_params (str): Ein String von Query-Parametern
         hx_target_id (str): Die ID des HTML-Tags, welches bei wechseln des Wertes ausgetauscht werden soll.
@@ -498,8 +502,11 @@ def radio_block(  # noqa: PLR0913 (too many arguments)
         Dict mit Kontext-Variablen für das Template.
 
     """
+    if config is not None:
+        name = config.get("name", name)
+
     return {
-        "name": config.get("name"),
+        "name": name,
         "label": config.get("label"),
         "items": config.get("items"),
         "current_value": current_value,
