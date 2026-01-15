@@ -221,13 +221,13 @@
         {% elif component == "query_builder" %}
             {% sq_builder model_fields=model_fields %}
         {% elif component == "card" %}
-            <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
+            <div class="flex flex-col md:flex-row items-center md:items-start gap-6 h-64">
                 {% for card in cards %}
                     {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
                 {% endfor %}
             </div>
         {% elif component == "effect_cards" %}
-            <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
+            <div class="flex flex-col md:flex-row items-center md:items-start gap-6 h-96">
                 {% for card in horizontale_cards %}
                     {% card_horizontale title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
                 {% endfor %}
@@ -262,6 +262,7 @@
     <script defer src="{% static 'insight_ui/js/insight-ui-checkbox.js' %}"></script>
     <script defer src="{% static 'insight_ui/js/insight-ui-code-block.js' %}"></script>
     <script defer src="{% static 'insight_ui/js/insight-ui-collapsible.js' %}"></script>
+    <script defer src="{% static 'insight_ui/js/insight-ui-demo-container.js' %}"></script>
     <script defer src="{% static 'insight_ui/js/insight-ui-dropdown.js' %}"></script>
     <script defer src="{% static 'insight_ui/js/insight-ui-floater.js' %}"></script>
     <script defer src="{% static 'insight_ui/js/insight-ui-modal.js' %}"></script>

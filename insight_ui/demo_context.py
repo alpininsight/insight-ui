@@ -117,15 +117,14 @@ def get_component_demo_context() -> dict:
     """Serve data of the device switch, etc. for component demos."""
     return {
         "device_radio_config": {
-            "name": "device",
             "items": [
                 {"tag_id": "mobile", "value": "mobile", "icon": {"name": "smartphone"}, "disabled": False},
                 {"tag_id": "tablet", "value": "tablet", "icon": {"name": "tablet"}, "disabled": False},
                 {"tag_id": "desktop", "value": "desktop", "icon": {"name": "desktop"}, "disabled": False},
-            ],
+            ]
         },
-        "dir_toggle": {"tag_id": "toggle_dir", "label": _("RTL")},
-        "theme_toggle": {"tag_id": "toggle_theme", "icon": {"name": "moon"}},
+        "dir_toggle": {"label": _("RTL")},
+        "theme_toggle": {"icon": {"name": "moon"}},
     }
 
 
