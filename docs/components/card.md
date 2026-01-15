@@ -5,7 +5,7 @@ Die `card` Komponenten werden dazu verwendet Informationsgruppen zu erstellen. J
 Für die Card Komponente gibt es unterschiedliche Varianten zur Auswahl:
 
 - **Card**: Standard Karte im 16:9 Format.
-- **Horizontale Card**: Das Layout dieser Karte ist vertikal ausgerichtet wodurch dieses länger ist.
+- **App Card**: Das Layout dieser Karte ist vertikal ausgerichtet wodurch dieses länger ist.
 - **Flip Card**: Diese Karte dreht sich um 180° und hält auf ihrer Rückseite weiteren Inhalt bereit.
 
 ## Verwendung
@@ -14,7 +14,7 @@ Für die Card Komponente gibt es unterschiedliche Varianten zur Auswahl:
 {% load insight_tags %}
 
 {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
-{% horizontale_card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
+{% app_card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
 {% flip_card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
 ```
 

@@ -221,15 +221,15 @@
         {% elif component == "query_builder" %}
             {% sq_builder model_fields=model_fields %}
         {% elif component == "card" %}
-            <div class="flex flex-col md:flex-row items-center md:items-start gap-6 h-64">
+            <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
                 {% for card in cards %}
                     {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
                 {% endfor %}
             </div>
         {% elif component == "effect_cards" %}
-            <div class="flex flex-col md:flex-row items-center md:items-start gap-6 h-96">
-                {% for card in horizontale_cards %}
-                    {% card_horizontale title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
+            <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
+                {% for card in app_cards %}
+                    {% card_app title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
                 {% endfor %}
                 {% for card in flip_cards %}
                     {% card_flip title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}

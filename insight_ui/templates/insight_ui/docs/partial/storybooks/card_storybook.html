@@ -48,8 +48,8 @@
         </h2>
     </div>
     <div class="flex flex-wrap flex-col md:flex-row items-center md:items-start gap-6 p-4 md:p-6">
-        {% for card in horizontale_cards %}
-            {% card_horizontale title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
+        {% for card in app_cards %}
+            {% card_app title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
         {% endfor %}
         {% for card in flip_cards %}
             {% card_flip title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}

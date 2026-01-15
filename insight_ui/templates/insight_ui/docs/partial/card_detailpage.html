@@ -12,7 +12,7 @@
     </p>
     <ul class="list-disc leading-relaxed ms-8">
         <li><span class="inline-tag">Card</span>: Standard Karte im 16:9 Format.</li>
-        <li><span class="inline-tag">Horizontale Card</span>: Das Layout dieser Karte ist vertikal ausgerichtet wodurch dieses länger ist.</li>
+        <li><span class="inline-tag">App Card</span>: Das Layout dieser Karte ist vertikal ausgerichtet wodurch dieses länger ist.</li>
         <li><span class="inline-tag">Flip Card</span>: Diese Karte dreht sich um 180° und hält auf ihrer Rückseite weiteren Inhalt bereit.</li>
     </ul>
 
@@ -33,7 +33,7 @@
         &lcub;% load insight_tags %&rcub;
 
         &lcub;% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %&rcub;
-        &lcub;% card_horizontale title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %&rcub;
+        &lcub;% card_app title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %&rcub;
         &lcub;% card_flip title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %&rcub;
         {# fmt:on #}
     </div>

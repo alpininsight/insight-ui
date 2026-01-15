@@ -142,12 +142,12 @@ def navbar(config: Mapping[str, Any], **kwargs: JsonValue) -> dict[str, Any]:
 
     Die folgenden Einstellungen können über das "config" Dictionary angepasst werden.
 
-    brand (dict[str, str]): Title der Anwendung und Logo Informationen
-    links (dict[str, str]): Eine Liste von Dictionaries mit Link-Informationen
-    show_searchbar (bool):  'True' wenn eine Suchzeile angezeigt werden soll
-    show_usermenu (bool): 'True' wenn ein Login/Usermenü angezeigt werden soll
-    show_language_selector (bool): 'True' wenn ein Menü zum wechseln der Sprache angezeigt werden soll
-    show_theme_toggle (bool): 'True' wenn ein Button zum wechseln Des Themes (Hell/Dunkel) angezeigt werden soll
+    brand (dict[str, str]): Title der Anwendung und Logo Informationen.
+    links (dict[str, str]): Eine Liste von Dictionaries mit Link-Informationen.
+    show_searchbar (bool):  'True' wenn eine Suchzeile angezeigt werden soll.
+    show_usermenu (bool): 'True' wenn ein Login/Usermenü angezeigt werden soll.
+    show_language_selector (bool): 'True' wenn ein Menü zum wechseln der Sprache angezeigt werden soll.
+    show_theme_toggle (bool): 'True' wenn ein Button zum wechseln Des Themes (Hell/Dunkel) angezeigt werden soll.
     fixed (bool): 'True' wenn die Navbar beim scrollen mit wandern soll.
 
     Beispiel Branding:
@@ -174,7 +174,7 @@ def navbar(config: Mapping[str, Any], **kwargs: JsonValue) -> dict[str, Any]:
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template
+        Dict mit Kontext-Variablen für das Template.
 
     """
     brand = _resolve_view_urls(config.get("brand")) if config.get("brand") else None
@@ -818,7 +818,7 @@ def insight_websocket(
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template
+        Dict mit Kontext-Variablen für das Template.
 
     """
     return {"options": {"id": html_tag_id, "ws_url": ws_url, "initial_content": initial_content, **kwargs}}
@@ -842,7 +842,7 @@ def infinite_scroll(  # noqa: PLR0913 (Too many arguments)
     ----
         items (list): Liste der bereits geladenen Elemente.
         view_name (str): Name der View für das Laden weiterer Elemente.
-        request_view (str): Veralteter Alias für `view_name` (wird weiterhin unterstützt)
+        request_view (str): Veralteter Alias für `view_name` (wird weiterhin unterstützt).
         page (int): Die Nummer der aktuellen "Seite", welche geladen werden soll.
         has_next (bool): 'True' wenn noch weitere Elemente verfügbar sind.
         auto_fetch (bool): 'False' wenn der Nutzer aktiv weitere Elemente per Button anfordern soll.
@@ -851,7 +851,7 @@ def infinite_scroll(  # noqa: PLR0913 (Too many arguments)
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template
+        Dict mit Kontext-Variablen für das Template.
 
     """
     resolved_view = view_name or request_view
@@ -883,7 +883,7 @@ def alert(message: str, alert_type: str = "info", dismissible: bool = True, **kw
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template
+        Dict mit Kontext-Variablen für das Template.
 
     """
     return {"message": message, "type": alert_type, "dismissible": dismissible, "options": kwargs}
@@ -905,7 +905,7 @@ def sidebar(
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template
+        Dict mit Kontext-Variablen für das Template.
 
     """
     resolved_sidebar = _resolve_view_urls(dict(sidebar_data)) if sidebar_data else {}
@@ -924,7 +924,7 @@ def breadcrumbs(items: Sequence[Mapping[str, Any]] | None = None) -> dict[str, A
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template
+        Dict mit Kontext-Variablen für das Template.
 
     """
     resolved_items = [dict(item) for item in items] if items is not None else []
@@ -942,7 +942,7 @@ def table(data: dict) -> dict[str, Any]:
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template
+        Dict mit Kontext-Variablen für das Template.
 
     """
     return {
@@ -974,7 +974,7 @@ def modal(  # noqa: PLR0913 (too many args)
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template,
+        Dict mit Kontext-Variablen für das Template.
 
     """
     return {
@@ -1009,7 +1009,7 @@ def carousel(  # noqa: PLR0913 (too many args)
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template
+        Dict mit Kontext-Variablen für das Template.
 
     """
     return {
@@ -1027,15 +1027,15 @@ def card(
     title: str, content: str, subtitle: str = "", image: dict[str, str] = {}, actions: list[dict[str, str]] = []
 ) -> dict[str, Any]:
     """
-    Rendert eine Karte mit dem Seitenverhältnis einer Visitenkarte.
+    Rendert eine Karte mit dem Seitenverhältnis 16:9, dies entspricht ca. dem einer Visitenkarte.
 
     Args:
     ----
         title (str): Der Title der Karte.
         content (str): Der Hauptinhalt der Karte.
-        subtitle (str): Der Untertitel der Karte.
+        subtitle (str): Ein optionaler Untertitel der Karte.
         image (dict[url: str, alt: str]): Informationen über das Bild der Karte.
-        actions (list[dict[text: str, url: str, type: str]]): Eine Liste von Aktion-Buttons.
+        actions (list[dict[text: str, url: str, type: str]]): Eine Liste von Aktionbuttons.
 
     Returns:
     -------
@@ -1045,8 +1045,8 @@ def card(
     return {"title": title, "subtitle": subtitle, "content": content, "image": image, "actions": actions}
 
 
-@register.inclusion_tag("insight_ui/components/cards/horizontale_card.html")
-def card_horizontale(  # noqa: PLR0913
+@register.inclusion_tag("insight_ui/components/cards/app_card.html")
+def card_app(  # noqa: PLR0913
     title: str,
     content: str,
     tags: list[str] = [],
@@ -1055,23 +1055,24 @@ def card_horizontale(  # noqa: PLR0913
     actions: list[dict[str, str]] = [],
 ) -> dict[str, Any]:
     """
-    Rendert eine horizontal ausgerichtete Karte.
+    Rendert eine vertikal ausgerichtete Karte.
 
-    Mit einem Bild am oberen Rand. Darunter befindet sich der Titel und der Content, sowie wenn angegeben,
-    eine Liste von Tags. Am Ende werden die angegebenen Action Buttons übereinander dargestellt.
+    Die Karte beginnt mit einem quadratischen Bild. Darunter befindet sich der Titel und der Content,
+    sowie wenn angegeben, eine Liste von Tags. Am Ende werden, sofern vorhanden die Aktionbuttons
+    übereinander dargestellt.
 
     Args:
     ----
-        title (str): Title der Karte
-        content (str): Inhalt der Karte
-        tags (list[str]): Eine Liste von Buttons
-        url (str): Eine URL
-        image (dict[url: str, alt: str]): Informationen über das Bild der Karte
-        actions (list[dict[text: str, url: str, type: str]]): Eine Liste von Aktionsbuttons
+        title (str): Der Title der Karte.
+        content (str): Der Hauptinhalt der Karte.
+        tags (list[str]): Eine Liste von Buttons.
+        url (str): Eine URL welche aufgerufen wird, wenn der Nutzer auf den Title klickt.
+        image (dict[url: str, alt: str]): Informationen über das Bild der Karte.
+        actions (list[dict[text: str, url: str, type: str]]): Eine Liste von Aktionbuttons.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template
+        Dict mit Kontext-Variablen für das Template.
 
     """
     return {"title": title, "content": content, "tags": tags, "url": url, "image": image, "actions": actions}
@@ -1087,20 +1088,20 @@ def card_flip(  # noqa: PLR0913
     actions: list[dict[str, str]] = [],
 ) -> dict[str, Any]:
     """
-    Rendert eine Karte welche sich um 180° drehen kann und auf der Rückseite weitere Informationen enthält.
+    Rendert eine Karte, welche sich um 180° drehen kann und auf der Rückseite weitere Informationen enthält.
 
     Args:
     ----
-        title (str): Title der Karte
-        content (str): Inhalt der Karte
-        tags (list[str]): Eine Liste von Buttons
-        url (str): Eine URL
-        image (dict[url: str, alt: str]): Informationen über das Bild der Karte
-        actions (list[dict[text: str, url: str, type: str]]): Eine Liste von Aktionsbuttons
+        title (str): Der Title der Karte.
+        content (str): Der Hauptinhalt der Karte.
+        tags (list[str]): Eine Liste von Buttons.
+        url (str): Eine URL welche aufgerufen wird, wenn der Nutzer auf den Title klickt.
+        image (dict[url: str, alt: str]): Informationen über das Bild der Karte.
+        actions (list[dict[text: str, url: str, type: str]]): Eine Liste von Aktionbuttons.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template
+        Dict mit Kontext-Variablen für das Template.
 
     """
     return {"title": title, "content": content, "tags": tags, "url": url, "image": image, "actions": actions}
@@ -1122,18 +1123,18 @@ def form(  # noqa: PLR0913 (too many args)
 
     Args:
     ----
-        fields (list): Eine Liste von Formularfeldern
-        title (str): Der Titel des Formulars
-        description (str): Eine optionale Beschreibung
-        view_name (str): Die Name des Endpunktes für die Formular-Übermittlung
-        method (str): Die HTTP-Methode ('post', 'get')
-        actions (list): Eine Liste von Aktions-Buttons
-        htmx (dict): HTMX Konfiguration für AJAX-Requests
-        **kwargs: Zusätzliche Optionen für das Formular
+        fields (list): Eine Liste von Formularfeldern.
+        title (str): Der Titel des Formulars.
+        description (str): Eine optionale Beschreibung.
+        view_name (str): Die Name des Endpunktes für die Formular-Übermittlung.
+        method (str): Die HTTP-Methode ('post', 'get').
+        actions (list): Eine Liste von Aktionbuttons.
+        htmx (dict): HTMX Konfiguration für AJAX-Requests.
+        **kwargs: Zusätzliche Optionen für das Formular.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template
+        Dict mit Kontext-Variablen für das Template.
 
     """
     # HTMX-Konfiguration
@@ -1198,7 +1199,7 @@ def accordion(items: list, group_id: str = "accordion", exclusive: bool = True) 
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template
+        Dict mit Kontext-Variablen für das Template.
 
     """
     return {"items": items, "group_id": group_id, "exclusive": exclusive}
@@ -1215,7 +1216,7 @@ def tabs(config: dict) -> dict:
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template
+        Dict mit Kontext-Variablen für das Template.
 
     """
     return {"config": config}
@@ -1242,7 +1243,7 @@ def three_d_carousel(
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template
+        Dict mit Kontext-Variablen für das Template.
 
     """
     return {
@@ -1275,7 +1276,7 @@ def select(
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template
+        Dict mit Kontext-Variablen für das Template.
 
     """
     if config is not None:
@@ -1315,7 +1316,7 @@ def multiselect(  # noqa: PLR0913 (too many arguments)
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template
+        Dict mit Kontext-Variablen für das Template.
 
     """
     if config is not None:
@@ -1352,7 +1353,7 @@ def bar_chart(chart_id: str, chart: dict, chart_height: int = 24) -> dict:
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template
+        Dict mit Kontext-Variablen für das Template.
 
     """
     return {"chart_id": chart_id, "chart": chart, "chart_height": chart_height}
@@ -1371,7 +1372,7 @@ def line_chart(chart_id: str, chart: dict, chart_height: int = 24) -> dict:
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template
+        Dict mit Kontext-Variablen für das Template.
 
     """
     return {"chart_id": chart_id, "chart": chart, "chart_height": chart_height}

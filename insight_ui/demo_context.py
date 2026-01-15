@@ -963,9 +963,9 @@ def get_cards_context() -> dict:
                 ],
             },
         ],
-        "horizontale_cards": [
+        "app_cards": [
             {
-                "title": "Horizontale Cards",
+                "title": "App Cards",
                 "content": "A card with its content arranged horizontally.",
                 "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": "Card-Image"},
                 "tags": ["Test", "Test2", "Test3"],
