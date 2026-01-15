@@ -253,6 +253,7 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
     """
     demo_info = {
         "url": reverse("component_demo_view", kwargs={"component_name": component_name}),
+        "repo_url": "#",
         "title": component_name,
         "id": component_name,
     }
