@@ -27,7 +27,41 @@ class DemoIframeController {
         debugLog("New DemoIframeController created: ", this.element);
     }
 
+    initIFrame() {
+        this.widthRadios.forEach(radio => {
+            if (radio.value == "desktop")
+                radio.checked = true;
+            else
+                radio.checked = false;
+        });
+
+        this.dirToggle.checked = false;
+        this.themeToggle.checked = false;
+
+        // Apply main theme to demo container
+        if (document.documentElement.classList.contains('dark')) {
+            this.toggleTheme();
+            this.themeToggle.checked = true;
+        }
+
+        // Add MutationObserver to notify theme changes
+        const config = { attributes: true, childList: false, subtree: false };
+        const callback = (mutationList, observer) => {
+            for (const mutation of mutationList) {
+                this.themeToggle.checked = document.documentElement.classList.contains('dark');
+                this.setTheme(this.themeToggle.checked);
+            }
+        };
+
+        const observer = new MutationObserver(callback);
+        observer.observe(document.documentElement, config);
+    }
+
     initEvents() {
+        this.iframe.addEventListener("load", (e) => {
+            this.initIFrame();
+        });
+
         this.widthRadios.forEach(radio => {
             radio.addEventListener("change", (e) => {
                 if (e.target.checked) {
@@ -61,7 +95,7 @@ class DemoIframeController {
 
     toggleRTL() {
         const htmlTag = this.getHtmlTag();
-        htmlTag.dir = (htmlTag.dir === "rtl") ? "ltr" : "rtl";
+        htmlTag.dir = (htmlTag.dir === "ltr" || htmlTag.dir === "") ? "rtl" : "ltr";
     }
 
     toggleTheme() {
@@ -74,11 +108,26 @@ class DemoIframeController {
         );
     }
 
+    setTheme(dark) {
+        const htmlTag = this.getHtmlTag();
+
+        if (dark === true) {
+            htmlTag.classList.add("dark");
+            htmlTag.setAttribute("data-theme", "dark");
+        }
+        else {
+            htmlTag.classList.remove("dark");
+            htmlTag.setAttribute("data-theme", "light");
+        }
+    }
+
     resizeIframe = () => {
         requestAnimationFrame(() => {
-            const doc = this.iframe.contentDocument || this.iframe.contentWindow.document;
-            this.iframe.style.height =
-                Math.min(doc.body.scrollHeight, 756) + "px";
+            if (this.iframe.contentDocument || this.iframe.contentWindow.document)
+            {
+                const doc = this.iframe.contentDocument || this.iframe.contentWindow.document;
+                this.iframe.style.height = Math.min(doc.body.scrollHeight, 756) + "px";
+            }
         });
     };
 
