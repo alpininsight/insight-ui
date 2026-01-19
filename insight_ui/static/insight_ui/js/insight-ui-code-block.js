@@ -11,8 +11,9 @@ class CodeBlock {
     this.element = element;
     this.id = element.id;
     this.lang = element.getAttribute('data-insight-code-block');
+    this.filename = element.getAttribute('data-insight-code-block-filename') || "";
     this.code = element.textContent;
-    this.wrapper = this.generateCodeBlock(this.id, this.lang, this.code);
+    this.wrapper = this.generateCodeBlock(this.id, this.lang, this.filename, this.code);
     this.element.replaceWith(this.wrapper);
 
     CodeBlock.instances.set(element, this);
@@ -46,17 +47,30 @@ class CodeBlock {
    *
    * @param {string} id The id of the code block.
    * @param {string} lang The langauge of the code.
+   * @param {string} filename An optional filename, shown in the topbar as hint for the user.
    * @param {string} code The code.
    * @returns The wrapper element of the created HTML structure.
    */
-  generateCodeBlock(id, lang, code) {
+  generateCodeBlock(id, lang, filename, code) {
     // Create wrapper-div
     const wrapper = document.createElement('div');
-    wrapper.classList.add('bg-[#f5f2f0]', 'rounded', 'border', 'border-gray-300', 'dark:border-0');
+    wrapper.classList.add('bg-[#f9fafb]', 'dark:bg-[#030712]', 'rounded', 'border', 'border-gray-300', 'dark:border-gray-700');
 
     // Create flex-box for the copy button
     const flexContainer = document.createElement('div');
-    flexContainer.classList.add('flex', 'justify-end', 'bg-blue-200/75', 'dark:bg-blue-900/75', 'rounded-t', 'p-2');
+    flexContainer.classList.add('flex', 'justify-between', 'bg-gray-200', 'dark:bg-gray-900', 'rounded-t', 'p-2');
+
+    // Create lang and filename infobox
+    const langSpan = document.createElement('span');
+    langSpan.appendChild(document.createTextNode(`${lang}`));
+    const fileSpan = document.createElement('span');
+    fileSpan.appendChild(document.createTextNode(`${filename}`));
+
+    const infobox = document.createElement('div');
+    infobox.appendChild(langSpan);
+    infobox.appendChild(fileSpan);
+
+    flexContainer.appendChild(infobox);
 
     // Create copy button
     const button = document.createElement('button');
@@ -94,7 +108,7 @@ class CodeBlock {
 
     const pre = document.createElement('pre');
     pre.id = id;
-    pre.classList.add(`language-${lang}`);
+    pre.classList.add('line-numbers', `language-${lang}`);
 
     const codeElement = document.createElement('code');
     const cleanCode = this.cleanIndentation(code).trim();
@@ -114,7 +128,7 @@ class CodeBlock {
     new ClipboardJS(`.${id}`);
 
     // Apply Prism.js syntax highlighting
-    Prism.highlightElement(pre);
+    Prism.highlightElement(codeElement);
 
     return wrapper;
   }
