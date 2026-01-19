@@ -58,6 +58,7 @@ from insight_ui.demo_context import (
 )
 from insight_ui.demo_utils import generate_payload, map_payload_to_cards, map_payload_to_table
 from insight_ui.forms import ChatForm
+from insight_ui.git_path_mapping import SCRIPT_PATHS, TEMPLATE_PATHS
 from insight_ui.utils.pagination import get_page
 from insight_ui.utils.query_builder_utils import FilterFieldConfig, get_filter_settings_for_field
 
@@ -253,7 +254,8 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
     """
     demo_info = {
         "url": reverse("component_demo_view", kwargs={"component_name": component_name}),
-        "repo_url": "#",
+        "template_repo_url": TEMPLATE_PATHS.get(component_name, ""),
+        "script_repo_url": SCRIPT_PATHS.get(component_name, ""),
         "title": component_name,
         "id": component_name,
     }
