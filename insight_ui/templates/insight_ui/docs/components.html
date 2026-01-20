@@ -16,17 +16,14 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/plugins/line-numbers/prism-line-numbers.min.css">
 
         <!-- leaflet (geo) -->
-        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
         <!-- Apache ECharts -->
         <script defer src="https://cdnjs.cloudflare.com/ajax/libs/echarts/6.0.0/echarts.min.js" integrity="sha512-4/g9GAdOdTpUP2mKClpKsEzaK7FQNgMjq+No0rX8XZlfrCGtbi4r+T/p5fnacsEC3zIAmHKLJUL7sh3/yVA4OQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
         <!-- Insight UI Modular Utils  -->
         <script defer src="{% static 'insight_ui/js/insight-ui-utils.js' %}"></script>
-
-        <!-- prism stylesheet (Syntax-Highlighting) -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css">
 
         <!-- Main stylesheet -->
         <link rel="stylesheet" href="{% static INSIGHT_UI.stylesheet %}">
@@ -37,8 +34,14 @@
                 {% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links show_login=True %}
             </div>
         {% elif component == "sidebar" %}
-            <div class="bg-gray-50 dark:bg-gray-700 h-72">
+            <div class="bg-gray-50 dark:bg-gray-700 h-96">
                 {% sidebar sidebar_data=right_sidebar side="left" auto_close=False %}
+                <script>
+                    // Demo fix
+                    const sidebar = document.getElementById("left-sidebar").firstElementChild;
+                    sidebar.classList.remove("top-16", "h-[calc(100vh-4rem)]");
+                    sidebar.classList.add("h-screen");
+                </script>
             </div>
         {% elif component == "footer" %}
             <div class="bg-gray-50 dark:bg-gray-700 h-24"></div>
