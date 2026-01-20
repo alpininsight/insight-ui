@@ -31,13 +31,44 @@
 
 <section>
     <h3>{% trans "Parameter" %}</h3>
-    <ul class="list-disc leading-relaxed ms-8">
-        <li><span class="inline-tag">sidebar_data</span> (<i>dict</i>): Der Inhalt der Sidebar (Titel und Navigations-Elemente).</li>
-        <li><span class="inline-tag">side</span> (<i>str</i>):  Gibt an, an welcher Seite die Sidebar dargestellt werden soll.</li>
-        <li><span class="inline-tag">static</span> (<i>bool</i>): <b>True</b> wenn die Sidebar nicht einklappbar sein soll.</li>
-        <li><span class="inline-tag">auto_close</span> (<i>bool</i>): <b>True</b> wenn die Sidebar sich automatisch schließen soll, wenn der Cursor sie verlässt.</li>
-    </ul>
-
+    <div class="bg-white dark:bg-gray-800 rounded-sm p-4">
+        <table class="table-auto w-full">
+            <thead class="text-primary">
+                <tr class="border-b border-gray-400 dark:border-gray-500">
+                    <th class="text-start text-sm px-4 py-2" scope="col">Name</th>
+                    <th class="text-start text-sm px-4 py-2" scope="col">Typ</th>
+                    <th class="text-start text-sm px-4 py-2" scope="col">Beschreibung</th>
+                    <th class="text-start text-sm px-4 py-2" scope="col">Standardwert</th>
+                </tr>
+            </thead>
+            <tbody class="text-primary">
+                <tr class="border-b border-gray-200 dark:border-gray-600">
+                    <td class="text-start text-sm px-4 py-3"><span class="inline-tag">sidebar_data</span></td>
+                    <td class="text-start text-sm px-4 py-3"><i>dict</i></td>
+                    <td class="text-start text-sm px-4 py-3">Der Inhalt der Sidebar (Titel und Navigations-Elemente).</td>
+                    <td class="text-start text-sm px-4 py-3">None</td>
+                </tr>
+                <tr class="border-b border-gray-200 dark:border-gray-600">
+                    <td class="text-start text-sm px-4 py-3"><span class="inline-tag">side</span></td>
+                    <td class="text-start text-sm px-4 py-3"><i>str</i></td>
+                    <td class="text-start text-sm px-4 py-3">Gibt an, an welcher Seite die Sidebar dargestellt werden soll.</td>
+                    <td class="text-start text-sm px-4 py-3">"right"</td>
+                </tr>
+                <tr class="border-b border-gray-200 dark:border-gray-600">
+                    <td class="text-start text-sm px-4 py-3"><span class="inline-tag">static</span></td>
+                    <td class="text-start text-sm px-4 py-3"><i>bool</i></td>
+                    <td class="text-start text-sm px-4 py-3"><b>True</b> wenn die Sidebar nicht einklappbar sein soll.</td>
+                    <td class="text-start text-sm px-4 py-3">True</td>
+                </tr>
+                <tr class="border-b border-gray-200 dark:border-gray-600">
+                    <td class="text-start text-sm px-4 py-3"><span class="inline-tag">auto_close</span></td>
+                    <td class="text-start text-sm px-4 py-3"><i>bool</i></td>
+                    <td class="text-start text-sm px-4 py-3"><b>True</b> wenn die Sidebar sich automatisch schließen soll, wenn der Cursor sie verlässt.</td>
+                    <td class="text-start text-sm px-4 py-3">False</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     <div class="mt-8">
         <h4>sidebar_data</h4>
         <p class="mb-6">Der Inhalt der Sidebar (Titel und Navigations-Elemente).</p>
@@ -95,14 +126,38 @@
     <ul class="list-disc leading-relaxed ms-8 mt-6">
         <li>
             <a
-                href="{% url 'component_detail_page_view' 'bullet_point_list' %}"
-                hx-get="{% url 'component_detail_page_view' 'bullet_point_list' %}"
+                href="{% url 'component_detail_page_view' 'navbar' %}"
+                hx-get="{% url 'component_detail_page_view' 'navbar' %}"
                 hx-target="#content"
                 hx-swap="innerHTML show:window:top"
                 hx-push-url="true"
                 class="text-link"
             >
-                {% trans "Bullet Point List" %}
+                {% trans "Navbar" %}
+            </a>
+        </li>
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'footer' %}"
+                hx-get="{% url 'component_detail_page_view' 'footer' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Footer" %}
+            </a>
+        </li>
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'modal' %}"
+                hx-get="{% url 'component_detail_page_view' 'modal' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Modal" %}
             </a>
         </li>
     </ul>

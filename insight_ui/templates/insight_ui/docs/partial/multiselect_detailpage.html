@@ -102,5 +102,17 @@
                 {% trans "Generic Filter" %}
             </a>
         </li>
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'query_builder' %}"
+                hx-get="{% url 'component_detail_page_view' 'query_builder' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Query Builder" %}
+            </a>
+        </li>
     </ul>
 </section>

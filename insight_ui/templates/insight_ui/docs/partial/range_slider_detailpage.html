@@ -79,6 +79,17 @@
 <section>
     <h2>{% trans "Related Topics" %}</h2>
     <ul class="list-disc leading-relaxed ms-8 mt-6">
-        <li><i>Todo</i></li>
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'input_field' %}"
+                hx-get="{% url 'component_detail_page_view' 'input_field' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Input-Field" %}
+            </a>
+        </li>
     </ul>
 </section>

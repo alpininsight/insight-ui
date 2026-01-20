@@ -71,5 +71,17 @@
                 {% trans "Karussell" %}
             </a>
         </li>
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'three_d_carousel' %}"
+                hx-get="{% url 'component_detail_page_view' 'three_d_carousel' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "3D Carousel" %}
+            </a>
+        </li>
     </ul>
 </section>

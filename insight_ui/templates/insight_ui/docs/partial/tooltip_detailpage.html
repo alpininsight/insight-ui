@@ -72,14 +72,14 @@
     <ul class="list-disc leading-relaxed ms-8 mt-6">
         <li>
             <a
-                href="{% url 'component_detail_page_view' 'tooltip' %}"
-                hx-get="{% url 'component_detail_page_view' 'tooltip' %}"
+                href="{% url 'component_detail_page_view' 'popover' %}"
+                hx-get="{% url 'component_detail_page_view' 'popover' %}"
                 hx-target="#content"
                 hx-swap="innerHTML show:window:top"
                 hx-push-url="true"
                 class="text-link"
             >
-                {% trans "Tooltip" %}
+                {% trans "Popover" %}
             </a>
         </li>
     </ul>

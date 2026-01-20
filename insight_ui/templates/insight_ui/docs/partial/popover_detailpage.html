@@ -76,14 +76,26 @@
     <ul class="list-disc leading-relaxed ms-8 mt-6">
         <li>
             <a
-                href="{% url 'component_detail_page_view' 'popover' %}"
-                hx-get="{% url 'component_detail_page_view' 'popover' %}"
+                href="{% url 'component_detail_page_view' 'modal' %}"
+                hx-get="{% url 'component_detail_page_view' 'modal' %}"
                 hx-target="#content"
                 hx-swap="innerHTML show:window:top"
                 hx-push-url="true"
                 class="text-link"
             >
-                {% trans "Popover" %}
+                {% trans "Modal" %}
+            </a>
+        </li>
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'tooltip' %}"
+                hx-get="{% url 'component_detail_page_view' 'tooltip' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Tooltip" %}
             </a>
         </li>
     </ul>

@@ -89,5 +89,17 @@
                 {% trans "Checkbox" %}
             </a>
         </li>
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'button' %}"
+                hx-get="{% url 'component_detail_page_view' 'button' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Button" %}
+            </a>
+        </li>
     </ul>
 </section>

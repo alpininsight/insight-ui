@@ -81,6 +81,53 @@
 <section>
     <h2>{% trans "Related Topics" %}</h2>
     <ul class="list-disc leading-relaxed ms-8 mt-6">
-        <li><i>Todo</i></li>
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'checkbox_group' %}"
+                hx-get="{% url 'component_detail_page_view' 'checkbox_group' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Checkbox Group" %}
+            </a>
+        </li>
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'button' %}"
+                hx-get="{% url 'component_detail_page_view' 'button' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Button" %}
+            </a>
+        </li>
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'toggle_button' %}"
+                hx-get="{% url 'component_detail_page_view' 'toggle_button' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Toggle-Button" %}
+            </a>
+        </li>
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'input_field' %}"
+                hx-get="{% url 'component_detail_page_view' 'input_field' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Input-Field" %}
+            </a>
+        </li>
     </ul>
 </section>

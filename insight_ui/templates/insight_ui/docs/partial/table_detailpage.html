@@ -80,7 +80,7 @@
                 hx-push-url="true"
                 class="text-link"
             >
-                {% trans "Liste" %}
+                {% trans "Pagination" %}
             </a>
         </li>
         <li>
@@ -92,7 +92,19 @@
                 hx-push-url="true"
                 class="text-link"
             >
-                {% trans "Karussell" %}
+                {% trans "Carousel" %}
+            </a>
+        </li>
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'toggle_view' %}"
+                hx-get="{% url 'component_detail_page_view' 'toggle_view' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Toggle-View" %}
             </a>
         </li>
     </ul>
