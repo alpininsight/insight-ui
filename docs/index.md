@@ -132,6 +132,7 @@ INSIGHT_UI = {
     "msapplication_TileColor": "#da532c",  # Sets the background color for a live tile (MS Edge only)
     "theme_color": "#ffffff",  # For the search bar on mobile devices
     "stylesheet": "insight_ui/css/tailwind.css",  # Only change in case of using alternative stylesheet (currently not supported)
+    "navbar_fixed": True,  # Should the navigation stick at the top of the window (has impact on the sidebars as well)
     "meta": {
         "seo": {
             "description": "My indispensable app",

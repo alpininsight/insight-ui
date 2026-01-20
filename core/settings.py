@@ -112,25 +112,18 @@ VERSION = "0.0.0"
 
 # Insight UI Einstellungen
 INSIGHT_UI = {
-    "theme": "light",
     "favicon": "insight_ui/favicon/favicon.ico",
     "favicon_32": "insight_ui/favicon/favicon-32x32.png",
     "favicon_16": "insight_ui/favicon/favicon-16x16.png",
     "apple_touch_icon": "insight_ui/favicon/apple-touch-icon.png",
     "safari_mask_icon": "insight_ui/svg/logo.svg",  # Used by Safari pinned tab
     "msapplication_TileColor": "#da532c",  # Sets the background color for a live tile (MS Edge only)
-    "theme_color": "#ffffff",
-    "stylesheet": "insight_ui/css/tailwind.css",
-    "branding": {"name": PROJECT_NAME, "logo": None},
-    "meta": {
-        "seo": {
-            "description": PROJECT_DESCRIPTION,
-            "keywords": "Django, Insight UI, base template",
-            "author": PROJECT_AUTHOR,
-        }
-    },
-    "load_prism": True,
-    "load_leaflet": True,
-    "load_echarts": True,
-    "JS_DEBUG": True,
+    "theme_color": "#ffffff",  # For the search bar on mobile devices
+    "stylesheet": "insight_ui/css/tailwind.css",  # Only change in case of using alternative stylesheet (currently not supported)  # noqa: E501
+    "navbar_fixed": True,  # Should the navigation stick at the top of the window (has impact on the sidebars as well)
+    "meta": {"seo": {"description": "My indispensable app", "keywords": "Django, Insight UI", "author": "It's me"}},
+    "load_prism": True,  # Turn to 'True' to use syntax highlighting
+    "load_leaflet": True,  # Turn to 'True' to use geo-maps
+    "load_echarts": True,  # Turn to 'True' to use Chart-Components
+    "JS_DEBUG": True,  # Turn to 'True' to enable build in browser console logging
 }

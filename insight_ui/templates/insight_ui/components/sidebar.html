@@ -1,5 +1,6 @@
 {% load static i18n insight_tags %}
 
+{% comment %} External open button {% endcomment %}
 {% if not auto_close and not static %}
   <button
     data-sidebar-target="{{ side }}"
@@ -12,51 +13,54 @@
   </button>
 {% endif %}
 
+{% comment %} Sidebar wrapper {% endcomment %}
 <div
   id="{{ side }}-sidebar"
   data-insight-sidebar="{{ side }}"
   data-insight-sidebar-static="{{ static }}"
   class="{% if not static %}fixed inset-0 z-50 hidden{% endif %}"
 >
+  {% comment %} Backdrop for main content area (only for drawers) {% endcomment %}
   {% if not static %}
     <div class="fixed inset-0 bg-black/50 transition-opacity" data-insight-dismiss="sidebar"></div>
   {% endif %}
+  {% comment %} Actual sidebar {% endcomment %}
   <aside
     role="complementary"
     aria-label="{% trans 'Side navigation' %}"
-    class="{% if static %}sticky top-16 h-[calc(100vh-4rem)]{% else %}fixed h-screen{% endif %} {% if side == "right" %}ltr:right-0 ltr:border-l rtl:left-0 rtl:border-r{% else %}ltr:left-0 ltr:border-r rtl:right-0 rtl:border-l{% endif %} overflow-y-auto bg-white dark:bg-gray-800 dark:border-gray-600 border-gray-200 shadow-md transition"
+    class="{% if static %}sticky {% if navbar_fixed %}top-16 h-[calc(100vh-4rem)]{% else %}top-0 h-screen{%endif%}{% else %}fixed h-screen{% endif %} {% if side == "right" %}ltr:right-0 ltr:border-l rtl:left-0 rtl:border-r{% else %}ltr:left-0 ltr:border-r rtl:right-0 rtl:border-l{% endif %} overflow-y-auto bg-white dark:bg-gray-800 dark:border-gray-600 border-gray-200 shadow-md transition"
     style="width: {{ sidebar_data.width|default:'18rem' }}"
     data-auto-close="{{ auto_close|yesno:'true,false' }}"
   >
-    <div class="flex flex-col {% if side == "right" %}ps-4 pe-4 md:pe-16{% else %}ps-4 md:ps-16 pe-4{% endif %} {% if static %}py-8{% else %}pb-8{% endif %}">
-      <!-- Sidebar Header -->
-      <div class="flex justify-between items-center {% if not static %}h-16{% else %}pb-4{% endif %} border-b border-gray-300 dark:border-gray-500 mb-4">
-        {% if sidebar_data.title %}
-          <h2 class="flex items-center gap-1 text-lg mb-0">
-            {% if sidebar_data.icon %}
-              <div>
-                {% icon sidebar_data.icon %}
-              </div>
-            {% endif %}
-            {{ sidebar_data.title }}
-          </h2>
-        {% endif %}
-        {% if not auto_close and not static %}
-          <button
-            id="{{ side }}-sidebar-close"
-            class="text-secondary hover:text-insight-text-primary dark:hover:text-insight-text-primary-dark p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 text-sm"
-            aria-label="{% trans 'Close sidebar' %}"
-            data-insight-dismiss="sidebar"
-          >
-            <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        {% endif %}
-      </div>
-
-      <!-- Sidebar Content -->
-      {% block sidebar_content %}
+    {% block sidebar_content %}
+      {% comment %} Sidebar head with internal close button {% endcomment %}
+      <div class="flex flex-col {% if side == "right" %}ps-4 pe-4 md:pe-16{% else %}ps-4 md:ps-16 pe-4{% endif %} {% if static %}py-8{% else %}pb-8{% endif %}">
+        <div class="flex justify-between items-center {% if not static %}h-16{% else %}pb-4{% endif %} border-b border-gray-300 dark:border-gray-500 mb-4">
+          {% if sidebar_data.title %}
+            <h2 class="flex items-center gap-1 text-lg mb-0">
+              {% if sidebar_data.icon %}
+                <div>
+                  {% icon sidebar_data.icon %}
+                </div>
+              {% endif %}
+              {{ sidebar_data.title }}
+            </h2>
+          {% endif %}
+          {% comment %} Internal close button (only for drawers) {% endcomment %}
+          {% if not auto_close and not static %}
+            <button
+              id="{{ side }}-sidebar-close"
+              class="text-secondary hover:text-insight-text-primary dark:hover:text-insight-text-primary-dark p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 text-sm"
+              aria-label="{% trans 'Close sidebar' %}"
+              data-insight-dismiss="sidebar"
+            >
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          {% endif %}
+        </div>
+        {% comment %} Sidebar body {% endcomment %}
         <div>
           <nav class="space-y-2">
             {% for category in sidebar_data.categories %}
@@ -88,7 +92,7 @@
             {% endfor %}
           </nav>
         </div>
-      {% endblock sidebar_content %}
-    </div>
+      </div>
+    {% endblock sidebar_content %}
   </aside>
 </div>

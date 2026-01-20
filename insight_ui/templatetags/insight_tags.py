@@ -9,6 +9,7 @@ from django import template
 from django.core.paginator import Page
 from django.urls import reverse
 
+from insight_ui.config import get_config
 from insight_ui.utils.diff import file_template, styles
 
 register = template.Library()
@@ -187,7 +188,7 @@ def navbar(config: Mapping[str, Any], **kwargs: JsonValue) -> dict[str, Any]:
         "show_usermenu": config.get("show_usermenu"),
         "show_language_selector": config.get("show_language_selector"),
         "show_theme_toggle": config.get("show_theme_toggle"),
-        "fixed": config.get("fixed"),
+        "fixed": get_config("navbar_fixed"),
         "options": {**kwargs},
     }
 
@@ -910,7 +911,13 @@ def sidebar(
     """
     resolved_sidebar = _resolve_view_urls(dict(sidebar_data)) if sidebar_data else {}
 
-    return {"sidebar_data": resolved_sidebar, "side": side, "static": static, "auto_close": auto_close}
+    return {
+        "sidebar_data": resolved_sidebar,
+        "side": side,
+        "static": static,
+        "auto_close": auto_close,
+        "navbar_fixed": get_config("navbar_fixed"),
+    }
 
 
 @register.inclusion_tag("insight_ui/components/breadcrumbs.html")
