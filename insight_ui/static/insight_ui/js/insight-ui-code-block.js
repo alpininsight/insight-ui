@@ -61,20 +61,27 @@ class CodeBlock {
     flexContainer.classList.add('flex', 'justify-between', 'bg-gray-200', 'dark:bg-gray-900', 'rounded-t', 'p-2');
 
     // Create lang and filename infobox
-    const langSpan = document.createElement('span');
-    langSpan.appendChild(document.createTextNode(`${lang}`));
-    const fileSpan = document.createElement('span');
-    fileSpan.appendChild(document.createTextNode(`${filename}`));
-
     const infobox = document.createElement('div');
+    infobox.classList.add("flex")
+
+    const langSpan = document.createElement('span');
+    langSpan.classList.add("bg-gray-50", "dark:bg-gray-700", "rounded-sm", "px-2");
+    langSpan.appendChild(document.createTextNode(`${lang}`));
     infobox.appendChild(langSpan);
-    infobox.appendChild(fileSpan);
+
+    if (filename)
+    {
+      const fileSpan = document.createElement('span');
+      fileSpan.classList.add("bg-gray-50", "dark:bg-gray-700", "rounded-sm", "px-2", "ms-2");
+      fileSpan.appendChild(document.createTextNode(`${filename}`));
+      infobox.appendChild(fileSpan);
+    }
 
     flexContainer.appendChild(infobox);
 
     // Create copy button
     const button = document.createElement('button');
-    button.classList.add('btn', 'btn-secondary', 'btn-xs');
+    button.classList.add('btn', 'btn-secondary', 'btn-sm');
     button.classList.add(id);
     button.setAttribute('data-clipboard-target', `#${id}`);
 
