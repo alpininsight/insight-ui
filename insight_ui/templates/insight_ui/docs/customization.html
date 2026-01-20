@@ -21,24 +21,23 @@
 
 {% block content %}
     <div id="content" class="bg-linear-to-r from-white from-30% to-white/60 dark:from-gray-900 dark:to-gray-900/75 w-full space-y-8 text-secondary leading-loose py-16 px-4 md:px-16">
-        <section>
+        <section class="space-y-4">
             <h1>Customization</h1>
-
-            <p class="text-secondary leading-loose">
+            <p>
                 Unser UI Framework bietet nicht nur eine reihe von nützlichen Komponenten, sondern lässt sich auch vollkommen nach allen Wünschen anpassen.
                 Farben und immer wiederkehrende Elemente, wie das Aussehen von Überschriften lassen sich an nur einer Stelle anpassen und sofort passt sich das Design an.
                 Es lassen sich aber auch neue Komponenten hinzufügen und bestehende Komponenten anpassen.
                 Sollte also eine Komponente nicht komplett passen, lässt sich diese mit relativ wenig Aufwand entsprechende anpassen.
             </p>
-            <p class="text-secondary leading-loose mt-4">
+            <p>
                 In den folgenden Abschnitten werden die unterschiedlichen Möglichkeiten der Anpassung beschrieben.
             </p>
         </section>
-        <section>
+        <section class="space-y-4">
             <h2>Konfiguration über settings.py</h2>
             <p>Es gibt eine Reihe von Einstellungen, welche über die <span class="inline-tag">settings.py</span> definiert werden können.</p>
 
-            <div id="settings" data-insight-code-block="python">
+            <div id="settings" data-insight-code-block="python" data-insight-code-block-filename="settings.py">
                 {# fmt:off #}
                 INSIGHT_UI = {
                     "favicon": "insight_ui/favicon/favicon.ico",
@@ -49,6 +48,7 @@
                     "msapplication_TileColor": "#da532c",  # Sets the background color for a live tile (MS Edge only)
                     "theme_color": "#ffffff",  # For the search bar on mobile devices
                     "stylesheet": "insight_ui/css/tailwind.css",  # Only change in case of using alternative stylesheet (currently not supported)
+                    "navbar_fixed": True,  # Should the navigation stick at the top of the window (has impact on the sidebars as well)
                     "meta": {
                         "seo": {
                             "description": "My indispensable app",
@@ -64,7 +64,7 @@
                 {# fmt:on #}
             </div>
         </section>
-        <section>
+        <section class="space-y-4">
             <h2>Theming (anpassen ans Corporate Design)</h2>
             <p>
                 Unser UI Framework verwendet <a href="https://tailwindcss.com/" class="text-link">TailwindCSS</a> für das Styling.
@@ -73,29 +73,29 @@
                 Dank Tailwinds Preflight Funktion lassen sich auch Standards definieren, wodurch bestimmte Elemente zum Beispiel Überschriften immer gleich aussehen ohne das dafür überhaupt eine Klasse im HTML-Code angegeben werden muss.
                 Die einzelnen Möglichkeiten und Bereiche der <i>input.css</i> werden in den nächsten Abschnitten näher erläutert.
             </p>
-            <p>
+            <p class="my-4">
                 Das Standard-Theme des Insight-UI Frameworks befindet sich in der Datei <span class="inline-tag">insight_ui/utils/input.css</span>.
             </p>
 
-            <section>
+            <section class="space-y-4">
                 <h3>Customization</h3>
                 <p>Um das Theming anzupassen muss diese Datei kopiert werden und anschließend in der Konfiguration von <i>Insight-UI</i> in den <span class="inline-tag">settings.py</span> angeben werden.</p>
-                <div id="settings2" data-insight-code-block="python">
+                <div id="settings2" data-insight-code-block="python" data-insight-code-block-filename="settings.py">
                     TAILWIND_CLI_SRC_CSS = "my-path/to/input.css"
                 </div>
-                <p>In dieser muss der Pfad zu den _Insight-UI_ Templates angepasst werden:</p>
-                <div id="settings3" data-insight-code-block="css">
+                <p>In dieser muss der Pfad zu den <span class="inline-tag">Insight-UI</span> Templates angepasst werden:</p>
+                <div id="settings3" data-insight-code-block="css" data-insight-code-block-filename="input.css">
                     @source "../templates/insight_ui/";
                 </div>
                 <p>ersetzen durch:</p>
-                <div id="settings4" data-insight-code-block="css">
+                <div id="settings4" data-insight-code-block="css" data-insight-code-block-filename="input.css">
                     @source ".venv/Lib/site-packages/insight_ui/templates/insight_ui";
                 </div>
                 <p>
                     Anschließend muss <span class="inline-tag">python manage.py tailwind setup</span> ausgeführt werden.
                 </p>
             </section>
-            <section>
+            <section class="space-y-4">
                 <h3>Inhalt der input.css</h3>
                 <p>
                     Die Datei enthält die folgenden Komponenten, alle zusammen ergeben das Theme.
@@ -103,7 +103,7 @@
                 <p>
                     In der ersten Zeile befindet sich der <span class="inline-tag">@import</span> für Tailwind, dieser wird benötigt, damit Tailwind aus dieser Datei, später das entsprechende Stylesheet generieren kann.
                 </p>
-                <div id="settings5" data-insight-code-block="css">
+                <div id="settings5" data-insight-code-block="css" data-insight-code-block-filename="input.css">
                     @import "tailwindcss";
                 </div>
                 <p>
@@ -111,13 +111,13 @@
                     Diese sagt Tailwind, wo es nach den Template Dateien suchen soll, um die CSS-Tags, welche dort verwendet werden zu finden.
                     I.d.R sollte Tailwind von sich aus alle Projekt spezifischen Templates finden, nur externe Pakete machen ab und zu Probleme, daher steht hier auch der Pfad zu unseren Templates.
                 </p>
-                <div id="settings6" data-insight-code-block="css">
+                <div id="settings6" data-insight-code-block="css" data-insight-code-block-filename="input.css">
                     @source "../templates/insight_ui/";
                 </div>
                 <p>
                     Die nächste Zeile wird benötigt für den wechseln zwischen Hell/Dunkel.
                 </p>
-                <div id="settings7" data-insight-code-block="css">
+                <div id="settings7" data-insight-code-block="css" data-insight-code-block-filename="input.css">
                     @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
                 </div>
                 <p>
@@ -126,7 +126,7 @@
                     Sollte ein anderen Font gewünscht sein, kann dieser an der Stelle ausgetauscht oder ergänzt werden.
                     Der Pfad zum Font ist relative zu der <i>input.css</i>, also der Datei in welcher das definiert wird.
                 </p>
-                <div id="settings8" data-insight-code-block="css">
+                <div id="settings8" data-insight-code-block="css" data-insight-code-block-filename="input.css">
                     {# fmt:off #}
                     @font-face {
                         font-family: "Inter";
@@ -147,7 +147,7 @@
                 <p>
                     <i>Todo: mehrere Fonts definieren.</i>
                 </p>
-                <div id="settings9" data-insight-code-block="css">
+                <div id="settings9" data-insight-code-block="css" data-insight-code-block-filename="input.css">
                     {# fmt:off #}
                     @theme {
                         --font-sans: "Inter", sans-serif;
@@ -183,7 +183,7 @@
                     Dadurch müssen nicht bei jedem Tag, diese Klassen manuell hinzugefügt werden. Sollte es mal zu ausnahmen kommen, können im Template trotzdem noch weitere CSS-klassen ergänzt werden oder überschrieben werden.
                     So werden Überschriften mit <span class="inline-tag">&lt;h1 class="text-red-500&gt;</span> trotzdem in Rot dargestellt.
                 </p>
-                <div id="settings10" data-insight-code-block="css">
+                <div id="settings10" data-insight-code-block="css" data-insight-code-block-filename="input.css">
                     {# fmt:off #}
                     @layer base {
                         button:not(:disabled), [role="button"]:not(:disabled) { cursor: pointer; }
@@ -205,7 +205,7 @@
                     Die Syntax hat hierbei mit klassischen CSS wenig zu tun. Stattdessen werden per <span class="inline-tag">@apply</span> die jeweiligen Tailwind-Klassen oder auch andere Custom-Klassen hinzugefügt.
                     Ein Vorteil für alle die bisher mit Tailwind gearbeitet haben.
                 </p>
-                <div id="settings11" data-insight-code-block="css">
+                <div id="settings11" data-insight-code-block="css" data-insight-code-block-filename="input.css">
                     {# fmt:off #}
                     @layer components {
                         .btn {
@@ -217,7 +217,7 @@
                 </div>
             </section>
         </section>
-        <section>
+        <section class="space-y-4">
             <h2>Template überschreiben</h2>
             <p>
                 Es besteht die Möglichkeit, die bereitgestellten Komponenten anzupassen. Dafür muss lediglich das entsprechende Template der Komponente in das eigene Projekt-Verzeichnis kopiert werden.
@@ -226,13 +226,13 @@
                 Wichtig ist nur, dass das kopierte Template in diesem Pfad <span class="inline-tag">templates/insight_ui/components/</span> abgelegt wird. Das Verzeichnis muss sich im Root-Verzeichnis des Projektes befinden.
             </p>
             <p>Beispiel:</p>
-            <div id="settings11" data-insight-code-block="css">
+            <div id="settings11" data-insight-code-block="bash">
                 {# fmt:off #}
-                    myapp/
-                        templates/
-                            insight_ui/
-                            components/
-                                navbar.html  # Überschreibt das standard Navbar-Template
+                myapp/
+                └── templates/
+                    │── insight_ui/
+                    └── components/
+                        └── navbar.html  # Überschreibt das standard Navbar-Template
                 {# fmt:on #}
             </div>
         </section>

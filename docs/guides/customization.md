@@ -153,7 +153,7 @@ Wichtig ist nur, dass das kopierte Template in diesem Pfad `templates/insight_ui
 
 Beispiel:
 
-```
+```bash
 myapp/
   templates/
     insight_ui/
