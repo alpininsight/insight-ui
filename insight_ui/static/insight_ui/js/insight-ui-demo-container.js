@@ -13,6 +13,8 @@ class DemoIframeController {
         this.iframe = this.element.querySelector(`[data-insight-demo-iframe="${this.demoId}"]`);
         if (!this.iframe) return;
 
+        this.iframe.classList.add("opacity-0", "transition-opacity", "duration-200");  // Hide <iframe> until rendering has finished, to hide flickering
+
         this.widthRadios = this.element.querySelectorAll(
             `input[type="radio"][name="width-toggle-${this.demoId}"]`
         );
@@ -123,9 +125,9 @@ class DemoIframeController {
 
     resizeIframe = () => {
         requestAnimationFrame(() => {
-            if (this.iframe.contentDocument || this.iframe.contentWindow.document)
+            if (this.iframe.contentDocument)
             {
-                const doc = this.iframe.contentDocument || this.iframe.contentWindow.document;
+                const doc = this.iframe.contentDocument;
                 this.iframe.style.height = Math.min(doc.body.scrollHeight, 756) + "px";
             }
         });
@@ -133,6 +135,7 @@ class DemoIframeController {
 
     initIframeObservers() {
         this.iframe.addEventListener("load", () => {
+            this.iframe.classList.remove("opacity-0");  // Show <iframe> after rendering has finished
             this.resizeIframe();
 
             const mutationObserver = new MutationObserver(this.resizeIframe);
