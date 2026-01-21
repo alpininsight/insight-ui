@@ -41,7 +41,18 @@
 <section>
     <h2>{% trans "Accessability" %}</h2>
     <ul class="list-disc leading-relaxed ms-8 mt-6">
-        <li><i>Todo</i></li>
+        <li>
+            Siehe <a
+                href="{% url 'component_detail_page_view' 'radio_group' %}"
+                hx-get="{% url 'component_detail_page_view' 'radio_group' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Radio-Group" %}
+            </a>
+        </li>
     </ul>
 </section>
 

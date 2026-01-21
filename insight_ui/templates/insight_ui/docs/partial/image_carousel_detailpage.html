@@ -49,7 +49,18 @@
 <section>
     <h2>{% trans "Accessability" %}</h2>
     <ul class="list-disc leading-relaxed ms-8 mt-6">
-        <li><i>Todo</i></li>
+        <li>
+            Siehe <a
+                href="{% url 'component_detail_page_view' 'card_carousel' %}"
+                hx-get="{% url 'component_detail_page_view' 'card_carousel' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Card Carousel" %}
+            </a>
+        </li>
     </ul>
 </section>
 
@@ -68,7 +79,7 @@
                 hx-push-url="true"
                 class="text-link"
             >
-                {% trans "Karussell" %}
+                {% trans "Carousel" %}
             </a>
         </li>
         <li>

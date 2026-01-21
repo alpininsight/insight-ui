@@ -51,7 +51,11 @@
 <section>
     <h2>{% trans "Accessability" %}</h2>
     <ul class="list-disc leading-relaxed ms-8 mt-6">
-        <li><i>Todo</i></li>
+        <li>Das aktuell geöffnete Element wird mit <span class="inline-tag">aria-expanded="true"</span> markiert.</li>
+        <li>Die Kopfzeile ist mit <span class="inline-tag">aria-controls</span> ausgestattet, wodurch der Bezug zum dem darunter liegenden Container hergestellt wird.</li>
+        <li>Der Container besitzt zusätzlich das Attribut <span class="inline-tag">aria-labelledby</span>.</li>
+        <li>Der Container ist mit <span class="inline-tag">role="region"</span> ausgestattet, damit dieser leicht ansteuerbar ist.</li>
+        <li>Die Komponente unterstützt die Navigation über die Tastatur mittels der Pfeiltasten (hoch/runter).</li>
     </ul>
 </section>
 
