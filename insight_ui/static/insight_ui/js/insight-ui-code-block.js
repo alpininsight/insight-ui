@@ -65,14 +65,14 @@ class CodeBlock {
     infobox.classList.add("flex")
 
     const langSpan = document.createElement('span');
-    langSpan.classList.add("bg-gray-50", "dark:bg-gray-700", "rounded-sm", "px-2");
+    langSpan.classList.add("text-secondary", "leading-loose", "bg-gray-50", "dark:bg-gray-700", "rounded-sm", "px-2");
     langSpan.appendChild(document.createTextNode(`${lang}`));
     infobox.appendChild(langSpan);
 
     if (filename)
     {
       const fileSpan = document.createElement('span');
-      fileSpan.classList.add("bg-gray-50", "dark:bg-gray-700", "rounded-sm", "px-2", "ms-2");
+      fileSpan.classList.add("text-secondary", "leading-loose", "bg-gray-50", "dark:bg-gray-700", "rounded-sm", "px-2", "ms-2");
       fileSpan.appendChild(document.createTextNode(`${filename}`));
       infobox.appendChild(fileSpan);
     }
@@ -131,8 +131,20 @@ class CodeBlock {
     // Add to DOM
     document.body.appendChild(wrapper);
 
-    // Init ClipboardJS for the newly created code block
-    new ClipboardJS(`.${id}`);
+    // Add Event Listener for copy button
+    button.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(codeElement.textContent);
+        button.textContent = '✔ Kopiert';
+        setTimeout(() => {
+          button.textContent = '';
+          button.appendChild(svg);
+          button.appendChild(document.createTextNode('Copy'));
+        }, 1200);
+      } catch (err) {
+        console.error('Failed to copy', err);
+      }
+    });
 
     // Apply Prism.js syntax highlighting
     Prism.highlightElement(codeElement);
