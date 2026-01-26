@@ -13,6 +13,10 @@ SECRET_KEY = config("SECRET_KEY", default="django-insecure-test-key-not-for-prod
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=False, cast=bool)
+IS_PROD = config("IS_PROD", default=False, cast=bool)
+
+if DEBUG:
+    print("Running in DEBUG mode!")
 
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=lambda v: [s.strip() for s in v.split(",")], default="*")
 
@@ -24,9 +28,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django_tailwind_cli",
     "insight_ui",
 ]
+
+if not IS_PROD:
+    INSTALLED_APPS += ["django_tailwind_cli"]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -54,11 +60,13 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.i18n",
+                "core.context_processor.project_context",
             ]
         },
     }
 ]
 
+WSGI_APPLICATION = "core.wsgi.application"
 ASGI_APPLICATION = "core.asgi.application"
 
 # Database
