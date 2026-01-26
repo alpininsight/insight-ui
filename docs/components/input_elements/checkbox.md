@@ -5,13 +5,13 @@ Mit der `checkbox` Komponente lassen sich einzelne Checkbox-Elemente einbauen. F
 ## Verwendung
 
 ```django
-    {% load insight_tags %}
+{% load insight_tags %}
 
-    {% checkbox tag_id="agb-box" name="accept_agb" value="accept_agb" checked=False disabled=False label="Accept AGBs" %}
+{% checkbox tag_id="agb-box" name="accept_agb" value="accept_agb" checked=False disabled=False label="Accept AGBs" %}
 
-    # or
+# or
 
-    {% checkbox config=checkbox_config %}
+{% checkbox config=checkbox_config %}
 ```
 
 ## Parameter
@@ -38,13 +38,6 @@ Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
     "label": "Accept AGBs",
 }
 ```
-
-## Customization
-
-Das Design der Checkbox Komponente befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/checkbox.html`.
-
-Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
-
 ## Barrierefreiheit
 
 - Das `<label>` und der dazugehörige `<input>` sind mit `for` / `id` miteinander verknüpft.

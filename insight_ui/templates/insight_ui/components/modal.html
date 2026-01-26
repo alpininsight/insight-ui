@@ -40,7 +40,7 @@
 
         <div class="text-primary">
           {% block modal_content %}
-            {{ content|safe }}
+            <p>{{ additional_content }}</p>
           {% endblock %}
         </div>
       </div>
@@ -53,22 +53,21 @@
               <button
                 class="bg-insight-secondary rounded-sm text-white px-6 py-2 hover:bg-insight-secondary-hover active:bg-insight-secondary-active transition"
                 data-insight-dismiss="modal"
-                aria-label="{{ action.text|default:'Abbrechen' }}">
+              >
                 {{ action.text|default:"Abbrechen" }}
               </button>
             {% elif action.type == 'primary' %}
               <button
                 class="bg-insight-primary rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active transition"
                 {% if action.onclick %}onclick="{{ action.onclick }}"{% endif %}
-                aria-label="{{ action.text }}">
+              >
                 {{ action.text }}
               </button>
             {% else %}
               <button
                 class="bg-insight-secondary rounded-sm text-white px-6 py-2 hover:bg-insight-secondary-hover active:bg-insight-secondary-active transition"
-                {% if action.dismiss %}data-insight-dismiss="modal"{% endif %}
                 {% if action.onclick %}onclick="{{ action.onclick }}"{% endif %}
-                aria-label="{{ action.text }}">
+              >
                 {{ action.text }}
               </button>
             {% endif %}
@@ -80,7 +79,7 @@
           <button
             class="bg-insight-secondary rounded-sm text-white px-6 py-2 hover:bg-insight-secondary-hover active:bg-insight-secondary-active transition"
             data-insight-dismiss="modal"
-            aria-label="{% trans 'Close' %}">
+          >
             {% trans 'Close' %}
           </button>
         </div>

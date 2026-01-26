@@ -42,6 +42,8 @@ Dieser Block befindet sich sozusagen hinter dem Eigentlichen Inhalt und kann daz
 Die Navigationsleiste hat einen eigenen Bereich. Dieser ist vor dem restlichen Inhalt definiert, wodurch dieser immer als ersten auf der Seite auftaucht.
 
 ```django
+{% load insight_tags %}
+
 {% block navbar %}
     {% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links show_login=True search_query=search_query %}
 {% endblock navbar %}
@@ -54,6 +56,8 @@ _Für weitere Information über die Komponente, siehe [navbar](components/navbar
 In diesem Block können sog. **Drawer** eingebettet werden. Drawer sind ein- und ausklappbare Sidebars und liegen gewöhnlich über dem Inhalt. Daher haben sie ihren eigenen Block, damit sie nicht mit dem restlichen Layout in Konflikt geraten.
 
 ```django
+{% load insight_tags %}
+
 {% block drawers %}
     {% sidebar sidebar_data=left_sidebar side="left" static=False %}
 {% endblock drawers %}
@@ -66,6 +70,8 @@ _Für weitere Information über die Komponente, siehe [sidebar](components/sideb
 zusätzlich zu dem `{% block drawers %}` Block gibt es zwei Blöcke für statische **Sidebars**. Einen für eine Sidebar auf der rechten Seite des Hauptinhalt und einen für eine Sidebar auf der linken Seite. In diesem Fall bekommt der Hauptinhalt etwas weniger Platz und die Sidebar bleibt dauerhaft sichtbar.
 
 ```django
+{% load insight_tags %}
+
 {% block sidebar_left %}
     {% sidebar sidebar_data=left_sidebar side="left" %}
 {% endblock sidebar_left %}
@@ -84,6 +90,8 @@ Dieser Blöcke ist für den Hauptinhalt der Seite vorgesehen. Hier kommt alles r
 Direkt unter dem `{% block content %}` befindet sich der **Footer**. Dieser schließt die Seite ab und befindet sich immer am Ende der Seite.
 
 ```django
+{% load insight_tags %}
+
 {% block footer %}
     {% footer data=footer_data %}
 {% endblock footer %}

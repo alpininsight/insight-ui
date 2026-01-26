@@ -16,10 +16,21 @@
 <!-- Component Documentation -->
 <section>
     <h2>{% trans "Verwendung" %}</h2>
-    <p class="mb-4">Eingebunden wird die Sidebar am einfachsten über das entsprechende <i>Template-Tag</i>. Für die Sidebar sind für jede Seite entsprechende Blöcke definiert, in welchem diese platziert werden sollten.</p>
+    <p class="mb-4">
+        Die Sidebar wird über das entsprechende <i>Template-Tag</i> eingebunden. Das <i>Base-Template</i> verfügt über, für die Sidebar vorgesehenen Blöcke, in welchem diese platziert werden sollte.
+        Es gibt einen Block für die rechte und einen für die linke Seite. Sollte die Sidebar einklappbar sein, gibt es dafür einen extra Block <i>Drawers</i>.
+        Wenn die Komponente außerhalb dieser Blöcke verwendet wird, kann es zu Layoutproblemen kommen.
+    </p>
+    <p class="mb-4">
+        Für die Sidebar gibt es eine vorgefertigte Variante mit einer Liste von Menüpunkten, welche als Links verwendet werden können.
+        Die Verwendung dieser Variante wird im Anschluss erläutert. Es ist jedoch auch möglich, eine komplett eigene Variante zu erstellen, welche lediglich die Funktionalität übernimmt,
+        siehe dafür <a href="#sidebar-custom" class="text-link">eigener Inhalt</a>.
+    </p>
 
-    <div id="Sidebar_Usage" data-insight-code-block="Django">
+    <div data-insight-code-block="Django">
         {# fmt:off #}
+        &lcub;% load insight_tags %&rcub;
+
         &lcub;% block drawers %&rcub;
             &lcub;% sidebar sidebar_data=right_sidebar side="right" auto_close=False %&rcub;
         &lcub;% endblock drawers %&rcub;
@@ -29,44 +40,33 @@
 
 <section>
     <h3>{% trans "Parameter" %}</h3>
-    <ul class="list-disc leading-relaxed ms-8">
-        <li><span class="inline-tag">sidebar_data</span> (<i>dict</i>): Der Inhalt der Sidebar (Titel und Navigations-Elemente).</li>
-        <li><span class="inline-tag">side</span> (<i>str</i>):  Gibt an, an welcher Seite die Sidebar dargestellt werden soll.</li>
-        <li><span class="inline-tag">static</span> (<i>bool</i>): <b>True</b> wenn die Sidebar nicht einklappbar sein soll.</li>
-        <li><span class="inline-tag">auto_close</span> (<i>bool</i>): <b>True</b> wenn die Sidebar sich automatisch schließen soll, wenn der Cursor sie verlässt.</li>
-    </ul>
+    {% include "insight_ui/components/parameter_table.html" with rows=main_params %}
 
-    <div class="mt-8">
-        <h4>sidebar_data</h4>
-        <p class="mb-6">Der Inhalt der Sidebar (Titel und Navigations-Elemente).</p>
+    <div class="mt-4">
+        <h4>sidebar_data <i>(dict[str, Any])</i></h4>
+        <p class="mb-4">Der Inhalt der Sidebar (Titel und Navigations-Elemente).</p>
 
-        <div id="Sidebar_Params" data-insight-code-block="python">
+        <div data-insight-code-block="python">
             {# fmt:off #}
             {
-                "title": _("Secondary Sidebar"),
+                "title": _("Personal Settings"),
                 "icon": {"name": "home", "size": "small"},
                 "categories": [
                     {
-                        "caption": "Main",
-                        "icon": {"name": "home", "size": "small"},
+                        "caption": "Work",
+                        "icon": {"name": "office", "size": "small"},
                         "items": [
-                            {
-                                "text": _("Notifications"),
-                                "icon": {"name": "home", "size": "small"},
-                                "url": reverse("index_view"),
-                            },
-                            {
-                                "text": _("Messages"),
-                                "icon": {"name": "home", "size": "small"},
-                                "url": reverse("index_view"),
-                            },
-                            {"text": _("Tasks"), "icon": {"name": "home", "size": "small"}, "url": reverse("index_view")},
-                            {
-                                "text": _("Calender"),
-                                "icon": {"name": "home", "size": "small"},
-                                "url": reverse("index_view"),
-                            },
-                            {"text": _("Profile"), "icon": {"name": "home", "size": "small"}, "url": reverse("index_view")},
+                            {"text": _("Notifications"), "icon": {"name": "bell", "size": "small"}, "url": reverse("notification_view")},
+                            {"text": _("Messages"), "icon": {"name": "chat-bubble", "size": "small"}, "url": reverse("message_view")},
+                            {"text": _("Tasks"), "icon": {"name": "checklist", "size": "small"}, "url": reverse("task_view")},
+                        ],
+                    },
+                    {
+                        "caption": "Management",
+                        "icon": {"name": "cog", "size": "small"},
+                        "items": [
+                            {"text": _("Calender"), "icon": {"name": "calender", "size": "small"}, "url": reverse("calender_view")},
+                            {"text": _("Profile"), "icon": {"name": "user", "size": "small"}, "url": reverse("profile_view")},
                         ],
                     }
                 ],
@@ -76,15 +76,20 @@
     </div>
 </section>
 
-<!-- Customization -->
-<section>
-    <h2>{% trans "Customization" %}</h2>
-    <p>
-        Das Design der Step Bar Komponente befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/step_bar.html</span>.
+<section id="sidebar-custom">
+    <h2>{% trans "Custom content" %}</h2>
+    <p class="mb-4">
+        Um eine eigene Sidebar bauen zu können, muss ein neues Template erstellt werden, welches das Template der Sidebar erweitert.
+        Anschließend muss der Block <span class="inline-tag whitespace-nowrap">&lcub;% block sidebar_content %&rcub;</span> definiert werden und darin kann der Inhalt komplett frei definiert werden.
     </p>
-    <p class="mt-4">
-        Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad <span class="inline-tag">templates/insight_ui/components/</span> vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
-    </p>
+    <div data-insight-code-block="Django">
+        {# fmt:off #}
+        &lcub;% extends "insight_ui/components/sidebar.html" %&rcub;
+        &lcub;% block sidebar_content %&rcub;
+            &lt;!-- Frei definierbarer Inhalt --&gt;
+        &lcub;% endblock sidebar_content%&rcub;
+        {# fmt:on #}
+    </div>
 </section>
 
 <!-- A11y -->
@@ -104,14 +109,38 @@
     <ul class="list-disc leading-relaxed ms-8 mt-6">
         <li>
             <a
-                href="{% url 'component_detail_page_view' 'bullet_point_list' %}"
-                hx-get="{% url 'component_detail_page_view' 'bullet_point_list' %}"
+                href="{% url 'component_detail_page_view' 'navbar' %}"
+                hx-get="{% url 'component_detail_page_view' 'navbar' %}"
                 hx-target="#content"
                 hx-swap="innerHTML show:window:top"
                 hx-push-url="true"
                 class="text-link"
             >
-                {% trans "Bullet Point List" %}
+                {% trans "Navbar" %}
+            </a>
+        </li>
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'footer' %}"
+                hx-get="{% url 'component_detail_page_view' 'footer' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Footer" %}
+            </a>
+        </li>
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'modal' %}"
+                hx-get="{% url 'component_detail_page_view' 'modal' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Modal" %}
             </a>
         </li>
     </ul>

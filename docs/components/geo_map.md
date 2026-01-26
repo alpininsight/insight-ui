@@ -9,7 +9,9 @@ Mit der `geo_map` Komponente wird eine geografische Karte mittels [leaflet](http
 ## Verwendung
 
 ```django
-    {% geo_map data=geo_map_data %}
+{% load insight_tags %}
+
+{% geo_map data=geo_map_data %}
 ```
 
 ## Parameter
@@ -58,12 +60,6 @@ Die Daten welche auf der Karte dargestellt werden sollen.
     - **name** (_str_): Der Name des Datensatzes, wird im Hintergrund zur Benennung verwendet.
     - **type** (_str_): Die Art und Weise wie die Daten dargestellt werden sollen ("marker", "circle")
     - **data** (_list_): Die eigentlichen Daten. Jeder Eintrage braucht folgende Werte "lat", "lon", "title" und "description". Daten welche mittels "circle" dargestellt werden sollen, benötigen noch einen Wert "value".
-
-## Customization
-
-Der Quellcode der Geo-Map Komponente befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/geo_map.html`.
-
-Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
 
 ## Barrierefreiheit
 

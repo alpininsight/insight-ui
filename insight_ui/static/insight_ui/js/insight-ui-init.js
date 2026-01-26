@@ -8,6 +8,7 @@ function initAll() {
 	InsightUI.Checkbox.initAll();
 	InsightUI.CodeBlock.initAll();
 	InsightUI.Collapsible.initAll();
+	InsightUI.DemoIframeController.initAll();
 	InsightUI.Dropdown.initAll();
 	InsightUI.Floater.initAll();
 	InsightUI.Modal.initAll();

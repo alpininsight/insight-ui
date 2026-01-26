@@ -88,12 +88,6 @@ Beinhaltet die Einstellungen für den Titel und das daneben stehende Logo. Das L
 
 > **_Info_**: Der externe Parameter **show_login** wird zum verstecken des Anmeldebutton auf bestimmten Seiten bspw. der Anmeldeseite verwendet.
 
-## Customization
-
-Das Design der Navbar Komponente befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/navbar.html`.
-
-Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
-
 ## Barrierefreiheit
 
 - Die Navbar-Komponente enthält einen **Skip-Link** zum *Hauptinhalt*.

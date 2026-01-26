@@ -2,7 +2,12 @@
 {% load static i18n insight_tags %}
 
 {% block content %}
-  <div class="flex max-w-96 flex-col justify-center bg-white dark:bg-gray-800 border dark:border-0 border-gray-200 rounded shadow p-6 lg:p-8 mb-16 mx-auto">
+  <div class="relative flex max-w-96 flex-col justify-center bg-white dark:bg-gray-800 border dark:border-0 border-gray-200 rounded shadow p-6 lg:p-8 mb-16 mx-auto">
+    {% if show_theme_toggle %}
+      <div class="absolute top-2 right-2">
+        {% include "insight_ui/components/toggle_theme.html" %}
+      </div>
+    {% endif %}
     {% if logo %}
       <div class="flex {% if logo.position == "start" %}justify-start{% elif logo.position == "end" %}justify-end{% else %}justify-center{% endif %}">
         <img

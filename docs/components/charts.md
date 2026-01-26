@@ -13,8 +13,10 @@ Die Komponente steht bisher in den folgenden Ausführungen zu Verfügung:
 ## Verwendung
 
 ```django
-    {% bar_chart chart_id="bar_chart_example" chart=chart_data %}
-    {% line_chart chart_id="line_chart_example" chart=chart_data %}
+{% load insight_tags %}
+
+{% bar_chart chart_id="bar_chart_example" chart=chart_data %}
+{% line_chart chart_id="line_chart_example" chart=chart_data %}
 ```
 
 ## Parameter
@@ -51,8 +53,6 @@ Die Informationen und Daten des Diagramms.
 Der Quellcode der Line-Chart Komponente befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/charts/line_chart.html`.
 
 Der Quellcode der Bar-Chart Komponente befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/charts/bar_chart.html`.
-
-Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
 
 ## Barrierefreiheit
 

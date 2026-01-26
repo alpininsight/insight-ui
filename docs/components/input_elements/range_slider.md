@@ -5,13 +5,13 @@ Mit der `slider`-Komponente kann ein Range-Slider in das Frontend eingebaut werd
 ## Verwendung
 
 ```django
-    {% load insight-tags %}
+{% load insight-tags %}
 
-    {% slider tag_id="cpu-cores" name="cpu_core_count" value=4 minimum=2 maximum=8 step_size=2 disabled=False label="Choose amount of CPU-Cores:" items=labels %}
+{% slider tag_id="cpu-cores" name="cpu_core_count" value=4 minimum=2 maximum=8 step_size=2 disabled=False label="Choose amount of CPU-Cores:" items=labels %}
 
-    # or
+# or
 
-    {% slider config=slider_config %}
+{% slider config=slider_config %}
 ```
 
 ## Parameter
@@ -44,12 +44,6 @@ Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
     "items": [_("100€ (minimum)"), "500€", "750€", "1000€", _("1500€ (maximum)")],
 }
 ```
-
-## Customization
-
-Das Design des Range-Sliders befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/range_slider.html`.
-
-Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
 
 ## Barrierefreiheit
 

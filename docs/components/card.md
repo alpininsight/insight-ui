@@ -5,15 +5,17 @@ Die `card` Komponenten werden dazu verwendet Informationsgruppen zu erstellen. J
 Für die Card Komponente gibt es unterschiedliche Varianten zur Auswahl:
 
 - **Card**: Standard Karte im 16:9 Format.
-- **Horizontale Card**: Das Layout dieser Karte ist vertikal ausgerichtet wodurch dieses länger ist.
+- **App Card**: Das Layout dieser Karte ist vertikal ausgerichtet wodurch dieses länger ist.
 - **Flip Card**: Diese Karte dreht sich um 180° und hält auf ihrer Rückseite weiteren Inhalt bereit.
 
 ## Verwendung
 
 ```django
-    {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
-    {% horizontale_card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
-    {% flip_card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
+{% load insight_tags %}
+
+{% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
+{% app_card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
+{% flip_card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
 ```
 
 ## Parameter
@@ -44,12 +46,6 @@ Eine Liste von Aktion-Buttons.
     {"text": _("Learn more"), "url": "#", "type": "secondary"},
 }
 ```
-
-## Customization
-
-Das Design der Card Komponente befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/cards/card.html`.
-
-Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
 
 ## Barrierefreiheit
 
