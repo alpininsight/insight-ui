@@ -1,5 +1,46 @@
 # Changelog
 
+## [1.8.0](https://github.com/alpininsight/insight-ui/compare/v1.7.0...v1.8.0) (2026-01-26)
+
+
+### Features
+
+* add {% load insight_tags %} to all demo containers ([51255d5](https://github.com/alpininsight/insight-ui/commit/51255d5289a6aa2642b4e5f829ddc71c63d2d2a8))
+* add basic dockerfile ([87d25e7](https://github.com/alpininsight/insight-ui/commit/87d25e7e12d3fe70a5f60b2dcef1a0bd9932334b))
+* add customization page and remove customization section from component pages ([5a61274](https://github.com/alpininsight/insight-ui/commit/5a61274252e1cdfc816384c072a1f2d97a62d132))
+* add dedicated navbar context to navbar detailpage ([126ba08](https://github.com/alpininsight/insight-ui/commit/126ba084f90e66a362a49a2c65171ec2d56efaef))
+* add description on how to change the theme in the documentation ([dea4860](https://github.com/alpininsight/insight-ui/commit/dea486042db5b67c34eaf806078269803451552c))
+* add git link to template and scripts file to demo container ([9b052ff](https://github.com/alpininsight/insight-ui/commit/9b052ff23341ee756a12dc63fa4a67f1f18be056))
+* add global setting for navbar config 'fixed' and update default settings ([48c4d5c](https://github.com/alpininsight/insight-ui/commit/48c4d5c60989dba1febeff71fc7f77ff47d77672))
+* add language and optional filename to code block ([48f5586](https://github.com/alpininsight/insight-ui/commit/48f5586c347d2a5692aeb014d0417361d4437a22))
+* add line numbers and dark theme support to code block component ([b85f422](https://github.com/alpininsight/insight-ui/commit/b85f4222e836ad27c7c8015650f3fa6b0591fccd))
+* add new class for demo container scripts ([87a3f12](https://github.com/alpininsight/insight-ui/commit/87a3f12e589920cf97cd017cb7f874cfa6d64fc4))
+* add new font Atkinson Hyperlegible for better a11y support ([174cce7](https://github.com/alpininsight/insight-ui/commit/174cce77817fe0bb5715456dd5de4a2f0551b54e))
+* add parameter tables to component detailpages ([bcabb57](https://github.com/alpininsight/insight-ui/commit/bcabb57e9f3e2a04149cd94bb8d909a33bfcbc7c))
+* add setting to make the navbar fixed at te top ([c85df04](https://github.com/alpininsight/insight-ui/commit/c85df044d189357725a58d8667e9f1111bcdab28))
+* add ToC generation script ([ff1cf8a](https://github.com/alpininsight/insight-ui/commit/ff1cf8a8d7dfdb62d7d6e699ca378e56069238ca))
+* apply main theme to demo containers ([beccccf](https://github.com/alpininsight/insight-ui/commit/beccccffc8a60158b96aecc04e4abeef30debdde))
+* connect components via related topic section ([2c61b57](https://github.com/alpininsight/insight-ui/commit/2c61b573b5eb24ebd62ed12bac29ed35039220d9))
+* improve a11y section on several component detailpages ([72708bc](https://github.com/alpininsight/insight-ui/commit/72708bc4c6f46993feb3dbc22fb8289b21d3ac92))
+* improve layout of the customization page ([84557e6](https://github.com/alpininsight/insight-ui/commit/84557e68e310ffef46615a9d40ea66827dab9b25))
+* improvements ([89891aa](https://github.com/alpininsight/insight-ui/commit/89891aa2205d39bcd287bce08cb5bc3037da28ba))
+* make image in the footer optional ([63409f2](https://github.com/alpininsight/insight-ui/commit/63409f2c7529f0dbba6b8d9564430ec398328fdf))
+* remove clipboard.js and add integrity checks for third party JavaScript and CSS files ([2a53a33](https://github.com/alpininsight/insight-ui/commit/2a53a3319a6346933e1e13b95429c3f456d449c3))
+* remove placeholder in code container ([0a2ea0d](https://github.com/alpininsight/insight-ui/commit/0a2ea0d4822f8c43c158805ece6a299e75b41435))
+* rename 'card_horizontale' to 'app_card' ([86b1de6](https://github.com/alpininsight/insight-ui/commit/86b1de6f329ad0bfce7c51b017a05dc3f08dc215))
+* replace clipboard.js with direct clipboard API call ([fa94bb3](https://github.com/alpininsight/insight-ui/commit/fa94bb355f4cad7c43724d922a91a6824b28a058))
+* update selected link in navbar ([c91560e](https://github.com/alpininsight/insight-ui/commit/c91560ea8aff069eff71d23f6eb7b991617c686b))
+
+
+### Bug Fixes
+
+* add missing config parameter 'fixed' to navbar tag ([0fead64](https://github.com/alpininsight/insight-ui/commit/0fead64c4357aa5de81cbec7916987d0f4ad8745))
+* leaflet.map warning ([b94ac29](https://github.com/alpininsight/insight-ui/commit/b94ac297dc1d542f55c8a236ffbdfcec1a38867d))
+* missing adjustments of the tests and demos ([075bb41](https://github.com/alpininsight/insight-ui/commit/075bb4186fb5de094d809a55545e6e43b1a97f42))
+* remove demo container flickering ([353119c](https://github.com/alpininsight/insight-ui/commit/353119cefeae9b37c6c7d89771f3b13e732610cf))
+* remove gap in the sidebar demo ([f9b2ea3](https://github.com/alpininsight/insight-ui/commit/f9b2ea30177020f819d89f3b92e8ec58209e8e05))
+* wrong id on bullet point component detailpage ([8d290cb](https://github.com/alpininsight/insight-ui/commit/8d290cb6b6f5f2f0dcafae074d8900c9cdfcc516))
+
 ## [1.7.0](https://github.com/alpininsight/insight-ui/compare/v1.6.0...v1.7.0) (2026-01-12)
 
 
