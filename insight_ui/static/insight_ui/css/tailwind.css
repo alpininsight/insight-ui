@@ -34,6 +34,7 @@
     --color-blue-600: oklch(54.6% 0.245 262.881);
     --color-blue-700: oklch(48.8% 0.243 264.376);
     --color-blue-900: oklch(37.9% 0.146 265.522);
+    --color-blue-950: oklch(28.2% 0.091 267.935);
     --color-gray-50: oklch(98.5% 0.002 247.839);
     --color-gray-100: oklch(96.7% 0.003 264.542);
     --color-gray-200: oklch(92.8% 0.006 264.531);
@@ -77,7 +78,6 @@
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
     --font-weight-bold: 700;
-    --leading-normal: 1.5;
     --leading-relaxed: 1.625;
     --leading-loose: 2;
     --radius-sm: 0.25rem;
@@ -328,6 +328,9 @@
   .top-1\/2 {
     top: calc(1/2 * 100%);
   }
+  .top-2 {
+    top: calc(var(--spacing) * 2);
+  }
   .top-4 {
     top: calc(var(--spacing) * 4);
   }
@@ -342,6 +345,12 @@
   }
   .top-20 {
     top: calc(var(--spacing) * 20);
+  }
+  .right-0 {
+    right: calc(var(--spacing) * 0);
+  }
+  .right-2 {
+    right: calc(var(--spacing) * 2);
   }
   .right-4 {
     right: calc(var(--spacing) * 4);
@@ -544,6 +553,10 @@
   .table {
     display: table;
   }
+  .size-0 {
+    width: calc(var(--spacing) * 0);
+    height: calc(var(--spacing) * 0);
+  }
   .size-2 {
     width: calc(var(--spacing) * 2);
     height: calc(var(--spacing) * 2);
@@ -692,6 +705,12 @@
   .w-10 {
     width: calc(var(--spacing) * 10);
   }
+  .w-28 {
+    width: calc(var(--spacing) * 28);
+  }
+  .w-60 {
+    width: calc(var(--spacing) * 60);
+  }
   .w-64 {
     width: calc(var(--spacing) * 64);
   }
@@ -758,6 +777,9 @@
   .table-auto {
     table-layout: auto;
   }
+  .table-fixed {
+    table-layout: fixed;
+  }
   .border-collapse {
     border-collapse: collapse;
   }
@@ -813,6 +835,9 @@
   }
   .scroll-mt-24 {
     scroll-margin-top: calc(var(--spacing) * 24);
+  }
+  .scroll-pt-24 {
+    scroll-padding-top: calc(var(--spacing) * 24);
   }
   .list-disc {
     list-style-type: disc;
@@ -1320,8 +1345,8 @@
   .pb-16 {
     padding-bottom: calc(var(--spacing) * 16);
   }
-  .pl-4 {
-    padding-left: calc(var(--spacing) * 4);
+  .pl-2 {
+    padding-left: calc(var(--spacing) * 2);
   }
   .pl-5 {
     padding-left: calc(var(--spacing) * 5);
@@ -1391,6 +1416,9 @@
     -webkit-hyphens: auto;
     hyphens: auto;
   }
+  .whitespace-nowrap {
+    white-space: nowrap;
+  }
   .text-blue-400 {
     color: var(--color-blue-400);
   }
@@ -1414,9 +1442,6 @@
   }
   .text-gray-700 {
     color: var(--color-gray-700);
-  }
-  .text-gray-800 {
-    color: var(--color-gray-800);
   }
   .text-green-400 {
     color: var(--color-green-400);
@@ -1730,6 +1755,13 @@
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-blue-100);
+      }
+    }
+  }
+  .hover\:bg-blue-300 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-blue-300);
       }
     }
   }
@@ -2375,6 +2407,11 @@
       border-color: var(--color-gray-700);
     }
   }
+  .dark\:border-gray-800 {
+    &:where([data-theme=dark], [data-theme=dark] *) {
+      border-color: var(--color-gray-800);
+    }
+  }
   .dark\:border-green-800 {
     &:where([data-theme=dark], [data-theme=dark] *) {
       border-color: var(--color-green-800);
@@ -2544,6 +2581,33 @@
       }
     }
   }
+  .dark\:hover\:bg-blue-700 {
+    &:where([data-theme=dark], [data-theme=dark] *) {
+      &:hover {
+        @media (hover: hover) {
+          background-color: var(--color-blue-700);
+        }
+      }
+    }
+  }
+  .dark\:hover\:bg-blue-900 {
+    &:where([data-theme=dark], [data-theme=dark] *) {
+      &:hover {
+        @media (hover: hover) {
+          background-color: var(--color-blue-900);
+        }
+      }
+    }
+  }
+  .dark\:hover\:bg-blue-950 {
+    &:where([data-theme=dark], [data-theme=dark] *) {
+      &:hover {
+        @media (hover: hover) {
+          background-color: var(--color-blue-950);
+        }
+      }
+    }
+  }
   .dark\:hover\:bg-gray-500 {
     &:where([data-theme=dark], [data-theme=dark] *) {
       &:hover {
@@ -2567,6 +2631,15 @@
       &:hover {
         @media (hover: hover) {
           background-color: var(--color-gray-700);
+        }
+      }
+    }
+  }
+  .dark\:hover\:bg-gray-800 {
+    &:where([data-theme=dark], [data-theme=dark] *) {
+      &:hover {
+        @media (hover: hover) {
+          background-color: var(--color-gray-800);
         }
       }
     }

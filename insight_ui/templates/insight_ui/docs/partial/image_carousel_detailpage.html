@@ -28,21 +28,21 @@
 <!-- Component Documentation -->
 <section>
     <h2>{% trans "Verwendung" %}</h2>
-    <div id="Image_Carousel_Usage" data-insight-code-block="Django">
-        &lcub;% include "insight_ui/components/carousels/image_carousel.html" with carousel_items=image_carousel_items show_dots=True show_index=True slides_count=range_total_slides items_per_slide=1 %&rcub;
+    <p class="mb-4">
+        {% blocktrans with image_carousel='<span class="inline-tag">&lcub;% image_carousel %&rcub;</span>'|safe %}
+            Die Komponente wird über das {{ image_carousel }} Tag eingebunden.
+        {% endblocktrans %}
+    </p>
+    <div data-insight-code-block="Django">
+        &lcub;% load insight_tags %&rcub;
+
+        &lcub;% image_carousel images=image_carousel_items show_dots=True show_index=True items_per_slide=1 %&rcub;
     </div>
 </section>
 
 <section>
     <h3>{% trans "Parameter" %}</h3>
-    <ul class="list-disc leading-relaxed ms-8">
-        <li><span class="inline-tag">carousel_items</span> (<i>list</i>): Bilder welche innerhalb des Karussell angezeigt werden sollen.</li>
-        <li><span class="inline-tag">show_index</span> (<i>bool</i>): <b>True</b> wenn in der unteren rechten Ecke die aktuelle Seite angezeigt werden soll.</li>
-        <li><span class="inline-tag">show_dots</span> (<i>bool</i>): <b>True</b> wenn unter dem Karussell-Inhalt eine einfache Pagination angezeigt werden soll.</li>
-        <li><span class="inline-tag">autoplay</span> (<i>bool</i>): <b>True</b> wenn das Karussell von alleine durch den Inhalt iterieren soll.</li>
-        <li><span class="inline-tag">slides_count</span> (<i>range</i>): Die Anzahl der Seiten.</li>
-        <li><span class="inline-tag">items_per_slide</span> (<i>int</i>): Die Anzahl an Objekten pro Seite.</li>
-    </ul>
+    {% include "insight_ui/components/parameter_table.html" with rows=main_params %}
 </section>
 
 <!-- A11y -->

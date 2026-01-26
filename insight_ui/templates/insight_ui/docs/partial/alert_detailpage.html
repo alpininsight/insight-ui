@@ -16,6 +16,11 @@
 <!-- Component Documentation -->
 <section>
     <h2>{% trans "Verwendung" %}</h2>
+    <p class="mb-4">
+        {% blocktrans with alert='<span class="inline-tag">&lcub;% alert %&rcub;</span>'|safe %}
+            Die Komponente wird über das {{ alert }} Tag eingebunden.
+        {% endblocktrans %}
+    </p>
     <div id="Alert_Usage" data-insight-code-block="Django">
         &lcub;% load insight_tags %&rcub;
 
@@ -25,17 +30,7 @@
 
 <section>
     <h3>{% trans "Parameter" %}</h3>
-    <ul class="list-disc leading-relaxed ms-8">
-        <li><span class="inline-tag">message</span> (<i>str</i>): {% trans "Die Hauptnachricht der Benachrichtigung" %}</li>
-        <li>
-            <span class="inline-tag">type</span> (<i>str</i>): {% trans "Der Typ der Benachrichtigung. Mögliche Werte:" %}
-            <span class="inline-tag">info</span>
-            <span class="inline-tag">success</span>
-            <span class="inline-tag">warning</span>
-            <span class="inline-tag">error</span>
-        </li>
-        <li><span class="inline-tag">dismissible</span> (<i>bool</i>): {% blocktrans with true='<b>True</b>'|safe %}{{ true }} wenn die Benachrichtigung schließbar sein soll. {% endblocktrans %}</li>
-    </ul>
+    {% include "insight_ui/components/parameter_table.html" with rows=main_params %}
 </section>
 
 <!-- A11y -->

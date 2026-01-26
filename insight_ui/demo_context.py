@@ -679,8 +679,8 @@ def get_breadcrumb_context() -> dict:
     return {
         "breadcrumb_items": [
             {"text": _("Startpage"), "view_name": "index_view", "icon": {"name": "home", "size": "small"}},
-            {"text": _("Demo"), "view_name": "index_view", "query_params": "?test=123"},
-            {"text": _("Components")},
+            {"text": _("Components"), "view_name": "index_view"},
+            {"text": _("Breadcrumbs")},
         ],
         "single_breadcrumb_item": [{"text": _("Startpage"), "icon": {"name": "home", "size": "small"}}],
     }
@@ -739,13 +739,8 @@ def get_step_bar_context() -> dict:
                 "description": _("Informationen zur Person und Anschrift."),
                 "completed": True,
             },
-            {
-                "title": _("Zahlungsmethode"),
-                "description": _("Art der Bezahlung auswählen."),
-                "completed": False,
-                "current": True,
-            },
-            {"title": _("Überprüfen"), "description": _("Prüfen der Angaben und Bezahlen."), "completed": False},
+            {"title": _("Zahlungsmethode"), "description": _("Art der Bezahlung auswählen."), "current": True},
+            {"title": _("Überprüfen"), "description": _("Prüfen der Angaben und Bezahlen.")},
         ]
     }
 
@@ -992,7 +987,7 @@ def get_cards_context() -> dict:
 
 def get_card_carousel_context() -> dict:
     """Serve data for card carousel detailpage."""
-    return {"carousel_items": map_payload_to_cards(generate_payload()), "range_total_slides": range(3)}
+    return {"carousel_items": map_payload_to_cards(generate_payload())}
 
 
 def get_image_carousel_context() -> dict:
@@ -1009,7 +1004,7 @@ def get_image_carousel_context() -> dict:
         for index, seed in enumerate(seeds)
     ]
 
-    return {"image_carousel_items": image_carousel_items, "range_total_slides": range(len(image_carousel_items))}
+    return {"image_carousel_items": image_carousel_items}
 
 
 def get_toggle_view_context() -> dict:
@@ -1022,7 +1017,6 @@ def get_toggle_view_context() -> dict:
         "toggle_start_view": "table",
         "view_radio_config": {
             "name": "view",
-            "param_name": "view",
             "items": [
                 {"tag_id": "card-view", "value": "card", "icon": {"name": "cards"}},
                 {"tag_id": "table-view", "value": "table", "icon": {"name": "list"}},
@@ -1111,9 +1105,9 @@ def get_accordion_context() -> dict:
     """Serve data for accordion detailpage."""
     return {
         "accordion_items": [
-            {"question": "Was ist Django?", "answer": "Django ist ein Webframework für Python."},
-            {"question": "Was ist Tailwind?", "answer": "Tailwind ist ein CSS-Utility-Framework."},
-            {"question": "Was ist ARIA?", "answer": "ARIA steht für Accessible Rich Internet Applications."},
+            {"title": "Was ist Django?", "content": "Django ist ein Webframework für Python."},
+            {"title": "Was ist Tailwind?", "content": "Tailwind ist ein CSS-Utility-Framework."},
+            {"title": "Was ist ARIA?", "content": "ARIA steht für Accessible Rich Internet Applications."},
         ]
     }
 
@@ -1139,7 +1133,7 @@ def get_tabs_context() -> dict:
 
 def get_3d_carousel_context() -> dict:
     """Serve data for 3D carousel detailpage."""
-    return {"3D_carousel": {"items": map_payload_to_cards(generate_payload()), "range_total_slides": range(5)}}
+    return {"3D_carousel": {"items": map_payload_to_cards(generate_payload())}}
 
 
 def get_charts_context() -> dict:

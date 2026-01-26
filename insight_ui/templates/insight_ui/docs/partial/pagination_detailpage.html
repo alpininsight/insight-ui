@@ -16,7 +16,12 @@
 <!-- Component Documentation -->
 <section>
     <h2>{% trans "Verwendung" %}</h2>
-    <div id="Pagination_Usage" data-insight-code-block="Django">
+    <p class="mb-4">
+        {% blocktrans with pagination='<span class="inline-tag">&lcub;% pagination %&rcub;</span>'|safe %}
+            Die Komponente wird über das {{ pagination }} Tag eingebunden.
+        {% endblocktrans %}
+    </p>
+    <div data-insight-code-block="Django">
         {# fmt:off #}
         &lcub;% load insight_tags %&rcub;
 
@@ -29,24 +34,24 @@
 
 <section>
     <h3>{% trans "Parameter" %}</h3>
-    <ul class="list-disc leading-relaxed ms-8">
-        <li><span class="inline-tag">current_page</span> (<i>Page</i>): Ein von Django erzeugtes Pagination-Objekt der aktuellen Seite.</li>
-        <li><span class="inline-tag">surrounding_pages</span> (<i>list</i>): Eine liste der benachbarten Seiten.</li>
-    </ul>
+    {% include "insight_ui/components/parameter_table.html" with rows=main_params %}
 
-    <div class="mt-8">
-        <h4>current_page</h4>
-        <p class="mb-6">Ein von Django erzeugtes Pagination-Objekt der aktuellen Seite.</p>
+    <div class="space-y-6 mt-4">
+        <div class="space-y-2">
+            <h4>current_page <i>(Page)</i></h4>
+            <p>Ein von Django erzeugtes Pagination-Objekt der aktuellen Seite.</p>
 
-        <div id="Pagination_Params1" data-insight-code-block="python">
-            <i>Todo</i>
+            <div data-insight-code-block="python">
+                <i>Todo</i>
+            </div>
         </div>
+        <div class="space-y-2">
+            <h4>surrounding_pages <i>(list[str])</i></h4>
+            <p>Eine liste der benachbarten Seiten.</p>
 
-        <h4 class="mt-6">surrounding_pages</h4>
-        <p class="mb-6">Eine liste der benachbarten Seiten.</p>
-
-        <div id="Pagination_Params2" data-insight-code-block="python">
-            <i>Todo</i>
+            <div data-insight-code-block="python">
+                <i>Todo</i>
+            </div>
         </div>
     </div>
 </section>

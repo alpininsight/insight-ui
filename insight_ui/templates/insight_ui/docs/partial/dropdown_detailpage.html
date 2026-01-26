@@ -19,7 +19,12 @@
 <!-- Component Documentation -->
 <section>
     <h2>{% trans "Verwendung" %}</h2>
-    <div id="Dropdown_Usage" data-insight-code-block="Django">
+    <p class="mb-4">
+        {% blocktrans with dropdown='<span class="inline-tag">&lcub;% dropdown %&rcub;</span>'|safe %}
+            Die Komponente wird über das {{ dropdown }} Tag eingebunden.
+        {% endblocktrans %}
+    </p>
+    <div data-insight-code-block="Django">
         &lcub;% load insight_tags %&rcub;
 
         &lcub;% dropdown dropdown_menu=user_dropdown %&rcub;
@@ -28,54 +33,46 @@
 
 <section>
     <h3>{% trans "Parameter" %}</h3>
+    {% include "insight_ui/components/parameter_table.html" with rows=main_params %}
 
-    <ul class="list-disc leading-relaxed ms-8">
-        <li><span class="inline-tag">dropdown_menu</span>(<i>dict</i>): {% trans "Ein Dictionary welches das Dropdown beschreibt." %}</li>
-    </ul>
+    <div class="space-y-6 mt-4">
+        <div class="space-y-2">
+            <h4>dropdown_menu <i>dict[str, Any]</i></h4>
+            <p class="mb-6">{% trans "Beschreibt den Dropdown-Button und die Menüelemente." %}</p>
 
-    <div class="mt-8">
-        <h4>dropdown_menu</h4>
-        <p class="mb-6">{% trans "Ein Dictionary welches das Dropdown beschreibt." %}</p>
-
-        <div id="Dropdown_Params" data-insight-code-block="python">
-            {# fmt:off #}
-            &lcub;
-                "tag_id": "DD_user",
-                "title": _("User"),
-                "show_arrow": True,
-                "items": [
-                    &lcub;
-                        "text": _("Profile"),
-                        "view_name": "storybook_view",
-                        "icon": &lcub;"name": "user", "size": "small"&rcub;,
-                    &rcub;,
-                    &lcub;
-                        "text": _("Settings"),
-                        "view_name": "storybook_view",
-                        "icon": &lcub;"name": "cog", "size": "small"&rcub;,
-                    &rcub;,
-                    &lcub;
-                        "text": _("Logout"),
-                        "view_name": "storybook_view",
-                        "icon": &lcub;"name": "got-out", "size": "small"&rcub;,
-                    &rcub;,
-                ],
-            &rcub;
-            {# fmt:on #}
+            <div data-insight-code-block="python">
+                {# fmt:off #}
+                &lcub;
+                    "tag_id": "user_dropdown",
+                    "title": _("User"),
+                    "show_arrow": True,
+                    "items": [
+                        &lcub;
+                            "text": _("Profile"),
+                            "view_name": "profile_view",
+                            "icon": &lcub;"name": "user", "size": "small"&rcub;,
+                        &rcub;,
+                        &lcub;
+                            "text": _("Settings"),
+                            "view_name": "settings_view",
+                            "icon": &lcub;"name": "cog", "size": "small"&rcub;,
+                        &rcub;,
+                        &lcub;
+                            "text": _("Logout"),
+                            "view_name": "logout_view",
+                            "icon": &lcub;"name": "leave", "size": "small"&rcub;,
+                        &rcub;,
+                    ],
+                &rcub;
+                {# fmt:on #}
+            </div>
+            {% include "insight_ui/components/parameter_table.html" with rows=dropdown_menu_params %}
         </div>
-
-        <ul class="list-disc leading-relaxed ms-8 mt-6">
-            <li><span class="inline-tag">tag_id</span>(<i>str</i>): {% trans "Eine eindeutige ID für das HTML-Tag des Dropdown-Containers." %}</li>
-            <li><span class="inline-tag">title</span>(<i>str</i>): {% trans "Die Beschriftung des Dropdown-Buttons." %}</li>
-            <li><span class="inline-tag">show_arrow</span>(<i>bool</i>): <b>True</b> {% trans "wenn ein Pfeil neben dem Titel angezeigt werden soll." %}</li>
-            <li><span class="inline-tag">item</span>(<i>list</i>): {% trans "Eine Liste der Dropdown-Elemente." %}
-                <ul class="list-disc leading-relaxed ms-8">
-                    <li><span class="inline-tag">text</span>(<i>str</i>): {% trans "Der angezeigte Text des jeweiligen Elements." %}</li>
-                    <li><span class="inline-tag">view_name</span>(<i>str</i>): {% trans "Der Name der View zu wessen Endpunkt der Request gesendet werden soll." %}</li>
-                    <li><span class="inline-tag">icon</span>(<i>dict</i>): {% trans "Ein optionales Icon welches vor dem Text angezeigt wird." %}</li>
-                </ul>
-            </li>
-        </ul>
+        <div class="space-y-2">
+            <h5>items <i>(list[dict[str, Any]])</i></h5>
+            <p>Eine Liste der Menüelemente.</p>
+            {% include "insight_ui/components/parameter_table.html" with rows=item_params %}
+        </div>
     </div>
 </section>
 

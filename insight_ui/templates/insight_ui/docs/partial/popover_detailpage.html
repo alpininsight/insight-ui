@@ -21,43 +21,27 @@
 <!-- Component Documentation -->
 <section>
     <h2>{% trans "Verwendung" %}</h2>
-
     <p class="mb-4">
-        {% blocktrans with insight_tag='<span class="inline-tag">insight_tag</span>'|safe tag_id='<b>Tag-ID</b>'|safe %}
-            Dieses Element besitzt kein {{ insight_tag }}, da es lediglich ein Auslöser braucht und ein Ziel-Element. Das Ziel-Element kann komplett selbst definiert werden, lediglich die Verbindung durch die {{ tag_id }} ist zu beachten.
+        {% blocktrans with data='<span class="inline-tag">data-popover</span>'|safe tag_id='<b>Tag-ID</b>'|safe %}
+            Um ein Popover hinzuzufügen, wird ein Auslöser gebraucht, welcher beim Hovern das Popover erscheinen lässt.
+            Dieser Auslöser kann jedes beliebe HTML-Tag sein und benötigt das Attribut {{ data-popover }}, dessen Wert die ID des Ziel-Elements (Popover) ist.
+            Das Popover kann komplett selbst definiert werden, lediglich die Verbindung durch die {{ tag_id }} ist zu beachten.
         {% endblocktrans %}
     </p>
 
-    <div id="Popover_Usage" data-insight-code-block="Django">
+    <div data-insight-code-block="Django">
         {# fmt:off #}
-        &lt;button data-popover-trigger="demo-popover" data-position="top" class="btn btn-primary"&gt;{% trans "Hover me!" %}&lt;/button&gt;
+        &lt;button data-popover="demo-popover" data-show-arrow="true" data-position="top" class="btn btn-primary"&gt;{% trans "Hover me!" %}&lt;/button&gt;
         &lt;div id="demo-popover" class="bg-white dark:bg-gray-500 w-64 border border-gray-300 dark:border-0 rounded-sm shadow"&gt;
-            &lt;!-- Arrow --&gt;
-            &lt;div class="popover-arrow absolute left-1/2 -top-2 -translate-x-1/2 w-0 h-0 border-10 border-t-0 border-transparent border-b-white dark:border-b-gray-600"&gt;&lt;/div&gt;
             &lt;!-- Content --&gt;
         &lt;/div&gt;
         {# fmt:on #}
     </div>
-
-    <p class="info-container text-base mt-4">
-        <span class="block font-bold italic text-lg">Info:</span>
-        {% blocktrans with div='&lt;div&gt;' comment='&lt;!-- Arrow --&gt;' %}
-            Der Pfeil kann ausgeschaltet werden, indem der {{ div }}-Container unter dem {{ comment }} Kommentar entfernt wird.
-        {% endblocktrans %}
-    </p>
 </section>
 
 <section>
     <h3>data-* {% trans "Attribute" %}</h3>
-    <ul class="list-disc leading-relaxed ms-8">
-        <li><span class="inline-tag">data-popover-trigger=&lt;tooltip_ID&gt;</span>: {% trans "Setzt den Auslöser für den Popover auf das Element mit der entsprechenden ID." %}</li>
-        <li><span class="inline-tag">data-position</span>: {% trans "Bestimmt wo im Bezug auf das Element, der Popover angezeigt werden soll. Mögliche Werte sind:" %}
-            <span class="inline-tag w-fit">top</span>
-            <span class="inline-tag w-fit">bottom</span>
-            <span class="inline-tag w-fit">right</span>
-            <span class="inline-tag w-fit">left</span>
-        </li>
-    </ul>
+    {% include "insight_ui/components/parameter_table.html" with rows=main_params %}
 </section>
 
 <!-- A11y -->

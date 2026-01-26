@@ -131,10 +131,10 @@
             {% chat view_name="chat_response" %}
         {% elif component == "alert" %}
             <div class="space-y-4">
-                {% alert message="This is just an information." alert_type="info" %}
-                {% alert message="Saved successfully!" alert_type="success" %}
-                {% alert message="Please review your entries!" alert_type="warning" %}
-                {% alert message="Error while loading data!" alert_type="error" %}
+                {% alert message="This is just an information." type="info" %}
+                {% alert message="Saved successfully!" type="success" %}
+                {% alert message="Please review your entries!" type="warning" %}
+                {% alert message="Error while loading data!" type="error" %}
             </div>
         {% elif component == "modal" %}
             <div class="h-72">
@@ -143,47 +143,38 @@
                     <button class="btn btn-primary w-72" data-insight-toggle="modal" data-insight-target="demo-modal">
                         {% trans "Standard Modal" %}
                     </button>
-                    {% modal html_tag_id="demo-modal" title=_("Demo Modal") description=_("This is an example of a standard modal.") %}
+                    {% modal tag_id="demo-modal" title=_("Demo Modal") description=_("This is an example of a standard modal.") %}
 
                     <!-- Action-Buttons -->
                     <button class="btn btn-danger w-72" data-insight-toggle="modal" data-insight-target="delete-modal">
                         {% trans "Modal with Action-Buttons" %}
                     </button>
-                    {% modal html_tag_id="delete-modal" title=_("Delete?") description="Please conform deletion!" actions=confirm_modal_actions %}
+                    {% modal tag_id="delete-modal" title=_("Delete?") description="Please conform deletion!" actions=confirm_modal_actions %}
                 </div>
             </div>
         {% elif component == "popover" %}
             <div class="flex items-end justify-center gap-12 h-64">
-                <button data-popover-trigger="demo-popover" class="btn btn-primary h-fit">Hover me!</button>
-                <div id="demo-popover" class="bg-white dark:bg-gray-500 w-64 border border-gray-300 dark:border-0 rounded-sm shadow">
-                    <!-- Arrow -->
-                    <div class="popover-arrow absolute left-1/2 -top-2 -translate-x-1/2 w-0 h-0 border-10 border-t-0 border-transparent border-b-white dark:border-b-gray-600"></div>
+                <button data-popover="demo-popover" data-show-arrow="true" class="btn btn-primary h-fit">Hover me!</button>
+                <div id="demo-popover" class="bg-white dark:bg-gray-700 w-64 border border-gray-300 dark:border-0 rounded-sm shadow">
                     <div class="p-4">
-                        <span class="block font-semibold w-full border-b-2 border-gray-300 pb-2">
+                        <span class="text-primary block font-semibold w-full border-b-2 border-gray-300 dark:border-gray-500 pb-2">
                             {% trans "This is a Popover." %}
                         </span>
-                        <p class="text-sm mt-4">
+                        <p class="text-secondary text-sm mt-4">
                             {% trans "A popover could have more content than a tooltip and it can also have interactive elements like buttons" %}
                         </p>
                     </div>
-                    <div class="bg-gray-100 dark:bg-gray-600 p-4 rounded-b-sm">
+                    <div class="bg-gray-100 dark:bg-gray-900 p-4 rounded-b-sm">
                         <button class="btn btn-primary btn-sm">{% trans "Learn more" %}</button>
                     </div>
                 </div>
             </div>
         {% elif component == "tooltip" %}
             <div class="flex flex-col md:flex-row items-center justify-center gap-12 py-8">
-                <button data-tooltip-trigger="tt-demo-top" data-position="top" class="btn btn-primary">{% trans "Top" %}</button>
-                {% include "insight_ui/components/tooltip.html" with text=_("This is a tooltip.") show_arrow="True" tag_id="tt-demo-top" %}
-
-                <button data-tooltip-trigger="tt-demo-bottom" data-position="bottom" class="btn btn-primary">{% trans "Bottom" %}</button>
-                {% include "insight_ui/components/tooltip.html" with text=_("This is a tooltip.") tag_id="tt-demo-bottom" %}
-
-                <button data-tooltip-trigger="tt-demo-right" data-position="right" class="btn btn-primary">{% trans "Right" %}</button>
-                {% include "insight_ui/components/tooltip.html" with text=_("This is a tooltip.") show_arrow="True" tag_id="tt-demo-right" %}
-
-                <button data-tooltip-trigger="tt-demo-left" data-position="left" class="btn btn-primary">{% trans "Left" %}</button>
-                {% include "insight_ui/components/tooltip.html" with text=_("This is a tooltip.") tag_id="tt-demo-left" %}
+                <button data-tooltip="This is a tooltip." data-show-arrow="true" data-position="top" class="btn btn-primary">{% trans "Top" %}</button>
+                <button data-tooltip="This is a tooltip." data-position="bottom" class="btn btn-primary">{% trans "Bottom" %}</button>
+                <button data-tooltip="This is a tooltip." data-show-arrow="true" data-position="right" class="btn btn-primary">{% trans "Right" %}</button>
+                <button data-tooltip="This is a tooltip." data-position="left" class="btn btn-primary">{% trans "Left" %}</button>
             </div>
         {% elif component == "code_block" %}
             <div id="code" data-insight-code-block="javascript">
@@ -203,10 +194,10 @@
             {% bar_chart chart_id="bar_chart_example" chart=chart_data %}
             {% line_chart chart_id="line_chart_example" chart=chart_data %}
         {% elif component == "live_content" %}
-            {% live_content url="/api/live-data/" interval=10 id="live-content" %}
+            {% live_content tag_id="live-content" url="/api/live-data/" interval=10 %}
         {% elif component == "web_socket" %}
-            <i>Work in progress...</i>
-            <!-- {% insight_websocket html_tag_id="demo-websocket" ws_url="ws://localhost:8765" initial_content="<p>Connect to Web-Socket…</p>" %} -->
+            <i class="text-secondary">Work in progress...</i>
+            <!-- {% insight_websocket tag_id="demo-websocket" url="ws://localhost:8765" initial_content="<p>Connect to Web-Socket…</p>" %} -->
         {% elif component == "infinite_scroll" %}
             {% infinite_scroll items=scroll_items view_name="more_items" auto_fetch=False %}
         {% elif component == "pagination" %}
@@ -241,9 +232,9 @@
                 {% endfor %}
             </div>
         {% elif component == "card_carousel" %}
-            {% carousel carousel_items=carousel_items show_index=True slides_count=range_total_slides items_per_slide=2 %}
+            {% carousel carousel_items=carousel_items show_index=True items_per_slide=2 %}
         {% elif component == "image_carousel" %}
-            {% include "insight_ui/components/carousels/image_carousel.html" with carousel_items=image_carousel_items show_dots=True show_index=True slides_count=range_total_slides items_per_slide=1 %}
+            {% image_carousel images=image_carousel_items show_dots=True show_index=True items_per_slide=1 %}
         {% elif component == "3D_carousel" %}
             <div class="h-144">
                 {% three_d_carousel tag_id="threeD_carousel" velocity=300 tilt=-15 face_camera=False carousel_items=3D_carousel.items %}
@@ -251,7 +242,7 @@
         {% elif component == "toggle_view" %}
             {% toggle_view tag_id="test" data=toggle_table view_radio_config=view_radio_config current_view=toggle_start_view %}
         {% elif component == "form" %}
-            {% form title="Contact Form" description="Please fill out the form" fields=form_fields actions=form_actions htmx=htmx_config id="htmx-form" %}
+            {% form tag_id="htmx-form" title="Contact Form" description="Please fill out the form" fields=form_fields actions=form_actions htmx=htmx_config %}
         {% endif %}
     </body>
 

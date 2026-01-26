@@ -74,7 +74,7 @@
         </h2>
     </div>
     <div class="p-4 md:p-6">
-        {% carousel carousel_items=carousel_items show_index=True slides_count=range_total_slides items_per_slide=2 %}
+        {% carousel carousel_items=carousel_items show_index=True items_per_slide=2 %}
     </div>
 </section>
 
@@ -95,7 +95,7 @@
         </h2>
     </div>
     <div class="p-4 md:p-6">
-        {% include "insight_ui/components/carousels/image_carousel.html" with carousel_items=image_carousel_items show_dots=True show_index=True slides_count=range_total_slides items_per_slide=1 %}
+        {% image_carousel images=image_carousel_items show_dots=True show_index=True items_per_slide=1 %}
     </div>
 </section>
 

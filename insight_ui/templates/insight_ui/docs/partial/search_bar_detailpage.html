@@ -16,7 +16,12 @@
 <!-- Component Documentation -->
 <section>
     <h2>{% trans "Verwendung" %}</h2>
-    <div id="Search_Bar_Usage" data-insight-code-block="Django">
+    <p class="mb-4">
+        {% blocktrans with search_bar='<span class="inline-tag">&lcub;% search_bar %&rcub;</span>'|safe %}
+            Die Komponente wird über das {{ search_bar }} Tag eingebunden.
+        {% endblocktrans %}
+    </p>
+    <div data-insight-code-block="Django">
         &lcub;% load insight_tags %&rcub;
 
         &lcub;% search_bar request_view="index_view" simple=True search_query="Test 123" %&rcub;
@@ -25,11 +30,7 @@
 
 <section>
     <h3>{% trans "Parameter" %}</h3>
-    <ul class="list-disc leading-relaxed ms-8">
-        <li><span class="inline-tag">request_view</span> (<i>str</i>): Der Name der View an welche der Request gesendet werden soll.</li>
-        <li><span class="inline-tag">simple</span> (<i>bool</i>): <b>True</b> wenn die Suchleiste ohne Button und kleiner angezeigt werden soll.</li>
-        <li><span class="inline-tag">search_query</span> (<i>str</i>): Ein optionaler Wert der automatisch in dem Textfeld steht.</li>
-    </ul>
+    {% include "insight_ui/components/parameter_table.html" with rows=main_params %}
 </section>
 
 <!-- A11y -->

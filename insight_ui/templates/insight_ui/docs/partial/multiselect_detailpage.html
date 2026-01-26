@@ -16,7 +16,12 @@
 <!-- Component Documentation -->
 <section>
     <h2>{% trans "Verwendung" %}</h2>
-    <div id="Multiselect_Usage" data-insight-code-block="Django">
+    <p class="mb-4">
+        {% blocktrans with multiselect='<span class="inline-tag">&lcub;% multiselect %&rcub;</span>'|safe %}
+            Die Komponente wird über das {{ multiselect }} Tag eingebunden.
+        {% endblocktrans %}
+    </p>
+    <div data-insight-code-block="Django">
         &lcub;% load insight_tags %&rcub;
 
         &lcub;% multiselect name="test" label="Test" maximum=0 show_buttons=True options=["A", "B", "C"] %&rcub;
@@ -29,27 +34,18 @@
 
 <section>
     <h3>{% trans "Parameter" %}</h3>
-
-    <ul class="list-disc leading-relaxed ms-8">
-        <li><span class="inline-tag">name</span> (<i>str</i>): Der Name des Multiselect Elements.</li>
-        <li><span class="inline-tag">label</span> (<i>str</i>): Ein kurzer Titel, welche rüber dem Multiselect angezeigt wird.</li>
-        <li><span class="inline-tag">maximum</span> (<i>int</i>): Gibt an wie viele Werte maximal ausgewählt sein dürfen.</li>
-        <li><span class="inline-tag">show_buttons</span> (<i>bool</i>): <b>True</b> zeigt zusätzlich "Alle Auswählen" und "Alle Abwählen" Buttons an.</li>
-        <li><span class="inline-tag">options</span> (<i>list[str]</i> oder <i>dict[str, str]</i>): Alle Werte welche ausgewählt werden können.</li>
-        <li><span class="inline-tag">selected_options</span> (<i>list[str]</i>): Alle Werte welche bereits ausgewählt sein sollen.</li>
-        <li><span class="inline-tag">config</span> (<i>dict[str, Any]</i>): Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.</li>
-    </ul>
+    {% include "insight_ui/components/parameter_table.html" with rows=main_params %}
 
     <p class="info-container text-base mt-4">
         <span class="block font-bold italic text-lg">Info:</span>
-        Wenn <span class="inline-tag">options</span> eine Liste ist, dann wird die automatisch in ein <i>Dictionary</i> umgewandelt, in welchem der <i>Key</i> und der <i>Value</i> identisch sind.
+        Wenn <span class="inline-tag">options</span> eine Liste ist, wird der Wert auch als Name verwendet.
     </p>
 
-    <div class="mt-8">
-        <h4>config</h4>
-        <p class="mb-6">{% trans "Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern." %}</p>
+    <div class="space-y-2 mt-4">
+        <h4>config <i>(dict[str, Any])</i></h4>
+        <p>{% trans "Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern." %}</p>
 
-        <div id="Dropdown_Params" data-insight-code-block="python">
+        <div data-insight-code-block="python">
             {# fmt:off #}
             {
                 "name": "test",

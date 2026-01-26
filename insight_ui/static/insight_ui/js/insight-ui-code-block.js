@@ -55,6 +55,7 @@ class CodeBlock {
     // Create wrapper-div
     const wrapper = document.createElement('div');
     wrapper.classList.add('bg-[#f9fafb]', 'dark:bg-[#030712]', 'rounded', 'border', 'border-gray-300', 'dark:border-gray-700');
+    wrapper.id = id;
 
     // Create flex-box for the copy button
     const flexContainer = document.createElement('div');
@@ -82,8 +83,6 @@ class CodeBlock {
     // Create copy button
     const button = document.createElement('button');
     button.classList.add('btn', 'btn-secondary', 'btn-sm');
-    button.classList.add(id);
-    button.setAttribute('data-clipboard-target', `#${id}`);
 
     // SVG-Icon of the button
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -114,7 +113,6 @@ class CodeBlock {
     codeWrapper.classList.add('max-w-2xs', 'md:max-w-2xl', 'lg:max-w-5xl', 'overflow-x-scroll');
 
     const pre = document.createElement('pre');
-    pre.id = id;
     pre.classList.add('line-numbers', `language-${lang}`);
 
     const codeElement = document.createElement('code');

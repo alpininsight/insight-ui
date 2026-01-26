@@ -7,9 +7,9 @@
                 <div aria-hidden="true" class="absolute top-9 start-4 bg-gray-300 h-1/2 w-0.5 mt-0.5 -ms-px"></div>
             {% endif %}
             <a
-                {% if item.url and not item.current %}href="{% url item.url %}"{% endif %}
+                {% if item.view_name and not item.current %}href="{% url item.view_name %}"{% endif %}
                 {% if item.current %}aria-current="step"{% endif %}
-                class="relative flex items-start {% if not item.url %}pointer-events-none{% endif %}"
+                class="relative flex items-start {% if not item.view_name %}pointer-events-none{% endif %}"
             >
                 <!-- Bullet -->
                 <span class="flex items-center h-9">

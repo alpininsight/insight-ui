@@ -17,24 +17,21 @@
 <section>
     <h2>{% trans "Verwendung" %}</h2>
     <p class="mb-4">
-        Die Toggle-View wird direkt über das <span class="inline-tag">&lcub;% toggle_view %&rcub;</span> Tag eingebunden. Diese Komponente erwartet unterschiedliche Parameter, je nach dem, welche View initial eingestellt wird.
+        {% blocktrans with toggle_view='<span class="inline-tag">&lcub;% toggle_view %&rcub;</span>'|safe %}
+            Die Komponente wird über das {{ toggle_view }} Tag eingebunden.
+        {% endblocktrans %}
     </p>
 
-    <div id="Toggle_View_Usage" data-insight-code-block="Django">
+    <div data-insight-code-block="Django">
         &lcub;% load insight_tags %&rcub;
 
-        &lcub;% toggle_view tag_id="test" data=toggle_table view_radio_config=view_radio_config current_view=toggle_start_view %&rcub;
+        &lcub;% toggle_view tag_id="test" data=toggle_data view_radio_config=view_radio_config current_view=toggle_start_view %&rcub;
     </div>
 </section>
 
 <section>
     <h3>{% trans "Parameter" %}</h3>
-    <ul class="list-disc leading-relaxed ms-8">
-        <li><span class="inline-tag">tag_id</span> (<i>str</i>): Eine einzigartige ID für die Komponente. (Wird für den wechsel der Ansicht benötigt).</li>
-        <li><span class="inline-tag">data</span> (<i>list</i>): Die Daten, welche angezeigt werden sollen.</li>
-        <li><span class="inline-tag">view_radio_config</span> (<i>dict</i>): Die Konfiguration der Radio-Group, zum wechseln der Ansichtsart.</li>
-        <li><span class="inline-tag">current_view</span> (<i>str</i>): Die anzuzeigende View-Variante (Start-View).</li>
-    </ul>
+    {% include "insight_ui/components/parameter_table.html" with rows=main_params %}
 </section>
 
 <!-- A11y -->

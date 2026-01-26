@@ -5,7 +5,7 @@
 <!-- Component Demo -->
 <section>
     <p>
-        {% trans 'Mit dieser Komponente kann dem Nutzer der Fortschritt eines Prozesses visuell dargestellt werden, welcher dieser selbst durchführt.  Damit sind Prozesse gemeint, wie zum Beispiel ein typischer Bezahlvorgang. Dieser besteht i.d.R. aus mehreren Schritten, wie die Adresse anzugeben, eine Zahlungsmethode auszuwählen und im Anschluss nochmal die Eingaben zu überprüfen. In diesem Fall muss der Nutzer aktiv werden, damit der Prozess voranschreitet.' %}
+        {% trans 'Diese Komponente kann dazu verwendet werden, dem Nutzer den Fortschritt eines manuellen Prozesses anzuzeigen. Damit ist zum Beispiel ein typischer Bezahlvorgang gemeint. Dieser besteht i.d.R. aus mehreren Schritten, wie die Adresse anzugeben, eine Zahlungsmethode auszuwählen und im Anschluss nochmal die Eingaben zu überprüfen. Die Komponente zeigt dem Nutzer an, wo er sich gerade befindet und wie viele Schritte noch folgen.' %}
     </p>
 
     {% include "insight_ui/docs/demo_container.html" %}
@@ -16,7 +16,12 @@
 <!-- Component Documentation -->
 <section>
     <h2>{% trans "Verwendung" %}</h2>
-    <div id="Step_Bar_Usage" data-insight-code-block="Django">
+    <p class="mb-4">
+        {% blocktrans with step_bar='<span class="inline-tag">&lcub;% step_bar %&rcub;</span>'|safe %}
+            Die Komponente wird über das {{ step_bar }} Tag eingebunden.
+        {% endblocktrans %}
+    </p>
+    <div data-insight-code-block="Django">
         &lcub;% load insight_tags %&rcub;
 
         &lcub;% step_bar items=steps_bar_items %&rcub;
@@ -25,30 +30,22 @@
 
 <section>
     <h3>{% trans "Parameter" %}</h3>
-    <ul class="list-disc leading-relaxed ms-8">
-        <li><span class="inline-tag">items</span>(<i>list</i>): Eine Liste der einzelnen Schritte des Prozesses.</li>
-    </ul>
+    {% include "insight_ui/components/parameter_table.html" with rows=main_params %}
 
-    <div class="mt-8">
-        <h4>items</h4>
-        <p class="mb-6">Die Liste der einzelnen Schritte, besteht aus Dictionaries welche den jeweiligen Schritt beschreiben.</p>
+    <div class="space-y-2 mt-4">
+        <h4>items <i>(list[dict])</i></h4>
+        <p>Liste der Prozessschritte.</p>
 
-        <div id="Step_Bar_Params" data-insight-code-block="python">
+        <div data-insight-code-block="python">
             {# fmt:off #}
             [
                 {"title": "Kontaktdaten", "description": "Informationen zur Person und Anschrift.", "completed": True},
-                {"title": "Zahlungsmethode", "description": "Art der Bezahlung.", "completed": False, "current": True},
-                {"title": "Überprüfen", "description": "Prüfen der Angaben und Bezahlen.", "completed": False},
+                {"title": "Zahlungsmethode", "description": "Art der Bezahlung.", "current": True},
+                {"title": "Überprüfen", "description": "Prüfen der Angaben und Bezahlen."},
             ]
             {# fmt:on #}
         </div>
-
-        <ul class="list-disc leading-relaxed ms-8 mt-6">
-            <li><span class="inline-tag">title</span>(<i>str</i>): {% trans "Der Titel des jeweiligen Schritts." %}</li>
-            <li><span class="inline-tag">description</span>(<i>str</i>): {% trans "Eine kurze Beschreibung des jeweiligen Schritts." %}</li>
-            <li><span class="inline-tag">completed</span>(<i>bool</i>): {% blocktrans with true='<b>True</b>'|safe %}{{ true }} wenn dieser Schritt bereits absolviert wurde.{% endblocktrans %}</li>
-            <li><span class="inline-tag">current</span>(<i>bool</i>): {% blocktrans with true='<b>True</b>'|safe %}{{ true }} wenn es sich um den aktuellen Schritt handelt.{% endblocktrans %}</li>
-        </ul>
+        {% include "insight_ui/components/parameter_table.html" with rows=step_params %}
     </div>
 </section>
 

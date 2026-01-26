@@ -16,28 +16,27 @@
 <!-- Component Documentation -->
 <section>
     <h2>{% trans "Verwendung" %}</h2>
-    <div id="ThreeD_Carousel_Usage" data-insight-code-block="Django">
+    <p class="mb-4">
+        {% blocktrans with three_d_carousel='<span class="inline-tag">&lcub;% three_d_carousel %&rcub;</span>'|safe %}
+            Die Komponente wird über das {{ three_d_carousel }} Tag eingebunden.
+        {% endblocktrans %}
+    </p>
+    <div data-insight-code-block="Django">
         &lcub;% load insight_tags %&rcub;
 
-        &lcub;% three_d_carousel tag_id="threeD_carousel" velocity=300 face_camera=True carousel_items=3D_carousel.items %&rcub;
+        &lcub;% three_d_carousel tag_id="threeD_carousel" velocity=300 face_camera=True carousel_items=items %&rcub;
     </div>
 </section>
 
 <section>
     <h3>{% trans "Parameter" %}</h3>
-    <ul class="list-disc leading-relaxed ms-8">
-        <li><span class="inline-tag">tag_id</span> (<i>str</i>): Eine eindeutige ID für das Karussell.</li>
-        <li><span class="inline-tag">velocity</span> (<i>int</i>): Die Geschwindigkeit mit welcher sich das Karussell drehen soll.</li>
-        <li><span class="inline-tag">tilt</span> (<i>int</i>): Die Neigung des Karussell zur Camera.</li>
-        <li><span class="inline-tag">face_camera</span> (<i>bool</i>): <b>True</b> wenn die Karten immer in Richtung der Kamera ausgerichtet sein sollen.</li>
-        <li><span class="inline-tag">carousel_items</span> (<i>list</i>): Daten welche innerhalb des Karussell angezeigt werden sollen (frei definierbar).</li>
-    </ul>
+    {% include "insight_ui/components/parameter_table.html" with rows=main_params %}
 
-    <div class="mt-8">
-        <h4>carousel_items</h4>
-        <p class="mb-6">Daten welche innerhalb des Karussell angezeigt werden sollen (frei definierbar).</p>
+    <div class="space-y-2 mt-4">
+        <h4>carousel_items <i>(list[dict])</i></h4>
+        <p>Daten welche innerhalb des Karussell angezeigt werden sollen (frei definierbar).</p>
 
-        <div id="ThreeD_Carousel_Params" data-insight-code-block="python">
+        <div data-insight-code-block="python">
             Todo
         </div>
     </div>

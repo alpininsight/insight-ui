@@ -21,31 +21,29 @@
 <!-- Component Documentation -->
 <section>
     <h2>{% trans "Verwendung" %}</h2>
-
-    <div id="Tooltip_Usage" data-insight-code-block="Django">
-        &lt;button data-tooltip-trigger="tt-demo-bottom" data-position="bottom" class="btn btn-primary"&gt;{% trans "Click me!" %}&lt;/button&gt;
-        &lcub;% include "insight_ui/components/tooltip.html" with text=_("This is a tooltip.") tag_id="tt-demo-bottom" %&rcub;
-    </div>
-
-    <p class="info-container text-base mt-4">
-        <span class="block font-bold italic text-lg">Info:</span>
-        {% blocktrans with div='&lt;div&gt;' comment='&lt;!-- Arrow --&gt;' %}
-            Der Pfeil kann ausgeschaltet werden, indem der {{ div }}-Container unter dem {{ comment }} Kommentar entfernt wird.
+    <p class="mb-4">
+        {% blocktrans with data='<span class="inline-tag">data-tooltip</span>'|safe %}
+            Um ein Tooltip zu einem Element hinzuzufügen, müssen diese lediglich das Attribut {{ data }}, dessen Wert der anzuzeigende Text im Tooltip ist.
         {% endblocktrans %}
     </p>
+
+    <div data-insight-code-block="Django">
+        {# fmt:off #}
+        &lt;button
+            data-tooltip="This is a tooltip."
+            data-show-arrow="true"
+            data-position="bottom"
+            class="btn btn-primary"
+        &gt;
+            {% trans "Click me!" %}
+        &lt;/button&gt;
+        {# fmt:on #}
+    </div>
 </section>
 
 <section>
     <h3>{% trans "data-* Attribute" %}</h3>
-    <ul class="list-disc leading-relaxed ms-8">
-        <li><span class="inline-tag">data-tooltip-trigger=&lt;tooltip_ID&gt;</span>: {% trans "Setzt den Auslöser für den Tooltip auf das Element mit der entsprechenden ID." %}</li>
-        <li><span class="inline-tag">data-position</span>: {% trans "Bestimmt wo im Bezug auf das Element, der Tooltip angezeigt werden soll. Mögliche Werte sind:" %}
-            <span class="inline-tag w-fit">top</span>
-            <span class="inline-tag w-fit">bottom</span>
-            <span class="inline-tag w-fit">right</span>
-            <span class="inline-tag w-fit">left</span>
-        </li>
-    </ul>
+    {% include "insight_ui/components/parameter_table.html" with rows=main_params %}
 </section>
 
 <section>

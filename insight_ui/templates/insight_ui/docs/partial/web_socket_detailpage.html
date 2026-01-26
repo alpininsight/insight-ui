@@ -16,21 +16,21 @@
 <!-- Component Documentation -->
 <section>
     <h2>{% trans "Verwendung" %}</h2>
-    <div id="Web_Socket_Usage" data-insight-code-block="Django">
+    <p class="mb-4">
+        {% blocktrans with web_socket='<span class="inline-tag">&lcub;% web_socket %&rcub;</span>'|safe %}
+            Die Komponente wird über das {{ web_socket }} Tag eingebunden.
+        {% endblocktrans %}
+    </p>
+    <div data-insight-code-block="Django">
         &lcub;% load insight_tags %&rcub;
 
-        &lcub;% insight_websocket html_tag_id="demo-websocket" ws_url="ws://localhost:8765" initial_content="<p>Connect to Web-Socket…</p>" %&rcub;
+        &lcub;% insight_websocket tag_id="demo-websocket" url="ws://localhost:8765" initial_content="<p>Connect to Web-Socket…</p>" %&rcub;
     </div>
 </section>
 
 <section>
     <h3>{% trans "Parameter" %}</h3>
-    <ul class="list-disc leading-relaxed ms-8">
-        <li><span class="inline-tag">html_tag_id</span> (<i>str</i>): Eine eindeutige ID für den Container.</li>
-        <li><span class="inline-tag">ws_url</span>(<i>str</i>): Die URL des Websocket-Service mit welchem eine Verbindung aufgebaut werden soll.</li>
-        <li><span class="inline-tag">initial_content</span> (<i>str</i>): Initialer Inhalt.</li>
-        <li><span class="inline-tag">kwargs</span>: Zusätzliche Optionen (<span class="inline-tag">id</span> = Tag-ID).</li>
-    </ul>
+    {% include "insight_ui/components/parameter_table.html" with rows=main_params %}
 </section>
 
 <!-- A11y -->

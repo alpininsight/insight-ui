@@ -17,12 +17,12 @@
 <section>
     <h2>{% trans "Verwendung" %}</h2>
     <p class="mb-4">
-        {% blocktrans with div='&lt;div&gt;' tag_id='<b>Tag-ID</b>'|safe data_attr='<i>data-Attribute</i>'|safe data_attr_value='<span class="inline-tag">data-insight-code-block</span>'|safe %}
-            Diese Komponente wird ohne ein Template einzubinden, verwendet. Es muss lediglich ein HTML-Tag vorzugsweise ein {{ div }} eingefügt werden. Dieses braucht eine Eindeutige {{ tag_id }}, diese ist für das Kopieren wichtig. Zum anderen muss das Tag den {{ data_attr }} {{ data_attr_value }} besitzen. Der Wert des {{ data_attr }} ist die gewünschte Programmiersprache. Innerhalb des Tags befindet sich dann ausschließlich der darzustellende Quellcode.
+        {% blocktrans with div='&lt;div&gt;' data='<span class="inline-tag">data-insight-code-block</span>'|safe %}
+            Um die Komponente zu verwenden, muss lediglich ein HTML-Tag vorzugsweise ein {{ div }} eingefügt werden. Das Element muss das Attribute {{ data }} besitzen, dessen Wert die gewünschte Programmiersprache ist. Innerhalb des Tags befindet sich dann ausschließlich der darzustellende Quellcode.
         {% endblocktrans %}
     </p>
 
-    <div id="Code_Block_Usage" data-insight-code-block="Django">
+    <div data-insight-code-block="Django">
         {# fmt:off #}
         &lt;div id="code" data-insight-code-block="javascript"&gt;
             function greet(name) &lcub;
@@ -31,13 +31,11 @@
         &lt;/div&gt;
         {# fmt:on #}
     </div>
+</section>
 
-    <p class="info-container text-base mt-4">
-        <span class="block font-bold italic text-lg">Info:</span>
-        {% blocktrans with copy='<b>Copy</b>'|safe %}
-            Beim klick auf den {{ copy }} Button wird der Quellcode hervorgehoben und gleichzeitig in den Zwischenspeicher kopiert. Ein erneutes kopieren ist nicht notwendig.
-        {% endblocktrans %}
-    </p>
+<section>
+    <h3>{% trans "data-* Attribute" %}</h3>
+    {% include "insight_ui/components/parameter_table.html" with rows=main_params %}
 </section>
 
 <!-- A11y -->

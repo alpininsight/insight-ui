@@ -5,7 +5,9 @@
 <!-- Component Demo -->
 <section>
     <p>
-        Mit der <span class="inline-tag">accordion</span> Komponente lassen sich ausklappbare Bereiche für weitere Informationen hinzufügen. Ein Accordion kann entweder ein oder mehrere Bereiche gleichzeitig geöffnet haben. Es besteht die Möglichkeit, dass beim öffnen eines Bereich, ein Anker gesetzt wird. Dadurch lassen sich über die URL bestimmte Bereiche beim aufrufen der Seite aufklappen und die Ansicht scrollt automatisch bis zu dem geöffneten Bereich.
+        Mit der <span class="inline-tag">accordion</span> Komponente lassen sich ausklappbare Bereiche für weitere Informationen hinzufügen.
+        Ein Accordion kann entweder ein oder mehrere Bereiche gleichzeitig geöffnet haben. Beim öffnen eines Accordion-Abschnitts wird automatisch ein URL-Anchor gesetzt.
+        Dadurch lassen sich über die URL bestimmte Bereiche beim aufrufen der Seite automatisch aufklappen und die Ansicht scrollt automatisch bis zu dem geöffneten Bereich.
     </p>
 
     {% include "insight_ui/docs/demo_container.html" %}
@@ -16,7 +18,12 @@
 <!-- Component Documentation -->
 <section>
     <h2>{% trans "Verwendung" %}</h2>
-    <div id="Accordion_Usage" data-insight-code-block="Django">
+    <p class="mb-4">
+        {% blocktrans with accordion='<span class="inline-tag">&lcub;% accordion %&rcub;</span>'|safe %}
+            Die Komponente wird über das {{ accordion }} Tag eingebunden.
+        {% endblocktrans %}
+    </p>
+    <div data-insight-code-block="Django">
         &lcub;% load insight_tags %&rcub;
 
         &lcub;% accordion id="faq-exclusive" items=accordion_items exclusive=True %&rcub;
@@ -25,25 +32,22 @@
 
 <section>
     <h3>{% trans "Parameter" %}</h3>
-    <ul class="list-disc leading-relaxed ms-8">
-        <li><span class="inline-tag">id</span> (<i>str</i>): Eine eindeutige ID für das Accordion.</li>
-        <li><span class="inline-tag">items</span> (<i>list</i>): Die einzelnen Bereiche des Accordion.</li>
-        <li><span class="inline-tag">exclusive</span> (<i>bool</i>): <b>True</b> wenn nur ein Element zur selben Zeit geöffnet sein darf.</li>
-    </ul>
+    {% include "insight_ui/components/parameter_table.html" with rows=main_params %}
 
-    <div class="mt-8">
-        <h4>items</h4>
-        <p class="mb-6">Die einzelnen Bereiche des Accordion.</p>
+    <div class="space-y-2 mt-4">
+        <h4>items <i>(list[dict])</i></h4>
+        <p>Die einzelnen Bereiche des Accordion.</p>
 
-        <div id="Accordion_Params" data-insight-code-block="python">
+        <div data-insight-code-block="python">
             {# fmt:off #}
             [
-                {"question": "Was ist Django?", "answer": "Django ist ein Webframework für Python."},
-                {"question": "Was ist Tailwind?", "answer": "Tailwind ist ein CSS-Utility-Framework."},
-                {"question": "Was ist ARIA?", "answer": "ARIA steht für Accessible Rich Internet Applications."},
+                {"title": "Was ist Django?", "content": "Django ist ein Webframework für Python."},
+                {"title": "Was ist Tailwind?", "content": "Tailwind ist ein CSS-Utility-Framework."},
+                {"title": "Was ist ARIA?", "content": "ARIA steht für Accessible Rich Internet Applications."},
             ]
             {# fmt:on #}
         </div>
+        {% include "insight_ui/components/parameter_table.html" with rows=item_params %}
     </div>
 </section>
 

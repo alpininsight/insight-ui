@@ -2,7 +2,7 @@
 
 <div
   class="insight-live-content"
-  {% if options.id %}id="{{ options.id }}"{% endif %}
+  {% if tag_id %}id="{{ tag_id }}"{% endif %}
   hx-get="{{ htmx.url }}"
   hx-trigger="{{ htmx.trigger }}"
   hx-swap="{{ htmx.swap }}"

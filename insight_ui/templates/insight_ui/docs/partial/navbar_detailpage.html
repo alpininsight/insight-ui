@@ -25,10 +25,10 @@
 <section>
     <h2>{% trans "Verwendung" %}</h2>
     <p>
-        Eingebunden wird die Navbar am einfachsten über das entsprechende <i>Template-Tag</i>. Für die Navbar ist ein entsprechender Block definiert, in welchem diese platziert werden sollte.
+        Die Navbar wird über das entsprechende <i>Template-Tag</i>. eingebunden. Das <i>Base-Template</i> verfügt über einen, für die Navbar vorgesehenen Block, in welchem diese platziert werden sollte, um die korrekte Funktionsweise zu gewährleisten.
     </p>
 
-    <div id="Navbar_Usage" data-insight-code-block="Django">
+    <div data-insight-code-block="Django">
         {# fmt:off #}
         &lcub;% load insight_tags %&rcub;
 
@@ -41,76 +41,75 @@
 
 <section>
     <h3>{% trans "Parameter" %}</h3>
-    <ul class="list-disc leading-relaxed ms-8">
-        <li><span class="inline-tag">config</span> (<i>dict</i>): Ein Dictionary mit der gesamten Konfiguration der Navigationsleiste.</li>
-        <li><span class="inline-tag">user</span> (<i>User</i>): Das <i>user</i> Objekt des Requests (sollte eigentlich immer verfügbar sein).</li>
-        <li><span class="inline-tag">user_dropdown_links</span> (<i>list</i>): Eine Liste mit den Links welche in dem Benutzermenü angezeigt werden sollen.</li>
-        <li><span class="inline-tag">show_login</span> (<i>bool</i>): <b>True</b> wenn ein Button zum Anmelden angezeigt werden soll (standardmäßig aus, also <b>False</b>).</li>
-    </ul>
+    {% include "insight_ui/components/parameter_table.html" with rows=main_params %}
 
-    <div class="mt-8">
-        <h4>config</h4>
-        <p class="mb-4">Ein Dictionary mit der gesamten Konfiguration der Navigationsleiste.</p>
+    <p class="info-container text-base mt-4">
+        <span class="block font-bold italic text-lg">Info:</span>
+        {% blocktrans with bold_text='<b>show_login</b>'|safe %}
+            Der externe Parameter {{ bold_text }} wird zum verstecken des Anmeldebutton auf bestimmten Seiten bspw. der Anmeldeseite verwendet.
+        {% endblocktrans %}
+    </p>
 
-        <div id="Navbar_Params" data-insight-code-block="python">
-            {# fmt:off #}
-            {
-                "brand": {
-                    "title": "Insight UI",
-                    "view_name": "storybook_view",
-                    "gap": "gap-2",
-                    "logo": {
-                        "url": "insight_ui/svg/logo.svg",
-                        "url_dark": "insight_ui/svg/ai-logo-dark.svg",
-                        "alt": "Insight UI Logo",
-                        "height": "h-8",
-                    },
-                },
-                "links": [
-                    {
-                        "text": _("Startseite"),
-                        "icon": {"name": "home", "size": "small"},
+    <div class="space-y-6 mt-4">
+        <div class="space-y-2">
+            <h4>config <i>(dict[str, Any])</i></h4>
+            <p>Ein Dictionary mit der gesamten Konfiguration der Navigationsleiste.</p>
+
+            <div data-insight-code-block="python">
+                {# fmt:off #}
+                {
+                    "brand": {
+                        "title": "Insight UI",
                         "view_name": "storybook_view",
-                        "active": True,
-                        "need_auth": False,
-                        "staff_only": False,
+                        "gap": "0.5rem",
+                        "logo": {
+                            "url": "insight_ui/svg/logo.svg",
+                            "url_dark": "insight_ui/svg/ai-logo-dark.svg",
+                            "alt": "Insight UI Logo",
+                            "height": "2rem",
+                        },
                     },
-                    {
-                        "text": _("Über"),
-                        "open_modal": "about-modal",
-                        "active": False,
-                        "need_auth": False,
-                        "staff_only": False,
-                    },
-                ],
-                "show_searchbar": True,
-                "show_usermenu": True,
-                "show_language_selector": True,
-                "show_theme_toggle": True,
-            }
-            {# fmt:on #}
+                    "links": [
+                        {
+                            "text": _("Startseite"),
+                            "icon": {"name": "home", "size": "small"},
+                            "view_name": "storybook_view",
+                            "active": True,
+                            "need_auth": False,
+                            "staff_only": False,
+                        },
+                        {
+                            "text": _("Über"),
+                            "open_modal": "about-modal",
+                            "active": False,
+                            "need_auth": False,
+                            "staff_only": False,
+                        },
+                    ],
+                    "searchbar_request_view": "search_view",
+                    "show_usermenu": True,
+                    "show_language_selector": True,
+                    "show_theme_toggle": True,
+                }
+                {# fmt:on #}
+            </div>
+            {% include "insight_ui/components/parameter_table.html" with rows=config_params %}
         </div>
-
-        <h5 class="mt-4">brand</h5>
-        <p>Beinhaltet die Einstellungen für den Titel und das daneben stehende Logo. Das Logo ist optional und wenn kein Pfad angegeben werden sollte, wird das standard Logo verwendet. Die Variable <b>view_name</b> wird verwendet, um den Nutzer auf die entsprechende Seite zu schicken, sollte dieser auf den Titel klicken. Erwartet wird der Name der View keine URL, da der Wert intern mit <span class="inline-tag">&lcub;% url view_name %&rcub;</span> aufgelöst wird.</p>
-
-        <h5 class="mt-2">links</h5>
-        <i>Todo</i>
-
-        <h5 class="mt-2">show_...</h5>
-        <ul class="list-disc leading-relaxed ms-8">
-            <li><span class="inline-tag">show_searchbar</span> (<i>bool</i>): <b>True</b> wenn eine Suchleiste nach den Links angezeigt werden soll.</li>
-            <li><span class="inline-tag">show_usermenu</span> (<i>bool</i>): <b>True</b> wenn ein Benutzermenü/Login an der rechten Seite angezeigt werden soll.</li>
-            <li><span class="inline-tag">show_language_selector</span> (<i>bool</i>): <b>True</b> wenn eine Sprachauswahl an der rechten Seite angezeigt werden soll.</li>
-            <li><span class="inline-tag">show_theme_toggle</span> (<i>bool</i>): <b>True</b> wenn der Theme-Toggle (hell/dunkel) an der rechten Seite angezeigt werden soll.</li>
-        </ul>
-
-        <p class="info-container text-base mt-4">
-            <span class="block font-bold italic text-lg">Info:</span>
-            {% blocktrans with bold_text='<b>show_login</b>'|safe %}
-                Der externe Parameter {{ bold_text }} wird zum verstecken des Anmeldebutton auf bestimmten Seiten bspw. der Anmeldeseite verwendet.
-            {% endblocktrans %}
-        </p>
+        <div class="space-y-2">
+            <h5>brand <i>(dict[str, str])</i></h5>
+            <p>Beschreibt den Titel und das Logo der Anwendung in der Navbar.</p>
+            {% include "insight_ui/components/parameter_table.html" with rows=brand_params %}
+        </div>
+        <div class="space-y-2">
+            <h5>logo <i>(dict[str, str])</i></h5>
+            <p>Beschreibt das Logo, welches neben dem Titel angezeigt wird.</p>
+            {% include "insight_ui/components/parameter_table.html" with rows=logo_params %}
+        </div>
+        <div class="space-y-2">
+            <h5>links <i>(list[dict])</i></h5>
+            <p>Enthält/Beschreibt die Navigationspunkte der Navbar.</p>
+            {% include "insight_ui/components/parameter_table.html" with rows=links_params %}
+        </div>
     </div>
 </section>
 

@@ -7,7 +7,7 @@
     {% endwith %}
   </div>
   {% if current_view == 'carousel' %}
-    {% carousel carousel_items=cards show_index=True slides_count=range_total_slides items_per_slide=2 %}
+    {% carousel carousel_items=cards show_index=True items_per_slide=2 %}
   {% elif current_view == 'card' %}
     <div class="flex flex-wrap gap-6">
       {% for card in cards %}
