@@ -5,17 +5,15 @@ Mit dem Differentiator lassen sich Unterschiede zwischen zwei Texten grafisch da
 ## Verwendung
 
 ```django
-    {{ textA|diff:textB|safe }}
+{% load insight_tags %}
+
+{{ textA|diff:textB|safe }}
 ```
 
 ## Parameter
 
 - **textA** (_str_): Die ursprüngliche Version des Textes.
 - **textB** (_str_): Die veränderte Version des Textes.
-
-## Customization
-
-- _Todo_
 
 ## Barrierefreiheit
 

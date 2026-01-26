@@ -58,6 +58,51 @@ from insight_ui.demo_context import (
 )
 from insight_ui.demo_utils import generate_payload, map_payload_to_cards, map_payload_to_table
 from insight_ui.forms import ChatForm
+from insight_ui.git_path_mapping import SCRIPT_PATHS, TEMPLATE_PATHS
+from insight_ui.parameter_context import (
+    get_3d_carousel_parameter_context,
+    get_accordion_parameter_context,
+    get_alert_parameter_context,
+    get_breadcrumb_parameter_context,
+    get_bullet_point_list_parameter_context,
+    get_button_parameter_context,
+    get_card_carousel_parameter_context,
+    get_card_parameter_context,
+    get_charts_parameter_context,
+    get_chat_parameter_context,
+    get_checkbox_group_parameter_context,
+    get_checkbox_parameter_context,
+    get_code_block_parameter_context,
+    get_differentiator_parameter_context,
+    get_dropdown_parameter_context,
+    get_footer_parameter_context,
+    get_form_parameter_context,
+    get_generic_filter_parameter_context,
+    get_geo_map_parameter_context,
+    get_image_carousel_parameter_context,
+    get_infinite_scroll_parameter_context,
+    get_input_field_parameter_context,
+    get_live_content_parameter_context,
+    get_modal_parameter_context,
+    get_multiselect_parameter_context,
+    get_navbar_parameter_context,
+    get_pagination_parameter_context,
+    get_popover_parameter_context,
+    get_progress_bar_parameter_context,
+    get_query_builder_parameter_context,
+    get_radio_group_parameter_context,
+    get_rangle_slider_parameter_context,
+    get_search_bar_parameter_context,
+    get_select_parameter_context,
+    get_sidebar_parameter_context,
+    get_step_bar_parameter_context,
+    get_table_parameter_context,
+    get_tabs_parameter_context,
+    get_toggle_parameter_context,
+    get_toggle_view_parameter_context,
+    get_tooltip_parameter_context,
+    get_web_socket_parameter_context,
+)
 from insight_ui.utils.pagination import get_page
 from insight_ui.utils.query_builder_utils import FilterFieldConfig, get_filter_settings_for_field
 
@@ -231,6 +276,12 @@ def index_view(request: HttpRequest) -> HttpResponse:
     return render(request, "insight_ui/index.html", context)
 
 
+def customization_view(request: HttpRequest) -> HttpResponse:
+    """Render customization page."""
+    context = get_base_context("customization_view") | get_sidebar_context() | get_drawer_context()
+    return render(request, "insight_ui/docs/customization.html", context)
+
+
 def component_detail_page_view(request: HttpRequest, component_name: str) -> HttpResponse:
     """
     Render detailpage of the specified component.
@@ -247,11 +298,64 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
     """
     demo_info = {
         "url": reverse("component_demo_view", kwargs={"component_name": component_name}),
+        "template_repo_url": TEMPLATE_PATHS.get(component_name, ""),
+        "script_repo_url": SCRIPT_PATHS.get(component_name, ""),
         "title": component_name,
         "id": component_name,
     }
 
-    context = get_component_demo_context()
+    parameter_context_func_map = {
+        "navbar": get_navbar_parameter_context,
+        "sidebar": get_sidebar_parameter_context,
+        "footer": get_footer_parameter_context,
+        "breadcrumb": get_breadcrumb_parameter_context,
+        "step_bar": get_step_bar_parameter_context,
+        "bullet_point_list": get_bullet_point_list_parameter_context,
+        "accordion": get_accordion_parameter_context,
+        "tabs": get_tabs_parameter_context,
+        "button": get_button_parameter_context,
+        "input_field": get_input_field_parameter_context,
+        "checkbox": get_checkbox_parameter_context,
+        "checkbox_group": get_checkbox_group_parameter_context,
+        "dropdown": get_dropdown_parameter_context,
+        "radio_group": get_radio_group_parameter_context,
+        "range_slider": get_rangle_slider_parameter_context,
+        "toggle_button": get_toggle_parameter_context,
+        "select": get_select_parameter_context,
+        "multiselect": get_multiselect_parameter_context,
+        "chat": get_chat_parameter_context,
+        "alert": get_alert_parameter_context,
+        "modal": get_modal_parameter_context,
+        "popover": get_popover_parameter_context,
+        "tooltip": get_tooltip_parameter_context,
+        "code_block": get_code_block_parameter_context,
+        "differentiator": get_differentiator_parameter_context,
+        "progress_bar": get_progress_bar_parameter_context,
+        "geo_map": get_geo_map_parameter_context,
+        "chart": get_charts_parameter_context,
+        "live_content": get_live_content_parameter_context,
+        "web_socket": get_web_socket_parameter_context,
+        "infinite_scroll": get_infinite_scroll_parameter_context,
+        "pagination": get_pagination_parameter_context,
+        "table": get_table_parameter_context,
+        "generic_filter": get_generic_filter_parameter_context,
+        "search_bar": get_search_bar_parameter_context,
+        "query_builder": get_query_builder_parameter_context,
+        "card": get_card_parameter_context,
+        "effect_cards": get_navbar_parameter_context,
+        "card_carousel": get_card_carousel_parameter_context,
+        "image_carousel": get_image_carousel_parameter_context,
+        "3D_carousel": get_3d_carousel_parameter_context,
+        "toggle_view": get_toggle_view_parameter_context,
+        "form": get_form_parameter_context,
+    }
+
+    parameter_context_func = parameter_context_func_map.get(component_name)
+
+    if not parameter_context_func:
+        return HttpResponse("Page not found", status=404)
+
+    context = get_component_demo_context() | parameter_context_func()
 
     if component_name == "button":
         context["outline_button_demo"] = {
@@ -282,7 +386,7 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
         context["demo"] = demo_info
         return render(request, f"insight_ui/docs/partial/{component_name}_detailpage.html", context)
 
-    context |= get_base_context() | get_sidebar_context()
+    context |= get_base_context("component_detail_page_view") | get_sidebar_context()
     context["template_name"] = f"insight_ui/docs/partial/{component_name}_detailpage.html"
     context["demo"] = demo_info
     return render(request, "insight_ui/docs/component_detailpage.html", context)

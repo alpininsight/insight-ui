@@ -16,30 +16,28 @@
 <!-- Component Documentation -->
 <section>
     <h2>{% trans "Verwendung" %}</h2>
-    <div id="Differentiator_Usage" data-insight-code-block="Django">
+    <p class="mb-4">
+        {% blocktrans with diff='<span class="inline-tag">&lcub;% diff %&rcub;</span>'|safe %}
+            Die Komponente wird über das {{ diff }} Tag verwendet.
+        {% endblocktrans %}
+    </p>
+    <div data-insight-code-block="Django">
+        &lcub;% load insight_tags %&rcub;
+
         &lcub;&lcub; textA|diff:textB|safe &rcub;&rcub;
     </div>
 </section>
 
 <section>
     <h3>{% trans "Parameter" %}</h3>
-    <ul class="list-disc leading-relaxed ms-8">
-        <li><span class="inline-tag">textA</span> (<i>str</i>): Die ursprüngliche Version des Textes.</li>
-        <li><span class="inline-tag">textB</span> (<i>str</i>): Die veränderte Version des Textes.</li>
-    </ul>
-</section>
-
-<!-- Customization -->
-<section>
-    <h2>{% trans "Customization" %}</h2>
-    <p><i>Todo</i></p>
+    {% include "insight_ui/components/parameter_table.html" with rows=main_params %}
 </section>
 
 <!-- A11y -->
 <section>
     <h2>{% trans "Accessability" %}</h2>
     <ul class="list-disc leading-relaxed ms-8 mt-6">
-        <li><i>Todo</i></li>
+        <li><i>Keine Anmerkungen.</i></li>
     </ul>
 </section>
 
@@ -49,6 +47,6 @@
 <section>
     <h2>{% trans "Related Topics" %}</h2>
     <ul class="list-disc leading-relaxed ms-8 mt-6">
-        <li><i>Todo</i></li>
+        <li><i>{% trans "No related components available." %}</i></li>
     </ul>
 </section>

@@ -31,12 +31,6 @@ Eine Liste von Aktion-Buttons.
 }
 ```
 
-## Customization
-
-Das Design der Modal Komponente befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/modal.html`.
-
-Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
-
 ## Barrierefreiheit
 
 - Das Modal wird semantisch korrekt als Dialogfenster definiert, durch die Attribute `role="dialog"` und `aria-modal="true"`.

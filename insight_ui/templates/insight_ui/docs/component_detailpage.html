@@ -3,24 +3,31 @@
 
 {% block title %}{% trans "Insight UI Components" %}{% endblock title %}
 
-{% block drawers %}
-    {% sidebar side="right" static=False %}
-{% endblock drawers %}
-
 {% block navbar %}
     {% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links show_login=True search_query=search_query %}
 {% endblock navbar %}
 
 {% block background_image %}
-    <img src="{% static "img/hubble-fiction.webp" %}" alt="Hubble Telescope" class="fixed left-1/4 -z-10 w-full h-dvh object-cover opacity-25">
+    {% comment %} <img src="{% static "img/hubble-fiction.webp" %}" alt="Hubble Telescope" class="fixed left-1/4 -z-10 w-full h-dvh object-cover opacity-25"> {% endcomment %}
 {% endblock background_image %}
 
 {% block sidebar_left %}
     {% sidebar sidebar_data=left_sidebar side="left" %}
 {% endblock sidebar_left %}
 
+{% block sidebar_right %}
+    {% comment %} Table of Contents {% endcomment %}
+    {% include "insight_ui/components/toc_sidebar.html" with side="right" static=True navbar_fixed=True %}
+    <script>
+        generateTOC({
+            contentSelector: "content",
+            tocSelector: "toc"
+        });
+    </script>
+{% endblock sidebar_right %}
+
 {% block content %}
-    <div id="content" class="bg-linear-to-r from-white from-30% to-white/60 dark:from-gray-900 dark:to-gray-900/75 w-full space-y-8 text-secondary leading-loose py-16 px-4 md:px-16">
+    <div id="content" class="bg-white dark:bg-gray-900 w-full space-y-8 text-secondary leading-loose py-16 px-4 md:px-16">
         {% include template_name %}
     </div>
 {% endblock content %}

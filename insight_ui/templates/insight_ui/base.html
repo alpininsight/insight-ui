@@ -4,7 +4,7 @@
 {% endif %}
 
 <!DOCTYPE html>
-<html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}">
+<html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" class="scroll-pt-24">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,21 +27,22 @@
         <meta name="author" content="{% block meta_author %}{{ INSIGHT_UI.meta.seo.author }}{% endblock meta_author %}">
 
         <!-- HTMX CDN -->
-        <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/htmx-ext-ws@2.0.2" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js" integrity="sha384-/TgkGk7p307TH7EXJDuUlgG3Ce1UVolAOFopFekQkkXihi5u/6OCvVKyz1W+idaz" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdn.jsdelivr.net/npm/htmx-ext-ws@2.0.4" integrity="sha384-1RwI/nvUSrMRuNj7hX1+27J8XDdCoSLf0EjEyF69nacuWyiJYoQ/j39RT1mSnd2G" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
         {% if INSIGHT_UI.load_prism %}
-            <!-- prism (Syntax-Highlighting) and clipboard (Copy to clipboard) CDN -->
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/prism.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/plugins/autoloader/prism-autoloader.min.js"></script>
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css">
+            <!-- prism (Syntax-Highlighting) CDN -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/prism.min.js" integrity="sha512-HiD3V4nv8fcjtouznjT9TqDNDm1EXngV331YGbfVGeKUoH+OLkRTCMzA34ecjlgSQZpdHZupdSrqHY+Hz3l6uQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/plugins/autoloader/prism-autoloader.min.js" referrerpolicy="no-referrer"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/plugins/line-numbers/prism-line-numbers.min.js" integrity="sha512-BttltKXFyWnGZQcRWj6osIg7lbizJchuAMotOkdLxHxwt/Hyo+cl47bZU0QADg+Qt5DJwni3SbYGXeGMB5cBcw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            <link rel="stylesheet" href="{% static 'insight_ui/css/prism.css' %}">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/plugins/line-numbers/prism-line-numbers.min.css" integrity="sha512-cbQXwDFK7lj2Fqfkuxbo5iD1dSbLlJGXGpfTDqbggqjHJeyzx88I3rfwjS38WJag/ihH7lzuGlGHpDBymLirZQ==" crossorigin="anonymous" referrerpolicy="no-referrer">
         {% endif %}
 
         {% if INSIGHT_UI.load_leaflet %}
             <!-- leaflet (geo) CDN -->
-            <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-            <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+            <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous" referrerpolicy="no-referrer">
         {% endif %}
 
         {% if INSIGHT_UI.load_echarts %}
@@ -51,6 +52,7 @@
 
         <!-- Insight UI Modular Utils  -->
         <script defer src="{% static 'insight_ui/js/insight-ui-utils.js' %}"></script>
+        <script src="{% static 'insight_ui/js/insight-ui-toc-generator.js' %}"></script>
 
         <!-- Main stylesheet -->
         <link rel="stylesheet" href="{% static INSIGHT_UI.stylesheet %}">
@@ -105,6 +107,7 @@
         <script defer src="{% static 'insight_ui/js/insight-ui-checkbox.js' %}"></script>
         <script defer src="{% static 'insight_ui/js/insight-ui-code-block.js' %}"></script>
         <script defer src="{% static 'insight_ui/js/insight-ui-collapsible.js' %}"></script>
+        <script defer src="{% static 'insight_ui/js/insight-ui-demo-container.js' %}"></script>
         <script defer src="{% static 'insight_ui/js/insight-ui-dropdown.js' %}"></script>
         <script defer src="{% static 'insight_ui/js/insight-ui-floater.js' %}"></script>
         <script defer src="{% static 'insight_ui/js/insight-ui-modal.js' %}"></script>

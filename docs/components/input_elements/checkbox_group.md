@@ -5,9 +5,9 @@ Mit der `checkbox_group` Komponente lassen sich Gruppen von Checkbox-Elementen e
 ## Verwendung
 
 ```django
-    {% load insight_tags %}
+{% load insight_tags %}
     
-    {% checkbox_group config=checkbox_config %}
+{% checkbox_group config=checkbox_config %}
 ```
 
 ## Parameter
@@ -39,12 +39,6 @@ Beschreibt die Checkbox-Gruppen Komponente.
 - **minimum_checked** (int): Die Anzahl der Checkbox-Elemente welche mindestens ausgewählt sein müssen.
 - **maximum_checked** (int): Die Anzahl der Checkbox-Elemente welche gleichzeitig ausgewählt sein dürfen.
 - **items**: (_list[dict]): Eine Liste der Checkbox-Elemente (siehe [Checkbox](checkbox.md)).
-
-## Customization
-
-Das Design der Checkbox-Gruppen Komponente befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/checkbox_group.html`.
-
-Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
 
 ## Barrierefreiheit
 

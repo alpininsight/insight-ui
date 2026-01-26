@@ -38,12 +38,6 @@ Das _data_ Dictionary besteht aus zwei Komponenten. Der _description_ und den Fo
 },
 ```
 
-## Customization
-
-Das Design des Footers befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/footer.html`.
-
-Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
-
 ## Barrierefreiheit
 
 - Die Überschriften der drei Spalten verwenden `<h4>`-Tags wodurch ein Screenreader zwischen den Spalten wechseln kann.

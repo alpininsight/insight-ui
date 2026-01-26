@@ -13,6 +13,10 @@ SECRET_KEY = config("SECRET_KEY", default="django-insecure-test-key-not-for-prod
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=False, cast=bool)
+IS_PROD = config("IS_PROD", default=False, cast=bool)
+
+if DEBUG:
+    print("Running in DEBUG mode!")
 
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=lambda v: [s.strip() for s in v.split(",")], default="*")
 
@@ -24,9 +28,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django_tailwind_cli",
     "insight_ui",
 ]
+
+if not IS_PROD:
+    INSTALLED_APPS += ["django_tailwind_cli"]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -54,11 +60,13 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.i18n",
+                "core.context_processor.project_context",
             ]
         },
     }
 ]
 
+WSGI_APPLICATION = "core.wsgi.application"
 ASGI_APPLICATION = "core.asgi.application"
 
 # Database
@@ -112,25 +120,18 @@ VERSION = "0.0.0"
 
 # Insight UI Einstellungen
 INSIGHT_UI = {
-    "theme": "light",
     "favicon": "insight_ui/favicon/favicon.ico",
     "favicon_32": "insight_ui/favicon/favicon-32x32.png",
     "favicon_16": "insight_ui/favicon/favicon-16x16.png",
     "apple_touch_icon": "insight_ui/favicon/apple-touch-icon.png",
     "safari_mask_icon": "insight_ui/svg/logo.svg",  # Used by Safari pinned tab
     "msapplication_TileColor": "#da532c",  # Sets the background color for a live tile (MS Edge only)
-    "theme_color": "#ffffff",
-    "stylesheet": "insight_ui/css/tailwind.css",
-    "branding": {"name": PROJECT_NAME, "logo": None},
-    "meta": {
-        "seo": {
-            "description": PROJECT_DESCRIPTION,
-            "keywords": "Django, Insight UI, base template",
-            "author": PROJECT_AUTHOR,
-        }
-    },
-    "load_prism": True,
-    "load_leaflet": True,
-    "load_echarts": True,
-    "JS_DEBUG": True,
+    "theme_color": "#ffffff",  # For the search bar on mobile devices
+    "stylesheet": "insight_ui/css/tailwind.css",  # Only change in case of using alternative stylesheet (currently not supported)  # noqa: E501
+    "navbar_fixed": True,  # Should the navigation stick at the top of the window (has impact on the sidebars as well)
+    "meta": {"seo": {"description": "My indispensable app", "keywords": "Django, Insight UI", "author": "It's me"}},
+    "load_prism": True,  # Turn to 'True' to use syntax highlighting
+    "load_leaflet": True,  # Turn to 'True' to use geo-maps
+    "load_echarts": True,  # Turn to 'True' to use Chart-Components
+    "JS_DEBUG": True,  # Turn to 'True' to enable build in browser console logging
 }

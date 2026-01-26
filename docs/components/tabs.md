@@ -40,12 +40,6 @@ Enthält die einzelnen Tabs und ein paar allgemeine Informationen über die Komp
     - **url** (_str_): Die URL an welche der Request gesendet werden soll.
     - **title** (_str_): Die Titel des Tabs.
 
-## Customization
-
-Das Design der Tabs Komponente befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/tabs.html`.
-
-Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
-
 ## Barrierefreiheit
 
 - Die Komponente Unterstützt Screenreader durch die entsprechenden Rollen: `role="tablist"`, `role="tab"`, `role="tabpanel"`.

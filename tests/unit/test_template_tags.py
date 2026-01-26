@@ -87,7 +87,7 @@ class WebsocketTemplateTagTest(TemplateTagsTestCase):
         """Test für grundlegende WebSocket Funktionalität."""
         template_string = """
         {% load insight_tags %}
-        {% insight_websocket ws_url="ws://localhost:8765" %}
+        {% insight_websocket url="ws://localhost:8765" %}
         """
         rendered = self.render_template(template_string)
         assert "ws://localhost:8765" in rendered
@@ -100,7 +100,7 @@ class InfiniteScrollTemplateTagTest(TemplateTagsTestCase):
         """Test für grundlegende infinite_scroll Funktionalität."""
         template_string = """
         {% load insight_tags %}
-        {% infinite_scroll request_view="more_items" %}
+        {% infinite_scroll view_name="more_items" %}
         """
         rendered = self.render_template(template_string)
         assert "/api/more-items/" in rendered
@@ -133,7 +133,7 @@ class AlertTemplateTagTest(TemplateTagsTestCase):
     def test_alert_types(self) -> None:
         """Test für verschiedene alert Typen."""
         for alert_type in ["info", "success", "warning", "error"]:
-            with self.subTest(alert_type=alert_type):
+            with self.subTest(type=alert_type):
                 template_string = f"""
                 {{% load insight_tags %}}
                 {{% alert message="Test message" type="{alert_type}" %}}
@@ -214,7 +214,7 @@ class ModalTemplateTagTest(TemplateTagsTestCase):
         """Test für grundlegende modal Funktionalität."""
         template_string = """
         {% load insight_tags %}
-        {% modal html_tag_id="test-modal" title="Test Modal" %}
+        {% modal tag_id="test-modal" title="Test Modal" %}
         """
         rendered = self.render_template(template_string)
         assert "test-modal" in rendered

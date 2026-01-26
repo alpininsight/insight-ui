@@ -18,12 +18,6 @@ Mit der `three_d_carousel` Komponente können beliebige Inhalte auf einzigartige
 - **face_camera** (_bool_): _True_ wenn die Karten immer in Richtung der Kamera ausgerichtet sein sollen.
 - **carousel_items** (_list_): Daten welche innerhalb des Karussell angezeigt werden sollen (frei definierbar).
 
-## Customization
-
-Das Design das Basis-Design der 3D Karussell Komponente befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/carousel/3D_carousel.html`.
-
-Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
-
 ## Barrierefreiheit
 
 - _Todo_
