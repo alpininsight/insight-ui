@@ -100,7 +100,7 @@ class InfiniteScrollTemplateTagTest(TemplateTagsTestCase):
         """Test für grundlegende infinite_scroll Funktionalität."""
         template_string = """
         {% load insight_tags %}
-        {% infinite_scroll request_view="more_items" %}
+        {% infinite_scroll view_name="more_items" %}
         """
         rendered = self.render_template(template_string)
         assert "/api/more-items/" in rendered

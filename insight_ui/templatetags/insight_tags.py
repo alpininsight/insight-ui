@@ -825,7 +825,7 @@ def insight_websocket(tag_id: str = "", url: str = "", initial_content: str = ""
         Dict mit Kontext-Variablen für das Template.
 
     """
-    return {"options": {"tag_id": tag_id, "url": url, "initial_content": initial_content}}
+    return {"tag_id": tag_id, "url": url, "initial_content": initial_content}
 
 
 @register.inclusion_tag("insight_ui/components/infinite_scroll.html")
