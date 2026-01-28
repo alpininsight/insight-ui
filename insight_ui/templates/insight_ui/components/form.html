@@ -3,13 +3,13 @@
 <form
   {% if tag_id %}id="{{ tag_id }}"{% endif %}
   {% if htmx %}
-    hx-post="{{ view_name }}"
+    hx-post="{% url view_name %}"
     hx-target="{{ htmx.target }}"
     hx-swap="{{ htmx.swap|default:'innerHTML' }}"
     hx-trigger="submit"
     hx-ext="progressive-enhancement"
   {% else %}
-    action="{{ view_name }}"
+    action="{% url view_name %}"
     method="post"
   {% endif %}
   class="space-y-6"
@@ -36,18 +36,12 @@
     {% endfor %}
   </div>
 
-  {% if actions %}
-    <div class="flex justify-end gap-2 pt-4 border-t border-gray-200 dark:border-gray-700">
-      {% for action in actions %}
-        <button
-          type="{{ action.type|default:'submit' }}"
-          class="bg-insight-{{ action.style }} rounded-sm text-white px-6 py-2 hover:bg-insight-{{ action.style }}-hover active:bg-insight-{{ action.style }}-active transition"
-        >
-          {{ action.text }}
-        </button>
-      {% endfor %}
-    </div>
-  {% endif %}
+  <div class="flex justify-end gap-2 pt-4 border-t border-gray-200 dark:border-gray-700">
+    {% if show_reset_button %}
+      <button type="reset" class="btn btn-secondary">{% trans "Reset" %}</button>
+    {% endif %}
+    <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+  </div>
 
   {% if htmx %}
     <!-- HTMX Loading Indicator -->

@@ -1149,10 +1149,10 @@ def form(  # noqa: PLR0913 (too many args)
     tag_id: str = "",
     title: str = "",
     description: str = "",
-    fields: Sequence[Mapping[str, Any]] | None = None,
-    actions: Sequence[Mapping[str, Any]] | None = None,
+    fields: Sequence[Mapping[str, Any]] | None = [],
+    show_reset_button: bool = False,
     view_name: str = "",
-    htmx: Mapping[str, Any] | None = None,
+    htmx_config: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """
     Rendert ein Formular mit HTMX-Unterstützung.
@@ -1163,26 +1163,21 @@ def form(  # noqa: PLR0913 (too many args)
         title (str): Der Titel des Formulars.
         description (str): Eine optionale Beschreibung.
         fields (list): Eine Liste von Formularfeldern.
-        actions (list): Eine Liste von Aktionbuttons.
+        show_reset_button (bool): Zeigt neben dem "Absenden" Button ein "Zurücksetzen" Button an.
         view_name (str): Die Name des Endpunktes für die Formular-Übermittlung.
-        htmx (dict): HTMX Konfiguration für AJAX-Requests.
+        htmx_config (dict): HTMX Konfiguration für AJAX-Requests.
 
     Returns:
     -------
         Dict mit Kontext-Variablen für das Template.
 
     """
-    # HTMX-Konfiguration
-    htmx_config = None
-    if htmx:
-        htmx_config = {"target": htmx.get("target"), "swap": htmx.get("swap")}
-
     return {
         "tag_id": tag_id,
         "title": title,
         "description": description,
-        "fields": [dict(field) for field in fields] if fields is not None else [],
-        "actions": [dict(action) for action in actions] if actions is not None else [],
+        "fields": fields,
+        "show_reset_button": show_reset_button,
         "view_name": view_name,
         "htmx": htmx_config,
     }

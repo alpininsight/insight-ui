@@ -583,7 +583,6 @@ def get_main_storybook_context() -> dict:
         | get_bullet_point_list_context()
         | get_accordion_context()
         | get_tabs_context()
-        | {"htmx_config": {"url": "/api/form-submit/", "method": "post", "target": "#htmx-form", "swap": "innerHTML"}}
     )
 
 
@@ -1079,10 +1078,8 @@ def get_form_context() -> dict:
                 "rows": 3,
             },
         ],
-        "form_actions": [
-            {"text": _("Absenden"), "type": "submit", "style": "primary"},
-            {"text": _("Zurücksetzen"), "type": "reset", "style": "secondary"},
-        ],
+        "show_reset_button": True,
+        "htmx_config": {"target": "#htmx-form", "swap": "innerHTML"},
     }
 
 

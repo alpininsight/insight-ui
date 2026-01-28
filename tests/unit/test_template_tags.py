@@ -241,7 +241,7 @@ class FormTemplateTagTest(TemplateTagsTestCase):
         """Test für grundlegende form Funktionalität."""
         template_string = """
         {% load insight_tags %}
-        {% form title="Test Form" %}
+        {% form title="Test Form" view_name="form_submit" %}
         """
         rendered = self.render_template(template_string)
         assert "Test Form" in rendered

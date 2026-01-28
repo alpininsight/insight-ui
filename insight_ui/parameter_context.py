@@ -1028,10 +1028,10 @@ def get_form_parameter_context() -> dict[str, list[str]]:
         ["description", "str", "Beschreibung des Formulars, welche direkt unter dem Title angezeigt wird.", "''"],
         ["fields", "list[dict[str, str]]", "Liste der einzelnen Formular-Felder.", "[]"],
         [
-            "actions",
-            "list[dict[str, str]]",
-            "Liste von Buttons, welche am unteren Rand des Formulars angezeigt werden.",
-            "[]",
+            "show_reset_button",
+            "bool",
+            "<b>True</b>, wenn neben dem 'Absenden' Button ein 'Zurücksetzen' Button angezeigt werden soll",
+            "False",
         ],
         [
             "view_name",
@@ -1039,10 +1039,10 @@ def get_form_parameter_context() -> dict[str, list[str]]:
             "Name der URL, an welche beim absenden des Formulars, der Request gesendet werden soll.",
             "''",
         ],
-        ["htmx", "dict[str, str]", "Konfiguration des HTMX Request, für asynchrone Requests.", "{}"],
+        ["htmx_config", "dict[str, str]", "Konfiguration des HTMX Request, für asynchrone Requests.", "{}"],
     ]
 
-    htmx_params = [
+    htmx_config_params = [
         ["target", "str", "ID des HTML-Containers, dessen Inhalt beim Response ausgetauscht werden soll.", "''"],
         [
             "swap",
@@ -1052,4 +1052,4 @@ def get_form_parameter_context() -> dict[str, list[str]]:
         ],
     ]
 
-    return {"main_params": main_params, "htmx_params": htmx_params}
+    return {"main_params": main_params, "htmx_config_params": htmx_config_params}

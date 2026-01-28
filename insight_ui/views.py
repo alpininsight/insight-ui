@@ -57,7 +57,7 @@ from insight_ui.demo_context import (
     get_utils_storybook_context,
 )
 from insight_ui.demo_utils import generate_payload, map_payload_to_cards, map_payload_to_table
-from insight_ui.forms import ChatForm
+from insight_ui.forms import ChatForm, FormDemoForm
 from insight_ui.git_path_mapping import SCRIPT_PATHS, TEMPLATE_PATHS
 from insight_ui.parameter_context import (
     get_3d_carousel_parameter_context,
@@ -217,56 +217,42 @@ def form_submit(request: HttpRequest) -> HttpResponse | JsonResponse:
     partial template data if this is a htmx request or do a whole page reload.
     """
     logger.debug("Empfangene POST-Daten: %s", request.POST)
-    logger.debug("Content-Type: %s", request.content_type)
 
-    name = request.POST.get("name", "")
-    email = request.POST.get("email", "")
-    message = request.POST.get("message", "")
-
-    logger.info("Extrahierte Werte - Name: '%s', Email: '%s', Message: '%s'", name, email, message)
-
-    # Simple validation
-    errors = {}
-    if not name:
-        errors["name"] = _("Name ist erforderlich")
-    if not email:
-        errors["email"] = _("E-Mail ist erforderlich")
-    elif "@" not in email:
-        errors["email"] = _("Ungültige E-Mail-Adresse")
-
-    if errors:
-        logger.warning("Formular-Validierungsfehler: %s", errors)
-
-        # Return error with partial template as it is a htmx request
+    form = FormDemoForm(request.POST)
+    if form.is_valid():
+        # Return partial template without redirect as it is a htmx request
         if request.headers.get("HX-Request"):
-            html = render_to_string("insight_ui/components/form_errors.html", {"errors": errors, "type": "error"})
-            return HttpResponse(html, status=400)
+            success_html = render_to_string(
+                "insight_ui/components/form_success.html",
+                {
+                    "message": _("AJAX Formular erfolgreich übermittelt!"),
+                    "title": form.cleaned_data["title"],
+                    "firstname": form.cleaned_data["firstname"],
+                    "lastname": form.cleaned_data["lastname"],
+                    "type": "success",
+                },
+            )
+            return HttpResponse(success_html, status=200)
 
-        # Retrieve necessary context data and perform a whole page reload to present form issues
+        # Retrieve necessary context data and perform a whole page reload to present form success
         context = get_form_storybook_context()
-        context["form_errors"] = errors
-        context["form_data"] = {"name": name, "email": email, "message": message}
-        return render(request, "insight_ui/storybook.html", context)
+        context["form_success"] = {
+            "message": _("Formular erfolgreich übermittelt!"),
+            "title": form.cleaned_data["title"],
+            "firstname": form.cleaned_data["firstname"],
+            "lastname": form.cleaned_data["lastname"],
+            "type": "success",
+        }
 
-    logger.info("Formular erfolgreich verarbeitet")
-
-    # Return partial template without redirect as it is a htmx request
+    # Return error with partial template as it is a htmx request
     if request.headers.get("HX-Request"):
-        success_html = render_to_string(
-            "insight_ui/components/form_success.html",
-            {"message": _("Formular erfolgreich übermittelt!"), "name": name, "email": email, "type": "success"},
-        )
-        return HttpResponse(success_html)
+        html = render_to_string("insight_ui/components/form_errors.html", {"errors": form.errors, "type": "error"})
+        return HttpResponse(html, status=400)
 
-    # Retrieve necessary context data and perform a whole page reload to present form success
+    # Retrieve necessary context data and perform a whole page reload to present form issues
     context = get_form_storybook_context()
-    context["form_success"] = {
-        "message": _("Normales Formular erfolgreich übermittelt!"),
-        "name": name,
-        "email": email,
-        "type": "success",
-    }
-
+    context["errors"] = form.errors
+    context["type"] = "error"
     return render(request, "insight_ui/storybook.html", context)
 
 
