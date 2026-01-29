@@ -8,7 +8,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.views.decorators.clickjacking import xframe_options_exempt
-from django.views.decorators.http import require_GET, require_http_methods
+from django.views.decorators.http import require_GET, require_POST
 
 from insight_ui.demo_context import (
     DEMO_FIELDS,
@@ -122,6 +122,7 @@ def get_allowed_operators(request: HttpRequest) -> JsonResponse:
     return JsonResponse({"operators": allowed_operators, "values": possible_values, "inputType": input_type})
 
 
+@require_POST
 def chat_response(request: HttpRequest) -> HttpResponse:
     """Chat request endpoint to answer on chat messages."""
     form = ChatForm(request.POST)
@@ -132,6 +133,7 @@ def chat_response(request: HttpRequest) -> HttpResponse:
     return HttpResponse(status=204)  # no content
 
 
+@require_GET
 def pagination(request: HttpRequest) -> HttpResponse:
     """Pagination endpoint to retrieve data of the desired page."""
     page_param = request.GET.get("page")
@@ -155,7 +157,7 @@ def pagination(request: HttpRequest) -> HttpResponse:
     return render(request, "insight_ui/storybook.html", context)
 
 
-@require_http_methods(["GET"])
+@require_GET
 def live_data_view(request: HttpRequest) -> HttpResponse | JsonResponse:
     """HTMX endpoint for live data feed."""
     current_time = datetime.now(tz=UTC).strftime("%H:%M:%S")
@@ -174,7 +176,7 @@ def live_data_view(request: HttpRequest) -> HttpResponse | JsonResponse:
     return JsonResponse(data)
 
 
-@require_http_methods(["GET"])
+@require_GET
 def more_items_view(request: HttpRequest) -> HttpResponse | JsonResponse:
     """HTMX endpoint for infinite scroll."""
     page = int(request.GET.get("page", 1))
@@ -208,7 +210,7 @@ def more_items_view(request: HttpRequest) -> HttpResponse | JsonResponse:
     return JsonResponse({"items": new_items, "has_next": has_next, "auto_fetch": auto_fetch, "view_name": view_name})
 
 
-@require_http_methods(["POST"])
+@require_POST
 def form_submit(request: HttpRequest) -> HttpResponse | JsonResponse:
     """
     Endpoint for form validation and handling.
@@ -256,18 +258,21 @@ def form_submit(request: HttpRequest) -> HttpResponse | JsonResponse:
     return render(request, "insight_ui/storybook.html", context)
 
 
+@require_GET
 def index_view(request: HttpRequest) -> HttpResponse:
     """Render index page."""
     context = get_base_context() | get_sidebar_context() | get_drawer_context()
     return render(request, "insight_ui/index.html", context)
 
 
+@require_GET
 def customization_view(request: HttpRequest) -> HttpResponse:
     """Render customization page."""
     context = get_base_context("customization_view") | get_sidebar_context() | get_drawer_context()
     return render(request, "insight_ui/docs/customization.html", context)
 
 
+@require_GET
 def component_detail_page_view(request: HttpRequest, component_name: str) -> HttpResponse:
     """
     Render detailpage of the specified component.
@@ -378,6 +383,7 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
     return render(request, "insight_ui/docs/component_detailpage.html", context)
 
 
+@require_GET
 @xframe_options_exempt
 def component_demo_view(request: HttpRequest, component_name: str) -> HttpResponse:
     """
@@ -457,6 +463,7 @@ def component_demo_view(request: HttpRequest, component_name: str) -> HttpRespon
     return render(request, "insight_ui/docs/components.html", context)
 
 
+@require_GET
 def storybook_view(request: HttpRequest, storybook_name: str) -> HttpResponse:
     """
     Render all components of the specified storybook.
@@ -518,23 +525,23 @@ def toggle_view(request: HttpRequest) -> HttpResponse:
         "name": "view",
         "param_name": "view",
         "items": [
-            {"id": "card-view", "value": "card", "icon": {"name": "cards"}},
-            {"id": "table-view", "value": "table", "icon": {"name": "list"}},
-            {"id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},
+            {"tag_id": "card-view", "value": "card", "icon": {"name": "cards"}},
+            {"tag_id": "table-view", "value": "table", "icon": {"name": "list"}},
+            {"tag_id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},
         ],
     }
 
     if view == "card":
         context["cards"] = map_payload_to_cards(payload)
-        logger.info("log: toggle_view - Kartenansicht ausgewählt")
+        logger.debug("log: toggle_view - Kartenansicht ausgewählt")
     elif view == "carousel":
         context["cards"] = map_payload_to_cards(payload)
-        logger.info("log: toggle_view - Karussell-Ansicht ausgewählt")
+        logger.debug("log: toggle_view - Karussell-Ansicht ausgewählt")
     else:
         # default: table view
         headers, rows = map_payload_to_table(payload)
         context["data"] = {"empty_msg": "Keine Daten vorhanden!", "headers": headers, "rows": rows}
-        logger.info("log: toggle_view - Tabellenansicht ausgewählt")
+        logger.debug("log: toggle_view - Tabellenansicht ausgewählt")
 
     return render(request, "insight_ui/components/toggle_view.html", context)
 
