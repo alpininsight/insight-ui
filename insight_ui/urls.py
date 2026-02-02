@@ -18,4 +18,5 @@ urlpatterns = [
     path("docs/<str:storybook_name>/", views.storybook_view, name="storybook_view"),
     path("", views.index_view, name="index_view"),
     path("docs/customization", views.customization_view, name="customization_view"),
+    path("docs/installation", views.installation_view, name="installation_view"),
 ]

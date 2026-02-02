@@ -77,6 +77,9 @@
     h5 {
         @apply text-base font-semibold text-insight-text-primary dark:text-white mb-1;
     }
+    hr {
+        @apply text-gray-300 dark:text-gray-600;
+    }
 }
 
 @layer components {

@@ -15,9 +15,17 @@ def get_navbar_context(current_view: str = "index_view") -> dict:
             "staff_only": False,
         },
         {
+            "text": _("Installation"),
+            "view_name": "installation_view",
+            "icon": {"name": "download", "size": "small"},
+            "active": False,
+            "need_auth": False,
+            "staff_only": False,
+        },
+        {
             "text": _("Customization"),
             "view_name": "customization_view",
-            "icon": {"name": "tools", "size": "small"},
+            "icon": {"name": "settings", "size": "small"},
             "active": False,
             "need_auth": False,
             "staff_only": False,
@@ -92,7 +100,6 @@ def get_navbar_context(current_view: str = "index_view") -> dict:
             "show_usermenu": False,
             "show_language_selector": True,
             "show_theme_toggle": True,
-            "fixed": True,
         }
     }
 
