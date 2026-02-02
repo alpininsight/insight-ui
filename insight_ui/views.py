@@ -55,12 +55,12 @@ from insight_ui.component_details.parameter_context import (
     get_tooltip_parameter_context,
     get_web_socket_parameter_context,
 )
+from insight_ui.context import get_base_context, get_icon_context
 from insight_ui.demo_context import (
     DEMO_FIELDS,
     get_3d_carousel_context,
     get_accordion_context,
     get_alert_context,
-    get_base_context,
     get_breadcrumb_context,
     get_bullet_point_list_context,
     get_card_carousel_context,
@@ -261,22 +261,29 @@ def form_submit(request: HttpRequest) -> HttpResponse | JsonResponse:
 @require_GET
 def index_view(request: HttpRequest) -> HttpResponse:
     """Render index page."""
-    context = get_base_context() | get_sidebar_context() | get_drawer_context()
+    context = get_base_context() | get_sidebar_context()
     return render(request, "insight_ui/index.html", context)
 
 
 @require_GET
 def customization_view(request: HttpRequest) -> HttpResponse:
     """Render customization page."""
-    context = get_base_context("customization_view") | get_sidebar_context() | get_drawer_context()
+    context = get_base_context("customization_view") | get_sidebar_context()
     return render(request, "insight_ui/docs/customization.html", context)
 
 
 @require_GET
 def installation_view(request: HttpRequest) -> HttpResponse:
     """Render installation page."""
-    context = get_base_context("installation_view") | get_sidebar_context() | get_drawer_context()
+    context = get_base_context("installation_view") | get_sidebar_context()
     return render(request, "insight_ui/docs/installation.html", context)
+
+
+@require_GET
+def icon_view(request: HttpRequest) -> HttpResponse:
+    """Render icon page."""
+    context = get_icon_context() | get_base_context("icon_view") | get_sidebar_context()
+    return render(request, "insight_ui/docs/icons.html", context)
 
 
 @require_GET

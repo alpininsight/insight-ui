@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<div class="bg-white dark:bg-gray-800 rounded overflow-auto">
+<div class="bg-white dark:bg-gray-900 rounded-sm overflow-auto">
   <table class="table-auto w-full">
     {% if caption %}
       <caption class="text-sm text-secondary">{{ caption }}</caption>
@@ -8,7 +8,7 @@
 
     {% if headers %}
       <thead class="text-primary">
-        <tr class="border-b border-gray-400 dark:border-gray-500">
+        <tr class="border-b border-gray-400 dark:border-gray-600">
           {% for header in headers %}
             <th class="text-start text-sm px-4 py-2" scope="col">{{ header }}</th>
           {% endfor %}
@@ -18,7 +18,7 @@
 
     <tbody class="text-primary">
       {% for row in rows %}
-        <tr class="border-b border-gray-200 dark:border-gray-600">
+        <tr class="border-b border-gray-200 dark:border-gray-800">
           {% for cell in row %}
             <td class="text-start text-sm px-4 py-3">{{ cell|safe }}</td>
           {% endfor %}

@@ -271,7 +271,7 @@ def get_drawer_context() -> dict:
                         },
                         {"text": _("Tasks"), "icon": {"name": "home", "size": "small"}, "url": reverse("index_view")},
                         {
-                            "text": _("Calender"),
+                            "text": _("Calendar"),
                             "icon": {"name": "home", "size": "small"},
                             "url": reverse("index_view"),
                         },

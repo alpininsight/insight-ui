@@ -19,4 +19,5 @@ urlpatterns = [
     path("", views.index_view, name="index_view"),
     path("docs/customization", views.customization_view, name="customization_view"),
     path("docs/installation", views.installation_view, name="installation_view"),
+    path("docs/icons", views.icon_view, name="icon_view"),
 ]
