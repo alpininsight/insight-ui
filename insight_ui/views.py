@@ -280,6 +280,13 @@ def installation_view(request: HttpRequest) -> HttpResponse:
 
 
 @require_GET
+def base_template_view(request: HttpRequest) -> HttpResponse:
+    """Render base_template page."""
+    context = get_base_context("base_template_view") | get_sidebar_context()
+    return render(request, "insight_ui/docs/base_template.html", context)
+
+
+@require_GET
 def icon_view(request: HttpRequest) -> HttpResponse:
     """Render icon page."""
     context = get_icon_context() | get_base_context("icon_view") | get_sidebar_context()

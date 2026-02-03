@@ -1,0 +1,256 @@
+{% extends "insight_ui/base.html" %}
+{% load static insight_tags i18n %}
+
+{% block title %}{% trans "Insight UI - Base Template" %}{% endblock title %}
+
+{% block navbar %}
+    {% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links show_login=True search_query=search_query %}
+{% endblock navbar %}
+
+{% block sidebar_left %}
+    {% sidebar sidebar_data=left_sidebar side="left" %}
+{% endblock sidebar_left %}
+
+{% block content %}
+    <div id="content" class="bg-white dark:bg-gray-900 w-full space-y-12 text-secondary leading-loose py-16 px-4 md:px-16">
+        <div class="space-y-8">
+            <h1>{% trans "Base Template" %}</h1>
+            <p>
+                Das Basis-Template dient als Grundlage für sämtliche Seiten der Anwendung.
+                Es bietet ein semantisch korrektes Grundgerüst inklusive <span class="inline-tag">&lcub;% block title %&rcub;</span>.
+                Es können bei Bedarf auch weitere JavaScript Bibliotheken verlinkt werden, durch den <span class="inline-tag">&lt;meta&gt;</span> Tags für Icons, SEO, die Einbindung der internen JavaScript- und CSS-Dateien und ein Grundgerüst für den eigentlichen Inhalt.
+            </p>
+
+            <div data-insight-code-block="Django">
+                &lcub;% extends "insight_ui/base.html" %&rcub;
+            </div>
+        </div>
+        <hr>
+        <section class="space-y-12">
+            <div>
+                <h2>&lt;head&gt;</h2>
+                <p>Im <b>Head</b> werden alle benötigten JavaScript Bibliotheken verlinkt, sowie die SEO und das Favicon definiert.</p>
+
+                <ul class="list-disc ms-8 space-y-2 *:border-b *:border-gray-300 *:dark:border-gray-700">
+                    <li>
+                        <span class="inline-tag">&lcub;% block title %&rcub;</span>
+                        <p>Definiert den Title der Seite, welcher u.a. oben im Browser-Tab angezeigt wird.</p>
+                    </li>
+                    <li>
+                        <span class="inline-tag">&lcub;% block extra_head %&rcub;</span>
+                        <p>Zum Einbinden weiterer JavaScript Libraries.</p>
+                    </li>
+                </ul>
+
+                <p class="info-container text-base mt-4">
+                    <span class="block font-bold italic text-lg">Info:</span>
+                    {% blocktrans with bold_text='<b>INSIGHT_UI</b>'|safe file='<span class="inline-tag">settings.py</span>'|safe %}
+                        Das Favicon, die SEO Angaben, sowie weitere Meta-Information können über die {{ bold_text }} Einstellungen in der {{ file }} angepasst werden.
+                    {% endblocktrans %}
+                </p>
+            </div>
+        </section>
+        <section class="space-y-12">
+            <div>
+                <h2>&lt;body&gt;</h2>
+                <p>
+                    Der <b>Body</b> stellt ein, aus mehreren Blöcken bestehendes Grundgerüst für den Inhalt bereit.
+                    Jeder Block ist für einen bestimmten Zweck vorgesehen und sorgt dafür, dass das layout zusammen passt.
+                    Das Grundgerüst besteht aus den folgenden Blöcken:
+                </p>
+
+                <ul class="list-disc ms-8 space-y-2 *:border-b *:border-gray-300 *:dark:border-gray-700">
+                    <li>
+                        <span class="inline-tag">&lcub;% block background_image %&rcub;</span>
+                        <p>Dieser Block kann verwendet werden, um etwas hinter allen anderen Blöcken anzuzeigen.</p>
+                    </li>
+                    <li>
+                        <span class="inline-tag">&lcub;% block navbar %&rcub;</span>
+                        <p>Der Block ist für die Navbar vorgesehen.</p>
+                    </li>
+                    <li>
+                        <span class="inline-tag">&lcub;% block drawers %&rcub;</span>
+                        <p>Dieser Block ist für ausklappbare Sidebars vorgesehen.</p>
+                    </li>
+                    <li>
+                        <span class="inline-tag">&lcub;% block sidebar_left %&rcub;</span>
+                        <p>Dieser Block befindet sich als erstes (links) im Hauptbereich und ist daher für die linke Sidebar vorgesehen.</p>
+                    </li>
+                    <li>
+                        <span class="inline-tag">&lcub;% block sidebar_right %&rcub;</span>
+                        <p>Dieser Block befindet sich als letztes (rechts) im Hauptbereich und ist daher für die rechte Sidebar vorgesehen.</p>
+                    </li>
+                    <li>
+                        <span class="inline-tag">&lcub;% block content %&rcub;</span>
+                        <p>Dieser Block befindet sich zwischen den Sidebar Blöcken und ist für den Hauptinhalt vorgesehen.</p>
+                    </li>
+                    <li>
+                        <span class="inline-tag">&lcub;% block footer %&rcub;</span>
+                        <p>Der Block ist für den Footer vorgesehen und wird nach dem Hauptbereich angezeigt.</p>
+                    </li>
+                    <li>
+                        <span class="inline-tag">&lcub;% block extra_scripts %&rcub;</span>
+                        <p>Zum Einbinden weiterer JavaScript Libraries.</p>
+                    </li>
+                </ul>
+
+                <p class="info-container text-base mt-4">
+                    <span class="block font-bold italic text-lg">Info:</span>
+                    {% blocktrans with block_title='<span class="inline-tag">&lcub;% block title %&rcub;</span>'|safe block_content='<span class="inline-tag">&lcub;% block content %&rcub;</span>'|safe %}
+                        Diese Blöcke müssen nicht zwangsläufig verwendet werden, allerdings ist es empfehlenswert, da sich ein paar Strukturelle Gegebenheiten mit sich bringen. Theoretisch könnte aber auch alles in den {{ block_title }}. Es können bei Bedarf auch weitere JavaScript Bibliotheken verlinkt werden, durch den {{ block_content }} gepackt werden.
+                    {% endblocktrans %}
+                </p>
+            </div>
+
+            <section class="space-y-4">
+                <h3>&lcub;% block background_image %&rcub;</h3>
+                <p>Dieser Block befindet sich sozusagen hinter dem Eigentlichen Inhalt und kann dazu verwendet werden, ein Hintergrundbild einzubinden, welches fixiert ist, also sich bei scrollen mitbewegt.</p>
+
+                <div data-insight-code-block="Django">
+                    {# fmt:off #}
+                    &lcub;% block background_image %&rcub;
+                        &lt;img src="&lcub;% static "img/my_bg_image.png" %&rcub;" alt="My awesome background image." class="fixed left-1/4 -z-10 w-full h-dvh object-cover opacity-25"&gt;
+                    &lcub;% endblock background_image %&rcub;
+                    {# fmt:on #}
+                </div>
+            </section>
+            <section class="space-y-4">
+                <h3>&lcub;% block navbar %&rcub;</h3>
+                <p>Die Navigationsleiste hat einen eigenen Bereich. Dieser ist vor dem restlichen Inhalt definiert, wodurch dieser immer als ersten auf der Seite auftaucht.</p>
+
+                <div data-insight-code-block="Django">
+                    {# fmt:off #}
+                    &lcub;% load insight_tags %&rcub;
+
+                    &lcub;% block navbar %&rcub;
+                        &lcub;% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links show_login=True search_query=search_query %&rcub;
+                    &lcub;% endblock navbar %&rcub;
+                    {# fmt:on #}
+                </div>
+
+                <i>
+                    Für weitere Information über die Komponente, siehe <a
+                        href="{% url 'component_detail_page_view' 'navbar' %}"
+                        hx-get="{% url 'component_detail_page_view' 'navbar' %}"
+                        hx-target="#content"
+                        hx-swap="innerHTML show:window:top"
+                        hx-push-url="true"
+                        class="text-link"
+                    >
+                        {% trans "navbar" %}
+                    </a>.
+                </i>
+            </section>
+            <section class="space-y-4">
+                <h3>&lcub;% block drawers %&rcub;</h3>
+                <p>
+                    In diesem Block können sog. <b>Drawer</b> eingebettet werden. Drawer sind ein- und ausklappbare Sidebars und liegen gewöhnlich über dem Inhalt.
+                    Daher haben sie ihren eigenen Block, damit sie nicht mit dem restlichen Layout in Konflikt geraten.
+                </p>
+
+                <div data-insight-code-block="Django">
+                    {# fmt:off #}
+                    &lcub;% load insight_tags %&rcub;
+
+                    &lcub;% block drawers %&rcub;
+                        &lcub;% sidebar sidebar_data=left_sidebar side="left" static=False %&rcub;
+                    &lcub;% endblock drawers %&rcub;
+                    {# fmt:on #}
+                </div>
+
+                <i>
+                    Für weitere Information über die Komponente, siehe <a
+                        href="{% url 'component_detail_page_view' 'sidebar' %}"
+                        hx-get="{% url 'component_detail_page_view' 'sidebar' %}"
+                        hx-target="#content"
+                        hx-swap="innerHTML show:window:top"
+                        hx-push-url="true"
+                        class="text-link"
+                    >
+                        {% trans "Sidebar" %}
+                    </a>.
+                </i>
+            </section>
+            <section class="space-y-4">
+                <h3>&lcub;% block sidebar_right %&rcub; und &lcub;% block sidebar_left %&rcub;</h3>
+                <p>
+                    Zusätzlich zu dem <span class="inline-tag">&lcub;% block drawers %&rcub;</span> Block gibt es zwei Blöcke für statische <b>Sidebars</b>.
+                    Einen für eine Sidebar auf der rechten Seite des Hauptinhalt und einen für eine Sidebar auf der linken Seite.
+                    In diesem Fall bekommt der Hauptinhalt etwas weniger Platz und die Sidebar bleibt dauerhaft sichtbar.
+                </p>
+
+                <div data-insight-code-block="Django">
+                    {# fmt:off #}
+                    &lcub;% load insight_tags %&rcub;
+
+                    &lcub;% block sidebar_left %&rcub;
+                        &lcub;% sidebar sidebar_data=left_sidebar side="left" %&rcub;
+                    &lcub;% endblock sidebar_left %&rcub;
+
+                    &lcub;% block sidebar_right %&rcub;
+                        &lcub;% sidebar sidebar_data=right_sidebar side="right" %&rcub;
+                    &lcub;% endblock sidebar_right %&rcub;
+                    {# fmt:on #}
+                </div>
+
+                <i>
+                    Für weitere Information über die Komponente, siehe <a
+                        href="{% url 'component_detail_page_view' 'sidebar' %}"
+                        hx-get="{% url 'component_detail_page_view' 'sidebar' %}"
+                        hx-target="#content"
+                        hx-swap="innerHTML show:window:top"
+                        hx-push-url="true"
+                        class="text-link"
+                    >
+                        {% trans "Sidebar" %}
+                    </a>.
+                </i>
+            </section>
+            <section class="space-y-4">
+                <h3>content</h3>
+                <p>Dieser Blöcke ist für den Hauptinhalt der Seite vorgesehen. Hier kommt alles rein was rein soll.</p>
+                <p class="info-container text-base mt-4">
+                    <span class="block font-bold italic text-lg">Info:</span>
+                    {% blocktrans %}
+                        Der Block nimmt immer die volle Höhe des Fenstern ein, unabhängig vom Inhalt. Dadurch wird sichergestellt, das sich der Footer nicht mitten im Browserfenster hängt.
+                    {% endblocktrans %}
+                </p>
+            </section>
+            <section class="space-y-4">
+                <h3>&lcub;% block footer %&rcub;</h3>
+                <p>Direkt unter dem <span class="inline-tag">&lcub;% block content %&rcub;</span> befindet sich der <b>Footer</b>. Dieser schließt die Seite ab und befindet sich immer am Ende der Seite.</p>
+
+                <div data-insight-code-block="Django">
+                    {# fmt:off #}
+                    &lcub;% load insight_tags %&rcub;
+
+                    &lcub;% block footer %&rcub;
+                        &lcub;% footer data=footer_data %&rcub;
+                    &lcub;% endblock footer %&rcub;
+                    {# fmt:on #}
+                </div>
+
+                <i>
+                    Für weitere Information über die Komponente, siehe <a
+                        href="{% url 'component_detail_page_view' 'footer' %}"
+                        hx-get="{% url 'component_detail_page_view' 'footer' %}"
+                        hx-target="#content"
+                        hx-swap="innerHTML show:window:top"
+                        hx-push-url="true"
+                        class="text-link"
+                    >
+                        {% trans "Footer" %}
+                    </a>.
+                </i>
+            </section>
+            <section class="space-y-4">
+                <h3>&lcub;% block extra_scripts %&rcub;</h3>
+                <p>Zuletzt gibt es einen Block um zusätzliche JavaScript Dateien zu verlinken.</p>
+            </section>
+        </section>
+    </div>
+{% endblock content %}
+
+{% block footer %}
+    {% footer data=footer_data %}
+{% endblock footer %}

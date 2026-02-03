@@ -1,12 +1,14 @@
+from typing import Any
+
 from django.template.loader import render_to_string
 from django.utils.translation import gettext as _
 
 from insight_ui import config
 
 
-def get_navbar_context(current_view: str = "index_view") -> dict:
-    """Serve data for main navbar."""
-    links = [
+def get_main_page_links() -> list[dict[str, Any]]:
+    """Serve a list of links to the main pages."""
+    return [
         {
             "text": _("Home"),
             "view_name": "index_view",
@@ -19,6 +21,14 @@ def get_navbar_context(current_view: str = "index_view") -> dict:
             "text": _("Installation"),
             "view_name": "installation_view",
             "icon": {"name": "download", "size": "small"},
+            "active": False,
+            "need_auth": False,
+            "staff_only": False,
+        },
+        {
+            "text": _("Base Template"),
+            "view_name": "base_template_view",
+            "icon": {"name": "blueprint", "size": "small"},
             "active": False,
             "need_auth": False,
             "staff_only": False,
@@ -39,6 +49,13 @@ def get_navbar_context(current_view: str = "index_view") -> dict:
             "need_auth": False,
             "staff_only": False,
         },
+    ]
+
+
+def get_navbar_context(current_view: str = "index_view") -> dict:
+    """Serve data for main navbar."""
+    links = get_main_page_links()
+    links.append(
         {
             "text": _("Components"),
             "open_dropdown": "components-menu",
@@ -77,8 +94,8 @@ def get_navbar_context(current_view: str = "index_view") -> dict:
             "active": False,
             "need_auth": False,
             "staff_only": False,
-        },
-    ]
+        }
+    )
 
     for link in links:
         if link.get("view_name") is not None:
@@ -115,20 +132,15 @@ def get_navbar_context(current_view: str = "index_view") -> dict:
 
 def get_footer_context() -> dict:
     """Server data for main footer."""
+    links = get_main_page_links()
+
     return {
         "footer_data": {
             "description": {
                 "title": "Insight UI",
                 "text": "A modern, accessible, and responsive UI library for Django projects.",
             },
-            "links": [
-                {"text": _("Home"), "icon": {"name": "home", "size": "xs"}, "view_name": "index_view"},
-                {
-                    "text": _("Customization"),
-                    "icon": {"name": "tools", "size": "xs"},
-                    "view_name": "customization_view",
-                },
-            ],
+            "links": links,
             "contact": {"mail": {"url": "support@alpininsight.com"}, "imprint": "https://alpininsight.com/imprint/"},
             "copyright": {"year": 2025, "app_name": "Insight UI"},
         }
@@ -351,6 +363,12 @@ def get_icon_context() -> dict:
             "settings",
             "Anpassungen, Einstellungen, eher für feingranulare Einstellungen.",
             "Heroicons - adjustments-horizontal",
+        ],
+        [
+            render_to_string("insight_ui/components/icons.html", {"name": "blueprint"}),
+            "settings",
+            "Anpassungen, Einstellungen, eher für feingranulare Einstellungen.",
+            "Heroicons - cube-transparent",
         ],
     ]
 
