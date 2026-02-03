@@ -41,7 +41,7 @@
                 <ul>
                     {% for link in links %}
                         <li>
-                            <a href="{{ link.href }}" class="inline-flex gap-1 text-secondary hover:text-insight-text-link-hover dark:hover:text-insight-text-link-hover text-sm">
+                            <a href="{% url link.view_name %}" class="inline-flex gap-1 text-secondary hover:text-insight-text-link-hover dark:hover:text-insight-text-link-hover text-sm">
                                 {% if link.icon %}
                                     {% icon link.icon %}
                                 {% endif %}
