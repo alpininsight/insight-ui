@@ -3,7 +3,7 @@
 <div class="bg-white dark:bg-gray-900 rounded-sm">
     <table class="table-auto w-full">
         <thead class="text-primary">
-            <tr class="border-b border-gray-400 dark:border-gray-600">
+            <tr class="border-b border-gray-300 dark:border-gray-700">
                 <th class="text-start text-sm px-4 py-2" scope="col">{% trans "Name" %}</th>
                 <th class="text-start text-sm px-4 py-2" scope="col">{% trans "Typ" %}</th>
                 <th class="text-start text-sm px-4 py-2" scope="col">{% trans "Beschreibung" %}</th>
@@ -12,7 +12,7 @@
         </thead>
         <tbody class="text-primary">
             {% for row in rows %}
-                <tr class="border-b border-gray-200 dark:border-gray-800">
+                <tr class="odd:bg-gray-100 even:bg-white odd:dark:bg-gray-800 even:dark:bg-gray-900">
                     <td class="text-start text-sm px-4 py-3"><span class="inline-tag">{{ row.0 }}</span></td>
                     <td class="text-start text-sm px-4 py-3"><i>{{ row.1 }}</i></td>
                     <td class="text-start text-sm px-4 py-3">{{ row.2|safe }}</td>

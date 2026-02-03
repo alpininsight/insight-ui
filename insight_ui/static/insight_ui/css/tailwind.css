@@ -816,6 +816,9 @@
   .animate-spin {
     animation: var(--animate-spin);
   }
+  .cursor-copy {
+    cursor: copy;
+  }
   .cursor-pointer {
     cursor: pointer;
   }
@@ -836,6 +839,12 @@
   }
   .appearance-none {
     appearance: none;
+  }
+  .columns-2 {
+    columns: 2;
+  }
+  .columns-3 {
+    columns: 3;
   }
   .flex-col {
     flex-direction: column;
@@ -884,9 +893,6 @@
   }
   .gap-6 {
     gap: calc(var(--spacing) * 6);
-  }
-  .gap-8 {
-    gap: calc(var(--spacing) * 8);
   }
   .gap-12 {
     gap: calc(var(--spacing) * 12);
@@ -945,6 +951,13 @@
       --tw-space-x-reverse: 0;
       margin-inline-start: calc(calc(var(--spacing) * 4) * var(--tw-space-x-reverse));
       margin-inline-end: calc(calc(var(--spacing) * 4) * calc(1 - var(--tw-space-x-reverse)));
+    }
+  }
+  .space-x-8 {
+    :where(& > :not(:last-child)) {
+      --tw-space-x-reverse: 0;
+      margin-inline-start: calc(calc(var(--spacing) * 8) * var(--tw-space-x-reverse));
+      margin-inline-end: calc(calc(var(--spacing) * 8) * calc(1 - var(--tw-space-x-reverse)));
     }
   }
   .divide-y {
@@ -1635,6 +1648,17 @@
   .transform-3d {
     transform-style: preserve-3d;
   }
+  .\*\:border-b {
+    :is(& > *) {
+      border-bottom-style: var(--tw-border-style);
+      border-bottom-width: 1px;
+    }
+  }
+  .\*\:border-gray-300 {
+    :is(& > *) {
+      border-color: var(--color-gray-300);
+    }
+  }
   .group-hover\:rotate-y-180 {
     &:is(:where(.group):hover *) {
       @media (hover: hover) {
@@ -1735,6 +1759,16 @@
         --tw-translate-x: 100%;
         translate: var(--tw-translate-x) var(--tw-translate-y);
       }
+    }
+  }
+  .odd\:bg-gray-100 {
+    &:nth-child(odd) {
+      background-color: var(--color-gray-100);
+    }
+  }
+  .even\:bg-white {
+    &:nth-child(even) {
+      background-color: var(--color-white);
     }
   }
   .hover\:scale-105 {
@@ -2552,11 +2586,46 @@
       color: var(--color-white);
     }
   }
+  .\*\:dark\:border-gray-700 {
+    :is(& > *) {
+      &:where([data-theme=dark], [data-theme=dark] *) {
+        border-color: var(--color-gray-700);
+      }
+    }
+  }
+  .\*\:dark\:border-gray-800 {
+    :is(& > *) {
+      &:where([data-theme=dark], [data-theme=dark] *) {
+        border-color: var(--color-gray-800);
+      }
+    }
+  }
   .after\:dark\:border-gray-700 {
     &::after {
       content: var(--tw-content);
       &:where([data-theme=dark], [data-theme=dark] *) {
         border-color: var(--color-gray-700);
+      }
+    }
+  }
+  .odd\:dark\:bg-gray-700 {
+    &:nth-child(odd) {
+      &:where([data-theme=dark], [data-theme=dark] *) {
+        background-color: var(--color-gray-700);
+      }
+    }
+  }
+  .odd\:dark\:bg-gray-800 {
+    &:nth-child(odd) {
+      &:where([data-theme=dark], [data-theme=dark] *) {
+        background-color: var(--color-gray-800);
+      }
+    }
+  }
+  .even\:dark\:bg-gray-900 {
+    &:nth-child(even) {
+      &:where([data-theme=dark], [data-theme=dark] *) {
+        background-color: var(--color-gray-900);
       }
     }
   }
