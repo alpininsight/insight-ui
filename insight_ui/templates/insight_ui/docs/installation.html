@@ -12,10 +12,10 @@
 {% endblock sidebar_left %}
 
 {% block content %}
-    <div id="content" class="bg-white dark:bg-gray-900 w-full space-y-8 text-secondary leading-loose py-16 px-4 md:px-16">
+    <div id="content" class="bg-white dark:bg-gray-900 w-full space-y-12 text-secondary leading-loose py-16 px-4 md:px-16">
         <h1>Get started</h1>
-
-        <section class="space-y-8">
+        <hr>
+        <section class="space-y-4">
             <h2>Installation</h2>
             <p>Insight-UI wird wie gewohnt über ein Python Paketmanager wie <b>pip</b> oder <b>uv</b> installiert.</p>
             <div data-insight-code-block="bash">
@@ -28,67 +28,69 @@
                 {# fmt:on #}
             </div>
         </section>
+        <section class="space-y-12">
+            <div class="space-y-4">
+                <h2>Schnellstart</h2>
+                <p>Schritt Nr. 1 ist es <span class="inline-tag">insight-ui</span> zu den <span class="inline-tag">INSTALLED_APPS</span> in der <b>settings.py</b> hinzufügen:</p>
+                <div data-insight-code-block="python" data-insight-code-block-filename="settings.py">
+                    {# fmt:off #}
+                    INSTALLED_APPS = [
+                        # ...
+                        'insight_ui',
+                        # ...
+                    ]
+                    {# fmt:on #}
+                </div>
 
-        <section class="space-y-8">
-            <h2>Schnellstart</h2>
-            <p>Schritt Nr. 1 ist es <span class="inline-tag">inisght-ui</span> zu den <span class="inline-tag">INSTALLED_APPS</span> in der <b>settings.py</b> hinzufügen:</p>
-            <div data-insight-code-block="python" data-insight-code-block-filename="settings.py">
-                {# fmt:off #}
-                INSTALLED_APPS = [
-                    # ...
-                    'insight_ui',
-                    # ...
-                ]
-                {# fmt:on #}
+                <p>Anschließend kann der Entwicklungsserver gestartet werden <span class="inline-tag select-all">python manage.py runserver</span></p>
             </div>
+            <section class="space-y-4">
+                <h3>Base Template</h3>
+                <p>
+                    Um alle Funktionen von Insight-UI verwenden zu können, muss unser <a href="https://github.com/alpininsight/insight-ui/blob/develop/insight_ui/templates/insight_ui/base.html" class="text-link">Base Template</a> eingebunden werden.
+                </p>
+                <div data-insight-code-block="Django" data-insight-code-block-filename="my_template.html">
+                    {# fmt:off #}
+                    &lcub;% extends "insight_ui/base.html" %&rcub;
+                    {# fmt:on #}
+                </div>
+                <p>
+                    Damit die Konfiguration von Insight-UI geladen werden kann, müssen die entsprechende Variablen in den Kontext geladen werden.
+                    Dazu muss die Konfiguration in jeder View, welche das Base Template verwendet, übergeben werden. Siehe auch <a href="http://127.0.0.1:8000/docs/customization#settings" class="text-link">Konfiguration anpassen</a>.
+                </p>
+                <div data-insight-code-block="python" data-insight-code-block-filename="views.py">
+                    {# fmt:off #}
+                    from insight_ui import config
 
-            <p>Anschließend kann der Entwicklungsserver gestartet werden <span class="inline-tag select-all">python manage.py runserver</span></p>
+                    def my_view(request: HttpRequest) -> HttpResponse:
+                        """Render my new page."""
+                        context = config.get_config()
+                        return render(request, "insight_ui/docs/customization.html", context)
+                    {# fmt:on #}
+                </div>
+            </section>
+            <section class="space-y-4">
+                <h3>Insight Tags</h3>
+                <p>Um nun auch noch die Komponenten verwenden zu können, müssen noch die <span class="inline-tag">Insight Tags</span> geladen werden</p>
+                <div data-insight-code-block="Django" data-insight-code-block-filename="my_template.html">
+                    {# fmt:off #}
+                    &lcub;% extends "insight_ui/base.html" %&rcub;
 
-            <h3>Base Template</h3>
-            <p>
-                Um alle Funktionen von Insight-UI verwenden zu können, muss unser <a href="https://github.com/alpininsight/insight-ui/blob/develop/insight_ui/templates/insight_ui/base.html" class="text-link">Base Template</a> eingebunden werden.
-            </p>
-            <div data-insight-code-block="Django" data-insight-code-block-filename="my_template.html">
-                {# fmt:off #}
-                &lcub;% extends "insight_ui/base.html" %&rcub;
-                {# fmt:on #}
-            </div>
+                    &lcub;% load insight_tags %&rcub;
+                    {# fmt:on #}
+                </div>
 
-            <p>
-                Damit die Konfiguration von Insight-UI geladen werden kann, müssen die entsprechende Variablen in den Kontext geladen werden.
-                Dazu muss die Konfiguration in jeder View, welche das Base Template verwendet, übergeben werden. Siehe auch <a href="http://127.0.0.1:8000/docs/customization#settings" class="text-link">Konfiguration anpassen</a>.
-            </p>
-            <div data-insight-code-block="python" data-insight-code-block-filename="views.py">
-                {# fmt:off #}
-                from insight_ui import config
+                <p class="mt-4">Nun können auch die Komponenten verwendet werden:</p>
+                <div data-insight-code-block="Django" data-insight-code-block-filename="my_template.html">
+                    {# fmt:off #}
+                    &lcub;% extends "insight_ui/base.html" %&rcub;
 
-                def my_view(request: HttpRequest) -> HttpResponse:
-                    """Render my new page."""
-                    context = config.get_config()
-                    return render(request, "insight_ui/docs/customization.html", context)
-                {# fmt:on #}
-            </div>
+                    &lcub;% load insight_tags %&rcub;
 
-            <h3>Insight Tags</h3>
-            <p>Um nun auch noch die Komponenten verwenden zu können, müssen noch die <span class="inline-tag">Insight Tags</span> geladen werden</p>
-            <div data-insight-code-block="Django" data-insight-code-block-filename="my_template.html">
-                {# fmt:off #}
-                &lcub;% extends "insight_ui/base.html" %&rcub;
-
-                &lcub;% load insight_tags %&rcub;
-                {# fmt:on #}
-            </div>
-
-            <p>Nun können auch die Komponenten verwendet werden:</p>
-            <div data-insight-code-block="Django" data-insight-code-block-filename="my_template.html">
-                {# fmt:off #}
-                &lcub;% extends "insight_ui/base.html" %&rcub;
-
-                &lcub;% load insight_tags %&rcub;
-
-                &lcub;% alert message="It works!" type="success" dismissible=True %&rcub;
-                {# fmt:on #}
-            </div>
+                    &lcub;% alert message="It works!" type="success" dismissible=True %&rcub;
+                    {# fmt:on #}
+                </div>
+            </section>
         </section>
     </div>
 {% endblock content %}

@@ -12,15 +12,17 @@
 {% endblock sidebar_left %}
 
 {% block content %}
-    <div id="content" class="bg-white dark:bg-gray-900 w-full space-y-8 text-secondary leading-loose py-16 px-4 md:px-16">
-        <h1>Icons</h1>
-        <p>
-            Viele unserer Komponenten haben die Möglichkeit, ein optionales Icons anzuzeigen.
-            Überall dort, wo die Komponente ein Icon erwartet, kann eines der hier aufgelisteten Icons angegeben werden.
-            Abgesehen davon, können mit der <span class="inline-tag">icon</span> Komponente, überall nach belieben Icons eingebaut werden.
-        </p>
-
-        <section class="space-y-8">
+    <div id="content" class="bg-white dark:bg-gray-900 w-full space-y-12 text-secondary leading-loose py-16 px-4 md:px-16">
+        <div class="space-y-8">
+            <h1>Icons</h1>
+            <p>
+                Viele unserer Komponenten haben die Möglichkeit, ein optionales Icons anzuzeigen.
+                Überall dort, wo die Komponente ein Icon erwartet, kann eines der hier aufgelisteten Icons angegeben werden.
+                Abgesehen davon, können mit der <span class="inline-tag">icon</span> Komponente, überall nach belieben Icons eingebaut werden.
+            </p>
+        </div>
+        <hr>
+        <section class="space-y-4">
             <h2>{% trans "Usage" %}</h2>
             <p class="mb-4">
                 {% blocktrans with icon='<span class="inline-tag">&lcub;% icon %&rcub;</span>'|safe %}
@@ -37,8 +39,7 @@
                 {% include "insight_ui/components/parameter_table.html" with rows=main_params %}
             </section>
         </section>
-
-        <section class="space-y-8">
+        <section class="space-y-4">
             <h2>{% trans "Icon Portfolio" %}</h2>
             <p class="info-container text-base">
                 <span class="block font-bold italic text-lg">Info:</span>
@@ -48,11 +49,11 @@
                 {% endblocktrans %}
             </p>
             {% table data=icon_table %}
-            <section class="space-y-4">
-                <h3>{% trans "Sizes" %}</h3>
-                <p>Alles Icons können in unterschiedlichen Größen verwendet werden:</p>
-                {% table data=size_table %}
-            </section>
+        </section>
+        <section class="space-y-4">
+            <h2>{% trans "Sizes" %}</h2>
+            <p>Alles Icons können in unterschiedlichen Größen verwendet werden:</p>
+            {% table data=size_table %}
         </section>
     </div>
 {% endblock content %}
