@@ -1,8 +1,6 @@
 # Barrierefreiheit
 
-**_STOP_**: Der Inhalt ist momentan als Guide für Entwickler zu verstehen, da leider viele Komponenten noch bei weitem nicht komplett Barrierefrei sind.
-
-Insight UI unter der Beachtung der Barrierefreiheit entwickelt. Alle Komponenten entsprechen den WCAG 2.1 AA-Richtlinien und bieten eine optimale Benutzererfahrung für alle Benutzer, unabhängig von ihren Fähigkeiten oder der verwendeten Technologie.
+Insight UI soll unter der Beachtung der Barrierefreiheit entwickelt werden. Alle Komponenten müssen den WCAG 2.1 AA-Richtlinien entsprechen und sollen eine optimale Benutzererfahrung für alle Benutzer, unabhängig von ihren Fähigkeiten oder der verwendeten Technologie, bieten.
 
 ## Barrierefreiheitsfunktionen
 
@@ -54,14 +52,9 @@ Hier ist eine Checkliste, die Sie verwenden können, um sicherzustellen, dass Ih
 
 ## Testen auf Barrierefreiheit
 
-Django Insight UI enthält automatisierte Tests für Barrierefreiheit, aber wir empfehlen auch manuelle Tests:
-
 ### Automatisierte Tests
 
-```bash
-# Führen Sie die automatisierten Barrierefreiheitstests aus
-uv run pytest tests/accessibility/
-```
+- _Kommen vielleicht irgendwann._
 
 ### Manuelle Tests
 
