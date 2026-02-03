@@ -44,7 +44,7 @@ def get_main_page_links() -> list[dict[str, Any]]:
         {
             "text": _("Icons"),
             "view_name": "icon_view",
-            "icon": {"name": "sparks", "size": "small"},
+            "icon": {"name": "sparkles", "size": "small"},
             "active": False,
             "need_auth": False,
             "staff_only": False,
@@ -167,6 +167,12 @@ def get_icon_context() -> dict:
             "Heroicons - home",
         ],
         [
+            render_to_string("insight_ui/components/icons.html", {"name": "office"}),
+            "settings",
+            "Themen mit Bezug zum Büro oder der Arbeit.",
+            "Heroicons - building-office",
+        ],
+        [
             render_to_string("insight_ui/components/icons.html", {"name": "globe"}),
             "globe",
             "Elemente zur Sprachauswahl.",
@@ -233,8 +239,8 @@ def get_icon_context() -> dict:
             "Heroicons - question-mark-circle",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "sparks"}),
-            "sparks",
+            render_to_string("insight_ui/components/icons.html", {"name": "sparkles"}),
+            "sparkles",
             "Für spezielle Fälle, wo es um etwas besonderes geht, oder einfach kein anderes Icon passt :).",
             "Heroicons - sparkles",
         ],
@@ -267,6 +273,12 @@ def get_icon_context() -> dict:
             "doc",
             "Klassisch für Dokumente.",
             "Heroicons - document-text",
+        ],
+        [
+            render_to_string("insight_ui/components/icons.html", {"name": "clipboard"}),
+            "clipboard",
+            "Klassisch für Copy and Paste.",
+            "Heroicons - clipboard-document-check",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "cursor-click"}),
@@ -335,6 +347,18 @@ def get_icon_context() -> dict:
             "Heroicons - calendar-days",
         ],
         [
+            render_to_string("insight_ui/components/icons.html", {"name": "bell"}),
+            "bell",
+            "Typisch für Benachrichtigungen.",
+            "Heroicons - bell",
+        ],
+        [
+            render_to_string("insight_ui/components/icons.html", {"name": "chat-bubble"}),
+            "chat-bubble",
+            "Interaktive Chats.",
+            "Heroicons - chat-bubble-bottom-center-text",
+        ],
+        [
             render_to_string("insight_ui/components/icons.html", {"name": "rocket"}),
             "rocket",
             "Besondere Dinge oder als Indikator für 'Jetzt geht`s los!'.",
@@ -366,9 +390,27 @@ def get_icon_context() -> dict:
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "blueprint"}),
-            "settings",
+            "blueprint",
             "Anpassungen, Einstellungen, eher für feingranulare Einstellungen.",
             "Heroicons - cube-transparent",
+        ],
+        [
+            render_to_string("insight_ui/components/icons.html", {"name": "info"}),
+            "info",
+            "Informationen und Anmerkungen.",
+            "Heroicons - information-circle",
+        ],
+        [
+            render_to_string("insight_ui/components/icons.html", {"name": "warning"}),
+            "warning",
+            "Warnhinweise, Probleme, kleinere Fehler.",
+            "Heroicons - exclamation-triangle",
+        ],
+        [
+            render_to_string("insight_ui/components/icons.html", {"name": "danger"}),
+            "danger",
+            "Große Fehler, kritische Probleme oder gefährliche Aktionen.",
+            "Heroicons - exclamation-circle",
         ],
     ]
 

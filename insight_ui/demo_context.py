@@ -252,32 +252,42 @@ def get_drawer_context() -> dict:
     """Serve data for sidebar detailpage."""
     return {
         "right_sidebar": {
-            "title": _("Secondary Sidebar"),
+            "title": _("Personal Settings"),
             "icon": {"name": "home", "size": "small"},
-            "width": "24rem",
             "categories": [
                 {
-                    "caption": "Main",
+                    "caption": "Work",
+                    "icon": {"name": "office", "size": "small"},
                     "items": [
                         {
                             "text": _("Notifications"),
-                            "icon": {"name": "home", "size": "small"},
+                            "icon": {"name": "bell", "size": "small"},
                             "url": reverse("index_view"),
                         },
                         {
                             "text": _("Messages"),
-                            "icon": {"name": "home", "size": "small"},
+                            "icon": {"name": "chat-bubble", "size": "small"},
                             "url": reverse("index_view"),
                         },
-                        {"text": _("Tasks"), "icon": {"name": "home", "size": "small"}, "url": reverse("index_view")},
+                        {
+                            "text": _("Tasks"),
+                            "icon": {"name": "checklist", "size": "small"},
+                            "url": reverse("index_view"),
+                        },
+                    ],
+                },
+                {
+                    "caption": "Management",
+                    "icon": {"name": "cog", "size": "small"},
+                    "items": [
                         {
                             "text": _("Calendar"),
-                            "icon": {"name": "home", "size": "small"},
+                            "icon": {"name": "calendar", "size": "small"},
                             "url": reverse("index_view"),
                         },
-                        {"text": _("Profile"), "icon": {"name": "home", "size": "small"}, "url": reverse("index_view")},
+                        {"text": _("Profile"), "icon": {"name": "user", "size": "small"}, "url": reverse("index_view")},
                     ],
-                }
+                },
             ],
         }
     }
