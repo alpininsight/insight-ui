@@ -93,7 +93,7 @@
                           {% icon name="chevron_down" size="small" %}
                         {% endif %}
                       </button>
-                      <div id="{{ link.open_dropdown }}" class="bg-white border border-gray-300 dark:border-0 rounded-sm shadow-lg">
+                      <div id="{{ link.open_dropdown }}" class="hidden bg-white border border-gray-300 dark:border-0 rounded-sm shadow-lg">
                         <div class="py-1">
                           {% for item in link.items %}
                             {% with item_url=item.href %}

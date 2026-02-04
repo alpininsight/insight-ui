@@ -7,7 +7,7 @@
             {% icon name="chevron_down" size="small" %}
         {% endif %}
     </button>
-    <div id="{{ tag_id }}" class="border border-gray-300 dark:border-0 rounded-sm shadow-lg">
+    <div id="{{ tag_id }}" class="hidden border border-gray-300 dark:border-0 rounded-sm shadow-lg">
         {% for item in items %}
             <a
                 {% if item.view_arg %}href="{% url item.view_name item.view_arg %}"{% else %}href="{% url item.view_name %}"{% endif %}
