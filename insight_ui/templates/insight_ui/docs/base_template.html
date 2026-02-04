@@ -11,6 +11,19 @@
     {% sidebar sidebar_data=left_sidebar side="left" %}
 {% endblock sidebar_left %}
 
+{% block sidebar_right %}
+    {% comment %} Table of Contents {% endcomment %}
+    {% include "insight_ui/components/toc_sidebar.html" with side="right" static=True navbar_fixed=True %}
+    <script>
+        new TableOfContents({
+            contentSelector: "content",
+            tocSelector: "toc",
+            offsetTop: 200,
+            offsetBottom: 300
+        });
+    </script>
+{% endblock sidebar_right %}
+
 {% block content %}
     <div id="content" class="bg-white dark:bg-gray-900 w-full space-y-12 text-secondary leading-loose py-16 px-4 md:px-16">
         <div class="space-y-8">

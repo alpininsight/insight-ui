@@ -15,9 +15,11 @@
     {% comment %} Table of Contents {% endcomment %}
     {% include "insight_ui/components/toc_sidebar.html" with side="right" static=True navbar_fixed=True %}
     <script>
-        generateTOC({
+        new TableOfContents({
             contentSelector: "content",
-            tocSelector: "toc"
+            tocSelector: "toc",
+            offsetTop: 200,
+            offsetBottom: 300
         });
     </script>
 {% endblock sidebar_right %}
