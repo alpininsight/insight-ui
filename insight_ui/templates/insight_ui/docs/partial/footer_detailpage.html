@@ -37,26 +37,64 @@
     <h3>{% trans "Parameter" %}</h3>
     {% include "insight_ui/components/parameter_table.html" with rows=main_params %}
 
-    <div class="mt-4">
-        <h4>data <i>(dict[str, Any])</i></h4>
-        <p class="text-secondary mb-4">{% trans "Daten welche im Footer angezeigt werden sollen." %}</p>
+    <div class="space-y-6 mt-4">
+        <div class="space-y-2">
+            <h4>data <i>(dict[str, Any])</i></h4>
+            <p class="text-secondary mb-4">{% trans "Daten welche im Footer angezeigt werden sollen." %}</p>
 
-        <div data-insight-code-block="python">
-            {# fmt:off #}
-            &lcub;
-                "description": &lcub;
-                    "title": "Insight UI",
-                    "text": "Eine moderne UI-Bibliothek für Django-Anwendungen um schnell zu durchzustarten.",
-                &rcub;,
-                "links": [
-                    &lcub;"text": _("Startseite"), "icon": &lcub;"name": "home", "size": "small"&rcub;, "view_name": "index_view"&rcub;,
-                    &lcub;"text": _("Storybook"), "view_name": "storybook_view"&rcub;,
-                    &lcub;"text": _("Dokumentation"), "view_name": "doc_view"&rcub;,
-                ],
-                "contact": {"mail": {"url": "support@alpininsight.com"}, "imprint": "https://alpininsight.com/imprint/"},
-                "copyright": {"year": 2026, "app_name": "Insight UI"},
-            &rcub;
-            {# fmt:on #}
+            <div data-insight-code-block="python">
+                {# fmt:off #}
+                &lcub;
+                    "description": &lcub;
+                        "title": "Insight UI",
+                        "text": "Eine moderne UI-Bibliothek für Django-Anwendungen um schnell zu durchzustarten.",
+                        "image": &lcub;
+                            "url": "insight_ui/svg/ai-logo.svg",
+                            "url_dark": "insight_ui/svg/ai-logo-dark.svg",
+                            "alt": "Insight UI Logo",
+                            "height": "6rem",
+                        &rcub;,
+                    &rcub;,
+                    "links": [
+                        &lcub;"text": _("Startseite"), "icon": &lcub;"name": "home", "size": "small"&rcub;, "view_name": "index_view"&rcub;,
+                        &lcub;"text": _("Storybook"), "view_name": "storybook_view"&rcub;,
+                        &lcub;"text": _("Dokumentation"), "view_name": "doc_view"&rcub;,
+                    ],
+                    "contact": &lcub;
+                        "mail_url": "support@alpininsight.com",
+                        "imprint": "https://alpininsight.com/imprint/",
+                        "privacy": "https://alpininsight.com/privacy/",
+                    &rcub;,
+                    "copyright": &lcub;"year": 2026, "app_name": "Insight UI"&rcub;,
+                &rcub;
+                {# fmt:on #}
+            </div>
+            {% include "insight_ui/components/parameter_table.html" with rows=data_params %}
+        </div>
+        <div class="space-y-2">
+            <h5>description <i>(dict[str, Any])</i></h5>
+            <p>Kurzbeschreibung der Anwendung mit optionalen Bild.</p>
+            {% include "insight_ui/components/parameter_table.html" with rows=description_params %}
+        </div>
+        <div class="space-y-2">
+            <h5>image <i>(dict[str, str])</i></h5>
+            <p>Optionales Bild, welches unter dem Text der Beschreibung angezeigt wird..</p>
+            {% include "insight_ui/components/parameter_table.html" with rows=image_params %}
+        </div>
+        <div class="space-y-2">
+            <h5>links <i>(list[dict[str, Any]])</i></h5>
+            <p>Liste der Hauptnavigationspunkte der Anwendung.</p>
+            {% include "insight_ui/components/parameter_table.html" with rows=links_params %}
+        </div>
+        <div class="space-y-2">
+            <h5>contact <i>(dict[str, Any])</i></h5>
+            <p>Kontaktinformationen, Link zum Impressum, Datenschutz und eine Kontaktmailadresse.</p>
+            {% include "insight_ui/components/parameter_table.html" with rows=contact_params %}
+        </div>
+        <div class="space-y-2">
+            <h5>copyright <i>(dict[str, str])</i></h5>
+            <p>Copyright Informationen, wie das Jahr und der geschützte Name.</p>
+            {% include "insight_ui/components/parameter_table.html" with rows=copyright_params %}
         </div>
     </div>
 </section>

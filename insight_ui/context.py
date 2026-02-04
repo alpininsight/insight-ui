@@ -141,7 +141,11 @@ def get_footer_context() -> dict:
                 "text": "A modern, accessible, and responsive UI library for Django projects.",
             },
             "links": links,
-            "contact": {"mail": {"url": "support@alpininsight.com"}, "imprint": "https://alpininsight.com/imprint/"},
+            "contact": {
+                "mail_url": "support@alpininsight.com",
+                "imprint": "https://alpininsight.com/imprint/",
+                "privacy": "https://alpininsight.com/privacy/",
+            },
             "copyright": {"year": 2025, "app_name": "Insight UI"},
         }
     }

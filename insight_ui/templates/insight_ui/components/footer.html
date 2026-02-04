@@ -53,11 +53,20 @@
             </div>
             <div class="flex-1">
                 <h4>{% trans 'Kontakt' %}</h4>
-                <a href="{{ contact.imprint }}" class="text-secondary hover:text-insight-text-link-hover text-sm">{% trans "Imprint" %}</a>
-                <p class="text-secondary text-sm mt-2">
-                    {% trans 'Do you have any questions or feedback?' %}<br>
-                    <a href="mailto:{{ contact.mail.url }}" class="text-insight-primary hover:underline">{{ contact.mail.url }}</a>
-                </p>
+                <div class="space-x-4">
+                    {% if contact.imprint %}
+                        <a href="{{ contact.imprint }}" class="text-secondary hover:text-insight-text-link-hover text-sm">{% trans "Imprint" %}</a>
+                    {% endif %}
+                    {% if contact.privacy %}
+                        <a href="{{ contact.privacy }}" class="text-secondary hover:text-insight-text-link-hover text-sm">{% trans "Privacy" %}</a>
+                    {% endif %}
+                </div>
+                {% if contact.mail_url %}
+                    <p class="text-secondary text-sm mt-2">
+                        {% trans 'Do you have any questions or feedback?' %}<br>
+                        <a href="mailto:{{ contact.mail_url }}" class="text-insight-primary hover:underline">{{ contact.mail_url }}</a>
+                    </p>
+                {% endif %}
             </div>
         </div>
         {% if copyright %}

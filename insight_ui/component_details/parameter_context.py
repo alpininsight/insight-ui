@@ -45,7 +45,7 @@ def get_navbar_parameter_context() -> dict[str, list[str]]:
     ]
 
     logo_params = [
-        ["url", "str", "Pfad zu der Logo Datei für das helle Theme.", "insight_ui/svg/logo.svg"],
+        ["url", "str", "Pfad zu der Logo Datei für das helle Theme.", "insight_ui/svg/ai-logo.svg"],
         ["url_dark", "str", "Pfad zu der Logo Datei für das dunkle Theme.", "insight_ui/svg/ai-logo-dark.svg"],
         ["alt", "str", "Alternativtext des Logos.", "Insight UI Logo"],
         ["height", "str", "Dieser Wert bestimmt die Größe des Logos.", "2rem"],
@@ -97,7 +97,66 @@ def get_footer_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the footer component."""
     main_params = [["data", "dict[str, Any]", "Daten welche im Footer angezeigt werden sollen.", "{}"]]
 
-    return {"main_params": main_params}
+    data_params = [
+        ["description", "dict[str, Any]", "Kurzbeschreibung der Anwendung mit optionalen Bild.", "{}"],
+        ["links", "list[dict[str, Any]]", "Liste der Hauptnavigationspunkte der Anwendung.", "[]"],
+        [
+            "contact",
+            "dict[str, Any]",
+            "Kontaktinformationen, Link zum Impressum, Datenschutz und eine Kontaktmailadresse.",
+            "{}",
+        ],
+        ["copyright", "dict[str, str]", "Copyright Informationen, wie das Jahr und der geschützte Name.", "{}"],
+    ]
+
+    description_params = [
+        ["title", "str", "Überschrift der Beschreibung.", "''"],
+        ["text", "str", "Kurze Zusammenfassung der Anwendung.", "''"],
+        ["image", "dict[str, str]", "Optionales Bild, welches unter dem Text der Beschreibung angezeigt wird.", "{}"],
+    ]
+
+    image_params = [
+        ["url", "str", "Pfad zu der Bilddatei für das helle Theme.", "insight_ui/svg/ai-logo.svg"],
+        ["url_dark", "str", "Pfad zu der Bilddatei für das dunkle Theme.", "insight_ui/svg/ai-logo-dark.svg"],
+        ["alt", "str", "Alternativtext des Logos.", "Insight UI Logo"],
+        ["height", "str", "Dieser Wert bestimmt die Größe des Logos.", "2rem"],
+    ]
+
+    links_params = [
+        ["text", "str", "Beschriftung des Links.", "''"],
+        ["icon", "dict[str, str]", "Ein optionales Icon, welches vor dem Text angezeigt wird.", "{}"],
+        ["view_name", "str", "Name der URL welche beim Klick auf den Link aufgerufen werden soll.", "''"],
+        ["open_modal", "str", "ID des Modal-Dialogs welche beim Klick auf den Link angezeigt werden soll.", "''"],
+        [
+            "active",
+            "bool",
+            "Hebt den Link stilistisch von den anderen ab um zu zeigen, dass der Nutzer auf der entsprechenden Seite ist.",  # noqa: E501
+            "True",
+        ],
+        ["need_auth", "bool", "Der Link wird nur für angemeldete Nutzer angezeigt.", "False"],
+        ["staff_only", "bool", "Der Link wird nur für Administratoren angezeigt.", "False"],
+    ]
+
+    contact_params = [
+        ["mail_url", "str", "URL einer Kontaktmailadresse.", "''"],
+        ["imprint", "str", "Verlinkung zu einem Impressum.", "''"],
+        ["privacy", "str", "Verlinkung zu einer Datenschutzerklärung.", "''"],
+    ]
+
+    copyright_params = [
+        ["year", "int", "I.d.R das aktuelle Jahr (ist nicht zwingend erforderlich). ", "undefined"],
+        ["app_name", "str", "Der geschützte Name der Anwendung.", "''"],
+    ]
+
+    return {
+        "main_params": main_params,
+        "data_params": data_params,
+        "description_params": description_params,
+        "image_params": image_params,
+        "links_params": links_params,
+        "contact_params": contact_params,
+        "copyright_params": copyright_params,
+    }
 
 
 def get_breadcrumb_parameter_context() -> dict[str, list[str]]:
