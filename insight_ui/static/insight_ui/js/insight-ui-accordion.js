@@ -1,5 +1,5 @@
-class Accordion {
-    // Manages all accordion instances of the DOM
+export class Accordion {
+    // Manages all Accordion instances of the DOM
     static instances = new WeakMap();
 
     constructor(element) {
@@ -149,14 +149,6 @@ class Accordion {
 
     // Static method for initializing all accordions
     static initAll() {
-        const accordions = document.querySelectorAll("[data-accordion]");
-        accordions.forEach((el) => {
-            if (!Accordion.instances.has(el)) {
-                new Accordion(el);
-            }
-        });
+        document.querySelectorAll("[data-accordion]").forEach(el => new Accordion(el));
     }
 }
-
-window.InsightUI = window.InsightUI || {};
-window.InsightUI.Accordion = Accordion;

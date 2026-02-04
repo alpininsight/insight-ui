@@ -394,7 +394,7 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
             "id": "effect_cards",
         }
 
-    if request.headers.get("HX-Request"):
+    if request.headers.get("HX-Request") and not request.headers.get("HX-History-Restore-Request"):
         context["demo"] = demo_info
         return render(request, f"insight_ui/docs/partial/{component_name}_detailpage.html", context)
 
@@ -515,7 +515,7 @@ def storybook_view(request: HttpRequest, storybook_name: str) -> HttpResponse:
     if not context_func:
         return HttpResponse("Page not found", status=404)
 
-    if request.headers.get("HX-Request"):
+    if request.headers.get("HX-Request") and not request.headers.get("HX-History-Restore-Request"):
         context = context_func()
         context["search_query"] = request.GET.get("search", "")
         return render(request, f"insight_ui/docs/partial/storybooks/{storybook_name}_storybook.html", context)

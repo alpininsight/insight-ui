@@ -1,14 +1,15 @@
 /**
- * Insight UI Theme Toggle für TailwindCSS & Storybook-Kompatibilität
+ * Insight UI Theme Toggle.
  * Setzt sowohl .dark (für Tailwind) als auch [data-theme] (für Insight UI CSS)
- * Initialisierung: InsightUI.ThemeToggle.init();
  */
-class ThemeToggle {
+export class ThemeToggle {
+    // Manages all ThemeToggle instances of the DOM
     static instances = new WeakMap();
 
     constructor(button) {
-        if (InsightUI.ThemeToggle.instances.has(button)) {
-            return InsightUI.ThemeToggle.instances.get(button);
+        // If an instance for this element already exists, return it
+        if (ThemeToggle.instances.has(button)) {
+            return ThemeToggle.instances.get(button);
         }
 
         this.button = button;
@@ -17,7 +18,7 @@ class ThemeToggle {
 
         this.init();
 
-        InsightUI.ThemeToggle.instances.set(button, this);
+        ThemeToggle.instances.set(button, this);
 
         debugLog("New theme toggle created: ", this.button);
     }
@@ -51,11 +52,6 @@ class ThemeToggle {
 
     // Static method for initializing all toggle buttons
     static initAll() {
-        document.querySelectorAll('[data-theme-toggle]').forEach(button => {
-            new ThemeToggle(button);
-        });
+        document.querySelectorAll('[data-theme-toggle]').forEach(toggleButton => new ThemeToggle(toggleButton));
     }
 };
-
-window.InsightUI = window.InsightUI || {};
-window.InsightUI.ThemeToggle = ThemeToggle;

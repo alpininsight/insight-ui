@@ -1,9 +1,11 @@
-class Sidebar {
+export class Sidebar {
+	// Manages all Sidebar instances of the DOM
     static instances = new WeakMap();
 
 	constructor(wrapper) {
-        if (InsightUI.Sidebar.instances.has(wrapper)) {
-            return InsightUI.Sidebar.instances.get(wrapper);
+		// If an instance for this element already exists, return it
+        if (Sidebar.instances.has(wrapper)) {
+            return Sidebar.instances.get(wrapper);
         }
 
 		this.wrapper = wrapper;
@@ -14,7 +16,7 @@ class Sidebar {
 
 		this.init();
 
-		InsightUI.Sidebar.instances.set(wrapper, this);
+		Sidebar.instances.set(wrapper, this);
 
         debugLog("New sidebar created: ", this.sidebar, this.side);
 	}
@@ -105,12 +107,6 @@ class Sidebar {
 
 	// Static method for initializing all sidebar/drawers
 	static initAll() {
-		const sidebarWrappers = document.querySelectorAll('[data-insight-sidebar]');
-		sidebarWrappers.forEach(wrapper => {
-			new Sidebar(wrapper);
-		});
+		document.querySelectorAll('[data-insight-sidebar]').forEach(wrapper => new Sidebar(wrapper));
 	}
 }
-
-window.InsightUI = window.InsightUI || {};
-window.InsightUI.Sidebar = Sidebar;

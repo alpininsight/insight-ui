@@ -1,7 +1,9 @@
-class Checkbox {
+export class Checkbox {
+    // Manages all Checkbox instances of the DOM
     static instances = new WeakMap();
 
     constructor(element) {
+        // If an instance for this element already exists, return it
         if (Checkbox.instances.has(element)) {
             return Checkbox.instances.get(element);
         }
@@ -28,7 +30,7 @@ class Checkbox {
                 checkboxesToCheck[i].checked = true;
             }
         } else if (checkedCount > this.maxChecked) {
-            // Too many checkboxes are selected, so deselect the last few that are unnecessary.
+            // Too many checkboxes are selected, so deselect the last few.
             let excessCount = checkedCount - this.maxChecked;
             let checkboxesToUncheck = [...this.checkboxes].filter(b => b.checked);
             for (let i = 0; i < excessCount; i++) {
@@ -49,9 +51,6 @@ class Checkbox {
 
     // Static method for initializing all checkboxes
     static initAll() {
-        document.querySelectorAll('[data-insight-checkbox-group]').forEach(c => new Checkbox(c));
+        document.querySelectorAll('[data-insight-checkbox-group]').forEach(el => new Checkbox(el));
     }
 }
-
-window.InsightUI = window.InsightUI || {};
-window.InsightUI.Checkbox = Checkbox;
