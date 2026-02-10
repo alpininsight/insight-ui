@@ -16,6 +16,8 @@
     --color-red-700: oklch(50.5% 0.213 27.518);
     --color-red-800: oklch(44.4% 0.177 26.899);
     --color-red-900: oklch(39.6% 0.141 25.723);
+    --color-amber-400: oklch(82.8% 0.189 84.429);
+    --color-amber-800: oklch(47.3% 0.137 46.201);
     --color-green-50: oklch(98.2% 0.018 155.826);
     --color-green-200: oklch(92.5% 0.084 155.995);
     --color-green-300: oklch(87.1% 0.15 154.449);
@@ -81,6 +83,7 @@
     --radius-sm: 0.25rem;
     --radius-md: 0.375rem;
     --radius-lg: 0.5rem;
+    --drop-shadow-xs: 0 1px 1px rgb(0 0 0 / 0.05);
     --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
     --animate-spin: spin 1s linear infinite;
     --animate-pulse: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
@@ -690,14 +693,14 @@
   .w-10 {
     width: calc(var(--spacing) * 10);
   }
+  .w-32 {
+    width: calc(var(--spacing) * 32);
+  }
   .w-64 {
     width: calc(var(--spacing) * 64);
   }
   .w-72 {
     width: calc(var(--spacing) * 72);
-  }
-  .w-96 {
-    width: calc(var(--spacing) * 96);
   }
   .w-fit {
     width: fit-content;
@@ -836,6 +839,9 @@
   }
   .justify-items-stretch {
     justify-items: stretch;
+  }
+  .gap-0\.5 {
+    gap: calc(var(--spacing) * 0.5);
   }
   .gap-1 {
     gap: calc(var(--spacing) * 1);
@@ -1074,6 +1080,9 @@
   .bg-\[\#f9fafb\] {
     background-color: #f9fafb;
   }
+  .bg-amber-400 {
+    background-color: var(--color-amber-400);
+  }
   .bg-black\/50 {
     background-color: color-mix(in srgb, #000 50%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -1104,6 +1113,9 @@
   .bg-green-50 {
     background-color: var(--color-green-50);
   }
+  .bg-insight-danger {
+    background-color: var(--color-insight-danger);
+  }
   .bg-insight-danger\/15 {
     background-color: color-mix(in srgb, #ef4444 15%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -1122,8 +1134,8 @@
   .bg-insight-primary-active {
     background-color: var(--color-insight-primary-active);
   }
-  .bg-insight-secondary {
-    background-color: var(--color-insight-secondary);
+  .bg-insight-success {
+    background-color: var(--color-insight-success);
   }
   .bg-insight-success\/15 {
     background-color: color-mix(in srgb, #10b981 15%, transparent);
@@ -1139,9 +1151,6 @@
   }
   .bg-neutral-100 {
     background-color: var(--color-neutral-100);
-  }
-  .bg-neutral-300 {
-    background-color: var(--color-neutral-300);
   }
   .bg-neutral-700\/75 {
     background-color: color-mix(in srgb, oklch(37.1% 0 0) 75%, transparent);
@@ -1181,6 +1190,12 @@
   }
   .fill-insight-primary {
     fill: var(--color-insight-primary);
+  }
+  .fill-insight-primary\/25 {
+    fill: color-mix(in srgb, #3b82f6 25%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      fill: color-mix(in oklab, var(--color-insight-primary) 25%, transparent);
+    }
   }
   .object-cover {
     object-fit: cover;
@@ -1241,9 +1256,6 @@
   }
   .py-8 {
     padding-block: calc(var(--spacing) * 8);
-  }
-  .py-16 {
-    padding-block: calc(var(--spacing) * 16);
   }
   .ps-3 {
     padding-inline-start: calc(var(--spacing) * 3);
@@ -1361,6 +1373,9 @@
   }
   .whitespace-nowrap {
     white-space: nowrap;
+  }
+  .text-amber-800 {
+    color: var(--color-amber-800);
   }
   .text-blue-400 {
     color: var(--color-blue-400);
@@ -1499,6 +1514,18 @@
   .blur {
     --tw-blur: blur(8px);
     filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
+  }
+  .drop-shadow-xs {
+    --tw-drop-shadow-size: drop-shadow(0 1px 1px var(--tw-drop-shadow-color, rgb(0 0 0 / 0.05)));
+    --tw-drop-shadow: drop-shadow(var(--drop-shadow-xs));
+    filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
+  }
+  .drop-shadow-gray-500 {
+    --tw-drop-shadow-color: oklch(55.1% 0.027 264.364);
+    @supports (color: color-mix(in lab, red, red)) {
+      --tw-drop-shadow-color: color-mix(in oklab, var(--color-gray-500) var(--tw-drop-shadow-alpha), transparent);
+    }
+    --tw-drop-shadow: var(--tw-drop-shadow-size);
   }
   .filter {
     filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
@@ -1733,24 +1760,10 @@
       }
     }
   }
-  .hover\:bg-insight-secondary-hover {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--color-insight-secondary-hover);
-      }
-    }
-  }
   .hover\:bg-neutral-200 {
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-neutral-200);
-      }
-    }
-  }
-  .hover\:bg-neutral-300 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--color-neutral-300);
       }
     }
   }
@@ -1943,11 +1956,6 @@
       background-color: var(--color-insight-primary-active);
     }
   }
-  .active\:bg-insight-secondary-active {
-    &:active {
-      background-color: var(--color-insight-secondary-active);
-    }
-  }
   .active\:bg-neutral-400 {
     &:active {
       background-color: var(--color-neutral-400);
@@ -1977,11 +1985,6 @@
   .sm\:hidden {
     @media (width >= 40rem) {
       display: none;
-    }
-  }
-  .md\:mt-0 {
-    @media (width >= 48rem) {
-      margin-top: calc(var(--spacing) * 0);
     }
   }
   .md\:block {
@@ -2398,11 +2401,6 @@
       }
     }
   }
-  .dark\:bg-neutral-600 {
-    &:where([data-theme=dark], [data-theme=dark] *) {
-      background-color: var(--color-neutral-600);
-    }
-  }
   .dark\:bg-red-900\/20 {
     &:where([data-theme=dark], [data-theme=dark] *) {
       background-color: color-mix(in srgb, oklch(39.6% 0.141 25.723) 20%, transparent);
@@ -2489,6 +2487,15 @@
   .dark\:text-white {
     &:where([data-theme=dark], [data-theme=dark] *) {
       color: var(--color-white);
+    }
+  }
+  .dark\:drop-shadow-gray-800 {
+    &:where([data-theme=dark], [data-theme=dark] *) {
+      --tw-drop-shadow-color: oklch(27.8% 0.033 256.848);
+      @supports (color: color-mix(in lab, red, red)) {
+        --tw-drop-shadow-color: color-mix(in oklab, var(--color-gray-800) var(--tw-drop-shadow-alpha), transparent);
+      }
+      --tw-drop-shadow: var(--tw-drop-shadow-size);
     }
   }
   .\*\:dark\:border-gray-700 {
@@ -2714,9 +2721,13 @@
     border-radius: var(--radius-sm);
     border-style: var(--tw-border-style);
     border-width: 2px;
+    border-color: transparent;
     padding-inline: calc(var(--spacing) * 5);
     padding-block: calc(var(--spacing) * 1.5);
     color: var(--color-white);
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
   }
   .btn-xs {
     padding-inline: calc(var(--spacing) * 2);
@@ -2743,9 +2754,6 @@
   }
   .btn-subtil2 {
     color: var(--color-insight-text-secondary);
-    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
-    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
-    transition-duration: var(--tw-duration, var(--default-transition-duration));
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-gray-200);
@@ -2794,9 +2802,6 @@
     border-color: var(--color-gray-100);
     background-color: var(--color-gray-100);
     color: var(--color-insight-text-secondary);
-    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
-    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
-    transition-duration: var(--tw-duration, var(--default-transition-duration));
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-gray-200);
@@ -2850,9 +2855,6 @@
   .btn-primary {
     border-color: var(--color-insight-primary);
     background-color: var(--color-insight-primary);
-    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
-    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
-    transition-duration: var(--tw-duration, var(--default-transition-duration));
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-primary-hover);
@@ -2873,9 +2875,6 @@
   .btn-secondary {
     border-color: var(--color-insight-secondary);
     background-color: var(--color-insight-secondary);
-    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
-    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
-    transition-duration: var(--tw-duration, var(--default-transition-duration));
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-secondary-hover);
@@ -2896,9 +2895,6 @@
   .btn-success {
     border-color: var(--color-insight-success);
     background-color: var(--color-insight-success);
-    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
-    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
-    transition-duration: var(--tw-duration, var(--default-transition-duration));
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-success-hover);
@@ -2919,9 +2915,6 @@
   .btn-warning {
     border-color: var(--color-insight-warning);
     background-color: var(--color-insight-warning);
-    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
-    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
-    transition-duration: var(--tw-duration, var(--default-transition-duration));
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-warning-hover);
@@ -2942,9 +2935,6 @@
   .btn-danger {
     border-color: var(--color-insight-danger);
     background-color: var(--color-insight-danger);
-    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
-    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
-    transition-duration: var(--tw-duration, var(--default-transition-duration));
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-danger-hover);
@@ -2965,9 +2955,27 @@
   .btn-info {
     border-color: var(--color-insight-info);
     background-color: var(--color-insight-info);
-    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
-    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
-    transition-duration: var(--tw-duration, var(--default-transition-duration));
+    &:hover {
+      @media (hover: hover) {
+        border-color: var(--color-insight-info-hover);
+      }
+    }
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-insight-info-hover);
+      }
+    }
+    &:active {
+      border-color: var(--color-insight-info-active);
+    }
+    &:active {
+      background-color: var(--color-insight-info-active);
+    }
+  }
+  .btn-white {
+    border-color: var(--color-white);
+    background-color: var(--color-white);
+    color: var(--color-gray-900);
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-info-hover);
@@ -3009,12 +3017,42 @@
       background-color: var(--color-neutral-600);
     }
   }
+  .btn-close {
+    border-style: var(--tw-border-style);
+    border-width: 0px;
+    background-color: var(--color-gray-100);
+    padding: calc(var(--spacing) * 2);
+    color: var(--color-insight-text-secondary);
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-gray-200);
+      }
+    }
+    &:active {
+      background-color: var(--color-gray-300);
+    }
+    &:where([data-theme=dark], [data-theme=dark] *) {
+      background-color: var(--color-gray-700);
+    }
+    &:where([data-theme=dark], [data-theme=dark] *) {
+      color: var(--color-insight-text-secondary-dark);
+    }
+    &:where([data-theme=dark], [data-theme=dark] *) {
+      &:hover {
+        @media (hover: hover) {
+          background-color: var(--color-gray-600);
+        }
+      }
+    }
+    &:where([data-theme=dark], [data-theme=dark] *) {
+      &:active {
+        background-color: var(--color-gray-500);
+      }
+    }
+  }
   .btn-outline-primary {
     border-color: var(--color-insight-primary);
     color: var(--color-insight-primary);
-    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
-    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
-    transition-duration: var(--tw-duration, var(--default-transition-duration));
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-primary-hover);
@@ -3040,9 +3078,6 @@
   .btn-outline-secondary {
     border-color: var(--color-insight-secondary);
     color: var(--color-insight-secondary);
-    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
-    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
-    transition-duration: var(--tw-duration, var(--default-transition-duration));
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-secondary-hover);
@@ -3068,9 +3103,6 @@
   .btn-outline-success {
     border-color: var(--color-insight-success);
     color: var(--color-insight-success);
-    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
-    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
-    transition-duration: var(--tw-duration, var(--default-transition-duration));
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-success-hover);
@@ -3096,9 +3128,6 @@
   .btn-outline-warning {
     border-color: var(--color-insight-warning);
     color: var(--color-insight-warning);
-    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
-    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
-    transition-duration: var(--tw-duration, var(--default-transition-duration));
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-warning-hover);
@@ -3124,9 +3153,6 @@
   .btn-outline-danger {
     border-color: var(--color-insight-danger);
     color: var(--color-insight-danger);
-    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
-    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
-    transition-duration: var(--tw-duration, var(--default-transition-duration));
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-danger-hover);
@@ -3152,9 +3178,6 @@
   .btn-outline-info {
     border-color: var(--color-insight-info);
     color: var(--color-insight-info);
-    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
-    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
-    transition-duration: var(--tw-duration, var(--default-transition-duration));
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-info-hover);

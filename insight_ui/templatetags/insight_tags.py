@@ -676,23 +676,24 @@ def geo_map(data: dict = {}, map_height: int = 36) -> dict:
     return {"data": data, "map_height": map_height}
 
 
-@register.inclusion_tag("insight_ui/components/list_partial.html")
-def paginated_list(current_page: Page, surrounding_pages: list) -> dict:
+@register.inclusion_tag("insight_ui/components/pagination.html")
+def pagination(current_page: Page, surrounding_pages: list[int], ipp_config: dict[str, Any] = {}) -> dict:
     """
-    Rendert ein Liste mit einer integrierten Pagination.
+    Rendert eine Pagination.
 
     Arguments:
     ---------
         current_page (Page): Ein von Django erzeugtes Pagination-Objekt der aktuellen Seite.
-        surrounding_pages (list): Eine liste der benachbarten Seiten.
+        surrounding_pages (list[int]): Eine liste der benachbarten Seiten.
             Siehe: from insight_ui.utils.pagination import get_page
+        ipp_config (dict[str, Any]): Konfiguration eines "Items per Page" Selects (select Komponente).
 
     Returns:
     -------
         Dict mit Kontext-Variablen für das Template.
 
     """
-    return {"current_page": current_page, "surrounding_pages": surrounding_pages}
+    return {"current_page": current_page, "surrounding_pages": surrounding_pages, "ipp_config": ipp_config}
 
 
 @register.inclusion_tag("insight_ui/components/generic_filter.html")
@@ -983,7 +984,7 @@ def modal(  # noqa: PLR0913 (too many args)
 
     """
     return {
-        "id": tag_id,
+        "tag_id": tag_id,
         "title": title,
         "description": description,
         "additional_content": additional_content,

@@ -225,6 +225,24 @@ def get_icon_context() -> dict:
             "Heroicons - chevron-up",
         ],
         [
+            render_to_string("insight_ui/components/icons.html", {"name": "chevron_both"}),
+            "chevron_both",
+            "Klassiker für die Andeutung einer Möglichkeit zum sortieren.",
+            "Heroicons - chevron-up-down",
+        ],
+        [
+            render_to_string("insight_ui/components/icons.html", {"name": "chevron_left"}),
+            "chevron_left",
+            "Karussells, Pagination oder Elemente zum ausklappen wie z.b.: ein Drawer.",
+            "Heroicons - chevron-left",
+        ],
+        [
+            render_to_string("insight_ui/components/icons.html", {"name": "chevron_right"}),
+            "chevron_right",
+            "Karussells, Pagination oder Elemente zum ausklappen wie z.b.: ein Drawer.",
+            "Heroicons - chevron-right",
+        ],
+        [
             render_to_string("insight_ui/components/icons.html", {"name": "tick"}),
             "tick",
             "Checklisten.",

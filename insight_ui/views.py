@@ -137,23 +137,50 @@ def chat_response(request: HttpRequest) -> HttpResponse:
 def pagination(request: HttpRequest) -> HttpResponse:
     """Pagination endpoint to retrieve data of the desired page."""
     page_param = request.GET.get("page")
+    ipp_param = request.GET.get("ipp")
     try:
         page_number = int(page_param) if page_param is not None else 1
+        ipp = int(ipp_param) if ipp_param is not None else 10
     except (TypeError, ValueError):
         page_number = 1
+        ipp = 10
 
-    page_obj, surrounding_pages = get_page(generate_payload(100), page_number)
+    page_obj, surrounding_pages = get_page(generate_payload(500), ipp, page_number)
+    ipp_config = {"name": "ipp", "label": "Items per page", "options": [10, 20, 30], "selected_option": ipp}
 
     if request.headers.get("HX-Request"):
         return render(
             request,
-            "insight_ui/components/list_partial.html",
-            {"current_page": page_obj, "surrounding_pages": surrounding_pages},
+            "insight_ui/components/pagination.html",
+            {
+                "current_page": page_obj,
+                "surrounding_pages": surrounding_pages,
+                "items_per_page": ipp,
+                "ipp_config": ipp_config,
+            },
         )
 
     context = get_table_storybook_context()
     context["current_page"] = page_obj
     context["surrounding_pages"] = surrounding_pages
+    context["items_per_page"] = ipp
+    context["ipp_config"] = ipp_config
+    return render(request, "insight_ui/storybook.html", context)
+
+
+@require_GET
+def sort_table(request: HttpRequest) -> HttpResponse:
+    """Endpoint to sort table data."""
+    sort = request.GET.get("sort", "name")
+    direction = request.GET.get("dir", "asc")
+
+    _, rows = map_payload_to_table(generate_payload())
+
+    context = {"data": rows, "sort": sort, "dir": direction}
+
+    if request.headers.get("HX-Request"):
+        return render(request, "insight_ui/components/table.html", context)
+
     return render(request, "insight_ui/storybook.html", context)
 
 
@@ -291,6 +318,17 @@ def icon_view(request: HttpRequest) -> HttpResponse:
     """Render icon page."""
     context = get_icon_context() | get_base_context("icon_view") | get_sidebar_context()
     return render(request, "insight_ui/docs/icons.html", context)
+
+
+@require_GET
+def playground_view(request: HttpRequest) -> HttpResponse:
+    """Render playground page."""
+    context = get_base_context() | get_sidebar_context()
+
+    context["items"] = ["success", "success", "failed", "active", ""]
+    context["icon_size"] = "xs"
+
+    return render(request, "insight_ui/playground.html", context)
 
 
 @require_GET

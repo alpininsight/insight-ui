@@ -5,7 +5,7 @@
 <!-- Component Demo -->
 <section>
     <p>
-        Mit der <span class="inline-tag">paginated_list</span> Komponente lässt sich eine Liste auf mehrere Seiten aufteilen, welche mittels der durch diese Komponente dargestellte Pagination am Ende der Liste gewechselt werden kann. Dies ist praktisch für große Datenmengen und bietet eine alternative zur <span class="inline-tag">infinite_scroll</span> Komponente.
+        Mit der <span class="inline-tag">pagination</span> Komponente lässt sich eine Liste auf mehrere Seiten aufteilen, welche mittels der durch diese Komponente dargestellte Pagination am Ende der Liste gewechselt werden kann. Dies ist praktisch für große Datenmengen und bietet eine alternative zur <span class="inline-tag">infinite_scroll</span> Komponente.
     </p>
 
     {% include "insight_ui/docs/demo_container.html" %}
@@ -26,7 +26,7 @@
         &lcub;% load insight_tags %&rcub;
 
         &lt;div id="list-container"&gt;
-            &lcub;% paginated_list with current_page=start_page surrounding_pages=surrounding_pages %&rcub;
+            &lcub;% pagination with current_page=start_page surrounding_pages=surrounding_pages %&rcub;
         &lt;/div&gt;
         {# fmt:on #}
     </div>

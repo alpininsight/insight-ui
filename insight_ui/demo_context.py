@@ -879,9 +879,10 @@ def get_infinite_scroll_context() -> dict:
 
 def get_pagination_context() -> dict:
     """Serve data for pagination detailpage."""
-    page_obj, surrounding_pages = get_page(generate_payload(100))
+    page_obj, surrounding_pages = get_page(generate_payload(500))
+    ipp_config = {"name": "ipp", "label": "Items per page", "options": [10, 20, 30]}
 
-    return {"start_page": page_obj, "surrounding_pages": surrounding_pages}
+    return {"start_page": page_obj, "surrounding_pages": surrounding_pages, "ipp_config": ipp_config}
 
 
 def get_table_context() -> dict:
