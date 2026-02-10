@@ -13,7 +13,9 @@
 
 {% block content %}
     <div id="content" class="w-full space-y-16">
-        {% include "insight_ui/components/progress_bar2.html" %}
+        <div class="w-40">
+            {% minimal_step_bar config=min_step_bar_config %}
+        </div>
     </div>
 {% endblock content %}
 

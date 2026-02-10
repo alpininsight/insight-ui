@@ -1,0 +1,33 @@
+{% load insight_tags %}
+
+<div class="flex items-stretch gap-0.5 h-full w-full bg-gray-50 dark:bg-gray-800 rounded-lg overflow-hidden">
+    {% for item in items %}
+        <div class="flex-1 flex items-center justify-center {% if item == "success" %}bg-insight-success{% elif item == "failed" %}bg-insight-danger{% elif item == "active" %}bg-insight-primary{% else %}bg-gray-400{% endif %} text-white {% if forloop.first %}chevron-start{% elif forloop.last %}chevron-end{% else %}chevron-mid{% endif %} group">
+            {% if item == "success" %}
+                {% icon name="tick" size=icon_size %}
+            {% elif item == "failed" %}
+                {% icon name="danger" size=icon_size %}
+            {% elif item == "active" %}
+                <div>{% icon name="cog" size=icon_size %}</div>
+            {% else %}
+                <span>-</span>
+            {% endif %}
+        </div>
+    {% endfor %}
+    <style>
+        :root {
+            --chevron-offset: 4px;
+        }
+
+        .chevron-start {
+            clip-path: polygon(0% 0%, calc(100% - var(--chevron-offset)) 0%, 100% 50%, calc(100% - var(--chevron-offset)) 100%, 0% 100%);
+        }
+        .chevron-mid {
+            clip-path: polygon(0% 0%, calc(100% - var(--chevron-offset)) 0%, 100% 50%, calc(100% - var(--chevron-offset)) 100%, 0% 100%, var(--chevron-offset) 50%);
+            margin-left: calc(-1 * var(--chevron-offset));}
+        .chevron-end {
+            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, var(--chevron-offset) 50%);
+            margin-left: calc(-1 * var(--chevron-offset));
+        }
+    </style>
+</div>

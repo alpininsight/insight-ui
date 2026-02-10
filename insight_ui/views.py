@@ -325,8 +325,8 @@ def playground_view(request: HttpRequest) -> HttpResponse:
     """Render playground page."""
     context = get_base_context() | get_sidebar_context()
 
-    context["items"] = ["success", "success", "failed", "active", ""]
-    context["icon_size"] = "xs"
+    context["min_step_bar_config"] = {"items": ["success", "success", "failed", "active", ""], "icon_size": "xs"}
+    context["min_step_bar_config2"] = {"step_count": 5, "current_step": 3, "icon_size": "xs"}
 
     return render(request, "insight_ui/playground.html", context)
 

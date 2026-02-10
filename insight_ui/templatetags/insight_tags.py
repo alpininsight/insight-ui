@@ -218,6 +218,33 @@ def step_bar(items: list) -> dict:
     return {"items": items}
 
 
+@register.inclusion_tag("insight_ui/components/minimal_step_bar.html")
+def minimal_step_bar(config: dict) -> dict:
+    """
+    Rendert eine grafische Darstellung von Prozessschritten.
+
+    Arguments:
+    ---------
+        config (dict): Konfiguration der einzelnen Schritte der Stepbar.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template.
+
+    """
+    items = config.get("items", [])
+    if items == []:
+        for step in range(0, config.get("step_count")):
+            if step < config.get("current_step"):
+                items.append("success")
+            elif step == config.get("current_step"):
+                items.append("active")
+            else:
+                items.append("")
+
+    return {"items": items, "icon_size": config.get("icon_size", "xs")}
+
+
 @register.inclusion_tag("insight_ui/components/bullet_point_list.html")
 def bullet_point_list(items: list = []) -> dict:
     """
