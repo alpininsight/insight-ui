@@ -6,7 +6,7 @@
 
     <!-- Input-container -->
     <form
-        hx-post="{% url view_name %}"
+        hx-post="{{ request_url }}"
         hx-swap="beforeend"
         hx-target="#response"
         hx-on::after-request="if(event.detail.successful) this.reset()"
