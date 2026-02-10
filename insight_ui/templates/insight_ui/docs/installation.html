@@ -16,7 +16,7 @@
     {% include "insight_ui/components/toc_sidebar.html" with side="right" static=True navbar_fixed=True %}
     <script>
         new TableOfContents({
-            contentSelector: "content",
+            contentSelector: "main-content",
             tocSelector: "toc",
             offsetTop: 200,
             offsetBottom: 300
@@ -24,10 +24,12 @@
     </script>
 {% endblock sidebar_right %}
 
+{% block heading %}
+    <h1 class="text-white">Get started</h1>
+{% endblock heading %}
+
 {% block content %}
-    <div id="content" class="bg-white dark:bg-gray-900 w-full space-y-12 text-secondary leading-loose py-16 px-4 md:px-16">
-        <h1>Get started</h1>
-        <hr>
+    <div class="w-full space-y-12 text-secondary leading-loose">
         <section class="space-y-4">
             <h2>Installation</h2>
             <p>Insight-UI wird wie gewohnt über ein Python Paketmanager wie <b>pip</b> oder <b>uv</b> installiert.</p>

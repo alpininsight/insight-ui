@@ -1,0 +1,22 @@
+{% extends "insight_ui/base.html" %}
+{% load static insight_tags i18n %}
+
+{% block title %}{% trans "Insight UI" %}{% endblock title %}
+
+{% block navbar %}
+    {% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links show_login=True search_query=search_query %}
+{% endblock navbar %}
+
+{% block sidebar_left %}
+    {% sidebar sidebar_data=left_sidebar side="left" %}
+{% endblock sidebar_left %}
+
+{% block content %}
+    <div id="content" class="w-full space-y-16">
+        {% include "insight_ui/components/progress_bar2.html" %}
+    </div>
+{% endblock content %}
+
+{% block footer %}
+    {% footer data=footer_data %}
+{% endblock footer %}

@@ -16,7 +16,7 @@
     {% include "insight_ui/components/toc_sidebar.html" with side="right" static=True navbar_fixed=True %}
     <script>
         new TableOfContents({
-            contentSelector: "content",
+            contentSelector: "main-content",
             tocSelector: "toc",
             offsetTop: 200,
             offsetBottom: 300
@@ -24,21 +24,31 @@
     </script>
 {% endblock sidebar_right %}
 
+{% block heading %}
+    <div class="space-y-8">
+        <h1 class="text-white">{% trans "Base Template" %}</h1>
+        <p class="text-gray-200 leading-loose text-lg mb-8">
+            Unser Base-Template dient als Grundlage für sämtliche Seiten der Anwendung.
+            Es bietet unter anderem ein semantisch korrektes Grundgerüst für den <i>Header</i>, <i>Footer</i>, <i>Sidebars</i>, dem Hauptinhalt und noch weiteren Grundbausteinen, vieler Web-Anwendungen.
+            Zusätzlich lädt das Base-Template bereits alle notwendigen JavaScript Dateien und je nach Konfiguration auch die externen JavaScript Libraries, sowie Stylesheets.
+            Die Konfiguration des <i>Favicon</i> und <i>Search Engine optimization (SEO)</i> wird von dem Base-Template ebenfalls vorgenommen.
+        </p>
+    </div>
+{% endblock heading %}
+
 {% block content %}
-    <div id="content" class="bg-white dark:bg-gray-900 w-full space-y-12 text-secondary leading-loose py-16 px-4 md:px-16">
+    <div class="w-full space-y-12 text-secondary leading-loose">
         <div class="space-y-8">
-            <h1>{% trans "Base Template" %}</h1>
+            <h2>{% trans "Usage" %}</h1>
             <p>
-                Das Basis-Template dient als Grundlage für sämtliche Seiten der Anwendung.
-                Es bietet ein semantisch korrektes Grundgerüst inklusive <span class="inline-tag">&lcub;% block title %&rcub;</span>.
-                Es können bei Bedarf auch weitere JavaScript Bibliotheken verlinkt werden, durch den <span class="inline-tag">&lt;meta&gt;</span> Tags für Icons, SEO, die Einbindung der internen JavaScript- und CSS-Dateien und ein Grundgerüst für den eigentlichen Inhalt.
+                Das Base-Template kann ganz einfach verwendet werden, indem ein neues Template dieses <i>erweitert</i>.
+                Dazu muss am Anfang des neuen Templates das <span class="inline-tag">&lcub;% extends %&rcub;</span> Tag von Django verwendet werden.
             </p>
 
             <div data-insight-code-block="Django">
                 &lcub;% extends "insight_ui/base.html" %&rcub;
             </div>
         </div>
-        <hr>
         <section class="space-y-12">
             <div>
                 <h2>&lt;head&gt;</h2>
