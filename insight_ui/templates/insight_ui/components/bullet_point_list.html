@@ -7,9 +7,17 @@
                 <div aria-hidden="true" class="absolute -top-1 start-4 {% if not item.completed and not item.current %}bg-gray-100 dark:bg-gray-600{% else %}bg-gray-300{% endif %} h-1/2 w-0.5 mt-0.5 -ms-px"></div>
             {% endif %}
             <a
-                {% if item.view_name and not item.current %}href="{% url item.view_name %}"{% endif %}
+                {% if item.request_url and not item.current %}
+                    href="{% url item.request_url %}"
+                    {% if htmx %}
+                        hx-get="{{ item.request_url }}"
+                        hx-target="{{ htmx.target }}"
+                        hx-swap="{{ htmx.swap|default:'innerHTML' }}"
+                        hx-trigger="submit"
+                    {% endif %}
+                {% endif %}
                 {% if item.current %}aria-current="step"{% endif %}
-                class="relative flex items-start {% if not item.view_name %}pointer-events-none{% endif %}"
+                class="relative flex items-start {% if not item.request_url %}pointer-events-none{% endif %}"
             >
                 <!-- Bullet -->
                 <span class="flex items-center h-9">
