@@ -1,6 +1,20 @@
 {% load i18n %}
 
-<form action="{% url request_view %}" method="get" class="h-full">
+<form
+    {% if request_url %}
+        {% if htmx %}
+            hx-get="{% url request_url %}"
+            hx-target="{{ htmx.target }}"
+            hx-swap="{{ htmx.swap|default:'innerHTML' }}"
+            hx-trigger="submit"
+            hx-ext="progressive-enhancement"
+        {% else %}
+            action="{% url request_url %}"
+            method="get"
+        {% endif %}
+    {% endif %}
+    class="h-full"
+>
     <label for="search" class="sr-only">{% trans "Search" %}</label>
     <div class="relative h-full">
         <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
