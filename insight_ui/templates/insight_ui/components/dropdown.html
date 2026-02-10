@@ -10,7 +10,15 @@
     <div id="{{ tag_id }}" class="hidden border border-gray-300 dark:border-0 rounded-sm shadow-lg">
         {% for item in items %}
             <a
-                {% if item.view_arg %}href="{% url item.view_name item.view_arg %}"{% else %}href="{% url item.view_name %}"{% endif %}
+                {% if request_url %}
+                    href="{{ request_url }}"
+                    {% if htmx %}
+                        hx-get="{{ request_url }}"
+                        hx-target="{{ htmx.target }}"
+                        hx-swap="{{ htmx.swap|default:'innerHTML' }}"
+                        hx-trigger="submit"
+                    {% endif %}
+                {% endif %}
                 class="flex items-center gap-1 px-4 py-2 text-sm text-primary bg-gray-100 dark:bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 {% if forloop.first %}rounded-t{% elif forloop.last %}rounded-b{% endif %}"
             >
                 {% if item.icon %}
