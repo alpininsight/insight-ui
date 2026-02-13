@@ -201,7 +201,7 @@ def navbar(config: Mapping[str, Any], **kwargs: JsonValue) -> dict[str, Any]:
     }
 
 
-@register.inclusion_tag("insight_ui/components/steps_bar.html")
+@register.inclusion_tag("insight_ui/components/step_bar.html")
 def step_bar(items: list) -> dict:
     """
     Rendert eine grafische Darstellung von Prozessschritten.

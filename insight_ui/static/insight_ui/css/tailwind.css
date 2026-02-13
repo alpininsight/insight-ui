@@ -693,9 +693,6 @@
   .w-10 {
     width: calc(var(--spacing) * 10);
   }
-  .w-24 {
-    width: calc(var(--spacing) * 24);
-  }
   .w-32 {
     width: calc(var(--spacing) * 32);
   }
@@ -1116,9 +1113,6 @@
   .bg-gray-400 {
     background-color: var(--color-gray-400);
   }
-  .bg-gray-500 {
-    background-color: var(--color-gray-500);
-  }
   .bg-gray-900 {
     background-color: var(--color-gray-900);
   }
@@ -1424,6 +1418,9 @@
   }
   .text-insight-danger {
     color: var(--color-insight-danger);
+  }
+  .text-insight-danger-hover {
+    color: var(--color-insight-danger-hover);
   }
   .text-insight-info {
     color: var(--color-insight-info);

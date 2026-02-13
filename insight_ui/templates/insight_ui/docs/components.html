@@ -51,7 +51,10 @@
                 {% breadcrumbs items=single_breadcrumb_item %}
             </div>
         {% elif component == "step_bar" %}
-            {% step_bar items=steps_bar_items %}
+            <div class="space-y-4">
+                {% step_bar items=steps_bar_items %}
+                {% step_bar items=steps_bar_items_failed %}
+            </div>
         {% elif component == "bullet_point_list" %}
             {% bullet_point_list items=bulletpoints %}
         {% elif component == "accordion" %}

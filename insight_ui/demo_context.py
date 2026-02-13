@@ -352,7 +352,7 @@ def get_sidebar_context() -> dict:
                             "htmx": {"target": "#content"},
                         },
                         {
-                            "text": _("Step Bars"),
+                            "text": _("Step Bar"),
                             "url": reverse("component_detail_page_view", kwargs={"component_name": "step_bar"}),
                             "htmx": {"target": "#content"},
                         },
@@ -747,14 +747,15 @@ def get_step_bar_context() -> dict:
     """Serve data for step bar detailpage."""
     return {
         "steps_bar_items": [
-            {
-                "title": _("Kontaktdaten"),
-                "description": _("Informationen zur Person und Anschrift."),
-                "completed": True,
-            },
+            {"title": _("Kontaktdaten"), "description": _("Informationen zur Person und Anschrift."), "success": True},
             {"title": _("Zahlungsmethode"), "description": _("Art der Bezahlung auswählen."), "current": True},
             {"title": _("Überprüfen"), "description": _("Prüfen der Angaben und Bezahlen.")},
-        ]
+        ],
+        "steps_bar_items_failed": [
+            {"title": _("Kontaktdaten"), "description": _("Informationen zur Person und Anschrift."), "success": True},
+            {"title": _("Zahlungsmethode"), "description": _("Art der Bezahlung auswählen."), "success": True},
+            {"title": _("Überprüfen"), "description": _("Prüfen der Angaben und Bezahlen."), "failed": True},
+        ],
     }
 
 

@@ -309,6 +309,12 @@ def get_icon_context() -> dict:
             "Heroicons - cursor-arrow-rays",
         ],
         [
+            render_to_string("insight_ui/components/icons.html", {"name": "link"}),
+            "link",
+            "Klassisch für Anhänge bzw. Links zu Dokumenten.",
+            "Heroicons - link",
+        ],
+        [
             render_to_string("insight_ui/components/icons.html", {"name": "open-link"}),
             "open-link",
             "Klassisch für Links zu anderen, oft externen Seiten oder zum öffnen eines Dialogfensters.",
