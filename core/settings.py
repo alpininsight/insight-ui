@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "insight_ui",
+    "core",
 ]
 
 if not IS_PROD:

@@ -43,8 +43,9 @@ See the [Installation guide](docs/en/installation.md) for configuration details 
 ## Local Development
 ```bash
 uv sync --all-groups
-uv run python manage.py migrate
-uv run python manage.py runserver
+cp .env.example .env
+uv run python manage.py setup_dev
+uv run python manage.py runserver 0:10800
 ```
 
 The WebSocket demo lives in `utils/main.py`:
