@@ -5,6 +5,8 @@ Mit der 'paginated_list' Komponente lässt sich eine Liste auf mehrere Seiten au
 ## Verwendung
 
 ```django
+{% load insight_tags %}
+
 {% paginated_list current_page=start_page surrounding_pages=surrounding_pages %}
 ```
 
@@ -24,12 +26,6 @@ _Todo_
 Eine liste der benachbarten Seiten.
 
 _Todo_
-
-## Customization
-
-Das Design der Pagination befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/pagination.html`.
-
-Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
 
 ## Barrierefreiheit
 

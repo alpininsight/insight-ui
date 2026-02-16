@@ -31,12 +31,6 @@ Die Liste der einzelnen Schritte, besteht aus Dictionaries welche den jeweiligen
 - **completed**: _True_ wenn dieser Schritt bereits absolviert wurde.
 - **current**: _True_ wenn es sich um den aktuellen Schritt handelt.
 
-## Customization
-
-Das Design der Step Bar Komponente befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/step_bar.html`.
-
-Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
-
 ## Barrierefreiheit
 
 - _Todo_

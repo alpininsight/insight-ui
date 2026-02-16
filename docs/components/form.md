@@ -14,12 +14,6 @@ Mit der `form` Komponente lässt sich ohne selbst HTML-Code editieren zu müssen
 
 - _Todo_
 
-## Customization
-
-Das Design der Form Komponente befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/form.html`.
-
-Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
-
 ## Barrierefreiheit
 
 - _Todo_

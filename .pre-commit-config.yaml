@@ -28,7 +28,7 @@ repos:
 
   # Ruff lint + format
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.9
+    rev: v0.15.1
     hooks:
       - id: ruff
         args: ["--fix"]
@@ -52,7 +52,7 @@ repos:
 
   # Security scan (lightweight; consider moving to pre-push if slow)
   - repo: https://github.com/PyCQA/bandit
-    rev: 1.9.2
+    rev: 1.9.3
     hooks:
       - id: bandit
         args: ['--exclude', 'tests']
@@ -66,7 +66,7 @@ repos:
 
   # Conventional Commits (commit-msg validation)
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.10.0
+    rev: v4.13.7
     hooks:
       - id: commitizen
         stages: [commit-msg]

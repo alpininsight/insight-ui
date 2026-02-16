@@ -17,12 +17,8 @@ def pytest_configure(config: Config) -> None:
     # Tests don't run collectstatic, so we use the simple storage backend
     # Django 4.2+ uses STORAGES dict instead of STATICFILES_STORAGE
     settings.STORAGES = {
-        "default": {
-            "BACKEND": "django.core.files.storage.FileSystemStorage",
-        },
-        "staticfiles": {
-            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-        },
+        "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+        "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
     }
 
 
