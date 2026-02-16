@@ -210,10 +210,10 @@ describe('Component Lifecycle - global listener cleanup', () => {
 
     it('should remove window scroll listener on destroy', () => {
       const container = TestUtils.createDOM(`
-        <button data-popover-trigger="test-popover">Trigger</button>
+        <button data-popover="test-popover">Trigger</button>
         <div id="test-popover">Popover content</div>
       `);
-      const trigger = container.querySelector('[data-popover-trigger]');
+      const trigger = container.querySelector('[data-popover]');
       const floater = new InsightUI.Floater(trigger, 'popover');
 
       const removeEventListenerSpy = vi.spyOn(window, 'removeEventListener');
