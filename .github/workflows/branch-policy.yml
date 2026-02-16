@@ -1,0 +1,58 @@
+name: Branch policy validation
+
+on:
+  pull_request:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+jobs:
+  branch-policy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate source branch
+        run: |
+          SOURCE="${{ github.head_ref }}"
+          TARGET="${{ github.base_ref }}"
+
+          echo "Source branch: $SOURCE"
+          echo "Target branch: $TARGET"
+
+          if [ "$TARGET" = "main" ]; then
+            if [ "$SOURCE" = "develop" ] || [[ "$SOURCE" == release-please--* ]]; then
+              echo "Valid: '$SOURCE' -> main"
+            else
+              echo "::error::PRs targeting 'main' must come from 'develop' or 'release-please--*'."
+              echo ""
+              echo "Only the develop branch (or release-please automation) can merge into main."
+              echo "Create your PR against develop instead."
+              exit 1
+            fi
+          elif [ "$TARGET" = "develop" ]; then
+            VALID_PREFIXES="feat/ fix/ refactor/ perf/ docs/ test/ build/ ci/ chore/ style/ release/"
+            VALID=false
+
+            for prefix in $VALID_PREFIXES; do
+              if [[ "$SOURCE" == ${prefix}* ]]; then
+                VALID=true
+                break
+              fi
+            done
+
+            if [[ "$SOURCE" == release-please--* ]]; then
+              VALID=true
+            fi
+
+            if [ "$VALID" = true ]; then
+              echo "Valid: '$SOURCE' -> develop"
+            else
+              echo "::error::Branch '$SOURCE' does not follow the naming convention for PRs targeting 'develop'."
+              echo ""
+              echo "Branch name must start with one of:"
+              echo "  feat/ fix/ refactor/ perf/ docs/ test/ build/ ci/ chore/ style/ release/"
+              echo ""
+              echo "Examples: feat/add-login, fix/123-null-error, ci/update-workflows"
+              exit 1
+            fi
+          fi
