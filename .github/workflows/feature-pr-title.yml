@@ -19,4 +19,7 @@ jobs:
             docs
             chore
             ci
+            test
+            build
+            style
           allowBreakingChanges: true
