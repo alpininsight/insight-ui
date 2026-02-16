@@ -20,7 +20,7 @@ window.InsightUI.lifecycle = {
 
         const components = [
             { Class: window.InsightUI.Dropdown, selector: '[data-dropdown-toggle]' },
-            { Class: window.InsightUI.Floater, selector: '[data-popover-trigger], [data-tooltip-trigger]' },
+            { Class: window.InsightUI.Floater, selector: '[data-popover], [data-tooltip]' },
             { Class: window.InsightUI.Modal, selector: '[data-insight-toggle="modal"]' },
             { Class: window.InsightUI.Accordion, selector: '[data-accordion]' },
             { Class: window.InsightUI.Tabs, selector: '[data-tabs]' },
@@ -33,12 +33,23 @@ window.InsightUI.lifecycle = {
 
         components.forEach(({ Class, selector }) => {
             if (!Class || !Class.instances) return;
+
+            // Check children of the container
             container.querySelectorAll(selector).forEach(el => {
                 const instance = Class.instances.get(el);
                 if (instance && typeof instance.destroy === 'function') {
                     instance.destroy();
                 }
             });
+
+            // Check the container itself (handles the case where
+            // the swap target IS the component root element)
+            if (container.matches && container.matches(selector)) {
+                const instance = Class.instances.get(container);
+                if (instance && typeof instance.destroy === 'function') {
+                    instance.destroy();
+                }
+            }
         });
     },
 

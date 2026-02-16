@@ -110,6 +110,26 @@ describe('HTMX Lifecycle Integration', () => {
         InsightUI.lifecycle.destroyAllIn(null);
       }).not.toThrow();
     });
+
+    it('should destroy component when container itself is the component root', () => {
+      // This tests the case where HTMX swaps out a component root directly
+      // (e.g., the swap target IS the [data-accordion] element)
+      const accordion = document.createElement('div');
+      accordion.setAttribute('data-accordion', 'root-acc');
+      accordion.innerHTML = `
+        <button aria-controls="root-acc-panel" aria-expanded="false">Panel</button>
+        <div id="root-acc-panel" style="height:0;opacity:0;">Content</div>
+      `;
+      document.body.appendChild(accordion);
+
+      new InsightUI.Accordion(accordion);
+      expect(InsightUI.Accordion.instances.has(accordion)).toBe(true);
+
+      // Pass the component root itself as the container
+      InsightUI.lifecycle.destroyAllIn(accordion);
+
+      expect(InsightUI.Accordion.instances.has(accordion)).toBe(false);
+    });
   });
 
   describe('lifecycle.registerHTMXHooks()', () => {
