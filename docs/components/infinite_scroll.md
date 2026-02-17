@@ -20,12 +20,6 @@ Die Komponente wird in zwei Varianten zur Verfügung gestellt, eine mit automati
 - **threshold** (_int_): Der Pixel-Schwellenwert für das Laden weiterer Elemente (nur wenn **auto_fetch=False**).
 - **kwargs**: Zusätzliche Optionen ('id' = Tag-ID).
 
-## Customization
-
-Das Design der Infinite Scroll Komponente befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/infinite_scroll.html`. Das Design der Elemente befindet sich in einer separaten Datei: `insight_ui/templates/insight_ui/components/infinite_scroll_items`.
-
-Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
-
 ## Barrierefreiheit
 
 - _Todo_

@@ -8,18 +8,32 @@ class Floater {
         }
 
         this.trigger = trigger;
-        this.type = type; // 'tooltip' oder 'popover'
-        this.targetId = trigger.getAttribute(`data-${type}-trigger`);
-        this.target = document.getElementById(this.targetId);
-        this.arrow = this.target?.querySelector(`.${type}-arrow`);
-        this.hideTimeout = null;
+        this.type = type; // 'tooltip' or 'popover'
+
+        if (this.trigger.getAttribute("data-show-arrow")) {
+            this.arrow = document.createElement('div');
+            this.arrow.classList.add("absolute", "left-1/2", "-top-2", "-translate-x-1/2", "size-0", "border-10", "border-t-0", "border-transparent", "border-b-white", "dark:border-b-gray-600");
+        }
+
+        if (type == "tooltip") {
+            this.target = document.createElement('span');
+            this.target.classList.add("text-primary", "bg-white", "dark:bg-gray-600", "px-3", "py-1", "border", "border-gray-300", "dark:border-0", "rounded-sm", "shadow");
+            this.target.textContent = this.trigger.getAttribute("data-tooltip");
+        }
+        else {
+            this.targetId = trigger.getAttribute("data-popover");
+            this.target = document.getElementById(this.targetId);
+        }
 
         if (!this.target) return;
+        if (this.arrow) { this.target.appendChild(this.arrow); }
+
+        this.target.classList.add("absolute", "hidden", "z-50");
+        this.trigger.parentNode.appendChild(this.target);
 
         this.triggerType = trigger.dataset.trigger || 'hover'; // hover or click
         this.autoClose = trigger.dataset.autoClose === "true";  // optional for click
-
-        this.target.classList.add("absolute", "hidden", "z-50");
+        this.hideTimeout = null;
 
         this.bindEvents();
 
@@ -112,10 +126,10 @@ class Floater {
 
     // Static method for initializing all popovers and tooltips
     static initAll() {
-        const popoverTriggers = document.querySelectorAll("[data-popover-trigger]");
+        const popoverTriggers = document.querySelectorAll("[data-popover]");
         popoverTriggers.forEach(trigger => new Floater(trigger, 'popover'));
 
-        const tooltipTriggers = document.querySelectorAll("[data-tooltip-trigger]");
+        const tooltipTriggers = document.querySelectorAll("[data-tooltip]");
         tooltipTriggers.forEach(trigger => new Floater(trigger, 'tooltip'));
     }
 }

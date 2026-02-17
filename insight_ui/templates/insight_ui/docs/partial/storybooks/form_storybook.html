@@ -25,7 +25,7 @@
         </h2>
     </div>
     <div class="p-4 md:p-6">
-        {% form title="Contact Form" description="Please fill out the form" fields=form_fields actions=form_actions action="api/form-submit/" id="standard-form" %}
+        {% form title="Contact Form" description="Please fill out the form" fields=form_fields actions=form_actions view_name="api/form-submit/" tag_id="standard-form" %}
     </div>
 </section>
 
@@ -46,6 +46,6 @@
         </h2>
     </div>
     <div class="p-4 md:p-6">
-        {% form title="Contact Form" description="Please fill out the form" fields=form_fields actions=form_actions htmx=htmx_config id="htmx-form" %}
+        {% form title="Contact Form" description="Please fill out the form" fields=form_fields actions=form_actions view_name="api/form-submit/" htmx=htmx_config tag_id="htmx-form" %}
     </div>
 </section>

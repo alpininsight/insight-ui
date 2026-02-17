@@ -5,13 +5,17 @@ Mit der `radio_group` oder alternativ mit der `radio_block` Komponente lassen si
 ## Verwendung
 
 ```django
-    {% radio_group config=example_radio current_value=current_view %}
+{% load insight_tags %}
+
+{% radio_group config=example_radio current_value=current_view %}
 ```
 
 Oder als Block
 
 ```django
-    {% radio_block config=example_radio current_value=current_view %}
+{% load insight_tags %}
+
+{% radio_block config=example_radio current_value=current_view %}
 ```
 
 ## Parameter
@@ -43,12 +47,6 @@ Beschreibt die Radio Komponente und deren Items.
     ],
 }
 ```
-
-## Customization
-
-Das Design der Radio-Group befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/radio_group.html`, das der Radio-Blocks in dieser Datei: `insight_ui/templates/insight_ui/components/radio_block.html`.
-
-Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
 
 ## Barrierefreiheit
 

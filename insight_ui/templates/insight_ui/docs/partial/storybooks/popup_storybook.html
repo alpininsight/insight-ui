@@ -25,10 +25,10 @@
         </h2>
     </div>
     <div class="p-4 md:p-6 space-y-6">
-        {% alert message="This is just an information." alert_type="info" %}
-        {% alert message="Saved successfully!" alert_type="success" %}
-        {% alert message="Please review your entries!" alert_type="warning" %}
-        {% alert message="Error while loading data!" alert_type="error" %}
+        {% alert message="This is just an information." type="info" %}
+        {% alert message="Saved successfully!" type="success" %}
+        {% alert message="Please review your entries!" type="warning" %}
+        {% alert message="Error while loading data!" type="error" %}
     </div>
 </section>
 
@@ -49,17 +49,10 @@
         </h2>
     </div>
     <div class="flex flex-col md:flex-row gap-12 p-4 md:p-6">
-        <button data-tooltip-trigger="tt-demo-top" data-position="top" class="btn btn-primary">{% trans "Top" %}</button>
-        {% include "insight_ui/components/tooltip.html" with text=_("This is a tooltip.") show_arrow="True" tag_id="tt-demo-top" %}
-
-        <button data-tooltip-trigger="tt-demo-bottom" data-position="bottom" class="btn btn-primary">{% trans "Bottom" %}</button>
-        {% include "insight_ui/components/tooltip.html" with text=_("This is a tooltip.") tag_id="tt-demo-bottom" %}
-
-        <button data-tooltip-trigger="tt-demo-right" data-position="right" class="btn btn-primary">{% trans "Right" %}</button>
-        {% include "insight_ui/components/tooltip.html" with text=_("This is a tooltip.") show_arrow="True" tag_id="tt-demo-right" %}
-
-        <button data-tooltip-trigger="tt-demo-left" data-position="left" class="btn btn-primary">{% trans "Left" %}</button>
-        {% include "insight_ui/components/tooltip.html" with text=_("This is a tooltip.") tag_id="tt-demo-left" %}
+        <button data-tooltip="{% trans 'This is a tooltip.' %}" data-show-arrow="true" data-position="top" class="btn btn-primary">{% trans "Top" %}</button>
+        <button data-tooltip="{% trans 'This is a tooltip.' %}" data-position="bottom" class="btn btn-primary">{% trans "Bottom" %}</button>
+        <button data-tooltip="{% trans 'This is a tooltip.' %}" data-show-arrow="true" data-position="right" class="btn btn-primary">{% trans "Right" %}</button>
+        <button data-tooltip="{% trans 'This is a tooltip.' %}" data-position="left" class="btn btn-primary">{% trans "Left" %}</button>
     </div>
 </section>
 
@@ -80,10 +73,8 @@
         </h2>
     </div>
     <div class="flex flex-col md:flex-row gap-12 p-4 md:p-6">
-        <button data-popover-trigger="demo-popover" class="btn btn-primary">Hover me!</button>
+        <button data-popover="demo-popover" data-show-arrow="true" class="btn btn-primary">Hover me!</button>
         <div id="demo-popover" class="bg-white dark:bg-gray-500 w-64 border border-gray-300 dark:border-0 rounded-sm shadow">
-            <!-- Arrow -->
-            <div class="popover-arrow absolute left-1/2 -top-2 -translate-x-1/2 w-0 h-0 border-10 border-t-0 border-transparent border-b-white dark:border-b-gray-600"></div>
             <div class="p-4">
                 <span class="block font-semibold w-full border-b-2 border-gray-300 pb-2">
                     {% trans "This is a Popover." %}
@@ -120,12 +111,12 @@
         <button class="btn btn-primary w-72" data-insight-toggle="modal" data-insight-target="demo-modal">
             {% trans "Standard Modal" %}
         </button>
-        {% modal html_tag_id="demo-modal" title=_("Demo Modal") description=_("This is an example of a standard modal.") %}
+        {% modal tag_id="demo-modal" title=_("Demo Modal") description=_("This is an example of a standard modal.") %}
 
         <!-- Action-Buttons -->
         <button class="btn btn-danger w-72" data-insight-toggle="modal" data-insight-target="delete-modal">
             {% trans "Modal with Action-Buttons" %}
         </button>
-        {% modal html_tag_id="delete-modal" title=_("Delete?") description="Please conform deletion!" actions=confirm_modal_actions %}
+        {% modal tag_id="delete-modal" title=_("Delete?") description="Please conform deletion!" actions=confirm_modal_actions %}
     </div>
 </section>

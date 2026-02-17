@@ -5,13 +5,13 @@ Mit der `toggle` Komponente lässt sich ein Toggle-Button einbauen. Dieser funkt
 ## Verwendung
 
 ```django
-    {% load insight-tags %}
+{% load insight-tags %}
 
-    {% toggle tag_id="theme-toggle" name="toggle_theme" value="toggle_theme" checked=False disabled=False label="Dark" method="changeTheme" switch=True %}
+{% toggle tag_id="theme-toggle" name="toggle_theme" value="toggle_theme" checked=False disabled=False label="Dark" method="changeTheme" switch=True %}
 
-    # or
+# or
     
-    {% toggle config=toggle_config method="changeTheme" %}
+{% toggle config=toggle_config method="changeTheme" %}
 ```
 
 ## Parameter
@@ -41,12 +41,6 @@ Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
     "switch": True,
 }
 ```
-
-## Customization
-
-Das Design des Toggle-Buttons befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/toggle_button.html`.
-
-Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
 
 ## Barrierefreiheit
 

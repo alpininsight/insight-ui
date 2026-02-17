@@ -1,17 +1,18 @@
 {% load i18n insight_tags %}
 
 <form
-  class="space-y-6"
+  {% if tag_id %}id="{{ tag_id }}"{% endif %}
   {% if htmx %}
-    hx-post="{{ htmx.url }}"
+    hx-post="{{ view_name }}"
     hx-target="{{ htmx.target }}"
     hx-swap="{{ htmx.swap|default:'innerHTML' }}"
     hx-trigger="submit"
     hx-ext="progressive-enhancement"
   {% else %}
-    action="{{ action }}"
-    method="{{ method|default:'post' }}"
+    action="{{ view_name }}"
+    method="post"
   {% endif %}
+  class="space-y-6"
 >
   {% csrf_token %}
   {% if title %}

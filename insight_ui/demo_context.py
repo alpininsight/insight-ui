@@ -4,6 +4,7 @@ from django.utils.lorem_ipsum import paragraphs
 from django.utils.translation import gettext as _
 
 from insight_ui import config
+from insight_ui.context import get_base_context
 from insight_ui.demo_utils import generate_payload, map_payload_to_cards, map_payload_to_table
 from insight_ui.utils.pagination import get_page
 
@@ -112,24 +113,18 @@ def get_login_screen_context() -> dict:
     )
 
 
-def get_base_context() -> dict:
-    """Serve basic context data, like navbar, footer and settings."""
-    return config.get_config() | get_navbar_context() | get_footer_context()
-
-
 def get_component_demo_context() -> dict:
     """Serve data of the device switch, etc. for component demos."""
     return {
         "device_radio_config": {
-            "name": "device",
             "items": [
                 {"tag_id": "mobile", "value": "mobile", "icon": {"name": "smartphone"}, "disabled": False},
                 {"tag_id": "tablet", "value": "tablet", "icon": {"name": "tablet"}, "disabled": False},
                 {"tag_id": "desktop", "value": "desktop", "icon": {"name": "desktop"}, "disabled": False},
-            ],
+            ]
         },
-        "dir_toggle": {"tag_id": "toggle_dir", "label": _("RTL")},
-        "theme_toggle": {"tag_id": "toggle_theme", "icon": {"name": "moon"}},
+        "dir_toggle": {"label": _("RTL")},
+        "theme_toggle": {"icon": {"name": "moon"}},
     }
 
 
@@ -581,7 +576,7 @@ def get_sidebar_context() -> dict:
 def get_main_storybook_context() -> dict:
     """Serve data for main storybook."""
     return (
-        get_base_context()
+        get_base_context("storybook_view")
         | get_sidebar_context()
         | get_breadcrumb_context()
         | get_step_bar_context()
@@ -595,7 +590,7 @@ def get_main_storybook_context() -> dict:
 def get_inputs_storybook_context() -> dict:
     """Serve data for input elements storybook."""
     return (
-        get_base_context()
+        get_base_context("storybook_view")
         | get_sidebar_context()
         | get_checkbox_context()
         | get_radio_group_context()
@@ -609,19 +604,24 @@ def get_inputs_storybook_context() -> dict:
 
 def get_popup_storybook_context() -> dict:
     """Serve data for popup storybook."""
-    return get_base_context() | get_sidebar_context() | get_alert_context() | get_modal_context()
+    return get_base_context("storybook_view") | get_sidebar_context() | get_alert_context() | get_modal_context()
 
 
 def get_utils_storybook_context() -> dict:
     """Serve data for utils storybook."""
-    return get_base_context() | get_sidebar_context() | get_differentiator_context() | get_geo_map_context()
+    return (
+        get_base_context("storybook_view")
+        | get_sidebar_context()
+        | get_differentiator_context()
+        | get_geo_map_context()
+    )
 
 
 def get_table_storybook_context() -> dict:
     """Serve data for table examples."""
     # Generate data for pagination example
     return (
-        get_base_context()
+        get_base_context("storybook_view")
         | get_sidebar_context()
         | get_table_context()
         | get_pagination_context()
@@ -633,7 +633,7 @@ def get_card_storybook_context() -> dict:
     """Serve data for card examples."""
     # Generate data for examples
     return (
-        get_base_context()
+        get_base_context("storybook_view")
         | get_sidebar_context()
         | get_cards_context()
         | get_image_carousel_context()
@@ -645,12 +645,17 @@ def get_card_storybook_context() -> dict:
 
 def get_form_storybook_context() -> dict:
     """Serve data for form examples."""
-    return get_base_context() | get_sidebar_context() | get_form_context()
+    return get_base_context("storybook_view") | get_sidebar_context() | get_form_context()
 
 
 def get_filter_storybook_context() -> dict:
     """Serve data for filter example."""
-    return get_base_context() | get_sidebar_context() | get_generic_filter_context() | get_query_builder_context()
+    return (
+        get_base_context("storybook_view")
+        | get_sidebar_context()
+        | get_generic_filter_context()
+        | get_query_builder_context()
+    )
 
 
 def get_alert_context() -> dict:
@@ -674,8 +679,8 @@ def get_breadcrumb_context() -> dict:
     return {
         "breadcrumb_items": [
             {"text": _("Startpage"), "view_name": "index_view", "icon": {"name": "home", "size": "small"}},
-            {"text": _("Demo"), "view_name": "index_view", "query_params": "?test=123"},
-            {"text": _("Components")},
+            {"text": _("Components"), "view_name": "index_view"},
+            {"text": _("Breadcrumbs")},
         ],
         "single_breadcrumb_item": [{"text": _("Startpage"), "icon": {"name": "home", "size": "small"}}],
     }
@@ -734,13 +739,8 @@ def get_step_bar_context() -> dict:
                 "description": _("Informationen zur Person und Anschrift."),
                 "completed": True,
             },
-            {
-                "title": _("Zahlungsmethode"),
-                "description": _("Art der Bezahlung auswählen."),
-                "completed": False,
-                "current": True,
-            },
-            {"title": _("Überprüfen"), "description": _("Prüfen der Angaben und Bezahlen."), "completed": False},
+            {"title": _("Zahlungsmethode"), "description": _("Art der Bezahlung auswählen."), "current": True},
+            {"title": _("Überprüfen"), "description": _("Prüfen der Angaben und Bezahlen.")},
         ]
     }
 
@@ -958,9 +958,9 @@ def get_cards_context() -> dict:
                 ],
             },
         ],
-        "horizontale_cards": [
+        "app_cards": [
             {
-                "title": "Horizontale Cards",
+                "title": "App Cards",
                 "content": "A card with its content arranged horizontally.",
                 "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": "Card-Image"},
                 "tags": ["Test", "Test2", "Test3"],
@@ -987,7 +987,7 @@ def get_cards_context() -> dict:
 
 def get_card_carousel_context() -> dict:
     """Serve data for card carousel detailpage."""
-    return {"carousel_items": map_payload_to_cards(generate_payload()), "range_total_slides": range(3)}
+    return {"carousel_items": map_payload_to_cards(generate_payload())}
 
 
 def get_image_carousel_context() -> dict:
@@ -1004,7 +1004,7 @@ def get_image_carousel_context() -> dict:
         for index, seed in enumerate(seeds)
     ]
 
-    return {"image_carousel_items": image_carousel_items, "range_total_slides": range(len(image_carousel_items))}
+    return {"image_carousel_items": image_carousel_items}
 
 
 def get_toggle_view_context() -> dict:
@@ -1017,7 +1017,6 @@ def get_toggle_view_context() -> dict:
         "toggle_start_view": "table",
         "view_radio_config": {
             "name": "view",
-            "param_name": "view",
             "items": [
                 {"tag_id": "card-view", "value": "card", "icon": {"name": "cards"}},
                 {"tag_id": "table-view", "value": "table", "icon": {"name": "list"}},
@@ -1106,9 +1105,9 @@ def get_accordion_context() -> dict:
     """Serve data for accordion detailpage."""
     return {
         "accordion_items": [
-            {"question": "Was ist Django?", "answer": "Django ist ein Webframework für Python."},
-            {"question": "Was ist Tailwind?", "answer": "Tailwind ist ein CSS-Utility-Framework."},
-            {"question": "Was ist ARIA?", "answer": "ARIA steht für Accessible Rich Internet Applications."},
+            {"title": "Was ist Django?", "content": "Django ist ein Webframework für Python."},
+            {"title": "Was ist Tailwind?", "content": "Tailwind ist ein CSS-Utility-Framework."},
+            {"title": "Was ist ARIA?", "content": "ARIA steht für Accessible Rich Internet Applications."},
         ]
     }
 
@@ -1134,7 +1133,7 @@ def get_tabs_context() -> dict:
 
 def get_3d_carousel_context() -> dict:
     """Serve data for 3D carousel detailpage."""
-    return {"3D_carousel": {"items": map_payload_to_cards(generate_payload()), "range_total_slides": range(5)}}
+    return {"3D_carousel": {"items": map_payload_to_cards(generate_payload())}}
 
 
 def get_charts_context() -> dict:

@@ -5,13 +5,13 @@ Mit der `input_field` Komponente lassen sich einzelne `<input>`-Elemente einbaue
 ## Verwendung
 
 ```django
-    {% load insight_tags %}
+{% load insight_tags %}
     
-    {% input_field tag_id="expiration-date" name="expiration_date" input_type="date" value="expiration_date" label="Choose expiration date:" %}
+{% input_field tag_id="expiration-date" name="expiration_date" input_type="date" value="expiration_date" label="Choose expiration date:" %}
 
-    # or
+# or
 
-    {% input_field config=input_config %}
+{% input_field config=input_config %}
 ```
 
 ## Parameter
@@ -46,12 +46,6 @@ Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
     "label": "Choose expiration date:",
 }
 ```
-
-## Customization
-
-Das Design der Input Komponente befindet sich in dieser Datei: `insight_ui/templates/insight_ui/components/input.html`.
-
-Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad `templates/insight_ui/components/` vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
 
 ## Barrierefreiheit
 

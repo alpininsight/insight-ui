@@ -1,8 +1,8 @@
 {% load insight_tags %}
 
-<div class="flex flex-col md:flex-row divide-y md:divide-y-0 divide-gray-300 dark:divide-gray-700 w-full border bg-gray-100 dark:bg-gray-900 border-gray-300 dark:border-gray-700 rounded-md">
+<ol class="flex flex-col md:flex-row divide-y md:divide-y-0 divide-gray-300 dark:divide-gray-700 w-full border bg-gray-100 dark:bg-gray-900 border-gray-300 dark:border-gray-700 rounded-md">
     {% for item in items %}
-        <div class="flex items-center gap-4 w-full h-20 px-6">
+        <li class="flex items-center gap-4 w-full h-20 px-6">
             {% if item.completed %}
                 <div class="flex items-center justify-center size-12 rounded-full bg-insight-primary text-white">
                     {% icon name="tick" size="big" %}
@@ -20,7 +20,7 @@
                 <span class="block font-semibold {% if not item.completed and not item.current %}text-gray-300 dark:text-gray-700{% elif item.current %}text-insight-primary{% else %}text-primary{% endif %}">{{ item.title }}</span>
                 <span class="block text-sm {% if not item.completed and not item.current %}text-gray-300 dark:text-gray-700{% else %}text-secondary{% endif %}">{{ item.description }}</span>
             </div>
-        </div>
+        </li>
         {% if not forloop.last %}
             <div class="text-gray-300 dark:text-gray-700 hidden md:block">
                 <svg viewBox="0 0 22 80" fill="none" preserveAspectRatio="none" aria-hidden="true" class="h-20 w-6 rtl:rotate-180">
@@ -29,4 +29,4 @@
             </div>
         {% endif %}
     {% endfor %}
-</div>
+</ol>
