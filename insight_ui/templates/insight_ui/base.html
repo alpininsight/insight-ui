@@ -83,7 +83,7 @@
 
         <main id="main" class="flex pt-16">
             {% block sidebar_left %}{% endblock sidebar_left %}
-            <div id="main-content" class="relative w-full">
+            <div id="main-content" class="relative w-full min-w-0">
                 <div>
                     <div id="heading" class="bg-insight-primary px-4 md:px-16 pt-16 pb-4">
                         {% block heading %}
@@ -95,7 +95,7 @@
                         <polyline class="fill-insight-primary drop-shadow-xs drop-shadow-gray-500 dark:drop-shadow-gray-800" points="-10,0 510,0 -10,35"/>
                     </svg>
                 </div>
-                <div id="content" class="grow px-4 md:px-16 pb-16">
+                <div id="content" class="grow px-4 md:px-16 pb-16 {% block content_bg %}{% endblock content_bg %}">
                     {% include "insight_ui/components/htmx_loading_indicator.html" %}
                     {% block content %}{% endblock content %}
                 </div>
