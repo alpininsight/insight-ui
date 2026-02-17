@@ -19,8 +19,10 @@
     {% sidebar sidebar_data=left_sidebar side="left" %}
 {% endblock sidebar_left %}
 
+{% block content_bg %}bg-linear-to-r from-white from-30% to-white/60 dark:from-gray-900 dark:to-gray-900/75{% endblock content_bg %}
+
 {% block content %}
-    <div id="content" class="bg-linear-to-r from-white from-30% to-white/60 dark:from-gray-900 dark:to-gray-900/75 w-full space-y-8 text-secondary leading-loose py-16 px-4 md:px-16">
+    <div class="text-secondary leading-loose">
         <section class="space-y-4">
             <h1>Customization</h1>
             <p>

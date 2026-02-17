@@ -75,7 +75,9 @@
         <main id="main-content" class="flex pt-16">
             {% block sidebar_left %}{% endblock sidebar_left %}
             <div class="grow">
-                {% block content %}{% endblock content %}
+                <div id="content" class="w-full space-y-8 py-16 px-4 md:px-16 {% block content_bg %}bg-white dark:bg-gray-900{% endblock content_bg %}">
+                    {% block content %}{% endblock content %}
+                </div>
             </div>
             {% block sidebar_right %}{% endblock sidebar_right %}
         </main>
