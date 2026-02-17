@@ -326,7 +326,7 @@ def get_sidebar_context() -> dict:
     """Serve data for the main sidebar."""
     return {
         "left_sidebar": {
-            "title": _("Insight UI Components"),
+            "title": _("Components"),
             "categories": [
                 {
                     "caption": _("Navigation / Main"),
