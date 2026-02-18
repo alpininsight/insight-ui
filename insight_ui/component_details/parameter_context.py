@@ -1134,3 +1134,26 @@ def get_article_parameter_context() -> dict[str, list[str]]:
     ]
 
     return {"main_params": main_params}
+
+
+def get_hero_parameter_context() -> dict[str, list[str]]:
+    """Serve parameter documentation for the hero component."""
+    main_params = [
+        ["title", "str", "Titel der Hero-Section.", "''"],
+        ["subtitle", "int", "Untertitel der Hero-Section, welche unter dem Titel angezeigt wird.", "''"],
+        [
+            "description",
+            "str",
+            "Beschreibung der Hero-Section, welche unter dem Titel zw. Untertitel angezeigt wird.",
+            "''",
+        ],
+        ["cta_primary", "dict", "Primärer 'Call-to-Action' Button.", "{}"],
+        ["cta_primary", "dict", "Sekundärer 'Call-to-Action' Button.", "{}"],
+        ["background_image_url", "str", "URL des Hintergrundbildes.", "''"],
+        ["badge", "dict", "Eine Badge mit Icon und Text.", "{}"],
+    ]
+
+    cta_params = []
+    badge_params = []
+
+    return {"main_params": main_params, "cta_params": cta_params, "badge_params": badge_params}

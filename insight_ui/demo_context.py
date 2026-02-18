@@ -341,6 +341,11 @@ def get_sidebar_context() -> dict:
                             "url": reverse("component_detail_page_view", kwargs={"component_name": "article"}),
                             "htmx": {"target": "#content"},
                         },
+                        {
+                            "text": _("Hero Section"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "hero"}),
+                            "htmx": {"target": "#content"},
+                        },
                     ],
                 },
                 {

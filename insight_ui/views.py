@@ -32,6 +32,7 @@ from insight_ui.component_details.parameter_context import (
     get_form_parameter_context,
     get_generic_filter_parameter_context,
     get_geo_map_parameter_context,
+    get_hero_parameter_context,
     get_image_carousel_parameter_context,
     get_infinite_scroll_parameter_context,
     get_input_field_parameter_context,
@@ -402,6 +403,7 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
         "form": get_form_parameter_context,
         "page_header": get_page_header_parameter_context,
         "article": get_article_parameter_context,
+        "hero": get_hero_parameter_context,
     }
 
     parameter_context_func = parameter_context_func_map.get(component_name)
@@ -512,8 +514,9 @@ def component_demo_view(request: HttpRequest, component_name: str) -> HttpRespon
         "form": get_form_context,
         "page_header": get_empty_context,
         "article": get_empty_context,
+        "hero": get_empty_context,
     }
-
+    logger.info(component_name)
     context_func = context_func_map.get(component_name)
 
     if not context_func:

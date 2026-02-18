@@ -1425,6 +1425,45 @@ def article(content: str = "", columns: int = 2, column_gap: str = "2rem", title
     return {"content": content, "columns": columns, "column_gap": column_gap, "title": title}
 
 
+@register.inclusion_tag("insight_ui/components/hero.html")
+def hero(  # noqa: PLR0913 (too many arguments)
+    title: str = "",
+    subtitle: str = "",
+    description: str = "",
+    cta_primary: dict = {},
+    cta_secondary: dict = {},
+    background_image_url: str = "",
+    badge: dict = {},
+) -> dict[str, Any]:
+    """
+    Rendert eine Hero Section mit optionalen Hintergrundbild.
+
+    Args:
+    ----
+        title (str): Titel der Hero-Section.
+        subtitle (str): Untertitel der Hero-Section, welche unter dem Titel angezeigt wird.
+        description (str): Beschreibung der Hero-Section, welche unter dem Titel zw. Untertitel angezeigt wird.
+        cta_primary (dict): Primärer 'Call-to-Action' Button.
+        cta_secondary (dict): Sekundärer 'Call-to-Action' Button.
+        background_image_url (str): URL des Hintergrundbildes.
+        badge (dict): Eine Badge mit Icon und Text.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template.
+
+    """
+    return {
+        "title": title,
+        "subtitle": subtitle,
+        "description": description,
+        "cta_primary": cta_primary,
+        "cta_secondary": cta_secondary,
+        "background_image_url": background_image_url,
+        "badge": badge,
+    }
+
+
 @register.inclusion_tag("insight_ui/components/charts/bar_chart.html")
 def bar_chart(chart_id: str, chart: dict, chart_height: int = 24) -> dict:
     """

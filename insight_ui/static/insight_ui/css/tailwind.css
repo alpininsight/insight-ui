@@ -1,4 +1,4 @@
-/*! tailwindcss v4.1.18 | MIT License | https://tailwindcss.com */
+/*! tailwindcss v4.2.0 | MIT License | https://tailwindcss.com */
 @layer properties;
 @layer theme, base, components, utilities;
 @layer theme {
@@ -83,7 +83,6 @@
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
     --font-weight-bold: 700;
-    --tracking-wider: 0.05em;
     --leading-relaxed: 1.625;
     --leading-loose: 2;
     --radius-sm: 0.25rem;
@@ -314,11 +313,17 @@
   .inset-y-0 {
     inset-block: calc(var(--spacing) * 0);
   }
+  .start {
+    inset-inline-start: var(--spacing);
+  }
   .start-0 {
     inset-inline-start: calc(var(--spacing) * 0);
   }
   .start-4 {
     inset-inline-start: calc(var(--spacing) * 4);
+  }
+  .end {
+    inset-inline-end: var(--spacing);
   }
   .end-0 {
     inset-inline-end: calc(var(--spacing) * 0);
@@ -333,7 +338,7 @@
     top: calc(var(--spacing) * 0);
   }
   .top-1\/2 {
-    top: calc(1/2 * 100%);
+    top: calc(1 / 2 * 100%);
   }
   .top-2 {
     top: calc(var(--spacing) * 2);
@@ -366,10 +371,10 @@
     bottom: calc(var(--spacing) * 10);
   }
   .left-1\/2 {
-    left: calc(1/2 * 100%);
+    left: calc(1 / 2 * 100%);
   }
   .left-1\/4 {
-    left: calc(1/4 * 100%);
+    left: calc(1 / 4 * 100%);
   }
   .left-2 {
     left: calc(var(--spacing) * 2);
@@ -598,7 +603,7 @@
     height: calc(var(--spacing) * 0);
   }
   .h-1\/2 {
-    height: calc(1/2 * 100%);
+    height: calc(1 / 2 * 100%);
   }
   .h-2 {
     height: calc(var(--spacing) * 2);
@@ -724,10 +729,7 @@
     max-width: var(--container-2xs);
   }
   .max-w-3\/4 {
-    max-width: calc(3/4 * 100%);
-  }
-  .max-w-3xl {
-    max-width: var(--container-3xl);
+    max-width: calc(3 / 4 * 100%);
   }
   .max-w-4xl {
     max-width: var(--container-4xl);
@@ -766,11 +768,11 @@
     table-layout: auto;
   }
   .-translate-x-1\/2 {
-    --tw-translate-x: calc(calc(1/2 * 100%) * -1);
+    --tw-translate-x: calc(calc(1 / 2 * 100%) * -1);
     translate: var(--tw-translate-x) var(--tw-translate-y);
   }
   .-translate-y-1\/2 {
-    --tw-translate-y: calc(calc(1/2 * 100%) * -1);
+    --tw-translate-y: calc(calc(1 / 2 * 100%) * -1);
     translate: var(--tw-translate-x) var(--tw-translate-y);
   }
   .-rotate-90 {
@@ -2454,14 +2456,6 @@
   .dark\:bg-gray-800 {
     &:where([data-theme=dark], [data-theme=dark] *) {
       background-color: var(--color-gray-800);
-    }
-  }
-  .dark\:bg-gray-800\/50 {
-    &:where([data-theme=dark], [data-theme=dark] *) {
-      background-color: color-mix(in srgb, oklch(27.8% 0.033 256.848) 50%, transparent);
-      @supports (color: color-mix(in lab, red, red)) {
-        background-color: color-mix(in oklab, var(--color-gray-800) 50%, transparent);
-      }
     }
   }
   .dark\:bg-gray-900 {
