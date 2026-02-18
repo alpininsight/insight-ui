@@ -799,8 +799,8 @@ def get_step_bar_context() -> dict:
 def get_minimal_step_bar_context() -> dict:
     """Serve data for minimal step bar detailpage."""
     return {
-        "min_step_bar": [{"step_count": 5, "current_step": 3, "icon_size": "xs"}],
-        "min_step_bar_with_list": [{"items": ["success", "success", "failed", "active", ""], "icon_size": "xs"}],
+        "min_step_bar": {"step_count": 5, "current_step": 3, "icon_size": "xs"},
+        "min_step_bar_with_list": {"items": ["success", "success", "failed", "active", ""], "icon_size": "xs"},
     }
 
 

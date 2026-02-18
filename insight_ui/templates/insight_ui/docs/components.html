@@ -55,6 +55,10 @@
                 {% step_bar items=step_bar_items %}
                 {% step_bar items=step_bar_items_failed %}
             </div>
+        {% elif component == "minimal_step_bar" %}
+            <div class="w-40">
+                {% minimal_step_bar config=min_step_bar %}
+            </div>
         {% elif component == "bullet_point_list" %}
             {% bullet_point_list items=bulletpoints %}
         {% elif component == "accordion" %}
