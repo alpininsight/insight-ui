@@ -1458,6 +1458,9 @@
   .text-insight-primary {
     color: var(--color-insight-primary);
   }
+  .text-insight-primary-hover {
+    color: var(--color-insight-primary-hover);
+  }
   .text-insight-success {
     color: var(--color-insight-success);
   }
@@ -2009,9 +2012,9 @@
       font-weight: var(--font-weight-bold);
     }
   }
-  .aria-\[current\=location\]\:text-blue-700 {
+  .aria-\[current\=location\]\:text-insight-primary-hover {
     &[aria-current="location"] {
-      color: var(--color-blue-700);
+      color: var(--color-insight-primary-hover);
     }
   }
   .sm\:bottom-10 {

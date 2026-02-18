@@ -1,80 +1,86 @@
-<div id="heading" hx-swap-oob="true">
-    <h1>Insight UI {{ component_name }}</h1>
+{% load i18n %}
+
+{% comment %} Titel and summarize (out of bands) {% endcomment %}
+<div id="heading" hx-swap-oob="true" class="bg-insight-primary px-4 md:px-16 pt-16 pb-4 space-y-8">
+    <h1 class="text-white">Insight UI {{ component_name }}</h1>
     {% for paragraph in description %}
-        <p>{{ paragraph }}</p>
+        <p class="text-gray-200 leading-loose text-lg">{{ paragraph }}</p>
     {% endfor %}
 </div>
 
-<div id="content">
-    <!-- Component Demo -->
-    <section>
-        {% include "insight_ui/docs/demo_container.html" %}
-    </section>
-
-    <hr class="text-gray-300 dark:text-gray-600">
-
-    <!-- Component Documentation -->
-    <section>
-        <h2>{% trans "Usage" %}</h2>
-        <p class="mb-4">
-            {{ usage_summary }}
-        </p>
-        <div data-insight-code-block="Django">
-            {{ usage }}
-        </div>
-    </section>
-
-    <section>
-        <h3>{% trans "Parameter" %}</h3>
-        {% for param_table in params %}
-            {% if forloop.first %}
-                {% include "insight_ui/components/parameter_table.html" with rows=param_table %}
-            {% else %}
-                <div class="space-y-2 mt-4">
-                    <h4>... <i>(...)</i></h4>
-                    <p>...</p>
-
-                    <div data-insight-code-block="python">
-                        {# fmt:off #}
-                        Work in Progress
-                        {# fmt:on #}
-                    </div>
-                    {% include "insight_ui/components/parameter_table.html" with rows=param_table %}
-                </div>
-            {% endif %}
-        {% endfor %}
-    </section>
-
-    <!-- A11y -->
-    <section>
-        <h2>{% trans "Accessability" %}</h2>
-        <ul class="list-disc leading-relaxed ms-8 mt-6">
-            {% for point in a11y %}
-                <li>{{ point }}</li>
-            {% endfor %}
-        </ul>
-    </section>
-
-    <hr class="text-gray-300 dark:text-gray-600">
-
-    <!-- Related -->
-    <section>
-        <h2>{% trans "Related Topics" %}</h2>
-        <ul class="list-disc leading-relaxed ms-8 mt-6">
-            {% for topic in related_topics %}
-                <li>
-                    <a
-                        href="{% url 'component_detail_page_view' topic %}"
-                        hx-get="{% url 'component_detail_page_view' topic %}"
-                        hx-target="#content"
-                        hx-swap="innerHTML show:window:top"
-                        hx-push-url="true"
-                        class="text-link"
-                    >
-                        {{ topic }}
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-    </section>
+<div id="right-aside" hx-swap-oob="true" class="flex">
+    {% include "insight_ui/components/toc_sidebar.html" with side="right" static=True navbar_fixed=True %}
 </div>
+
+{% comment %} Component Demo {% endcomment %}
+<section>
+    {% include "insight_ui/docs/demo_container.html" %}
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+{% comment %} Component Documentation {% endcomment %}
+<section>
+    <h2>{% trans "Usage" %}</h2>
+    <p class="mb-4">
+        {{ usage_summary }}
+    </p>
+    <div data-insight-code-block="Django">
+        {{ usage }}
+    </div>
+</section>
+
+{% comment %} Parameter {% endcomment %}
+<section>
+    <h3>{% trans "Parameter" %}</h3>
+    {% for param in params %}
+        {% if forloop.first %}
+            {% include "insight_ui/components/parameter_table.html" with rows=param %}
+        {% else %}
+            <div class="space-y-2 mt-4">
+                <h4>{{ param.name }} <i>({{ param.type }})</i></h4>
+                <p>{{ param.description }}</p>
+
+                <div data-insight-code-block="python">
+                    {# fmt:off #}
+                    {{ param.example_data }}
+                    {# fmt:on #}
+                </div>
+                {% include "insight_ui/components/parameter_table.html" with rows=param.table %}
+            </div>
+        {% endif %}
+    {% endfor %}
+</section>
+
+{% comment %} A11y {% endcomment %}
+<section>
+    <h2>{% trans "Accessability" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        {% for point in a11y %}
+            <li>{{ point }}</li>
+        {% endfor %}
+    </ul>
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+{% comment %} Related {% endcomment %}
+<section>
+    <h2>{% trans "Related Topics" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        {% for topic in related_topics %}
+            <li>
+                <a
+                    href="{% url 'component_detail_page_view' topic.component_name %}"
+                    hx-get="{% url 'component_detail_page_view' topic.component_name %}"
+                    hx-target="#content"
+                    hx-swap="innerHTML show:window:top"
+                    hx-push-url="true"
+                    class="text-link"
+                >
+                    {{ topic.formatted_name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</section>

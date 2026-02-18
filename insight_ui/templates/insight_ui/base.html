@@ -82,7 +82,9 @@
         {% endblock drawers %}
 
         <main id="main" class="flex grow pt-16">
-            {% block sidebar_left %}{% endblock sidebar_left %}
+            <div id="left-aside" class="flex">
+                {% block sidebar_left %}{% endblock sidebar_left %}
+            </div>
             <div id="main-content" class="relative w-full min-w-0">
                 <div>
                     <div id="heading" class="bg-insight-primary px-4 md:px-16 pt-16 pb-4">
@@ -100,7 +102,9 @@
                     {% block content %}{% endblock content %}
                 </div>
             </div>
-            {% block sidebar_right %}{% endblock sidebar_right %}
+            <div id="right-aside" class="flex">
+                {% block sidebar_right %}{% endblock sidebar_right %}
+            </div>
         </main>
 
         {% block footer %}
