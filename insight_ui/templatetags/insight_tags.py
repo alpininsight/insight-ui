@@ -225,7 +225,7 @@ def minimal_step_bar(config: dict) -> dict:
 
     Arguments:
     ---------
-        config (dict): Konfiguration der einzelnen Schritte der Stepbar.
+        config (dict): Konfiguration der einzelnen Schritte der Step Bar.
 
     Returns:
     -------
