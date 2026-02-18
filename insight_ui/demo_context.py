@@ -329,6 +329,21 @@ def get_sidebar_context() -> dict:
             "title": _("Components"),
             "categories": [
                 {
+                    "caption": _("Layout"),
+                    "items": [
+                        {
+                            "text": _("Page Header"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "page_header"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Article"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "article"}),
+                            "htmx": {"target": "#content"},
+                        },
+                    ],
+                },
+                {
                     "caption": _("Navigation / Main"),
                     "items": [
                         {

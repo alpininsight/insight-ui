@@ -15,6 +15,7 @@ from insight_ui.component_details.parameter_context import (
     get_3d_carousel_parameter_context,
     get_accordion_parameter_context,
     get_alert_parameter_context,
+    get_article_parameter_context,
     get_breadcrumb_parameter_context,
     get_bullet_point_list_parameter_context,
     get_button_parameter_context,
@@ -38,6 +39,7 @@ from insight_ui.component_details.parameter_context import (
     get_modal_parameter_context,
     get_multiselect_parameter_context,
     get_navbar_parameter_context,
+    get_page_header_parameter_context,
     get_pagination_parameter_context,
     get_popover_parameter_context,
     get_progress_bar_parameter_context,
@@ -398,6 +400,8 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
         "3D_carousel": get_3d_carousel_parameter_context,
         "toggle_view": get_toggle_view_parameter_context,
         "form": get_form_parameter_context,
+        "page_header": get_page_header_parameter_context,
+        "article": get_article_parameter_context,
     }
 
     parameter_context_func = parameter_context_func_map.get(component_name)
@@ -434,11 +438,18 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
 
     if request.headers.get("HX-Request") and not request.headers.get("HX-History-Restore-Request"):
         context["demo"] = demo_info
-        return render(request, f"insight_ui/docs/partial/{component_name}_detailpage.html", context)
+        page_header_title = component_name.replace("_", " ").title()
+        partial_html = render_to_string(f"insight_ui/docs/partial/{component_name}_detailpage.html", context, request)
+        heading_html = render_to_string("insight_ui/components/page_header.html", {"title": page_header_title}, request)
+        toc_html = render_to_string("insight_ui/components/toc_sidebar.html", {}, request)
+        oob_heading = f'<div id="heading" hx-swap-oob="innerHTML">{heading_html}</div>'
+        oob_sidebar = f'<div id="right-sidebar-wrapper" hx-swap-oob="innerHTML">{toc_html}</div>'
+        return HttpResponse(partial_html + oob_heading + oob_sidebar)
 
     context |= get_base_context("component_detail_page_view") | get_sidebar_context()
     context["template_name"] = f"insight_ui/docs/partial/{component_name}_detailpage.html"
     context["demo"] = demo_info
+    context["page_header_title"] = component_name.replace("_", " ").title()
     return render(request, "insight_ui/docs/component_detailpage.html", context)
 
 
@@ -506,6 +517,8 @@ def component_demo_view(request: HttpRequest, component_name: str) -> HttpRespon
         "3D_carousel": get_3d_carousel_context,
         "toggle_view": get_toggle_view_context,
         "form": get_form_context,
+        "page_header": get_empty_context,
+        "article": get_empty_context,
     }
 
     context_func = context_func_map.get(component_name)
@@ -548,18 +561,39 @@ def storybook_view(request: HttpRequest, storybook_name: str) -> HttpResponse:
         "filter": get_filter_storybook_context,
     }
 
+    title_map = {
+        "main": _("Navigation"),
+        "input": _("Input Elements"),
+        "popup": _("Popups"),
+        "util": _("Utils"),
+        "table": _("Lists & Tables"),
+        "card": _("Cards"),
+        "form": _("Forms"),
+        "filter": _("Filters & Search"),
+    }
+
     context_func = context_func_map.get(storybook_name)
 
     if not context_func:
         return HttpResponse("Page not found", status=404)
 
+    storybook_title = title_map.get(storybook_name, storybook_name.replace("_", " ").title())
+
     if request.headers.get("HX-Request") and not request.headers.get("HX-History-Restore-Request"):
         context = context_func()
         context["search_query"] = request.GET.get("search", "")
-        return render(request, f"insight_ui/docs/partial/storybooks/{storybook_name}_storybook.html", context)
+        partial_html = render_to_string(
+            f"insight_ui/docs/partial/storybooks/{storybook_name}_storybook.html", context, request
+        )
+        heading_html = render_to_string("insight_ui/components/page_header.html", {"title": storybook_title}, request)
+        toc_html = render_to_string("insight_ui/components/toc_sidebar.html", {}, request)
+        oob_heading = f'<div id="heading" hx-swap-oob="innerHTML">{heading_html}</div>'
+        oob_sidebar = f'<div id="right-sidebar-wrapper" hx-swap-oob="innerHTML">{toc_html}</div>'
+        return HttpResponse(partial_html + oob_heading + oob_sidebar)
 
     context = context_func()
     context["template_name"] = f"insight_ui/docs/partial/storybooks/{storybook_name}_storybook.html"
+    context["page_header_title"] = storybook_title
     return render(request, "insight_ui/docs/component_detailpage.html", context)
 
 

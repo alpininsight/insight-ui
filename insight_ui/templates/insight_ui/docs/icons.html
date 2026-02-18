@@ -12,22 +12,16 @@
 {% endblock sidebar_left %}
 
 {% block sidebar_right %}
-    {% comment %} Table of Contents {% endcomment %}
-    {% include "insight_ui/components/toc_sidebar.html" with side="right" static=True navbar_fixed=True %}
-    <script>
-        new TableOfContents({
-            contentSelector: "main-content",
-            tocSelector: "toc",
-            offsetTop: 200,
-            offsetBottom: 300
-        });
-    </script>
+    {% include "insight_ui/components/toc_sidebar.html" %}
 {% endblock sidebar_right %}
+
+{% block heading %}
+    {% page_header title=_("Icons") %}
+{% endblock heading %}
 
 {% block content %}
     <div class="w-full space-y-12 text-secondary leading-loose">
         <div class="space-y-8">
-            <h1>Icons</h1>
             <p>
                 Viele unserer Komponenten haben die Möglichkeit, ein optionales Icons anzuzeigen.
                 Überall dort, wo die Komponente ein Icon erwartet, kann eines der hier aufgelisteten Icons angegeben werden.

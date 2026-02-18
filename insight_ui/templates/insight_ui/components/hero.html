@@ -1,0 +1,40 @@
+{% load static insight_tags i18n %}
+
+<section class="relative overflow-hidden py-8 md:py-12 px-4 md:px-12">
+    {% if background_image %}
+        <img src="{% static background_image %}" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover opacity-20 -z-10">
+        <div class="absolute inset-0 bg-linear-to-r from-white from-30% to-white/60 dark:from-gray-900 dark:to-gray-900/75 -z-10"></div>
+    {% endif %}
+
+    <div class="max-w-4xl{% if not background_image %} mx-auto text-center{% endif %}">
+        {% if badge %}
+            <div class="inline-flex items-center gap-2 rounded-full bg-insight-primary/10 dark:bg-insight-primary/20 px-4 py-1.5 mb-6">
+                {% if badge.icon %}
+                    {% icon name=badge.icon size="small" %}
+                {% endif %}
+                <span class="text-sm font-medium text-insight-primary">{{ badge.text }}</span>
+            </div>
+        {% endif %}
+
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-primary mb-4">{{ title }}</h1>
+
+        {% if subtitle %}
+            <p class="text-xl md:text-2xl font-medium text-insight-primary mb-4">{{ subtitle }}</p>
+        {% endif %}
+
+        {% if description %}
+            <p class="text-lg text-secondary leading-relaxed mb-4 max-w-2xl{% if not background_image %} mx-auto{% endif %}">{{ description }}</p>
+        {% endif %}
+
+        {% if cta_primary or cta_secondary %}
+            <div class="flex flex-wrap gap-4{% if not background_image %} justify-center{% endif %}">
+                {% if cta_primary %}
+                    <a href="{{ cta_primary.url }}" class="btn btn-primary btn-lg">{{ cta_primary.text }}</a>
+                {% endif %}
+                {% if cta_secondary %}
+                    <a href="{{ cta_secondary.url }}" class="btn btn-outline-primary btn-lg">{{ cta_secondary.text }}</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</section>

@@ -12,28 +12,11 @@
 {% endblock sidebar_left %}
 
 {% block sidebar_right %}
-    {% comment %} Table of Contents {% endcomment %}
-    {% include "insight_ui/components/toc_sidebar.html" with side="right" static=True navbar_fixed=True %}
-    <script>
-        new TableOfContents({
-            contentSelector: "main-content",
-            tocSelector: "toc",
-            offsetTop: 200,
-            offsetBottom: 300
-        });
-    </script>
+    {% include "insight_ui/components/toc_sidebar.html" %}
 {% endblock sidebar_right %}
 
 {% block heading %}
-    <div class="space-y-8">
-        <h1 class="text-white">{% trans "Base Template" %}</h1>
-        <p class="text-gray-200 leading-loose text-lg mb-8">
-            Unser Base-Template dient als Grundlage für sämtliche Seiten der Anwendung.
-            Es bietet unter anderem ein semantisch korrektes Grundgerüst für den <i>Header</i>, <i>Footer</i>, <i>Sidebars</i>, dem Hauptinhalt und noch weiteren Grundbausteinen, vieler Web-Anwendungen.
-            Zusätzlich lädt das Base-Template bereits alle notwendigen JavaScript Dateien und je nach Konfiguration auch die externen JavaScript Libraries, sowie Stylesheets.
-            Die Konfiguration des <i>Favicon</i> und <i>Search Engine optimization (SEO)</i> wird von dem Base-Template ebenfalls vorgenommen.
-        </p>
-    </div>
+    {% page_header title=_("Base Template") description=_("Unser Base-Template dient als Grundlage für sämtliche Seiten der Anwendung. Es bietet unter anderem ein semantisch korrektes Grundgerüst für den Header, Footer, Sidebars, dem Hauptinhalt und noch weiteren Grundbausteinen, vieler Web-Anwendungen. Zusätzlich lädt das Base-Template bereits alle notwendigen JavaScript Dateien und je nach Konfiguration auch die externen JavaScript Libraries, sowie Stylesheets. Die Konfiguration des Favicon und Search Engine optimization (SEO) wird von dem Base-Template ebenfalls vorgenommen.") %}
 {% endblock heading %}
 
 {% block content %}

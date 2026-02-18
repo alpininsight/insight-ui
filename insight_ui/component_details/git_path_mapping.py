@@ -54,6 +54,8 @@ TEMPLATE_PATHS = {
     "tooltip": GIT_BASE_FILE + "tooltip.html",
     "user_dropdown": GIT_BASE_FILE + "user_dropdown.html",
     "websocket": GIT_BASE_FILE + "websocket.html",
+    "page_header": GIT_BASE_FILE + "page_header.html",
+    "article": GIT_BASE_FILE + "article.html",
 }
 
 # Mapping-Table between components and their respective script files

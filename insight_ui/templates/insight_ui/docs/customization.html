@@ -12,24 +12,18 @@
 {% endblock sidebar_left %}
 
 {% block sidebar_right %}
-    {% comment %} Table of Contents {% endcomment %}
-    {% include "insight_ui/components/toc_sidebar.html" with side="right" static=True navbar_fixed=True %}
-    <script>
-        new TableOfContents({
-            contentSelector: "main-content",
-            tocSelector: "toc",
-            offsetTop: 200,
-            offsetBottom: 300
-        });
-    </script>
+    {% include "insight_ui/components/toc_sidebar.html" %}
 {% endblock sidebar_right %}
+
+{% block heading %}
+    {% page_header title=_("Customization") description=_("Unser UI Framework bietet nicht nur eine Reihe von nützlichen Komponenten, sondern lässt sich auch vollkommen nach allen Wünschen anpassen.") %}
+{% endblock heading %}
 
 {% block content_bg %}bg-linear-to-r from-white from-30% to-white/60 dark:from-gray-900 dark:to-gray-900/75{% endblock content_bg %}
 
 {% block content %}
     <div class="w-full space-y-12 text-secondary leading-loose">
         <section class="space-y-8">
-            <h1>Customization</h1>
             <p>
                 Unser UI Framework bietet nicht nur eine reihe von nützlichen Komponenten, sondern lässt sich auch vollkommen nach allen Wünschen anpassen.
                 Farben und immer wiederkehrende Elemente, wie das Aussehen von Überschriften lassen sich an nur einer Stelle anpassen und sofort passt sich das Design an.

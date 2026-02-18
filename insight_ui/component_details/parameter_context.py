@@ -1112,3 +1112,25 @@ def get_form_parameter_context() -> dict[str, list[str]]:
     ]
 
     return {"main_params": main_params, "htmx_config_params": htmx_config_params}
+
+
+def get_page_header_parameter_context() -> dict[str, list[str]]:
+    """Serve parameter documentation for the page_header component."""
+    main_params = [
+        ["title", "str", "Der Titel der Seite, wird als h1 in weißer Schrift angezeigt.", "''"],
+        ["description", "str", "Eine optionale Beschreibung unterhalb des Titels.", "''"],
+    ]
+
+    return {"main_params": main_params}
+
+
+def get_article_parameter_context() -> dict[str, list[str]]:
+    """Serve parameter documentation for the article component."""
+    main_params = [
+        ["content", "str", "Der Textinhalt des Artikels (kann HTML enthalten).", "''"],
+        ["columns", "int", "Die Anzahl der Spalten für das CSS-Columns-Layout.", "2"],
+        ["column_gap", "str", "Der Abstand zwischen den Spalten (CSS-Einheit).", "'2rem'"],
+        ["title", "str", "Ein optionaler Titel über dem Artikel.", "''"],
+    ]
+
+    return {"main_params": main_params}

@@ -242,6 +242,17 @@
             {% toggle_view tag_id="test" data=toggle_table view_radio_config=view_radio_config current_view=toggle_start_view %}
         {% elif component == "form" %}
             {% form tag_id="htmx-form" title="Contact Form" description="Please fill out the form" fields=form_fields show_reset_button=True view_name="form_submit" htmx_config=htmx_config %}
+        {% elif component == "page_header" %}
+            <div class="bg-insight-primary px-8 pt-12 pb-4">
+                {% page_header title="Example Page" description="This is an example description for the page header component." %}
+            </div>
+            <svg viewBox="0 0 500 90" class="-z-10">
+                <polyline class="fill-insight-primary/25 drop-shadow-xs drop-shadow-gray-500 dark:drop-shadow-gray-800" points="-10,0 450,0 -10,65"/>
+                <polyline class="fill-insight-primary/25 drop-shadow-xs drop-shadow-gray-500 dark:drop-shadow-gray-800" points="-10,0 250,0 -10,80"/>
+                <polyline class="fill-insight-primary drop-shadow-xs drop-shadow-gray-500 dark:drop-shadow-gray-800" points="-10,0 510,0 -10,35"/>
+            </svg>
+        {% elif component == "article" %}
+            {% article title="Newsletter" columns=3 content="<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>" %}
         {% endif %}
     </body>
 

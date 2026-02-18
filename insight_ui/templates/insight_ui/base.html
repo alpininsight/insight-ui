@@ -81,7 +81,7 @@
         {% block drawers %}
         {% endblock drawers %}
 
-        <main id="main" class="flex pt-16">
+        <main id="main" class="flex grow pt-16">
             {% block sidebar_left %}{% endblock sidebar_left %}
             <div id="main-content" class="relative w-full min-w-0">
                 <div>
@@ -95,12 +95,14 @@
                         <polyline class="fill-insight-primary drop-shadow-xs drop-shadow-gray-500 dark:drop-shadow-gray-800" points="-10,0 510,0 -10,35"/>
                     </svg>
                 </div>
-                <div id="content" class="grow px-4 md:px-16 pb-16 {% block content_bg %}{% endblock content_bg %}">
+                <div id="content" class="px-4 md:px-16 pb-16 {% block content_bg %}{% endblock content_bg %}">
                     {% include "insight_ui/components/htmx_loading_indicator.html" %}
                     {% block content %}{% endblock content %}
                 </div>
             </div>
-            {% block sidebar_right %}{% endblock sidebar_right %}
+            <div id="right-sidebar-wrapper">
+                {% block sidebar_right %}{% endblock sidebar_right %}
+            </div>
         </main>
 
         {% block footer %}
@@ -136,6 +138,7 @@
         <script type="module" defer src="{% static 'insight_ui/js/insight-ui-modal.js' %}"></script>
         <script type="module" defer src="{% static 'insight_ui/js/insight-ui-multiselect.js' %}"></script>
         <script type="module" defer src="{% static 'insight_ui/js/insight-ui-sidebar.js' %}"></script>
+        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-toc-sidebar.js' %}"></script>
         <script type="module" defer src="{% static 'insight_ui/js/insight-ui-tabs.js' %}"></script>
         <script type="module" defer src="{% static 'insight_ui/js/insight-ui-theme-toggle.js' %}"></script>
         <script defer src="{% static 'insight_ui/js/insight-ui-websocket.js' %}"></script>

@@ -1387,6 +1387,44 @@ def multiselect(  # noqa: PLR0913 (too many arguments)
     }
 
 
+@register.inclusion_tag("insight_ui/components/page_header.html")
+def page_header(title: str = "", description: str = "") -> dict[str, Any]:
+    """
+    Rendert einen Seitenkopf für die blaue Kopfzeile im Base-Template.
+
+    Args:
+    ----
+        title (str): Der Titel der Seite.
+        description (str): Eine optionale Beschreibung unterhalb des Titels.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template.
+
+    """
+    return {"title": title, "description": description}
+
+
+@register.inclusion_tag("insight_ui/components/article.html")
+def article(content: str = "", columns: int = 2, column_gap: str = "2rem", title: str = "") -> dict[str, Any]:
+    """
+    Rendert einen Artikel im Zeitungsstil mit mehrspaltigem CSS-Columns-Layout.
+
+    Args:
+    ----
+        content (str): Der Textinhalt des Artikels (kann HTML enthalten).
+        columns (int): Die Anzahl der Spalten (Standard: 2).
+        column_gap (str): Der Abstand zwischen den Spalten (Standard: '2rem').
+        title (str): Ein optionaler Titel über dem Artikel.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template.
+
+    """
+    return {"content": content, "columns": columns, "column_gap": column_gap, "title": title}
+
+
 @register.inclusion_tag("insight_ui/components/charts/bar_chart.html")
 def bar_chart(chart_id: str, chart: dict, chart_height: int = 24) -> dict:
     """
