@@ -51,7 +51,14 @@
                 {% breadcrumbs items=single_breadcrumb_item %}
             </div>
         {% elif component == "step_bar" %}
-            {% step_bar items=steps_bar_items %}
+            <div class="space-y-4">
+                {% step_bar items=step_bar_items %}
+                {% step_bar items=step_bar_items_failed %}
+            </div>
+        {% elif component == "minimal_step_bar" %}
+            <div class="w-40">
+                {% minimal_step_bar config=min_step_bar %}
+            </div>
         {% elif component == "bullet_point_list" %}
             {% bullet_point_list items=bulletpoints %}
         {% elif component == "accordion" %}
@@ -61,7 +68,7 @@
         {% elif component == "tabs" %}
             {% tabs config=tabs_config %}
         {% elif component == "button" %}
-            <div class="flex flex-col md:flex-row items-stretch flex-wrap gap-1">
+            <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
                 <button class="btn btn-primary">{% trans "Primary" %}</button>
                 <button class="btn btn-secondary">{% trans "Secondary" %}</button>
                 <button class="btn btn-success">{% trans "Success" %}</button>
@@ -69,11 +76,7 @@
                 <button class="btn btn-danger">{% trans "Danger" %}</button>
                 <button class="btn btn-info">{% trans "Info" %}</button>
                 <button disabled class="btn btn-disabled">{% trans "Disabled" %}</button>
-                <button aria-label="{% trans 'Close' %}" class="bg-white h-fit rounded-sm shadow p-3 text-insight-text-primary hover:bg-neutral-200 active:bg-neutral-400 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
-                        <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z" />
-                    </svg>
-                </button>
+                <button aria-label="{% trans 'Close' %}" class="btn btn-close">{% icon name="x-mark" size="xs" %}</button>
                 <a href="#" class="btn-link">{% trans "Link" %}</a>
             </div>
         {% elif component == "outline_button" %}
@@ -202,7 +205,7 @@
             {% infinite_scroll items=scroll_items view_name="more_items" auto_fetch=False %}
         {% elif component == "pagination" %}
             <div id="list-container">
-                {% paginated_list current_page=start_page surrounding_pages=surrounding_pages %}
+                {% pagination current_page=start_page surrounding_pages=surrounding_pages ipp_config=ipp_config %}
             </div>
         {% elif component == "table" %}
             {% table data=table %}
@@ -242,7 +245,20 @@
         {% elif component == "toggle_view" %}
             {% toggle_view tag_id="test" data=toggle_table view_radio_config=view_radio_config current_view=toggle_start_view %}
         {% elif component == "form" %}
-            {% form tag_id="htmx-form" title="Contact Form" description="Please fill out the form" fields=form_fields actions=form_actions htmx=htmx_config %}
+            {% form tag_id="htmx-form" title="Contact Form" description="Please fill out the form" fields=form_fields show_reset_button=True view_name="form_submit" htmx_config=htmx_config %}
+        {% elif component == "page_header" %}
+            <div class="bg-insight-primary px-8 pt-12 pb-4">
+                {% page_header title="Example Page" description="This is an example description for the page header component." %}
+            </div>
+            <svg viewBox="0 0 500 90" class="-z-10">
+                <polyline class="fill-insight-primary/25 drop-shadow-xs drop-shadow-gray-500 dark:drop-shadow-gray-800" points="-10,0 450,0 -10,65"/>
+                <polyline class="fill-insight-primary/25 drop-shadow-xs drop-shadow-gray-500 dark:drop-shadow-gray-800" points="-10,0 250,0 -10,80"/>
+                <polyline class="fill-insight-primary drop-shadow-xs drop-shadow-gray-500 dark:drop-shadow-gray-800" points="-10,0 510,0 -10,35"/>
+            </svg>
+        {% elif component == "article" %}
+            {% article title="Newsletter" columns=3 content="<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>" %}
+        {% elif component == "hero" %}
+            {% hero title="Insight UI" subtitle="A Django Component Framework" description="A modern UI library." %}
         {% endif %}
     </body>
 
@@ -252,23 +268,22 @@
     </script>
     <script defer src="{% static 'insight_ui/js/insight-ui-debug.js' %}"></script>
     <script defer src="{% static 'insight_ui/js/insight-ui-utils.js' %}"></script>
-    <script defer src="{% static 'insight_ui/js/insight-ui-3D-carousel.js' %}"></script>
-    <script defer src="{% static 'insight_ui/js/insight-ui-accordion.js' %}"></script>
-    <script defer src="{% static 'insight_ui/js/insight-ui-carousel.js' %}"></script>
-    <script defer src="{% static 'insight_ui/js/insight-ui-checkbox.js' %}"></script>
-    <script defer src="{% static 'insight_ui/js/insight-ui-code-block.js' %}"></script>
-    <script defer src="{% static 'insight_ui/js/insight-ui-collapsible.js' %}"></script>
-    <script defer src="{% static 'insight_ui/js/insight-ui-demo-container.js' %}"></script>
-    <script defer src="{% static 'insight_ui/js/insight-ui-dropdown.js' %}"></script>
-    <script defer src="{% static 'insight_ui/js/insight-ui-floater.js' %}"></script>
-    <script defer src="{% static 'insight_ui/js/insight-ui-modal.js' %}"></script>
-    <script defer src="{% static 'insight_ui/js/insight-ui-multiselect.js' %}"></script>
-    <script defer src="{% static 'insight_ui/js/insight-ui-select-language.js' %}"></script>
-    <script defer src="{% static 'insight_ui/js/insight-ui-sidebar.js' %}"></script>
-    <script defer src="{% static 'insight_ui/js/insight-ui-tabs.js' %}"></script>
-    <script defer src="{% static 'insight_ui/js/insight-ui-theme-toggle.js' %}"></script>
+    <script type="module" defer src="{% static 'insight_ui/js/insight-ui-3D-carousel.js' %}"></script>
+    <script type="module" defer src="{% static 'insight_ui/js/insight-ui-accordion.js' %}"></script>
+    <script type="module" defer src="{% static 'insight_ui/js/insight-ui-carousel.js' %}"></script>
+    <script type="module" defer src="{% static 'insight_ui/js/insight-ui-checkbox.js' %}"></script>
+    <script type="module" defer src="{% static 'insight_ui/js/insight-ui-code-block.js' %}"></script>
+    <script type="module" defer src="{% static 'insight_ui/js/insight-ui-collapsible.js' %}"></script>
+    <script type="module" defer src="{% static 'insight_ui/js/insight-ui-demo-container.js' %}"></script>
+    <script type="module" defer src="{% static 'insight_ui/js/insight-ui-dropdown.js' %}"></script>
+    <script type="module" defer src="{% static 'insight_ui/js/insight-ui-floater.js' %}"></script>
+    <script type="module" defer src="{% static 'insight_ui/js/insight-ui-modal.js' %}"></script>
+    <script type="module" defer src="{% static 'insight_ui/js/insight-ui-multiselect.js' %}"></script>
+    <script type="module" defer src="{% static 'insight_ui/js/insight-ui-sidebar.js' %}"></script>
+    <script type="module" defer src="{% static 'insight_ui/js/insight-ui-tabs.js' %}"></script>
+    <script type="module" defer src="{% static 'insight_ui/js/insight-ui-theme-toggle.js' %}"></script>
     <script defer src="{% static 'insight_ui/js/insight-ui-websocket.js' %}"></script>
-    <script defer src="{% static 'insight_ui/js/insight-ui-init.js' %}"></script>
+    <script type="module" defer src="{% static 'insight_ui/js/insight-ui-init.js' %}"></script>
     <!-- HTMX Extensions -->
     <script defer src="{% static 'insight_ui/js/insight-ui-htmx-extensions.js' %}"></script>
 </html>

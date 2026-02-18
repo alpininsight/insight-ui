@@ -3,117 +3,66 @@
 
 {% block title %}{% trans "Insight UI" %}{% endblock title %}
 
-{% block drawers %}
-    {% sidebar sidebar_data=right_sidebar side="right" static=False %}
-{% endblock drawers %}
-
 {% block navbar %}
     {% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links show_login=True search_query=search_query %}
 {% endblock navbar %}
 
 {% block background_image %}
     <img src="{% static "img/hubble-fiction.webp" %}" alt="Hubble Telescope" class="fixed left-1/4 -z-10 w-full h-dvh object-cover opacity-25">
+    <div class="fixed bg-linear-to-r from-white from-30% to-white/60 dark:from-gray-900 dark:to-gray-900/75 -z-10 w-full h-dvh"></div>
 {% endblock background_image %}
 
 {% block sidebar_left %}
     {% sidebar sidebar_data=left_sidebar side="left" %}
 {% endblock sidebar_left %}
 
+{% block heading %}
+    <h1 class="text-white text-5xl">Insight UI</h1>
+    <p class="text-gray-200 leading-loose text-xl mb-8">
+        Willkommen in der Dokumentation von <b>Insight UI</b>, unserem modernen, erweiterbaren und barrierefreien UI-Framework für Django-Projekte.
+    </p>
+    <a href="{% url 'installation_view' %}" class="btn btn-white btn-large font-bold w-fit">Get started</a>
+{% endblock heading %}
+
 {% block content %}
-    <div id="content" class="bg-linear-to-r from-white from-30% to-white/60 dark:from-gray-900 dark:to-gray-900/75 w-full space-y-8 py-16 px-4 md:px-16">
-        <h1>Insight UI</h1>
-
+    <div class="w-full space-y-16">
         <section>
+            <h2>Was ist Insight-UI, etwa noch so ein CSS/JavaScript Framework?</h2>
             <p class="text-secondary leading-loose">
-                Willkommen in der Dokumentation von <b>Insight UI</b>, einem modernen, erweiterbaren und unseren Gestaltungsprinzipien entsprechendes UI-Framework für Django-Projekte.
-            </p>
-        </section>
-
-        <section>
-            <h2>Überblick</h2>
-            <p class="text-secondary leading-loose">
-                Das Insight UI Framework bietet eine Sammlung von UI-Komponenten und Hilfsmitteln, welche speziell für die Entwicklung von Django Webanwendungen konzipiert sind.
+                Insight-UI ist in der Tat ein CSS/JavaScript Framework, dediziert für Django Anwendungen. Der Unterschied zu anderen Frameworks ist jedoch der,
+                dass Insight-UI ohne fundiertes Grundwissen in Frontendtechnologien wie HTML, JavaScript, CSS, etc. verwendet werden kann. Insight-UI ist
+                vor allem für <b>Rapid Prototyping</b> gedacht und so konzipiert, dass es von Entwicklern welche eher wenig Ahnung von oder Interesse an Frontendentwicklung haben, verwendet werden kann.
+                Für diesen Zweck stellt unser Framework eine Reihe vorgefertigter Komponenten zur Verfügung, welche direkt in das Template eingefügt werden können und lediglich mit Daten befüllt werden müssen.
             </p>
             <p class="text-secondary leading-loose mt-4">
-                Die Komponenten des Frameworks sind unter Beachtung der <b>Barrierefreiheit</b> implementiert und bieten im Bezug auf <b>Internationalisierung</b> eine Unterstützung für ein <b>RTL-Layout</b> für Sprachen, welche von rechts nach links gelesen werden.
+                Die Komponenten sind unter Beachtung der <b>Barrierefreiheit</b> implementiert und bieten im Bezug auf <b>Internationalisierung</b> eine Unterstützung für ein <b>RTL-Layout</b> für Sprachen, welche von rechts nach links gelesen werden.
             </p>
             <p class="text-secondary leading-loose mt-4">
-                Für Performance unterstützen entsprechende Komponenten die Verwendung von <b>HTMX</b> Requests, um nur einzelne ausschnitte des DOM zu ändern, ohne einen kompletten Seiten-Reload.
+                Für eine gute Performance unterstützen entsprechende Komponenten die Verwendung von <b>HTMX</b> Requests, um nur einzelne ausschnitte des DOM zu ändern, ohne einen kompletten Seiten-Reload.
             </p>
         </section>
 
         <section>
-            <h2>Installation</h2>
-            <div id="install1" data-insight-code-block="bash">
-                {# fmt:off #}
-                uv add insight-ui
-
-                # oder die Git-Quelle verwenden
-
-                uv add "git+https://github.com/alpininsight/insight-ui@main"
-                {# fmt:on #}
-            </div>
+            <h2>Was ist Insight-UI nicht?</h2>
+            <p class="text-secondary leading-loose">
+                Insight-UI ist keine CSS-Library und auch keine JavaScript Library. Insight-UI ist ausschließlich für Django Anwendungen konzipiert.
+                Unser Framework bietet zwar mehrere, auch sehr flexible Möglichkeiten der Anpassung, ist in erster Linie aber eher weniger für kreative Freiheit entworfen worden.
+            </p>
         </section>
 
         <section>
-            <h2>Schnellstart</h2>
-
-            <ul class="text-secondary leading-loose space-y-4">
-                <li>
-                    <p class="text-secondary leading-loose mb-4">1. <span class="inline-tag">insight_ui</span> zu <span class="inline-tag">INSTALLED_APPS</span> in <b>settings.py</b> hinzufügen:</p>
-
-                    <div id="install2" data-insight-code-block="python">
-                        {# fmt:off #}
-                        INSTALLED_APPS = [
-                            # ...
-                            'insight_ui',
-                            # ...
-                        ]
-                        {# fmt:on #}
-                    </div>
-                </li>
-                <li>
-                    <p class="text-secondary leading-loose">2. Konfiguration in settings.py hinzufügen und anpassen (siehe Konfiguration)</p>
-                </li>
-                <li>
-                    <p class="text-secondary leading-loose">3. (A) Projekt starten ohne Änderungen am Frontend vornehmen zu wollen</p>
-                    <ul class="list-disc ms-8">
-                        <li><span class="inline-tag">python manage.py collectstatic</span> um das vorkompilierte insight-ui Stylesheet einzusammeln</li>
-                        <li><span class="inline-tag">python manage.py runserver</span> Startet den development Server</li>
-                    </ul>
-                    <p class="text-secondary leading-loose">3. (B) Projekt aufsetzen und starten, wenn das Frontend weiter entwickelt werden soll</p>
-                    <ul class="list-disc ms-8">
-                        <li>Django-Tailwind-CLI zu Projekt hinzufügen (<span class="inline-tag">uv add django-tailwind-cli</span>)</li>
-                        <li>Zu <span class="inline-tag">INSTALLED_APPS</span> hinzufügen, <span class="inline-tag">STATICFILES_DIRS</span>, <span class="inline-tag">TAILWIND_CLI_SRC_CSS</span> und <span class="inline-tag">TAILWIND_CLI_DIST_CSS</span> definieren</li>
-                        <div class="my-4">
-                            <div id="install3" data-insight-code-block="python">
-                                {# fmt:off #}
-                                INSTALLED_APPS = [
-                                    # ...
-                                    "django_tailwind_cli",
-                                    # ...
-                                ]
-
-                                # Configure static files directory
-                                STATICFILES_DIRS = [BASE_DIR / "assets"]
-
-                                # Tailwind source file
-                                TAILWIND_CLI_SRC_CSS = BASE_DIR / ".venv/Lib/site-packages/insight_ui/static/insight_ui/css/input.css"
-
-                                # Tailwind dist file
-                                TAILWIND_CLI_DIST_CSS = "insight_ui/css/tailwind.css"
-
-                                # Prevent automatic updating (recommended)
-                                # This is a silent process that can lead to silent problems if the process is terminated too quickly.
-                                TAILWIND_CLI_AUTOMATIC_DOWNLOAD = False
-                                {# fmt:on #}
-                            </div>
-                        </div>
-                        <li><span class="inline-tag">python manage.py tailwind setup</span> Für initiales Setup von Tailwind ausführen (lädt u.a. das Tailwind-CLI runter ~120MB)</li>
-                        <li><span class="inline-tag">python manage.py tailwind runserver</span> Startet den development Server und aktualisiert automatisch das Stylesheet (ACHTUNG: eventuelle Fehler der Tailwind-CLI werden nicht geloggt!)</li>
-                    </ul>
-                </li>
+            <h2>Ist Insight-UI das richtige für mich?</h2>
+            <p class="text-secondary leading-loose">Gute Frage, hier eine Checkliste um diese zu beantworten:</p>
+            <ul class="text-secondary leading-loose list-disc w-fit ms-8 mt-8 space-y-4">
+                <li class="border-b border-gray-300 dark:border-gray-700"><div class="flex gap-12 items-center justify-between"><i>Du hast eine Django Anwendung, welcher noch ein Frontend fehlt?</i>{% icon name="tick" %}</div></li>
+                <li class="border-b border-gray-300 dark:border-gray-700"><div class="flex gap-12 items-center justify-between"><i>Du musst schnell ein Frontend für ein PoC zusammen basteln?</i>{% icon name="tick" %}</div></li>
+                <li class="border-b border-gray-300 dark:border-gray-700"><div class="flex gap-12 items-center justify-between"><i>Du hast eigentlich keine übermäßige Leidenschaft für die Frontendentwicklung?</i>{% icon name="tick" %}</div></li>
+                <li class="border-b border-gray-300 dark:border-gray-700"><div class="flex gap-12 items-center justify-between"><i>Du hast keine Lust dich mit den WCAG Richtlinien zur Barrierefreiheit zu beschäftigen?</i>{% icon name="tick" %}</div></li>
+                <li class="border-b border-gray-300 dark:border-gray-700"><div class="flex gap-12 items-center justify-between"><i>Du bist nicht sonderlich kreativ oder möchtest zumindest nicht alles selbst Gestalten?</i>{% icon name="tick" %}</div></li>
             </ul>
+
+            <p class="text-secondary leading-loose my-8">Perfekt, dann kann es ja losgehen!</p>
+            <a href="{% url 'installation_view' %}" class="btn btn-primary btn-large w-fit">Get started</a>
         </section>
     </div>
 {% endblock content %}

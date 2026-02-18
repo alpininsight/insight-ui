@@ -241,7 +241,7 @@ class FormTemplateTagTest(TemplateTagsTestCase):
         """Test für grundlegende form Funktionalität."""
         template_string = """
         {% load insight_tags %}
-        {% form title="Test Form" %}
+        {% form title="Test Form" view_name="form_submit" %}
         """
         rendered = self.render_template(template_string)
         assert "Test Form" in rendered
@@ -262,7 +262,11 @@ class FooterTemplateTagTest(TemplateTagsTestCase):
                 {"text": "Storybook", "view_name": "index_view"},
                 {"text": "Documentation", "view_name": "index_view"},
             ],
-            "contact": {"mail": {"url": "support@alpininsight.com"}, "imprint": "https://alpininsight.com/imprint/"},
+            "contact": {
+                "mail_url": "support@alpininsight.com",
+                "imprint": "https://alpininsight.com/imprint/",
+                "privacy": "https://alpininsight.com/privacy/",
+            },
             "copyright": {"year": 2025, "app_name": "Insight UI"},
         }
 
@@ -284,12 +288,16 @@ class FooterTemplateTagTest(TemplateTagsTestCase):
         link_elements = soup.select("ul li a")
         assert len(link_elements) == 3  # noqa: PLR2004
         for link, el in zip(footer_data["links"], link_elements):
-            assert el.get("href") == ""
+            assert el.get("href") == "/"
             assert link["text"] in el.text
 
         # --- Assert: contact imprint ---
         imprint_el = soup.find("a", href="https://alpininsight.com/imprint/")
         assert imprint_el is not None
+
+        # --- Assert: contact privacy ---
+        privacy_el = soup.find("a", href="https://alpininsight.com/privacy/")
+        assert privacy_el is not None
 
         # --- Assert: contact mail ---
         mail_el = soup.find("a", href="mailto:support@alpininsight.com")

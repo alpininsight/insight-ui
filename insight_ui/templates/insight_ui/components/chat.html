@@ -5,7 +5,13 @@
     <div class="my-2 grow" id="response"></div>
 
     <!-- Input-container -->
-    <form hx-post="{% url view_name %}" hx-swap="beforeend" hx-target="#response" class="mt-16 space-y-2">
+    <form
+        hx-post="{{ request_url }}"
+        hx-swap="beforeend"
+        hx-target="#response"
+        hx-on::after-request="if(event.detail.successful) this.reset()"
+        class="mt-16 space-y-2"
+    >
         {% csrf_token %}
         <label class="block text-sm font-medium text-secondary" for="msg">
             {% trans "Message" %}

@@ -1,0 +1,58 @@
+{% load i18n insight_tags %}
+
+<h1>Insight UI Page-Header</h1>
+
+<!-- Component Demo -->
+<section>
+    <p>
+        {% trans 'Die Page-Header-Komponente rendert den Seitenkopf innerhalb der blauen Kopfzeile des Base-Templates. Sie zeigt einen Titel und optional eine Beschreibung an.' %}
+    </p>
+
+    {% include "insight_ui/docs/demo_container.html" %}
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- Component Documentation -->
+<section>
+    <h2>{% trans "Verwendung" %}</h2>
+    <p class="mb-4">
+        {% blocktrans with page_header='<span class="inline-tag">&lcub;% page_header %&rcub;</span>'|safe %}
+            Die Komponente wird innerhalb des <code>heading</code> Blocks über das {{ page_header }} Tag eingebunden.
+        {% endblocktrans %}
+    </p>
+    <div id="PageHeader_Usage" data-insight-code-block="Django">
+        &lcub;% block heading %&rcub;
+        &lcub;% page_header title="Base Template" description="Beschreibung der Seite." %&rcub;
+        &lcub;% endblock heading %&rcub;
+    </div>
+</section>
+
+<section>
+    <h3>{% trans "Parameter" %}</h3>
+    {% include "insight_ui/components/parameter_table.html" with rows=main_params %}
+</section>
+
+<hr class="text-gray-300 dark:text-gray-600">
+
+<!-- A11y -->
+<section>
+    <h2>{% trans "Accessability" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li>{% trans "Der Titel wird als semantisches h1-Element gerendert." %}</li>
+        <li>{% trans "Die Beschreibung verwendet ein p-Element mit ausreichendem Farbkontrast (grau auf blau)." %}</li>
+    </ul>
+</section>
+
+<!-- Related -->
+<section>
+    <h2>{% trans "Related Topics" %}</h2>
+    <ul class="list-disc leading-relaxed ms-8 mt-6">
+        <li>
+            <a href="{% url 'component_detail_page_view' component_name='article' %}"
+               hx-get="{% url 'component_detail_page_view' component_name='article' %}"
+               hx-target="#content" hx-swap="innerHTML show:window:top" hx-push-url="true"
+               class="text-insight-text-link hover:underline">Article</a>
+        </li>
+    </ul>
+</section>

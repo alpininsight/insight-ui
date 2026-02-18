@@ -1,5 +1,5 @@
-class DemoIframeController {
-    // Manages all iframe controller instances of the DOM
+export class DemoIframeController {
+    // Manages all <iframe> controller instances of the DOM
     static instances = new WeakMap();
 
     constructor(element) {
@@ -152,14 +152,6 @@ class DemoIframeController {
 
     // Static method for initializing all iframe container
     static initAll() {
-        const controller = document.querySelectorAll("[data-insight-demo-container]");
-        controller.forEach((el) => {
-            if (!DemoIframeController.instances.has(el)) {
-                new DemoIframeController(el);
-            }
-        });
+        document.querySelectorAll("[data-insight-demo-container]").forEach(el => new DemoIframeController(el));
     }
 }
-
-window.InsightUI = window.InsightUI || {};
-window.InsightUI.DemoIframeController = DemoIframeController;

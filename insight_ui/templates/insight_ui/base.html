@@ -59,12 +59,21 @@
 
         {% block extra_head %}{% endblock %}
     </head>
-    <body class="size-full min-h-screen bg-gray-50 dark:bg-gray-900 text-neutral-700 dark:text-neutral-100 transition-colors duration-200 flex flex-col" hx-indicator="#loading-indicator">
+    <body class="size-full min-h-screen dark:bg-gray-900 text-neutral-700 dark:text-neutral-100 transition-colors duration-200 flex flex-col" hx-indicator="#loading-indicator">
 
         {% block background_image %}
         {% endblock background_image %}
 
         <header>
+            {% block notification %}
+                {% comment %}
+                <div class="fixed z-50 w-full bg-amber-400 h-12">
+                    <p class="text-amber-800 font-bold text-center">
+                        ATTENTION! ATTENTION! This is a test message!
+                    </p>
+                </div>
+                {% endcomment %}
+            {% endblock notification %}
             {% block navbar %}
             {% endblock navbar %}
         </header>
@@ -72,19 +81,37 @@
         {% block drawers %}
         {% endblock drawers %}
 
-        <main id="main-content" class="flex pt-16">
-            {% block sidebar_left %}{% endblock sidebar_left %}
-            <div class="grow">
-                {% block content %}{% endblock content %}
+        <main id="main" class="flex grow pt-16">
+            <div id="left-aside" class="flex">
+                {% block sidebar_left %}{% endblock sidebar_left %}
             </div>
-            {% block sidebar_right %}{% endblock sidebar_right %}
+            <div id="main-content" class="relative w-full min-w-0">
+                <div>
+                    <div id="heading" class="bg-insight-primary px-4 md:px-16 pt-16 pb-4">
+                        {% block heading %}
+                        {% endblock heading %}
+                    </div>
+                    <svg viewBox="0 0 500 90" class="-z-10">
+                        <polyline class="fill-insight-primary/25 drop-shadow-xs drop-shadow-gray-500 dark:drop-shadow-gray-800" points="-10,0 450,0 -10,65"/>
+                        <polyline class="fill-insight-primary/25 drop-shadow-xs drop-shadow-gray-500 dark:drop-shadow-gray-800" points="-10,0 250,0 -10,80"/>
+                        <polyline class="fill-insight-primary drop-shadow-xs drop-shadow-gray-500 dark:drop-shadow-gray-800" points="-10,0 510,0 -10,35"/>
+                    </svg>
+                </div>
+                <div id="content" class="w-full space-y-12 text-secondary leading-loose px-4 md:px-16 pb-16">
+                    {% include "insight_ui/components/htmx_loading_indicator.html" %}
+                    {% block content %}{% endblock content %}
+                </div>
+            </div>
+            <div id="right-aside" class="flex">
+                {% block sidebar_right %}{% endblock sidebar_right %}
+            </div>
         </main>
 
         {% block footer %}
         {% endblock footer %}
 
-        <!-- Helper to visualize media breakpoints -->
         {% comment %}
+        <!-- Helper to visualize media breakpoints -->
         <div class="fixed flex items-center z-30 bottom-2 left-2 bg-gray-900 rounded-full size-10 text-white text-xs">
             <span class="w-full text-center sm:hidden">-</span>
             <span class="w-full text-center hidden sm:block md:hidden">sm</span>
@@ -101,23 +128,22 @@
         </script>
         <script defer src="{% static 'insight_ui/js/insight-ui-debug.js' %}"></script>
         <script defer src="{% static 'insight_ui/js/insight-ui-utils.js' %}"></script>
-        <script defer src="{% static 'insight_ui/js/insight-ui-3D-carousel.js' %}"></script>
-        <script defer src="{% static 'insight_ui/js/insight-ui-accordion.js' %}"></script>
-        <script defer src="{% static 'insight_ui/js/insight-ui-carousel.js' %}"></script>
-        <script defer src="{% static 'insight_ui/js/insight-ui-checkbox.js' %}"></script>
-        <script defer src="{% static 'insight_ui/js/insight-ui-code-block.js' %}"></script>
-        <script defer src="{% static 'insight_ui/js/insight-ui-collapsible.js' %}"></script>
-        <script defer src="{% static 'insight_ui/js/insight-ui-demo-container.js' %}"></script>
-        <script defer src="{% static 'insight_ui/js/insight-ui-dropdown.js' %}"></script>
-        <script defer src="{% static 'insight_ui/js/insight-ui-floater.js' %}"></script>
-        <script defer src="{% static 'insight_ui/js/insight-ui-modal.js' %}"></script>
-        <script defer src="{% static 'insight_ui/js/insight-ui-multiselect.js' %}"></script>
-        <script defer src="{% static 'insight_ui/js/insight-ui-select-language.js' %}"></script>
-        <script defer src="{% static 'insight_ui/js/insight-ui-sidebar.js' %}"></script>
-        <script defer src="{% static 'insight_ui/js/insight-ui-tabs.js' %}"></script>
-        <script defer src="{% static 'insight_ui/js/insight-ui-theme-toggle.js' %}"></script>
+        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-3D-carousel.js' %}"></script>
+        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-accordion.js' %}"></script>
+        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-carousel.js' %}"></script>
+        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-checkbox.js' %}"></script>
+        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-code-block.js' %}"></script>
+        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-collapsible.js' %}"></script>
+        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-demo-container.js' %}"></script>
+        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-dropdown.js' %}"></script>
+        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-floater.js' %}"></script>
+        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-modal.js' %}"></script>
+        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-multiselect.js' %}"></script>
+        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-sidebar.js' %}"></script>
+        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-tabs.js' %}"></script>
+        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-theme-toggle.js' %}"></script>
         <script defer src="{% static 'insight_ui/js/insight-ui-websocket.js' %}"></script>
-        <script defer src="{% static 'insight_ui/js/insight-ui-init.js' %}"></script>
+        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-init.js' %}"></script>
         <!-- HTMX Extensions -->
         <script defer src="{% static 'insight_ui/js/insight-ui-htmx-extensions.js' %}"></script>
 

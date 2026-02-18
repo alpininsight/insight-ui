@@ -1,8 +1,12 @@
-class Dropdown {
+export class Dropdown {
+    // Manages all Dropdown instances of the DOM
     static instances = new WeakMap();
+
+    // Handle of the open dropdown
     static currentOpen = null;
 
     constructor(toggleButton) {
+        // If an instance for this element already exists, return it
         if (Dropdown.instances.has(toggleButton)) {
             return Dropdown.instances.get(toggleButton);
         }
@@ -11,9 +15,12 @@ class Dropdown {
         this.targetId = toggleButton.getAttribute("data-dropdown-toggle");
         this.menu = document.getElementById(this.targetId);
 
-        if (!this.menu) return;
+        if (!this.menu) {
+            debugLog("Dropdown menu target not found!")
+            return;
+        }
 
-        this.menu.classList.add("absolute", "hidden", "z-50", "mt-2");
+        this.menu.classList.add("absolute", "z-50", "mt-2");
 
         this.bindEvents();
 
@@ -49,10 +56,6 @@ class Dropdown {
 
     // Static method for initializing all dropdown menus
     static initAll() {
-        const buttons = document.querySelectorAll("[data-dropdown-toggle]");
-        buttons.forEach(btn => new Dropdown(btn));
+        document.querySelectorAll("[data-dropdown-toggle]").forEach(openButton => new Dropdown(openButton));
     }
 }
-
-window.InsightUI = window.InsightUI || {};
-window.InsightUI.Dropdown = Dropdown;

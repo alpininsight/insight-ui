@@ -1,10 +1,14 @@
-class Modal {
+export class Modal {
+    // Manages all Modal instances of the DOM
     static instances = new WeakMap();
+
+    // Handle of the open dialog
     static currentOpen = null;
 
     constructor(button) {
-        if (InsightUI.Modal.instances.has(button)) {
-            return InsightUI.Modal.instances.get(button);
+        // If an instance for this element already exists, return it
+        if (Modal.instances.has(button)) {
+            return Modal.instances.get(button);
         }
 
         this.button = button;
@@ -14,7 +18,7 @@ class Modal {
         if (!this.modal) return;
 
         this.bindEvents();
-        InsightUI.Modal.instances.set(button, this);
+        Modal.instances.set(button, this);
 
         debugLog("New modal created: ", this.button, this.modal);
     }
@@ -38,12 +42,12 @@ class Modal {
     }
 
     open() {
-        if (InsightUI.Modal.currentOpen && InsightUI.Modal.currentOpen !== this) {
-            InsightUI.Modal.currentOpen.close();
+        if (Modal.currentOpen && Modal.currentOpen !== this) {
+            Modal.currentOpen.close();
         }
 
         this.modal.style.display = 'block';
-        InsightUI.Modal.currentOpen = this;
+        Modal.currentOpen = this;
 
         InsightUI.utils.blockScroll();
         InsightUI.utils.trapFocus(this.modal);
@@ -51,8 +55,8 @@ class Modal {
 
     close() {
         this.modal.style.display = 'none';
-        if (InsightUI.Modal.currentOpen === this) {
-            InsightUI.Modal.currentOpen = null;
+        if (Modal.currentOpen === this) {
+            Modal.currentOpen = null;
         }
 
         InsightUI.utils.unblockScroll();
@@ -60,11 +64,6 @@ class Modal {
 
     // Static method for initializing all modals
     static initAll() {
-        document.querySelectorAll('[data-insight-toggle="modal"]').forEach(button => {
-            new InsightUI.Modal(button);
-        });
+        document.querySelectorAll('[data-insight-toggle="modal"]').forEach(openButton => new Modal(openButton));
     }
 };
-
-window.InsightUI = window.InsightUI || {};
-window.InsightUI.Modal = Modal;

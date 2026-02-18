@@ -1,6 +1,6 @@
 {% load static i18n %}
 
-<div class="bg-gray-100 dark:bg-gray-700 h-56 w-full max-w-96 border border-gray-200 dark:border-gray-600 shadow-lg rounded" {% if options.id %}id="{{ options.id }}"{% endif %}>
+<div class="bg-gray-100 dark:bg-gray-700 h-56 w-full max-w-96 border border-gray-200 dark:border-gray-600 shadow-lg rounded">
   {% if image %}
     <div class="w-full h-24 overflow-hidden">
       <img src="{% static image.url %}" alt="{{ image.alt|default:'' }}" class="w-full object-cover" />

@@ -7,10 +7,12 @@
  * There are optional buttons to select or deselect all values at once and the maximum amount
  * of selected values is customizable.
  */
-class Multiselect {
+export class Multiselect {
+    // Manages all Multiselect instances of the DOM
     static instances = new WeakMap();
 
     constructor(container) {
+        // If an instance for this element already exists, return it
         if (Multiselect.instances.has(container)) {
             return Multiselect.instances.get(container);
         }
@@ -278,9 +280,6 @@ class Multiselect {
 
     // Static method for initializing all multiselect elements
     static initAll() {
-        document.querySelectorAll('[data-multiselect]').forEach(c => new Multiselect(c));
+        document.querySelectorAll('[data-multiselect]').forEach(el => new Multiselect(el));
     }
 }
-
-window.InsightUI = window.InsightUI || {};
-window.InsightUI.Multiselect = Multiselect;

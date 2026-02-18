@@ -2,18 +2,26 @@
 
 <ol>
     {% for item in items %}
-        <li class="relative {% if not forloop.last %}pb-10{% endif %}">
-            {% if not forloop.last %}
-                <div aria-hidden="true" class="absolute top-9 start-4 bg-gray-300 h-1/2 w-0.5 mt-0.5 -ms-px"></div>
+        <li class="relative {% if not forloop.first %}pt-10{% endif %}">
+            {% if not forloop.first %}
+                <div aria-hidden="true" class="absolute -top-1 start-4 {% if not item.completed and not item.current %}bg-gray-100 dark:bg-gray-600{% else %}bg-gray-300{% endif %} h-1/2 w-0.5 mt-0.5 -ms-px"></div>
             {% endif %}
             <a
-                {% if item.view_name and not item.current %}href="{% url item.view_name %}"{% endif %}
+                {% if item.request_url and not item.current %}
+                    href="{% url item.request_url %}"
+                    {% if htmx %}
+                        hx-get="{{ item.request_url }}"
+                        hx-target="{{ htmx.target }}"
+                        hx-swap="{{ htmx.swap|default:'innerHTML' }}"
+                        hx-trigger="submit"
+                    {% endif %}
+                {% endif %}
                 {% if item.current %}aria-current="step"{% endif %}
-                class="relative flex items-start {% if not item.view_name %}pointer-events-none{% endif %}"
+                class="relative flex items-start {% if not item.request_url %}pointer-events-none{% endif %}"
             >
                 <!-- Bullet -->
                 <span class="flex items-center h-9">
-                    <span class="relative z-10 flex items-center justify-center size-8 border-2 border-gray-300 rounded-full text-primary">
+                    <span class="relative z-10 flex items-center justify-center size-8 border-2 {% if not item.completed and not item.current %}border-gray-100 dark:border-gray-600{% else %}border-gray-300{% endif %} rounded-full text-primary">
                         {% if item.completed %}
                             {% icon name="tick" size="small" %}
                         {% elif item.bullet_icon %}
@@ -21,7 +29,7 @@
                         {% elif item.bullet_text %}
                             <span>{{ item.bullet_text }}</span>
                         {% else %}
-                            <span class="bg-gray-300 size-2.5 rounded-full"></span>
+                            <span class="{% if not item.completed and not item.current %}bg-gray-100 dark:bg-gray-600{% else %}bg-gray-300{% endif %} size-2.5 rounded-full"></span>
                         {% endif %}
                     </span>
                 </span>

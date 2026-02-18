@@ -2,44 +2,73 @@
  * Insight UI - Component Initializer
  */
 
+import { Accordion } from "./insight-ui-accordion.js";
+import { Carousel } from "./insight-ui-carousel.js";
+import { Checkbox } from "./insight-ui-checkbox.js";
+import { CodeBlock } from "./insight-ui-code-block.js";
+import { Collapsible } from "./insight-ui-collapsible.js";
+import { DemoIframeController } from "./insight-ui-demo-container.js";
+import { Dropdown } from "./insight-ui-dropdown.js";
+import { Floater } from "./insight-ui-floater.js";
+import { Modal } from "./insight-ui-modal.js";
+import { Multiselect } from "./insight-ui-multiselect.js";
+import { Sidebar } from "./insight-ui-sidebar.js";
+import { Tabs } from "./insight-ui-tabs.js";
+import { ThemeToggle } from "./insight-ui-theme-toggle.js";
+import { ThreeDCarousel } from "./insight-ui-3D-carousel.js";
+
 function initAll() {
-	window.initCarousels();
-	InsightUI.Accordion.initAll();
-	InsightUI.Checkbox.initAll();
-	InsightUI.CodeBlock.initAll();
-	InsightUI.Collapsible.initAll();
-	InsightUI.DemoIframeController.initAll();
-	InsightUI.Dropdown.initAll();
-	InsightUI.Floater.initAll();
-	InsightUI.Modal.initAll();
-	InsightUI.Multiselect.initAll();
-	InsightUI.SelectLanguage.init();
-	InsightUI.Sidebar.initAll();
-	InsightUI.Tabs.initAll();
-	InsightUI.ThemeToggle.initAll();
-	InsightUI.ThreeDCarousel.init();
+	Accordion.initAll();
+	Carousel.initAll();
+	Checkbox.initAll();
+	CodeBlock.initAll();
+	Collapsible.initAll();
+	DemoIframeController.initAll();
+	Dropdown.initAll();
+	Floater.initAll();
+	Modal.initAll();
+	Multiselect.initAll();
+	Sidebar.initAll();
+	Tabs.initAll();
+	ThemeToggle.initAll();
+	ThreeDCarousel.initAll();
 	// InsightUI.WebSocket.init();
 }
 
 document.addEventListener('DOMContentLoaded', function () {
 	debugLog('InsightUI initializing...');
 	debugLog('InsightUI components found:', window.InsightUI);
-	// debugLog('HTMX available:', typeof htmx !== 'undefined');
-	// debugLog('WebSocket API available:', typeof WebSocket !== 'undefined');
-
-	// htmx.logger = function(elt, event, data) {
-    //     if(console) {
-    //         debugLog("INFO:", event, elt, data);
-    //     }
-    // }
 
 	// Initialize all instances
 	initAll();
 
+	// Initialize TOC if present on page load
+	const tocEl = document.getElementById("toc");
+	if (tocEl) {
+		new TableOfContents({
+			contentSelector: "main-content",
+			tocSelector: "toc",
+			offsetTop: 200,
+			offsetBottom: 300
+		});
+	}
+
 	// Initialize all (new) instances after htmx manipulates the DOM
-	htmx.on("htmx:afterRequest", function (evt) {
+	htmx.on("htmx:afterSwap", function (evt) {
 		debugLog("Initialize new instances...")
 		initAll();
+
+		// Regenerate TOC after content swap
+		const tocEl = document.getElementById("toc");
+		if (tocEl) {
+			tocEl.innerHTML = "";
+			new TableOfContents({
+				contentSelector: "main-content",
+				tocSelector: "toc",
+				offsetTop: 200,
+				offsetBottom: 300
+			});
+		}
 		debugLog("New instances initialized!")
 	});
 

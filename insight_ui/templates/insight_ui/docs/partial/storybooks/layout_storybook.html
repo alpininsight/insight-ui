@@ -1,0 +1,72 @@
+{% load i18n insight_tags %}
+
+<!-- Welcome -->
+<section>
+    <h1>{% trans 'Insight UI Layout Components' %}</h1>
+    <p class="text-lg text-secondary">
+        {% trans 'List and table components for big data.' %}
+    </p>
+</section>
+
+<!-- Page Header Demo -->
+<section class="component-container">
+    <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-t p-4 py-2 md:px-6 md:py-3">
+        <h2 class="text-xl mb-0">
+            <a
+                href="{% url 'component_detail_page_view' 'page_header' %}"
+                hx-get="{% url 'component_detail_page_view' 'page_header' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="inline-flex items-center gap-1 hover:text-blue-300"
+            >
+                {% trans 'Page Header' %} {% icon name="open-link" size="small" %}
+            </a>
+        </h2>
+    </div>
+    <div class="p-4 md:p-6">
+        {% page_header title="Example Page" description="This is an example description for the page header component." %}
+    </div>
+</section>
+
+<!-- Article Demo -->
+<section class="component-container">
+    <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-t p-4 py-2 md:px-6 md:py-3">
+        <h2 class="text-xl mb-0">
+            <a
+                href="{% url 'component_detail_page_view' 'article' %}"
+                hx-get="{% url 'component_detail_page_view' 'article' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="inline-flex items-center gap-1 hover:text-blue-300"
+            >
+                {% trans 'Article' %} {% icon name="open-link" size="small" %}
+            </a>
+        </h2>
+    </div>
+    <div id="list-container" class="p-4 md:p-6">
+        {% article title="Newsletter" columns=3 content="<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>" %}
+    </div>
+</section>
+
+<!-- Hero Section Demo -->
+<section class="component-container">
+    <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-t p-4 py-2 md:px-6 md:py-3">
+        <h2 class="text-xl mb-0">
+            <a
+                href="{% url 'component_detail_page_view' 'hero' %}"
+                hx-get="{% url 'component_detail_page_view' 'hero' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="inline-flex items-center gap-1 hover:text-blue-300"
+            >
+                {% trans 'Hero Section' %} {% icon name="open-link" size="small" %}
+            </a>
+        </h2>
+    </div>
+    <div class="p-4 md:p-6">
+        {% hero title="Insight UI" subtitle="A Django Component Framework" description="A modern UI library." %}
+    </div>
+</section>

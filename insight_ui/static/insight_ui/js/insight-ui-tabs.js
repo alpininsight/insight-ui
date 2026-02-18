@@ -1,7 +1,9 @@
-class Tabs {
+export class Tabs {
+    // Manages all Tab instances of the DOM
     static instances = new WeakMap();
 
     constructor(tabBar) {
+        // If an instance for this element already exists, return it
         if (Tabs.instances.has(tabBar)) {
             return Tabs.instances.get(tabBar);
         }
@@ -74,10 +76,6 @@ class Tabs {
 
     // Static method for initializing all tabs
     static initAll() {
-        const tabBars = document.querySelectorAll("[data-tabs]");
-        tabBars.forEach(bar => new Tabs(bar));
+        document.querySelectorAll("[data-tabs]").forEach(tabBar => new Tabs(tabBar));
     }
 }
-
-window.InsightUI = window.InsightUI || {};
-window.InsightUI.Tabs = Tabs;

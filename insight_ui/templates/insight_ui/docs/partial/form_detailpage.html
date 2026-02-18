@@ -25,7 +25,7 @@
     <div data-insight-code-block="Django">
         &lcub;% load insight_tags %&rcub;
 
-        &lcub;% form tag_id="htmx-form" title="Contact Form" description="Please fill out the form" fields=form_fields actions=form_actions htmx=htmx_config %&rcub;
+        &lcub;% form tag_id="htmx-form" title="Contact Form" description="Please fill out the form" fields=form_fields show_reset_button=True view_name="form_submit" htmx_config_params=htmx_config %&rcub;
     </div>
 </section>
 
@@ -36,7 +36,7 @@
     <div class="space-y-2 mt-4">
         <h4>htmx<i>(dict[str, str])</i></h4>
         <p>{% trans "Konfiguration des HTMX Request, für asynchrone Requests." %}</p>
-        {% include "insight_ui/components/parameter_table.html" with rows=htmx_params %}
+        {% include "insight_ui/components/parameter_table.html" with rows=htmx_config_params %}
     </div>
 </section>
 
@@ -47,8 +47,6 @@
         <li><i>Keine Anmerkungen.</i></li>
     </ul>
 </section>
-
-<hr class="text-gray-300 dark:text-gray-600">
 
 <!-- Related -->
 <section>

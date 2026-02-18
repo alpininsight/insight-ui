@@ -8,14 +8,63 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.views.decorators.clickjacking import xframe_options_exempt
-from django.views.decorators.http import require_GET, require_http_methods
+from django.views.decorators.http import require_GET, require_POST
 
+from insight_ui.component_details import component_context
+from insight_ui.component_details.git_path_mapping import SCRIPT_PATHS, TEMPLATE_PATHS
+from insight_ui.component_details.parameter_context import (
+    get_3d_carousel_parameter_context,
+    get_accordion_parameter_context,
+    get_alert_parameter_context,
+    get_article_parameter_context,
+    get_breadcrumb_parameter_context,
+    get_bullet_point_list_parameter_context,
+    get_button_parameter_context,
+    get_card_carousel_parameter_context,
+    get_card_parameter_context,
+    get_charts_parameter_context,
+    get_chat_parameter_context,
+    get_checkbox_group_parameter_context,
+    get_checkbox_parameter_context,
+    get_code_block_parameter_context,
+    get_differentiator_parameter_context,
+    get_dropdown_parameter_context,
+    get_footer_parameter_context,
+    get_form_parameter_context,
+    get_generic_filter_parameter_context,
+    get_geo_map_parameter_context,
+    get_hero_parameter_context,
+    get_image_carousel_parameter_context,
+    get_infinite_scroll_parameter_context,
+    get_input_field_parameter_context,
+    get_live_content_parameter_context,
+    get_modal_parameter_context,
+    get_multiselect_parameter_context,
+    get_navbar_parameter_context,
+    get_page_header_parameter_context,
+    get_pagination_parameter_context,
+    get_popover_parameter_context,
+    get_progress_bar_parameter_context,
+    get_query_builder_parameter_context,
+    get_radio_group_parameter_context,
+    get_rangle_slider_parameter_context,
+    get_search_bar_parameter_context,
+    get_select_parameter_context,
+    get_sidebar_parameter_context,
+    get_step_bar_parameter_context,
+    get_table_parameter_context,
+    get_tabs_parameter_context,
+    get_toggle_parameter_context,
+    get_toggle_view_parameter_context,
+    get_tooltip_parameter_context,
+    get_web_socket_parameter_context,
+)
+from insight_ui.context import get_base_context, get_icon_context
 from insight_ui.demo_context import (
     DEMO_FIELDS,
     get_3d_carousel_context,
     get_accordion_context,
     get_alert_context,
-    get_base_context,
     get_breadcrumb_context,
     get_bullet_point_list_context,
     get_card_carousel_context,
@@ -37,7 +86,9 @@ from insight_ui.demo_context import (
     get_image_carousel_context,
     get_infinite_scroll_context,
     get_inputs_storybook_context,
+    get_layout_storybook_context,
     get_main_storybook_context,
+    get_minimal_step_bar_context,
     get_modal_context,
     get_multiselect_context,
     get_navbar_context,
@@ -57,52 +108,7 @@ from insight_ui.demo_context import (
     get_utils_storybook_context,
 )
 from insight_ui.demo_utils import generate_payload, map_payload_to_cards, map_payload_to_table
-from insight_ui.forms import ChatForm
-from insight_ui.git_path_mapping import SCRIPT_PATHS, TEMPLATE_PATHS
-from insight_ui.parameter_context import (
-    get_3d_carousel_parameter_context,
-    get_accordion_parameter_context,
-    get_alert_parameter_context,
-    get_breadcrumb_parameter_context,
-    get_bullet_point_list_parameter_context,
-    get_button_parameter_context,
-    get_card_carousel_parameter_context,
-    get_card_parameter_context,
-    get_charts_parameter_context,
-    get_chat_parameter_context,
-    get_checkbox_group_parameter_context,
-    get_checkbox_parameter_context,
-    get_code_block_parameter_context,
-    get_differentiator_parameter_context,
-    get_dropdown_parameter_context,
-    get_footer_parameter_context,
-    get_form_parameter_context,
-    get_generic_filter_parameter_context,
-    get_geo_map_parameter_context,
-    get_image_carousel_parameter_context,
-    get_infinite_scroll_parameter_context,
-    get_input_field_parameter_context,
-    get_live_content_parameter_context,
-    get_modal_parameter_context,
-    get_multiselect_parameter_context,
-    get_navbar_parameter_context,
-    get_pagination_parameter_context,
-    get_popover_parameter_context,
-    get_progress_bar_parameter_context,
-    get_query_builder_parameter_context,
-    get_radio_group_parameter_context,
-    get_rangle_slider_parameter_context,
-    get_search_bar_parameter_context,
-    get_select_parameter_context,
-    get_sidebar_parameter_context,
-    get_step_bar_parameter_context,
-    get_table_parameter_context,
-    get_tabs_parameter_context,
-    get_toggle_parameter_context,
-    get_toggle_view_parameter_context,
-    get_tooltip_parameter_context,
-    get_web_socket_parameter_context,
-)
+from insight_ui.forms import ChatForm, FormDemoForm
 from insight_ui.utils.pagination import get_page
 from insight_ui.utils.query_builder_utils import FilterFieldConfig, get_filter_settings_for_field
 
@@ -122,6 +128,7 @@ def get_allowed_operators(request: HttpRequest) -> JsonResponse:
     return JsonResponse({"operators": allowed_operators, "values": possible_values, "inputType": input_type})
 
 
+@require_POST
 def chat_response(request: HttpRequest) -> HttpResponse:
     """Chat request endpoint to answer on chat messages."""
     form = ChatForm(request.POST)
@@ -132,30 +139,58 @@ def chat_response(request: HttpRequest) -> HttpResponse:
     return HttpResponse(status=204)  # no content
 
 
+@require_GET
 def pagination(request: HttpRequest) -> HttpResponse:
     """Pagination endpoint to retrieve data of the desired page."""
     page_param = request.GET.get("page")
+    ipp_param = request.GET.get("ipp")
     try:
         page_number = int(page_param) if page_param is not None else 1
+        ipp = int(ipp_param) if ipp_param is not None else 10
     except (TypeError, ValueError):
         page_number = 1
+        ipp = 10
 
-    page_obj, surrounding_pages = get_page(generate_payload(100), page_number)
+    page_obj, surrounding_pages = get_page(generate_payload(500), ipp, page_number)
+    ipp_config = {"name": "ipp", "label": "Items per page", "options": [10, 20, 30], "selected_option": ipp}
 
     if request.headers.get("HX-Request"):
         return render(
             request,
-            "insight_ui/components/list_partial.html",
-            {"current_page": page_obj, "surrounding_pages": surrounding_pages},
+            "insight_ui/components/pagination.html",
+            {
+                "current_page": page_obj,
+                "surrounding_pages": surrounding_pages,
+                "items_per_page": ipp,
+                "ipp_config": ipp_config,
+            },
         )
 
     context = get_table_storybook_context()
     context["current_page"] = page_obj
     context["surrounding_pages"] = surrounding_pages
+    context["items_per_page"] = ipp
+    context["ipp_config"] = ipp_config
     return render(request, "insight_ui/storybook.html", context)
 
 
-@require_http_methods(["GET"])
+@require_GET
+def sort_table(request: HttpRequest) -> HttpResponse:
+    """Endpoint to sort table data."""
+    sort = request.GET.get("sort", "name")
+    direction = request.GET.get("dir", "asc")
+
+    _, rows = map_payload_to_table(generate_payload())
+
+    context = {"data": rows, "sort": sort, "dir": direction}
+
+    if request.headers.get("HX-Request"):
+        return render(request, "insight_ui/components/table.html", context)
+
+    return render(request, "insight_ui/storybook.html", context)
+
+
+@require_GET
 def live_data_view(request: HttpRequest) -> HttpResponse | JsonResponse:
     """HTMX endpoint for live data feed."""
     current_time = datetime.now(tz=UTC).strftime("%H:%M:%S")
@@ -174,7 +209,7 @@ def live_data_view(request: HttpRequest) -> HttpResponse | JsonResponse:
     return JsonResponse(data)
 
 
-@require_http_methods(["GET"])
+@require_GET
 def more_items_view(request: HttpRequest) -> HttpResponse | JsonResponse:
     """HTMX endpoint for infinite scroll."""
     page = int(request.GET.get("page", 1))
@@ -208,7 +243,7 @@ def more_items_view(request: HttpRequest) -> HttpResponse | JsonResponse:
     return JsonResponse({"items": new_items, "has_next": has_next, "auto_fetch": auto_fetch, "view_name": view_name})
 
 
-@require_http_methods(["POST"])
+@require_POST
 def form_submit(request: HttpRequest) -> HttpResponse | JsonResponse:
     """
     Endpoint for form validation and handling.
@@ -217,71 +252,89 @@ def form_submit(request: HttpRequest) -> HttpResponse | JsonResponse:
     partial template data if this is a htmx request or do a whole page reload.
     """
     logger.debug("Empfangene POST-Daten: %s", request.POST)
-    logger.debug("Content-Type: %s", request.content_type)
 
-    name = request.POST.get("name", "")
-    email = request.POST.get("email", "")
-    message = request.POST.get("message", "")
-
-    logger.info("Extrahierte Werte - Name: '%s', Email: '%s', Message: '%s'", name, email, message)
-
-    # Simple validation
-    errors = {}
-    if not name:
-        errors["name"] = _("Name ist erforderlich")
-    if not email:
-        errors["email"] = _("E-Mail ist erforderlich")
-    elif "@" not in email:
-        errors["email"] = _("Ungültige E-Mail-Adresse")
-
-    if errors:
-        logger.warning("Formular-Validierungsfehler: %s", errors)
-
-        # Return error with partial template as it is a htmx request
+    form = FormDemoForm(request.POST)
+    if form.is_valid():
+        # Return partial template without redirect as it is a htmx request
         if request.headers.get("HX-Request"):
-            html = render_to_string("insight_ui/components/form_errors.html", {"errors": errors, "type": "error"})
-            return HttpResponse(html, status=400)
+            success_html = render_to_string(
+                "insight_ui/components/form_success.html",
+                {
+                    "message": _("AJAX Formular erfolgreich übermittelt!"),
+                    "title": form.cleaned_data["title"],
+                    "firstname": form.cleaned_data["firstname"],
+                    "lastname": form.cleaned_data["lastname"],
+                    "type": "success",
+                },
+            )
+            return HttpResponse(success_html, status=200)
 
-        # Retrieve necessary context data and perform a whole page reload to present form issues
+        # Retrieve necessary context data and perform a whole page reload to present form success
         context = get_form_storybook_context()
-        context["form_errors"] = errors
-        context["form_data"] = {"name": name, "email": email, "message": message}
-        return render(request, "insight_ui/storybook.html", context)
+        context["form_success"] = {
+            "message": _("Formular erfolgreich übermittelt!"),
+            "title": form.cleaned_data["title"],
+            "firstname": form.cleaned_data["firstname"],
+            "lastname": form.cleaned_data["lastname"],
+            "type": "success",
+        }
 
-    logger.info("Formular erfolgreich verarbeitet")
-
-    # Return partial template without redirect as it is a htmx request
+    # Return error with partial template as it is a htmx request
     if request.headers.get("HX-Request"):
-        success_html = render_to_string(
-            "insight_ui/components/form_success.html",
-            {"message": _("Formular erfolgreich übermittelt!"), "name": name, "email": email, "type": "success"},
-        )
-        return HttpResponse(success_html)
+        html = render_to_string("insight_ui/components/form_errors.html", {"errors": form.errors, "type": "error"})
+        return HttpResponse(html, status=400)
 
-    # Retrieve necessary context data and perform a whole page reload to present form success
+    # Retrieve necessary context data and perform a whole page reload to present form issues
     context = get_form_storybook_context()
-    context["form_success"] = {
-        "message": _("Normales Formular erfolgreich übermittelt!"),
-        "name": name,
-        "email": email,
-        "type": "success",
-    }
-
+    context["errors"] = form.errors
+    context["type"] = "error"
     return render(request, "insight_ui/storybook.html", context)
 
 
+@require_GET
 def index_view(request: HttpRequest) -> HttpResponse:
     """Render index page."""
-    context = get_base_context() | get_sidebar_context() | get_drawer_context()
+    context = get_base_context() | get_sidebar_context()
     return render(request, "insight_ui/index.html", context)
 
 
+@require_GET
 def customization_view(request: HttpRequest) -> HttpResponse:
     """Render customization page."""
-    context = get_base_context("customization_view") | get_sidebar_context() | get_drawer_context()
+    context = get_base_context("customization_view") | get_sidebar_context()
     return render(request, "insight_ui/docs/customization.html", context)
 
 
+@require_GET
+def installation_view(request: HttpRequest) -> HttpResponse:
+    """Render installation page."""
+    context = get_base_context("installation_view") | get_sidebar_context()
+    return render(request, "insight_ui/docs/installation.html", context)
+
+
+@require_GET
+def base_template_view(request: HttpRequest) -> HttpResponse:
+    """Render base_template page."""
+    context = get_base_context("base_template_view") | get_sidebar_context()
+    return render(request, "insight_ui/docs/base_template.html", context)
+
+
+@require_GET
+def icon_view(request: HttpRequest) -> HttpResponse:
+    """Render icon page."""
+    context = get_icon_context() | get_base_context("icon_view") | get_sidebar_context()
+    return render(request, "insight_ui/docs/icons.html", context)
+
+
+@require_GET
+def playground_view(request: HttpRequest) -> HttpResponse:
+    """Render playground page."""
+    context = get_base_context() | get_sidebar_context() | get_minimal_step_bar_context()
+
+    return render(request, "insight_ui/playground.html", context)
+
+
+@require_GET
 def component_detail_page_view(request: HttpRequest, component_name: str) -> HttpResponse:
     """
     Render detailpage of the specified component.
@@ -310,6 +363,7 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
         "footer": get_footer_parameter_context,
         "breadcrumb": get_breadcrumb_parameter_context,
         "step_bar": get_step_bar_parameter_context,
+        "minimal_step_bar": get_minimal_step_bar_context,
         "bullet_point_list": get_bullet_point_list_parameter_context,
         "accordion": get_accordion_parameter_context,
         "tabs": get_tabs_parameter_context,
@@ -348,6 +402,9 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
         "3D_carousel": get_3d_carousel_parameter_context,
         "toggle_view": get_toggle_view_parameter_context,
         "form": get_form_parameter_context,
+        "page_header": get_page_header_parameter_context,
+        "article": get_article_parameter_context,
+        "hero": get_hero_parameter_context,
     }
 
     parameter_context_func = parameter_context_func_map.get(component_name)
@@ -382,8 +439,11 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
             "id": "effect_cards",
         }
 
-    if request.headers.get("HX-Request"):
+    if request.headers.get("HX-Request") and not request.headers.get("HX-History-Restore-Request"):
         context["demo"] = demo_info
+        if component_name == "minimal_step_bar":
+            context |= component_context.get_component_context(component_name)
+            return render(request, "insight_ui/docs/component_detailpage2.html", context)
         return render(request, f"insight_ui/docs/partial/{component_name}_detailpage.html", context)
 
     context |= get_base_context("component_detail_page_view") | get_sidebar_context()
@@ -392,6 +452,7 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
     return render(request, "insight_ui/docs/component_detailpage.html", context)
 
 
+@require_GET
 @xframe_options_exempt
 def component_demo_view(request: HttpRequest, component_name: str) -> HttpResponse:
     """
@@ -413,6 +474,7 @@ def component_demo_view(request: HttpRequest, component_name: str) -> HttpRespon
         "footer": get_footer_context,
         "breadcrumb": get_breadcrumb_context,
         "step_bar": get_step_bar_context,
+        "minimal_step_bar": get_minimal_step_bar_context,
         "bullet_point_list": get_bullet_point_list_context,
         "accordion": get_accordion_context,
         "accordion_exclusive": get_accordion_context,
@@ -455,8 +517,11 @@ def component_demo_view(request: HttpRequest, component_name: str) -> HttpRespon
         "3D_carousel": get_3d_carousel_context,
         "toggle_view": get_toggle_view_context,
         "form": get_form_context,
+        "page_header": get_empty_context,
+        "article": get_empty_context,
+        "hero": get_empty_context,
     }
-
+    logger.info(component_name)
     context_func = context_func_map.get(component_name)
 
     if not context_func:
@@ -471,6 +536,7 @@ def component_demo_view(request: HttpRequest, component_name: str) -> HttpRespon
     return render(request, "insight_ui/docs/components.html", context)
 
 
+@require_GET
 def storybook_view(request: HttpRequest, storybook_name: str) -> HttpResponse:
     """
     Render all components of the specified storybook.
@@ -486,6 +552,7 @@ def storybook_view(request: HttpRequest, storybook_name: str) -> HttpResponse:
 
     """
     context_func_map = {
+        "layout": get_layout_storybook_context,
         "main": get_main_storybook_context,
         "input": get_inputs_storybook_context,
         "popup": get_popup_storybook_context,
@@ -501,7 +568,7 @@ def storybook_view(request: HttpRequest, storybook_name: str) -> HttpResponse:
     if not context_func:
         return HttpResponse("Page not found", status=404)
 
-    if request.headers.get("HX-Request"):
+    if request.headers.get("HX-Request") and not request.headers.get("HX-History-Restore-Request"):
         context = context_func()
         context["search_query"] = request.GET.get("search", "")
         return render(request, f"insight_ui/docs/partial/storybooks/{storybook_name}_storybook.html", context)
@@ -532,23 +599,23 @@ def toggle_view(request: HttpRequest) -> HttpResponse:
         "name": "view",
         "param_name": "view",
         "items": [
-            {"id": "card-view", "value": "card", "icon": {"name": "cards"}},
-            {"id": "table-view", "value": "table", "icon": {"name": "list"}},
-            {"id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},
+            {"tag_id": "card-view", "value": "card", "icon": {"name": "cards"}},
+            {"tag_id": "table-view", "value": "table", "icon": {"name": "list"}},
+            {"tag_id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},
         ],
     }
 
     if view == "card":
         context["cards"] = map_payload_to_cards(payload)
-        logger.info("log: toggle_view - Kartenansicht ausgewählt")
+        logger.debug("log: toggle_view - Kartenansicht ausgewählt")
     elif view == "carousel":
         context["cards"] = map_payload_to_cards(payload)
-        logger.info("log: toggle_view - Karussell-Ansicht ausgewählt")
+        logger.debug("log: toggle_view - Karussell-Ansicht ausgewählt")
     else:
         # default: table view
         headers, rows = map_payload_to_table(payload)
         context["data"] = {"empty_msg": "Keine Daten vorhanden!", "headers": headers, "rows": rows}
-        logger.info("log: toggle_view - Tabellenansicht ausgewählt")
+        logger.debug("log: toggle_view - Tabellenansicht ausgewählt")
 
     return render(request, "insight_ui/components/toggle_view.html", context)
 

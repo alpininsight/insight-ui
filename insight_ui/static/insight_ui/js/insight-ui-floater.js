@@ -1,8 +1,12 @@
-class Floater {
+export class Floater {
+    // Manages all Floater instances of the DOM
     static instances = new WeakMap();
+
+    // Handle of the open floater
     static currentOpen = null;
 
     constructor(trigger, type = 'popover') {
+        // If an instance for this element already exists, return it
         if (Floater.instances.has(trigger)) {
             return Floater.instances.get(trigger);
         }
@@ -126,13 +130,7 @@ class Floater {
 
     // Static method for initializing all popovers and tooltips
     static initAll() {
-        const popoverTriggers = document.querySelectorAll("[data-popover]");
-        popoverTriggers.forEach(trigger => new Floater(trigger, 'popover'));
-
-        const tooltipTriggers = document.querySelectorAll("[data-tooltip]");
-        tooltipTriggers.forEach(trigger => new Floater(trigger, 'tooltip'));
+        document.querySelectorAll("[data-popover]").forEach(trigger => new Floater(trigger, 'popover'));
+        document.querySelectorAll("[data-tooltip]").forEach(trigger => new Floater(trigger, 'tooltip'));
     }
 }
-
-window.InsightUI = window.InsightUI || {};
-window.InsightUI.Floater = Floater;

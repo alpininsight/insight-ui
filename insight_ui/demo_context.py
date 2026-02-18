@@ -157,6 +157,12 @@ def get_navbar_context() -> dict:
                     "open_dropdown": "components-menu",
                     "items": [
                         {
+                            "text": "Layout",
+                            "view_name": "storybook_view",
+                            "view_arg": "layout",
+                            "htmx": {"target": "#content"},
+                        },
+                        {
                             "text": "Main / Navigation",
                             "view_name": "storybook_view",
                             "view_arg": "main",
@@ -252,32 +258,42 @@ def get_drawer_context() -> dict:
     """Serve data for sidebar detailpage."""
     return {
         "right_sidebar": {
-            "title": _("Secondary Sidebar"),
+            "title": _("Personal Settings"),
             "icon": {"name": "home", "size": "small"},
-            "width": "24rem",
             "categories": [
                 {
-                    "caption": "Main",
+                    "caption": "Work",
+                    "icon": {"name": "office", "size": "small"},
                     "items": [
                         {
                             "text": _("Notifications"),
-                            "icon": {"name": "home", "size": "small"},
+                            "icon": {"name": "bell", "size": "small"},
                             "url": reverse("index_view"),
                         },
                         {
                             "text": _("Messages"),
-                            "icon": {"name": "home", "size": "small"},
+                            "icon": {"name": "chat-bubble", "size": "small"},
                             "url": reverse("index_view"),
                         },
-                        {"text": _("Tasks"), "icon": {"name": "home", "size": "small"}, "url": reverse("index_view")},
                         {
-                            "text": _("Calender"),
-                            "icon": {"name": "home", "size": "small"},
+                            "text": _("Tasks"),
+                            "icon": {"name": "checklist", "size": "small"},
                             "url": reverse("index_view"),
                         },
-                        {"text": _("Profile"), "icon": {"name": "home", "size": "small"}, "url": reverse("index_view")},
                     ],
-                }
+                },
+                {
+                    "caption": "Management",
+                    "icon": {"name": "cog", "size": "small"},
+                    "items": [
+                        {
+                            "text": _("Calendar"),
+                            "icon": {"name": "calendar", "size": "small"},
+                            "url": reverse("index_view"),
+                        },
+                        {"text": _("Profile"), "icon": {"name": "user", "size": "small"}, "url": reverse("index_view")},
+                    ],
+                },
             ],
         }
     }
@@ -302,8 +318,12 @@ def get_footer_context() -> dict:
                 {"text": _("Storybook"), "view_name": "index_view"},
                 {"text": _("Documentation"), "view_name": "index_view"},
             ],
-            "contact": {"mail": {"url": "support@alpininsight.com"}, "imprint": "https://alpininsight.com/imprint/"},
-            "copyright": {"year": 2025, "app_name": "Insight UI"},
+            "contact": {
+                "mail_url": "support@alpininsight.com",
+                "imprint": "https://alpininsight.com/imprint/",
+                "privacy": "https://alpininsight.com/privacy/",
+            },
+            "copyright": {"year": 2026, "app_name": "Insight UI"},
         }
     }
 
@@ -312,8 +332,28 @@ def get_sidebar_context() -> dict:
     """Serve data for the main sidebar."""
     return {
         "left_sidebar": {
-            "title": _("Insight UI Components"),
+            "title": _("Components"),
             "categories": [
+                {
+                    "caption": _("Layout"),
+                    "items": [
+                        {
+                            "text": _("Page Header"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "page_header"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Article"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "article"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Hero Section"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "hero"}),
+                            "htmx": {"target": "#content"},
+                        },
+                    ],
+                },
                 {
                     "caption": _("Navigation / Main"),
                     "items": [
@@ -338,8 +378,13 @@ def get_sidebar_context() -> dict:
                             "htmx": {"target": "#content"},
                         },
                         {
-                            "text": _("Step Bars"),
+                            "text": _("Step Bar"),
                             "url": reverse("component_detail_page_view", kwargs={"component_name": "step_bar"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Minimal Step Bar"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "minimal_step_bar"}),
                             "htmx": {"target": "#content"},
                         },
                         {
@@ -573,6 +618,11 @@ def get_sidebar_context() -> dict:
     }
 
 
+def get_layout_storybook_context() -> dict:
+    """Serve data for layout storybook."""
+    return get_base_context("storybook_view")
+
+
 def get_main_storybook_context() -> dict:
     """Serve data for main storybook."""
     return (
@@ -580,10 +630,10 @@ def get_main_storybook_context() -> dict:
         | get_sidebar_context()
         | get_breadcrumb_context()
         | get_step_bar_context()
+        | get_minimal_step_bar_context()
         | get_bullet_point_list_context()
         | get_accordion_context()
         | get_tabs_context()
-        | {"htmx_config": {"url": "/api/form-submit/", "method": "post", "target": "#htmx-form", "swap": "innerHTML"}}
     )
 
 
@@ -733,15 +783,24 @@ def get_modal_context() -> dict:
 def get_step_bar_context() -> dict:
     """Serve data for step bar detailpage."""
     return {
-        "steps_bar_items": [
-            {
-                "title": _("Kontaktdaten"),
-                "description": _("Informationen zur Person und Anschrift."),
-                "completed": True,
-            },
+        "step_bar_items": [
+            {"title": _("Kontaktdaten"), "description": _("Informationen zur Person und Anschrift."), "success": True},
             {"title": _("Zahlungsmethode"), "description": _("Art der Bezahlung auswählen."), "current": True},
             {"title": _("Überprüfen"), "description": _("Prüfen der Angaben und Bezahlen.")},
-        ]
+        ],
+        "step_bar_items_failed": [
+            {"title": _("Kontaktdaten"), "description": _("Informationen zur Person und Anschrift."), "success": True},
+            {"title": _("Zahlungsmethode"), "description": _("Art der Bezahlung auswählen."), "success": True},
+            {"title": _("Überprüfen"), "description": _("Prüfen der Angaben und Bezahlen."), "failed": True},
+        ],
+    }
+
+
+def get_minimal_step_bar_context() -> dict:
+    """Serve data for minimal step bar detailpage."""
+    return {
+        "min_step_bar": {"step_count": 5, "current_step": 3, "icon_size": "xs"},
+        "min_step_bar_with_list": {"items": ["success", "success", "failed", "active", ""], "icon_size": "xs"},
     }
 
 
@@ -866,9 +925,10 @@ def get_infinite_scroll_context() -> dict:
 
 def get_pagination_context() -> dict:
     """Serve data for pagination detailpage."""
-    page_obj, surrounding_pages = get_page(generate_payload(100))
+    page_obj, surrounding_pages = get_page(generate_payload(500))
+    ipp_config = {"name": "ipp", "label": "Items per page", "options": [10, 20, 30]}
 
-    return {"start_page": page_obj, "surrounding_pages": surrounding_pages}
+    return {"start_page": page_obj, "surrounding_pages": surrounding_pages, "ipp_config": ipp_config}
 
 
 def get_table_context() -> dict:
@@ -1079,10 +1139,8 @@ def get_form_context() -> dict:
                 "rows": 3,
             },
         ],
-        "form_actions": [
-            {"text": _("Absenden"), "type": "submit", "style": "primary"},
-            {"text": _("Zurücksetzen"), "type": "reset", "style": "secondary"},
-        ],
+        "show_reset_button": True,
+        "htmx_config": {"target": "#htmx-form", "swap": "innerHTML"},
     }
 
 

@@ -38,13 +38,14 @@ INSTALLED_APPS = [
 ]
 ```
 
-See the [Installation guide](docs/en/installation.md) for configuration details and Tailwind workflows.
+Run the application and visit the Installation page in your browser for configuration details and Tailwind workflows.
 
 ## Local Development
 ```bash
 uv sync --all-groups
-uv run python manage.py migrate
-uv run python manage.py runserver
+cp .env.example .env
+uv run python manage.py setup_dev
+uv run python manage.py runserver 0:10800
 ```
 
 The WebSocket demo lives in `utils/main.py`:
@@ -61,15 +62,16 @@ CI runs tests against Python 3.12, 3.13, and 3.14. Note that Python 3.14 is stil
 
 ## Documentation
 
-Currently, there is additional documentation in `docs/`, but we have documented the functionality of the UI components and installation, etc. directly in the HTML files. So when you run the application, you can open it in your browser and read the details about each component on the corresponding page. In addition to the documentation, a running example is also available.
+The application is self-documenting — run it locally and open it in your browser to read details about each component on its corresponding page, including live examples.
 
-Run the site locally:
-```bash
-uv run mkdocs serve
-```
+Additional developer references in `docs/`:
+- [Contributing Guide](docs/contributing.md)
+- [Naming Conventions](docs/naming_conventions.md)
+- [Accessibility](docs/accessibility.md)
+- [Internationalization](docs/i18n.md)
 
 ## Contributing
-We welcome improvements! Please read the [Contributor Guide](docs/en/contributing.md) alongside the [naming conventions](docs/en/guides/naming_conventions.md) before opening a pull request. Remember to mirror changes in both language trees.
+We welcome improvements! Please read the [Contributor Guide](docs/contributing.md) alongside the [Naming Conventions](docs/naming_conventions.md) before opening a pull request.
 
 Code ownership and review for this repository are managed via `.github/CODEOWNERS`. By default, changes are owned by the `@alpininsight` organization, with CI/CD workflows under `.github/workflows/` explicitly covered.
 

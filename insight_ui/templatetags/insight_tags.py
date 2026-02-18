@@ -201,7 +201,7 @@ def navbar(config: Mapping[str, Any], **kwargs: JsonValue) -> dict[str, Any]:
     }
 
 
-@register.inclusion_tag("insight_ui/components/steps_bar.html")
+@register.inclusion_tag("insight_ui/components/step_bar.html")
 def step_bar(items: list) -> dict:
     """
     Rendert eine grafische Darstellung von Prozessschritten.
@@ -216,6 +216,33 @@ def step_bar(items: list) -> dict:
 
     """
     return {"items": items}
+
+
+@register.inclusion_tag("insight_ui/components/minimal_step_bar.html")
+def minimal_step_bar(config: dict) -> dict:
+    """
+    Rendert eine grafische Darstellung von Prozessschritten.
+
+    Arguments:
+    ---------
+        config (dict): Konfiguration der einzelnen Schritte der Step Bar.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template.
+
+    """
+    items = config.get("items", [])
+    if items == []:
+        for step in range(0, config.get("step_count")):
+            if step < config.get("current_step"):
+                items.append("success")
+            elif step == config.get("current_step"):
+                items.append("active")
+            else:
+                items.append("")
+
+    return {"items": items, "icon_size": config.get("icon_size", "xs")}
 
 
 @register.inclusion_tag("insight_ui/components/bullet_point_list.html")
@@ -676,23 +703,24 @@ def geo_map(data: dict = {}, map_height: int = 36) -> dict:
     return {"data": data, "map_height": map_height}
 
 
-@register.inclusion_tag("insight_ui/components/list_partial.html")
-def paginated_list(current_page: Page, surrounding_pages: list) -> dict:
+@register.inclusion_tag("insight_ui/components/pagination.html")
+def pagination(current_page: Page, surrounding_pages: list[int], ipp_config: dict[str, Any] = {}) -> dict:
     """
-    Rendert ein Liste mit einer integrierten Pagination.
+    Rendert eine Pagination.
 
     Arguments:
     ---------
         current_page (Page): Ein von Django erzeugtes Pagination-Objekt der aktuellen Seite.
-        surrounding_pages (list): Eine liste der benachbarten Seiten.
+        surrounding_pages (list[int]): Eine liste der benachbarten Seiten.
             Siehe: from insight_ui.utils.pagination import get_page
+        ipp_config (dict[str, Any]): Konfiguration eines "Items per Page" Selects (select Komponente).
 
     Returns:
     -------
         Dict mit Kontext-Variablen für das Template.
 
     """
-    return {"current_page": current_page, "surrounding_pages": surrounding_pages}
+    return {"current_page": current_page, "surrounding_pages": surrounding_pages, "ipp_config": ipp_config}
 
 
 @register.inclusion_tag("insight_ui/components/generic_filter.html")
@@ -983,7 +1011,7 @@ def modal(  # noqa: PLR0913 (too many args)
 
     """
     return {
-        "id": tag_id,
+        "tag_id": tag_id,
         "title": title,
         "description": description,
         "additional_content": additional_content,
@@ -1149,10 +1177,10 @@ def form(  # noqa: PLR0913 (too many args)
     tag_id: str = "",
     title: str = "",
     description: str = "",
-    fields: Sequence[Mapping[str, Any]] | None = None,
-    actions: Sequence[Mapping[str, Any]] | None = None,
+    fields: Sequence[Mapping[str, Any]] | None = [],
+    show_reset_button: bool = False,
     view_name: str = "",
-    htmx: Mapping[str, Any] | None = None,
+    htmx_config: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """
     Rendert ein Formular mit HTMX-Unterstützung.
@@ -1163,26 +1191,21 @@ def form(  # noqa: PLR0913 (too many args)
         title (str): Der Titel des Formulars.
         description (str): Eine optionale Beschreibung.
         fields (list): Eine Liste von Formularfeldern.
-        actions (list): Eine Liste von Aktionbuttons.
+        show_reset_button (bool): Zeigt neben dem "Absenden" Button ein "Zurücksetzen" Button an.
         view_name (str): Die Name des Endpunktes für die Formular-Übermittlung.
-        htmx (dict): HTMX Konfiguration für AJAX-Requests.
+        htmx_config (dict): HTMX Konfiguration für AJAX-Requests.
 
     Returns:
     -------
         Dict mit Kontext-Variablen für das Template.
 
     """
-    # HTMX-Konfiguration
-    htmx_config = None
-    if htmx:
-        htmx_config = {"target": htmx.get("target"), "swap": htmx.get("swap")}
-
     return {
         "tag_id": tag_id,
         "title": title,
         "description": description,
-        "fields": [dict(field) for field in fields] if fields is not None else [],
-        "actions": [dict(action) for action in actions] if actions is not None else [],
+        "fields": fields,
+        "show_reset_button": show_reset_button,
         "view_name": view_name,
         "htmx": htmx_config,
     }
@@ -1361,6 +1384,83 @@ def multiselect(  # noqa: PLR0913 (too many arguments)
         "show_buttons": show_buttons,
         "options": options,
         "selected_options": selected_options,
+    }
+
+
+@register.inclusion_tag("insight_ui/components/page_header.html")
+def page_header(title: str = "", description: str = "") -> dict[str, Any]:
+    """
+    Rendert einen Seitenkopf für die blaue Kopfzeile im Base-Template.
+
+    Args:
+    ----
+        title (str): Der Titel der Seite.
+        description (str): Eine optionale Beschreibung unterhalb des Titels.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template.
+
+    """
+    return {"title": title, "description": description}
+
+
+@register.inclusion_tag("insight_ui/components/article.html")
+def article(content: str = "", columns: int = 2, column_gap: str = "2rem", title: str = "") -> dict[str, Any]:
+    """
+    Rendert einen Artikel im Zeitungsstil mit mehrspaltigem CSS-Columns-Layout.
+
+    Args:
+    ----
+        content (str): Der Textinhalt des Artikels (kann HTML enthalten).
+        columns (int): Die Anzahl der Spalten (Standard: 2).
+        column_gap (str): Der Abstand zwischen den Spalten (Standard: '2rem').
+        title (str): Ein optionaler Titel über dem Artikel.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template.
+
+    """
+    return {"content": content, "columns": columns, "column_gap": column_gap, "title": title}
+
+
+@register.inclusion_tag("insight_ui/components/hero.html")
+def hero(  # noqa: PLR0913 (too many arguments)
+    title: str = "",
+    subtitle: str = "",
+    description: str = "",
+    cta_primary: dict = {},
+    cta_secondary: dict = {},
+    background_image_url: str = "",
+    badge: dict = {},
+) -> dict[str, Any]:
+    """
+    Rendert eine Hero Section mit optionalen Hintergrundbild.
+
+    Args:
+    ----
+        title (str): Titel der Hero-Section.
+        subtitle (str): Untertitel der Hero-Section, welche unter dem Titel angezeigt wird.
+        description (str): Beschreibung der Hero-Section, welche unter dem Titel zw. Untertitel angezeigt wird.
+        cta_primary (dict): Primärer 'Call-to-Action' Button.
+        cta_secondary (dict): Sekundärer 'Call-to-Action' Button.
+        background_image_url (str): URL des Hintergrundbildes.
+        badge (dict): Eine Badge mit Icon und Text.
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template.
+
+    """
+    return {
+        "title": title,
+        "subtitle": subtitle,
+        "description": description,
+        "cta_primary": cta_primary,
+        "cta_secondary": cta_secondary,
+        "background_image_url": background_image_url,
+        "badge": badge,
     }
 
 

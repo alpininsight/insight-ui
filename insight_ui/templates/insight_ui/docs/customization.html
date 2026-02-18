@@ -1,28 +1,27 @@
 {% extends "insight_ui/base.html" %}
 {% load static insight_tags i18n %}
 
-{% block title %}{% trans "Insight UI Customization" %}{% endblock title %}
-
-{% block drawers %}
-    {% sidebar side="right" static=False %}
-{% endblock drawers %}
+{% block title %}{% trans "Insight UI - Customization" %}{% endblock title %}
 
 {% block navbar %}
     {% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links show_login=True search_query=search_query %}
 {% endblock navbar %}
 
-{% block background_image %}
-    <img src="{% static "img/hubble-fiction.webp" %}" alt="Hubble Telescope" class="fixed left-1/4 -z-10 w-full h-dvh object-cover opacity-25">
-{% endblock background_image %}
-
 {% block sidebar_left %}
     {% sidebar sidebar_data=left_sidebar side="left" %}
 {% endblock sidebar_left %}
 
+{% block sidebar_right %}
+    {% include "insight_ui/components/toc_sidebar.html" with side="right" static=True navbar_fixed=True %}
+{% endblock sidebar_right %}
+
+{% block heading %}
+    {% page_header title=_("Customization") description=_("Unser UI Framework bietet nicht nur eine Reihe von nützlichen Komponenten, sondern lässt sich auch vollkommen nach allen Wünschen anpassen.") %}
+{% endblock heading %}
+
 {% block content %}
-    <div id="content" class="bg-linear-to-r from-white from-30% to-white/60 dark:from-gray-900 dark:to-gray-900/75 w-full space-y-8 text-secondary leading-loose py-16 px-4 md:px-16">
-        <section class="space-y-4">
-            <h1>Customization</h1>
+    <div class="w-full space-y-12 text-secondary leading-loose">
+        <section class="space-y-8">
             <p>
                 Unser UI Framework bietet nicht nur eine reihe von nützlichen Komponenten, sondern lässt sich auch vollkommen nach allen Wünschen anpassen.
                 Farben und immer wiederkehrende Elemente, wie das Aussehen von Überschriften lassen sich an nur einer Stelle anpassen und sofort passt sich das Design an.
@@ -33,6 +32,7 @@
                 In den folgenden Abschnitten werden die unterschiedlichen Möglichkeiten der Anpassung beschrieben.
             </p>
         </section>
+        <hr>
         <section class="space-y-4">
             <h2>Konfiguration über settings.py</h2>
             <p>Es gibt eine Reihe von Einstellungen, welche über die <span class="inline-tag">settings.py</span> definiert werden können.</p>
@@ -47,7 +47,7 @@
                     "safari_mask_icon": "insight_ui/svg/logo.svg",  # Used by Safari pinned tab
                     "msapplication_TileColor": "#da532c",  # Sets the background color for a live tile (MS Edge only)
                     "theme_color": "#ffffff",  # For the search bar on mobile devices
-                    "stylesheet": "insight_ui/css/tailwind.css",  # Only change in case of using alternative stylesheet (currently not supported)
+                    "stylesheet": "insight_ui/css/tailwind.css",  # Only change in case of using an alternative name for the stylesheet
                     "navbar_fixed": True,  # Should the navigation stick at the top of the window (has impact on the sidebars as well)
                     "meta": {
                         "seo": {
@@ -64,19 +64,72 @@
                 {# fmt:on #}
             </div>
         </section>
-        <section class="space-y-4">
-            <h2>Theming (anpassen ans Corporate Design)</h2>
-            <p>
-                Unser UI Framework verwendet <a href="https://tailwindcss.com/" class="text-link">TailwindCSS</a> für das Styling.
-                Tailwind verwendet eine sog. <i>input.css</i> Datei, in welcher sich ein Theme aufbauen lässt.
-                Darunter fällt die Definition von grundlegenden Eigenschaften wie Farben, Schriftgrößen oder Fonts, aber auch Custom-CSS-Klassen erstellen oder Animationen lassen sich dort definieren.
-                Dank Tailwinds Preflight Funktion lassen sich auch Standards definieren, wodurch bestimmte Elemente zum Beispiel Überschriften immer gleich aussehen ohne das dafür überhaupt eine Klasse im HTML-Code angegeben werden muss.
-                Die einzelnen Möglichkeiten und Bereiche der <i>input.css</i> werden in den nächsten Abschnitten näher erläutert.
-            </p>
-            <p class="my-4">
-                Das Standard-Theme des Insight-UI Frameworks befindet sich in der Datei <span class="inline-tag">insight_ui/utils/input.css</span>.
-            </p>
+        <section class="space-y-12">
+            <div class="space-y-4">
+                <h2>Theming (anpassen ans Corporate Design)</h2>
+                <p>
+                    Unser UI Framework verwendet <a href="https://tailwindcss.com/" class="text-link">TailwindCSS</a> für das Styling.
+                    Tailwind verwendet eine sog. <i>input.css</i> Datei, in welcher sich ein Theme aufbauen lässt.
+                    Darunter fällt die Definition von grundlegenden Eigenschaften wie Farben, Schriftgrößen oder Fonts, aber auch Custom-CSS-Klassen erstellen oder Animationen lassen sich dort definieren.
+                    Dank Tailwinds Preflight Funktion lassen sich auch Standards definieren, wodurch bestimmte Elemente zum Beispiel Überschriften immer gleich aussehen ohne das dafür überhaupt eine Klasse im HTML-Code angegeben werden muss.
+                    Die einzelnen Möglichkeiten und Bereiche der <i>input.css</i> werden in den nächsten Abschnitten näher erläutert.
+                </p>
+                <p>
+                    Das Standard-Theme des Insight-UI Frameworks befindet sich in der Datei <a href="https://github.com/alpininsight/insight-ui/blob/develop/insight_ui/utils/input.css" class="text-link">insight_ui/utils/input.css</a>.
+                </p>
+            </div>
 
+            <section class="space-y-4">
+                <h3>Setup</h3>
+                <p>
+                    Um das Theming anpassen zu können, müssen zuvor ein paar Schritte durchgeführt werden.
+                    Da unser Framework, TailwindCSS verwendet muss ein <i>Tailwind Compiler</i> installiert werden, am einfachsten geht dies über die <a href="https://github.com/django-commons/django-tailwind-cli" class="text-link">django-tailwind-cli</a>.
+                </p>
+
+                <p>Zuerst muss die <b>django-tailwind-cli</b> installiert werden, zum Beispiel mit <a href="https://docs.astral.sh/uv/" class="text-link">uv</a> mit <span class="inline-tag select-all">uv add django-tailwind-cli</span>.</p>
+
+                <p>Anschließend muss <b>django-tailwind-cli</b> zu den <span class="inline-tag">INSTALLED_APPS</span> hinzugefügt werden.</p>
+                <div data-insight-code-block="python" data-insight-code-block-filename="settings.py">
+                    {# fmt:off #}
+                    INSTALLED_APPS = [
+                        # ...
+                        "django_tailwind_cli",
+                        # ...
+                    ]
+                    {# fmt:on #}
+                </div>
+                <p>Damit der Compiler weiß wo die entsprechenden Dateien zu finden sind, müssen ein paar Settings gesetzt werden.</p>
+                <ul>
+                    <li><span class="inline-tag">STATICFILES_DIRS</span>: Der Pfad zu den Staticfiles muss definiert werden.</li>
+                    <li><span class="inline-tag">TAILWIND_CLI_SRC_CSS</span>: Der Pfad zu der <span class="inline-tag">input.css</span>, welche die Theme Konfiguration enthält (dazu später mehr).</li>
+                    <li><span class="inline-tag">TAILWIND_CLI_DIST_CSS</span>: Der Pfad wo das generierte Stylesheet gespeichert werden soll.</li>
+                    <li><span class="inline-tag">TAILWIND_CLI_AUTOMATIC_DOWNLOAD</span>: Wir empfehlen das automatische Updaten des Tailwind-Compilers auszuschalten, da es zum einen immer mehr Speicherplatz verbraucht und zum anderen bei Fehlerhaften Downloads zu keinen Fehlermeldungen kommt.</li>
+                </ul>
+                <div data-insight-code-block="python" data-insight-code-block-filename="settings.py">
+                    {# fmt:off #}
+                    # Configure static files directory
+                    STATICFILES_DIRS = [BASE_DIR / &lt;path/to/static_dir&gt;]
+
+                    # Tailwind source file
+                    TAILWIND_CLI_SRC_CSS = BASE_DIR / ".venv/Lib/site-packages/insight_ui/static/insight_ui/css/input.css"
+
+                    # Tailwind dist file
+                    TAILWIND_CLI_DIST_CSS = "insight_ui/css/tailwind.css"
+
+                    # Prevent automatic updating (recommended)
+                    # This is a silent process that can lead to silent problems if the process is terminated too quickly.
+                    TAILWIND_CLI_AUTOMATIC_DOWNLOAD = False
+                    {# fmt:on #}
+                </div>
+                <p>Im Anschluss muss einmal das Setup der <b>django-tailwind-cli</b> durchgeführt werden, dabei wird auch die Tailwind-CLI heruntergeladen (~120MB).</p>
+                <div data-insight-code-block="bash">
+                    python manage.py tailwind setup
+                </div>
+                <p>Danach kann der Entwicklungsserver gestartet werden, nur diesmal muss vor dem <span class="inline-tag">runserver</span> noch <span class="inline-tag">tailwind</span> stehen.</p>
+                <div data-insight-code-block="bash">
+                    python manage.py tailwind runserver
+                </div>
+            </section>
             <section class="space-y-4">
                 <h3>Customization</h3>
                 <p>Um das Theming anzupassen muss diese Datei kopiert werden und anschließend in der Konfiguration von <i>Insight-UI</i> in den <span class="inline-tag">settings.py</span> angeben werden.</p>
@@ -221,8 +274,6 @@
             <h2>Template überschreiben</h2>
             <p>
                 Es besteht die Möglichkeit, die bereitgestellten Komponenten anzupassen. Dafür muss lediglich das entsprechende Template der Komponente in das eigene Projekt-Verzeichnis kopiert werden.
-            </p>
-            <p>
                 Wichtig ist nur, dass das kopierte Template in diesem Pfad <span class="inline-tag">templates/insight_ui/components/</span> abgelegt wird. Das Verzeichnis muss sich im Root-Verzeichnis des Projektes befinden.
             </p>
             <p>Beispiel:</p>
