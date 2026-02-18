@@ -438,18 +438,11 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
 
     if request.headers.get("HX-Request") and not request.headers.get("HX-History-Restore-Request"):
         context["demo"] = demo_info
-        page_header_title = component_name.replace("_", " ").title()
-        partial_html = render_to_string(f"insight_ui/docs/partial/{component_name}_detailpage.html", context, request)
-        heading_html = render_to_string("insight_ui/components/page_header.html", {"title": page_header_title}, request)
-        toc_html = render_to_string("insight_ui/components/toc_sidebar.html", {}, request)
-        oob_heading = f'<div id="heading" hx-swap-oob="innerHTML">{heading_html}</div>'
-        oob_sidebar = f'<div id="right-sidebar-wrapper" hx-swap-oob="innerHTML">{toc_html}</div>'
-        return HttpResponse(partial_html + oob_heading + oob_sidebar)
+        return render(request, f"insight_ui/docs/partial/{component_name}_detailpage.html", context)
 
     context |= get_base_context("component_detail_page_view") | get_sidebar_context()
     context["template_name"] = f"insight_ui/docs/partial/{component_name}_detailpage.html"
     context["demo"] = demo_info
-    context["page_header_title"] = component_name.replace("_", " ").title()
     return render(request, "insight_ui/docs/component_detailpage.html", context)
 
 
@@ -561,39 +554,18 @@ def storybook_view(request: HttpRequest, storybook_name: str) -> HttpResponse:
         "filter": get_filter_storybook_context,
     }
 
-    title_map = {
-        "main": _("Navigation"),
-        "input": _("Input Elements"),
-        "popup": _("Popups"),
-        "util": _("Utils"),
-        "table": _("Lists & Tables"),
-        "card": _("Cards"),
-        "form": _("Forms"),
-        "filter": _("Filters & Search"),
-    }
-
     context_func = context_func_map.get(storybook_name)
 
     if not context_func:
         return HttpResponse("Page not found", status=404)
 
-    storybook_title = title_map.get(storybook_name, storybook_name.replace("_", " ").title())
-
     if request.headers.get("HX-Request") and not request.headers.get("HX-History-Restore-Request"):
         context = context_func()
         context["search_query"] = request.GET.get("search", "")
-        partial_html = render_to_string(
-            f"insight_ui/docs/partial/storybooks/{storybook_name}_storybook.html", context, request
-        )
-        heading_html = render_to_string("insight_ui/components/page_header.html", {"title": storybook_title}, request)
-        toc_html = render_to_string("insight_ui/components/toc_sidebar.html", {}, request)
-        oob_heading = f'<div id="heading" hx-swap-oob="innerHTML">{heading_html}</div>'
-        oob_sidebar = f'<div id="right-sidebar-wrapper" hx-swap-oob="innerHTML">{toc_html}</div>'
-        return HttpResponse(partial_html + oob_heading + oob_sidebar)
+        return render(request, f"insight_ui/docs/partial/storybooks/{storybook_name}_storybook.html", context)
 
     context = context_func()
     context["template_name"] = f"insight_ui/docs/partial/storybooks/{storybook_name}_storybook.html"
-    context["page_header_title"] = storybook_title
     return render(request, "insight_ui/docs/component_detailpage.html", context)
 
 

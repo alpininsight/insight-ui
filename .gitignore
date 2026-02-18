@@ -215,6 +215,4 @@ uv.lock
 .django_tailwind_cli/
 
 img/
-management/
-!core/management/
 staticfiles/

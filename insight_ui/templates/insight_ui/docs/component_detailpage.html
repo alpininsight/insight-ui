@@ -1,7 +1,7 @@
 {% extends "insight_ui/base.html" %}
 {% load static insight_tags i18n %}
 
-{% block title %}{% trans "Components" %}{% endblock title %}
+{% block title %}{% trans "Insight UI - Components" %}{% endblock title %}
 
 {% block navbar %}
     {% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links show_login=True search_query=search_query %}
@@ -12,7 +12,7 @@
 {% endblock sidebar_left %}
 
 {% block sidebar_right %}
-    {% include "insight_ui/components/toc_sidebar.html" %}
+    {% include "insight_ui/components/toc_sidebar.html" with side="right" static=True navbar_fixed=True %}
 {% endblock sidebar_right %}
 
 {% block heading %}
@@ -20,9 +20,7 @@
 {% endblock heading %}
 
 {% block content %}
-    <div class="w-full space-y-12 text-secondary leading-loose">
-        {% include template_name %}
-    </div>
+    {% include template_name %}
 {% endblock content %}
 
 {% block footer %}

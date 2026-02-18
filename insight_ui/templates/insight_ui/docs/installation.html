@@ -12,7 +12,7 @@
 {% endblock sidebar_left %}
 
 {% block sidebar_right %}
-    {% include "insight_ui/components/toc_sidebar.html" %}
+    {% include "insight_ui/components/toc_sidebar.html" with side="right" static=True navbar_fixed=True %}
 {% endblock sidebar_right %}
 
 {% block heading %}

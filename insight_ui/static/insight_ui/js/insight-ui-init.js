@@ -16,7 +16,6 @@ import { Sidebar } from "./insight-ui-sidebar.js";
 import { Tabs } from "./insight-ui-tabs.js";
 import { ThemeToggle } from "./insight-ui-theme-toggle.js";
 import { ThreeDCarousel } from "./insight-ui-3D-carousel.js";
-import { TocSidebar } from "./insight-ui-toc-sidebar.js";
 
 function initAll() {
 	Accordion.initAll();
@@ -33,7 +32,6 @@ function initAll() {
 	Tabs.initAll();
 	ThemeToggle.initAll();
 	ThreeDCarousel.initAll();
-	TocSidebar.initAll();
 	// InsightUI.WebSocket.init();
 }
 
@@ -59,6 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	htmx.on("htmx:afterSwap", function (evt) {
 		debugLog("Initialize new instances...")
 		initAll();
+
 		// Regenerate TOC after content swap
 		const tocEl = document.getElementById("toc");
 		if (tocEl) {
