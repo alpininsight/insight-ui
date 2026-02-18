@@ -1,12 +1,62 @@
-{% extends "insight_ui/components/sidebar.html" %}
 {% load i18n %}
 
-{% block sidebar_content %}
-    <div class="flex flex-col ps-4 pe-4 md:pe-16 py-8">
-        <div class="flex justify-between items-center pb-4 border-b border-gray-300 dark:border-gray-500 mb-4">
-            <h2 class="text-lg mb-0">{% trans "Table of Contents" %}</h2>
+{% comment %} Collapsible Table of Contents — circle button + in-flow slide-in panel {% endcomment %}
+<div
+    id="toc-sidebar"
+    data-insight-toc-sidebar
+    class="relative shrink-0 w-0 transition-[width] duration-300 ease-in-out"
+>
+    {% comment %} Circle toggle button — fixed top-right, below navbar {% endcomment %}
+    <button
+        id="toc-rail"
+        type="button"
+        aria-label="{% trans 'Open Table of Contents' %}"
+        aria-expanded="false"
+        aria-controls="toc-panel"
+        class="fixed z-30 top-20 right-4
+               flex items-center justify-center size-10
+               rounded-full
+               border border-gray-200 dark:border-gray-700
+               bg-white dark:bg-gray-800
+               shadow-lg
+               hover:bg-gray-50 dark:hover:bg-gray-700/50
+               hover:shadow-xl
+               text-secondary hover:text-insight-text-primary dark:hover:text-insight-text-primary-dark
+               transition-all duration-200 cursor-pointer"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true" class="size-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" />
+        </svg>
+    </button>
+
+    {% comment %} Expanded: TOC panel slides in from right, pushes content {% endcomment %}
+    <aside
+        id="toc-panel"
+        role="complementary"
+        aria-label="{% trans 'Table of Contents' %}"
+        class="sticky top-20 h-fit max-h-[calc(100vh-6rem)]
+               overflow-hidden opacity-0 transition-all duration-300 ease-in-out
+               border-s border-gray-200 dark:border-gray-700
+               bg-white dark:bg-gray-800"
+    >
+        <div class="flex flex-col px-4 py-4 min-w-[16rem]">
+            <div class="flex justify-between items-center pb-3 border-b border-gray-300 dark:border-gray-500 mb-3">
+                <h2 class="text-sm font-semibold uppercase tracking-wider text-secondary mb-0">{% trans "Contents" %}</h2>
+                <button
+                    id="toc-close"
+                    type="button"
+                    aria-label="{% trans 'Close Table of Contents' %}"
+                    class="text-secondary hover:text-insight-text-primary dark:hover:text-insight-text-primary-dark
+                           p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700
+                           transition-colors duration-200 cursor-pointer"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true" class="size-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div id="toc" class="overflow-y-auto">
+            </div>
         </div>
-        <div id="toc">
-        </div>
-    </div>
-{% endblock sidebar_content %}
+    </aside>
+</div>
