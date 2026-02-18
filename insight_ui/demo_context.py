@@ -383,6 +383,11 @@ def get_sidebar_context() -> dict:
                             "htmx": {"target": "#content"},
                         },
                         {
+                            "text": _("Minimal Step Bar"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "minimal_step_bar"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
                             "text": _("Bullet Point List"),
                             "url": reverse(
                                 "component_detail_page_view", kwargs={"component_name": "bullet_point_list"}
@@ -625,6 +630,7 @@ def get_main_storybook_context() -> dict:
         | get_sidebar_context()
         | get_breadcrumb_context()
         | get_step_bar_context()
+        | get_minimal_step_bar_context()
         | get_bullet_point_list_context()
         | get_accordion_context()
         | get_tabs_context()
@@ -777,16 +783,24 @@ def get_modal_context() -> dict:
 def get_step_bar_context() -> dict:
     """Serve data for step bar detailpage."""
     return {
-        "steps_bar_items": [
+        "step_bar_items": [
             {"title": _("Kontaktdaten"), "description": _("Informationen zur Person und Anschrift."), "success": True},
             {"title": _("Zahlungsmethode"), "description": _("Art der Bezahlung auswählen."), "current": True},
             {"title": _("Überprüfen"), "description": _("Prüfen der Angaben und Bezahlen.")},
         ],
-        "steps_bar_items_failed": [
+        "step_bar_items_failed": [
             {"title": _("Kontaktdaten"), "description": _("Informationen zur Person und Anschrift."), "success": True},
             {"title": _("Zahlungsmethode"), "description": _("Art der Bezahlung auswählen."), "success": True},
             {"title": _("Überprüfen"), "description": _("Prüfen der Angaben und Bezahlen."), "failed": True},
         ],
+    }
+
+
+def get_minimal_step_bar_context() -> dict:
+    """Serve data for minimal step bar detailpage."""
+    return {
+        "min_step_bar": [{"step_count": 5, "current_step": 3, "icon_size": "xs"}],
+        "min_step_bar_with_list": [{"items": ["success", "success", "failed", "active", ""], "icon_size": "xs"}],
     }
 
 

@@ -31,6 +31,17 @@ def get_step_bar_usage_context() -> dict[str, str]:
     return {"usage": ""}
 
 
+def get_minimal_step_bar_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the minimal step bar component."""
+    return {
+        "usage": """
+            {% load insight_tags %}
+
+            {% minimal_step_bar config=min_step_bar_config %}
+            """
+    }
+
+
 def get_bullet_point_list_usage_context() -> dict[str, str]:
     """Serve usage documentation for the bullet point list component."""
     return {"usage": ""}
@@ -38,7 +49,13 @@ def get_bullet_point_list_usage_context() -> dict[str, str]:
 
 def get_accordion_usage_context() -> dict[str, str]:
     """Serve usage documentation for the accordion component."""
-    return {"usage": ""}
+    return {
+        "usage": """
+        {% load insight_tags %}
+
+        {% accordion id="faq-exclusive" items=accordion_items exclusive=True %}
+        """
+    }
 
 
 def get_tabs_usage_context() -> dict[str, str]:

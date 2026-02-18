@@ -23,6 +23,15 @@ def get_step_bar_description_context() -> dict[str, list[str]]:
     return {"description": []}
 
 
+def get_minimal_step_bar_description_context() -> dict[str, list[str]]:
+    """Serve description documentation for the minimal step bar component."""
+    return {
+        "description": [
+            "Mit der minimal_step_bar Komponente lässt sich der Fortschritt in einem mehrstufigen Prozess auf einem simple Art und Weise, graphisch darstellen."
+        ]
+    }
+
+
 def get_bullet_point_list_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the bullet point list component."""
     return {"description": []}
@@ -30,7 +39,11 @@ def get_bullet_point_list_description_context() -> dict[str, list[str]]:
 
 def get_accordion_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the accordion component."""
-    return {"description": []}
+    return {
+        "description": [
+            "Mit der accordion Komponente lassen sich ausklappbare Bereiche für weitere Informationen hinzufügen. Ein Accordion kann entweder ein oder mehrere Bereiche gleichzeitig geöffnet haben. Beim öffnen eines Accordion-Abschnitts wird automatisch ein URL-Anchor gesetzt. Dadurch lassen sich über die URL bestimmte Bereiche beim aufrufen der Seite automatisch aufklappen und die Ansicht scrollt automatisch bis zu dem geöffneten Bereich."
+        ]
+    }
 
 
 def get_tabs_description_context() -> dict[str, list[str]]:

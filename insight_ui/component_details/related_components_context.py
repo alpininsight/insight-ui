@@ -21,6 +21,7 @@ RELATED_COMPONENTS = {
     "infinite_scroll": ["pagination"],
     "input": ["checkbox", "checkbox_group", "radio_group", "button", "toggle"],
     "live_content": ["websocket"],
+    "minimal_step_bar": ["step_bar"],
     "modal": ["popover"],
     "multiselect": ["select", "generic_filter", "query_builder"],
     "navbar": ["footer", "sidebar"],
@@ -34,7 +35,7 @@ RELATED_COMPONENTS = {
     "search_bar": ["chat", "select", "multiselect"],
     "select": ["multiselect", "generic_filter", "query_builder"],
     "sidebar": ["navbar", "footer", "modal"],
-    "steps_bar": ["bullet_point_list"],
+    "step_bar": ["minimal_step_bar", "bullet_point_list"],
     "table": ["pagination", "carousel", "toggle_view"],
     "tabs": ["accordion"],
     "toggle_button": ["checkbox", "button"],
@@ -42,3 +43,11 @@ RELATED_COMPONENTS = {
     "tooltip": ["popover"],
     "websocket": ["live_content"],
 }
+
+
+def get_related_components_context(component_name: str) -> list[dict[str, str]]:
+    """Serve related components context of the specified component."""
+    return [
+        {"component_name": component, "formatted_name": component.replace("_", " ").title()}
+        for component in RELATED_COMPONENTS[component_name]
+    ]

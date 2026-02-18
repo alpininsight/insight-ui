@@ -23,6 +23,11 @@ def get_step_bar_a11y_context() -> dict[str, list[str]]:
     return {"a11y": []}
 
 
+def get_minimal_step_bar_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y documentation for the minimal step bar component."""
+    return {"a11y": []}
+
+
 def get_bullet_point_list_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the bullet point list component."""
     return {"a11y": []}
@@ -30,7 +35,15 @@ def get_bullet_point_list_a11y_context() -> dict[str, list[str]]:
 
 def get_accordion_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the accordion component."""
-    return {"a11y": []}
+    return {
+        "a11y": [
+            "Das aktuell geöffnete Element wird mit aria-expanded='true' markiert.",
+            "Die Kopfzeile ist mit aria-controls ausgestattet, wodurch der Bezug zum dem darunter liegenden Container hergestellt wird.",
+            "Der Container besitzt zusätzlich das Attribut aria-labelledby.",
+            "Der Container ist mit role='region' ausgestattet, damit dieser leicht ansteuerbar ist.",
+            "Die Komponente unterstützt die Navigation über die Tastatur mittels der Pfeiltasten (hoch/runter).",
+        ]
+    }
 
 
 def get_tabs_a11y_context() -> dict[str, list[str]]:

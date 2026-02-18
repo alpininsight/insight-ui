@@ -10,6 +10,7 @@ from django.utils.translation import gettext as _
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.decorators.http import require_GET, require_POST
 
+from insight_ui.component_details import component_context
 from insight_ui.component_details.git_path_mapping import SCRIPT_PATHS, TEMPLATE_PATHS
 from insight_ui.component_details.parameter_context import (
     get_3d_carousel_parameter_context,
@@ -87,6 +88,7 @@ from insight_ui.demo_context import (
     get_inputs_storybook_context,
     get_layout_storybook_context,
     get_main_storybook_context,
+    get_minimal_step_bar_context,
     get_modal_context,
     get_multiselect_context,
     get_navbar_context,
@@ -327,10 +329,7 @@ def icon_view(request: HttpRequest) -> HttpResponse:
 @require_GET
 def playground_view(request: HttpRequest) -> HttpResponse:
     """Render playground page."""
-    context = get_base_context() | get_sidebar_context()
-
-    context["min_step_bar_config"] = {"items": ["success", "success", "failed", "active", ""], "icon_size": "xs"}
-    context["min_step_bar_config2"] = {"step_count": 5, "current_step": 3, "icon_size": "xs"}
+    context = get_base_context() | get_sidebar_context() | get_minimal_step_bar_context()
 
     return render(request, "insight_ui/playground.html", context)
 
@@ -364,6 +363,7 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
         "footer": get_footer_parameter_context,
         "breadcrumb": get_breadcrumb_parameter_context,
         "step_bar": get_step_bar_parameter_context,
+        "minimal_step_bar": get_minimal_step_bar_context,
         "bullet_point_list": get_bullet_point_list_parameter_context,
         "accordion": get_accordion_parameter_context,
         "tabs": get_tabs_parameter_context,
@@ -441,6 +441,9 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
 
     if request.headers.get("HX-Request") and not request.headers.get("HX-History-Restore-Request"):
         context["demo"] = demo_info
+        if component_name == "minimal_step_bar":
+            context |= component_context.get_component_context(component_name)
+            return render(request, "insight_ui/docs/component_detailpage2.html", context)
         return render(request, f"insight_ui/docs/partial/{component_name}_detailpage.html", context)
 
     context |= get_base_context("component_detail_page_view") | get_sidebar_context()
@@ -471,6 +474,7 @@ def component_demo_view(request: HttpRequest, component_name: str) -> HttpRespon
         "footer": get_footer_context,
         "breadcrumb": get_breadcrumb_context,
         "step_bar": get_step_bar_context,
+        "minimal_step_bar": get_minimal_step_bar_context,
         "bullet_point_list": get_bullet_point_list_context,
         "accordion": get_accordion_context,
         "accordion_exclusive": get_accordion_context,

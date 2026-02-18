@@ -187,6 +187,25 @@ def get_step_bar_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params, "step_params": step_params}
 
 
+def get_minimal_step_bar_parameter_context() -> dict[str, list[str]]:
+    """Serve parameter documentation for the minimal step bar component."""
+    main_params = [["config", "dict[str, Any]", "Konfiguration der Step Bar.", "{}"]]
+
+    config_params = [
+        [
+            "items",
+            "list[str]",
+            "Liste der Zustände der Prozessschritte. Mögliche Werte: 'success', 'failed', 'active' und '' für Inaktiv. ",
+            "[]",
+        ],
+        ["step_count", "int", "(Nur wenn 'items' nicht gesetzt ist!) Anzahl der Prozessschritte.", "0"],
+        ["current_step", "int", "(Nur wenn 'items' nicht gesetzt ist!) Aktueller Schritt des Prozesses.", "0"],
+        ["icon_size", "str", "Größe der Icons auf der Fortschrittsanzeige.", "xs"],
+    ]
+
+    return {"params": [main_params, config_params]}
+
+
 def get_bullet_point_list_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the bullet point list component."""
     main_params = [["items", "list[dict]", "Liste der einzelnen Punkte.", "[]"]]
@@ -217,9 +236,21 @@ def get_accordion_parameter_context() -> dict[str, list[str]]:
         ["exclusive", "bool", "Bei <b>True</b> kann immer nur ein Abschnitt gleichzeitig geöffnet sein.", "False"],
     ]
 
-    item_params = [["title", "str", "Titel des Abschnitts.", "''"], ["content", "str", "Inhalt des Abschnitts.", "''"]]
+    item_params = {
+        "name": "items",
+        "type": "list[dict]",
+        "description": "Liste der einzelnen Abschnitte.",
+        "example_data": """
+                    [
+                        {"title": "Was ist Django?", "content": "Django ist ein Webframework für Python."},
+                        {"title": "Was ist Tailwind?", "content": "Tailwind ist ein CSS-Utility-Framework."},
+                        {"title": "Was ist ARIA?", "content": "ARIA steht für Accessible Rich Internet Applications."},
+                    ]
+        """,
+        "table": [["title", "str", "Titel des Abschnitts.", "''"], ["content", "str", "Inhalt des Abschnitts.", "''"]],
+    }
 
-    return {"main_params": main_params, "item_params": item_params}
+    return {"params": [main_params, item_params]}
 
 
 def get_tabs_parameter_context() -> dict[str, list[str]]:
