@@ -61,6 +61,7 @@ def get_navbar_context(current_view: str = "index_view") -> dict:
             "open_dropdown": "components-menu",
             "icon": {"name": "cards", "size": "small"},
             "items": [
+                {"text": "Layout", "view_name": "storybook_view", "view_arg": "layout", "htmx": {"target": "#content"}},
                 {
                     "text": "Main / Navigation",
                     "view_name": "storybook_view",
@@ -146,7 +147,7 @@ def get_footer_context() -> dict:
                 "imprint": "https://alpininsight.com/imprint/",
                 "privacy": "https://alpininsight.com/privacy/",
             },
-            "copyright": {"year": 2025, "app_name": "Insight UI"},
+            "copyright": {"year": 2026, "app_name": "Insight UI"},
         }
     }
 

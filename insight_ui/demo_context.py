@@ -157,6 +157,12 @@ def get_navbar_context() -> dict:
                     "open_dropdown": "components-menu",
                     "items": [
                         {
+                            "text": "Layout",
+                            "view_name": "storybook_view",
+                            "view_arg": "layout",
+                            "htmx": {"target": "#content"},
+                        },
+                        {
                             "text": "Main / Navigation",
                             "view_name": "storybook_view",
                             "view_arg": "main",
@@ -317,7 +323,7 @@ def get_footer_context() -> dict:
                 "imprint": "https://alpininsight.com/imprint/",
                 "privacy": "https://alpininsight.com/privacy/",
             },
-            "copyright": {"year": 2025, "app_name": "Insight UI"},
+            "copyright": {"year": 2026, "app_name": "Insight UI"},
         }
     }
 
@@ -605,6 +611,11 @@ def get_sidebar_context() -> dict:
             ],
         }
     }
+
+
+def get_layout_storybook_context() -> dict:
+    """Serve data for layout storybook."""
+    return get_base_context("storybook_view")
 
 
 def get_main_storybook_context() -> dict:

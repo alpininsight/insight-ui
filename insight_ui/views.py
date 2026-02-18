@@ -85,6 +85,7 @@ from insight_ui.demo_context import (
     get_image_carousel_context,
     get_infinite_scroll_context,
     get_inputs_storybook_context,
+    get_layout_storybook_context,
     get_main_storybook_context,
     get_modal_context,
     get_multiselect_context,
@@ -547,6 +548,7 @@ def storybook_view(request: HttpRequest, storybook_name: str) -> HttpResponse:
 
     """
     context_func_map = {
+        "layout": get_layout_storybook_context,
         "main": get_main_storybook_context,
         "input": get_inputs_storybook_context,
         "popup": get_popup_storybook_context,
