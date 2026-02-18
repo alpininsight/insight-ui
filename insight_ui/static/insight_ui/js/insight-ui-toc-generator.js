@@ -96,7 +96,7 @@ class TableOfContents {
         border-s border-gray-200 dark:border-gray-700
         hover:border-gray-400 hover:text-gray-400
         aria-[current=location]:font-bold
-        aria-[current=location]:text-blue-700
+        aria-[current=location]:text-insight-primary-hover
         focus-visible:outline focus-visible:outline-2
         focus-visible:outline-blue-600 focus-visible:outline-offset-2
       `.trim();

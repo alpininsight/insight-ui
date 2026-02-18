@@ -32,9 +32,9 @@
     style="width: {{ sidebar_data.width|default:'18rem' }}"
     data-auto-close="{{ auto_close|yesno:'true,false' }}"
   >
-    {% block sidebar_content %}
-      {% comment %} Sidebar head with internal close button {% endcomment %}
-      <div class="flex flex-col {% if side == "right" %}ps-4 pe-4 md:pe-16{% else %}ps-4 md:ps-16 pe-4{% endif %} {% if static %}py-8{% else %}pb-8{% endif %}">
+    <div class="flex flex-col {% if side == "right" %}ps-4 pe-4 md:pe-16{% else %}ps-4 md:ps-16 pe-4{% endif %} {% if static %}py-8{% else %}pb-8{% endif %}">
+      {% block sidebar_content %}
+        {% comment %} Sidebar head with internal close button {% endcomment %}
         <div class="flex justify-between items-center {% if not static %}h-16{% else %}pb-4{% endif %} border-b border-gray-300 dark:border-gray-500 mb-4">
           {% if sidebar_data.title %}
             <h2 class="flex items-center gap-1 text-lg mb-0">
@@ -65,7 +65,7 @@
           <nav class="space-y-2">
             {% for category in sidebar_data.categories %}
               <div>
-                <div class="flex gap-1 pt-4 pb-2 text-secondary">
+                <div class="flex gap-1 pt-4 pb-2 text-insight-primary-hover">
                   {% if category.icon %}
                     {% icon category.icon %}
                   {% endif %}
@@ -78,6 +78,7 @@
                       hx-target="{{ item.htmx.target }}"
                       hx-swap="{{ item.htmx.swap|default:'innerHTML' }} show:window:top"
                       hx-push-url="true"
+                      hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
                     {% endif %}
                     href="{{ item.url }}"
                     class="flex gap-2 px-2 py-1 border-s text-sm text-primary border-gray-200 dark:border-gray-700 hover:border-gray-400 hover:text-gray-400"
@@ -92,7 +93,7 @@
             {% endfor %}
           </nav>
         </div>
-      </div>
-    {% endblock sidebar_content %}
+      {% endblock sidebar_content %}
+    </div>
   </aside>
 </div>
