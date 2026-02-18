@@ -35,7 +35,7 @@ def test_login_url_responds_ok(client: Client) -> None:  # noqa: ANN001
 
 @pytest.mark.smoke
 @pytest.mark.django_db
-@pytest.mark.parametrize("viewname", ["main", "input", "popup", "util", "table", "card", "form", "filter"])
+@pytest.mark.parametrize("viewname", ["layout", "main", "input", "popup", "util", "table", "card", "form", "filter"])
 def test_storybook_urls_responds_ok(viewname: str, client: Client) -> None:  # noqa: ANN001
     """Basic smoke test for the storybook pages."""
     response = client.get(reverse("storybook_view", kwargs={"storybook_name": viewname}))
@@ -48,6 +48,9 @@ def test_storybook_urls_responds_ok(viewname: str, client: Client) -> None:  # n
 @pytest.mark.parametrize(
     "component_name",
     [
+        "page_header",
+        "article",
+        "hero",
         "navbar",
         "sidebar",
         "footer",
@@ -57,7 +60,9 @@ def test_storybook_urls_responds_ok(viewname: str, client: Client) -> None:  # n
         "accordion",
         "tabs",
         "button",
+        "input_field",
         "checkbox",
+        "checkbox_group",
         "dropdown",
         "radio_group",
         "range_slider",
@@ -102,6 +107,9 @@ def test_component_urls_responds_ok(component_name: str, client: Client) -> None
 @pytest.mark.parametrize(
     "component_name",
     [
+        "page_header",
+        "article",
+        "hero",
         "navbar",
         "sidebar",
         "footer",
@@ -114,7 +122,9 @@ def test_component_urls_responds_ok(component_name: str, client: Client) -> None
         "button",
         "outline_button",
         "button_sizes",
+        "input_field",
         "checkbox",
+        "checkbox_group",
         "dropdown",
         "radio_group",
         "radio_block",
