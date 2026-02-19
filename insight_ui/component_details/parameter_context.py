@@ -1,3 +1,7 @@
+from insight_ui.component_details.component_context import component
+
+
+@component("navbar")
 def get_navbar_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the navbar component."""
     main_params = [
@@ -75,6 +79,7 @@ def get_navbar_parameter_context() -> dict[str, list[str]]:
     }
 
 
+@component("sidebar")
 def get_sidebar_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the sidebar component."""
     main_params = [
@@ -99,6 +104,7 @@ def get_sidebar_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params}
 
 
+@component("footer")
 def get_footer_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the footer component."""
     main_params = [["data", "dict[str, Any]", "Daten welche im Footer angezeigt werden sollen.", "{}"]]
@@ -165,6 +171,7 @@ def get_footer_parameter_context() -> dict[str, list[str]]:
     }
 
 
+@component("breadcrumbs")
 def get_breadcrumb_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the breadcrumb component."""
     main_params = [["items", "list[dict]", "Liste der Navigationspunkte.", "[]"]]
@@ -179,6 +186,7 @@ def get_breadcrumb_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params, "links_params": links_params}
 
 
+@component("step_bar")
 def get_step_bar_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the step bar component."""
     main_params = [["items", "list[dict]", "Liste der Prozessschritte.", "[]"]]
@@ -193,6 +201,7 @@ def get_step_bar_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params, "step_params": step_params}
 
 
+@component("minimal_step_bar")
 def get_minimal_step_bar_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the minimal step bar component."""
     main_params = [["config", "dict[str, Any]", "Konfiguration der Step Bar.", "{}"]]
@@ -212,6 +221,7 @@ def get_minimal_step_bar_parameter_context() -> dict[str, list[str]]:
     return {"params": [main_params, config_params]}
 
 
+@component("bullet_point_list")
 def get_bullet_point_list_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the bullet point list component."""
     main_params = [["items", "list[dict]", "Liste der einzelnen Punkte.", "[]"]]
@@ -234,6 +244,7 @@ def get_bullet_point_list_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params, "step_params": step_params}
 
 
+@component("accordion")
 def get_accordion_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the accordion component."""
     main_params = [
@@ -259,6 +270,7 @@ def get_accordion_parameter_context() -> dict[str, list[str]]:
     return {"params": [main_params, item_params]}
 
 
+@component("tabs")
 def get_tabs_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the tabs component."""
     main_params = [
@@ -286,6 +298,7 @@ def get_tabs_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params, "config_params": config_params, "tabs_params": tabs_params}
 
 
+@component("button")
 def get_button_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the button component."""
     main_params = [["", "", "", ""]]
@@ -293,6 +306,7 @@ def get_button_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params}
 
 
+@component("input_field")
 def get_input_field_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the input field component."""
     main_params = [
@@ -335,6 +349,7 @@ def get_input_field_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params}
 
 
+@component("checkbox")
 def get_checkbox_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the checkbox component."""
     main_params = [
@@ -365,6 +380,7 @@ def get_checkbox_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params}
 
 
+@component("checkbox_group")
 def get_checkbox_group_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the checkbox group component."""
     main_params = [
@@ -398,6 +414,7 @@ def get_checkbox_group_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params, "config_params": config_params}
 
 
+@component("dropdown")
 def get_dropdown_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the dropdown component."""
     main_params = [["dropdown_menu", "dict[str, Any]", "Beschreibt den Dropdown-Button und die Menüelemente.", "{}"]]
@@ -418,6 +435,7 @@ def get_dropdown_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params, "dropdown_menu_params": dropdown_menu_params, "item_params": item_params}
 
 
+@component("radio_group")
 def get_radio_group_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the radio_group component."""
     main_params = [
@@ -479,6 +497,7 @@ def get_radio_group_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params, "config_params": config_params, "items_params": items_params}
 
 
+@component("range_slider")
 def get_rangle_slider_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the range slider component."""
     main_params = [
@@ -512,6 +531,7 @@ def get_rangle_slider_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params}
 
 
+@component("toggle")
 def get_toggle_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the toggle component."""
     main_params = [
@@ -549,6 +569,7 @@ def get_toggle_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params}
 
 
+@component("select")
 def get_select_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the select component."""
     main_params = [
@@ -577,6 +598,7 @@ def get_select_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params}
 
 
+@component("multiselect")
 def get_multiselect_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the multiselect component."""
     main_params = [
@@ -607,6 +629,7 @@ def get_multiselect_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params}
 
 
+@component("chat")
 def get_chat_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the chat component."""
     main_params = [
@@ -621,6 +644,7 @@ def get_chat_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params}
 
 
+@component("alert")
 def get_alert_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the alert component."""
     main_params = [
@@ -633,6 +657,7 @@ def get_alert_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params}
 
 
+@component("modal")
 def get_modal_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the modal component."""
     main_params = [
@@ -668,6 +693,7 @@ def get_modal_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params, "action_button_params": action_button_params}
 
 
+@component("popover")
 def get_popover_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the popover component."""
     main_params = [
@@ -689,6 +715,7 @@ def get_popover_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params}
 
 
+@component("tooltip")
 def get_tooltip_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the tooltip component."""
     main_params = [
@@ -710,6 +737,7 @@ def get_tooltip_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params}
 
 
+@component("code_block")
 def get_code_block_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the code block component."""
     main_params = [
@@ -731,6 +759,7 @@ def get_code_block_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params}
 
 
+@component("differentiator")
 def get_differentiator_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the differentiator component."""
     main_params = [
@@ -741,6 +770,7 @@ def get_differentiator_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params}
 
 
+@component("progress_bar")
 def get_progress_bar_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the progress bar component."""
     main_params = [["", "", "", ""]]
@@ -748,6 +778,7 @@ def get_progress_bar_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params}
 
 
+@component("geo_map")
 def get_geo_map_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the geo map component."""
     main_params = [
@@ -798,6 +829,7 @@ def get_geo_map_parameter_context() -> dict[str, list[str]]:
     }
 
 
+@component("chart")
 def get_charts_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the charts component."""
     main_params = [
@@ -815,6 +847,7 @@ def get_charts_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params, "chart_params": chart_params}
 
 
+@component("live_content")
 def get_live_content_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the live content component."""
     main_params = [
@@ -827,6 +860,7 @@ def get_live_content_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params}
 
 
+@component("web_socket")
 def get_web_socket_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the web socket component."""
     main_params = [
@@ -838,6 +872,7 @@ def get_web_socket_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params}
 
 
+@component("infinite_scroll")
 def get_infinite_scroll_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the infinite scroll component."""
     main_params = [
@@ -861,6 +896,7 @@ def get_infinite_scroll_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params}
 
 
+@component("pagination")
 def get_pagination_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the pagination component."""
     main_params = [
@@ -871,6 +907,7 @@ def get_pagination_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params}
 
 
+@component("table")
 def get_table_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the table component."""
     main_params = [
@@ -892,6 +929,7 @@ def get_table_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params, "data_params": data_params}
 
 
+@component("generic_filter")
 def get_generic_filter_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the generic filter component."""
     main_params = [
@@ -926,6 +964,7 @@ def get_generic_filter_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params}
 
 
+@component("search_bar")
 def get_search_bar_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the search bar component."""
     main_params = [
@@ -942,6 +981,7 @@ def get_search_bar_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params}
 
 
+@component("query_builder")
 def get_query_builder_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the query builder component."""
     main_params = [["", "", "", ""]]
@@ -949,6 +989,7 @@ def get_query_builder_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params}
 
 
+@component("card")
 def get_card_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the card component."""
     main_params = [
@@ -992,6 +1033,7 @@ def get_card_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params, "image_params": image_params, "action_button_params": action_button_params}
 
 
+@component("card_carousel")
 def get_card_carousel_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the card carousel component."""
     main_params = [
@@ -1020,6 +1062,7 @@ def get_card_carousel_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params}
 
 
+@component("image_carousel")
 def get_image_carousel_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the image carousel component."""
     main_params = [
@@ -1059,6 +1102,7 @@ def get_image_carousel_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params, "image_params": image_params}
 
 
+@component("3d_carousel")
 def get_3d_carousel_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the 3D carousel component."""
     main_params = [
@@ -1082,6 +1126,7 @@ def get_3d_carousel_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params}
 
 
+@component("toggle_view")
 def get_toggle_view_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the toggle view component."""
     main_params = [
@@ -1116,6 +1161,7 @@ def get_toggle_view_parameter_context() -> dict[str, list[str]]:
     }
 
 
+@component("form")
 def get_form_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the form component."""
     main_params = [
@@ -1151,6 +1197,7 @@ def get_form_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params, "htmx_config_params": htmx_config_params}
 
 
+@component("page_header")
 def get_page_header_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the page_header component."""
     main_params = [
@@ -1161,6 +1208,7 @@ def get_page_header_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params}
 
 
+@component("article")
 def get_article_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the article component."""
     main_params = [
@@ -1173,6 +1221,7 @@ def get_article_parameter_context() -> dict[str, list[str]]:
     return {"main_params": main_params}
 
 
+@component("hero")
 def get_hero_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the hero component."""
     main_params = [

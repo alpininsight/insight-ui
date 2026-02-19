@@ -441,7 +441,7 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
 
     if request.headers.get("HX-Request") and not request.headers.get("HX-History-Restore-Request"):
         context["demo"] = demo_info
-        if component_name == "minimal_step_bar":
+        if component_name == "accordion":
             context |= component_context.get_component_context(component_name)
             return render(request, "insight_ui/docs/component_detailpage2.html", context)
         return render(request, f"insight_ui/docs/partial/{component_name}_detailpage.html", context)
@@ -521,7 +521,7 @@ def component_demo_view(request: HttpRequest, component_name: str) -> HttpRespon
         "article": get_empty_context,
         "hero": get_empty_context,
     }
-    logger.info(component_name)
+
     context_func = context_func_map.get(component_name)
 
     if not context_func:

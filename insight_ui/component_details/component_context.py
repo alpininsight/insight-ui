@@ -1,21 +1,37 @@
-from insight_ui.component_details import (
-    a11y_context,
-    description_context,
-    parameter_context,
-    related_components_context,
-    usage_context,
-)
+from collections import defaultdict
+from collections.abc import Callable
+from typing import Any
+
+from insight_ui.component_details.related_components_context import get_related_components_context
+
+Context = dict[str, Any]
+ContextBuilder = Callable[[], Context]
+
+CONTEXT_BUILDERS: dict[str, list[ContextBuilder]] = defaultdict(list)
+
+
+def component(component_name: str) -> Callable[[ContextBuilder], ContextBuilder]:
+    """Register context method for the specified component."""
+
+    def decorator(func: ContextBuilder) -> ContextBuilder:
+        CONTEXT_BUILDERS[component_name].append(func)
+        return func
+
+    return decorator
 
 
 def get_component_context(component_name: str) -> dict:
     """Serve docs of the specified component."""
-    related_components = {"related_topics": related_components_context.get_related_components_context(component_name)}
+    if component_name not in CONTEXT_BUILDERS:
+        raise ValueError(f"Unknown component: {component_name}")  # noqa: TRY003
 
-    return (
-        {"component_name": component_name.replace("_", " ").title()}
-        | description_context.get_minimal_step_bar_description_context()
-        | usage_context.get_minimal_step_bar_usage_context()
-        | parameter_context.get_minimal_step_bar_parameter_context()
-        | a11y_context.get_minimal_step_bar_a11y_context()
-        | related_components
-    )
+    context = {}
+
+    for builder in CONTEXT_BUILDERS.get(component_name, []):
+        part = builder()
+        context.update(part)
+
+    related_components = {"related_topics": get_related_components_context(component_name)}
+    context.update(related_components)
+
+    return context
