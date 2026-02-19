@@ -14,7 +14,7 @@ export class ThreeDCarousel {
         this.nextBtn = wrapper.lastElementChild.lastElementChild;
 
         this.faceCamera = wrapper.getAttribute("data-carousel-face-camera") === 'true';
-        this.distanceSettings = [-1100, -750, -750, -550];
+        this.distances = [-1100, -750, -750, -550];
         this.screens = [
             window.matchMedia('(min-width: 640px)'),
             window.matchMedia('(min-width: 1024px)'),
@@ -42,8 +42,8 @@ export class ThreeDCarousel {
     }
 
     bindEvents() {
-        this.previous.addEventListener("click", this.boundGotoPrevious);
-        this.next.addEventListener("click", this.boundGotoNext);
+        this.previousBtn.addEventListener("click", this.boundGotoPrevious);
+        this.nextBtn.addEventListener("click", this.boundGotoNext);
     }
 
     spin(index, toRight) {
@@ -110,8 +110,8 @@ export class ThreeDCarousel {
     destroy() {
         debugLog("Destroy 3D carousel: ", this.carouselWrapper);
 
-        this.previous.removeEventListener("click", this.boundGotoPrevious);
-        this.next.removeEventListener("click", this.boundGotoNext);
+        this.previousBtn.removeEventListener("click", this.boundGotoPrevious);
+        this.nextBtn.removeEventListener("click", this.boundGotoNext);
 
         ThreeDCarousel.instances.delete(this.carouselWrapper);
         this.carouselWrapper = null;

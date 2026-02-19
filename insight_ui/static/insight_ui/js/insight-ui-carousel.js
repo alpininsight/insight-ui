@@ -37,7 +37,7 @@ export class Carousel {
         this.boundWindowResize = () => this.resizeItems();
         this.boundDotClicks = [];
 
-        this.dots = [...this.root.querySelectorAll(".carousel-dot")];
+        this.dots = [...this.element.querySelectorAll(".carousel-dot")];
         this.dots.forEach((dot, i) => {
             const handler = () => {
                 this.index = i;
@@ -50,7 +50,7 @@ export class Carousel {
 
         this.init();
 
-        Carousel.instances.set(root, this);
+        Carousel.instances.set(this.element, this);
 
         debugLog("New carousel created: ", this.element);
     }
@@ -68,8 +68,8 @@ export class Carousel {
 
         this.prevBtn.addEventListener("click", this.boundPrevClick);
         this.nextBtn.addEventListener("click", this.boundNextClick);
-        this.root.addEventListener("touchstart", this.boundTouchStart);
-        this.root.addEventListener("touchend", this.boundTouchEnd);
+        this.element.addEventListener("touchstart", this.boundTouchStart);
+        this.element.addEventListener("touchend", this.boundTouchEnd);
 
         if (this.autoplayEnabled) this.startAutoplay();
 
@@ -193,7 +193,7 @@ export class Carousel {
      * Call this before removing the element from DOM.
      */
     destroy() {
-        debugLog("Destroy carousel: ", this.root);
+        debugLog("Destroy carousel: ", this.element);
 
         // Stop autoplay interval
         this.stopAutoplay();
@@ -203,8 +203,8 @@ export class Carousel {
         this.nextBtn.removeEventListener("click", this.boundNextClick);
 
         // Remove touch listeners
-        this.root.removeEventListener("touchstart", this.boundTouchStart);
-        this.root.removeEventListener("touchend", this.boundTouchEnd);
+        this.element.removeEventListener("touchstart", this.boundTouchStart);
+        this.element.removeEventListener("touchend", this.boundTouchEnd);
 
         // Remove window resize listener
         window.removeEventListener("resize", this.boundWindowResize);
@@ -215,8 +215,8 @@ export class Carousel {
         });
         this.boundDotClicks = [];
 
-        Carousel.instances.delete(this.root);
-        this.root = null;
+        Carousel.instances.delete(this.element);
+        this.element = null;
     }
 
     // Static method for initializing all carousels
