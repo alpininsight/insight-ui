@@ -1,5 +1,65 @@
 # Changelog
 
+## [1.9.0](https://github.com/alpininsight/insight-ui/compare/v1.8.0...v1.9.0) (2026-02-18)
+
+
+### Features
+
+* add 'failed' status option to step bar component ([24b9431](https://github.com/alpininsight/insight-ui/commit/24b94313f120e199b02df04bf64fcf5598bb884c))
+* add 'hero' component ([dfac646](https://github.com/alpininsight/insight-ui/commit/dfac646a69cb3d2659f137199d9c31fb16a38703))
+* add 'layout' storybook ([d0b377f](https://github.com/alpininsight/insight-ui/commit/d0b377faba0ee91a2a27302ac21988b6e7268fe1))
+* add 'link' icon ([7a01829](https://github.com/alpininsight/insight-ui/commit/7a01829fccae0578054fb760ffd5eb288e9500cf))
+* add alternating row colors to the table component ([88b4b84](https://github.com/alpininsight/insight-ui/commit/88b4b84dcaf72cb45b6ef99762d8858b53997b94))
+* add base_template page ([b475aee](https://github.com/alpininsight/insight-ui/commit/b475aeebe8a6173e2bc71313f0eb15b879051dc5))
+* add documentation of the 'minimal_step_bar' component ([ae04367](https://github.com/alpininsight/insight-ui/commit/ae04367f21f3bf2f3abd0a18609c71b0620eeda4))
+* add HTMX support for breadcrumb component ([7817c48](https://github.com/alpininsight/insight-ui/commit/7817c48587d5a7a453c74290f901c14124d5f3b9))
+* add HTMX support for bulletpoint component ([f6779bd](https://github.com/alpininsight/insight-ui/commit/f6779bd143909bf4214925bc10cf9f0db00b73ec))
+* add HTMX support for dropdown component ([069f461](https://github.com/alpininsight/insight-ui/commit/069f46108853381d13dee8f6cffbd513cfa87714))
+* add HTMX support for generic_filter component ([024d3cf](https://github.com/alpininsight/insight-ui/commit/024d3cf2a78228fe314be7c847219fb438aeee0f))
+* add HTMX support for searchbar component ([8fab838](https://github.com/alpininsight/insight-ui/commit/8fab8384410753449339d2be754a143137acddb6))
+* add icons page ([4b84bcb](https://github.com/alpininsight/insight-ui/commit/4b84bcb3b44413f038b8449e8e9636cacdfff65a))
+* add installation page ([2acedb3](https://github.com/alpininsight/insight-ui/commit/2acedb3d3e8185c65a120bf79de3307be14ba4b5))
+* add ipp select to pagination and decouple pagination from list ([9913d6d](https://github.com/alpininsight/insight-ui/commit/9913d6d480bc24abab04c2bbb4114819ec5112c2))
+* add minimal step bar compoenent ([31fd4eb](https://github.com/alpininsight/insight-ui/commit/31fd4eb848437fa0016b2abdf6519a0929a1b90a))
+* add new 'heading' block to base template ([6819d93](https://github.com/alpininsight/insight-ui/commit/6819d93399cf8e67e92dcc9f556203975242b104))
+* add new component detailpage base template ([fb176d8](https://github.com/alpininsight/insight-ui/commit/fb176d8a6ddeedb94ee73944c666823fb5326cff))
+* add new components, detail pages, and context helpers ([d3f9cca](https://github.com/alpininsight/insight-ui/commit/d3f9ccac4c18554c783105de22521f738ee07460))
+* add optional privacy link to footer component and improve footer documentation ([7827b95](https://github.com/alpininsight/insight-ui/commit/7827b95b210593ef83c4261178f2f6e4c97e9c16))
+* add submit Button to form by default and make reset button optional via bool parameter ([d5b93c2](https://github.com/alpininsight/insight-ui/commit/d5b93c2d84270a89cbbd7e0e8905af715bb37a84))
+* add tailwind setup instructions to customization page ([719c730](https://github.com/alpininsight/insight-ui/commit/719c730775954ca6abfef25321020a347807857c))
+* add ToC to base_template, icons and installations page ([d6eaff5](https://github.com/alpininsight/insight-ui/commit/d6eaff59819be158978c4c5f0b0aa82c384e209b))
+* align layout of the component detailpage, the icons, customization and installation page ([e72e471](https://github.com/alpininsight/insight-ui/commit/e72e471d0da8ea6c0c26bcec720aad021c2f0f88))
+* change from view_name to url for chat component request ([d52e149](https://github.com/alpininsight/insight-ui/commit/d52e14951810078a969b5b5f37abb279614981d8))
+* change htmx-indicator display method from inline to flex ([3ef5ae0](https://github.com/alpininsight/insight-ui/commit/3ef5ae0da74a312e66bfcbc1d85c8cb5a6297c25))
+* create ToC class and completely rewrite ToC script ([7025ba0](https://github.com/alpininsight/insight-ui/commit/7025ba09c5f180e1ec1899e77270c5f107a128cc))
+* display unachieved bullet points in gray, in the bullet point component ([28e9eec](https://github.com/alpininsight/insight-ui/commit/28e9eecb161076b70baca76e5d7494176b614438))
+* improve sidebar demo content ([69ddfea](https://github.com/alpininsight/insight-ui/commit/69ddfeae1b5dc52f68285ae8dcdbff1b42d6f0e7))
+* make radio_block item id's more unique ([4be5e68](https://github.com/alpininsight/insight-ui/commit/4be5e68eb9e98ac57eebf34e73d8dd4c52ed6be2))
+* rebase further improvements (TOC tree, HTMX, pagination, new pages) ([e131f8c](https://github.com/alpininsight/insight-ui/commit/e131f8c369fa405155ac4fb32960dbf67a5302f8))
+* remove background image on installation, customization and ([ecace3f](https://github.com/alpininsight/insight-ui/commit/ecace3f4068ff7299d49133f1907b29fe88f1f71))
+* **toc:** redesign TOC sidebar with circle button and in-flow layout ([ce985df](https://github.com/alpininsight/insight-ui/commit/ce985df3078ff5f006a10c51ef0198c1e8a3bf7a))
+* turn JavaScript classes to modules and fix browser history related htmx request issue ([0ece80c](https://github.com/alpininsight/insight-ui/commit/0ece80cde968a6e085bfa225760f59274b7e989d))
+* use icon component for alert icons ([4068f41](https://github.com/alpininsight/insight-ui/commit/4068f41d4598b9842ee5858c40258f0019659ca0))
+* use icon component for language toggle ([6a0ca4b](https://github.com/alpininsight/insight-ui/commit/6a0ca4bc6f5500d4b5be8d6b904cce692171d24a))
+
+
+### Bug Fixes
+
+* add min-w-0 to content area flex child to prevent overflow ([b720e3b](https://github.com/alpininsight/insight-ui/commit/b720e3b9898224fef9d0db6bd8655e2857652f54))
+* align tests with pagination API rewrite ([0bf47b1](https://github.com/alpininsight/insight-ui/commit/0bf47b17ad29248a63c3e3032b5db10ee69302a5))
+* carousel rtl issue ([a9958a6](https://github.com/alpininsight/insight-ui/commit/a9958a671661fdd91a689680ba590017015f74a7))
+* chat field is not cleared after submit ([3c28216](https://github.com/alpininsight/insight-ui/commit/3c2821699a26bc7247a3b9565c0a766e475bea31))
+* **dev:** resolve Server Error 500 after fresh clone ([b73d8b9](https://github.com/alpininsight/insight-ui/commit/b73d8b9947803dadbf015e2c8a44d1ad4e0f570b))
+* footer links always link to current page ([6ff7412](https://github.com/alpininsight/insight-ui/commit/6ff7412ed58b1ad7f766d0d6a715a82cfb443f2e))
+* minimal_step_bar demo ([a53c5fb](https://github.com/alpininsight/insight-ui/commit/a53c5fb86da3725fedb404d99d131308147550ad))
+* prevent navbar link text from wrapping ([aeab8b9](https://github.com/alpininsight/insight-ui/commit/aeab8b9cc5370cc67b764fb40ed544ddba85634a))
+* shorten sidebar title and fix TOC sidebar padding ([3b084f0](https://github.com/alpininsight/insight-ui/commit/3b084f01dcfc66930051aeb951fd7d16ffd47dbd))
+* sidebar height and remove container style from component detail pages ([fa5b32d](https://github.com/alpininsight/insight-ui/commit/fa5b32d10c02e24d61f91d83f68bcd7823a0cc15))
+* step_bar component misspelling issue ([f4211e1](https://github.com/alpininsight/insight-ui/commit/f4211e1f561143006163b6a6960296ff905c9146))
+* that the dropdown menu briefly appears after page reload ([d65af7e](https://github.com/alpininsight/insight-ui/commit/d65af7e38cddc78e607a5727c380ab32e5f04989))
+* toggle_view demo issue ([41eec1d](https://github.com/alpininsight/insight-ui/commit/41eec1d73d44b69a9bfbc54259d270467f346400))
+* usage of old variable name for the id in the alert, infinit scroll and card component ([d52423b](https://github.com/alpininsight/insight-ui/commit/d52423bba13b61411c3e77e7aa774ed805f0b7b6))
+
 ## [1.8.0](https://github.com/alpininsight/insight-ui/compare/v1.7.0...v1.8.0) (2026-01-26)
 
 
