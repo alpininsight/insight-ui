@@ -44,10 +44,55 @@ RELATED_COMPONENTS = {
     "websocket": ["live_content"],
 }
 
+SOURCE_COMPONENT_ALIASES = {
+    "breadcrumb": "breadcrumbs",
+    "button": "buttons",
+    "card": "cards",
+    "input_field": "input",
+    "web_socket": "websocket",
+}
 
-def get_related_components_context(component_name: str) -> list[dict[str, str]]:
+RELATED_COMPONENT_ALIASES = {
+    "breadcrumbs": "breadcrumb",
+    "buttons": "button",
+    "cards": "card",
+    "input": "input_field",
+    "three_d_carousel": "3D_carousel",
+    "toggle": "toggle_button",
+    "websocket": "web_socket",
+}
+
+
+def _normalize_source_component_name(component_name: str) -> str:
+    """Normalize component names used as dictionary keys in RELATED_COMPONENTS."""
+    return SOURCE_COMPONENT_ALIASES.get(component_name, component_name)
+
+
+def _normalize_related_component_name(component_name: str) -> str:
+    """Normalize related component names to route-compatible component names."""
+    return RELATED_COMPONENT_ALIASES.get(component_name, component_name)
+
+
+def get_related_components_context(
+    component_name: str, valid_component_names: set[str] | None = None
+) -> list[dict[str, str]]:
     """Serve related components context of the specified component."""
-    return [
-        {"component_name": component, "formatted_name": component.replace("_", " ").title()}
-        for component in RELATED_COMPONENTS[component_name]
-    ]
+    source_component = _normalize_source_component_name(component_name)
+    related_components = RELATED_COMPONENTS.get(source_component, [])
+
+    normalized_components = []
+    seen_components: set[str] = set()
+
+    for component in related_components:
+        normalized_component = _normalize_related_component_name(component)
+        if valid_component_names is not None and normalized_component not in valid_component_names:
+            continue
+        if normalized_component in seen_components:
+            continue
+
+        seen_components.add(normalized_component)
+        normalized_components.append(
+            {"component_name": normalized_component, "formatted_name": normalized_component.replace("_", " ").title()}
+        )
+
+    return normalized_components
