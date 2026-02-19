@@ -7,6 +7,16 @@ GIT_BASE_SCRIPT_FILE = "https://github.com/alpininsight/insight-ui/blob/develop/
 
 # Mapping-Table between components and their respective template files
 TEMPLATE_PATHS = {
+    # Canonical component keys used by views.py
+    "card": GIT_BASE_FILE + "cards/card.html",
+    "breadcrumb": GIT_BASE_FILE + "breadcrumbs.html",
+    "chart": GIT_BASE_DIRECTORY + "charts",
+    "code_block": GIT_BASE_FILE + "code_block.html",
+    "effect_cards": GIT_BASE_DIRECTORY + "cards",
+    "input_field": GIT_BASE_FILE + "input.html",
+    "query_builder": GIT_BASE_DIRECTORY + "search_query_builder",
+    "web_socket": GIT_BASE_FILE + "websocket.html",
+    # Backward-compatible aliases
     "cards": GIT_BASE_FILE + "cards/card.html",
     "flip_card": GIT_BASE_FILE + "cards/flip_card.html",
     "app_card": GIT_BASE_FILE + "cards/app_card.html",
@@ -57,6 +67,7 @@ TEMPLATE_PATHS = {
     "websocket": GIT_BASE_FILE + "websocket.html",
     "page_header": GIT_BASE_FILE + "page_header.html",
     "article": GIT_BASE_FILE + "article.html",
+    "hero": GIT_BASE_FILE + "hero.html",
 }
 
 # Mapping-Table between components and their respective script files
@@ -76,5 +87,6 @@ SCRIPT_PATHS = {
     "toggle_theme": GIT_BASE_SCRIPT_FILE + "insight-ui-theme-toggle.js",
     "sidebar": GIT_BASE_SCRIPT_FILE + "insight-ui-sidebar.js",
     "tabs": GIT_BASE_SCRIPT_FILE + "insight-ui-tabs.js",
+    "web_socket": GIT_BASE_SCRIPT_FILE + "insight-ui-websocket.js",
     "websocket": GIT_BASE_SCRIPT_FILE + "insight-ui-websocket.js",
 }
