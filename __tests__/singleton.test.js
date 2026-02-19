@@ -13,7 +13,8 @@ const jsDir = path.join(__dirname, '../insight_ui/static/insight_ui/js');
 function loadComponent(filename) {
   const filepath = path.join(jsDir, filename);
   const code = fs.readFileSync(filepath, 'utf-8');
-  eval(code);
+  const transformed = code.replace(/export class\s+(\w+)/g, 'window.InsightUI.$1 = class $1');
+  eval(transformed);
 }
 
 describe('WeakMap Singleton Pattern', () => {
@@ -94,7 +95,7 @@ describe('WeakMap Singleton Pattern', () => {
 
     it('should return existing instance for same element', () => {
       const container = TestUtils.createCarousel();
-      const element = container.querySelector('.carousel');
+      const element = container.querySelector('[data-insight-carousel]');
 
       const instance1 = new InsightUI.Carousel(element);
       const instance2 = new InsightUI.Carousel(element);

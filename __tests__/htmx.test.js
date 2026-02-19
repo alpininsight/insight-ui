@@ -13,7 +13,8 @@ const jsDir = path.join(__dirname, '../insight_ui/static/insight_ui/js');
 function loadComponent(filename) {
   const filepath = path.join(jsDir, filename);
   const code = fs.readFileSync(filepath, 'utf-8');
-  eval(code);
+  const transformed = code.replace(/export class\s+(\w+)/g, 'window.InsightUI.$1 = class $1');
+  eval(transformed);
 }
 
 // Mock htmx
@@ -129,6 +130,23 @@ describe('HTMX Lifecycle Integration', () => {
       InsightUI.lifecycle.destroyAllIn(accordion);
 
       expect(InsightUI.Accordion.instances.has(accordion)).toBe(false);
+    });
+
+    it('should destroy carousel instances using data-insight-carousel selector', () => {
+      const container = document.createElement('div');
+      const carousel = document.createElement('div');
+      carousel.setAttribute('data-insight-carousel', '');
+      container.appendChild(carousel);
+      document.body.appendChild(container);
+
+      const destroySpy = vi.fn();
+      InsightUI.Carousel = {
+        instances: new WeakMap([[carousel, { destroy: destroySpy }]]),
+      };
+
+      InsightUI.lifecycle.destroyAllIn(container);
+
+      expect(destroySpy).toHaveBeenCalled();
     });
   });
 

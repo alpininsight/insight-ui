@@ -14,7 +14,8 @@ const jsDir = path.join(__dirname, '../insight_ui/static/insight_ui/js');
 function loadComponent(filename) {
   const filepath = path.join(jsDir, filename);
   const code = fs.readFileSync(filepath, 'utf-8');
-  eval(code);
+  const transformed = code.replace(/export class\s+(\w+)/g, 'window.InsightUI.$1 = class $1');
+  eval(transformed);
 }
 
 describe('Component Lifecycle - destroy() methods', () => {
@@ -119,7 +120,7 @@ describe('Component Lifecycle - destroy() methods', () => {
 
     it('should have a destroy method', () => {
       const container = TestUtils.createCarousel();
-      const element = container.querySelector('.carousel');
+      const element = container.querySelector('[data-insight-carousel]');
       const carousel = new InsightUI.Carousel(element);
 
       expect(typeof carousel.destroy).toBe('function');
@@ -127,7 +128,7 @@ describe('Component Lifecycle - destroy() methods', () => {
 
     it('should stop autoplay interval on destroy', () => {
       const container = TestUtils.createCarousel();
-      const element = container.querySelector('.carousel');
+      const element = container.querySelector('[data-insight-carousel]');
       element.dataset.autoplay = 'true';
       const carousel = new InsightUI.Carousel(element);
 
@@ -139,7 +140,7 @@ describe('Component Lifecycle - destroy() methods', () => {
 
     it('should remove window resize listener on destroy', () => {
       const container = TestUtils.createCarousel();
-      const element = container.querySelector('.carousel');
+      const element = container.querySelector('[data-insight-carousel]');
       const carousel = new InsightUI.Carousel(element);
 
       const removeEventListenerSpy = vi.spyOn(window, 'removeEventListener');
@@ -150,7 +151,7 @@ describe('Component Lifecycle - destroy() methods', () => {
 
     it('should remove instance from WeakMap on destroy', () => {
       const container = TestUtils.createCarousel();
-      const element = container.querySelector('.carousel');
+      const element = container.querySelector('[data-insight-carousel]');
       const carousel = new InsightUI.Carousel(element);
 
       expect(InsightUI.Carousel.instances.has(element)).toBe(true);
