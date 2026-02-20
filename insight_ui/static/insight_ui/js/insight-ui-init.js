@@ -17,6 +17,25 @@ import { Tabs } from "./insight-ui-tabs.js";
 import { ThemeToggle } from "./insight-ui-theme-toggle.js";
 import { ThreeDCarousel } from "./insight-ui-3D-carousel.js";
 
+// Expose component classes for lifecycle cleanup lookups in insight-ui-utils.js
+window.InsightUI = window.InsightUI || {};
+Object.assign(window.InsightUI, {
+	Accordion,
+	Carousel,
+	Checkbox,
+	CodeBlock,
+	Collapsible,
+	DemoIframeController,
+	Dropdown,
+	Floater,
+	Modal,
+	Multiselect,
+	Sidebar,
+	Tabs,
+	ThemeToggle,
+	ThreeDCarousel,
+});
+
 function initAll() {
 	Accordion.initAll();
 	Carousel.initAll();

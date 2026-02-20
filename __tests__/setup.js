@@ -79,7 +79,7 @@ globalThis.TestUtils = {
    */
   createCarousel(id = 'test-carousel') {
     return this.createDOM(`
-      <div class="carousel" data-autoplay="false">
+      <div data-insight-carousel data-autoplay="false">
         <div class="carousel-track">
           <div class="carousel-item">Slide 1</div>
           <div class="carousel-item">Slide 2</div>
