@@ -8,32 +8,32 @@
  * of selected values is customizable.
  */
 export class Multiselect {
-    // Manages all Multiselect instances of the DOM
+    // Weak references used to prevent multiple initialization of the same instance
     static instances = new WeakMap();
 
-    constructor(container) {
+    constructor(element) {
         // If an instance for this element already exists, return it
-        if (Multiselect.instances.has(container)) {
-            return Multiselect.instances.get(container);
+        if (Multiselect.instances.has(element)) {
+            return Multiselect.instances.get(element);
         }
 
-        this.container = container;
-        this.name = container.dataset.name || "multiselect";
-        this.max = parseInt(container.dataset.max) || Infinity;
-        if (!container.dataset.selected || !container.dataset.selected.trim()) this.selectedValues = [];
-        else this.selectedValues = JSON.parse(container.dataset.selected.replace(/'/g, '"'));
+        this.element = element;
+        this.name = element.dataset.name || "multiselect";
+        this.max = parseInt(element.dataset.max) || Infinity;
+        if (!element.dataset.selected || !element.dataset.selected.trim()) this.selectedValues = [];
+        else this.selectedValues = JSON.parse(element.dataset.selected.replace(/'/g, '"'));
         this.focusedIndex = -1;
 
-        this.combobox = this.container.querySelector('[role="combobox"]');
-        this.selected = this.container.querySelector('.selected');
-        this.tags = this.container.querySelector('.tags');
-        this.search = this.container.querySelector('.search');
-        this.options = this.container.querySelector('.options');
-        this.optionItems = Array.from(this.container.querySelectorAll('.option'));
-        this.info = this.container.querySelector('.info');
-        this.ariaStatus = this.container.querySelector(`#${this.name}-aria-status`);
-        this.selectAllBtn = this.container.querySelector('.select-all');
-        this.deselectAllBtn = this.container.querySelector('.deselect-all');
+        this.combobox = this.element.querySelector('[role="combobox"]');
+        this.selected = this.element.querySelector('.selected');
+        this.tags = this.element.querySelector('.tags');
+        this.search = this.element.querySelector('.search');
+        this.options = this.element.querySelector('.options');
+        this.optionItems = Array.from(this.element.querySelectorAll('.option'));
+        this.info = this.element.querySelector('.info');
+        this.ariaStatus = this.element.querySelector(`#${this.name}-aria-status`);
+        this.selectAllBtn = this.element.querySelector('.select-all');
+        this.deselectAllBtn = this.element.querySelector('.deselect-all');
 
         this.bindEvents();
         this.renderSelected();
@@ -41,9 +41,10 @@ export class Multiselect {
         this.updateInfo();
         this.updateAriaStatus();
 
-        Multiselect.instances.set(container, this);
+        this.element.__insightInstance = this;
+        Multiselect.instances.set(element, this);
 
-        debugLog("New multiselect created: ", this.container, this.name);
+        debugLog("New multiselect created: ", this.element, this.name);
     }
 
     /**
@@ -109,7 +110,7 @@ export class Multiselect {
     }
 
     handleDocumentClick(e) {
-        if (!this.container.contains(e.target)) this.toggleDropdown(false);
+        if (!this.element.contains(e.target)) this.toggleDropdown(false);
     }
 
     /**
@@ -204,7 +205,7 @@ export class Multiselect {
      */
     renderSelected() {
         this.tags.innerHTML = '';
-        this.container.querySelectorAll('input[type=hidden]').forEach(i => i.remove());
+        this.element.querySelectorAll('input[type=hidden]').forEach(i => i.remove());
         this.selectedValues.forEach(value => {
             const tag = document.createElement('span');
             tag.className = 'inline-tag me-1';
@@ -218,7 +219,7 @@ export class Multiselect {
 
             const hidden = document.createElement('input');
             hidden.type = 'hidden'; hidden.name = this.name; hidden.value = value;
-            this.container.appendChild(hidden);
+            this.element.appendChild(hidden);
         });
         this.updateInfo();
         this.updateAriaStatus();
@@ -294,7 +295,7 @@ export class Multiselect {
      * Because this is a custom input-element the event has to be dispatched manually.
      */
     dispatchEvent() {
-        this.container.dispatchEvent(new CustomEvent("change", {
+        this.element.dispatchEvent(new CustomEvent("change", {
             detail: { value: this.selectedValues },
             bubbles: true
         }));
@@ -305,7 +306,7 @@ export class Multiselect {
      * Call this before removing the element from DOM.
      */
     destroy() {
-        debugLog("Destroy multiselect: ", this.container, this.name);
+        debugLog("Destroy multiselect: ", this.element, this.name);
 
         // Remove search and selected listeners
         this.search.removeEventListener('input', this.boundSearchInput);
@@ -327,8 +328,10 @@ export class Multiselect {
         if (this.selectAllBtn) this.selectAllBtn.removeEventListener('click', this.boundSelectAll);
         if (this.deselectAllBtn) this.deselectAllBtn.removeEventListener('click', this.boundDeselectAll);
 
-        Multiselect.instances.delete(this.container);
-        this.container = null;
+        Multiselect.instances.delete(this.element);
+        delete this.element.__insightInstance;
+
+        this.element = null;
     }
 
     // Static method for initializing all multiselect elements

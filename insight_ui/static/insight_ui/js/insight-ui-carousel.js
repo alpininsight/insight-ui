@@ -1,5 +1,5 @@
 export class Carousel {
-    // Manages all Carousel instances of the DOM
+    // Weak references used to prevent multiple initialization of the same instance
     static instances = new WeakMap();
 
     constructor(element) {
@@ -50,6 +50,7 @@ export class Carousel {
 
         this.init();
 
+        this.element.__insightInstance = this;
         Carousel.instances.set(this.element, this);
 
         debugLog("New carousel created: ", this.element);
@@ -216,6 +217,8 @@ export class Carousel {
         this.boundDotClicks = [];
 
         Carousel.instances.delete(this.element);
+        delete this.element.__insightInstance;
+
         this.element = null;
     }
 

@@ -1,19 +1,19 @@
 export class ThreeDCarousel {
-    // Manages all ThreeDCarousel instances of the DOM
+    // Weak references used to prevent multiple initialization of the same instance
     static instances = new WeakMap();
 
-    constructor(wrapper) {
+    constructor(element) {
         // If an instance for this element already exists, return it
-        if (ThreeDCarousel.instances.has(wrapper)) {
-            return ThreeDCarousel.instances.get(wrapper);
+        if (ThreeDCarousel.instances.has(element)) {
+            return ThreeDCarousel.instances.get(element);
         }
 
-        this.wrapper = wrapper;
-        this.carousel = wrapper.firstElementChild;
-        this.previousBtn = wrapper.lastElementChild.firstElementChild;
-        this.nextBtn = wrapper.lastElementChild.lastElementChild;
+        this.element = element;
+        this.carousel = element.firstElementChild;
+        this.previousBtn = element.lastElementChild.firstElementChild;
+        this.nextBtn = element.lastElementChild.lastElementChild;
 
-        this.faceCamera = wrapper.getAttribute("data-carousel-face-camera") === 'true';
+        this.faceCamera = element.getAttribute("data-carousel-face-camera") === 'true';
         this.distances = [-1100, -750, -750, -550];
         this.screens = [
             window.matchMedia('(min-width: 640px)'),
@@ -26,7 +26,7 @@ export class ThreeDCarousel {
         this.angle = 360 / this.itemsCount;
         this.currentIndex = 0;
         this.spinSettings = {
-            duration: parseInt(wrapper.getAttribute("data-carousel-velocity")) || 1000,
+            duration: parseInt(element.getAttribute("data-carousel-velocity")) || 1000,
             fill: "forwards",
         };
 
@@ -36,9 +36,10 @@ export class ThreeDCarousel {
 
         this.bindEvents();
 
-        ThreeDCarousel.instances.set(wrapper, this);
+        this.element.__insightInstance = this;
+        ThreeDCarousel.instances.set(element, this);
 
-        debugLog("New 3D carousel created: ", this.wrapper);
+        debugLog("New 3D carousel created: ", this.element);
     }
 
     bindEvents() {
@@ -108,18 +109,20 @@ export class ThreeDCarousel {
      * Call this before removing the element from DOM.
      */
     destroy() {
-        debugLog("Destroy 3D carousel: ", this.carouselWrapper);
+        debugLog("Destroy 3D carousel: ", this.element);
 
         this.previousBtn.removeEventListener("click", this.boundGotoPrevious);
         this.nextBtn.removeEventListener("click", this.boundGotoNext);
 
-        ThreeDCarousel.instances.delete(this.carouselWrapper);
-        this.carouselWrapper = null;
+        ThreeDCarousel.instances.delete(this.element);
+        delete this.element.__insightInstance;
+
+        this.element = null;
         this.carousel = null;
     }
 
     // Static method for initializing all 3D carousels
     static initAll() {
-        document.querySelectorAll("[data-3D-carousel]").forEach(wrapper => new ThreeDCarousel(wrapper));
+        document.querySelectorAll("[data-3D-carousel]").forEach(el => new ThreeDCarousel(el));
     }
 }

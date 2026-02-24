@@ -1,10 +1,11 @@
 export class Accordion {
-    // Manages all Accordion instances of the DOM
+    // Weak references used to prevent multiple initialization of the same instance
     static instances = new WeakMap();
 
     constructor(element) {
         // If an instance for this element already exists, return it
         if (Accordion.instances.has(element)) {
+            debugLog("Element already instantiated: ", element);
             return Accordion.instances.get(element);
         }
 
@@ -18,6 +19,7 @@ export class Accordion {
         this.bindEvents();
         this.handleInitialOpen();
 
+        this.element.__insightInstance = this;
         Accordion.instances.set(element, this);
 
         debugLog("New accordion created: ", this.element);
@@ -173,6 +175,8 @@ export class Accordion {
         this.boundButtonHandlers = [];
 
         Accordion.instances.delete(this.element);
+        delete this.element.__insightInstance;
+
         this.element = null;
     }
 

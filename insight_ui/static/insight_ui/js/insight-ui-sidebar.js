@@ -1,5 +1,5 @@
 export class Sidebar {
-	// Manages all Sidebar instances of the DOM
+	// Weak references used to prevent multiple initialization of the same instance
     static instances = new WeakMap();
 
 	constructor(wrapper) {
@@ -22,6 +22,7 @@ export class Sidebar {
 
 		this.init();
 
+		this.wrapper.__insightInstance = this;
 		Sidebar.instances.set(wrapper, this);
 
         debugLog("New sidebar created: ", this.sidebar, this.side);
@@ -143,6 +144,8 @@ export class Sidebar {
 		}
 
 		Sidebar.instances.delete(this.wrapper);
+		delete this.wrapper.__insightInstance;
+
 		this.wrapper = null;
 		this.sidebar = null;
 	}

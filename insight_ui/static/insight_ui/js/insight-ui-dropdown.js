@@ -1,18 +1,18 @@
 export class Dropdown {
-    // Manages all Dropdown instances of the DOM
+    // Weak references used to prevent multiple initialization of the same instance
     static instances = new WeakMap();
 
     // Handle of the open dropdown
     static currentOpen = null;
 
-    constructor(toggleButton) {
+    constructor(trigger) {
         // If an instance for this element already exists, return it
-        if (Dropdown.instances.has(toggleButton)) {
-            return Dropdown.instances.get(toggleButton);
+        if (Dropdown.instances.has(trigger)) {
+            return Dropdown.instances.get(trigger);
         }
 
-        this.toggleButton = toggleButton;
-        this.targetId = toggleButton.getAttribute("data-dropdown-toggle");
+        this.trigger = trigger;
+        this.targetId = trigger.getAttribute("data-dropdown-toggle");
         this.menu = document.getElementById(this.targetId);
 
         if (!this.menu) {
@@ -28,9 +28,10 @@ export class Dropdown {
 
         this.bindEvents();
 
-        Dropdown.instances.set(toggleButton, this);
+        this.trigger.__insightInstance = this;
+        Dropdown.instances.set(trigger, this);
 
-        debugLog("New dropdown created: ", this.toggleButton, this.menu);
+        debugLog("New dropdown created: ", this.trigger, this.menu);
     }
 
     handleToggleClick(e) {
@@ -47,7 +48,7 @@ export class Dropdown {
     }
 
     bindEvents() {
-        this.toggleButton.addEventListener("click", this.boundToggleClick);
+        this.trigger.addEventListener("click", this.boundToggleClick);
         document.addEventListener("click", this.boundDocumentClick);
     }
 
@@ -65,17 +66,19 @@ export class Dropdown {
      * Call this before removing the element from DOM.
      */
     destroy() {
-        debugLog("Destroy dropdown: ", this.toggleButton, this.menu);
+        debugLog("Destroy dropdown: ", this.trigger, this.menu);
 
-        this.toggleButton.removeEventListener("click", this.boundToggleClick);
+        this.trigger.removeEventListener("click", this.boundToggleClick);
         document.removeEventListener("click", this.boundDocumentClick);
 
         if (Dropdown.currentOpen === this) {
             Dropdown.currentOpen = null;
         }
 
-        Dropdown.instances.delete(this.toggleButton);
-        this.toggleButton = null;
+        Dropdown.instances.delete(this.trigger);
+        delete this.trigger.__insightInstance;
+
+        this.trigger = null;
         this.menu = null;
     }
 

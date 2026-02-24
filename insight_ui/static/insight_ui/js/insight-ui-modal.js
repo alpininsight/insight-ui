@@ -1,18 +1,18 @@
 export class Modal {
-    // Manages all Modal instances of the DOM
+    // Weak references used to prevent multiple initialization of the same instance
     static instances = new WeakMap();
 
     // Handle of the open dialog
     static currentOpen = null;
 
-    constructor(button) {
+    constructor(trigger) {
         // If an instance for this element already exists, return it
-        if (Modal.instances.has(button)) {
-            return Modal.instances.get(button);
+        if (Modal.instances.has(trigger)) {
+            return Modal.instances.get(trigger);
         }
 
-        this.button = button;
-        this.targetId = button.getAttribute('data-insight-target');
+        this.trigger = trigger;
+        this.targetId = trigger.getAttribute('data-insight-target');
         this.modal = document.getElementById(this.targetId);
 
         if (!this.modal) return;
@@ -23,9 +23,11 @@ export class Modal {
         this.boundModalClick = null;
 
         this.bindEvents();
-        Modal.instances.set(button, this);
 
-        debugLog("New modal created: ", this.button, this.modal);
+        this.trigger.__insightInstance = this;
+        Modal.instances.set(trigger, this);
+
+        debugLog("New modal created: ", this.trigger, this.modal);
     }
 
     bindEvents() {
@@ -33,7 +35,7 @@ export class Modal {
             e.preventDefault();
             this.open();
         };
-        this.button.addEventListener('click', this.boundButtonClick);
+        this.trigger.addEventListener('click', this.boundButtonClick);
 
         this.modal.querySelectorAll('[data-insight-dismiss="modal"]').forEach(closeBtn => {
             const handler = (e) => {
@@ -76,7 +78,7 @@ export class Modal {
      * Call this before removing the element from DOM.
      */
     destroy() {
-        debugLog("Destroy modal: ", this.button, this.modal);
+        debugLog("Destroy modal: ", this.trigger, this.modal);
 
         // Close modal if open
         if (Modal.currentOpen === this) {
@@ -85,7 +87,7 @@ export class Modal {
 
         // Remove button click handler
         if (this.boundButtonClick) {
-            this.button.removeEventListener('click', this.boundButtonClick);
+            this.trigger.removeEventListener('click', this.boundButtonClick);
         }
 
         // Remove close button handlers
@@ -99,8 +101,10 @@ export class Modal {
             this.modal.removeEventListener('click', this.boundModalClick);
         }
 
-        Modal.instances.delete(this.button);
-        this.button = null;
+        Modal.instances.delete(this.trigger);
+        delete this.trigger.__insightInstance;
+
+        this.trigger = null;
         this.modal = null;
     }
 

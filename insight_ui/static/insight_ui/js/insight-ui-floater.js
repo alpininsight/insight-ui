@@ -1,5 +1,5 @@
 export class Floater {
-    // Manages all Floater instances of the DOM
+    // Weak references used to prevent multiple initialization of the same instance
     static instances = new WeakMap();
 
     // Handle of the open floater
@@ -50,6 +50,7 @@ export class Floater {
 
         this.bindEvents();
 
+        this.trigger.__insightInstance = this;
         Floater.instances.set(trigger, this);
 
         if (type == "popover") debugLog("New popover created: ", this.trigger, this.target);
@@ -176,6 +177,8 @@ export class Floater {
         }
 
         Floater.instances.delete(this.trigger);
+        delete this.trigger.__insightInstance;
+
         this.trigger = null;
         this.target = null;
     }

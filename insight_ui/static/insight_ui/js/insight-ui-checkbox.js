@@ -1,5 +1,5 @@
 export class Checkbox {
-    // Manages all Checkbox instances of the DOM
+    // Weak references used to prevent multiple initialization of the same instance
     static instances = new WeakMap();
 
     constructor(element) {
@@ -19,6 +19,7 @@ export class Checkbox {
         this.init();
         this.bindEvents();
 
+        this.element.__insightInstance = this;
         Checkbox.instances.set(element, this);
 
         debugLog("New checkbox group created: ", this.element);
@@ -68,6 +69,8 @@ export class Checkbox {
         this.boundChangeHandlers = [];
 
         Checkbox.instances.delete(this.element);
+        delete this.element.__insightInstance;
+
         this.element = null;
     }
 
