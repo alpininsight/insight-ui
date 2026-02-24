@@ -83,6 +83,12 @@ def get_sidebar_parameter_context() -> dict[str, list[str]]:
         ["static", "bool", "<b>True</b> wenn die Sidebar nicht einklappbar sein soll.", "True"],
         ["auto_close", "bool", "Bei <b>True</b> schließt sich die Sidebar sobald der Cursor diese verlässt.", "False"],
         [
+            "mobile_hidden",
+            "bool",
+            "Bei <b>True</b> wird eine statische Sidebar auf kleineren Viewports ausgeblendet.",
+            "False",
+        ],
+        [
             "navbar_fixed",
             "bool",
             "Bei <b>True</b> wird die Position des Inhalts angepasst. (NUR FÜR CUSTOM-SIDEBAR!) ",

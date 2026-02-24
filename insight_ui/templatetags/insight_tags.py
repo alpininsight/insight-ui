@@ -918,7 +918,11 @@ def alert(tag_id: str = "", message: str = "", type: str = "info", dismissible: 
 
 @register.inclusion_tag("insight_ui/components/sidebar.html")
 def sidebar(
-    sidebar_data: Mapping[str, Any] | None = None, side: str = "right", static: bool = True, auto_close: bool = False
+    sidebar_data: Mapping[str, Any] | None = None,
+    side: str = "right",
+    static: bool = True,
+    auto_close: bool = False,
+    mobile_hidden: bool = False,
 ) -> dict[str, Any]:
     """
     Rendert eine konfigurierbare Seitennavigation.
@@ -929,6 +933,7 @@ def sidebar(
         side (str): Gibt an, an welcher Seite die Sidebar dargestellt werden soll.
         static (bool): True wenn die Sidebar nicht einklappbar sein soll.
         auto_close (bool): True wenn die Sidebar sich automatisch schließen soll, wenn der Cursor sie verlässt.
+        mobile_hidden (bool): True wenn eine statische Sidebar auf kleineren Viewports ausgeblendet werden soll.
 
     Returns:
     -------
@@ -942,6 +947,7 @@ def sidebar(
         "side": side,
         "static": static,
         "auto_close": auto_close,
+        "mobile_hidden": mobile_hidden,
         "navbar_fixed": get_config("navbar_fixed"),
     }
 
