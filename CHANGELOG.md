@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.9.1](https://github.com/alpininsight/insight-ui/compare/v1.9.0...v1.9.1) (2026-02-23)
+
+
+### Bug Fixes
+
+* hide static docs sidebars on smaller viewports ([367358f](https://github.com/alpininsight/insight-ui/commit/367358f4bf20bcfd7317daea179c744972c4d8d3))
+* make docs sidebars responsive on small viewports ([8012498](https://github.com/alpininsight/insight-ui/commit/80124985d63b8e39537e8b62bd8023905511281a))
+
 ## [1.9.0](https://github.com/alpininsight/insight-ui/compare/v1.8.0...v1.9.0) (2026-02-18)
 
 
