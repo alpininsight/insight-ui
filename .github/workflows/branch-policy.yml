@@ -30,7 +30,7 @@ jobs:
               exit 1
             fi
           elif [ "$TARGET" = "develop" ]; then
-            VALID_PREFIXES="feat/ fix/ refactor/ perf/ docs/ test/ build/ ci/ chore/ style/ release/"
+            VALID_PREFIXES="feat/ fix/ refactor/ perf/ docs/ test/ build/ ci/ ci- chore/ style/ release/"
             VALID=false
 
             for prefix in $VALID_PREFIXES; do
