@@ -913,7 +913,7 @@ def alert(tag_id: str = "", message: str = "", type: str = "info", dismissible: 
         Dict mit Kontext-Variablen für das Template.
 
     """
-    return {"tage_id": tag_id, "message": message, "type": type, "dismissible": dismissible}
+    return {"tag_id": tag_id, "message": message, "type": type, "dismissible": dismissible}
 
 
 @register.inclusion_tag("insight_ui/components/sidebar.html")
