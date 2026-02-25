@@ -17,6 +17,25 @@ import { Tabs } from "./insight-ui-tabs.js";
 import { ThemeToggle } from "./insight-ui-theme-toggle.js";
 import { ThreeDCarousel } from "./insight-ui-3D-carousel.js";
 
+// Expose component classes for lifecycle cleanup lookups in insight-ui-utils.js
+window.InsightUI = window.InsightUI || {};
+Object.assign(window.InsightUI, {
+	Accordion,
+	Carousel,
+	Checkbox,
+	CodeBlock,
+	Collapsible,
+	DemoIframeController,
+	Dropdown,
+	Floater,
+	Modal,
+	Multiselect,
+	Sidebar,
+	Tabs,
+	ThemeToggle,
+	ThreeDCarousel,
+});
+
 function initAll() {
 	Accordion.initAll();
 	Carousel.initAll();
@@ -38,6 +57,12 @@ function initAll() {
 document.addEventListener('DOMContentLoaded', function () {
 	debugLog('InsightUI initializing...');
 	debugLog('InsightUI components found:', window.InsightUI);
+
+	// Register HTMX cleanup hooks to prevent memory leaks
+	InsightUI.lifecycle.registerHTMXHooks();
+
+	// Initialize delegated event handlers (security hardening)
+	InsightUI.handlers.init();
 
 	// Initialize all instances
 	initAll();

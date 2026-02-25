@@ -1,22 +1,26 @@
 export class CodeBlock {
-    // Manages all CodeBlock instances of the DOM
+    // Weak references used to prevent multiple initialization of the same instance
     static instances = new WeakMap();
 
-    constructor(element) {
+    constructor(originalElement) {
         // If an instance for this element already exists, return it
-        if (CodeBlock.instances.has(element)) {
-            return CodeBlock.instances.get(element);
+        if (CodeBlock.instances.has(originalElement)) {
+            return CodeBlock.instances.get(originalElement);
         }
 
-        this.element = element;
-        this.id = element.id;
-        this.lang = element.getAttribute('data-insight-code-block');
-        this.filename = element.getAttribute('data-insight-code-block-filename') || "";
-        this.code = element.textContent;
-        this.wrapper = this.generateCodeBlock(this.id, this.lang, this.filename, this.code);
-        this.element.replaceWith(this.wrapper);
+        this.id = originalElement.id;
+        this.lang = originalElement.getAttribute('data-insight-code-block');
+        this.filename = originalElement.getAttribute('data-insight-code-block-filename') || "";
+        this.code = originalElement.textContent;
+        this.copyButton = undefined;
+        this.copyEvent = undefined;
+        this.element = this.generateCodeBlock(this.id, this.lang, this.filename, this.code);
 
-        CodeBlock.instances.set(element, this);
+        this.originalElement = originalElement
+        originalElement.replaceWith(this.element);
+
+        this.element.__insightInstance = this;
+        CodeBlock.instances.set(this.originalElement, this);
 
         debugLog("New code block created: ", this.element);
     }
@@ -80,8 +84,8 @@ export class CodeBlock {
         flexContainer.appendChild(infobox);
 
         // Create copy button
-        const button = document.createElement('button');
-        button.classList.add('btn', 'btn-secondary', 'btn-sm');
+        this.copyButton = document.createElement('button');
+        this.copyButton.classList.add('btn', 'btn-secondary', 'btn-sm');
 
         // SVG-Icon of the button
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -102,10 +106,10 @@ export class CodeBlock {
         svg.appendChild(path1);
         svg.appendChild(path2);
 
-        button.appendChild(svg);
-        button.appendChild(document.createTextNode('Copy'));
+        this.copyButton.appendChild(svg);
+        this.copyButton.appendChild(document.createTextNode('Copy'));
 
-        flexContainer.appendChild(button);
+        flexContainer.appendChild(this.copyButton);
 
         // Create actual code block
         const codeWrapper = document.createElement('div');
@@ -129,24 +133,42 @@ export class CodeBlock {
         document.body.appendChild(wrapper);
 
         // Add Event Listener for copy button
-        button.addEventListener('click', async () => {
+        this.copyEvent = async () => {
             try {
                 await navigator.clipboard.writeText(codeElement.textContent);
-                button.textContent = '✔ Kopiert';
+                this.copyButton.textContent = '✔ Kopiert';
                 setTimeout(() => {
-                    button.textContent = '';
-                    button.appendChild(svg);
-                    button.appendChild(document.createTextNode('Copy'));
+                    this.copyButton.textContent = '';
+                    this.copyButton.appendChild(svg);
+                    this.copyButton.appendChild(document.createTextNode('Copy'));
                 }, 1200);
             } catch (err) {
                 console.error('Failed to copy', err);
             }
-        });
+        }
+
+        this.copyButton.addEventListener('click', this.copyEvent);
 
         // Apply Prism.js syntax highlighting
         Prism.highlightElement(codeElement);
 
         return wrapper;
+    }
+
+    /**
+     * Destroys the code block instance and removes all event listeners.
+     * Call this before removing the element from DOM.
+     */
+    destroy() {
+        debugLog("Destroy code block: ", this.element);
+
+        this.copyButton.removeEventListener("click", this.copyEvent);
+
+        CodeBlock.instances.delete(this.originalElement);
+        delete this.element.__insightInstance;
+
+        this.originalElement = null;
+        this.element = null;
     }
 
     // Static method for initializing all code blocks

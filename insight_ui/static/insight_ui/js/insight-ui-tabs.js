@@ -1,36 +1,46 @@
 export class Tabs {
-    // Manages all Tab instances of the DOM
+    // Weak references used to prevent multiple initialization of the same instance
     static instances = new WeakMap();
 
-    constructor(tabBar) {
+    constructor(element) {
         // If an instance for this element already exists, return it
-        if (Tabs.instances.has(tabBar)) {
-            return Tabs.instances.get(tabBar);
+        if (Tabs.instances.has(element)) {
+            return Tabs.instances.get(element);
         }
 
-        this.tabBar = tabBar;
-        this.tabs = Array.from(tabBar.children[0].children);
-        this.tabContent = tabBar.children[1];
+        this.element = element;
+        this.tabs = Array.from(element.children[0].children);
+        this.tabContent = element.children[1];
+
+        // Store bound handlers for cleanup
+        this.boundTabHandlers = [];
+        this.boundHTMXAfterSwap = null;
 
         this.bindEvents();
-        Tabs.instances.set(tabBar, this);
 
-        debugLog("New tab bar created: ", this.tabBar);
+        this.element.__insightInstance = this;
+        Tabs.instances.set(element, this);
+
+        debugLog("New tab bar created: ", this.element);
     }
 
     bindEvents() {
         // Keyboard control
         this.tabs.forEach((tab, index) => {
-            tab.addEventListener('keydown', e => this.handleKeyDown(e, index));
-            tab.addEventListener('click', () => this.activateTab(tab));
+            const keydownHandler = (e) => this.handleKeyDown(e, index);
+            const clickHandler = () => this.activateTab(tab);
+            tab.addEventListener('keydown', keydownHandler);
+            tab.addEventListener('click', clickHandler);
+            this.boundTabHandlers.push({ element: tab, keydownHandler, clickHandler });
         });
 
         // HTMX-Focus
-        document.body.addEventListener('htmx:afterSwap', event => {
+        this.boundHTMXAfterSwap = (event) => {
             if (event.detail.target.id === 'tab-content') {
                 this.tabContent.focus();
             }
-        });
+        };
+        document.body.addEventListener('htmx:afterSwap', this.boundHTMXAfterSwap);
     }
 
     handleKeyDown(e, index) {
@@ -74,8 +84,34 @@ export class Tabs {
         });
     }
 
+    /**
+     * Destroys the tabs instance and removes all event listeners.
+     * Call this before removing the element from DOM.
+     */
+    destroy() {
+        debugLog("Destroy tab bar: ", this.element);
+
+        // Remove tab keydown and click handlers
+        this.boundTabHandlers.forEach(({ element, keydownHandler, clickHandler }) => {
+            element.removeEventListener('keydown', keydownHandler);
+            element.removeEventListener('click', clickHandler);
+        });
+        this.boundTabHandlers = [];
+
+        // Remove global HTMX handler
+        if (this.boundHTMXAfterSwap) {
+            document.body.removeEventListener('htmx:afterSwap', this.boundHTMXAfterSwap);
+        }
+
+        Tabs.instances.delete(this.element);
+        delete this.element.__insightInstance;
+
+        this.element = null;
+        this.tabContent = null;
+    }
+
     // Static method for initializing all tabs
     static initAll() {
-        document.querySelectorAll("[data-tabs]").forEach(tabBar => new Tabs(tabBar));
+        document.querySelectorAll("[data-tabs]").forEach(el => new Tabs(el));
     }
 }

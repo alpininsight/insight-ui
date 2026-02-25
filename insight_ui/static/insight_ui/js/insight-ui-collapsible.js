@@ -1,28 +1,45 @@
 export class Collapsible {
-    // Manages all Collapsible instances of the DOM
+    // Weak references used to prevent multiple initialization of the same instance
     static instances = new WeakMap();
 
-    constructor(element) {
+    constructor(trigger) {
         // If an instance for this element already exists, return it
-        if (Collapsible.instances.has(element)) {
-            return Collapsible.instances.get(element);
+        if (Collapsible.instances.has(trigger)) {
+            return Collapsible.instances.get(trigger);
         }
 
-        this.element = element;
-        this.targetID = this.element.getAttribute('data-insight-target');
+        this.trigger = trigger;
+        this.targetID = this.trigger.getAttribute('data-insight-target');
         this.targetElement = document.getElementById(this.targetID);
 
-        this.bindEvents();
+        this.clickHandler = () => { this.targetElement.classList.toggle("hidden"); };
 
-        Collapsible.instances.set(element, this);
+        this.init();
 
-        debugLog("New collapsible created: ", this.element, this.targetElement);
+        this.trigger.__insightInstance = this;
+        Collapsible.instances.set(trigger, this);
+
+        debugLog("New collapsible created: ", this.trigger, this.targetElement);
     }
 
-    bindEvents() {
-        this.element.addEventListener("click", () => {
-            this.targetElement.classList.toggle("hidden");
-        });
+    init() {
+        this.trigger.addEventListener("click", this.clickHandler);
+    }
+
+    /**
+     * Destroys the collapsible instance and removes all event listeners.
+     * Call this before removing the element from DOM.
+     */
+    destroy() {
+        debugLog("Destroy collapsible: ", this.trigger);
+
+        this.trigger.removeEventListener("click", this.clickHandler);
+
+        Collapsible.instances.delete(this.trigger);
+        delete this.trigger.__insightInstance;
+
+        this.trigger = null;
+        this.targetElement = null;
     }
 
     // Static method for initializing all collapsible
