@@ -1,5 +1,5 @@
 export class Sidebar {
-	// Manages all Sidebar instances of the DOM
+	// Weak references used to prevent multiple initialization of the same instance
     static instances = new WeakMap();
 
 	constructor(wrapper) {
@@ -14,8 +14,15 @@ export class Sidebar {
 		this.openBtn = document.querySelector(`.open-btn[data-sidebar-target="${this.side}"]`);
 		this.autoClose = this.sidebar.getAttribute("data-auto-close") === "true";
 
+		// Store bound handlers for cleanup
+		this.boundCloseButtons = [];
+		this.boundOpenBtnClick = null;
+		this.boundMouseMove = null;
+		this.boundMouseLeave = null;
+
 		this.init();
 
+		this.wrapper.__insightInstance = this;
 		Sidebar.instances.set(wrapper, this);
 
         debugLog("New sidebar created: ", this.sidebar, this.side);
@@ -28,7 +35,9 @@ export class Sidebar {
 		if (isStatic === "True") return;
 
 		this.wrapper.querySelectorAll('[data-insight-dismiss="sidebar"]').forEach(closeButton => {
-			closeButton.addEventListener('click', () => this.closeSidebar());
+			const handler = () => this.closeSidebar();
+			this.boundCloseButtons.push({ element: closeButton, handler });
+			closeButton.addEventListener('click', handler);
 		});
 
 		// Sidebar initial verstecken
@@ -39,10 +48,11 @@ export class Sidebar {
 		}
 
 		if (this.openBtn) {
-			this.openBtn.addEventListener('click', () => {
+			this.boundOpenBtnClick = () => {
 				this.openSidebar();
 				this.openBtn.classList.toggle("hidden", true);
-			});
+			};
+			this.openBtn.addEventListener('click', this.boundOpenBtnClick);
 		}
 	}
 
@@ -80,7 +90,7 @@ export class Sidebar {
 
 	setupAutoClose() {
 		// Öffnen, wenn Maus nahe an der Fenster Seite ist
-		document.addEventListener('mousemove', (e) => {
+		this.boundMouseMove = (e) => {
 			const xThreshold = 50; // Pixel Abstand vom Rand
 			const yThreshold = 0;  // 64 Pixel Abstand vom oberen Rand (wird durch Navbar bestimmt)
 
@@ -99,10 +109,45 @@ export class Sidebar {
 					}
 				}
 			}
-		});
+		};
+		document.addEventListener('mousemove', this.boundMouseMove);
 
 		// Schließen, wenn Maus die Sidebar verlässt
-		this.sidebar.addEventListener('mouseleave', () => this.closeSidebar());
+		this.boundMouseLeave = () => this.closeSidebar();
+		this.sidebar.addEventListener('mouseleave', this.boundMouseLeave);
+	}
+
+	/**
+	 * Destroys the sidebar instance and removes all event listeners.
+	 * Call this before removing the element from DOM.
+	 */
+	destroy() {
+		debugLog("Destroy sidebar: ", this.sidebar, this.side);
+
+		// Remove close button handlers
+		this.boundCloseButtons.forEach(({ element, handler }) => {
+			element.removeEventListener('click', handler);
+		});
+		this.boundCloseButtons = [];
+
+		// Remove open button handler
+		if (this.openBtn && this.boundOpenBtnClick) {
+			this.openBtn.removeEventListener('click', this.boundOpenBtnClick);
+		}
+
+		// Remove auto-close handlers
+		if (this.boundMouseMove) {
+			document.removeEventListener('mousemove', this.boundMouseMove);
+		}
+		if (this.boundMouseLeave) {
+			this.sidebar.removeEventListener('mouseleave', this.boundMouseLeave);
+		}
+
+		Sidebar.instances.delete(this.wrapper);
+		delete this.wrapper.__insightInstance;
+
+		this.wrapper = null;
+		this.sidebar = null;
 	}
 
 	// Static method for initializing all sidebar/drawers

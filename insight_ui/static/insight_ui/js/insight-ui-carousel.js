@@ -1,5 +1,5 @@
 export class Carousel {
-    // Manages all Carousel instances of the DOM
+    // Weak references used to prevent multiple initialization of the same instance
     static instances = new WeakMap();
 
     constructor(element) {
@@ -29,18 +29,29 @@ export class Carousel {
         this.index = 0;
         this.autoplayInterval = null;
 
+        // Bind handlers for proper cleanup
+        this.boundPrevClick = () => { this.prev(); this.restartAutoplay(); };
+        this.boundNextClick = () => { this.next(); this.restartAutoplay(); };
+        this.boundTouchStart = (e) => { this.startX = e.touches[0].clientX; };
+        this.boundTouchEnd = this.handleTouchEnd.bind(this);
+        this.boundWindowResize = () => this.resizeItems();
+        this.boundDotClicks = [];
+
         this.dots = [...this.element.querySelectorAll(".carousel-dot")];
         this.dots.forEach((dot, i) => {
-            dot.addEventListener("click", () => {
+            const handler = () => {
                 this.index = i;
                 this.update();
                 this.restartAutoplay();
-            });
+            };
+            this.boundDotClicks.push({ element: dot, handler });
+            dot.addEventListener("click", handler);
         });
 
         this.init();
 
-        Carousel.instances.set(element, this);
+        this.element.__insightInstance = this;
+        Carousel.instances.set(this.element, this);
 
         debugLog("New carousel created: ", this.element);
     }
@@ -56,36 +67,14 @@ export class Carousel {
         if (this.showIndex) this.updateIndexText();
         this.update();
 
-        this.prevBtn.addEventListener("click", () => {
-            this.prev();
-            this.restartAutoplay();
-        });
-
-        this.nextBtn.addEventListener("click", () => {
-            this.next();
-            this.restartAutoplay();
-        });
-
-        this.element.addEventListener("touchstart", (e) => {
-            this.startX = e.touches[0].clientX;
-        });
-
-        this.element.addEventListener("touchend", (e) => {
-            const endX = e.changedTouches[0].clientX;
-            const diff = endX - this.startX;
-            if (Math.abs(diff) > 50) {
-                if ((diff > 0) !== this.isRTL) {
-                    this.prev();
-                } else {
-                    this.next();
-                }
-                this.restartAutoplay();
-            }
-        });
+        this.prevBtn.addEventListener("click", this.boundPrevClick);
+        this.nextBtn.addEventListener("click", this.boundNextClick);
+        this.element.addEventListener("touchstart", this.boundTouchStart);
+        this.element.addEventListener("touchend", this.boundTouchEnd);
 
         if (this.autoplayEnabled) this.startAutoplay();
 
-        window.addEventListener("resize", () => this.resizeItems());
+        window.addEventListener("resize", this.boundWindowResize);
 
         // Add MutationObserver for "dir" changes
         const observer = new MutationObserver((mutations) => {
@@ -104,6 +93,19 @@ export class Carousel {
             attributes: true,
             attributeFilter: ['dir']
         });
+    }
+
+    handleTouchEnd(e) {
+        const endX = e.changedTouches[0].clientX;
+        const diff = endX - this.startX;
+        if (Math.abs(diff) > 50) {
+            if ((diff > 0) !== this.isRTL) {
+                this.prev();
+            } else {
+                this.next();
+            }
+            this.restartAutoplay();
+        }
     }
 
     /**
@@ -185,6 +187,39 @@ export class Carousel {
         if (this.indexText) {
             this.indexText.textContent = `Seite ${this.index + 1} / ${this.totalSlides}`;
         }
+    }
+
+    /**
+     * Destroys the carousel instance and removes all event listeners.
+     * Call this before removing the element from DOM.
+     */
+    destroy() {
+        debugLog("Destroy carousel: ", this.element);
+
+        // Stop autoplay interval
+        this.stopAutoplay();
+
+        // Remove button listeners
+        this.prevBtn.removeEventListener("click", this.boundPrevClick);
+        this.nextBtn.removeEventListener("click", this.boundNextClick);
+
+        // Remove touch listeners
+        this.element.removeEventListener("touchstart", this.boundTouchStart);
+        this.element.removeEventListener("touchend", this.boundTouchEnd);
+
+        // Remove window resize listener
+        window.removeEventListener("resize", this.boundWindowResize);
+
+        // Remove dot click handlers
+        this.boundDotClicks.forEach(({ element, handler }) => {
+            element.removeEventListener("click", handler);
+        });
+        this.boundDotClicks = [];
+
+        Carousel.instances.delete(this.element);
+        delete this.element.__insightInstance;
+
+        this.element = null;
     }
 
     // Static method for initializing all carousels

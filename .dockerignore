@@ -49,6 +49,7 @@ htmlcov/
 # Local AI helper artifacts
 AGENTS.md
 AGENT*.md
+CLAUDE.md
 ai-notes/
 .claude/
 .claude*

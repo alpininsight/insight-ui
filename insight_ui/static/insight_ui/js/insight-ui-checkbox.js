@@ -1,5 +1,5 @@
 export class Checkbox {
-    // Manages all Checkbox instances of the DOM
+    // Weak references used to prevent multiple initialization of the same instance
     static instances = new WeakMap();
 
     constructor(element) {
@@ -8,16 +8,21 @@ export class Checkbox {
             return Checkbox.instances.get(element);
         }
 
+        this.element = element;
         this.checkboxes = element.getElementsByTagName('input');
         this.minChecked = element.dataset.minimumChecked;
         this.maxChecked = element.dataset.maximumChecked;
 
+        // Store bound handlers for cleanup
+        this.boundChangeHandlers = [];
+
         this.init();
         this.bindEvents();
 
+        this.element.__insightInstance = this;
         Checkbox.instances.set(element, this);
 
-        debugLog("New checkbox group created: ", element);
+        debugLog("New checkbox group created: ", this.element);
     }
 
     init() {
@@ -41,12 +46,32 @@ export class Checkbox {
 
     bindEvents() {
         for (let box of this.checkboxes) {
-            box.addEventListener('change', () => {
+            const handler = () => {
                 const checkedCount = [...this.checkboxes].filter(b => b.checked).length;
                 if (checkedCount < this.minChecked) { box.checked = true; }
                 else if (checkedCount > this.maxChecked) { box.checked = false; }
-            });
+            };
+            this.boundChangeHandlers.push({ element: box, handler });
+            box.addEventListener('change', handler);
         }
+    }
+
+    /**
+     * Destroys the checkbox group instance and removes all event listeners.
+     * Call this before removing the element from DOM.
+     */
+    destroy() {
+        debugLog("Destroy checkbox group: ", this.element);
+
+        this.boundChangeHandlers.forEach(({ element, handler }) => {
+            element.removeEventListener('change', handler);
+        });
+        this.boundChangeHandlers = [];
+
+        Checkbox.instances.delete(this.element);
+        delete this.element.__insightInstance;
+
+        this.element = null;
     }
 
     // Static method for initializing all checkboxes

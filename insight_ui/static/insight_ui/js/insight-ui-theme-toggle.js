@@ -3,32 +3,36 @@
  * Setzt sowohl .dark (für Tailwind) als auch [data-theme] (für Insight UI CSS)
  */
 export class ThemeToggle {
-    // Manages all ThemeToggle instances of the DOM
+    // Weak references used to prevent multiple initialization of the same instance
     static instances = new WeakMap();
 
-    constructor(button) {
+    constructor(trigger) {
         // If an instance for this element already exists, return it
-        if (ThemeToggle.instances.has(button)) {
-            return ThemeToggle.instances.get(button);
+        if (ThemeToggle.instances.has(trigger)) {
+            return ThemeToggle.instances.get(trigger);
         }
 
-        this.button = button;
+        this.trigger = trigger;
         this.themeKey = 'insight-ui-theme';
         this.root = document.documentElement;
 
-        this.init();
-
-        ThemeToggle.instances.set(button, this);
-
-        debugLog("New theme toggle created: ", this.button);
-    }
-
-    init() {
-        this.button.addEventListener('click', () => {
+        // Bind handlers for proper cleanup
+        this.clickHandler = () => {
             const currentTheme = this.root.classList.contains('dark') ? 'dark' : 'light';
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             this.setTheme(newTheme);
-        });
+        };
+
+        this.init();
+
+        this.trigger.__insightInstance = this;
+        ThemeToggle.instances.set(trigger, this);
+
+        debugLog("New theme toggle created: ", this.trigger);
+    }
+
+    init() {
+        this.trigger.addEventListener("click", this.clickHandler);
 
         // Set the initial theme based on saved preferences or system default
         this.loadSavedTheme();
@@ -48,6 +52,21 @@ export class ThemeToggle {
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
             this.setTheme(prefersDark ? 'dark' : 'light');
         }
+    }
+
+    /**
+     * Destroys the theme toggle instance and removes all event listeners.
+     * Call this before removing the element from DOM.
+     */
+    destroy() {
+        debugLog("Destroy demo container: ", this.trigger);
+
+        this.trigger.removeEventListener("click", this.clickHandler);
+
+        ThemeToggle.instances.delete(this.trigger);
+        delete this.trigger.__insightInstance;
+
+        this.trigger = null;
     }
 
     // Static method for initializing all toggle buttons
