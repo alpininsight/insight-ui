@@ -36,6 +36,7 @@ dependencies = [
     "whitenoise>=6.11.0",
     "structlog>=25.5.0",
     "python-decouple==3.8",
+    "markdown>=3.8",
 ]
 
 [tool.uv]

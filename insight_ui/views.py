@@ -441,10 +441,13 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
 
     if request.headers.get("HX-Request") and not request.headers.get("HX-History-Restore-Request"):
         context["demo"] = demo_info
-        if component_name == "accordion":
-            context |= component_context.get_component_context(component_name)
-            return render(request, "insight_ui/docs/component_detailpage2.html", context)
-        return render(request, f"insight_ui/docs/partial/{component_name}_detailpage.html", context)
+        context |= component_context.get_component_context(component_name)
+
+        # Temporary fix for components with more complex detailpage
+        if component_name in ["button", "radio_group", "card"]:
+            return render(request, f"insight_ui/docs/partial/{component_name}_detailpage.html", context)
+
+        return render(request, "insight_ui/docs/component_detailpage2.html", context)
 
     context |= get_base_context("component_detail_page_view") | get_sidebar_context()
     context["template_name"] = f"insight_ui/docs/partial/{component_name}_detailpage.html"
