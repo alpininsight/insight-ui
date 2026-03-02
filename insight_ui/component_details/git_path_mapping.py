@@ -57,6 +57,7 @@ TEMPLATE_PATHS = {
     "websocket": GIT_BASE_FILE + "websocket.html",
     "page_header": GIT_BASE_FILE + "page_header.html",
     "article": GIT_BASE_FILE + "article.html",
+    "hero": GIT_BASE_FILE + "hero.html",
 }
 
 # Mapping-Table between components and their respective script files
