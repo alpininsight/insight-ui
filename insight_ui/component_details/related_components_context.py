@@ -42,6 +42,9 @@ RELATED_COMPONENTS = {
     "toggle_view": ["table", "pagination", "card_carousel"],
     "tooltip": ["popover"],
     "websocket": ["live_content"],
+    "page_header": [],
+    "article": [],
+    "hero": [],
 }
 
 
