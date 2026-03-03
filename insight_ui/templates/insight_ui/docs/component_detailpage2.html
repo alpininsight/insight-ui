@@ -2,9 +2,9 @@
 
 {% comment %} Titel and summarize (out of bands) {% endcomment %}
 <div id="heading" hx-swap-oob="true" class="bg-insight-primary px-4 md:px-16 pt-16 pb-4 space-y-8">
-    <h1 class="text-white">Insight UI {{ component_name }}</h1>
+    <h1 class="text-white">Insight UI {{ formatted_name }}</h1>
     {% for paragraph in description %}
-        <p class="text-gray-200 leading-loose text-lg">{{ paragraph|markdownify }}</p>
+        <p class="text-white leading-loose text-lg">{{ paragraph|markdownify }}</p>
     {% endfor %}
 </div>
 
@@ -23,7 +23,11 @@
 <section>
     <h2>{% trans "Usage" %}</h2>
     <p class="mb-4">
-        {{ usage_summary }}
+        {% if usage_summary %}
+            {{ usage_summary }}
+        {% else %}
+            Die Komponente wird über das <span class="inline-tag">{{ component_name }}</span> Tag eingebunden.
+        {% endif %}
     </p>
     <div data-insight-code-block="Django">
         {{ usage }}
@@ -56,6 +60,8 @@
     <ul class="list-disc leading-relaxed ms-8 mt-6">
         {% for point in a11y %}
             <li>{{ point }}</li>
+        {% empty %}
+            <li><i>{% trans "No comments." %}</i></li>
         {% endfor %}
     </ul>
 </section>
@@ -79,6 +85,8 @@
                     {{ topic.formatted_name }}
                 </a>
             </li>
+        {% empty %}
+            <li><i>{% trans "No related components available." %}</i></li>
         {% endfor %}
     </ul>
 </section>
