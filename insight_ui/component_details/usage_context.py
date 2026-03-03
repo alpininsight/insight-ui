@@ -79,9 +79,9 @@ def get_footer_usage_context() -> dict[str, str]:
     }
 
 
-@component("breadcrumb")
+@component("breadcrumbs")
 def get_breadcrumb_usage_context() -> dict[str, str]:
-    """Serve usage documentation for the breadcrumb component."""
+    """Serve usage documentation for the breadcrumbs component."""
     return {
         "usage": """
         {% load insight_tags %}

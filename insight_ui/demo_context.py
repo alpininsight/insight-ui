@@ -374,7 +374,7 @@ def get_sidebar_context() -> dict:
                         },
                         {
                             "text": _("Breadcrumb Navigation"),
-                            "url": reverse("component_detail_page_view", kwargs={"component_name": "breadcrumb"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "breadcrumbs"}),
                             "htmx": {"target": "#content"},
                         },
                         {
@@ -446,7 +446,7 @@ def get_sidebar_context() -> dict:
                         },
                         {
                             "text": _("Toggle-Buttons"),
-                            "url": reverse("component_detail_page_view", kwargs={"component_name": "toggle_button"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "toggle"}),
                             "htmx": {"target": "#content"},
                         },
                         {
@@ -593,7 +593,7 @@ def get_sidebar_context() -> dict:
                         },
                         {
                             "text": _("3D Carousel"),
-                            "url": reverse("component_detail_page_view", kwargs={"component_name": "3D_carousel"}),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "3d_carousel"}),
                             "htmx": {"target": "#content"},
                         },
                         {
@@ -725,7 +725,7 @@ def get_alert_context() -> dict:
 
 
 def get_breadcrumb_context() -> dict:
-    """Serve data for breadcrumb detailpage."""
+    """Serve data for breadcrumbs detailpage."""
     return {
         "breadcrumb_items": [
             {"text": _("Startpage"), "view_name": "index_view", "icon": {"name": "home", "size": "small"}},

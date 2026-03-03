@@ -363,7 +363,7 @@ def get_footer_parameter_context() -> dict[str, list[str]]:
 
 @component("breadcrumbs")
 def get_breadcrumb_parameter_context() -> dict[str, list[str]]:
-    """Serve parameter documentation for the breadcrumb component."""
+    """Serve parameter documentation for the breadcrumbs component."""
     links_param = ParameterDoc(
         ParameterDetails("items", "list[dict]", "Liste der Navigationspunkte.", "[]"),
         [

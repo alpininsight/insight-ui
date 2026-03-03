@@ -64,7 +64,7 @@ def get_footer_description_context() -> dict[str, list[str]]:
 
 @component("breadcrumbs")
 def get_breadcrumb_description_context() -> dict[str, list[str]]:
-    """Serve description documentation for the breadcrumb component."""
+    """Serve description documentation for the breadcrumbs component."""
     return {
         "description": [
             "Breadcrumbs sind eine sekundäre Navigation, welche dazu verwendet werden, dem Nutzer Klarheit über die hierarchische Struktur einer Webseite zu verschaffen. Dies ist vor allem bei Webseiten mit einer tiefen Struktur, also mit vielen Unterseiten sinnvoll. Webseiten mit einer Tiefe von maximal zwei Stufen bspw. Übersicht -> Produkt Details sollten auf Breadcrumbs verzichten.",

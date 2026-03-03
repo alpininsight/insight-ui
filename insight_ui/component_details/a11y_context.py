@@ -66,7 +66,7 @@ def get_footer_a11y_context() -> dict[str, list[str]]:
 
 @component("breadcrumbs")
 def get_breadcrumb_a11y_context() -> dict[str, list[str]]:
-    """Serve a11y documentation for the breadcrumb component."""
+    """Serve a11y documentation for the breadcrumbs component."""
     return {
         "a11y": [
             "Die Komponente verwendet ein <nav>-Tag mit dem entsprechenden aria-label='Breadcrumb'.",

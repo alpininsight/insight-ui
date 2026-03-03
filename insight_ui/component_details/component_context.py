@@ -23,9 +23,9 @@ def component(component_name: str) -> Callable[[ContextBuilder], ContextBuilder]
 def get_component_context(component_name: str) -> dict:
     """Serve docs of the specified component."""
     if component_name not in CONTEXT_BUILDERS:
-        raise ValueError(f"Unknown component: {component_name}")  # noqa: TRY003
+        raise ValueError(f"Unknown component: {component_name} accessible components are {CONTEXT_BUILDERS.keys()}.")  # noqa: TRY003
 
-    context = {}
+    context = {"component_name": component_name, "formatted_name": component_name.replace("_", " ").title()}
 
     for builder in CONTEXT_BUILDERS.get(component_name, []):
         part = builder()
