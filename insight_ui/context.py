@@ -1,9 +1,12 @@
 from typing import Any
 
 from django.template.loader import render_to_string
+from django.urls import reverse
 from django.utils.translation import gettext as _
 
 from insight_ui import config
+from insight_ui.component_details.demo_context import get_component_demo_context
+from insight_ui.demo_utils import generate_payload, map_payload_to_cards
 
 
 def get_main_page_links() -> list[dict[str, Any]]:
@@ -127,6 +130,296 @@ def get_navbar_context(current_view: str = "index_view") -> dict:
             "show_usermenu": False,
             "show_language_selector": True,
             "show_theme_toggle": True,
+        }
+    }
+
+
+def get_sidebar_context() -> dict:
+    """Serve data for the main sidebar."""
+    return {
+        "left_sidebar": {
+            "title": _("Components"),
+            "categories": [
+                {
+                    "caption": _("Layout"),
+                    "items": [
+                        {
+                            "text": _("Page Header"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "page_header"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Article"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "article"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Hero Section"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "hero"}),
+                            "htmx": {"target": "#content"},
+                        },
+                    ],
+                },
+                {
+                    "caption": _("Navigation / Main"),
+                    "items": [
+                        {
+                            "text": _("Navbar"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "navbar"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Sidebar"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "sidebar"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Footer"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "footer"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Breadcrumb Navigation"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "breadcrumbs"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Step Bar"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "step_bar"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Minimal Step Bar"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "minimal_step_bar"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Bullet Point List"),
+                            "url": reverse(
+                                "component_detail_page_view", kwargs={"component_name": "bullet_point_list"}
+                            ),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Accordion"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "accordion"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Tabs"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "tabs"}),
+                            "htmx": {"target": "#content"},
+                        },
+                    ],
+                },
+                {
+                    "caption": _("Input Elements"),
+                    "items": [
+                        {
+                            "text": _("Buttons"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "button"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Input Fields"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "input_field"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Checkboxes"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "checkbox"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Checkbox-Group"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "checkbox_group"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Dropdown"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "dropdown"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Radio-Group"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "radio_group"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Range Slider"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "range_slider"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Toggle-Buttons"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "toggle"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Select"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "select"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Multiselect"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "multiselect"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Chat"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "chat"}),
+                            "htmx": {"target": "#content"},
+                        },
+                    ],
+                },
+                {
+                    "caption": _("Popups"),
+                    "items": [
+                        {
+                            "text": _("Alerts"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "alert"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Modals"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "modal"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Popovers"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "popover"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Tooltips"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "tooltip"}),
+                            "htmx": {"target": "#content"},
+                        },
+                    ],
+                },
+                {
+                    "caption": _("Utils"),
+                    "items": [
+                        {
+                            "text": _("Code Blocks"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "code_block"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Differentiator"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "differentiator"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Progress Bar"),
+                            "icon": {"name": "tools", "size": "xs"},
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "progress_bar"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Geo-Maps"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "geo_map"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Charts"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "chart"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Live-Content (Pull)"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "live_content"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Web-Sockets (Push)"),
+                            "icon": {"name": "tools", "size": "xs"},
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "web_socket"}),
+                            "htmx": {"target": "#content"},
+                        },
+                    ],
+                },
+                {
+                    "caption": _("Lists & Tables"),
+                    "items": [
+                        {
+                            "text": _("Infinite Scroll"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "infinite_scroll"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Pagination"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "pagination"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Tables"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "table"}),
+                            "htmx": {"target": "#content"},
+                        },
+                    ],
+                },
+                {
+                    "caption": _("Search & Filters"),
+                    "items": [
+                        {
+                            "text": _("Generic Filter"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "generic_filter"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Search Bar"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "search_bar"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Query-Builder"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "query_builder"}),
+                            "htmx": {"target": "#content"},
+                        },
+                    ],
+                },
+                {
+                    "caption": _("Cards"),
+                    "items": [
+                        {
+                            "text": _("Cards"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "card"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Card Carousel"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "card_carousel"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Image Carousel"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "image_carousel"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("3D Carousel"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "3d_carousel"}),
+                            "htmx": {"target": "#content"},
+                        },
+                        {
+                            "text": _("Toggle-View"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "toggle_view"}),
+                            "htmx": {"target": "#content"},
+                        },
+                    ],
+                },
+                {
+                    "caption": _("Forms"),
+                    "items": [
+                        {
+                            "text": _("Forms"),
+                            "url": reverse("component_detail_page_view", kwargs={"component_name": "form"}),
+                            "htmx": {"target": "#content"},
+                        }
+                    ],
+                },
+            ],
         }
     }
 
@@ -466,3 +759,78 @@ def get_icon_context() -> dict:
     }
 
     return {"main_params": main_params, "icon_table": icon_table, "size_table": size_table}
+
+
+def get_demo_container_context() -> dict:
+    """Serve data of the device switch, etc. for component demos."""
+    return {
+        "device_radio_config": {
+            "items": [
+                {"tag_id": "mobile", "value": "mobile", "icon": {"name": "smartphone"}, "disabled": False},
+                {"tag_id": "tablet", "value": "tablet", "icon": {"name": "tablet"}, "disabled": False},
+                {"tag_id": "desktop", "value": "desktop", "icon": {"name": "desktop"}, "disabled": False},
+            ]
+        },
+        "dir_toggle": {"label": _("RTL")},
+        "theme_toggle": {"icon": {"name": "moon"}},
+    }
+
+
+def get_storybook_context(components: list[str]) -> dict:
+    """Serve the base context and the context for each component in the list."""
+    context = get_base_context("storybook_view") | get_sidebar_context()
+    for component in components:
+        context |= get_component_demo_context(component)
+
+    return context
+
+
+def get_layout_storybook_context() -> dict:
+    """Serve data for layout storybook."""
+    return get_storybook_context([])
+
+
+def get_main_storybook_context() -> dict:
+    """Serve data for main storybook."""
+    return get_storybook_context(
+        ["sidebar", "breadcrumbs", "step_bar", "minimal_step_bar", "bullet_point_list", "accordion", "tabs"]
+    )
+
+
+def get_inputs_storybook_context() -> dict:
+    """Serve data for input elements storybook."""
+    return get_storybook_context(
+        ["checkbox", "radio_group", "toggle_button", "range_slider", "dropdown", "select", "multiselect"]
+    )
+
+
+def get_popup_storybook_context() -> dict:
+    """Serve data for popup storybook."""
+    return get_storybook_context(["alert", "modal"])
+
+
+def get_utils_storybook_context() -> dict:
+    """Serve data for utils storybook."""
+    return get_storybook_context(["differentiator", "geo_map"])
+
+
+def get_table_storybook_context() -> dict:
+    """Serve data for table examples."""
+    return get_storybook_context(["table", "pagination", "infinite_scroll"])
+
+
+def get_card_storybook_context() -> dict:
+    """Serve data for card examples."""
+    return get_storybook_context(["card", "image_carousel", "toggle_view", "3d_carousel"]) | {
+        "carousel_items": map_payload_to_cards(generate_payload())
+    }
+
+
+def get_form_storybook_context() -> dict:
+    """Serve data for form examples."""
+    return get_storybook_context(["form"])
+
+
+def get_filter_storybook_context() -> dict:
+    """Serve data for filter example."""
+    return get_storybook_context(["generic_filter", "query_builder"])

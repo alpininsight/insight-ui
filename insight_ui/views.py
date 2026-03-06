@@ -11,53 +11,26 @@ from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.decorators.http import require_GET, require_POST
 
 from insight_ui.component_details import component_context
-from insight_ui.component_details.git_path_mapping import SCRIPT_PATHS, TEMPLATE_PATHS
-from insight_ui.context import get_base_context, get_icon_context
-from insight_ui.demo_context import (
+from insight_ui.component_details.components import Component
+from insight_ui.component_details.demo_context import (
     DEMO_FIELDS,
-    get_3d_carousel_context,
-    get_accordion_context,
-    get_alert_context,
-    get_breadcrumb_context,
-    get_bullet_point_list_context,
-    get_card_carousel_context,
-    get_card_storybook_context,
-    get_cards_context,
-    get_charts_context,
-    get_checkbox_context,
     get_component_demo_context,
-    get_differentiator_context,
-    get_drawer_context,
-    get_dropdown_context,
-    get_empty_context,
+    get_minimal_step_bar_context,
+)
+from insight_ui.component_details.git_path_mapping import SCRIPT_PATHS, TEMPLATE_PATHS
+from insight_ui.context import (
+    get_base_context,
+    get_card_storybook_context,
+    get_demo_container_context,
     get_filter_storybook_context,
-    get_footer_context,
-    get_form_context,
     get_form_storybook_context,
-    get_generic_filter_context,
-    get_geo_map_context,
-    get_image_carousel_context,
-    get_infinite_scroll_context,
+    get_icon_context,
     get_inputs_storybook_context,
     get_layout_storybook_context,
     get_main_storybook_context,
-    get_minimal_step_bar_context,
-    get_modal_context,
-    get_multiselect_context,
-    get_navbar_context,
-    get_pagination_context,
     get_popup_storybook_context,
-    get_query_builder_context,
-    get_radio_group_context,
-    get_range_slider_context,
-    get_select_context,
     get_sidebar_context,
-    get_step_bar_context,
-    get_table_context,
     get_table_storybook_context,
-    get_tabs_context,
-    get_toggle_button_context,
-    get_toggle_view_context,
     get_utils_storybook_context,
 )
 from insight_ui.demo_utils import generate_payload, map_payload_to_cards, map_payload_to_table
@@ -310,7 +283,7 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
         "id": component_name,
     }
 
-    context = get_component_demo_context() | component_context.get_component_context(component_name)
+    context = get_demo_container_context() | component_context.get_component_context(Component(component_name))
     context["demo"] = demo_info
 
     # Temporary fix for components with more complex detailpage
@@ -366,51 +339,7 @@ def component_demo_view(request: HttpRequest, component_name: str) -> HttpRespon
         response (HttpResponse): response object.
 
     """
-    context_func_map = {
-        "navbar": get_navbar_context,
-        "sidebar": get_drawer_context,
-        "footer": get_footer_context,
-        "breadcrumbs": get_breadcrumb_context,
-        "step_bar": get_step_bar_context,
-        "minimal_step_bar": get_minimal_step_bar_context,
-        "bullet_point_list": get_bullet_point_list_context,
-        "accordion": get_accordion_context,
-        "accordion_exclusive": get_accordion_context,
-        "tabs": get_tabs_context,
-        "checkbox": get_checkbox_context,
-        "checkbox_group": get_checkbox_context,
-        "dropdown": get_dropdown_context,
-        "radio_group": get_radio_group_context,
-        "radio_block": get_radio_group_context,
-        "range_slider": get_range_slider_context,
-        "toggle_button": get_toggle_button_context,
-        "select": get_select_context,
-        "multiselect": get_multiselect_context,
-        "alert": get_alert_context,
-        "modal": get_modal_context,
-        "differentiator": get_differentiator_context,
-        "geo_map": get_geo_map_context,
-        "chart": get_charts_context,
-        "infinite_scroll": get_infinite_scroll_context,
-        "pagination": get_pagination_context,
-        "table": get_table_context,
-        "generic_filter": get_generic_filter_context,
-        "query_builder": get_query_builder_context,
-        "card": get_cards_context,
-        "effect_cards": get_cards_context,
-        "card_carousel": get_card_carousel_context,
-        "image_carousel": get_image_carousel_context,
-        "3D_carousel": get_3d_carousel_context,
-        "toggle_view": get_toggle_view_context,
-        "form": get_form_context,
-    }
-
-    context_func = context_func_map.get(component_name)
-
-    if not context_func:
-        context_func = get_empty_context
-
-    context = get_base_context() | context_func()
+    context = get_base_context() | get_component_demo_context(Component(component_name))
     context["component"] = component_name
 
     # The demo container has a padding but some components should get the whole space
