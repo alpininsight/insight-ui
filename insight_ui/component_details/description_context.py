@@ -1,7 +1,8 @@
-from insight_ui.component_details.component_context import component
+from insight_ui.component_details.component_context import register_component
+from insight_ui.component_details.components import Component
 
 
-@component("page_header")
+@register_component(Component.PAGE_HEADER)
 def get_page_header_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the page hader component."""
     return {
@@ -11,7 +12,7 @@ def get_page_header_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("article")
+@register_component(Component.ARTICLE)
 def get_article_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the article component."""
     return {
@@ -21,7 +22,7 @@ def get_article_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("hero")
+@register_component(Component.HERO)
 def get_hero_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the hero component."""
     return {
@@ -31,7 +32,7 @@ def get_hero_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("navbar")
+@register_component(Component.NAVBAR)
 def get_navbar_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the navbar component."""
     return {
@@ -42,7 +43,7 @@ def get_navbar_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("sidebar")
+@register_component(Component.SIDEBAR)
 def get_sidebar_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the sidebar component."""
     return {
@@ -52,7 +53,7 @@ def get_sidebar_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("footer")
+@register_component(Component.FOOTER)
 def get_footer_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the footer component."""
     return {
@@ -62,7 +63,7 @@ def get_footer_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("breadcrumbs")
+@register_component(Component.BREADCRUMBS)
 def get_breadcrumb_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the breadcrumbs component."""
     return {
@@ -73,7 +74,7 @@ def get_breadcrumb_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("step_bar")
+@register_component(Component.STEP_BAR)
 def get_step_bar_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the step bar component."""
     return {
@@ -83,7 +84,7 @@ def get_step_bar_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("minimal_step_bar")
+@register_component(Component.MINIMAL_STEP_BAR)
 def get_minimal_step_bar_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the minimal step bar component."""
     return {
@@ -93,7 +94,7 @@ def get_minimal_step_bar_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("bullet_point_list")
+@register_component(Component.BULLET_POINT_LIST)
 def get_bullet_point_list_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the bullet point list component."""
     return {
@@ -103,7 +104,7 @@ def get_bullet_point_list_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("accordion")
+@register_component(Component.ACCORDION)
 def get_accordion_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the accordion component."""
     return {
@@ -113,7 +114,7 @@ def get_accordion_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("tabs")
+@register_component(Component.TABS)
 def get_tabs_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the tabs component."""
     return {
@@ -123,7 +124,7 @@ def get_tabs_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("button")
+@register_component(Component.BUTTON)
 def get_button_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the button component."""
     return {
@@ -133,13 +134,13 @@ def get_button_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("input_field")
+@register_component(Component.INPUT_FIELD)
 def get_input_field_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the input field component."""
     return {"description": ["Mit der input_field Komponente lassen sich einzelne <input>-Elemente einbauen."]}
 
 
-@component("checkbox")
+@register_component(Component.CHECKBOX)
 def get_checkbox_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the checkbox component."""
     return {
@@ -149,7 +150,7 @@ def get_checkbox_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("checkbox_group")
+@register_component(Component.CHECKBOX_GROUP)
 def get_checkbox_group_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the checkbox group component."""
     return {
@@ -159,7 +160,7 @@ def get_checkbox_group_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("dropdown")
+@register_component(Component.DROPDOWN)
 def get_dropdown_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the dropdown component."""
     return {
@@ -170,7 +171,7 @@ def get_dropdown_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("radio_group")
+@register_component(Component.RADIO_GROUP)
 def get_radio_group_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the radio_group component."""
     return {
@@ -180,7 +181,7 @@ def get_radio_group_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("range_slider")
+@register_component(Component.RANGE_SLIDER)
 def get_rangle_slider_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the range slider component."""
     return {
@@ -190,7 +191,7 @@ def get_rangle_slider_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("toggle")
+@register_component(Component.TOGGLE)
 def get_toggle_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the toggle component."""
     return {
@@ -200,13 +201,13 @@ def get_toggle_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("select")
+@register_component(Component.SELECT)
 def get_select_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the select component."""
     return {"description": ["Die select Komponente stellt eine einfache Auswahlbox zur Verfügung."]}
 
 
-@component("multiselect")
+@register_component(Component.MULTISELECT)
 def get_multiselect_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the multiselect component."""
     return {
@@ -216,7 +217,7 @@ def get_multiselect_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("chat")
+@register_component(Component.CHAT)
 def get_chat_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the chat component."""
     return {
@@ -226,7 +227,7 @@ def get_chat_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("alert")
+@register_component(Component.ALERT)
 def get_alert_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the alert component."""
     return {
@@ -236,7 +237,7 @@ def get_alert_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("modal")
+@register_component(Component.MODAL)
 def get_modal_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the modal component."""
     return {
@@ -246,7 +247,7 @@ def get_modal_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("popover")
+@register_component(Component.POPOVER)
 def get_popover_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the popover component."""
     return {
@@ -257,7 +258,7 @@ def get_popover_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("tooltip")
+@register_component(Component.TOOLTIP)
 def get_tooltip_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the tooltip component."""
     return {
@@ -268,7 +269,7 @@ def get_tooltip_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("code_block")
+@register_component(Component.CODE_BLOCK)
 def get_code_block_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the code block component."""
     return {
@@ -278,7 +279,7 @@ def get_code_block_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("differentiator")
+@register_component(Component.DIFFERENTIATOR)
 def get_differentiator_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the differentiator component."""
     return {
@@ -288,7 +289,7 @@ def get_differentiator_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("progress_bar")
+@register_component(Component.PROGRESS_BAR)
 def get_progress_bar_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the progress bar component."""
     return {
@@ -299,7 +300,7 @@ def get_progress_bar_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("geo_map")
+@register_component(Component.GEO_MAP)
 def get_geo_map_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the geo map component."""
     return {
@@ -309,7 +310,7 @@ def get_geo_map_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("chart")
+@register_component(Component.CHART)
 def get_charts_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the charts component."""
     return {
@@ -320,7 +321,7 @@ def get_charts_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("live_content")
+@register_component(Component.LIVE_CONTENT)
 def get_live_content_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the live content component."""
     return {
@@ -330,7 +331,7 @@ def get_live_content_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("web_socket")
+@register_component(Component.WEB_SOCKET)
 def get_web_socket_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the web socket component."""
     return {
@@ -340,7 +341,7 @@ def get_web_socket_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("infinite_scroll")
+@register_component(Component.INFINITE_SCROLL)
 def get_infinite_scroll_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the infinite scroll component."""
     return {
@@ -351,7 +352,7 @@ def get_infinite_scroll_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("pagination")
+@register_component(Component.PAGINATION)
 def get_pagination_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the pagination component."""
     return {
@@ -361,7 +362,7 @@ def get_pagination_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("table")
+@register_component(Component.TABLE)
 def get_table_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the table component."""
     return {
@@ -371,7 +372,7 @@ def get_table_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("generic_filter")
+@register_component(Component.GENERIC_FILTER)
 def get_generic_filter_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the generic filter component."""
     return {
@@ -382,7 +383,7 @@ def get_generic_filter_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("search_bar")
+@register_component(Component.SEARCH_BAR)
 def get_search_bar_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the search bar component."""
     return {
@@ -392,7 +393,7 @@ def get_search_bar_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("query_builder")
+@register_component(Component.QUERY_BUILDER)
 def get_query_builder_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the query builder component."""
     return {
@@ -405,7 +406,7 @@ def get_query_builder_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("card")
+@register_component(Component.CARD)
 def get_card_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the card component."""
     return {
@@ -416,7 +417,7 @@ def get_card_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("card_carousel")
+@register_component(Component.CARD_CAROUSEL)
 def get_card_carousel_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the card carousel component."""
     return {
@@ -426,7 +427,7 @@ def get_card_carousel_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("image_carousel")
+@register_component(Component.IMAGE_CAROUSEL)
 def get_image_carousel_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the image carousel component."""
     return {
@@ -436,7 +437,7 @@ def get_image_carousel_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("3d_carousel")
+@register_component(Component.THREE_D_CAROUSEL)
 def get_3d_carousel_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the 3D carousel component."""
     return {
@@ -446,7 +447,7 @@ def get_3d_carousel_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("toggle_view")
+@register_component(Component.TOGGLE_VIEW)
 def get_toggle_view_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the toggle view component."""
     return {
@@ -456,7 +457,7 @@ def get_toggle_view_description_context() -> dict[str, list[str]]:
     }
 
 
-@component("form")
+@register_component(Component.FORM)
 def get_form_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the form component."""
     return {
