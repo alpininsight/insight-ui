@@ -325,6 +325,12 @@ def get_icon_context() -> dict:
             "Heroicons - arrow-top-right-on-square",
         ],
         [
+            render_to_string("insight_ui/components/icons.html", {"name": "share"}),
+            "share",
+            "Klassisch für das Teilen von Inhalten.",
+            "Heroicons - share",
+        ],
+        [
             render_to_string("insight_ui/components/icons.html", {"name": "smartphone"}),
             "smartphone",
             "Hinweis auf Smartphone-Nutzung.",
@@ -486,7 +492,7 @@ def get_demo_container_context() -> dict:
     }
 
 
-def get_storybook_context(storybook: ComponentCategory) -> dict:
+def get_storybook_context(storybook: ComponentCategory) -> dict:  # noqa: C901
     """Serve the base context and the context for each component in the list."""
     context = get_base_context("storybook_view") | get_sidebar_context()
     components = []
@@ -496,5 +502,29 @@ def get_storybook_context(storybook: ComponentCategory) -> dict:
             components.append(component)
 
     context["components"] = components
+
+    match storybook:
+        case ComponentCategory.LAYOUT:
+            context["description"] = ["Structural layout components."]
+        case ComponentCategory.NAVIGATION:
+            context["description"] = ["Main layout elements like navigation, footer and sidebars."]
+        case ComponentCategory.INPUT:
+            context["description"] = [
+                "Standard input elements like Buttons, Radio-Buttons, Toggle-Buttons, Dropdown Menus and more."
+            ]
+        case ComponentCategory.POPUP:
+            context["description"] = [
+                "Popover, Tooltips, Modal and everything that pops up with additional information."
+            ]
+        case ComponentCategory.UTIL:
+            context["description"] = ["Utility components."]
+        case ComponentCategory.LIST:
+            context["description"] = ["List and table components for big data."]
+        case ComponentCategory.FILTER:
+            context["description"] = ["Filter and search components for big data."]
+        case ComponentCategory.CARD:
+            context["description"] = ["Card components and different presentation types."]
+        case ComponentCategory.FORM:
+            context["description"] = ["Form components with various input fields and different request methods."]
 
     return context
