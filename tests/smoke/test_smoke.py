@@ -11,7 +11,7 @@ import pytest
 from django.test import Client
 from django.urls import reverse
 from insight_ui.component_details.component_context import COMPONENT_CONTEXT_BUILDERS
-from insight_ui.component_details.components import ComponentCategory
+from insight_ui.component_details.components import Component, ComponentCategory
 
 
 @pytest.mark.smoke
@@ -37,10 +37,20 @@ def test_login_url_responds_ok(client: Client) -> None:  # noqa: ANN001
 
 @pytest.mark.smoke
 @pytest.mark.django_db
-@pytest.mark.parametrize("viewname", list(ComponentCategory))
-def test_storybook_urls_responds_ok(viewname: ComponentCategory, client: Client) -> None:  # noqa: ANN001
+@pytest.mark.parametrize("category", list(ComponentCategory))
+def test_storybook_urls_responds_ok(category: ComponentCategory, client: Client) -> None:  # noqa: ANN001
     """Basic smoke test for the storybook pages."""
-    response = client.get(reverse("storybook_view", kwargs={"storybook_name": viewname.value}))
+    response = client.get(reverse("storybook_view", kwargs={"storybook_name": category.value}))
+
+    assert response.status_code == HTTPStatus.OK
+
+
+@pytest.mark.smoke
+@pytest.mark.django_db
+@pytest.mark.parametrize("component", list(Component))
+def test_component_urls_responds_ok(component: Component, client: Client) -> None:  # noqa: ANN001
+    """Basic smoke test for the component pages."""
+    response = client.get(reverse("component_detail_page_view", kwargs={"component_name": component.value}))
 
     assert response.status_code == HTTPStatus.OK
 
@@ -48,18 +58,6 @@ def test_storybook_urls_responds_ok(viewname: ComponentCategory, client: Client)
 @pytest.mark.smoke
 @pytest.mark.django_db
 @pytest.mark.parametrize("component_name", COMPONENT_CONTEXT_BUILDERS.keys())
-def test_component_urls_responds_ok(component_name: str, client: Client) -> None:  # noqa: ANN001
-    """Basic smoke test for the component pages."""
-    response = client.get(reverse("component_detail_page_view", kwargs={"component_name": component_name}))
-
-    assert response.status_code == HTTPStatus.OK
-
-
-@pytest.mark.smoke
-@pytest.mark.django_db
-@pytest.mark.parametrize(
-    "component_name", [*COMPONENT_CONTEXT_BUILDERS.keys(), "accordion_exclusive", "outline_button", "button_sizes"]
-)
 def test_component_demo_urls_responds_ok(component_name: str, client: Client) -> None:  # noqa: ANN001
     """Basic smoke test for the component demo pages."""
     response = client.get(reverse("component_demo_view", kwargs={"component_name": component_name}))
