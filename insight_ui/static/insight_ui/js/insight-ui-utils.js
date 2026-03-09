@@ -9,16 +9,53 @@ window.InsightUI = window.InsightUI || {};
  */
 window.InsightUI.lifecycle = {
     /**
+     * Component selectors mapped to their class names on InsightUI.
+     * Used by destroyAllIn() to find and destroy all component instances.
+     */
+    _componentSelectors: {
+        '[data-dropdown-toggle]': 'Dropdown',
+        '[data-accordion]': 'Accordion',
+        '[data-insight-carousel]': 'Carousel',
+    },
+
+    /**
+     * Destroys all component instances within a container element.
+     * Handles both children and the container itself being a component root.
+     * @param {HTMLElement|null} container - The container to clean up
+     */
+    destroyAllIn: function(container) {
+        if (!container) return;
+
+        const selectors = InsightUI.lifecycle._componentSelectors;
+        for (const [selector, className] of Object.entries(selectors)) {
+            const Component = InsightUI[className];
+            if (!Component?.instances) continue;
+
+            // Check children
+            container.querySelectorAll(selector).forEach((el) => {
+                const instance = Component.instances.get(el);
+                if (instance?.destroy) instance.destroy();
+            });
+
+            // Check if container itself is a component root
+            if (container.matches?.(selector)) {
+                const instance = Component.instances.get(container);
+                if (instance?.destroy) instance.destroy();
+            }
+        }
+    },
+
+    /**
      * Registers HTMX lifecycle hooks for automatic component cleanup.
      * Call this once during initialization.
      */
     registerHTMXHooks: function() {
         if (typeof htmx === 'undefined') return;
 
-        htmx.on('htmx:beforeCleanupElement', (evt) => {
-            const el = evt.detail.elt;
-            if (el.__insightInstance?.destroy) {
-                el.__insightInstance.destroy();
+        htmx.on('htmx:beforeSwap', (evt) => {
+            const target = evt.detail.target;
+            if (target) {
+                InsightUI.lifecycle.destroyAllIn(target);
             }
         });
     }
