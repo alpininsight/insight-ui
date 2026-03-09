@@ -34,6 +34,8 @@ jobs:
         if: steps.changes.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v6
         with:
+          # PAT required so the PR triggers CI workflows (GITHUB_TOKEN cannot)
+          token: ${{ secrets.INSIGHT_TOKEN }}
           commit-message: "chore(pre-commit): autoupdate hooks"
           title: "chore(pre-commit): autoupdate hooks"
           body: |
