@@ -309,10 +309,10 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
         if component_name in ["button", "radio_group", "card"]:
             return render(request, f"insight_ui/docs/partial/{component_name}_detailpage.html", context)
 
-        return render(request, "insight_ui/docs/component_doc.html", context)
+        return render(request, "insight_ui/docs/component_detailpage_partial.html", context)
 
     context |= get_base_context("component_detail_page_view") | get_sidebar_context()
-    return render(request, "insight_ui/docs/component_detailpage2.html", context)
+    return render(request, "insight_ui/docs/component_detailpage.html", context)
 
 
 @require_GET
@@ -368,10 +368,9 @@ def storybook_view(request: HttpRequest, storybook_name: str) -> HttpResponse:
 
     if request.headers.get("HX-Request") and not request.headers.get("HX-History-Restore-Request"):
         context["search_query"] = request.GET.get("search", "")
-        return render(request, "insight_ui/docs/partial/storybooks/storybook.html", context)
+        return render(request, "insight_ui/docs/storybook_partial.html", context)
 
-    context["template_name"] = f"insight_ui/docs/partial/storybooks/{storybook_name}_storybook.html"
-    return render(request, "insight_ui/docs/component_detailpage.html", context)
+    return render(request, "insight_ui/docs/storybook.html", context)
 
 
 @require_GET
