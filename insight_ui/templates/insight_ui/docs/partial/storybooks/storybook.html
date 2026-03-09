@@ -1,0 +1,31 @@
+{% load i18n insight_tags %}
+
+{% comment %} Titel and summarize (out of bands) {% endcomment %}
+<div id="heading" hx-swap-oob="true" class="bg-insight-primary px-4 md:px-16 pt-16 pb-4 space-y-8">
+    <h1 class="text-white">Insight UI {{ storybook.formatted_name }}</h1>
+    {% for paragraph in description %}
+        <p class="text-white leading-loose text-lg">{{ paragraph|markdownify }}</p>
+    {% endfor %}
+</div>
+
+{% for component in components %}
+    <section class="component-container">
+        <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-tp-4 py-2 md:px-6 md:py-3">
+            <h2 class="text-xl mb-0">
+                <a
+                    href="{% url 'component_detail_page_view' component.value %}"
+                    hx-get="{% url 'component_detail_page_view' component.value %}"
+                    hx-target="#content"
+                    hx-swap="innerHTML show:window:top"
+                    hx-push-url="true"
+                    class="inline-flex items-center gap-1 hover:text-blue-300"
+                >
+                    {{ component.formatted_name }} {% icon name="open-link" size="small" %}
+                </a>
+            </h2>
+        </div>
+        <div class="p-4 md:p-6">
+            {% include "insight_ui/docs/component_demo.html" %}
+        </div>
+    </section>
+{% endfor %}

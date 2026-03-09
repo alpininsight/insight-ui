@@ -29,13 +29,13 @@ def get_component_context(component: Component) -> dict:
             f"Unknown component: {component.value} accessible components are {COMPONENT_CONTEXT_BUILDERS.keys()}."
         )
 
-    context = {"component_name": component.value, "formatted_name": component.value.replace("_", " ").title()}
+    context = {"component_name": component.value, "formatted_name": component.formatted_name}
 
     for builder in COMPONENT_CONTEXT_BUILDERS.get(component.value, []):
         part = builder()
         context.update(part)
 
-    related_components = {"related_topics": get_related_components_context(component.value)}
+    related_components = {"related_topics": get_related_components_context(component)}
     context.update(related_components)
 
     return context
