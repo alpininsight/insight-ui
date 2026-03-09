@@ -233,7 +233,7 @@ def get_navbar_context() -> dict:
                 "text": _("Settings"),
                 "view_name": "index_view",
                 "staff_only": False,
-                "icon": {"name": "cog", "size": "small"},
+                "icon": {"name": "gear", "size": "small"},
             },
             {
                 "text": _("Administration"),
@@ -282,7 +282,7 @@ def get_drawer_context() -> dict:
                 },
                 {
                     "caption": "Management",
-                    "icon": {"name": "cog", "size": "small"},
+                    "icon": {"name": "gear", "size": "small"},
                     "items": [
                         {
                             "text": _("Calendar"),
@@ -373,7 +373,7 @@ def get_dropdown_context() -> dict:
             "show_arrow": True,
             "items": [
                 {"text": _("Profile"), "view_name": "index_view", "icon": {"name": "user", "size": "small"}},
-                {"text": _("Settings"), "view_name": "index_view", "icon": {"name": "cog", "size": "small"}},
+                {"text": _("Settings"), "view_name": "index_view", "icon": {"name": "gear", "size": "small"}},
                 {"text": _("Logout"), "view_name": "index_view", "icon": {"name": "leave", "size": "small"}},
             ],
         },
@@ -387,7 +387,7 @@ def get_dropdown_context() -> dict:
                     "view_name": "index_view",
                     "icon": {"name": "user", "size": "small"},
                 },
-                {"text": _("Appearance"), "view_name": "index_view", "icon": {"name": "cog", "size": "small"}},
+                {"text": _("Appearance"), "view_name": "index_view", "icon": {"name": "gear", "size": "small"}},
             ],
         },
     }
