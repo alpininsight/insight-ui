@@ -71,11 +71,16 @@ jobs:
         run: |
           set -euo pipefail
 
-          docker run -d --name insight-ui-web -p 8000:8000 -e RUN_MIGRATIONS=1 ${{ env.LOCAL_IMAGE_TAG }}
+          docker run -d --name insight-ui-web -e RUN_MIGRATIONS=1 ${{ env.LOCAL_IMAGE_TAG }}
           trap 'docker logs insight-ui-web || true; docker rm -f insight-ui-web || true' EXIT
 
           for attempt in {1..30}; do
-            if curl --fail --silent http://127.0.0.1:8000/ > /dev/null; then
+            if [ "$(docker inspect -f '{{.State.Running}}' insight-ui-web)" != "true" ]; then
+              echo "Container exited before becoming ready"
+              exit 1
+            fi
+
+            if docker exec insight-ui-web python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/', timeout=2)" > /dev/null 2>&1; then
               exit 0
             fi
             sleep 2
