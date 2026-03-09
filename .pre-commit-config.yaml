@@ -28,7 +28,7 @@ repos:
 
   # Ruff lint + format
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.2
+    rev: v0.15.5
     hooks:
       - id: ruff
         args: ["--fix"]
@@ -45,14 +45,14 @@ repos:
 
   # Modernize Django code (optional but useful)
   - repo: https://github.com/adamchainz/django-upgrade
-    rev: 1.29.1
+    rev: 1.30.0
     hooks:
       - id: django-upgrade
         args: ["--target-version", "5.2"]
 
   # Security scan (lightweight; consider moving to pre-push if slow)
   - repo: https://github.com/PyCQA/bandit
-    rev: 1.9.3
+    rev: 1.9.4
     hooks:
       - id: bandit
         args: ['--exclude', 'tests']
@@ -66,7 +66,7 @@ repos:
 
   # Conventional Commits (commit-msg validation)
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.13.8
+    rev: v4.13.9
     hooks:
       - id: commitizen
         stages: [commit-msg]
