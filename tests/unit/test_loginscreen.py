@@ -1,7 +1,7 @@
 import pytest
 from django.template.loader import render_to_string
 from django.utils.translation import activate
-from insight_ui.demo_context import get_footer_context
+from insight_ui.component_details.demo_context import get_footer_context
 
 
 @pytest.fixture(autouse=True)
