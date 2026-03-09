@@ -128,7 +128,7 @@ def get_login_screen_context() -> dict:
 def get_navbar_context() -> dict:
     """Serve data for navbar detailpage."""
     return {
-        "nav_config": {
+        "demo_nav_config": {
             "brand": {
                 "title": "Insight UI",
                 "view_name": "index_view",
@@ -146,70 +146,6 @@ def get_navbar_context() -> dict:
                     "icon": {"name": "home", "size": "small"},
                     "view_name": "index_view",
                     "active": True,
-                    "need_auth": False,
-                    "staff_only": False,
-                },
-                {
-                    "text": _("Components"),
-                    "open_dropdown": "components-menu",
-                    "items": [
-                        {
-                            "text": "Layout",
-                            "view_name": "storybook_view",
-                            "view_arg": "layout",
-                            "htmx": {"target": "#content"},
-                        },
-                        {
-                            "text": "Main / Navigation",
-                            "view_name": "storybook_view",
-                            "view_arg": "main",
-                            "htmx": {"target": "#content"},
-                        },
-                        {
-                            "text": "Input Elements",
-                            "view_name": "storybook_view",
-                            "view_arg": "input",
-                            "htmx": {"target": "#content"},
-                        },
-                        {
-                            "text": "Popups",
-                            "view_name": "storybook_view",
-                            "view_arg": "popup",
-                            "htmx": {"target": "#content"},
-                        },
-                        {
-                            "text": "Utils",
-                            "view_name": "storybook_view",
-                            "view_arg": "util",
-                            "htmx": {"target": "#content"},
-                        },
-                        {
-                            "text": "List & Tables",
-                            "view_name": "storybook_view",
-                            "view_arg": "table",
-                            "htmx": {"target": "#content"},
-                        },
-                        {
-                            "text": "Cards",
-                            "view_name": "storybook_view",
-                            "view_arg": "card",
-                            "htmx": {"target": "#content"},
-                        },
-                        {
-                            "text": "Forms",
-                            "view_name": "storybook_view",
-                            "view_arg": "form",
-                            "htmx": {"target": "#content"},
-                        },
-                        {
-                            "text": "Search & Filters",
-                            "view_name": "storybook_view",
-                            "view_arg": "filter",
-                            "htmx": {"target": "#content"},
-                        },
-                    ],
-                    "chevron": {"name": "chevron_down", "size": "small"},
-                    "active": False,
                     "need_auth": False,
                     "staff_only": False,
                 },
@@ -255,7 +191,7 @@ def get_navbar_context() -> dict:
 def get_drawer_context() -> dict:
     """Serve data for sidebar detailpage."""
     return {
-        "right_sidebar": {
+        "demo_sidebar": {
             "title": _("Personal Settings"),
             "icon": {"name": "home", "size": "small"},
             "categories": [

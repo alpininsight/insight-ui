@@ -1,17 +1,23 @@
 {% load static i18n insight_tags %}
 
 {% if component.value == "navbar" %}
-    <div class="bg-gray-50 dark:bg-gray-700 h-80">
-        {% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links show_login=True %}
+    <div class="relative bg-gray-50 dark:bg-gray-700 h-80 w-full">
+        {% navbar config=demo_nav_config user=user user_dropdown_links=user_dropdown_links show_login=True %}
+        <script>
+            // Demo fix
+            const nav = document.currentScript.parentElement.querySelector("nav");
+            nav.classList.remove("fixed");
+            nav.classList.add("absolute");
+        </script>
     </div>
 {% elif component.value == "sidebar" %}
     <div class="bg-gray-50 dark:bg-gray-700 h-96">
-        {% sidebar sidebar_data=right_sidebar side="left" auto_close=False %}
+        {% sidebar sidebar_data=demo_sidebar side="left" auto_close=False %}
         <script>
             // Demo fix
-            const sidebar = document.getElementById("left-sidebar").firstElementChild;
-            sidebar.classList.remove("top-16", "h-[calc(100vh-4rem)]");
-            sidebar.classList.add("h-screen");
+            const aside = document.currentScript.parentElement.querySelector("aside");
+            aside.classList.remove("top-16", "h-[calc(100vh-4rem)]");
+            aside.classList.add("h-96");
         </script>
     </div>
 {% elif component.value == "footer" %}
