@@ -18,7 +18,7 @@
 {% block heading %}
     <h1 class="text-white">Insight UI {{ formatted_name }}</h1>
     {% for paragraph in description %}
-        <p class="text-white leading-loose text-lg">{{ paragraph|markdownify }}</p>
+        {{ paragraph|markdownify }}
     {% endfor %}
 {% endblock heading %}
 
