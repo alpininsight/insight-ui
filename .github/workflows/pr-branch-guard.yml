@@ -9,6 +9,7 @@ permissions:
 
 jobs:
   validate-source-target:
+    name: branch-policy
     runs-on: ubuntu-latest
     steps:
       - name: Validate PR branch routing policy
