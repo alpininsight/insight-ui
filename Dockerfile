@@ -1,55 +1,50 @@
-FROM python:3.13-slim AS python
-
-# Build requirements
-FROM python AS python-build-stage
-
-RUN apt-get update && apt-get install -y git && apt-get install --no-install-recommends -y
-
-COPY ./requirements.txt .
-RUN pip wheel --wheel-dir /usr/src/app/wheels -r requirements.txt "uvicorn[standard]" gunicorn
-
-# The real container
-FROM python AS python-run-stage
+FROM python:3.13-slim AS builder
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+ENV PIP_NO_CACHE_DIR=1
 
-RUN addgroup --system nonroot \
-    && adduser --system --ingroup nonroot nonroot
+WORKDIR /build
 
-RUN apt-get update && apt-get install --no-install-recommends -y \
-    # cleaning up unused files
-    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
-    && rm -rf /var/lib/apt/lists/*
+COPY requirements.txt .
 
-# Requirements from build stage
-COPY --from=python-build-stage /usr/src/app/wheels /wheels/
-RUN pip install --no-cache-dir --no-index --find-links=/wheels/ /wheels/* \
-  && rm -rf /wheels/
+RUN pip wheel --wheel-dir /wheels -r requirements.txt "uvicorn[standard]" gunicorn
 
-# Set directory
+FROM python:3.13-slim AS runtime
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV PIP_NO_CACHE_DIR=1
+ENV DEBUG=false
+ENV IS_PROD=true
+ENV RUN_MIGRATIONS=1
+ENV RUN_COLLECTSTATIC=0
+
+RUN addgroup --system app \
+    && adduser --system --ingroup app app
+
 WORKDIR /app
 
-# Copy files
-COPY . .
+COPY --from=builder /wheels /wheels
 
-# Copy environment file
-COPY --chown=app:app .env.example /app/.env
+RUN pip install --no-cache-dir --no-index --find-links=/wheels /wheels/* \
+    && rm -rf /wheels
 
-# Run collectstatic
-RUN python manage.py collectstatic --noinput
+COPY --chown=app:app . /app
+COPY --chown=app:app docker/entrypoint.sh /entrypoint.sh
 
-# Give permissions to nonroot user
-RUN chown -R nonroot:nonroot /app
+RUN chmod 755 /entrypoint.sh \
+    && mkdir -p /app/staticfiles \
+    && python manage.py collectstatic --noinput \
+    && python manage.py check \
+    && chown -R app:app /app
 
-# Switch to 'nonroot'
-USER nonroot
+USER app
 
-# Expose port
 EXPOSE 8000
 
-# Define healthcheck
-HEALTHCHECK --interval=30s --timeout=3s CMD curl --silent --show-error --fail http://localhost:8000/ || exit 1
+HEALTHCHECK --interval=30s --timeout=3s --start-period=20s --retries=5 \
+    CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/', timeout=2)" || exit 1
 
-# Define start command
-CMD ["gunicorn", "--worker-class", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0", "core.asgi:application"]
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["gunicorn", "--worker-class", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000", "core.asgi:application"]

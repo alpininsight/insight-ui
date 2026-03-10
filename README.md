@@ -48,6 +48,21 @@ uv run python manage.py setup_dev
 uv run python manage.py runserver 0:10800
 ```
 
+## Container Runtime
+The repository now ships a Django container workflow at `.github/workflows/container-build.yml`. It builds a production-oriented image, bakes static assets into the image during `docker build`, smoke-tests `migrate` and optional runtime `collectstatic`, and publishes branch images to GHCR on pushes to `develop` and `main`.
+
+Build and run locally:
+```bash
+docker build -t insight-ui:local .
+docker run --rm -p 8000:8000 insight-ui:local
+```
+
+Runtime flags:
+- `RUN_MIGRATIONS=1` runs `python manage.py migrate --noinput` before the web process starts. This is enabled by default for single-container Docker runs.
+- `RUN_COLLECTSTATIC=1` re-runs `python manage.py collectstatic --noinput` at container start when you need to refresh a mounted static volume. Static assets are already collected during the image build, so the default remains `0`.
+
+For Kubernetes, use the same image and disable startup migrations on scaled web deployments (`RUN_MIGRATIONS=0`). Run `python manage.py migrate --noinput` as a one-off Job or init step instead, then start the web pods from the published image.
+
 The WebSocket demo lives in `utils/main.py`:
 ```bash
 uv run ./utils/main.py
