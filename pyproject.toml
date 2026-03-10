@@ -291,25 +291,6 @@ mark-parentheses  = false
 [tool.hatch.build.targets.wheel]
 packages = ["insight_ui"]
 
-[tool.semantic_release]
-version_source = "tag"
-tag_format = "v{version}"
-commit_parser = "angular"
-changelog_file = "CHANGELOG.md"
-build_command = "uv build"
-upload_to_repository = true
-upload_to_release = true
-
-[[tool.semantic_release.branches]]
-name = "main"
-match = "main"
-prerelease = false
-
-[[tool.semantic_release.branches]]
-name = "develop"
-match = "develop"
-prerelease = true
-prerelease_token = "rc"
 
 [tool.uv.workspace]
 members = [
