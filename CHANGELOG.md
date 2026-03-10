@@ -13,14 +13,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - DestroyAllIn() container-as-root bug and Floater selector mismatch
 - Merge issues in the carousel components
 - **js:** Wire lifecycle cleanup class lookup and carousel selector
-- **ci:** Use PAT token for pre-commit autoupdate PRs
+- **security:** Update dependencies to resolve all 16 vulnerabilities
 - **ci:** Probe django container readiness internally
 - **ui:** Replace missing homepage static asset
+- **ci:** Use PAT token for pre-commit autoupdate PRs
 
 ### CI/CD
 
 - Automate release-please PR checks and merge 
 - **guard:** Preserve branch-policy check name
+- **guard:** Preserve branch-policy check name
+- **feature:** Mirror required legacy test checks
 
 ### Documentation
 
