@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **ci:** Probe django container readiness internally
 - **ui:** Replace missing homepage static asset
 - **ci:** Use PAT token for pre-commit autoupdate PRs
+- **ci:** Enable multi-arch container build for arm64 support
 
 ### CI/CD
 
