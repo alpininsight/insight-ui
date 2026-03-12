@@ -176,7 +176,17 @@ def get_radio_group_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the radio_group component."""
     return {
         "description": [
-            "Mit der radio_group oder alternativ mit der radio_block Komponente lassen sich Gruppen von Radio-Buttons einbauen. Bei der radio_group Variante handelt es sich um eine Variante mit normalen Radio-Buttons für ein Formular o.ä.. Bei der radio_block Variante handelt es sich hingegen, um eine grafisch anspruchsvollere Variante und die Radio-Buttons können dazu verwendet werden, einen Request zu starten."
+            "Mit der radio_group Komponente lassen sich Gruppen von Radio-Buttons einbauen. Bei der radio_group Variante handelt es sich um eine Variante mit normalen Radio-Buttons für ein Formular o.ä.."
+        ]
+    }
+
+
+@register_component(Component.RADIO_BLOCK)
+def get_radio_group_description_context() -> dict[str, list[str]]:
+    """Serve description documentation for the radio_block component."""
+    return {
+        "description": [
+            "Mit der radio_block Komponente lassen sich Gruppen von Radio-Buttons einbauen. Die radio_block Variante der Radio-Buttons wird als Block von Buttons dargestellt und kann dazu verwendet werden, einen Request beim wechsel des ausgewählten Wertes zu starten."
         ]
     }
 

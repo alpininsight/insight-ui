@@ -182,6 +182,17 @@ def get_radio_group_a11y_context() -> dict[str, list[str]]:
     }
 
 
+@register_component(Component.RADIO_BLOCK)
+def get_radio_group_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y documentation for the radio_block component."""
+    return {
+        "a11y": [
+            "Die Komponente unterstützt die Navigation über die Tastatur mittels der Pfeiltasten (hoch/runter, rechts/links).",
+            "TODO: Fokus hervorheben.",
+        ]
+    }
+
+
 @register_component(Component.RANGE_SLIDER)
 def get_rangle_slider_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the range slider component."""

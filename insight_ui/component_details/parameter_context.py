@@ -732,11 +732,83 @@ def get_radio_group_parameter_context() -> dict[str, list[str]]:
             ),
             ParameterDetails("value", "str", "Wert des jeweiligen Radio-Buttons.", "''"),
             ParameterDetails("text", "str", "Beschriftung des jeweiligen Radio-Buttons.", "''"),
+            ParameterDetails("disabled", "bool", "<b>True</b>, wenn der Radio-Button deaktiviert sein soll.", "False"),
+        ],
+        """""",
+    )
+
+    config_param = ParameterDoc(
+        ParameterDetails(
+            "config", "dict[str, Any]", "Beschreibt die Radio-Button Gruppe und die einzelnen Radio-Elemente.", "{}"
+        ),
+        [
             ParameterDetails(
-                "icon",
-                "dict[str, str]",
-                "Optionales Icon, welches vor der Beschriftung angezeigt wird (nur für die Radio-Block Variante).",
-                "{}",
+                "name", "str", "Optionale, eindeutige Tag-ID für die Identifizierung des Elements im JavaScript.", "''"
+            ),
+            ParameterDetails("label", "str", "Ein Label-Text welcher über den Radio-Elementen angezeigt wird.", "''"),
+            ParameterDetails(
+                "as_row", "bool", "<b>True</b>, wenn die Radio-Elemente nebeneinander angezeigt werden sollen.", "False"
+            ),
+            items_param.details,
+        ],
+        """""",
+    )
+
+    main_params = [
+        config_param.details,
+        ParameterDetails("current_value", "str", "Der Wert des aktuell ausgewählten Radio-Buttons.", "''"),
+        # Block only
+        ParameterDetails(
+            "view_name",
+            "str",
+            "Name der URL an welchen der Request beim Klick auf einen der Radio-Button, gesendet werden soll.",
+            "''",
+        ),
+        ParameterDetails(
+            "query_params",
+            "str",
+            "Ein String von Query-Parametern, welche bei dem Request mit gesendet werden sollen.",
+            "''",
+        ),
+        ParameterDetails(
+            "target_id",
+            "str",
+            "Die ID des HTML-Tags, welches bei wechseln des Radio-Buttons ausgetauscht werden soll.",
+            "''",
+        ),
+        ParameterDetails(
+            "method",
+            "str",
+            "Name der JavaScript Methode welche beim Klick auf einen der Radio-Button ausgeführt werden soll.",
+            "''",
+        ),
+        ParameterDetails(
+            "integrated",
+            "bool",
+            "<b>True</b> wenn sich die Gruppe in einer &lt;form&gt; befindet, bei <b>False</b> bekommt die Gruppe ihre eigene &lt;form&gt;.",
+            "False",
+        ),
+    ]
+
+    return {"params": [main_params, config_param, items_param]}
+
+
+@register_component(Component.RADIO_BLOCK)
+def get_radio_group_parameter_context() -> dict[str, list[str]]:
+    """Serve parameter documentation for the radio_block component."""
+    items_param = ParameterDoc(
+        ParameterDetails("items", "list[dict[str, Any]]", "Eine Liste der Radio-Elemente.", "[]"),
+        [
+            ParameterDetails(
+                "tag_id",
+                "str",
+                "Optionale, eindeutige Tag-ID für die Identifizierung des Elements im JavaScript.",
+                "''",
+            ),
+            ParameterDetails("value", "str", "Wert des jeweiligen Radio-Buttons.", "''"),
+            ParameterDetails("text", "str", "Beschriftung des jeweiligen Radio-Buttons.", "''"),
+            ParameterDetails(
+                "icon", "dict[str, str]", "Optionales Icon, welches vor der Beschriftung angezeigt wird.", "{}"
             ),
             ParameterDetails("disabled", "bool", "<b>True</b>, wenn der Radio-Button deaktiviert sein soll.", "False"),
         ],
