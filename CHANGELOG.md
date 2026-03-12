@@ -18,6 +18,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **ui:** Replace missing homepage static asset
 - **ci:** Use PAT token for pre-commit autoupdate PRs
 - **ci:** Enable multi-arch container build for arm64 support
+- Misspelled component names
+- Navbar and sidebar demo in the navigation storybook
+- Page header for storybook and component details pages
+- Add missing description texts for storybooks
+- Add missing docs context for the 'radio_block' component
 
 ### CI/CD
 
@@ -31,6 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add component architecture requirements
 - **guides:** Add component architecture epic backlog
 - **backlog:** Update with Sprint 1 completion status
+- Rewrote and translate contributing.md
 
 ### Features
 
@@ -46,6 +52,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add lifecycle support to demo containers
 - Use instance and tag connection for proper cleanup
 - **container:** Add django runtime image workflow
+- Add component decorator and dispatcher for component context methods
+- Fill a11y documentation context with current data
+- Fill description documentation context with current data
+- Fill usage documentation context with current data
+- Update parameter documentation context structure
+- Add missing git link for hero component documenation
+- Add related topic entries for page_header, article and hero component
+- Adjust new component documentation base template and add markdown as dependency
+- Handle empty lists in the component details template
+- Add Component Enum Class as component registry
+- Add registration system for the component demo contexts
+- Rename 'cog' icon to 'gear'
+- Add new components automatically to sidebar navigation and corresponding storybook
+- Add non partial version of the new storybook and component details pages
+- Add share icon
 
 ### Miscellaneous
 
@@ -53,10 +74,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add .playwright-mcp to gitignore
 - Remove checklists from docs
 - **ci:** Migrate from release-please to GitVersion
+- Update requirements.txt
 
 ### Refactoring
 
 - Change toc generator indentation from two to four whitespaces
+- Remove special parameter context handling from views.py
+- Remove hardcoded list of components from smoke tests
+- Rename 'table' and 'main' storybook
+- Remove obsolete storybook template files
+
+### Testing
+
+- Improve smoke tests for storybooks and fix loginscreen test
+- Use Component Enum Class for smoke tests
 
 ## [1.9.1] - 2026-02-24
 
