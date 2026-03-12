@@ -1,21 +1,61 @@
-from insight_ui.component_details import (
-    a11y_context,
-    description_context,
-    parameter_context,
-    related_components_context,
-    usage_context,
-)
+from collections import defaultdict
+from collections.abc import Callable
+from typing import Any
+
+from insight_ui.component_details.components import Component
+from insight_ui.component_details.related_components_context import get_related_components_context
+
+Context = dict[str, Any]
+ContextBuilder = Callable[[], Context]
+
+COMPONENT_CONTEXT_BUILDERS: dict[str, list[ContextBuilder]] = defaultdict(list)
+DEMO_CONTEXT_BUILDERS: dict[str, ContextBuilder] = {}
 
 
-def get_component_context(component_name: str) -> dict:
+def register_component(component: Component) -> Callable[[ContextBuilder], ContextBuilder]:
+    """Register context method for the specified component."""
+
+    def decorator(func: ContextBuilder) -> ContextBuilder:
+        COMPONENT_CONTEXT_BUILDERS[component.value].append(func)
+        return func
+
+    return decorator
+
+
+def get_component_context(component: Component) -> dict:
     """Serve docs of the specified component."""
-    related_components = {"related_topics": related_components_context.get_related_components_context(component_name)}
+    if component.value not in COMPONENT_CONTEXT_BUILDERS:
+        raise ValueError(  # noqa: TRY003
+            f"Unknown component: {component.value} accessible components are {COMPONENT_CONTEXT_BUILDERS.keys()}."
+        )
 
-    return (
-        {"component_name": component_name.replace("_", " ").title()}
-        | description_context.get_minimal_step_bar_description_context()
-        | usage_context.get_minimal_step_bar_usage_context()
-        | parameter_context.get_minimal_step_bar_parameter_context()
-        | a11y_context.get_minimal_step_bar_a11y_context()
-        | related_components
-    )
+    context = {"component_name": component.value, "formatted_name": component.formatted_name}
+
+    for builder in COMPONENT_CONTEXT_BUILDERS.get(component.value, []):
+        part = builder()
+        context.update(part)
+
+    related_components = {"related_topics": get_related_components_context(component)}
+    context.update(related_components)
+
+    return context
+
+
+def register_demo_context(component: Component) -> Callable[[ContextBuilder], ContextBuilder]:
+    """Register a demo context method for the specified component."""
+
+    def decorator(func: ContextBuilder) -> ContextBuilder:
+        key = component.value
+
+        if key in DEMO_CONTEXT_BUILDERS:
+            raise ValueError(f"Component '{key}' already has a registered demo context!")  # noqa: TRY003
+
+        DEMO_CONTEXT_BUILDERS[key] = func
+        return func
+
+    return decorator
+
+
+def get_demo_context(component: Component) -> dict | None:
+    """Serve demo context of the specified component."""
+    return DEMO_CONTEXT_BUILDERS.get(component.value)

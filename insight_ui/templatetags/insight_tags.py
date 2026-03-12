@@ -9,6 +9,8 @@ from typing import Any
 from django import template
 from django.core.paginator import Page
 from django.urls import reverse
+from django.utils.safestring import SafeString, mark_safe
+from markdown import markdown
 
 from insight_ui.config import get_config
 from insight_ui.utils.diff import file_template, styles
@@ -19,6 +21,17 @@ JsonPrimitive = str | int | float | bool | None
 type JsonMapping = dict[str, "JsonValue"]
 type JsonSequence = list["JsonValue"]
 type JsonValue = JsonPrimitive | JsonMapping | JsonSequence
+
+
+@register.filter
+def markdownify(value: str) -> SafeString:
+    """Convert markdown to html."""
+    html = markdown(value)
+
+    html = html.replace("<code>", '<span class="inline-tag">')
+    html = html.replace("</code>", "</span>")
+
+    return mark_safe(html)  # nosec  # noqa: S308
 
 
 def _resolve_view_urls(value: JsonValue) -> JsonValue:

@@ -1,9 +1,13 @@
 from typing import Any
 
 from django.template.loader import render_to_string
+from django.urls import reverse
 from django.utils.translation import gettext as _
 
 from insight_ui import config
+from insight_ui.component_details.components import Component, ComponentCategory
+from insight_ui.component_details.demo_context import get_component_demo_context
+from insight_ui.component_details.parameter_context import ParameterDetails
 
 
 def get_main_page_links() -> list[dict[str, Any]]:
@@ -61,35 +65,13 @@ def get_navbar_context(current_view: str = "index_view") -> dict:
             "open_dropdown": "components-menu",
             "icon": {"name": "cards", "size": "small"},
             "items": [
-                {"text": "Layout", "view_name": "storybook_view", "view_arg": "layout", "htmx": {"target": "#content"}},
                 {
-                    "text": "Main / Navigation",
+                    "text": category.formatted_name,
                     "view_name": "storybook_view",
-                    "view_arg": "main",
+                    "view_arg": category.value,
                     "htmx": {"target": "#content"},
-                },
-                {
-                    "text": "Input Elements",
-                    "view_name": "storybook_view",
-                    "view_arg": "input",
-                    "htmx": {"target": "#content"},
-                },
-                {"text": "Popups", "view_name": "storybook_view", "view_arg": "popup", "htmx": {"target": "#content"}},
-                {"text": "Utils", "view_name": "storybook_view", "view_arg": "util", "htmx": {"target": "#content"}},
-                {
-                    "text": "List & Tables",
-                    "view_name": "storybook_view",
-                    "view_arg": "table",
-                    "htmx": {"target": "#content"},
-                },
-                {"text": "Cards", "view_name": "storybook_view", "view_arg": "card", "htmx": {"target": "#content"}},
-                {"text": "Forms", "view_name": "storybook_view", "view_arg": "form", "htmx": {"target": "#content"}},
-                {
-                    "text": "Search & Filters",
-                    "view_name": "storybook_view",
-                    "view_arg": "filter",
-                    "htmx": {"target": "#content"},
-                },
+                }
+                for category in ComponentCategory
             ],
             "chevron": {"name": "chevron_down", "size": "small"},
             "active": False,
@@ -131,6 +113,25 @@ def get_navbar_context(current_view: str = "index_view") -> dict:
     }
 
 
+def get_sidebar_context() -> dict:
+    """Serve data for the main sidebar."""
+    categories = [{"caption": category.formatted_name, "items": []} for category in ComponentCategory]
+
+    for component in Component:
+        for category in categories:
+            if category["caption"] == component.group.formatted_name:
+                category["items"].append(
+                    {
+                        "text": component.formatted_name,
+                        "url": reverse("component_detail_page_view", kwargs={"component_name": component.value}),
+                        "htmx": {"target": "#content"},
+                    }
+                )
+                break
+
+    return {"left_sidebar": {"title": _("Components"), "categories": categories}}
+
+
 def get_footer_context() -> dict:
     """Server data for main footer."""
     links = get_main_page_links()
@@ -160,8 +161,10 @@ def get_base_context(current_view: str = "index_view") -> dict:
 def get_icon_context() -> dict:
     """Serve context for the icon detailpage."""
     main_params = [
-        ["name", "str", "Name des Icons (siehe Tabelle unten).", "question-mark"],
-        ["size", "str", "Größe des Icons. Mögliche Werte sind: 'big', 'medium', 'small' und 'xs'", "default"],
+        ParameterDetails("name", "str", "Name des Icons (siehe Tabelle unten).", "question-mark"),
+        ParameterDetails(
+            "size", "str", "Größe des Icons. Mögliche Werte sind: 'big', 'medium', 'small' und 'xs'", "default"
+        ),
     ]
 
     table_rows = [
@@ -173,7 +176,7 @@ def get_icon_context() -> dict:
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "office"}),
-            "settings",
+            "office",
             "Themen mit Bezug zum Büro oder der Arbeit.",
             "Heroicons - building-office",
         ],
@@ -184,8 +187,8 @@ def get_icon_context() -> dict:
             "Heroicons - globe-alt",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "cog"}),
-            "cog",
+            render_to_string("insight_ui/components/icons.html", {"name": "gear"}),
+            "gear",
             "Generelle Einstellungen.",
             "Heroicons - cog-6-tooth",
         ],
@@ -320,6 +323,12 @@ def get_icon_context() -> dict:
             "open-link",
             "Klassisch für Links zu anderen, oft externen Seiten oder zum öffnen eines Dialogfensters.",
             "Heroicons - arrow-top-right-on-square",
+        ],
+        [
+            render_to_string("insight_ui/components/icons.html", {"name": "share"}),
+            "share",
+            "Klassisch für das Teilen von Inhalten.",
+            "Heroicons - share",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "smartphone"}),
@@ -466,3 +475,56 @@ def get_icon_context() -> dict:
     }
 
     return {"main_params": main_params, "icon_table": icon_table, "size_table": size_table}
+
+
+def get_demo_container_context() -> dict:
+    """Serve data of the device switch, etc. for component demos."""
+    return {
+        "device_radio_config": {
+            "items": [
+                {"tag_id": "mobile", "value": "mobile", "icon": {"name": "smartphone"}, "disabled": False},
+                {"tag_id": "tablet", "value": "tablet", "icon": {"name": "tablet"}, "disabled": False},
+                {"tag_id": "desktop", "value": "desktop", "icon": {"name": "desktop"}, "disabled": False},
+            ]
+        },
+        "dir_toggle": {"label": _("RTL")},
+        "theme_toggle": {"icon": {"name": "moon"}},
+    }
+
+
+def get_storybook_context(storybook: ComponentCategory) -> dict:  # noqa: C901
+    """Serve the base context and the context for each component in the list."""
+    context = get_base_context("storybook_view") | get_sidebar_context()
+    components = []
+    for component in Component:
+        if component.group.value == storybook.value:
+            context |= get_component_demo_context(component)
+            components.append(component)
+
+    context["components"] = components
+
+    match storybook:
+        case ComponentCategory.LAYOUT:
+            context["description"] = ["Structural layout components."]
+        case ComponentCategory.NAVIGATION:
+            context["description"] = ["Main layout elements like navigation, footer and sidebars."]
+        case ComponentCategory.INPUT:
+            context["description"] = [
+                "Standard input elements like Buttons, Radio-Buttons, Toggle-Buttons, Dropdown Menus and more."
+            ]
+        case ComponentCategory.POPUP:
+            context["description"] = [
+                "Popover, Tooltips, Modal and everything that pops up with additional information."
+            ]
+        case ComponentCategory.UTIL:
+            context["description"] = ["Utility components."]
+        case ComponentCategory.LIST:
+            context["description"] = ["List and table components for big data."]
+        case ComponentCategory.FILTER:
+            context["description"] = ["Filter and search components for big data."]
+        case ComponentCategory.CARD:
+            context["description"] = ["Card components and different presentation types."]
+        case ComponentCategory.FORM:
+            context["description"] = ["Form components with various input fields and different request methods."]
+
+    return context

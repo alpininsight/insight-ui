@@ -16,14 +16,14 @@
 {% endblock sidebar_right %}
 
 {% block heading %}
-    <h1 class="text-white">Insight UI {{ formatted_name }}</h1>
+    <h1 class="text-white">Insight UI {{ storybook.formatted_name }}</h1>
     {% for paragraph in description %}
         {{ paragraph|markdownify }}
     {% endfor %}
 {% endblock heading %}
 
 {% block content %}
-    {% include "insight_ui/docs/component_details_content.html" %}
+    {% include "insight_ui/docs/storybook_content.html" %}
 {% endblock content %}
 
 {% block footer %}

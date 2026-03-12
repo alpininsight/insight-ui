@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import include, path
-from insight_ui.demo_context import get_login_screen_context
+from insight_ui.component_details.demo_context import get_login_screen_context
 
 urlpatterns = [
     path("admin/", admin.site.urls),

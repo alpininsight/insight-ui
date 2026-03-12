@@ -1,16 +1,4 @@
-{% load i18n %}
-
-{% comment %} Titel and summarize (out of bands) {% endcomment %}
-<div id="heading" hx-swap-oob="true" class="bg-insight-primary px-4 md:px-16 pt-16 pb-4 space-y-8">
-    <h1 class="text-white">Insight UI {{ component_name }}</h1>
-    {% for paragraph in description %}
-        <p class="text-gray-200 leading-loose text-lg">{{ paragraph }}</p>
-    {% endfor %}
-</div>
-
-<div id="right-aside" hx-swap-oob="true" class="flex">
-    {% include "insight_ui/components/toc_sidebar.html" with side="right" static=True navbar_fixed=True mobile_hidden=True %}
-</div>
+{% load i18n insight_tags %}
 
 {% comment %} Component Demo {% endcomment %}
 <section>
@@ -23,7 +11,11 @@
 <section>
     <h2>{% trans "Usage" %}</h2>
     <p class="mb-4">
-        {{ usage_summary }}
+        {% if usage_summary %}
+            {{ usage_summary }}
+        {% else %}
+            Die Komponente wird über das <span class="inline-tag">{{ component_name }}</span> Tag eingebunden.
+        {% endif %}
     </p>
     <div data-insight-code-block="Django">
         {{ usage }}
@@ -38,15 +30,13 @@
             {% include "insight_ui/components/parameter_table.html" with rows=param %}
         {% else %}
             <div class="space-y-2 mt-4">
-                <h4>{{ param.name }} <i>({{ param.type }})</i></h4>
-                <p>{{ param.description }}</p>
+                <h4>{{ param.details.name }} <i>({{ param.details.type }})</i></h4>
+                <p>{{ param.details.description }}</p>
 
-                <div data-insight-code-block="python">
-                    {# fmt:off #}
-                    {{ param.example_data }}
-                    {# fmt:on #}
-                </div>
-                {% include "insight_ui/components/parameter_table.html" with rows=param.table %}
+                {% if param.example_data %}
+                    <div data-insight-code-block="python">{{ param.example_data }}</div>
+                {% endif %}
+                {% include "insight_ui/components/parameter_table.html" with rows=param.params_table %}
             </div>
         {% endif %}
     {% endfor %}
@@ -58,6 +48,8 @@
     <ul class="list-disc leading-relaxed ms-8 mt-6">
         {% for point in a11y %}
             <li>{{ point }}</li>
+        {% empty %}
+            <li><i>{% trans "No comments." %}</i></li>
         {% endfor %}
     </ul>
 </section>
@@ -81,6 +73,8 @@
                     {{ topic.formatted_name }}
                 </a>
             </li>
+        {% empty %}
+            <li><i>{% trans "No related components available." %}</i></li>
         {% endfor %}
     </ul>
 </section>

@@ -791,9 +791,6 @@
   .transform {
     transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);
   }
-  .animate-blink {
-    animation: var(--animate-blink);
-  }
   .animate-pulse {
     animation: var(--animate-pulse);
   }
@@ -1234,9 +1231,6 @@
   }
   .p-2 {
     padding: calc(var(--spacing) * 2);
-  }
-  .p-3 {
-    padding: calc(var(--spacing) * 3);
   }
   .p-4 {
     padding: calc(var(--spacing) * 4);
@@ -1805,13 +1799,6 @@
       }
     }
   }
-  .hover\:bg-neutral-200 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--color-neutral-200);
-      }
-    }
-  }
   .hover\:bg-red-100 {
     &:hover {
       @media (hover: hover) {
@@ -1999,11 +1986,6 @@
   .active\:bg-insight-primary-active {
     &:active {
       background-color: var(--color-insight-primary-active);
-    }
-  }
-  .active\:bg-neutral-400 {
-    &:active {
-      background-color: var(--color-neutral-400);
     }
   }
   .aria-\[current\=location\]\:font-bold {

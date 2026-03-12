@@ -7,7 +7,7 @@ GIT_BASE_SCRIPT_FILE = "https://github.com/alpininsight/insight-ui/blob/develop/
 
 # Mapping-Table between components and their respective template files
 TEMPLATE_PATHS = {
-    "cards": GIT_BASE_FILE + "cards/card.html",
+    "card": GIT_BASE_FILE + "cards/card.html",
     "flip_card": GIT_BASE_FILE + "cards/flip_card.html",
     "app_card": GIT_BASE_FILE + "cards/app_card.html",
     "3D_carousel": GIT_BASE_FILE + "carousels/3D_carousel.html",
@@ -54,9 +54,10 @@ TEMPLATE_PATHS = {
     "toggle_view": GIT_BASE_FILE + "toggle_view.html",
     "tooltip": GIT_BASE_FILE + "tooltip.html",
     "user_dropdown": GIT_BASE_FILE + "user_dropdown.html",
-    "websocket": GIT_BASE_FILE + "websocket.html",
+    "web_socket": GIT_BASE_FILE + "websocket.html",
     "page_header": GIT_BASE_FILE + "page_header.html",
     "article": GIT_BASE_FILE + "article.html",
+    "hero": GIT_BASE_FILE + "hero.html",
 }
 
 # Mapping-Table between components and their respective script files

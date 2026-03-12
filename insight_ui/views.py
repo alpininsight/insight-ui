@@ -11,101 +11,19 @@ from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.decorators.http import require_GET, require_POST
 
 from insight_ui.component_details import component_context
-from insight_ui.component_details.git_path_mapping import SCRIPT_PATHS, TEMPLATE_PATHS
-from insight_ui.component_details.parameter_context import (
-    get_3d_carousel_parameter_context,
-    get_accordion_parameter_context,
-    get_alert_parameter_context,
-    get_article_parameter_context,
-    get_breadcrumb_parameter_context,
-    get_bullet_point_list_parameter_context,
-    get_button_parameter_context,
-    get_card_carousel_parameter_context,
-    get_card_parameter_context,
-    get_charts_parameter_context,
-    get_chat_parameter_context,
-    get_checkbox_group_parameter_context,
-    get_checkbox_parameter_context,
-    get_code_block_parameter_context,
-    get_differentiator_parameter_context,
-    get_dropdown_parameter_context,
-    get_footer_parameter_context,
-    get_form_parameter_context,
-    get_generic_filter_parameter_context,
-    get_geo_map_parameter_context,
-    get_hero_parameter_context,
-    get_image_carousel_parameter_context,
-    get_infinite_scroll_parameter_context,
-    get_input_field_parameter_context,
-    get_live_content_parameter_context,
-    get_modal_parameter_context,
-    get_multiselect_parameter_context,
-    get_navbar_parameter_context,
-    get_page_header_parameter_context,
-    get_pagination_parameter_context,
-    get_popover_parameter_context,
-    get_progress_bar_parameter_context,
-    get_query_builder_parameter_context,
-    get_radio_group_parameter_context,
-    get_rangle_slider_parameter_context,
-    get_search_bar_parameter_context,
-    get_select_parameter_context,
-    get_sidebar_parameter_context,
-    get_step_bar_parameter_context,
-    get_table_parameter_context,
-    get_tabs_parameter_context,
-    get_toggle_parameter_context,
-    get_toggle_view_parameter_context,
-    get_tooltip_parameter_context,
-    get_web_socket_parameter_context,
-)
-from insight_ui.context import get_base_context, get_icon_context
-from insight_ui.demo_context import (
+from insight_ui.component_details.components import Component, ComponentCategory
+from insight_ui.component_details.demo_context import (
     DEMO_FIELDS,
-    get_3d_carousel_context,
-    get_accordion_context,
-    get_alert_context,
-    get_breadcrumb_context,
-    get_bullet_point_list_context,
-    get_card_carousel_context,
-    get_card_storybook_context,
-    get_cards_context,
-    get_charts_context,
-    get_checkbox_context,
     get_component_demo_context,
-    get_differentiator_context,
-    get_drawer_context,
-    get_dropdown_context,
-    get_empty_context,
-    get_filter_storybook_context,
-    get_footer_context,
-    get_form_context,
-    get_form_storybook_context,
-    get_generic_filter_context,
-    get_geo_map_context,
-    get_image_carousel_context,
-    get_infinite_scroll_context,
-    get_inputs_storybook_context,
-    get_layout_storybook_context,
-    get_main_storybook_context,
     get_minimal_step_bar_context,
-    get_modal_context,
-    get_multiselect_context,
-    get_navbar_context,
-    get_pagination_context,
-    get_popup_storybook_context,
-    get_query_builder_context,
-    get_radio_group_context,
-    get_range_slider_context,
-    get_select_context,
+)
+from insight_ui.component_details.git_path_mapping import SCRIPT_PATHS, TEMPLATE_PATHS
+from insight_ui.context import (
+    get_base_context,
+    get_demo_container_context,
+    get_icon_context,
     get_sidebar_context,
-    get_step_bar_context,
-    get_table_context,
-    get_table_storybook_context,
-    get_tabs_context,
-    get_toggle_button_context,
-    get_toggle_view_context,
-    get_utils_storybook_context,
+    get_storybook_context,
 )
 from insight_ui.demo_utils import generate_payload, map_payload_to_cards, map_payload_to_table
 from insight_ui.forms import ChatForm, FormDemoForm
@@ -166,7 +84,7 @@ def pagination(request: HttpRequest) -> HttpResponse:
             },
         )
 
-    context = get_table_storybook_context()
+    context = get_storybook_context(ComponentCategory.LIST)
     context["current_page"] = page_obj
     context["surrounding_pages"] = surrounding_pages
     context["items_per_page"] = ipp
@@ -270,7 +188,7 @@ def form_submit(request: HttpRequest) -> HttpResponse | JsonResponse:
             return HttpResponse(success_html, status=200)
 
         # Retrieve necessary context data and perform a whole page reload to present form success
-        context = get_form_storybook_context()
+        context = get_storybook_context(ComponentCategory.FORM)
         context["form_success"] = {
             "message": _("Formular erfolgreich übermittelt!"),
             "title": form.cleaned_data["title"],
@@ -285,7 +203,7 @@ def form_submit(request: HttpRequest) -> HttpResponse | JsonResponse:
         return HttpResponse(html, status=400)
 
     # Retrieve necessary context data and perform a whole page reload to present form issues
-    context = get_form_storybook_context()
+    context = get_storybook_context(ComponentCategory.FORM)
     context["errors"] = form.errors
     context["type"] = "error"
     return render(request, "insight_ui/storybook.html", context)
@@ -357,63 +275,10 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
         "id": component_name,
     }
 
-    parameter_context_func_map = {
-        "navbar": get_navbar_parameter_context,
-        "sidebar": get_sidebar_parameter_context,
-        "footer": get_footer_parameter_context,
-        "breadcrumb": get_breadcrumb_parameter_context,
-        "step_bar": get_step_bar_parameter_context,
-        "minimal_step_bar": get_minimal_step_bar_context,
-        "bullet_point_list": get_bullet_point_list_parameter_context,
-        "accordion": get_accordion_parameter_context,
-        "tabs": get_tabs_parameter_context,
-        "button": get_button_parameter_context,
-        "input_field": get_input_field_parameter_context,
-        "checkbox": get_checkbox_parameter_context,
-        "checkbox_group": get_checkbox_group_parameter_context,
-        "dropdown": get_dropdown_parameter_context,
-        "radio_group": get_radio_group_parameter_context,
-        "range_slider": get_rangle_slider_parameter_context,
-        "toggle_button": get_toggle_parameter_context,
-        "select": get_select_parameter_context,
-        "multiselect": get_multiselect_parameter_context,
-        "chat": get_chat_parameter_context,
-        "alert": get_alert_parameter_context,
-        "modal": get_modal_parameter_context,
-        "popover": get_popover_parameter_context,
-        "tooltip": get_tooltip_parameter_context,
-        "code_block": get_code_block_parameter_context,
-        "differentiator": get_differentiator_parameter_context,
-        "progress_bar": get_progress_bar_parameter_context,
-        "geo_map": get_geo_map_parameter_context,
-        "chart": get_charts_parameter_context,
-        "live_content": get_live_content_parameter_context,
-        "web_socket": get_web_socket_parameter_context,
-        "infinite_scroll": get_infinite_scroll_parameter_context,
-        "pagination": get_pagination_parameter_context,
-        "table": get_table_parameter_context,
-        "generic_filter": get_generic_filter_parameter_context,
-        "search_bar": get_search_bar_parameter_context,
-        "query_builder": get_query_builder_parameter_context,
-        "card": get_card_parameter_context,
-        "effect_cards": get_navbar_parameter_context,
-        "card_carousel": get_card_carousel_parameter_context,
-        "image_carousel": get_image_carousel_parameter_context,
-        "3D_carousel": get_3d_carousel_parameter_context,
-        "toggle_view": get_toggle_view_parameter_context,
-        "form": get_form_parameter_context,
-        "page_header": get_page_header_parameter_context,
-        "article": get_article_parameter_context,
-        "hero": get_hero_parameter_context,
-    }
+    context = get_demo_container_context() | component_context.get_component_context(Component(component_name))
+    context["demo"] = demo_info
 
-    parameter_context_func = parameter_context_func_map.get(component_name)
-
-    if not parameter_context_func:
-        return HttpResponse("Page not found", status=404)
-
-    context = get_component_demo_context() | parameter_context_func()
-
+    # Temporary fix for components with more complex detailpage
     if component_name == "button":
         context["outline_button_demo"] = {
             "url": reverse("component_demo_view", kwargs={"component_name": "outline_button"}),
@@ -440,15 +305,13 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
         }
 
     if request.headers.get("HX-Request") and not request.headers.get("HX-History-Restore-Request"):
-        context["demo"] = demo_info
-        if component_name == "minimal_step_bar":
-            context |= component_context.get_component_context(component_name)
-            return render(request, "insight_ui/docs/component_detailpage2.html", context)
-        return render(request, f"insight_ui/docs/partial/{component_name}_detailpage.html", context)
+        # Temporary fix for components with more complex detailpage
+        if component_name in ["button", "radio_group", "card"]:
+            return render(request, f"insight_ui/docs/partial/{component_name}_detailpage.html", context)
+
+        return render(request, "insight_ui/docs/component_detailpage_partial.html", context)
 
     context |= get_base_context("component_detail_page_view") | get_sidebar_context()
-    context["template_name"] = f"insight_ui/docs/partial/{component_name}_detailpage.html"
-    context["demo"] = demo_info
     return render(request, "insight_ui/docs/component_detailpage.html", context)
 
 
@@ -468,68 +331,12 @@ def component_demo_view(request: HttpRequest, component_name: str) -> HttpRespon
         response (HttpResponse): response object.
 
     """
-    context_func_map = {
-        "navbar": get_navbar_context,
-        "sidebar": get_drawer_context,
-        "footer": get_footer_context,
-        "breadcrumb": get_breadcrumb_context,
-        "step_bar": get_step_bar_context,
-        "minimal_step_bar": get_minimal_step_bar_context,
-        "bullet_point_list": get_bullet_point_list_context,
-        "accordion": get_accordion_context,
-        "accordion_exclusive": get_accordion_context,
-        "tabs": get_tabs_context,
-        "button": get_empty_context,
-        "outline_button": get_empty_context,
-        "button_sizes": get_empty_context,
-        "input_field": get_empty_context,
-        "checkbox": get_checkbox_context,
-        "checkbox_group": get_checkbox_context,
-        "dropdown": get_dropdown_context,
-        "radio_group": get_radio_group_context,
-        "radio_block": get_radio_group_context,
-        "range_slider": get_range_slider_context,
-        "toggle_button": get_toggle_button_context,
-        "select": get_select_context,
-        "multiselect": get_multiselect_context,
-        "chat": get_empty_context,
-        "alert": get_alert_context,
-        "modal": get_modal_context,
-        "popover": get_empty_context,
-        "tooltip": get_empty_context,
-        "code_block": get_empty_context,
-        "differentiator": get_differentiator_context,
-        "progress_bar": get_empty_context,
-        "geo_map": get_geo_map_context,
-        "chart": get_charts_context,
-        "live_content": get_empty_context,
-        "web_socket": get_empty_context,
-        "infinite_scroll": get_infinite_scroll_context,
-        "pagination": get_pagination_context,
-        "table": get_table_context,
-        "generic_filter": get_generic_filter_context,
-        "search_bar": get_empty_context,
-        "query_builder": get_query_builder_context,
-        "card": get_cards_context,
-        "effect_cards": get_cards_context,
-        "card_carousel": get_card_carousel_context,
-        "image_carousel": get_image_carousel_context,
-        "3D_carousel": get_3d_carousel_context,
-        "toggle_view": get_toggle_view_context,
-        "form": get_form_context,
-        "page_header": get_empty_context,
-        "article": get_empty_context,
-        "hero": get_empty_context,
-    }
-    logger.info(component_name)
-    context_func = context_func_map.get(component_name)
+    component = Component(component_name)
 
-    if not context_func:
-        return HttpResponse("Page not found", status=404)
+    context = get_base_context() | get_component_demo_context(component)
+    context["component"] = component
 
-    context = get_base_context() | context_func()
-    context["component"] = component_name
-
+    # The demo container has a padding but some components should get the whole space
     if component_name in ["navbar", "sidebar", "footer"]:
         context["no_padding"] = True
 
@@ -551,31 +358,19 @@ def storybook_view(request: HttpRequest, storybook_name: str) -> HttpResponse:
         response (HttpResponse): response object.
 
     """
-    context_func_map = {
-        "layout": get_layout_storybook_context,
-        "main": get_main_storybook_context,
-        "input": get_inputs_storybook_context,
-        "popup": get_popup_storybook_context,
-        "util": get_utils_storybook_context,
-        "table": get_table_storybook_context,
-        "card": get_card_storybook_context,
-        "form": get_form_storybook_context,
-        "filter": get_filter_storybook_context,
-    }
+    storybook = ComponentCategory(storybook_name)
 
-    context_func = context_func_map.get(storybook_name)
+    context = get_storybook_context(storybook)
+    context["storybook"] = storybook
 
-    if not context_func:
+    if not context:
         return HttpResponse("Page not found", status=404)
 
     if request.headers.get("HX-Request") and not request.headers.get("HX-History-Restore-Request"):
-        context = context_func()
         context["search_query"] = request.GET.get("search", "")
-        return render(request, f"insight_ui/docs/partial/storybooks/{storybook_name}_storybook.html", context)
+        return render(request, "insight_ui/docs/storybook_partial.html", context)
 
-    context = context_func()
-    context["template_name"] = f"insight_ui/docs/partial/storybooks/{storybook_name}_storybook.html"
-    return render(request, "insight_ui/docs/component_detailpage.html", context)
+    return render(request, "insight_ui/docs/storybook.html", context)
 
 
 @require_GET

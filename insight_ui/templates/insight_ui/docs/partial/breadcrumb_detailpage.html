@@ -20,8 +20,8 @@
 <section>
     <h2>{% trans "Verwendung" %}</h2>
     <p class="mb-4">
-        {% blocktrans with breadcrumb='<span class="inline-tag">&lcub;% breadcrumbs %&rcub;</span>'|safe %}
-            Die Komponente wird über das {{ breadcrumb }} Tag eingebunden.
+        {% blocktrans with breadcrumbs='<span class="inline-tag">&lcub;% breadcrumbs %&rcub;</span>'|safe %}
+            Die Komponente wird über das {{ breadcrumbs }} Tag eingebunden.
         {% endblocktrans %}
     </p>
     <div data-insight-code-block="Django">
