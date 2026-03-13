@@ -1,4 +1,4 @@
-"""Template-Tags für Insight UI-Komponenten."""
+"""Template-Tags for Insight UI-Components."""
 
 import math
 from collections.abc import Mapping, Sequence
@@ -113,13 +113,13 @@ def diff(a: str, b: str, simple: bool = True) -> str:
 
     Arguments:
     ---------
-        a (str): Die ursprüngliche Version des Textes.
-        b (str): Die veränderte Version des Textes.
-        simple (bool): 'True' für eine vereinfachte Darstellung.
+        a (str): The original version of the text.
+        b (str): The modified version of the text.
+        simple (bool): 'True' for a simplified display.
 
     Returns:
     -------
-        diff (str): Ein HTML Ausschnitt zur grafischen Darstellung der Unterschiede.
+        diff (str): The HTML code for the graphical representation of the differences.
 
     """
     if not simple:
@@ -128,7 +128,6 @@ def diff(a: str, b: str, simple: bool = True) -> str:
         differentiator._styles = styles
         diff = unified_diff(a.splitlines(), b.splitlines(), lineterm="")
         return "\n".join(list(diff))
-        return differentiator.make_file(a.splitlines(), b.splitlines())
 
     diff = ndiff(a.split(), b.split())
     html = ""
@@ -153,50 +152,16 @@ def diff(a: str, b: str, simple: bool = True) -> str:
 @register.inclusion_tag("insight_ui/components/navbar.html")
 def navbar(config: Mapping[str, Any], **kwargs: JsonValue) -> dict[str, Any]:
     """
-    Rendert eine konfigurierbare Navigationsleiste.
+    Render a configurable navigation bar.
 
     Args:
     ----
-        config (dict): Navbar Konfiguration:
-            {
-                "brand": {
-                    "title": "Insight UI",
-                    "view_name": "storybook_view",
-                    "gap": "0.5rem",
-                    "logo": {
-                        "url": "insight_ui/svg/logo.svg",
-                        "url_dark": "insight_ui/svg/ai-logo-dark.svg",
-                        "alt": "Insight UI Logo",
-                        "height": "2rem",
-                    },
-                },
-                "links": [
-                    {
-                        "text": _("Startseite"),
-                        "icon": {"name": "home", "size": "small"},
-                        "view_name": "storybook_view",
-                        "active": True,
-                        "need_auth": False,
-                        "staff_only": False,
-                    },
-                    {
-                        "text": _("Über"),
-                        "open_modal": "about-modal",
-                        "active": False,
-                        "need_auth": False,
-                        "staff_only": False,
-                    },
-                ],
-                "searchbar_request_view": "search_view",
-                "show_usermenu": True,
-                "show_language_selector": True,
-                "show_theme_toggle": True,
-            }
-        **kwargs: Zusätzliche Optionen für die Navbar
+        config (dict): Navbar configuration.
+        **kwargs: Additional options for the navigation bar.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     brand = _resolve_view_urls(config.get("brand")) if config.get("brand") else None
@@ -217,15 +182,15 @@ def navbar(config: Mapping[str, Any], **kwargs: JsonValue) -> dict[str, Any]:
 @register.inclusion_tag("insight_ui/components/step_bar.html")
 def step_bar(items: list) -> dict:
     """
-    Rendert eine grafische Darstellung von Prozessschritten.
+    Render a graphical representation of process steps.
 
     Arguments:
     ---------
-        items (list): Eine Liste der einzelnen Schritte.
+        items (list): A list of the individual steps.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {"items": items}
@@ -234,15 +199,15 @@ def step_bar(items: list) -> dict:
 @register.inclusion_tag("insight_ui/components/minimal_step_bar.html")
 def minimal_step_bar(config: dict) -> dict:
     """
-    Rendert eine grafische Darstellung von Prozessschritten.
+    Render a graphical representation of process steps.
 
     Arguments:
     ---------
-        config (dict): Konfiguration der einzelnen Schritte der Step Bar.
+        config (dict): Configuration of the individual steps of the Step Bar.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     items = config.get("items", [])
@@ -261,15 +226,15 @@ def minimal_step_bar(config: dict) -> dict:
 @register.inclusion_tag("insight_ui/components/bullet_point_list.html")
 def bullet_point_list(items: list = []) -> dict:
     """
-    Rendert eine grafische Darstellung einer Bullet-Point Liste.
+    Render a graphical representation of a bullet point list.
 
     Arguments:
     ---------
-        items (list): Eine Liste der einzelnen Bullet-Points.
+        items (list): A list of the individual bullet points.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {"items": items}
@@ -293,28 +258,28 @@ def input_field(  # noqa: PLR0913 (too many arguments)
     config: dict | None = None,
 ) -> dict:
     """
-    Rendert ein beliebiges <input> Feld.
+    Render any <input> field.
 
     Arguments:
     ---------
-        tag_id (str): Eine optionale, eindeutige ID für JavaScript.
-        name (str): Wird für eine <form> benötigt, als Name des Request-Parameters.
-        input_type (str): Der Type des Input-Feldes bspw.: "text", "password", "date", etc..
-        placeholder (str): Ein platzhalter Text.
-        value (str): Der Wert des Input-Feldes (Bei type="checkbox", siehe 'checked').
-        minimum (int): Bestimmt den minimalen Wert der Eingabe.
-        maximum (int): Bestimmt den maximalen Wert der Eingabe.
-        min_length (int): Bestimmt die minimale Anzahl an Zeichen in einem Textfeld.
-        max_length (int): Bestimmt die maximale Anzahl an Zeichen in einem Textfeld.
-        checked (bool): 'True', wenn type="checkbox" und die Checkbox ausgewählt sein soll.
-        required (bool): 'True' wenn das Feld ausgefüllt werden muss.
-        disabled (bool): 'True', wenn das Feld deaktiviert sein soll, andernfalls 'False'.
-        label (str): Ein Label-Text welcher über dem Input-Feld angezeigt wird.
-        config (dict[str, Any]): Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
+        tag_id (str): An optional, unique ID for JavaScript.
+        name (str): Required for a <form> as the name of the request parameter.
+        input_type (str): The type of input field, e.g. "text", "password", "date" etc..
+        placeholder (str): Placeholder text.
+        value (str): The value of the input field (for type="checkbox", see 'checked').
+        minimum (int): Determines the minimum value of the input.
+        maximum (int): Determines the minimum value of the input.
+        min_length (int): Determines the minimum number of characters in a text field.
+        max_length (int): Determines the minimum number of characters in a text field.
+        checked (bool): 'True' if type="checkbox" and the checkbox should be selected.
+        required (bool): 'True' if the field must be filled in.
+        disabled (bool): 'True' if the field should be disabled, otherwise 'False'.
+        label (str): A label text that is displayed above the input field.
+        config (dict[str, Any]): An alternative configuration with keys corresponding to the previous parameters.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     if config is not None:
@@ -363,24 +328,24 @@ def textarea(  # noqa: PLR0913 (too many arguments)
     config: dict | None = None,
 ) -> dict:
     """
-    Rendert ein <textarea> Feld.
+    Render a <textarea> field.
 
     Arguments:
     ---------
-        tag_id (str): Eine optionale, eindeutige ID für JavaScript.
-        name (str): Wird für eine <form> benötigt, als Name des Request-Parameters.
-        placeholder (str): Ein platzhalter Text.
-        value (str): Der Wert des Text-Feldes.
-        rows (int): Bestimmt die Anzahl an Zeilen.
-        cols (int): Bestimmt die Anzahl an Zeichen in einer Zeile.
-        required (bool): 'True' wenn das Feld ausgefüllt werden muss.
-        disabled (bool): 'True', wenn das Feld deaktiviert sein soll, andernfalls 'False'.
-        label (str): Ein Label-Text welcher über dem Input-Feld angezeigt wird.
-        config (dict[str, Any]): Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
+        tag_id (str): An optional, unique ID for JavaScript.
+        name (str): Required for a <form> as the name of the request parameter.
+        placeholder (str): Placeholder text.
+        value (str): The value of the text field.
+        rows (int): Determines the number of lines.
+        cols (int): Determines the number of characters in a line.
+        required (bool): 'True' if the field must be filled in.
+        disabled (bool): 'True' if the field should be disabled, otherwise 'False'.
+        label (str): A label text that is displayed above the text field.
+        config (dict[str, Any]): An alternative configuration with keys corresponding to the previous parameters.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     if config is not None:
@@ -410,28 +375,15 @@ def textarea(  # noqa: PLR0913 (too many arguments)
 @register.inclusion_tag("insight_ui/components/dropdown.html")
 def dropdown(config: dict) -> dict:
     """
-    Rendert ein Dropdown Menü.
+    Render a dropdown menu.
 
     Arguments:
     ---------
-        config (dict): Ein Dictionary welches das Dropdown Menü beschreibt:
-        config = {
-            "tag_id": "user-menu",
-            "title": _("User"),
-            "show_arrow": True,
-            "items": [
-                {
-                    "text": _("Profile"),
-                    "view_name": "user_profile_view",
-                    "icon": {"name": "user", "size": "small"},
-                },
-                ...
-            ],
-        }
+        config (dict): A dictionary that describes the dropdown menu.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return config
@@ -448,21 +400,21 @@ def checkbox(  # noqa: PLR0913 (too many arguments)
     config: dict | None = None,
 ) -> dict:
     """
-    Rendert eine Checkbox mit einem Label-Text.
+    Render a checkbox with label text.
 
     Arguments:
     ---------
-        tag_id (str): Eine optionale, eindeutige ID für JavaScript.
-        name (str): Wird für eine <form> benötigt, als Name des Request-Parameters.
-        value (str): Der Wert der Checkbox (Das ist nicht der Zustand, siehe dafür 'checked').
-        label (str): Ein Label-Text welcher über der Checkbox angezeigt wird.
-        checked (bool): 'True', wenn die Checkbox ausgewählt sein soll, andernfalls 'False'.
-        disabled (bool): 'True', wenn die Checkbox deaktiviert sein soll, andernfalls 'False'.
-        config (dict[str, Any]): Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
+        tag_id (str): An optional, unique ID for JavaScript.
+        name (str): Required for a <form> as the name of the request parameter.
+        value (str): The value of the checkbox (this is not the state, see 'checked' for that).
+        label (str): A label text that is displayed above the checkbox.
+        checked (bool): 'True' if the checkbox should be selected, otherwise 'False'.
+        disabled (bool): 'True' if the checkbox should be disabled, otherwise 'False'.
+        config (dict[str, Any]): An alternative configuration with keys corresponding to the previous parameters.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     if config is not None:
@@ -479,15 +431,15 @@ def checkbox(  # noqa: PLR0913 (too many arguments)
 @register.inclusion_tag("insight_ui/components/checkbox_group.html")
 def checkbox_group(config: dict) -> dict:
     """
-    Rendert eine Gruppe von Checkbox-Elementen.
+    Render a group of checkbox elements.
 
     Arguments:
     ---------
-        config (dict): Beschreibt die Checkbox-Gruppen Komponente.
+        config (dict): Describes the checkbox groups component.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {"config": config}
@@ -496,16 +448,16 @@ def checkbox_group(config: dict) -> dict:
 @register.inclusion_tag("insight_ui/components/radio_group.html")
 def radio_group(config: dict, current_value: str) -> dict:
     """
-    Rendert eine Gruppe von Radio-Buttons.
+    Render a group of radio buttons.
 
     Arguments:
     ---------
-        config (dict): Beschreibt die Radio Komponente und deren Items.
-        current_value (str): Der Name des aktuell ausgewählten Radio-Buttons.
+        config (dict): Describes the radio component and its items.
+        current_value (str): The name of the currently selected radio button.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {
@@ -530,23 +482,23 @@ def radio_block(  # noqa: PLR0913 (too many arguments)
     integrated: bool = False,
 ) -> dict:
     """
-    Rendert ein Gruppe von Radio-Buttons.
+    Render a group of radio buttons.
 
     Arguments:
     ---------
-        config (dict): Beschreibt die Radio Komponente und deren Items.
-        current_value (str): Der Name des aktuell ausgewählten Radio-Buttons.
-        name (str): Der Name des gesamten Radio-Blocks, benötigt zur Referenzierung im JavaScript Code.
-        view_name (str): Der Name der View an welchen der Request beim wechseln, gesendet werden soll.
-        query_params (str): Ein String von Query-Parametern
-        hx_target_id (str): Die ID des HTML-Tags, welches bei wechseln des Wertes ausgetauscht werden soll.
-        hx_swap_method (str): Die Art wie das Target ausgetauscht werden soll (siehe: https://htmx.org/attributes/hx-swap/).
-        method (str): Der Name der JavaScript Methode welche ausgeführt werden soll.
-        integrated (bool): 'False' wenn die Komponente ihr eigenes <form> Element haben soll.
+        config (dict): Describes the radio component and its items.
+        current_value (str): The name of the currently selected radio button.
+        name (str): The name of the entire radio block, required for referencing in JavaScript code.
+        view_name (str): The name of the view to which the request should be sent when switching.
+        query_params (str): A string of query parameters.
+        hx_target_id (str): The ID of the HTML tag that should be replaced when the value changes.
+        hx_swap_method (str): The way in which the target is to be replaced (see: https://htmx.org/attributes/hx-swap/).
+        method (str): The name of the JavaScript method to be executed.
+        integrated (bool): 'False' if the component should have its own <form> element.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     if config is not None:
@@ -580,24 +532,24 @@ def toggle(  # noqa: PLR0913 (too many arguments)
     method: str = "",
 ) -> dict:
     """
-    Rendert ein Toggle-Button.
+    Render a toggle button.
 
     Arguments:
     ---------
-        tag_id (str): Eine eindeutige ID für die Verknüpfung von <input> und <label>, sowie JavaScript.
-        name (str): Wird für eine <form> benötigt, als Name des Request-Parameters.
-        value (str): Der Wert des Toggles (Das ist nicht der Zustand, siehe dafür 'checked').
-        label (str): Ein Label-Text welcher über dem Toggle angezeigt wird.
-        icon (dict[str, str]): Ein Icon welches neben dem Text angezeigt wird.
-        checked (bool): 'True', wenn der Toggle ausgewählt sein soll, andernfalls 'False'.
-        disabled (bool): 'True', wenn der Toggle deaktiviert sein soll, andernfalls 'False'.
-        switch (bool): 'True', wenn der Toggle-Button wie ein typischer Switch-Select aussehen soll.
-        config (dict[str, Any]): Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
-        method (str): Der Name der JavaScript Methode welche ausgeführt werden soll.
+        tag_id (str): A unique ID for linking <input> and <label>, as well as JavaScript.
+        name (str): Required for a <form> as the name of the request parameter.
+        value (str): The value of the toggle (this is not the state, see 'checked' for that).
+        label (str): A label text that is displayed above the toggle.
+        icon (dict[str, str]): An icon displayed next to the text.
+        checked (bool): 'True' if the toggle should be selected, otherwise 'False'.
+        disabled (bool): 'True' if the toggle should be disabled, otherwise 'False'.
+        switch (bool): 'True' if the toggle button should look like a typical switch select.
+        config (dict[str, Any]): An alternative configuration with keys corresponding to the previous parameters.
+        method (str): The name of the JavaScript method to be executed.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     if config is not None:
@@ -637,24 +589,24 @@ def slider(  # noqa: PLR0913 (too many arguments)
     config: dict | None = None,
 ) -> dict:
     """
-    Rendert ein Range-Slider.
+    Render a range slider.
 
     Arguments:
     ---------
-        tag_id (str): Eine eindeutige ID für die Verknüpfung von <input> und <label>, sowie JavaScript.
-        name (str): Wird für eine <form> benötigt, als Name des Request-Parameters.
-        value (int): Der Wert des Sliders.
-        minimum (int): Der kleinste Wert des Sliders.
-        maximum (int): Der größte Wert des Sliders.
-        step_size (int): Die Größe der Schritte des Sliders.
-        label (str): Ein Label-Text welcher über dem Toggle angezeigt wird.
-        disabled (bool): 'True', wenn der Toggle deaktiviert sein soll, andernfalls 'False'.
-        items (list[str]): Eine Liste von Texten, welche als Legende unter dem Slider angezeigt werden.
-        config (dict[str, Any]): Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
+        tag_id (str): A unique ID for linking <input> and <label>, as well as JavaScript.
+        name (str): Required for a <form> as the name of the request parameter.
+        value (int): The value of the slider.
+        minimum (int): The smallest value of the slider.
+        maximum (int): The largest value of the slider.
+        step_size (int): The size of the slider's steps.
+        label (str): A label text that is displayed above the slider.
+        disabled (bool): 'True' if the slider should be disabled, otherwise 'False'.
+        items (list[str]): A list of texts that are displayed as captions below the slider.
+        config (dict[str, Any]): An alternative configuration with keys corresponding to the previous parameters.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     if config is not None:
@@ -684,15 +636,15 @@ def slider(  # noqa: PLR0913 (too many arguments)
 @register.inclusion_tag("insight_ui/components/chat.html")
 def chat(view_name: str) -> dict:
     """
-    Rendert ein Chat mit Input Zeile und ein Platz für den Response.
+    Render a chat with an input line and a place for the response.
 
     Arguments:
     ---------
-        view_name (str): Der Name der View an welchen der Request gesendet werden soll.
+        view_name (str): The name of the view to which the request should be sent.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {"view_name": view_name}
@@ -701,16 +653,16 @@ def chat(view_name: str) -> dict:
 @register.inclusion_tag("insight_ui/components/geo_map.html")
 def geo_map(data: dict = {}, map_height: int = 36) -> dict:
     """
-    Rendert eine integrierte geografische Karte.
+    Render an integrated geographic map.
 
     Arguments:
     ---------
-        data (dict): Einstellungen für die Karte und Daten welche auf der Karte dargestellt werden sollen.
-        map_height (int): Die Höhe der Karte in 'rem'.
+        data (dict): Settings for the map and data to be displayed on the map.
+        map_height (int): The height of the map in 'rem'.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {"data": data, "map_height": map_height}
@@ -719,18 +671,18 @@ def geo_map(data: dict = {}, map_height: int = 36) -> dict:
 @register.inclusion_tag("insight_ui/components/pagination.html")
 def pagination(current_page: Page, surrounding_pages: list[int], ipp_config: dict[str, Any] = {}) -> dict:
     """
-    Rendert eine Pagination.
+    Render pagination with items per page selection and display of adjacent pages.
 
     Arguments:
     ---------
-        current_page (Page): Ein von Django erzeugtes Pagination-Objekt der aktuellen Seite.
-        surrounding_pages (list[int]): Eine liste der benachbarten Seiten.
-            Siehe: from insight_ui.utils.pagination import get_page
-        ipp_config (dict[str, Any]): Konfiguration eines "Items per Page" Selects (select Komponente).
+        current_page (Page): A pagination object generated by Django for the current page.
+        surrounding_pages (list[int]): A list of neighboring pages.
+            See: from insight_ui.utils.pagination import get_page
+        ipp_config (dict[str, Any]): Configuring an "Items per Page" select (select component).
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {"current_page": current_page, "surrounding_pages": surrounding_pages, "ipp_config": ipp_config}
@@ -746,20 +698,20 @@ def generic_filter(  # noqa: PLR0913 (too many arguments)
     query_params: dict[str, str] = {},
 ) -> dict:
     """
-    Rendert eine generische Filterung, bestehend aus einem oder mehreren <select> Feldern.
+    Render a generic filter consisting of one or more <select> fields.
 
     Arguments:
     ---------
-        filters (list): Eine Liste der einzelnen Filter (<select> Feldern).
-        view_name (str): Der Name der View an welche der Request gesendet werden soll.
-        hx_target (str): Die ID des Containers, dessen Inhalt vom Response ausgetauscht werden soll.
-        hx_push_url (str): "true" wenn die ausgewählten Filterwerte in der URL abgebildet werden sollen.
-        vertical (bool): 'True' wenn die Filter übereinander angeordnet sein sollen.
-        query_params (dict): Ein Dictionary um die Werte der Filter zu setzen.
+        filters (list): A list of individual filters (<select> fields).
+        view_name (str): The name of the view to which the request should be sent.
+        hx_target (str): The ID of the container whose contents are to be exchanged by the response.
+        hx_push_url (str): "true" if the selected filter values should be mapped in the URL.
+        vertical (bool): 'True' if the filters should be arranged one above the other.
+        query_params (dict): A dictionary to set the values of the filters.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {
@@ -775,17 +727,17 @@ def generic_filter(  # noqa: PLR0913 (too many arguments)
 @register.inclusion_tag("insight_ui/components/search_bar.html")
 def search_bar(request_view: str, simple: bool = False, search_query: str = "") -> dict:
     """
-    Rendert eine Texteingabe für eine beispielsweise eine Suchfunktion.
+    Render text input with a button for a search function.
 
     Arguments:
     ---------
-        request_view (str): Der Name der View an welche der Request gesendet werden soll.
-        simple (bool): True wenn die Suchleiste ohne Button und kleiner angezeigt werden soll.
-        search_query (str): Ein optionaler Wert der automatisch in dem Textfeld steht.
+        request_view (str): The name of the view to which the request should be sent.
+        simple (bool): 'True' if the search bar should be displayed without buttons and smaller.
+        search_query (str): An optional value that appears automatically in the text field.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {"request_view": request_view, "simple": simple, "search_query": search_query}
@@ -794,15 +746,15 @@ def search_bar(request_view: str, simple: bool = False, search_query: str = "") 
 @register.inclusion_tag("insight_ui/components/search_query_builder/sq_builder.html")
 def sq_builder(model_fields: list) -> dict:
     """
-    Rendert eine Filterung mit welcher sich eine eigene Suchanfrage zusammenbauen lässt. Angelehnt an eine SQL-Query.
+    Render a filter that can be used to construct your own search query. Based on an SQL query.
 
     Arguments:
     ---------
-        model_fields (list): Eine Liste der Modell Felder mit möglichen Operatoren, etc.
+        model_fields (list): A list of model fields with possible operators, etc..
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {"model_fields": model_fields}
@@ -811,18 +763,18 @@ def sq_builder(model_fields: list) -> dict:
 @register.inclusion_tag("insight_ui/components/toggle_view.html")
 def toggle_view(tag_id: str, data: list, view_radio_config: dict, current_view: str) -> dict:
     """
-    Rendert eine Ansicht von Daten, welche auf verschiedene Arten dargestellt werden kann.
+    Render a view of data that can be displayed in various ways.
 
     Arguments:
     ---------
-        tag_id (str): Eine einzigartige ID für die Komponente. (Wird für den wechsel der Ansicht benötigt).
-        data (list): Die Daten, welche angezeigt werden sollen.
-        view_radio_config (dict): Die Konfiguration der Radio-Group, zum wechseln der Ansichtsart.
-        current_view (str): Der name der aktuellen Ansichtsart.
+        tag_id (str): A unique ID for the component. (Required for changing the view).
+        data (list): The data to be displayed.
+        view_radio_config (dict): The configuration of the radio group for changing the view type.
+        current_view (str): The name of the current view type.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {"tag_id": tag_id, "data": data, "view_radio_config": view_radio_config, "current_view": current_view}
@@ -831,18 +783,18 @@ def toggle_view(tag_id: str, data: list, view_radio_config: dict, current_view: 
 @register.inclusion_tag("insight_ui/components/live_content.html")
 def live_content(tag_id: str = "", url: str = "", interval: int = 10, initial_content: str = "") -> dict[str, Any]:
     """
-    Rendert einen Container für Live-Updates via HTMX.
+    Render a container for live updates via HTMX.
 
     Args:
     ----
-        tag_id (str): Eine optionale, eindeutige ID für JavaScript.
-        url (str): Die URL an welche der Request für das updaten des Inhalts gesendet werden soll.
-        interval (int): Das Intervall für automatische Updates in Sekunden.
-        initial_content (str): Optionaler, initialer Inhalt.
+        tag_id (str): An optional, unique ID for JavaScript.
+        url (str): The URL to which the request for updating the content should be sent.
+        interval (int): The interval for automatic updates in seconds.
+        initial_content (str): Optional initial content.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     htmx_config = {"url": url, "trigger": f"load, every {interval}s", "swap": "innerHTML"}
@@ -853,17 +805,17 @@ def live_content(tag_id: str = "", url: str = "", interval: int = 10, initial_co
 @register.inclusion_tag("insight_ui/components/websocket.html")
 def insight_websocket(tag_id: str = "", url: str = "", initial_content: str = "") -> dict[str, Any]:
     """
-    Rendert eine WebSocket-Komponente als Wrapper für die htmx v2 ws-Extension.
+    Render a WebSocket component as a wrapper for the htmx v2 ws extension.
 
     Args:
     ----
-        tag_id: Die ID des WebSocket-Containers.
-        url: Die WebSocket-URL (z.B. ws://localhost:8765).
-        initial_content: Initialer Inhalt.
+        tag_id: The ID of the WebSocket container.
+        url: The WebSocket URL (e.g. ws://localhost:8765).
+        initial_content: Initial content.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {"tag_id": tag_id, "url": url, "initial_content": initial_content}
@@ -880,22 +832,21 @@ def infinite_scroll(  # noqa: PLR0913 (Too many arguments)
     threshold: int = 100,
 ) -> dict[str, Any]:
     """
-    Rendert einen Container für Infinite Scroll.
+    Render a container for infinite scroll with an optional 'Fetch more' button.
 
     Args:
     ----
-        tag_id (str): Optionale, eindeutige Tag-ID für die identification des Elements im JavaScript.
-        view_name (str): Name der View für das Laden weiterer Elemente.
-        items (list): Liste der bereits geladenen Elemente.
-        page (int): Die Nummer der aktuellen "Seite", welche geladen werden soll.
-        has_next (bool): 'True' wenn noch weitere Elemente verfügbar sind.
-        auto_fetch (bool): 'False' wenn der Nutzer aktiv weitere Elemente per Button anfordern soll.
-        threshold (int): Der Pixel-Schwellenwert für das Laden weiterer Elemente.
-        **kwargs: Zusätzliche Optionen ('id' = Tag-ID).
+        tag_id (str): An optional, unique ID for JavaScript.
+        view_name (str): Name of the view for loading additional elements.
+        items (list): List of items already loaded.
+        page (int): The number of the current "page" to be loaded.
+        has_next (bool): 'True' if further elements are available.
+        auto_fetch (bool): 'False' if the user should actively request additional elements via a button.
+        threshold (int): The pixel threshold for loading additional elements.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {
@@ -912,18 +863,18 @@ def infinite_scroll(  # noqa: PLR0913 (Too many arguments)
 @register.inclusion_tag("insight_ui/components/alert.html")
 def alert(tag_id: str = "", message: str = "", type: str = "info", dismissible: bool = True) -> dict[str, Any]:  # noqa: A002
     """
-    Rendert eine barrierefreie Benachrichtigung.
+    Render a closable notification.
 
     Args:
     ----
-        tag_id (str): Optionale, eindeutige Tag-ID für die identification des Elements im JavaScript.
-        message: Die Hauptnachricht der Benachrichtigung.
-        type: Der Typ der Benachrichtigung ('info', 'success', 'warning', 'error').
-        dismissible: True wenn die Benachrichtigung schließbar sein soll.
+        tag_id (str): An optional, unique ID for JavaScript.
+        message: The message of the notification.
+        type: The type of notification ('info', 'success', 'warning', 'error').
+        dismissible: 'True' if the notification should be closable.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {"tag_id": tag_id, "message": message, "type": type, "dismissible": dismissible}
@@ -938,19 +889,19 @@ def sidebar(
     mobile_hidden: bool = False,
 ) -> dict[str, Any]:
     """
-    Rendert eine konfigurierbare Seitennavigation.
+    Render a configurable page navigation.
 
     Args:
     ----
-        sidebar_data (dict): Der Inhalt der Sidebar (Titel und Navigations-Elemente).
-        side (str): Gibt an, an welcher Seite die Sidebar dargestellt werden soll.
-        static (bool): True wenn die Sidebar nicht einklappbar sein soll.
-        auto_close (bool): True wenn die Sidebar sich automatisch schließen soll, wenn der Cursor sie verlässt.
-        mobile_hidden (bool): True wenn eine statische Sidebar auf kleineren Viewports ausgeblendet werden soll.
+        sidebar_data (dict): The content of the sidebar (title and navigation elements).
+        side (str): Specifies on which side the sidebar should be displayed.
+        static (bool): 'True' if the sidebar should not be collapsible.
+        auto_close (bool): 'True' if the sidebar should close automatically when the cursor leaves it.
+        mobile_hidden (bool): 'True' if a static sidebar should be hidden on smaller viewports.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     resolved_sidebar = _resolve_view_urls(dict(sidebar_data)) if sidebar_data else {}
@@ -968,15 +919,15 @@ def sidebar(
 @register.inclusion_tag("insight_ui/components/breadcrumbs.html")
 def breadcrumbs(items: Sequence[Mapping[str, Any]] | None = None) -> dict[str, Any]:
     """
-    Rendert eine Breadcrumb-Navigation.
+    Render breadcrumb navigation.
 
     Args:
     ----
-        items (list): Eine Liste von Dictionaries mit den Breadcrumb-Elementen.
+        items (list): List of dictionaries containing the breadcrumb elements.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     resolved_items = [dict(item) for item in items] if items is not None else []
@@ -986,15 +937,15 @@ def breadcrumbs(items: Sequence[Mapping[str, Any]] | None = None) -> dict[str, A
 @register.inclusion_tag("insight_ui/components/table.html")
 def table(data: dict) -> dict[str, Any]:
     """
-    Rendert eine einfache Tabelle.
+    Render a simple table.
 
     Args:
     ----
-        data (dict): Ein Dictionary mit den Headern, den Rows und einer Überschrift.
+        data (dict): Dictionary with headers, rows, a title and an empty message if not data is available.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {
@@ -1014,19 +965,19 @@ def modal(  # noqa: PLR0913 (too many args)
     actions: Sequence[Mapping[str, str]] = [],
 ) -> dict[str, Any]:
     """
-    Rendert ein barrierefreies Modal-Dialog.
+    Render an accessible modal dialog.
 
     Args:
     ----
-        tag_id (str): Eine eindeutige ID für das Modal.
-        title (str): Der Titel des Modals.
-        description (str): Eine optionale Beschreibung des Modals.
-        additional_content (str): Der Inhalt des Modals.
-        actions (list): Eine Liste von Aktion-Buttons.
+        tag_id (str): A unique ID for the modal.
+        title (str): The title of the modal.
+        description (str): An optional description of the modal.
+        additional_content (str): The content of the modal.
+        actions (list): A list of action buttons.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {
@@ -1047,19 +998,19 @@ def carousel(  # noqa: PLR0913 (too many args)
     items_per_slide: int = 1,
 ) -> dict[str, Any]:
     """
-    Rendert ein Karten-Karussell.
+    Render a card carousel.
 
     Args:
     ----
-        carousel_items (list): Darzustellender Inhalt (Karten)
-        autoplay (bool): Wechsle automatisch nach einer bestimmten Zeit (5s) zur nächsten Seite
-        show_dots (bool): Zeige Pagination Dots unter dem Inhalt
-        show_index (bool): Zeige Anzahl und aktuelle Seite in der unteren rechten Ecke
-        items_per_slide (int): Anzahl der Items pro Seite
+        carousel_items (list): Content to be displayed (cards).
+        autoplay (bool): Automatically switch to the next page after a certain amount of time (5 seconds).
+        show_dots (bool): Show pagination dots below the content.
+        show_index (bool): Display number and current page in the lower right corner.
+        items_per_slide (int): Number of items per page.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {
@@ -1081,19 +1032,19 @@ def image_carousel(  # noqa: PLR0913 (too many args)
     items_per_slide: int = 1,
 ) -> dict[str, Any]:
     """
-    Rendert ein Bilder-Karussell.
+    Render an image carousel.
 
     Args:
     ----
-        images (list): Bilder welche innerhalb des Karussell angezeigt werden sollen.
-        autoplay (bool): Wechsle automatisch nach einer bestimmten Zeit (5s) zur nächsten Seite
-        show_dots (bool): Zeige Pagination Dots unter dem Inhalt
-        show_index (bool): 'True', wenn in der unteren rechten Ecke die aktuelle Seite angezeigt werden soll.
-        items_per_slide (int): Anzahl der Items pro Seite
+        images (list): Images to be displayed within the carousel.
+        autoplay (bool): Automatically switch to the next page after a certain amount of time (5 seconds).
+        show_dots (bool): Show pagination dots below the content.
+        show_index (bool): Display number and current page in the lower right corner.
+        items_per_slide (int): Number of items per page.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {
@@ -1111,26 +1062,26 @@ def card(
     title: str, content: str, subtitle: str = "", image: dict[str, str] = {}, actions: list[dict[str, str]] = []
 ) -> dict[str, Any]:
     """
-    Rendert eine Karte mit dem Seitenverhältnis 16:9, dies entspricht ca. dem einer Visitenkarte.
+    Render a card with an aspect ratio of 16:9, which is approximately the same as a business card.
 
     Args:
     ----
-        title (str): Der Title der Karte.
-        content (str): Der Hauptinhalt der Karte.
-        subtitle (str): Ein optionaler Untertitel der Karte.
-        image (dict[url: str, alt: str]): Informationen über das Bild der Karte.
-        actions (list[dict[text: str, url: str, type: str]]): Eine Liste von Aktionbuttons.
+        title (str): The title of the card.
+        content (str): The main content of the card.
+        subtitle (str): An optional subtitle for the card.
+        image (dict[url: str, alt: str]): Information about the image on the card.
+        actions (list[dict[text: str, url: str, type: str]]): A list of action buttons.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {"title": title, "subtitle": subtitle, "content": content, "image": image, "actions": actions}
 
 
 @register.inclusion_tag("insight_ui/components/cards/app_card.html")
-def card_app(  # noqa: PLR0913
+def app_card(  # noqa: PLR0913
     title: str,
     content: str,
     tags: list[str] = [],
@@ -1139,31 +1090,31 @@ def card_app(  # noqa: PLR0913
     actions: list[dict[str, str]] = [],
 ) -> dict[str, Any]:
     """
-    Rendert eine vertikal ausgerichtete Karte.
+    Render a vertically aligned card.
 
-    Die Karte beginnt mit einem quadratischen Bild. Darunter befindet sich der Titel und der Content,
-    sowie wenn angegeben, eine Liste von Tags. Am Ende werden, sofern vorhanden die Aktionbuttons
-    übereinander dargestellt.
+    The card starts with a square image. Below it is the title and content,
+    as well as a list of tags, if specified. At the end, if available, the action buttons
+    are displayed one above the other.
 
     Args:
     ----
-        title (str): Der Title der Karte.
-        content (str): Der Hauptinhalt der Karte.
-        tags (list[str]): Eine Liste von Buttons.
-        url (str): Eine URL welche aufgerufen wird, wenn der Nutzer auf den Title klickt.
-        image (dict[url: str, alt: str]): Informationen über das Bild der Karte.
-        actions (list[dict[text: str, url: str, type: str]]): Eine Liste von Aktionbuttons.
+        title (str): The title of the card.
+        content (str): The main content of the card.
+        tags (list[str]): A list of buttons.
+        url (str): A URL that is called up when the user clicks on the title.
+        image (dict[url: str, alt: str]): Information about the image on the card.
+        actions (list[dict[text: str, url: str, type: str]]): A list of action buttons.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {"title": title, "content": content, "tags": tags, "url": url, "image": image, "actions": actions}
 
 
 @register.inclusion_tag("insight_ui/components/cards/flip_card.html")
-def card_flip(  # noqa: PLR0913
+def flip_card(  # noqa: PLR0913
     title: str,
     content: str,
     tags: list[str] = [],
@@ -1172,20 +1123,20 @@ def card_flip(  # noqa: PLR0913
     actions: list[dict[str, str]] = [],
 ) -> dict[str, Any]:
     """
-    Rendert eine Karte, welche sich um 180° drehen kann und auf der Rückseite weitere Informationen enthält.
+    Render a card that can be rotated 180° and contains additional information on the back.
 
     Args:
     ----
-        title (str): Der Title der Karte.
-        content (str): Der Hauptinhalt der Karte.
-        tags (list[str]): Eine Liste von Buttons.
-        url (str): Eine URL welche aufgerufen wird, wenn der Nutzer auf den Title klickt.
-        image (dict[url: str, alt: str]): Informationen über das Bild der Karte.
-        actions (list[dict[text: str, url: str, type: str]]): Eine Liste von Aktionbuttons.
+        title (str): The title of the card.
+        content (str): The main content of the card.
+        tags (list[str]): A list of buttons.
+        url (str): A URL that is called up when the user clicks on the title.
+        image (dict[url: str, alt: str]): Information about the image on the card.
+        actions (list[dict[text: str, url: str, type: str]]): A list of action buttons.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {"title": title, "content": content, "tags": tags, "url": url, "image": image, "actions": actions}
@@ -1202,21 +1153,21 @@ def form(  # noqa: PLR0913 (too many args)
     htmx_config: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """
-    Rendert ein Formular mit HTMX-Unterstützung.
+    Render a form with HTMX support.
 
     Args:
     ----
-        tag_id (str): Optionale, eindeutige ID zur Identifizierung.
-        title (str): Der Titel des Formulars.
-        description (str): Eine optionale Beschreibung.
-        fields (list): Eine Liste von Formularfeldern.
-        show_reset_button (bool): Zeigt neben dem "Absenden" Button ein "Zurücksetzen" Button an.
-        view_name (str): Die Name des Endpunktes für die Formular-Übermittlung.
-        htmx_config (dict): HTMX Konfiguration für AJAX-Requests.
+        tag_id (str): An optional, unique ID for JavaScript.
+        title (str): The title of the form.
+        description (str): An optional description.
+        fields (list): A list of form fields.
+        show_reset_button (bool): Displays a "Reset" button next to the "Submit" button.
+        view_name (str): The name of the endpoint for form submission.
+        htmx_config (dict): HTMX configuration for AJAX requests.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {
@@ -1233,15 +1184,15 @@ def form(  # noqa: PLR0913 (too many args)
 @register.inclusion_tag("insight_ui/components/footer.html")
 def footer(data: dict) -> dict[str, Any]:
     """
-    Rendert einen Footer mit optionaler Beschreibung, Links und einer Copyright Zeile.
+    Render a footer with optional description, links, and a copyright line.
 
     Args:
     ----
-        data (dict): Die Daten welche im Footer angezeigt werden sollen.
+        data (dict): The data that should be displayed in the footer.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {
@@ -1255,17 +1206,17 @@ def footer(data: dict) -> dict[str, Any]:
 @register.inclusion_tag("insight_ui/components/accordion.html")
 def accordion(items: list, group_id: str = "accordion", exclusive: bool = True) -> dict:
     """
-    Rendert ein Accordion welches ein oder mehrere Bereiche geöffnet haben kann.
+    Render an accordion that can have one or more sections open.
 
     Args:
     ----
-        items (list): Die einzelnen Bereiche mit Caption und Content.
-        group_id (str): Eine eindeutige ID für das Accordion.
-        exclusive (bool): True wenn nur ein Bereich gleichzeitig offen sein darf.
+        items (list): The individual sections with captions and content.
+        group_id (str): A unique ID for the accordion.
+        exclusive (bool): 'True' if only one area may be open at a time.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {"items": items, "group_id": group_id, "exclusive": exclusive}
@@ -1274,15 +1225,15 @@ def accordion(items: list, group_id: str = "accordion", exclusive: bool = True) 
 @register.inclusion_tag("insight_ui/components/tabs.html")
 def tabs(config: dict) -> dict:
     """
-    Rendert eine Gruppe von Tabs/Registrierkarten und einen Container für den Inhalt des jeweiligen Tabs.
+    Render a group of tabs and a container for the content of each tab.
 
     Args:
     ----
-        config (dict): Enthält die einzelnen Tabs und ein paar allgemeine Informationen über die Komponente.
+        config (dict): Contains the individual tabs and some general information about the component.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {"config": config}
@@ -1297,19 +1248,19 @@ def three_d_carousel(
     carousel_items: Sequence[Mapping[str, Any]] = [],
 ) -> dict[str, Any]:
     """
-    Rendert eine 3D Variante der Karussell Komponente.
+    Render a 3D version of the carousel component.
 
     Args:
     ----
-        tag_id (str): Eine eindeutige ID für das Karussell.
-        velocity (int): Die Geschwindigkeit mit welcher sich das Karussell drehen soll.
-        tilt (int): Die Neigung des Karussell zur Kamera.
-        face_camera (bool): True wenn die Karten immer in Richtung der Kamera ausgerichtet sein sollen.
-        carousel_items (list): Darzustellender Inhalt (Karten)
+        tag_id (str): A unique ID for the carousel.
+        velocity (int): The speed at which the carousel should rotate.
+        tilt (int): The inclination of the carousel toward the camera.
+        face_camera (bool): 'True' if the cards should always be oriented toward the camera.
+        carousel_items (list): Content to be displayed (card).
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {
@@ -1330,19 +1281,19 @@ def select(
     config: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """
-    Rendert eine Auswahlbox.
+    Render a selection box.
 
     Args:
     ----
-        name (str): Der Name des <select> Elements.
-        label (str): Ein kurzer Titel, welche rüber dem Select angezeigt wird.
-        options (list[str] or dict[str, str]): Alle Werte welche ausgewählt werden können.
-        selected_option (str): Ein bereits ausgewählter Wert.
-        config (dict[str, Any]): Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
+        name (str): The name of the select element.
+        label (str): A short title that appears above the select box.
+        options (list[str] or dict[str, str]): All values that can be selected.
+        selected_option (str): A value that has already been selected.
+        config (dict[str, Any]): An alternative configuration with keys corresponding to the previous parameters.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     if config is not None:
@@ -1368,21 +1319,21 @@ def multiselect(  # noqa: PLR0913 (too many arguments)
     config: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """
-    Rendert eine Auswahlbox, welche mehrere ausgewählte Werte zulässt und eine integrierte Suchzeile hat.
+    Render a selection box that allows multiple selected values and has an integrated search bar.
 
     Args:
     ----
-        name (str): Der Name des Multiselect Elements.
-        label (str): Ein kurzer Titel, welche rüber dem Multiselect angezeigt wird.
-        maximum (int): Gibt an wie viele Werte maximal ausgewählt sein dürfen.
-        show_buttons (bool): 'True' zeigt zusätzlich "Alle Auswählen" und "Alle Abwählen" Buttons an.
-        options (list[str] or dict[str, str]): Alle Werte welche ausgewählt werden können.
-        selected_options (list[str]): Alle Werte welche bereits ausgewählt sein sollen.
-        config (dict[str, Any]): Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern.
+        name (str): The name of the multiselect element.
+        label (str): A short title that appears above the multiselect.
+        maximum (int): Specifies the maximum number of values that may be selected.
+        show_buttons (bool): 'True' additionally displays "Select All" and "Deselect All" buttons.
+        options (list[str] or dict[str, str]): All values that can be selected.
+        selected_options (list[str]): All values that should already be selected.
+        config (dict[str, Any]): An alternative configuration with keys corresponding to the previous parameters.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     if config is not None:
@@ -1409,16 +1360,16 @@ def multiselect(  # noqa: PLR0913 (too many arguments)
 @register.inclusion_tag("insight_ui/components/page_header.html")
 def page_header(title: str = "", description: str = "") -> dict[str, Any]:
     """
-    Rendert einen Seitenkopf für die blaue Kopfzeile im Base-Template.
+    Render a page header for the blue header in the base template.
 
     Args:
     ----
-        title (str): Der Titel der Seite.
-        description (str): Eine optionale Beschreibung unterhalb des Titels.
+        title (str): The title of the page.
+        description (str): An optional description below the title.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {"title": title, "description": description}
@@ -1427,18 +1378,18 @@ def page_header(title: str = "", description: str = "") -> dict[str, Any]:
 @register.inclusion_tag("insight_ui/components/article.html")
 def article(content: str = "", columns: int = 2, column_gap: str = "2rem", title: str = "") -> dict[str, Any]:
     """
-    Rendert einen Artikel im Zeitungsstil mit mehrspaltigem CSS-Columns-Layout.
+    Render an article in newspaper style with a multi-column layout.
 
     Args:
     ----
-        content (str): Der Textinhalt des Artikels (kann HTML enthalten).
-        columns (int): Die Anzahl der Spalten (Standard: 2).
-        column_gap (str): Der Abstand zwischen den Spalten (Standard: '2rem').
-        title (str): Ein optionaler Titel über dem Artikel.
+        content (str): The text content of the article (may contain HTML).
+        columns (int): The number of columns (default: 2).
+        column_gap (str): The distance between columns (default: '2rem').
+        title (str): An optional title above the article.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {"content": content, "columns": columns, "column_gap": column_gap, "title": title}
@@ -1455,21 +1406,21 @@ def hero(  # noqa: PLR0913 (too many arguments)
     badge: dict = {},
 ) -> dict[str, Any]:
     """
-    Rendert eine Hero Section mit optionalen Hintergrundbild.
+    Render a hero section with optional background image.
 
     Args:
     ----
-        title (str): Titel der Hero-Section.
-        subtitle (str): Untertitel der Hero-Section, welche unter dem Titel angezeigt wird.
-        description (str): Beschreibung der Hero-Section, welche unter dem Titel zw. Untertitel angezeigt wird.
-        cta_primary (dict): Primärer 'Call-to-Action' Button.
-        cta_secondary (dict): Sekundärer 'Call-to-Action' Button.
-        background_image_url (str): URL des Hintergrundbildes.
-        badge (dict): Eine Badge mit Icon und Text.
+        title (str): Title of the hero section.
+        subtitle (str): Subtitle of the hero section, which is displayed under the title.
+        description (str): Description of the hero section, which is displayed under the title or subtitle.
+        cta_primary (dict): Primary 'Call-to-Action' button.
+        cta_secondary (dict): Secondary 'Call-to-Action' button.
+        background_image_url (str): URL of the background image.
+        badge (dict): A badge with an icon and text.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {
@@ -1486,17 +1437,17 @@ def hero(  # noqa: PLR0913 (too many arguments)
 @register.inclusion_tag("insight_ui/components/charts/bar_chart.html")
 def bar_chart(chart_id: str, chart: dict, chart_height: int = 24) -> dict:
     """
-    Rendert ein Bar-Chart mit Apache ECharts.
+    Render a bar chart with Apache ECharts.
 
     Args:
     ----
-        chart_id (str): Eine eindeutige ID für das Diagramm.
-        chart (dict): Enthält die Informationen und die Daten des Diagramms.
-        chart_height (int): Die Höhe des Diagramms in 'rem'.
+        chart_id (str): A unique ID for the chart.
+        chart (dict): Contains the information and data from the chart.
+        chart_height (int): The height of the chart in 'rem'.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {"chart_id": chart_id, "chart": chart, "chart_height": chart_height}
@@ -1505,17 +1456,17 @@ def bar_chart(chart_id: str, chart: dict, chart_height: int = 24) -> dict:
 @register.inclusion_tag("insight_ui/components/charts/line_chart.html")
 def line_chart(chart_id: str, chart: dict, chart_height: int = 24) -> dict:
     """
-    Rendert ein Line-Chart mit Apache ECharts.
+    Render a line chart with Apache ECharts.
 
     Args:
     ----
-        chart_id (str): Eine eindeutige ID für das Diagramm.
-        chart (dict): Enthält die Informationen und die Daten des Diagramms.
-        chart_height (int): Die Höhe des Diagramms in 'rem'.
+        chart_id (str): A unique ID for the chart.
+        chart (dict): Contains the information and data from the chart.
+        chart_height (int): The height of the chart in 'rem'.
 
     Returns:
     -------
-        Dict mit Kontext-Variablen für das Template.
+        A dict with context variables for the template.
 
     """
     return {"chart_id": chart_id, "chart": chart, "chart_height": chart_height}
