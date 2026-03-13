@@ -1,72 +1,72 @@
-# Barrierefreiheit
+# Accessibility (a11y)
 
-Insight UI soll unter der Beachtung der Barrierefreiheit entwickelt werden. Alle Komponenten müssen den WCAG 2.1 AA-Richtlinien entsprechen und sollen eine optimale Benutzererfahrung für alle Benutzer, unabhängig von ihren Fähigkeiten oder der verwendeten Technologie, bieten.
+Insight UI should be developed with accessibility in mind. All components must comply with WCAG 2.1 AA guidelines and should provide an optimal user experience for all users, regardless of their abilities or the technology they use.
 
-## Barrierefreiheitsfunktionen
+## Accessibility features
 
-### Tastaturnavigation
+### Keyboard navigation
 
-Alle interaktiven Elemente sind vollständig über die Tastatur zugänglich:
+All interactive elements are fully accessible via the keyboard:
 
-- Fokusreihenfolge folgt dem natürlichen Dokumentfluss
-- Sichtbarer Fokusindikator für alle interaktiven Elemente
-- Tastaturkürzel für häufig verwendete Aktionen
-- Skip-Links zum Überspringen von Navigationsblöcken
+- Focus order follows the natural document flow
+- Visible focus indicator for all interactive elements
+- Keyboard shortcuts for frequently used actions
+- Skip links for skipping navigation blocks
 
-### Screenreader-Unterstützung
+### Screen reader support
 
-Alle Komponenten sind für Screenreader optimiert:
+All components are optimized for screen readers:
 
-- Semantisches HTML mit korrekten ARIA-Attributen
-- Aussagekräftige Alt-Texte für Bilder
-- ARIA-Live-Regionen für dynamische Inhalte
-- Beschreibende Labels für Formularelemente
+- Semantic HTML with correct ARIA attributes
+- Meaningful alt text for images
+- ARIA live regions for dynamic content
+- Descriptive labels for form elements
 
-### Farbkontrast und Sichtbarkeit
+### Color contrast and visibility
 
-- Alle Text- und UI-Elemente erfüllen die WCAG 2.1 AA-Kontrastanforderungen
-- Hochkontrastmodus für Benutzer mit Sehbehinderungen
-- Keine Informationsübermittlung ausschließlich durch Farbe
-- Responsive Designs mit anpassbarer Textgröße
+- All text and UI elements meet WCAG 2.1 AA contrast requirements
+- High contrast mode for users with visual impairments
+- No information conveyed solely by color
+- Responsive designs with customizable text size
 
 ### Responsive Design
 
-- Vollständig responsive Layouts für alle Bildschirmgrößen
-- Unterstützung für Zoom bis zu 400% ohne Verlust von Funktionalität
-- Anpassung an verschiedene Eingabemethoden (Maus, Tastatur, Touch)
+- Fully responsive layouts for all screen sizes
+- Support for zoom up to 400% without loss of functionality
+- Adaptation to different input methods (mouse, keyboard, touch)
 
-## Barrierefreiheits-Checkliste
+Accessibility Checklist
 
-Hier ist eine Checkliste, die Sie verwenden können, um sicherzustellen, dass Ihre Anwendung barrierefrei bleibt:
+Here is a checklist you can use to ensure your application remains accessible:
 
-- [ ] Alle Bilder haben aussagekräftige Alt-Texte
-- [ ] Farbkontrast erfüllt WCAG 2.1 AA-Anforderungen (4.5:1 für normalen Text, 3:1 für großen Text)
-- [ ] Alle Funktionen sind über die Tastatur zugänglich
-- [ ] Fokusreihenfolge ist logisch und intuitiv
-- [ ] Formularelemente haben beschreibende Labels
-- [ ] Dynamische Inhalte verwenden ARIA-Live-Regionen
-- [ ] Keine Informationsübermittlung ausschließlich durch Farbe
-- [ ] Seite ist bei 200% Zoom noch benutzbar
-- [ ] Semantisches HTML wird verwendet
-- [ ] Skip-Links sind vorhanden
+- [ ] All images have meaningful alt text
+- [ ] Color contrast meets WCAG 2.1 AA requirements (4.5:1 for normal text, 3:1 for large text)
+- [ ] All functions are accessible via the keyboard
+- [ ] Focus order is logical and intuitive
+- [ ] Form elements have descriptive labels
+- [ ] Dynamic content uses ARIA live regions
+- [ ] No information is conveyed solely through color
+- [ ] Page is still usable at 200% zoom
+- [ ] Semantic HTML is used
+- [ ] Skip links are available
 
-## Testen auf Barrierefreiheit
+## Testing for accessibility
 
-### Automatisierte Tests
+### Automated tests
 
-- _Kommen vielleicht irgendwann._
+- _May be available at some point._
 
-### Manuelle Tests
+### Manual testing
 
-- Testen Sie mit einem Screenreader (z.B. NVDA, JAWS, VoiceOver)
-- Navigieren Sie durch Ihre Anwendung nur mit der Tastatur
-- Testen Sie mit verschiedenen Zoomstufen
-- Überprüfen Sie den Farbkontrast mit Tools wie dem WAVE Browser Extension
-- Testen Sie im Hochkontrastmodus
+- Test with a screen reader (e.g., NVDA, JAWS, VoiceOver)
+- Navigate through your application using only the keyboard
+- Test with different zoom levels
+- Check color contrast with tools such as the WAVE Browser Extension
+- Test in high contrast mode
 
-## Ressourcen
+## Resources
 
-- [WCAG 2.1 Richtlinien](https://www.w3.org/TR/WCAG21/)
+- [WCAG 2.1 Guidelines](https://www.w3.org/TR/WCAG21/)
 - [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)
 - [The A11Y Project](https://www.a11yproject.com/)
 - [MDN Web Docs: Accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility)
