@@ -22,7 +22,7 @@ CONFIG_DEFAULTS: dict[str, Any] = {
 
 
 def get_config(attribute_name: str = "") -> dict[str, Any] | str:
-    """Get insight-ui configuration."""
+    """Serve insight-ui configuration."""
     user_config = cast(Mapping[str, Any], getattr(settings, "INSIGHT_UI", {}))
 
     if attribute_name != "":

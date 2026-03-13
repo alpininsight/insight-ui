@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import include, path
@@ -14,3 +15,7 @@ urlpatterns = [
     path("i18n/", include("django.conf.urls.i18n")),
     path("", include("insight_ui.urls")),
 ]
+
+# Add rosetta's urls for translation
+if "rosetta" in settings.INSTALLED_APPS:
+    urlpatterns += [path("rosetta/", include("rosetta.urls"))]
