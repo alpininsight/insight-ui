@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django-insight-ui 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-09 20:25+0200\n"
+"POT-Creation-Date: 2026-03-13 21:36+0100\n"
 "PO-Revision-Date: 2024-06-09 12:00+0000\n"
 "Last-Translator: Django Insight UI Team\n"
 "Language-Team: German\n"
@@ -16,136 +16,3887 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: insight_ui/templates/insight_ui/components/alert.html:39
-#, fuzzy
-#| msgid "Modal schließen"
-msgid "Schließen"
-msgstr "Modal schließen"
+#: .\insight_ui\component_details\a11y_context.py:12
+#: .\insight_ui\component_details\a11y_context.py:35
+#: .\insight_ui\templates\insight_ui\docs\partial\hero_detailpage.html:52
+#: .\insight_ui\templates\insight_ui\docs\partial\page_header_detailpage.html:42
+msgid "Der Titel wird als semantisches h1-Element gerendert."
+msgstr ""
 
-#: insight_ui/templates/insight_ui/components/breadcrumbs.html:3
-#: tests/templates/index.html:70
+#: .\insight_ui\component_details\a11y_context.py:13
+#: .\insight_ui\templates\insight_ui\docs\partial\page_header_detailpage.html:43
+msgid ""
+"Die Beschreibung verwendet ein p-Element mit ausreichendem Farbkontrast "
+"(grau auf blau)."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:23
+#: .\insight_ui\templates\insight_ui\docs\partial\article_detailpage.html:42
+msgid "Der Artikel verwendet das semantische article-Element."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:24
+#: .\insight_ui\templates\insight_ui\docs\partial\article_detailpage.html:43
+msgid ""
+"Die Spaltenstruktur ist rein visuell und beeinflusst nicht die "
+"Lesereihenfolge für Screenreader."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:25
+#: .\insight_ui\templates\insight_ui\docs\partial\article_detailpage.html:44
+msgid "Die Spaltentrennung wird mit column-rule visuell dargestellt."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:36
+#: .\insight_ui\templates\insight_ui\docs\partial\hero_detailpage.html:53
+msgid ""
+"CTA-Buttons sind als Link-Elemente mit klarer Beschriftung implementiert."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:37
+#: .\insight_ui\templates\insight_ui\docs\partial\hero_detailpage.html:54
+msgid "Hintergrundbilder werden mit aria-hidden markiert."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:45
+msgid "Die Navbar-Komponente enthält einen Skip-Link zum Hauptinhalt."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:54
+msgid ""
+"Die Sidebar verwendet für eine semantische Korrektheit das <aside>-Tag und "
+"das Attribute role='complementary'."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:57
+msgid ""
+"Die Drawer Variante verwendet Focus-Trapping und besitzt ein Schließen-"
+"Button, um diese auch per Tastatur verwenden zu können."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:69
+msgid ""
+"Die Überschriften der drei Spalten verwenden <h4>-Tags wodurch ein "
+"Screenreader zwischen den Spalten wechseln kann."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:71
+msgid ""
+"Die Auflistung der Links verwendet ein semantisch korrektes <ul>-Tag mit "
+"entsprechenden <li>-Tags."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:81
+msgid ""
+"Die Komponente verwendet ein <nav>-Tag mit dem entsprechenden aria-"
+"label='Breadcrumb'."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:82
+msgid "Das aktive Element besitzt das Attribute aria-current='page'."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:93
+msgid ""
+"Das grafische Element zu Beginn jedes Eintrags, sollte es keine Zahl sein, "
+"wird von Screenreadern mittels aria-hidden ignoriert, da es rein dekorativ "
+"ist."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:111
+msgid ""
+"Das grafische Element zu Beginn jedes Eintrags wird von Screenreadern "
+"mittels aria-hidden ignoriert, da es rein dekorativ ist."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:122
+msgid "Das aktuell geöffnete Element wird mit aria-expanded='true' markiert."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:124
+msgid ""
+"Die Kopfzeile ist mit aria-controls ausgestattet, wodurch der Bezug zum dem "
+"darunter liegenden Container hergestellt wird."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:126
+msgid "Der Container besitzt zusätzlich das Attribut aria-labelledby."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:127
+msgid ""
+"Der Container ist mit role='region' ausgestattet, damit dieser leicht "
+"ansteuerbar ist."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:128
+#: .\insight_ui\component_details\a11y_context.py:260
+#: .\insight_ui\component_details\a11y_context.py:274
+msgid ""
+"Die Komponente unterstützt die Navigation über die Tastatur mittels der "
+"Pfeiltasten (hoch/runter)."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:139
+msgid ""
+"Die Komponente Unterstützt Screenreader durch die entsprechenden Rollen: "
+"role='tablist', role='tab', role='tabpanel'."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:142
+msgid ""
+"Zusätzlich werden die Tabs und deren Inhalte mittels aria-selected, aria-"
+"controls, aria-labelledby miteinander Verbunden."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:144
+msgid ""
+"Der aktuell fokussierte Tab besitzt das Attribute tabindex='0' alle anderen "
+"tabindex='-1'."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:146
+msgid ""
+"Die Komponente unterstützt die Navigation über die Tastatur mittels der "
+"Pfeil- (links/rechts) und Home/End-Tasten."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:158
+msgid ""
+"Buttons welche lediglich ein Icon besitzen und keinen Text, sollten ein "
+"beschreibendes aria-label besitzen."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:161
+msgid ""
+"Ein Button sollte so wie der Rest der Webseite, immer auch mit der Tastatur "
+"ansteuer- und bedienbar sein."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:164
+msgid ""
+"Für die korrekten Einhaltung der Semantik, ist ein <button> einem "
+"interaktivem <div>-Container immer vorzuziehen."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:173
+#: .\insight_ui\component_details\a11y_context.py:179
+#: .\insight_ui\component_details\a11y_context.py:235
+#: .\insight_ui\component_details\a11y_context.py:248
+#: .\insight_ui\component_details\a11y_context.py:259
+#: .\insight_ui\component_details\a11y_context.py:270
+#: .\insight_ui\component_details\a11y_context.py:282
+msgid ""
+"Das <label> und der dazugehörige <input> sind mit for / id miteinander "
+"verknüpft."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:185
+msgid "Siehe Checkbox"
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:194
+msgid ""
+"Der Pfeil am Ende Dropdown-Buttons wird von Screenreadern mittels aria-"
+"hidden ignoriert, da dieser rein dekorativ ist."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:197
+msgid ""
+"Icon welche in den Links bzw. Menüpunkten angezeigt werden, werden ebenfalls "
+"von Screenreadern ignoriert."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:199
+msgid "TODO: Unterstützung für die Navigation mit den Pfeiltasten hinzufügen."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:210
+#: .\insight_ui\component_details\a11y_context.py:223
+#: .\insight_ui\component_details\a11y_context.py:237
+msgid ""
+"Die Komponente unterstützt die Navigation über die Tastatur mittels der "
+"Pfeiltasten (hoch/runter, rechts/links)."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:212
+#: .\insight_ui\component_details\a11y_context.py:225
+msgid "TODO: Fokus hervorheben."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:249
+msgid "TODO: Fokus bei der Block-Variante hervorheben."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:272
+msgid ""
+"Die Komponente Unterstützt Screenreader durch die entsprechenden ARIA-"
+"Attribute: role='combobox', aria-expanded', aria-selected'."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:290
+msgid ""
+"Die Alert-Box besitzt das Attribute role='alert' für die Unterstützung eines "
+"Screenreader."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:291
+msgid ""
+"Der Button zum Schließen ist mit der Tastatur ansteuerbar und besitzt ein "
+"entsprechendes aria-label."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:302
+msgid ""
+"Das Modal wird semantisch korrekt als Dialogfenster definiert, durch die "
+"Attribute role='dialog' und aria-modal='true'."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:305
+msgid ""
+"Für Screenreader bietet das Modal einen Titel und eine (jedoch optionale) "
+"Beschreibung, welche mit aria-labelledby und aria-describedby verlinkt "
+"werden."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:308
+msgid ""
+"Das Dialogfenster verwendet Focus-Trapping und besitzt ein Schließen-Button, "
+"um dieses auch per Tastatur verwenden zu können."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:317
+#: .\insight_ui\component_details\a11y_context.py:323
+msgid "TODO: Bedienbarkeit über die Tastatur hinzufügen!"
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:329
+msgid "Die Komponente ist mit der Tastatur bedienbar."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:347
+msgid "TODO: leaflet.js a11y anwenden!"
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:353
+msgid "TODO: Apache EChart Web Accessibility anwenden!"
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:380
+msgid ""
+"Die Tasten für die Erste Seite, Letzte Seite, etc. haben einen "
+"beschreibenden Text, welcher von Screenreadern vorgelesen wird und auch "
+"erklärt warum der Button in manchen Fällen deaktiviert ist."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:382
+#: .\insight_ui\component_details\a11y_context.py:423
+msgid "TODO: Unterstützung für Pfeiltasten-Navigation (rechts/links)"
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:402
+msgid "Das Textinput-Feld besitzt ein extra Title ('Suche') für Screenreader."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:422
+#: .\insight_ui\component_details\a11y_context.py:437
+msgid "Das Karussell ist mit der Tastatur steuerbar."
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:431
+msgid "Siehe Card Carousel"
+msgstr ""
+
+#: .\insight_ui\component_details\a11y_context.py:443
+msgid "Siehe Radio-Group"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:43
+#: .\insight_ui\component_details\demo_context.py:678
+msgid "Title"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:46
+#: .\insight_ui\component_details\demo_context.py:72
+#: .\insight_ui\component_details\demo_context.py:79
+#: .\insight_ui\component_details\demo_context.py:87
+msgid "is exact"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:47
+#: .\insight_ui\component_details\demo_context.py:58
+#: .\insight_ui\component_details\demo_context.py:65
+#: .\insight_ui\component_details\demo_context.py:88
+msgid "contains"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:48
+#: .\insight_ui\component_details\demo_context.py:58
+#: .\insight_ui\component_details\demo_context.py:65
+msgid "contains (case sensitive)"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:49
+#: .\insight_ui\component_details\demo_context.py:89
+msgid "starts with"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:50
+#: .\insight_ui\component_details\demo_context.py:90
+msgid "ends with"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:56
+#: .\insight_ui\component_details\demo_context.py:273
+msgid "Description"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:63
+msgid "Short Description"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:70
+msgid "Release Date"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:72
+#: .\insight_ui\component_details\demo_context.py:79
+msgid "is not before"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:72
+#: .\insight_ui\component_details\demo_context.py:79
+msgid "is not after"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:77
+msgid "Deadline"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:84
+msgid "Client"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:145
+#: .\insight_ui\component_details\demo_context.py:252
+#: .\insight_ui\component_details\demo_context.py:288
+#: .\insight_ui\component_details\demo_context.py:292
+msgid "Startpage"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:153
+msgid "About"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:159
+msgid "Test"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:160
+msgid "Test2"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:169
+#: .\insight_ui\component_details\demo_context.py:312
+#: .\insight_ui\component_details\demo_context.py:318
+msgid "Settings"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:175
+msgid "Administration"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:181
+msgid "Translation"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:195
+msgid "Personal Settings"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:203
+msgid "Notifications"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:208
+msgid "Messages"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:213
+msgid "Tasks"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:224
+msgid "Calendar"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:228
+#: .\insight_ui\component_details\demo_context.py:311
+msgid "Profile"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:253
+msgid "Storybook"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:254
+msgid "Documentation"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:271
+msgid "Parameter of the alert component."
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:272
+#: .\insight_ui\component_details\demo_context.py:513
+msgid "No data available!"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:273
+#: .\insight_ui\templates\insight_ui\docs\component_details_content.html:30
+#: .\insight_ui\templates\insight_ui\docs\icons.html:45
+#: .\insight_ui\templates\insight_ui\docs\partial\3D_carousel_detailpage.html:32
+#: .\insight_ui\templates\insight_ui\docs\partial\accordion_detailpage.html:34
+#: .\insight_ui\templates\insight_ui\docs\partial\alert_detailpage.html:32
+#: .\insight_ui\templates\insight_ui\docs\partial\article_detailpage.html:32
+#: .\insight_ui\templates\insight_ui\docs\partial\breadcrumb_detailpage.html:36
+#: .\insight_ui\templates\insight_ui\docs\partial\bullet_point_list_detailpage.html:33
+#: .\insight_ui\templates\insight_ui\docs\partial\card_carousel_detailpage.html:32
+#: .\insight_ui\templates\insight_ui\docs\partial\card_detailpage.html:48
+#: .\insight_ui\templates\insight_ui\docs\partial\chart_detailpage.html:40
+#: .\insight_ui\templates\insight_ui\docs\partial\chat_detailpage.html:32
+#: .\insight_ui\templates\insight_ui\docs\partial\checkbox_detailpage.html:46
+#: .\insight_ui\templates\insight_ui\docs\partial\checkbox_group_detailpage.html:32
+#: .\insight_ui\templates\insight_ui\docs\partial\differentiator_detailpage.html:32
+#: .\insight_ui\templates\insight_ui\docs\partial\dropdown_detailpage.html:35
+#: .\insight_ui\templates\insight_ui\docs\partial\footer_detailpage.html:37
+#: .\insight_ui\templates\insight_ui\docs\partial\form_detailpage.html:33
+#: .\insight_ui\templates\insight_ui\docs\partial\generic_filter_detailpage.html:35
+#: .\insight_ui\templates\insight_ui\docs\partial\geo_map_detailpage.html:32
+#: .\insight_ui\templates\insight_ui\docs\partial\hero_detailpage.html:32
+#: .\insight_ui\templates\insight_ui\docs\partial\image_carousel_detailpage.html:44
+#: .\insight_ui\templates\insight_ui\docs\partial\infinite_scroll_detailpage.html:35
+#: .\insight_ui\templates\insight_ui\docs\partial\input_field_detailpage.html:36
+#: .\insight_ui\templates\insight_ui\docs\partial\live_content_detailpage.html:32
+#: .\insight_ui\templates\insight_ui\docs\partial\modal_detailpage.html:37
+#: .\insight_ui\templates\insight_ui\docs\partial\multiselect_detailpage.html:36
+#: .\insight_ui\templates\insight_ui\docs\partial\navbar_detailpage.html:43
+#: .\insight_ui\templates\insight_ui\docs\partial\page_header_detailpage.html:32
+#: .\insight_ui\templates\insight_ui\docs\partial\pagination_detailpage.html:36
+#: .\insight_ui\templates\insight_ui\docs\partial\query_builder_detailpage.html:36
+#: .\insight_ui\templates\insight_ui\docs\partial\radio_group_detailpage.html:40
+#: .\insight_ui\templates\insight_ui\docs\partial\range_slider_detailpage.html:36
+#: .\insight_ui\templates\insight_ui\docs\partial\search_bar_detailpage.html:32
+#: .\insight_ui\templates\insight_ui\docs\partial\select_detailpage.html:36
+#: .\insight_ui\templates\insight_ui\docs\partial\sidebar_detailpage.html:42
+#: .\insight_ui\templates\insight_ui\docs\partial\step_bar_detailpage.html:32
+#: .\insight_ui\templates\insight_ui\docs\partial\table_detailpage.html:32
+#: .\insight_ui\templates\insight_ui\docs\partial\tabs_detailpage.html:34
+#: .\insight_ui\templates\insight_ui\docs\partial\toggle_button_detailpage.html:36
+#: .\insight_ui\templates\insight_ui\docs\partial\toggle_view_detailpage.html:33
+#: .\insight_ui\templates\insight_ui\docs\partial\tooltip_detailpage.html:50
+#: .\insight_ui\templates\insight_ui\docs\partial\web_socket_detailpage.html:32
+msgid "Parameter"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:273
+msgid "Type"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:273
+msgid "Default"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:275
+msgid "Die Hauptnachricht der Benachrichtigung."
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:276
+msgid "Der Typ der Benachrichtigung ('info', 'success', 'warning', 'error')"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:277
+msgid "Ob die Benachrichtigung schließbar sein soll."
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:289
+#: .\insight_ui\context.py:64 .\insight_ui\context.py:132
+msgid "Components"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:290
+#, fuzzy
+#| msgid "Breadcrumb-Navigation"
+msgid "Breadcrumbs"
+msgstr "Breadcrumb-Navigation"
+
+#: .\insight_ui\component_details\demo_context.py:308
+msgid "User"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:313
+#: .\insight_ui\templates\insight_ui\components\user_dropdown.html:34
+msgid "Logout"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:322
+msgid "Personal Information"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:326
+msgid "Appearance"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:337
+msgid "Yes, confirm"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:338
+msgid "Abort"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:348
+#: .\insight_ui\component_details\demo_context.py:353
+#: .\insight_ui\component_details\demo_context.py:734
+msgid "Kontaktdaten"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:348
+#: .\insight_ui\component_details\demo_context.py:353
+#: .\insight_ui\component_details\demo_context.py:735
+msgid "Informationen zur Person und Anschrift."
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:349
+#: .\insight_ui\component_details\demo_context.py:354
+#: .\insight_ui\component_details\demo_context.py:738
+msgid "Zahlungsmethode"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:349
+#: .\insight_ui\component_details\demo_context.py:354
+#: .\insight_ui\component_details\demo_context.py:738
+msgid "Art der Bezahlung auswählen."
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:350
+#: .\insight_ui\component_details\demo_context.py:355
+#: .\insight_ui\component_details\demo_context.py:739
+msgid "Überprüfen"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:350
+#: .\insight_ui\component_details\demo_context.py:355
+#: .\insight_ui\component_details\demo_context.py:739
+msgid "Prüfen der Angaben und Bezahlen."
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:377
+msgid "Accept AGBs"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:387
+msgid "English"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:388
+msgid "German"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:389
+msgid "French"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:390
+msgid "Spanish"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:394
+msgid "Italian (currently not available)"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:409
+msgid "BERT"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:410
+msgid "PaLM 2"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:414
+msgid "LLaMA 2 (currently not available)"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:450
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:72
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:73
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:74
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:75
+#: .\insight_ui\templates\insight_ui\docs\partial\tooltip_detailpage.html:38
+msgid "Click me!"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:485
+msgid "100€ (minimum)"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:485
+msgid "1500€ (maximum)"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:512
+msgid "Example of a table component."
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:514
+#: .\insight_ui\templates\insight_ui\components\parameter_table.html:7
+msgid "Name"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:514
+#: .\insight_ui\component_details\demo_context.py:702
+msgid "E-Mail"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:514
+#: .\insight_ui\templates\insight_ui\components\live_content_partial.html:14
+msgid "Status"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:514
+msgid "Actions"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:519
+#: .\insight_ui\component_details\demo_context.py:531
+msgid "Active"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:525
+msgid "Inactive"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:545
+msgid "AI model type"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:549
+msgid "To filter by the type of AI-Model."
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:552
+msgid "Runtime"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:556
+msgid "To filter by the runtime."
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:559
+msgid "License"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:581
+msgid "Example Card"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:582
+msgid "Subtitle"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:583
+msgid "This is the card content."
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:585
+#: .\insight_ui\component_details\demo_context.py:593
+#: .\insight_ui\component_details\demo_context.py:605
+#: .\insight_ui\component_details\demo_context.py:617
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:149
+msgid "Learn more"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:586
+#: .\insight_ui\component_details\demo_context.py:594
+#: .\insight_ui\component_details\demo_context.py:606
+#: .\insight_ui\component_details\demo_context.py:618
+msgid "Share"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:641
+#, python-format
+msgid "Placeholder image %(index)s"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:679
+msgid "Your title"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:686
+msgid "Firstname"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:687
+msgid "Type in your firstname"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:694
+msgid "Lastname"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:695
+msgid "Type in your lastname"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:703
+msgid "Type in your.email@example.com"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:710
+#: .\insight_ui\templates\insight_ui\login.html:53
+msgid "Password"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:711
+msgid "Type in your password"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:718
+#: .\insight_ui\templates\insight_ui\components\chat.html:17
+msgid "Message"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:719
+msgid "Do you want to tell us something?..."
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:764
+msgid "First Tab"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:768
+msgid "Second Tab"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:770
+msgid "Third Tab"
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:13
+msgid ""
+"Die `Page-Header`-Komponente rendert den Seitenkopf innerhalb der blauen "
+"Kopfzeile des Base-Templates. Sie zeigt einen Titel und optional eine "
+"Beschreibung an."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:25
+#: .\insight_ui\templates\insight_ui\docs\partial\article_detailpage.html:8
+msgid ""
+"Die Article-Komponente rendert Textinhalte im Zeitungsstil mit mehrspaltigen "
+"CSS-Columns. Der Text fließt automatisch von einer Spalte in die nächste."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:37
+#: .\insight_ui\templates\insight_ui\docs\partial\hero_detailpage.html:8
+msgid ""
+"Die Hero-Komponente rendert einen prominenten Banner-Abschnitt mit Titel, "
+"Untertitel, Beschreibung und Call-to-Action Buttons."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:49
+msgid ""
+"Die navbar Komponente stellt eine anpassbare Navigationsleiste mit "
+"verschiedenen Komponenten zur Verfügung. Die Navigation ist fixiert am "
+"oberen Rand des Browserfenstern und bewegt sich beim nach unten Scrollen "
+"mit. Die Navigationsleiste besteht aus den folgenden Komponenten: "
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:52
+msgid ""
+"Brand: Logo und Titel am linken Rand. Navigationslinks: Hauptnavigation, "
+"rechts neben dem Logo und Titel. Suchleiste: Eine optionale Suchleiste, "
+"rechts neben der Hauptnavigation. Login/Benutzermenü: Ein optionales, "
+"anpassbares Benutzermenü bzw. ein Anmeldebutton wenn der Nutzer nicht "
+"angemeldet ist. Sprachauswahl: Ein optionales Menü zum auswählen der "
+"Sprache, in welcher die Webseite angezeigt werden soll. Theme-Toggle Button: "
+"Ein optionaler Button zum wechseln wischen dem hellen und dem dunklen Design."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:64
+msgid ""
+"Die sidebar Komponente fügt einen Bereich an der Fensterseite hinzu. Die "
+"Sidebar kann sowohl auf der linken oder auf der rechten Seite sowie auch auf "
+"beiden Seiten gleichzeitig angewendet werden. Die Sidebar kann auch als "
+"Drawer verwendet werden, in diesem Fall kann sie geschlossen werden."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:76
+#: .\insight_ui\templates\insight_ui\docs\partial\footer_detailpage.html:8
+msgid ""
+"Ein einfacher Footer bestehend aus drei Spalten mit anpassbaren Inhalt. Der "
+"Footer ist ein wichtiger Bestandteil einer jeden Webseite, er dient jedoch "
+"nicht nur dazu, die Webseite optisch abzuschließen. Er enthält i.d.R. "
+"mindestens eine Verlinkung zum Impressum und der Datenschutzerklärung. Oft "
+"befindet sich im Footer noch einmal eine Navigation zu den wichtigsten "
+"Seiten der Webseite und eine Copyright Angabe."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:88
+msgid ""
+"Breadcrumbs sind eine sekundäre Navigation, welche dazu verwendet werden, "
+"dem Nutzer Klarheit über die hierarchische Struktur einer Webseite zu "
+"verschaffen. Dies ist vor allem bei Webseiten mit einer tiefen Struktur, "
+"also mit vielen Unterseiten sinnvoll. Webseiten mit einer Tiefe von maximal "
+"zwei Stufen bspw. Übersicht -> Produkt Details sollten auf Breadcrumbs "
+"verzichten."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:91
+#: .\insight_ui\templates\insight_ui\docs\partial\breadcrumb_detailpage.html:11
+msgid ""
+"Für eine gute Konsistenz sollten Breadcrumbs, wenn sie verwendet werden, "
+"überall verwendet werden und nicht nur sporadisch."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:103
+#: .\insight_ui\templates\insight_ui\docs\partial\step_bar_detailpage.html:8
+msgid ""
+"Diese Komponente kann dazu verwendet werden, dem Nutzer den Fortschritt "
+"eines manuellen Prozesses anzuzeigen. Damit ist zum Beispiel ein typischer "
+"Bezahlvorgang gemeint. Dieser besteht i.d.R. aus mehreren Schritten, wie die "
+"Adresse anzugeben, eine Zahlungsmethode auszuwählen und im Anschluss nochmal "
+"die Eingaben zu überprüfen. Die Komponente zeigt dem Nutzer an, wo er sich "
+"gerade befindet und wie viele Schritte noch folgen."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:115
+msgid ""
+"Mit der minimal_step_bar Komponente lässt sich der Fortschritt in einem "
+"mehrstufigen Prozess auf einem simple Art und Weise, graphisch darstellen."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:127
+msgid ""
+"Die bullet_point_list Komponente kann dazu verwendet werden, eine Abfolge "
+"von Tasks, Prozessschritten, o.ä darzustellen. Die einzelnen Schritte können "
+"eine Verlinkung enthalten, um diese beispielsweise mit einer konkreten Seite "
+"für jeden Tasks, o.ä. zu verlinken."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:139
+msgid ""
+"Mit der accordion Komponente lassen sich ausklappbare Bereiche für weitere "
+"Informationen hinzufügen. Ein Accordion kann entweder ein oder mehrere "
+"Bereiche gleichzeitig geöffnet haben. Beim öffnen eines Accordion-Abschnitts "
+"wird automatisch ein URL-Anchor gesetzt. Dadurch lassen sich über die URL "
+"bestimmte Bereiche beim aufrufen der Seite automatisch aufklappen und die "
+"Ansicht scrollt automatisch bis zu dem geöffneten Bereich."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:151
+msgid ""
+"Mit der tabs Komponente lassen sich Tabs bzw. Registrierkarten hinzufügen. "
+"Diese Komponente besteht aus einer Reihe von Buttons, welche per HTMX-"
+"Request den Hauptinhalt der Komponente austauschen. Dadurch kann zwischen "
+"den einzelnen Tabs gewechselt werden, ohne dass die Seite neu geladen werden "
+"muss."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:163
+#: .\insight_ui\templates\insight_ui\docs\partial\button_detailpage.html:8
+msgid ""
+"Für einen gewöhnlichen Button stellt unser UI-Framework eine Reihe von CSS-"
+"Klassen zur Verfügung. Damit lassen sich Buttons für unterschiedliche "
+"Szenarien ohne großen Aufwand mit gängigen CSS-Klassen einbauen."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:172
+msgid ""
+"Mit der input_field Komponente lassen sich einzelne <input>-Elemente "
+"einbauen."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:181
+msgid ""
+"Mit der checkbox Komponente lassen sich einzelne Checkbox-Elemente einbauen. "
+"Für eine Gruppe von miteinander verbundenen Checkbox-Elementen siehe "
+"Checkbox-Group."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:193
+msgid ""
+"Mit der checkbox_group Komponente lassen sich Gruppen von Checkbox-Elementen "
+"einbauen, welche miteinander verknüpft sind. Das erlaubt es eine "
+"Beschränkung einzuschalten, welche es zum Beispiel nicht erlaubt, dass kein "
+"Checkbox-Element ausgewählt ist."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:205
+#: .\insight_ui\templates\insight_ui\docs\partial\dropdown_detailpage.html:8
+msgid ""
+"Ein Dropdown-Menü bietet die Möglichkeit eine Gruppe von Buttons in einem "
+"sich ein- und ausklappbaren Menü zu verstauen. Das ist immer dann sehr "
+"nützlich, wenn entweder nur wenig Platz zu Verfügung steht oder die Anzahl "
+"der Elemente sonst zu groß und unübersichtlich wäre."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:208
+#: .\insight_ui\templates\insight_ui\docs\partial\dropdown_detailpage.html:11
+msgid ""
+"Bei der Verwendung von Dropdown-Menüs ist dennoch zu beachten, das diese "
+"nicht überladen werden. In der Regel sollte ein Menü nicht mehr als sieben "
+"Elemente besitzen und auch verschachtelte Menüs, also ein Dropdown-Menü in "
+"einem Dropdown-Menü sollten vermieden werden."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:220
+msgid ""
+"Mit der radio_group Komponente lassen sich Gruppen von Radio-Buttons "
+"einbauen. Bei der radio_group Variante handelt es sich um eine Variante mit "
+"normalen Radio-Buttons für ein Formular o.ä.."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:232
+msgid ""
+"Mit der radio_block Komponente lassen sich Gruppen von Radio-Buttons "
+"einbauen. Die radio_block Variante der Radio-Buttons wird als Block von "
+"Buttons dargestellt und kann dazu verwendet werden, einen Request beim "
+"wechsel des ausgewählten Wertes zu starten."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:244
+msgid ""
+"Mit der slider-Komponente kann ein Range-Slider in das Frontend eingebaut "
+"werden, mit welchem sich ein Wert innerhalb eines begrenzten Intervall "
+"auswählen lässt."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:256
+msgid ""
+"Mit der toggle Komponente lässt sich ein Toggle-Button einbauen. Dieser "
+"funktioniert im Grunde wie eine einzelne Checkbox."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:265
+msgid "Die select Komponente stellt eine einfache Auswahlbox zur Verfügung."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:274
+msgid ""
+"Die multiselect Komponente stellt eine Auswahlbox zur Verfügung, welche die "
+"Auswahl mehrere Werte erlaubt. Zusätzlich hat das Multiselect eine "
+"Suchleiste integriert um schnell nach bestimmten Werten suchen zu können."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:286
+#: .\insight_ui\templates\insight_ui\docs\partial\chat_detailpage.html:8
+msgid ""
+"Die Chat Komponente bietet ein einfaches Frontend für eine Chat-Anwendung. "
+"Die Komponente besteht aus einem Text-Input und einem Bereich für die "
+"Nachrichten. Der Inhalt des Nachrichtenbereichs wird mittels HTMX bei jedem "
+"Response erweitert, ohne dass die Seite neu geladen wird."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:298
+#: .\insight_ui\templates\insight_ui\docs\partial\alert_detailpage.html:8
+msgid ""
+"Die Alert-Komponente bietet eine Möglichkeit, Benutzern wichtige "
+"Informationen, Warnungen oder Erfolgsmeldungen anzuzeigen."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:310
+#: .\insight_ui\templates\insight_ui\docs\partial\modal_detailpage.html:8
+msgid ""
+"Mit der Modal Komponente lassen sich anpassbare Dialoge einbauen. Diese "
+"können verwendet werden um dem Nutzer zusätzliche Informationen anzuzeigen "
+"oder als Bestätigungsdialoge für diverse Aktionen verwendet werden."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:322
+#: .\insight_ui\templates\insight_ui\docs\partial\popover_detailpage.html:8
+msgid ""
+"In manchen Fällen ist es notwendig weitere jedoch eher optionale "
+"Informationen anzuzeigen, welche jedoch das gesamtbild stören würden oder "
+"für welche einfach nicht genug Platz vorhanden ist. Für diesen Fall sind "
+"_Popover_ eine nützliche Komponente. Ähnlich wie ein _Tooltip_ werden auch "
+"Popover getrennt vom restlichen Layout dargestellt und stören insofern nicht "
+"den Fluss des Layouts. Bei einem Popover handelt es sich um eine Bereich für "
+"zusätzliche Informationen, welcher nur angezeigt wird, wenn der Nutzer sich "
+"mit dem Mauszeiger über einem bestimmten Element befindet. Im gegensatz zum "
+"Tooltip, kann der Nutzer mit dem Mauszeiger auf das Popover gehen, ohne das "
+"dieses sich schließt. Dadurch können mit einem Popover auch interaktive "
+"Elemente angezeigt werden."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:325
+msgid ""
+"Wenn nur ein kurzer Informationstext angezeigt werden soll, um ein Element "
+"mit ein, zwei Wörter zu erklären, sollte stattdessen die Tooltip-Komponente "
+"verwendet werden."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:337
+#: .\insight_ui\templates\insight_ui\docs\partial\tooltip_detailpage.html:8
+msgid ""
+"Manchmal ist die Beschriftung oder das Icon eines Buttons o.ä. nicht "
+"eindeutig genug und lässt Raum für Interpretationen, was im schlimmsten Fall "
+"zu Verwirrung führen kann. In solchen Fällen ist es hilfreich und wichtig, "
+"zusätzliche Informationen anzuzeigen. Um nicht den Fluss der Weboberfläche "
+"zu stören, eignen sich _Tooltips_. Diese werden nur angezeigt, wenn der "
+"Nutzer sich mit dem Mauszeiger über dem entsprechenden Element befindet. Der "
+"Tooltip wird getrennt wom restlichen Layout über allen anderen Elementen "
+"angezeigt und ist damit immer sichtbar und stört nicht das gesamtbild."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:340
+msgid ""
+"Ein Tooltip sollte nur für kurze Informationstexte (meist nur ein Wort) "
+"verwendet werden, wenn mehr Informationen angezeigt werden sollen, sollte "
+"stattdessen die Popover-Komponente verwendet werden."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:352
+#: .\insight_ui\templates\insight_ui\docs\partial\code_block_detailpage.html:8
+msgid ""
+"Diese Komponente bietet die Möglichkeit, Quellcode mit Syntax-Highlighting "
+"darzustellen. Darüber hinaus gibt es Möglichkeit, den dargestellten "
+"Quellcode, über einen Button in den Zwischenspeicher zu kopieren. Das Syntax-"
+"Highlighting umfasst so ziemlich alle gängigen und auch die meisten nicht "
+"sehr geläufigen Programmiersprachen."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:364
+msgid ""
+"Mit dem Differentiator lassen sich Unterschiede zwischen zwei Texten "
+"grafisch darstellen, was vor allem bei längeren Texten mit nur kleinen "
+"Änderungen, eine sehr gute Hilfe bieten kann. Für Texte welche sich mehr "
+"oder weniger komplett voneinander unterscheiden, ist diese Komponente "
+"wahrscheinlich weniger nützlich."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:376
+msgid ""
+"Die progress_bar Komponente wird dafür verwendet dem Nutzer den Fortschritt "
+"eines im Hintergrund laufenden Prozesses visuell darzustellen. Ein gängiges "
+"Szenario für solche Komponenten sind zum Beispiel Downloads."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:379
+msgid ""
+"Für eine Fortschrittsanzeige wo der Fortschritt durch aktives Zutun des "
+"Nutzers entsteht, eignet sich unsere Step Bar Komponente."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:391
+msgid ""
+"Mit der geo_map Komponente wird eine geografische Karte mittels leaflet "
+"dargestellt. Auf dieser lassen sich mühelos geografische Informationen "
+"darstellen."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:403
+msgid ""
+"Mit der chart Komponente können ohne JavaScript anpassen zu müssen, "
+"Diagramme dargestellt werden. Die Komponente verwendet intern Apache ECharts."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:406
+msgid ""
+"Die Komponente steht bisher in den folgenden Ausführungen zu Verfügung: "
+"line_chart: Ein Linien-Diagramm. bar_chart: Ein Stacked Balken-Diagramm."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:418
+msgid ""
+"Die live_content Komponente aktualisiert ein Fragment regelmäßig mithilfe "
+"von HTMX-Abfragen. Sie eignet sich ideal für Dashboards oder "
+"Statusansichten, die häufig aktualisiert werden müssen, ohne dass die "
+"gesamte Seite neu geladen werden muss."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:430
+msgid ""
+"Mit der websocket kann eine Verbindung mit einem anderen Websocket aufgebaut "
+"werden, um automatisch Daten zu empfangen. Die empfangenen Daten werden "
+"mittels HTMX in dem Container der Komponente eingesetzt. Es wird kein "
+"Neuladen der Seite oder irgendeine andere Form von Interaktion benötigt."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:442
+msgid ""
+"Die infinite_scroll Komponente stellt eine Alternative zu einer Pagination "
+"dar und kann dazu verwendet werden, eine große Menge Daten darzustellen. "
+"Anstatt von Seite zu Seite zu wechseln, lädt der Infinite Scroll nach dem "
+"ein bestimmter Schwellwert beim Scrollen erreicht wurde, weitere Daten aus "
+"dem Backend und fügt diese mittels HTMX an das Ende an."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:445
+msgid ""
+"Die Komponente wird in zwei Varianten zur Verfügung gestellt, eine mit "
+"automatischer Erweiterung und eine zweite, wobei zum Laden neuer Elemente "
+"aktiv ein Button Lade weitere geklickt werden muss."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:457
+msgid ""
+"Mit der pagination Komponente lässt sich eine Liste auf mehrere Seiten "
+"aufteilen, welche mittels der durch diese Komponente dargestellte Pagination "
+"am Ende der Liste gewechselt werden kann. Dies ist praktisch für große "
+"Datenmengen und bietet eine alternative zur infinite_scroll Komponente."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:469
+msgid ""
+"Mit der table Komponente lässt sich eine einfache Tabelle für beliebige "
+"Daten darstellen. Das Layout ist responsive Gestaltet, sollte der Platz "
+"nicht ausreichen wird eine horizontale Scrollbar eingeblendet."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:481
+msgid ""
+"Mit der generic_filter Komponente lassen sich relativ einfach standard "
+"Filter, bestehend aus <select>-Tags, bauen. Der Filter macht bei einer "
+"Änderung automatisch einen Request an den entsprechenden Endpunkt und "
+"aktualisiert den Datenbereich mittels HTMX."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:483
+msgid ""
+"Eine alternative hierzu stellt der flexiblere, aber auch kompliziertere "
+"Query Builder dar."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:494
+msgid ""
+"Ein einfaches Textinput-Feld mit einem großen Button am rechten Ende. Beim "
+"absenden wird ein Request an den angegebenen Endpunkt geschickt. Die "
+"search_bar Komponente unterstützt auch HTMX Requests."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:505
+msgid ""
+"Diese Komponente stellt eine Alternative zur Generic Filter Komponente dar."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:507
+msgid ""
+"Der Query Builder ist weitaus flexibler aber auch komplexer in der Nutzung "
+"als übliche Filter Methoden. Der Query Builder ist im Grunde eine Art "
+"grafische Darstellung einer SQL-Query. Der Query Builder bekommt eine Liste "
+"der Modell-Felder in welchen gesucht werden kann und zu jedem Feld eine "
+"Liste der erlaubten Operationen. Bspw.: { 'field': 'name', 'type': 'text', "
+"'operations': ['iexact', 'icontains']}."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:510
+msgid ""
+"In speziellen Fällen können auch wie bei der anderen Variante, vordefinierte "
+"Werte angegeben werden. Dieser Aspekt macht diese Art der Filterung, u.u. "
+"wesentlich flexibler, da auf fest definierte Werte verzichtet wird."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:513
+msgid ""
+"Ähnlich wie bei der anderen Filter Variante, wird hier auch lediglich ein "
+"Dictionary mit den gewünschten Eigenschaften benötigt."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:525
+msgid ""
+"Die card Komponenten werden dazu verwendet Informationsgruppen zu erstellen. "
+"Jede Karte besteht aus einer Überschrift und ihren Hauptinhalt. Dazu gibt es "
+"noch weitere Optionen, wie ein Hintergrundbild oder ein Untertitel und "
+"Aktion-Buttons."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:528
+msgid ""
+"Für die Card Komponente gibt es unterschiedliche Varianten zur Auswahl: "
+"Card: Standard Karte im 16:9 Format. App Card: Das Layout dieser Karte ist "
+"vertikal ausgerichtet wodurch dieses länger ist. Flip Card: Diese Karte "
+"dreht sich um 180° und hält auf ihrer Rückseite weiteren Inhalt bereit."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:540
+msgid ""
+"Mit der carousel Komponente können Bilder, aber auch alle möglichen anderen "
+"Sachen, Platzsparend und interaktiv angezeigt werden und es befindet sich "
+"immer ein Objekt im Fokus. Daher eignet sich die Komponente vor allem für "
+"Bilder."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:552
+msgid ""
+"Die image_carousel Komponente ist eine auf die Darstellung von Bildern "
+"angepasste Variante der carousel Komponente."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:564
+msgid ""
+"Mit der three_d_carousel Komponente können beliebige Inhalte auf "
+"einzigartige Weise dargestellt werden. Die Inhalte werden in einem Kreis "
+"angeordnet dargestellt."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:576
+msgid ""
+"Die toggle-view Komponente kombiniert die Tabellen und die Karten-Ansicht, "
+"sowie die Karussell-Komponente. Die Komponente wird dazu verwendet, die "
+"selben Daten auf komplett unterschiedliche Art und Weise darzustellen."
+msgstr ""
+
+#: .\insight_ui\component_details\description_context.py:587
+msgid ""
+"Mit der form Komponente lässt sich ohne selbst HTML-Code editieren zu "
+"müssen, Formulare bauen."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:32
+msgid "Der Titel der Seite, wird als h1 in weißer Schrift angezeigt."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:33
+msgid "Eine optionale Beschreibung unterhalb des Titels."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:43
+msgid "Der Textinhalt des Artikels (kann HTML enthalten)."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:44
+msgid "Die Anzahl der Spalten für das CSS-Columns-Layout."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:45
+msgid "Der Abstand zwischen den Spalten (CSS-Einheit)."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:46
+msgid "Ein optionaler Titel über dem Artikel."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:56
+msgid "Primärer 'Call-to-Action' Button"
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:58
+msgid "URL, welche beim klick des Buttons aufgerufen werden soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:59
+#: .\insight_ui\component_details\parameter_context.py:1128
+#: .\insight_ui\component_details\parameter_context.py:1555
+msgid "Beschriftung des Buttons."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:67
+msgid "Eine Badge mit Icon und Text."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:69
+msgid "Beschriftung des Badge."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:71
+#: .\insight_ui\component_details\parameter_context.py:141
+#: .\insight_ui\component_details\parameter_context.py:330
+#: .\insight_ui\component_details\parameter_context.py:404
+msgid "Ein optionales Icon, welches vor dem Text angezeigt wird."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:80
+msgid "Titel der Hero-Section."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:82
+msgid "Untertitel der Hero-Section, welche unter dem Titel angezeigt wird."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:87
+msgid ""
+"Beschreibung der Hero-Section, welche unter dem Titel zw. Untertitel "
+"angezeigt wird."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:91
+msgid "Sekundärer 'Call-to-Action' Button"
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:92
+msgid "URL des Hintergrundbildes."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:104
+msgid "Beschreibt das Logo, welches neben dem Titel angezeigt wird."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:108
+msgid "Pfad zu der Logo Datei für das helle Theme."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:111
+msgid "Pfad zu der Logo Datei für das dunkle Theme."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:113
+#: .\insight_ui\component_details\parameter_context.py:307
+msgid "Alternativtext des Logos."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:114
+#: .\insight_ui\component_details\parameter_context.py:308
+msgid "Dieser Wert bestimmt die Größe des Logos."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:121
+msgid "Beschreibt den Titel und das Logo der Anwendung in der Navbar."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:124
+msgid "Der Titel der Anwendung."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:126
+msgid "Name der URL welche beim klick auf den Titel aufgerufen werden soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:129
+msgid "Dieser Wert bestimmt den Abstand zwischen dem Logo und dem Titel."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:137
+msgid "Enthält/Beschreibt die Navigationspunkte der Navbar."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:139
+#: .\insight_ui\component_details\parameter_context.py:328
+#: .\insight_ui\component_details\parameter_context.py:402
+msgid "Beschriftung des Links."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:144
+#: .\insight_ui\component_details\parameter_context.py:333
+#: .\insight_ui\component_details\parameter_context.py:407
+msgid "Name der URL welche beim Klick auf den Link aufgerufen werden soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:149
+#: .\insight_ui\component_details\parameter_context.py:338
+msgid ""
+"ID des Modal-Dialogs welche beim Klick auf den Link angezeigt werden soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:156
+#: .\insight_ui\component_details\parameter_context.py:345
+msgid ""
+"Hebt den Link stilistisch von den anderen ab um zu zeigen, dass der Nutzer "
+"auf der entsprechenden Seite ist."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:160
+#: .\insight_ui\component_details\parameter_context.py:349
+msgid "Der Link wird nur für angemeldete Nutzer angezeigt."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:161
+#: .\insight_ui\component_details\parameter_context.py:350
+msgid "Der Link wird nur für Administratoren angezeigt."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:168
+msgid "Ein Dictionary mit der gesamten Konfiguration der Navigationsleiste."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:177
+msgid ""
+"Name der URL welche bei der Suche aufgerufen werden soll (wenn leer wird "
+"keine Suchzeile angezeigt)."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:182
+msgid "Zeigt ein Dropdown-Menü mit mindestens einem Logout-Button."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:187
+msgid ""
+"Zeigt ein Dropdown-Menü zum Auswählen der Anzeigesprache (sofern definiert)."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:193
+msgid ""
+"Zeigt ein Button zum wechsel zwischen der hellen und der dunklen Darstellung "
+"der Seite."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:240
+msgid ""
+"Das <i>user</i> Objekt des Requests (i.d.R. über <i>request.user</i> "
+"verfügbar)."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:246
+msgid ""
+"Eine Liste mit den Links welche in dem Benutzermenü angezeigt werden sollen."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:250
+msgid "<b>True</b> wenn ein Button zum Anmelden angezeigt werden soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:252
+msgid "Suchstring für die Suchleiste."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:263
+msgid "Inhalt der Sidebar (Titel und Navigations-Elemente)."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:265
+msgid "Bestimmt, auf welcher Seite die Sidebar platziert werden soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:266
+msgid "<b>True</b> wenn die Sidebar nicht einklappbar sein soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:270
+msgid ""
+"Bei <b>True</b> schließt sich die Sidebar sobald der Cursor diese verlässt."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:276
+msgid ""
+"Bei <b>True</b> wird eine statische Sidebar auf einem kleineren Viewport "
+"ausgeblendet."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:282
+msgid ""
+"Bei <b>True</b> wird die Position des Inhalts angepasst. (NUR FÜR CUSTOM-"
+"SIDEBAR!) "
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:297
+msgid ""
+"Optionales Bild, welches unter dem Text der Beschreibung angezeigt wird."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:302
+msgid "Pfad zu der Bilddatei für das helle Theme."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:305
+msgid "Pfad zu der Bilddatei für das dunkle Theme."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:315
+msgid "Kurzbeschreibung der Anwendung mit optionalen Bild."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:318
+msgid "Überschrift der Beschreibung."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:319
+msgid "Kurze Zusammenfassung der Anwendung."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:326
+msgid "Liste der Hauptnavigationspunkte der Anwendung."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:359
+msgid ""
+"Kontaktinformationen, Link zum Impressum, Datenschutz und eine "
+"Kontaktmailadresse."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:363
+msgid "URL einer Kontaktmailadresse."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:364
+msgid "Verlinkung zu einem Impressum."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:365
+msgid "Verlinkung zu einer Datenschutzerklärung."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:372
+msgid "Copyright Informationen, wie das Jahr und der geschützte Name."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:376
+msgid "I.d.R das aktuelle Jahr (ist nicht zwingend erforderlich)."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:378
+msgid "Der geschützte Name der Anwendung."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:384
+#: .\insight_ui\templates\insight_ui\docs\partial\footer_detailpage.html:43
+msgid "Daten welche im Footer angezeigt werden sollen."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:400
+#: .\insight_ui\templates\insight_ui\docs\partial\breadcrumb_detailpage.html:41
+msgid "Liste der Navigationspunkte."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:410
+msgid "Ein optionaler Parameter, falls die aufzurufende View einen benötigt."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:425
+msgid "Liste der Prozessschritte."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:427
+#: .\insight_ui\component_details\parameter_context.py:478
+msgid "Titel des Schritts."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:428
+#: .\insight_ui\component_details\parameter_context.py:479
+msgid "Zusätzliche Beschreibung des Schritts unter dem Titel."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:429
+msgid "Zeigt statt der Schrittzahl ein Haken an."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:431
+msgid "Hebt den Titel farblich hervor und lässt den Text pulsieren."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:446
+msgid "Konfiguration der Step Bar."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:452
+msgid ""
+"Liste der Zustände der Prozessschritte. Mögliche Werte: 'success', 'failed', "
+"'active' und '' für Inaktiv."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:457
+msgid "(Nur wenn 'items' nicht gesetzt ist!) Anzahl der Prozessschritte."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:460
+msgid "(Nur wenn 'items' nicht gesetzt ist!) Aktueller Schritt des Prozesses."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:462
+msgid "Größe der Icons auf der Fortschrittsanzeige."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:476
+#: .\insight_ui\templates\insight_ui\docs\partial\bullet_point_list_detailpage.html:38
+msgid "Liste der einzelnen Punkte."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:483
+msgid "Ein optionales Icon, welches statt dem normalen Punkt angezeigt wird."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:487
+msgid "Ein optionaler Text, welcher statt dem normalen Punkt angezeigt wird."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:492
+#: .\insight_ui\component_details\parameter_context.py:725
+msgid ""
+"Name der URL welche beim Klick auf den jeweiligen Punkt aufgerufen werden "
+"soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:495
+msgid "Zeigt statt dem Punkt ein Haken an."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:496
+msgid "Hebt den Titel farblich hervor."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:510
+msgid "Liste der einzelnen Abschnitte."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:512
+msgid "Titel des Abschnitts."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:513
+msgid "Inhalt des Abschnitts."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:525
+#: .\insight_ui\component_details\parameter_context.py:542
+#: .\insight_ui\component_details\parameter_context.py:562
+#: .\insight_ui\component_details\parameter_context.py:1344
+msgid "Eindeutige Tag-ID für die Identifizierung des Elements im JavaScript."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:528
+msgid ""
+"Bei <b>True</b> kann immer nur ein Abschnitt gleichzeitig geöffnet sein."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:539
+msgid "Liste der Tab-Buttons."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:544
+msgid "Die URL welche beim Klick auf den Tab aufgerufen werden soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:545
+msgid "Beschriftung des Tab-Button."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:547
+#: .\insight_ui\component_details\parameter_context.py:729
+msgid "Ein optionales Icon, welches vor der Beschriftung angezeigt wird."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:557
+msgid ""
+"Beschreibt die Buttons, welche zum wechseln der einzelnen Tabs verwendet "
+"werden."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:567
+msgid ""
+"Zusätzlicher, nicht sichtbarer Titel, welcher nur von Screenreadern "
+"vorgelesen wird."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:593
+#: .\insight_ui\component_details\parameter_context.py:642
+#: .\insight_ui\component_details\parameter_context.py:743
+#: .\insight_ui\component_details\parameter_context.py:767
+#: .\insight_ui\component_details\parameter_context.py:787
+#: .\insight_ui\component_details\parameter_context.py:854
+#: .\insight_ui\component_details\parameter_context.py:877
+#: .\insight_ui\component_details\parameter_context.py:940
+#: .\insight_ui\component_details\parameter_context.py:981
+#: .\insight_ui\component_details\parameter_context.py:1100
+#: .\insight_ui\component_details\parameter_context.py:1145
+#: .\insight_ui\component_details\parameter_context.py:1225
+#: .\insight_ui\component_details\parameter_context.py:1357
+#: .\insight_ui\component_details\parameter_context.py:1372
+#: .\insight_ui\component_details\parameter_context.py:1386
+#: .\insight_ui\component_details\parameter_context.py:1676
+#: .\insight_ui\component_details\parameter_context.py:1706
+#: .\insight_ui\component_details\parameter_context.py:1732
+#: .\insight_ui\component_details\parameter_context.py:1785
+msgid ""
+"Optionale, eindeutige Tag-ID für die Identifizierung des Elements im "
+"JavaScript."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:598
+#: .\insight_ui\component_details\parameter_context.py:647
+#: .\insight_ui\component_details\parameter_context.py:682
+#: .\insight_ui\component_details\parameter_context.py:945
+#: .\insight_ui\component_details\parameter_context.py:986
+#: .\insight_ui\component_details\parameter_context.py:1023
+#: .\insight_ui\component_details\parameter_context.py:1054
+msgid ""
+"Wird für eine <span class='inline-tag'>&lt;form&gt;</span> benötigt, als "
+"Name des Request-Parameters."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:602
+msgid "Der Type des Input-Feldes bspw.: 'text', 'password', 'date', etc.."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:607
+msgid ""
+"Platzhalter Text, wird in dem Feld angezeigt, solange es nicht selektiert "
+"wurde."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:610
+msgid "Der Wert des Input-Feldes."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:611
+msgid "Kleinster numerischer Wert (für input_type='number')."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:612
+msgid "Größter numerischer Wert (für input_type='number')."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:613
+msgid "Minimale Anzahl an Zeichen in einem Textfeld."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:614
+msgid "Maximale Anzahl an Zeichen in einem Textfeld."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:619
+msgid ""
+"<b>True</b>, wenn <span class='inline-tag'>input_type='checkbox'</span> und "
+"die Checkbox ausgewählt sein soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:623
+msgid "<b>True</b> wenn das Feld ausgefüllt werden muss."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:624
+msgid "<b>True</b>, wenn das Feld deaktiviert sein soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:625
+msgid "Ein Label-Text welcher über dem Input-Feld angezeigt wird."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:629
+#: .\insight_ui\component_details\parameter_context.py:662
+#: .\insight_ui\component_details\parameter_context.py:968
+#: .\insight_ui\component_details\parameter_context.py:1008
+#: .\insight_ui\component_details\parameter_context.py:1039
+#: .\insight_ui\component_details\parameter_context.py:1072
+#: .\insight_ui\templates\insight_ui\docs\partial\checkbox_detailpage.html:51
+#: .\insight_ui\templates\insight_ui\docs\partial\multiselect_detailpage.html:46
+#: .\insight_ui\templates\insight_ui\docs\partial\select_detailpage.html:46
+msgid ""
+"Eine alternative Konfiguration mit Keys entsprechend den vorherigen "
+"Parametern."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:653
+msgid ""
+"Der Wert der Checkbox (Dabei handelt es sich nicht um den Zustand, siehe "
+"dafür 'checked')."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:656
+msgid "Ein Label-Text welcher über der Checkbox angezeigt wird."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:657
+msgid "<b>True</b>, wenn die Checkbox ausgewählt sein soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:658
+msgid "<b>True</b>, wenn die Checkbox deaktiviert sein soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:675
+#: .\insight_ui\templates\insight_ui\docs\partial\checkbox_group_detailpage.html:38
+msgid "Beschreibt die Checkbox Gruppe und die einzelnen Checkbox-Elemente."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:686
+msgid "Label-Text welcher über den Checkbox-Elementen angezeigt wird."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:690
+msgid ""
+"<b>True</b>, wenn die Checkbox-Elemente nebeneinander angezeigt werden "
+"sollen."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:696
+msgid "Anzahl der Checkbox-Elemente welche mindestens ausgewählt sein müssen."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:702
+msgid ""
+"Anzahl der Checkbox-Elemente welche gleichzeitig ausgewählt sein dürfen."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:705
+msgid "Liste der Checkbox-Elemente."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:719
+msgid "Eine Liste der Menüelemente."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:721
+msgid "Beschriftung des Dropdown-Elements."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:737
+#: .\insight_ui\templates\insight_ui\docs\partial\dropdown_detailpage.html:41
+msgid "Beschreibt den Dropdown-Button und die Menüelemente."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:746
+msgid "Beschriftung des Dropdown-Buttons."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:747
+msgid "<b>True</b> zeigt einen Pfeil hinter em Titel an."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:762
+#: .\insight_ui\component_details\parameter_context.py:849
+#: .\insight_ui\component_details\parameter_context.py:1701
+msgid "Eine Liste der Radio-Elemente."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:770
+#: .\insight_ui\component_details\parameter_context.py:857
+#: .\insight_ui\component_details\parameter_context.py:1709
+msgid "Wert des jeweiligen Radio-Buttons."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:771
+#: .\insight_ui\component_details\parameter_context.py:858
+#: .\insight_ui\component_details\parameter_context.py:1710
+msgid "Beschriftung des jeweiligen Radio-Buttons."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:773
+#: .\insight_ui\component_details\parameter_context.py:863
+#: .\insight_ui\component_details\parameter_context.py:1715
+msgid "<b>True</b>, wenn der Radio-Button deaktiviert sein soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:781
+#: .\insight_ui\component_details\parameter_context.py:871
+msgid "Beschreibt die Radio-Button Gruppe und die einzelnen Radio-Elemente."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:791
+#: .\insight_ui\component_details\parameter_context.py:881
+msgid "Ein Label-Text welcher über den Radio-Elementen angezeigt wird."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:796
+#: .\insight_ui\component_details\parameter_context.py:886
+msgid ""
+"<b>True</b>, wenn die Radio-Elemente nebeneinander angezeigt werden sollen."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:806
+#: .\insight_ui\component_details\parameter_context.py:896
+msgid "Der Wert des aktuell ausgewählten Radio-Buttons."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:811
+#: .\insight_ui\component_details\parameter_context.py:901
+msgid ""
+"Name der URL an welchen der Request beim Klick auf einen der Radio-Button, "
+"gesendet werden soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:817
+#: .\insight_ui\component_details\parameter_context.py:907
+msgid ""
+"Ein String von Query-Parametern, welche bei dem Request mit gesendet werden "
+"sollen."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:823
+#: .\insight_ui\component_details\parameter_context.py:913
+msgid ""
+"Die ID des HTML-Tags, welches bei wechseln des Radio-Buttons ausgetauscht "
+"werden soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:829
+#: .\insight_ui\component_details\parameter_context.py:919
+msgid ""
+"Name der JavaScript Methode welche beim Klick auf einen der Radio-Button "
+"ausgeführt werden soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:836
+#: .\insight_ui\component_details\parameter_context.py:926
+msgid ""
+"<b>True</b> wenn sich die Gruppe in einer &lt;form&gt; befindet, bei "
+"<b>False</b> bekommt die Gruppe ihre eigene &lt;form&gt;."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:860
+#: .\insight_ui\component_details\parameter_context.py:1712
+msgid "Optionales Icon, welches vor der Beschriftung angezeigt wird."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:948
+msgid "Ein Label-Text welcher über dem Range-Slider angezeigt wird."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:949
+msgid "Der Wert des Range-Sliders."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:950
+msgid "Kleinster einzustellender Wert des Range-Sliders."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:951
+msgid "Größter einzustellender Wert des Range-Sliders."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:955
+msgid ""
+"Die Größe der Schritte um welche sich der Wert, beim Bewegen des Range-"
+"Sliders verändert."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:958
+msgid "<b>True</b>, wenn der Range-Slider deaktiviert sein soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:962
+msgid ""
+"Eine Liste von Texten, welche als Legende unter dem Slider angezeigt werden."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:989
+msgid "Ein Label-Text welcher über dem Toggle-Button angezeigt wird."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:990
+msgid "Der Wert des Toggle-Buttons."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:994
+msgid ""
+"<b>True</b>, wenn der Toggle-Button wie ein typischer Switch-Select aussehen "
+"soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:997
+msgid "<b>True</b>, wenn der Toggle-Button ausgewählt sein soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:998
+msgid "<b>True</b>, wenn der Toggle-Button deaktiviert sein soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1002
+msgid ""
+"Name der JavaScript Methode welche beim Klick auf den Toggle-Button "
+"ausgeführt werden soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1026
+#: .\insight_ui\component_details\parameter_context.py:1057
+msgid "Ein Label-Text welcher über dem Select angezeigt wird."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1028
+#: .\insight_ui\component_details\parameter_context.py:1066
+msgid "Liste von Werten welche ausgewählt werden können."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1033
+msgid ""
+"Wert (Der Key-Wert, falls die Optionen als Dict übergeben wurden) der "
+"aktuell ausgewählten Option."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1058
+msgid "Anzahl der maximal ausgewählten Optionen."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1062
+msgid ""
+"zusätzliche Buttons für 'Alle Auswählen' und 'Alle Abwählen' Buttons "
+"anzeigen."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1068
+msgid "Liste der aktuell ausgewählten Optionen."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1087
+msgid ""
+"Name der URL an welchen der Request beim absenden einer Nachricht, gesendet "
+"werden soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1102
+msgid "Nachricht welche in dem Alert angezeigt wird."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1104
+msgid ""
+"Typ des Alerts. Möglich Werte sind 'info', 'success', 'warning' und 'error'."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1109
+msgid ""
+"Zeigt ein Button zum schließen des Alerts am Ende des Alert-Containers an."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1124
+msgid "Liste von Buttons, welche um unteren Ende des Dialogs angezeigt werden."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1133
+#: .\insight_ui\component_details\parameter_context.py:1560
+msgid ""
+"Beschreibt die Wichtigkeit des Buttons (rein visuell). Mögliche Werte sind: "
+"'primary' und 'secondary'."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1137
+msgid "Aufruf einer JavaScript Funktion, bspw.: alert('Confirmed!')"
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1138
+msgid "Schließt den Dialog beim Klick."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1147
+msgid "Überschrift des Modal Dialogs."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1148
+msgid "Text welcher direkt unter dem Titel angezeigt wird."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1153
+msgid ""
+"Zusätzlicher Text, welcher unter der Kopfzeile, welche aus Titel und "
+"Description besteht, angezeigt wird."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1170
+msgid "Bestimmt das Popover Objekt, welches beim Hovern angezeigt werden soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1177
+msgid ""
+"Bestimmt wo im Bezug auf das Element, der Popover angezeigt werden soll. "
+"Mögliche Werte sind: 'top', 'bottom', 'right', und 'left'."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1184
+msgid "Zeigt ein Pfeil am Rand des Popovers, hin zum auslösenden Objekt an."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1198
+msgid ""
+"Zeigt beim Hovern über das Element, ein Tooltip mit dem angegeben Text an."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1205
+msgid ""
+"Bestimmt wo im Bezug auf das Element, der Tooltip angezeigt werden soll. "
+"Mögliche Werte sind: 'top', 'bottom', 'right', und 'left'."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1212
+msgid "Zeigt ein Pfeil am Rand des Tooltips, hin zum auslösenden Objekt an."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1230
+msgid ""
+"Identifiziert dieses Objekt als Code Block und um welche Sprache es sich "
+"handelt."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1236
+msgid ""
+"Zeigt den Text, als Hinweis für den Nutzer in der Kopfzeile des Code Blocks "
+"an."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1248
+msgid "Erste bzw. ältere Version des Textes."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1249
+msgid "Zweite bzw. neuere Version des Textes."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1267
+msgid "Liste der Dateneinträge."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1269
+msgid "Breitengrad (Latitude) des Dateneintrags."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1270
+msgid "Längengrad (Longitude) des Dateneintrags."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1272
+msgid "Wird als Überschrift in dem Popover des Dateneintrags angezeigt."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1275
+msgid "Wird unter dem Title in dem Popover des Dateneintrags angezeigt."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1280
+msgid ""
+"Wird nur für 'circle' Dateneinträge verwenden und definiert die Größe/Farbe "
+"des Kreises."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1289
+msgid "Datensätze welche auf der Karte dargestellt werden sollen."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1292
+msgid "Der Name des Datensatzes, wird intern zur Benennung verwendet."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1297
+msgid ""
+"Die Art und Weise wie die Daten dargestellt werden sollen. Mögliche Werte "
+"sind: 'marker' und 'circle'."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1310
+msgid ""
+"Beschreibt die Karte und die Daten welche auf der Karte dargestellt werden "
+"sollen."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1315
+msgid "Startposition auf der Karte, beim Seitenaufruf."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1317
+msgid "Zoom auf der Karte, beim Seitenaufruf"
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1323
+msgid "Höhe der Karte in 'rem'."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1332
+msgid "Informationen und Daten des Diagramms."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1334
+msgid "Wird über dem Diagramm als Überschrift angezeigt."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1335
+msgid "Beschriftung der X-Achse."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1336
+msgid "Namen der einzelnen Datensätze."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1337
+msgid "Die Daten der einzelnen Datensätze."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1359
+msgid "URL des API Endpunkts zum abfragen der Daten."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1360
+msgid "Intervall des Datenabrufs in Sekunden."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1361
+#: .\insight_ui\component_details\parameter_context.py:1375
+msgid "Optionaler, initialer Inhalt."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1374
+msgid "URL des Websocket-API Endpunkts."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1389
+msgid "Name der URL, an welche der Request zum laden weitere Elemente."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1391
+msgid "Liste der bereits geladenen Elemente."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1396
+msgid ""
+"<b>True</b>, neue Einträge werden, sobald der angegebenen Threshold beim "
+"Scrollen überschritten wird, geladen. <b>False</b>, am Ende der Liste wird "
+"ein Button zum Abfragen weiterer Einträge angezeigt."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1403
+msgid ""
+"Der Pixel-Schwellenwert für das Laden weiterer Elemente (nur wenn "
+"<b>auto_fetch=False</b>)."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1416
+msgid "Ein von Django erzeugtes Pagination-Objekt der aktuellen Seite."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1418
+msgid "Liste der benachbarten Seiten."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1431
+msgid ""
+"Beschreibt die Tabelle und die Daten welche in dieser dargestellt werden "
+"sollen."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1435
+msgid "Überschrift der Tabelle."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1437
+msgid "Wird angezeigt, wenn keine Einträge vorhanden sind (wenn 'rows=[]')."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1439
+msgid "Liste der Überschriften der einzelnen Spalten."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1440
+msgid "Liste der Daten der einzelnen Zeilen."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1457
+msgid ""
+"Name der URL an welchen der Request beim ändern eines Filters, gesendet "
+"werden soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1464
+msgid ""
+"ID des HTML-Containers, dessen Inhalt beim Response ausgetauscht werden soll "
+"(zum Beispiel eine Liste von Daten, welche gefiltert wird)."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1471
+msgid ""
+"<b>True</b> wenn die ausgewählten Filterwerte in der URL angezeigt werden "
+"sollen."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1474
+msgid "Definition der einzelnen Filter."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1476
+msgid "<b>True</b> wenn die Filter übereinander angeordnet sein sollen."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1482
+msgid ""
+"Enthält die aktuell ausgewählten Werte der einzelnen Filter, um diese nach "
+"dem Request wiederherzustellen."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1498
+msgid ""
+"Name der URL an welchen der Request beim absenden der Suche, gesendet werden "
+"soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1504
+msgid ""
+"<b>True</b> wenn die Suchleiste ohne Button und kleiner angezeigt werden "
+"soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1508
+msgid "Optionaler Wert der automatisch in dem Textfeld angezeigt wird."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1530
+msgid ""
+"Beschreibt ein Bild, welches als Hintergrund für den Title und dem Subtitle "
+"angezeigt wird."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1534
+#: .\insight_ui\component_details\parameter_context.py:1632
+msgid "URL zu der Bild-Resource."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1539
+#: .\insight_ui\component_details\parameter_context.py:1637
+msgid ""
+"Alternativtext der angezeigt wird, falls das Bild nicht geladen werden kann "
+"und für Screenreader verwendet wird."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1551
+msgid "Liste von Buttons, welche am unteren Rand der Karte angezeigt werden."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1564
+msgid "URL welche beim Klick auf den Button aufgerufen werden soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1570
+msgid "Überschrift der Karte."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1572
+msgid "Optionaler Untertitel, welcher direkt unter dem Title angezeigt wird."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1575
+msgid ""
+"Textinhalt der Karte. Wird unter dem Title bzw. unter dem Subtitle angezeigt."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1591
+#: .\insight_ui\component_details\parameter_context.py:1689
+msgid ""
+"Daten welche innerhalb des Karussell angezeigt werden sollen (frei "
+"definierbar)."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1597
+#: .\insight_ui\component_details\parameter_context.py:1650
+msgid ""
+"<b>True</b>, wenn in der unteren rechten Ecke die aktuelle Seite angezeigt "
+"werden soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1603
+#: .\insight_ui\component_details\parameter_context.py:1656
+msgid ""
+"<b>True</b>, wenn unter dem Karussell-Inhalt eine einfache Pagination "
+"angezeigt werden soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1609
+#: .\insight_ui\component_details\parameter_context.py:1662
+msgid ""
+"<b>True</b>, wenn das Karussell von alleine durch den Inhalt iterieren soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1612
+msgid "Anzahl an 'carousel_items' pro Seite."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1623
+msgid "Bilder welche innerhalb des Karussell angezeigt werden sollen."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1629
+msgid ""
+"Optionale Beschreibung des Bildes, welche am oberen Rand des Bildes "
+"angezeigt wird."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1665
+msgid "Anzahl der Bilder pro Seite."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1678
+msgid "Geschwindigkeit mit welcher sich das Karussell dreht."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1679
+msgid "Vertikale Neigung des Karussell zur Camera."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1683
+msgid ""
+"<b>True</b> wenn alle Karten immer in Richtung der Kamera ausgerichtet sein "
+"sollen."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1725
+msgid "Konfiguration der Radio-Group, zum wechseln der Ansichtsart."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1745
+msgid ""
+"Eindeutige Tag-ID für die Identifizierung des Elements im JavaScript (wird "
+"für den wechsel der Ansicht benötigt)."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1749
+msgid "Daten, welche angezeigt werden sollen."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1751
+msgid "Name der aktuell ausgewählten View-Variante."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1762
+#: .\insight_ui\templates\insight_ui\docs\partial\form_detailpage.html:38
+msgid "Konfiguration des HTMX Request, für asynchrone Requests."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1768
+msgid ""
+"ID des HTML-Containers, dessen Inhalt beim Response ausgetauscht werden soll."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1775
+msgid ""
+"Die Art wie das Target ausgetauscht werden soll, nur der Inhalt mit "
+"'innerHTML' oder der Container selbst mit 'outerHTML'."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1787
+msgid "Überschrift des Formulars."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1789
+msgid ""
+"Beschreibung des Formulars, welche direkt unter dem Title angezeigt wird."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1791
+msgid "Liste der einzelnen Formular-Felder."
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1795
+msgid ""
+"<b>True</b>, wenn neben dem 'Absenden' Button ein 'Zurücksetzen' Button "
+"angezeigt werden soll"
+msgstr ""
+
+#: .\insight_ui\component_details\parameter_context.py:1801
+msgid ""
+"Name der URL, an welche beim absenden des Formulars, der Request gesendet "
+"werden soll."
+msgstr ""
+
+#: .\insight_ui\context.py:17
+msgid "Home"
+msgstr ""
+
+#: .\insight_ui\context.py:25
+msgid "Installation"
+msgstr ""
+
+#: .\insight_ui\context.py:33
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:19
+msgid "Base Template"
+msgstr ""
+
+#: .\insight_ui\context.py:41
+#: .\insight_ui\templates\insight_ui\docs\customization.html:19
+#: .\insight_ui\templates\insight_ui\docs\partial\button_detailpage.html:84
+msgid "Customization"
+msgstr ""
+
+#: .\insight_ui\context.py:49
+#: .\insight_ui\templates\insight_ui\docs\icons.html:19
+msgid "Icons"
+msgstr ""
+
+#: .\insight_ui\context.py:490
+msgid "RTL"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\alert.html:24
+#: .\insight_ui\templates\insight_ui\components\form_errors.html:25
+#: .\insight_ui\templates\insight_ui\components\modal.html:22
+#: .\insight_ui\templates\insight_ui\components\modal.html:63
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:57
+msgid "Close"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\breadcrumbs.html:3
 msgid "Breadcrumb-Navigation"
 msgstr "Breadcrumb-Navigation"
 
-#: insight_ui/templates/insight_ui/components/form.html:38
-msgid "Pflichtfeld"
-msgstr "Pflichtfeld"
-
-#: insight_ui/templates/insight_ui/components/infinite_scroll.html:27
-msgid "Weitere Inhalte werden geladen..."
+#: .\insight_ui\templates\insight_ui\components\carousel.html:24
+#: .\insight_ui\templates\insight_ui\components\pagination.html:17
+msgid "To previous page"
 msgstr ""
 
-#: insight_ui/templates/insight_ui/components/infinite_scroll.html:34
-msgid "Alle Inhalte geladen"
+#: .\insight_ui\templates\insight_ui\components\carousel.html:30
+#: .\insight_ui\templates\insight_ui\components\pagination.html:57
+msgid "To next page"
 msgstr ""
 
-#: insight_ui/templates/insight_ui/components/language_selector.html:5
-msgid "Sprache auswählen"
-msgstr "Sprache auswählen"
-
-#: insight_ui/templates/insight_ui/components/language_selector.html:12
-msgid "Sprache ändern"
-msgstr "Sprache ändern"
-
-#: insight_ui/templates/insight_ui/components/live_content.html:25
-msgid "Wird geladen..."
+#: .\insight_ui\templates\insight_ui\components\carousel.html:38
+msgid "Go to page:"
 msgstr ""
 
-#: insight_ui/templates/insight_ui/components/live_content.html:33
-msgid "Inhalte werden geladen..."
+#: .\insight_ui\templates\insight_ui\components\carousels\3D_carousel.html:24
+msgid "Zurück"
 msgstr ""
 
-#: insight_ui/templates/insight_ui/components/modal.html:23
-msgid "Modal schließen"
-msgstr "Modal schließen"
-
-#: insight_ui/templates/insight_ui/components/navbar.html:3
-msgid "Hauptnavigation"
-msgstr "Hauptnavigation"
-
-#: insight_ui/templates/insight_ui/components/navbar.html:6
-msgid "Zum Hauptinhalt springen"
-msgstr "Zum Hauptinhalt springen"
-
-#: insight_ui/templates/insight_ui/components/navbar.html:26
-msgid "Menü öffnen"
-msgstr "Menü öffnen"
-
-#: insight_ui/templates/insight_ui/components/navbar.html:61
-msgid "Farbschema umschalten"
-msgstr "Farbschema umschalten"
-
-#: insight_ui/templates/insight_ui/components/sidebar.html:3
-#: tests/templates/index.html:107
-msgid "Seitennavigation"
-msgstr "Seitennavigation"
-
-#: insight_ui/templates/insight_ui/components/sidebar.html:15
-msgid "Sidebar umschalten"
-msgstr "Sidebar umschalten"
-
-#: tests/templates/index.html:6
-msgid "Django Insight UI Demo"
+#: .\insight_ui\templates\insight_ui\components\carousels\3D_carousel.html:27
+msgid "Weiter"
 msgstr ""
 
-#: tests/templates/index.html:51
-msgid "Willkommen bei Django Insight UI"
+#: .\insight_ui\templates\insight_ui\components\chat.html:20
+msgid "Write something..."
 msgstr ""
 
-#: tests/templates/index.html:55
+#: .\insight_ui\templates\insight_ui\components\chat.html:22
+msgid "Send"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\code_block.html:22
+msgid "Copy"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\footer.html:40
+msgid "Links"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\footer.html:55
+msgid "Kontakt"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\footer.html:58
+msgid "Imprint"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\footer.html:61
+msgid "Privacy"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\footer.html:66
+msgid "Do you have any questions or feedback?"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\footer.html:75
+msgid "All rights reserved."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\form.html:41
+msgid "Reset"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\form.html:43
+msgid "Submit"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\form.html:53
+#: .\insight_ui\templates\insight_ui\components\htmx_loading_indicator.html:20
+#: .\insight_ui\templates\insight_ui\components\live_content.html:18
+msgid "Loading..."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\form_errors.html:12
+msgid "Error while submitting the form"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\form_success.html:12
+msgid "Successfully submitted!"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\infinite_scroll.html:33
+#: .\insight_ui\templates\insight_ui\components\infinite_scroll_items.html:19
+msgid "Load more"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\infinite_scroll.html:41
+msgid "More content is loading..."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\infinite_scroll_items.html:33
+msgid "Load more content..."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\infinite_scroll_items.html:39
+msgid "All content loaded"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\input.html:9
+#: .\insight_ui\templates\insight_ui\components\select.html:9
+#: .\insight_ui\templates\insight_ui\components\textarea.html:9
+msgid "Required"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\list_partial.html:12
+msgid "No elements found!"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\live_content.html:26
+msgid "Content is loading..."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\live_content_partial.html:14
+msgid "Timestamp"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\multiselect.html:7
 #, fuzzy
 #| msgid "Sprache auswählen"
-msgid "Sprachauswahl"
+msgid "Alle auswählen"
 msgstr "Sprache auswählen"
 
-#: tests/templates/index.html:61
-msgid "Benachrichtigungen"
-msgstr ""
-
-#: tests/templates/index.html:76
-msgid "Tabelle"
-msgstr ""
-
-#: tests/templates/index.html:82
-msgid "Karten"
-msgstr ""
-
-#: tests/templates/index.html:91
-msgid "Formular"
-msgstr ""
-
-#: tests/templates/index.html:97
-msgid "Modal-Dialog"
-msgstr ""
-
-#: tests/templates/index.html:99
+#: .\insight_ui\templates\insight_ui\components\multiselect.html:8
 #, fuzzy
-#| msgid "Menü öffnen"
-msgid "Modal öffnen"
-msgstr "Menü öffnen"
+#| msgid "Sprache auswählen"
+msgid "Alle abwählen"
+msgstr "Sprache auswählen"
 
-#: tests/templates/index.html:113
-msgid "Live-Inhalte (HTMX)"
+#: .\insight_ui\templates\insight_ui\components\navbar.html:5
+msgid "Jump to main content"
 msgstr ""
 
-#: tests/templates/index.html:119
-msgid "HTMX-Formular"
+#: .\insight_ui\templates\insight_ui\components\navbar.html:10
+#, fuzzy
+#| msgid "Seitennavigation"
+msgid "Main navigation"
+msgstr "Seitennavigation"
+
+#: .\insight_ui\templates\insight_ui\components\navbar.html:55
+msgid "Open menu"
 msgstr ""
 
-#: tests/templates/index.html:126
+#: .\insight_ui\templates\insight_ui\components\navbar.html:122
+msgid "Insight-UI"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\navbar.html:122
+msgid "Lorem ipsum..."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\pagination.html:22
+msgid "To previous page (Deactivated because there are no more previous pages)"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\pagination.html:62
+msgid "To next page (Deactivated because there are no more next pages)"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\pagination.html:83
+msgid "Page"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\pagination.html:83
+msgid "of"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\parameter_table.html:8
+msgid "Typ"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\parameter_table.html:9
+msgid "Beschreibung"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\parameter_table.html:10
+msgid "Standardwert"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\search_bar.html:18
+#: .\insight_ui\templates\insight_ui\components\search_bar.html:28
+msgid "Search"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\search_bar.html:25
+msgid "Browse..."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\search_query_builder\sq_builder.html:6
+msgid "The following conditions must be met:"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\search_query_builder\sq_builder.html:23
+msgid "Add another filter"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\search_query_builder\sq_builder.html:26
+msgid "Apply"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\search_query_builder\sq_builder.html:101
+#: .\insight_ui\templates\insight_ui\components\search_query_builder\sq_builder_filter.html:41
+msgid "Value"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\search_query_builder\sq_builder_filter.html:19
+msgid "Select the field of the filter"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\search_query_builder\sq_builder_filter.html:21
+msgid "-- Attribute --"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\search_query_builder\sq_builder_filter.html:29
+msgid "Select the operator of the filter"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\search_query_builder\sq_builder_filter.html:39
+msgid "Specify the value of the filter"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\search_query_builder\sq_builder_filter.html:51
+msgid "Remove filter"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\sidebar.html:8
+msgid "Open sidebar"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\sidebar.html:34
+#, fuzzy
+#| msgid "Seitennavigation"
+msgid "Side navigation"
+msgstr "Seitennavigation"
+
+#: .\insight_ui\templates\insight_ui\components\sidebar.html:60
+msgid "Close sidebar"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\tabs.html:29
+msgid "Tab content"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\toc_sidebar.html:6
+msgid "Table of Contents"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\toggle_theme.html:4
+msgid "Toggle theme"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\user_dropdown.html:11
+msgid "Logged in as"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\user_dropdown.html:45
+#: .\insight_ui\templates\insight_ui\login.html:40
+msgid "Login"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\websocket.html:12
+msgid "Wait for messages..."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\websocket.html:16
+msgid "Status:"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\websocket.html:16
+msgid "Establishing connection..."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\websocket.html:19
+msgid "URL:"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\components\websocket.html:22
+msgid "Mode: HTMX WebSocket Extension (expects HTML)"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:4
+msgid "Insight UI - Base Template"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:19
+msgid ""
+"Unser Base-Template dient als Grundlage für sämtliche Seiten der Anwendung. "
+"Es bietet unter anderem ein semantisch korrektes Grundgerüst für den Header, "
+"Footer, Sidebars, dem Hauptinhalt und noch weiteren Grundbausteinen, vieler "
+"Web-Anwendungen. Zusätzlich lädt das Base-Template bereits alle notwendigen "
+"JavaScript Dateien und je nach Konfiguration auch die externen JavaScript "
+"Libraries, sowie Stylesheets. Die Konfiguration des Favicon und Search "
+"Engine optimization (SEO) wird von dem Base-Template ebenfalls vorgenommen."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:25
+#: .\insight_ui\templates\insight_ui\docs\component_details_content.html:14
+#: .\insight_ui\templates\insight_ui\docs\icons.html:33
+msgid "Usage"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:53
+#, python-format
+msgid ""
+"\n"
+"                        Das Favicon, die SEO Angaben, sowie weitere Meta-"
+"Information können über die %(bold_text)s Einstellungen in der %(file)s "
+"angepasst werden.\n"
+"                    "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:105
+#, python-format
+msgid ""
+"\n"
+"                        Diese Blöcke müssen nicht zwangsläufig verwendet "
+"werden, allerdings ist es empfehlenswert, da sich ein paar Strukturelle "
+"Gegebenheiten mit sich bringen. Theoretisch könnte aber auch alles in den "
+"%(block_title)s. Es können bei Bedarf auch weitere JavaScript Bibliotheken "
+"verlinkt werden, durch den %(block_content)s gepackt werden.\n"
+"                    "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:146
+msgid "navbar"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:176
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:211
+#: .\insight_ui\templates\insight_ui\docs\partial\footer_detailpage.html:136
+#: .\insight_ui\templates\insight_ui\docs\partial\navbar_detailpage.html:149
+msgid "Sidebar"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:220
+msgid ""
+"\n"
+"                        Der Block nimmt immer die volle Höhe des Fenstern "
+"ein, unabhängig vom Inhalt. Dadurch wird sichergestellt, das sich der Footer "
+"nicht mitten im Browserfenster hängt.\n"
+"                    "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:248
+#: .\insight_ui\templates\insight_ui\docs\partial\navbar_detailpage.html:137
+#: .\insight_ui\templates\insight_ui\docs\partial\sidebar_detailpage.html:129
+msgid "Footer"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:50
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:62
+msgid "Primary"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:51
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:63
+msgid "Secondary"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:52
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:64
+msgid "Success"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:53
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:65
+msgid "Warning"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:54
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:66
+msgid "Danger"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:55
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:67
+msgid "Info"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:56
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:68
+msgid "Disabled"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:58
+msgid "Link"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:125
+msgid "Standard Modal"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:127
+msgid "Demo Modal"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:127
+msgid "This is an example of a standard modal."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:131
+msgid "Modal with Action-Buttons"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:133
+msgid "Delete?"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:142
+msgid "This is a Popover."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:145
+msgid ""
+"A popover could have more content than a tooltip and it can also have "
+"interactive elements like buttons"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:155
+msgid "Top"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:156
+msgid "Bottom"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:157
+msgid "Right"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:158
+msgid "Left"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\component_detailpage.html:4
+#: .\insight_ui\templates\insight_ui\docs\storybook.html:4
+msgid "Insight UI - Components"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\component_details_content.html:51
+#: .\insight_ui\templates\insight_ui\docs\partial\3D_carousel_detailpage.html:47
+#: .\insight_ui\templates\insight_ui\docs\partial\accordion_detailpage.html:56
+#: .\insight_ui\templates\insight_ui\docs\partial\alert_detailpage.html:38
+#: .\insight_ui\templates\insight_ui\docs\partial\article_detailpage.html:40
+#: .\insight_ui\templates\insight_ui\docs\partial\breadcrumb_detailpage.html:58
+#: .\insight_ui\templates\insight_ui\docs\partial\bullet_point_list_detailpage.html:55
+#: .\insight_ui\templates\insight_ui\docs\partial\button_detailpage.html:92
+#: .\insight_ui\templates\insight_ui\docs\partial\card_carousel_detailpage.html:77
+#: .\insight_ui\templates\insight_ui\docs\partial\card_detailpage.html:84
+#: .\insight_ui\templates\insight_ui\docs\partial\chart_detailpage.html:69
+#: .\insight_ui\templates\insight_ui\docs\partial\chat_detailpage.html:38
+#: .\insight_ui\templates\insight_ui\docs\partial\checkbox_detailpage.html:70
+#: .\insight_ui\templates\insight_ui\docs\partial\checkbox_group_detailpage.html:77
+#: .\insight_ui\templates\insight_ui\docs\partial\code_block_detailpage.html:43
+#: .\insight_ui\templates\insight_ui\docs\partial\differentiator_detailpage.html:38
+#: .\insight_ui\templates\insight_ui\docs\partial\dropdown_detailpage.html:81
+#: .\insight_ui\templates\insight_ui\docs\partial\footer_detailpage.html:104
+#: .\insight_ui\templates\insight_ui\docs\partial\form_detailpage.html:45
+#: .\insight_ui\templates\insight_ui\docs\partial\generic_filter_detailpage.html:100
+#: .\insight_ui\templates\insight_ui\docs\partial\geo_map_detailpage.html:88
+#: .\insight_ui\templates\insight_ui\docs\partial\hero_detailpage.html:50
+#: .\insight_ui\templates\insight_ui\docs\partial\image_carousel_detailpage.html:50
+#: .\insight_ui\templates\insight_ui\docs\partial\infinite_scroll_detailpage.html:41
+#: .\insight_ui\templates\insight_ui\docs\partial\input_field_detailpage.html:61
+#: .\insight_ui\templates\insight_ui\docs\partial\live_content_detailpage.html:38
+#: .\insight_ui\templates\insight_ui\docs\partial\modal_detailpage.html:57
+#: .\insight_ui\templates\insight_ui\docs\partial\multiselect_detailpage.html:64
+#: .\insight_ui\templates\insight_ui\docs\partial\navbar_detailpage.html:118
+#: .\insight_ui\templates\insight_ui\docs\partial\page_header_detailpage.html:40
+#: .\insight_ui\templates\insight_ui\docs\partial\pagination_detailpage.html:61
+#: .\insight_ui\templates\insight_ui\docs\partial\popover_detailpage.html:49
+#: .\insight_ui\templates\insight_ui\docs\partial\progress_bar_detailpage.html:42
+#: .\insight_ui\templates\insight_ui\docs\partial\query_builder_detailpage.html:109
+#: .\insight_ui\templates\insight_ui\docs\partial\radio_group_detailpage.html:74
+#: .\insight_ui\templates\insight_ui\docs\partial\range_slider_detailpage.html:63
+#: .\insight_ui\templates\insight_ui\docs\partial\search_bar_detailpage.html:38
+#: .\insight_ui\templates\insight_ui\docs\partial\select_detailpage.html:62
+#: .\insight_ui\templates\insight_ui\docs\partial\sidebar_detailpage.html:97
+#: .\insight_ui\templates\insight_ui\docs\partial\step_bar_detailpage.html:54
+#: .\insight_ui\templates\insight_ui\docs\partial\table_detailpage.html:66
+#: .\insight_ui\templates\insight_ui\docs\partial\tabs_detailpage.html:79
+#: .\insight_ui\templates\insight_ui\docs\partial\toggle_button_detailpage.html:61
+#: .\insight_ui\templates\insight_ui\docs\partial\toggle_view_detailpage.html:39
+#: .\insight_ui\templates\insight_ui\docs\partial\tooltip_detailpage.html:59
+#: .\insight_ui\templates\insight_ui\docs\partial\web_socket_detailpage.html:38
+msgid "Accessability"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\component_details_content.html:56
+msgid "No comments."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\component_details_content.html:66
+#: .\insight_ui\templates\insight_ui\docs\partial\3D_carousel_detailpage.html:55
+#: .\insight_ui\templates\insight_ui\docs\partial\accordion_detailpage.html:68
+#: .\insight_ui\templates\insight_ui\docs\partial\alert_detailpage.html:47
+#: .\insight_ui\templates\insight_ui\docs\partial\article_detailpage.html:50
+#: .\insight_ui\templates\insight_ui\docs\partial\breadcrumb_detailpage.html:67
+#: .\insight_ui\templates\insight_ui\docs\partial\button_detailpage.html:103
+#: .\insight_ui\templates\insight_ui\docs\partial\card_carousel_detailpage.html:86
+#: .\insight_ui\templates\insight_ui\docs\partial\card_detailpage.html:92
+#: .\insight_ui\templates\insight_ui\docs\partial\chart_detailpage.html:77
+#: .\insight_ui\templates\insight_ui\docs\partial\chat_detailpage.html:46
+#: .\insight_ui\templates\insight_ui\docs\partial\checkbox_detailpage.html:78
+#: .\insight_ui\templates\insight_ui\docs\partial\checkbox_group_detailpage.html:96
+#: .\insight_ui\templates\insight_ui\docs\partial\code_block_detailpage.html:51
+#: .\insight_ui\templates\insight_ui\docs\partial\differentiator_detailpage.html:46
+#: .\insight_ui\templates\insight_ui\docs\partial\dropdown_detailpage.html:91
+#: .\insight_ui\templates\insight_ui\docs\partial\form_detailpage.html:53
+#: .\insight_ui\templates\insight_ui\docs\partial\generic_filter_detailpage.html:108
+#: .\insight_ui\templates\insight_ui\docs\partial\geo_map_detailpage.html:96
+#: .\insight_ui\templates\insight_ui\docs\partial\hero_detailpage.html:60
+#: .\insight_ui\templates\insight_ui\docs\partial\image_carousel_detailpage.html:69
+#: .\insight_ui\templates\insight_ui\docs\partial\infinite_scroll_detailpage.html:49
+#: .\insight_ui\templates\insight_ui\docs\partial\input_field_detailpage.html:69
+#: .\insight_ui\templates\insight_ui\docs\partial\live_content_detailpage.html:46
+#: .\insight_ui\templates\insight_ui\docs\partial\modal_detailpage.html:67
+#: .\insight_ui\templates\insight_ui\docs\partial\multiselect_detailpage.html:74
+#: .\insight_ui\templates\insight_ui\docs\partial\navbar_detailpage.html:126
+#: .\insight_ui\templates\insight_ui\docs\partial\page_header_detailpage.html:49
+#: .\insight_ui\templates\insight_ui\docs\partial\pagination_detailpage.html:70
+#: .\insight_ui\templates\insight_ui\docs\partial\popover_detailpage.html:57
+#: .\insight_ui\templates\insight_ui\docs\partial\progress_bar_detailpage.html:50
+#: .\insight_ui\templates\insight_ui\docs\partial\query_builder_detailpage.html:117
+#: .\insight_ui\templates\insight_ui\docs\partial\radio_group_detailpage.html:83
+#: .\insight_ui\templates\insight_ui\docs\partial\range_slider_detailpage.html:72
+#: .\insight_ui\templates\insight_ui\docs\partial\search_bar_detailpage.html:46
+#: .\insight_ui\templates\insight_ui\docs\partial\select_detailpage.html:71
+#: .\insight_ui\templates\insight_ui\docs\partial\sidebar_detailpage.html:106
+#: .\insight_ui\templates\insight_ui\docs\partial\step_bar_detailpage.html:62
+#: .\insight_ui\templates\insight_ui\docs\partial\table_detailpage.html:74
+#: .\insight_ui\templates\insight_ui\docs\partial\tabs_detailpage.html:90
+#: .\insight_ui\templates\insight_ui\docs\partial\toggle_button_detailpage.html:70
+#: .\insight_ui\templates\insight_ui\docs\partial\toggle_view_detailpage.html:58
+#: .\insight_ui\templates\insight_ui\docs\partial\tooltip_detailpage.html:67
+#: .\insight_ui\templates\insight_ui\docs\partial\web_socket_detailpage.html:46
+msgid "Related Topics"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\component_details_content.html:82
+#: .\insight_ui\templates\insight_ui\docs\partial\alert_detailpage.html:49
+#: .\insight_ui\templates\insight_ui\docs\partial\breadcrumb_detailpage.html:69
+#: .\insight_ui\templates\insight_ui\docs\partial\chart_detailpage.html:79
+#: .\insight_ui\templates\insight_ui\docs\partial\code_block_detailpage.html:53
+#: .\insight_ui\templates\insight_ui\docs\partial\differentiator_detailpage.html:48
+#: .\insight_ui\templates\insight_ui\docs\partial\dropdown_detailpage.html:93
+#: .\insight_ui\templates\insight_ui\docs\partial\geo_map_detailpage.html:98
+#: .\insight_ui\templates\insight_ui\docs\partial\hero_detailpage.html:62
+msgid "No related components available."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:4
+msgid "Insight UI - Customization"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:19
+msgid ""
+"Unser UI Framework bietet nicht nur eine Reihe von nützlichen Komponenten, "
+"sondern lässt sich auch vollkommen nach allen Wünschen anpassen."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\icons.html:4
+msgid "Insight UI - Icons"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\icons.html:35
+#, python-format
+msgid ""
+"\n"
+"                    Die Komponente wird über das %(icon)s Tag eingebunden.\n"
+"                "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\icons.html:50
+msgid "Icon Portfolio"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\icons.html:53
+#, python-format
+msgid ""
+"\n"
+"                    Die hier dargestellten Icon stammen von %(heroicons)s "
+"und von %(flowbite_icons)s. Beide stellen ihre Icons unter der <b>MIT</b> "
+"Lizenz zur Verfügung.\n"
+"                    Es ist nicht unser Ziel eine generische Icon Library "
+"aufzubauen, sondern passen diese an die API unserer Icon-Komponente an, um "
+"die Icons auch aus dem Django-Kontext heraus angeben zu können.\n"
+"                "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\icons.html:61
+msgid "Sizes"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\installation.html:4
+msgid "Insight UI - Get Started"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\installation.html:19
+msgid "Get started"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\3D_carousel_detailpage.html:18
+#: .\insight_ui\templates\insight_ui\docs\partial\accordion_detailpage.html:20
+#: .\insight_ui\templates\insight_ui\docs\partial\alert_detailpage.html:18
+#: .\insight_ui\templates\insight_ui\docs\partial\article_detailpage.html:18
+#: .\insight_ui\templates\insight_ui\docs\partial\breadcrumb_detailpage.html:21
+#: .\insight_ui\templates\insight_ui\docs\partial\bullet_point_list_detailpage.html:19
+#: .\insight_ui\templates\insight_ui\docs\partial\button_detailpage.html:23
+#: .\insight_ui\templates\insight_ui\docs\partial\card_carousel_detailpage.html:18
+#: .\insight_ui\templates\insight_ui\docs\partial\card_detailpage.html:30
+#: .\insight_ui\templates\insight_ui\docs\partial\chart_detailpage.html:25
+#: .\insight_ui\templates\insight_ui\docs\partial\chat_detailpage.html:18
+#: .\insight_ui\templates\insight_ui\docs\partial\checkbox_detailpage.html:28
+#: .\insight_ui\templates\insight_ui\docs\partial\checkbox_group_detailpage.html:18
+#: .\insight_ui\templates\insight_ui\docs\partial\code_block_detailpage.html:18
+#: .\insight_ui\templates\insight_ui\docs\partial\differentiator_detailpage.html:18
+#: .\insight_ui\templates\insight_ui\docs\partial\dropdown_detailpage.html:21
+#: .\insight_ui\templates\insight_ui\docs\partial\footer_detailpage.html:18
+#: .\insight_ui\templates\insight_ui\docs\partial\form_detailpage.html:18
+#: .\insight_ui\templates\insight_ui\docs\partial\generic_filter_detailpage.html:21
+#: .\insight_ui\templates\insight_ui\docs\partial\geo_map_detailpage.html:18
+#: .\insight_ui\templates\insight_ui\docs\partial\hero_detailpage.html:18
+#: .\insight_ui\templates\insight_ui\docs\partial\image_carousel_detailpage.html:30
+#: .\insight_ui\templates\insight_ui\docs\partial\infinite_scroll_detailpage.html:21
+#: .\insight_ui\templates\insight_ui\docs\partial\input_field_detailpage.html:18
+#: .\insight_ui\templates\insight_ui\docs\partial\live_content_detailpage.html:18
+#: .\insight_ui\templates\insight_ui\docs\partial\modal_detailpage.html:18
+#: .\insight_ui\templates\insight_ui\docs\partial\multiselect_detailpage.html:18
+#: .\insight_ui\templates\insight_ui\docs\partial\navbar_detailpage.html:26
+#: .\insight_ui\templates\insight_ui\docs\partial\page_header_detailpage.html:18
+#: .\insight_ui\templates\insight_ui\docs\partial\pagination_detailpage.html:18
+#: .\insight_ui\templates\insight_ui\docs\partial\popover_detailpage.html:23
+#: .\insight_ui\templates\insight_ui\docs\partial\progress_bar_detailpage.html:34
+#: .\insight_ui\templates\insight_ui\docs\partial\query_builder_detailpage.html:27
+#: .\insight_ui\templates\insight_ui\docs\partial\radio_group_detailpage.html:22
+#: .\insight_ui\templates\insight_ui\docs\partial\range_slider_detailpage.html:18
+#: .\insight_ui\templates\insight_ui\docs\partial\search_bar_detailpage.html:18
+#: .\insight_ui\templates\insight_ui\docs\partial\select_detailpage.html:18
+#: .\insight_ui\templates\insight_ui\docs\partial\sidebar_detailpage.html:18
+#: .\insight_ui\templates\insight_ui\docs\partial\step_bar_detailpage.html:18
+#: .\insight_ui\templates\insight_ui\docs\partial\table_detailpage.html:18
+#: .\insight_ui\templates\insight_ui\docs\partial\tabs_detailpage.html:20
+#: .\insight_ui\templates\insight_ui\docs\partial\toggle_button_detailpage.html:18
+#: .\insight_ui\templates\insight_ui\docs\partial\toggle_view_detailpage.html:18
+#: .\insight_ui\templates\insight_ui\docs\partial\tooltip_detailpage.html:23
+#: .\insight_ui\templates\insight_ui\docs\partial\web_socket_detailpage.html:18
+msgid "Verwendung"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\3D_carousel_detailpage.html:20
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(three_d_carousel)s Tag "
+"eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\3D_carousel_detailpage.html:66
+#: .\insight_ui\templates\insight_ui\docs\partial\image_carousel_detailpage.html:61
+#: .\insight_ui\templates\insight_ui\docs\partial\toggle_view_detailpage.html:93
+msgid "Card Carousel"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\3D_carousel_detailpage.html:78
+#: .\insight_ui\templates\insight_ui\docs\partial\card_carousel_detailpage.html:97
+msgid "Image Carousel"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\accordion_detailpage.html:22
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(accordion)s Tag eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\accordion_detailpage.html:79
+msgid "Tabs"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\alert_detailpage.html:20
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(alert)s Tag eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\article_detailpage.html:20
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(article)s Tag eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\breadcrumb_detailpage.html:23
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(breadcrumbs)s Tag eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\bullet_point_list_detailpage.html:21
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(bullet_point_list)s Tag "
+"eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\bullet_point_list_detailpage.html:63
+#: .\insight_ui\templates\insight_ui\docs\partial\footer_detailpage.html:113
+msgid "Related topics"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\bullet_point_list_detailpage.html:74
+#: .\insight_ui\templates\insight_ui\docs\partial\progress_bar_detailpage.html:23
+#: .\insight_ui\templates\insight_ui\docs\partial\progress_bar_detailpage.html:61
+msgid "Step Bar"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\button_detailpage.html:11
+msgid "Standard Buttons"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\button_detailpage.html:13
+msgid "Outline Buttons"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\button_detailpage.html:15
+msgid "Button sizes"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\button_detailpage.html:93
+msgid "Tipps"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\button_detailpage.html:114
+#: .\insight_ui\templates\insight_ui\docs\partial\checkbox_detailpage.html:137
+#: .\insight_ui\templates\insight_ui\docs\partial\checkbox_group_detailpage.html:155
+#: .\insight_ui\templates\insight_ui\docs\partial\radio_group_detailpage.html:130
+#: .\insight_ui\templates\insight_ui\docs\partial\range_slider_detailpage.html:83
+msgid "Input-Field"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\button_detailpage.html:126
+msgid "Radio-Buttons"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\button_detailpage.html:138
+#: .\insight_ui\templates\insight_ui\docs\partial\checkbox_detailpage.html:125
+#: .\insight_ui\templates\insight_ui\docs\partial\checkbox_group_detailpage.html:143
+#: .\insight_ui\templates\insight_ui\docs\partial\input_field_detailpage.html:128
+#: .\insight_ui\templates\insight_ui\docs\partial\radio_group_detailpage.html:118
+msgid "Toggle-Button"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\button_detailpage.html:150
+#: .\insight_ui\templates\insight_ui\docs\partial\checkbox_group_detailpage.html:69
+#: .\insight_ui\templates\insight_ui\docs\partial\checkbox_group_detailpage.html:88
+#: .\insight_ui\templates\insight_ui\docs\partial\checkbox_group_detailpage.html:107
+#: .\insight_ui\templates\insight_ui\docs\partial\input_field_detailpage.html:80
+#: .\insight_ui\templates\insight_ui\docs\partial\toggle_button_detailpage.html:81
+msgid "Checkbox"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\card_carousel_detailpage.html:20
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(carousel)s Tag eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\card_carousel_detailpage.html:38
+#: .\insight_ui\templates\insight_ui\docs\partial\sidebar_detailpage.html:80
+msgid "Custom content"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\card_carousel_detailpage.html:46
+msgid ""
+"\n"
+"            Das Basis-Template des Karussells iteriert bereits durch die "
+"gegebenen Daten, daher ist es nicht notwendig, in dem eigenen Template "
+"nochmal durch die Daten zu iterieren.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\card_carousel_detailpage.html:109
+#: .\insight_ui\templates\insight_ui\docs\partial\image_carousel_detailpage.html:92
+msgid "3D Carousel"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\card_detailpage.html:19
+msgid "Standard Karten"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\card_detailpage.html:22
+msgid "Karten mit Effekten"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\card_detailpage.html:32
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(card)s Tag eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\card_detailpage.html:103
+#: .\insight_ui\templates\insight_ui\docs\partial\image_carousel_detailpage.html:20
+msgid "Karussell"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\card_detailpage.html:115
+#: .\insight_ui\templates\insight_ui\docs\partial\table_detailpage.html:109
+msgid "Toggle-View"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\chart_detailpage.html:27
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(line)s Tag für ein Linien-"
+"Diagramm, oder über das %(bar)s Tag für ein Balken-Diagramm eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\chat_detailpage.html:20
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(chat)s Tag eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\chat_detailpage.html:57
+msgid "Search Bar"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\checkbox_detailpage.html:30
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(checkbox)s Tag eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\checkbox_detailpage.html:89
+#: .\insight_ui\templates\insight_ui\docs\partial\input_field_detailpage.html:92
+msgid "Checkbox-Group"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\checkbox_detailpage.html:101
+#: .\insight_ui\templates\insight_ui\docs\partial\checkbox_group_detailpage.html:119
+#: .\insight_ui\templates\insight_ui\docs\partial\input_field_detailpage.html:104
+#: .\insight_ui\templates\insight_ui\docs\partial\toggle_view_detailpage.html:50
+msgid "Radio-Group"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\checkbox_detailpage.html:113
+#: .\insight_ui\templates\insight_ui\docs\partial\checkbox_group_detailpage.html:131
+#: .\insight_ui\templates\insight_ui\docs\partial\input_field_detailpage.html:116
+#: .\insight_ui\templates\insight_ui\docs\partial\radio_group_detailpage.html:106
+#: .\insight_ui\templates\insight_ui\docs\partial\toggle_button_detailpage.html:93
+msgid "Button"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\checkbox_group_detailpage.html:20
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(checkbox_group)s Tag "
+"eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\code_block_detailpage.html:20
+#, python-format
+msgid ""
+"\n"
+"            Um die Komponente zu verwenden, muss lediglich ein HTML-Tag "
+"vorzugsweise ein %(div)s eingefügt werden. Das Element muss das Attribute "
+"%(data)s besitzen, dessen Wert die gewünschte Programmiersprache ist. "
+"Innerhalb des Tags befindet sich dann ausschließlich der darzustellende "
+"Quellcode.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\code_block_detailpage.html:37
+#: .\insight_ui\templates\insight_ui\docs\partial\tooltip_detailpage.html:45
+msgid "data-* Attribute"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\differentiator_detailpage.html:20
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(diff)s Tag verwendet.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\dropdown_detailpage.html:23
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(dropdown)s Tag eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\footer_detailpage.html:20
+#, python-format
+msgid ""
+"\n"
+"            Der Footer wird über das %(footer)s Tag eingebunden. Das <i>Base-"
+"Template</i> verfügt über einen, für den Footer vorgesehenen Block.\n"
+"            Damit der Footer auch garantiert immer am Ende der Webseite "
+"erscheint, sollte dieser in vorgesehenen Block gepackt werden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\footer_detailpage.html:124
+#: .\insight_ui\templates\insight_ui\docs\partial\sidebar_detailpage.html:117
+msgid "Navbar"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\form_detailpage.html:20
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(form)s Tag eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\form_detailpage.html:64
+msgid "Alert"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\generic_filter_detailpage.html:23
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(generic_filter)s Tag "
+"eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\generic_filter_detailpage.html:119
+#: .\insight_ui\templates\insight_ui\docs\partial\multiselect_detailpage.html:109
+#: .\insight_ui\templates\insight_ui\docs\partial\select_detailpage.html:106
+msgid "Query Builder"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\generic_filter_detailpage.html:131
+#: .\insight_ui\templates\insight_ui\docs\partial\multiselect_detailpage.html:85
+#: .\insight_ui\templates\insight_ui\docs\partial\query_builder_detailpage.html:140
+#: .\insight_ui\templates\insight_ui\docs\partial\search_bar_detailpage.html:69
+msgid "Select"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\generic_filter_detailpage.html:143
+#: .\insight_ui\templates\insight_ui\docs\partial\query_builder_detailpage.html:152
+#: .\insight_ui\templates\insight_ui\docs\partial\search_bar_detailpage.html:81
+#: .\insight_ui\templates\insight_ui\docs\partial\select_detailpage.html:82
+msgid "Multiselect"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\geo_map_detailpage.html:20
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(geo_map)s Tag eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\hero_detailpage.html:20
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(hero)s Tag eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\hero_detailpage.html:37
+msgid "CTA Button Parameter"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\hero_detailpage.html:42
+msgid "Badge Parameter"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\image_carousel_detailpage.html:32
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(image_carousel)s Tag "
+"eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\image_carousel_detailpage.html:80
+#: .\insight_ui\templates\insight_ui\docs\partial\table_detailpage.html:97
+msgid "Carousel"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\infinite_scroll_detailpage.html:23
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(infinite_scroll)s Tag "
+"eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\infinite_scroll_detailpage.html:60
+#: .\insight_ui\templates\insight_ui\docs\partial\table_detailpage.html:85
+#: .\insight_ui\templates\insight_ui\docs\partial\toggle_view_detailpage.html:81
+msgid "Pagination"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\input_field_detailpage.html:20
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(input_field)s Tag eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\input_field_detailpage.html:41
+msgid ""
+"Eine alternative Konfiguration mit Keys entsprechend den vorherigen "
+"Parametern. "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\input_field_detailpage.html:42
+msgid "Ein Beispiel für eine Datumsauswahl:"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\live_content_detailpage.html:20
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(live_content)s Tag eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\live_content_detailpage.html:57
+msgid "Websocket"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\modal_detailpage.html:20
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(modal)s Tag eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\modal_detailpage.html:78
+#: .\insight_ui\templates\insight_ui\docs\partial\tooltip_detailpage.html:78
+msgid "Popover"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\multiselect_detailpage.html:20
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(multiselect)s Tag eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\multiselect_detailpage.html:97
+#: .\insight_ui\templates\insight_ui\docs\partial\query_builder_detailpage.html:128
+#: .\insight_ui\templates\insight_ui\docs\partial\select_detailpage.html:94
+msgid "Generic Filter"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\navbar_detailpage.html:48
+#, python-format
+msgid ""
+"\n"
+"            Der externe Parameter %(bold_text)s wird zum verstecken des "
+"Anmeldebutton auf bestimmten Seiten bspw. der Anmeldeseite verwendet.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\page_header_detailpage.html:8
+msgid ""
+"Die Page-Header-Komponente rendert den Seitenkopf innerhalb der blauen "
+"Kopfzeile des Base-Templates. Sie zeigt einen Titel und optional eine "
+"Beschreibung an."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\page_header_detailpage.html:20
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird innerhalb des <code>heading</code> Blocks "
+"über das %(page_header)s Tag eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\pagination_detailpage.html:20
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(pagination)s Tag eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\pagination_detailpage.html:81
 msgid "Infinite Scroll"
 msgstr ""
 
-#: tests/templates/index.html:132
-msgid "Alpine.js Integration"
+#: .\insight_ui\templates\insight_ui\docs\partial\popover_detailpage.html:11
+#, python-format
+msgid ""
+"\n"
+"            Wenn nur ein kurzer Informationstext angezeigt werden soll, um "
+"ein Element mit ein, zwei Wörter zu erklären, sollte stattdessen die "
+"%(tooltip_url)s verwendet werden.\n"
+"        "
 msgstr ""
 
-#: tests/templates/index.html:137
-msgid "Zähler erhöhen"
+#: .\insight_ui\templates\insight_ui\docs\partial\popover_detailpage.html:25
+#, python-format
+msgid ""
+"\n"
+"            Um ein Popover hinzuzufügen, wird ein Auslöser gebraucht, "
+"welcher beim Hovern das Popover erscheinen lässt.\n"
+"            Dieser Auslöser kann jedes beliebe HTML-Tag sein und benötigt "
+"das Attribut %(data-popover)s, dessen Wert die ID des Ziel-Elements "
+"(Popover) ist.\n"
+"            Das Popover kann komplett selbst definiert werden, lediglich die "
+"Verbindung durch die %(tag_id)s ist zu beachten.\n"
+"        "
 msgstr ""
 
-#: tests/templates/index.html:140
+#: .\insight_ui\templates\insight_ui\docs\partial\popover_detailpage.html:34
+msgid "Hover me!"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\popover_detailpage.html:43
+msgid "Attribute"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\popover_detailpage.html:68
+#: .\insight_ui\templates\insight_ui\docs\partial\sidebar_detailpage.html:141
+msgid "Modal"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\popover_detailpage.html:80
+msgid "Tooltip"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\radio_group_detailpage.html:11
+msgid "Radio Gruppe"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\radio_group_detailpage.html:14
+msgid "Radio Block"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\radio_group_detailpage.html:24
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(radio_group)s Tag eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\radio_group_detailpage.html:94
+msgid "Checkbox Group"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\range_slider_detailpage.html:20
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(range_slider)s Tag eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\search_bar_detailpage.html:20
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(search_bar)s Tag eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\search_bar_detailpage.html:57
+msgid "Chat"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\select_detailpage.html:20
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(select)s Tag eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\step_bar_detailpage.html:20
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(step_bar)s Tag eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\step_bar_detailpage.html:73
+msgid "Bullet Point List"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\table_detailpage.html:20
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(table)s Tag eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\tabs_detailpage.html:22
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(tabs)s Tag eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\tabs_detailpage.html:101
+msgid "Accordion"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\toggle_button_detailpage.html:20
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(toggle_button)s Tag eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\toggle_view_detailpage.html:20
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(toggle_view)s Tag eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\toggle_view_detailpage.html:69
+msgid "Table"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\tooltip_detailpage.html:11
+#, python-format
+msgid ""
+"\n"
+"            Ein Tooltip sollte nur für kurze Informationstexte (meist nur "
+"ein Wort) verwendet werden, wenn mehr Informationen angezeigt werden sollen, "
+"sollte stattdessen die %(popover_url)s verwendet werden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\tooltip_detailpage.html:25
+#, python-format
+msgid ""
+"\n"
+"            Um ein Tooltip zu einem Element hinzuzufügen, müssen diese "
+"lediglich das Attribut %(data)s, dessen Wert der anzuzeigende Text im "
+"Tooltip ist.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\tooltip_detailpage.html:52
+msgid "Der anzuzeigende Text."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\tooltip_detailpage.html:53
+msgid ""
+"Eine einzigartige ID für den Tooltip, diese muss bei dem auslösenden Element "
+"ebenfalls angegeben werden."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\web_socket_detailpage.html:20
+#, python-format
+msgid ""
+"\n"
+"            Die Komponente wird über das %(web_socket)s Tag eingebunden.\n"
+"        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\web_socket_detailpage.html:57
+msgid "Live Content"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\index.html:4
+#: .\insight_ui\templates\insight_ui\playground.html:4
+msgid "Insight UI"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\login.html:47
+msgid "Username"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\login.html:48
+msgid "Enter username"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\login.html:54
+msgid "Enter password"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\login.html:58
+msgid "Forgot password?"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\login.html:64
+msgid "Sign in"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\login.html:71
+msgid "Or"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\login.html:83
+msgid "You do not have an account yet?"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\login.html:84
+msgid "Sign up here"
+msgstr ""
+
+#: .\insight_ui\views.py:117
+#, python-format
+msgid "Data updated at %(time)s"
+msgstr ""
+
+#: .\insight_ui\views.py:181
+msgid "AJAX Formular erfolgreich übermittelt!"
+msgstr ""
+
+#: .\insight_ui\views.py:193
+msgid "Formular erfolgreich übermittelt!"
+msgstr ""
+
 #, fuzzy
-#| msgid "Sprache ändern"
-msgid "Nachricht ändern"
-msgstr "Sprache ändern"
+#~| msgid "Modal schließen"
+#~ msgid "Schließen"
+#~ msgstr "Modal schließen"
+
+#~ msgid "Pflichtfeld"
+#~ msgstr "Pflichtfeld"
+
+#~ msgid "Sprache ändern"
+#~ msgstr "Sprache ändern"
+
+#~ msgid "Modal schließen"
+#~ msgstr "Modal schließen"
+
+#~ msgid "Hauptnavigation"
+#~ msgstr "Hauptnavigation"
+
+#~ msgid "Zum Hauptinhalt springen"
+#~ msgstr "Zum Hauptinhalt springen"
+
+#~ msgid "Menü öffnen"
+#~ msgstr "Menü öffnen"
+
+#~ msgid "Farbschema umschalten"
+#~ msgstr "Farbschema umschalten"
+
+#~ msgid "Sidebar umschalten"
+#~ msgstr "Sidebar umschalten"
+
+#, fuzzy
+#~| msgid "Sprache auswählen"
+#~ msgid "Sprachauswahl"
+#~ msgstr "Sprache auswählen"
+
+#, fuzzy
+#~| msgid "Menü öffnen"
+#~ msgid "Modal öffnen"
+#~ msgstr "Menü öffnen"
+
+#, fuzzy
+#~| msgid "Sprache ändern"
+#~ msgid "Nachricht ändern"
+#~ msgstr "Sprache ändern"
