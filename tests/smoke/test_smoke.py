@@ -26,6 +26,15 @@ def test_root_url_responds_ok(client: Client) -> None:  # noqa: ANN001
 
 
 @pytest.mark.smoke
+def test_healthz_responds_ok(client: Client) -> None:  # noqa: ANN001
+    """Health endpoint should stay cheap and stable for probes."""
+    response = client.get("/healthz/")
+
+    assert response.status_code == HTTPStatus.OK
+    assert response.content.decode() == "OK"
+
+
+@pytest.mark.smoke
 @pytest.mark.django_db
 def test_login_url_responds_ok(client: Client) -> None:  # noqa: ANN001
     """Basic smoke test for the login page."""
