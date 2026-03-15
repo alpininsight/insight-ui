@@ -1,11 +1,11 @@
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from django.http import HttpResponse
+from django.http import HttpRequest, HttpResponse
 from django.urls import include, path
 from insight_ui.component_details.demo_context import get_login_screen_context
 
 
-def health(request):
+def health(request: HttpRequest) -> HttpResponse:
     """Health check endpoint for Kubernetes probes."""
     return HttpResponse("OK", content_type="text/plain")
 
