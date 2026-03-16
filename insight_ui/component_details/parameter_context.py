@@ -426,6 +426,9 @@ def get_step_bar_parameter_context() -> dict[str, list[str]]:
         [
             ParameterDetails("title", "str", _("Titel des Schritts."), "''"),
             ParameterDetails("description", "str", _("Zusätzliche Beschreibung des Schritts unter dem Titel."), "''"),
+            ParameterDetails(
+                "url", "str", _("URL welche aufgerufen wird, wenn der Nutzer auf den Title des Schritts klickt."), "''"
+            ),
             ParameterDetails("success", "bool", _("Zeigt statt der Schrittzahl ein Haken an."), "False"),
             ParameterDetails("failed", "bool", _("Zeigt statt der Schrittzahl ein X an."), "False"),
             ParameterDetails(
