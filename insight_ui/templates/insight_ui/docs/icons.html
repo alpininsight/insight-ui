@@ -23,9 +23,11 @@
     <div class="w-full space-y-12 text-secondary leading-loose">
         <div class="space-y-8">
             <p>
-                Viele unserer Komponenten haben die Möglichkeit, ein optionales Icons anzuzeigen.
-                Überall dort, wo die Komponente ein Icon erwartet, kann eines der hier aufgelisteten Icons angegeben werden.
-                Abgesehen davon, können mit der <span class="inline-tag">icon</span> Komponente, überall nach belieben Icons eingebaut werden.
+                {% blocktrans with icon='<span class="inline-tag">&lcub;% icon %&rcub;</span>'|safe %}
+                    Viele unserer Komponenten haben die Möglichkeit, ein optionales Icons anzuzeigen.
+                    Überall dort, wo die Komponente ein Icon erwartet, kann eines der hier aufgelisteten Icons angegeben werden.
+                    Abgesehen davon, können mit der {{ icon }} Komponente, überall nach belieben Icons eingebaut werden.
+                {% endblocktrans %}
             </p>
         </div>
         <hr>
@@ -59,7 +61,7 @@
         </section>
         <section class="space-y-4">
             <h2>{% trans "Sizes" %}</h2>
-            <p>Alles Icons können in unterschiedlichen Größen verwendet werden:</p>
+            <p>{% trans "Alles Icons können in unterschiedlichen Größen verwendet werden:" %}</p>
             {% table data=size_table %}
         </section>
     </div>

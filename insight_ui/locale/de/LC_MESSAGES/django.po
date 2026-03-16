@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django-insight-ui 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-13 21:36+0100\n"
+"POT-Creation-Date: 2026-03-16 10:56+0100\n"
 "PO-Revision-Date: 2024-06-09 12:00+0000\n"
 "Last-Translator: Django Insight UI Team\n"
 "Language-Team: German\n"
@@ -454,7 +454,7 @@ msgstr ""
 
 #: .\insight_ui\component_details\demo_context.py:273
 #: .\insight_ui\templates\insight_ui\docs\component_details_content.html:30
-#: .\insight_ui\templates\insight_ui\docs\icons.html:45
+#: .\insight_ui\templates\insight_ui\docs\icons.html:47
 #: .\insight_ui\templates\insight_ui\docs\partial\3D_carousel_detailpage.html:32
 #: .\insight_ui\templates\insight_ui\docs\partial\accordion_detailpage.html:34
 #: .\insight_ui\templates\insight_ui\docs\partial\alert_detailpage.html:32
@@ -2472,16 +2472,19 @@ msgid "Home"
 msgstr ""
 
 #: .\insight_ui\context.py:25
+#: .\insight_ui\templates\insight_ui\docs\installation.html:25
 msgid "Installation"
 msgstr ""
 
 #: .\insight_ui\context.py:33
 #: .\insight_ui\templates\insight_ui\docs\base_template.html:19
+#: .\insight_ui\templates\insight_ui\docs\installation.html:62
 msgid "Base Template"
 msgstr ""
 
 #: .\insight_ui\context.py:41
 #: .\insight_ui\templates\insight_ui\docs\customization.html:19
+#: .\insight_ui\templates\insight_ui\docs\customization.html:156
 #: .\insight_ui\templates\insight_ui\docs\partial\button_detailpage.html:84
 msgid "Customization"
 msgstr ""
@@ -2802,11 +2805,39 @@ msgstr ""
 
 #: .\insight_ui\templates\insight_ui\docs\base_template.html:25
 #: .\insight_ui\templates\insight_ui\docs\component_details_content.html:14
-#: .\insight_ui\templates\insight_ui\docs\icons.html:33
+#: .\insight_ui\templates\insight_ui\docs\icons.html:35
 msgid "Usage"
 msgstr ""
 
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:53
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:27
+#, python-format
+msgid ""
+"\n"
+"                    Das Base-Template kann ganz einfach verwendet werden, "
+"indem ein neues Template dieses <i>erweitert</i>.\n"
+"                    Dazu muss am Anfang des neuen Templates das %(extends)s "
+"Tag von Django verwendet werden.\n"
+"                "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:40
+msgid ""
+"Im <b>Head</b> werden alle benötigten JavaScript Bibliotheken verlinkt, "
+"sowie die SEO und das Favicon definiert."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:45
+msgid ""
+"Definiert den Title der Seite, welcher u.a. oben im Browser-Tab angezeigt "
+"wird."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:49
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:101
+msgid "Zum Einbinden weiterer JavaScript Libraries."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:55
 #, python-format
 msgid ""
 "\n"
@@ -2816,7 +2847,45 @@ msgid ""
 "                    "
 msgstr ""
 
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:105
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:73
+msgid ""
+"Dieser Block kann verwendet werden, um etwas hinter allen anderen Blöcken "
+"anzuzeigen."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:77
+msgid "Der Block ist für die Navbar vorgesehen."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:81
+msgid "Dieser Block ist für ausklappbare Sidebars vorgesehen."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:85
+msgid ""
+"Dieser Block befindet sich als erstes (links) im Hauptbereich und ist daher "
+"für die linke Sidebar vorgesehen."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:89
+msgid ""
+"Dieser Block befindet sich als letztes (rechts) im Hauptbereich und ist "
+"daher für die rechte Sidebar vorgesehen."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:93
+msgid ""
+"Dieser Block befindet sich zwischen den Sidebar Blöcken und ist für den "
+"Hauptinhalt vorgesehen."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:97
+msgid ""
+"Der Block ist für den Footer vorgesehen und wird nach dem Hauptbereich "
+"angezeigt."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:107
 #, python-format
 msgid ""
 "\n"
@@ -2828,30 +2897,87 @@ msgid ""
 "                    "
 msgstr ""
 
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:146
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:115
+msgid ""
+"Dieser Block befindet sich sozusagen hinter dem Eigentlichen Inhalt und kann "
+"dazu verwendet werden, ein Hintergrundbild einzubinden, welches fixiert ist, "
+"also sich bei scrollen mitbewegt."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:127
+msgid ""
+"Die Navigationsleiste hat einen eigenen Bereich. Dieser ist vor dem "
+"restlichen Inhalt definiert, wodurch dieser immer als ersten auf der Seite "
+"auftaucht."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:140
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:170
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:207
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:246
+msgid "Für weitere Information über die Komponente, siehe"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:148
 msgid "navbar"
 msgstr ""
 
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:176
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:211
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:178
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:215
 #: .\insight_ui\templates\insight_ui\docs\partial\footer_detailpage.html:136
 #: .\insight_ui\templates\insight_ui\docs\partial\navbar_detailpage.html:149
 msgid "Sidebar"
 msgstr ""
 
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:220
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:185
+#, python-format
 msgid ""
 "\n"
-"                        Der Block nimmt immer die volle Höhe des Fenstern "
-"ein, unabhängig vom Inhalt. Dadurch wird sichergestellt, das sich der Footer "
-"nicht mitten im Browserfenster hängt.\n"
+"                        Zusätzlich zu dem %(drawers)s Block gibt es zwei "
+"Blöcke für statische <b>Sidebars</b>.\n"
+"                        Einen für eine Sidebar auf der rechten Seite des "
+"Hauptinhalt und einen für eine Sidebar auf der linken Seite.\n"
+"                        In diesem Fall bekommt der Hauptinhalt etwas weniger "
+"Platz und die Sidebar bleibt dauerhaft sichtbar.\n"
 "                    "
 msgstr ""
 
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:248
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:221
+msgid ""
+"Dieser Blöcke ist für den Hauptinhalt der Seite vorgesehen. Hier kommt alles "
+"rein was rein soll."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:223
+msgid "Info:"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:224
+msgid ""
+"Der Block nimmt immer die volle Höhe des Fenstern ein, unabhängig vom "
+"Inhalt. Dadurch wird sichergestellt, das sich der Footer nicht mitten im "
+"Browserfenster hängt."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:230
+#, python-format
+msgid ""
+"\n"
+"                        Direkt unter dem %(content)s befindet sich der "
+"<b>Footer</b>. Dieser schließt die Seite ab und befindet sich immer am Ende "
+"der Seite.\n"
+"                    "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:254
 #: .\insight_ui\templates\insight_ui\docs\partial\navbar_detailpage.html:137
 #: .\insight_ui\templates\insight_ui\docs\partial\sidebar_detailpage.html:129
 msgid "Footer"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:260
+msgid ""
+"Zuletzt gibt es einen Block um zusätzliche JavaScript Dateien zu verlinken."
 msgstr ""
 
 #: .\insight_ui\templates\insight_ui\docs\component_demo.html:50
@@ -3066,11 +3192,363 @@ msgid ""
 "sondern lässt sich auch vollkommen nach allen Wünschen anpassen."
 msgstr ""
 
+#: .\insight_ui\templates\insight_ui\docs\customization.html:32
+msgid ""
+"In den folgenden Abschnitten werden die unterschiedlichen Möglichkeiten der "
+"Anpassung beschrieben."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:37
+msgid "Konfiguration über settings.py"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:39
+#, python-format
+msgid ""
+"\n"
+"                    Es gibt eine Reihe von Einstellungen, welche über die "
+"%(settings)s definiert werden können.\n"
+"                "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:73
+msgid "Theming (anpassen ans Corporate Design)"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:75
+#, python-format
+msgid ""
+"\n"
+"                        Unser UI Framework verwendet %(tailwind)s für das "
+"Styling.\n"
+"                        Tailwind verwendet eine sog. <i>input.css</i> Datei, "
+"in welcher sich ein Theme aufbauen lässt.\n"
+"                        Darunter fällt die Definition von grundlegenden "
+"Eigenschaften wie Farben, Schriftgrößen oder Fonts, aber auch Custom-CSS-"
+"Klassen erstellen oder Animationen lassen sich dort definieren.\n"
+"                        Dank Tailwinds Preflight Funktion lassen sich auch "
+"Standards definieren, wodurch bestimmte Elemente zum Beispiel Überschriften "
+"immer gleich aussehen ohne das dafür überhaupt eine Klasse im HTML-Code "
+"angegeben werden muss.\n"
+"                        Die einzelnen Möglichkeiten und Bereiche der "
+"<i>input.css</i> werden in den nächsten Abschnitten näher erläutert.\n"
+"                    "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:84
+#, python-format
+msgid ""
+"\n"
+"                        Das Standard-Theme des Insight-UI Frameworks "
+"befindet sich in der Datei %(input)s.\n"
+"                    "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:91
+msgid "Setup"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:93
+#, python-format
+msgid ""
+"\n"
+"                        Um das Theming anpassen zu können, müssen zuvor ein "
+"paar Schritte durchgeführt werden.\n"
+"                        Da unser Framework, TailwindCSS verwendet muss ein "
+"<i>Tailwind Compiler</i> installiert werden, am einfachsten geht dies über "
+"die %(tailwind_cli)s.\n"
+"                    "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:100
+#, python-format
+msgid ""
+"\n"
+"                        Zuerst muss die <b>django-tailwind-cli</b> "
+"installiert werden, zum Beispiel über %(uv)s mit %(uv_add)s.\n"
+"                    "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:106
+#, python-format
+msgid ""
+"\n"
+"                        Anschließend muss <b>django-tailwind-cli</b> zu den "
+"%(installed_apps)s hinzugefügt werden.\n"
+"                    "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:119
+msgid ""
+"Damit der Compiler weiß wo die entsprechenden Dateien zu finden sind, müssen "
+"ein paar Settings gesetzt werden."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:121
+msgid "Der Pfad zu den Staticfiles muss definiert werden."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:122
+#, python-format
+msgid ""
+"Der Pfad zu der %(input)s, welche die Theme Konfiguration enthält (dazu "
+"später mehr)."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:123
+msgid "Der Pfad wo das generierte Stylesheet gespeichert werden soll."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:124
+msgid ""
+"Wir empfehlen das automatische Updaten des Tailwind-Compilers auszuschalten, "
+"da es zum einen immer mehr Speicherplatz verbraucht und zum anderen bei "
+"Fehlerhaften Downloads zu keinen Fehlermeldungen kommt."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:142
+msgid ""
+"Im Anschluss muss einmal das Setup der <b>django-tailwind-cli</b> "
+"durchgeführt werden, dabei wird auch die Tailwind-CLI heruntergeladen "
+"(~120MB)."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:147
+#, python-format
+msgid ""
+"\n"
+"                        Danach kann der Entwicklungsserver gestartet werden, "
+"nur diesmal muss vor dem %(runserver)s noch %(tailwind)s stehen.\n"
+"                    "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:158
+#, python-format
+msgid ""
+"\n"
+"                        Um das Theming anzupassen muss diese Datei kopiert "
+"werden und anschließend in der Konfiguration von <i>Insight-UI</i> in den "
+"%(settings)s angeben werden.\n"
+"                    "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:166
+#, python-format
+msgid ""
+"\n"
+"                        In dieser muss der Pfad zu den %(insight_ui)s "
+"Templates angepasst werden:\n"
+"                    "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:178
+#, python-format
+msgid ""
+"\n"
+"                        Anschließend muss %(setup)s ausgeführt werden.\n"
+"                    "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:184
+msgid "Inhalt der input.css"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:186
+msgid ""
+"Die Datei enthält die folgenden Komponenten, alle zusammen ergeben das Theme."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:189
+#, python-format
+msgid ""
+"\n"
+"                        In der ersten Zeile befindet sich der %(import)s für "
+"Tailwind, dieser wird benötigt, damit Tailwind aus dieser Datei, später das "
+"entsprechende Stylesheet generieren kann.\n"
+"                    "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:197
+#, python-format
+msgid ""
+"\n"
+"                        In der nächsten Zeile befindet sich eine  %(source)s "
+"Direktive.\n"
+"                        Diese sagt Tailwind, wo es nach den Template Dateien "
+"suchen soll, um die CSS-Tags, welche dort verwendet werden zu finden.\n"
+"                        I.d.R sollte Tailwind von sich aus alle Projekt "
+"spezifischen Templates finden, nur externe Pakete machen ab und zu Probleme, "
+"daher steht hier auch der Pfad zu unseren Templates.\n"
+"                    "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:207
+msgid "Die nächste Zeile wird benötigt für den wechseln zwischen Hell/Dunkel."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:213
+#, python-format
+msgid ""
+"\n"
+"                        Von Hause aus, verwendet Insight-UI den Font "
+"%(font)s.\n"
+"                        Dabei handelt es sich um kein standard System-Font, "
+"weshalb dieser explizit angegeben werden muss.\n"
+"                        Sollte ein anderen Font gewünscht sein, kann dieser "
+"an der Stelle ausgetauscht oder ergänzt werden.\n"
+"                        Der Pfad zum Font ist relative zu der <i>input.css</"
+"i>, also der Datei in welcher das definiert wird.\n"
+"                    "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:229
+#, python-format
+msgid ""
+"\n"
+"                        Das ist ja alles ganz nett, aber wo sind die "
+"Farben?\n"
+"                        Nun, bis auf den Font sind die bisherigen Schritte "
+"notwendig und sollten auch nicht ohne Grund verändert werden.\n"
+"                        Das eigentliche Theme kommt jetzt erst. "
+"Passenderweise wird der Block mit %(theme)s deklariert.\n"
+"                        In diesem Block werden all die Theme spezifischen "
+"Variablen definiert. Darunter auch Farben.\n"
+"                    "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:237
+#, python-format
+msgid ""
+"\n"
+"                        Doch zunächst nochmal der Font. In dem Theme-Block "
+"lässt sich auch ein Default-Font einstellen, welcher für alle Texte im "
+"gesamten Projekt verwendet wird, ohne in jedes mal explizit angeben zu "
+"müssen.\n"
+"                        Die Direktive %(font)s sagt, dass jeder Text, der "
+"keine Serifen besitzen soll, den Font <i>Inter</i> verwenden soll.\n"
+"                    "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:243
+msgid "Todo: mehrere Fonts definieren."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:268
+#, python-format
+msgid ""
+"\n"
+"                        Während die Variablen welche in dem Theme-Block "
+"definiert wurden, sich manuell auf Elemente anwenden lassen und jeweils eine "
+"Eigenschaft anpassen, können auch komplette Designs für bestimmte HTML-Tags "
+"vordefiniert werden.\n"
+"                        Dies funktioniert mittels Tailwinds <i>Preflight</i> "
+"Modul. Dieses entfernt vor allem alle Default Styles der HTML-Elemente "
+"wodurch beispielsweise alle %(caption)s gleich aussehen.\n"
+"                        Das passiert, u.a. um die verschiedenen Browser-"
+"Defaults zu entfernen, damit die Seite in jedem Browser gleich aussieht.\n"
+"                        Zum anderen lassen sich darüber aber auch direkt "
+"Styles für bestimmte Elemente hinzufügen.\n"
+"                    "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:276
+#, python-format
+msgid ""
+"\n"
+"                        Die Zeile %(button)s sorgt bspw. dafür, dass alle "
+"Buttons ein %(pointer)s also ein Hand-Cursor aufzeigen (seit Tailwind V.4.0 "
+"nicht mehr standard und deswegen hier angegeben).\n"
+"                    "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:281
+#, python-format
+msgid ""
+"\n"
+"                        Die direktive drunter für das %(caption)s Tag, gibt "
+"an dass die dort aufgelistet CSS-Klassen auf jedes %(caption)s Tag "
+"angewendet werden sollen.\n"
+"                        Dadurch müssen nicht bei jedem Tag, diese Klassen "
+"manuell hinzugefügt werden. Sollte es mal zu ausnahmen kommen, können im "
+"Template trotzdem noch weitere CSS-klassen ergänzt werden oder überschrieben "
+"werden.\n"
+"                        So werden Überschriften mit %(caption_red)s trotzdem "
+"in Rot dargestellt.\n"
+"                    "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:299
+#, python-format
+msgid ""
+"\n"
+"                        Der nächste Block heißt %(components)s und enthält "
+"sozusagen Custom-CSS-Klassen.\n"
+"                        Warum keine Custom-CSS-Klassen in dem eigentlichen "
+"Stylesheet? Theoretisch gibt es kein konventionelles Stylesheet, da dieses "
+"von Tailwind erzeugt wird und zwar jedes mal wenn sich etwas an den "
+"Templates ändert. Insofern der Tailwind-Compiler läuft.\n"
+"                        Dabei wird jedes mal die gesamte Datei neu erstellt "
+"und alle manuell hinzugefügten Klassen gehen verloren. Um trotzdem "
+"vorgefertigte Konstrukte verwenden zu können, ohne jedes mal zwanzig CSS-"
+"klassen kopieren zu müssen, lassen sich %(components)s definieren.\n"
+"                    "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:306
+#, python-format
+msgid ""
+"\n"
+"                        In der <i>input.css</i> sind beispielsweise "
+"Komponenten für Buttons definiert.\n"
+"                        Diese können in den Templates wie eine normale CSS-"
+"Klasse verwendet werden %(button)s.\n"
+"                        Die Syntax hat hierbei mit klassischen CSS wenig zu "
+"tun. Stattdessen werden per %(apply)s die jeweiligen Tailwind-Klassen oder "
+"auch andere Custom-Klassen hinzugefügt.\n"
+"                        Ein Vorteil für alle die bisher mit Tailwind "
+"gearbeitet haben.\n"
+"                    "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:326
+msgid "Template überschreiben"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:328
+#, python-format
+msgid ""
+"\n"
+"                    Es besteht die Möglichkeit, die bereitgestellten "
+"Komponenten anzupassen. Dafür muss lediglich das entsprechende Template der "
+"Komponente in das eigene Projekt-Verzeichnis kopiert werden.\n"
+"                    Wichtig ist nur, dass das kopierte Template in diesem "
+"Pfad %(path)s abgelegt wird. Das Verzeichnis muss sich im Root-Verzeichnis "
+"des Projektes befinden.\n"
+"                "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:333
+msgid "Beispiel:"
+msgstr ""
+
 #: .\insight_ui\templates\insight_ui\docs\icons.html:4
 msgid "Insight UI - Icons"
 msgstr ""
 
-#: .\insight_ui\templates\insight_ui\docs\icons.html:35
+#: .\insight_ui\templates\insight_ui\docs\icons.html:26
+#, python-format
+msgid ""
+"\n"
+"                    Viele unserer Komponenten haben die Möglichkeit, ein "
+"optionales Icons anzuzeigen.\n"
+"                    Überall dort, wo die Komponente ein Icon erwartet, kann "
+"eines der hier aufgelisteten Icons angegeben werden.\n"
+"                    Abgesehen davon, können mit der %(icon)s Komponente, "
+"überall nach belieben Icons eingebaut werden.\n"
+"                "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\icons.html:37
 #, python-format
 msgid ""
 "\n"
@@ -3078,11 +3556,11 @@ msgid ""
 "                "
 msgstr ""
 
-#: .\insight_ui\templates\insight_ui\docs\icons.html:50
+#: .\insight_ui\templates\insight_ui\docs\icons.html:52
 msgid "Icon Portfolio"
 msgstr ""
 
-#: .\insight_ui\templates\insight_ui\docs\icons.html:53
+#: .\insight_ui\templates\insight_ui\docs\icons.html:55
 #, python-format
 msgid ""
 "\n"
@@ -3095,8 +3573,12 @@ msgid ""
 "                "
 msgstr ""
 
-#: .\insight_ui\templates\insight_ui\docs\icons.html:61
+#: .\insight_ui\templates\insight_ui\docs\icons.html:63
 msgid "Sizes"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\icons.html:64
+msgid "Alles Icons können in unterschiedlichen Größen verwendet werden:"
 msgstr ""
 
 #: .\insight_ui\templates\insight_ui\docs\installation.html:4
@@ -3104,7 +3586,73 @@ msgid "Insight UI - Get Started"
 msgstr ""
 
 #: .\insight_ui\templates\insight_ui\docs\installation.html:19
+#: .\insight_ui\templates\insight_ui\index.html:24
+#: .\insight_ui\templates\insight_ui\index.html:65
 msgid "Get started"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\installation.html:26
+msgid ""
+"Insight-UI wird wie gewohnt über ein Python Paketmanager wie <b>pip</b> oder "
+"<b>uv</b> installiert."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\installation.html:39
+msgid "Schnellstart"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\installation.html:41
+#, python-format
+msgid ""
+"\n"
+"                        Schritt Nr. 1 ist es %(insight_ui)s zu den "
+"%(installed_apps)s in der <b>settings.py</b> hinzufügen:\n"
+"                    "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\installation.html:56
+#, python-format
+msgid ""
+"\n"
+"                        Anschließend kann der Entwicklungsserver gestartet "
+"werden %(command)s.\n"
+"                    "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\installation.html:64
+#, python-format
+msgid ""
+"\n"
+"                        Um alle Funktionen von Insight-UI verwenden zu "
+"können, muss unser %(link_open)sBase Template%(link_close)s eingebunden "
+"werden.\n"
+"                    "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\installation.html:74
+#, python-format
+msgid ""
+"\n"
+"                        Damit die Konfiguration von Insight-UI geladen "
+"werden kann, müssen die entsprechende Variablen in den Kontext geladen "
+"werden.\n"
+"                        Dazu muss die Konfiguration in jeder View, welche "
+"das Base Template verwendet, übergeben werden. Siehe auch "
+"%(link_open)sKonfiguration anpassen%(link_close)s.\n"
+"                    "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\installation.html:93
+#, python-format
+msgid ""
+"\n"
+"                        Um nun auch noch die Komponenten verwenden zu "
+"können, müssen noch die %(insight_tags)s geladen werden\n"
+"                    "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\installation.html:105
+msgid "Nun können auch die Komponenten verwendet werden:"
 msgstr ""
 
 #: .\insight_ui\templates\insight_ui\docs\partial\3D_carousel_detailpage.html:18
@@ -3810,6 +4358,72 @@ msgstr ""
 #: .\insight_ui\templates\insight_ui\index.html:4
 #: .\insight_ui\templates\insight_ui\playground.html:4
 msgid "Insight UI"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\index.html:22
+msgid ""
+"Willkommen in der Dokumentation von <b>Insight UI</b>, unserem modernen, "
+"erweiterbaren und barrierefreien UI-Framework für Django-Projekte."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\index.html:30
+msgid "Was ist Insight-UI, etwa noch so ein CSS/JavaScript Framework?"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\index.html:38
+msgid ""
+"Die Komponenten sind unter Beachtung der <b>Barrierefreiheit</b> "
+"implementiert und bieten im Bezug auf <b>Internationalisierung</b> eine "
+"Unterstützung für ein <b>RTL-Layout</b> für Sprachen, welche von rechts nach "
+"links gelesen werden."
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\index.html:41
+msgid ""
+"Für eine gute Performance unterstützen entsprechende Komponenten die "
+"Verwendung von <b>HTMX</b> Requests, um nur einzelne ausschnitte des DOM zu "
+"ändern, ohne einen kompletten Seiten-Reload. "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\index.html:46
+msgid "Was ist Insight-UI nicht?"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\index.html:54
+msgid "Ist Insight-UI das richtige für mich?"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\index.html:55
+msgid "Gute Frage, hier eine Checkliste um diese zu beantworten:"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\index.html:57
+msgid "Du hast eine Django Anwendung, welcher noch ein Frontend fehlt?"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\index.html:58
+msgid "Du musst schnell ein Frontend für ein PoC zusammen basteln?"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\index.html:59
+msgid ""
+"Du hast eigentlich keine übermäßige Leidenschaft für die Frontendentwicklung?"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\index.html:60
+msgid ""
+"Du hast keine Lust dich mit den WCAG Richtlinien zur Barrierefreiheit zu "
+"beschäftigen?"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\index.html:61
+msgid ""
+"Du bist nicht sonderlich kreativ oder möchtest zumindest nicht alles selbst "
+"Gestalten?"
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\index.html:64
+msgid "Perfekt, dann kann es ja losgehen!"
 msgstr ""
 
 #: .\insight_ui\templates\insight_ui\login.html:47
