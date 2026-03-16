@@ -72,7 +72,10 @@ WSGI_APPLICATION = "core.wsgi.application"
 ASGI_APPLICATION = "core.asgi.application"
 
 # Database
-DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": os.path.join(BASE_DIR, "db.sqlite3")}}
+DATA_DIR = Path(config("DATA_DIR", default=str(BASE_DIR / "data")))
+DATA_DIR.mkdir(parents=True, exist_ok=True)
+
+DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": DATA_DIR / "db.sqlite3"}}
 
 # Internationalization
 LANGUAGE_CODE = "de-de"
@@ -86,7 +89,8 @@ LOCALE_PATHS = [os.path.join(BASE_DIR, "insight_ui", "locale")]
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_ROOT = Path(config("STATIC_ROOT", default=str(BASE_DIR / "staticfiles")))
+STATIC_ROOT.mkdir(parents=True, exist_ok=True)
 STATICFILES_DIRS = [BASE_DIR / "insight_ui/static/insight_ui/"]
 
 # Tailwind source file

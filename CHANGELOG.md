@@ -23,6 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Page header for storybook and component details pages
 - Add missing description texts for storybooks
 - Add missing docs context for the 'radio_block' component
+- Add configurable data and static roots
+- Annotate health check view
 
 ### CI/CD
 

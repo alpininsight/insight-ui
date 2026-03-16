@@ -5,7 +5,10 @@ Guards against the scenario where a missing .env file causes DEBUG=False
 in development, leading to WhiteNoise manifest errors and 500 responses.
 """
 
+from pathlib import Path
+
 from decouple import config
+from django.conf import settings
 
 
 class TestSettingsDefaults:
@@ -21,3 +24,11 @@ class TestSettingsDefaults:
         """ALLOWED_HOSTS should default to '*' so dev server responds."""
         value = config("ALLOWED_HOSTS", default="*")
         assert value is not None
+
+    def test_database_defaults_to_data_dir(self) -> None:
+        """App settings should expose a dedicated default data directory."""
+        assert settings.DATA_DIR == Path(settings.BASE_DIR) / "data"
+
+    def test_static_root_has_safe_default(self) -> None:
+        """Static root should keep a dedicated configurable directory."""
+        assert settings.STATIC_ROOT == Path(settings.BASE_DIR) / "staticfiles"
