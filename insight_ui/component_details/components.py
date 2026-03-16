@@ -33,7 +33,7 @@ class Component(Enum):
     FOOTER = ("footer", ComponentCategory.NAVIGATION)
     BREADCRUMBS = ("breadcrumbs", ComponentCategory.NAVIGATION)
     STEP_BAR = ("step_bar", ComponentCategory.NAVIGATION)
-    MINIMAL_STEP_BAR = ("minimal_Step_bar", ComponentCategory.NAVIGATION)
+    MINIMAL_STEP_BAR = ("minimal_step_bar", ComponentCategory.NAVIGATION)
     BULLET_POINT_LIST = ("bullet_point_list", ComponentCategory.NAVIGATION)
     ACCORDION = ("accordion", ComponentCategory.NAVIGATION)
     TABS = ("tabs", ComponentCategory.NAVIGATION)

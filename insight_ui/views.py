@@ -291,12 +291,6 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
             "title": "button_sizes",
             "id": "button_sizes",
         }
-    elif component_name == "radio_group":
-        context["radio_block_demo"] = {
-            "url": reverse("component_demo_view", kwargs={"component_name": "radio_block"}),
-            "title": "radio_block",
-            "id": "radio_block",
-        }
     elif component_name == "card":
         context["effect_cards_demo"] = {
             "url": reverse("component_demo_view", kwargs={"component_name": "effect_cards"}),
@@ -306,7 +300,7 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
 
     if request.headers.get("HX-Request") and not request.headers.get("HX-History-Restore-Request"):
         # Temporary fix for components with more complex detailpage
-        if component_name in ["button", "radio_group", "card"]:
+        if component_name in ["button", "card"]:
             return render(request, f"insight_ui/docs/partial/{component_name}_detailpage.html", context)
 
         return render(request, "insight_ui/docs/component_detailpage_partial.html", context)
@@ -384,7 +378,7 @@ def toggle_view(request: HttpRequest) -> HttpResponse:
     valid_views = {"table", "card", "carousel"}
 
     if view not in valid_views:
-        logger.warning("log: toggle_view - Ungültiger 'view'-Parameter empfangen: %s. Fallback auf 'table'.", view)
+        logger.warning("log: toggle_view - Received invalid 'view' parameter: %s. Fallback to 'table'.", view)
         view = "table"
 
     # Generate the base payload
@@ -402,15 +396,15 @@ def toggle_view(request: HttpRequest) -> HttpResponse:
 
     if view == "card":
         context["cards"] = map_payload_to_cards(payload)
-        logger.debug("log: toggle_view - Kartenansicht ausgewählt")
+        logger.debug("log: toggle_view - Card view selected")
     elif view == "carousel":
         context["cards"] = map_payload_to_cards(payload)
-        logger.debug("log: toggle_view - Karussell-Ansicht ausgewählt")
+        logger.debug("log: toggle_view - Carousel view selected")
     else:
         # default: table view
         headers, rows = map_payload_to_table(payload)
-        context["data"] = {"empty_msg": "Keine Daten vorhanden!", "headers": headers, "rows": rows}
-        logger.debug("log: toggle_view - Tabellenansicht ausgewählt")
+        context["data"] = {"empty_msg": "No data available!", "headers": headers, "rows": rows}
+        logger.debug("log: toggle_view - Table view selected")
 
     return render(request, "insight_ui/components/toggle_view.html", context)
 

@@ -46,33 +46,33 @@
 {% elif component.value == "tabs" %}
     {% tabs config=tabs_config %}
 {% elif component.value == "button" %}
-    <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
-        <button class="btn btn-primary">{% trans "Primary" %}</button>
-        <button class="btn btn-secondary">{% trans "Secondary" %}</button>
-        <button class="btn btn-success">{% trans "Success" %}</button>
-        <button class="btn btn-warning">{% trans "Warning" %}</button>
-        <button class="btn btn-danger">{% trans "Danger" %}</button>
-        <button class="btn btn-info">{% trans "Info" %}</button>
-        <button disabled class="btn btn-disabled">{% trans "Disabled" %}</button>
-        <button aria-label="{% trans 'Close' %}" class="btn btn-close">{% icon name="x-mark" size="xs" %}</button>
-        <a href="#" class="btn-link">{% trans "Link" %}</a>
-    </div>
-{% elif component.value == "outline_button" %}
-    <div class="flex flex-col md:flex-row items-stretch flex-wrap gap-1">
-        <button class="btn btn-outline-primary">{% trans "Primary" %}</button>
-        <button class="btn btn-outline-secondary">{% trans "Secondary" %}</button>
-        <button class="btn btn-outline-success">{% trans "Success" %}</button>
-        <button class="btn btn-outline-warning">{% trans "Warning" %}</button>
-        <button class="btn btn-outline-danger">{% trans "Danger" %}</button>
-        <button class="btn btn-outline-info">{% trans "Info" %}</button>
-        <button disabled class="btn btn-outline-disabled">{% trans "Disabled" %}</button>
-    </div>
-{% elif component.value == "button_sizes" %}
-    <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
-        <button class="btn btn-primary btn-large">{% trans "Click me!" %}</button>
-        <button class="btn btn-primary">{% trans "Click me!" %}</button>
-        <button class="btn btn-primary btn-sm">{% trans "Click me!" %}</button>
-        <button class="btn btn-primary btn-xs">{% trans "Click me!" %}</button>
+    <div class="space-y-6">
+        <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
+            <button class="btn btn-primary">{% trans "Primary" %}</button>
+            <button class="btn btn-secondary">{% trans "Secondary" %}</button>
+            <button class="btn btn-success">{% trans "Success" %}</button>
+            <button class="btn btn-warning">{% trans "Warning" %}</button>
+            <button class="btn btn-danger">{% trans "Danger" %}</button>
+            <button class="btn btn-info">{% trans "Info" %}</button>
+            <button disabled class="btn btn-disabled">{% trans "Disabled" %}</button>
+            <button aria-label="{% trans 'Close' %}" class="btn btn-close">{% icon name="x-mark" size="xs" %}</button>
+            <a href="#" class="btn-link">{% trans "Link" %}</a>
+        </div>
+        <div class="flex flex-col md:flex-row items-stretch flex-wrap gap-1">
+            <button class="btn btn-outline-primary">{% trans "Primary" %}</button>
+            <button class="btn btn-outline-secondary">{% trans "Secondary" %}</button>
+            <button class="btn btn-outline-success">{% trans "Success" %}</button>
+            <button class="btn btn-outline-warning">{% trans "Warning" %}</button>
+            <button class="btn btn-outline-danger">{% trans "Danger" %}</button>
+            <button class="btn btn-outline-info">{% trans "Info" %}</button>
+            <button disabled class="btn btn-outline-disabled">{% trans "Disabled" %}</button>
+        </div>
+        <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
+            <button class="btn btn-primary btn-large">{% trans "Click me!" %}</button>
+            <button class="btn btn-primary">{% trans "Click me!" %}</button>
+            <button class="btn btn-primary btn-sm">{% trans "Click me!" %}</button>
+            <button class="btn btn-primary btn-xs">{% trans "Click me!" %}</button>
+        </div>
     </div>
 {% elif component.value == "input_field" %}
     <div class="space-y-6">
@@ -98,7 +98,7 @@
     </div>
 {% elif component.value == "range_slider" %}
     {% slider config=example_slider %}
-{% elif component.value == "toggle_button" %}
+{% elif component.value == "toggle" %}
     {% toggle config=example_toggle %}
 {% elif component.value == "select" %}
     <div class="h-64">
@@ -206,10 +206,10 @@
 {% elif component.value == "effect_cards" %}
     <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
         {% for card in app_cards %}
-            {% card_app title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
+            {% app_card title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
         {% endfor %}
         {% for card in flip_cards %}
-            {% card_flip title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
+            {% flip_card title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
         {% endfor %}
     </div>
 {% elif component.value == "card_carousel" %}

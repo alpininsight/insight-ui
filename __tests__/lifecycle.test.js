@@ -66,7 +66,7 @@ describe('Component Lifecycle - destroy() methods', () => {
 
       dropdown.destroy();
 
-      expect(dropdown.toggleButton).toBeNull();
+      expect(dropdown.trigger).toBeNull();
       expect(dropdown.menu).toBeNull();
     });
   });

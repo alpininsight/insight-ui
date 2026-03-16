@@ -1,4 +1,4 @@
-"""Django-Einstellungen für Tests."""
+"""Django settings."""
 
 import os
 from pathlib import Path
@@ -32,8 +32,9 @@ INSTALLED_APPS = [
     "core",
 ]
 
+# Additional apps which are only for development
 if not IS_PROD:
-    INSTALLED_APPS += ["django_tailwind_cli"]
+    INSTALLED_APPS += ["rosetta", "django_tailwind_cli"]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -82,14 +83,7 @@ TIME_ZONE = "Europe/Berlin"
 USE_I18N = True
 USE_TZ = True
 
-LANGUAGES = [
-    ("de", "Deutsch"),
-    ("en", "English"),
-    ("es", "Español"),
-    ("fr", "Français"),
-    ("ar", "العربية"),
-    ("zh", "中文"),
-]
+LANGUAGES = [("de", "Deutsch"), ("en", "English")]
 
 LOCALE_PATHS = [os.path.join(BASE_DIR, "insight_ui", "locale")]
 
@@ -123,7 +117,7 @@ PROJECT_DESCRIPTION = config("PROJECT_DESCRIPTION", default="Our base template t
 PROJECT_AUTHOR = config("PROJECT_AUTHOR", default="Alpin Insight AI")
 VERSION = "0.0.0"
 
-# Insight UI Einstellungen
+# Insight UI configuration
 INSIGHT_UI = {
     "favicon": "insight_ui/favicon/favicon.ico",
     "favicon_32": "insight_ui/favicon/favicon-32x32.png",

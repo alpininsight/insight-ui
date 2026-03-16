@@ -1,9 +1,8 @@
 # Insight UI
-<!-- Badges -->
 
-![CI](https://github.com/alpininsight/insight-ui/actions/workflows/release.yml/badge.svg?branch=main)
+<!-- Badges -->
 ![Conventional Commits](https://github.com/alpininsight/insight-ui/actions/workflows/feature-pr-title.yml/badge.svg?branch=develop)
-![Staging (develop)](https://github.com/alpininsight/insight-ui/actions/workflows/release-develop.yml/badge.svg?branch=develop)
+![Staging](https://github.com/alpininsight/insight-ui/actions/workflows/release-develop.yml/badge.svg?branch=develop)
 ![Release](https://github.com/alpininsight/insight-ui/actions/workflows/release.yml/badge.svg?branch=main)
 ![Publish](https://github.com/alpininsight/insight-ui/actions/workflows/main-publish-pypi.yml/badge.svg?branch=main)
 
@@ -70,7 +69,11 @@ uv run ./utils/main.py
 
 ## Testing
 ```bash
+# Python code
 uv run pytest
+
+# JavaScript code (no local node.js required due docker container)
+docker run --rm -it -v ${PWD}:/app -w /app  node:25-alpine sh -c "npm install && npx vitest run"
 ```
 
 CI runs tests against Python 3.12, 3.13, and 3.14. Note that Python 3.14 is still in development, so some third-party packages may not fully support it yet. The CI matrix uses `fail-fast: false` to ensure all versions report results independently.

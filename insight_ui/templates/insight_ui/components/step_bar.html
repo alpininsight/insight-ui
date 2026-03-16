@@ -21,13 +21,15 @@
                 </div>
             {% endif %}
             <div class="flex-1">
-                {% if item.failed %}
-                    <span class="block font-semibold text-insight-danger">{{ item.title }}</span>
-                    <span class="block text-sm text-insight-danger-hover">{{ item.description }}</span>
-                {% else %}
-                    <span class="block font-semibold {% if not item.success and not item.current %}text-gray-300 dark:text-gray-700{% elif item.current %}text-insight-primary{% else %}text-primary{% endif %}">{{ item.title }}</span>
-                    <span class="block text-sm {% if not item.success and not item.current %}text-gray-300 dark:text-gray-700{% else %}text-secondary{% endif %}">{{ item.description }}</span>
-                {% endif %}
+                <a {% if item.url %}href="{{ item.url }}"{% endif %}>
+                    {% if item.failed %}
+                        <span class="block font-semibold text-insight-danger">{{ item.title }}</span>
+                        <span class="block text-sm text-insight-danger-hover">{{ item.description }}</span>
+                    {% else %}
+                        <span class="block font-semibold {% if not item.success and not item.current %}text-gray-300 dark:text-gray-700{% elif item.current %}text-insight-primary{% else %}text-primary{% endif %}">{{ item.title }}</span>
+                        <span class="block text-sm {% if not item.success and not item.current %}text-gray-300 dark:text-gray-700{% else %}text-secondary{% endif %}">{{ item.description }}</span>
+                    {% endif %}
+                </a>
             </div>
         </li>
         {% if not forloop.last %}

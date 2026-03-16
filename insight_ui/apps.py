@@ -1,11 +1,11 @@
-"""Django App-Konfiguration für Insight UI."""
+"""Configuration of the 'insight_ui' app."""
 
 from django.apps import AppConfig
 
 
 class InsightUiConfig(AppConfig):
-    """Konfiguration für die Insight UI Django-App."""
+    """Configuration of the 'insight_ui' app."""
 
     default_auto_field = "django.db.models.BigAutoField"
     name = "insight_ui"
-    verbose_name = "Django Insight UI"
+    verbose_name = "Insight UI"
