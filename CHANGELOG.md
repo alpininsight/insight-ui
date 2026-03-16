@@ -23,6 +23,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Page header for storybook and component details pages
 - Add missing description texts for storybooks
 - Add missing docs context for the 'radio_block' component
+- Remove obsolete special handling of the 'radio_block' component
+- JavaScript test and bump undici version to 7.24.0
+- Broken component demos
 - Add configurable data and static roots
 - Annotate health check view
 
@@ -39,6 +42,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **guides:** Add component architecture epic backlog
 - **backlog:** Update with Sprint 1 completion status
 - Rewrote and translate contributing.md
+- Translate developer documentation
+- Add hint to run JavaScript tests to README.md
+- Make component docu context strings translateable
 
 ### Features
 
@@ -69,6 +75,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add new components automatically to sidebar navigation and corresponding storybook
 - Add non partial version of the new storybook and component details pages
 - Add share icon
+- Add 'django-rosetta' as dev dependency
+- Translate function docs of the insight_tags
+- Add translatable strings to the index, base_template, customization, icons and installation templates
+- Make the current step of the minimal_step_bar configurable
+- Add an url parameter to the steps of the steps_bar and make them klickable
 
 ### Miscellaneous
 
