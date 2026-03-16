@@ -216,7 +216,7 @@ def minimal_step_bar(config: dict) -> dict:
             if step < config.get("current_step"):
                 items.append("success")
             elif step == config.get("current_step"):
-                items.append("active")
+                items.append(config.get("current_step_status", "active"))
             else:
                 items.append("")
 

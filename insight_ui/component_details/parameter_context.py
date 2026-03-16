@@ -426,7 +426,8 @@ def get_step_bar_parameter_context() -> dict[str, list[str]]:
         [
             ParameterDetails("title", "str", _("Titel des Schritts."), "''"),
             ParameterDetails("description", "str", _("Zusätzliche Beschreibung des Schritts unter dem Titel."), "''"),
-            ParameterDetails("completed", "bool", _("Zeigt statt der Schrittzahl ein Haken an."), "False"),
+            ParameterDetails("success", "bool", _("Zeigt statt der Schrittzahl ein Haken an."), "False"),
+            ParameterDetails("failed", "bool", _("Zeigt statt der Schrittzahl ein X an."), "False"),
             ParameterDetails(
                 "current", "bool", _("Hebt den Titel farblich hervor und lässt den Text pulsieren."), "False"
             ),
@@ -458,6 +459,12 @@ def get_minimal_step_bar_parameter_context() -> dict[str, list[str]]:
             ),
             ParameterDetails(
                 "current_step", "int", _("(Nur wenn 'items' nicht gesetzt ist!) Aktueller Schritt des Prozesses."), "0"
+            ),
+            ParameterDetails(
+                "current_step_status",
+                "str",
+                _("(Nur wenn 'items' nicht gesetzt ist!) Status des aktuellen Schritts."),
+                "'active'",
             ),
             ParameterDetails("icon_size", "str", _("Größe der Icons auf der Fortschrittsanzeige."), "xs"),
         ],
