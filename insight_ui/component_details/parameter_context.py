@@ -1181,7 +1181,8 @@ def get_popover_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "data-show-arrow",
             "bool",
-            _("Zeigt ein Pfeil am Rand des Popovers, hin zum auslösenden Objekt an.", "False"),
+            _("Zeigt ein Pfeil am Rand des Popovers, hin zum auslösenden Objekt an."),
+            "False",
         ),
     ]
 

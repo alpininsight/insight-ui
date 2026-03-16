@@ -376,7 +376,14 @@ def get_checkbox_context() -> dict:
             "value": "AGB",
             "label": _("Accept AGBs"),
             "disabled": False,
-        },
+        }
+    }
+
+
+@register_demo_context(Component.CHECKBOX_GROUP)
+def get_checkbox_context() -> dict:
+    """Serve data for checkbox group detailpage."""
+    return {
         "example_checkbox_group": {
             "name": "language_select",
             "label": "Choose languages: (max. 3)",
@@ -395,7 +402,7 @@ def get_checkbox_context() -> dict:
                     "disabled": True,
                 },
             ],
-        },
+        }
     }
 
 

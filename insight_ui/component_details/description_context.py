@@ -478,7 +478,7 @@ def get_generic_filter_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Mit der generic_filter Komponente lassen sich relativ einfach standard Filter, bestehend aus <select>-Tags, bauen. Der Filter macht bei einer Änderung automatisch einen Request an den entsprechenden Endpunkt und aktualisiert den Datenbereich mittels HTMX."
+                "Mit der generic_filter Komponente lassen sich relativ einfach standard Filter, bestehend aus &lt;select&gt;-Tags, bauen. Der Filter macht bei einer Änderung automatisch einen Request an den entsprechenden Endpunkt und aktualisiert den Datenbereich mittels HTMX."
             ),
             _("Eine alternative hierzu stellt der flexiblere, aber auch kompliziertere Query Builder dar."),
         ]

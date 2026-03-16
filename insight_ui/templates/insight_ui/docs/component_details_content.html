@@ -14,7 +14,9 @@
         {% if usage_summary %}
             {{ usage_summary }}
         {% else %}
-            Die Komponente wird über das <span class="inline-tag">{{ component_name }}</span> Tag eingebunden.
+            {% blocktrans with component_tag='<span class="inline-tag">{{ component_name }}</span>'|safe %}
+                Die Komponente wird über das {{ component_tag }} Tag eingebunden.
+            {% endblocktrans %}
         {% endif %}
     </p>
     <div data-insight-code-block="Django">
