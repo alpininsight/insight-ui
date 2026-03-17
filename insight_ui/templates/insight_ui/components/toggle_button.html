@@ -25,11 +25,11 @@
             {% if checked %}checked{% endif %}
             {% if disabled %}disabled{% endif %}
             {% if method %}onclick="{{ method }}()"{% endif %}
-            class="peer hidden"
+            class="peer sr-only"
         >
         <label
             for="{{ tag_id }}"
-            class="btn btn-sm btn-primary h-full cursor-pointer select-none peer-checked:bg-insight-primary-active peer-checked:border-insight-primary-active"
+            class="btn btn-sm btn-primary h-full cursor-pointer select-none peer-focus:outline-2 outline-insight-primary-hover peer-checked:bg-insight-primary-active peer-checked:border-insight-primary-active"
         >
             {% if icon %}
                 {% icon icon %}

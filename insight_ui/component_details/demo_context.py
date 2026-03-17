@@ -462,7 +462,10 @@ def get_radio_block_context() -> dict:
 @register_demo_context(Component.TOGGLE)
 def get_toggle_button_context() -> dict:
     """Serve data for toggle-button detailpage."""
-    return {"example_toggle": {"tag_id": "toggle_button_example1", "label": _("Click me!"), "switch": True}}
+    return {
+        "example_switch": {"tag_id": "toggle_switch_example", "label": _("Click me!"), "switch": True},
+        "example_toggle": {"tag_id": "toggle_button_example", "label": _("Click me!"), "switch": False},
+    }
 
 
 @register_demo_context(Component.SELECT)

@@ -99,7 +99,10 @@
 {% elif component.value == "range_slider" %}
     {% slider config=example_slider %}
 {% elif component.value == "toggle" %}
-    {% toggle config=example_toggle %}
+    <div class="flex justify-between w-64">
+        {% toggle config=example_switch %}
+        {% toggle config=example_toggle %}
+    </div>
 {% elif component.value == "select" %}
     <div class="h-64">
         {% select config=select_config %}
