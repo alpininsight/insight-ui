@@ -483,7 +483,7 @@ def get_multiselect_context() -> dict:
             "maximum": 3,
             "show_buttons": False,
             "options": [_("Berlin"), _("Rome"), _("London"), _("Brussels"), _("Paris"), _("Warsaw")],
-            "selected_options": [_("Rom"), _("Paris"), _("Berlin")],
+            "selected_options": [_("Rome"), _("Paris"), _("Berlin")],
         }
     }
 
