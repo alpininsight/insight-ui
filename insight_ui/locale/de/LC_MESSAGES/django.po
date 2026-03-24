@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django-insight-ui 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-24 12:32+0100\n"
+"POT-Creation-Date: 2026-03-24 13:28+0100\n"
 "PO-Revision-Date: 2026-03-24 12:32+0100\n"
 "Last-Translator:   <>\n"
 "Language-Team: German\n"
@@ -357,6 +357,84 @@ msgstr "Siehe Kartenkarussell"
 #: .\insight_ui\component_details\a11y_context.py:415
 msgid "See Radio Group"
 msgstr "Siehe Radio-Gruppe"
+
+#: .\insight_ui\component_details\demo_context.py:14
+msgid "-- Select model --"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:15
+msgid "Language Model"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:16
+msgid "Vision Model"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:17
+msgid "Multimodal Model"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:18
+msgid "Audio / Speech Processing"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:19
+msgid "Recommendation System"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:20
+msgid "Generative Model"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:23
+msgid "-- Select runtime --"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:24
+msgid "Cloud (API-based)"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:25
+msgid "Edge / On-Device"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:26
+msgid "Local (Self-hosted)"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:27
+msgid "Hybrid (Cloud + Local)"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:28
+msgid "Serverless Deployment"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:31
+msgid "-- Select license --"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:32
+msgid "Free / Open Source"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:33
+msgid "Freemium"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:34
+#, fuzzy
+#| msgid "Description"
+msgid "Subscription"
+msgstr "Beschreibung"
+
+#: .\insight_ui\component_details\demo_context.py:35
+msgid "Pay per Use"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:36
+msgid "Enterprise License"
+msgstr ""
 
 #: .\insight_ui\component_details\demo_context.py:43
 #: .\insight_ui\component_details\demo_context.py:699
@@ -814,10 +892,6 @@ msgstr "Nach Laufdauer filtern."
 msgid "License"
 msgstr "Lizenz"
 
-#: .\insight_ui\component_details\demo_context.py:582
-msgid "To filter by license."
-msgstr "Nach Lizenz filtern."
-
 #: .\insight_ui\component_details\demo_context.py:602
 msgid "Example Card"
 msgstr "Beispielkarte"
@@ -865,6 +939,24 @@ msgstr "Eine Karte mit horizontal angeordnetem Inhalt."
 #: .\insight_ui\component_details\demo_context.py:635
 msgid "Card-Image"
 msgstr "Kartenbild"
+
+#: .\insight_ui\component_details\demo_context.py:624
+#: .\insight_ui\component_details\demo_context.py:636
+#: .\insight_ui\templates\insight_ui\components\navbar.html:122
+msgid "Insight-UI"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:624
+#: .\insight_ui\component_details\demo_context.py:636
+msgid "Layout"
+msgstr ""
+
+#: .\insight_ui\component_details\demo_context.py:624
+#: .\insight_ui\component_details\demo_context.py:636
+#, fuzzy
+#| msgid "App Card"
+msgid "Card"
+msgstr "Appkarte"
 
 #: .\insight_ui\component_details\demo_context.py:633
 msgid "Flip Card"
@@ -2858,10 +2950,6 @@ msgid "Open menu"
 msgstr ""
 
 #: .\insight_ui\templates\insight_ui\components\navbar.html:122
-msgid "Insight-UI"
-msgstr ""
-
-#: .\insight_ui\templates\insight_ui\components\navbar.html:122
 msgid "Lorem ipsum..."
 msgstr ""
 
@@ -4719,6 +4807,9 @@ msgstr ""
 #: .\insight_ui\views.py:193
 msgid "Formular erfolgreich übermittelt!"
 msgstr ""
+
+#~ msgid "To filter by license."
+#~ msgstr "Nach Lizenz filtern."
 
 #~ msgid "Rom"
 #~ msgstr "Rom"

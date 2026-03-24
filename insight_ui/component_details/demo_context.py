@@ -11,29 +11,29 @@ from insight_ui.utils.pagination import get_page
 
 # Some example filters for the filter example
 model_type_options = {
-    "placeholder": "-- Select model --",
-    "language": "Language Model",
-    "vision": "Vision Model",
-    "multimodal": "Multimodal Model",
-    "audio": "Audio / Speech Processing",
-    "recommendation": "Recommendation System",
-    "generative": "Generative Model",
+    "placeholder": _("-- Select model --"),
+    "language": _("Language Model"),
+    "vision": _("Vision Model"),
+    "multimodal": _("Multimodal Model"),
+    "audio": _("Audio / Speech Processing"),
+    "recommendation": _("Recommendation System"),
+    "generative": _("Generative Model"),
 }
 runtime_options = {
-    "placeholder": "-- Select runtime --",
-    "cloud": "Cloud (API-based)",
-    "edge": "Edge / On-Device",
-    "local": "Local (Self-hosted)",
-    "hybrid": "Hybrid (Cloud + Local)",
-    "serverless": "Serverless Deployment",
+    "placeholder": _("-- Select runtime --"),
+    "cloud": _("Cloud (API-based)"),
+    "edge": _("Edge / On-Device"),
+    "local": _("Local (Self-hosted)"),
+    "hybrid": _("Hybrid (Cloud + Local)"),
+    "serverless": _("Serverless Deployment"),
 }
 license_options = {
-    "placeholder": "-- Select license --",
-    "free": "Free / Open Source",
-    "freemium": "Freemium",
-    "subscription": "Subscription",
-    "pay_per_use": "Pay per Use",
-    "enterprise": "Enterprise License",
+    "placeholder": _("-- Select license --"),
+    "free": _("Free / Open Source"),
+    "freemium": _("Freemium"),
+    "subscription": _("Subscription"),
+    "pay_per_use": _("Pay per Use"),
+    "enterprise": _("Enterprise License"),
 }
 
 # Some example data for the query builder filter
@@ -379,9 +379,9 @@ def get_checkbox_context() -> dict:
     """Serve data for checkbox detailpage."""
     return {
         "example_checkbox": {
-            "tag_id": "accept-agbs",
-            "name": "accept_agbs",
-            "value": "AGB",
+            "tag_id": "accept-gtc",
+            "name": "accept_gtc",
+            "value": "GTC",
             "label": _("Accept GTC"),
             "disabled": False,
         }
@@ -579,7 +579,7 @@ def get_generic_filter_context() -> dict:
             {
                 "text": _("License"),
                 "icon": {"name": "doc", "size": "small"},
-                "name": _("To filter by license."),
+                "name": "license_filter",
                 "values": license_options,
             },
         ],
@@ -621,7 +621,7 @@ def get_cards_context() -> dict:
                 "title": _("App Card"),
                 "content": _("A card with its content arranged horizontally."),
                 "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": _("Card-Image")},
-                "tags": ["Test", "Test2", "Test3"],
+                "tags": [_("Insight-UI"), _("Layout"), _("Card")],
                 "actions": [
                     {"text": _("Learn more"), "url": "#", "type": "secondary"},
                     {"text": _("Share"), "url": "#", "type": "primary"},
@@ -633,7 +633,7 @@ def get_cards_context() -> dict:
                 "title": _("Flip Card"),
                 "content": _("A card that rotates 180° and has additional content on the back."),
                 "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": _("Card-Image")},
-                "tags": ["Test", "Test2", "Test3"],
+                "tags": [_("Insight-UI"), _("Layout"), _("Card")],
                 "actions": [
                     {"text": _("Learn more"), "url": "#", "type": "secondary"},
                     {"text": _("Share"), "url": "#", "type": "primary"},
