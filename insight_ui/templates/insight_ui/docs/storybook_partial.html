@@ -1,5 +1,7 @@
 {% load i18n insight_tags %}
 
+{% include "insight_ui/components/htmx_loading_indicator.html" %}
+
 {% comment %} Titel and summarize (out of bands) {% endcomment %}
 <div id="heading" hx-swap-oob="true" class="bg-insight-primary text-white leading-loose text-lg px-4 md:px-16 pt-16 pb-4">
     <h1 class="text-white">Insight UI {{ storybook.formatted_name }}</h1>
