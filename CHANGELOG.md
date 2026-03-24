@@ -28,6 +28,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Broken component demos
 - Add configurable data and static roots
 - Annotate health check view
+- Function naming radio_block
+- Function declarations demo_context, checkbox_group
+- Rome translation ID
+- Add some missing translatable strings in the demo_context.py
 
 ### CI/CD
 
@@ -80,6 +84,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add translatable strings to the index, base_template, customization, icons and installation templates
 - Make the current step of the minimal_step_bar configurable
 - Add an url parameter to the steps of the steps_bar and make them klickable
+- Replace DE with EN strings
+- Added EN translation fields
+- In progress 22 % translation EN to DE
 
 ### Miscellaneous
 
@@ -96,6 +103,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove hardcoded list of components from smoke tests
 - Rename 'table' and 'main' storybook
 - Remove obsolete storybook template files
+
+### Reverted
+
+- Get_component_demo_context() linter warning
 
 ### Testing
 
