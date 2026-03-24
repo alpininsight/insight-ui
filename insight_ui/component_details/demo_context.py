@@ -99,9 +99,9 @@ def get_component_demo_context(component: Component) -> dict:
     context_func = get_demo_context(component)
 
     if not context_func:
-        context_func = get_empty_context
+        context_func = get_empty_context()
 
-    return context_func()
+    return context_func
 
 
 def get_login_screen_context() -> dict:
@@ -381,7 +381,7 @@ def get_checkbox_context() -> dict:
 
 
 @register_demo_context(Component.CHECKBOX_GROUP)
-def get_checkbox_context() -> dict:
+def get_checkbox_group_context() -> dict:
     """Serve data for checkbox group detailpage."""
     return {
         "example_checkbox_group": {
