@@ -11,29 +11,29 @@ from insight_ui.utils.pagination import get_page
 
 # Some example filters for the filter example
 model_type_options = {
-    "placeholder": "-- Select model --",
-    "language": "Language Model",
-    "vision": "Vision Model",
-    "multimodal": "Multimodal Model",
-    "audio": "Audio / Speech Processing",
-    "recommendation": "Recommendation System",
-    "generative": "Generative Model",
+    "placeholder": _("-- Select model --"),
+    "language": _("Language Model"),
+    "vision": _("Vision Model"),
+    "multimodal": _("Multimodal Model"),
+    "audio": _("Audio / Speech Processing"),
+    "recommendation": _("Recommendation System"),
+    "generative": _("Generative Model"),
 }
 runtime_options = {
-    "placeholder": "-- Select runtime --",
-    "cloud": "Cloud (API-based)",
-    "edge": "Edge / On-Device",
-    "local": "Local (Self-hosted)",
-    "hybrid": "Hybrid (Cloud + Local)",
-    "serverless": "Serverless Deployment",
+    "placeholder": _("-- Select runtime --"),
+    "cloud": _("Cloud (API-based)"),
+    "edge": _("Edge / On-Device"),
+    "local": _("Local (Self-hosted)"),
+    "hybrid": _("Hybrid (Cloud + Local)"),
+    "serverless": _("Serverless Deployment"),
 }
 license_options = {
-    "placeholder": "-- Select license --",
-    "free": "Free / Open Source",
-    "freemium": "Freemium",
-    "subscription": "Subscription",
-    "pay_per_use": "Pay per Use",
-    "enterprise": "Enterprise License",
+    "placeholder": _("-- Select license --"),
+    "free": _("Free / Open Source"),
+    "freemium": _("Freemium"),
+    "subscription": _("Subscription"),
+    "pay_per_use": _("Pay per Use"),
+    "enterprise": _("Enterprise License"),
 }
 
 # Some example data for the query builder filter
@@ -113,12 +113,12 @@ def get_login_screen_context() -> dict:
             "logo": {
                 "url": "svg/ai-logo.svg",
                 "url_dark": "svg/ai-logo.svg",
-                "alt": "Unser Logo",
+                "alt": _("Our Logo"),
                 "height": "8rem",
                 "position": "center",
             },
             "forgot_password": {"url": "#"},
-            "alt_login": {"url": "#", "title": "Login with OIDC"},
+            "alt_login": {"url": "#", "title": _("Login with OIDC")},
             "sign_up": {"url": "#"},
         }
     )
@@ -240,7 +240,7 @@ def get_footer_context() -> dict:
         "footer_data": {
             "description": {
                 "title": "Insight UI",
-                "text": "A modern, accessible, and responsive UI library for Django projects.",
+                "text": _("A modern, accessible, and responsive UI library for Django projects."),
                 "image": {
                     "url": "img/thumbnail.png",
                     "url_dark": "img/thumbnail.png",
@@ -272,9 +272,9 @@ def get_alert_context() -> dict:
             "empty_msg": _("No data available!"),
             "headers": [_("Parameter"), _("Type"), _("Default"), _("Description")],
             "rows": [
-                ["message", "str", "''", _("Die Hauptnachricht der Benachrichtigung.")],
-                ["type", "str", "info", _("Der Typ der Benachrichtigung ('info', 'success', 'warning', 'error')")],
-                ["dismissible", "bool", "True", _("Ob die Benachrichtigung schließbar sein soll.")],
+                ["message", "str", "''", _("The main message of the notification.")],
+                ["type", "str", "info", _("The type of the notification ('info', 'success', 'warning', 'error')")],
+                ["dismissible", "bool", "True", _("Whether the notification should be dismissible.")],
             ],
         }
     }
@@ -296,7 +296,7 @@ def get_breadcrumb_context() -> dict:
 @register_demo_context(Component.DIFFERENTIATOR)
 def get_differentiator_context() -> dict:
     """Serve data for differentiator detailpage."""
-    return {"textA": "The cat is sleeping on the red sofa.", "textB": "This is a completely different sentence!"}
+    return {"textA": _("The cat is sleeping on the red sofa."), "textB": _("This is a completely different sentence!")}
 
 
 @register_demo_context(Component.DROPDOWN)
@@ -345,14 +345,22 @@ def get_step_bar_context() -> dict:
     """Serve data for step bar detailpage."""
     return {
         "step_bar_items": [
-            {"title": _("Kontaktdaten"), "description": _("Informationen zur Person und Anschrift."), "success": True},
-            {"title": _("Zahlungsmethode"), "description": _("Art der Bezahlung auswählen."), "current": True},
-            {"title": _("Überprüfen"), "description": _("Prüfen der Angaben und Bezahlen.")},
+            {
+                "title": _("Contact Details"),
+                "description": _("Information about the person and address."),
+                "success": True,
+            },
+            {"title": _("Payment Method"), "description": _("Select the payment method."), "current": True},
+            {"title": _("Review"), "description": _("Review the data and pay.")},
         ],
         "step_bar_items_failed": [
-            {"title": _("Kontaktdaten"), "description": _("Informationen zur Person und Anschrift."), "success": True},
-            {"title": _("Zahlungsmethode"), "description": _("Art der Bezahlung auswählen."), "success": True},
-            {"title": _("Überprüfen"), "description": _("Prüfen der Angaben und Bezahlen."), "failed": True},
+            {
+                "title": _("Contact Details"),
+                "description": _("Information about the person and address."),
+                "success": True,
+            },
+            {"title": _("Payment Method"), "description": _("Select the payment method."), "success": True},
+            {"title": _("Review"), "description": _("Review the data and pay."), "failed": True},
         ],
     }
 
@@ -371,17 +379,17 @@ def get_checkbox_context() -> dict:
     """Serve data for checkbox detailpage."""
     return {
         "example_checkbox": {
-            "tag_id": "accept-agbs",
-            "name": "accept_agbs",
-            "value": "AGB",
-            "label": _("Accept AGBs"),
+            "tag_id": "accept-gtc",
+            "name": "accept_gtc",
+            "value": "GTC",
+            "label": _("Accept GTC"),
             "disabled": False,
         }
     }
 
 
 @register_demo_context(Component.CHECKBOX_GROUP)
-def get_checkbox_context() -> dict:
+def get_checkbox_group_context() -> dict:
     """Serve data for checkbox group detailpage."""
     return {
         "example_checkbox_group": {
@@ -460,7 +468,9 @@ def get_toggle_button_context() -> dict:
 @register_demo_context(Component.SELECT)
 def get_select_context() -> dict:
     """Serve data for select detailpage."""
-    return {"select_config": {"name": "capital", "label": "Capitals:", "options": ["Berlin", "Rom", "London"]}}
+    return {
+        "select_config": {"name": "capital", "label": _("Capitals:"), "options": [_("Berlin"), _("Rome"), _("London")]}
+    }
 
 
 @register_demo_context(Component.MULTISELECT)
@@ -469,11 +479,11 @@ def get_multiselect_context() -> dict:
     return {
         "multiselect_config": {
             "name": "capital",
-            "label": "Capitals:",
+            "label": _("Capitals:"),
             "maximum": 3,
             "show_buttons": False,
-            "options": ["Berlin", "Rom", "London", "Brüssel", "Paris", "Warschau"],
-            "selected_options": ["Rom", "Paris", "Berlin"],
+            "options": [_("Berlin"), _("Rome"), _("London"), _("Brussels"), _("Paris"), _("Warsaw")],
+            "selected_options": [_("Rome"), _("Paris"), _("Berlin")],
         }
     }
 
@@ -499,14 +509,18 @@ register_demo_context(Component.INFINITE_SCROLL)
 
 def get_infinite_scroll_context() -> dict:
     """Serve data for infinite scroll detailpage."""
-    return {"scroll_items": [{"title": f"Element {i}", "content": f"Inhalt für Element {i}"} for i in range(1, 11)]}
+    return {
+        "scroll_items": [
+            {"title": f"{_('Element')} {i}", "content": f"{_('Content for element')} {i}"} for i in range(1, 11)
+        ]
+    }
 
 
 @register_demo_context(Component.PAGINATION)
 def get_pagination_context() -> dict:
     """Serve data for pagination detailpage."""
     page_obj, surrounding_pages = get_page(generate_payload(500))
-    ipp_config = {"name": "ipp", "label": "Items per page", "options": [10, 20, 30]}
+    ipp_config = {"name": "ipp", "label": _("Items per page"), "options": [10, 20, 30]}
 
     return {"start_page": page_obj, "surrounding_pages": surrounding_pages, "ipp_config": ipp_config}
 
@@ -518,7 +532,7 @@ def get_table_context() -> dict:
         "table": {
             "caption": _("Example of a table component."),
             "empty_msg": _("No data available!"),
-            "headers": [_("Name"), _("E-Mail"), _("Status"), _("Actions")],
+            "headers": [_("Name"), _("E-mail"), _("Status"), _("Actions")],
             "rows": [
                 [
                     "Max Mustermann",
@@ -594,8 +608,8 @@ def get_cards_context() -> dict:
                 ],
             },
             {
-                "title": "Card with actions",
-                "content": "This card has some action buttons.",
+                "title": _("Card with actions"),
+                "content": _("This card has some action buttons."),
                 "actions": [
                     {"text": _("Learn more"), "url": "#", "type": "secondary"},
                     {"text": _("Share"), "url": "#", "type": "primary"},
@@ -604,10 +618,10 @@ def get_cards_context() -> dict:
         ],
         "app_cards": [
             {
-                "title": "App Cards",
-                "content": "A card with its content arranged horizontally.",
-                "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": "Card-Image"},
-                "tags": ["Test", "Test2", "Test3"],
+                "title": _("App Card"),
+                "content": _("A card with its content arranged horizontally."),
+                "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": _("Card-Image")},
+                "tags": [_("Insight-UI"), _("Layout"), _("Card")],
                 "actions": [
                     {"text": _("Learn more"), "url": "#", "type": "secondary"},
                     {"text": _("Share"), "url": "#", "type": "primary"},
@@ -616,10 +630,10 @@ def get_cards_context() -> dict:
         ],
         "flip_cards": [
             {
-                "title": "Flip Card",
-                "content": "A card that rotates 180° and has additional content on the back.",
-                "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": "Card-Image"},
-                "tags": ["Test", "Test2", "Test3"],
+                "title": _("Flip Card"),
+                "content": _("A card that rotates 180° and has additional content on the back."),
+                "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": _("Card-Image")},
+                "tags": [_("Insight-UI"), _("Layout"), _("Card")],
                 "actions": [
                     {"text": _("Learn more"), "url": "#", "type": "secondary"},
                     {"text": _("Share"), "url": "#", "type": "primary"},
@@ -660,7 +674,7 @@ def get_toggle_view_context() -> dict:
     headers, rows = map_payload_to_table(payload)
 
     return {
-        "toggle_table": {"empty_msg": "No data available!", "headers": headers, "rows": rows},
+        "toggle_table": {"empty_msg": _("No data available!"), "headers": headers, "rows": rows},
         "toggle_start_view": "table",
         "view_radio_config": {
             "name": "view",
@@ -684,29 +698,29 @@ def get_form_context() -> dict:
                 "name": "title",
                 "label": _("Title"),
                 "placeholder": _("Your title"),
-                "options": ["No title", "Prof.", "Dr.", "King"],
+                "options": [_("No title"), "Prof.", "Dr.", _("King")],
             },
             {
                 "input_type": "text",
                 "tag_id": "firstname",
                 "name": "firstname",
-                "label": _("Firstname"),
-                "placeholder": _("Type in your firstname"),
+                "label": _("First name"),
+                "placeholder": _("Type in your first name"),
                 "required": True,
             },
             {
                 "input_type": "text",
                 "tag_id": "lastname",
                 "name": "lastname",
-                "label": _("Lastname"),
-                "placeholder": _("Type in your lastname"),
+                "label": _("Last name"),
+                "placeholder": _("Type in your last name"),
                 "required": True,
             },
             {
                 "input_type": "email",
                 "tag_id": "email",
                 "name": "email",
-                "label": _("E-Mail"),
+                "label": _("E-mail"),
                 "placeholder": _("Type in your.email@example.com"),
                 "required": True,
             },
@@ -738,12 +752,12 @@ def get_bullet_point_list_context() -> dict:
     return {
         "bulletpoints": [
             {
-                "title": _("Kontaktdaten"),
-                "description": _("Informationen zur Person und Anschrift."),
+                "title": _("Contact Details"),
+                "description": _("Information about the person and address."),
                 "completed": True,
             },
-            {"title": _("Zahlungsmethode"), "description": _("Art der Bezahlung auswählen."), "current": True},
-            {"title": _("Überprüfen"), "description": _("Prüfen der Angaben und Bezahlen.")},
+            {"title": _("Payment Method"), "description": _("Select the payment method."), "current": True},
+            {"title": _("Review"), "description": _("Review the data and pay.")},
         ]
     }
 
@@ -753,9 +767,9 @@ def get_accordion_context() -> dict:
     """Serve data for accordion detailpage."""
     return {
         "accordion_items": [
-            {"title": "Was ist Django?", "content": "Django ist ein Webframework für Python."},
-            {"title": "Was ist Tailwind?", "content": "Tailwind ist ein CSS-Utility-Framework."},
-            {"title": "Was ist ARIA?", "content": "ARIA steht für Accessible Rich Internet Applications."},
+            {"title": _("What is Django?"), "content": _("Django is a web framework for Python.")},
+            {"title": _("What is Tailwind?"), "content": _("Tailwind is a CSS utility framework")},
+            {"title": _("What is ARIA?"), "content": _("ARIA is short for Accessible Rich Internet Applications.")},
         ]
     }
 
@@ -766,7 +780,7 @@ def get_tabs_context() -> dict:
     return {
         "tabs_config": {
             "tag_id": "example_tabs",
-            "label": "Tabs Example",
+            "label": _("Tabs Example"),
             "tabs": [
                 {"tag_id": "first", "url": reverse("tabs_view", kwargs={"tab_id": "first"}), "title": _("First Tab")},
                 {
@@ -791,7 +805,7 @@ def get_charts_context() -> dict:
     """Serve data for charts detailpage."""
     return {
         "chart_data": {
-            "title": "Chart Example",
+            "title": _("Chart Example"),
             "x_axis_legend": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
             "series": ["Email", "Union Ads", "Video Ads", "Direct", "Search Engine"],
             "data": [

@@ -9,8 +9,8 @@ def get_page_header_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the page header component."""
     return {
         "a11y": [
-            _("Der Titel wird als semantisches h1-Element gerendert."),
-            _("Die Beschreibung verwendet ein p-Element mit ausreichendem Farbkontrast (grau auf blau)."),
+            _("The title is rendered as a semantic h1 element."),
+            _("The description uses a p element with sufficient color contrast (grey on blue)."),
         ]
     }
 
@@ -20,9 +20,9 @@ def get_article_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the article component."""
     return {
         "a11y": [
-            _("Der Artikel verwendet das semantische article-Element."),
-            _("Die Spaltenstruktur ist rein visuell und beeinflusst nicht die Lesereihenfolge für Screenreader."),
-            _("Die Spaltentrennung wird mit column-rule visuell dargestellt."),
+            _("The article uses the semantic article element."),
+            _("The column structure is purely visual and does not influence the reading order for screen readers."),
+            _("The column separation is visually represented with column-rule."),
         ]
     }
 
@@ -32,9 +32,9 @@ def get_hero_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the hero component."""
     return {
         "a11y": [
-            _("Der Titel wird als semantisches h1-Element gerendert."),
-            _("CTA-Buttons sind als Link-Elemente mit klarer Beschriftung implementiert."),
-            _("Hintergrundbilder werden mit aria-hidden markiert."),
+            _("The title is rendered as a semantic h1 element."),
+            _("CTA buttons are implemented as link elements with clear labels."),
+            _("Background images are denoted with aria-hidden."),
         ]
     }
 
@@ -42,7 +42,7 @@ def get_hero_a11y_context() -> dict[str, list[str]]:
 @register_component(Component.NAVBAR)
 def get_navbar_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the navbar component."""
-    return {"a11y": [_("Die Navbar-Komponente enthält einen Skip-Link zum Hauptinhalt.")]}
+    return {"a11y": [_("The navbar component contains a skip link to the main content.")]}
 
 
 @register_component(Component.SIDEBAR)
@@ -50,12 +50,8 @@ def get_sidebar_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the sidebar component."""
     return {
         "a11y": [
-            _(
-                "Die Sidebar verwendet für eine semantische Korrektheit das <aside>-Tag und das Attribute role='complementary'."
-            ),
-            _(
-                "Die Drawer Variante verwendet Focus-Trapping und besitzt ein Schließen-Button, um diese auch per Tastatur verwenden zu können."
-            ),
+            _("The sidebar uses an <aside> tag and the attribute role='complementary' for semantic correctness."),
+            _("The drawer variant uses focus-trapping and has a close button to be accessible by keyboard."),
         ]
     }
 
@@ -65,10 +61,8 @@ def get_footer_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the footer component."""
     return {
         "a11y": [
-            _(
-                "Die Überschriften der drei Spalten verwenden <h4>-Tags wodurch ein Screenreader zwischen den Spalten wechseln kann."
-            ),
-            _("Die Auflistung der Links verwendet ein semantisch korrektes <ul>-Tag mit entsprechenden <li>-Tags."),
+            _("The headings of the three columns use <h4> tags so that a screennreader can switch between them."),
+            _("The listing of the links uses a semantically correct  <ul> tag with corresponding <li> tags."),
         ]
     }
 
@@ -78,8 +72,8 @@ def get_breadcrumb_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the breadcrumbs component."""
     return {
         "a11y": [
-            _("Die Komponente verwendet ein <nav>-Tag mit dem entsprechenden aria-label='Breadcrumb'."),
-            _("Das aktive Element besitzt das Attribute aria-current='page'."),
+            _("The component uses a <nav> tag with the corresponding aria-label='Breadcrumb'."),
+            _("The active element has the attribute aria-current='page'."),
         ]
     }
 
@@ -90,7 +84,7 @@ def get_step_bar_a11y_context() -> dict[str, list[str]]:
     return {
         "a11y": [
             _(
-                "Das grafische Element zu Beginn jedes Eintrags, sollte es keine Zahl sein, wird von Screenreadern mittels aria-hidden ignoriert, da es rein dekorativ ist."
+                "If the graphical element at the start of every entry is not a number, it will be ignored by screenreaders through aria-hidden, since it is purely decorative."
             )
         ]
     }
@@ -108,7 +102,7 @@ def get_bullet_point_list_a11y_context() -> dict[str, list[str]]:
     return {
         "a11y": [
             _(
-                "Das grafische Element zu Beginn jedes Eintrags wird von Screenreadern mittels aria-hidden ignoriert, da es rein dekorativ ist."
+                "The graphical element at the start of every entry will be ignored by screen readers through aria-hidden, since it is purely decorative."
             )
         ]
     }
@@ -119,13 +113,11 @@ def get_accordion_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the accordion component."""
     return {
         "a11y": [
-            _("Das aktuell geöffnete Element wird mit aria-expanded='true' markiert."),
-            _(
-                "Die Kopfzeile ist mit aria-controls ausgestattet, wodurch der Bezug zum dem darunter liegenden Container hergestellt wird."
-            ),
-            _("Der Container besitzt zusätzlich das Attribut aria-labelledby."),
-            _("Der Container ist mit role='region' ausgestattet, damit dieser leicht ansteuerbar ist."),
-            _("Die Komponente unterstützt die Navigation über die Tastatur mittels der Pfeiltasten (hoch/runter)."),
+            _("The currently active element is labeled with aria-expanded='true'."),
+            _("The header row is equipped with aria-controls, establishing the relationship to the container below."),
+            _("The container additionally has the attribute  aria-labelledby."),
+            _("The container has the role='region' for ease of navigation."),
+            _("The component can be navigated by keyboard keys Arrow (up/down)."),
         ]
     }
 
@@ -136,15 +128,11 @@ def get_tabs_a11y_context() -> dict[str, list[str]]:
     return {
         "a11y": [
             _(
-                "Die Komponente Unterstützt Screenreader durch die entsprechenden Rollen: role='tablist', role='tab', role='tabpanel'."
+                "The component supports screen readers with the following roles: role='tablist', role='tab', role='tabpanel'."
             ),
-            _(
-                "Zusätzlich werden die Tabs und deren Inhalte mittels aria-selected, aria-controls, aria-labelledby miteinander Verbunden."
-            ),
-            _("Der aktuell fokussierte Tab besitzt das Attribute tabindex='0' alle anderen tabindex='-1'."),
-            _(
-                "Die Komponente unterstützt die Navigation über die Tastatur mittels der Pfeil- (links/rechts) und Home/End-Tasten."
-            ),
+            _("Tabs and their contents are connected by aria-selected, aria-controls, aria-labelledby."),
+            _("The currently focused tab has the attribute tabindex='0' while all others have tabindex='1'."),
+            _("The component supports keyboard navigation using the arrow keys (left/right) and Home/End keys."),
         ]
     }
 
@@ -154,15 +142,9 @@ def get_button_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the button component."""
     return {
         "a11y": [
-            _(
-                "Buttons welche lediglich ein Icon besitzen und keinen Text, sollten ein beschreibendes aria-label besitzen."
-            ),
-            _(
-                "Ein Button sollte so wie der Rest der Webseite, immer auch mit der Tastatur ansteuer- und bedienbar sein."
-            ),
-            _(
-                "Für die korrekten Einhaltung der Semantik, ist ein <button> einem interaktivem <div>-Container immer vorzuziehen."
-            ),
+            _("Buttons that only have an icon and no text should have a descriptive aria-label."),
+            _("A button should, like the rest of the website, always be operable and usable via keyboard."),
+            _("For correct semantic compliance, a <button> is always preferable to an interactive <div> container."),
         ]
     }
 
@@ -170,19 +152,19 @@ def get_button_a11y_context() -> dict[str, list[str]]:
 @register_component(Component.INPUT_FIELD)
 def get_input_field_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the input field component."""
-    return {"a11y": [_("Das <label> und der dazugehörige <input> sind mit for / id miteinander verknüpft.")]}
+    return {"a11y": [_("The <label> and its associated <input> are linked using for / id.")]}
 
 
 @register_component(Component.CHECKBOX)
 def get_checkbox_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the checkbox component."""
-    return {"a11y": [_("Das <label> und der dazugehörige <input> sind mit for / id miteinander verknüpft.")]}
+    return {"a11y": [_("The <label> and its associated <input> are linked using for / id.")]}
 
 
 @register_component(Component.CHECKBOX_GROUP)
 def get_checkbox_group_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the checkbox group component."""
-    return {"a11y": [_("Siehe Checkbox")]}
+    return {"a11y": [_("See Checkbox")]}
 
 
 @register_component(Component.DROPDOWN)
@@ -191,12 +173,10 @@ def get_dropdown_a11y_context() -> dict[str, list[str]]:
     return {
         "a11y": [
             _(
-                "Der Pfeil am Ende Dropdown-Buttons wird von Screenreadern mittels aria-hidden ignoriert, da dieser rein dekorativ ist."
+                "The arrow at the end of dropdown buttons is ignored by screen readers using aria-hidden, since it is purely decorative."
             ),
-            _(
-                "Icon welche in den Links bzw. Menüpunkten angezeigt werden, werden ebenfalls von Screenreadern ignoriert."
-            ),
-            _("TODO: Unterstützung für die Navigation mit den Pfeiltasten hinzufügen."),
+            _("Icons displayed in links or menu items are also ignored by screen readers."),
+            _("TODO: Add support for navigation with arrow keys."),
         ]
     }
 
@@ -206,23 +186,19 @@ def get_radio_group_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the radio_group component."""
     return {
         "a11y": [
-            _(
-                "Die Komponente unterstützt die Navigation über die Tastatur mittels der Pfeiltasten (hoch/runter, rechts/links)."
-            ),
-            _("TODO: Fokus hervorheben."),
+            _("The component supports keyboard navigation using the arrow keys (up/down, right/left)."),
+            _("TODO: Highlight focus."),
         ]
     }
 
 
 @register_component(Component.RADIO_BLOCK)
-def get_radio_group_a11y_context() -> dict[str, list[str]]:
+def get_radio_block_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the radio_block component."""
     return {
         "a11y": [
-            _(
-                "Die Komponente unterstützt die Navigation über die Tastatur mittels der Pfeiltasten (hoch/runter, rechts/links)."
-            ),
-            _("TODO: Fokus hervorheben."),
+            _("The component supports keyboard navigation using the arrow keys (up/down, right/left)."),
+            _("TODO: Highlight focus."),
         ]
     }
 
@@ -232,10 +208,8 @@ def get_rangle_slider_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the range slider component."""
     return {
         "a11y": [
-            _("Das <label> und der dazugehörige <input> sind mit for / id miteinander verknüpft."),
-            _(
-                "Die Komponente unterstützt die Navigation über die Tastatur mittels der Pfeiltasten (hoch/runter, rechts/links)."
-            ),
+            _("The <label> and its associated <input> are linked using for / id."),
+            _("The component supports keyboard navigation using the arrow keys (up/down, right/left)."),
         ]
     }
 
@@ -245,8 +219,8 @@ def get_toggle_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the toggle component."""
     return {
         "a11y": [
-            _("Das <label> und der dazugehörige <input> sind mit for / id miteinander verknüpft."),
-            _("TODO: Fokus bei der Block-Variante hervorheben."),
+            _("The <label> and its associated <input> are linked using for / id."),
+            _("TODO: Highlight focus for the block variant."),
         ]
     }
 
@@ -256,8 +230,8 @@ def get_select_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the select component."""
     return {
         "a11y": [
-            _("Das <label> und der dazugehörige <input> sind mit for / id miteinander verknüpft."),
-            _("Die Komponente unterstützt die Navigation über die Tastatur mittels der Pfeiltasten (hoch/runter)."),
+            _("The <label> and its associated <input> are linked using for / id."),
+            _("The component can be navigated by keyboard keys Arrow (up/down)."),
         ]
     }
 
@@ -267,11 +241,11 @@ def get_multiselect_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the multiselect component."""
     return {
         "a11y": [
-            _("Das <label> und der dazugehörige <input> sind mit for / id miteinander verknüpft."),
+            _("The <label> and its associated <input> are linked using for / id."),
             _(
-                "Die Komponente Unterstützt Screenreader durch die entsprechenden ARIA-Attribute: role='combobox', aria-expanded', aria-selected'."
+                "The component supports screen readers through the corresponding ARIA attributes: role='combobox', aria-expanded', aria-selected'."
             ),
-            _("Die Komponente unterstützt die Navigation über die Tastatur mittels der Pfeiltasten (hoch/runter)."),
+            _("The component can be navigated by keyboard keys Arrow (up/down)."),
         ]
     }
 
@@ -279,7 +253,7 @@ def get_multiselect_a11y_context() -> dict[str, list[str]]:
 @register_component(Component.CHAT)
 def get_chat_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the chat component."""
-    return {"a11y": [_("Das <label> und der dazugehörige <input> sind mit for / id miteinander verknüpft.")]}
+    return {"a11y": [_("The <label> and its associated <input> are linked using for / id.")]}
 
 
 @register_component(Component.ALERT)
@@ -287,8 +261,8 @@ def get_alert_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the alert component."""
     return {
         "a11y": [
-            _("Die Alert-Box besitzt das Attribute role='alert' für die Unterstützung eines Screenreader."),
-            _("Der Button zum Schließen ist mit der Tastatur ansteuerbar und besitzt ein entsprechendes aria-label."),
+            _("The alert box has the attribute role='alert' to support screen readers."),
+            _("The close button is accessible via keyboard and has a corresponding aria-label."),
         ]
     }
 
@@ -299,14 +273,12 @@ def get_modal_a11y_context() -> dict[str, list[str]]:
     return {
         "a11y": [
             _(
-                "Das Modal wird semantisch korrekt als Dialogfenster definiert, durch die Attribute role='dialog' und aria-modal='true'."
+                "The modal is semantically correctly defined as a dialog window using the attributes role='dialog' and aria-modal='true'."
             ),
             _(
-                "Für Screenreader bietet das Modal einen Titel und eine (jedoch optionale) Beschreibung, welche mit aria-labelledby und aria-describedby verlinkt werden."
+                "For screen readers, the modal provides a title and an (optional) description, which are linked using aria-labelledby and aria-describedby."
             ),
-            _(
-                "Das Dialogfenster verwendet Focus-Trapping und besitzt ein Schließen-Button, um dieses auch per Tastatur verwenden zu können."
-            ),
+            _("The dialog window uses focus trapping and has a close button so that it can be accessed via keyboard."),
         ]
     }
 
@@ -314,19 +286,19 @@ def get_modal_a11y_context() -> dict[str, list[str]]:
 @register_component(Component.POPOVER)
 def get_popover_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the popover component."""
-    return {"a11y": [_("TODO: Bedienbarkeit über die Tastatur hinzufügen!")]}
+    return {"a11y": [_("TODO: Add keyboard support!")]}
 
 
 @register_component(Component.TOOLTIP)
 def get_tooltip_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the tooltip component."""
-    return {"a11y": [_("TODO: Bedienbarkeit über die Tastatur hinzufügen!")]}
+    return {"a11y": [_("TODO: Add keyboard support!")]}
 
 
 @register_component(Component.CODE_BLOCK)
 def get_code_block_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the code block component."""
-    return {"a11y": [_("Die Komponente ist mit der Tastatur bedienbar.")]}
+    return {"a11y": [_("The component is accessible via keyboard.")]}
 
 
 @register_component(Component.DIFFERENTIATOR)
@@ -344,13 +316,13 @@ def get_progress_bar_a11y_context() -> dict[str, list[str]]:
 @register_component(Component.GEO_MAP)
 def get_geo_map_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the geo map component."""
-    return {"a11y": [_("TODO: leaflet.js a11y anwenden!")]}
+    return {"a11y": [_("TODO: Apply leaflet.js a11y!")]}
 
 
 @register_component(Component.CHART)
 def get_charts_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the charts component."""
-    return {"a11y": [_("TODO: Apache EChart Web Accessibility anwenden!")]}
+    return {"a11y": [_("TODO: Apply Apache EChart Web Accessibility!")]}
 
 
 @register_component(Component.LIVE_CONTENT)
@@ -377,9 +349,9 @@ def get_pagination_a11y_context() -> dict[str, list[str]]:
     return {
         "a11y": [
             _(
-                "Die Tasten für die Erste Seite, Letzte Seite, etc. haben einen beschreibenden Text, welcher von Screenreadern vorgelesen wird und auch erklärt warum der Button in manchen Fällen deaktiviert ist."
+                "The buttons for first page, last page, etc. have a descriptive text that is read aloud by screen readers and also explains why the button is disabled in some cases."
             ),
-            _("TODO: Unterstützung für Pfeiltasten-Navigation (rechts/links)"),
+            _("TODO: Add support for arrow key navigation (right/left)"),
         ]
     }
 
@@ -399,7 +371,7 @@ def get_generic_filter_a11y_context() -> dict[str, list[str]]:
 @register_component(Component.SEARCH_BAR)
 def get_search_bar_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the search bar component."""
-    return {"a11y": [_("Das Textinput-Feld besitzt ein extra Title ('Suche') für Screenreader.")]}
+    return {"a11y": [_("The text input field has an extra title ('Search') for screen readers.")]}
 
 
 @register_component(Component.QUERY_BUILDER)
@@ -419,8 +391,8 @@ def get_card_carousel_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the card carousel component."""
     return {
         "a11y": [
-            _("Das Karussell ist mit der Tastatur steuerbar."),
-            _("TODO: Unterstützung für Pfeiltasten-Navigation (rechts/links)"),
+            _("The carousel is accessible via keyboard."),
+            _("TODO: Add support for arrow key navigation (right/left)"),
         ]
     }
 
@@ -428,19 +400,19 @@ def get_card_carousel_a11y_context() -> dict[str, list[str]]:
 @register_component(Component.IMAGE_CAROUSEL)
 def get_image_carousel_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the image carousel component."""
-    return {"a11y": [_("Siehe Card Carousel")]}
+    return {"a11y": [_("See Card Carousel")]}
 
 
 @register_component(Component.THREE_D_CAROUSEL)
 def get_3d_carousel_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the 3D carousel component."""
-    return {"a11y": [_("Das Karussell ist mit der Tastatur steuerbar.")]}
+    return {"a11y": [_("The carousel is accessible via keyboard.")]}
 
 
 @register_component(Component.TOGGLE_VIEW)
 def get_toggle_view_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the toggle view component."""
-    return {"a11y": [_("Siehe Radio-Group")]}
+    return {"a11y": [_("See Radio Group")]}
 
 
 @register_component(Component.FORM)
