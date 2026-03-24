@@ -193,7 +193,7 @@ def get_radio_group_a11y_context() -> dict[str, list[str]]:
 
 
 @register_component(Component.RADIO_BLOCK)
-def get_radio_group_a11y_context() -> dict[str, list[str]]:
+def get_radio_block_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the radio_block component."""
     return {
         "a11y": [
