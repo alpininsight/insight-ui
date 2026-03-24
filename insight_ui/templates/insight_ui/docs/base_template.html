@@ -62,9 +62,11 @@
             <div>
                 <h2>&lt;body&gt;</h2>
                 <p>
-                    {% trans "Der <b>Body</b> stellt ein, aus mehreren Blöcken bestehendes Grundgerüst für den Inhalt bereit.
-                    Jeder Block ist für einen bestimmten Zweck vorgesehen und sorgt dafür, dass das layout zusammen passt.
-                    Das Grundgerüst besteht aus den folgenden Blöcken:" %}
+                    {% blocktrans %}
+                        Der <b>Body</b> stellt ein, aus mehreren Blöcken bestehendes Grundgerüst für den Inhalt bereit.
+                        Jeder Block ist für einen bestimmten Zweck vorgesehen und sorgt dafür, dass das layout zusammen passt.
+                        Das Grundgerüst besteht aus den folgenden Blöcken:
+                    {% endblocktrans %}
                 </p>
 
                 <ul class="list-disc ms-8 space-y-2 *:border-b *:border-gray-300 *:dark:border-gray-700">
@@ -152,8 +154,10 @@
             <section class="space-y-4">
                 <h3>&lcub;% block drawers %&rcub;</h3>
                 <p>
-                    {% trans "In diesem Block können sog. <b>Drawer</b> eingebettet werden. Drawer sind ein- und ausklappbare Sidebars und liegen gewöhnlich über dem Inhalt.
-                    Daher haben sie ihren eigenen Block, damit sie nicht mit dem restlichen Layout in Konflikt geraten." %}
+                    {% blocktrans %}
+                        In diesem Block können sog. <b>Drawer</b> eingebettet werden. Drawer sind ein- und ausklappbare Sidebars und liegen gewöhnlich über dem Inhalt.
+                        Daher haben sie ihren eigenen Block, damit sie nicht mit dem restlichen Layout in Konflikt geraten.
+                    {% endblocktrans %}
                 </p>
 
                 <div data-insight-code-block="Django">

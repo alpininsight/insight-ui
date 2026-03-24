@@ -29,10 +29,12 @@
         <section>
             <h2>{% trans "Was ist Insight-UI, etwa noch so ein CSS/JavaScript Framework?" %}</h2>
             <p class="text-secondary leading-loose">
-                {% trans "Insight-UI ist in der Tat ein CSS/JavaScript Framework, dediziert für Django Anwendungen. Der Unterschied zu anderen Frameworks ist jedoch der,
-                dass Insight-UI ohne fundiertes Grundwissen in Frontendtechnologien wie HTML, JavaScript, CSS, etc. verwendet werden kann. Insight-UI ist
-                vor allem für <b>Rapid Prototyping</b> gedacht und so konzipiert, dass es von Entwicklern welche eher wenig Ahnung von oder Interesse an Frontendentwicklung haben, verwendet werden kann.
-                Für diesen Zweck stellt unser Framework eine Reihe vorgefertigter Komponenten zur Verfügung, welche direkt in das Template eingefügt werden können und lediglich mit Daten befüllt werden müssen." %}
+                {% blocktrans %}
+                    Insight-UI ist in der Tat ein CSS/JavaScript Framework, dediziert für Django Anwendungen. Der Unterschied zu anderen Frameworks ist jedoch der,
+                    dass Insight-UI ohne fundiertes Grundwissen in Frontendtechnologien wie HTML, JavaScript, CSS, etc. verwendet werden kann. Insight-UI ist
+                    vor allem für <b>Rapid Prototyping</b> gedacht und so konzipiert, dass es von Entwicklern welche eher wenig Ahnung von oder Interesse an Frontendentwicklung haben, verwendet werden kann.
+                    Für diesen Zweck stellt unser Framework eine Reihe vorgefertigter Komponenten zur Verfügung, welche direkt in das Template eingefügt werden können und lediglich mit Daten befüllt werden müssen.
+                {% endblocktrans %}
             </p>
             <p class="text-secondary leading-loose mt-4">
                 {% trans "Die Komponenten sind unter Beachtung der <b>Barrierefreiheit</b> implementiert und bieten im Bezug auf <b>Internationalisierung</b> eine Unterstützung für ein <b>RTL-Layout</b> für Sprachen, welche von rechts nach links gelesen werden." %}
@@ -45,8 +47,10 @@
         <section>
             <h2>{% trans "Was ist Insight-UI nicht?" %}</h2>
             <p class="text-secondary leading-loose">
-                {% trans "Insight-UI ist keine CSS-Library und auch keine JavaScript Library. Insight-UI ist ausschließlich für Django Anwendungen konzipiert.
-                Unser Framework bietet zwar mehrere, auch sehr flexible Möglichkeiten der Anpassung, ist in erster Linie aber eher weniger für kreative Freiheit entworfen worden." %}
+                {% blocktrans %}
+                    Insight-UI ist keine CSS-Library und auch keine JavaScript Library. Insight-UI ist ausschließlich für Django Anwendungen konzipiert.
+                    Unser Framework bietet zwar mehrere, auch sehr flexible Möglichkeiten der Anpassung, ist in erster Linie aber eher weniger für kreative Freiheit entworfen worden.
+                {% endblocktrans %}
             </p>
         </section>
 
