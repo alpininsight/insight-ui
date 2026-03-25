@@ -10,7 +10,7 @@ def get_page_header_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `page header` component renders the page header within the blue header of the base template. It displays a title and optionally a description."
+                "The page header component renders the page header within the blue header of the base template. It displays a title and optionally a description."
             )
         ]
     }
