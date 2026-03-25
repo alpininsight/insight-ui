@@ -222,7 +222,7 @@ def get_radio_group_description_context() -> dict[str, list[str]]:
 
 
 @register_component(Component.RADIO_BLOCK)
-def get_radio_group_description_context() -> dict[str, list[str]]:
+def get_radio_block_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the radio_block component."""
     return {
         "description": [
