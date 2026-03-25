@@ -359,7 +359,7 @@ def get_differentiator_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The differentiator can be used to graphically display differences between two texts, which can be very welcome help especially for longer texts with only small changes. For texts that differ more or less completely from each other, this component is probably less useful."
+                "The differentiator component can be used to graphically display differences between two texts, which can be very welcome help especially for longer texts with only small changes. For texts that differ more or less completely from each other, this component is probably less useful."
             )
         ]
     }
