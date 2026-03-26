@@ -29,8 +29,8 @@ class ParameterDoc:
 def get_page_header_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the page_header component."""
     main_params = [
-        ParameterDetails("title", "str", _("Der Titel der Seite, wird als h1 in weißer Schrift angezeigt."), "''"),
-        ParameterDetails("description", "str", _("Eine optionale Beschreibung unterhalb des Titels."), "''"),
+        ParameterDetails("title", "str", _("The page title, displayed as h1 in white text."), "''"),
+        ParameterDetails("description", "str", _("An optional description below the title."), "''"),
     ]
 
     return {"params": [main_params]}
@@ -40,10 +40,10 @@ def get_page_header_parameter_context() -> dict[str, list[str]]:
 def get_article_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the article component."""
     main_params = [
-        ParameterDetails("content", "str", _("Der Textinhalt des Artikels (kann HTML enthalten)."), "''"),
-        ParameterDetails("columns", "int", _("Die Anzahl der Spalten für das CSS-Columns-Layout."), "2"),
-        ParameterDetails("column_gap", "str", _("Der Abstand zwischen den Spalten (CSS-Einheit)."), "'2rem'"),
-        ParameterDetails("title", "str", _("Ein optionaler Titel über dem Artikel."), "''"),
+        ParameterDetails("content", "str", _("The text content of the article (can contain HTML)."), "''"),
+        ParameterDetails("columns", "int", _("The number of columns for the CSS columns layout."), "2"),
+        ParameterDetails("column_gap", "str", _("The gap between the columns (CSS unit)."), "'2rem'"),
+        ParameterDetails("title", "str", _("An optional title above the article."), "''"),
     ]
 
     return {"params": [main_params]}
@@ -53,10 +53,10 @@ def get_article_parameter_context() -> dict[str, list[str]]:
 def get_hero_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the hero component."""
     cta_param = ParameterDoc(
-        ParameterDetails("cta_primary", "dict[str, str]", _("Primärer 'Call-to-Action' Button"), "{}"),
+        ParameterDetails("cta_primary", "dict[str, str]", _("Primary 'Call-to-Action' button."), "{}"),
         [
-            ParameterDetails("url", "str", _("URL, welche beim klick des Buttons aufgerufen werden soll."), "''"),
-            ParameterDetails("text", "str", _("Beschriftung des Buttons."), "''"),
+            ParameterDetails("url", "str", _("URL to be called when the button is clicked."), "''"),
+            ParameterDetails("text", "str", _("Button label."), "''"),
         ],
         """
             {"url": "/newsletter", "content": "Subscribe to Newsletter"}
@@ -64,12 +64,10 @@ def get_hero_parameter_context() -> dict[str, list[str]]:
     )
 
     badge_param = ParameterDoc(
-        ParameterDetails("badge", "dict[str, str]", _("Eine Badge mit Icon und Text."), "{}"),
+        ParameterDetails("badge", "dict[str, str]", _("A badge with icon and text."), "{}"),
         [
-            ParameterDetails("text", "str", _("Beschriftung des Badge."), "''"),
-            ParameterDetails(
-                "icon", "dict[str, str]", _("Ein optionales Icon, welches vor dem Text angezeigt wird."), "{}"
-            ),
+            ParameterDetails("text", "str", _("Badge label."), "''"),
+            ParameterDetails("icon", "dict[str, str]", _("An optional icon displayed before the text."), "{}"),
         ],
         """
             {"url": "/newsletter", "content": "Subscribe to Newsletter"}
@@ -77,19 +75,17 @@ def get_hero_parameter_context() -> dict[str, list[str]]:
     )
 
     main_params = [
-        ParameterDetails("title", "str", _("Titel der Hero-Section."), "''"),
-        ParameterDetails(
-            "subtitle", "int", _("Untertitel der Hero-Section, welche unter dem Titel angezeigt wird."), "''"
-        ),
+        ParameterDetails("title", "str", _("Title of the Hero section."), "''"),
+        ParameterDetails("subtitle", "int", _("Subtitle of the Hero section, displayed below the title."), "''"),
         ParameterDetails(
             "description",
             "str",
-            _("Beschreibung der Hero-Section, welche unter dem Titel zw. Untertitel angezeigt wird."),
+            _("Description of the Hero section, displayed below the title and above the subtitle."),
             "''",
         ),
         cta_param.details,
-        ParameterDetails("cta_secondary", "dict[str, str]", _("Sekundärer 'Call-to-Action' Button"), "{}"),
-        ParameterDetails("background_image_url", "str", _("URL des Hintergrundbildes."), "''"),
+        ParameterDetails("cta_secondary", "dict[str, str]", _("Secondary 'Call-to-Action' button."), "{}"),
+        ParameterDetails("background_image_url", "str", _("URL of the background image."), "''"),
         badge_param.details,
     ]
 
@@ -100,33 +96,29 @@ def get_hero_parameter_context() -> dict[str, list[str]]:
 def get_navbar_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the navbar component."""
     logo_param = ParameterDoc(
-        ParameterDetails(
-            "logo", "dict[str, str]", _("Beschreibt das Logo, welches neben dem Titel angezeigt wird."), "{}"
-        ),
+        ParameterDetails("logo", "dict[str, str]", _("Describes the logo that is displayed next to the title."), "{}"),
         [
             ParameterDetails(
-                "url", "str", _("Pfad zu der Logo Datei für das helle Theme."), "insight_ui/svg/ai-logo.svg"
+                "url", "str", _("Path to the logo file for the light theme."), "insight_ui/svg/ai-logo.svg"
             ),
             ParameterDetails(
-                "url_dark", "str", _("Pfad zu der Logo Datei für das dunkle Theme."), "insight_ui/svg/ai-logo-dark.svg"
+                "url_dark", "str", _("Path to the logo file for the dark theme."), "insight_ui/svg/ai-logo-dark.svg"
             ),
-            ParameterDetails("alt", "str", _("Alternativtext des Logos."), "Insight UI Logo"),
-            ParameterDetails("height", "str", _("Dieser Wert bestimmt die Größe des Logos."), "2rem"),
+            ParameterDetails("alt", "str", _("Alternative text of the logo."), "Insight UI Logo"),
+            ParameterDetails("height", "str", _("This value determines the size of the logo."), "2rem"),
         ],
         """""",
     )
 
     brand_param = ParameterDoc(
         ParameterDetails(
-            "brand", "dict[str, Any]", _("Beschreibt den Titel und das Logo der Anwendung in der Navbar."), "{}"
+            "brand", "dict[str, Any]", _("Describes the title and the logo of the application in the navbar."), "{}"
         ),
         [
-            ParameterDetails("title", "str", _("Der Titel der Anwendung."), "''"),
+            ParameterDetails("title", "str", _("The title of the application."), "''"),
+            ParameterDetails("view_name", "str", _("Name of the URL to be called when clicking on the title."), "''"),
             ParameterDetails(
-                "view_name", "str", _("Name der URL welche beim klick auf den Titel aufgerufen werden soll."), "''"
-            ),
-            ParameterDetails(
-                "gap", "str", _("Dieser Wert bestimmt den Abstand zwischen dem Logo und dem Titel."), "0.5rem"
+                "gap", "str", _("This value determines the spacing between the logo and the title."), "0.5rem"
             ),
             logo_param.details,
         ],
@@ -134,38 +126,34 @@ def get_navbar_parameter_context() -> dict[str, list[str]]:
     )
 
     links_param = ParameterDoc(
-        ParameterDetails("links", "list[dict]", _("Enthält/Beschreibt die Navigationspunkte der Navbar."), "[]"),
+        ParameterDetails("links", "list[dict]", _("Contains and describes the navigation items of the navbar."), "[]"),
         [
-            ParameterDetails("text", "str", _("Beschriftung des Links."), "''"),
+            ParameterDetails("text", "str", _("Label of the link."), "''"),
+            ParameterDetails("icon", "dict[str, str]", _("An optional icon displayed before the text."), "{}"),
+            ParameterDetails("view_name", "str", _("Name of the URL to be called when clicking on the link."), "''"),
             ParameterDetails(
-                "icon", "dict[str, str]", _("Ein optionales Icon, welches vor dem Text angezeigt wird."), "{}"
-            ),
-            ParameterDetails(
-                "view_name", "str", _("Name der URL welche beim Klick auf den Link aufgerufen werden soll."), "''"
-            ),
-            ParameterDetails(
-                "open_modal",
-                "str",
-                _("ID des Modal-Dialogs welche beim Klick auf den Link angezeigt werden soll."),
-                "''",
+                "open_modal", "str", _("ID of the modal dialog to be displayed when clicking on the link."), "''"
             ),
             ParameterDetails(
                 "active",
                 "bool",
                 _(
-                    "Hebt den Link stilistisch von den anderen ab um zu zeigen, dass der Nutzer auf der entsprechenden Seite ist."
+                    "Visually distinguishes the link from the others to indicate that the user is currently on that page."
                 ),
                 "True",
             ),
-            ParameterDetails("need_auth", "bool", _("Der Link wird nur für angemeldete Nutzer angezeigt."), "False"),
-            ParameterDetails("staff_only", "bool", _("Der Link wird nur für Administratoren angezeigt."), "False"),
+            ParameterDetails("need_auth", "bool", _("The link is only displayed for logged-in users."), "False"),
+            ParameterDetails("staff_only", "bool", _("The link is only displayed for administrators."), "False"),
         ],
         """""",
     )
 
     config_param = ParameterDoc(
         ParameterDetails(
-            "config", "dict[str, Any]", _("Ein Dictionary mit der gesamten Konfiguration der Navigationsleiste."), "{}"
+            "config",
+            "dict[str, Any]",
+            _("A dictionary containing the entire configuration of the navigation bar."),
+            "{}",
         ),
         [
             brand_param.details,
@@ -173,24 +161,22 @@ def get_navbar_parameter_context() -> dict[str, list[str]]:
             ParameterDetails(
                 "searchbar_request_view",
                 "str",
-                _(
-                    "Name der URL welche bei der Suche aufgerufen werden soll (wenn leer wird keine Suchzeile angezeigt)."
-                ),
+                _("Name of the URL to be called when performing a search. If empty, no search bar will be displayed."),
                 "''",
             ),
             ParameterDetails(
-                "show_usermenu", "bool", _("Zeigt ein Dropdown-Menü mit mindestens einem Logout-Button."), "False"
+                "show_usermenu", "bool", _("Displays a dropdown menu with at least a logout button."), "False"
             ),
             ParameterDetails(
                 "show_language_selector",
                 "bool",
-                _("Zeigt ein Dropdown-Menü zum Auswählen der Anzeigesprache (sofern definiert)."),
+                _("Displays a dropdown menu for selecting the display language (if defined)."),
                 "False",
             ),
             ParameterDetails(
                 "show_theme_toggle",
                 "bool",
-                _("Zeigt ein Button zum wechsel zwischen der hellen und der dunklen Darstellung der Seite."),
+                _("Displays a button to switch between the light and dark theme of the page."),
                 "False",
             ),
         ],
@@ -237,19 +223,14 @@ def get_navbar_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "user",
             "User",
-            _("Das <i>user</i> Objekt des Requests (i.d.R. über <i>request.user</i> verfügbar)."),
+            _("The <i>user</i> object of the request (usually available via <i>request.user</i>)."),
             "None",
         ),
+        ParameterDetails("user_dropdown_links", "list", _("A list of links to be displayed in the user menu."), "[]"),
         ParameterDetails(
-            "user_dropdown_links",
-            "list",
-            _("Eine Liste mit den Links welche in dem Benutzermenü angezeigt werden sollen."),
-            "[]",
+            "show_login", "bool", _("<b>True</b> if a button for logging in should be displayed."), "false"
         ),
-        ParameterDetails(
-            "show_login", "bool", _("<b>True</b> wenn ein Button zum Anmelden angezeigt werden soll."), "false"
-        ),
-        ParameterDetails("search_query", "str", _("Suchstring für die Suchleiste."), "''"),
+        ParameterDetails("search_query", "str", _("Search string for the search bar."), "''"),
     ]
 
     return {"params": [main_params, config_param, brand_param, logo_param, links_param]}
@@ -260,26 +241,20 @@ def get_sidebar_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the sidebar component."""
     main_params = [
         ParameterDetails(
-            "sidebar_data", "dict[str, Any]", _("Inhalt der Sidebar (Titel und Navigations-Elemente)."), "None"
+            "sidebar_data", "dict[str, Any]", _("Content of the sidebar (title and navigation elements)."), "None"
         ),
-        ParameterDetails("side", "str", _("Bestimmt, auf welcher Seite die Sidebar platziert werden soll."), "right"),
-        ParameterDetails("static", "bool", _("<b>True</b> wenn die Sidebar nicht einklappbar sein soll."), "True"),
+        ParameterDetails("side", "str", _("Determines on which side the sidebar should be placed."), "right"),
+        ParameterDetails("static", "bool", _("<b>True</b> if the sidebar should not be collapsible."), "True"),
         ParameterDetails(
-            "auto_close",
-            "bool",
-            _("Bei <b>True</b> schließt sich die Sidebar sobald der Cursor diese verlässt."),
-            "False",
+            "auto_close", "bool", _("If <b>True</b> the sidebar closes as soon as the cursor leaves it."), "False"
         ),
         ParameterDetails(
-            "mobile_hidden",
-            "bool",
-            _("Bei <b>True</b> wird eine statische Sidebar auf einem kleineren Viewport ausgeblendet."),
-            "False",
+            "mobile_hidden", "bool", _("If <b>True</b> the static sidebar is hidden on a smaller viewport."), "False"
         ),
         ParameterDetails(
             "navbar_fixed",
             "bool",
-            _("Bei <b>True</b> wird die Position des Inhalts angepasst. (NUR FÜR CUSTOM-SIDEBAR!) "),
+            _("If <b>True</b> the position of the content is adjusted. (FOR CUSTOM SIDEBAR ONLY!)"),
             "False",
         ),
     ]
@@ -291,63 +266,53 @@ def get_sidebar_parameter_context() -> dict[str, list[str]]:
 def get_footer_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the footer component."""
     image_param = ParameterDoc(
-        ParameterDetails(
-            "image",
-            "dict[str, str]",
-            _("Optionales Bild, welches unter dem Text der Beschreibung angezeigt wird."),
-            "{}",
-        ),
+        ParameterDetails("image", "dict[str, str]", _("Optional image displayed below the description text."), "{}"),
         [
             ParameterDetails(
-                "url", "str", _("Pfad zu der Bilddatei für das helle Theme."), "insight_ui/svg/ai-logo.svg"
+                "url", "str", _("Path to the image file for the light theme."), "insight_ui/svg/ai-logo.svg"
             ),
             ParameterDetails(
-                "url_dark", "str", _("Pfad zu der Bilddatei für das dunkle Theme."), "insight_ui/svg/ai-logo-dark.svg"
+                "url_dark", "str", _("Path to the image file for the dark theme."), "insight_ui/svg/ai-logo-dark.svg"
             ),
-            ParameterDetails("alt", "str", _("Alternativtext des Logos."), "Insight UI Logo"),
-            ParameterDetails("height", "str", _("Dieser Wert bestimmt die Größe des Logos."), "2rem"),
+            ParameterDetails("alt", "str", _("Alternative text of the logo."), "Insight UI Logo"),
+            ParameterDetails("height", "str", _("This value determines the size of the logo."), "2rem"),
         ],
         """""",
     )
 
     description_param = ParameterDoc(
         ParameterDetails(
-            "description", "dict[str, Any]", _("Kurzbeschreibung der Anwendung mit optionalen Bild."), "{}"
+            "description", "dict[str, Any]", _("Brief description of the application with optional image."), "{}"
         ),
         [
-            ParameterDetails("title", "str", _("Überschrift der Beschreibung."), "''"),
-            ParameterDetails("text", "str", _("Kurze Zusammenfassung der Anwendung."), "''"),
+            ParameterDetails("title", "str", _("Heading of the description."), "''"),
+            ParameterDetails("text", "str", _("Brief summary of the application."), "''"),
             image_param.details,
         ],
         """""",
     )
 
     links_param = ParameterDoc(
-        ParameterDetails("links", "list[dict[str, Any]]", _("Liste der Hauptnavigationspunkte der Anwendung."), "[]"),
+        ParameterDetails(
+            "links", "list[dict[str, Any]]", _("List of the main navigation items of the application."), "[]"
+        ),
         [
-            ParameterDetails("text", "str", _("Beschriftung des Links."), "''"),
+            ParameterDetails("text", "str", _("Label of the link."), "''"),
+            ParameterDetails("icon", "dict[str, str]", _("An optional icon displayed before the text."), "{}"),
+            ParameterDetails("view_name", "str", _("Name of the URL to be called when clicking on the link."), "''"),
             ParameterDetails(
-                "icon", "dict[str, str]", _("Ein optionales Icon, welches vor dem Text angezeigt wird."), "{}"
-            ),
-            ParameterDetails(
-                "view_name", "str", _("Name der URL welche beim Klick auf den Link aufgerufen werden soll."), "''"
-            ),
-            ParameterDetails(
-                "open_modal",
-                "str",
-                _("ID des Modal-Dialogs welche beim Klick auf den Link angezeigt werden soll."),
-                "''",
+                "open_modal", "str", _("ID of the modal dialog to be displayed when clicking on the link."), "''"
             ),
             ParameterDetails(
                 "active",
                 "bool",
                 _(
-                    "Hebt den Link stilistisch von den anderen ab um zu zeigen, dass der Nutzer auf der entsprechenden Seite ist."
+                    "Visually distinguishes the link from the others to indicate that the user is currently on that page."
                 ),
                 "True",
             ),
-            ParameterDetails("need_auth", "bool", _("Der Link wird nur für angemeldete Nutzer angezeigt."), "False"),
-            ParameterDetails("staff_only", "bool", _("Der Link wird nur für Administratoren angezeigt."), "False"),
+            ParameterDetails("need_auth", "bool", _("The link is only displayed for logged-in users."), "False"),
+            ParameterDetails("staff_only", "bool", _("The link is only displayed for administrators."), "False"),
         ],
         """""",
     )
@@ -356,32 +321,30 @@ def get_footer_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "contact",
             "dict[str, Any]",
-            _("Kontaktinformationen, Link zum Impressum, Datenschutz und eine Kontaktmailadresse."),
+            _("Contact information, link to the imprint, privacy policy and a contact email address."),
             "{}",
         ),
         [
-            ParameterDetails("mail_url", "str", _("URL einer Kontaktmailadresse."), "''"),
-            ParameterDetails("imprint", "str", _("Verlinkung zu einem Impressum."), "''"),
-            ParameterDetails("privacy", "str", _("Verlinkung zu einer Datenschutzerklärung."), "''"),
+            ParameterDetails("mail_url", "str", _("URL of a contact email address."), "''"),
+            ParameterDetails("imprint", "str", _("Link to an imprint."), "''"),
+            ParameterDetails("privacy", "str", _("Link to a privacy policy."), "''"),
         ],
         """""",
     )
 
     copyright_param = ParameterDoc(
         ParameterDetails(
-            "copyright", "dict[str, str]", _("Copyright Informationen, wie das Jahr und der geschützte Name."), "{}"
+            "copyright", "dict[str, str]", _("Copyright information, such as the year and the protected name."), "{}"
         ),
         [
-            ParameterDetails(
-                "year", "int", _("I.d.R das aktuelle Jahr (ist nicht zwingend erforderlich)."), "undefined"
-            ),
-            ParameterDetails("app_name", "str", _("Der geschützte Name der Anwendung."), "''"),
+            ParameterDetails("year", "int", _("Typically the current year (not strictly required)."), "undefined"),
+            ParameterDetails("app_name", "str", _("The protected name of the application."), "''"),
         ],
         """""",
     )
 
     data_param = ParameterDoc(
-        ParameterDetails("data", "dict[str, Any]", _("Daten welche im Footer angezeigt werden sollen."), "{}"),
+        ParameterDetails("data", "dict[str, Any]", _("Data to be displayed in the footer."), "{}"),
         [description_param.details, links_param.details, contact_param.details, copyright_param.details],
         """""",
     )
@@ -397,17 +360,15 @@ def get_footer_parameter_context() -> dict[str, list[str]]:
 def get_breadcrumb_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the breadcrumbs component."""
     links_param = ParameterDoc(
-        ParameterDetails("items", "list[dict]", _("Liste der Navigationspunkte."), "[]"),
+        ParameterDetails("items", "list[dict]", _("List of navigation items."), "[]"),
         [
-            ParameterDetails("text", "str", _("Beschriftung des Links."), "''"),
+            ParameterDetails("text", "str", _("Label of the link."), "''"),
             ParameterDetails(
-                "icon", "dict[str, str]", _("Ein optionales Icon, welches vor dem Text angezeigt wird."), "{}"
+                "icon", "dict[str, str]", _("An optional parameter, in case the view to be called requires one."), "{}"
             ),
+            ParameterDetails("view_name", "str", _("Name of the URL to be called when clicking on the link."), "''"),
             ParameterDetails(
-                "view_name", "str", _("Name der URL welche beim Klick auf den Link aufgerufen werden soll."), "''"
-            ),
-            ParameterDetails(
-                "query_params", "str", _("Ein optionaler Parameter, falls die aufzurufende View einen benötigt."), "''"
+                "query_params", "str", _("An optional parameter, in case the view to be called requires one."), "''"
             ),
         ],
         """""",
@@ -422,18 +383,14 @@ def get_breadcrumb_parameter_context() -> dict[str, list[str]]:
 def get_step_bar_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the step bar component."""
     step_param = ParameterDoc(
-        ParameterDetails("items", "list[dict]", _("Liste der Prozessschritte."), "[]"),
+        ParameterDetails("items", "list[dict]", _("List of process steps."), "[]"),
         [
-            ParameterDetails("title", "str", _("Titel des Schritts."), "''"),
-            ParameterDetails("description", "str", _("Zusätzliche Beschreibung des Schritts unter dem Titel."), "''"),
-            ParameterDetails(
-                "url", "str", _("URL welche aufgerufen wird, wenn der Nutzer auf den Title des Schritts klickt."), "''"
-            ),
-            ParameterDetails("success", "bool", _("Zeigt statt der Schrittzahl ein Haken an."), "False"),
-            ParameterDetails("failed", "bool", _("Zeigt statt der Schrittzahl ein X an."), "False"),
-            ParameterDetails(
-                "current", "bool", _("Hebt den Titel farblich hervor und lässt den Text pulsieren."), "False"
-            ),
+            ParameterDetails("title", "str", _("Title of the step."), "''"),
+            ParameterDetails("description", "str", _("Additional description of the step below the title."), "''"),
+            ParameterDetails("url", "str", _("URL called when the user clicks on the title of the step."), "''"),
+            ParameterDetails("success", "bool", _("Displays a checkmark instead of the step number."), "False"),
+            ParameterDetails("failed", "bool", _("Displays an X instead of the step number."), "False"),
+            ParameterDetails("current", "bool", _("Highlights the title in color and makes the text pulse."), "False"),
         ],
         """""",
     )
@@ -447,29 +404,24 @@ def get_step_bar_parameter_context() -> dict[str, list[str]]:
 def get_minimal_step_bar_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the minimal step bar component."""
     config_param = ParameterDoc(
-        ParameterDetails("config", "dict[str, Any]", _("Konfiguration der Step Bar."), "{}"),
+        ParameterDetails("config", "dict[str, Any]", _("Configuration of the step bar."), "{}"),
         [
             ParameterDetails(
                 "items",
                 "list[str]",
                 _(
-                    "Liste der Zustände der Prozessschritte. Mögliche Werte: 'success', 'failed', 'active' und '' für Inaktiv."
+                    "List of states for the process steps. Possible values: 'success', 'failed', 'active' and '' for inactive."
                 ),
                 "[]",
             ),
+            ParameterDetails("step_count", "int", _("Number of process steps. (Only if 'items' is not set!)"), "0"),
             ParameterDetails(
-                "step_count", "int", _("(Nur wenn 'items' nicht gesetzt ist!) Anzahl der Prozessschritte."), "0"
+                "current_step", "int", _("Current step of the process. (Only if 'items' is not set!)"), "0"
             ),
             ParameterDetails(
-                "current_step", "int", _("(Nur wenn 'items' nicht gesetzt ist!) Aktueller Schritt des Prozesses."), "0"
+                "current_step_status", "str", _("Status of the current step. (Only if 'items' is not set!)"), "'active'"
             ),
-            ParameterDetails(
-                "current_step_status",
-                "str",
-                _("(Nur wenn 'items' nicht gesetzt ist!) Status des aktuellen Schritts."),
-                "'active'",
-            ),
-            ParameterDetails("icon_size", "str", _("Größe der Icons auf der Fortschrittsanzeige."), "xs"),
+            ParameterDetails("icon_size", "str", _("Size of the icons in the progress bar."), "xs"),
         ],
         """""",
     )
@@ -483,27 +435,24 @@ def get_minimal_step_bar_parameter_context() -> dict[str, list[str]]:
 def get_bullet_point_list_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the bullet point list component."""
     step_param = ParameterDoc(
-        ParameterDetails("items", "list[dict]", _("Liste der einzelnen Punkte."), "[]"),
+        ParameterDetails("items", "list[dict]", _("List of the individual items."), "[]"),
         [
-            ParameterDetails("title", "str", _("Titel des Schritts."), "''"),
-            ParameterDetails("description", "str", _("Zusätzliche Beschreibung des Schritts unter dem Titel."), "''"),
+            ParameterDetails("title", "str", _("Title of the step."), "''"),
+            ParameterDetails("description", "str", _("Additional description of the step below the title."), "''"),
             ParameterDetails(
                 "bullet_icon",
                 "dict[str, str]",
-                _("Ein optionales Icon, welches statt dem normalen Punkt angezeigt wird."),
+                _("An optional icon displayed instead of the normal bullet point."),
                 "''",
             ),
             ParameterDetails(
-                "bullet_text", "str", _("Ein optionaler Text, welcher statt dem normalen Punkt angezeigt wird."), "''"
+                "bullet_text", "str", _("An optional text displayed instead of the normal bullet point."), "''"
             ),
             ParameterDetails(
-                "view_name",
-                "str",
-                _("Name der URL welche beim Klick auf den jeweiligen Punkt aufgerufen werden soll."),
-                "''",
+                "view_name", "str", _("Name of the URL to be called when clicking on the respective item."), "''"
             ),
-            ParameterDetails("completed", "bool", _("Zeigt statt dem Punkt ein Haken an."), "False"),
-            ParameterDetails("current", "bool", _("Hebt den Titel farblich hervor."), "False"),
+            ParameterDetails("completed", "bool", _("Displays a checkmark instead of a bullet point."), "False"),
+            ParameterDetails("current", "bool", _("Highlights the title by color."), "False"),
         ],
         """""",
     )
@@ -517,26 +466,24 @@ def get_bullet_point_list_parameter_context() -> dict[str, list[str]]:
 def get_accordion_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the accordion component."""
     item_param = ParameterDoc(
-        ParameterDetails("items", "list[dict]", _("Liste der einzelnen Abschnitte."), "[]"),
+        ParameterDetails("items", "list[dict]", _("List of individual sections."), "[]"),
         [
-            ParameterDetails("title", "str", _("Titel des Abschnitts."), "''"),
-            ParameterDetails("content", "str", _("Inhalt des Abschnitts."), "''"),
+            ParameterDetails("title", "str", _("Section title."), "''"),
+            ParameterDetails("content", "str", _("Section content."), "''"),
         ],
         """
         [
-            {"title": "Was ist Django?", "content": "Django ist ein Web-Framework für Python."},
-            {"title": "Was ist Tailwind?", "content": "Tailwind ist ein CSS-Utility-Framework."},
-            {"title": "Was ist ARIA?", "content": "ARIA steht für Accessible Rich Internet Applications."},
+            {"title": "What is Django?", "content": "Django is a web framework for Python."},
+            {"title": "What is Tailwind?", "content": "Tailwind is a CSS utility framework"},
+            {"title": "What is ARIA?", "content": "ARIA is short for Accessible Rich Internet Applications."},
         ]
         """,
     )
 
     main_params = [
-        ParameterDetails("id", "str", _("Eindeutige Tag-ID für die Identifizierung des Elements im JavaScript."), "''"),
+        ParameterDetails("id", "str", _("Unique tag ID for identifying the element in JavaScript."), "''"),
         item_param.details,
-        ParameterDetails(
-            "exclusive", "bool", _("Bei <b>True</b> kann immer nur ein Abschnitt gleichzeitig geöffnet sein."), "False"
-        ),
+        ParameterDetails("exclusive", "bool", _("If <b>True</b> only one section can be open at a time."), "False"),
     ]
 
     return {"params": [main_params, item_param]}
@@ -546,36 +493,24 @@ def get_accordion_parameter_context() -> dict[str, list[str]]:
 def get_tabs_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the tabs component."""
     tabs_param = ParameterDoc(
-        ParameterDetails("tabs", "list[dict]", _("Liste der Tab-Buttons."), "[]"),
+        ParameterDetails("tabs", "list[dict]", _("List of tab buttons."), "[]"),
         [
-            ParameterDetails(
-                "id", "str", _("Eindeutige Tag-ID für die Identifizierung des Elements im JavaScript."), "''"
-            ),
-            ParameterDetails("url", "str", _("Die URL welche beim Klick auf den Tab aufgerufen werden soll."), "''"),
-            ParameterDetails("title", "str", _("Beschriftung des Tab-Button."), "''"),
-            ParameterDetails(
-                "icon", "dict[str, str]", _("Ein optionales Icon, welches vor der Beschriftung angezeigt wird."), "{}"
-            ),
+            ParameterDetails("id", "str", _("Unique tag ID for identifying the element in JavaScript."), "''"),
+            ParameterDetails("url", "str", _("The URL to be called when the tab is clicked."), "''"),
+            ParameterDetails("title", "str", _("Label of the tab button."), "''"),
+            ParameterDetails("icon", "dict[str, str]", _("An optional icon displayed before the label."), "{}"),
         ],
         """""",
     )
 
     config_param = ParameterDoc(
         ParameterDetails(
-            "config",
-            "dict[str, Any]",
-            _("Beschreibt die Buttons, welche zum wechseln der einzelnen Tabs verwendet werden."),
-            "{}",
+            "config", "dict[str, Any]", _("Describes the buttons used to switch between individual tabs."), "{}"
         ),
         [
+            ParameterDetails("id", "str", _("Unique tag ID for identifying the element in JavaScript."), "''"),
             ParameterDetails(
-                "id", "str", _("Eindeutige Tag-ID für die Identifizierung des Elements im JavaScript."), "''"
-            ),
-            ParameterDetails(
-                "label",
-                "str",
-                _("Zusätzlicher, nicht sichtbarer Titel, welcher nur von Screenreadern vorgelesen wird."),
-                "''",
+                "label", "str", _("Non-visible additional title that is to be read aloud by screen readers."), "''"
             ),
             tabs_param.details,
         ],
@@ -600,43 +535,43 @@ def get_input_field_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the input field component."""
     main_params = [
         ParameterDetails(
-            "tag_id", "str", _("Optionale, eindeutige Tag-ID für die Identifizierung des Elements im JavaScript."), "''"
+            "tag_id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
         ),
         ParameterDetails(
             "name",
             "str",
-            _("Wird für eine <span class='inline-tag'>&lt;form&gt;</span> benötigt, als Name des Request-Parameters."),
+            _("Required for a <span class='inline-tag'>&lt;form&gt;</span>, as the name of the request parameter."),
             "''",
         ),
         ParameterDetails(
-            "input_type", "str", _("Der Type des Input-Feldes bspw.: 'text', 'password', 'date', etc.."), "''"
+            "input_type", "str", _("The type of the input field, e.g.: 'text', 'password', 'date', etc."), "''"
         ),
         ParameterDetails(
             "placeholder",
             "str",
-            _("Platzhalter Text, wird in dem Feld angezeigt, solange es nicht selektiert wurde."),
+            _("Placeholder text, displayed in the field as long as it has not been selected."),
             "''",
         ),
-        ParameterDetails("value", "str", _("Der Wert des Input-Feldes."), "''"),
-        ParameterDetails("minimum", "int", _("Kleinster numerischer Wert (für input_type='number')."), "undefined"),
-        ParameterDetails("maximum", "int", _("Größter numerischer Wert (für input_type='number')."), "undefined"),
-        ParameterDetails("min_length", "int", _("Minimale Anzahl an Zeichen in einem Textfeld."), "undefined"),
-        ParameterDetails("max_length", "int", _("Maximale Anzahl an Zeichen in einem Textfeld."), "undefined"),
+        ParameterDetails("value", "str", _("The value of the input field."), "''"),
+        ParameterDetails("minimum", "int", _("Smallest numeric value (for input_type='number')."), "undefined"),
+        ParameterDetails("maximum", "int", _("Largest numeric value (for input_type='number')."), "undefined"),
+        ParameterDetails("min_length", "int", _("Minimum number of characters in a text field."), "undefined"),
+        ParameterDetails("max_length", "int", _("Maximum number of characters in a text field."), "undefined"),
         ParameterDetails(
             "checked",
             "bool",
             _(
-                "<b>True</b>, wenn <span class='inline-tag'>input_type='checkbox'</span> und die Checkbox ausgewählt sein soll."
+                "<b>True</b> if <span class='inline-tag'>input_type='checkbox'</span> and the checkbox should be selected."
             ),
             "False",
         ),
-        ParameterDetails("required", "bool", _("<b>True</b> wenn das Feld ausgefüllt werden muss."), "False"),
-        ParameterDetails("disabled", "bool", _("<b>True</b>, wenn das Feld deaktiviert sein soll."), "False"),
-        ParameterDetails("label", "str", _("Ein Label-Text welcher über dem Input-Feld angezeigt wird."), "''"),
+        ParameterDetails("required", "bool", _("<b>True</b> if the field must be filled in."), "False"),
+        ParameterDetails("disabled", "bool", _("<b>True</b> if the field should be disabled."), "False"),
+        ParameterDetails("label", "str", _("A text label displayed above the input field."), "''"),
         ParameterDetails(
             "config",
             "dict[str, Any]",
-            _("Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern."),
+            _("An alternative configuration with keys corresponding to the previous parameters."),
             "{}",
         ),
     ]
@@ -649,27 +584,24 @@ def get_checkbox_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the checkbox component."""
     main_params = [
         ParameterDetails(
-            "tag_id", "str", _("Optionale, eindeutige Tag-ID für die Identifizierung des Elements im JavaScript."), "''"
+            "tag_id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
         ),
         ParameterDetails(
             "name",
             "str",
-            _("Wird für eine <span class='inline-tag'>&lt;form&gt;</span> benötigt, als Name des Request-Parameters."),
+            _("Required for a <span class='inline-tag'>&lt;form&gt;</span>, as the name of the request parameter."),
             "''",
         ),
         ParameterDetails(
-            "value",
-            "str",
-            _("Der Wert der Checkbox (Dabei handelt es sich nicht um den Zustand, siehe dafür 'checked')."),
-            "''",
+            "value", "str", _("The value of the checkbox (this is not the state, see 'checked' for that)."), "''"
         ),
-        ParameterDetails("label", "str", _("Ein Label-Text welcher über der Checkbox angezeigt wird."), "''"),
-        ParameterDetails("checked", "bool", _("<b>True</b>, wenn die Checkbox ausgewählt sein soll."), "False"),
-        ParameterDetails("disabled", "bool", _("<b>True</b>, wenn die Checkbox deaktiviert sein soll."), "False"),
+        ParameterDetails("label", "str", _("A text label displayed above the checkbox."), "''"),
+        ParameterDetails("checked", "bool", _("<b>True</b> if the checkbox should be selected."), "False"),
+        ParameterDetails("disabled", "bool", _("<b>True</b> if the checkbox should be disabled."), "False"),
         ParameterDetails(
             "config",
             "dict[str, Any]",
-            _("Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern."),
+            _("An alternative configuration with keys corresponding to the previous parameters."),
             "{}",
         ),
     ]
@@ -682,37 +614,32 @@ def get_checkbox_group_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the checkbox group component."""
     config_param = ParameterDoc(
         ParameterDetails(
-            "config", "dict[str, Any]", _("Beschreibt die Checkbox Gruppe und die einzelnen Checkbox-Elemente."), "{}"
+            "config", "dict[str, Any]", _("Describes the checkbox group and the individual checkbox elements."), "{}"
         ),
         [
             ParameterDetails(
                 "name",
                 "str",
-                _(
-                    "Wird für eine <span class='inline-tag'>&lt;form&gt;</span> benötigt, als Name des Request-Parameters."
-                ),
+                _("Required for a <span class='inline-tag'>&lt;form&gt;</span>, as the name of the request parameter."),
                 "''",
             ),
-            ParameterDetails("label", "str", _("Label-Text welcher über den Checkbox-Elementen angezeigt wird."), "''"),
+            ParameterDetails("label", "str", _("Text label displayed above the checkbox elements."), "''"),
             ParameterDetails(
-                "as_row",
-                "bool",
-                _("<b>True</b>, wenn die Checkbox-Elemente nebeneinander angezeigt werden sollen."),
-                "False",
+                "as_row", "bool", _("<b>True</b> if the checkbox elements should be displayed side by side."), "False"
             ),
             ParameterDetails(
                 "minimum_checked",
                 "int",
-                _("Anzahl der Checkbox-Elemente welche mindestens ausgewählt sein müssen."),
+                _("Number of checkbox elements that must be selected at minimum."),
                 "undefined",
             ),
             ParameterDetails(
                 "maximum_checked",
                 "int",
-                _("Anzahl der Checkbox-Elemente welche gleichzeitig ausgewählt sein dürfen."),
+                _("Number of checkbox elements that may be selected at the same time."),
                 "undefined",
             ),
-            ParameterDetails("items", "list[dict[str, Any]]", _("Liste der Checkbox-Elemente."), "[]"),
+            ParameterDetails("items", "list[dict[str, Any]]", _("List of the checkbox elements."), "[]"),
         ],
         """""",
     )
@@ -726,35 +653,27 @@ def get_checkbox_group_parameter_context() -> dict[str, list[str]]:
 def get_dropdown_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the dropdown component."""
     item_param = ParameterDoc(
-        ParameterDetails("items", "list[dict[str, Any]]", _("Eine Liste der Menüelemente."), "[]"),
+        ParameterDetails("items", "list[dict[str, Any]]", _("A list of the menu elements."), "[]"),
         [
-            ParameterDetails("text", "str", _("Beschriftung des Dropdown-Elements."), "''"),
+            ParameterDetails("text", "str", _("Label of the dropdown element."), "''"),
             ParameterDetails(
-                "view_name",
-                "str",
-                _("Name der URL welche beim Klick auf den jeweiligen Punkt aufgerufen werden soll."),
-                "''",
+                "view_name", "str", _("Name of the URL to be called when clicking on the respective item."), "''"
             ),
-            ParameterDetails(
-                "icon", "dict[str, str]", _("Ein optionales Icon, welches vor der Beschriftung angezeigt wird."), "{}"
-            ),
+            ParameterDetails("icon", "dict[str, str]", _("An optional icon displayed before the label."), "{}"),
         ],
         """""",
     )
 
     dropdown_menu_param = ParameterDoc(
         ParameterDetails(
-            "dropdown_menu", "dict[str, Any]", _("Beschreibt den Dropdown-Button und die Menüelemente."), "{}"
+            "dropdown_menu", "dict[str, Any]", _("Describes the dropdown button and the menu elements."), "{}"
         ),
         [
             ParameterDetails(
-                "tag_id",
-                "str",
-                _("Optionale, eindeutige Tag-ID für die Identifizierung des Elements im JavaScript."),
-                "''",
+                "tag_id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
             ),
-            ParameterDetails("title", "str", _("Beschriftung des Dropdown-Buttons."), "''"),
-            ParameterDetails("show_arrow", "bool", _("<b>True</b> zeigt einen Pfeil hinter em Titel an."), "False"),
+            ParameterDetails("title", "str", _("Label of the dropdown button."), "''"),
+            ParameterDetails("show_arrow", "bool", _("<b>True</b> displays an arrow behind the title."), "False"),
             item_param.details,
         ],
         """""",
@@ -769,42 +688,29 @@ def get_dropdown_parameter_context() -> dict[str, list[str]]:
 def get_radio_group_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the radio_group component."""
     items_param = ParameterDoc(
-        ParameterDetails("items", "list[dict[str, Any]]", _("Eine Liste der Radio-Elemente."), "[]"),
+        ParameterDetails("items", "list[dict[str, Any]]", _("A list of the radio elements."), "[]"),
         [
             ParameterDetails(
-                "tag_id",
-                "str",
-                _("Optionale, eindeutige Tag-ID für die Identifizierung des Elements im JavaScript."),
-                "''",
+                "tag_id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
             ),
-            ParameterDetails("value", "str", _("Wert des jeweiligen Radio-Buttons."), "''"),
-            ParameterDetails("text", "str", _("Beschriftung des jeweiligen Radio-Buttons."), "''"),
-            ParameterDetails(
-                "disabled", "bool", _("<b>True</b>, wenn der Radio-Button deaktiviert sein soll."), "False"
-            ),
+            ParameterDetails("value", "str", _("Value of the respective radio button."), "''"),
+            ParameterDetails("text", "str", _("Label of the respective radio button."), "''"),
+            ParameterDetails("disabled", "bool", _("<b>True</b> if the radio button should be disabled."), "False"),
         ],
         """""",
     )
 
     config_param = ParameterDoc(
         ParameterDetails(
-            "config", "dict[str, Any]", _("Beschreibt die Radio-Button Gruppe und die einzelnen Radio-Elemente."), "{}"
+            "config", "dict[str, Any]", _("Describes the radio button group and the individual radio elements."), "{}"
         ),
         [
             ParameterDetails(
-                "name",
-                "str",
-                _("Optionale, eindeutige Tag-ID für die Identifizierung des Elements im JavaScript."),
-                "''",
+                "name", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
             ),
+            ParameterDetails("label", "str", _("A text label displayed above the radio elements."), "''"),
             ParameterDetails(
-                "label", "str", _("Ein Label-Text welcher über den Radio-Elementen angezeigt wird."), "''"
-            ),
-            ParameterDetails(
-                "as_row",
-                "bool",
-                _("<b>True</b>, wenn die Radio-Elemente nebeneinander angezeigt werden sollen."),
-                "False",
+                "as_row", "bool", _("<b>True</b> if the radio elements should be displayed side by side."), "False"
             ),
             items_param.details,
         ],
@@ -813,37 +719,31 @@ def get_radio_group_parameter_context() -> dict[str, list[str]]:
 
     main_params = [
         config_param.details,
-        ParameterDetails("current_value", "str", _("Der Wert des aktuell ausgewählten Radio-Buttons."), "''"),
+        ParameterDetails("current_value", "str", _("The value of the currently selected radio button."), "''"),
         # Block only
         ParameterDetails(
             "view_name",
             "str",
-            _("Name der URL an welchen der Request beim Klick auf einen der Radio-Button, gesendet werden soll."),
+            _("Name of the URL to which the request should be sent when clicking one of the radio buttons."),
             "''",
         ),
         ParameterDetails(
-            "query_params",
-            "str",
-            _("Ein String von Query-Parametern, welche bei dem Request mit gesendet werden sollen."),
-            "''",
+            "query_params", "str", _("A string of query parameters to be sent along with the request."), "''"
         ),
         ParameterDetails(
-            "target_id",
-            "str",
-            _("Die ID des HTML-Tags, welches bei wechseln des Radio-Buttons ausgetauscht werden soll."),
-            "''",
+            "target_id", "str", _("The ID of the HTML tag to be replaced when switching the radio button."), "''"
         ),
         ParameterDetails(
             "method",
             "str",
-            _("Name der JavaScript Methode welche beim Klick auf einen der Radio-Button ausgeführt werden soll."),
+            _("Name of the JavaScript method to be executed when clicking one of the radio buttons."),
             "''",
         ),
         ParameterDetails(
             "integrated",
             "bool",
             _(
-                "<b>True</b> wenn sich die Gruppe in einer &lt;form&gt; befindet, bei <b>False</b> bekommt die Gruppe ihre eigene &lt;form&gt;."
+                "<b>True</b> if the group is inside a &lt;form&gt;. If <b>False</b> the group gets its own &lt;form&gt;."
             ),
             "False",
         ),
@@ -856,45 +756,30 @@ def get_radio_group_parameter_context() -> dict[str, list[str]]:
 def get_radio_group_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the radio_block component."""
     items_param = ParameterDoc(
-        ParameterDetails("items", "list[dict[str, Any]]", _("Eine Liste der Radio-Elemente."), "[]"),
+        ParameterDetails("items", "list[dict[str, Any]]", _("A list of the radio elements."), "[]"),
         [
             ParameterDetails(
-                "tag_id",
-                "str",
-                _("Optionale, eindeutige Tag-ID für die Identifizierung des Elements im JavaScript."),
-                "''",
+                "tag_id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
             ),
-            ParameterDetails("value", "str", _("Wert des jeweiligen Radio-Buttons."), "''"),
-            ParameterDetails("text", "str", _("Beschriftung des jeweiligen Radio-Buttons."), "''"),
-            ParameterDetails(
-                "icon", "dict[str, str]", _("Optionales Icon, welches vor der Beschriftung angezeigt wird."), "{}"
-            ),
-            ParameterDetails(
-                "disabled", "bool", _("<b>True</b>, wenn der Radio-Button deaktiviert sein soll."), "False"
-            ),
+            ParameterDetails("value", "str", _("Value of the respective radio button."), "''"),
+            ParameterDetails("text", "str", _("Label of the respective radio button."), "''"),
+            ParameterDetails("icon", "dict[str, str]", _("Optional icon displayed before the label."), "{}"),
+            ParameterDetails("disabled", "bool", _("<b>True</b> if the radio button should be disabled."), "False"),
         ],
         """""",
     )
 
     config_param = ParameterDoc(
         ParameterDetails(
-            "config", "dict[str, Any]", _("Beschreibt die Radio-Button Gruppe und die einzelnen Radio-Elemente."), "{}"
+            "config", "dict[str, Any]", _("Describes the radio button group and the individual radio elements."), "{}"
         ),
         [
             ParameterDetails(
-                "name",
-                "str",
-                _("Optionale, eindeutige Tag-ID für die Identifizierung des Elements im JavaScript."),
-                "''",
+                "name", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
             ),
+            ParameterDetails("label", "str", _("A text label displayed above the radio elements."), "''"),
             ParameterDetails(
-                "label", "str", _("Ein Label-Text welcher über den Radio-Elementen angezeigt wird."), "''"
-            ),
-            ParameterDetails(
-                "as_row",
-                "bool",
-                _("<b>True</b>, wenn die Radio-Elemente nebeneinander angezeigt werden sollen."),
-                "False",
+                "as_row", "bool", _("<b>True</b> if the radio elements should be displayed side by side."), "False"
             ),
             items_param.details,
         ],
@@ -903,37 +788,31 @@ def get_radio_group_parameter_context() -> dict[str, list[str]]:
 
     main_params = [
         config_param.details,
-        ParameterDetails("current_value", "str", _("Der Wert des aktuell ausgewählten Radio-Buttons."), "''"),
+        ParameterDetails("current_value", "str", _("The value of the currently selected radio button."), "''"),
         # Block only
         ParameterDetails(
             "view_name",
             "str",
-            _("Name der URL an welchen der Request beim Klick auf einen der Radio-Button, gesendet werden soll."),
+            _("Name of the URL to which the request should be sent when clicking one of the radio buttons."),
             "''",
         ),
         ParameterDetails(
-            "query_params",
-            "str",
-            _("Ein String von Query-Parametern, welche bei dem Request mit gesendet werden sollen."),
-            "''",
+            "query_params", "str", _("A string of query parameters to be sent along with the request."), "''"
         ),
         ParameterDetails(
-            "target_id",
-            "str",
-            _("Die ID des HTML-Tags, welches bei wechseln des Radio-Buttons ausgetauscht werden soll."),
-            "''",
+            "target_id", "str", _("The ID of the HTML tag to be replaced when switching the radio button."), "''"
         ),
         ParameterDetails(
             "method",
             "str",
-            _("Name der JavaScript Methode welche beim Klick auf einen der Radio-Button ausgeführt werden soll."),
+            _("Name of the JavaScript method to be executed when clicking one of the radio buttons."),
             "''",
         ),
         ParameterDetails(
             "integrated",
             "bool",
             _(
-                "<b>True</b> wenn sich die Gruppe in einer &lt;form&gt; befindet, bei <b>False</b> bekommt die Gruppe ihre eigene &lt;form&gt;."
+                "<b>True</b> if the group is inside a &lt;form&gt;. If <b>False</b> the group gets its own &lt;form&gt;."
             ),
             "False",
         ),
@@ -947,35 +826,27 @@ def get_rangle_slider_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the range slider component."""
     main_params = [
         ParameterDetails(
-            "tag_id", "str", _("Optionale, eindeutige Tag-ID für die Identifizierung des Elements im JavaScript."), "''"
+            "tag_id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
         ),
         ParameterDetails(
             "name",
             "str",
-            _("Wird für eine <span class='inline-tag'>&lt;form&gt;</span> benötigt, als Name des Request-Parameters."),
+            _("Required for a <span class='inline-tag'>&lt;form&gt;</span>, as the name of the request parameter."),
             "''",
         ),
-        ParameterDetails("label", "str", _("Ein Label-Text welcher über dem Range-Slider angezeigt wird."), "''"),
-        ParameterDetails("value", "int", _("Der Wert des Range-Sliders."), "0"),
-        ParameterDetails("minimum", "int", _("Kleinster einzustellender Wert des Range-Sliders."), "undefined"),
-        ParameterDetails("maximum", "int", _("Größter einzustellender Wert des Range-Sliders."), "undefined"),
+        ParameterDetails("label", "str", _("A text label displayed above the range slider."), "''"),
+        ParameterDetails("value", "int", _("The value of the range slider."), "0"),
+        ParameterDetails("minimum", "int", _("Smallest configurable value of the range slider."), "undefined"),
+        ParameterDetails("maximum", "int", _("Largest configurable value of the range slider."), "undefined"),
         ParameterDetails(
-            "step_size",
-            "int",
-            _("Die Größe der Schritte um welche sich der Wert, beim Bewegen des Range-Sliders verändert."),
-            "1",
+            "step_size", "int", _("The size of the steps by which the value changes when moving the range slider."), "1"
         ),
-        ParameterDetails("disabled", "bool", _("<b>True</b>, wenn der Range-Slider deaktiviert sein soll."), "False"),
-        ParameterDetails(
-            "items",
-            "list[str]",
-            _("Eine Liste von Texten, welche als Legende unter dem Slider angezeigt werden."),
-            "[]",
-        ),
+        ParameterDetails("disabled", "bool", _("<b>True</b> if the range slider should be disabled."), "False"),
+        ParameterDetails("items", "list[str]", _("A list of texts displayed as a legend below the slider."), "[]"),
         ParameterDetails(
             "config",
             "dict[str, Any]",
-            _("Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern."),
+            _("An alternative configuration with keys corresponding to the previous parameters."),
             "{}",
         ),
     ]
@@ -988,12 +859,12 @@ def get_toggle_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the toggle component."""
     main_params = [
         ParameterDetails(
-            "tag_id", "str", _("Optionale, eindeutige Tag-ID für die Identifizierung des Elements im JavaScript."), "''"
+            "tag_id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
         ),
         ParameterDetails(
             "name",
             "str",
-            _("Wird für eine <span class='inline-tag'>&lt;form&gt;</span> benötigt, als Name des Request-Parameters."),
+            _("Required for a <span class='inline-tag'>&lt;form&gt;</span>, as the name of the request parameter."),
             "''",
         ),
         ParameterDetails("label", "str", _("Ein Label-Text welcher über dem Toggle-Button angezeigt wird."), "''"),
@@ -1015,7 +886,7 @@ def get_toggle_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "config",
             "dict[str, Any]",
-            _("Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern."),
+            _("An alternative configuration with keys corresponding to the previous parameters."),
             "{}",
         ),
     ]
@@ -1030,7 +901,7 @@ def get_select_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "name",
             "str",
-            _("Wird für eine <span class='inline-tag'>&lt;form&gt;</span> benötigt, als Name des Request-Parameters."),
+            _("Required for a <span class='inline-tag'>&lt;form&gt;</span>, as the name of the request parameter."),
             "''",
         ),
         ParameterDetails("label", "str", _("Ein Label-Text welcher über dem Select angezeigt wird."), "''"),
@@ -1046,7 +917,7 @@ def get_select_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "config",
             "dict[str, Any]",
-            _("Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern."),
+            _("An alternative configuration with keys corresponding to the previous parameters."),
             "{}",
         ),
     ]
@@ -1061,7 +932,7 @@ def get_multiselect_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "name",
             "str",
-            _("Wird für eine <span class='inline-tag'>&lt;form&gt;</span> benötigt, als Name des Request-Parameters."),
+            _("Required for a <span class='inline-tag'>&lt;form&gt;</span>, as the name of the request parameter."),
             "''",
         ),
         ParameterDetails("label", "str", _("Ein Label-Text welcher über dem Select angezeigt wird."), "''"),
@@ -1079,7 +950,7 @@ def get_multiselect_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "config",
             "dict[str, Any]",
-            _("Eine alternative Konfiguration mit Keys entsprechend den vorherigen Parametern."),
+            _("An alternative configuration with keys corresponding to the previous parameters."),
             "{}",
         ),
     ]
@@ -1107,7 +978,7 @@ def get_alert_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the alert component."""
     main_params = [
         ParameterDetails(
-            "tag_id", "str", _("Optionale, eindeutige Tag-ID für die Identifizierung des Elements im JavaScript."), "''"
+            "tag_id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
         ),
         ParameterDetails("message", "str", _("Nachricht welche in dem Alert angezeigt wird."), "''"),
         ParameterDetails(
@@ -1152,7 +1023,7 @@ def get_modal_parameter_context() -> dict[str, list[str]]:
 
     main_params = [
         ParameterDetails(
-            "tag_id", "str", _("Optionale, eindeutige Tag-ID für die Identifizierung des Elements im JavaScript."), "''"
+            "tag_id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
         ),
         ParameterDetails("title", "str", _("Überschrift des Modal Dialogs."), "''"),
         ParameterDetails("description", "str", _("Text welcher direkt unter dem Titel angezeigt wird."), "''"),
@@ -1232,9 +1103,7 @@ def get_tooltip_parameter_context() -> dict[str, list[str]]:
 def get_code_block_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the code block component."""
     main_params = [
-        ParameterDetails(
-            "id", "str", _("Optionale, eindeutige Tag-ID für die Identifizierung des Elements im JavaScript."), "''"
-        ),
+        ParameterDetails("id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"),
         ParameterDetails(
             "data-insight-code-block",
             "str",
@@ -1351,9 +1220,7 @@ def get_charts_parameter_context() -> dict[str, list[str]]:
     )
 
     main_params = [
-        ParameterDetails(
-            "chart_id", "str", _("Eindeutige Tag-ID für die Identifizierung des Elements im JavaScript."), "''"
-        ),
+        ParameterDetails("chart_id", "str", _("Unique tag ID for identifying the element in JavaScript."), "''"),
         chart_param.details,
     ]
 
@@ -1365,7 +1232,7 @@ def get_live_content_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the live content component."""
     main_params = [
         ParameterDetails(
-            "tag_id", "str", _("Optionale, eindeutige Tag-ID für die Identifizierung des Elements im JavaScript."), "''"
+            "tag_id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
         ),
         ParameterDetails("url", "str", _("URL des API Endpunkts zum abfragen der Daten."), "''"),
         ParameterDetails("interval", "int", _("Intervall des Datenabrufs in Sekunden."), "10"),
@@ -1380,7 +1247,7 @@ def get_web_socket_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the web socket component."""
     main_params = [
         ParameterDetails(
-            "tag_id", "str", _("Optionale, eindeutige Tag-ID für die Identifizierung des Elements im JavaScript."), "''"
+            "tag_id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
         ),
         ParameterDetails("url", "str", _("URL des Websocket-API Endpunkts."), "''"),
         ParameterDetails("initial_content", "str", _("Optionaler, initialer Inhalt."), "''"),
@@ -1394,7 +1261,7 @@ def get_infinite_scroll_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the infinite scroll component."""
     main_params = [
         ParameterDetails(
-            "tag_id", "str", _("Optionale, eindeutige Tag-ID für die Identifizierung des Elements im JavaScript."), "''"
+            "tag_id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
         ),
         ParameterDetails(
             "view_name", "str", _("Name der URL, an welche der Request zum laden weitere Elemente."), "''"
@@ -1684,7 +1551,7 @@ def get_3d_carousel_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the 3D carousel component."""
     main_params = [
         ParameterDetails(
-            "tag_id", "str", _("Optionale, eindeutige Tag-ID für die Identifizierung des Elements im JavaScript."), "''"
+            "tag_id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
         ),
         ParameterDetails("velocity", "int", _("Geschwindigkeit mit welcher sich das Karussell dreht."), "1000"),
         ParameterDetails("tilt", "int", _("Vertikale Neigung des Karussell zur Camera."), "0"),
@@ -1709,22 +1576,15 @@ def get_3d_carousel_parameter_context() -> dict[str, list[str]]:
 def get_toggle_view_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the toggle view component."""
     items_param = ParameterDoc(
-        ParameterDetails("items", "list[dict]", _("Eine Liste der Radio-Elemente."), "[]"),
+        ParameterDetails("items", "list[dict]", _("A list of the radio elements."), "[]"),
         [
             ParameterDetails(
-                "tag_id",
-                "str",
-                _("Optionale, eindeutige Tag-ID für die Identifizierung des Elements im JavaScript."),
-                "''",
+                "tag_id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
             ),
-            ParameterDetails("value", "str", _("Wert des jeweiligen Radio-Buttons."), "''"),
-            ParameterDetails("text", "str", _("Beschriftung des jeweiligen Radio-Buttons."), "''"),
-            ParameterDetails(
-                "icon", "dict[str, str]", _("Optionales Icon, welches vor der Beschriftung angezeigt wird."), "{}"
-            ),
-            ParameterDetails(
-                "disabled", "bool", _("<b>True</b>, wenn der Radio-Button deaktiviert sein soll."), "False"
-            ),
+            ParameterDetails("value", "str", _("Value of the respective radio button."), "''"),
+            ParameterDetails("text", "str", _("Label of the respective radio button."), "''"),
+            ParameterDetails("icon", "dict[str, str]", _("Optional icon displayed before the label."), "{}"),
+            ParameterDetails("disabled", "bool", _("<b>True</b> if the radio button should be disabled."), "False"),
         ],
         """""",
     )
@@ -1738,10 +1598,7 @@ def get_toggle_view_parameter_context() -> dict[str, list[str]]:
         ),
         [
             ParameterDetails(
-                "name",
-                "str",
-                _("Optionale, eindeutige Tag-ID für die Identifizierung des Elements im JavaScript."),
-                "''",
+                "name", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
             ),
             items_param.details,
         ],
@@ -1793,7 +1650,7 @@ def get_form_parameter_context() -> dict[str, list[str]]:
 
     main_params = [
         ParameterDetails(
-            "tag_id", "str", _("Optionale, eindeutige Tag-ID für die Identifizierung des Elements im JavaScript."), "''"
+            "tag_id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
         ),
         ParameterDetails("title", "str", _("Überschrift des Formulars."), "''"),
         ParameterDetails(
