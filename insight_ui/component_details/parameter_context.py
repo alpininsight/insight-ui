@@ -753,7 +753,7 @@ def get_radio_group_parameter_context() -> dict[str, list[str]]:
 
 
 @register_component(Component.RADIO_BLOCK)
-def get_radio_group_parameter_context() -> dict[str, list[str]]:
+def get_radio_block_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the radio_block component."""
     items_param = ParameterDoc(
         ParameterDetails("items", "list[dict[str, Any]]", _("A list of the radio elements."), "[]"),
