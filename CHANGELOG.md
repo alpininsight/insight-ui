@@ -32,6 +32,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Function declarations demo_context, checkbox_group
 - Rome translation ID
 - Add some missing translatable strings in the demo_context.py
+- Make 'toggle' component accessible for keyboard navigation
+- Visualize focus for 'radio_block' component
+- Add loading indicator to partial responses
+- Use blocktrans for multiline strings in some templates
 
 ### CI/CD
 

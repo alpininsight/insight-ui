@@ -5,7 +5,7 @@
         {% navbar config=demo_nav_config user=user user_dropdown_links=user_dropdown_links show_login=True %}
         <script>
             // Demo fix
-            const nav = document.currentScript.parentElement.querySelector("nav");
+            var nav = document.currentScript.parentElement.querySelector("nav");
             nav.classList.remove("fixed");
             nav.classList.add("absolute");
         </script>
@@ -15,7 +15,7 @@
         {% sidebar sidebar_data=demo_sidebar side="left" auto_close=False %}
         <script>
             // Demo fix
-            const aside = document.currentScript.parentElement.querySelector("aside");
+            var aside = document.currentScript.parentElement.querySelector("aside");
             aside.classList.remove("top-16", "h-[calc(100vh-4rem)]");
             aside.classList.add("h-96");
         </script>
@@ -99,7 +99,10 @@
 {% elif component.value == "range_slider" %}
     {% slider config=example_slider %}
 {% elif component.value == "toggle" %}
-    {% toggle config=example_toggle %}
+    <div class="flex justify-between w-64">
+        {% toggle config=example_switch %}
+        {% toggle config=example_toggle %}
+    </div>
 {% elif component.value == "select" %}
     <div class="h-64">
         {% select config=select_config %}
