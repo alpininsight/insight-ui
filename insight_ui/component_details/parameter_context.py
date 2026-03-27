@@ -867,21 +867,15 @@ def get_toggle_parameter_context() -> dict[str, list[str]]:
             _("Required for a <span class='inline-tag'>&lt;form&gt;</span>, as the name of the request parameter."),
             "''",
         ),
-        ParameterDetails("label", "str", _("Ein Label-Text welcher über dem Toggle-Button angezeigt wird."), "''"),
-        ParameterDetails("value", "str", _("Der Wert des Toggle-Buttons."), "''"),
+        ParameterDetails("label", "str", _("A text label displayed above the toggle button."), "''"),
+        ParameterDetails("value", "str", _("The value of the toggle button."), "''"),
         ParameterDetails(
-            "switch",
-            "bool",
-            _("<b>True</b>, wenn der Toggle-Button wie ein typischer Switch-Select aussehen soll."),
-            "False",
+            "switch", "bool", _("<b>True</b> if the toggle button should look like a typical switch select."), "False"
         ),
-        ParameterDetails("checked", "bool", _("<b>True</b>, wenn der Toggle-Button ausgewählt sein soll."), "False"),
-        ParameterDetails("disabled", "bool", _("<b>True</b>, wenn der Toggle-Button deaktiviert sein soll."), "False"),
+        ParameterDetails("checked", "bool", _("<b>True</b> if the toggle button should be selected."), "False"),
+        ParameterDetails("disabled", "bool", _("<b>True</b> if the toggle button should be disabled."), "False"),
         ParameterDetails(
-            "method",
-            "str",
-            _("Name der JavaScript Methode welche beim Klick auf den Toggle-Button ausgeführt werden soll."),
-            "''",
+            "method", "str", _("Name of the JavaScript method to be executed when the toggle button is clicked."), "''"
         ),
         ParameterDetails(
             "config",
@@ -904,14 +898,12 @@ def get_select_parameter_context() -> dict[str, list[str]]:
             _("Required for a <span class='inline-tag'>&lt;form&gt;</span>, as the name of the request parameter."),
             "''",
         ),
-        ParameterDetails("label", "str", _("Ein Label-Text welcher über dem Select angezeigt wird."), "''"),
-        ParameterDetails(
-            "options", "list[str] oder dict[str, str]", _("Liste von Werten welche ausgewählt werden können."), "[]"
-        ),
+        ParameterDetails("label", "str", _("A text label displayed above the select."), "''"),
+        ParameterDetails("options", "list[str] oder dict[str, str]", _("List of values that can be selected."), "[]"),
         ParameterDetails(
             "selected_option",
             "str",
-            _("Wert (Der Key-Wert, falls die Optionen als Dict übergeben wurden) der aktuell ausgewählten Option."),
+            _("Value (the key value, if the options were passed as a dict) of the currently selected option."),
             "''",
         ),
         ParameterDetails(
@@ -935,18 +927,13 @@ def get_multiselect_parameter_context() -> dict[str, list[str]]:
             _("Required for a <span class='inline-tag'>&lt;form&gt;</span>, as the name of the request parameter."),
             "''",
         ),
-        ParameterDetails("label", "str", _("Ein Label-Text welcher über dem Select angezeigt wird."), "''"),
-        ParameterDetails("maximum", "int", _("Anzahl der maximal ausgewählten Optionen."), "undefined"),
+        ParameterDetails("label", "str", _("A text label displayed above the select."), "''"),
+        ParameterDetails("maximum", "int", _("Maximum number of selectable options."), "undefined"),
         ParameterDetails(
-            "show_buttons",
-            "bool",
-            _("zusätzliche Buttons für 'Alle Auswählen' und 'Alle Abwählen' Buttons anzeigen."),
-            "False",
+            "show_buttons", "bool", _("Show additional buttons for 'Select All' and 'Deselect All'."), "False"
         ),
-        ParameterDetails(
-            "options", "list[str] oder dict[str, str]", _("Liste von Werten welche ausgewählt werden können."), "[]"
-        ),
-        ParameterDetails("selected_options", "list[str]", _("Liste der aktuell ausgewählten Optionen."), "[]"),
+        ParameterDetails("options", "list[str] oder dict[str, str]", _("List of values that can be selected."), "[]"),
+        ParameterDetails("selected_options", "list[str]", _("List of currently selected options."), "[]"),
         ParameterDetails(
             "config",
             "dict[str, Any]",
@@ -965,7 +952,7 @@ def get_chat_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "view_name",
             "str",
-            _("Name der URL an welchen der Request beim absenden einer Nachricht, gesendet werden soll."),
+            _("Name of the URL to which the request should be sent when submitting a message."),
             "''",
         )
     ]
@@ -980,15 +967,12 @@ def get_alert_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "tag_id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
         ),
-        ParameterDetails("message", "str", _("Nachricht welche in dem Alert angezeigt wird."), "''"),
+        ParameterDetails("message", "str", _("Message displayed in the alert."), "''"),
         ParameterDetails(
-            "type", "str", _("Typ des Alerts. Möglich Werte sind 'info', 'success', 'warning' und 'error'."), "info"
+            "type", "str", _("Type of the alert. Possible values are 'info', 'success', 'warning' and 'error'."), "info"
         ),
         ParameterDetails(
-            "dismissible",
-            "bool",
-            _("Zeigt ein Button zum schließen des Alerts am Ende des Alert-Containers an."),
-            "False",
+            "dismissible", "bool", _("Shows a button to close the alert at the end of the alert container."), "False"
         ),
     ]
 
@@ -1000,23 +984,20 @@ def get_modal_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the modal component."""
     action_button_param = ParameterDoc(
         ParameterDetails(
-            "actions",
-            "Sequence[Mapping[str, str]]",
-            _("Liste von Buttons, welche um unteren Ende des Dialogs angezeigt werden."),
-            "[]",
+            "actions", "Sequence[Mapping[str, str]]", _("List of buttons displayed at the bottom of the dialog."), "[]"
         ),
         [
-            ParameterDetails("text", "str", _("Beschriftung des Buttons."), "''"),
+            ParameterDetails("text", "str", _("Button label."), "''"),
             ParameterDetails(
                 "type",
                 "str",
                 _(
-                    "Beschreibt die Wichtigkeit des Buttons (rein visuell). Mögliche Werte sind: 'primary' und 'secondary'."
+                    "Describes the importance of the button (purely visual). Possible values are: 'primary' and 'secondary'.."
                 ),
                 "''",
             ),
-            ParameterDetails("onclick", "str", _("Aufruf einer JavaScript Funktion, bspw.: alert('Confirmed!')"), "''"),
-            ParameterDetails("dismiss", "bool", _("Schließt den Dialog beim Klick."), "False"),
+            ParameterDetails("onclick", "str", _("Call a JavaScript function, e.g.: alert('Confirmed!')"), "''"),
+            ParameterDetails("dismiss", "bool", _("Closes the dialog on click."), "False"),
         ],
         """""",
     )
@@ -1025,14 +1006,12 @@ def get_modal_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "tag_id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
         ),
-        ParameterDetails("title", "str", _("Überschrift des Modal Dialogs."), "''"),
-        ParameterDetails("description", "str", _("Text welcher direkt unter dem Titel angezeigt wird."), "''"),
+        ParameterDetails("title", "str", _("Heading of the modal dialog."), "''"),
+        ParameterDetails("description", "str", _("Text displayed directly below the title."), "''"),
         ParameterDetails(
             "additional_content",
             "str",
-            _(
-                "Zusätzlicher Text, welcher unter der Kopfzeile, welche aus Titel und Description besteht, angezeigt wird."
-            ),
+            _("Additional text displayed below the header, which itself consists of title and description."),
             "''",
         ),
         action_button_param.details,
@@ -1046,23 +1025,20 @@ def get_popover_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the popover component."""
     main_params = [
         ParameterDetails(
-            "data-popover='<target-id>'",
-            "str",
-            _("Bestimmt das Popover Objekt, welches beim Hovern angezeigt werden soll."),
-            "''",
+            "data-popover='<target-id>'", "str", _("Determines the popover object to be displayed on hover."), "''"
         ),
         ParameterDetails(
             "data-position='<position>'",
             "str",
             _(
-                "Bestimmt wo im Bezug auf das Element, der Popover angezeigt werden soll. Mögliche Werte sind: 'top', 'bottom', 'right', und 'left'."
+                "Determines where the popover should be displayed relative to the element. Possible values are: 'top', 'bottom', 'right', and 'left'."
             ),
             "''",
         ),
         ParameterDetails(
             "data-show-arrow",
             "bool",
-            _("Zeigt ein Pfeil am Rand des Popovers, hin zum auslösenden Objekt an."),
+            _("Shows an arrow at the edge of the popover pointing to the triggering object."),
             "False",
         ),
     ]
@@ -1077,21 +1053,21 @@ def get_tooltip_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "data-popover='<text>'",
             "str",
-            _("Zeigt beim Hovern über das Element, ein Tooltip mit dem angegeben Text an."),
+            _("Shows a tooltip with the specified text when hovering over the element."),
             "''",
         ),
         ParameterDetails(
             "data-position='<position>'",
             "str",
             _(
-                "Bestimmt wo im Bezug auf das Element, der Tooltip angezeigt werden soll. Mögliche Werte sind: 'top', 'bottom', 'right', und 'left'."
+                "Determines where the tooltip should be displayed relative to the element. Possible values are: 'top', 'bottom', 'right', and 'left'."
             ),
             "''",
         ),
         ParameterDetails(
             "data-show-arrow",
             "bool",
-            _("Zeigt ein Pfeil am Rand des Tooltips, hin zum auslösenden Objekt an."),
+            _("Shows an arrow at the edge of the tooltip pointing to the triggering object."),
             "False",
         ),
     ]
@@ -1107,13 +1083,13 @@ def get_code_block_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "data-insight-code-block",
             "str",
-            _("Identifiziert dieses Objekt als Code Block und um welche Sprache es sich handelt."),
+            _("Identifies this object as a code block and specifies the used language."),
             "''",
         ),
         ParameterDetails(
             "data-insight-code-block-filename",
             "str",
-            _("Zeigt den Text, als Hinweis für den Nutzer in der Kopfzeile des Code Blocks an."),
+            _("Displays the text as a hint for the user in the header of the code block."),
             "''",
         ),
     ]
@@ -1125,8 +1101,8 @@ def get_code_block_parameter_context() -> dict[str, list[str]]:
 def get_differentiator_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the differentiator component."""
     main_params = [
-        ParameterDetails("textA", "str", _("Erste bzw. ältere Version des Textes."), "''"),
-        ParameterDetails("textB", "str", _("Zweite bzw. neuere Version des Textes."), "''"),
+        ParameterDetails("textA", "str", _("First or older version of the text."), "''"),
+        ParameterDetails("textB", "str", _("Second or newer version of the text."), "''"),
     ]
 
     return {"params": [main_params]}
@@ -1144,39 +1120,27 @@ def get_progress_bar_parameter_context() -> dict[str, list[str]]:
 def get_geo_map_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the geo map component."""
     data_param = ParameterDoc(
-        ParameterDetails("data", "list[dict]", _("Liste der Dateneinträge."), "-"),
+        ParameterDetails("data", "list[dict]", _("List of data entries."), "-"),
         [
-            ParameterDetails("lat", "double", _("Breitengrad (Latitude) des Dateneintrags."), "-"),
-            ParameterDetails("lon", "double", _("Längengrad (Longitude) des Dateneintrags."), "-"),
+            ParameterDetails("lat", "double", _("Latitude of the data entry."), "-"),
+            ParameterDetails("lon", "double", _("Longitude of the data entry."), "-"),
+            ParameterDetails("title", "str", _("Displayed as the heading in the popover of the data entry."), "-"),
             ParameterDetails(
-                "title", "str", _("Wird als Überschrift in dem Popover des Dateneintrags angezeigt."), "-"
+                "description", "str", _("Displayed below the title in the popover of the data entry."), "-"
             ),
             ParameterDetails(
-                "description", "str", _("Wird unter dem Title in dem Popover des Dateneintrags angezeigt."), "-"
-            ),
-            ParameterDetails(
-                "value",
-                "int",
-                _("Wird nur für 'circle' Dateneinträge verwenden und definiert die Größe/Farbe des Kreises."),
-                "-",
+                "value", "int", _("Used only for 'circle' data entries and defines the size/color of the circle."), "-"
             ),
         ],
         """""",
     )
 
     datasets_param = ParameterDoc(
-        ParameterDetails(
-            "datasets", "dict[str, Any]", _("Datensätze welche auf der Karte dargestellt werden sollen."), "{}"
-        ),
+        ParameterDetails("datasets", "dict[str, Any]", _("Datasets to be displayed on the map."), "{}"),
         [
-            ParameterDetails("name", "str", _("Der Name des Datensatzes, wird intern zur Benennung verwendet."), "-"),
+            ParameterDetails("name", "str", _("The name of the dataset, used internally for identification."), "-"),
             ParameterDetails(
-                "type",
-                "str",
-                _(
-                    "Die Art und Weise wie die Daten dargestellt werden sollen. Mögliche Werte sind: 'marker' und 'circle'."
-                ),
-                "-",
+                "type", "str", _("How the data should be displayed. Possible values are: 'marker' and 'circle'."), "-"
             ),
             data_param.details,
         ],
@@ -1184,23 +1148,21 @@ def get_geo_map_parameter_context() -> dict[str, list[str]]:
     )
 
     config_param = ParameterDoc(
-        ParameterDetails(
-            "data",
-            "dict[str, Any]",
-            _("Beschreibt die Karte und die Daten welche auf der Karte dargestellt werden sollen."),
-            "{}",
-        ),
+        ParameterDetails("data", "dict[str, Any]", _("Describes the map and the data to be displayed on it."), "{}"),
         [
             ParameterDetails(
-                "initial_coords", "set(int, int)", _("Startposition auf der Karte, beim Seitenaufruf."), "undefined"
+                "initial_coords",
+                "set(int, int)",
+                _("Starting position on the map when the page is loaded."),
+                "undefined",
             ),
-            ParameterDetails("initial_zoom", "int", _("Zoom auf der Karte, beim Seitenaufruf"), "undefined"),
+            ParameterDetails("initial_zoom", "int", _("Zoom level on the map when the page is loaded."), "undefined"),
             datasets_param.details,
         ],
         """""",
     )
 
-    main_params = [config_param.details, ParameterDetails("map_height", "int", _("Höhe der Karte in 'rem'."), "36")]
+    main_params = [config_param.details, ParameterDetails("map_height", "int", _("Height of the map in 'rem'."), "36")]
 
     return {"params": [main_params, config_param, datasets_param, data_param]}
 
@@ -1209,12 +1171,12 @@ def get_geo_map_parameter_context() -> dict[str, list[str]]:
 def get_charts_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the charts component."""
     chart_param = ParameterDoc(
-        ParameterDetails("chart", "dict[str, Any]", _("Informationen und Daten des Diagramms."), "{}"),
+        ParameterDetails("chart", "dict[str, Any]", _("Information and data of the chart."), "{}"),
         [
-            ParameterDetails("title", "str", _("Wird über dem Diagramm als Überschrift angezeigt."), "-"),
-            ParameterDetails("x_axis_legend", "list[str]", _("Beschriftung der X-Achse."), "-"),
-            ParameterDetails("series", "list[str]", _("Namen der einzelnen Datensätze."), "-"),
-            ParameterDetails("data", "list[list[int]]", _("Die Daten der einzelnen Datensätze."), "-"),
+            ParameterDetails("title", "str", _("Displayed as the heading above the chart."), "-"),
+            ParameterDetails("x_axis_legend", "list[str]", _("Label of the x-axis."), "-"),
+            ParameterDetails("series", "list[str]", _("Names of the individual datasets."), "-"),
+            ParameterDetails("data", "list[list[int]]", _("The data of the individual datasets."), "-"),
         ],
         """""",
     )
@@ -1234,9 +1196,9 @@ def get_live_content_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "tag_id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
         ),
-        ParameterDetails("url", "str", _("URL des API Endpunkts zum abfragen der Daten."), "''"),
-        ParameterDetails("interval", "int", _("Intervall des Datenabrufs in Sekunden."), "10"),
-        ParameterDetails("initial_content", "str", _("Optionaler, initialer Inhalt."), "''"),
+        ParameterDetails("url", "str", _("URL of the API endpoint for querying data."), "''"),
+        ParameterDetails("interval", "int", _("Interval of data retrieval in seconds."), "10"),
+        ParameterDetails("initial_content", "str", _("Optional initial content."), "''"),
     ]
 
     return {"params": [main_params]}
@@ -1249,8 +1211,8 @@ def get_web_socket_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "tag_id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
         ),
-        ParameterDetails("url", "str", _("URL des Websocket-API Endpunkts."), "''"),
-        ParameterDetails("initial_content", "str", _("Optionaler, initialer Inhalt."), "''"),
+        ParameterDetails("url", "str", _("URL of the WebSocket API endpoint."), "''"),
+        ParameterDetails("initial_content", "str", _("Optional initial content."), "''"),
     ]
 
     return {"params": [main_params]}
@@ -1264,21 +1226,24 @@ def get_infinite_scroll_parameter_context() -> dict[str, list[str]]:
             "tag_id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
         ),
         ParameterDetails(
-            "view_name", "str", _("Name der URL, an welche der Request zum laden weitere Elemente."), "''"
+            "view_name",
+            "str",
+            _("Name of the URL to which the request for loading more elements should be send."),
+            "''",
         ),
-        ParameterDetails("items", "list[dict]", _("Liste der bereits geladenen Elemente."), "[]"),
+        ParameterDetails("items", "list[dict]", _("List of already loaded elements."), "[]"),
         ParameterDetails(
             "auto_fetch",
             "bool",
             _(
-                "<b>True</b>, neue Einträge werden, sobald der angegebenen Threshold beim Scrollen überschritten wird, geladen. <b>False</b>, am Ende der Liste wird ein Button zum Abfragen weiterer Einträge angezeigt."
+                "<b>True</b>, new entries are loaded as soon as the specified scroll threshold is exceeded. <b>False</b>, at the end of the list a button to fetch more entries is shown instead."
             ),
             "True",
         ),
         ParameterDetails(
             "threshold",
             "int",
-            _("Der Pixel-Schwellenwert für das Laden weiterer Elemente (nur wenn <b>auto_fetch=False</b>)."),
+            _("The pixel threshold for loading more elements (only when <b>auto_fetch=False</b>)."),
             "100",
         ),
     ]
@@ -1291,9 +1256,9 @@ def get_pagination_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the pagination component."""
     main_params = [
         ParameterDetails(
-            "current_page", "Page", _("Ein von Django erzeugtes Pagination-Objekt der aktuellen Seite."), "None"
+            "current_page", "Page", _("A Django-generated pagination object for the current page."), "None"
         ),
-        ParameterDetails("surrounding_pages", "list[str]", _("Liste der benachbarten Seiten."), "[]"),
+        ParameterDetails("surrounding_pages", "list[str]", _("List of adjacent pages."), "[]"),
     ]
 
     return {"params": [main_params]}
@@ -1303,19 +1268,12 @@ def get_pagination_parameter_context() -> dict[str, list[str]]:
 def get_table_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the table component."""
     data_param = ParameterDoc(
-        ParameterDetails(
-            "data",
-            "dict[str, Any]",
-            _("Beschreibt die Tabelle und die Daten welche in dieser dargestellt werden sollen."),
-            "{}",
-        ),
+        ParameterDetails("data", "dict[str, Any]", _("Describes the table and the data to be displayed in it."), "{}"),
         [
-            ParameterDetails("caption", "str", _("Überschrift der Tabelle."), "''"),
-            ParameterDetails(
-                "empty_msg", "str", _("Wird angezeigt, wenn keine Einträge vorhanden sind (wenn 'rows=[]')."), "''"
-            ),
-            ParameterDetails("headers", "list[str]", _("Liste der Überschriften der einzelnen Spalten."), "[]"),
-            ParameterDetails("rows", "list[list[str]]", _("Liste der Daten der einzelnen Zeilen."), "[]"),
+            ParameterDetails("caption", "str", _("Heading of the table."), "''"),
+            ParameterDetails("empty_msg", "str", _("Displayed when no data entries are present ('rows=[]')."), "''"),
+            ParameterDetails("headers", "list[str]", _("List of headings for the individual columns."), "[]"),
+            ParameterDetails("rows", "list[list[str]]", _("List of data for the individual rows."), "[]"),
         ],
         """""",
     )
@@ -1330,35 +1288,26 @@ def get_generic_filter_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the generic filter component."""
     main_params = [
         ParameterDetails(
-            "view_name",
-            "str",
-            _("Name der URL an welchen der Request beim ändern eines Filters, gesendet werden soll."),
-            "''",
+            "view_name", "str", _("Name of the URL to which the request should be sent when changing a filter."), "''"
         ),
         ParameterDetails(
             "hx_target",
             "str",
-            _(
-                "ID des HTML-Containers, dessen Inhalt beim Response ausgetauscht werden soll (zum Beispiel eine Liste von Daten, welche gefiltert wird)."
-            ),
+            _("ID of the HTML container whose content should be replaced on response (e.g. a list of filtered data)."),
             "''",
         ),
         ParameterDetails(
             "hx_push_url",
             "bool",
-            _("<b>True</b> wenn die ausgewählten Filterwerte in der URL angezeigt werden sollen."),
+            _("<b>True</b> if the selected filter values should be displayed in the URL."),
             "True",
         ),
-        ParameterDetails("filters", "list[dict[str, Any]]", _("Definition der einzelnen Filter."), "[]"),
-        ParameterDetails(
-            "vertical", "bool", _("<b>True</b> wenn die Filter übereinander angeordnet sein sollen."), "False"
-        ),
+        ParameterDetails("filters", "list[dict[str, Any]]", _("Definition of the individual filters."), "[]"),
+        ParameterDetails("vertical", "bool", _("<b>True</b> if the filters should be arranged in a column."), "False"),
         ParameterDetails(
             "query_params",
             "dict[str, str]",
-            _(
-                "Enthält die aktuell ausgewählten Werte der einzelnen Filter, um diese nach dem Request wiederherzustellen."
-            ),
+            _("Contains the currently selected values of the individual filters to restore them after the request."),
             "''",
         ),
     ]
@@ -1373,18 +1322,16 @@ def get_search_bar_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "request_view",
             "str",
-            _("Name der URL an welchen der Request beim absenden der Suche, gesendet werden soll."),
+            _("Name of the URL to which the request should be sent when submitting the search."),
             "''",
         ),
         ParameterDetails(
             "simple",
             "bool",
-            _("<b>True</b> wenn die Suchleiste ohne Button und kleiner angezeigt werden soll."),
+            _("<b>True</b> if the search bar should be displayed without a button and smaller."),
             "False",
         ),
-        ParameterDetails(
-            "search_query", "str", _("Optionaler Wert der automatisch in dem Textfeld angezeigt wird."), "''"
-        ),
+        ParameterDetails("search_query", "str", _("Optional value automatically displayed in the text field."), "''"),
     ]
 
     return {"params": [main_params]}
@@ -1403,19 +1350,14 @@ def get_card_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the card component."""
     image_param = ParameterDoc(
         ParameterDetails(
-            "image",
-            "dict[str]",
-            _("Beschreibt ein Bild, welches als Hintergrund für den Title und dem Subtitle angezeigt wird."),
-            "{}",
+            "image", "dict[str]", _("Describes an image displayed as background for the title and subtitle."), "{}"
         ),
         [
-            ParameterDetails("url", "str", _("URL zu der Bild-Resource."), "''"),
+            ParameterDetails("url", "str", _("URL to the image resource."), "''"),
             ParameterDetails(
                 "alt",
                 "str",
-                _(
-                    "Alternativtext der angezeigt wird, falls das Bild nicht geladen werden kann und für Screenreader verwendet wird."
-                ),
+                _("Displayed alternative text used for screen readers if the image cannot be loaded."),
                 "''",
             ),
         ],
@@ -1424,33 +1366,31 @@ def get_card_parameter_context() -> dict[str, list[str]]:
 
     action_button_param = ParameterDoc(
         ParameterDetails(
-            "actions",
-            "list[dict[str, str]]",
-            _("Liste von Buttons, welche am unteren Rand der Karte angezeigt werden."),
-            "[]",
+            "actions", "list[dict[str, str]]", _("List of buttons displayed at the bottom edge of the card."), "[]"
         ),
         [
-            ParameterDetails("text", "str", _("Beschriftung des Buttons."), "''"),
+            ParameterDetails("text", "str", _("Button label."), "''"),
             ParameterDetails(
                 "type",
                 "str",
                 _(
-                    "Beschreibt die Wichtigkeit des Buttons (rein visuell). Mögliche Werte sind: 'primary' und 'secondary'."
+                    "Describes the importance of the button (purely visual). Possible values are: 'primary' and 'secondary'."
                 ),
                 "''",
             ),
-            ParameterDetails("url", "str", _("URL welche beim Klick auf den Button aufgerufen werden soll."), "''"),
+            ParameterDetails("url", "str", _("URL to be called when the button is clicked."), "''"),
         ],
         """""",
     )
 
     main_params = [
-        ParameterDetails("title", "str", _("Überschrift der Karte."), "''"),
+        ParameterDetails("title", "str", _("Heading of the card."), "''"),
+        ParameterDetails("subtitle", "str", _("Optional subtitle displayed directly below the title."), "''"),
         ParameterDetails(
-            "subtitle", "str", _("Optionaler Untertitel, welcher direkt unter dem Title angezeigt wird."), "''"
-        ),
-        ParameterDetails(
-            "content", "str", _("Textinhalt der Karte. Wird unter dem Title bzw. unter dem Subtitle angezeigt."), "''"
+            "content",
+            "str",
+            _("Text content of the card. Displayed below the title or subtitle if there is one."),
+            "''",
         ),
         image_param.details,
         action_button_param.details,
@@ -1464,30 +1404,27 @@ def get_card_carousel_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the card carousel component."""
     main_params = [
         ParameterDetails(
-            "carousel_items",
-            "list[dict]",
-            _("Daten welche innerhalb des Karussell angezeigt werden sollen (frei definierbar)."),
-            "[]",
+            "carousel_items", "list[dict]", _("Data to be displayed within the carousel (freely definable)."), "[]"
         ),
         ParameterDetails(
             "show_index",
             "bool",
-            _("<b>True</b>, wenn in der unteren rechten Ecke die aktuelle Seite angezeigt werden soll."),
+            _("<b>True</b> if the current page should be displayed in the bottom right corner."),
             "False",
         ),
         ParameterDetails(
             "show_dots",
             "bool",
-            _("<b>True</b>, wenn unter dem Karussell-Inhalt eine einfache Pagination angezeigt werden soll."),
+            _("<b>True</b> if a simple pagination should be displayed below the carousel content."),
             "True",
         ),
         ParameterDetails(
             "autoplay",
             "bool",
-            _("<b>True</b>, wenn das Karussell von alleine durch den Inhalt iterieren soll."),
+            _("<b>True</b> if the carousel should iterate through the content automatically."),
             "False",
         ),
-        ParameterDetails("items_per_slide", "int", _("Anzahl an 'carousel_items' pro Seite."), "1"),
+        ParameterDetails("items_per_slide", "int", _("Number of 'carousel_items' per page."), "1"),
     ]
 
     return {"params": [main_params]}
@@ -1497,23 +1434,19 @@ def get_card_carousel_parameter_context() -> dict[str, list[str]]:
 def get_image_carousel_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the image carousel component."""
     image_param = ParameterDoc(
-        ParameterDetails(
-            "images", "list[dict]", _("Bilder welche innerhalb des Karussell angezeigt werden sollen."), "[]"
-        ),
+        ParameterDetails("images", "list[dict]", _("Images to be displayed within the carousel."), "[]"),
         [
             ParameterDetails(
                 "description",
                 "str",
-                _("Optionale Beschreibung des Bildes, welche am oberen Rand des Bildes angezeigt wird."),
+                _("Optional description of the image displayed at the top edge of the image."),
                 "''",
             ),
-            ParameterDetails("url", "str", _("URL zu der Bild-Resource."), "''"),
+            ParameterDetails("url", "str", _("URL to the image resource."), "''"),
             ParameterDetails(
                 "alt",
                 "str",
-                _(
-                    "Alternativtext der angezeigt wird, falls das Bild nicht geladen werden kann und für Screenreader verwendet wird."
-                ),
+                _("Displayed alternative text used for screen readers if the image cannot be loaded."),
                 "''",
             ),
         ],
@@ -1525,22 +1458,22 @@ def get_image_carousel_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "show_index",
             "bool",
-            _("<b>True</b>, wenn in der unteren rechten Ecke die aktuelle Seite angezeigt werden soll."),
+            _("<b>True</b> if the current page should be displayed in the bottom right corner."),
             "False",
         ),
         ParameterDetails(
             "show_dots",
             "bool",
-            _("<b>True</b>, wenn unter dem Karussell-Inhalt eine einfache Pagination angezeigt werden soll."),
+            _("<b>True</b> if a simple pagination should be displayed below the carousel content."),
             "True",
         ),
         ParameterDetails(
             "autoplay",
             "bool",
-            _("<b>True</b>, wenn das Karussell von alleine durch den Inhalt iterieren soll."),
+            _("<b>True</b> if the carousel should iterate through the content automatically."),
             "False",
         ),
-        ParameterDetails("items_per_slide", "int", _("Anzahl der Bilder pro Seite."), "1"),
+        ParameterDetails("items_per_slide", "int", _("Number of images per page."), "1"),
     ]
 
     return {"params": [main_params, image_param]}
@@ -1553,19 +1486,13 @@ def get_3d_carousel_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "tag_id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
         ),
-        ParameterDetails("velocity", "int", _("Geschwindigkeit mit welcher sich das Karussell dreht."), "1000"),
-        ParameterDetails("tilt", "int", _("Vertikale Neigung des Karussell zur Camera."), "0"),
+        ParameterDetails("velocity", "int", _("Rotation speed of the carousel."), "1000"),
+        ParameterDetails("tilt", "int", _("Vertical tilt of the carousel towards the camera."), "0"),
         ParameterDetails(
-            "face_camera",
-            "bool",
-            _("<b>True</b> wenn alle Karten immer in Richtung der Kamera ausgerichtet sein sollen."),
-            "False",
+            "face_camera", "bool", _("<b>True</b> if all cards should face the camera at all times."), "False"
         ),
         ParameterDetails(
-            "carousel_items",
-            "list[dict]",
-            _("Daten welche innerhalb des Karussell angezeigt werden sollen (frei definierbar)."),
-            "[]",
+            "carousel_items", "list[dict]", _("Data to be displayed within the carousel (freely definable)."), "[]"
         ),
     ]
 
@@ -1593,7 +1520,7 @@ def get_toggle_view_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "view_radio_config",
             "dict[str, Any]",
-            _("Konfiguration der Radio-Group, zum wechseln der Ansichtsart."),
+            _("Configuration of the radio group for switching the view type."),
             "{}",
         ),
         [
@@ -1609,14 +1536,12 @@ def get_toggle_view_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "tag_id",
             "str",
-            _(
-                "Eindeutige Tag-ID für die Identifizierung des Elements im JavaScript (wird für den wechsel der Ansicht benötigt)."
-            ),
+            _("Unique tag ID for identifying the element in JavaScript (required for switching the view)."),
             "''",
         ),
-        ParameterDetails("data", "list[dict]", _("Daten, welche angezeigt werden sollen."), "[]"),
+        ParameterDetails("data", "list[dict]", _("Data to be displayed."), "[]"),
         view_radio_config_param.details,
-        ParameterDetails("current_view", "str", _("Name der aktuell ausgewählten View-Variante."), "''"),
+        ParameterDetails("current_view", "str", _("Name of the currently selected view type."), "''"),
     ]
 
     return {"params": [main_params, view_radio_config_param, items_param]}
@@ -1627,20 +1552,17 @@ def get_form_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the form component."""
     htmx_config_param = ParameterDoc(
         ParameterDetails(
-            "htmx_config", "dict[str, str]", _("Konfiguration des HTMX Request, für asynchrone Requests."), "{}"
+            "htmx_config", "dict[str, str]", _("Configuration of the HTMX request for asynchronous requests."), "{}"
         ),
         [
             ParameterDetails(
-                "target",
-                "str",
-                _("ID des HTML-Containers, dessen Inhalt beim Response ausgetauscht werden soll."),
-                "''",
+                "target", "str", _("ID of the HTML container whose content should be replaced upon response."), "''"
             ),
             ParameterDetails(
                 "swap",
                 "str",
                 _(
-                    "Die Art wie das Target ausgetauscht werden soll, nur der Inhalt mit 'innerHTML' oder der Container selbst mit 'outerHTML'."
+                    "The way the target should be replaced: only the content ('innerHTML') or the container itself ('outerHTML')."
                 ),
                 "innerHTML",
             ),
@@ -1652,22 +1574,17 @@ def get_form_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "tag_id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
         ),
-        ParameterDetails("title", "str", _("Überschrift des Formulars."), "''"),
-        ParameterDetails(
-            "description", "str", _("Beschreibung des Formulars, welche direkt unter dem Title angezeigt wird."), "''"
-        ),
-        ParameterDetails("fields", "list[dict[str, str]]", _("Liste der einzelnen Formular-Felder."), "[]"),
+        ParameterDetails("title", "str", _("Heading of the form."), "''"),
+        ParameterDetails("description", "str", _("Description of the form displayed directly below the title."), "''"),
+        ParameterDetails("fields", "list[dict[str, str]]", _("List of the individual form fields."), "[]"),
         ParameterDetails(
             "show_reset_button",
             "bool",
-            _("<b>True</b>, wenn neben dem 'Absenden' Button ein 'Zurücksetzen' Button angezeigt werden soll"),
+            _("<b>True</b> if a 'Reset' button should be displayed next to the 'Submit' button."),
             "False",
         ),
         ParameterDetails(
-            "view_name",
-            "str",
-            _("Name der URL, an welche beim absenden des Formulars, der Request gesendet werden soll."),
-            "''",
+            "view_name", "str", _("Name of the URL to which the request should be sent when submitting the form."), "''"
         ),
         htmx_config_param.details,
     ]
