@@ -553,8 +553,18 @@ def get_input_field_parameter_context() -> dict[str, list[str]]:
             "''",
         ),
         ParameterDetails("value", "str", _("The value of the input field."), "''"),
-        ParameterDetails("minimum", "int", _("Smallest numeric value (for input_type='number')."), "undefined"),
-        ParameterDetails("maximum", "int", _("Largest numeric value (for input_type='number')."), "undefined"),
+        ParameterDetails(
+            "minimum",
+            "int",
+            _("Smallest numeric value (for <span class='inline-tag'>input_type='number'</span>)."),
+            "undefined",
+        ),
+        ParameterDetails(
+            "maximum",
+            "int",
+            _("Largest numeric value (for <span class='inline-tag'>input_type='number'</span>)."),
+            "undefined",
+        ),
         ParameterDetails("min_length", "int", _("Minimum number of characters in a text field."), "undefined"),
         ParameterDetails("max_length", "int", _("Maximum number of characters in a text field."), "undefined"),
         ParameterDetails(
