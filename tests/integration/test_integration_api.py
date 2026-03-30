@@ -34,7 +34,7 @@ def test_live_data_view_htmx_partial(client) -> None:  # noqa: ANN001
     assert response.status_code == HTTPStatus.OK
     content = response.content.decode()
     assert "<div" in content
-    assert "Data updated" in content
+    assert "success" in content
 
 
 @pytest.mark.integration
