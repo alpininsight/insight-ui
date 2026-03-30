@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django-insight-ui 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-30 11:15+0200\n"
-"PO-Revision-Date: 2026-03-30 11:15+0200\n"
+"POT-Creation-Date: 2026-03-30 11:22+0200\n"
+"PO-Revision-Date: 2026-03-30 11:23+0200\n"
 "Last-Translator:   <>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -830,12 +830,16 @@ msgid "1500€ (maximum)"
 msgstr "1500€ (Maximum)"
 
 #: .\insight_ui\component_details\demo_context.py:514
-msgid "Element"
-msgstr "Element"
+#: .\insight_ui\views.py:142
+#, python-format
+msgid "Element %(i)s"
+msgstr "Element %(i)s"
 
 #: .\insight_ui\component_details\demo_context.py:514
-msgid "Content for element"
-msgstr "Inhalt für Element"
+#, python-format
+#| msgid "Content for element"
+msgid "Content for element %(i)s"
+msgstr "Inhalt für Element %(i)s"
 
 #: .\insight_ui\component_details\demo_context.py:523 .\insight_ui\views.py:73
 msgid "Items per page"
@@ -3483,10 +3487,9 @@ msgid "Timestamp"
 msgstr ""
 
 #: .\insight_ui\templates\insight_ui\components\multiselect.html:7
-#, fuzzy
 #| msgid "Sprache auswählen"
 msgid "Alle auswählen"
-msgstr "Sprache auswählen"
+msgstr ""
 
 #: .\insight_ui\templates\insight_ui\components\multiselect.html:8
 #, fuzzy
@@ -5387,35 +5390,33 @@ msgstr ""
 msgid "Data updated at %(time)s"
 msgstr "Daten aktualisiert um %(time)s"
 
-#: .\insight_ui\views.py:141
-#, python-format
-msgid "Element %(i)s"
-msgstr "Element %(i)s"
-
-#: .\insight_ui\views.py:141
+#: .\insight_ui\views.py:143
 #, python-format
 msgid "Dynamically loaded content for element %(i)s"
 msgstr "Dynamisch geladener Inhalt für Element %(i)s"
 
-#: .\insight_ui\views.py:181
+#: .\insight_ui\views.py:185
 msgid "AJAX form successfully submitted!"
 msgstr "AJAX Formular erfolgreich übermittelt!"
 
-#: .\insight_ui\views.py:193
+#: .\insight_ui\views.py:197
 msgid "Form successfully submitted!"
 msgstr "Formular erfolgreich übermittelt!"
 
-#: .\insight_ui\views.py:415
+#: .\insight_ui\views.py:419
 msgid "This is the content of the first tab!"
 msgstr "Das ist der Inhalt des ersten Reiters!"
 
-#: .\insight_ui\views.py:418
+#: .\insight_ui\views.py:422
 msgid "This is the content of the second tab!"
 msgstr "Das ist der Inhalt des zweiten Reiters!"
 
-#: .\insight_ui\views.py:420
+#: .\insight_ui\views.py:424
 msgid "This is the content of the third tab!"
 msgstr "Das ist der Inhalt des dritten Reiters!"
+
+#~ msgid "Element"
+#~ msgstr "Element"
 
 #, fuzzy
 #~ msgid "Elemente zur Sprachauswahl."

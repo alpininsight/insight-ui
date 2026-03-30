@@ -511,7 +511,8 @@ def get_infinite_scroll_context() -> dict:
     """Serve data for infinite scroll detailpage."""
     return {
         "scroll_items": [
-            {"title": f"{_('Element')} {i}", "content": f"{_('Content for element')} {i}"} for i in range(1, 11)
+            {"title": _("Element %(i)s") % {"i": i}, "content": _("Content for element %(i)s") % {"i": i}}
+            for i in range(1, 11)
         ]
     }
 
