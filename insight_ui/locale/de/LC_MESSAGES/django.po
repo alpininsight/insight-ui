@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django-insight-ui 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-27 10:36+0100\n"
-"PO-Revision-Date: 2026-03-27 10:38+0100\n"
+"POT-Creation-Date: 2026-03-30 10:39+0200\n"
+"PO-Revision-Date: 2026-03-30 10:48+0200\n"
 "Last-Translator:   <>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -569,6 +569,7 @@ msgid "Profile"
 msgstr "Profil"
 
 #: .\insight_ui\component_details\demo_context.py:243
+#: .\insight_ui\context.py:143
 msgid "A modern, accessible, and responsive UI library for Django projects."
 msgstr ""
 "Eine moderne, barrierefreie und reaktive UI-Bibliothek für Django-Projekte."
@@ -845,6 +846,7 @@ msgid "Example of a table component."
 msgstr "Beispiel einer Tabellenkomponente."
 
 #: .\insight_ui\component_details\demo_context.py:535
+#: .\insight_ui\context.py:458
 #: .\insight_ui\templates\insight_ui\components\parameter_table.html:7
 msgid "Name"
 msgstr "Name"
@@ -1746,13 +1748,13 @@ msgid "Primary 'Call-to-Action' button."
 msgstr "Primärer 'Call-to-Action'-Button."
 
 #: .\insight_ui\component_details\parameter_context.py:58
-#: .\insight_ui\component_details\parameter_context.py:1381
+#: .\insight_ui\component_details\parameter_context.py:1391
 msgid "URL to be called when the button is clicked."
 msgstr "URL, welche beim Anklicken des Buttons aufgerufen werden soll."
 
 #: .\insight_ui\component_details\parameter_context.py:59
-#: .\insight_ui\component_details\parameter_context.py:990
-#: .\insight_ui\component_details\parameter_context.py:1372
+#: .\insight_ui\component_details\parameter_context.py:1000
+#: .\insight_ui\component_details\parameter_context.py:1382
 msgid "Button label."
 msgstr "Beschriftung des Buttons."
 
@@ -2108,7 +2110,7 @@ msgstr ""
 "Ein optionaler Text, welcher statt des normalen Punktes angezeigt wird."
 
 #: .\insight_ui\component_details\parameter_context.py:452
-#: .\insight_ui\component_details\parameter_context.py:660
+#: .\insight_ui\component_details\parameter_context.py:670
 msgid "Name of the URL to be called when clicking on the respective item."
 msgstr ""
 "Name der URL, welche beim Anklicken auf den jeweiligen Punkt aufgerufen "
@@ -2137,7 +2139,7 @@ msgstr "Inhalt des Abschnitts."
 #: .\insight_ui\component_details\parameter_context.py:484
 #: .\insight_ui\component_details\parameter_context.py:498
 #: .\insight_ui\component_details\parameter_context.py:511
-#: .\insight_ui\component_details\parameter_context.py:1185
+#: .\insight_ui\component_details\parameter_context.py:1195
 msgid "Unique tag ID for identifying the element in JavaScript."
 msgstr "Eindeutige Tag-ID für die Identifizierung des Elements im JavaScript."
 
@@ -2159,7 +2161,7 @@ msgid "Label of the tab button."
 msgstr "Beschriftung des Tab-Buttons."
 
 #: .\insight_ui\component_details\parameter_context.py:501
-#: .\insight_ui\component_details\parameter_context.py:662
+#: .\insight_ui\component_details\parameter_context.py:672
 msgid "An optional icon displayed before the label."
 msgstr "Ein optionales Icon, welches vor der Beschriftung angezeigt wird."
 
@@ -2177,36 +2179,36 @@ msgstr ""
 "vorgelesen wird."
 
 #: .\insight_ui\component_details\parameter_context.py:538
-#: .\insight_ui\component_details\parameter_context.py:587
-#: .\insight_ui\component_details\parameter_context.py:673
-#: .\insight_ui\component_details\parameter_context.py:694
-#: .\insight_ui\component_details\parameter_context.py:709
-#: .\insight_ui\component_details\parameter_context.py:762
-#: .\insight_ui\component_details\parameter_context.py:778
-#: .\insight_ui\component_details\parameter_context.py:829
-#: .\insight_ui\component_details\parameter_context.py:862
-#: .\insight_ui\component_details\parameter_context.py:968
-#: .\insight_ui\component_details\parameter_context.py:1007
-#: .\insight_ui\component_details\parameter_context.py:1082
-#: .\insight_ui\component_details\parameter_context.py:1197
-#: .\insight_ui\component_details\parameter_context.py:1212
-#: .\insight_ui\component_details\parameter_context.py:1226
-#: .\insight_ui\component_details\parameter_context.py:1487
-#: .\insight_ui\component_details\parameter_context.py:1509
-#: .\insight_ui\component_details\parameter_context.py:1528
-#: .\insight_ui\component_details\parameter_context.py:1575
+#: .\insight_ui\component_details\parameter_context.py:597
+#: .\insight_ui\component_details\parameter_context.py:683
+#: .\insight_ui\component_details\parameter_context.py:704
+#: .\insight_ui\component_details\parameter_context.py:719
+#: .\insight_ui\component_details\parameter_context.py:772
+#: .\insight_ui\component_details\parameter_context.py:788
+#: .\insight_ui\component_details\parameter_context.py:839
+#: .\insight_ui\component_details\parameter_context.py:872
+#: .\insight_ui\component_details\parameter_context.py:978
+#: .\insight_ui\component_details\parameter_context.py:1017
+#: .\insight_ui\component_details\parameter_context.py:1092
+#: .\insight_ui\component_details\parameter_context.py:1207
+#: .\insight_ui\component_details\parameter_context.py:1222
+#: .\insight_ui\component_details\parameter_context.py:1236
+#: .\insight_ui\component_details\parameter_context.py:1497
+#: .\insight_ui\component_details\parameter_context.py:1519
+#: .\insight_ui\component_details\parameter_context.py:1538
+#: .\insight_ui\component_details\parameter_context.py:1585
 msgid "Optional, unique tag ID for identifying the element in JavaScript."
 msgstr ""
 "Optionale, eindeutige Tag-ID für die Identifizierung des Elements im "
 "JavaScript."
 
 #: .\insight_ui\component_details\parameter_context.py:543
-#: .\insight_ui\component_details\parameter_context.py:592
-#: .\insight_ui\component_details\parameter_context.py:623
-#: .\insight_ui\component_details\parameter_context.py:834
-#: .\insight_ui\component_details\parameter_context.py:867
-#: .\insight_ui\component_details\parameter_context.py:898
-#: .\insight_ui\component_details\parameter_context.py:927
+#: .\insight_ui\component_details\parameter_context.py:602
+#: .\insight_ui\component_details\parameter_context.py:633
+#: .\insight_ui\component_details\parameter_context.py:844
+#: .\insight_ui\component_details\parameter_context.py:877
+#: .\insight_ui\component_details\parameter_context.py:908
+#: .\insight_ui\component_details\parameter_context.py:937
 msgid ""
 "Required for a <span class='inline-tag'>&lt;form&gt;</span>, as the name of "
 "the request parameter."
@@ -2229,8 +2231,7 @@ msgstr ""
 msgid "The value of the input field."
 msgstr "Der Wert des Eingabefeldes."
 
-#: .\insight_ui\component_details\parameter_context.py:556
-#| msgid "Smallest numeric value (for input_type='number')."
+#: .\insight_ui\component_details\parameter_context.py:559
 msgid ""
 "Smallest numeric value (for <span class='inline-"
 "tag'>input_type='number'</span>)."
@@ -2238,8 +2239,7 @@ msgstr ""
 "Kleinster numerischer Wert (für <span class='inline-"
 "tag'>input_type='number'</span>)."
 
-#: .\insight_ui\component_details\parameter_context.py:557
-#| msgid "Largest numeric value (for input_type='number')."
+#: .\insight_ui\component_details\parameter_context.py:565
 msgid ""
 "Largest numeric value (for <span class='inline-"
 "tag'>input_type='number'</span>)."
@@ -2247,15 +2247,15 @@ msgstr ""
 "Größter numerischer Wert (für <span class='inline-"
 "tag'>input_type='number'</span>)."
 
-#: .\insight_ui\component_details\parameter_context.py:558
+#: .\insight_ui\component_details\parameter_context.py:568
 msgid "Minimum number of characters in a text field."
 msgstr "Minimale Anzahl an Zeichen in einem Textfeld."
 
-#: .\insight_ui\component_details\parameter_context.py:559
+#: .\insight_ui\component_details\parameter_context.py:569
 msgid "Maximum number of characters in a text field."
 msgstr "Maximale Anzahl an Zeichen in einem Textfeld."
 
-#: .\insight_ui\component_details\parameter_context.py:564
+#: .\insight_ui\component_details\parameter_context.py:574
 msgid ""
 "<b>True</b> if <span class='inline-tag'>input_type='checkbox'</span> and the"
 " checkbox should be selected."
@@ -2263,24 +2263,24 @@ msgstr ""
 "<b>True</b>, wenn <span class='inline-tag'>input_type='checkbox'</span> und "
 "die Checkbox ausgewählt sein soll."
 
-#: .\insight_ui\component_details\parameter_context.py:568
+#: .\insight_ui\component_details\parameter_context.py:578
 msgid "<b>True</b> if the field must be filled in."
 msgstr "<b>True</b>, wenn das Feld ausgefüllt werden muss."
 
-#: .\insight_ui\component_details\parameter_context.py:569
+#: .\insight_ui\component_details\parameter_context.py:579
 msgid "<b>True</b> if the field should be disabled."
 msgstr "<b>True</b>, wenn das Feld deaktiviert sein soll."
 
-#: .\insight_ui\component_details\parameter_context.py:570
+#: .\insight_ui\component_details\parameter_context.py:580
 msgid "A text label displayed above the input field."
 msgstr "Ein beschreibender Text, welcher über dem Eingabefeld angezeigt wird."
 
-#: .\insight_ui\component_details\parameter_context.py:574
-#: .\insight_ui\component_details\parameter_context.py:604
-#: .\insight_ui\component_details\parameter_context.py:849
-#: .\insight_ui\component_details\parameter_context.py:883
-#: .\insight_ui\component_details\parameter_context.py:912
-#: .\insight_ui\component_details\parameter_context.py:940
+#: .\insight_ui\component_details\parameter_context.py:584
+#: .\insight_ui\component_details\parameter_context.py:614
+#: .\insight_ui\component_details\parameter_context.py:859
+#: .\insight_ui\component_details\parameter_context.py:893
+#: .\insight_ui\component_details\parameter_context.py:922
+#: .\insight_ui\component_details\parameter_context.py:950
 msgid ""
 "An alternative configuration with keys corresponding to the previous "
 "parameters."
@@ -2288,121 +2288,121 @@ msgstr ""
 "Eine alternative Konfiguration mit Keys entsprechend den vorherigen "
 "Parametern."
 
-#: .\insight_ui\component_details\parameter_context.py:596
+#: .\insight_ui\component_details\parameter_context.py:606
 msgid ""
 "The value of the checkbox (this is not the state, see 'checked' for that)."
 msgstr ""
 "Der Wert der Checkbox (Dabei handelt es sich nicht um den Zustand, siehe "
 "dafür 'checked')."
 
-#: .\insight_ui\component_details\parameter_context.py:598
+#: .\insight_ui\component_details\parameter_context.py:608
 msgid "A text label displayed above the checkbox."
 msgstr "Ein beschreibender Text, welcher über der Checkbox angezeigt wird."
 
-#: .\insight_ui\component_details\parameter_context.py:599
+#: .\insight_ui\component_details\parameter_context.py:609
 msgid "<b>True</b> if the checkbox should be selected."
 msgstr "<b>True</b>, wenn die Checkbox ausgewählt sein soll."
 
-#: .\insight_ui\component_details\parameter_context.py:600
+#: .\insight_ui\component_details\parameter_context.py:610
 msgid "<b>True</b> if the checkbox should be disabled."
 msgstr "<b>True</b>, wenn die Checkbox deaktiviert sein soll."
 
-#: .\insight_ui\component_details\parameter_context.py:617
+#: .\insight_ui\component_details\parameter_context.py:627
 msgid "Describes the checkbox group and the individual checkbox elements."
 msgstr "Beschreibt die Checkbox-Gruppe und die einzelnen Checkbox-Elemente."
 
-#: .\insight_ui\component_details\parameter_context.py:626
+#: .\insight_ui\component_details\parameter_context.py:636
 msgid "Text label displayed above the checkbox elements."
 msgstr ""
 "Ein beschreibender Text, welcher über den Checkbox-Elementen angezeigt wird."
 
-#: .\insight_ui\component_details\parameter_context.py:628
+#: .\insight_ui\component_details\parameter_context.py:638
 msgid "<b>True</b> if the checkbox elements should be displayed side by side."
 msgstr ""
 "<b>True</b>, wenn die Checkbox-Elemente nebeneinander angezeigt werden "
 "sollen."
 
-#: .\insight_ui\component_details\parameter_context.py:633
+#: .\insight_ui\component_details\parameter_context.py:643
 msgid "Number of checkbox elements that must be selected at minimum."
 msgstr "Anzahl der Checkbox-Elemente, die mindestens ausgewählt sein müssen."
 
-#: .\insight_ui\component_details\parameter_context.py:639
+#: .\insight_ui\component_details\parameter_context.py:649
 msgid "Number of checkbox elements that may be selected at the same time."
 msgstr ""
 "Anzahl der Checkbox-Elemente, die gleichzeitig ausgewählt sein dürfen."
 
-#: .\insight_ui\component_details\parameter_context.py:642
+#: .\insight_ui\component_details\parameter_context.py:652
 msgid "List of the checkbox elements."
 msgstr "Liste der Checkbox-Elemente."
 
-#: .\insight_ui\component_details\parameter_context.py:656
+#: .\insight_ui\component_details\parameter_context.py:666
 msgid "A list of the menu elements."
 msgstr "Eine Liste der Menüelemente."
 
-#: .\insight_ui\component_details\parameter_context.py:658
+#: .\insight_ui\component_details\parameter_context.py:668
 msgid "Label of the dropdown element."
 msgstr "Beschriftung des Dropdown-Elements."
 
-#: .\insight_ui\component_details\parameter_context.py:669
+#: .\insight_ui\component_details\parameter_context.py:679
 msgid "Describes the dropdown button and the menu elements."
 msgstr "Beschreibt den Dropdown-Button und die Menüelemente."
 
-#: .\insight_ui\component_details\parameter_context.py:675
+#: .\insight_ui\component_details\parameter_context.py:685
 msgid "Label of the dropdown button."
 msgstr "Beschriftung des Dropdown-Buttons."
 
-#: .\insight_ui\component_details\parameter_context.py:676
+#: .\insight_ui\component_details\parameter_context.py:686
 msgid "<b>True</b> displays an arrow behind the title."
 msgstr "<b>True</b> zeigt einen Pfeil hinter dem Titel an."
 
-#: .\insight_ui\component_details\parameter_context.py:691
-#: .\insight_ui\component_details\parameter_context.py:759
-#: .\insight_ui\component_details\parameter_context.py:1506
+#: .\insight_ui\component_details\parameter_context.py:701
+#: .\insight_ui\component_details\parameter_context.py:769
+#: .\insight_ui\component_details\parameter_context.py:1516
 msgid "A list of the radio elements."
 msgstr "Eine Liste der Radio-Elemente."
 
-#: .\insight_ui\component_details\parameter_context.py:696
-#: .\insight_ui\component_details\parameter_context.py:764
-#: .\insight_ui\component_details\parameter_context.py:1511
+#: .\insight_ui\component_details\parameter_context.py:706
+#: .\insight_ui\component_details\parameter_context.py:774
+#: .\insight_ui\component_details\parameter_context.py:1521
 msgid "Value of the respective radio button."
 msgstr "Wert des jeweiligen Radio-Buttons."
 
-#: .\insight_ui\component_details\parameter_context.py:697
-#: .\insight_ui\component_details\parameter_context.py:765
-#: .\insight_ui\component_details\parameter_context.py:1512
+#: .\insight_ui\component_details\parameter_context.py:707
+#: .\insight_ui\component_details\parameter_context.py:775
+#: .\insight_ui\component_details\parameter_context.py:1522
 msgid "Label of the respective radio button."
 msgstr "Beschriftung des jeweiligen Radio-Buttons."
 
-#: .\insight_ui\component_details\parameter_context.py:698
-#: .\insight_ui\component_details\parameter_context.py:767
-#: .\insight_ui\component_details\parameter_context.py:1514
+#: .\insight_ui\component_details\parameter_context.py:708
+#: .\insight_ui\component_details\parameter_context.py:777
+#: .\insight_ui\component_details\parameter_context.py:1524
 msgid "<b>True</b> if the radio button should be disabled."
 msgstr "<b>True</b>, wenn der Radio-Button deaktiviert sein soll."
 
-#: .\insight_ui\component_details\parameter_context.py:705
-#: .\insight_ui\component_details\parameter_context.py:774
+#: .\insight_ui\component_details\parameter_context.py:715
+#: .\insight_ui\component_details\parameter_context.py:784
 msgid "Describes the radio button group and the individual radio elements."
 msgstr "Beschreibt die Radio-Button-Gruppe und die einzelnen Radio-Elemente."
 
-#: .\insight_ui\component_details\parameter_context.py:711
-#: .\insight_ui\component_details\parameter_context.py:780
+#: .\insight_ui\component_details\parameter_context.py:721
+#: .\insight_ui\component_details\parameter_context.py:790
 msgid "A text label displayed above the radio elements."
 msgstr ""
 "Ein beschreibender Text, welcher über den Radio-Elementen angezeigt wird."
 
-#: .\insight_ui\component_details\parameter_context.py:713
-#: .\insight_ui\component_details\parameter_context.py:782
+#: .\insight_ui\component_details\parameter_context.py:723
+#: .\insight_ui\component_details\parameter_context.py:792
 msgid "<b>True</b> if the radio elements should be displayed side by side."
 msgstr ""
 "<b>True</b>, wenn die Radio-Elemente nebeneinander angezeigt werden sollen."
 
-#: .\insight_ui\component_details\parameter_context.py:722
-#: .\insight_ui\component_details\parameter_context.py:791
+#: .\insight_ui\component_details\parameter_context.py:732
+#: .\insight_ui\component_details\parameter_context.py:801
 msgid "The value of the currently selected radio button."
 msgstr "Der Wert des aktuell ausgewählten Radio-Buttons."
 
-#: .\insight_ui\component_details\parameter_context.py:727
-#: .\insight_ui\component_details\parameter_context.py:796
+#: .\insight_ui\component_details\parameter_context.py:737
+#: .\insight_ui\component_details\parameter_context.py:806
 msgid ""
 "Name of the URL to which the request should be sent when clicking one of the"
 " radio buttons."
@@ -2410,22 +2410,22 @@ msgstr ""
 "Name der URL, an welche der Request beim Anklicken auf einen der Radio-"
 "Button gesendet werden soll."
 
-#: .\insight_ui\component_details\parameter_context.py:731
-#: .\insight_ui\component_details\parameter_context.py:800
+#: .\insight_ui\component_details\parameter_context.py:741
+#: .\insight_ui\component_details\parameter_context.py:810
 msgid "A string of query parameters to be sent along with the request."
 msgstr ""
 "Ein String von Such-Parametern, welche bei dem Request mit gesendet werden "
 "sollen."
 
-#: .\insight_ui\component_details\parameter_context.py:734
-#: .\insight_ui\component_details\parameter_context.py:803
+#: .\insight_ui\component_details\parameter_context.py:744
+#: .\insight_ui\component_details\parameter_context.py:813
 msgid "The ID of the HTML tag to be replaced when switching the radio button."
 msgstr ""
 "Die ID des HTML-Tags, welcher beim Wechseln des Radio-Buttons ausgetauscht "
 "werden soll."
 
-#: .\insight_ui\component_details\parameter_context.py:739
-#: .\insight_ui\component_details\parameter_context.py:808
+#: .\insight_ui\component_details\parameter_context.py:749
+#: .\insight_ui\component_details\parameter_context.py:818
 msgid ""
 "Name of the JavaScript method to be executed when clicking one of the radio "
 "buttons."
@@ -2433,8 +2433,8 @@ msgstr ""
 "Name der JavaScript Methode, welche beim Anklicken auf einen der Radio-"
 "Button ausgeführt werden soll."
 
-#: .\insight_ui\component_details\parameter_context.py:746
-#: .\insight_ui\component_details\parameter_context.py:815
+#: .\insight_ui\component_details\parameter_context.py:756
+#: .\insight_ui\component_details\parameter_context.py:825
 msgid ""
 "<b>True</b> if the group is inside a &lt;form&gt;. If <b>False</b> the group"
 " gets its own &lt;form&gt;."
@@ -2442,29 +2442,29 @@ msgstr ""
 "<b>True</b>, wenn sich die Gruppe in einer &lt;form&gt; befindet. Bei "
 "<b>False</b> bekommt die Gruppe ihre eigene &lt;form&gt;."
 
-#: .\insight_ui\component_details\parameter_context.py:766
-#: .\insight_ui\component_details\parameter_context.py:1513
+#: .\insight_ui\component_details\parameter_context.py:776
+#: .\insight_ui\component_details\parameter_context.py:1523
 msgid "Optional icon displayed before the label."
 msgstr "Optionales Icon, welches vor der Beschriftung angezeigt wird."
 
-#: .\insight_ui\component_details\parameter_context.py:837
+#: .\insight_ui\component_details\parameter_context.py:847
 msgid "A text label displayed above the range slider."
 msgstr ""
 "Ein beschreibender Text, welcher über dem Range-Slider angezeigt wird."
 
-#: .\insight_ui\component_details\parameter_context.py:838
+#: .\insight_ui\component_details\parameter_context.py:848
 msgid "The value of the range slider."
 msgstr "Der Wert des Range-Sliders."
 
-#: .\insight_ui\component_details\parameter_context.py:839
+#: .\insight_ui\component_details\parameter_context.py:849
 msgid "Smallest configurable value of the range slider."
 msgstr "Kleinster einzustellender Wert des Range-Sliders."
 
-#: .\insight_ui\component_details\parameter_context.py:840
+#: .\insight_ui\component_details\parameter_context.py:850
 msgid "Largest configurable value of the range slider."
 msgstr "Größter einzustellender Wert des Range-Sliders."
 
-#: .\insight_ui\component_details\parameter_context.py:842
+#: .\insight_ui\component_details\parameter_context.py:852
 msgid ""
 "The size of the steps by which the value changes when moving the range "
 "slider."
@@ -2472,40 +2472,40 @@ msgstr ""
 "Die Größe der Schritte, um welche sich der Wert beim Bewegen des Range-"
 "Sliders verändert."
 
-#: .\insight_ui\component_details\parameter_context.py:844
+#: .\insight_ui\component_details\parameter_context.py:854
 msgid "<b>True</b> if the range slider should be disabled."
 msgstr "<b>True</b>, wenn der Range-Slider deaktiviert sein soll."
 
-#: .\insight_ui\component_details\parameter_context.py:845
+#: .\insight_ui\component_details\parameter_context.py:855
 msgid "A list of texts displayed as a legend below the slider."
 msgstr ""
 "Eine Liste von Texten, welche als Legende unter dem Slider angezeigt werden."
 
-#: .\insight_ui\component_details\parameter_context.py:870
+#: .\insight_ui\component_details\parameter_context.py:880
 msgid "A text label displayed above the toggle button."
 msgstr ""
 "Ein  beschreibender Text, welcher über dem Toggle-Button angezeigt wird."
 
-#: .\insight_ui\component_details\parameter_context.py:871
+#: .\insight_ui\component_details\parameter_context.py:881
 msgid "The value of the toggle button."
 msgstr "Der Wert des Toggle-Buttons."
 
-#: .\insight_ui\component_details\parameter_context.py:873
+#: .\insight_ui\component_details\parameter_context.py:883
 msgid ""
 "<b>True</b> if the toggle button should look like a typical switch select."
 msgstr ""
 "<b>True</b>, wenn der Toggle-Button wie ein typischer Switch-Select aussehen"
 " soll."
 
-#: .\insight_ui\component_details\parameter_context.py:875
+#: .\insight_ui\component_details\parameter_context.py:885
 msgid "<b>True</b> if the toggle button should be selected."
 msgstr "<b>True</b>, wenn der Toggle-Button ausgewählt sein soll."
 
-#: .\insight_ui\component_details\parameter_context.py:876
+#: .\insight_ui\component_details\parameter_context.py:886
 msgid "<b>True</b> if the toggle button should be disabled."
 msgstr "<b>True</b>, wenn der Toggle-Button deaktiviert sein soll."
 
-#: .\insight_ui\component_details\parameter_context.py:878
+#: .\insight_ui\component_details\parameter_context.py:888
 msgid ""
 "Name of the JavaScript method to be executed when the toggle button is "
 "clicked."
@@ -2513,17 +2513,17 @@ msgstr ""
 "Name der JavaScript Methode, welche beim Anklicken auf den Toggle-Button "
 "ausgeführt werden soll."
 
-#: .\insight_ui\component_details\parameter_context.py:901
-#: .\insight_ui\component_details\parameter_context.py:930
+#: .\insight_ui\component_details\parameter_context.py:911
+#: .\insight_ui\component_details\parameter_context.py:940
 msgid "A text label displayed above the select."
 msgstr "Ein beschreibender Text, welcher über dem Select angezeigt wird."
 
-#: .\insight_ui\component_details\parameter_context.py:902
-#: .\insight_ui\component_details\parameter_context.py:935
+#: .\insight_ui\component_details\parameter_context.py:912
+#: .\insight_ui\component_details\parameter_context.py:945
 msgid "List of values that can be selected."
 msgstr "Liste von Werten, welche ausgewählt werden können."
 
-#: .\insight_ui\component_details\parameter_context.py:906
+#: .\insight_ui\component_details\parameter_context.py:916
 msgid ""
 "Value (the key value, if the options were passed as a dict) of the currently"
 " selected option."
@@ -2531,21 +2531,21 @@ msgstr ""
 "Wert (Der Key-Wert, falls die Optionen als Dict übergeben wurden) der "
 "aktuell ausgewählten Option."
 
-#: .\insight_ui\component_details\parameter_context.py:931
+#: .\insight_ui\component_details\parameter_context.py:941
 msgid "Maximum number of selectable options."
 msgstr "Anzahl der maximal ausgewählten Optionen."
 
-#: .\insight_ui\component_details\parameter_context.py:933
+#: .\insight_ui\component_details\parameter_context.py:943
 msgid "Show additional buttons for 'Select All' and 'Deselect All'."
 msgstr ""
 "Zusätzliche Buttons für 'Alle Auswählen' und 'Alle Abwählen' Buttons "
 "anzeigen."
 
-#: .\insight_ui\component_details\parameter_context.py:936
+#: .\insight_ui\component_details\parameter_context.py:946
 msgid "List of currently selected options."
 msgstr "Liste der aktuell ausgewählten Optionen."
 
-#: .\insight_ui\component_details\parameter_context.py:955
+#: .\insight_ui\component_details\parameter_context.py:965
 msgid ""
 "Name of the URL to which the request should be sent when submitting a "
 "message."
@@ -2553,11 +2553,11 @@ msgstr ""
 "Name der URL, an welche der Request beim Absenden einer Nachricht gesendet "
 "werden soll."
 
-#: .\insight_ui\component_details\parameter_context.py:970
+#: .\insight_ui\component_details\parameter_context.py:980
 msgid "Message displayed in the alert."
 msgstr "Angezeigte Nachricht im Alert."
 
-#: .\insight_ui\component_details\parameter_context.py:972
+#: .\insight_ui\component_details\parameter_context.py:982
 msgid ""
 "Type of the alert. Possible values are 'info', 'success', 'warning' and "
 "'error'."
@@ -2565,17 +2565,17 @@ msgstr ""
 "Typ des Alerts. Mögliche Werte sind 'info', 'success' (Erfolg), 'warning' "
 "(Warnung) und 'error' (Fehler)."
 
-#: .\insight_ui\component_details\parameter_context.py:975
+#: .\insight_ui\component_details\parameter_context.py:985
 msgid "Shows a button to close the alert at the end of the alert container."
 msgstr ""
 "Zeigt einen Button zum Schließen des Alerts am Ende des Alert-Containers an."
 
-#: .\insight_ui\component_details\parameter_context.py:987
+#: .\insight_ui\component_details\parameter_context.py:997
 msgid "List of buttons displayed at the bottom of the dialog."
 msgstr ""
 "Liste von Buttons, welche um unteren Ende des Dialogs angezeigt werden."
 
-#: .\insight_ui\component_details\parameter_context.py:995
+#: .\insight_ui\component_details\parameter_context.py:1005
 msgid ""
 "Describes the importance of the button (purely visual). Possible values are:"
 " 'primary' and 'secondary'.."
@@ -2583,23 +2583,23 @@ msgstr ""
 "Beschreibt die Wichtigkeit des Buttons (rein visuell). Mögliche Werte sind: "
 "'primary' und 'secondary'."
 
-#: .\insight_ui\component_details\parameter_context.py:999
+#: .\insight_ui\component_details\parameter_context.py:1009
 msgid "Call a JavaScript function, e.g.: alert('Confirmed!')"
 msgstr "Aufruf einer JavaScript Funktion, bspw.: alert('Confirmed!')"
 
-#: .\insight_ui\component_details\parameter_context.py:1000
+#: .\insight_ui\component_details\parameter_context.py:1010
 msgid "Closes the dialog on click."
 msgstr "Schließt den Dialog beim Anklicken."
 
-#: .\insight_ui\component_details\parameter_context.py:1009
+#: .\insight_ui\component_details\parameter_context.py:1019
 msgid "Heading of the modal dialog."
 msgstr "Überschrift des Modal Dialogs."
 
-#: .\insight_ui\component_details\parameter_context.py:1010
+#: .\insight_ui\component_details\parameter_context.py:1020
 msgid "Text displayed directly below the title."
 msgstr "Text, welcher direkt unter dem Titel angezeigt wird."
 
-#: .\insight_ui\component_details\parameter_context.py:1014
+#: .\insight_ui\component_details\parameter_context.py:1024
 msgid ""
 "Additional text displayed below the header, which itself consists of title "
 "and description."
@@ -2607,12 +2607,12 @@ msgstr ""
 "Zusätzlicher Text, welcher unter der Kopfzeile, bestehend aus Titel und "
 "Beschreibung, angezeigt wird."
 
-#: .\insight_ui\component_details\parameter_context.py:1028
+#: .\insight_ui\component_details\parameter_context.py:1038
 msgid "Determines the popover object to be displayed on hover."
 msgstr ""
 "Bestimmt das Popover-Objekt, welches beim Hovern angezeigt werden soll."
 
-#: .\insight_ui\component_details\parameter_context.py:1034
+#: .\insight_ui\component_details\parameter_context.py:1044
 msgid ""
 "Determines where the popover should be displayed relative to the element. "
 "Possible values are: 'top', 'bottom', 'right', and 'left'."
@@ -2621,18 +2621,18 @@ msgstr ""
 "Mögliche Werte sind: 'top' (darüber), 'bottom' (darunter), 'right' (rechts),"
 " und 'left' (links)."
 
-#: .\insight_ui\component_details\parameter_context.py:1041
+#: .\insight_ui\component_details\parameter_context.py:1051
 msgid ""
 "Shows an arrow at the edge of the popover pointing to the triggering object."
 msgstr "Zeigt am Rand des Popovers einen Pfeil hin zum auslösenden Objekt an."
 
-#: .\insight_ui\component_details\parameter_context.py:1056
+#: .\insight_ui\component_details\parameter_context.py:1066
 msgid ""
 "Shows a tooltip with the specified text when hovering over the element."
 msgstr ""
 "Zeigt beim Hovern über das Element einen Tooltip mit dem angegeben Text an."
 
-#: .\insight_ui\component_details\parameter_context.py:1063
+#: .\insight_ui\component_details\parameter_context.py:1073
 msgid ""
 "Determines where the tooltip should be displayed relative to the element. "
 "Possible values are: 'top', 'bottom', 'right', and 'left'."
@@ -2641,53 +2641,53 @@ msgstr ""
 "Mögliche Werte sind: 'top' (darüber), 'bottom' (darunter), 'right' (rechts),"
 " und 'left' (links)."
 
-#: .\insight_ui\component_details\parameter_context.py:1070
+#: .\insight_ui\component_details\parameter_context.py:1080
 msgid ""
 "Shows an arrow at the edge of the tooltip pointing to the triggering object."
 msgstr "Zeigt am Rand des Tooltips einen Pfeil hin zum auslösenden Objekt an."
 
-#: .\insight_ui\component_details\parameter_context.py:1086
+#: .\insight_ui\component_details\parameter_context.py:1096
 msgid ""
 "Identifies this object as a code block and specifies the used language."
 msgstr ""
 "Identifiziert dieses Objekt als Code Block und die darin verwendete Sprache."
 
-#: .\insight_ui\component_details\parameter_context.py:1092
+#: .\insight_ui\component_details\parameter_context.py:1102
 msgid ""
 "Displays the text as a hint for the user in the header of the code block."
 msgstr ""
 "Zeigt den Text als Hinweis für den Nutzer in der Kopfzeile des Code Blocks "
 "an."
 
-#: .\insight_ui\component_details\parameter_context.py:1104
+#: .\insight_ui\component_details\parameter_context.py:1114
 msgid "First or older version of the text."
 msgstr "Erste bzw. ältere Version des Textes."
 
-#: .\insight_ui\component_details\parameter_context.py:1105
+#: .\insight_ui\component_details\parameter_context.py:1115
 msgid "Second or newer version of the text."
 msgstr "Zweite bzw. neuere Version des Textes."
 
-#: .\insight_ui\component_details\parameter_context.py:1123
+#: .\insight_ui\component_details\parameter_context.py:1133
 msgid "List of data entries."
 msgstr "Liste der Dateneinträge."
 
-#: .\insight_ui\component_details\parameter_context.py:1125
+#: .\insight_ui\component_details\parameter_context.py:1135
 msgid "Latitude of the data entry."
 msgstr "Breitengrad (Latitude) des Dateneintrags."
 
-#: .\insight_ui\component_details\parameter_context.py:1126
+#: .\insight_ui\component_details\parameter_context.py:1136
 msgid "Longitude of the data entry."
 msgstr "Längengrad (Longitude) des Dateneintrags."
 
-#: .\insight_ui\component_details\parameter_context.py:1127
+#: .\insight_ui\component_details\parameter_context.py:1137
 msgid "Displayed as the heading in the popover of the data entry."
 msgstr "Wird als Überschrift in dem Popover des Dateneintrags angezeigt."
 
-#: .\insight_ui\component_details\parameter_context.py:1129
+#: .\insight_ui\component_details\parameter_context.py:1139
 msgid "Displayed below the title in the popover of the data entry."
 msgstr "Wird unter dem Titel im Popover des Dateneintrags angezeigt."
 
-#: .\insight_ui\component_details\parameter_context.py:1132
+#: .\insight_ui\component_details\parameter_context.py:1142
 msgid ""
 "Used only for 'circle' data entries and defines the size/color of the "
 "circle."
@@ -2695,15 +2695,15 @@ msgstr ""
 "Wird nur für 'circle' Dateneinträge verwendet und definiert die Größe/Farbe "
 "des Kreises."
 
-#: .\insight_ui\component_details\parameter_context.py:1139
+#: .\insight_ui\component_details\parameter_context.py:1149
 msgid "Datasets to be displayed on the map."
 msgstr "Datensätze, welche auf der Karte dargestellt werden sollen."
 
-#: .\insight_ui\component_details\parameter_context.py:1141
+#: .\insight_ui\component_details\parameter_context.py:1151
 msgid "The name of the dataset, used internally for identification."
 msgstr "Der Name des Datensatzes, wird intern zur Identifizierung verwendet."
 
-#: .\insight_ui\component_details\parameter_context.py:1143
+#: .\insight_ui\component_details\parameter_context.py:1153
 msgid ""
 "How the data should be displayed. Possible values are: 'marker' and "
 "'circle'."
@@ -2711,60 +2711,60 @@ msgstr ""
 "Darstellungsweise der Daten. Mögliche Werte sind: 'marker' (Symbol) und "
 "'circle' (Kreis)."
 
-#: .\insight_ui\component_details\parameter_context.py:1151
+#: .\insight_ui\component_details\parameter_context.py:1161
 msgid "Describes the map and the data to be displayed on it."
 msgstr "Beschreibt die Karte und die darauf darzustellenden Daten."
 
-#: .\insight_ui\component_details\parameter_context.py:1156
+#: .\insight_ui\component_details\parameter_context.py:1166
 msgid "Starting position on the map when the page is loaded."
 msgstr "Startposition auf der Karte beim Seitenaufruf."
 
-#: .\insight_ui\component_details\parameter_context.py:1159
+#: .\insight_ui\component_details\parameter_context.py:1169
 msgid "Zoom level on the map when the page is loaded."
 msgstr "Zoom der Karte beim Seitenaufruf"
 
-#: .\insight_ui\component_details\parameter_context.py:1165
+#: .\insight_ui\component_details\parameter_context.py:1175
 msgid "Height of the map in 'rem'."
 msgstr "Höhe der Karte in 'rem'."
 
-#: .\insight_ui\component_details\parameter_context.py:1174
+#: .\insight_ui\component_details\parameter_context.py:1184
 msgid "Information and data of the chart."
 msgstr "Informationen und Daten des Diagramms."
 
-#: .\insight_ui\component_details\parameter_context.py:1176
+#: .\insight_ui\component_details\parameter_context.py:1186
 msgid "Displayed as the heading above the chart."
 msgstr "Wird über dem Diagramm als Überschrift angezeigt."
 
-#: .\insight_ui\component_details\parameter_context.py:1177
+#: .\insight_ui\component_details\parameter_context.py:1187
 msgid "Label of the x-axis."
 msgstr "Beschriftung der X-Achse."
 
-#: .\insight_ui\component_details\parameter_context.py:1178
+#: .\insight_ui\component_details\parameter_context.py:1188
 msgid "Names of the individual datasets."
 msgstr "Namen der einzelnen Datensätze."
 
-#: .\insight_ui\component_details\parameter_context.py:1179
+#: .\insight_ui\component_details\parameter_context.py:1189
 msgid "The data of the individual datasets."
 msgstr "Die Daten der einzelnen Datensätze."
 
-#: .\insight_ui\component_details\parameter_context.py:1199
+#: .\insight_ui\component_details\parameter_context.py:1209
 msgid "URL of the API endpoint for querying data."
 msgstr "URL des API Endpunkts zum Abfragen der Daten."
 
-#: .\insight_ui\component_details\parameter_context.py:1200
+#: .\insight_ui\component_details\parameter_context.py:1210
 msgid "Interval of data retrieval in seconds."
 msgstr "Intervall des Datenabrufs in Sekunden."
 
-#: .\insight_ui\component_details\parameter_context.py:1201
-#: .\insight_ui\component_details\parameter_context.py:1215
+#: .\insight_ui\component_details\parameter_context.py:1211
+#: .\insight_ui\component_details\parameter_context.py:1225
 msgid "Optional initial content."
 msgstr "Optionaler, initialer Inhalt."
 
-#: .\insight_ui\component_details\parameter_context.py:1214
+#: .\insight_ui\component_details\parameter_context.py:1224
 msgid "URL of the WebSocket API endpoint."
 msgstr "URL des Websocket-API Endpunkts."
 
-#: .\insight_ui\component_details\parameter_context.py:1231
+#: .\insight_ui\component_details\parameter_context.py:1241
 msgid ""
 "Name of the URL to which the request for loading more elements should be "
 "send."
@@ -2772,11 +2772,11 @@ msgstr ""
 "Name der URL, an welche der Request zum Laden weitere Elemente gesendet "
 "werden soll."
 
-#: .\insight_ui\component_details\parameter_context.py:1234
+#: .\insight_ui\component_details\parameter_context.py:1244
 msgid "List of already loaded elements."
 msgstr "Liste der bereits geladenen Elemente."
 
-#: .\insight_ui\component_details\parameter_context.py:1239
+#: .\insight_ui\component_details\parameter_context.py:1249
 msgid ""
 "<b>True</b>, new entries are loaded as soon as the specified scroll "
 "threshold is exceeded. <b>False</b>, at the end of the list a button to "
@@ -2786,7 +2786,7 @@ msgstr ""
 "beim Scrollen überschritten wird. <b>False</b>, am Ende der Liste wird "
 "stattdessen ein Button zum Abfragen weiterer Einträge angezeigt."
 
-#: .\insight_ui\component_details\parameter_context.py:1246
+#: .\insight_ui\component_details\parameter_context.py:1256
 msgid ""
 "The pixel threshold for loading more elements (only when "
 "<b>auto_fetch=False</b>)."
@@ -2794,42 +2794,42 @@ msgstr ""
 "Der Pixel-Schwellenwert für das Laden weiterer Elemente (nur wenn "
 "<b>auto_fetch=False</b>)."
 
-#: .\insight_ui\component_details\parameter_context.py:1259
+#: .\insight_ui\component_details\parameter_context.py:1269
 msgid "A Django-generated pagination object for the current page."
 msgstr "Ein von Django erzeugtes Pagination-Objekt der aktuellen Seite."
 
-#: .\insight_ui\component_details\parameter_context.py:1261
+#: .\insight_ui\component_details\parameter_context.py:1271
 msgid "List of adjacent pages."
 msgstr "Liste der benachbarten Seiten."
 
-#: .\insight_ui\component_details\parameter_context.py:1271
+#: .\insight_ui\component_details\parameter_context.py:1281
 msgid "Describes the table and the data to be displayed in it."
 msgstr "Beschreibt die Tabelle und die darin darzustellenden Daten."
 
-#: .\insight_ui\component_details\parameter_context.py:1273
+#: .\insight_ui\component_details\parameter_context.py:1283
 msgid "Heading of the table."
 msgstr "Überschrift der Tabelle."
 
-#: .\insight_ui\component_details\parameter_context.py:1274
+#: .\insight_ui\component_details\parameter_context.py:1284
 msgid "Displayed when no data entries are present ('rows=[]')."
 msgstr "Wird angezeigt, wenn keine Dateneinträge vorhanden sind ('rows=[]')."
 
-#: .\insight_ui\component_details\parameter_context.py:1275
+#: .\insight_ui\component_details\parameter_context.py:1285
 msgid "List of headings for the individual columns."
 msgstr "Liste der Überschriften für die einzelnen Spalten."
 
-#: .\insight_ui\component_details\parameter_context.py:1276
+#: .\insight_ui\component_details\parameter_context.py:1286
 msgid "List of data for the individual rows."
 msgstr "Liste der Daten für die einzelnen Zeilen."
 
-#: .\insight_ui\component_details\parameter_context.py:1291
+#: .\insight_ui\component_details\parameter_context.py:1301
 msgid ""
 "Name of the URL to which the request should be sent when changing a filter."
 msgstr ""
 "Name der URL, an welche der Request beim Ändern eines Filters gesendet "
 "werden soll."
 
-#: .\insight_ui\component_details\parameter_context.py:1296
+#: .\insight_ui\component_details\parameter_context.py:1306
 msgid ""
 "ID of the HTML container whose content should be replaced on response (e.g. "
 "a list of filtered data)."
@@ -2837,22 +2837,22 @@ msgstr ""
 "ID des HTML-Containers, dessen Inhalt beim Response ausgetauscht werden soll"
 " (z.B. eine gefilterte Liste von Daten)."
 
-#: .\insight_ui\component_details\parameter_context.py:1302
+#: .\insight_ui\component_details\parameter_context.py:1312
 msgid ""
 "<b>True</b> if the selected filter values should be displayed in the URL."
 msgstr ""
 "<b>True</b>, wenn die ausgewählten Filterwerte in der URL angezeigt werden "
 "sollen."
 
-#: .\insight_ui\component_details\parameter_context.py:1305
+#: .\insight_ui\component_details\parameter_context.py:1315
 msgid "Definition of the individual filters."
 msgstr "Definition der einzelnen Filter."
 
-#: .\insight_ui\component_details\parameter_context.py:1306
+#: .\insight_ui\component_details\parameter_context.py:1316
 msgid "<b>True</b> if the filters should be arranged in a column."
 msgstr "<b>True</b>, wenn die Filter übereinander angeordnet sein sollen."
 
-#: .\insight_ui\component_details\parameter_context.py:1310
+#: .\insight_ui\component_details\parameter_context.py:1320
 msgid ""
 "Contains the currently selected values of the individual filters to restore "
 "them after the request."
@@ -2860,7 +2860,7 @@ msgstr ""
 "Enthält die aktuell ausgewählten Werte der einzelnen Filter für die "
 "Wiederherstellung nach dem Request."
 
-#: .\insight_ui\component_details\parameter_context.py:1325
+#: .\insight_ui\component_details\parameter_context.py:1335
 msgid ""
 "Name of the URL to which the request should be sent when submitting the "
 "search."
@@ -2868,7 +2868,7 @@ msgstr ""
 "Name der URL, an welche der Request beim Absenden der Suche gesendet werden "
 "soll."
 
-#: .\insight_ui\component_details\parameter_context.py:1331
+#: .\insight_ui\component_details\parameter_context.py:1341
 msgid ""
 "<b>True</b> if the search bar should be displayed without a button and "
 "smaller."
@@ -2876,23 +2876,23 @@ msgstr ""
 "<b>True</b>, wenn die Suchleiste ohne Button und kleiner angezeigt werden "
 "soll."
 
-#: .\insight_ui\component_details\parameter_context.py:1334
+#: .\insight_ui\component_details\parameter_context.py:1344
 msgid "Optional value automatically displayed in the text field."
 msgstr "Optionaler Wert, der automatisch im Textfeld angezeigt wird."
 
-#: .\insight_ui\component_details\parameter_context.py:1353
+#: .\insight_ui\component_details\parameter_context.py:1363
 msgid "Describes an image displayed as background for the title and subtitle."
 msgstr ""
 "Beschreibt ein Bild, welches als Hintergrund für den Titel und Untertitel "
 "angezeigt wird."
 
-#: .\insight_ui\component_details\parameter_context.py:1356
-#: .\insight_ui\component_details\parameter_context.py:1445
+#: .\insight_ui\component_details\parameter_context.py:1366
+#: .\insight_ui\component_details\parameter_context.py:1455
 msgid "URL to the image resource."
 msgstr "URL zur Bild-Ressource."
 
-#: .\insight_ui\component_details\parameter_context.py:1360
-#: .\insight_ui\component_details\parameter_context.py:1449
+#: .\insight_ui\component_details\parameter_context.py:1370
+#: .\insight_ui\component_details\parameter_context.py:1459
 msgid ""
 "Displayed alternative text used for screen readers if the image cannot be "
 "loaded."
@@ -2900,39 +2900,39 @@ msgstr ""
 "Angezeigter Alternativtext für Screenreader, falls das Bild nicht geladen "
 "werden kann."
 
-#: .\insight_ui\component_details\parameter_context.py:1369
+#: .\insight_ui\component_details\parameter_context.py:1379
 msgid "List of buttons displayed at the bottom edge of the card."
 msgstr "Liste von Buttons, welche am unteren Rand der Karte angezeigt werden."
 
-#: .\insight_ui\component_details\parameter_context.py:1377
+#: .\insight_ui\component_details\parameter_context.py:1387
 msgid ""
 "Describes the importance of the button (purely visual). Possible values are:"
 " 'primary' and 'secondary'."
 msgstr "URL, welche beim Anklicken auf den Button aufgerufen werden soll."
 
-#: .\insight_ui\component_details\parameter_context.py:1387
+#: .\insight_ui\component_details\parameter_context.py:1397
 msgid "Heading of the card."
 msgstr "Überschrift der Karte."
 
-#: .\insight_ui\component_details\parameter_context.py:1388
+#: .\insight_ui\component_details\parameter_context.py:1398
 msgid "Optional subtitle displayed directly below the title."
 msgstr "Optionaler Untertitel, welcher direkt unter dem Titel angezeigt wird."
 
-#: .\insight_ui\component_details\parameter_context.py:1392
+#: .\insight_ui\component_details\parameter_context.py:1402
 msgid ""
 "Text content of the card. Displayed below the title or subtitle if there is "
 "one."
 msgstr "Textinhalt der Karte. Wird unter dem Titel bzw. Untertitel angezeigt."
 
-#: .\insight_ui\component_details\parameter_context.py:1407
-#: .\insight_ui\component_details\parameter_context.py:1495
+#: .\insight_ui\component_details\parameter_context.py:1417
+#: .\insight_ui\component_details\parameter_context.py:1505
 msgid "Data to be displayed within the carousel (freely definable)."
 msgstr ""
 "Daten, welche innerhalb des Karussells angezeigt werden sollen (frei "
 "definierbar)."
 
-#: .\insight_ui\component_details\parameter_context.py:1412
-#: .\insight_ui\component_details\parameter_context.py:1461
+#: .\insight_ui\component_details\parameter_context.py:1422
+#: .\insight_ui\component_details\parameter_context.py:1471
 msgid ""
 "<b>True</b> if the current page should be displayed in the bottom right "
 "corner."
@@ -2940,8 +2940,8 @@ msgstr ""
 "<b>True</b>, wenn in der unteren rechten Ecke die aktuelle Seite angezeigt "
 "werden soll."
 
-#: .\insight_ui\component_details\parameter_context.py:1418
-#: .\insight_ui\component_details\parameter_context.py:1467
+#: .\insight_ui\component_details\parameter_context.py:1428
+#: .\insight_ui\component_details\parameter_context.py:1477
 msgid ""
 "<b>True</b> if a simple pagination should be displayed below the carousel "
 "content."
@@ -2949,52 +2949,52 @@ msgstr ""
 "<b>True</b>, wenn unter dem Karussell-Inhalt eine einfache Pagination "
 "angezeigt werden soll."
 
-#: .\insight_ui\component_details\parameter_context.py:1424
-#: .\insight_ui\component_details\parameter_context.py:1473
+#: .\insight_ui\component_details\parameter_context.py:1434
+#: .\insight_ui\component_details\parameter_context.py:1483
 msgid ""
 "<b>True</b> if the carousel should iterate through the content "
 "automatically."
 msgstr ""
 "<b>True</b>, wenn das Karussell selbständig durch den Inhalt iterieren soll."
 
-#: .\insight_ui\component_details\parameter_context.py:1427
+#: .\insight_ui\component_details\parameter_context.py:1437
 msgid "Number of 'carousel_items' per page."
 msgstr "Anzahl an 'carousel_items' pro Seite."
 
-#: .\insight_ui\component_details\parameter_context.py:1437
+#: .\insight_ui\component_details\parameter_context.py:1447
 msgid "Images to be displayed within the carousel."
 msgstr "Bilder, welche innerhalb des Karussells angezeigt werden sollen."
 
-#: .\insight_ui\component_details\parameter_context.py:1442
+#: .\insight_ui\component_details\parameter_context.py:1452
 msgid ""
 "Optional description of the image displayed at the top edge of the image."
 msgstr ""
 "Optionale Beschreibung des Bildes, welche am oberen Rand des Bildes "
 "angezeigt wird."
 
-#: .\insight_ui\component_details\parameter_context.py:1476
+#: .\insight_ui\component_details\parameter_context.py:1486
 msgid "Number of images per page."
 msgstr "Anzahl der Bilder pro Seite."
 
-#: .\insight_ui\component_details\parameter_context.py:1489
+#: .\insight_ui\component_details\parameter_context.py:1499
 msgid "Rotation speed of the carousel."
 msgstr "Drehgeschwindigkeit des Karussells."
 
-#: .\insight_ui\component_details\parameter_context.py:1490
+#: .\insight_ui\component_details\parameter_context.py:1500
 msgid "Vertical tilt of the carousel towards the camera."
 msgstr "Vertikale Neigung des Karussells zur Kamera."
 
-#: .\insight_ui\component_details\parameter_context.py:1492
+#: .\insight_ui\component_details\parameter_context.py:1502
 msgid "<b>True</b> if all cards should face the camera at all times."
 msgstr ""
 "<b>True</b>, wenn alle Karten immer in Richtung der Kamera ausgerichtet sein"
 " sollen."
 
-#: .\insight_ui\component_details\parameter_context.py:1523
+#: .\insight_ui\component_details\parameter_context.py:1533
 msgid "Configuration of the radio group for switching the view type."
 msgstr "Konfiguration der Radio-Group, zum Wechseln der Ansichtsart."
 
-#: .\insight_ui\component_details\parameter_context.py:1539
+#: .\insight_ui\component_details\parameter_context.py:1549
 msgid ""
 "Unique tag ID for identifying the element in JavaScript (required for "
 "switching the view)."
@@ -3002,26 +3002,26 @@ msgstr ""
 "Eindeutige Tag-ID für die Identifizierung des Elements im JavaScript (wird "
 "für den Wechsel der Ansicht benötigt)."
 
-#: .\insight_ui\component_details\parameter_context.py:1542
+#: .\insight_ui\component_details\parameter_context.py:1552
 msgid "Data to be displayed."
 msgstr "Daten, welche angezeigt werden sollen."
 
-#: .\insight_ui\component_details\parameter_context.py:1544
+#: .\insight_ui\component_details\parameter_context.py:1554
 msgid "Name of the currently selected view type."
 msgstr "Name der aktuell ausgewählten Ansichtsart."
 
-#: .\insight_ui\component_details\parameter_context.py:1555
+#: .\insight_ui\component_details\parameter_context.py:1565
 msgid "Configuration of the HTMX request for asynchronous requests."
 msgstr "Konfiguration des HTMX Requests für asynchrone Requests."
 
-#: .\insight_ui\component_details\parameter_context.py:1559
+#: .\insight_ui\component_details\parameter_context.py:1569
 msgid ""
 "ID of the HTML container whose content should be replaced upon response."
 msgstr ""
 "ID des HTML-Containers, dessen Inhalt beim Response ausgetauscht werden "
 "soll."
 
-#: .\insight_ui\component_details\parameter_context.py:1565
+#: .\insight_ui\component_details\parameter_context.py:1575
 msgid ""
 "The way the target should be replaced: only the content ('innerHTML') or the"
 " container itself ('outerHTML')."
@@ -3029,20 +3029,20 @@ msgstr ""
 "Die Art, wie das Target ausgetauscht werden soll: nur der Inhalt "
 "('innerHTML') oder der Container selbst ('outerHTML')."
 
-#: .\insight_ui\component_details\parameter_context.py:1577
+#: .\insight_ui\component_details\parameter_context.py:1587
 msgid "Heading of the form."
 msgstr "Überschrift des Formulars."
 
-#: .\insight_ui\component_details\parameter_context.py:1578
+#: .\insight_ui\component_details\parameter_context.py:1588
 msgid "Description of the form displayed directly below the title."
 msgstr ""
 "Beschreibung des Formulars, welche direkt unter dem Titel angezeigt wird."
 
-#: .\insight_ui\component_details\parameter_context.py:1579
+#: .\insight_ui\component_details\parameter_context.py:1589
 msgid "List of the individual form fields."
 msgstr "Liste der einzelnen Formular-Felder."
 
-#: .\insight_ui\component_details\parameter_context.py:1583
+#: .\insight_ui\component_details\parameter_context.py:1593
 msgid ""
 "<b>True</b> if a 'Reset' button should be displayed next to the 'Submit' "
 "button."
@@ -3050,7 +3050,7 @@ msgstr ""
 "<b>True</b>, wenn neben dem 'Absenden' Button ein 'Zurücksetzen' Button "
 "angezeigt werden soll"
 
-#: .\insight_ui\component_details\parameter_context.py:1587
+#: .\insight_ui\component_details\parameter_context.py:1597
 msgid ""
 "Name of the URL to which the request should be sent when submitting the "
 "form."
@@ -3060,34 +3060,312 @@ msgstr ""
 
 #: .\insight_ui\context.py:17
 msgid "Home"
-msgstr ""
+msgstr "Startseite"
 
 #: .\insight_ui\context.py:25
 #: .\insight_ui\templates\insight_ui\docs\installation.html:25
 msgid "Installation"
-msgstr ""
+msgstr "Installation"
 
 #: .\insight_ui\context.py:33
 #: .\insight_ui\templates\insight_ui\docs\base_template.html:19
 #: .\insight_ui\templates\insight_ui\docs\installation.html:62
 msgid "Base Template"
-msgstr ""
+msgstr "Basis-Template"
 
 #: .\insight_ui\context.py:41
 #: .\insight_ui\templates\insight_ui\docs\customization.html:19
 #: .\insight_ui\templates\insight_ui\docs\customization.html:156
 #: .\insight_ui\templates\insight_ui\docs\partial\button_detailpage.html:84
 msgid "Customization"
-msgstr ""
+msgstr "Anpassung"
 
 #: .\insight_ui\context.py:49
 #: .\insight_ui\templates\insight_ui\docs\icons.html:19
 msgid "Icons"
+msgstr "Icons"
+
+#: .\insight_ui\context.py:164
+#| msgid "Name of the currently selected view type."
+msgid "Name of the icon (see table below)."
+msgstr "Name des Icons (siehe Tabelle unten)."
+
+#: .\insight_ui\context.py:166
+#| msgid ""
+#| "Type of the alert. Possible values are 'info', 'success', 'warning' and "
+#| "'error'."
+msgid ""
+"Size of the icon. Possible values are: 'big', 'medium', 'small' and 'xs'."
 msgstr ""
+"Größe des Icons. Mögliche Werte sind: 'big' (groß), 'medium' (mittel), "
+"'small' (klein) und 'xs' (extra klein)."
+
+#: .\insight_ui\context.py:174
+msgid "Typically used for links to the home page."
+msgstr "Typisch für Verlinkungen auf die Startseite."
+
+#: .\insight_ui\context.py:180
+msgid "Topics related to the office or work."
+msgstr "Themen mit Bezug zum Büro oder der Arbeit."
+
+#: .\insight_ui\context.py:186
+msgid "Language selection elements."
+msgstr "Elemente zur Sprachauswahl."
+
+#: .\insight_ui\context.py:192
+#| msgid "Personal Settings"
+msgid "General settings."
+msgstr "Generelle Einstellungen."
+
+#: .\insight_ui\context.py:198
+msgid "As a logout button or for leaving a section."
+msgstr "Als Abmeldebutton oder zum Verlassen eines Bereichs."
+
+#: .\insight_ui\context.py:204
+msgid "Card-based dashboards, grid views, etc."
+msgstr "Auf Karten basierte Dashboards, Rasteransichten, etc.."
+
+#: .\insight_ui\context.py:210
+msgid "List views of all kinds."
+msgstr "Listenansichten jeder Art."
+
+#: .\insight_ui\context.py:216
+msgid ""
+"Specifically for our carousel components. <b>(This icon is to be replaced "
+"soon!)</b>"
+msgstr ""
+"Speziell für unsere Karussell-Komponenten. <b>(Das Icon soll demnächst "
+"ausgetauscht werden!)</b>"
+
+#: .\insight_ui\context.py:222
+msgid ""
+"Classic for dropdowns, accordions, and everything that can be expanded."
+msgstr ""
+"Klassiker für Dropdowns und Accordion, eben alles was sich aufklappen lässt."
+
+#: .\insight_ui\context.py:228
+msgid ""
+"Classic for dropdowns, accordions, and everything that can be collapsed."
+msgstr ""
+"Klassiker für Dropdowns und Accordion, eben alles was sich zuklappen lässt."
+
+#: .\insight_ui\context.py:234
+msgid "Classic for indicating a sorting option."
+msgstr "Klassiker für die Andeutung einer Sortiermöglichkeit."
+
+#: .\insight_ui\context.py:240 .\insight_ui\context.py:246
+msgid "Carousels, pagination or expandable elements such as a drawer."
+msgstr ""
+"Karussells, Pagination oder Elemente zum Ausklappen wie z.b. ein Drawer."
+
+#: .\insight_ui\context.py:252
+msgid "Checklists."
+msgstr "Checklisten."
+
+#: .\insight_ui\context.py:258
+msgid "Classic for buttons to close dialogs, alerts, etc."
+msgstr ""
+"Klassisch für Buttons zum Schließen von Dialogen, Warnungen und dergleichen."
+
+#: .\insight_ui\context.py:264
+msgid "Indicator for additional information or FAQs."
+msgstr "Indikator für weitere Informationen oder FAQs."
+
+#: .\insight_ui\context.py:270
+msgid ""
+"For special cases where something unique is needed, or simply no other icon "
+"fits :)."
+msgstr ""
+"Für spezielle Fälle, in denen es um etwas besonderes geht, oder einfach kein"
+" anderes Icon passt :)."
+
+#: .\insight_ui\context.py:276
+msgid "Settings or as a maintenance symbol."
+msgstr "Einstellungen oder als Wartungssymbol."
+
+#: .\insight_ui\context.py:282
+#| msgid "Search string for the search bar."
+msgid "Classic for any search bar."
+msgstr "Klassiker für jede Suchleiste."
+
+#: .\insight_ui\context.py:288
+msgid "Groups of different objects, for example components or dashboards."
+msgstr ""
+"Gruppen von unterschiedlichen Objekten, zum Beispiel Komponenten oder "
+"Dashboards."
+
+#: .\insight_ui\context.py:294
+msgid "Indicator for applications, programs or dialog windows."
+msgstr "Indikator für Anwendungen, Programme oder Dialogfenster."
+
+#: .\insight_ui\context.py:300
+msgid "Classic for documents."
+msgstr "Klassiker für Dokumente."
+
+#: .\insight_ui\context.py:306
+msgid "Classic for copy and paste."
+msgstr "Klassiker für Kopieren und Einfügen."
+
+#: .\insight_ui\context.py:312
+msgid "Indicator for a clickable element."
+msgstr "Indikator für ein anklickbares Element."
+
+#: .\insight_ui\context.py:318
+msgid "Classic for attachments or links to documents."
+msgstr "Klassiker für Anhänge bzw. Links zu Dokumenten."
+
+#: .\insight_ui\context.py:324
+msgid ""
+"Classic for links to other, often external pages or for opening a dialog "
+"window."
+msgstr ""
+"Klassiker für Links zu anderen, oft externen Seiten oder zum Öffnen eines "
+"Dialogfensters."
+
+#: .\insight_ui\context.py:330
+msgid "Classic for sharing content."
+msgstr "Klassiker für das Teilen von Inhalten."
+
+#: .\insight_ui\context.py:336
+msgid "Indicates smartphone usage."
+msgstr "Hinweis auf Smartphone-Nutzung."
+
+#: .\insight_ui\context.py:342
+msgid "Indicates tablet usage."
+msgstr "Hinweis auf Tablet-Nutzung."
+
+#: .\insight_ui\context.py:348
+msgid "Indicates desktop PC usage."
+msgstr "Hinweis auf Desktop-PC Nutzung."
+
+#: .\insight_ui\context.py:354 .\insight_ui\context.py:360
+msgid "Classic for light/dark mode switches."
+msgstr "Klassiker für Hell/Dunkel Darstellungswechselschalter."
+
+#: .\insight_ui\context.py:366
+#| msgid "Link to an imprint."
+msgid "Links to GitHub."
+msgstr "Verlinkungen zu GitHub."
+
+#: .\insight_ui\context.py:372
+msgid "Typical user icon, user profile, settings, etc."
+msgstr "Typisches Benutzericon, Benutzerprofil, Einstellungen, etc.."
+
+#: .\insight_ui\context.py:378
+msgid "Everything related to time."
+msgstr "Alles zum Thema Uhrzeit."
+
+#: .\insight_ui\context.py:384
+msgid "Dates, deadlines, appointments."
+msgstr "Datumsangaben, Deadlines, Termine."
+
+#: .\insight_ui\context.py:390
+#| msgid "Notifications"
+msgid "Typical for notifications."
+msgstr "Typisch für Benachrichtigungen."
+
+#: .\insight_ui\context.py:396
+#| msgid "Inactive"
+msgid "Interactive chats."
+msgstr "Interaktive Chats."
+
+#: .\insight_ui\context.py:402
+msgid "Special things or as an indicator for 'Let's get started!'."
+msgstr "Besondere Dinge oder als Indikator für 'Jetzt geht es los!'."
+
+#: .\insight_ui\context.py:408
+msgid "Indicator for the use of the terminal or command line."
+msgstr "Indikator für die Verwendung des Terminals bzw. der Kommandozeile."
+
+#: .\insight_ui\context.py:414
+msgid "Indicates source code."
+msgstr "Hinweis auf Quellcode."
+
+#: .\insight_ui\context.py:420
+msgid "Classic for downloads."
+msgstr "Klassiker für Downloads."
+
+#: .\insight_ui\context.py:426 .\insight_ui\context.py:432
+msgid "Customizations, settings, more for fine-grained settings."
+msgstr "Anpassungen, Einstellungen, eher für feingranulare Einstellungen."
+
+#: .\insight_ui\context.py:438
+#| msgid "Information and data of the chart."
+msgid "Information and notes."
+msgstr "Informationen und Anmerkungen."
+
+#: .\insight_ui\context.py:444
+msgid "Warnings, issues, minor errors."
+msgstr "Warnhinweise, Probleme, kleinere Fehler."
+
+#: .\insight_ui\context.py:450
+msgid "Major errors, critical issues or dangerous actions."
+msgstr "Große Fehler, kritische Probleme oder gefährliche Aktionen."
+
+#: .\insight_ui\context.py:458
+msgid "Icon"
+msgstr "Icon"
+
+#: .\insight_ui\context.py:458
+#| msgid "Example Card"
+msgid "Example usages"
+msgstr "Verwendungsbeispiele"
+
+#: .\insight_ui\context.py:458
+msgid "Source"
+msgstr "Quelle"
 
 #: .\insight_ui\context.py:490
 msgid "RTL"
+msgstr "RTL"
+
+#: .\insight_ui\context.py:508
+msgid "Structural layout components."
+msgstr "Strukturelle Anordnungs-Komponenten."
+
+#: .\insight_ui\context.py:510
+msgid "Main layout elements like navigation, footer and sidebars."
+msgstr "Hauptdarstellungselemente wie Navigation, Footer und Sidebars."
+
+#: .\insight_ui\context.py:513
+msgid ""
+"Standard input elements like Buttons, Radio-Buttons, Toggle-Buttons, "
+"Dropdown Menus and more."
 msgstr ""
+"Standard Eingabeelemente wie Buttons, Radio-Buttons, Toggle-Buttons, "
+"Dropdown-Menüs und mehr."
+
+#: .\insight_ui\context.py:517
+msgid ""
+"Popover, Tooltip, Modal and everything that pops up with additional "
+"information."
+msgstr ""
+"Popover, Tooltips, Modale und alles andere, das mit weiteren Informationen "
+"auftaucht."
+
+#: .\insight_ui\context.py:520
+#| msgid "Components"
+msgid "Utility components."
+msgstr "Unterstützende Komponenten."
+
+#: .\insight_ui\context.py:522
+msgid "List and table components for big data."
+msgstr "Listen- und Tabellen-Komponenten für große Datenmengen."
+
+#: .\insight_ui\context.py:524
+msgid "Filter and search components for big data."
+msgstr "Filter- und Such-Komponenten für große Datenmengen."
+
+#: .\insight_ui\context.py:526
+msgid "Card components and different presentation types."
+msgstr "Karten-Komponenten und verschiedene Präsentationsarten."
+
+#: .\insight_ui\context.py:528
+msgid ""
+"Form components with various input fields and different request methods."
+msgstr ""
+"Form-Komponenten mit diversen Eingabefeldern und verschiedenen Request-"
+"Methoden."
 
 #: .\insight_ui\templates\insight_ui\components\alert.html:24
 #: .\insight_ui\templates\insight_ui\components\form_errors.html:25
@@ -5129,6 +5407,10 @@ msgstr ""
 msgid "Formular erfolgreich übermittelt!"
 msgstr ""
 
+#, fuzzy
+#~ msgid "Elemente zur Sprachauswahl."
+#~ msgstr "Sprache auswählen"
+
 #~ msgid "To filter by license."
 #~ msgstr "Nach Lizenz filtern."
 
@@ -5162,10 +5444,6 @@ msgstr ""
 
 #~ msgid "Sidebar umschalten"
 #~ msgstr "Sidebar umschalten"
-
-#, fuzzy
-#~ msgid "Sprachauswahl"
-#~ msgstr "Sprache auswählen"
 
 #, fuzzy
 #~ msgid "Modal öffnen"
