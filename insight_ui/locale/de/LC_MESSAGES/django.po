@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django-insight-ui 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-30 10:39+0200\n"
-"PO-Revision-Date: 2026-03-30 10:48+0200\n"
+"POT-Creation-Date: 2026-03-30 11:15+0200\n"
+"PO-Revision-Date: 2026-03-30 11:15+0200\n"
 "Last-Translator:   <>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -837,7 +837,7 @@ msgstr "Element"
 msgid "Content for element"
 msgstr "Inhalt für Element"
 
-#: .\insight_ui\component_details\demo_context.py:523
+#: .\insight_ui\component_details\demo_context.py:523 .\insight_ui\views.py:73
 msgid "Items per page"
 msgstr "Einträge pro Seite"
 
@@ -3086,14 +3086,10 @@ msgid "Icons"
 msgstr "Icons"
 
 #: .\insight_ui\context.py:164
-#| msgid "Name of the currently selected view type."
 msgid "Name of the icon (see table below)."
 msgstr "Name des Icons (siehe Tabelle unten)."
 
 #: .\insight_ui\context.py:166
-#| msgid ""
-#| "Type of the alert. Possible values are 'info', 'success', 'warning' and "
-#| "'error'."
 msgid ""
 "Size of the icon. Possible values are: 'big', 'medium', 'small' and 'xs'."
 msgstr ""
@@ -3113,7 +3109,6 @@ msgid "Language selection elements."
 msgstr "Elemente zur Sprachauswahl."
 
 #: .\insight_ui\context.py:192
-#| msgid "Personal Settings"
 msgid "General settings."
 msgstr "Generelle Einstellungen."
 
@@ -3184,7 +3179,6 @@ msgid "Settings or as a maintenance symbol."
 msgstr "Einstellungen oder als Wartungssymbol."
 
 #: .\insight_ui\context.py:282
-#| msgid "Search string for the search bar."
 msgid "Classic for any search bar."
 msgstr "Klassiker für jede Suchleiste."
 
@@ -3243,7 +3237,6 @@ msgid "Classic for light/dark mode switches."
 msgstr "Klassiker für Hell/Dunkel Darstellungswechselschalter."
 
 #: .\insight_ui\context.py:366
-#| msgid "Link to an imprint."
 msgid "Links to GitHub."
 msgstr "Verlinkungen zu GitHub."
 
@@ -3260,12 +3253,10 @@ msgid "Dates, deadlines, appointments."
 msgstr "Datumsangaben, Deadlines, Termine."
 
 #: .\insight_ui\context.py:390
-#| msgid "Notifications"
 msgid "Typical for notifications."
 msgstr "Typisch für Benachrichtigungen."
 
 #: .\insight_ui\context.py:396
-#| msgid "Inactive"
 msgid "Interactive chats."
 msgstr "Interaktive Chats."
 
@@ -3290,7 +3281,6 @@ msgid "Customizations, settings, more for fine-grained settings."
 msgstr "Anpassungen, Einstellungen, eher für feingranulare Einstellungen."
 
 #: .\insight_ui\context.py:438
-#| msgid "Information and data of the chart."
 msgid "Information and notes."
 msgstr "Informationen und Anmerkungen."
 
@@ -3307,7 +3297,6 @@ msgid "Icon"
 msgstr "Icon"
 
 #: .\insight_ui\context.py:458
-#| msgid "Example Card"
 msgid "Example usages"
 msgstr "Verwendungsbeispiele"
 
@@ -3344,7 +3333,6 @@ msgstr ""
 "auftaucht."
 
 #: .\insight_ui\context.py:520
-#| msgid "Components"
 msgid "Utility components."
 msgstr "Unterstützende Komponenten."
 
@@ -5397,15 +5385,37 @@ msgstr ""
 #: .\insight_ui\views.py:117
 #, python-format
 msgid "Data updated at %(time)s"
-msgstr ""
+msgstr "Daten aktualisiert um %(time)s"
+
+#: .\insight_ui\views.py:141
+#, python-format
+msgid "Element %(i)s"
+msgstr "Element %(i)s"
+
+#: .\insight_ui\views.py:141
+#, python-format
+msgid "Dynamically loaded content for element %(i)s"
+msgstr "Dynamisch geladener Inhalt für Element %(i)s"
 
 #: .\insight_ui\views.py:181
-msgid "AJAX Formular erfolgreich übermittelt!"
-msgstr ""
+msgid "AJAX form successfully submitted!"
+msgstr "AJAX Formular erfolgreich übermittelt!"
 
 #: .\insight_ui\views.py:193
-msgid "Formular erfolgreich übermittelt!"
-msgstr ""
+msgid "Form successfully submitted!"
+msgstr "Formular erfolgreich übermittelt!"
+
+#: .\insight_ui\views.py:415
+msgid "This is the content of the first tab!"
+msgstr "Das ist der Inhalt des ersten Reiters!"
+
+#: .\insight_ui\views.py:418
+msgid "This is the content of the second tab!"
+msgstr "Das ist der Inhalt des zweiten Reiters!"
+
+#: .\insight_ui\views.py:420
+msgid "This is the content of the third tab!"
+msgstr "Das ist der Inhalt des dritten Reiters!"
 
 #, fuzzy
 #~ msgid "Elemente zur Sprachauswahl."
