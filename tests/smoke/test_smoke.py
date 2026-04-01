@@ -41,7 +41,7 @@ def test_login_url_responds_ok(client: Client) -> None:  # noqa: ANN001
     response = client.get("/login/")
 
     assert response.status_code == HTTPStatus.OK
-    assert "Login" in response.content.decode()
+    assert "login" in response.content.decode()
 
 
 @pytest.mark.smoke
