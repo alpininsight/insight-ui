@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django-insight-ui 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-30 11:32+0200\n"
-"PO-Revision-Date: 2026-03-30 11:33+0200\n"
+"POT-Creation-Date: 2026-04-01 10:23+0200\n"
+"PO-Revision-Date: 2026-04-01 10:23+0200\n"
 "Last-Translator:   <>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -437,8 +437,8 @@ msgid "Enterprise License"
 msgstr "Enterprise Lizenz"
 
 #: .\insight_ui\component_details\demo_context.py:43
-#: .\insight_ui\component_details\demo_context.py:700
-#: .\insight_ui\demo_utils.py:63
+#: .\insight_ui\component_details\demo_context.py:703
+#: .\insight_ui\demo_utils.py:67
 msgid "Title"
 msgstr "Titel"
 
@@ -474,6 +474,7 @@ msgstr "endet mit"
 
 #: .\insight_ui\component_details\demo_context.py:56
 #: .\insight_ui\component_details\demo_context.py:273
+#: .\insight_ui\templates\insight_ui\components\parameter_table.html:9
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -588,13 +589,13 @@ msgid "Parameter of the alert component."
 msgstr "Parameter der Alert-Komponente"
 
 #: .\insight_ui\component_details\demo_context.py:272
-#: .\insight_ui\component_details\demo_context.py:535
-#: .\insight_ui\component_details\demo_context.py:678
+#: .\insight_ui\component_details\demo_context.py:538
+#: .\insight_ui\component_details\demo_context.py:681
 msgid "No data available!"
 msgstr "Keine Daten verfügbar!"
 
 #: .\insight_ui\component_details\demo_context.py:273
-#: .\insight_ui\templates\insight_ui\docs\component_details_content.html:32
+#: .\insight_ui\templates\insight_ui\docs\component_details_content.html:34
 #: .\insight_ui\templates\insight_ui\docs\icons.html:47
 #: .\insight_ui\templates\insight_ui\docs\partial\3D_carousel_detailpage.html:32
 #: .\insight_ui\templates\insight_ui\docs\partial\accordion_detailpage.html:34
@@ -641,6 +642,7 @@ msgid "Parameter"
 msgstr "Parameter"
 
 #: .\insight_ui\component_details\demo_context.py:273
+#: .\insight_ui\templates\insight_ui\components\parameter_table.html:8
 msgid "Type"
 msgstr "Typ"
 
@@ -708,37 +710,37 @@ msgstr "Abbrechen"
 
 #: .\insight_ui\component_details\demo_context.py:349
 #: .\insight_ui\component_details\demo_context.py:358
-#: .\insight_ui\component_details\demo_context.py:756
+#: .\insight_ui\component_details\demo_context.py:759
 msgid "Contact Details"
 msgstr "Kontaktdaten"
 
 #: .\insight_ui\component_details\demo_context.py:350
 #: .\insight_ui\component_details\demo_context.py:359
-#: .\insight_ui\component_details\demo_context.py:757
+#: .\insight_ui\component_details\demo_context.py:760
 msgid "Information about the person and address."
 msgstr "Informationen zur Person und Anschrift."
 
 #: .\insight_ui\component_details\demo_context.py:353
 #: .\insight_ui\component_details\demo_context.py:362
-#: .\insight_ui\component_details\demo_context.py:760
+#: .\insight_ui\component_details\demo_context.py:763
 msgid "Payment Method"
 msgstr "Zahlungsmethode"
 
 #: .\insight_ui\component_details\demo_context.py:353
 #: .\insight_ui\component_details\demo_context.py:362
-#: .\insight_ui\component_details\demo_context.py:760
+#: .\insight_ui\component_details\demo_context.py:763
 msgid "Select the payment method."
 msgstr "Art der Bezahlung auswählen."
 
 #: .\insight_ui\component_details\demo_context.py:354
 #: .\insight_ui\component_details\demo_context.py:363
-#: .\insight_ui\component_details\demo_context.py:761
+#: .\insight_ui\component_details\demo_context.py:764
 msgid "Review"
 msgstr "Überprüfen"
 
 #: .\insight_ui\component_details\demo_context.py:354
 #: .\insight_ui\component_details\demo_context.py:363
-#: .\insight_ui\component_details\demo_context.py:761
+#: .\insight_ui\component_details\demo_context.py:764
 msgid "Review the data and pay."
 msgstr "Prüfen der Angaben und Bezahlen."
 
@@ -778,7 +780,8 @@ msgstr "PaLM 2"
 msgid "LLaMA 2 (currently not available)"
 msgstr "LLaMA 2 (gerade nicht verfügbar)"
 
-#: .\insight_ui\component_details\demo_context.py:465
+#: .\insight_ui\component_details\demo_context.py:466
+#: .\insight_ui\component_details\demo_context.py:467
 #: .\insight_ui\templates\insight_ui\docs\component_demo.html:71
 #: .\insight_ui\templates\insight_ui\docs\component_demo.html:72
 #: .\insight_ui\templates\insight_ui\docs\component_demo.html:73
@@ -787,295 +790,298 @@ msgstr "LLaMA 2 (gerade nicht verfügbar)"
 msgid "Click me!"
 msgstr "Klick mich an!"
 
-#: .\insight_ui\component_details\demo_context.py:472
-#: .\insight_ui\component_details\demo_context.py:482
+#: .\insight_ui\component_details\demo_context.py:475
+#: .\insight_ui\component_details\demo_context.py:485
 msgid "Capitals:"
 msgstr "Hauptstädte:"
 
-#: .\insight_ui\component_details\demo_context.py:472
-#: .\insight_ui\component_details\demo_context.py:485
-#: .\insight_ui\component_details\demo_context.py:486
+#: .\insight_ui\component_details\demo_context.py:475
+#: .\insight_ui\component_details\demo_context.py:488
+#: .\insight_ui\component_details\demo_context.py:489
 msgid "Berlin"
 msgstr "Berlin"
 
-#: .\insight_ui\component_details\demo_context.py:472
-#: .\insight_ui\component_details\demo_context.py:485
-#: .\insight_ui\component_details\demo_context.py:486
+#: .\insight_ui\component_details\demo_context.py:475
+#: .\insight_ui\component_details\demo_context.py:488
+#: .\insight_ui\component_details\demo_context.py:489
 msgid "Rome"
 msgstr "Rom"
 
-#: .\insight_ui\component_details\demo_context.py:472
-#: .\insight_ui\component_details\demo_context.py:485
+#: .\insight_ui\component_details\demo_context.py:475
+#: .\insight_ui\component_details\demo_context.py:488
 msgid "London"
 msgstr "London"
 
-#: .\insight_ui\component_details\demo_context.py:485
+#: .\insight_ui\component_details\demo_context.py:488
 msgid "Brussels"
 msgstr "Brüssel"
 
-#: .\insight_ui\component_details\demo_context.py:485
-#: .\insight_ui\component_details\demo_context.py:486
+#: .\insight_ui\component_details\demo_context.py:488
+#: .\insight_ui\component_details\demo_context.py:489
 msgid "Paris"
 msgstr "Paris"
 
-#: .\insight_ui\component_details\demo_context.py:485
+#: .\insight_ui\component_details\demo_context.py:488
 msgid "Warsaw"
 msgstr "Warschau"
 
-#: .\insight_ui\component_details\demo_context.py:502
+#: .\insight_ui\component_details\demo_context.py:505
 msgid "100€ (minimum)"
 msgstr "100€ (Minimum)"
 
-#: .\insight_ui\component_details\demo_context.py:502
+#: .\insight_ui\component_details\demo_context.py:505
 msgid "1500€ (maximum)"
 msgstr "1500€ (Maximum)"
 
-#: .\insight_ui\component_details\demo_context.py:514
-#: .\insight_ui\demo_utils.py:18 .\insight_ui\views.py:142
+#: .\insight_ui\component_details\demo_context.py:517
+#: .\insight_ui\demo_utils.py:19 .\insight_ui\views.py:142
 #, python-format
 msgid "Element %(i)s"
 msgstr "Element %(i)s"
 
-#: .\insight_ui\component_details\demo_context.py:514
-#: .\insight_ui\demo_utils.py:19
+#: .\insight_ui\component_details\demo_context.py:517
+#: .\insight_ui\demo_utils.py:20
 #, python-format
 msgid "Content for element %(i)s"
 msgstr "Inhalt für Element %(i)s"
 
-#: .\insight_ui\component_details\demo_context.py:524 .\insight_ui\views.py:73
+#: .\insight_ui\component_details\demo_context.py:527 .\insight_ui\views.py:73
 msgid "Items per page"
 msgstr "Einträge pro Seite"
 
-#: .\insight_ui\component_details\demo_context.py:534
+#: .\insight_ui\component_details\demo_context.py:537
 msgid "Example of a table component."
 msgstr "Beispiel einer Tabellenkomponente."
 
-#: .\insight_ui\component_details\demo_context.py:536
+#: .\insight_ui\component_details\demo_context.py:539
 #: .\insight_ui\context.py:458
 #: .\insight_ui\templates\insight_ui\components\parameter_table.html:7
 msgid "Name"
 msgstr "Name"
 
-#: .\insight_ui\component_details\demo_context.py:536
-#: .\insight_ui\component_details\demo_context.py:724
+#: .\insight_ui\component_details\demo_context.py:539
+#: .\insight_ui\component_details\demo_context.py:727
 msgid "E-mail"
 msgstr "E-Mail"
 
-#: .\insight_ui\component_details\demo_context.py:536
-#: .\insight_ui\demo_utils.py:63
+#: .\insight_ui\component_details\demo_context.py:539
+#: .\insight_ui\demo_utils.py:67
 #: .\insight_ui\templates\insight_ui\components\live_content_partial.html:14
 msgid "Status"
 msgstr "Status"
 
-#: .\insight_ui\component_details\demo_context.py:536
+#: .\insight_ui\component_details\demo_context.py:539
 msgid "Actions"
 msgstr "Aktionen"
 
-#: .\insight_ui\component_details\demo_context.py:541
-#: .\insight_ui\component_details\demo_context.py:553
-#: .\insight_ui\demo_utils.py:20
+#: .\insight_ui\component_details\demo_context.py:544
+#: .\insight_ui\component_details\demo_context.py:556
+#: .\insight_ui\demo_utils.py:21
 msgid "Active"
 msgstr "Aktiv"
 
-#: .\insight_ui\component_details\demo_context.py:547
-#: .\insight_ui\demo_utils.py:20
+#: .\insight_ui\component_details\demo_context.py:550
+#: .\insight_ui\demo_utils.py:21
 msgid "Inactive"
 msgstr "Inaktiv"
 
-#: .\insight_ui\component_details\demo_context.py:567
+#: .\insight_ui\component_details\demo_context.py:570
 msgid "AI model type"
 msgstr "KI-Modelltyp"
 
-#: .\insight_ui\component_details\demo_context.py:571
+#: .\insight_ui\component_details\demo_context.py:574
 msgid "To filter by the type of AI-Model."
 msgstr "Nach KI-Modelltyp filtern."
 
-#: .\insight_ui\component_details\demo_context.py:574
+#: .\insight_ui\component_details\demo_context.py:577
 msgid "Runtime"
 msgstr "Laufdauer"
 
-#: .\insight_ui\component_details\demo_context.py:578
+#: .\insight_ui\component_details\demo_context.py:581
 msgid "To filter by the runtime."
 msgstr "Nach Laufdauer filtern."
 
-#: .\insight_ui\component_details\demo_context.py:581
+#: .\insight_ui\component_details\demo_context.py:584
 msgid "License"
 msgstr "Lizenz"
 
-#: .\insight_ui\component_details\demo_context.py:603
+#: .\insight_ui\component_details\demo_context.py:606
 msgid "Example Card"
 msgstr "Beispielkarte"
 
-#: .\insight_ui\component_details\demo_context.py:604
+#: .\insight_ui\component_details\demo_context.py:607
 msgid "Subtitle"
 msgstr "Untertitel"
 
-#: .\insight_ui\component_details\demo_context.py:605
+#: .\insight_ui\component_details\demo_context.py:608
 msgid "This is the card content."
 msgstr "Das ist der Karteninhalt."
 
-#: .\insight_ui\component_details\demo_context.py:607
-#: .\insight_ui\component_details\demo_context.py:615
-#: .\insight_ui\component_details\demo_context.py:627
-#: .\insight_ui\component_details\demo_context.py:639
-#: .\insight_ui\demo_utils.py:22
-#: .\insight_ui\templates\insight_ui\docs\component_demo.html:149
+#: .\insight_ui\component_details\demo_context.py:610
+#: .\insight_ui\component_details\demo_context.py:618
+#: .\insight_ui\component_details\demo_context.py:630
+#: .\insight_ui\component_details\demo_context.py:642
+#: .\insight_ui\demo_utils.py:23
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:152
 msgid "Learn more"
 msgstr "Mehr erfahren"
 
-#: .\insight_ui\component_details\demo_context.py:608
-#: .\insight_ui\component_details\demo_context.py:616
-#: .\insight_ui\component_details\demo_context.py:628
-#: .\insight_ui\component_details\demo_context.py:640
-#: .\insight_ui\demo_utils.py:23
+#: .\insight_ui\component_details\demo_context.py:611
+#: .\insight_ui\component_details\demo_context.py:619
+#: .\insight_ui\component_details\demo_context.py:631
+#: .\insight_ui\component_details\demo_context.py:643
+#: .\insight_ui\demo_utils.py:24
 msgid "Share"
 msgstr "Teilen"
 
-#: .\insight_ui\component_details\demo_context.py:612
+#: .\insight_ui\component_details\demo_context.py:615
 msgid "Card with actions"
 msgstr "Karte mit Aktion"
 
-#: .\insight_ui\component_details\demo_context.py:613
+#: .\insight_ui\component_details\demo_context.py:616
 msgid "This card has some action buttons."
 msgstr "Diese Karte hat einige Aktions-Buttons."
 
-#: .\insight_ui\component_details\demo_context.py:622
+#: .\insight_ui\component_details\demo_context.py:625
 msgid "App Card"
 msgstr "Appkarte"
 
-#: .\insight_ui\component_details\demo_context.py:623
+#: .\insight_ui\component_details\demo_context.py:626
 msgid "A card with its content arranged horizontally."
 msgstr "Eine Karte mit horizontal angeordnetem Inhalt."
 
-#: .\insight_ui\component_details\demo_context.py:624
-#: .\insight_ui\component_details\demo_context.py:636
+#: .\insight_ui\component_details\demo_context.py:627
+#: .\insight_ui\component_details\demo_context.py:639
 msgid "Card-Image"
 msgstr "Kartenbild"
 
-#: .\insight_ui\component_details\demo_context.py:625
-#: .\insight_ui\component_details\demo_context.py:637
+#: .\insight_ui\component_details\demo_context.py:628
+#: .\insight_ui\component_details\demo_context.py:640
 #: .\insight_ui\templates\insight_ui\components\navbar.html:122
-msgid "Insight-UI"
-msgstr ""
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:242
+#: .\insight_ui\templates\insight_ui\index.html:4
+#: .\insight_ui\templates\insight_ui\playground.html:4
+msgid "Insight UI"
+msgstr "Insight UI"
 
-#: .\insight_ui\component_details\demo_context.py:625
-#: .\insight_ui\component_details\demo_context.py:637
+#: .\insight_ui\component_details\demo_context.py:628
+#: .\insight_ui\component_details\demo_context.py:640
 msgid "Layout"
-msgstr ""
+msgstr "Layout"
 
-#: .\insight_ui\component_details\demo_context.py:625
-#: .\insight_ui\component_details\demo_context.py:637
+#: .\insight_ui\component_details\demo_context.py:628
+#: .\insight_ui\component_details\demo_context.py:640
 #, fuzzy
 #| msgid "App Card"
 msgid "Card"
 msgstr "Appkarte"
 
-#: .\insight_ui\component_details\demo_context.py:634
+#: .\insight_ui\component_details\demo_context.py:637
 msgid "Flip Card"
 msgstr "Drehkarte"
 
-#: .\insight_ui\component_details\demo_context.py:635
+#: .\insight_ui\component_details\demo_context.py:638
 msgid "A card that rotates 180° and has additional content on the back."
 msgstr ""
 "Eine Karte, die sich um 180° dreht und weiteren Inhalt auf der Rückseite "
 "hat."
 
-#: .\insight_ui\component_details\demo_context.py:663
+#: .\insight_ui\component_details\demo_context.py:666
 #, python-format
 msgid "Placeholder image %(index)s"
 msgstr "Platzhalterbild %(index)s"
 
-#: .\insight_ui\component_details\demo_context.py:701
+#: .\insight_ui\component_details\demo_context.py:704
 msgid "Your title"
 msgstr "Dein Titel"
 
-#: .\insight_ui\component_details\demo_context.py:702
+#: .\insight_ui\component_details\demo_context.py:705
 msgid "No title"
 msgstr "Kein Titel"
 
-#: .\insight_ui\component_details\demo_context.py:702
+#: .\insight_ui\component_details\demo_context.py:705
 msgid "King"
 msgstr "König"
 
-#: .\insight_ui\component_details\demo_context.py:708
+#: .\insight_ui\component_details\demo_context.py:711
 msgid "First name"
 msgstr "Vorname"
 
-#: .\insight_ui\component_details\demo_context.py:709
+#: .\insight_ui\component_details\demo_context.py:712
 msgid "Type in your first name"
 msgstr "Gib deinen Vornamen ein"
 
-#: .\insight_ui\component_details\demo_context.py:716
+#: .\insight_ui\component_details\demo_context.py:719
 msgid "Last name"
 msgstr "Nachname"
 
-#: .\insight_ui\component_details\demo_context.py:717
+#: .\insight_ui\component_details\demo_context.py:720
 msgid "Type in your last name"
 msgstr "Gib deinen Nachnamen ein"
 
-#: .\insight_ui\component_details\demo_context.py:725
+#: .\insight_ui\component_details\demo_context.py:728
 msgid "Type in your.email@example.com"
 msgstr "Gib deine.email@ein.de"
 
-#: .\insight_ui\component_details\demo_context.py:732
+#: .\insight_ui\component_details\demo_context.py:735
 #: .\insight_ui\templates\insight_ui\login.html:53
 msgid "Password"
 msgstr "Passwort"
 
-#: .\insight_ui\component_details\demo_context.py:733
+#: .\insight_ui\component_details\demo_context.py:736
 msgid "Type in your password"
 msgstr "Gib dein Passwort ein"
 
-#: .\insight_ui\component_details\demo_context.py:740
+#: .\insight_ui\component_details\demo_context.py:743
 #: .\insight_ui\templates\insight_ui\components\chat.html:17
 msgid "Message"
 msgstr "Nachricht"
 
-#: .\insight_ui\component_details\demo_context.py:741
+#: .\insight_ui\component_details\demo_context.py:744
 msgid "Do you want to tell us something?..."
 msgstr "Willst Du uns etwas mitteilen? …"
 
-#: .\insight_ui\component_details\demo_context.py:771
+#: .\insight_ui\component_details\demo_context.py:774
 msgid "What is Django?"
 msgstr "Was ist Django?"
 
-#: .\insight_ui\component_details\demo_context.py:771
+#: .\insight_ui\component_details\demo_context.py:774
 msgid "Django is a web framework for Python."
 msgstr "Django ist ein Webframework für Python."
 
-#: .\insight_ui\component_details\demo_context.py:772
+#: .\insight_ui\component_details\demo_context.py:775
 msgid "What is Tailwind?"
 msgstr "Was ist Tailwind?"
 
-#: .\insight_ui\component_details\demo_context.py:772
+#: .\insight_ui\component_details\demo_context.py:775
 msgid "Tailwind is a CSS utility framework"
 msgstr "Tailwind ist ein CSS-Utility-Framework."
 
-#: .\insight_ui\component_details\demo_context.py:773
+#: .\insight_ui\component_details\demo_context.py:776
 msgid "What is ARIA?"
 msgstr "Was ist ARIA?"
 
-#: .\insight_ui\component_details\demo_context.py:773
+#: .\insight_ui\component_details\demo_context.py:776
 msgid "ARIA is short for Accessible Rich Internet Applications."
 msgstr "ARIA steht für Accessible Rich Internet Applications."
 
-#: .\insight_ui\component_details\demo_context.py:784
+#: .\insight_ui\component_details\demo_context.py:787
 msgid "Tabs Example"
 msgstr "Reiterbeispiel"
 
-#: .\insight_ui\component_details\demo_context.py:786
+#: .\insight_ui\component_details\demo_context.py:789
 msgid "First Tab"
 msgstr "Erster Reiter"
 
-#: .\insight_ui\component_details\demo_context.py:790
+#: .\insight_ui\component_details\demo_context.py:793
 msgid "Second Tab"
 msgstr "Zweiter Reiter"
 
-#: .\insight_ui\component_details\demo_context.py:792
+#: .\insight_ui\component_details\demo_context.py:795
 msgid "Third Tab"
 msgstr "Dritter Reiter"
 
-#: .\insight_ui\component_details\demo_context.py:809
+#: .\insight_ui\component_details\demo_context.py:812
 msgid "Chart Example"
 msgstr "Diagrammbeispiel"
 
@@ -3085,7 +3091,7 @@ msgstr "Basis-Template"
 
 #: .\insight_ui\context.py:41
 #: .\insight_ui\templates\insight_ui\docs\customization.html:19
-#: .\insight_ui\templates\insight_ui\docs\customization.html:156
+#: .\insight_ui\templates\insight_ui\docs\customization.html:157
 #: .\insight_ui\templates\insight_ui\docs\partial\button_detailpage.html:84
 msgid "Customization"
 msgstr "Anpassung"
@@ -3365,7 +3371,7 @@ msgstr ""
 "Form-Komponenten mit diversen Eingabefeldern und verschiedenen Request-"
 "Methoden."
 
-#: .\insight_ui\demo_utils.py:25
+#: .\insight_ui\demo_utils.py:27
 #, python-format
 msgid ""
 "<a href='#' class='underline text-insight-text-link hover:text-insight-text-"
@@ -3374,12 +3380,11 @@ msgstr ""
 "<a href='#' class='underline text-insight-text-link hover:text-insight-text-"
 "link-hover'>Details %(i)s</a>"
 
-#: .\insight_ui\demo_utils.py:63
+#: .\insight_ui\demo_utils.py:67
 msgid "Content"
 msgstr "Inhalt"
 
-#: .\insight_ui\demo_utils.py:63
-#| msgid "RTL"
+#: .\insight_ui\demo_utils.py:67
 msgid "URL"
 msgstr "URL"
 
@@ -3389,7 +3394,7 @@ msgstr "URL"
 #: .\insight_ui\templates\insight_ui\components\modal.html:63
 #: .\insight_ui\templates\insight_ui\docs\component_demo.html:58
 msgid "Close"
-msgstr ""
+msgstr "Schließen"
 
 #: .\insight_ui\templates\insight_ui\components\breadcrumbs.html:3
 msgid "Breadcrumb-Navigation"
@@ -3398,554 +3403,648 @@ msgstr "Breadcrumb-Navigation"
 #: .\insight_ui\templates\insight_ui\components\carousel.html:24
 #: .\insight_ui\templates\insight_ui\components\pagination.html:17
 msgid "To previous page"
-msgstr ""
+msgstr "Vorige Seite"
 
 #: .\insight_ui\templates\insight_ui\components\carousel.html:30
 #: .\insight_ui\templates\insight_ui\components\pagination.html:57
 msgid "To next page"
-msgstr ""
+msgstr "Nächste Seite"
 
 #: .\insight_ui\templates\insight_ui\components\carousel.html:38
 msgid "Go to page:"
-msgstr ""
+msgstr "Gehe zu Seite:"
 
 #: .\insight_ui\templates\insight_ui\components\carousels\3D_carousel.html:24
-msgid "Zurück"
-msgstr ""
+msgid "Back"
+msgstr "Zurück"
 
 #: .\insight_ui\templates\insight_ui\components\carousels\3D_carousel.html:27
-msgid "Weiter"
-msgstr ""
+msgid "Next"
+msgstr "Weiter"
 
 #: .\insight_ui\templates\insight_ui\components\chat.html:20
 msgid "Write something..."
-msgstr ""
+msgstr "Etwas schreiben…"
 
 #: .\insight_ui\templates\insight_ui\components\chat.html:22
 msgid "Send"
-msgstr ""
+msgstr "Senden"
 
 #: .\insight_ui\templates\insight_ui\components\code_block.html:22
 msgid "Copy"
-msgstr ""
+msgstr "Kopieren"
 
 #: .\insight_ui\templates\insight_ui\components\footer.html:40
 msgid "Links"
-msgstr ""
+msgstr "Links"
 
 #: .\insight_ui\templates\insight_ui\components\footer.html:55
-msgid "Kontakt"
-msgstr ""
+msgid "Contact"
+msgstr "Kontakt"
 
 #: .\insight_ui\templates\insight_ui\components\footer.html:58
 msgid "Imprint"
-msgstr ""
+msgstr "Impressum"
 
 #: .\insight_ui\templates\insight_ui\components\footer.html:61
 msgid "Privacy"
-msgstr ""
+msgstr "Datenschutz"
 
 #: .\insight_ui\templates\insight_ui\components\footer.html:66
 msgid "Do you have any questions or feedback?"
-msgstr ""
+msgstr "Gibt es Fragen oder Rückmeldungen?"
 
 #: .\insight_ui\templates\insight_ui\components\footer.html:75
 msgid "All rights reserved."
-msgstr ""
+msgstr "Alle Rechte vorbehalten."
 
 #: .\insight_ui\templates\insight_ui\components\form.html:41
 msgid "Reset"
-msgstr ""
+msgstr "Zurücksetzen"
 
 #: .\insight_ui\templates\insight_ui\components\form.html:43
 msgid "Submit"
-msgstr ""
+msgstr "Absenden"
 
 #: .\insight_ui\templates\insight_ui\components\form.html:53
 #: .\insight_ui\templates\insight_ui\components\htmx_loading_indicator.html:20
 #: .\insight_ui\templates\insight_ui\components\live_content.html:18
 msgid "Loading..."
-msgstr ""
+msgstr "Laden…"
 
 #: .\insight_ui\templates\insight_ui\components\form_errors.html:12
 msgid "Error while submitting the form"
-msgstr ""
+msgstr "Fehler beim Absenden des Formulars"
 
 #: .\insight_ui\templates\insight_ui\components\form_success.html:12
 msgid "Successfully submitted!"
-msgstr ""
+msgstr "Erfolgreich abgesendet!"
 
 #: .\insight_ui\templates\insight_ui\components\infinite_scroll.html:33
 #: .\insight_ui\templates\insight_ui\components\infinite_scroll_items.html:19
 msgid "Load more"
-msgstr ""
+msgstr "Mehr laden"
 
 #: .\insight_ui\templates\insight_ui\components\infinite_scroll.html:41
 msgid "More content is loading..."
-msgstr ""
+msgstr "Weitere Inhalte werden geladen…"
 
 #: .\insight_ui\templates\insight_ui\components\infinite_scroll_items.html:33
 msgid "Load more content..."
-msgstr ""
+msgstr "Mehr Inhalte laden…"
 
 #: .\insight_ui\templates\insight_ui\components\infinite_scroll_items.html:39
 msgid "All content loaded"
-msgstr ""
+msgstr "Aller Inhalt geladen"
 
 #: .\insight_ui\templates\insight_ui\components\input.html:9
 #: .\insight_ui\templates\insight_ui\components\select.html:9
 #: .\insight_ui\templates\insight_ui\components\textarea.html:9
 msgid "Required"
-msgstr ""
+msgstr "Erforderlich"
 
 #: .\insight_ui\templates\insight_ui\components\list_partial.html:12
 msgid "No elements found!"
-msgstr ""
+msgstr "Keine Elemente gefunden!"
 
 #: .\insight_ui\templates\insight_ui\components\live_content.html:26
 msgid "Content is loading..."
-msgstr ""
+msgstr "Inhalt wird geladen…"
 
 #: .\insight_ui\templates\insight_ui\components\live_content_partial.html:14
 msgid "Timestamp"
-msgstr ""
+msgstr "Zeitstempel"
 
 #: .\insight_ui\templates\insight_ui\components\multiselect.html:7
-msgid "Alle auswählen"
-msgstr ""
+msgid "Select all"
+msgstr "Alle auswählen"
 
 #: .\insight_ui\templates\insight_ui\components\multiselect.html:8
-#, fuzzy
-#| msgid "Sprache auswählen"
-msgid "Alle abwählen"
-msgstr "Sprache auswählen"
+msgid "Deselect all"
+msgstr "Alle abwählen"
 
 #: .\insight_ui\templates\insight_ui\components\navbar.html:5
 msgid "Jump to main content"
-msgstr ""
+msgstr "Zum Hauptinhalt springen"
 
 #: .\insight_ui\templates\insight_ui\components\navbar.html:10
-#, fuzzy
-#| msgid "Seitennavigation"
 msgid "Main navigation"
-msgstr "Seitennavigation"
+msgstr "Hauptnavigation"
 
 #: .\insight_ui\templates\insight_ui\components\navbar.html:55
 msgid "Open menu"
-msgstr ""
+msgstr "Menü öffnen"
 
 #: .\insight_ui\templates\insight_ui\components\navbar.html:122
 msgid "Lorem ipsum..."
-msgstr ""
+msgstr "Lorem ipsum..."
 
 #: .\insight_ui\templates\insight_ui\components\pagination.html:22
 msgid ""
 "To previous page (Deactivated because there are no more previous pages)"
-msgstr ""
+msgstr "Vorige Seite (deaktiviert, weil es keine vorige Seite gibt)"
 
 #: .\insight_ui\templates\insight_ui\components\pagination.html:62
 msgid "To next page (Deactivated because there are no more next pages)"
-msgstr ""
+msgstr "Nächste Seite (deaktiviert, weil es keine nächste Seite gibt)"
 
 #: .\insight_ui\templates\insight_ui\components\pagination.html:83
 msgid "Page"
-msgstr ""
+msgstr "Seite"
 
 #: .\insight_ui\templates\insight_ui\components\pagination.html:83
 msgid "of"
-msgstr ""
-
-#: .\insight_ui\templates\insight_ui\components\parameter_table.html:8
-msgid "Typ"
-msgstr ""
-
-#: .\insight_ui\templates\insight_ui\components\parameter_table.html:9
-msgid "Beschreibung"
-msgstr ""
+msgstr "von"
 
 #: .\insight_ui\templates\insight_ui\components\parameter_table.html:10
-msgid "Standardwert"
-msgstr ""
+msgid "Default value"
+msgstr "Standardwert"
 
 #: .\insight_ui\templates\insight_ui\components\search_bar.html:18
 #: .\insight_ui\templates\insight_ui\components\search_bar.html:28
 msgid "Search"
-msgstr ""
+msgstr "Suche"
 
 #: .\insight_ui\templates\insight_ui\components\search_bar.html:25
 msgid "Browse..."
-msgstr ""
+msgstr "Durchsuchen…"
 
 #: .\insight_ui\templates\insight_ui\components\search_query_builder\sq_builder.html:6
 msgid "The following conditions must be met:"
-msgstr ""
+msgstr "Die folgenden Bedingungen sind erforderlich:"
 
 #: .\insight_ui\templates\insight_ui\components\search_query_builder\sq_builder.html:23
 msgid "Add another filter"
-msgstr ""
+msgstr "Weiteren Filter hinzufügen"
 
 #: .\insight_ui\templates\insight_ui\components\search_query_builder\sq_builder.html:26
 msgid "Apply"
-msgstr ""
+msgstr "Anwenden"
 
 #: .\insight_ui\templates\insight_ui\components\search_query_builder\sq_builder.html:101
 #: .\insight_ui\templates\insight_ui\components\search_query_builder\sq_builder_filter.html:41
 msgid "Value"
-msgstr ""
+msgstr "Wert"
 
 #: .\insight_ui\templates\insight_ui\components\search_query_builder\sq_builder_filter.html:19
 msgid "Select the field of the filter"
-msgstr ""
+msgstr "Feld des Filter auswählen"
 
 #: .\insight_ui\templates\insight_ui\components\search_query_builder\sq_builder_filter.html:21
 msgid "-- Attribute --"
-msgstr ""
+msgstr "-- Attribut --"
 
 #: .\insight_ui\templates\insight_ui\components\search_query_builder\sq_builder_filter.html:29
 msgid "Select the operator of the filter"
-msgstr ""
+msgstr "Operator des Filters auswählen"
 
 #: .\insight_ui\templates\insight_ui\components\search_query_builder\sq_builder_filter.html:39
 msgid "Specify the value of the filter"
-msgstr ""
+msgstr "Wert des Filters angeben"
 
 #: .\insight_ui\templates\insight_ui\components\search_query_builder\sq_builder_filter.html:51
 msgid "Remove filter"
-msgstr ""
+msgstr "Filter entfernen"
 
 #: .\insight_ui\templates\insight_ui\components\sidebar.html:8
 msgid "Open sidebar"
-msgstr ""
+msgstr "Sidebar öffnen"
 
 #: .\insight_ui\templates\insight_ui\components\sidebar.html:34
-#, fuzzy
-#| msgid "Seitennavigation"
 msgid "Side navigation"
 msgstr "Seitennavigation"
 
 #: .\insight_ui\templates\insight_ui\components\sidebar.html:60
 msgid "Close sidebar"
-msgstr ""
+msgstr "Sidebar schließen"
 
 #: .\insight_ui\templates\insight_ui\components\tabs.html:29
 msgid "Tab content"
-msgstr ""
+msgstr "Reiterinhalt"
 
 #: .\insight_ui\templates\insight_ui\components\toc_sidebar.html:6
 msgid "Table of Contents"
-msgstr ""
+msgstr "Inhaltsverzeichnis"
 
 #: .\insight_ui\templates\insight_ui\components\toggle_theme.html:4
 msgid "Toggle theme"
-msgstr ""
+msgstr "Darstellung wechseln"
 
 #: .\insight_ui\templates\insight_ui\components\user_dropdown.html:11
 msgid "Logged in as"
-msgstr ""
+msgstr "Angemeldet als"
 
 #: .\insight_ui\templates\insight_ui\components\user_dropdown.html:45
 #: .\insight_ui\templates\insight_ui\login.html:40
 msgid "Login"
-msgstr ""
+msgstr "Anmelden"
 
 #: .\insight_ui\templates\insight_ui\components\websocket.html:12
 msgid "Wait for messages..."
-msgstr ""
+msgstr "Auf Nachrichten warten…"
 
 #: .\insight_ui\templates\insight_ui\components\websocket.html:16
 msgid "Status:"
-msgstr ""
+msgstr "Status:"
 
 #: .\insight_ui\templates\insight_ui\components\websocket.html:16
 msgid "Establishing connection..."
-msgstr ""
+msgstr "Verbindung wird hergestellt…"
 
 #: .\insight_ui\templates\insight_ui\components\websocket.html:19
 msgid "URL:"
-msgstr ""
+msgstr "URL:"
 
 #: .\insight_ui\templates\insight_ui\components\websocket.html:22
 msgid "Mode: HTMX WebSocket Extension (expects HTML)"
-msgstr ""
+msgstr "Modus: HTMX WebSocket Extension (erwartet HTML)"
 
 #: .\insight_ui\templates\insight_ui\docs\base_template.html:4
 msgid "Insight UI - Base Template"
-msgstr ""
+msgstr "Insight UI – Basis-Template"
 
 #: .\insight_ui\templates\insight_ui\docs\base_template.html:19
 msgid ""
-"Unser Base-Template dient als Grundlage für sämtliche Seiten der Anwendung. "
-"Es bietet unter anderem ein semantisch korrektes Grundgerüst für den Header,"
-" Footer, Sidebars, dem Hauptinhalt und noch weiteren Grundbausteinen, vieler"
-" Web-Anwendungen. Zusätzlich lädt das Base-Template bereits alle notwendigen"
-" JavaScript Dateien und je nach Konfiguration auch die externen JavaScript "
-"Libraries, sowie Stylesheets. Die Konfiguration des Favicon und Search "
-"Engine optimization (SEO) wird von dem Base-Template ebenfalls vorgenommen."
+"Our base template serves as the foundation for all pages of the application."
+" It provides a semantically correct framework for the header, footer, "
+"sidebars, main content and other basic building blocks of many web "
+"applications. The base template also loads all necessary JavaScript files "
+"and, depending on the configuration, external JavaScript libraries and "
+"stylesheets. Favicon configuration and search engine optimization (SEO) are "
+"also handled by the base template."
 msgstr ""
+"Unser Basis-Template dient als Grundlage für sämtliche Seiten der Anwendung."
+" Es bietet unter anderem ein semantisch korrektes Grundgerüst für den "
+"Header, Footer, Sidebars, den Hauptinhalt und letztlich noch weitere "
+"Grundbausteine vieler Web-Anwendungen. Zusätzlich lädt das Base-Template "
+"bereits alle notwendigen JavaScript Dateien und, je nach Konfiguration, auch"
+" die externen JavaScript Libraries, sowie Stylesheets. Auch die "
+"Konfiguration des Favicon und der Search Engine optimization (SEO) wird vom "
+"Basis-Template vorgenommen."
 
 #: .\insight_ui\templates\insight_ui\docs\base_template.html:25
-#: .\insight_ui\templates\insight_ui\docs\component_details_content.html:14
+#: .\insight_ui\templates\insight_ui\docs\component_details_content.html:16
 #: .\insight_ui\templates\insight_ui\docs\icons.html:35
 msgid "Usage"
-msgstr ""
+msgstr "Verwendung"
 
 #: .\insight_ui\templates\insight_ui\docs\base_template.html:27
 #, python-format
 msgid ""
 "\n"
-"                    Das Base-Template kann ganz einfach verwendet werden, indem ein neues Template dieses <i>erweitert</i>.\n"
-"                    Dazu muss am Anfang des neuen Templates das %(extends)s Tag von Django verwendet werden.\n"
+"                    The base template can be easily used by having a new template <i>extend</i> it.\n"
+"                    To do this, the %(extends)s tag from Django must be used at the beginning of the new template.\n"
 "                "
 msgstr ""
+"\n"
+"Das Basis-Template kann ganz einfach verwendet werden, indem es von einem neuem Template <i>erweiter</i>t wird. Dazu muss am Anfang des neuen Templates das %(extends)s Tag von Django verwendet werden."
 
 #: .\insight_ui\templates\insight_ui\docs\base_template.html:40
 msgid ""
+"In the <b>Head</b>, all required JavaScript libraries are linked and the SEO"
+" and favicon are defined."
+msgstr ""
 "Im <b>Head</b> werden alle benötigten JavaScript Bibliotheken verlinkt, "
 "sowie die SEO und das Favicon definiert."
-msgstr ""
 
 #: .\insight_ui\templates\insight_ui\docs\base_template.html:45
 msgid ""
-"Definiert den Title der Seite, welcher u.a. oben im Browser-Tab angezeigt "
-"wird."
+"Defines the title of the page, which is displayed on the browser tab among "
+"other places."
 msgstr ""
+"Definiert den Titel der Seite, welcher u.a. oben im Browser-Tab angezeigt "
+"wird."
 
 #: .\insight_ui\templates\insight_ui\docs\base_template.html:49
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:101
-msgid "Zum Einbinden weiterer JavaScript Libraries."
-msgstr ""
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:103
+msgid "For including additional JavaScript libraries."
+msgstr "Zum Einbinden weiterer JavaScript-Bibliotheken."
 
 #: .\insight_ui\templates\insight_ui\docs\base_template.html:55
 #, python-format
 msgid ""
 "\n"
-"                        Das Favicon, die SEO Angaben, sowie weitere Meta-Information können über die %(bold_text)s Einstellungen in der %(file)s angepasst werden.\n"
+"                        The favicon, SEO settings and other meta information can be adjusted via the %(bold_text)s settings in %(file)s.\n"
 "                    "
 msgstr ""
+"\n"
+"Das Favicon, die SEO Angaben, sowie weitere Meta-Information können über die %(bold_text)s Einstellungen in der %(file)s angepasst werden."
 
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:73
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:65
 msgid ""
-"Dieser Block kann verwendet werden, um etwas hinter allen anderen Blöcken "
-"anzuzeigen."
+"\n"
+"                        The <b>Body</b> provides a basic framework for the content, consisting of several blocks.\n"
+"                        Each block is intended for a specific purpose and ensures that the layout fits together.\n"
+"                        The basic framework consists of the following blocks:\n"
+"                    "
 msgstr ""
+"\n"
+"Der <b>Body</b> stellt ein aus mehreren Blöcken bestehendes Grundgerüst für den Inhalt bereit. Jeder Block ist für einen bestimmten Zweck vorgesehen und sorgt dafür, dass das Layout zusammen passt. Das Grundgerüst besteht aus den folgenden Blöcken:"
 
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:77
-msgid "Der Block ist für die Navbar vorgesehen."
-msgstr ""
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:75
+msgid "This block displays something behind all other blocks."
+msgstr "Dieser Block zeigt etwas hinter allen anderen Blöcken an."
 
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:81
-msgid "Dieser Block ist für ausklappbare Sidebars vorgesehen."
-msgstr ""
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:79
+msgid "This block is intended for the navbar."
+msgstr "Dieser Block ist für die Navbar vorgesehen."
 
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:85
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:83
+msgid "This block is intended for expandable sidebars."
+msgstr "Dieser Block ist für ausklappbare Sidebars vorgesehen."
+
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:87
 msgid ""
+"This block is the first (left) in the main area and is therefore intended "
+"for the left sidebar."
+msgstr ""
 "Dieser Block befindet sich als erstes (links) im Hauptbereich und ist daher "
 "für die linke Sidebar vorgesehen."
-msgstr ""
 
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:89
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:91
 msgid ""
+"This block is the last (right) in the main area and is therefore intended "
+"for the right sidebar."
+msgstr ""
 "Dieser Block befindet sich als letztes (rechts) im Hauptbereich und ist "
 "daher für die rechte Sidebar vorgesehen."
-msgstr ""
 
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:93
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:95
 msgid ""
-"Dieser Block befindet sich zwischen den Sidebar Blöcken und ist für den "
+"This block is located between the sidebar blocks and is intended for the "
+"main content."
+msgstr ""
+"Dieser Block befindet sich zwischen den Sidebar-Blöcken und ist für den "
 "Hauptinhalt vorgesehen."
-msgstr ""
 
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:97
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:99
 msgid ""
-"Der Block ist für den Footer vorgesehen und wird nach dem Hauptbereich "
-"angezeigt."
+"This block is intended for the footer and is displayed after the main area."
 msgstr ""
+"Dieser Block ist für den Footer vorgesehen und wird nach dem Hauptbereich "
+"angezeigt."
 
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:107
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:109
 #, python-format
 msgid ""
 "\n"
-"                        Diese Blöcke müssen nicht zwangsläufig verwendet werden, allerdings ist es empfehlenswert, da sich ein paar Strukturelle Gegebenheiten mit sich bringen. Theoretisch könnte aber auch alles in den %(block_title)s. Es können bei Bedarf auch weitere JavaScript Bibliotheken verlinkt werden, durch den %(block_content)s gepackt werden.\n"
+"                        These blocks do not necessarily have to be used, but it is recommended as they bring some structural benefits. Theoretically everything could also go into %(block_title)s. Additional JavaScript libraries can be linked if needed, wrapped in %(block_content)s.\n"
 "                    "
 msgstr ""
+"\n"
+"Diese Blöcke müssen nicht zwangsläufig verwendet werden, allerdings ist es empfehlenswert, da sie ein paar strukturelle Vorteile mit sich bringen. Theoretisch könnte aber auch alles in den %(block_title)s. Es können bei Bedarf noch weitere JavaScript Bibliotheken verlinkt werden, die dann in den %(block_content)s gepackt werden."
 
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:115
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:117
 msgid ""
-"Dieser Block befindet sich sozusagen hinter dem Eigentlichen Inhalt und kann"
-" dazu verwendet werden, ein Hintergrundbild einzubinden, welches fixiert "
-"ist, also sich bei scrollen mitbewegt."
+"This block is located behind the actual content and can be used to include a"
+" fixed background image that moves with the page when scrolling."
 msgstr ""
+"Dieser Block befindet sich hinter dem eigentlichen Inhalt und kann dazu "
+"verwendet werden ein fixiertes Hintergrundbild einzubinden, welches sich "
+"also beim Scrollen mitbewegt."
 
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:127
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:129
 msgid ""
+"The navigation bar has its own area. This is defined before the rest of the "
+"content, which makes it always appears first on the page."
+msgstr ""
 "Die Navigationsleiste hat einen eigenen Bereich. Dieser ist vor dem "
-"restlichen Inhalt definiert, wodurch dieser immer als ersten auf der Seite "
-"auftaucht."
-msgstr ""
+"restlichen Inhalt definiert, wodurch er immer als Erster auf der Seite "
+"erscheint."
 
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:140
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:170
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:207
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:246
-msgid "Für weitere Information über die Komponente, siehe"
-msgstr ""
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:142
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:174
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:211
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:250
+msgid "For more information about the component, see"
+msgstr "Für weitere Information über die Komponente, siehe"
 
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:148
-msgid "navbar"
-msgstr ""
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:150
+#: .\insight_ui\templates\insight_ui\docs\partial\footer_detailpage.html:124
+#: .\insight_ui\templates\insight_ui\docs\partial\sidebar_detailpage.html:117
+msgid "Navbar"
+msgstr "Navbar"
 
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:178
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:215
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:157
+msgid ""
+"\n"
+"                        In this block, so-called <b>Drawer</b> can be embedded. Drawers are expandable and collapsible sidebars that usually sit on top of the content.\n"
+"                        They have their own block so that they do not conflict with the rest of the layout.\n"
+"                    "
+msgstr ""
+"\n"
+"In diesem Block können sog. <b>Drawer</b> eingebettet werden. Drawer sind ein- und ausklappbare Sidebars und liegen gewöhnlich über dem Inhalt. Sie haben ihren eigenen Block, damit sie nicht mit dem restlichen Layout in Konflikt geraten."
+
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:182
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:219
 #: .\insight_ui\templates\insight_ui\docs\partial\footer_detailpage.html:136
 #: .\insight_ui\templates\insight_ui\docs\partial\navbar_detailpage.html:149
 msgid "Sidebar"
-msgstr ""
+msgstr "Sidebar"
 
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:185
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:189
 #, python-format
 msgid ""
 "\n"
-"                        Zusätzlich zu dem %(drawers)s Block gibt es zwei Blöcke für statische <b>Sidebars</b>.\n"
-"                        Einen für eine Sidebar auf der rechten Seite des Hauptinhalt und einen für eine Sidebar auf der linken Seite.\n"
-"                        In diesem Fall bekommt der Hauptinhalt etwas weniger Platz und die Sidebar bleibt dauerhaft sichtbar.\n"
+"                        In addition to the %(drawers)s block, there are two blocks for static <b>sidebars</b>.\n"
+"                        One for a sidebar on the right side of the main content and one for a sidebar on the left side.\n"
+"                        In this case, the main content has less available space and the sidebar remains permanently visible.\n"
 "                    "
 msgstr ""
+"\n"
+"Zusätzlich zum %(drawers)s Block gibt es zwei Blöcke für statische <b>Sidebars</b>. Einen für eine Sidebar auf der rechten Seite des Hauptinhalt und einen für eine Sidebar auf der linken Seite. In diesem Fall bekommt der Hauptinhalt etwas weniger Platz und die Sidebar bleibt dauerhaft sichtbar."
 
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:221
-msgid ""
-"Dieser Blöcke ist für den Hauptinhalt der Seite vorgesehen. Hier kommt alles"
-" rein was rein soll."
-msgstr ""
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:225
+msgid "This block is intended for the main content of the page."
+msgstr "Dieser Block ist für den Hauptinhalt der Seite vorgesehen."
 
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:223
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:227
 msgid "Info:"
-msgstr ""
+msgstr "Info:"
 
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:224
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:228
 msgid ""
-"Der Block nimmt immer die volle Höhe des Fenstern ein, unabhängig vom "
-"Inhalt. Dadurch wird sichergestellt, das sich der Footer nicht mitten im "
-"Browserfenster hängt."
+"The block always takes up the full height of the window, regardless of the "
+"content. This ensures that the footer does not float in the middle of the "
+"browser window but is pushed to the bottom."
 msgstr ""
+"Der Block nimmt immer die volle Höhe des Fenstern ein, unabhängig vom "
+"Inhalt. Dadurch wird sichergestellt, das der Footer nicht mitten im "
+"Browserfenster schwebt, sondern an den unteren Rand rutscht."
 
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:230
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:234
 #, python-format
 msgid ""
 "\n"
-"                        Direkt unter dem %(content)s befindet sich der <b>Footer</b>. Dieser schließt die Seite ab und befindet sich immer am Ende der Seite.\n"
+"                        Directly below the %(content)s is the <b>Footer</b>. It closes the page off and is always at the bottom of the page.\n"
 "                    "
 msgstr ""
+"\n"
+"Direkt unter dem %(content)s befindet sich der <b>Footer</b>. Dieser schließt die Seite ab und befindet sich immer am Ende der Seite."
 
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:254
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:258
 #: .\insight_ui\templates\insight_ui\docs\partial\navbar_detailpage.html:137
 #: .\insight_ui\templates\insight_ui\docs\partial\sidebar_detailpage.html:129
 msgid "Footer"
-msgstr ""
+msgstr "Footer"
 
-#: .\insight_ui\templates\insight_ui\docs\base_template.html:260
-msgid ""
-"Zuletzt gibt es einen Block um zusätzliche JavaScript Dateien zu verlinken."
+#: .\insight_ui\templates\insight_ui\docs\base_template.html:264
+msgid "Finally, there is a block for linking additional JavaScript files."
 msgstr ""
+"Zuletzt gibt es einen Block zum Verlinken zusätzlicher JavaScript Dateien."
 
 #: .\insight_ui\templates\insight_ui\docs\component_demo.html:51
 #: .\insight_ui\templates\insight_ui\docs\component_demo.html:62
 msgid "Primary"
-msgstr ""
+msgstr "Primär"
 
 #: .\insight_ui\templates\insight_ui\docs\component_demo.html:52
 #: .\insight_ui\templates\insight_ui\docs\component_demo.html:63
 msgid "Secondary"
-msgstr ""
+msgstr "Sekundär"
 
 #: .\insight_ui\templates\insight_ui\docs\component_demo.html:53
 #: .\insight_ui\templates\insight_ui\docs\component_demo.html:64
 msgid "Success"
-msgstr ""
+msgstr "Erfolg"
 
 #: .\insight_ui\templates\insight_ui\docs\component_demo.html:54
 #: .\insight_ui\templates\insight_ui\docs\component_demo.html:65
 msgid "Warning"
-msgstr ""
+msgstr "Warnung"
 
 #: .\insight_ui\templates\insight_ui\docs\component_demo.html:55
 #: .\insight_ui\templates\insight_ui\docs\component_demo.html:66
 msgid "Danger"
-msgstr ""
+msgstr "Gefahr"
 
 #: .\insight_ui\templates\insight_ui\docs\component_demo.html:56
 #: .\insight_ui\templates\insight_ui\docs\component_demo.html:67
 msgid "Info"
-msgstr ""
+msgstr "Info"
 
 #: .\insight_ui\templates\insight_ui\docs\component_demo.html:57
 #: .\insight_ui\templates\insight_ui\docs\component_demo.html:68
 msgid "Disabled"
-msgstr ""
+msgstr "Deaktiviert"
 
 #: .\insight_ui\templates\insight_ui\docs\component_demo.html:59
 msgid "Link"
-msgstr ""
+msgstr "Link"
 
-#: .\insight_ui\templates\insight_ui\docs\component_demo.html:125
-msgid "Standard Modal"
-msgstr ""
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:118
+msgid "This is just an information."
+msgstr "Das hier ist nur eine Info."
 
-#: .\insight_ui\templates\insight_ui\docs\component_demo.html:127
-msgid "Demo Modal"
-msgstr ""
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:119
+msgid "Saved successfully!"
+msgstr "Erfolgreich gespeichert!"
 
-#: .\insight_ui\templates\insight_ui\docs\component_demo.html:127
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:120
+msgid "Please review your entries!"
+msgstr "Bitte die Eintragungen überprüfen!"
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:121
+msgid "Error while loading data!"
+msgstr "Fehler beim Laden der Daten!"
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:128
+msgid "Standard modal"
+msgstr "Standard-Modal"
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:130
+msgid "Demo modal"
+msgstr "Demo-Modal"
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:130
 msgid "This is an example of a standard modal."
-msgstr ""
+msgstr "Dies ist ein Beispiel für ein Standard-Modal"
 
-#: .\insight_ui\templates\insight_ui\docs\component_demo.html:131
-msgid "Modal with Action-Buttons"
-msgstr ""
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:134
+msgid "Modal with Action Buttons"
+msgstr "Modal mit Action-Buttons"
 
-#: .\insight_ui\templates\insight_ui\docs\component_demo.html:133
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:136
 msgid "Delete?"
-msgstr ""
+msgstr "Löschen?"
 
-#: .\insight_ui\templates\insight_ui\docs\component_demo.html:142
-msgid "This is a Popover."
-msgstr ""
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:136
+msgid "Please conform deletion!"
+msgstr "Bitte Löschung bestätigen!"
 
 #: .\insight_ui\templates\insight_ui\docs\component_demo.html:145
+msgid "This is a popover."
+msgstr "Dies ist ein Popover."
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:148
 msgid ""
-"A popover could have more content than a tooltip and it can also have "
-"interactive elements like buttons"
+"A popover can have more content than a tooltip, e.g. interactive elements "
+"like buttons."
 msgstr ""
-
-#: .\insight_ui\templates\insight_ui\docs\component_demo.html:155
-msgid "Top"
-msgstr ""
-
-#: .\insight_ui\templates\insight_ui\docs\component_demo.html:156
-msgid "Bottom"
-msgstr ""
-
-#: .\insight_ui\templates\insight_ui\docs\component_demo.html:157
-msgid "Right"
-msgstr ""
+"Ein Popover kann mehr Inhalt als einen Tooltip haben, z.B interaktive "
+"Elemente wie einen Button."
 
 #: .\insight_ui\templates\insight_ui\docs\component_demo.html:158
+msgid "Top"
+msgstr "Oben"
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:159
+msgid "Bottom"
+msgstr "Unten"
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:160
+msgid "Right"
+msgstr "Rechts"
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:161
 msgid "Left"
+msgstr "Links"
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:229
+msgid "Contact Form"
+msgstr "Kontaktformular"
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:229
+msgid "Please fill out the form"
+msgstr "Bitte das Formular ausfüllen"
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:232
+msgid "Example Page"
+msgstr "Beispielseite"
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:232
+msgid "This is an example description for the page header component."
 msgstr ""
+"Dies ist eine beispielhafte Beschreibung für die Kopfzeilen-Komponente."
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:240
+msgid "Newsletter"
+msgstr "Neuigkeiten"
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:242
+msgid "A Django Component Framework"
+msgstr "Ein Django-Komponenten-Framework"
+
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:242
+msgid "A modern UI library."
+msgstr "Eine moderne UI Bibliothek."
 
 #: .\insight_ui\templates\insight_ui\docs\component_detailpage.html:4
 #: .\insight_ui\templates\insight_ui\docs\storybook.html:4
 msgid "Insight UI - Components"
-msgstr ""
+msgstr "Insight UI - Komponenten"
 
-#: .\insight_ui\templates\insight_ui\docs\component_details_content.html:19
+#: .\insight_ui\templates\insight_ui\docs\component_details_content.html:21
 #, python-format
 msgid ""
 "\n"
-"                Die Komponente wird über das %(component_tag)s Tag eingebunden.\n"
+"                The component is included via the %(component_tag)s tag.\n"
 "            "
 msgstr ""
+"\n"
+"Die Komponente wird über das %(component_tag)s Tag eingebunden."
 
-#: .\insight_ui\templates\insight_ui\docs\component_details_content.html:53
+#: .\insight_ui\templates\insight_ui\docs\component_details_content.html:55
 #: .\insight_ui\templates\insight_ui\docs\partial\3D_carousel_detailpage.html:47
 #: .\insight_ui\templates\insight_ui\docs\partial\accordion_detailpage.html:56
 #: .\insight_ui\templates\insight_ui\docs\partial\alert_detailpage.html:38
@@ -3992,60 +4091,19 @@ msgstr ""
 #: .\insight_ui\templates\insight_ui\docs\partial\tooltip_detailpage.html:59
 #: .\insight_ui\templates\insight_ui\docs\partial\web_socket_detailpage.html:38
 msgid "Accessability"
-msgstr ""
+msgstr "Barrierefreiheit"
 
-#: .\insight_ui\templates\insight_ui\docs\component_details_content.html:58
+#: .\insight_ui\templates\insight_ui\docs\component_details_content.html:60
 msgid "No comments."
-msgstr ""
+msgstr "Keine Kommentare."
 
-#: .\insight_ui\templates\insight_ui\docs\component_details_content.html:68
-#: .\insight_ui\templates\insight_ui\docs\partial\3D_carousel_detailpage.html:55
-#: .\insight_ui\templates\insight_ui\docs\partial\accordion_detailpage.html:68
-#: .\insight_ui\templates\insight_ui\docs\partial\alert_detailpage.html:47
-#: .\insight_ui\templates\insight_ui\docs\partial\article_detailpage.html:50
-#: .\insight_ui\templates\insight_ui\docs\partial\breadcrumb_detailpage.html:67
-#: .\insight_ui\templates\insight_ui\docs\partial\button_detailpage.html:103
-#: .\insight_ui\templates\insight_ui\docs\partial\card_carousel_detailpage.html:86
-#: .\insight_ui\templates\insight_ui\docs\partial\card_detailpage.html:92
-#: .\insight_ui\templates\insight_ui\docs\partial\chart_detailpage.html:77
-#: .\insight_ui\templates\insight_ui\docs\partial\chat_detailpage.html:46
-#: .\insight_ui\templates\insight_ui\docs\partial\checkbox_detailpage.html:78
-#: .\insight_ui\templates\insight_ui\docs\partial\checkbox_group_detailpage.html:96
-#: .\insight_ui\templates\insight_ui\docs\partial\code_block_detailpage.html:51
-#: .\insight_ui\templates\insight_ui\docs\partial\differentiator_detailpage.html:46
-#: .\insight_ui\templates\insight_ui\docs\partial\dropdown_detailpage.html:91
-#: .\insight_ui\templates\insight_ui\docs\partial\form_detailpage.html:53
-#: .\insight_ui\templates\insight_ui\docs\partial\generic_filter_detailpage.html:108
-#: .\insight_ui\templates\insight_ui\docs\partial\geo_map_detailpage.html:96
-#: .\insight_ui\templates\insight_ui\docs\partial\hero_detailpage.html:60
-#: .\insight_ui\templates\insight_ui\docs\partial\image_carousel_detailpage.html:69
-#: .\insight_ui\templates\insight_ui\docs\partial\infinite_scroll_detailpage.html:49
-#: .\insight_ui\templates\insight_ui\docs\partial\input_field_detailpage.html:69
-#: .\insight_ui\templates\insight_ui\docs\partial\live_content_detailpage.html:46
-#: .\insight_ui\templates\insight_ui\docs\partial\modal_detailpage.html:67
-#: .\insight_ui\templates\insight_ui\docs\partial\multiselect_detailpage.html:74
-#: .\insight_ui\templates\insight_ui\docs\partial\navbar_detailpage.html:126
-#: .\insight_ui\templates\insight_ui\docs\partial\page_header_detailpage.html:49
-#: .\insight_ui\templates\insight_ui\docs\partial\pagination_detailpage.html:70
-#: .\insight_ui\templates\insight_ui\docs\partial\popover_detailpage.html:57
-#: .\insight_ui\templates\insight_ui\docs\partial\progress_bar_detailpage.html:50
-#: .\insight_ui\templates\insight_ui\docs\partial\query_builder_detailpage.html:117
-#: .\insight_ui\templates\insight_ui\docs\partial\radio_group_detailpage.html:83
-#: .\insight_ui\templates\insight_ui\docs\partial\range_slider_detailpage.html:72
-#: .\insight_ui\templates\insight_ui\docs\partial\search_bar_detailpage.html:46
-#: .\insight_ui\templates\insight_ui\docs\partial\select_detailpage.html:71
-#: .\insight_ui\templates\insight_ui\docs\partial\sidebar_detailpage.html:106
-#: .\insight_ui\templates\insight_ui\docs\partial\step_bar_detailpage.html:62
-#: .\insight_ui\templates\insight_ui\docs\partial\table_detailpage.html:74
-#: .\insight_ui\templates\insight_ui\docs\partial\tabs_detailpage.html:90
-#: .\insight_ui\templates\insight_ui\docs\partial\toggle_button_detailpage.html:70
-#: .\insight_ui\templates\insight_ui\docs\partial\toggle_view_detailpage.html:58
-#: .\insight_ui\templates\insight_ui\docs\partial\tooltip_detailpage.html:67
-#: .\insight_ui\templates\insight_ui\docs\partial\web_socket_detailpage.html:46
-msgid "Related Topics"
-msgstr ""
+#: .\insight_ui\templates\insight_ui\docs\component_details_content.html:70
+#: .\insight_ui\templates\insight_ui\docs\partial\bullet_point_list_detailpage.html:63
+#: .\insight_ui\templates\insight_ui\docs\partial\footer_detailpage.html:113
+msgid "Related topics"
+msgstr "Verwandte Themen"
 
-#: .\insight_ui\templates\insight_ui\docs\component_details_content.html:84
+#: .\insight_ui\templates\insight_ui\docs\component_details_content.html:86
 #: .\insight_ui\templates\insight_ui\docs\partial\alert_detailpage.html:49
 #: .\insight_ui\templates\insight_ui\docs\partial\breadcrumb_detailpage.html:69
 #: .\insight_ui\templates\insight_ui\docs\partial\chart_detailpage.html:79
@@ -4055,397 +4113,486 @@ msgstr ""
 #: .\insight_ui\templates\insight_ui\docs\partial\geo_map_detailpage.html:98
 #: .\insight_ui\templates\insight_ui\docs\partial\hero_detailpage.html:62
 msgid "No related components available."
-msgstr ""
+msgstr "Keine verwandten Komponenten vorhanden."
 
 #: .\insight_ui\templates\insight_ui\docs\customization.html:4
 msgid "Insight UI - Customization"
-msgstr ""
+msgstr "Insight UI - Anpassung"
 
 #: .\insight_ui\templates\insight_ui\docs\customization.html:19
 msgid ""
+"Our UI framework not only offers a range of useful components, but can also "
+"be fully customized to suit additional needs."
+msgstr ""
 "Unser UI Framework bietet nicht nur eine Reihe von nützlichen Komponenten, "
-"sondern lässt sich auch vollkommen nach allen Wünschen anpassen."
-msgstr ""
+"sondern lässt sich auch vollkommen nach weiteren Wünschen anpassen."
 
-#: .\insight_ui\templates\insight_ui\docs\customization.html:32
-msgid ""
-"In den folgenden Abschnitten werden die unterschiedlichen Möglichkeiten der "
-"Anpassung beschrieben."
-msgstr ""
-
-#: .\insight_ui\templates\insight_ui\docs\customization.html:37
-msgid "Konfiguration über settings.py"
-msgstr ""
-
-#: .\insight_ui\templates\insight_ui\docs\customization.html:39
-#, python-format
+#: .\insight_ui\templates\insight_ui\docs\customization.html:26
 msgid ""
 "\n"
-"                    Es gibt eine Reihe von Einstellungen, welche über die %(settings)s definiert werden können.\n"
+"                    Colors and recurring elements, such as the appearance of headings, can be adjusted in just one place and the design adapts immediately.\n"
+"                    New components can also be added and existing ones customized.\n"
+"                    Should a component not fit your needs completely, it can be adapted accordingly with relatively little effort.\n"
 "                "
 msgstr ""
+"\n"
+"Farben und immer wiederkehrende Elemente, wie das Aussehen von Überschriften, lassen sich an nur einer Stelle anpassen und sofort passt sich das Design an. Es lassen sich aber auch neue Komponenten hinzufügen und bestehende anpassen. Sollte also eine Komponente nicht komplett passen, lässt sich diese mit relativ wenig Aufwand entsprechend anpassen."
 
-#: .\insight_ui\templates\insight_ui\docs\customization.html:73
-msgid "Theming (anpassen ans Corporate Design)"
+#: .\insight_ui\templates\insight_ui\docs\customization.html:33
+msgid "The following sections describe the different customization options."
 msgstr ""
+"In den folgenden Abschnitten werden die unterschiedlichen Möglichkeiten der "
+"Anpassung beschrieben."
 
-#: .\insight_ui\templates\insight_ui\docs\customization.html:75
+#: .\insight_ui\templates\insight_ui\docs\customization.html:38
+msgid "Configuration via settings.py"
+msgstr "Konfiguration über settings.py"
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:40
 #, python-format
 msgid ""
 "\n"
-"                        Unser UI Framework verwendet %(tailwind)s für das Styling.\n"
-"                        Tailwind verwendet eine sog. <i>input.css</i> Datei, in welcher sich ein Theme aufbauen lässt.\n"
-"                        Darunter fällt die Definition von grundlegenden Eigenschaften wie Farben, Schriftgrößen oder Fonts, aber auch Custom-CSS-Klassen erstellen oder Animationen lassen sich dort definieren.\n"
-"                        Dank Tailwinds Preflight Funktion lassen sich auch Standards definieren, wodurch bestimmte Elemente zum Beispiel Überschriften immer gleich aussehen ohne das dafür überhaupt eine Klasse im HTML-Code angegeben werden muss.\n"
-"                        Die einzelnen Möglichkeiten und Bereiche der <i>input.css</i> werden in den nächsten Abschnitten näher erläutert.\n"
-"                    "
+"                    There are a number of things that can be defined via the %(settings)s.\n"
+"                "
 msgstr ""
+"\n"
+"Es gibt eine Reihe von Einstellungen, welche über die %(settings)s definiert werden können."
 
-#: .\insight_ui\templates\insight_ui\docs\customization.html:84
+#: .\insight_ui\templates\insight_ui\docs\customization.html:74
+msgid "Theming (adapting to a corporate design)"
+msgstr "Theming (anpassen ans Corporate Design)"
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:76
 #, python-format
 msgid ""
 "\n"
-"                        Das Standard-Theme des Insight-UI Frameworks befindet sich in der Datei %(input)s.\n"
+"                        Our UI framework uses %(tailwind)s for styling.\n"
+"                        Tailwind uses a so-called <i>input.css</i> file in which a theme can be built.\n"
+"                        This includes defining basic properties such as colors, font sizes or fonts, but also creating custom CSS classes or animations.\n"
+"                        Thanks to Tailwind's Preflight function, standards can also be defined so that certain elements such as headings always look the same without needing a class specified in the HTML code.\n"
+"                        The individual options and sections of the <i>input.css</i> are explained in more detail in the following sections.\n"
 "                    "
 msgstr ""
+"\n"
+"Unser UI Framework verwendet %(tailwind)s für das Styling. Tailwind verwendet eine sog. <i>input.css</i> Datei, in welcher sich ein Theme aufbauen lässt. Darunter fällt die Definition von grundlegenden Eigenschaften wie Farben, Schriftgrößen oder Fonts, aber auch Custom-CSS-Klassen oder Animationen lassen sich dort definieren. Dank Tailwinds Preflight Funktion lassen sich auch Standards definieren, wodurch bestimmte Elemente, wie zum Beispiel Überschriften, immer gleich aussehen, ohne dass dafür überhaupt eine Klasse im HTML-Code angegeben werden muss. Die einzelnen Möglichkeiten und Bereiche der <i>input.css</i> werden in den nächsten Abschnitten näher erläutert."
 
-#: .\insight_ui\templates\insight_ui\docs\customization.html:91
+#: .\insight_ui\templates\insight_ui\docs\customization.html:85
+#, python-format
+msgid ""
+"\n"
+"                        The default theme of the Insight-UI framework is located in the file %(input)s.\n"
+"                    "
+msgstr ""
+"\n"
+"Das Standard-Theme des Insight-UI Frameworks befindet sich in der Datei %(input)s."
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:92
 msgid "Setup"
-msgstr ""
+msgstr "Einrichtung"
 
-#: .\insight_ui\templates\insight_ui\docs\customization.html:93
+#: .\insight_ui\templates\insight_ui\docs\customization.html:94
 #, python-format
 msgid ""
 "\n"
-"                        Um das Theming anpassen zu können, müssen zuvor ein paar Schritte durchgeführt werden.\n"
-"                        Da unser Framework, TailwindCSS verwendet muss ein <i>Tailwind Compiler</i> installiert werden, am einfachsten geht dies über die %(tailwind_cli)s.\n"
+"                        To be able to customize the theming, a few steps need to be carried out first.\n"
+"                        Since our framework uses TailwindCSS, a <i>Tailwind Compiler</i> must be installed. This is most easily done via %(tailwind_cli)s.\n"
 "                    "
 msgstr ""
+"\n"
+"Um das Theming anpassen zu können, müssen zuvor ein paar Schritte durchgeführt werden. Da unser Framework, TailwindCSS verwendet, muss ein <i>Tailwind Compiler</i> installiert werden. Am einfachsten geht dies über die %(tailwind_cli)s."
 
-#: .\insight_ui\templates\insight_ui\docs\customization.html:100
+#: .\insight_ui\templates\insight_ui\docs\customization.html:101
 #, python-format
 msgid ""
 "\n"
-"                        Zuerst muss die <b>django-tailwind-cli</b> installiert werden, zum Beispiel über %(uv)s mit %(uv_add)s.\n"
+"                        First, <b>django-tailwind-cli</b> must be installed, for example via %(uv)s with %(uv_add)s.\n"
 "                    "
 msgstr ""
+"\n"
+"Zuerst muss die <b>django-tailwind-cli</b> installiert werden, zum Beispiel über %(uv)s mit %(uv_add)s."
 
-#: .\insight_ui\templates\insight_ui\docs\customization.html:106
+#: .\insight_ui\templates\insight_ui\docs\customization.html:107
 #, python-format
 msgid ""
 "\n"
-"                        Anschließend muss <b>django-tailwind-cli</b> zu den %(installed_apps)s hinzugefügt werden.\n"
+"                        Then <b>django-tailwind-cli</b> must be added to the %(installed_apps)s.\n"
 "                    "
 msgstr ""
+"\n"
+"Anschließend muss die <b>django-tailwind-cli</b> zu den %(installed_apps)s hinzugefügt werden."
 
-#: .\insight_ui\templates\insight_ui\docs\customization.html:119
+#: .\insight_ui\templates\insight_ui\docs\customization.html:120
 msgid ""
-"Damit der Compiler weiß wo die entsprechenden Dateien zu finden sind, müssen"
-" ein paar Settings gesetzt werden."
+"So that the compiler knows where to find the relevant files, a few settings "
+"need to be configured."
 msgstr ""
-
-#: .\insight_ui\templates\insight_ui\docs\customization.html:121
-msgid "Der Pfad zu den Staticfiles muss definiert werden."
-msgstr ""
+"Damit der Compiler weiß, wo die entsprechenden Dateien zu finden sind, "
+"müssen ein paar Einstellungen gesetzt werden."
 
 #: .\insight_ui\templates\insight_ui\docs\customization.html:122
-#, python-format
-msgid ""
-"Der Pfad zu der %(input)s, welche die Theme Konfiguration enthält (dazu "
-"später mehr)."
-msgstr ""
+msgid "The path to the static files must be defined."
+msgstr "Der Pfad zu den Staticfiles muss definiert werden."
 
 #: .\insight_ui\templates\insight_ui\docs\customization.html:123
-msgid "Der Pfad wo das generierte Stylesheet gespeichert werden soll."
+#, python-format
+msgid ""
+"The path to %(input)s, which contains the theme configuration (more on this "
+"later)."
 msgstr ""
+"Der Pfad zur %(input)s-Datei, welche die Theme Konfiguration enthält (dazu "
+"später mehr)."
 
 #: .\insight_ui\templates\insight_ui\docs\customization.html:124
+msgid "The path where the generated stylesheet should be saved."
+msgstr "Der Pfad, in dem das generierte Stylesheet gespeichert werden soll."
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:125
 msgid ""
+"We recommend disabling the automatic updating of the Tailwind compiler, as "
+"it would consume more and more storage space and prevents error messages due"
+" to failed downloads."
+msgstr ""
 "Wir empfehlen das automatische Updaten des Tailwind-Compilers auszuschalten,"
-" da es zum einen immer mehr Speicherplatz verbraucht und zum anderen bei "
-"Fehlerhaften Downloads zu keinen Fehlermeldungen kommt."
-msgstr ""
+" da es zum einen immer mehr Speicherplatz verbraucht und zum anderen "
+"Fehlermeldungen durch fehlerhafte Downloads ausbleiben."
 
-#: .\insight_ui\templates\insight_ui\docs\customization.html:142
+#: .\insight_ui\templates\insight_ui\docs\customization.html:143
 msgid ""
+"Next, the setup of <b>django-tailwind-cli</b> must be run once, during which"
+" the Tailwind CLI is also downloaded (~120MB)."
+msgstr ""
 "Im Anschluss muss einmal das Setup der <b>django-tailwind-cli</b> "
-"durchgeführt werden, dabei wird auch die Tailwind-CLI heruntergeladen "
+"durchgeführt werden, wodurch auch die Tailwind-CLI heruntergeladen wird "
 "(~120MB)."
-msgstr ""
 
-#: .\insight_ui\templates\insight_ui\docs\customization.html:147
+#: .\insight_ui\templates\insight_ui\docs\customization.html:148
 #, python-format
 msgid ""
 "\n"
-"                        Danach kann der Entwicklungsserver gestartet werden, nur diesmal muss vor dem %(runserver)s noch %(tailwind)s stehen.\n"
+"                        After that, the development server can be started with %%(tailwind)s, so this time %(tailwind)s must be included before %(runserver)s.\n"
 "                    "
 msgstr ""
+"\n"
+"Danach kann der Entwicklungsserver mit %(tailwind)s gestartet werden: Es muss jetzt noch %(tailwind)s vor dem %(runserver)s  stehen."
 
-#: .\insight_ui\templates\insight_ui\docs\customization.html:158
+#: .\insight_ui\templates\insight_ui\docs\customization.html:159
 #, python-format
 msgid ""
 "\n"
-"                        Um das Theming anzupassen muss diese Datei kopiert werden und anschließend in der Konfiguration von <i>Insight-UI</i> in den %(settings)s angeben werden.\n"
+"                        To customize the theming, this file must be copied and then specified in the <i>Insight-UI</i> configuration in %(settings)s.\n"
 "                    "
 msgstr ""
+"\n"
+"Um das Theming anzupassen muss diese Datei kopiert und anschließend in der Konfiguration von <i>Insight-UI</i> in den %(settings)s angeben werden."
 
-#: .\insight_ui\templates\insight_ui\docs\customization.html:166
+#: .\insight_ui\templates\insight_ui\docs\customization.html:167
 #, python-format
 msgid ""
 "\n"
-"                        In dieser muss der Pfad zu den %(insight_ui)s Templates angepasst werden:\n"
+"                        In this file, the path to the %(insight_ui)s templates must be adjusted:\n"
 "                    "
 msgstr ""
+"\n"
+"In dieser Datei muss der Pfad zu den %(insight_ui)s Templates angepasst werden:"
 
-#: .\insight_ui\templates\insight_ui\docs\customization.html:178
+#: .\insight_ui\templates\insight_ui\docs\customization.html:174
+msgid "replace with:"
+msgstr "ersetzen durch:"
+
+#: .\insight_ui\templates\insight_ui\docs\customization.html:179
 #, python-format
 msgid ""
 "\n"
-"                        Anschließend muss %(setup)s ausgeführt werden.\n"
+"                        Then %(setup)s must be executed.\n"
 "                    "
 msgstr ""
+"\n"
+"Anschließend muss %(setup)s ausgeführt werden."
 
-#: .\insight_ui\templates\insight_ui\docs\customization.html:184
-msgid "Inhalt der input.css"
-msgstr ""
+#: .\insight_ui\templates\insight_ui\docs\customization.html:185
+msgid "Contents of input.css"
+msgstr "Inhalt der input.css"
 
-#: .\insight_ui\templates\insight_ui\docs\customization.html:186
+#: .\insight_ui\templates\insight_ui\docs\customization.html:187
 msgid ""
-"Die Datei enthält die folgenden Komponenten, alle zusammen ergeben das "
-"Theme."
+"The file contains the following components, which together make up the "
+"theme."
 msgstr ""
+"Die Datei enthält die folgenden Komponenten, die alle zusammen das Theme "
+"ergeben."
 
-#: .\insight_ui\templates\insight_ui\docs\customization.html:189
+#: .\insight_ui\templates\insight_ui\docs\customization.html:190
 #, python-format
 msgid ""
 "\n"
-"                        In der ersten Zeile befindet sich der %(import)s für Tailwind, dieser wird benötigt, damit Tailwind aus dieser Datei, später das entsprechende Stylesheet generieren kann.\n"
+"                        The first line contains the %(import)s for Tailwind. This is needed so that Tailwind can later generate the corresponding stylesheet from this file.\n"
 "                    "
 msgstr ""
+"\n"
+"In der ersten Zeile befindet sich der %(import)s für Tailwind. Dies wird benötigt, damit Tailwind aus dieser Datei später das entsprechende Stylesheet generieren kann."
 
-#: .\insight_ui\templates\insight_ui\docs\customization.html:197
+#: .\insight_ui\templates\insight_ui\docs\customization.html:198
 #, python-format
 msgid ""
 "\n"
-"                        In der nächsten Zeile befindet sich eine  %(source)s Direktive.\n"
-"                        Diese sagt Tailwind, wo es nach den Template Dateien suchen soll, um die CSS-Tags, welche dort verwendet werden zu finden.\n"
-"                        I.d.R sollte Tailwind von sich aus alle Projekt spezifischen Templates finden, nur externe Pakete machen ab und zu Probleme, daher steht hier auch der Pfad zu unseren Templates.\n"
+"                        The next line contains the %(source)s directive.\n"
+"                        This tells Tailwind where to look for the template files to find the CSS tags used inside.\n"
+"                        Normally Tailwind should find all project-specific templates on its own, but external packages occasionally cause issues, which is why the path to our templates is also specified here.\n"
 "                    "
 msgstr ""
+"\n"
+"In der nächsten Zeile befindet sich eine %(source)s Direktive. Diese sagt Tailwind, wo es nach den Template Dateien suchen soll, um die CSS-Tags zu finden, welche dort verwendet werden. I.d.R sollte Tailwind von sich aus alle Projekt spezifischen Templates finden, nur externe Pakete machen ab und zu Probleme, daher steht hier auch der Pfad zu unseren Templates."
 
-#: .\insight_ui\templates\insight_ui\docs\customization.html:207
-msgid "Die nächste Zeile wird benötigt für den wechseln zwischen Hell/Dunkel."
+#: .\insight_ui\templates\insight_ui\docs\customization.html:208
+msgid "The next line enables switching between light/dark mode."
 msgstr ""
+"Die nächste Zeile ermöglicht das Wechseln zwischen den Hell/Dunkel "
+"Darstellungen."
 
-#: .\insight_ui\templates\insight_ui\docs\customization.html:213
+#: .\insight_ui\templates\insight_ui\docs\customization.html:214
 #, python-format
 msgid ""
 "\n"
-"                        Von Hause aus, verwendet Insight-UI den Font %(font)s.\n"
-"                        Dabei handelt es sich um kein standard System-Font, weshalb dieser explizit angegeben werden muss.\n"
-"                        Sollte ein anderen Font gewünscht sein, kann dieser an der Stelle ausgetauscht oder ergänzt werden.\n"
-"                        Der Pfad zum Font ist relative zu der <i>input.css</i>, also der Datei in welcher das definiert wird.\n"
+"                        By default, Insight UI uses the font %(font)s.\n"
+"                        This is not a standard system font, which is why it must be specified explicitly.\n"
+"                        If a different font is desired, it can be replaced or supplemented here.\n"
+"                        The path to the font is relative to the <i>input.css</i>, i.e. the file in which it is defined.\n"
 "                    "
 msgstr ""
+"\n"
+"Von Hause aus verwendet Insight UI den Font %(font)s. Dabei handelt es sich um keinen Standard-System-Font, weshalb dieser explizit angegeben werden muss. Sollte ein anderen Font gewünscht sein, kann er an dieser Stelle ausgetauscht oder ergänzt werden. Der Pfad zum Font ist relativ zu der <i>input.css</i>, also der Datei, in welcher das definiert wird."
 
-#: .\insight_ui\templates\insight_ui\docs\customization.html:229
+#: .\insight_ui\templates\insight_ui\docs\customization.html:230
 #, python-format
 msgid ""
 "\n"
-"                        Das ist ja alles ganz nett, aber wo sind die Farben?\n"
-"                        Nun, bis auf den Font sind die bisherigen Schritte notwendig und sollten auch nicht ohne Grund verändert werden.\n"
-"                        Das eigentliche Theme kommt jetzt erst. Passenderweise wird der Block mit %(theme)s deklariert.\n"
-"                        In diesem Block werden all die Theme spezifischen Variablen definiert. Darunter auch Farben.\n"
+"                        That's all very nice, but where are the colors?\n"
+"                        Apart from the font, the previous steps are necessary and their settings should not be changed without reason.\n"
+"                        The actual theming comes now. Fittingly, the block is declared with %(theme)s.\n"
+"                        In this block all theme-specific variables are defined, including colors.\n"
 "                    "
 msgstr ""
+"\n"
+"Das ist ja alles ganz nett, aber wo sind die Farben? Bis auf den Font sind die bisherigen Schritte notwendig und ihre Einstellungen sollten auch nicht ohne Grund verändert werden. Das eigentliche Theme kommt jetzt erst. Passenderweise wird der Block mit %(theme)s deklariert. In diesem Block werden all die Theme spezifischen Variablen definiert. Darunter auch Farben."
 
-#: .\insight_ui\templates\insight_ui\docs\customization.html:237
+#: .\insight_ui\templates\insight_ui\docs\customization.html:238
 #, python-format
 msgid ""
 "\n"
-"                        Doch zunächst nochmal der Font. In dem Theme-Block lässt sich auch ein Default-Font einstellen, welcher für alle Texte im gesamten Projekt verwendet wird, ohne in jedes mal explizit angeben zu müssen.\n"
-"                        Die Direktive %(font)s sagt, dass jeder Text, der keine Serifen besitzen soll, den Font <i>Inter</i> verwenden soll.\n"
+"                        But first, the font again. In the theme block, a default font can also be set that is used for all text throughout the entire project without having to specify it each time.\n"
+"                        The directive %(font)s causes any text without serifs to use for example the font <i>Inter</i>.\n"
 "                    "
 msgstr ""
+"\n"
+"Doch zunächst nochmal der Font. In dem Theme-Block lässt sich auch ein Default-Font einstellen, welcher für alle Texte im gesamten Projekt verwendet wird, ohne das jedes Mal explizit angeben zu müssen. Die Direktive %(font)s bewirkt, dass jeder Text, der keine Serifen besitzen soll, z.B. den Font <i>Inter</i> verwenden soll."
 
-#: .\insight_ui\templates\insight_ui\docs\customization.html:243
-msgid "Todo: mehrere Fonts definieren."
-msgstr ""
+#: .\insight_ui\templates\insight_ui\docs\customization.html:244
+msgid "Todo: define multiple fonts."
+msgstr "Todo: mehrere Fonts definieren."
 
-#: .\insight_ui\templates\insight_ui\docs\customization.html:268
+#: .\insight_ui\templates\insight_ui\docs\customization.html:269
 #, python-format
 msgid ""
 "\n"
-"                        Während die Variablen welche in dem Theme-Block definiert wurden, sich manuell auf Elemente anwenden lassen und jeweils eine Eigenschaft anpassen, können auch komplette Designs für bestimmte HTML-Tags vordefiniert werden.\n"
-"                        Dies funktioniert mittels Tailwinds <i>Preflight</i> Modul. Dieses entfernt vor allem alle Default Styles der HTML-Elemente wodurch beispielsweise alle %(caption)s gleich aussehen.\n"
-"                        Das passiert, u.a. um die verschiedenen Browser-Defaults zu entfernen, damit die Seite in jedem Browser gleich aussieht.\n"
-"                        Zum anderen lassen sich darüber aber auch direkt Styles für bestimmte Elemente hinzufügen.\n"
+"                        While the variables defined in the theme block can be manually applied to elements to adjust individual properties, complete designs for specific HTML tags can also be predefined.\n"
+"                        This works via Tailwind's <i>Preflight</i> module, which removes all default styles from HTML elements so that for example all %(caption)s look the same.\n"
+"                        This is done partly to remove various browser defaults so that the page looks the same in every browser, and also to directly add styles for specific elements.\n"
 "                    "
 msgstr ""
+"\n"
+"Während die Variablen welche in dem Theme-Block definiert wurden, sich manuell auf Elemente anwenden lassen und jeweils eine Eigenschaft anpassen, können auch komplette Designs für bestimmte HTML-Tags vordefiniert werden. Dies funktioniert mittels Tailwinds <i>Preflight</i> Modul. Dieses entfernt vor allem alle Default Styles der HTML-Elemente, wodurch beispielsweise alle %(caption)s gleich aussehen. Das passiert, u.a. um die verschiedenen Browser-Defaults zu entfernen, damit die Seite in jedem Browser gleich aussieht. Zum anderen lassen sich darüber aber auch direkt Styles für bestimmte Elemente hinzufügen."
 
 #: .\insight_ui\templates\insight_ui\docs\customization.html:276
 #, python-format
 msgid ""
 "\n"
-"                        Die Zeile %(button)s sorgt bspw. dafür, dass alle Buttons ein %(pointer)s also ein Hand-Cursor aufzeigen (seit Tailwind V.4.0 nicht mehr standard und deswegen hier angegeben).\n"
+"                        The line %(button)s ensures for example that all buttons show a %(pointer)s, i.e. a hand cursor (no longer standard since Tailwind V.4.0 and therefore specified here).\n"
 "                    "
 msgstr ""
+"\n"
+"Die Zeile %(button)s sorgt bspw. dafür, dass alle Buttons ein %(pointer)s also einen Hand-Cursor aufzeigen (seit Tailwind V.4.0 nicht mehr der Standard und deswegen hier angegeben)."
 
 #: .\insight_ui\templates\insight_ui\docs\customization.html:281
 #, python-format
 msgid ""
 "\n"
-"                        Die direktive drunter für das %(caption)s Tag, gibt an dass die dort aufgelistet CSS-Klassen auf jedes %(caption)s Tag angewendet werden sollen.\n"
-"                        Dadurch müssen nicht bei jedem Tag, diese Klassen manuell hinzugefügt werden. Sollte es mal zu ausnahmen kommen, können im Template trotzdem noch weitere CSS-klassen ergänzt werden oder überschrieben werden.\n"
-"                        So werden Überschriften mit %(caption_red)s trotzdem in Rot dargestellt.\n"
+"                        The directive below for the %(caption)s tag specifies that the CSS classes listed there should be applied to every %%(caption)s tag.\n"
+"                        This means that these classes do not need to be added manually to each tag. If exceptions are wanted, additional CSS classes can still be added or overridden in the template.\n"
+"                        For example, headings with %(caption_red)s will still be displayed in red.\n"
 "                    "
 msgstr ""
+"\n"
+"Die Direktive darunter für das %(caption)s Tag gibt an, dass die dort aufgelisteten CSS-Klassen auf jedes %(caption)s Tag angewendet werden sollen. Dadurch müssen diese Klassen nicht bei jedem Tag manuell hinzugefügt werden. Sollte Ausnahmen nötig sein, können im Template trotzdem noch weitere CSS-Klassen ergänzt oder überschrieben werden. So werden z.B. Überschriften mit %(caption_red)s trotzdem in Rot dargestellt."
 
 #: .\insight_ui\templates\insight_ui\docs\customization.html:299
 #, python-format
 msgid ""
 "\n"
-"                        Der nächste Block heißt %(components)s und enthält sozusagen Custom-CSS-Klassen.\n"
-"                        Warum keine Custom-CSS-Klassen in dem eigentlichen Stylesheet? Theoretisch gibt es kein konventionelles Stylesheet, da dieses von Tailwind erzeugt wird und zwar jedes mal wenn sich etwas an den Templates ändert. Insofern der Tailwind-Compiler läuft.\n"
-"                        Dabei wird jedes mal die gesamte Datei neu erstellt und alle manuell hinzugefügten Klassen gehen verloren. Um trotzdem vorgefertigte Konstrukte verwenden zu können, ohne jedes mal zwanzig CSS-klassen kopieren zu müssen, lassen sich %(components)s definieren.\n"
+"                        The next block is called %(components)s and contains custom CSS classes.\n"
+"                        Why are there no custom CSS classes in the actual stylesheet? There is technically no conventional stylesheet, since it is generated by Tailwind every time something changes in the templates, as long as the Tailwind compiler is running.\n"
+"                        Each time, the entire file is recreated and all manually added classes are lost. To still be able to use predefined constructs without having to copy CSS classes every time, %(components)s can be defined.\n"
 "                    "
 msgstr ""
+"\n"
+"Der nächste Block heißt %(components)s und enthält sogenannte Custom-CSS-Klassen. Warum gibt es keine Custom-CSS-Klassen im eigentlichen Stylesheet? Theoretisch gibt es kein konventionelles Stylesheet, da es von Tailwind erzeugt wird und zwar jedes mal aufs Neue, wenn sich etwas an den Templates ändert (Nur wenn der Tailwind-Compiler läuft). Dabei wird jedes Mal die gesamte Datei neu erstellt und alle manuell hinzugefügten Klassen würden verloren gehen. Um trotzdem vorgefertigte Konstrukte verwenden zu können, ohne jedes Mal CSS-Klassen kopieren zu müssen, lassen sich %(components)s definieren."
 
 #: .\insight_ui\templates\insight_ui\docs\customization.html:306
 #, python-format
 msgid ""
 "\n"
-"                        In der <i>input.css</i> sind beispielsweise Komponenten für Buttons definiert.\n"
-"                        Diese können in den Templates wie eine normale CSS-Klasse verwendet werden %(button)s.\n"
-"                        Die Syntax hat hierbei mit klassischen CSS wenig zu tun. Stattdessen werden per %(apply)s die jeweiligen Tailwind-Klassen oder auch andere Custom-Klassen hinzugefügt.\n"
-"                        Ein Vorteil für alle die bisher mit Tailwind gearbeitet haben.\n"
+"                        In the <i>input.css</i>, for example, components for buttons are defined.\n"
+"                        These can be used in templates like a normal CSS class %(button)s.\n"
+"                        The syntax has little to do with classic CSS. Instead, the respective Tailwind classes or other custom classes are added via %(apply)s.\n"
+"                        This is an advantage for anyone who has previously worked with Tailwind.\n"
 "                    "
 msgstr ""
+"\n"
+"In der <i>input.css</i> sind beispielsweise Komponenten für Buttons definiert. Diese können in den Templates wie eine normale CSS-Klasse verwendet werden %(button)s. Die Syntax hat hierbei mit klassischen CSS wenig zu tun. Stattdessen werden per %(apply)s die jeweiligen Tailwind-Klassen oder auch andere Custom-Klassen hinzugefügt. Ein Vorteil für alle, die bisher mit Tailwind gearbeitet haben."
 
 #: .\insight_ui\templates\insight_ui\docs\customization.html:326
-msgid "Template überschreiben"
-msgstr ""
+msgid "Override template"
+msgstr "Template überschreiben"
 
 #: .\insight_ui\templates\insight_ui\docs\customization.html:328
 #, python-format
 msgid ""
 "\n"
-"                    Es besteht die Möglichkeit, die bereitgestellten Komponenten anzupassen. Dafür muss lediglich das entsprechende Template der Komponente in das eigene Projekt-Verzeichnis kopiert werden.\n"
-"                    Wichtig ist nur, dass das kopierte Template in diesem Pfad %(path)s abgelegt wird. Das Verzeichnis muss sich im Root-Verzeichnis des Projektes befinden.\n"
+"                    It is possible to customize the provided components. To do so, simply copy the corresponding template of the component into your own project directory\n"
+"                    The only important thing is that the copied template is placed at this path %(path)s and must be located in the root directory of the project.\n"
 "                "
 msgstr ""
+"\n"
+"Es besteht die Möglichkeit die bereitgestellten Komponenten anzupassen. Dafür muss lediglich das entsprechende Template der Komponente in das eigene Projekt-Verzeichnis kopiert werden. Wichtig ist nur, dass das kopierte Template in diesem Pfad %(path)s abgelegt wird und es sich im Root-Verzeichnis des Projektes befinden muss."
 
 #: .\insight_ui\templates\insight_ui\docs\customization.html:333
-msgid "Beispiel:"
-msgstr ""
+msgid "Example:"
+msgstr "Beispiel:"
 
 #: .\insight_ui\templates\insight_ui\docs\icons.html:4
 msgid "Insight UI - Icons"
-msgstr ""
+msgstr "Insight UI - Icons"
 
 #: .\insight_ui\templates\insight_ui\docs\icons.html:26
 #, python-format
 msgid ""
 "\n"
-"                    Viele unserer Komponenten haben die Möglichkeit, ein optionales Icons anzuzeigen.\n"
-"                    Überall dort, wo die Komponente ein Icon erwartet, kann eines der hier aufgelisteten Icons angegeben werden.\n"
-"                    Abgesehen davon, können mit der %(icon)s Komponente, überall nach belieben Icons eingebaut werden.\n"
+"                    Many of our components have the ability to display an optional icon.\n"
+"                    Wherever a component expects an icon, one of the icons listed here can be specified.\n"
+"                    More icons can be inserted anywhere using the %(icon)s component.\n"
 "                "
 msgstr ""
+"\n"
+"Viele unserer Komponenten haben die Möglichkeit, ein optionales Icons anzuzeigen. Überall dort, wo die Komponente ein Icon erwartet, kann eines der hier aufgelisteten Icons angegeben werden. Mit der %(icon)s-Komponente können überall nach Belieben weitere Icons eingebaut werden."
 
 #: .\insight_ui\templates\insight_ui\docs\icons.html:37
 #, python-format
 msgid ""
 "\n"
-"                    Die Komponente wird über das %(icon)s Tag eingebunden.\n"
+"                    The component is included via the %(icon)s tag.\n"
 "                "
 msgstr ""
+"\n"
+"Die Komponente wird über das %(icon)s Tag eingebunden."
 
 #: .\insight_ui\templates\insight_ui\docs\icons.html:52
 msgid "Icon Portfolio"
-msgstr ""
+msgstr "Icon Portfolio"
 
 #: .\insight_ui\templates\insight_ui\docs\icons.html:55
 #, python-format
 msgid ""
 "\n"
-"                    Die hier dargestellten Icon stammen von %(heroicons)s und von %(flowbite_icons)s. Beide stellen ihre Icons unter der <b>MIT</b> Lizenz zur Verfügung.\n"
-"                    Es ist nicht unser Ziel eine generische Icon Library aufzubauen, sondern passen diese an die API unserer Icon-Komponente an, um die Icons auch aus dem Django-Kontext heraus angeben zu können.\n"
+"                    The icons shown here come from %(heroicons)s and %(flowbite_icons)s. Both sources provide their icons under the <b>MIT</b> license.\n"
+"                    Our goal is not to build a generic icon library, but to adapt it to the API of our icon component so that icons can also be specified from within the Django context.\n"
 "                "
 msgstr ""
+"\n"
+"Die hier dargestellten Icon stammen von %(heroicons)s und %(flowbite_icons)s. Beide Quellen stellen ihre Icons unter der <b>MIT</b> Lizenz zur Verfügung. Es ist nicht unser Ziel eine generische Icon Bibliothek aufzubauen. Wir passen sie lediglich an die API unserer Icon-Komponente an, um die Icons auch aus dem Django-Kontext heraus angeben zu können."
 
 #: .\insight_ui\templates\insight_ui\docs\icons.html:63
 msgid "Sizes"
-msgstr ""
+msgstr "Größen"
 
 #: .\insight_ui\templates\insight_ui\docs\icons.html:64
-msgid "Alles Icons können in unterschiedlichen Größen verwendet werden:"
-msgstr ""
+msgid "All icons can be used in different sizes:"
+msgstr "Alles Icons können in unterschiedlichen Größen verwendet werden:"
 
 #: .\insight_ui\templates\insight_ui\docs\installation.html:4
 msgid "Insight UI - Get Started"
-msgstr ""
+msgstr "Insight UI - Erste Schritte"
 
 #: .\insight_ui\templates\insight_ui\docs\installation.html:19
 #: .\insight_ui\templates\insight_ui\index.html:24
-#: .\insight_ui\templates\insight_ui\index.html:65
+#: .\insight_ui\templates\insight_ui\index.html:69
 msgid "Get started"
-msgstr ""
+msgstr "Erste Schritte"
 
 #: .\insight_ui\templates\insight_ui\docs\installation.html:26
 msgid ""
-"Insight-UI wird wie gewohnt über ein Python Paketmanager wie <b>pip</b> oder"
-" <b>uv</b> installiert."
+"Insight UI can installed as usual via a Python package manager such as "
+"<b>pip</b> or <b>uv</b>."
 msgstr ""
+"Insight UI kann wie gewohnt über einen Python Paketmanager wie <b>pip</b> "
+"oder <b>uv</b> installiert werden."
 
 #: .\insight_ui\templates\insight_ui\docs\installation.html:39
-msgid "Schnellstart"
-msgstr ""
+msgid "Quick start"
+msgstr "Schnellstart"
 
 #: .\insight_ui\templates\insight_ui\docs\installation.html:41
 #, python-format
 msgid ""
 "\n"
-"                        Schritt Nr. 1 ist es %(insight_ui)s zu den %(installed_apps)s in der <b>settings.py</b> hinzufügen:\n"
+"                        Step 1 is to add %(insight_ui)s to the %(installed_apps)s in <b>settings.py</b>:\n"
 "                    "
 msgstr ""
+"\n"
+"Schritt Nr. 1 ist es, %(insight_ui)s zu den %(installed_apps)s in der <b>settings.py</b> hinzufügen:"
 
 #: .\insight_ui\templates\insight_ui\docs\installation.html:56
 #, python-format
 msgid ""
 "\n"
-"                        Anschließend kann der Entwicklungsserver gestartet werden %(command)s.\n"
+"                        Then the development server can be started %(command)s.\n"
 "                    "
 msgstr ""
+"\n"
+"Anschließend kann der Entwicklungsserver gestartet werden %(command)s."
 
 #: .\insight_ui\templates\insight_ui\docs\installation.html:64
 #, python-format
 msgid ""
 "\n"
-"                        Um alle Funktionen von Insight-UI verwenden zu können, muss unser %(link_open)sBase Template%(link_close)s eingebunden werden.\n"
+"                        To use all features of Insight-UI, our %(link_open)sBase Template%(link_close)s must be included.\n"
 "                    "
 msgstr ""
+"\n"
+"Um alle Funktionen von Insight UI verwenden zu können, muss unser %(link_open)sBasis-Template%(link_close)s eingebunden werden."
 
 #: .\insight_ui\templates\insight_ui\docs\installation.html:74
 #, python-format
 msgid ""
 "\n"
-"                        Damit die Konfiguration von Insight-UI geladen werden kann, müssen die entsprechende Variablen in den Kontext geladen werden.\n"
-"                        Dazu muss die Konfiguration in jeder View, welche das Base Template verwendet, übergeben werden. Siehe auch %(link_open)sKonfiguration anpassen%(link_close)s.\n"
+"                        In order for the Insight UI configuration to be loaded, the corresponding variables must be loaded into the context.\n"
+"                        The configuration must be passed in every view that uses the base template. See also %(link_open)sCustomization%(link_close)s.\n"
 "                    "
 msgstr ""
+"\n"
+"Zum Laden der Konfiguration von Insight UI müssen die entsprechende Variablen in den Kontext geladen werden. Dazu muss die Konfiguration in jeder View, welche das Basis-Template verwendet, übergeben werden. Siehe auch %(link_open)sAnpassung%(link_close)s."
 
 #: .\insight_ui\templates\insight_ui\docs\installation.html:93
 #, python-format
 msgid ""
 "\n"
-"                        Um nun auch noch die Komponenten verwenden zu können, müssen noch die %(insight_tags)s geladen werden\n"
+"                        To also be able to use the components, the %(insight_tags)s must always be loaded in a respective template.\n"
 "                    "
 msgstr ""
+"\n"
+"Um nun auch noch die Komponenten verwenden zu können, müssen zusätzlich noch die %(insight_tags)s im jeweiligen Template geladen werden."
 
 #: .\insight_ui\templates\insight_ui\docs\installation.html:105
-msgid "Nun können auch die Komponenten verwendet werden:"
-msgstr ""
+msgid "Now the components can be used:"
+msgstr "Jetzt können die Komponenten verwendet werden:"
 
 #: .\insight_ui\templates\insight_ui\docs\partial\3D_carousel_detailpage.html:18
 #: .\insight_ui\templates\insight_ui\docs\partial\accordion_detailpage.html:20
@@ -4501,6 +4648,52 @@ msgid ""
 "\n"
 "            Die Komponente wird über das %(three_d_carousel)s Tag eingebunden.\n"
 "        "
+msgstr ""
+
+#: .\insight_ui\templates\insight_ui\docs\partial\3D_carousel_detailpage.html:55
+#: .\insight_ui\templates\insight_ui\docs\partial\accordion_detailpage.html:68
+#: .\insight_ui\templates\insight_ui\docs\partial\alert_detailpage.html:47
+#: .\insight_ui\templates\insight_ui\docs\partial\article_detailpage.html:50
+#: .\insight_ui\templates\insight_ui\docs\partial\breadcrumb_detailpage.html:67
+#: .\insight_ui\templates\insight_ui\docs\partial\button_detailpage.html:103
+#: .\insight_ui\templates\insight_ui\docs\partial\card_carousel_detailpage.html:86
+#: .\insight_ui\templates\insight_ui\docs\partial\card_detailpage.html:92
+#: .\insight_ui\templates\insight_ui\docs\partial\chart_detailpage.html:77
+#: .\insight_ui\templates\insight_ui\docs\partial\chat_detailpage.html:46
+#: .\insight_ui\templates\insight_ui\docs\partial\checkbox_detailpage.html:78
+#: .\insight_ui\templates\insight_ui\docs\partial\checkbox_group_detailpage.html:96
+#: .\insight_ui\templates\insight_ui\docs\partial\code_block_detailpage.html:51
+#: .\insight_ui\templates\insight_ui\docs\partial\differentiator_detailpage.html:46
+#: .\insight_ui\templates\insight_ui\docs\partial\dropdown_detailpage.html:91
+#: .\insight_ui\templates\insight_ui\docs\partial\form_detailpage.html:53
+#: .\insight_ui\templates\insight_ui\docs\partial\generic_filter_detailpage.html:108
+#: .\insight_ui\templates\insight_ui\docs\partial\geo_map_detailpage.html:96
+#: .\insight_ui\templates\insight_ui\docs\partial\hero_detailpage.html:60
+#: .\insight_ui\templates\insight_ui\docs\partial\image_carousel_detailpage.html:69
+#: .\insight_ui\templates\insight_ui\docs\partial\infinite_scroll_detailpage.html:49
+#: .\insight_ui\templates\insight_ui\docs\partial\input_field_detailpage.html:69
+#: .\insight_ui\templates\insight_ui\docs\partial\live_content_detailpage.html:46
+#: .\insight_ui\templates\insight_ui\docs\partial\modal_detailpage.html:67
+#: .\insight_ui\templates\insight_ui\docs\partial\multiselect_detailpage.html:74
+#: .\insight_ui\templates\insight_ui\docs\partial\navbar_detailpage.html:126
+#: .\insight_ui\templates\insight_ui\docs\partial\page_header_detailpage.html:49
+#: .\insight_ui\templates\insight_ui\docs\partial\pagination_detailpage.html:70
+#: .\insight_ui\templates\insight_ui\docs\partial\popover_detailpage.html:57
+#: .\insight_ui\templates\insight_ui\docs\partial\progress_bar_detailpage.html:50
+#: .\insight_ui\templates\insight_ui\docs\partial\query_builder_detailpage.html:117
+#: .\insight_ui\templates\insight_ui\docs\partial\radio_group_detailpage.html:83
+#: .\insight_ui\templates\insight_ui\docs\partial\range_slider_detailpage.html:72
+#: .\insight_ui\templates\insight_ui\docs\partial\search_bar_detailpage.html:46
+#: .\insight_ui\templates\insight_ui\docs\partial\select_detailpage.html:71
+#: .\insight_ui\templates\insight_ui\docs\partial\sidebar_detailpage.html:106
+#: .\insight_ui\templates\insight_ui\docs\partial\step_bar_detailpage.html:62
+#: .\insight_ui\templates\insight_ui\docs\partial\table_detailpage.html:74
+#: .\insight_ui\templates\insight_ui\docs\partial\tabs_detailpage.html:90
+#: .\insight_ui\templates\insight_ui\docs\partial\toggle_button_detailpage.html:70
+#: .\insight_ui\templates\insight_ui\docs\partial\toggle_view_detailpage.html:58
+#: .\insight_ui\templates\insight_ui\docs\partial\tooltip_detailpage.html:67
+#: .\insight_ui\templates\insight_ui\docs\partial\web_socket_detailpage.html:46
+msgid "Related Topics"
 msgstr ""
 
 #: .\insight_ui\templates\insight_ui\docs\partial\3D_carousel_detailpage.html:66
@@ -4596,11 +4789,6 @@ msgstr ""
 
 #: .\insight_ui\templates\insight_ui\docs\partial\bullet_point_list_detailpage.html:38
 msgid "Liste der einzelnen Punkte."
-msgstr ""
-
-#: .\insight_ui\templates\insight_ui\docs\partial\bullet_point_list_detailpage.html:63
-#: .\insight_ui\templates\insight_ui\docs\partial\footer_detailpage.html:113
-msgid "Related topics"
 msgstr ""
 
 #: .\insight_ui\templates\insight_ui\docs\partial\bullet_point_list_detailpage.html:74
@@ -4867,11 +5055,6 @@ msgstr ""
 
 #: .\insight_ui\templates\insight_ui\docs\partial\footer_detailpage.html:43
 msgid "Daten welche im Footer angezeigt werden sollen."
-msgstr ""
-
-#: .\insight_ui\templates\insight_ui\docs\partial\footer_detailpage.html:124
-#: .\insight_ui\templates\insight_ui\docs\partial\sidebar_detailpage.html:117
-msgid "Navbar"
 msgstr ""
 
 #: .\insight_ui\templates\insight_ui\docs\partial\form_detailpage.html:20
@@ -5304,109 +5487,135 @@ msgstr ""
 msgid "Live Content"
 msgstr ""
 
-#: .\insight_ui\templates\insight_ui\index.html:4
-#: .\insight_ui\templates\insight_ui\playground.html:4
-msgid "Insight UI"
-msgstr ""
-
 #: .\insight_ui\templates\insight_ui\index.html:22
 msgid ""
+"Welcome to the documentation of <b>Insight UI</b>, our modern, extensible "
+"and accessible UI framework for Django projects."
+msgstr ""
 "Willkommen in der Dokumentation von <b>Insight UI</b>, unserem modernen, "
 "erweiterbaren und barrierefreien UI-Framework für Django-Projekte."
-msgstr ""
 
 #: .\insight_ui\templates\insight_ui\index.html:30
-msgid "Was ist Insight-UI, etwa noch so ein CSS/JavaScript Framework?"
-msgstr ""
+msgid "What is Insight-UI, just another CSS/JavaScript framework?"
+msgstr "Was ist Insight-UI, etwa noch so ein CSS/JavaScript Framework?"
 
-#: .\insight_ui\templates\insight_ui\index.html:38
+#: .\insight_ui\templates\insight_ui\index.html:32
 msgid ""
+"\n"
+"                    Insight UI is indeed a CSS/JavaScript framework dedicated to Django applications. The difference compared to other frameworks, however,\n"
+"                    is that Insight UI can be used without a solid foundational knowledge of frontend technologies such as HTML, JavaScript, CSS, etc. Insight UI is\n"
+"                    primarily intended for <b>Rapid Prototyping</b> and designed in such a way that it can be used by developers who have little prior knowledge of or interest in frontend development.\n"
+"                    For this purpose, our framework provides a set of pre-built components that can be inserted directly into the template and just need to be populated with data.\n"
+"                "
+msgstr ""
+"\n"
+"Insight UI ist in der Tat ein CSS/JavaScript Framework, dediziert für Django Anwendungen. Der Unterschied zu anderen Frameworks ist jedoch der, dass Insight UI ohne fundiertes Grundwissen in Frontendtechnologien wie HTML, JavaScript, CSS, etc. verwendet werden kann. Insight UI ist vor allem für <b>Rapid Prototyping</b> gedacht und so konzipiert, dass es von Entwicklern verwendet werden kann, welche kaum Vorwissen über oder wenig Interesse an Frontendentwicklung haben. Für diesen Zweck stellt unser Framework eine Reihe vorgefertigter Komponenten zur Verfügung, welche direkt in das Template eingefügt werden können und lediglich mit Daten befüllt werden müssen."
+
+#: .\insight_ui\templates\insight_ui\index.html:40
+msgid ""
+"The components are implemented with <b>accessibility</b> in mind and "
+"support, with regard to <b>internationalization</b>, an <b>RTL layout</b> "
+"for languages that are read from right to left."
+msgstr ""
 "Die Komponenten sind unter Beachtung der <b>Barrierefreiheit</b> "
-"implementiert und bieten im Bezug auf <b>Internationalisierung</b> eine "
-"Unterstützung für ein <b>RTL-Layout</b> für Sprachen, welche von rechts nach"
-" links gelesen werden."
-msgstr ""
+"implementiert und unterstützen zur <b>Internationalisierung</b> ein <b>RTL-"
+"Layout</b> für Sprachen, welche von rechts nach links gelesen werden."
 
-#: .\insight_ui\templates\insight_ui\index.html:41
+#: .\insight_ui\templates\insight_ui\index.html:43
 msgid ""
-"Für eine gute Performance unterstützen entsprechende Komponenten die "
-"Verwendung von <b>HTMX</b> Requests, um nur einzelne ausschnitte des DOM zu "
-"ändern, ohne einen kompletten Seiten-Reload. "
+"For good performance, the relevant components support the use of <b>HTMX</b>"
+" requests to update only individual parts of the DOM without a full page "
+"reload. "
 msgstr ""
+"Für eine gute Leistung unterstützen entsprechende Komponenten die Verwendung"
+" von <b>HTMX</b> Requests, um nur einzelne Ausschnitte des DOM zu ändern, "
+"ohne eine Seite komplett neu laden zu müssen."
 
-#: .\insight_ui\templates\insight_ui\index.html:46
-msgid "Was ist Insight-UI nicht?"
-msgstr ""
+#: .\insight_ui\templates\insight_ui\index.html:48
+msgid "What is Insight UI not?"
+msgstr "Was ist Insight UI nicht?"
 
-#: .\insight_ui\templates\insight_ui\index.html:54
-msgid "Ist Insight-UI das richtige für mich?"
+#: .\insight_ui\templates\insight_ui\index.html:50
+msgid ""
+"\n"
+"                    Insight UI is neither a CSS library nor a JavaScript library. Insight UI is designed exclusively for Django applications.\n"
+"                    While our framework offers several, quite flexible customization options, it has primarily been designed with less of a focus on creative freedom.\n"
+"                "
 msgstr ""
-
-#: .\insight_ui\templates\insight_ui\index.html:55
-msgid "Gute Frage, hier eine Checkliste um diese zu beantworten:"
-msgstr ""
-
-#: .\insight_ui\templates\insight_ui\index.html:57
-msgid "Du hast eine Django Anwendung, welcher noch ein Frontend fehlt?"
-msgstr ""
+"\n"
+"Insight UI ist keine CSS-Library und auch keine JavaScript Library. Insight UI ist ausschließlich für Django Anwendungen konzipiert. Unser Framework bietet zwar mehrere, auch sehr flexible Möglichkeiten der Anpassung, ist in erster Linie aber eher weniger für kreative Freiheit entworfen worden."
 
 #: .\insight_ui\templates\insight_ui\index.html:58
-msgid "Du musst schnell ein Frontend für ein PoC zusammen basteln?"
-msgstr ""
+msgid "Is Insight UI the right choice for me?"
+msgstr "Ist Insight UI das Richtige für mich?"
 
 #: .\insight_ui\templates\insight_ui\index.html:59
-msgid ""
-"Du hast eigentlich keine übermäßige Leidenschaft für die "
-"Frontendentwicklung?"
-msgstr ""
-
-#: .\insight_ui\templates\insight_ui\index.html:60
-msgid ""
-"Du hast keine Lust dich mit den WCAG Richtlinien zur Barrierefreiheit zu "
-"beschäftigen?"
-msgstr ""
+msgid "Good question, here is a checklist to answer it:"
+msgstr "Gute Frage, hier ist eine Checkliste um das zu beantworten:"
 
 #: .\insight_ui\templates\insight_ui\index.html:61
-msgid ""
-"Du bist nicht sonderlich kreativ oder möchtest zumindest nicht alles selbst "
-"Gestalten?"
+msgid "You have a Django application that is still missing a frontend?"
+msgstr "Du hast eine Django Anwendung, welcher noch ein Frontend fehlt?"
+
+#: .\insight_ui\templates\insight_ui\index.html:62
+msgid "You need to quickly put together a frontend for a PoC?"
+msgstr "Du musst schnell ein Frontend für einen PoC zusammen basteln?"
+
+#: .\insight_ui\templates\insight_ui\index.html:63
+msgid "You don't really have a great passion for frontend development?"
 msgstr ""
+"Du hast eigentlich keine übermäßige Leidenschaft für die "
+"Frontendentwicklung?"
 
 #: .\insight_ui\templates\insight_ui\index.html:64
-msgid "Perfekt, dann kann es ja losgehen!"
+msgid "You don't feel like dealing with the WCAG accessibility guidelines?"
 msgstr ""
+"Du hast keine Lust, dich mit den WCAG Richtlinien zur Barrierefreiheit zu "
+"beschäftigen?"
+
+#: .\insight_ui\templates\insight_ui\index.html:65
+msgid ""
+"You don't want to waste your creativity to design the basics of a web site "
+"yourself?"
+msgstr ""
+"Du bist möchtest deine Kreativität nicht mit dem grundlegenden Gestalten von"
+" Webseiten belasten?"
+
+#: .\insight_ui\templates\insight_ui\index.html:68
+msgid "Perfect, then let's get started!"
+msgstr "Perfekt, dann kann es ja losgehen!"
 
 #: .\insight_ui\templates\insight_ui\login.html:47
 msgid "Username"
-msgstr ""
+msgstr "Benutzername"
 
 #: .\insight_ui\templates\insight_ui\login.html:48
 msgid "Enter username"
-msgstr ""
+msgstr "Benutzernamen eingeben"
 
 #: .\insight_ui\templates\insight_ui\login.html:54
 msgid "Enter password"
-msgstr ""
+msgstr "Passwort eingeben"
 
 #: .\insight_ui\templates\insight_ui\login.html:58
 msgid "Forgot password?"
-msgstr ""
+msgstr "Passwort vergessen?"
 
 #: .\insight_ui\templates\insight_ui\login.html:64
 msgid "Sign in"
-msgstr ""
+msgstr "Anmelden"
 
 #: .\insight_ui\templates\insight_ui\login.html:71
 msgid "Or"
-msgstr ""
+msgstr "Oder"
 
 #: .\insight_ui\templates\insight_ui\login.html:83
 msgid "You do not have an account yet?"
-msgstr ""
+msgstr "Du hast noch kein Konto?"
 
 #: .\insight_ui\templates\insight_ui\login.html:84
 msgid "Sign up here"
-msgstr ""
+msgstr "Hier registrieren"
 
 #: .\insight_ui\views.py:117
 #, python-format
@@ -5437,6 +5646,10 @@ msgstr "Das ist der Inhalt des zweiten Reiters!"
 #: .\insight_ui\views.py:424
 msgid "This is the content of the third tab!"
 msgstr "Das ist der Inhalt des dritten Reiters!"
+
+#, fuzzy
+#~ msgid "Alle abwählen"
+#~ msgstr "Sprache auswählen"
 
 #~ msgid "Element"
 #~ msgstr "Element"
