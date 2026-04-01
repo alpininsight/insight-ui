@@ -115,25 +115,25 @@
     {% chat view_name="chat_response" %}
 {% elif component.value == "alert" %}
     <div class="space-y-4">
-        {% alert message="This is just an information." type="info" %}
-        {% alert message="Saved successfully!" type="success" %}
-        {% alert message="Please review your entries!" type="warning" %}
-        {% alert message="Error while loading data!" type="error" %}
+        {% alert message=_("This is just an information.") type="info" %}
+        {% alert message=_("Saved successfully!") type="success" %}
+        {% alert message=_("Please review your entries!") type="warning" %}
+        {% alert message=_("Error while loading data!") type="error" %}
     </div>
 {% elif component.value == "modal" %}
     <div class="h-72">
         <div class="flex flex-col items-center gap-4">
             <!-- Standard -->
             <button class="btn btn-primary w-72" data-insight-toggle="modal" data-insight-target="demo-modal">
-                {% trans "Standard Modal" %}
+                {% trans "Standard modal" %}
             </button>
-            {% modal tag_id="demo-modal" title=_("Demo Modal") description=_("This is an example of a standard modal.") %}
+            {% modal tag_id="demo-modal" title=_("Demo modal") description=_("This is an example of a standard modal.") %}
 
             <!-- Action-Buttons -->
             <button class="btn btn-danger w-72" data-insight-toggle="modal" data-insight-target="delete-modal">
-                {% trans "Modal with Action-Buttons" %}
+                {% trans "Modal with Action Buttons" %}
             </button>
-            {% modal tag_id="delete-modal" title=_("Delete?") description="Please conform deletion!" actions=confirm_modal_actions %}
+            {% modal tag_id="delete-modal" title=_("Delete?") description=_("Please conform deletion!") actions=confirm_modal_actions %}
         </div>
     </div>
 {% elif component.value == "popover" %}
@@ -142,10 +142,10 @@
         <div id="demo-popover" class="bg-white dark:bg-gray-700 w-64 border border-gray-300 dark:border-0 rounded-sm shadow">
             <div class="p-4">
                 <span class="text-primary block font-semibold w-full border-b-2 border-gray-300 dark:border-gray-500 pb-2">
-                    {% trans "This is a Popover." %}
+                    {% trans "This is a popover." %}
                 </span>
                 <p class="text-secondary text-sm mt-4">
-                    {% trans "A popover could have more content than a tooltip and it can also have interactive elements like buttons" %}
+                    {% trans "A popover can have more content than a tooltip, e.g. interactive elements like buttons." %}
                 </p>
             </div>
             <div class="bg-gray-100 dark:bg-gray-900 p-4 rounded-b-sm">
@@ -226,10 +226,10 @@
 {% elif component.value == "toggle_view" %}
     {% toggle_view tag_id="test" data=toggle_table view_radio_config=view_radio_config current_view=toggle_start_view %}
 {% elif component.value == "form" %}
-    {% form tag_id="htmx-form" title="Contact Form" description="Please fill out the form" fields=form_fields show_reset_button=True view_name="form_submit" htmx_config=htmx_config %}
+    {% form tag_id="htmx-form" title=_("Contact Form") description=_("Please fill out the form") fields=form_fields show_reset_button=True view_name="form_submit" htmx_config=htmx_config %}
 {% elif component.value == "page_header" %}
     <div class="bg-insight-primary px-8 pt-12 pb-4">
-        {% page_header title="Example Page" description="This is an example description for the page header component." %}
+        {% page_header title=_("Example Page") description=_("This is an example description for the page header component.") %}
     </div>
     <svg viewBox="0 0 500 90" class="-z-10">
         <polyline class="fill-insight-primary/25 drop-shadow-xs drop-shadow-gray-500 dark:drop-shadow-gray-800" points="-10,0 450,0 -10,65"/>
@@ -237,7 +237,7 @@
         <polyline class="fill-insight-primary drop-shadow-xs drop-shadow-gray-500 dark:drop-shadow-gray-800" points="-10,0 510,0 -10,35"/>
     </svg>
 {% elif component.value == "article" %}
-    {% article title="Newsletter" columns=3 content="<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>" %}
+    {% article title=_("Newsletter") columns=3 content="<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>" %}
 {% elif component.value == "hero" %}
-    {% hero title="Insight UI" subtitle="A Django Component Framework" description="A modern UI library." %}
+    {% hero title=_("Insight UI") subtitle=_("A Django Component Framework") description=_("A modern UI library.") %}
 {% endif %}

@@ -24,9 +24,9 @@
         <div class="space-y-8">
             <p>
                 {% blocktrans with icon='<span class="inline-tag">&lcub;% icon %&rcub;</span>'|safe %}
-                    Viele unserer Komponenten haben die Möglichkeit, ein optionales Icons anzuzeigen.
-                    Überall dort, wo die Komponente ein Icon erwartet, kann eines der hier aufgelisteten Icons angegeben werden.
-                    Abgesehen davon, können mit der {{ icon }} Komponente, überall nach belieben Icons eingebaut werden.
+                    Many of our components have the ability to display an optional icon.
+                    Wherever a component expects an icon, one of the icons listed here can be specified.
+                    More icons can be inserted anywhere using the {{ icon }} component.
                 {% endblocktrans %}
             </p>
         </div>
@@ -35,7 +35,7 @@
             <h2>{% trans "Usage" %}</h2>
             <p class="mb-4">
                 {% blocktrans with icon='<span class="inline-tag">&lcub;% icon %&rcub;</span>'|safe %}
-                    Die Komponente wird über das {{ icon }} Tag eingebunden.
+                    The component is included via the {{ icon }} tag.
                 {% endblocktrans %}
             </p>
             <div data-insight-code-block="Django">
@@ -53,15 +53,15 @@
             <p class="info-container text-base">
                 <span class="block font-bold italic text-lg">Info:</span>
                 {% blocktrans with heroicons='<a href="https://heroicons.com/" class="text-link">Heroicons</a>'|safe flowbite_icons='<a href="https://flowbite.com/icons/" class="text-link">Flowbite</a>'|safe %}
-                    Die hier dargestellten Icon stammen von {{ heroicons }} und von {{ flowbite_icons }}. Beide stellen ihre Icons unter der <b>MIT</b> Lizenz zur Verfügung.
-                    Es ist nicht unser Ziel eine generische Icon Library aufzubauen, sondern passen diese an die API unserer Icon-Komponente an, um die Icons auch aus dem Django-Kontext heraus angeben zu können.
+                    The icons shown here come from {{ heroicons }} and {{  flowbite_icons }}. Both sources provide their icons under the <b>MIT</b> license.
+                    Our goal is not to build a generic icon library, but to adapt it to the API of our icon component so that icons can also be specified from within the Django context.
                 {% endblocktrans %}
             </p>
             {% table data=icon_table %}
         </section>
         <section class="space-y-4">
             <h2>{% trans "Sizes" %}</h2>
-            <p>{% trans "Alles Icons können in unterschiedlichen Größen verwendet werden:" %}</p>
+            <p>{% trans "All icons can be used in different sizes:" %}</p>
             {% table data=size_table %}
         </section>
     </div>

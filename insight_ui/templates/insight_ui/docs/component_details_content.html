@@ -17,7 +17,7 @@
             {{ usage_summary }}
         {% else %}
             {% blocktrans with component_tag='<span class="inline-tag">{{ component_name }}</span>'|safe %}
-                Die Komponente wird über das {{ component_tag }} Tag eingebunden.
+                The component is included via the {{ component_tag }} tag.
             {% endblocktrans %}
         {% endif %}
     </p>
@@ -62,7 +62,7 @@
 
 {% comment %} Related {% endcomment %}
 <section>
-    <h2>{% trans "Related Topics" %}</h2>
+    <h2>{% trans "Related topics" %}</h2>
     <ul class="list-disc leading-relaxed ms-8 mt-6">
         {% for topic in related_topics %}
             <li>

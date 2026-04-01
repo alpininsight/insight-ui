@@ -23,7 +23,7 @@
     <div class="w-full space-y-12 text-secondary leading-loose">
         <section class="space-y-4">
             <h2>{% trans "Installation" %}</h2>
-            <p>{% trans "Insight-UI wird wie gewohnt über ein Python Paketmanager wie <b>pip</b> oder <b>uv</b> installiert." %}</p>
+            <p>{% trans "Insight UI can installed as usual via a Python package manager such as <b>pip</b> or <b>uv</b>." %}</p>
             <div data-insight-code-block="bash">
                 {# fmt:off #}
                 uv add insight-ui
@@ -36,10 +36,10 @@
         </section>
         <section class="space-y-12">
             <div class="space-y-4">
-                <h2>{% trans "Schnellstart" %}</h2>
+                <h2>{% trans "Quick start" %}</h2>
                 <p>
                     {% blocktrans with insight_ui='<span class="inline-tag">insight-ui</span>'|safe installed_apps='<span class="inline-tag">INSTALLED_APPS</span>'|safe %}
-                        Schritt Nr. 1 ist es {{ insight_ui }} zu den {{ installed_apps }} in der <b>settings.py</b> hinzufügen:
+                        Step 1 is to add {{ insight_ui }} to the {{ installed_apps }} in <b>settings.py</b>:
                     {% endblocktrans %}
                 </p>
                 <div data-insight-code-block="python" data-insight-code-block-filename="settings.py">
@@ -54,7 +54,7 @@
 
                 <p>
                     {% blocktrans with command='<span class="inline-tag select-all">python manage.py runserver</span>'|safe %}
-                        Anschließend kann der Entwicklungsserver gestartet werden {{ command }}.
+                        Then the development server can be started {{ command }}.
                     {% endblocktrans %}
                 </p>
             </div>
@@ -62,7 +62,7 @@
                 <h3>{% trans "Base Template" %}</h3>
                 <p>
                     {% blocktrans with link_open='<a href="https://github.com/alpininsight/insight-ui/blob/develop/insight_ui/templates/insight_ui/base.html" class="text-link">'|safe link_close='</a>'|safe %}
-                        Um alle Funktionen von Insight-UI verwenden zu können, muss unser {{ link_open }}Base Template{{ link_close }} eingebunden werden.
+                        To use all features of Insight-UI, our {{ link_open }}Base Template{{ link_close }} must be included.
                     {% endblocktrans %}
                 </p>
                 <div data-insight-code-block="Django" data-insight-code-block-filename="my_template.html">
@@ -72,8 +72,8 @@
                 </div>
                 <p>
                     {% blocktrans with link_open='<a href="http://127.0.0.1:8000/docs/customization#settings" class="text-link">'|safe link_close='</a>'|safe %}
-                        Damit die Konfiguration von Insight-UI geladen werden kann, müssen die entsprechende Variablen in den Kontext geladen werden.
-                        Dazu muss die Konfiguration in jeder View, welche das Base Template verwendet, übergeben werden. Siehe auch {{ link_open }}Konfiguration anpassen{{ link_close }}.
+                        In order for the Insight UI configuration to be loaded, the corresponding variables must be loaded into the context.
+                        The configuration must be passed in every view that uses the base template. See also {{ link_open }}Customization{{ link_close }}.
                     {% endblocktrans %}
                 </p>
                 <div data-insight-code-block="python" data-insight-code-block-filename="views.py">
@@ -91,7 +91,7 @@
                 <h3>Insight Tags</h3>
                 <p>
                     {% blocktrans with insight_tags='<span class="inline-tag">insight_tags</span>'|safe %}
-                        Um nun auch noch die Komponenten verwenden zu können, müssen noch die {{ insight_tags }} geladen werden
+                        To also be able to use the components, the {{ insight_tags }} must always be loaded in a respective template.
                     {% endblocktrans %}
                 </p>
                 <div data-insight-code-block="Django" data-insight-code-block-filename="my_template.html">
@@ -102,7 +102,7 @@
                     {# fmt:on #}
                 </div>
 
-                <p class="mt-4">{% trans "Nun können auch die Komponenten verwendet werden:" %}</p>
+                <p class="mt-4">{% trans "Now the components can be used:" %}</p>
                 <div data-insight-code-block="Django" data-insight-code-block-filename="my_template.html">
                     {# fmt:off #}
                     &lcub;% extends "insight_ui/base.html" %&rcub;
