@@ -16,7 +16,7 @@
 {% endblock sidebar_right %}
 
 {% block heading %}
-    <h1 class="text-white">{% trans "Insight UI %} {{ storybook.formatted_name }}</h1>
+    <h1 class="text-white">{% trans "Insight UI" %} {{ storybook.formatted_name }}</h1>
     {% for paragraph in description %}
         {{ paragraph|markdownify }}
     {% endfor %}
