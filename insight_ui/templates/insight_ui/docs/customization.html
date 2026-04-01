@@ -122,7 +122,7 @@
                     <li><span class="inline-tag">STATICFILES_DIRS</span>: {% trans "The path to the static files must be defined." %}</li>
                     <li><span class="inline-tag">TAILWIND_CLI_SRC_CSS</span>: {% blocktrans with input='<span class="inline-tag">input.css</span>'|safe %}The path to {{ input }}, which contains the theme configuration (more on this later).{% endblocktrans %}</li>
                     <li><span class="inline-tag">TAILWIND_CLI_DIST_CSS</span>: {% trans "The path where the generated stylesheet should be saved." %}</li>
-                    <li><span class="inline-tag">TAILWIND_CLI_AUTOMATIC_DOWNLOAD</span>: {% trans We recommend disabling the automatic updating of the Tailwind compiler, as it would consume more and more storage space and prevents error messages due to failed downloads." %}</li>
+                    <li><span class="inline-tag">TAILWIND_CLI_AUTOMATIC_DOWNLOAD</span>: {% trans "We recommend disabling the automatic updating of the Tailwind compiler, as it would consume more and more storage space and prevents error messages due to failed downloads." %}</li>
                 </ul>
                 <div data-insight-code-block="python" data-insight-code-block-filename="settings.py">
                     {# fmt:off #}
@@ -171,7 +171,7 @@
                 <div id="settings3" data-insight-code-block="css" data-insight-code-block-filename="input.css">
                     @source "../templates/insight_ui/";
                 </div>
-                <p>{% trans replace with: %}</p>
+                <p>{% trans "replace with:" %}</p>
                 <div id="settings4" data-insight-code-block="css" data-insight-code-block-filename="input.css">
                     @source ".venv/Lib/site-packages/insight_ui/templates/insight_ui";
                 </div>

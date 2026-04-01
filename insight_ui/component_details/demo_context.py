@@ -625,7 +625,7 @@ def get_cards_context() -> dict:
                 "title": _("App Card"),
                 "content": _("A card with its content arranged horizontally."),
                 "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": _("Card-Image")},
-                "tags": [_("Insight-UI"), _("Layout"), _("Card")],
+                "tags": [_("Insight UI"), _("Layout"), _("Card")],
                 "actions": [
                     {"text": _("Learn more"), "url": "#", "type": "secondary"},
                     {"text": _("Share"), "url": "#", "type": "primary"},
@@ -637,7 +637,7 @@ def get_cards_context() -> dict:
                 "title": _("Flip Card"),
                 "content": _("A card that rotates 180° and has additional content on the back."),
                 "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": _("Card-Image")},
-                "tags": [_("Insight-UI"), _("Layout"), _("Card")],
+                "tags": [_("Insight UI"), _("Layout"), _("Card")],
                 "actions": [
                     {"text": _("Learn more"), "url": "#", "type": "secondary"},
                     {"text": _("Share"), "url": "#", "type": "primary"},
