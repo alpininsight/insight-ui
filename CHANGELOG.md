@@ -32,10 +32,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Function declarations demo_context, checkbox_group
 - Rome translation ID
 - Add some missing translatable strings in the demo_context.py
+- Get_radio_block_description_context() naming declaration
+- Resolve merge conflict in django.po
+- Radio_block_parameter_context() declaration
+- Demo_context, replace f-string to make it translatable
 - Make 'toggle' component accessible for keyboard navigation
 - Visualize focus for 'radio_block' component
 - Add loading indicator to partial responses
 - Use blocktrans for multiline strings in some templates
+- Integration test checks now for success status, not the potentially tranlated string.
+- Add missing string markers, correct spelling
+- String fixes
+- Change login smoke test to check for NOT translated string rather in comments
+- Minor spelling
 
 ### CI/CD
 
@@ -91,6 +100,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Replace DE with EN strings
 - Added EN translation fields
 - In progress 22 % translation EN to DE
+- Exchange DE to EN text strings
+- Description_context.py with EN strings
+- 50%  EN strings replaced
+- Changes all translatable strings to EN in parameter_context.py
+- EN-DE translations for parameter_context.py
+- Context.py added new and replaced msgid to EN, added DE translations
+- Views.py add and replace msgid to EN, add DE translations
+- Demo_utils.py add EN to DE translations
+- Replaced and added EN msgids for all .html templates
+- EN to DE translations for all .html
+- Sharpen fuzzy translations
 
 ### Miscellaneous
 
@@ -99,6 +119,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove checklists from docs
 - **ci:** Migrate from release-please to GitVersion
 - Update requirements.txt
+- Consistent Insight UI spelling
 
 ### Refactoring
 
