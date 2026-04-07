@@ -4,8 +4,8 @@
     <label id="{{ name }}-label" class="block text-sm font-bold text-primary mb-1">{{ label }}</label>
     {% if show_buttons %}
         <div class="flex gap-2 mb-1">
-            <button type="button" class="select-all btn btn-primary btn-sm">{% trans "Alle auswählen" %}</button>
-            <button type="button" class="deselect-all btn btn-primary btn-sm">{% trans "Alle abwählen" %}</button>
+            <button type="button" class="select-all btn btn-primary btn-sm">{% trans "Select all" %}</button>
+            <button type="button" class="deselect-all btn btn-primary btn-sm">{% trans "Deselect all" %}</button>
         </div>
     {% endif %}
     <div class="relative" role="combobox" aria-labelledby="{{ name }}-label" aria-haspopup="listbox" aria-expanded="false" aria-owns="{{ name }}-listbox">

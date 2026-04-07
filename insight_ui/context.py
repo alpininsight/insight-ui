@@ -140,7 +140,7 @@ def get_footer_context() -> dict:
         "footer_data": {
             "description": {
                 "title": "Insight UI",
-                "text": "A modern, accessible, and responsive UI library for Django projects.",
+                "text": _("A modern, accessible, and responsive UI library for Django projects."),
             },
             "links": links,
             "contact": {
@@ -161,9 +161,9 @@ def get_base_context(current_view: str = "index_view") -> dict:
 def get_icon_context() -> dict:
     """Serve context for the icon detailpage."""
     main_params = [
-        ParameterDetails("name", "str", "Name des Icons (siehe Tabelle unten).", "question-mark"),
+        ParameterDetails("name", "str", _("Name of the icon (see table below)."), "question-mark"),
         ParameterDetails(
-            "size", "str", "Größe des Icons. Mögliche Werte sind: 'big', 'medium', 'small' und 'xs'", "default"
+            "size", "str", _("Size of the icon. Possible values are: 'big', 'medium', 'small' and 'xs'."), "default"
         ),
     ]
 
@@ -171,283 +171,283 @@ def get_icon_context() -> dict:
         [
             render_to_string("insight_ui/components/icons.html", {"name": "home"}),
             "home",
-            "Typisch für Verlinkungen auf die Startseite.",
+            _("Typically used for links to the home page."),
             "Heroicons - home",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "office"}),
             "office",
-            "Themen mit Bezug zum Büro oder der Arbeit.",
+            _("Topics related to the office or work."),
             "Heroicons - building-office",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "globe"}),
             "globe",
-            "Elemente zur Sprachauswahl.",
+            _("Language selection elements."),
             "Heroicons - globe-alt",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "gear"}),
             "gear",
-            "Generelle Einstellungen.",
+            _("General settings."),
             "Heroicons - cog-6-tooth",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "leave"}),
             "leave",
-            "Als Abmeldebutton oder verlassen eines Bereichs.",
+            _("As a logout button or for leaving a section."),
             "Heroicons - arrow-left-start-on-rectangle",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "cards"}),
             "cards",
-            "Karten basierte Dashboards, Rasteransichten, etc..",
+            _("Card-based dashboards, grid views, etc."),
             "Flowbite - grid",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "list"}),
             "list",
-            "Listenansichten jeder Art.",
+            _("List views of all kinds."),
             "Heroicons - list-bullet",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "carousel"}),
             "carousel",
-            "Speziell für unsere Karussell-Komponenten. <b>(Das Icon soll demnächst ausgetauscht werden!)</b>",
+            _("Specifically for our carousel components. <b>(This icon is to be replaced soon!)</b>"),
             "Heroicons - square-3-stack-3d",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "chevron_down"}),
             "chevron_down",
-            "Klassiker für Dropdowns, Accordion, eben alles was sich aufklappen lässt.",
+            _("Classic for dropdowns, accordions, and everything that can be expanded."),
             "Heroicons - chevron-down",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "chevron_up"}),
             "chevron_up",
-            "Klassiker für Dropdowns, Accordion, eben alles was sich zuklappen lässt.",
+            _("Classic for dropdowns, accordions, and everything that can be collapsed."),
             "Heroicons - chevron-up",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "chevron_both"}),
             "chevron_both",
-            "Klassiker für die Andeutung einer Möglichkeit zum sortieren.",
+            _("Classic for indicating a sorting option."),
             "Heroicons - chevron-up-down",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "chevron_left"}),
             "chevron_left",
-            "Karussells, Pagination oder Elemente zum ausklappen wie z.b.: ein Drawer.",
+            _("Carousels, pagination or expandable elements such as a drawer."),
             "Heroicons - chevron-left",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "chevron_right"}),
             "chevron_right",
-            "Karussells, Pagination oder Elemente zum ausklappen wie z.b.: ein Drawer.",
+            _("Carousels, pagination or expandable elements such as a drawer."),
             "Heroicons - chevron-right",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "tick"}),
             "tick",
-            "Checklisten.",
+            _("Checklists."),
             "Heroicons - check",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "x-mark"}),
             "x-mark",
-            "Klassisch für Buttons zum schließen von Dialogen, Alerts, etc..",
+            _("Classic for buttons to close dialogs, alerts, etc."),
             "Heroicons - x-mark",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "question-mark"}),
             "question-mark",
-            "Indikator für weitere Informationen oder FAQs.",
+            _("Indicator for additional information or FAQs."),
             "Heroicons - question-mark-circle",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "sparkles"}),
             "sparkles",
-            "Für spezielle Fälle, wo es um etwas besonderes geht, oder einfach kein anderes Icon passt :).",
+            _("For special cases where something unique is needed, or simply no other icon fits :)."),
             "Heroicons - sparkles",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "tools"}),
             "tools",
-            "Einstellungen oder als Wartungssymbol.",
+            _("Settings or as a maintenance symbol."),
             "Heroicons - wrench-screwdriver",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "search"}),
             "search",
-            "Klassiker für jede Suchleiste.",
+            _("Classic for any search bar."),
             "Heroicons - magnifying-glass",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "rectangles"}),
             "rectangles",
-            "Gruppen von unterschiedlichen Objekten, zum Beispiel Komponenten oder Dashboards.",
+            _("Groups of different objects, for example components or dashboards."),
             "Heroicons - rectangle-group",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "app"}),
             "app",
-            "Indikator für Anwendungen, Programme oder Dialogfenster.",
+            _("Indicator for applications, programs or dialog windows."),
             "Heroicons - window",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "doc"}),
             "doc",
-            "Klassisch für Dokumente.",
+            _("Classic for documents."),
             "Heroicons - document-text",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "clipboard"}),
             "clipboard",
-            "Klassisch für Copy and Paste.",
+            _("Classic for copy and paste."),
             "Heroicons - clipboard-document-check",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "cursor-click"}),
             "cursor-click",
-            "Indikator für ein klickbares Element.",
+            _("Indicator for a clickable element."),
             "Heroicons - cursor-arrow-rays",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "link"}),
             "link",
-            "Klassisch für Anhänge bzw. Links zu Dokumenten.",
+            _("Classic for attachments or links to documents."),
             "Heroicons - link",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "open-link"}),
             "open-link",
-            "Klassisch für Links zu anderen, oft externen Seiten oder zum öffnen eines Dialogfensters.",
+            _("Classic for links to other, often external pages or for opening a dialog window."),
             "Heroicons - arrow-top-right-on-square",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "share"}),
             "share",
-            "Klassisch für das Teilen von Inhalten.",
+            _("Classic for sharing content."),
             "Heroicons - share",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "smartphone"}),
             "smartphone",
-            "Hinweis auf Smartphone-Nutzung.",
+            _("Indicates smartphone usage."),
             "Heroicons - device-phone-mobile",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "tablet"}),
             "tablet",
-            "Hinweis auf Table-Nutzung.",
+            _("Indicates tablet usage."),
             "Heroicons - device-tablet",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "desktop"}),
             "desktop",
-            "Hinweis auf Desktop-PC Nutzung.",
+            _("Indicates desktop PC usage."),
             "Heroicons - computer-desktop",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "sun"}),
             "sun",
-            "Klassisch für Hell/Dunkel Switches.",
+            _("Classic for light/dark mode switches."),
             "Heroicons - sun",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "moon"}),
             "moon",
-            "Klassisch für Hell/Dunkel Switches.",
+            _("Classic for light/dark mode switches."),
             "Heroicons - moon",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "git"}),
             "git",
-            "Verlinkungen zu GitHub.",
+            _("Links to GitHub."),
             "Flowbite - github",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "user"}),
             "user",
-            "Typisches Benutzericon, Benutzerprofil, Einstellungen, etc..",
+            _("Typical user icon, user profile, settings, etc."),
             "Heroicons - user",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "clock"}),
             "clock",
-            "Alles zum Thema Uhrzeit.",
+            _("Everything related to time."),
             "Heroicons - clock",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "calendar"}),
             "calendar",
-            "Datumsangaben, Deadlines, Termine.",
+            _("Dates, deadlines, appointments."),
             "Heroicons - calendar-days",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "bell"}),
             "bell",
-            "Typisch für Benachrichtigungen.",
+            _("Typical for notifications."),
             "Heroicons - bell",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "chat-bubble"}),
             "chat-bubble",
-            "Interaktive Chats.",
+            _("Interactive chats."),
             "Heroicons - chat-bubble-bottom-center-text",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "rocket"}),
             "rocket",
-            "Besondere Dinge oder als Indikator für 'Jetzt geht`s los!'.",
+            _("Special things or as an indicator for 'Let's get started!'."),
             "Heroicons - rocket-launch",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "terminal"}),
             "terminal",
-            "Indikator für die Verwendung des Terminals bzw. der Commandline.",
+            _("Indicator for the use of the terminal or command line."),
             "Heroicons - command-line",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "code"}),
             "code",
-            "Hinweis auf Quellcode.",
+            _("Indicates source code."),
             "Heroicons - code-bracket",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "download"}),
             "download",
-            "Klassisch für Downloads.",
+            _("Classic for downloads."),
             "Heroicons - arrow-down-tray",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "settings"}),
             "settings",
-            "Anpassungen, Einstellungen, eher für feingranulare Einstellungen.",
+            _("Customizations, settings, more for fine-grained settings."),
             "Heroicons - adjustments-horizontal",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "blueprint"}),
             "blueprint",
-            "Anpassungen, Einstellungen, eher für feingranulare Einstellungen.",
+            _("Customizations, settings, more for fine-grained settings."),
             "Heroicons - cube-transparent",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "info"}),
             "info",
-            "Informationen und Anmerkungen.",
+            _("Information and notes."),
             "Heroicons - information-circle",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "warning"}),
             "warning",
-            "Warnhinweise, Probleme, kleinere Fehler.",
+            _("Warnings, issues, minor errors."),
             "Heroicons - exclamation-triangle",
         ],
         [
             render_to_string("insight_ui/components/icons.html", {"name": "danger"}),
             "danger",
-            "Große Fehler, kritische Probleme oder gefährliche Aktionen.",
+            _("Major errors, critical issues or dangerous actions."),
             "Heroicons - exclamation-circle",
         ],
     ]
@@ -455,7 +455,7 @@ def get_icon_context() -> dict:
     icon_table = {
         "caption": "",
         "empty_msg": "",
-        "headers": ["Icon", "Name", "Verwendungsbeispiele", "Quelle"],
+        "headers": [_("Icon"), _("Name"), _("Example usages"), _("Source")],
         "rows": table_rows,
     }
 
@@ -505,26 +505,26 @@ def get_storybook_context(storybook: ComponentCategory) -> dict:  # noqa: C901
 
     match storybook:
         case ComponentCategory.LAYOUT:
-            context["description"] = ["Structural layout components."]
+            context["description"] = [_("Structural layout components.")]
         case ComponentCategory.NAVIGATION:
-            context["description"] = ["Main layout elements like navigation, footer and sidebars."]
+            context["description"] = [_("Main layout elements like navigation, footer and sidebars.")]
         case ComponentCategory.INPUT:
             context["description"] = [
-                "Standard input elements like Buttons, Radio-Buttons, Toggle-Buttons, Dropdown Menus and more."
+                _("Standard input elements like Buttons, Radio-Buttons, Toggle-Buttons, Dropdown Menus and more.")
             ]
         case ComponentCategory.POPUP:
             context["description"] = [
-                "Popover, Tooltips, Modal and everything that pops up with additional information."
+                _("Popover, Tooltip, Modal and everything that pops up with additional information.")
             ]
         case ComponentCategory.UTIL:
-            context["description"] = ["Utility components."]
+            context["description"] = [_("Utility components.")]
         case ComponentCategory.LIST:
-            context["description"] = ["List and table components for big data."]
+            context["description"] = [_("List and table components for big data.")]
         case ComponentCategory.FILTER:
-            context["description"] = ["Filter and search components for big data."]
+            context["description"] = [_("Filter and search components for big data.")]
         case ComponentCategory.CARD:
-            context["description"] = ["Card components and different presentation types."]
+            context["description"] = [_("Card components and different presentation types.")]
         case ComponentCategory.FORM:
-            context["description"] = ["Form components with various input fields and different request methods."]
+            context["description"] = [_("Form components with various input fields and different request methods.")]
 
     return context

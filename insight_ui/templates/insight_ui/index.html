@@ -17,9 +17,9 @@
 {% endblock sidebar_left %}
 
 {% block heading %}
-    <h1 class="text-white text-5xl">Insight UI</h1>
+    <h1 class="text-white text-5xl">{% trans "Insight UI" %}</h1>
     <p class="text-gray-200 leading-loose text-xl mb-8">
-        {% trans "Willkommen in der Dokumentation von <b>Insight UI</b>, unserem modernen, erweiterbaren und barrierefreien UI-Framework für Django-Projekte." %}
+        {% trans "Welcome to the documentation of <b>Insight UI</b>, our modern, extensible and accessible UI framework for Django projects." %}
     </p>
     <a href="{% url 'installation_view' %}" class="btn btn-white btn-large font-bold w-fit">{% trans "Get started" %}</a>
 {% endblock heading %}
@@ -27,45 +27,45 @@
 {% block content %}
     <div class="w-full space-y-16">
         <section>
-            <h2>{% trans "Was ist Insight-UI, etwa noch so ein CSS/JavaScript Framework?" %}</h2>
+            <h2>{% trans "What is Insight UI, just another CSS/JavaScript framework?" %}</h2>
             <p class="text-secondary leading-loose">
                 {% blocktrans %}
-                    Insight-UI ist in der Tat ein CSS/JavaScript Framework, dediziert für Django Anwendungen. Der Unterschied zu anderen Frameworks ist jedoch der,
-                    dass Insight-UI ohne fundiertes Grundwissen in Frontendtechnologien wie HTML, JavaScript, CSS, etc. verwendet werden kann. Insight-UI ist
-                    vor allem für <b>Rapid Prototyping</b> gedacht und so konzipiert, dass es von Entwicklern welche eher wenig Ahnung von oder Interesse an Frontendentwicklung haben, verwendet werden kann.
-                    Für diesen Zweck stellt unser Framework eine Reihe vorgefertigter Komponenten zur Verfügung, welche direkt in das Template eingefügt werden können und lediglich mit Daten befüllt werden müssen.
+                    Insight UI is indeed a CSS/JavaScript framework dedicated to Django applications. The difference compared to other frameworks, however,
+                    is that Insight UI can be used without a solid foundational knowledge of frontend technologies such as HTML, JavaScript, CSS, etc. Insight UI is
+                    primarily intended for <b>Rapid Prototyping</b> and designed in such a way that it can be used by developers who have little prior knowledge of or interest in frontend development.
+                    For this purpose, our framework provides a set of pre-built components that can be inserted directly into the template and just need to be populated with data.
                 {% endblocktrans %}
             </p>
             <p class="text-secondary leading-loose mt-4">
-                {% trans "Die Komponenten sind unter Beachtung der <b>Barrierefreiheit</b> implementiert und bieten im Bezug auf <b>Internationalisierung</b> eine Unterstützung für ein <b>RTL-Layout</b> für Sprachen, welche von rechts nach links gelesen werden." %}
+                {% trans "The components are implemented with <b>accessibility</b> in mind and support, with regard to <b>internationalization</b>, an <b>RTL layout</b> for languages that are read from right to left." %}
             </p>
             <p class="text-secondary leading-loose mt-4">
-                {% trans "Für eine gute Performance unterstützen entsprechende Komponenten die Verwendung von <b>HTMX</b> Requests, um nur einzelne ausschnitte des DOM zu ändern, ohne einen kompletten Seiten-Reload. "%}
+                {% trans "For good performance, the relevant components support the use of <b>HTMX</b> requests to update only individual parts of the DOM without a full page reload. "%}
             </p>
         </section>
 
         <section>
-            <h2>{% trans "Was ist Insight-UI nicht?" %}</h2>
+            <h2>{% trans "What is Insight UI not?" %}</h2>
             <p class="text-secondary leading-loose">
                 {% blocktrans %}
-                    Insight-UI ist keine CSS-Library und auch keine JavaScript Library. Insight-UI ist ausschließlich für Django Anwendungen konzipiert.
-                    Unser Framework bietet zwar mehrere, auch sehr flexible Möglichkeiten der Anpassung, ist in erster Linie aber eher weniger für kreative Freiheit entworfen worden.
+                    Insight UI is neither a CSS library nor a JavaScript library. Insight UI is designed exclusively for Django applications.
+                    While our framework offers several, quite flexible customization options, it has primarily been designed with less of a focus on creative freedom.
                 {% endblocktrans %}
             </p>
         </section>
 
         <section>
-            <h2>{% trans "Ist Insight-UI das richtige für mich?" %}</h2>
-            <p class="text-secondary leading-loose">{% trans "Gute Frage, hier eine Checkliste um diese zu beantworten:" %}</p>
+            <h2>{% trans "Is Insight UI the right choice for me?" %}</h2>
+            <p class="text-secondary leading-loose">{% trans "Good question, here is a checklist to answer it:" %}</p>
             <ul class="text-secondary leading-loose list-disc w-fit ms-8 mt-8 space-y-4">
-                <li class="border-b border-gray-300 dark:border-gray-700"><div class="flex gap-12 items-center justify-between"><i>{% trans "Du hast eine Django Anwendung, welcher noch ein Frontend fehlt?" %}</i>{% icon name="tick" %}</div></li>
-                <li class="border-b border-gray-300 dark:border-gray-700"><div class="flex gap-12 items-center justify-between"><i>{% trans "Du musst schnell ein Frontend für ein PoC zusammen basteln?" %}</i>{% icon name="tick" %}</div></li>
-                <li class="border-b border-gray-300 dark:border-gray-700"><div class="flex gap-12 items-center justify-between"><i>{% trans "Du hast eigentlich keine übermäßige Leidenschaft für die Frontendentwicklung?" %}</i>{% icon name="tick" %}</div></li>
-                <li class="border-b border-gray-300 dark:border-gray-700"><div class="flex gap-12 items-center justify-between"><i>{% trans "Du hast keine Lust dich mit den WCAG Richtlinien zur Barrierefreiheit zu beschäftigen?" %}</i>{% icon name="tick" %}</div></li>
-                <li class="border-b border-gray-300 dark:border-gray-700"><div class="flex gap-12 items-center justify-between"><i>{% trans "Du bist nicht sonderlich kreativ oder möchtest zumindest nicht alles selbst Gestalten?" %}</i>{% icon name="tick" %}</div></li>
+                <li class="border-b border-gray-300 dark:border-gray-700"><div class="flex gap-12 items-center justify-between"><i>{% trans "You have a Django application that is still missing a frontend?" %}</i>{% icon name="tick" %}</div></li>
+                <li class="border-b border-gray-300 dark:border-gray-700"><div class="flex gap-12 items-center justify-between"><i>{% trans "You need to quickly put together a frontend for a PoC?" %}</i>{% icon name="tick" %}</div></li>
+                <li class="border-b border-gray-300 dark:border-gray-700"><div class="flex gap-12 items-center justify-between"><i>{% trans "You don't really have a great passion for frontend development?" %}</i>{% icon name="tick" %}</div></li>
+                <li class="border-b border-gray-300 dark:border-gray-700"><div class="flex gap-12 items-center justify-between"><i>{% trans "You don't feel like dealing with the WCAG accessibility guidelines?" %}</i>{% icon name="tick" %}</div></li>
+                <li class="border-b border-gray-300 dark:border-gray-700"><div class="flex gap-12 items-center justify-between"><i>{% trans "You don't want to waste your creativity to design the basics of a web site yourself?" %}</i>{% icon name="tick" %}</div></li>
             </ul>
 
-            <p class="text-secondary leading-loose my-8">{% trans "Perfekt, dann kann es ja losgehen!" %}</p>
+            <p class="text-secondary leading-loose my-8">{% trans "Perfect, then let's get started!" %}</p>
             <a href="{% url 'installation_view' %}" class="btn btn-primary btn-large w-fit">{% trans "Get started" %}</a>
         </section>
     </div>

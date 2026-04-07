@@ -70,7 +70,7 @@ def pagination(request: HttpRequest) -> HttpResponse:
         ipp = 10
 
     page_obj, surrounding_pages = get_page(generate_payload(500), ipp, page_number)
-    ipp_config = {"name": "ipp", "label": "Items per page", "options": [10, 20, 30], "selected_option": ipp}
+    ipp_config = {"name": "ipp", "label": _("Items per page"), "options": [10, 20, 30], "selected_option": ipp}
 
     if request.headers.get("HX-Request"):
         return render(
@@ -138,7 +138,11 @@ def more_items_view(request: HttpRequest) -> HttpResponse | JsonResponse:
     end = start + items_per_page
 
     new_items = [
-        {"title": f"Element {i}", "content": f"Dynamisch geladener Inhalt für Element {i}"} for i in range(start, end)
+        {
+            "title": _("Element %(i)s") % {"i": i},
+            "content": _("Dynamically loaded content for element %(i)s") % {"i": i},
+        }
+        for i in range(start, end)
     ]
 
     has_next = page < 5  # noqa: PLR2004 Simuliere max 5 Seiten
@@ -178,7 +182,7 @@ def form_submit(request: HttpRequest) -> HttpResponse | JsonResponse:
             success_html = render_to_string(
                 "insight_ui/components/form_success.html",
                 {
-                    "message": _("AJAX Formular erfolgreich übermittelt!"),
+                    "message": _("AJAX form successfully submitted!"),
                     "title": form.cleaned_data["title"],
                     "firstname": form.cleaned_data["firstname"],
                     "lastname": form.cleaned_data["lastname"],
@@ -190,7 +194,7 @@ def form_submit(request: HttpRequest) -> HttpResponse | JsonResponse:
         # Retrieve necessary context data and perform a whole page reload to present form success
         context = get_storybook_context(ComponentCategory.FORM)
         context["form_success"] = {
-            "message": _("Formular erfolgreich übermittelt!"),
+            "message": _("Form successfully submitted!"),
             "title": form.cleaned_data["title"],
             "firstname": form.cleaned_data["firstname"],
             "lastname": form.cleaned_data["lastname"],
@@ -412,11 +416,11 @@ def toggle_view(request: HttpRequest) -> HttpResponse:
 @require_GET
 def tabs_view(request: HttpRequest, tab_id: str) -> HttpResponse:
     """Switch content of the Tabs-Component corresponding to the given 'tab_id'."""
-    msg = "This is the content of the first tab!"
+    msg = _("This is the content of the first tab!")
     match tab_id:
         case "second":
-            msg = "This is the content of the second tab!"
+            msg = _("This is the content of the second tab!")
         case "third":
-            msg = "This is the content of the third tab!"
+            msg = _("This is the content of the third tab!")
 
     return render(request, "insight_ui/components/tabs_content.html", {"message": msg})

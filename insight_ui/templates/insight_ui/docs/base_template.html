@@ -16,7 +16,7 @@
 {% endblock sidebar_right %}
 
 {% block heading %}
-    {% page_header title=_("Base Template") description=_("Unser Base-Template dient als Grundlage für sämtliche Seiten der Anwendung. Es bietet unter anderem ein semantisch korrektes Grundgerüst für den Header, Footer, Sidebars, dem Hauptinhalt und noch weiteren Grundbausteinen, vieler Web-Anwendungen. Zusätzlich lädt das Base-Template bereits alle notwendigen JavaScript Dateien und je nach Konfiguration auch die externen JavaScript Libraries, sowie Stylesheets. Die Konfiguration des Favicon und Search Engine optimization (SEO) wird von dem Base-Template ebenfalls vorgenommen.") %}
+    {% page_header title=_("Base Template") description=_("Our base template serves as the foundation for all pages of the application. It provides a semantically correct framework for the header, footer, sidebars, main content and other basic building blocks of many web applications. The base template also loads all necessary JavaScript files and, depending on the configuration, external JavaScript libraries and stylesheets. Favicon configuration and search engine optimization (SEO) are also handled by the base template.") %}
 {% endblock heading %}
 
 {% block content %}
@@ -25,8 +25,8 @@
             <h2>{% trans "Usage" %}</h1>
             <p>
                 {% blocktrans with extends='<span class="inline-tag">&lcub;% extends %&rcub;</span>'|safe %}
-                    Das Base-Template kann ganz einfach verwendet werden, indem ein neues Template dieses <i>erweitert</i>.
-                    Dazu muss am Anfang des neuen Templates das {{ extends }} Tag von Django verwendet werden.
+                    The base template can be easily used by having a new template <i>extend</i> it.
+                    To do this, the {{ extends }} tag from Django must be used at the beginning of the new template.
                 {% endblocktrans %}
             </p>
 
@@ -37,23 +37,23 @@
         <section class="space-y-12">
             <div>
                 <h2>&lt;head&gt;</h2>
-                <p>{% trans "Im <b>Head</b> werden alle benötigten JavaScript Bibliotheken verlinkt, sowie die SEO und das Favicon definiert." %}</p>
+                <p>{% trans "In the <b>Head</b>, all required JavaScript libraries are linked and the SEO and favicon are defined." %}</p>
 
                 <ul class="list-disc ms-8 space-y-2 *:border-b *:border-gray-300 *:dark:border-gray-700">
                     <li>
                         <span class="inline-tag">&lcub;% block title %&rcub;</span>
-                        <p>{% trans "Definiert den Title der Seite, welcher u.a. oben im Browser-Tab angezeigt wird." %}</p>
+                        <p>{% trans "Defines the title of the page, which is displayed on the browser tab among other places." %}</p>
                     </li>
                     <li>
                         <span class="inline-tag">&lcub;% block extra_head %&rcub;</span>
-                        <p>{% trans "Zum Einbinden weiterer JavaScript Libraries." %}</p>
+                        <p>{% trans "For including additional JavaScript libraries." %}</p>
                     </li>
                 </ul>
 
                 <p class="info-container text-base mt-4">
                     <span class="block font-bold italic text-lg">Info:</span>
                     {% blocktrans with bold_text='<b>INSIGHT_UI</b>'|safe file='<span class="inline-tag">settings.py</span>'|safe %}
-                        Das Favicon, die SEO Angaben, sowie weitere Meta-Information können über die {{ bold_text }} Einstellungen in der {{ file }} angepasst werden.
+                        The favicon, SEO settings and other meta information can be adjusted via the {{ bold_text }} settings in {{ file }}.
                     {% endblocktrans %}
                 </p>
             </div>
@@ -63,58 +63,58 @@
                 <h2>&lt;body&gt;</h2>
                 <p>
                     {% blocktrans %}
-                        Der <b>Body</b> stellt ein, aus mehreren Blöcken bestehendes Grundgerüst für den Inhalt bereit.
-                        Jeder Block ist für einen bestimmten Zweck vorgesehen und sorgt dafür, dass das layout zusammen passt.
-                        Das Grundgerüst besteht aus den folgenden Blöcken:
+                        The <b>Body</b> provides a basic framework for the content, consisting of several blocks.
+                        Each block is intended for a specific purpose and ensures that the layout fits together.
+                        The basic framework consists of the following blocks:
                     {% endblocktrans %}
                 </p>
 
                 <ul class="list-disc ms-8 space-y-2 *:border-b *:border-gray-300 *:dark:border-gray-700">
                     <li>
                         <span class="inline-tag">&lcub;% block background_image %&rcub;</span>
-                        <p>{% trans "Dieser Block kann verwendet werden, um etwas hinter allen anderen Blöcken anzuzeigen." %}</p>
+                        <p>{% trans "This block displays something behind all other blocks." %}</p>
                     </li>
                     <li>
                         <span class="inline-tag">&lcub;% block navbar %&rcub;</span>
-                        <p>{% trans "Der Block ist für die Navbar vorgesehen." %}</p>
+                        <p>{% trans "This block is intended for the navbar." %}</p>
                     </li>
                     <li>
                         <span class="inline-tag">&lcub;% block drawers %&rcub;</span>
-                        <p>{% trans "Dieser Block ist für ausklappbare Sidebars vorgesehen." %}</p>
+                        <p>{% trans "This block is intended for expandable sidebars." %}</p>
                     </li>
                     <li>
                         <span class="inline-tag">&lcub;% block sidebar_left %&rcub;</span>
-                        <p>{% trans "Dieser Block befindet sich als erstes (links) im Hauptbereich und ist daher für die linke Sidebar vorgesehen." %}</p>
+                        <p>{% trans "This block is the first (left) in the main area and is therefore intended for the left sidebar." %}</p>
                     </li>
                     <li>
                         <span class="inline-tag">&lcub;% block sidebar_right %&rcub;</span>
-                        <p>{% trans "Dieser Block befindet sich als letztes (rechts) im Hauptbereich und ist daher für die rechte Sidebar vorgesehen." %}</p>
+                        <p>{% trans "This block is the last (right) in the main area and is therefore intended for the right sidebar." %}</p>
                     </li>
                     <li>
                         <span class="inline-tag">&lcub;% block content %&rcub;</span>
-                        <p>{% trans "Dieser Block befindet sich zwischen den Sidebar Blöcken und ist für den Hauptinhalt vorgesehen." %}</p>
+                        <p>{% trans "This block is located between the sidebar blocks and is intended for the main content." %}</p>
                     </li>
                     <li>
                         <span class="inline-tag">&lcub;% block footer %&rcub;</span>
-                        <p>{% trans "Der Block ist für den Footer vorgesehen und wird nach dem Hauptbereich angezeigt." %}</p>
+                        <p>{% trans "This block is intended for the footer and is displayed after the main area." %}</p>
                     </li>
                     <li>
                         <span class="inline-tag">&lcub;% block extra_scripts %&rcub;</span>
-                        <p>{% trans "Zum Einbinden weiterer JavaScript Libraries." %}</p>
+                        <p>{% trans "For including additional JavaScript libraries." %}</p>
                     </li>
                 </ul>
 
                 <p class="info-container text-base mt-4">
                     <span class="block font-bold italic text-lg">Info:</span>
                     {% blocktrans with block_title='<span class="inline-tag">&lcub;% block title %&rcub;</span>'|safe block_content='<span class="inline-tag">&lcub;% block content %&rcub;</span>'|safe %}
-                        Diese Blöcke müssen nicht zwangsläufig verwendet werden, allerdings ist es empfehlenswert, da sich ein paar Strukturelle Gegebenheiten mit sich bringen. Theoretisch könnte aber auch alles in den {{ block_title }}. Es können bei Bedarf auch weitere JavaScript Bibliotheken verlinkt werden, durch den {{ block_content }} gepackt werden.
+                        These blocks do not necessarily have to be used, but it is recommended as they bring some structural benefits. Theoretically everything could also go into {{ block_title }}. Additional JavaScript libraries can be linked if needed, wrapped in {{ block_content }}.
                     {% endblocktrans %}
                 </p>
             </div>
 
             <section class="space-y-4">
                 <h3>&lcub;% block background_image %&rcub;</h3>
-                <p>{% trans "Dieser Block befindet sich sozusagen hinter dem Eigentlichen Inhalt und kann dazu verwendet werden, ein Hintergrundbild einzubinden, welches fixiert ist, also sich bei scrollen mitbewegt." %}</p>
+                <p>{% trans "This block is located behind the actual content and can be used to include a fixed background image that moves with the page when scrolling." %}</p>
 
                 <div data-insight-code-block="Django">
                     {# fmt:off #}
@@ -126,7 +126,7 @@
             </section>
             <section class="space-y-4">
                 <h3>&lcub;% block navbar %&rcub;</h3>
-                <p>{% trans "Die Navigationsleiste hat einen eigenen Bereich. Dieser ist vor dem restlichen Inhalt definiert, wodurch dieser immer als ersten auf der Seite auftaucht." %}</p>
+                <p>{% trans "The navigation bar has its own area. This is defined before the rest of the content, which makes it always appears first on the page." %}</p>
 
                 <div data-insight-code-block="Django">
                     {# fmt:off #}
@@ -139,7 +139,7 @@
                 </div>
 
                 <i>
-                    {% trans "Für weitere Information über die Komponente, siehe" %} <a
+                    {% trans "For more information about the component, see" %} <a
                         href="{% url 'component_detail_page_view' 'navbar' %}"
                         hx-get="{% url 'component_detail_page_view' 'navbar' %}"
                         hx-target="#content"
@@ -147,7 +147,7 @@
                         hx-push-url="true"
                         class="text-link"
                     >
-                        {% trans "navbar" %}
+                        {% trans "Navbar" %}
                     </a>.
                 </i>
             </section>
@@ -155,8 +155,8 @@
                 <h3>&lcub;% block drawers %&rcub;</h3>
                 <p>
                     {% blocktrans %}
-                        In diesem Block können sog. <b>Drawer</b> eingebettet werden. Drawer sind ein- und ausklappbare Sidebars und liegen gewöhnlich über dem Inhalt.
-                        Daher haben sie ihren eigenen Block, damit sie nicht mit dem restlichen Layout in Konflikt geraten.
+                        In this block, so-called <b>Drawer</b> can be embedded. Drawers are expandable and collapsible sidebars that usually sit on top of the content.
+                        They have their own block so that they do not conflict with the rest of the layout.
                     {% endblocktrans %}
                 </p>
 
@@ -171,7 +171,7 @@
                 </div>
 
                 <i>
-                    {% trans "Für weitere Information über die Komponente, siehe" %} <a
+                    {% trans "For more information about the component, see" %} <a
                         href="{% url 'component_detail_page_view' 'sidebar' %}"
                         hx-get="{% url 'component_detail_page_view' 'sidebar' %}"
                         hx-target="#content"
@@ -187,9 +187,9 @@
                 <h3>&lcub;% block sidebar_right %&rcub; und &lcub;% block sidebar_left %&rcub;</h3>
                 <p>
                     {% blocktrans with drawers='<span class="inline-tag">&lcub;% block drawers %&rcub;</span>'|safe %}
-                        Zusätzlich zu dem {{ drawers }} Block gibt es zwei Blöcke für statische <b>Sidebars</b>.
-                        Einen für eine Sidebar auf der rechten Seite des Hauptinhalt und einen für eine Sidebar auf der linken Seite.
-                        In diesem Fall bekommt der Hauptinhalt etwas weniger Platz und die Sidebar bleibt dauerhaft sichtbar.
+                        In addition to the {{ drawers }} block, there are two blocks for static <b>sidebars</b>.
+                        One for a sidebar on the right side of the main content and one for a sidebar on the left side.
+                        In this case, the main content has less available space and the sidebar remains permanently visible.
                     {% endblocktrans %}
                 </p>
 
@@ -208,7 +208,7 @@
                 </div>
 
                 <i>
-                    {% trans "Für weitere Information über die Komponente, siehe" %} <a
+                    {% trans "For more information about the component, see" %} <a
                         href="{% url 'component_detail_page_view' 'sidebar' %}"
                         hx-get="{% url 'component_detail_page_view' 'sidebar' %}"
                         hx-target="#content"
@@ -222,17 +222,17 @@
             </section>
             <section class="space-y-4">
                 <h3>content</h3>
-                <p>{% trans "Dieser Blöcke ist für den Hauptinhalt der Seite vorgesehen. Hier kommt alles rein was rein soll." %}</p>
+                <p>{% trans "This block is intended for the main content of the page." %}</p>
                 <p class="info-container text-base mt-4">
                     <span class="block font-bold italic text-lg">{% trans "Info:" %}</span>
-                    {% trans "Der Block nimmt immer die volle Höhe des Fenstern ein, unabhängig vom Inhalt. Dadurch wird sichergestellt, das sich der Footer nicht mitten im Browserfenster hängt." %}
+                    {% trans "The block always takes up the full height of the window, regardless of the content. This ensures that the footer does not float in the middle of the browser window but is pushed to the bottom." %}
                 </p>
             </section>
             <section class="space-y-4">
                 <h3>&lcub;% block footer %&rcub;</h3>
                 <p>
                     {% blocktrans with content='<span class="inline-tag">&lcub;% block content %&rcub;</span>'|safe %}
-                        Direkt unter dem {{ content }} befindet sich der <b>Footer</b>. Dieser schließt die Seite ab und befindet sich immer am Ende der Seite.
+                        Directly below the {{ content }} is the <b>Footer</b>. It closes the page off and is always at the bottom of the page.
                     {% endblocktrans %}
                 </p>
 
@@ -247,7 +247,7 @@
                 </div>
 
                 <i>
-                    {% trans "Für weitere Information über die Komponente, siehe" %} <a
+                    {% trans "For more information about the component, see" %} <a
                         href="{% url 'component_detail_page_view' 'footer' %}"
                         hx-get="{% url 'component_detail_page_view' 'footer' %}"
                         hx-target="#content"
@@ -261,7 +261,7 @@
             </section>
             <section class="space-y-4">
                 <h3>&lcub;% block extra_scripts %&rcub;</h3>
-                <p>{% trans "Zuletzt gibt es einen Block um zusätzliche JavaScript Dateien zu verlinken." %}</p>
+                <p>{% trans "Finally, there is a block for linking additional JavaScript files." %}</p>
             </section>
         </section>
     </div>

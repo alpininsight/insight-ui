@@ -514,7 +514,8 @@ def get_infinite_scroll_context() -> dict:
     """Serve data for infinite scroll detailpage."""
     return {
         "scroll_items": [
-            {"title": f"{_('Element')} {i}", "content": f"{_('Content for element')} {i}"} for i in range(1, 11)
+            {"title": _("Element %(i)s") % {"i": i}, "content": _("Content for element %(i)s") % {"i": i}}
+            for i in range(1, 11)
         ]
     }
 
@@ -624,7 +625,7 @@ def get_cards_context() -> dict:
                 "title": _("App Card"),
                 "content": _("A card with its content arranged horizontally."),
                 "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": _("Card-Image")},
-                "tags": [_("Insight-UI"), _("Layout"), _("Card")],
+                "tags": [_("Insight UI"), _("Layout"), _("Card")],
                 "actions": [
                     {"text": _("Learn more"), "url": "#", "type": "secondary"},
                     {"text": _("Share"), "url": "#", "type": "primary"},
@@ -636,7 +637,7 @@ def get_cards_context() -> dict:
                 "title": _("Flip Card"),
                 "content": _("A card that rotates 180° and has additional content on the back."),
                 "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": _("Card-Image")},
-                "tags": [_("Insight-UI"), _("Layout"), _("Card")],
+                "tags": [_("Insight UI"), _("Layout"), _("Card")],
                 "actions": [
                     {"text": _("Learn more"), "url": "#", "type": "secondary"},
                     {"text": _("Share"), "url": "#", "type": "primary"},

@@ -10,7 +10,7 @@ def get_page_header_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Die `Page-Header`-Komponente rendert den Seitenkopf innerhalb der blauen Kopfzeile des Base-Templates. Sie zeigt einen Titel und optional eine Beschreibung an."
+                "The page header component renders the page header within the blue header of the base template. It displays a title and optionally a description."
             )
         ]
     }
@@ -22,7 +22,7 @@ def get_article_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Die Article-Komponente rendert Textinhalte im Zeitungsstil mit mehrspaltigen CSS-Columns. Der Text fließt automatisch von einer Spalte in die nächste."
+                "The article component renders text content in newspaper style with multi-column CSS columns. The text flows automatically from one column to the next."
             )
         ]
     }
@@ -34,7 +34,7 @@ def get_hero_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Die Hero-Komponente rendert einen prominenten Banner-Abschnitt mit Titel, Untertitel, Beschreibung und Call-to-Action Buttons."
+                "The hero component renders a prominent banner section with title, subtitle, description and Call-to-Action buttons."
             )
         ]
     }
@@ -46,10 +46,10 @@ def get_navbar_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Die navbar Komponente stellt eine anpassbare Navigationsleiste mit verschiedenen Komponenten zur Verfügung. Die Navigation ist fixiert am oberen Rand des Browserfenstern und bewegt sich beim nach unten Scrollen mit. Die Navigationsleiste besteht aus den folgenden Komponenten: "
+                "The navbar component provides a customizable navigation bar with various components. The navigation is fixed to the top edge of the browser window and moves along when scrolling down. The navigation bar consists of the following components: "
             ),
             _(
-                "Brand: Logo und Titel am linken Rand. Navigationslinks: Hauptnavigation, rechts neben dem Logo und Titel. Suchleiste: Eine optionale Suchleiste, rechts neben der Hauptnavigation. Login/Benutzermenü: Ein optionales, anpassbares Benutzermenü bzw. ein Anmeldebutton wenn der Nutzer nicht angemeldet ist. Sprachauswahl: Ein optionales Menü zum auswählen der Sprache, in welcher die Webseite angezeigt werden soll. Theme-Toggle Button: Ein optionaler Button zum wechseln wischen dem hellen und dem dunklen Design."
+                "Brand: Logo and title on the left edge. Navigation links: Main navigation, to the right of the logo and title. Search bar: An optional search bar, to the right of the main navigation. Login/user menu: An optional, customizable user menu or a login button when the user is not logged in. Language selection: An optional menu for selecting the language in which the website should be displayed. Theme toggle button: An optional button for switching between the light and dark theme."
             ),
         ]
     }
@@ -61,7 +61,7 @@ def get_sidebar_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Die sidebar Komponente fügt einen Bereich an der Fensterseite hinzu. Die Sidebar kann sowohl auf der linken oder auf der rechten Seite sowie auch auf beiden Seiten gleichzeitig angewendet werden. Die Sidebar kann auch als Drawer verwendet werden, in diesem Fall kann sie geschlossen werden."
+                "The sidebar component adds an area to the side of the window. The sidebar can be applied on the left or on the right side, as well as on both sides simultaneously. The sidebar can also be used as a drawer, in which case it can be closed."
             )
         ]
     }
@@ -73,7 +73,7 @@ def get_footer_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Ein einfacher Footer bestehend aus drei Spalten mit anpassbaren Inhalt. Der Footer ist ein wichtiger Bestandteil einer jeden Webseite, er dient jedoch nicht nur dazu, die Webseite optisch abzuschließen. Er enthält i.d.R. mindestens eine Verlinkung zum Impressum und der Datenschutzerklärung. Oft befindet sich im Footer noch einmal eine Navigation zu den wichtigsten Seiten der Webseite und eine Copyright Angabe."
+                "A simple footer consisting of three columns with customizable content. The footer is an important part of every website; however, it does not only serve to visually close off the website. It typically contains at least a link to the imprint and the privacy policy. Often the footer also contains navigation to the most important pages of the website and a copyright notice."
             )
         ]
     }
@@ -85,11 +85,9 @@ def get_breadcrumb_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Breadcrumbs sind eine sekundäre Navigation, welche dazu verwendet werden, dem Nutzer Klarheit über die hierarchische Struktur einer Webseite zu verschaffen. Dies ist vor allem bei Webseiten mit einer tiefen Struktur, also mit vielen Unterseiten sinnvoll. Webseiten mit einer Tiefe von maximal zwei Stufen bspw. Übersicht -> Produkt Details sollten auf Breadcrumbs verzichten."
+                "Breadcrumbs are a secondary navigation used to provide the user with clarity about the hierarchical structure of a website. This is especially useful for websites with a deep structure, i.e. with many subpages. Websites with a depth of no more than two levels (e.g. Overview -> Product Details) should refrain from using breadcrumbs."
             ),
-            _(
-                "Für eine gute Konsistenz sollten Breadcrumbs, wenn sie verwendet werden, überall verwendet werden und nicht nur sporadisch."
-            ),
+            _("For good consistency, breadcrumbs should ,when used, be used everywhere, not just sporadically."),
         ]
     }
 
@@ -100,7 +98,7 @@ def get_step_bar_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Diese Komponente kann dazu verwendet werden, dem Nutzer den Fortschritt eines manuellen Prozesses anzuzeigen. Damit ist zum Beispiel ein typischer Bezahlvorgang gemeint. Dieser besteht i.d.R. aus mehreren Schritten, wie die Adresse anzugeben, eine Zahlungsmethode auszuwählen und im Anschluss nochmal die Eingaben zu überprüfen. Die Komponente zeigt dem Nutzer an, wo er sich gerade befindet und wie viele Schritte noch folgen."
+                "The step_bar component can be used to show the user the progress of a manual process. This refers, for example, to a typical checkout process. This typically consists of several steps, such as entering an address, selecting a payment method, and then reviewing the entries once more. The component shows the user where they currently are and which steps remain."
             )
         ]
     }
@@ -112,7 +110,7 @@ def get_minimal_step_bar_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Mit der minimal_step_bar Komponente lässt sich der Fortschritt in einem mehrstufigen Prozess auf einem simple Art und Weise, graphisch darstellen."
+                "The minimal_step_bar component can be used to graphically display progress in a multi-step process in a simple way."
             )
         ]
     }
@@ -124,7 +122,7 @@ def get_bullet_point_list_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Die bullet_point_list Komponente kann dazu verwendet werden, eine Abfolge von Tasks, Prozessschritten, o.ä darzustellen. Die einzelnen Schritte können eine Verlinkung enthalten, um diese beispielsweise mit einer konkreten Seite für jeden Tasks, o.ä. zu verlinken."
+                "The bullet_point_list component can be used to display a sequence of tasks, process steps, or similar. The individual steps can contain a link, for example to link them to a specific page for each task."
             )
         ]
     }
@@ -136,7 +134,7 @@ def get_accordion_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Mit der accordion Komponente lassen sich ausklappbare Bereiche für weitere Informationen hinzufügen. Ein Accordion kann entweder ein oder mehrere Bereiche gleichzeitig geöffnet haben. Beim öffnen eines Accordion-Abschnitts wird automatisch ein URL-Anchor gesetzt. Dadurch lassen sich über die URL bestimmte Bereiche beim aufrufen der Seite automatisch aufklappen und die Ansicht scrollt automatisch bis zu dem geöffneten Bereich."
+                "The accordion component can be used to add expandable sections for additional information. An accordion can have either one or multiple sections open at the same time. When an accordion section is opened, a URL anchor is automatically set. This allows certain sections to be automatically expanded when the page is loaded via the URL, and the view automatically scrolls to the opened section."
             )
         ]
     }
@@ -148,7 +146,7 @@ def get_tabs_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Mit der tabs Komponente lassen sich Tabs bzw. Registrierkarten hinzufügen. Diese Komponente besteht aus einer Reihe von Buttons, welche per HTMX-Request den Hauptinhalt der Komponente austauschen. Dadurch kann zwischen den einzelnen Tabs gewechselt werden, ohne dass die Seite neu geladen werden muss."
+                "The tabs component can be used to add tabs. This component consists of a series of buttons that swap the main content of the component via HTMX requests. This allows switching between individual tabs without reloading the page."
             )
         ]
     }
@@ -160,7 +158,7 @@ def get_button_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Für einen gewöhnlichen Button stellt unser UI-Framework eine Reihe von CSS-Klassen zur Verfügung. Damit lassen sich Buttons für unterschiedliche Szenarien ohne großen Aufwand mit gängigen CSS-Klassen einbauen."
+                "For a standard button, our UI framework provides a set of CSS classes. These allow buttons for different scenarios to be integrated with minimal effort using common CSS classes."
             )
         ]
     }
@@ -169,7 +167,7 @@ def get_button_description_context() -> dict[str, list[str]]:
 @register_component(Component.INPUT_FIELD)
 def get_input_field_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the input field component."""
-    return {"description": [_("Mit der input_field Komponente lassen sich einzelne <input>-Elemente einbauen.")]}
+    return {"description": [_("The input_field component can be used to integrate individual <input> elements.")]}
 
 
 @register_component(Component.CHECKBOX)
@@ -178,7 +176,7 @@ def get_checkbox_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Mit der checkbox Komponente lassen sich einzelne Checkbox-Elemente einbauen. Für eine Gruppe von miteinander verbundenen Checkbox-Elementen siehe Checkbox-Group."
+                "The checkbox component can be used to integrate individual checkbox elements. For a group of interconnected checkbox elements, see checkbox_group."
             )
         ]
     }
@@ -190,7 +188,7 @@ def get_checkbox_group_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Mit der checkbox_group Komponente lassen sich Gruppen von Checkbox-Elementen einbauen, welche miteinander verknüpft sind. Das erlaubt es eine Beschränkung einzuschalten, welche es zum Beispiel nicht erlaubt, dass kein Checkbox-Element ausgewählt ist."
+                "The checkbox_group component can be used to integrate groups of checkbox elements that are linked to each other. This allows a restriction to be enabled that, for example, ensures that at least one checkbox element is selected."
             )
         ]
     }
@@ -202,10 +200,10 @@ def get_dropdown_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Ein Dropdown-Menü bietet die Möglichkeit eine Gruppe von Buttons in einem sich ein- und ausklappbaren Menü zu verstauen. Das ist immer dann sehr nützlich, wenn entweder nur wenig Platz zu Verfügung steht oder die Anzahl der Elemente sonst zu groß und unübersichtlich wäre."
+                "A dropdown menu offers the possibility of housing a group of buttons in a collapsible menu. This is very useful whenever space is limited or the number of elements would otherwise be too large and confusing."
             ),
             _(
-                "Bei der Verwendung von Dropdown-Menüs ist dennoch zu beachten, das diese nicht überladen werden. In der Regel sollte ein Menü nicht mehr als sieben Elemente besitzen und auch verschachtelte Menüs, also ein Dropdown-Menü in einem Dropdown-Menü sollten vermieden werden."
+                "Dropdown menus should not be overloaded. As a rule, a menu should have no more than seven elements, and nested menus, i.e. a dropdown menu within a dropdown menu, should also be avoided."
             ),
         ]
     }
@@ -217,19 +215,19 @@ def get_radio_group_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Mit der radio_group Komponente lassen sich Gruppen von Radio-Buttons einbauen. Bei der radio_group Variante handelt es sich um eine Variante mit normalen Radio-Buttons für ein Formular o.ä.."
+                "The radio_group component can be used to integrate groups of radio buttons. This variant of radio buttons uses standard radio buttons for e.g. a form or similar."
             )
         ]
     }
 
 
 @register_component(Component.RADIO_BLOCK)
-def get_radio_group_description_context() -> dict[str, list[str]]:
+def get_radio_block_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the radio_block component."""
     return {
         "description": [
             _(
-                "Mit der radio_block Komponente lassen sich Gruppen von Radio-Buttons einbauen. Die radio_block Variante der Radio-Buttons wird als Block von Buttons dargestellt und kann dazu verwendet werden, einen Request beim wechsel des ausgewählten Wertes zu starten."
+                "The radio_block component can be used to integrate groups of radio buttons. This variant of the radio buttons is displayed as a block of buttons and can be used to trigger a request when the selected value changes."
             )
         ]
     }
@@ -241,7 +239,7 @@ def get_rangle_slider_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Mit der slider-Komponente kann ein Range-Slider in das Frontend eingebaut werden, mit welchem sich ein Wert innerhalb eines begrenzten Intervall auswählen lässt."
+                "The slider component can be used to integrate a range slider into the frontend, allowing a value to be selected within a defined interval."
             )
         ]
     }
@@ -253,7 +251,7 @@ def get_toggle_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Mit der toggle Komponente lässt sich ein Toggle-Button einbauen. Dieser funktioniert im Grunde wie eine einzelne Checkbox."
+                "The toggle component can be used to integrate a toggle button. It essentially functions like a single checkbox."
             )
         ]
     }
@@ -262,7 +260,7 @@ def get_toggle_description_context() -> dict[str, list[str]]:
 @register_component(Component.SELECT)
 def get_select_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the select component."""
-    return {"description": [_("Die select Komponente stellt eine einfache Auswahlbox zur Verfügung.")]}
+    return {"description": [_("The select component provides a simple selection box.")]}
 
 
 @register_component(Component.MULTISELECT)
@@ -271,7 +269,7 @@ def get_multiselect_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Die multiselect Komponente stellt eine Auswahlbox zur Verfügung, welche die Auswahl mehrere Werte erlaubt. Zusätzlich hat das Multiselect eine Suchleiste integriert um schnell nach bestimmten Werten suchen zu können."
+                "The multiselect component provides a selection box that allows multiple values to be selected. Additionally, the multiselect has an integrated search bar to allow quick searches for specific values."
             )
         ]
     }
@@ -283,7 +281,7 @@ def get_chat_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Die Chat Komponente bietet ein einfaches Frontend für eine Chat-Anwendung. Die Komponente besteht aus einem Text-Input und einem Bereich für die Nachrichten. Der Inhalt des Nachrichtenbereichs wird mittels HTMX bei jedem Response erweitert, ohne dass die Seite neu geladen wird."
+                "The chat component provides a simple frontend for a chat application. It consists of a text input and an area for messages. The content of the message area is extended via HTMX with each response, without the page needing to be reloaded."
             )
         ]
     }
@@ -295,7 +293,7 @@ def get_alert_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Die Alert-Komponente bietet eine Möglichkeit, Benutzern wichtige Informationen, Warnungen oder Erfolgsmeldungen anzuzeigen."
+                "The alert component provides a way to display important information, warnings, or success messages to users."
             )
         ]
     }
@@ -307,7 +305,7 @@ def get_modal_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Mit der Modal Komponente lassen sich anpassbare Dialoge einbauen. Diese können verwendet werden um dem Nutzer zusätzliche Informationen anzuzeigen oder als Bestätigungsdialoge für diverse Aktionen verwendet werden."
+                "The modal component can be used to integrate customizable dialogs. These can display additional information to the user or be used as confirmation dialogs for various actions."
             )
         ]
     }
@@ -319,10 +317,10 @@ def get_popover_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "In manchen Fällen ist es notwendig weitere jedoch eher optionale Informationen anzuzeigen, welche jedoch das gesamtbild stören würden oder für welche einfach nicht genug Platz vorhanden ist. Für diesen Fall sind _Popover_ eine nützliche Komponente. Ähnlich wie ein _Tooltip_ werden auch Popover getrennt vom restlichen Layout dargestellt und stören insofern nicht den Fluss des Layouts. Bei einem Popover handelt es sich um eine Bereich für zusätzliche Informationen, welcher nur angezeigt wird, wenn der Nutzer sich mit dem Mauszeiger über einem bestimmten Element befindet. Im gegensatz zum Tooltip, kann der Nutzer mit dem Mauszeiger auf das Popover gehen, ohne das dieses sich schließt. Dadurch können mit einem Popover auch interaktive Elemente angezeigt werden."
+                "_Popovers_ are a useful component if it is necessary to display additional but rather optional information that would disrupt the overall appearance or for which there simply is not enough space. Similar to a tooltip, popovers are also displayed separately from the rest of the layout and therefore do not disrupt the flow of the layout. A popover is an area for additional information that is only displayed when the user hovers the mouse cursor over a specific element. Unlike the tooltip, popovers do not close automatically and therefor also allow to display interactive elements to the user."
             ),
             _(
-                "Wenn nur ein kurzer Informationstext angezeigt werden soll, um ein Element mit ein, zwei Wörter zu erklären, sollte stattdessen die Tooltip-Komponente verwendet werden."
+                "If only a short explanatory informational text with 1-2 words is to be displayed, the tooltip component is a better option."
             ),
         ]
     }
@@ -334,10 +332,10 @@ def get_tooltip_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Manchmal ist die Beschriftung oder das Icon eines Buttons o.ä. nicht eindeutig genug und lässt Raum für Interpretationen, was im schlimmsten Fall zu Verwirrung führen kann. In solchen Fällen ist es hilfreich und wichtig, zusätzliche Informationen anzuzeigen. Um nicht den Fluss der Weboberfläche zu stören, eignen sich _Tooltips_. Diese werden nur angezeigt, wenn der Nutzer sich mit dem Mauszeiger über dem entsprechenden Element befindet. Der Tooltip wird getrennt wom restlichen Layout über allen anderen Elementen angezeigt und ist damit immer sichtbar und stört nicht das gesamtbild."
+                "_Tooltips_ are helpful and important for displaying additional information without disrupting the flow of the web interface. If the label or icon of a button or similar element is not clear enough, it leaves room for interpretation, which in the worst case can lead to confusion. Tooltips are only displayed when the user hovers the mouse cursor over the corresponding element. The tooltip is displayed separately from the rest of the layout above all other elements, is therefore always visible and does not disrupt the overall appearance."
             ),
             _(
-                "Ein Tooltip sollte nur für kurze Informationstexte (meist nur ein Wort) verwendet werden, wenn mehr Informationen angezeigt werden sollen, sollte stattdessen die Popover-Komponente verwendet werden."
+                "A tooltip should only be used for short informational texts (usually just one word). If more information needs to be displayed, the popover component should be used instead."
             ),
         ]
     }
@@ -349,7 +347,7 @@ def get_code_block_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Diese Komponente bietet die Möglichkeit, Quellcode mit Syntax-Highlighting darzustellen. Darüber hinaus gibt es Möglichkeit, den dargestellten Quellcode, über einen Button in den Zwischenspeicher zu kopieren. Das Syntax-Highlighting umfasst so ziemlich alle gängigen und auch die meisten nicht sehr geläufigen Programmiersprachen."
+                "The code block component displays source code with syntax highlighting and can copy the displayed source code to the clipboard via a button. The syntax highlighting covers virtually all common and most less common programming languages."
             )
         ]
     }
@@ -361,7 +359,7 @@ def get_differentiator_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Mit dem Differentiator lassen sich Unterschiede zwischen zwei Texten grafisch darstellen, was vor allem bei längeren Texten mit nur kleinen Änderungen, eine sehr gute Hilfe bieten kann. Für Texte welche sich mehr oder weniger komplett voneinander unterscheiden, ist diese Komponente wahrscheinlich weniger nützlich."
+                "The differentiator component can be used to graphically display differences between two texts, which can be very welcome help especially for longer texts with only small changes. For texts that differ more or less completely from each other, this component is probably less useful."
             )
         ]
     }
@@ -373,10 +371,10 @@ def get_progress_bar_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Die progress_bar Komponente wird dafür verwendet dem Nutzer den Fortschritt eines im Hintergrund laufenden Prozesses visuell darzustellen. Ein gängiges Szenario für solche Komponenten sind zum Beispiel Downloads."
+                "The progress_bar component is used to visually display the progress of a background process to the user. A common scenario for such components is, for example, downloads."
             ),
             _(
-                "Für eine Fortschrittsanzeige wo der Fortschritt durch aktives Zutun des Nutzers entsteht, eignet sich unsere Step Bar Komponente."
+                "For a progress indicator where progress is made through active user interaction, our Step Bar component is suitable."
             ),
         ]
     }
@@ -388,7 +386,7 @@ def get_geo_map_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Mit der geo_map Komponente wird eine geografische Karte mittels leaflet dargestellt. Auf dieser lassen sich mühelos geografische Informationen darstellen."
+                "The geo_map component displays a geographic map using leaflet on which geographic information can be easily displayed."
             )
         ]
     }
@@ -400,10 +398,10 @@ def get_charts_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Mit der chart Komponente können ohne JavaScript anpassen zu müssen, Diagramme dargestellt werden. Die Komponente verwendet intern Apache ECharts."
+                "The chart component allows charts to be displayed without having to customize JavaScript. The component uses Apache ECharts internally."
             ),
             _(
-                "Die Komponente steht bisher in den folgenden Ausführungen zu Verfügung: line_chart: Ein Linien-Diagramm. bar_chart: Ein Stacked Balken-Diagramm."
+                "This component is currently available in the following variants: line_chart: A line chart. bar_chart: A stacked bar chart."
             ),
         ]
     }
@@ -415,7 +413,7 @@ def get_live_content_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Die live_content Komponente aktualisiert ein Fragment regelmäßig mithilfe von HTMX-Abfragen. Sie eignet sich ideal für Dashboards oder Statusansichten, die häufig aktualisiert werden müssen, ohne dass die gesamte Seite neu geladen werden muss."
+                "The live_content component regularly updates a fragment using HTMX requests. It is ideal for dashboards or status views that need to be updated frequently without reloading the entire page."
             )
         ]
     }
@@ -427,7 +425,7 @@ def get_web_socket_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Mit der websocket kann eine Verbindung mit einem anderen Websocket aufgebaut werden, um automatisch Daten zu empfangen. Die empfangenen Daten werden mittels HTMX in dem Container der Komponente eingesetzt. Es wird kein Neuladen der Seite oder irgendeine andere Form von Interaktion benötigt."
+                "The websocket component can be used to establish a connection with another websocket to automatically receive data. The received data is inserted into the component's container using HTMX. No page reload or any other form of interaction is required."
             )
         ]
     }
@@ -439,10 +437,10 @@ def get_infinite_scroll_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Die infinite_scroll Komponente stellt eine Alternative zu einer Pagination dar und kann dazu verwendet werden, eine große Menge Daten darzustellen. Anstatt von Seite zu Seite zu wechseln, lädt der Infinite Scroll nach dem ein bestimmter Schwellwert beim Scrollen erreicht wurde, weitere Daten aus dem Backend und fügt diese mittels HTMX an das Ende an."
+                "The infinite_scroll component represents an alternative to pagination and can be used to display large amounts of data. Instead of switching from page to page, the infinite scroll loads more data from the backend once a certain scroll threshold is reached and appends it to the end using HTMX."
             ),
             _(
-                "Die Komponente wird in zwei Varianten zur Verfügung gestellt, eine mit automatischer Erweiterung und eine zweite, wobei zum Laden neuer Elemente aktiv ein Button Lade weitere geklickt werden muss."
+                "The component is provided in two variants: one with automatic expansion and a second where a 'Load more' button must be actively clicked to load new elements."
             ),
         ]
     }
@@ -454,7 +452,7 @@ def get_pagination_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Mit der pagination Komponente lässt sich eine Liste auf mehrere Seiten aufteilen, welche mittels der durch diese Komponente dargestellte Pagination am Ende der Liste gewechselt werden kann. Dies ist praktisch für große Datenmengen und bietet eine alternative zur infinite_scroll Komponente."
+                "The pagination component can be used to split a list across multiple pages, which can be switched using the pagination displayed at the end of the list by this component. This is practical for large amounts of data and offers an alternative to the infinite_scroll component."
             )
         ]
     }
@@ -466,7 +464,7 @@ def get_table_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Mit der table Komponente lässt sich eine einfache Tabelle für beliebige Daten darstellen. Das Layout ist responsive Gestaltet, sollte der Platz nicht ausreichen wird eine horizontale Scrollbar eingeblendet."
+                "The table component can be used to display a simple table for any data. The layout is designed to be responsive; if space is insufficient, a horizontal scrollbar is displayed."
             )
         ]
     }
@@ -478,9 +476,9 @@ def get_generic_filter_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Mit der generic_filter Komponente lassen sich relativ einfach standard Filter, bestehend aus &lt;select&gt;-Tags, bauen. Der Filter macht bei einer Änderung automatisch einen Request an den entsprechenden Endpunkt und aktualisiert den Datenbereich mittels HTMX."
+                "The generic_filter component can be used to build relatively simple standard filters consisting of &lt;select&gt; tags. The filter automatically makes a request to the corresponding endpoint when a change is made and updates the data area using HTMX."
             ),
-            _("Eine alternative hierzu stellt der flexiblere, aber auch kompliziertere Query Builder dar."),
+            _("An alternative is the more flexible but also more complex Query Builder."),
         ]
     }
 
@@ -491,7 +489,7 @@ def get_search_bar_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Ein einfaches Textinput-Feld mit einem großen Button am rechten Ende. Beim absenden wird ein Request an den angegebenen Endpunkt geschickt. Die search_bar Komponente unterstützt auch HTMX Requests."
+                "A simple text input field with a large button on the right end. When submitted, a request is sent to the specified endpoint. The search_bar component also supports HTMX requests."
             )
         ]
     }
@@ -502,16 +500,14 @@ def get_query_builder_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the query builder component."""
     return {
         "description": [
-            _("Diese Komponente stellt eine Alternative zur Generic Filter Komponente dar."),
+            _("This component represents an alternative to the generic_filter component."),
             _(
-                "Der Query Builder ist weitaus flexibler aber auch komplexer in der Nutzung als übliche Filter Methoden. Der Query Builder ist im Grunde eine Art grafische Darstellung einer SQL-Query. Der Query Builder bekommt eine Liste der Modell-Felder in welchen gesucht werden kann und zu jedem Feld eine Liste der erlaubten Operationen. Bspw.: { 'field': 'name', 'type': 'text', 'operations': ['iexact', 'icontains']}."
+                "The query builder is far more flexible but also more complex to use than conventional filter methods. It is essentially a kind of graphical representation of an SQL query. The query builder receives a list of model fields that can be searched and for each field a list of allowed operations. E.g.: { 'field': 'name', 'type': 'text', 'operations': ['iexact', 'icontains']}."
             ),
             _(
-                "In speziellen Fällen können auch wie bei der anderen Variante, vordefinierte Werte angegeben werden. Dieser Aspekt macht diese Art der Filterung, u.u. wesentlich flexibler, da auf fest definierte Werte verzichtet wird."
+                "In special cases, predefined values can also be specified as with the other variant. This aspect makes this type of filtering potentially much more flexible, as it does away with fixed defined values."
             ),
-            _(
-                "Ähnlich wie bei der anderen Filter Variante, wird hier auch lediglich ein Dictionary mit den gewünschten Eigenschaften benötigt."
-            ),
+            _("Similar to the other filter variant, only a dictionary with the desired properties is needed here."),
         ]
     }
 
@@ -522,10 +518,10 @@ def get_card_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Die card Komponenten werden dazu verwendet Informationsgruppen zu erstellen. Jede Karte besteht aus einer Überschrift und ihren Hauptinhalt. Dazu gibt es noch weitere Optionen, wie ein Hintergrundbild oder ein Untertitel und Aktion-Buttons."
+                "The card components are used to create information groups. Each card consists of a heading and its main content. There are also further options such as a background image or subtitle, and action buttons."
             ),
             _(
-                "Für die Card Komponente gibt es unterschiedliche Varianten zur Auswahl: Card: Standard Karte im 16:9 Format. App Card: Das Layout dieser Karte ist vertikal ausgerichtet wodurch dieses länger ist. Flip Card: Diese Karte dreht sich um 180° und hält auf ihrer Rückseite weiteren Inhalt bereit."
+                "For the card component there are several variants to choose from: Card: Standard card in 16:9 format. App Card: The layout of this card is vertically oriented making it taller. Flip Card: This card rotates 180° and holds additional content on its back side."
             ),
         ]
     }
@@ -537,7 +533,7 @@ def get_card_carousel_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Mit der carousel Komponente können Bilder, aber auch alle möglichen anderen Sachen, Platzsparend und interaktiv angezeigt werden und es befindet sich immer ein Objekt im Fokus. Daher eignet sich die Komponente vor allem für Bilder."
+                "The carousel component can be used to display images, but also all kinds of other things, in a compact and interactive way. With having one object always in focus it is especially suited for images."
             )
         ]
     }
@@ -548,9 +544,7 @@ def get_image_carousel_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the image carousel component."""
     return {
         "description": [
-            _(
-                "Die image_carousel Komponente ist eine auf die Darstellung von Bildern angepasste Variante der carousel Komponente."
-            )
+            _("The image_carousel component is a variant of the carousel component adapted for displaying images.")
         ]
     }
 
@@ -561,7 +555,7 @@ def get_3d_carousel_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Mit der three_d_carousel Komponente können beliebige Inhalte auf einzigartige Weise dargestellt werden. Die Inhalte werden in einem Kreis angeordnet dargestellt."
+                "The three_d_carousel component can be used to display any content in a unique way: arranged in a circle."
             )
         ]
     }
@@ -573,7 +567,7 @@ def get_toggle_view_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "Die toggle-view Komponente kombiniert die Tabellen und die Karten-Ansicht, sowie die Karussell-Komponente. Die Komponente wird dazu verwendet, die selben Daten auf komplett unterschiedliche Art und Weise darzustellen."
+                "The toggle_view component combines the table and card view as well as the carousel component. The component is used to display the same data in completely different ways."
             )
         ]
     }
@@ -583,7 +577,5 @@ def get_toggle_view_description_context() -> dict[str, list[str]]:
 def get_form_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the form component."""
     return {
-        "description": [
-            _("Mit der form Komponente lässt sich ohne selbst HTML-Code editieren zu müssen, Formulare bauen.")
-        ]
+        "description": [_("The form component can be used to build forms without having to edit HTML code yourself.")]
     }
