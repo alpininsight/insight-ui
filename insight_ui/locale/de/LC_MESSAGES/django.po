@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django-insight-ui 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-01 10:23+0200\n"
-"PO-Revision-Date: 2026-04-01 13:08+0200\n"
+"POT-Creation-Date: 2026-04-07 12:50+0200\n"
+"PO-Revision-Date: 2026-04-07 12:50+0200\n"
 "Last-Translator:   <>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -959,7 +959,9 @@ msgstr "Kartenbild"
 #: .\insight_ui\component_details\demo_context.py:640
 #: .\insight_ui\templates\insight_ui\components\navbar.html:122
 #: .\insight_ui\templates\insight_ui\docs\component_demo.html:242
+#: .\insight_ui\templates\insight_ui\docs\storybook.html:19
 #: .\insight_ui\templates\insight_ui\index.html:4
+#: .\insight_ui\templates\insight_ui\index.html:20
 #: .\insight_ui\templates\insight_ui\playground.html:4
 msgid "Insight UI"
 msgstr "Insight UI"
@@ -4178,13 +4180,17 @@ msgstr ""
 
 #: .\insight_ui\templates\insight_ui\docs\customization.html:85
 #, python-format
+#| msgid ""
+#| "\n"
+#| "                        The default theme of the Insight-UI framework is located in the file %(input)s.\n"
+#| "                    "
 msgid ""
 "\n"
-"                        The default theme of the Insight-UI framework is located in the file %(input)s.\n"
+"                        The default theme of the Insight UI framework is located in the file %(input)s.\n"
 "                    "
 msgstr ""
 "\n"
-"Das Standard-Theme des Insight-UI Frameworks befindet sich in der Datei %(input)s."
+"Das Standard-Theme des Insight UI Frameworks befindet sich in der Datei %(input)s."
 
 #: .\insight_ui\templates\insight_ui\docs\customization.html:92
 msgid "Setup"
@@ -4277,13 +4283,17 @@ msgstr ""
 
 #: .\insight_ui\templates\insight_ui\docs\customization.html:159
 #, python-format
+#| msgid ""
+#| "\n"
+#| "                        To customize the theming, this file must be copied and then specified in the <i>Insight-UI</i> configuration in %(settings)s.\n"
+#| "                    "
 msgid ""
 "\n"
-"                        To customize the theming, this file must be copied and then specified in the <i>Insight-UI</i> configuration in %(settings)s.\n"
+"                        To customize the theming, this file must be copied and then specified in the <i>Insight UI</i> configuration in %(settings)s.\n"
 "                    "
 msgstr ""
 "\n"
-"Um das Theming anzupassen muss diese Datei kopiert und anschließend in der Konfiguration von <i>Insight-UI</i> in den %(settings)s angeben werden."
+"Um das Theming anzupassen muss diese Datei kopiert und anschließend in der Konfiguration von <i>Insight UI</i> in den %(settings)s angeben werden."
 
 #: .\insight_ui\templates\insight_ui\docs\customization.html:167
 #, python-format
@@ -4560,10 +4570,14 @@ msgstr ""
 "Anschließend kann der Entwicklungsserver gestartet werden %(command)s."
 
 #: .\insight_ui\templates\insight_ui\docs\installation.html:64
-#, python-format
+#, fuzzy, python-format
+#| msgid ""
+#| "\n"
+#| "                        To use all features of Insight-UI, our %(link_open)sBase Template%(link_close)s must be included.\n"
+#| "                    "
 msgid ""
 "\n"
-"                        To use all features of Insight-UI, our %(link_open)sBase Template%(link_close)s must be included.\n"
+"                        To use all features of Insight UI, our %(link_open)sBase Template%(link_close)s must be included.\n"
 "                    "
 msgstr ""
 "\n"
@@ -5496,8 +5510,10 @@ msgstr ""
 "erweiterbaren und barrierefreien UI-Framework für Django-Projekte."
 
 #: .\insight_ui\templates\insight_ui\index.html:30
-msgid "What is Insight-UI, just another CSS/JavaScript framework?"
-msgstr "Was ist Insight-UI, etwa noch so ein CSS/JavaScript Framework?"
+#, fuzzy
+#| msgid "What is Insight-UI, just another CSS/JavaScript framework?"
+msgid "What is Insight UI, just another CSS/JavaScript framework?"
+msgstr "Was ist Insight UI, etwa noch so ein CSS/JavaScript Framework?"
 
 #: .\insight_ui\templates\insight_ui\index.html:32
 msgid ""
