@@ -13,11 +13,13 @@ CONFIG_DEFAULTS: dict[str, Any] = {
     "theme_color": "#ffffff",  # For the search bar on mobile devices
     "stylesheet": "insight_ui/css/tailwind.css",  # Only change in case of using alternative stylesheet (currently not supported)  # noqa: E501
     "navbar_fixed": True,  # Should the navigation stick at the top of the window (has impact on the sidebars as well)
+    "title": "My indispensable app",  # Default title if the {% title %} block is not overridden
     "meta": {"seo": {"description": "My indispensable app", "keywords": "Django, Insight UI", "author": "It's me"}},
     "load_prism": False,  # Turn to 'True' to use syntax highlighting
     "load_leaflet": False,  # Turn to 'True' to use geo-maps
     "load_echarts": False,  # Turn to 'True' to use Chart-Components
     "JS_DEBUG": False,  # Turn to 'True' to enable build in browser console logging
+    "use_tailwind_cli": False,  # Turn to 'True' to enable the tailwind cli, if you want to modify the styles
 }
 
 
