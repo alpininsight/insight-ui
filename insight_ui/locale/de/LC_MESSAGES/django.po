@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: django-insight-ui 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-07 12:50+0200\n"
-"PO-Revision-Date: 2026-04-07 12:50+0200\n"
+"PO-Revision-Date: 2026-04-07 13:02+0200\n"
 "Last-Translator:   <>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -670,7 +670,6 @@ msgid "Components"
 msgstr "Komponenten"
 
 #: .\insight_ui\component_details\demo_context.py:290
-#, fuzzy
 #| msgid "Breadcrumb-Navigation"
 msgid "Breadcrumbs"
 msgstr "Breadcrumb-Navigation"
@@ -973,10 +972,9 @@ msgstr "Layout"
 
 #: .\insight_ui\component_details\demo_context.py:628
 #: .\insight_ui\component_details\demo_context.py:640
-#, fuzzy
 #| msgid "App Card"
 msgid "Card"
-msgstr "Appkarte"
+msgstr "Karte"
 
 #: .\insight_ui\component_details\demo_context.py:637
 msgid "Flip Card"
@@ -4570,7 +4568,7 @@ msgstr ""
 "Anschließend kann der Entwicklungsserver gestartet werden %(command)s."
 
 #: .\insight_ui\templates\insight_ui\docs\installation.html:64
-#, fuzzy, python-format
+#, python-format
 #| msgid ""
 #| "\n"
 #| "                        To use all features of Insight-UI, our %(link_open)sBase Template%(link_close)s must be included.\n"
@@ -5510,7 +5508,6 @@ msgstr ""
 "erweiterbaren und barrierefreien UI-Framework für Django-Projekte."
 
 #: .\insight_ui\templates\insight_ui\index.html:30
-#, fuzzy
 #| msgid "What is Insight-UI, just another CSS/JavaScript framework?"
 msgid "What is Insight UI, just another CSS/JavaScript framework?"
 msgstr "Was ist Insight UI, etwa noch so ein CSS/JavaScript Framework?"
