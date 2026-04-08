@@ -45,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - String fixes
 - Change login smoke test to check for NOT translated string rather in comments
 - Minor spelling
+- **ci:** Restore automatic release on develop→main merge
 
 ### CI/CD
 
