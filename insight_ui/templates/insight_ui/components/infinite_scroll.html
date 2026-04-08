@@ -1,7 +1,7 @@
 {% load i18n %}
 
 <div
-  {% if options.id %}id="{{ options.id }}"{% endif %}
+  {% if tag_id %}id="{{ tag_id }}"{% endif %}
   {% if auto_fetch %}
     hx-get="{% url view_name %}?page={{ page }}"
     hx-swap="afterend"

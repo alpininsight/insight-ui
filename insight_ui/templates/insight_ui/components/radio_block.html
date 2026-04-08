@@ -1,0 +1,72 @@
+{% load insight_tags %}
+
+<div>
+    {% if label %}
+        <span class="flex gap-1 text-sm font-bold text-primary mb-1">{{ label }}</span>
+    {% endif %}
+    {% if integrated %}
+        {% comment %} To use with other elements in a extern <form> {% endcomment %}
+        <div class="flex rtl:flex-row-reverse" id="{{ name }}">
+            {% for item in items %}
+                <div>
+                    <input
+                        type="radio"
+                        {% if item.tag_id %}id="{{ name|add:item.tag_id }}"{% endif %}
+                        name="{{ name }}"
+                        value="{{ item.value }}"
+                        {% if current_value == item.value or not current_value and forloop.first %}checked{% endif %}
+                        {% if item.disabled %}disabled{% endif %}
+                        {% if method %}
+                            data-radio-callback="{{ method }}"
+                        {% endif %}
+                        class="peer sr-only"
+                    >
+                    <label
+                        for="{{ item.tag_id }}"
+                        {% if sr_only %}aria-label="{{ name|add:item.label }}"{% endif %}
+                        class="flex items-center peer-focus:outline-2 outline-insight-primary-hover peer-checked:bg-insight-primary-active peer-checked:border-insight-primary-active bg-insight-primary border-insight-primary {% if forloop.first %}border-2 rounded-l-sm{% elif forloop.last %}border-2 rounded-r-sm{% else %}border-y-2{% endif %} text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition cursor-pointer"
+                    >
+                        {% if item.icon %}
+                            {% icon item.icon %}
+                        {% endif %}
+                        <span {% if sr_only %}class="sr-only"{% endif %}>{{ item.label }}</span>
+                    </label>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <form class="flex rtl:flex-row-reverse" id="{{ name }}">
+            {% for item in items %}
+                <div>
+                    <input
+                        type="radio"
+                        {% if item.tag_id %}id="{{ name|add:item.tag_id }}"{% endif %}
+                        name="{{ name }}"
+                        value="{{ item.value }}"
+                        {% if current_value == item.value or not current_value and forloop.first %}checked{% endif %}
+                        {% if item.disabled %}disabled{% endif %}
+                        {% if view_name and hx_target_id %}
+                            hx-get="{% url view_name %}{%if query_params %}&{{ query_params }}{% endif %}"
+                            hx-target="#{{ hx_target_id }}"
+                            hx-swap="{{ hx_swap_method|default:"outerHTML" }}"
+                        {% endif %}
+                        {% if method %}
+                            data-radio-callback="{{ method }}"
+                        {% endif %}
+                        class="peer sr-only"
+                    >
+                    <label
+                        for="{{ name|add:item.tag_id }}"
+                        {% if sr_only %}aria-label="{{ item.label }}"{% endif %}
+                        class="flex items-center peer-focus:outline-2 outline-insight-primary-hover peer-checked:bg-insight-primary-active peer-checked:border-insight-primary-active bg-insight-primary border-insight-primary {% if forloop.first %}border-2 rounded-l-sm{% elif forloop.last %}border-2 rounded-r-sm{% else %}border-y-2{% endif %} text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition cursor-pointer"
+                    >
+                        {% if item.icon %}
+                            {% icon item.icon %}
+                        {% endif %}
+                        <span {% if sr_only %}class="sr-only"{% endif %}>{{ item.label }}</span>
+                    </label>
+                </div>
+            {% endfor %}
+        </form>
+    {% endif %}
+</div>

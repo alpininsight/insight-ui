@@ -1,76 +1,33 @@
-<div class="relative">
-    <label class="flex gap-1 text-sm font-bold text-primary" for="{{ slider.id }}">{{ slider.title }}</label>
+<div class="relative slider-wrapper">
+    <label class="flex gap-1 text-sm font-bold text-primary" for="{{ tag_id }}">{{ label }}</label>
     <input
-        id="{{ slider.id }}"
-        name="{{ slider.id }}"
         type="range"
-        value="{{ slider.value }}"
-        min="{{ slider.min }}"
-        max="{{ slider.max }}"
-        class="range-custom w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-sm appearance-none cursor-pointer"
+        id="{{ tag_id }}"
+        name="{{ name }}"
+        value="{{ value }}"
+        min="{{ minimum }}"
+        max="{{ maximum }}"
+        step="{{ step_size|default:1 }}"
+        {% if disabled %}disabled{% endif %}
+        class="range-custom w-full h-2 bg-gray-200 dark:bg-gray-700 accent-insight-primary rounded-sm appearance-none cursor-pointer"
         oninput="updateSlider(this)"
     >
     <div class="flex justify-between w-full text-sm text-secondary">
-        {% for item in slider.items %}
+        {% for item in items %}
             <span>{{ item }}</span>
         {% endfor %}
     </div>
 </div>
 <script>
     function updateSlider(slider) {
-        const min = slider.min ? slider.min : 0;
-        const max = slider.max ? slider.max : 100;
-        const val = slider.value;
+        const wrapper = slider.closest(".slider-wrapper");
+        const min = Number(slider.min || 0);
+        const max = Number(slider.max || 100);
+        const val = Number(slider.value);
 
         const percent = ((val - min) / (max - min)) * 100;
-        slider.style.setProperty('--range-progress', `${percent}%`);
+        wrapper.style.setProperty("--range-progress", `${percent}%`);
     }
 
-    updateSlider(document.getElementById("{{ slider.id }}"));
+    updateSlider(document.getElementById("{{ tag_id }}"));
 </script>
-<style>
-    .range-custom {
-        --range-progress: 0%;
-    }
-
-/* Track */
-    .range-custom::-webkit-slider-runnable-track {
-        height: 0.5rem;
-        border-radius: 4px;
-        background: linear-gradient(
-            to right,
-            #3b82f6 var(--range-progress), /* Tailwind: blue-500 */
-            #e5e7eb var(--range-progress)   /* gray-200 */
-        );
-    }
-    .range-custom::-moz-range-track {
-        height: 0.5rem;
-        border-radius: 4px;
-        background: linear-gradient(
-            to right,
-            #3b82f6 var(--range-progress),
-            #e5e7eb var(--range-progress)
-        );
-    }
-
-/* Thumb */
-    .range-custom::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        appearance: none;
-        width: 1rem;
-        height: 1rem;
-        background: #fff;
-        border: 2px solid #3b82f6;
-        border-radius: 9999px;
-        cursor: pointer;
-        margin-top: -0.25rem; /* Zentriert den Daumen */
-    }
-    .range-custom::-moz-range-thumb {
-        width: 1rem;
-        height: 1rem;
-        background: #fff;
-        border: 2px solid #3b82f6;
-        border-radius: 9999px;
-        cursor: pointer;
-    }
-</style>

@@ -17,13 +17,14 @@
         </div>
         <div class="flex gap-1 mt-6">
             <button id="add-filter-btn" onclick="addFilter()" type="button" class="btn btn-outline-primary">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                 </svg>
+                <span class="sr-only">{% trans "Add another filter" %}</span>
             </button>
             <button type="submit" class="btn btn-primary">
                 {% trans "Apply" %}
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="size-5">
                     <path fill-rule="evenodd" d="M4.755 10.059a7.5 7.5 0 0 1 12.548-3.364l1.903 1.903h-3.183a.75.75 0 1 0 0 1.5h4.992a.75.75 0 0 0 .75-.75V4.356a.75.75 0 0 0-1.5 0v3.18l-1.9-1.9A9 9 0 0 0 3.306 9.67a.75.75 0 1 0 1.45.388Zm15.408 3.352a.75.75 0 0 0-.919.53 7.5 7.5 0 0 1-12.548 3.364l-1.902-1.903h3.183a.75.75 0 0 0 0-1.5H2.984a.75.75 0 0 0-.75.75v4.992a.75.75 0 0 0 1.5 0v-3.18l1.9 1.9a9 9 0 0 0 15.059-4.035.75.75 0 0 0-.53-.918Z" clip-rule="evenodd" />
                 </svg>
             </button>
@@ -69,7 +70,7 @@
                         newSelect.id ="value";
                         newSelect.name = "value";
                         newSelect.value = valueField.value;
-                        newSelect.classList.add("value-field", "block", "w-full", "h-9", "px-3", "border", "border-gray-300", "dark:border-gray-600", "rounded-sm", "shadow-sm", "text-sm", "focus:ring-2", "focus:ring-blue-500", "focus:border-blue-500", "dark:bg-gray-700", "dark:text-white", "transition-colors", "duration-200");
+                        newSelect.classList.add("value-field", "block", "w-full", "h-9", "input");
                         // Load available values
                         for (const [key, value] of Object.entries(data.values)) {
                             const option = document.createElement('option');
@@ -98,7 +99,7 @@
                         }
                         newInput.value = valueField.value;
                         newInput.placeholder = "{% trans 'Value' %}";
-                        newInput.classList.add("value-field", "block", "w-full", "h-9", "px-3", "border", "border-gray-300", "dark:border-gray-600", "rounded-sm", "shadow-sm", "text-sm", "focus:ring-2", "focus:ring-blue-500", "focus:border-blue-500", "dark:bg-gray-700", "dark:text-white", "transition-colors", "duration-200");
+                        newInput.classList.add("value-field", "block", "w-full", "h-9", "input");
                         valueField.parentNode.replaceChild(newInput, valueField);
                     }
                 });

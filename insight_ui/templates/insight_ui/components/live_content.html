@@ -1,26 +1,47 @@
 {% load i18n %}
 
 <div
-  class="insight-live-content"
-  {% if options.id %}id="{{ options.id }}"{% endif %}
-  hx-get="{{ htmx.url }}"
-  hx-trigger="{{ htmx.trigger }}"
-  hx-swap="{{ htmx.swap }}"
-  hx-ext="progressive-enhancement"
-  data-loading-class="insight-live-content--loading"
+    class="insight-live-content"
+    {% if tag_id %}id="{{ tag_id }}"{% endif %}
+    hx-get="{{ htmx.url }}"
+    hx-trigger="{{ htmx.trigger }}"
+    hx-swap="{{ htmx.swap }}"
+    hx-ext="progressive-enhancement"
+    data-loading-class="insight-live-content--loading"
+    aria-live="polite"
+    aria-busy="false"
+    tabindex="-1"
 >
-  <!-- Loading Spinner -->
-  <div class="htmx-spinner" style="display: none;">
-    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-insight-primary"></div>
-    <span class="ml-2 text-sm text-secondary">{% trans 'Loading...' %}</span>
-  </div>
-
-  <!-- Content is loaded here -->
-  {% if initial_content %}
-    {{ initial_content|safe }}
-  {% else %}
-    <div>
-      <p class="text-secondary">{% trans 'Content is loading...' %}</p>
+    <!-- Loading Spinner -->
+    <div class="htmx-spinner" style="display: none;" role="status">
+        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-insight-primary" aria-hidden="true"></div>
+        <span class="ml-2 text-sm text-secondary">{% trans 'Loading...' %}</span>
     </div>
-  {% endif %}
+
+    <!-- Content is loaded here -->
+    {% if initial_content %}
+        {{ initial_content|safe }}
+    {% else %}
+        <div>
+            <p class="text-secondary">{% trans 'Content is loading...' %}</p>
+        </div>
+    {% endif %}
 </div>
+
+<script>
+    document.body.addEventListener('htmx:configRequest', function(evt) {
+        const target = evt.target;
+        if(target.classList.contains('insight-live-content')) {
+            target.setAttribute('aria-busy', 'true');
+        }
+    });
+
+    document.body.addEventListener('htmx:afterSwap', function(evt) {
+        const target = evt.target;
+        if(target.classList.contains('insight-live-content')) {
+            target.setAttribute('aria-busy', 'false');
+            // Optional: Focus on updated content
+            // target.focus({ preventScroll: true });
+        }
+    });
+</script>

@@ -5,12 +5,12 @@
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @font-face {
-    font-family: "Inter";
-    src: url("../font/Inter.ttf");
+    font-family: "insight-ui";
+    src: url("../font/AtkinsonHyperlegibleNext-VariableFont_wght.ttf");
 }
 
 @theme {
-    --font-sans: "Inter", sans-serif;
+    --font-sans: "insight-ui", sans-serif;
 
     --color-insight-primary: #3b82f6;
     --color-insight-primary-hover: #60a5fa;
@@ -37,6 +37,8 @@
     --color-insight-text-link: #3b82f6;
     --color-insight-text-link-hover: #93c5fd;
 
+    --range-progress: 0%;
+
     --animate-blink: blink 2s step-start infinite;
 
     @keyframes blink {
@@ -46,6 +48,14 @@
         50% {
             opacity: 100;
         }
+    }
+
+    --animate-shake: shake 0.3s;
+
+    @keyframes shake {
+        0%,100% { transform: translateX(0); }
+        25% { transform: translateX(-4px); }
+        75% { transform: translateX(4px); }
     }
 }
 
@@ -67,6 +77,9 @@
     h5 {
         @apply text-base font-semibold text-insight-text-primary dark:text-white mb-1;
     }
+    hr {
+        @apply text-gray-300 dark:text-gray-600;
+    }
 }
 
 @layer components {
@@ -81,7 +94,7 @@
     }
 
     .btn {
-        @apply flex gap-2 items-center justify-center border-2 rounded-sm text-white px-5 py-1.5;
+        @apply flex gap-2 items-center justify-center border-2 border-transparent rounded-sm text-white px-5 py-1.5 transition-colors;
     }
     .btn-xs {
         @apply text-xs px-2 py-0.5;
@@ -95,29 +108,33 @@
     .btn-square {
         @apply p-2 border-0;
     }
+
     .btn-subtil2 {
-        @apply text-insight-text-secondary dark:text-insight-text-secondary-dark hover:bg-gray-200 dark:hover:bg-gray-600 active:bg-gray-300 dark:active:bg-gray-500 hover:border-gray-200 dark:hover:border-gray-600 active:border-gray-300 dark:active:border-gray-500 transition-colors;
+        @apply text-insight-text-secondary dark:text-insight-text-secondary-dark hover:bg-gray-200 dark:hover:bg-gray-600 active:bg-gray-300 dark:active:bg-gray-500 hover:border-gray-200 dark:hover:border-gray-600 active:border-gray-300 dark:active:border-gray-500;
     }
     .btn-subtil {
-        @apply text-insight-text-secondary dark:text-insight-text-secondary-dark bg-gray-100 dark:bg-gray-700 border-gray-100 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 active:bg-gray-300 dark:active:bg-gray-500 hover:border-gray-200 dark:hover:border-gray-600 active:border-gray-300 dark:active:border-gray-500 transition-colors;
+        @apply text-insight-text-secondary dark:text-insight-text-secondary-dark bg-gray-100 dark:bg-gray-700 border-gray-100 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 active:bg-gray-300 dark:active:bg-gray-500 hover:border-gray-200 dark:hover:border-gray-600 active:border-gray-300 dark:active:border-gray-500;
     }
     .btn-primary {
-        @apply bg-insight-primary border-insight-primary hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition-colors;
+        @apply bg-insight-primary border-insight-primary hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active;
     }
     .btn-secondary {
-        @apply bg-insight-secondary border-insight-secondary hover:bg-insight-secondary-hover active:bg-insight-secondary-active hover:border-insight-secondary-hover active:border-insight-secondary-active transition-colors;
+        @apply bg-insight-secondary border-insight-secondary hover:bg-insight-secondary-hover active:bg-insight-secondary-active hover:border-insight-secondary-hover active:border-insight-secondary-active;
     }
     .btn-success {
-        @apply bg-insight-success border-insight-success hover:bg-insight-success-hover active:bg-insight-success-active hover:border-insight-success-hover active:border-insight-success-active transition-colors;
+        @apply bg-insight-success border-insight-success hover:bg-insight-success-hover active:bg-insight-success-active hover:border-insight-success-hover active:border-insight-success-active;
     }
     .btn-warning {
-        @apply bg-insight-warning border-insight-warning hover:bg-insight-warning-hover active:bg-insight-warning-active hover:border-insight-warning-hover active:border-insight-warning-active transition-colors;
+        @apply bg-insight-warning border-insight-warning hover:bg-insight-warning-hover active:bg-insight-warning-active hover:border-insight-warning-hover active:border-insight-warning-active;
     }
     .btn-danger {
-        @apply bg-insight-danger border-insight-danger hover:bg-insight-danger-hover active:bg-insight-danger-active hover:border-insight-danger-hover active:border-insight-danger-active transition-colors;
+        @apply bg-insight-danger border-insight-danger hover:bg-insight-danger-hover active:bg-insight-danger-active hover:border-insight-danger-hover active:border-insight-danger-active;
     }
     .btn-info {
-        @apply bg-insight-info border-insight-info hover:bg-insight-info-hover active:bg-insight-info-active hover:border-insight-info-hover active:border-insight-info-active transition-colors;
+        @apply bg-insight-info border-insight-info hover:bg-insight-info-hover active:bg-insight-info-active hover:border-insight-info-hover active:border-insight-info-active;
+    }
+    .btn-white {
+        @apply bg-white border-white hover:bg-insight-info-hover active:bg-insight-info-active hover:border-insight-info-hover active:border-insight-info-active text-gray-900;
     }
     .btn-link {
         @apply border-0 underline text-insight-text-link px-6 py-2 hover:text-insight-text-link-hover;
@@ -125,23 +142,27 @@
     .btn-disabled {
         @apply bg-neutral-300 dark:bg-neutral-600 border-neutral-300 dark:border-neutral-600 text-neutral-400;
     }
+    .btn-close {
+        @apply p-2 border-0 text-insight-text-secondary dark:text-insight-text-secondary-dark bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 active:bg-gray-300 dark:active:bg-gray-500;
+    }
+
     .btn-outline-primary {
-        @apply border-insight-primary text-insight-primary hover:text-white hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition-colors;
+        @apply border-insight-primary text-insight-primary hover:text-white hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active;
     }
     .btn-outline-secondary {
-        @apply border-insight-secondary text-insight-secondary hover:text-white hover:bg-insight-secondary-hover active:bg-insight-secondary-active hover:border-insight-secondary-hover active:border-insight-secondary-active transition-colors;
+        @apply border-insight-secondary text-insight-secondary hover:text-white hover:bg-insight-secondary-hover active:bg-insight-secondary-active hover:border-insight-secondary-hover active:border-insight-secondary-active;
     }
     .btn-outline-success {
-        @apply border-insight-success text-insight-success hover:text-white hover:bg-insight-success-hover active:bg-insight-success-active hover:border-insight-success-hover active:border-insight-success-active transition-colors;
+        @apply border-insight-success text-insight-success hover:text-white hover:bg-insight-success-hover active:bg-insight-success-active hover:border-insight-success-hover active:border-insight-success-active;
     }
     .btn-outline-warning {
-        @apply border-insight-warning text-insight-warning hover:text-white hover:bg-insight-warning-hover active:bg-insight-warning-active hover:border-insight-warning-hover active:border-insight-warning-active transition-colors;
+        @apply border-insight-warning text-insight-warning hover:text-white hover:bg-insight-warning-hover active:bg-insight-warning-active hover:border-insight-warning-hover active:border-insight-warning-active;
     }
     .btn-outline-danger {
-        @apply border-insight-danger text-insight-danger hover:text-white hover:bg-insight-danger-hover active:bg-insight-danger-active hover:border-insight-danger-hover active:border-insight-danger-active transition-colors;
+        @apply border-insight-danger text-insight-danger hover:text-white hover:bg-insight-danger-hover active:bg-insight-danger-active hover:border-insight-danger-hover active:border-insight-danger-active;
     }
     .btn-outline-info {
-        @apply border-insight-info text-insight-info hover:text-white hover:bg-insight-info-hover active:bg-insight-info-active hover:border-insight-info-hover active:border-insight-info-active transition-colors;
+        @apply border-insight-info text-insight-info hover:text-white hover:bg-insight-info-hover active:bg-insight-info-active hover:border-insight-info-hover active:border-insight-info-active;
     }
     .btn-outline-disabled {
         @apply border-neutral-300 dark:border-neutral-600 text-neutral-400;
@@ -156,10 +177,44 @@
     }
 
     .info-container {
-        @apply bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 border-s-4 border-s-insight-info dark:border-s-insight-info rounded-e px-4 py-1;
+        @apply bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 border-s-4 border-s-insight-info dark:border-s-insight-info rounded-e-sm px-4 py-1;
     }
 
     .inline-tag {
         @apply bg-gray-200 dark:bg-gray-800 text-insight-primary rounded px-2 py-0.5;
+    }
+
+    .input {
+        @apply w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm shadow-sm text-sm focus:ring-2 focus:ring-insight-primary focus:border-insight-primary bg-white dark:bg-gray-700 dark:text-white transition-colors duration-200;
+    }
+
+    .slider-wrapper {
+        --range-progress: 0%;
+    }
+
+    .range-custom::-webkit-slider-runnable-track {
+        @apply h-2 rounded-md;
+        background: linear-gradient(to right, #3b82f6 var(--range-progress), #e5e7eb var(--range-progress));
+    }
+
+    .range-custom::-moz-range-track {
+        @apply h-2 rounded-md;
+        background: linear-gradient(to right, #3b82f6 var(--range-progress), #e5e7eb var(--range-progress));
+    }
+
+    html[dir='rtl'] .range-custom::-webkit-slider-runnable-track {
+        background: linear-gradient(to left, #3b82f6 var(--range-progress), #e5e7eb var(--range-progress));
+    }
+
+      html[dir='rtl'] .range-custom::-moz-range-track {
+        background: linear-gradient(to left, #3b82f6 var(--range-progress), #e5e7eb var(--range-progress));
+    }
+
+    .range-custom::-webkit-slider-thumb {
+        @apply w-4 h-4 bg-white border-2 border-insight-primary rounded-full cursor-pointer -mt-1;
+    }
+
+    .range-custom::-moz-range-thumb {
+        @apply w-4 h-4 bg-white border-2 border-insight-primary rounded-full cursor-pointer;
     }
 }

@@ -1,22 +1,47 @@
-{% load i18n insight_tags %}
+{% load static i18n insight_tags %}
 
 <footer class="z-10 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 px-4 md:px-16 mt-auto">
     <div class="mx-auto py-6">
         <div class="flex flex-col md:flex-row justify-stretch gap-6">
-            {% if data.description %}
+            {% if description %}
                 <div class="flex-1">
-                    <h4>{{ data.description.title }}</h4>
-                    <p class="text-secondary text-sm">
-                        {{ data.description.text }}
-                    </p>
+                    <h4>{{ description.title }}</h4>
+                    <p class="text-secondary text-sm">{{ description.text }}</p>
+                    {% if description.image %}
+                        <img
+                            id="footer-img"
+                            src="{% static description.image.url %}"
+                            data-light-src="{% static description.image.url %}"
+                            data-dark-src="{% static description.image.url_dark %}"
+                            alt="{{ description.image.alt }}"
+                            class="mt-4"
+                            style="height: {{ description.image.height|default:'8rem' }}"
+                        >
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function() {
+                                const root = document.documentElement;
+                                const logo = document.getElementById("footer-img");
+
+                                function updateLogo() {
+                                    const theme = root.getAttribute("data-theme") || "light";
+                                    logo.src = theme === "dark" ? logo.dataset.darkSrc : logo.dataset.lightSrc;
+                                }
+
+                                updateLogo();
+
+                                const observer = new MutationObserver(updateLogo);
+                                observer.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+                            });
+                        </script>
+                    {% endif %}
                 </div>
             {% endif %}
             <div class="flex-1">
                 <h4>{% trans 'Links' %}</h4>
                 <ul>
-                    {% for link in data.links %}
+                    {% for link in links %}
                         <li>
-                            <a href="{{ link.href }}" class="inline-flex gap-1 text-secondary hover:text-insight-text-link-hover dark:hover:text-insight-text-link-hover text-sm">
+                            <a href="{% url link.view_name %}" class="inline-flex gap-1 text-secondary hover:text-insight-text-link-hover dark:hover:text-insight-text-link-hover text-sm">
                                 {% if link.icon %}
                                     {% icon link.icon %}
                                 {% endif %}
@@ -27,18 +52,29 @@
                 </ul>
             </div>
             <div class="flex-1">
-                <h4>{% trans 'Kontakt' %}</h4>
-                <a href="{{ contact.imprint }}" class="text-secondary hover:text-insight-text-link-hover text-sm">{% trans "Imprint" %}</a>
-                <p class="text-secondary text-sm mt-2">
-                    {% trans 'Do you have any questions or feedback?' %}<br>
-                    <a href="mailto:{{ contact.mail.url }}" class="text-insight-primary hover:underline">{{ contact.mail.url }}</a>
-                </p>
+                <h4>{% trans 'Contact' %}</h4>
+                <div class="space-x-4">
+                    {% if contact.imprint %}
+                        <a href="{{ contact.imprint }}" class="text-secondary hover:text-insight-text-link-hover text-sm">{% trans "Imprint" %}</a>
+                    {% endif %}
+                    {% if contact.privacy %}
+                        <a href="{{ contact.privacy }}" class="text-secondary hover:text-insight-text-link-hover text-sm">{% trans "Privacy" %}</a>
+                    {% endif %}
+                </div>
+                {% if contact.mail_url %}
+                    <p class="text-secondary text-sm mt-2">
+                        {% trans 'Do you have any questions or feedback?' %}<br>
+                        <a href="mailto:{{ contact.mail_url }}" class="text-insight-primary hover:underline">{{ contact.mail_url }}</a>
+                    </p>
+                {% endif %}
             </div>
         </div>
-        <div class="border-t border-gray-200 dark:border-gray-700 mt-6 pt-4 text-center">
-            <p class="text-secondary text-sm">
-                © 2025 {{ PROJECT_NAME }}. {% trans 'All rights reserved.' %}
-            </p>
-        </div>
+        {% if copyright %}
+            <div class="border-t border-gray-200 dark:border-gray-700 mt-6 pt-4 text-center">
+                <p class="text-secondary text-sm">
+                    © {{ copyright.year }} {{ copyright.app_name }}. {% trans 'All rights reserved.' %}
+                </p>
+            </div>
+        {% endif %}
     </div>
 </footer>

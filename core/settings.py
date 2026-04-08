@@ -1,4 +1,4 @@
-"""Django-Einstellungen für Tests."""
+"""Django settings."""
 
 import os
 from pathlib import Path
@@ -13,6 +13,11 @@ SECRET_KEY = config("SECRET_KEY", default="django-insecure-test-key-not-for-prod
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=False, cast=bool)
+IS_PROD = config("IS_PROD", default=False, cast=bool)
+USE_TAILWIND_CLI = config("USE_TAILWIND_CLI", default=False, cast=bool)
+
+if DEBUG:
+    print("Running in DEBUG mode!")
 
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=lambda v: [s.strip() for s in v.split(",")], default="*")
 
@@ -24,10 +29,15 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django_tailwind_cli",
-    "django_htmx",
     "insight_ui",
+    "core",
 ]
+
+# Additional apps which are only for development
+if not IS_PROD:
+    INSTALLED_APPS += ["rosetta"]
+    if USE_TAILWIND_CLI:
+        INSTALLED_APPS += ["django_tailwind_cli"]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -36,7 +46,6 @@ MIDDLEWARE = [
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
-    "django_htmx.middleware.HtmxMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -56,15 +65,20 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.i18n",
+                "core.context_processor.project_context",
             ]
         },
     }
 ]
 
+WSGI_APPLICATION = "core.wsgi.application"
 ASGI_APPLICATION = "core.asgi.application"
 
 # Database
-DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": os.path.join(BASE_DIR, "db.sqlite3")}}
+DATA_DIR = Path(config("DATA_DIR", default=str(BASE_DIR / "data")))
+DATA_DIR.mkdir(parents=True, exist_ok=True)
+
+DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": DATA_DIR / "db.sqlite3"}}
 
 # Internationalization
 LANGUAGE_CODE = "de-de"
@@ -72,20 +86,14 @@ TIME_ZONE = "Europe/Berlin"
 USE_I18N = True
 USE_TZ = True
 
-LANGUAGES = [
-    ("de", "Deutsch"),
-    ("en", "English"),
-    ("es", "Español"),
-    ("fr", "Français"),
-    ("ar", "العربية"),
-    ("zh", "中文"),
-]
+LANGUAGES = [("de", "Deutsch"), ("en", "English")]
 
 LOCALE_PATHS = [os.path.join(BASE_DIR, "insight_ui", "locale")]
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_ROOT = Path(config("STATIC_ROOT", default=str(BASE_DIR / "staticfiles")))
+STATIC_ROOT.mkdir(parents=True, exist_ok=True)
 STATICFILES_DIRS = [BASE_DIR / "insight_ui/static/insight_ui/"]
 
 # Tailwind source file
@@ -106,33 +114,11 @@ LOGOUT_REDIRECT_URL = "/"
 LOGIN_URL = "/accounts/login/"
 LOGIN_REDIRECT_URL_FAILURE = "/login/failure"
 
-# Env-Variables
-PROJECT_NAME = config("PROJECT_NAME", default="Insight UI")
-PROJECT_DESCRIPTION = config("PROJECT_DESCRIPTION", default="Our base template to build Web UI's for our applications.")
-PROJECT_AUTHOR = config("PROJECT_AUTHOR", default="Alpin Insight AI")
-VERSION = "0.0.0"
-
-# Insight UI Einstellungen
+# Insight UI configuration (see insight_ui/config.py for available settings)
 INSIGHT_UI = {
-    "theme": "light",
-    "favicon": "insight_ui/favicon/favicon.ico",
-    "favicon_32": "insight_ui/favicon/favicon-32x32.png",
-    "favicon_16": "insight_ui/favicon/favicon-16x16.png",
-    "apple_touch_icon": "insight_ui/favicon/apple-touch-icon.png",
-    "safari_mask_icon": "insight_ui/svg/logo.svg",  # Used by Safari pinned tab
-    "msapplication_TileColor": "#da532c",  # Sets the background color for a live tile (MS Edge only)
-    "theme_color": "#ffffff",
-    "stylesheet": "insight_ui/css/tailwind.css",
-    "branding": {"name": PROJECT_NAME, "logo": None},
-    "meta": {
-        "seo": {
-            "description": PROJECT_DESCRIPTION,
-            "keywords": "Django, Insight UI, base template",
-            "author": PROJECT_AUTHOR,
-        }
-    },
-    "load_prism": True,
-    "load_leaflet": True,
-    "load_echarts": True,
-    "JS_DEBUG": True,
+    "load_prism": True,  # Turn to 'True' to use syntax highlighting
+    "load_leaflet": True,  # Turn to 'True' to use geo-maps
+    "load_echarts": True,  # Turn to 'True' to use Chart-Components
+    "JS_DEBUG": True,  # Turn to 'True' to enable build in browser console logging
+    "use_tailwind_cli": USE_TAILWIND_CLI,  # Turn to 'True' to enable the tailwind cli, if you want to modify the styles
 }

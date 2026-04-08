@@ -5,7 +5,9 @@
 <!-- Component Demo -->
 <section>
     <p>
-        Mit der <span class="inline-tag">tabs</span> Komponente lassen sich Tabs bzw. Registrierkarten hinzufügen. Diese Komponente besteht aus einer Reihe von Buttons, welche per HTMX-Request den Hauptinhalt der Komponente austauschen. Dadurch kann der Inhalt flexibel ausgetauscht werden, ohne das die Seite neu geladen werden muss.
+        Mit der <span class="inline-tag">tabs</span> Komponente lassen sich Tabs bzw. Registrierkarten hinzufügen.
+        Diese Komponente besteht aus einer Reihe von Buttons, welche per HTMX-Request den Hauptinhalt der Komponente austauschen.
+        Dadurch kann zwischen den einzelnen Tabs gewechselt werden, ohne dass die Seite neu geladen werden muss.
     </p>
 
     {% include "insight_ui/docs/demo_container.html" %}
@@ -16,7 +18,12 @@
 <!-- Component Documentation -->
 <section>
     <h2>{% trans "Verwendung" %}</h2>
-    <div id="Tabs_Usage" data-insight-code-block="Django">
+    <p class="mb-4">
+        {% blocktrans with tabs='<span class="inline-tag">&lcub;% tabs %&rcub;</span>'|safe %}
+            Die Komponente wird über das {{ tabs }} Tag eingebunden.
+        {% endblocktrans %}
+    </p>
+    <div data-insight-code-block="Django">
         &lcub;% load insight_tags %&rcub;
 
         &lcub;% tabs config=tabs_config %&rcub;
@@ -25,54 +32,46 @@
 
 <section>
     <h3>{% trans "Parameter" %}</h3>
-    <ul class="list-disc leading-relaxed ms-8">
-        <li><span class="inline-tag">config</span>(<i>dict</i>): Enthält die einzelnen Tabs und ein paar allgemeine Informationen über die Komponente.</li>
-    </ul>
+    {% include "insight_ui/components/parameter_table.html" with rows=main_params %}
 
-    <div class="mt-8">
-        <h4>config</h4>
-        <p class="mb-6">Enthält die einzelnen Tabs und ein paar allgemeine Informationen über die Komponente.</p>
+    <div class="space-y-6 mt-4">
+        <div class="space-y-2">
+            <h4>config <i>(dict[str, Any])</i></h4>
+            <p>Beschreibt die Buttons, welche zum wechseln der einzelnen Tabs verwendet werden.</p>
 
-        <div id="Tabs_Params" data-insight-code-block="python">
-            {# fmt:off #}
-            {
-                "id": "example_tabs",
-                "label": "Tabs Example",
-                "tabs": [
-                    {
-                        "id": "First",
-                        "url": reverse("tabs_view", kwargs={"tab_id": "first"}),
-                        "title": _("First Tab"),
-                    }
-                    ...
-                ]
-            }
-            {# fmt:on #}
+            <div data-insight-code-block="python">
+                {# fmt:off #}
+                {
+                    "id": "example_tabs",
+                    "label": "Tabs Example",
+                    "tabs": [
+                        {
+                            "id": "First",
+                            "url": reverse("tabs_view", kwargs={"tab_id": "first"}),
+                            "title": _("First Tab"),
+                        },
+                        {
+                            "id": "Second",
+                            "url": reverse("tabs_view", kwargs={"tab_id": "second"}),
+                            "title": _("Second Tab"),
+                        },
+                        {
+                            "id": "Third",
+                            "url": reverse("tabs_view", kwargs={"tab_id": "third"}),
+                            "title": _("Third Tab"),
+                        }
+                    ]
+                }
+                {# fmt:on #}
+            </div>
+            {% include "insight_ui/components/parameter_table.html" with rows=config_params %}
         </div>
-
-        <ul class="list-disc leading-relaxed ms-8 mt-6">
-            <li><span class="inline-tag">id</span> (<i>str</i>): Eine eindeutige ID für das Element.</li>
-            <li><span class="inline-tag">label</span> (<i>str</i>): Ein Label für Screenreader.</li>
-            <li><span class="inline-tag">tabs</span> (<i>list</i>): Die Tabs.
-                <ul class="list-disc leading-relaxed ms-8">
-                    <li><span class="inline-tag">id</span> (<i>str</i>): Eine eindeutige ID für den Tab.</li>
-                    <li><span class="inline-tag">url</span> (<i>str</i>): Die URL an welche der Request gesendet werden soll.</li>
-                    <li><span class="inline-tag">title</span> (<i>str</i>): Die Titel des Tabs.</li>
-                </ul>
-            </li>
-        </ul>
+        <div class="space-y-2">
+            <h5>tabs <i>(list[dict])</i></h5>
+            <p>Liste der Tab-Buttons.</p>
+            {% include "insight_ui/components/parameter_table.html" with rows=tabs_params %}
+        </div>
     </div>
-</section>
-
-<!-- Customization -->
-<section>
-    <h2>{% trans "Customization" %}</h2>
-    <p>
-        Das Design der Tabs Komponente befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/tabs.html</span>.
-    </p>
-    <p class="mt-4">
-        Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad <span class="inline-tag">templates/insight_ui/components/</span> vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
-    </p>
 </section>
 
 <!-- A11y -->
@@ -86,12 +85,21 @@
     </ul>
 </section>
 
-<hr class="text-gray-300 dark:text-gray-600">
-
 <!-- Related -->
 <section>
     <h2>{% trans "Related Topics" %}</h2>
     <ul class="list-disc leading-relaxed ms-8 mt-6">
-        <li><i>Todo</i></li>
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'accordion' %}"
+                hx-get="{% url 'component_detail_page_view' 'accordion' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Accordion" %}
+            </a>
+        </li>
     </ul>
 </section>

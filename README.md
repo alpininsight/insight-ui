@@ -1,14 +1,13 @@
 # Insight UI
-<!-- Badges -->
 
-![CI](https://github.com/alpininsight/insight-ui/actions/workflows/release.yml/badge.svg?branch=main)
+<!-- Badges -->
 ![Conventional Commits](https://github.com/alpininsight/insight-ui/actions/workflows/feature-pr-title.yml/badge.svg?branch=develop)
-![Staging (develop)](https://github.com/alpininsight/insight-ui/actions/workflows/release-develop.yml/badge.svg?branch=develop)
+![Staging](https://github.com/alpininsight/insight-ui/actions/workflows/release-develop.yml/badge.svg?branch=develop)
 ![Release](https://github.com/alpininsight/insight-ui/actions/workflows/release.yml/badge.svg?branch=main)
 ![Publish](https://github.com/alpininsight/insight-ui/actions/workflows/main-publish-pypi.yml/badge.svg?branch=main)
 
 [![Ruff](https://img.shields.io/badge/ruff-checked-5D3FD3?logo=python&logoColor=white)](https://github.com/astral-sh/ruff)
-[![Python](https://img.shields.io/badge/python-3.13%2B-blue?logo=python&logoColor=white)](pyproject.toml)
+[![Python](https://img.shields.io/badge/python-3.12%2B-blue?logo=python&logoColor=white)](pyproject.toml)
 [![Django](https://img.shields.io/badge/django-5.2-092E20?logo=django&logoColor=white)](https://www.djangoproject.com/)
 [![PyPI - Version](https://img.shields.io/pypi/v/insight-ui.svg)](https://pypi.org/project/insight-ui/)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
@@ -17,9 +16,9 @@ Insight UI is a modern, extensible UI framework for Django. It ships with reusab
 
 ## Highlights
 - **Accessible components**: ready-made navigation, forms, tables, alerts, carousels, and more.
-- **Internationalisation**: RTL layouts, language switchers, and localisation helpers.
+- **Internationalization**: RTL layouts, language switchers, and localization helpers.
 - **Performance minded**: HTMX-powered partial updates reduce full page reloads.
-- **Theming**: customisable Tailwind tokens and component layers for fast brand alignment.
+- **Theming**: customizable Tailwind tokens and component layers for fast brand alignment.
 
 ## Installation
 ```bash
@@ -38,31 +37,59 @@ INSTALLED_APPS = [
 ]
 ```
 
-See the [Installation guide](docs/en/installation.md) for configuration details and Tailwind workflows.
+Run the application and visit the Installation page in your browser for configuration details and Tailwind workflows.
 
 ## Local Development
 ```bash
 uv sync --all-groups
-uv run python manage.py migrate
-uv run python manage.py runserver
+cp .env.example .env
+uv run python manage.py setup_dev
+uv run python manage.py runserver 0:10800
 ```
+
+## Container Runtime
+The repository now ships a Django container workflow at `.github/workflows/container-build.yml`. It builds a production-oriented image, bakes static assets into the image during `docker build`, smoke-tests `migrate` and optional runtime `collectstatic`, and publishes branch images to GHCR on pushes to `develop` and `main`.
+
+Build and run locally:
+```bash
+docker build -t insight-ui:local .
+docker run --rm -p 8000:8000 insight-ui:local
+```
+
+Runtime flags:
+- `RUN_MIGRATIONS=1` runs `python manage.py migrate --noinput` before the web process starts. This is enabled by default for single-container Docker runs.
+- `RUN_COLLECTSTATIC=1` re-runs `python manage.py collectstatic --noinput` at container start when you need to refresh a mounted static volume. Static assets are already collected during the image build, so the default remains `0`.
+
+For Kubernetes, use the same image and disable startup migrations on scaled web deployments (`RUN_MIGRATIONS=0`). Run `python manage.py migrate --noinput` as a one-off Job or init step instead, then start the web pods from the published image.
 
 The WebSocket demo lives in `utils/main.py`:
 ```bash
 uv run ./utils/main.py
 ```
 
-## Documentation
-- English: `docs/en/` (served via MkDocs)
-- Deutsch: `docs/de/`
-
-Run the site locally:
+## Testing
 ```bash
-uv run mkdocs serve
+# Python code
+uv run pytest
+
+# JavaScript code (no local node.js required due docker container)
+docker run --rm -it -v ${PWD}:/app -w /app  node:25-alpine sh -c "npm install && npx vitest run"
 ```
 
+CI runs tests against Python 3.12, 3.13, and 3.14. Note that Python 3.14 is still in development, so some third-party packages may not fully support it yet. The CI matrix uses `fail-fast: false` to ensure all versions report results independently.
+
+## Documentation
+
+The application is self-documenting — run it locally and open it in your browser to read details about each component on its corresponding page, including live examples.
+
+Additional developer references in `docs/`:
+- [Contributing Guide](docs/contributing.md)
+- [Naming Conventions](docs/naming_conventions.md)
+- [Accessibility](docs/accessibility.md)
+- [Internationalization](docs/i18n.md)
+
 ## Contributing
-We welcome improvements! Please read the [Contributor Guide](docs/en/contributing.md) alongside the [naming conventions](docs/en/guides/naming_conventions.md) before opening a pull request. Remember to mirror changes in both language trees.
+We welcome improvements! Please read the [Contributor Guide](docs/contributing.md) alongside the [Naming Conventions](docs/naming_conventions.md) before opening a pull request.
 
 Code ownership and review for this repository are managed via `.github/CODEOWNERS`. By default, changes are owned by the `@alpininsight` organization, with CI/CD workflows under `.github/workflows/` explicitly covered.
 

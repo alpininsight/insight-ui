@@ -162,7 +162,13 @@ dmypy.json
 # Local AI helper artifacts (never commit)
 AGENTS.md
 AGENT*.md
+CLAUDE.md
 ai-notes/
+.claude/
+.claude*
+.cursorrules
+.github/copilot*
+copilot-instructions.md
 cython_debug/
 .act-cache/
 .xdg-cache/
@@ -189,7 +195,7 @@ insight_ui/_version.py
 #  that can be found at https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore
 #  and can be added to the global gitignore or merged into this file. However, if you prefer,
 #  you could uncomment the following to ignore the enitre vscode folder
-# .vscode/
+.vscode/
 
 # Ruff stuff:
 .ruff_cache/
@@ -210,5 +216,6 @@ uv.lock
 .django_tailwind_cli/
 
 img/
-management/
 staticfiles/
+node_modules/
+.playwright-mcp/

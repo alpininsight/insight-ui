@@ -1,17 +1,26 @@
 {% load insight_tags %}
 
 <div class="relative">
-    <button data-dropdown-toggle="{{ dropdown_menu.tag_id }}" class="btn btn-primary">
-        {{ dropdown_menu.title }}
-        {% if dropdown_menu.show_arrow %}
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" class="size-5">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
+    <button data-dropdown-toggle="{{ tag_id }}" class="btn btn-primary">
+        {{ title }}
+        {% if show_arrow %}
+            {% icon name="chevron_down" size="small" %}
         {% endif %}
     </button>
-    <div id="{{ dropdown_menu.tag_id }}" class="border border-gray-300 dark:border-0 rounded-sm shadow-lg">
-        {% for item in dropdown_menu.items %}
-            <a {% if item.view_arg %}href="{% url item.view_name item.view_arg %}"{% else %}href="{% url item.view_name %}"{% endif %} class="flex items-center gap-1 px-4 py-2 text-sm text-primary bg-gray-100 dark:bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 {% if forloop.first %}rounded-t{% elif forloop.last %}rounded-b{% endif %}">
+    <div id="{{ tag_id }}" class="hidden border border-gray-300 dark:border-0 rounded-sm shadow-lg">
+        {% for item in items %}
+            <a
+                {% if request_url %}
+                    href="{{ request_url }}"
+                    {% if htmx %}
+                        hx-get="{{ request_url }}"
+                        hx-target="{{ htmx.target }}"
+                        hx-swap="{{ htmx.swap|default:'innerHTML' }}"
+                        hx-trigger="submit"
+                    {% endif %}
+                {% endif %}
+                class="flex items-center gap-1 px-4 py-2 text-sm text-primary bg-gray-100 dark:bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 {% if forloop.first %}rounded-t{% elif forloop.last %}rounded-b{% endif %}"
+            >
                 {% if item.icon %}
                     <div>
                         {% icon item.icon %}

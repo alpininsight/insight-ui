@@ -28,7 +28,7 @@ repos:
 
   # Ruff lint + format
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.5
+    rev: v0.15.2
     hooks:
       - id: ruff
         args: ["--fix"]
@@ -38,7 +38,7 @@ repos:
 
   # Modernize Python syntax
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.21.1
+    rev: v3.21.2
     hooks:
       - id: pyupgrade
         args: ["--py312-plus"]
@@ -52,7 +52,7 @@ repos:
 
   # Security scan (lightweight; consider moving to pre-push if slow)
   - repo: https://github.com/PyCQA/bandit
-    rev: 1.9.0
+    rev: 1.9.3
     hooks:
       - id: bandit
         args: ['--exclude', 'tests']
@@ -60,13 +60,13 @@ repos:
 
   # Secret scanning (Gitleaks)
   - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.29.0
+    rev: v8.30.0
     hooks:
       - id: gitleaks
 
   # Conventional Commits (commit-msg validation)
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.10.0
+    rev: v4.13.8
     hooks:
       - id: commitizen
         stages: [commit-msg]

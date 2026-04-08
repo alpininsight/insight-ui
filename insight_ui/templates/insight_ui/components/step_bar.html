@@ -1,0 +1,43 @@
+{% load insight_tags %}
+
+<ol class="flex flex-col md:flex-row divide-y md:divide-y-0 divide-gray-300 dark:divide-gray-700 w-full border bg-gray-100 dark:bg-gray-900 border-gray-300 dark:border-gray-700 rounded-md">
+    {% for item in items %}
+        <li class="flex items-center gap-4 w-full h-20 px-6">
+            {% if item.success %}
+                <div class="flex items-center justify-center size-12 rounded-full bg-insight-primary text-white">
+                    {% icon name="tick" size="big" %}
+                </div>
+            {% elif item.failed %}
+                <div class="flex items-center justify-center size-12 rounded-full bg-insight-danger text-white">
+                    {% icon name="x-mark" size="big" %}
+                </div>
+            {% else %}
+                <div class="flex items-center justify-center size-12 rounded-full border-2 {% if not item.current %}border-gray-300 dark:border-gray-700 text-gray-300 dark:text-gray-700{% elif item.current %}text-insight-primary animate-pulse{% else %}border-insight-primary{% endif %}">
+                    {% if item.icon %}
+                        {% icon item.icon %}
+                    {% else %}
+                        <span>0{{ forloop.counter }}</span>
+                    {% endif %}
+                </div>
+            {% endif %}
+            <div class="flex-1">
+                <a {% if item.url %}href="{{ item.url }}"{% endif %}>
+                    {% if item.failed %}
+                        <span class="block font-semibold text-insight-danger">{{ item.title }}</span>
+                        <span class="block text-sm text-insight-danger-hover">{{ item.description }}</span>
+                    {% else %}
+                        <span class="block font-semibold {% if not item.success and not item.current %}text-gray-300 dark:text-gray-700{% elif item.current %}text-insight-primary{% else %}text-primary{% endif %}">{{ item.title }}</span>
+                        <span class="block text-sm {% if not item.success and not item.current %}text-gray-300 dark:text-gray-700{% else %}text-secondary{% endif %}">{{ item.description }}</span>
+                    {% endif %}
+                </a>
+            </div>
+        </li>
+        {% if not forloop.last %}
+            <div class="text-gray-300 dark:text-gray-700 hidden md:block">
+                <svg viewBox="0 0 22 80" fill="none" preserveAspectRatio="none" aria-hidden="true" class="h-20 w-6 rtl:rotate-180">
+                    <path d="M0 -2L20 40L0 82" stroke="currentcolor" vector-effect="non-scaling-stroke" stroke-linejoin="round"></path>
+                </svg>
+            </div>
+        {% endif %}
+    {% endfor %}
+</ol>

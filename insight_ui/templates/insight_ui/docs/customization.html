@@ -1,0 +1,351 @@
+{% extends "insight_ui/base.html" %}
+{% load static insight_tags i18n %}
+
+{% block title %}{% trans "Insight UI - Customization" %}{% endblock title %}
+
+{% block navbar %}
+    {% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links show_login=True search_query=search_query %}
+{% endblock navbar %}
+
+{% block sidebar_left %}
+    {% sidebar sidebar_data=left_sidebar side="left" mobile_hidden=True %}
+{% endblock sidebar_left %}
+
+{% block sidebar_right %}
+    {% include "insight_ui/components/toc_sidebar.html" with side="right" static=True navbar_fixed=True mobile_hidden=True %}
+{% endblock sidebar_right %}
+
+{% block heading %}
+    {% page_header title=_("Customization") description=_("Our UI framework not only offers a range of useful components, but can also be fully customized to suit additional needs.") %}
+{% endblock heading %}
+
+{% block content %}
+    <div class="w-full space-y-12 text-secondary leading-loose">
+        <section class="space-y-8">
+            <p>
+                {% blocktrans %}
+                    Colors and recurring elements, such as the appearance of headings, can be adjusted in just one place and the design adapts immediately.
+                    New components can also be added and existing ones customized.
+                    Should a component not fit your needs completely, it can be adapted accordingly with relatively little effort.
+                {% endblocktrans%}
+            </p>
+            <p>
+                {% trans "The following sections describe the different customization options." %}
+            </p>
+        </section>
+        <hr>
+        <section class="space-y-4">
+            <h2>{% trans "Configuration via settings.py" %}</h2>
+            <p>
+                {% blocktrans with settings='<span class="inline-tag">settings.py</span>'|safe %}
+                    There are a number of things that can be defined via the {{ settings }}.
+                {% endblocktrans %}
+            </p>
+
+            <div id="settings" data-insight-code-block="python" data-insight-code-block-filename="settings.py">
+                {# fmt:off #}
+                INSIGHT_UI = {
+                    "favicon": "insight_ui/favicon/favicon.ico",
+                    "favicon_32": "insight_ui/favicon/favicon-32x32.png",
+                    "favicon_16": "insight_ui/favicon/favicon-16x16.png",
+                    "apple_touch_icon": "insight_ui/favicon/apple-touch-icon.png",
+                    "safari_mask_icon": "insight_ui/svg/logo.svg",  # Used by Safari pinned tab
+                    "msapplication_TileColor": "#da532c",  # Sets the background color for a live tile (MS Edge only)
+                    "theme_color": "#ffffff",  # For the search bar on mobile devices
+                    "stylesheet": "insight_ui/css/tailwind.css",  # Only change in case of using an alternative name for the stylesheet
+                    "navbar_fixed": True,  # Should the navigation stick to the top of the window (has impact on the sidebars as well)
+                    "title": "My indispensable app",  # Default title if the &lcub;% title %&rcub; block is not overridden
+                    "meta": {
+                        "seo": {
+                            "description": "My indispensable app",
+                            "keywords": "Django, Insight UI",
+                            "author": "It's me",
+                        }
+                    },
+                    "load_prism": False,  # Turn to 'True' to use syntax highlighting
+                    "load_leaflet": False,  # Turn to 'True' to use geo-maps
+                    "load_echarts": False,  # Turn to 'True' to use Chart-Components
+                    "JS_DEBUG": False,  # Turn to 'True' to enable build in browser console logging
+                    "use_tailwind_cli": False, # Turn to 'True' to enable the tailwind cli, if you want to modify the styles
+                }
+                {# fmt:on #}
+            </div>
+        </section>
+        <section class="space-y-12">
+            <div class="space-y-4">
+                <h2>{% trans "Theming (adapting to a corporate design)" %}</h2>
+                <p>
+                    {% blocktrans with tailwind='<a href="https://tailwindcss.com/" class="text-link">TailwindCSS</a>'|safe %}
+                        Our UI framework uses {{ tailwind }} for styling.
+                        Tailwind uses a so-called <i>input.css</i> file in which a theme can be built.
+                        This includes defining basic properties such as colors, font sizes or fonts, but also creating custom CSS classes or animations.
+                        Thanks to Tailwind's Preflight function, standards can also be defined so that certain elements such as headings always look the same without needing a class specified in the HTML code.
+                        The individual options and sections of the <i>input.css</i> are explained in more detail in the following sections.
+                    {% endblocktrans %}
+                </p>
+                <p>
+                    {% blocktrans with input='<a href="https://github.com/alpininsight/insight-ui/blob/develop/insight_ui/utils/input.css" class="text-link">insight_ui/utils/input.css</a>'|safe %}
+                        The default theme of the Insight UI framework is located in the file {{ input }}.
+                    {% endblocktrans %}
+                </p>
+            </div>
+
+            <section class="space-y-4">
+                <h3>{% trans "Setup" %}</h3>
+                <p>
+                    {% blocktrans with tailwind_cli='<a href="https://github.com/django-commons/django-tailwind-cli" class="text-link">django-tailwind-cli</a>'|safe %}
+                        To be able to customize the theming, a few steps need to be carried out first.
+                        Since our framework uses TailwindCSS, a <i>Tailwind Compiler</i> must be installed. This is most easily done via {{ tailwind_cli }}.
+                    {% endblocktrans %}
+                </p>
+
+                <p>
+                    {% blocktrans with uv='<a href="https://docs.astral.sh/uv/" class="text-link">uv</a>'|safe uv_add='<span class="inline-tag select-all">uv add django-tailwind-cli</span>'|safe %}
+                        First, <b>django-tailwind-cli</b> must be installed, for example via {{ uv }} with {{ uv_add }}.
+                    {% endblocktrans %}
+                </p>
+
+                <p>
+                    {% blocktrans with installed_apps='<span class="inline-tag">INSTALLED_APPS</span>'|safe %}
+                        Then <b>django-tailwind-cli</b> must be added to the {{ installed_apps }}.
+                    {% endblocktrans %}
+                </p>
+                <div data-insight-code-block="python" data-insight-code-block-filename="settings.py">
+                    {# fmt:off #}
+                    INSTALLED_APPS = [
+                        # ...
+                        "django_tailwind_cli",
+                        # ...
+                    ]
+                    {# fmt:on #}
+                </div>
+                <p>{% trans "So that the compiler knows where to find the relevant files, a few settings need to be configured." %}</p>
+                <ul>
+                    <li><span class="inline-tag">STATICFILES_DIRS</span>: {% trans "The path to the static files must be defined." %}</li>
+                    <li><span class="inline-tag">TAILWIND_CLI_SRC_CSS</span>: {% blocktrans with input='<span class="inline-tag">input.css</span>'|safe %}The path to {{ input }}, which contains the theme configuration (more on this later).{% endblocktrans %}</li>
+                    <li><span class="inline-tag">TAILWIND_CLI_DIST_CSS</span>: {% trans "The path where the generated stylesheet should be saved." %}</li>
+                    <li><span class="inline-tag">TAILWIND_CLI_AUTOMATIC_DOWNLOAD</span>: {% trans "We recommend disabling the automatic updating of the Tailwind compiler, as it would consume more and more storage space and prevents error messages due to failed downloads." %}</li>
+                </ul>
+                <div data-insight-code-block="python" data-insight-code-block-filename="settings.py">
+                    {# fmt:off #}
+                    # Configure static files directory
+                    STATICFILES_DIRS = [BASE_DIR / &lt;path/to/static_dir&gt;]
+
+                    # Tailwind source file
+                    TAILWIND_CLI_SRC_CSS = BASE_DIR / ".venv/Lib/site-packages/insight_ui/static/insight_ui/css/input.css"
+
+                    # Tailwind dist file
+                    TAILWIND_CLI_DIST_CSS = "insight_ui/css/tailwind.css"
+
+                    # Prevent automatic updating (recommended)
+                    # This is a silent process that can lead to silent problems if the process is terminated too quickly.
+                    TAILWIND_CLI_AUTOMATIC_DOWNLOAD = False
+                    {# fmt:on #}
+                </div>
+                <p>{% trans "Next, the setup of <b>django-tailwind-cli</b> must be run once, during which the Tailwind CLI is also downloaded (~120MB)." %}</p>
+                <div data-insight-code-block="bash">
+                    python manage.py tailwind setup
+                </div>
+                <p>
+                    {% blocktrans with runserver='<span class="inline-tag">runserver</span>'|safe tailwind='<span class="inline-tag">tailwind</span>'|safe %}
+                        After that, the development server can be started with %(tailwind)s, so this time {{ tailwind }} must be included before {{ runserver }}.
+                    {% endblocktrans %}
+                </p>
+                <div data-insight-code-block="bash">
+                    python manage.py tailwind runserver
+                </div>
+            </section>
+            <section class="space-y-4">
+                <h3>{% trans "Customization" %}</h3>
+                <p>
+                    {% blocktrans with settings='<span class="inline-tag">settings.py</span>'|safe %}
+                        To customize the theming, this file must be copied and then specified in the <i>Insight UI</i> configuration in {{ settings }}.
+                    {% endblocktrans %}
+                </p>
+                <div id="settings2" data-insight-code-block="python" data-insight-code-block-filename="settings.py">
+                    TAILWIND_CLI_SRC_CSS = "my-path/to/input.css"
+                </div>
+                <p>
+                    {% blocktrans with insight_ui='<span class="inline-tag">Insight-UI</span>'|safe %}
+                        In this file, the path to the {{ insight_ui }} templates must be adjusted:
+                    {% endblocktrans %}
+                </p>
+                <div id="settings3" data-insight-code-block="css" data-insight-code-block-filename="input.css">
+                    @source "../templates/insight_ui/";
+                </div>
+                <p>{% trans "replace with:" %}</p>
+                <div id="settings4" data-insight-code-block="css" data-insight-code-block-filename="input.css">
+                    @source ".venv/Lib/site-packages/insight_ui/templates/insight_ui";
+                </div>
+                <p>
+                    {% blocktrans with setup='<span class="inline-tag">python manage.py tailwind setup</span>'|safe %}
+                        Then {{ setup }} must be executed.
+                    {% endblocktrans %}
+                </p>
+            </section>
+            <section class="space-y-4">
+                <h3>{% trans "Contents of input.css" %}</h3>
+                <p>
+                    {% trans "The file contains the following components, which together make up the theme." %}
+                </p>
+                <p>
+                    {% blocktrans with import='<span class="inline-tag">@import</span>'|safe %}
+                        The first line contains the {{ import }} for Tailwind. This is needed so that Tailwind can later generate the corresponding stylesheet from this file.
+                    {% endblocktrans %}
+                </p>
+                <div id="settings5" data-insight-code-block="css" data-insight-code-block-filename="input.css">
+                    @import "tailwindcss";
+                </div>
+                <p>
+                    {% blocktrans with source='<span class="inline-tag">@source</span>'|safe %}
+                        The next line contains the {{ source }} directive.
+                        This tells Tailwind where to look for the template files to find the CSS tags used inside.
+                        Normally Tailwind should find all project-specific templates on its own, but external packages occasionally cause issues, which is why the path to our templates is also specified here.
+                    {% endblocktrans %}
+                </p>
+                <div id="settings6" data-insight-code-block="css" data-insight-code-block-filename="input.css">
+                    @source "../templates/insight_ui/";
+                </div>
+                <p>
+                    {% trans "The next line enables switching between light/dark mode." %}
+                </p>
+                <div id="settings7" data-insight-code-block="css" data-insight-code-block-filename="input.css">
+                    @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+                </div>
+                <p>
+                    {% blocktrans with font='<a href="https://fonts.google.com/specimen/Atkinson+Hyperlegible?query=Atkinson+Hyperlegible" class="text-link">Atkinson Hyperlegible</a>'|safe %}
+                        By default, Insight UI uses the font {{ font }}.
+                        This is not a standard system font, which is why it must be specified explicitly.
+                        If a different font is desired, it can be replaced or supplemented here.
+                        The path to the font is relative to the <i>input.css</i>, i.e. the file in which it is defined.
+                    {% endblocktrans %}
+                </p>
+                <div id="settings8" data-insight-code-block="css" data-insight-code-block-filename="input.css">
+                    {# fmt:off #}
+                    @font-face {
+                        font-family: "insight-ui";
+                        src: url("../font/AtkinsonHyperlegibleNext-VariableFont_wght.ttf");
+                    }
+                    {# fmt:on #}
+                </div>
+                <p>
+                    {% blocktrans with theme='<span class="inline-tag">@theme</span>'|safe %}
+                        That's all very nice, but where are the colors?
+                        Apart from the font, the previous steps are necessary and their settings should not be changed without reason.
+                        The actual theming comes now. Fittingly, the block is declared with {{ theme }}.
+                        In this block all theme-specific variables are defined, including colors.
+                    {% endblocktrans %}
+                </p>
+                <p>
+                    {% blocktrans with font='<span class="inline-tag">--font-sans: "insight-ui", sans-serif;</span>'|safe %}
+                        But first, the font again. In the theme block, a default font can also be set that is used for all text throughout the entire project without having to specify it each time.
+                        The directive {{ font }} causes any text without serifs to use for example the font <i>Inter</i>.
+                    {% endblocktrans%}
+                </p>
+                <p>
+                    <i>{% trans "Todo: define multiple fonts." %}</i>
+                </p>
+                <div id="settings9" data-insight-code-block="css" data-insight-code-block-filename="input.css">
+                    {# fmt:off #}
+                    @theme {
+                        --font-sans: "Inter", sans-serif;
+
+                        --color-insight-primary: #3b82f6;
+                        ...
+                        --color-insight-text-link-hover: #93c5fd;
+
+                        --animate-blink: blink 2s step-start infinite;
+
+                        @keyframes blink {
+                            0%, 100% {
+                            opacity: 0;
+                            }
+                            50% {
+                            opacity: 100;
+                            }
+                        }
+                    }
+                    {# fmt:on #}
+                </div>
+                <p>
+                    {% blocktrans with caption='<span class="inline-tag">&lt;h&gt;</span>'|safe %}
+                        While the variables defined in the theme block can be manually applied to elements to adjust individual properties, complete designs for specific HTML tags can also be predefined.
+                        This works via Tailwind's <i>Preflight</i> module, which removes all default styles from HTML elements so that for example all {{ caption }} look the same.
+                        This is done partly to remove various browser defaults so that the page looks the same in every browser, and also to directly add styles for specific elements.
+                    {% endblocktrans %}
+                </p>
+                <p>
+                    {% blocktrans with button='<span class ="inline-tag">button:not(:disabled), [role="button"]:not(:disabled) { cursor: pointer; }</span>'|safe pointer='<span class ="inline-tag">pointer</span>'|safe %}
+                        The line {{ button }} ensures for example that all buttons show a {{ pointer }}, i.e. a hand cursor (no longer standard since Tailwind V.4.0 and therefore specified here).
+                    {% endblocktrans%}
+                </p>
+                <p>
+                    {% blocktrans with caption='<span class="inline-tag">&lt;h1&gt;</span>'|safe caption_red='<span class="inline-tag">&lt;h1 class="text-red-500&gt;</span>'|safe %}
+                        The directive below for the {{ caption }} tag specifies that the CSS classes listed there should be applied to every %(caption)s tag.
+                        This means that these classes do not need to be added manually to each tag. If exceptions are wanted, additional CSS classes can still be added or overridden in the template.
+                        For example, headings with {{ caption_red }} will still be displayed in red.
+                    {% endblocktrans %}
+                </p>
+                <div id="settings10" data-insight-code-block="css" data-insight-code-block-filename="input.css">
+                    {# fmt:off #}
+                    @layer base {
+                        button:not(:disabled), [role="button"]:not(:disabled) { cursor: pointer; }
+
+                        h1 {
+                            @apply text-3xl font-bold text-insight-text-primary dark:text-white mb-4;
+                        }
+                    }
+                    {# fmt:on #}
+                </div>
+                <p>
+                    {% blocktrans with components='<span class="inline-tag">components</span>'|safe %}
+                        The next block is called {{ components }} and contains custom CSS classes.
+                        Why are there no custom CSS classes in the actual stylesheet? There is technically no conventional stylesheet, since it is generated by Tailwind every time something changes in the templates, as long as the Tailwind compiler is running.
+                        Each time, the entire file is recreated and all manually added classes are lost. To still be able to use predefined constructs without having to copy CSS classes every time, {{ components }} can be defined.
+                    {% endblocktrans %}
+                </p>
+                <p>
+                    {% blocktrans with button='<span class="inline-tag">&lt;button class="btn btn-sm"&gt;</span>'|safe apply='<span class="inline-tag">@apply</span>'|safe %}
+                        In the <i>input.css</i>, for example, components for buttons are defined.
+                        These can be used in templates like a normal CSS class {{ button }}.
+                        The syntax has little to do with classic CSS. Instead, the respective Tailwind classes or other custom classes are added via {{ apply }}.
+                        This is an advantage for anyone who has previously worked with Tailwind.
+                    {% endblocktrans %}
+                </p>
+                <div id="settings11" data-insight-code-block="css" data-insight-code-block-filename="input.css">
+                    {# fmt:off #}
+                    @layer components {
+                        .btn {
+                            @apply flex gap-2 items-center justify-center border-2 rounded-sm text-white px-5 py-1.5;
+                        }
+                        ...
+                    }
+                    {# fmt:on #}
+                </div>
+            </section>
+        </section>
+        <section class="space-y-4">
+            <h2>{% trans "Override template" %}</h2>
+            <p>
+                {% blocktrans with path='<span class="inline-tag">templates/insight_ui/components/</span>'|safe %}
+                    It is possible to customize the provided components. To do so, simply copy the corresponding template of the component into your own project directory
+                    The only important thing is that the copied template is placed at this path {{ path }} and must be located in the root directory of the project.
+                {% endblocktrans %}
+            </p>
+            <p>{% trans "Example:" %}</p>
+            <div id="settings11" data-insight-code-block="bash">
+                {# fmt:off #}
+                myapp/
+                └── templates/
+                    │── insight_ui/
+                    └── components/
+                        └── navbar.html  # Overwrites the standard Navbar-Template
+                {# fmt:on #}
+            </div>
+        </section>
+    </div>
+{% endblock content %}
+
+{% block footer %}
+    {% footer data=footer_data %}
+{% endblock footer %}

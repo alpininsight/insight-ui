@@ -4,29 +4,30 @@ from typing import Any, cast
 from django.conf import settings
 
 CONFIG_DEFAULTS: dict[str, Any] = {
-    "theme": "light",
     "favicon": "insight_ui/favicon/favicon.ico",
     "favicon_32": "insight_ui/favicon/favicon-32x32.png",
     "favicon_16": "insight_ui/favicon/favicon-16x16.png",
     "apple_touch_icon": "insight_ui/favicon/apple-touch-icon.png",
     "safari_mask_icon": "insight_ui/svg/logo.svg",  # Used by Safari pinned tab
     "msapplication_TileColor": "#da532c",  # Sets the background color for a live tile (MS Edge only)
-    "theme_color": "#ffffff",
-    "stylesheet": "insight_ui/css/tailwind.css",
-    "branding": {"name": "Alpin Insight AI", "logo": None},
-    "meta": {
-        "seo": {
-            "description": "An Alpin Insight AI application",
-            "keywords": "Django, Alpin Insight, AI, Webapp",
-            "author": "Alpin Insight AI Dev-Team",
-        }
-    },
+    "theme_color": "#ffffff",  # For the search bar on mobile devices
+    "stylesheet": "insight_ui/css/tailwind.css",  # Only change in case of using alternative stylesheet (currently not supported)  # noqa: E501
+    "navbar_fixed": True,  # Should the navigation stick at the top of the window (has impact on the sidebars as well)
+    "title": "My indispensable app",  # Default title if the {% title %} block is not overridden
+    "meta": {"seo": {"description": "My indispensable app", "keywords": "Django, Insight UI", "author": "It's me"}},
+    "load_prism": False,  # Turn to 'True' to use syntax highlighting
+    "load_leaflet": False,  # Turn to 'True' to use geo-maps
+    "load_echarts": False,  # Turn to 'True' to use Chart-Components
+    "JS_DEBUG": False,  # Turn to 'True' to enable build in browser console logging
+    "use_tailwind_cli": False,  # Turn to 'True' to enable the tailwind cli, if you want to modify the styles
 }
 
 
-def get_config(settings_name: str | None = None) -> dict[str, Any]:
-    """Get insight-ui configuration."""
-    config_attribute = settings_name or "INSIGHT_UI"
-    user_config = cast(Mapping[str, Any], getattr(settings, config_attribute, {}))
+def get_config(attribute_name: str = "") -> dict[str, Any] | str:
+    """Serve insight-ui configuration."""
+    user_config = cast(Mapping[str, Any], getattr(settings, "INSIGHT_UI", {}))
+
+    if attribute_name != "":
+        return {**CONFIG_DEFAULTS, **dict(user_config)}[attribute_name]
 
     return {"INSIGHT_UI": {**CONFIG_DEFAULTS, **dict(user_config)}}

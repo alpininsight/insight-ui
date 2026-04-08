@@ -1,90 +1,69 @@
 {% load static i18n insight_tags %}
 
 <div
-  class="fixed inset-0 z-50 overflow-y-auto hidden"
-  id="{{ id }}"
-  role="dialog"
-  aria-modal="true"
-  aria-labelledby="{{ id }}-title"
-  {% if description %}aria-describedby="{{ id }}-description"{% endif %}
-  tabindex="-1"
+    {% if tag_id %}id="{{ tag_id }}"{% endif %}
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="{{ tag_id }}-title"
+    {% if description %}aria-describedby="{{ tag_id }}-description"{% endif %}
+    tabindex="-1"
+    class="fixed inset-0 z-50 overflow-y-auto hidden"
 >
-  <!-- Modal Backdrop -->
-  <div class="fixed inset-0 bg-black/50 transition-opacity" data-insight-dismiss="modal"></div>
+    <!-- Modal Backdrop -->
+    <div class="fixed inset-0 bg-black/50 transition-opacity" data-insight-dismiss="modal"></div>
 
-  <!-- Modal -->
-  <div class="flex items-center justify-center min-h-screen p-4">
-    <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-lg w-full mx-auto transform transition-all">
+    <!-- Modal -->
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-lg w-full mx-auto transform transition-all">
 
-      <!-- Modal Header -->
-      <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-        <h2 id="{{ id }}-title" class="text-xl font-semibold text-primary">{{ title }}</h2>
-        <button
-          aria-label="{% trans 'Close' %}"
-          class="bg-white h-fit rounded-sm p-2 text-insight-text-primary hover:bg-neutral-300 transition"
-          data-insight-dismiss="modal"
-        >
-          <svg class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+                <h2 id="{{ tag_id }}-title" class="text-xl font-semibold text-primary">{{ title }}</h2>
+                <button aria-label="{% trans 'Close' %}" class="btn btn-close" data-insight-dismiss="modal">
+                    {% icon name="x-mark" size="xs" %}
+                </button>
+            </div>
 
-      <!-- Modal Body -->
-      <div class="p-6 space-y-4">
-        {% if description %}
-          <p id="{{ id }}-description" class="text-secondary mb-4 flex items-center">
-            {{ description }}
-          </p>
-        {% endif %}
+            <!-- Modal Body -->
+            <div class="p-6 space-y-4">
+                {% if description %}
+                    <p id="{{ tag_id }}-description" class="text-secondary mb-4 flex items-center">
+                        {{ description }}
+                    </p>
+                {% endif %}
 
-        <div class="text-primary">
-          {% block modal_content %}
-            {{ content|safe }}
-          {% endblock %}
+                <div class="text-primary">
+                    {% block modal_content %}
+                        <p>{{ additional_content }}</p>
+                    {% endblock %}
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="flex justify-end gap-2 p-6 border-t border-gray-200 dark:border-gray-700">
+                {% if actions %}
+                    {% for action in actions %}
+                        {% if action.type == 'cancel' or action.dismiss %}
+                            <button class="btn btn-secondary" data-insight-dismiss="modal">
+                                {{ action.text|default:"Abbrechen" }}
+                            </button>
+                        {% elif action.type == 'primary' %}
+                            <button class="btn btn-primary" {% if action.onclick %}onclick="{{ action.onclick }}"{% endif %}>
+                                {{ action.text }}
+                            </button>
+                        {% else %}
+                            <button class="btn btn-secondary" {% if action.onclick %}onclick="{{ action.onclick }}"{% endif %}>
+                                {{ action.text }}
+                            </button>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                <!-- Default close button -->
+                    <button class="btn btn-secondary" data-insight-dismiss="modal">
+                        {% trans 'Close' %}
+                    </button>
+                {% endif %}
+            </div>
         </div>
-      </div>
-
-      <!-- Modal Footer -->
-      {% if actions %}
-        <div class="flex justify-end gap-2 p-6 border-t border-gray-200 dark:border-gray-700">
-          {% for action in actions %}
-            {% if action.type == 'cancel' or action.dismiss %}
-              <button
-                class="bg-insight-secondary rounded-sm text-white px-6 py-2 hover:bg-insight-secondary-hover active:bg-insight-secondary-active transition"
-                data-insight-dismiss="modal"
-                aria-label="{{ action.text|default:'Abbrechen' }}">
-                {{ action.text|default:"Abbrechen" }}
-              </button>
-            {% elif action.type == 'primary' %}
-              <button
-                class="bg-insight-primary rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active transition"
-                {% if action.onclick %}onclick="{{ action.onclick }}"{% endif %}
-                aria-label="{{ action.text }}">
-                {{ action.text }}
-              </button>
-            {% else %}
-              <button
-                class="bg-insight-secondary rounded-sm text-white px-6 py-2 hover:bg-insight-secondary-hover active:bg-insight-secondary-active transition"
-                {% if action.dismiss %}data-insight-dismiss="modal"{% endif %}
-                {% if action.onclick %}onclick="{{ action.onclick }}"{% endif %}
-                aria-label="{{ action.text }}">
-                {{ action.text }}
-              </button>
-            {% endif %}
-          {% endfor %}
-        </div>
-      {% else %}
-        <!-- Default close button -->
-        <div class="flex justify-end p-6 border-t border-gray-200 dark:border-gray-700">
-          <button
-            class="bg-insight-secondary rounded-sm text-white px-6 py-2 hover:bg-insight-secondary-hover active:bg-insight-secondary-active transition"
-            data-insight-dismiss="modal"
-            aria-label="{% trans 'Close' %}">
-            {% trans 'Close' %}
-          </button>
-        </div>
-      {% endif %}
     </div>
-  </div>
 </div>

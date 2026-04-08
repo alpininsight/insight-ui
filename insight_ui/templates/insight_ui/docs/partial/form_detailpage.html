@@ -16,36 +16,53 @@
 <!-- Component Documentation -->
 <section>
     <h2>{% trans "Verwendung" %}</h2>
-    <div id="Form_Usage" data-insight-code-block="Django">
-        &lcub;% form title="Contact Form" description="Please fill out the form" fields=form_fields actions=form_actions htmx=htmx_config id="htmx-form" %&rcub;
+    <p class="mb-4">
+        {% blocktrans with form='<span class="inline-tag">&lcub;% form %&rcub;</span>'|safe %}
+            Die Komponente wird über das {{ form }} Tag eingebunden.
+        {% endblocktrans %}
+    </p>
+
+    <div data-insight-code-block="Django">
+        &lcub;% load insight_tags %&rcub;
+
+        &lcub;% form tag_id="htmx-form" title="Contact Form" description="Please fill out the form" fields=form_fields show_reset_button=True view_name="form_submit" htmx_config_params=htmx_config %&rcub;
     </div>
 </section>
 
-<!-- Customization -->
 <section>
-    <h2>{% trans "Customization" %}</h2>
-    <p>
-        Das Design der Form Komponente befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/form.html</span>.
-    </p>
-    <p class="mt-4">
-        Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad <span class="inline-tag">templates/insight_ui/components/</span> vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
-    </p>
+    <h3>{% trans "Parameter" %}</h3>
+    {% include "insight_ui/components/parameter_table.html" with rows=main_params %}
+
+    <div class="space-y-2 mt-4">
+        <h4>htmx<i>(dict[str, str])</i></h4>
+        <p>{% trans "Konfiguration des HTMX Request, für asynchrone Requests." %}</p>
+        {% include "insight_ui/components/parameter_table.html" with rows=htmx_config_params %}
+    </div>
 </section>
 
 <!-- A11y -->
 <section>
     <h2>{% trans "Accessability" %}</h2>
     <ul class="list-disc leading-relaxed ms-8 mt-6">
-        <li><i>Todo</i></li>
+        <li><i>Keine Anmerkungen.</i></li>
     </ul>
 </section>
-
-<hr class="text-gray-300 dark:text-gray-600">
 
 <!-- Related -->
 <section>
     <h2>{% trans "Related Topics" %}</h2>
     <ul class="list-disc leading-relaxed ms-8 mt-6">
-        <li><i>Todo</i></li>
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'alert' %}"
+                hx-get="{% url 'component_detail_page_view' 'alert' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Alert" %}
+            </a>
+        </li>
     </ul>
 </section>

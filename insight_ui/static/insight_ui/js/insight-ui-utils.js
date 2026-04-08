@@ -2,6 +2,81 @@
  * Insight UI - Shared Utilities
  */
 window.InsightUI = window.InsightUI || {};
+
+/**
+ * Component lifecycle utilities for proper cleanup and memory management.
+ * All components should use these patterns to prevent memory leaks.
+ */
+window.InsightUI.lifecycle = {
+    /**
+     * Registers HTMX lifecycle hooks for automatic component cleanup.
+     * Call this once during initialization.
+     */
+    registerHTMXHooks: function() {
+        if (typeof htmx === 'undefined') return;
+
+        htmx.on('htmx:beforeCleanupElement', (evt) => {
+            const el = evt.detail.elt;
+            if (el.__insightInstance?.destroy) {
+                el.__insightInstance.destroy();
+            }
+        });
+    }
+};
+
+/**
+ * Event delegation handlers for components that use data attributes
+ * instead of inline onclick handlers (security hardening).
+ */
+window.InsightUI.handlers = {
+    /**
+     * Initialize delegated event handlers.
+     * Call this once during initialization.
+     */
+    init: function() {
+        debugLog("Register event listeners...");
+
+        // Radio block callback handler
+        document.addEventListener('change', function(e) {
+            const target = e.target;
+            if (target.type === 'radio' && target.dataset.radioCallback) {
+                const methodName = target.dataset.radioCallback;
+                const value = target.value;
+                // Call the method if it exists on window
+                if (typeof window[methodName] === 'function') {
+                    window[methodName](value);
+                } else {
+                    console.warn(`InsightUI: Radio callback "${methodName}" is not defined`);
+                }
+            }
+        });
+
+        // Alert/notification dismiss handler
+        document.addEventListener('click', function(e) {
+            const dismissBtn = e.target.closest('[data-insight-dismiss="alert"]');
+            if (dismissBtn) {
+                const alert = dismissBtn.closest('[role="alert"]');
+                if (alert) {
+                    alert.remove();
+                }
+            }
+        });
+
+        // Form errors dismiss handler
+        document.addEventListener('click', function(e) {
+            const dismissBtn = e.target.closest('[data-insight-dismiss="form-errors"]');
+            if (dismissBtn) {
+                const formResult = dismissBtn.closest('#form-result');
+                if (formResult) {
+                    formResult.innerHTML = '';
+                }
+            }
+        });
+
+        debugLog("Event listeners registered.");
+    }
+};
+
 window.InsightUI.utils = {
     /**
      * This function is used to lock the keyboard focus within a modal dialog,

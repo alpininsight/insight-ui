@@ -12,7 +12,7 @@
     </p>
     <ul class="list-disc leading-relaxed ms-8">
         <li><span class="inline-tag">Card</span>: Standard Karte im 16:9 Format.</li>
-        <li><span class="inline-tag">Horizontale Card</span>: Das Layout dieser Karte ist vertikal ausgerichtet wodurch dieses länger ist.</li>
+        <li><span class="inline-tag">App Card</span>: Das Layout dieser Karte ist vertikal ausgerichtet wodurch dieses länger ist.</li>
         <li><span class="inline-tag">Flip Card</span>: Diese Karte dreht sich um 180° und hält auf ihrer Rückseite weiteren Inhalt bereit.</li>
     </ul>
 
@@ -20,7 +20,7 @@
     {% include "insight_ui/docs/demo_container.html" %}
 
     <h2 class="mt-8">{% trans "Karten mit Effekten" %}</h2>
-    {% include "insight_ui/docs/demo_container.html" %}
+    {% include "insight_ui/docs/demo_container.html" with demo=effect_cards_demo %}
 </section>
 
 <hr class="text-gray-300 dark:text-gray-600">
@@ -28,77 +28,64 @@
 <!-- Component Documentation -->
 <section>
     <h2>{% trans "Verwendung" %}</h2>
-    <div id="Card_Usage" data-insight-code-block="Django">
+    <p class="mb-4">
+        {% blocktrans with card='<span class="inline-tag">&lcub;% card %&rcub;</span>'|safe %}
+            Die Komponente wird über das {{ card }} Tag eingebunden.
+        {% endblocktrans %}
+    </p>
+    <div data-insight-code-block="Django">
         {# fmt:off #}
-        &lcub;% for card in cards %&rcub;
-            &lcub;% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %&rcub;
-        &lcub;% endfor %&rcub;
-        &lcub;% for card in horizontale_cards %&rcub;
-            &lcub;% card_horizontale title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %&rcub;
-        &lcub;% endfor %&rcub;
-        &lcub;% for card in flip_cards %&rcub;
-            &lcub;% card_flip title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %&rcub;
-        &lcub;% endfor %&rcub;
+        &lcub;% load insight_tags %&rcub;
+
+        &lcub;% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %&rcub;
+        &lcub;% card_app title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %&rcub;
+        &lcub;% card_flip title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %&rcub;
         {# fmt:on #}
     </div>
 </section>
 
 <section>
     <h3>{% trans "Parameter" %}</h3>
-    <ul class="list-disc leading-relaxed ms-8">
-        <li><span class="inline-tag">title</span> (<i>str</i>): Der Title der Karte.</li>
-        <li><span class="inline-tag">content</span> (<i>str</i>): Der Hauptinhalt der Karte.</li>
-        <li><span class="inline-tag">subtitle</span> (<i>str</i>): Der Untertitel der Karte.</li>
-        <li><span class="inline-tag">image</span> (<i>dict</i>): Informationen über das Bild der Karte.</li>
-        <li><span class="inline-tag">actions</span> (<i>list</i>): Eine Liste von Aktion-Buttons.</li>
-    </ul>
+    {% include "insight_ui/components/parameter_table.html" with rows=main_params %}
 
-    <div class="mt-8">
-        <h4>image</h4>
-        <p class="mb-6">Informationen über das Bild der Karte.</p>
+    <div class="space-y-6 mt-4">
+        <div class="space-y-2">
+            <h4>image <i>(dict[str])</i></h4>
+            <p>Beschreibt ein Bild, welches als Hintergrund für den Title und dem Subtitle angezeigt wird.</p>
 
-        <div id="Card_Params1" data-insight-code-block="python">
-            {# fmt:off #}
-            &lcub;
-                "url": static("insight_ui/img/thumbnail.png"),
-                "alt": "Card-Image"
-            &rcub;
-            {# fmt:on #}
+            <div data-insight-code-block="python">
+                {# fmt:off #}
+                &lcub;
+                    "url": static("insight_ui/img/thumbnail.png"),
+                    "alt": "Card-Image"
+                &rcub;
+                {# fmt:on #}
+            </div>
+            {% include "insight_ui/components/parameter_table.html" with rows=image_params %}
         </div>
+        <div class="space-y-2">
+            <h4>actions <i>(list[dict[str, str]])</i></h4>
+            <p>Liste von Buttons, welche am unteren Rand der Karte angezeigt werden.</p>
 
-        <h4 class="mt-6">actions</h4>
-        <p class="mb-6">Eine Liste von Aktion-Buttons.</p>
-
-        <div id="Card_Params2" data-insight-code-block="python">
-            {# fmt:off #}
-            &lcub;
-                &lcub;"text": _("Learn more"), "url": "#", "type": "secondary"&rcub;,
-            &rcub;
-            {# fmt:on #}
+            <div data-insight-code-block="python">
+                {# fmt:off #}
+                &lcub;
+                    &lcub;"text": _("Learn more"), "url": "#", "type": "secondary"&rcub;,
+                &rcub;
+                {# fmt:on #}
+            </div>
+            {% include "insight_ui/components/parameter_table.html" with rows=action_button_params %}
         </div>
     </div>
-</section>
-
-<!-- Customization -->
-<section>
-    <h2>{% trans "Customization" %}</h2>
-    <p>
-        Das Design der Card Komponente befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/cards/card.html</span>.
-    </p>
-    <p class="mt-4">
-        Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad <span class="inline-tag">templates/insight_ui/components/</span> vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
-    </p>
 </section>
 
 <!-- A11y -->
 <section>
     <h2>{% trans "Accessability" %}</h2>
     <ul class="list-disc leading-relaxed ms-8 mt-6">
-        <li><i>Todo</i></li>
+        <li><i>Keine Anmerkungen.</i></li>
     </ul>
 </section>
-
-<hr class="text-gray-300 dark:text-gray-600">
 
 <!-- Related -->
 <section>

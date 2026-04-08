@@ -1,6 +1,6 @@
-{% load insight_tags %}
+{% load i18n insight_tags %}
 
-<div class="carousel relative flex w-full rtl:flex-row-reverse"
+<div data-insight-carousel class="relative flex w-full rtl:flex-row-reverse"
      data-autoplay="{{ autoplay|yesno:'true,false' }}"
      data-show-dots="{{ show_dots|yesno:'true,false' }}"
      data-show-index="{{ show_index|yesno:'true,false' }}"
@@ -18,21 +18,25 @@
 
   <!-- Navigation Buttons -->
   <button class="carousel-prev absolute top-1/2 ltr:left-4 rtl:right-4 -translate-y-1/2 bg-insight-primary rounded-full text-white p-2 hover:bg-insight-primary-hover active:bg-insight-primary-active transition">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 rtl:rotate-180">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="size-6 rtl:rotate-180">
       <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
     </svg>
+    <span class="sr-only">{% trans "To previous page" %}</span>
   </button>
   <button class="carousel-next absolute top-1/2 ltr:right-4 rtl:left-4 -translate-y-1/2 bg-insight-primary rounded-full text-white p-2 hover:bg-insight-primary-hover active:bg-insight-primary-active transition">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 rtl:rotate-180">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="size-6 rtl:rotate-180">
       <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
     </svg>
+    <span class="sr-only">{% trans "To next page" %}</span>
   </button>
 
   <!-- Pagination Dots -->
   {% if show_dots %}
     <div class="carousel-dots absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
       {% for i in slides_count %}
-        <button class="carousel-dot size-3 rounded-full bg-transparent border border-gray-400 transition" data-index="{{ i }}"></button>
+        <button class="carousel-dot size-3 rounded-full bg-transparent border border-gray-400 transition" data-index="{{ i }}">
+          <span class="sr-only">{% trans "Go to page:" %} {{ i }}</span>
+        </button>
       {% endfor %}
     </div>
   {% endif %}
@@ -44,8 +48,3 @@
     </div>
   {% endif %}
 </div>
-<script>
-  if (typeof window.initCarousels === "function") {
-    window.initCarousels();
-  }
-</script>

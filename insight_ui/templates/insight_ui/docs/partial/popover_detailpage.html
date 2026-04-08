@@ -21,65 +21,36 @@
 <!-- Component Documentation -->
 <section>
     <h2>{% trans "Verwendung" %}</h2>
-
     <p class="mb-4">
-        {% blocktrans with insight_tag='<span class="inline-tag">insight_tag</span>'|safe tag_id='<b>Tag-ID</b>'|safe %}
-            Dieses Element besitzt kein {{ insight_tag }}, da es lediglich ein Auslöser braucht und ein Ziel-Element. Das Ziel-Element kann komplett selbst definiert werden, lediglich die Verbindung durch die {{ tag_id }} ist zu beachten.
+        {% blocktrans with data='<span class="inline-tag">data-popover</span>'|safe tag_id='<b>Tag-ID</b>'|safe %}
+            Um ein Popover hinzuzufügen, wird ein Auslöser gebraucht, welcher beim Hovern das Popover erscheinen lässt.
+            Dieser Auslöser kann jedes beliebe HTML-Tag sein und benötigt das Attribut {{ data-popover }}, dessen Wert die ID des Ziel-Elements (Popover) ist.
+            Das Popover kann komplett selbst definiert werden, lediglich die Verbindung durch die {{ tag_id }} ist zu beachten.
         {% endblocktrans %}
     </p>
 
-    <div id="Popover_Usage" data-insight-code-block="Django">
+    <div data-insight-code-block="Django">
         {# fmt:off #}
-        &lt;button data-popover-trigger="demo-popover" data-position="top" class="btn btn-primary"&gt;{% trans "Hover me!" %}&lt;/button&gt;
+        &lt;button data-popover="demo-popover" data-show-arrow="true" data-position="top" class="btn btn-primary"&gt;{% trans "Hover me!" %}&lt;/button&gt;
         &lt;div id="demo-popover" class="bg-white dark:bg-gray-500 w-64 border border-gray-300 dark:border-0 rounded-sm shadow"&gt;
-            &lt;!-- Arrow --&gt;
-            &lt;div class="popover-arrow absolute left-1/2 -top-2 -translate-x-1/2 w-0 h-0 border-10 border-t-0 border-transparent border-b-white dark:border-b-gray-600"&gt;&lt;/div&gt;
             &lt;!-- Content --&gt;
         &lt;/div&gt;
         {# fmt:on #}
     </div>
-
-    <p class="info-container text-base mt-4">
-        <span class="block font-bold italic text-lg">Info:</span>
-        {% blocktrans with div='&lt;div&gt;' comment='&lt;!-- Arrow --&gt;' %}
-            Der Pfeil kann ausgeschaltet werden, indem der {{ div }}-Container unter dem {{ comment }} Kommentar entfernt wird.
-        {% endblocktrans %}
-    </p>
 </section>
 
 <section>
     <h3>data-* {% trans "Attribute" %}</h3>
-    <ul class="list-disc leading-relaxed ms-8">
-        <li><span class="inline-tag">data-popover-trigger=&lt;tooltip_ID&gt;</span>: {% trans "Setzt den Auslöser für den Popover auf das Element mit der entsprechenden ID." %}</li>
-        <li><span class="inline-tag">data-position</span>: {% trans "Bestimmt wo im Bezug auf das Element, der Popover angezeigt werden soll. Mögliche Werte sind:" %}
-            <span class="inline-tag w-fit">top</span>
-            <span class="inline-tag w-fit">bottom</span>
-            <span class="inline-tag w-fit">right</span>
-            <span class="inline-tag w-fit">left</span>
-        </li>
-    </ul>
-</section>
-
-<!-- Customization -->
-<section>
-    <h2>{% trans "Customization" %}</h2>
-    <p>
-        Das Design der Popover Komponente befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/popover.html</span>.
-    </p>
-    <p class="mt-4">
-        Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad <span class="inline-tag">templates/insight_ui/components/</span> vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
-    </p>
+    {% include "insight_ui/components/parameter_table.html" with rows=main_params %}
 </section>
 
 <!-- A11y -->
 <section>
     <h2>{% trans "Accessability" %}</h2>
     <ul class="list-disc leading-relaxed ms-8 mt-6">
-        <li><i>Todo</i></li>
+        <li class="text-insight-danger"><i>TODO: Bedienbarkeit über die Tastatur hinzufügen!</i></li>
     </ul>
 </section>
-
-<hr class="text-gray-300 dark:text-gray-600">
 
 <!-- Related -->
 <section>
@@ -87,14 +58,26 @@
     <ul class="list-disc leading-relaxed ms-8 mt-6">
         <li>
             <a
-                href="{% url 'component_detail_page_view' 'popover' %}"
-                hx-get="{% url 'component_detail_page_view' 'popover' %}"
+                href="{% url 'component_detail_page_view' 'modal' %}"
+                hx-get="{% url 'component_detail_page_view' 'modal' %}"
                 hx-target="#content"
                 hx-swap="innerHTML show:window:top"
                 hx-push-url="true"
                 class="text-link"
             >
-                {% trans "Popover" %}
+                {% trans "Modal" %}
+            </a>
+        </li>
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'tooltip' %}"
+                hx-get="{% url 'component_detail_page_view' 'tooltip' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Tooltip" %}
             </a>
         </li>
     </ul>

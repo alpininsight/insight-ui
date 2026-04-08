@@ -1,40 +1,49 @@
-class Collapsible {
-  // Manages all collapsible instances of the DOM
-  static instances = new WeakMap();
+export class Collapsible {
+    // Weak references used to prevent multiple initialization of the same instance
+    static instances = new WeakMap();
 
-  constructor(element) {
-    // If an instance for this element already exists, return it
-    if (Collapsible.instances.has(element)) {
-      return Collapsible.instances.get(element);
+    constructor(trigger) {
+        // If an instance for this element already exists, return it
+        if (Collapsible.instances.has(trigger)) {
+            return Collapsible.instances.get(trigger);
+        }
+
+        this.trigger = trigger;
+        this.targetID = this.trigger.getAttribute('data-insight-target');
+        this.targetElement = document.getElementById(this.targetID);
+
+        this.clickHandler = () => { this.targetElement.classList.toggle("hidden"); };
+
+        this.init();
+
+        this.trigger.__insightInstance = this;
+        Collapsible.instances.set(trigger, this);
+
+        debugLog("New collapsible created: ", this.trigger, this.targetElement);
     }
 
-    this.element = element;
-    this.targetID = this.element.getAttribute('data-insight-target');
-    this.targetElement = document.getElementById(this.targetID);
+    init() {
+        this.trigger.addEventListener("click", this.clickHandler);
+    }
 
-    this.bindEvents();
+    /**
+     * Destroys the collapsible instance and removes all event listeners.
+     * Call this before removing the element from DOM.
+     */
+    destroy() {
+        debugLog("Destroy collapsible: ", this.trigger);
 
-    Collapsible.instances.set(element, this);
+        this.trigger.removeEventListener("click", this.clickHandler);
 
-    debugLog("New collapsible created: ", this.element, this.targetElement);
-  }
+        Collapsible.instances.delete(this.trigger);
+        delete this.trigger.__insightInstance;
 
-  bindEvents() {
-    this.element.addEventListener("click", () => {
-        this.targetElement.classList.toggle("hidden");
-    });
-  }
+        this.trigger = null;
+        this.targetElement = null;
+    }
 
-  // Static method for initializing all collapsible
-  static initAll() {
-    const collapsible = document.querySelectorAll('[data-insight-toggle="collapsible"]');
-    collapsible.forEach((el) => {
-      if (!Collapsible.instances.has(el)) {
-        new Collapsible(el);
-      }
-    });
-  }
+    // Static method for initializing all collapsible
+    static initAll() {
+        document.querySelectorAll('[data-insight-toggle="collapsible"]').forEach(el => new Collapsible(el));
+    }
 }
-
-window.InsightUI = window.InsightUI || {};
-window.InsightUI.Collapsible = Collapsible;

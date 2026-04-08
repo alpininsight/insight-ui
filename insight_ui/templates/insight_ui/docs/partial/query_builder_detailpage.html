@@ -26,6 +26,8 @@
 <section>
     <h2>{% trans "Verwendung" %}</h2>
     <div id="Query_Builder_Usage" data-insight-code-block="Django">
+        &lcub;% load insight_tags %&rcub;
+
         &lcub;% sq_builder model_fields=model_fields %&rcub;
     </div>
 </section>
@@ -102,17 +104,6 @@
     </div>
 </section>
 
-<!-- Customization -->
-<section>
-    <h2>{% trans "Customization" %}</h2>
-    <p>
-        Das Design des Query Builder befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/search_query_builder/sq_builder.html</span>. Das Design der Filterzeile befindet sich in dieser Datei: <span class="inline-tag">insight_ui/templates/insight_ui/components/search_query_builder/sq_builder_filter.html</span>.
-    </p>
-    <p class="mt-4">
-        Das Design kann am einfachsten angepasst werden, indem eine Kopie der Datei in den folgenden Pfad <span class="inline-tag">templates/insight_ui/components/</span> vom Projektverzeichnis aus gesehen, abgelegt wird. Anschließend wird immer dieses Template anstelle des Originals verwendet werden.
-    </p>
-</section>
-
 <!-- A11y -->
 <section>
     <h2>{% trans "Accessability" %}</h2>
@@ -120,8 +111,6 @@
         <li><i>Todo</i></li>
     </ul>
 </section>
-
-<hr class="text-gray-300 dark:text-gray-600">
 
 <!-- Related -->
 <section>
@@ -137,6 +126,30 @@
                 class="text-link"
             >
                 {% trans "Generic Filter" %}
+            </a>
+        </li>
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'select' %}"
+                hx-get="{% url 'component_detail_page_view' 'select' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Select" %}
+            </a>
+        </li>
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'multiselect' %}"
+                hx-get="{% url 'component_detail_page_view' 'multiselect' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Multiselect" %}
             </a>
         </li>
     </ul>

@@ -3,7 +3,9 @@ from collections.abc import Sequence
 from django.core.paginator import Page, Paginator
 
 
-def get_page(data: Sequence[object], page: int = 1, max_neighbor_pages: int = 6) -> tuple[Page[object], list[str]]:
+def get_page(
+    data: Sequence[object], items_per_page: int = 10, page: int = 1, max_neighbor_pages: int = 2
+) -> tuple[Page[object], list[int]]:
     """
     Create pagination for given data.
 
@@ -11,42 +13,45 @@ def get_page(data: Sequence[object], page: int = 1, max_neighbor_pages: int = 6)
 
     Arguments:
     ---------
-        data (list): data to create pagination for.
+        data (Sequence[object]): data to create pagination for.
+        items_per_page (int): the amount of items per page.
         page (int): desired page number.
         max_neighbor_pages (int): the maximal amount of pages, next to the desired page.
 
     Returns:
     -------
-        page, neighbor_pages (Page, List[str]): the desired page and a list of neighboring pages.
+        page, neighbor_pages (Page[object], List[int]): the desired page and a list of neighboring pages.
 
     """
-    paginator = Paginator(data, 10)
+    paginator = Paginator(data, items_per_page)
 
-    # Calculate neighboring pages
-    surrounding_pages: list[int] = []
-    half = max_neighbor_pages // 2
+    # Prevent page number out of range
+    if page > paginator.num_pages:
+        page = paginator.num_pages
+    elif page < 1:
+        page = 1
 
     # Calculate start page and end page
-    start = max(1, page - half)
-    end = min(paginator.num_pages, page + half)
+    start = max(1, page - max_neighbor_pages)
+    end = min(paginator.num_pages, page + max_neighbor_pages)
 
     # Adjust if there are not enough pages before the current page
-    if page - start < half:
-        end = min(paginator.num_pages, end + (half - (page - start)))
+    if page - start < max_neighbor_pages:
+        end = min(paginator.num_pages, end + (max_neighbor_pages - (page - start)))
 
     # Adjust if there are not enough pages after the current page
-    if end - page < half:
-        start = max(1, start - (half - (end - page)))
+    if end - page < max_neighbor_pages:
+        start = max(1, start - (max_neighbor_pages - (end - page)))
 
     # Create list of neighboring pages
     surrounding_pages = list(range(start, end + 1))
 
-    page_links: list[str] = []
+    page_links: list[int] = []
     for i in range(1, paginator.num_pages + 1):
         if i in surrounding_pages or i in {1, paginator.num_pages}:
-            page_links.append(str(i))
-        elif not page_links or page_links[-1] != "...":
-            page_links.append("...")
+            page_links.append(i)
+        elif not page_links or page_links[-1] != -1:
+            page_links.append(-1)
 
     page_obj: Page[object] = paginator.get_page(page)
     return page_obj, page_links

@@ -11,9 +11,9 @@
     <h2 class="mt-4">{% trans "Standard Buttons" %}</h2>
     {% include "insight_ui/docs/demo_container.html" %}
     <h2 class="mt-8">{% trans "Outline Buttons" %}</h2>
-    {% include "insight_ui/docs/demo_container.html" %}
+    {% include "insight_ui/docs/demo_container.html" with demo=outline_button_demo %}
     <h2 class="mt-8">{% trans "Button sizes" %}</h2>
-    {% include "insight_ui/docs/demo_container.html" %}
+    {% include "insight_ui/docs/demo_container.html" with demo=button_sizes_demo %}
 </section>
 
 <hr class="text-gray-300 dark:text-gray-600">
@@ -30,11 +30,7 @@
         &lt;button class="btn btn-danger"&gt;&lcub;% trans "Danger" %&rcub;&lt;/button&gt;
         &lt;button class="btn btn-info"&gt;&lcub;% trans "Info" %&rcub;&lt;/button&gt;
         &lt;button disabled class="btn btn-disabled"&gt;&lcub;% trans "Disabled" %&rcub;&lt;/button&gt;
-        &lt;button aria-label="&lcub;% trans 'Close' %&rcub;" class="bg-white h-fit rounded-sm shadow p-3 text-insight-text-primary hover:bg-neutral-200 active:bg-neutral-400 transition"&gt;
-            &lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4"&gt;
-                &lt;path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z" /&gt;
-            &lt;/svg&gt;
-        &lt;/button&gt;
+        &lt;button aria-label="&lcub;% trans 'Close' %&rcub;" class="btn btn-close"&gt;&lcub;% icon name="x-mark" size="xs" %&rcub;&lt;/button&gt;
         &lt;a href="#" class="btn-link"&gt;&lcub;% trans "Link" %&rcub;&lt;/a&gt;
 
         &lt;button class="btn btn-outline-primary"&gt;&lcub;% trans "Primary" %&rcub;&lt;/button&gt;
@@ -87,8 +83,8 @@
 <section>
     <h2>{% trans "Customization" %}</h2>
     <p>
-        Alle <span class="inline-tag">btn-*</span>-Klassen sind in der Datei <span class="inline-tag">insight_ui/utils/input.css</span> innerhalb des <span class="inline-tag">@layer components</span> Bereichs definiert und können dort nach belieben angepasst werden.</p>
-</p>
+        Alle <span class="inline-tag">btn-*</span>-Klassen sind in der Datei <span class="inline-tag">insight_ui/utils/input.css</span> innerhalb des <span class="inline-tag">@layer components</span> Bereichs definiert und können dort nach belieben angepasst werden.
+    </p>
 </section>
 
 <!-- A11y -->
@@ -102,12 +98,57 @@
     </ul>
 </section>
 
-<hr class="text-gray-300 dark:text-gray-600">
-
 <!-- Related -->
 <section>
     <h2>{% trans "Related Topics" %}</h2>
     <ul class="list-disc leading-relaxed ms-8 mt-6">
-        <li><a href="#" class="text-link">Links</a> <i>(Todo!)</i></li>
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'input_field' %}"
+                hx-get="{% url 'component_detail_page_view' 'input_field' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Input-Field" %}
+            </a>
+        </li>
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'radio_group' %}"
+                hx-get="{% url 'component_detail_page_view' 'radio_group' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Radio-Buttons" %}
+            </a>
+        </li>
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'toggle_button' %}"
+                hx-get="{% url 'component_detail_page_view' 'toggle_button' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Toggle-Button" %}
+            </a>
+        </li>
+        <li>
+            <a
+                href="{% url 'component_detail_page_view' 'checkbox' %}"
+                hx-get="{% url 'component_detail_page_view' 'checkbox' %}"
+                hx-target="#content"
+                hx-swap="innerHTML show:window:top"
+                hx-push-url="true"
+                class="text-link"
+            >
+                {% trans "Checkbox" %}
+            </a>
+        </li>
     </ul>
 </section>

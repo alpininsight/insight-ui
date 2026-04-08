@@ -1,10 +1,11 @@
-class Accordion {
-    // Manages all accordion instances of the DOM
+export class Accordion {
+    // Weak references used to prevent multiple initialization of the same instance
     static instances = new WeakMap();
 
     constructor(element) {
         // If an instance for this element already exists, return it
         if (Accordion.instances.has(element)) {
+            debugLog("Element already instantiated: ", element);
             return Accordion.instances.get(element);
         }
 
@@ -12,9 +13,13 @@ class Accordion {
         this.buttons = Array.from(element.querySelectorAll("button[aria-controls]"));
         this.exclusive = element.getAttribute("data-accordion-exclusive") === "true";
 
+        // Store bound handlers for cleanup
+        this.boundButtonHandlers = [];
+
         this.bindEvents();
         this.handleInitialOpen();
 
+        this.element.__insightInstance = this;
         Accordion.instances.set(element, this);
 
         debugLog("New accordion created: ", this.element);
@@ -26,7 +31,7 @@ class Accordion {
             const panel = document.getElementById(panelId);
 
             // Click-Event
-            button.addEventListener("click", () => {
+            const clickHandler = () => {
                 const isExpanded = button.getAttribute("aria-expanded") === "true";
 
                 if (this.exclusive) {
@@ -43,10 +48,10 @@ class Accordion {
                     this.openPanel(button, panel);
                     this.updateURL(panelId);
                 }
-            });
+            };
 
             // Keyboard navigation
-            button.addEventListener("keydown", (event) => {
+            const keydownHandler = (event) => {
                 let targetIndex = null;
 
                 switch (event.key) {
@@ -68,6 +73,15 @@ class Accordion {
                     event.preventDefault();
                     this.buttons[targetIndex].focus();
                 }
+            };
+
+            button.addEventListener("click", clickHandler);
+            button.addEventListener("keydown", keydownHandler);
+
+            this.boundButtonHandlers.push({
+                element: button,
+                clickHandler,
+                keydownHandler
             });
         });
     }
@@ -147,16 +161,27 @@ class Accordion {
         }
     }
 
+    /**
+     * Destroys the accordion instance and removes all event listeners.
+     * Call this before removing the element from DOM.
+     */
+    destroy() {
+        debugLog("Destroy accordion: ", this.element);
+
+        this.boundButtonHandlers.forEach(({ element, clickHandler, keydownHandler }) => {
+            element.removeEventListener("click", clickHandler);
+            element.removeEventListener("keydown", keydownHandler);
+        });
+        this.boundButtonHandlers = [];
+
+        Accordion.instances.delete(this.element);
+        delete this.element.__insightInstance;
+
+        this.element = null;
+    }
+
     // Static method for initializing all accordions
     static initAll() {
-        const accordions = document.querySelectorAll("[data-accordion]");
-        accordions.forEach((el) => {
-            if (!Accordion.instances.has(el)) {
-                new Accordion(el);
-            }
-        });
+        document.querySelectorAll("[data-accordion]").forEach(el => new Accordion(el));
     }
 }
-
-window.InsightUI = window.InsightUI || {};
-window.InsightUI.Accordion = Accordion;
