@@ -111,6 +111,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Replaced and added EN msgids for all .html templates
 - EN to DE translations for all .html
 - Sharpen fuzzy translations
+- Add new setting 'use_tailwind_cli' and remove obsolete env-variables
 
 ### Miscellaneous
 
@@ -120,6 +121,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **ci:** Migrate from release-please to GitVersion
 - Update requirements.txt
 - Consistent Insight UI spelling
+- Update package-lock.json
+- Update uv.lock
 
 ### Refactoring
 
