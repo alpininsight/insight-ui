@@ -1,0 +1,38 @@
+---
+# Envoy AI Gateway Konfiguration
+#
+# Steuert das Verhalten des Envoy Proxy, der vom Gateway erstellt wird.
+# Referenziert durch die Annotation aigateway.envoyproxy.io/config am Gateway.
+apiVersion: aigateway.envoyproxy.io/v1alpha1
+kind: AIGatewayConfig
+metadata:
+  name: mcp-gateway-config
+  namespace: mcp-system
+  labels:
+    app.kubernetes.io/part-of: insight-k8s-mcp
+    app.kubernetes.io/component: gateway
+spec:
+  # Logging-Konfiguration
+  logging:
+    level: info
+    # Strukturiertes Logging fuer Container-Umgebung
+    format: json
+
+  # Timeouts fuer MCP-Verbindungen
+  # MCP-Sessions koennen langlebig sein (SSE/Streaming)
+  timeouts:
+    # Idle-Timeout fuer bestehende Verbindungen
+    idle: 300s
+    # Request-Timeout fuer einzelne Tool-Aufrufe
+    request: 60s
+    # Connect-Timeout zum Backend
+    connect: 10s
+
+  # Ressourcen-Limits fuer den Envoy Proxy
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi

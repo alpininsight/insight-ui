@@ -1,0 +1,56 @@
+---
+# SecurityPolicy: OAuth Partner
+#
+# Definiert die OAuth/OIDC-Konfiguration fuer den Partner MCP-Endpoint.
+# Separater Issuer/Realm, eingeschraenkte Scopes.
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: oauth-partner
+  namespace: mcp-system
+  labels:
+    app.kubernetes.io/part-of: insight-k8s-mcp
+    app.kubernetes.io/component: policy
+    insight.alpininsight.ai/trust-zone: partner
+spec:
+  targetRef:
+    group: aigateway.envoyproxy.io
+    kind: MCPRoute
+    name: mcp-partner
+    namespace: mcp-system
+
+  oidc:
+    provider:
+      # Separater Realm fuer Partner
+      issuer: "https://login.alpininsight.ai/realms/partner"
+
+    clientID: "mcp-gateway-partner"
+    clientSecret:
+      secretRef:
+        name: oauth-partner-client-secret
+        namespace: mcp-system
+
+    audiences:
+      - "https://mcp-partner.alpininsight.ai/mcp"
+
+    # Eingeschraenkte Scopes fuer Partner
+    scopes:
+      - "openid"
+      - "mcp:base"
+      - "tools.partner.read"
+      - "tools.partner.write"
+
+    requirePKCE: true
+    forwardAccessToken: false
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: oauth-partner-client-secret
+  namespace: mcp-system
+  labels:
+    app.kubernetes.io/part-of: insight-k8s-mcp
+type: Opaque
+stringData:
+  # TODO: Ersetzen durch echten Client Secret
+  client-secret: "REPLACE_ME"

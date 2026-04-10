@@ -1,0 +1,66 @@
+---
+# MCPRoute: Internal
+#
+# Aggregiert interne MCP-Backends (OpenAPI, GitHub, Jira) hinter
+# mcp.alpininsight.ai/mcp. Authentifizierung ueber internen OIDC-Issuer.
+#
+# MCP-Clients (Claude, Codex, eigene Agents) verbinden sich mit diesem
+# Endpoint und erhalten Zugriff auf alle internen Tools.
+apiVersion: aigateway.envoyproxy.io/v1alpha1
+kind: MCPRoute
+metadata:
+  name: mcp-internal
+  namespace: mcp-system
+  labels:
+    app.kubernetes.io/part-of: insight-k8s-mcp
+    app.kubernetes.io/component: mcproute
+    insight.alpininsight.ai/trust-zone: internal
+spec:
+  # Bindung an das Haupt-Gateway
+  parentRef:
+    name: mcp-gateway
+    namespace: mcp-system
+    sectionName: https-mcp-internal
+
+  # Hostname-Filter
+  hostnames:
+    - mcp.alpininsight.ai
+
+  # OAuth-Konfiguration (Nordseite)
+  oauth:
+    # OIDC-Issuer fuer interne Authentifizierung
+    issuer: "https://login.alpininsight.ai/realms/internal"
+    # Audience muss mit dem kanonischen MCP-Endpoint uebereinstimmen
+    audience: "https://mcp.alpininsight.ai/mcp"
+    # Erlaubte Scopes
+    scopes:
+      - "mcp:base"
+      - "tools.openapi.read"
+      - "tools.openapi.write"
+      - "tools.github.read"
+      - "tools.github.write"
+      - "tools.jira.read"
+      - "tools.jira.write"
+
+  # Backend MCP-Server
+  backendRefs:
+    # OpenAPI MCP Server -- stellt API-Dokumentation als Tools bereit
+    - name: openapi-mcp
+      namespace: mcp-system
+      port: 8080
+      toolSelector:
+        prefix: "openapi__"
+
+    # GitHub MCP Server -- Issues, PRs, Repos
+    - name: github-mcp
+      namespace: mcp-system
+      port: 8080
+      toolSelector:
+        prefix: "github__"
+
+    # Jira MCP Server -- Tickets, Boards, Sprints
+    - name: jira-mcp
+      namespace: mcp-system
+      port: 8080
+      toolSelector:
+        prefix: "jira__"

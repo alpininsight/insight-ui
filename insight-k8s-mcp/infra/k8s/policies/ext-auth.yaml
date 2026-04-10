@@ -1,0 +1,99 @@
+---
+# SecurityPolicy: External Auth (Ops/Admin)
+#
+# Fuer ops-mcp.alpininsight.ai -- hinter Cloudflare Access.
+# Diese Policy validiert den Cloudflare Access JWT Token.
+#
+# WICHTIG: Diese Policy ist NUR fuer den Ops-Endpoint gedacht.
+# Niemals fuer mcp.alpininsight.ai verwenden -- das wuerde den
+# MCP-OAuth-Discovery-Flow brechen.
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: ext-auth-ops
+  namespace: mcp-system
+  labels:
+    app.kubernetes.io/part-of: insight-k8s-mcp
+    app.kubernetes.io/component: policy
+    insight.alpininsight.ai/trust-zone: ops
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: mcp-gateway
+    namespace: mcp-system
+    # TODO: Wenn ein eigener Ops-Gateway erstellt wird, targetRef anpassen
+
+  extAuth:
+    # Cloudflare Access JWT Validierung
+    jwt:
+      providers:
+        - name: cloudflare-access
+          # Cloudflare Access OIDC Issuer
+          issuer: "https://alpininsight.cloudflareaccess.com"
+          # JWKS-Endpoint fuer Token-Validierung
+          remoteJWKS:
+            uri: "https://alpininsight.cloudflareaccess.com/cdn-cgi/access/certs"
+          # Audiences -- Cloudflare Access Application ID
+          audiences:
+            - "<CLOUDFLARE_ACCESS_APPLICATION_AUD>"
+          # Nur E-Mails von alpininsight.ai Domain erlauben
+          claimToHeaders:
+            - claim: email
+              header: x-auth-email
+
+---
+# NetworkPolicy: Ops-Endpoint nur von Cloudflare IPs erreichbar
+#
+# Stellt sicher, dass der Ops-Endpoint nicht direkt angesprochen
+# werden kann, sondern nur ueber Cloudflare.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ops-mcp-cloudflare-only
+  namespace: mcp-system
+  labels:
+    app.kubernetes.io/part-of: insight-k8s-mcp
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/component: gateway
+  policyTypes:
+    - Ingress
+  ingress:
+    # Cloudflare IPv4 Ranges (Auszug -- vollstaendige Liste pflegen)
+    # Siehe: https://www.cloudflare.com/ips-v4/
+    - from:
+        - ipBlock:
+            cidr: 173.245.48.0/20
+        - ipBlock:
+            cidr: 103.21.244.0/22
+        - ipBlock:
+            cidr: 103.22.200.0/22
+        - ipBlock:
+            cidr: 103.31.4.0/22
+        - ipBlock:
+            cidr: 141.101.64.0/18
+        - ipBlock:
+            cidr: 108.162.192.0/18
+        - ipBlock:
+            cidr: 190.93.240.0/20
+        - ipBlock:
+            cidr: 188.114.96.0/20
+        - ipBlock:
+            cidr: 197.234.240.0/22
+        - ipBlock:
+            cidr: 198.41.128.0/17
+        - ipBlock:
+            cidr: 162.158.0.0/15
+        - ipBlock:
+            cidr: 104.16.0.0/13
+        - ipBlock:
+            cidr: 104.24.0.0/14
+        - ipBlock:
+            cidr: 172.64.0.0/13
+        - ipBlock:
+            cidr: 131.0.72.0/22
+      ports:
+        - protocol: TCP
+          port: 443

@@ -1,0 +1,108 @@
+---
+# Backend: GitHub MCP Server
+#
+# Stellt GitHub-Funktionalitaet als MCP-Tools bereit.
+# Issues, Pull Requests, Repositories, Code Search.
+#
+# Tool-Namespace: github__*
+# Beispiel-Tools:
+#   - github__list_repos
+#   - github__get_issue
+#   - github__create_issue
+#   - github__list_pull_requests
+#   - github__get_file_contents
+#   - github__search_code
+#
+# Auth zum GitHub API: Personal Access Token oder GitHub App
+# als Kubernetes Secret bereitgestellt.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: github-mcp
+  namespace: mcp-system
+  labels:
+    app.kubernetes.io/name: github-mcp
+    app.kubernetes.io/part-of: insight-k8s-mcp
+    app.kubernetes.io/component: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: github-mcp
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: github-mcp
+        app.kubernetes.io/part-of: insight-k8s-mcp
+    spec:
+      containers:
+        - name: github-mcp
+          # GitHub MCP Server -- offizielles oder eigenes Image
+          image: ghcr.io/github/github-mcp-server:latest
+          ports:
+            - name: mcp
+              containerPort: 8080
+              protocol: TCP
+          env:
+            - name: MCP_SERVER_NAME
+              value: "github-mcp"
+            - name: MCP_TOOL_PREFIX
+              value: "github__"
+            # GitHub API Token aus Secret
+            - name: GITHUB_PERSONAL_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: github-mcp-credentials
+                  key: token
+            # Einschraenkung auf bestimmte Organisationen
+            - name: GITHUB_ALLOWED_ORGS
+              value: "alpininsight"
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: mcp
+            initialDelaySeconds: 5
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: mcp
+            initialDelaySeconds: 3
+            periodSeconds: 10
+      # ServiceAccount fuer moegliche IRSA/Workload-Identity
+      serviceAccountName: github-mcp
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: github-mcp
+  namespace: mcp-system
+  labels:
+    app.kubernetes.io/name: github-mcp
+    app.kubernetes.io/part-of: insight-k8s-mcp
+    app.kubernetes.io/component: backend
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: github-mcp
+  ports:
+    - name: mcp
+      port: 8080
+      targetPort: mcp
+      protocol: TCP
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: github-mcp
+  namespace: mcp-system
+  labels:
+    app.kubernetes.io/name: github-mcp
+    app.kubernetes.io/part-of: insight-k8s-mcp

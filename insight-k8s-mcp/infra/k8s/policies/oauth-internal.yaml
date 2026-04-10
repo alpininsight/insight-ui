@@ -1,0 +1,76 @@
+---
+# SecurityPolicy: OAuth Internal
+#
+# Definiert die OAuth/OIDC-Konfiguration fuer den internen MCP-Endpoint.
+# Wird an die MCPRoute "mcp-internal" gebunden.
+#
+# Der OIDC-Issuer muss:
+#   - Authorization Code Flow mit PKCE unterstuetzen
+#   - resource-Parameter akzeptieren und in Audience einbetten
+#   - Scopes wie mcp:base, tools.* definierbar machen
+#   - OIDC Discovery unter /.well-known/openid-configuration bereitstellen
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: oauth-internal
+  namespace: mcp-system
+  labels:
+    app.kubernetes.io/part-of: insight-k8s-mcp
+    app.kubernetes.io/component: policy
+    insight.alpininsight.ai/trust-zone: internal
+spec:
+  targetRef:
+    group: aigateway.envoyproxy.io
+    kind: MCPRoute
+    name: mcp-internal
+    namespace: mcp-system
+
+  oidc:
+    provider:
+      # OIDC-Issuer URL -- muss /.well-known/openid-configuration bereitstellen
+      issuer: "https://login.alpininsight.ai/realms/internal"
+
+    # Client-Konfiguration am Gateway
+    # Das Gateway selbst braucht einen Client im IdP fuer Token-Validierung
+    clientID: "mcp-gateway-internal"
+    clientSecret:
+      secretRef:
+        name: oauth-internal-client-secret
+        namespace: mcp-system
+
+    # Token-Validierung
+    audiences:
+      - "https://mcp.alpininsight.ai/mcp"
+
+    # Erlaubte Scopes -- Client muss mindestens mcp:base anfordern
+    scopes:
+      - "openid"
+      - "mcp:base"
+      - "tools.openapi.read"
+      - "tools.openapi.write"
+      - "tools.github.read"
+      - "tools.github.write"
+      - "tools.jira.read"
+      - "tools.jira.write"
+
+    # PKCE ist Pflicht fuer MCP-Clients
+    requirePKCE: true
+
+    # Token-Forwarding zum Backend deaktivieren (Sicherheitsmodell)
+    forwardAccessToken: false
+---
+# Secret-Template fuer den OAuth Client Secret
+# WICHTIG: Dieses Template zeigt die Struktur.
+# Das eigentliche Secret muss manuell oder via Sealed Secrets / External Secrets
+# erstellt werden. NIEMALS Klartext-Secrets committen.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: oauth-internal-client-secret
+  namespace: mcp-system
+  labels:
+    app.kubernetes.io/part-of: insight-k8s-mcp
+type: Opaque
+stringData:
+  # TODO: Ersetzen durch echten Client Secret
+  client-secret: "REPLACE_ME"

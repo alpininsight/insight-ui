@@ -1,0 +1,29 @@
+# Secrets
+*.secret
+*.key
+*.pem
+.env
+.env.*
+!.env.example
+
+# Kubernetes generated
+kubeconfig
+*.kubeconfig
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+!*.tfvars.example
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,95 @@
+---
+# Backend: OpenAPI MCP Server
+#
+# Stellt OpenAPI-Spezifikationen als MCP-Tools bereit.
+# Erlaubt MCP-Clients, API-Dokumentation zu lesen, Endpoints zu
+# entdecken und Test-Requests auszufuehren.
+#
+# Tool-Namespace: openapi__*
+# Beispiel-Tools:
+#   - openapi__list_apis
+#   - openapi__get_spec
+#   - openapi__describe_endpoint
+#   - openapi__try_request
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openapi-mcp
+  namespace: mcp-system
+  labels:
+    app.kubernetes.io/name: openapi-mcp
+    app.kubernetes.io/part-of: insight-k8s-mcp
+    app.kubernetes.io/component: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: openapi-mcp
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: openapi-mcp
+        app.kubernetes.io/part-of: insight-k8s-mcp
+    spec:
+      containers:
+        - name: openapi-mcp
+          # TODO: Eigenes Image oder Community-Image einsetzen
+          image: ghcr.io/alpininsight/openapi-mcp:latest
+          ports:
+            - name: mcp
+              containerPort: 8080
+              protocol: TCP
+          env:
+            - name: MCP_SERVER_NAME
+              value: "openapi-mcp"
+            - name: MCP_TOOL_PREFIX
+              value: "openapi__"
+            # OpenAPI-Spezifikationen als ConfigMap oder URL
+            - name: OPENAPI_SPECS_DIR
+              value: "/etc/openapi-specs"
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: mcp
+            initialDelaySeconds: 5
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: mcp
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          volumeMounts:
+            - name: openapi-specs
+              mountPath: /etc/openapi-specs
+              readOnly: true
+      volumes:
+        - name: openapi-specs
+          configMap:
+            name: openapi-specs
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: openapi-mcp
+  namespace: mcp-system
+  labels:
+    app.kubernetes.io/name: openapi-mcp
+    app.kubernetes.io/part-of: insight-k8s-mcp
+    app.kubernetes.io/component: backend
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: openapi-mcp
+  ports:
+    - name: mcp
+      port: 8080
+      targetPort: mcp
+      protocol: TCP

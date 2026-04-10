@@ -1,0 +1,84 @@
+---
+# Envoy AI Gateway -- Haupt-Gateway fuer MCP-Endpoints
+#
+# Dieses Gateway stellt den zentralen Einstiegspunkt fuer alle MCP-Clients
+# bereit. Die MCPRoutes binden sich ueber parentRef an dieses Gateway.
+#
+# Voraussetzung: GatewayClass "envoy-ai-gateway" muss im Cluster existieren
+# (wird durch Envoy AI Gateway Installation bereitgestellt).
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: mcp-gateway
+  namespace: mcp-system
+  labels:
+    app.kubernetes.io/part-of: insight-k8s-mcp
+    app.kubernetes.io/component: gateway
+  annotations:
+    # Envoy AI Gateway spezifische Konfiguration
+    aigateway.envoyproxy.io/config: mcp-gateway-config
+spec:
+  gatewayClassName: envoy-ai-gateway
+  listeners:
+    # HTTPS-Listener fuer alle MCP-Subdomains
+    - name: https-mcp
+      protocol: HTTPS
+      port: 443
+      hostname: "*.alpininsight.ai"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: alpininsight-ai-tls
+            namespace: mcp-system
+      allowedRoutes:
+        namespaces:
+          from: Same
+        kinds:
+          - group: aigateway.envoyproxy.io
+            kind: MCPRoute
+
+    # Dedizierter Listener fuer mcp.alpininsight.ai
+    - name: https-mcp-internal
+      protocol: HTTPS
+      port: 443
+      hostname: mcp.alpininsight.ai
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: alpininsight-ai-tls
+            namespace: mcp-system
+      allowedRoutes:
+        namespaces:
+          from: Same
+
+    # Dedizierter Listener fuer mcp-partner.alpininsight.ai
+    - name: https-mcp-partner
+      protocol: HTTPS
+      port: 443
+      hostname: mcp-partner.alpininsight.ai
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: alpininsight-ai-tls
+            namespace: mcp-system
+      allowedRoutes:
+        namespaces:
+          from: Same
+
+    # Dedizierter Listener fuer mcp-dev.alpininsight.ai
+    - name: https-mcp-dev
+      protocol: HTTPS
+      port: 443
+      hostname: mcp-dev.alpininsight.ai
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: alpininsight-ai-tls
+            namespace: mcp-system
+      allowedRoutes:
+        namespaces:
+          from: Same

@@ -1,0 +1,42 @@
+---
+# MCPRoute: Partner
+#
+# Separater MCP-Endpoint fuer externe Partner.
+# Eigener OIDC-Issuer/Client-Set, eingeschraenkte Tool-Auswahl.
+apiVersion: aigateway.envoyproxy.io/v1alpha1
+kind: MCPRoute
+metadata:
+  name: mcp-partner
+  namespace: mcp-system
+  labels:
+    app.kubernetes.io/part-of: insight-k8s-mcp
+    app.kubernetes.io/component: mcproute
+    insight.alpininsight.ai/trust-zone: partner
+spec:
+  parentRef:
+    name: mcp-gateway
+    namespace: mcp-system
+    sectionName: https-mcp-partner
+
+  hostnames:
+    - mcp-partner.alpininsight.ai
+
+  oauth:
+    # Separater Issuer oder Realm fuer Partner
+    issuer: "https://login.alpininsight.ai/realms/partner"
+    audience: "https://mcp-partner.alpininsight.ai/mcp"
+    scopes:
+      - "mcp:base"
+      - "tools.partner.read"
+      - "tools.partner.write"
+
+  backendRefs:
+    # Partner-spezifische MCP-Server
+    # TODO: Partner-Backend-Referenzen hinzufuegen sobald definiert
+    # Beispiel:
+    # - name: partner-data-mcp
+    #   namespace: mcp-system
+    #   port: 8080
+    #   toolSelector:
+    #     prefix: "partner__"
+    []

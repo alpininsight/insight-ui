@@ -1,0 +1,52 @@
+---
+# MCPRoute: Dev
+#
+# Dev/Test-Endpoint. Kann auf Named Tunnel zum Notebook zeigen.
+# Breiter Scope-Zugang (tools.*) fuer Entwicklung.
+apiVersion: aigateway.envoyproxy.io/v1alpha1
+kind: MCPRoute
+metadata:
+  name: mcp-dev
+  namespace: mcp-system
+  labels:
+    app.kubernetes.io/part-of: insight-k8s-mcp
+    app.kubernetes.io/component: mcproute
+    insight.alpininsight.ai/trust-zone: dev
+spec:
+  parentRef:
+    name: mcp-gateway
+    namespace: mcp-system
+    sectionName: https-mcp-dev
+
+  hostnames:
+    - mcp-dev.alpininsight.ai
+
+  oauth:
+    # Dev-Issuer -- gleiches IdP, separater Realm/Audience
+    issuer: "https://login.alpininsight.ai/realms/dev"
+    audience: "https://mcp-dev.alpininsight.ai/mcp"
+    scopes:
+      - "mcp:base"
+      - "tools.*"
+
+  backendRefs:
+    # Gleiche Backends wie Internal -- aber Dev-Instanzen
+    - name: openapi-mcp
+      namespace: mcp-system
+      port: 8080
+      toolSelector:
+        prefix: "openapi__"
+
+    - name: github-mcp
+      namespace: mcp-system
+      port: 8080
+      toolSelector:
+        prefix: "github__"
+
+    # Dev-spezifisch: Notebook MCP Server
+    # Wird ueber Cloudflare Tunnel angebunden
+    # - name: notebook-mcp
+    #   namespace: mcp-system
+    #   port: 8080
+    #   toolSelector:
+    #     prefix: "notebook__"
