@@ -279,7 +279,8 @@ DEMO_VARIANT_PARENTS: dict[str, Component] = {
 
 
 def _resolve_component(name: str) -> tuple[Component | None, str]:
-    """Resolve a URL path segment to a Component enum, honoring legacy aliases.
+    """
+    Resolve a URL path segment to a Component enum, honoring legacy aliases.
 
     Returns (component, canonical_name). `component` is None when the name
     is neither a known Component nor a legacy alias — caller may still
@@ -309,7 +310,7 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
     """
     component, component_name = _resolve_component(component_name)
     if component is None:
-        raise Http404(f"Unknown component: {component_name}")
+        raise Http404(f"Unknown component: {component_name}")  # noqa: TRY003
 
     demo_info = {
         "url": reverse("component_demo_view", kwargs={"component_name": component_name}),
@@ -380,7 +381,7 @@ def component_demo_view(request: HttpRequest, component_name: str) -> HttpRespon
         # branches still work.
         parent = DEMO_VARIANT_PARENTS.get(component_name)
         if parent is None:
-            raise Http404(f"Unknown component: {component_name}")
+            raise Http404(f"Unknown component: {component_name}")  # noqa: TRY003
         context = get_base_context() | get_component_demo_context(parent)
         context["component"] = SimpleNamespace(
             value=component_name,
