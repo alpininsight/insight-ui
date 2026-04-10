@@ -2,7 +2,9 @@
 # MCPRoute: Partner
 #
 # Separater MCP-Endpoint fuer externe Partner.
-# Eigener OIDC-Issuer/Client-Set, eingeschraenkte Tool-Auswahl.
+# Eigener OIDC-Realm, eingeschraenkte Tool-Auswahl.
+#
+# Partner erhalten nur Zugriff auf explizit freigegebene Tools.
 apiVersion: aigateway.envoyproxy.io/v1alpha1
 kind: MCPRoute
 metadata:
@@ -13,30 +15,48 @@ metadata:
     app.kubernetes.io/component: mcproute
     insight.alpininsight.ai/trust-zone: partner
 spec:
-  parentRef:
-    name: mcp-gateway
-    namespace: mcp-system
-    sectionName: https-mcp-partner
+  parentRefs:
+    - name: mcp-gateway
+      kind: Gateway
+      group: gateway.networking.k8s.io
+      namespace: mcp-system
+      sectionName: https-mcp-partner
 
-  hostnames:
-    - mcp-partner.alpininsight.ai
+  path: "/mcp"
 
-  oauth:
-    # Separater Issuer oder Realm fuer Partner
-    issuer: "https://login.alpininsight.ai/realms/partner"
-    audience: "https://mcp-partner.alpininsight.ai/mcp"
-    scopes:
-      - "mcp:base"
-      - "tools.partner.read"
-      - "tools.partner.write"
+  securityPolicy:
+    oauth:
+      # Separater Realm fuer Partner
+      issuer: "https://login.alpininsight.ai/realms/partner"
+      audiences:
+        - "https://mcp-partner.alpininsight.ai/mcp"
+      protectedResourceMetadata:
+        resource: "https://mcp-partner.alpininsight.ai/mcp"
+        resourceName: "alpininsight Partner MCP Gateway"
+        scopesSupported:
+          - "openid"
+          - "mcp:base"
+          - "tools.partner.read"
+          - "tools.partner.write"
 
-  backendRefs:
-    # Partner-spezifische MCP-Server
-    # TODO: Partner-Backend-Referenzen hinzufuegen sobald definiert
-    # Beispiel:
-    # - name: partner-data-mcp
-    #   namespace: mcp-system
-    #   port: 8080
-    #   toolSelector:
-    #     prefix: "partner__"
-    []
+    authorization:
+      defaultAction: Deny
+      rules:
+        - source:
+            jwt:
+              scopes:
+                - "mcp:base"
+
+  # Backend-Referenzen -- Partner-spezifische MCP-Server
+  # TODO: Partner-Backends hinzufuegen sobald definiert
+  backendRefs: []
+  # Beispiel:
+  # backendRefs:
+  #   - name: partner-data-mcp
+  #     kind: Service
+  #     port: 8080
+  #     path: "/mcp"
+  #     toolSelector:
+  #       include:
+  #         - get_partner_data
+  #         - list_partner_resources

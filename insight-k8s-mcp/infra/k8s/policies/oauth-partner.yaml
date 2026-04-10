@@ -1,56 +1,26 @@
 ---
-# SecurityPolicy: OAuth Partner
+# Secrets fuer Partner Trust-Zone
 #
-# Definiert die OAuth/OIDC-Konfiguration fuer den Partner MCP-Endpoint.
-# Separater Issuer/Realm, eingeschraenkte Scopes.
-apiVersion: gateway.envoyproxy.io/v1alpha1
-kind: SecurityPolicy
-metadata:
-  name: oauth-partner
-  namespace: mcp-system
-  labels:
-    app.kubernetes.io/part-of: insight-k8s-mcp
-    app.kubernetes.io/component: policy
-    insight.alpininsight.ai/trust-zone: partner
-spec:
-  targetRef:
-    group: aigateway.envoyproxy.io
-    kind: MCPRoute
-    name: mcp-partner
-    namespace: mcp-system
+# Credentials fuer den Partner MCP-Endpoint.
+#
+# WICHTIG: Diese Datei zeigt die Secret-Struktur als Template.
+# In Produktion: Sealed Secrets, External Secrets Operator, oder
+# manuell erstellen. NIEMALS Klartext-Secrets committen.
+#
+# Hinweis: Die eigentliche OAuth-Konfiguration ist im MCPRoute
+# (mcp-partner.yaml) unter spec.securityPolicy.oauth definiert.
 
-  oidc:
-    provider:
-      # Separater Realm fuer Partner
-      issuer: "https://login.alpininsight.ai/realms/partner"
-
-    clientID: "mcp-gateway-partner"
-    clientSecret:
-      secretRef:
-        name: oauth-partner-client-secret
-        namespace: mcp-system
-
-    audiences:
-      - "https://mcp-partner.alpininsight.ai/mcp"
-
-    # Eingeschraenkte Scopes fuer Partner
-    scopes:
-      - "openid"
-      - "mcp:base"
-      - "tools.partner.read"
-      - "tools.partner.write"
-
-    requirePKCE: true
-    forwardAccessToken: false
----
+# Platzhalter fuer Partner-Backend API-Keys
+# Wird aktiviert sobald Partner-Backends definiert sind.
 apiVersion: v1
 kind: Secret
 metadata:
-  name: oauth-partner-client-secret
+  name: partner-backend-api-key
   namespace: mcp-system
   labels:
     app.kubernetes.io/part-of: insight-k8s-mcp
+    insight.alpininsight.ai/trust-zone: partner
 type: Opaque
 stringData:
-  # TODO: Ersetzen durch echten Client Secret
-  client-secret: "REPLACE_ME"
+  # TODO: Ersetzen durch echten API-Key
+  apiKey: "REPLACE_ME"

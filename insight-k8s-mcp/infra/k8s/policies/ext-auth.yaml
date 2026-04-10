@@ -1,56 +1,39 @@
 ---
-# SecurityPolicy: External Auth (Ops/Admin)
+# NetworkPolicy: Backend-Isolation
 #
-# Fuer ops-mcp.alpininsight.ai -- hinter Cloudflare Access.
-# Diese Policy validiert den Cloudflare Access JWT Token.
-#
-# WICHTIG: Diese Policy ist NUR fuer den Ops-Endpoint gedacht.
-# Niemals fuer mcp.alpininsight.ai verwenden -- das wuerde den
-# MCP-OAuth-Discovery-Flow brechen.
-apiVersion: gateway.envoyproxy.io/v1alpha1
-kind: SecurityPolicy
-metadata:
-  name: ext-auth-ops
-  namespace: mcp-system
-  labels:
-    app.kubernetes.io/part-of: insight-k8s-mcp
-    app.kubernetes.io/component: policy
-    insight.alpininsight.ai/trust-zone: ops
-spec:
-  targetRef:
-    group: gateway.networking.k8s.io
-    kind: Gateway
-    name: mcp-gateway
-    namespace: mcp-system
-    # TODO: Wenn ein eigener Ops-Gateway erstellt wird, targetRef anpassen
-
-  extAuth:
-    # Cloudflare Access JWT Validierung
-    jwt:
-      providers:
-        - name: cloudflare-access
-          # Cloudflare Access OIDC Issuer
-          issuer: "https://alpininsight.cloudflareaccess.com"
-          # JWKS-Endpoint fuer Token-Validierung
-          remoteJWKS:
-            uri: "https://alpininsight.cloudflareaccess.com/cdn-cgi/access/certs"
-          # Audiences -- Cloudflare Access Application ID
-          audiences:
-            - "<CLOUDFLARE_ACCESS_APPLICATION_AUD>"
-          # Nur E-Mails von alpininsight.ai Domain erlauben
-          claimToHeaders:
-            - claim: email
-              header: x-auth-email
-
----
-# NetworkPolicy: Ops-Endpoint nur von Cloudflare IPs erreichbar
-#
-# Stellt sicher, dass der Ops-Endpoint nicht direkt angesprochen
-# werden kann, sondern nur ueber Cloudflare.
+# Stellt sicher, dass MCP-Backend-Server nur vom Gateway-Pod
+# angesprochen werden koennen -- nicht direkt von aussen.
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: ops-mcp-cloudflare-only
+  name: backend-isolation
+  namespace: mcp-system
+  labels:
+    app.kubernetes.io/part-of: insight-k8s-mcp
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/component: backend
+  policyTypes:
+    - Ingress
+  ingress:
+    # Nur vom Gateway-Pod auf Port 8080
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/component: gateway
+      ports:
+        - protocol: TCP
+          port: 8080
+---
+# NetworkPolicy: Gateway-Ingress
+#
+# Gateway akzeptiert nur Traffic von Cloudflare IP-Ranges
+# und Cluster-internen Quellen.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: gateway-ingress
   namespace: mcp-system
   labels:
     app.kubernetes.io/part-of: insight-k8s-mcp
@@ -61,8 +44,9 @@ spec:
   policyTypes:
     - Ingress
   ingress:
-    # Cloudflare IPv4 Ranges (Auszug -- vollstaendige Liste pflegen)
-    # Siehe: https://www.cloudflare.com/ips-v4/
+    # Cloudflare IPv4 Ranges
+    # Quelle: https://www.cloudflare.com/ips-v4/
+    # HINWEIS: Diese Liste muss aktuell gehalten werden.
     - from:
         - ipBlock:
             cidr: 173.245.48.0/20
@@ -94,6 +78,12 @@ spec:
             cidr: 172.64.0.0/13
         - ipBlock:
             cidr: 131.0.72.0/22
+      ports:
+        - protocol: TCP
+          port: 443
+    # Cluster-interner Traffic (Health Checks, Probes)
+    - from:
+        - namespaceSelector: {}
       ports:
         - protocol: TCP
           port: 443

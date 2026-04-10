@@ -4,17 +4,12 @@
 # Stellt GitHub-Funktionalitaet als MCP-Tools bereit.
 # Issues, Pull Requests, Repositories, Code Search.
 #
-# Tool-Namespace: github__*
-# Beispiel-Tools:
-#   - github__list_repos
-#   - github__get_issue
-#   - github__create_issue
-#   - github__list_pull_requests
-#   - github__get_file_contents
-#   - github__search_code
+# Tool-Namen werden automatisch vom Gateway mit dem Backend-Namen
+# prefixed: github-mcp__list_issues, github-mcp__get_file_contents, etc.
 #
 # Auth zum GitHub API: Personal Access Token oder GitHub App
-# als Kubernetes Secret bereitgestellt.
+# als Kubernetes Secret bereitgestellt. Das Gateway injiziert den
+# API-Key per securityPolicy.apiKey.secretRef in der MCPRoute.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -46,8 +41,6 @@ spec:
           env:
             - name: MCP_SERVER_NAME
               value: "github-mcp"
-            - name: MCP_TOOL_PREFIX
-              value: "github__"
             # GitHub API Token aus Secret
             - name: GITHUB_PERSONAL_ACCESS_TOKEN
               valueFrom:
@@ -76,7 +69,6 @@ spec:
               port: mcp
             initialDelaySeconds: 3
             periodSeconds: 10
-      # ServiceAccount fuer moegliche IRSA/Workload-Identity
       serviceAccountName: github-mcp
 ---
 apiVersion: v1

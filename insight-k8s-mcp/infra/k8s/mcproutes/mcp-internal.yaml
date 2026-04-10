@@ -6,6 +6,11 @@
 #
 # MCP-Clients (Claude, Codex, eigene Agents) verbinden sich mit diesem
 # Endpoint und erhalten Zugriff auf alle internen Tools.
+#
+# Tool-Namen werden automatisch mit dem Backend-Namen prefixed:
+#   openapi-mcp -> openapi-mcp__list_apis, openapi-mcp__get_spec, ...
+#   github-mcp  -> github-mcp__list_issues, github-mcp__get_file_contents, ...
+#   jira-mcp    -> jira-mcp__search_issues, jira-mcp__create_issue, ...
 apiVersion: aigateway.envoyproxy.io/v1alpha1
 kind: MCPRoute
 metadata:
@@ -16,51 +21,112 @@ metadata:
     app.kubernetes.io/component: mcproute
     insight.alpininsight.ai/trust-zone: internal
 spec:
-  # Bindung an das Haupt-Gateway
-  parentRef:
-    name: mcp-gateway
-    namespace: mcp-system
-    sectionName: https-mcp-internal
-
-  # Hostname-Filter
-  hostnames:
-    - mcp.alpininsight.ai
-
-  # OAuth-Konfiguration (Nordseite)
-  oauth:
-    # OIDC-Issuer fuer interne Authentifizierung
-    issuer: "https://login.alpininsight.ai/realms/internal"
-    # Audience muss mit dem kanonischen MCP-Endpoint uebereinstimmen
-    audience: "https://mcp.alpininsight.ai/mcp"
-    # Erlaubte Scopes
-    scopes:
-      - "mcp:base"
-      - "tools.openapi.read"
-      - "tools.openapi.write"
-      - "tools.github.read"
-      - "tools.github.write"
-      - "tools.jira.read"
-      - "tools.jira.write"
-
-  # Backend MCP-Server
-  backendRefs:
-    # OpenAPI MCP Server -- stellt API-Dokumentation als Tools bereit
-    - name: openapi-mcp
+  # Bindung an das Gateway (parentRefs ist ein Array)
+  parentRefs:
+    - name: mcp-gateway
+      kind: Gateway
+      group: gateway.networking.k8s.io
       namespace: mcp-system
+      sectionName: https-mcp-internal
+
+  # MCP-Endpoint-Pfad (Default: /mcp)
+  path: "/mcp"
+
+  # OAuth-Konfiguration (Nordseite -- Client -> Gateway)
+  # Eingebettet in die MCPRoute, kein separates SecurityPolicy-CRD
+  securityPolicy:
+    oauth:
+      issuer: "https://login.alpininsight.ai/realms/internal"
+      audiences:
+        - "https://mcp.alpininsight.ai/mcp"
+      # JWKS wird automatisch via OIDC Discovery aufgeloest
+      # Alternativ: explizit konfigurieren
+      # jwks:
+      #   remoteJWKS:
+      #     uri: "https://login.alpininsight.ai/realms/internal/protocol/openid-connect/certs"
+      protectedResourceMetadata:
+        resource: "https://mcp.alpininsight.ai/mcp"
+        resourceName: "alpininsight Internal MCP Gateway"
+        scopesSupported:
+          - "openid"
+          - "mcp:base"
+          - "tools.openapi.read"
+          - "tools.openapi.write"
+          - "tools.github.read"
+          - "tools.github.write"
+          - "tools.jira.read"
+          - "tools.jira.write"
+        resourceDocumentation: "https://docs.alpininsight.ai/mcp"
+
+    # Autorisierung: Scope-basierte Tool-Zugriffskontrolle
+    authorization:
+      defaultAction: Deny
+      rules:
+        # Basis-Zugriff (tools/list, ping) fuer alle authentifizierten Clients
+        - source:
+            jwt:
+              scopes:
+                - "mcp:base"
+
+        # OpenAPI-Tools: Lesen
+        - source:
+            jwt:
+              scopes:
+                - "tools.openapi.read"
+          target:
+            tools:
+              - backend: openapi-mcp
+
+        # GitHub-Tools: Lesen
+        - source:
+            jwt:
+              scopes:
+                - "tools.github.read"
+          target:
+            tools:
+              - backend: github-mcp
+
+        # Jira-Tools: Lesen
+        - source:
+            jwt:
+              scopes:
+                - "tools.jira.read"
+          target:
+            tools:
+              - backend: jira-mcp
+
+  # Backend MCP-Server (alle als ClusterIP Services im Namespace)
+  backendRefs:
+    # OpenAPI MCP Server -- API-Dokumentation als Tools
+    - name: openapi-mcp
+      kind: Service
       port: 8080
-      toolSelector:
-        prefix: "openapi__"
+      path: "/mcp"
 
     # GitHub MCP Server -- Issues, PRs, Repos
     - name: github-mcp
-      namespace: mcp-system
+      kind: Service
       port: 8080
+      path: "/mcp"
+      # Nur Issues und PRs exponieren, keine Admin-Tools
       toolSelector:
-        prefix: "github__"
+        includeRegex:
+          - ".*issues?.*"
+          - ".*pull_requests?.*"
+          - ".*repos?.*"
+          - ".*search.*"
+          - ".*file_contents.*"
+      securityPolicy:
+        apiKey:
+          secretRef:
+            name: github-mcp-api-key
 
     # Jira MCP Server -- Tickets, Boards, Sprints
     - name: jira-mcp
-      namespace: mcp-system
+      kind: Service
       port: 8080
-      toolSelector:
-        prefix: "jira__"
+      path: "/mcp"
+      securityPolicy:
+        apiKey:
+          secretRef:
+            name: jira-mcp-api-key

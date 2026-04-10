@@ -5,12 +5,8 @@
 # Erlaubt MCP-Clients, API-Dokumentation zu lesen, Endpoints zu
 # entdecken und Test-Requests auszufuehren.
 #
-# Tool-Namespace: openapi__*
-# Beispiel-Tools:
-#   - openapi__list_apis
-#   - openapi__get_spec
-#   - openapi__describe_endpoint
-#   - openapi__try_request
+# Tool-Namen werden automatisch vom Gateway mit dem Backend-Namen
+# prefixed: openapi-mcp__list_apis, openapi-mcp__get_spec, etc.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -42,8 +38,6 @@ spec:
           env:
             - name: MCP_SERVER_NAME
               value: "openapi-mcp"
-            - name: MCP_TOOL_PREFIX
-              value: "openapi__"
             # OpenAPI-Spezifikationen als ConfigMap oder URL
             - name: OPENAPI_SPECS_DIR
               value: "/etc/openapi-specs"

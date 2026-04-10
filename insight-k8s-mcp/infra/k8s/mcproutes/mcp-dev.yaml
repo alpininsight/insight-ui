@@ -2,7 +2,7 @@
 # MCPRoute: Dev
 #
 # Dev/Test-Endpoint. Kann auf Named Tunnel zum Notebook zeigen.
-# Breiter Scope-Zugang (tools.*) fuer Entwicklung.
+# Breiterer Zugang fuer Entwicklung -- alle Tools exponiert.
 apiVersion: aigateway.envoyproxy.io/v1alpha1
 kind: MCPRoute
 metadata:
@@ -13,40 +13,58 @@ metadata:
     app.kubernetes.io/component: mcproute
     insight.alpininsight.ai/trust-zone: dev
 spec:
-  parentRef:
-    name: mcp-gateway
-    namespace: mcp-system
-    sectionName: https-mcp-dev
+  parentRefs:
+    - name: mcp-gateway
+      kind: Gateway
+      group: gateway.networking.k8s.io
+      namespace: mcp-system
+      sectionName: https-mcp-dev
 
-  hostnames:
-    - mcp-dev.alpininsight.ai
+  path: "/mcp"
 
-  oauth:
-    # Dev-Issuer -- gleiches IdP, separater Realm/Audience
-    issuer: "https://login.alpininsight.ai/realms/dev"
-    audience: "https://mcp-dev.alpininsight.ai/mcp"
-    scopes:
-      - "mcp:base"
-      - "tools.*"
+  securityPolicy:
+    oauth:
+      # Dev-Realm -- gleiches IdP, separater Realm/Audience
+      issuer: "https://login.alpininsight.ai/realms/dev"
+      audiences:
+        - "https://mcp-dev.alpininsight.ai/mcp"
+      protectedResourceMetadata:
+        resource: "https://mcp-dev.alpininsight.ai/mcp"
+        resourceName: "alpininsight Dev MCP Gateway"
+        scopesSupported:
+          - "openid"
+          - "mcp:base"
+          - "tools.openapi.read"
+          - "tools.github.read"
+          - "tools.jira.read"
+
+    # Dev: Kein defaultAction: Deny -- alle authentifizierten Nutzer duerfen alles
+    authorization:
+      rules:
+        - source:
+            jwt:
+              scopes:
+                - "mcp:base"
 
   backendRefs:
-    # Gleiche Backends wie Internal -- aber Dev-Instanzen
+    # Gleiche Backends wie Internal (Dev-Instanzen oder shared)
     - name: openapi-mcp
-      namespace: mcp-system
+      kind: Service
       port: 8080
-      toolSelector:
-        prefix: "openapi__"
+      path: "/mcp"
 
     - name: github-mcp
-      namespace: mcp-system
+      kind: Service
       port: 8080
-      toolSelector:
-        prefix: "github__"
+      path: "/mcp"
+      securityPolicy:
+        apiKey:
+          secretRef:
+            name: github-mcp-api-key
 
-    # Dev-spezifisch: Notebook MCP Server
-    # Wird ueber Cloudflare Tunnel angebunden
+    # Dev-spezifisch: Notebook MCP Server (via Cloudflare Tunnel)
+    # Wird aktiviert sobald Tunnel konfiguriert ist
     # - name: notebook-mcp
-    #   namespace: mcp-system
+    #   kind: Service
     #   port: 8080
-    #   toolSelector:
-    #     prefix: "notebook__"
+    #   path: "/mcp"

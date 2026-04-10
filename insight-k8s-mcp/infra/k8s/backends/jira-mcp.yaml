@@ -4,17 +4,12 @@
 # Stellt Jira-Funktionalitaet als MCP-Tools bereit.
 # Tickets, Boards, Sprints, Suche.
 #
-# Tool-Namespace: jira__*
-# Beispiel-Tools:
-#   - jira__search_issues
-#   - jira__get_issue
-#   - jira__create_issue
-#   - jira__update_issue
-#   - jira__list_projects
-#   - jira__get_sprint
+# Tool-Namen werden automatisch vom Gateway mit dem Backend-Namen
+# prefixed: jira-mcp__search_issues, jira-mcp__create_issue, etc.
 #
-# Auth zum Jira API: API Token oder OAuth App Credentials
-# als Kubernetes Secret bereitgestellt.
+# Auth zum Jira API: API Token als Kubernetes Secret.
+# Das Gateway injiziert den API-Key per securityPolicy.apiKey.secretRef
+# in der MCPRoute.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -46,8 +41,6 @@ spec:
           env:
             - name: MCP_SERVER_NAME
               value: "jira-mcp"
-            - name: MCP_TOOL_PREFIX
-              value: "jira__"
             # Jira-Instanz URL
             - name: JIRA_BASE_URL
               value: "https://alpininsight.atlassian.net"

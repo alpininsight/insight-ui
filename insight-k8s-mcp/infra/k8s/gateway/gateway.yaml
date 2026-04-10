@@ -1,11 +1,24 @@
 ---
-# Envoy AI Gateway -- Haupt-Gateway fuer MCP-Endpoints
+# GatewayClass -- Envoy AI Gateway Controller
 #
-# Dieses Gateway stellt den zentralen Einstiegspunkt fuer alle MCP-Clients
-# bereit. Die MCPRoutes binden sich ueber parentRef an dieses Gateway.
+# Wird durch die Installation von Envoy AI Gateway bereitgestellt.
+# Hier explizit definiert fuer Reproduzierbarkeit.
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: envoy-ai-gateway
+  labels:
+    app.kubernetes.io/part-of: insight-k8s-mcp
+spec:
+  controllerName: gateway.envoyproxy.io/gatewayclass-controller
+---
+# Gateway -- Haupt-Einstiegspunkt fuer alle MCP-Endpoints
 #
-# Voraussetzung: GatewayClass "envoy-ai-gateway" muss im Cluster existieren
-# (wird durch Envoy AI Gateway Installation bereitgestellt).
+# Dieses Gateway stellt den zentralen Listener fuer alle MCP-Clients
+# bereit. MCPRoutes binden sich ueber parentRefs an dieses Gateway.
+#
+# In Produktion terminiert Cloudflare TLS. Das Gateway kann
+# HTTP hinter Cloudflare oder HTTPS mit eigenem Zertifikat betreiben.
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
@@ -14,31 +27,15 @@ metadata:
   labels:
     app.kubernetes.io/part-of: insight-k8s-mcp
     app.kubernetes.io/component: gateway
-  annotations:
-    # Envoy AI Gateway spezifische Konfiguration
-    aigateway.envoyproxy.io/config: mcp-gateway-config
 spec:
   gatewayClassName: envoy-ai-gateway
+  infrastructure:
+    parametersRef:
+      group: gateway.envoyproxy.io
+      kind: EnvoyProxy
+      name: mcp-envoy-proxy
   listeners:
-    # HTTPS-Listener fuer alle MCP-Subdomains
-    - name: https-mcp
-      protocol: HTTPS
-      port: 443
-      hostname: "*.alpininsight.ai"
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - kind: Secret
-            name: alpininsight-ai-tls
-            namespace: mcp-system
-      allowedRoutes:
-        namespaces:
-          from: Same
-        kinds:
-          - group: aigateway.envoyproxy.io
-            kind: MCPRoute
-
-    # Dedizierter Listener fuer mcp.alpininsight.ai
+    # HTTPS-Listener fuer mcp.alpininsight.ai (Internal)
     - name: https-mcp-internal
       protocol: HTTPS
       port: 443
@@ -52,8 +49,11 @@ spec:
       allowedRoutes:
         namespaces:
           from: Same
+        kinds:
+          - group: aigateway.envoyproxy.io
+            kind: MCPRoute
 
-    # Dedizierter Listener fuer mcp-partner.alpininsight.ai
+    # HTTPS-Listener fuer mcp-partner.alpininsight.ai (Partner)
     - name: https-mcp-partner
       protocol: HTTPS
       port: 443
@@ -67,8 +67,11 @@ spec:
       allowedRoutes:
         namespaces:
           from: Same
+        kinds:
+          - group: aigateway.envoyproxy.io
+            kind: MCPRoute
 
-    # Dedizierter Listener fuer mcp-dev.alpininsight.ai
+    # HTTPS-Listener fuer mcp-dev.alpininsight.ai (Dev)
     - name: https-mcp-dev
       protocol: HTTPS
       port: 443
@@ -82,3 +85,6 @@ spec:
       allowedRoutes:
         namespaces:
           from: Same
+        kinds:
+          - group: aigateway.envoyproxy.io
+            kind: MCPRoute
