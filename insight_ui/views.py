@@ -1,8 +1,9 @@
 from datetime import UTC, datetime
+from types import SimpleNamespace
 from typing import Any, cast
 
 import structlog
-from django.http import HttpRequest, HttpResponse, JsonResponse
+from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.urls import reverse
@@ -256,6 +257,42 @@ def playground_view(request: HttpRequest) -> HttpResponse:
     return render(request, "insight_ui/playground.html", context)
 
 
+# Legacy component slugs that were renamed in the refactor. Accepted on
+# GET for external bookmarks and in-repo cross-links that haven't been
+# migrated yet. Resolved to the new canonical enum value before hitting
+# Component(...).
+LEGACY_COMPONENT_ALIASES: dict[str, str] = {
+    "toggle_button": "toggle",
+}
+
+# Demo variant names that have a dedicated template block in
+# insight_ui/docs/component_demo.html but are NOT top-level Component
+# enum members. They are only rendered as iframe demos from their parent
+# component's detail page (e.g. 'effect_cards' appears inside the 'card'
+# detail page). component_demo_view must render them without crashing on
+# Component(...).
+DEMO_VARIANT_PARENTS: dict[str, Component] = {
+    "effect_cards": Component.CARD,
+    "outline_button": Component.BUTTON,
+    "button_sizes": Component.BUTTON,
+}
+
+
+def _resolve_component(name: str) -> tuple[Component | None, str]:
+    """
+    Resolve a URL path segment to a Component enum, honoring legacy aliases.
+
+    Returns (component, canonical_name). `component` is None when the name
+    is neither a known Component nor a legacy alias — caller may still
+    treat the canonical name as a demo variant identifier.
+    """
+    canonical = LEGACY_COMPONENT_ALIASES.get(name, name)
+    try:
+        return Component(canonical), canonical
+    except ValueError:
+        return None, canonical
+
+
 @require_GET
 def component_detail_page_view(request: HttpRequest, component_name: str) -> HttpResponse:
     """
@@ -271,6 +308,10 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
         response (HttpResponse): response object.
 
     """
+    component, component_name = _resolve_component(component_name)
+    if component is None:
+        raise Http404(f"Unknown component: {component_name}")  # noqa: TRY003
+
     demo_info = {
         "url": reverse("component_demo_view", kwargs={"component_name": component_name}),
         "template_repo_url": TEMPLATE_PATHS.get(component_name, ""),
@@ -279,7 +320,7 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
         "id": component_name,
     }
 
-    context = get_demo_container_context() | component_context.get_component_context(Component(component_name))
+    context = get_demo_container_context() | component_context.get_component_context(component)
     context["demo"] = demo_info
 
     # Temporary fix for components with more complex detailpage
@@ -329,10 +370,27 @@ def component_demo_view(request: HttpRequest, component_name: str) -> HttpRespon
         response (HttpResponse): response object.
 
     """
-    component = Component(component_name)
+    component, component_name = _resolve_component(component_name)
 
-    context = get_base_context() | get_component_demo_context(component)
-    context["component"] = component
+    if component is None:
+        # Known demo variant (e.g. effect_cards, outline_button) that has
+        # a template block in component_demo.html but no dedicated enum
+        # entry. Render its parent component's demo context so the page
+        # has sensible data, and expose a lightweight stand-in object
+        # with .value so the template {% elif component.value == ... %}
+        # branches still work.
+        parent = DEMO_VARIANT_PARENTS.get(component_name)
+        if parent is None:
+            raise Http404(f"Unknown component: {component_name}")  # noqa: TRY003
+        context = get_base_context() | get_component_demo_context(parent)
+        context["component"] = SimpleNamespace(
+            value=component_name,
+            formatted_name=component_name.replace("_", " ").title(),
+            group=parent.group,
+        )
+    else:
+        context = get_base_context() | get_component_demo_context(component)
+        context["component"] = component
 
     # The demo container has a padding but some components should get the whole space
     if component_name in ["navbar", "sidebar", "footer"]:
