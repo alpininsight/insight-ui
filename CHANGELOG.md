@@ -46,6 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Change login smoke test to check for NOT translated string rather in comments
 - Minor spelling
 - **ci:** Restore automatic release on develop→main merge
+- **docs:** Resolve component-slug regressions (toggle_button, outline_button, button_sizes, effect_cards) 
 
 ### CI/CD
 
