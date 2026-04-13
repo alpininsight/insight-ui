@@ -194,6 +194,12 @@ def get_input_field_description_context() -> dict[str, list[str]]:
     return {"description": [_("The `input_field` component can be used to integrate individual `<input>` elements.")]}
 
 
+@register_component(Component.TEXTAREA)
+def get_textarea_description_context() -> dict[str, list[str]]:
+    """Serve description documentation for the textarea component."""
+    return {"description": [_("The `textarea` component can be used to integrate a text field for longer texts.")]}
+
+
 @register_component(Component.CHECKBOX)
 def get_checkbox_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the checkbox component."""

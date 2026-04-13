@@ -168,6 +168,12 @@ def get_input_field_a11y_context() -> dict[str, list[str]]:
     return {"a11y": [_("The `<label>` and its associated `<input>` are linked using `for` / `id`.")]}
 
 
+@register_component(Component.TEXTAREA)
+def get_textarea_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y documentation for the textarea component."""
+    return {"a11y": [_("The `<label>` and its associated `<input>` are linked using `for` / `id`.")]}
+
+
 @register_component(Component.CHECKBOX)
 def get_checkbox_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the checkbox component."""

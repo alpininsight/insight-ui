@@ -662,6 +662,42 @@ def get_input_field_parameter_context() -> dict[str, list[str]]:
     return {"params": [main_params]}
 
 
+@register_component(Component.TEXTAREA)
+def get_textarea_parameter_context() -> dict[str, list[str]]:
+    """Serve parameter documentation for the textarea component."""
+    main_params = [
+        ParameterDetails(
+            "tag_id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
+        ),
+        ParameterDetails(
+            "name",
+            "str",
+            _("Required for a <span class='inline-tag'>&lt;form&gt;</span>, as the name of the request parameter."),
+            "''",
+        ),
+        ParameterDetails(
+            "placeholder",
+            "str",
+            _("Placeholder text, displayed in the field as long as it has not been selected."),
+            "''",
+        ),
+        ParameterDetails("value", "str", _("The value of the input field."), "''"),
+        ParameterDetails("rows", "int", _("Determines the number of lines."), "undefined"),
+        ParameterDetails("cols", "int", _("Determines the number of characters in a line."), "undefined"),
+        ParameterDetails("required", "bool", _("<b>True</b> if the field must be filled in."), "False"),
+        ParameterDetails("disabled", "bool", _("<b>True</b> if the field should be disabled."), "False"),
+        ParameterDetails("label", "str", _("A text label displayed above the input field."), "''"),
+        ParameterDetails(
+            "config",
+            "dict[str, Any]",
+            _("An alternative configuration with keys corresponding to the previous parameters."),
+            "{}",
+        ),
+    ]
+
+    return {"params": [main_params]}
+
+
 @register_component(Component.CHECKBOX)
 def get_checkbox_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the checkbox component."""

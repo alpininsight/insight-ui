@@ -40,6 +40,7 @@ class Component(Enum):
     TABS = ("tabs", ComponentCategory.NAVIGATION)
     BUTTON = ("button", ComponentCategory.INPUT)
     INPUT_FIELD = ("input_field", ComponentCategory.INPUT)
+    TEXTAREA = ("textarea", ComponentCategory.INPUT)
     CHECKBOX = ("checkbox", ComponentCategory.INPUT)
     CHECKBOX_GROUP = ("checkbox_group", ComponentCategory.INPUT)
     DROPDOWN = ("dropdown", ComponentCategory.INPUT)
