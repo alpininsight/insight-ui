@@ -63,19 +63,19 @@
     button:not(:disabled), [role="button"]:not(:disabled) { cursor: pointer; }
 
     h1 {
-        @apply text-3xl font-bold text-insight-text-primary dark:text-white mb-4;
+        @apply text-3xl font-bold text-insight-text-primary dark:text-white pb-4;
     }
     h2 {
-        @apply text-2xl font-semibold text-insight-text-primary dark:text-white mb-4;
+        @apply text-2xl font-semibold text-insight-text-primary dark:text-white pb-4;
     }
     h3 {
-        @apply text-xl font-semibold text-insight-text-primary dark:text-white mb-2;
+        @apply text-xl font-semibold text-insight-text-primary dark:text-white pb-2;
     }
     h4 {
-        @apply text-lg font-semibold text-insight-text-primary dark:text-white mb-1;
+        @apply text-lg font-semibold text-insight-text-primary dark:text-white pb-1;
     }
     h5 {
-        @apply text-base font-semibold text-insight-text-primary dark:text-white mb-1;
+        @apply text-base font-semibold text-insight-text-primary dark:text-white pb-1;
     }
     hr {
         @apply text-gray-300 dark:text-gray-600;
@@ -177,7 +177,7 @@
     }
 
     .info-container {
-        @apply bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 border-s-4 border-s-insight-info dark:border-s-insight-info rounded-e-sm px-4 py-1;
+        @apply bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 border-s-4 rounded-e-sm px-4 py-1;
     }
 
     .inline-tag {
