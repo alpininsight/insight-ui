@@ -173,7 +173,7 @@ def get_accordion_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% accordion id="faq-exclusive" items=accordion_items exclusive=True %}
+        {% accordion tag_id="faq-exclusive" items=accordion_items exclusive=True %}
         """
     }
 

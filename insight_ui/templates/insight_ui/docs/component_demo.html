@@ -41,8 +41,6 @@
     {% bullet_point_list items=bulletpoints %}
 {% elif component.value == "accordion" %}
     {% accordion accordion_items "faq-multiple" False %}
-{% elif component.value == "accordion_exclusive" %}
-    {% accordion accordion_items "faq-exclusive" True %}
 {% elif component.value == "tabs" %}
     {% tabs config=tabs_config %}
 {% elif component.value == "button" %}

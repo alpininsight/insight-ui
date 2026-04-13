@@ -1204,14 +1204,14 @@ def footer(data: dict) -> dict[str, Any]:
 
 
 @register.inclusion_tag("insight_ui/components/accordion.html")
-def accordion(items: list, group_id: str = "accordion", exclusive: bool = True) -> dict:
+def accordion(items: list, tag_id: str = "accordion", exclusive: bool = True) -> dict:
     """
     Render an accordion that can have one or more sections open.
 
     Args:
     ----
         items (list): The individual sections with captions and content.
-        group_id (str): A unique ID for the accordion.
+        tag_id (str): A unique ID for the accordion.
         exclusive (bool): 'True' if only one area may be open at a time.
 
     Returns:
@@ -1219,7 +1219,7 @@ def accordion(items: list, group_id: str = "accordion", exclusive: bool = True) 
         A dict with context variables for the template.
 
     """
-    return {"items": items, "group_id": group_id, "exclusive": exclusive}
+    return {"items": items, "tag_id": tag_id, "exclusive": exclusive}
 
 
 @register.inclusion_tag("insight_ui/components/tabs.html")

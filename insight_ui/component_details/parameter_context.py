@@ -554,7 +554,7 @@ def get_accordion_parameter_context() -> dict[str, list[str]]:
     )
 
     main_params = [
-        ParameterDetails("id", "str", _("Unique tag ID for identifying the element in JavaScript."), "''"),
+        ParameterDetails("tag_id", "str", _("Unique tag ID for identifying the element in JavaScript."), "''"),
         item_param.details,
         ParameterDetails("exclusive", "bool", _("If <b>True</b> only one section can be open at a time."), "False"),
     ]

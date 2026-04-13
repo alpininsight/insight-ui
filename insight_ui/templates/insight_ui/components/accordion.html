@@ -1,11 +1,11 @@
 <div
-  data-accordion="{{ group_id }}"
+  data-accordion="{{ tag_id }}"
   data-accordion-exclusive="{{ exclusive|yesno:'true,false' }}"
   class="rounded-sm overflow-hidden"
 >
   {% for item in items %}
     {% with forloop.counter0|stringformat:"s" as idx %}
-      {% with group_id|add:"-panel-"|add:idx as panel_id %}
+      {% with tag_id|add:"-panel-"|add:idx as panel_id %}
         <div class="bg-white dark:bg-gray-800">
           <h3 class="text-primary mb-1">
             <button
