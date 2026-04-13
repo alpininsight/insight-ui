@@ -595,14 +595,6 @@ def get_tabs_parameter_context() -> dict[str, list[str]]:
     return {"params": [main_params, config_param, tabs_param]}
 
 
-@register_component(Component.BUTTON)
-def get_button_parameter_context() -> dict[str, list[str]]:
-    """Serve parameter documentation for the button component."""
-    main_params = [ParameterDetails("", "", "", "")]
-
-    return {"params": [main_params]}
-
-
 @register_component(Component.INPUT_FIELD)
 def get_input_field_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the input field component."""
@@ -1242,7 +1234,7 @@ def get_differentiator_parameter_context() -> dict[str, list[str]]:
 @register_component(Component.PROGRESS_BAR)
 def get_progress_bar_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the progress bar component."""
-    main_params = [ParameterDetails("", "", "", "")]
+    main_params = [ParameterDetails("TODO!", "-", "-", "-")]
 
     return {"params": [main_params]}
 
@@ -1480,7 +1472,7 @@ def get_search_bar_parameter_context() -> dict[str, list[str]]:
 @register_component(Component.QUERY_BUILDER)
 def get_query_builder_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the query builder component."""
-    main_params = [ParameterDetails("", "", "", "")]
+    main_params = [ParameterDetails("TODO!", "-", "-", "-")]
 
     return {"params": [main_params]}
 
@@ -1542,7 +1534,7 @@ def get_card_parameter_context() -> dict[str, list[str]]:
 @register_component(Component.APP_CARD)
 def get_app_card_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the app card component."""
-    main_params = []
+    main_params = [ParameterDetails("TODO!", "-", "-", "-")]
 
     return {"params": [main_params]}
 
@@ -1550,7 +1542,7 @@ def get_app_card_parameter_context() -> dict[str, list[str]]:
 @register_component(Component.FLIP_CARD)
 def get_flip_card_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the flip card component."""
-    main_params = []
+    main_params = [ParameterDetails("TODO!", "-", "-", "-")]
 
     return {"params": [main_params]}
 

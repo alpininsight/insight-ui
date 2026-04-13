@@ -611,7 +611,7 @@ def get_query_builder_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% sq_builder model_fields=model_fields %}
+        {% query_builder model_fields=model_fields %}
         """
     }
 

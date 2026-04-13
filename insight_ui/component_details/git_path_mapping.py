@@ -15,7 +15,7 @@ TEMPLATE_PATHS = {
     "image_carousel": GIT_BASE_FILE + "carousels/image_carousel.html",
     "bar_chart": GIT_BASE_FILE + "charts/bar_chart.html",
     "line_chart": GIT_BASE_FILE + "charts/line_chart.html",
-    "sq_builder": GIT_BASE_DIRECTORY + "search_query_builder",
+    "query_builder": GIT_BASE_DIRECTORY + "search_query_builder",
     "accordion": GIT_BASE_FILE + "accordion.html",
     "alert": GIT_BASE_FILE + "alert.html",
     "breadcrumbs": GIT_BASE_FILE + "breadcrumbs.html",

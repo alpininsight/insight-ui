@@ -744,7 +744,7 @@ def search_bar(request_view: str, simple: bool = False, search_query: str = "") 
 
 
 @register.inclusion_tag("insight_ui/components/search_query_builder/sq_builder.html")
-def sq_builder(model_fields: list) -> dict:
+def query_builder(model_fields: list) -> dict:
     """
     Render a filter that can be used to construct your own search query. Based on an SQL query.
 
