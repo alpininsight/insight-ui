@@ -23,6 +23,7 @@ class ParameterDoc:
     details: ParameterDetails
     params_table: list[ParameterDetails]
     example_data: str
+    notes: list[dict[str, str]] = None
 
 
 @register_component(Component.PAGE_HEADER)
@@ -293,7 +294,19 @@ def get_navbar_parameter_context() -> dict[str, list[str]]:
         ParameterDetails("search_query", "str", _("Search string for the search bar."), "''"),
     ]
 
-    return {"params": [main_params, config_param, brand_param, logo_param, links_param]}
+    notes_begin = [
+        {
+            "type": "info",
+            "message": _(
+                "The external parameter **show_login** is used to hide the login button on certain pages, such as the login page."
+            ),
+        }
+    ]
+
+    return {
+        "params": [main_params, config_param, brand_param, logo_param, links_param],
+        "params_notes_begin": notes_begin,
+    }
 
 
 @register_component(Component.SIDEBAR)
@@ -984,7 +997,9 @@ def get_select_parameter_context() -> dict[str, list[str]]:
         ),
     ]
 
-    return {"params": [main_params]}
+    notes_end = [{"type": "info", "message": _("If `options` is a list, the value is also used as the name.")}]
+
+    return {"params": [main_params], "params_notes_end": notes_end}
 
 
 @register_component(Component.MULTISELECT)
@@ -1012,7 +1027,9 @@ def get_multiselect_parameter_context() -> dict[str, list[str]]:
         ),
     ]
 
-    return {"params": [main_params]}
+    notes_end = [{"type": "info", "message": _("If `options` is a list, the value is also used as the name.")}]
+
+    return {"params": [main_params], "params_notes_end": notes_end}
 
 
 @register_component(Component.CHAT)
@@ -1141,6 +1158,14 @@ def get_tooltip_parameter_context() -> dict[str, list[str]]:
             "False",
         ),
     ]
+
+    return {"params": [main_params]}
+
+
+@register_component(Component.INFOBOX)
+def get_infobox_parameter_context() -> dict[str, list[str]]:
+    """Serve parameter documentation for the infobox component."""
+    main_params = []
 
     return {"params": [main_params]}
 
@@ -1382,7 +1407,16 @@ def get_generic_filter_parameter_context() -> dict[str, list[str]]:
         ),
     ]
 
-    return {"params": [main_params]}
+    notes_end = [
+        {
+            "type": "info",
+            "message": _(
+                "In the `values` filters, the value `-` serves as a separator that cannot be clicked. The value `placeholder` serves as a placeholder."
+            ),
+        }
+    ]
+
+    return {"params": [main_params], "params_notes_end": notes_end}
 
 
 @register_component(Component.SEARCH_BAR)
@@ -1467,6 +1501,22 @@ def get_card_parameter_context() -> dict[str, list[str]]:
     ]
 
     return {"params": [main_params, image_param, action_button_param]}
+
+
+@register_component(Component.APP_CARD)
+def get_app_card_parameter_context() -> dict[str, list[str]]:
+    """Serve parameter documentation for the app card component."""
+    main_params = []
+
+    return {"params": [main_params]}
+
+
+@register_component(Component.FLIP_CARD)
+def get_flip_card_parameter_context() -> dict[str, list[str]]:
+    """Serve parameter documentation for the flip card component."""
+    main_params = []
+
+    return {"params": [main_params]}
 
 
 @register_component(Component.CARD_CAROUSEL)

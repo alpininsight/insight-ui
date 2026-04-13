@@ -30,6 +30,7 @@ TEMPLATE_PATHS = {
     "generic_filter": GIT_BASE_FILE + "generic_filter.html",
     "geo_map": GIT_BASE_FILE + "geo_map.html",
     "infinite_scroll": GIT_BASE_FILE + "infinite_scroll.html",
+    "infobox": GIT_BASE_FILE + "infobox.html",
     "input": GIT_BASE_FILE + "input.html",
     "live_content": GIT_BASE_FILE + "live_content.html",
     "minimal_step_bar": GIT_BASE_FILE + "minimal_step_bar.html",

@@ -612,8 +612,8 @@ def get_query_builder_context() -> dict:
 
 
 @register_demo_context(Component.CARD)
-def get_cards_context() -> dict:
-    """Serve data for cards detailpage."""
+def get_card_context() -> dict:
+    """Serve data for card detailpage."""
     return {
         "cards": [
             {
@@ -633,31 +633,41 @@ def get_cards_context() -> dict:
                     {"text": _("Share"), "url": "#", "type": "primary"},
                 ],
             },
-        ],
-        "app_cards": [
-            {
-                "title": _("App Card"),
-                "content": _("A card with its content arranged horizontally."),
-                "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": _("Card-Image")},
-                "tags": [_("Insight UI"), _("Layout"), _("Card")],
-                "actions": [
-                    {"text": _("Learn more"), "url": "#", "type": "secondary"},
-                    {"text": _("Share"), "url": "#", "type": "primary"},
-                ],
-            }
-        ],
-        "flip_cards": [
-            {
-                "title": _("Flip Card"),
-                "content": _("A card that rotates 180° and has additional content on the back."),
-                "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": _("Card-Image")},
-                "tags": [_("Insight UI"), _("Layout"), _("Card")],
-                "actions": [
-                    {"text": _("Learn more"), "url": "#", "type": "secondary"},
-                    {"text": _("Share"), "url": "#", "type": "primary"},
-                ],
-            }
-        ],
+        ]
+    }
+
+
+@register_demo_context(Component.APP_CARD)
+def get_app_card_context() -> dict:
+    """Serve data for app card detailpage."""
+    return {
+        "app_card": {
+            "title": _("App Card"),
+            "content": _("A card with its content arranged horizontally."),
+            "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": _("Card-Image")},
+            "tags": [_("Insight UI"), _("Layout"), _("Card")],
+            "actions": [
+                {"text": _("Learn more"), "url": "#", "type": "secondary"},
+                {"text": _("Share"), "url": "#", "type": "primary"},
+            ],
+        }
+    }
+
+
+@register_demo_context(Component.FLIP_CARD)
+def get_flip_card_context() -> dict:
+    """Serve data for flip card detailpage."""
+    return {
+        "flip_card": {
+            "title": _("Flip Card"),
+            "content": _("A card that rotates 180° and has additional content on the back."),
+            "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": _("Card-Image")},
+            "tags": [_("Insight UI"), _("Layout"), _("Card")],
+            "actions": [
+                {"text": _("Learn more"), "url": "#", "type": "secondary"},
+                {"text": _("Share"), "url": "#", "type": "primary"},
+            ],
+        }
     }
 
 
