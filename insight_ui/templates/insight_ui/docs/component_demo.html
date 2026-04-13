@@ -160,6 +160,8 @@
         <button data-tooltip="This is a tooltip." data-show-arrow="true" data-position="right" class="btn btn-primary">{% trans "Right" %}</button>
         <button data-tooltip="This is a tooltip." data-position="left" class="btn btn-primary">{% trans "Left" %}</button>
     </div>
+{% elif component.value == "infobox" %}
+    {% infobox info_type="info" message="This is an informative message." %}
 {% elif component.value == "code_block" %}
     <div id="code" data-insight-code-block="javascript">
         {# fmt:off #}
@@ -206,14 +208,13 @@
             {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
         {% endfor %}
     </div>
-{% elif component.value == "effect_cards" %}
+{% elif component.value == "app_card" %}
     <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
-        {% for card in app_cards %}
-            {% app_card title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
-        {% endfor %}
-        {% for card in flip_cards %}
-            {% flip_card title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
-        {% endfor %}
+        {% app_card title=app_card.title content=app_card.content tags=app_card.tags url=app_card.url image=app_card.image actions=app_card.actions %}
+    </div>
+{% elif component.value == "flip_card" %}
+    <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
+        {% flip_card title=flip_card.title content=flip_card.content tags=flip_card.tags url=flip_card.url image=flip_card.image actions=flip_card.actions %}
     </div>
 {% elif component.value == "card_carousel" %}
     {% carousel carousel_items=carousel_items show_index=True items_per_slide=2 %}

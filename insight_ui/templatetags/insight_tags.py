@@ -1492,6 +1492,24 @@ def hero(  # noqa: PLR0913 (too many arguments)
     }
 
 
+@register.inclusion_tag("insight_ui/components/infobox.html")
+def infobox(info_type: str = "", message: str = "") -> dict[str, Any]:
+    """
+    Render a small box of information.
+
+    Args:
+    ----
+        info_type (str): importance level of the message e.g 'info', 'warn' or 'danger'.
+        message (str): Descriptive message.
+
+    Returns:
+    -------
+        A dict with context variables for the template.
+
+    """
+    return {"type": info_type, "message": message}
+
+
 @register.inclusion_tag("insight_ui/components/charts/bar_chart.html")
 def bar_chart(chart_id: str, chart: dict, chart_height: int = 24) -> dict:
     """

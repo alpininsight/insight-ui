@@ -1,4 +1,4 @@
-/*! tailwindcss v4.2.1 | MIT License | https://tailwindcss.com */
+/*! tailwindcss v4.2.2 | MIT License | https://tailwindcss.com */
 @layer properties;
 @layer theme, base, components, utilities;
 @layer theme {
@@ -1096,6 +1096,15 @@
   .border-transparent {
     border-color: transparent;
   }
+  .border-s-insight-info {
+    border-inline-start-color: var(--color-insight-info);
+  }
+  .border-s-insight-success {
+    border-inline-start-color: var(--color-insight-success);
+  }
+  .border-s-insight-warning {
+    border-inline-start-color: var(--color-insight-warning);
+  }
   .border-b-white {
     border-bottom-color: var(--color-white);
   }
@@ -1228,6 +1237,12 @@
       fill: color-mix(in oklab, var(--color-insight-primary) 25%, transparent);
     }
   }
+  .fill-white\/25 {
+    fill: color-mix(in srgb, #fff 25%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      fill: color-mix(in oklab, var(--color-white) 25%, transparent);
+    }
+  }
   .object-cover {
     object-fit: cover;
   }
@@ -1317,6 +1332,9 @@
   }
   .pt-16 {
     padding-top: calc(var(--spacing) * 16);
+  }
+  .pt-20 {
+    padding-top: calc(var(--spacing) * 20);
   }
   .pb-2 {
     padding-bottom: calc(var(--spacing) * 2);
@@ -2419,6 +2437,21 @@
       border-color: var(--color-red-800);
     }
   }
+  .dark\:border-s-insight-info {
+    &:where([data-theme=dark], [data-theme=dark] *) {
+      border-inline-start-color: var(--color-insight-info);
+    }
+  }
+  .dark\:border-s-insight-success {
+    &:where([data-theme=dark], [data-theme=dark] *) {
+      border-inline-start-color: var(--color-insight-success);
+    }
+  }
+  .dark\:border-s-insight-warning {
+    &:where([data-theme=dark], [data-theme=dark] *) {
+      border-inline-start-color: var(--color-insight-warning);
+    }
+  }
   .dark\:border-b-gray-600 {
     &:where([data-theme=dark], [data-theme=dark] *) {
       border-bottom-color: var(--color-gray-600);
@@ -2719,7 +2752,7 @@
     cursor: pointer;
   }
   h1 {
-    margin-bottom: calc(var(--spacing) * 4);
+    padding-bottom: calc(var(--spacing) * 4);
     font-size: var(--text-3xl);
     line-height: var(--tw-leading, var(--text-3xl--line-height));
     --tw-font-weight: var(--font-weight-bold);
@@ -2730,7 +2763,7 @@
     }
   }
   h2 {
-    margin-bottom: calc(var(--spacing) * 4);
+    padding-bottom: calc(var(--spacing) * 4);
     font-size: var(--text-2xl);
     line-height: var(--tw-leading, var(--text-2xl--line-height));
     --tw-font-weight: var(--font-weight-semibold);
@@ -2741,7 +2774,7 @@
     }
   }
   h3 {
-    margin-bottom: calc(var(--spacing) * 2);
+    padding-bottom: calc(var(--spacing) * 2);
     font-size: var(--text-xl);
     line-height: var(--tw-leading, var(--text-xl--line-height));
     --tw-font-weight: var(--font-weight-semibold);
@@ -2752,7 +2785,7 @@
     }
   }
   h4 {
-    margin-bottom: calc(var(--spacing) * 1);
+    padding-bottom: calc(var(--spacing) * 1);
     font-size: var(--text-lg);
     line-height: var(--tw-leading, var(--text-lg--line-height));
     --tw-font-weight: var(--font-weight-semibold);
@@ -2763,7 +2796,7 @@
     }
   }
   h5 {
-    margin-bottom: calc(var(--spacing) * 1);
+    padding-bottom: calc(var(--spacing) * 1);
     font-size: var(--text-base);
     line-height: var(--tw-leading, var(--text-base--line-height));
     --tw-font-weight: var(--font-weight-semibold);
@@ -3337,15 +3370,11 @@
     border-inline-start-style: var(--tw-border-style);
     border-inline-start-width: 4px;
     border-color: var(--color-gray-200);
-    border-inline-start-color: var(--color-insight-info);
     background-color: var(--color-gray-100);
     padding-inline: calc(var(--spacing) * 4);
     padding-block: calc(var(--spacing) * 1);
     &:where([data-theme=dark], [data-theme=dark] *) {
       border-color: var(--color-gray-600);
-    }
-    &:where([data-theme=dark], [data-theme=dark] *) {
-      border-inline-start-color: var(--color-insight-info);
     }
     &:where([data-theme=dark], [data-theme=dark] *) {
       background-color: var(--color-gray-800);
