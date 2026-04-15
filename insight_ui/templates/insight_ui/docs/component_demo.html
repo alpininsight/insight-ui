@@ -78,6 +78,8 @@
         {% input_field tag_id="text" name="text_input" input_type="text" placeholder="Type your name" label="Name:" %}
         {% input_field tag_id="password" name="password_input" input_type="password" placeholder="Type your password" label="Password" %}
     </div>
+{% elif component.value == "textarea" %}
+    {% textarea tag_id="text" name="text_field" rows=4 label="Write a message:" placeholder="Write something..." %}
 {% elif component.value == "checkbox" %}
     {% checkbox config=example_checkbox %}
 {% elif component.value == "checkbox_group" %}

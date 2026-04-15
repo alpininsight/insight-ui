@@ -374,7 +374,13 @@ def get_tooltip_description_context() -> dict[str, list[str]]:
 @register_component(Component.INFOBOX)
 def get_infobox_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the infobox component."""
-    return {"description": [_("")]}
+    return {
+        "description": [
+            _(
+                "The `infobox` component displays the text it contains in a bordered box, making it slightly more prominent, but not as conspicuous as an `alert`."
+            )
+        ]
+    }
 
 
 @register_component(Component.CODE_BLOCK)
@@ -569,13 +575,28 @@ def get_card_description_context() -> dict[str, list[str]]:
 @register_component(Component.APP_CARD)
 def get_app_card_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the app card component."""
-    return {"description": [_("")]}
+    return {
+        "description": [
+            _(
+                "The `app_card` component is designed for overview pages featuring multiple apps, demos, products, etc., and begins with a large image followed by the title and a description. Each card can include a set of tags (small buttons) as well as action buttons."
+            )
+        ]
+    }
 
 
 @register_component(Component.FLIP_CARD)
 def get_flip_card_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the flip card component."""
-    return {"description": [_("")]}
+    return {
+        "description": [
+            _(
+                "The `flip_card` component is a variation of the `app_card` and has the unique feature of rotating 180° when hovered over. This special feature allows additional information to be displayed on the back without taking up any extra space."
+            )
+        ],
+        "description_notes_begin": [
+            {"type": "info", "message": _("The component is currently still under development.")}
+        ],
+    }
 
 
 @register_component(Component.CARD_CAROUSEL)

@@ -177,7 +177,7 @@
     }
 
     .info-container {
-        @apply bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 border-s-4 rounded-e-sm px-4 py-1;
+        @apply bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 border-s-4 rounded-e-sm text-base px-4 py-1;
     }
 
     .inline-tag {

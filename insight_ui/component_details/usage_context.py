@@ -237,6 +237,22 @@ def get_input_field_usage_context() -> dict[str, str]:
     }
 
 
+@register_component(Component.TEXTAREA)
+def get_textarea_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the textarea component."""
+    return {
+        "usage": """
+        {% load insight_tags %}
+
+        {% textarea tag_id="message" name="message" rows=4 label="Write a message:" placeholder="Write something..." %}
+
+        <!-- or -->
+
+        {% textarea config=input_config %}
+        """
+    }
+
+
 @register_component(Component.CHECKBOX)
 def get_checkbox_usage_context() -> dict[str, str]:
     """Serve usage documentation for the checkbox component."""

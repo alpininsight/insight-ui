@@ -1193,7 +1193,15 @@ def get_tooltip_parameter_context() -> dict[str, list[str]]:
 @register_component(Component.INFOBOX)
 def get_infobox_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the infobox component."""
-    main_params = []
+    main_params = [
+        ParameterDetails(
+            "info_type",
+            "str",
+            _("Importance level of the message. Possible values are 'info', 'success', 'warn' or 'danger'."),
+            "'info'",
+        ),
+        ParameterDetails("message", "str", _("Descriptive message."), "''"),
+    ]
 
     return {"params": [main_params]}
 
@@ -1537,17 +1545,107 @@ def get_card_parameter_context() -> dict[str, list[str]]:
 @register_component(Component.APP_CARD)
 def get_app_card_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the app card component."""
-    main_params = [ParameterDetails("TODO!", "-", "-", "-")]
+    image_param = ParameterDoc(
+        ParameterDetails("image", "dict[str]", _("Describes an image displayed at the top."), "{}"),
+        [
+            ParameterDetails("url", "str", _("URL to the image resource."), "''"),
+            ParameterDetails(
+                "alt",
+                "str",
+                _("Displayed alternative text used for screen readers if the image cannot be loaded."),
+                "''",
+            ),
+        ],
+        """""",
+    )
 
-    return {"params": [main_params]}
+    action_button_param = ParameterDoc(
+        ParameterDetails(
+            "actions", "list[dict[str, str]]", _("List of buttons displayed at the bottom edge of the card."), "[]"
+        ),
+        [
+            ParameterDetails("text", "str", _("Button label."), "''"),
+            ParameterDetails(
+                "type",
+                "str",
+                _(
+                    "Describes the importance of the button (purely visual). Possible values are: 'primary' and 'secondary'."
+                ),
+                "''",
+            ),
+            ParameterDetails("url", "str", _("URL to be called when the button is clicked."), "''"),
+        ],
+        """""",
+    )
+
+    main_params = [
+        ParameterDetails("title", "str", _("Heading of the card."), "''"),
+        ParameterDetails(
+            "content",
+            "str",
+            _("Text content of the card. Displayed below the title or subtitle if there is one."),
+            "''",
+        ),
+        ParameterDetails("tags", "list[str]", "A list of small buttons, placed below the content text.", "[]"),
+        ParameterDetails("url", "str", "A URL that is called up when the user clicks on the title.", ""),
+        image_param.details,
+        action_button_param.details,
+    ]
+
+    return {"params": [main_params, image_param, action_button_param]}
 
 
 @register_component(Component.FLIP_CARD)
 def get_flip_card_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the flip card component."""
-    main_params = [ParameterDetails("TODO!", "-", "-", "-")]
+    image_param = ParameterDoc(
+        ParameterDetails("image", "dict[str]", _("Describes an image displayed at the top."), "{}"),
+        [
+            ParameterDetails("url", "str", _("URL to the image resource."), "''"),
+            ParameterDetails(
+                "alt",
+                "str",
+                _("Displayed alternative text used for screen readers if the image cannot be loaded."),
+                "''",
+            ),
+        ],
+        """""",
+    )
 
-    return {"params": [main_params]}
+    action_button_param = ParameterDoc(
+        ParameterDetails(
+            "actions", "list[dict[str, str]]", _("List of buttons displayed at the bottom edge of the card."), "[]"
+        ),
+        [
+            ParameterDetails("text", "str", _("Button label."), "''"),
+            ParameterDetails(
+                "type",
+                "str",
+                _(
+                    "Describes the importance of the button (purely visual). Possible values are: 'primary' and 'secondary'."
+                ),
+                "''",
+            ),
+            ParameterDetails("url", "str", _("URL to be called when the button is clicked."), "''"),
+        ],
+        """""",
+    )
+
+    main_params = [
+        ParameterDetails("title", "str", _("Heading of the card."), "''"),
+        ParameterDetails(
+            "content",
+            "str",
+            _("Text content of the card. Displayed below the title or subtitle if there is one."),
+            "''",
+        ),
+        ParameterDetails("tags", "list[str]", "A list of small buttons, placed below the content text.", "[]"),
+        ParameterDetails("url", "str", "A URL that is called up when the user clicks on the title.", ""),
+        image_param.details,
+        action_button_param.details,
+    ]
+
+    return {"params": [main_params, image_param, action_button_param]}
 
 
 @register_component(Component.CARD_CAROUSEL)
