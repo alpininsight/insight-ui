@@ -1382,6 +1382,9 @@ def get_pagination_parameter_context() -> dict[str, list[str]]:
             "current_page", "Page", _("A Django-generated pagination object for the current page."), "None"
         ),
         ParameterDetails("surrounding_pages", "list[str]", _("List of adjacent pages."), "[]"),
+        ParameterDetails(
+            "ipp", "dict[str, Any]", _("Configuration of an 'Items per Page' select (select component)"), "[]"
+        ),
     ]
 
     return {"params": [main_params]}
