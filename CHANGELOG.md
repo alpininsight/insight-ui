@@ -64,6 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Translate developer documentation
 - Add hint to run JavaScript tests to README.md
 - Make component docu context strings translateable
+- Document GitHub issue label taxonomy 
 
 ### Features
 
