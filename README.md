@@ -1,11 +1,5 @@
 # Insight UI
 
-<!-- Badges -->
-![Conventional Commits](https://github.com/alpininsight/insight-ui/actions/workflows/feature-pr-title.yml/badge.svg?branch=develop)
-![Staging](https://github.com/alpininsight/insight-ui/actions/workflows/release-develop.yml/badge.svg?branch=develop)
-![Release](https://github.com/alpininsight/insight-ui/actions/workflows/release.yml/badge.svg?branch=main)
-![Publish](https://github.com/alpininsight/insight-ui/actions/workflows/main-publish-pypi.yml/badge.svg?branch=main)
-
 [![Ruff](https://img.shields.io/badge/ruff-checked-5D3FD3?logo=python&logoColor=white)](https://github.com/astral-sh/ruff)
 [![Python](https://img.shields.io/badge/python-3.12%2B-blue?logo=python&logoColor=white)](pyproject.toml)
 [![Django](https://img.shields.io/badge/django-5.2-092E20?logo=django&logoColor=white)](https://www.djangoproject.com/)
