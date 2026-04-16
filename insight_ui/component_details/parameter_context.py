@@ -350,7 +350,14 @@ def get_footer_parameter_context() -> dict[str, list[str]]:
             ParameterDetails("alt", "str", _("Alternative text of the logo."), "Insight UI Logo"),
             ParameterDetails("height", "str", _("This value determines the size of the logo."), "2rem"),
         ],
-        """""",
+        """
+        {
+            "url": "insight_ui/svg/ai-logo.svg",
+            "url_dark": "insight_ui/svg/ai-logo-dark.svg",
+            "alt": "Insight UI Logo",
+            "height": "6rem",
+        }
+        """,
     )
 
     description_param = ParameterDoc(
@@ -362,7 +369,18 @@ def get_footer_parameter_context() -> dict[str, list[str]]:
             ParameterDetails("text", "str", _("Brief summary of the application."), "''"),
             image_param.details,
         ],
-        """""",
+        """
+        {
+            "title": "Insight UI",
+            "text": "A modern UI library for Django applications to get started quickly.",
+            "image": {
+                "url": "insight_ui/svg/ai-logo.svg",
+                "url_dark": "insight_ui/svg/ai-logo-dark.svg",
+                "alt": "Insight UI Logo",
+                "height": "6rem",
+            },
+        },
+        """,
     )
 
     links_param = ParameterDoc(
@@ -387,7 +405,13 @@ def get_footer_parameter_context() -> dict[str, list[str]]:
             ParameterDetails("need_auth", "bool", _("The link is only displayed for logged-in users."), "False"),
             ParameterDetails("staff_only", "bool", _("The link is only displayed for administrators."), "False"),
         ],
-        """""",
+        """
+        [
+            {"text": _("Indexpage"), "icon": {"name": "home", "size": "small"}, "view_name": "index_view"},
+            {"text": _("Storybook"), "view_name": "storybook_view"},
+            {"text": _("Documentation"), "view_name": "doc_view"},
+        ]
+        """,
     )
 
     contact_param = ParameterDoc(
@@ -402,7 +426,13 @@ def get_footer_parameter_context() -> dict[str, list[str]]:
             ParameterDetails("imprint", "str", _("Link to an imprint."), "''"),
             ParameterDetails("privacy", "str", _("Link to a privacy policy."), "''"),
         ],
-        """""",
+        """
+        {
+            "mail_url": "support@alpininsight.com",
+            "imprint": "https://alpininsight.com/imprint/",
+            "privacy": "https://alpininsight.com/privacy/",
+        }
+        """,
     )
 
     copyright_param = ParameterDoc(
@@ -413,13 +443,39 @@ def get_footer_parameter_context() -> dict[str, list[str]]:
             ParameterDetails("year", "int", _("Typically the current year (not strictly required)."), "undefined"),
             ParameterDetails("app_name", "str", _("The protected name of the application."), "''"),
         ],
-        """""",
+        """
+        {"year": 2026, "app_name": "Insight UI"}
+        """,
     )
 
     data_param = ParameterDoc(
         ParameterDetails("data", "dict[str, Any]", _("Data to be displayed in the footer."), "{}"),
         [description_param.details, links_param.details, contact_param.details, copyright_param.details],
-        """""",
+        """
+        {
+            "description": {
+                "title": "Insight UI",
+                "text": "A modern UI library for Django applications to get started quickly.",
+                "image": {
+                    "url": "insight_ui/svg/ai-logo.svg",
+                    "url_dark": "insight_ui/svg/ai-logo-dark.svg",
+                    "alt": "Insight UI Logo",
+                    "height": "6rem",
+                },
+            },
+            "links": [
+                {"text": _("Indexpage"), "icon": {"name": "home", "size": "small"}, "view_name": "index_view"},
+                {"text": _("Storybook"), "view_name": "storybook_view"},
+                {"text": _("Documentation"), "view_name": "doc_view"},
+            ],
+            "contact": {
+                "mail_url": "support@alpininsight.com",
+                "imprint": "https://alpininsight.com/imprint/",
+                "privacy": "https://alpininsight.com/privacy/",
+            },
+            "copyright": {"year": 2026, "app_name": "Insight UI"},
+        }
+        """,
     )
 
     main_params = [data_param.details]
@@ -433,7 +489,7 @@ def get_footer_parameter_context() -> dict[str, list[str]]:
 def get_breadcrumb_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the breadcrumbs component."""
     links_param = ParameterDoc(
-        ParameterDetails("items", "list[dict]", _("List of navigation items."), "[]"),
+        ParameterDetails("items", "list[dict[str, Any]]", _("List of navigation items."), "[]"),
         [
             ParameterDetails("text", "str", _("Label of the link."), "''"),
             ParameterDetails(
@@ -444,7 +500,13 @@ def get_breadcrumb_parameter_context() -> dict[str, list[str]]:
                 "query_params", "str", _("An optional parameter, in case the view to be called requires one."), "''"
             ),
         ],
-        """""",
+        """
+        [
+            {"text": _("Indexpage"), "icon": {"name": "home", "size": "small" %}, "view_name": "index_view"},
+            {"text": _("Components"), "view_name": "components_view"},
+            {"text": _("Breadcrumbs")},
+        ]
+        """,
     )
 
     main_params = [links_param.details]
@@ -465,7 +527,13 @@ def get_step_bar_parameter_context() -> dict[str, list[str]]:
             ParameterDetails("failed", "bool", _("Displays an X instead of the step number."), "False"),
             ParameterDetails("current", "bool", _("Highlights the title in color and makes the text pulse."), "False"),
         ],
-        """""",
+        """
+        [
+            {"title": "Contact Information", "description": "Personal information and address.", "completed": True},
+            {"title": "Payment method", "description": "Method of payment.", "current": True},
+            {"title": "Check", "description": "Review the details and pay."},
+        ]
+        """,
     )
 
     main_params = [step_param.details]
@@ -527,7 +595,13 @@ def get_bullet_point_list_parameter_context() -> dict[str, list[str]]:
             ParameterDetails("completed", "bool", _("Displays a checkmark instead of a bullet point."), "False"),
             ParameterDetails("current", "bool", _("Highlights the title by color."), "False"),
         ],
-        """""",
+        """
+        [
+            {"title": _("Kontaktdaten"), "description": _("Informationen zur Person und Anschrift."), "completed": True},
+            {"title": _("Zahlungsmethode"), "description": _("Art der Bezahlung auswählen."), "current": True},
+            {"title": _("Überprüfen"), "description": _("Prüfen der Angaben und Bezahlen.")},
+        ]
+        """,
     )
 
     main_params = [step_param.details]
@@ -573,7 +647,25 @@ def get_tabs_parameter_context() -> dict[str, list[str]]:
             ParameterDetails("title", "str", _("Label of the tab button."), "''"),
             ParameterDetails("icon", "dict[str, str]", _("An optional icon displayed before the label."), "{}"),
         ],
-        """""",
+        """
+        [
+            {
+                "id": "First",
+                "url": reverse("tabs_view", kwargs={"tab_id": "first"}),
+                "title": _("First Tab"),
+            },
+            {
+                "id": "Second",
+                "url": reverse("tabs_view", kwargs={"tab_id": "second"}),
+                "title": _("Second Tab"),
+            },
+            {
+                "id": "Third",
+                "url": reverse("tabs_view", kwargs={"tab_id": "third"}),
+                "title": _("Third Tab"),
+            }
+        ]
+        """,
     )
 
     config_param = ParameterDoc(
@@ -587,7 +679,29 @@ def get_tabs_parameter_context() -> dict[str, list[str]]:
             ),
             tabs_param.details,
         ],
-        """""",
+        """
+        {
+            "id": "example_tabs",
+            "label": "Tabs Example",
+            "tabs": [
+                {
+                    "id": "First",
+                    "url": reverse("tabs_view", kwargs={"tab_id": "first"}),
+                    "title": _("First Tab"),
+                },
+                {
+                    "id": "Second",
+                    "url": reverse("tabs_view", kwargs={"tab_id": "second"}),
+                    "title": _("Second Tab"),
+                },
+                {
+                    "id": "Third",
+                    "url": reverse("tabs_view", kwargs={"tab_id": "third"}),
+                    "title": _("Third Tab"),
+                }
+            ]
+        }
+        """,
     )
 
     main_params = [config_param.details]
@@ -752,7 +866,20 @@ def get_checkbox_group_parameter_context() -> dict[str, list[str]]:
             ),
             ParameterDetails("items", "list[dict[str, Any]]", _("List of the checkbox elements."), "[]"),
         ],
-        """""",
+        """
+        {
+            "name": "language_select",
+            "label": "Choose languages: (max. 3)",
+            "as_row": True,
+            "minimum_checked": 1,
+            "maximum_checked": 3,
+            "items": [
+                {"tag_id": "english", "value": "english", "text": _("English")},
+                {"tag_id": "german", "value": "german", "text": _("German"), "checked": True},
+                {"tag_id": "italian", "value": "italian", "text": _("Italian (coming soon)"), "disabled": True},
+            ],
+        }
+        """,
     )
 
     main_params = [config_param.details]
@@ -772,7 +899,15 @@ def get_dropdown_parameter_context() -> dict[str, list[str]]:
             ),
             ParameterDetails("icon", "dict[str, str]", _("An optional icon displayed before the label."), "{}"),
         ],
-        """""",
+        """
+        [
+            {
+                "text": _("Profile"),
+                "view_name": "profile_view",
+                "icon": {"name": "user", "size": "small"},
+            },
+        ]
+        """,
     )
 
     dropdown_menu_param = ParameterDoc(
@@ -787,7 +922,30 @@ def get_dropdown_parameter_context() -> dict[str, list[str]]:
             ParameterDetails("show_arrow", "bool", _("<b>True</b> displays an arrow behind the title."), "False"),
             item_param.details,
         ],
-        """""",
+        """
+        {
+            "tag_id": "user_dropdown",
+            "title": _("User"),
+            "show_arrow": True,
+            "items": [
+                {
+                    "text": _("Profile"),
+                    "view_name": "profile_view",
+                    "icon": {"name": "user", "size": "small"},
+                },
+                {
+                    "text": _("Settings"),
+                    "view_name": "settings_view",
+                    "icon": {"name": "gear", "size": "small"},
+                },
+                {
+                    "text": _("Logout"),
+                    "view_name": "logout_view",
+                    "icon": {"name": "leave", "size": "small"},
+                },
+            ],
+        }
+        """,
     )
 
     main_params = [dropdown_menu_param.details]
@@ -808,7 +966,13 @@ def get_radio_group_parameter_context() -> dict[str, list[str]]:
             ParameterDetails("text", "str", _("Label of the respective radio button."), "''"),
             ParameterDetails("disabled", "bool", _("<b>True</b> if the radio button should be disabled."), "False"),
         ],
-        """""",
+        """
+        [
+            {"tag_id": "model1", "value": "BERT", "text": _("BERT"), "disabled": False},
+            {"tag_id": "model2", "value": "PaLM 2", "text": _("PaLM 2"), "disabled": False},
+            {"tag_id": "model3", "value": "LLaMA 2", "text": _("LLaMA 2 (currently not available)"), "disabled": True},
+        ]
+        """,
     )
 
     config_param = ParameterDoc(
@@ -825,7 +989,18 @@ def get_radio_group_parameter_context() -> dict[str, list[str]]:
             ),
             items_param.details,
         ],
-        """""",
+        """
+        {
+            "name": "model",
+            "label": "Choose model:",
+            "as_row": True,
+            "items": [
+                {"tag_id": "model1", "value": "BERT", "text": _("BERT"), "disabled": False},
+                {"tag_id": "model2", "value": "PaLM 2", "text": _("PaLM 2"), "disabled": False},
+                {"tag_id": "model3", "value": "LLaMA 2", "text": _("LLaMA 2 (currently not available)"), "disabled": True},
+            ],
+        }
+        """,
     )
 
     main_params = [
@@ -1115,7 +1290,11 @@ def get_modal_parameter_context() -> dict[str, list[str]]:
             ParameterDetails("onclick", "str", _("Call a JavaScript function, e.g.: alert('Confirmed!')"), "''"),
             ParameterDetails("dismiss", "bool", _("Closes the dialog on click."), "False"),
         ],
-        """""",
+        """
+        {
+            {"text": _("Learn more"), "url": "#", "type": "secondary"},
+        }
+        """,
     )
 
     main_params = [
@@ -1264,11 +1443,17 @@ def get_geo_map_parameter_context() -> dict[str, list[str]]:
                 "value", "int", _("Used only for 'circle' data entries and defines the size/color of the circle."), "-"
             ),
         ],
-        """""",
+        """
+        [
+            {"title": "Berlin", "value": 3769000, "lat": 52.5200, "lon": 13.4050},
+            {"title": "Hamburg", "value": 1850000, "lat": 53.5511, "lon": 9.9937},
+            {"title": "München", "value": 1488000, "lat": 48.1351, "lon": 11.5820},
+        ]
+        """,
     )
 
     datasets_param = ParameterDoc(
-        ParameterDetails("datasets", "dict[str, Any]", _("Datasets to be displayed on the map."), "{}"),
+        ParameterDetails("datasets", "list[dict[str, Any]]", _("Datasets to be displayed on the map."), "{}"),
         [
             ParameterDetails("name", "str", _("The name of the dataset, used internally for identification."), "-"),
             ParameterDetails(
@@ -1276,7 +1461,19 @@ def get_geo_map_parameter_context() -> dict[str, list[str]]:
             ),
             data_param.details,
         ],
-        """""",
+        """
+        [
+            {
+                "name": "population",
+                "type": "circle",
+                "data": [
+                    {"title": "Berlin", "value": 3769000, "lat": 52.5200, "lon": 13.4050},
+                    {"title": "Hamburg", "value": 1850000, "lat": 53.5511, "lon": 9.9937},
+                    {"title": "München", "value": 1488000, "lat": 48.1351, "lon": 11.5820},
+                ],
+            }
+        ],
+        """,
     )
 
     config_param = ParameterDoc(
@@ -1291,7 +1488,23 @@ def get_geo_map_parameter_context() -> dict[str, list[str]]:
             ParameterDetails("initial_zoom", "int", _("Zoom level on the map when the page is loaded."), "undefined"),
             datasets_param.details,
         ],
-        """""",
+        """
+        {
+            "initial_coords": [52.5200, 13.4050],
+            "initial_zoom": 8,
+            "datasets": [
+                {
+                    "name": "population",
+                    "type": "circle",
+                    "data": [
+                        {"title": "Berlin", "value": 3769000, "lat": 52.5200, "lon": 13.4050},
+                        {"title": "Hamburg", "value": 1850000, "lat": 53.5511, "lon": 9.9937},
+                        {"title": "München", "value": 1488000, "lat": 48.1351, "lon": 11.5820},
+                    ],
+                }
+            ],
+        }
+        """,
     )
 
     main_params = [config_param.details, ParameterDetails("map_height", "int", _("Height of the map in 'rem'."), "36")]
@@ -1310,7 +1523,20 @@ def get_charts_parameter_context() -> dict[str, list[str]]:
             ParameterDetails("series", "list[str]", _("Names of the individual datasets."), "-"),
             ParameterDetails("data", "list[list[int]]", _("The data of the individual datasets."), "-"),
         ],
-        """""",
+        """
+       {
+            "title": "Chart Example",
+            "x_axis_legend": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+            "series": ["Email", "Union Ads", "Video Ads", "Direct", "Search Engine"],
+            "data": [
+                [100, 302, 301, 334, 390, 330, 320],
+                [320, 132, 101, 134, 90, 230, 210],
+                [220, 182, 191, 234, 290, 330, 310],
+                [150, 212, 201, 154, 190, 330, 410],
+                [820, 832, 901, 934, 1290, 1330, 1320],
+            ],
+        }
+        """,
     )
 
     main_params = [
@@ -1410,7 +1636,25 @@ def get_table_parameter_context() -> dict[str, list[str]]:
             ParameterDetails("headers", "list[str]", _("List of headings for the individual columns."), "[]"),
             ParameterDetails("rows", "list[list[str]]", _("List of data for the individual rows."), "[]"),
         ],
-        """""",
+        """
+        {
+            "caption": _("All registered users and their current status."),
+            "empty_msg": _("No data available!"),
+            "headers": [_("Name"), _("E-Mail"), _("Status")],
+            "rows": [
+                [
+                    "Max Mustermann",
+                    "max@example.com",
+                    _("Active"),
+                ],
+                [
+                    "Erika Mustermann",
+                    "erika@example.com",
+                    _("Inactive"),
+                ]
+            ],
+        }
+        """,
     )
 
     main_params = [data_param.details]
@@ -1450,9 +1694,53 @@ def get_generic_filter_parameter_context() -> dict[str, list[str]]:
         """""",
     )
 
+    filter_params = ParameterDoc(
+        ParameterDetails("filters", "list[dict[str, Any]]", _("Definition of the individual filters."), "[]"),
+        [
+            ParameterDetails(
+                "name",
+                "str",
+                _("Required for a <span class='inline-tag'>&lt;form&gt;</span>, as the name of the request parameter."),
+                "''",
+            ),
+            ParameterDetails("label", "str", _("A text label displayed above the select."), "''"),
+            ParameterDetails(
+                "explanation", "str", _("A brief description of the filter that appears in a tooltip."), "''"
+            ),
+            ParameterDetails(
+                "options", "list[str] oder dict[str, str]", _("List of values that can be selected."), "[]"
+            ),
+            ParameterDetails(
+                "selected_option",
+                "str",
+                _("Value (the key value, if the options were passed as a dict) of the currently selected option."),
+                "''",
+            ),
+        ],
+        """
+        [
+            {
+                "name": "model_type_filter",
+                "label": _("AI model type"),
+                "explanation": _("To filter by the type of AI-Model."),
+                "icon": {"name": "rocket", "size": "small"},
+                "options": {
+                    "placeholder": "-- Select model --",
+                    "language": "Language Model",
+                    "vision": "Vision Model",
+                    "multimodal": "Multimodal Model",
+                    "audio": "Audio / Speech Processing",
+                    "recommendation": "Recommendation System",
+                    "generative": "Generative Model",
+                },
+            },
+        ]
+        """,
+    )
+
     main_params = [
         ParameterDetails("request_url", "str", _("The URL to which the request should be sent."), "''"),
-        ParameterDetails("filters", "list[dict[str, Any]]", _("Definition of the individual filters."), "[]"),
+        filter_params.details,
         ParameterDetails("vertical", "bool", _("<b>True</b> if the filters should be arranged in a column."), "False"),
         htmx_config_params.details,
         ParameterDetails(
@@ -1472,7 +1760,7 @@ def get_generic_filter_parameter_context() -> dict[str, list[str]]:
         }
     ]
 
-    return {"params": [main_params, htmx_config_params], "params_notes_end": notes_end}
+    return {"params": [main_params, filter_params, htmx_config_params], "params_notes_end": notes_end}
 
 
 @register_component(Component.SEARCH_BAR)
@@ -1594,7 +1882,12 @@ def get_card_parameter_context() -> dict[str, list[str]]:
                 "''",
             ),
         ],
-        """""",
+        """
+        {
+            "url": static("insight_ui/img/thumbnail.png"),
+            "alt": "Card-Image"
+        }
+        """,
     )
 
     action_button_param = ParameterDoc(
@@ -1613,7 +1906,11 @@ def get_card_parameter_context() -> dict[str, list[str]]:
             ),
             ParameterDetails("url", "str", _("URL to be called when the button is clicked."), "''"),
         ],
-        """""",
+        """
+        [
+            {"text": _("Learn more"), "url": "#", "type": "secondary"},
+        ]
+        """,
     )
 
     main_params = [
@@ -1646,7 +1943,12 @@ def get_app_card_parameter_context() -> dict[str, list[str]]:
                 "''",
             ),
         ],
-        """""",
+        """
+        {
+            "url": static("insight_ui/img/thumbnail.png"),
+            "alt": "Card-Image"
+        }
+        """,
     )
 
     action_button_param = ParameterDoc(
@@ -1665,7 +1967,11 @@ def get_app_card_parameter_context() -> dict[str, list[str]]:
             ),
             ParameterDetails("url", "str", _("URL to be called when the button is clicked."), "''"),
         ],
-        """""",
+        """
+        [
+            {"text": _("Learn more"), "url": "#", "type": "secondary"},
+        ]
+        """,
     )
 
     main_params = [
@@ -1699,7 +2005,12 @@ def get_flip_card_parameter_context() -> dict[str, list[str]]:
                 "''",
             ),
         ],
-        """""",
+        """
+        {
+            "url": static("insight_ui/img/thumbnail.png"),
+            "alt": "Card-Image"
+        }
+        """,
     )
 
     action_button_param = ParameterDoc(
@@ -1718,7 +2029,11 @@ def get_flip_card_parameter_context() -> dict[str, list[str]]:
             ),
             ParameterDetails("url", "str", _("URL to be called when the button is clicked."), "''"),
         ],
-        """""",
+        """
+        [
+            {"text": _("Learn more"), "url": "#", "type": "secondary"},
+        ]
+        """,
     )
 
     main_params = [

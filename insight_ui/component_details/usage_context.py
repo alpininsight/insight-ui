@@ -362,7 +362,7 @@ def get_select_usage_context() -> dict[str, str]:
 
         {% select name="test" label="Test" options=["A", "B", "C"] %}
 
-        <!-- Oder -->
+        <!-- or -->
 
         {% select config=select_config %}
         """
@@ -378,7 +378,7 @@ def get_multiselect_usage_context() -> dict[str, str]:
 
         {% multiselect name="test" label="Test" maximum=0 show_buttons=True options=["A", "B", "C"] %}
 
-        <!-- Oder -->
+        <!-- or -->
 
         {% multiselect config=multiselect_config %}
         """
