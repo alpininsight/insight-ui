@@ -1010,6 +1010,7 @@ def get_select_parameter_context() -> dict[str, list[str]]:
             "''",
         ),
         ParameterDetails("label", "str", _("A text label displayed above the select."), "''"),
+        ParameterDetails("explanation", "str", _("A brief description of the filter that appears in a tooltip."), "''"),
         ParameterDetails("options", "list[str] oder dict[str, str]", _("List of values that can be selected."), "[]"),
         ParameterDetails(
             "selected_option",
@@ -1420,24 +1421,40 @@ def get_table_parameter_context() -> dict[str, list[str]]:
 @register_component(Component.GENERIC_FILTER)
 def get_generic_filter_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the generic filter component."""
+    htmx_config_params = ParameterDoc(
+        ParameterDetails(
+            "htmx_config", "dict[str, str]", _("Configuration of the HTMX request for asynchronous requests."), "{}"
+        ),
+        [
+            ParameterDetails(
+                "target", "str", _("ID of the HTML container whose content should be replaced upon response."), "''"
+            ),
+            ParameterDetails(
+                "swap",
+                "str",
+                _(
+                    "The way the target should be replaced: only the content ('innerHTML') or the container itself ('outerHTML')."
+                ),
+                "innerHTML",
+            ),
+            ParameterDetails(
+                "push_url",
+                "str",
+                _("<b>True</b> to register filter changes in the browser history, for backward navigation support."),
+                "'true'",
+            ),
+            ParameterDetails(
+                "loading_indicator_id", "str", _("ID of the loading indicator container."), "'#loading-indicator'"
+            ),
+        ],
+        """""",
+    )
+
     main_params = [
-        ParameterDetails(
-            "view_name", "str", _("Name of the URL to which the request should be sent when changing a filter."), "''"
-        ),
-        ParameterDetails(
-            "hx_target",
-            "str",
-            _("ID of the HTML container whose content should be replaced on response (e.g. a list of filtered data)."),
-            "''",
-        ),
-        ParameterDetails(
-            "hx_push_url",
-            "bool",
-            _("<b>True</b> if the selected filter values should be displayed in the URL."),
-            "True",
-        ),
+        ParameterDetails("request_url", "str", _("The URL to which the request should be sent."), "''"),
         ParameterDetails("filters", "list[dict[str, Any]]", _("Definition of the individual filters."), "[]"),
         ParameterDetails("vertical", "bool", _("<b>True</b> if the filters should be arranged in a column."), "False"),
+        htmx_config_params.details,
         ParameterDetails(
             "query_params",
             "dict[str, str]",
@@ -1455,7 +1472,7 @@ def get_generic_filter_parameter_context() -> dict[str, list[str]]:
         }
     ]
 
-    return {"params": [main_params], "params_notes_end": notes_end}
+    return {"params": [main_params, htmx_config_params], "params_notes_end": notes_end}
 
 
 @register_component(Component.SEARCH_BAR)
@@ -1799,7 +1816,7 @@ def get_toggle_view_parameter_context() -> dict[str, list[str]]:
 @register_component(Component.FORM)
 def get_form_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the form component."""
-    htmx_config_param = ParameterDoc(
+    htmx_config_params = ParameterDoc(
         ParameterDetails(
             "htmx_config", "dict[str, str]", _("Configuration of the HTMX request for asynchronous requests."), "{}"
         ),
@@ -1835,7 +1852,7 @@ def get_form_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "view_name", "str", _("Name of the URL to which the request should be sent when submitting the form."), "''"
         ),
-        htmx_config_param.details,
+        htmx_config_params.details,
     ]
 
-    return {"params": [main_params, htmx_config_param]}
+    return {"params": [main_params, htmx_config_params]}

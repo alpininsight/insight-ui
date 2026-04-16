@@ -690,11 +690,10 @@ def pagination(current_page: Page, surrounding_pages: list[int], ipp_config: dic
 
 @register.inclusion_tag("insight_ui/components/generic_filter.html")
 def generic_filter(  # noqa: PLR0913 (too many arguments)
-    filters: list,
-    view_name: str,
-    hx_target: str = "",
-    hx_push_url: str = "true",
+    filters: list = [],
+    request_url: str = "",
     vertical: bool = False,
+    htmx_config: Mapping[str, Any] | None = None,
     query_params: dict[str, str] = {},
 ) -> dict:
     """
@@ -703,11 +702,10 @@ def generic_filter(  # noqa: PLR0913 (too many arguments)
     Arguments:
     ---------
         filters (list): A list of individual filters (<select> fields).
-        view_name (str): The name of the view to which the request should be sent.
-        hx_target (str): The ID of the container whose contents are to be exchanged by the response.
-        hx_push_url (str): "true" if the selected filter values should be mapped in the URL.
+        request_url (str): The URL to which the request should be sent.
         vertical (bool): 'True' if the filters should be arranged one above the other.
-        query_params (dict): A dictionary to set the values of the filters.
+        htmx_config ([str, str]): HTMX configuration for AJAX requests.
+        query_params (dict[str, str]): A dictionary to set the values of the filters.
 
     Returns:
     -------
@@ -716,10 +714,9 @@ def generic_filter(  # noqa: PLR0913 (too many arguments)
     """
     return {
         "filters": filters,
-        "view_name": view_name,
-        "hx_target": hx_target,
-        "hx_push_url": hx_push_url,
+        "request_url": request_url,
         "vertical": vertical,
+        "htmx": htmx_config,
         "query_params": query_params,
     }
 
@@ -1081,7 +1078,7 @@ def card(
 
 
 @register.inclusion_tag("insight_ui/components/cards/app_card.html")
-def app_card(  # noqa: PLR0913
+def app_card(  # noqa: PLR0913 (too many args)
     title: str,
     content: str,
     tags: list[str] = [],
@@ -1114,7 +1111,7 @@ def app_card(  # noqa: PLR0913
 
 
 @register.inclusion_tag("insight_ui/components/cards/flip_card.html")
-def flip_card(  # noqa: PLR0913
+def flip_card(  # noqa: PLR0913 (too many args)
     title: str,
     content: str,
     tags: list[str] = [],
@@ -1273,9 +1270,10 @@ def three_d_carousel(
 
 
 @register.inclusion_tag("insight_ui/components/select.html")
-def select(
+def select(  # noqa: PLR0913 (too many args)
     name: str | None = None,
     label: str | None = None,
+    explanation: str = "",
     options: list[str] | dict[str, str] | None = None,
     selected_option: str | None = None,
     config: dict[str, Any] | None = None,
@@ -1287,6 +1285,7 @@ def select(
     ----
         name (str): The name of the select element.
         label (str): A short title that appears above the select box.
+        explanation (str): A brief description of the filter that appears in a tooltip.
         options (list[str] or dict[str, str]): All values that can be selected.
         selected_option (str): A value that has already been selected.
         config (dict[str, Any]): An alternative configuration with keys corresponding to the previous parameters.
@@ -1299,13 +1298,20 @@ def select(
     if config is not None:
         name = config.get("name", name)
         label = config.get("label", label)
+        explanation = config.get("explanation", explanation)
         options = config.get("options", options)
         selected_option = config.get("selected_option", selected_option)
 
     if isinstance(options, list):
         options = dict(zip(options, options))
 
-    return {"name": name, "label": label, "options": options, "selected_option": selected_option}
+    return {
+        "name": name,
+        "label": label,
+        "explanation": explanation,
+        "options": options,
+        "selected_option": selected_option,
+    }
 
 
 @register.inclusion_tag("insight_ui/components/multiselect.html")

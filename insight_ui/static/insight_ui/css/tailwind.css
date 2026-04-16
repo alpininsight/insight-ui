@@ -3370,13 +3370,17 @@
     }
   }
   .inline-tag {
-    border-radius: 0.25rem;
+    border-radius: var(--radius-sm);
     background-color: var(--color-gray-200);
-    padding-inline: calc(var(--spacing) * 2);
-    padding-block: calc(var(--spacing) * 0.5);
+    padding-inline: calc(var(--spacing) * 1);
+    padding-block: 1px;
+    font-family: var(--font-mono);
     color: var(--color-insight-primary);
     &:where([data-theme=dark], [data-theme=dark] *) {
-      background-color: var(--color-gray-800);
+      background-color: var(--color-gray-700);
+    }
+    &:where([data-theme=dark], [data-theme=dark] *) {
+      color: var(--color-insight-primary-active);
     }
   }
   .input {

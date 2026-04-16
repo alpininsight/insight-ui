@@ -603,7 +603,7 @@ def get_generic_filter_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% generic_filter filters=filters view_name=filter_view_name hx_target="#data" hx_push_url="true" vertical=False query_params=request.GET %}
+        {% generic_filter filters=filters view_name="/models/filter/ vertical=False htmx_config=htmx_config query_params=request.GET %}
         """
     }
 

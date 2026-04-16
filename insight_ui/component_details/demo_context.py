@@ -581,24 +581,24 @@ def get_generic_filter_context() -> dict:
     return {
         "filters": [
             {
-                "text": _("AI model type"),
+                "label": _("AI model type"),
                 "icon": {"name": "rocket", "size": "small"},
                 "name": "model_type_filter",
-                "values": model_type_options,
+                "options": model_type_options,
                 "explanation": _("To filter by the type of AI-Model."),
             },
             {
-                "text": _("Runtime"),
+                "label": _("Runtime"),
                 "icon": {"name": "clock", "size": "small"},
                 "name": "runtime_filter",
-                "values": runtime_options,
+                "options": runtime_options,
                 "explanation": _("To filter by the runtime."),
             },
             {
-                "text": _("License"),
+                "label": _("License"),
                 "icon": {"name": "doc", "size": "small"},
                 "name": "license_filter",
-                "values": license_options,
+                "options": license_options,
             },
         ],
         "filter_view_name": "index_view",
