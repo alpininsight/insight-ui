@@ -259,6 +259,7 @@ def get_footer_context() -> dict:
                 "privacy": "https://alpininsight.com/privacy/",
             },
             "copyright": {"year": 2026, "app_name": "Insight UI"},
+            "version": "v1.0.0",
         }
     }
 

@@ -1197,6 +1197,7 @@ def footer(data: dict) -> dict[str, Any]:
         "links": data.get("links"),
         "contact": data.get("contact"),
         "copyright": data.get("copyright"),
+        "version": data.get("version"),
     }
 
 

@@ -450,7 +450,13 @@ def get_footer_parameter_context() -> dict[str, list[str]]:
 
     data_param = ParameterDoc(
         ParameterDetails("data", "dict[str, Any]", _("Data to be displayed in the footer."), "{}"),
-        [description_param.details, links_param.details, contact_param.details, copyright_param.details],
+        [
+            description_param.details,
+            links_param.details,
+            contact_param.details,
+            copyright_param.details,
+            ParameterDetails("version", "str", _("Information about the current version."), "''"),
+        ],
         """
         {
             "description": {
@@ -474,6 +480,7 @@ def get_footer_parameter_context() -> dict[str, list[str]]:
                 "privacy": "https://alpininsight.com/privacy/",
             },
             "copyright": {"year": 2026, "app_name": "Insight UI"},
+            "version": "v1.0.0",
         }
         """,
     )
