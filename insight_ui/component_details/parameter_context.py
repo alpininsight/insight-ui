@@ -1500,9 +1500,82 @@ def get_search_bar_parameter_context() -> dict[str, list[str]]:
 @register_component(Component.QUERY_BUILDER)
 def get_query_builder_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the query builder component."""
-    main_params = [ParameterDetails("TODO!", "-", "-", "-")]
+    model_field_params = ParameterDoc(
+        ParameterDetails(
+            "model_fields",
+            "list[dict[str, Any]]",
+            "A list of filter fields with suitable operators and possible values.",
+            "[]",
+        ),
+        [
+            ParameterDetails("field", "str", _("Filter name, e.g., Modelfield."), "''"),
+            ParameterDetails("name", "str", _("Display name in the drop-down menu."), "''"),
+            ParameterDetails("type", "str", _("Type of value, e.g., 'text', 'date', or 'number'."), "''"),
+            ParameterDetails(
+                "operations",
+                "dict[str, str]",
+                _(
+                    "List of applicable operations, such as 'iexact', 'icontains', or 'gte', etc. The key is the operation, and the value is the display text."
+                ),
+                "{}",
+            ),
+            ParameterDetails(
+                "values",
+                "dict[str, Any]",
+                _(
+                    "A list of possible values, if they need to be restricted. The key is the filter value, and the value is the display text."
+                ),
+                "{}",
+            ),
+        ],
+        """
+        [
+            {
+                "field": "title",
+                "name": _("Title"),
+                "type": "text",
+                "operations": {
+                    "iexact": _("is exact"),
+                    "icontains": _("contains"),
+                    "contains": _("contains (case sensitive)"),
+                    "istartswith": _("starts with"),
+                    "iendswith": _("ends with"),
+                },
+                "values": {},
+            },
+            {
+                "field": "description",
+                "name": _("Description"),
+                "type": "text",
+                "operations": {"icontains": _("contains"), "contains": _("contains (case sensitive)")},
+                "values": {},
+            },
+            {
+                "field": "deadline",
+                "name": _("Deadline"),
+                "type": "date",
+                "operations": {"date": _("is exact"), "date__gte": _("is not before"), "date__lte": _("is not after")},
+                "values": {},
+            },
+            {
+                "field": "client__name",
+                "name": _("Client"),
+                "type": "text",
+                "operations": {
+                    "iexact": _("is exact"),
+                    "icontains": _("contains"),
+                    "istartswith": _("starts with"),
+                    "iendswith": _("ends with"),
+                },
+                "values": {},
+            },
+        ]
+        """,
+    )
 
-    return {"params": [main_params]}
+    main_params = [model_field_params.details]
+
+    return {"params": [main_params, model_field_params]}
 
 
 @register_component(Component.CARD)

@@ -59,20 +59,6 @@ DEMO_FIELDS = [
         "values": {},
     },
     {
-        "field": "short_description",
-        "name": _("Short Description"),
-        "type": "text",
-        "operations": {"icontains": _("contains"), "contains": _("contains (case sensitive)")},
-        "values": {},
-    },
-    {
-        "field": "release_date",
-        "name": _("Release Date"),
-        "type": "date",
-        "operations": {"date": _("is exact"), "date__gte": _("is not before"), "date__lte": _("is not after")},
-        "values": {},
-    },
-    {
         "field": "deadline",
         "name": _("Deadline"),
         "type": "date",

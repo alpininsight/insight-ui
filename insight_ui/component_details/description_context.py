@@ -547,7 +547,7 @@ def get_query_builder_description_context() -> dict[str, list[str]]:
         "description": [
             _("The `query_builder` component represents an alternative to the `generic_filter` component."),
             _(
-                "The query builder is far more flexible but also more complex to use than conventional filter methods. It is essentially a kind of graphical representation of an SQL query. The query builder receives a list of model fields that can be searched and for each field a list of allowed operations. E.g.: { 'field': 'name', 'type': 'text', 'operations': ['iexact', 'icontains']}."
+                "The query builder is far more flexible but also more complex to use than conventional filter methods. It is essentially a kind of graphical representation of an SQL query. The query builder receives a list of model fields that can be searched and for each field a list of allowed operations."
             ),
             _(
                 "In special cases, predefined values can also be specified as with the other variant. This aspect makes this type of filtering potentially much more flexible, as it does away with fixed defined values."

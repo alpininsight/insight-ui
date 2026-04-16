@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django-insight-ui 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-16 12:54+0200\n"
-"PO-Revision-Date: 2026-04-16 12:55+0200\n"
+"POT-Creation-Date: 2026-04-16 13:47+0200\n"
+"PO-Revision-Date: 2026-04-16 13:48+0200\n"
 "Last-Translator:   <>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -432,308 +432,295 @@ msgid "Enterprise License"
 msgstr "Enterprise Lizenz"
 
 #: .\insight_ui\component_details\demo_context.py:43
-#: .\insight_ui\component_details\demo_context.py:713
+#: .\insight_ui\component_details\demo_context.py:699
 #: .\insight_ui\demo_utils.py:67
 msgid "Title"
 msgstr "Titel"
 
 #: .\insight_ui\component_details\demo_context.py:46
-#: .\insight_ui\component_details\demo_context.py:72
-#: .\insight_ui\component_details\demo_context.py:79
-#: .\insight_ui\component_details\demo_context.py:87
+#: .\insight_ui\component_details\demo_context.py:65
+#: .\insight_ui\component_details\demo_context.py:73
 msgid "is exact"
 msgstr "ist exakt"
 
 #: .\insight_ui\component_details\demo_context.py:47
 #: .\insight_ui\component_details\demo_context.py:58
-#: .\insight_ui\component_details\demo_context.py:65
-#: .\insight_ui\component_details\demo_context.py:88
+#: .\insight_ui\component_details\demo_context.py:74
 msgid "contains"
 msgstr "beinhaltet"
 
 #: .\insight_ui\component_details\demo_context.py:48
 #: .\insight_ui\component_details\demo_context.py:58
-#: .\insight_ui\component_details\demo_context.py:65
 msgid "contains (case sensitive)"
 msgstr "beinhaltet (beachtet Groß-/Kleinschreibung)"
 
 #: .\insight_ui\component_details\demo_context.py:49
-#: .\insight_ui\component_details\demo_context.py:89
+#: .\insight_ui\component_details\demo_context.py:75
 msgid "starts with"
 msgstr "beginnt mit"
 
 #: .\insight_ui\component_details\demo_context.py:50
-#: .\insight_ui\component_details\demo_context.py:90
+#: .\insight_ui\component_details\demo_context.py:76
 msgid "ends with"
 msgstr "endet mit"
 
 #: .\insight_ui\component_details\demo_context.py:56
-#: .\insight_ui\component_details\demo_context.py:273
+#: .\insight_ui\component_details\demo_context.py:259
 #: .\insight_ui\templates\insight_ui\components\parameter_table.html:9
 msgid "Description"
 msgstr "Beschreibung"
 
 #: .\insight_ui\component_details\demo_context.py:63
-msgid "Short Description"
-msgstr "Kurzbeschreibung"
-
-#: .\insight_ui\component_details\demo_context.py:70
-msgid "Release Date"
-msgstr "Veröffentlichungsdatum"
-
-#: .\insight_ui\component_details\demo_context.py:72
-#: .\insight_ui\component_details\demo_context.py:79
-msgid "is not before"
-msgstr "nicht vor"
-
-#: .\insight_ui\component_details\demo_context.py:72
-#: .\insight_ui\component_details\demo_context.py:79
-msgid "is not after"
-msgstr "nicht nach"
-
-#: .\insight_ui\component_details\demo_context.py:77
 msgid "Deadline"
 msgstr "Fristtermin"
 
-#: .\insight_ui\component_details\demo_context.py:84
+#: .\insight_ui\component_details\demo_context.py:65
+msgid "is not before"
+msgstr "nicht vor"
+
+#: .\insight_ui\component_details\demo_context.py:65
+msgid "is not after"
+msgstr "nicht nach"
+
+#: .\insight_ui\component_details\demo_context.py:70
 msgid "Client"
 msgstr "Kunde"
 
-#: .\insight_ui\component_details\demo_context.py:116
+#: .\insight_ui\component_details\demo_context.py:102
 msgid "Our Logo"
 msgstr "Unser Logo"
 
-#: .\insight_ui\component_details\demo_context.py:121
+#: .\insight_ui\component_details\demo_context.py:107
 msgid "Login with OIDC"
 msgstr "Mit OIDC anmelden"
 
-#: .\insight_ui\component_details\demo_context.py:145
-#: .\insight_ui\component_details\demo_context.py:252
-#: .\insight_ui\component_details\demo_context.py:288
-#: .\insight_ui\component_details\demo_context.py:292
+#: .\insight_ui\component_details\demo_context.py:131
+#: .\insight_ui\component_details\demo_context.py:238
+#: .\insight_ui\component_details\demo_context.py:274
+#: .\insight_ui\component_details\demo_context.py:278
 msgid "Startpage"
 msgstr "Startseite"
 
-#: .\insight_ui\component_details\demo_context.py:153
+#: .\insight_ui\component_details\demo_context.py:139
 msgid "About"
 msgstr "Über"
 
-#: .\insight_ui\component_details\demo_context.py:159
+#: .\insight_ui\component_details\demo_context.py:145
 msgid "Test"
 msgstr "Test"
 
-#: .\insight_ui\component_details\demo_context.py:160
+#: .\insight_ui\component_details\demo_context.py:146
 msgid "Test2"
 msgstr "Test2"
 
-#: .\insight_ui\component_details\demo_context.py:169
-#: .\insight_ui\component_details\demo_context.py:312
-#: .\insight_ui\component_details\demo_context.py:318
+#: .\insight_ui\component_details\demo_context.py:155
+#: .\insight_ui\component_details\demo_context.py:298
+#: .\insight_ui\component_details\demo_context.py:304
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: .\insight_ui\component_details\demo_context.py:175
+#: .\insight_ui\component_details\demo_context.py:161
 msgid "Administration"
 msgstr "Administration"
 
-#: .\insight_ui\component_details\demo_context.py:181
+#: .\insight_ui\component_details\demo_context.py:167
 msgid "Translation"
 msgstr "Übersetzung"
 
-#: .\insight_ui\component_details\demo_context.py:195
+#: .\insight_ui\component_details\demo_context.py:181
 msgid "Personal Settings"
 msgstr "Persönliche Einstellungen"
 
-#: .\insight_ui\component_details\demo_context.py:203
+#: .\insight_ui\component_details\demo_context.py:189
 msgid "Notifications"
 msgstr "Benachrichtigungen"
 
-#: .\insight_ui\component_details\demo_context.py:208
+#: .\insight_ui\component_details\demo_context.py:194
 msgid "Messages"
 msgstr "Nachrichten"
 
-#: .\insight_ui\component_details\demo_context.py:213
+#: .\insight_ui\component_details\demo_context.py:199
 msgid "Tasks"
 msgstr "Aufgaben"
 
-#: .\insight_ui\component_details\demo_context.py:224
+#: .\insight_ui\component_details\demo_context.py:210
 msgid "Calendar"
 msgstr "Kalender"
 
-#: .\insight_ui\component_details\demo_context.py:228
-#: .\insight_ui\component_details\demo_context.py:311
+#: .\insight_ui\component_details\demo_context.py:214
+#: .\insight_ui\component_details\demo_context.py:297
 msgid "Profile"
 msgstr "Profil"
 
-#: .\insight_ui\component_details\demo_context.py:243
+#: .\insight_ui\component_details\demo_context.py:229
 #: .\insight_ui\context.py:143
 msgid "A modern, accessible, and responsive UI library for Django projects."
 msgstr ""
 "Eine moderne, barrierefreie und reaktive UI-Bibliothek für Django-Projekte."
 
-#: .\insight_ui\component_details\demo_context.py:253
+#: .\insight_ui\component_details\demo_context.py:239
 msgid "Storybook"
 msgstr "Bilderbuch"
 
-#: .\insight_ui\component_details\demo_context.py:254
+#: .\insight_ui\component_details\demo_context.py:240
 msgid "Documentation"
 msgstr "Dokumentation"
 
-#: .\insight_ui\component_details\demo_context.py:271
+#: .\insight_ui\component_details\demo_context.py:257
 msgid "Parameter of the alert component."
 msgstr "Parameter der Alert-Komponente"
 
-#: .\insight_ui\component_details\demo_context.py:272
-#: .\insight_ui\component_details\demo_context.py:538
-#: .\insight_ui\component_details\demo_context.py:691
+#: .\insight_ui\component_details\demo_context.py:258
+#: .\insight_ui\component_details\demo_context.py:524
+#: .\insight_ui\component_details\demo_context.py:677
 msgid "No data available!"
 msgstr "Keine Daten verfügbar!"
 
-#: .\insight_ui\component_details\demo_context.py:273
+#: .\insight_ui\component_details\demo_context.py:259
 #: .\insight_ui\templates\insight_ui\docs\component_details_content.html:79
 #: .\insight_ui\templates\insight_ui\docs\icons.html:47
 msgid "Parameter"
 msgstr "Parameter"
 
-#: .\insight_ui\component_details\demo_context.py:273
+#: .\insight_ui\component_details\demo_context.py:259
 #: .\insight_ui\templates\insight_ui\components\parameter_table.html:8
 msgid "Type"
 msgstr "Typ"
 
-#: .\insight_ui\component_details\demo_context.py:273
+#: .\insight_ui\component_details\demo_context.py:259
 msgid "Default"
 msgstr "Anfangseinstellung"
 
-#: .\insight_ui\component_details\demo_context.py:275
+#: .\insight_ui\component_details\demo_context.py:261
 msgid "The main message of the notification."
 msgstr "Die Hauptnachricht der Benachrichtigung."
 
-#: .\insight_ui\component_details\demo_context.py:276
+#: .\insight_ui\component_details\demo_context.py:262
 msgid "The type of the notification ('info', 'success', 'warning', 'error')"
 msgstr ""
 "Der Typ der Benachrichtigung ('info', 'success' (Erfolg), 'warning' "
 "(Warnung), 'error' (Fehler))"
 
-#: .\insight_ui\component_details\demo_context.py:277
+#: .\insight_ui\component_details\demo_context.py:263
 msgid "Whether the notification should be dismissible."
 msgstr "Ob die Benachrichtigung schließbar sein soll."
 
-#: .\insight_ui\component_details\demo_context.py:289
+#: .\insight_ui\component_details\demo_context.py:275
 #: .\insight_ui\context.py:64 .\insight_ui\context.py:132
 msgid "Components"
 msgstr "Komponenten"
 
-#: .\insight_ui\component_details\demo_context.py:290
+#: .\insight_ui\component_details\demo_context.py:276
 msgid "Breadcrumbs"
 msgstr "Breadcrumb-Navigation"
 
-#: .\insight_ui\component_details\demo_context.py:299
+#: .\insight_ui\component_details\demo_context.py:285
 msgid "The cat is sleeping on the red sofa."
 msgstr "Die Katze schläft auf dem roten Sofa."
 
-#: .\insight_ui\component_details\demo_context.py:299
+#: .\insight_ui\component_details\demo_context.py:285
 msgid "This is a completely different sentence!"
 msgstr "Das ist ein komplett anderer Satz!"
 
-#: .\insight_ui\component_details\demo_context.py:308
+#: .\insight_ui\component_details\demo_context.py:294
 msgid "User"
 msgstr "Benutzer"
 
-#: .\insight_ui\component_details\demo_context.py:313
+#: .\insight_ui\component_details\demo_context.py:299
 #: .\insight_ui\templates\insight_ui\components\user_dropdown.html:34
 msgid "Logout"
 msgstr "Abmelden"
 
-#: .\insight_ui\component_details\demo_context.py:322
+#: .\insight_ui\component_details\demo_context.py:308
 msgid "Personal Information"
 msgstr "Persönliche Informationen"
 
-#: .\insight_ui\component_details\demo_context.py:326
+#: .\insight_ui\component_details\demo_context.py:312
 msgid "Appearance"
 msgstr "Aussehen"
 
-#: .\insight_ui\component_details\demo_context.py:337
+#: .\insight_ui\component_details\demo_context.py:323
 msgid "Yes, confirm"
 msgstr "Ja, bestätigen"
 
-#: .\insight_ui\component_details\demo_context.py:338
+#: .\insight_ui\component_details\demo_context.py:324
 msgid "Abort"
 msgstr "Abbrechen"
 
-#: .\insight_ui\component_details\demo_context.py:349
-#: .\insight_ui\component_details\demo_context.py:358
-#: .\insight_ui\component_details\demo_context.py:769
+#: .\insight_ui\component_details\demo_context.py:335
+#: .\insight_ui\component_details\demo_context.py:344
+#: .\insight_ui\component_details\demo_context.py:755
 msgid "Contact Details"
 msgstr "Kontaktdaten"
 
-#: .\insight_ui\component_details\demo_context.py:350
-#: .\insight_ui\component_details\demo_context.py:359
-#: .\insight_ui\component_details\demo_context.py:770
+#: .\insight_ui\component_details\demo_context.py:336
+#: .\insight_ui\component_details\demo_context.py:345
+#: .\insight_ui\component_details\demo_context.py:756
 msgid "Information about the person and address."
 msgstr "Informationen zur Person und Anschrift."
 
-#: .\insight_ui\component_details\demo_context.py:353
-#: .\insight_ui\component_details\demo_context.py:362
-#: .\insight_ui\component_details\demo_context.py:773
+#: .\insight_ui\component_details\demo_context.py:339
+#: .\insight_ui\component_details\demo_context.py:348
+#: .\insight_ui\component_details\demo_context.py:759
 msgid "Payment Method"
 msgstr "Zahlungsmethode"
 
-#: .\insight_ui\component_details\demo_context.py:353
-#: .\insight_ui\component_details\demo_context.py:362
-#: .\insight_ui\component_details\demo_context.py:773
+#: .\insight_ui\component_details\demo_context.py:339
+#: .\insight_ui\component_details\demo_context.py:348
+#: .\insight_ui\component_details\demo_context.py:759
 msgid "Select the payment method."
 msgstr "Art der Bezahlung auswählen."
 
-#: .\insight_ui\component_details\demo_context.py:354
-#: .\insight_ui\component_details\demo_context.py:363
-#: .\insight_ui\component_details\demo_context.py:774
+#: .\insight_ui\component_details\demo_context.py:340
+#: .\insight_ui\component_details\demo_context.py:349
+#: .\insight_ui\component_details\demo_context.py:760
 msgid "Review"
 msgstr "Überprüfen"
 
-#: .\insight_ui\component_details\demo_context.py:354
-#: .\insight_ui\component_details\demo_context.py:363
-#: .\insight_ui\component_details\demo_context.py:774
+#: .\insight_ui\component_details\demo_context.py:340
+#: .\insight_ui\component_details\demo_context.py:349
+#: .\insight_ui\component_details\demo_context.py:760
 msgid "Review the data and pay."
 msgstr "Prüfen der Angaben und Bezahlen."
 
-#: .\insight_ui\component_details\demo_context.py:385
+#: .\insight_ui\component_details\demo_context.py:371
 msgid "Accept GTC"
 msgstr "AGBs annehmen"
 
-#: .\insight_ui\component_details\demo_context.py:402
+#: .\insight_ui\component_details\demo_context.py:388
 msgid "English"
 msgstr "Englisch"
 
-#: .\insight_ui\component_details\demo_context.py:403
+#: .\insight_ui\component_details\demo_context.py:389
 msgid "German"
 msgstr "Deutsch"
 
-#: .\insight_ui\component_details\demo_context.py:404
+#: .\insight_ui\component_details\demo_context.py:390
 msgid "French"
 msgstr "Französisch"
 
-#: .\insight_ui\component_details\demo_context.py:405
+#: .\insight_ui\component_details\demo_context.py:391
 msgid "Spanish"
 msgstr "Spanisch"
 
-#: .\insight_ui\component_details\demo_context.py:409
+#: .\insight_ui\component_details\demo_context.py:395
 msgid "Italian (currently not available)"
 msgstr "Italienisch (gerade nicht verfügbar)"
 
-#: .\insight_ui\component_details\demo_context.py:424
+#: .\insight_ui\component_details\demo_context.py:410
 msgid "BERT"
 msgstr "BERT"
 
-#: .\insight_ui\component_details\demo_context.py:425
+#: .\insight_ui\component_details\demo_context.py:411
 msgid "PaLM 2"
 msgstr "PaLM 2"
 
-#: .\insight_ui\component_details\demo_context.py:429
+#: .\insight_ui\component_details\demo_context.py:415
 msgid "LLaMA 2 (currently not available)"
 msgstr "LLaMA 2 (gerade nicht verfügbar)"
 
-#: .\insight_ui\component_details\demo_context.py:466
-#: .\insight_ui\component_details\demo_context.py:467
+#: .\insight_ui\component_details\demo_context.py:452
+#: .\insight_ui\component_details\demo_context.py:453
 #: .\insight_ui\templates\insight_ui\docs\component_demo.html:70
 #: .\insight_ui\templates\insight_ui\docs\component_demo.html:71
 #: .\insight_ui\templates\insight_ui\docs\component_demo.html:72
@@ -741,173 +728,173 @@ msgstr "LLaMA 2 (gerade nicht verfügbar)"
 msgid "Click me!"
 msgstr "Klick mich an!"
 
-#: .\insight_ui\component_details\demo_context.py:475
-#: .\insight_ui\component_details\demo_context.py:485
+#: .\insight_ui\component_details\demo_context.py:461
+#: .\insight_ui\component_details\demo_context.py:471
 msgid "Capitals:"
 msgstr "Hauptstädte:"
 
+#: .\insight_ui\component_details\demo_context.py:461
+#: .\insight_ui\component_details\demo_context.py:474
 #: .\insight_ui\component_details\demo_context.py:475
-#: .\insight_ui\component_details\demo_context.py:488
-#: .\insight_ui\component_details\demo_context.py:489
 msgid "Berlin"
 msgstr "Berlin"
 
+#: .\insight_ui\component_details\demo_context.py:461
+#: .\insight_ui\component_details\demo_context.py:474
 #: .\insight_ui\component_details\demo_context.py:475
-#: .\insight_ui\component_details\demo_context.py:488
-#: .\insight_ui\component_details\demo_context.py:489
 msgid "Rome"
 msgstr "Rom"
 
-#: .\insight_ui\component_details\demo_context.py:475
-#: .\insight_ui\component_details\demo_context.py:488
+#: .\insight_ui\component_details\demo_context.py:461
+#: .\insight_ui\component_details\demo_context.py:474
 msgid "London"
 msgstr "London"
 
-#: .\insight_ui\component_details\demo_context.py:488
+#: .\insight_ui\component_details\demo_context.py:474
 msgid "Brussels"
 msgstr "Brüssel"
 
-#: .\insight_ui\component_details\demo_context.py:488
-#: .\insight_ui\component_details\demo_context.py:489
+#: .\insight_ui\component_details\demo_context.py:474
+#: .\insight_ui\component_details\demo_context.py:475
 msgid "Paris"
 msgstr "Paris"
 
-#: .\insight_ui\component_details\demo_context.py:488
+#: .\insight_ui\component_details\demo_context.py:474
 msgid "Warsaw"
 msgstr "Warschau"
 
-#: .\insight_ui\component_details\demo_context.py:505
+#: .\insight_ui\component_details\demo_context.py:491
 msgid "100€ (minimum)"
 msgstr "100€ (Minimum)"
 
-#: .\insight_ui\component_details\demo_context.py:505
+#: .\insight_ui\component_details\demo_context.py:491
 msgid "1500€ (maximum)"
 msgstr "1500€ (Maximum)"
 
-#: .\insight_ui\component_details\demo_context.py:517
+#: .\insight_ui\component_details\demo_context.py:503
 #: .\insight_ui\demo_utils.py:19 .\insight_ui\views.py:142
 #, python-format
 msgid "Element %(i)s"
 msgstr "Element %(i)s"
 
-#: .\insight_ui\component_details\demo_context.py:517
+#: .\insight_ui\component_details\demo_context.py:503
 #: .\insight_ui\demo_utils.py:20
 #, python-format
 msgid "Content for element %(i)s"
 msgstr "Inhalt für Element %(i)s"
 
-#: .\insight_ui\component_details\demo_context.py:527 .\insight_ui\views.py:73
+#: .\insight_ui\component_details\demo_context.py:513 .\insight_ui\views.py:73
 msgid "Items per page"
 msgstr "Einträge pro Seite"
 
-#: .\insight_ui\component_details\demo_context.py:537
+#: .\insight_ui\component_details\demo_context.py:523
 msgid "Example of a table component."
 msgstr "Beispiel einer Tabellenkomponente."
 
-#: .\insight_ui\component_details\demo_context.py:539
+#: .\insight_ui\component_details\demo_context.py:525
 #: .\insight_ui\context.py:458
 #: .\insight_ui\templates\insight_ui\components\parameter_table.html:7
 msgid "Name"
 msgstr "Name"
 
-#: .\insight_ui\component_details\demo_context.py:539
-#: .\insight_ui\component_details\demo_context.py:737
+#: .\insight_ui\component_details\demo_context.py:525
+#: .\insight_ui\component_details\demo_context.py:723
 msgid "E-mail"
 msgstr "E-Mail"
 
-#: .\insight_ui\component_details\demo_context.py:539
+#: .\insight_ui\component_details\demo_context.py:525
 #: .\insight_ui\demo_utils.py:67
 #: .\insight_ui\templates\insight_ui\components\live_content_partial.html:14
 msgid "Status"
 msgstr "Status"
 
-#: .\insight_ui\component_details\demo_context.py:539
+#: .\insight_ui\component_details\demo_context.py:525
 msgid "Actions"
 msgstr "Aktionen"
 
-#: .\insight_ui\component_details\demo_context.py:544
-#: .\insight_ui\component_details\demo_context.py:556
+#: .\insight_ui\component_details\demo_context.py:530
+#: .\insight_ui\component_details\demo_context.py:542
 #: .\insight_ui\demo_utils.py:21
 msgid "Active"
 msgstr "Aktiv"
 
-#: .\insight_ui\component_details\demo_context.py:550
+#: .\insight_ui\component_details\demo_context.py:536
 #: .\insight_ui\demo_utils.py:21
 msgid "Inactive"
 msgstr "Inaktiv"
 
-#: .\insight_ui\component_details\demo_context.py:570
+#: .\insight_ui\component_details\demo_context.py:556
 msgid "AI model type"
 msgstr "KI-Modelltyp"
 
-#: .\insight_ui\component_details\demo_context.py:574
+#: .\insight_ui\component_details\demo_context.py:560
 msgid "To filter by the type of AI-Model."
 msgstr "Nach KI-Modelltyp filtern."
 
-#: .\insight_ui\component_details\demo_context.py:577
+#: .\insight_ui\component_details\demo_context.py:563
 msgid "Runtime"
 msgstr "Laufdauer"
 
-#: .\insight_ui\component_details\demo_context.py:581
+#: .\insight_ui\component_details\demo_context.py:567
 msgid "To filter by the runtime."
 msgstr "Nach Laufdauer filtern."
 
-#: .\insight_ui\component_details\demo_context.py:584
+#: .\insight_ui\component_details\demo_context.py:570
 msgid "License"
 msgstr "Lizenz"
 
-#: .\insight_ui\component_details\demo_context.py:606
+#: .\insight_ui\component_details\demo_context.py:592
 msgid "Example Card"
 msgstr "Beispielkarte"
 
-#: .\insight_ui\component_details\demo_context.py:607
+#: .\insight_ui\component_details\demo_context.py:593
 msgid "Subtitle"
 msgstr "Untertitel"
 
-#: .\insight_ui\component_details\demo_context.py:608
+#: .\insight_ui\component_details\demo_context.py:594
 msgid "This is the card content."
 msgstr "Das ist der Karteninhalt."
 
-#: .\insight_ui\component_details\demo_context.py:610
-#: .\insight_ui\component_details\demo_context.py:618
-#: .\insight_ui\component_details\demo_context.py:636
-#: .\insight_ui\component_details\demo_context.py:653
+#: .\insight_ui\component_details\demo_context.py:596
+#: .\insight_ui\component_details\demo_context.py:604
+#: .\insight_ui\component_details\demo_context.py:622
+#: .\insight_ui\component_details\demo_context.py:639
 #: .\insight_ui\demo_utils.py:23
 #: .\insight_ui\templates\insight_ui\docs\component_demo.html:152
 msgid "Learn more"
 msgstr "Mehr erfahren"
 
-#: .\insight_ui\component_details\demo_context.py:611
-#: .\insight_ui\component_details\demo_context.py:619
-#: .\insight_ui\component_details\demo_context.py:637
-#: .\insight_ui\component_details\demo_context.py:654
+#: .\insight_ui\component_details\demo_context.py:597
+#: .\insight_ui\component_details\demo_context.py:605
+#: .\insight_ui\component_details\demo_context.py:623
+#: .\insight_ui\component_details\demo_context.py:640
 #: .\insight_ui\demo_utils.py:24
 msgid "Share"
 msgstr "Teilen"
 
-#: .\insight_ui\component_details\demo_context.py:615
+#: .\insight_ui\component_details\demo_context.py:601
 msgid "Card with actions"
 msgstr "Karte mit Aktion"
 
-#: .\insight_ui\component_details\demo_context.py:616
+#: .\insight_ui\component_details\demo_context.py:602
 msgid "This card has some action buttons."
 msgstr "Diese Karte hat einige Aktions-Buttons."
 
-#: .\insight_ui\component_details\demo_context.py:631
+#: .\insight_ui\component_details\demo_context.py:617
 msgid "App Card"
 msgstr "Appkarte"
 
-#: .\insight_ui\component_details\demo_context.py:632
+#: .\insight_ui\component_details\demo_context.py:618
 msgid "A card with its content arranged horizontally."
 msgstr "Eine Karte mit horizontal angeordnetem Inhalt."
 
-#: .\insight_ui\component_details\demo_context.py:633
-#: .\insight_ui\component_details\demo_context.py:650
+#: .\insight_ui\component_details\demo_context.py:619
+#: .\insight_ui\component_details\demo_context.py:636
 msgid "Card-Image"
 msgstr "Kartenbild"
 
-#: .\insight_ui\component_details\demo_context.py:634
-#: .\insight_ui\component_details\demo_context.py:651
+#: .\insight_ui\component_details\demo_context.py:620
+#: .\insight_ui\component_details\demo_context.py:637
 #: .\insight_ui\templates\insight_ui\components\navbar.html:122
 #: .\insight_ui\templates\insight_ui\docs\component_demo.html:243
 #: .\insight_ui\templates\insight_ui\docs\storybook.html:19
@@ -916,122 +903,122 @@ msgstr "Kartenbild"
 msgid "Insight UI"
 msgstr "Insight UI"
 
-#: .\insight_ui\component_details\demo_context.py:634
-#: .\insight_ui\component_details\demo_context.py:651
+#: .\insight_ui\component_details\demo_context.py:620
+#: .\insight_ui\component_details\demo_context.py:637
 msgid "Layout"
 msgstr "Layout"
 
-#: .\insight_ui\component_details\demo_context.py:634
-#: .\insight_ui\component_details\demo_context.py:651
+#: .\insight_ui\component_details\demo_context.py:620
+#: .\insight_ui\component_details\demo_context.py:637
 msgid "Card"
 msgstr "Karte"
 
-#: .\insight_ui\component_details\demo_context.py:648
+#: .\insight_ui\component_details\demo_context.py:634
 msgid "Flip Card"
 msgstr "Drehkarte"
 
-#: .\insight_ui\component_details\demo_context.py:649
+#: .\insight_ui\component_details\demo_context.py:635
 msgid "A card that rotates 180° and has additional content on the back."
 msgstr ""
 "Eine Karte, die sich um 180° dreht und weiteren Inhalt auf der Rückseite "
 "hat."
 
-#: .\insight_ui\component_details\demo_context.py:676
+#: .\insight_ui\component_details\demo_context.py:662
 #, python-format
 msgid "Placeholder image %(index)s"
 msgstr "Platzhalterbild %(index)s"
 
-#: .\insight_ui\component_details\demo_context.py:714
+#: .\insight_ui\component_details\demo_context.py:700
 msgid "Your title"
 msgstr "Dein Titel"
 
-#: .\insight_ui\component_details\demo_context.py:715
+#: .\insight_ui\component_details\demo_context.py:701
 msgid "No title"
 msgstr "Kein Titel"
 
-#: .\insight_ui\component_details\demo_context.py:715
+#: .\insight_ui\component_details\demo_context.py:701
 msgid "King"
 msgstr "König"
 
-#: .\insight_ui\component_details\demo_context.py:721
+#: .\insight_ui\component_details\demo_context.py:707
 msgid "First name"
 msgstr "Vorname"
 
-#: .\insight_ui\component_details\demo_context.py:722
+#: .\insight_ui\component_details\demo_context.py:708
 msgid "Type in your first name"
 msgstr "Gib deinen Vornamen ein"
 
-#: .\insight_ui\component_details\demo_context.py:729
+#: .\insight_ui\component_details\demo_context.py:715
 msgid "Last name"
 msgstr "Nachname"
 
-#: .\insight_ui\component_details\demo_context.py:730
+#: .\insight_ui\component_details\demo_context.py:716
 msgid "Type in your last name"
 msgstr "Gib deinen Nachnamen ein"
 
-#: .\insight_ui\component_details\demo_context.py:738
+#: .\insight_ui\component_details\demo_context.py:724
 msgid "Type in your.email@example.com"
 msgstr "Gib deine.email@ein.de"
 
-#: .\insight_ui\component_details\demo_context.py:745
+#: .\insight_ui\component_details\demo_context.py:731
 #: .\insight_ui\templates\insight_ui\login.html:53
 msgid "Password"
 msgstr "Passwort"
 
-#: .\insight_ui\component_details\demo_context.py:746
+#: .\insight_ui\component_details\demo_context.py:732
 msgid "Type in your password"
 msgstr "Gib dein Passwort ein"
 
-#: .\insight_ui\component_details\demo_context.py:753
+#: .\insight_ui\component_details\demo_context.py:739
 #: .\insight_ui\templates\insight_ui\components\chat.html:17
 msgid "Message"
 msgstr "Nachricht"
 
-#: .\insight_ui\component_details\demo_context.py:754
+#: .\insight_ui\component_details\demo_context.py:740
 msgid "Do you want to tell us something?..."
 msgstr "Willst Du uns etwas mitteilen? …"
 
-#: .\insight_ui\component_details\demo_context.py:784
+#: .\insight_ui\component_details\demo_context.py:770
 msgid "What is Django?"
 msgstr "Was ist Django?"
 
-#: .\insight_ui\component_details\demo_context.py:784
+#: .\insight_ui\component_details\demo_context.py:770
 msgid "Django is a web framework for Python."
 msgstr "Django ist ein Webframework für Python."
 
-#: .\insight_ui\component_details\demo_context.py:785
+#: .\insight_ui\component_details\demo_context.py:771
 msgid "What is Tailwind?"
 msgstr "Was ist Tailwind?"
 
-#: .\insight_ui\component_details\demo_context.py:785
+#: .\insight_ui\component_details\demo_context.py:771
 msgid "Tailwind is a CSS utility framework"
 msgstr "Tailwind ist ein CSS-Utility-Framework."
 
-#: .\insight_ui\component_details\demo_context.py:786
+#: .\insight_ui\component_details\demo_context.py:772
 msgid "What is ARIA?"
 msgstr "Was ist ARIA?"
 
-#: .\insight_ui\component_details\demo_context.py:786
+#: .\insight_ui\component_details\demo_context.py:772
 msgid "ARIA is short for Accessible Rich Internet Applications."
 msgstr "ARIA steht für Accessible Rich Internet Applications."
 
-#: .\insight_ui\component_details\demo_context.py:797
+#: .\insight_ui\component_details\demo_context.py:783
 msgid "Tabs Example"
 msgstr "Reiterbeispiel"
 
-#: .\insight_ui\component_details\demo_context.py:799
+#: .\insight_ui\component_details\demo_context.py:785
 msgid "First Tab"
 msgstr "Erster Reiter"
 
-#: .\insight_ui\component_details\demo_context.py:803
+#: .\insight_ui\component_details\demo_context.py:789
 msgid "Second Tab"
 msgstr "Zweiter Reiter"
 
-#: .\insight_ui\component_details\demo_context.py:805
+#: .\insight_ui\component_details\demo_context.py:791
 msgid "Third Tab"
 msgstr "Dritter Reiter"
 
-#: .\insight_ui\component_details\demo_context.py:822
+#: .\insight_ui\component_details\demo_context.py:808
 msgid "Chart Example"
 msgstr "Diagrammbeispiel"
 
@@ -1626,20 +1613,24 @@ msgstr ""
 "dar."
 
 #: .\insight_ui\component_details\description_context.py:535
+#| msgid ""
+#| "The query builder is far more flexible but also more complex to use than "
+#| "conventional filter methods. It is essentially a kind of graphical "
+#| "representation of an SQL query. The query builder receives a list of model "
+#| "fields that can be searched and for each field a list of allowed operations."
+#| " E.g.: { 'field': 'name', 'type': 'text', 'operations': ['iexact', "
+#| "'icontains']}."
 msgid ""
 "The query builder is far more flexible but also more complex to use than "
 "conventional filter methods. It is essentially a kind of graphical "
 "representation of an SQL query. The query builder receives a list of model "
 "fields that can be searched and for each field a list of allowed operations."
-" E.g.: { 'field': 'name', 'type': 'text', 'operations': ['iexact', "
-"'icontains']}."
 msgstr ""
 "Der Query-Builder ist weitaus flexibler, aber auch komplexer, in der Nutzung"
 " als übliche Filter Methoden. Er ist im Grunde eine Art grafische "
 "Darstellung einer SQL-Query. Der Query Builder bekommt eine Liste der "
 "Modell-Felder, in welchen gesucht werden kann, und zu jedem Feld eine Liste "
-"der erlaubten Operationen. Bspw.: { 'field': 'name', 'type': 'text', "
-"'operations': ['iexact', 'icontains']}."
+"der erlaubten Operationen."
 
 #: .\insight_ui\component_details\description_context.py:538
 msgid ""
@@ -1792,17 +1783,17 @@ msgid "Primary 'Call-to-Action' button."
 msgstr "Primärer 'Call-to-Action'-Button."
 
 #: .\insight_ui\component_details\parameter_context.py:59
-#: .\insight_ui\component_details\parameter_context.py:1481
-#: .\insight_ui\component_details\parameter_context.py:1533
-#: .\insight_ui\component_details\parameter_context.py:1586
+#: .\insight_ui\component_details\parameter_context.py:1554
+#: .\insight_ui\component_details\parameter_context.py:1606
+#: .\insight_ui\component_details\parameter_context.py:1659
 msgid "URL to be called when the button is clicked."
 msgstr "URL, welche beim Anklicken des Buttons aufgerufen werden soll."
 
 #: .\insight_ui\component_details\parameter_context.py:60
 #: .\insight_ui\component_details\parameter_context.py:1046
-#: .\insight_ui\component_details\parameter_context.py:1472
-#: .\insight_ui\component_details\parameter_context.py:1524
-#: .\insight_ui\component_details\parameter_context.py:1577
+#: .\insight_ui\component_details\parameter_context.py:1545
+#: .\insight_ui\component_details\parameter_context.py:1597
+#: .\insight_ui\component_details\parameter_context.py:1650
 msgid "Button label."
 msgstr "Beschriftung des Buttons."
 
@@ -2250,10 +2241,10 @@ msgstr ""
 #: .\insight_ui\component_details\parameter_context.py:1269
 #: .\insight_ui\component_details\parameter_context.py:1284
 #: .\insight_ui\component_details\parameter_context.py:1298
-#: .\insight_ui\component_details\parameter_context.py:1693
-#: .\insight_ui\component_details\parameter_context.py:1715
-#: .\insight_ui\component_details\parameter_context.py:1734
-#: .\insight_ui\component_details\parameter_context.py:1781
+#: .\insight_ui\component_details\parameter_context.py:1766
+#: .\insight_ui\component_details\parameter_context.py:1788
+#: .\insight_ui\component_details\parameter_context.py:1807
+#: .\insight_ui\component_details\parameter_context.py:1854
 msgid "Optional, unique tag ID for identifying the element in JavaScript."
 msgstr ""
 "Optionale, eindeutige Tag-ID für die Identifizierung des Elements im "
@@ -2429,25 +2420,25 @@ msgstr "<b>True</b> zeigt einen Pfeil hinter dem Titel an."
 
 #: .\insight_ui\component_details\parameter_context.py:742
 #: .\insight_ui\component_details\parameter_context.py:810
-#: .\insight_ui\component_details\parameter_context.py:1712
+#: .\insight_ui\component_details\parameter_context.py:1785
 msgid "A list of the radio elements."
 msgstr "Eine Liste der Radio-Elemente."
 
 #: .\insight_ui\component_details\parameter_context.py:747
 #: .\insight_ui\component_details\parameter_context.py:815
-#: .\insight_ui\component_details\parameter_context.py:1717
+#: .\insight_ui\component_details\parameter_context.py:1790
 msgid "Value of the respective radio button."
 msgstr "Wert des jeweiligen Radio-Buttons."
 
 #: .\insight_ui\component_details\parameter_context.py:748
 #: .\insight_ui\component_details\parameter_context.py:816
-#: .\insight_ui\component_details\parameter_context.py:1718
+#: .\insight_ui\component_details\parameter_context.py:1791
 msgid "Label of the respective radio button."
 msgstr "Beschriftung des jeweiligen Radio-Buttons."
 
 #: .\insight_ui\component_details\parameter_context.py:749
 #: .\insight_ui\component_details\parameter_context.py:818
-#: .\insight_ui\component_details\parameter_context.py:1720
+#: .\insight_ui\component_details\parameter_context.py:1793
 msgid "<b>True</b> if the radio button should be disabled."
 msgstr "<b>True</b>, wenn der Radio-Button deaktiviert sein soll."
 
@@ -2515,7 +2506,7 @@ msgstr ""
 "<b>False</b> bekommt die Gruppe ihre eigene &lt;form&gt;."
 
 #: .\insight_ui\component_details\parameter_context.py:817
-#: .\insight_ui\component_details\parameter_context.py:1719
+#: .\insight_ui\component_details\parameter_context.py:1792
 msgid "Optional icon displayed before the label."
 msgstr "Optionales Icon, welches vor der Beschriftung angezeigt wird."
 
@@ -2922,12 +2913,12 @@ msgid "List of data for the individual rows."
 msgstr "Liste der Daten für die einzelnen Zeilen."
 
 #: .\insight_ui\component_details\parameter_context.py:1366
-#: .\insight_ui\component_details\parameter_context.py:1761
+#: .\insight_ui\component_details\parameter_context.py:1834
 msgid "Configuration of the HTMX request for asynchronous requests."
 msgstr "Konfiguration des HTMX Requests für asynchrone Requests."
 
 #: .\insight_ui\component_details\parameter_context.py:1370
-#: .\insight_ui\component_details\parameter_context.py:1765
+#: .\insight_ui\component_details\parameter_context.py:1838
 msgid ""
 "ID of the HTML container whose content should be replaced upon response."
 msgstr ""
@@ -2935,7 +2926,7 @@ msgstr ""
 "soll."
 
 #: .\insight_ui\component_details\parameter_context.py:1376
-#: .\insight_ui\component_details\parameter_context.py:1771
+#: .\insight_ui\component_details\parameter_context.py:1844
 msgid ""
 "The way the target should be replaced: only the content ('innerHTML') or the"
 " container itself ('outerHTML')."
@@ -3003,23 +2994,54 @@ msgstr ""
 msgid "Optional value automatically displayed in the text field."
 msgstr "Optionaler Wert, der automatisch im Textfeld angezeigt wird."
 
+#: .\insight_ui\component_details\parameter_context.py:1451
+msgid "Filter name, e.g., Modelfield."
+msgstr "Name des Filters bspw. Modelfield."
+
+#: .\insight_ui\component_details\parameter_context.py:1452
+#| msgid "Label of the dropdown element."
+msgid "Display name in the drop-down menu."
+msgstr "Anzeigename im Auswahlmenü."
+
 #: .\insight_ui\component_details\parameter_context.py:1453
+#| msgid ""
+#| "The type of the input field, e.g.: 'text', 'password', 'date', etc."
+msgid "Type of value, e.g., 'text', 'date', or 'number'."
+msgstr "Art des Wertes bspw. 'text', 'date' oder 'number'."
+
+#: .\insight_ui\component_details\parameter_context.py:1458
+msgid ""
+"List of applicable operations, such as 'iexact', 'icontains', or 'gte', etc."
+" The key is the operation, and the value is the display text."
+msgstr ""
+"Liste der anwendbaren Operationen bspw. 'iexact', 'icontains' oder 'gte', "
+"etc. Der Schlüssel ist die Operation und der Wert ist der Anzeigetext."
+
+#: .\insight_ui\component_details\parameter_context.py:1466
+msgid ""
+"A list of possible values, if they need to be restricted. The key is the "
+"filter value, and the value is the display text."
+msgstr ""
+"Eine Liste möglicher Werte, falls diese begrenzt werden sollen. Der "
+"Schlüssel ist der Filterwert und der Wert ist der Anzeigetext."
+
+#: .\insight_ui\component_details\parameter_context.py:1526
 msgid "Describes an image displayed as background for the title and subtitle."
 msgstr ""
 "Beschreibt ein Bild, welches als Hintergrund für den Titel und Untertitel "
 "angezeigt wird."
 
-#: .\insight_ui\component_details\parameter_context.py:1456
-#: .\insight_ui\component_details\parameter_context.py:1508
-#: .\insight_ui\component_details\parameter_context.py:1561
-#: .\insight_ui\component_details\parameter_context.py:1651
+#: .\insight_ui\component_details\parameter_context.py:1529
+#: .\insight_ui\component_details\parameter_context.py:1581
+#: .\insight_ui\component_details\parameter_context.py:1634
+#: .\insight_ui\component_details\parameter_context.py:1724
 msgid "URL to the image resource."
 msgstr "URL zur Bild-Ressource."
 
-#: .\insight_ui\component_details\parameter_context.py:1460
-#: .\insight_ui\component_details\parameter_context.py:1512
-#: .\insight_ui\component_details\parameter_context.py:1565
-#: .\insight_ui\component_details\parameter_context.py:1655
+#: .\insight_ui\component_details\parameter_context.py:1533
+#: .\insight_ui\component_details\parameter_context.py:1585
+#: .\insight_ui\component_details\parameter_context.py:1638
+#: .\insight_ui\component_details\parameter_context.py:1728
 msgid ""
 "Displayed alternative text used for screen readers if the image cannot be "
 "loaded."
@@ -3027,66 +3049,64 @@ msgstr ""
 "Angezeigter Alternativtext für Screenreader, falls das Bild nicht geladen "
 "werden kann."
 
-#: .\insight_ui\component_details\parameter_context.py:1469
-#: .\insight_ui\component_details\parameter_context.py:1521
-#: .\insight_ui\component_details\parameter_context.py:1574
+#: .\insight_ui\component_details\parameter_context.py:1542
+#: .\insight_ui\component_details\parameter_context.py:1594
+#: .\insight_ui\component_details\parameter_context.py:1647
 msgid "List of buttons displayed at the bottom edge of the card."
 msgstr "Liste von Buttons, welche am unteren Rand der Karte angezeigt werden."
 
-#: .\insight_ui\component_details\parameter_context.py:1477
-#: .\insight_ui\component_details\parameter_context.py:1529
-#: .\insight_ui\component_details\parameter_context.py:1582
+#: .\insight_ui\component_details\parameter_context.py:1550
+#: .\insight_ui\component_details\parameter_context.py:1602
+#: .\insight_ui\component_details\parameter_context.py:1655
 msgid ""
 "Describes the importance of the button (purely visual). Possible values are:"
 " 'primary' and 'secondary'."
 msgstr "URL, welche beim Anklicken auf den Button aufgerufen werden soll."
 
-#: .\insight_ui\component_details\parameter_context.py:1487
-#: .\insight_ui\component_details\parameter_context.py:1539
-#: .\insight_ui\component_details\parameter_context.py:1592
+#: .\insight_ui\component_details\parameter_context.py:1560
+#: .\insight_ui\component_details\parameter_context.py:1612
+#: .\insight_ui\component_details\parameter_context.py:1665
 msgid "Heading of the card."
 msgstr "Überschrift der Karte."
 
-#: .\insight_ui\component_details\parameter_context.py:1488
+#: .\insight_ui\component_details\parameter_context.py:1561
 msgid "Optional subtitle displayed directly below the title."
 msgstr "Optionaler Untertitel, welcher direkt unter dem Titel angezeigt wird."
 
-#: .\insight_ui\component_details\parameter_context.py:1492
-#: .\insight_ui\component_details\parameter_context.py:1543
-#: .\insight_ui\component_details\parameter_context.py:1596
+#: .\insight_ui\component_details\parameter_context.py:1565
+#: .\insight_ui\component_details\parameter_context.py:1616
+#: .\insight_ui\component_details\parameter_context.py:1669
 msgid ""
 "Text content of the card. Displayed below the title or subtitle if there is "
 "one."
 msgstr "Textinhalt der Karte. Wird unter dem Titel bzw. Untertitel angezeigt."
 
-#: .\insight_ui\component_details\parameter_context.py:1506
-#: .\insight_ui\component_details\parameter_context.py:1559
+#: .\insight_ui\component_details\parameter_context.py:1579
+#: .\insight_ui\component_details\parameter_context.py:1632
 msgid "Describes an image displayed at the top."
 msgstr "Beschreibt ein Bild, welches oben angezeigt wird."
 
-#: .\insight_ui\component_details\parameter_context.py:1546
-#: .\insight_ui\component_details\parameter_context.py:1599
-#| msgid "List of buttons displayed at the bottom of the dialog."
+#: .\insight_ui\component_details\parameter_context.py:1619
+#: .\insight_ui\component_details\parameter_context.py:1672
 msgid "A list of small buttons, placed below the content text."
 msgstr ""
 "Eine Liste kleiner Butttons, die unterhalb des Textinhalts angeordnet sind."
 
-#: .\insight_ui\component_details\parameter_context.py:1547
-#: .\insight_ui\component_details\parameter_context.py:1600
-#| msgid "URL called when the user clicks on the title of the step."
+#: .\insight_ui\component_details\parameter_context.py:1620
+#: .\insight_ui\component_details\parameter_context.py:1673
 msgid "A URL that is called up when the user clicks on the title."
 msgstr ""
 "Eine URL, die aufgerufen wird, wenn der Benutzer auf den Titel klickt."
 
-#: .\insight_ui\component_details\parameter_context.py:1613
-#: .\insight_ui\component_details\parameter_context.py:1701
+#: .\insight_ui\component_details\parameter_context.py:1686
+#: .\insight_ui\component_details\parameter_context.py:1774
 msgid "Data to be displayed within the carousel (freely definable)."
 msgstr ""
 "Daten, welche innerhalb des Karussells angezeigt werden sollen (frei "
 "definierbar)."
 
-#: .\insight_ui\component_details\parameter_context.py:1618
-#: .\insight_ui\component_details\parameter_context.py:1667
+#: .\insight_ui\component_details\parameter_context.py:1691
+#: .\insight_ui\component_details\parameter_context.py:1740
 msgid ""
 "<b>True</b> if the current page should be displayed in the bottom right "
 "corner."
@@ -3094,8 +3114,8 @@ msgstr ""
 "<b>True</b>, wenn in der unteren rechten Ecke die aktuelle Seite angezeigt "
 "werden soll."
 
-#: .\insight_ui\component_details\parameter_context.py:1624
-#: .\insight_ui\component_details\parameter_context.py:1673
+#: .\insight_ui\component_details\parameter_context.py:1697
+#: .\insight_ui\component_details\parameter_context.py:1746
 msgid ""
 "<b>True</b> if a simple pagination should be displayed below the carousel "
 "content."
@@ -3103,52 +3123,52 @@ msgstr ""
 "<b>True</b>, wenn unter dem Karussell-Inhalt eine einfache Pagination "
 "angezeigt werden soll."
 
-#: .\insight_ui\component_details\parameter_context.py:1630
-#: .\insight_ui\component_details\parameter_context.py:1679
+#: .\insight_ui\component_details\parameter_context.py:1703
+#: .\insight_ui\component_details\parameter_context.py:1752
 msgid ""
 "<b>True</b> if the carousel should iterate through the content "
 "automatically."
 msgstr ""
 "<b>True</b>, wenn das Karussell selbständig durch den Inhalt iterieren soll."
 
-#: .\insight_ui\component_details\parameter_context.py:1633
+#: .\insight_ui\component_details\parameter_context.py:1706
 msgid "Number of 'carousel_items' per page."
 msgstr "Anzahl an 'carousel_items' pro Seite."
 
-#: .\insight_ui\component_details\parameter_context.py:1643
+#: .\insight_ui\component_details\parameter_context.py:1716
 msgid "Images to be displayed within the carousel."
 msgstr "Bilder, welche innerhalb des Karussells angezeigt werden sollen."
 
-#: .\insight_ui\component_details\parameter_context.py:1648
+#: .\insight_ui\component_details\parameter_context.py:1721
 msgid ""
 "Optional description of the image displayed at the top edge of the image."
 msgstr ""
 "Optionale Beschreibung des Bildes, welche am oberen Rand des Bildes "
 "angezeigt wird."
 
-#: .\insight_ui\component_details\parameter_context.py:1682
+#: .\insight_ui\component_details\parameter_context.py:1755
 msgid "Number of images per page."
 msgstr "Anzahl der Bilder pro Seite."
 
-#: .\insight_ui\component_details\parameter_context.py:1695
+#: .\insight_ui\component_details\parameter_context.py:1768
 msgid "Rotation speed of the carousel."
 msgstr "Drehgeschwindigkeit des Karussells."
 
-#: .\insight_ui\component_details\parameter_context.py:1696
+#: .\insight_ui\component_details\parameter_context.py:1769
 msgid "Vertical tilt of the carousel towards the camera."
 msgstr "Vertikale Neigung des Karussells zur Kamera."
 
-#: .\insight_ui\component_details\parameter_context.py:1698
+#: .\insight_ui\component_details\parameter_context.py:1771
 msgid "<b>True</b> if all cards should face the camera at all times."
 msgstr ""
 "<b>True</b>, wenn alle Karten immer in Richtung der Kamera ausgerichtet sein"
 " sollen."
 
-#: .\insight_ui\component_details\parameter_context.py:1729
+#: .\insight_ui\component_details\parameter_context.py:1802
 msgid "Configuration of the radio group for switching the view type."
 msgstr "Konfiguration der Radio-Group, zum Wechseln der Ansichtsart."
 
-#: .\insight_ui\component_details\parameter_context.py:1745
+#: .\insight_ui\component_details\parameter_context.py:1818
 msgid ""
 "Unique tag ID for identifying the element in JavaScript (required for "
 "switching the view)."
@@ -3156,28 +3176,28 @@ msgstr ""
 "Eindeutige Tag-ID für die Identifizierung des Elements im JavaScript (wird "
 "für den Wechsel der Ansicht benötigt)."
 
-#: .\insight_ui\component_details\parameter_context.py:1748
+#: .\insight_ui\component_details\parameter_context.py:1821
 msgid "Data to be displayed."
 msgstr "Daten, welche angezeigt werden sollen."
 
-#: .\insight_ui\component_details\parameter_context.py:1750
+#: .\insight_ui\component_details\parameter_context.py:1823
 msgid "Name of the currently selected view type."
 msgstr "Name der aktuell ausgewählten Ansichtsart."
 
-#: .\insight_ui\component_details\parameter_context.py:1783
+#: .\insight_ui\component_details\parameter_context.py:1856
 msgid "Heading of the form."
 msgstr "Überschrift des Formulars."
 
-#: .\insight_ui\component_details\parameter_context.py:1784
+#: .\insight_ui\component_details\parameter_context.py:1857
 msgid "Description of the form displayed directly below the title."
 msgstr ""
 "Beschreibung des Formulars, welche direkt unter dem Titel angezeigt wird."
 
-#: .\insight_ui\component_details\parameter_context.py:1785
+#: .\insight_ui\component_details\parameter_context.py:1858
 msgid "List of the individual form fields."
 msgstr "Liste der einzelnen Formular-Felder."
 
-#: .\insight_ui\component_details\parameter_context.py:1789
+#: .\insight_ui\component_details\parameter_context.py:1862
 msgid ""
 "<b>True</b> if a 'Reset' button should be displayed next to the 'Submit' "
 "button."
@@ -3185,7 +3205,7 @@ msgstr ""
 "<b>True</b>, wenn neben dem 'Absenden' Button ein 'Zurücksetzen' Button "
 "angezeigt werden soll"
 
-#: .\insight_ui\component_details\parameter_context.py:1793
+#: .\insight_ui\component_details\parameter_context.py:1866
 msgid ""
 "Name of the URL to which the request should be sent when submitting the "
 "form."
@@ -4886,6 +4906,12 @@ msgstr "Das ist der Inhalt des zweiten Reiters!"
 #: .\insight_ui\views.py:418
 msgid "This is the content of the third tab!"
 msgstr "Das ist der Inhalt des dritten Reiters!"
+
+#~ msgid "Short Description"
+#~ msgstr "Kurzbeschreibung"
+
+#~ msgid "Release Date"
+#~ msgstr "Veröffentlichungsdatum"
 
 #~ msgid ""
 #~ "ID of the HTML container whose content should be replaced on response (e.g. "
