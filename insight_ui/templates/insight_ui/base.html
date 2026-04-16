@@ -91,11 +91,9 @@
                         {% block heading %}
                         {% endblock heading %}
                     </div>
-                    <svg viewBox="0 0 500 90" class="-z-10">
-                        <polyline class="fill-insight-primary/25 drop-shadow-xs drop-shadow-gray-500 dark:drop-shadow-gray-800" points="-10,0 450,0 -10,65"/>
-                        <polyline class="fill-insight-primary/25 drop-shadow-xs drop-shadow-gray-500 dark:drop-shadow-gray-800" points="-10,0 250,0 -10,80"/>
-                        <polyline class="fill-insight-primary drop-shadow-xs drop-shadow-gray-500 dark:drop-shadow-gray-800" points="-10,0 510,0 -10,35"/>
-                    </svg>
+                    {% block heading_decoration %}
+                        {% heading_decoration %}
+                    {% endblock heading_decoration %}
                 </div>
                 <div id="content" class="w-full space-y-12 text-secondary leading-loose px-4 md:px-16 pb-16">
                     {% include "insight_ui/components/htmx_loading_indicator.html" %}

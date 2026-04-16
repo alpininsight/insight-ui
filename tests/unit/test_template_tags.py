@@ -320,6 +320,72 @@ class FooterTemplateTagTest(TemplateTagsTestCase):
         assert "Insight UI" in copyright_p.text
 
 
+class HeadingDecorationTemplateTagTest(TemplateTagsTestCase):
+    """Tests for the heading_decoration template tag."""
+
+    def test_heading_decoration_default_waves(self) -> None:
+        """Test default heading decoration output."""
+        template_string = """
+        {% load insight_tags %}
+        {% heading_decoration %}
+        """
+        rendered = self.render_template(template_string)
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        decoration = soup.find(attrs={"data-heading-decoration": "waves"})
+        assert decoration is not None
+        assert decoration.name == "svg"
+        assert decoration.get("aria-hidden") == "true"
+        assert decoration.get("viewbox") == "0 0 500 90"
+        assert len(decoration.find_all("polyline")) == 3  # noqa: PLR2004
+
+    def test_heading_decoration_variants(self) -> None:
+        """Test gradient and image heading decoration variants."""
+        template_string = """
+        {% load insight_tags %}
+        {% heading_decoration style="gradient" height=64 %}
+        {% heading_decoration style="image" image_url="/static/hero.jpg" height=120 %}
+        """
+        rendered = self.render_template(template_string)
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        gradient = soup.find(attrs={"data-heading-decoration": "gradient"})
+        image = soup.find(attrs={"data-heading-decoration": "image"})
+
+        assert gradient is not None
+        assert "height: 64px" in gradient.get("style")
+        assert "linear-gradient" in gradient.get("style")
+
+        assert image is not None
+        assert "height: 120px" in image.get("style")
+        assert "/static/hero.jpg" in image.get("style")
+
+    def test_heading_decoration_config_and_color(self) -> None:
+        """Test config dictionary support and custom color propagation."""
+        config = {"style": "waves", "height": 120, "color": "#123456"}
+        template_string = """
+        {% load insight_tags %}
+        {% heading_decoration config=config %}
+        """
+        rendered = self.render_template(template_string, context={"config": config})
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        decoration = soup.find(attrs={"data-heading-decoration": "waves"})
+        assert decoration is not None
+        assert decoration.get("viewbox") == "0 0 500 120"
+        assert "--heading-decoration-color: #123456" in decoration.get("style")
+
+    def test_heading_decoration_none_renders_no_markup(self) -> None:
+        """Test that style='none' renders no decoration element."""
+        template_string = """
+        {% load insight_tags %}
+        {% heading_decoration style="none" %}
+        """
+        rendered = self.render_template(template_string)
+
+        assert "data-heading-decoration" not in rendered
+
+
 class CheckboxTemplateTagTest(TemplateTagsTestCase):
     """Tests for the {% checkbox %} component."""
 

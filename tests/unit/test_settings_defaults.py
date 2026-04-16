@@ -27,8 +27,8 @@ class TestSettingsDefaults:
 
     def test_database_defaults_to_data_dir(self) -> None:
         """App settings should expose a dedicated default data directory."""
-        assert settings.DATA_DIR == Path(settings.BASE_DIR) / "data"
+        assert Path(settings.BASE_DIR) / "data" == settings.DATA_DIR
 
     def test_static_root_has_safe_default(self) -> None:
         """Static root should keep a dedicated configurable directory."""
-        assert settings.STATIC_ROOT == Path(settings.BASE_DIR) / "staticfiles"
+        assert Path(settings.BASE_DIR) / "staticfiles" == settings.STATIC_ROOT
