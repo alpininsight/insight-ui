@@ -9,8 +9,10 @@ def get_page_header_usage_context() -> dict[str, str]:
     """Serve usage documentation for the page header component."""
     return {
         "usage": """
+        {% load insight_tags %}
+
         {% block heading %}
-        {% page_header title="Base Template" description="Beschreibung der Seite." %}
+            {% page_header title="My indispensable app" description="This is a django application designed with the help of insight UI." %}
         {% endblock heading %}
         """
     }
@@ -50,7 +52,7 @@ def get_article_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% article title="Aktuelles" columns=3 content="<p>Erster Absatz...</p><p>Zweiter Absatz...</p>" %}
+        {% article title="News" columns=3 content="<p>First paragraph...</p><p>Second paragraph...</p>" %}
         """
     }
 

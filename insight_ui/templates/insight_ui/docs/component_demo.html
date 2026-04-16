@@ -229,10 +229,7 @@
 {% elif component.value == "form" %}
     {% form tag_id="htmx-form" title=_("Contact Form") description=_("Please fill out the form") fields=form_fields show_reset_button=True view_name="form_submit" htmx_config=htmx_config %}
 {% elif component.value == "page_header" %}
-    <div class="bg-insight-primary px-8 pt-12 pb-4">
-        {% page_header title=_("Example Page") description=_("This is an example description for the page header component.") %}
-    </div>
-    {% heading_decoration %}
+    {% page_header title=_("Example Page") description=_("This is an example description for the page header component.") %}
 {% elif component.value == "heading_decoration" %}
     <div class="space-y-8">
         <div class="space-y-2">

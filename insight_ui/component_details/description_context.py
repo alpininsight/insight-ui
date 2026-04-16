@@ -10,7 +10,7 @@ def get_page_header_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `page_header` component renders the page header within the blue header of the base template. It displays a title and optionally a description."
+                "The `page_header` component can be used to display a header featuring geometric decorations, along with a title, an optional description, and buttons. The header is displayed in the selected primary color to stand out from the rest of the page."
             )
         ]
     }

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django-insight-ui 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-16 13:47+0200\n"
-"PO-Revision-Date: 2026-04-16 13:48+0200\n"
+"POT-Creation-Date: 2026-04-16 14:58+0200\n"
+"PO-Revision-Date: 2026-04-16 14:59+0200\n"
 "Last-Translator:   <>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -553,7 +553,7 @@ msgid "Profile"
 msgstr "Profil"
 
 #: .\insight_ui\component_details\demo_context.py:229
-#: .\insight_ui\context.py:143
+#: .\insight_ui\context.py:144
 msgid "A modern, accessible, and responsive UI library for Django projects."
 msgstr ""
 "Eine moderne, barrierefreie und reaktive UI-Bibliothek für Django-Projekte."
@@ -606,7 +606,7 @@ msgid "Whether the notification should be dismissible."
 msgstr "Ob die Benachrichtigung schließbar sein soll."
 
 #: .\insight_ui\component_details\demo_context.py:275
-#: .\insight_ui\context.py:64 .\insight_ui\context.py:132
+#: .\insight_ui\context.py:64 .\insight_ui\context.py:133
 msgid "Components"
 msgstr "Komponenten"
 
@@ -792,7 +792,7 @@ msgid "Example of a table component."
 msgstr "Beispiel einer Tabellenkomponente."
 
 #: .\insight_ui\component_details\demo_context.py:525
-#: .\insight_ui\context.py:458
+#: .\insight_ui\context.py:459
 #: .\insight_ui\templates\insight_ui\components\parameter_table.html:7
 msgid "Name"
 msgstr "Name"
@@ -896,7 +896,7 @@ msgstr "Kartenbild"
 #: .\insight_ui\component_details\demo_context.py:620
 #: .\insight_ui\component_details\demo_context.py:637
 #: .\insight_ui\templates\insight_ui\components\navbar.html:122
-#: .\insight_ui\templates\insight_ui\docs\component_demo.html:243
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:236
 #: .\insight_ui\templates\insight_ui\docs\storybook.html:19
 #: .\insight_ui\templates\insight_ui\index.html:4
 #: .\insight_ui\templates\insight_ui\playground.html:4
@@ -1024,12 +1024,16 @@ msgstr "Diagrammbeispiel"
 
 #: .\insight_ui\component_details\description_context.py:13
 msgid ""
-"The `page_header` component renders the page header within the blue header "
-"of the base template. It displays a title and optionally a description."
+"The `page_header` component can be used to display a header featuring "
+"geometric decorations, along with a title, an optional description, and "
+"buttons. The header is displayed in the selected primary color to stand out "
+"from the rest of the page."
 msgstr ""
-"Die `page_header` Komponente rendert den Seitenkopf innerhalb der blauen "
-"Kopfzeile des Base-Templates. Sie zeigt einen Titel und optional eine "
-"Beschreibung an."
+"Die `page_header` Komponente kann verwendet werden, um eine mit "
+"geometrischen Verzierungen ausgestattete Kopfzeile, mit einem Titel, einer "
+"optionalen Beschreibung, sowie Buttons, darzustellen. Die Kopfzeile wird in "
+"der gewählten primär Farbe dargestellt, um sich von der restlichen Seite "
+"abzuheben."
 
 #: .\insight_ui\component_details\description_context.py:25
 msgid ""
@@ -1613,13 +1617,6 @@ msgstr ""
 "dar."
 
 #: .\insight_ui\component_details\description_context.py:535
-#| msgid ""
-#| "The query builder is far more flexible but also more complex to use than "
-#| "conventional filter methods. It is essentially a kind of graphical "
-#| "representation of an SQL query. The query builder receives a list of model "
-#| "fields that can be searched and for each field a list of allowed operations."
-#| " E.g.: { 'field': 'name', 'type': 'text', 'operations': ['iexact', "
-#| "'icontains']}."
 msgid ""
 "The query builder is far more flexible but also more complex to use than "
 "conventional filter methods. It is essentially a kind of graphical "
@@ -2999,13 +2996,10 @@ msgid "Filter name, e.g., Modelfield."
 msgstr "Name des Filters bspw. Modelfield."
 
 #: .\insight_ui\component_details\parameter_context.py:1452
-#| msgid "Label of the dropdown element."
 msgid "Display name in the drop-down menu."
 msgstr "Anzeigename im Auswahlmenü."
 
 #: .\insight_ui\component_details\parameter_context.py:1453
-#| msgid ""
-#| "The type of the input field, e.g.: 'text', 'password', 'date', etc."
 msgid "Type of value, e.g., 'text', 'date', or 'number'."
 msgstr "Art des Wertes bspw. 'text', 'date' oder 'number'."
 
@@ -3213,7 +3207,7 @@ msgstr ""
 "Name der URL, an welche beim Absenden des Formulars der Request gesendet "
 "werden soll."
 
-#: .\insight_ui\component_details\usage_context.py:48
+#: .\insight_ui\component_details\usage_context.py:50
 msgid ""
 "The navigation bar is integrated using the `navbar` tag. The _base template_"
 " includes a block designated for the navigation bar, where it should be "
@@ -3223,7 +3217,7 @@ msgstr ""
 "verfügt über einen, für die Navbar vorgesehenen Block, in welchem diese "
 "platziert werden sollte, um die korrekte Funktionsweise zu gewährleisten."
 
-#: .\insight_ui\component_details\usage_context.py:65
+#: .\insight_ui\component_details\usage_context.py:67
 msgid ""
 "The sidebar is integrated using the `sidebar` tag. The _base template_ "
 "includes blocks designated for the sidebar, where it should be placed. There"
@@ -3239,7 +3233,7 @@ msgstr ""
 "extra Block _Drawers_. Wenn die Komponente außerhalb dieser Blöcke verwendet"
 " wird, kann es zu Layoutproblemen kommen."
 
-#: .\insight_ui\component_details\usage_context.py:82
+#: .\insight_ui\component_details\usage_context.py:84
 msgid ""
 "The footer is included using the `footer` tag. The _base template_ includes "
 "a block designated for the footer. To ensure that the footer always appears "
@@ -3251,7 +3245,7 @@ msgstr ""
 " garantiert immer am Ende der Webseite erscheint, sollte dieser in "
 "vorgesehenen Block gepackt werden."
 
-#: .\insight_ui\component_details\usage_context.py:403
+#: .\insight_ui\component_details\usage_context.py:405
 msgid ""
 "To add a popover, you need a trigger that causes the popover to appear when "
 "the user hovers over it. This trigger can be any HTML tag and must include "
@@ -3265,7 +3259,7 @@ msgstr ""
 "des Ziel-Elements (Popover) ist. Das Popover kann komplett selbst definiert "
 "werden, lediglich die Verbindung durch die **Tag-ID** ist zu beachten."
 
-#: .\insight_ui\component_details\usage_context.py:419
+#: .\insight_ui\component_details\usage_context.py:421
 msgid ""
 "To add a tooltip to an element, simply add the `data-tooltip` attribute, "
 "whose value is the text to be displayed in the tooltip."
@@ -3273,7 +3267,7 @@ msgstr ""
 "Um ein Tooltip zu einem Element hinzuzufügen, müssen diese lediglich das "
 "Attribut `data-tooltip`, dessen Wert der anzuzeigende Text im Tooltip ist."
 
-#: .\insight_ui\component_details\usage_context.py:451
+#: .\insight_ui\component_details\usage_context.py:453
 msgid ""
 "To use the component, simply insert an HTML tag—preferably a `<div>`. The "
 "element must include the `data-insight-code-block` attribute, whose value "
@@ -3312,46 +3306,46 @@ msgstr "Anpassung"
 msgid "Icons"
 msgstr "Icons"
 
-#: .\insight_ui\context.py:164
+#: .\insight_ui\context.py:165
 msgid "Name of the icon (see table below)."
 msgstr "Name des Icons (siehe Tabelle unten)."
 
-#: .\insight_ui\context.py:166
+#: .\insight_ui\context.py:167
 msgid ""
 "Size of the icon. Possible values are: 'big', 'medium', 'small' and 'xs'."
 msgstr ""
 "Größe des Icons. Mögliche Werte sind: 'big' (groß), 'medium' (mittel), "
 "'small' (klein) und 'xs' (extra klein)."
 
-#: .\insight_ui\context.py:174
+#: .\insight_ui\context.py:175
 msgid "Typically used for links to the home page."
 msgstr "Typisch für Verlinkungen auf die Startseite."
 
-#: .\insight_ui\context.py:180
+#: .\insight_ui\context.py:181
 msgid "Topics related to the office or work."
 msgstr "Themen mit Bezug zum Büro oder der Arbeit."
 
-#: .\insight_ui\context.py:186
+#: .\insight_ui\context.py:187
 msgid "Language selection elements."
 msgstr "Elemente zur Sprachauswahl."
 
-#: .\insight_ui\context.py:192
+#: .\insight_ui\context.py:193
 msgid "General settings."
 msgstr "Generelle Einstellungen."
 
-#: .\insight_ui\context.py:198
+#: .\insight_ui\context.py:199
 msgid "As a logout button or for leaving a section."
 msgstr "Als Abmeldebutton oder zum Verlassen eines Bereichs."
 
-#: .\insight_ui\context.py:204
+#: .\insight_ui\context.py:205
 msgid "Card-based dashboards, grid views, etc."
 msgstr "Auf Karten basierte Dashboards, Rasteransichten, etc.."
 
-#: .\insight_ui\context.py:210
+#: .\insight_ui\context.py:211
 msgid "List views of all kinds."
 msgstr "Listenansichten jeder Art."
 
-#: .\insight_ui\context.py:216
+#: .\insight_ui\context.py:217
 msgid ""
 "Specifically for our carousel components. <b>(This icon is to be replaced "
 "soon!)</b>"
@@ -3359,41 +3353,41 @@ msgstr ""
 "Speziell für unsere Karussell-Komponenten. <b>(Das Icon soll demnächst "
 "ausgetauscht werden!)</b>"
 
-#: .\insight_ui\context.py:222
+#: .\insight_ui\context.py:223
 msgid ""
 "Classic for dropdowns, accordions, and everything that can be expanded."
 msgstr ""
 "Klassiker für Dropdowns und Accordion, eben alles was sich aufklappen lässt."
 
-#: .\insight_ui\context.py:228
+#: .\insight_ui\context.py:229
 msgid ""
 "Classic for dropdowns, accordions, and everything that can be collapsed."
 msgstr ""
 "Klassiker für Dropdowns und Accordion, eben alles was sich zuklappen lässt."
 
-#: .\insight_ui\context.py:234
+#: .\insight_ui\context.py:235
 msgid "Classic for indicating a sorting option."
 msgstr "Klassiker für die Andeutung einer Sortiermöglichkeit."
 
-#: .\insight_ui\context.py:240 .\insight_ui\context.py:246
+#: .\insight_ui\context.py:241 .\insight_ui\context.py:247
 msgid "Carousels, pagination or expandable elements such as a drawer."
 msgstr ""
 "Karussells, Pagination oder Elemente zum Ausklappen wie z.b. ein Drawer."
 
-#: .\insight_ui\context.py:252
+#: .\insight_ui\context.py:253
 msgid "Checklists."
 msgstr "Checklisten."
 
-#: .\insight_ui\context.py:258
+#: .\insight_ui\context.py:259
 msgid "Classic for buttons to close dialogs, alerts, etc."
 msgstr ""
 "Klassisch für Buttons zum Schließen von Dialogen, Warnungen und dergleichen."
 
-#: .\insight_ui\context.py:264
+#: .\insight_ui\context.py:265
 msgid "Indicator for additional information or FAQs."
 msgstr "Indikator für weitere Informationen oder FAQs."
 
-#: .\insight_ui\context.py:270
+#: .\insight_ui\context.py:271
 msgid ""
 "For special cases where something unique is needed, or simply no other icon "
 "fits :)."
@@ -3401,41 +3395,41 @@ msgstr ""
 "Für spezielle Fälle, in denen es um etwas besonderes geht, oder einfach kein"
 " anderes Icon passt :)."
 
-#: .\insight_ui\context.py:276
+#: .\insight_ui\context.py:277
 msgid "Settings or as a maintenance symbol."
 msgstr "Einstellungen oder als Wartungssymbol."
 
-#: .\insight_ui\context.py:282
+#: .\insight_ui\context.py:283
 msgid "Classic for any search bar."
 msgstr "Klassiker für jede Suchleiste."
 
-#: .\insight_ui\context.py:288
+#: .\insight_ui\context.py:289
 msgid "Groups of different objects, for example components or dashboards."
 msgstr ""
 "Gruppen von unterschiedlichen Objekten, zum Beispiel Komponenten oder "
 "Dashboards."
 
-#: .\insight_ui\context.py:294
+#: .\insight_ui\context.py:295
 msgid "Indicator for applications, programs or dialog windows."
 msgstr "Indikator für Anwendungen, Programme oder Dialogfenster."
 
-#: .\insight_ui\context.py:300
+#: .\insight_ui\context.py:301
 msgid "Classic for documents."
 msgstr "Klassiker für Dokumente."
 
-#: .\insight_ui\context.py:306
+#: .\insight_ui\context.py:307
 msgid "Classic for copy and paste."
 msgstr "Klassiker für Kopieren und Einfügen."
 
-#: .\insight_ui\context.py:312
+#: .\insight_ui\context.py:313
 msgid "Indicator for a clickable element."
 msgstr "Indikator für ein anklickbares Element."
 
-#: .\insight_ui\context.py:318
+#: .\insight_ui\context.py:319
 msgid "Classic for attachments or links to documents."
 msgstr "Klassiker für Anhänge bzw. Links zu Dokumenten."
 
-#: .\insight_ui\context.py:324
+#: .\insight_ui\context.py:325
 msgid ""
 "Classic for links to other, often external pages or for opening a dialog "
 "window."
@@ -3443,107 +3437,107 @@ msgstr ""
 "Klassiker für Links zu anderen, oft externen Seiten oder zum Öffnen eines "
 "Dialogfensters."
 
-#: .\insight_ui\context.py:330
+#: .\insight_ui\context.py:331
 msgid "Classic for sharing content."
 msgstr "Klassiker für das Teilen von Inhalten."
 
-#: .\insight_ui\context.py:336
+#: .\insight_ui\context.py:337
 msgid "Indicates smartphone usage."
 msgstr "Hinweis auf Smartphone-Nutzung."
 
-#: .\insight_ui\context.py:342
+#: .\insight_ui\context.py:343
 msgid "Indicates tablet usage."
 msgstr "Hinweis auf Tablet-Nutzung."
 
-#: .\insight_ui\context.py:348
+#: .\insight_ui\context.py:349
 msgid "Indicates desktop PC usage."
 msgstr "Hinweis auf Desktop-PC Nutzung."
 
-#: .\insight_ui\context.py:354 .\insight_ui\context.py:360
+#: .\insight_ui\context.py:355 .\insight_ui\context.py:361
 msgid "Classic for light/dark mode switches."
 msgstr "Klassiker für Hell/Dunkel Darstellungswechselschalter."
 
-#: .\insight_ui\context.py:366
+#: .\insight_ui\context.py:367
 msgid "Links to GitHub."
 msgstr "Verlinkungen zu GitHub."
 
-#: .\insight_ui\context.py:372
+#: .\insight_ui\context.py:373
 msgid "Typical user icon, user profile, settings, etc."
 msgstr "Typisches Benutzericon, Benutzerprofil, Einstellungen, etc.."
 
-#: .\insight_ui\context.py:378
+#: .\insight_ui\context.py:379
 msgid "Everything related to time."
 msgstr "Alles zum Thema Uhrzeit."
 
-#: .\insight_ui\context.py:384
+#: .\insight_ui\context.py:385
 msgid "Dates, deadlines, appointments."
 msgstr "Datumsangaben, Deadlines, Termine."
 
-#: .\insight_ui\context.py:390
+#: .\insight_ui\context.py:391
 msgid "Typical for notifications."
 msgstr "Typisch für Benachrichtigungen."
 
-#: .\insight_ui\context.py:396
+#: .\insight_ui\context.py:397
 msgid "Interactive chats."
 msgstr "Interaktive Chats."
 
-#: .\insight_ui\context.py:402
+#: .\insight_ui\context.py:403
 msgid "Special things or as an indicator for 'Let's get started!'."
 msgstr "Besondere Dinge oder als Indikator für 'Jetzt geht es los!'."
 
-#: .\insight_ui\context.py:408
+#: .\insight_ui\context.py:409
 msgid "Indicator for the use of the terminal or command line."
 msgstr "Indikator für die Verwendung des Terminals bzw. der Kommandozeile."
 
-#: .\insight_ui\context.py:414
+#: .\insight_ui\context.py:415
 msgid "Indicates source code."
 msgstr "Hinweis auf Quellcode."
 
-#: .\insight_ui\context.py:420
+#: .\insight_ui\context.py:421
 msgid "Classic for downloads."
 msgstr "Klassiker für Downloads."
 
-#: .\insight_ui\context.py:426 .\insight_ui\context.py:432
+#: .\insight_ui\context.py:427 .\insight_ui\context.py:433
 msgid "Customizations, settings, more for fine-grained settings."
 msgstr "Anpassungen, Einstellungen, eher für feingranulare Einstellungen."
 
-#: .\insight_ui\context.py:438
+#: .\insight_ui\context.py:439
 msgid "Information and notes."
 msgstr "Informationen und Anmerkungen."
 
-#: .\insight_ui\context.py:444
+#: .\insight_ui\context.py:445
 msgid "Warnings, issues, minor errors."
 msgstr "Warnhinweise, Probleme, kleinere Fehler."
 
-#: .\insight_ui\context.py:450
+#: .\insight_ui\context.py:451
 msgid "Major errors, critical issues or dangerous actions."
 msgstr "Große Fehler, kritische Probleme oder gefährliche Aktionen."
 
-#: .\insight_ui\context.py:458
+#: .\insight_ui\context.py:459
 msgid "Icon"
 msgstr "Icon"
 
-#: .\insight_ui\context.py:458
+#: .\insight_ui\context.py:459
 msgid "Example usages"
 msgstr "Verwendungsbeispiele"
 
-#: .\insight_ui\context.py:458
+#: .\insight_ui\context.py:459
 msgid "Source"
 msgstr "Quelle"
 
-#: .\insight_ui\context.py:490
+#: .\insight_ui\context.py:491
 msgid "RTL"
 msgstr "RTL"
 
-#: .\insight_ui\context.py:508
+#: .\insight_ui\context.py:509
 msgid "Structural layout components."
 msgstr "Strukturelle Anordnungs-Komponenten."
 
-#: .\insight_ui\context.py:510
+#: .\insight_ui\context.py:511
 msgid "Main layout elements like navigation, footer and sidebars."
 msgstr "Hauptdarstellungselemente wie Navigation, Footer und Sidebars."
 
-#: .\insight_ui\context.py:513
+#: .\insight_ui\context.py:514
 msgid ""
 "Standard input elements like Buttons, Radio-Buttons, Toggle-Buttons, "
 "Dropdown Menus and more."
@@ -3551,7 +3545,7 @@ msgstr ""
 "Standard Eingabeelemente wie Buttons, Radio-Buttons, Toggle-Buttons, "
 "Dropdown-Menüs und mehr."
 
-#: .\insight_ui\context.py:517
+#: .\insight_ui\context.py:518
 msgid ""
 "Popover, Tooltip, Modal and everything that pops up with additional "
 "information."
@@ -3559,23 +3553,23 @@ msgstr ""
 "Popover, Tooltips, Modale und alles andere, das mit weiteren Informationen "
 "auftaucht."
 
-#: .\insight_ui\context.py:520
+#: .\insight_ui\context.py:521
 msgid "Utility components."
 msgstr "Unterstützende Komponenten."
 
-#: .\insight_ui\context.py:522
+#: .\insight_ui\context.py:523
 msgid "List and table components for big data."
 msgstr "Listen- und Tabellen-Komponenten für große Datenmengen."
 
-#: .\insight_ui\context.py:524
+#: .\insight_ui\context.py:525
 msgid "Filter and search components for big data."
 msgstr "Filter- und Such-Komponenten für große Datenmengen."
 
-#: .\insight_ui\context.py:526
+#: .\insight_ui\context.py:527
 msgid "Card components and different presentation types."
 msgstr "Karten-Komponenten und verschiedene Präsentationsarten."
 
-#: .\insight_ui\context.py:528
+#: .\insight_ui\context.py:529
 msgid ""
 "Form components with various input fields and different request methods."
 msgstr ""
@@ -4213,24 +4207,24 @@ msgstr "Kontaktformular"
 msgid "Please fill out the form"
 msgstr "Bitte das Formular ausfüllen"
 
-#: .\insight_ui\templates\insight_ui\docs\component_demo.html:233
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:232
 msgid "Example Page"
 msgstr "Beispielseite"
 
-#: .\insight_ui\templates\insight_ui\docs\component_demo.html:233
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:232
 msgid "This is an example description for the page header component."
 msgstr ""
 "Dies ist eine beispielhafte Beschreibung für die Kopfzeilen-Komponente."
 
-#: .\insight_ui\templates\insight_ui\docs\component_demo.html:241
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:234
 msgid "Newsletter"
 msgstr "Neuigkeiten"
 
-#: .\insight_ui\templates\insight_ui\docs\component_demo.html:243
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:236
 msgid "A Django Component Framework"
 msgstr "Ein Django-Komponenten-Framework"
 
-#: .\insight_ui\templates\insight_ui\docs\component_demo.html:243
+#: .\insight_ui\templates\insight_ui\docs\component_demo.html:236
 msgid "A modern UI library."
 msgstr "Eine moderne UI Bibliothek."
 
@@ -4906,6 +4900,14 @@ msgstr "Das ist der Inhalt des zweiten Reiters!"
 #: .\insight_ui\views.py:418
 msgid "This is the content of the third tab!"
 msgstr "Das ist der Inhalt des dritten Reiters!"
+
+#~ msgid ""
+#~ "The `page_header` component renders the page header within the blue header "
+#~ "of the base template. It displays a title and optionally a description."
+#~ msgstr ""
+#~ "Die `page_header` Komponente rendert den Seitenkopf innerhalb der blauen "
+#~ "Kopfzeile des Base-Templates. Sie zeigt einen Titel und optional eine "
+#~ "Beschreibung an."
 
 #~ msgid "Short Description"
 #~ msgstr "Kurzbeschreibung"
