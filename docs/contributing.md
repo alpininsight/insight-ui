@@ -13,7 +13,7 @@ First of all, the requirements for working with Insight UI:
 - Python 3.12+
 - [`uv`](https://github.com/astral-sh/uv) for dependency management
 
-Lokales Setup:
+Local setup:
 
 ```bash
 uv sync --all-groups
@@ -75,6 +75,33 @@ In this section, we explain all the steps necessary to add a new component.
 
 - Template tags or Python logic: Add tests in `insight_ui/tests/test_template_tags.py` or your own test module.
 - Frontend behavior: Add regression tests (e.g., HTMX requests or screenshots) if necessary.
+
+## GitHub issue labels
+
+Issue labels are used as a small taxonomy, not as a flat list of keywords. It is acceptable for an issue to have more than three labels when each label answers a different routing or planning question.
+
+Use labels along these axes:
+
+| Axis | Purpose | Examples |
+|---|---|---|
+| Type | What kind of work is this? | `bug`, `enhancement`, `documentation`, `chore`, `ci` |
+| Area | Which part of the package is affected? | `area: component-api`, `area: design-system`, `area: responsive`, `area: self-documentation` |
+| Component | Which reusable UI building block is affected? | `component: sidebar`, `component: footer`, `component: tooltip` |
+| Impact | Who may be affected by the change? | `impact: public-api`, `impact: consumer-compatibility` |
+| Status | What process state needs to be visible? | `status: split` |
+
+For most issues, choose exactly one type label, at least one area label, and a component label when a concrete component is involved. Add impact labels only when the issue affects reusable APIs, downstream packages, or projects that consume Insight UI as a generic UI package. Use status labels sparingly and only for workflow state that is not already clear from the issue state.
+
+Example:
+
+An issue titled `fix(sidebar): scrollbar appears on mobile viewport resize` should use:
+
+- `bug`, because existing behavior is broken.
+- `area: responsive`, because the problem is about viewport behavior and breakpoints.
+- `component: sidebar`, because the sidebar component owns the visible defect.
+- `impact: consumer-compatibility`, because downstream projects using the generic sidebar may see the same layout issue.
+
+Do not add labels just because they are loosely related. A label should make filtering, ownership, prioritization, or compatibility review easier. Avoid creating one-off labels for a single issue; prefer extending the existing axes only when the same label will be useful across multiple future issues.
 
 ## Pull request guidelines
 
