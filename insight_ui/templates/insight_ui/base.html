@@ -74,7 +74,7 @@
         {% block drawers %}
         {% endblock drawers %}
 
-        <main id="main" class="flex grow pt-16">
+        <main id="main" class="flex grow {% if navbar_fixed %}pt-16{% endif %}">
             <div id="left-aside" class="flex">
                 {% block sidebar_left %}{% endblock sidebar_left %}
             </div>
