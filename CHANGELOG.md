@@ -117,6 +117,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - EN to DE translations for all .html
 - Sharpen fuzzy translations
 - Add new setting 'use_tailwind_cli' and remove obsolete env-variables
+- Add heading decoration component 
 
 ### Miscellaneous
 
