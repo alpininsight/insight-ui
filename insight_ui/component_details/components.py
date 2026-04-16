@@ -26,6 +26,7 @@ class Component(Enum):
     """Enum of all available components with an additional member called 'group' to categorize components."""
 
     PAGE_HEADER = ("page_header", ComponentCategory.LAYOUT)
+    HEADING_DECORATION = ("heading_decoration", ComponentCategory.LAYOUT)
     ARTICLE = ("article", ComponentCategory.LAYOUT)
     HERO = ("hero", ComponentCategory.LAYOUT)
     NAVBAR = ("navbar", ComponentCategory.NAVIGATION)

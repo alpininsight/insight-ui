@@ -16,6 +16,21 @@ def get_page_header_description_context() -> dict[str, list[str]]:
     }
 
 
+@register_component(Component.HEADING_DECORATION)
+def get_heading_decoration_description_context() -> dict[str, list[str]]:
+    """Serve description documentation for the heading decoration component."""
+    return {
+        "description": [
+            _(
+                "The heading_decoration component renders the decorative transition between the base template heading and the page content."
+            ),
+            _(
+                "It is available as a template tag so host applications can keep the default waves, change the visual style, or remove the decoration through the heading_decoration block."
+            ),
+        ]
+    }
+
+
 @register_component(Component.ARTICLE)
 def get_article_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the article component."""

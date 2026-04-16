@@ -1375,6 +1375,64 @@ def page_header(title: str = "", description: str = "") -> dict[str, Any]:
     return {"title": title, "description": description}
 
 
+def _coerce_heading_decoration_height(value: object, default: int = 90) -> int:
+    """Return a positive integer height for the heading decoration."""
+    try:
+        height = int(value)
+    except (TypeError, ValueError):
+        return default
+
+    return max(height, 1)
+
+
+@register.inclusion_tag("insight_ui/components/heading_decoration.html")
+def heading_decoration(
+    style: str | None = None,
+    color: str | None = None,
+    image_url: str | None = None,
+    height: int | str | None = None,
+    config: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """
+    Render a decorative transition between the base-template heading and content area.
+
+    Args:
+    ----
+        style (str): One of 'waves', 'image', 'gradient', or 'none'. Defaults to 'waves'.
+        color (str): Optional CSS color override. Defaults to --color-insight-primary.
+        image_url (str): Optional background image URL used by the 'image' style.
+        height (int): Decoration height in px. Defaults to 90.
+        config (dict[str, Any]): Alternative configuration with keys corresponding to the previous parameters.
+
+    Returns:
+    -------
+        A dict with context variables for the template.
+
+    """
+    if config is not None:
+        style = config.get("style", style)
+        color = config.get("color", color)
+        image_url = config.get("image_url", image_url)
+        height = config.get("height", height)
+
+    normalized_style = (style or "waves").strip().lower()
+    if normalized_style not in {"waves", "image", "gradient", "none"}:
+        normalized_style = "waves"
+
+    height_px = _coerce_heading_decoration_height(height)
+    color_value = color or "var(--color-insight-primary, #3b82f6)"
+
+    return {
+        "style": normalized_style,
+        "color": color_value,
+        "image_url": image_url or "",
+        "height": height_px,
+        "wave_back_y": max(height_px - 25, 0),
+        "wave_middle_y": max(height_px - 10, 0),
+        "wave_front_y": max(height_px - 55, 0),
+    }
+
+
 @register.inclusion_tag("insight_ui/components/article.html")
 def article(content: str = "", columns: int = 2, column_gap: str = "2rem", title: str = "") -> dict[str, Any]:
     """

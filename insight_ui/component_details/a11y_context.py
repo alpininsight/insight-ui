@@ -15,6 +15,17 @@ def get_page_header_a11y_context() -> dict[str, list[str]]:
     }
 
 
+@register_component(Component.HEADING_DECORATION)
+def get_heading_decoration_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y documentation for the heading decoration component."""
+    return {
+        "a11y": [
+            _("All rendered variants are decorative and use aria-hidden='true'."),
+            _("The 'none' style renders no markup and therefore adds no extra accessibility tree content."),
+        ]
+    }
+
+
 @register_component(Component.ARTICLE)
 def get_article_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the article component."""

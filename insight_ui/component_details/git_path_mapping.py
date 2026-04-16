@@ -56,6 +56,7 @@ TEMPLATE_PATHS = {
     "user_dropdown": GIT_BASE_FILE + "user_dropdown.html",
     "web_socket": GIT_BASE_FILE + "websocket.html",
     "page_header": GIT_BASE_FILE + "page_header.html",
+    "heading_decoration": GIT_BASE_FILE + "heading_decoration.html",
     "article": GIT_BASE_FILE + "article.html",
     "hero": GIT_BASE_FILE + "hero.html",
 }

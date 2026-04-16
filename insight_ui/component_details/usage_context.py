@@ -14,6 +14,33 @@ def get_page_header_usage_context() -> dict[str, str]:
     }
 
 
+@register_component(Component.HEADING_DECORATION)
+def get_heading_decoration_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the heading decoration component."""
+    return {
+        "usage": """
+        {% load insight_tags %}
+
+        {# Default waves, used by insight_ui/base.html #}
+        {% heading_decoration %}
+
+        {# Individual parameters #}
+        {% heading_decoration style="waves" height=120 %}
+        {% heading_decoration style="gradient" height=64 %}
+        {% heading_decoration style="image" image_url="/static/hero.jpg" height=160 %}
+        {% heading_decoration style="none" %}
+
+        {# Config dictionary from view context #}
+        {% heading_decoration config=heading_decoration_config %}
+
+        {# Override or remove the base-template default in extending templates #}
+        {% block heading_decoration %}
+            {% heading_decoration style="gradient" height=72 %}
+        {% endblock heading_decoration %}
+        """
+    }
+
+
 @register_component(Component.ARTICLE)
 def get_article_usage_context() -> dict[str, str]:
     """Serve usage documentation for the article component."""

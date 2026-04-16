@@ -36,6 +36,66 @@ def get_page_header_parameter_context() -> dict[str, list[str]]:
     return {"params": [main_params]}
 
 
+@register_component(Component.HEADING_DECORATION)
+def get_heading_decoration_parameter_context() -> dict[str, list[str]]:
+    """Serve parameter documentation for the heading_decoration component."""
+    config_param = ParameterDoc(
+        ParameterDetails(
+            "config",
+            "dict[str, Any]",
+            _("Alternative dictionary-based configuration for all heading decoration parameters."),
+            "{}",
+        ),
+        [
+            ParameterDetails(
+                "style",
+                "str",
+                _("Decoration style: 'waves', 'image', 'gradient', or 'none'. Unknown values fall back to 'waves'."),
+                "'waves'",
+            ),
+            ParameterDetails(
+                "color",
+                "str",
+                _("Optional CSS color override. By default the component follows --color-insight-primary."),
+                "''",
+            ),
+            ParameterDetails(
+                "image_url",
+                "str",
+                _("Background image URL used when style is 'image'."),
+                "''",
+            ),
+            ParameterDetails("height", "int", _("Decoration height in pixels."), "90"),
+        ],
+        """
+        {
+            "style": "gradient",
+            "height": 72,
+        }
+        """,
+    )
+
+    main_params = [
+        ParameterDetails(
+            "style",
+            "str",
+            _("Decoration style: 'waves', 'image', 'gradient', or 'none'. Unknown values fall back to 'waves'."),
+            "'waves'",
+        ),
+        ParameterDetails(
+            "color",
+            "str",
+            _("Optional CSS color override. By default the component follows --color-insight-primary."),
+            "''",
+        ),
+        ParameterDetails("image_url", "str", _("Background image URL used when style is 'image'."), "''"),
+        ParameterDetails("height", "int", _("Decoration height in pixels."), "90"),
+        config_param.details,
+    ]
+
+    return {"params": [main_params, config_param]}
+
+
 @register_component(Component.ARTICLE)
 def get_article_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the article component."""
