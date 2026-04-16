@@ -66,6 +66,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Make component docu context strings translateable
 - Document GitHub issue label taxonomy 
 - Remove README workflow badges 
+- Reflect Django support range in badge 
 
 ### Features
 
