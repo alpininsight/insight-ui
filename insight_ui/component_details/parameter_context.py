@@ -1603,8 +1603,8 @@ def get_app_card_parameter_context() -> dict[str, list[str]]:
             _("Text content of the card. Displayed below the title or subtitle if there is one."),
             "''",
         ),
-        ParameterDetails("tags", "list[str]", "A list of small buttons, placed below the content text.", "[]"),
-        ParameterDetails("url", "str", "A URL that is called up when the user clicks on the title.", ""),
+        ParameterDetails("tags", "list[str]", _("A list of small buttons, placed below the content text."), "[]"),
+        ParameterDetails("url", "str", _("A URL that is called up when the user clicks on the title."), ""),
         image_param.details,
         action_button_param.details,
     ]
@@ -1656,8 +1656,8 @@ def get_flip_card_parameter_context() -> dict[str, list[str]]:
             _("Text content of the card. Displayed below the title or subtitle if there is one."),
             "''",
         ),
-        ParameterDetails("tags", "list[str]", "A list of small buttons, placed below the content text.", "[]"),
-        ParameterDetails("url", "str", "A URL that is called up when the user clicks on the title.", ""),
+        ParameterDetails("tags", "list[str]", _("A list of small buttons, placed below the content text."), "[]"),
+        ParameterDetails("url", "str", _("A URL that is called up when the user clicks on the title."), ""),
         image_param.details,
         action_button_param.details,
     ]
