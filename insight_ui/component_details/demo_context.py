@@ -300,6 +300,31 @@ def get_differentiator_context() -> dict:
     return {"textA": _("The cat is sleeping on the red sofa."), "textB": _("This is a completely different sentence!")}
 
 
+@register_demo_context(Component.LOGO)
+def get_logo_context() -> dict:
+    """Serve data for logo detailpage."""
+    return {
+        "logo_svg": {
+            "type": "svg",
+            "url": "insight_ui/svg/ai-logo.svg",
+            "url_dark": "insight_ui/svg/ai-logo.svg",
+            "alt": "Insight UI Logo",
+            "height": "3rem",
+        },
+        "logo_image": {
+            "type": "image",
+            "url": "insight_ui/favicon/android-chrome-192x192.png",
+            "alt": "Insight UI app icon",
+            "height": "3rem",
+        },
+        "logo_icon": {
+            "type": "icon",
+            "icon": {"name": "sparkles", "size": "big"},
+            "alt": "Decorative product icon",
+        },
+    }
+
+
 @register_demo_context(Component.DROPDOWN)
 def get_dropdown_context() -> dict:
     """Serve data for dropdown detailpage."""

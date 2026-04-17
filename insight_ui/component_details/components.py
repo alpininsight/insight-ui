@@ -58,6 +58,7 @@ class Component(Enum):
     INFOBOX = ("infobox", ComponentCategory.UTIL)
     CODE_BLOCK = ("code_block", ComponentCategory.UTIL)
     DIFFERENTIATOR = ("differentiator", ComponentCategory.UTIL)
+    LOGO = ("logo", ComponentCategory.UTIL)
     PROGRESS_BAR = ("progress_bar", ComponentCategory.UTIL)
     GEO_MAP = ("geo_map", ComponentCategory.UTIL)
     CHART = ("chart", ComponentCategory.UTIL)
