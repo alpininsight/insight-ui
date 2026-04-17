@@ -1,5 +1,5 @@
 {% extends "insight_ui/base.html" %}
-{% load static insight_tags i18n %}
+{% load static i18n insight_tags %}
 
 {% block title %}{% trans "Insight UI" %}{% endblock title %}
 
@@ -17,11 +17,8 @@
 {% endblock sidebar_left %}
 
 {% block heading %}
-    <h1 class="text-white text-5xl">{% trans "Insight UI" %}</h1>
-    <p class="text-gray-200 leading-loose text-xl mb-8">
-        {% trans "Welcome to the documentation of <b>Insight UI</b>, our modern, extensible and accessible UI framework for Django projects." %}
-    </p>
-    <a href="{% url 'installation_view' %}" class="btn btn-white btn-large font-bold w-fit">{% trans "Get started" %}</a>
+    {% page_header title="Insight UI" description=_("Welcome to the documentation of <b>Insight UI</b>, our modern, extensible and accessible UI framework for Django projects.") %}
+    {% comment %} <a href="{% url 'installation_view' %}" class="btn btn-white btn-large font-bold w-fit">{% trans "Get started" %}</a> {% endcomment %}
 {% endblock heading %}
 
 {% block content %}

@@ -46,11 +46,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Change login smoke test to check for NOT translated string rather in comments
 - Minor spelling
 - **ci:** Restore automatic release on develop→main merge
-- **docs:** Resolve component-slug regressions (toggle_button, outline_button, button_sizes, effect_cards) 
+- **docs:** Resolve component-slug regressions (toggle_button, outline_button, button_sizes, effect_cards)
 
 ### CI/CD
 
-- Automate release-please PR checks and merge 
+- Automate release-please PR checks and merge
 - **guard:** Preserve branch-policy check name
 - **guard:** Preserve branch-policy check name
 - **feature:** Mirror required legacy test checks
@@ -64,9 +64,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Translate developer documentation
 - Add hint to run JavaScript tests to README.md
 - Make component docu context strings translateable
-- Document GitHub issue label taxonomy 
-- Remove README workflow badges 
-- Reflect Django support range in badge 
+- Document GitHub issue label taxonomy
+- Remove README workflow badges
+- Reflect Django support range in badge
 
 ### Features
 
@@ -117,7 +117,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - EN to DE translations for all .html
 - Sharpen fuzzy translations
 - Add new setting 'use_tailwind_cli' and remove obsolete env-variables
-- Add heading decoration component 
+- Add heading decoration component
 
 ### Miscellaneous
 
@@ -228,7 +228,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Pin and update all dependencies
 - **docs:** Remove completed architecture guide documents
 - **docs:** Remove obsolete index.md and fix README links
-- **develop:** Release 1.9.0 
+- **develop:** Release 1.9.0
 
 ### Refactoring
 

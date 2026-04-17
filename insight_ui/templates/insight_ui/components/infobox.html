@@ -1,0 +1,6 @@
+{% load insight_tags %}
+
+<div class="info-container text-primary mt-4 {% if type == "success" %}border-s-insight-success dark:border-s-insight-success{% elif type == "warning" %}border-s-insight-warning dark:border-s-insight-warning{% elif type == "error" %}border-s-insight-error dark:border-s-insight-error{% else %}border-s-insight-info dark:border-s-insight-info{% endif %}">
+    <span class="block font-bold italic text-lg">{{ type|upper }}:</span>
+    {{ message|markdownify }}
+</div>

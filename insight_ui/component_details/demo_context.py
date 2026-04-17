@@ -59,20 +59,6 @@ DEMO_FIELDS = [
         "values": {},
     },
     {
-        "field": "short_description",
-        "name": _("Short Description"),
-        "type": "text",
-        "operations": {"icontains": _("contains"), "contains": _("contains (case sensitive)")},
-        "values": {},
-    },
-    {
-        "field": "release_date",
-        "name": _("Release Date"),
-        "type": "date",
-        "operations": {"date": _("is exact"), "date__gte": _("is not before"), "date__lte": _("is not after")},
-        "values": {},
-    },
-    {
         "field": "deadline",
         "name": _("Deadline"),
         "type": "date",
@@ -273,6 +259,7 @@ def get_footer_context() -> dict:
                 "privacy": "https://alpininsight.com/privacy/",
             },
             "copyright": {"year": 2026, "app_name": "Insight UI"},
+            "version": "v1.0.0",
         }
     }
 
@@ -581,24 +568,24 @@ def get_generic_filter_context() -> dict:
     return {
         "filters": [
             {
-                "text": _("AI model type"),
+                "label": _("AI model type"),
                 "icon": {"name": "rocket", "size": "small"},
                 "name": "model_type_filter",
-                "values": model_type_options,
+                "options": model_type_options,
                 "explanation": _("To filter by the type of AI-Model."),
             },
             {
-                "text": _("Runtime"),
+                "label": _("Runtime"),
                 "icon": {"name": "clock", "size": "small"},
                 "name": "runtime_filter",
-                "values": runtime_options,
+                "options": runtime_options,
                 "explanation": _("To filter by the runtime."),
             },
             {
-                "text": _("License"),
+                "label": _("License"),
                 "icon": {"name": "doc", "size": "small"},
                 "name": "license_filter",
-                "values": license_options,
+                "options": license_options,
             },
         ],
         "filter_view_name": "index_view",
@@ -612,8 +599,8 @@ def get_query_builder_context() -> dict:
 
 
 @register_demo_context(Component.CARD)
-def get_cards_context() -> dict:
-    """Serve data for cards detailpage."""
+def get_card_context() -> dict:
+    """Serve data for card detailpage."""
     return {
         "cards": [
             {
@@ -633,31 +620,41 @@ def get_cards_context() -> dict:
                     {"text": _("Share"), "url": "#", "type": "primary"},
                 ],
             },
-        ],
-        "app_cards": [
-            {
-                "title": _("App Card"),
-                "content": _("A card with its content arranged horizontally."),
-                "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": _("Card-Image")},
-                "tags": [_("Insight UI"), _("Layout"), _("Card")],
-                "actions": [
-                    {"text": _("Learn more"), "url": "#", "type": "secondary"},
-                    {"text": _("Share"), "url": "#", "type": "primary"},
-                ],
-            }
-        ],
-        "flip_cards": [
-            {
-                "title": _("Flip Card"),
-                "content": _("A card that rotates 180° and has additional content on the back."),
-                "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": _("Card-Image")},
-                "tags": [_("Insight UI"), _("Layout"), _("Card")],
-                "actions": [
-                    {"text": _("Learn more"), "url": "#", "type": "secondary"},
-                    {"text": _("Share"), "url": "#", "type": "primary"},
-                ],
-            }
-        ],
+        ]
+    }
+
+
+@register_demo_context(Component.APP_CARD)
+def get_app_card_context() -> dict:
+    """Serve data for app card detailpage."""
+    return {
+        "app_card": {
+            "title": _("App Card"),
+            "content": _("A card with its content arranged horizontally."),
+            "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": _("Card-Image")},
+            "tags": [_("Insight UI"), _("Layout"), _("Card")],
+            "actions": [
+                {"text": _("Learn more"), "url": "#", "type": "secondary"},
+                {"text": _("Share"), "url": "#", "type": "primary"},
+            ],
+        }
+    }
+
+
+@register_demo_context(Component.FLIP_CARD)
+def get_flip_card_context() -> dict:
+    """Serve data for flip card detailpage."""
+    return {
+        "flip_card": {
+            "title": _("Flip Card"),
+            "content": _("A card that rotates 180° and has additional content on the back."),
+            "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": _("Card-Image")},
+            "tags": [_("Insight UI"), _("Layout"), _("Card")],
+            "actions": [
+                {"text": _("Learn more"), "url": "#", "type": "secondary"},
+                {"text": _("Share"), "url": "#", "type": "primary"},
+            ],
+        }
     }
 
 

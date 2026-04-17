@@ -16,10 +16,9 @@
 {% endblock sidebar_right %}
 
 {% block heading %}
-    <h1 class="text-white">Insight UI {{ formatted_name }}</h1>
-    {% for paragraph in description %}
-        {{ paragraph|markdownify }}
-    {% endfor %}
+    {% with "Insight UI "|add:formatted_name as full_title %}
+        {% page_header title=full_title %}
+    {% endwith %}
 {% endblock heading %}
 
 {% block content %}

@@ -41,8 +41,6 @@
     {% bullet_point_list items=bulletpoints %}
 {% elif component.value == "accordion" %}
     {% accordion accordion_items "faq-multiple" False %}
-{% elif component.value == "accordion_exclusive" %}
-    {% accordion accordion_items "faq-exclusive" True %}
 {% elif component.value == "tabs" %}
     {% tabs config=tabs_config %}
 {% elif component.value == "button" %}
@@ -80,6 +78,8 @@
         {% input_field tag_id="text" name="text_input" input_type="text" placeholder="Type your name" label="Name:" %}
         {% input_field tag_id="password" name="password_input" input_type="password" placeholder="Type your password" label="Password" %}
     </div>
+{% elif component.value == "textarea" %}
+    {% textarea tag_id="text" name="text_field" rows=4 label="Write a message:" placeholder="Write something..." %}
 {% elif component.value == "checkbox" %}
     {% checkbox config=example_checkbox %}
 {% elif component.value == "checkbox_group" %}
@@ -160,6 +160,8 @@
         <button data-tooltip="This is a tooltip." data-show-arrow="true" data-position="right" class="btn btn-primary">{% trans "Right" %}</button>
         <button data-tooltip="This is a tooltip." data-position="left" class="btn btn-primary">{% trans "Left" %}</button>
     </div>
+{% elif component.value == "infobox" %}
+    {% infobox info_type="info" message="This is an informative message." %}
 {% elif component.value == "code_block" %}
     <div id="code" data-insight-code-block="javascript">
         {# fmt:off #}
@@ -191,7 +193,7 @@
 {% elif component.value == "table" %}
     {% table data=table %}
 {% elif component.value == "generic_filter" %}
-    {% generic_filter filters=filters view_name=filter_view_name hx_target="#data" hx_push_url="true" vertical=False query_params=request.GET %}
+    {% generic_filter filters=filters request_url="#" vertical=False query_params=request.GET %}
 {% elif component.value == "search_bar" %}
     <div class="space-y-6">
         {% search_bar request_view="index_view" %}
@@ -199,21 +201,20 @@
         {% search_bar request_view="index_view" simple="True" search_query="Test 123" %}
     </div>
 {% elif component.value == "query_builder" %}
-    {% sq_builder model_fields=model_fields %}
+    {% query_builder model_fields=model_fields %}
 {% elif component.value == "card" %}
     <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
         {% for card in cards %}
             {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
         {% endfor %}
     </div>
-{% elif component.value == "effect_cards" %}
+{% elif component.value == "app_card" %}
     <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
-        {% for card in app_cards %}
-            {% app_card title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
-        {% endfor %}
-        {% for card in flip_cards %}
-            {% flip_card title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
-        {% endfor %}
+        {% app_card title=app_card.title content=app_card.content tags=app_card.tags url=app_card.url image=app_card.image actions=app_card.actions %}
+    </div>
+{% elif component.value == "flip_card" %}
+    <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
+        {% flip_card title=flip_card.title content=flip_card.content tags=flip_card.tags url=flip_card.url image=flip_card.image actions=flip_card.actions %}
     </div>
 {% elif component.value == "card_carousel" %}
     {% carousel carousel_items=carousel_items show_index=True items_per_slide=2 %}
@@ -228,10 +229,7 @@
 {% elif component.value == "form" %}
     {% form tag_id="htmx-form" title=_("Contact Form") description=_("Please fill out the form") fields=form_fields show_reset_button=True view_name="form_submit" htmx_config=htmx_config %}
 {% elif component.value == "page_header" %}
-    <div class="bg-insight-primary px-8 pt-12 pb-4">
-        {% page_header title=_("Example Page") description=_("This is an example description for the page header component.") %}
-    </div>
-    {% heading_decoration %}
+    {% page_header title=_("Example Page") description=_("This is an example description for the page header component.") %}
 {% elif component.value == "heading_decoration" %}
     <div class="space-y-8">
         <div class="space-y-2">

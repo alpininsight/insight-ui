@@ -1,3 +1,5 @@
+from django.utils.translation import gettext as _
+
 from insight_ui.component_details.component_context import register_component
 from insight_ui.component_details.components import Component
 
@@ -7,8 +9,10 @@ def get_page_header_usage_context() -> dict[str, str]:
     """Serve usage documentation for the page header component."""
     return {
         "usage": """
+        {% load insight_tags %}
+
         {% block heading %}
-        {% page_header title="Base Template" description="Beschreibung der Seite." %}
+            {% page_header title="My indispensable app" description="This is a django application designed with the help of insight UI." %}
         {% endblock heading %}
         """
     }
@@ -48,7 +52,7 @@ def get_article_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% article title="Aktuelles" columns=3 content="<p>Erster Absatz...</p><p>Zweiter Absatz...</p>" %}
+        {% article title="News" columns=3 content="<p>First paragraph...</p><p>Second paragraph...</p>" %}
         """
     }
 
@@ -69,13 +73,16 @@ def get_hero_usage_context() -> dict[str, str]:
 def get_navbar_usage_context() -> dict[str, str]:
     """Serve usage documentation for the navbar component."""
     return {
+        "usage_summary": _(
+            "The navigation bar is integrated using the `navbar` tag. The _base template_ includes a block designated for the navigation bar, where it should be placed to ensure proper functionality."
+        ),
         "usage": """
         {% load insight_tags %}
 
         {% block navbar %}
             {% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links show_login=True %}
         {% endblock navbar %}
-        """
+        """,
     }
 
 
@@ -83,13 +90,16 @@ def get_navbar_usage_context() -> dict[str, str]:
 def get_sidebar_usage_context() -> dict[str, str]:
     """Serve usage documentation for the sidebar component."""
     return {
+        "usage_summary": _(
+            "The sidebar is integrated using the `sidebar` tag. The _base template_ includes blocks designated for the sidebar, where it should be placed. There is one block for the right side and one for the left side. If the sidebar is collapsible, there is an additional block called _Drawers_ for this purpose. If the component is used outside of these blocks, layout issues may occur."
+        ),
         "usage": """
         {% load insight_tags %}
 
         {% block drawers %}
             {% sidebar sidebar_data=right_sidebar side="right" auto_close=False %}
         {% endblock drawers %}
-        """
+        """,
     }
 
 
@@ -97,13 +107,16 @@ def get_sidebar_usage_context() -> dict[str, str]:
 def get_footer_usage_context() -> dict[str, str]:
     """Serve usage documentation for the footer component."""
     return {
+        "usage_summary": _(
+            "The footer is included using the `footer` tag. The _base template_ includes a block designated for the footer. To ensure that the footer always appears at the bottom of the webpage, it should be placed within this designated block."
+        ),
         "usage": """
         {% load insight_tags %}
 
         {% block footer %}
             {% footer data=footer_data %}
         {% endblock footer %}
-        """
+        """,
     }
 
 
@@ -162,7 +175,7 @@ def get_accordion_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% accordion id="faq-exclusive" items=accordion_items exclusive=True %}
+        {% accordion tag_id="faq-exclusive" items=accordion_items exclusive=True %}
         """
     }
 
@@ -222,6 +235,22 @@ def get_input_field_usage_context() -> dict[str, str]:
         <!-- or -->
 
         {% input_field config=input_config %}
+        """
+    }
+
+
+@register_component(Component.TEXTAREA)
+def get_textarea_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the textarea component."""
+    return {
+        "usage": """
+        {% load insight_tags %}
+
+        {% textarea tag_id="message" name="message" rows=4 label="Write a message:" placeholder="Write something..." %}
+
+        <!-- or -->
+
+        {% textarea config=input_config %}
         """
     }
 
@@ -333,7 +362,7 @@ def get_select_usage_context() -> dict[str, str]:
 
         {% select name="test" label="Test" options=["A", "B", "C"] %}
 
-        <!-- Oder -->
+        <!-- or -->
 
         {% select config=select_config %}
         """
@@ -349,7 +378,7 @@ def get_multiselect_usage_context() -> dict[str, str]:
 
         {% multiselect name="test" label="Test" maximum=0 show_buttons=True options=["A", "B", "C"] %}
 
-        <!-- Oder -->
+        <!-- or -->
 
         {% multiselect config=multiselect_config %}
         """
@@ -399,12 +428,15 @@ def get_modal_usage_context() -> dict[str, str]:
 def get_popover_usage_context() -> dict[str, str]:
     """Serve usage documentation for the popover component."""
     return {
+        "usage_summary": _(
+            "To add a popover, you need a trigger that causes the popover to appear when the user hovers over it. This trigger can be any HTML tag and must include the `data-popover` attribute, whose value is the ID of the target element (the popover). You can customize the popover entirely on your own; the only thing to keep in mind is the connection via the **tag ID**."
+        ),
         "usage": """
         <button data-popover="demo-popover" data-show-arrow="true" data-position="top" class="btn btn-primary">Hover me!</button>
         <div id="demo-popover" class="bg-white dark:bg-gray-500 w-64 border border-gray-300 dark:border-0 rounded-sm shadow">
             <!-- Content -->
         </div>
-        """
+        """,
     }
 
 
@@ -412,6 +444,9 @@ def get_popover_usage_context() -> dict[str, str]:
 def get_tooltip_usage_context() -> dict[str, str]:
     """Serve usage documentation for the tooltip component."""
     return {
+        "usage_summary": _(
+            "To add a tooltip to an element, simply add the `data-tooltip` attribute, whose value is the text to be displayed in the tooltip."
+        ),
         "usage": """
         <button
             data-tooltip="This is a tooltip."
@@ -421,6 +456,18 @@ def get_tooltip_usage_context() -> dict[str, str]:
         >
             Click me!
         </button>
+        """,
+    }
+
+
+@register_component(Component.INFOBOX)
+def get_infobox_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the infobox component."""
+    return {
+        "usage": """
+        {% load insight_tags %}
+
+        {% infobox info_type=note.type message=note.message %}
         """
     }
 
@@ -429,13 +476,16 @@ def get_tooltip_usage_context() -> dict[str, str]:
 def get_code_block_usage_context() -> dict[str, str]:
     """Serve usage documentation for the code block component."""
     return {
+        "usage_summary": _(
+            "To use the component, simply insert an HTML tag—preferably a `<div>`. The element must include the `data-insight-code-block` attribute, whose value should be the desired programming language. The tag should contain only the source code to be displayed."
+        ),
         "usage": """
         <div id="code" data-insight-code-block="javascript">
             function greet(name) {
                 return `Hello, ${name}!`;
             }
         </div>
-        """
+        """,
     }
 
 
@@ -555,7 +605,7 @@ def get_generic_filter_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% generic_filter filters=filters view_name=filter_view_name hx_target="#data" hx_push_url="true" vertical=False query_params=request.GET %}
+        {% generic_filter filters=filters view_name="/models/filter/ vertical=False htmx_config=htmx_config query_params=request.GET %}
         """
     }
 
@@ -579,7 +629,7 @@ def get_query_builder_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% sq_builder model_fields=model_fields %}
+        {% query_builder model_fields=model_fields %}
         """
     }
 
@@ -592,8 +642,30 @@ def get_card_usage_context() -> dict[str, str]:
         {% load insight_tags %}
 
         {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
-        {% card_app title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
-        {% card_flip title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
+        """
+    }
+
+
+@register_component(Component.APP_CARD)
+def get_app_card_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the app card component."""
+    return {
+        "usage": """
+        {% load insight_tags %}
+
+        {% app_card title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
+        """
+    }
+
+
+@register_component(Component.FLIP_CARD)
+def get_flip_card_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the flip card component."""
+    return {
+        "usage": """
+        {% load insight_tags %}
+
+        {% flip_card title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
         """
     }
 

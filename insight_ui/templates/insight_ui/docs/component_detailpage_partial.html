@@ -1,11 +1,10 @@
 {% load i18n insight_tags %}
 
 {% comment %} Titel and summarize (out of bands) {% endcomment %}
-<div id="heading" hx-swap-oob="true" class="bg-insight-primary text-white leading-loose text-lg px-4 md:px-16 pt-16 pb-4">
-    <h1 class="text-white">Insight UI {{ formatted_name }}</h1>
-    {% for paragraph in description %}
-        {{ paragraph|markdownify }}
-    {% endfor %}
+<div id="heading" hx-swap-oob="true">
+    {% with "Insight UI "|add:formatted_name as full_title %}
+        {% page_header title=full_title %}
+    {% endwith %}
 </div>
 
 <div id="right-aside" hx-swap-oob="true" class="flex">

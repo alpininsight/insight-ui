@@ -109,7 +109,8 @@ def get_navbar_context(current_view: str = "index_view") -> dict:
             "show_usermenu": False,
             "show_language_selector": True,
             "show_theme_toggle": True,
-        }
+        },
+        "navbar_fixed": True,
     }
 
 
