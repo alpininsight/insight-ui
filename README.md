@@ -79,6 +79,7 @@ The application is self-documenting — run it locally and open it in your brows
 Additional developer references in `docs/`:
 - [Contributing Guide](docs/contributing.md)
 - [Naming Conventions](docs/naming_conventions.md)
+- [Design System Contract](docs/design-system-contract.md)
 - [Accessibility](docs/accessibility.md)
 - [Internationalization](docs/i18n.md)
 
