@@ -20,14 +20,12 @@ class Command(BaseCommand):
         user_model = get_user_model()
         username_field = user_model.USERNAME_FIELD
         if not user_model.objects.filter(**{username_field: "admin"}).exists():
-            kwargs = {username_field: "admin", "password": "admin"}  # noqa: S106
+            kwargs = {username_field: "admin", "password": "admin"}  # nosec: B105 noqa: S106
             if username_field != "email":
                 kwargs["email"] = "admin@localhost"
             user_model.objects.create_superuser(**kwargs)
             self.stdout.write(self.style.SUCCESS("Created superuser: admin / admin"))
         else:
-            self.stdout.write(
-                self.style.WARNING("Superuser 'admin' already exists, skipping.")
-            )
+            self.stdout.write(self.style.WARNING("Superuser 'admin' already exists, skipping."))
 
         self.stdout.write(self.style.SUCCESS("Dev setup complete!"))

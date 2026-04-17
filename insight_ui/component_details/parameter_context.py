@@ -60,12 +60,7 @@ def get_heading_decoration_parameter_context() -> dict[str, list[str]]:
                 _("Optional CSS color override. By default the component follows --color-insight-primary."),
                 "''",
             ),
-            ParameterDetails(
-                "image_url",
-                "str",
-                _("Background image URL used when style is 'image'."),
-                "''",
-            ),
+            ParameterDetails("image_url", "str", _("Background image URL used when style is 'image'."), "''"),
             ParameterDetails("height", "int", _("Decoration height in pixels."), "90"),
         ],
         """
