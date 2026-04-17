@@ -73,7 +73,20 @@
             <div class="border-t border-gray-200 dark:border-gray-700 mt-6 pt-4 text-center">
                 {% if copyright %}
                     <p class="text-secondary text-sm">
-                        © {{ copyright.year }} {{ copyright.app_name }}. {% trans 'All rights reserved.' %}
+                        © {{ copyright.year }}
+                        {% if copyright.holder %}{{ copyright.holder }}{% else %}{{ copyright.app_name }}{% endif %}
+                        {% if copyright.source_label %}
+                            <span aria-hidden="true">&middot;</span> {{ copyright.source_label }}
+                        {% endif %}
+                        {% if copyright.license_text %}
+                            <span aria-hidden="true">&middot;</span>
+                            {% if copyright.license_url %}
+                                <a href="{{ copyright.license_url }}" class="text-secondary hover:text-insight-text-link-hover">{{ copyright.license_text }}</a>
+                            {% else %}
+                                {{ copyright.license_text }}
+                            {% endif %}
+                        {% endif %}
+                        <span aria-hidden="true">&middot;</span> {% trans 'All rights reserved.' %}
                     </p>
                 {% endif %}
                 {% if version %}

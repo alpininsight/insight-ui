@@ -277,7 +277,13 @@ class FooterTemplateTagTest(TemplateTagsTestCase):
                 "imprint": "https://alpininsight.com/imprint/",
                 "privacy": "https://alpininsight.com/privacy/",
             },
-            "copyright": {"year": 2025, "app_name": "Insight UI"},
+            "copyright": {
+                "year": 2025,
+                "holder": "Alpin Insight Solutions GmbH & Co. KG",
+                "source_label": "Open Source",
+                "license_text": "AGPL-3.0",
+                "license_url": "https://github.com/alpininsight/insight-ui/blob/develop/LICENSE",
+            },
         }
 
         template_string = """
@@ -315,9 +321,33 @@ class FooterTemplateTagTest(TemplateTagsTestCase):
         assert "support@alpininsight.com" in mail_el.text
 
         # --- Assert: copyright ---
-        copyright_p = soup.find("p", string=lambda t: t and str(2025) in t)
+        copyright_p = next((p for p in soup.find_all("p") if str(2025) in p.get_text(" ", strip=True)), None)
+        assert copyright_p is not None
+        assert "Alpin Insight Solutions GmbH & Co. KG" in copyright_p.text
+        assert "Open Source" in copyright_p.text
+        assert "AGPL-3.0" in copyright_p.text
+        assert "All rights reserved." in copyright_p.text
+        license_el = copyright_p.find("a", href="https://github.com/alpininsight/insight-ui/blob/develop/LICENSE")
+        assert license_el is not None
+        assert license_el.get_text(strip=True) == "AGPL-3.0"
+
+    def test_footer_copyright_supports_legacy_app_name(self) -> None:
+        """Legacy copyright data should keep rendering app_name."""
+        footer_data = {
+            "copyright": {"year": 2025, "app_name": "Insight UI"},
+        }
+
+        template_string = """
+        {% load insight_tags %}
+        {% footer data=footer_data %}
+        """
+        rendered = self.render_template(template_string, context={"footer_data": footer_data})
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        copyright_p = next((p for p in soup.find_all("p") if str(2025) in p.get_text(" ", strip=True)), None)
         assert copyright_p is not None
         assert "Insight UI" in copyright_p.text
+        assert "All rights reserved." in copyright_p.text
 
 
 class HeadingDecorationTemplateTagTest(TemplateTagsTestCase):
