@@ -21,6 +21,8 @@ jobs:
 
           echo "base=$BASE_REF head=$HEAD_REF"
 
+          conventional_branch_regex='^(feature|feat|fix|refactor|perf|chore|docs|style|test|build|ci|hotfix|release)/.+$'
+
           if [[ "$BASE_REF" == "main" ]]; then
             if [[ "$HEAD_REF" == "develop" || "$HEAD_REF" =~ ^release/.+$ ]]; then
               exit 0
@@ -30,11 +32,15 @@ jobs:
           fi
 
           if [[ "$BASE_REF" == "develop" ]]; then
-            if [[ "$HEAD_REF" =~ ^(feature|feat|fix|refactor|perf|chore|docs|style|test|build|ci|hotfix|release)/.+$ ]]; then
+            if [[ "$HEAD_REF" =~ $conventional_branch_regex ]]; then
               exit 0
             fi
             echo "ERROR: PRs into develop must use a conventional prefix (feat/, fix/, refactor/, perf/, chore/, docs/, style/, test/, build/, ci/, hotfix/, release/)."
             exit 1
+          fi
+
+          if [[ "$BASE_REF" =~ $conventional_branch_regex && "$HEAD_REF" =~ $conventional_branch_regex ]]; then
+            exit 0
           fi
 
           echo "ERROR: PR target branch '$BASE_REF' is not allowed by policy."
