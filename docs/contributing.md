@@ -52,7 +52,10 @@ In this section, we explain all the steps necessary to add a new component.
     - We use classes for all components that are exported as modules.
     - Corresponding instances are found and created in the DOM using `data attributes`.
 3. Implement the new component.
-    - We use TailwindCSS for styling.
+    - Tailwind CSS is the default styling implementation.
+    - For new reusable components, prefer semantic Insight UI classes and tokens over raw Tailwind utility classes in public component markup when the concept is stable enough to name.
+    - Use the mapping table in [Naming Conventions](naming_conventions.md#css-classes-and-design-semantics) to decide whether a repeated Tailwind utility pattern should become an `insight-*` class.
+    - Tailwind utilities are still acceptable for local layout details, experiments, and the current default implementation, but they should not become the long-term public design contract of reusable components.
 4. Create a new inclusion tag in `insight_ui/templatetags/insight_tags.py`.
 
 ### Part 2: Documenting New Components

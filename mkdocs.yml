@@ -111,6 +111,7 @@ plugins:
                 - Accessibility: guides/accessibility.en.md
                 - Internationalisation: guides/i18n.en.md
                 - Styling: guides/styling.en.md
+                - Design system contract: design-system-contract.md
                 - Icons: guides/icons.en.md
                 - Phrases: guides/phrases.en.md
                 - Naming conventions: guides/naming_conventions.en.md
@@ -174,6 +175,7 @@ nav:
       - Barrierefreiheit: guides/accessibility.md
       - Internationalisierung: guides/i18n.md
       - Styling: guides/styling.md
+      - Design-System Contract: design-system-contract.md
       - Icons: guides/icons.md
       - Phrasen: guides/phrases.md
       - Naming Conventions: guides/naming_conventions.md
