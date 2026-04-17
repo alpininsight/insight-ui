@@ -58,6 +58,50 @@ class NavbarTemplateTagTest(TemplateTagsTestCase):
         assert "Django Insight UI NavBar" in rendered
 
 
+class CopyrightNoticeTemplateTagTest(TemplateTagsTestCase):
+    """Tests for the copyright_notice template tag."""
+
+    def test_copyright_notice_renders_full_legal_line(self) -> None:
+        """Check copyright notice output with license metadata."""
+        config = {
+            "year": 2026,
+            "holder": "Alpin Insight Solutions GmbH & Co. KG",
+            "source_label": "Open Source",
+            "license_text": "AGPL-3.0",
+            "license_url": "https://example.com/license",
+            "rights_text": "All rights reserved.",
+        }
+        template_string = """
+        {% load insight_tags %}
+        {% copyright_notice config=config %}
+        """
+        rendered = self.render_template(template_string, context={"config": config})
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        notice = soup.find(attrs={"data-insight-copyright-notice": True})
+        assert notice is not None
+        text = notice.get_text(" ", strip=True)
+        assert "© 2026 Alpin Insight Solutions GmbH & Co. KG" in text
+        assert "· Open Source" in text
+        assert "· AGPL-3.0" in text
+        assert "· All rights reserved." in text
+        assert notice.find("a", href="https://example.com/license").get_text(strip=True) == "AGPL-3.0"
+        assert len(notice.select("span[aria-hidden='true']")) == 3  # noqa: PLR2004
+
+    def test_copyright_notice_supports_app_name_fallback(self) -> None:
+        """Existing footer copyright configuration with app_name should continue to work."""
+        template_string = """
+        {% load insight_tags %}
+        {% copyright_notice year=2026 app_name="Insight UI" rights_text="All rights reserved." %}
+        """
+        rendered = self.render_template(template_string)
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        notice = soup.find(attrs={"data-insight-copyright-notice": True})
+        assert notice is not None
+        assert "© 2026 Insight UI" in notice.get_text(" ", strip=True)
+
+
 class LiveContentTemplateTagTest(TemplateTagsTestCase):
     """Tests für den live_content Template Tag."""
 
@@ -315,9 +359,42 @@ class FooterTemplateTagTest(TemplateTagsTestCase):
         assert "support@alpininsight.com" in mail_el.text
 
         # --- Assert: copyright ---
-        copyright_p = soup.find("p", string=lambda t: t and str(2025) in t)
+        copyright_p = soup.find(attrs={"data-insight-copyright-notice": True})
         assert copyright_p is not None
+        assert copyright_p.get("data-insight-copyright-notice") is not None
+        assert str(2025) in copyright_p.text
         assert "Insight UI" in copyright_p.text
+        assert "·" in copyright_p.text
+
+    def test_footer_uses_copyright_notice_metadata(self) -> None:
+        """Footer should compose the reusable copyright notice component."""
+        footer_data = {
+            "links": [],
+            "contact": {},
+            "copyright": {
+                "year": 2026,
+                "holder": "Alpin Insight Solutions GmbH & Co. KG",
+                "source_label": "Open Source",
+                "license_text": "AGPL-3.0",
+                "license_url": "https://example.com/license",
+                "rights_text": "All rights reserved.",
+            },
+        }
+
+        template_string = """
+        {% load insight_tags %}
+        {% footer data=footer_data %}
+        """
+        rendered = self.render_template(template_string, context={"footer_data": footer_data})
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        notice = soup.find(attrs={"data-insight-copyright-notice": True})
+        assert notice is not None
+        text = notice.get_text(" ", strip=True)
+        assert "© 2026 Alpin Insight Solutions GmbH & Co. KG" in text
+        assert "· Open Source" in text
+        assert "· AGPL-3.0" in text
+        assert notice.find("a", href="https://example.com/license") is not None
 
 
 class HeadingDecorationTemplateTagTest(TemplateTagsTestCase):

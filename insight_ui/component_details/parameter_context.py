@@ -432,14 +432,26 @@ def get_footer_parameter_context() -> dict[str, list[str]]:
 
     copyright_param = ParameterDoc(
         ParameterDetails(
-            "copyright", "dict[str, str]", _("Copyright information, such as the year and the protected name."), "{}"
+            "copyright", "dict[str, str]", _("Copyright and legal notice information."), "{}"
         ),
         [
             ParameterDetails("year", "int", _("Typically the current year (not strictly required)."), "undefined"),
-            ParameterDetails("app_name", "str", _("The protected name of the application."), "''"),
+            ParameterDetails("holder", "str", _("Copyright holder name."), "''"),
+            ParameterDetails("app_name", "str", _("Backwards-compatible fallback for the holder name."), "''"),
+            ParameterDetails("source_label", "str", _("Optional source or distribution label."), "''"),
+            ParameterDetails("license_text", "str", _("Optional license label."), "''"),
+            ParameterDetails("license_url", "str", _("Optional URL for the license label."), "''"),
+            ParameterDetails("separator", "str", _("Separator between legal metadata parts."), "'·'"),
+            ParameterDetails("rights_text", "str", _("Optional rights statement."), "'All rights reserved.'"),
         ],
         """
-        {"year": 2026, "app_name": "Insight UI"}
+        {
+            "year": 2026,
+            "holder": "Alpin Insight Solutions GmbH & Co. KG",
+            "source_label": "Open Source",
+            "license_text": "AGPL-3.0",
+            "license_url": "https://github.com/alpininsight/insight-ui/blob/develop/LICENSE",
+        }
         """,
     )
 
@@ -474,7 +486,13 @@ def get_footer_parameter_context() -> dict[str, list[str]]:
                 "imprint": "https://alpininsight.com/imprint/",
                 "privacy": "https://alpininsight.com/privacy/",
             },
-            "copyright": {"year": 2026, "app_name": "Insight UI"},
+            "copyright": {
+                "year": 2026,
+                "holder": "Alpin Insight Solutions GmbH & Co. KG",
+                "source_label": "Open Source",
+                "license_text": "AGPL-3.0",
+                "license_url": "https://github.com/alpininsight/insight-ui/blob/develop/LICENSE",
+            },
             "version": "v1.0.0",
         }
         """,
@@ -1408,6 +1426,54 @@ def get_code_block_parameter_context() -> dict[str, list[str]]:
     ]
 
     return {"params": [main_params]}
+
+
+@register_component(Component.COPYRIGHT_NOTICE)
+def get_copyright_notice_parameter_context() -> dict[str, list[str]]:
+    """Serve parameter documentation for the copyright notice component."""
+    config_param = ParameterDoc(
+        ParameterDetails("config", "dict[str, Any]", _("Dictionary-based copyright notice configuration."), "{}"),
+        [
+            ParameterDetails("year", "int | str", _("Optional copyright year."), "''"),
+            ParameterDetails("holder", "str", _("Copyright holder name."), "''"),
+            ParameterDetails(
+                "app_name",
+                "str",
+                _("Backwards-compatible fallback for existing footer copyright configuration."),
+                "''",
+            ),
+            ParameterDetails("source_label", "str", _("Optional source or distribution label."), "''"),
+            ParameterDetails("license_text", "str", _("Optional license label."), "''"),
+            ParameterDetails("license_url", "str", _("Optional URL for the license label."), "''"),
+            ParameterDetails("separator", "str", _("Separator between legal metadata parts."), "'·'"),
+            ParameterDetails("rights_text", "str", _("Optional rights statement."), "'All rights reserved.'"),
+            ParameterDetails("class", "str", _("Additional CSS classes for the rendered notice."), "''"),
+        ],
+        """
+        {
+            "year": 2026,
+            "holder": "Alpin Insight Solutions GmbH & Co. KG",
+            "source_label": "Open Source",
+            "license_text": "AGPL-3.0",
+            "license_url": "https://github.com/alpininsight/insight-ui/blob/develop/LICENSE",
+        }
+        """,
+    )
+
+    main_params = [
+        ParameterDetails("year", "int | str", _("Optional copyright year."), "''"),
+        ParameterDetails("holder", "str", _("Copyright holder name."), "''"),
+        ParameterDetails("app_name", "str", _("Backwards-compatible fallback for the holder name."), "''"),
+        ParameterDetails("source_label", "str", _("Optional source or distribution label."), "''"),
+        ParameterDetails("license_text", "str", _("Optional license label."), "''"),
+        ParameterDetails("license_url", "str", _("Optional URL for the license label."), "''"),
+        ParameterDetails("separator", "str", _("Separator between legal metadata parts."), "'·'"),
+        ParameterDetails("rights_text", "str", _("Optional rights statement."), "'All rights reserved.'"),
+        ParameterDetails("css_class", "str", _("Additional CSS classes for the rendered notice."), "''"),
+        config_param.details,
+    ]
+
+    return {"params": [main_params, config_param]}
 
 
 @register_component(Component.DIFFERENTIATOR)

@@ -57,6 +57,7 @@ class Component(Enum):
     TOOLTIP = ("tooltip", ComponentCategory.POPUP)
     INFOBOX = ("infobox", ComponentCategory.UTIL)
     CODE_BLOCK = ("code_block", ComponentCategory.UTIL)
+    COPYRIGHT_NOTICE = ("copyright_notice", ComponentCategory.UTIL)
     DIFFERENTIATOR = ("differentiator", ComponentCategory.UTIL)
     PROGRESS_BAR = ("progress_bar", ComponentCategory.UTIL)
     GEO_MAP = ("geo_map", ComponentCategory.UTIL)

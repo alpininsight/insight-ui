@@ -72,9 +72,7 @@
         {% if copyright or version %}
             <div class="border-t border-gray-200 dark:border-gray-700 mt-6 pt-4 text-center">
                 {% if copyright %}
-                    <p class="text-secondary text-sm">
-                        © {{ copyright.year }} {{ copyright.app_name }}. {% trans 'All rights reserved.' %}
-                    </p>
+                    {% copyright_notice config=copyright %}
                 {% endif %}
                 {% if version %}
                     <span class="text-secondary text-sm">{% trans "Current version:" %} {{ version }}</span>

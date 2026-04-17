@@ -23,6 +23,11 @@
 {% elif component.value == "footer" %}
     <div class="bg-gray-50 dark:bg-gray-700 h-24"></div>
     {% footer data=footer_data %}
+{% elif component.value == "copyright_notice" %}
+    <div class="space-y-6">
+        {% copyright_notice config=copyright_notice_config %}
+        {% copyright_notice config=copyright_notice_legacy_config %}
+    </div>
 {% elif component.value == "breadcrumbs" %}
     <div class="space-y-4">
         {% breadcrumbs items=breadcrumb_items %}

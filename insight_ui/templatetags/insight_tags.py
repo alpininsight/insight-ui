@@ -10,6 +10,7 @@ from django import template
 from django.core.paginator import Page
 from django.urls import reverse
 from django.utils.safestring import SafeString, mark_safe
+from django.utils.translation import gettext as _
 from markdown import markdown
 
 from insight_ui.config import get_config
@@ -104,6 +105,67 @@ def icon(name: str = "", size: str = "") -> dict[str, Any]:
         return {"name": name.get("name", ""), "size": name.get("size", "")}
 
     return {"name": name, "size": size}
+
+
+@register.inclusion_tag("insight_ui/components/copyright_notice.html")
+def copyright_notice(  # noqa: PLR0913
+    year: int | str | None = None,
+    holder: str | None = None,
+    app_name: str | None = None,
+    source_label: str | None = None,
+    license_text: str | None = None,
+    license_url: str | None = None,
+    separator: str | None = None,
+    rights_text: str | None = None,
+    css_class: str | None = None,
+    config: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """
+    Render a reusable copyright and legal notice line.
+
+    Args:
+    ----
+        year: Optional copyright year.
+        holder: Copyright holder name.
+        app_name: Backwards-compatible fallback for the holder name.
+        source_label: Optional source/distribution label, for example "Open Source".
+        license_text: Optional license label.
+        license_url: Optional URL for the license label.
+        separator: Separator between legal metadata parts. Defaults to a middle dot.
+        rights_text: Optional rights statement.
+        css_class: Additional CSS classes for the rendered notice.
+        config: Alternative dictionary-based configuration for all parameters.
+
+    Returns:
+    -------
+        A dict with context variables for the template.
+
+    """
+    if config is not None:
+        year = config.get("year", year)
+        holder = config.get("holder", holder)
+        app_name = config.get("app_name", app_name)
+        source_label = config.get("source_label", source_label)
+        license_text = config.get("license_text", license_text)
+        license_url = config.get("license_url", license_url)
+        separator = config.get("separator", separator)
+        rights_text = config.get("rights_text", rights_text)
+        css_class = config.get("class", config.get("css_class", css_class))
+
+    notice_holder = holder or app_name or ""
+    metadata = [
+        {"text": source_label or "", "url": ""},
+        {"text": license_text or "", "url": license_url or ""},
+        {"text": rights_text or _("All rights reserved."), "url": ""},
+    ]
+
+    return {
+        "year": year or "",
+        "holder": notice_holder,
+        "metadata": [item for item in metadata if item["text"]],
+        "separator": separator or "\u00b7",
+        "css_class": css_class or "",
+    }
 
 
 @register.filter

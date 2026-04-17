@@ -24,6 +24,7 @@ TEMPLATE_PATHS = {
     "chat": GIT_BASE_FILE + "chat.html",
     "checkbox": GIT_BASE_FILE + "checkbox.html",
     "checkbox_group": GIT_BASE_FILE + "checkbox_group.html",
+    "copyright_notice": GIT_BASE_FILE + "copyright_notice.html",
     "dropdown": GIT_BASE_FILE + "dropdown.html",
     "footer": GIT_BASE_FILE + "footer.html",
     "form": GIT_BASE_FILE + "form.html",

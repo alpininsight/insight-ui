@@ -258,7 +258,13 @@ def get_footer_context() -> dict:
                 "imprint": "https://alpininsight.com/imprint/",
                 "privacy": "https://alpininsight.com/privacy/",
             },
-            "copyright": {"year": 2026, "app_name": "Insight UI"},
+            "copyright": {
+                "year": 2026,
+                "holder": "Alpin Insight Solutions GmbH & Co. KG",
+                "source_label": "Open Source",
+                "license_text": "AGPL-3.0",
+                "license_url": "https://github.com/alpininsight/insight-ui/blob/develop/LICENSE",
+            },
             "version": "v1.0.0",
         }
     }
@@ -298,6 +304,21 @@ def get_breadcrumb_context() -> dict:
 def get_differentiator_context() -> dict:
     """Serve data for differentiator detailpage."""
     return {"textA": _("The cat is sleeping on the red sofa."), "textB": _("This is a completely different sentence!")}
+
+
+@register_demo_context(Component.COPYRIGHT_NOTICE)
+def get_copyright_notice_context() -> dict:
+    """Serve data for copyright notice detailpage."""
+    return {
+        "copyright_notice_config": {
+            "year": 2026,
+            "holder": "Alpin Insight Solutions GmbH & Co. KG",
+            "source_label": "Open Source",
+            "license_text": "AGPL-3.0",
+            "license_url": "https://github.com/alpininsight/insight-ui/blob/develop/LICENSE",
+        },
+        "copyright_notice_legacy_config": {"year": 2026, "app_name": "Insight UI"},
+    }
 
 
 @register_demo_context(Component.DROPDOWN)

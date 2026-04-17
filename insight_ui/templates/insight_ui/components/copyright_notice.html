@@ -1,0 +1,11 @@
+<p class="text-secondary text-sm {{ css_class }}" data-insight-copyright-notice>
+    &copy;{% if year %} {{ year }}{% endif %}{% if holder %} {{ holder }}{% endif %}
+    {% for item in metadata %}
+        <span aria-hidden="true">{{ separator }}</span>
+        {% if item.url %}
+            <a href="{{ item.url }}" class="text-link">{{ item.text }}</a>
+        {% else %}
+            <span>{{ item.text }}</span>
+        {% endif %}
+    {% endfor %}
+</p>
