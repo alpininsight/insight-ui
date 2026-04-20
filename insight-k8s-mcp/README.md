@@ -16,7 +16,7 @@ Cloudflare (DNS / TLS / WAF / Tunnel)
         |
         v
 Envoy AI Gateway (aigateway.envoyproxy.io/v1alpha1)
-  +-- MCPRoute: internal  ->  OpenAPI MCP, GitHub MCP, Jira MCP
+  +-- MCPRoute: internal  ->  OpenAPI MCP, GitHub MCP, Context7 MCP
   +-- MCPRoute: partner   ->  Partner-spezifische MCPs
   +-- MCPRoute: dev       ->  Notebook / Dev MCPs
 ```
@@ -42,7 +42,7 @@ insight-k8s-mcp/
       backends/
         openapi-mcp.yaml       # Deployment + Service: OpenAPI MCP Server
         github-mcp.yaml        # Deployment + Service: GitHub MCP Server
-        jira-mcp.yaml          # Deployment + Service: Jira MCP Server
+        context7-mcp.yaml      # Deployment + Service: Context7 MCP Server
       policies/
         oauth-internal.yaml    # Secret-Templates: API-Keys und Credentials
         oauth-partner.yaml     # Secret-Templates: Partner Credentials
@@ -98,7 +98,7 @@ und die Subdomain-Strategie.
 ## Rollout-Reihenfolge
 
 1. **Phase 1:** `mcp.alpininsight.ai` mit internem OIDC-Issuer
-2. **Phase 2:** 2-3 private MCP-Backends anbinden (OpenAPI, GitHub, Jira)
+2. **Phase 2:** 2-3 private MCP-Backends anbinden (OpenAPI, GitHub, Context7)
 3. **Phase 3:** `mcp-partner.alpininsight.ai` mit separatem Issuer/Scopes
 4. **Phase 4:** `mcp-dev.alpininsight.ai` fuer Notebook/Tunnel-Szenarien
 

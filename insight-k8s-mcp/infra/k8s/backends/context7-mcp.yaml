@@ -1,63 +1,44 @@
 ---
-# Backend: Jira MCP Server
+# Backend: Context7 MCP Server
 #
-# Stellt Jira-Funktionalitaet als MCP-Tools bereit.
-# Tickets, Boards, Sprints, Suche.
+# Stellt aktuelle Library- und Framework-Dokumentation als MCP-Tools bereit.
+# Erlaubt MCP-Clients, Dokumentation zu suchen, Libraries aufzuloesen
+# und kontextbezogene Code-Beispiele abzurufen.
 #
 # Tool-Namen werden automatisch vom Gateway mit dem Backend-Namen
-# prefixed: jira-mcp__search_issues, jira-mcp__create_issue, etc.
+# prefixed: context7-mcp__resolve_library_id, context7-mcp__get_library_docs, etc.
 #
-# Auth zum Jira API: API Token als Kubernetes Secret.
-# Das Gateway injiziert den API-Key per securityPolicy.apiKey.secretRef
-# in der MCPRoute.
+# Context7 benoetigt keine API-Keys -- oeffentlicher Zugang.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: jira-mcp
+  name: context7-mcp
   namespace: mcp-system
   labels:
-    app.kubernetes.io/name: jira-mcp
+    app.kubernetes.io/name: context7-mcp
     app.kubernetes.io/part-of: insight-k8s-mcp
     app.kubernetes.io/component: backend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: jira-mcp
+      app.kubernetes.io/name: context7-mcp
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: jira-mcp
+        app.kubernetes.io/name: context7-mcp
         app.kubernetes.io/part-of: insight-k8s-mcp
     spec:
       containers:
-        - name: jira-mcp
-          # Jira MCP Server -- eigenes oder Community-Image
-          image: ghcr.io/alpininsight/jira-mcp:latest
+        - name: context7-mcp
+          image: ghcr.io/alpininsight/context7-mcp:latest
           ports:
             - name: mcp
               containerPort: 8080
               protocol: TCP
           env:
             - name: MCP_SERVER_NAME
-              value: "jira-mcp"
-            # Jira-Instanz URL
-            - name: JIRA_BASE_URL
-              value: "https://alpininsight.atlassian.net"
-            # Jira API Credentials aus Secret
-            - name: JIRA_USER_EMAIL
-              valueFrom:
-                secretKeyRef:
-                  name: jira-mcp-credentials
-                  key: email
-            - name: JIRA_API_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: jira-mcp-credentials
-                  key: token
-            # Einschraenkung auf Projekte
-            - name: JIRA_ALLOWED_PROJECTS
-              value: "INSIGHT,OPS,DEV"
+              value: "context7-mcp"
           resources:
             requests:
               cpu: 50m
@@ -81,16 +62,16 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: jira-mcp
+  name: context7-mcp
   namespace: mcp-system
   labels:
-    app.kubernetes.io/name: jira-mcp
+    app.kubernetes.io/name: context7-mcp
     app.kubernetes.io/part-of: insight-k8s-mcp
     app.kubernetes.io/component: backend
 spec:
   type: ClusterIP
   selector:
-    app.kubernetes.io/name: jira-mcp
+    app.kubernetes.io/name: context7-mcp
   ports:
     - name: mcp
       port: 8080

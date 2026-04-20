@@ -56,7 +56,7 @@ Backend MCP Server (privat)
     "mcp:base",
     "tools.openapi.read",
     "tools.github.read",
-    "tools.jira.read"
+    "tools.context7.read"
   ]
 }
 ```
@@ -116,8 +116,7 @@ backendRefs:
 | `tools.openapi.write`  | OpenAPI-Tools mit Schreibzugriff           |
 | `tools.github.read`    | GitHub-Tools (Issues, PRs, Repos lesen)    |
 | `tools.github.write`   | GitHub-Tools (Issues erstellen, PRs mergen)|
-| `tools.jira.read`      | Jira-Tools (Tickets lesen)                 |
-| `tools.jira.write`     | Jira-Tools (Tickets erstellen/bearbeiten)  |
+| `tools.context7.read`  | Context7-Tools (Library-Docs lesen)        |
 
 ### mcp-partner.alpininsight.ai/mcp (Partner)
 

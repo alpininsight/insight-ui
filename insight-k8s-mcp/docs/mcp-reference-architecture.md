@@ -13,7 +13,7 @@ Cloudflare (DNS / TLS / WAF / Tunnel)
         |
         v
 Envoy AI Gateway
-  +-- MCPRoute: internal  ->  OpenAPI MCP, GitHub MCP, Jira MCP
+  +-- MCPRoute: internal  ->  OpenAPI MCP, GitHub MCP, Context7 MCP
   +-- MCPRoute: partner   ->  Partner-spezifische MCPs
   +-- MCPRoute: dev       ->  Notebook / Dev MCPs
 ```
@@ -163,7 +163,7 @@ spec:
 
 Tool-Namen werden automatisch vom Gateway mit dem Backend-Namen prefixed:
 - Backend `github-mcp` mit Tool `list_issues` -> `github-mcp__list_issues`
-- Backend `jira-mcp` mit Tool `search_issues` -> `jira-mcp__search_issues`
+- Backend `context7-mcp` mit Tool `get_library_docs` -> `context7-mcp__get_library_docs`
 
 Tool-Filter (`toolSelector`) unterstuetzt vier Modi:
 
@@ -275,7 +275,7 @@ MCPRoute, kein separates CRD.
 
 1. Start mit einem produktiven Endpoint: **`mcp.alpininsight.ai`**
 2. Einen OIDC-Issuer fuer intern verwenden
-3. Zuerst 2-3 private MCP-Backends dahinter haengen
+3. Zuerst 2-3 private MCP-Backends dahinter haengen (OpenAPI, GitHub, Context7)
 4. `partner` und `dev` erst danach ueber eigene Hostnames trennen
 5. `mcp-dev.alpininsight.ai` fuer den Notebook-/Tunnel-Fall nutzen --
    **nicht** `mcp.alpininsight.ai`

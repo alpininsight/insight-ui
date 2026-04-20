@@ -36,7 +36,7 @@ spec:
           - "mcp:base"
           - "tools.openapi.read"
           - "tools.github.read"
-          - "tools.jira.read"
+          - "tools.context7.read"
 
     # Dev: Kein defaultAction: Deny -- alle authentifizierten Nutzer duerfen alles
     authorization:
@@ -61,6 +61,11 @@ spec:
         apiKey:
           secretRef:
             name: github-mcp-api-key
+
+    - name: context7-mcp
+      kind: Service
+      port: 8080
+      path: "/mcp"
 
     # Dev-spezifisch: Notebook MCP Server (via Cloudflare Tunnel)
     # Wird aktiviert sobald Tunnel konfiguriert ist

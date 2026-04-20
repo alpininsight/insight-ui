@@ -1,7 +1,7 @@
 ---
 # Secrets fuer Internal Trust-Zone
 #
-# OAuth und Backend-Credentials fuer den internen MCP-Endpoint.
+# Backend-Credentials fuer den internen MCP-Endpoint.
 #
 # WICHTIG: Diese Datei zeigt die Secret-Struktur als Template.
 # In Produktion: Sealed Secrets, External Secrets Operator, oder
@@ -26,20 +26,6 @@ stringData:
   # TODO: Ersetzen durch echten API-Key
   apiKey: "REPLACE_ME_GITHUB_TOKEN"
 ---
-# API-Key fuer Jira Backend (Suedseite: Gateway -> Backend)
-apiVersion: v1
-kind: Secret
-metadata:
-  name: jira-mcp-api-key
-  namespace: mcp-system
-  labels:
-    app.kubernetes.io/part-of: insight-k8s-mcp
-    insight.alpininsight.ai/trust-zone: internal
-type: Opaque
-stringData:
-  # TODO: Ersetzen durch echten API-Key
-  apiKey: "REPLACE_ME_JIRA_TOKEN"
----
 # GitHub MCP Server Credentials (fuer das Deployment selbst)
 apiVersion: v1
 kind: Secret
@@ -51,18 +37,4 @@ metadata:
 type: Opaque
 stringData:
   # TODO: Ersetzen durch echten GitHub PAT oder App Token
-  token: "REPLACE_ME"
----
-# Jira MCP Server Credentials (fuer das Deployment selbst)
-apiVersion: v1
-kind: Secret
-metadata:
-  name: jira-mcp-credentials
-  namespace: mcp-system
-  labels:
-    app.kubernetes.io/part-of: insight-k8s-mcp
-type: Opaque
-stringData:
-  # TODO: Ersetzen durch echte Jira Credentials
-  email: "mcp-service@alpininsight.ai"
   token: "REPLACE_ME"

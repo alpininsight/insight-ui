@@ -27,8 +27,8 @@ Issuer pro Route modelliert.
 | Trust-Zone      | Internal                                               |
 | OIDC-Issuer     | `https://login.alpininsight.ai/realms/internal`        |
 | Audience        | `https://mcp.alpininsight.ai/mcp`                      |
-| Scopes          | `mcp:base`, `tools.openapi.*`, `tools.github.*`, `tools.jira.*` |
-| Backends        | OpenAPI MCP, GitHub MCP, Jira MCP                      |
+| Scopes          | `mcp:base`, `tools.openapi.*`, `tools.github.*`, `tools.context7.*` |
+| Backends        | OpenAPI MCP, GitHub MCP, Context7 MCP                  |
 | Cloudflare      | DNS + TLS + WAF + Rate Limiting                        |
 | Zugang          | Authentifizierte Mitarbeiter und autorisierte Agents   |
 
