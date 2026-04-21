@@ -54,6 +54,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **guard:** Preserve branch-policy check name
 - **guard:** Preserve branch-policy check name
 - **feature:** Mirror required legacy test checks
+- Allow stacked branch pull requests
 
 ### Documentation
 
@@ -141,6 +142,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove hardcoded list of components from smoke tests
 - Rename 'table' and 'main' storybook
 - Remove obsolete storybook template files
+- Adopt logo component
 
 ### Reverted
 
