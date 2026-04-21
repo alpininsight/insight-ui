@@ -51,7 +51,7 @@ function initAll() {
 	Tabs.initAll();
 	ThemeToggle.initAll();
 	ThreeDCarousel.initAll();
-	// InsightUI.WebSocket.init();
+	InsightUI.WebSocket?.init();
 }
 
 document.addEventListener('DOMContentLoaded', function () {

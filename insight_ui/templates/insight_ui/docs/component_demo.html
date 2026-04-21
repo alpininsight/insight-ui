@@ -204,7 +204,7 @@
     {% live_content tag_id="live-content" url="/api/live-data/" interval=10 %}
 {% elif component.value == "web_socket" %}
     <i class="text-secondary">Work in progress...</i>
-    <!-- {% insight_websocket tag_id="demo-websocket" url="ws://localhost:8765" initial_content="<p>Connect to Web-Socket…</p>" %} -->
+    <!-- {% insight_websocket tag_id="runtime-stream" url="/runtime/stream/" initial_content="<p>Waiting for runtime updates…</p>" %} -->
 {% elif component.value == "infinite_scroll" %}
     {% infinite_scroll items=scroll_items view_name="more_items" auto_fetch=False %}
 {% elif component.value == "pagination" %}
