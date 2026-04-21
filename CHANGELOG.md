@@ -120,6 +120,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add new setting 'use_tailwind_cli' and remove obsolete env-variables
 - Add heading decoration component 
 - Remove detailpages 
+- Add logo component
 
 ### Miscellaneous
 
