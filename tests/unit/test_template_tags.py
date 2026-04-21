@@ -144,10 +144,23 @@ class WebsocketTemplateTagTest(TemplateTagsTestCase):
         """Test für grundlegende WebSocket Funktionalität."""
         template_string = """
         {% load insight_tags %}
-        {% insight_websocket url="ws://localhost:8765" %}
+        {% insight_websocket url="/runtime/stream/" %}
         """
         rendered = self.render_template(template_string)
-        assert "ws://localhost:8765" in rendered
+        assert "/runtime/stream/" in rendered
+        assert 'data-insight-websocket' in rendered
+        assert 'data-insight-websocket-status' in rendered
+        assert 'data-insight-websocket-output' in rendered
+
+    def test_websocket_without_tag_id_does_not_render_broken_ids(self) -> None:
+        """Leere tag_id Werte sollten keine unbrauchbaren HTML-IDs erzeugen."""
+        template_string = """
+        {% load insight_tags %}
+        {% insight_websocket url="/runtime/stream/" %}
+        """
+        rendered = self.render_template(template_string)
+        assert 'id="-output"' not in rendered
+        assert 'id="-status"' not in rendered
 
 
 class InfiniteScrollTemplateTagTest(TemplateTagsTestCase):

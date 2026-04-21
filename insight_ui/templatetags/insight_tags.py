@@ -891,12 +891,12 @@ def live_content(tag_id: str = "", url: str = "", interval: int = 10, initial_co
 @register.inclusion_tag("insight_ui/components/websocket.html")
 def insight_websocket(tag_id: str = "", url: str = "", initial_content: str = "") -> dict[str, Any]:
     """
-    Render a WebSocket component as a wrapper for the htmx v2 ws extension.
+    Render a WebSocket component as a thin wrapper for the HTMX ws extension.
 
     Args:
     ----
         tag_id: The ID of the WebSocket container.
-        url: The WebSocket URL (e.g. ws://localhost:8765).
+        url: The WebSocket endpoint URL (for example `/runtime/stream/`).
         initial_content: Initial content.
 
     Returns:
