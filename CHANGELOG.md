@@ -47,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Minor spelling
 - **ci:** Restore automatic release on develop→main merge
 - **docs:** Resolve component-slug regressions (toggle_button, outline_button, button_sizes, effect_cards) 
+- **ci:** Update scheduled pre-commit workflow actions 
 
 ### CI/CD
 
