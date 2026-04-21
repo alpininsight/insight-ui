@@ -432,14 +432,27 @@ def get_footer_parameter_context() -> dict[str, list[str]]:
 
     copyright_param = ParameterDoc(
         ParameterDetails(
-            "copyright", "dict[str, str]", _("Copyright information, such as the year and the protected name."), "{}"
+            "copyright",
+            "dict[str, str]",
+            _("Copyright information, such as the year, holder, source label, and license text."),
+            "{}",
         ),
         [
             ParameterDetails("year", "int", _("Typically the current year (not strictly required)."), "undefined"),
             ParameterDetails("app_name", "str", _("The protected name of the application."), "''"),
+            ParameterDetails("holder", "str", _("The copyright holder. Falls back to app_name."), "''"),
+            ParameterDetails("source_label", "str", _("Optional source model label, for example Open Source."), "''"),
+            ParameterDetails("license_text", "str", _("Optional license label, for example AGPL-3.0."), "''"),
+            ParameterDetails("license_url", "str", _("Optional URL for the license label."), "''"),
         ],
         """
-        {"year": 2026, "app_name": "Insight UI"}
+        {
+            "year": 2026,
+            "holder": "Alpin Insight Solutions GmbH & Co. KG",
+            "source_label": "Open Source",
+            "license_text": "AGPL-3.0",
+            "license_url": "https://github.com/alpininsight/insight-ui/blob/develop/LICENSE",
+        }
         """,
     )
 
@@ -474,7 +487,13 @@ def get_footer_parameter_context() -> dict[str, list[str]]:
                 "imprint": "https://alpininsight.com/imprint/",
                 "privacy": "https://alpininsight.com/privacy/",
             },
-            "copyright": {"year": 2026, "app_name": "Insight UI"},
+            "copyright": {
+                "year": 2026,
+                "holder": "Alpin Insight Solutions GmbH & Co. KG",
+                "source_label": "Open Source",
+                "license_text": "AGPL-3.0",
+                "license_url": "https://github.com/alpininsight/insight-ui/blob/develop/LICENSE",
+            },
             "version": "v1.0.0",
         }
         """,
