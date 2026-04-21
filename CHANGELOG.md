@@ -137,6 +137,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update uv.lock
 - Update footer copyright notice
 - **docs:** Remove legacy mkdocs layer 
+- **ci:** Refresh GitHub Actions for Node 24 
 
 ### Refactoring
 
