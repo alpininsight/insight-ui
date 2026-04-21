@@ -258,7 +258,13 @@ def get_footer_context() -> dict:
                 "imprint": "https://alpininsight.com/imprint/",
                 "privacy": "https://alpininsight.com/privacy/",
             },
-            "copyright": {"year": 2026, "app_name": "Insight UI"},
+            "copyright": {
+                "year": 2026,
+                "holder": "Alpin Insight Solutions GmbH & Co. KG",
+                "source_label": "Open Source",
+                "license_text": "AGPL-3.0",
+                "license_url": "https://github.com/alpininsight/insight-ui/blob/develop/LICENSE",
+            },
             "version": "v1.0.0",
         }
     }

@@ -67,6 +67,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Document GitHub issue label taxonomy 
 - Remove README workflow badges 
 - Reflect Django support range in badge 
+- Add notification component mockups 
 
 ### Features
 
@@ -130,6 +131,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Consistent Insight UI spelling
 - Update package-lock.json
 - Update uv.lock
+- Update footer copyright notice
 
 ### Refactoring
 
