@@ -58,6 +58,63 @@ class NavbarTemplateTagTest(TemplateTagsTestCase):
         assert "Django Insight UI NavBar" in rendered
 
 
+class LogoTemplateTagTest(TemplateTagsTestCase):
+    """Tests for the logo template tag."""
+
+    def test_logo_renders_svg_asset(self) -> None:
+        """SVG logo assets should render as static image tags."""
+        template_string = """
+        {% load insight_tags %}
+        {% logo logo_type="svg" url="insight_ui/svg/ai-logo.svg" alt="Insight UI Logo" height="3rem" %}
+        """
+        rendered = self.render_template(template_string)
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        logo = soup.find(attrs={"data-insight-logo-type": "svg"})
+        assert logo is not None
+        assert logo.name == "img"
+        assert logo.get("src") == "/static/insight_ui/svg/ai-logo.svg"
+        assert logo.get("alt") == "Insight UI Logo"
+        assert "height: 3rem" in logo.get("style")
+
+    def test_logo_renders_dark_variant_without_script(self) -> None:
+        """Dark logo variants should render with dark-mode classes and no inline script."""
+        config = {
+            "type": "image",
+            "url": "light.png",
+            "url_dark": "dark.png",
+            "alt": "Theme-aware logo",
+        }
+        template_string = """
+        {% load insight_tags %}
+        {% logo config=config %}
+        """
+        rendered = self.render_template(template_string, context={"config": config})
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        logos = soup.find_all(attrs={"data-insight-logo-type": "image"})
+        assert len(logos) == 2  # noqa: PLR2004
+        assert logos[0].get("src") == "/static/light.png"
+        assert "dark:hidden" in logos[0].get("class")
+        assert logos[1].get("src") == "/static/dark.png"
+        assert "dark:inline-block" in logos[1].get("class")
+        assert not soup.find("script")
+
+    def test_logo_renders_icon(self) -> None:
+        """Icon logos should use the existing Insight UI icon set."""
+        config = {"type": "icon", "icon": {"name": "sparkles", "size": "big"}, "alt": "Product mark"}
+        template_string = """
+        {% load insight_tags %}
+        {% logo config=config %}
+        """
+        rendered = self.render_template(template_string, context={"config": config})
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        wrapper = soup.find("span", attrs={"role": "img", "aria-label": "Product mark"})
+        assert wrapper is not None
+        assert wrapper.find("svg") is not None
+
+
 class LiveContentTemplateTagTest(TemplateTagsTestCase):
     """Tests für den live_content Template Tag."""
 
@@ -277,7 +334,13 @@ class FooterTemplateTagTest(TemplateTagsTestCase):
                 "imprint": "https://alpininsight.com/imprint/",
                 "privacy": "https://alpininsight.com/privacy/",
             },
-            "copyright": {"year": 2025, "app_name": "Insight UI"},
+            "copyright": {
+                "year": 2025,
+                "holder": "Alpin Insight Solutions GmbH & Co. KG",
+                "source_label": "Open Source",
+                "license_text": "AGPL-3.0",
+                "license_url": "https://github.com/alpininsight/insight-ui/blob/develop/LICENSE",
+            },
         }
 
         template_string = """
@@ -315,9 +378,33 @@ class FooterTemplateTagTest(TemplateTagsTestCase):
         assert "support@alpininsight.com" in mail_el.text
 
         # --- Assert: copyright ---
-        copyright_p = soup.find("p", string=lambda t: t and str(2025) in t)
+        copyright_p = next((p for p in soup.find_all("p") if str(2025) in p.get_text(" ", strip=True)), None)
+        assert copyright_p is not None
+        assert "Alpin Insight Solutions GmbH & Co. KG" in copyright_p.text
+        assert "Open Source" in copyright_p.text
+        assert "AGPL-3.0" in copyright_p.text
+        assert "All rights reserved." in copyright_p.text
+        license_el = copyright_p.find("a", href="https://github.com/alpininsight/insight-ui/blob/develop/LICENSE")
+        assert license_el is not None
+        assert license_el.get_text(strip=True) == "AGPL-3.0"
+
+    def test_footer_copyright_supports_legacy_app_name(self) -> None:
+        """Legacy copyright data should keep rendering app_name."""
+        footer_data = {
+            "copyright": {"year": 2025, "app_name": "Insight UI"},
+        }
+
+        template_string = """
+        {% load insight_tags %}
+        {% footer data=footer_data %}
+        """
+        rendered = self.render_template(template_string, context={"footer_data": footer_data})
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        copyright_p = next((p for p in soup.find_all("p") if str(2025) in p.get_text(" ", strip=True)), None)
         assert copyright_p is not None
         assert "Insight UI" in copyright_p.text
+        assert "All rights reserved." in copyright_p.text
 
 
 class HeadingDecorationTemplateTagTest(TemplateTagsTestCase):

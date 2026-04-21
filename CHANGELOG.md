@@ -54,6 +54,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **guard:** Preserve branch-policy check name
 - **guard:** Preserve branch-policy check name
 - **feature:** Mirror required legacy test checks
+- Allow stacked branch pull requests
 
 ### Documentation
 
@@ -67,6 +68,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Document GitHub issue label taxonomy 
 - Remove README workflow badges 
 - Reflect Django support range in badge 
+- Add notification component mockups 
 
 ### Features
 
@@ -119,6 +121,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add new setting 'use_tailwind_cli' and remove obsolete env-variables
 - Add heading decoration component 
 - Remove detailpages 
+- Add logo component
 
 ### Miscellaneous
 
@@ -130,6 +133,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Consistent Insight UI spelling
 - Update package-lock.json
 - Update uv.lock
+- Update footer copyright notice
 
 ### Refactoring
 
@@ -138,6 +142,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove hardcoded list of components from smoke tests
 - Rename 'table' and 'main' storybook
 - Remove obsolete storybook template files
+- Adopt logo component
 
 ### Reverted
 

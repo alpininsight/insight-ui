@@ -1,5 +1,5 @@
 {% extends "insight_ui/base.html" %}
-{% load static i18n insight_tags %}
+{% load i18n insight_tags %}
 
 {% block content %}
   <div class="relative flex max-w-96 flex-col justify-center bg-white dark:bg-gray-800 border dark:border-0 border-gray-200 rounded shadow p-6 lg:p-8 mb-16 mx-auto">
@@ -10,31 +10,7 @@
     {% endif %}
     {% if logo %}
       <div class="flex {% if logo.position == "start" %}justify-start{% elif logo.position == "end" %}justify-end{% else %}justify-center{% endif %}">
-        <img
-          id="login-logo"
-          src="{% static logo.url %}"
-          data-light-src="{% static logo.url %}"
-          data-dark-src="{% static logo.url_dark %}"
-          alt="{{ logo.alt }}"
-          class="w-fit mb-4"
-          style="height: {{ logo.height|default:'12rem' }}"
-        >
-        <script>
-          document.addEventListener("DOMContentLoaded", function() {
-            const root = document.documentElement;
-            const logo = document.getElementById("login-logo");
-
-            function updateLogo() {
-              const theme = root.getAttribute("data-theme") || "light";
-              logo.src = theme === "dark" ? logo.dataset.darkSrc : logo.dataset.lightSrc;
-            }
-
-            updateLogo();
-
-            const observer = new MutationObserver(updateLogo);
-            observer.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
-          });
-        </script>
+        {% logo config=logo height=logo.height|default:'12rem' css_class="w-fit mb-4" %}
       </div>
     {% endif %}
     <h2 class="text-primary text-center text-3xl font-bold leading-9">{% trans "Login" %}</h2>

@@ -242,8 +242,8 @@ def get_footer_context() -> dict:
                 "title": "Insight UI",
                 "text": _("A modern, accessible, and responsive UI library for Django projects."),
                 "image": {
-                    "url": "img/thumbnail.png",
-                    "url_dark": "img/thumbnail.png",
+                    "url": "insight_ui/favicon/android-chrome-192x192.png",
+                    "url_dark": "insight_ui/favicon/android-chrome-192x192.png",
                     "alt": "Footer image",
                     "height": "6rem",
                 },
@@ -258,7 +258,13 @@ def get_footer_context() -> dict:
                 "imprint": "https://alpininsight.com/imprint/",
                 "privacy": "https://alpininsight.com/privacy/",
             },
-            "copyright": {"year": 2026, "app_name": "Insight UI"},
+            "copyright": {
+                "year": 2026,
+                "holder": "Alpin Insight Solutions GmbH & Co. KG",
+                "source_label": "Open Source",
+                "license_text": "AGPL-3.0",
+                "license_url": "https://github.com/alpininsight/insight-ui/blob/develop/LICENSE",
+            },
             "version": "v1.0.0",
         }
     }
@@ -298,6 +304,31 @@ def get_breadcrumb_context() -> dict:
 def get_differentiator_context() -> dict:
     """Serve data for differentiator detailpage."""
     return {"textA": _("The cat is sleeping on the red sofa."), "textB": _("This is a completely different sentence!")}
+
+
+@register_demo_context(Component.LOGO)
+def get_logo_context() -> dict:
+    """Serve data for logo detailpage."""
+    return {
+        "logo_svg": {
+            "type": "svg",
+            "url": "insight_ui/svg/ai-logo.svg",
+            "url_dark": "insight_ui/svg/ai-logo.svg",
+            "alt": "Insight UI Logo",
+            "height": "3rem",
+        },
+        "logo_image": {
+            "type": "image",
+            "url": "insight_ui/favicon/android-chrome-192x192.png",
+            "alt": "Insight UI app icon",
+            "height": "3rem",
+        },
+        "logo_icon": {
+            "type": "icon",
+            "icon": {"name": "sparkles", "size": "big"},
+            "alt": "Decorative product icon",
+        },
+    }
 
 
 @register_demo_context(Component.DROPDOWN)

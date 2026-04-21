@@ -1,0 +1,27 @@
+{% load insight_tags %}
+
+{% if type == "icon" %}
+    <span
+        class="inline-flex items-center justify-center text-insight-primary {{ css_class }}"
+        {% if alt %}role="img" aria-label="{{ alt }}"{% else %}aria-hidden="true"{% endif %}
+    >
+        {% icon icon %}
+    </span>
+{% elif src %}
+    <img
+        src="{{ src }}"
+        alt="{{ alt }}"
+        class="inline-block w-auto object-contain {% if has_dark_variant %}dark:hidden{% endif %} {{ css_class }}"
+        style="height: {{ height }}{% if width %}; width: {{ width }}{% endif %}"
+        data-insight-logo-type="{{ type }}"
+    >
+    {% if has_dark_variant %}
+        <img
+            src="{{ dark_src }}"
+            alt="{{ alt }}"
+            class="hidden w-auto object-contain dark:inline-block {{ css_class }}"
+            style="height: {{ height }}{% if width %}; width: {{ width }}{% endif %}"
+            data-insight-logo-type="{{ type }}"
+        >
+    {% endif %}
+{% endif %}
