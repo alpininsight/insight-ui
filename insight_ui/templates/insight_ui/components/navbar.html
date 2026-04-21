@@ -1,4 +1,4 @@
-{% load static insight_tags i18n %}
+{% load insight_tags i18n %}
 
 <!-- Skip-Link for Accessibility, placed BEFORE nav -->
 <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-blue-600 text-white p-2 rounded">
@@ -16,30 +16,7 @@
     {% if brand %}
       <a href="{{ brand.href }}" class="flex items-center text-xl font-bold text-primary" style="gap: {{ brand.gap|default:'0.5rem' }}">
         {% if brand.logo %}
-          <img
-            id="brand-logo"
-            src="{% static brand.logo.url %}"
-            data-light-src="{% static brand.logo.url %}"
-            data-dark-src="{% static brand.logo.url_dark %}"
-            alt="{{ brand.logo.alt }}"
-            style="height: {{ brand.logo.height|default:'2rem' }}"
-          >
-          <script>
-            document.addEventListener("DOMContentLoaded", function() {
-              const root = document.documentElement;
-              const logo = document.getElementById("brand-logo");
-
-              function updateLogo() {
-                const theme = root.getAttribute("data-theme") || "light";
-                logo.src = theme === "dark" ? logo.dataset.darkSrc : logo.dataset.lightSrc;
-              }
-
-              updateLogo();
-
-              const observer = new MutationObserver(updateLogo);
-              observer.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
-            });
-          </script>
+          {% logo config=brand.logo %}
         {% endif %}
         <span>{{ brand.title }}</span>
       </a>
