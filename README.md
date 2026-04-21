@@ -74,9 +74,9 @@ CI runs tests against Python 3.12, 3.13, and 3.14. Note that Python 3.14 is stil
 
 ## Documentation
 
-The application is self-documenting — run it locally and open it in your browser to read details about each component on its corresponding page, including live examples.
+The application is self-documenting. Run it locally and open it in your browser to read component documentation, examples, parameters, and accessibility notes on the corresponding pages.
 
-Additional developer references in `docs/`:
+The `docs/` directory is reserved for repository-level developer and governance references:
 - [Contributing Guide](docs/contributing.md)
 - [Naming Conventions](docs/naming_conventions.md)
 - [Accessibility](docs/accessibility.md)
