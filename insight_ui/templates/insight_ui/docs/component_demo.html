@@ -23,6 +23,27 @@
 {% elif component.value == "footer" %}
     <div class="bg-gray-50 dark:bg-gray-700 h-24"></div>
     {% footer data=footer_data %}
+{% elif component.value == "logo" %}
+    <div class="grid gap-8 sm:grid-cols-3">
+        <div class="space-y-3">
+            <p class="font-semibold text-secondary">SVG asset</p>
+            <div class="flex h-16 items-end">
+                {% logo config=logo_svg %}
+            </div>
+        </div>
+        <div class="space-y-3">
+            <p class="font-semibold text-secondary">Image asset</p>
+            <div class="flex h-16 items-end">
+                {% logo config=logo_image %}
+            </div>
+        </div>
+        <div class="space-y-3">
+            <p class="font-semibold text-secondary">Icon</p>
+            <div class="flex h-16 items-end">
+                {% logo config=logo_icon %}
+            </div>
+        </div>
+    </div>
 {% elif component.value == "breadcrumbs" %}
     <div class="space-y-4">
         {% breadcrumbs items=breadcrumb_items %}

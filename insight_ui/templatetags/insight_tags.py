@@ -8,6 +8,7 @@ from typing import Any
 
 from django import template
 from django.core.paginator import Page
+from django.templatetags.static import static
 from django.urls import reverse
 from django.utils.safestring import SafeString, mark_safe
 from markdown import markdown
@@ -104,6 +105,94 @@ def icon(name: str = "", size: str = "") -> dict[str, Any]:
         return {"name": name.get("name", ""), "size": name.get("size", "")}
 
     return {"name": name, "size": size}
+
+
+def _resolve_asset_url(value: object) -> str:
+    """Resolve static asset paths while preserving absolute, root-relative, and data URLs."""
+    if not value:
+        return ""
+
+    url = str(value)
+    if url.startswith(("http://", "https://", "/", "data:")):
+        return url
+
+    return static(url)
+
+
+@register.inclusion_tag("insight_ui/components/logo.html")
+def logo(  # noqa: PLR0913 (too many arguments)
+    logo_type: str | None = None,
+    url: str | None = None,
+    url_dark: str | None = None,
+    alt: str | None = None,
+    icon_name: str | None = None,
+    icon_size: str | None = None,
+    height: str | None = None,
+    width: str | None = None,
+    css_class: str | None = None,
+    config: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """
+    Render a brand logo as an image, SVG asset, or Insight UI icon.
+
+    Args:
+    ----
+        logo_type (str): One of 'image', 'svg', or 'icon'. In config dictionaries, 'type' is also supported.
+        url (str): Static, absolute, root-relative, or data URL for image/svg logos.
+        url_dark (str): Optional dark-theme URL for image/svg logos.
+        alt (str): Accessible text. Empty values mark image/svg logos as decorative.
+        icon_name (str): Insight UI icon name when logo_type is 'icon'.
+        icon_size (str): Insight UI icon size when logo_type is 'icon'.
+        height (str): CSS height for image/svg logos.
+        width (str): Optional CSS width for image/svg logos.
+        css_class (str): Extra classes for the rendered logo root.
+        config (dict[str, Any]): Alternative configuration with keys corresponding to the previous parameters.
+
+    Returns:
+    -------
+        A dict with context variables for the template.
+
+    """
+    if config is not None:
+        logo_type = config.get("type", config.get("logo_type", logo_type))
+        url = config.get("url", config.get("src", url))
+        url_dark = config.get("url_dark", config.get("src_dark", url_dark))
+        alt = config.get("alt", alt)
+        icon_size = config.get("icon_size", icon_size)
+        height = config.get("height", height)
+        width = config.get("width", width)
+        css_class = config.get("class", config.get("css_class", css_class))
+
+        icon_config = config.get("icon")
+        if isinstance(icon_config, Mapping):
+            icon_name = icon_config.get("name", icon_name)
+            icon_size = icon_config.get("size", icon_size)
+        elif isinstance(icon_config, str):
+            icon_name = icon_config
+
+        icon_name = config.get("icon_name", icon_name)
+
+    inferred_type = logo_type or (
+        "icon" if icon_name else "svg" if str(url or "").lower().endswith(".svg") else "image"
+    )
+    normalized_type = str(inferred_type).strip().lower()
+    if normalized_type not in {"image", "svg", "icon"}:
+        normalized_type = "image"
+
+    src = _resolve_asset_url(url)
+    dark_src = _resolve_asset_url(url_dark)
+
+    return {
+        "type": normalized_type,
+        "src": src,
+        "dark_src": dark_src,
+        "has_dark_variant": bool(dark_src and dark_src != src),
+        "alt": alt or "",
+        "icon": {"name": icon_name or "", "size": icon_size or "medium"},
+        "height": height or "2rem",
+        "width": width or "",
+        "css_class": css_class or "",
+    }
 
 
 @register.filter

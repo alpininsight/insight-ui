@@ -407,6 +407,28 @@ def get_differentiator_description_context() -> dict[str, list[str]]:
     }
 
 
+@register_component(Component.LOGO)
+def get_logo_description_context() -> dict[str, list[str]]:
+    """Serve description documentation for the logo component."""
+    return {
+        "description": [
+            _(
+                "The `logo` component renders a brand mark from one consistent API. It supports image assets, SVG assets, and Insight UI icons."
+            ),
+            _(
+                "Use `type='svg'` for SVG files stored as static assets, `type='image'` for bitmap images, and `type='icon'` for symbols from the Insight UI icon set. This avoids repeated ad-hoc SVG and dark-mode logo handling in application templates."
+            ),
+        ],
+        "features": [
+            _(
+                "Image and SVG asset paths are resolved through Django static files unless an absolute, root-relative, or data URL is provided."
+            ),
+            _("Optional `url_dark` renders a dark-theme variant without custom JavaScript."),
+            _("Icon logos reuse the existing Insight UI icon component."),
+        ],
+    }
+
+
 @register_component(Component.PROGRESS_BAR)
 def get_progress_bar_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the progress bar component."""
