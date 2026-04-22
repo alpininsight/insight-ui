@@ -34,6 +34,7 @@ TEMPLATE_PATHS = {
     "infobox": GIT_BASE_FILE + "infobox.html",
     "input": GIT_BASE_FILE + "input.html",
     "live_content": GIT_BASE_FILE + "live_content.html",
+    "logo": GIT_BASE_FILE + "logo.html",
     "minimal_step_bar": GIT_BASE_FILE + "minimal_step_bar.html",
     "modal": GIT_BASE_FILE + "modal.html",
     "multiselect": GIT_BASE_FILE + "multiselect.html",

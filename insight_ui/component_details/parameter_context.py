@@ -432,14 +432,17 @@ def get_footer_parameter_context() -> dict[str, list[str]]:
 
     copyright_param = ParameterDoc(
         ParameterDetails(
-            "copyright", "dict[str, str]", _("Copyright and legal notice information."), "{}"
+            "copyright",
+            "dict[str, str]",
+            _("Copyright information, such as the year, holder, source label, and license text."),
+            "{}",
         ),
         [
             ParameterDetails("year", "int", _("Typically the current year (not strictly required)."), "undefined"),
-            ParameterDetails("holder", "str", _("Copyright holder name."), "''"),
+            ParameterDetails("holder", "str", _("The copyright holder. Falls back to app_name."), "''"),
             ParameterDetails("app_name", "str", _("Backwards-compatible fallback for the holder name."), "''"),
-            ParameterDetails("source_label", "str", _("Optional source or distribution label."), "''"),
-            ParameterDetails("license_text", "str", _("Optional license label."), "''"),
+            ParameterDetails("source_label", "str", _("Optional source model label, for example Open Source."), "''"),
+            ParameterDetails("license_text", "str", _("Optional license label, for example AGPL-3.0."), "''"),
             ParameterDetails("license_url", "str", _("Optional URL for the license label."), "''"),
             ParameterDetails("separator", "str", _("Separator between legal metadata parts."), "'·'"),
             ParameterDetails("rights_text", "str", _("Optional rights statement."), "'All rights reserved.'"),
@@ -1485,6 +1488,67 @@ def get_differentiator_parameter_context() -> dict[str, list[str]]:
     ]
 
     return {"params": [main_params]}
+
+
+@register_component(Component.LOGO)
+def get_logo_parameter_context() -> dict[str, list[str]]:
+    """Serve parameter documentation for the logo component."""
+    icon_param = ParameterDoc(
+        ParameterDetails("icon", "dict[str, str] | str", _("Icon configuration used when type is 'icon'."), "{}"),
+        [
+            ParameterDetails("name", "str", _("Name of the Insight UI icon."), "''"),
+            ParameterDetails("size", "str", _("Icon size: 'big', 'medium', 'small', or 'xs'."), "'medium'"),
+        ],
+        """
+        {"name": "sparkles", "size": "big"}
+        """,
+    )
+
+    config_param = ParameterDoc(
+        ParameterDetails("config", "dict[str, Any]", _("Dictionary-based logo configuration."), "{}"),
+        [
+            ParameterDetails("type", "str", _("Logo type: 'image', 'svg', or 'icon'."), "'image'"),
+            ParameterDetails("url", "str", _("Static, absolute, root-relative, or data URL for image/svg logos."), "''"),
+            ParameterDetails("url_dark", "str", _("Optional dark-theme URL for image/svg logos."), "''"),
+            ParameterDetails("alt", "str", _("Accessible text. Empty values make image/svg logos decorative."), "''"),
+            icon_param.details,
+            ParameterDetails("height", "str", _("CSS height for image/svg logos."), "'2rem'"),
+            ParameterDetails("width", "str", _("Optional CSS width for image/svg logos."), "''"),
+            ParameterDetails("class", "str", _("Additional CSS classes for the rendered logo root."), "''"),
+        ],
+        """
+        {
+            "type": "svg",
+            "url": "insight_ui/svg/ai-logo.svg",
+            "url_dark": "insight_ui/svg/ai-logo-dark.svg",
+            "alt": "Insight UI Logo",
+            "height": "2rem",
+        }
+        """,
+        notes=[
+            {
+                "type": "info",
+                "message": _(
+                    "Use type='svg' for SVG files stored as static assets. Use type='icon' when the mark should come from the built-in Insight UI icon set."
+                ),
+            }
+        ],
+    )
+
+    main_params = [
+        ParameterDetails("logo_type", "str", _("Logo type: 'image', 'svg', or 'icon'. Config key: 'type'."), "'image'"),
+        ParameterDetails("url", "str", _("Static, absolute, root-relative, or data URL for image/svg logos."), "''"),
+        ParameterDetails("url_dark", "str", _("Optional dark-theme URL for image/svg logos."), "''"),
+        ParameterDetails("alt", "str", _("Accessible text. Empty values make image/svg logos decorative."), "''"),
+        ParameterDetails("icon_name", "str", _("Insight UI icon name used when logo_type is 'icon'."), "''"),
+        ParameterDetails("icon_size", "str", _("Icon size used when logo_type is 'icon'."), "'medium'"),
+        ParameterDetails("height", "str", _("CSS height for image/svg logos."), "'2rem'"),
+        ParameterDetails("width", "str", _("Optional CSS width for image/svg logos."), "''"),
+        ParameterDetails("css_class", "str", _("Additional CSS classes for the rendered logo root."), "''"),
+        config_param.details,
+    ]
+
+    return {"params": [main_params, config_param, icon_param]}
 
 
 @register_component(Component.PROGRESS_BAR)

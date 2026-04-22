@@ -428,6 +428,28 @@ def get_differentiator_description_context() -> dict[str, list[str]]:
     }
 
 
+@register_component(Component.LOGO)
+def get_logo_description_context() -> dict[str, list[str]]:
+    """Serve description documentation for the logo component."""
+    return {
+        "description": [
+            _(
+                "The `logo` component renders a brand mark from one consistent API. It supports image assets, SVG assets, and Insight UI icons."
+            ),
+            _(
+                "Use `type='svg'` for SVG files stored as static assets, `type='image'` for bitmap images, and `type='icon'` for symbols from the Insight UI icon set. This avoids repeated ad-hoc SVG and dark-mode logo handling in application templates."
+            ),
+        ],
+        "features": [
+            _(
+                "Image and SVG asset paths are resolved through Django static files unless an absolute, root-relative, or data URL is provided."
+            ),
+            _("Optional `url_dark` renders a dark-theme variant without custom JavaScript."),
+            _("Icon logos reuse the existing Insight UI icon component."),
+        ],
+    }
+
+
 @register_component(Component.PROGRESS_BAR)
 def get_progress_bar_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the progress bar component."""
@@ -491,8 +513,11 @@ def get_web_socket_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `websocket` component can be used to establish a connection with another websocket to automatically receive data. The received data is inserted into the component's container using HTMX. No page reload or any other form of interaction is required."
-            )
+                "The `websocket` component is a thin wrapper around the HTMX WebSocket extension. It is designed for host applications that want HTMX-managed WebSocket updates without reloading the page."
+            ),
+            _(
+                "By default the component expects HTML fragments that HTMX can swap into the DOM. Non-HTML frames are surfaced as browser events so host adapters can decide how to render them."
+            ),
         ]
     }
 

@@ -523,6 +523,36 @@ def get_differentiator_usage_context() -> dict[str, str]:
     }
 
 
+@register_component(Component.LOGO)
+def get_logo_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the logo component."""
+    return {
+        "usage": """
+        {% load insight_tags %}
+
+        {# SVG static asset #}
+        {% logo config=logo_svg %}
+
+        {# Bitmap image #}
+        {% logo logo_type="image" url="img/company-logo.png" alt="Company" height="3rem" %}
+
+        {# Icon logo using the Insight UI icon set #}
+        {% logo logo_type="icon" icon_name="sparkles" icon_size="big" alt="Product mark" %}
+
+        {# Theme-aware SVG asset #}
+        {% logo logo_type="svg" url="svg/logo-light.svg" url_dark="svg/logo-dark.svg" alt="Company" %}
+        """,
+        "usage_notes_end": [
+            {
+                "type": "info",
+                "message": _(
+                    "For SVG logos, prefer `type='svg'` with a static asset path. Do not paste raw SVG markup into templates unless a component explicitly requires inline SVG behavior."
+                ),
+            }
+        ],
+    }
+
+
 @register_component(Component.PROGRESS_BAR)
 def get_progress_bar_usage_context() -> dict[str, str]:
     """Serve usage documentation for the progress bar component."""
@@ -577,7 +607,7 @@ def get_web_socket_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% insight_websocket tag_id="demo-websocket" url="ws://localhost:8765" initial_content="Connect to Web-Socket…" %}
+        {% insight_websocket tag_id="runtime-stream" url="/runtime/stream/" initial_content="Waiting for runtime updates…" %}
         """
     }
 

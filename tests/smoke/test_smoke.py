@@ -28,10 +28,34 @@ def test_root_url_responds_ok(client: Client) -> None:  # noqa: ANN001
 @pytest.mark.smoke
 def test_healthz_responds_ok(client: Client) -> None:  # noqa: ANN001
     """Health endpoint should stay cheap and stable for probes."""
-    response = client.get("/healthz/")
+    response = client.get("/healthz")
 
     assert response.status_code == HTTPStatus.OK
     assert response.content.decode() == "OK"
+
+
+@pytest.mark.smoke
+@pytest.mark.django_db
+def test_readyz_responds_ok(client: Client) -> None:  # noqa: ANN001
+    """Readiness endpoint should confirm cheap local prerequisites."""
+    response = client.get("/readyz")
+
+    assert response.status_code == HTTPStatus.OK
+    assert response.json()["status"] == "ok"
+
+
+@pytest.mark.smoke
+@pytest.mark.django_db
+def test_api_info_responds_ok(client: Client) -> None:  # noqa: ANN001
+    """Runtime identity endpoint should expose the canonical service metadata."""
+    response = client.get("/api/info")
+
+    assert response.status_code == HTTPStatus.OK
+    payload = response.json()
+    assert payload["service"]["name"] == "insight-ui"
+    assert payload["service"]["namespace"] == "alpininsight"
+    assert payload["deployment"]["platform_namespace"] == "demo"
+    assert payload["deployment"]["environment"]["name"] == "local"
 
 
 @pytest.mark.smoke

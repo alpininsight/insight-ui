@@ -59,6 +59,7 @@ class Component(Enum):
     CODE_BLOCK = ("code_block", ComponentCategory.UTIL)
     COPYRIGHT_NOTICE = ("copyright_notice", ComponentCategory.UTIL)
     DIFFERENTIATOR = ("differentiator", ComponentCategory.UTIL)
+    LOGO = ("logo", ComponentCategory.UTIL)
     PROGRESS_BAR = ("progress_bar", ComponentCategory.UTIL)
     GEO_MAP = ("geo_map", ComponentCategory.UTIL)
     CHART = ("chart", ComponentCategory.UTIL)

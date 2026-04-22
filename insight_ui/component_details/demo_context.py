@@ -242,8 +242,8 @@ def get_footer_context() -> dict:
                 "title": "Insight UI",
                 "text": _("A modern, accessible, and responsive UI library for Django projects."),
                 "image": {
-                    "url": "img/thumbnail.png",
-                    "url_dark": "img/thumbnail.png",
+                    "url": "insight_ui/favicon/android-chrome-192x192.png",
+                    "url_dark": "insight_ui/favicon/android-chrome-192x192.png",
                     "alt": "Footer image",
                     "height": "6rem",
                 },
@@ -318,6 +318,31 @@ def get_copyright_notice_context() -> dict:
             "license_url": "https://github.com/alpininsight/insight-ui/blob/develop/LICENSE",
         },
         "copyright_notice_legacy_config": {"year": 2026, "app_name": "Insight UI"},
+    }
+
+
+@register_demo_context(Component.LOGO)
+def get_logo_context() -> dict:
+    """Serve data for logo detailpage."""
+    return {
+        "logo_svg": {
+            "type": "svg",
+            "url": "insight_ui/svg/ai-logo.svg",
+            "url_dark": "insight_ui/svg/ai-logo.svg",
+            "alt": "Insight UI Logo",
+            "height": "3rem",
+        },
+        "logo_image": {
+            "type": "image",
+            "url": "insight_ui/favicon/android-chrome-192x192.png",
+            "alt": "Insight UI app icon",
+            "height": "3rem",
+        },
+        "logo_icon": {
+            "type": "icon",
+            "icon": {"name": "sparkles", "size": "big"},
+            "alt": "Decorative product icon",
+        },
     }
 
 

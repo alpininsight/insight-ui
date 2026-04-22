@@ -78,7 +78,7 @@ class CopyrightNoticeTemplateTagTest(TemplateTagsTestCase):
         rendered = self.render_template(template_string, context={"config": config})
         soup = BeautifulSoup(rendered, "html.parser")
 
-        notice = soup.find(attrs={"data-insight-copyright-notice": True})
+        notice = soup.find("p")
         assert notice is not None
         text = notice.get_text(" ", strip=True)
         assert "© 2026 Alpin Insight Solutions GmbH & Co. KG" in text
@@ -97,9 +97,66 @@ class CopyrightNoticeTemplateTagTest(TemplateTagsTestCase):
         rendered = self.render_template(template_string)
         soup = BeautifulSoup(rendered, "html.parser")
 
-        notice = soup.find(attrs={"data-insight-copyright-notice": True})
+        notice = soup.find("p")
         assert notice is not None
         assert "© 2026 Insight UI" in notice.get_text(" ", strip=True)
+
+
+class LogoTemplateTagTest(TemplateTagsTestCase):
+    """Tests for the logo template tag."""
+
+    def test_logo_renders_svg_asset(self) -> None:
+        """SVG logo assets should render as static image tags."""
+        template_string = """
+        {% load insight_tags %}
+        {% logo logo_type="svg" url="insight_ui/svg/ai-logo.svg" alt="Insight UI Logo" height="3rem" %}
+        """
+        rendered = self.render_template(template_string)
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        logo = soup.find(attrs={"data-insight-logo-type": "svg"})
+        assert logo is not None
+        assert logo.name == "img"
+        assert logo.get("src") == "/static/insight_ui/svg/ai-logo.svg"
+        assert logo.get("alt") == "Insight UI Logo"
+        assert "height: 3rem" in logo.get("style")
+
+    def test_logo_renders_dark_variant_without_script(self) -> None:
+        """Dark logo variants should render with dark-mode classes and no inline script."""
+        config = {
+            "type": "image",
+            "url": "light.png",
+            "url_dark": "dark.png",
+            "alt": "Theme-aware logo",
+        }
+        template_string = """
+        {% load insight_tags %}
+        {% logo config=config %}
+        """
+        rendered = self.render_template(template_string, context={"config": config})
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        logos = soup.find_all(attrs={"data-insight-logo-type": "image"})
+        assert len(logos) == 2  # noqa: PLR2004
+        assert logos[0].get("src") == "/static/light.png"
+        assert "dark:hidden" in logos[0].get("class")
+        assert logos[1].get("src") == "/static/dark.png"
+        assert "dark:inline-block" in logos[1].get("class")
+        assert not soup.find("script")
+
+    def test_logo_renders_icon(self) -> None:
+        """Icon logos should use the existing Insight UI icon set."""
+        config = {"type": "icon", "icon": {"name": "sparkles", "size": "big"}, "alt": "Product mark"}
+        template_string = """
+        {% load insight_tags %}
+        {% logo config=config %}
+        """
+        rendered = self.render_template(template_string, context={"config": config})
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        wrapper = soup.find("span", attrs={"role": "img", "aria-label": "Product mark"})
+        assert wrapper is not None
+        assert wrapper.find("svg") is not None
 
 
 class LiveContentTemplateTagTest(TemplateTagsTestCase):
@@ -131,10 +188,23 @@ class WebsocketTemplateTagTest(TemplateTagsTestCase):
         """Test für grundlegende WebSocket Funktionalität."""
         template_string = """
         {% load insight_tags %}
-        {% insight_websocket url="ws://localhost:8765" %}
+        {% insight_websocket url="/runtime/stream/" %}
         """
         rendered = self.render_template(template_string)
-        assert "ws://localhost:8765" in rendered
+        assert "/runtime/stream/" in rendered
+        assert "data-insight-websocket" in rendered
+        assert "data-insight-websocket-status" in rendered
+        assert "data-insight-websocket-output" in rendered
+
+    def test_websocket_without_tag_id_does_not_render_broken_ids(self) -> None:
+        """Leere tag_id Werte sollten keine unbrauchbaren HTML-IDs erzeugen."""
+        template_string = """
+        {% load insight_tags %}
+        {% insight_websocket url="/runtime/stream/" %}
+        """
+        rendered = self.render_template(template_string)
+        assert 'id="-output"' not in rendered
+        assert 'id="-status"' not in rendered
 
 
 class InfiniteScrollTemplateTagTest(TemplateTagsTestCase):
@@ -321,7 +391,13 @@ class FooterTemplateTagTest(TemplateTagsTestCase):
                 "imprint": "https://alpininsight.com/imprint/",
                 "privacy": "https://alpininsight.com/privacy/",
             },
-            "copyright": {"year": 2025, "app_name": "Insight UI"},
+            "copyright": {
+                "year": 2025,
+                "holder": "Alpin Insight Solutions GmbH & Co. KG",
+                "source_label": "Open Source",
+                "license_text": "AGPL-3.0",
+                "license_url": "https://github.com/alpininsight/insight-ui/blob/develop/LICENSE",
+            },
         }
 
         template_string = """
@@ -359,26 +435,20 @@ class FooterTemplateTagTest(TemplateTagsTestCase):
         assert "support@alpininsight.com" in mail_el.text
 
         # --- Assert: copyright ---
-        copyright_p = soup.find(attrs={"data-insight-copyright-notice": True})
+        copyright_p = next((p for p in soup.find_all("p") if str(2025) in p.get_text(" ", strip=True)), None)
         assert copyright_p is not None
-        assert copyright_p.get("data-insight-copyright-notice") is not None
-        assert str(2025) in copyright_p.text
-        assert "Insight UI" in copyright_p.text
-        assert "·" in copyright_p.text
+        assert "Alpin Insight Solutions GmbH & Co. KG" in copyright_p.text
+        assert "Open Source" in copyright_p.text
+        assert "AGPL-3.0" in copyright_p.text
+        assert "All rights reserved." in copyright_p.text
+        license_el = copyright_p.find("a", href="https://github.com/alpininsight/insight-ui/blob/develop/LICENSE")
+        assert license_el is not None
+        assert license_el.get_text(strip=True) == "AGPL-3.0"
 
-    def test_footer_uses_copyright_notice_metadata(self) -> None:
-        """Footer should compose the reusable copyright notice component."""
+    def test_footer_copyright_supports_legacy_app_name(self) -> None:
+        """Legacy copyright data should keep rendering app_name."""
         footer_data = {
-            "links": [],
-            "contact": {},
-            "copyright": {
-                "year": 2026,
-                "holder": "Alpin Insight Solutions GmbH & Co. KG",
-                "source_label": "Open Source",
-                "license_text": "AGPL-3.0",
-                "license_url": "https://example.com/license",
-                "rights_text": "All rights reserved.",
-            },
+            "copyright": {"year": 2025, "app_name": "Insight UI"},
         }
 
         template_string = """
@@ -388,13 +458,12 @@ class FooterTemplateTagTest(TemplateTagsTestCase):
         rendered = self.render_template(template_string, context={"footer_data": footer_data})
         soup = BeautifulSoup(rendered, "html.parser")
 
-        notice = soup.find(attrs={"data-insight-copyright-notice": True})
-        assert notice is not None
-        text = notice.get_text(" ", strip=True)
-        assert "© 2026 Alpin Insight Solutions GmbH & Co. KG" in text
-        assert "· Open Source" in text
-        assert "· AGPL-3.0" in text
-        assert notice.find("a", href="https://example.com/license") is not None
+        copyright_p = next((p for p in soup.find_all("p") if str(2025) in p.get_text(" ", strip=True)), None)
+        assert copyright_p is not None
+        assert str(2025) in copyright_p.text
+        assert "Insight UI" in copyright_p.text
+        assert "·" in copyright_p.text
+        assert "All rights reserved." in copyright_p.text
 
 
 class HeadingDecorationTemplateTagTest(TemplateTagsTestCase):

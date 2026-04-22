@@ -329,6 +329,17 @@ def get_differentiator_a11y_context() -> dict[str, list[str]]:
     return {"a11y": []}
 
 
+@register_component(Component.LOGO)
+def get_logo_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y documentation for the logo component."""
+    return {
+        "a11y": [
+            _("Image and SVG logos use the provided `alt` text. Empty `alt` values make them decorative."),
+            _("Icon logos receive `role='img'` and an accessible label when `alt` is provided."),
+        ]
+    }
+
+
 @register_component(Component.PROGRESS_BAR)
 def get_progress_bar_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the progress bar component."""

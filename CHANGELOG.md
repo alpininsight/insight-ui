@@ -47,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Minor spelling
 - **ci:** Restore automatic release on develop→main merge
 - **docs:** Resolve component-slug regressions (toggle_button, outline_button, button_sizes, effect_cards) 
+- **ci:** Update scheduled pre-commit workflow actions 
 
 ### CI/CD
 
@@ -54,6 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **guard:** Preserve branch-policy check name
 - **guard:** Preserve branch-policy check name
 - **feature:** Mirror required legacy test checks
+- Allow stacked branch pull requests
 
 ### Documentation
 
@@ -120,6 +122,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add new setting 'use_tailwind_cli' and remove obsolete env-variables
 - Add heading decoration component 
 - Remove detailpages 
+- Add logo component
+- **stream:** Clarify HTMX websocket boundary 
+- **runtime:** Prepare blue-green demo deployment contract 
 
 ### Miscellaneous
 
@@ -131,6 +136,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Consistent Insight UI spelling
 - Update package-lock.json
 - Update uv.lock
+- Update footer copyright notice
+- **docs:** Remove legacy mkdocs layer 
+- **ci:** Refresh GitHub Actions for Node 24 
 
 ### Refactoring
 
@@ -139,6 +147,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove hardcoded list of components from smoke tests
 - Rename 'table' and 'main' storybook
 - Remove obsolete storybook template files
+- Adopt logo component
 
 ### Reverted
 
