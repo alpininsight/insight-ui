@@ -124,6 +124,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove detailpages 
 - Add logo component
 - **stream:** Clarify HTMX websocket boundary 
+- **runtime:** Prepare blue-green demo deployment contract 
 
 ### Miscellaneous
 
