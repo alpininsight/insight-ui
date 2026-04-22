@@ -68,8 +68,8 @@ COPY --chown=app:app docker/entrypoint.sh /entrypoint.sh
 RUN chmod 755 /entrypoint.sh \
     && mkdir -p /home/app \
     && mkdir -p /app/staticfiles \
-    && python manage.py collectstatic --noinput \
-    && python manage.py check \
+    && SECRET_KEY="$(python -c "import secrets; print(secrets.token_urlsafe(64))")" python manage.py collectstatic --noinput \
+    && SECRET_KEY="$(python -c "import secrets; print(secrets.token_urlsafe(64))")" python manage.py check \
     && chown -R app:app /app /home/app
 
 USER app

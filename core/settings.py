@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 from typing import Any
 
-from decouple import config
+from decouple import UndefinedValueError, config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,16 +19,24 @@ def normalize_log_level(value: str) -> str:
     """Normalize env-provided log levels for Django's logging config."""
     return value.strip().upper()
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config(
-    "SECRET_KEY",
-    default="local-dev-only-override-before-public-deploy-5f2c1b7e4a9d8c6f3e1a0b4c7d9e2f6a",
-)
+
+def get_secret_key(*, is_prod: bool) -> str:
+    """Resolve the Django secret key with a fail-fast production path."""
+    if is_prod:
+        return config("SECRET_KEY")
+    return config("SECRET_KEY", default="django-insecure-test-key-not-for-production")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=False, cast=bool)
 IS_PROD = config("IS_PROD", default=False, cast=bool)
 USE_TAILWIND_CLI = config("USE_TAILWIND_CLI", default=False, cast=bool)
+
+try:
+    SECRET_KEY = get_secret_key(is_prod=IS_PROD)
+except UndefinedValueError as exc:
+    msg = "SECRET_KEY must be set when IS_PROD=true."
+    raise RuntimeError(msg) from exc
+
 SERVICE_NAMESPACE = config("SERVICE_NAMESPACE", default="alpininsight")
 SERVICE_NAME = config("SERVICE_NAME", default="insight-ui")
 PLATFORM_NAMESPACE = config("PLATFORM_NAMESPACE", default="demo")
@@ -44,7 +52,7 @@ DJANGO_LOG_LEVEL = config("DJANGO_LOG_LEVEL", default=LOG_LEVEL, cast=normalize_
 SERVER_LOG_LEVEL = config("SERVER_LOG_LEVEL", default=LOG_LEVEL, cast=normalize_log_level)
 LOG_FORMAT = config("LOG_FORMAT", default="console")
 ACCESS_LOG_ENABLED = config("ACCESS_LOG_ENABLED", default=False, cast=bool)
-USE_X_FORWARDED_HOST = config("USE_X_FORWARDED_HOST", default=True, cast=bool)
+USE_X_FORWARDED_HOST = config("USE_X_FORWARDED_HOST", default=False, cast=bool)
 TRUST_X_FORWARDED_PROTO = config("TRUST_X_FORWARDED_PROTO", default=True, cast=bool)
 
 if DEBUG:

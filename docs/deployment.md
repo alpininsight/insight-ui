@@ -102,6 +102,8 @@ Notes:
   the live lane/slot. It does not require a new `main` container build.
 - Rollback means switching traffic back to the previous slot while keeping the
   new image available for analysis.
+- `SECRET_KEY` must be provided explicitly for production-style deployments;
+  the repo no longer carries a production fallback.
 - Build metadata is baked into the image through `ARTIFACT_VERSION` and
   `GIT_COMMIT_SHA`, and also surfaced in `/api/info`.
 
