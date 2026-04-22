@@ -148,9 +148,9 @@ class WebsocketTemplateTagTest(TemplateTagsTestCase):
         """
         rendered = self.render_template(template_string)
         assert "/runtime/stream/" in rendered
-        assert 'data-insight-websocket' in rendered
-        assert 'data-insight-websocket-status' in rendered
-        assert 'data-insight-websocket-output' in rendered
+        assert "data-insight-websocket" in rendered
+        assert "data-insight-websocket-status" in rendered
+        assert "data-insight-websocket-output" in rendered
 
     def test_websocket_without_tag_id_does_not_render_broken_ids(self) -> None:
         """Leere tag_id Werte sollten keine unbrauchbaren HTML-IDs erzeugen."""
