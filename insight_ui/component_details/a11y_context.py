@@ -311,6 +311,18 @@ def get_code_block_a11y_context() -> dict[str, list[str]]:
     return {"a11y": [_("The component is accessible via keyboard.")]}
 
 
+@register_component(Component.COPYRIGHT_NOTICE)
+def get_copyright_notice_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y documentation for the copyright notice component."""
+    return {
+        "a11y": [
+            _("The legal notice is rendered as text so it remains readable by screen readers."),
+            _("Decorative separators are marked with `aria-hidden='true'`."),
+            _("A license URL is rendered as a normal accessible link when provided."),
+        ]
+    }
+
+
 @register_component(Component.DIFFERENTIATOR)
 def get_differentiator_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the differentiator component."""

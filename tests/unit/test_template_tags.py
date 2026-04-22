@@ -58,6 +58,50 @@ class NavbarTemplateTagTest(TemplateTagsTestCase):
         assert "Django Insight UI NavBar" in rendered
 
 
+class CopyrightNoticeTemplateTagTest(TemplateTagsTestCase):
+    """Tests for the copyright_notice template tag."""
+
+    def test_copyright_notice_renders_full_legal_line(self) -> None:
+        """Check copyright notice output with license metadata."""
+        config = {
+            "year": 2026,
+            "holder": "Alpin Insight Solutions GmbH & Co. KG",
+            "source_label": "Open Source",
+            "license_text": "AGPL-3.0",
+            "license_url": "https://example.com/license",
+            "rights_text": "All rights reserved.",
+        }
+        template_string = """
+        {% load insight_tags %}
+        {% copyright_notice config=config %}
+        """
+        rendered = self.render_template(template_string, context={"config": config})
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        notice = soup.find("p")
+        assert notice is not None
+        text = notice.get_text(" ", strip=True)
+        assert "© 2026 Alpin Insight Solutions GmbH & Co. KG" in text
+        assert "· Open Source" in text
+        assert "· AGPL-3.0" in text
+        assert "· All rights reserved." in text
+        assert notice.find("a", href="https://example.com/license").get_text(strip=True) == "AGPL-3.0"
+        assert len(notice.select("span[aria-hidden='true']")) == 3  # noqa: PLR2004
+
+    def test_copyright_notice_supports_app_name_fallback(self) -> None:
+        """Existing footer copyright configuration with app_name should continue to work."""
+        template_string = """
+        {% load insight_tags %}
+        {% copyright_notice year=2026 app_name="Insight UI" rights_text="All rights reserved." %}
+        """
+        rendered = self.render_template(template_string)
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        notice = soup.find("p")
+        assert notice is not None
+        assert "© 2026 Insight UI" in notice.get_text(" ", strip=True)
+
+
 class LogoTemplateTagTest(TemplateTagsTestCase):
     """Tests for the logo template tag."""
 
@@ -416,7 +460,9 @@ class FooterTemplateTagTest(TemplateTagsTestCase):
 
         copyright_p = next((p for p in soup.find_all("p") if str(2025) in p.get_text(" ", strip=True)), None)
         assert copyright_p is not None
+        assert str(2025) in copyright_p.text
         assert "Insight UI" in copyright_p.text
+        assert "·" in copyright_p.text
         assert "All rights reserved." in copyright_p.text
 
 

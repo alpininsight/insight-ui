@@ -489,6 +489,28 @@ def get_code_block_usage_context() -> dict[str, str]:
     }
 
 
+@register_component(Component.COPYRIGHT_NOTICE)
+def get_copyright_notice_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the copyright notice component."""
+    return {
+        "usage": """
+        {% load insight_tags %}
+
+        {% copyright_notice config=copyright %}
+
+        {% copyright_notice year=2026 holder="Alpin Insight Solutions GmbH & Co. KG" source_label="Open Source" license_text="AGPL-3.0" %}
+        """,
+        "usage_notes_end": [
+            {
+                "type": "info",
+                "message": _(
+                    "Use `holder` for new configuration. Existing footer data using `app_name` still works as a backwards-compatible fallback."
+                ),
+            }
+        ],
+    }
+
+
 @register_component(Component.DIFFERENTIATOR)
 def get_differentiator_usage_context() -> dict[str, str]:
     """Serve usage documentation for the differentiator component."""
