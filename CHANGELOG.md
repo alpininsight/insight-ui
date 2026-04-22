@@ -70,6 +70,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove README workflow badges 
 - Reflect Django support range in badge 
 - Add notification component mockups 
+- Move insight ui audit into repo 
 
 ### Features
 
