@@ -171,6 +171,9 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+  if (globalThis.InsightUI?.WebSocket?.destroy) {
+    globalThis.InsightUI.WebSocket.destroy();
+  }
   TestUtils.cleanup();
   vi.clearAllMocks();
 });

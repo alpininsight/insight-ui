@@ -585,7 +585,7 @@ def get_web_socket_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% insight_websocket tag_id="demo-websocket" url="ws://localhost:8765" initial_content="Connect to Web-Socket…" %}
+        {% insight_websocket tag_id="runtime-stream" url="/runtime/stream/" initial_content="Waiting for runtime updates…" %}
         """
     }
 

@@ -492,8 +492,11 @@ def get_web_socket_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `websocket` component can be used to establish a connection with another websocket to automatically receive data. The received data is inserted into the component's container using HTMX. No page reload or any other form of interaction is required."
-            )
+                "The `websocket` component is a thin wrapper around the HTMX WebSocket extension. It is designed for host applications that want HTMX-managed WebSocket updates without reloading the page."
+            ),
+            _(
+                "By default the component expects HTML fragments that HTMX can swap into the DOM. Non-HTML frames are surfaced as browser events so host adapters can decide how to render them."
+            ),
         ]
     }
 

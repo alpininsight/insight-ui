@@ -2,10 +2,16 @@
 
 <div
   {% if tag_id %}id="{{ tag_id }}"{% endif %}
+  data-insight-websocket
+  data-insight-stream-mode="htmx-ws-html"
   hx-ext="ws"
   ws-connect="{{ url }}"
 >
-  <div id="{{ tag_id }}-output" class="bg-gray-100 dark:bg-gray-900 rounded shadow px-4 py-2 mt-4">
+  <div
+    {% if tag_id %}id="{{ tag_id }}-output"{% endif %}
+    data-insight-websocket-output
+    class="bg-gray-100 dark:bg-gray-900 rounded shadow px-4 py-2 mt-4"
+  >
     {% if initial_content %}
       {{ initial_content|safe }}
     {% else %}
@@ -13,7 +19,15 @@
     {% endif %}
   </div>
   <span class="block text-sm text-primary mt-4">
-    {% trans "Status:" %} <span id="{{ tag_id }}-status"><b>{% trans "Establishing connection..." %}</b></span>
+    {% trans "Status:" %}
+    <span
+      {% if tag_id %}id="{{ tag_id }}-status"{% endif %}
+      data-insight-websocket-status
+      role="status"
+      aria-live="polite"
+    >
+      <b>{% trans "Establishing connection..." %}</b>
+    </span>
   </span>
   <span class="block text-xs text-secondary mt-2">
     {% trans "URL:" %} {{ url }}

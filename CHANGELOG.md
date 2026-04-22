@@ -47,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Minor spelling
 - **ci:** Restore automatic release on develop→main merge
 - **docs:** Resolve component-slug regressions (toggle_button, outline_button, button_sizes, effect_cards) 
+- **ci:** Update scheduled pre-commit workflow actions 
 
 ### CI/CD
 
@@ -69,6 +70,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove README workflow badges 
 - Reflect Django support range in badge 
 - Add notification component mockups 
+- Move insight ui audit into repo 
 
 ### Features
 
@@ -122,6 +124,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add heading decoration component 
 - Remove detailpages 
 - Add logo component
+- **stream:** Clarify HTMX websocket boundary 
+- **runtime:** Prepare blue-green demo deployment contract 
 
 ### Miscellaneous
 
@@ -134,6 +138,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update package-lock.json
 - Update uv.lock
 - Update footer copyright notice
+- **docs:** Remove legacy mkdocs layer 
+- **ci:** Refresh GitHub Actions for Node 24 
 
 ### Refactoring
 

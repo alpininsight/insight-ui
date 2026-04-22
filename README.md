@@ -53,8 +53,21 @@ docker run --rm -p 8000:8000 insight-ui:local
 Runtime flags:
 - `RUN_MIGRATIONS=1` runs `python manage.py migrate --noinput` before the web process starts. This is enabled by default for single-container Docker runs.
 - `RUN_COLLECTSTATIC=1` re-runs `python manage.py collectstatic --noinput` at container start when you need to refresh a mounted static volume. Static assets are already collected during the image build, so the default remains `0`.
+- `ARTIFACT_VERSION` and `GIT_COMMIT_SHA` are injected at build time and surfaced at runtime via `/api/info`.
+- `DEPLOYMENT_ENVIRONMENT`, `DEPLOYMENT_LANE`, `DEPLOYMENT_SLOT`, `PLATFORM_NAMESPACE`, and `PUBLIC_BASE_URL` let the same image describe its current blue/green role without code changes.
 
 For Kubernetes, use the same image and disable startup migrations on scaled web deployments (`RUN_MIGRATIONS=0`). Run `python manage.py migrate --noinput` as a one-off Job or init step instead, then start the web pods from the published image.
+
+Runtime endpoints:
+- `/healthz` for cheap liveness probes
+- `/readyz` for cheap readiness checks against local prerequisites
+- `/api/info` for canonical runtime identity and build metadata
+
+For blue/green promotion, the repo publishes one slot-neutral image. The
+platform moves the tested digest between `develop` and `main` aliases by
+changing the slot wiring, not by rebuilding a second `main` image.
+
+The deployment-specific prep for `insight-ui.demo.alpininsight.ai` is documented in [Deployment Contract](docs/deployment.md).
 
 The WebSocket demo lives in `utils/main.py`:
 ```bash
@@ -74,9 +87,9 @@ CI runs tests against Python 3.12, 3.13, and 3.14. Note that Python 3.14 is stil
 
 ## Documentation
 
-The application is self-documenting — run it locally and open it in your browser to read details about each component on its corresponding page, including live examples.
+The application is self-documenting. Run it locally and open it in your browser to read component documentation, examples, parameters, and accessibility notes on the corresponding pages.
 
-Additional developer references in `docs/`:
+The `docs/` directory is reserved for repository-level developer and governance references:
 - [Contributing Guide](docs/contributing.md)
 - [Naming Conventions](docs/naming_conventions.md)
 - [Design System Contract](docs/design-system-contract.md)

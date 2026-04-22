@@ -1,16 +1,24 @@
 import logging
+import os
 
 import structlog
 
-LOG_LEVEL = "INFO"
 LOGGING_TIME_FORMAT = "%d-%m-%Y %H:%M:%S"
+
+
+def _normalize_log_level(value: str, *, default: int) -> int:
+    """Normalize user-provided log level strings to logging constants."""
+    return getattr(logging, value.strip().upper(), default)
 
 
 def setup_structlog() -> None:
     """Set up logger."""
-    log_level = LOG_LEVEL
+    root_level = _normalize_log_level(os.environ.get("LOG_LEVEL", "WARNING"), default=logging.WARNING)
+    app_level = _normalize_log_level(os.environ.get("APP_LOG_LEVEL", "INFO"), default=logging.INFO)
+    log_format = os.environ.get("LOG_FORMAT", "console").strip().lower()
+    renderer = structlog.processors.JSONRenderer() if log_format == "json" else structlog.dev.ConsoleRenderer()
 
-    logging.basicConfig(level=log_level, format="%(message)s")
+    logging.basicConfig(level=root_level, format="%(message)s", force=True)
 
     structlog.configure(
         processors=[
@@ -30,11 +38,10 @@ def setup_structlog() -> None:
             ),
             # Adds a timestamp to the event dictionary.
             structlog.processors.TimeStamper(fmt=LOGGING_TIME_FORMAT, utc=False),
-            # Renders the event dictionary as a colorized, human-readable string for console output.
-            structlog.dev.ConsoleRenderer(),
+            renderer,
         ],
         # Creates a bound logger that filters log entries based on the log level.
-        wrapper_class=structlog.make_filtering_bound_logger(logging.NOTSET),
+        wrapper_class=structlog.make_filtering_bound_logger(app_level),
         # Use a plain dictionary for the event dictionary.
         context_class=dict,
         # Use a print-based logger factory that prints log entries to the console.
