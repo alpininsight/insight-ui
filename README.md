@@ -6,7 +6,7 @@
 [![PyPI - Version](https://img.shields.io/pypi/v/insight-ui.svg)](https://pypi.org/project/insight-ui/)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
 
-Insight UI is a modern, extensible UI framework for Django. It ships with reusable, WCAG 2.1 AA-compliant components, live HTMX integrations, and a Tailwind-based design system so teams can bootstrap projects quickly. The published version is derived from Git tags via hatch-vcs and kept in sync by release-please.
+Insight UI is a modern, extensible UI framework for Django. It ships with reusable, WCAG 2.1 AA-compliant components, live HTMX integrations, and a Tailwind-based design system so teams can bootstrap projects quickly. Tailwind CSS is the default styling implementation; the public design contract is semantic. The published version is derived from Git tags via hatch-vcs and kept in sync by release-please.
 
 ## Highlights
 - **Accessible components**: ready-made navigation, forms, tables, alerts, carousels, and more.
@@ -92,6 +92,7 @@ The application is self-documenting. Run it locally and open it in your browser 
 The `docs/` directory is reserved for repository-level developer and governance references:
 - [Contributing Guide](docs/contributing.md)
 - [Naming Conventions](docs/naming_conventions.md)
+- [Design System Contract](docs/design-system-contract.md)
 - [Accessibility](docs/accessibility.md)
 - [Internationalization](docs/i18n.md)
 

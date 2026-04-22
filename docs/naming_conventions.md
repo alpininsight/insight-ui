@@ -16,6 +16,40 @@ This guide documents the naming conventions that keep Insight UI consistent acro
 - CSS/JS files use `kebab-case`: `insight-ui-sidebar.js`.
 - Images and SVGs also follow `kebab case`: `favicon-16X16.png`.
 
+## CSS classes and design semantics
+
+Tailwind CSS is the default styling implementation, but the public design
+contract should stay semantic. New reusable component markup should prefer stable
+Insight UI class names when the concept is part of the component contract.
+Tailwind utility classes may still be used inside the default implementation and
+for local, non-contract layout details.
+
+Use the `insight-*` prefix for stable classes that describe Insight UI concepts:
+
+| Pattern | Use for | Example |
+|---|---|---|
+| `insight-surface-*` | Reusable surfaces and containers | `insight-surface-card` |
+| `insight-layout-*` | Shared layout regions or layout primitives | `insight-layout-content` |
+| `insight-component-*` | Component-specific stable structure | `insight-component-sidebar` |
+| `insight-state-*` | Semantic state styling | `insight-state-disabled` |
+| `insight-doc-*` | Self-documentation surfaces and examples | `insight-doc-demo` |
+
+Use this mapping when deciding whether repeated Tailwind utility usage should
+become a semantic Insight UI class:
+
+| Tailwind-oriented concept | Prefer semantic class when shared | Notes |
+|---|---|---|
+| `bg-*`, `dark:bg-*`, `border`, `rounded`, `shadow` used together for a reusable container | `insight-surface-*` | Use for cards, panels, modal bodies, docs examples, and other named surfaces. |
+| `flex`, `grid`, `gap-*`, `space-*`, `px-*`, `py-*` used as a repeated structural pattern | `insight-layout-*` | Use for shared layout primitives. Keep one-off alignment utilities local. |
+| Component root classes mixed with repeated spacing, border, and state utilities | `insight-component-*` | Use when the class describes stable component anatomy, not just visual decoration. |
+| `hover:*`, `active:*`, `focus:*`, `disabled:*`, `aria-*`, or state-specific variants | `insight-state-*` | Use when the state is a semantic public behavior such as selected, disabled, open, or invalid. |
+| Documentation/demo chrome such as examples, code areas, or demo wrappers | `insight-doc-*` | Use for self-documentation structures that should stay consistent across demos. |
+| Brand, status, or text colors such as `text-insight-*`, `bg-insight-*`, `border-insight-*` | Token plus semantic class | Keep the token in `input.css`; add a class only when the usage pattern is repeated. |
+
+Do not add a semantic class for every Tailwind utility. Add one only when it
+names a reusable design or component concept that should survive a future styling
+implementation change.
+
 ## Data-Attributs (HTML)
 
 ### Component identification

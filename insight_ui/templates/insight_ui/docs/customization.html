@@ -76,11 +76,16 @@
                 <h2>{% trans "Theming (adapting to a corporate design)" %}</h2>
                 <p>
                     {% blocktrans with tailwind='<a href="https://tailwindcss.com/" class="text-link">TailwindCSS</a>'|safe %}
-                        Our UI framework uses {{ tailwind }} for styling.
+                        Our UI framework uses {{ tailwind }} as its default styling implementation.
                         Tailwind uses a so-called <i>input.css</i> file in which a theme can be built.
                         This includes defining basic properties such as colors, font sizes or fonts, but also creating custom CSS classes or animations.
                         Thanks to Tailwind's Preflight function, standards can also be defined so that certain elements such as headings always look the same without needing a class specified in the HTML code.
                         The individual options and sections of the <i>input.css</i> are explained in more detail in the following sections.
+                    {% endblocktrans %}
+                </p>
+                <p>
+                    {% blocktrans %}
+                        The public design contract is semantic: brand colors, status colors, text colors, surfaces, interaction states, and component behavior should stay meaningful even if the styling implementation changes in the future.
                     {% endblocktrans %}
                 </p>
                 <p>
@@ -89,6 +94,53 @@
                     {% endblocktrans %}
                 </p>
             </div>
+
+            <section class="space-y-4">
+                <h3>{% trans "Start with your corporate identity" %}</h3>
+                <p>
+                    {% blocktrans with input='<span class="inline-tag">input.css</span>'|safe theme='<span class="inline-tag">@theme</span>'|safe %}
+                        The recommended starting point is to map your corporate identity to Insight UI's semantic tokens in {{ input }}.
+                        Put your brand colors, text colors, status colors, interaction states, and default font into the {{ theme }} block.
+                        Buttons, links, headings, forms, surfaces, and documentation examples then consume the same design decisions without changing every template.
+                    {% endblocktrans %}
+                </p>
+                <ul>
+                    <li>{% trans "Use primary and secondary colors for the main brand actions and supporting accents." %}</li>
+                    <li>{% trans "Use success, warning, danger, and info colors for product and system states." %}</li>
+                    <li>{% trans "Use text tokens for primary content, secondary content, and links." %}</li>
+                    <li>{% trans "Use component classes and template tags after the tokens are set, so the whole UI follows the same visual language." %}</li>
+                </ul>
+                <div data-insight-code-block="css" data-insight-code-block-filename="input.css">
+                    {# fmt:off #}
+                    @theme {
+                        --font-sans: "Inter", sans-serif;
+
+                        --color-insight-primary: #0057b8;
+                        --color-insight-primary-hover: #0072ce;
+                        --color-insight-primary-active: #1d8fe3;
+                        --color-insight-secondary: #008578;
+                        --color-insight-secondary-hover: #00a992;
+                        --color-insight-secondary-active: #2cc8b4;
+
+                        --color-insight-success: #15803d;
+                        --color-insight-warning: #ca8a04;
+                        --color-insight-danger: #dc2626;
+                        --color-insight-info: #2563eb;
+
+                        --color-insight-text-primary: oklch(26.9% 0 0);
+                        --color-insight-text-secondary: oklch(55.6% 0 0);
+                        --color-insight-text-link: var(--color-insight-primary);
+                        --color-insight-text-link-hover: var(--color-insight-primary-hover);
+                    }
+                    {# fmt:on #}
+                </div>
+                <p>
+                    {% blocktrans with input='<span class="inline-tag">input.css</span>'|safe %}
+                        Change templates only when the structure, behavior, or component anatomy must change.
+                        For brand alignment, prefer {{ input }} first.
+                    {% endblocktrans %}
+                </p>
+            </section>
 
             <section class="space-y-4">
                 <h3>{% trans "Setup" %}</h3>
