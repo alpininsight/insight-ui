@@ -2,24 +2,66 @@
 
 import os
 from pathlib import Path
+from typing import Any
 
 from decouple import config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
+def split_csv(value: str) -> list[str]:
+    """Split a comma-separated env var into a trimmed list."""
+    return [item.strip() for item in value.split(",") if item.strip()]
+
+
+def normalize_log_level(value: str) -> str:
+    """Normalize env-provided log levels for Django's logging config."""
+    return value.strip().upper()
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config("SECRET_KEY", default="django-insecure-test-key-not-for-production")
+SECRET_KEY = config(
+    "SECRET_KEY",
+    default="local-dev-only-override-before-public-deploy-5f2c1b7e4a9d8c6f3e1a0b4c7d9e2f6a",
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=False, cast=bool)
 IS_PROD = config("IS_PROD", default=False, cast=bool)
 USE_TAILWIND_CLI = config("USE_TAILWIND_CLI", default=False, cast=bool)
+SERVICE_NAMESPACE = config("SERVICE_NAMESPACE", default="alpininsight")
+SERVICE_NAME = config("SERVICE_NAME", default="insight-ui")
+PLATFORM_NAMESPACE = config("PLATFORM_NAMESPACE", default="demo")
+DEPLOYMENT_ENVIRONMENT = config("DEPLOYMENT_ENVIRONMENT", default="local")
+DEPLOYMENT_LANE = config("DEPLOYMENT_LANE", default="")
+DEPLOYMENT_SLOT = config("DEPLOYMENT_SLOT", default="")
+PUBLIC_BASE_URL = config("PUBLIC_BASE_URL", default="http://localhost:8000").strip()
+ARTIFACT_VERSION = config("ARTIFACT_VERSION", default="0.0.0")
+GIT_COMMIT_SHA = config("GIT_COMMIT_SHA", default="unknown")
+LOG_LEVEL = config("LOG_LEVEL", default="WARNING", cast=normalize_log_level)
+APP_LOG_LEVEL = config("APP_LOG_LEVEL", default="INFO", cast=normalize_log_level)
+DJANGO_LOG_LEVEL = config("DJANGO_LOG_LEVEL", default=LOG_LEVEL, cast=normalize_log_level)
+SERVER_LOG_LEVEL = config("SERVER_LOG_LEVEL", default=LOG_LEVEL, cast=normalize_log_level)
+LOG_FORMAT = config("LOG_FORMAT", default="console")
+ACCESS_LOG_ENABLED = config("ACCESS_LOG_ENABLED", default=False, cast=bool)
+USE_X_FORWARDED_HOST = config("USE_X_FORWARDED_HOST", default=True, cast=bool)
+TRUST_X_FORWARDED_PROTO = config("TRUST_X_FORWARDED_PROTO", default=True, cast=bool)
 
 if DEBUG:
     print("Running in DEBUG mode!")
 
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=lambda v: [s.strip() for s in v.split(",")], default="*")
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=split_csv, default="*")
+CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", cast=split_csv, default="")
+
+if TRUST_X_FORWARDED_PROTO:
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+SECURE_SSL_REDIRECT = config("SECURE_SSL_REDIRECT", default=False, cast=bool)
+SESSION_COOKIE_SECURE = config("SESSION_COOKIE_SECURE", default=False, cast=bool)
+CSRF_COOKIE_SECURE = config("CSRF_COOKIE_SECURE", default=False, cast=bool)
+SECURE_HSTS_SECONDS = config("SECURE_HSTS_SECONDS", default=0, cast=int)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = config("SECURE_HSTS_INCLUDE_SUBDOMAINS", default=False, cast=bool)
+SECURE_HSTS_PRELOAD = config("SECURE_HSTS_PRELOAD", default=False, cast=bool)
 
 # Application definition
 INSTALLED_APPS = [
@@ -103,6 +145,31 @@ TAILWIND_CLI_SRC_CSS = os.path.join(BASE_DIR, "insight_ui/utils/input.css")
 STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
     "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
+}
+
+LOGGING: dict[str, Any] = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        }
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": LOG_LEVEL,
+    },
+    "loggers": {
+        "django": {"handlers": ["console"], "level": DJANGO_LOG_LEVEL, "propagate": False},
+        "gunicorn": {"handlers": ["console"], "level": SERVER_LOG_LEVEL, "propagate": False},
+        "uvicorn": {"handlers": ["console"], "level": SERVER_LOG_LEVEL, "propagate": False},
+        "uvicorn.error": {"handlers": ["console"], "level": SERVER_LOG_LEVEL, "propagate": False},
+        "uvicorn.access": {
+            "handlers": ["console"],
+            "level": "INFO" if ACCESS_LOG_ENABLED else "WARNING",
+            "propagate": False,
+        },
+    },
 }
 
 # Default primary key field type

@@ -16,7 +16,10 @@ class TestSettingsDefaults:
 
     def test_secret_key_has_default(self) -> None:
         """SECRET_KEY should have a fallback so the app starts without .env."""
-        value = config("SECRET_KEY", default="django-insecure-test-key-not-for-production")
+        value = config(
+            "SECRET_KEY",
+            default="local-dev-only-override-before-public-deploy-5f2c1b7e4a9d8c6f3e1a0b4c7d9e2f6a",
+        )
         assert value is not None
         assert len(value) > 0
 
