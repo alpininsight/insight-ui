@@ -1,4 +1,4 @@
-/*! tailwindcss v4.2.2 | MIT License | https://tailwindcss.com */
+/*! tailwindcss v4.2.4 | MIT License | https://tailwindcss.com */
 @layer properties;
 @layer theme, base, components, utilities;
 @layer theme {
@@ -719,6 +719,9 @@
   .w-\[70dvh\] {
     width: 70dvh;
   }
+  .w-auto {
+    width: auto;
+  }
   .w-fit {
     width: fit-content;
   }
@@ -875,6 +878,9 @@
   .gap-6 {
     gap: calc(var(--spacing) * 6);
   }
+  .gap-8 {
+    gap: calc(var(--spacing) * 8);
+  }
   .gap-12 {
     gap: calc(var(--spacing) * 12);
   }
@@ -890,6 +896,13 @@
       --tw-space-y-reverse: 0;
       margin-block-start: calc(calc(var(--spacing) * 2) * var(--tw-space-y-reverse));
       margin-block-end: calc(calc(var(--spacing) * 2) * calc(1 - var(--tw-space-y-reverse)));
+    }
+  }
+  .space-y-3 {
+    :where(& > :not(:last-child)) {
+      --tw-space-y-reverse: 0;
+      margin-block-start: calc(calc(var(--spacing) * 3) * var(--tw-space-y-reverse));
+      margin-block-end: calc(calc(var(--spacing) * 3) * calc(1 - var(--tw-space-y-reverse)));
     }
   }
   .space-y-4 {
@@ -984,6 +997,10 @@
   .rounded-sm {
     border-radius: var(--radius-sm);
   }
+  .rounded-s-sm {
+    border-start-start-radius: var(--radius-sm);
+    border-end-start-radius: var(--radius-sm);
+  }
   .rounded-e-sm {
     border-start-end-radius: var(--radius-sm);
     border-end-end-radius: var(--radius-sm);
@@ -997,6 +1014,10 @@
   .rounded-t {
     border-top-left-radius: 0.25rem;
     border-top-right-radius: 0.25rem;
+  }
+  .rounded-t-sm {
+    border-top-left-radius: var(--radius-sm);
+    border-top-right-radius: var(--radius-sm);
   }
   .rounded-l-sm {
     border-top-left-radius: var(--radius-sm);
@@ -1033,6 +1054,10 @@
   .border-s {
     border-inline-start-style: var(--tw-border-style);
     border-inline-start-width: 1px;
+  }
+  .border-s-2 {
+    border-inline-start-style: var(--tw-border-style);
+    border-inline-start-width: 2px;
   }
   .border-t {
     border-top-style: var(--tw-border-style);
@@ -1223,6 +1248,15 @@
     }
     --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
   }
+  .bg-cover {
+    background-size: cover;
+  }
+  .bg-center {
+    background-position: center;
+  }
+  .bg-no-repeat {
+    background-repeat: no-repeat;
+  }
   .fill-insight-primary {
     fill: var(--color-insight-primary);
   }
@@ -1237,6 +1271,9 @@
     @supports (color: color-mix(in lab, red, red)) {
       fill: color-mix(in oklab, var(--color-white) 25%, transparent);
     }
+  }
+  .object-contain {
+    object-fit: contain;
   }
   .object-cover {
     object-fit: cover;
@@ -1325,14 +1362,14 @@
   .pt-10 {
     padding-top: calc(var(--spacing) * 10);
   }
-  .pt-12 {
-    padding-top: calc(var(--spacing) * 12);
-  }
   .pt-16 {
     padding-top: calc(var(--spacing) * 16);
   }
   .pt-20 {
     padding-top: calc(var(--spacing) * 20);
+  }
+  .pb-0 {
+    padding-bottom: calc(var(--spacing) * 0);
   }
   .pb-2 {
     padding-bottom: calc(var(--spacing) * 2);
@@ -2030,6 +2067,11 @@
       display: none;
     }
   }
+  .sm\:grid-cols-3 {
+    @media (width >= 40rem) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
   .md\:block {
     @media (width >= 48rem) {
       display: block;
@@ -2363,6 +2405,11 @@
       display: none;
     }
   }
+  .dark\:inline-block {
+    &:where([data-theme=dark], [data-theme=dark] *) {
+      display: inline-block;
+    }
+  }
   .dark\:divide-gray-500 {
     &:where([data-theme=dark], [data-theme=dark] *) {
       :where(& > :not(:last-child)) {
@@ -2566,11 +2613,6 @@
   .dark\:text-insight-text-secondary-dark {
     &:where([data-theme=dark], [data-theme=dark] *) {
       color: var(--color-insight-text-secondary-dark);
-    }
-  }
-  .dark\:text-neutral-100 {
-    &:where([data-theme=dark], [data-theme=dark] *) {
-      color: var(--color-neutral-100);
     }
   }
   .dark\:text-red-200 {
