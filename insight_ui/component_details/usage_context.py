@@ -392,7 +392,7 @@ def get_chat_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% chat view_name=view_name %}
+        {% chat request_url="/api/chat-response/" %}
         """
     }
 

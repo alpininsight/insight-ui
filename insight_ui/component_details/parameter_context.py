@@ -998,67 +998,23 @@ def get_radio_group_parameter_context() -> dict[str, list[str]]:
         """,
     )
 
-    config_param = ParameterDoc(
-        ParameterDetails(
-            "config", "dict[str, Any]", _("Describes the radio button group and the individual radio elements."), "{}"
-        ),
-        [
-            ParameterDetails(
-                "name", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
-            ),
-            ParameterDetails("label", "str", _("A text label displayed above the radio elements."), "''"),
-            ParameterDetails(
-                "as_row", "bool", _("<b>True</b> if the radio elements should be displayed side by side."), "False"
-            ),
-            items_param.details,
-        ],
-        """
-        {
-            "name": "model",
-            "label": "Choose model:",
-            "as_row": True,
-            "items": [
-                {"tag_id": "model1", "value": "BERT", "text": _("BERT"), "disabled": False},
-                {"tag_id": "model2", "value": "PaLM 2", "text": _("PaLM 2"), "disabled": False},
-                {"tag_id": "model3", "value": "LLaMA 2", "text": _("LLaMA 2 (currently not available)"), "disabled": True},
-            ],
-        }
-        """,
-    )
-
     main_params = [
-        config_param.details,
+        ParameterDetails("name", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"),
+        ParameterDetails("label", "str", _("A text label displayed above the radio elements."), "''"),
+        items_param.details,
+        ParameterDetails(
+            "as_row", "bool", _("<b>True</b> if the radio elements should be displayed side by side."), "False"
+        ),
         ParameterDetails("current_value", "str", _("The value of the currently selected radio button."), "''"),
-        # Block only
         ParameterDetails(
-            "view_name",
-            "str",
-            _("Name of the URL to which the request should be sent when clicking one of the radio buttons."),
-            "''",
-        ),
-        ParameterDetails(
-            "query_params", "str", _("A string of query parameters to be sent along with the request."), "''"
-        ),
-        ParameterDetails(
-            "target_id", "str", _("The ID of the HTML tag to be replaced when switching the radio button."), "''"
-        ),
-        ParameterDetails(
-            "method",
-            "str",
-            _("Name of the JavaScript method to be executed when clicking one of the radio buttons."),
-            "''",
-        ),
-        ParameterDetails(
-            "integrated",
-            "bool",
-            _(
-                "<b>True</b> if the group is inside a &lt;form&gt;. If <b>False</b> the group gets its own &lt;form&gt;."
-            ),
-            "False",
+            "config",
+            "dict[str, Any]",
+            _("An alternative configuration with keys corresponding to the previous parameters."),
+            "{}",
         ),
     ]
 
-    return {"params": [main_params, config_param, items_param]}
+    return {"params": [main_params, items_param]}
 
 
 @register_component(Component.RADIO_BLOCK)
@@ -1075,30 +1031,30 @@ def get_radio_block_parameter_context() -> dict[str, list[str]]:
             ParameterDetails("icon", "dict[str, str]", _("Optional icon displayed before the label."), "{}"),
             ParameterDetails("disabled", "bool", _("<b>True</b> if the radio button should be disabled."), "False"),
         ],
-        """""",
-    )
-
-    config_param = ParameterDoc(
-        ParameterDetails(
-            "config", "dict[str, Any]", _("Describes the radio button group and the individual radio elements."), "{}"
-        ),
+        """
         [
-            ParameterDetails(
-                "name", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
-            ),
-            ParameterDetails("label", "str", _("A text label displayed above the radio elements."), "''"),
-            ParameterDetails(
-                "as_row", "bool", _("<b>True</b> if the radio elements should be displayed side by side."), "False"
-            ),
-            items_param.details,
-        ],
-        """""",
+            {"tag_id": "model1", "value": "BERT", "text": _("BERT"), "disabled": False},
+            {"tag_id": "model2", "value": "PaLM 2", "text": _("PaLM 2"), "disabled": False},
+            {"tag_id": "model3", "value": "LLaMA 2", "text": _("LLaMA 2 (currently not available)"), "disabled": True},
+        ]
+        """,
     )
 
     main_params = [
-        config_param.details,
-        ParameterDetails("current_value", "str", _("The value of the currently selected radio button."), "''"),
-        # Block only
+        ParameterDetails("name", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"),
+        ParameterDetails("label", "str", _("A text label displayed above the radio elements."), "''"),
+        items_param.details,
+        ParameterDetails(
+            "integrated",
+            "bool",
+            _(
+                "<b>True</b> if the group is inside a &lt;form&gt;. If <b>False</b> the group gets its own &lt;form&gt;."
+            ),
+            "False",
+        ),
+        ParameterDetails(
+            "as_row", "bool", _("<b>True</b> if the radio elements should be displayed side by side."), "False"
+        ),
         ParameterDetails(
             "view_name",
             "str",
@@ -1109,25 +1065,25 @@ def get_radio_block_parameter_context() -> dict[str, list[str]]:
             "query_params", "str", _("A string of query parameters to be sent along with the request."), "''"
         ),
         ParameterDetails(
-            "target_id", "str", _("The ID of the HTML tag to be replaced when switching the radio button."), "''"
+            "hx_target_id", "str", _("The ID of the HTML tag to be replaced when switching the radio button."), "''"
         ),
+        ParameterDetails("hx_swap_method", "str", _("The way in which the target is to be replaced."), "'outerHTML'"),
         ParameterDetails(
             "method",
             "str",
             _("Name of the JavaScript method to be executed when clicking one of the radio buttons."),
             "''",
         ),
+        ParameterDetails("current_value", "str", _("The value of the currently selected radio button."), "''"),
         ParameterDetails(
-            "integrated",
-            "bool",
-            _(
-                "<b>True</b> if the group is inside a &lt;form&gt;. If <b>False</b> the group gets its own &lt;form&gt;."
-            ),
-            "False",
+            "config",
+            "dict[str, Any]",
+            _("An alternative configuration with keys corresponding to the previous parameters."),
+            "{}",
         ),
     ]
 
-    return {"params": [main_params, config_param, items_param]}
+    return {"params": [main_params, items_param]}
 
 
 @register_component(Component.RANGE_SLIDER)
@@ -1264,10 +1220,7 @@ def get_chat_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the chat component."""
     main_params = [
         ParameterDetails(
-            "view_name",
-            "str",
-            _("Name of the URL to which the request should be sent when submitting a message."),
-            "''",
+            "request_url", "str", _("The URL to which the request should be sent when submitting a message."), "''"
         )
     ]
 
