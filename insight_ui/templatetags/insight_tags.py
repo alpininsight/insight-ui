@@ -1,7 +1,7 @@
 """Template-Tags for Insight UI-Components."""
 
 import math
-from collections.abc import Mapping, Sequence
+from collections.abc import Iterable, Mapping, Sequence
 from copy import deepcopy
 from difflib import HtmlDiff, ndiff, unified_diff
 from typing import Any
@@ -10,6 +10,7 @@ from django import template
 from django.core.paginator import Page
 from django.templatetags.static import static
 from django.urls import reverse
+from django.utils.functional import Promise
 from django.utils.safestring import SafeString, mark_safe
 from django.utils.translation import gettext as _
 from markdown import markdown
@@ -622,30 +623,36 @@ def radio_group(config: dict, current_value: str) -> dict:
 
 @register.inclusion_tag("insight_ui/components/radio_block.html")
 def radio_block(  # noqa: PLR0913 (too many arguments)
-    config: dict,
-    current_value: str,
     name: str = "",
+    label: str = "",
+    items: list[dict[str, Any]] = [],
+    current_value: str = "",
     view_name: str = "",
     query_params: str = "",
     hx_target_id: str = "",
     hx_swap_method: str = "",
     method: str = "",
     integrated: bool = False,
+    as_row: bool = True,
+    config: dict[str, Any] = {},
 ) -> dict:
     """
     Render a group of radio buttons.
 
     Arguments:
     ---------
-        config (dict): Describes the radio component and its items.
-        current_value (str): The name of the currently selected radio button.
         name (str): The name of the entire radio block, required for referencing in JavaScript code.
+        label (str): A label text that is displayed above the radio buttons.
+        items (list[dict[str, Any]]): A list of radio-button configurations.
+        current_value (str): The name of the currently selected radio button.
         view_name (str): The name of the view to which the request should be sent when switching.
         query_params (str): A string of query parameters.
         hx_target_id (str): The ID of the HTML tag that should be replaced when the value changes.
         hx_swap_method (str): The way in which the target is to be replaced (see: https://htmx.org/attributes/hx-swap/).
         method (str): The name of the JavaScript method to be executed.
         integrated (bool): 'False' if the component should have its own <form> element.
+        as_row (bool): 'False' if the elements are to be arranged in a column.
+        config (dict[str, Any]): An alternative configuration with keys corresponding to the previous parameters.
 
     Returns:
     -------
@@ -654,11 +661,21 @@ def radio_block(  # noqa: PLR0913 (too many arguments)
     """
     if config is not None:
         name = config.get("name", name)
+        label = config.get("label", label)
+        items = config.get("items", items)
+        current_value = config.get("current_value", current_value)
+        view_name = config.get("view_name", view_name)
+        query_params = config.get("query_params", query_params)
+        hx_target_id = config.get("hx_target_id", hx_target_id)
+        hx_swap_method = config.get("hx_swap_method", hx_swap_method)
+        method = config.get("method", method)
+        integrated = config.get("integrated", integrated)
+        as_row = config.get("as_row", as_row)
 
     return {
         "name": name,
-        "label": config.get("label"),
-        "items": config.get("items"),
+        "label": label,
+        "items": items,
         "current_value": current_value,
         "view_name": view_name,
         "query_params": query_params,
@@ -666,6 +683,7 @@ def radio_block(  # noqa: PLR0913 (too many arguments)
         "hx_swap_method": hx_swap_method,
         "method": method,
         "integrated": integrated,
+        "as_row": as_row,
     }
 
 
@@ -1106,11 +1124,7 @@ def table(data: dict) -> dict[str, Any]:
 
 @register.inclusion_tag("insight_ui/components/modal.html")
 def modal(  # noqa: PLR0913 (too many args)
-    tag_id: str,
-    title: str,
-    description: str = "",
-    additional_content: str = "",
-    actions: Sequence[Mapping[str, str]] = [],
+    tag_id: str, title: str, description: list[str] = [], actions: Sequence[Mapping[str, str]] = [], width: int = 32
 ) -> dict[str, Any]:
     """
     Render an accessible modal dialog.
@@ -1119,21 +1133,25 @@ def modal(  # noqa: PLR0913 (too many args)
     ----
         tag_id (str): A unique ID for the modal.
         title (str): The title of the modal.
-        description (str): An optional description of the modal.
-        additional_content (str): The content of the modal.
+        description (list[str]): An optional text description of the modal.
         actions (list): A list of action buttons.
+        width (int): The maximum width of the dialog box relative to the screen in 'rem'.
 
     Returns:
     -------
         A dict with context variables for the template.
 
     """
+    # Convert a single string or a 'lazy translation objects' which is a Promise to a list.
+    if isinstance(description, (str, Promise)) or not isinstance(description, Iterable):
+        description = [description]
+
     return {
         "tag_id": tag_id,
         "title": title,
         "description": description,
-        "additional_content": additional_content,
         "actions": [dict(action) for action in actions] if actions is not None else [],
+        "width": width,
     }
 
 

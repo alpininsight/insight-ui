@@ -1325,12 +1325,14 @@ def get_modal_parameter_context() -> dict[str, list[str]]:
             "tag_id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
         ),
         ParameterDetails("title", "str", _("Heading of the modal dialog."), "''"),
-        ParameterDetails("description", "str", _("Text displayed directly below the title."), "''"),
         ParameterDetails(
-            "additional_content",
-            "str",
-            _("Additional text displayed below the header, which itself consists of title and description."),
-            "''",
+            "description",
+            "str or list[str]",
+            _("A text in the center of the modal dialog. This can be exchanged by extending the template."),
+            "[]",
+        ),
+        ParameterDetails(
+            "width", "int", _("The maximum width of the dialog box relative to the screen in 'rem'."), "32"
         ),
         action_button_param.details,
     ]
@@ -1440,10 +1442,7 @@ def get_copyright_notice_parameter_context() -> dict[str, list[str]]:
             ParameterDetails("year", "int | str", _("Optional copyright year."), "''"),
             ParameterDetails("holder", "str", _("Copyright holder name."), "''"),
             ParameterDetails(
-                "app_name",
-                "str",
-                _("Backwards-compatible fallback for existing footer copyright configuration."),
-                "''",
+                "app_name", "str", _("Backwards-compatible fallback for existing footer copyright configuration."), "''"
             ),
             ParameterDetails("source_label", "str", _("Optional source or distribution label."), "''"),
             ParameterDetails("license_text", "str", _("Optional license label."), "''"),
@@ -1508,7 +1507,9 @@ def get_logo_parameter_context() -> dict[str, list[str]]:
         ParameterDetails("config", "dict[str, Any]", _("Dictionary-based logo configuration."), "{}"),
         [
             ParameterDetails("type", "str", _("Logo type: 'image', 'svg', or 'icon'."), "'image'"),
-            ParameterDetails("url", "str", _("Static, absolute, root-relative, or data URL for image/svg logos."), "''"),
+            ParameterDetails(
+                "url", "str", _("Static, absolute, root-relative, or data URL for image/svg logos."), "''"
+            ),
             ParameterDetails("url_dark", "str", _("Optional dark-theme URL for image/svg logos."), "''"),
             ParameterDetails("alt", "str", _("Accessible text. Empty values make image/svg logos decorative."), "''"),
             icon_param.details,

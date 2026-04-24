@@ -12,31 +12,27 @@
     <!-- Modal Backdrop -->
     <div class="fixed inset-0 bg-black/50 transition-opacity" data-insight-dismiss="modal"></div>
 
-    <!-- Modal -->
+    <!-- Wrapper to centralize the modal on screen -->
     <div class="flex items-center justify-center min-h-screen p-4">
-        <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-lg w-full mx-auto transform transition-all">
-
+        <!-- Modal -->
+        <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full mx-auto transform transition-all", style="max-width: {{ width|default:32 }}rem;">
             <!-- Modal Header -->
-            <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-                <h2 id="{{ tag_id }}-title" class="text-xl font-semibold text-primary">{{ title }}</h2>
+            <div class="flex items-start justify-between h-fit p-6 border-b border-gray-200 dark:border-gray-700">
+                <h2 id="{{ tag_id }}-title" class="pb-0">{{ title }}</h2>
                 <button aria-label="{% trans 'Close' %}" class="btn btn-close" data-insight-dismiss="modal">
                     {% icon name="x-mark" size="xs" %}
                 </button>
             </div>
 
             <!-- Modal Body -->
-            <div class="p-6 space-y-4">
-                {% if description %}
-                    <p id="{{ tag_id }}-description" class="text-secondary mb-4 flex items-center">
-                        {{ description }}
-                    </p>
-                {% endif %}
-
-                <div class="text-primary">
-                    {% block modal_content %}
-                        <p>{{ additional_content }}</p>
-                    {% endblock %}
-                </div>
+            <div id="{{ tag_id }}-description" class="p-6 space-y-4">
+                {% block modal_content %}
+                    <div class="space-y-4">
+                        {% for paragraph in description %}
+                            <p class="text-secondary flex items-center">{{ paragraph }}</p>
+                        {% endfor %}
+                    </div>
+                {% endblock %}
             </div>
 
             <!-- Modal Footer -->
@@ -58,7 +54,7 @@
                         {% endif %}
                     {% endfor %}
                 {% else %}
-                <!-- Default close button -->
+                    <!-- Default close button -->
                     <button class="btn btn-secondary" data-insight-dismiss="modal">
                         {% trans 'Close' %}
                     </button>
