@@ -1,5 +1,6 @@
 from typing import Any
 
+from core.context_processor import get_app_version
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.translation import gettext as _
@@ -111,10 +112,13 @@ def get_navbar_context(current_view: str = "index_view") -> dict:
             "show_theme_toggle": True,
         },
         "navbar_fixed": True,
+        "white_bg": True,
+        "default_padding": True,
+        "use_default_loading_indicator": False,
     }
 
 
-def get_sidebar_context() -> dict:
+def get_sidebar_context(component_name: str = "") -> dict:
     """Serve data for the main sidebar."""
     categories = [{"caption": category.formatted_name, "items": []} for category in ComponentCategory]
 
@@ -126,6 +130,7 @@ def get_sidebar_context() -> dict:
                         "text": component.formatted_name,
                         "url": reverse("component_detail_page_view", kwargs={"component_name": component.value}),
                         "htmx": {"target": "#content"},
+                        "is_selected": component.value == component_name,
                     }
                 )
                 break
@@ -156,6 +161,7 @@ def get_footer_context() -> dict:
                 "license_text": "AGPL-3.0",
                 "license_url": "https://github.com/alpininsight/insight-ui/blob/develop/LICENSE",
             },
+            "version": get_app_version(),
         }
     }
 
