@@ -338,11 +338,7 @@ def get_logo_context() -> dict:
             "alt": "Insight UI app icon",
             "height": "3rem",
         },
-        "logo_icon": {
-            "type": "icon",
-            "icon": {"name": "sparkles", "size": "big"},
-            "alt": "Decorative product icon",
-        },
+        "logo_icon": {"type": "icon", "icon": {"name": "sparkles", "size": "big"}, "alt": "Decorative product icon"},
     }
 
 
@@ -487,7 +483,6 @@ def get_radio_block_context() -> dict:
     return {
         "view_radio_config": {
             "name": "view",
-            "param_name": "view",
             "items": [
                 {"tag_id": "card-view", "value": "card", "icon": {"name": "cards"}},
                 {"tag_id": "table-view", "value": "table", "icon": {"name": "list"}},
@@ -496,12 +491,12 @@ def get_radio_block_context() -> dict:
         },
         "size_radio_config": {
             "name": "size",
-            "param_name": "size",
             "items": [
                 {"tag_id": "small-size", "value": "small", "label": "sm"},
                 {"tag_id": "medium-size", "value": "medium", "label": "md"},
                 {"tag_id": "large-size", "value": "large", "label": "lg"},
             ],
+            "as_row": False,
         },
     }
 
