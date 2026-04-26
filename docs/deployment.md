@@ -38,7 +38,8 @@ The repo is prepared for slot-neutral images and platform-side promotion.
 
 Rules:
 
-- `develop` and `main` do not need separate image builds.
+- `develop` is the deploy-relevant container build lane.
+- `main` must not introduce a new deploy-relevant image digest.
 - The same tested digest is promoted from the candidate slot to the live slot.
 - The platform decides which color is currently live and which color receives
   the next candidate rollout.
@@ -96,8 +97,14 @@ Notes:
 
 - `RUN_MIGRATIONS=0` is the default for scaled web pods after a dedicated
   migration job or init step has completed.
-- The container image is reused across `develop` and `main`; the platform
-  decides which slot/lane receives which digest and runtime env values.
+- The deploy-relevant container image is built once on `develop`, published
+  with moving aliases such as `develop`, `candidate`, and `edge`, and also
+  with a stable tree-content alias `tree-<git-tree-sha>`.
+- `main` performs a protocol validation build in GitHub Actions, but stable
+  aliases such as `main` and `latest` are promoted from the already tested
+  `tree-<git-tree-sha>` image instead of pushing a newly rebuilt digest.
+- The platform decides which slot/lane receives which digest and runtime env
+  values.
 - Promotion means switching the tested digest from the candidate lane/slot to
   the live lane/slot. It does not require a new `main` container build.
 - Rollback means switching traffic back to the previous slot while keeping the
@@ -115,6 +122,14 @@ Notes:
 - management commands for migrations and collectstatic
 - production-style Django deploy checks
 - runtime smoke checks against `/healthz`, `/readyz`, and `/api/info`
+- candidate runtime identity with `develop/green`
+- promoted runtime identity with `main/blue`
+
+On branch pushes, the workflow then behaves as follows:
+
+- `develop`: publish the candidate digest to GHCR
+- `main`: promote the previously published `tree-<git-tree-sha>` digest to the
+  stable aliases without creating a new deploy-relevant image
 
 That keeps the repo-side runtime contract explicit before the K8s repo wires
 the actual ArgoCD, ingress, secret, and namespace manifests.

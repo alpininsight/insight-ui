@@ -33,6 +33,7 @@ on:
 env:
   IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/insight-ui
   LOCAL_IMAGE_TAG: insight-ui:ci
+  PUBLIC_DEMO_URL: https://insight-ui.demo.alpininsight.ai
 
 concurrency:
   group: container-${{ github.event.pull_request.number || github.ref || github.run_id }}
@@ -43,6 +44,11 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    outputs:
+      artifact_version: ${{ steps.build_meta.outputs.artifact_version }}
+      build_created: ${{ steps.build_meta.outputs.build_created }}
+      tree_sha: ${{ steps.build_meta.outputs.tree_sha }}
+      service_name: ${{ steps.build_meta.outputs.service_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -54,9 +60,12 @@ jobs:
 
       - name: Derive build metadata
         id: build_meta
+        shell: bash
         run: |
           echo "artifact_version=$(git describe --tags --always --dirty)" >> "$GITHUB_OUTPUT"
           echo "build_created=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
+          echo "tree_sha=$(git rev-parse HEAD^{tree})" >> "$GITHUB_OUTPUT"
+          echo "service_name=${IMAGE_NAME##*/}" >> "$GITHUB_OUTPUT"
 
       - name: Build image for validation
         uses: docker/build-push-action@v6
@@ -73,6 +82,7 @@ jobs:
           cache-to: type=gha,mode=max
 
       - name: Smoke test Django management commands
+        shell: bash
         run: |
           TEST_SECRET_KEY="$(python -c 'import secrets; print(secrets.token_urlsafe(64))')"
 
@@ -80,6 +90,7 @@ jobs:
           docker run --rm -e SECRET_KEY="$TEST_SECRET_KEY" -e RUN_MIGRATIONS=0 -e RUN_COLLECTSTATIC=1 ${{ env.LOCAL_IMAGE_TAG }} true
 
       - name: Validate Django deploy profile
+        shell: bash
         run: |
           TEST_SECRET_KEY="$(python -c 'import secrets; print(secrets.token_urlsafe(64))')"
 
@@ -95,52 +106,81 @@ jobs:
             ${{ env.LOCAL_IMAGE_TAG }} \
             python manage.py check --deploy --fail-level WARNING
 
-      - name: Smoke test web container
+      - name: Smoke test candidate and promoted runtime profiles
+        shell: bash
+        env:
+          EXPECTED_SERVICE_NAME: ${{ steps.build_meta.outputs.service_name }}
+          PUBLIC_BASE_URL: ${{ env.PUBLIC_DEMO_URL }}
         run: |
           set -euo pipefail
           TEST_SECRET_KEY="$(python -c 'import secrets; print(secrets.token_urlsafe(64))')"
 
-          docker run -d --name insight-ui-web \
-            -e SECRET_KEY="$TEST_SECRET_KEY" \
-            -e RUN_MIGRATIONS=1 \
-            -e DEPLOYMENT_ENVIRONMENT=develop \
-            -e DEPLOYMENT_LANE=develop \
-            -e DEPLOYMENT_SLOT=green \
-            ${{ env.LOCAL_IMAGE_TAG }}
-          trap 'docker logs insight-ui-web || true; docker rm -f insight-ui-web || true' EXIT
+          cat <<'EOF' > smoke-profiles.txt
+          develop|develop|develop|green
+          main|production|main|blue
+          EOF
 
-          for attempt in {1..30}; do
-            if [ "$(docker inspect -f '{{.State.Running}}' insight-ui-web)" != "true" ]; then
-              echo "Container exited before becoming ready"
-              exit 1
-            fi
+          while IFS='|' read -r profile environment lane slot; do
+            container_name="insight-ui-${profile}"
 
-            if docker exec insight-ui-web python - <<'PY'
-import json
-import urllib.request
+            docker run -d --name "${container_name}" \
+              -e SECRET_KEY="$TEST_SECRET_KEY" \
+              -e RUN_MIGRATIONS=1 \
+              -e DEPLOYMENT_ENVIRONMENT="${environment}" \
+              -e DEPLOYMENT_LANE="${lane}" \
+              -e DEPLOYMENT_SLOT="${slot}" \
+              -e PUBLIC_BASE_URL="${PUBLIC_BASE_URL}" \
+              ${{ env.LOCAL_IMAGE_TAG }}
 
-for endpoint in ("healthz", "readyz", "api/info"):
-    with urllib.request.urlopen(f"http://127.0.0.1:8000/{endpoint}", timeout=2) as response:
-        if response.status != 200:
-            raise SystemExit(f"{endpoint} returned {response.status}")
-        if endpoint == "api/info":
-            payload = json.loads(response.read().decode())
-            assert payload["service"]["name"] == "insight-ui"
-            assert payload["deployment"]["environment"]["name"] == "develop"
-            assert payload["deployment"]["lane"] == "develop"
-            assert payload["deployment"]["slot"] == "green"
-PY
-            then
-              exit 0
-            fi
-            sleep 2
-          done
+            for attempt in {1..30}; do
+              if [ "$(docker inspect -f '{{.State.Running}}' "${container_name}")" != "true" ]; then
+                echo "Container ${container_name} exited before becoming ready"
+                docker logs "${container_name}" || true
+                exit 1
+              fi
 
-          echo "Container did not become ready in time"
-          exit 1
+              if docker exec \
+                -e EXPECTED_SERVICE_NAME="${EXPECTED_SERVICE_NAME}" \
+                -e EXPECTED_ENVIRONMENT="${environment}" \
+                -e EXPECTED_LANE="${lane}" \
+                -e EXPECTED_SLOT="${slot}" \
+                -e EXPECTED_PUBLIC_BASE_URL="${PUBLIC_BASE_URL}" \
+                "${container_name}" \
+                python -c "import textwrap; exec(textwrap.dedent('''
+                import json
+                import os
+                import urllib.request
 
-  publish:
-    if: github.event_name == 'push'
+                for endpoint in (\"healthz\", \"readyz\", \"api/info\"):
+                    with urllib.request.urlopen(f\"http://127.0.0.1:8000/{endpoint}\", timeout=2) as response:
+                        if response.status != 200:
+                            raise SystemExit(f\"{endpoint} returned {response.status}\")
+                        if endpoint == \"api/info\":
+                            payload = json.loads(response.read().decode())
+                            assert payload[\"service\"][\"name\"] == os.environ[\"EXPECTED_SERVICE_NAME\"]
+                            assert payload[\"deployment\"][\"environment\"][\"name\"] == os.environ[\"EXPECTED_ENVIRONMENT\"]
+                            assert payload[\"deployment\"][\"lane\"] == os.environ[\"EXPECTED_LANE\"]
+                            assert payload[\"deployment\"][\"slot\"] == os.environ[\"EXPECTED_SLOT\"]
+                            assert payload[\"urls\"][\"public_base\"] == os.environ[\"EXPECTED_PUBLIC_BASE_URL\"]
+                '''))"
+              then
+                break
+              fi
+
+              if [ "${attempt}" -eq 30 ]; then
+                echo "Container ${container_name} did not become ready in time"
+                docker logs "${container_name}" || true
+                exit 1
+              fi
+
+              sleep 2
+            done
+
+            docker rm -f "${container_name}" >/dev/null
+          done < smoke-profiles.txt
+
+  publish_candidate:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
     needs: validate
     runs-on: ubuntu-latest
     permissions:
@@ -165,7 +205,7 @@ PY
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Generate Docker metadata
+      - name: Generate candidate Docker metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
@@ -173,18 +213,13 @@ PY
           flavor: |
             latest=false
           tags: |
-            type=ref,event=branch
             type=sha
-            type=raw,value=edge,enable=${{ github.ref == 'refs/heads/develop' }}
-            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+            type=ref,event=branch
+            type=raw,value=candidate
+            type=raw,value=edge
+            type=raw,value=tree-${{ needs.validate.outputs.tree_sha }}
 
-      - name: Derive build metadata
-        id: build_meta
-        run: |
-          echo "artifact_version=$(git describe --tags --always --dirty)" >> "$GITHUB_OUTPUT"
-          echo "build_created=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
-
-      - name: Build and push image
+      - name: Build and push candidate image
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -192,10 +227,59 @@ PY
           platforms: linux/amd64,linux/arm64
           push: true
           build-args: |
-            ARTIFACT_VERSION=${{ steps.build_meta.outputs.artifact_version }}
+            ARTIFACT_VERSION=${{ needs.validate.outputs.artifact_version }}
             GIT_COMMIT_SHA=${{ github.sha }}
-            BUILD_CREATED=${{ steps.build_meta.outputs.build_created }}
+            BUILD_CREATED=${{ needs.validate.outputs.build_created }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Candidate summary
+        run: |
+          echo "## Candidate image published" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Source branch: develop" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Deployable digest aliases: \`develop\`, \`candidate\`, \`edge\`, \`tree-${{ needs.validate.outputs.tree_sha }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Runtime identity smoke-tested for lanes \`develop/green\` and \`main/blue\`" >> "$GITHUB_STEP_SUMMARY"
+
+  promote_main:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: validate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Promote candidate tree digest to stable aliases
+        shell: bash
+        env:
+          SOURCE_TAG: tree-${{ needs.validate.outputs.tree_sha }}
+        run: |
+          set -euo pipefail
+
+          docker buildx imagetools inspect "${IMAGE_NAME}:${SOURCE_TAG}" >/dev/null
+          docker buildx imagetools create \
+            -t "${IMAGE_NAME}:main" \
+            -t "${IMAGE_NAME}:latest" \
+            "${IMAGE_NAME}:${SOURCE_TAG}"
+
+      - name: Promotion summary
+        env:
+          SOURCE_TAG: tree-${{ needs.validate.outputs.tree_sha }}
+        run: |
+          echo "## Stable aliases promoted" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Promotion source: \`${IMAGE_NAME}:${SOURCE_TAG}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Stable aliases: \`main\`, \`latest\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- No new deploy-relevant image was built on \`main\`." >> "$GITHUB_STEP_SUMMARY"
