@@ -57,6 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **feature:** Mirror required legacy test checks
 - Allow stacked branch pull requests
 - Align blue/green container publish and promotion 
+- Use central reusable container workflow 
 
 ### Documentation
 
