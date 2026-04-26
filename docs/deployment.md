@@ -117,7 +117,8 @@ Notes:
 
 ## CI expectation
 
-`.github/workflows/container-build.yml` validates:
+`.github/workflows/container-build.yml` now acts as a thin caller into the
+central reusable workflow in `.github-private@main` and validates:
 
 - container build
 - management commands for migrations and collectstatic
