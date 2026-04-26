@@ -10,6 +10,7 @@ Canonical references:
   - `insight-lima-k8s-capi/docs/runbooks/management-cloud-application-namespace-contract.md`
 - Repo side:
   - `.github-private/docs/repo-runtime-contract.md`
+  - `docs/blue-green-ci-cd-handover.md`
 
 ## Runtime contract
 
