@@ -35,7 +35,21 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  container:
+  container_validate:
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+    uses: alpininsight/.github-private/.github/workflows/python-django-container-build-reusable.yml@main
+    with:
+      image_name: ghcr.io/${{ github.repository_owner }}/insight-ui
+      service_name: insight-ui
+      platform_namespace: demo
+      public_base_url: https://insight-ui.demo.alpininsight.ai
+      platforms: linux/amd64,linux/arm64
+      local_image_tag: insight-ui:ci
+
+  container_release:
+    if: github.event_name == 'push'
     permissions:
       contents: read
       packages: write

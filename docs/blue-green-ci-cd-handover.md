@@ -45,6 +45,7 @@ PRs validate the container contract only through the central reusable workflow:
 - runtime endpoint checks for:
   - candidate profile: `develop` + `green`
   - promoted profile: `main` + `blue`
+- caller permissions: read-only `GITHUB_TOKEN`, no package write scope
 
 No deploy-relevant image is pushed on PRs.
 
@@ -57,6 +58,7 @@ The reusable workflow:
 - builds the image
 - validates runtime and management commands
 - publishes the candidate digest to GHCR
+- runs with `packages: write` only on trusted `push` events
 
 Candidate aliases:
 
