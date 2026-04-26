@@ -19,21 +19,24 @@ rollout.
 - Runtime endpoints and identity payload:
   - [core/runtime_views.py](../core/runtime_views.py)
   - [core/runtime_contract.py](../core/runtime_contract.py)
-- Workflow implementation: [container-build.yml](../.github/workflows/container-build.yml)
+- Repo caller workflow: [container-build.yml](../.github/workflows/container-build.yml)
+- Central reusable workflow:
+  [python-django-container-build-reusable.yml](https://github.com/alpininsight/.github-private/blob/main/.github/workflows/python-django-container-build-reusable.yml)
 
 ## GitHub URLs
 
 - Service repository: <https://github.com/alpininsight/insight-ui>
-- Current implementation PR: <https://github.com/alpininsight/insight-ui/pull/189>
 - Workflow page: <https://github.com/alpininsight/insight-ui/actions/workflows/container-build.yml>
-- Workflow file on GitHub:
-  <https://github.com/alpininsight/insight-ui/blob/feat/bluegreen-cicd/.github/workflows/container-build.yml>
+- Repo caller workflow:
+  <https://github.com/alpininsight/insight-ui/blob/develop/.github/workflows/container-build.yml>
+- Central reusable workflow:
+  <https://github.com/alpininsight/.github-private/blob/main/.github/workflows/python-django-container-build-reusable.yml>
 
 ## Build and promotion behavior
 
 ### Pull requests
 
-PRs validate the container contract only:
+PRs validate the container contract only through the central reusable workflow:
 
 - container build
 - `migrate` smoke run
@@ -49,7 +52,7 @@ No deploy-relevant image is pushed on PRs.
 
 `develop` is the deploy-relevant candidate lane.
 
-The workflow:
+The reusable workflow:
 
 - builds the image
 - validates runtime and management commands
@@ -69,7 +72,7 @@ The `tree-<git-tree-sha>` alias is the stable promotion source.
 `main` still runs the validation build for protocol and developer comparison,
 but it must not replace the deploy-relevant artifact.
 
-The workflow:
+The reusable workflow:
 
 - validates the repository state locally
 - resolves the already published `tree-<git-tree-sha>` image
@@ -108,16 +111,15 @@ Recommended deployment source:
 
 ## End-to-end test sequence
 
-1. Merge the central reusable workflow change in `alpininsight/.github-private`.
-2. Merge this `insight-ui` CI/CD change.
-3. Push or merge to `develop` in `insight-ui`.
-4. Confirm on the workflow page that the `develop` run published the candidate image.
-5. Deploy the `tree-<git-tree-sha>` alias or digest into the candidate slot in the K8s repo.
-6. Verify `/healthz`, `/readyz`, and `/api/info` on the candidate rollout.
-7. Merge `develop` into `main`.
-8. Confirm on the workflow page that `main` promoted the existing `tree-<git-tree-sha>` digest to `main` and `latest`.
-9. Switch traffic on the platform side with ArgoCD/Istio.
-10. Verify `/api/info` on the live slot after cutover.
+1. Merge the `insight-ui` caller workflow change.
+2. Push or merge to `develop` in `insight-ui`.
+3. Confirm on the workflow page that the `develop` run published the candidate image.
+4. Deploy the `tree-<git-tree-sha>` alias or digest into the candidate slot in the K8s repo.
+5. Verify `/healthz`, `/readyz`, and `/api/info` on the candidate rollout.
+6. Merge `develop` into `main`.
+7. Confirm on the workflow page that `main` promoted the existing `tree-<git-tree-sha>` digest to `main` and `latest`.
+8. Switch traffic on the platform side with ArgoCD/Istio.
+9. Verify `/api/info` on the live slot after cutover.
 
 ## Platform-side responsibilities
 
