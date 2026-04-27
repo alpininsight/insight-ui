@@ -302,8 +302,11 @@ def get_radio_group_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        <!-- Radio Group -->
-        {% radio_group config=example_radio %}
+        {% radio_group name="radio-example1" label="" items=items as_row=True %}
+
+        <!-- or -->
+
+        {% radio_group config=example_radio current_value=value %}
         """
     }
 
@@ -315,8 +318,7 @@ def get_radio_group_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        <!-- Radio Block -->
-        {% radio_block config=view_radio_config current_value=current_view view_name="toggle_view" target_id=target_id %}
+        {% radio_block config=view_radio_config current_value=current_view view_name="toggle_view" hx_target_id=hx_target_id %}
         """
     }
 

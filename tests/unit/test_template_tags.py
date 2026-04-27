@@ -739,7 +739,7 @@ class RadioGroupTemplateTagTest(TemplateTagsTestCase):
 
         template_string = """
         {% load insight_tags %}
-        {% radio_group radio_group_config current_value=current_value %}
+        {% radio_group config=radio_group_config current_value=current_value %}
         """
 
         rendered = self.render_template(template_string, context)
