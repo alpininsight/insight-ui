@@ -50,13 +50,9 @@
         </section>
         <section class="space-y-4">
             <h2>{% trans "Icon Portfolio" %}</h2>
-            <p class="info-container text-base">
-                <span class="block font-bold italic text-lg">Info:</span>
-                {% blocktrans with heroicons='<a href="https://heroicons.com/" class="text-link">Heroicons</a>'|safe flowbite_icons='<a href="https://flowbite.com/icons/" class="text-link">Flowbite</a>'|safe %}
-                    The icons shown here come from {{ heroicons }} and {{  flowbite_icons }}. Both sources provide their icons under the <b>MIT</b> license.
-                    Our goal is not to build a generic icon library, but to adapt it to the API of our icon component so that icons can also be specified from within the Django context.
-                {% endblocktrans %}
-            </p>
+            {% with heroicons='<a href="https://heroicons.com/" class="text-link">Heroicons</a>'|safe flowbite_icons='<a href="https://flowbite.com/icons/" class="text-link">Flowbite</a>'|safe %}
+                {% infobox message="The icons shown here come from {heroicons} and {flowbite_icons}. Both sources provide their icons under the <b>MIT</b> license. Our goal is not to build a generic icon library, but to adapt it to the API of our icon component so that icons can also be specified from within the Django context." heroicons=heroicons flowbite_icons=flowbite_icons %}
+            {% endwith %}
             {% table data=icon_table %}
         </section>
         <section class="space-y-4">
