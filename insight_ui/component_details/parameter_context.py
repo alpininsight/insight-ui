@@ -277,15 +277,10 @@ def get_navbar_parameter_context() -> dict[str, list[str]]:
     main_params = [
         config_param.details,
         ParameterDetails(
-            "user",
-            "User",
-            _("The <i>user</i> object of the request (usually available via <i>request.user</i>)."),
-            "None",
+            "user", "User", _("The _user_ object of the request (usually available via _request.user_)."), "None"
         ),
         ParameterDetails("user_dropdown_links", "list", _("A list of links to be displayed in the user menu."), "[]"),
-        ParameterDetails(
-            "show_login", "bool", _("<b>True</b> if a button for logging in should be displayed."), "false"
-        ),
+        ParameterDetails("show_login", "bool", _("**True** if a button for logging in should be displayed."), "false"),
         ParameterDetails("search_query", "str", _("Search string for the search bar."), "''"),
     ]
 
@@ -312,17 +307,17 @@ def get_sidebar_parameter_context() -> dict[str, list[str]]:
             "sidebar_data", "dict[str, Any]", _("Content of the sidebar (title and navigation elements)."), "None"
         ),
         ParameterDetails("side", "str", _("Determines on which side the sidebar should be placed."), "right"),
-        ParameterDetails("static", "bool", _("<b>True</b> if the sidebar should not be collapsible."), "True"),
+        ParameterDetails("static", "bool", _("**True** if the sidebar should not be collapsible."), "True"),
         ParameterDetails(
-            "auto_close", "bool", _("If <b>True</b> the sidebar closes as soon as the cursor leaves it."), "False"
+            "auto_close", "bool", _("If **True** the sidebar closes as soon as the cursor leaves it."), "False"
         ),
         ParameterDetails(
-            "mobile_hidden", "bool", _("If <b>True</b> the static sidebar is hidden on a smaller viewport."), "False"
+            "mobile_hidden", "bool", _("If **True** the static sidebar is hidden on a smaller viewport."), "False"
         ),
         ParameterDetails(
             "navbar_fixed",
             "bool",
-            _("If <b>True</b> the position of the content is adjusted. (FOR CUSTOM SIDEBAR ONLY!)"),
+            _("If **True** the position of the content is adjusted. (FOR CUSTOM SIDEBAR ONLY!)"),
             "False",
         ),
     ]
@@ -653,7 +648,7 @@ def get_accordion_parameter_context() -> dict[str, list[str]]:
     main_params = [
         ParameterDetails("tag_id", "str", _("Unique tag ID for identifying the element in JavaScript."), "''"),
         item_param.details,
-        ParameterDetails("exclusive", "bool", _("If <b>True</b> only one section can be open at a time."), "False"),
+        ParameterDetails("exclusive", "bool", _("If **True** only one section can be open at a time."), "False"),
     ]
 
     return {"params": [main_params, item_param]}
@@ -739,12 +734,7 @@ def get_input_field_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "tag_id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
         ),
-        ParameterDetails(
-            "name",
-            "str",
-            _("Required for a <span class='inline-tag'>&lt;form&gt;</span>, as the name of the request parameter."),
-            "''",
-        ),
+        ParameterDetails("name", "str", _("Required for a `<form>`, as the name of the request parameter."), "''"),
         ParameterDetails(
             "input_type", "str", _("The type of the input field, e.g.: 'text', 'password', 'date', etc."), "''"
         ),
@@ -755,30 +745,15 @@ def get_input_field_parameter_context() -> dict[str, list[str]]:
             "''",
         ),
         ParameterDetails("value", "str", _("The value of the input field."), "''"),
-        ParameterDetails(
-            "minimum",
-            "int",
-            _("Smallest numeric value (for <span class='inline-tag'>input_type='number'</span>)."),
-            "undefined",
-        ),
-        ParameterDetails(
-            "maximum",
-            "int",
-            _("Largest numeric value (for <span class='inline-tag'>input_type='number'</span>)."),
-            "undefined",
-        ),
+        ParameterDetails("minimum", "int", _("Smallest numeric value (for `input_type='number'`)."), "undefined"),
+        ParameterDetails("maximum", "int", _("Largest numeric value (for `input_type='number'`)."), "undefined"),
         ParameterDetails("min_length", "int", _("Minimum number of characters in a text field."), "undefined"),
         ParameterDetails("max_length", "int", _("Maximum number of characters in a text field."), "undefined"),
         ParameterDetails(
-            "checked",
-            "bool",
-            _(
-                "<b>True</b> if <span class='inline-tag'>input_type='checkbox'</span> and the checkbox should be selected."
-            ),
-            "False",
+            "checked", "bool", _("**True** if `input_type='checkbox'` and the checkbox should be selected."), "False"
         ),
-        ParameterDetails("required", "bool", _("<b>True</b> if the field must be filled in."), "False"),
-        ParameterDetails("disabled", "bool", _("<b>True</b> if the field should be disabled."), "False"),
+        ParameterDetails("required", "bool", _("**True** if the field must be filled in."), "False"),
+        ParameterDetails("disabled", "bool", _("**True** if the field should be disabled."), "False"),
         ParameterDetails("label", "str", _("A text label displayed above the input field."), "''"),
         ParameterDetails(
             "config",
@@ -798,12 +773,7 @@ def get_textarea_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "tag_id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
         ),
-        ParameterDetails(
-            "name",
-            "str",
-            _("Required for a <span class='inline-tag'>&lt;form&gt;</span>, as the name of the request parameter."),
-            "''",
-        ),
+        ParameterDetails("name", "str", _("Required for a `<form>`, as the name of the request parameter."), "''"),
         ParameterDetails(
             "placeholder",
             "str",
@@ -813,8 +783,8 @@ def get_textarea_parameter_context() -> dict[str, list[str]]:
         ParameterDetails("value", "str", _("The value of the input field."), "''"),
         ParameterDetails("rows", "int", _("Determines the number of lines."), "undefined"),
         ParameterDetails("cols", "int", _("Determines the number of characters in a line."), "undefined"),
-        ParameterDetails("required", "bool", _("<b>True</b> if the field must be filled in."), "False"),
-        ParameterDetails("disabled", "bool", _("<b>True</b> if the field should be disabled."), "False"),
+        ParameterDetails("required", "bool", _("**True** if the field must be filled in."), "False"),
+        ParameterDetails("disabled", "bool", _("**True** if the field should be disabled."), "False"),
         ParameterDetails("label", "str", _("A text label displayed above the input field."), "''"),
         ParameterDetails(
             "config",
@@ -834,18 +804,13 @@ def get_checkbox_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "tag_id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
         ),
-        ParameterDetails(
-            "name",
-            "str",
-            _("Required for a <span class='inline-tag'>&lt;form&gt;</span>, as the name of the request parameter."),
-            "''",
-        ),
+        ParameterDetails("name", "str", _("Required for a `<form>`, as the name of the request parameter."), "''"),
         ParameterDetails(
             "value", "str", _("The value of the checkbox (this is not the state, see 'checked' for that)."), "''"
         ),
         ParameterDetails("label", "str", _("A text label displayed above the checkbox."), "''"),
-        ParameterDetails("checked", "bool", _("<b>True</b> if the checkbox should be selected."), "False"),
-        ParameterDetails("disabled", "bool", _("<b>True</b> if the checkbox should be disabled."), "False"),
+        ParameterDetails("checked", "bool", _("**True** if the checkbox should be selected."), "False"),
+        ParameterDetails("disabled", "bool", _("**True** if the checkbox should be disabled."), "False"),
         ParameterDetails(
             "config",
             "dict[str, Any]",
@@ -865,15 +830,10 @@ def get_checkbox_group_parameter_context() -> dict[str, list[str]]:
             "config", "dict[str, Any]", _("Describes the checkbox group and the individual checkbox elements."), "{}"
         ),
         [
-            ParameterDetails(
-                "name",
-                "str",
-                _("Required for a <span class='inline-tag'>&lt;form&gt;</span>, as the name of the request parameter."),
-                "''",
-            ),
+            ParameterDetails("name", "str", _("Required for a `<form>`, as the name of the request parameter."), "''"),
             ParameterDetails("label", "str", _("Text label displayed above the checkbox elements."), "''"),
             ParameterDetails(
-                "as_row", "bool", _("<b>True</b> if the checkbox elements should be displayed side by side."), "False"
+                "as_row", "bool", _("**True** if the checkbox elements should be displayed side by side."), "False"
             ),
             ParameterDetails(
                 "minimum_checked",
@@ -942,7 +902,7 @@ def get_dropdown_parameter_context() -> dict[str, list[str]]:
                 "tag_id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
             ),
             ParameterDetails("title", "str", _("Label of the dropdown button."), "''"),
-            ParameterDetails("show_arrow", "bool", _("<b>True</b> displays an arrow behind the title."), "False"),
+            ParameterDetails("show_arrow", "bool", _("**True** displays an arrow behind the title."), "False"),
             item_param.details,
         ],
         """
@@ -987,7 +947,7 @@ def get_radio_group_parameter_context() -> dict[str, list[str]]:
             ),
             ParameterDetails("value", "str", _("Value of the respective radio button."), "''"),
             ParameterDetails("text", "str", _("Label of the respective radio button."), "''"),
-            ParameterDetails("disabled", "bool", _("<b>True</b> if the radio button should be disabled."), "False"),
+            ParameterDetails("disabled", "bool", _("**True** if the radio button should be disabled."), "False"),
         ],
         """
         [
@@ -1003,7 +963,7 @@ def get_radio_group_parameter_context() -> dict[str, list[str]]:
         ParameterDetails("label", "str", _("A text label displayed above the radio elements."), "''"),
         items_param.details,
         ParameterDetails(
-            "as_row", "bool", _("<b>True</b> if the radio elements should be displayed side by side."), "False"
+            "as_row", "bool", _("**True** if the radio elements should be displayed side by side."), "False"
         ),
         ParameterDetails("current_value", "str", _("The value of the currently selected radio button."), "''"),
         ParameterDetails(
@@ -1029,7 +989,7 @@ def get_radio_block_parameter_context() -> dict[str, list[str]]:
             ParameterDetails("value", "str", _("Value of the respective radio button."), "''"),
             ParameterDetails("text", "str", _("Label of the respective radio button."), "''"),
             ParameterDetails("icon", "dict[str, str]", _("Optional icon displayed before the label."), "{}"),
-            ParameterDetails("disabled", "bool", _("<b>True</b> if the radio button should be disabled."), "False"),
+            ParameterDetails("disabled", "bool", _("**True** if the radio button should be disabled."), "False"),
         ],
         """
         [
@@ -1047,13 +1007,11 @@ def get_radio_block_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "integrated",
             "bool",
-            _(
-                "<b>True</b> if the group is inside a &lt;form&gt;. If <b>False</b> the group gets its own &lt;form&gt;."
-            ),
+            _("**True** if the group is inside a `<form>`. If **False** the group gets its own `<form>`."),
             "False",
         ),
         ParameterDetails(
-            "as_row", "bool", _("<b>True</b> if the radio elements should be displayed side by side."), "False"
+            "as_row", "bool", _("**True** if the radio elements should be displayed side by side."), "False"
         ),
         ParameterDetails(
             "view_name",
@@ -1093,12 +1051,7 @@ def get_rangle_slider_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "tag_id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
         ),
-        ParameterDetails(
-            "name",
-            "str",
-            _("Required for a <span class='inline-tag'>&lt;form&gt;</span>, as the name of the request parameter."),
-            "''",
-        ),
+        ParameterDetails("name", "str", _("Required for a `<form>`, as the name of the request parameter."), "''"),
         ParameterDetails("label", "str", _("A text label displayed above the range slider."), "''"),
         ParameterDetails("value", "int", _("The value of the range slider."), "0"),
         ParameterDetails("minimum", "int", _("Smallest configurable value of the range slider."), "undefined"),
@@ -1106,7 +1059,7 @@ def get_rangle_slider_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "step_size", "int", _("The size of the steps by which the value changes when moving the range slider."), "1"
         ),
-        ParameterDetails("disabled", "bool", _("<b>True</b> if the range slider should be disabled."), "False"),
+        ParameterDetails("disabled", "bool", _("**True** if the range slider should be disabled."), "False"),
         ParameterDetails("items", "list[str]", _("A list of texts displayed as a legend below the slider."), "[]"),
         ParameterDetails(
             "config",
@@ -1126,19 +1079,14 @@ def get_toggle_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "tag_id", "str", _("Optional, unique tag ID for identifying the element in JavaScript."), "''"
         ),
-        ParameterDetails(
-            "name",
-            "str",
-            _("Required for a <span class='inline-tag'>&lt;form&gt;</span>, as the name of the request parameter."),
-            "''",
-        ),
+        ParameterDetails("name", "str", _("Required for a `<form>`, as the name of the request parameter."), "''"),
         ParameterDetails("label", "str", _("A text label displayed above the toggle button."), "''"),
         ParameterDetails("value", "str", _("The value of the toggle button."), "''"),
         ParameterDetails(
-            "switch", "bool", _("<b>True</b> if the toggle button should look like a typical switch select."), "False"
+            "switch", "bool", _("**True** if the toggle button should look like a typical switch select."), "False"
         ),
-        ParameterDetails("checked", "bool", _("<b>True</b> if the toggle button should be selected."), "False"),
-        ParameterDetails("disabled", "bool", _("<b>True</b> if the toggle button should be disabled."), "False"),
+        ParameterDetails("checked", "bool", _("**True** if the toggle button should be selected."), "False"),
+        ParameterDetails("disabled", "bool", _("**True** if the toggle button should be disabled."), "False"),
         ParameterDetails(
             "method", "str", _("Name of the JavaScript method to be executed when the toggle button is clicked."), "''"
         ),
@@ -1157,12 +1105,7 @@ def get_toggle_parameter_context() -> dict[str, list[str]]:
 def get_select_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the select component."""
     main_params = [
-        ParameterDetails(
-            "name",
-            "str",
-            _("Required for a <span class='inline-tag'>&lt;form&gt;</span>, as the name of the request parameter."),
-            "''",
-        ),
+        ParameterDetails("name", "str", _("Required for a `<form>`, as the name of the request parameter."), "''"),
         ParameterDetails("label", "str", _("A text label displayed above the select."), "''"),
         ParameterDetails("explanation", "str", _("A brief description of the filter that appears in a tooltip."), "''"),
         ParameterDetails("options", "list[str] oder dict[str, str]", _("List of values that can be selected."), "[]"),
@@ -1189,12 +1132,7 @@ def get_select_parameter_context() -> dict[str, list[str]]:
 def get_multiselect_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the multiselect component."""
     main_params = [
-        ParameterDetails(
-            "name",
-            "str",
-            _("Required for a <span class='inline-tag'>&lt;form&gt;</span>, as the name of the request parameter."),
-            "''",
-        ),
+        ParameterDetails("name", "str", _("Required for a `<form>`, as the name of the request parameter."), "''"),
         ParameterDetails("label", "str", _("A text label displayed above the select."), "''"),
         ParameterDetails("maximum", "int", _("Maximum number of selectable options."), "undefined"),
         ParameterDetails(
@@ -1680,14 +1618,14 @@ def get_infinite_scroll_parameter_context() -> dict[str, list[str]]:
             "auto_fetch",
             "bool",
             _(
-                "<b>True</b>, new entries are loaded as soon as the specified scroll threshold is exceeded. <b>False</b>, at the end of the list a button to fetch more entries is shown instead."
+                "**True**, new entries are loaded as soon as the specified scroll threshold is exceeded. **False**, at the end of the list a button to fetch more entries is shown instead."
             ),
             "True",
         ),
         ParameterDetails(
             "threshold",
             "int",
-            _("The pixel threshold for loading more elements (only when <b>auto_fetch=False</b>)."),
+            _("The pixel threshold for loading more elements (only when **auto_fetch=False**)."),
             "100",
         ),
     ]
@@ -1770,7 +1708,7 @@ def get_generic_filter_parameter_context() -> dict[str, list[str]]:
             ParameterDetails(
                 "push_url",
                 "str",
-                _("<b>True</b> to register filter changes in the browser history, for backward navigation support."),
+                _("**True** to register filter changes in the browser history, for backward navigation support."),
                 "'true'",
             ),
             ParameterDetails(
@@ -1783,12 +1721,7 @@ def get_generic_filter_parameter_context() -> dict[str, list[str]]:
     filter_params = ParameterDoc(
         ParameterDetails("filters", "list[dict[str, Any]]", _("Definition of the individual filters."), "[]"),
         [
-            ParameterDetails(
-                "name",
-                "str",
-                _("Required for a <span class='inline-tag'>&lt;form&gt;</span>, as the name of the request parameter."),
-                "''",
-            ),
+            ParameterDetails("name", "str", _("Required for a `<form>`, as the name of the request parameter."), "''"),
             ParameterDetails("label", "str", _("A text label displayed above the select."), "''"),
             ParameterDetails(
                 "explanation", "str", _("A brief description of the filter that appears in a tooltip."), "''"
@@ -1827,7 +1760,7 @@ def get_generic_filter_parameter_context() -> dict[str, list[str]]:
     main_params = [
         ParameterDetails("request_url", "str", _("The URL to which the request should be sent."), "''"),
         filter_params.details,
-        ParameterDetails("vertical", "bool", _("<b>True</b> if the filters should be arranged in a column."), "False"),
+        ParameterDetails("vertical", "bool", _("**True** if the filters should be arranged in a column."), "False"),
         htmx_config_params.details,
         ParameterDetails(
             "query_params",
@@ -1860,10 +1793,7 @@ def get_search_bar_parameter_context() -> dict[str, list[str]]:
             "''",
         ),
         ParameterDetails(
-            "simple",
-            "bool",
-            _("<b>True</b> if the search bar should be displayed without a button and smaller."),
-            "False",
+            "simple", "bool", _("**True** if the search bar should be displayed without a button and smaller."), "False"
         ),
         ParameterDetails("search_query", "str", _("Optional value automatically displayed in the text field."), "''"),
     ]
@@ -2149,20 +2079,17 @@ def get_card_carousel_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "show_index",
             "bool",
-            _("<b>True</b> if the current page should be displayed in the bottom right corner."),
+            _("**True** if the current page should be displayed in the bottom right corner."),
             "False",
         ),
         ParameterDetails(
             "show_dots",
             "bool",
-            _("<b>True</b> if a simple pagination should be displayed below the carousel content."),
+            _("**True** if a simple pagination should be displayed below the carousel content."),
             "True",
         ),
         ParameterDetails(
-            "autoplay",
-            "bool",
-            _("<b>True</b> if the carousel should iterate through the content automatically."),
-            "False",
+            "autoplay", "bool", _("**True** if the carousel should iterate through the content automatically."), "False"
         ),
         ParameterDetails("items_per_slide", "int", _("Number of 'carousel_items' per page."), "1"),
     ]
@@ -2198,20 +2125,17 @@ def get_image_carousel_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "show_index",
             "bool",
-            _("<b>True</b> if the current page should be displayed in the bottom right corner."),
+            _("**True** if the current page should be displayed in the bottom right corner."),
             "False",
         ),
         ParameterDetails(
             "show_dots",
             "bool",
-            _("<b>True</b> if a simple pagination should be displayed below the carousel content."),
+            _("**True** if a simple pagination should be displayed below the carousel content."),
             "True",
         ),
         ParameterDetails(
-            "autoplay",
-            "bool",
-            _("<b>True</b> if the carousel should iterate through the content automatically."),
-            "False",
+            "autoplay", "bool", _("**True** if the carousel should iterate through the content automatically."), "False"
         ),
         ParameterDetails("items_per_slide", "int", _("Number of images per page."), "1"),
     ]
@@ -2229,7 +2153,7 @@ def get_3d_carousel_parameter_context() -> dict[str, list[str]]:
         ParameterDetails("velocity", "int", _("Rotation speed of the carousel."), "1000"),
         ParameterDetails("tilt", "int", _("Vertical tilt of the carousel towards the camera."), "0"),
         ParameterDetails(
-            "face_camera", "bool", _("<b>True</b> if all cards should face the camera at all times."), "False"
+            "face_camera", "bool", _("**True** if all cards should face the camera at all times."), "False"
         ),
         ParameterDetails(
             "carousel_items", "list[dict]", _("Data to be displayed within the carousel (freely definable)."), "[]"
@@ -2251,7 +2175,7 @@ def get_toggle_view_parameter_context() -> dict[str, list[str]]:
             ParameterDetails("value", "str", _("Value of the respective radio button."), "''"),
             ParameterDetails("text", "str", _("Label of the respective radio button."), "''"),
             ParameterDetails("icon", "dict[str, str]", _("Optional icon displayed before the label."), "{}"),
-            ParameterDetails("disabled", "bool", _("<b>True</b> if the radio button should be disabled."), "False"),
+            ParameterDetails("disabled", "bool", _("**True** if the radio button should be disabled."), "False"),
         ],
         """""",
     )
@@ -2320,7 +2244,7 @@ def get_form_parameter_context() -> dict[str, list[str]]:
         ParameterDetails(
             "show_reset_button",
             "bool",
-            _("<b>True</b> if a 'Reset' button should be displayed next to the 'Submit' button."),
+            _("**True** if a 'Reset' button should be displayed next to the 'Submit' button."),
             "False",
         ),
         ParameterDetails(

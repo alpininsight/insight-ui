@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n insight_tags %}
 
 <div class="bg-white dark:bg-gray-900 rounded-sm">
     <table class="table-auto w-full">
@@ -15,7 +15,7 @@
                 <tr class="odd:bg-gray-100 even:bg-white odd:dark:bg-gray-800 even:dark:bg-gray-900">
                     <td class="text-start text-sm px-4 py-3"><span class="inline-tag">{{ row.name }}</span></td>
                     <td class="text-start text-sm px-4 py-3"><i>{{ row.type }}</i></td>
-                    <td class="text-start text-sm px-4 py-3">{{ row.description|safe }}</td>
+                    <td class="text-start text-sm px-4 py-3">{{ row.description|markdownify }}</td>
                     <td class="text-start text-sm px-4 py-3"><b>{{ row.default }}</b></td>
                 </tr>
             {% endfor %}
