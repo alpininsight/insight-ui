@@ -6,7 +6,7 @@
     {% endif %}
     {% if integrated %}
         {% comment %} To use with other elements in a extern <form> {% endcomment %}
-        <div class="flex rtl:flex-row-reverse" id="{{ name }}">
+        <div id="{{ name }}" class="flex w-fit {% if as_row == False %}flex-col{% endif %}">
             {% for item in items %}
                 <div>
                     <input
@@ -24,7 +24,7 @@
                     <label
                         for="{{ item.tag_id }}"
                         {% if sr_only %}aria-label="{{ name|add:item.label }}"{% endif %}
-                        class="flex items-center peer-focus:outline-2 outline-insight-primary-hover peer-checked:bg-insight-primary-active peer-checked:border-insight-primary-active bg-insight-primary border-insight-primary {% if forloop.first %}border-2 rounded-l-sm{% elif forloop.last %}border-2 rounded-r-sm{% else %}border-y-2{% endif %} text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition cursor-pointer"
+                        class="flex items-center peer-focus:outline-2 outline-insight-primary-hover peer-checked:bg-insight-primary-active peer-checked:border-insight-primary-active bg-insight-primary border-insight-primary {% if forloop.first %}border-2 {% if as_row == False %}rounded-t-sm{% else %}rounded-s-sm{% endif %}{% elif forloop.last %}border-2 {% if as_row == False %}rounded-b-sm{% else %}rounded-e-sm{% endif %}{% else %}border-y-2{% endif %} text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition cursor-pointer"
                     >
                         {% if item.icon %}
                             {% icon item.icon %}
@@ -35,7 +35,7 @@
             {% endfor %}
         </div>
     {% else %}
-        <form class="flex rtl:flex-row-reverse" id="{{ name }}">
+        <form id="{{ name }}" class="flex w-fit {% if as_row == False %}flex-col{% endif %}">
             {% for item in items %}
                 <div>
                     <input
@@ -58,7 +58,7 @@
                     <label
                         for="{{ name|add:item.tag_id }}"
                         {% if sr_only %}aria-label="{{ item.label }}"{% endif %}
-                        class="flex items-center peer-focus:outline-2 outline-insight-primary-hover peer-checked:bg-insight-primary-active peer-checked:border-insight-primary-active bg-insight-primary border-insight-primary {% if forloop.first %}border-2 rounded-l-sm{% elif forloop.last %}border-2 rounded-r-sm{% else %}border-y-2{% endif %} text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition cursor-pointer"
+                        class="flex items-center peer-focus:outline-2 outline-insight-primary-hover peer-checked:bg-insight-primary-active peer-checked:border-insight-primary-active bg-insight-primary border-insight-primary {% if forloop.first %}border-2 {% if as_row == False %}rounded-t-sm{% else %}rounded-s-sm{% endif %}{% elif forloop.last %}border-2 {% if as_row == False %}rounded-b-sm{% else %}rounded-e-sm{% endif %}{% else %}border-y-2{% endif %} text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition cursor-pointer"
                     >
                         {% if item.icon %}
                             {% icon item.icon %}

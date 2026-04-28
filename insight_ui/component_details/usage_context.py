@@ -302,8 +302,11 @@ def get_radio_group_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        <!-- Radio Group -->
-        {% radio_group config=example_radio %}
+        {% radio_group name="radio-example1" label="" items=items as_row=True %}
+
+        <!-- or -->
+
+        {% radio_group config=example_radio current_value=value %}
         """
     }
 
@@ -315,8 +318,7 @@ def get_radio_group_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        <!-- Radio Block -->
-        {% radio_block config=view_radio_config current_value=current_view view_name="toggle_view" target_id=target_id %}
+        {% radio_block config=view_radio_config current_value=current_view view_name="toggle_view" hx_target_id=hx_target_id %}
         """
     }
 
@@ -392,7 +394,7 @@ def get_chat_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% chat view_name=view_name %}
+        {% chat request_url="/api/chat-response/" %}
         """
     }
 
@@ -537,7 +539,7 @@ def get_logo_usage_context() -> dict[str, str]:
         {% logo logo_type="image" url="img/company-logo.png" alt="Company" height="3rem" %}
 
         {# Icon logo using the Insight UI icon set #}
-        {% logo logo_type="icon" icon_name="sparkles" icon_size="big" alt="Product mark" %}
+        {% logo logo_type="icon" icon_name="sparkles" icon_size="xl" alt="Product mark" %}
 
         {# Theme-aware SVG asset #}
         {% logo logo_type="svg" url="svg/logo-light.svg" url_dark="svg/logo-dark.svg" alt="Company" %}

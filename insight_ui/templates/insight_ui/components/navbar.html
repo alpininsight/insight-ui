@@ -1,4 +1,4 @@
-{% load insight_tags i18n %}
+{% load i18n insight_tags %}
 
 <!-- Skip-Link for Accessibility, placed BEFORE nav -->
 <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-blue-600 text-white p-2 rounded">
@@ -33,9 +33,7 @@
         data-insight-toggle="collapsible"
         data-insight-target="navigation-menu"
       >
-        <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
+        {% icon name="bars" %}
       </button>
     </div>
 
@@ -67,7 +65,7 @@
                         {% endif %}
                         {{ link.text }}
                         {% if link.chevron %}
-                          {% icon name="chevron_down" size="small" %}
+                          {% icon name="chevron_down" size="s" %}
                         {% endif %}
                       </button>
                       <div id="{{ link.open_dropdown }}" class="hidden bg-white border border-gray-300 dark:border-0 rounded-sm shadow-lg">

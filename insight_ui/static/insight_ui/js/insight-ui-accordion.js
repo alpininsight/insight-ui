@@ -88,7 +88,7 @@ export class Accordion {
 
     closePanel(button, panel) {
         button.setAttribute("aria-expanded", "false");
-        button.querySelector("svg")?.classList.remove("rotate-180");
+        button.querySelector("div")?.classList.remove("rotate-180");
 
         panel.style.height = panel.scrollHeight + "px";
         panel.offsetHeight; // Force reflow
@@ -110,7 +110,7 @@ export class Accordion {
 
     openPanel(button, panel, scroll = true) {
         button.setAttribute("aria-expanded", "true");
-        button.querySelector("svg")?.classList.add("rotate-180");
+        button.querySelector("div")?.classList.add("rotate-180");
 
         panel.style.transition = "none";
         panel.style.height = "auto";

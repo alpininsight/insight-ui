@@ -93,7 +93,8 @@
     </div>
 {% elif component.value == "button_sizes" %}
     <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
-        <button class="btn btn-primary btn-large">{% trans "Click me!" %}</button>
+        <button class="btn btn-primary btn-xl">{% trans "Click me!" %}</button>
+        <button class="btn btn-primary btn-l">{% trans "Click me!" %}</button>
         <button class="btn btn-primary">{% trans "Click me!" %}</button>
         <button class="btn btn-primary btn-sm">{% trans "Click me!" %}</button>
         <button class="btn btn-primary btn-xs">{% trans "Click me!" %}</button>
@@ -138,7 +139,7 @@
         {% multiselect config=multiselect_config %}
     </div>
 {% elif component.value == "chat" %}
-    {% chat view_name="chat_response" %}
+    {% chat request_url="/api/chat-response/" %}
 {% elif component.value == "alert" %}
     <div class="space-y-4">
         {% alert message=_("This is just an information.") type="info" %}
@@ -219,7 +220,9 @@
 {% elif component.value == "table" %}
     {% table data=table %}
 {% elif component.value == "generic_filter" %}
-    {% generic_filter filters=filters request_url="#" vertical=False query_params=request.GET %}
+    <div class="pt-8">
+        {% generic_filter filters=filters request_url="#" vertical=False query_params=request.GET %}
+    </div>
 {% elif component.value == "search_bar" %}
     <div class="space-y-6">
         {% search_bar request_view="index_view" %}

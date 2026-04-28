@@ -1,7 +1,7 @@
 """Template-Tags for Insight UI-Components."""
 
 import math
-from collections.abc import Mapping, Sequence
+from collections.abc import Iterable, Mapping, Sequence
 from copy import deepcopy
 from difflib import HtmlDiff, ndiff, unified_diff
 from typing import Any
@@ -10,6 +10,7 @@ from django import template
 from django.core.paginator import Page
 from django.templatetags.static import static
 from django.urls import reverse
+from django.utils.functional import Promise
 from django.utils.safestring import SafeString, mark_safe
 from django.utils.translation import gettext as _
 from markdown import markdown
@@ -189,7 +190,7 @@ def logo(  # noqa: PLR0913 (too many arguments)
         "dark_src": dark_src,
         "has_dark_variant": bool(dark_src and dark_src != src),
         "alt": alt or "",
-        "icon": {"name": icon_name or "", "size": icon_size or "medium"},
+        "icon": {"name": icon_name or "", "size": icon_size or "m"},
         "height": height or "2rem",
         "width": width or "",
         "css_class": css_class or "",
@@ -597,55 +598,25 @@ def checkbox_group(config: dict) -> dict:
 
 
 @register.inclusion_tag("insight_ui/components/radio_group.html")
-def radio_group(config: dict, current_value: str) -> dict:
-    """
-    Render a group of radio buttons.
-
-    Arguments:
-    ---------
-        config (dict): Describes the radio component and its items.
-        current_value (str): The name of the currently selected radio button.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {
-        "name": config.get("name"),
-        "label": config.get("label"),
-        "as_row": config.get("as_row"),
-        "items": config.get("items"),
-        "current_value": current_value,
-    }
-
-
-@register.inclusion_tag("insight_ui/components/radio_block.html")
-def radio_block(  # noqa: PLR0913 (too many arguments)
-    config: dict,
-    current_value: str,
+def radio_group(  # noqa: PLR0913 (too many arguments)
     name: str = "",
-    view_name: str = "",
-    query_params: str = "",
-    hx_target_id: str = "",
-    hx_swap_method: str = "",
-    method: str = "",
-    integrated: bool = False,
+    label: str = "",
+    items: list[dict[str, Any]] = [],
+    as_row: bool = True,
+    current_value: str = "",
+    config: dict[str, Any] = {},
 ) -> dict:
     """
     Render a group of radio buttons.
 
     Arguments:
     ---------
-        config (dict): Describes the radio component and its items.
+        name (str): The name of the radio group, required for identification in requests etc.
+        label (str): A label text that is displayed above the radio buttons.
+        items (list[dict[str, Any]]): A list of radio-button configurations.
+        as_row (bool): 'False' if the elements are to be arranged in a column.
         current_value (str): The name of the currently selected radio button.
-        name (str): The name of the entire radio block, required for referencing in JavaScript code.
-        view_name (str): The name of the view to which the request should be sent when switching.
-        query_params (str): A string of query parameters.
-        hx_target_id (str): The ID of the HTML tag that should be replaced when the value changes.
-        hx_swap_method (str): The way in which the target is to be replaced (see: https://htmx.org/attributes/hx-swap/).
-        method (str): The name of the JavaScript method to be executed.
-        integrated (bool): 'False' if the component should have its own <form> element.
+        config (dict[str, Any]): An alternative configuration with keys corresponding to the previous parameters.
 
     Returns:
     -------
@@ -654,11 +625,69 @@ def radio_block(  # noqa: PLR0913 (too many arguments)
     """
     if config is not None:
         name = config.get("name", name)
+        label = config.get("label", label)
+        items = config.get("items", items)
+        as_row = config.get("as_row", as_row)
+        current_value = config.get("current_value", current_value)
+
+    return {"name": name, "label": label, "items": items, "as_row": as_row, "current_value": current_value}
+
+
+@register.inclusion_tag("insight_ui/components/radio_block.html")
+def radio_block(  # noqa: PLR0913 (too many arguments)
+    name: str = "",
+    label: str = "",
+    items: list[dict[str, Any]] = [],
+    integrated: bool = False,
+    as_row: bool = True,
+    view_name: str = "",
+    query_params: str = "",
+    hx_target_id: str = "",
+    hx_swap_method: str = "outerHTML",
+    method: str = "",
+    current_value: str = "",
+    config: dict[str, Any] = {},
+) -> dict:
+    """
+    Render a group of radio buttons.
+
+    Arguments:
+    ---------
+        name (str): The name of the entire radio block, required for referencing in JavaScript code.
+        label (str): A label text that is displayed above the radio buttons.
+        items (list[dict[str, Any]]): A list of radio-button configurations.
+        integrated (bool): 'False' if the component should have its own <form> element.
+        as_row (bool): 'False' if the elements are to be arranged in a column.
+        view_name (str): The name of the view to which the request should be sent when switching.
+        query_params (str): A string of query parameters.
+        hx_target_id (str): The ID of the HTML tag that should be replaced when the value changes.
+        hx_swap_method (str): The way in which the target is to be replaced (see: https://htmx.org/attributes/hx-swap/).
+        method (str): The name of the JavaScript method to be executed.
+        current_value (str): The name of the currently selected radio button.
+        config (dict[str, Any]): An alternative configuration with keys corresponding to the previous parameters.
+
+    Returns:
+    -------
+        A dict with context variables for the template.
+
+    """
+    if config is not None:
+        name = config.get("name", name)
+        label = config.get("label", label)
+        items = config.get("items", items)
+        integrated = config.get("integrated", integrated)
+        as_row = config.get("as_row", as_row)
+        view_name = config.get("view_name", view_name)
+        query_params = config.get("query_params", query_params)
+        hx_target_id = config.get("hx_target_id", hx_target_id)
+        hx_swap_method = config.get("hx_swap_method", hx_swap_method)
+        method = config.get("method", method)
+        current_value = config.get("current_value", current_value)
 
     return {
         "name": name,
-        "label": config.get("label"),
-        "items": config.get("items"),
+        "label": label,
+        "items": items,
         "current_value": current_value,
         "view_name": view_name,
         "query_params": query_params,
@@ -666,6 +695,7 @@ def radio_block(  # noqa: PLR0913 (too many arguments)
         "hx_swap_method": hx_swap_method,
         "method": method,
         "integrated": integrated,
+        "as_row": as_row,
     }
 
 
@@ -785,20 +815,20 @@ def slider(  # noqa: PLR0913 (too many arguments)
 
 
 @register.inclusion_tag("insight_ui/components/chat.html")
-def chat(view_name: str) -> dict:
+def chat(request_url: str) -> dict:
     """
     Render a chat with an input line and a place for the response.
 
     Arguments:
     ---------
-        view_name (str): The name of the view to which the request should be sent.
+        request_url (str): The URL to which the request should be sent.
 
     Returns:
     -------
         A dict with context variables for the template.
 
     """
-    return {"view_name": view_name}
+    return {"request_url": request_url}
 
 
 @register.inclusion_tag("insight_ui/components/geo_map.html")
@@ -1108,9 +1138,9 @@ def table(data: dict) -> dict[str, Any]:
 def modal(  # noqa: PLR0913 (too many args)
     tag_id: str,
     title: str,
-    description: str = "",
-    additional_content: str = "",
+    description: str | list[str] = [],
     actions: Sequence[Mapping[str, str]] = [],
+    width: int = 32,
 ) -> dict[str, Any]:
     """
     Render an accessible modal dialog.
@@ -1119,21 +1149,25 @@ def modal(  # noqa: PLR0913 (too many args)
     ----
         tag_id (str): A unique ID for the modal.
         title (str): The title of the modal.
-        description (str): An optional description of the modal.
-        additional_content (str): The content of the modal.
+        description (list[str]): An optional text description of the modal.
         actions (list): A list of action buttons.
+        width (int): The maximum width of the dialog box relative to the screen in 'rem'.
 
     Returns:
     -------
         A dict with context variables for the template.
 
     """
+    # Convert a single string or a 'lazy translation objects' which is a Promise to a list.
+    if isinstance(description, (str, Promise)) or not isinstance(description, Iterable):
+        description = [description]
+
     return {
         "tag_id": tag_id,
         "title": title,
         "description": description,
-        "additional_content": additional_content,
         "actions": [dict(action) for action in actions] if actions is not None else [],
+        "width": width,
     }
 
 
@@ -1516,7 +1550,7 @@ def multiselect(  # noqa: PLR0913 (too many arguments)
 
 
 @register.inclusion_tag("insight_ui/components/page_header.html")
-def page_header(title: str = "", description: str = "") -> dict[str, Any]:
+def page_header(title: str = "", description: str | list[str] = []) -> dict[str, Any]:
     """
     Render a page header for the blue header in the base template.
 
@@ -1530,6 +1564,10 @@ def page_header(title: str = "", description: str = "") -> dict[str, Any]:
         A dict with context variables for the template.
 
     """
+    # Convert a single string or a 'lazy translation objects' which is a Promise to a list.
+    if isinstance(description, (str, Promise)) or not isinstance(description, Iterable):
+        description = [description]
+
     return {"title": title, "description": description}
 
 
@@ -1651,7 +1689,7 @@ def hero(  # noqa: PLR0913 (too many arguments)
 
 
 @register.inclusion_tag("insight_ui/components/infobox.html")
-def infobox(info_type: str = "", message: str = "") -> dict[str, Any]:
+def infobox(info_type: str = "", message: str = "", **kwargs) -> dict[str, Any]:
     """
     Render a small box of information.
 
@@ -1659,13 +1697,21 @@ def infobox(info_type: str = "", message: str = "") -> dict[str, Any]:
     ----
         info_type (str): importance level of the message e.g 'info', 'warn' or 'danger'.
         message (str): Descriptive message.
+        kwargs: A list of variables that are inserted into the message using 'format'.
 
     Returns:
     -------
         A dict with context variables for the template.
 
     """
-    return {"type": info_type, "message": message}
+    formatted_message = message
+    if kwargs:
+        try:
+            formatted_message = message.format(**kwargs)
+        except (KeyError, ValueError):
+            formatted_message = message
+
+    return {"type": info_type, "message": formatted_message}
 
 
 @register.inclusion_tag("insight_ui/components/charts/bar_chart.html")

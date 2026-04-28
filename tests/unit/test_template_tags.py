@@ -18,7 +18,7 @@ class TemplateTagsTestCase(TestCase):
     def setUp(self) -> None:
         """Setup für Tests."""  # noqa: D401 (It's not in imperative mood o_O)
         self.user = User.objects.create_user(username="testuser", email="test@example.com", password="testpass123")  # noqa: S106
-        activate("de")
+        activate("en")
 
     def render_template(self, template_string: str, context: dict = {}) -> SafeText:
         """Hilfsmethode zum Rendern von Templates."""
@@ -123,12 +123,7 @@ class LogoTemplateTagTest(TemplateTagsTestCase):
 
     def test_logo_renders_dark_variant_without_script(self) -> None:
         """Dark logo variants should render with dark-mode classes and no inline script."""
-        config = {
-            "type": "image",
-            "url": "light.png",
-            "url_dark": "dark.png",
-            "alt": "Theme-aware logo",
-        }
+        config = {"type": "image", "url": "light.png", "url_dark": "dark.png", "alt": "Theme-aware logo"}
         template_string = """
         {% load insight_tags %}
         {% logo config=config %}
@@ -447,9 +442,7 @@ class FooterTemplateTagTest(TemplateTagsTestCase):
 
     def test_footer_copyright_supports_legacy_app_name(self) -> None:
         """Legacy copyright data should keep rendering app_name."""
-        footer_data = {
-            "copyright": {"year": 2025, "app_name": "Insight UI"},
-        }
+        footer_data = {"copyright": {"year": 2025, "app_name": "Insight UI"}}
 
         template_string = """
         {% load insight_tags %}
@@ -746,7 +739,7 @@ class RadioGroupTemplateTagTest(TemplateTagsTestCase):
 
         template_string = """
         {% load insight_tags %}
-        {% radio_group radio_group_config current_value=current_value %}
+        {% radio_group config=radio_group_config current_value=current_value %}
         """
 
         rendered = self.render_template(template_string, context)

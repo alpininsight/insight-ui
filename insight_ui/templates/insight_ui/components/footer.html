@@ -46,12 +46,15 @@
             </div>
         </div>
         {% if copyright or version %}
-            <div class="border-t border-gray-200 dark:border-gray-700 mt-6 pt-4 text-center">
+            <div class="flex justify-center border-t border-gray-200 dark:border-gray-700 mt-6 pt-4">
                 {% if copyright %}
                     {% copyright_notice config=copyright %}
                 {% endif %}
                 {% if version %}
-                    <span class="text-secondary text-sm">{% trans "Current version:" %} {{ version }}</span>
+                    <span class="text-secondary text-sm">
+                        {% if copyright %}&nbsp;&centerdot;{% endif %}
+                        {% trans "Version:" %} {{ version }}
+                    </span>
                 {% endif %}
             </div>
         {% endif %}

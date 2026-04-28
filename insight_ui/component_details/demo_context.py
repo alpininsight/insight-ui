@@ -143,7 +143,7 @@ def get_navbar_context() -> dict:
             "links": [
                 {
                     "text": _("Startpage"),
-                    "icon": {"name": "home", "size": "small"},
+                    "icon": {"name": "home", "size": "s"},
                     "view_name": "index_view",
                     "active": True,
                     "need_auth": False,
@@ -169,19 +169,19 @@ def get_navbar_context() -> dict:
                 "text": _("Settings"),
                 "view_name": "index_view",
                 "staff_only": False,
-                "icon": {"name": "gear", "size": "small"},
+                "icon": {"name": "gear", "size": "s"},
             },
             {
                 "text": _("Administration"),
                 "view_name": "admin:index",
                 "staff_only": True,
-                "icon": {"name": "home", "size": "small"},
+                "icon": {"name": "home", "size": "s"},
             },
             {
                 "text": _("Translation"),
                 "view_name": "index_view",
                 "staff_only": True,
-                "icon": {"name": "globe", "size": "small"},
+                "icon": {"name": "globe", "size": "s"},
             },
         ],
     }
@@ -193,39 +193,35 @@ def get_drawer_context() -> dict:
     return {
         "demo_sidebar": {
             "title": _("Personal Settings"),
-            "icon": {"name": "home", "size": "small"},
+            "icon": {"name": "home", "size": "s"},
             "categories": [
                 {
                     "caption": "Work",
-                    "icon": {"name": "office", "size": "small"},
+                    "icon": {"name": "office", "size": "s"},
                     "items": [
                         {
                             "text": _("Notifications"),
-                            "icon": {"name": "bell", "size": "small"},
+                            "icon": {"name": "bell", "size": "s"},
                             "url": reverse("index_view"),
                         },
                         {
                             "text": _("Messages"),
-                            "icon": {"name": "chat-bubble", "size": "small"},
+                            "icon": {"name": "chat-bubble", "size": "s"},
                             "url": reverse("index_view"),
                         },
-                        {
-                            "text": _("Tasks"),
-                            "icon": {"name": "checklist", "size": "small"},
-                            "url": reverse("index_view"),
-                        },
+                        {"text": _("Tasks"), "icon": {"name": "checklist", "size": "s"}, "url": reverse("index_view")},
                     ],
                 },
                 {
                     "caption": "Management",
-                    "icon": {"name": "gear", "size": "small"},
+                    "icon": {"name": "gear", "size": "s"},
                     "items": [
                         {
                             "text": _("Calendar"),
-                            "icon": {"name": "calendar", "size": "small"},
+                            "icon": {"name": "calendar", "size": "s"},
                             "url": reverse("index_view"),
                         },
-                        {"text": _("Profile"), "icon": {"name": "user", "size": "small"}, "url": reverse("index_view")},
+                        {"text": _("Profile"), "icon": {"name": "user", "size": "s"}, "url": reverse("index_view")},
                     ],
                 },
             ],
@@ -292,11 +288,11 @@ def get_breadcrumb_context() -> dict:
     """Serve data for breadcrumbs detailpage."""
     return {
         "breadcrumb_items": [
-            {"text": _("Startpage"), "view_name": "index_view", "icon": {"name": "home", "size": "small"}},
+            {"text": _("Startpage"), "view_name": "index_view", "icon": {"name": "home", "size": "s"}},
             {"text": _("Components"), "view_name": "index_view"},
             {"text": _("Breadcrumbs")},
         ],
-        "single_breadcrumb_item": [{"text": _("Startpage"), "icon": {"name": "home", "size": "small"}}],
+        "single_breadcrumb_item": [{"text": _("Startpage"), "icon": {"name": "home", "size": "s"}}],
     }
 
 
@@ -338,11 +334,7 @@ def get_logo_context() -> dict:
             "alt": "Insight UI app icon",
             "height": "3rem",
         },
-        "logo_icon": {
-            "type": "icon",
-            "icon": {"name": "sparkles", "size": "big"},
-            "alt": "Decorative product icon",
-        },
+        "logo_icon": {"type": "icon", "icon": {"name": "sparkles", "size": "big"}, "alt": "Decorative product icon"},
     }
 
 
@@ -355,9 +347,9 @@ def get_dropdown_context() -> dict:
             "title": _("User"),
             "show_arrow": True,
             "items": [
-                {"text": _("Profile"), "view_name": "index_view", "icon": {"name": "user", "size": "small"}},
-                {"text": _("Settings"), "view_name": "index_view", "icon": {"name": "gear", "size": "small"}},
-                {"text": _("Logout"), "view_name": "index_view", "icon": {"name": "leave", "size": "small"}},
+                {"text": _("Profile"), "view_name": "index_view", "icon": {"name": "user", "size": "s"}},
+                {"text": _("Settings"), "view_name": "index_view", "icon": {"name": "gear", "size": "s"}},
+                {"text": _("Logout"), "view_name": "index_view", "icon": {"name": "leave", "size": "s"}},
             ],
         },
         "settings_dropdown": {
@@ -365,12 +357,8 @@ def get_dropdown_context() -> dict:
             "title": _("Settings"),
             "show_arrow": False,
             "items": [
-                {
-                    "text": _("Personal Information"),
-                    "view_name": "index_view",
-                    "icon": {"name": "user", "size": "small"},
-                },
-                {"text": _("Appearance"), "view_name": "index_view", "icon": {"name": "gear", "size": "small"}},
+                {"text": _("Personal Information"), "view_name": "index_view", "icon": {"name": "user", "size": "s"}},
+                {"text": _("Appearance"), "view_name": "index_view", "icon": {"name": "gear", "size": "s"}},
             ],
         },
     }
@@ -487,7 +475,6 @@ def get_radio_block_context() -> dict:
     return {
         "view_radio_config": {
             "name": "view",
-            "param_name": "view",
             "items": [
                 {"tag_id": "card-view", "value": "card", "icon": {"name": "cards"}},
                 {"tag_id": "table-view", "value": "table", "icon": {"name": "list"}},
@@ -496,12 +483,12 @@ def get_radio_block_context() -> dict:
         },
         "size_radio_config": {
             "name": "size",
-            "param_name": "size",
             "items": [
                 {"tag_id": "small-size", "value": "small", "label": "sm"},
                 {"tag_id": "medium-size", "value": "medium", "label": "md"},
                 {"tag_id": "large-size", "value": "large", "label": "lg"},
             ],
+            "as_row": False,
         },
     }
 
@@ -615,21 +602,21 @@ def get_generic_filter_context() -> dict:
         "filters": [
             {
                 "label": _("AI model type"),
-                "icon": {"name": "rocket", "size": "small"},
+                "icon": {"name": "rocket", "size": "s"},
                 "name": "model_type_filter",
                 "options": model_type_options,
                 "explanation": _("To filter by the type of AI-Model."),
             },
             {
                 "label": _("Runtime"),
-                "icon": {"name": "clock", "size": "small"},
+                "icon": {"name": "clock", "size": "s"},
                 "name": "runtime_filter",
                 "options": runtime_options,
                 "explanation": _("To filter by the runtime."),
             },
             {
                 "label": _("License"),
-                "icon": {"name": "doc", "size": "small"},
+                "icon": {"name": "doc", "size": "s"},
                 "name": "license_filter",
                 "options": license_options,
             },

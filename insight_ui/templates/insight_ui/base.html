@@ -59,7 +59,7 @@
 
         {% block extra_head %}{% endblock %}
     </head>
-    <body class="size-full min-h-screen dark:bg-gray-900 text-neutral-700 dark:text-neutral-100 transition-colors duration-200 flex flex-col" hx-indicator="#loading-indicator">
+    <body class="flex flex-col size-full min-h-screen {% if white_bg == False %}bg-gray-100 dark:bg-gray-950{% else %}bg-white dark:bg-gray-900{% endif %} text-primary transition-colors duration-200" hx-indicator="#loading-indicator">
 
         {% block background_image %}
         {% endblock background_image %}
@@ -82,8 +82,8 @@
                 <div id="heading">
                     {% block heading %}{% endblock heading %}
                 </div>
-                <div id="content" class="w-full space-y-12 text-secondary leading-loose px-4 md:px-16 py-16">
-                    {% include "insight_ui/components/htmx_loading_indicator.html" %}
+                <div id="content" class="w-full space-y-12 leading-loose {% if default_padding is not False %}px-4 md:px-16 py-16{% endif %}">
+                    {% if use_default_loading_indicator is not False %}{% include "insight_ui/components/htmx_loading_indicator.html" %}{% endif %}
                     {% block content %}{% endblock content %}
                 </div>
             </div>

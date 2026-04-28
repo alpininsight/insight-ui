@@ -9,12 +9,12 @@
             <h1 class="text-white text-4xl md:text-5xl font-bold">{{ title }}</h1>
         {% endif %}
 
-        {% if description %}
-            <p class="text-gray-200 leading-loose text-lg mt-4">{{ description }}</p>
-        {% endif %}
+        {% for paragraph in description %}
+            <p class="text-gray-200 leading-loose text-lg mt-4">{{ paragraph }}</p>
+        {% endfor %}
 
         {% if cta %}
-            <a href="{{ cta.url }}" class="btn btn-white btn-large font-bold w-fit">{{ cta.label }}</a>
+            <a href="{{ cta.url }}" class="btn btn-white btn-l font-bold w-fit">{{ cta.label }}</a>
         {% endif %}
     </div>
     <svg viewBox="0 0 500 50" class="-z-10">
