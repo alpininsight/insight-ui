@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n insight_tags %}
 
 <form
     {% if request_url %}
@@ -17,14 +17,19 @@
 >
     <label for="search" class="sr-only">{% trans "Search" %}</label>
     <div class="relative h-full">
-        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-            <svg class="size-4 text-neutral-700 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-            </svg>
+        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none text-secondary">
+            {% icon name="search" size="s" %}
         </div>
-        <input type="search" id="search" name="search" class="block size-full px-3 {% if simple %}text-sm py-2{% else %}py-3 pe-32{% endif %} ps-10 text-neutral-700 d dark:text-white border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-sm focus:outline-none focus:ring-2 ring-insight-primary-active" placeholder="{% trans "Browse..." %}" value="{{ search_query }}" />
+        <input
+            type="search"
+            id="search"
+            name="search"
+            placeholder="{% trans "Browse..." %}"
+            value="{{ search_query }}"
+            class="block size-full px-3 {% if simple %}text-sm py-2{% else %}py-3 pe-32{% endif %} ps-10 text-neutral-700 d dark:text-white border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-sm focus:outline-none focus:ring-2 ring-insight-primary-active"
+        />
         {% if not simple %}
-            <button class="absolute inset-y-0 end-0 bg-insight-primary border-insight-primary border-2 rounded-e-sm text-white text-lg px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">
+            <button class="absolute inset-y-0 end-0 btn btn-primary btn-l rounded-s-none">
                 {% trans "Search" %}
             </button>
         {% endif %}

@@ -539,7 +539,7 @@ def get_logo_usage_context() -> dict[str, str]:
         {% logo logo_type="image" url="img/company-logo.png" alt="Company" height="3rem" %}
 
         {# Icon logo using the Insight UI icon set #}
-        {% logo logo_type="icon" icon_name="sparkles" icon_size="big" alt="Product mark" %}
+        {% logo logo_type="icon" icon_name="sparkles" icon_size="xl" alt="Product mark" %}
 
         {# Theme-aware SVG asset #}
         {% logo logo_type="svg" url="svg/logo-light.svg" url_dark="svg/logo-dark.svg" alt="Company" %}

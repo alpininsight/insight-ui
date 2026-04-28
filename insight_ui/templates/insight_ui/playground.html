@@ -8,8 +8,12 @@
 {% endblock navbar %}
 
 {% block sidebar_left %}
-    {% sidebar sidebar_data=left_sidebar side="left" %}
+    {% sidebar sidebar_data=left_sidebar side="left" static=False %}
 {% endblock sidebar_left %}
+
+{% block sidebar_right %}
+    {% sidebar side="right" static=False %}
+{% endblock sidebar_right %}
 
 {% block content %}
     <div id="content" class="w-full space-y-16">

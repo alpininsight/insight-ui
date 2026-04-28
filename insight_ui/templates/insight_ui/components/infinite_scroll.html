@@ -24,7 +24,7 @@
 
   {% if not auto_fetch %}
     <button
-      class="btn btn-primary btn-big mx-auto"
+      class="btn btn-primary btn-l mx-auto"
       hx-get="{% url view_name %}?page={{ page }}&auto_fetch={{ auto_fetch }}"
       hx-swap="outerHTML"
       hx-trigger="click"

@@ -102,8 +102,11 @@
     .btn-sm {
         @apply text-sm px-4 py-1;
     }
-    .btn-large {
+    .btn-l {
         @apply text-lg px-6 py-2;
+    }
+    .btn-xl {
+        @apply text-lg px-8 py-3;
     }
     .btn-square {
         @apply p-2 border-0;

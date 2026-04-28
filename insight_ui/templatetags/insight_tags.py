@@ -190,7 +190,7 @@ def logo(  # noqa: PLR0913 (too many arguments)
         "dark_src": dark_src,
         "has_dark_variant": bool(dark_src and dark_src != src),
         "alt": alt or "",
-        "icon": {"name": icon_name or "", "size": icon_size or "medium"},
+        "icon": {"name": icon_name or "", "size": icon_size or "m"},
         "height": height or "2rem",
         "width": width or "",
         "css_class": css_class or "",

@@ -638,9 +638,6 @@
   .h-24 {
     height: calc(var(--spacing) * 24);
   }
-  .h-36 {
-    height: calc(var(--spacing) * 36);
-  }
   .h-56 {
     height: calc(var(--spacing) * 56);
   }
@@ -1000,6 +997,10 @@
   .rounded-sm {
     border-radius: var(--radius-sm);
   }
+  .rounded-s-none {
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+  }
   .rounded-s-sm {
     border-start-start-radius: var(--radius-sm);
     border-end-start-radius: var(--radius-sm);
@@ -1113,6 +1114,9 @@
   }
   .border-transparent {
     border-color: transparent;
+  }
+  .border-s-insight-danger {
+    border-inline-start-color: var(--color-insight-danger);
   }
   .border-s-insight-info {
     border-inline-start-color: var(--color-insight-info);
@@ -2355,11 +2359,6 @@
       left: calc(var(--spacing) * 4);
     }
   }
-  .rtl\:rotate-0 {
-    &:where(:dir(rtl), [dir="rtl"], [dir="rtl"] *) {
-      rotate: 0deg;
-    }
-  }
   .rtl\:rotate-180 {
     &:where(:dir(rtl), [dir="rtl"], [dir="rtl"] *) {
       rotate: 180deg;
@@ -2467,21 +2466,6 @@
   .dark\:border-red-800 {
     &:where([data-theme=dark], [data-theme=dark] *) {
       border-color: var(--color-red-800);
-    }
-  }
-  .dark\:border-s-insight-info {
-    &:where([data-theme=dark], [data-theme=dark] *) {
-      border-inline-start-color: var(--color-insight-info);
-    }
-  }
-  .dark\:border-s-insight-success {
-    &:where([data-theme=dark], [data-theme=dark] *) {
-      border-inline-start-color: var(--color-insight-success);
-    }
-  }
-  .dark\:border-s-insight-warning {
-    &:where([data-theme=dark], [data-theme=dark] *) {
-      border-inline-start-color: var(--color-insight-warning);
     }
   }
   .dark\:border-b-gray-600 {
@@ -2890,9 +2874,15 @@
     font-size: var(--text-sm);
     line-height: var(--tw-leading, var(--text-sm--line-height));
   }
-  .btn-large {
+  .btn-l {
     padding-inline: calc(var(--spacing) * 6);
     padding-block: calc(var(--spacing) * 2);
+    font-size: var(--text-lg);
+    line-height: var(--tw-leading, var(--text-lg--line-height));
+  }
+  .btn-xl {
+    padding-inline: calc(var(--spacing) * 8);
+    padding-block: calc(var(--spacing) * 3);
     font-size: var(--text-lg);
     line-height: var(--tw-leading, var(--text-lg--line-height));
   }

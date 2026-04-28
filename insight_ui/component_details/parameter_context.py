@@ -252,7 +252,7 @@ def get_navbar_parameter_context() -> dict[str, list[str]]:
             "links": [
                 {
                     "text": _("Startseite"),
-                    "icon": {"name": "home", "size": "small"},
+                    "icon": {"name": "home", "size": "s"},
                     "view_name": "storybook_view",
                     "active": True,
                     "need_auth": False,
@@ -397,7 +397,7 @@ def get_footer_parameter_context() -> dict[str, list[str]]:
         ],
         """
         [
-            {"text": _("Indexpage"), "icon": {"name": "home", "size": "small"}, "view_name": "index_view"},
+            {"text": _("Indexpage"), "icon": {"name": "home", "size": "s"}, "view_name": "index_view"},
             {"text": _("Storybook"), "view_name": "storybook_view"},
             {"text": _("Documentation"), "view_name": "doc_view"},
         ]
@@ -475,7 +475,7 @@ def get_footer_parameter_context() -> dict[str, list[str]]:
                 },
             },
             "links": [
-                {"text": _("Indexpage"), "icon": {"name": "home", "size": "small"}, "view_name": "index_view"},
+                {"text": _("Indexpage"), "icon": {"name": "home", "size": "s"}, "view_name": "index_view"},
                 {"text": _("Storybook"), "view_name": "storybook_view"},
                 {"text": _("Documentation"), "view_name": "doc_view"},
             ],
@@ -520,7 +520,7 @@ def get_breadcrumb_parameter_context() -> dict[str, list[str]]:
         ],
         """
         [
-            {"text": _("Indexpage"), "icon": {"name": "home", "size": "small" %}, "view_name": "index_view"},
+            {"text": _("Indexpage"), "icon": {"name": "home", "size": "s" %}, "view_name": "index_view"},
             {"text": _("Components"), "view_name": "components_view"},
             {"text": _("Breadcrumbs")},
         ]
@@ -887,7 +887,7 @@ def get_dropdown_parameter_context() -> dict[str, list[str]]:
             {
                 "text": _("Profile"),
                 "view_name": "profile_view",
-                "icon": {"name": "user", "size": "small"},
+                "icon": {"name": "user", "size": "s"},
             },
         ]
         """,
@@ -914,17 +914,17 @@ def get_dropdown_parameter_context() -> dict[str, list[str]]:
                 {
                     "text": _("Profile"),
                     "view_name": "profile_view",
-                    "icon": {"name": "user", "size": "small"},
+                    "icon": {"name": "user", "size": "s"},
                 },
                 {
                     "text": _("Settings"),
                     "view_name": "settings_view",
-                    "icon": {"name": "gear", "size": "small"},
+                    "icon": {"name": "gear", "size": "s"},
                 },
                 {
                     "text": _("Logout"),
                     "view_name": "logout_view",
-                    "icon": {"name": "leave", "size": "small"},
+                    "icon": {"name": "leave", "size": "s"},
                 },
             ],
         }
@@ -1387,10 +1387,10 @@ def get_logo_parameter_context() -> dict[str, list[str]]:
         ParameterDetails("icon", "dict[str, str] | str", _("Icon configuration used when type is 'icon'."), "{}"),
         [
             ParameterDetails("name", "str", _("Name of the Insight UI icon."), "''"),
-            ParameterDetails("size", "str", _("Icon size: 'big', 'medium', 'small', or 'xs'."), "'medium'"),
+            ParameterDetails("size", "str", _("Icon size: 'xl', 'l', 'm', 's', or 'xs'."), "'m'"),
         ],
         """
-        {"name": "sparkles", "size": "big"}
+        {"name": "sparkles", "size": "xl"}
         """,
     )
 

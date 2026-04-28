@@ -17,7 +17,7 @@ def get_main_page_links() -> list[dict[str, Any]]:
         {
             "text": _("Home"),
             "view_name": "index_view",
-            "icon": {"name": "home", "size": "small"},
+            "icon": {"name": "home", "size": "s"},
             "active": False,
             "need_auth": False,
             "staff_only": False,
@@ -25,7 +25,7 @@ def get_main_page_links() -> list[dict[str, Any]]:
         {
             "text": _("Installation"),
             "view_name": "installation_view",
-            "icon": {"name": "download", "size": "small"},
+            "icon": {"name": "download", "size": "s"},
             "active": False,
             "need_auth": False,
             "staff_only": False,
@@ -33,7 +33,7 @@ def get_main_page_links() -> list[dict[str, Any]]:
         {
             "text": _("Base Template"),
             "view_name": "base_template_view",
-            "icon": {"name": "blueprint", "size": "small"},
+            "icon": {"name": "blueprint", "size": "s"},
             "active": False,
             "need_auth": False,
             "staff_only": False,
@@ -41,7 +41,7 @@ def get_main_page_links() -> list[dict[str, Any]]:
         {
             "text": _("Customization"),
             "view_name": "customization_view",
-            "icon": {"name": "settings", "size": "small"},
+            "icon": {"name": "settings", "size": "s"},
             "active": False,
             "need_auth": False,
             "staff_only": False,
@@ -49,7 +49,7 @@ def get_main_page_links() -> list[dict[str, Any]]:
         {
             "text": _("Icons"),
             "view_name": "icon_view",
-            "icon": {"name": "sparkles", "size": "small"},
+            "icon": {"name": "sparkles", "size": "s"},
             "active": False,
             "need_auth": False,
             "staff_only": False,
@@ -64,7 +64,7 @@ def get_navbar_context(current_view: str = "index_view") -> dict:
         {
             "text": _("Components"),
             "open_dropdown": "components-menu",
-            "icon": {"name": "cards", "size": "small"},
+            "icon": {"name": "cards", "size": "s"},
             "items": [
                 {
                     "text": category.formatted_name,
@@ -74,7 +74,7 @@ def get_navbar_context(current_view: str = "index_view") -> dict:
                 }
                 for category in ComponentCategory
             ],
-            "chevron": {"name": "chevron_down", "size": "small"},
+            "chevron": {"name": "chevron_down", "size": "s"},
             "active": False,
             "need_auth": False,
             "staff_only": False,
@@ -107,7 +107,7 @@ def get_navbar_context(current_view: str = "index_view") -> dict:
             },
             "links": links,
             "searchbar_request_view": "index_view",
-            "show_usermenu": False,
+            "show_usermenu": True,
             "show_language_selector": True,
             "show_theme_toggle": True,
         },
@@ -175,9 +175,7 @@ def get_icon_context() -> dict:
     """Serve context for the icon detailpage."""
     main_params = [
         ParameterDetails("name", "str", _("Name of the icon (see table below)."), "question-mark"),
-        ParameterDetails(
-            "size", "str", _("Size of the icon. Possible values are: 'big', 'medium', 'small' and 'xs'."), "default"
-        ),
+        ParameterDetails("size", "str", _("Size of the icon. Possible values are: 'xl', 'l', 'm', 's' and 'xs'."), "m"),
     ]
 
     table_rows = [
@@ -475,14 +473,14 @@ def get_icon_context() -> dict:
     size_table = {
         "caption": "",
         "empty_msg": "",
-        "headers": ["xs", "small", "default", "medium", "big"],
+        "headers": ["xs", "s", "m", "l", "xl"],
         "rows": [
             [
                 render_to_string("insight_ui/components/icons.html", {"name": "home", "size": "xs"}),
-                render_to_string("insight_ui/components/icons.html", {"name": "home", "size": "small"}),
-                render_to_string("insight_ui/components/icons.html", {"name": "home", "size": ""}),
-                render_to_string("insight_ui/components/icons.html", {"name": "home", "size": "medium"}),
-                render_to_string("insight_ui/components/icons.html", {"name": "home", "size": "big"}),
+                render_to_string("insight_ui/components/icons.html", {"name": "home", "size": "s"}),
+                render_to_string("insight_ui/components/icons.html", {"name": "home", "size": "m"}),
+                render_to_string("insight_ui/components/icons.html", {"name": "home", "size": "l"}),
+                render_to_string("insight_ui/components/icons.html", {"name": "home", "size": "xl"}),
             ]
         ],
     }
