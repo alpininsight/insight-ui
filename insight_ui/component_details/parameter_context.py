@@ -31,7 +31,7 @@ def get_page_header_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the page_header component."""
     main_params = [
         ParameterDetails("title", "str", _("The page title, displayed as h1 in white text."), "''"),
-        ParameterDetails("description", "str", _("An optional description below the title."), "''"),
+        ParameterDetails("description", "str or list[str]", _("An optional description below the title."), "''"),
     ]
 
     return {"params": [main_params]}

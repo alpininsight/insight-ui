@@ -1,6 +1,7 @@
 import importlib
 import tomllib
 from functools import lru_cache
+from importlib.metadata import PackageNotFoundError
 from pathlib import Path
 
 import structlog
@@ -36,7 +37,12 @@ def get_app_version() -> str:
     if env_version:
         return env_version if env_version.startswith("v") else f"v{env_version}"
 
-    version = importlib.metadata.version("insight-ui")
+    version = ""
+    try:
+        version = importlib.metadata.version("insight-ui")
+    except PackageNotFoundError:
+        version = ""
+
     if not version and _PYPROJECT_PATH.is_file():
         try:
             with _PYPROJECT_PATH.open("rb") as fh:

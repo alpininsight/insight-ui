@@ -1136,7 +1136,11 @@ def table(data: dict) -> dict[str, Any]:
 
 @register.inclusion_tag("insight_ui/components/modal.html")
 def modal(  # noqa: PLR0913 (too many args)
-    tag_id: str, title: str, description: list[str] = [], actions: Sequence[Mapping[str, str]] = [], width: int = 32
+    tag_id: str,
+    title: str,
+    description: str | list[str] = [],
+    actions: Sequence[Mapping[str, str]] = [],
+    width: int = 32,
 ) -> dict[str, Any]:
     """
     Render an accessible modal dialog.
@@ -1546,7 +1550,7 @@ def multiselect(  # noqa: PLR0913 (too many arguments)
 
 
 @register.inclusion_tag("insight_ui/components/page_header.html")
-def page_header(title: str = "", description: str = "") -> dict[str, Any]:
+def page_header(title: str = "", description: str | list[str] = []) -> dict[str, Any]:
     """
     Render a page header for the blue header in the base template.
 
@@ -1560,6 +1564,10 @@ def page_header(title: str = "", description: str = "") -> dict[str, Any]:
         A dict with context variables for the template.
 
     """
+    # Convert a single string or a 'lazy translation objects' which is a Promise to a list.
+    if isinstance(description, (str, Promise)) or not isinstance(description, Iterable):
+        description = [description]
+
     return {"title": title, "description": description}
 
 
@@ -1696,7 +1704,14 @@ def infobox(info_type: str = "", message: str = "", **kwargs) -> dict[str, Any]:
         A dict with context variables for the template.
 
     """
-    return {"type": info_type, "message": message.format(**kwargs)}
+    formatted_message = message
+    if kwargs:
+        try:
+            formatted_message = message.format(**kwargs)
+        except (KeyError, ValueError):
+            formatted_message = message
+
+    return {"type": info_type, "message": formatted_message}
 
 
 @register.inclusion_tag("insight_ui/components/charts/bar_chart.html")
