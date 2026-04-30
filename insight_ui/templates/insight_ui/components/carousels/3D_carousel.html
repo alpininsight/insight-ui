@@ -2,8 +2,8 @@
 
 <div
     data-3D-carousel="{{ id }}"
-    data-carousel-velocity="{{ velocity|default:1000 }}"
-    data-carousel-face-camera="{{ face_camera|yesno:'true,false' }}"
+    data-velocity="{{ velocity|default:1000 }}"
+    data-face-camera="{{ face_camera|yesno:'true,false' }}"
     class="carousel_wrapper relative size-full overflow-hidden"
 >
     <div style="--quantity: {{ carousel_items|length }}; --carousel-tilt: {{ tilt }}deg" class="threeD_carousel absolute top-5 left-1/2 h-[35vh] w-full">

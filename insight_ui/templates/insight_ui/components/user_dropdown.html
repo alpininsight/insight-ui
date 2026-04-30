@@ -3,7 +3,7 @@
 {% if user.is_authenticated %}
     <!-- User-Dropdown menu -->
     <div class"relative">
-        <button data-dropdown-toggle="user-menu" class="btn-subtil rounded-full size-10">
+        <button data-insight-dropdown="user-menu" class="btn-subtil rounded-full size-10">
             {{ user.get_username|default:''|slice:":1"|upper }}
         </button>
         <div class="flex flex-col text-lg bg-neutral-100 dark:bg-gray-700 border border-gray-200 dark:border-0 rounded shadow-lg divide-y divide-gray-300 dark:divide-gray-500" id="user-menu">

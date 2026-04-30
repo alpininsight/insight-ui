@@ -1,7 +1,7 @@
 {% load insight_tags %}
 
 <div class="relative">
-    <button data-dropdown-toggle="{{ tag_id }}" class="btn btn-primary">
+    <button data-insight-dropdown="{{ tag_id }}" class="btn btn-primary">
         {{ title }}
         {% if show_arrow %}
             {% icon name="chevron_down" size="s" %}

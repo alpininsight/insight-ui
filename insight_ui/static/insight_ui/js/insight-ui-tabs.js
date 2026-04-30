@@ -112,6 +112,6 @@ export class Tabs {
 
     // Static method for initializing all tabs
     static initAll() {
-        document.querySelectorAll("[data-tabs]").forEach(el => new Tabs(el));
+        document.querySelectorAll("[data-insight-tabs]").forEach(el => new Tabs(el));
     }
 }

@@ -336,6 +336,6 @@ export class Multiselect {
 
     // Static method for initializing all multiselect elements
     static initAll() {
-        document.querySelectorAll('[data-multiselect]').forEach(el => new Multiselect(el));
+        document.querySelectorAll('[data-insight-multiselect]').forEach(el => new Multiselect(el));
     }
 }

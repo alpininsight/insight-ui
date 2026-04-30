@@ -30,8 +30,7 @@
         aria-expanded="false"
         aria-controls="navigation-menu"
         aria-label="{% trans 'Open menu' %}"
-        data-insight-toggle="collapsible"
-        data-insight-target="navigation-menu"
+        data-insight-collapsible="navigation-menu"
       >
         {% icon name="bars" %}
       </button>
@@ -90,8 +89,8 @@
                   {% elif link.open_modal %}
                     <button
                       class="text-secondary hover:text-insight-text-link px-4 py-2 text-sm transition-colors duration-200"
-                      data-insight-toggle="modal"
-                      data-insight-target="{{ link.open_modal }}">
+                      data-insight-modal="{{ link.open_modal }}"
+                    >
                       {{ link.text }}
                     </button>
                     {% modal tag_id=link.open_modal title=_("Insight UI") description=_("Lorem ipsum...") %}

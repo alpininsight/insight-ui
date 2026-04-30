@@ -184,7 +184,7 @@
     }
 
     .inline-tag {
-        @apply bg-gray-200 dark:bg-gray-700 font-mono text-insight-primary dark:text-insight-primary-active rounded-sm px-1 py-px;
+        @apply bg-gray-200 dark:bg-gray-700 font-mono text-insight-primary dark:text-insight-primary-active text-nowrap rounded-sm px-1 py-px;
     }
 
     .input {

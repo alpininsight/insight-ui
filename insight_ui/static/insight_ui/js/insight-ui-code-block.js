@@ -10,7 +10,7 @@ export class CodeBlock {
 
         this.id = originalElement.id;
         this.lang = originalElement.getAttribute('data-insight-code-block');
-        this.filename = originalElement.getAttribute('data-insight-code-block-filename') || "";
+        this.filename = originalElement.getAttribute('data-filename') || "";
         this.code = originalElement.textContent;
         this.copyButton = undefined;
         this.copyEvent = undefined;

@@ -1453,6 +1453,9 @@
     --tw-font-weight: var(--font-weight-semibold);
     font-weight: var(--font-weight-semibold);
   }
+  .text-nowrap {
+    text-wrap: nowrap;
+  }
   .hyphens-auto {
     -webkit-hyphens: auto;
     hyphens: auto;
@@ -3405,6 +3408,7 @@
     padding-inline: calc(var(--spacing) * 1);
     padding-block: 1px;
     font-family: var(--font-mono);
+    text-wrap: nowrap;
     color: var(--color-insight-primary);
     &:where([data-theme=dark], [data-theme=dark] *) {
       background-color: var(--color-gray-700);

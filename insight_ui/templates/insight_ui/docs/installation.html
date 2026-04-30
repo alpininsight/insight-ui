@@ -42,7 +42,7 @@
                         Step 1 is to add {{ insight_ui }} to the {{ installed_apps }} in <b>settings.py</b>:
                     {% endblocktrans %}
                 </p>
-                <div data-insight-code-block="python" data-insight-code-block-filename="settings.py">
+                <div data-insight-code-block="python" data-filename="settings.py">
                     {# fmt:off #}
                     INSTALLED_APPS = [
                         # ...
@@ -65,7 +65,7 @@
                         To use all features of Insight UI, our {{ link_open }}Base Template{{ link_close }} must be included.
                     {% endblocktrans %}
                 </p>
-                <div data-insight-code-block="Django" data-insight-code-block-filename="my_template.html">
+                <div data-insight-code-block="Django" data-filename="my_template.html">
                     {# fmt:off #}
                     &lcub;% extends "insight_ui/base.html" %&rcub;
                     {# fmt:on #}
@@ -76,7 +76,7 @@
                         The configuration must be passed in every view that uses the base template. See also {{ link_open }}Customization{{ link_close }}.
                     {% endblocktrans %}
                 </p>
-                <div data-insight-code-block="python" data-insight-code-block-filename="views.py">
+                <div data-insight-code-block="python" data-filename="views.py">
                     {# fmt:off #}
                     from insight_ui import config
 
@@ -94,7 +94,7 @@
                         To also be able to use the components, the {{ insight_tags }} must always be loaded in a respective template.
                     {% endblocktrans %}
                 </p>
-                <div data-insight-code-block="Django" data-insight-code-block-filename="my_template.html">
+                <div data-insight-code-block="Django" data-filename="my_template.html">
                     {# fmt:off #}
                     &lcub;% extends "insight_ui/base.html" %&rcub;
 
@@ -103,7 +103,7 @@
                 </div>
 
                 <p class="mt-4">{% trans "Now the components can be used:" %}</p>
-                <div data-insight-code-block="Django" data-insight-code-block-filename="my_template.html">
+                <div data-insight-code-block="Django" data-filename="my_template.html">
                     {# fmt:off #}
                     &lcub;% extends "insight_ui/base.html" %&rcub;
 

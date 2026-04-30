@@ -22,10 +22,10 @@ export class Floater {
         if (type == "tooltip") {
             this.target = document.createElement('span');
             this.target.classList.add("text-primary", "bg-white", "dark:bg-gray-600", "px-3", "py-1", "border", "border-gray-300", "dark:border-0", "rounded-sm", "shadow");
-            this.target.textContent = this.trigger.getAttribute("data-tooltip");
+            this.target.textContent = this.trigger.getAttribute("data-insight-tooltip");
         }
         else {
-            this.targetId = trigger.getAttribute("data-popover");
+            this.targetId = trigger.getAttribute("data-insight-popover");
             this.target = document.getElementById(this.targetId);
         }
 
@@ -185,7 +185,7 @@ export class Floater {
 
     // Static method for initializing all popovers and tooltips
     static initAll() {
-        document.querySelectorAll("[data-popover]").forEach(trigger => new Floater(trigger, 'popover'));
-        document.querySelectorAll("[data-tooltip]").forEach(trigger => new Floater(trigger, 'tooltip'));
+        document.querySelectorAll("[data-insight-popover]").forEach(trigger => new Floater(trigger, 'popover'));
+        document.querySelectorAll("[data-insight-tooltip]").forEach(trigger => new Floater(trigger, 'tooltip'));
     }
 }

@@ -12,7 +12,7 @@ export class Modal {
         }
 
         this.trigger = trigger;
-        this.targetId = trigger.getAttribute('data-insight-target');
+        this.targetId = trigger.getAttribute('data-insight-modal');
         this.modal = document.getElementById(this.targetId);
 
         if (!this.modal) return;
@@ -110,6 +110,6 @@ export class Modal {
 
     // Static method for initializing all modals
     static initAll() {
-        document.querySelectorAll('[data-insight-toggle="modal"]').forEach(openButton => new Modal(openButton));
+        document.querySelectorAll('[data-insight-modal]').forEach(openButton => new Modal(openButton));
     }
 };

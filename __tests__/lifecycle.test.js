@@ -168,7 +168,7 @@ describe('Component Lifecycle - destroy() methods', () => {
 
     it('should have a destroy method', () => {
       const container = TestUtils.createModal();
-      const button = container.querySelector('[data-insight-toggle="modal"]');
+      const button = container.querySelector('[data-insight-modal]');
       const modal = new InsightUI.Modal(button);
 
       expect(typeof modal.destroy).toBe('function');
@@ -176,7 +176,7 @@ describe('Component Lifecycle - destroy() methods', () => {
 
     it('should close modal if open on destroy', () => {
       const container = TestUtils.createModal();
-      const button = container.querySelector('[data-insight-toggle="modal"]');
+      const button = container.querySelector('[data-insight-modal]');
       const modal = new InsightUI.Modal(button);
 
       modal.open();
@@ -188,7 +188,7 @@ describe('Component Lifecycle - destroy() methods', () => {
 
     it('should remove instance from WeakMap on destroy', () => {
       const container = TestUtils.createModal();
-      const button = container.querySelector('[data-insight-toggle="modal"]');
+      const button = container.querySelector('[data-insight-modal]');
       const modal = new InsightUI.Modal(button);
 
       expect(InsightUI.Modal.instances.has(button)).toBe(true);

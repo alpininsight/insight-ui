@@ -1236,7 +1236,10 @@ def get_popover_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the popover component."""
     main_params = [
         ParameterDetails(
-            "data-popover='<target-id>'", "str", _("Determines the popover object to be displayed on hover."), "''"
+            "data-insight-popover='<target-id>'",
+            "str",
+            _("Determines the popover object to be displayed on hover."),
+            "''",
         ),
         ParameterDetails(
             "data-position='<position>'",
@@ -1262,7 +1265,7 @@ def get_tooltip_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the tooltip component."""
     main_params = [
         ParameterDetails(
-            "data-popover='<text>'",
+            "data-insight-tooltip='<text>'",
             "str",
             _("Shows a tooltip with the specified text when hovering over the element."),
             "''",
@@ -1314,10 +1317,7 @@ def get_code_block_parameter_context() -> dict[str, list[str]]:
             "''",
         ),
         ParameterDetails(
-            "data-insight-code-block-filename",
-            "str",
-            _("Displays the text as a hint for the user in the header of the code block."),
-            "''",
+            "data-filename", "str", _("Displays the text as a hint for the user in the header of the code block."), "''"
         ),
     ]
 
