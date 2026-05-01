@@ -92,6 +92,7 @@ The application is self-documenting. Run it locally and open it in your browser 
 The `docs/` directory is reserved for repository-level developer and governance references:
 - [Contributing Guide](docs/contributing.md)
 - [New Component Self-Documentation Checklist](docs/new-component-self-documentation-checklist.md)
+- [Documentation Architecture](docs/docs-architecture.md)
 - [Naming Conventions](docs/naming_conventions.md)
 - [Design System Contract](docs/design-system-contract.md)
 - [Accessibility](docs/accessibility.md)

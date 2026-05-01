@@ -83,6 +83,31 @@ The following patterns are used for user interactions across components:
 | Callback | `data-radio-callback="{fn}"` | `data-radio-callback="onSelect"` |
 | ... |
 
+### JavaScript consumers of data-insight hooks
+
+Every documented `data-insight-*` hook must have one owning JavaScript module or
+one explicit delegated handler. If a hook changes, update the owning module, the
+template that emits the hook, the component self-documentation, and this table.
+
+| Hook | Owner | Notes |
+|---|---|---|
+| `data-insight-accordion` | `insight-ui-accordion.js` | Initializes accordion groups and reads `data-exclusive`. |
+| `data-insight-carousel` | `insight-ui-carousel.js` | Initializes carousel controls and track behavior. |
+| `data-insight-checkbox-group` | `insight-ui-checkbox.js` | Handles grouped checkbox behavior. |
+| `data-insight-code-block` | `insight-ui-code-block.js` | Enhances code blocks and reads optional `data-filename`. |
+| `data-insight-collapsible` | `insight-ui-collapsible.js` | Connects a trigger with a collapsible target. |
+| `data-insight-demo-container`, `data-insight-demo-iframe` | `insight-ui-demo-container.js` | Controls docs demo iframe viewport sizing. |
+| `data-insight-dropdown` | `insight-ui-dropdown.js` | Connects dropdown triggers with menu targets. |
+| `data-insight-modal` | `insight-ui-modal.js` | Connects modal triggers with modal targets. |
+| `data-insight-multiselect` | `insight-ui-multiselect.js` | Initializes multiselect combobox behavior. |
+| `data-insight-popover`, `data-insight-tooltip` | `insight-ui-floater.js` | Creates floating popover and tooltip behavior. |
+| `data-insight-sidebar` | `insight-ui-sidebar.js` | Initializes sidebar wrappers and side-specific controls. |
+| `data-insight-tabs` | `insight-ui-tabs.js` | Initializes tab list, tab panel, and optional HTMX behavior. |
+| `data-insight-theme-toggle` | `insight-ui-theme-toggle.js` | Handles theme switching. |
+| `data-insight-3D-carousel` | `insight-ui-3D-carousel.js` | Initializes 3D carousel behavior and reads 3D options such as `data-face-camera` and `data-velocity`. |
+| `data-insight-websocket`, `data-insight-websocket-status` | `insight-ui-websocket.js` | Bridges HTMX WebSocket events to status text and custom DOM events. |
+| `data-insight-dismiss` | `insight-ui-modal.js`, `insight-ui-sidebar.js`, `insight-ui-utils.js` | Dismissal is scoped by value, for example `modal`, `sidebar`, `alert`, or `form-errors`. |
+
 ### Boolean attributes
 HTML Boolean attributes should be written without a value:
 
