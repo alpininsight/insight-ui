@@ -53,35 +53,33 @@ implementation change.
 ## Data-Attributs (HTML)
 
 ### Component identification
-Each JavaScript component is identified by a `data-*` attribute in the HTML:
+Each JavaScript component is identified by a `data-insight-{component_name}` attribute in the HTML. The value of this attribute is the `id` of the target HTML element, if necessary.
 
 | Component | Main-Attribute | Example |
 |------------|----------------|----------|
-| `accordion` | `data-accordion` | `<div data-accordion="faq-group">` |
-| `dropdown` | `data-dropdown-toggle` | `<button data-dropdown-toggle="menu-id">` |
-| `modal` | `data-insight-toggle="modal"` | `<button data-insight-toggle="modal">` |
-| `tabs` | `data-tabs` | `<div data-tabs>` |
+| `accordion` | `data-insight-accordion` | `<div data-insight-accordion="accordion-container-id">` |
+| `dropdown` | `data-insight-dropdown` | `<button data-insight-dropdown="menu-container-id">` |
+| `modal` | `data-insight-modal="modal"` | `<button data-insight-modal="modal-container-id">` |
+| `tabs` | `data-insight-tabs` | `<div data-insight-tabs="tabs-container-id">` |
 | ... |
 
 ### Component options
-Optional settings use the schema `data-{component}-{option}`:
+Additional attributes do not repeat he component name. Optional settings use the schema `data-{option}`:
 
 ```html
 <!-- Accordion with exclusive mode -->
-<div data-accordion="faq" data-accordion-exclusive="true">
+<div data-insight-accordion="faq" data-exclusive="true">
 
 <!-- 3D carousel with camera alignment -->
-<div data-3D-carousel="gallery" data-carousel-face-camera="true" data-carousel-velocity="500">
+<div data-insight-3D-carousel="gallery" data-face-camera="true" data-velocity="500">
 ```
 
 ### Action attributes
-The following patterns are used for user interactions:
+The following patterns are used for user interactions across components:
 
 | Action | Attribute | Usage |
 |--------|----------|------------|
 | Close/Dismiss | `data-insight-dismiss="{type}"` | `data-insight-dismiss="alert"`, `data-insight-dismiss="modal"` |
-| Toggle | `data-insight-toggle="{type}"` | `data-insight-toggle="modal"` |
-| Target-Reference | `data-insight-target="{id}"` | `data-insight-target="modal-1"` |
 | Callback | `data-radio-callback="{fn}"` | `data-radio-callback="onSelect"` |
 | ... |
 

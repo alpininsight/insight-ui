@@ -71,6 +71,6 @@ export class ThemeToggle {
 
     // Static method for initializing all toggle buttons
     static initAll() {
-        document.querySelectorAll('[data-theme-toggle]').forEach(toggleButton => new ThemeToggle(toggleButton));
+        document.querySelectorAll('[data-insight-theme-toggle]').forEach(toggleButton => new ThemeToggle(toggleButton));
     }
 };

@@ -113,7 +113,7 @@ globalThis.TestUtils = {
    */
   createModal(id = 'test-modal') {
     return this.createDOM(`
-      <button data-insight-toggle="modal" data-insight-target="${id}">Open Modal</button>
+      <button data-insight-modal="${id}">Open Modal</button>
       <div id="${id}" style="display: none;">
         <div class="modal-content">
           <button data-insight-dismiss="modal">Close</button>

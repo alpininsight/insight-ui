@@ -13,7 +13,7 @@ export class ThreeDCarousel {
         this.previousBtn = element.lastElementChild.firstElementChild;
         this.nextBtn = element.lastElementChild.lastElementChild;
 
-        this.faceCamera = element.getAttribute("data-carousel-face-camera") === 'true';
+        this.faceCamera = element.getAttribute("data-face-camera") === 'true';
         this.distances = [-1100, -750, -750, -550];
         this.screens = [
             window.matchMedia('(min-width: 640px)'),
@@ -26,7 +26,7 @@ export class ThreeDCarousel {
         this.angle = 360 / this.itemsCount;
         this.currentIndex = 0;
         this.spinSettings = {
-            duration: parseInt(element.getAttribute("data-carousel-velocity")) || 1000,
+            duration: parseInt(element.getAttribute("data-velocity")) || 1000,
             fill: "forwards",
         };
 
@@ -123,6 +123,6 @@ export class ThreeDCarousel {
 
     // Static method for initializing all 3D carousels
     static initAll() {
-        document.querySelectorAll("[data-3D-carousel]").forEach(el => new ThreeDCarousel(el));
+        document.querySelectorAll("[data-insight-3D-carousel]").forEach(el => new ThreeDCarousel(el));
     }
 }

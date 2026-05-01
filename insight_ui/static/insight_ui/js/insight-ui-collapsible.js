@@ -9,7 +9,7 @@ export class Collapsible {
         }
 
         this.trigger = trigger;
-        this.targetID = this.trigger.getAttribute('data-insight-target');
+        this.targetID = this.trigger.getAttribute('data-insight-collapsible');
         this.targetElement = document.getElementById(this.targetID);
 
         this.clickHandler = () => { this.targetElement.classList.toggle("hidden"); };
@@ -44,6 +44,6 @@ export class Collapsible {
 
     // Static method for initializing all collapsible
     static initAll() {
-        document.querySelectorAll('[data-insight-toggle="collapsible"]').forEach(el => new Collapsible(el));
+        document.querySelectorAll('[data-insight-collapsible]').forEach(el => new Collapsible(el));
     }
 }

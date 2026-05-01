@@ -1,8 +1,8 @@
 {% load insight_tags %}
 
 <div
-  data-accordion="{{ tag_id }}"
-  data-accordion-exclusive="{{ exclusive|yesno:'true,false' }}"
+  data-insight-accordion="{{ tag_id }}"
+  data-exclusive="{{ exclusive|yesno:'true,false' }}"
   class="rounded-sm overflow-hidden"
 >
   {% for item in items %}

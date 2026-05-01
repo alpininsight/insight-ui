@@ -11,7 +11,7 @@ export class Accordion {
 
         this.element = element;
         this.buttons = Array.from(element.querySelectorAll("button[aria-controls]"));
-        this.exclusive = element.getAttribute("data-accordion-exclusive") === "true";
+        this.exclusive = element.getAttribute("data-exclusive") === "true";
 
         // Store bound handlers for cleanup
         this.boundButtonHandlers = [];
@@ -182,6 +182,6 @@ export class Accordion {
 
     // Static method for initializing all accordions
     static initAll() {
-        document.querySelectorAll("[data-accordion]").forEach(el => new Accordion(el));
+        document.querySelectorAll("[data-insight-accordion]").forEach(el => new Accordion(el));
     }
 }

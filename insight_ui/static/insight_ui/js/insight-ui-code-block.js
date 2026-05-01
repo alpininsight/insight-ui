@@ -10,7 +10,7 @@ export class CodeBlock {
 
         this.id = originalElement.id;
         this.lang = originalElement.getAttribute('data-insight-code-block');
-        this.filename = originalElement.getAttribute('data-insight-code-block-filename') || "";
+        this.filename = originalElement.getAttribute('data-filename') || "";
         this.code = originalElement.textContent;
         this.copyButton = undefined;
         this.copyEvent = undefined;
@@ -137,14 +137,32 @@ export class CodeBlock {
             try {
                 await navigator.clipboard.writeText(codeElement.textContent);
                 this.copyButton.textContent = '✔ Kopiert';
-                setTimeout(() => {
-                    this.copyButton.textContent = '';
-                    this.copyButton.appendChild(svg);
-                    this.copyButton.appendChild(document.createTextNode('Copy'));
-                }, 1200);
             } catch (err) {
-                console.error('Failed to copy', err);
+                // Use a temporary textarea as fallback
+                const textarea = document.createElement('textarea');
+                textarea.value = codeElement.textContent;
+                document.body.appendChild(textarea);
+                textarea.select();
+
+                const copied = document.execCommand('copy');  // Copies the content of the selected element
+                document.body.removeChild(textarea);
+
+                if (copied)
+                {
+                    this.copyButton.textContent = '✔ Kopiert';
+                }
+                else
+                {
+                    console.error('Failed to copy', err);
+                    this.copyButton.textContent = '✖ Kopieren fehlgeschlagen';
+                }
             }
+
+            setTimeout(() => {
+                this.copyButton.textContent = '';
+                this.copyButton.appendChild(svg);
+                this.copyButton.appendChild(document.createTextNode('Copy'));
+            }, 1200);
         }
 
         this.copyButton.addEventListener('click', this.copyEvent);

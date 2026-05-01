@@ -42,7 +42,7 @@
                 {% endblocktrans %}
             </p>
 
-            <div id="settings" data-insight-code-block="python" data-insight-code-block-filename="settings.py">
+            <div id="settings" data-insight-code-block="python" data-filename="settings.py">
                 {# fmt:off #}
                 INSIGHT_UI = {
                     "favicon": "insight_ui/favicon/favicon.ico",
@@ -110,7 +110,7 @@
                     <li>{% trans "Use text tokens for primary content, secondary content, and links." %}</li>
                     <li>{% trans "Use component classes and template tags after the tokens are set, so the whole UI follows the same visual language." %}</li>
                 </ul>
-                <div data-insight-code-block="css" data-insight-code-block-filename="input.css">
+                <div data-insight-code-block="css" data-filename="input.css">
                     {# fmt:off #}
                     @theme {
                         --font-sans: "Inter", sans-serif;
@@ -162,7 +162,7 @@
                         Then <b>django-tailwind-cli</b> must be added to the {{ installed_apps }}.
                     {% endblocktrans %}
                 </p>
-                <div data-insight-code-block="python" data-insight-code-block-filename="settings.py">
+                <div data-insight-code-block="python" data-filename="settings.py">
                     {# fmt:off #}
                     INSTALLED_APPS = [
                         # ...
@@ -178,7 +178,7 @@
                     <li><span class="inline-tag">TAILWIND_CLI_DIST_CSS</span>: {% trans "The path where the generated stylesheet should be saved." %}</li>
                     <li><span class="inline-tag">TAILWIND_CLI_AUTOMATIC_DOWNLOAD</span>: {% trans "We recommend disabling the automatic updating of the Tailwind compiler, as it would consume more and more storage space and prevents error messages due to failed downloads." %}</li>
                 </ul>
-                <div data-insight-code-block="python" data-insight-code-block-filename="settings.py">
+                <div data-insight-code-block="python" data-filename="settings.py">
                     {# fmt:off #}
                     # Configure static files directory
                     STATICFILES_DIRS = [BASE_DIR / &lt;path/to/static_dir&gt;]
@@ -214,7 +214,7 @@
                         To customize the theming, this file must be copied and then specified in the <i>Insight UI</i> configuration in {{ settings }}.
                     {% endblocktrans %}
                 </p>
-                <div id="settings2" data-insight-code-block="python" data-insight-code-block-filename="settings.py">
+                <div id="settings2" data-insight-code-block="python" data-filename="settings.py">
                     TAILWIND_CLI_SRC_CSS = "my-path/to/input.css"
                 </div>
                 <p>
@@ -222,11 +222,11 @@
                         In this file, the path to the {{ insight_ui }} templates must be adjusted:
                     {% endblocktrans %}
                 </p>
-                <div id="settings3" data-insight-code-block="css" data-insight-code-block-filename="input.css">
+                <div id="settings3" data-insight-code-block="css" data-filename="input.css">
                     @source "../templates/insight_ui/";
                 </div>
                 <p>{% trans "replace with:" %}</p>
-                <div id="settings4" data-insight-code-block="css" data-insight-code-block-filename="input.css">
+                <div id="settings4" data-insight-code-block="css" data-filename="input.css">
                     @source ".venv/Lib/site-packages/insight_ui/templates/insight_ui";
                 </div>
                 <p>
@@ -245,7 +245,7 @@
                         The first line contains the {{ import }} for Tailwind. This is needed so that Tailwind can later generate the corresponding stylesheet from this file.
                     {% endblocktrans %}
                 </p>
-                <div id="settings5" data-insight-code-block="css" data-insight-code-block-filename="input.css">
+                <div id="settings5" data-insight-code-block="css" data-filename="input.css">
                     @import "tailwindcss";
                 </div>
                 <p>
@@ -255,13 +255,13 @@
                         Normally Tailwind should find all project-specific templates on its own, but external packages occasionally cause issues, which is why the path to our templates is also specified here.
                     {% endblocktrans %}
                 </p>
-                <div id="settings6" data-insight-code-block="css" data-insight-code-block-filename="input.css">
+                <div id="settings6" data-insight-code-block="css" data-filename="input.css">
                     @source "../templates/insight_ui/";
                 </div>
                 <p>
                     {% trans "The next line enables switching between light/dark mode." %}
                 </p>
-                <div id="settings7" data-insight-code-block="css" data-insight-code-block-filename="input.css">
+                <div id="settings7" data-insight-code-block="css" data-filename="input.css">
                     @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
                 </div>
                 <p>
@@ -272,7 +272,7 @@
                         The path to the font is relative to the <i>input.css</i>, i.e. the file in which it is defined.
                     {% endblocktrans %}
                 </p>
-                <div id="settings8" data-insight-code-block="css" data-insight-code-block-filename="input.css">
+                <div id="settings8" data-insight-code-block="css" data-filename="input.css">
                     {# fmt:off #}
                     @font-face {
                         font-family: "insight-ui";
@@ -297,7 +297,7 @@
                 <p>
                     <i>{% trans "Todo: define multiple fonts." %}</i>
                 </p>
-                <div id="settings9" data-insight-code-block="css" data-insight-code-block-filename="input.css">
+                <div id="settings9" data-insight-code-block="css" data-filename="input.css">
                     {# fmt:off #}
                     @theme {
                         --font-sans: "Inter", sans-serif;
@@ -338,7 +338,7 @@
                         For example, headings with {{ caption_red }} will still be displayed in red.
                     {% endblocktrans %}
                 </p>
-                <div id="settings10" data-insight-code-block="css" data-insight-code-block-filename="input.css">
+                <div id="settings10" data-insight-code-block="css" data-filename="input.css">
                     {# fmt:off #}
                     @layer base {
                         button:not(:disabled), [role="button"]:not(:disabled) { cursor: pointer; }
@@ -364,7 +364,7 @@
                         This is an advantage for anyone who has previously worked with Tailwind.
                     {% endblocktrans %}
                 </p>
-                <div id="settings11" data-insight-code-block="css" data-insight-code-block-filename="input.css">
+                <div id="settings11" data-insight-code-block="css" data-filename="input.css">
                     {# fmt:off #}
                     @layer components {
                         .btn {

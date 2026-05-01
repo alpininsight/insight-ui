@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<div data-multiselect data-name="{{ name }}" data-max="{{ maximum }}" data-selected="{{ selected_options|default:"" }}">
+<div data-insight-multiselect data-name="{{ name }}" data-max="{{ maximum }}" data-selected="{{ selected_options|default:"" }}">
     <label id="{{ name }}-label" class="block text-sm font-bold text-primary mb-1">{{ label }}</label>
     {% if show_buttons %}
         <div class="flex gap-2 mb-1">

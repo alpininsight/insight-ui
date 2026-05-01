@@ -8,7 +8,7 @@
         <span class="self-end">{{ label }}</span>
         {% if required %}<span class="text-red-500" aria-label="{% trans 'Required' %}">*</span>{% endif %}
         {% if explanation %}
-            <div class="text-secondary" data-tooltip="{{ explanation }}" data-position="top">
+            <div class="text-secondary" data-insight-tooltip="{{ explanation }}" data-position="top">
                 {% icon name="question-mark" size="xs" %}
             </div>
         {% endif %}

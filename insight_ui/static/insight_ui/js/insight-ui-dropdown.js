@@ -12,7 +12,7 @@ export class Dropdown {
         }
 
         this.trigger = trigger;
-        this.targetId = trigger.getAttribute("data-dropdown-toggle");
+        this.targetId = trigger.getAttribute("data-insight-dropdown");
         this.menu = document.getElementById(this.targetId);
 
         if (!this.menu) {
@@ -84,6 +84,6 @@ export class Dropdown {
 
     // Static method for initializing all dropdown menus
     static initAll() {
-        document.querySelectorAll("[data-dropdown-toggle]").forEach(openButton => new Dropdown(openButton));
+        document.querySelectorAll("[data-insight-dropdown]").forEach(openButton => new Dropdown(openButton));
     }
 }

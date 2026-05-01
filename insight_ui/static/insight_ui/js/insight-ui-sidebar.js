@@ -31,7 +31,7 @@ export class Sidebar {
 	init() {
 		if (!this.wrapper) return;
 
-		const isStatic = this.wrapper.getAttribute("data-insight-sidebar-static");
+		const isStatic = this.wrapper.getAttribute("data-static");
 		if (isStatic === "True") return;
 
 		this.wrapper.querySelectorAll('[data-insight-dismiss="sidebar"]').forEach(closeButton => {

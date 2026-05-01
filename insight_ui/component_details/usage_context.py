@@ -415,14 +415,17 @@ def get_alert_usage_context() -> dict[str, str]:
 def get_modal_usage_context() -> dict[str, str]:
     """Serve usage documentation for the modal component."""
     return {
+        "usage_summary": _(
+            "The component is included via the `modal` tag. Additionally you need a trigger that causes the dialog to appear when the user clicks on it. This trigger can be any HTML tag and must include the `data-insight-modal` attribute, whose value is the ID of the target element (the dialog)."
+        ),
         "usage": """
         {% load insight_tags %}
 
-        <button class="btn btn-primary" data-insight-toggle="modal" data-insight-target="demo-modal">
+        <button class="btn btn-primary" data-insight-modal="demo-modal">
             {% trans "Open Modal" %}
         </button>
         {% modal tag_id="demo-modal" title=_("Demo Modal") description=_("Dies ist ein Beispiel-Modal mit Standard-Styling!") %}
-        """
+        """,
     }
 
 
@@ -431,10 +434,10 @@ def get_popover_usage_context() -> dict[str, str]:
     """Serve usage documentation for the popover component."""
     return {
         "usage_summary": _(
-            "To add a popover, you need a trigger that causes the popover to appear when the user hovers over it. This trigger can be any HTML tag and must include the `data-popover` attribute, whose value is the ID of the target element (the popover). You can customize the popover entirely on your own; the only thing to keep in mind is the connection via the **tag ID**."
+            "To add a popover, you need a trigger that causes the popover to appear when the user hovers over it. This trigger can be any HTML tag and must include the `data-insight-popover` attribute, whose value is the ID of the target element (the popover). You can customize the popover entirely on your own; the only thing to keep in mind is the connection via the **tag ID**."
         ),
         "usage": """
-        <button data-popover="demo-popover" data-show-arrow="true" data-position="top" class="btn btn-primary">Hover me!</button>
+        <button data-insight-popover="demo-popover" data-show-arrow="true" data-position="top" class="btn btn-primary">Hover me!</button>
         <div id="demo-popover" class="bg-white dark:bg-gray-500 w-64 border border-gray-300 dark:border-0 rounded-sm shadow">
             <!-- Content -->
         </div>
@@ -447,11 +450,11 @@ def get_tooltip_usage_context() -> dict[str, str]:
     """Serve usage documentation for the tooltip component."""
     return {
         "usage_summary": _(
-            "To add a tooltip to an element, simply add the `data-tooltip` attribute, whose value is the text to be displayed in the tooltip."
+            "To add a tooltip to an element, simply add the `data-insight-tooltip` attribute, whose value is the text to be displayed in the tooltip."
         ),
         "usage": """
         <button
-            data-tooltip="This is a tooltip."
+            data-insight-tooltip="This is a tooltip."
             data-show-arrow="true"
             data-position="bottom"
             class="btn btn-primary"

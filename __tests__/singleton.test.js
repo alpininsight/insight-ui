@@ -116,7 +116,7 @@ describe('WeakMap Singleton Pattern', () => {
 
     it('should return existing instance for same button', () => {
       const container = TestUtils.createModal();
-      const button = container.querySelector('[data-insight-toggle="modal"]');
+      const button = container.querySelector('[data-insight-modal]');
 
       const instance1 = new InsightUI.Modal(button);
       const instance2 = new InsightUI.Modal(button);
