@@ -131,6 +131,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **runtime:** Prepare blue-green demo deployment contract 
 - Add copyright notice component 
 - Improvements 
+- Standardize the JavaScript lookup attribute naming convention 
 
 ### Miscellaneous
 
