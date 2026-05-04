@@ -60,6 +60,11 @@ In this section, we explain all the steps necessary to add a new component.
 
 ### Part 2: Documenting New Components
 
+Before opening a pull request for a new reusable component, complete the
+[New Component Self-Documentation Checklist](new-component-self-documentation-checklist.md).
+This checklist is mandatory whenever a reusable UI surface is added or changed.
+See the checklist for package-local source-of-truth expectations.
+
 1. Document the new component for future users. Our component documentation is context-based and is divided into several files in this directory: `insight_ui/component_details/`
     - `a11y_context.py`: Contains documentation for all accessibility topics related to the component.
     - `description_context.py`: Contains a summary description of the component.
@@ -70,7 +75,7 @@ In this section, we explain all the steps necessary to add a new component.
 2. Insert demo
     - Extend component demo file `insight_ui/templates/insight_ui/docs/component_demo.html`
         - Disable padding in the view if necessary
-    - Add demo context function `insight_ui/demo_context.py
+    - Add demo context function `insight_ui/component_details/demo_context.py`
 
 > Please note our [Naming Conventions](naming_conventions.md) for Templates, Assets and Context-helper.
 
