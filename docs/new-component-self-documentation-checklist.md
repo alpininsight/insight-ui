@@ -3,11 +3,8 @@
 This checklist is mandatory for contributors adding or changing reusable UI
 components in the Insight UI ecosystem.
 
-It applies to:
-
-- `insight-ui`
-- sibling packages named `insight-ui-*`
-- `insight-oidc-provider` when it adds reusable provider/account UI surfaces
+It applies to any Insight UI ecosystem package that exposes reusable UI
+surfaces, including the core package and sibling packages.
 
 The goal is simple: every reusable component must ship with the implementation,
 the public Django-facing API, the live demo, and the self-documentation needed
@@ -329,12 +326,12 @@ component:
 - [ ] Tests cover template tag output and interactive behavior where relevant.
 - [ ] Design-system contract updated if tokens or semantic classes changed.
 - [ ] Naming conventions updated if `data-insight-*` hooks changed.
-- [ ] Sibling/provider package docs updated if this component is part of an ecosystem package.
+- [ ] Ecosystem package docs updated if this component belongs outside the core package.
 ```
 
-## Guidance for sibling packages and `insight-oidc-provider`
+## Guidance for ecosystem packages
 
-Sibling packages do not have to copy the exact `insight_ui/component_details/*`
+Ecosystem packages do not have to copy the exact `insight_ui/component_details/*`
 implementation before they can comply with this checklist. They must still keep
 the same source-of-truth split:
 
@@ -347,10 +344,10 @@ the same source-of-truth split:
 | Live docs/demo | Package-local docs or showcase page |
 | Tests | Package-local unit/integration tests |
 
-For `insight-oidc-provider`, provider-specific authentication mechanics remain
-provider-owned. Reusable account UI surfaces should still document templates,
-forms, redirects, security assumptions, and demo states with the same discipline
-as `insight-ui` components.
+Package-specific mechanics remain package-owned. Reusable account, provider,
+or extension UI surfaces should still document templates, forms, redirects,
+security assumptions, and demo states with the same discipline as core
+`insight-ui` components.
 
 ## Reviewer standard
 

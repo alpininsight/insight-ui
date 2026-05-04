@@ -62,8 +62,8 @@ In this section, we explain all the steps necessary to add a new component.
 
 Before opening a pull request for a new reusable component, complete the
 [New Component Self-Documentation Checklist](new-component-self-documentation-checklist.md).
-This checklist is mandatory for `insight-ui`, `insight-ui-*` sibling packages,
-and `insight-oidc-provider` contributors when they add reusable UI surfaces.
+This checklist is mandatory whenever a reusable UI surface is added or changed.
+See the checklist for package-local source-of-truth expectations.
 
 1. Document the new component for future users. Our component documentation is context-based and is divided into several files in this directory: `insight_ui/component_details/`
     - `a11y_context.py`: Contains documentation for all accessibility topics related to the component.
