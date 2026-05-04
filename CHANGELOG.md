@@ -75,6 +75,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add notification component mockups 
 - Move insight ui audit into repo 
 - Document design system contract 
+- Add component self-documentation checklist 
 
 ### Features
 
