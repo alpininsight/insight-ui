@@ -79,6 +79,19 @@ See the checklist for package-local source-of-truth expectations.
 
 > Please note our [Naming Conventions](naming_conventions.md) for Templates, Assets and Context-helper.
 
+### Contract documentation rule
+
+If you change a token, semantic class, template tag signature, or
+`data-insight-*` hook, update the corresponding contract documentation and the
+component self-documentation in the same pull request.
+
+Use [Documentation Architecture](docs-architecture.md) to decide where the
+canonical explanation belongs. In short: public design rules belong in
+`docs/design-system-contract.md`, hook naming belongs in
+`docs/naming_conventions.md`, contributor workflow belongs here, component usage
+belongs in `insight_ui/component_details/*`, and rendered docs templates should
+remain presentation.
+
 ## Test checklist
 
 - Template tags or Python logic: Add tests in `insight_ui/tests/test_template_tags.py` or your own test module.

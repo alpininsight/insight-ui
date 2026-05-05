@@ -75,6 +75,29 @@ without editing every button, form, heading, or documentation example.
 Do not use generated CSS as the design-system source. The built stylesheet under
 `insight_ui/static/insight_ui/css/` is output, not the design contract.
 
+## Documentation surfaces and source-of-truth boundaries
+
+Insight UI's docs are split between repository-level Markdown, component
+self-documentation, and rendered application pages. Keep these boundaries clear:
+
+- Markdown docs in `docs/` define policy, public contracts, naming rules, and
+  maintainer workflow.
+- `insight_ui/component_details/*` defines per-component user-facing docs such
+  as descriptions, usage, parameters, accessibility notes, related topics, and
+  demo context.
+- `insight_ui/templatetags/insight_tags.py` defines the Django-facing component
+  API and must stay aligned with the parameter self-doc.
+- `insight_ui/utils/input.css` defines public tokens and reusable semantic
+  classes. Generated CSS is never the contract.
+- `insight_ui/static/insight_ui/js/*` defines behavior contracts for
+  `data-insight-*` hooks.
+- `insight_ui/templates/insight_ui/docs/*` renders documentation pages and HTMX
+  partials. These templates may compose and display docs, but they should not
+  become the canonical explanation of API, token, or behavior contracts.
+
+The maintainer-facing map for these boundaries lives in
+[Documentation Architecture](docs-architecture.md).
+
 ## Stable public contract today
 
 These concepts already exist in Insight UI and form the baseline that extensions
