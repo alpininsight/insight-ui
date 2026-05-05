@@ -136,7 +136,7 @@ export class CodeBlock {
         this.copyEvent = async () => {
             try {
                 await navigator.clipboard.writeText(codeElement.textContent);
-                this.copyButton.textContent = '✔ Kopiert';
+                this.copyButton.textContent = gettext('✔ copied');
             } catch (err) {
                 // Use a temporary textarea as fallback
                 const textarea = document.createElement('textarea');
@@ -149,12 +149,12 @@ export class CodeBlock {
 
                 if (copied)
                 {
-                    this.copyButton.textContent = '✔ Kopiert';
+                    this.copyButton.textContent = gettext('✔ copied');
                 }
                 else
                 {
                     console.error('Failed to copy', err);
-                    this.copyButton.textContent = '✖ Kopieren fehlgeschlagen';
+                    this.copyButton.textContent = gettext('✖ Copy failed!');
                 }
             }
 
