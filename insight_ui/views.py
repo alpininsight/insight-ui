@@ -303,7 +303,7 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
 
         return render(request, "insight_ui/docs/component_detailpage_partial.html", context)
 
-    context |= get_base_context("component_detail_page_view") | get_sidebar_context()
+    context |= get_base_context("component_detail_page_view") | get_sidebar_context(component_name)
     return render(request, "insight_ui/docs/component_detailpage.html", context)
 
 

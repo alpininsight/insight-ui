@@ -49,6 +49,10 @@
             </div>
         </div>
     </div>
+{% elif component.value == "corner_ribbon" %}
+    <div class="h-64">
+        {% corner_ribbon text="New Feature" %}
+    </div>
 {% elif component.value == "breadcrumbs" %}
     <div class="space-y-4">
         {% breadcrumbs items=breadcrumb_items %}

@@ -338,6 +338,18 @@ def get_logo_context() -> dict:
     }
 
 
+@register_demo_context(Component.CORNER_RIBBON)
+def get_corner_ribbon_context() -> dict:
+    """Serve data for corner ribbon detailpage."""
+    return {
+        "ribbon_top_right": {"text": _("New Feature"), "position": "top-right", "color": "primary"},
+        "ribbon_top_left": {"text": _("Verified"), "position": "top-left", "color": "success"},
+        "ribbon_bottom_right": {"text": _("Beta"), "position": "bottom-right", "color": "warning"},
+        "ribbon_bottom_left": {"text": _("Limited"), "position": "bottom-left", "color": "danger"},
+        "ribbon_info": {"text": _("Info"), "position": "top-right", "color": "info"},
+    }
+
+
 @register_demo_context(Component.DROPDOWN)
 def get_dropdown_context() -> dict:
     """Serve data for dropdown detailpage."""

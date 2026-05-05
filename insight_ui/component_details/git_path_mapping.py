@@ -62,6 +62,7 @@ TEMPLATE_PATHS = {
     "heading_decoration": GIT_BASE_FILE + "heading_decoration.html",
     "article": GIT_BASE_FILE + "article.html",
     "hero": GIT_BASE_FILE + "hero.html",
+    "corner_ribbon": GIT_BASE_FILE + "corner_ribbon.html",
 }
 
 # Mapping-Table between components and their respective script files

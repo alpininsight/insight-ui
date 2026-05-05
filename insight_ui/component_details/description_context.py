@@ -55,6 +55,21 @@ def get_hero_description_context() -> dict[str, list[str]]:
     }
 
 
+@register_component(Component.CORNER_RIBBON)
+def get_corner_ribbon_description_context() -> dict[str, list[str]]:
+    """Serve description documentation for the corner ribbon component."""
+    return {
+        "description": [
+            _(
+                "The `corner_ribbon` component displays a decorative diagonal text ribbon positioned in any of the four browser corners. It's ideal for highlighting new features, displaying status indicators, or adding promotional badges."
+            ),
+            _(
+                "The ribbon appears above most page content, but you can click on elements located behind the component. It supports RTL layouts and multiple color variants for different semantic meanings."
+            ),
+        ]
+    }
+
+
 @register_component(Component.NAVBAR)
 def get_navbar_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the navbar component."""
@@ -401,9 +416,7 @@ def get_copyright_notice_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the copyright notice component."""
     return {
         "description": [
-            _(
-                "The `copyright_notice` component renders a compact, reusable copyright and legal notice line."
-            ),
+            _("The `copyright_notice` component renders a compact, reusable copyright and legal notice line."),
             _(
                 "It can be used inside the footer or in other page shells where an application needs a consistent public legal notice."
             ),

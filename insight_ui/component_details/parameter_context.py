@@ -148,6 +148,74 @@ def get_hero_parameter_context() -> dict[str, list[str]]:
     return {"params": [main_params, cta_param, badge_param]}
 
 
+@register_component(Component.CORNER_RIBBON)
+def get_corner_ribbon_parameter_context() -> dict[str, list[str]]:
+    """Serve parameter documentation for the corner_ribbon component."""
+    config_param = ParameterDoc(
+        ParameterDetails(
+            "config",
+            "dict[str, Any]",
+            _("Alternative dictionary-based configuration for all corner ribbon parameters."),
+            "{}",
+        ),
+        [
+            ParameterDetails("text", "str", _("The text displayed in the ribbon."), "''"),
+            ParameterDetails(
+                "position",
+                "str",
+                _(
+                    "Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'. "
+                    "Invalid values fall back to 'top-right'."
+                ),
+                "'top-right'",
+            ),
+            ParameterDetails(
+                "color",
+                "str",
+                _(
+                    "Color variant: 'primary', 'success', 'warning', 'danger', 'info'. "
+                    "Invalid values fall back to 'primary'."
+                ),
+                "'primary'",
+            ),
+            ParameterDetails("tag_id", "str", _("An optional, unique ID for JavaScript/CSS targeting."), "''"),
+        ],
+        """
+        {
+            "text": "New Feature",
+            "position": "top-right",
+            "color": "success",
+        }
+        """,
+    )
+
+    main_params = [
+        ParameterDetails("text", "str", _("The text displayed in the ribbon."), "''"),
+        ParameterDetails(
+            "position",
+            "str",
+            _(
+                "Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'. "
+                "Invalid values fall back to 'top-right'."
+            ),
+            "'top-right'",
+        ),
+        ParameterDetails(
+            "color",
+            "str",
+            _(
+                "Color variant: 'primary', 'success', 'warning', 'danger', 'info'. "
+                "Invalid values fall back to 'primary'."
+            ),
+            "'primary'",
+        ),
+        ParameterDetails("tag_id", "str", _("An optional, unique ID for JavaScript/CSS targeting."), "''"),
+        config_param.details,
+    ]
+
+    return {"params": [main_params, config_param]}
+
+
 @register_component(Component.NAVBAR)
 def get_navbar_parameter_context() -> dict[str, list[str]]:
     """Serve parameter documentation for the navbar component."""

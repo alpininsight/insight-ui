@@ -60,6 +60,7 @@ class Component(Enum):
     COPYRIGHT_NOTICE = ("copyright_notice", ComponentCategory.UTIL)
     DIFFERENTIATOR = ("differentiator", ComponentCategory.UTIL)
     LOGO = ("logo", ComponentCategory.UTIL)
+    CORNER_RIBBON = ("corner_ribbon", ComponentCategory.UTIL)
     PROGRESS_BAR = ("progress_bar", ComponentCategory.UTIL)
     GEO_MAP = ("geo_map", ComponentCategory.UTIL)
     CHART = ("chart", ComponentCategory.UTIL)

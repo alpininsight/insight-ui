@@ -69,6 +69,36 @@ def get_hero_usage_context() -> dict[str, str]:
     }
 
 
+@register_component(Component.CORNER_RIBBON)
+def get_corner_ribbon_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the corner ribbon component."""
+    return {
+        "usage": """
+        {% load insight_tags %}
+
+        {# Basic usage with default top-right position #}
+        {% corner_ribbon text="New Feature" %}
+
+        {# Different positions #}
+        {% corner_ribbon text="Beta" position="top-left" %}
+        {% corner_ribbon text="Sale" position="bottom-right" %}
+        {% corner_ribbon text="Limited" position="bottom-left" %}
+
+        {# Different colors #}
+        {% corner_ribbon text="Success" color="success" %}
+        {% corner_ribbon text="Warning" color="warning" %}
+        {% corner_ribbon text="Error" color="danger" %}
+        {% corner_ribbon text="Info" color="info" %}
+
+        {# With custom ID for JavaScript #}
+        {% corner_ribbon text="Click Me" tag_id="promo-ribbon" position="top-right" %}
+
+        {# Using config dictionary from view context #}
+        {% corner_ribbon config=ribbon_config %}
+        """
+    }
+
+
 @register_component(Component.NAVBAR)
 def get_navbar_usage_context() -> dict[str, str]:
     """Serve usage documentation for the navbar component."""

@@ -1688,6 +1688,51 @@ def hero(  # noqa: PLR0913 (too many arguments)
     }
 
 
+@register.inclusion_tag("insight_ui/components/corner_ribbon.html")
+def corner_ribbon(
+    text: str = "",
+    position: str = "top-right",
+    color: str = "primary",
+    tag_id: str | None = None,
+    config: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """
+    Render a corner ribbon positioned in any browser corner.
+
+    Args:
+    ----
+        text (str): The text displayed in the ribbon.
+        position (str): Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'.
+        color (str): Color variant: 'primary', 'success', 'warning', 'danger', 'info'.
+        tag_id (str): An optional, unique ID for JavaScript/CSS targeting.
+        config (dict[str, Any]): An alternative configuration dictionary.
+
+    Returns:
+    -------
+        A dict with context variables for the template.
+
+    """
+    if config is not None:
+        text = config.get("text", text)
+        position = config.get("position", position)
+        color = config.get("color", color)
+        tag_id = config.get("tag_id", tag_id)
+
+    # Validate position
+    valid_positions = ["top-right", "top-left", "bottom-right", "bottom-left"]
+    normalized_position = position.lower().strip() if position else "top-right"
+    if normalized_position not in valid_positions:
+        normalized_position = "top-right"
+
+    # Validate color
+    valid_colors = ["primary", "success", "warning", "danger", "info"]
+    normalized_color = color.lower().strip() if color else "primary"
+    if normalized_color not in valid_colors:
+        normalized_color = "primary"
+
+    return {"text": text, "position": normalized_position, "color": normalized_color, "tag_id": tag_id}
+
+
 @register.inclusion_tag("insight_ui/components/infobox.html")
 def infobox(info_type: str = "", message: str = "", **kwargs) -> dict[str, Any]:
     """

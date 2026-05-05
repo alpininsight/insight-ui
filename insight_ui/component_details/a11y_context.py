@@ -20,7 +20,7 @@ def get_heading_decoration_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the heading decoration component."""
     return {
         "a11y": [
-            _("All rendered variants are decorative and use aria-hidden='true'."),
+            _("All rendered variants are decorative and use `aria-hidden='true'`."),
             _("The 'none' style renders no markup and therefore adds no extra accessibility tree content."),
         ]
     }
@@ -45,7 +45,7 @@ def get_hero_a11y_context() -> dict[str, list[str]]:
         "a11y": [
             _("The title is rendered as a semantic `<h1>` element."),
             _("CTA buttons are implemented as link elements with clear labels."),
-            _("Background images are denoted with aria-hidden."),
+            _("Background images are denoted with `aria-hidden`."),
         ]
     }
 
@@ -192,7 +192,7 @@ def get_dropdown_a11y_context() -> dict[str, list[str]]:
     return {
         "a11y": [
             _(
-                "The arrow at the end of dropdown buttons is ignored by screen readers using aria-hidden, since it is purely decorative."
+                "The arrow at the end of dropdown buttons is ignored by screen readers using `aria-hidden`, since it is purely decorative."
             ),
             _("Icons displayed in links or menu items are also ignored by screen readers."),
             _("**TODO: Add support for navigation with arrow keys.**"),
@@ -247,7 +247,7 @@ def get_multiselect_a11y_context() -> dict[str, list[str]]:
         "a11y": [
             _("The `<label>` and its associated `<input>` are linked using `for` / `id`."),
             _(
-                "The component supports screen readers through the corresponding ARIA attributes: `role='combobox'`, `aria-expanded'`, `aria-selected'`."
+                "The component supports screen readers through the corresponding _ARIA_ attributes: `role='combobox'`, `aria-expanded'`, `aria-selected'`."
             ),
             _("The component can be navigated by keyboard keys Arrow (up/down)."),
         ]
@@ -302,6 +302,12 @@ def get_tooltip_a11y_context() -> dict[str, list[str]]:
 @register_component(Component.INFOBOX)
 def get_infobox_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the infobox component."""
+    return {"a11y": []}
+
+
+@register_component(Component.CORNER_RIBBON)
+def get_corner_ribbon_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y documentation for the corner ribbon component."""
     return {"a11y": []}
 
 
