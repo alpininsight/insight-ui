@@ -124,16 +124,16 @@ more than once on the same DOM by using their singleton/lifecycle pattern.
 
 Use this routing rule when reviewing or implementing documentation changes:
 
-![Insight UI documentation change routing](https://kroki.showcase.alpininsight.ai/graphviz/svg/eNpdUk1PGzEQvfMrrO0NsgEKoZHQVspnpUq9UG6kQhN7smvFO3ZtL5Ci_veOdzdpws3z5s1782GlSw-uEt_E-5kQ3fvJA22V9sXjdCDWpbTG-iKLjAYHHilmA-FAFdnV8JafZBUGdCm8GXGcqvt4NMp-3bNuooinUIHDYm3fBiLEncEi87YhhWqw0cag4tr06P0-LcfLyXLG4B6YTeejxXViWYoENQtMvAbTI0H_weL6qjVEVbLhvvDu9svteMo08N6-tryr4ZiJzJQVUOIaWKMpslkXevzdYIgfOppPF5Pl4qijm-n48_KumzHaLdJB57GNrBcBa6CopZAGQliRJtfEoQxBXAjemy4pD7sQsc4lz-BBxmGtVnTBHrWzxNtmCbPJlZVCb8SLDnptsLeE8r8h1s5AxBZMshAbj8mPgyo-MxyGbseufEPeXUT_nBzxLTKcDJsAJR5hTI28g9B5VdZuD2YKIuS9cn7e5lb0_aeorWoMtoVdN0mXL6WpTMIvPI22FHhC5uzH6vSd509EERLh4DO3MpxmLBludi8fLrk-XJ6viKyQQJa0BCOMLXnhFfp-T84aLXcH1Qd0Nuho_a7PrKiTaTdvNG3FxttaPCwm8x8L8VrxJZuAPt-A5Emyk4-Tf-0uf38KQXkKpBWdIsdjfci0Td2f_f0HZ5s2yQ)
+![Insight UI documentation change routing](https://kroki.showcase.alpininsight.ai/graphviz/svg/eNpdUstu2zAQvOcrCPWWWE7sOomLQAXsWC5QoJc0t7gI1uRaIkwtVZJK4hT99y4l2bWjg8Ad7szsg0oXDupSfBN_zoTozk8OaKu0yx7nA7EupDXWZUlg1NfgkEIyEDWoLLkaTvhIVqHHOobXHEZyH94mv-5YNSaIJ19Cjdnavg2EDzuDWeJsQwrVYKONQcXUeOjdPi2ny9nynsE9cD9fXOejmGUpEFQsMHMaTI94_Y7ZaDoQFbhCU7Qf3Qz4N-6KQFVwEXuxm8ntZDpnKjhnX1vu1fALt4X0qlUos9FwwjTmyRIoMg2s0WTJfRc6_N2gDx9qXszz2TI_qvnzfDpe3nQFBLtFOug8tpF1wmMFFLQU0oD3K9JUN2EovRcXgueqC0r9zgesUsldOpBhWKkVXbBHVVvibbCE2aTKSqE34kV7vTbYW0Lx3xCr2kDAFoyyEBqH0Y-DMjwz7If1jl15xzzdgO45OuJbYDgaNh4KPMI4NfAMfOdVWrs9mCkIkPbK6Xl7t6LvP0VlVWOwJXbVRF3epaYiCr9wN9qS5w45Z99Wp187fmQUICYcfBZW-tMbS4aL3cv7S-b7y_MVkRUSyJKWYISxBQ-8RIcfH12ej_Px0QLz5YS_vgJrtNwdvB-wtl4H63b9zYo6s3Y_RtNWbJytxEM-W_zIxWvJ-248unQDkvtNTp5X-rV7H3enEBSnQBzkKXLc_Iebtqi7s7__APVBSoE)
 
 <details>
 <summary>Diagram source</summary>
 
 ```dot
 digraph G {
-  graph [rankdir=TB, bgcolor="transparent", pad="0.4", nodesep="0.35", ranksep="0.55"];
-  node [shape=box, style="rounded,filled", fillcolor="#F8FAFC", color="#CBD5E1", fontname="Arial", fontsize=10];
-  edge [color="#64748B", arrowsize=0.8];
+  graph [rankdir=TB, bgcolor="transparent", pad="0.4", nodesep="0.5", ranksep="0.7"];
+  node [shape=box, style="rounded,filled", fillcolor="#F8FAFC", color="#CBD5E1", fontname="Arial", fontsize=18, margin="0.16,0.12"];
+  edge [color="#64748B", arrowsize=0.9, penwidth=1.4];
 
   change [label="Change request", fillcolor="#DBEAFE", color="#3B82F6"];
   token [label="Token or semantic class\ninput.css + design-system-contract.md\n+ component self-doc if visible"];
