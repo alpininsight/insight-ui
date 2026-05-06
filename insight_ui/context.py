@@ -18,7 +18,6 @@ def get_main_page_links() -> list[dict[str, Any]]:
             "text": _("Home"),
             "view_name": "index_view",
             "icon": {"name": "home", "size": "s"},
-            "active": False,
             "need_auth": False,
             "staff_only": False,
         },
@@ -26,7 +25,6 @@ def get_main_page_links() -> list[dict[str, Any]]:
             "text": _("Installation"),
             "view_name": "installation_view",
             "icon": {"name": "download", "size": "s"},
-            "active": False,
             "need_auth": False,
             "staff_only": False,
         },
@@ -34,7 +32,6 @@ def get_main_page_links() -> list[dict[str, Any]]:
             "text": _("Base Template"),
             "view_name": "base_template_view",
             "icon": {"name": "blueprint", "size": "s"},
-            "active": False,
             "need_auth": False,
             "staff_only": False,
         },
@@ -42,7 +39,6 @@ def get_main_page_links() -> list[dict[str, Any]]:
             "text": _("Customization"),
             "view_name": "customization_view",
             "icon": {"name": "settings", "size": "s"},
-            "active": False,
             "need_auth": False,
             "staff_only": False,
         },
@@ -50,7 +46,6 @@ def get_main_page_links() -> list[dict[str, Any]]:
             "text": _("Icons"),
             "view_name": "icon_view",
             "icon": {"name": "sparkles", "size": "s"},
-            "active": False,
             "need_auth": False,
             "staff_only": False,
         },
@@ -81,17 +76,6 @@ def get_navbar_context(current_view: str = "index_view") -> dict:
         }
     )
 
-    for link in links:
-        if link.get("view_name") is not None:
-            if link["view_name"] == current_view:
-                link["active"] = True
-                break
-        else:
-            for item in link["items"]:
-                if item["view_name"] == current_view:
-                    link["active"] = True
-                    break
-
     return {
         "nav_config": {
             "brand": {
@@ -107,7 +91,7 @@ def get_navbar_context(current_view: str = "index_view") -> dict:
             },
             "links": links,
             "searchbar_request_view": "index_view",
-            "show_usermenu": True,
+            "show_usermenu": False,
             "show_language_selector": True,
             "show_theme_toggle": True,
         },

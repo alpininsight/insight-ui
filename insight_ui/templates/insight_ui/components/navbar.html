@@ -43,11 +43,11 @@
           <ul class="flex flex-col lg:flex-row justify-items-stretch lg:items-center w-full lg:w-fit">
             {% for link in links %}
               {% if not link.need_auth or options.user.is_authenticated and not link.staff_only or options.user.is_staff %}
-                <li>
+                <li data-insight-nav>
                   {% if link.view_name or link.href %}
                     <a
                       href="{{ link.href }}"
-                      class="flex gap-2 h-full whitespace-nowrap {% if link.active %}text-insight-text-link{% else %}text-secondary hover:text-insight-text-link{% endif %} px-4 py-2 text-sm transition-colors duration-200"
+                      class="flex gap-2 h-full whitespace-nowrap text-secondary hover:text-insight-text-link px-4 py-2 text-sm transition-colors duration-200"
                       {% if link.active %}aria-current="page"{% endif %}
                       {% if link.external %}target="_blank" rel="noopener"{% endif %}
                     >

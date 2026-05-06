@@ -59,34 +59,40 @@
         {% comment %} Sidebar body {% endcomment %}
         <div>
           <nav class="space-y-2">
-            {% for category in sidebar_data.categories %}
-              <div>
-                <div class="flex gap-1 pt-4 pb-2 text-insight-primary-hover">
-                  {% if category.icon %}
-                    {% icon category.icon %}
-                  {% endif %}
-                  <span class="font-semibold">{{ category.caption }}</span>
-                </div>
-                {% for item in category.items %}
-                  <a
-                    {% if item.htmx %}
-                      hx-get="{{ item.url }}"
-                      hx-target="{{ item.htmx.target }}"
-                      hx-swap="{{ item.htmx.swap|default:'innerHTML' }} show:window:top"
-                      hx-push-url="true"
-                      hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
+            <ul>
+              {% for category in sidebar_data.categories %}
+                <li>
+                  <div class="flex gap-1 pt-4 pb-2 text-insight-primary-hover">
+                    {% if category.icon %}
+                      {% icon category.icon %}
                     {% endif %}
-                    href="{{ item.url }}"
-                    class="flex gap-2 px-2 py-1 text-sm text-primary {% if item.is_selected %}font-semibold bg-gray-100 dark:bg-gray-700 border-s-2 border-insight-primary hover:border-insight-primary-hover{% else %}border-s border-gray-200 dark:border-gray-700 hover:border-gray-400 hover:text-gray-400{% endif %}"
-                  >
-                    {% if item.icon %}
-                      {% icon item.icon %}
-                    {% endif %}
-                    {{ item.text }}
-                  </a>
-                {% endfor %}
-              </div>
-            {% endfor %}
+                    <span class="font-semibold">{{ category.caption }}</span>
+                  </div>
+                  <ul>
+                    {% for item in category.items %}
+                      <li data-insight-side-nav>
+                        <a
+                          {% if item.htmx %}
+                            hx-get="{{ item.url }}"
+                            hx-target="{{ item.htmx.target }}"
+                            hx-swap="{{ item.htmx.swap|default:'innerHTML' }} show:window:top"
+                            hx-push-url="true"
+                            hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
+                          {% endif %}
+                          href="{{ item.url }}"
+                          class="flex gap-2 px-2 py-1 text-sm text-primary {% if item.is_selected %}font-semibold bg-gray-100 dark:bg-gray-700 border-s-2 border-insight-primary hover:border-insight-primary-hover{% else %}border-s border-gray-200 dark:border-gray-700 hover:border-gray-400 hover:text-gray-400{% endif %}"
+                        >
+                          {% if item.icon %}
+                            {% icon item.icon %}
+                          {% endif %}
+                          {{ item.text }}
+                        </a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </li>
+              {% endfor %}
+            </ul>
           </nav>
         </div>
       {% endblock sidebar_content %}
