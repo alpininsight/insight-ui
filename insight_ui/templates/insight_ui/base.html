@@ -26,6 +26,15 @@
         <meta name="keywords" content="{% block meta_keywords %}{{ INSIGHT_UI.meta.seo.keywords }}{% endblock meta_keywords %}">
         <meta name="author" content="{% block meta_author %}{{ INSIGHT_UI.meta.seo.author }}{% endblock meta_author %}">
 
+        <!-- Set theme before loading any stylesheets -->
+        <script>
+            (function() {
+                const theme = localStorage.getItem('insight-ui-theme') || 'light';
+                document.documentElement.setAttribute('data-theme', theme);
+                document.cookie = "theme=" + theme + "; path=/";
+            })();
+        </script>
+
         <script src="{% url 'javascript-catalog' %}"></script>
 
         <!-- HTMX CDN -->
