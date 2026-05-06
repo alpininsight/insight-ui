@@ -58,7 +58,7 @@
                     </a>
                   {% elif link.open_dropdown %}
                     <div class="relative">
-                      <button data-dropdown-toggle="{{ link.open_dropdown }}" class="flex gap-2 h-full whitespace-nowrap {% if link.active %}text-insight-text-link{% else %}text-secondary hover:text-insight-text-link{% endif %} px-4 py-2 text-sm transition-colors duration-200">
+                      <button data-insight-dropdown="{{ link.open_dropdown }}" class="flex gap-2 h-full whitespace-nowrap {% if link.active %}text-insight-text-link{% else %}text-secondary hover:text-insight-text-link{% endif %} px-4 py-2 text-sm transition-colors duration-200">
                         {% if link.icon %}
                           {% icon link.icon %}
                         {% endif %}
