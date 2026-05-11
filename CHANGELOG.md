@@ -135,6 +135,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add copyright notice component 
 - Improvements 
 - Standardize the JavaScript lookup attribute naming convention 
+- Enhancements 
 
 ### Miscellaneous
 
