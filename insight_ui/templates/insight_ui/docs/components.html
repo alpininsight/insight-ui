@@ -9,6 +9,11 @@
         <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js" integrity="sha384-/TgkGk7p307TH7EXJDuUlgG3Ce1UVolAOFopFekQkkXihi5u/6OCvVKyz1W+idaz" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://cdn.jsdelivr.net/npm/htmx-ext-ws@2.0.4" integrity="sha384-1RwI/nvUSrMRuNj7hX1+27J8XDdCoSLf0EjEyF69nacuWyiJYoQ/j39RT1mSnd2G" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+        {% if not component.allow_requests %}
+            <!-- Demo Sandbox - blocks links, forms, and requests in demo iframes -->
+            <script src="{% static 'insight_ui/js/insight-ui-demo-sandbox.js' %}"></script>
+        {% endif %}
+
         <!-- prism (Syntax-Highlighting) and clipboard (Copy to clipboard) CDN -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/prism.min.js" integrity="sha512-HiD3V4nv8fcjtouznjT9TqDNDm1EXngV331YGbfVGeKUoH+OLkRTCMzA34ecjlgSQZpdHZupdSrqHY+Hz3l6uQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/plugins/autoloader/prism-autoloader.min.js" referrerpolicy="no-referrer"></script>
@@ -29,7 +34,7 @@
         <!-- Main stylesheet -->
         <link rel="stylesheet" href="{% static INSIGHT_UI.stylesheet %}">
     </head>
-    <body class="bg-white dark:bg-gray-800 {{ body_height }} {% if not no_padding %}p-8{% endif %}">
+    <body class="bg-white dark:bg-gray-800 {% if not component.no_padding %}p-8{% endif %}">
         {% include "insight_ui/docs/component_demo.html" %}
     </body>
 
