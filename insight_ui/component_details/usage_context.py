@@ -69,6 +69,36 @@ def get_hero_usage_context() -> dict[str, str]:
     }
 
 
+@register_component(Component.CORNER_RIBBON)
+def get_corner_ribbon_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the corner ribbon component."""
+    return {
+        "usage": """
+        {% load insight_tags %}
+
+        {# Basic usage with default top-right position #}
+        {% corner_ribbon text="New Feature" %}
+
+        {# Different positions #}
+        {% corner_ribbon text="Beta" position="top-left" %}
+        {% corner_ribbon text="Sale" position="bottom-right" %}
+        {% corner_ribbon text="Limited" position="bottom-left" %}
+
+        {# Different colors #}
+        {% corner_ribbon text="Success" color="success" %}
+        {% corner_ribbon text="Warning" color="warning" %}
+        {% corner_ribbon text="Error" color="danger" %}
+        {% corner_ribbon text="Info" color="info" %}
+
+        {# With custom ID for JavaScript #}
+        {% corner_ribbon text="Click Me" tag_id="promo-ribbon" position="top-right" %}
+
+        {# Using config dictionary from view context #}
+        {% corner_ribbon config=ribbon_config %}
+        """
+    }
+
+
 @register_component(Component.NAVBAR)
 def get_navbar_usage_context() -> dict[str, str]:
     """Serve usage documentation for the navbar component."""
@@ -328,12 +358,21 @@ def get_rangle_slider_usage_context() -> dict[str, str]:
     """Serve usage documentation for the range slider component."""
     return {
         "usage": """
-        {% load insight-tags %}
+        {% load insight_tags %}
 
-        {% slider tag_id="cpu-cores" name="cpu_core_count" value=4 minimum=2 maximum=8 step_size=2 disabled=False label="Choose amount of CPU-Cores:" items=labels %}
+        <!-- Single-thumb slider -->
+        {% slider tag_id="cpu-cores" name="cpu_core_count" value=4 minimum=2 maximum=8 step_size=2 label="Choose amount of CPU-Cores:" items=labels %}
 
-        <!-- or -->
+        <!-- With responsive legend (skip mode) -->
+        {% slider tag_id="month" name="month" value=6 minimum=1 maximum=12 items=months legend_mode="skip" %}
 
+        <!-- With responsive legend (rotate mode) -->
+        {% slider tag_id="month" name="month" value=6 minimum=1 maximum=12 items=months legend_mode="rotate" %}
+
+        <!-- Dual-thumb slider for range selection -->
+        {% slider tag_id="price-range" name="price" dual=True value_min=200 value_max=800 minimum=0 maximum=1000 label="Price Range:" items=price_labels %}
+
+        <!-- Using config dict -->
         {% slider config=slider_config %}
         """
     }

@@ -47,52 +47,49 @@ export class CodeBlock {
     }
 
     /**
-     * Create the HTML structure of the code block component.
+     * Create the toolbar with language/filename info and copy button.
      *
-     * @param {string} id The id of the code block.
-     * @param {string} lang The langauge of the code.
-     * @param {string} filename An optional filename, shown in the topbar as hint for the user.
-     * @param {string} code The code.
-     * @returns The wrapper element of the created HTML structure.
+     * @param {string} lang The language of the code.
+     * @param {string} filename An optional filename.
+     * @returns {HTMLElement} The toolbar element.
      */
-    generateCodeBlock(id, lang, filename, code) {
-        // Create wrapper-div
-        const wrapper = document.createElement('div');
-        wrapper.classList.add('bg-[#f9fafb]', 'dark:bg-[#030712]', 'rounded', 'border', 'border-gray-300', 'dark:border-gray-700');
-        wrapper.id = id;
+    #createToolbar(lang, filename) {
+        const toolbar = document.createElement('div');
+        toolbar.classList.add('flex', 'justify-between', 'bg-gray-200', 'dark:bg-gray-900', 'rounded-t', 'p-2');
 
-        // Create flex-box for the copy button
-        const flexContainer = document.createElement('div');
-        flexContainer.classList.add('flex', 'justify-between', 'bg-gray-200', 'dark:bg-gray-900', 'rounded-t', 'p-2');
-
-        // Create lang and filename infobox
         const infobox = document.createElement('div');
-        infobox.classList.add("flex")
+        infobox.classList.add('flex');
 
         const langSpan = document.createElement('span');
-        langSpan.classList.add("text-secondary", "leading-loose", "bg-gray-50", "dark:bg-gray-700", "rounded-sm", "px-2");
-        langSpan.appendChild(document.createTextNode(`${lang}`));
+        langSpan.classList.add('text-secondary', 'leading-loose', 'bg-gray-50', 'dark:bg-gray-700', 'rounded-sm', 'px-2');
+        langSpan.textContent = lang;
         infobox.appendChild(langSpan);
 
         if (filename) {
             const fileSpan = document.createElement('span');
-            fileSpan.classList.add("text-secondary", "leading-loose", "bg-gray-50", "dark:bg-gray-700", "rounded-sm", "px-2", "ms-2");
-            fileSpan.appendChild(document.createTextNode(`${filename}`));
+            fileSpan.classList.add('text-secondary', 'leading-loose', 'bg-gray-50', 'dark:bg-gray-700', 'rounded-sm', 'px-2', 'ms-2');
+            fileSpan.textContent = filename;
             infobox.appendChild(fileSpan);
         }
 
-        flexContainer.appendChild(infobox);
+        toolbar.appendChild(infobox);
+        return toolbar;
+    }
 
-        // Create copy button
-        this.copyButton = document.createElement('button');
-        this.copyButton.classList.add('btn', 'btn-secondary', 'btn-sm');
+    /**
+     * Create the copy button with icon.
+     *
+     * @returns {{button: HTMLButtonElement, icon: SVGElement}} The button and its icon.
+     */
+    #createCopyButton() {
+        const button = document.createElement('button');
+        button.classList.add('btn', 'btn-secondary', 'btn-sm');
 
-        // SVG-Icon of the button
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
         svg.setAttribute('viewBox', '0 0 24 24');
         svg.setAttribute('fill', 'currentColor');
-        svg.setAttribute('aria-hidden', "true");
+        svg.setAttribute('aria-hidden', 'true');
         svg.classList.add('size-5');
 
         const path1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -106,69 +103,105 @@ export class CodeBlock {
         svg.appendChild(path1);
         svg.appendChild(path2);
 
-        this.copyButton.appendChild(svg);
-        this.copyButton.appendChild(document.createTextNode('Copy'));
+        button.appendChild(svg);
+        button.appendChild(document.createTextNode('Copy'));
 
-        flexContainer.appendChild(this.copyButton);
+        return { button, icon: svg };
+    }
 
-        // Create actual code block
-        const codeWrapper = document.createElement('div');
-        codeWrapper.classList.add('max-w-2xs', 'md:max-w-2xl', 'lg:max-w-5xl', 'overflow-x-scroll');
+    /**
+     * Create the code area with syntax highlighting.
+     *
+     * @param {string} lang The language for syntax highlighting.
+     * @param {string} code The code content.
+     * @returns {{wrapper: HTMLElement, codeElement: HTMLElement}} The wrapper and code element.
+     */
+    #createCodeArea(lang, code) {
+        const wrapper = document.createElement('div');
+        wrapper.classList.add('w-full', 'overflow-x-scroll');
+        // Code is always LTR, even in RTL layouts
+        wrapper.dir = 'ltr';
 
         const pre = document.createElement('pre');
         pre.classList.add('line-numbers', `language-${lang}`);
 
         const codeElement = document.createElement('code');
-        const cleanCode = this.cleanIndentation(code).trim();
-        codeElement.textContent = cleanCode;
+        codeElement.textContent = this.cleanIndentation(code).trim();
 
         pre.appendChild(codeElement);
-        codeWrapper.appendChild(pre);
+        wrapper.appendChild(pre);
 
-        // Connect both parts (Head with button and code block)
-        wrapper.appendChild(flexContainer);
-        wrapper.appendChild(codeWrapper);
+        return { wrapper, codeElement };
+    }
 
-        // Add to DOM
-        document.body.appendChild(wrapper);
-
-        // Add Event Listener for copy button
+    /**
+     * Setup the copy event handler for the copy button.
+     *
+     * @param {HTMLElement} codeElement The code element to copy from.
+     * @param {SVGElement} icon The icon to restore after copying.
+     */
+    #setupCopyHandler(codeElement, icon) {
         this.copyEvent = async () => {
             try {
                 await navigator.clipboard.writeText(codeElement.textContent);
-                this.copyButton.textContent = '✔ Kopiert';
+                this.copyButton.textContent = gettext('✔ copied');
             } catch (err) {
-                // Use a temporary textarea as fallback
+                // Fallback for older browsers
                 const textarea = document.createElement('textarea');
                 textarea.value = codeElement.textContent;
                 document.body.appendChild(textarea);
                 textarea.select();
 
-                const copied = document.execCommand('copy');  // Copies the content of the selected element
+                const copied = document.execCommand('copy');
                 document.body.removeChild(textarea);
 
-                if (copied)
-                {
-                    this.copyButton.textContent = '✔ Kopiert';
-                }
-                else
-                {
-                    console.error('Failed to copy', err);
-                    this.copyButton.textContent = '✖ Kopieren fehlgeschlagen';
+                if (copied) {
+                    this.copyButton.textContent = gettext('✔ copied');
+                } else {
+                    console.error('Failed to copy!', err);
+                    this.copyButton.textContent = gettext('✖ Copy failed!');
                 }
             }
 
             setTimeout(() => {
                 this.copyButton.textContent = '';
-                this.copyButton.appendChild(svg);
+                this.copyButton.appendChild(icon);
                 this.copyButton.appendChild(document.createTextNode('Copy'));
             }, 1200);
-        }
+        };
 
         this.copyButton.addEventListener('click', this.copyEvent);
+    }
 
-        // Apply Prism.js syntax highlighting
+    /**
+     * Create the HTML structure of the code block component.
+     *
+     * @param {string} id The id of the code block.
+     * @param {string} lang The language of the code.
+     * @param {string} filename An optional filename, shown in the toolbar.
+     * @param {string} code The code.
+     * @returns {HTMLElement} The wrapper element of the created HTML structure.
+     */
+    generateCodeBlock(id, lang, filename, code) {
+        const wrapper = document.createElement('div');
+        wrapper.classList.add('flex', 'flex-col', 'bg-[#f9fafb]', 'dark:bg-[#030712]', 'rounded', 'border', 'border-gray-300', 'dark:border-gray-700');
+        wrapper.id = id;
+
+        const toolbar = this.#createToolbar(lang, filename);
+        const { button, icon } = this.#createCopyButton();
+        this.copyButton = button;
+        toolbar.appendChild(this.copyButton);
+
+        const { wrapper: codeWrapper, codeElement } = this.#createCodeArea(lang, code);
+
+        wrapper.appendChild(toolbar);
+        wrapper.appendChild(codeWrapper);
+
+        // Temporarily add to DOM for Prism to process
+        document.body.appendChild(wrapper);
         Prism.highlightElement(codeElement);
+
+        this.#setupCopyHandler(codeElement, icon);
 
         return wrapper;
     }

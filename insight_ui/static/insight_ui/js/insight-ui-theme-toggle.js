@@ -42,6 +42,7 @@ export class ThemeToggle {
         this.root.classList.toggle('dark', theme === 'dark');
         this.root.setAttribute('data-theme', theme);
         localStorage.setItem(this.themeKey, theme);
+        document.cookie = "theme=" + theme + "; path=/; max-age=31536000";
     }
 
     loadSavedTheme() {

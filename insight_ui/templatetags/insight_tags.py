@@ -767,6 +767,10 @@ def slider(  # noqa: PLR0913 (too many arguments)
     label: str | None = None,
     disabled: bool | None = None,
     items: list[str] | None = None,
+    legend_mode: str | None = None,
+    dual: bool | None = None,
+    value_min: int | None = None,
+    value_max: int | None = None,
     config: dict | None = None,
 ) -> dict:
     """
@@ -776,13 +780,20 @@ def slider(  # noqa: PLR0913 (too many arguments)
     ---------
         tag_id (str): A unique ID for linking <input> and <label>, as well as JavaScript.
         name (str): Required for a <form> as the name of the request parameter.
-        value (int): The value of the slider.
+        value (int): The value of the slider (single-thumb mode only).
         minimum (int): The smallest value of the slider.
         maximum (int): The largest value of the slider.
         step_size (int): The size of the slider's steps.
         label (str): A label text that is displayed above the slider.
         disabled (bool): 'True' if the slider should be disabled, otherwise 'False'.
         items (list[str]): A list of texts that are displayed as captions below the slider.
+        legend_mode (str): Controls responsive legend behavior. Options:
+            - 'static' (default): No responsive adjustment, legend items are always visible.
+            - 'skip': Progressively hides legend items (every 2nd, then 4th, etc.) when space is limited.
+            - 'rotate': Rotates legend text vertically when space is limited.
+        dual (bool): If True, enables dual-thumb mode for range selection.
+        value_min (int): The minimum value in dual-thumb mode (defaults to minimum).
+        value_max (int): The maximum value in dual-thumb mode (defaults to maximum).
         config (dict[str, Any]): An alternative configuration with keys corresponding to the previous parameters.
 
     Returns:
@@ -800,6 +811,10 @@ def slider(  # noqa: PLR0913 (too many arguments)
         label = config.get("label", label)
         disabled = config.get("disabled", disabled)
         items = config.get("items", items)
+        legend_mode = config.get("legend_mode", legend_mode)
+        dual = config.get("dual", dual)
+        value_min = config.get("value_min", value_min)
+        value_max = config.get("value_max", value_max)
 
     return {
         "tag_id": tag_id,
@@ -811,6 +826,10 @@ def slider(  # noqa: PLR0913 (too many arguments)
         "label": label,
         "disabled": disabled,
         "items": items,
+        "legend_mode": legend_mode,
+        "dual": dual,
+        "value_min": value_min,
+        "value_max": value_max,
     }
 
 
@@ -1686,6 +1705,51 @@ def hero(  # noqa: PLR0913 (too many arguments)
         "background_image_url": background_image_url,
         "badge": badge,
     }
+
+
+@register.inclusion_tag("insight_ui/components/corner_ribbon.html")
+def corner_ribbon(
+    text: str = "",
+    position: str = "top-right",
+    color: str = "primary",
+    tag_id: str | None = None,
+    config: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """
+    Render a corner ribbon positioned in any browser corner.
+
+    Args:
+    ----
+        text (str): The text displayed in the ribbon.
+        position (str): Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'.
+        color (str): Color variant: 'primary', 'success', 'warning', 'danger', 'info'.
+        tag_id (str): An optional, unique ID for JavaScript/CSS targeting.
+        config (dict[str, Any]): An alternative configuration dictionary.
+
+    Returns:
+    -------
+        A dict with context variables for the template.
+
+    """
+    if config is not None:
+        text = config.get("text", text)
+        position = config.get("position", position)
+        color = config.get("color", color)
+        tag_id = config.get("tag_id", tag_id)
+
+    # Validate position
+    valid_positions = ["top-right", "top-left", "bottom-right", "bottom-left"]
+    normalized_position = position.lower().strip() if position else "top-right"
+    if normalized_position not in valid_positions:
+        normalized_position = "top-right"
+
+    # Validate color
+    valid_colors = ["primary", "success", "warning", "danger", "info"]
+    normalized_color = color.lower().strip() if color else "primary"
+    if normalized_color not in valid_colors:
+        normalized_color = "primary"
+
+    return {"text": text, "position": normalized_position, "color": normalized_color, "tag_id": tag_id}
 
 
 @register.inclusion_tag("insight_ui/components/infobox.html")

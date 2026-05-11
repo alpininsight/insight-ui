@@ -49,6 +49,10 @@
             </div>
         </div>
     </div>
+{% elif component.value == "corner_ribbon" %}
+    <div class="h-64">
+        {% corner_ribbon text="New Feature" %}
+    </div>
 {% elif component.value == "breadcrumbs" %}
     <div class="space-y-4">
         {% breadcrumbs items=breadcrumb_items %}
@@ -124,7 +128,12 @@
         {% radio_block config=size_radio_config current_value=current_size %}
     </div>
 {% elif component.value == "range_slider" %}
-    {% slider config=example_slider %}
+    <div class="space-y-8">
+        {% slider config=example_slider %}
+        {% slider config=example_slider_skip %}
+        {% slider config=example_slider_rotate %}
+        {% slider config=example_slider_dual %}
+    </div>
 {% elif component.value == "toggle" %}
     <div class="flex justify-between w-64">
         {% toggle config=example_switch %}
