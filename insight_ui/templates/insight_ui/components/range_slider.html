@@ -1,33 +1,72 @@
-<div class="relative slider-wrapper">
-    <label class="flex gap-1 text-sm font-bold text-primary" for="{{ tag_id }}">{{ label }}</label>
-    <input
-        type="range"
-        id="{{ tag_id }}"
-        name="{{ name }}"
-        value="{{ value }}"
-        min="{{ minimum }}"
-        max="{{ maximum }}"
-        step="{{ step_size|default:1 }}"
-        {% if disabled %}disabled{% endif %}
-        class="range-custom w-full h-2 bg-gray-200 dark:bg-gray-700 accent-insight-primary rounded-sm appearance-none cursor-pointer"
-        oninput="updateSlider(this)"
-    >
-    <div class="flex justify-between w-full text-sm text-secondary">
-        {% for item in items %}
-            <span>{{ item }}</span>
-        {% endfor %}
-    </div>
+{% load i18n %}
+
+<div class="relative slider-wrapper" data-insight-range-slider data-legend-mode="{{ legend_mode|default:'static' }}">
+    {% if dual %}
+        {# Dual-range mode with two thumbs #}
+        <div role="group" aria-labelledby="{{ tag_id }}_label" class="slider-dual-group">
+            <span id="{{ tag_id }}_label" class="flex gap-1 text-sm font-bold text-primary">{{ label }}</span>
+            <div class="slider-dual-container relative h-2 mt-1">
+                {# Background track #}
+                <div class="absolute inset-0 bg-gray-200 dark:bg-gray-700 rounded-md" aria-hidden="true"></div>
+                {# Highlighted range track #}
+                <div class="slider-track absolute top-0 h-full bg-blue-500 rounded-md pointer-events-none" aria-hidden="true"></div>
+                {# Min thumb input #}
+                <input
+                    type="range"
+                    id="{{ tag_id }}_min"
+                    name="{{ name }}_min"
+                    value="{{ value_min|default:minimum }}"
+                    min="{{ minimum }}"
+                    max="{{ maximum }}"
+                    step="{{ step_size|default:1 }}"
+                    {% if disabled %}disabled aria-disabled="true"{% endif %}
+                    aria-label="{% blocktranslate with label=label %}{{ label }} - Minimum{% endblocktranslate %}"
+                    aria-valuemin="{{ minimum }}"
+                    aria-valuemax="{{ maximum }}"
+                    aria-valuenow="{{ value_min|default:minimum }}"
+                    class="slider-input-min absolute inset-0 w-full h-full bg-transparent appearance-none cursor-pointer pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-moz-range-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-insight-primary [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:-mt-1 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-insight-primary [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:cursor-pointer focus-visible:outline-none [&:focus-visible::-webkit-slider-thumb]:ring-2 [&:focus-visible::-webkit-slider-thumb]:ring-insight-primary [&:focus-visible::-webkit-slider-thumb]:ring-offset-2 [&:focus-visible::-moz-range-thumb]:ring-2 [&:focus-visible::-moz-range-thumb]:ring-insight-primary [&:focus-visible::-moz-range-thumb]:ring-offset-2"
+                >
+                {# Max thumb input #}
+                <input
+                    type="range"
+                    id="{{ tag_id }}_max"
+                    name="{{ name }}_max"
+                    value="{{ value_max|default:maximum }}"
+                    min="{{ minimum }}"
+                    max="{{ maximum }}"
+                    step="{{ step_size|default:1 }}"
+                    {% if disabled %}disabled aria-disabled="true"{% endif %}
+                    aria-label="{% blocktranslate with label=label %}{{ label }} - Maximum{% endblocktranslate %}"
+                    aria-valuemin="{{ minimum }}"
+                    aria-valuemax="{{ maximum }}"
+                    aria-valuenow="{{ value_max|default:maximum }}"
+                    class="slider-input-max absolute inset-0 w-full h-full bg-transparent appearance-none cursor-pointer pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-moz-range-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-insight-primary [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:-mt-1 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-insight-primary [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:cursor-pointer focus-visible:outline-none [&:focus-visible::-webkit-slider-thumb]:ring-2 [&:focus-visible::-webkit-slider-thumb]:ring-insight-primary [&:focus-visible::-webkit-slider-thumb]:ring-offset-2 [&:focus-visible::-moz-range-thumb]:ring-2 [&:focus-visible::-moz-range-thumb]:ring-insight-primary [&:focus-visible::-moz-range-thumb]:ring-offset-2"
+                >
+            </div>
+        </div>
+    {% else %}
+        {# Single-range mode #}
+        <label class="flex gap-1 text-sm font-bold text-primary" for="{{ tag_id }}">{{ label }}</label>
+        <input
+            type="range"
+            id="{{ tag_id }}"
+            name="{{ name }}"
+            value="{{ value }}"
+            min="{{ minimum }}"
+            max="{{ maximum }}"
+            step="{{ step_size|default:1 }}"
+            {% if disabled %}disabled aria-disabled="true"{% endif %}
+            aria-valuemin="{{ minimum }}"
+            aria-valuemax="{{ maximum }}"
+            aria-valuenow="{{ value }}"
+            class="range-custom w-full h-2 bg-gray-200 dark:bg-gray-700 accent-insight-primary rounded-sm appearance-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-insight-primary focus-visible:ring-offset-2"
+        >
+    {% endif %}
+    {% if items %}
+        <div class="slider-legend flex justify-between w-full text-sm text-secondary mt-1" aria-hidden="true">
+            {% for item in items %}
+                <span class="slider-legend-item text-center" data-index="{{ forloop.counter0 }}">{{ item }}</span>
+            {% endfor %}
+        </div>
+    {% endif %}
 </div>
-<script>
-    function updateSlider(slider) {
-        const wrapper = slider.closest(".slider-wrapper");
-        const min = Number(slider.min || 0);
-        const max = Number(slider.max || 100);
-        const val = Number(slider.value);
-
-        const percent = ((val - min) / (max - min)) * 100;
-        wrapper.style.setProperty("--range-progress", `${percent}%`);
-    }
-
-    updateSlider(document.getElementById("{{ tag_id }}"));
-</script>

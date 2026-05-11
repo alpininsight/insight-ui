@@ -286,7 +286,18 @@ def get_rangle_slider_description_context() -> dict[str, list[str]]:
         "description": [
             _(
                 "The `slider` component can be used to integrate a range slider into the frontend, allowing a value to be selected within a defined interval."
-            )
+            ),
+            _(
+                "The component supports a **dual-thumb mode** (`dual=True`) that allows users to select a range by setting both minimum and maximum values. "
+                "In dual mode, two form fields are submitted: `{name}_min` and `{name}_max`."
+            ),
+            _(
+                "The legend below the slider can be configured to respond to limited space using `legend_mode`: "
+                "**'skip'** progressively hides items, while **'rotate'** displays text vertically."
+            ),
+            _(
+                "The component fully supports **RTL (right-to-left)** layouts and adapts to **dark mode** automatically."
+            ),
         ]
     }
 

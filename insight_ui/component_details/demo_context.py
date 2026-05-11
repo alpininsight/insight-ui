@@ -288,8 +288,8 @@ def get_breadcrumb_context() -> dict:
     """Serve data for breadcrumbs detailpage."""
     return {
         "breadcrumb_items": [
-            {"text": _("Startpage"), "view_name": "index_view", "icon": {"name": "home", "size": "s"}},
-            {"text": _("Components"), "view_name": "index_view"},
+            {"text": _("Startpage"), "request_url": "/", "icon": {"name": "home", "size": "s"}},
+            {"text": _("Components"), "request_url": "/"},
             {"text": _("Breadcrumbs")},
         ],
         "single_breadcrumb_item": [{"text": _("Startpage"), "icon": {"name": "home", "size": "s"}}],
@@ -359,9 +359,9 @@ def get_dropdown_context() -> dict:
             "title": _("User"),
             "show_arrow": True,
             "items": [
-                {"text": _("Profile"), "view_name": "index_view", "icon": {"name": "user", "size": "s"}},
-                {"text": _("Settings"), "view_name": "index_view", "icon": {"name": "gear", "size": "s"}},
-                {"text": _("Logout"), "view_name": "index_view", "icon": {"name": "leave", "size": "s"}},
+                {"text": _("Profile"), "request_url": "/", "icon": {"name": "user", "size": "s"}},
+                {"text": _("Settings"), "request_url": "/", "icon": {"name": "gear", "size": "s"}},
+                {"text": _("Logout"), "request_url": "/", "icon": {"name": "leave", "size": "s"}},
             ],
         },
         "settings_dropdown": {
@@ -369,8 +369,8 @@ def get_dropdown_context() -> dict:
             "title": _("Settings"),
             "show_arrow": False,
             "items": [
-                {"text": _("Personal Information"), "view_name": "index_view", "icon": {"name": "user", "size": "s"}},
-                {"text": _("Appearance"), "view_name": "index_view", "icon": {"name": "gear", "size": "s"}},
+                {"text": _("Personal Information"), "request_url": "/", "icon": {"name": "user", "size": "s"}},
+                {"text": _("Appearance"), "request_url": "/", "icon": {"name": "gear", "size": "s"}},
             ],
         },
     }
@@ -540,6 +540,7 @@ def get_multiselect_context() -> dict:
 @register_demo_context(Component.RANGE_SLIDER)
 def get_range_slider_context() -> dict:
     """Serve data for range-slider detailpage."""
+    many_items = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     return {
         "example_slider": {
             "tag_id": "range_slider_example",
@@ -549,7 +550,38 @@ def get_range_slider_context() -> dict:
             "minimum": 100,
             "maximum": 1500,
             "items": [_("100€ (minimum)"), "500€", "750€", "1000€", _("1500€ (maximum)")],
-        }
+        },
+        "example_slider_skip": {
+            "tag_id": "range_slider_skip",
+            "name": "range_slider_skip",
+            "label": _("Legend Mode: Skip"),
+            "value": 6,
+            "minimum": 1,
+            "maximum": 12,
+            "items": many_items,
+            "legend_mode": "skip",
+        },
+        "example_slider_rotate": {
+            "tag_id": "range_slider_rotate",
+            "name": "range_slider_rotate",
+            "label": _("Legend Mode: Rotate"),
+            "value": 6,
+            "minimum": 1,
+            "maximum": 12,
+            "items": many_items,
+            "legend_mode": "rotate",
+        },
+        "example_slider_dual": {
+            "tag_id": "range_slider_dual",
+            "name": "price_range",
+            "label": _("Dual Range Slider (Price Range)"),
+            "minimum": 0,
+            "maximum": 1000,
+            "value_min": 200,
+            "value_max": 800,
+            "dual": True,
+            "items": ["0€", "250€", "500€", "750€", "1000€"],
+        },
     }
 
 

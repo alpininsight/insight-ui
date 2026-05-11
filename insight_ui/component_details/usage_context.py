@@ -358,12 +358,21 @@ def get_rangle_slider_usage_context() -> dict[str, str]:
     """Serve usage documentation for the range slider component."""
     return {
         "usage": """
-        {% load insight-tags %}
+        {% load insight_tags %}
 
-        {% slider tag_id="cpu-cores" name="cpu_core_count" value=4 minimum=2 maximum=8 step_size=2 disabled=False label="Choose amount of CPU-Cores:" items=labels %}
+        <!-- Single-thumb slider -->
+        {% slider tag_id="cpu-cores" name="cpu_core_count" value=4 minimum=2 maximum=8 step_size=2 label="Choose amount of CPU-Cores:" items=labels %}
 
-        <!-- or -->
+        <!-- With responsive legend (skip mode) -->
+        {% slider tag_id="month" name="month" value=6 minimum=1 maximum=12 items=months legend_mode="skip" %}
 
+        <!-- With responsive legend (rotate mode) -->
+        {% slider tag_id="month" name="month" value=6 minimum=1 maximum=12 items=months legend_mode="rotate" %}
+
+        <!-- Dual-thumb slider for range selection -->
+        {% slider tag_id="price-range" name="price" dual=True value_min=200 value_max=800 minimum=0 maximum=1000 label="Price Range:" items=price_labels %}
+
+        <!-- Using config dict -->
         {% slider config=slider_config %}
         """
     }

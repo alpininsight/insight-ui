@@ -219,6 +219,16 @@ def get_rangle_slider_a11y_context() -> dict[str, list[str]]:
         "a11y": [
             _("The `<label>` and its associated `<input>` are linked using `for` / `id`."),
             _("The component supports keyboard navigation using the arrow keys (up/down, right/left)."),
+            _(
+                "ARIA attributes `aria-valuemin`, `aria-valuemax`, and `aria-valuenow` are set on each input "
+                "and updated dynamically for screen reader announcements."
+            ),
+            _(
+                "In dual-thumb mode, both inputs have descriptive `aria-label` attributes (e.g., 'Label - Minimum', 'Label - Maximum') "
+                'and are grouped using `role="group"` with `aria-labelledby`.'
+            ),
+            _("Visible focus indicators are provided for keyboard navigation (`focus-visible` ring)."),
+            _('Decorative elements (track, legend) are hidden from assistive technologies using `aria-hidden="true"`.'),
         ]
     }
 

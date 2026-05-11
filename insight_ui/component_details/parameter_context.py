@@ -1121,7 +1121,7 @@ def get_rangle_slider_parameter_context() -> dict[str, list[str]]:
         ),
         ParameterDetails("name", "str", _("Required for a `<form>`, as the name of the request parameter."), "''"),
         ParameterDetails("label", "str", _("A text label displayed above the range slider."), "''"),
-        ParameterDetails("value", "int", _("The value of the range slider."), "0"),
+        ParameterDetails("value", "int", _("The value of the range slider (single-thumb mode only)."), "0"),
         ParameterDetails("minimum", "int", _("Smallest configurable value of the range slider."), "undefined"),
         ParameterDetails("maximum", "int", _("Largest configurable value of the range slider."), "undefined"),
         ParameterDetails(
@@ -1129,6 +1129,29 @@ def get_rangle_slider_parameter_context() -> dict[str, list[str]]:
         ),
         ParameterDetails("disabled", "bool", _("**True** if the range slider should be disabled."), "False"),
         ParameterDetails("items", "list[str]", _("A list of texts displayed as a legend below the slider."), "[]"),
+        ParameterDetails(
+            "legend_mode",
+            "str",
+            _(
+                "Controls responsive legend behavior. Options: "
+                "**'static'** (default) - no adjustment; "
+                "**'skip'** - progressively hides legend items when space is limited; "
+                "**'rotate'** - rotates legend text vertically when space is limited."
+            ),
+            "'static'",
+        ),
+        ParameterDetails(
+            "dual",
+            "bool",
+            _("**True** to enable dual-thumb mode for selecting a range with min and max values."),
+            "False",
+        ),
+        ParameterDetails(
+            "value_min", "int", _("The minimum value in dual-thumb mode. Defaults to `minimum`."), "minimum"
+        ),
+        ParameterDetails(
+            "value_max", "int", _("The maximum value in dual-thumb mode. Defaults to `maximum`."), "maximum"
+        ),
         ParameterDetails(
             "config",
             "dict[str, Any]",
