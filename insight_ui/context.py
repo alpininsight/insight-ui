@@ -112,6 +112,7 @@ def get_sidebar_context(component_name: str = "") -> dict:
                 category["items"].append(
                     {
                         "text": component.formatted_name,
+                        "icon": {"name": "tools", "size": "s"} if component.in_development else None,
                         "url": reverse("component_detail_page_view", kwargs={"component_name": component.value}),
                         "htmx": {"target": "#content"},
                         "is_selected": component.value == component_name,

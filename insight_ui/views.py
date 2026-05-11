@@ -328,10 +328,6 @@ def component_demo_view(request: HttpRequest, component_name: str) -> HttpRespon
     context = get_base_context() | get_component_demo_context(component)
     context["component"] = component
 
-    # The demo container has a padding but some components should get the whole space
-    if component_name in ["navbar", "sidebar", "footer"]:
-        context["no_padding"] = True
-
     return render(request, "insight_ui/docs/components.html", context)
 
 
