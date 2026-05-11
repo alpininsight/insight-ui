@@ -863,11 +863,15 @@ class SliderTemplateTagTest(TemplateTagsTestCase):
             "tag_id": "cpu-cores",
             "name": "cpu_core_count",
             "value": 4,
+            "dual": False,
+            "value_min": None,
+            "value_max": None,
             "minimum": 2,
             "maximum": 8,
             "step_size": 2,
             "disabled": False,
             "label": "Choose amount of CPU-Cores:",
+            "legend_mode": "static",
             "items": ["2", "4", "6", "8"],
         }
 
