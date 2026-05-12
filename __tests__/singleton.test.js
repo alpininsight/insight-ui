@@ -34,7 +34,7 @@ describe('WeakMap Singleton Pattern', () => {
 
     it('should return existing instance for same element', () => {
       const container = TestUtils.createDropdown();
-      const button = container.querySelector('[data-dropdown-toggle]');
+      const button = container.querySelector('[data-insight-dropdown]');
 
       const instance1 = new InsightUI.Dropdown(button);
       const instance2 = new InsightUI.Dropdown(button);
@@ -45,8 +45,8 @@ describe('WeakMap Singleton Pattern', () => {
     it('should create different instances for different elements', () => {
       const container1 = TestUtils.createDropdown('dropdown-1');
       const container2 = TestUtils.createDropdown('dropdown-2');
-      const button1 = container1.querySelector('[data-dropdown-toggle]');
-      const button2 = container2.querySelector('[data-dropdown-toggle]');
+      const button1 = container1.querySelector('[data-insight-dropdown]');
+      const button2 = container2.querySelector('[data-insight-dropdown]');
 
       const instance1 = new InsightUI.Dropdown(button1);
       const instance2 = new InsightUI.Dropdown(button2);
@@ -56,7 +56,7 @@ describe('WeakMap Singleton Pattern', () => {
 
     it('should store instance in WeakMap', () => {
       const container = TestUtils.createDropdown();
-      const button = container.querySelector('[data-dropdown-toggle]');
+      const button = container.querySelector('[data-insight-dropdown]');
 
       const instance = new InsightUI.Dropdown(button);
 
@@ -75,7 +75,7 @@ describe('WeakMap Singleton Pattern', () => {
 
     it('should return existing instance for same element', () => {
       const container = TestUtils.createAccordion();
-      const element = container.querySelector('[data-accordion]');
+      const element = container.querySelector('[data-insight-accordion]');
 
       const instance1 = new InsightUI.Accordion(element);
       const instance2 = new InsightUI.Accordion(element);
@@ -136,10 +136,10 @@ describe('WeakMap Singleton Pattern', () => {
 
     it('should return existing instance for same trigger', () => {
       const container = TestUtils.createDOM(`
-        <button data-tooltip-trigger="test-tip">Hover me</button>
+        <button data-insight-tooltip="test-tip">Hover me</button>
         <div id="test-tip">Tooltip</div>
       `);
-      const trigger = container.querySelector('[data-tooltip-trigger]');
+      const trigger = container.querySelector('[data-insight-tooltip]');
 
       const instance1 = new InsightUI.Floater(trigger, 'tooltip');
       const instance2 = new InsightUI.Floater(trigger, 'tooltip');
@@ -170,6 +170,11 @@ describe('WeakMap Singleton Pattern', () => {
 
   describe('Multiselect', () => {
     beforeEach(() => {
+      // Mock gettext and ngettext for multiselect
+      globalThis.gettext = (s) => s;
+      globalThis.ngettext = (s, p, n) => n === 1 ? s : p;
+      globalThis.interpolate = (s, vars) => s.replace(/%\((\w+)\)s/g, (_, key) => vars[key]);
+
       loadComponent('insight-ui-multiselect.js');
     });
 
@@ -198,6 +203,36 @@ describe('WeakMap Singleton Pattern', () => {
       expect(InsightUI.ThreeDCarousel.instances).toBeInstanceOf(WeakMap);
     });
   });
+
+  describe('RangeSlider', () => {
+    beforeEach(() => {
+      loadComponent('insight-ui-range-slider.js');
+    });
+
+    it('should have static instances WeakMap', () => {
+      expect(InsightUI.RangeSlider.instances).toBeInstanceOf(WeakMap);
+    });
+  });
+
+  describe('ThemeToggle', () => {
+    beforeEach(() => {
+      // Mock localStorage
+      const mockLocalStorage = {
+        getItem: () => null,
+        setItem: () => {},
+      };
+      Object.defineProperty(globalThis, 'localStorage', { value: mockLocalStorage, writable: true });
+
+      // Mock matchMedia
+      globalThis.matchMedia = () => ({ matches: false });
+
+      loadComponent('insight-ui-theme-toggle.js');
+    });
+
+    it('should have static instances WeakMap', () => {
+      expect(InsightUI.ThemeToggle.instances).toBeInstanceOf(WeakMap);
+    });
+  });
 });
 
 describe('initAll() static methods', () => {
@@ -217,7 +252,7 @@ describe('initAll() static methods', () => {
 
       InsightUI.Dropdown.initAll();
 
-      const buttons = document.querySelectorAll('[data-dropdown-toggle]');
+      const buttons = document.querySelectorAll('[data-insight-dropdown]');
       buttons.forEach(btn => {
         expect(InsightUI.Dropdown.instances.has(btn)).toBe(true);
       });
@@ -225,7 +260,7 @@ describe('initAll() static methods', () => {
 
     it('should not re-initialize existing instances', () => {
       const container = TestUtils.createDropdown();
-      const button = container.querySelector('[data-dropdown-toggle]');
+      const button = container.querySelector('[data-insight-dropdown]');
 
       const instance1 = new InsightUI.Dropdown(button);
       InsightUI.Dropdown.initAll();
@@ -246,7 +281,7 @@ describe('initAll() static methods', () => {
 
       InsightUI.Accordion.initAll();
 
-      const accordions = document.querySelectorAll('[data-accordion]');
+      const accordions = document.querySelectorAll('[data-insight-accordion]');
       accordions.forEach(el => {
         expect(InsightUI.Accordion.instances.has(el)).toBe(true);
       });

@@ -42,140 +42,58 @@ describe('HTMX Lifecycle Integration', () => {
     loadComponent('insight-ui-utils.js');
   });
 
-  describe('lifecycle.destroyAllIn()', () => {
-    beforeEach(() => {
-      loadComponent('insight-ui-dropdown.js');
-      loadComponent('insight-ui-accordion.js');
+  describe('lifecycle.registerHTMXHooks()', () => {
+    it('should register htmx:beforeCleanupElement handler', () => {
+      InsightUI.lifecycle.registerHTMXHooks();
+
+      expect(htmx.on).toHaveBeenCalledWith('htmx:beforeCleanupElement', expect.any(Function));
     });
 
-    it('should destroy all component instances within a container', () => {
+    it('should call destroy on element __insightInstance during htmx:beforeCleanupElement', () => {
+      loadComponent('insight-ui-dropdown.js');
+
       const container = document.createElement('div');
       document.body.appendChild(container);
 
-      // Create dropdown inside container
       container.innerHTML = `
-        <button data-dropdown-toggle="test-dd">Toggle</button>
-        <div id="test-dd">Menu</div>
+        <button data-insight-dropdown="cleanup-dd">Toggle</button>
+        <div id="cleanup-dd">Menu</div>
       `;
-      const button = container.querySelector('[data-dropdown-toggle]');
+      const button = container.querySelector('[data-insight-dropdown]');
       const dropdown = new InsightUI.Dropdown(button);
 
       expect(InsightUI.Dropdown.instances.has(button)).toBe(true);
+      expect(button.__insightInstance).toBe(dropdown);
 
-      InsightUI.lifecycle.destroyAllIn(container);
+      InsightUI.lifecycle.registerHTMXHooks();
+
+      // Simulate htmx:beforeCleanupElement event
+      htmx.trigger('htmx:beforeCleanupElement', { elt: button });
 
       expect(InsightUI.Dropdown.instances.has(button)).toBe(false);
     });
 
-    it('should handle containers with multiple component types', () => {
-      const container = document.createElement('div');
-      document.body.appendChild(container);
+    it('should not throw if element has no __insightInstance', () => {
+      InsightUI.lifecycle.registerHTMXHooks();
 
-      container.innerHTML = `
-        <div>
-          <button data-dropdown-toggle="dd1">Dropdown</button>
-          <div id="dd1">Menu</div>
-        </div>
-        <div data-accordion="acc1">
-          <button aria-controls="acc1-panel" aria-expanded="false">Panel</button>
-          <div id="acc1-panel" style="height:0;opacity:0;">Content</div>
-        </div>
-      `;
-
-      const dropdownBtn = container.querySelector('[data-dropdown-toggle]');
-      const accordionEl = container.querySelector('[data-accordion]');
-
-      new InsightUI.Dropdown(dropdownBtn);
-      new InsightUI.Accordion(accordionEl);
-
-      expect(InsightUI.Dropdown.instances.has(dropdownBtn)).toBe(true);
-      expect(InsightUI.Accordion.instances.has(accordionEl)).toBe(true);
-
-      InsightUI.lifecycle.destroyAllIn(container);
-
-      expect(InsightUI.Dropdown.instances.has(dropdownBtn)).toBe(false);
-      expect(InsightUI.Accordion.instances.has(accordionEl)).toBe(false);
-    });
-
-    it('should not throw for empty containers', () => {
-      const container = document.createElement('div');
-      document.body.appendChild(container);
+      const div = document.createElement('div');
+      document.body.appendChild(div);
 
       expect(() => {
-        InsightUI.lifecycle.destroyAllIn(container);
+        htmx.trigger('htmx:beforeCleanupElement', { elt: div });
       }).not.toThrow();
     });
 
-    it('should not throw for null container', () => {
+    it('should not throw if __insightInstance has no destroy method', () => {
+      InsightUI.lifecycle.registerHTMXHooks();
+
+      const div = document.createElement('div');
+      div.__insightInstance = { someOtherMethod: () => {} };
+      document.body.appendChild(div);
+
       expect(() => {
-        InsightUI.lifecycle.destroyAllIn(null);
+        htmx.trigger('htmx:beforeCleanupElement', { elt: div });
       }).not.toThrow();
-    });
-
-    it('should destroy component when container itself is the component root', () => {
-      // This tests the case where HTMX swaps out a component root directly
-      // (e.g., the swap target IS the [data-accordion] element)
-      const accordion = document.createElement('div');
-      accordion.setAttribute('data-accordion', 'root-acc');
-      accordion.innerHTML = `
-        <button aria-controls="root-acc-panel" aria-expanded="false">Panel</button>
-        <div id="root-acc-panel" style="height:0;opacity:0;">Content</div>
-      `;
-      document.body.appendChild(accordion);
-
-      new InsightUI.Accordion(accordion);
-      expect(InsightUI.Accordion.instances.has(accordion)).toBe(true);
-
-      // Pass the component root itself as the container
-      InsightUI.lifecycle.destroyAllIn(accordion);
-
-      expect(InsightUI.Accordion.instances.has(accordion)).toBe(false);
-    });
-
-    it('should destroy carousel instances using data-insight-carousel selector', () => {
-      const container = document.createElement('div');
-      const carousel = document.createElement('div');
-      carousel.setAttribute('data-insight-carousel', '');
-      container.appendChild(carousel);
-      document.body.appendChild(container);
-
-      const destroySpy = vi.fn();
-      InsightUI.Carousel = {
-        instances: new WeakMap([[carousel, { destroy: destroySpy }]]),
-      };
-
-      InsightUI.lifecycle.destroyAllIn(container);
-
-      expect(destroySpy).toHaveBeenCalled();
-    });
-  });
-
-  describe('lifecycle.registerHTMXHooks()', () => {
-    it('should register htmx:beforeSwap handler', () => {
-      InsightUI.lifecycle.registerHTMXHooks();
-
-      expect(htmx.on).toHaveBeenCalledWith('htmx:beforeSwap', expect.any(Function));
-    });
-
-    it('should call destroyAllIn on htmx:beforeSwap event', () => {
-      loadComponent('insight-ui-dropdown.js');
-
-      const container = document.createElement('div');
-      document.body.appendChild(container);
-
-      container.innerHTML = `
-        <button data-dropdown-toggle="swap-dd">Toggle</button>
-        <div id="swap-dd">Menu</div>
-      `;
-      const button = container.querySelector('[data-dropdown-toggle]');
-      new InsightUI.Dropdown(button);
-
-      InsightUI.lifecycle.registerHTMXHooks();
-
-      // Simulate htmx:beforeSwap event
-      htmx.trigger('htmx:beforeSwap', { target: container });
-
-      expect(InsightUI.Dropdown.instances.has(button)).toBe(false);
     });
 
     it('should not throw if htmx is not defined', () => {
@@ -188,6 +106,62 @@ describe('HTMX Lifecycle Integration', () => {
       expect(() => {
         InsightUI.lifecycle.registerHTMXHooks();
       }).not.toThrow();
+    });
+  });
+
+  describe('Component __insightInstance binding', () => {
+    beforeEach(() => {
+      loadComponent('insight-ui-dropdown.js');
+      loadComponent('insight-ui-accordion.js');
+    });
+
+    it('should set __insightInstance on dropdown trigger element', () => {
+      const container = document.createElement('div');
+      document.body.appendChild(container);
+
+      container.innerHTML = `
+        <button data-insight-dropdown="test-dd">Toggle</button>
+        <div id="test-dd">Menu</div>
+      `;
+      const button = container.querySelector('[data-insight-dropdown]');
+      const dropdown = new InsightUI.Dropdown(button);
+
+      expect(button.__insightInstance).toBe(dropdown);
+    });
+
+    it('should set __insightInstance on accordion element', () => {
+      const container = document.createElement('div');
+      document.body.appendChild(container);
+
+      container.innerHTML = `
+        <div data-insight-accordion="acc1">
+          <button aria-controls="acc1-panel" aria-expanded="false">Panel</button>
+          <div id="acc1-panel" style="height:0;opacity:0;">Content</div>
+        </div>
+      `;
+
+      const accordionEl = container.querySelector('[data-insight-accordion]');
+      const accordion = new InsightUI.Accordion(accordionEl);
+
+      expect(accordionEl.__insightInstance).toBe(accordion);
+    });
+
+    it('should delete __insightInstance on destroy', () => {
+      const container = document.createElement('div');
+      document.body.appendChild(container);
+
+      container.innerHTML = `
+        <button data-insight-dropdown="destroy-dd">Toggle</button>
+        <div id="destroy-dd">Menu</div>
+      `;
+      const button = container.querySelector('[data-insight-dropdown]');
+      const dropdown = new InsightUI.Dropdown(button);
+
+      expect(button.__insightInstance).toBe(dropdown);
+
+      dropdown.destroy();
+
+      expect(button.__insightInstance).toBeUndefined();
     });
   });
 });
