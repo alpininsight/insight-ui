@@ -168,6 +168,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Improve smoke tests for storybooks and fix loginscreen test
 - Use Component Enum Class for smoke tests
+- Js tests 
 
 ## [1.9.1] - 2026-02-24
 
