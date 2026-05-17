@@ -138,6 +138,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improvements 
 - Standardize the JavaScript lookup attribute naming convention 
 - Enhancements 
+- **static:** Publish minified assets via cdn 
 
 ### Miscellaneous
 
