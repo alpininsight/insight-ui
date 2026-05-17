@@ -49,6 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **docs:** Resolve component-slug regressions (toggle_button, outline_button, button_sizes, effect_cards) 
 - **ci:** Update scheduled pre-commit workflow actions 
 - **deps:** Update vulnerable dependencies
+- **docs:** Use manifest-safe card demo assets 
 
 ### CI/CD
 
