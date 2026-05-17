@@ -5,6 +5,8 @@ from django.utils.translation import gettext as _
 from insight_ui.component_details.component_context import register_component
 from insight_ui.component_details.components import Component
 
+CARD_IMAGE_EXAMPLE_PATH = "insight_ui/favicon/android-chrome-512x512.png"
+
 
 @dataclass
 class ParameterDetails:
@@ -1989,11 +1991,11 @@ def get_card_parameter_context() -> dict[str, list[str]]:
                 "''",
             ),
         ],
-        """
-        {
-            "url": static("insight_ui/img/thumbnail.png"),
+        f"""
+        {{
+            "url": static("{CARD_IMAGE_EXAMPLE_PATH}"),
             "alt": "Card-Image"
-        }
+        }}
         """,
     )
 
@@ -2050,11 +2052,11 @@ def get_app_card_parameter_context() -> dict[str, list[str]]:
                 "''",
             ),
         ],
-        """
-        {
-            "url": static("insight_ui/img/thumbnail.png"),
+        f"""
+        {{
+            "url": static("{CARD_IMAGE_EXAMPLE_PATH}"),
             "alt": "Card-Image"
-        }
+        }}
         """,
     )
 
@@ -2112,11 +2114,11 @@ def get_flip_card_parameter_context() -> dict[str, list[str]]:
                 "''",
             ),
         ],
-        """
-        {
-            "url": static("insight_ui/img/thumbnail.png"),
+        f"""
+        {{
+            "url": static("{CARD_IMAGE_EXAMPLE_PATH}"),
             "alt": "Card-Image"
-        }
+        }}
         """,
     )
 
