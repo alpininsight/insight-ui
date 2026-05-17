@@ -46,6 +46,12 @@ DEPLOYMENT_SLOT = config("DEPLOYMENT_SLOT", default="")
 PUBLIC_BASE_URL = config("PUBLIC_BASE_URL", default="http://localhost:8000").strip()
 ARTIFACT_VERSION = config("ARTIFACT_VERSION", default="0.0.0")
 GIT_COMMIT_SHA = config("GIT_COMMIT_SHA", default="unknown")
+INSIGHT_UI_USE_MINIFIED_ASSETS = config("INSIGHT_UI_USE_MINIFIED_ASSETS", default=IS_PROD, cast=bool)
+INSIGHT_UI_CDN_ENABLED = config("INSIGHT_UI_CDN_ENABLED", default=IS_PROD, cast=bool)
+INSIGHT_UI_CDN_BASE_URL = config("INSIGHT_UI_CDN_BASE_URL", default="https://cdn.alpininsight.ai").strip().rstrip("/")
+INSIGHT_UI_CDN_PREFIX = config("INSIGHT_UI_CDN_PREFIX", default="insight-ui").strip().strip("/")
+INSIGHT_UI_CDN_VERSION = config("INSIGHT_UI_CDN_VERSION", default="latest").strip()
+INSIGHT_UI_JS_DEBUG = config("INSIGHT_UI_JS_DEBUG", default=not IS_PROD, cast=bool)
 LOG_LEVEL = config("LOG_LEVEL", default="WARNING", cast=normalize_log_level)
 APP_LOG_LEVEL = config("APP_LOG_LEVEL", default="INFO", cast=normalize_log_level)
 DJANGO_LOG_LEVEL = config("DJANGO_LOG_LEVEL", default=LOG_LEVEL, cast=normalize_log_level)
@@ -194,6 +200,13 @@ INSIGHT_UI = {
     "load_prism": True,  # Turn to 'True' to use syntax highlighting
     "load_leaflet": True,  # Turn to 'True' to use geo-maps
     "load_echarts": True,  # Turn to 'True' to use Chart-Components
-    "JS_DEBUG": True,  # Turn to 'True' to enable build in browser console logging
+    "JS_DEBUG": INSIGHT_UI_JS_DEBUG,  # Turn to 'True' to enable build in browser console logging
     "use_tailwind_cli": USE_TAILWIND_CLI,  # Turn to 'True' to enable the tailwind cli, if you want to modify the styles
+    "assets": {
+        "use_minified": INSIGHT_UI_USE_MINIFIED_ASSETS,
+        "cdn_enabled": INSIGHT_UI_CDN_ENABLED,
+        "cdn_base_url": INSIGHT_UI_CDN_BASE_URL,
+        "cdn_prefix": INSIGHT_UI_CDN_PREFIX,
+        "cdn_version": INSIGHT_UI_CDN_VERSION,
+    },
 }

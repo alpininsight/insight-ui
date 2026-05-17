@@ -1,0 +1,34 @@
+---
+name: CDN Deploy
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to deploy, for example 1.2.3. Leave empty for release events."
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cdn-deploy
+  cancel-in-progress: false
+
+jobs:
+  static-assets-cdn:
+    uses: alpininsight/.github-private/.github/workflows/static-assets-reusable.yml@main
+    with:
+      mode: build
+      upload_cdn: true
+      asset_directory: insight_ui/static/insight_ui
+      cdn_prefix: insight-ui
+      cdn_version: ${{ github.event_name == 'workflow_dispatch' && inputs.version || '' }}
+      cdn_base_url: https://cdn.alpininsight.ai
+    secrets:
+      r2_access_key_id: ${{ secrets.R2_ACCESS_KEY_ID }}
+      r2_secret_access_key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      r2_endpoint: ${{ secrets.R2_ENDPOINT }}

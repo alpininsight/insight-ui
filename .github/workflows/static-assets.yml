@@ -1,0 +1,23 @@
+---
+name: Static Assets
+
+on:
+  pull_request:
+    branches: [develop, main]
+  push:
+    branches: [develop, main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: static-assets-${{ github.event.pull_request.number || github.ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  static-assets:
+    uses: alpininsight/.github-private/.github/workflows/static-assets-reusable.yml@main
+    with:
+      mode: check
+      upload_cdn: false
