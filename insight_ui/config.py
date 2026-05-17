@@ -20,14 +20,32 @@ CONFIG_DEFAULTS: dict[str, Any] = {
     "load_echarts": False,  # Turn to 'True' to use Chart-Components
     "JS_DEBUG": False,  # Turn to 'True' to enable build in browser console logging
     "use_tailwind_cli": False,  # Turn to 'True' to enable the tailwind cli, if you want to modify the styles
+    "assets": {
+        "use_minified": False,
+        "cdn_enabled": False,
+        "cdn_base_url": "https://cdn.alpininsight.ai",
+        "cdn_prefix": "insight-ui",
+        "cdn_version": "latest",
+    },
 }
 
 
-def get_config(attribute_name: str = "") -> dict[str, Any] | str:
+def _merge_config(defaults: Mapping[str, Any], user_config: Mapping[str, Any]) -> dict[str, Any]:
+    merged = dict(defaults)
+    for key, value in user_config.items():
+        if isinstance(merged.get(key), Mapping) and isinstance(value, Mapping):
+            merged[key] = {**cast(Mapping[str, Any], merged[key]), **value}
+        else:
+            merged[key] = value
+    return merged
+
+
+def get_config(attribute_name: str = "") -> object:
     """Serve insight-ui configuration."""
     user_config = cast(Mapping[str, Any], getattr(settings, "INSIGHT_UI", {}))
+    resolved_config = _merge_config(CONFIG_DEFAULTS, user_config)
 
     if attribute_name != "":
-        return {**CONFIG_DEFAULTS, **dict(user_config)}[attribute_name]
+        return resolved_config[attribute_name]
 
-    return {"INSIGHT_UI": {**CONFIG_DEFAULTS, **dict(user_config)}}
+    return {"INSIGHT_UI": resolved_config}
