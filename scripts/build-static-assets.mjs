@@ -28,6 +28,44 @@ function toMinifiedName(sourceFile, extension, minExtension) {
     return sourceFile.slice(0, -extension.length) + minExtension;
 }
 
+function toMinifiedJavaScriptSpecifier(specifier) {
+    if (!specifier.startsWith("./") && !specifier.startsWith("../")) {
+        return specifier;
+    }
+    if (!specifier.endsWith(".js") || specifier.endsWith(".min.js")) {
+        return specifier;
+    }
+
+    return specifier.slice(0, -".js".length) + ".min.js";
+}
+
+function rewriteJavaScriptModuleSpecifiers(sourceFile, code) {
+    const rewriteStaticSpecifier = (_match, prefix, quote, specifier) => {
+        const rewrittenSpecifier = toMinifiedJavaScriptSpecifier(specifier);
+        return `${prefix}${quote}${rewrittenSpecifier}${quote}`;
+    };
+    const rewriteDynamicSpecifier = (_match, prefix, quote, specifier, suffix) => {
+        const rewrittenSpecifier = toMinifiedJavaScriptSpecifier(specifier);
+        return `${prefix}${quote}${rewrittenSpecifier}${quote}${suffix}`;
+    };
+
+    const rewritten = code
+        .replace(/\b(from\s*)(["'])([^"']+)\2/g, rewriteStaticSpecifier)
+        .replace(/\b(import\s*)(["'])([^"']+)\2/g, rewriteStaticSpecifier)
+        .replace(/\b(import\s*\(\s*)(["'])([^"']+)\2(\s*\))/g, rewriteDynamicSpecifier);
+
+    const remainingUnminifiedImports = [
+        ...rewritten.matchAll(/\b(?:from\s*|import\s*|import\s*\(\s*)(["'])(\.{1,2}\/[^"']+\.js)\1/g),
+    ].filter((match) => !match[2].endsWith(".min.js"));
+
+    if (remainingUnminifiedImports.length > 0) {
+        const specifiers = remainingUnminifiedImports.map((match) => match[2]).join(", ");
+        throw new Error(`Unminified relative module imports remain in ${sourceFile}: ${specifiers}`);
+    }
+
+    return rewritten;
+}
+
 async function minifyJavaScript(sourceFile, source) {
     const isModule = /\b(?:import|export)\b/.test(source);
     const result = await minify({ [sourceFile]: source }, {
@@ -42,7 +80,7 @@ async function minifyJavaScript(sourceFile, source) {
         throw new Error(`Terser produced empty output for ${sourceFile}`);
     }
 
-    return result.code;
+    return isModule ? rewriteJavaScriptModuleSpecifiers(sourceFile, result.code) : result.code;
 }
 
 async function minifyCss(sourceFile, source) {
