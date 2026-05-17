@@ -47,9 +47,10 @@ jobs:
       public_base_url: https://insight-ui.demo.alpininsight.ai
       platforms: linux/amd64,linux/arm64
       local_image_tag: insight-ui:ci
+      smoke_env_file: ""
 
   container_release:
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     permissions:
       contents: read
       packages: write
@@ -61,5 +62,6 @@ jobs:
       public_base_url: https://insight-ui.demo.alpininsight.ai
       platforms: linux/amd64,linux/arm64
       local_image_tag: insight-ui:ci
-      push: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' }}
-      promote_existing_tree_digest: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+      smoke_env_file: ""
+      push: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/develop' }}
+      promote_existing_tree_digest: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main' }}
