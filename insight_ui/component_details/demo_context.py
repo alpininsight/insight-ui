@@ -35,6 +35,7 @@ license_options = {
     "pay_per_use": _("Pay per Use"),
     "enterprise": _("Enterprise License"),
 }
+DEMO_CARD_IMAGE_PATH = "insight_ui/favicon/android-chrome-512x512.png"
 
 # Some example data for the query builder filter
 DEMO_FIELDS = [
@@ -708,7 +709,7 @@ def get_app_card_context() -> dict:
         "app_card": {
             "title": _("App Card"),
             "content": _("A card with its content arranged horizontally."),
-            "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": _("Card-Image")},
+            "image": {"url": static(DEMO_CARD_IMAGE_PATH), "alt": _("Card-Image")},
             "tags": [_("Insight UI"), _("Layout"), _("Card")],
             "actions": [
                 {"text": _("Learn more"), "url": "#", "type": "secondary"},
@@ -725,7 +726,7 @@ def get_flip_card_context() -> dict:
         "flip_card": {
             "title": _("Flip Card"),
             "content": _("A card that rotates 180° and has additional content on the back."),
-            "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": _("Card-Image")},
+            "image": {"url": static(DEMO_CARD_IMAGE_PATH), "alt": _("Card-Image")},
             "tags": [_("Insight UI"), _("Layout"), _("Card")],
             "actions": [
                 {"text": _("Learn more"), "url": "#", "type": "secondary"},
