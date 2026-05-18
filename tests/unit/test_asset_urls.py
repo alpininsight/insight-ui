@@ -1,6 +1,7 @@
 from http import HTTPStatus
 
 import pytest
+from django.conf import settings
 from django.template import Context, Template
 from django.test import override_settings
 from insight_ui.asset_urls import insight_asset_url, to_minified_asset_path
@@ -19,6 +20,11 @@ def test_to_minified_asset_path_handles_css_and_js() -> None:
 def test_insight_asset_url_uses_local_staticfiles_by_default() -> None:
     """Local development should keep readable staticfiles by default."""
     assert insight_asset_url("insight_ui/js/insight-ui-utils.js") == "/static/insight_ui/js/insight-ui-utils.js"
+
+
+def test_project_settings_do_not_enable_cdn_implicitly() -> None:
+    """Production must opt in explicitly before templates emit CDN URLs."""
+    assert settings.INSIGHT_UI["assets"]["cdn_enabled"] is False
 
 
 @override_settings(INSIGHT_UI={"assets": {"use_minified": True, "cdn_enabled": False}})
