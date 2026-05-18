@@ -51,6 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **deps:** Update vulnerable dependencies
 - **docs:** Use manifest-safe card demo assets 
 - **docs:** Serve component source links locally 
+- **static:** Require explicit cdn opt-in 
 
 ### CI/CD
 
