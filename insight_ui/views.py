@@ -1,8 +1,10 @@
 from datetime import UTC, datetime
+from importlib import metadata
+from pathlib import Path
 from typing import Any, cast
 
 import structlog
-from django.http import HttpRequest, HttpResponse, JsonResponse
+from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.urls import reverse
@@ -31,6 +33,94 @@ from insight_ui.utils.pagination import get_page
 from insight_ui.utils.query_builder_utils import FilterFieldConfig, get_filter_settings_for_field
 
 logger = structlog.get_logger(__name__)
+
+SOURCE_ROOT = Path(__file__).resolve().parent
+SOURCE_PATHS = {
+    "html": TEMPLATE_PATHS,
+    "js": SCRIPT_PATHS,
+}
+COMPONENT_NOT_FOUND = "Component not found"
+SOURCE_TYPE_NOT_FOUND = "Component source type not found"
+SOURCE_NOT_FOUND = "Component source not found"
+SOURCE_FILE_NOT_FOUND = "Component source file not found"
+LICENSE_FILE_NOT_FOUND = "License file not found"
+LICENSE_FILE_NAME = "LICENSE"
+PACKAGE_DISTRIBUTION_NAME = "insight-ui"
+
+
+def _resolve_component_source_path(component_name: str, source_kind: str) -> Path:
+    """Resolve an allow-listed component source file from the deployed package."""
+    try:
+        Component(component_name)
+    except ValueError as exc:
+        raise Http404(COMPONENT_NOT_FOUND) from exc
+
+    source_mapping = SOURCE_PATHS.get(source_kind)
+    if source_mapping is None:
+        raise Http404(SOURCE_TYPE_NOT_FOUND)
+
+    source_path_value = source_mapping.get(component_name)
+    if not source_path_value:
+        raise Http404(SOURCE_NOT_FOUND)
+
+    source_path = (SOURCE_ROOT / source_path_value).resolve()
+    if not source_path.is_relative_to(SOURCE_ROOT) or not source_path.is_file():
+        raise Http404(SOURCE_FILE_NOT_FOUND)
+
+    return source_path
+
+
+def _component_source_url(component_name: str, source_kind: str) -> str:
+    """Return an internal source URL only when the deployed file exists."""
+    try:
+        _resolve_component_source_path(component_name, source_kind)
+    except Http404:
+        return ""
+
+    return reverse("component_source_view", kwargs={"component_name": component_name, "source_kind": source_kind})
+
+
+def _distribution_license_path() -> Path | None:
+    """Resolve the license file from installed wheel metadata when available."""
+    try:
+        distribution = metadata.distribution(PACKAGE_DISTRIBUTION_NAME)
+    except metadata.PackageNotFoundError:
+        return None
+
+    for distribution_file in distribution.files or ():
+        if distribution_file.name != LICENSE_FILE_NAME:
+            continue
+
+        license_path = Path(distribution.locate_file(distribution_file)).resolve()
+        if license_path.is_file():
+            return license_path
+
+    return None
+
+
+def _source_tree_license_path() -> Path | None:
+    """Resolve the license file from a local source-tree checkout."""
+    license_path = (SOURCE_ROOT.parent / LICENSE_FILE_NAME).resolve()
+    if not license_path.is_file():
+        return None
+
+    return license_path
+
+
+def _resolve_license_path() -> Path:
+    """Resolve the license file from the package, independent of host BASE_DIR."""
+    license_path = _distribution_license_path() or _source_tree_license_path()
+    if license_path is None:
+        raise Http404(LICENSE_FILE_NOT_FOUND)
+    return license_path
+
+
+def _plain_text_response(file_path: Path) -> HttpResponse:
+    """Serve source-like files inline without relying on a remote repository."""
+    response = HttpResponse(file_path.read_text(encoding="utf-8"), content_type="text/plain; charset=utf-8")
+    response["Content-Disposition"] = f'inline; filename="{file_path.name}"'
+    response["X-Content-Type-Options"] = "nosniff"
+    return response
 
 
 @require_GET
@@ -273,8 +363,8 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
     """
     demo_info = {
         "url": reverse("component_demo_view", kwargs={"component_name": component_name}),
-        "template_repo_url": TEMPLATE_PATHS.get(component_name, ""),
-        "script_repo_url": SCRIPT_PATHS.get(component_name, ""),
+        "template_source_url": _component_source_url(component_name, "html"),
+        "script_source_url": _component_source_url(component_name, "js"),
         "title": component_name,
         "id": component_name,
     }
@@ -305,6 +395,18 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
 
     context |= get_base_context("component_detail_page_view") | get_sidebar_context(component_name)
     return render(request, "insight_ui/docs/component_detailpage.html", context)
+
+
+@require_GET
+def component_source_view(request: HttpRequest, component_name: str, source_kind: str) -> HttpResponse:
+    """Serve component source code from the deployed container package."""
+    return _plain_text_response(_resolve_component_source_path(component_name, source_kind))
+
+
+@require_GET
+def license_view(request: HttpRequest) -> HttpResponse:
+    """Serve the license text from the deployed container instead of GitHub."""
+    return _plain_text_response(_resolve_license_path())
 
 
 @require_GET
