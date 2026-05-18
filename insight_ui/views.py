@@ -1,9 +1,9 @@
 from datetime import UTC, datetime
+from importlib import metadata
 from pathlib import Path
 from typing import Any, cast
 
 import structlog
-from django.conf import settings
 from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
@@ -44,6 +44,8 @@ SOURCE_TYPE_NOT_FOUND = "Component source type not found"
 SOURCE_NOT_FOUND = "Component source not found"
 SOURCE_FILE_NOT_FOUND = "Component source file not found"
 LICENSE_FILE_NOT_FOUND = "License file not found"
+LICENSE_FILE_NAME = "LICENSE"
+PACKAGE_DISTRIBUTION_NAME = "insight-ui"
 
 
 def _resolve_component_source_path(component_name: str, source_kind: str) -> Path:
@@ -78,12 +80,38 @@ def _component_source_url(component_name: str, source_kind: str) -> str:
     return reverse("component_source_view", kwargs={"component_name": component_name, "source_kind": source_kind})
 
 
-def _resolve_license_path() -> Path:
-    """Resolve the license file from the deployed project root."""
-    license_path = (Path(settings.BASE_DIR) / "LICENSE").resolve()
-    if not license_path.is_file():
-        raise Http404(LICENSE_FILE_NOT_FOUND)
+def _distribution_license_path() -> Path | None:
+    """Resolve the license file from installed wheel metadata when available."""
+    try:
+        distribution = metadata.distribution(PACKAGE_DISTRIBUTION_NAME)
+    except metadata.PackageNotFoundError:
+        return None
 
+    for distribution_file in distribution.files or ():
+        if distribution_file.name != LICENSE_FILE_NAME:
+            continue
+
+        license_path = Path(distribution.locate_file(distribution_file)).resolve()
+        if license_path.is_file():
+            return license_path
+
+    return None
+
+
+def _source_tree_license_path() -> Path | None:
+    """Resolve the license file from a local source-tree checkout."""
+    license_path = (SOURCE_ROOT.parent / LICENSE_FILE_NAME).resolve()
+    if not license_path.is_file():
+        return None
+
+    return license_path
+
+
+def _resolve_license_path() -> Path:
+    """Resolve the license file from the package, independent of host BASE_DIR."""
+    license_path = _distribution_license_path() or _source_tree_license_path()
+    if license_path is None:
+        raise Http404(LICENSE_FILE_NOT_FOUND)
     return license_path
 
 

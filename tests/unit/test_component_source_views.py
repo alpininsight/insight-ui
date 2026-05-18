@@ -1,7 +1,8 @@
 from http import HTTPStatus
+from pathlib import Path
 
 import pytest
-from django.test import Client
+from django.test import Client, override_settings
 from django.urls import reverse
 
 
@@ -61,4 +62,13 @@ def test_license_view_serves_deployed_license_file(client: Client) -> None:
     assert response.status_code == HTTPStatus.OK
     assert response.headers["Content-Type"].startswith("text/plain")
     assert response.headers["Content-Disposition"] == 'inline; filename="LICENSE"'
+    assert "GNU AFFERO GENERAL PUBLIC LICENSE" in response.content.decode()
+
+
+def test_license_view_does_not_depend_on_host_project_base_dir(client: Client, tmp_path: Path) -> None:
+    """Package consumers should not need a LICENSE file in their Django project root."""
+    with override_settings(BASE_DIR=tmp_path):
+        response = client.get(reverse("license_view"))
+
+    assert response.status_code == HTTPStatus.OK
     assert "GNU AFFERO GENERAL PUBLIC LICENSE" in response.content.decode()
