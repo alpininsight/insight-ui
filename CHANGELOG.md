@@ -50,6 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **ci:** Update scheduled pre-commit workflow actions 
 - **deps:** Update vulnerable dependencies
 - **docs:** Use manifest-safe card demo assets 
+- **docs:** Serve component source links locally 
 
 ### CI/CD
 
