@@ -1,5 +1,5 @@
 from django.templatetags.static import static
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.utils.lorem_ipsum import paragraphs
 from django.utils.translation import gettext as _
 
@@ -260,7 +260,7 @@ def get_footer_context() -> dict:
                 "holder": "Alpin Insight Solutions GmbH & Co. KG",
                 "source_label": "Open Source",
                 "license_text": "AGPL-3.0",
-                "license_url": "https://github.com/alpininsight/insight-ui/blob/develop/LICENSE",
+                "license_url": reverse_lazy("license_view"),
             },
             "version": "v1.0.0",
         }
@@ -312,7 +312,7 @@ def get_copyright_notice_context() -> dict:
             "holder": "Alpin Insight Solutions GmbH & Co. KG",
             "source_label": "Open Source",
             "license_text": "AGPL-3.0",
-            "license_url": "https://github.com/alpininsight/insight-ui/blob/develop/LICENSE",
+            "license_url": reverse_lazy("license_view"),
         },
         "copyright_notice_legacy_config": {"year": 2026, "app_name": "Insight UI"},
     }

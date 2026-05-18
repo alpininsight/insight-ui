@@ -2,7 +2,7 @@ from typing import Any
 
 from core.context_processor import get_app_version
 from django.template.loader import render_to_string
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext as _
 
 from insight_ui import config
@@ -144,7 +144,7 @@ def get_footer_context() -> dict:
                 "holder": "Alpin Insight Solutions GmbH & Co. KG",
                 "source_label": "Open Source",
                 "license_text": "AGPL-3.0",
-                "license_url": "https://github.com/alpininsight/insight-ui/blob/develop/LICENSE",
+                "license_url": reverse_lazy("license_view"),
             },
             "version": get_app_version(),
         }

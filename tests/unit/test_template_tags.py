@@ -391,7 +391,7 @@ class FooterTemplateTagTest(TemplateTagsTestCase):
                 "holder": "Alpin Insight Solutions GmbH & Co. KG",
                 "source_label": "Open Source",
                 "license_text": "AGPL-3.0",
-                "license_url": "https://github.com/alpininsight/insight-ui/blob/develop/LICENSE",
+                "license_url": "/docs/license/",
             },
         }
 
@@ -436,7 +436,7 @@ class FooterTemplateTagTest(TemplateTagsTestCase):
         assert "Open Source" in copyright_p.text
         assert "AGPL-3.0" in copyright_p.text
         assert "All rights reserved." in copyright_p.text
-        license_el = copyright_p.find("a", href="https://github.com/alpininsight/insight-ui/blob/develop/LICENSE")
+        license_el = copyright_p.find("a", href="/docs/license/")
         assert license_el is not None
         assert license_el.get_text(strip=True) == "AGPL-3.0"
 
