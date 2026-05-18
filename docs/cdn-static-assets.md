@@ -38,6 +38,12 @@ generated assets via the shared `.github-private` workflow:
 Production consumers should use the immutable version path. `latest/` is only a
 convenience alias for demos and development checks.
 
+Runtime deployments must not rely on `latest/` for application rendering. New
+paths can be negatively cached at the Cloudflare edge before the first upload,
+so a deployment that points at `latest/` can keep seeing a stale `404` until the
+edge TTL expires. Use a versioned `INSIGHT_UI_CDN_VERSION` value for runtime
+deployments and reserve `latest/` for manual smoke checks.
+
 Required GitHub secrets:
 
 - `R2_ACCESS_KEY_ID`
@@ -48,7 +54,9 @@ Required GitHub secrets:
 
 The Django templates resolve Insight UI-owned CSS/JS assets through the
 `insight_asset` template tag. Local development keeps using Django staticfiles.
-Production can switch to CDN-backed minified assets with:
+Production uses minified local staticfiles by default. It can switch to
+CDN-backed minified assets only when the matching versioned CDN path has already
+been published and verified:
 
 ```env
 IS_PROD=True

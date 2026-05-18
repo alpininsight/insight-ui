@@ -47,7 +47,7 @@ PUBLIC_BASE_URL = config("PUBLIC_BASE_URL", default="http://localhost:8000").str
 ARTIFACT_VERSION = config("ARTIFACT_VERSION", default="0.0.0")
 GIT_COMMIT_SHA = config("GIT_COMMIT_SHA", default="unknown")
 INSIGHT_UI_USE_MINIFIED_ASSETS = config("INSIGHT_UI_USE_MINIFIED_ASSETS", default=IS_PROD, cast=bool)
-INSIGHT_UI_CDN_ENABLED = config("INSIGHT_UI_CDN_ENABLED", default=IS_PROD, cast=bool)
+INSIGHT_UI_CDN_ENABLED = config("INSIGHT_UI_CDN_ENABLED", default=False, cast=bool)
 INSIGHT_UI_CDN_BASE_URL = config("INSIGHT_UI_CDN_BASE_URL", default="https://cdn.alpininsight.ai").strip().rstrip("/")
 INSIGHT_UI_CDN_PREFIX = config("INSIGHT_UI_CDN_PREFIX", default="insight-ui").strip().strip("/")
 INSIGHT_UI_CDN_VERSION = config("INSIGHT_UI_CDN_VERSION", default="latest").strip()
