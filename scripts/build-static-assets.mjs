@@ -1,4 +1,3 @@
-import CleanCSS from "clean-css";
 import { readdir, readFile, unlink, writeFile } from "node:fs/promises";
 import { basename } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -84,16 +83,43 @@ async function minifyJavaScript(sourceFile, source) {
 }
 
 async function minifyCss(sourceFile, source) {
-    const result = new CleanCSS({ level: 2 }).minify(source);
+    const minified = source
+        .replace(/\/\*[\s\S]*?\*\//g, "")
+        .replace(/\s+/g, " ")
+        .replace(/\s*([{};,])\s*/g, "$1")
+        .replace(/:\s+/g, ":")
+        .replace(/;}/g, "}")
+        .trim();
 
-    if (result.errors.length > 0) {
-        throw new Error(`CleanCSS failed for ${sourceFile}: ${result.errors.join("; ")}`);
-    }
-    if (!result.styles) {
-        throw new Error(`CleanCSS produced empty output for ${sourceFile}`);
+    if (!minified) {
+        throw new Error(`CSS minifier produced empty output for ${sourceFile}`);
     }
 
-    return result.styles;
+    validateCssOutput(sourceFile, minified);
+
+    return minified;
+}
+
+function validateCssOutput(sourceFile, output) {
+    if (sourceFile !== "tailwind.css") {
+        return;
+    }
+
+    const requiredPatterns = [
+        [".bg-insight-primary", /\.bg-insight-primary\{[^}]*background-color:\s*var\(--color-insight-primary\)/],
+        [".fill-insight-primary", /\.fill-insight-primary\{[^}]*fill:\s*var\(--color-insight-primary\)/],
+        [".text-insight-primary", /\.text-insight-primary\{[^}]*color:\s*var\(--color-insight-primary\)/],
+        [".btn-primary", /\.btn-primary\{/],
+        [".btn-white", /\.btn-white\{/],
+        [".lg:flex-row", /\.lg\\:flex-row\{/],
+        [".lg:hidden", /\.lg\\:hidden\{/],
+        [".xl:block", /\.xl\\:block\{/],
+    ];
+    const missingTokens = requiredPatterns.filter(([, pattern]) => !pattern.test(output)).map(([label]) => label);
+
+    if (missingTokens.length > 0) {
+        throw new Error(`Minified ${sourceFile} is missing required selectors: ${missingTokens.join(", ")}`);
+    }
 }
 
 async function processAssetGroup({ directory, extension, minExtension, build, label }) {

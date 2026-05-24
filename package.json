@@ -15,7 +15,6 @@
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^4.0.18",
-    "clean-css": "^5.3.3",
     "jsdom": "^28.1.0",
     "terser": "^5.47.1",
     "vitest": "^4.0.18"
