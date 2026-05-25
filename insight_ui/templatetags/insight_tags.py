@@ -1293,7 +1293,7 @@ def app_card(  # noqa: PLR0913 (too many args)
     """
     Render a vertically aligned card.
 
-    The card starts with a square image. Below it is the title and content,
+    The card starts with a fixed-height image preview. Below it is the title and content,
     as well as a list of tags, if specified. At the end, if available, the action buttons
     are displayed one above the other.
 
