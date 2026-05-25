@@ -109,21 +109,39 @@
     --color-insight-primary: #3b82f6;
     --color-insight-primary-hover: #60a5fa;
     --color-insight-primary-active: #93c5fd;
+    --color-insight-primary-foreground: #fff;
+    --color-insight-primary-foreground-hover: #fff;
+    --color-insight-primary-foreground-active: #fff;
     --color-insight-secondary: #0d9488;
     --color-insight-secondary-hover: #14b8a6;
     --color-insight-secondary-active: #2dd4bf;
+    --color-insight-secondary-foreground: #fff;
+    --color-insight-secondary-foreground-hover: #fff;
+    --color-insight-secondary-foreground-active: #fff;
     --color-insight-success: #10b981;
     --color-insight-success-hover: #34d399;
     --color-insight-success-active: #6ee7b7;
+    --color-insight-success-foreground: #fff;
+    --color-insight-success-foreground-hover: #fff;
+    --color-insight-success-foreground-active: #fff;
     --color-insight-warning: #f59e0b;
     --color-insight-warning-hover: #fbbf24;
     --color-insight-warning-active: #fcd34d;
+    --color-insight-warning-foreground: #fff;
+    --color-insight-warning-foreground-hover: #fff;
+    --color-insight-warning-foreground-active: #fff;
     --color-insight-danger: #ef4444;
     --color-insight-danger-hover: #f87171;
     --color-insight-danger-active: #fca5a5;
+    --color-insight-danger-foreground: #fff;
+    --color-insight-danger-foreground-hover: #fff;
+    --color-insight-danger-foreground-active: #fff;
     --color-insight-info: #06b6d4;
     --color-insight-info-hover: #22d3ee;
     --color-insight-info-active: #67e8f9;
+    --color-insight-info-foreground: #fff;
+    --color-insight-info-foreground-hover: #fff;
+    --color-insight-info-foreground-active: #fff;
     --color-insight-text-primary: oklch(26.9% 0 0);
     --color-insight-text-secondary: oklch(55.6% 0 0);
     --color-insight-text-primary-dark: oklch(92.2% 0 0);
@@ -872,6 +890,9 @@
   }
   .min-w-0 {
     min-width: calc(var(--spacing) * 0);
+  }
+  .min-w-56 {
+    min-width: calc(var(--spacing) * 56);
   }
   .min-w-56 {
     min-width: calc(var(--spacing) * 56);
@@ -3477,7 +3498,7 @@
     font-weight: var(--font-weight-bold);
     color: var(--color-insight-text-primary);
     &:where([data-theme=dark], [data-theme=dark] *) {
-      color: var(--color-white);
+      color: var(--color-insight-text-primary-dark);
     }
   }
   h2 {
@@ -3488,7 +3509,7 @@
     font-weight: var(--font-weight-semibold);
     color: var(--color-insight-text-primary);
     &:where([data-theme=dark], [data-theme=dark] *) {
-      color: var(--color-white);
+      color: var(--color-insight-text-primary-dark);
     }
   }
   h3 {
@@ -3499,7 +3520,7 @@
     font-weight: var(--font-weight-semibold);
     color: var(--color-insight-text-primary);
     &:where([data-theme=dark], [data-theme=dark] *) {
-      color: var(--color-white);
+      color: var(--color-insight-text-primary-dark);
     }
   }
   h4 {
@@ -3510,7 +3531,7 @@
     font-weight: var(--font-weight-semibold);
     color: var(--color-insight-text-primary);
     &:where([data-theme=dark], [data-theme=dark] *) {
-      color: var(--color-white);
+      color: var(--color-insight-text-primary-dark);
     }
   }
   h5 {
@@ -3521,7 +3542,7 @@
     font-weight: var(--font-weight-semibold);
     color: var(--color-insight-text-primary);
     &:where([data-theme=dark], [data-theme=dark] *) {
-      color: var(--color-white);
+      color: var(--color-insight-text-primary-dark);
     }
   }
   hr {
@@ -3564,7 +3585,6 @@
     border-color: transparent;
     padding-inline: calc(var(--spacing) * 5);
     padding-block: calc(var(--spacing) * 1.5);
-    color: var(--color-white);
     transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
     transition-duration: var(--tw-duration, var(--default-transition-duration));
@@ -3701,6 +3721,7 @@
   .btn-primary {
     border-color: var(--color-insight-primary);
     background-color: var(--color-insight-primary);
+    color: var(--color-insight-primary-foreground);
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-primary-hover);
@@ -3711,16 +3732,25 @@
         background-color: var(--color-insight-primary-hover);
       }
     }
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-insight-primary-foreground-hover);
+      }
+    }
     &:active {
       border-color: var(--color-insight-primary-active);
     }
     &:active {
       background-color: var(--color-insight-primary-active);
     }
+    &:active {
+      color: var(--color-insight-primary-foreground-active);
+    }
   }
   .btn-secondary {
     border-color: var(--color-insight-secondary);
     background-color: var(--color-insight-secondary);
+    color: var(--color-insight-secondary-foreground);
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-secondary-hover);
@@ -3731,16 +3761,25 @@
         background-color: var(--color-insight-secondary-hover);
       }
     }
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-insight-secondary-foreground-hover);
+      }
+    }
     &:active {
       border-color: var(--color-insight-secondary-active);
     }
     &:active {
       background-color: var(--color-insight-secondary-active);
     }
+    &:active {
+      color: var(--color-insight-secondary-foreground-active);
+    }
   }
   .btn-success {
     border-color: var(--color-insight-success);
     background-color: var(--color-insight-success);
+    color: var(--color-insight-success-foreground);
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-success-hover);
@@ -3751,16 +3790,25 @@
         background-color: var(--color-insight-success-hover);
       }
     }
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-insight-success-foreground-hover);
+      }
+    }
     &:active {
       border-color: var(--color-insight-success-active);
     }
     &:active {
       background-color: var(--color-insight-success-active);
     }
+    &:active {
+      color: var(--color-insight-success-foreground-active);
+    }
   }
   .btn-warning {
     border-color: var(--color-insight-warning);
     background-color: var(--color-insight-warning);
+    color: var(--color-insight-warning-foreground);
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-warning-hover);
@@ -3771,16 +3819,25 @@
         background-color: var(--color-insight-warning-hover);
       }
     }
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-insight-warning-foreground-hover);
+      }
+    }
     &:active {
       border-color: var(--color-insight-warning-active);
     }
     &:active {
       background-color: var(--color-insight-warning-active);
     }
+    &:active {
+      color: var(--color-insight-warning-foreground-active);
+    }
   }
   .btn-danger {
     border-color: var(--color-insight-danger);
     background-color: var(--color-insight-danger);
+    color: var(--color-insight-danger-foreground);
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-danger-hover);
@@ -3791,16 +3848,25 @@
         background-color: var(--color-insight-danger-hover);
       }
     }
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-insight-danger-foreground-hover);
+      }
+    }
     &:active {
       border-color: var(--color-insight-danger-active);
     }
     &:active {
       background-color: var(--color-insight-danger-active);
     }
+    &:active {
+      color: var(--color-insight-danger-foreground-active);
+    }
   }
   .btn-info {
     border-color: var(--color-insight-info);
     background-color: var(--color-insight-info);
+    color: var(--color-insight-info-foreground);
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-info-hover);
@@ -3811,11 +3877,19 @@
         background-color: var(--color-insight-info-hover);
       }
     }
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-insight-info-foreground-hover);
+      }
+    }
     &:active {
       border-color: var(--color-insight-info-active);
     }
     &:active {
       background-color: var(--color-insight-info-active);
+    }
+    &:active {
+      color: var(--color-insight-info-foreground-active);
     }
   }
   .btn-white {
@@ -3911,7 +3985,7 @@
     }
     &:hover {
       @media (hover: hover) {
-        color: var(--color-white);
+        color: var(--color-insight-primary-foreground-hover);
       }
     }
     &:active {
@@ -3919,6 +3993,9 @@
     }
     &:active {
       background-color: var(--color-insight-primary-active);
+    }
+    &:active {
+      color: var(--color-insight-primary-foreground-active);
     }
   }
   .btn-outline-secondary {
@@ -3936,7 +4013,7 @@
     }
     &:hover {
       @media (hover: hover) {
-        color: var(--color-white);
+        color: var(--color-insight-secondary-foreground-hover);
       }
     }
     &:active {
@@ -3944,6 +4021,9 @@
     }
     &:active {
       background-color: var(--color-insight-secondary-active);
+    }
+    &:active {
+      color: var(--color-insight-secondary-foreground-active);
     }
   }
   .btn-outline-success {
@@ -3961,7 +4041,7 @@
     }
     &:hover {
       @media (hover: hover) {
-        color: var(--color-white);
+        color: var(--color-insight-success-foreground-hover);
       }
     }
     &:active {
@@ -3969,6 +4049,9 @@
     }
     &:active {
       background-color: var(--color-insight-success-active);
+    }
+    &:active {
+      color: var(--color-insight-success-foreground-active);
     }
   }
   .btn-outline-warning {
@@ -3986,7 +4069,7 @@
     }
     &:hover {
       @media (hover: hover) {
-        color: var(--color-white);
+        color: var(--color-insight-warning-foreground-hover);
       }
     }
     &:active {
@@ -3994,6 +4077,9 @@
     }
     &:active {
       background-color: var(--color-insight-warning-active);
+    }
+    &:active {
+      color: var(--color-insight-warning-foreground-active);
     }
   }
   .btn-outline-danger {
@@ -4011,7 +4097,7 @@
     }
     &:hover {
       @media (hover: hover) {
-        color: var(--color-white);
+        color: var(--color-insight-danger-foreground-hover);
       }
     }
     &:active {
@@ -4019,6 +4105,9 @@
     }
     &:active {
       background-color: var(--color-insight-danger-active);
+    }
+    &:active {
+      color: var(--color-insight-danger-foreground-active);
     }
   }
   .btn-outline-info {
@@ -4036,7 +4125,7 @@
     }
     &:hover {
       @media (hover: hover) {
-        color: var(--color-white);
+        color: var(--color-insight-info-foreground-hover);
       }
     }
     &:active {
@@ -4044,6 +4133,9 @@
     }
     &:active {
       background-color: var(--color-insight-info-active);
+    }
+    &:active {
+      color: var(--color-insight-info-foreground-active);
     }
   }
   .btn-outline-disabled {
@@ -4156,7 +4248,7 @@
       background-color: var(--color-gray-700);
     }
     &:where([data-theme=dark], [data-theme=dark] *) {
-      color: var(--color-white);
+      color: var(--color-insight-text-primary-dark);
     }
   }
   .slider-wrapper {
