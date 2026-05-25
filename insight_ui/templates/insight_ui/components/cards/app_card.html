@@ -1,10 +1,12 @@
 {% load static i18n %}
 
-<div class="flex flex-col overflow-hidden bg-gray-50 dark:bg-gray-700 max-w-72 border-gray-100 dark:border-none shadow-lg rounded hover:scale-105 hover:shadow-xl transition-transform duration-500">
-    <img class="w-full" src="{{ image.url }}" alt="{{ image.alt }}">
+<div
+    class="flex h-full w-full flex-col overflow-hidden rounded border border-gray-200 bg-white shadow-sm dark:border-gray-600 dark:bg-gray-800"
+>
+    <img class="h-56 w-full bg-gray-100 object-cover dark:bg-gray-700" src="{{ image.url }}" alt="{{ image.alt }}">
 
     <!-- Title and description -->
-    <div class="h-full px-4 py-2">
+    <div class="flex flex-1 flex-col px-4 py-3">
         {% if url %}
             <a href="{% url url %}">
                 <p id="card-title" class="text-primary font-bold text-xl hover:text-insight-text-link-hover mb-2">{{ title }}</p>
@@ -12,14 +14,14 @@
         {% else %}
             <p id="card-title" class="text-primary font-bold text-xl mb-2">{{ title }}</p>
         {% endif %}
-        <p id="card-description" class="text-secondary text-base text-justify hyphens-auto" lang="de">{{ content }}</p>
+        <p id="card-description" class="text-secondary text-sm leading-relaxed hyphens-auto" lang="de">{{ content }}</p>
     </div>
 
     <!-- Tags -->
     {% if tags %}
-        <div id="card-tags" class="flex gap-1 px-4">
+        <div id="card-tags" class="flex flex-wrap gap-1 px-4 pb-2">
             {% for tag in tags %}
-                <button class="btn btn-primary btn-xs">
+                <button class="btn btn-subtil btn-xs">
                     {{ tag }}
                 </button>
             {% endfor %}
@@ -27,11 +29,19 @@
     {% endif %}
 
     <!-- Start and more -->
-    <div class="flex flex-col gap-2 pt-4 m-4 border-t border-insight-text-secondary dark:border-insight-text-secondary-dark">
+    <div class="mt-auto flex flex-col gap-2 border-t border-gray-200 p-4 dark:border-gray-600">
         {% for action in actions %}
-            <a href="{{ action.url }}" class="btn btn-{{ action.type }}" {% if action.external %}target="_blank" rel="noopener"{% endif %}>
-                {{ action.text }}
-            </a>
+            {% if action.disabled %}
+                <span class="btn btn-{{ action.type }}" aria-disabled="true">{{ action.text }}</span>
+            {% else %}
+                <a
+                    href="{{ action.url }}"
+                    class="btn btn-{{ action.type }}"
+                    {% if action.external %}target="_blank" rel="noopener"{% endif %}
+                >
+                    {{ action.text }}
+                </a>
+            {% endif %}
         {% endfor %}
     </div>
 </div>
