@@ -35,6 +35,15 @@ export class Multiselect {
         this.selectAllBtn = this.element.querySelector('.select-all');
         this.deselectAllBtn = this.element.querySelector('.deselect-all');
 
+        // Hide already selected options
+        this.optionItems.forEach(opt => {
+            const value = opt.textContent.trim();
+            if (this.selectedValues.includes(value)) {
+                opt.setAttribute('aria-selected', 'true');
+                opt.hidden = true;
+            }
+        });
+
         this.bindEvents();
         this.renderSelected();
 
@@ -164,7 +173,7 @@ export class Multiselect {
             }
             this.selectedValues.push(value);
             opt.setAttribute('aria-selected', 'true');
-            opt.style.display = 'none';
+            opt.hidden = true;
             this.renderSelected();
             this.dispatchEvent();
         }
@@ -184,10 +193,10 @@ export class Multiselect {
      */
     deselectValue(value) {
         this.selectedValues = this.selectedValues.filter(v => v !== value);
-        this.optionItems.forEach(o => {
-            if (o.textContent.trim() === value) {
-                o.setAttribute('aria-selected', 'false');
-                o.style.display = 'block';
+        this.optionItems.forEach(opt => {
+            if (opt.textContent.trim() === value) {
+                opt.setAttribute('aria-selected', 'false');
+                opt.hidden = false;
             }
         });
         this.renderSelected();
@@ -238,7 +247,7 @@ export class Multiselect {
         this.optionItems.forEach(opt => {
             const value = opt.textContent.toLowerCase();
             const hiddenBySelection = this.selectedValues.includes(opt.textContent.trim());
-            opt.style.display = (!hiddenBySelection && value.includes(lower)) ? 'block' : 'none';
+            opt.hidden = (!hiddenBySelection && value.includes(lower)) ? false : true;
         });
         this.focusedIndex = -1;
     }
@@ -246,18 +255,41 @@ export class Multiselect {
     /**
      * Update the info text.
      */
-    updateInfo() {this.info.textContent = this.max === Infinity ? '' : `${this.selectedValues.length}/${this.max} ausgewählt`; }
+    updateInfo() {
+        if (this.max === Infinity) {
+            this.info.textContent = '';
+            return;
+        }
+
+        const text = gettext('%(count)s/%(max)s selected');
+        this.info.textContent = interpolate(text, {
+            count: this.selectedValues.length,
+            max: this.max
+        }, true);
+    }
 
     /**
      * Update the 'aria-status'.
      */
-    updateAriaStatus() { this.ariaStatus.textContent = `${this.selectedValues.length} Option${this.selectedValues.length !== 1 ? 'en' : ''} ausgewählt`; }
+    updateAriaStatus() {
+        const count = this.selectedValues.length;
+
+        const text = ngettext(
+            '%(count)s option selected',
+            '%(count)s options selected',
+            count
+        );
+
+        this.ariaStatus.textContent = interpolate(text, {
+            count: count
+        }, true);
+    }
 
     /**
      * Select every option, so that all is selected.
      *
      * Add every option to the list of selected values, set 'aria-selected' to 'true' and
-     * 'display' to 'none' for every option. Update DOM.
+     * 'hidden' to 'true' for every option. Update DOM.
      */
     selectAll() {
         this.optionItems.forEach(opt => {
@@ -265,7 +297,7 @@ export class Multiselect {
             if (!this.selectedValues.includes(value)) {
                 this.selectedValues.push(value);
                 opt.setAttribute('aria-selected', 'true');
-                opt.style.display = 'none';
+                opt.hidden = true;
             }
         });
         this.renderSelected();
@@ -276,13 +308,13 @@ export class Multiselect {
      * Deselect every option, so that nothing is selected.
      *
      * Clear list of selected values, set 'aria-selected' to 'false' and
-     * 'display' to 'block' for every option. Update DOM and open search field.
+     * 'hidden' to 'false' for every option. Update DOM and open search field.
      */
     deselectAll() {
         this.selectedValues = [];
         this.optionItems.forEach(opt => {
             opt.setAttribute('aria-selected', 'false');
-            opt.style.display = 'block';
+            opt.hidden = false;
         });
         this.renderSelected();
         this.dispatchEvent();
@@ -336,6 +368,6 @@ export class Multiselect {
 
     // Static method for initializing all multiselect elements
     static initAll() {
-        document.querySelectorAll('[data-multiselect]').forEach(el => new Multiselect(el));
+        document.querySelectorAll('[data-insight-multiselect]').forEach(el => new Multiselect(el));
     }
 }

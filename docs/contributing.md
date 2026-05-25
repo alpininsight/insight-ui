@@ -13,7 +13,7 @@ First of all, the requirements for working with Insight UI:
 - Python 3.12+
 - [`uv`](https://github.com/astral-sh/uv) for dependency management
 
-Lokales Setup:
+Local setup:
 
 ```bash
 uv sync --all-groups
@@ -52,10 +52,18 @@ In this section, we explain all the steps necessary to add a new component.
     - We use classes for all components that are exported as modules.
     - Corresponding instances are found and created in the DOM using `data attributes`.
 3. Implement the new component.
-    - We use TailwindCSS for styling.
+    - Tailwind CSS is the default styling implementation.
+    - For new reusable components, prefer semantic Insight UI classes and tokens over raw Tailwind utility classes in public component markup when the concept is stable enough to name.
+    - Use the mapping table in [Naming Conventions](naming_conventions.md#css-classes-and-design-semantics) to decide whether a repeated Tailwind utility pattern should become an `insight-*` class.
+    - Tailwind utilities are still acceptable for local layout details, experiments, and the current default implementation, but they should not become the long-term public design contract of reusable components.
 4. Create a new inclusion tag in `insight_ui/templatetags/insight_tags.py`.
 
 ### Part 2: Documenting New Components
+
+Before opening a pull request for a new reusable component, complete the
+[New Component Self-Documentation Checklist](new-component-self-documentation-checklist.md).
+This checklist is mandatory whenever a reusable UI surface is added or changed.
+See the checklist for package-local source-of-truth expectations.
 
 1. Document the new component for future users. Our component documentation is context-based and is divided into several files in this directory: `insight_ui/component_details/`
     - `a11y_context.py`: Contains documentation for all accessibility topics related to the component.
@@ -67,18 +75,61 @@ In this section, we explain all the steps necessary to add a new component.
 2. Insert demo
     - Extend component demo file `insight_ui/templates/insight_ui/docs/component_demo.html`
         - Disable padding in the view if necessary
-    - Add demo context function `insight_ui/demo_context.py
+    - Add demo context function `insight_ui/component_details/demo_context.py`
 
 > Please note our [Naming Conventions](naming_conventions.md) for Templates, Assets and Context-helper.
+
+### Contract documentation rule
+
+If you change a token, semantic class, template tag signature, or
+`data-insight-*` hook, update the corresponding contract documentation and the
+component self-documentation in the same pull request.
+
+Use [Documentation Architecture](docs-architecture.md) to decide where the
+canonical explanation belongs. In short: public design rules belong in
+`docs/design-system-contract.md`, hook naming belongs in
+`docs/naming_conventions.md`, contributor workflow belongs here, component usage
+belongs in `insight_ui/component_details/*`, and rendered docs templates should
+remain presentation.
 
 ## Test checklist
 
 - Template tags or Python logic: Add tests in `insight_ui/tests/test_template_tags.py` or your own test module.
 - Frontend behavior: Add regression tests (e.g., HTMX requests or screenshots) if necessary.
 
+## GitHub issue labels
+
+Issue labels are used as a small taxonomy, not as a flat list of keywords. It is acceptable for an issue to have more than three labels when each label answers a different routing or planning question.
+
+Use labels along these axes:
+
+| Axis | Purpose | Examples |
+|---|---|---|
+| Type | What kind of work is this? | `bug`, `enhancement`, `documentation`, `chore`, `ci` |
+| Area | Which part of the package is affected? | `area: component-api`, `area: design-system`, `area: responsive`, `area: self-documentation` |
+| Component | Which reusable UI building block is affected? | `component: sidebar`, `component: footer`, `component: tooltip` |
+| Impact | Who may be affected by the change? | `impact: public-api`, `impact: consumer-compatibility` |
+| Status | What process state needs to be visible? | `status: split` |
+
+For most issues, choose exactly one type label, at least one area label, and a component label when a concrete component is involved. Add impact labels only when the issue affects reusable APIs, downstream packages, or projects that consume Insight UI as a generic UI package. Use status labels sparingly and only for workflow state that is not already clear from the issue state.
+
+Example:
+
+An issue titled `fix(sidebar): scrollbar appears on mobile viewport resize` should use:
+
+- `bug`, because existing behavior is broken.
+- `area: responsive`, because the problem is about viewport behavior and breakpoints.
+- `component: sidebar`, because the sidebar component owns the visible defect.
+- `impact: consumer-compatibility`, because downstream projects using the generic sidebar may see the same layout issue.
+
+Do not add labels just because they are loosely related. A label should make filtering, ownership, prioritization, or compatibility review easier. Avoid creating one-off labels for a single issue; prefer extending the existing axes only when the same label will be useful across multiple future issues.
+
 ## Pull request guidelines
 
 - We use conventional commits (`feat:`, `fix:`, `chore:`, `docs:`, etc.) for both commit messages and branch names. For branch name use `/` instead of `:`.
+- Pull request titles must follow the same Conventional Commit format, for example `docs: document GitHub issue label taxonomy`.
+- Branch names must start with an allowed conventional prefix, such as `feat/`, `fix/`, `docs/`, `chore/`, `ci/`, or `test/`.
+- AI-assisted pull requests must follow the same branch and title rules. Do not use tool prefixes such as `codex/` for branches or `[codex]` in pull request titles; mention the tool in the pull request body if that context is useful.
 - Refer to issues if necessary.
 - Only request a review once the CI runners for linting and testing are green and the documentation has been updated.
 

@@ -32,7 +32,7 @@ describe('Component Lifecycle - destroy() methods', () => {
 
     it('should have a destroy method', () => {
       const container = TestUtils.createDropdown();
-      const button = container.querySelector('[data-dropdown-toggle]');
+      const button = container.querySelector('[data-insight-dropdown]');
       const dropdown = new InsightUI.Dropdown(button);
 
       expect(typeof dropdown.destroy).toBe('function');
@@ -40,7 +40,7 @@ describe('Component Lifecycle - destroy() methods', () => {
 
     it('should remove event listeners on destroy', () => {
       const container = TestUtils.createDropdown();
-      const button = container.querySelector('[data-dropdown-toggle]');
+      const button = container.querySelector('[data-insight-dropdown]');
       const dropdown = new InsightUI.Dropdown(button);
 
       const removeEventListenerSpy = vi.spyOn(button, 'removeEventListener');
@@ -51,7 +51,7 @@ describe('Component Lifecycle - destroy() methods', () => {
 
     it('should remove instance from WeakMap on destroy', () => {
       const container = TestUtils.createDropdown();
-      const button = container.querySelector('[data-dropdown-toggle]');
+      const button = container.querySelector('[data-insight-dropdown]');
       const dropdown = new InsightUI.Dropdown(button);
 
       expect(InsightUI.Dropdown.instances.has(button)).toBe(true);
@@ -61,7 +61,7 @@ describe('Component Lifecycle - destroy() methods', () => {
 
     it('should nullify references on destroy', () => {
       const container = TestUtils.createDropdown();
-      const button = container.querySelector('[data-dropdown-toggle]');
+      const button = container.querySelector('[data-insight-dropdown]');
       const dropdown = new InsightUI.Dropdown(button);
 
       dropdown.destroy();
@@ -78,7 +78,7 @@ describe('Component Lifecycle - destroy() methods', () => {
 
     it('should have a destroy method', () => {
       const container = TestUtils.createAccordion();
-      const element = container.querySelector('[data-accordion]');
+      const element = container.querySelector('[data-insight-accordion]');
       const accordion = new InsightUI.Accordion(element);
 
       expect(typeof accordion.destroy).toBe('function');
@@ -86,7 +86,7 @@ describe('Component Lifecycle - destroy() methods', () => {
 
     it('should remove button event listeners on destroy', () => {
       const container = TestUtils.createAccordion();
-      const element = container.querySelector('[data-accordion]');
+      const element = container.querySelector('[data-insight-accordion]');
       const accordion = new InsightUI.Accordion(element);
       const buttons = element.querySelectorAll('button[aria-controls]');
 
@@ -104,7 +104,7 @@ describe('Component Lifecycle - destroy() methods', () => {
 
     it('should remove instance from WeakMap on destroy', () => {
       const container = TestUtils.createAccordion();
-      const element = container.querySelector('[data-accordion]');
+      const element = container.querySelector('[data-insight-accordion]');
       const accordion = new InsightUI.Accordion(element);
 
       expect(InsightUI.Accordion.instances.has(element)).toBe(true);
@@ -168,7 +168,7 @@ describe('Component Lifecycle - destroy() methods', () => {
 
     it('should have a destroy method', () => {
       const container = TestUtils.createModal();
-      const button = container.querySelector('[data-insight-toggle="modal"]');
+      const button = container.querySelector('[data-insight-modal]');
       const modal = new InsightUI.Modal(button);
 
       expect(typeof modal.destroy).toBe('function');
@@ -176,7 +176,7 @@ describe('Component Lifecycle - destroy() methods', () => {
 
     it('should close modal if open on destroy', () => {
       const container = TestUtils.createModal();
-      const button = container.querySelector('[data-insight-toggle="modal"]');
+      const button = container.querySelector('[data-insight-modal]');
       const modal = new InsightUI.Modal(button);
 
       modal.open();
@@ -188,7 +188,7 @@ describe('Component Lifecycle - destroy() methods', () => {
 
     it('should remove instance from WeakMap on destroy', () => {
       const container = TestUtils.createModal();
-      const button = container.querySelector('[data-insight-toggle="modal"]');
+      const button = container.querySelector('[data-insight-modal]');
       const modal = new InsightUI.Modal(button);
 
       expect(InsightUI.Modal.instances.has(button)).toBe(true);
@@ -211,10 +211,10 @@ describe('Component Lifecycle - global listener cleanup', () => {
 
     it('should remove window scroll listener on destroy', () => {
       const container = TestUtils.createDOM(`
-        <button data-popover="test-popover">Trigger</button>
+        <button data-insight-popover="test-popover">Trigger</button>
         <div id="test-popover">Popover content</div>
       `);
-      const trigger = container.querySelector('[data-popover]');
+      const trigger = container.querySelector('[data-insight-popover]');
       const floater = new InsightUI.Floater(trigger, 'popover');
 
       const removeEventListenerSpy = vi.spyOn(window, 'removeEventListener');
@@ -232,7 +232,7 @@ describe('Component Lifecycle - global listener cleanup', () => {
 
     it('should remove document mousemove listener on destroy when autoClose', () => {
       const container = TestUtils.createDOM(`
-        <div data-insight-sidebar="left" data-insight-sidebar-static="False">
+        <div data-insight-sidebar="left" data-static="False">
           <aside data-auto-close="true">Sidebar content</aside>
         </div>
       `);
@@ -253,7 +253,7 @@ describe('Component Lifecycle - global listener cleanup', () => {
 
     it('should remove document.body htmx:afterSwap listener on destroy', () => {
       const container = TestUtils.createDOM(`
-        <div data-tabs>
+        <div data-insight-tabs>
           <div>
             <button>Tab 1</button>
             <button>Tab 2</button>
@@ -261,7 +261,7 @@ describe('Component Lifecycle - global listener cleanup', () => {
           <div id="tab-content">Content</div>
         </div>
       `);
-      const tabBar = container.querySelector('[data-tabs]');
+      const tabBar = container.querySelector('[data-insight-tabs]');
       const tabs = new InsightUI.Tabs(tabBar);
 
       const removeEventListenerSpy = vi.spyOn(document.body, 'removeEventListener');

@@ -60,22 +60,68 @@
 }
 
 @layer base {
+    /* Color scheme for native browser elements (scrollbars, date pickers, etc.) */
+    :root {
+        color-scheme: light;
+    }
+
+    [data-theme="dark"] {
+        color-scheme: dark;
+    }
+
+    /* Custom scrollbar styling for Chromium browsers */
+    ::-webkit-scrollbar {
+        width: 12px;
+        height: 12px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 6px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 6px;
+        border: 2px solid #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #a1a1a1;
+    }
+
+    [data-theme="dark"] ::-webkit-scrollbar-track,
+    [data-theme="dark"]::-webkit-scrollbar-track {
+        background: #1f2937;
+    }
+
+    [data-theme="dark"] ::-webkit-scrollbar-thumb,
+    [data-theme="dark"]::-webkit-scrollbar-thumb {
+        background: #4b5563;
+        border-color: #1f2937;
+    }
+
+    [data-theme="dark"] ::-webkit-scrollbar-thumb:hover,
+    [data-theme="dark"]::-webkit-scrollbar-thumb:hover {
+        background: #6b7280;
+    }
+
     button:not(:disabled), [role="button"]:not(:disabled) { cursor: pointer; }
 
     h1 {
-        @apply text-3xl font-bold text-insight-text-primary dark:text-white mb-4;
+        @apply text-3xl font-bold text-insight-text-primary dark:text-white pb-4;
     }
     h2 {
-        @apply text-2xl font-semibold text-insight-text-primary dark:text-white mb-4;
+        @apply text-2xl font-semibold text-insight-text-primary dark:text-white pb-4;
     }
     h3 {
-        @apply text-xl font-semibold text-insight-text-primary dark:text-white mb-2;
+        @apply text-xl font-semibold text-insight-text-primary dark:text-white pb-2;
     }
     h4 {
-        @apply text-lg font-semibold text-insight-text-primary dark:text-white mb-1;
+        @apply text-lg font-semibold text-insight-text-primary dark:text-white pb-1;
     }
     h5 {
-        @apply text-base font-semibold text-insight-text-primary dark:text-white mb-1;
+        @apply text-base font-semibold text-insight-text-primary dark:text-white pb-1;
     }
     hr {
         @apply text-gray-300 dark:text-gray-600;
@@ -102,8 +148,11 @@
     .btn-sm {
         @apply text-sm px-4 py-1;
     }
-    .btn-large {
+    .btn-l {
         @apply text-lg px-6 py-2;
+    }
+    .btn-xl {
+        @apply text-lg px-8 py-3;
     }
     .btn-square {
         @apply p-2 border-0;
@@ -177,11 +226,11 @@
     }
 
     .info-container {
-        @apply bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 border-s-4 border-s-insight-info dark:border-s-insight-info rounded-e-sm px-4 py-1;
+        @apply bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 border-s-4 rounded-e-sm text-base px-4 py-1;
     }
 
     .inline-tag {
-        @apply bg-gray-200 dark:bg-gray-800 text-insight-primary rounded px-2 py-0.5;
+        @apply bg-gray-200 dark:bg-gray-700 font-mono text-insight-primary dark:text-insight-primary-active text-nowrap rounded-sm px-1 py-px;
     }
 
     .input {
@@ -190,24 +239,30 @@
 
     .slider-wrapper {
         --range-progress: 0%;
+        --slider-track-active: #3b82f6;
+        --slider-track-inactive: #e5e7eb;
+    }
+
+    .dark .slider-wrapper {
+        --slider-track-inactive: #374151;
     }
 
     .range-custom::-webkit-slider-runnable-track {
         @apply h-2 rounded-md;
-        background: linear-gradient(to right, #3b82f6 var(--range-progress), #e5e7eb var(--range-progress));
+        background: linear-gradient(to right, var(--slider-track-active) var(--range-progress), var(--slider-track-inactive) var(--range-progress));
     }
 
     .range-custom::-moz-range-track {
         @apply h-2 rounded-md;
-        background: linear-gradient(to right, #3b82f6 var(--range-progress), #e5e7eb var(--range-progress));
+        background: linear-gradient(to right, var(--slider-track-active) var(--range-progress), var(--slider-track-inactive) var(--range-progress));
     }
 
     html[dir='rtl'] .range-custom::-webkit-slider-runnable-track {
-        background: linear-gradient(to left, #3b82f6 var(--range-progress), #e5e7eb var(--range-progress));
+        background: linear-gradient(to left, var(--slider-track-active) var(--range-progress), var(--slider-track-inactive) var(--range-progress));
     }
 
-      html[dir='rtl'] .range-custom::-moz-range-track {
-        background: linear-gradient(to left, #3b82f6 var(--range-progress), #e5e7eb var(--range-progress));
+    html[dir='rtl'] .range-custom::-moz-range-track {
+        background: linear-gradient(to left, var(--slider-track-active) var(--range-progress), var(--slider-track-inactive) var(--range-progress));
     }
 
     .range-custom::-webkit-slider-thumb {

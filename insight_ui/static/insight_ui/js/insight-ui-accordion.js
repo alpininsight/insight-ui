@@ -11,7 +11,7 @@ export class Accordion {
 
         this.element = element;
         this.buttons = Array.from(element.querySelectorAll("button[aria-controls]"));
-        this.exclusive = element.getAttribute("data-accordion-exclusive") === "true";
+        this.exclusive = element.getAttribute("data-exclusive") === "true";
 
         // Store bound handlers for cleanup
         this.boundButtonHandlers = [];
@@ -88,7 +88,7 @@ export class Accordion {
 
     closePanel(button, panel) {
         button.setAttribute("aria-expanded", "false");
-        button.querySelector("svg")?.classList.remove("rotate-180");
+        button.querySelector("div")?.classList.remove("rotate-180");
 
         panel.style.height = panel.scrollHeight + "px";
         panel.offsetHeight; // Force reflow
@@ -110,7 +110,7 @@ export class Accordion {
 
     openPanel(button, panel, scroll = true) {
         button.setAttribute("aria-expanded", "true");
-        button.querySelector("svg")?.classList.add("rotate-180");
+        button.querySelector("div")?.classList.add("rotate-180");
 
         panel.style.transition = "none";
         panel.style.height = "auto";
@@ -182,6 +182,6 @@ export class Accordion {
 
     // Static method for initializing all accordions
     static initAll() {
-        document.querySelectorAll("[data-accordion]").forEach(el => new Accordion(el));
+        document.querySelectorAll("[data-insight-accordion]").forEach(el => new Accordion(el));
     }
 }

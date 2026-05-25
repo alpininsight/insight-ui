@@ -5,11 +5,9 @@
   <button
     data-sidebar-target="{{ side }}"
     aria-label="{% trans 'Open sidebar' %}"
-    class="open-btn fixed top-20 {% if side == "right" %}ltr:right-4 rtl:left-4{% else %}ltr:left-4 rtl:right-4{% endif %} z-40 text-white bg-insight-primary rounded-full shadow p-2 hover:bg-insight-primary-hover active:bg-insight-primary-active"
+    class="open-btn fixed top-20 {% if side == "right" %}ltr:right-4 rtl:left-4{% else %}ltr:left-4 rtl:right-4 rotate-180{% endif %} z-40 text-white bg-insight-primary rounded-full shadow p-2 hover:bg-insight-primary-hover active:bg-insight-primary-active"
   >
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true" class="size-5 {% if side == "right" %}rotate-180 rtl:rotate-0{% else %}rtl:rotate-180{% endif %}">
-      <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-    </svg>
+    {% icon name="chevron_left" size="s" %}
   </button>
 {% endif %}
 
@@ -17,7 +15,7 @@
 <div
   id="{{ side }}-sidebar"
   data-insight-sidebar="{{ side }}"
-  data-insight-sidebar-static="{{ static }}"
+  data-static="{{ static }}"
   class="{% if not static %}fixed inset-0 z-50 hidden{% endif %}"
 >
   {% comment %} Backdrop for main content area (only for drawers) {% endcomment %}
@@ -54,43 +52,47 @@
               aria-label="{% trans 'Close sidebar' %}"
               data-insight-dismiss="sidebar"
             >
-              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              {% icon name="x-mark" size="xs" %}
             </button>
           {% endif %}
         </div>
         {% comment %} Sidebar body {% endcomment %}
         <div>
           <nav class="space-y-2">
-            {% for category in sidebar_data.categories %}
-              <div>
-                <div class="flex gap-1 pt-4 pb-2 text-insight-primary-hover">
-                  {% if category.icon %}
-                    {% icon category.icon %}
-                  {% endif %}
-                  <span class="font-semibold">{{ category.caption }}</span>
-                </div>
-                {% for item in category.items %}
-                  <a
-                    {% if item.htmx %}
-                      hx-get="{{ item.url }}"
-                      hx-target="{{ item.htmx.target }}"
-                      hx-swap="{{ item.htmx.swap|default:'innerHTML' }} show:window:top"
-                      hx-push-url="true"
-                      hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
+            <ul>
+              {% for category in sidebar_data.categories %}
+                <li>
+                  <div class="flex gap-1 pt-4 pb-2 text-insight-primary-hover">
+                    {% if category.icon %}
+                      {% icon category.icon %}
                     {% endif %}
-                    href="{{ item.url }}"
-                    class="flex gap-2 px-2 py-1 border-s text-sm text-primary border-gray-200 dark:border-gray-700 hover:border-gray-400 hover:text-gray-400"
-                  >
-                    {% if item.icon %}
-                      {% icon item.icon %}
-                    {% endif %}
-                    {{ item.text }}
-                  </a>
-                {% endfor %}
-              </div>
-            {% endfor %}
+                    <span class="font-semibold">{{ category.caption }}</span>
+                  </div>
+                  <ul>
+                    {% for item in category.items %}
+                      <li data-insight-side-nav>
+                        <a
+                          {% if item.htmx %}
+                            hx-get="{{ item.url }}"
+                            hx-target="{{ item.htmx.target }}"
+                            hx-swap="{{ item.htmx.swap|default:'innerHTML' }} show:window:top"
+                            hx-push-url="true"
+                            hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
+                          {% endif %}
+                          href="{{ item.url }}"
+                          class="flex gap-2 px-2 py-1 text-sm text-primary {% if item.is_selected %}font-semibold bg-gray-100 dark:bg-gray-700 border-s-2 border-insight-primary hover:border-insight-primary-hover{% else %}border-s border-gray-200 dark:border-gray-700 hover:border-gray-400 hover:text-gray-400{% endif %}"
+                        >
+                          {% if item.icon %}
+                            {% icon item.icon %}
+                          {% endif %}
+                          {{ item.text }}
+                        </a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </li>
+              {% endfor %}
+            </ul>
           </nav>
         </div>
       {% endblock sidebar_content %}

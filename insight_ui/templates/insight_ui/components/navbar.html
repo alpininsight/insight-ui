@@ -1,4 +1,4 @@
-{% load static insight_tags i18n %}
+{% load i18n insight_tags %}
 
 <!-- Skip-Link for Accessibility, placed BEFORE nav -->
 <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-blue-600 text-white p-2 rounded">
@@ -16,30 +16,7 @@
     {% if brand %}
       <a href="{{ brand.href }}" class="flex items-center text-xl font-bold text-primary" style="gap: {{ brand.gap|default:'0.5rem' }}">
         {% if brand.logo %}
-          <img
-            id="brand-logo"
-            src="{% static brand.logo.url %}"
-            data-light-src="{% static brand.logo.url %}"
-            data-dark-src="{% static brand.logo.url_dark %}"
-            alt="{{ brand.logo.alt }}"
-            style="height: {{ brand.logo.height|default:'2rem' }}"
-          >
-          <script>
-            document.addEventListener("DOMContentLoaded", function() {
-              const root = document.documentElement;
-              const logo = document.getElementById("brand-logo");
-
-              function updateLogo() {
-                const theme = root.getAttribute("data-theme") || "light";
-                logo.src = theme === "dark" ? logo.dataset.darkSrc : logo.dataset.lightSrc;
-              }
-
-              updateLogo();
-
-              const observer = new MutationObserver(updateLogo);
-              observer.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
-            });
-          </script>
+          {% logo config=brand.logo %}
         {% endif %}
         <span>{{ brand.title }}</span>
       </a>
@@ -53,12 +30,9 @@
         aria-expanded="false"
         aria-controls="navigation-menu"
         aria-label="{% trans 'Open menu' %}"
-        data-insight-toggle="collapsible"
-        data-insight-target="navigation-menu"
+        data-insight-collapsible="navigation-menu"
       >
-        <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
+        {% icon name="bars" %}
       </button>
     </div>
 
@@ -69,11 +43,11 @@
           <ul class="flex flex-col lg:flex-row justify-items-stretch lg:items-center w-full lg:w-fit">
             {% for link in links %}
               {% if not link.need_auth or options.user.is_authenticated and not link.staff_only or options.user.is_staff %}
-                <li>
+                <li data-insight-nav>
                   {% if link.view_name or link.href %}
                     <a
                       href="{{ link.href }}"
-                      class="flex gap-2 h-full whitespace-nowrap {% if link.active %}text-insight-text-link{% else %}text-secondary hover:text-insight-text-link{% endif %} px-4 py-2 text-sm transition-colors duration-200"
+                      class="flex gap-2 h-full whitespace-nowrap text-secondary hover:text-insight-text-link px-4 py-2 text-sm transition-colors duration-200"
                       {% if link.active %}aria-current="page"{% endif %}
                       {% if link.external %}target="_blank" rel="noopener"{% endif %}
                     >
@@ -84,13 +58,13 @@
                     </a>
                   {% elif link.open_dropdown %}
                     <div class="relative">
-                      <button data-dropdown-toggle="{{ link.open_dropdown }}" class="flex gap-2 h-full whitespace-nowrap {% if link.active %}text-insight-text-link{% else %}text-secondary hover:text-insight-text-link{% endif %} px-4 py-2 text-sm transition-colors duration-200">
+                      <button data-insight-dropdown="{{ link.open_dropdown }}" class="flex gap-2 h-full whitespace-nowrap {% if link.active %}text-insight-text-link{% else %}text-secondary hover:text-insight-text-link{% endif %} px-4 py-2 text-sm transition-colors duration-200">
                         {% if link.icon %}
                           {% icon link.icon %}
                         {% endif %}
                         {{ link.text }}
                         {% if link.chevron %}
-                          {% icon name="chevron_down" size="small" %}
+                          {% icon name="chevron_down" size="s" %}
                         {% endif %}
                       </button>
                       <div id="{{ link.open_dropdown }}" class="hidden bg-white border border-gray-300 dark:border-0 rounded-sm shadow-lg">
@@ -115,8 +89,8 @@
                   {% elif link.open_modal %}
                     <button
                       class="text-secondary hover:text-insight-text-link px-4 py-2 text-sm transition-colors duration-200"
-                      data-insight-toggle="modal"
-                      data-insight-target="{{ link.open_modal }}">
+                      data-insight-modal="{{ link.open_modal }}"
+                    >
                       {{ link.text }}
                     </button>
                     {% modal tag_id=link.open_modal title=_("Insight UI") description=_("Lorem ipsum...") %}

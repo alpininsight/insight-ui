@@ -1,9 +1,9 @@
 {% load i18n insight_tags %}
 
 <div
-    data-3D-carousel="{{ id }}"
-    data-carousel-velocity="{{ velocity|default:1000 }}"
-    data-carousel-face-camera="{{ face_camera|yesno:'true,false' }}"
+    data-insight-3D-carousel="{{ id }}"
+    data-velocity="{{ velocity|default:1000 }}"
+    data-face-camera="{{ face_camera|yesno:'true,false' }}"
     class="carousel_wrapper relative size-full overflow-hidden"
 >
     <div style="--quantity: {{ carousel_items|length }}; --carousel-tilt: {{ tilt }}deg" class="threeD_carousel absolute top-5 left-1/2 h-[35vh] w-full">
@@ -18,16 +18,10 @@
     <!-- Controls -->
     <div class="absolute flex justify-between gap-4 bottom-10 sm:bottom-10 left-1/2 -translate-x-1/2 px-8 lg:px-0">
         <button class="btn btn-primary">
-            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 rtl:rotate-180">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-            </svg>
-            {% trans 'Back' %}
+            {% icon name="chevron_left" %}{% trans 'Back' %}
         </button>
         <button class="btn btn-primary">
-            {% trans 'Next' %}
-            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 rtl:rotate-180">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-            </svg>
+            {% trans 'Next' %}{% icon name="chevron_right" %}
         </button>
     </div>
 </div>

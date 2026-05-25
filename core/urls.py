@@ -1,15 +1,11 @@
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from django.http import HttpRequest, HttpResponse
 from django.urls import include, path
+from django.views.i18n import JavaScriptCatalog
 from insight_ui.component_details.demo_context import get_login_screen_context
 
-
-def health(request: HttpRequest) -> HttpResponse:
-    """Health check endpoint for Kubernetes probes."""
-    return HttpResponse("OK", content_type="text/plain")
-
+from core.runtime_views import api_info_view, healthz_view, readyz_view
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -19,8 +15,14 @@ urlpatterns = [
         auth_views.LoginView.as_view(template_name="insight_ui/login.html", extra_context=get_login_screen_context()),
         name="login",
     ),
-    path("healthz/", health, name="health"),
+    path("healthz", healthz_view, name="healthz"),
+    path("healthz/", healthz_view),
+    path("readyz", readyz_view, name="readyz"),
+    path("readyz/", readyz_view),
+    path("api/info", api_info_view, name="api_info"),
+    path("api/info/", api_info_view),
     path("i18n/", include("django.conf.urls.i18n")),
+    path("jsi18n/", JavaScriptCatalog.as_view(), name="javascript-catalog"),
     path("", include("insight_ui.urls")),
 ]
 

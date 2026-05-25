@@ -1,11 +1,13 @@
+{% load insight_tags %}
+
 <div
-  data-accordion="{{ group_id }}"
-  data-accordion-exclusive="{{ exclusive|yesno:'true,false' }}"
+  data-insight-accordion="{{ tag_id }}"
+  data-exclusive="{{ exclusive|yesno:'true,false' }}"
   class="rounded-sm overflow-hidden"
 >
   {% for item in items %}
     {% with forloop.counter0|stringformat:"s" as idx %}
-      {% with group_id|add:"-panel-"|add:idx as panel_id %}
+      {% with tag_id|add:"-panel-"|add:idx as panel_id %}
         <div class="bg-white dark:bg-gray-800">
           <h3 class="text-primary mb-1">
             <button
@@ -15,9 +17,9 @@
               id="{{ panel_id }}-header"
             >
               <span>{{ item.title }}</span>
-              <svg class="size-4 ml-2 transform transition-transform duration-300" aria-hidden="true" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 011.08 1.04l-4.25 4.25a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-              </svg>
+              <div class="ml-2 transform transition-transform duration-300">
+                {% icon name="chevron_down" size="xs" %}
+              </div>
             </button>
           </h3>
           <div

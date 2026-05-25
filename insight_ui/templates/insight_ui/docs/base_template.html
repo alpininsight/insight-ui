@@ -50,12 +50,7 @@
                     </li>
                 </ul>
 
-                <p class="info-container text-base mt-4">
-                    <span class="block font-bold italic text-lg">Info:</span>
-                    {% blocktrans with bold_text='<b>INSIGHT_UI</b>'|safe file='<span class="inline-tag">settings.py</span>'|safe %}
-                        The favicon, SEO settings and other meta information can be adjusted via the {{ bold_text }} settings in {{ file }}.
-                    {% endblocktrans %}
-                </p>
+                {% infobox message=_("The favicon, SEO settings and other meta information can be adjusted via the **INSIGHT_UI** settings in `settings.py`") %}
             </div>
         </section>
         <section class="space-y-12">
@@ -104,12 +99,9 @@
                     </li>
                 </ul>
 
-                <p class="info-container text-base mt-4">
-                    <span class="block font-bold italic text-lg">Info:</span>
-                    {% blocktrans with block_title='<span class="inline-tag">&lcub;% block title %&rcub;</span>'|safe block_content='<span class="inline-tag">&lcub;% block content %&rcub;</span>'|safe %}
-                        These blocks do not necessarily have to be used, but it is recommended as they bring some structural benefits. Theoretically everything could also go into {{ block_title }}. Additional JavaScript libraries can be linked if needed, wrapped in {{ block_content }}.
-                    {% endblocktrans %}
-                </p>
+                {% with block_title='<span class="inline-tag">&lcub;% block title %&rcub;</span>'|safe block_content='<span class="inline-tag">&lcub;% block content %&rcub;</span>'|safe %}
+                    {% infobox message=_("These blocks do not necessarily have to be used, but it is recommended as they bring some structural benefits. Theoretically everything could also go into {block_title}. Additional JavaScript libraries can be linked if needed, wrapped in {block_content}.") block_title=block_title block_content=block_content %}
+                {% endwith %}
             </div>
 
             <section class="space-y-4">
@@ -221,12 +213,14 @@
                 </i>
             </section>
             <section class="space-y-4">
-                <h3>content</h3>
+                <h3>&lcub;% block heading %&rcub;</h3>
+                <p>{% trans "This block is intended for the heading of the main content of the page." %}</p>
+            </section>
+            <section class="space-y-4">
+                <h3>&lcub;% block content %&rcub;</h3>
                 <p>{% trans "This block is intended for the main content of the page." %}</p>
-                <p class="info-container text-base mt-4">
-                    <span class="block font-bold italic text-lg">{% trans "Info:" %}</span>
-                    {% trans "The block always takes up the full height of the window, regardless of the content. This ensures that the footer does not float in the middle of the browser window but is pushed to the bottom." %}
-                </p>
+
+                {% infobox message="The block always takes up the full height of the window, regardless of the content. This ensures that the footer does not float in the middle of the browser window but is pushed to the bottom." %}
             </section>
             <section class="space-y-4">
                 <h3>&lcub;% block footer %&rcub;</h3>

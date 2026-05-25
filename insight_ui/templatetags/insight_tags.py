@@ -1,15 +1,18 @@
 """Template-Tags for Insight UI-Components."""
 
 import math
-from collections.abc import Mapping, Sequence
+from collections.abc import Iterable, Mapping, Sequence
 from copy import deepcopy
 from difflib import HtmlDiff, ndiff, unified_diff
 from typing import Any
 
 from django import template
 from django.core.paginator import Page
+from django.templatetags.static import static
 from django.urls import reverse
+from django.utils.functional import Promise
 from django.utils.safestring import SafeString, mark_safe
+from django.utils.translation import gettext as _
 from markdown import markdown
 
 from insight_ui.config import get_config
@@ -104,6 +107,155 @@ def icon(name: str = "", size: str = "") -> dict[str, Any]:
         return {"name": name.get("name", ""), "size": name.get("size", "")}
 
     return {"name": name, "size": size}
+
+
+def _resolve_asset_url(value: object) -> str:
+    """Resolve static asset paths while preserving absolute, root-relative, and data URLs."""
+    if not value:
+        return ""
+
+    url = str(value)
+    if url.startswith(("http://", "https://", "/", "data:")):
+        return url
+
+    return static(url)
+
+
+@register.inclusion_tag("insight_ui/components/logo.html")
+def logo(  # noqa: PLR0913 (too many arguments)
+    logo_type: str | None = None,
+    url: str | None = None,
+    url_dark: str | None = None,
+    alt: str | None = None,
+    icon_name: str | None = None,
+    icon_size: str | None = None,
+    height: str | None = None,
+    width: str | None = None,
+    css_class: str | None = None,
+    config: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """
+    Render a brand logo as an image, SVG asset, or Insight UI icon.
+
+    Args:
+    ----
+        logo_type (str): One of 'image', 'svg', or 'icon'. In config dictionaries, 'type' is also supported.
+        url (str): Static, absolute, root-relative, or data URL for image/svg logos.
+        url_dark (str): Optional dark-theme URL for image/svg logos.
+        alt (str): Accessible text. Empty values mark image/svg logos as decorative.
+        icon_name (str): Insight UI icon name when logo_type is 'icon'.
+        icon_size (str): Insight UI icon size when logo_type is 'icon'.
+        height (str): CSS height for image/svg logos.
+        width (str): Optional CSS width for image/svg logos.
+        css_class (str): Extra classes for the rendered logo root.
+        config (dict[str, Any]): Alternative configuration with keys corresponding to the previous parameters.
+
+    Returns:
+    -------
+        A dict with context variables for the template.
+
+    """
+    if config is not None:
+        logo_type = config.get("type", config.get("logo_type", logo_type))
+        url = config.get("url", config.get("src", url))
+        url_dark = config.get("url_dark", config.get("src_dark", url_dark))
+        alt = config.get("alt", alt)
+        icon_size = config.get("icon_size", icon_size)
+        height = config.get("height", height)
+        width = config.get("width", width)
+        css_class = config.get("class", config.get("css_class", css_class))
+
+        icon_config = config.get("icon")
+        if isinstance(icon_config, Mapping):
+            icon_name = icon_config.get("name", icon_name)
+            icon_size = icon_config.get("size", icon_size)
+        elif isinstance(icon_config, str):
+            icon_name = icon_config
+
+        icon_name = config.get("icon_name", icon_name)
+
+    inferred_type = logo_type or (
+        "icon" if icon_name else "svg" if str(url or "").lower().endswith(".svg") else "image"
+    )
+    normalized_type = str(inferred_type).strip().lower()
+    if normalized_type not in {"image", "svg", "icon"}:
+        normalized_type = "image"
+
+    src = _resolve_asset_url(url)
+    dark_src = _resolve_asset_url(url_dark)
+
+    return {
+        "type": normalized_type,
+        "src": src,
+        "dark_src": dark_src,
+        "has_dark_variant": bool(dark_src and dark_src != src),
+        "alt": alt or "",
+        "icon": {"name": icon_name or "", "size": icon_size or "m"},
+        "height": height or "2rem",
+        "width": width or "",
+        "css_class": css_class or "",
+    }
+
+
+@register.inclusion_tag("insight_ui/components/copyright_notice.html")
+def copyright_notice(  # noqa: PLR0913
+    year: int | str | None = None,
+    holder: str | None = None,
+    app_name: str | None = None,
+    source_label: str | None = None,
+    license_text: str | None = None,
+    license_url: str | None = None,
+    separator: str | None = None,
+    rights_text: str | None = None,
+    css_class: str | None = None,
+    config: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """
+    Render a reusable copyright and legal notice line.
+
+    Args:
+    ----
+        year: Optional copyright year.
+        holder: Copyright holder name.
+        app_name: Backwards-compatible fallback for the holder name.
+        source_label: Optional source/distribution label, for example "Open Source".
+        license_text: Optional license label.
+        license_url: Optional URL for the license label.
+        separator: Separator between legal metadata parts. Defaults to a middle dot.
+        rights_text: Optional rights statement.
+        css_class: Additional CSS classes for the rendered notice.
+        config: Alternative dictionary-based configuration for all parameters.
+
+    Returns:
+    -------
+        A dict with context variables for the template.
+
+    """
+    if config is not None:
+        year = config.get("year", year)
+        holder = config.get("holder", holder)
+        app_name = config.get("app_name", app_name)
+        source_label = config.get("source_label", source_label)
+        license_text = config.get("license_text", license_text)
+        license_url = config.get("license_url", license_url)
+        separator = config.get("separator", separator)
+        rights_text = config.get("rights_text", rights_text)
+        css_class = config.get("class", config.get("css_class", css_class))
+
+    notice_holder = holder or app_name or ""
+    metadata = [
+        {"text": source_label or "", "url": ""},
+        {"text": license_text or "", "url": license_url or ""},
+        {"text": rights_text or _("All rights reserved."), "url": ""},
+    ]
+
+    return {
+        "year": year or "",
+        "holder": notice_holder,
+        "metadata": [item for item in metadata if item["text"]],
+        "separator": separator or "\u00b7",
+        "css_class": css_class or "",
+    }
 
 
 @register.filter
@@ -446,55 +598,25 @@ def checkbox_group(config: dict) -> dict:
 
 
 @register.inclusion_tag("insight_ui/components/radio_group.html")
-def radio_group(config: dict, current_value: str) -> dict:
-    """
-    Render a group of radio buttons.
-
-    Arguments:
-    ---------
-        config (dict): Describes the radio component and its items.
-        current_value (str): The name of the currently selected radio button.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {
-        "name": config.get("name"),
-        "label": config.get("label"),
-        "as_row": config.get("as_row"),
-        "items": config.get("items"),
-        "current_value": current_value,
-    }
-
-
-@register.inclusion_tag("insight_ui/components/radio_block.html")
-def radio_block(  # noqa: PLR0913 (too many arguments)
-    config: dict,
-    current_value: str,
+def radio_group(  # noqa: PLR0913 (too many arguments)
     name: str = "",
-    view_name: str = "",
-    query_params: str = "",
-    hx_target_id: str = "",
-    hx_swap_method: str = "",
-    method: str = "",
-    integrated: bool = False,
+    label: str = "",
+    items: list[dict[str, Any]] = [],
+    as_row: bool = True,
+    current_value: str = "",
+    config: dict[str, Any] = {},
 ) -> dict:
     """
     Render a group of radio buttons.
 
     Arguments:
     ---------
-        config (dict): Describes the radio component and its items.
+        name (str): The name of the radio group, required for identification in requests etc.
+        label (str): A label text that is displayed above the radio buttons.
+        items (list[dict[str, Any]]): A list of radio-button configurations.
+        as_row (bool): 'False' if the elements are to be arranged in a column.
         current_value (str): The name of the currently selected radio button.
-        name (str): The name of the entire radio block, required for referencing in JavaScript code.
-        view_name (str): The name of the view to which the request should be sent when switching.
-        query_params (str): A string of query parameters.
-        hx_target_id (str): The ID of the HTML tag that should be replaced when the value changes.
-        hx_swap_method (str): The way in which the target is to be replaced (see: https://htmx.org/attributes/hx-swap/).
-        method (str): The name of the JavaScript method to be executed.
-        integrated (bool): 'False' if the component should have its own <form> element.
+        config (dict[str, Any]): An alternative configuration with keys corresponding to the previous parameters.
 
     Returns:
     -------
@@ -503,11 +625,69 @@ def radio_block(  # noqa: PLR0913 (too many arguments)
     """
     if config is not None:
         name = config.get("name", name)
+        label = config.get("label", label)
+        items = config.get("items", items)
+        as_row = config.get("as_row", as_row)
+        current_value = config.get("current_value", current_value)
+
+    return {"name": name, "label": label, "items": items, "as_row": as_row, "current_value": current_value}
+
+
+@register.inclusion_tag("insight_ui/components/radio_block.html")
+def radio_block(  # noqa: PLR0913 (too many arguments)
+    name: str = "",
+    label: str = "",
+    items: list[dict[str, Any]] = [],
+    integrated: bool = False,
+    as_row: bool = True,
+    view_name: str = "",
+    query_params: str = "",
+    hx_target_id: str = "",
+    hx_swap_method: str = "outerHTML",
+    method: str = "",
+    current_value: str = "",
+    config: dict[str, Any] = {},
+) -> dict:
+    """
+    Render a group of radio buttons.
+
+    Arguments:
+    ---------
+        name (str): The name of the entire radio block, required for referencing in JavaScript code.
+        label (str): A label text that is displayed above the radio buttons.
+        items (list[dict[str, Any]]): A list of radio-button configurations.
+        integrated (bool): 'False' if the component should have its own <form> element.
+        as_row (bool): 'False' if the elements are to be arranged in a column.
+        view_name (str): The name of the view to which the request should be sent when switching.
+        query_params (str): A string of query parameters.
+        hx_target_id (str): The ID of the HTML tag that should be replaced when the value changes.
+        hx_swap_method (str): The way in which the target is to be replaced (see: https://htmx.org/attributes/hx-swap/).
+        method (str): The name of the JavaScript method to be executed.
+        current_value (str): The name of the currently selected radio button.
+        config (dict[str, Any]): An alternative configuration with keys corresponding to the previous parameters.
+
+    Returns:
+    -------
+        A dict with context variables for the template.
+
+    """
+    if config is not None:
+        name = config.get("name", name)
+        label = config.get("label", label)
+        items = config.get("items", items)
+        integrated = config.get("integrated", integrated)
+        as_row = config.get("as_row", as_row)
+        view_name = config.get("view_name", view_name)
+        query_params = config.get("query_params", query_params)
+        hx_target_id = config.get("hx_target_id", hx_target_id)
+        hx_swap_method = config.get("hx_swap_method", hx_swap_method)
+        method = config.get("method", method)
+        current_value = config.get("current_value", current_value)
 
     return {
         "name": name,
-        "label": config.get("label"),
-        "items": config.get("items"),
+        "label": label,
+        "items": items,
         "current_value": current_value,
         "view_name": view_name,
         "query_params": query_params,
@@ -515,6 +695,7 @@ def radio_block(  # noqa: PLR0913 (too many arguments)
         "hx_swap_method": hx_swap_method,
         "method": method,
         "integrated": integrated,
+        "as_row": as_row,
     }
 
 
@@ -586,6 +767,10 @@ def slider(  # noqa: PLR0913 (too many arguments)
     label: str | None = None,
     disabled: bool | None = None,
     items: list[str] | None = None,
+    legend_mode: str | None = None,
+    dual: bool | None = None,
+    value_min: int | None = None,
+    value_max: int | None = None,
     config: dict | None = None,
 ) -> dict:
     """
@@ -595,13 +780,20 @@ def slider(  # noqa: PLR0913 (too many arguments)
     ---------
         tag_id (str): A unique ID for linking <input> and <label>, as well as JavaScript.
         name (str): Required for a <form> as the name of the request parameter.
-        value (int): The value of the slider.
+        value (int): The value of the slider (single-thumb mode only).
         minimum (int): The smallest value of the slider.
         maximum (int): The largest value of the slider.
         step_size (int): The size of the slider's steps.
         label (str): A label text that is displayed above the slider.
         disabled (bool): 'True' if the slider should be disabled, otherwise 'False'.
         items (list[str]): A list of texts that are displayed as captions below the slider.
+        legend_mode (str): Controls responsive legend behavior. Options:
+            - 'static' (default): No responsive adjustment, legend items are always visible.
+            - 'skip': Progressively hides legend items (every 2nd, then 4th, etc.) when space is limited.
+            - 'rotate': Rotates legend text vertically when space is limited.
+        dual (bool): If True, enables dual-thumb mode for range selection.
+        value_min (int): The minimum value in dual-thumb mode (defaults to minimum).
+        value_max (int): The maximum value in dual-thumb mode (defaults to maximum).
         config (dict[str, Any]): An alternative configuration with keys corresponding to the previous parameters.
 
     Returns:
@@ -619,6 +811,10 @@ def slider(  # noqa: PLR0913 (too many arguments)
         label = config.get("label", label)
         disabled = config.get("disabled", disabled)
         items = config.get("items", items)
+        legend_mode = config.get("legend_mode", legend_mode)
+        dual = config.get("dual", dual)
+        value_min = config.get("value_min", value_min)
+        value_max = config.get("value_max", value_max)
 
     return {
         "tag_id": tag_id,
@@ -630,24 +826,28 @@ def slider(  # noqa: PLR0913 (too many arguments)
         "label": label,
         "disabled": disabled,
         "items": items,
+        "legend_mode": legend_mode,
+        "dual": dual,
+        "value_min": value_min,
+        "value_max": value_max,
     }
 
 
 @register.inclusion_tag("insight_ui/components/chat.html")
-def chat(view_name: str) -> dict:
+def chat(request_url: str) -> dict:
     """
     Render a chat with an input line and a place for the response.
 
     Arguments:
     ---------
-        view_name (str): The name of the view to which the request should be sent.
+        request_url (str): The URL to which the request should be sent.
 
     Returns:
     -------
         A dict with context variables for the template.
 
     """
-    return {"view_name": view_name}
+    return {"request_url": request_url}
 
 
 @register.inclusion_tag("insight_ui/components/geo_map.html")
@@ -678,7 +878,7 @@ def pagination(current_page: Page, surrounding_pages: list[int], ipp_config: dic
         current_page (Page): A pagination object generated by Django for the current page.
         surrounding_pages (list[int]): A list of neighboring pages.
             See: from insight_ui.utils.pagination import get_page
-        ipp_config (dict[str, Any]): Configuring an "Items per Page" select (select component).
+        ipp_config (dict[str, Any]): Configuration an "Items per Page" select (select component).
 
     Returns:
     -------
@@ -690,11 +890,10 @@ def pagination(current_page: Page, surrounding_pages: list[int], ipp_config: dic
 
 @register.inclusion_tag("insight_ui/components/generic_filter.html")
 def generic_filter(  # noqa: PLR0913 (too many arguments)
-    filters: list,
-    view_name: str,
-    hx_target: str = "",
-    hx_push_url: str = "true",
+    filters: list = [],
+    request_url: str = "",
     vertical: bool = False,
+    htmx_config: Mapping[str, Any] | None = None,
     query_params: dict[str, str] = {},
 ) -> dict:
     """
@@ -703,11 +902,10 @@ def generic_filter(  # noqa: PLR0913 (too many arguments)
     Arguments:
     ---------
         filters (list): A list of individual filters (<select> fields).
-        view_name (str): The name of the view to which the request should be sent.
-        hx_target (str): The ID of the container whose contents are to be exchanged by the response.
-        hx_push_url (str): "true" if the selected filter values should be mapped in the URL.
+        request_url (str): The URL to which the request should be sent.
         vertical (bool): 'True' if the filters should be arranged one above the other.
-        query_params (dict): A dictionary to set the values of the filters.
+        htmx_config ([str, str]): HTMX configuration for AJAX requests.
+        query_params (dict[str, str]): A dictionary to set the values of the filters.
 
     Returns:
     -------
@@ -716,10 +914,9 @@ def generic_filter(  # noqa: PLR0913 (too many arguments)
     """
     return {
         "filters": filters,
-        "view_name": view_name,
-        "hx_target": hx_target,
-        "hx_push_url": hx_push_url,
+        "request_url": request_url,
         "vertical": vertical,
+        "htmx": htmx_config,
         "query_params": query_params,
     }
 
@@ -744,13 +941,13 @@ def search_bar(request_view: str, simple: bool = False, search_query: str = "") 
 
 
 @register.inclusion_tag("insight_ui/components/search_query_builder/sq_builder.html")
-def sq_builder(model_fields: list) -> dict:
+def query_builder(model_fields: list[dict[str, Any]]) -> dict:
     """
     Render a filter that can be used to construct your own search query. Based on an SQL query.
 
     Arguments:
     ---------
-        model_fields (list): A list of model fields with possible operators, etc..
+        model_fields (list[dict[str, Any]]): A list of model fields with possible operators.
 
     Returns:
     -------
@@ -805,12 +1002,12 @@ def live_content(tag_id: str = "", url: str = "", interval: int = 10, initial_co
 @register.inclusion_tag("insight_ui/components/websocket.html")
 def insight_websocket(tag_id: str = "", url: str = "", initial_content: str = "") -> dict[str, Any]:
     """
-    Render a WebSocket component as a wrapper for the htmx v2 ws extension.
+    Render a WebSocket component as a thin wrapper for the HTMX ws extension.
 
     Args:
     ----
         tag_id: The ID of the WebSocket container.
-        url: The WebSocket URL (e.g. ws://localhost:8765).
+        url: The WebSocket endpoint URL (for example `/runtime/stream/`).
         initial_content: Initial content.
 
     Returns:
@@ -960,9 +1157,9 @@ def table(data: dict) -> dict[str, Any]:
 def modal(  # noqa: PLR0913 (too many args)
     tag_id: str,
     title: str,
-    description: str = "",
-    additional_content: str = "",
+    description: str | list[str] = [],
     actions: Sequence[Mapping[str, str]] = [],
+    width: int = 32,
 ) -> dict[str, Any]:
     """
     Render an accessible modal dialog.
@@ -971,21 +1168,25 @@ def modal(  # noqa: PLR0913 (too many args)
     ----
         tag_id (str): A unique ID for the modal.
         title (str): The title of the modal.
-        description (str): An optional description of the modal.
-        additional_content (str): The content of the modal.
+        description (list[str]): An optional text description of the modal.
         actions (list): A list of action buttons.
+        width (int): The maximum width of the dialog box relative to the screen in 'rem'.
 
     Returns:
     -------
         A dict with context variables for the template.
 
     """
+    # Convert a single string or a 'lazy translation objects' which is a Promise to a list.
+    if isinstance(description, (str, Promise)) or not isinstance(description, Iterable):
+        description = [description]
+
     return {
         "tag_id": tag_id,
         "title": title,
         "description": description,
-        "additional_content": additional_content,
         "actions": [dict(action) for action in actions] if actions is not None else [],
+        "width": width,
     }
 
 
@@ -1081,7 +1282,7 @@ def card(
 
 
 @register.inclusion_tag("insight_ui/components/cards/app_card.html")
-def app_card(  # noqa: PLR0913
+def app_card(  # noqa: PLR0913 (too many args)
     title: str,
     content: str,
     tags: list[str] = [],
@@ -1092,7 +1293,7 @@ def app_card(  # noqa: PLR0913
     """
     Render a vertically aligned card.
 
-    The card starts with a square image. Below it is the title and content,
+    The card starts with a fixed-height image preview. Below it is the title and content,
     as well as a list of tags, if specified. At the end, if available, the action buttons
     are displayed one above the other.
 
@@ -1114,7 +1315,7 @@ def app_card(  # noqa: PLR0913
 
 
 @register.inclusion_tag("insight_ui/components/cards/flip_card.html")
-def flip_card(  # noqa: PLR0913
+def flip_card(  # noqa: PLR0913 (too many args)
     title: str,
     content: str,
     tags: list[str] = [],
@@ -1200,18 +1401,19 @@ def footer(data: dict) -> dict[str, Any]:
         "links": data.get("links"),
         "contact": data.get("contact"),
         "copyright": data.get("copyright"),
+        "version": data.get("version"),
     }
 
 
 @register.inclusion_tag("insight_ui/components/accordion.html")
-def accordion(items: list, group_id: str = "accordion", exclusive: bool = True) -> dict:
+def accordion(items: list, tag_id: str = "accordion", exclusive: bool = True) -> dict:
     """
     Render an accordion that can have one or more sections open.
 
     Args:
     ----
         items (list): The individual sections with captions and content.
-        group_id (str): A unique ID for the accordion.
+        tag_id (str): A unique ID for the accordion.
         exclusive (bool): 'True' if only one area may be open at a time.
 
     Returns:
@@ -1219,7 +1421,7 @@ def accordion(items: list, group_id: str = "accordion", exclusive: bool = True) 
         A dict with context variables for the template.
 
     """
-    return {"items": items, "group_id": group_id, "exclusive": exclusive}
+    return {"items": items, "tag_id": tag_id, "exclusive": exclusive}
 
 
 @register.inclusion_tag("insight_ui/components/tabs.html")
@@ -1273,9 +1475,10 @@ def three_d_carousel(
 
 
 @register.inclusion_tag("insight_ui/components/select.html")
-def select(
+def select(  # noqa: PLR0913 (too many args)
     name: str | None = None,
     label: str | None = None,
+    explanation: str = "",
     options: list[str] | dict[str, str] | None = None,
     selected_option: str | None = None,
     config: dict[str, Any] | None = None,
@@ -1287,6 +1490,7 @@ def select(
     ----
         name (str): The name of the select element.
         label (str): A short title that appears above the select box.
+        explanation (str): A brief description of the filter that appears in a tooltip.
         options (list[str] or dict[str, str]): All values that can be selected.
         selected_option (str): A value that has already been selected.
         config (dict[str, Any]): An alternative configuration with keys corresponding to the previous parameters.
@@ -1299,13 +1503,20 @@ def select(
     if config is not None:
         name = config.get("name", name)
         label = config.get("label", label)
+        explanation = config.get("explanation", explanation)
         options = config.get("options", options)
         selected_option = config.get("selected_option", selected_option)
 
     if isinstance(options, list):
         options = dict(zip(options, options))
 
-    return {"name": name, "label": label, "options": options, "selected_option": selected_option}
+    return {
+        "name": name,
+        "label": label,
+        "explanation": explanation,
+        "options": options,
+        "selected_option": selected_option,
+    }
 
 
 @register.inclusion_tag("insight_ui/components/multiselect.html")
@@ -1358,7 +1569,7 @@ def multiselect(  # noqa: PLR0913 (too many arguments)
 
 
 @register.inclusion_tag("insight_ui/components/page_header.html")
-def page_header(title: str = "", description: str = "") -> dict[str, Any]:
+def page_header(title: str = "", description: str | list[str] = []) -> dict[str, Any]:
     """
     Render a page header for the blue header in the base template.
 
@@ -1372,7 +1583,69 @@ def page_header(title: str = "", description: str = "") -> dict[str, Any]:
         A dict with context variables for the template.
 
     """
+    # Convert a single string or a 'lazy translation objects' which is a Promise to a list.
+    if isinstance(description, (str, Promise)) or not isinstance(description, Iterable):
+        description = [description]
+
     return {"title": title, "description": description}
+
+
+def _coerce_heading_decoration_height(value: object, default: int = 90) -> int:
+    """Return a positive integer height for the heading decoration."""
+    try:
+        height = int(value)
+    except (TypeError, ValueError):
+        return default
+
+    return max(height, 1)
+
+
+@register.inclusion_tag("insight_ui/components/heading_decoration.html")
+def heading_decoration(
+    style: str | None = None,
+    color: str | None = None,
+    image_url: str | None = None,
+    height: int | str | None = None,
+    config: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """
+    Render a decorative transition between the base-template heading and content area.
+
+    Args:
+    ----
+        style (str): One of 'waves', 'image', 'gradient', or 'none'. Defaults to 'waves'.
+        color (str): Optional CSS color override. Defaults to --color-insight-primary.
+        image_url (str): Optional background image URL used by the 'image' style.
+        height (int): Decoration height in px. Defaults to 90.
+        config (dict[str, Any]): Alternative configuration with keys corresponding to the previous parameters.
+
+    Returns:
+    -------
+        A dict with context variables for the template.
+
+    """
+    if config is not None:
+        style = config.get("style", style)
+        color = config.get("color", color)
+        image_url = config.get("image_url", image_url)
+        height = config.get("height", height)
+
+    normalized_style = (style or "waves").strip().lower()
+    if normalized_style not in {"waves", "image", "gradient", "none"}:
+        normalized_style = "waves"
+
+    height_px = _coerce_heading_decoration_height(height)
+    color_value = color or "var(--color-insight-primary, #3b82f6)"
+
+    return {
+        "style": normalized_style,
+        "color": color_value,
+        "image_url": image_url or "",
+        "height": height_px,
+        "wave_back_y": max(height_px - 25, 0),
+        "wave_middle_y": max(height_px - 10, 0),
+        "wave_front_y": max(height_px - 55, 0),
+    }
 
 
 @register.inclusion_tag("insight_ui/components/article.html")
@@ -1432,6 +1705,77 @@ def hero(  # noqa: PLR0913 (too many arguments)
         "background_image_url": background_image_url,
         "badge": badge,
     }
+
+
+@register.inclusion_tag("insight_ui/components/corner_ribbon.html")
+def corner_ribbon(
+    text: str = "",
+    position: str = "top-right",
+    color: str = "primary",
+    tag_id: str | None = None,
+    config: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """
+    Render a corner ribbon positioned in any browser corner.
+
+    Args:
+    ----
+        text (str): The text displayed in the ribbon.
+        position (str): Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'.
+        color (str): Color variant: 'primary', 'success', 'warning', 'danger', 'info'.
+        tag_id (str): An optional, unique ID for JavaScript/CSS targeting.
+        config (dict[str, Any]): An alternative configuration dictionary.
+
+    Returns:
+    -------
+        A dict with context variables for the template.
+
+    """
+    if config is not None:
+        text = config.get("text", text)
+        position = config.get("position", position)
+        color = config.get("color", color)
+        tag_id = config.get("tag_id", tag_id)
+
+    # Validate position
+    valid_positions = ["top-right", "top-left", "bottom-right", "bottom-left"]
+    normalized_position = position.lower().strip() if position else "top-right"
+    if normalized_position not in valid_positions:
+        normalized_position = "top-right"
+
+    # Validate color
+    valid_colors = ["primary", "success", "warning", "danger", "info"]
+    normalized_color = color.lower().strip() if color else "primary"
+    if normalized_color not in valid_colors:
+        normalized_color = "primary"
+
+    return {"text": text, "position": normalized_position, "color": normalized_color, "tag_id": tag_id}
+
+
+@register.inclusion_tag("insight_ui/components/infobox.html")
+def infobox(info_type: str = "", message: str = "", **kwargs) -> dict[str, Any]:
+    """
+    Render a small box of information.
+
+    Args:
+    ----
+        info_type (str): importance level of the message e.g 'info', 'warn' or 'danger'.
+        message (str): Descriptive message.
+        kwargs: A list of variables that are inserted into the message using 'format'.
+
+    Returns:
+    -------
+        A dict with context variables for the template.
+
+    """
+    formatted_message = message
+    if kwargs:
+        try:
+            formatted_message = message.format(**kwargs)
+        except (KeyError, ValueError):
+            formatted_message = message
+
+    return {"type": info_type, "message": formatted_message}
 
 
 @register.inclusion_tag("insight_ui/components/charts/bar_chart.html")

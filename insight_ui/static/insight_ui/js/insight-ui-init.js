@@ -12,6 +12,7 @@ import { Dropdown } from "./insight-ui-dropdown.js";
 import { Floater } from "./insight-ui-floater.js";
 import { Modal } from "./insight-ui-modal.js";
 import { Multiselect } from "./insight-ui-multiselect.js";
+import { RangeSlider } from "./insight-ui-range-slider.js";
 import { Sidebar } from "./insight-ui-sidebar.js";
 import { Tabs } from "./insight-ui-tabs.js";
 import { ThemeToggle } from "./insight-ui-theme-toggle.js";
@@ -30,6 +31,7 @@ Object.assign(window.InsightUI, {
 	Floater,
 	Modal,
 	Multiselect,
+	RangeSlider,
 	Sidebar,
 	Tabs,
 	ThemeToggle,
@@ -47,11 +49,12 @@ function initAll() {
 	Floater.initAll();
 	Modal.initAll();
 	Multiselect.initAll();
+	RangeSlider.initAll();
 	Sidebar.initAll();
 	Tabs.initAll();
 	ThemeToggle.initAll();
 	ThreeDCarousel.initAll();
-	// InsightUI.WebSocket.init();
+	InsightUI.WebSocket?.init();
 }
 
 document.addEventListener('DOMContentLoaded', function () {

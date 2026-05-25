@@ -1,4 +1,4 @@
-{% load static i18n insight_tags %}
+{% load static i18n insight_tags insight_assets %}
 {% if INSIGHT_UI.use_tailwind_cli %}
     {% include "insight_ui/tailwind_cli.html" %}
 {% endif %}
@@ -26,6 +26,17 @@
         <meta name="keywords" content="{% block meta_keywords %}{{ INSIGHT_UI.meta.seo.keywords }}{% endblock meta_keywords %}">
         <meta name="author" content="{% block meta_author %}{{ INSIGHT_UI.meta.seo.author }}{% endblock meta_author %}">
 
+        <!-- Set theme before loading any stylesheets -->
+        <script>
+            (function() {
+                const theme = localStorage.getItem('insight-ui-theme') || 'light';
+                document.documentElement.setAttribute('data-theme', theme);
+                document.cookie = "theme=" + theme + "; path=/";
+            })();
+        </script>
+
+        <script src="{% url 'javascript-catalog' %}"></script>
+
         <!-- HTMX CDN -->
         <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js" integrity="sha384-/TgkGk7p307TH7EXJDuUlgG3Ce1UVolAOFopFekQkkXihi5u/6OCvVKyz1W+idaz" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://cdn.jsdelivr.net/npm/htmx-ext-ws@2.0.4" integrity="sha384-1RwI/nvUSrMRuNj7hX1+27J8XDdCoSLf0EjEyF69nacuWyiJYoQ/j39RT1mSnd2G" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -35,7 +46,7 @@
             <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/prism.min.js" integrity="sha512-HiD3V4nv8fcjtouznjT9TqDNDm1EXngV331YGbfVGeKUoH+OLkRTCMzA34ecjlgSQZpdHZupdSrqHY+Hz3l6uQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/plugins/autoloader/prism-autoloader.min.js" referrerpolicy="no-referrer"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/plugins/line-numbers/prism-line-numbers.min.js" integrity="sha512-BttltKXFyWnGZQcRWj6osIg7lbizJchuAMotOkdLxHxwt/Hyo+cl47bZU0QADg+Qt5DJwni3SbYGXeGMB5cBcw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-            <link rel="stylesheet" href="{% static 'insight_ui/css/prism.css' %}">
+            <link rel="stylesheet" href="{% insight_asset 'insight_ui/css/prism.css' %}">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/plugins/line-numbers/prism-line-numbers.min.css" integrity="sha512-cbQXwDFK7lj2Fqfkuxbo5iD1dSbLlJGXGpfTDqbggqjHJeyzx88I3rfwjS38WJag/ihH7lzuGlGHpDBymLirZQ==" crossorigin="anonymous" referrerpolicy="no-referrer">
         {% endif %}
 
@@ -51,28 +62,21 @@
         {% endif %}
 
         <!-- Insight UI Modular Utils  -->
-        <script defer src="{% static 'insight_ui/js/insight-ui-utils.js' %}"></script>
-        <script src="{% static 'insight_ui/js/insight-ui-toc-generator.js' %}"></script>
+        <script defer src="{% insight_asset 'insight_ui/js/insight-ui-utils.js' %}"></script>
+        <script src="{% insight_asset 'insight_ui/js/insight-ui-toc-generator.js' %}"></script>
 
         <!-- Main stylesheet -->
-        <link rel="stylesheet" href="{% static INSIGHT_UI.stylesheet %}">
+        <link rel="stylesheet" href="{% insight_asset INSIGHT_UI.stylesheet %}">
 
         {% block extra_head %}{% endblock %}
     </head>
-    <body class="size-full min-h-screen dark:bg-gray-900 text-neutral-700 dark:text-neutral-100 transition-colors duration-200 flex flex-col" hx-indicator="#loading-indicator">
+    <body class="flex flex-col size-full min-h-screen {% if white_bg == False %}bg-gray-100 dark:bg-gray-950{% else %}bg-white dark:bg-gray-900{% endif %} text-primary transition-colors duration-200" hx-indicator="#loading-indicator">
 
         {% block background_image %}
         {% endblock background_image %}
 
         <header>
             {% block notification %}
-                {% comment %}
-                <div class="fixed z-50 w-full bg-amber-400 h-12">
-                    <p class="text-amber-800 font-bold text-center">
-                        ATTENTION! ATTENTION! This is a test message!
-                    </p>
-                </div>
-                {% endcomment %}
             {% endblock notification %}
             {% block navbar %}
             {% endblock navbar %}
@@ -81,24 +85,16 @@
         {% block drawers %}
         {% endblock drawers %}
 
-        <main id="main" class="flex grow pt-16">
+        <main id="main" class="flex grow {% if navbar_fixed %}pt-16{% endif %}">
             <div id="left-aside" class="flex">
                 {% block sidebar_left %}{% endblock sidebar_left %}
             </div>
             <div id="main-content" class="relative w-full min-w-0">
-                <div>
-                    <div id="heading" class="bg-insight-primary text-white leading-loose text-lg px-4 md:px-16 pt-16 pb-4">
-                        {% block heading %}
-                        {% endblock heading %}
-                    </div>
-                    <svg viewBox="0 0 500 90" class="-z-10">
-                        <polyline class="fill-insight-primary/25 drop-shadow-xs drop-shadow-gray-500 dark:drop-shadow-gray-800" points="-10,0 450,0 -10,65"/>
-                        <polyline class="fill-insight-primary/25 drop-shadow-xs drop-shadow-gray-500 dark:drop-shadow-gray-800" points="-10,0 250,0 -10,80"/>
-                        <polyline class="fill-insight-primary drop-shadow-xs drop-shadow-gray-500 dark:drop-shadow-gray-800" points="-10,0 510,0 -10,35"/>
-                    </svg>
+                <div id="heading">
+                    {% block heading %}{% endblock heading %}
                 </div>
-                <div id="content" class="w-full space-y-12 text-secondary leading-loose px-4 md:px-16 pb-16">
-                    {% include "insight_ui/components/htmx_loading_indicator.html" %}
+                <div id="content" class="w-full space-y-12 leading-loose {% if default_padding is not False %}px-4 md:px-16 py-16{% endif %}">
+                    {% if use_default_loading_indicator is not False %}{% include "insight_ui/components/htmx_loading_indicator.html" %}{% endif %}
                     {% block content %}{% endblock content %}
                 </div>
             </div>
@@ -110,42 +106,43 @@
         {% block footer %}
         {% endblock footer %}
 
-        {% comment %}
-        <!-- Helper to visualize media breakpoints -->
-        <div class="fixed flex items-center z-30 bottom-2 left-2 bg-gray-900 rounded-full size-10 text-white text-xs">
-            <span class="w-full text-center sm:hidden">-</span>
-            <span class="w-full text-center hidden sm:block md:hidden">sm</span>
-            <span class="w-full text-center hidden md:block lg:hidden">md</span>
-            <span class="w-full text-center hidden lg:block xl:hidden">lg</span>
-            <span class="w-full text-center hidden xl:block 2xl:hidden">xl</span>
-            <span class="w-full text-center hidden 2xl:block">2xl</span>
-        </div>
-        {% endcomment %}
+        {% if INSIGHT_UI.show_current_media_breakpoint %}
+            <!-- Helper to visualize media breakpoints -->
+            <div class="fixed flex items-center z-30 bottom-2 left-2 bg-gray-900 rounded-full size-10 text-white text-xs">
+                <span class="w-full text-center sm:hidden">-</span>
+                <span class="w-full text-center hidden sm:block md:hidden">sm</span>
+                <span class="w-full text-center hidden md:block lg:hidden">md</span>
+                <span class="w-full text-center hidden lg:block xl:hidden">lg</span>
+                <span class="w-full text-center hidden xl:block 2xl:hidden">xl</span>
+                <span class="w-full text-center hidden 2xl:block">2xl</span>
+            </div>
+        {% endif %}
 
         <!-- Insight UI Modular JavaScript -->
         <script>
             window.JS_DEBUG = {{ INSIGHT_UI.JS_DEBUG|yesno:"true,false" }};
         </script>
-        <script defer src="{% static 'insight_ui/js/insight-ui-debug.js' %}"></script>
-        <script defer src="{% static 'insight_ui/js/insight-ui-utils.js' %}"></script>
-        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-3D-carousel.js' %}"></script>
-        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-accordion.js' %}"></script>
-        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-carousel.js' %}"></script>
-        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-checkbox.js' %}"></script>
-        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-code-block.js' %}"></script>
-        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-collapsible.js' %}"></script>
-        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-demo-container.js' %}"></script>
-        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-dropdown.js' %}"></script>
-        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-floater.js' %}"></script>
-        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-modal.js' %}"></script>
-        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-multiselect.js' %}"></script>
-        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-sidebar.js' %}"></script>
-        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-tabs.js' %}"></script>
-        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-theme-toggle.js' %}"></script>
-        <script defer src="{% static 'insight_ui/js/insight-ui-websocket.js' %}"></script>
-        <script type="module" defer src="{% static 'insight_ui/js/insight-ui-init.js' %}"></script>
+        <script defer src="{% insight_asset 'insight_ui/js/insight-ui-debug.js' %}"></script>
+        <script defer src="{% insight_asset 'insight_ui/js/insight-ui-utils.js' %}"></script>
+        <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-3D-carousel.js' %}"></script>
+        <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-accordion.js' %}"></script>
+        <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-carousel.js' %}"></script>
+        <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-checkbox.js' %}"></script>
+        <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-code-block.js' %}"></script>
+        <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-collapsible.js' %}"></script>
+        <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-demo-container.js' %}"></script>
+        <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-dropdown.js' %}"></script>
+        <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-floater.js' %}"></script>
+        <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-modal.js' %}"></script>
+        <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-multiselect.js' %}"></script>
+        <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-sidebar.js' %}"></script>
+        <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-tabs.js' %}"></script>
+        <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-theme-toggle.js' %}"></script>
+        <script defer src="{% insight_asset 'insight_ui/js/insight-ui-websocket.js' %}"></script>
+        <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-init.js' %}"></script>
+        <script defer src="{% insight_asset 'insight_ui/js/insight-ui-state.js' %}"></script>
         <!-- HTMX Extensions -->
-        <script defer src="{% static 'insight_ui/js/insight-ui-htmx-extensions.js' %}"></script>
+        <script defer src="{% insight_asset 'insight_ui/js/insight-ui-htmx-extensions.js' %}"></script>
 
         {% block extra_scripts %}{% endblock %}
     </body>

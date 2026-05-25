@@ -46,6 +46,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Change login smoke test to check for NOT translated string rather in comments
 - Minor spelling
 - **ci:** Restore automatic release on develop→main merge
+- **docs:** Resolve component-slug regressions (toggle_button, outline_button, button_sizes, effect_cards) 
+- **ci:** Update scheduled pre-commit workflow actions 
+- **deps:** Update vulnerable dependencies
+- **docs:** Use manifest-safe card demo assets 
+- **docs:** Serve component source links locally 
+- **static:** Require explicit cdn opt-in 
+- **static:** Preserve selectors in minified css assets 
+- **cards:** Stabilize app card layout 
 
 ### CI/CD
 
@@ -53,6 +61,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **guard:** Preserve branch-policy check name
 - **guard:** Preserve branch-policy check name
 - **feature:** Mirror required legacy test checks
+- Allow stacked branch pull requests
+- Align blue/green container publish and promotion 
+- Use central reusable container workflow 
+- **container:** Enable manual django image builds 
 
 ### Documentation
 
@@ -63,6 +75,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Translate developer documentation
 - Add hint to run JavaScript tests to README.md
 - Make component docu context strings translateable
+- Document GitHub issue label taxonomy 
+- Remove README workflow badges 
+- Reflect Django support range in badge 
+- Add notification component mockups 
+- Move insight ui audit into repo 
+- Document design system contract 
+- Add component self-documentation checklist 
+- Document documentation architecture 
 
 ### Features
 
@@ -113,6 +133,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - EN to DE translations for all .html
 - Sharpen fuzzy translations
 - Add new setting 'use_tailwind_cli' and remove obsolete env-variables
+- Add heading decoration component 
+- Remove detailpages 
+- Add logo component
+- **stream:** Clarify HTMX websocket boundary 
+- **runtime:** Prepare blue-green demo deployment contract 
+- Add copyright notice component 
+- Improvements 
+- Standardize the JavaScript lookup attribute naming convention 
+- Enhancements 
+- **static:** Publish minified assets via cdn 
 
 ### Miscellaneous
 
@@ -124,6 +154,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Consistent Insight UI spelling
 - Update package-lock.json
 - Update uv.lock
+- Update footer copyright notice
+- **docs:** Remove legacy mkdocs layer 
+- **ci:** Refresh GitHub Actions for Node 24 
 
 ### Refactoring
 
@@ -132,6 +165,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove hardcoded list of components from smoke tests
 - Rename 'table' and 'main' storybook
 - Remove obsolete storybook template files
+- Adopt logo component
 
 ### Reverted
 
@@ -141,6 +175,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Improve smoke tests for storybooks and fix loginscreen test
 - Use Component Enum Class for smoke tests
+- Js tests 
 
 ## [1.9.1] - 2026-02-24
 

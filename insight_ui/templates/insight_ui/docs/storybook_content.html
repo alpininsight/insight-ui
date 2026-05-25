@@ -3,7 +3,7 @@
 {% for component in components %}
     <section class="component-container">
         <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-tp-4 py-2 md:px-6 md:py-3">
-            <h2 class="text-xl mb-0">
+            <h2 class="text-xl pb-0">
                 <a
                     href="{% url 'component_detail_page_view' component.value %}"
                     hx-get="{% url 'component_detail_page_view' component.value %}"
@@ -12,7 +12,7 @@
                     hx-push-url="true"
                     class="inline-flex items-center gap-1 hover:text-blue-300"
                 >
-                    {{ component.formatted_name }} {% icon name="open-link" size="small" %}
+                    {{ component.formatted_name }} {% icon name="open-link" size="s" %}
                 </a>
             </h2>
         </div>

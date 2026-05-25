@@ -1,5 +1,5 @@
 from django.templatetags.static import static
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.utils.lorem_ipsum import paragraphs
 from django.utils.translation import gettext as _
 
@@ -35,6 +35,7 @@ license_options = {
     "pay_per_use": _("Pay per Use"),
     "enterprise": _("Enterprise License"),
 }
+DEMO_CARD_IMAGE_PATH = "insight_ui/favicon/android-chrome-512x512.png"
 
 # Some example data for the query builder filter
 DEMO_FIELDS = [
@@ -56,20 +57,6 @@ DEMO_FIELDS = [
         "name": _("Description"),
         "type": "text",
         "operations": {"icontains": _("contains"), "contains": _("contains (case sensitive)")},
-        "values": {},
-    },
-    {
-        "field": "short_description",
-        "name": _("Short Description"),
-        "type": "text",
-        "operations": {"icontains": _("contains"), "contains": _("contains (case sensitive)")},
-        "values": {},
-    },
-    {
-        "field": "release_date",
-        "name": _("Release Date"),
-        "type": "date",
-        "operations": {"date": _("is exact"), "date__gte": _("is not before"), "date__lte": _("is not after")},
         "values": {},
     },
     {
@@ -124,6 +111,20 @@ def get_login_screen_context() -> dict:
     )
 
 
+@register_demo_context(Component.HEADING_DECORATION)
+def get_heading_decoration_context() -> dict:
+    """Serve demo context for the heading decoration component."""
+    image_url = (
+        "data:image/svg+xml,"
+        "%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20500%20120%22%3E"
+        "%3Crect%20width%3D%22500%22%20height%3D%22120%22%20fill%3D%22%233b82f6%22/%3E"
+        "%3Ccircle%20cx%3D%22120%22%20cy%3D%2260%22%20r%3D%2248%22%20fill%3D%22%23ffffff%22%20fill-opacity%3D%22.35%22/%3E"
+        "%3Ccircle%20cx%3D%22260%22%20cy%3D%2270%22%20r%3D%2264%22%20fill%3D%22%230f172a%22%20fill-opacity%3D%22.18%22/%3E"
+        "%3C/svg%3E"
+    )
+    return {"heading_decoration_image_url": image_url}
+
+
 @register_demo_context(Component.NAVBAR)
 def get_navbar_context() -> dict:
     """Serve data for navbar detailpage."""
@@ -143,7 +144,7 @@ def get_navbar_context() -> dict:
             "links": [
                 {
                     "text": _("Startpage"),
-                    "icon": {"name": "home", "size": "small"},
+                    "icon": {"name": "home", "size": "s"},
                     "view_name": "index_view",
                     "active": True,
                     "need_auth": False,
@@ -169,19 +170,19 @@ def get_navbar_context() -> dict:
                 "text": _("Settings"),
                 "view_name": "index_view",
                 "staff_only": False,
-                "icon": {"name": "gear", "size": "small"},
+                "icon": {"name": "gear", "size": "s"},
             },
             {
                 "text": _("Administration"),
                 "view_name": "admin:index",
                 "staff_only": True,
-                "icon": {"name": "home", "size": "small"},
+                "icon": {"name": "home", "size": "s"},
             },
             {
                 "text": _("Translation"),
                 "view_name": "index_view",
                 "staff_only": True,
-                "icon": {"name": "globe", "size": "small"},
+                "icon": {"name": "globe", "size": "s"},
             },
         ],
     }
@@ -193,39 +194,35 @@ def get_drawer_context() -> dict:
     return {
         "demo_sidebar": {
             "title": _("Personal Settings"),
-            "icon": {"name": "home", "size": "small"},
+            "icon": {"name": "home", "size": "s"},
             "categories": [
                 {
                     "caption": "Work",
-                    "icon": {"name": "office", "size": "small"},
+                    "icon": {"name": "office", "size": "s"},
                     "items": [
                         {
                             "text": _("Notifications"),
-                            "icon": {"name": "bell", "size": "small"},
+                            "icon": {"name": "bell", "size": "s"},
                             "url": reverse("index_view"),
                         },
                         {
                             "text": _("Messages"),
-                            "icon": {"name": "chat-bubble", "size": "small"},
+                            "icon": {"name": "chat-bubble", "size": "s"},
                             "url": reverse("index_view"),
                         },
-                        {
-                            "text": _("Tasks"),
-                            "icon": {"name": "checklist", "size": "small"},
-                            "url": reverse("index_view"),
-                        },
+                        {"text": _("Tasks"), "icon": {"name": "checklist", "size": "s"}, "url": reverse("index_view")},
                     ],
                 },
                 {
                     "caption": "Management",
-                    "icon": {"name": "gear", "size": "small"},
+                    "icon": {"name": "gear", "size": "s"},
                     "items": [
                         {
                             "text": _("Calendar"),
-                            "icon": {"name": "calendar", "size": "small"},
+                            "icon": {"name": "calendar", "size": "s"},
                             "url": reverse("index_view"),
                         },
-                        {"text": _("Profile"), "icon": {"name": "user", "size": "small"}, "url": reverse("index_view")},
+                        {"text": _("Profile"), "icon": {"name": "user", "size": "s"}, "url": reverse("index_view")},
                     ],
                 },
             ],
@@ -242,8 +239,8 @@ def get_footer_context() -> dict:
                 "title": "Insight UI",
                 "text": _("A modern, accessible, and responsive UI library for Django projects."),
                 "image": {
-                    "url": "img/thumbnail.png",
-                    "url_dark": "img/thumbnail.png",
+                    "url": "insight_ui/favicon/android-chrome-192x192.png",
+                    "url_dark": "insight_ui/favicon/android-chrome-192x192.png",
                     "alt": "Footer image",
                     "height": "6rem",
                 },
@@ -258,7 +255,14 @@ def get_footer_context() -> dict:
                 "imprint": "https://alpininsight.com/imprint/",
                 "privacy": "https://alpininsight.com/privacy/",
             },
-            "copyright": {"year": 2026, "app_name": "Insight UI"},
+            "copyright": {
+                "year": 2026,
+                "holder": "Alpin Insight Solutions GmbH & Co. KG",
+                "source_label": "Open Source",
+                "license_text": "AGPL-3.0",
+                "license_url": reverse_lazy("license_view"),
+            },
+            "version": "v1.0.0",
         }
     }
 
@@ -285,11 +289,11 @@ def get_breadcrumb_context() -> dict:
     """Serve data for breadcrumbs detailpage."""
     return {
         "breadcrumb_items": [
-            {"text": _("Startpage"), "view_name": "index_view", "icon": {"name": "home", "size": "small"}},
-            {"text": _("Components"), "view_name": "index_view"},
+            {"text": _("Startpage"), "request_url": "/", "icon": {"name": "home", "size": "s"}},
+            {"text": _("Components"), "request_url": "/"},
             {"text": _("Breadcrumbs")},
         ],
-        "single_breadcrumb_item": [{"text": _("Startpage"), "icon": {"name": "home", "size": "small"}}],
+        "single_breadcrumb_item": [{"text": _("Startpage"), "icon": {"name": "home", "size": "s"}}],
     }
 
 
@@ -297,6 +301,54 @@ def get_breadcrumb_context() -> dict:
 def get_differentiator_context() -> dict:
     """Serve data for differentiator detailpage."""
     return {"textA": _("The cat is sleeping on the red sofa."), "textB": _("This is a completely different sentence!")}
+
+
+@register_demo_context(Component.COPYRIGHT_NOTICE)
+def get_copyright_notice_context() -> dict:
+    """Serve data for copyright notice detailpage."""
+    return {
+        "copyright_notice_config": {
+            "year": 2026,
+            "holder": "Alpin Insight Solutions GmbH & Co. KG",
+            "source_label": "Open Source",
+            "license_text": "AGPL-3.0",
+            "license_url": reverse_lazy("license_view"),
+        },
+        "copyright_notice_legacy_config": {"year": 2026, "app_name": "Insight UI"},
+    }
+
+
+@register_demo_context(Component.LOGO)
+def get_logo_context() -> dict:
+    """Serve data for logo detailpage."""
+    return {
+        "logo_svg": {
+            "type": "svg",
+            "url": "insight_ui/svg/ai-logo.svg",
+            "url_dark": "insight_ui/svg/ai-logo.svg",
+            "alt": "Insight UI Logo",
+            "height": "3rem",
+        },
+        "logo_image": {
+            "type": "image",
+            "url": "insight_ui/favicon/android-chrome-192x192.png",
+            "alt": "Insight UI app icon",
+            "height": "3rem",
+        },
+        "logo_icon": {"type": "icon", "icon": {"name": "sparkles", "size": "big"}, "alt": "Decorative product icon"},
+    }
+
+
+@register_demo_context(Component.CORNER_RIBBON)
+def get_corner_ribbon_context() -> dict:
+    """Serve data for corner ribbon detailpage."""
+    return {
+        "ribbon_top_right": {"text": _("New Feature"), "position": "top-right", "color": "primary"},
+        "ribbon_top_left": {"text": _("Verified"), "position": "top-left", "color": "success"},
+        "ribbon_bottom_right": {"text": _("Beta"), "position": "bottom-right", "color": "warning"},
+        "ribbon_bottom_left": {"text": _("Limited"), "position": "bottom-left", "color": "danger"},
+        "ribbon_info": {"text": _("Info"), "position": "top-right", "color": "info"},
+    }
 
 
 @register_demo_context(Component.DROPDOWN)
@@ -308,9 +360,9 @@ def get_dropdown_context() -> dict:
             "title": _("User"),
             "show_arrow": True,
             "items": [
-                {"text": _("Profile"), "view_name": "index_view", "icon": {"name": "user", "size": "small"}},
-                {"text": _("Settings"), "view_name": "index_view", "icon": {"name": "gear", "size": "small"}},
-                {"text": _("Logout"), "view_name": "index_view", "icon": {"name": "leave", "size": "small"}},
+                {"text": _("Profile"), "request_url": "/", "icon": {"name": "user", "size": "s"}},
+                {"text": _("Settings"), "request_url": "/", "icon": {"name": "gear", "size": "s"}},
+                {"text": _("Logout"), "request_url": "/", "icon": {"name": "leave", "size": "s"}},
             ],
         },
         "settings_dropdown": {
@@ -318,12 +370,8 @@ def get_dropdown_context() -> dict:
             "title": _("Settings"),
             "show_arrow": False,
             "items": [
-                {
-                    "text": _("Personal Information"),
-                    "view_name": "index_view",
-                    "icon": {"name": "user", "size": "small"},
-                },
-                {"text": _("Appearance"), "view_name": "index_view", "icon": {"name": "gear", "size": "small"}},
+                {"text": _("Personal Information"), "request_url": "/", "icon": {"name": "user", "size": "s"}},
+                {"text": _("Appearance"), "request_url": "/", "icon": {"name": "gear", "size": "s"}},
             ],
         },
     }
@@ -440,7 +488,6 @@ def get_radio_block_context() -> dict:
     return {
         "view_radio_config": {
             "name": "view",
-            "param_name": "view",
             "items": [
                 {"tag_id": "card-view", "value": "card", "icon": {"name": "cards"}},
                 {"tag_id": "table-view", "value": "table", "icon": {"name": "list"}},
@@ -449,12 +496,12 @@ def get_radio_block_context() -> dict:
         },
         "size_radio_config": {
             "name": "size",
-            "param_name": "size",
             "items": [
                 {"tag_id": "small-size", "value": "small", "label": "sm"},
                 {"tag_id": "medium-size", "value": "medium", "label": "md"},
                 {"tag_id": "large-size", "value": "large", "label": "lg"},
             ],
+            "as_row": False,
         },
     }
 
@@ -494,6 +541,7 @@ def get_multiselect_context() -> dict:
 @register_demo_context(Component.RANGE_SLIDER)
 def get_range_slider_context() -> dict:
     """Serve data for range-slider detailpage."""
+    many_items = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     return {
         "example_slider": {
             "tag_id": "range_slider_example",
@@ -503,7 +551,38 @@ def get_range_slider_context() -> dict:
             "minimum": 100,
             "maximum": 1500,
             "items": [_("100€ (minimum)"), "500€", "750€", "1000€", _("1500€ (maximum)")],
-        }
+        },
+        "example_slider_skip": {
+            "tag_id": "range_slider_skip",
+            "name": "range_slider_skip",
+            "label": _("Legend Mode: Skip"),
+            "value": 6,
+            "minimum": 1,
+            "maximum": 12,
+            "items": many_items,
+            "legend_mode": "skip",
+        },
+        "example_slider_rotate": {
+            "tag_id": "range_slider_rotate",
+            "name": "range_slider_rotate",
+            "label": _("Legend Mode: Rotate"),
+            "value": 6,
+            "minimum": 1,
+            "maximum": 12,
+            "items": many_items,
+            "legend_mode": "rotate",
+        },
+        "example_slider_dual": {
+            "tag_id": "range_slider_dual",
+            "name": "price_range",
+            "label": _("Dual Range Slider (Price Range)"),
+            "minimum": 0,
+            "maximum": 1000,
+            "value_min": 200,
+            "value_max": 800,
+            "dual": True,
+            "items": ["0€", "250€", "500€", "750€", "1000€"],
+        },
     }
 
 
@@ -567,24 +646,24 @@ def get_generic_filter_context() -> dict:
     return {
         "filters": [
             {
-                "text": _("AI model type"),
-                "icon": {"name": "rocket", "size": "small"},
+                "label": _("AI model type"),
+                "icon": {"name": "rocket", "size": "s"},
                 "name": "model_type_filter",
-                "values": model_type_options,
+                "options": model_type_options,
                 "explanation": _("To filter by the type of AI-Model."),
             },
             {
-                "text": _("Runtime"),
-                "icon": {"name": "clock", "size": "small"},
+                "label": _("Runtime"),
+                "icon": {"name": "clock", "size": "s"},
                 "name": "runtime_filter",
-                "values": runtime_options,
+                "options": runtime_options,
                 "explanation": _("To filter by the runtime."),
             },
             {
-                "text": _("License"),
-                "icon": {"name": "doc", "size": "small"},
+                "label": _("License"),
+                "icon": {"name": "doc", "size": "s"},
                 "name": "license_filter",
-                "values": license_options,
+                "options": license_options,
             },
         ],
         "filter_view_name": "index_view",
@@ -598,8 +677,8 @@ def get_query_builder_context() -> dict:
 
 
 @register_demo_context(Component.CARD)
-def get_cards_context() -> dict:
-    """Serve data for cards detailpage."""
+def get_card_context() -> dict:
+    """Serve data for card detailpage."""
     return {
         "cards": [
             {
@@ -619,31 +698,41 @@ def get_cards_context() -> dict:
                     {"text": _("Share"), "url": "#", "type": "primary"},
                 ],
             },
-        ],
-        "app_cards": [
-            {
-                "title": _("App Card"),
-                "content": _("A card with its content arranged horizontally."),
-                "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": _("Card-Image")},
-                "tags": [_("Insight UI"), _("Layout"), _("Card")],
-                "actions": [
-                    {"text": _("Learn more"), "url": "#", "type": "secondary"},
-                    {"text": _("Share"), "url": "#", "type": "primary"},
-                ],
-            }
-        ],
-        "flip_cards": [
-            {
-                "title": _("Flip Card"),
-                "content": _("A card that rotates 180° and has additional content on the back."),
-                "image": {"url": static("insight_ui/img/thumbnail.png"), "alt": _("Card-Image")},
-                "tags": [_("Insight UI"), _("Layout"), _("Card")],
-                "actions": [
-                    {"text": _("Learn more"), "url": "#", "type": "secondary"},
-                    {"text": _("Share"), "url": "#", "type": "primary"},
-                ],
-            }
-        ],
+        ]
+    }
+
+
+@register_demo_context(Component.APP_CARD)
+def get_app_card_context() -> dict:
+    """Serve data for app card detailpage."""
+    return {
+        "app_card": {
+            "title": _("App Card"),
+            "content": _("A card with its content arranged horizontally."),
+            "image": {"url": static(DEMO_CARD_IMAGE_PATH), "alt": _("Card-Image")},
+            "tags": [_("Insight UI"), _("Layout"), _("Card")],
+            "actions": [
+                {"text": _("Learn more"), "url": "#", "type": "secondary"},
+                {"text": _("Share"), "url": "#", "type": "primary"},
+            ],
+        }
+    }
+
+
+@register_demo_context(Component.FLIP_CARD)
+def get_flip_card_context() -> dict:
+    """Serve data for flip card detailpage."""
+    return {
+        "flip_card": {
+            "title": _("Flip Card"),
+            "content": _("A card that rotates 180° and has additional content on the back."),
+            "image": {"url": static(DEMO_CARD_IMAGE_PATH), "alt": _("Card-Image")},
+            "tags": [_("Insight UI"), _("Layout"), _("Card")],
+            "actions": [
+                {"text": _("Learn more"), "url": "#", "type": "secondary"},
+                {"text": _("Share"), "url": "#", "type": "primary"},
+            ],
+        }
     }
 
 

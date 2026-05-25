@@ -38,30 +38,46 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
         with:
           fetch-depth: 0
 
-      - name: Set up GitVersion
-        uses: gittools/actions/gitversion/setup@8fedf8a6f6cec22c9eaa66ee693f5b1f315dcbdd  # v3.1.2
+      - name: Set up .NET SDK
+        uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7  # v5.2.0
         with:
-          versionSpec: '5.x'
-          preferLatestVersion: true
+          dotnet-version: '8.0.x'
+
+      - name: Install GitVersion.Tool
+        run: |
+          echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
+          dotnet tool install --global GitVersion.Tool --version 5.*
 
       - name: Calculate version
         id: gitversion
-        uses: gittools/actions/gitversion/execute@8fedf8a6f6cec22c9eaa66ee693f5b1f315dcbdd  # v3.1.2
-        with:
-          useConfigFile: true
-          configFilePath: GitVersion.yml
+        run: |
+          set -euo pipefail
+          dotnet-gitversion -config GitVersion.yml > gitversion.json
+          cat gitversion.json
+          python3 - <<'PY'
+          import json
+          import os
+
+          with open("gitversion.json", encoding="utf-8") as fh:
+              data = json.load(fh)
+
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as fh:
+              fh.write(f"major_minor_patch={data['MajorMinorPatch']}\n")
+              fh.write(f"semver={data['SemVer']}\n")
+              fh.write(f"full_semver={data['FullSemVer']}\n")
+          PY
 
       - name: Display and validate version info
         id: version
         run: |
-          VERSION="${{ steps.gitversion.outputs.MajorMinorPatch }}"
+          VERSION="${{ steps.gitversion.outputs.major_minor_patch }}"
           echo "MajorMinorPatch: $VERSION"
-          echo "SemVer: ${{ steps.gitversion.outputs.SemVer }}"
-          echo "FullSemVer: ${{ steps.gitversion.outputs.FullSemVer }}"
+          echo "SemVer: ${{ steps.gitversion.outputs.semver }}"
+          echo "FullSemVer: ${{ steps.gitversion.outputs.full_semver }}"
 
           if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "::error::Invalid version format: '$VERSION'. Expected X.Y.Z"
@@ -84,7 +100,7 @@ jobs:
 
       - name: Create GitHub Release
         if: steps.tagcheck.outputs.exists != 'true'
-        uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe  # v2
+        uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda  # v3.0.0
         with:
           tag_name: v${{ steps.version.outputs.version }}
           name: v${{ steps.version.outputs.version }}

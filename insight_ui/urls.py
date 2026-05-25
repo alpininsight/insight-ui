@@ -14,7 +14,13 @@ urlpatterns = [
     path("pagination/", views.pagination, name="pagination"),
     path("i18n/setlang/", set_language, name="set_language"),
     path("docs/components/<str:component_name>/", views.component_detail_page_view, name="component_detail_page_view"),
+    path(
+        "docs/components/<str:component_name>/source/<str:source_kind>/",
+        views.component_source_view,
+        name="component_source_view",
+    ),
     path("docs/components/demo/<str:component_name>/", views.component_demo_view, name="component_demo_view"),
+    path("docs/license/", views.license_view, name="license_view"),
     path("docs/<str:storybook_name>/", views.storybook_view, name="storybook_view"),
     path("", views.index_view, name="index_view"),
     path("playground", views.playground_view, name="playground_view"),

@@ -16,40 +16,97 @@ This guide documents the naming conventions that keep Insight UI consistent acro
 - CSS/JS files use `kebab-case`: `insight-ui-sidebar.js`.
 - Images and SVGs also follow `kebab case`: `favicon-16X16.png`.
 
+## CSS classes and design semantics
+
+Tailwind CSS is the default styling implementation, but the public design
+contract should stay semantic. New reusable component markup should prefer stable
+Insight UI class names when the concept is part of the component contract.
+Tailwind utility classes may still be used inside the default implementation and
+for local, non-contract layout details.
+
+Use the `insight-*` prefix for stable classes that describe Insight UI concepts:
+
+| Pattern | Use for | Example |
+|---|---|---|
+| `insight-surface-*` | Reusable surfaces and containers | `insight-surface-card` |
+| `insight-layout-*` | Shared layout regions or layout primitives | `insight-layout-content` |
+| `insight-component-*` | Component-specific stable structure | `insight-component-sidebar` |
+| `insight-state-*` | Semantic state styling | `insight-state-disabled` |
+| `insight-doc-*` | Self-documentation surfaces and examples | `insight-doc-demo` |
+
+Use this mapping when deciding whether repeated Tailwind utility usage should
+become a semantic Insight UI class:
+
+| Tailwind-oriented concept | Prefer semantic class when shared | Notes |
+|---|---|---|
+| `bg-*`, `dark:bg-*`, `border`, `rounded`, `shadow` used together for a reusable container | `insight-surface-*` | Use for cards, panels, modal bodies, docs examples, and other named surfaces. |
+| `flex`, `grid`, `gap-*`, `space-*`, `px-*`, `py-*` used as a repeated structural pattern | `insight-layout-*` | Use for shared layout primitives. Keep one-off alignment utilities local. |
+| Component root classes mixed with repeated spacing, border, and state utilities | `insight-component-*` | Use when the class describes stable component anatomy, not just visual decoration. |
+| `hover:*`, `active:*`, `focus:*`, `disabled:*`, `aria-*`, or state-specific variants | `insight-state-*` | Use when the state is a semantic public behavior such as selected, disabled, open, or invalid. |
+| Documentation/demo chrome such as examples, code areas, or demo wrappers | `insight-doc-*` | Use for self-documentation structures that should stay consistent across demos. |
+| Brand, status, or text colors such as `text-insight-*`, `bg-insight-*`, `border-insight-*` | Token plus semantic class | Keep the token in `input.css`; add a class only when the usage pattern is repeated. |
+
+Do not add a semantic class for every Tailwind utility. Add one only when it
+names a reusable design or component concept that should survive a future styling
+implementation change.
+
 ## Data-Attributs (HTML)
 
 ### Component identification
-Each JavaScript component is identified by a `data-*` attribute in the HTML:
+Each JavaScript component is identified by a `data-insight-{component_name}` attribute in the HTML. The value of this attribute is the `id` of the target HTML element, if necessary.
 
 | Component | Main-Attribute | Example |
 |------------|----------------|----------|
-| `accordion` | `data-accordion` | `<div data-accordion="faq-group">` |
-| `dropdown` | `data-dropdown-toggle` | `<button data-dropdown-toggle="menu-id">` |
-| `modal` | `data-insight-toggle="modal"` | `<button data-insight-toggle="modal">` |
-| `tabs` | `data-tabs` | `<div data-tabs>` |
+| `accordion` | `data-insight-accordion` | `<div data-insight-accordion="accordion-container-id">` |
+| `dropdown` | `data-insight-dropdown` | `<button data-insight-dropdown="menu-container-id">` |
+| `modal` | `data-insight-modal="modal"` | `<button data-insight-modal="modal-container-id">` |
+| `tabs` | `data-insight-tabs` | `<div data-insight-tabs="tabs-container-id">` |
 | ... |
 
 ### Component options
-Optional settings use the schema `data-{component}-{option}`:
+Additional attributes do not repeat he component name. Optional settings use the schema `data-{option}`:
 
 ```html
 <!-- Accordion with exclusive mode -->
-<div data-accordion="faq" data-accordion-exclusive="true">
+<div data-insight-accordion="faq" data-exclusive="true">
 
 <!-- 3D carousel with camera alignment -->
-<div data-3D-carousel="gallery" data-carousel-face-camera="true" data-carousel-velocity="500">
+<div data-insight-3D-carousel="gallery" data-face-camera="true" data-velocity="500">
 ```
 
 ### Action attributes
-The following patterns are used for user interactions:
+The following patterns are used for user interactions across components:
 
 | Action | Attribute | Usage |
 |--------|----------|------------|
 | Close/Dismiss | `data-insight-dismiss="{type}"` | `data-insight-dismiss="alert"`, `data-insight-dismiss="modal"` |
-| Toggle | `data-insight-toggle="{type}"` | `data-insight-toggle="modal"` |
-| Target-Reference | `data-insight-target="{id}"` | `data-insight-target="modal-1"` |
 | Callback | `data-radio-callback="{fn}"` | `data-radio-callback="onSelect"` |
 | ... |
+
+### JavaScript consumers of data-insight hooks
+
+Every documented `data-insight-*` hook must have one owning JavaScript module or
+one explicit delegated handler. If a hook changes, update the owning module, the
+template that emits the hook, the component self-documentation, and this table.
+
+| Hook | Owner | Notes |
+|---|---|---|
+| `data-insight-accordion` | `insight-ui-accordion.js` | Initializes accordion groups and reads `data-exclusive`. |
+| `data-insight-carousel` | `insight-ui-carousel.js` | Initializes carousel controls and track behavior. |
+| `data-insight-checkbox-group` | `insight-ui-checkbox.js` | Handles grouped checkbox behavior. |
+| `data-insight-code-block` | `insight-ui-code-block.js` | Enhances code blocks and reads optional `data-filename`. |
+| `data-insight-collapsible` | `insight-ui-collapsible.js` | Connects a trigger with a collapsible target. |
+| `data-insight-demo-container`, `data-insight-demo-iframe` | `insight-ui-demo-container.js` | Controls docs demo iframe viewport sizing. |
+| `data-insight-dropdown` | `insight-ui-dropdown.js` | Connects dropdown triggers with menu targets. |
+| `data-insight-modal` | `insight-ui-modal.js` | Connects modal triggers with modal targets. |
+| `data-insight-multiselect` | `insight-ui-multiselect.js` | Initializes multiselect combobox behavior. |
+| `data-insight-popover`, `data-insight-tooltip` | `insight-ui-floater.js` | Creates floating popover and tooltip behavior. |
+| `data-insight-sidebar` | `insight-ui-sidebar.js` | Initializes sidebar wrappers and side-specific controls. |
+| `data-insight-tabs` | `insight-ui-tabs.js` | Initializes tab list, tab panel, and optional HTMX behavior. |
+| `data-insight-theme-toggle` | `insight-ui-theme-toggle.js` | Handles theme switching. |
+| `data-insight-3D-carousel` | `insight-ui-3D-carousel.js` | Initializes 3D carousel behavior and reads 3D options such as `data-face-camera` and `data-velocity`. |
+| `data-insight-websocket`, `data-insight-websocket-status` | `insight-ui-websocket.js` | Bridges HTMX WebSocket events to status text and custom DOM events. |
+| `data-insight-dismiss` | `insight-ui-modal.js`, `insight-ui-sidebar.js`, `insight-ui-utils.js` | Dismissal is scoped by value, for example `modal`, `sidebar`, `alert`, or `form-errors`. |
 
 ### Boolean attributes
 HTML Boolean attributes should be written without a value:

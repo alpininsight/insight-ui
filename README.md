@@ -1,18 +1,12 @@
 # Insight UI
 
-<!-- Badges -->
-![Conventional Commits](https://github.com/alpininsight/insight-ui/actions/workflows/feature-pr-title.yml/badge.svg?branch=develop)
-![Staging](https://github.com/alpininsight/insight-ui/actions/workflows/release-develop.yml/badge.svg?branch=develop)
-![Release](https://github.com/alpininsight/insight-ui/actions/workflows/release.yml/badge.svg?branch=main)
-![Publish](https://github.com/alpininsight/insight-ui/actions/workflows/main-publish-pypi.yml/badge.svg?branch=main)
-
 [![Ruff](https://img.shields.io/badge/ruff-checked-5D3FD3?logo=python&logoColor=white)](https://github.com/astral-sh/ruff)
 [![Python](https://img.shields.io/badge/python-3.12%2B-blue?logo=python&logoColor=white)](pyproject.toml)
-[![Django](https://img.shields.io/badge/django-5.2-092E20?logo=django&logoColor=white)](https://www.djangoproject.com/)
+[![Django](https://img.shields.io/badge/django-5.2%20to%206.x-092E20?logo=django&logoColor=white)](pyproject.toml)
 [![PyPI - Version](https://img.shields.io/pypi/v/insight-ui.svg)](https://pypi.org/project/insight-ui/)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
 
-Insight UI is a modern, extensible UI framework for Django. It ships with reusable, WCAG 2.1 AA-compliant components, live HTMX integrations, and a Tailwind-based design system so teams can bootstrap projects quickly. The published version is derived from Git tags via hatch-vcs and kept in sync by release-please.
+Insight UI is a modern, extensible UI framework for Django. It ships with reusable, WCAG 2.1 AA-compliant components, live HTMX integrations, and a Tailwind-based design system so teams can bootstrap projects quickly. Tailwind CSS is the default styling implementation; the public design contract is semantic. The published version is derived from Git tags via hatch-vcs and kept in sync by release-please.
 
 ## Highlights
 - **Accessible components**: ready-made navigation, forms, tables, alerts, carousels, and more.
@@ -59,8 +53,21 @@ docker run --rm -p 8000:8000 insight-ui:local
 Runtime flags:
 - `RUN_MIGRATIONS=1` runs `python manage.py migrate --noinput` before the web process starts. This is enabled by default for single-container Docker runs.
 - `RUN_COLLECTSTATIC=1` re-runs `python manage.py collectstatic --noinput` at container start when you need to refresh a mounted static volume. Static assets are already collected during the image build, so the default remains `0`.
+- `ARTIFACT_VERSION` and `GIT_COMMIT_SHA` are injected at build time and surfaced at runtime via `/api/info`.
+- `DEPLOYMENT_ENVIRONMENT`, `DEPLOYMENT_LANE`, `DEPLOYMENT_SLOT`, `PLATFORM_NAMESPACE`, and `PUBLIC_BASE_URL` let the same image describe its current blue/green role without code changes.
 
 For Kubernetes, use the same image and disable startup migrations on scaled web deployments (`RUN_MIGRATIONS=0`). Run `python manage.py migrate --noinput` as a one-off Job or init step instead, then start the web pods from the published image.
+
+Runtime endpoints:
+- `/healthz` for cheap liveness probes
+- `/readyz` for cheap readiness checks against local prerequisites
+- `/api/info` for canonical runtime identity and build metadata
+
+For blue/green promotion, the repo publishes one slot-neutral image. The
+platform moves the tested digest between `develop` and `main` aliases by
+changing the slot wiring, not by rebuilding a second `main` image.
+
+The deployment-specific prep for `insight-ui.demo.alpininsight.ai` is documented in [Deployment Contract](docs/deployment.md).
 
 The WebSocket demo lives in `utils/main.py`:
 ```bash
@@ -80,11 +87,14 @@ CI runs tests against Python 3.12, 3.13, and 3.14. Note that Python 3.14 is stil
 
 ## Documentation
 
-The application is self-documenting — run it locally and open it in your browser to read details about each component on its corresponding page, including live examples.
+The application is self-documenting. Run it locally and open it in your browser to read component documentation, examples, parameters, and accessibility notes on the corresponding pages.
 
-Additional developer references in `docs/`:
+The `docs/` directory is reserved for repository-level developer and governance references:
 - [Contributing Guide](docs/contributing.md)
+- [New Component Self-Documentation Checklist](docs/new-component-self-documentation-checklist.md)
+- [Documentation Architecture](docs/docs-architecture.md)
 - [Naming Conventions](docs/naming_conventions.md)
+- [Design System Contract](docs/design-system-contract.md)
 - [Accessibility](docs/accessibility.md)
 - [Internationalization](docs/i18n.md)
 

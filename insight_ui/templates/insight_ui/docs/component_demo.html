@@ -23,6 +23,36 @@
 {% elif component.value == "footer" %}
     <div class="bg-gray-50 dark:bg-gray-700 h-24"></div>
     {% footer data=footer_data %}
+{% elif component.value == "copyright_notice" %}
+    <div class="space-y-6">
+        {% copyright_notice config=copyright_notice_config %}
+        {% copyright_notice config=copyright_notice_legacy_config %}
+    </div>
+{% elif component.value == "logo" %}
+    <div class="grid gap-8 sm:grid-cols-3">
+        <div class="space-y-3">
+            <p class="font-semibold text-secondary">SVG asset</p>
+            <div class="flex h-16 items-end">
+                {% logo config=logo_svg %}
+            </div>
+        </div>
+        <div class="space-y-3">
+            <p class="font-semibold text-secondary">Image asset</p>
+            <div class="flex h-16 items-end">
+                {% logo config=logo_image %}
+            </div>
+        </div>
+        <div class="space-y-3">
+            <p class="font-semibold text-secondary">Icon</p>
+            <div class="flex h-16 items-end">
+                {% logo config=logo_icon %}
+            </div>
+        </div>
+    </div>
+{% elif component.value == "corner_ribbon" %}
+    <div class="h-64">
+        {% corner_ribbon text="New Feature" %}
+    </div>
 {% elif component.value == "breadcrumbs" %}
     <div class="space-y-4">
         {% breadcrumbs items=breadcrumb_items %}
@@ -41,38 +71,37 @@
     {% bullet_point_list items=bulletpoints %}
 {% elif component.value == "accordion" %}
     {% accordion accordion_items "faq-multiple" False %}
-{% elif component.value == "accordion_exclusive" %}
-    {% accordion accordion_items "faq-exclusive" True %}
 {% elif component.value == "tabs" %}
     {% tabs config=tabs_config %}
 {% elif component.value == "button" %}
-    <div class="space-y-6">
-        <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
-            <button class="btn btn-primary">{% trans "Primary" %}</button>
-            <button class="btn btn-secondary">{% trans "Secondary" %}</button>
-            <button class="btn btn-success">{% trans "Success" %}</button>
-            <button class="btn btn-warning">{% trans "Warning" %}</button>
-            <button class="btn btn-danger">{% trans "Danger" %}</button>
-            <button class="btn btn-info">{% trans "Info" %}</button>
-            <button disabled class="btn btn-disabled">{% trans "Disabled" %}</button>
-            <button aria-label="{% trans 'Close' %}" class="btn btn-close">{% icon name="x-mark" size="xs" %}</button>
-            <a href="#" class="btn-link">{% trans "Link" %}</a>
-        </div>
-        <div class="flex flex-col md:flex-row items-stretch flex-wrap gap-1">
-            <button class="btn btn-outline-primary">{% trans "Primary" %}</button>
-            <button class="btn btn-outline-secondary">{% trans "Secondary" %}</button>
-            <button class="btn btn-outline-success">{% trans "Success" %}</button>
-            <button class="btn btn-outline-warning">{% trans "Warning" %}</button>
-            <button class="btn btn-outline-danger">{% trans "Danger" %}</button>
-            <button class="btn btn-outline-info">{% trans "Info" %}</button>
-            <button disabled class="btn btn-outline-disabled">{% trans "Disabled" %}</button>
-        </div>
-        <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
-            <button class="btn btn-primary btn-large">{% trans "Click me!" %}</button>
-            <button class="btn btn-primary">{% trans "Click me!" %}</button>
-            <button class="btn btn-primary btn-sm">{% trans "Click me!" %}</button>
-            <button class="btn btn-primary btn-xs">{% trans "Click me!" %}</button>
-        </div>
+    <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
+        <button class="btn btn-primary">{% trans "Primary" %}</button>
+        <button class="btn btn-secondary">{% trans "Secondary" %}</button>
+        <button class="btn btn-success">{% trans "Success" %}</button>
+        <button class="btn btn-warning">{% trans "Warning" %}</button>
+        <button class="btn btn-danger">{% trans "Danger" %}</button>
+        <button class="btn btn-info">{% trans "Info" %}</button>
+        <button disabled class="btn btn-disabled">{% trans "Disabled" %}</button>
+        <button aria-label="{% trans 'Close' %}" class="btn btn-close">{% icon name="x-mark" size="xs" %}</button>
+        <a href="#" class="btn-link">{% trans "Link" %}</a>
+    </div>
+{% elif component.value == "outline_button" %}
+    <div class="flex flex-col md:flex-row items-stretch flex-wrap gap-1">
+        <button class="btn btn-outline-primary">{% trans "Primary" %}</button>
+        <button class="btn btn-outline-secondary">{% trans "Secondary" %}</button>
+        <button class="btn btn-outline-success">{% trans "Success" %}</button>
+        <button class="btn btn-outline-warning">{% trans "Warning" %}</button>
+        <button class="btn btn-outline-danger">{% trans "Danger" %}</button>
+        <button class="btn btn-outline-info">{% trans "Info" %}</button>
+        <button disabled class="btn btn-outline-disabled">{% trans "Disabled" %}</button>
+    </div>
+{% elif component.value == "button_sizes" %}
+    <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
+        <button class="btn btn-primary btn-xl">{% trans "Click me!" %}</button>
+        <button class="btn btn-primary btn-l">{% trans "Click me!" %}</button>
+        <button class="btn btn-primary">{% trans "Click me!" %}</button>
+        <button class="btn btn-primary btn-sm">{% trans "Click me!" %}</button>
+        <button class="btn btn-primary btn-xs">{% trans "Click me!" %}</button>
     </div>
 {% elif component.value == "input_field" %}
     <div class="space-y-6">
@@ -80,6 +109,8 @@
         {% input_field tag_id="text" name="text_input" input_type="text" placeholder="Type your name" label="Name:" %}
         {% input_field tag_id="password" name="password_input" input_type="password" placeholder="Type your password" label="Password" %}
     </div>
+{% elif component.value == "textarea" %}
+    {% textarea tag_id="text" name="text_field" rows=4 label="Write a message:" placeholder="Write something..." %}
 {% elif component.value == "checkbox" %}
     {% checkbox config=example_checkbox %}
 {% elif component.value == "checkbox_group" %}
@@ -97,7 +128,12 @@
         {% radio_block config=size_radio_config current_value=current_size %}
     </div>
 {% elif component.value == "range_slider" %}
-    {% slider config=example_slider %}
+    <div class="space-y-8">
+        {% slider config=example_slider %}
+        {% slider config=example_slider_skip %}
+        {% slider config=example_slider_rotate %}
+        {% slider config=example_slider_dual %}
+    </div>
 {% elif component.value == "toggle" %}
     <div class="flex justify-between w-64">
         {% toggle config=example_switch %}
@@ -112,7 +148,7 @@
         {% multiselect config=multiselect_config %}
     </div>
 {% elif component.value == "chat" %}
-    {% chat view_name="chat_response" %}
+    {% chat request_url="/api/chat-response/" %}
 {% elif component.value == "alert" %}
     <div class="space-y-4">
         {% alert message=_("This is just an information.") type="info" %}
@@ -124,13 +160,13 @@
     <div class="h-72">
         <div class="flex flex-col items-center gap-4">
             <!-- Standard -->
-            <button class="btn btn-primary w-72" data-insight-toggle="modal" data-insight-target="demo-modal">
+            <button class="btn btn-primary w-72" data-insight-modal="demo-modal">
                 {% trans "Standard modal" %}
             </button>
             {% modal tag_id="demo-modal" title=_("Demo modal") description=_("This is an example of a standard modal.") %}
 
             <!-- Action-Buttons -->
-            <button class="btn btn-danger w-72" data-insight-toggle="modal" data-insight-target="delete-modal">
+            <button class="btn btn-danger w-72" data-insight-modal="delete-modal">
                 {% trans "Modal with Action Buttons" %}
             </button>
             {% modal tag_id="delete-modal" title=_("Delete?") description=_("Please conform deletion!") actions=confirm_modal_actions %}
@@ -138,7 +174,7 @@
     </div>
 {% elif component.value == "popover" %}
     <div class="flex items-end justify-center gap-12 h-64">
-        <button data-popover="demo-popover" data-show-arrow="true" class="btn btn-primary h-fit">Hover me!</button>
+        <button data-insight-popover="demo-popover" data-show-arrow="true" class="btn btn-primary h-fit">Hover me!</button>
         <div id="demo-popover" class="bg-white dark:bg-gray-700 w-64 border border-gray-300 dark:border-0 rounded-sm shadow">
             <div class="p-4">
                 <span class="text-primary block font-semibold w-full border-b-2 border-gray-300 dark:border-gray-500 pb-2">
@@ -155,11 +191,13 @@
     </div>
 {% elif component.value == "tooltip" %}
     <div class="flex flex-col md:flex-row items-center justify-center gap-12 py-8">
-        <button data-tooltip="This is a tooltip." data-show-arrow="true" data-position="top" class="btn btn-primary">{% trans "Top" %}</button>
-        <button data-tooltip="This is a tooltip." data-position="bottom" class="btn btn-primary">{% trans "Bottom" %}</button>
-        <button data-tooltip="This is a tooltip." data-show-arrow="true" data-position="right" class="btn btn-primary">{% trans "Right" %}</button>
-        <button data-tooltip="This is a tooltip." data-position="left" class="btn btn-primary">{% trans "Left" %}</button>
+        <button data-insight-tooltip="This is a tooltip." data-show-arrow="true" data-position="top" class="btn btn-primary">{% trans "Top" %}</button>
+        <button data-insight-tooltip="This is a tooltip." data-position="bottom" class="btn btn-primary">{% trans "Bottom" %}</button>
+        <button data-insight-tooltip="This is a tooltip." data-show-arrow="true" data-position="right" class="btn btn-primary">{% trans "Right" %}</button>
+        <button data-insight-tooltip="This is a tooltip." data-position="left" class="btn btn-primary">{% trans "Left" %}</button>
     </div>
+{% elif component.value == "infobox" %}
+    {% infobox info_type="info" message="This is an informative message." %}
 {% elif component.value == "code_block" %}
     <div id="code" data-insight-code-block="javascript">
         {# fmt:off #}
@@ -181,7 +219,7 @@
     {% live_content tag_id="live-content" url="/api/live-data/" interval=10 %}
 {% elif component.value == "web_socket" %}
     <i class="text-secondary">Work in progress...</i>
-    <!-- {% insight_websocket tag_id="demo-websocket" url="ws://localhost:8765" initial_content="<p>Connect to Web-Socket…</p>" %} -->
+    <!-- {% insight_websocket tag_id="runtime-stream" url="/runtime/stream/" initial_content="<p>Waiting for runtime updates…</p>" %} -->
 {% elif component.value == "infinite_scroll" %}
     {% infinite_scroll items=scroll_items view_name="more_items" auto_fetch=False %}
 {% elif component.value == "pagination" %}
@@ -191,7 +229,9 @@
 {% elif component.value == "table" %}
     {% table data=table %}
 {% elif component.value == "generic_filter" %}
-    {% generic_filter filters=filters view_name=filter_view_name hx_target="#data" hx_push_url="true" vertical=False query_params=request.GET %}
+    <div class="pt-8">
+        {% generic_filter filters=filters request_url="#" vertical=False query_params=request.GET %}
+    </div>
 {% elif component.value == "search_bar" %}
     <div class="space-y-6">
         {% search_bar request_view="index_view" %}
@@ -199,21 +239,20 @@
         {% search_bar request_view="index_view" simple="True" search_query="Test 123" %}
     </div>
 {% elif component.value == "query_builder" %}
-    {% sq_builder model_fields=model_fields %}
+    {% query_builder model_fields=model_fields %}
 {% elif component.value == "card" %}
     <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
         {% for card in cards %}
             {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
         {% endfor %}
     </div>
-{% elif component.value == "effect_cards" %}
+{% elif component.value == "app_card" %}
     <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
-        {% for card in app_cards %}
-            {% app_card title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
-        {% endfor %}
-        {% for card in flip_cards %}
-            {% flip_card title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
-        {% endfor %}
+        {% app_card title=app_card.title content=app_card.content tags=app_card.tags url=app_card.url image=app_card.image actions=app_card.actions %}
+    </div>
+{% elif component.value == "flip_card" %}
+    <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
+        {% flip_card title=flip_card.title content=flip_card.content tags=flip_card.tags url=flip_card.url image=flip_card.image actions=flip_card.actions %}
     </div>
 {% elif component.value == "card_carousel" %}
     {% carousel carousel_items=carousel_items show_index=True items_per_slide=2 %}
@@ -228,14 +267,22 @@
 {% elif component.value == "form" %}
     {% form tag_id="htmx-form" title=_("Contact Form") description=_("Please fill out the form") fields=form_fields show_reset_button=True view_name="form_submit" htmx_config=htmx_config %}
 {% elif component.value == "page_header" %}
-    <div class="bg-insight-primary px-8 pt-12 pb-4">
-        {% page_header title=_("Example Page") description=_("This is an example description for the page header component.") %}
+    {% page_header title=_("Example Page") description=_("This is an example description for the page header component.") %}
+{% elif component.value == "heading_decoration" %}
+    <div class="space-y-8">
+        <div class="space-y-2">
+            <p class="font-semibold text-secondary">Waves</p>
+            {% heading_decoration %}
+        </div>
+        <div class="space-y-2">
+            <p class="font-semibold text-secondary">Gradient</p>
+            {% heading_decoration style="gradient" height=64 %}
+        </div>
+        <div class="space-y-2">
+            <p class="font-semibold text-secondary">Image</p>
+            {% heading_decoration style="image" image_url=heading_decoration_image_url height=120 %}
+        </div>
     </div>
-    <svg viewBox="0 0 500 90" class="-z-10">
-        <polyline class="fill-insight-primary/25 drop-shadow-xs drop-shadow-gray-500 dark:drop-shadow-gray-800" points="-10,0 450,0 -10,65"/>
-        <polyline class="fill-insight-primary/25 drop-shadow-xs drop-shadow-gray-500 dark:drop-shadow-gray-800" points="-10,0 250,0 -10,80"/>
-        <polyline class="fill-insight-primary drop-shadow-xs drop-shadow-gray-500 dark:drop-shadow-gray-800" points="-10,0 510,0 -10,35"/>
-    </svg>
 {% elif component.value == "article" %}
     {% article title=_("Newsletter") columns=3 content="<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>" %}
 {% elif component.value == "hero" %}

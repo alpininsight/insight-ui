@@ -42,6 +42,7 @@ export class ThemeToggle {
         this.root.classList.toggle('dark', theme === 'dark');
         this.root.setAttribute('data-theme', theme);
         localStorage.setItem(this.themeKey, theme);
+        document.cookie = "theme=" + theme + "; path=/; max-age=31536000";
     }
 
     loadSavedTheme() {
@@ -71,6 +72,6 @@ export class ThemeToggle {
 
     // Static method for initializing all toggle buttons
     static initAll() {
-        document.querySelectorAll('[data-theme-toggle]').forEach(toggleButton => new ThemeToggle(toggleButton));
+        document.querySelectorAll('[data-insight-theme-toggle]').forEach(toggleButton => new ThemeToggle(toggleButton));
     }
 };
