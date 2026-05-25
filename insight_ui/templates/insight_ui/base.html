@@ -68,33 +68,32 @@
         <!-- Main stylesheet -->
         <link rel="stylesheet" href="{% insight_asset INSIGHT_UI.stylesheet %}">
         {% if INSIGHT_UI.design_themes.enabled %}
-            {% with default_theme_path=INSIGHT_UI.design_themes.stylesheets|get_item:INSIGHT_UI.design_themes.default %}
-                <script>
-                    window.INSIGHT_UI_DESIGN_THEMES = {
-                        storageKey: "{{ INSIGHT_UI.design_themes.storage_key|escapejs }}",
-                        defaultTheme: "{{ INSIGHT_UI.design_themes.default|escapejs }}",
-                        assets: {
-                            {% for theme_name, theme_path in INSIGHT_UI.design_themes.stylesheets.items %}
-                                "{{ theme_name|escapejs }}": "{% insight_asset theme_path %}"{% if not forloop.last %},{% endif %}
-                            {% endfor %}
-                        }
-                    };
-                    (function() {
-                        const config = window.INSIGHT_UI_DESIGN_THEMES;
-                        const savedTheme = window.localStorage.getItem(config.storageKey);
-                        const selectedTheme = Object.prototype.hasOwnProperty.call(config.assets, savedTheme)
-                            ? savedTheme
-                            : config.defaultTheme;
-                        document.documentElement.setAttribute("data-insight-design-theme", selectedTheme);
-                    })();
-                </script>
-                <link
-                    id="insight-ui-theme-stylesheet"
-                    rel="stylesheet"
-                    href="{% insight_asset default_theme_path %}"
-                    data-default-theme="{{ INSIGHT_UI.design_themes.default }}"
-                >
-            {% endwith %}
+            <script>
+                window.INSIGHT_UI_DESIGN_THEMES = {
+                    storageKey: "{{ INSIGHT_UI.design_themes.storage_key|escapejs }}",
+                    defaultTheme: "{{ INSIGHT_UI.design_themes.default|escapejs }}",
+                    assets: {
+                        {% for theme_name, theme_path in INSIGHT_UI.design_themes.stylesheets.items %}
+                            {% insight_asset theme_path as theme_asset_url %}
+                            "{{ theme_name|escapejs }}": "{{ theme_asset_url|escapejs }}"{% if not forloop.last %},{% endif %}
+                        {% endfor %}
+                    }
+                };
+                (function() {
+                    const config = window.INSIGHT_UI_DESIGN_THEMES;
+                    const savedTheme = window.localStorage.getItem(config.storageKey);
+                    const selectedTheme = Object.prototype.hasOwnProperty.call(config.assets, savedTheme)
+                        ? savedTheme
+                        : config.defaultTheme;
+                    document.documentElement.setAttribute("data-insight-design-theme", selectedTheme);
+                    const themeLink = document.createElement("link");
+                    themeLink.id = "insight-ui-theme-stylesheet";
+                    themeLink.rel = "stylesheet";
+                    themeLink.href = config.assets[selectedTheme] || config.assets[config.defaultTheme];
+                    themeLink.dataset.defaultTheme = config.defaultTheme;
+                    document.currentScript.after(themeLink);
+                })();
+            </script>
         {% endif %}
 
         {% block extra_head %}{% endblock %}
