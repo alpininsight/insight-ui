@@ -94,6 +94,7 @@ def get_navbar_context(current_view: str = "index_view") -> dict:
             "show_usermenu": False,
             "show_language_selector": True,
             "show_theme_toggle": True,
+            "show_design_theme_selector": True,
         },
         "navbar_fixed": True,
         "white_bg": True,

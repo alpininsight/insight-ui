@@ -326,6 +326,8 @@ def navbar(config: Mapping[str, Any], **kwargs: JsonValue) -> dict[str, Any]:
         "show_usermenu": config.get("show_usermenu"),
         "show_language_selector": config.get("show_language_selector"),
         "show_theme_toggle": config.get("show_theme_toggle"),
+        "show_design_theme_selector": config.get("show_design_theme_selector"),
+        "design_themes": get_config("design_themes"),
         "fixed": get_config("navbar_fixed"),
         "options": {**kwargs},
     }

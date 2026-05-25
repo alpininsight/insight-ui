@@ -131,10 +131,8 @@ function validateCssOutput(sourceFile, source, output) {
 }
 
 async function processAssetGroup({ directory, extension, minExtension, build, label }) {
-    const entries = await readdir(directory, { withFileTypes: true });
+    const entries = await listAssetFiles(directory);
     const sourceFiles = entries
-        .filter((entry) => entry.isFile())
-        .map((entry) => entry.name)
         .filter((name) => name.endsWith(extension) && !name.endsWith(minExtension))
         .sort();
 
@@ -182,17 +180,33 @@ async function processAssetGroup({ directory, extension, minExtension, build, la
     }
 
     for (const entry of entries) {
-        if (entry.isFile() && entry.name.endsWith(minExtension) && !generatedFiles.has(entry.name)) {
+        if (entry.endsWith(minExtension) && !generatedFiles.has(entry)) {
             if (checkMode) {
-                staleFiles.push(entry.name);
+                staleFiles.push(entry);
             } else {
-                await unlink(new URL(entry.name, directory));
-                console.log(`Removed stale generated file ${entry.name}`);
+                await unlink(new URL(entry, directory));
+                console.log(`Removed stale generated file ${entry}`);
             }
         }
     }
 
     return staleFiles;
+}
+
+async function listAssetFiles(directory, relativeDirectory = "") {
+    const files = [];
+    const entries = await readdir(new URL(relativeDirectory, directory), { withFileTypes: true });
+
+    for (const entry of entries) {
+        const relativePath = `${relativeDirectory}${entry.name}`;
+        if (entry.isDirectory()) {
+            files.push(...await listAssetFiles(directory, `${relativePath}/`));
+        } else if (entry.isFile()) {
+            files.push(relativePath);
+        }
+    }
+
+    return files;
 }
 
 const staleFiles = [];

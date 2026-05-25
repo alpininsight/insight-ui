@@ -98,7 +98,7 @@ class TableOfContents {
         aria-[current=location]:font-bold
         aria-[current=location]:text-insight-primary-hover
         focus-visible:outline focus-visible:outline-2
-        focus-visible:outline-blue-600 focus-visible:outline-offset-2
+        focus-visible:outline-insight-primary-hover focus-visible:outline-offset-2
       `.trim();
 
             a.style.paddingInlineStart = `${0.5 * currentLevel}rem`;

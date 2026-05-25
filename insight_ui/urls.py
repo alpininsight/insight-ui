@@ -13,6 +13,7 @@ urlpatterns = [
     path("tabs_view/<str:tab_id>", views.tabs_view, name="tabs_view"),
     path("pagination/", views.pagination, name="pagination"),
     path("i18n/setlang/", set_language, name="set_language"),
+    path("docs/components/", views.components_overview_view, name="components_overview_view"),
     path("docs/components/<str:component_name>/", views.component_detail_page_view, name="component_detail_page_view"),
     path(
         "docs/components/<str:component_name>/source/<str:source_kind>/",

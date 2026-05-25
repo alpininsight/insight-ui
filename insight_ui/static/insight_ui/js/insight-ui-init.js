@@ -15,6 +15,7 @@ import { Multiselect } from "./insight-ui-multiselect.js";
 import { RangeSlider } from "./insight-ui-range-slider.js";
 import { Sidebar } from "./insight-ui-sidebar.js";
 import { Tabs } from "./insight-ui-tabs.js";
+import { ThemeSwitcher } from "./insight-ui-theme-switcher.js";
 import { ThemeToggle } from "./insight-ui-theme-toggle.js";
 import { ThreeDCarousel } from "./insight-ui-3D-carousel.js";
 
@@ -34,6 +35,7 @@ Object.assign(window.InsightUI, {
 	RangeSlider,
 	Sidebar,
 	Tabs,
+	ThemeSwitcher,
 	ThemeToggle,
 	ThreeDCarousel,
 });
@@ -52,6 +54,7 @@ function initAll() {
 	RangeSlider.initAll();
 	Sidebar.initAll();
 	Tabs.initAll();
+	ThemeSwitcher.initAll();
 	ThemeToggle.initAll();
 	ThreeDCarousel.initAll();
 	InsightUI.WebSocket?.init();

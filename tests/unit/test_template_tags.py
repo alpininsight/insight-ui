@@ -7,7 +7,7 @@ import pytest
 from bs4 import BeautifulSoup
 from django.contrib.auth.models import User
 from django.template import Context, Template
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.utils.safestring import SafeText
 from django.utils.translation import activate
 
@@ -86,6 +86,44 @@ class NavbarTemplateTagTest(TemplateTagsTestCase):
         assert "hidden" in menu.get("class", [])
         assert "absolute" in menu.get("class", [])
         assert "top-full" in menu.get("class", [])
+
+    @override_settings(INSIGHT_UI={"design_themes": {"enabled": True}})
+    def test_navbar_design_theme_selector_is_between_links_and_search(self) -> None:
+        """The design-theme selector belongs next to the component menu, before search."""
+        nav_config = {
+            "brand": {"title": "Django Insight UI NavBar"},
+            "links": [
+                {
+                    "text": "Components",
+                    "open_dropdown": "components-menu",
+                    "items": [{"text": "Button", "href": "#button"}],
+                    "chevron": True,
+                    "need_auth": False,
+                    "staff_only": False,
+                }
+            ],
+            "searchbar_request_view": "index_view",
+            "show_design_theme_selector": True,
+            "show_usermenu": False,
+            "show_language_selector": True,
+            "show_theme_toggle": True,
+        }
+        template_string = """
+        {% load insight_tags %}
+        {% navbar config=nav_config %}
+        """
+
+        rendered = self.render_template(template_string, context={"nav_config": nav_config})
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        assert soup.select_one('button[data-insight-dropdown="components-menu"]') is not None
+        assert soup.select_one("#insight-ui-design-theme-selector") is not None
+        assert soup.select_one("#search") is not None
+        assert (
+            rendered.index('data-insight-dropdown="components-menu"')
+            < rendered.index('id="insight-ui-design-theme-selector"')
+            < rendered.index('id="search"')
+        )
 
 
 class CopyrightNoticeTemplateTagTest(TemplateTagsTestCase):

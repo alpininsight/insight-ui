@@ -20,6 +20,16 @@ CONFIG_DEFAULTS: dict[str, Any] = {
     "load_echarts": False,  # Turn to 'True' to use Chart-Components
     "JS_DEBUG": False,  # Turn to 'True' to enable build in browser console logging
     "use_tailwind_cli": False,  # Turn to 'True' to enable the tailwind cli, if you want to modify the styles
+    "design_themes": {
+        "enabled": False,
+        "default": "default",
+        "storage_key": "insight-ui-design-theme",
+        "stylesheets": {
+            "default": "insight_ui/css/themes/default.css",
+            "alpin": "insight_ui/css/themes/alpin.css",
+            "foundry": "insight_ui/css/themes/foundry.css",
+        },
+    },
     "assets": {
         "use_minified": False,
         "cdn_enabled": False,

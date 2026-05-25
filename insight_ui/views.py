@@ -5,7 +5,7 @@ from typing import Any, cast
 
 import structlog
 from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.translation import gettext as _
@@ -347,6 +347,12 @@ def playground_view(request: HttpRequest) -> HttpResponse:
 
 
 @require_GET
+def components_overview_view(_request: HttpRequest) -> HttpResponse:
+    """Redirect the generic components entrypoint to the first component category."""
+    return redirect("storybook_view", storybook_name=ComponentCategory.LAYOUT.value)
+
+
+@require_GET
 def component_detail_page_view(request: HttpRequest, component_name: str) -> HttpResponse:
     """
     Render detailpage of the specified component.
@@ -387,10 +393,6 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
         }
 
     if request.headers.get("HX-Request") and not request.headers.get("HX-History-Restore-Request"):
-        # Temporary fix for the button component
-        if component_name in ["button"]:
-            return render(request, f"insight_ui/docs/partial/{component_name}_detailpage.html", context)
-
         return render(request, "insight_ui/docs/component_detailpage_partial.html", context)
 
     context |= get_base_context("component_detail_page_view") | get_sidebar_context(component_name)

@@ -1,16 +1,16 @@
 {% load i18n %}
-<div class="bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 rounded-lg p-4">
+<div class="bg-insight-primary/10 dark:bg-insight-primary/20 border border-insight-primary/30 dark:border-insight-primary/40 rounded-lg p-4">
     <div class="flex items-center">
         <div class="shrink-0">
-            <svg class="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+            <svg class="h-5 w-5 text-insight-primary" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
             </svg>
         </div>
         <div class="ms-3">
-            <p class="text-sm text-blue-700 dark:text-blue-200">
+            <p class="text-sm text-insight-text-primary dark:text-insight-text-primary-dark">
                 {{ data.message }}
             </p>
-            <p class="text-xs text-blue-600 dark:text-blue-300 mt-1">
+            <p class="text-xs text-insight-text-link dark:text-insight-text-link-hover mt-1">
                 {% trans "Status" %}: {{ data.status }} | {% trans "Timestamp" %}: {{ timestamp }}
             </p>
         </div>
