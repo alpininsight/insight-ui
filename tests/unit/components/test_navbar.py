@@ -208,7 +208,13 @@ class TestNavbar(TemplateTagsTestCase):
         soup = BeautifulSoup(rendered, "html.parser")
 
         assert soup.select_one('button[data-insight-dropdown="components-menu"]') is not None
-        assert soup.select_one("#insight-ui-design-theme-selector") is not None
+        theme_selector = soup.select_one("#insight-ui-design-theme-selector")
+        assert theme_selector is not None
+        assert theme_selector.select_one('option[value="default"]').get_text(strip=True) == "Original"
+        assert (
+            theme_selector.select_one('option[value="cerulean"]')["data-theme-href"]
+            == "/static/insight_ui/css/themes/cerulean.css"
+        )
         assert soup.select_one("#search") is not None
         assert (
             rendered.index('data-insight-dropdown="components-menu"')

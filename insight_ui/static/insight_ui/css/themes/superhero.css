@@ -1,0 +1,23 @@
+:root {
+    --insight-design-theme-name: superhero;
+    --color-insight-primary: #df6919;
+    --color-insight-secondary: #4e5d6c;
+    --color-insight-success: #5cb85c;
+    --color-insight-info: #5bc0de;
+    --color-insight-warning: #ffc107;
+    --color-insight-danger: #d9534f;
+    --color-insight-primary-hover: color-mix(in oklab, var(--color-insight-primary) 85%, white);
+    --color-insight-primary-active: color-mix(in oklab, var(--color-insight-primary) 70%, white);
+    --color-insight-secondary-hover: color-mix(in oklab, var(--color-insight-secondary) 85%, white);
+    --color-insight-secondary-active: color-mix(in oklab, var(--color-insight-secondary) 70%, white);
+    --color-insight-success-hover: color-mix(in oklab, var(--color-insight-success) 85%, white);
+    --color-insight-success-active: color-mix(in oklab, var(--color-insight-success) 70%, white);
+    --color-insight-info-hover: color-mix(in oklab, var(--color-insight-info) 85%, white);
+    --color-insight-info-active: color-mix(in oklab, var(--color-insight-info) 70%, white);
+    --color-insight-warning-hover: color-mix(in oklab, var(--color-insight-warning) 85%, white);
+    --color-insight-warning-active: color-mix(in oklab, var(--color-insight-warning) 70%, white);
+    --color-insight-danger-hover: color-mix(in oklab, var(--color-insight-danger) 85%, white);
+    --color-insight-danger-active: color-mix(in oklab, var(--color-insight-danger) 70%, white);
+    --color-insight-text-link: var(--color-insight-primary);
+    --color-insight-text-link-hover: var(--color-insight-primary-hover);
+}

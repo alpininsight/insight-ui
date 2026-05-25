@@ -1,4 +1,4 @@
-{% load i18n insight_assets %}
+{% load i18n insight_assets insight_tags %}
 
 <div class="flex h-10 items-center gap-2 rounded-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-2 shadow-sm">
   <label class="hidden md:inline text-xs font-semibold uppercase tracking-wide text-secondary" for="insight-ui-design-theme-selector">
@@ -17,7 +17,9 @@
         data-theme-href="{% insight_asset theme_path %}"
         {% if theme_name == design_themes.default %}selected{% endif %}
       >
-        {{ theme_name|title }}
+        {% with theme_label=design_themes.labels|get_item:theme_name %}
+          {% if theme_label %}{{ theme_label }}{% else %}{{ theme_name|title }}{% endif %}
+        {% endwith %}
       </option>
     {% endfor %}
   </select>

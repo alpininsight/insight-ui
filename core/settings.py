@@ -198,13 +198,6 @@ INSIGHT_UI = {
     "use_tailwind_cli": USE_TAILWIND_CLI,  # Turn to 'True' to enable the tailwind cli, if you want to modify the styles
     "design_themes": {
         "enabled": True,
-        "default": "default",
-        "storage_key": "insight-ui-design-theme",
-        "stylesheets": {
-            "default": "insight_ui/css/themes/default.css",
-            "alpin": "insight_ui/css/themes/alpin.css",
-            "foundry": "insight_ui/css/themes/foundry.css",
-        },
     },
     "assets": {
         "use_minified": INSIGHT_UI_USE_MINIFIED_ASSETS,
