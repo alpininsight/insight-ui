@@ -25,3 +25,4 @@ class DesignThemeHeadTest(SimpleTestCase):
         assert 'themeLink.id = "insight-ui-theme-stylesheet";' in rendered
         assert "themeLink.href = config.assets[selectedTheme] || config.assets[config.defaultTheme];" in rendered
         assert '"/static/insight_ui/css/themes/alpin.css"' in rendered
+        assert '"/static/insight_ui/css/themes/cerulean.css"' in rendered
