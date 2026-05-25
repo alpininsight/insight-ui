@@ -53,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **docs:** Serve component source links locally 
 - **static:** Require explicit cdn opt-in 
 - **static:** Preserve selectors in minified css assets 
+- **cards:** Stabilize app card layout 
 
 ### CI/CD
 
