@@ -1,0 +1,11 @@
+:root {
+    --insight-design-theme-name: foundry;
+    --color-insight-primary: #7c3aed;
+    --color-insight-primary-hover: #8b5cf6;
+    --color-insight-primary-active: #a78bfa;
+    --color-insight-secondary: #f97316;
+    --color-insight-secondary-hover: #fb923c;
+    --color-insight-secondary-active: #fdba74;
+    --color-insight-text-link: #7c3aed;
+    --color-insight-text-link-hover: #a78bfa;
+}

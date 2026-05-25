@@ -98,6 +98,7 @@ class NavbarConfig:
         show_usermenu: Displays a dropdown menu with at least a logout button.
         show_language_selector: Displays a dropdown menu for selecting the display language (if defined).
         show_theme_toggle: Displays a button to switch between the light and dark theme of the page.
+        show_design_theme_selector: Displays a dropdown menu for selecting a design theme.
 
     """
 
@@ -138,6 +139,9 @@ class NavbarConfig:
     )
     show_theme_toggle: bool = field(
         default=False, metadata={"doc": _("Displays a button to switch between the light and dark theme of the page.")}
+    )
+    show_design_theme_selector: bool = field(
+        default=False, metadata={"doc": _("Displays a dropdown menu for selecting a design theme.")}
     )
 
 

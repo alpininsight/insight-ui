@@ -108,6 +108,12 @@
           </ul>
         {% endif %}
 
+        {% if navbar_config.show_design_theme_selector and design_themes.enabled %}
+          <div class="flex items-center lg:h-10 lg:shrink-0">
+            {% include "insight_ui/components/toggle_design_theme.html" with design_themes=design_themes %}
+          </div>
+        {% endif %}
+
         {# Other Nav-Elements #}
         <div class="flex flex-col lg:flex-row gap-2 w-full lg:w-fit">
           {% if navbar_config.searchbar_request_url %}

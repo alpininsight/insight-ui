@@ -340,6 +340,7 @@ def navbar(context: dict[str, Any], config: NavbarConfig, **kwargs: JsonValue) -
     return {
         "user": context.get("user"),
         "navbar_config": config,
+        "design_themes": get_config("design_themes"),
         "fixed": get_config("navbar_fixed"),
         "options": {**kwargs},
     }

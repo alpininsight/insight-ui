@@ -1,8 +1,31 @@
-{% load static i18n insight_assets %}
+{% load static i18n insight_tags insight_assets %}
 
 <!DOCTYPE html>
 <html>
     <head>
+        {% if INSIGHT_UI.design_themes.enabled %}
+            {% with default_theme_path=INSIGHT_UI.design_themes.stylesheets|get_item:INSIGHT_UI.design_themes.default %}
+                <script>
+                    window.INSIGHT_UI_DESIGN_THEMES = {
+                        storageKey: "{{ INSIGHT_UI.design_themes.storage_key|escapejs }}",
+                        defaultTheme: "{{ INSIGHT_UI.design_themes.default|escapejs }}",
+                        assets: {
+                            {% for theme_name, theme_path in INSIGHT_UI.design_themes.stylesheets.items %}
+                                "{{ theme_name|escapejs }}": "{% insight_asset theme_path %}"{% if not forloop.last %},{% endif %}
+                            {% endfor %}
+                        }
+                    };
+                    (function() {
+                        const config = window.INSIGHT_UI_DESIGN_THEMES;
+                        const savedTheme = window.localStorage.getItem(config.storageKey);
+                        const selectedTheme = Object.prototype.hasOwnProperty.call(config.assets, savedTheme)
+                            ? savedTheme
+                            : config.defaultTheme;
+                        document.documentElement.setAttribute("data-insight-design-theme", selectedTheme);
+                    })();
+                </script>
+            {% endwith %}
+        {% endif %}
         <script src="{% url 'javascript-catalog' %}"></script>
 
         <!-- HTMX CDN -->
@@ -33,6 +56,16 @@
 
         <!-- Main stylesheet -->
         <link rel="stylesheet" href="{% insight_asset INSIGHT_UI.stylesheet %}">
+        {% if INSIGHT_UI.design_themes.enabled %}
+            {% with default_theme_path=INSIGHT_UI.design_themes.stylesheets|get_item:INSIGHT_UI.design_themes.default %}
+                <link
+                    id="insight-ui-theme-stylesheet"
+                    rel="stylesheet"
+                    href="{% insight_asset default_theme_path %}"
+                    data-default-theme="{{ INSIGHT_UI.design_themes.default }}"
+                >
+            {% endwith %}
+        {% endif %}
     </head>
     <body class="bg-white dark:bg-gray-800 {% if not component.no_padding %}p-8{% endif %}">
         {% include "insight_ui/docs/component_demo.html" %}

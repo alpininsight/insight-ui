@@ -1,0 +1,24 @@
+{% load i18n insight_assets %}
+
+<div class="flex h-10 items-center gap-2 rounded-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-2 shadow-sm">
+  <label class="hidden md:inline text-xs font-semibold uppercase tracking-wide text-secondary" for="insight-ui-design-theme-selector">
+    {% trans "Theme" %}
+  </label>
+  <select
+    id="insight-ui-design-theme-selector"
+    class="h-8 min-w-28 rounded-sm border-0 bg-transparent px-1 text-sm text-primary focus:outline-none focus:ring-2 focus:ring-insight-primary"
+    aria-label="{% trans "Design theme" %}"
+    data-insight-theme-switcher
+    data-storage-key="{{ design_themes.storage_key }}"
+  >
+    {% for theme_name, theme_path in design_themes.stylesheets.items %}
+      <option
+        value="{{ theme_name }}"
+        data-theme-href="{% insight_asset theme_path %}"
+        {% if theme_name == design_themes.default %}selected{% endif %}
+      >
+        {{ theme_name|title }}
+      </option>
+    {% endfor %}
+  </select>
+</div>

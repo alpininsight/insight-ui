@@ -3,7 +3,9 @@
 # ruff: noqa: E501
 
 from bs4 import BeautifulSoup
+from django.test import override_settings
 from insight_ui.configs.base import IconConfig
+from insight_ui.configs.input import DropdownConfig, DropdownItemConfig
 from insight_ui.configs.navigation import NavbarBrandConfig, NavbarConfig, NavbarLinkConfig
 from insight_ui.configs.popup import ModalConfig
 from insight_ui.configs.utils import BrandLockupConfig, LogoConfig
@@ -178,3 +180,38 @@ class TestNavbar(TemplateTagsTestCase):
         assert brand_link is not None
         assert brand_link.find("span", string="Insight UI") is not None
         assert brand_link.find("img") is not None
+
+    @override_settings(INSIGHT_UI={"design_themes": {"enabled": True}})
+    def test_navbar_design_theme_selector_is_between_links_and_search(self) -> None:
+        """The design-theme selector belongs next to the component menu, before search."""
+        nav_config = NavbarConfig(
+            brand=NavbarBrandConfig(title="Django Insight UI NavBar", request_url="/"),
+            links=[
+                NavbarLinkConfig(
+                    "Components",
+                    dropdown=DropdownConfig(
+                        "components-menu",
+                        "",
+                        items=[DropdownItemConfig("Button", "/docs/components/button/")],
+                    ),
+                )
+            ],
+            searchbar_request_url="/search/",
+            show_language_selector=True,
+            show_theme_toggle=True,
+            show_design_theme_selector=True,
+        )
+
+        rendered = self.render_template(
+            "{% load insight_tags %}{% navbar config=nav_config %}", context={"nav_config": nav_config}
+        )
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        assert soup.select_one('button[data-insight-dropdown="components-menu"]') is not None
+        assert soup.select_one("#insight-ui-design-theme-selector") is not None
+        assert soup.select_one("#search") is not None
+        assert (
+            rendered.index('data-insight-dropdown="components-menu"')
+            < rendered.index('id="insight-ui-design-theme-selector"')
+            < rendered.index('id="search"')
+        )

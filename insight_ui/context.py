@@ -76,6 +76,7 @@ def get_navbar_context() -> dict:
             "/",
             show_language_selector=True,
             show_theme_toggle=True,
+            show_design_theme_selector=True,
         ),
         "navbar_fixed": True,
         "white_bg": True,
