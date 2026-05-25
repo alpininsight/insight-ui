@@ -84,7 +84,7 @@ async function minifyJavaScript(sourceFile, source) {
 
 async function minifyCss(sourceFile, source) {
     const minified = source
-        .replace(/\/\*[\s\S]*?\*\//g, "")
+        .replace(/\/\*[\s\S]*?\*\//g, (comment) => comment.startsWith("/*!") ? comment : "")
         .replace(/\s+/g, " ")
         .replace(/\s*([{};,])\s*/g, "$1")
         .replace(/:\s+/g, ":")
@@ -95,12 +95,20 @@ async function minifyCss(sourceFile, source) {
         throw new Error(`CSS minifier produced empty output for ${sourceFile}`);
     }
 
-    validateCssOutput(sourceFile, minified);
+    validateCssOutput(sourceFile, source, minified);
 
     return minified;
 }
 
-function validateCssOutput(sourceFile, output) {
+function validateCssOutput(sourceFile, source, output) {
+    const missingLicenseComments = [...source.matchAll(/\/\*![\s\S]*?\*\//g)]
+        .map((match) => match[0].replace(/\s+/g, " ").trim())
+        .filter((comment) => !output.includes(comment));
+
+    if (missingLicenseComments.length > 0) {
+        throw new Error(`Minified ${sourceFile} is missing required license comments`);
+    }
+
     if (sourceFile !== "tailwind.css") {
         return;
     }
