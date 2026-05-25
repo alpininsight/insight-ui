@@ -352,6 +352,37 @@ class CardTemplateTagTest(TemplateTagsTestCase):
         rendered = self.render_template(template_string)
         assert "Test Card" in rendered
 
+    def test_app_card_uses_stable_catalog_card_layout(self) -> None:
+        """The app card should fill its grid cell without hover-driven reflow."""
+        card = {
+            "title": "Catalog Product",
+            "content": "Reusable product description.",
+            "tags": ["SSO", "Demo"],
+            "image": {"url": "/static/product.png", "alt": "Product preview"},
+            "actions": [
+                {"text": "More information", "url": "/demo/product", "type": "secondary"},
+                {"text": "Not live yet", "url": "#", "type": "disabled", "disabled": True},
+            ],
+        }
+        template_string = """
+        {% load insight_tags %}
+        {% app_card title=card.title content=card.content tags=card.tags image=card.image actions=card.actions %}
+        """
+
+        rendered = self.render_template(template_string, context={"card": card})
+        soup = BeautifulSoup(rendered, "html.parser")
+        wrapper = soup.find("div")
+        classes = wrapper["class"]
+
+        assert "h-full" in classes
+        assert "w-full" in classes
+        assert "border" in classes
+        assert "max-w-72" not in classes
+        assert "hover:scale-105" not in classes
+        assert soup.find("img")["class"] == ["h-56", "w-full", "bg-gray-100", "object-cover", "dark:bg-gray-700"]
+        assert soup.find("div", id="card-tags")["class"] == ["flex", "flex-wrap", "gap-1", "px-4", "pb-2"]
+        assert soup.find("span", attrs={"aria-disabled": "true"}).text.strip() == "Not live yet"
+
 
 class FormTemplateTagTest(TemplateTagsTestCase):
     """Tests für den form Template Tag."""
