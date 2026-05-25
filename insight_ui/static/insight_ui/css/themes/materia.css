@@ -1,23 +1,50 @@
 :root {
     --insight-design-theme-name: materia;
+    --color-insight-text-primary: #444;
+    --color-insight-text-secondary: rgba(68, 68, 68, 0.75);
+    --color-insight-text-link: #2196f3;
+    --color-insight-text-link-hover: #1a78c2;
     --color-insight-primary: #2196f3;
-    --color-insight-secondary: #222;
+    --color-insight-primary-hover: #1c80cf;
+    --color-insight-primary-active: #1a78c2;
+    --color-insight-primary-foreground: #fff;
+    --color-insight-primary-foreground-hover: #fff;
+    --color-insight-primary-foreground-active: #fff;
+    --color-insight-secondary: #fff;
+    --color-insight-secondary-hover: white;
+    --color-insight-secondary-active: white;
+    --color-insight-secondary-foreground: #000;
+    --color-insight-secondary-foreground-hover: #000;
+    --color-insight-secondary-foreground-active: #000;
     --color-insight-success: #4caf50;
+    --color-insight-success-hover: #419544;
+    --color-insight-success-active: #3d8c40;
+    --color-insight-success-foreground: #fff;
+    --color-insight-success-foreground-hover: #fff;
+    --color-insight-success-foreground-active: #fff;
     --color-insight-info: #9c27b0;
+    --color-insight-info-hover: #852196;
+    --color-insight-info-active: #7d1f8d;
+    --color-insight-info-foreground: #fff;
+    --color-insight-info-foreground-hover: #fff;
+    --color-insight-info-foreground-active: #fff;
     --color-insight-warning: #ff9800;
+    --color-insight-warning-hover: #d98100;
+    --color-insight-warning-active: #cc7a00;
+    --color-insight-warning-foreground: #fff;
+    --color-insight-warning-foreground-hover: #fff;
+    --color-insight-warning-foreground-active: #fff;
     --color-insight-danger: #e51c23;
-    --color-insight-primary-hover: color-mix(in oklab, var(--color-insight-primary) 85%, white);
-    --color-insight-primary-active: color-mix(in oklab, var(--color-insight-primary) 70%, white);
-    --color-insight-secondary-hover: color-mix(in oklab, var(--color-insight-secondary) 85%, white);
-    --color-insight-secondary-active: color-mix(in oklab, var(--color-insight-secondary) 70%, white);
-    --color-insight-success-hover: color-mix(in oklab, var(--color-insight-success) 85%, white);
-    --color-insight-success-active: color-mix(in oklab, var(--color-insight-success) 70%, white);
-    --color-insight-info-hover: color-mix(in oklab, var(--color-insight-info) 85%, white);
-    --color-insight-info-active: color-mix(in oklab, var(--color-insight-info) 70%, white);
-    --color-insight-warning-hover: color-mix(in oklab, var(--color-insight-warning) 85%, white);
-    --color-insight-warning-active: color-mix(in oklab, var(--color-insight-warning) 70%, white);
-    --color-insight-danger-hover: color-mix(in oklab, var(--color-insight-danger) 85%, white);
-    --color-insight-danger-active: color-mix(in oklab, var(--color-insight-danger) 70%, white);
-    --color-insight-text-link: var(--color-insight-primary);
-    --color-insight-text-link-hover: var(--color-insight-primary-hover);
+    --color-insight-danger-hover: #c3181e;
+    --color-insight-danger-active: #b7161c;
+    --color-insight-danger-foreground: #fff;
+    --color-insight-danger-foreground-hover: #fff;
+    --color-insight-danger-foreground-active: #fff;
+}
+
+[data-theme="dark"] {
+    --color-insight-text-primary-dark: #dee2e6;
+    --color-insight-text-secondary-dark: rgba(222, 226, 230, 0.75);
+    --color-insight-text-link: #7ac0f8;
+    --color-insight-text-link-hover: #95cdf9;
 }
