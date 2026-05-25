@@ -239,7 +239,7 @@
 
     .slider-wrapper {
         --range-progress: 0%;
-        --slider-track-active: #3b82f6;
+        --slider-track-active: var(--color-insight-primary);
         --slider-track-inactive: #e5e7eb;
     }
 
