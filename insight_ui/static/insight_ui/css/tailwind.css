@@ -3719,14 +3719,9 @@
     }
   }
   .btn-primary {
-    border-color: var(--color-insight-primary);
+    --insight-button-border-color: var(--color-insight-primary-border, var(--color-insight-primary));
     background-color: var(--color-insight-primary);
     color: var(--color-insight-primary-foreground);
-    &:hover {
-      @media (hover: hover) {
-        border-color: var(--color-insight-primary-hover);
-      }
-    }
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-insight-primary-hover);
@@ -3738,24 +3733,23 @@
       }
     }
     &:active {
-      border-color: var(--color-insight-primary-active);
-    }
-    &:active {
       background-color: var(--color-insight-primary-active);
     }
     &:active {
       color: var(--color-insight-primary-foreground-active);
     }
+    border-color: var(--insight-button-border-color);
+  }
+  .btn-primary:hover {
+    --insight-button-border-color: var(--color-insight-primary-border-hover, var(--color-insight-primary-hover));
+  }
+  .btn-primary:active {
+    --insight-button-border-color: var(--color-insight-primary-border-active, var(--color-insight-primary-active));
   }
   .btn-secondary {
-    border-color: var(--color-insight-secondary);
+    --insight-button-border-color: var(--color-insight-secondary-border, var(--color-insight-secondary));
     background-color: var(--color-insight-secondary);
     color: var(--color-insight-secondary-foreground);
-    &:hover {
-      @media (hover: hover) {
-        border-color: var(--color-insight-secondary-hover);
-      }
-    }
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-insight-secondary-hover);
@@ -3767,24 +3761,23 @@
       }
     }
     &:active {
-      border-color: var(--color-insight-secondary-active);
-    }
-    &:active {
       background-color: var(--color-insight-secondary-active);
     }
     &:active {
       color: var(--color-insight-secondary-foreground-active);
     }
+    border-color: var(--insight-button-border-color);
+  }
+  .btn-secondary:hover {
+    --insight-button-border-color: var(--color-insight-secondary-border-hover, var(--color-insight-secondary-hover));
+  }
+  .btn-secondary:active {
+    --insight-button-border-color: var(--color-insight-secondary-border-active, var(--color-insight-secondary-active));
   }
   .btn-success {
-    border-color: var(--color-insight-success);
+    --insight-button-border-color: var(--color-insight-success-border, var(--color-insight-success));
     background-color: var(--color-insight-success);
     color: var(--color-insight-success-foreground);
-    &:hover {
-      @media (hover: hover) {
-        border-color: var(--color-insight-success-hover);
-      }
-    }
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-insight-success-hover);
@@ -3796,24 +3789,23 @@
       }
     }
     &:active {
-      border-color: var(--color-insight-success-active);
-    }
-    &:active {
       background-color: var(--color-insight-success-active);
     }
     &:active {
       color: var(--color-insight-success-foreground-active);
     }
+    border-color: var(--insight-button-border-color);
+  }
+  .btn-success:hover {
+    --insight-button-border-color: var(--color-insight-success-border-hover, var(--color-insight-success-hover));
+  }
+  .btn-success:active {
+    --insight-button-border-color: var(--color-insight-success-border-active, var(--color-insight-success-active));
   }
   .btn-warning {
-    border-color: var(--color-insight-warning);
+    --insight-button-border-color: var(--color-insight-warning-border, var(--color-insight-warning));
     background-color: var(--color-insight-warning);
     color: var(--color-insight-warning-foreground);
-    &:hover {
-      @media (hover: hover) {
-        border-color: var(--color-insight-warning-hover);
-      }
-    }
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-insight-warning-hover);
@@ -3825,24 +3817,23 @@
       }
     }
     &:active {
-      border-color: var(--color-insight-warning-active);
-    }
-    &:active {
       background-color: var(--color-insight-warning-active);
     }
     &:active {
       color: var(--color-insight-warning-foreground-active);
     }
+    border-color: var(--insight-button-border-color);
+  }
+  .btn-warning:hover {
+    --insight-button-border-color: var(--color-insight-warning-border-hover, var(--color-insight-warning-hover));
+  }
+  .btn-warning:active {
+    --insight-button-border-color: var(--color-insight-warning-border-active, var(--color-insight-warning-active));
   }
   .btn-danger {
-    border-color: var(--color-insight-danger);
+    --insight-button-border-color: var(--color-insight-danger-border, var(--color-insight-danger));
     background-color: var(--color-insight-danger);
     color: var(--color-insight-danger-foreground);
-    &:hover {
-      @media (hover: hover) {
-        border-color: var(--color-insight-danger-hover);
-      }
-    }
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-insight-danger-hover);
@@ -3854,24 +3845,23 @@
       }
     }
     &:active {
-      border-color: var(--color-insight-danger-active);
-    }
-    &:active {
       background-color: var(--color-insight-danger-active);
     }
     &:active {
       color: var(--color-insight-danger-foreground-active);
     }
+    border-color: var(--insight-button-border-color);
+  }
+  .btn-danger:hover {
+    --insight-button-border-color: var(--color-insight-danger-border-hover, var(--color-insight-danger-hover));
+  }
+  .btn-danger:active {
+    --insight-button-border-color: var(--color-insight-danger-border-active, var(--color-insight-danger-active));
   }
   .btn-info {
-    border-color: var(--color-insight-info);
+    --insight-button-border-color: var(--color-insight-info-border, var(--color-insight-info));
     background-color: var(--color-insight-info);
     color: var(--color-insight-info-foreground);
-    &:hover {
-      @media (hover: hover) {
-        border-color: var(--color-insight-info-hover);
-      }
-    }
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-insight-info-hover);
@@ -3883,14 +3873,18 @@
       }
     }
     &:active {
-      border-color: var(--color-insight-info-active);
-    }
-    &:active {
       background-color: var(--color-insight-info-active);
     }
     &:active {
       color: var(--color-insight-info-foreground-active);
     }
+    border-color: var(--insight-button-border-color);
+  }
+  .btn-info:hover {
+    --insight-button-border-color: var(--color-insight-info-border-hover, var(--color-insight-info-hover));
+  }
+  .btn-info:active {
+    --insight-button-border-color: var(--color-insight-info-border-active, var(--color-insight-info-active));
   }
   .btn-white {
     border-color: var(--color-white);
@@ -3971,13 +3965,7 @@
     }
   }
   .btn-outline-primary {
-    border-color: var(--color-insight-primary);
-    color: var(--color-insight-primary);
-    &:hover {
-      @media (hover: hover) {
-        border-color: var(--color-insight-primary-hover);
-      }
-    }
+    --insight-button-border-color: var(--color-insight-primary-border, var(--color-insight-primary));
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-insight-primary-hover);
@@ -3989,23 +3977,22 @@
       }
     }
     &:active {
-      border-color: var(--color-insight-primary-active);
-    }
-    &:active {
       background-color: var(--color-insight-primary-active);
     }
     &:active {
       color: var(--color-insight-primary-foreground-active);
     }
+    color: var(--insight-button-border-color);
+    border-color: var(--insight-button-border-color);
+  }
+  .btn-outline-primary:hover {
+    --insight-button-border-color: var(--color-insight-primary-border-hover, var(--color-insight-primary-hover));
+  }
+  .btn-outline-primary:active {
+    --insight-button-border-color: var(--color-insight-primary-border-active, var(--color-insight-primary-active));
   }
   .btn-outline-secondary {
-    border-color: var(--color-insight-secondary);
-    color: var(--color-insight-secondary);
-    &:hover {
-      @media (hover: hover) {
-        border-color: var(--color-insight-secondary-hover);
-      }
-    }
+    --insight-button-border-color: var(--color-insight-secondary-border, var(--color-insight-secondary));
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-insight-secondary-hover);
@@ -4017,23 +4004,22 @@
       }
     }
     &:active {
-      border-color: var(--color-insight-secondary-active);
-    }
-    &:active {
       background-color: var(--color-insight-secondary-active);
     }
     &:active {
       color: var(--color-insight-secondary-foreground-active);
     }
+    color: var(--insight-button-border-color);
+    border-color: var(--insight-button-border-color);
+  }
+  .btn-outline-secondary:hover {
+    --insight-button-border-color: var(--color-insight-secondary-border-hover, var(--color-insight-secondary-hover));
+  }
+  .btn-outline-secondary:active {
+    --insight-button-border-color: var(--color-insight-secondary-border-active, var(--color-insight-secondary-active));
   }
   .btn-outline-success {
-    border-color: var(--color-insight-success);
-    color: var(--color-insight-success);
-    &:hover {
-      @media (hover: hover) {
-        border-color: var(--color-insight-success-hover);
-      }
-    }
+    --insight-button-border-color: var(--color-insight-success-border, var(--color-insight-success));
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-insight-success-hover);
@@ -4045,23 +4031,22 @@
       }
     }
     &:active {
-      border-color: var(--color-insight-success-active);
-    }
-    &:active {
       background-color: var(--color-insight-success-active);
     }
     &:active {
       color: var(--color-insight-success-foreground-active);
     }
+    color: var(--insight-button-border-color);
+    border-color: var(--insight-button-border-color);
+  }
+  .btn-outline-success:hover {
+    --insight-button-border-color: var(--color-insight-success-border-hover, var(--color-insight-success-hover));
+  }
+  .btn-outline-success:active {
+    --insight-button-border-color: var(--color-insight-success-border-active, var(--color-insight-success-active));
   }
   .btn-outline-warning {
-    border-color: var(--color-insight-warning);
-    color: var(--color-insight-warning);
-    &:hover {
-      @media (hover: hover) {
-        border-color: var(--color-insight-warning-hover);
-      }
-    }
+    --insight-button-border-color: var(--color-insight-warning-border, var(--color-insight-warning));
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-insight-warning-hover);
@@ -4073,23 +4058,22 @@
       }
     }
     &:active {
-      border-color: var(--color-insight-warning-active);
-    }
-    &:active {
       background-color: var(--color-insight-warning-active);
     }
     &:active {
       color: var(--color-insight-warning-foreground-active);
     }
+    color: var(--insight-button-border-color);
+    border-color: var(--insight-button-border-color);
+  }
+  .btn-outline-warning:hover {
+    --insight-button-border-color: var(--color-insight-warning-border-hover, var(--color-insight-warning-hover));
+  }
+  .btn-outline-warning:active {
+    --insight-button-border-color: var(--color-insight-warning-border-active, var(--color-insight-warning-active));
   }
   .btn-outline-danger {
-    border-color: var(--color-insight-danger);
-    color: var(--color-insight-danger);
-    &:hover {
-      @media (hover: hover) {
-        border-color: var(--color-insight-danger-hover);
-      }
-    }
+    --insight-button-border-color: var(--color-insight-danger-border, var(--color-insight-danger));
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-insight-danger-hover);
@@ -4101,23 +4085,22 @@
       }
     }
     &:active {
-      border-color: var(--color-insight-danger-active);
-    }
-    &:active {
       background-color: var(--color-insight-danger-active);
     }
     &:active {
       color: var(--color-insight-danger-foreground-active);
     }
+    color: var(--insight-button-border-color);
+    border-color: var(--insight-button-border-color);
+  }
+  .btn-outline-danger:hover {
+    --insight-button-border-color: var(--color-insight-danger-border-hover, var(--color-insight-danger-hover));
+  }
+  .btn-outline-danger:active {
+    --insight-button-border-color: var(--color-insight-danger-border-active, var(--color-insight-danger-active));
   }
   .btn-outline-info {
-    border-color: var(--color-insight-info);
-    color: var(--color-insight-info);
-    &:hover {
-      @media (hover: hover) {
-        border-color: var(--color-insight-info-hover);
-      }
-    }
+    --insight-button-border-color: var(--color-insight-info-border, var(--color-insight-info));
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-insight-info-hover);
@@ -4129,14 +4112,19 @@
       }
     }
     &:active {
-      border-color: var(--color-insight-info-active);
-    }
-    &:active {
       background-color: var(--color-insight-info-active);
     }
     &:active {
       color: var(--color-insight-info-foreground-active);
     }
+    color: var(--insight-button-border-color);
+    border-color: var(--insight-button-border-color);
+  }
+  .btn-outline-info:hover {
+    --insight-button-border-color: var(--color-insight-info-border-hover, var(--color-insight-info-hover));
+  }
+  .btn-outline-info:active {
+    --insight-button-border-color: var(--color-insight-info-border-active, var(--color-insight-info-active));
   }
   .btn-outline-disabled {
     border-color: var(--color-neutral-300);
