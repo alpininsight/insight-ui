@@ -29,6 +29,17 @@ on:
       - "pyproject.toml"
       - "requirements.txt"
   workflow_dispatch:
+    inputs:
+      publish_candidate:
+        description: "Publish this branch as a temporary candidate image"
+        required: false
+        type: boolean
+        default: false
+      candidate_alias_tags:
+        description: "Comma-separated candidate image aliases"
+        required: false
+        type: string
+        default: "candidate-pr-250-theme"
 
 concurrency:
   group: container-${{ github.event.pull_request.number || github.ref || github.run_id }}
@@ -63,5 +74,6 @@ jobs:
       platforms: linux/amd64,linux/arm64
       local_image_tag: insight-ui:ci
       smoke_env_file: ""
-      push: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/develop' }}
+      push: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/develop') || (github.event_name == 'workflow_dispatch' && inputs.publish_candidate) }}
       promote_existing_tree_digest: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main' }}
+      candidate_alias_tags: ${{ github.event_name == 'workflow_dispatch' && inputs.candidate_alias_tags || 'candidate,edge' }}
