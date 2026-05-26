@@ -36,6 +36,17 @@ on:
   push:
     branches: [develop, main]
   workflow_dispatch:
+    inputs:
+      publish_candidate:
+        description: "Publish this branch as a temporary candidate image"
+        required: false
+        type: boolean
+        default: false
+      candidate_alias_tags:
+        description: "Comma-separated candidate image aliases"
+        required: false
+        type: string
+        default: "candidate-pr-250-theme"
 
 concurrency:
   group: container-${{ github.event.pull_request.number || github.ref || github.run_id }}
@@ -60,6 +71,8 @@ jobs:
       local_image_tag: insight-ui:ci
       smoke_env_file: ""
       run_trivy_scan: true
+      push: ${{ github.event_name == 'workflow_dispatch' && inputs.publish_candidate }}
+      candidate_alias_tags: ${{ github.event_name == 'workflow_dispatch' && inputs.candidate_alias_tags || 'candidate-pr-250-theme' }}
     secrets:
       github_read_token: ${{ secrets.INSIGHT_TOKEN_RO }}
       ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
