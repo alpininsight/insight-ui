@@ -1,7 +1,7 @@
 {% load static i18n %}
 
 <div
-    class="flex h-full w-full flex-col overflow-hidden rounded border border-gray-200 bg-white shadow-sm dark:border-gray-600 dark:bg-gray-800"
+    class="flex h-full w-full flex-col overflow-hidden rounded border insight-border-surface bg-white insight-shadow-surface-subtle dark:bg-gray-800"
 >
     <img class="h-56 w-full bg-gray-100 object-cover dark:bg-gray-700" src="{{ image.url }}" alt="{{ image.alt }}">
 
@@ -29,7 +29,7 @@
     {% endif %}
 
     <!-- Start and more -->
-    <div class="mt-auto flex flex-col gap-2 border-t border-gray-200 p-4 dark:border-gray-600">
+    <div class="mt-auto flex flex-col gap-2 border-t insight-border-surface p-4">
         {% for action in actions %}
             {% if action.disabled %}
                 <span class="btn btn-{{ action.type }}" aria-disabled="true">{{ action.text }}</span>

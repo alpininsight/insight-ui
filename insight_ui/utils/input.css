@@ -54,6 +54,18 @@
     --color-insight-text-secondary-dark: oklch(70.8% 0 0);
     --color-insight-text-link: #3b82f6;
     --color-insight-text-link-hover: #93c5fd;
+    --color-insight-border-surface: oklch(92.8% 0.006 264.531);
+    --color-insight-border-surface-dark: oklch(37.3% 0.034 259.733);
+    --color-insight-border-control: oklch(87.2% 0.01 258.338);
+    --color-insight-border-control-dark: oklch(44.6% 0.03 256.802);
+
+    --insight-shadow-button: none;
+    --insight-shadow-button-hover: var(--insight-shadow-button);
+    --insight-shadow-button-active: var(--insight-shadow-button-hover);
+    --insight-shadow-control: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --insight-shadow-surface-subtle: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --insight-shadow-surface: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --insight-shadow-overlay: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 
     --range-progress: 0%;
 
@@ -157,8 +169,41 @@
         @apply text-insight-text-link hover:text-insight-text-link-hover underline;
     }
 
+    .insight-border-surface {
+        border-color: var(--color-insight-border-surface);
+    }
+    .insight-border-surface:where([data-theme=dark], [data-theme=dark] *) {
+        border-color: var(--color-insight-border-surface-dark);
+    }
+    .insight-border-control {
+        border-color: var(--color-insight-border-control);
+    }
+    .insight-border-control:where([data-theme=dark], [data-theme=dark] *) {
+        border-color: var(--color-insight-border-control-dark);
+    }
+    .insight-shadow-control {
+        box-shadow: var(--insight-shadow-control);
+    }
+    .insight-shadow-surface-subtle {
+        box-shadow: var(--insight-shadow-surface-subtle);
+    }
+    .insight-shadow-surface {
+        box-shadow: var(--insight-shadow-surface);
+    }
+    .insight-shadow-overlay {
+        box-shadow: var(--insight-shadow-overlay);
+    }
+
     .btn {
         @apply flex gap-2 items-center justify-center border-2 border-transparent rounded-sm px-5 py-1.5 transition-colors;
+        box-shadow: var(--insight-shadow-button);
+        transition-property: color, background-color, border-color, box-shadow, transform;
+    }
+    .btn:hover {
+        box-shadow: var(--insight-shadow-button-hover);
+    }
+    .btn:active {
+        box-shadow: var(--insight-shadow-button-active);
     }
     .btn-xs {
         @apply text-xs px-2 py-0.5;
@@ -183,76 +228,76 @@
         @apply text-insight-text-secondary dark:text-insight-text-secondary-dark bg-gray-100 dark:bg-gray-700 border-gray-100 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 active:bg-gray-300 dark:active:bg-gray-500 hover:border-gray-200 dark:hover:border-gray-600 active:border-gray-300 dark:active:border-gray-500;
     }
     .btn-primary {
-        --insight-button-border-color: var(--color-insight-primary-border, var(--color-insight-primary));
+        --insight-button-border-color: var(--color-insight-button-border, var(--color-insight-primary-border, var(--color-insight-primary)));
 
         @apply text-insight-primary-foreground hover:text-insight-primary-foreground-hover active:text-insight-primary-foreground-active bg-insight-primary hover:bg-insight-primary-hover active:bg-insight-primary-active;
         border-color: var(--insight-button-border-color);
     }
     .btn-primary:hover {
-        --insight-button-border-color: var(--color-insight-primary-border-hover, var(--color-insight-primary-hover));
+        --insight-button-border-color: var(--color-insight-button-border-hover, var(--color-insight-primary-border-hover, var(--color-insight-primary-hover)));
     }
     .btn-primary:active {
-        --insight-button-border-color: var(--color-insight-primary-border-active, var(--color-insight-primary-active));
+        --insight-button-border-color: var(--color-insight-button-border-active, var(--color-insight-primary-border-active, var(--color-insight-primary-active)));
     }
     .btn-secondary {
-        --insight-button-border-color: var(--color-insight-secondary-border, var(--color-insight-secondary));
+        --insight-button-border-color: var(--color-insight-button-border, var(--color-insight-secondary-border, var(--color-insight-secondary)));
 
         @apply text-insight-secondary-foreground hover:text-insight-secondary-foreground-hover active:text-insight-secondary-foreground-active bg-insight-secondary hover:bg-insight-secondary-hover active:bg-insight-secondary-active;
         border-color: var(--insight-button-border-color);
     }
     .btn-secondary:hover {
-        --insight-button-border-color: var(--color-insight-secondary-border-hover, var(--color-insight-secondary-hover));
+        --insight-button-border-color: var(--color-insight-button-border-hover, var(--color-insight-secondary-border-hover, var(--color-insight-secondary-hover)));
     }
     .btn-secondary:active {
-        --insight-button-border-color: var(--color-insight-secondary-border-active, var(--color-insight-secondary-active));
+        --insight-button-border-color: var(--color-insight-button-border-active, var(--color-insight-secondary-border-active, var(--color-insight-secondary-active)));
     }
     .btn-success {
-        --insight-button-border-color: var(--color-insight-success-border, var(--color-insight-success));
+        --insight-button-border-color: var(--color-insight-button-border, var(--color-insight-success-border, var(--color-insight-success)));
 
         @apply text-insight-success-foreground hover:text-insight-success-foreground-hover active:text-insight-success-foreground-active bg-insight-success hover:bg-insight-success-hover active:bg-insight-success-active;
         border-color: var(--insight-button-border-color);
     }
     .btn-success:hover {
-        --insight-button-border-color: var(--color-insight-success-border-hover, var(--color-insight-success-hover));
+        --insight-button-border-color: var(--color-insight-button-border-hover, var(--color-insight-success-border-hover, var(--color-insight-success-hover)));
     }
     .btn-success:active {
-        --insight-button-border-color: var(--color-insight-success-border-active, var(--color-insight-success-active));
+        --insight-button-border-color: var(--color-insight-button-border-active, var(--color-insight-success-border-active, var(--color-insight-success-active)));
     }
     .btn-warning {
-        --insight-button-border-color: var(--color-insight-warning-border, var(--color-insight-warning));
+        --insight-button-border-color: var(--color-insight-button-border, var(--color-insight-warning-border, var(--color-insight-warning)));
 
         @apply text-insight-warning-foreground hover:text-insight-warning-foreground-hover active:text-insight-warning-foreground-active bg-insight-warning hover:bg-insight-warning-hover active:bg-insight-warning-active;
         border-color: var(--insight-button-border-color);
     }
     .btn-warning:hover {
-        --insight-button-border-color: var(--color-insight-warning-border-hover, var(--color-insight-warning-hover));
+        --insight-button-border-color: var(--color-insight-button-border-hover, var(--color-insight-warning-border-hover, var(--color-insight-warning-hover)));
     }
     .btn-warning:active {
-        --insight-button-border-color: var(--color-insight-warning-border-active, var(--color-insight-warning-active));
+        --insight-button-border-color: var(--color-insight-button-border-active, var(--color-insight-warning-border-active, var(--color-insight-warning-active)));
     }
     .btn-danger {
-        --insight-button-border-color: var(--color-insight-danger-border, var(--color-insight-danger));
+        --insight-button-border-color: var(--color-insight-button-border, var(--color-insight-danger-border, var(--color-insight-danger)));
 
         @apply text-insight-danger-foreground hover:text-insight-danger-foreground-hover active:text-insight-danger-foreground-active bg-insight-danger hover:bg-insight-danger-hover active:bg-insight-danger-active;
         border-color: var(--insight-button-border-color);
     }
     .btn-danger:hover {
-        --insight-button-border-color: var(--color-insight-danger-border-hover, var(--color-insight-danger-hover));
+        --insight-button-border-color: var(--color-insight-button-border-hover, var(--color-insight-danger-border-hover, var(--color-insight-danger-hover)));
     }
     .btn-danger:active {
-        --insight-button-border-color: var(--color-insight-danger-border-active, var(--color-insight-danger-active));
+        --insight-button-border-color: var(--color-insight-button-border-active, var(--color-insight-danger-border-active, var(--color-insight-danger-active)));
     }
     .btn-info {
-        --insight-button-border-color: var(--color-insight-info-border, var(--color-insight-info));
+        --insight-button-border-color: var(--color-insight-button-border, var(--color-insight-info-border, var(--color-insight-info)));
 
         @apply text-insight-info-foreground hover:text-insight-info-foreground-hover active:text-insight-info-foreground-active bg-insight-info hover:bg-insight-info-hover active:bg-insight-info-active;
         border-color: var(--insight-button-border-color);
     }
     .btn-info:hover {
-        --insight-button-border-color: var(--color-insight-info-border-hover, var(--color-insight-info-hover));
+        --insight-button-border-color: var(--color-insight-button-border-hover, var(--color-insight-info-border-hover, var(--color-insight-info-hover)));
     }
     .btn-info:active {
-        --insight-button-border-color: var(--color-insight-info-border-active, var(--color-insight-info-active));
+        --insight-button-border-color: var(--color-insight-button-border-active, var(--color-insight-info-border-active, var(--color-insight-info-active)));
     }
     .btn-white {
         @apply bg-white border-white hover:bg-insight-info-hover active:bg-insight-info-active hover:border-insight-info-hover active:border-insight-info-active text-gray-900;
@@ -268,97 +313,112 @@
     }
 
     .btn-outline-primary {
-        --insight-button-border-color: var(--color-insight-primary-border, var(--color-insight-primary));
+        --insight-button-border-color: var(--color-insight-button-border, var(--color-insight-primary-border, var(--color-insight-primary)));
 
         @apply hover:text-insight-primary-foreground-hover active:text-insight-primary-foreground-active hover:bg-insight-primary-hover active:bg-insight-primary-active;
         color: var(--insight-button-border-color);
         border-color: var(--insight-button-border-color);
     }
     .btn-outline-primary:hover {
-        --insight-button-border-color: var(--color-insight-primary-border-hover, var(--color-insight-primary-hover));
+        --insight-button-border-color: var(--color-insight-button-border-hover, var(--color-insight-primary-border-hover, var(--color-insight-primary-hover)));
     }
     .btn-outline-primary:active {
-        --insight-button-border-color: var(--color-insight-primary-border-active, var(--color-insight-primary-active));
+        --insight-button-border-color: var(--color-insight-button-border-active, var(--color-insight-primary-border-active, var(--color-insight-primary-active)));
     }
     .btn-outline-secondary {
-        --insight-button-border-color: var(--color-insight-secondary-border, var(--color-insight-secondary));
+        --insight-button-border-color: var(--color-insight-button-border, var(--color-insight-secondary-border, var(--color-insight-secondary)));
 
         @apply hover:text-insight-secondary-foreground-hover active:text-insight-secondary-foreground-active hover:bg-insight-secondary-hover active:bg-insight-secondary-active;
         color: var(--insight-button-border-color);
         border-color: var(--insight-button-border-color);
     }
     .btn-outline-secondary:hover {
-        --insight-button-border-color: var(--color-insight-secondary-border-hover, var(--color-insight-secondary-hover));
+        --insight-button-border-color: var(--color-insight-button-border-hover, var(--color-insight-secondary-border-hover, var(--color-insight-secondary-hover)));
     }
     .btn-outline-secondary:active {
-        --insight-button-border-color: var(--color-insight-secondary-border-active, var(--color-insight-secondary-active));
+        --insight-button-border-color: var(--color-insight-button-border-active, var(--color-insight-secondary-border-active, var(--color-insight-secondary-active)));
     }
     .btn-outline-success {
-        --insight-button-border-color: var(--color-insight-success-border, var(--color-insight-success));
+        --insight-button-border-color: var(--color-insight-button-border, var(--color-insight-success-border, var(--color-insight-success)));
 
         @apply hover:text-insight-success-foreground-hover active:text-insight-success-foreground-active hover:bg-insight-success-hover active:bg-insight-success-active;
         color: var(--insight-button-border-color);
         border-color: var(--insight-button-border-color);
     }
     .btn-outline-success:hover {
-        --insight-button-border-color: var(--color-insight-success-border-hover, var(--color-insight-success-hover));
+        --insight-button-border-color: var(--color-insight-button-border-hover, var(--color-insight-success-border-hover, var(--color-insight-success-hover)));
     }
     .btn-outline-success:active {
-        --insight-button-border-color: var(--color-insight-success-border-active, var(--color-insight-success-active));
+        --insight-button-border-color: var(--color-insight-button-border-active, var(--color-insight-success-border-active, var(--color-insight-success-active)));
     }
     .btn-outline-warning {
-        --insight-button-border-color: var(--color-insight-warning-border, var(--color-insight-warning));
+        --insight-button-border-color: var(--color-insight-button-border, var(--color-insight-warning-border, var(--color-insight-warning)));
 
         @apply hover:text-insight-warning-foreground-hover active:text-insight-warning-foreground-active hover:bg-insight-warning-hover active:bg-insight-warning-active;
         color: var(--insight-button-border-color);
         border-color: var(--insight-button-border-color);
     }
     .btn-outline-warning:hover {
-        --insight-button-border-color: var(--color-insight-warning-border-hover, var(--color-insight-warning-hover));
+        --insight-button-border-color: var(--color-insight-button-border-hover, var(--color-insight-warning-border-hover, var(--color-insight-warning-hover)));
     }
     .btn-outline-warning:active {
-        --insight-button-border-color: var(--color-insight-warning-border-active, var(--color-insight-warning-active));
+        --insight-button-border-color: var(--color-insight-button-border-active, var(--color-insight-warning-border-active, var(--color-insight-warning-active)));
     }
     .btn-outline-danger {
-        --insight-button-border-color: var(--color-insight-danger-border, var(--color-insight-danger));
+        --insight-button-border-color: var(--color-insight-button-border, var(--color-insight-danger-border, var(--color-insight-danger)));
 
         @apply hover:text-insight-danger-foreground-hover active:text-insight-danger-foreground-active hover:bg-insight-danger-hover active:bg-insight-danger-active;
         color: var(--insight-button-border-color);
         border-color: var(--insight-button-border-color);
     }
     .btn-outline-danger:hover {
-        --insight-button-border-color: var(--color-insight-danger-border-hover, var(--color-insight-danger-hover));
+        --insight-button-border-color: var(--color-insight-button-border-hover, var(--color-insight-danger-border-hover, var(--color-insight-danger-hover)));
     }
     .btn-outline-danger:active {
-        --insight-button-border-color: var(--color-insight-danger-border-active, var(--color-insight-danger-active));
+        --insight-button-border-color: var(--color-insight-button-border-active, var(--color-insight-danger-border-active, var(--color-insight-danger-active)));
     }
     .btn-outline-info {
-        --insight-button-border-color: var(--color-insight-info-border, var(--color-insight-info));
+        --insight-button-border-color: var(--color-insight-button-border, var(--color-insight-info-border, var(--color-insight-info)));
 
         @apply hover:text-insight-info-foreground-hover active:text-insight-info-foreground-active hover:bg-insight-info-hover active:bg-insight-info-active;
         color: var(--insight-button-border-color);
         border-color: var(--insight-button-border-color);
     }
     .btn-outline-info:hover {
-        --insight-button-border-color: var(--color-insight-info-border-hover, var(--color-insight-info-hover));
+        --insight-button-border-color: var(--color-insight-button-border-hover, var(--color-insight-info-border-hover, var(--color-insight-info-hover)));
     }
     .btn-outline-info:active {
-        --insight-button-border-color: var(--color-insight-info-border-active, var(--color-insight-info-active));
+        --insight-button-border-color: var(--color-insight-button-border-active, var(--color-insight-info-border-active, var(--color-insight-info-active)));
     }
     .btn-outline-disabled {
         @apply border-neutral-300 dark:border-neutral-600 text-neutral-400;
     }
 
     .component-container {
-        @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded shadow-md;
+        @apply bg-white dark:bg-gray-800 rounded;
+        border: 1px solid var(--color-insight-border-surface);
+        box-shadow: var(--insight-shadow-surface);
+    }
+    .component-container:where([data-theme=dark], [data-theme=dark] *) {
+        border-color: var(--color-insight-border-surface-dark);
     }
 
     .example-container {
-        @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow px-8 py-16 my-12;
+        @apply bg-white dark:bg-gray-800 rounded-lg px-8 py-16 my-12;
+        border: 1px solid var(--color-insight-border-surface);
+        box-shadow: var(--insight-shadow-surface-subtle);
+    }
+    .example-container:where([data-theme=dark], [data-theme=dark] *) {
+        border-color: var(--color-insight-border-surface-dark);
     }
 
     .info-container {
-        @apply bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 border-s-4 rounded-e-sm text-base px-4 py-1;
+        @apply bg-gray-100 dark:bg-gray-700 rounded-e-sm text-base px-4 py-1;
+        border: 1px solid var(--color-insight-border-surface);
+        border-inline-start-width: 4px;
+    }
+    .info-container:where([data-theme=dark], [data-theme=dark] *) {
+        border-color: var(--color-insight-border-surface-dark);
     }
 
     .inline-tag {
@@ -366,7 +426,15 @@
     }
 
     .input {
-        @apply w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm shadow-sm text-sm focus:ring-2 focus:ring-insight-primary focus:border-insight-primary bg-white dark:bg-gray-700 dark:text-insight-text-primary-dark transition-colors duration-200;
+        @apply w-full px-3 py-2 rounded-sm text-sm focus:ring-2 focus:ring-insight-primary bg-white dark:bg-gray-700 dark:text-insight-text-primary-dark transition-colors duration-200;
+        border: 1px solid var(--color-insight-border-control);
+        box-shadow: var(--insight-shadow-control);
+    }
+    .input:where([data-theme=dark], [data-theme=dark] *) {
+        border-color: var(--color-insight-border-control-dark);
+    }
+    .input:focus {
+        border-color: var(--color-insight-primary);
     }
 
     .slider-wrapper {

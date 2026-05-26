@@ -34,7 +34,9 @@ class DesignThemeCssTest(SimpleTestCase):
         cerulean_css = (THEME_ROOT / "cerulean.css").read_text()
 
         assert "--color-insight-secondary: #fff;" in brite_css
-        assert "--color-insight-secondary-border: #212529;" in brite_css
+        assert "--color-insight-button-border: #000;" in brite_css
+        assert "--insight-shadow-button: 3px 3px 0 0 var(--color-insight-button-border);" in brite_css
+        assert "--insight-shadow-surface: 3px 3px 0 0 var(--color-insight-border-surface);" in brite_css
         assert "--color-insight-secondary-foreground: #000;" in brite_css
         assert "--color-insight-text-primary: #495057;" in cerulean_css
         assert "--color-insight-text-secondary: rgba(73, 80, 87, 0.75);" in cerulean_css
