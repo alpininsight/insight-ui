@@ -2,7 +2,7 @@
 
 <div class="group relative w-72 perspective-distant">
     <div class="relative size-full transform-3d group-hover:rotate-y-180 transition-transform duration-500">
-        <div class="flex flex-col overflow-hidden size-full bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 shadow-lg rounded backface-hidden">
+        <div class="flex flex-col overflow-hidden size-full bg-gray-50 dark:bg-gray-700 border insight-border-surface insight-shadow-surface rounded backface-hidden">
             <img class="w-full backface-hidden" src="{{ flip_card_config.image.url }}" alt="{{ flip_card_config.image.alt }}">
 
             {# Title and description #}
@@ -29,7 +29,7 @@
             {% endif %}
 
             {# Start and more #}
-            <div class="flex flex-col gap-2 pt-4 m-4 border-t border-gray-200 dark:border-gray-600">
+            <div class="flex flex-col gap-2 pt-4 m-4 border-t insight-border-surface">
                 {% for action in flip_card_config.actions %}
                     {% if action.disabled %}
                         <span class="btn btn-{{ action.type }}" aria-disabled="true">{{ action.text }}</span>
@@ -41,7 +41,7 @@
                 {% endfor %}
             </div>
         </div>
-        <div class="absolute inset-0 flex flex-col overflow-hidden size-full bg-gray-50 dark:bg-gray-700 border-gray-100 dark:border-none shadow-lg rounded rotate-y-180 backface-hidden">
+        <div class="absolute inset-0 flex flex-col overflow-hidden size-full bg-gray-50 dark:bg-gray-700 border insight-border-surface insight-shadow-surface rounded rotate-y-180 backface-hidden">
             <div class="flex justify-center items-center h-full p-4">
                 <div class="text-lg">{{ flip_card_config.back_content|safe }}</div>
             </div>

@@ -110,6 +110,8 @@ and host applications should inherit before introducing domain-specific variants
 | Status colors | `success`, `warning`, `danger`, `info` tokens | Semantic user feedback and system state. |
 | Text hierarchy | `text-primary`, `text-secondary`, `text-link` | Primary content, secondary content, and navigable text. |
 | Dark mode | `@custom-variant dark` and dark text tokens | Theme-aware rendering via `data-theme=dark`. |
+| Border hierarchy | `--color-insight-border-surface`, `--color-insight-border-control`, `insight-border-*` | Themeable boundaries for cards, docs surfaces, forms, inputs, and controls. |
+| Shadow hierarchy | `--insight-shadow-*`, `insight-shadow-*` | Themeable elevation and neobrutalist offsets mapped from the project design language, with Tailwind values as defaults. |
 | Surfaces | `.component-container`, `.example-container`, cards, panels, modal body | Visual containers that separate content from the page background. |
 | Layout hierarchy | Navbar, sidebars, heading, content, footer, drawer blocks | Page shell and navigation structure. |
 | Overlay hierarchy | Modal backdrop, sidebar backdrop, z-index utilities | Layering for temporary UI and blocking interactions. |
@@ -125,6 +127,9 @@ should live:
 
 - Stable theme tokens belong in `insight_ui/utils/input.css`.
 - Shared semantic component classes belong in `@layer components`.
+- Reusable borders and shadows should use `--color-insight-border-*` and
+  `--insight-shadow-*` tokens instead of direct `border-gray-*` or `shadow-*`
+  utilities when the visual rule is part of the component contract.
 - Semantic HTML, ARIA, component anatomy, and data hooks belong in templates.
 - JavaScript behavior belongs in `insight_ui/static/insight_ui/js/`.
 - Django-facing API normalization belongs in template tags.
