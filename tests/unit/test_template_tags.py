@@ -85,6 +85,7 @@ class NavbarTemplateTagTest(TemplateTagsTestCase):
         assert menu is not None
         assert "hidden" in menu.get("class", [])
         assert "absolute" in menu.get("class", [])
+        assert "top-full" in menu.get("class", [])
 
 
 class CopyrightNoticeTemplateTagTest(TemplateTagsTestCase):
