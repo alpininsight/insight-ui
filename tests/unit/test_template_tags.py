@@ -57,6 +57,36 @@ class NavbarTemplateTagTest(TemplateTagsTestCase):
         rendered = self.render_template(template_string, context={"nav_config": nav_config})
         assert "Django Insight UI NavBar" in rendered
 
+    def test_navbar_user_menu_is_hidden_until_opened(self) -> None:
+        """Authenticated user menus must not push navbar controls into a second row."""
+        nav_config = {
+            "brand": {"title": "Django Insight UI NavBar"},
+            "links": [],
+            "show_usermenu": True,
+            "show_language_selector": True,
+            "show_theme_toggle": True,
+        }
+        template_string = """
+        {% load insight_tags %}
+        {% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links show_login=True %}
+        """
+
+        rendered = self.render_template(
+            template_string,
+            context={"nav_config": nav_config, "user": self.user, "user_dropdown_links": []},
+        )
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        trigger = soup.select_one('button[data-insight-dropdown="user-menu"]')
+        menu = soup.select_one("#user-menu")
+
+        assert trigger is not None
+        assert trigger.find_parent("div", class_="relative") is not None
+        assert menu is not None
+        assert "hidden" in menu.get("class", [])
+        assert "absolute" in menu.get("class", [])
+        assert "top-full" in menu.get("class", [])
+
 
 class CopyrightNoticeTemplateTagTest(TemplateTagsTestCase):
     """Tests for the copyright_notice template tag."""
