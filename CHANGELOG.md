@@ -55,6 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **static:** Preserve selectors in minified css assets 
 - **cards:** Stabilize app card layout 
 - **navbar:** Keep user dropdown out of layout flow 
+- **navbar:** Sync user dropdown position to develop
 
 ### CI/CD
 
