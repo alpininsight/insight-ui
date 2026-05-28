@@ -26,6 +26,7 @@ def get_secret_key(*, is_prod: bool) -> str:
         return config("SECRET_KEY")
     return config("SECRET_KEY", default="django-insecure-test-key-not-for-production")
 
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=False, cast=bool)
 IS_PROD = config("IS_PROD", default=False, cast=bool)
@@ -62,7 +63,7 @@ USE_X_FORWARDED_HOST = config("USE_X_FORWARDED_HOST", default=False, cast=bool)
 TRUST_X_FORWARDED_PROTO = config("TRUST_X_FORWARDED_PROTO", default=True, cast=bool)
 
 if DEBUG:
-    print("Running in DEBUG mode!")
+    print("Running in DEBUG mode!")  # noqa: T201
 
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=split_csv, default="*")
 CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", cast=split_csv, default="")
@@ -164,15 +165,8 @@ STORAGES = {
 LOGGING: dict[str, Any] = {
     "version": 1,
     "disable_existing_loggers": False,
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-        }
-    },
-    "root": {
-        "handlers": ["console"],
-        "level": LOG_LEVEL,
-    },
+    "handlers": {"console": {"class": "logging.StreamHandler"}},
+    "root": {"handlers": ["console"], "level": LOG_LEVEL},
     "loggers": {
         "django": {"handlers": ["console"], "level": DJANGO_LOG_LEVEL, "propagate": False},
         "gunicorn": {"handlers": ["console"], "level": SERVER_LOG_LEVEL, "propagate": False},
