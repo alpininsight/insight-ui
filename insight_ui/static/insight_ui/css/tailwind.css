@@ -1493,6 +1493,9 @@
   .whitespace-nowrap {
     white-space: nowrap;
   }
+  .tab-1 {
+    tab-size: 1;
+  }
   .text-blue-400 {
     color: var(--color-blue-400);
   }
@@ -2727,6 +2730,20 @@
   }
   .odd\:dark\:bg-gray-800 {
     &:nth-child(odd) {
+      &:where([data-theme=dark], [data-theme=dark] *) {
+        background-color: var(--color-gray-800);
+      }
+    }
+  }
+  .odd\:dark\:bg-gray-900 {
+    &:nth-child(odd) {
+      &:where([data-theme=dark], [data-theme=dark] *) {
+        background-color: var(--color-gray-900);
+      }
+    }
+  }
+  .even\:dark\:bg-gray-800 {
+    &:nth-child(even) {
       &:where([data-theme=dark], [data-theme=dark] *) {
         background-color: var(--color-gray-800);
       }

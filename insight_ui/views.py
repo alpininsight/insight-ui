@@ -1,7 +1,7 @@
 from datetime import UTC, datetime
 from importlib import metadata
 from pathlib import Path
-from typing import Any, cast
+from typing import cast
 
 import structlog
 from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
@@ -20,6 +20,9 @@ from insight_ui.component_details.demo_context import (
     get_minimal_step_bar_context,
 )
 from insight_ui.component_details.git_path_mapping import SCRIPT_PATHS, TEMPLATE_PATHS
+from insight_ui.configs.base import IconConfig
+from insight_ui.configs.input import RadioBlockConfig, RadioItemConfig
+from insight_ui.configs.list import PaginationIppConfig, TableConfig
 from insight_ui.context import (
     get_base_context,
     get_demo_container_context,
@@ -160,7 +163,7 @@ def pagination(request: HttpRequest) -> HttpResponse:
         ipp = 10
 
     page_obj, surrounding_pages = get_page(generate_payload(500), ipp, page_number)
-    ipp_config = {"name": "ipp", "label": _("Items per page"), "options": [10, 20, 30], "selected_option": ipp}
+    ipp_config = PaginationIppConfig("ipp", _("Items per page"), options=[10, 20, 30], selected_option=ipp)
 
     if request.headers.get("HX-Request"):
         return render(
@@ -200,7 +203,7 @@ def sort_table(request: HttpRequest) -> HttpResponse:
 
 @require_GET
 def live_data_view(request: HttpRequest) -> HttpResponse | JsonResponse:
-    """HTMX endpoint for live data feed."""
+    """HTMX endpoint for live data feed demo."""
     current_time = datetime.now(tz=UTC).strftime("%H:%M:%S")
     data = {
         "time": current_time,
@@ -209,22 +212,21 @@ def live_data_view(request: HttpRequest) -> HttpResponse | JsonResponse:
     }
 
     if request.headers.get("HX-Request"):
-        html = render_to_string(
-            "insight_ui/components/live_content_partial.html", {"data": data, "timestamp": current_time}
+        return render(
+            request, "insight_ui/components/live_content_partial.html", {"data": data, "timestamp": current_time}
         )
-        return HttpResponse(html)
 
     return JsonResponse(data)
 
 
 @require_GET
 def more_items_view(request: HttpRequest) -> HttpResponse | JsonResponse:
-    """HTMX endpoint for infinite scroll."""
+    """HTMX endpoint for infinite scroll demo."""
     page = int(request.GET.get("page", 1))
     items_per_page = 5
 
-    # Simuliere mehr Items
-    start = (page - 1) * items_per_page + 11  # +11 weil wir schon 10 Items haben
+    # Simulate more items
+    start = (page - 1) * items_per_page + 11  # +11 because we already have 10 items
     end = start + items_per_page
 
     new_items = [
@@ -235,30 +237,32 @@ def more_items_view(request: HttpRequest) -> HttpResponse | JsonResponse:
         for i in range(start, end)
     ]
 
-    has_next = page < 5  # noqa: PLR2004 Simuliere max 5 Seiten
-    view_name = "more_items" if has_next else ""
+    has_next = page < 5  # noqa: PLR2004 Simulate up to 5 pages
+    request_url = reverse("more_items") if has_next else ""
     auto_fetch = request.GET.get("auto_fetch", True)
 
     if request.headers.get("HX-Request"):
-        html = render_to_string(
+        return render(
+            request,
             "insight_ui/components/infinite_scroll_items.html",
             {
                 "items": new_items,
-                "view_name": view_name,
+                "request_url": request_url,
                 "has_next": has_next,
                 "auto_fetch": auto_fetch,
                 "page": page + 1,
             },
         )
-        return HttpResponse(html)
 
-    return JsonResponse({"items": new_items, "has_next": has_next, "auto_fetch": auto_fetch, "view_name": view_name})
+    return JsonResponse(
+        {"items": new_items, "has_next": has_next, "auto_fetch": auto_fetch, "request_url": request_url}
+    )
 
 
 @require_POST
 def form_submit(request: HttpRequest) -> HttpResponse | JsonResponse:
     """
-    Endpoint for form validation and handling.
+    Endpoint for form demo validation and handling.
 
     Works with standard and htmx requests. Handle form issues and return either
     partial template data if this is a htmx request or do a whole page reload.
@@ -313,28 +317,28 @@ def index_view(request: HttpRequest) -> HttpResponse:
 @require_GET
 def customization_view(request: HttpRequest) -> HttpResponse:
     """Render customization page."""
-    context = get_base_context("customization_view") | get_sidebar_context()
+    context = get_base_context() | get_sidebar_context()
     return render(request, "insight_ui/docs/customization.html", context)
 
 
 @require_GET
 def installation_view(request: HttpRequest) -> HttpResponse:
     """Render installation page."""
-    context = get_base_context("installation_view") | get_sidebar_context()
+    context = get_base_context() | get_sidebar_context()
     return render(request, "insight_ui/docs/installation.html", context)
 
 
 @require_GET
 def base_template_view(request: HttpRequest) -> HttpResponse:
     """Render base_template page."""
-    context = get_base_context("base_template_view") | get_sidebar_context()
+    context = get_base_context() | get_sidebar_context()
     return render(request, "insight_ui/docs/base_template.html", context)
 
 
 @require_GET
 def icon_view(request: HttpRequest) -> HttpResponse:
     """Render icon page."""
-    context = get_icon_context() | get_base_context("icon_view") | get_sidebar_context()
+    context = get_icon_context() | get_base_context() | get_sidebar_context()
     return render(request, "insight_ui/docs/icons.html", context)
 
 
@@ -393,7 +397,7 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
 
         return render(request, "insight_ui/docs/component_detailpage_partial.html", context)
 
-    context |= get_base_context("component_detail_page_view") | get_sidebar_context(component_name)
+    context |= get_base_context() | get_sidebar_context()
     return render(request, "insight_ui/docs/component_detailpage.html", context)
 
 
@@ -470,36 +474,37 @@ def toggle_view(request: HttpRequest) -> HttpResponse:
 
     Load and map payload data to the appropriate format.
     """
-    view = request.GET.get("view", "table")
+    current_view = request.GET.get("products-view-toggle", "table")
     valid_views = {"table", "card", "carousel"}
 
-    if view not in valid_views:
-        logger.warning("log: toggle_view - Received invalid 'view' parameter: %s. Fallback to 'table'.", view)
-        view = "table"
+    if current_view not in valid_views:
+        logger.warning("log: toggle_view - Received invalid 'view' parameter: %s. Fallback to 'table'.", current_view)
+        current_view = "table"
+
+    context = {"tag_id": "products-view"}
+    context["view_radio_config"] = RadioBlockConfig(
+        "products-view-toggle",
+        items=[
+            RadioItemConfig("card-view", "card", icon=IconConfig("cards")),
+            RadioItemConfig("table-view", "table", icon=IconConfig("list")),
+            RadioItemConfig("carousel-view", "carousel", icon=IconConfig("carousel")),
+        ],
+        request_url=reverse("toggle_view"),
+        current_value=current_view,
+    )
 
     # Generate the base payload
     payload = generate_payload()
-    context: dict[str, Any] = {"current_view": view, "tag_id": request.GET.get("tag_id", "")}
-    context["view_radio_config"] = {
-        "name": "view",
-        "param_name": "view",
-        "items": [
-            {"tag_id": "card-view", "value": "card", "icon": {"name": "cards"}},
-            {"tag_id": "table-view", "value": "table", "icon": {"name": "list"}},
-            {"tag_id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},
-        ],
-    }
-
-    if view == "card":
+    if current_view == "card":
         context["cards"] = map_payload_to_cards(payload)
         logger.debug("log: toggle_view - Card view selected")
-    elif view == "carousel":
+    elif current_view == "carousel":
         context["cards"] = map_payload_to_cards(payload)
         logger.debug("log: toggle_view - Carousel view selected")
     else:
         # default: table view
         headers, rows = map_payload_to_table(payload)
-        context["data"] = {"empty_msg": "No data available!", "headers": headers, "rows": rows}
+        context["table_config"] = TableConfig(headers, rows)
         logger.debug("log: toggle_view - Table view selected")
 
     return render(request, "insight_ui/components/toggle_view.html", context)

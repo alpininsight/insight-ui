@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 from django.contrib.auth.models import User
 from django.template import Context, Template
 from django.test import TestCase
+from django.urls import reverse
 from django.utils.safestring import SafeText
 from django.utils.translation import activate
 
@@ -36,14 +37,12 @@ class NavbarTemplateTagTest(TemplateTagsTestCase):
             "links": [
                 {
                     "text": "Startseite",
-                    "view_name": "storybook_view",
-                    "view_kwargs": {"storybook_name": "components"},
-                    "active": True,
+                    "request_url": reverse("storybook_view", kwargs={"storybook_name": "components"}),
                     "need_auth": False,
                     "staff_only": False,
                 }
             ],
-            "show_searchbar": True,
+            "searchbar_request_url": reverse("index"),
             "show_usermenu": True,
             "show_language_selector": True,
             "show_theme_toggle": True,
@@ -239,7 +238,7 @@ class InfiniteScrollTemplateTagTest(TemplateTagsTestCase):
         """Test für grundlegende infinite_scroll Funktionalität."""
         template_string = """
         {% load insight_tags %}
-        {% infinite_scroll view_name="more_items" %}
+        {% infinite_scroll request_view="/api/more-items/" %}
         """
         rendered = self.render_template(template_string)
         assert "/api/more-items/" in rendered
@@ -421,7 +420,7 @@ class FormTemplateTagTest(TemplateTagsTestCase):
         """Test für grundlegende form Funktionalität."""
         template_string = """
         {% load insight_tags %}
-        {% form title="Test Form" view_name="form_submit" %}
+        {% form title="Test Form" request_url="/api/form_submit/" %}
         """
         rendered = self.render_template(template_string)
         assert "Test Form" in rendered
@@ -438,9 +437,9 @@ class FooterTemplateTagTest(TemplateTagsTestCase):
                 "text": "A modern, accessible, and responsive UI library for Django projects.",
             },
             "links": [
-                {"text": "Startpage", "icon": {"name": "home", "size": "xs"}, "view_name": "index_view"},
-                {"text": "Storybook", "view_name": "index_view"},
-                {"text": "Documentation", "view_name": "index_view"},
+                {"text": "Startpage", "icon": {"name": "home", "size": "xs"}, "request_url": reverse("index_view")},
+                {"text": "Storybook", "request_url": reverse("index_view")},
+                {"text": "Documentation", "request_url": reverse("index_view")},
             ],
             "contact": {
                 "mail_url": "support@alpininsight.com",
@@ -601,7 +600,6 @@ class CheckboxTemplateTagTest(TemplateTagsTestCase):
         }
 
         result = insight_ui.templatetags.insight_tags.checkbox(config=config)
-        print(result)
         assert result == config
 
     def test_checkbox_single_params(self) -> None:
@@ -703,8 +701,7 @@ class RadioGroupTemplateTagTest(TemplateTagsTestCase):
         """Test the {% radio_block %} tag."""
         context = {
             "current_value": "BERT",
-            "view_name": "index",
-            "query_params": "lang=german",
+            "request_url": reverse("index_view"),
             "target_id": "test-container",
             "method": "loadOptions",
             "integrated": False,

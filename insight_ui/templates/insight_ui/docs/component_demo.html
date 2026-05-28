@@ -1,6 +1,27 @@
 {% load static i18n insight_tags %}
 
-{% if component.value == "navbar" %}
+{% if component.value == "page_header" %}
+    {% page_header title=_("Example Page") description=_("This is an example description for the page header component.") %}
+{% elif component.value == "heading_decoration" %}
+    <div class="space-y-8">
+        <div class="space-y-2">
+            <p class="font-semibold text-secondary">Waves</p>
+            {% heading_decoration %}
+        </div>
+        <div class="space-y-2">
+            <p class="font-semibold text-secondary">Gradient</p>
+            {% heading_decoration style="gradient" height=64 %}
+        </div>
+        <div class="space-y-2">
+            <p class="font-semibold text-secondary">Image</p>
+            {% heading_decoration style="image" image_url=heading_decoration_image_url height=120 %}
+        </div>
+    </div>
+{% elif component.value == "article" %}
+    {% article title=_("Newsletter") columns=3 content="<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>" %}
+{% elif component.value == "hero" %}
+    {% hero title=_("Insight UI") subtitle=_("A Django Component Framework") description=_("A modern UI library.") %}
+{% elif component.value == "navbar" %}
     <div class="relative bg-gray-50 dark:bg-gray-700 h-80 w-full">
         {% navbar config=demo_nav_config user=user user_dropdown_links=user_dropdown_links show_login=True %}
         <script>
@@ -12,7 +33,7 @@
     </div>
 {% elif component.value == "sidebar" %}
     <div class="bg-gray-50 dark:bg-gray-700 h-96">
-        {% sidebar sidebar_data=demo_sidebar side="left" auto_close=False %}
+        {% sidebar config=demo_sidebar_config %}
         <script>
             // Demo fix
             var aside = document.currentScript.parentElement.querySelector("aside");
@@ -22,37 +43,7 @@
     </div>
 {% elif component.value == "footer" %}
     <div class="bg-gray-50 dark:bg-gray-700 h-24"></div>
-    {% footer data=footer_data %}
-{% elif component.value == "copyright_notice" %}
-    <div class="space-y-6">
-        {% copyright_notice config=copyright_notice_config %}
-        {% copyright_notice config=copyright_notice_legacy_config %}
-    </div>
-{% elif component.value == "logo" %}
-    <div class="grid gap-8 sm:grid-cols-3">
-        <div class="space-y-3">
-            <p class="font-semibold text-secondary">SVG asset</p>
-            <div class="flex h-16 items-end">
-                {% logo config=logo_svg %}
-            </div>
-        </div>
-        <div class="space-y-3">
-            <p class="font-semibold text-secondary">Image asset</p>
-            <div class="flex h-16 items-end">
-                {% logo config=logo_image %}
-            </div>
-        </div>
-        <div class="space-y-3">
-            <p class="font-semibold text-secondary">Icon</p>
-            <div class="flex h-16 items-end">
-                {% logo config=logo_icon %}
-            </div>
-        </div>
-    </div>
-{% elif component.value == "corner_ribbon" %}
-    <div class="h-64">
-        {% corner_ribbon text="New Feature" %}
-    </div>
+    {% footer config=footer_config %}
 {% elif component.value == "breadcrumbs" %}
     <div class="space-y-4">
         {% breadcrumbs items=breadcrumb_items %}
@@ -68,9 +59,9 @@
         {% minimal_step_bar config=min_step_bar %}
     </div>
 {% elif component.value == "bullet_point_list" %}
-    {% bullet_point_list items=bulletpoints %}
+    {% bullet_point_list items=bullet_points_items %}
 {% elif component.value == "accordion" %}
-    {% accordion accordion_items "faq-multiple" False %}
+    {% accordion config=accordion_config %}
 {% elif component.value == "tabs" %}
     {% tabs config=tabs_config %}
 {% elif component.value == "button" %}
@@ -112,16 +103,16 @@
 {% elif component.value == "textarea" %}
     {% textarea tag_id="text" name="text_field" rows=4 label="Write a message:" placeholder="Write something..." %}
 {% elif component.value == "checkbox" %}
-    {% checkbox config=example_checkbox %}
+    {% checkbox config=checkbox_config %}
 {% elif component.value == "checkbox_group" %}
-    {% checkbox_group config=example_checkbox_group %}
+    {% checkbox_group config=checkbox_group_config %}
 {% elif component.value == "dropdown" %}
     <div class="flex gap-2 h-64">
-        {% dropdown config=user_dropdown %}
-        {% dropdown config=settings_dropdown %}
+        {% dropdown config=user_dropdown_config %}
+        {% dropdown config=settings_dropdown_config %}
     </div>
 {% elif component.value == "radio_group" %}
-    {% radio_group config=example_radio current_value="PaLM 2" %}
+    {% radio_group config=model_radio_config current_value="PaLM 2" %}
 {% elif component.value == "radio_block" %}
     <div class="w-fit space-y-4">
         {% radio_block config=view_radio_config current_value=current_view %}
@@ -129,15 +120,14 @@
     </div>
 {% elif component.value == "range_slider" %}
     <div class="space-y-8">
-        {% slider config=example_slider %}
-        {% slider config=example_slider_skip %}
-        {% slider config=example_slider_rotate %}
-        {% slider config=example_slider_dual %}
+        {% slider config=slider_skip_config %}
+        {% slider config=slider_rotate_config %}
+        {% slider config=slider_dual_config %}
     </div>
 {% elif component.value == "toggle" %}
     <div class="flex justify-between w-64">
-        {% toggle config=example_switch %}
-        {% toggle config=example_toggle %}
+        {% toggle config=switch_config %}
+        {% toggle config=toggle_config %}
     </div>
 {% elif component.value == "select" %}
     <div class="h-64">
@@ -206,85 +196,89 @@
         }
         {# fmt:on #}
     </div>
+{% elif component.value == "copyright_notice" %}
+    <div class="space-y-6">
+        {% copyright_notice config=copyright_notice_config %}
+    </div>
 {% elif component.value == "differentiator" %}
     {{ textA|diff:textB|safe }}
+{% elif component.value == "logo" %}
+    <div class="grid gap-8 sm:grid-cols-3">
+        <div class="space-y-3">
+            <p class="font-semibold text-secondary">SVG asset</p>
+            <div class="flex h-16 items-end">
+                {% logo config=logo_svg_config %}
+            </div>
+        </div>
+        <div class="space-y-3">
+            <p class="font-semibold text-secondary">Image asset</p>
+            <div class="flex h-16 items-end">
+                {% logo config=logo_image_config %}
+            </div>
+        </div>
+        <div class="space-y-3">
+            <p class="font-semibold text-secondary">Icon</p>
+            <div class="flex h-16 items-end">
+                {% logo config=logo_icon_config %}
+            </div>
+        </div>
+    </div>
+{% elif component.value == "corner_ribbon" %}
+    <div class="h-64">
+        {% corner_ribbon text="New Feature" %}
+    </div>
 {% elif component.value == "progress_bar" %}
     {% include "insight_ui/components/progress_bar.html" %}
 {% elif component.value == "geo_map" %}
-    {% geo_map data=geo_map_data map_height=40 %}
+    {% geo_map config=geo_map_config map_height=40 %}
 {% elif component.value == "chart" %}
-    {% bar_chart chart_id="bar_chart_example" chart=chart_data %}
-    {% line_chart chart_id="line_chart_example" chart=chart_data %}
+    {% bar_chart chart=chart_config chart_id="bar_chart_example" %}
+    {% line_chart chart=chart_config chart_id="line_chart_example" %}
 {% elif component.value == "live_content" %}
     {% live_content tag_id="live-content" url="/api/live-data/" interval=10 %}
 {% elif component.value == "web_socket" %}
     <i class="text-secondary">Work in progress...</i>
     <!-- {% insight_websocket tag_id="runtime-stream" url="/runtime/stream/" initial_content="<p>Waiting for runtime updates…</p>" %} -->
 {% elif component.value == "infinite_scroll" %}
-    {% infinite_scroll items=scroll_items view_name="more_items" auto_fetch=False %}
+    {% infinite_scroll config=infinite_scroll_config %}
 {% elif component.value == "pagination" %}
     <div id="list-container">
         {% pagination current_page=start_page surrounding_pages=surrounding_pages ipp_config=ipp_config %}
     </div>
 {% elif component.value == "table" %}
-    {% table data=table %}
-{% elif component.value == "generic_filter" %}
-    <div class="pt-8">
-        {% generic_filter filters=filters request_url="#" vertical=False query_params=request.GET %}
-    </div>
+    {% table config=table_config %}
 {% elif component.value == "search_bar" %}
     <div class="space-y-6">
-        {% search_bar request_view="index_view" %}
-        {% search_bar request_view="index_view" simple="True" %}
-        {% search_bar request_view="index_view" simple="True" search_query="Test 123" %}
+        {% search_bar request_url="index_view" %}
+        {% search_bar request_url="index_view" simple="True" %}
+        {% search_bar request_url="index_view" simple="True" search_query="Test 123" %}
+    </div>
+{% elif component.value == "generic_filter" %}
+    <div class="pt-8">
+        {% generic_filter config=generic_filter_config %}
     </div>
 {% elif component.value == "query_builder" %}
     {% query_builder model_fields=model_fields %}
 {% elif component.value == "card" %}
     <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
-        {% for card in cards %}
+        {% for card in cards_config %}
             {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
         {% endfor %}
     </div>
 {% elif component.value == "app_card" %}
-    <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
-        {% app_card title=app_card.title content=app_card.content tags=app_card.tags url=app_card.url image=app_card.image actions=app_card.actions %}
-    </div>
+    {% app_card config=app_card_config %}
 {% elif component.value == "flip_card" %}
-    <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
-        {% flip_card title=flip_card.title content=flip_card.content tags=flip_card.tags url=flip_card.url image=flip_card.image actions=flip_card.actions %}
-    </div>
+    {% flip_card config=flip_card_config %}
 {% elif component.value == "card_carousel" %}
-    {% carousel carousel_items=carousel_items show_index=True items_per_slide=2 %}
+    {% carousel config=carousel_config %}
 {% elif component.value == "image_carousel" %}
-    {% image_carousel images=image_carousel_items show_dots=True show_index=True items_per_slide=1 %}
+    {% image_carousel config=image_carousel_config %}
 {% elif component.value == "3d_carousel" %}
     <div class="h-144">
-        {% three_d_carousel tag_id="threeD_carousel" velocity=300 tilt=-15 face_camera=False carousel_items=3D_carousel.items %}
+        {% three_d_carousel config=3D_carousel_config %}
     </div>
 {% elif component.value == "toggle_view" %}
-    {% toggle_view tag_id="test" data=toggle_table view_radio_config=view_radio_config current_view=toggle_start_view %}
+    {% toggle_view config=toggle_view_config %}
 {% elif component.value == "form" %}
-    {% form tag_id="htmx-form" title=_("Contact Form") description=_("Please fill out the form") fields=form_fields show_reset_button=True view_name="form_submit" htmx_config=htmx_config %}
-{% elif component.value == "page_header" %}
-    {% page_header title=_("Example Page") description=_("This is an example description for the page header component.") %}
-{% elif component.value == "heading_decoration" %}
-    <div class="space-y-8">
-        <div class="space-y-2">
-            <p class="font-semibold text-secondary">Waves</p>
-            {% heading_decoration %}
-        </div>
-        <div class="space-y-2">
-            <p class="font-semibold text-secondary">Gradient</p>
-            {% heading_decoration style="gradient" height=64 %}
-        </div>
-        <div class="space-y-2">
-            <p class="font-semibold text-secondary">Image</p>
-            {% heading_decoration style="image" image_url=heading_decoration_image_url height=120 %}
-        </div>
-    </div>
-{% elif component.value == "article" %}
-    {% article title=_("Newsletter") columns=3 content="<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>" %}
-{% elif component.value == "hero" %}
-    {% hero title=_("Insight UI") subtitle=_("A Django Component Framework") description=_("A modern UI library.") %}
+    {% form config=form_config %}
 {% endif %}

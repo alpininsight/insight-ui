@@ -45,8 +45,8 @@
                         value="{{ item.value }}"
                         {% if current_value == item.value or not current_value and forloop.first %}checked{% endif %}
                         {% if item.disabled %}disabled{% endif %}
-                        {% if view_name and hx_target_id %}
-                            hx-get="{% url view_name %}{%if query_params %}&{{ query_params }}{% endif %}"
+                        {% if request_url and hx_target_id %}
+                            hx-get="{{ request_url }}"
                             hx-target="#{{ hx_target_id }}"
                             hx-swap="{{ hx_swap_method|default:"outerHTML" }}"
                         {% endif %}

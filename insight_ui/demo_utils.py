@@ -1,5 +1,7 @@
 from django.utils.translation import gettext as _
 
+from insight_ui.configs import CardConfig
+
 
 def generate_payload(count: int = 5) -> list:
     """
@@ -32,7 +34,7 @@ def generate_payload(count: int = 5) -> list:
     ]
 
 
-def map_payload_to_cards(payload: list) -> list:
+def map_payload_to_cards(payload: list) -> list[CardConfig]:
     """
     Map given data to required data layout for the cards examples.
 
@@ -45,10 +47,7 @@ def map_payload_to_cards(payload: list) -> list:
         data (list): transformed data.
 
     """
-    return [
-        {"title": item["title"], "subtitle": item["status"], "content": item["content"], "actions": item["actions"]}
-        for item in payload
-    ]
+    return [CardConfig(item["title"], content=item["content"], actions=item["actions"]) for item in payload]
 
 
 def map_payload_to_table(payload: list) -> tuple[list[str], list]:

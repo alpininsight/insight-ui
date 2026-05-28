@@ -9,92 +9,73 @@ from insight_ui import config
 from insight_ui.component_details.components import Component, ComponentCategory
 from insight_ui.component_details.demo_context import get_component_demo_context
 from insight_ui.component_details.parameter_context import ParameterDetails
+from insight_ui.configs import (
+    CopyrightNoticeConfig,
+    FooterConfig,
+    FooterContactConfig,
+    FooterDescriptionConfig,
+    IconConfig,
+    LogoConfig,
+    NavbarBrandConfig,
+    NavbarConfig,
+    NavbarLinkConfig,
+    RadioItemConfig,
+    SidebarItemConfig,
+    TableConfig,
+)
+from insight_ui.configs.base import HtmxConfig
+from insight_ui.configs.input import DropdownConfig, DropdownItemConfig
 
 
 def get_main_page_links() -> list[dict[str, Any]]:
     """Serve a list of links to the main pages."""
     return [
-        {
-            "text": _("Home"),
-            "view_name": "index_view",
-            "icon": {"name": "home", "size": "s"},
-            "need_auth": False,
-            "staff_only": False,
-        },
-        {
-            "text": _("Installation"),
-            "view_name": "installation_view",
-            "icon": {"name": "download", "size": "s"},
-            "need_auth": False,
-            "staff_only": False,
-        },
-        {
-            "text": _("Base Template"),
-            "view_name": "base_template_view",
-            "icon": {"name": "blueprint", "size": "s"},
-            "need_auth": False,
-            "staff_only": False,
-        },
-        {
-            "text": _("Customization"),
-            "view_name": "customization_view",
-            "icon": {"name": "settings", "size": "s"},
-            "need_auth": False,
-            "staff_only": False,
-        },
-        {
-            "text": _("Icons"),
-            "view_name": "icon_view",
-            "icon": {"name": "sparkles", "size": "s"},
-            "need_auth": False,
-            "staff_only": False,
-        },
+        NavbarLinkConfig(_("Home"), reverse("index_view"), IconConfig("home", "s")),
+        NavbarLinkConfig(_("Installation"), reverse("installation_view"), IconConfig("download", "s")),
+        NavbarLinkConfig(_("Base Template"), reverse("base_template_view"), IconConfig("blueprint", "s")),
+        NavbarLinkConfig(_("Customization"), reverse("customization_view"), IconConfig("settings", "s")),
+        NavbarLinkConfig(_("Icons"), reverse("icon_view"), IconConfig("sparkles", "s")),
     ]
 
 
-def get_navbar_context(current_view: str = "index_view") -> dict:
+def get_navbar_context() -> dict:
     """Serve data for main navbar."""
     links = get_main_page_links()
     links.append(
-        {
-            "text": _("Components"),
-            "open_dropdown": "components-menu",
-            "icon": {"name": "cards", "size": "s"},
-            "items": [
-                {
-                    "text": category.formatted_name,
-                    "view_name": "storybook_view",
-                    "view_arg": category.value,
-                    "htmx": {"target": "#content"},
-                }
-                for category in ComponentCategory
-            ],
-            "chevron": {"name": "chevron_down", "size": "s"},
-            "active": False,
-            "need_auth": False,
-            "staff_only": False,
-        }
+        NavbarLinkConfig(
+            _("Components"),
+            icon=IconConfig("cards", "s"),
+            dropdown=DropdownConfig(
+                "components-menu",
+                "",
+                items=[
+                    DropdownItemConfig(
+                        category.formatted_name, reverse("storybook_view", kwargs={"storybook_name": category.value})
+                    )
+                    for category in ComponentCategory
+                ],
+            ),
+        )
     )
 
     return {
-        "nav_config": {
-            "brand": {
-                "title": "Insight UI",
-                "view_name": "index_view",
-                "gap": "0.5rem",
-                "logo": {
-                    "url": "insight_ui/svg/ai-logo.svg",
-                    "url_dark": "insight_ui/svg/ai-logo.svg",
-                    "alt": "Insight UI Logo",
-                    "height": "2rem",
-                },
-            },
-            "links": links,
-            "searchbar_request_view": "index_view",
-            "show_usermenu": False,
-            "show_language_selector": True,
-            "show_theme_toggle": True,
-        },
+        "nav_config": NavbarConfig(
+            NavbarBrandConfig(
+                "Insight UI",
+                "/",
+                LogoConfig(
+                    url="insight_ui/svg/ai-logo.svg",
+                    url_dark="insight_ui/svg/ai-logo.svg",
+                    alt="Insight UI Logo",
+                    height="2rem",
+                ),
+                "0.5rem",
+            ),
+            links,
+            "/",
+            show_language_selector=True,
+            show_theme_toggle=True,
+        ),
         "navbar_fixed": True,
         "white_bg": True,
         "default_padding": True,
@@ -102,7 +83,7 @@ def get_navbar_context(current_view: str = "index_view") -> dict:
     }
 
 
-def get_sidebar_context(component_name: str = "") -> dict:
+def get_sidebar_context() -> dict:
     """Serve data for the main sidebar."""
     categories = [{"caption": category.formatted_name, "items": []} for category in ComponentCategory]
 
@@ -110,13 +91,12 @@ def get_sidebar_context(component_name: str = "") -> dict:
         for category in categories:
             if category["caption"] == component.group.formatted_name:
                 category["items"].append(
-                    {
-                        "text": component.formatted_name,
-                        "icon": {"name": "tools", "size": "s"} if component.in_development else None,
-                        "url": reverse("component_detail_page_view", kwargs={"component_name": component.value}),
-                        "htmx": {"target": "#content"},
-                        "is_selected": component.value == component_name,
-                    }
+                    SidebarItemConfig(
+                        component.formatted_name,
+                        reverse("component_detail_page_view", kwargs={"component_name": component.value}),
+                        IconConfig("tools", "s") if component.in_development else None,
+                        HtmxConfig(target="#content"),
+                    )
                 )
                 break
 
@@ -128,32 +108,29 @@ def get_footer_context() -> dict:
     links = get_main_page_links()
 
     return {
-        "footer_data": {
-            "description": {
-                "title": "Insight UI",
-                "text": _("A modern, accessible, and responsive UI library for Django projects."),
-            },
-            "links": links,
-            "contact": {
-                "mail_url": "support@alpininsight.com",
-                "imprint": "https://alpininsight.com/imprint/",
-                "privacy": "https://alpininsight.com/privacy/",
-            },
-            "copyright": {
-                "year": 2026,
-                "holder": "Alpin Insight Solutions GmbH & Co. KG",
-                "source_label": "Open Source",
-                "license_text": "AGPL-3.0",
-                "license_url": reverse_lazy("license_view"),
-            },
-            "version": get_app_version(),
-        }
+        "footer_config": FooterConfig(
+            FooterDescriptionConfig(
+                "Insight UI", _("A modern, accessible, and responsive UI library for Django projects.")
+            ),
+            links,
+            FooterContactConfig(
+                "support@alpininsight.com", "https://alpininsight.com/imprint/", "https://alpininsight.com/privacy/"
+            ),
+            CopyrightNoticeConfig(
+                2026,
+                "Alpin Insight Solutions GmbH & Co. KG",
+                "Open Source",
+                "AGPL-3.0",
+                reverse_lazy("license_view"),
+            ),
+            get_app_version(),
+        )
     }
 
 
-def get_base_context(current_view: str = "index_view") -> dict:
+def get_base_context() -> dict:
     """Serve basic context data, like navbar, footer and settings."""
-    return config.get_config() | get_navbar_context(current_view) | get_footer_context()
+    return config.get_config() | get_navbar_context() | get_footer_context()
 
 
 def get_icon_context() -> dict:
@@ -448,18 +425,10 @@ def get_icon_context() -> dict:
         ],
     ]
 
-    icon_table = {
-        "caption": "",
-        "empty_msg": "",
-        "headers": [_("Icon"), _("Name"), _("Example usages"), _("Source")],
-        "rows": table_rows,
-    }
-
-    size_table = {
-        "caption": "",
-        "empty_msg": "",
-        "headers": ["xs", "s", "m", "l", "xl"],
-        "rows": [
+    icon_table = TableConfig([_("Icon"), _("Name"), _("Example usages"), _("Source")], table_rows)
+    size_table = TableConfig(
+        ["xs", "s", "m", "l", "xl"],
+        [
             [
                 render_to_string("insight_ui/components/icons.html", {"name": "home", "size": "xs"}),
                 render_to_string("insight_ui/components/icons.html", {"name": "home", "size": "s"}),
@@ -468,7 +437,7 @@ def get_icon_context() -> dict:
                 render_to_string("insight_ui/components/icons.html", {"name": "home", "size": "xl"}),
             ]
         ],
-    }
+    )
 
     return {"main_params": main_params, "icon_table": icon_table, "size_table": size_table}
 
@@ -476,21 +445,18 @@ def get_icon_context() -> dict:
 def get_demo_container_context() -> dict:
     """Serve data of the device switch, etc. for component demos."""
     return {
-        "device_radio_config": {
-            "items": [
-                {"tag_id": "mobile", "value": "mobile", "icon": {"name": "smartphone"}, "disabled": False},
-                {"tag_id": "tablet", "value": "tablet", "icon": {"name": "tablet"}, "disabled": False},
-                {"tag_id": "desktop", "value": "desktop", "icon": {"name": "desktop"}, "disabled": False},
-            ]
-        },
-        "dir_toggle": {"label": _("RTL")},
-        "theme_toggle": {"icon": {"name": "moon"}},
+        "device_radio_items": [
+            RadioItemConfig("mobile", "mobile", icon=IconConfig("smartphone")),
+            RadioItemConfig("tablet", "tablet", icon=IconConfig("tablet")),
+            RadioItemConfig("desktop", "desktop", icon=IconConfig("desktop")),
+        ],
+        "theme_toggle_icon": IconConfig("moon"),
     }
 
 
 def get_storybook_context(storybook: ComponentCategory) -> dict:  # noqa: C901
     """Serve the base context and the context for each component in the list."""
-    context = get_base_context("storybook_view") | get_sidebar_context()
+    context = get_base_context() | get_sidebar_context()
     components = []
     for component in Component:
         if component.group.value == storybook.value:

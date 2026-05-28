@@ -1,6 +1,6 @@
 {% load i18n insight_tags %}
 
-<div class="bg-white dark:bg-gray-900 rounded-sm overflow-auto">
+<div class="bg-white dark:bg-gray-800 rounded-sm overflow-auto">
     <table class="table-auto w-full">
         {% if caption %}
             <caption class="text-sm text-secondary">{{ caption }}</caption>
@@ -27,7 +27,7 @@
 
         <tbody class="text-primary">
             {% for row in rows %}
-                <tr class="odd:bg-gray-100 even:bg-white odd:dark:bg-gray-800 even:dark:bg-gray-900">
+                <tr class="odd:bg-gray-100 even:bg-white odd:dark:bg-gray-900 even:dark:bg-gray-800">
                     {% for cell in row %}
                         <td class="text-start text-sm px-4 py-3">{{ cell|safe }}</td>
                     {% endfor %}

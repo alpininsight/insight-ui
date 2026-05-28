@@ -3,13 +3,16 @@
 <form
     {% if request_url %}
         {% if htmx %}
-            hx-get="{% url request_url %}"
+            hx-get="{{ request_url }}"
             hx-target="{{ htmx.target }}"
             hx-swap="{{ htmx.swap|default:'innerHTML' }}"
-            hx-trigger="submit"
+            hx-trigger="{{ htmx.trigger|default:'submit' }}"
+            hx-vals="{{ htmx.vals }}"
+            hx-indicator="{{ htmx.indicator|default:'#loading-indicator' }}"
+            hx-push-url="{{ htmx.push_url|default:'False' }}"
             hx-ext="progressive-enhancement"
         {% else %}
-            action="{% url request_url %}"
+            action="{{ request_url }}"
             method="get"
         {% endif %}
     {% endif %}
@@ -24,7 +27,7 @@
             type="search"
             id="search"
             name="search"
-            placeholder="{% trans "Browse..." %}"
+            placeholder="{% trans 'Browse...' %}"
             value="{{ search_query }}"
             class="block size-full px-3 {% if simple %}text-sm py-2{% else %}py-3 pe-32{% endif %} ps-10 text-neutral-700 d dark:text-white border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-sm focus:outline-none focus:ring-2 ring-insight-primary-active"
         />

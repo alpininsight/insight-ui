@@ -3,13 +3,13 @@
 <form
   {% if tag_id %}id="{{ tag_id }}"{% endif %}
   {% if htmx %}
-    hx-post="{% url view_name %}"
+    hx-post="{{ request_url }}"
     hx-target="{{ htmx.target }}"
     hx-swap="{{ htmx.swap|default:'innerHTML' }}"
     hx-trigger="submit"
     hx-ext="progressive-enhancement"
   {% else %}
-    action="{% url view_name %}"
+    action="{{ request_url }}"
     method="post"
   {% endif %}
   class="space-y-6"

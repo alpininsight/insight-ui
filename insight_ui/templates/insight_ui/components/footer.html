@@ -7,8 +7,8 @@
                 <div class="flex-1">
                     <h4>{{ description.title }}</h4>
                     <p class="text-secondary text-sm">{{ description.text }}</p>
-                    {% if description.image %}
-                        {% logo config=description.image height=description.image.height|default:'8rem' css_class="mt-4" %}
+                    {% if description.logo %}
+                        {% logo config=description.logo height=description.image.height|default:'8rem' css_class="mt-4" %}
                     {% endif %}
                 </div>
             {% endif %}
@@ -17,7 +17,7 @@
                 <ul>
                     {% for link in links %}
                         <li>
-                            <a href="{% url link.view_name %}" class="inline-flex gap-1 text-secondary hover:text-insight-text-link-hover dark:hover:text-insight-text-link-hover text-sm">
+                            <a href="{{ link.url }}" class="inline-flex gap-1 text-secondary hover:text-insight-text-link-hover dark:hover:text-insight-text-link-hover text-sm">
                                 {% if link.icon %}
                                     {% icon link.icon %}
                                 {% endif %}
