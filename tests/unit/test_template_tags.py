@@ -71,8 +71,7 @@ class NavbarTemplateTagTest(TemplateTagsTestCase):
         """
 
         rendered = self.render_template(
-            template_string,
-            context={"nav_config": nav_config, "user": self.user, "user_dropdown_links": []},
+            template_string, context={"nav_config": nav_config, "user": self.user, "user_dropdown_links": []}
         )
         soup = BeautifulSoup(rendered, "html.parser")
 

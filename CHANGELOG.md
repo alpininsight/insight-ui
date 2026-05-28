@@ -50,11 +50,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **ci:** Update scheduled pre-commit workflow actions
 - **deps:** Update vulnerable dependencies
 - **docs:** Use manifest-safe card demo assets
-- **docs:** Serve component source links locally 
-- **static:** Require explicit cdn opt-in 
-- **static:** Preserve selectors in minified css assets 
-- **cards:** Stabilize app card layout 
-- **navbar:** Keep user dropdown out of layout flow 
+- **docs:** Serve component source links locally
+- **static:** Require explicit cdn opt-in
+- **static:** Preserve selectors in minified css assets
+- **cards:** Stabilize app card layout
+- **navbar:** Keep user dropdown out of layout flow
 - **navbar:** Sync user dropdown position to develop
 
 ### CI/CD

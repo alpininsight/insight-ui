@@ -38,10 +38,7 @@ from insight_ui.utils.query_builder_utils import FilterFieldConfig, get_filter_s
 logger = structlog.get_logger(__name__)
 
 SOURCE_ROOT = Path(__file__).resolve().parent
-SOURCE_PATHS = {
-    "html": TEMPLATE_PATHS,
-    "js": SCRIPT_PATHS,
-}
+SOURCE_PATHS = {"html": TEMPLATE_PATHS, "js": SCRIPT_PATHS}
 COMPONENT_NOT_FOUND = "Component not found"
 SOURCE_TYPE_NOT_FOUND = "Component source type not found"
 SOURCE_NOT_FOUND = "Component source not found"

@@ -117,11 +117,7 @@ def get_footer_context() -> dict:
                 "support@alpininsight.com", "https://alpininsight.com/imprint/", "https://alpininsight.com/privacy/"
             ),
             CopyrightNoticeConfig(
-                2026,
-                "Alpin Insight Solutions GmbH & Co. KG",
-                "Open Source",
-                "AGPL-3.0",
-                reverse_lazy("license_view"),
+                2026, "Alpin Insight Solutions GmbH & Co. KG", "Open Source", "AGPL-3.0", reverse_lazy("license_view")
             ),
             get_app_version(),
         )
