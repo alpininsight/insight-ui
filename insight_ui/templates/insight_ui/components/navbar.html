@@ -1,14 +1,14 @@
 {% load i18n insight_tags %}
 
 <!-- Skip-Link for Accessibility, placed BEFORE nav -->
-<a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-insight-primary text-white p-2 rounded">
+<a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-insight-primary text-insight-primary-foreground p-2 insight-radius-surface">
   {% trans 'Jump to main content' %}
 </a>
 
 <nav
   role="navigation"
   aria-label="{% trans 'Main navigation' %}"
-  class="{% if fixed %}fixed{% else %}absolute{% endif %} w-full h-16 z-50 bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700 px-4 md:px-16"
+  class="{% if fixed %}fixed{% else %}absolute{% endif %} w-full h-16 z-50 insight-surface-base insight-shadow-surface border-b insight-border-surface px-4 md:px-16"
 >
   <!--- Desktop Navigation -->
   <div class="flex flex-wrap lg:flex-nowrap justify-between items-center gap-1 h-full">
@@ -26,7 +26,7 @@
     <div class="lg:hidden flex items-center gap-2 py-3">
       <!-- Mobile Menu Toggle -->
       <button
-        class="inline-flex items-center justify-center p-2 rounded-md text-secondary hover:text-insight-text-link dark:hover:text-insight-text-link-hover hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-insight-primary"
+        class="inline-flex items-center justify-center p-2 insight-radius-surface text-secondary hover:text-insight-text-link dark:hover:text-insight-text-link-hover hover:bg-insight-surface-soft dark:hover:bg-insight-surface-soft-dark focus:outline-none focus:ring-2 focus:ring-inset focus:ring-insight-primary"
         aria-expanded="false"
         aria-controls="navigation-menu"
         aria-label="{% trans 'Open menu' %}"
@@ -37,7 +37,7 @@
     </div>
 
     <div id="navigation-menu" class="hidden lg:block h-full w-full lg:w-fit grow lg:py-3">
-      <div class="flex flex-col lg:flex-row justify-end gap-6 w-full lg:h-full p-2 lg:p-0 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 shadow-lg lg:shadow-none lg:bg-transparent lg:border-none rounded">
+      <div class="flex flex-col lg:flex-row justify-end gap-6 w-full lg:h-full p-2 lg:p-0 insight-surface-soft border insight-border-surface insight-shadow-surface lg:shadow-none lg:bg-transparent lg:border-none insight-radius-surface">
         <!-- Main-Navigation -->
         {% if links %}
           <ul class="flex flex-col lg:flex-row justify-items-stretch lg:items-center w-full lg:w-fit">
@@ -67,7 +67,7 @@
                           {% icon name="chevron_down" size="s" %}
                         {% endif %}
                       </button>
-                      <div id="{{ link.open_dropdown }}" class="hidden bg-white border border-gray-300 dark:border-0 rounded-sm shadow-lg">
+                      <div id="{{ link.open_dropdown }}" class="hidden insight-surface-base border insight-border-surface insight-radius-control insight-shadow-overlay">
                         <div class="py-1">
                           {% for item in link.items %}
                             {% with item_url=item.href %}
@@ -79,7 +79,7 @@
                                   hx-push-url="true"
                                 {% endif %}
                                 href="{{ item_url|default:'' }}"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                class="block px-4 py-2 text-sm text-primary hover:bg-insight-surface-soft dark:hover:bg-insight-surface-soft-dark"
                               >{{ item.text }}</a>
                             {% endwith %}
                           {% endfor %}

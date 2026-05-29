@@ -6,12 +6,53 @@ from django.test import SimpleTestCase
 from insight_ui.config import CONFIG_DEFAULTS
 
 THEME_ROOT = Path(__file__).resolve().parents[2] / "insight_ui/static/insight_ui/css/themes"
+INPUT_CSS = Path(__file__).resolve().parents[2] / "insight_ui/utils/input.css"
 BOOTSWATCH_THEMES = set(CONFIG_DEFAULTS["design_themes"]["stylesheets"]) - {"default", "alpin", "foundry"}
 SEMANTIC_ROLES = ("primary", "secondary", "success", "info", "warning", "danger")
 
 
 class DesignThemeCssTest(SimpleTestCase):
     """Verify Bootswatch-derived theme files carry text and foreground tokens."""
+
+    def test_input_css_exposes_brand_alignment_tokens(self) -> None:
+        """Brand-relevant design concepts must be public Insight UI tokens."""
+        input_css = INPUT_CSS.read_text()
+
+        for token in (
+            "--font-display:",
+            "--font-mono:",
+            "--color-insight-pending:",
+            "--color-insight-surface-page:",
+            "--color-insight-surface-base:",
+            "--color-insight-surface-soft:",
+            "--color-insight-surface-canvas:",
+            "--color-insight-surface-panel:",
+            "--color-insight-surface-raised:",
+            "--color-insight-surface-sunken:",
+            "--color-insight-disabled:",
+            "--color-insight-focus-ring:",
+            "--insight-radius-sm:",
+            "--insight-radius-lg:",
+            "--insight-radius-pill:",
+            "--insight-tracking-display:",
+            "--insight-tracking-caption:",
+        ):
+            assert token in input_css
+
+        for semantic_class in (
+            ".insight-surface-page",
+            ".insight-surface-base",
+            ".insight-surface-soft",
+            ".insight-surface-canvas",
+            ".insight-surface-panel",
+            ".insight-surface-raised",
+            ".insight-surface-sunken",
+            ".insight-radius-control",
+            ".insight-radius-surface",
+            ".insight-radius-pill",
+            ".insight-focus-ring",
+        ):
+            assert semantic_class in input_css
 
     def test_bootswatch_themes_define_text_and_button_foreground_tokens(self) -> None:
         """Every Bootswatch theme must include text and button font color tokens."""

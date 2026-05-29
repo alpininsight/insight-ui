@@ -8,11 +8,11 @@ This file is just a helper to develop the structure, the real component is in 's
 
 {% endcomment %}
 
-<div class="bg-[#f9fafb] dark:bg-[#030712] rounded border border-gray-300 dark:border-gray-700">
-    <div class="flex justify-between bg-gray-200 dark:bg-gray-900 rounded-t p-2">
+<div class="insight-surface-code insight-radius-surface border insight-border-surface">
+    <div class="flex justify-between insight-surface-muted rounded-t p-2">
         <div class="flex">
-            <span class="text-secondary leading-loose bg-gray-50 dark:bg-gray-700 rounded-sm px-2 py-1">{{ lang }}</span>
-            <span class="text-secondary leading-loose bg-gray-50 dark:bg-gray-700 rounded-sm px-2 py-1 ms-2">{{ filename }}</span>
+            <span class="text-secondary leading-loose insight-surface-soft insight-radius-control px-2 py-1">{{ lang }}</span>
+            <span class="text-secondary leading-loose insight-surface-soft insight-radius-control px-2 py-1 ms-2">{{ filename }}</span>
         </div>
         <button class="btn btn-secondary btn-xs {{ id }}" data-clipboard-target="#{{ id }}">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5">

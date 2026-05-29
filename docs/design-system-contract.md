@@ -98,6 +98,9 @@ self-documentation, and rendered application pages. Keep these boundaries clear:
 The maintainer-facing map for these boundaries lives in
 [Documentation Architecture](docs-architecture.md).
 
+The visual impact of the public token families is documented with before/after
+screenshots in [Design Token Impact Map](design-token-impact-map.md).
+
 ## Stable public contract today
 
 These concepts already exist in Insight UI and form the baseline that extensions
@@ -110,9 +113,13 @@ and host applications should inherit before introducing domain-specific variants
 | Status colors | `success`, `warning`, `danger`, `info` tokens | Semantic user feedback and system state. |
 | Text hierarchy | `text-primary`, `text-secondary`, `text-link` | Primary content, secondary content, and navigable text. |
 | Dark mode | `@custom-variant dark` and dark text tokens | Theme-aware rendering via `data-theme=dark`. |
+| Surface hierarchy | `--color-insight-surface-*`, `insight-surface-*` | Page/base/soft/muted surfaces plus Brand-compatible tonal aliases `canvas`, `panel`, `raised`, `sunken`, and overlays/code surfaces. |
 | Border hierarchy | `--color-insight-border-surface`, `--color-insight-border-control`, `insight-border-*` | Themeable boundaries for cards, docs surfaces, forms, inputs, and controls. |
 | Shadow hierarchy | `--insight-shadow-*`, `insight-shadow-*` | Themeable elevation and neobrutalist offsets mapped from the project design language, with Tailwind values as defaults. |
-| Surfaces | `.component-container`, `.example-container`, cards, panels, modal body | Visual containers that separate content from the page background. |
+| Radius hierarchy | `--insight-radius-*`, `insight-radius-*` | Themeable corner treatment for controls, cards, pills, and overlays. |
+| Tracking hierarchy | `--insight-tracking-display`, `--insight-tracking-caption` | Optional letter spacing for display headings and caption-like text. |
+| Disabled and focus states | `--color-insight-disabled-*`, `--color-insight-focus-ring` | Shared disabled, muted, and keyboard-focus behavior. |
+| Surfaces | `.component-container`, `.example-container`, cards, panels, modal body, semantic surface classes | Visual containers that separate content from the page background. |
 | Layout hierarchy | Navbar, sidebars, heading, content, footer, drawer blocks | Page shell and navigation structure. |
 | Overlay hierarchy | Modal backdrop, sidebar backdrop, z-index utilities | Layering for temporary UI and blocking interactions. |
 | Documentation surfaces | Code block, inline tag, demo container | Self-documentation chrome and examples. |
@@ -127,6 +134,13 @@ should live:
 
 - Stable theme tokens belong in `insight_ui/utils/input.css`.
 - Shared semantic component classes belong in `@layer components`.
+- Reusable surfaces and radii should use `--color-insight-surface-*`,
+  `--insight-radius-*`, `insight-surface-*`, and `insight-radius-*` when the
+  visual rule is part of the component contract.
+- New Brand-facing documentation should prefer the tonal aliases
+  `canvas`, `panel`, `raised`, and `sunken`; existing Insight UI components may
+  keep the older `page`, `base`, `soft`, and `muted` names where that preserves
+  compatibility.
 - Reusable borders and shadows should use `--color-insight-border-*` and
   `--insight-shadow-*` tokens instead of direct `border-gray-*` or `shadow-*`
   utilities when the visual rule is part of the component contract.

@@ -4,7 +4,7 @@
     {% for item in items %}
         <li class="relative {% if not forloop.first %}pt-10{% endif %}">
             {% if not forloop.first %}
-                <div aria-hidden="true" class="absolute -top-1 start-4 {% if not item.completed and not item.current %}bg-gray-100 dark:bg-gray-600{% else %}bg-gray-300{% endif %} h-1/2 w-0.5 mt-0.5 -ms-px"></div>
+                <div aria-hidden="true" class="absolute -top-1 start-4 {% if not item.completed and not item.current %}bg-insight-surface-soft dark:bg-insight-surface-soft-dark{% else %}bg-insight-surface-muted dark:bg-insight-surface-muted-dark{% endif %} h-1/2 w-0.5 mt-0.5 -ms-px"></div>
             {% endif %}
             <a
                 {% if item.request_url and not item.current %}
@@ -21,7 +21,7 @@
             >
                 <!-- Bullet -->
                 <span class="flex items-center h-9">
-                    <span class="relative z-10 flex items-center justify-center size-8 border-2 {% if not item.completed and not item.current %}border-gray-100 dark:border-gray-600{% else %}border-gray-300{% endif %} rounded-full text-primary">
+                    <span class="relative z-10 flex items-center justify-center size-8 border-2 {% if not item.completed and not item.current %}insight-border-surface{% else %}insight-border-muted{% endif %} insight-radius-pill text-primary">
                         {% if item.completed %}
                             {% icon name="tick" size="s" %}
                         {% elif item.bullet_icon %}
@@ -29,14 +29,14 @@
                         {% elif item.bullet_text %}
                             <span>{{ item.bullet_text }}</span>
                         {% else %}
-                            <span class="{% if not item.completed and not item.current %}bg-gray-100 dark:bg-gray-600{% else %}bg-gray-300{% endif %} size-2.5 rounded-full"></span>
+                            <span class="{% if not item.completed and not item.current %}bg-insight-surface-soft dark:bg-insight-surface-soft-dark{% else %}bg-insight-surface-muted dark:bg-insight-surface-muted-dark{% endif %} size-2.5 insight-radius-pill"></span>
                         {% endif %}
                     </span>
                 </span>
                 <!-- Information -->
                 <div class="flex flex-col min-w-0 ms-4">
-                    <span class="text-sm font-medium {% if not item.completed and not item.current %}text-gray-300 dark:text-gray-700{% elif item.current %}text-insight-primary{% else %}text-primary{% endif %}">{{ item.title}}</span>
-                    <span class="text-sm {% if not item.completed and not item.current %}text-gray-300 dark:text-gray-700{% else %}text-secondary{% endif %}">{{ item.description }}</span>
+                    <span class="text-sm font-medium {% if not item.completed and not item.current %}text-disabled{% elif item.current %}text-insight-primary{% else %}text-primary{% endif %}">{{ item.title}}</span>
+                    <span class="text-sm {% if not item.completed and not item.current %}text-disabled{% else %}text-secondary{% endif %}">{{ item.description }}</span>
                 </div>
             </a>
         </li>

@@ -5,7 +5,7 @@
   <button
     data-sidebar-target="{{ side }}"
     aria-label="{% trans 'Open sidebar' %}"
-    class="open-btn fixed top-20 {% if side == "right" %}ltr:right-4 rtl:left-4{% else %}ltr:left-4 rtl:right-4 rotate-180{% endif %} z-40 text-white bg-insight-primary rounded-full shadow p-2 hover:bg-insight-primary-hover active:bg-insight-primary-active"
+    class="open-btn fixed top-20 {% if side == "right" %}ltr:right-4 rtl:left-4{% else %}ltr:left-4 rtl:right-4 rotate-180{% endif %} z-40 text-insight-primary-foreground bg-insight-primary insight-radius-pill insight-shadow-control p-2 hover:bg-insight-primary-hover active:bg-insight-primary-active"
   >
     {% icon name="chevron_left" size="s" %}
   </button>
@@ -26,14 +26,14 @@
   <aside
     role="complementary"
     aria-label="{% trans 'Side navigation' %}"
-    class="{% if static %}{% if mobile_hidden %}hidden xl:block {% endif %}sticky {% if navbar_fixed %}top-16 h-[calc(100vh-4rem)]{% else %}top-0 h-screen{%endif%}{% else %}fixed h-screen{% endif %} {% if side == "right" %}ltr:right-0 ltr:border-l rtl:left-0 rtl:border-r{% else %}ltr:left-0 ltr:border-r rtl:right-0 rtl:border-l{% endif %} overflow-y-auto bg-white dark:bg-gray-800 dark:border-gray-600 border-gray-200 shadow-md transition"
+    class="{% if static %}{% if mobile_hidden %}hidden xl:block {% endif %}sticky {% if navbar_fixed %}top-16 h-[calc(100vh-4rem)]{% else %}top-0 h-screen{%endif%}{% else %}fixed h-screen{% endif %} {% if side == "right" %}ltr:right-0 ltr:border-l rtl:left-0 rtl:border-r{% else %}ltr:left-0 ltr:border-r rtl:right-0 rtl:border-l{% endif %} overflow-y-auto insight-surface-base insight-border-surface insight-shadow-surface transition"
     style="width: {{ sidebar_data.width|default:'18rem' }}"
     data-auto-close="{{ auto_close|yesno:'true,false' }}"
   >
     <div class="flex flex-col {% if side == "right" %}ps-4 pe-4 md:pe-16{% else %}ps-4 md:ps-16 pe-4{% endif %} {% if static %}py-8{% else %}pb-8{% endif %}">
       {% block sidebar_content %}
         {% comment %} Sidebar head with internal close button {% endcomment %}
-        <div class="flex justify-between items-center {% if not static %}h-16{% else %}pb-4{% endif %} border-b border-gray-300 dark:border-gray-500 mb-4">
+        <div class="flex justify-between items-center {% if not static %}h-16{% else %}pb-4{% endif %} border-b insight-border-surface mb-4">
           {% if sidebar_data.title %}
             <h2 class="flex items-center gap-1 text-lg mb-0">
               {% if sidebar_data.icon %}
@@ -48,7 +48,7 @@
           {% if not auto_close and not static %}
             <button
               id="{{ side }}-sidebar-close"
-              class="text-secondary hover:text-insight-text-primary dark:hover:text-insight-text-primary-dark p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 text-sm"
+              class="text-secondary hover:text-insight-text-primary dark:hover:text-insight-text-primary-dark p-2 insight-radius-surface hover:bg-insight-surface-soft dark:hover:bg-insight-surface-soft-dark transition-colors duration-200 text-sm"
               aria-label="{% trans 'Close sidebar' %}"
               data-insight-dismiss="sidebar"
             >
@@ -80,7 +80,7 @@
                             hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
                           {% endif %}
                           href="{{ item.url }}"
-                          class="flex gap-2 px-2 py-1 text-sm text-primary {% if item.is_selected %}font-semibold bg-gray-100 dark:bg-gray-700 border-s-2 border-insight-primary hover:border-insight-primary-hover{% else %}border-s border-gray-200 dark:border-gray-700 hover:border-gray-400 hover:text-gray-400{% endif %}"
+                          class="flex gap-2 px-2 py-1 text-sm text-primary {% if item.is_selected %}font-semibold insight-surface-soft border-s-2 border-insight-primary hover:border-insight-primary-hover{% else %}border-s insight-border-surface hover:border-insight-border-muted hover:text-insight-text-secondary{% endif %}"
                         >
                           {% if item.icon %}
                             {% icon item.icon %}

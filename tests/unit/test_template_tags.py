@@ -453,7 +453,7 @@ class CardTemplateTagTest(TemplateTagsTestCase):
         assert "border" in classes
         assert "max-w-72" not in classes
         assert "hover:scale-105" not in classes
-        assert soup.find("img")["class"] == ["h-56", "w-full", "bg-gray-100", "object-cover", "dark:bg-gray-700"]
+        assert soup.find("img")["class"] == ["h-56", "w-full", "insight-surface-soft", "object-cover"]
         assert soup.find("div", id="card-tags")["class"] == ["flex", "flex-wrap", "gap-1", "px-4", "pb-2"]
         assert soup.find("span", attrs={"aria-disabled": "true"}).text.strip() == "Not live yet"
 

@@ -15,9 +15,9 @@
     <!-- Wrapper to centralize the modal on screen -->
     <div class="flex items-center justify-center min-h-screen p-4">
         <!-- Modal -->
-        <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full mx-auto transform transition-all", style="max-width: {{ width|default:32 }}rem;">
+        <div class="relative insight-surface-base insight-radius-surface-lg insight-shadow-overlay w-full mx-auto transform transition-all", style="max-width: {{ width|default:32 }}rem;">
             <!-- Modal Header -->
-            <div class="flex items-start justify-between h-fit p-6 border-b border-gray-200 dark:border-gray-700">
+            <div class="flex items-start justify-between h-fit p-6 border-b insight-border-surface">
                 <h2 id="{{ tag_id }}-title" class="pb-0">{{ title }}</h2>
                 <button aria-label="{% trans 'Close' %}" class="btn btn-close" data-insight-dismiss="modal">
                     {% icon name="x-mark" size="xs" %}
@@ -36,7 +36,7 @@
             </div>
 
             <!-- Modal Footer -->
-            <div class="flex justify-end gap-2 p-6 border-t border-gray-200 dark:border-gray-700">
+            <div class="flex justify-end gap-2 p-6 border-t insight-border-surface">
                 {% if actions %}
                     {% for action in actions %}
                         {% if action.type == 'cancel' or action.dismiss %}

@@ -11,6 +11,8 @@
 
 @theme {
     --font-sans: "insight-ui", sans-serif;
+    --font-display: var(--font-sans);
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
     --color-insight-primary: #3b82f6;
     --color-insight-primary-hover: #60a5fa;
@@ -48,16 +50,56 @@
     --color-insight-info-foreground: #fff;
     --color-insight-info-foreground-hover: #fff;
     --color-insight-info-foreground-active: #fff;
+    --color-insight-pending: #64748b;
+    --color-insight-pending-hover: #94a3b8;
+    --color-insight-pending-active: #cbd5e1;
+    --color-insight-pending-foreground: #fff;
+    --color-insight-pending-foreground-hover: #0f172a;
+    --color-insight-pending-foreground-active: #0f172a;
     --color-insight-text-primary: oklch(26.9% 0 0);
     --color-insight-text-secondary: oklch(55.6% 0 0);
     --color-insight-text-primary-dark: oklch(92.2% 0 0);
     --color-insight-text-secondary-dark: oklch(70.8% 0 0);
     --color-insight-text-link: #3b82f6;
     --color-insight-text-link-hover: #93c5fd;
+    --color-insight-text-disabled: oklch(70.8% 0 0);
+    --color-insight-text-disabled-dark: oklch(55.6% 0 0);
+    --color-insight-surface-page: oklch(96.7% 0.003 264.542);
+    --color-insight-surface-page-dark: oklch(13% 0.028 261.692);
+    --color-insight-surface-base: #fff;
+    --color-insight-surface-base-dark: oklch(27.8% 0.033 256.848);
+    --color-insight-surface-soft: oklch(92.8% 0.006 264.531);
+    --color-insight-surface-soft-dark: oklch(37.3% 0.034 259.733);
+    --color-insight-surface-muted: oklch(87.2% 0.01 258.338);
+    --color-insight-surface-muted-dark: oklch(44.6% 0.03 256.802);
+    --color-insight-surface-inverse: oklch(21% 0.034 264.665);
+    --color-insight-surface-inverse-foreground: #fff;
+    --color-insight-surface-overlay: rgb(17 24 39 / 0.75);
+    --color-insight-surface-code: #f9fafb;
+    --color-insight-surface-code-dark: #030712;
+    --color-insight-surface-canvas: var(--color-insight-surface-page);
+    --color-insight-surface-canvas-dark: var(--color-insight-surface-page-dark);
+    --color-insight-surface-panel: var(--color-insight-surface-base);
+    --color-insight-surface-panel-dark: var(--color-insight-surface-base-dark);
+    --color-insight-surface-raised: var(--color-insight-surface-soft);
+    --color-insight-surface-raised-dark: var(--color-insight-surface-soft-dark);
+    --color-insight-surface-sunken: var(--color-insight-surface-muted);
+    --color-insight-surface-sunken-dark: var(--color-insight-surface-muted-dark);
     --color-insight-border-surface: oklch(92.8% 0.006 264.531);
     --color-insight-border-surface-dark: oklch(37.3% 0.034 259.733);
     --color-insight-border-control: oklch(87.2% 0.01 258.338);
     --color-insight-border-control-dark: oklch(44.6% 0.03 256.802);
+    --color-insight-border-muted: oklch(70.7% 0.022 261.325);
+    --color-insight-border-muted-dark: oklch(55.1% 0.027 264.364);
+    --color-insight-border-disabled: oklch(87.2% 0.01 258.338);
+    --color-insight-border-disabled-dark: oklch(44.6% 0.03 256.802);
+    --color-insight-disabled: oklch(87.2% 0.01 258.338);
+    --color-insight-disabled-dark: oklch(44.6% 0.03 256.802);
+    --color-insight-disabled-foreground: oklch(70.8% 0 0);
+    --color-insight-disabled-foreground-dark: oklch(55.6% 0 0);
+    --color-insight-focus-ring: var(--color-insight-primary);
+    --color-insight-focus-ring-offset: var(--color-insight-surface-base);
+    --color-insight-focus-ring-offset-dark: var(--color-insight-surface-base-dark);
 
     --insight-shadow-button: none;
     --insight-shadow-button-hover: var(--insight-shadow-button);
@@ -67,6 +109,13 @@
     --insight-shadow-surface: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     --insight-shadow-overlay: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 
+    --insight-radius-none: 0;
+    --insight-radius-sm: 0.125rem;
+    --insight-radius-md: 0.25rem;
+    --insight-radius-lg: 0.5rem;
+    --insight-radius-pill: 9999px;
+    --insight-tracking-display: normal;
+    --insight-tracking-caption: 0.08em;
     --range-progress: 0%;
 
     --animate-blink: blink 2s step-start infinite;
@@ -154,7 +203,10 @@
         @apply text-base font-semibold text-insight-text-primary dark:text-insight-text-primary-dark pb-1;
     }
     hr {
-        @apply text-gray-300 dark:text-gray-600;
+        border-color: var(--color-insight-border-surface);
+    }
+    hr:where([data-theme=dark], [data-theme=dark] *) {
+        border-color: var(--color-insight-border-surface-dark);
     }
 }
 
@@ -167,6 +219,83 @@
     }
     .text-link {
         @apply text-insight-text-link hover:text-insight-text-link-hover underline;
+    }
+    .text-disabled {
+        color: var(--color-insight-text-disabled);
+    }
+    .text-disabled:where([data-theme=dark], [data-theme=dark] *) {
+        color: var(--color-insight-text-disabled-dark);
+    }
+    .text-inverse {
+        color: var(--color-insight-surface-inverse-foreground);
+    }
+    .insight-tracking-display {
+        letter-spacing: var(--insight-tracking-display);
+    }
+    .insight-tracking-caption {
+        letter-spacing: var(--insight-tracking-caption);
+    }
+
+    .insight-surface-page {
+        background-color: var(--color-insight-surface-page);
+    }
+    .insight-surface-page:where([data-theme=dark], [data-theme=dark] *) {
+        background-color: var(--color-insight-surface-page-dark);
+    }
+    .insight-surface-base {
+        background-color: var(--color-insight-surface-base);
+    }
+    .insight-surface-base:where([data-theme=dark], [data-theme=dark] *) {
+        background-color: var(--color-insight-surface-base-dark);
+    }
+    .insight-surface-soft {
+        background-color: var(--color-insight-surface-soft);
+    }
+    .insight-surface-soft:where([data-theme=dark], [data-theme=dark] *) {
+        background-color: var(--color-insight-surface-soft-dark);
+    }
+    .insight-surface-muted {
+        background-color: var(--color-insight-surface-muted);
+    }
+    .insight-surface-muted:where([data-theme=dark], [data-theme=dark] *) {
+        background-color: var(--color-insight-surface-muted-dark);
+    }
+    .insight-surface-inverse {
+        background-color: var(--color-insight-surface-inverse);
+        color: var(--color-insight-surface-inverse-foreground);
+    }
+    .insight-surface-overlay {
+        background-color: var(--color-insight-surface-overlay);
+    }
+    .insight-surface-code {
+        background-color: var(--color-insight-surface-code);
+    }
+    .insight-surface-code:where([data-theme=dark], [data-theme=dark] *) {
+        background-color: var(--color-insight-surface-code-dark);
+    }
+    .insight-surface-canvas {
+        background-color: var(--color-insight-surface-canvas);
+    }
+    .insight-surface-canvas:where([data-theme=dark], [data-theme=dark] *) {
+        background-color: var(--color-insight-surface-canvas-dark);
+    }
+    .insight-surface-panel {
+        background-color: var(--color-insight-surface-panel);
+    }
+    .insight-surface-panel:where([data-theme=dark], [data-theme=dark] *) {
+        background-color: var(--color-insight-surface-panel-dark);
+    }
+    .insight-surface-raised {
+        background-color: var(--color-insight-surface-raised);
+    }
+    .insight-surface-raised:where([data-theme=dark], [data-theme=dark] *) {
+        background-color: var(--color-insight-surface-raised-dark);
+    }
+    .insight-surface-sunken {
+        background-color: var(--color-insight-surface-sunken);
+    }
+    .insight-surface-sunken:where([data-theme=dark], [data-theme=dark] *) {
+        background-color: var(--color-insight-surface-sunken-dark);
     }
 
     .insight-border-surface {
@@ -181,6 +310,18 @@
     .insight-border-control:where([data-theme=dark], [data-theme=dark] *) {
         border-color: var(--color-insight-border-control-dark);
     }
+    .insight-border-muted {
+        border-color: var(--color-insight-border-muted);
+    }
+    .insight-border-muted:where([data-theme=dark], [data-theme=dark] *) {
+        border-color: var(--color-insight-border-muted-dark);
+    }
+    .insight-border-disabled {
+        border-color: var(--color-insight-border-disabled);
+    }
+    .insight-border-disabled:where([data-theme=dark], [data-theme=dark] *) {
+        border-color: var(--color-insight-border-disabled-dark);
+    }
     .insight-shadow-control {
         box-shadow: var(--insight-shadow-control);
     }
@@ -193,9 +334,33 @@
     .insight-shadow-overlay {
         box-shadow: var(--insight-shadow-overlay);
     }
+    .insight-radius-none {
+        border-radius: var(--insight-radius-none);
+    }
+    .insight-radius-control {
+        border-radius: var(--insight-radius-sm);
+    }
+    .insight-radius-surface {
+        border-radius: var(--insight-radius-md);
+    }
+    .insight-radius-surface-lg {
+        border-radius: var(--insight-radius-lg);
+    }
+    .insight-radius-pill {
+        border-radius: var(--insight-radius-pill);
+    }
+    .insight-focus-ring {
+        @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+        --tw-ring-color: var(--color-insight-focus-ring);
+        --tw-ring-offset-color: var(--color-insight-focus-ring-offset);
+    }
+    .insight-focus-ring:where([data-theme=dark], [data-theme=dark] *) {
+        --tw-ring-offset-color: var(--color-insight-focus-ring-offset-dark);
+    }
 
     .btn {
-        @apply flex gap-2 items-center justify-center border-2 border-transparent rounded-sm px-5 py-1.5 transition-colors;
+        @apply flex gap-2 items-center justify-center border-2 border-transparent px-5 py-1.5 transition-colors;
+        border-radius: var(--insight-radius-sm);
         box-shadow: var(--insight-shadow-button);
         transition-property: color, background-color, border-color, box-shadow, transform;
     }
@@ -222,10 +387,26 @@
     }
 
     .btn-subtil2 {
-        @apply text-insight-text-secondary dark:text-insight-text-secondary-dark hover:bg-gray-200 dark:hover:bg-gray-600 active:bg-gray-300 dark:active:bg-gray-500 hover:border-gray-200 dark:hover:border-gray-600 active:border-gray-300 dark:active:border-gray-500;
+        @apply text-insight-text-secondary dark:text-insight-text-secondary-dark;
+        border-color: transparent;
+    }
+    .btn-subtil2:hover {
+        background-color: var(--color-insight-surface-soft);
+        border-color: var(--color-insight-border-surface);
+    }
+    .btn-subtil2:active {
+        background-color: var(--color-insight-surface-muted);
+        border-color: var(--color-insight-border-muted);
     }
     .btn-subtil {
-        @apply text-insight-text-secondary dark:text-insight-text-secondary-dark bg-gray-100 dark:bg-gray-700 border-gray-100 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 active:bg-gray-300 dark:active:bg-gray-500 hover:border-gray-200 dark:hover:border-gray-600 active:border-gray-300 dark:active:border-gray-500;
+        @apply text-insight-text-secondary dark:text-insight-text-secondary-dark;
+        background-color: var(--color-insight-surface-soft);
+        border-color: var(--color-insight-border-surface);
+    }
+    .btn-subtil:active,
+    .btn-subtil:hover {
+        background-color: var(--color-insight-surface-muted);
+        border-color: var(--color-insight-border-muted);
     }
     .btn-primary {
         --insight-button-border-color: var(--color-insight-button-border, var(--color-insight-primary-border, var(--color-insight-primary)));
@@ -300,16 +481,29 @@
         --insight-button-border-color: var(--color-insight-button-border-active, var(--color-insight-info-border-active, var(--color-insight-info-active)));
     }
     .btn-white {
-        @apply bg-white border-white hover:bg-insight-info-hover active:bg-insight-info-active hover:border-insight-info-hover active:border-insight-info-active text-gray-900;
+        @apply bg-white border-white hover:bg-insight-info-hover active:bg-insight-info-active hover:border-insight-info-hover active:border-insight-info-active;
+        color: var(--color-insight-text-primary);
     }
     .btn-link {
         @apply border-0 underline text-insight-text-link px-6 py-2 hover:text-insight-text-link-hover;
     }
     .btn-disabled {
-        @apply bg-neutral-300 dark:bg-neutral-600 border-neutral-300 dark:border-neutral-600 text-neutral-400;
+        background-color: var(--color-insight-disabled);
+        border-color: var(--color-insight-border-disabled);
+        color: var(--color-insight-disabled-foreground);
+    }
+    .btn-disabled:where([data-theme=dark], [data-theme=dark] *) {
+        background-color: var(--color-insight-disabled-dark);
+        border-color: var(--color-insight-border-disabled-dark);
+        color: var(--color-insight-disabled-foreground-dark);
     }
     .btn-close {
-        @apply p-2 border-0 text-insight-text-secondary dark:text-insight-text-secondary-dark bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 active:bg-gray-300 dark:active:bg-gray-500;
+        @apply p-2 border-0 text-insight-text-secondary dark:text-insight-text-secondary-dark;
+        background-color: var(--color-insight-surface-soft);
+    }
+    .btn-close:hover,
+    .btn-close:active {
+        background-color: var(--color-insight-surface-muted);
     }
 
     .btn-outline-primary {
@@ -391,46 +585,68 @@
         --insight-button-border-color: var(--color-insight-button-border-active, var(--color-insight-info-border-active, var(--color-insight-info-active)));
     }
     .btn-outline-disabled {
-        @apply border-neutral-300 dark:border-neutral-600 text-neutral-400;
+        border-color: var(--color-insight-border-disabled);
+        color: var(--color-insight-disabled-foreground);
+    }
+    .btn-outline-disabled:where([data-theme=dark], [data-theme=dark] *) {
+        border-color: var(--color-insight-border-disabled-dark);
+        color: var(--color-insight-disabled-foreground-dark);
     }
 
     .component-container {
-        @apply bg-white dark:bg-gray-800 rounded;
+        border-radius: var(--insight-radius-md);
+        background-color: var(--color-insight-surface-base);
         border: 1px solid var(--color-insight-border-surface);
         box-shadow: var(--insight-shadow-surface);
     }
     .component-container:where([data-theme=dark], [data-theme=dark] *) {
+        background-color: var(--color-insight-surface-base-dark);
         border-color: var(--color-insight-border-surface-dark);
     }
 
     .example-container {
-        @apply bg-white dark:bg-gray-800 rounded-lg px-8 py-16 my-12;
+        @apply px-8 py-16 my-12;
+        border-radius: var(--insight-radius-lg);
+        background-color: var(--color-insight-surface-base);
         border: 1px solid var(--color-insight-border-surface);
         box-shadow: var(--insight-shadow-surface-subtle);
     }
     .example-container:where([data-theme=dark], [data-theme=dark] *) {
+        background-color: var(--color-insight-surface-base-dark);
         border-color: var(--color-insight-border-surface-dark);
     }
 
     .info-container {
-        @apply bg-gray-100 dark:bg-gray-700 rounded-e-sm text-base px-4 py-1;
+        @apply text-base px-4 py-1;
+        border-start-end-radius: var(--insight-radius-sm);
+        border-end-end-radius: var(--insight-radius-sm);
+        background-color: var(--color-insight-surface-soft);
         border: 1px solid var(--color-insight-border-surface);
         border-inline-start-width: 4px;
     }
     .info-container:where([data-theme=dark], [data-theme=dark] *) {
+        background-color: var(--color-insight-surface-soft-dark);
         border-color: var(--color-insight-border-surface-dark);
     }
 
     .inline-tag {
-        @apply bg-gray-200 dark:bg-gray-700 font-mono text-insight-primary dark:text-insight-primary-active text-nowrap rounded-sm px-1 py-px;
+        @apply font-mono text-insight-primary dark:text-insight-primary-active text-nowrap px-1 py-px;
+        border-radius: var(--insight-radius-sm);
+        background-color: var(--color-insight-surface-muted);
+    }
+    .inline-tag:where([data-theme=dark], [data-theme=dark] *) {
+        background-color: var(--color-insight-surface-muted-dark);
     }
 
     .input {
-        @apply w-full px-3 py-2 rounded-sm text-sm focus:ring-2 focus:ring-insight-primary bg-white dark:bg-gray-700 dark:text-insight-text-primary-dark transition-colors duration-200;
+        @apply w-full px-3 py-2 text-sm focus:ring-2 focus:ring-insight-primary dark:text-insight-text-primary-dark transition-colors duration-200;
+        border-radius: var(--insight-radius-sm);
+        background-color: var(--color-insight-surface-base);
         border: 1px solid var(--color-insight-border-control);
         box-shadow: var(--insight-shadow-control);
     }
     .input:where([data-theme=dark], [data-theme=dark] *) {
+        background-color: var(--color-insight-surface-soft-dark);
         border-color: var(--color-insight-border-control-dark);
     }
     .input:focus {
@@ -440,20 +656,22 @@
     .slider-wrapper {
         --range-progress: 0%;
         --slider-track-active: var(--color-insight-primary);
-        --slider-track-inactive: #e5e7eb;
+        --slider-track-inactive: var(--color-insight-surface-muted);
     }
 
     .dark .slider-wrapper {
-        --slider-track-inactive: #374151;
+        --slider-track-inactive: var(--color-insight-surface-muted-dark);
     }
 
     .range-custom::-webkit-slider-runnable-track {
-        @apply h-2 rounded-md;
+        @apply h-2;
+        border-radius: var(--insight-radius-md);
         background: linear-gradient(to right, var(--slider-track-active) var(--range-progress), var(--slider-track-inactive) var(--range-progress));
     }
 
     .range-custom::-moz-range-track {
-        @apply h-2 rounded-md;
+        @apply h-2;
+        border-radius: var(--insight-radius-md);
         background: linear-gradient(to right, var(--slider-track-active) var(--range-progress), var(--slider-track-inactive) var(--range-progress));
     }
 
@@ -466,10 +684,12 @@
     }
 
     .range-custom::-webkit-slider-thumb {
-        @apply w-4 h-4 bg-white border-2 border-insight-primary rounded-full cursor-pointer -mt-1;
+        @apply w-4 h-4 bg-white border-2 border-insight-primary cursor-pointer -mt-1;
+        border-radius: var(--insight-radius-pill);
     }
 
     .range-custom::-moz-range-thumb {
-        @apply w-4 h-4 bg-white border-2 border-insight-primary rounded-full cursor-pointer;
+        @apply w-4 h-4 bg-white border-2 border-insight-primary cursor-pointer;
+        border-radius: var(--insight-radius-pill);
     }
 }

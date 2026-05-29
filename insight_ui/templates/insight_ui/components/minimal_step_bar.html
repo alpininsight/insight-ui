@@ -1,8 +1,8 @@
 {% load insight_tags %}
 
-<div class="flex items-stretch gap-0.5 h-full w-full bg-gray-50 dark:bg-gray-800 rounded-lg overflow-hidden">
+<div class="flex items-stretch gap-0.5 h-full w-full insight-surface-base insight-radius-surface-lg overflow-hidden">
     {% for item in items %}
-        <div class="flex-1 flex items-center justify-center {% if item == "success" %}bg-insight-success{% elif item == "failed" %}bg-insight-danger{% elif item == "active" %}bg-insight-primary{% else %}bg-gray-400{% endif %} text-white {% if forloop.first %}chevron-start{% elif forloop.last %}chevron-end{% else %}chevron-mid{% endif %} group">
+        <div class="flex-1 flex items-center justify-center {% if item == "success" %}bg-insight-success{% elif item == "failed" %}bg-insight-danger{% elif item == "active" %}bg-insight-primary{% else %}bg-insight-pending{% endif %} text-white {% if forloop.first %}chevron-start{% elif forloop.last %}chevron-end{% else %}chevron-mid{% endif %} group">
             {% if item == "success" %}
                 {% icon name="tick" size=icon_size %}
             {% elif item == "failed" %}

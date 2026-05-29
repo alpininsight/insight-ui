@@ -4,7 +4,7 @@
     <!-- Loading Indicator -->
     {% include "insight_ui/components/htmx_loading_indicator.html" %}
     {% for item in current_page.object_list %}
-        <li class="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4 mb-4">
+        <li class="insight-surface-base border insight-border-surface insight-radius-surface-lg p-4 mb-4">
             <h3>{{ item.title }}</h3>
             <p class="text-secondary">{{ item.content }}</p>
         </li>
