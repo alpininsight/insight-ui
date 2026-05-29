@@ -43,8 +43,8 @@
 }
 
 [data-theme="dark"] {
-    --color-insight-text-primary-dark: #e0e1e2;
-    --color-insight-text-secondary-dark: rgba(224, 225, 226, 0.75);
+    --color-insight-text-primary: #e0e1e2;
+    --color-insight-text-secondary: rgba(224, 225, 226, 0.75);
     --color-insight-text-link: #767676;
     --color-insight-text-link-hover: #919191;
 }

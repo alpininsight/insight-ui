@@ -100,6 +100,8 @@ The maintainer-facing map for these boundaries lives in
 
 The visual impact of the public token families is documented with before/after
 screenshots in [Design Token Impact Map](design-token-impact-map.md).
+The dark-mode token override migration is documented separately in
+[Dark Mode Variable Override](dark-mode-variable-override.md).
 
 ## Stable public contract today
 
@@ -112,7 +114,7 @@ and host applications should inherit before introducing domain-specific variants
 | Interaction variants | `*-hover`, `*-active` color tokens | Pointer and pressed states for interactive elements. |
 | Status colors | `success`, `warning`, `danger`, `info` tokens | Semantic user feedback and system state. |
 | Text hierarchy | `text-primary`, `text-secondary`, `text-link` | Primary content, secondary content, and navigable text. |
-| Dark mode | `@custom-variant dark` and dark text tokens | Theme-aware rendering via `data-theme=dark`. |
+| Dark mode | `[data-theme="dark"]` overrides the same public semantic tokens | Theme-aware rendering without a second public `*-dark` token contract. |
 | Surface hierarchy | `--color-insight-surface-*`, `insight-surface-*` | Page/base/soft/muted surfaces plus Brand-compatible tonal aliases `canvas`, `panel`, `raised`, `sunken`, and overlays/code surfaces. |
 | Border hierarchy | `--color-insight-border-surface`, `--color-insight-border-control`, `insight-border-*` | Themeable boundaries for cards, docs surfaces, forms, inputs, and controls. |
 | Shadow hierarchy | `--insight-shadow-*`, `insight-shadow-*` | Themeable elevation and neobrutalist offsets mapped from the project design language, with Tailwind values as defaults. |
@@ -144,6 +146,10 @@ should live:
 - Reusable borders and shadows should use `--color-insight-border-*` and
   `--insight-shadow-*` tokens instead of direct `border-gray-*` or `shadow-*`
   utilities when the visual rule is part of the component contract.
+- Dark mode should override the same semantic tokens under
+  `[data-theme="dark"]`. Do not add new reusable component markup with
+  `dark:*` utility classes or public `*-dark` token names when an existing
+  semantic token can express the same concept.
 - Semantic HTML, ARIA, component anatomy, and data hooks belong in templates.
 - JavaScript behavior belongs in `insight_ui/static/insight_ui/js/`.
 - Django-facing API normalization belongs in template tags.

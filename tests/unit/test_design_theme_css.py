@@ -54,6 +54,23 @@ class DesignThemeCssTest(SimpleTestCase):
         ):
             assert semantic_class in input_css
 
+    def test_dark_mode_overrides_public_tokens_without_dark_suffix_contract(self) -> None:
+        """Dark mode should override the same semantic tokens instead of exposing duplicate token names."""
+        input_css = INPUT_CSS.read_text()
+        dark_block = input_css.split('[data-theme="dark"] {', maxsplit=1)[1].split("}", maxsplit=1)[0]
+
+        for token in (
+            "--color-insight-text-primary:",
+            "--color-insight-surface-page:",
+            "--color-insight-surface-base:",
+            "--color-insight-border-surface:",
+            "--color-insight-focus-ring-offset:",
+        ):
+            assert token in dark_block
+
+        assert "-dark:" not in input_css
+        assert "dark:" not in input_css
+
     def test_bootswatch_themes_define_text_and_button_foreground_tokens(self) -> None:
         """Every Bootswatch theme must include text and button font color tokens."""
         for theme_name in BOOTSWATCH_THEMES:
@@ -68,6 +85,8 @@ class DesignThemeCssTest(SimpleTestCase):
                 assert f"--color-insight-{role}-foreground:" in theme_css
                 assert f"--color-insight-{role}-foreground-hover:" in theme_css
                 assert f"--color-insight-{role}-foreground-active:" in theme_css
+
+            assert "-dark:" not in theme_css
 
     def test_bootswatch_values_are_not_replaced_by_project_defaults(self) -> None:
         """Representative Bootswatch values should remain sourced from Bootswatch CSS."""

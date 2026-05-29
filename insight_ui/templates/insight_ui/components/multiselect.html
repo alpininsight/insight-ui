@@ -16,7 +16,7 @@
         <span class="ml-auto text-disabled text-xs info"></span>
         <div id="{{ name }}-listbox" role="listbox" class="options hidden absolute mt-1 w-full insight-surface-base border insight-border-control insight-radius-surface insight-shadow-overlay max-h-48 overflow-y-auto z-10">
             {% for item in options %}
-                <div id="{{ name }}-opt-{{ forloop.counter }}" role="option" aria-selected="false" tabindex="-1" class="option text-primary px-3 py-2 hover:bg-insight-surface-soft dark:hover:bg-insight-surface-soft-dark cursor-pointer">{{ item }}</div>
+                <div id="{{ name }}-opt-{{ forloop.counter }}" role="option" aria-selected="false" tabindex="-1" class="option text-primary px-3 py-2 hover:bg-insight-surface-soft cursor-pointer">{{ item }}</div>
             {% endfor %}
         </div>
     </div>

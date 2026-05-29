@@ -26,7 +26,7 @@
     <div class="lg:hidden flex items-center gap-2 py-3">
       <!-- Mobile Menu Toggle -->
       <button
-        class="inline-flex items-center justify-center p-2 insight-radius-surface text-secondary hover:text-insight-text-link dark:hover:text-insight-text-link-hover hover:bg-insight-surface-soft dark:hover:bg-insight-surface-soft-dark focus:outline-none focus:ring-2 focus:ring-inset focus:ring-insight-primary"
+        class="inline-flex items-center justify-center p-2 insight-radius-surface text-secondary hover:text-insight-text-link  hover:bg-insight-surface-soft focus:outline-none focus:ring-2 focus:ring-inset focus:ring-insight-primary"
         aria-expanded="false"
         aria-controls="navigation-menu"
         aria-label="{% trans 'Open menu' %}"
@@ -79,7 +79,7 @@
                                   hx-push-url="true"
                                 {% endif %}
                                 href="{{ item_url|default:'' }}"
-                                class="block px-4 py-2 text-sm text-primary hover:bg-insight-surface-soft dark:hover:bg-insight-surface-soft-dark"
+                                class="block px-4 py-2 text-sm text-primary hover:bg-insight-surface-soft"
                               >{{ item.text }}</a>
                             {% endwith %}
                           {% endfor %}

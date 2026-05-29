@@ -12,7 +12,7 @@
         </thead>
         <tbody class="text-primary">
             {% for row in rows %}
-                <tr class="odd:bg-insight-surface-soft even:bg-insight-surface-base odd:dark:bg-insight-surface-soft-dark even:dark:bg-insight-surface-base-dark">
+                <tr class="odd:bg-insight-surface-soft even:bg-insight-surface-base">
                     <td class="text-start text-sm px-4 py-3"><span class="inline-tag">{{ row.name }}</span></td>
                     <td class="text-start text-sm px-4 py-3"><i>{{ row.type }}</i></td>
                     <td class="text-start text-sm px-4 py-3">{{ row.description|markdownify }}</td>

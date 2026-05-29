@@ -196,7 +196,7 @@ class LogoTemplateTagTest(TemplateTagsTestCase):
         assert "height: 3rem" in logo.get("style")
 
     def test_logo_renders_dark_variant_without_script(self) -> None:
-        """Dark logo variants should render with dark-mode classes and no inline script."""
+        """Dark logo variants should render with semantic theme classes and no inline script."""
         config = {"type": "image", "url": "light.png", "url_dark": "dark.png", "alt": "Theme-aware logo"}
         template_string = """
         {% load insight_tags %}
@@ -208,9 +208,9 @@ class LogoTemplateTagTest(TemplateTagsTestCase):
         logos = soup.find_all(attrs={"data-insight-logo-type": "image"})
         assert len(logos) == 2  # noqa: PLR2004
         assert logos[0].get("src") == "/static/light.png"
-        assert "dark:hidden" in logos[0].get("class")
+        assert "insight-theme-light-only" in logos[0].get("class")
         assert logos[1].get("src") == "/static/dark.png"
-        assert "dark:inline-block" in logos[1].get("class")
+        assert "insight-theme-dark-only" in logos[1].get("class")
         assert not soup.find("script")
 
     def test_logo_renders_icon(self) -> None:

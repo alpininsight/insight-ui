@@ -29,7 +29,7 @@
             {% endif %}
 
             <!-- Start and more -->
-            <div class="flex flex-col gap-2 pt-4 m-4 border-t border-insight-text-secondary dark:border-insight-text-secondary-dark">
+            <div class="flex flex-col gap-2 pt-4 m-4 border-t border-insight-text-secondary">
                 {% for action in actions %}
                     <a href="{{ action.url }}" class="btn btn-{{ action.type }}" {% if action.external %}target="_blank" rel="noopener"{% endif %}>
                         {{ action.text }}

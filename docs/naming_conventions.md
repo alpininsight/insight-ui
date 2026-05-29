@@ -41,7 +41,7 @@ become a semantic Insight UI class:
 
 | Tailwind-oriented concept | Prefer semantic class when shared | Notes |
 |---|---|---|
-| `bg-*`, `dark:bg-*`, `border`, `rounded`, `shadow` used together for a reusable container | `insight-surface-*`, `insight-border-*`, `insight-shadow-*` | Use for cards, panels, modal bodies, docs examples, and other named surfaces. |
+| `bg-*`, `border`, `rounded`, `shadow`, and repeated light/dark variants used together for a reusable container | `insight-surface-*`, `insight-border-*`, `insight-shadow-*` | Use for cards, panels, modal bodies, docs examples, and other named surfaces. Dark mode should come from token overrides, not duplicate reusable markup classes. |
 | `flex`, `grid`, `gap-*`, `space-*`, `px-*`, `py-*` used as a repeated structural pattern | `insight-layout-*` | Use for shared layout primitives. Keep one-off alignment utilities local. |
 | Component root classes mixed with repeated spacing, border, and state utilities | `insight-component-*` | Use when the class describes stable component anatomy, not just visual decoration. |
 | `hover:*`, `active:*`, `focus:*`, `disabled:*`, `aria-*`, or state-specific variants | `insight-state-*` | Use when the state is a semantic public behavior such as selected, disabled, open, or invalid. |

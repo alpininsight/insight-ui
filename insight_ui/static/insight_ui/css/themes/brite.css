@@ -5,9 +5,7 @@
     --color-insight-text-link: #000;
     --color-insight-text-link-hover: black;
     --color-insight-border-surface: #000;
-    --color-insight-border-surface-dark: #dee2e6;
     --color-insight-border-control: #000;
-    --color-insight-border-control-dark: #dee2e6;
     --color-insight-button-border: #000;
     --color-insight-button-border-hover: #000;
     --color-insight-button-border-active: #000;
@@ -57,15 +55,17 @@
 }
 
 [data-theme="dark"] {
-    --color-insight-text-primary-dark: #dee2e6;
-    --color-insight-text-secondary-dark: rgba(222, 226, 230, 0.75);
+    --color-insight-border-surface: #dee2e6;
+    --color-insight-border-control: #dee2e6;
+    --color-insight-text-primary: #dee2e6;
+    --color-insight-text-secondary: rgba(222, 226, 230, 0.75);
     --color-insight-text-link: #c7ef86;
     --color-insight-text-link-hover: #d2f29e;
     --color-insight-button-border: #dee2e6;
     --color-insight-button-border-hover: #dee2e6;
     --color-insight-button-border-active: #dee2e6;
-    --insight-shadow-control: 2px 2px 0 0 var(--color-insight-border-control-dark);
-    --insight-shadow-surface-subtle: 3px 3px 0 0 var(--color-insight-border-surface-dark);
-    --insight-shadow-surface: 3px 3px 0 0 var(--color-insight-border-surface-dark);
-    --insight-shadow-overlay: 4px 4px 0 0 var(--color-insight-border-surface-dark);
+    --insight-shadow-control: 2px 2px 0 0 var(--color-insight-border-control);
+    --insight-shadow-surface-subtle: 3px 3px 0 0 var(--color-insight-border-surface);
+    --insight-shadow-surface: 3px 3px 0 0 var(--color-insight-border-surface);
+    --insight-shadow-overlay: 4px 4px 0 0 var(--color-insight-border-surface);
 }

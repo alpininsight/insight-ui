@@ -1,5 +1,5 @@
 {% load i18n %}
-<div class="bg-insight-primary/10 dark:bg-insight-primary/20 border border-insight-primary/30 dark:border-insight-primary/40 insight-radius-surface-lg p-4">
+<div class="bg-insight-primary/10 border border-insight-primary/30  insight-radius-surface-lg p-4">
     <div class="flex items-center">
         <div class="shrink-0">
             <svg class="h-5 w-5 text-insight-primary" fill="currentColor" viewBox="0 0 20 20">
@@ -7,10 +7,10 @@
             </svg>
         </div>
         <div class="ms-3">
-            <p class="text-sm text-insight-text-primary dark:text-insight-text-primary-dark">
+            <p class="text-sm text-insight-text-primary">
                 {{ data.message }}
             </p>
-            <p class="text-xs text-insight-text-link dark:text-insight-text-link-hover mt-1">
+            <p class="text-xs text-insight-text-link mt-1">
                 {% trans "Status" %}: {{ data.status }} | {% trans "Timestamp" %}: {{ timestamp }}
             </p>
         </div>

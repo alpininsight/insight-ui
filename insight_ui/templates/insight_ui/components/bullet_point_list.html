@@ -4,7 +4,7 @@
     {% for item in items %}
         <li class="relative {% if not forloop.first %}pt-10{% endif %}">
             {% if not forloop.first %}
-                <div aria-hidden="true" class="absolute -top-1 start-4 {% if not item.completed and not item.current %}bg-insight-surface-soft dark:bg-insight-surface-soft-dark{% else %}bg-insight-surface-muted dark:bg-insight-surface-muted-dark{% endif %} h-1/2 w-0.5 mt-0.5 -ms-px"></div>
+                <div aria-hidden="true" class="absolute -top-1 start-4 {% if not item.completed and not item.current %}bg-insight-surface-soft{% else %}bg-insight-surface-muted{% endif %} h-1/2 w-0.5 mt-0.5 -ms-px"></div>
             {% endif %}
             <a
                 {% if item.request_url and not item.current %}
@@ -29,7 +29,7 @@
                         {% elif item.bullet_text %}
                             <span>{{ item.bullet_text }}</span>
                         {% else %}
-                            <span class="{% if not item.completed and not item.current %}bg-insight-surface-soft dark:bg-insight-surface-soft-dark{% else %}bg-insight-surface-muted dark:bg-insight-surface-muted-dark{% endif %} size-2.5 insight-radius-pill"></span>
+                            <span class="{% if not item.completed and not item.current %}bg-insight-surface-soft{% else %}bg-insight-surface-muted{% endif %} size-2.5 insight-radius-pill"></span>
                         {% endif %}
                     </span>
                 </span>

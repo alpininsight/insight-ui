@@ -58,48 +58,29 @@
     --color-insight-pending-foreground-active: #0f172a;
     --color-insight-text-primary: oklch(26.9% 0 0);
     --color-insight-text-secondary: oklch(55.6% 0 0);
-    --color-insight-text-primary-dark: oklch(92.2% 0 0);
-    --color-insight-text-secondary-dark: oklch(70.8% 0 0);
     --color-insight-text-link: #3b82f6;
     --color-insight-text-link-hover: #93c5fd;
     --color-insight-text-disabled: oklch(70.8% 0 0);
-    --color-insight-text-disabled-dark: oklch(55.6% 0 0);
     --color-insight-surface-page: oklch(96.7% 0.003 264.542);
-    --color-insight-surface-page-dark: oklch(13% 0.028 261.692);
     --color-insight-surface-base: #fff;
-    --color-insight-surface-base-dark: oklch(27.8% 0.033 256.848);
     --color-insight-surface-soft: oklch(92.8% 0.006 264.531);
-    --color-insight-surface-soft-dark: oklch(37.3% 0.034 259.733);
     --color-insight-surface-muted: oklch(87.2% 0.01 258.338);
-    --color-insight-surface-muted-dark: oklch(44.6% 0.03 256.802);
     --color-insight-surface-inverse: oklch(21% 0.034 264.665);
     --color-insight-surface-inverse-foreground: #fff;
     --color-insight-surface-overlay: rgb(17 24 39 / 0.75);
     --color-insight-surface-code: #f9fafb;
-    --color-insight-surface-code-dark: #030712;
     --color-insight-surface-canvas: var(--color-insight-surface-page);
-    --color-insight-surface-canvas-dark: var(--color-insight-surface-page-dark);
     --color-insight-surface-panel: var(--color-insight-surface-base);
-    --color-insight-surface-panel-dark: var(--color-insight-surface-base-dark);
     --color-insight-surface-raised: var(--color-insight-surface-soft);
-    --color-insight-surface-raised-dark: var(--color-insight-surface-soft-dark);
     --color-insight-surface-sunken: var(--color-insight-surface-muted);
-    --color-insight-surface-sunken-dark: var(--color-insight-surface-muted-dark);
     --color-insight-border-surface: oklch(92.8% 0.006 264.531);
-    --color-insight-border-surface-dark: oklch(37.3% 0.034 259.733);
     --color-insight-border-control: oklch(87.2% 0.01 258.338);
-    --color-insight-border-control-dark: oklch(44.6% 0.03 256.802);
     --color-insight-border-muted: oklch(70.7% 0.022 261.325);
-    --color-insight-border-muted-dark: oklch(55.1% 0.027 264.364);
     --color-insight-border-disabled: oklch(87.2% 0.01 258.338);
-    --color-insight-border-disabled-dark: oklch(44.6% 0.03 256.802);
     --color-insight-disabled: oklch(87.2% 0.01 258.338);
-    --color-insight-disabled-dark: oklch(44.6% 0.03 256.802);
     --color-insight-disabled-foreground: oklch(70.8% 0 0);
-    --color-insight-disabled-foreground-dark: oklch(55.6% 0 0);
     --color-insight-focus-ring: var(--color-insight-primary);
     --color-insight-focus-ring-offset: var(--color-insight-surface-base);
-    --color-insight-focus-ring-offset-dark: var(--color-insight-surface-base-dark);
 
     --insight-shadow-button: none;
     --insight-shadow-button-hover: var(--insight-shadow-button);
@@ -146,6 +127,21 @@
 
     [data-theme="dark"] {
         color-scheme: dark;
+        --color-insight-text-primary: oklch(92.2% 0 0);
+        --color-insight-text-secondary: oklch(70.8% 0 0);
+        --color-insight-text-disabled: oklch(55.6% 0 0);
+        --color-insight-surface-page: oklch(13% 0.028 261.692);
+        --color-insight-surface-base: oklch(27.8% 0.033 256.848);
+        --color-insight-surface-soft: oklch(37.3% 0.034 259.733);
+        --color-insight-surface-muted: oklch(44.6% 0.03 256.802);
+        --color-insight-surface-code: #030712;
+        --color-insight-border-surface: oklch(37.3% 0.034 259.733);
+        --color-insight-border-control: oklch(44.6% 0.03 256.802);
+        --color-insight-border-muted: oklch(55.1% 0.027 264.364);
+        --color-insight-border-disabled: oklch(44.6% 0.03 256.802);
+        --color-insight-disabled: oklch(44.6% 0.03 256.802);
+        --color-insight-disabled-foreground: oklch(55.6% 0 0);
+        --color-insight-focus-ring-offset: var(--color-insight-surface-base);
     }
 
     /* Custom scrollbar styling for Chromium browsers */
@@ -188,43 +184,37 @@
     button:not(:disabled), [role="button"]:not(:disabled) { cursor: pointer; }
 
     h1 {
-        @apply text-3xl font-bold text-insight-text-primary dark:text-insight-text-primary-dark pb-4;
+        @apply text-3xl font-bold text-insight-text-primary pb-4;
     }
     h2 {
-        @apply text-2xl font-semibold text-insight-text-primary dark:text-insight-text-primary-dark pb-4;
+        @apply text-2xl font-semibold text-insight-text-primary pb-4;
     }
     h3 {
-        @apply text-xl font-semibold text-insight-text-primary dark:text-insight-text-primary-dark pb-2;
+        @apply text-xl font-semibold text-insight-text-primary pb-2;
     }
     h4 {
-        @apply text-lg font-semibold text-insight-text-primary dark:text-insight-text-primary-dark pb-1;
+        @apply text-lg font-semibold text-insight-text-primary pb-1;
     }
     h5 {
-        @apply text-base font-semibold text-insight-text-primary dark:text-insight-text-primary-dark pb-1;
+        @apply text-base font-semibold text-insight-text-primary pb-1;
     }
     hr {
         border-color: var(--color-insight-border-surface);
-    }
-    hr:where([data-theme=dark], [data-theme=dark] *) {
-        border-color: var(--color-insight-border-surface-dark);
     }
 }
 
 @layer components {
     .text-primary {
-        @apply text-insight-text-primary dark:text-insight-text-primary-dark;
+        @apply text-insight-text-primary;
     }
     .text-secondary {
-        @apply text-insight-text-secondary dark:text-insight-text-secondary-dark;
+        @apply text-insight-text-secondary;
     }
     .text-link {
         @apply text-insight-text-link hover:text-insight-text-link-hover underline;
     }
     .text-disabled {
         color: var(--color-insight-text-disabled);
-    }
-    .text-disabled:where([data-theme=dark], [data-theme=dark] *) {
-        color: var(--color-insight-text-disabled-dark);
     }
     .text-inverse {
         color: var(--color-insight-surface-inverse-foreground);
@@ -239,26 +229,14 @@
     .insight-surface-page {
         background-color: var(--color-insight-surface-page);
     }
-    .insight-surface-page:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-page-dark);
-    }
     .insight-surface-base {
         background-color: var(--color-insight-surface-base);
-    }
-    .insight-surface-base:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-base-dark);
     }
     .insight-surface-soft {
         background-color: var(--color-insight-surface-soft);
     }
-    .insight-surface-soft:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-soft-dark);
-    }
     .insight-surface-muted {
         background-color: var(--color-insight-surface-muted);
-    }
-    .insight-surface-muted:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-muted-dark);
     }
     .insight-surface-inverse {
         background-color: var(--color-insight-surface-inverse);
@@ -270,57 +248,30 @@
     .insight-surface-code {
         background-color: var(--color-insight-surface-code);
     }
-    .insight-surface-code:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-code-dark);
-    }
     .insight-surface-canvas {
         background-color: var(--color-insight-surface-canvas);
-    }
-    .insight-surface-canvas:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-canvas-dark);
     }
     .insight-surface-panel {
         background-color: var(--color-insight-surface-panel);
     }
-    .insight-surface-panel:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-panel-dark);
-    }
     .insight-surface-raised {
         background-color: var(--color-insight-surface-raised);
     }
-    .insight-surface-raised:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-raised-dark);
-    }
     .insight-surface-sunken {
         background-color: var(--color-insight-surface-sunken);
-    }
-    .insight-surface-sunken:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-sunken-dark);
     }
 
     .insight-border-surface {
         border-color: var(--color-insight-border-surface);
     }
-    .insight-border-surface:where([data-theme=dark], [data-theme=dark] *) {
-        border-color: var(--color-insight-border-surface-dark);
-    }
     .insight-border-control {
         border-color: var(--color-insight-border-control);
-    }
-    .insight-border-control:where([data-theme=dark], [data-theme=dark] *) {
-        border-color: var(--color-insight-border-control-dark);
     }
     .insight-border-muted {
         border-color: var(--color-insight-border-muted);
     }
-    .insight-border-muted:where([data-theme=dark], [data-theme=dark] *) {
-        border-color: var(--color-insight-border-muted-dark);
-    }
     .insight-border-disabled {
         border-color: var(--color-insight-border-disabled);
-    }
-    .insight-border-disabled:where([data-theme=dark], [data-theme=dark] *) {
-        border-color: var(--color-insight-border-disabled-dark);
     }
     .insight-shadow-control {
         box-shadow: var(--insight-shadow-control);
@@ -354,8 +305,17 @@
         --tw-ring-color: var(--color-insight-focus-ring);
         --tw-ring-offset-color: var(--color-insight-focus-ring-offset);
     }
-    .insight-focus-ring:where([data-theme=dark], [data-theme=dark] *) {
-        --tw-ring-offset-color: var(--color-insight-focus-ring-offset-dark);
+    .insight-theme-light-only {
+        display: inline-block;
+    }
+    .insight-theme-dark-only {
+        display: none;
+    }
+    [data-theme="dark"] .insight-theme-light-only {
+        display: none;
+    }
+    [data-theme="dark"] .insight-theme-dark-only {
+        display: inline-block;
     }
 
     .btn {
@@ -387,7 +347,7 @@
     }
 
     .btn-subtil2 {
-        @apply text-insight-text-secondary dark:text-insight-text-secondary-dark;
+        @apply text-insight-text-secondary;
         border-color: transparent;
     }
     .btn-subtil2:hover {
@@ -399,7 +359,7 @@
         border-color: var(--color-insight-border-muted);
     }
     .btn-subtil {
-        @apply text-insight-text-secondary dark:text-insight-text-secondary-dark;
+        @apply text-insight-text-secondary;
         background-color: var(--color-insight-surface-soft);
         border-color: var(--color-insight-border-surface);
     }
@@ -492,13 +452,8 @@
         border-color: var(--color-insight-border-disabled);
         color: var(--color-insight-disabled-foreground);
     }
-    .btn-disabled:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-disabled-dark);
-        border-color: var(--color-insight-border-disabled-dark);
-        color: var(--color-insight-disabled-foreground-dark);
-    }
     .btn-close {
-        @apply p-2 border-0 text-insight-text-secondary dark:text-insight-text-secondary-dark;
+        @apply p-2 border-0 text-insight-text-secondary;
         background-color: var(--color-insight-surface-soft);
     }
     .btn-close:hover,
@@ -588,20 +543,12 @@
         border-color: var(--color-insight-border-disabled);
         color: var(--color-insight-disabled-foreground);
     }
-    .btn-outline-disabled:where([data-theme=dark], [data-theme=dark] *) {
-        border-color: var(--color-insight-border-disabled-dark);
-        color: var(--color-insight-disabled-foreground-dark);
-    }
 
     .component-container {
         border-radius: var(--insight-radius-md);
         background-color: var(--color-insight-surface-base);
         border: 1px solid var(--color-insight-border-surface);
         box-shadow: var(--insight-shadow-surface);
-    }
-    .component-container:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-base-dark);
-        border-color: var(--color-insight-border-surface-dark);
     }
 
     .example-container {
@@ -610,10 +557,6 @@
         background-color: var(--color-insight-surface-base);
         border: 1px solid var(--color-insight-border-surface);
         box-shadow: var(--insight-shadow-surface-subtle);
-    }
-    .example-container:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-base-dark);
-        border-color: var(--color-insight-border-surface-dark);
     }
 
     .info-container {
@@ -624,30 +567,19 @@
         border: 1px solid var(--color-insight-border-surface);
         border-inline-start-width: 4px;
     }
-    .info-container:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-soft-dark);
-        border-color: var(--color-insight-border-surface-dark);
-    }
 
     .inline-tag {
-        @apply font-mono text-insight-primary dark:text-insight-primary-active text-nowrap px-1 py-px;
+        @apply font-mono text-insight-primary text-nowrap px-1 py-px;
         border-radius: var(--insight-radius-sm);
         background-color: var(--color-insight-surface-muted);
     }
-    .inline-tag:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-muted-dark);
-    }
 
     .input {
-        @apply w-full px-3 py-2 text-sm focus:ring-2 focus:ring-insight-primary dark:text-insight-text-primary-dark transition-colors duration-200;
+        @apply w-full px-3 py-2 text-sm focus:ring-2 focus:ring-insight-primary text-insight-text-primary transition-colors duration-200;
         border-radius: var(--insight-radius-sm);
         background-color: var(--color-insight-surface-base);
         border: 1px solid var(--color-insight-border-control);
         box-shadow: var(--insight-shadow-control);
-    }
-    .input:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-soft-dark);
-        border-color: var(--color-insight-border-control-dark);
     }
     .input:focus {
         border-color: var(--color-insight-primary);
@@ -657,10 +589,6 @@
         --range-progress: 0%;
         --slider-track-active: var(--color-insight-primary);
         --slider-track-inactive: var(--color-insight-surface-muted);
-    }
-
-    .dark .slider-wrapper {
-        --slider-track-inactive: var(--color-insight-surface-muted-dark);
     }
 
     .range-custom::-webkit-slider-runnable-track {

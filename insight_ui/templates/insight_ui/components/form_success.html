@@ -1,15 +1,15 @@
 {% load i18n insight_tags %}
 
-<div class="border border-insight-success/30 bg-insight-success/10 dark:bg-insight-success/20 insight-radius-surface p-4">
+<div class="border border-insight-success/30 bg-insight-success/10 insight-radius-surface p-4">
     <div class="flex">
         <div class="shrink-0 text-green-400">
             {% icon name="tick" size="s" %}
         </div>
         <div class="ml-3">
-            <h3 class="text-sm font-medium text-green-800 dark:text-green-200">
+            <h3 class="text-sm font-medium text-insight-success">
                 {% trans 'Successfully submitted!' %}
             </h3>
-            <div class="mt-2 text-sm text-green-700 dark:text-green-300">
+            <div class="mt-2 text-sm text-insight-success">
                 <p class="text-lg">Welcome, {% if title != _("No title") %}{{ title }}{% endif %} {{ firstname }} {{ lastname }}!</p>
             </div>
         </div>

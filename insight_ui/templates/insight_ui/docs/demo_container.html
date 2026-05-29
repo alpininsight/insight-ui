@@ -1,7 +1,7 @@
 {% load insight_tags %}
 
-<div data-insight-demo-container="{{ demo.id }}" class="bg-gray-300 dark:bg-gray-950 border border-gray-300 dark:border-gray-700 rounded-sm overflow-hidden mt-8">
-    <div class="flex items-center justify-between gap-4 bg-gray-200 dark:bg-gray-900 h-12 p-1.5">
+<div data-insight-demo-container="{{ demo.id }}" class="insight-surface-muted border insight-border-surface rounded-sm overflow-hidden mt-8">
+    <div class="flex items-center justify-between gap-4 insight-surface-soft h-12 p-1.5">
         <div class="flex items-center justify-center gap-1 h-full">
             {% if demo.template_source_url %}
                 <a href="{{ demo.template_source_url }}" class="btn btn-sm btn-outline-secondary">
@@ -20,7 +20,7 @@
             {% toggle config=theme_toggle tag_id="theme-toggle-"|add:demo.id name="theme-toggle-"|add:demo.id %}
         </div>
     </div>
-    <div class="bg-neutral-300 dark:bg-gray-950 w-full">
+    <div class="insight-surface-muted w-full">
         <iframe data-insight-demo-iframe="{{ demo.id }}" id="{{ demo.id }}" src="{{ demo.url }}" title="{{ demo.title }}" class="w-full mx-auto"></iframe>
     </div>
 </div>

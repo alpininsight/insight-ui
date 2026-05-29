@@ -6,7 +6,7 @@
         <button type="button" data-insight-dropdown="user-menu" class="btn-subtil insight-radius-pill size-10">
             {{ user.get_username|default:''|slice:":1"|upper }}
         </button>
-        <div class="hidden absolute top-full z-50 mt-2 min-w-56 text-lg insight-surface-base border insight-border-surface insight-radius-surface insight-shadow-overlay divide-y divide-gray-300 dark:divide-gray-500 ltr:right-0 rtl:left-0" id="user-menu">
+        <div class="hidden absolute top-full z-50 mt-2 min-w-56 text-lg insight-surface-base border insight-border-surface insight-radius-surface insight-shadow-overlay divide-y divide-insight-border-surface ltr:right-0 rtl:left-0" id="user-menu">
             <span class="flex flex-col gap-1 text-xs px-6 py-1">
                 <span class="text-secondary">{% trans "Logged in as" %}: </span>
                 <span class="font-bold ">{{ user.get_username }}</span>
@@ -15,7 +15,7 @@
                 {% for link in user_dropdown_links %}
                     <li>
                         {% if not link.staff_only or user.is_staff %}
-                            <a href="{% url link.view_name %}" class="flex items-center gap-2 text-sm w-full px-6 py-2 hover:bg-insight-surface-soft dark:hover:bg-insight-surface-soft-dark">
+                            <a href="{% url link.view_name %}" class="flex items-center gap-2 text-sm w-full px-6 py-2 hover:bg-insight-surface-soft">
                                 {% if link.icon %}
                                     {% icon link.icon %}
                                 {% endif %}
@@ -27,7 +27,7 @@
             </ul>
             <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}
-                <button type="submit" class="flex items-center gap-2 text-sm text-insight-danger text-start w-full rounded-b px-6 py-2 hover:bg-insight-surface-soft dark:hover:bg-insight-surface-soft-dark">
+                <button type="submit" class="flex items-center gap-2 text-sm text-insight-danger text-start w-full rounded-b px-6 py-2 hover:bg-insight-surface-soft">
                     {% icon name="leave" size="s" %}{% trans "Logout" %}
                 </button>
             </form>
