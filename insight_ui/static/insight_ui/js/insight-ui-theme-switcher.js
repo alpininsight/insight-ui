@@ -71,7 +71,7 @@ export class ThemeSwitcher {
     }
 
     applyThemeToIframe(iframe) {
-        if (!iframe?.contentDocument) {
+        if (!iframe?.contentDocument?.documentElement) {
             return;
         }
 
