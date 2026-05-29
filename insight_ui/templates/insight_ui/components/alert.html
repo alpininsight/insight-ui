@@ -3,7 +3,7 @@
 <div
   {% if alert_config.tag_id %}id="{{ alert_config.tag_id }}"{% endif %}
   role="alert"
-  class="flex justify-between w-full h-fit shadow p-4 rounded {% if alert_config.type == "success" %}bg-insight-success/15{% elif alert_config.type == "warning" %}bg-insight-warning/15{% elif alert_config.type == "error" %}bg-insight-danger/15{% else %}bg-insight-info/15{% endif %}"
+  class="flex justify-between w-full h-fit insight-shadow-surface-subtle p-4 insight-radius-surface {% if alert_config.type == "success" %}bg-insight-success/15{% elif alert_config.type == "warning" %}bg-insight-warning/15{% elif alert_config.type == "error" %}bg-insight-danger/15{% else %}bg-insight-info/15{% endif %}"
 >
   <div class="flex items-center gap-2 {% if alert_config.type == "success" %}text-insight-success{% elif alert_config.type == "warning" %}text-insight-warning{% elif alert_config.type == "error" %}text-insight-danger{% else %}text-insight-info{% endif %}">
     {% if alert_config.type == 'success' %}
@@ -20,7 +20,7 @@
 
   {% if alert_config.dismissible %}
     <button
-      class="bg-white h-fit rounded-sm p-2 text-insight-text-primary hover:bg-gray-100 hover:dark:bg-gray-300 transition"
+      class="insight-surface-base h-fit insight-radius-control p-2 text-insight-text-primary hover:bg-insight-surface-soft transition"
       aria-label="{% trans 'Close' %}"
       data-insight-dismiss="alert"
     >

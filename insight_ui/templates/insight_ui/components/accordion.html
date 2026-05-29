@@ -3,15 +3,15 @@
 <div
   data-insight-accordion="{{ accordion_config.tag_id }}"
   data-exclusive="{{ accordion_config.exclusive|yesno:'true,false' }}"
-  class="rounded-sm overflow-hidden"
+  class="insight-radius-control overflow-hidden"
 >
   {% for item in accordion_config.items %}
     {% with forloop.counter0|stringformat:"s" as idx %}
       {% with accordion_config.tag_id|add:"-panel-"|add:idx as panel_id %}
-        <div class="bg-white dark:bg-gray-800">
+        <div class="insight-surface-base">
           <h3 class="text-primary mb-1">
             <button
-              class="flex justify-between items-center w-full border-b border-gray-300 dark:border-gray-600 px-4 py-3 scroll-mt-24 focus:outline-none focus-visible:ring-2 ring-insight-primary"
+              class="flex justify-between items-center w-full border-b insight-border-surface px-4 py-3 scroll-mt-24 focus:outline-none focus-visible:ring-2 ring-insight-primary"
               aria-expanded="false"
               aria-controls="{{ panel_id }}"
               id="{{ panel_id }}-header"

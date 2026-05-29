@@ -7,7 +7,7 @@
             {% icon name="chevron_down" size="s" %}
         {% endif %}
     </button>
-    <div id="{{ dropdown_config.tag_id }}" class="hidden border border-gray-300 dark:border-0 rounded-sm shadow-lg">
+    <div id="{{ dropdown_config.tag_id }}" class="hidden border insight-border-surface insight-radius-control insight-shadow-overlay">
         {% for item in dropdown_config.items %}
             <a
                 href="{{ item.request_url|default:'#' }}"
@@ -17,7 +17,7 @@
                     hx-swap="{{ htmx.swap|default:'innerHTML' }}"
                     hx-trigger="submit"
                 {% endif %}
-                class="flex items-center gap-1 px-4 py-2 text-sm text-primary bg-gray-100 dark:bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 {% if forloop.first %}rounded-t{% elif forloop.last %}rounded-b{% endif %}"
+                class="flex items-center gap-1 px-4 py-2 text-sm text-primary insight-surface-soft hover:bg-insight-surface-muted dark:hover:bg-insight-surface-muted-dark {% if forloop.first %}rounded-t{% elif forloop.last %}rounded-b{% endif %}"
             >
                 {% if item.icon %}
                     <div>

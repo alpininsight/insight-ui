@@ -1,9 +1,9 @@
 {% load i18n insight_tags %}
 
-<div class="bg-white dark:bg-gray-900 rounded-sm">
+<div class="insight-surface-base insight-radius-control">
     <table class="table-auto w-full">
         <thead class="text-primary">
-            <tr class="border-b border-gray-300 dark:border-gray-700">
+            <tr class="border-b insight-border-surface">
                 <th class="text-start text-nowrap text-sm px-4 py-2" scope="col">{% trans "Name" %}</th>
                 <th class="text-start text-nowrap text-sm px-4 py-2" scope="col">{% trans "Type" %}</th>
                 <th class="text-start text-nowrap text-sm px-4 py-2" scope="col">{% trans "Description" %}</th>
@@ -13,7 +13,7 @@
         </thead>
         <tbody class="text-primary">
             {% for row in rows %}
-                <tr class="odd:bg-gray-100 even:bg-white odd:dark:bg-gray-800 even:dark:bg-gray-900">
+                <tr class="odd:bg-insight-surface-soft even:bg-insight-surface-base odd:dark:bg-insight-surface-soft-dark even:dark:bg-insight-surface-base-dark">
                     <td class="text-start text-sm px-4 py-3"><span class="inline-tag">{{ row.name }}</span></td>
                     <td class="text-start text-sm px-4 py-3"><i>{{ row.type }}</i></td>
                     <td class="text-start text-sm px-4 py-3">{{ row.description|markdownify }}</td>

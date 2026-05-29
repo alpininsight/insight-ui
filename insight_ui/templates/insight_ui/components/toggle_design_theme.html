@@ -1,12 +1,12 @@
 {% load i18n insight_assets insight_tags %}
 
-<div class="flex h-10 items-center gap-2 rounded-sm border insight-border-control bg-white dark:bg-gray-800 px-2 insight-shadow-control">
+<div class="flex h-10 items-center gap-2 insight-radius-control border insight-border-control insight-surface-base px-2 insight-shadow-control">
   <label class="hidden md:inline text-xs font-semibold uppercase tracking-wide text-secondary" for="insight-ui-design-theme-selector">
     {% trans "Theme" %}
   </label>
   <select
     id="insight-ui-design-theme-selector"
-    class="h-8 min-w-28 rounded-sm border-0 bg-transparent px-1 text-sm text-primary focus:outline-none focus:ring-2 focus:ring-insight-primary"
+    class="h-8 min-w-28 insight-radius-control border-0 bg-transparent px-1 text-sm text-primary focus:outline-none focus:ring-2 focus:ring-insight-primary"
     aria-label="{% trans "Design theme" %}"
     data-insight-theme-switcher
     data-storage-key="{{ design_themes.storage_key }}"
