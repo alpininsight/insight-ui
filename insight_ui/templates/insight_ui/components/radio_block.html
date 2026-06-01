@@ -1,28 +1,28 @@
 {% load insight_tags %}
 
 <div>
-    {% if label %}
-        <span class="flex gap-1 text-sm font-bold text-primary mb-1">{{ label }}</span>
+    {% if radio_block_config.label %}
+        <span class="flex gap-1 text-sm font-bold text-primary mb-1">{{ radio_block_config.label }}</span>
     {% endif %}
     {% if integrated %}
-        {% comment %} To use with other elements in a extern <form> {% endcomment %}
-        <div id="{{ name }}" class="flex w-fit {% if as_row == False %}flex-col{% endif %}">
-            {% for item in items %}
+        {# To use with other elements in a extern <form> #}
+        <div id="{{ radio_block_config.name }}" class="flex w-fit {% if radio_block_config.as_row == False %}flex-col{% endif %}">
+            {% for item in radio_block_config.items %}
                 <div>
                     <input
                         type="radio"
-                        {% if item.tag_id %}id="{{ name|add:item.tag_id }}"{% endif %}
-                        name="{{ name }}"
+                        {% if item.tag_id %}id="{{ radio_block_config.name|add:'-'|add:item.tag_id }}"{% endif %}
+                        name="{{ radio_block_config.name }}"
                         value="{{ item.value }}"
-                        {% if current_value == item.value or not current_value and forloop.first %}checked{% endif %}
+                        {% if radio_block_config.current_value == item.value or not radio_block_config.current_value and forloop.first %}checked{% endif %}
                         {% if item.disabled %}disabled{% endif %}
-                        {% if method %}
-                            data-radio-callback="{{ method }}"
+                        {% if radio_block_config.method %}
+                            data-radio-callback="{{ radio_block_config.method }}"
                         {% endif %}
                         class="peer sr-only"
                     >
                     <label
-                        for="{{ name|add:item.tag_id }}"
+                        for="{{ radio_block_config.name|add:'-'|add:item.tag_id }}"
                         {% if sr_only %}aria-label="{{ item.label }}"{% endif %}
                         class="flex items-center peer-focus:outline-2 outline-insight-primary-hover peer-checked:bg-insight-primary-active peer-checked:border-insight-primary-active bg-insight-primary border-insight-primary {% if forloop.first %}border-2 {% if as_row == False %}rounded-t-sm{% else %}rounded-s-sm{% endif %}{% elif forloop.last %}border-2 {% if as_row == False %}rounded-b-sm{% else %}rounded-e-sm{% endif %}{% else %}border-y-2{% endif %} text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition cursor-pointer"
                     >
@@ -35,30 +35,30 @@
             {% endfor %}
         </div>
     {% else %}
-        <form id="{{ name }}" class="flex w-fit {% if as_row == False %}flex-col{% endif %}">
-            {% for item in items %}
+        <form id="{{ radio_block_config.name }}" class="flex w-fit {% if radio_block_config.as_row == False %}flex-col{% endif %}">
+            {% for item in radio_block_config.items %}
                 <div>
                     <input
                         type="radio"
-                        {% if item.tag_id %}id="{{ name|add:item.tag_id }}"{% endif %}
-                        name="{{ name }}"
+                        {% if item.tag_id %}id="{{ radio_block_config.name|add:'-'|add:item.tag_id }}"{% endif %}
+                        name="{{ radio_block_config.name }}"
                         value="{{ item.value }}"
-                        {% if current_value == item.value or not current_value and forloop.first %}checked{% endif %}
+                        {% if radio_block_config.current_value == item.value or not radio_block_config.current_value and forloop.first %}checked{% endif %}
                         {% if item.disabled %}disabled{% endif %}
-                        {% if request_url and hx_target_id %}
-                            hx-get="{{ request_url }}"
-                            hx-target="#{{ hx_target_id }}"
-                            hx-swap="{{ hx_swap_method|default:"outerHTML" }}"
+                        {% if radio_block_config.request_url and radio_block_config.hx_target_id %}
+                            hx-get="{{ radio_block_config.request_url }}"
+                            hx-target="#{{ radio_block_config.hx_target_id }}"
+                            hx-swap="{{ radio_block_config.hx_swap_method|default:"outerHTML" }}"
                         {% endif %}
-                        {% if method %}
-                            data-radio-callback="{{ method }}"
+                        {% if radio_block_config.method %}
+                            data-radio-callback="{{ radio_block_config.method }}"
                         {% endif %}
                         class="peer sr-only"
                     >
                     <label
-                        for="{{ name|add:item.tag_id }}"
+                        for="{{ radio_block_config.name|add:'-'|add:item.tag_id }}"
                         {% if sr_only %}aria-label="{{ item.label }}"{% endif %}
-                        class="flex items-center peer-focus:outline-2 outline-insight-primary-hover peer-checked:bg-insight-primary-active peer-checked:border-insight-primary-active bg-insight-primary border-insight-primary {% if forloop.first %}border-2 {% if as_row == False %}rounded-t-sm{% else %}rounded-s-sm{% endif %}{% elif forloop.last %}border-2 {% if as_row == False %}rounded-b-sm{% else %}rounded-e-sm{% endif %}{% else %}border-y-2{% endif %} text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition cursor-pointer"
+                        class="flex items-center peer-focus:outline-2 outline-insight-primary-hover peer-checked:bg-insight-primary-active peer-checked:border-insight-primary-active bg-insight-primary border-insight-primary {% if forloop.first %}border-2 {% if radio_block_config.as_row == False %}rounded-t-sm{% else %}rounded-s-sm{% endif %}{% elif forloop.last %}border-2 {% if radio_block_config.as_row == False %}rounded-b-sm{% else %}rounded-e-sm{% endif %}{% else %}border-y-2{% endif %} text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition cursor-pointer"
                     >
                         {% if item.icon %}
                             {% icon item.icon %}

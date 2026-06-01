@@ -8,9 +8,9 @@
         {% include "insight_ui/components/toggle_theme.html" %}
       </div>
     {% endif %}
-    {% if logo %}
+    {% if logo_config %}
       <div class="flex {% if logo.position == "start" %}justify-start{% elif logo.position == "end" %}justify-end{% else %}justify-center{% endif %}">
-        {% logo config=logo height=logo.height|default:'12rem' css_class="w-fit mb-4" %}
+        {% logo config=logo_config %}
       </div>
     {% endif %}
     <h2 class="text-primary text-center text-3xl font-bold leading-9">{% trans "Login" %}</h2>

@@ -44,7 +44,6 @@ class CopyrightNoticeConfig:
         license_url: URL to full license.
         separator: Separator between items (default: middle dot).
         rights_text: Rights statement (default: "All rights reserved.").
-        css_class: Additional CSS classes.
 
     Example:
         >>> copyright = CopyrightNoticeConfig(
@@ -64,7 +63,6 @@ class CopyrightNoticeConfig:
     license_url: str = ""
     separator: str = "\u00b7"  # Middle dot
     rights_text: str = ""
-    css_class: str = ""
 
 
 @dataclass
@@ -83,7 +81,6 @@ class LogoConfig:
         icon_size: Icon size (alternative to icon config).
         height: CSS height value.
         width: Optional CSS width value.
-        css_class: Additional CSS classes.
 
     Example:
         >>> logo = LogoConfig(
@@ -104,7 +101,6 @@ class LogoConfig:
     icon_size: str = ""
     height: str = "2rem"
     width: str = ""
-    css_class: str = ""
 
 
 @dataclass
@@ -118,7 +114,6 @@ class CornerRibbonConfig:
         text: Ribbon text.
         position: Corner position.
         color: Color variant.
-        tag_id: Optional unique ID.
 
     Example:
         >>> beta_ribbon = CornerRibbonConfig(
@@ -132,7 +127,6 @@ class CornerRibbonConfig:
     text: str
     position: Literal["top-right", "top-left", "bottom-right", "bottom-left"] = "top-right"
     color: Literal["primary", "success", "warning", "danger", "info"] = "primary"
-    tag_id: str = ""
 
 
 @dataclass
@@ -199,6 +193,7 @@ class GeoMapConfig:
     Attributes:
         initial_coords: Starting map center [lat, lon].
         initial_zoom: Starting zoom level.
+        map_height: The height of the map in 'rem'.
         datasets: List of data layers to display.
 
     Example:
@@ -220,6 +215,7 @@ class GeoMapConfig:
 
     initial_coords: list[float] = field(default_factory=lambda: [52.52, 13.405])
     initial_zoom: int = 8
+    map_height: int = 36
     datasets: list[GeoMapDatasetConfig] = field(default_factory=list)
 
 
@@ -277,14 +273,14 @@ class LiveContentConfig:
 
     Attributes:
         tag_id: Unique ID for JavaScript/CSS targeting.
-        url: URL for content updates.
+        request_url: URL for content updates.
         interval: Update interval in seconds.
         initial_content: Initial content before first update.
 
     Example:
         >>> live_stats = LiveContentConfig(
         ...     tag_id="live-stats",
-        ...     url="/api/stats/",
+        ...     request_url="/api/stats/",
         ...     interval=30,
         ...     initial_content="Loading...",
         ... )
@@ -292,7 +288,7 @@ class LiveContentConfig:
     """
 
     tag_id: str = ""
-    url: str = ""
+    request_url: str = ""
     interval: int = 10
     initial_content: str = ""
 
@@ -306,18 +302,18 @@ class WebSocketConfig:
 
     Attributes:
         tag_id: Container ID.
-        url: WebSocket endpoint URL.
+        request_url: WebSocket endpoint URL.
         initial_content: Initial content.
 
     Example:
         >>> ws = WebSocketConfig(
         ...     tag_id="chat-stream",
-        ...     url="/ws/chat/",
+        ...     request_url="/ws/chat/",
         ...     initial_content="Connecting...",
         ... )
 
     """
 
     tag_id: str = ""
-    url: str = ""
+    request_url: str = ""
     initial_content: str = ""

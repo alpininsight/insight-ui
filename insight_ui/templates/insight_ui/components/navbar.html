@@ -1,7 +1,7 @@
 {% load i18n insight_tags %}
 
-<!-- Skip-Link for Accessibility, placed BEFORE nav -->
-<a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-blue-600 text-white p-2 rounded">
+{# Skip-Link for Accessibility, placed BEFORE nav #}
+<a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-insight-primary text-white p-2 rounded">
   {% trans 'Jump to main content' %}
 </a>
 
@@ -10,21 +10,21 @@
   aria-label="{% trans 'Main navigation' %}"
   class="{% if fixed %}fixed{% else %}absolute{% endif %} w-full h-16 z-50 bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700 px-4 md:px-16"
 >
-  <!--- Desktop Navigation -->
+  {# Desktop Navigation #}
   <div class="flex flex-wrap lg:flex-nowrap justify-between items-center gap-1 h-full">
-    <!-- Brand Logo -->
-    {% if brand %}
-      <a href="{{ brand.href }}" class="flex items-center text-xl font-bold text-primary" style="gap: {{ brand.gap|default:'0.5rem' }}">
-        {% if brand.logo %}
-          {% logo config=brand.logo %}
+    {# Brand Logo #}
+    {% if navbar_config.brand %}
+      <a href="{{ navbar_config.brand.href }}" class="flex items-center text-xl font-bold text-primary" style="gap: {{ navbar_config.brand.gap|default:'0.5rem' }}">
+        {% if navbar_config.brand.logo %}
+          {% logo config=navbar_config.brand.logo %}
         {% endif %}
-        <span>{{ brand.title }}</span>
+        <span>{{ navbar_config.brand.title }}</span>
       </a>
     {% endif %}
 
-    <!-- Mobile menu button -->
+    {# Mobile menu button #}
     <div class="lg:hidden flex items-center gap-2 py-3">
-      <!-- Mobile Menu Toggle -->
+      {# Mobile Menu Toggle #}
       <button
         class="inline-flex items-center justify-center p-2 rounded-md text-secondary hover:text-insight-text-link dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
         aria-expanded="false"
@@ -38,10 +38,10 @@
 
     <div id="navigation-menu" class="hidden lg:block h-full w-full lg:w-fit grow lg:py-3">
       <div class="flex flex-col lg:flex-row justify-end gap-6 w-full lg:h-full p-2 lg:p-0 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 shadow-lg lg:shadow-none lg:bg-transparent lg:border-none rounded">
-        <!-- Main-Navigation -->
-        {% if links %}
+        {# Main-Navigation #}
+        {% if navbar_config.links %}
           <ul class="flex flex-col lg:flex-row justify-items-stretch lg:items-center w-full lg:w-fit">
-            {% for link in links %}
+            {% for link in navbar_config.links %}
               {% if not link.need_auth or options.user.is_authenticated and not link.staff_only or options.user.is_staff %}
                 <li data-insight-nav>
                   {% if link.url %}
@@ -99,21 +99,21 @@
           </ul>
         {% endif %}
 
-        <!-- Other Nav-Elements -->
+        {# Other Nav-Elements #}
         <div class="flex flex-col lg:flex-row gap-2 w-full lg:w-fit">
-          {% if searchbar_request_url %}
+          {% if navbar_config.searchbar_request_url %}
             <div class="flex-1 lg:max-w-72">
-              {% search_bar request_url=searchbar_request_url simple=True search_query=options.search_query %}
+              {% search_bar request_url=navbar_config.searchbar_request_url simple=True search_query=options.search_query %}
             </div>
           {% endif%}
           <div class="flex gap-2 h-10">
-            {% if show_usermenu %}
+            {% if navbar_config.show_usermenu %}
               {% include "insight_ui/components/user_dropdown.html" with user=options.user show_login=options.show_login user_dropdown_links=options.user_dropdown_links %}
             {% endif %}
-            {% if show_language_selector %}
+            {% if navbar_config.show_language_selector %}
               {% include "insight_ui/components/toggle_language.html" %}
             {% endif %}
-            {% if show_theme_toggle %}
+            {% if navbar_config.show_theme_toggle %}
               {% include "insight_ui/components/toggle_theme.html" %}
             {% endif %}
           </div>

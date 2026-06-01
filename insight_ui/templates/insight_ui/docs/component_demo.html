@@ -20,7 +20,7 @@
 {% elif component.value == "article" %}
     {% article title=_("Newsletter") columns=3 content="<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>" %}
 {% elif component.value == "hero" %}
-    {% hero title=_("Insight UI") subtitle=_("A Django Component Framework") description=_("A modern UI library.") %}
+    {% hero config=hero_config %}
 {% elif component.value == "navbar" %}
     <div class="relative bg-gray-50 dark:bg-gray-700 h-80 w-full">
         {% navbar config=demo_nav_config user=user user_dropdown_links=user_dropdown_links show_login=True %}
@@ -32,13 +32,26 @@
         </script>
     </div>
 {% elif component.value == "sidebar" %}
-    <div class="bg-gray-50 dark:bg-gray-700 h-96">
-        {% sidebar config=demo_sidebar_config %}
+    <div class="flex grow bg-gray-50 dark:bg-gray-700 h-96">
+        <div class="flex">
+            {% sidebar config=left_sidebar_config %}
+        </div>
+        <div class="relative w-full min-w-0"></div>
+        <div class="flex">
+            {% sidebar config=right_drawer_config %}
+        </div>
         <script>
             // Demo fix
-            var aside = document.currentScript.parentElement.querySelector("aside");
-            aside.classList.remove("top-16", "h-[calc(100vh-4rem)]");
-            aside.classList.add("h-96");
+            var openBtn = document.currentScript.parentElement.querySelector(".open-btn");
+            openBtn.classList.remove("top-20");
+            openBtn.classList.add("top-4");
+
+            var asides = document.currentScript.parentElement.querySelectorAll("aside");
+            for (let aside of asides)
+            {
+                aside.classList.remove("top-16", "h-[calc(100vh-4rem)]");
+                aside.classList.add("h-96");
+            }
         </script>
     </div>
 {% elif component.value == "footer" %}
@@ -96,12 +109,13 @@
     </div>
 {% elif component.value == "input_field" %}
     <div class="space-y-6">
-        {% input_field tag_id="date" name="date_input" input_type="date" label="Choose date:" %}
-        {% input_field tag_id="text" name="text_input" input_type="text" placeholder="Type your name" label="Name:" %}
-        {% input_field tag_id="password" name="password_input" input_type="password" placeholder="Type your password" label="Password" %}
+        {% input_field tag_id="text" name="text_input" input_type="text" placeholder=_("Type your name") label=_("Name:") %}
+        {% input_field tag_id="password" name="password_input" input_type="password" placeholder=_("Type your password") label=_("Password:") %}
+        {% input_field tag_id="date" name="date_input" input_type="date" label=_("Choose date:") %}
+        {% input_field tag_id="color" name="color_picker" input_type="color" label=_("Choose a color:") %}
     </div>
 {% elif component.value == "textarea" %}
-    {% textarea tag_id="text" name="text_field" rows=4 label="Write a message:" placeholder="Write something..." %}
+    {% textarea tag_id="text" name="text_field" rows=4 label=_("Write a message:") placeholder=_("Write something...") %}
 {% elif component.value == "checkbox" %}
     {% checkbox config=checkbox_config %}
 {% elif component.value == "checkbox_group" %}
@@ -156,10 +170,10 @@
             {% modal tag_id="demo-modal" title=_("Demo modal") description=_("This is an example of a standard modal.") %}
 
             <!-- Action-Buttons -->
-            <button class="btn btn-danger w-72" data-insight-modal="delete-modal">
+            <button class="btn btn-danger w-72" data-insight-modal="{{ confirm_modal_config.tag_id }}">
                 {% trans "Modal with Action Buttons" %}
             </button>
-            {% modal tag_id="delete-modal" title=_("Delete?") description=_("Please conform deletion!") actions=confirm_modal_actions %}
+            {% modal config=confirm_modal_config %}
         </div>
     </div>
 {% elif component.value == "popover" %}
@@ -204,23 +218,17 @@
     {{ textA|diff:textB|safe }}
 {% elif component.value == "logo" %}
     <div class="grid gap-8 sm:grid-cols-3">
-        <div class="space-y-3">
+        <div class="space-y-2">
             <p class="font-semibold text-secondary">SVG asset</p>
-            <div class="flex h-16 items-end">
-                {% logo config=logo_svg_config %}
-            </div>
+            {% logo config=logo_svg_config %}
         </div>
-        <div class="space-y-3">
+        <div class="space-y-2">
             <p class="font-semibold text-secondary">Image asset</p>
-            <div class="flex h-16 items-end">
-                {% logo config=logo_image_config %}
-            </div>
+            {% logo config=logo_image_config %}
         </div>
-        <div class="space-y-3">
+        <div class="space-y-2">
             <p class="font-semibold text-secondary">Icon</p>
-            <div class="flex h-16 items-end">
-                {% logo config=logo_icon_config %}
-            </div>
+            {% logo config=logo_icon_config %}
         </div>
     </div>
 {% elif component.value == "corner_ribbon" %}
@@ -235,10 +243,10 @@
     {% bar_chart chart=chart_config chart_id="bar_chart_example" %}
     {% line_chart chart=chart_config chart_id="line_chart_example" %}
 {% elif component.value == "live_content" %}
-    {% live_content tag_id="live-content" url="/api/live-data/" interval=10 %}
+    {% live_content tag_id="live-content" request_url="/api/live-data/" interval=10 %}
 {% elif component.value == "web_socket" %}
     <i class="text-secondary">Work in progress...</i>
-    <!-- {% insight_websocket tag_id="runtime-stream" url="/runtime/stream/" initial_content="<p>Waiting for runtime updates…</p>" %} -->
+    {# {% insight_websocket tag_id="runtime-stream" request_url="/runtime/stream/" initial_content="<p>Waiting for runtime updates…</p>" %} #}
 {% elif component.value == "infinite_scroll" %}
     {% infinite_scroll config=infinite_scroll_config %}
 {% elif component.value == "pagination" %}
@@ -274,7 +282,7 @@
 {% elif component.value == "image_carousel" %}
     {% image_carousel config=image_carousel_config %}
 {% elif component.value == "3d_carousel" %}
-    <div class="h-144">
+    <div class="h-114">
         {% three_d_carousel config=3D_carousel_config %}
     </div>
 {% elif component.value == "toggle_view" %}

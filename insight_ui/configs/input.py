@@ -294,6 +294,11 @@ class RadioGroupConfig:
     as_row: bool = True
     current_value: str = ""
 
+    def __post_init__(self) -> None:
+        """Set first option for current_value if empty."""
+        if not self.current_value and self.items:
+            self.current_value = self.items[0].value
+
 
 @dataclass
 class RadioBlockConfig:

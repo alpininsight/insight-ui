@@ -1,6 +1,6 @@
 {% load static %}
 
-<div id="map" class="z-0" style="height: {{ map_height|default:36 }}rem"></div>
+<div id="map" class="z-0" style="height: {{ map_config.map_height|default:36 }}rem"></div>
 
 <script>
   /**
@@ -55,14 +55,14 @@
     return newLayer;
   }
 
-  var map = L.map('map').setView({{ data.initial_coords }}, {{ data.initial_zoom }});
+  var map = L.map('map').setView({{ map_config.initial_coords }}, {{ map_config.initial_zoom }});
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 18,
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
 
   var overlayMaps = {};
-  var datasets = {{ data.datasets|safe }};
+  var datasets = {{ map_config.datasets|safe }};
   for (let dataset of datasets)
   {
     let newLayer = null;

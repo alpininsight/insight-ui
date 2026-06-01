@@ -2,7 +2,7 @@
 
 <div class="flex flex-col lg:flex-row gap-1">
     {% if index != 0 %}
-        <!-- Logic -->
+        {# Logic #}
         <div class="flex gap-1 items-center text-primary pe-2">
             <input type="radio" id="optionAND" name="logic{{ index }}" value="AND" {% if not selected_logic or selected_logic == "AND" %}checked{% endif %}>
             <label for="optionAND" class="pe-2">
@@ -15,26 +15,26 @@
         </div>
     {% endif %}
     <div class="w-full lg:w-48 xl:w-64">
-        <!-- Field -->
+        {# Field #}
         <label for="field" class="sr-only">{% trans "Select the field of the filter" %}</label>
         <select id="field" name="field" class="field-select block w-full h-9 input">
             <option value="" {% if not selected_value %}selected{% endif %}>{% trans "-- Attribute --" %}</option>
             {% for field in model_fields %}
-                <option value="{{ field.field }}" {% if selected_field == field.field %}selected{% endif %}>{{ field.name }}</option>
+                <option value="{{ field.field }}" {% if selected_field == field.field %}selected{% endif %}>{{ field.label }}</option>
             {% endfor %}
         </select>
     </div>
     <div class="w-full lg:w-48 xl:w-64">
-        <!-- Operator -->
+        {# Operator #}
         <label for="operator" class="sr-only">{% trans "Select the operator of the filter" %}</label>
         <select id="operator" name="operator" class="operator-select block w-full h-9 input">
-            {% comment %} This option is used to retain the selected value {% endcomment %}
+            {# This option is used to retain the selected value #}
             <option value="{{ filter_operator }}" selected>{{ filter_operator }}</option>
-            <!-- Operators are loaded dynamically here -->
+            {# Operators are loaded dynamically here #}
         </select>
     </div>
     <div class="w-full lg:w-48 xl:w-64">
-        <!-- Input -->
+        {# Input #}
         <label for="value" class="sr-only">{% trans "Specify the value of the filter" %}</label>
         <input
             type="text" id="value" name="value" placeholder="{% trans 'Value' %}"

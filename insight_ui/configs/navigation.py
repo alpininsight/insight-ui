@@ -472,5 +472,12 @@ class TabsConfig:
     """
 
     tag_id: str
+    tabs: list[TabConfig]
     label: str = ""
-    tabs: list[TabConfig] = field(default_factory=list)
+
+    def __post_init__(self) -> None:
+        """Set the first tab as active if no tab is currently active."""
+        if any(tab.active for tab in self.tabs):
+            return
+
+        self.tabs[0].active = True

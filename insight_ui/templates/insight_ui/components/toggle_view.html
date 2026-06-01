@@ -1,18 +1,18 @@
 {% load i18n insight_tags %}
 
-<div id="{{ tag_id }}">
+<div id="{{ toggle_view_config.tag_id }}">
   <div class="flex justify-end w-full mb-2">
-    {% radio_block config=view_radio_config hx_target_id=tag_id %}
+    {% radio_block config=toggle_view_config.view_radio_config hx_target_id=toggle_view_config.tag_id %}
   </div>
-  {% if view_radio_config.current_value == 'carousel' %}
-    {% carousel carousel_items=cards show_index=True items_per_slide=2 %}
-  {% elif view_radio_config.current_value == 'card' %}
+  {% if toggle_view_config.view_radio_config.current_value == 'carousel' %}
+    {% carousel carousel_items=toggle_view_config.cards show_index=True items_per_slide=2 %}
+  {% elif toggle_view_config.view_radio_config.current_value == 'card' %}
     <div class="flex flex-wrap gap-6">
-      {% for card in cards %}
+      {% for card in toggle_view_config.cards %}
         {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
       {% endfor %}
     </div>
   {% else %}
-    {% table config=table_config %}
+    {% table config=toggle_view_config.table_config %}
   {% endif %}
 </div>

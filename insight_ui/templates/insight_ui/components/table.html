@@ -2,14 +2,14 @@
 
 <div class="bg-white dark:bg-gray-800 rounded-sm overflow-auto">
     <table class="table-auto w-full">
-        {% if caption %}
-            <caption class="text-sm text-secondary">{{ caption }}</caption>
+        {% if table_config.caption %}
+            <caption class="text-sm text-secondary">{{ table_config.caption }}</caption>
         {% endif %}
 
-        {% if headers %}
+        {% if table_config.headers %}
             <thead class="text-primary">
                 <tr class="border-b border-gray-300 dark:border-gray-700">
-                    {% for header in headers %}
+                    {% for header in table_config.headers %}
                         <th class="text-start text-sm px-4 py-2" scope="col">
                             {% if sortable %}
                                 <div class="flex items-center gap-1">
@@ -26,7 +26,7 @@
         {% endif %}
 
         <tbody class="text-primary">
-            {% for row in rows %}
+            {% for row in table_config.rows %}
                 <tr class="odd:bg-gray-100 even:bg-white odd:dark:bg-gray-900 even:dark:bg-gray-800">
                     {% for cell in row %}
                         <td class="text-start text-sm px-4 py-3">{{ cell|safe }}</td>
@@ -35,8 +35,8 @@
             {% empty %}
                 <tfoot>
                     <tr>
-                        <td colspan="{{ headers|length }}" class="w-full border-t border-gray-400 dark:border-gray-500 text-secondary text-center pt-16">
-                            {{ empty_msg }}
+                        <td colspan="{{ table_config.headers|length }}" class="w-full border-t border-gray-400 dark:border-gray-500 text-secondary text-center pt-16">
+                            {{ table_config.empty_msg }}
                         </td>
                     </tr>
                 </tfoot>

@@ -51,7 +51,7 @@ class AppCardConfig:
     Attributes:
         title: Card title.
         content: Card description.
-        url: URL when title is clicked.
+        request_url: URL when title is clicked.
         image: Card image (displayed as square at top).
         tags: List of tag labels.
         actions: List of action buttons.
@@ -60,7 +60,7 @@ class AppCardConfig:
         >>> app = AppCardConfig(
         ...     title="Analytics Dashboard",
         ...     content="Real-time metrics and insights.",
-        ...     url="/apps/analytics/",
+        ...     request_url="/apps/analytics/",
         ...     image=ImageConfig(url="img/analytics.png", alt="Analytics"),
         ...     tags=["New", "Featured"],
         ...     actions=[ActionConfig(text="Open", url="/apps/analytics/", type="primary")],
@@ -70,7 +70,7 @@ class AppCardConfig:
 
     title: str
     content: str
-    url: str = ""
+    request_url: str = ""
     image: ImageConfig | None = None
     tags: list[str] = field(default_factory=list)
     actions: list[ActionConfig] = field(default_factory=list)
@@ -86,7 +86,7 @@ class FlipCardConfig:
     Attributes:
         title: Card title.
         content: Back side content.
-        url: URL when title is clicked.
+        request_url: URL when title is clicked.
         image: Front side image.
         tags: List of tag labels.
         actions: List of action buttons.
@@ -104,7 +104,7 @@ class FlipCardConfig:
 
     title: str
     content: str
-    url: str = ""
+    request_url: str = ""
     image: ImageConfig | None = None
     tags: list[str] = field(default_factory=list)
     actions: list[ActionConfig] = field(default_factory=list)
@@ -188,7 +188,7 @@ class ImageCarouselConfig:
     Renders an image-focused carousel.
 
     Attributes:
-        images: List of image configurations.
+        carousel_items: List of image configurations.
         autoplay: Auto-advance slides.
         show_dots: Show pagination dots.
         show_index: Show current/total index.
@@ -196,7 +196,7 @@ class ImageCarouselConfig:
 
     Example:
         >>> gallery = ImageCarouselConfig(
-        ...     images=[
+        ...     carousel_items=[
         ...         ImageCarouselItemConfig(url="/img/photo1.jpg", alt="Photo 1"),
         ...         ImageCarouselItemConfig(url="/img/photo2.jpg", alt="Photo 2"),
         ...     ],
@@ -205,7 +205,7 @@ class ImageCarouselConfig:
 
     """
 
-    images: list[ImageCarouselItemConfig] = field(default_factory=list)
+    carousel_items: list[ImageCarouselItemConfig] = field(default_factory=list)
     autoplay: bool = False
     show_dots: bool = True
     show_index: bool = False

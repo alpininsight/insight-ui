@@ -1,7 +1,6 @@
 from datetime import UTC, datetime
 from importlib import metadata
 from pathlib import Path
-from typing import cast
 
 import structlog
 from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
@@ -33,7 +32,7 @@ from insight_ui.context import (
 from insight_ui.demo_utils import generate_payload, map_payload_to_cards, map_payload_to_table
 from insight_ui.forms import ChatForm, FormDemoForm
 from insight_ui.utils.pagination import get_page
-from insight_ui.utils.query_builder_utils import FilterFieldConfig, get_filter_settings_for_field
+from insight_ui.utils.query_builder_utils import get_filter_settings_for_field
 
 logger = structlog.get_logger(__name__)
 
@@ -131,8 +130,7 @@ def get_allowed_operators(request: HttpRequest) -> JsonResponse:
     if not field:
         return JsonResponse({"error": "Field is required!"}, status=400)
 
-    field_config = cast(list[FilterFieldConfig], DEMO_FIELDS)
-    input_type, allowed_operators, possible_values = get_filter_settings_for_field(field_config, field)
+    input_type, allowed_operators, possible_values = get_filter_settings_for_field(DEMO_FIELDS, field)
     return JsonResponse({"operators": allowed_operators, "values": possible_values, "inputType": input_type})
 
 

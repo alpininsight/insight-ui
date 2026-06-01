@@ -1,15 +1,15 @@
 {% load i18n insight_tags %}
 
 <div
-    data-insight-3D-carousel="{{ id }}"
-    data-velocity="{{ velocity|default:1000 }}"
-    data-face-camera="{{ face_camera|yesno:'true,false' }}"
+    data-insight-3D-carousel="{{ carousel_config.tag_id }}"
+    data-velocity="{{ carousel_config.velocity|default:1000 }}"
+    data-face-camera="{{ carousel_config.face_camera|yesno:'true,false' }}"
     class="carousel_wrapper relative size-full overflow-hidden"
 >
-    <div style="--quantity: {{ carousel_items|length }}; --carousel-tilt: {{ tilt }}deg" class="threeD_carousel absolute top-5 left-1/2 h-[35vh] w-full">
-        {% for item in carousel_items %}
-            <div style="--position: {{ forloop.counter }}; --item-tilt: {% if face_camera %}0deg{% else %}{{ tilt }}deg{% endif %}" class="item_wrapper absolute inset-0">
-                <div class="{% if face_camera %}item{% endif %} flex justify-center size-full">
+    <div style="--quantity: {{ carousel_config.carousel_items|length }}; --carousel-tilt: {{ carousel_config.tilt }}deg" class="threeD_carousel absolute top-5 left-1/2 h-[35vh] w-full">
+        {% for item in carousel_config.carousel_items %}
+            <div style="--position: {{ forloop.counter }}; --item-tilt: {% if carousel_config.face_camera %}0deg{% else %}{{ carousel_config.tilt }}deg{% endif %}" class="item_wrapper absolute inset-0">
+                <div class="{% if carousel_config.face_camera %}item{% endif %} flex justify-center size-full">
                     {% card title=item.title subtitle=item.subtitle content=item.content actions=item.actions %}
                 </div>
             </div>

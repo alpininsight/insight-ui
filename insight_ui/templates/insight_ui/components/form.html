@@ -1,31 +1,31 @@
 {% load i18n insight_tags %}
 
 <form
-  {% if tag_id %}id="{{ tag_id }}"{% endif %}
-  {% if htmx %}
-    hx-post="{{ request_url }}"
-    hx-target="{{ htmx.target }}"
-    hx-swap="{{ htmx.swap|default:'innerHTML' }}"
+  {% if form_config.tag_id %}id="{{ form_config.tag_id }}"{% endif %}
+  {% if form_config.htmx_config %}
+    hx-post="{{ form_config.request_url }}"
+    hx-target="{{ form_config.htmx_config.target }}"
+    hx-swap="{{ form_config.htmx_config.swap|default:'innerHTML' }}"
     hx-trigger="submit"
     hx-ext="progressive-enhancement"
   {% else %}
-    action="{{ request_url }}"
+    action="{{ form_config.request_url }}"
     method="post"
   {% endif %}
   class="space-y-6"
 >
   {% csrf_token %}
-  {% if title %}
+  {% if form_config.title %}
     <div class="mb-6">
-      <h2 class="text-2xl font-bold text-primary">{{ title }}</h2>
-      {% if description %}
-        <p class="mt-2 text-secondary">{{ description }}</p>
+      <h2 class="text-2xl font-bold text-primary">{{ form_config.title }}</h2>
+      {% if form_config.description %}
+        <p class="mt-2 text-secondary">{{ form_config.description }}</p>
       {% endif %}
     </div>
   {% endif %}
 
   <div class="space-y-4">
-    {% for field in fields %}
+    {% for field in form_config.fields %}
       {% if field.input_type == "textarea" %}
         {% textarea config=field %}
       {% elif field.input_type == "select" %}
@@ -37,13 +37,13 @@
   </div>
 
   <div class="flex justify-end gap-2 pt-4 border-t border-gray-200 dark:border-gray-700">
-    {% if show_reset_button %}
+    {% if form_config.show_reset_button %}
       <button type="reset" class="btn btn-secondary">{% trans "Reset" %}</button>
     {% endif %}
     <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
   </div>
 
-  {% if htmx %}
+  {% if form_config.htmx_config %}
     <!-- HTMX Loading Indicator -->
     <div class="htmx-indicator fixed top-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-md shadow-lg">
       <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

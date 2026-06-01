@@ -15,12 +15,14 @@ class SearchBarConfig:
         request_url: Url for search requests.
         simple: If True, render compact/minimal style.
         search_query: Initial search query value.
+        htmx_config: HTMX configuration for AJAX requests.
 
     """
 
     request_url: str
     simple: bool = False
     search_query: str = ""
+    htmx_config: HtmxConfig | None = None
 
 
 @dataclass
@@ -58,7 +60,6 @@ class GenericFilterConfig:
         request_url: URL for filter requests.
         vertical: If True, arrange filters vertically.
         htmx_config: HTMX configuration for AJAX requests.
-        query_params: Initial query parameter values.
 
     Example:
         >>> filter_bar = GenericFilterConfig(
@@ -83,7 +84,6 @@ class GenericFilterConfig:
     request_url: str = ""
     vertical: bool = False
     htmx_config: HtmxConfig | None = None
-    query_params: dict[str, str] = field(default_factory=dict)
 
 
 @dataclass
@@ -93,7 +93,7 @@ class QueryBuilderFieldConfig:
 
     Attributes:
         field: Database field name.
-        name: Display name.
+        label: Display name.
         type: Field type (text, date, number).
         operations: Available operations (maps operation→label).
         values: Predefined values (optional).
@@ -101,7 +101,7 @@ class QueryBuilderFieldConfig:
     Example:
         >>> title_field = QueryBuilderFieldConfig(
         ...     field="title",
-        ...     name="Title",
+        ...     label="Title",
         ...     type="text",
         ...     operations={
         ...         "iexact": "is exact",
@@ -113,7 +113,7 @@ class QueryBuilderFieldConfig:
     """
 
     field: str
-    name: str
+    label: str
     type: Literal["text", "date", "number"] = "text"
     operations: dict[str, str] = field(default_factory=dict)
     values: dict[str, str] = field(default_factory=dict)
