@@ -26,18 +26,33 @@
     --color-insight-secondary-foreground: #fff;
     --color-insight-secondary-foreground-hover: #fff;
     --color-insight-secondary-foreground-active: #fff;
+    /*
+     * Status color foregrounds — dark text per WCAG 2.2 AA / BFSG.
+     *
+     * Tailwind palette base colors (emerald-500, amber-500, cyan-500)
+     * give contrast ratios of ~2.3-2.5:1 against white text — below
+     * AA Normal (4.5:1) AND AA Large/UI (3:1). Switching to dark text
+     * (Tailwind slate-900) raises contrast to 7.3-8.0:1 ✓ AAA across
+     * base + hover + active variants. Dark foreground is mode-invariant
+     * per insight-brand ADR-001 (CSS-Variable-Override) + #53 D3
+     * (foreground-hover/active stay invariant) — the dark scope below
+     * does not override these tokens.
+     *
+     * Brand-side adopted the same pattern: brand/styles/input.css uses
+     * --color-warning-foreground / --color-orange-foreground = #0b1f33.
+     */
     --color-insight-success: #10b981;
     --color-insight-success-hover: #34d399;
     --color-insight-success-active: #6ee7b7;
-    --color-insight-success-foreground: #fff;
-    --color-insight-success-foreground-hover: #fff;
-    --color-insight-success-foreground-active: #fff;
+    --color-insight-success-foreground: #0f172a;
+    --color-insight-success-foreground-hover: #0f172a;
+    --color-insight-success-foreground-active: #0f172a;
     --color-insight-warning: #f59e0b;
     --color-insight-warning-hover: #fbbf24;
     --color-insight-warning-active: #fcd34d;
-    --color-insight-warning-foreground: #fff;
-    --color-insight-warning-foreground-hover: #fff;
-    --color-insight-warning-foreground-active: #fff;
+    --color-insight-warning-foreground: #0f172a;
+    --color-insight-warning-foreground-hover: #0f172a;
+    --color-insight-warning-foreground-active: #0f172a;
     --color-insight-danger: #ef4444;
     --color-insight-danger-hover: #f87171;
     --color-insight-danger-active: #fca5a5;
@@ -47,9 +62,9 @@
     --color-insight-info: #06b6d4;
     --color-insight-info-hover: #22d3ee;
     --color-insight-info-active: #67e8f9;
-    --color-insight-info-foreground: #fff;
-    --color-insight-info-foreground-hover: #fff;
-    --color-insight-info-foreground-active: #fff;
+    --color-insight-info-foreground: #0f172a;
+    --color-insight-info-foreground-hover: #0f172a;
+    --color-insight-info-foreground-active: #0f172a;
     --color-insight-pending: #64748b;
     --color-insight-pending-hover: #94a3b8;
     --color-insight-pending-active: #cbd5e1;
