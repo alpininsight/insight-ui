@@ -83,7 +83,7 @@ class NavbarTemplateTagTest(TemplateTagsTestCase):
     def test_navbar_user_menu_is_hidden_until_opened(self) -> None:
         """Authenticated user menus must not push navbar controls into a second row."""
         nav_config = {
-            "brand": {"title": "Django Insight UI NavBar"},
+            "brand": {"title": "Insight UI NavBar"},
             "links": [],
             "show_usermenu": True,
             "show_language_selector": True,
@@ -91,12 +91,10 @@ class NavbarTemplateTagTest(TemplateTagsTestCase):
         }
         template_string = """
         {% load insight_tags %}
-        {% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links show_login=True %}
+        {% navbar config=nav_config user_dropdown_links=user_dropdown_links %}
         """
 
-        rendered = self.render_template(
-            template_string, context={"nav_config": nav_config, "user": self.user, "user_dropdown_links": []}
-        )
+        rendered = self.render_template(template_string, context={"nav_config": nav_config, "user_dropdown_links": []})
         soup = BeautifulSoup(rendered, "html.parser")
 
         trigger = soup.select_one('button[data-insight-dropdown="user-menu"]')
