@@ -3,6 +3,8 @@
 from dataclasses import dataclass, field
 from typing import Literal
 
+from django.utils.translation import gettext_lazy as _
+
 from insight_ui.configs.base import HtmxConfig
 
 
@@ -28,36 +30,39 @@ class FormFieldConfig:
         selected_option: Currently selected value.
         rows: Number of rows for textarea fields.
 
-    Example:
-        >>> fields = [
-        ...     FormFieldConfig(
-        ...         input_type="email",
-        ...         name="email",
-        ...         label="E-Mail",
-        ...         required=True,
-        ...     ),
-        ...     FormFieldConfig(
-        ...         input_type="textarea",
-        ...         name="bio",
-        ...         label="Biography",
-        ...         rows=4,
-        ...     ),
-        ... ]
-
     """
 
-    input_type: Literal["text", "password", "email", "number", "tel", "url", "date", "textarea", "select"] = "text"
-    tag_id: str = ""
-    name: str = ""
-    label: str = ""
-    placeholder: str = ""
-    value: str = ""
-    explanation: str = ""
-    required: bool = False
-    disabled: bool = False
-    options: list[str] = field(default_factory=list)
-    selected_option: str = ""
-    rows: int = 3
+    __example__ = """
+        [
+            FormFieldConfig(
+                input_type="email",
+                name="email",
+                label="E-Mail",
+                required=True,
+            ),
+            FormFieldConfig(
+                input_type="textarea",
+                name="bio",
+                label="Biography",
+                rows=4,
+            ),
+        ]
+        """
+
+    input_type: Literal["text", "password", "email", "number", "tel", "url", "date", "textarea", "select"] = field(
+        default="text", metadata={"doc": _("Type of form field (text, email, password, textarea, select).")}
+    )
+    tag_id: str = field(default="", metadata={"doc": _("Unique ID for the field.")})
+    name: str = field(default="", metadata={"doc": _("Form field name.")})
+    label: str = field(default="", metadata={"doc": _("Label text.")})
+    placeholder: str = field(default="", metadata={"doc": _("Placeholder text.")})
+    value: str = field(default="", metadata={"doc": _("Default value.")})
+    explanation: str = field(default="", metadata={"doc": _("Tooltip explanation text.")})
+    required: bool = field(default=False, metadata={"doc": _("Whether field is required.")})
+    disabled: bool = field(default=False, metadata={"doc": _("Whether field is disabled.")})
+    options: list[str] = field(default_factory=list, metadata={"doc": _("List of options for select fields.")})
+    selected_option: str = field(default="", metadata={"doc": _("Currently selected value.")})
+    rows: int = field(default=3, metadata={"doc": _("Number of rows for textarea fields.")})
 
 
 @dataclass
@@ -76,26 +81,29 @@ class FormConfig:
         request_url: Target URL for form submission.
         htmx_config: HTMX configuration for AJAX submission.
 
-    Example:
-        >>> contact_form = FormConfig(
-        ...     tag_id="contact-form",
-        ...     title="Contact Us",
-        ...     description="We'll get back to you within 24 hours.",
-        ...     fields=[
-        ...         FormFieldConfig(input_type="text", name="name", label="Name", required=True),
-        ...         FormFieldConfig(input_type="email", name="email", label="E-Mail", required=True),
-        ...         FormFieldConfig(input_type="textarea", name="message", label="Message", rows=5),
-        ...     ],
-        ...     show_reset_button=True,
-        ...     htmx_config=HtmxConfig(url="/contact_submission", target="#form-response", swap="innerHTML"),
-        ... )
-
     """
 
-    tag_id: str = ""
-    title: str = ""
-    description: str = ""
-    fields: list[FormFieldConfig] = field(default_factory=list)
-    show_reset_button: bool = False
-    request_url: str = ""
-    htmx_config: HtmxConfig | None = None
+    __example__ = """
+        FormConfig(
+            tag_id="contact-form",
+            title="Contact Us",
+            description="We'll get back to you within 24 hours.",
+            fields=[
+                FormFieldConfig(input_type="text", name="name", label="Name", required=True),
+                FormFieldConfig(input_type="email", name="email", label="E-Mail", required=True),
+                FormFieldConfig(input_type="textarea", name="message", label="Message", rows=5),
+            ],
+            show_reset_button=True,
+            htmx_config=HtmxConfig(url="/contact_submission", target="#form-response", swap="innerHTML"),
+        )
+        """
+
+    tag_id: str = field(default="", metadata={"doc": _("Unique ID for the form element.")})
+    title: str = field(default="", metadata={"doc": _("Form title displayed at the top.")})
+    description: str = field(default="", metadata={"doc": _("Optional description below the title.")})
+    fields: list[FormFieldConfig] = field(
+        default_factory=list, metadata={"doc": _("List of form field configurations.")}
+    )
+    show_reset_button: bool = field(default=False, metadata={"doc": _("Whether to show a reset button.")})
+    request_url: str = field(default="", metadata={"doc": _("Target URL for form submission.")})
+    htmx_config: HtmxConfig | None = field(default=None, metadata={"doc": _("HTMX configuration for AJAX submission.")})

@@ -3,6 +3,8 @@
 from dataclasses import dataclass, field
 from typing import Literal
 
+from django.utils.translation import gettext_lazy as _
+
 from insight_ui.configs.base import IconConfig
 
 
@@ -14,19 +16,25 @@ class InfoboxConfig:
     Renders a bordered information box (less prominent than alert).
 
     Attributes:
-        message: Information message.
-        info_type: Box type/severity.
-
-    Example:
-        >>> hint = InfoboxConfig(
-        ...     message="Tip: You can drag and drop files here.",
-        ...     info_type="info",
-        ... )
+        message: Descriptive message.
+        info_type: Importance level of the message. Possible values are 'info', 'success', 'warn' or 'danger'.
 
     """
 
-    message: str
-    info_type: Literal["info", "warn", "danger"] = "info"
+    __example__ = """
+        InfoboxConfig(
+            message="Tip: You can drag and drop files here.",
+            info_type="info",
+        )
+        """
+
+    message: str = field(metadata={"doc": _("Descriptive message.")})
+    info_type: Literal["info", "warn", "danger"] = field(
+        default="info",
+        metadata={
+            "doc": _("Importance level of the message. Possible values are 'info', 'success', 'warn' or 'danger'.")
+        },
+    )
 
 
 @dataclass
@@ -37,32 +45,35 @@ class CopyrightNoticeConfig:
     Renders a compact copyright and legal notice line.
 
     Attributes:
-        year: Copyright year.
-        holder: Copyright holder name.
-        source_label: Source/distribution label (e.g., "Open Source").
-        license_text: License name/text.
-        license_url: URL to full license.
-        separator: Separator between items (default: middle dot).
-        rights_text: Rights statement (default: "All rights reserved.").
-
-    Example:
-        >>> copyright = CopyrightNoticeConfig(
-        ...     year=2026,
-        ...     holder="Alpin Insight Solutions GmbH",
-        ...     source_label="Open Source",
-        ...     license_text="AGPL-3.0",
-        ...     license_url="https://github.com/org/repo/blob/main/LICENSE",
-        ... )
+        year: Typically the current year (not strictly required).
+        holder: The copyright holder.
+        source_label: Optional source model label, for example Open Source.
+        license_text: Optional license label, for example AGPL-3.0.
+        license_url: Optional URL for the license label.
+        separator: Separator between legal metadata parts.
+        rights_text: Optional rights statement.
 
     """
 
-    year: int | str = ""
-    holder: str = ""
-    source_label: str = ""
-    license_text: str = ""
-    license_url: str = ""
-    separator: str = "\u00b7"  # Middle dot
-    rights_text: str = ""
+    __example__ = """
+        CopyrightNoticeConfig(
+            year=2026,
+            holder="Alpin Insight Solutions GmbH",
+            source_label="Open Source",
+            license_text="AGPL-3.0",
+            license_url="https://github.com/org/repo/blob/main/LICENSE",
+        )
+        """
+
+    year: int | str = field(default="", metadata={"doc": _("Typically the current year (not strictly required).")})
+    holder: str = field(default="", metadata={"doc": _("The copyright holder.")})
+    source_label: str = field(default="", metadata={"doc": _("Optional source model label, for example Open Source.")})
+    license_text: str = field(default="", metadata={"doc": _("Optional license label, for example AGPL-3.0.")})
+    license_url: str = field(default="", metadata={"doc": _("Optional URL for the license label.")})
+    separator: str = field(
+        default="\u00b7", metadata={"doc": _("Separator between legal metadata parts.")}
+    )  # Middle dot
+    rights_text: str = field(default="", metadata={"doc": _("Optional rights statement.")})
 
 
 @dataclass
@@ -73,34 +84,36 @@ class LogoConfig:
     Renders a brand logo as an image, SVG, or icon.
 
     Attributes:
-        url: Static path or URL for image/svg logos.
-        url_dark: Optional dark-theme variant.
-        alt: Accessible text.
-        icon: Icon configuration for icon-type logos.
+        url: Static, absolute, root-relative, or data URL for image/svg logos.
+        url_dark: Optional dark-theme URL for image/svg logos.
+        alt: Accessible text. Empty values make image/svg logos decorative.
+        icon: Icon configuration used when type is 'icon'.
         icon_name: Icon name (alternative to icon config).
         icon_size: Icon size (alternative to icon config).
-        height: CSS height value.
-        width: Optional CSS width value.
-
-    Example:
-        >>> logo = LogoConfig(
-        ...     type="svg",
-        ...     url="img/logo.svg",
-        ...     url_dark="img/logo-dark.svg",
-        ...     alt="Company Logo",
-        ...     height="2rem",
-        ... )
+        height: CSS height for image/svg logos.
+        width: Optional CSS width for image/svg logos.
 
     """
 
-    url: str = ""
-    url_dark: str = ""
-    alt: str = ""
-    icon: IconConfig | None = None
-    icon_name: str = ""
-    icon_size: str = ""
-    height: str = "2rem"
-    width: str = ""
+    __example__ = """
+        LogoConfig(
+            url="img/logo.svg",
+            url_dark="img/logo-dark.svg",
+            alt="Company Logo",
+            height="2rem",
+        )
+        """
+
+    url: str = field(
+        default="", metadata={"doc": _("Static, absolute, root-relative, or data URL for image/svg logos.")}
+    )
+    url_dark: str = field(default="", metadata={"doc": _("Optional dark-theme URL for image/svg logos.")})
+    alt: str = field(default="", metadata={"doc": _("Accessible text. Empty values make image/svg logos decorative.")})
+    icon: IconConfig | None = field(default=None, metadata={"doc": _("Icon configuration used when type is 'icon'.")})
+    icon_name: str = field(default="", metadata={"doc": _("Icon name (alternative to icon config).")})
+    icon_size: str = field(default="", metadata={"doc": _("Icon size (alternative to icon config).")})
+    height: str = field(default="2rem", metadata={"doc": _("CSS height for image/svg logos.")})
+    width: str = field(default="", metadata={"doc": _("Optional CSS width for image/svg logos.")})
 
 
 @dataclass
@@ -111,22 +124,37 @@ class CornerRibbonConfig:
     Renders a decorative diagonal ribbon in a browser corner.
 
     Attributes:
-        text: Ribbon text.
-        position: Corner position.
-        color: Color variant.
-
-    Example:
-        >>> beta_ribbon = CornerRibbonConfig(
-        ...     text="Beta",
-        ...     position="top-right",
-        ...     color="warning",
-        ... )
+        text: The text displayed in the ribbon.
+        position: Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'. Invalid values fall back to 'top-right'.
+        color: Color variant: 'primary', 'success', 'warning', 'danger', 'info'. Invalid values fall back to 'primary'.
 
     """
 
-    text: str
-    position: Literal["top-right", "top-left", "bottom-right", "bottom-left"] = "top-right"
-    color: Literal["primary", "success", "warning", "danger", "info"] = "primary"
+    __example__ = """
+        CornerRibbonConfig(
+            text="Beta",
+            position="top-right",
+            color="warning",
+        )
+        """
+
+    text: str = field(metadata={"doc": _("The text displayed in the ribbon.")})
+    position: Literal["top-right", "top-left", "bottom-right", "bottom-left"] = field(
+        default="top-right",
+        metadata={
+            "doc": _(
+                "Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'. Invalid values fall back to 'top-right'."
+            )
+        },
+    )
+    color: Literal["primary", "success", "warning", "danger", "info"] = field(
+        default="primary",
+        metadata={
+            "doc": _(
+                "Color variant: 'primary', 'success', 'warning', 'danger', 'info'. Invalid values fall back to 'primary'."
+            )
+        },
+    )
 
 
 @dataclass
@@ -143,11 +171,11 @@ class GeoMapMarkerConfig:
 
     """
 
-    title: str
-    lat: float
-    lon: float
-    description: str = ""
-    value: int | float | None = None
+    title: str = field(metadata={"doc": _("Marker title/label.")})
+    lat: float = field(metadata={"doc": _("Latitude coordinate.")})
+    lon: float = field(metadata={"doc": _("Longitude coordinate.")})
+    description: str = field(default="", metadata={"doc": _("Optional popup description.")})
+    value: int | float | None = field(default=None, metadata={"doc": _("Optional numeric value (for circle markers).")})
 
 
 @dataclass
@@ -162,25 +190,28 @@ class GeoMapDatasetConfig:
         min: Minimum value for circle scaling.
         max: Maximum value for circle scaling.
 
-    Example:
-        >>> population = GeoMapDatasetConfig(
-        ...     name="population",
-        ...     type="circle",
-        ...     min=100000,
-        ...     max=5000000,
-        ...     data=[
-        ...         GeoMapMarkerConfig(title="Berlin", lat=52.52, lon=13.405, value=3769000),
-        ...         GeoMapMarkerConfig(title="Munich", lat=48.135, lon=11.582, value=1488000),
-        ...     ],
-        ... )
-
     """
 
-    name: str
-    type: Literal["marker", "circle"] = "marker"
-    data: list[GeoMapMarkerConfig] = field(default_factory=list)
-    min: int | float = 0
-    max: int | float = 100
+    __example__ = """
+        GeoMapDatasetConfig(
+            name="population",
+            type="circle",
+            min=100000,
+            max=5000000,
+            data=[
+                GeoMapMarkerConfig(title="Berlin", lat=52.52, lon=13.405, value=3769000),
+                GeoMapMarkerConfig(title="Munich", lat=48.135, lon=11.582, value=1488000),
+            ],
+        )
+        """
+
+    name: str = field(metadata={"doc": _("Dataset name.")})
+    type: Literal["marker", "circle"] = field(
+        default="marker", metadata={"doc": _("Marker type ('marker' or 'circle').")}
+    )
+    data: list[GeoMapMarkerConfig] = field(default_factory=list, metadata={"doc": _("List of marker configurations.")})
+    min: int | float = field(default=0, metadata={"doc": _("Minimum value for circle scaling.")})
+    max: int | float = field(default=100, metadata={"doc": _("Maximum value for circle scaling.")})
 
 
 @dataclass
@@ -196,27 +227,32 @@ class GeoMapConfig:
         map_height: The height of the map in 'rem'.
         datasets: List of data layers to display.
 
-    Example:
-        >>> geo_map = GeoMapConfig(
-        ...     initial_coords=[52.52, 13.405],
-        ...     initial_zoom=10,
-        ...     datasets=[
-        ...         GeoMapDatasetConfig(
-        ...             name="offices",
-        ...             type="marker",
-        ...             data=[
-        ...                 GeoMapMarkerConfig(title="HQ", lat=52.52, lon=13.405),
-        ...             ],
-        ...         ),
-        ...     ],
-        ... )
-
     """
 
-    initial_coords: list[float] = field(default_factory=lambda: [52.52, 13.405])
-    initial_zoom: int = 8
-    map_height: int = 36
-    datasets: list[GeoMapDatasetConfig] = field(default_factory=list)
+    __example__ = """
+        GeoMapConfig(
+            initial_coords=[52.52, 13.405],
+            initial_zoom=10,
+            datasets=[
+                GeoMapDatasetConfig(
+                    name="offices",
+                    type="marker",
+                    data=[
+                        GeoMapMarkerConfig(title="HQ", lat=52.52, lon=13.405),
+                    ],
+                ),
+            ],
+        )
+        """
+
+    initial_coords: list[float] = field(
+        default_factory=lambda: [52.52, 13.405], metadata={"doc": _("Starting map center [lat, lon].")}
+    )
+    initial_zoom: int = field(default=8, metadata={"doc": _("Starting zoom level.")})
+    map_height: int = field(default=36, metadata={"doc": _("The height of the map in 'rem'.")})
+    datasets: list[GeoMapDatasetConfig] = field(
+        default_factory=list, metadata={"doc": _("List of data layers to display.")}
+    )
 
 
 @dataclass
@@ -230,8 +266,8 @@ class ChartSeriesConfig:
 
     """
 
-    name: str
-    data: list[int | float]
+    name: str = field(metadata={"doc": _("Series name (shown in legend).")})
+    data: list[int | float] = field(metadata={"doc": _("Data points for this series.")})
 
 
 @dataclass
@@ -245,23 +281,26 @@ class ChartConfig:
         series: Series names (for legend).
         data: Data for each series (list of lists).
 
-    Example:
-        >>> sales_chart = ChartConfig(
-        ...     title="Weekly Sales",
-        ...     x_axis_legend=["Mon", "Tue", "Wed", "Thu", "Fri"],
-        ...     series=["Online", "In-Store"],
-        ...     data=[
-        ...         [120, 150, 180, 130, 200],  # Online
-        ...         [80, 90, 110, 100, 120],    # In-Store
-        ...     ],
-        ... )
-
     """
 
-    title: str = ""
-    x_axis_legend: list[str] = field(default_factory=list)
-    series: list[str] = field(default_factory=list)
-    data: list[list[int | float]] = field(default_factory=list)
+    __example__ = """
+        ChartConfig(
+            title="Weekly Sales",
+            x_axis_legend=["Mon", "Tue", "Wed", "Thu", "Fri"],
+            series=["Online", "In-Store"],
+            data=[
+                [120, 150, 180, 130, 200],  # Online
+                [80, 90, 110, 100, 120],    # In-Store
+            ],
+        )
+        """
+
+    title: str = field(default="", metadata={"doc": _("Chart title.")})
+    x_axis_legend: list[str] = field(default_factory=list, metadata={"doc": _("Labels for X-axis categories.")})
+    series: list[str] = field(default_factory=list, metadata={"doc": _("Series names (for legend).")})
+    data: list[list[int | float]] = field(
+        default_factory=list, metadata={"doc": _("Data for each series (list of lists).")}
+    )
 
 
 @dataclass
@@ -277,20 +316,21 @@ class LiveContentConfig:
         interval: Update interval in seconds.
         initial_content: Initial content before first update.
 
-    Example:
-        >>> live_stats = LiveContentConfig(
-        ...     tag_id="live-stats",
-        ...     request_url="/api/stats/",
-        ...     interval=30,
-        ...     initial_content="Loading...",
-        ... )
-
     """
 
-    tag_id: str = ""
-    request_url: str = ""
-    interval: int = 10
-    initial_content: str = ""
+    __example__ = """
+        LiveContentConfig(
+            tag_id="live-stats",
+            request_url="/api/stats/",
+            interval=30,
+            initial_content="Loading...",
+        )
+        """
+
+    tag_id: str = field(default="", metadata={"doc": _("Unique ID for JavaScript/CSS targeting.")})
+    request_url: str = field(default="", metadata={"doc": _("URL for content updates.")})
+    interval: int = field(default=10, metadata={"doc": _("Update interval in seconds.")})
+    initial_content: str = field(default="", metadata={"doc": _("Initial content before first update.")})
 
 
 @dataclass
@@ -305,15 +345,16 @@ class WebSocketConfig:
         request_url: WebSocket endpoint URL.
         initial_content: Initial content.
 
-    Example:
-        >>> ws = WebSocketConfig(
-        ...     tag_id="chat-stream",
-        ...     request_url="/ws/chat/",
-        ...     initial_content="Connecting...",
-        ... )
-
     """
 
-    tag_id: str = ""
-    request_url: str = ""
-    initial_content: str = ""
+    __example__ = """
+        WebSocketConfig(
+            tag_id="chat-stream",
+            request_url="/ws/chat/",
+            initial_content="Connecting...",
+        )
+        """
+
+    tag_id: str = field(default="", metadata={"doc": _("Container ID.")})
+    request_url: str = field(default="", metadata={"doc": _("WebSocket endpoint URL.")})
+    initial_content: str = field(default="", metadata={"doc": _("Initial content.")})

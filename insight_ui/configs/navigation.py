@@ -3,6 +3,8 @@
 from dataclasses import dataclass, field
 from typing import Literal
 
+from django.utils.translation import gettext_lazy as _
+
 from insight_ui.configs.base import HtmxConfig, IconConfig
 from insight_ui.configs.input import DropdownConfig
 from insight_ui.configs.popup import ModalConfig
@@ -14,18 +16,26 @@ class NavbarBrandConfig:
     """
     Configuration for the navbar brand section.
 
+    Describes the title and the logo of the application in the navbar.
+
     Attributes:
-        title: Brand title text.
-        request_url: Brand link URL.
-        logo: Logo configuration.
-        gap: CSS gap between logo and title.
+        title: The title of the application.
+        request_url: Name of the URL to be called when clicking on the title.
+        logo: Describes the logo that is displayed next to the title.
+        gap: This value determines the spacing between the logo and the title.
 
     """
 
-    title: str = ""
-    request_url: str = ""
-    logo: LogoConfig | None = None
-    gap: str = "0.5rem"
+    title: str = field(default="", metadata={"doc": _("The title of the application.")})
+    request_url: str = field(
+        default="", metadata={"doc": _("Name of the URL to be called when clicking on the title.")}
+    )
+    logo: LogoConfig | None = field(
+        default=None, metadata={"doc": _("Describes the logo that is displayed next to the title.")}
+    )
+    gap: str = field(
+        default="0.5rem", metadata={"doc": _("This value determines the spacing between the logo and the title.")}
+    )
 
 
 @dataclass
@@ -34,23 +44,26 @@ class NavbarLinkConfig:
     Configuration for a navbar navigation link.
 
     Attributes:
-        text: Link text.
-        url: Direct URL, if not opening a modal or dropdown menu.
-        icon: Optional icon configuration.
-        need_auth: Only show to authenticated users.
-        staff_only: Only show to staff users.
-        open_modal: Configuration of a modal dialog.
-        open_dropdown: Configuration of a dropdown menu.
+        text: Label of the link.
+        url: The URL to be called when clicking on the link, if not opening a modal or dropdown menu.
+        icon: An optional icon displayed before the text.
+        need_auth: The link is only displayed for logged-in users.
+        staff_only: The link is only displayed for administrators.
+        modal: Configuration of a modal dialog.
+        dropdown: Configuration of a dropdown menu.
 
     """
 
-    text: str
-    url: str = ""
-    icon: IconConfig | None = None
-    need_auth: bool = False
-    staff_only: bool = False
-    modal: ModalConfig | None = None
-    dropdown: DropdownConfig | None = None
+    text: str = field(metadata={"doc": _("Label of the link.")})
+    url: str = field(
+        default="",
+        metadata={"doc": _("The URL to be called when clicking on the link, if not opening a modal or dropdown menu.")},
+    )
+    icon: IconConfig | None = field(default=None, metadata={"doc": _("An optional icon displayed before the text.")})
+    need_auth: bool = field(default=False, metadata={"doc": _("The link is only displayed for logged-in users.")})
+    staff_only: bool = field(default=False, metadata={"doc": _("The link is only displayed for administrators.")})
+    modal: ModalConfig | None = field(default=None, metadata={"doc": _("Configuration of a modal dialog.")})
+    dropdown: DropdownConfig | None = field(default=None, metadata={"doc": _("Configuration of a dropdown menu.")})
 
 
 @dataclass
@@ -61,37 +74,53 @@ class NavbarConfig:
     Renders a full navigation bar with brand, links, and optional features.
 
     Attributes:
-        brand: Brand section configuration.
-        links: List of navigation links.
-        searchbar_request_url: Url for search functionality.
-        show_usermenu: Show user menu dropdown.
-        show_language_selector: Show language selection dropdown.
-        show_theme_toggle: Show dark/light theme toggle.
-
-    Example:
-        >>> navbar = NavbarConfig(
-        ...     brand=NavbarBrandConfig(
-        ...         title="My App",
-        ...         request_url=reverse("index"),
-        ...         logo=LogoConfig(url="img/logo.svg", height="2rem"),
-        ...     ),
-        ...     links=[
-        ...         NavbarLinkConfig(text="Home", request_url=reverse("index")),
-        ...         NavbarLinkConfig(text="About", request_url=reverse("about")),
-        ...         NavbarLinkConfig(text="Admin", request_url=reverse("admin:index"), staff_only=True),
-        ...     ],
-        ...     show_usermenu=True,
-        ...     show_theme_toggle=True,
-        ... )
+        brand: Describes the title and the logo of the application in the navbar.
+        links: Contains and describes the navigation items of the navbar.
+        searchbar_request_url: The URL to be called when performing a search. If empty, no search bar will be displayed.
+        show_usermenu: Displays a dropdown menu with at least a logout button.
+        show_language_selector: Displays a dropdown menu for selecting the display language (if defined).
+        show_theme_toggle: Displays a button to switch between the light and dark theme of the page.
 
     """
 
-    brand: NavbarBrandConfig | None = None
-    links: list[NavbarLinkConfig] = field(default_factory=list)
-    searchbar_request_url: str = ""
-    show_usermenu: bool = False
-    show_language_selector: bool = False
-    show_theme_toggle: bool = False
+    __example__ = """
+        NavbarConfig(
+            brand=NavbarBrandConfig(
+                title="My App",
+                request_url=reverse("index"),
+                logo=LogoConfig(url="img/logo.svg", height="2rem"),
+            ),
+            links=[
+                NavbarLinkConfig(text="Home", url=reverse("index")),
+                NavbarLinkConfig(text="About", url=reverse("about")),
+                NavbarLinkConfig(text="Admin", url=reverse("admin:index"), staff_only=True),
+            ],
+            show_usermenu=True,
+            show_theme_toggle=True,
+        )
+        """
+
+    brand: NavbarBrandConfig | None = field(
+        default=None, metadata={"doc": _("Describes the title and the logo of the application in the navbar.")}
+    )
+    links: list[NavbarLinkConfig] = field(
+        default_factory=list, metadata={"doc": _("Contains and describes the navigation items of the navbar.")}
+    )
+    searchbar_request_url: str = field(
+        default="",
+        metadata={
+            "doc": _("The URL to be called when performing a search. If empty, no search bar will be displayed.")
+        },
+    )
+    show_usermenu: bool = field(
+        default=False, metadata={"doc": _("Displays a dropdown menu with at least a logout button.")}
+    )
+    show_language_selector: bool = field(
+        default=False, metadata={"doc": _("Displays a dropdown menu for selecting the display language (if defined).")}
+    )
+    show_theme_toggle: bool = field(
+        default=False, metadata={"doc": _("Displays a button to switch between the light and dark theme of the page.")}
+    )
 
 
 @dataclass
@@ -100,17 +129,17 @@ class SidebarItemConfig:
     Configuration for a sidebar navigation item.
 
     Attributes:
-        text: Item text.
-        request_url: Target URL.
-        icon: Optional icon configuration.
+        text: Label of the item.
+        request_url: The URL to be called when clicking on the item.
+        icon: An optional icon displayed before the text.
         htmx: HTMX configuration for AJAX page changes.
 
     """
 
-    text: str
-    request_url: str = ""
-    icon: IconConfig | None = None
-    htmx: HtmxConfig | None = None
+    text: str = field(metadata={"doc": _("Label of the item.")})
+    request_url: str = field(default="", metadata={"doc": _("The URL to be called when clicking on the item.")})
+    icon: IconConfig | None = field(default=None, metadata={"doc": _("An optional icon displayed before the text.")})
+    htmx: HtmxConfig | None = field(default=None, metadata={"doc": _("HTMX configuration for AJAX page changes.")})
 
 
 @dataclass
@@ -126,10 +155,10 @@ class SidebarCategoryConfig:
 
     """
 
-    caption: str
-    icon: IconConfig | None = None
-    items: list[SidebarItemConfig] = field(default_factory=list)
-    collapsed: bool = False
+    caption: str = field(metadata={"doc": _("Category header text.")})
+    icon: IconConfig | None = field(default=None, metadata={"doc": _("Optional category icon.")})
+    items: list[SidebarItemConfig] = field(default_factory=list, metadata={"doc": _("List of items in this category.")})
+    collapsed: bool = field(default=False, metadata={"doc": _("Whether category is initially collapsed.")})
 
 
 @dataclass
@@ -144,9 +173,11 @@ class SidebarDataConfig:
 
     """
 
-    title: str = ""
-    icon: IconConfig | None = None
-    categories: list[SidebarCategoryConfig] = field(default_factory=list)
+    title: str = field(default="", metadata={"doc": _("Sidebar title.")})
+    icon: IconConfig | None = field(default=None, metadata={"doc": _("Optional title icon.")})
+    categories: list[SidebarCategoryConfig] = field(
+        default_factory=list, metadata={"doc": _("List of navigation categories.")}
+    )
 
 
 @dataclass
@@ -157,37 +188,46 @@ class SidebarConfig:
     Renders a side navigation panel.
 
     Attributes:
-        sidebar_data: Sidebar content configuration.
-        side: Which side to display ('left' or 'right').
-        static: If True, sidebar is always visible.
-        auto_close: If True, sidebar closes when mouse leaves.
-        mobile_hidden: If True, hide on mobile viewports.
-
-    Example:
-        >>> sidebar = SidebarConfig(
-        ...     sidebar_data=SidebarDataConfig(
-        ...         title="Settings",
-        ...         categories=[
-        ...             SidebarCategoryConfig(
-        ...                 caption="Account",
-        ...                 items=[
-        ...                     SidebarItemConfig(text="Profile", request_url=reverse("profile")),
-        ...                     SidebarItemConfig(text="Security", request_url=reverse("security")),
-        ...                 ],
-        ...             ),
-        ...         ],
-        ...     ),
-        ...     side="left",
-        ...     static=True,
-        ... )
+        sidebar_data: Content of the sidebar (title and navigation elements).
+        side: Determines on which side the sidebar should be placed.
+        static: **True** if the sidebar should not be collapsible.
+        auto_close: If **True** the sidebar closes as soon as the cursor leaves it.
+        mobile_hidden: If **True** the static sidebar is hidden on a smaller viewport.
 
     """
 
-    sidebar_data: SidebarDataConfig | None = None
-    side: Literal["left", "right"] = "right"
-    static: bool = True
-    auto_close: bool = False
-    mobile_hidden: bool = False
+    __example__ = """
+        SidebarConfig(
+            sidebar_data=SidebarDataConfig(
+                title="Settings",
+                categories=[
+                    SidebarCategoryConfig(
+                        caption="Account",
+                        items=[
+                            SidebarItemConfig(text="Profile", request_url=reverse("profile")),
+                            SidebarItemConfig(text="Security", request_url=reverse("security")),
+                        ],
+                    ),
+                ],
+            ),
+            side="left",
+            static=True,
+        )
+        """
+
+    sidebar_data: SidebarDataConfig | None = field(
+        default=None, metadata={"doc": _("Content of the sidebar (title and navigation elements).")}
+    )
+    side: Literal["left", "right"] = field(
+        default="right", metadata={"doc": _("Determines on which side the sidebar should be placed.")}
+    )
+    static: bool = field(default=True, metadata={"doc": _("**True** if the sidebar should not be collapsible.")})
+    auto_close: bool = field(
+        default=False, metadata={"doc": _("If **True** the sidebar closes as soon as the cursor leaves it.")}
+    )
+    mobile_hidden: bool = field(
+        default=False, metadata={"doc": _("If **True** the static sidebar is hidden on a smaller viewport.")}
+    )
 
 
 @dataclass
@@ -195,16 +235,27 @@ class FooterDescriptionConfig:
     """
     Configuration for the footer description section.
 
+    Brief description of the application with optional image.
+
     Attributes:
-        title: Section title.
-        text: Description text.
-        logo: Optional image/logo configuration.
+        title: Heading of the description.
+        text: Brief summary of the application.
+        logo: Optional image displayed below the description text.
 
     """
 
-    title: str = ""
-    text: str = ""
-    logo: LogoConfig | None = None
+    __example__ = """
+        FooterDescriptionConfig(
+            title="My App",
+            text="A modern web application.",
+        )
+        """
+
+    title: str = field(default="", metadata={"doc": _("Heading of the description.")})
+    text: str = field(default="", metadata={"doc": _("Brief summary of the application.")})
+    logo: LogoConfig | None = field(
+        default=None, metadata={"doc": _("Optional image displayed below the description text.")}
+    )
 
 
 @dataclass
@@ -212,16 +263,26 @@ class FooterContactConfig:
     """
     Configuration for footer contact information.
 
+    Contact information, link to the imprint, privacy policy and a contact email address.
+
     Attributes:
-        mail_url: Email address or mailto URL.
-        imprint: Imprint page URL.
-        privacy: Privacy policy URL.
+        mail_url: URL of a contact email address.
+        imprint: Link to an imprint.
+        privacy: Link to a privacy policy.
 
     """
 
-    mail_url: str = ""
-    imprint: str = ""
-    privacy: str = ""
+    __example__ = """
+        FooterContactConfig(
+            mail_url="support@example.com",
+            imprint="/imprint/",
+            privacy="/privacy/",
+        )
+        """
+
+    mail_url: str = field(default="", metadata={"doc": _("URL of a contact email address.")})
+    imprint: str = field(default="", metadata={"doc": _("Link to an imprint.")})
+    privacy: str = field(default="", metadata={"doc": _("Link to a privacy policy.")})
 
 
 @dataclass
@@ -232,41 +293,52 @@ class FooterConfig:
     Renders a complete page footer.
 
     Attributes:
-        description: Description section configuration.
-        links: List of footer links.
-        contact: Contact information.
-        copyright: Copyright notice configuration.
-        version: Application version string.
-
-    Example:
-        >>> footer = FooterConfig(
-        ...     description=FooterDescriptionConfig(
-        ...         title="My App",
-        ...         text="A modern web application.",
-        ...     ),
-        ...     links=[
-        ...         NavbarLinkConfig(text="Home", request_url=reverse("index")),
-        ...         NavbarLinkConfig(text="Docs", request_url="https://docs.example.com"),
-        ...     ],
-        ...     contact=FooterContactConfig(
-        ...         mail_url="support@example.com",
-        ...         imprint="/imprint/",
-        ...         privacy="/privacy/",
-        ...     ),
-        ...     copyright=CopyrightNoticeConfig(
-        ...         year=2026,
-        ...         holder="My Company",
-        ...     ),
-        ...     version="v1.0.0",
-        ... )
+        description: Brief description of the application with optional image.
+        links: List of the main navigation items of the application.
+        contact: Contact information, link to the imprint, privacy policy and a contact email address.
+        copyright: Copyright information, such as the year, holder, source label, and license text.
+        version: Information about the current version.
 
     """
 
-    description: FooterDescriptionConfig | None = None
-    links: list[NavbarLinkConfig] = field(default_factory=list)
-    contact: FooterContactConfig | None = None
-    copyright: CopyrightNoticeConfig | None = None
-    version: str = ""
+    __example__ = """
+        FooterConfig(
+            description=FooterDescriptionConfig(
+                title="My App",
+                text="A modern web application.",
+            ),
+            links=[
+                NavbarLinkConfig(text="Home", url=reverse("index")),
+                NavbarLinkConfig(text="Docs", url="https://docs.example.com"),
+            ],
+            contact=FooterContactConfig(
+                mail_url="support@example.com",
+                imprint="/imprint/",
+                privacy="/privacy/",
+            ),
+            copyright=CopyrightNoticeConfig(
+                year=2026,
+                holder="My Company",
+            ),
+            version="v1.0.0",
+        )
+        """
+
+    description: FooterDescriptionConfig | None = field(
+        default=None, metadata={"doc": _("Brief description of the application with optional image.")}
+    )
+    links: list[NavbarLinkConfig] = field(
+        default_factory=list, metadata={"doc": _("List of the main navigation items of the application.")}
+    )
+    contact: FooterContactConfig | None = field(
+        default=None,
+        metadata={"doc": _("Contact information, link to the imprint, privacy policy and a contact email address.")},
+    )
+    copyright: CopyrightNoticeConfig | None = field(
+        default=None,
+        metadata={"doc": _("Copyright information, such as the year, holder, source label, and license text.")},
+    )
+    version: str = field(default="", metadata={"doc": _("Information about the current version.")})
 
 
 @dataclass
@@ -275,15 +347,19 @@ class BreadcrumbItemConfig:
     Configuration for a breadcrumb navigation item.
 
     Attributes:
-        text: Breadcrumb text.
-        request_url: Target URL.
+        text: Label of the link.
+        request_url: The URL to be called when clicking on the link.
         icon: Optional icon (typically for home item).
 
     """
 
-    text: str
-    request_url: str = ""
-    icon: IconConfig | None = None
+    __example__ = """
+        BreadcrumbItemConfig(text="Home", request_url="/", icon=IconConfig("home")=,
+        """
+
+    text: str = field(metadata={"doc": _("Label of the link.")})
+    request_url: str = field(default="", metadata={"doc": _("The URL to be called when clicking on the link.")})
+    icon: IconConfig | None = field(default=None, metadata={"doc": _("Optional icon (typically for home item).")})
 
 
 @dataclass
@@ -292,28 +368,29 @@ class StepBarItemConfig:
     Configuration for a step in the step_bar component.
 
     Attributes:
-        title: Step title.
-        description: Step description.
+        title: Title of the step.
+        description: Additional description of the step below the title.
         url: URL called when the user clicks on the title of the step.
-        success: Whether step is completed successfully.
-        failed: Whether step failed.
-        current: Whether this is the current step.
-
-    Example:
-        >>> steps = [
-        ...     StepBarItemConfig(title="Address", description="Enter shipping address", success=True),
-        ...     StepBarItemConfig(title="Payment", description="Select payment method", current=True),
-        ...     StepBarItemConfig(title="Review", description="Review and confirm"),
-        ... ]
+        success: Displays a checkmark instead of the step number.
+        failed: Displays an X instead of the step number.
+        current: Highlights the title in color and makes the text pulse.
 
     """
 
-    title: str
-    description: str = ""
-    url: str = ""
-    success: bool = False
-    failed: bool = False
-    current: bool = False
+    __example__ = """
+        [
+            StepBarItemConfig(title="Address", description="Enter shipping address", success=True),
+            StepBarItemConfig(title="Payment", description="Select payment method", current=True),
+            StepBarItemConfig(title="Review", description="Review and confirm"),
+        ]
+        """
+
+    title: str = field(metadata={"doc": _("Title of the step.")})
+    description: str = field(default="", metadata={"doc": _("Additional description of the step below the title.")})
+    url: str = field(default="", metadata={"doc": _("URL called when the user clicks on the title of the step.")})
+    success: bool = field(default=False, metadata={"doc": _("Displays a checkmark instead of the step number.")})
+    failed: bool = field(default=False, metadata={"doc": _("Displays an X instead of the step number.")})
+    current: bool = field(default=False, metadata={"doc": _("Highlights the title in color and makes the text pulse.")})
 
 
 @dataclass
@@ -324,33 +401,36 @@ class MinimalStepBarConfig:
     Renders a compact progress indicator.
 
     Attributes:
-        items: List of step statuses ('success', 'failed', 'active', '').
-        step_count: Total number of steps (used if items is empty).
-        current_step: Current step index (0-based, used if items is empty).
-        current_step_status: Status for current step ('active', 'success', 'failed').
-        icon_size: Icon size for step indicators.
-
-    Example using items directly:
-        >>> progress = MinimalStepBarConfig(
-        ...     items=["success", "success", "active", "", ""],
-        ...     icon_size="xs",
-        ... )
-
-    Example using step_count and current_step:
-        >>> progress = MinimalStepBarConfig(
-        ...     step_count=5,
-        ...     current_step=2,
-        ...     current_step_status="active",
-        ...     icon_size="xs",
-        ... )
+        items: List of states for the process steps. Possible values: 'success', 'failed', 'active' and '' for inactive.
+        step_count: Number of process steps. (Only if 'items' is not set!)
+        current_step: Current step of the process. (Only if 'items' is not set!)
+        current_step_status: Status of the current step. (Only if 'items' is not set!)
+        icon_size: Size of the icons in the progress bar.
 
     """
 
-    items: list[Literal["success", "failed", "active", ""]] = field(default_factory=list)
-    step_count: int = 0
-    current_step: int = 0
-    current_step_status: Literal["active", "success", "failed"] = "active"
-    icon_size: Literal["xs", "s", "m", "l", "xl"] = "xs"
+    __example__ = """
+        MinimalStepBarConfig(step_count=5, current_step=3)
+        """
+
+    items: list[Literal["success", "failed", "active", ""]] = field(
+        default_factory=list,
+        metadata={
+            "doc": _(
+                "List of states for the process steps. Possible values: 'success', 'failed', 'active' and '' for inactive."
+            )
+        },
+    )
+    step_count: int = field(default=0, metadata={"doc": _("Number of process steps. (Only if 'items' is not set!)")})
+    current_step: int = field(
+        default=0, metadata={"doc": _("Current step of the process. (Only if 'items' is not set!)")}
+    )
+    current_step_status: Literal["active", "success", "failed"] = field(
+        default="active", metadata={"doc": _("Status of the current step. (Only if 'items' is not set!)")}
+    )
+    icon_size: Literal["xs", "s", "m", "l", "xl"] = field(
+        default="xs", metadata={"doc": _("Size of the icons in the progress bar.")}
+    )
 
 
 @dataclass
@@ -359,26 +439,29 @@ class BulletPointItemConfig:
     Configuration for an item in the bullet_point_list component.
 
     Attributes:
-        title: Item title.
-        description: Item description.
-        request_url: Optional link URL.
-        completed: Whether item is marked as completed.
-        current: Whether this is the current item.
-
-    Example:
-        >>> checklist = [
-        ...     BulletPointItemConfig(title="Setup", description="Initial configuration", completed=True),
-        ...     BulletPointItemConfig(title="Configure", description="Add settings", current=True),
-        ...     BulletPointItemConfig(title="Deploy", description="Push to production"),
-        ... ]
+        title: Title of the item.
+        description: Additional description of the item below the title.
+        request_url: The URL to be called when clicking on the respective item.
+        completed: Displays a checkmark instead of a bullet point.
+        current: Highlights the title by color.
 
     """
 
-    title: str
-    description: str = ""
-    request_url: str = ""
-    completed: bool = False
-    current: bool = False
+    __example__ = """
+        [
+            BulletPointItemConfig(title="Setup", description="Initial configuration", completed=True),
+            BulletPointItemConfig(title="Configure", description="Add settings", current=True),
+            BulletPointItemConfig(title="Deploy", description="Push to production"),
+        ]
+        """
+
+    title: str = field(metadata={"doc": _("Title of the item.")})
+    description: str = field(default="", metadata={"doc": _("Additional description of the item below the title.")})
+    request_url: str = field(
+        default="", metadata={"doc": _("The URL to be called when clicking on the respective item.")}
+    )
+    completed: bool = field(default=False, metadata={"doc": _("Displays a checkmark instead of a bullet point.")})
+    current: bool = field(default=False, metadata={"doc": _("Highlights the title by color.")})
 
 
 @dataclass
@@ -387,15 +470,19 @@ class AccordionItemConfig:
     Configuration for an accordion section.
 
     Attributes:
-        title: Section header text.
-        content: Section content (can include HTML).
+        title: Section title.
+        content: Section content.
         open: Whether section is initially open.
 
     """
 
-    title: str
-    content: str
-    open: bool = False
+    __example__ = """
+        AccordionItemConfig(title="What is Django?", content="Django is...")
+        """
+
+    title: str = field(metadata={"doc": _("Section title.")})
+    content: str = field(metadata={"doc": _("Section content.")})
+    open: bool = field(default=False, metadata={"doc": _("Whether section is initially open.")})
 
 
 @dataclass
@@ -406,25 +493,28 @@ class AccordionConfig:
     Renders expandable/collapsible sections.
 
     Attributes:
-        tag_id: Unique ID for the accordion.
-        items: List of accordion sections.
-        exclusive: If True, only one section can be open at a time.
-
-    Example:
-        >>> faq = AccordionConfig(
-        ...     tag_id="faq-accordion",
-        ...     items=[
-        ...         AccordionItemConfig(title="What is Django?", content="Django is..."),
-        ...         AccordionItemConfig(title="What is HTMX?", content="HTMX is..."),
-        ...     ],
-        ...     exclusive=True,
-        ... )
+        tag_id: Unique tag ID for identifying the element in JavaScript.
+        items: List of individual sections.
+        exclusive: If **True** only one section can be open at a time.
 
     """
 
-    tag_id: str = "accordion"
-    items: list[AccordionItemConfig] = field(default_factory=list)
-    exclusive: bool = True
+    __example__ = """
+        AccordionConfig(
+            tag_id="faq-accordion",
+            items=[
+                AccordionItemConfig(title="What is Django?", content="Django is..."),
+                AccordionItemConfig(title="What is HTMX?", content="HTMX is..."),
+            ],
+            exclusive=True,
+        )
+        """
+
+    tag_id: str = field(
+        default="accordion", metadata={"doc": _("Unique tag ID for identifying the element in JavaScript.")}
+    )
+    items: list[AccordionItemConfig] = field(default_factory=list, metadata={"doc": _("List of individual sections.")})
+    exclusive: bool = field(default=True, metadata={"doc": _("If **True** only one section can be open at a time.")})
 
 
 @dataclass
@@ -433,17 +523,21 @@ class TabConfig:
     Configuration for a single tab.
 
     Attributes:
-        tag_id: Unique ID for this tab.
-        title: Tab button text.
-        url: URL for tab content (loaded via HTMX).
+        tag_id: Unique tag ID for identifying the element in JavaScript.
+        title: Label of the tab button.
+        url: The URL to be called when the tab is clicked.
         active: Whether this tab is initially active.
 
     """
 
-    tag_id: str
-    title: str
-    url: str = ""
-    active: bool = False
+    __example__ = """
+        TabConfig(tag_id="general", title="General", url=reverse("conf_general"), active=True)
+        """
+
+    tag_id: str = field(metadata={"doc": _("Unique tag ID for identifying the element in JavaScript.")})
+    title: str = field(metadata={"doc": _("Label of the tab button.")})
+    url: str = field(default="", metadata={"doc": _("The URL to be called when the tab is clicked.")})
+    active: bool = field(default=False, metadata={"doc": _("Whether this tab is initially active.")})
 
 
 @dataclass
@@ -454,26 +548,29 @@ class TabsConfig:
     Renders a tabbed interface with HTMX content loading.
 
     Attributes:
-        tag_id: Unique ID for the tabs container.
-        label: Accessible label for the tab list.
-        tabs: List of tab configurations.
-
-    Example:
-        >>> tabs = TabsConfig(
-        ...     tag_id="settings-tabs",
-        ...     label="Settings",
-        ...     tabs=[
-        ...         TabConfig(tag_id="general", title="General", request_url=reverse("conf_general"), active=True),
-        ...         TabConfig(tag_id="security", title="Security", request_url=reverse("conf_security")),
-        ...         TabConfig(tag_id="notifications", title="Notifications", request_url=reverse("conf_notifications")),
-        ...     ],
-        ... )
+        tag_id: Unique tag ID for identifying the element in JavaScript.
+        tabs: List of tab buttons.
+        label: Non-visible additional title that is to be read aloud by screen readers.
 
     """
 
-    tag_id: str
-    tabs: list[TabConfig]
-    label: str = ""
+    __example__ = """
+        TabsConfig(
+            tag_id="settings-tabs",
+            label="Settings",
+            tabs=[
+                TabConfig(tag_id="general", title="General", url=reverse("conf_general"), active=True),
+                TabConfig(tag_id="security", title="Security", url=reverse("conf_security")),
+                TabConfig(tag_id="notifications", title="Notifications", url=reverse("conf_notifications")),
+            ],
+        )
+        """
+
+    tag_id: str = field(metadata={"doc": _("Unique tag ID for identifying the element in JavaScript.")})
+    tabs: list[TabConfig] = field(metadata={"doc": _("List of tab buttons.")})
+    label: str = field(
+        default="", metadata={"doc": _("Non-visible additional title that is to be read aloud by screen readers.")}
+    )
 
     def __post_init__(self) -> None:
         """Set the first tab as active if no tab is currently active."""

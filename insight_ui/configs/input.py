@@ -3,6 +3,8 @@
 from dataclasses import dataclass, field
 from typing import Literal
 
+from django.utils.translation import gettext_lazy as _
+
 from insight_ui.configs.base import BaseFormFieldConfig, IconConfig
 
 
@@ -14,30 +16,26 @@ class InputFieldConfig(BaseFormFieldConfig):
     Renders any HTML <input> element with proper styling and accessibility.
 
     Attributes:
-        tag_id: Unique ID for JavaScript/CSS targeting.
-        name: Form field name (used in request parameters).
-        input_type: HTML input type (text, password, email, number, date, etc.).
-        placeholder: Placeholder text shown when empty.
-        value: Current value of the input.
-        minimum: Minimum value (for number/date inputs).
-        maximum: Maximum value (for number/date inputs).
-        min_length: Minimum character length.
-        max_length: Maximum character length.
-        checked: Whether checkbox/radio is checked.
-        label: Label text displayed above the field.
-        disabled: Whether the field is disabled.
-        required: Whether the field is required.
-
-    Example:
-        >>> email_input = InputFieldConfig(
-        ...     name="email",
-        ...     input_type="email",
-        ...     label="E-Mail Address",
-        ...     placeholder="you@example.com",
-        ...     required=True,
-        ... )
+        input_type: The type of the input field, e.g.: 'text', 'password', 'date', etc.
+        placeholder: Placeholder text, displayed in the field as long as it has not been selected.
+        value: The value of the input field.
+        minimum: Smallest numeric value (for `input_type='number'`).
+        maximum: Largest numeric value (for `input_type='number'`).
+        min_length: Minimum number of characters in a text field.
+        max_length: Maximum number of characters in a text field.
+        checked: **True** if `input_type='checkbox'` and the checkbox should be selected.
 
     """
+
+    __example__ = """
+        InputFieldConfig(
+            name="email",
+            input_type="email",
+            label="E-Mail Address",
+            placeholder="you@example.com",
+            required=True,
+        )
+        """
 
     input_type: Literal[
         "text",
@@ -56,14 +54,22 @@ class InputFieldConfig(BaseFormFieldConfig):
         "hidden",
         "checkbox",
         "radio",
-    ] = "text"
-    placeholder: str = ""
-    value: str | int | float | None = None
-    minimum: int | None = None
-    maximum: int | None = None
-    min_length: int | None = None
-    max_length: int | None = None
-    checked: bool = False
+    ] = field(
+        default="text", metadata={"doc": _("The type of the input field, e.g.: 'text', 'password', 'date', etc.")}
+    )
+    placeholder: str = field(
+        default="", metadata={"doc": _("Placeholder text, displayed in the field as long as it has not been selected.")}
+    )
+    value: str | int | float | None = field(default=None, metadata={"doc": _("The value of the input field.")})
+    minimum: int | None = field(
+        default=None, metadata={"doc": _("Smallest numeric value (for `input_type='number'`).")}
+    )
+    maximum: int | None = field(default=None, metadata={"doc": _("Largest numeric value (for `input_type='number'`).")})
+    min_length: int | None = field(default=None, metadata={"doc": _("Minimum number of characters in a text field.")})
+    max_length: int | None = field(default=None, metadata={"doc": _("Maximum number of characters in a text field.")})
+    checked: bool = field(
+        default=False, metadata={"doc": _("**True** if `input_type='checkbox'` and the checkbox should be selected.")}
+    )
 
 
 @dataclass
@@ -74,31 +80,29 @@ class TextareaConfig(BaseFormFieldConfig):
     Renders a multi-line text input field.
 
     Attributes:
-        tag_id: Unique ID for JavaScript/CSS targeting.
-        name: Form field name.
-        placeholder: Placeholder text.
-        value: Current text content.
-        rows: Number of visible text lines.
-        cols: Visible width in characters.
-        label: Label text displayed above the field.
-        disabled: Whether the field is disabled.
-        required: Whether the field is required.
-
-    Example:
-        >>> message_field = TextareaConfig(
-        ...     name="message",
-        ...     label="Your Message",
-        ...     placeholder="Enter your message here...",
-        ...     rows=5,
-        ...     required=True,
-        ... )
+        placeholder: Placeholder text, displayed in the field as long as it has not been selected.
+        value: The value of the input field.
+        rows: Determines the number of lines.
+        cols: Determines the number of characters in a line.
 
     """
 
-    placeholder: str = ""
-    value: str = ""
-    rows: int = 3
-    cols: int | None = None
+    __example__ = """
+        TextareaConfig(
+            name="message",
+            label="Your Message",
+            placeholder="Enter your message here...",
+            rows=5,
+            required=True,
+        )
+        """
+
+    placeholder: str = field(
+        default="", metadata={"doc": _("Placeholder text, displayed in the field as long as it has not been selected.")}
+    )
+    value: str = field(default="", metadata={"doc": _("The value of the input field.")})
+    rows: int = field(default=3, metadata={"doc": _("Determines the number of lines.")})
+    cols: int | None = field(default=None, metadata={"doc": _("Determines the number of characters in a line.")})
 
 
 @dataclass
@@ -109,25 +113,24 @@ class CheckboxConfig(BaseFormFieldConfig):
     Renders a single checkbox with label.
 
     Attributes:
-        tag_id: Unique ID for JavaScript/CSS targeting.
-        name: Form field name.
-        label: Label text displayed next to the checkbox.
-        value: The value submitted when checked.
-        checked: Whether the checkbox is initially checked.
-        disabled: Whether the checkbox is disabled.
-
-    Example:
-        >>> accept_terms = CheckboxConfig(
-        ...     tag_id="accept-terms",
-        ...     name="accept_terms",
-        ...     value="accepted",
-        ...     label="I accept the terms and conditions",
-        ... )
+        value: The value of the checkbox (this is not the state, see 'checked' for that).
+        checked: **True** if the checkbox should be selected.
 
     """
 
-    value: str = ""
-    checked: bool = False
+    __example__ = """
+        CheckboxConfig(
+            tag_id="accept-terms",
+            name="accept_terms",
+            value="accepted",
+            label="I accept the terms and conditions",
+        )
+        """
+
+    value: str = field(
+        default="", metadata={"doc": _("The value of the checkbox (this is not the state, see 'checked' for that).")}
+    )
+    checked: bool = field(default=False, metadata={"doc": _("**True** if the checkbox should be selected.")})
 
 
 @dataclass
@@ -139,16 +142,20 @@ class CheckboxItemConfig:
         tag_id: Unique ID for this checkbox.
         label: Label text.
         value: Value submitted when checked.
-        disabled: Whether this checkbox is disabled.
-        checked: Whether initially checked.
+        disabled: **True** if the checkbox should be disabled.
+        checked: **True** if the checkbox should be selected.
 
     """
 
-    tag_id: str
-    label: str
-    value: str
-    disabled: bool = False
-    checked: bool = False
+    __example__ = """
+        CheckboxItemConfig(tag_id="en", value="english", label="English"),
+        """
+
+    tag_id: str = field(metadata={"doc": _("Unique ID for this checkbox.")})
+    label: str = field(metadata={"doc": _("Label text.")})
+    value: str = field(metadata={"doc": _("Value submitted when checked.")})
+    disabled: bool = field(default=False, metadata={"doc": _("**True** if the checkbox should be disabled.")})
+    checked: bool = field(default=False, metadata={"doc": _("**True** if the checkbox should be selected.")})
 
 
 @dataclass
@@ -159,34 +166,41 @@ class CheckboxGroupConfig:
     Renders a group of linked checkboxes with optional constraints.
 
     Attributes:
-        name: Form field name for the group.
-        label: Label for the entire group.
-        items: List of checkbox configurations.
-        as_row: If True, arrange checkboxes horizontally.
-        minimum_checked: Minimum number that must be checked.
-        maximum_checked: Maximum number that can be checked.
-
-    Example:
-        >>> languages = CheckboxGroupConfig(
-        ...     name="languages",
-        ...     label="Select languages (max 3):",
-        ...     as_row=True,
-        ...     maximum_checked=3,
-        ...     items=[
-        ...         CheckboxItemConfig(tag_id="en", value="english", label="English"),
-        ...         CheckboxItemConfig(tag_id="de", value="german", label="German"),
-        ...         CheckboxItemConfig(tag_id="fr", value="french", label="French"),
-        ...     ],
-        ... )
+        name: Required for a `<form>`, as the name of the request parameter.
+        label: Text label displayed above the checkbox elements.
+        items: List of the checkbox elements.
+        as_row: **True** if the checkbox elements should be displayed side by side.
+        minimum_checked: Number of checkbox elements that must be selected at minimum.
+        maximum_checked: Number of checkbox elements that may be selected at the same time.
 
     """
 
-    name: str
-    label: str = ""
-    items: list[CheckboxItemConfig] = field(default_factory=list)
-    as_row: bool = True
-    minimum_checked: int = 0
-    maximum_checked: int | None = None
+    __example__ = """
+        CheckboxGroupConfig(
+            name="languages",
+            label="Select languages (max 3):",
+            as_row=True,
+            maximum_checked=3,
+            items=[
+                CheckboxItemConfig(tag_id="en", value="english", label="English"),
+                CheckboxItemConfig(tag_id="de", value="german", label="German"),
+                CheckboxItemConfig(tag_id="fr", value="french", label="French"),
+            ],
+        )
+        """
+
+    name: str = field(metadata={"doc": _("Required for a `<form>`, as the name of the request parameter.")})
+    label: str = field(default="", metadata={"doc": _("Text label displayed above the checkbox elements.")})
+    items: list[CheckboxItemConfig] = field(default_factory=list, metadata={"doc": _("List of the checkbox elements.")})
+    as_row: bool = field(
+        default=True, metadata={"doc": _("**True** if the checkbox elements should be displayed side by side.")}
+    )
+    minimum_checked: int = field(
+        default=0, metadata={"doc": _("Number of checkbox elements that must be selected at minimum.")}
+    )
+    maximum_checked: int | None = field(
+        default=None, metadata={"doc": _("Number of checkbox elements that may be selected at the same time.")}
+    )
 
 
 @dataclass
@@ -195,15 +209,21 @@ class DropdownItemConfig:
     Configuration for an item within a dropdown menu.
 
     Attributes:
-        text: Item text label.
-        request_url: Target URL when clicked.
-        icon: Optional icon configuration.
+        text: Label of the dropdown element.
+        request_url: The URL to be called when clicking on the respective item.
+        icon: An optional icon displayed before the label.
 
     """
 
-    text: str
-    request_url: str = ""
-    icon: IconConfig | None = None
+    __example__ = """
+        DropdownItemConfig(text="Profile", request_url="/profile/", icon=IconConfig(name="user")),
+        """
+
+    text: str = field(metadata={"doc": _("Label of the dropdown element.")})
+    request_url: str = field(
+        default="", metadata={"doc": _("The URL to be called when clicking on the respective item.")}
+    )
+    icon: IconConfig | None = field(default=None, metadata={"doc": _("An optional icon displayed before the label.")})
 
 
 @dataclass
@@ -214,29 +234,30 @@ class DropdownConfig:
     Renders a dropdown menu with a trigger button.
 
     Attributes:
-        tag_id: Unique ID for JavaScript/CSS targeting.
-        title: Dropdown trigger button text.
-        show_arrow: Show dropdown arrow indicator.
-        items: List of dropdown items.
-
-    Example:
-        >>> user_menu = DropdownConfig(
-        ...     tag_id="user-dropdown",
-        ...     title="Account",
-        ...     show_arrow=True,
-        ...     items=[
-        ...         DropdownItemConfig(text="Profile", request_url="/profile/", icon=IconConfig(name="user")),
-        ...         DropdownItemConfig(text="Settings", request_url="/settings/", icon=IconConfig(name="gear")),
-        ...         DropdownItemConfig(text="Logout", request_url="/logout/", icon=IconConfig(name="leave")),
-        ...     ],
-        ... )
+        tag_id: Optional, unique tag ID for identifying the element in JavaScript.
+        title: Label of the dropdown button.
+        show_arrow: **True** displays an arrow behind the title.
+        items: A list of the menu elements.
 
     """
 
-    tag_id: str
-    title: str
-    show_arrow: bool = True
-    items: list[DropdownItemConfig] = field(default_factory=list)
+    __example__ = """
+        DropdownConfig(
+            tag_id="user-dropdown",
+            title="Account",
+            show_arrow=True,
+            items=[
+                DropdownItemConfig(text="Profile", request_url="/profile/", icon=IconConfig(name="user")),
+                DropdownItemConfig(text="Settings", request_url="/settings/", icon=IconConfig(name="gear")),
+                DropdownItemConfig(text="Logout", request_url="/logout/", icon=IconConfig(name="leave")),
+            ],
+        )
+        """
+
+    tag_id: str = field(metadata={"doc": _("Optional, unique tag ID for identifying the element in JavaScript.")})
+    title: str = field(metadata={"doc": _("Label of the dropdown button.")})
+    show_arrow: bool = field(default=True, metadata={"doc": _("**True** displays an arrow behind the title.")})
+    items: list[DropdownItemConfig] = field(default_factory=list, metadata={"doc": _("A list of the menu elements.")})
 
 
 @dataclass
@@ -245,19 +266,23 @@ class RadioItemConfig:
     Configuration for a single radio button within a group.
 
     Attributes:
-        tag_id: Unique ID for this radio button.
-        value: Value submitted when selected.
-        label: Text label (for text-based radio buttons).
-        icon: Icon configuration (for icon-based radio buttons).
-        disabled: Whether this option is disabled.
+        tag_id: Optional, unique tag ID for identifying the element in JavaScript.
+        value: Value of the respective radio button.
+        label: Label of the respective radio button.
+        icon: Optional icon displayed before the label.
+        disabled: **True** if the radio button should be disabled.
 
     """
 
-    tag_id: str
-    value: str
-    label: str = ""
-    icon: IconConfig | None = None
-    disabled: bool = False
+    __example__ = """
+        RadioItemConfig(tag_id="gpt4", value="gpt-4", label="GPT-4")
+        """
+
+    tag_id: str = field(metadata={"doc": _("Optional, unique tag ID for identifying the element in JavaScript.")})
+    value: str = field(metadata={"doc": _("Value of the respective radio button.")})
+    label: str = field(default="", metadata={"doc": _("Label of the respective radio button.")})
+    icon: IconConfig | None = field(default=None, metadata={"doc": _("Optional icon displayed before the label.")})
+    disabled: bool = field(default=False, metadata={"doc": _("**True** if the radio button should be disabled.")})
 
 
 @dataclass
@@ -268,31 +293,34 @@ class RadioGroupConfig:
     Renders a group of standard radio buttons.
 
     Attributes:
-        name: Form field name for the group.
-        label: Label for the entire group.
-        items: List of radio button configurations.
-        as_row: If True, arrange radio buttons horizontally.
-        current_value: Currently selected value.
-
-    Example:
-        >>> model_select = RadioGroupConfig(
-        ...     name="model",
-        ...     label="Select AI Model:",
-        ...     items=[
-        ...         RadioItemConfig(tag_id="gpt4", value="gpt-4", label="GPT-4"),
-        ...         RadioItemConfig(tag_id="claude", value="claude", label="Claude"),
-        ...         RadioItemConfig(tag_id="llama", value="llama", label="LLaMA", disabled=True),
-        ...     ],
-        ...     current_value="claude",
-        ... )
+        name: Optional, unique tag ID for identifying the element in JavaScript.
+        label: A text label displayed above the radio elements.
+        items: A list of the radio elements.
+        as_row: **True** if the radio elements should be displayed side by side.
+        current_value: The value of the currently selected radio button.
 
     """
 
-    name: str
-    label: str = ""
-    items: list[RadioItemConfig] = field(default_factory=list)
-    as_row: bool = True
-    current_value: str = ""
+    __example__ = """
+        RadioGroupConfig(
+            name="model",
+            label="Select AI Model:",
+            items=[
+                RadioItemConfig(tag_id="gpt4", value="gpt-4", label="GPT-4"),
+                RadioItemConfig(tag_id="claude", value="claude", label="Claude"),
+                RadioItemConfig(tag_id="llama", value="llama", label="LLaMA", disabled=True),
+            ],
+            current_value="claude",
+        )
+        """
+
+    name: str = field(metadata={"doc": _("Optional, unique tag ID for identifying the element in JavaScript.")})
+    label: str = field(default="", metadata={"doc": _("A text label displayed above the radio elements.")})
+    items: list[RadioItemConfig] = field(default_factory=list, metadata={"doc": _("A list of the radio elements.")})
+    as_row: bool = field(
+        default=True, metadata={"doc": _("**True** if the radio elements should be displayed side by side.")}
+    )
+    current_value: str = field(default="", metadata={"doc": _("The value of the currently selected radio button.")})
 
     def __post_init__(self) -> None:
         """Set first option for current_value if empty."""
@@ -308,42 +336,60 @@ class RadioBlockConfig:
     Renders radio buttons as a compact block that can trigger requests.
 
     Attributes:
-        name: Form field name.
-        label: Label for the group.
-        items: List of radio button configurations.
-        integrated: If False, component has its own <form> element.
-        as_row: If True, arrange buttons horizontally.
-        request_url: Url for request on change.
-        hx_target_id: HTMX target element ID.
-        hx_swap_method: HTMX swap method.
-        method: JavaScript method to execute on change.
-        current_value: Currently selected value.
-
-    Example:
-        >>> view_toggle = RadioBlockConfig(
-        ...     name="view",
-        ...     items=[
-        ...         RadioItemConfig(tag_id="card", value="card", icon=IconConfig(name="cards")),
-        ...         RadioItemConfig(tag_id="table", value="table", icon=IconConfig(name="list")),
-        ...     ],
-        ...     current_value="card",
-        ...     hx_target_id="content-area",
-        ... )
+        name: Optional, unique tag ID for identifying the element in JavaScript.
+        label: A text label displayed above the radio elements.
+        items: A list of the radio elements.
+        integrated: **True** if the group is inside a `<form>`. If **False** the group gets its own `<form>`.
+        as_row: **True** if the radio elements should be displayed side by side.
+        request_url: Name of the URL to which the request should be sent when clicking one of the radio buttons.
+        hx_target_id: The ID of the HTML tag to be replaced when switching the radio button.
+        hx_swap_method: The way in which the target is to be replaced.
+        method: Name of the JavaScript method to be executed when clicking one of the radio buttons.
+        current_value: The value of the currently selected radio button.
 
     """
 
-    name: str
-    label: str = ""
-    items: list[RadioItemConfig] = field(default_factory=list)
-    integrated: bool = False
-    as_row: bool = True
-    request_url: str = ""
-    hx_target_id: str = ""
-    hx_swap_method: Literal["innerHTML", "outerHTML", "beforebegin", "afterbegin", "beforeend", "afterend"] = (
-        "outerHTML"
+    __example__ = """
+        RadioBlockConfig(
+            name="view",
+            items=[
+                RadioItemConfig(tag_id="card", value="card", icon=IconConfig(name="cards")),
+                RadioItemConfig(tag_id="table", value="table", icon=IconConfig(name="list")),
+            ],
+            current_value="card",
+            hx_target_id="content-area",
+        )
+        """
+
+    name: str = field(metadata={"doc": _("Optional, unique tag ID for identifying the element in JavaScript.")})
+    label: str = field(default="", metadata={"doc": _("A text label displayed above the radio elements.")})
+    items: list[RadioItemConfig] = field(default_factory=list, metadata={"doc": _("A list of the radio elements.")})
+    integrated: bool = field(
+        default=False,
+        metadata={
+            "doc": _("**True** if the group is inside a `<form>`. If **False** the group gets its own `<form>`.")
+        },
     )
-    method: str = ""
-    current_value: str = ""
+    as_row: bool = field(
+        default=True, metadata={"doc": _("**True** if the radio elements should be displayed side by side.")}
+    )
+    request_url: str = field(
+        default="",
+        metadata={
+            "doc": _("Name of the URL to which the request should be sent when clicking one of the radio buttons.")
+        },
+    )
+    hx_target_id: str = field(
+        default="", metadata={"doc": _("The ID of the HTML tag to be replaced when switching the radio button.")}
+    )
+    hx_swap_method: Literal["innerHTML", "outerHTML", "beforebegin", "afterbegin", "beforeend", "afterend"] = field(
+        default="outerHTML", metadata={"doc": _("The way in which the target is to be replaced.")}
+    )
+    method: str = field(
+        default="",
+        metadata={"doc": _("Name of the JavaScript method to be executed when clicking one of the radio buttons.")},
+    )
+    current_value: str = field(default="", metadata={"doc": _("The value of the currently selected radio button.")})
 
     def __post_init__(self) -> None:
         """Set first option for current_value if empty."""
@@ -359,31 +405,15 @@ class SliderConfig(BaseFormFieldConfig):
     Renders a range slider for selecting numeric values.
 
     Attributes:
-        tag_id: Unique ID for JavaScript/CSS targeting.
-        name: Form field name.
-        value: Current value (single-thumb mode).
-        minimum: Minimum allowed value.
-        maximum: Maximum allowed value.
-        step_size: Step increment.
-        label: Label text displayed above slider.
-        disabled: Whether slider is disabled.
-        items: Legend labels displayed below the slider.
-        legend_mode: Responsive legend behavior ('static', 'skip', 'rotate').
-        dual: Enable dual-thumb mode for range selection.
-        value_min: Minimum value in dual-thumb mode.
-        value_max: Maximum value in dual-thumb mode.
-
-    Example:
-        >>> price_range = SliderConfig(
-        ...     name="price",
-        ...     label="Price Range",
-        ...     minimum=0,
-        ...     maximum=1000,
-        ...     dual=True,
-        ...     value_min=200,
-        ...     value_max=800,
-        ...     items=["0€", "250€", "500€", "750€", "1000€"],
-        ... )
+        value: The value of the range slider (single-thumb mode only).
+        minimum: Smallest configurable value of the range slider.
+        maximum: Largest configurable value of the range slider.
+        step_size: The size of the steps by which the value changes when moving the range slider.
+        items: A list of texts displayed as a legend below the slider.
+        legend_mode: Controls responsive legend behavior. Options: **'static'** (default) - no adjustment; **'skip'** - progressively hides legend items when space is limited; **'rotate'** - rotates legend text vertically when space is limited.
+        dual: **True** to enable dual-thumb mode for selecting a range with min and max values.
+        value_min: The minimum value in dual-thumb mode. Defaults to `minimum`.
+        value_max: The maximum value in dual-thumb mode. Defaults to `maximum`.
 
     Note:
         In dual-thumb mode, two form fields are submitted:
@@ -391,15 +421,48 @@ class SliderConfig(BaseFormFieldConfig):
 
     """
 
-    value: int | None = None
-    minimum: int = 0
-    maximum: int = 100
-    step_size: int = 1
-    items: list[str] = field(default_factory=list)
-    legend_mode: Literal["static", "skip", "rotate"] = "static"
-    dual: bool = False
-    value_min: int | None = None
-    value_max: int | None = None
+    __example__ = """
+        SliderConfig(
+            name="price",
+            label="Price Range",
+            minimum=0,
+            maximum=1000,
+            dual=True,
+            value_min=200,
+            value_max=800,
+            items=["0€", "250€", "500€", "750€", "1000€"],
+        )
+        """
+
+    value: int | None = field(
+        default=None, metadata={"doc": _("The value of the range slider (single-thumb mode only).")}
+    )
+    minimum: int = field(default=0, metadata={"doc": _("Smallest configurable value of the range slider.")})
+    maximum: int = field(default=100, metadata={"doc": _("Largest configurable value of the range slider.")})
+    step_size: int = field(
+        default=1, metadata={"doc": _("The size of the steps by which the value changes when moving the range slider.")}
+    )
+    items: list[str] = field(
+        default_factory=list, metadata={"doc": _("A list of texts displayed as a legend below the slider.")}
+    )
+    legend_mode: Literal["static", "skip", "rotate"] = field(
+        default="static",
+        metadata={
+            "doc": _(
+                "Controls responsive legend behavior. Options: **'static'** (default) - no adjustment; **'skip'** - progressively hides legend items when space is limited; **'rotate'** - rotates legend text vertically when space is limited."
+            )
+        },
+    )
+    dual: bool = field(
+        default=False,
+        metadata={"doc": _("**True** to enable dual-thumb mode for selecting a range with min and max values.")},
+    )
+    value_min: int | None = field(
+        default=None, metadata={"doc": _("The minimum value in dual-thumb mode. Defaults to `minimum`.")}
+    )
+    value_max: int | None = field(
+        default=None, metadata={"doc": _("The maximum value in dual-thumb mode. Defaults to `maximum`.")}
+    )
 
     def __post_init__(self) -> None:
         """Validate slider configuration."""
@@ -424,31 +487,33 @@ class ToggleConfig(BaseFormFieldConfig):
     Renders a toggle button or switch.
 
     Attributes:
-        tag_id: Unique ID for JavaScript/CSS targeting.
-        name: Form field name.
-        value: Value submitted when toggled on.
-        label: Label text.
+        value: The value of the toggle button.
         icon: Optional icon configuration.
-        checked: Whether initially toggled on.
-        disabled: Whether toggle is disabled.
-        switch: If True, render as iOS-style switch.
-        method: JavaScript method to execute on change.
-
-    Example:
-        >>> dark_mode = ToggleConfig(
-        ...     tag_id="dark-mode",
-        ...     name="dark_mode",
-        ...     label="Dark Mode",
-        ...     switch=True,
-        ... )
+        checked: **True** if the toggle button should be selected.
+        switch: **True** if the toggle button should look like a typical switch select.
+        method: Name of the JavaScript method to be executed when the toggle button is clicked.
 
     """
 
-    value: str = ""
-    icon: IconConfig | None = None
-    checked: bool = False
-    switch: bool = False
-    method: str = ""
+    __example__ = """
+        ToggleConfig(
+            tag_id="dark-mode",
+            name="dark_mode",
+            label="Dark Mode",
+            switch=True,
+        )
+        """
+
+    value: str = field(default="", metadata={"doc": _("The value of the toggle button.")})
+    icon: IconConfig | None = field(default=None, metadata={"doc": _("Optional icon configuration.")})
+    checked: bool = field(default=False, metadata={"doc": _("**True** if the toggle button should be selected.")})
+    switch: bool = field(
+        default=False, metadata={"doc": _("**True** if the toggle button should look like a typical switch select.")}
+    )
+    method: str = field(
+        default="",
+        metadata={"doc": _("Name of the JavaScript method to be executed when the toggle button is clicked.")},
+    )
 
 
 @dataclass
@@ -459,25 +524,36 @@ class SelectConfig(BaseFormFieldConfig):
     Renders a dropdown selection box.
 
     Attributes:
-        name: Form field name.
-        label: Label text displayed above the select.
-        explanation: Tooltip explanation text.
-        options: Available options (list of strings or dict mapping value→label).
-        selected_option: Currently selected value.
+        explanation: A brief description of the filter that appears in a tooltip.
+        options: List of values that can be selected.
+        selected_option: Value (the key value, if the options were passed as a dict) of the currently selected option.
 
-    Example:
-        >>> country_select = SelectConfig(
-        ...     name="country",
-        ...     label="Country",
-        ...     options={"de": "Germany", "fr": "France", "uk": "United Kingdom"},
-        ...     selected_option="de",
-        ... )
+    Note:
+        If `options` is a list, the value is also used as the name.
 
     """
 
-    explanation: str = ""
-    options: list[str] | dict[str, str] = field(default_factory=list)
-    selected_option: str = ""
+    __example__ = """
+        SelectConfig(
+            name="country",
+            label="Country",
+            options={"de": "Germany", "fr": "France", "uk": "United Kingdom"},
+            selected_option="de",
+        )
+        """
+
+    explanation: str = field(
+        default="", metadata={"doc": _("A brief description of the filter that appears in a tooltip.")}
+    )
+    options: list[str] | dict[str, str] = field(
+        default_factory=list, metadata={"doc": _("List of values that can be selected.")}
+    )
+    selected_option: str = field(
+        default="",
+        metadata={
+            "doc": _("Value (the key value, if the options were passed as a dict) of the currently selected option.")
+        },
+    )
 
 
 @dataclass
@@ -488,26 +564,34 @@ class MultiselectConfig(BaseFormFieldConfig):
     Renders a selection box allowing multiple selections with search.
 
     Attributes:
-        name: Form field name.
-        label: Label text.
-        maximum: Maximum number of selections allowed.
-        show_buttons: Show "Select All" / "Deselect All" buttons.
-        options: Available options.
-        selected_options: Currently selected values.
+        maximum: Maximum number of selectable options.
+        show_buttons: Show additional buttons for 'Select All' and 'Deselect All'.
+        options: List of values that can be selected.
+        selected_options: List of currently selected options.
 
-    Example:
-        >>> tags_select = MultiselectConfig(
-        ...     name="tags",
-        ...     label="Select Tags (max 5):",
-        ...     maximum=5,
-        ...     show_buttons=True,
-        ...     options=["Python", "Django", "JavaScript", "React", "Docker"],
-        ...     selected_options=["Python", "Django"],
-        ... )
+    Note:
+        If `options` is a list, the value is also used as the name.
 
     """
 
-    maximum: int | None = None
-    show_buttons: bool = False
-    options: list[str] | dict[str, str] = field(default_factory=list)
-    selected_options: list[str] = field(default_factory=list)
+    __example__ = """
+        MultiselectConfig(
+            name="tags",
+            label="Select Tags (max 5):",
+            maximum=5,
+            show_buttons=True,
+            options=["Python", "Django", "JavaScript", "React", "Docker"],
+            selected_options=["Python", "Django"],
+        )
+        """
+
+    maximum: int | None = field(default=None, metadata={"doc": _("Maximum number of selectable options.")})
+    show_buttons: bool = field(
+        default=False, metadata={"doc": _("Show additional buttons for 'Select All' and 'Deselect All'.")}
+    )
+    options: list[str] | dict[str, str] = field(
+        default_factory=list, metadata={"doc": _("List of values that can be selected.")}
+    )
+    selected_options: list[str] = field(
+        default_factory=list, metadata={"doc": _("List of currently selected options.")}
+    )

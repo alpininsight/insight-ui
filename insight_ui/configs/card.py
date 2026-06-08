@@ -3,6 +3,8 @@
 from dataclasses import dataclass, field
 from typing import Literal
 
+from django.utils.translation import gettext_lazy as _
+
 from insight_ui.configs.base import ActionConfig, ImageConfig
 from insight_ui.configs.input import RadioBlockConfig
 from insight_ui.configs.list import TableConfig
@@ -17,28 +19,29 @@ class CardConfig:
 
     Attributes:
         title: Card title.
-        subtitle: Optional subtitle.
         content: Main card content.
+        subtitle: Optional subtitle.
         image: Optional card image.
         actions: List of action buttons.
 
-    Example:
-        >>> card = CardConfig(
-        ...     title="Welcome",
-        ...     subtitle="Getting Started",
-        ...     content="Learn how to use our platform.",
-        ...     actions=[
-        ...         ActionConfig(text="Learn More", url="/docs/", type="primary"),
-        ...     ],
-        ... )
-
     """
 
-    title: str
-    content: str
-    subtitle: str = ""
-    image: ImageConfig | None = None
-    actions: list[ActionConfig] = field(default_factory=list)
+    __example__ = """
+        CardConfig(
+            title="Welcome",
+            subtitle="Getting Started",
+            content="Learn how to use our platform.",
+            actions=[
+                ActionConfig(text="Learn More", url="/docs/", type="primary"),
+            ],
+        )
+        """
+
+    title: str = field(metadata={"doc": _("Card title.")})
+    content: str = field(metadata={"doc": _("Main card content.")})
+    subtitle: str = field(default="", metadata={"doc": _("Optional subtitle.")})
+    image: ImageConfig | None = field(default=None, metadata={"doc": _("Optional card image.")})
+    actions: list[ActionConfig] = field(default_factory=list, metadata={"doc": _("List of action buttons.")})
 
 
 @dataclass
@@ -56,24 +59,25 @@ class AppCardConfig:
         tags: List of tag labels.
         actions: List of action buttons.
 
-    Example:
-        >>> app = AppCardConfig(
-        ...     title="Analytics Dashboard",
-        ...     content="Real-time metrics and insights.",
-        ...     request_url="/apps/analytics/",
-        ...     image=ImageConfig(url="img/analytics.png", alt="Analytics"),
-        ...     tags=["New", "Featured"],
-        ...     actions=[ActionConfig(text="Open", url="/apps/analytics/", type="primary")],
-        ... )
-
     """
 
-    title: str
-    content: str
-    request_url: str = ""
-    image: ImageConfig | None = None
-    tags: list[str] = field(default_factory=list)
-    actions: list[ActionConfig] = field(default_factory=list)
+    __example__ = """
+        AppCardConfig(
+            title="Analytics Dashboard",
+            content="Real-time metrics and insights.",
+            request_url="/apps/analytics/",
+            image=ImageConfig(url="img/analytics.png", alt="Analytics"),
+            tags=["New", "Featured"],
+            actions=[ActionConfig(text="Open", url="/apps/analytics/", type="primary")],
+        )
+        """
+
+    title: str = field(metadata={"doc": _("Card title.")})
+    content: str = field(metadata={"doc": _("Card description.")})
+    request_url: str = field(default="", metadata={"doc": _("URL when title is clicked.")})
+    image: ImageConfig | None = field(default=None, metadata={"doc": _("Card image (displayed as square at top).")})
+    tags: list[str] = field(default_factory=list, metadata={"doc": _("List of tag labels.")})
+    actions: list[ActionConfig] = field(default_factory=list, metadata={"doc": _("List of action buttons.")})
 
 
 @dataclass
@@ -91,23 +95,24 @@ class FlipCardConfig:
         tags: List of tag labels.
         actions: List of action buttons.
 
-    Example:
-        >>> flip_card = FlipCardConfig(
-        ...     title="Product Name",
-        ...     content="Detailed description shown on hover.",
-        ...     image=ImageConfig(url="img/product.png", alt="Product"),
-        ...     tags=["Sale", "-20%"],
-        ...     actions=[ActionConfig(text="Buy", url="/buy/", type="primary")],
-        ... )
-
     """
 
-    title: str
-    content: str
-    request_url: str = ""
-    image: ImageConfig | None = None
-    tags: list[str] = field(default_factory=list)
-    actions: list[ActionConfig] = field(default_factory=list)
+    __example__ = """
+        FlipCardConfig(
+            title="Product Name",
+            content="Detailed description shown on hover.",
+            image=ImageConfig(url="img/product.png", alt="Product"),
+            tags=["Sale", "-20%"],
+            actions=[ActionConfig(text="Buy", url="/buy/", type="primary")],
+        )
+        """
+
+    title: str = field(metadata={"doc": _("Card title.")})
+    content: str = field(metadata={"doc": _("Back side content.")})
+    request_url: str = field(default="", metadata={"doc": _("URL when title is clicked.")})
+    image: ImageConfig | None = field(default=None, metadata={"doc": _("Front side image.")})
+    tags: list[str] = field(default_factory=list, metadata={"doc": _("List of tag labels.")})
+    actions: list[ActionConfig] = field(default_factory=list, metadata={"doc": _("List of action buttons.")})
 
 
 @dataclass
@@ -123,10 +128,10 @@ class CarouselItemConfig:
 
     """
 
-    title: str = ""
-    content: str = ""
-    image: ImageConfig | None = None
-    url: str = ""
+    title: str = field(default="", metadata={"doc": _("Item title.")})
+    content: str = field(default="", metadata={"doc": _("Item content/description.")})
+    image: ImageConfig | None = field(default=None, metadata={"doc": _("Optional image configuration.")})
+    url: str = field(default="", metadata={"doc": _("Optional link URL.")})
 
 
 @dataclass
@@ -143,24 +148,25 @@ class CardCarouselConfig:
         show_index: Show current/total index.
         items_per_slide: Number of items visible per slide.
 
-    Example:
-        >>> carousel = CardCarouselConfig(
-        ...     carousel_items=[
-        ...         CarouselItemConfig(title="Item 1", content="Description 1"),
-        ...         CarouselItemConfig(title="Item 2", content="Description 2"),
-        ...     ],
-        ...     autoplay=True,
-        ...     show_dots=True,
-        ...     items_per_slide=3,
-        ... )
-
     """
 
-    carousel_items: list[CardConfig] = field(default_factory=list)
-    autoplay: bool = False
-    show_dots: bool = True
-    show_index: bool = False
-    items_per_slide: int = 1
+    __example__ = """
+        CardCarouselConfig(
+            carousel_items=[
+                CarouselItemConfig(title="Item 1", content="Description 1"),
+                CarouselItemConfig(title="Item 2", content="Description 2"),
+            ],
+            autoplay=True,
+            show_dots=True,
+            items_per_slide=3,
+        )
+        """
+
+    carousel_items: list[CardConfig] = field(default_factory=list, metadata={"doc": _("List of items to display.")})
+    autoplay: bool = field(default=False, metadata={"doc": _("Auto-advance slides every 5 seconds.")})
+    show_dots: bool = field(default=True, metadata={"doc": _("Show pagination dots.")})
+    show_index: bool = field(default=False, metadata={"doc": _("Show current/total index.")})
+    items_per_slide: int = field(default=1, metadata={"doc": _("Number of items visible per slide.")})
 
 
 @dataclass
@@ -175,9 +181,9 @@ class ImageCarouselItemConfig:
 
     """
 
-    url: str
-    alt: str = ""
-    description: str = ""
+    url: str = field(metadata={"doc": _("Image URL.")})
+    alt: str = field(default="", metadata={"doc": _("Image alt text.")})
+    description: str = field(default="", metadata={"doc": _("Optional caption/description.")})
 
 
 @dataclass
@@ -194,22 +200,25 @@ class ImageCarouselConfig:
         show_index: Show current/total index.
         items_per_slide: Images visible per slide.
 
-    Example:
-        >>> gallery = ImageCarouselConfig(
-        ...     carousel_items=[
-        ...         ImageCarouselItemConfig(url="/img/photo1.jpg", alt="Photo 1"),
-        ...         ImageCarouselItemConfig(url="/img/photo2.jpg", alt="Photo 2"),
-        ...     ],
-        ...     autoplay=True,
-        ... )
-
     """
 
-    carousel_items: list[ImageCarouselItemConfig] = field(default_factory=list)
-    autoplay: bool = False
-    show_dots: bool = True
-    show_index: bool = False
-    items_per_slide: int = 1
+    __example__ = """
+        ImageCarouselConfig(
+            carousel_items=[
+                ImageCarouselItemConfig(url="/img/photo1.jpg", alt="Photo 1"),
+                ImageCarouselItemConfig(url="/img/photo2.jpg", alt="Photo 2"),
+            ],
+            autoplay=True,
+        )
+        """
+
+    carousel_items: list[ImageCarouselItemConfig] = field(
+        default_factory=list, metadata={"doc": _("List of image configurations.")}
+    )
+    autoplay: bool = field(default=False, metadata={"doc": _("Auto-advance slides.")})
+    show_dots: bool = field(default=True, metadata={"doc": _("Show pagination dots.")})
+    show_index: bool = field(default=False, metadata={"doc": _("Show current/total index.")})
+    items_per_slide: int = field(default=1, metadata={"doc": _("Images visible per slide.")})
 
 
 @dataclass
@@ -226,22 +235,25 @@ class ThreeDCarouselConfig:
         tilt: Camera tilt angle.
         face_camera: If True, items always face the camera.
 
-    Example:
-        >>> carousel_3d = ThreeDCarouselConfig(
-        ...     tag_id="product-showcase",
-        ...     carousel_items=[...],
-        ...     velocity=1000,
-        ...     tilt=15,
-        ...     face_camera=True,
-        ... )
-
     """
 
-    tag_id: str
-    carousel_items: list[CarouselItemConfig] = field(default_factory=list)
-    velocity: int = 1000
-    tilt: int = 0
-    face_camera: bool = False
+    __example__ = """
+        ThreeDCarouselConfig(
+            tag_id="product-showcase",
+            carousel_items=[...],
+            velocity=1000,
+            tilt=15,
+            face_camera=True,
+        )
+        """
+
+    tag_id: str = field(metadata={"doc": _("Unique ID for the carousel.")})
+    carousel_items: list[CarouselItemConfig] = field(
+        default_factory=list, metadata={"doc": _("List of items to display.")}
+    )
+    velocity: int = field(default=1000, metadata={"doc": _("Rotation speed.")})
+    tilt: int = field(default=0, metadata={"doc": _("Camera tilt angle.")})
+    face_camera: bool = field(default=False, metadata={"doc": _("If True, items always face the camera.")})
 
 
 @dataclass
@@ -258,25 +270,30 @@ class ToggleViewConfig:
         view_radio_config: Radio block config for view switching.
         current_view: Currently active view ('card', 'table', 'carousel').
 
-    Example:
-        >>> toggle = ToggleViewConfig(
-        ...     tag_id="products-view",
-        ...     cards=products_list,
-        ...     table_config=TableConfig(headers, rows),
-        ...     view_radio_config=RadioBlockConfig(
-        ...         name="view",
-        ...         items=[
-        ...             RadioItemConfig(tag_id="card", value="card", icon=IconConfig(name="cards")),
-        ...             RadioItemConfig(tag_id="table", value="table", icon=IconConfig(name="list")),
-        ...         ],
-        ...     ),
-        ...     current_view="card",
-        ... )
-
     """
 
-    tag_id: str
-    cards: list[CardConfig] = field(default_factory=list)
-    table_config: TableConfig | None = None
-    view_radio_config: RadioBlockConfig | None = None
-    current_view: Literal["card", "table", "carousel"] = "card"
+    __example__ = """
+        ToggleViewConfig(
+            tag_id="products-view",
+            cards=products_list,
+            table_config=TableConfig(headers, rows),
+            view_radio_config=RadioBlockConfig(
+                name="view",
+                items=[
+                    RadioItemConfig(tag_id="card", value="card", icon=IconConfig(name="cards")),
+                    RadioItemConfig(tag_id="table", value="table", icon=IconConfig(name="list")),
+                ],
+            ),
+            current_view="card",
+        )
+        """
+
+    tag_id: str = field(metadata={"doc": _("Unique ID for the component.")})
+    cards: list[CardConfig] = field(default_factory=list, metadata={"doc": _("The cards to be displayed.")})
+    table_config: TableConfig | None = field(default=None, metadata={"doc": _("Configuration of the table view.")})
+    view_radio_config: RadioBlockConfig | None = field(
+        default=None, metadata={"doc": _("Radio block config for view switching.")}
+    )
+    current_view: Literal["card", "table", "carousel"] = field(
+        default="card", metadata={"doc": _("Currently active view ('card', 'table', 'carousel').")}
+    )
