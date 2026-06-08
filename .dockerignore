@@ -56,6 +56,7 @@ ai-notes/
 .cursorrules
 .cursorignore
 .cursorindexingignore
+.playwright-cli/
 .github/copilot*
 copilot-instructions.md
 .aider*

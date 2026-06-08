@@ -171,6 +171,7 @@ ai-notes/
 copilot-instructions.md
 cython_debug/
 .act-cache/
+.playwright-cli/
 .xdg-cache/
 .home/
 
