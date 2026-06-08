@@ -1,7 +1,7 @@
 {% load i18n insight_tags %}
 
 {% if user.is_authenticated %}
-    <!-- User-Dropdown menu -->
+    {# User-Dropdown menu #}
     <div class="relative h-full">
         <button type="button" data-insight-dropdown="user-menu" class="btn-subtil rounded-full size-10">
             {{ user.get_username|default:''|slice:":1"|upper }}
@@ -33,8 +33,8 @@
             </form>
         </div>
     </div>
-{% elif show_login %}
-    <!-- Login btn -->
+{% else %}
+    {# Login btn #}
     <a href="{% url 'login' %}" class="btn btn-subtil btn-sm">
         {% icon name="user" size="s" %}
         <span class="lg:hidden xl:inline-block">{% trans "Login" %}</span>

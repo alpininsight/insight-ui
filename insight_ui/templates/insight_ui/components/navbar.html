@@ -14,7 +14,7 @@
   <div class="flex flex-wrap lg:flex-nowrap justify-between items-center gap-1 h-full">
     {# Brand Logo #}
     {% if navbar_config.brand %}
-      <a href="{{ navbar_config.brand.href }}" class="flex items-center text-xl font-bold text-primary" style="gap: {{ navbar_config.brand.gap|default:'0.5rem' }}">
+      <a href="{{ navbar_config.brand.request_url }}" class="flex items-center text-xl font-bold text-primary" style="gap: {{ navbar_config.brand.gap|default:'0.5rem' }}">
         {% if navbar_config.brand.logo %}
           {% logo config=navbar_config.brand.logo %}
         {% endif %}
@@ -108,7 +108,7 @@
           {% endif%}
           <div class="flex gap-2 h-10">
             {% if navbar_config.show_usermenu %}
-              {% include "insight_ui/components/user_dropdown.html" with user=options.user show_login=options.show_login user_dropdown_links=options.user_dropdown_links %}
+              {% include "insight_ui/components/user_dropdown.html" with user_dropdown_links=options.user_dropdown_links %}
             {% endif %}
             {% if navbar_config.show_language_selector %}
               {% include "insight_ui/components/toggle_language.html" %}
