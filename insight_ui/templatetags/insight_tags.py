@@ -197,6 +197,64 @@ def logo(  # noqa: PLR0913 (too many arguments)
     }
 
 
+@register.inclusion_tag("insight_ui/components/brand_lockup.html")
+def brand_lockup(  # noqa: PLR0913 (too many arguments)
+    primary_text: str = "Alpin Insight",
+    secondary_text: str = "Solutions",
+    logo_position: str = "start",
+    height: str = "1.75rem",
+    css_class: str | None = None,
+    config: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """
+    Render the brand lockup: the final-symbol logo plus a two-tone wordmark.
+
+    The wordmark's first run (``primary_text``) is painted in
+    ``--color-insight-primary`` and the second run (``secondary_text``) in
+    ``--color-insight-secondary``; the logo's wing and node use the same two
+    tokens. Because the colours are design tokens, the lockup follows the
+    active theme automatically — generic insight-ui renders it blue/teal,
+    while a brand-themed app (e.g. the Alpin Insight identity theme that
+    overrides the tokens to Navy ``#003153`` / Orange ``#ff6a00``) renders
+    it in brand colours with no extra markup.
+
+    Args:
+    ----
+        primary_text (str): First wordmark run. Brand name — not translated.
+            Defaults to "Alpin Insight".
+        secondary_text (str): Second wordmark run, accent-coloured. Defaults
+            to "Solutions".
+        logo_position (str): "start" (logo before the wordmark, left-aligned
+            group) or "end" (wordmark left-aligned, logo pushed to the far
+            edge). Anything else falls back to "start".
+        height (str): CSS height of the logo symbol. Width auto-scales.
+        css_class (str): Extra classes for the lockup root element.
+        config (Mapping): Alternative configuration; keys mirror the
+            parameters above ("class" is also accepted for css_class).
+
+    Returns:
+    -------
+        Context for ``insight_ui/components/brand_lockup.html``.
+
+    """
+    if config is not None:
+        primary_text = config.get("primary_text", primary_text)
+        secondary_text = config.get("secondary_text", secondary_text)
+        logo_position = config.get("logo_position", logo_position)
+        height = config.get("height", height)
+        css_class = config.get("css_class", config.get("class", css_class))
+
+    normalized_position = "end" if str(logo_position).strip().lower() == "end" else "start"
+
+    return {
+        "primary_text": primary_text,
+        "secondary_text": secondary_text,
+        "logo_position": normalized_position,
+        "height": height,
+        "css_class": css_class or "",
+    }
+
+
 @register.inclusion_tag("insight_ui/components/copyright_notice.html")
 def copyright_notice(  # noqa: PLR0913
     year: int | str | None = None,
