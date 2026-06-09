@@ -72,8 +72,7 @@ class NavbarTemplateTagTest(TemplateTagsTestCase):
         """
 
         rendered = self.render_template(
-            template_string,
-            context={"nav_config": nav_config, "user": self.user, "user_dropdown_links": []},
+            template_string, context={"nav_config": nav_config, "user": self.user, "user_dropdown_links": []}
         )
         soup = BeautifulSoup(rendered, "html.parser")
 
@@ -962,3 +961,55 @@ class SliderTemplateTagTest(TemplateTagsTestCase):
         assert input_element["max"] == "8"
         assert input_element["step"] == "2"
         assert not input_element.has_attr("disabled")
+
+
+class BrandLockupTemplateTagTest(TemplateTagsTestCase):
+    """Tests für den brand_lockup Template Tag."""
+
+    def test_brand_lockup_defaults(self) -> None:
+        """Default render carries the Alpin Insight wordmark + logo."""
+        rendered = self.render_template("{% load insight_tags %}{% brand_lockup %}")
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        # Two-tone wordmark, brand name not translated
+        assert "Alpin Insight" in rendered
+        assert "Solutions" in rendered
+
+        # Colours are the design tokens (theme-following), not hardcoded hex
+        assert "var(--color-insight-primary)" in rendered
+        assert "var(--color-insight-secondary)" in rendered
+
+        # Logo present and decorative (wordmark already read by AT)
+        svg = soup.find("svg")
+        assert svg is not None
+        assert svg.get("aria-hidden") == "true"
+
+    def test_brand_lockup_logo_position_start_is_default(self) -> None:
+        """Default position keeps the group left-aligned (no justify-between)."""
+        rendered = self.render_template("{% load insight_tags %}{% brand_lockup %}")
+        root = BeautifulSoup(rendered, "html.parser").find("div")
+        assert "justify-between" not in root.get("class", [])
+
+    def test_brand_lockup_logo_position_end_pushes_logo_to_edge(self) -> None:
+        """Position 'end' left-aligns the wordmark and pushes the logo out."""
+        rendered = self.render_template('{% load insight_tags %}{% brand_lockup logo_position="end" %}')
+        root = BeautifulSoup(rendered, "html.parser").find("div")
+        assert "justify-between" in root.get("class", [])
+
+    def test_brand_lockup_custom_text(self) -> None:
+        """primary_text / secondary_text override the wordmark runs."""
+        rendered = self.render_template(
+            '{% load insight_tags %}{% brand_lockup primary_text="Foo Bar" secondary_text="Cloud" %}'
+        )
+        assert "Foo Bar" in rendered
+        assert "Cloud" in rendered
+
+    def test_brand_lockup_config_dict(self) -> None:
+        """A config dict configures the lockup (mirrors the logo tag style)."""
+        rendered = self.render_template(
+            "{% load insight_tags %}{% brand_lockup config=cfg %}",
+            context={"cfg": {"logo_position": "end", "height": "2.5rem"}},
+        )
+        root = BeautifulSoup(rendered, "html.parser").find("div")
+        assert "justify-between" in root.get("class", [])
+        assert "height: 2.5rem" in rendered

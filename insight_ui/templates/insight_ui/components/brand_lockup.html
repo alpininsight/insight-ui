@@ -1,0 +1,33 @@
+{% load i18n %}
+{% comment %}
+  Brand lockup: final-symbol logo + two-tone wordmark.
+
+  Colours are inline `var(--color-insight-*)` references on purpose:
+  the SVG fills are presentation attributes (not Tailwind), and using the
+  same tokens for the wordmark keeps the lockup theme-following without
+  depending on a `text-insight-secondary` utility that isn't always
+  compiled. A brand-themed app that overrides the tokens (Navy/Orange)
+  gets brand colours with zero extra markup.
+
+  Wordmark text is a brand name and is intentionally not wrapped in
+  {% trans %}. The logo is decorative (aria-hidden) because the wordmark
+  text is already read by assistive tech.
+{% endcomment %}
+<div class="flex items-center gap-3 {% if logo_position == 'end' %}justify-between{% endif %} {{ css_class }}">
+    {% if logo_position == 'start' %}
+        <svg viewBox="0 0 240 120" class="shrink-0" style="height: {{ height }}; width: auto;" aria-hidden="true">
+            <path fill="var(--color-insight-primary)" d="M20 90 C50 42 61 35 100 32 L220 10 L122 92 C109 103 76 75 20 90Z"></path>
+            <circle cx="196" cy="84" r="14" fill="var(--color-insight-secondary)"></circle>
+        </svg>
+    {% endif %}
+    <span class="text-base font-bold tracking-tight whitespace-nowrap">
+        <span style="color: var(--color-insight-primary)">{{ primary_text }}</span>
+        <span style="color: var(--color-insight-secondary)">{{ secondary_text }}</span>
+    </span>
+    {% if logo_position == 'end' %}
+        <svg viewBox="0 0 240 120" class="shrink-0" style="height: {{ height }}; width: auto;" aria-hidden="true">
+            <path fill="var(--color-insight-primary)" d="M20 90 C50 42 61 35 100 32 L220 10 L122 92 C109 103 76 75 20 90Z"></path>
+            <circle cx="196" cy="84" r="14" fill="var(--color-insight-secondary)"></circle>
+        </svg>
+    {% endif %}
+</div>
