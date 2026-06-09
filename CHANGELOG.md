@@ -146,6 +146,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Standardize the JavaScript lookup attribute naming convention 
 - Enhancements 
 - **static:** Publish minified assets via cdn 
+- **component:** Add brand_lockup — final-symbol logo + two-tone wordmark 
 
 ### Miscellaneous
 
