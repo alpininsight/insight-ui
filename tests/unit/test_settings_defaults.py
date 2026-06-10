@@ -6,10 +6,11 @@ in development, leading to WhiteNoise manifest errors and 500 responses.
 """
 
 from pathlib import Path
+from typing import Any
 
 import pytest
 from core.settings import get_secret_key
-from decouple import UndefinedValueError, config
+from decouple import UndefinedValueError, config, config as real_config
 from django.conf import settings
 
 
@@ -24,15 +25,26 @@ class TestSettingsDefaults:
 
     def test_secret_key_requires_explicit_value_in_prod(self, monkeypatch: pytest.MonkeyPatch) -> None:
         """Production config should fail fast if SECRET_KEY is missing."""
-        monkeypatch.delenv("SECRET_KEY", raising=False)
 
+        def mock_config(key: str, **kwargs) -> dict[str, Any]:
+            if key == "SECRET_KEY" and "default" not in kwargs:
+                raise UndefinedValueError(key)
+            return real_config(key, **kwargs)
+
+        monkeypatch.setattr("core.settings.config", mock_config)
         with pytest.raises(UndefinedValueError):
             get_secret_key(is_prod=True)
 
     def test_secret_key_keeps_dev_fallback_outside_prod(self, monkeypatch: pytest.MonkeyPatch) -> None:
         """Development config may still use the standard local fallback."""
-        monkeypatch.delenv("SECRET_KEY", raising=False)
 
+        def mock_config(key: str, **kwargs) -> dict[str, Any]:
+            if key == "SECRET_KEY":
+                # Simulate missing SECRET_KEY - use default if provided
+                return kwargs.get("default", real_config(key, **kwargs))
+            return real_config(key, **kwargs)
+
+        monkeypatch.setattr("core.settings.config", mock_config)
         assert get_secret_key(is_prod=False) == "django-insecure-test-key-not-for-production"
 
     def test_allowed_hosts_has_default(self) -> None:
