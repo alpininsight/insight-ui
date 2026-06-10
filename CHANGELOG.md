@@ -147,6 +147,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Enhancements 
 - **static:** Publish minified assets via cdn 
 - **component:** Add brand_lockup — final-symbol logo + two-tone wordmark 
+- **brand_lockup:** Add per-environment wing variant param 
 
 ### Miscellaneous
 
