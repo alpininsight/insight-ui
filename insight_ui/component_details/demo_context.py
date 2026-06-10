@@ -13,11 +13,13 @@ from insight_ui.configs import (
     AccordionItemConfig,
     ActionConfig,
     AppCardConfig,
+    BadgeConfig,
     BreadcrumbItemConfig,
     BulletPointItemConfig,
     CardCarouselConfig,
     CardConfig,
     ChartConfig,
+    ChartDatasetConfig,
     CheckboxConfig,
     CheckboxGroupConfig,
     CheckboxItemConfig,
@@ -34,6 +36,7 @@ from insight_ui.configs import (
     FormFieldConfig,
     GenericFilterConfig,
     GeoMapConfig,
+    HeroConfig,
     HtmxConfig,
     IconConfig,
     ImageCarouselConfig,
@@ -47,7 +50,9 @@ from insight_ui.configs import (
     NavbarBrandConfig,
     NavbarConfig,
     NavbarLinkConfig,
+    PaginationConfig,
     PaginationIppConfig,
+    QueryBuilderFieldConfig,
     RadioBlockConfig,
     RadioGroupConfig,
     RadioItemConfig,
@@ -65,8 +70,6 @@ from insight_ui.configs import (
     ToggleConfig,
     ToggleViewConfig,
 )
-from insight_ui.configs.filter import QueryBuilderFieldConfig
-from insight_ui.configs.layout import BadgeConfig, HeroConfig
 from insight_ui.demo_utils import generate_payload, map_payload_to_cards
 from insight_ui.utils.pagination import get_page
 
@@ -783,16 +786,19 @@ def get_charts_context() -> dict:
     """Serve data for charts detailpage."""
     return {
         "chart_config": ChartConfig(
-            _("Chart Example"),
-            ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-            ["Email", "Union Ads", "Video Ads", "Direct", "Search Engine"],
-            [
-                [100, 302, 301, 334, 390, 330, 320],
-                [320, 132, 101, 134, 90, 230, 210],
-                [220, 182, 191, 234, 290, 330, 310],
-                [150, 212, 201, 154, 190, 330, 410],
-                [820, 832, 901, 934, 1290, 1330, 1320],
-            ],
+            "chart",
+            ChartDatasetConfig(
+                _("Chart Example"),
+                ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+                ["Email", "Union Ads", "Video Ads", "Direct", "Search Engine"],
+                [
+                    [100, 302, 301, 334, 390, 330, 320],
+                    [320, 132, 101, 134, 90, 230, 210],
+                    [220, 182, 191, 234, 290, 330, 310],
+                    [150, 212, 201, 154, 190, 330, 410],
+                    [820, 832, 901, 934, 1290, 1330, 1320],
+                ],
+            ),
         )
     }
 
@@ -825,7 +831,7 @@ def get_pagination_context() -> dict:
     page_obj, surrounding_pages = get_page(generate_payload(500))
     ipp_config = PaginationIppConfig("ipp", _("Items per page"), options=[10, 20, 30])
 
-    return {"start_page": page_obj, "surrounding_pages": surrounding_pages, "ipp_config": ipp_config}
+    return {"pagination_config": PaginationConfig(reverse("pagination"), page_obj, surrounding_pages, ipp_config)}
 
 
 @register_demo_context(Component.TABLE)

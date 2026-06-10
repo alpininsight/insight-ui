@@ -110,7 +110,7 @@ def get_navbar_usage_context() -> dict[str, str]:
         {% load insight_tags %}
 
         {% block navbar %}
-            {% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links show_login=True %}
+            {% navbar config=nav_config user_dropdown_links=user_dropdown_links %}
         {% endblock navbar %}
         """,
     }
@@ -542,16 +542,10 @@ def get_copyright_notice_usage_context() -> dict[str, str]:
 
         {% copyright_notice config=copyright %}
 
+        <!-- or -->
+
         {% copyright_notice year=2026 holder="Alpin Insight Solutions GmbH & Co. KG" source_label="Open Source" license_text="AGPL-3.0" %}
-        """,
-        "usage_notes_end": [
-            {
-                "type": "info",
-                "message": _(
-                    "Use `holder` for new configuration. Existing footer data using `app_name` still works as a backwards-compatible fallback."
-                ),
-            }
-        ],
+        """
     }
 
 
@@ -578,22 +572,14 @@ def get_logo_usage_context() -> dict[str, str]:
         {% logo config=logo_svg %}
 
         {# Bitmap image #}
-        {% logo logo_type="image" url="img/company-logo.png" alt="Company" height="3rem" %}
+        {% logo url="img/company-logo.png" alt="Company" height="3rem" %}
 
         {# Icon logo using the Insight UI icon set #}
-        {% logo logo_type="icon" icon_name="sparkles" icon_size="xl" alt="Product mark" %}
+        {% logo icon_name="sparkles" icon_size="xl" alt="Product mark" %}
 
         {# Theme-aware SVG asset #}
-        {% logo logo_type="svg" url="svg/logo-light.svg" url_dark="svg/logo-dark.svg" alt="Company" %}
-        """,
-        "usage_notes_end": [
-            {
-                "type": "info",
-                "message": _(
-                    "For SVG logos, prefer `type='svg'` with a static asset path. Do not paste raw SVG markup into templates unless a component explicitly requires inline SVG behavior."
-                ),
-            }
-        ],
+        {% logo url="svg/logo-light.svg" url_dark="svg/logo-dark.svg" alt="Company" %}
+        """
     }
 
 

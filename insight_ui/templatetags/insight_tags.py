@@ -18,14 +18,22 @@ from markdown import markdown
 
 from insight_ui.config import get_config
 from insight_ui.configs import (
+    AccordionConfig,
+    ActionConfig,
     AlertConfig,
     AppCardConfig,
     ArticleConfig,
+    BadgeConfig,
     BreadcrumbItemConfig,
+    BreadcrumbsConfig,
     BulletPointItemConfig,
+    BulletPointListConfig,
     CardCarouselConfig,
     CardConfig,
+    CarouselItemConfig,
     ChartConfig,
+    ChartDatasetConfig,
+    ChatConfig,
     CheckboxConfig,
     CheckboxGroupConfig,
     CopyrightNoticeConfig,
@@ -37,10 +45,15 @@ from insight_ui.configs import (
     FormFieldConfig,
     GenericFilterConfig,
     GeoMapConfig,
+    GeoMapDatasetConfig,
     HeroConfig,
+    HtmxConfig,
     IconConfig,
     ImageCarouselConfig,
+    ImageCarouselItemConfig,
+    ImageConfig,
     InfiniteScrollConfig,
+    InfoboxConfig,
     InputFieldConfig,
     LiveContentConfig,
     LogoConfig,
@@ -49,14 +62,19 @@ from insight_ui.configs import (
     MultiselectConfig,
     NavbarConfig,
     PageHeaderConfig,
+    PaginationConfig,
     PaginationIppConfig,
+    QueryBuilderConfig,
+    QueryBuilderFieldConfig,
     RadioBlockConfig,
     RadioGroupConfig,
     RadioItemConfig,
     SearchBarConfig,
     SelectConfig,
     SidebarConfig,
+    SidebarDataConfig,
     SliderConfig,
+    StepBarConfig,
     StepBarItemConfig,
     TableConfig,
     TabsConfig,
@@ -66,12 +84,6 @@ from insight_ui.configs import (
     ToggleViewConfig,
     WebSocketConfig,
 )
-from insight_ui.configs.base import ActionConfig, HtmxConfig, ImageConfig
-from insight_ui.configs.card import CarouselItemConfig, ImageCarouselItemConfig
-from insight_ui.configs.filter import QueryBuilderFieldConfig
-from insight_ui.configs.layout import BadgeConfig
-from insight_ui.configs.navigation import AccordionConfig, SidebarDataConfig
-from insight_ui.configs.utils import GeoMapDatasetConfig, InfoboxConfig
 from insight_ui.utils.diff import file_template, styles
 
 register = template.Library()
@@ -253,7 +265,7 @@ def hero(
 def navbar(context: dict[str, Any], config: NavbarConfig, **kwargs: JsonValue) -> dict[str, Any]:
     """Render a configurable navigation bar."""
     return {
-        "user": context["user"],
+        "user": context.get("user"),
         "navbar_config": config,
         "fixed": get_config("navbar_fixed"),
         "options": {**kwargs},
@@ -282,15 +294,21 @@ def footer(config: FooterConfig) -> dict[str, Any]:
 
 
 @register.inclusion_tag("insight_ui/components/breadcrumbs.html")
-def breadcrumbs(items: list[BreadcrumbItemConfig]) -> dict[str, Any]:
+def breadcrumbs(
+    config: BreadcrumbsConfig | None = None, *, items: list[BreadcrumbItemConfig] | None | _Unset = UNSET
+) -> dict[str, Any]:
     """Render breadcrumb navigation."""
-    return {"items": items}
+    config = build_config(BreadcrumbsConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"items": config.items, "htmx": config.htmx}
 
 
 @register.inclusion_tag("insight_ui/components/step_bar.html")
-def step_bar(items: list[StepBarItemConfig]) -> dict[str, Any]:
+def step_bar(
+    config: StepBarConfig | None = None, *, items: list[StepBarItemConfig] | None | _Unset = UNSET
+) -> dict[str, Any]:
     """Render a graphical representation of process steps."""
-    return {"items": items}
+    config = build_config(StepBarConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"items": config.items}
 
 
 @register.inclusion_tag("insight_ui/components/minimal_step_bar.html")
@@ -321,9 +339,12 @@ def minimal_step_bar(
 
 
 @register.inclusion_tag("insight_ui/components/bullet_point_list.html")
-def bullet_point_list(items: list[BulletPointItemConfig]) -> dict[str, Any]:
+def bullet_point_list(
+    config: BulletPointListConfig | None = None, *, items: list[BulletPointItemConfig] | None | _Unset = UNSET
+) -> dict[str, Any]:
     """Render a graphical representation of a bullet point list."""
-    return {"items": items}
+    config = build_config(BulletPointListConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"items": config.items, "htmx": config.htmx}
 
 
 @register.inclusion_tag("insight_ui/components/accordion.html")
@@ -538,9 +559,10 @@ def multiselect(
 
 
 @register.inclusion_tag("insight_ui/components/chat.html")
-def chat(request_url: str) -> dict[str, Any]:
+def chat(config: ChatConfig | None = None, *, request_url: str | _Unset = UNSET) -> dict[str, Any]:
     """Render a chat with an input line and a place for the response."""
-    return {"request_url": request_url}
+    config = build_config(ChatConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"request_url": config.request_url}
 
 
 # =============================================================
@@ -682,9 +704,10 @@ def logo(
     width: str | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a brand logo as an image, SVG asset, or Insight UI icon."""
-    icon = None
-    if config is None:
-        icon = IconConfig(icon_name, icon_size) if icon_name else None
+    # Only override icon if icon_name was explicitly provided
+    icon: IconConfig | None | _Unset = UNSET
+    if icon_name is not UNSET:
+        icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "md") if icon_name else None
 
     config = build_config(
         LogoConfig,
@@ -737,41 +760,29 @@ def geo_map(
 
 
 @register.inclusion_tag("insight_ui/components/charts/bar_chart.html")
-def bar_chart(chart_id: str, chart: ChartConfig, chart_height: int = 24) -> dict[str, Any]:
-    """
-    Render a bar chart with Apache ECharts.
-
-    Args:
-    ----
-        chart_id: A unique ID for the chart.
-        chart: Contains the information and data for the chart.
-        chart_height: The height of the chart in 'rem'.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {"chart_id": chart_id, "chart": chart, "chart_height": chart_height}
+def bar_chart(
+    config: ChartConfig | None = None,
+    *,
+    tag_id: str | _Unset = UNSET,
+    dataset: ChartDatasetConfig | None | _Unset = UNSET,
+    chart_height: int | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a bar chart with Apache ECharts."""
+    config = build_config(ChartConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"chart_config": config}
 
 
 @register.inclusion_tag("insight_ui/components/charts/line_chart.html")
-def line_chart(chart_id: str, chart: ChartConfig, chart_height: int = 24) -> dict[str, Any]:
-    """
-    Render a line chart with Apache ECharts.
-
-    Args:
-    ----
-        chart_id: A unique ID for the chart.
-        chart: Contains the information and data for the chart.
-        chart_height: The height of the chart in 'rem'.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {"chart_id": chart_id, "chart": chart, "chart_height": chart_height}
+def line_chart(
+    config: ChartConfig | None = None,
+    *,
+    tag_id: str | _Unset = UNSET,
+    dataset: ChartDatasetConfig | None | _Unset = UNSET,
+    chart_height: int | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a line chart with Apache ECharts."""
+    config = build_config(ChartConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"chart_config": config}
 
 
 @register.inclusion_tag("insight_ui/components/live_content.html")
@@ -829,27 +840,16 @@ def infinite_scroll(
 
 @register.inclusion_tag("insight_ui/components/pagination.html")
 def pagination(
-    current_page: Page, surrounding_pages: list[int], ipp_config: PaginationIppConfig | None = None
+    config: PaginationConfig | None = None,
+    *,
+    request_url: str | _Unset = UNSET,
+    current_page: Page | _Unset = UNSET,
+    surrounding_pages: list[int] | _Unset = UNSET,
+    ipp_config: PaginationIppConfig | None | _Unset = UNSET,
 ) -> dict[str, Any]:
-    """
-    Render pagination with items per page selection.
-
-    Args:
-    ----
-        current_page: Django pagination Page object for the current page.
-        surrounding_pages: A list of neighboring page numbers.
-        ipp_config: Configuration for the items-per-page selector.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {
-        "current_page": current_page,
-        "surrounding_pages": surrounding_pages,
-        "ipp_config": ipp_config if ipp_config else {},
-    }
+    """Render pagination with items per page selection."""
+    config = build_config(PaginationConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"pagination_config": config}
 
 
 @register.inclusion_tag("insight_ui/components/table.html")
@@ -894,20 +894,12 @@ def generic_filter(
 
 
 @register.inclusion_tag("insight_ui/components/search_query_builder/sq_builder.html")
-def query_builder(model_fields: list[QueryBuilderFieldConfig]) -> dict[str, Any]:
-    """
-    Render a filter for constructing custom search queries.
-
-    Args:
-    ----
-        model_fields: A list of model fields with possible operators.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {"model_fields": model_fields}
+def query_builder(
+    config: QueryBuilderConfig | None = None, *, model_fields: list[QueryBuilderFieldConfig] | None | _Unset = UNSET
+) -> dict[str, Any]:
+    """Render a filter for constructing custom search queries."""
+    config = build_config(QueryBuilderConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"model_fields": config.model_fields}
 
 
 # =============================================================

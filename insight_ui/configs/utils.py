@@ -171,6 +171,10 @@ class GeoMapMarkerConfig:
 
     """
 
+    __example__ = """
+        GeoMapMarkerConfig(title="HQ", lat=52.52, lon=13.405)
+        """
+
     title: str = field(metadata={"doc": _("Marker title/label.")})
     lat: float = field(metadata={"doc": _("Latitude coordinate.")})
     lon: float = field(metadata={"doc": _("Longitude coordinate.")})
@@ -266,14 +270,16 @@ class ChartSeriesConfig:
 
     """
 
+    # NOTE: This config is currently no in use!
+
     name: str = field(metadata={"doc": _("Series name (shown in legend).")})
     data: list[int | float] = field(metadata={"doc": _("Data points for this series.")})
 
 
 @dataclass
-class ChartConfig:
+class ChartDatasetConfig:
     """
-    Configuration for chart components (bar_chart, line_chart).
+    Configuration for chart data.
 
     Attributes:
         title: Chart title.
@@ -284,7 +290,7 @@ class ChartConfig:
     """
 
     __example__ = """
-        ChartConfig(
+        ChartDatasetConfig(
             title="Weekly Sales",
             x_axis_legend=["Mon", "Tue", "Wed", "Thu", "Fri"],
             series=["Online", "In-Store"],
@@ -301,6 +307,40 @@ class ChartConfig:
     data: list[list[int | float]] = field(
         default_factory=list, metadata={"doc": _("Data for each series (list of lists).")}
     )
+
+
+@dataclass
+class ChartConfig:
+    """
+    Configuration for chart components (e.g. bar_chart, line_chart).
+
+    Renders a chart with Apache ECharts.
+
+    Attributes:
+        tag_id: Unique ID for the chart element.
+        dataset: Chart data and configuration.
+        chart_height: Height of the chart in 'rem'.
+
+    """
+
+    __example__ = """
+        ChartConfig(
+            tag_id="sales-chart",
+            dataset=ChartDatasetConfig(
+                title="Monthly Sales",
+                x_axis_legend=["Jan", "Feb", "Mar"],
+                series=["Product A", "Product B"],
+                data=[[100, 150, 200], [80, 120, 160]],
+            ),
+            chart_height=24,
+        )
+        """
+
+    tag_id: str = field(metadata={"doc": _("Unique ID for the chart element.")})
+    dataset: ChartDatasetConfig = field(
+        default_factory=ChartDatasetConfig, metadata={"doc": _("Chart data and configuration.")}
+    )
+    chart_height: int = field(default=24, metadata={"doc": _("Height of the chart in 'rem'.")})
 
 
 @dataclass

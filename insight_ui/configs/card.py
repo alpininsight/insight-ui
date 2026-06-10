@@ -128,6 +128,10 @@ class CarouselItemConfig:
 
     """
 
+    __example__ = """
+        CarouselItemConfig(title="Item 1", content="Description 1")
+        """
+
     title: str = field(default="", metadata={"doc": _("Item title.")})
     content: str = field(default="", metadata={"doc": _("Item content/description.")})
     image: ImageConfig | None = field(default=None, metadata={"doc": _("Optional image configuration.")})
@@ -180,6 +184,10 @@ class ImageCarouselItemConfig:
         description: Optional caption/description.
 
     """
+
+    __example__ = """
+        ImageCarouselItemConfig(url="/img/photo1.jpg", alt="Photo 1")
+        """
 
     url: str = field(metadata={"doc": _("Image URL.")})
     alt: str = field(default="", metadata={"doc": _("Image alt text.")})

@@ -33,20 +33,12 @@ class FormFieldConfig:
     """
 
     __example__ = """
-        [
-            FormFieldConfig(
-                input_type="email",
-                name="email",
-                label="E-Mail",
-                required=True,
-            ),
-            FormFieldConfig(
-                input_type="textarea",
-                name="bio",
-                label="Biography",
-                rows=4,
-            ),
-        ]
+        FormFieldConfig(
+            input_type="email",
+            name="email",
+            label="E-Mail",
+            required=True,
+        )
         """
 
     input_type: Literal["text", "password", "email", "number", "tel", "url", "date", "textarea", "select"] = field(

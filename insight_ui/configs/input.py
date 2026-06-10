@@ -16,6 +16,11 @@ class InputFieldConfig(BaseFormFieldConfig):
     Renders any HTML <input> element with proper styling and accessibility.
 
     Attributes:
+        tag_id: Optional, unique tag ID for identifying the element in JavaScript.
+        name: Required for a `<form>`, as the name of the request parameter.
+        label: A text label displayed above the field.
+        disabled: **True** if the field should be disabled.
+        required: **True** if the field must be filled in.
         input_type: The type of the input field, e.g.: 'text', 'password', 'date', etc.
         placeholder: Placeholder text, displayed in the field as long as it has not been selected.
         value: The value of the input field.
@@ -80,6 +85,11 @@ class TextareaConfig(BaseFormFieldConfig):
     Renders a multi-line text input field.
 
     Attributes:
+        tag_id: Optional, unique tag ID for identifying the element in JavaScript.
+        name: Required for a `<form>`, as the name of the request parameter.
+        label: A text label displayed above the field.
+        disabled: **True** if the field should be disabled.
+        required: **True** if the field must be filled in.
         placeholder: Placeholder text, displayed in the field as long as it has not been selected.
         value: The value of the input field.
         rows: Determines the number of lines.
@@ -113,6 +123,11 @@ class CheckboxConfig(BaseFormFieldConfig):
     Renders a single checkbox with label.
 
     Attributes:
+        tag_id: Optional, unique tag ID for identifying the element in JavaScript.
+        name: Required for a `<form>`, as the name of the request parameter.
+        label: A text label displayed above the field.
+        disabled: **True** if the field should be disabled.
+        required: **True** if the field must be filled in.
         value: The value of the checkbox (this is not the state, see 'checked' for that).
         checked: **True** if the checkbox should be selected.
 
@@ -148,7 +163,7 @@ class CheckboxItemConfig:
     """
 
     __example__ = """
-        CheckboxItemConfig(tag_id="en", value="english", label="English"),
+        CheckboxItemConfig(tag_id="en", value="english", label="English")
         """
 
     tag_id: str = field(metadata={"doc": _("Unique ID for this checkbox.")})
@@ -216,7 +231,7 @@ class DropdownItemConfig:
     """
 
     __example__ = """
-        DropdownItemConfig(text="Profile", request_url="/profile/", icon=IconConfig(name="user")),
+        DropdownItemConfig(text="Profile", request_url="/profile/", icon=IconConfig(name="user"))
         """
 
     text: str = field(metadata={"doc": _("Label of the dropdown element.")})
@@ -405,6 +420,11 @@ class SliderConfig(BaseFormFieldConfig):
     Renders a range slider for selecting numeric values.
 
     Attributes:
+        tag_id: Optional, unique tag ID for identifying the element in JavaScript.
+        name: Required for a `<form>`, as the name of the request parameter.
+        label: A text label displayed above the field.
+        disabled: **True** if the field should be disabled.
+        required: **True** if the field must be filled in.
         value: The value of the range slider (single-thumb mode only).
         minimum: Smallest configurable value of the range slider.
         maximum: Largest configurable value of the range slider.
@@ -487,6 +507,11 @@ class ToggleConfig(BaseFormFieldConfig):
     Renders a toggle button or switch.
 
     Attributes:
+        tag_id: Optional, unique tag ID for identifying the element in JavaScript.
+        name: Required for a `<form>`, as the name of the request parameter.
+        label: A text label displayed above the field.
+        disabled: **True** if the field should be disabled.
+        required: **True** if the field must be filled in.
         value: The value of the toggle button.
         icon: Optional icon configuration.
         checked: **True** if the toggle button should be selected.
@@ -524,6 +549,11 @@ class SelectConfig(BaseFormFieldConfig):
     Renders a dropdown selection box.
 
     Attributes:
+        tag_id: Optional, unique tag ID for identifying the element in JavaScript.
+        name: Required for a `<form>`, as the name of the request parameter.
+        label: A text label displayed above the field.
+        disabled: **True** if the field should be disabled.
+        required: **True** if the field must be filled in.
         explanation: A brief description of the filter that appears in a tooltip.
         options: List of values that can be selected.
         selected_option: Value (the key value, if the options were passed as a dict) of the currently selected option.
@@ -564,6 +594,11 @@ class MultiselectConfig(BaseFormFieldConfig):
     Renders a selection box allowing multiple selections with search.
 
     Attributes:
+        tag_id: Optional, unique tag ID for identifying the element in JavaScript.
+        name: Required for a `<form>`, as the name of the request parameter.
+        label: A text label displayed above the field.
+        disabled: **True** if the field should be disabled.
+        required: **True** if the field must be filled in.
         maximum: Maximum number of selectable options.
         show_buttons: Show additional buttons for 'Select All' and 'Deselect All'.
         options: List of values that can be selected.
@@ -595,3 +630,22 @@ class MultiselectConfig(BaseFormFieldConfig):
     selected_options: list[str] = field(
         default_factory=list, metadata={"doc": _("List of currently selected options.")}
     )
+
+
+@dataclass
+class ChatConfig:
+    """
+    Configuration for the chat component.
+
+    Renders a chat interface with an input line and a response container.
+
+    Attributes:
+        request_url: URL for sending chat messages via HTMX POST.
+
+    """
+
+    __example__ = """
+        ChatConfig(request_url=reverse("chat_api"))
+        """
+
+    request_url: str = field(metadata={"doc": _("URL for sending chat messages via HTMX POST.")})

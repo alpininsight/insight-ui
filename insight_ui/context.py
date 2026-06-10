@@ -11,9 +11,12 @@ from insight_ui.component_details.demo_context import get_component_demo_context
 from insight_ui.component_details.parameter_context import ParameterDetails
 from insight_ui.configs import (
     CopyrightNoticeConfig,
+    DropdownConfig,
+    DropdownItemConfig,
     FooterConfig,
     FooterContactConfig,
     FooterDescriptionConfig,
+    HtmxConfig,
     IconConfig,
     LogoConfig,
     NavbarBrandConfig,
@@ -23,8 +26,6 @@ from insight_ui.configs import (
     SidebarItemConfig,
     TableConfig,
 )
-from insight_ui.configs.base import HtmxConfig
-from insight_ui.configs.input import DropdownConfig, DropdownItemConfig
 
 
 def get_main_page_links() -> list[dict[str, Any]]:

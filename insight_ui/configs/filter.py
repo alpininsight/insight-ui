@@ -21,6 +21,13 @@ class SearchBarConfig:
 
     """
 
+    __example__ = """
+        SearchBarConfig(
+            request_url="/search_products/",
+            simple=False,
+        )
+        """
+
     request_url: str = dc_field(metadata={"doc": _("URL for search requests.")})
     simple: bool = dc_field(default=False, metadata={"doc": _("If True, render compact/minimal style.")})
     search_query: str = dc_field(default="", metadata={"doc": _("Initial search query value.")})
@@ -43,6 +50,14 @@ class FilterConfig:
         selected_option: Currently selected value.
 
     """
+
+    __example__ = """
+        FilterConfig(
+            name="status",
+            label="Status",
+            options={"": "All", "active": "Active", "inactive": "Inactive"},
+        )
+        """
 
     name: str = dc_field(metadata={"doc": _("Filter field name.")})
     label: str = dc_field(default="", metadata={"doc": _("Filter label.")})
@@ -131,3 +146,39 @@ class QueryBuilderFieldConfig:
         default_factory=dict, metadata={"doc": _("Available operations (maps operation→label).")}
     )
     values: dict[str, str] = dc_field(default_factory=dict, metadata={"doc": _("Predefined values (optional).")})
+
+
+@dataclass
+class QueryBuilderConfig:
+    """
+    Configuration for the query_builder component.
+
+    Renders a filter for constructing custom search queries.
+
+    Attributes:
+        model_fields: List of model fields with possible operators.
+
+    """
+
+    __example__ = """
+        QueryBuilderConfig(
+            model_fields=[
+                QueryBuilderFieldConfig(
+                    field="title",
+                    label="Title",
+                    type="text",
+                    operations={"iexact": "is exact", "icontains": "contains"},
+                ),
+                QueryBuilderFieldConfig(
+                    field="created_at",
+                    label="Created At",
+                    type="date",
+                    operations={"gte": "after", "lte": "before"},
+                ),
+            ],
+        )
+        """
+
+    model_fields: list[QueryBuilderFieldConfig] = dc_field(
+        default_factory=list, metadata={"doc": _("List of model fields with possible operators.")}
+    )

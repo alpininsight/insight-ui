@@ -2,28 +2,13 @@
 
 {% if component.value == "page_header" %}
     {% page_header title=_("Example Page") description=_("This is an example description for the page header component.") %}
-{% elif component.value == "heading_decoration" %}
-    <div class="space-y-8">
-        <div class="space-y-2">
-            <p class="font-semibold text-secondary">Waves</p>
-            {% heading_decoration %}
-        </div>
-        <div class="space-y-2">
-            <p class="font-semibold text-secondary">Gradient</p>
-            {% heading_decoration style="gradient" height=64 %}
-        </div>
-        <div class="space-y-2">
-            <p class="font-semibold text-secondary">Image</p>
-            {% heading_decoration style="image" image_url=heading_decoration_image_url height=120 %}
-        </div>
-    </div>
 {% elif component.value == "article" %}
     {% article title=_("Newsletter") columns=3 content="<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>" %}
 {% elif component.value == "hero" %}
     {% hero config=hero_config %}
 {% elif component.value == "navbar" %}
     <div class="relative bg-gray-50 dark:bg-gray-700 h-80 w-full">
-        {% navbar config=demo_nav_config user=user user_dropdown_links=user_dropdown_links show_login=True %}
+        {% navbar config=demo_nav_config user_dropdown_links=user_dropdown_links %}
         <script>
             // Demo fix
             var nav = document.currentScript.parentElement.querySelector("nav");
@@ -233,15 +218,15 @@
     </div>
 {% elif component.value == "corner_ribbon" %}
     <div class="h-64">
-        {% corner_ribbon text="New Feature" %}
+        {% corner_ribbon text="New Version" position="bottom-right" %}
     </div>
 {% elif component.value == "progress_bar" %}
     {% include "insight_ui/components/progress_bar.html" %}
 {% elif component.value == "geo_map" %}
     {% geo_map config=geo_map_config map_height=40 %}
 {% elif component.value == "chart" %}
-    {% bar_chart chart=chart_config chart_id="bar_chart_example" %}
-    {% line_chart chart=chart_config chart_id="line_chart_example" %}
+    {% bar_chart config=chart_config tag_id="bar_chart_example" %}
+    {% line_chart config=chart_config tag_id="line_chart_example" %}
 {% elif component.value == "live_content" %}
     {% live_content tag_id="live-content" request_url="/api/live-data/" interval=10 %}
 {% elif component.value == "web_socket" %}
@@ -251,7 +236,7 @@
     {% infinite_scroll config=infinite_scroll_config %}
 {% elif component.value == "pagination" %}
     <div id="list-container">
-        {% pagination current_page=start_page surrounding_pages=surrounding_pages ipp_config=ipp_config %}
+        {% pagination config=pagination_config %}
     </div>
 {% elif component.value == "table" %}
     {% table config=table_config %}
@@ -270,7 +255,7 @@
 {% elif component.value == "card" %}
     <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
         {% for card in cards_config %}
-            {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
+            {% card config=card %}
         {% endfor %}
     </div>
 {% elif component.value == "app_card" %}

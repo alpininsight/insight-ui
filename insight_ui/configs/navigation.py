@@ -26,6 +26,14 @@ class NavbarBrandConfig:
 
     """
 
+    __example__ = """
+        NavbarBrandConfig(
+            title="My App",
+            request_url=reverse("index"),
+            logo=LogoConfig(url="img/logo.svg", height="2rem"),
+        )
+        """
+
     title: str = field(default="", metadata={"doc": _("The title of the application.")})
     request_url: str = field(
         default="", metadata={"doc": _("Name of the URL to be called when clicking on the title.")}
@@ -53,6 +61,10 @@ class NavbarLinkConfig:
         dropdown: Configuration of a dropdown menu.
 
     """
+
+    __example__ = """
+        NavbarLinkConfig(text="Home", url=reverse("index"))
+        """
 
     text: str = field(metadata={"doc": _("Label of the link.")})
     url: str = field(
@@ -136,6 +148,10 @@ class SidebarItemConfig:
 
     """
 
+    __example__ = """
+        SidebarItemConfig(text="Profile", request_url=reverse("profile"))
+        """
+
     text: str = field(metadata={"doc": _("Label of the item.")})
     request_url: str = field(default="", metadata={"doc": _("The URL to be called when clicking on the item.")})
     icon: IconConfig | None = field(default=None, metadata={"doc": _("An optional icon displayed before the text.")})
@@ -155,6 +171,16 @@ class SidebarCategoryConfig:
 
     """
 
+    __example__ = """
+        SidebarCategoryConfig(
+            caption="Account",
+            items=[
+                SidebarItemConfig(text="Profile", request_url=reverse("profile")),
+                SidebarItemConfig(text="Security", request_url=reverse("security")),
+            ],
+        )
+        """
+
     caption: str = field(metadata={"doc": _("Category header text.")})
     icon: IconConfig | None = field(default=None, metadata={"doc": _("Optional category icon.")})
     items: list[SidebarItemConfig] = field(default_factory=list, metadata={"doc": _("List of items in this category.")})
@@ -172,6 +198,21 @@ class SidebarDataConfig:
         categories: List of navigation categories.
 
     """
+
+    __example__ = """
+        SidebarDataConfig(
+            title="Settings",
+            categories=[
+                SidebarCategoryConfig(
+                    caption="Account",
+                    items=[
+                        SidebarItemConfig(text="Profile", request_url=reverse("profile")),
+                        SidebarItemConfig(text="Security", request_url=reverse("security")),
+                    ],
+                ),
+            ],
+        )
+        """
 
     title: str = field(default="", metadata={"doc": _("Sidebar title.")})
     icon: IconConfig | None = field(default=None, metadata={"doc": _("Optional title icon.")})
@@ -354,12 +395,43 @@ class BreadcrumbItemConfig:
     """
 
     __example__ = """
-        BreadcrumbItemConfig(text="Home", request_url="/", icon=IconConfig("home")=,
+        BreadcrumbItemConfig(text="Home", request_url="/", icon=IconConfig("home"))
         """
 
     text: str = field(metadata={"doc": _("Label of the link.")})
     request_url: str = field(default="", metadata={"doc": _("The URL to be called when clicking on the link.")})
     icon: IconConfig | None = field(default=None, metadata={"doc": _("Optional icon (typically for home item).")})
+
+
+@dataclass
+class BreadcrumbsConfig:
+    """
+    Configuration for the breadcrumbs component.
+
+    Renders a breadcrumb navigation trail.
+
+    Attributes:
+        items: List of breadcrumb navigation items.
+        htmx: Optional HTMX configuration for AJAX navigation.
+
+    """
+
+    __example__ = """
+        BreadcrumbsConfig(
+            items=[
+                BreadcrumbItemConfig(text="Home", request_url="/", icon=IconConfig("home")),
+                BreadcrumbItemConfig(text="Products", request_url="/products/"),
+                BreadcrumbItemConfig(text="Laptops"),
+            ],
+        )
+        """
+
+    items: list[BreadcrumbItemConfig] = field(
+        default_factory=list, metadata={"doc": _("List of breadcrumb navigation items.")}
+    )
+    htmx: HtmxConfig | None = field(
+        default=None, metadata={"doc": _("Optional HTMX configuration for AJAX navigation.")}
+    )
 
 
 @dataclass
@@ -378,11 +450,7 @@ class StepBarItemConfig:
     """
 
     __example__ = """
-        [
-            StepBarItemConfig(title="Address", description="Enter shipping address", success=True),
-            StepBarItemConfig(title="Payment", description="Select payment method", current=True),
-            StepBarItemConfig(title="Review", description="Review and confirm"),
-        ]
+        StepBarItemConfig(title="Address", description="Enter shipping address", success=True)
         """
 
     title: str = field(metadata={"doc": _("Title of the step.")})
@@ -391,6 +459,31 @@ class StepBarItemConfig:
     success: bool = field(default=False, metadata={"doc": _("Displays a checkmark instead of the step number.")})
     failed: bool = field(default=False, metadata={"doc": _("Displays an X instead of the step number.")})
     current: bool = field(default=False, metadata={"doc": _("Highlights the title in color and makes the text pulse.")})
+
+
+@dataclass
+class StepBarConfig:
+    """
+    Configuration for the step_bar component.
+
+    Renders a graphical representation of process steps.
+
+    Attributes:
+        items: List of step configurations.
+
+    """
+
+    __example__ = """
+        StepBarConfig(
+            items=[
+                StepBarItemConfig(title="Address", description="Enter shipping address", success=True),
+                StepBarItemConfig(title="Payment", description="Select payment method", current=True),
+                StepBarItemConfig(title="Review", description="Review and confirm"),
+            ],
+        )
+        """
+
+    items: list[StepBarItemConfig] = field(default_factory=list, metadata={"doc": _("List of step configurations.")})
 
 
 @dataclass
@@ -448,11 +541,7 @@ class BulletPointItemConfig:
     """
 
     __example__ = """
-        [
-            BulletPointItemConfig(title="Setup", description="Initial configuration", completed=True),
-            BulletPointItemConfig(title="Configure", description="Add settings", current=True),
-            BulletPointItemConfig(title="Deploy", description="Push to production"),
-        ]
+        BulletPointItemConfig(title="Setup", description="Initial configuration", completed=True)
         """
 
     title: str = field(metadata={"doc": _("Title of the item.")})
@@ -462,6 +551,35 @@ class BulletPointItemConfig:
     )
     completed: bool = field(default=False, metadata={"doc": _("Displays a checkmark instead of a bullet point.")})
     current: bool = field(default=False, metadata={"doc": _("Highlights the title by color.")})
+
+
+@dataclass
+class BulletPointListConfig:
+    """
+    Configuration for the bullet_point_list component.
+
+    Renders a graphical representation of a bullet point list.
+
+    Attributes:
+        items: List of bullet point items.
+        htmx: Optional HTMX configuration for AJAX navigation.
+
+    """
+
+    __example__ = """
+        BulletPointListConfig(
+            items=[
+                BulletPointItemConfig(title="Setup", description="Initial configuration", completed=True),
+                BulletPointItemConfig(title="Configure", description="Add settings", current=True),
+                BulletPointItemConfig(title="Deploy", description="Push to production"),
+            ],
+        )
+        """
+
+    items: list[BulletPointItemConfig] = field(default_factory=list, metadata={"doc": _("List of bullet point items.")})
+    htmx: HtmxConfig | None = field(
+        default=None, metadata={"doc": _("Optional HTMX configuration for AJAX navigation.")}
+    )
 
 
 @dataclass
