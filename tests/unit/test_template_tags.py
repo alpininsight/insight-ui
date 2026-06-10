@@ -1013,3 +1013,39 @@ class BrandLockupTemplateTagTest(TemplateTagsTestCase):
         root = BeautifulSoup(rendered, "html.parser").find("div")
         assert "justify-between" in root.get("class", [])
         assert "height: 2.5rem" in rendered
+
+    def test_brand_lockup_default_variant_is_wing_slice(self) -> None:
+        """Default renders the wing-slice company logo (single path, 240x120)."""
+        rendered = self.render_template("{% load insight_tags %}{% brand_lockup %}")
+        svg = BeautifulSoup(rendered, "html.parser").find("svg")
+        assert svg.get("viewbox") == "0 0 240 120"
+        assert len(svg.find_all("path")) == 1
+
+    def test_brand_lockup_dual_wing_variant(self) -> None:
+        """dual-wing renders the double-swoosh mark (two paths, 260x140)."""
+        rendered = self.render_template('{% load insight_tags %}{% brand_lockup variant="dual-wing" %}')
+        svg = BeautifulSoup(rendered, "html.parser").find("svg")
+        assert svg.get("viewbox") == "0 0 260 140"
+        assert len(svg.find_all("path")) == 2  # noqa: PLR2004
+
+    def test_brand_lockup_wing_arc_variant(self) -> None:
+        """wing-arc renders the arced wing mark."""
+        rendered = self.render_template('{% load insight_tags %}{% brand_lockup variant="wing-arc" %}')
+        # wing-arc's node sits at cy=77 (distinct from wing-slice's cy=84)
+        assert 'cy="77"' in rendered
+
+    def test_brand_lockup_unknown_variant_falls_back_to_wing_slice(self) -> None:
+        """An unknown variant falls back to the company logo, not an empty SVG."""
+        rendered = self.render_template('{% load insight_tags %}{% brand_lockup variant="bogus" %}')
+        svg = BeautifulSoup(rendered, "html.parser").find("svg")
+        assert svg is not None
+        assert svg.get("viewbox") == "0 0 240 120"
+        assert len(svg.find_all("path")) == 1
+
+    def test_brand_lockup_variant_via_config(self) -> None:
+        """Variant is configurable through the config dict too."""
+        rendered = self.render_template(
+            "{% load insight_tags %}{% brand_lockup config=cfg %}", context={"cfg": {"variant": "dual-wing"}}
+        )
+        svg = BeautifulSoup(rendered, "html.parser").find("svg")
+        assert len(svg.find_all("path")) == 2  # noqa: PLR2004
