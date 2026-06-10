@@ -452,6 +452,19 @@ def storybook_view(request: HttpRequest, storybook_name: str) -> HttpResponse:
     context = get_storybook_context(storybook)
     context["storybook"] = storybook
 
+    # Retrieve demo information for each component
+    demos = [
+        {
+            "url": reverse("component_demo_view", kwargs={"component_name": component.value}),
+            "title": component.value,
+            "id": component.value,
+        }
+        for component in context["components"]
+    ]
+
+    # Connect components with related demo information
+    context["components"] = zip(context["components"], demos)
+
     if not context:
         return HttpResponse("Page not found", status=404)
 

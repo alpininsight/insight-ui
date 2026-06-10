@@ -326,14 +326,14 @@ def minimal_step_bar(
 
     # Generate items from step_count if not provided
     if not config.items and config.step_count > 0:
-        items = []
+        config.items = []
         for step in range(config.step_count):
             if step < config.current_step:
-                items.append("success")
+                config.items.append("success")
             elif step == config.current_step:
-                items.append(config.current_step_status)
+                config.items.append(config.current_step_status)
             else:
-                items.append("")
+                config.items.append("")
 
     return {"items": config.items, "icon_size": config.icon_size}
 
