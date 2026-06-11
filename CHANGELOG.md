@@ -57,6 +57,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **navbar:** Keep user dropdown out of layout flow 
 - **navbar:** Sync user dropdown position to develop
 - **sidebar:** Keep primary docs navigation visible
+- **brand-lockup:** Use public icons and document navbar mode
+- **brand-lockup:** Preserve icon sizing and variant compatibility
+- **brand-lockup:** Handle legacy positional size calls
 
 ### CI/CD
 
