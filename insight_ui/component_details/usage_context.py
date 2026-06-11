@@ -52,6 +52,10 @@ def get_article_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
+        {% article config=article_config %}
+
+        <!-- or -->
+
         {% article title="News" columns=3 content="<p>First paragraph...</p><p>Second paragraph...</p>" %}
         """
     }
@@ -63,6 +67,10 @@ def get_hero_usage_context() -> dict[str, str]:
     return {
         "usage": """
         {% load insight_tags %}
+
+        {% hero config=hero_config %}
+
+        <!-- or -->
 
         {% hero title="Insight UI" subtitle="A Django Component Framework" description="A modern UI library." cta_primary=cta_primary badge=badge %}
         """
@@ -205,6 +213,10 @@ def get_accordion_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
+        {% accordion config=accordion_config %}
+
+        <!-- or -->
+
         {% accordion tag_id="faq-exclusive" items=accordion_items exclusive=True %}
         """
     }
@@ -260,11 +272,11 @@ def get_input_field_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% input_field tag_id="expiration-date" name="expiration_date" input_type="date" value="expiration_date" label="Choose expiration date:" %}
+        {% input_field config=input_config %}
 
         <!-- or -->
 
-        {% input_field config=input_config %}
+        {% input_field tag_id="expiration-date" name="expiration_date" input_type="date" value="expiration_date" label="Choose expiration date:" %}
         """
     }
 
@@ -276,11 +288,11 @@ def get_textarea_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% textarea tag_id="message" name="message" rows=4 label="Write a message:" placeholder="Write something..." %}
+        {% textarea config=input_config %}
 
         <!-- or -->
 
-        {% textarea config=input_config %}
+        {% textarea tag_id="message" name="message" rows=4 label="Write a message:" placeholder="Write something..." %}
         """
     }
 
@@ -320,7 +332,7 @@ def get_dropdown_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% dropdown dropdown_menu=user_dropdown %}
+        {% dropdown config=user_dropdown_config %}
         """
     }
 
@@ -332,11 +344,11 @@ def get_radio_group_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% radio_group name="radio-example1" label="" items=items as_row=True %}
+        {% radio_group config=example_radio current_value=value %}
 
         <!-- or -->
 
-        {% radio_group config=example_radio current_value=value %}
+        {% radio_group name="radio-example1" label="" items=items as_row=True %}
         """
     }
 
@@ -348,7 +360,11 @@ def get_radio_group_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% radio_block config=view_radio_config current_value=current_view view_name="toggle_view" hx_target_id=hx_target_id %}
+        {% radio_block config=example_radio current_value=value %}
+
+        <!-- or -->
+
+        {% radio_block config=view_radio_config current_value=current_view request_url="/switch_view/" hx_target_id=hx_target_id %}
         """
     }
 
@@ -385,11 +401,11 @@ def get_toggle_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight-tags %}
 
-        {% toggle tag_id="theme-toggle" name="toggle_theme" value="toggle_theme" checked=False disabled=False label="Dark" method="changeTheme" switch=True %}
+        {% toggle config=toggle_config method="changeTheme" %}
 
         <!-- or -->
 
-        {% toggle config=toggle_config method="changeTheme" %}
+        {% toggle tag_id="theme-toggle" name="toggle_theme" value="toggle_theme" checked=False disabled=False label="Dark" method="changeTheme" switch=True %}
         """
     }
 
@@ -401,11 +417,11 @@ def get_select_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% select name="test" label="Test" options=["A", "B", "C"] %}
+        {% select config=select_config %}
 
         <!-- or -->
 
-        {% select config=select_config %}
+        {% select name="test" label="Test" options=["A", "B", "C"] %}
         """
     }
 
@@ -417,11 +433,11 @@ def get_multiselect_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% multiselect name="test" label="Test" maximum=0 show_buttons=True options=["A", "B", "C"] %}
+        {% multiselect config=multiselect_config %}
 
         <!-- or -->
 
-        {% multiselect config=multiselect_config %}
+        {% multiselect name="test" label="Test" maximum=0 show_buttons=True options=["A", "B", "C"] %}
         """
     }
 
@@ -627,7 +643,7 @@ def get_geo_map_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% geo_map data=geo_map_data %}
+        {% geo_map config=geo_map_config %}
         """
     }
 
@@ -639,8 +655,11 @@ def get_charts_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% bar_chart chart_id="bar_chart_example" chart=chart_data %}
-        {% line_chart chart_id="line_chart_example" chart=chart_data %}
+        {% bar_chart config=chart_config %}
+
+        <!-- or -->
+
+        {% line_chart tag_id="line_chart_example" dataset=chart_data %}
         """
     }
 
@@ -652,7 +671,11 @@ def get_live_content_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% live_content url="/api/live-data/" interval=10 id="live-content" %}
+        {% live_content config=live_content_config %}
+
+        <!-- or -->
+
+        {% live_content tag_id="live-content" url="/api/live-data/" interval=10  %}
         """
     }
 
@@ -664,7 +687,11 @@ def get_web_socket_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% insight_websocket tag_id="runtime-stream" url="/runtime/stream/" initial_content="Waiting for runtime updates…" %}
+        {% websocket config=websocket_config %}
+
+        <!-- or -->
+
+        {% websocket tag_id="runtime-stream" url="/runtime/stream/" initial_content="Waiting for runtime updates…" %}
         """
     }
 
@@ -676,7 +703,11 @@ def get_infinite_scroll_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% infinite_scroll items=scroll_items view_name="more_items" auto_fetch=False %}
+        {% infinite_scroll config=infinite_scroll_config %}
+
+        <!-- or -->
+
+        {% infinite_scroll items=scroll_items request_url="/more_items/" auto_fetch=False %}
         """
     }
 
@@ -689,7 +720,15 @@ def get_pagination_usage_context() -> dict[str, str]:
         {% load insight_tags %}
 
         <div id="list-container">
-            {% pagination with current_page=start_page surrounding_pages=surrounding_pages %}
+            <!-- Actual list -->
+            {% pagination config=pagination_config %}
+        </div>
+
+        <!-- or -->
+
+        <div id="list-container">
+            <!-- Actual list -->
+            {% pagination current_page=start_page surrounding_pages=surrounding_pages %}
         </div>
         """
     }
@@ -702,7 +741,7 @@ def get_table_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% table data=user_data %}
+        {% table config=table_config %}
         """
     }
 
@@ -714,7 +753,7 @@ def get_generic_filter_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% generic_filter filters=filters view_name="/models/filter/ vertical=False htmx_config=htmx_config query_params=request.GET %}
+        {% generic_filter config=generic_filter_config %}
         """
     }
 
@@ -726,7 +765,7 @@ def get_search_bar_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% search_bar request_view="index_view" simple=True search_query="Test 123" %}
+        {% search_bar request_url="/search/" simple=True search_query="Test 123" %}
         """
     }
 
@@ -738,7 +777,7 @@ def get_query_builder_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% query_builder model_fields=model_fields %}
+        {% query_builder config=query_builder_config %}
         """
     }
 
@@ -750,7 +789,11 @@ def get_card_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
+        {% card config=card_config %}
+
+        <!-- or -->
+
+        {% card title="My Card" subtitle="More than just a card." content="Ok, it's actually just a card." %}
         """
     }
 
@@ -762,7 +805,11 @@ def get_app_card_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% app_card title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
+        {% app_card config=card_config %}
+
+        <!-- or -->
+
+        {% app_card title="Insight UI" content="Django UI Framework for ..." url="/insight-ui/" %}
         """
     }
 
@@ -774,9 +821,11 @@ def get_flip_card_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% flip_card title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
+        {% flip_card config=card_config %}
 
-        {% flip_card title=card.title content=card.content back_content=card.back_content back_style=card.back_style image=card.image %}
+        <!-- or -->
+
+        {% flip_card title="Insight UI" content="Django UI Framework for ..." back_content="Features ..." %}
         """
     }
 
@@ -787,6 +836,10 @@ def get_card_carousel_usage_context() -> dict[str, str]:
     return {
         "usage": """
         {% load insight_tags %}
+
+        {% carousel config=carousel_config %}
+
+        <!-- or -->
 
         {% carousel carousel_items=carousel_items show_index=True items_per_slide=2 %}
         """
@@ -800,6 +853,10 @@ def get_image_carousel_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
+        {% image_carousel config=carousel_config %}
+
+        <!-- or -->
+
         {% image_carousel images=image_carousel_items show_dots=True show_index=True items_per_slide=1 %}
         """
     }
@@ -811,6 +868,10 @@ def get_3d_carousel_usage_context() -> dict[str, str]:
     return {
         "usage": """
         {% load insight_tags %}
+
+        {% three_d_carousel config=carousel_config %}
+
+        <!-- or -->
 
         {% three_d_carousel tag_id="threeD_carousel" velocity=300 face_camera=True carousel_items=items %}
         """
@@ -824,7 +885,7 @@ def get_toggle_view_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% toggle_view tag_id="test" data=toggle_data view_radio_config=view_radio_config current_view=toggle_start_view %}
+        {% toggle_view config=toggle_view_config %}
         """
     }
 
@@ -836,6 +897,6 @@ def get_form_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% form tag_id="htmx-form" title="Contact Form" description="Please fill out the form" fields=form_fields show_reset_button=True view_name="form_submit" htmx_config_params=htmx_config %}
+        {% form config=form_config %}
         """
     }
