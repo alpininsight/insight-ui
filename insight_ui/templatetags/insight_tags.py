@@ -89,7 +89,7 @@ def get_item(dictionary: dict, key: str) -> Any:  # noqa: ANN401
 
 
 @register.inclusion_tag("insight_ui/components/icons.html")
-def icon(name: str = "", size: str = "") -> dict[str, Any]:
+def icon(name: str = "", size: str = "", css_class: str = "", style: str = "") -> dict[str, Any]:
     """
     Render specified icon with given size.
 
@@ -97,6 +97,8 @@ def icon(name: str = "", size: str = "") -> dict[str, Any]:
     ---------
         name (str or dict): name of the icon or a dict with "name" and "size".
         size (str): size of the icon.
+        css_class (str): optional additional classes for the wrapper.
+        style (str): optional inline style for the wrapper.
 
     Returns:
     -------
@@ -104,9 +106,14 @@ def icon(name: str = "", size: str = "") -> dict[str, Any]:
 
     """
     if isinstance(name, dict):
-        return {"name": name.get("name", ""), "size": name.get("size", "")}
+        return {
+            "name": name.get("name", ""),
+            "size": name.get("size", ""),
+            "css_class": name.get("class", name.get("css_class", css_class)),
+            "style": name.get("style", style),
+        }
 
-    return {"name": name, "size": size}
+    return {"name": name, "size": size, "css_class": css_class, "style": style}
 
 
 def _resolve_asset_url(value: object) -> str:
@@ -253,6 +260,12 @@ def brand_lockup(  # noqa: PLR0913 (too many arguments)
         Context for ``insight_ui/components/brand_lockup.html``.
 
     """
+    if config is None:
+        height_or_variant = str(height).strip().lower()
+        if variant == "main" and height_or_variant in {*BRAND_LOCKUP_VARIANTS, *BRAND_LOCKUP_VARIANT_ALIASES}:
+            variant = height
+            height = "1.75rem"
+
     if config is not None:
         primary_text = config.get("primary_text", primary_text)
         secondary_text = config.get("secondary_text", secondary_text)
@@ -274,6 +287,7 @@ def brand_lockup(  # noqa: PLR0913 (too many arguments)
         "variant": normalized_variant,
         "icon_name": BRAND_LOCKUP_ICON_BY_VARIANT[normalized_variant],
         "icon_size": "l",
+        "icon_style": f"width: {height}; height: {height};",
         "height": height,
         "css_class": css_class or "",
     }

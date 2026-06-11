@@ -20,8 +20,8 @@
   text is already read by assistive tech.
 {% endcomment %}
 <div class="flex items-center {% if logo_position == 'end' %}justify-between{% endif %} {{ css_class }}" style="gap: 0.75rem">
-    <span class="shrink-0 text-primary" style="{% if logo_position == 'end' %}order: 2;{% endif %}" aria-hidden="true">
-        {% icon name=icon_name size=icon_size %}
+    <span class="shrink-0" style="color: var(--color-insight-primary);{% if logo_position == 'end' %} order: 2;{% endif %}" aria-hidden="true">
+        {% icon name=icon_name size=icon_size style=icon_style %}
     </span>
     <span class="text-base font-bold tracking-tight whitespace-nowrap">
         <span style="color: var(--color-insight-primary)">{{ primary_text }}</span>

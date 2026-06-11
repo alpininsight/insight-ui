@@ -26,6 +26,19 @@ class TemplateTagsTestCase(TestCase):
         return template.render(Context(context))
 
 
+class IconTemplateTagTest(TemplateTagsTestCase):
+    """Tests für den icon Template Tag."""
+
+    def test_icon_accepts_custom_style(self) -> None:
+        """Icons can be sized by callers that need an exact CSS height."""
+        rendered = self.render_template(
+            '{% load insight_tags %}{% icon name="rocket" style="width: 2.5rem; height: 2.5rem;" %}'
+        )
+        root = BeautifulSoup(rendered, "html.parser").find("div")
+        assert root["style"] == "width: 2.5rem; height: 2.5rem;"
+        assert "M15.59 14.37" in rendered
+
+
 class NavbarTemplateTagTest(TemplateTagsTestCase):
     """Tests für den navbar Template Tag."""
 
@@ -1031,6 +1044,7 @@ class BrandLockupTemplateTagTest(TemplateTagsTestCase):
         # Colours are the design tokens (theme-following), not hardcoded hex
         assert "var(--color-insight-primary)" in rendered
         assert "var(--color-insight-secondary)" in rendered
+        assert "color: var(--color-insight-primary)" in rendered
 
         # Icon present and decorative (wordmark already read by AT)
         svg = soup.find("svg")
@@ -1065,6 +1079,7 @@ class BrandLockupTemplateTagTest(TemplateTagsTestCase):
         )
         root = BeautifulSoup(rendered, "html.parser").find("div")
         assert "justify-between" in root.get("class", [])
+        assert "width: 2.5rem; height: 2.5rem;" in rendered
         assert "order: 2" in rendered
 
     def test_brand_lockup_default_variant_uses_app_icon(self) -> None:
@@ -1106,6 +1121,13 @@ class BrandLockupTemplateTagTest(TemplateTagsTestCase):
         assert "M15.59 14.37" in rendered
         assert "viewBox=\"0 0 260 140\"" not in rendered
 
+    def test_brand_lockup_accepts_old_positional_variant_argument(self) -> None:
+        """The fourth positional argument can still be a legacy variant value."""
+        rendered = self.render_template(
+            '{% load insight_tags %}{% brand_lockup "Alpin Insight" "Develop" "start" "dual-wing" %}'
+        )
+        assert "M15.59 14.37" in rendered
+
     def test_brand_lockup_preserves_positional_height_argument(self) -> None:
         """The fourth positional argument remains accepted for backwards compatibility."""
         rendered = self.render_template(
@@ -1114,6 +1136,7 @@ class BrandLockupTemplateTagTest(TemplateTagsTestCase):
         svg = BeautifulSoup(rendered, "html.parser").find("svg")
         assert "Alpin Insight" in rendered
         assert "Develop" in rendered
+        assert "width: 2.5rem; height: 2.5rem;" in rendered
         assert svg.get("viewbox") == "0 0 24 24"
 
     def test_brand_lockup_uses_shipped_spacing_without_gap_three(self) -> None:
