@@ -649,6 +649,57 @@ def get_logo_context() -> dict:
     }
 
 
+@register_demo_context(Component.BRAND_LOCKUP)
+def get_brand_lockup_context() -> dict:
+    """Serve data for brand lockup detailpage."""
+    return {
+        "brand_lockup_default": {
+            "primary_text": "Alpin Insight",
+            "secondary_text": "Solutions",
+            "variant": "main",
+            "height": "2rem",
+        },
+        "brand_lockup_develop": {
+            "primary_text": "Alpin Insight",
+            "secondary_text": "Develop",
+            "variant": "develop",
+            "height": "2rem",
+        },
+        "brand_lockup_candidate": {
+            "primary_text": "Alpin Insight",
+            "secondary_text": "Candidate",
+            "variant": "candidate",
+            "height": "2rem",
+        },
+        "brand_lockup_end": {
+            "primary_text": "Alpin Insight",
+            "secondary_text": "Platform",
+            "logo_position": "end",
+            "variant": "main",
+            "height": "2rem",
+            "class": "w-full",
+        },
+        "brand_lockup_nav_config": {
+            "brand": {
+                "title": "Alpin Insight Develop",
+                "aria_label": "Alpin Insight Develop Startseite",
+                "view_name": "index_view",
+                "gap": "0.75rem",
+                "lockup": {
+                    "primary_text": "Alpin Insight",
+                    "secondary_text": "Develop",
+                    "variant": "develop",
+                    "height": "1.75rem",
+                },
+            },
+            "links": [],
+            "show_usermenu": False,
+            "show_language_selector": False,
+            "show_theme_toggle": False,
+        },
+    }
+
+
 @register_demo_context(Component.CORNER_RIBBON)
 def get_corner_ribbon_context() -> dict:
     """Serve data for corner ribbon detailpage."""

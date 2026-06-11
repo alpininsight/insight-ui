@@ -94,6 +94,7 @@ from insight_ui.configs.navigation import (
 )
 from insight_ui.configs.popup import AlertConfig, ModalConfig
 from insight_ui.configs.utils import (
+    BrandLockupConfig,
     ChartConfig,
     ChartDatasetConfig,
     CopyrightNoticeConfig,
@@ -184,6 +185,7 @@ __all__ = [
     "AlertConfig",
     "ModalConfig",
     # Utils
+    "BrandLockupConfig",
     "ChartConfig",
     "ChartDatasetConfig",
     "CopyrightNoticeConfig",

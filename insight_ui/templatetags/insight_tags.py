@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import math
-from collections.abc import Iterable, Sequence
+import re
+from collections.abc import Iterable, Mapping, Sequence
+from copy import deepcopy
 from dataclasses import MISSING, fields, replace
 from difflib import HtmlDiff, ndiff, unified_diff
 from typing import Any, Final, Literal, TypeVar
@@ -11,6 +13,7 @@ from typing import Any, Final, Literal, TypeVar
 from django import template
 from django.core.paginator import Page
 from django.templatetags.static import static
+from django.urls import reverse
 from django.utils.functional import Promise
 from django.utils.safestring import SafeString, mark_safe
 from django.utils.translation import gettext as _
@@ -24,6 +27,7 @@ from insight_ui.configs import (
     AppCardConfig,
     ArticleConfig,
     BadgeConfig,
+    BrandLockupConfig,
     BreadcrumbItemConfig,
     BreadcrumbsConfig,
     BulletPointItemConfig,
@@ -101,6 +105,51 @@ class _Unset:
 
 UNSET: Final = _Unset()
 T = TypeVar("T")
+
+
+def _resolve_view_urls(value: JsonValue) -> JsonValue:
+    """Resolve `view_name` entries within nested structures to concrete URLs."""
+    if isinstance(value, list):
+        return [_resolve_view_urls(item) for item in value]
+
+    if isinstance(value, dict):
+        return _resolve_mapping(value)
+
+    return value
+
+
+def _resolve_mapping(mapping: JsonMapping) -> JsonMapping:
+    """Return a copy of the given mapping with resolved view-based URLs."""
+    result: JsonMapping = deepcopy(mapping)
+    _ensure_resolved_url(result)
+
+    for key, nested_value in list(result.items()):
+        if isinstance(nested_value, list | dict):
+            result[key] = _resolve_view_urls(nested_value)
+
+    href_value = result.get("href") or result.get("url") or ""
+    result["href"] = href_value
+    return result
+
+
+def _ensure_resolved_url(mapping: JsonMapping) -> None:
+    """Populate the `url` field when a `view_name` and optional arguments are provided."""
+    view_name = mapping.get("view_name")
+    if not isinstance(view_name, str) or not view_name:
+        return
+
+    view_args = mapping.get("view_args")
+    view_arg = mapping.get("view_arg")
+    view_kwargs = mapping.get("view_kwargs")
+
+    if isinstance(view_args, list | tuple):
+        mapping["url"] = reverse(view_name, args=list(view_args))
+    elif view_arg is not None:
+        mapping["url"] = reverse(view_name, args=[view_arg])
+    elif isinstance(view_kwargs, dict):
+        mapping["url"] = reverse(view_name, kwargs=view_kwargs)
+    else:
+        mapping["url"] = reverse(view_name)
 
 
 def _resolve_asset_url(value: object) -> str:
@@ -193,13 +242,25 @@ def get_item(dictionary: dict, key: str) -> Any:  # noqa: ANN401
 
 
 @register.inclusion_tag("insight_ui/components/icons.html")
-def icon(config: IconConfig | None = None, *, name: str = "", size: str = "m") -> dict[str, Any]:
+def icon(
+    config: IconConfig | Mapping[str, Any] | None = None,
+    *,
+    name: str = "",
+    size: str = "m",
+    css_class: str = "",
+    style: str = "",
+) -> dict[str, Any]:
     """Render specified icon with given size."""
-    if config is not None:
+    if isinstance(config, Mapping):
+        name = str(config.get("name", name) or "")
+        size = str(config.get("size", size) or "m")
+        css_class = str(config.get("class", config.get("css_class", css_class)) or "")
+        style = str(config.get("style", style) or "")
+    elif config is not None:
         name = config.name or name
         size = config.size or size
 
-    return {"icon_config": IconConfig(name, size)}
+    return {"icon_config": IconConfig(name, size), "css_class": css_class, "style": style}
 
 
 # =============================================================
@@ -262,11 +323,12 @@ def hero(
 
 
 @register.inclusion_tag("insight_ui/components/navbar.html", takes_context=True)
-def navbar(context: dict[str, Any], config: NavbarConfig, **kwargs: JsonValue) -> dict[str, Any]:
+def navbar(context: dict[str, Any], config: NavbarConfig | JsonMapping, **kwargs: JsonValue) -> dict[str, Any]:
     """Render a configurable navigation bar."""
+    navbar_config = _resolve_mapping(config) if isinstance(config, dict) else config
     return {
         "user": context.get("user"),
-        "navbar_config": config,
+        "navbar_config": navbar_config,
         "fixed": get_config("navbar_fixed"),
         "options": {**kwargs},
     }
@@ -284,7 +346,15 @@ def sidebar(
 ) -> dict[str, Any]:
     """Render a configurable page navigation."""
     config = build_config(SidebarConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
-    return {"sidebar_config": config, "navbar_fixed": get_config("navbar_fixed")}
+    return {
+        "sidebar_config": config,
+        "sidebar_data": config.sidebar_data,
+        "side": config.side,
+        "static": config.static,
+        "auto_close": config.auto_close,
+        "mobile_hidden": config.mobile_hidden,
+        "navbar_fixed": get_config("navbar_fixed"),
+    }
 
 
 @register.inclusion_tag("insight_ui/components/footer.html")
@@ -693,7 +763,7 @@ def diff(a: str, b: str, simple: bool = True) -> str:
 
 @register.inclusion_tag("insight_ui/components/logo.html")
 def logo(
-    config: LogoConfig | None = None,
+    config: LogoConfig | Mapping[str, Any] | None = None,
     *,
     url: str | None | _Unset = UNSET,
     url_dark: str | None | _Unset = UNSET,
@@ -704,10 +774,36 @@ def logo(
     width: str | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a brand logo as an image, SVG asset, or Insight UI icon."""
+    if isinstance(config, Mapping):
+        icon_config = config.get("icon")
+        icon = None
+        resolved_icon_name = config.get("icon_name", icon_name if icon_name is not UNSET else "")
+        resolved_icon_size = config.get("icon_size", icon_size if icon_size is not UNSET else "m")
+
+        if isinstance(icon_config, Mapping):
+            resolved_icon_name = icon_config.get("name", resolved_icon_name)
+            resolved_icon_size = icon_config.get("size", resolved_icon_size)
+        elif isinstance(icon_config, str):
+            resolved_icon_name = icon_config
+        elif isinstance(icon_config, IconConfig):
+            icon = icon_config
+
+        if icon is None and resolved_icon_name:
+            icon = IconConfig(str(resolved_icon_name), str(resolved_icon_size or "m"))
+
+        config = LogoConfig(
+            url=str(config.get("url", config.get("src", "")) or ""),
+            url_dark=str(config.get("url_dark", config.get("src_dark", "")) or ""),
+            alt=str(config.get("alt", "") or ""),
+            icon=icon,
+            height=str(config.get("height", "2rem") or "2rem"),
+            width=str(config.get("width", "") or ""),
+        )
+
     # Only override icon if icon_name was explicitly provided
     icon: IconConfig | None | _Unset = UNSET
     if icon_name is not UNSET:
-        icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "md") if icon_name else None
+        icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "m") if icon_name else None
 
     config = build_config(
         LogoConfig,
@@ -729,6 +825,100 @@ def logo(
         "logo_config": config,
         "type": "icon" if config.icon else "svg" if str(config.url or "").lower().endswith(".svg") else "image",
         "has_dark_variant": bool(config.url_dark and config.url_dark != config.url),
+    }
+
+
+BRAND_LOCKUP_VARIANTS = ("main", "develop", "candidate")
+BRAND_LOCKUP_ICON_BY_VARIANT = {
+    "main": "app",
+    "develop": "rocket",
+    "candidate": "sparkles",
+}
+CSS_SIZE_PATTERN = re.compile(r"^-?(?:\d+(?:\.\d+)?|\.\d+)(?:px|rem|em|vh|vw|vmin|vmax|%|ch|ex|lh|rlh)$")
+
+
+def _looks_like_css_size(value: object) -> bool:
+    """Return true when a positional value is intended as a CSS size."""
+    normalized = str(value).strip().lower()
+    return normalized in {"auto", "inherit", "initial", "revert", "unset"} or bool(CSS_SIZE_PATTERN.match(normalized))
+
+
+def _normalize_brand_lockup_variant(value: object) -> str:
+    """Normalize public variants and a small set of legacy aliases."""
+    normalized = str(value).strip().lower()
+    if normalized in BRAND_LOCKUP_VARIANTS:
+        return normalized
+    if "dual" in normalized:
+        return "develop"
+    if "arc" in normalized:
+        return "candidate"
+    if "slice" in normalized:
+        return "main"
+    return "main"
+
+
+@register.inclusion_tag("insight_ui/components/brand_lockup.html")
+def brand_lockup(  # noqa: PLR0913
+    primary_text: str = "Alpin Insight",
+    secondary_text: str = "Solutions",
+    logo_position: str = "start",
+    height: str = "1.75rem",
+    variant: str = "main",
+    css_class: str | None = None,
+    config: BrandLockupConfig | Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Render a public icon plus a two-tone wordmark."""
+    if config is None:
+        height_or_variant = str(height).strip().lower()
+        variant_or_height = str(variant).strip().lower()
+        if height_or_variant not in BRAND_LOCKUP_VARIANTS and not _looks_like_css_size(height):
+            if variant != "main" and _looks_like_css_size(variant):
+                height, variant = variant, height
+            elif variant == "main":
+                variant = height
+                height = "1.75rem"
+        elif variant == "main" and height_or_variant in BRAND_LOCKUP_VARIANTS:
+            variant = height
+            height = "1.75rem"
+        elif variant != "main" and variant_or_height not in BRAND_LOCKUP_VARIANTS and _looks_like_css_size(variant):
+            height, variant = variant, height
+
+        config = BrandLockupConfig(
+            primary_text=primary_text,
+            secondary_text=secondary_text,
+            logo_position="end" if str(logo_position).strip().lower() == "end" else "start",
+            height=height,
+            variant=_normalize_brand_lockup_variant(variant),
+            css_class=css_class or "",
+        )
+    elif isinstance(config, Mapping):
+        config = BrandLockupConfig(
+            primary_text=str(config.get("primary_text", primary_text) or ""),
+            secondary_text=str(config.get("secondary_text", secondary_text) or ""),
+            logo_position=(
+                "end" if str(config.get("logo_position", logo_position)).strip().lower() == "end" else "start"
+            ),
+            height=str(config.get("height", height) or "1.75rem"),
+            variant=_normalize_brand_lockup_variant(config.get("variant", variant)),
+            css_class=str(config.get("css_class", config.get("class", css_class or "")) or ""),
+        )
+    else:
+        config = replace(
+            config,
+            logo_position="end" if str(config.logo_position).strip().lower() == "end" else "start",
+            variant=_normalize_brand_lockup_variant(config.variant),
+        )
+
+    return {
+        "primary_text": config.primary_text,
+        "secondary_text": config.secondary_text,
+        "logo_position": config.logo_position,
+        "variant": config.variant,
+        "icon_name": BRAND_LOCKUP_ICON_BY_VARIANT[config.variant],
+        "icon_size": "l",
+        "icon_style": f"width: {config.height}; height: {config.height};",
+        "height": config.height,
+        "css_class": config.css_class,
     }
 
 

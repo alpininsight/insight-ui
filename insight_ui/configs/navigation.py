@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from insight_ui.configs.base import HtmxConfig, IconConfig
 from insight_ui.configs.input import DropdownConfig
 from insight_ui.configs.popup import ModalConfig
-from insight_ui.configs.utils import CopyrightNoticeConfig, LogoConfig
+from insight_ui.configs.utils import BrandLockupConfig, CopyrightNoticeConfig, LogoConfig
 
 
 @dataclass
@@ -22,7 +22,10 @@ class NavbarBrandConfig:
         title: The title of the application.
         request_url: Name of the URL to be called when clicking on the title.
         logo: Describes the logo that is displayed next to the title.
+        aria_label: Optional accessible label for the brand link.
+        lockup: Optional controlled brand lockup rendered instead of logo plus title.
         gap: This value determines the spacing between the logo and the title.
+        href: Optional resolved link target for dict-compatible navbar configurations.
 
     """
 
@@ -43,6 +46,14 @@ class NavbarBrandConfig:
     )
     gap: str = field(
         default="0.5rem", metadata={"doc": _("This value determines the spacing between the logo and the title.")}
+    )
+    aria_label: str = field(default="", metadata={"doc": _("Optional accessible label for the brand link.")})
+    lockup: BrandLockupConfig | None = field(
+        default=None, metadata={"doc": _("Optional controlled brand lockup rendered instead of logo plus title.")}
+    )
+    href: str = field(
+        default="",
+        metadata={"doc": _("Optional resolved link target for dict-compatible navbar configurations.")},
     )
 
 
@@ -145,6 +156,7 @@ class SidebarItemConfig:
         request_url: The URL to be called when clicking on the item.
         icon: An optional icon displayed before the text.
         htmx: HTMX configuration for AJAX page changes.
+        url: Backwards-compatible alias for dictionary-based sidebar items.
 
     """
 
@@ -156,6 +168,7 @@ class SidebarItemConfig:
     request_url: str = field(default="", metadata={"doc": _("The URL to be called when clicking on the item.")})
     icon: IconConfig | None = field(default=None, metadata={"doc": _("An optional icon displayed before the text.")})
     htmx: HtmxConfig | None = field(default=None, metadata={"doc": _("HTMX configuration for AJAX page changes.")})
+    url: str = field(default="", metadata={"doc": _("Backwards-compatible alias for dictionary-based sidebar items.")})
 
 
 @dataclass

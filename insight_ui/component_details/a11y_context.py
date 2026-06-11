@@ -358,6 +358,20 @@ def get_logo_a11y_context() -> dict[str, list[str]]:
     }
 
 
+@register_component(Component.BRAND_LOCKUP)
+def get_brand_lockup_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y documentation for the brand lockup component."""
+    return {
+        "a11y": [
+            _("The wordmark is rendered as readable text so assistive technologies can announce the brand name."),
+            _("The decorative public icon is hidden from assistive technologies with `aria-hidden='true'`."),
+            _(
+                "When used inside the navbar, provide `brand.aria_label` or `brand.title` so the surrounding link has a clear accessible name."
+            ),
+        ]
+    }
+
+
 @register_component(Component.PROGRESS_BAR)
 def get_progress_bar_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the progress bar component."""

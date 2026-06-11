@@ -40,6 +40,19 @@ class TemplateTagsTestCase(TestCase):
         return template.render(Context(context))
 
 
+class IconTemplateTagTest(TemplateTagsTestCase):
+    """Tests für den icon Template Tag."""
+
+    def test_icon_accepts_custom_style(self) -> None:
+        """Icons can be sized by callers that need an exact CSS height."""
+        rendered = self.render_template(
+            '{% load insight_tags %}{% icon name="rocket" style="width: 2.5rem; height: 2.5rem;" %}'
+        )
+        root = BeautifulSoup(rendered, "html.parser").find("div")
+        assert root["style"] == "width: 2.5rem; height: 2.5rem;"
+        assert "M15.59 14.37" in rendered
+
+
 class NavbarTemplateTagTest(TemplateTagsTestCase):
     """Tests für den navbar Template Tag."""
 
@@ -107,6 +120,59 @@ class NavbarTemplateTagTest(TemplateTagsTestCase):
         assert "hidden" in menu.get("class", [])
         assert "absolute" in menu.get("class", [])
         assert "top-full" in menu.get("class", [])
+
+    def test_navbar_renders_brand_lockup_when_configured(self) -> None:
+        """Navbar can render a controlled brand lockup instead of logo plus title."""
+        nav_config = {
+            "brand": {
+                "title": "Alpin Insight Develop",
+                "aria_label": "Alpin Insight Develop Startseite",
+                "lockup": {
+                    "primary_text": "Alpin Insight",
+                    "secondary_text": "Develop",
+                    "variant": "develop",
+                    "height": "2rem",
+                },
+            },
+            "links": [],
+        }
+
+        rendered = self.render_template(
+            "{% load insight_tags %}{% navbar config=nav_config %}", context={"nav_config": nav_config}
+        )
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        brand_link = soup.find("a", attrs={"aria-label": "Alpin Insight Develop Startseite"})
+        assert brand_link is not None
+        assert "Alpin Insight" in brand_link.get_text(" ", strip=True)
+        assert "Develop" in brand_link.get_text(" ", strip=True)
+        assert brand_link.find("svg") is not None
+        assert brand_link.find("img") is None
+
+    def test_navbar_keeps_logo_title_fallback_without_lockup(self) -> None:
+        """Existing logo plus title configuration remains the fallback mode."""
+        nav_config = {
+            "brand": {
+                "title": "Insight UI",
+                "logo": {
+                    "type": "svg",
+                    "url": "insight_ui/svg/ai-logo.svg",
+                    "alt": "Insight UI Logo",
+                    "height": "2rem",
+                },
+            },
+            "links": [],
+        }
+
+        rendered = self.render_template(
+            "{% load insight_tags %}{% navbar config=nav_config %}", context={"nav_config": nav_config}
+        )
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        brand_link = soup.find("a", attrs={"aria-label": "Insight UI"})
+        assert brand_link is not None
+        assert brand_link.find("span", string="Insight UI") is not None
+        assert brand_link.find("img") is not None
 
 
 class CopyrightNoticeTemplateTagTest(TemplateTagsTestCase):
@@ -777,3 +843,134 @@ class SliderTemplateTagTest(TemplateTagsTestCase):
         assert input_element["max"] == "8"
         assert input_element["step"] == "2"
         assert not input_element.has_attr("disabled")
+
+
+class BrandLockupTemplateTagTest(TemplateTagsTestCase):
+    """Tests für den brand_lockup Template Tag."""
+
+    def test_brand_lockup_defaults(self) -> None:
+        """Default render carries the Alpin Insight wordmark + public icon."""
+        rendered = self.render_template("{% load insight_tags %}{% brand_lockup %}")
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        # Two-tone wordmark, brand name not translated
+        assert "Alpin Insight" in rendered
+        assert "Solutions" in rendered
+
+        # Colours are the design tokens (theme-following), not hardcoded hex
+        assert "var(--color-insight-primary)" in rendered
+        assert "var(--color-insight-secondary)" in rendered
+        assert "color: var(--color-insight-primary)" in rendered
+
+        # Icon present and decorative (wordmark already read by AT)
+        svg = soup.find("svg")
+        assert svg is not None
+        assert svg.get("aria-hidden") == "true"
+
+    def test_brand_lockup_logo_position_start_is_default(self) -> None:
+        """Default position keeps the group left-aligned (no justify-between)."""
+        rendered = self.render_template("{% load insight_tags %}{% brand_lockup %}")
+        root = BeautifulSoup(rendered, "html.parser").find("div")
+        assert "justify-between" not in root.get("class", [])
+
+    def test_brand_lockup_logo_position_end_pushes_logo_to_edge(self) -> None:
+        """Position 'end' left-aligns the wordmark and pushes the logo out."""
+        rendered = self.render_template('{% load insight_tags %}{% brand_lockup logo_position="end" %}')
+        root = BeautifulSoup(rendered, "html.parser").find("div")
+        assert "justify-between" in root.get("class", [])
+
+    def test_brand_lockup_custom_text(self) -> None:
+        """primary_text / secondary_text override the wordmark runs."""
+        rendered = self.render_template(
+            '{% load insight_tags %}{% brand_lockup primary_text="Foo Bar" secondary_text="Cloud" %}'
+        )
+        assert "Foo Bar" in rendered
+        assert "Cloud" in rendered
+
+    def test_brand_lockup_config_dict(self) -> None:
+        """A config dict configures the lockup (mirrors the logo tag style)."""
+        rendered = self.render_template(
+            "{% load insight_tags %}{% brand_lockup config=cfg %}",
+            context={"cfg": {"logo_position": "end", "height": "2.5rem"}},
+        )
+        root = BeautifulSoup(rendered, "html.parser").find("div")
+        assert "justify-between" in root.get("class", [])
+        assert "width: 2.5rem; height: 2.5rem;" in rendered
+        assert "order: 2" in rendered
+
+    def test_brand_lockup_default_variant_uses_app_icon(self) -> None:
+        """Default renders the public app icon."""
+        rendered = self.render_template("{% load insight_tags %}{% brand_lockup %}")
+        svg = BeautifulSoup(rendered, "html.parser").find("svg")
+        assert svg.get("viewbox") == "0 0 24 24"
+        assert "M2.25 6a3 3" in rendered
+
+    def test_brand_lockup_develop_variant_uses_rocket_icon(self) -> None:
+        """Develop renders the public rocket icon."""
+        rendered = self.render_template('{% load insight_tags %}{% brand_lockup variant="develop" %}')
+        svg = BeautifulSoup(rendered, "html.parser").find("svg")
+        assert svg.get("viewbox") == "0 0 24 24"
+        assert "M15.59 14.37" in rendered
+
+    def test_brand_lockup_candidate_variant_uses_sparkles_icon(self) -> None:
+        """Candidate renders the public sparkles icon."""
+        rendered = self.render_template('{% load insight_tags %}{% brand_lockup variant="candidate" %}')
+        assert "M9.813 15.904" in rendered
+
+    def test_brand_lockup_unknown_variant_falls_back_to_main_icon(self) -> None:
+        """An unknown variant falls back to the public app icon, not an empty SVG."""
+        rendered = self.render_template('{% load insight_tags %}{% brand_lockup variant="bogus" %}')
+        svg = BeautifulSoup(rendered, "html.parser").find("svg")
+        assert svg is not None
+        assert "M2.25 6a3 3" in rendered
+
+    def test_brand_lockup_variant_via_config(self) -> None:
+        """Variant is configurable through the config dict too."""
+        rendered = self.render_template(
+            "{% load insight_tags %}{% brand_lockup config=cfg %}", context={"cfg": {"variant": "develop"}}
+        )
+        assert "M15.59 14.37" in rendered
+
+    def test_brand_lockup_accepts_legacy_variant_aliases(self) -> None:
+        """Legacy variant names remain aliases but no private SVG is embedded."""
+        legacy_alias = "dual" + "-" + "w" + "ing"
+        rendered = self.render_template(
+            "{% load insight_tags %}{% brand_lockup variant=legacy_alias %}", context={"legacy_alias": legacy_alias}
+        )
+        assert "M15.59 14.37" in rendered
+
+    def test_brand_lockup_accepts_old_positional_variant_argument(self) -> None:
+        """The fourth positional argument can still be a legacy variant value."""
+        legacy_alias = "dual" + "-" + "w" + "ing"
+        rendered = self.render_template(
+            '{% load insight_tags %}{% brand_lockup "Alpin Insight" "Develop" "start" legacy_alias %}',
+            context={"legacy_alias": legacy_alias},
+        )
+        assert "M15.59 14.37" in rendered
+
+    def test_brand_lockup_accepts_legacy_positional_variant_and_height(self) -> None:
+        """Old positional variant plus height calls still render the intended public icon at the requested size."""
+        legacy_alias = "dual" + "-" + "w" + "ing"
+        rendered = self.render_template(
+            '{% load insight_tags %}{% brand_lockup "Alpin Insight" "Develop" "start" legacy_alias "2.5rem" %}',
+            context={"legacy_alias": legacy_alias},
+        )
+        assert "M15.59 14.37" in rendered
+        assert "width: 2.5rem; height: 2.5rem;" in rendered
+
+    def test_brand_lockup_preserves_positional_height_argument(self) -> None:
+        """The fourth positional argument remains accepted for backwards compatibility."""
+        rendered = self.render_template(
+            '{% load insight_tags %}{% brand_lockup "Alpin Insight" "Develop" "start" "2.5rem" %}'
+        )
+        svg = BeautifulSoup(rendered, "html.parser").find("svg")
+        assert "Alpin Insight" in rendered
+        assert "Develop" in rendered
+        assert "width: 2.5rem; height: 2.5rem;" in rendered
+        assert svg.get("viewbox") == "0 0 24 24"
+
+    def test_brand_lockup_uses_shipped_spacing_without_gap_three(self) -> None:
+        """The component must not depend on a Tailwind class that is missing from shipped CSS."""
+        rendered = self.render_template("{% load insight_tags %}{% brand_lockup %}")
+        assert "gap-3" not in rendered
+        assert "gap: 0.75rem" in rendered

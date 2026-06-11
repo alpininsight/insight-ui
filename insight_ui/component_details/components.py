@@ -6,6 +6,7 @@ from insight_ui.configs import (
     AlertConfig,
     AppCardConfig,
     ArticleConfig,
+    BrandLockupConfig,
     BulletPointListConfig,
     CardCarouselConfig,
     CardConfig,
@@ -111,6 +112,7 @@ class Component(Enum):
     COPYRIGHT_NOTICE = ("copyright_notice", ComponentCategory.UTIL, CopyrightNoticeConfig)
     DIFFERENTIATOR = ("differentiator", ComponentCategory.UTIL)
     LOGO = ("logo", ComponentCategory.UTIL, LogoConfig)
+    BRAND_LOCKUP = ("brand_lockup", ComponentCategory.UTIL, BrandLockupConfig)
     CORNER_RIBBON = ("corner_ribbon", ComponentCategory.UTIL, CornerRibbonConfig)
     PROGRESS_BAR = ("progress_bar", ComponentCategory.UTIL, None, False, False, True)
     GEO_MAP = ("geo_map", ComponentCategory.UTIL, GeoMapConfig)

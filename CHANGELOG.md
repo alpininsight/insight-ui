@@ -56,6 +56,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **cards:** Stabilize app card layout
 - **navbar:** Keep user dropdown out of layout flow
 - **navbar:** Sync user dropdown position to develop
+- **sidebar:** Keep primary docs navigation visible
+- **brand-lockup:** Use public icons and document navbar mode
+- **brand-lockup:** Preserve icon sizing and variant compatibility
+- **brand-lockup:** Handle legacy positional size calls
 
 ### CI/CD
 
@@ -145,6 +149,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Standardize the JavaScript lookup attribute naming convention
 - Enhancements
 - **static:** Publish minified assets via cdn
+- **component:** Add brand_lockup — final-symbol logo + two-tone wordmark
+- **brand_lockup:** Add per-environment wing variant param
 
 ### Miscellaneous
 
