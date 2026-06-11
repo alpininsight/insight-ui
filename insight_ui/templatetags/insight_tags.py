@@ -5,7 +5,6 @@ from __future__ import annotations
 import math
 import re
 from collections.abc import Iterable, Mapping, Sequence
-from copy import deepcopy
 from dataclasses import MISSING, fields, replace
 from difflib import HtmlDiff, ndiff, unified_diff
 from typing import Any, Final, Literal, TypeVar
@@ -13,7 +12,6 @@ from typing import Any, Final, Literal, TypeVar
 from django import template
 from django.core.paginator import Page
 from django.templatetags.static import static
-from django.urls import reverse
 from django.utils.functional import Promise
 from django.utils.safestring import SafeString, mark_safe
 from django.utils.translation import gettext as _
@@ -107,51 +105,6 @@ UNSET: Final = _Unset()
 T = TypeVar("T")
 
 
-def _resolve_view_urls(value: JsonValue) -> JsonValue:
-    """Resolve `view_name` entries within nested structures to concrete URLs."""
-    if isinstance(value, list):
-        return [_resolve_view_urls(item) for item in value]
-
-    if isinstance(value, dict):
-        return _resolve_mapping(value)
-
-    return value
-
-
-def _resolve_mapping(mapping: JsonMapping) -> JsonMapping:
-    """Return a copy of the given mapping with resolved view-based URLs."""
-    result: JsonMapping = deepcopy(mapping)
-    _ensure_resolved_url(result)
-
-    for key, nested_value in list(result.items()):
-        if isinstance(nested_value, list | dict):
-            result[key] = _resolve_view_urls(nested_value)
-
-    href_value = result.get("href") or result.get("url") or ""
-    result["href"] = href_value
-    return result
-
-
-def _ensure_resolved_url(mapping: JsonMapping) -> None:
-    """Populate the `url` field when a `view_name` and optional arguments are provided."""
-    view_name = mapping.get("view_name")
-    if not isinstance(view_name, str) or not view_name:
-        return
-
-    view_args = mapping.get("view_args")
-    view_arg = mapping.get("view_arg")
-    view_kwargs = mapping.get("view_kwargs")
-
-    if isinstance(view_args, list | tuple):
-        mapping["url"] = reverse(view_name, args=list(view_args))
-    elif view_arg is not None:
-        mapping["url"] = reverse(view_name, args=[view_arg])
-    elif isinstance(view_kwargs, dict):
-        mapping["url"] = reverse(view_name, kwargs=view_kwargs)
-    else:
-        mapping["url"] = reverse(view_name)
-
-
 def _resolve_asset_url(value: object) -> str:
     """Resolve static asset paths while preserving absolute, root-relative, and data URLs."""
     if not value:
@@ -243,24 +196,15 @@ def get_item(dictionary: dict, key: str) -> Any:  # noqa: ANN401
 
 @register.inclusion_tag("insight_ui/components/icons.html")
 def icon(
-    config: IconConfig | Mapping[str, Any] | None = None,
+    config: IconConfig | None = None,
     *,
-    name: str = "",
-    size: str = "m",
-    css_class: str = "",
-    style: str = "",
+    name: str | _Unset = UNSET,
+    size: str | _Unset = UNSET,
+    color: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render specified icon with given size."""
-    if isinstance(config, Mapping):
-        name = str(config.get("name", name) or "")
-        size = str(config.get("size", size) or "m")
-        css_class = str(config.get("class", config.get("css_class", css_class)) or "")
-        style = str(config.get("style", style) or "")
-    elif config is not None:
-        name = config.name or name
-        size = config.size or size
-
-    return {"icon_config": IconConfig(name, size), "css_class": css_class, "style": style}
+    config = build_config(IconConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"icon_config": config}
 
 
 # =============================================================
@@ -323,12 +267,11 @@ def hero(
 
 
 @register.inclusion_tag("insight_ui/components/navbar.html", takes_context=True)
-def navbar(context: dict[str, Any], config: NavbarConfig | JsonMapping, **kwargs: JsonValue) -> dict[str, Any]:
+def navbar(context: dict[str, Any], config: NavbarConfig, **kwargs: JsonValue) -> dict[str, Any]:
     """Render a configurable navigation bar."""
-    navbar_config = _resolve_mapping(config) if isinstance(config, dict) else config
     return {
         "user": context.get("user"),
-        "navbar_config": navbar_config,
+        "navbar_config": config,
         "fixed": get_config("navbar_fixed"),
         "options": {**kwargs},
     }
@@ -763,7 +706,7 @@ def diff(a: str, b: str, simple: bool = True) -> str:
 
 @register.inclusion_tag("insight_ui/components/logo.html")
 def logo(
-    config: LogoConfig | Mapping[str, Any] | None = None,
+    config: LogoConfig | None = None,
     *,
     url: str | None | _Unset = UNSET,
     url_dark: str | None | _Unset = UNSET,
@@ -774,36 +717,10 @@ def logo(
     width: str | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a brand logo as an image, SVG asset, or Insight UI icon."""
-    if isinstance(config, Mapping):
-        icon_config = config.get("icon")
-        icon = None
-        resolved_icon_name = config.get("icon_name", icon_name if icon_name is not UNSET else "")
-        resolved_icon_size = config.get("icon_size", icon_size if icon_size is not UNSET else "m")
-
-        if isinstance(icon_config, Mapping):
-            resolved_icon_name = icon_config.get("name", resolved_icon_name)
-            resolved_icon_size = icon_config.get("size", resolved_icon_size)
-        elif isinstance(icon_config, str):
-            resolved_icon_name = icon_config
-        elif isinstance(icon_config, IconConfig):
-            icon = icon_config
-
-        if icon is None and resolved_icon_name:
-            icon = IconConfig(str(resolved_icon_name), str(resolved_icon_size or "m"))
-
-        config = LogoConfig(
-            url=str(config.get("url", config.get("src", "")) or ""),
-            url_dark=str(config.get("url_dark", config.get("src_dark", "")) or ""),
-            alt=str(config.get("alt", "") or ""),
-            icon=icon,
-            height=str(config.get("height", "2rem") or "2rem"),
-            width=str(config.get("width", "") or ""),
-        )
-
     # Only override icon if icon_name was explicitly provided
     icon: IconConfig | None | _Unset = UNSET
     if icon_name is not UNSET:
-        icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "m") if icon_name else None
+        icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "md") if icon_name else None
 
     config = build_config(
         LogoConfig,
@@ -829,11 +746,7 @@ def logo(
 
 
 BRAND_LOCKUP_VARIANTS = ("main", "develop", "candidate")
-BRAND_LOCKUP_ICON_BY_VARIANT = {
-    "main": "app",
-    "develop": "rocket",
-    "candidate": "sparkles",
-}
+BRAND_LOCKUP_ICON_BY_VARIANT = {"main": "app", "develop": "rocket", "candidate": "sparkles"}
 CSS_SIZE_PATTERN = re.compile(r"^-?(?:\d+(?:\.\d+)?|\.\d+)(?:px|rem|em|vh|vw|vmin|vmax|%|ch|ex|lh|rlh)$")
 
 
@@ -848,12 +761,6 @@ def _normalize_brand_lockup_variant(value: object) -> str:
     normalized = str(value).strip().lower()
     if normalized in BRAND_LOCKUP_VARIANTS:
         return normalized
-    if "dual" in normalized:
-        return "develop"
-    if "arc" in normalized:
-        return "candidate"
-    if "slice" in normalized:
-        return "main"
     return "main"
 
 
@@ -916,7 +823,6 @@ def brand_lockup(  # noqa: PLR0913
         "variant": config.variant,
         "icon_name": BRAND_LOCKUP_ICON_BY_VARIANT[config.variant],
         "icon_size": "l",
-        "icon_style": f"width: {config.height}; height: {config.height};",
         "height": config.height,
         "css_class": config.css_class,
     }

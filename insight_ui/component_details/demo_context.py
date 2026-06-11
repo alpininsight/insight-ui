@@ -984,6 +984,7 @@ def get_flip_card_context() -> dict:
         "flip_card_config": FlipCardConfig(
             _("Flip Card"),
             _("A card that rotates 180° and has additional content on the back."),
+            _("Here you can add more information, without taken more space."),
             image=ImageConfig(static(DEMO_CARD_IMAGE_PATH), _("Card-Image")),
             tags=[_("Insight UI"), _("Layout"), _("Card")],
             actions=[ActionConfig(_("Learn more"), "#", "secondary"), ActionConfig(_("Share"), "#", "primary")],

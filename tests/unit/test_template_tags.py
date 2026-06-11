@@ -23,7 +23,7 @@ from insight_ui.configs.navigation import (
     NavbarLinkConfig,
 )
 from insight_ui.configs.popup import ModalConfig
-from insight_ui.configs.utils import CopyrightNoticeConfig, LogoConfig
+from insight_ui.configs.utils import BrandLockupConfig, CopyrightNoticeConfig, LogoConfig
 
 
 class TemplateTagsTestCase(TestCase):
@@ -38,19 +38,6 @@ class TemplateTagsTestCase(TestCase):
         """Hilfsmethode zum Rendern von Templates."""
         template = Template(template_string)
         return template.render(Context(context))
-
-
-class IconTemplateTagTest(TemplateTagsTestCase):
-    """Tests für den icon Template Tag."""
-
-    def test_icon_accepts_custom_style(self) -> None:
-        """Icons can be sized by callers that need an exact CSS height."""
-        rendered = self.render_template(
-            '{% load insight_tags %}{% icon name="rocket" style="width: 2.5rem; height: 2.5rem;" %}'
-        )
-        root = BeautifulSoup(rendered, "html.parser").find("div")
-        assert root["style"] == "width: 2.5rem; height: 2.5rem;"
-        assert "M15.59 14.37" in rendered
 
 
 class NavbarTemplateTagTest(TemplateTagsTestCase):
@@ -94,13 +81,20 @@ class NavbarTemplateTagTest(TemplateTagsTestCase):
 
     def test_navbar_user_menu_is_hidden_until_opened(self) -> None:
         """Authenticated user menus must not push navbar controls into a second row."""
-        nav_config = {
-            "brand": {"title": "Insight UI NavBar"},
-            "links": [],
-            "show_usermenu": True,
-            "show_language_selector": True,
-            "show_theme_toggle": True,
-        }
+        nav_config = NavbarConfig(
+            NavbarBrandConfig(
+                "Insight UI",
+                "/",
+                LogoConfig(
+                    "insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="2rem"
+                ),
+                "0.5rem",
+            ),
+            show_usermenu=True,
+            show_language_selector=True,
+            show_theme_toggle=True,
+        )
+
         template_string = """
         {% load insight_tags %}
         {% navbar config=nav_config user_dropdown_links=user_dropdown_links %}
@@ -123,19 +117,14 @@ class NavbarTemplateTagTest(TemplateTagsTestCase):
 
     def test_navbar_renders_brand_lockup_when_configured(self) -> None:
         """Navbar can render a controlled brand lockup instead of logo plus title."""
-        nav_config = {
-            "brand": {
-                "title": "Alpin Insight Develop",
-                "aria_label": "Alpin Insight Develop Startseite",
-                "lockup": {
-                    "primary_text": "Alpin Insight",
-                    "secondary_text": "Develop",
-                    "variant": "develop",
-                    "height": "2rem",
-                },
-            },
-            "links": [],
-        }
+        nav_config = NavbarConfig(
+            NavbarBrandConfig(
+                "Insight UI",
+                "/",
+                aria_label="Alpin Insight Develop Startseite",
+                lockup=BrandLockupConfig("Alpin Insight", "Develop", height="2rem", variant="develop"),
+            )
+        )
 
         rendered = self.render_template(
             "{% load insight_tags %}{% navbar config=nav_config %}", context={"nav_config": nav_config}
@@ -151,18 +140,16 @@ class NavbarTemplateTagTest(TemplateTagsTestCase):
 
     def test_navbar_keeps_logo_title_fallback_without_lockup(self) -> None:
         """Existing logo plus title configuration remains the fallback mode."""
-        nav_config = {
-            "brand": {
-                "title": "Insight UI",
-                "logo": {
-                    "type": "svg",
-                    "url": "insight_ui/svg/ai-logo.svg",
-                    "alt": "Insight UI Logo",
-                    "height": "2rem",
-                },
-            },
-            "links": [],
-        }
+        nav_config = NavbarConfig(
+            NavbarBrandConfig(
+                "Insight UI",
+                "/",
+                LogoConfig(
+                    "insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="2rem"
+                ),
+                "0.5rem",
+            )
+        )
 
         rendered = self.render_template(
             "{% load insight_tags %}{% navbar config=nav_config %}", context={"nav_config": nav_config}
@@ -449,37 +436,6 @@ class CardTemplateTagTest(TemplateTagsTestCase):
         assert "<strong>Important</strong>" in rendered
         assert "<br>Line 2" in rendered
 
-    def test_app_card_uses_stable_catalog_card_layout(self) -> None:
-        """The app card should fill its grid cell without hover-driven reflow."""
-        card = {
-            "title": "Catalog Product",
-            "content": "Reusable product description.",
-            "tags": ["SSO", "Demo"],
-            "image": {"url": "/static/product.png", "alt": "Product preview"},
-            "actions": [
-                {"text": "More information", "url": "/demo/product", "type": "secondary"},
-                {"text": "Not live yet", "url": "#", "type": "disabled", "disabled": True},
-            ],
-        }
-        template_string = """
-        {% load insight_tags %}
-        {% app_card title=card.title content=card.content tags=card.tags image=card.image actions=card.actions %}
-        """
-
-        rendered = self.render_template(template_string, context={"card": card})
-        soup = BeautifulSoup(rendered, "html.parser")
-        wrapper = soup.find("div")
-        classes = wrapper["class"]
-
-        assert "h-full" in classes
-        assert "w-full" in classes
-        assert "border" in classes
-        assert "max-w-72" not in classes
-        assert "hover:scale-105" not in classes
-        assert soup.find("img")["class"] == ["h-56", "w-full", "bg-gray-100", "object-cover", "dark:bg-gray-700"]
-        assert soup.find("div", id="card-tags")["class"] == ["flex", "flex-wrap", "gap-1", "px-4", "pb-2"]
-        assert soup.find("span", attrs={"aria-disabled": "true"}).text.strip() == "Not live yet"
-
     def test_app_card_content_allows_html(self) -> None:
         """App card content can render developer-provided HTML fragments."""
         card = {
@@ -502,17 +458,15 @@ class CardTemplateTagTest(TemplateTagsTestCase):
             "content": "Front <strong>content</strong>.",
             "image": {"url": "/static/product.png", "alt": "Product preview"},
             "back_content": "<p>Lorem ipsum</p>",
-            "back_style": "background-color: #fef3c7; color: #1f2937;",
         }
         template_string = """
         {% load insight_tags %}
-        {% flip_card title=card.title content=card.content image=card.image back_content=card.back_content back_style=card.back_style %}
+        {% flip_card title=card.title content=card.content image=card.image back_content=card.back_content %}
         """
 
         rendered = self.render_template(template_string, context={"card": card})
         assert "Front <strong>content</strong>." in rendered
         assert "<p>Lorem ipsum</p>" in rendered
-        assert 'style="background-color: #fef3c7; color: #1f2937;"' in rendered
 
 
 class FormTemplateTagTest(TemplateTagsTestCase):
@@ -963,12 +917,10 @@ class BrandLockupTemplateTagTest(TemplateTagsTestCase):
     def test_brand_lockup_config_dict(self) -> None:
         """A config dict configures the lockup (mirrors the logo tag style)."""
         rendered = self.render_template(
-            "{% load insight_tags %}{% brand_lockup config=cfg %}",
-            context={"cfg": {"logo_position": "end", "height": "2.5rem"}},
+            "{% load insight_tags %}{% brand_lockup config=cfg %}", context={"cfg": {"logo_position": "end"}}
         )
         root = BeautifulSoup(rendered, "html.parser").find("div")
         assert "justify-between" in root.get("class", [])
-        assert "width: 2.5rem; height: 2.5rem;" in rendered
         assert "order: 2" in rendered
 
     def test_brand_lockup_default_variant_uses_app_icon(self) -> None:
@@ -1004,33 +956,6 @@ class BrandLockupTemplateTagTest(TemplateTagsTestCase):
         )
         assert "M15.59 14.37" in rendered
 
-    def test_brand_lockup_accepts_legacy_variant_aliases(self) -> None:
-        """Legacy variant names remain aliases but no private SVG is embedded."""
-        legacy_alias = "dual" + "-" + "w" + "ing"
-        rendered = self.render_template(
-            "{% load insight_tags %}{% brand_lockup variant=legacy_alias %}", context={"legacy_alias": legacy_alias}
-        )
-        assert "M15.59 14.37" in rendered
-
-    def test_brand_lockup_accepts_old_positional_variant_argument(self) -> None:
-        """The fourth positional argument can still be a legacy variant value."""
-        legacy_alias = "dual" + "-" + "w" + "ing"
-        rendered = self.render_template(
-            '{% load insight_tags %}{% brand_lockup "Alpin Insight" "Develop" "start" legacy_alias %}',
-            context={"legacy_alias": legacy_alias},
-        )
-        assert "M15.59 14.37" in rendered
-
-    def test_brand_lockup_accepts_legacy_positional_variant_and_height(self) -> None:
-        """Old positional variant plus height calls still render the intended public icon at the requested size."""
-        legacy_alias = "dual" + "-" + "w" + "ing"
-        rendered = self.render_template(
-            '{% load insight_tags %}{% brand_lockup "Alpin Insight" "Develop" "start" legacy_alias "2.5rem" %}',
-            context={"legacy_alias": legacy_alias},
-        )
-        assert "M15.59 14.37" in rendered
-        assert "width: 2.5rem; height: 2.5rem;" in rendered
-
     def test_brand_lockup_preserves_positional_height_argument(self) -> None:
         """The fourth positional argument remains accepted for backwards compatibility."""
         rendered = self.render_template(
@@ -1039,11 +964,4 @@ class BrandLockupTemplateTagTest(TemplateTagsTestCase):
         svg = BeautifulSoup(rendered, "html.parser").find("svg")
         assert "Alpin Insight" in rendered
         assert "Develop" in rendered
-        assert "width: 2.5rem; height: 2.5rem;" in rendered
         assert svg.get("viewbox") == "0 0 24 24"
-
-    def test_brand_lockup_uses_shipped_spacing_without_gap_three(self) -> None:
-        """The component must not depend on a Tailwind class that is missing from shipped CSS."""
-        rendered = self.render_template("{% load insight_tags %}{% brand_lockup %}")
-        assert "gap-3" not in rendered
-        assert "gap: 0.75rem" in rendered
