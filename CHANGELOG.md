@@ -71,6 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Align blue/green container publish and promotion 
 - Use central reusable container workflow 
 - **container:** Enable manual django image builds 
+- **cdn:** Upload static assets by branch alias
 
 ### Documentation
 
