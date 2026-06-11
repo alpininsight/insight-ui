@@ -267,13 +267,13 @@ class LiveContentTemplateTagTest(TemplateTagsTestCase):
 
 
 class WebsocketTemplateTagTest(TemplateTagsTestCase):
-    """Tests für den insight_websocket Template Tag."""
+    """Tests für den websocket Template Tag."""
 
     def test_websocket_basic(self) -> None:
         """Test für grundlegende WebSocket Funktionalität."""
         template_string = """
         {% load insight_tags %}
-        {% insight_websocket request_url="/runtime/stream/" %}
+        {% websocket request_url="/runtime/stream/" %}
         """
         rendered = self.render_template(template_string)
         assert "/runtime/stream/" in rendered
@@ -285,7 +285,7 @@ class WebsocketTemplateTagTest(TemplateTagsTestCase):
         """Leere tag_id Werte sollten keine unbrauchbaren HTML-IDs erzeugen."""
         template_string = """
         {% load insight_tags %}
-        {% insight_websocket request_url="/runtime/stream/" %}
+        {% websocket request_url="/runtime/stream/" %}
         """
         rendered = self.render_template(template_string)
         assert 'id="-output"' not in rendered

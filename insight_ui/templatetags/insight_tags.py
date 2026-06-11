@@ -898,7 +898,7 @@ def live_content(
 
 
 @register.inclusion_tag("insight_ui/components/websocket.html")
-def insight_websocket(
+def websocket(
     config: WebSocketConfig | None = None,
     *,
     tag_id: str | _Unset = UNSET,

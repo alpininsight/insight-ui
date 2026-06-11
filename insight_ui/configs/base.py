@@ -19,7 +19,7 @@ class IconConfig:
     """
 
     __example__ = """
-        IconConfig(name="home", size="s", color="#123456)
+        IconConfig(name="home", size="s", color="#123456")
         """
 
     name: str = field(metadata={"doc": _("Name of the Insight UI icon.")})
