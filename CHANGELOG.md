@@ -46,31 +46,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Change login smoke test to check for NOT translated string rather in comments
 - Minor spelling
 - **ci:** Restore automatic release on develop→main merge
-- **docs:** Resolve component-slug regressions (toggle_button, outline_button, button_sizes, effect_cards)
-- **ci:** Update scheduled pre-commit workflow actions
+- **docs:** Resolve component-slug regressions (toggle_button, outline_button, button_sizes, effect_cards) 
+- **ci:** Update scheduled pre-commit workflow actions 
 - **deps:** Update vulnerable dependencies
-- **docs:** Use manifest-safe card demo assets
-- **docs:** Serve component source links locally
-- **static:** Require explicit cdn opt-in
-- **static:** Preserve selectors in minified css assets
-- **cards:** Stabilize app card layout
-- **navbar:** Keep user dropdown out of layout flow
+- **docs:** Use manifest-safe card demo assets 
+- **docs:** Serve component source links locally 
+- **static:** Require explicit cdn opt-in 
+- **static:** Preserve selectors in minified css assets 
+- **cards:** Stabilize app card layout 
+- **navbar:** Keep user dropdown out of layout flow 
 - **navbar:** Sync user dropdown position to develop
+- Correct linting and remove print statements (T201) from ignored issues
+- Correct size of the 'corner_ribbon' component for non default positions
+- Remove 'user' and 'show_login' parameter for the navbar component from templates
 - **sidebar:** Keep primary docs navigation visible
 - **brand-lockup:** Use public icons and document navbar mode
 - **brand-lockup:** Preserve icon sizing and variant compatibility
 - **brand-lockup:** Handle legacy positional size calls
+- **dataclasses:** Port brand lockup after develop merge
+- **static:** Refresh generated tailwind assets
 
 ### CI/CD
 
-- Automate release-please PR checks and merge
+- Automate release-please PR checks and merge 
 - **guard:** Preserve branch-policy check name
 - **guard:** Preserve branch-policy check name
 - **feature:** Mirror required legacy test checks
 - Allow stacked branch pull requests
-- Align blue/green container publish and promotion
-- Use central reusable container workflow
-- **container:** Enable manual django image builds
+- Align blue/green container publish and promotion 
+- Use central reusable container workflow 
+- **container:** Enable manual django image builds 
 - **cdn:** Upload static assets by branch alias
 
 ### Documentation
@@ -82,14 +87,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Translate developer documentation
 - Add hint to run JavaScript tests to README.md
 - Make component docu context strings translateable
-- Document GitHub issue label taxonomy
-- Remove README workflow badges
-- Reflect Django support range in badge
-- Add notification component mockups
-- Move insight ui audit into repo
-- Document design system contract
-- Add component self-documentation checklist
-- Document documentation architecture
+- Document GitHub issue label taxonomy 
+- Remove README workflow badges 
+- Reflect Django support range in badge 
+- Add notification component mockups 
+- Move insight ui audit into repo 
+- Document design system contract 
+- Add component self-documentation checklist 
+- Document documentation architecture 
 
 ### Features
 
@@ -140,18 +145,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - EN to DE translations for all .html
 - Sharpen fuzzy translations
 - Add new setting 'use_tailwind_cli' and remove obsolete env-variables
-- Add heading decoration component
-- Remove detailpages
+- Add heading decoration component 
+- Remove detailpages 
 - Add logo component
-- **stream:** Clarify HTMX websocket boundary
-- **runtime:** Prepare blue-green demo deployment contract
-- Add copyright notice component
-- Improvements
-- Standardize the JavaScript lookup attribute naming convention
-- Enhancements
-- **static:** Publish minified assets via cdn
-- **component:** Add brand_lockup — final-symbol logo + two-tone wordmark
-- **brand_lockup:** Add per-environment wing variant param
+- **stream:** Clarify HTMX websocket boundary 
+- **runtime:** Prepare blue-green demo deployment contract 
+- Add copyright notice component 
+- Improvements 
+- Standardize the JavaScript lookup attribute naming convention 
+- Enhancements 
+- **static:** Publish minified assets via cdn 
+- Introduce dataclasses instead of dictionaries for component configuration
+- Add consistent config namespace to each component
+- Add href links to component documentation of several components
+- Add metadata with field documentation to component config dataclasses
+- Standardize insight_tags and add config override support for kwargs
+- Remove 'user' and 'show_login' parameter from navbar component
+- Use 'IconConfig' for icon docu page icons
+- Add config dataclass for several components
+- Generate component parameter documentation from dataclass documentation
+- Use component demo containers for storybook pages
+- **component:** Add brand_lockup — final-symbol logo + two-tone wordmark 
+- **brand_lockup:** Add per-environment wing variant param 
 
 ### Miscellaneous
 
@@ -164,8 +179,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update package-lock.json
 - Update uv.lock
 - Update footer copyright notice
-- **docs:** Remove legacy mkdocs layer
-- **ci:** Refresh GitHub Actions for Node 24
+- **docs:** Remove legacy mkdocs layer 
+- **ci:** Refresh GitHub Actions for Node 24 
+- Correct linting
+- Merge develop into dataclasses branch
 
 ### Refactoring
 
@@ -184,7 +201,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Improve smoke tests for storybooks and fix loginscreen test
 - Use Component Enum Class for smoke tests
-- Js tests
+- Js tests 
+- Update tests to use dataclass based config system for the component tests
+- Fix tests
 
 ## [1.9.1] - 2026-02-24
 
@@ -267,7 +286,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Pin and update all dependencies
 - **docs:** Remove completed architecture guide documents
 - **docs:** Remove obsolete index.md and fix README links
-- **develop:** Release 1.9.0
+- **develop:** Release 1.9.0 
 
 ### Refactoring
 
