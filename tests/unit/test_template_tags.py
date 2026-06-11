@@ -457,15 +457,20 @@ class CardTemplateTagTest(TemplateTagsTestCase):
 
         outer_card = soup.find("div", class_="max-w-96")
         assert outer_card is not None
+        assert "flex" in outer_card.get("class", [])
+        assert "flex-col" in outer_card.get("class", [])
         assert "min-h-56" in outer_card.get("class", [])
         assert "h-56" not in outer_card.get("class", [])
 
         body = outer_card.find("div", class_="flex")
         assert body is not None
-        assert "min-h-56" in body.get("class", [])
+        assert "min-h-0" in body.get("class", [])
+        assert "flex-1" in body.get("class", [])
+        assert "min-h-56" not in body.get("class", [])
 
         content = outer_card.find("div", class_="overflow-auto")
         assert content is not None
+        assert "min-h-0" in content.get("class", [])
         assert "grow" in content.get("class", [])
         assert content.find("strong", string="bold text") is not None
 
