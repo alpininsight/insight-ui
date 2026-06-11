@@ -1140,6 +1140,8 @@ def flip_card(
     request_url: str | _Unset = UNSET,
     image: ImageConfig | None | _Unset = UNSET,
     actions: list[ActionConfig] | None | _Unset = UNSET,
+    back_content: str | None | _Unset = UNSET,
+    back_style: str | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a card that can be rotated 180°."""
     config = build_config(FlipCardConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})

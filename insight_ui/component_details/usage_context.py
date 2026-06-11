@@ -775,6 +775,8 @@ def get_flip_card_usage_context() -> dict[str, str]:
         {% load insight_tags %}
 
         {% flip_card title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
+
+        {% flip_card title=card.title content=card.content back_content=card.back_content back_style=card.back_style image=card.image %}
         """
     }
 

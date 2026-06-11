@@ -441,6 +441,79 @@ class CardTemplateTagTest(TemplateTagsTestCase):
         rendered = self.render_template(template_string)
         assert "Test Card" in rendered
 
+    def test_card_content_allows_html(self) -> None:
+        """Card content can render developer-provided HTML fragments."""
+        rendered = self.render_template(
+            '{% load insight_tags %}{% card title="Formatted" content="<strong>Important</strong><br>Line 2" %}'
+        )
+        assert "<strong>Important</strong>" in rendered
+        assert "<br>Line 2" in rendered
+
+    def test_app_card_uses_stable_catalog_card_layout(self) -> None:
+        """The app card should fill its grid cell without hover-driven reflow."""
+        card = {
+            "title": "Catalog Product",
+            "content": "Reusable product description.",
+            "tags": ["SSO", "Demo"],
+            "image": {"url": "/static/product.png", "alt": "Product preview"},
+            "actions": [
+                {"text": "More information", "url": "/demo/product", "type": "secondary"},
+                {"text": "Not live yet", "url": "#", "type": "disabled", "disabled": True},
+            ],
+        }
+        template_string = """
+        {% load insight_tags %}
+        {% app_card title=card.title content=card.content tags=card.tags image=card.image actions=card.actions %}
+        """
+
+        rendered = self.render_template(template_string, context={"card": card})
+        soup = BeautifulSoup(rendered, "html.parser")
+        wrapper = soup.find("div")
+        classes = wrapper["class"]
+
+        assert "h-full" in classes
+        assert "w-full" in classes
+        assert "border" in classes
+        assert "max-w-72" not in classes
+        assert "hover:scale-105" not in classes
+        assert soup.find("img")["class"] == ["h-56", "w-full", "bg-gray-100", "object-cover", "dark:bg-gray-700"]
+        assert soup.find("div", id="card-tags")["class"] == ["flex", "flex-wrap", "gap-1", "px-4", "pb-2"]
+        assert soup.find("span", attrs={"aria-disabled": "true"}).text.strip() == "Not live yet"
+
+    def test_app_card_content_allows_html(self) -> None:
+        """App card content can render developer-provided HTML fragments."""
+        card = {
+            "title": "Catalog Product",
+            "content": "Supports <strong>formatted</strong> content.",
+            "image": {"url": "/static/product.png", "alt": "Product preview"},
+        }
+        template_string = """
+        {% load insight_tags %}
+        {% app_card title=card.title content=card.content image=card.image %}
+        """
+
+        rendered = self.render_template(template_string, context={"card": card})
+        assert "<strong>formatted</strong>" in rendered
+
+    def test_flip_card_back_content_and_style(self) -> None:
+        """Flip card can render formatted content on a styled back side."""
+        card = {
+            "title": "Formatted Flip",
+            "content": "Front <strong>content</strong>.",
+            "image": {"url": "/static/product.png", "alt": "Product preview"},
+            "back_content": "<p>Lorem ipsum</p>",
+            "back_style": "background-color: #fef3c7; color: #1f2937;",
+        }
+        template_string = """
+        {% load insight_tags %}
+        {% flip_card title=card.title content=card.content image=card.image back_content=card.back_content back_style=card.back_style %}
+        """
+
+        rendered = self.render_template(template_string, context={"card": card})
+        assert "Front <strong>content</strong>." in rendered
+        assert "<p>Lorem ipsum</p>" in rendered
+        assert 'style="background-color: #fef3c7; color: #1f2937;"' in rendered
+
 
 class FormTemplateTagTest(TemplateTagsTestCase):
     """Tests für den form Template Tag."""
