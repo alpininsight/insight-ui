@@ -242,9 +242,21 @@ def get_navbar_parameter_context() -> dict[str, list[str]]:
         ),
         [
             ParameterDetails("title", "str", _("The title of the application."), "''"),
+            ParameterDetails(
+                "aria_label",
+                "str",
+                _("Accessible label for the clickable brand area. Falls back to title when omitted."),
+                "''",
+            ),
             ParameterDetails("view_name", "str", _("Name of the URL to be called when clicking on the title."), "''"),
             ParameterDetails(
                 "gap", "str", _("This value determines the spacing between the logo and the title."), "0.5rem"
+            ),
+            ParameterDetails(
+                "lockup",
+                "dict[str, Any]",
+                _("Optional brand lockup configuration. When present, it replaces logo plus plain title text."),
+                "{}",
             ),
             logo_param.details,
         ],
@@ -310,6 +322,7 @@ def get_navbar_parameter_context() -> dict[str, list[str]]:
         {
             "brand": {
                 "title": "Insight UI",
+                "aria_label": "Insight UI Startseite",
                 "view_name": "storybook_view",
                 "gap": "0.5rem",
                 "logo": {
@@ -1534,6 +1547,60 @@ def get_logo_parameter_context() -> dict[str, list[str]]:
     ]
 
     return {"params": [main_params, config_param, icon_param]}
+
+
+@register_component(Component.BRAND_LOCKUP)
+def get_brand_lockup_parameter_context() -> dict[str, list[str]]:
+    """Serve parameter documentation for the brand lockup component."""
+    config_param = ParameterDoc(
+        ParameterDetails("config", "dict[str, Any]", _("Dictionary-based brand lockup configuration."), "{}"),
+        [
+            ParameterDetails("primary_text", "str", _("First wordmark text run."), "'Alpin Insight'"),
+            ParameterDetails("secondary_text", "str", _("Second wordmark text run."), "'Solutions'"),
+            ParameterDetails("logo_position", "str", _("Logo position: 'start' or 'end'."), "'start'"),
+            ParameterDetails("height", "str", _("Compatibility parameter for existing configurations."), "'1.75rem'"),
+            ParameterDetails(
+                "variant",
+                "str",
+                _("Icon variant: 'main', 'develop', or 'candidate'. Unknown values fall back to 'main'."),
+                "'main'",
+            ),
+            ParameterDetails("class", "str", _("Additional CSS classes for the root element."), "''"),
+        ],
+        """
+        {
+            "primary_text": "Alpin Insight",
+            "secondary_text": "Develop",
+            "variant": "develop",
+            "height": "1.75rem",
+        }
+        """,
+        notes=[
+            {
+                "type": "info",
+                "message": _(
+                    "The same dictionary can be nested as `brand.lockup` in the navbar configuration."
+                ),
+            }
+        ],
+    )
+
+    main_params = [
+        ParameterDetails("primary_text", "str", _("First wordmark text run."), "'Alpin Insight'"),
+        ParameterDetails("secondary_text", "str", _("Second wordmark text run."), "'Solutions'"),
+        ParameterDetails("logo_position", "str", _("Logo position: 'start' or 'end'."), "'start'"),
+        ParameterDetails("height", "str", _("Compatibility parameter for existing configurations."), "'1.75rem'"),
+        ParameterDetails(
+            "variant",
+            "str",
+            _("Icon variant: 'main', 'develop', or 'candidate'."),
+            "'main'",
+        ),
+        ParameterDetails("css_class", "str", _("Additional CSS classes for the root element."), "''"),
+        config_param.details,
+    ]
+
+    return {"params": [main_params, config_param]}
 
 
 @register_component(Component.PROGRESS_BAR)

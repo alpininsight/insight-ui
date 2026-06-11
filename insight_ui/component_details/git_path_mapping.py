@@ -16,6 +16,7 @@ TEMPLATE_PATHS = {
     "accordion": TEMPLATE_BASE + "accordion.html",
     "alert": TEMPLATE_BASE + "alert.html",
     "breadcrumbs": TEMPLATE_BASE + "breadcrumbs.html",
+    "brand_lockup": TEMPLATE_BASE + "brand_lockup.html",
     "bullet_point_list": TEMPLATE_BASE + "bullet_point_list.html",
     "carousel": TEMPLATE_BASE + "carousel.html",
     "chat": TEMPLATE_BASE + "chat.html",

@@ -1,6 +1,7 @@
 """Template-Tags for Insight UI-Components."""
 
 import math
+import re
 from collections.abc import Iterable, Mapping, Sequence
 from copy import deepcopy
 from difflib import HtmlDiff, ndiff, unified_diff
@@ -89,7 +90,7 @@ def get_item(dictionary: dict, key: str) -> Any:  # noqa: ANN401
 
 
 @register.inclusion_tag("insight_ui/components/icons.html")
-def icon(name: str = "", size: str = "") -> dict[str, Any]:
+def icon(name: str = "", size: str = "", css_class: str = "", style: str = "") -> dict[str, Any]:
     """
     Render specified icon with given size.
 
@@ -97,6 +98,8 @@ def icon(name: str = "", size: str = "") -> dict[str, Any]:
     ---------
         name (str or dict): name of the icon or a dict with "name" and "size".
         size (str): size of the icon.
+        css_class (str): optional additional classes for the wrapper.
+        style (str): optional inline style for the wrapper.
 
     Returns:
     -------
@@ -104,9 +107,14 @@ def icon(name: str = "", size: str = "") -> dict[str, Any]:
 
     """
     if isinstance(name, dict):
-        return {"name": name.get("name", ""), "size": name.get("size", "")}
+        return {
+            "name": name.get("name", ""),
+            "size": name.get("size", ""),
+            "css_class": name.get("class", name.get("css_class", css_class)),
+            "style": name.get("style", style),
+        }
 
-    return {"name": name, "size": size}
+    return {"name": name, "size": size, "css_class": css_class, "style": style}
 
 
 def _resolve_asset_url(value: object) -> str:
@@ -197,7 +205,33 @@ def logo(  # noqa: PLR0913 (too many arguments)
     }
 
 
-BRAND_LOCKUP_VARIANTS = ("wing-slice", "dual-wing", "wing-arc")
+BRAND_LOCKUP_VARIANTS = ("main", "develop", "candidate")
+BRAND_LOCKUP_ICON_BY_VARIANT = {
+    "main": "app",
+    "develop": "rocket",
+    "candidate": "sparkles",
+}
+CSS_SIZE_PATTERN = re.compile(r"^-?(?:\d+(?:\.\d+)?|\.\d+)(?:px|rem|em|vh|vw|vmin|vmax|%|ch|ex|lh|rlh)$")
+
+
+def _looks_like_css_size(value: object) -> bool:
+    """Return true when a positional value is intended as a CSS size."""
+    normalized = str(value).strip().lower()
+    return normalized in {"auto", "inherit", "initial", "revert", "unset"} or bool(CSS_SIZE_PATTERN.match(normalized))
+
+
+def _normalize_brand_lockup_variant(value: object) -> str:
+    """Normalize public variants and a small set of legacy aliases."""
+    normalized = str(value).strip().lower()
+    if normalized in BRAND_LOCKUP_VARIANTS:
+        return normalized
+    if "dual" in normalized:
+        return "develop"
+    if "arc" in normalized:
+        return "candidate"
+    if "slice" in normalized:
+        return "main"
+    return "main"
 
 
 @register.inclusion_tag("insight_ui/components/brand_lockup.html")
@@ -205,22 +239,19 @@ def brand_lockup(  # noqa: PLR0913 (too many arguments)
     primary_text: str = "Alpin Insight",
     secondary_text: str = "Solutions",
     logo_position: str = "start",
-    variant: str = "wing-slice",
     height: str = "1.75rem",
+    variant: str = "main",
     css_class: str | None = None,
     config: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """
-    Render the brand lockup: a wing logo plus a two-tone wordmark.
+    Render the brand lockup: a public icon plus a two-tone wordmark.
 
     The wordmark's first run (``primary_text``) is painted in
     ``--color-insight-primary`` and the second run (``secondary_text``) in
-    ``--color-insight-secondary``; the logo's wing and node use the same two
-    tokens. Because the colours are design tokens, the lockup follows the
-    active theme automatically — generic insight-ui renders it blue/teal,
-    while a brand-themed app (e.g. the Alpin Insight identity theme that
-    overrides the tokens to Navy ``#003153`` / Orange ``#ff6a00``) renders
-    it in brand colours with no extra markup.
+    ``--color-insight-secondary``; the icon inherits the primary token. This
+    keeps the open-source component theme-following without embedding
+    private assets.
 
     Args:
     ----
@@ -231,12 +262,10 @@ def brand_lockup(  # noqa: PLR0913 (too many arguments)
         logo_position (str): "start" (logo before the wordmark, left-aligned
             group) or "end" (wordmark left-aligned, logo pushed to the far
             edge). Anything else falls back to "start".
-        variant (str): Which wing mark to render — ``wing-slice`` (the
-            company logo, default), ``dual-wing`` (used for the dev
-            environment), or ``wing-arc`` (candidate environments). Apps
-            typically pick this by deployment lane. Unknown values fall
-            back to ``wing-slice``. See alpininsight/insight-brand#123.
-        height (str): CSS height of the logo symbol. Width auto-scales.
+        height (str): Compatibility parameter for existing configurations.
+        variant (str): Which public Insight UI icon variant to render —
+            ``main`` (app icon, default), ``develop`` (rocket), or
+            ``candidate`` (sparkles). Unknown values fall back to ``main``.
         css_class (str): Extra classes for the lockup root element.
         config (Mapping): Alternative configuration; keys mirror the
             parameters above ("class" is also accepted for css_class).
@@ -246,6 +275,21 @@ def brand_lockup(  # noqa: PLR0913 (too many arguments)
         Context for ``insight_ui/components/brand_lockup.html``.
 
     """
+    if config is None:
+        height_or_variant = str(height).strip().lower()
+        variant_or_height = str(variant).strip().lower()
+        if height_or_variant not in BRAND_LOCKUP_VARIANTS and not _looks_like_css_size(height):
+            if variant != "main" and _looks_like_css_size(variant):
+                height, variant = variant, height
+            elif variant == "main":
+                variant = height
+                height = "1.75rem"
+        elif variant == "main" and height_or_variant in BRAND_LOCKUP_VARIANTS:
+            variant = height
+            height = "1.75rem"
+        elif variant != "main" and variant_or_height not in BRAND_LOCKUP_VARIANTS and _looks_like_css_size(variant):
+            height, variant = variant, height
+
     if config is not None:
         primary_text = config.get("primary_text", primary_text)
         secondary_text = config.get("secondary_text", secondary_text)
@@ -255,15 +299,16 @@ def brand_lockup(  # noqa: PLR0913 (too many arguments)
         css_class = config.get("css_class", config.get("class", css_class))
 
     normalized_position = "end" if str(logo_position).strip().lower() == "end" else "start"
-    normalized_variant = str(variant).strip().lower()
-    if normalized_variant not in BRAND_LOCKUP_VARIANTS:
-        normalized_variant = "wing-slice"
+    normalized_variant = _normalize_brand_lockup_variant(variant)
 
     return {
         "primary_text": primary_text,
         "secondary_text": secondary_text,
         "logo_position": normalized_position,
         "variant": normalized_variant,
+        "icon_name": BRAND_LOCKUP_ICON_BY_VARIANT[normalized_variant],
+        "icon_size": "l",
+        "icon_style": f"width: {height}; height: {height};",
         "height": height,
         "css_class": css_class or "",
     }

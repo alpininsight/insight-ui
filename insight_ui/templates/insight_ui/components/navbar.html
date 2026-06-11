@@ -14,11 +14,20 @@
   <div class="flex flex-wrap lg:flex-nowrap justify-between items-center gap-1 h-full">
     <!-- Brand Logo -->
     {% if brand %}
-      <a href="{{ brand.href }}" class="flex items-center text-xl font-bold text-primary" style="gap: {{ brand.gap|default:'0.5rem' }}">
-        {% if brand.logo %}
-          {% logo config=brand.logo %}
+      <a
+        href="{{ brand.href }}"
+        class="flex items-center text-xl font-bold text-primary"
+        style="gap: {{ brand.gap|default:'0.5rem' }}"
+        {% if brand.aria_label %}aria-label="{{ brand.aria_label }}"{% elif brand.title %}aria-label="{{ brand.title }}"{% endif %}
+      >
+        {% if brand.lockup %}
+          {% brand_lockup config=brand.lockup %}
+        {% else %}
+          {% if brand.logo %}
+            {% logo config=brand.logo %}
+          {% endif %}
+          <span>{{ brand.title }}</span>
         {% endif %}
-        <span>{{ brand.title }}</span>
       </a>
     {% endif %}
 
