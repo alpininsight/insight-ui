@@ -597,6 +597,33 @@ def get_logo_usage_context() -> dict[str, str]:
     }
 
 
+@register_component(Component.BRAND_LOCKUP)
+def get_brand_lockup_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the brand lockup component."""
+    return {
+        "usage": """
+        {% load insight_tags %}
+
+        {# Direct use with defaults #}
+        {% brand_lockup %}
+
+        {# Deployment-lane variant #}
+        {% brand_lockup primary_text="Alpin Insight" secondary_text="Develop" variant="develop" %}
+
+        {# Navbar brand mode #}
+        {% navbar config=navbar_config %}
+        """,
+        "usage_notes_end": [
+            {
+                "type": "info",
+                "message": _(
+                    "Use `brand.lockup` in the navbar when the wordmark should be the clickable brand element. Keep `brand.logo` plus `brand.title` for generic application names."
+                ),
+            }
+        ],
+    }
+
+
 @register_component(Component.PROGRESS_BAR)
 def get_progress_bar_usage_context() -> dict[str, str]:
     """Serve usage documentation for the progress bar component."""

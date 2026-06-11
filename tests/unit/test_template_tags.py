@@ -86,6 +86,59 @@ class NavbarTemplateTagTest(TemplateTagsTestCase):
         assert "absolute" in menu.get("class", [])
         assert "top-full" in menu.get("class", [])
 
+    def test_navbar_renders_brand_lockup_when_configured(self) -> None:
+        """Navbar can render a controlled brand lockup instead of logo plus title."""
+        nav_config = {
+            "brand": {
+                "title": "Alpin Insight Develop",
+                "aria_label": "Alpin Insight Develop Startseite",
+                "lockup": {
+                    "primary_text": "Alpin Insight",
+                    "secondary_text": "Develop",
+                    "variant": "develop",
+                    "height": "2rem",
+                },
+            },
+            "links": [],
+        }
+
+        rendered = self.render_template(
+            "{% load insight_tags %}{% navbar config=nav_config %}", context={"nav_config": nav_config}
+        )
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        brand_link = soup.find("a", attrs={"aria-label": "Alpin Insight Develop Startseite"})
+        assert brand_link is not None
+        assert "Alpin Insight" in brand_link.get_text(" ", strip=True)
+        assert "Develop" in brand_link.get_text(" ", strip=True)
+        assert brand_link.find("svg") is not None
+        assert brand_link.find("img") is None
+
+    def test_navbar_keeps_logo_title_fallback_without_lockup(self) -> None:
+        """Existing logo plus title configuration remains the fallback mode."""
+        nav_config = {
+            "brand": {
+                "title": "Insight UI",
+                "logo": {
+                    "type": "svg",
+                    "url": "insight_ui/svg/ai-logo.svg",
+                    "alt": "Insight UI Logo",
+                    "height": "2rem",
+                },
+            },
+            "links": [],
+        }
+
+        rendered = self.render_template(
+            "{% load insight_tags %}{% navbar config=nav_config %}", context={"nav_config": nav_config}
+        )
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        brand_link = soup.find("a", attrs={"aria-label": "Insight UI"})
+        assert brand_link is not None
+        assert brand_link.find("span", string="Insight UI") is not None
+        assert brand_link.find("img") is not None
+
 
 class CopyrightNoticeTemplateTagTest(TemplateTagsTestCase):
     """Tests for the copyright_notice template tag."""
@@ -967,7 +1020,7 @@ class BrandLockupTemplateTagTest(TemplateTagsTestCase):
     """Tests für den brand_lockup Template Tag."""
 
     def test_brand_lockup_defaults(self) -> None:
-        """Default render carries the Alpin Insight wordmark + logo."""
+        """Default render carries the Alpin Insight wordmark + public icon."""
         rendered = self.render_template("{% load insight_tags %}{% brand_lockup %}")
         soup = BeautifulSoup(rendered, "html.parser")
 
@@ -979,7 +1032,7 @@ class BrandLockupTemplateTagTest(TemplateTagsTestCase):
         assert "var(--color-insight-primary)" in rendered
         assert "var(--color-insight-secondary)" in rendered
 
-        # Logo present and decorative (wordmark already read by AT)
+        # Icon present and decorative (wordmark already read by AT)
         svg = soup.find("svg")
         assert svg is not None
         assert svg.get("aria-hidden") == "true"
@@ -1012,40 +1065,59 @@ class BrandLockupTemplateTagTest(TemplateTagsTestCase):
         )
         root = BeautifulSoup(rendered, "html.parser").find("div")
         assert "justify-between" in root.get("class", [])
-        assert "height: 2.5rem" in rendered
+        assert "order: 2" in rendered
 
-    def test_brand_lockup_default_variant_is_wing_slice(self) -> None:
-        """Default renders the wing-slice company logo (single path, 240x120)."""
+    def test_brand_lockup_default_variant_uses_app_icon(self) -> None:
+        """Default renders the public app icon."""
         rendered = self.render_template("{% load insight_tags %}{% brand_lockup %}")
         svg = BeautifulSoup(rendered, "html.parser").find("svg")
-        assert svg.get("viewbox") == "0 0 240 120"
-        assert len(svg.find_all("path")) == 1
+        assert svg.get("viewbox") == "0 0 24 24"
+        assert "M2.25 6a3 3" in rendered
 
-    def test_brand_lockup_dual_wing_variant(self) -> None:
-        """dual-wing renders the double-swoosh mark (two paths, 260x140)."""
-        rendered = self.render_template('{% load insight_tags %}{% brand_lockup variant="dual-wing" %}')
+    def test_brand_lockup_develop_variant_uses_rocket_icon(self) -> None:
+        """develop renders the public rocket icon."""
+        rendered = self.render_template('{% load insight_tags %}{% brand_lockup variant="develop" %}')
         svg = BeautifulSoup(rendered, "html.parser").find("svg")
-        assert svg.get("viewbox") == "0 0 260 140"
-        assert len(svg.find_all("path")) == 2  # noqa: PLR2004
+        assert svg.get("viewbox") == "0 0 24 24"
+        assert "M15.59 14.37" in rendered
 
-    def test_brand_lockup_wing_arc_variant(self) -> None:
-        """wing-arc renders the arced wing mark."""
-        rendered = self.render_template('{% load insight_tags %}{% brand_lockup variant="wing-arc" %}')
-        # wing-arc's node sits at cy=77 (distinct from wing-slice's cy=84)
-        assert 'cy="77"' in rendered
+    def test_brand_lockup_candidate_variant_uses_sparkles_icon(self) -> None:
+        """candidate renders the public sparkles icon."""
+        rendered = self.render_template('{% load insight_tags %}{% brand_lockup variant="candidate" %}')
+        assert "M9.813 15.904" in rendered
 
-    def test_brand_lockup_unknown_variant_falls_back_to_wing_slice(self) -> None:
-        """An unknown variant falls back to the company logo, not an empty SVG."""
+    def test_brand_lockup_unknown_variant_falls_back_to_main_icon(self) -> None:
+        """An unknown variant falls back to the public app icon, not an empty SVG."""
         rendered = self.render_template('{% load insight_tags %}{% brand_lockup variant="bogus" %}')
         svg = BeautifulSoup(rendered, "html.parser").find("svg")
         assert svg is not None
-        assert svg.get("viewbox") == "0 0 240 120"
-        assert len(svg.find_all("path")) == 1
+        assert "M2.25 6a3 3" in rendered
 
     def test_brand_lockup_variant_via_config(self) -> None:
         """Variant is configurable through the config dict too."""
         rendered = self.render_template(
-            "{% load insight_tags %}{% brand_lockup config=cfg %}", context={"cfg": {"variant": "dual-wing"}}
+            "{% load insight_tags %}{% brand_lockup config=cfg %}", context={"cfg": {"variant": "develop"}}
+        )
+        assert "M15.59 14.37" in rendered
+
+    def test_brand_lockup_accepts_old_wing_variant_aliases(self) -> None:
+        """Old wing variant names remain aliases but no internal SVG is embedded."""
+        rendered = self.render_template('{% load insight_tags %}{% brand_lockup variant="dual-wing" %}')
+        assert "M15.59 14.37" in rendered
+        assert "viewBox=\"0 0 260 140\"" not in rendered
+
+    def test_brand_lockup_preserves_positional_height_argument(self) -> None:
+        """The fourth positional argument remains accepted for backwards compatibility."""
+        rendered = self.render_template(
+            '{% load insight_tags %}{% brand_lockup "Alpin Insight" "Develop" "start" "2.5rem" %}'
         )
         svg = BeautifulSoup(rendered, "html.parser").find("svg")
-        assert len(svg.find_all("path")) == 2  # noqa: PLR2004
+        assert "Alpin Insight" in rendered
+        assert "Develop" in rendered
+        assert svg.get("viewbox") == "0 0 24 24"
+
+    def test_brand_lockup_uses_shipped_spacing_without_gap_three(self) -> None:
+        """The component must not depend on a Tailwind class that is missing from shipped CSS."""
+        rendered = self.render_template("{% load insight_tags %}{% brand_lockup %}")
+        assert "gap-3" not in rendered
+        assert "gap: 0.75rem" in rendered

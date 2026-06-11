@@ -197,7 +197,17 @@ def logo(  # noqa: PLR0913 (too many arguments)
     }
 
 
-BRAND_LOCKUP_VARIANTS = ("wing-slice", "dual-wing", "wing-arc")
+BRAND_LOCKUP_VARIANTS = ("main", "develop", "candidate")
+BRAND_LOCKUP_VARIANT_ALIASES = {
+    "wing-slice": "main",
+    "dual-wing": "develop",
+    "wing-arc": "candidate",
+}
+BRAND_LOCKUP_ICON_BY_VARIANT = {
+    "main": "app",
+    "develop": "rocket",
+    "candidate": "sparkles",
+}
 
 
 @register.inclusion_tag("insight_ui/components/brand_lockup.html")
@@ -205,22 +215,19 @@ def brand_lockup(  # noqa: PLR0913 (too many arguments)
     primary_text: str = "Alpin Insight",
     secondary_text: str = "Solutions",
     logo_position: str = "start",
-    variant: str = "wing-slice",
     height: str = "1.75rem",
+    variant: str = "main",
     css_class: str | None = None,
     config: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """
-    Render the brand lockup: a wing logo plus a two-tone wordmark.
+    Render the brand lockup: a public icon plus a two-tone wordmark.
 
     The wordmark's first run (``primary_text``) is painted in
     ``--color-insight-primary`` and the second run (``secondary_text``) in
-    ``--color-insight-secondary``; the logo's wing and node use the same two
-    tokens. Because the colours are design tokens, the lockup follows the
-    active theme automatically — generic insight-ui renders it blue/teal,
-    while a brand-themed app (e.g. the Alpin Insight identity theme that
-    overrides the tokens to Navy ``#003153`` / Orange ``#ff6a00``) renders
-    it in brand colours with no extra markup.
+    ``--color-insight-secondary``; the icon inherits the primary token. This
+    keeps the open-source component theme-following without embedding
+    internal brand SVGs.
 
     Args:
     ----
@@ -231,12 +238,12 @@ def brand_lockup(  # noqa: PLR0913 (too many arguments)
         logo_position (str): "start" (logo before the wordmark, left-aligned
             group) or "end" (wordmark left-aligned, logo pushed to the far
             edge). Anything else falls back to "start".
-        variant (str): Which wing mark to render — ``wing-slice`` (the
-            company logo, default), ``dual-wing`` (used for the dev
-            environment), or ``wing-arc`` (candidate environments). Apps
-            typically pick this by deployment lane. Unknown values fall
-            back to ``wing-slice``. See alpininsight/insight-brand#123.
-        height (str): CSS height of the logo symbol. Width auto-scales.
+        height (str): Compatibility parameter for existing configurations.
+        variant (str): Which public Insight UI icon variant to render —
+            ``main`` (app icon, default), ``develop`` (rocket), or
+            ``candidate`` (sparkles). The old ``wing-*`` names are accepted
+            as aliases for backwards compatibility. Unknown values fall back
+            to ``main``.
         css_class (str): Extra classes for the lockup root element.
         config (Mapping): Alternative configuration; keys mirror the
             parameters above ("class" is also accepted for css_class).
@@ -256,14 +263,17 @@ def brand_lockup(  # noqa: PLR0913 (too many arguments)
 
     normalized_position = "end" if str(logo_position).strip().lower() == "end" else "start"
     normalized_variant = str(variant).strip().lower()
+    normalized_variant = BRAND_LOCKUP_VARIANT_ALIASES.get(normalized_variant, normalized_variant)
     if normalized_variant not in BRAND_LOCKUP_VARIANTS:
-        normalized_variant = "wing-slice"
+        normalized_variant = "main"
 
     return {
         "primary_text": primary_text,
         "secondary_text": secondary_text,
         "logo_position": normalized_position,
         "variant": normalized_variant,
+        "icon_name": BRAND_LOCKUP_ICON_BY_VARIANT[normalized_variant],
+        "icon_size": "l",
         "height": height,
         "css_class": css_class or "",
     }
