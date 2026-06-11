@@ -65,6 +65,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **brand-lockup:** Handle legacy positional size calls
 - **dataclasses:** Port brand lockup after develop merge
 - **static:** Refresh generated tailwind assets
+- **card:** Keep actions inside long content cards
+- **card:** Restore template and constrain actions
+- **card:** Preserve image card sizing
 
 ### CI/CD
 
@@ -167,6 +170,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Use component demo containers for storybook pages
 - **component:** Add brand_lockup — final-symbol logo + two-tone wordmark 
 - **brand_lockup:** Add per-environment wing variant param 
+- Allow HTML code in card content
+- **card:** Add formatted content demos
+- Rename 'insight_websocket' component to 'websocket'
+- Update component usage examples with new config dataclass examples
 
 ### Miscellaneous
 
@@ -183,6 +190,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **ci:** Refresh GitHub Actions for Node 24 
 - Correct linting
 - Merge develop into dataclasses branch
+- Fix merge issues
 
 ### Refactoring
 
