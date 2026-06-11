@@ -19,7 +19,7 @@
 
     {% if card_config.content %}
       <div class="text-primary grow my-4">
-        {{ card_config.content }}
+        {{ card_config.content|safe }}
       </div>
     {% endif %}
 

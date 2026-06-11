@@ -12,7 +12,7 @@
         {% else %}
             <p id="card-title" class="text-primary font-bold text-xl mb-2">{{ app_card_config.title }}</p>
         {% endif %}
-        <p id="card-description" class="text-secondary text-base text-justify hyphens-auto" lang="de">{{ app_card_config.content }}</p>
+        <p id="card-description" class="text-secondary text-base text-justify hyphens-auto" lang="de">{{ app_card_config.content|safe }}</p>
     </div>
 
     {# Tags #}

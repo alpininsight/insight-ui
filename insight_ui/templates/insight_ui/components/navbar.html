@@ -15,7 +15,7 @@
     {# Brand Logo #}
     {% if navbar_config.brand %}
       <a
-        href="{{ navbar_config.brand.request_url|default:navbar_config.brand.href }}"
+        href="{{ navbar_config.brand.request_url }}"
         class="flex items-center text-xl font-bold text-primary"
         style="gap: {{ navbar_config.brand.gap|default:'0.5rem' }}"
         {% if navbar_config.brand.aria_label %}aria-label="{{ navbar_config.brand.aria_label }}"{% elif navbar_config.brand.title %}aria-label="{{ navbar_config.brand.title }}"{% endif %}

@@ -414,7 +414,7 @@ class LiveContentConfig:
 @dataclass
 class WebSocketConfig:
     """
-    Configuration for the insight_websocket component.
+    Configuration for the websocket component.
 
     Renders a WebSocket-connected container using HTMX ws extension.
 

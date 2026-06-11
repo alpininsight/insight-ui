@@ -14,17 +14,19 @@ class IconConfig:
     Attributes:
         name: Name of the Insight UI icon.
         size: Icon size: 'xl', 'l', 'm', 's', or 'xs'.
+        color: Color Hex-Code of the icon.
 
     """
 
     __example__ = """
-        IconConfig(name="home", size="s")
+        IconConfig(name="home", size="s", color="#123456")
         """
 
     name: str = field(metadata={"doc": _("Name of the Insight UI icon.")})
     size: Literal["xs", "s", "m", "l", "xl"] = field(
         default="m", metadata={"doc": _("Icon size: 'xl', 'l', 'm', 's', or 'xs'.")}
     )
+    color: str = field(default="", metadata={"doc": _("Color Hex-Code of the icon.")})
 
 
 @dataclass

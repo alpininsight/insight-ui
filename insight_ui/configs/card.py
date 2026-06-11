@@ -89,7 +89,8 @@ class FlipCardConfig:
 
     Attributes:
         title: Card title.
-        content: Back side content.
+        content: Front side content.
+        back_content: Back side content.
         request_url: URL when title is clicked.
         image: Front side image.
         tags: List of tag labels.
@@ -100,7 +101,8 @@ class FlipCardConfig:
     __example__ = """
         FlipCardConfig(
             title="Product Name",
-            content="Detailed description shown on hover.",
+            content="Detailed description shown on the front side.",
+            back_content="Detailed description shown on the back side.",
             image=ImageConfig(url="img/product.png", alt="Product"),
             tags=["Sale", "-20%"],
             actions=[ActionConfig(text="Buy", url="/buy/", type="primary")],
@@ -108,7 +110,8 @@ class FlipCardConfig:
         """
 
     title: str = field(metadata={"doc": _("Card title.")})
-    content: str = field(metadata={"doc": _("Back side content.")})
+    content: str = field(metadata={"doc": _("Front side content.")})
+    back_content: str = field(metadata={"doc": _("Back side content.")})
     request_url: str = field(default="", metadata={"doc": _("URL when title is clicked.")})
     image: ImageConfig | None = field(default=None, metadata={"doc": _("Front side image.")})
     tags: list[str] = field(default_factory=list, metadata={"doc": _("List of tag labels.")})
