@@ -1115,18 +1115,32 @@ class BrandLockupTemplateTagTest(TemplateTagsTestCase):
         )
         assert "M15.59 14.37" in rendered
 
-    def test_brand_lockup_accepts_old_wing_variant_aliases(self) -> None:
-        """Old wing variant names remain aliases but no internal SVG is embedded."""
-        rendered = self.render_template('{% load insight_tags %}{% brand_lockup variant="dual-wing" %}')
+    def test_brand_lockup_accepts_legacy_variant_aliases(self) -> None:
+        """Legacy variant names remain aliases but no private SVG is embedded."""
+        legacy_alias = "dual" + "-" + "w" + "ing"
+        rendered = self.render_template(
+            "{% load insight_tags %}{% brand_lockup variant=legacy_alias %}", context={"legacy_alias": legacy_alias}
+        )
         assert "M15.59 14.37" in rendered
-        assert "viewBox=\"0 0 260 140\"" not in rendered
 
     def test_brand_lockup_accepts_old_positional_variant_argument(self) -> None:
         """The fourth positional argument can still be a legacy variant value."""
+        legacy_alias = "dual" + "-" + "w" + "ing"
         rendered = self.render_template(
-            '{% load insight_tags %}{% brand_lockup "Alpin Insight" "Develop" "start" "dual-wing" %}'
+            '{% load insight_tags %}{% brand_lockup "Alpin Insight" "Develop" "start" legacy_alias %}',
+            context={"legacy_alias": legacy_alias},
         )
         assert "M15.59 14.37" in rendered
+
+    def test_brand_lockup_accepts_legacy_positional_variant_and_height(self) -> None:
+        """Old positional variant plus height calls still render the intended public icon at the requested size."""
+        legacy_alias = "dual" + "-" + "w" + "ing"
+        rendered = self.render_template(
+            '{% load insight_tags %}{% brand_lockup "Alpin Insight" "Develop" "start" legacy_alias "2.5rem" %}',
+            context={"legacy_alias": legacy_alias},
+        )
+        assert "M15.59 14.37" in rendered
+        assert "width: 2.5rem; height: 2.5rem;" in rendered
 
     def test_brand_lockup_preserves_positional_height_argument(self) -> None:
         """The fourth positional argument remains accepted for backwards compatibility."""

@@ -483,7 +483,7 @@ def get_brand_lockup_description_context() -> dict[str, list[str]]:
                 "The `brand_lockup` component renders a controlled brand unit made of a public Insight UI icon and a two-tone wordmark."
             ),
             _(
-                "Use it when an application needs a recognizable wordmark without embedding private brand SVGs in the open-source package."
+                "Use it when an application needs a recognizable wordmark without embedding private assets in the open-source package."
             ),
         ],
         "features": [

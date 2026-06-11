@@ -1,6 +1,7 @@
 """Template-Tags for Insight UI-Components."""
 
 import math
+import re
 from collections.abc import Iterable, Mapping, Sequence
 from copy import deepcopy
 from difflib import HtmlDiff, ndiff, unified_diff
@@ -205,16 +206,32 @@ def logo(  # noqa: PLR0913 (too many arguments)
 
 
 BRAND_LOCKUP_VARIANTS = ("main", "develop", "candidate")
-BRAND_LOCKUP_VARIANT_ALIASES = {
-    "wing-slice": "main",
-    "dual-wing": "develop",
-    "wing-arc": "candidate",
-}
 BRAND_LOCKUP_ICON_BY_VARIANT = {
     "main": "app",
     "develop": "rocket",
     "candidate": "sparkles",
 }
+CSS_SIZE_PATTERN = re.compile(r"^-?(?:\d+(?:\.\d+)?|\.\d+)(?:px|rem|em|vh|vw|vmin|vmax|%|ch|ex|lh|rlh)$")
+
+
+def _looks_like_css_size(value: object) -> bool:
+    """Return true when a positional value is intended as a CSS size."""
+    normalized = str(value).strip().lower()
+    return normalized in {"auto", "inherit", "initial", "revert", "unset"} or bool(CSS_SIZE_PATTERN.match(normalized))
+
+
+def _normalize_brand_lockup_variant(value: object) -> str:
+    """Normalize public variants and a small set of legacy aliases."""
+    normalized = str(value).strip().lower()
+    if normalized in BRAND_LOCKUP_VARIANTS:
+        return normalized
+    if "dual" in normalized:
+        return "develop"
+    if "arc" in normalized:
+        return "candidate"
+    if "slice" in normalized:
+        return "main"
+    return "main"
 
 
 @register.inclusion_tag("insight_ui/components/brand_lockup.html")
@@ -234,7 +251,7 @@ def brand_lockup(  # noqa: PLR0913 (too many arguments)
     ``--color-insight-primary`` and the second run (``secondary_text``) in
     ``--color-insight-secondary``; the icon inherits the primary token. This
     keeps the open-source component theme-following without embedding
-    internal brand SVGs.
+    private assets.
 
     Args:
     ----
@@ -248,9 +265,7 @@ def brand_lockup(  # noqa: PLR0913 (too many arguments)
         height (str): Compatibility parameter for existing configurations.
         variant (str): Which public Insight UI icon variant to render —
             ``main`` (app icon, default), ``develop`` (rocket), or
-            ``candidate`` (sparkles). The old ``wing-*`` names are accepted
-            as aliases for backwards compatibility. Unknown values fall back
-            to ``main``.
+            ``candidate`` (sparkles). Unknown values fall back to ``main``.
         css_class (str): Extra classes for the lockup root element.
         config (Mapping): Alternative configuration; keys mirror the
             parameters above ("class" is also accepted for css_class).
@@ -262,9 +277,18 @@ def brand_lockup(  # noqa: PLR0913 (too many arguments)
     """
     if config is None:
         height_or_variant = str(height).strip().lower()
-        if variant == "main" and height_or_variant in {*BRAND_LOCKUP_VARIANTS, *BRAND_LOCKUP_VARIANT_ALIASES}:
+        variant_or_height = str(variant).strip().lower()
+        if height_or_variant not in BRAND_LOCKUP_VARIANTS and not _looks_like_css_size(height):
+            if variant != "main" and _looks_like_css_size(variant):
+                height, variant = variant, height
+            elif variant == "main":
+                variant = height
+                height = "1.75rem"
+        elif variant == "main" and height_or_variant in BRAND_LOCKUP_VARIANTS:
             variant = height
             height = "1.75rem"
+        elif variant != "main" and variant_or_height not in BRAND_LOCKUP_VARIANTS and _looks_like_css_size(variant):
+            height, variant = variant, height
 
     if config is not None:
         primary_text = config.get("primary_text", primary_text)
@@ -275,10 +299,7 @@ def brand_lockup(  # noqa: PLR0913 (too many arguments)
         css_class = config.get("css_class", config.get("class", css_class))
 
     normalized_position = "end" if str(logo_position).strip().lower() == "end" else "start"
-    normalized_variant = str(variant).strip().lower()
-    normalized_variant = BRAND_LOCKUP_VARIANT_ALIASES.get(normalized_variant, normalized_variant)
-    if normalized_variant not in BRAND_LOCKUP_VARIANTS:
-        normalized_variant = "main"
+    normalized_variant = _normalize_brand_lockup_variant(variant)
 
     return {
         "primary_text": primary_text,

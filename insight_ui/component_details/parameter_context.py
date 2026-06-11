@@ -1562,7 +1562,7 @@ def get_brand_lockup_parameter_context() -> dict[str, list[str]]:
             ParameterDetails(
                 "variant",
                 "str",
-                _("Icon variant: 'main', 'develop', or 'candidate'. Old 'wing-*' values are accepted as aliases."),
+                _("Icon variant: 'main', 'develop', or 'candidate'. Unknown values fall back to 'main'."),
                 "'main'",
             ),
             ParameterDetails("class", "str", _("Additional CSS classes for the root element."), "''"),
