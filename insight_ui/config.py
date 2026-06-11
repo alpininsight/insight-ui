@@ -100,8 +100,9 @@ CONFIG_DEFAULTS: dict[str, Any] = {
 def _merge_config(defaults: Mapping[str, Any], user_config: Mapping[str, Any]) -> dict[str, Any]:
     merged = dict(defaults)
     for key, value in user_config.items():
-        if isinstance(merged.get(key), Mapping) and isinstance(value, Mapping):
-            merged[key] = {**cast(Mapping[str, Any], merged[key]), **value}
+        default_value = merged.get(key)
+        if isinstance(default_value, Mapping) and isinstance(value, Mapping):
+            merged[key] = _merge_config(cast(Mapping[str, Any], default_value), value)
         else:
             merged[key] = value
     return merged
