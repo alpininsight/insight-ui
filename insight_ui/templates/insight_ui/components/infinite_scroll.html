@@ -1,20 +1,20 @@
 {% load i18n %}
 
 <div
-  {% if tag_id %}id="{{ tag_id }}"{% endif %}
-  {% if auto_fetch %}
-    hx-get="{% url view_name %}?page={{ page }}"
+  {% if infinite_scroll_config.tag_id %}id="{{ infinite_scroll_config.tag_id }}"{% endif %}
+  {% if infinite_scroll_config.auto_fetch %}
+    hx-get="{{ infinite_scroll_config.request_url }}?page={{ infinite_scroll_config.page }}"
     hx-swap="afterend"
     hx-trigger="revealed"
     hx-infinite-scroll
     data-threshold="{{ threshold|default:100 }}"
-    data-next-url="{% url view_name %}?page={{ page }}"
+    data-next-url="{{ infinite_scroll_config.request_url }}?page={{ infinite_scroll_config.page }}"
     hx-ext="infinite-scroll,progressive-enhancement"
   {% endif %}
 >
   <!-- Existing Content -->
   <div>
-    {% for item in items %}
+    {% for item in infinite_scroll_config.items %}
       <div class="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4 mb-4">
         <h3>{{ item.title }}</h3>
         <p class="text-secondary">{{ item.content }}</p>
@@ -22,10 +22,10 @@
     {% endfor %}
   </div>
 
-  {% if not auto_fetch %}
+  {% if not infinite_scroll_config.auto_fetch %}
     <button
       class="btn btn-primary btn-l mx-auto"
-      hx-get="{% url view_name %}?page={{ page }}&auto_fetch={{ auto_fetch }}"
+      hx-get="{{ infinite_scroll_config.request_url }}?page={{ page }}&auto_fetch={{ infinite_scroll_config.auto_fetch }}"
       hx-swap="outerHTML"
       hx-trigger="click"
       hx-ext="progressive-enhancement"

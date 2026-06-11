@@ -1,14 +1,14 @@
 {% load insight_tags %}
 
 <div class="relative">
-    <button data-insight-dropdown="{{ tag_id }}" class="btn btn-primary">
-        {{ title }}
-        {% if show_arrow %}
+    <button data-insight-dropdown="{{ dropdown_config.tag_id }}" class="btn btn-primary">
+        {{ dropdown_config.title }}
+        {% if dropdown_config.show_arrow %}
             {% icon name="chevron_down" size="s" %}
         {% endif %}
     </button>
-    <div id="{{ tag_id }}" class="hidden border border-gray-300 dark:border-0 rounded-sm shadow-lg">
-        {% for item in items %}
+    <div id="{{ dropdown_config.tag_id }}" class="hidden border border-gray-300 dark:border-0 rounded-sm shadow-lg">
+        {% for item in dropdown_config.items %}
             <a
                 href="{{ item.request_url|default:'#' }}"
                 {% if htmx %}

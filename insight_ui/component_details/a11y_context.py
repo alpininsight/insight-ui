@@ -1,3 +1,4 @@
+from django.urls import reverse
 from django.utils.translation import gettext as _
 
 from insight_ui.component_details.component_context import register_component
@@ -183,7 +184,8 @@ def get_checkbox_a11y_context() -> dict[str, list[str]]:
 @register_component(Component.CHECKBOX_GROUP)
 def get_checkbox_group_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the checkbox group component."""
-    return {"a11y": [_("See Checkbox")]}
+    checkbox_url = reverse("component_detail_page_view", args=[Component.CHECKBOX.value])
+    return {"a11y": [_("See [Checkbox](%(url)s).") % {"url": checkbox_url}]}
 
 
 @register_component(Component.DROPDOWN)
@@ -475,7 +477,8 @@ def get_card_carousel_a11y_context() -> dict[str, list[str]]:
 @register_component(Component.IMAGE_CAROUSEL)
 def get_image_carousel_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the image carousel component."""
-    return {"a11y": [_("See Card Carousel")]}
+    carousel_url = reverse("component_detail_page_view", args=[Component.CARD_CAROUSEL.value])
+    return {"a11y": [_("See [Card Carousel](%(url)s).") % {"url": carousel_url}]}
 
 
 @register_component(Component.THREE_D_CAROUSEL)
@@ -487,7 +490,8 @@ def get_3d_carousel_a11y_context() -> dict[str, list[str]]:
 @register_component(Component.TOGGLE_VIEW)
 def get_toggle_view_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the toggle view component."""
-    return {"a11y": [_("See Radio Group")]}
+    radio_group_url = reverse("component_detail_page_view", args=[Component.RADIO_GROUP.value])
+    return {"a11y": [_("See [Radio Group](%(url)s).") % {"url": radio_group_url}]}
 
 
 @register_component(Component.FORM)

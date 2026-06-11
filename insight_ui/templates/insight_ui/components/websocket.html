@@ -1,19 +1,19 @@
 {% load i18n %}
 
 <div
-  {% if tag_id %}id="{{ tag_id }}"{% endif %}
+  {% if websocket_config.tag_id %}id="{{ websocket_config.tag_id }}"{% endif %}
   data-insight-websocket
   data-insight-stream-mode="htmx-ws-html"
   hx-ext="ws"
-  ws-connect="{{ url }}"
+  ws-connect="{{ websocket_config..request_url }}"
 >
   <div
-    {% if tag_id %}id="{{ tag_id }}-output"{% endif %}
+    {% if websocket_config.tag_id %}id="{{ websocket_config.tag_id }}-output"{% endif %}
     data-insight-websocket-output
     class="bg-gray-100 dark:bg-gray-900 rounded shadow px-4 py-2 mt-4"
   >
-    {% if initial_content %}
-      {{ initial_content|safe }}
+    {% if websocket_config.initial_content %}
+      {{ websocket_config.initial_content|safe }}
     {% else %}
       <p class="text-secondary">{% trans "Wait for messages..." %}</p>
     {% endif %}
@@ -21,7 +21,7 @@
   <span class="block text-sm text-primary mt-4">
     {% trans "Status:" %}
     <span
-      {% if tag_id %}id="{{ tag_id }}-status"{% endif %}
+      {% if websocket_config.tag_id %}id="{{ websocket_config.tag_id }}-status"{% endif %}
       data-insight-websocket-status
       role="status"
       aria-live="polite"
@@ -30,7 +30,7 @@
     </span>
   </span>
   <span class="block text-xs text-secondary mt-2">
-    {% trans "URL:" %} {{ url }}
+    {% trans "URL:" %} {{ websocket_config.request_url }}
   </span>
   <span class="block text-xs text-secondary">
     {% trans "Mode: HTMX WebSocket Extension (expects HTML)" %}

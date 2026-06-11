@@ -1,12 +1,12 @@
-<div id="{{ chart_id }}" style="height: {{ chart_height|default:24 }}rem"></div>
+<div id="{{ chart_config.tag_id }}" style="height: {{ chart_config.chart_height|default:24 }}rem"></div>
 
 <script type="module">
-    var chartDom = document.getElementById("{{ chart_id }}");
+    var chartDom = document.getElementById("{{ chart_config.tag_id }}");
     var myChart = echarts.init(chartDom);
     var option;
 
-    const rawData = {{ chart.data }};
-    const series = {{ chart.series|safe }}.map((name, sid) => {
+    const rawData = {{ chart_config.dataset.data }};
+    const series = {{ chart_config.dataset.series|safe }}.map((name, sid) => {
         return {
             name,
             type: 'line',
@@ -17,13 +17,13 @@
 
     option = {
         title: {
-            text: "{{ chart.title }}"
+            text: "{{ chart_config.dataset.title }}"
         },
         tooltip: {
             trigger: 'axis'
         },
         legend: {
-            data: {{ chart.series|safe }}
+            data: {{ chart_config.dataset.series|safe }}
         },
         grid: {
             left: '3%',
@@ -34,7 +34,7 @@
         xAxis: {
             type: 'category',
             boundaryGap: false,
-            data: {{ chart.x_axis_legend|safe }}
+            data: {{ chart_config.dataset.x_axis_legend|safe }}
         },
         yAxis: {
             type: 'value'

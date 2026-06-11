@@ -18,13 +18,7 @@ def healthz_view(request: HttpRequest) -> HttpResponse:
 def readyz_view(request: HttpRequest) -> JsonResponse:
     """Cheap readiness endpoint for local runtime prerequisites."""
     is_ready, checks = check_runtime_readiness()
-    return JsonResponse(
-        {
-            "status": "ok" if is_ready else "error",
-            "checks": checks,
-        },
-        status=200 if is_ready else 503,
-    )
+    return JsonResponse({"status": "ok" if is_ready else "error", "checks": checks}, status=200 if is_ready else 503)
 
 
 @require_GET

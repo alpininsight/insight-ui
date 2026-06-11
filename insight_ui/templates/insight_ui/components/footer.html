@@ -3,21 +3,21 @@
 <footer class="z-10 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 px-4 md:px-16 mt-auto">
     <div class="mx-auto py-6">
         <div class="flex flex-col md:flex-row justify-stretch gap-6">
-            {% if description %}
+            {% if footer_config.description %}
                 <div class="flex-1">
-                    <h4>{{ description.title }}</h4>
-                    <p class="text-secondary text-sm">{{ description.text }}</p>
-                    {% if description.image %}
-                        {% logo config=description.image height=description.image.height|default:'8rem' css_class="mt-4" %}
+                    <h4>{{ footer_config.description.title }}</h4>
+                    <p class="text-secondary text-sm">{{ footer_config.description.text }}</p>
+                    {% if footer_config.description.logo %}
+                        {% logo config=footer_config.description.logo %}
                     {% endif %}
                 </div>
             {% endif %}
             <div class="flex-1">
                 <h4>{% trans 'Links' %}</h4>
                 <ul>
-                    {% for link in links %}
+                    {% for link in footer_config.links %}
                         <li>
-                            <a href="{% url link.view_name %}" class="inline-flex gap-1 text-secondary hover:text-insight-text-link-hover dark:hover:text-insight-text-link-hover text-sm">
+                            <a href="{{ link.url }}" class="inline-flex gap-1 text-secondary hover:text-insight-text-link-hover dark:hover:text-insight-text-link-hover text-sm">
                                 {% if link.icon %}
                                     {% icon link.icon %}
                                 {% endif %}
@@ -30,30 +30,30 @@
             <div class="flex-1">
                 <h4>{% trans 'Contact' %}</h4>
                 <div class="space-x-4">
-                    {% if contact.imprint %}
-                        <a href="{{ contact.imprint }}" class="text-secondary hover:text-insight-text-link-hover text-sm">{% trans "Imprint" %}</a>
+                    {% if footer_config.contact.imprint %}
+                        <a href="{{ footer_config.contact.imprint }}" class="text-secondary hover:text-insight-text-link-hover text-sm">{% trans "Imprint" %}</a>
                     {% endif %}
-                    {% if contact.privacy %}
-                        <a href="{{ contact.privacy }}" class="text-secondary hover:text-insight-text-link-hover text-sm">{% trans "Privacy" %}</a>
+                    {% if footer_config.contact.privacy %}
+                        <a href="{{ footer_config.contact.privacy }}" class="text-secondary hover:text-insight-text-link-hover text-sm">{% trans "Privacy" %}</a>
                     {% endif %}
                 </div>
-                {% if contact.mail_url %}
+                {% if footer_config.contact.mail_url %}
                     <p class="text-secondary text-sm mt-2">
                         {% trans 'Do you have any questions or feedback?' %}<br>
-                        <a href="mailto:{{ contact.mail_url }}" class="text-insight-primary hover:underline">{{ contact.mail_url }}</a>
+                        <a href="mailto:{{ footer_config.contact.mail_url }}" class="text-insight-primary hover:underline">{{ footer_config.contact.mail_url }}</a>
                     </p>
                 {% endif %}
             </div>
         </div>
-        {% if copyright or version %}
+        {% if footer_config.copyright or footer_config.version %}
             <div class="flex justify-center border-t border-gray-200 dark:border-gray-700 mt-6 pt-4">
-                {% if copyright %}
-                    {% copyright_notice config=copyright %}
+                {% if footer_config.copyright %}
+                    {% copyright_notice config=footer_config.copyright %}
                 {% endif %}
-                {% if version %}
+                {% if footer_config.version %}
                     <span class="text-secondary text-sm">
                         {% if copyright %}&nbsp;&centerdot;{% endif %}
-                        {% trans "Version:" %} {{ version }}
+                        {% trans "Version:" %} {{ footer_config.version }}
                     </span>
                 {% endif %}
             </div>

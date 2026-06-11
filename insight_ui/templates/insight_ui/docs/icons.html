@@ -4,7 +4,7 @@
 {% block title %}{% trans "Insight UI - Icons" %}{% endblock title %}
 
 {% block navbar %}
-    {% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links show_login=True search_query=search_query %}
+    {% navbar config=nav_config user_dropdown_links=user_dropdown_links search_query=search_query %}
 {% endblock navbar %}
 
 {% block sidebar_left %}
@@ -53,16 +53,16 @@
             {% with heroicons='<a href="https://heroicons.com/" class="text-link">Heroicons</a>'|safe flowbite_icons='<a href="https://flowbite.com/icons/" class="text-link">Flowbite</a>'|safe %}
                 {% infobox message="The icons shown here come from {heroicons} and {flowbite_icons}. Both sources provide their icons under the <b>MIT</b> license. Our goal is not to build a generic icon library, but to adapt it to the API of our icon component so that icons can also be specified from within the Django context." heroicons=heroicons flowbite_icons=flowbite_icons %}
             {% endwith %}
-            {% table data=icon_table %}
+            {% table config=icon_table %}
         </section>
         <section class="space-y-4">
             <h2>{% trans "Sizes" %}</h2>
             <p>{% trans "All icons can be used in different sizes:" %}</p>
-            {% table data=size_table %}
+            {% table config=size_table %}
         </section>
     </div>
 {% endblock content %}
 
 {% block footer %}
-    {% footer data=footer_data %}
+    {% footer config=footer_config %}
 {% endblock footer %}

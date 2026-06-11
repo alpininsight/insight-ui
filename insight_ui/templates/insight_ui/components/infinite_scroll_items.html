@@ -11,7 +11,7 @@
     {% if auto_fetch == "False" %}
         <button
             class="btn btn-primary btn-l mx-auto"
-            hx-get="{% url view_name %}?page={{ page }}&auto_fetch={{ auto_fetch }}"
+            hx-get="{{ request_url }}?page={{ page }}&auto_fetch={{ auto_fetch }}"
             hx-swap="outerHTML"
             hx-trigger="click"
             hx-ext="progressive-enhancement"
@@ -20,7 +20,7 @@
         </button>
     {% else %}
         <div
-            hx-get="{% url view_name %}?page={{ page }}&auto_fetch={{ auto_fetch }}"
+            hx-get="{{ request_url }}?page={{ page }}&auto_fetch={{ auto_fetch }}"
             hx-trigger="revealed"
             hx-swap="outerHTML"
             class="text-center py-4"
@@ -36,6 +36,6 @@
     {% endif %}
 {% else %}
     <div>
-        <p class="text-center text-secondary py-4">{% trans 'All content loaded' %}</p>
+        <p class="text-center text-secondary py-4">{% trans 'All content loaded.' %}</p>
     </div>
 {% endif %}

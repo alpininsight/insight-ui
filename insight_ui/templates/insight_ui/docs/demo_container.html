@@ -14,10 +14,10 @@
                 </a>
             {% endif %}
         </div>
-        {% radio_block config=device_radio_config current_value="desktop" name="width-toggle-"|add:demo.id %}
+        {% radio_block items=device_radio_items current_value="desktop" name="width-toggle-"|add:demo.id %}
         <div class="flex items-center justify-center gap-1 h-full">
-            {% toggle config=dir_toggle tag_id="dir-toggle-"|add:demo.id name="dir-toggle-"|add:demo.id %}
-            {% toggle config=theme_toggle tag_id="theme-toggle-"|add:demo.id name="theme-toggle-"|add:demo.id %}
+            {% toggle tag_id="dir-toggle-"|add:demo.id name="dir-toggle-"|add:demo.id label=_("RTL") %}
+            {% toggle tag_id="theme-toggle-"|add:demo.id name="theme-toggle-"|add:demo.id icon=theme_toggle_icon %}
         </div>
     </div>
     <div class="bg-neutral-300 dark:bg-gray-950 w-full">

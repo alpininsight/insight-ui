@@ -1,22 +1,22 @@
 {% load insight_tags %}
 
 <form
-    {% if htmx %}
-        hx-get="{{ request_url }}"
-        hx-target="{{ htmx.target }}"
-        hx-swap="{{ htmx.swap|default:'innerHTML' }}"
-        hx-push-url="{{ htmx.push_url|default:"true" }}"
-        hx-indicator="{{ htmx.loading_indicator_id|default:'#loading-indicator' }}"
+    {% if generic_filter_config.htmx_config %}
+        hx-get="{{ generic_filter_config.request_url }}"
+        hx-target="{{ generic_filter_config.htmx_config.target }}"
+        hx-swap="{{ generic_filter_config.htmx_config.swap|default:'innerHTML' }}"
+        hx-push-url="{{ generic_filter_config.htmx_config.push_url|default:"true" }}"
+        hx-indicator="{{ generic_filter_config.htmx_config.loading_indicator_id|default:'#loading-indicator' }}"
         hx-trigger="submit, change"
     {% else %}
-        action="{{ request_url }}"
+        action="{{ generic_filter_config.request_url }}"
         method="get"
     {% endif %}
     class="w-full"
 >
     <!-- Filters -->
-    <div class="flex flex-col {% if not vertical %}lg:flex-row{% endif %} gap-2 space-y-4">
-        {% for filter in filters %}
+    <div class="flex flex-col {% if not generic_filter_config.vertical %}lg:flex-row{% endif %} gap-2 space-y-4">
+        {% for filter in generic_filter_config.filters %}
             {% select config=filter %}
         {% endfor %}
     </div>

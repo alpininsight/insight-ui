@@ -1,11 +1,11 @@
 {% load insight_tags %}
 
 <div
-  data-insight-accordion="{{ tag_id }}"
-  data-exclusive="{{ exclusive|yesno:'true,false' }}"
+  data-insight-accordion="{{ accordion_config.tag_id }}"
+  data-exclusive="{{ accordion_config.exclusive|yesno:'true,false' }}"
   class="rounded-sm overflow-hidden"
 >
-  {% for item in items %}
+  {% for item in accordion_config.items %}
     {% with forloop.counter0|stringformat:"s" as idx %}
       {% with tag_id|add:"-panel-"|add:idx as panel_id %}
         <div class="bg-white dark:bg-gray-800">

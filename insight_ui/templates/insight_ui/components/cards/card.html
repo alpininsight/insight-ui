@@ -1,31 +1,31 @@
 {% load static i18n %}
 
-<div class="bg-gray-100 dark:bg-gray-700 h-56 w-full max-w-96 border border-gray-200 dark:border-gray-600 shadow-lg rounded">
-  {% if image %}
+<div class="bg-gray-50 dark:bg-gray-700 h-56 w-full max-w-96 border border-gray-200 dark:border-gray-600 shadow-lg rounded">
+  {% if card_config.image %}
     <div class="w-full h-24 overflow-hidden">
-      <img src="{% static image.url %}" alt="{{ image.alt|default:'' }}" class="w-full object-cover" />
+      <img src="{% static card_config.image.url %}" alt="{{ card_config.image.alt|default:'' }}" class="w-full object-cover" />
     </div>
   {% endif %}
 
   <div class="flex flex-col h-full p-6">
-    {% if title %}
+    {% if card_config.title %}
       <div>
-        <h3 class="text-xl text-primary">{{ title }}</h3>
-        {% if subtitle %}
-          <p class="text-secondary">{{ subtitle }}</p>
+        <h3 class="text-xl text-primary">{{ card_config.title }}</h3>
+        {% if card_config.subtitle %}
+          <p class="text-secondary">{{ card_config.subtitle }}</p>
         {% endif %}
       </div>
     {% endif %}
 
-    {% if content %}
+    {% if card_config.content %}
       <div class="text-primary grow my-4">
-        {{ content }}
+        {{ card_config.content }}
       </div>
     {% endif %}
 
-    {% if actions %}
+    {% if card_config.actions %}
       <div class="flex gap-2">
-        {% for action in actions %}
+        {% for action in card_config.actions %}
           <a href="{{ action.url }}" class="btn btn-{{ action.type }}" {% if action.external %}target="_blank" rel="noopener"{% endif %}>
             {{ action.text }}
           </a>

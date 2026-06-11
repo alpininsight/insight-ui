@@ -1,25 +1,20 @@
 from collections.abc import Iterable, Mapping
-from typing import Any, TypedDict
+from typing import Any
 
 from django.db.models import Q
 
-
-class FilterFieldConfig(TypedDict, total=False):
-    """Typed configuration describing a filterable field."""
-
-    field: str
-    type: str
-    operations: list[str]
-    values: dict[str, str]
+from insight_ui.configs.filter import QueryBuilderFieldConfig
 
 
 def _coerce_operations(operations: object) -> list[str]:
+    """Check whether the specified operations are a list of strings."""
     if isinstance(operations, Iterable) and not isinstance(operations, str | bytes):
         return [op for op in operations if isinstance(op, str)]
     return []
 
 
 def _coerce_values(values: object) -> dict[str, str]:
+    """Check whether the specified values are a list of strings."""
     if isinstance(values, Mapping):
         return {
             str(key): str(value) for key, value in values.items() if isinstance(key, str) and isinstance(value, str)
@@ -28,7 +23,7 @@ def _coerce_values(values: object) -> dict[str, str]:
 
 
 def get_filter_settings_for_field(
-    fields: list[FilterFieldConfig], field: object
+    fields: list[QueryBuilderFieldConfig], field: QueryBuilderFieldConfig
 ) -> tuple[str, list[str], dict[str, str]]:
     """
     Retrieve the allowed operators based on the type of field.
@@ -44,15 +39,8 @@ def get_filter_settings_for_field(
 
     """
     for config in fields:
-        if config.get("field") == field:
-            field_type = config.get("type")
-            if not isinstance(field_type, str):
-                field_type = "text"
-
-            operations = _coerce_operations(config.get("operations"))
-            values = _coerce_values(config.get("values"))
-
-            return field_type, operations, values
+        if config.field == field:
+            return config.type, _coerce_operations(config.operations), _coerce_values(config.values)
 
     return "text", [], {}
 

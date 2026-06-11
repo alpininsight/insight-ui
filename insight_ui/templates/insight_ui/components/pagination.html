@@ -7,8 +7,8 @@
             <!-- Previous and first -->
             {% if current_page.has_previous %}
                 <a
-                    href="{% url 'pagination' %}?page={{ current_page.previous_page_number }}"
-                    hx-get="{% url 'pagination' %}?page={{ current_page.previous_page_number }}"
+                    href="{{ pagination_config.request_url }}?page={{ pagination_config.current_page.previous_page_number }}"
+                    hx-get="{{ pagination_config.request_url }}?page={{ pagination_config.current_page.previous_page_number }}"
                     hx-target="#list-container"
                     hx-include="#ipp"
                     class="btn btn-primary btn-sm"
@@ -25,15 +25,15 @@
 
             <!-- Neighbor Pages -->
             <div class="hidden md:flex gap-1 justify-center">
-                {% for num in surrounding_pages %}
-                    {% if num == current_page.number %}
+                {% for num in pagination_config.surrounding_pages %}
+                    {% if num == pagination_config.current_page.number %}
                         <span class="btn btn-sm bg-insight-primary-active">{{ num }}</span>
                     {% elif num == -1 %}
                         <span class="text-neutral-400 px-4 py-1">...</span>
                     {% else %}
                         <a
-                            href="{% url 'pagination' %}?page={{ num }}"
-                            hx-get="{% url 'pagination' %}?page={{ num }}"
+                            href="{{ pagination_config.request_url }}?page={{ num }}"
+                            hx-get="{{ pagination_config.request_url }}?page={{ num }}"
                             hx-target="#list-container"
                             hx-include="#ipp"
                             class="btn btn-primary btn-sm"
@@ -45,10 +45,10 @@
             </div>
 
             <!-- Next and last -->
-            {% if current_page.has_next %}
+            {% if pagination_config.current_page.has_next %}
                 <a
-                    href="{% url 'pagination' %}?page={{ current_page.next_page_number }}"
-                    hx-get="{% url 'pagination' %}?page={{ current_page.next_page_number }}"
+                    href="{{ pagination_config.request_url }}?page={{ pagination_config.current_page.next_page_number }}"
+                    hx-get="{{ pagination_config.request_url }}?page={{ pagination_config.current_page.next_page_number }}"
                     hx-target="#list-container"
                     hx-include="#ipp"
                     class="btn btn-primary btn-sm"
@@ -64,22 +64,22 @@
             {% endif %}
         </div>
 
-        {% if ipp_config %}
+        {% if pagination_config.ipp_config %}
             <!-- Items per page -->
             <form
                 id="ipp"
-                hx-get="{% url 'pagination' %}"
+                hx-get="{{ pagination_config.request_url }}"
                 hx-target="#list-container"
                 hx-trigger="change"
                 class="w-32"
             >
-                {% select config=ipp_config %}
+                {% select config=pagination_config.ipp_config %}
             </form>
         {% endif %}
     </div>
 
     <!-- Current Page -->
     <span class="block md:hidden text-secondary mt-2">
-        {% trans "Page" %} {{ current_page.number }} {% trans "of" %} {{ current_page.paginator.num_pages }}.
+        {% trans "Page" %} {{ pagination_config.current_page.number }} {% trans "of" %} {{ pagination_config.current_page.paginator.num_pages }}.
     </span>
 </div>

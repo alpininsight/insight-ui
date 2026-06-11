@@ -9,92 +9,74 @@ from insight_ui import config
 from insight_ui.component_details.components import Component, ComponentCategory
 from insight_ui.component_details.demo_context import get_component_demo_context
 from insight_ui.component_details.parameter_context import ParameterDetails
+from insight_ui.configs import (
+    CopyrightNoticeConfig,
+    DropdownConfig,
+    DropdownItemConfig,
+    FooterConfig,
+    FooterContactConfig,
+    FooterDescriptionConfig,
+    HtmxConfig,
+    IconConfig,
+    LogoConfig,
+    NavbarBrandConfig,
+    NavbarConfig,
+    NavbarLinkConfig,
+    RadioItemConfig,
+    SidebarItemConfig,
+    TableConfig,
+)
 
 
 def get_main_page_links() -> list[dict[str, Any]]:
     """Serve a list of links to the main pages."""
     return [
-        {
-            "text": _("Home"),
-            "view_name": "index_view",
-            "icon": {"name": "home", "size": "s"},
-            "need_auth": False,
-            "staff_only": False,
-        },
-        {
-            "text": _("Installation"),
-            "view_name": "installation_view",
-            "icon": {"name": "download", "size": "s"},
-            "need_auth": False,
-            "staff_only": False,
-        },
-        {
-            "text": _("Base Template"),
-            "view_name": "base_template_view",
-            "icon": {"name": "blueprint", "size": "s"},
-            "need_auth": False,
-            "staff_only": False,
-        },
-        {
-            "text": _("Customization"),
-            "view_name": "customization_view",
-            "icon": {"name": "settings", "size": "s"},
-            "need_auth": False,
-            "staff_only": False,
-        },
-        {
-            "text": _("Icons"),
-            "view_name": "icon_view",
-            "icon": {"name": "sparkles", "size": "s"},
-            "need_auth": False,
-            "staff_only": False,
-        },
+        NavbarLinkConfig(_("Home"), reverse("index_view"), IconConfig("home", "s")),
+        NavbarLinkConfig(_("Installation"), reverse("installation_view"), IconConfig("download", "s")),
+        NavbarLinkConfig(_("Base Template"), reverse("base_template_view"), IconConfig("blueprint", "s")),
+        NavbarLinkConfig(_("Customization"), reverse("customization_view"), IconConfig("settings", "s")),
+        NavbarLinkConfig(_("Icons"), reverse("icon_view"), IconConfig("sparkles", "s")),
     ]
 
 
-def get_navbar_context(current_view: str = "index_view") -> dict:
+def get_navbar_context() -> dict:
     """Serve data for main navbar."""
     links = get_main_page_links()
     links.append(
-        {
-            "text": _("Components"),
-            "open_dropdown": "components-menu",
-            "icon": {"name": "cards", "size": "s"},
-            "items": [
-                {
-                    "text": category.formatted_name,
-                    "view_name": "storybook_view",
-                    "view_arg": category.value,
-                    "htmx": {"target": "#content"},
-                }
-                for category in ComponentCategory
-            ],
-            "chevron": {"name": "chevron_down", "size": "s"},
-            "active": False,
-            "need_auth": False,
-            "staff_only": False,
-        }
+        NavbarLinkConfig(
+            _("Components"),
+            icon=IconConfig("cards", "s"),
+            dropdown=DropdownConfig(
+                "components-menu",
+                "",
+                items=[
+                    DropdownItemConfig(
+                        category.formatted_name, reverse("storybook_view", kwargs={"storybook_name": category.value})
+                    )
+                    for category in ComponentCategory
+                ],
+            ),
+        )
     )
 
     return {
-        "nav_config": {
-            "brand": {
-                "title": "Insight UI",
-                "view_name": "index_view",
-                "gap": "0.5rem",
-                "logo": {
-                    "url": "insight_ui/svg/ai-logo.svg",
-                    "url_dark": "insight_ui/svg/ai-logo.svg",
-                    "alt": "Insight UI Logo",
-                    "height": "2rem",
-                },
-            },
-            "links": links,
-            "searchbar_request_view": "index_view",
-            "show_usermenu": False,
-            "show_language_selector": True,
-            "show_theme_toggle": True,
-        },
+        "nav_config": NavbarConfig(
+            NavbarBrandConfig(
+                "Insight UI",
+                "/",
+                LogoConfig(
+                    url="insight_ui/svg/ai-logo.svg",
+                    url_dark="insight_ui/svg/ai-logo.svg",
+                    alt="Insight UI Logo",
+                    height="2rem",
+                ),
+                "0.5rem",
+            ),
+            links,
+            "/",
+            show_language_selector=True,
+            show_theme_toggle=True,
+        ),
         "navbar_fixed": True,
         "white_bg": True,
         "default_padding": True,
@@ -102,7 +84,7 @@ def get_navbar_context(current_view: str = "index_view") -> dict:
     }
 
 
-def get_sidebar_context(component_name: str = "") -> dict:
+def get_sidebar_context() -> dict:
     """Serve data for the main sidebar."""
     categories = [{"caption": category.formatted_name, "items": []} for category in ComponentCategory]
 
@@ -110,13 +92,12 @@ def get_sidebar_context(component_name: str = "") -> dict:
         for category in categories:
             if category["caption"] == component.group.formatted_name:
                 category["items"].append(
-                    {
-                        "text": component.formatted_name,
-                        "icon": {"name": "tools", "size": "s"} if component.in_development else None,
-                        "url": reverse("component_detail_page_view", kwargs={"component_name": component.value}),
-                        "htmx": {"target": "#content"},
-                        "is_selected": component.value == component_name,
-                    }
+                    SidebarItemConfig(
+                        component.formatted_name,
+                        reverse("component_detail_page_view", kwargs={"component_name": component.value}),
+                        IconConfig("tools", "s") if component.in_development else None,
+                        HtmxConfig(target="#content"),
+                    )
                 )
                 break
 
@@ -128,32 +109,25 @@ def get_footer_context() -> dict:
     links = get_main_page_links()
 
     return {
-        "footer_data": {
-            "description": {
-                "title": "Insight UI",
-                "text": _("A modern, accessible, and responsive UI library for Django projects."),
-            },
-            "links": links,
-            "contact": {
-                "mail_url": "support@alpininsight.com",
-                "imprint": "https://alpininsight.com/imprint/",
-                "privacy": "https://alpininsight.com/privacy/",
-            },
-            "copyright": {
-                "year": 2026,
-                "holder": "Alpin Insight Solutions GmbH & Co. KG",
-                "source_label": "Open Source",
-                "license_text": "AGPL-3.0",
-                "license_url": reverse_lazy("license_view"),
-            },
-            "version": get_app_version(),
-        }
+        "footer_config": FooterConfig(
+            FooterDescriptionConfig(
+                "Insight UI", _("A modern, accessible, and responsive UI library for Django projects.")
+            ),
+            links,
+            FooterContactConfig(
+                "support@alpininsight.com", "https://alpininsight.com/imprint/", "https://alpininsight.com/privacy/"
+            ),
+            CopyrightNoticeConfig(
+                2026, "Alpin Insight Solutions GmbH & Co. KG", "Open Source", "AGPL-3.0", reverse_lazy("license_view")
+            ),
+            get_app_version(),
+        )
     }
 
 
-def get_base_context(current_view: str = "index_view") -> dict:
+def get_base_context() -> dict:
     """Serve basic context data, like navbar, footer and settings."""
-    return config.get_config() | get_navbar_context(current_view) | get_footer_context()
+    return config.get_config() | get_navbar_context() | get_footer_context()
 
 
 def get_icon_context() -> dict:
@@ -165,310 +139,302 @@ def get_icon_context() -> dict:
 
     table_rows = [
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "home"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("home")}),
             "home",
             _("Typically used for links to the home page."),
             "Heroicons - home",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "office"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("office")}),
             "office",
             _("Topics related to the office or work."),
             "Heroicons - building-office",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "globe"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("globe")}),
             "globe",
             _("Language selection elements."),
             "Heroicons - globe-alt",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "gear"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("gear")}),
             "gear",
             _("General settings."),
             "Heroicons - cog-6-tooth",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "leave"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("leave")}),
             "leave",
             _("As a logout button or for leaving a section."),
             "Heroicons - arrow-left-start-on-rectangle",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "cards"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("cards")}),
             "cards",
             _("Card-based dashboards, grid views, etc."),
             "Flowbite - grid",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "list"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("list")}),
             "list",
             _("List views of all kinds."),
             "Heroicons - list-bullet",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "carousel"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("carousel")}),
             "carousel",
             _("Specifically for our carousel components. <b>(This icon is to be replaced soon!)</b>"),
             "Heroicons - square-3-stack-3d",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "chevron_down"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("chevron_down")}),
             "chevron_down",
             _("Classic for dropdowns, accordions, and everything that can be expanded."),
             "Heroicons - chevron-down",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "chevron_up"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("chevron_up")}),
             "chevron_up",
             _("Classic for dropdowns, accordions, and everything that can be collapsed."),
             "Heroicons - chevron-up",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "chevron_both"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("chevron_both")}),
             "chevron_both",
             _("Classic for indicating a sorting option."),
             "Heroicons - chevron-up-down",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "chevron_left"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("chevron_left")}),
             "chevron_left",
             _("Carousels, pagination or expandable elements such as a drawer."),
             "Heroicons - chevron-left",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "chevron_right"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("chevron_right")}),
             "chevron_right",
             _("Carousels, pagination or expandable elements such as a drawer."),
             "Heroicons - chevron-right",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "tick"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("tick")}),
             "tick",
             _("Checklists."),
             "Heroicons - check",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "x-mark"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("x-mark")}),
             "x-mark",
             _("Classic for buttons to close dialogs, alerts, etc."),
             "Heroicons - x-mark",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "question-mark"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("question-mark")}),
             "question-mark",
             _("Indicator for additional information or FAQs."),
             "Heroicons - question-mark-circle",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "sparkles"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("sparkles")}),
             "sparkles",
             _("For special cases where something unique is needed, or simply no other icon fits :)."),
             "Heroicons - sparkles",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "tools"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("tools")}),
             "tools",
             _("Settings or as a maintenance symbol."),
             "Heroicons - wrench-screwdriver",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "search"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("search")}),
             "search",
             _("Classic for any search bar."),
             "Heroicons - magnifying-glass",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "rectangles"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("rectangles")}),
             "rectangles",
             _("Groups of different objects, for example components or dashboards."),
             "Heroicons - rectangle-group",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "app"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("app")}),
             "app",
             _("Indicator for applications, programs or dialog windows."),
             "Heroicons - window",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "doc"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("doc")}),
             "doc",
             _("Classic for documents."),
             "Heroicons - document-text",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "clipboard"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("clipboard")}),
             "clipboard",
             _("Classic for copy and paste."),
             "Heroicons - clipboard-document-check",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "cursor-click"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("cursor-click")}),
             "cursor-click",
             _("Indicator for a clickable element."),
             "Heroicons - cursor-arrow-rays",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "link"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("link")}),
             "link",
             _("Classic for attachments or links to documents."),
             "Heroicons - link",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "open-link"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("open-link")}),
             "open-link",
             _("Classic for links to other, often external pages or for opening a dialog window."),
             "Heroicons - arrow-top-right-on-square",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "share"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("share")}),
             "share",
             _("Classic for sharing content."),
             "Heroicons - share",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "smartphone"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("smartphone")}),
             "smartphone",
             _("Indicates smartphone usage."),
             "Heroicons - device-phone-mobile",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "tablet"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("tablet")}),
             "tablet",
             _("Indicates tablet usage."),
             "Heroicons - device-tablet",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "desktop"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("desktop")}),
             "desktop",
             _("Indicates desktop PC usage."),
             "Heroicons - computer-desktop",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "sun"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("sun")}),
             "sun",
             _("Classic for light/dark mode switches."),
             "Heroicons - sun",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "moon"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("moon")}),
             "moon",
             _("Classic for light/dark mode switches."),
             "Heroicons - moon",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "git"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("git")}),
             "git",
             _("Links to GitHub."),
             "Flowbite - github",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "user"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("user")}),
             "user",
             _("Typical user icon, user profile, settings, etc."),
             "Heroicons - user",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "clock"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("clock")}),
             "clock",
             _("Everything related to time."),
             "Heroicons - clock",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "calendar"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("calendar")}),
             "calendar",
             _("Dates, deadlines, appointments."),
             "Heroicons - calendar-days",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "bell"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("bell")}),
             "bell",
             _("Typical for notifications."),
             "Heroicons - bell",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "chat-bubble"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("chat-bubble")}),
             "chat-bubble",
             _("Interactive chats."),
             "Heroicons - chat-bubble-bottom-center-text",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "rocket"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("rocket")}),
             "rocket",
             _("Special things or as an indicator for 'Let's get started!'."),
             "Heroicons - rocket-launch",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "terminal"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("terminal")}),
             "terminal",
             _("Indicator for the use of the terminal or command line."),
             "Heroicons - command-line",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "code"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("code")}),
             "code",
             _("Indicates source code."),
             "Heroicons - code-bracket",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "download"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("download")}),
             "download",
             _("Classic for downloads."),
             "Heroicons - arrow-down-tray",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "settings"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("settings")}),
             "settings",
             _("Customizations, settings, more for fine-grained settings."),
             "Heroicons - adjustments-horizontal",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "blueprint"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("blueprint")}),
             "blueprint",
             _("Customizations, settings, more for fine-grained settings."),
             "Heroicons - cube-transparent",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "info"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("info")}),
             "info",
             _("Information and notes."),
             "Heroicons - information-circle",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "warning"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("warning")}),
             "warning",
             _("Warnings, issues, minor errors."),
             "Heroicons - exclamation-triangle",
         ],
         [
-            render_to_string("insight_ui/components/icons.html", {"name": "danger"}),
+            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("danger")}),
             "danger",
             _("Major errors, critical issues or dangerous actions."),
             "Heroicons - exclamation-circle",
         ],
     ]
 
-    icon_table = {
-        "caption": "",
-        "empty_msg": "",
-        "headers": [_("Icon"), _("Name"), _("Example usages"), _("Source")],
-        "rows": table_rows,
-    }
-
-    size_table = {
-        "caption": "",
-        "empty_msg": "",
-        "headers": ["xs", "s", "m", "l", "xl"],
-        "rows": [
+    icon_table = TableConfig([_("Icon"), _("Name"), _("Example usages"), _("Source")], table_rows)
+    size_table = TableConfig(
+        ["xs", "s", "m", "l", "xl"],
+        [
             [
-                render_to_string("insight_ui/components/icons.html", {"name": "home", "size": "xs"}),
-                render_to_string("insight_ui/components/icons.html", {"name": "home", "size": "s"}),
-                render_to_string("insight_ui/components/icons.html", {"name": "home", "size": "m"}),
-                render_to_string("insight_ui/components/icons.html", {"name": "home", "size": "l"}),
-                render_to_string("insight_ui/components/icons.html", {"name": "home", "size": "xl"}),
+                render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("home", "xs")}),
+                render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("home", "s")}),
+                render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("home", "m")}),
+                render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("home", "l")}),
+                render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("home", "xl")}),
             ]
         ],
-    }
+    )
 
     return {"main_params": main_params, "icon_table": icon_table, "size_table": size_table}
 
@@ -476,21 +442,18 @@ def get_icon_context() -> dict:
 def get_demo_container_context() -> dict:
     """Serve data of the device switch, etc. for component demos."""
     return {
-        "device_radio_config": {
-            "items": [
-                {"tag_id": "mobile", "value": "mobile", "icon": {"name": "smartphone"}, "disabled": False},
-                {"tag_id": "tablet", "value": "tablet", "icon": {"name": "tablet"}, "disabled": False},
-                {"tag_id": "desktop", "value": "desktop", "icon": {"name": "desktop"}, "disabled": False},
-            ]
-        },
-        "dir_toggle": {"label": _("RTL")},
-        "theme_toggle": {"icon": {"name": "moon"}},
+        "device_radio_items": [
+            RadioItemConfig("mobile", "mobile", icon=IconConfig("smartphone")),
+            RadioItemConfig("tablet", "tablet", icon=IconConfig("tablet")),
+            RadioItemConfig("desktop", "desktop", icon=IconConfig("desktop")),
+        ],
+        "theme_toggle_icon": IconConfig("moon"),
     }
 
 
 def get_storybook_context(storybook: ComponentCategory) -> dict:  # noqa: C901
     """Serve the base context and the context for each component in the list."""
-    context = get_base_context("storybook_view") | get_sidebar_context()
+    context = get_base_context() | get_sidebar_context()
     components = []
     for component in Component:
         if component.group.value == storybook.value:

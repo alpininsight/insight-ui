@@ -3,13 +3,27 @@
 # ruff: noqa: E501
 
 import insight_ui.templatetags.insight_tags
-import pytest
 from bs4 import BeautifulSoup
 from django.contrib.auth.models import User
 from django.template import Context, Template
 from django.test import TestCase
+from django.urls import reverse_lazy
 from django.utils.safestring import SafeText
 from django.utils.translation import activate
+from insight_ui.component_details.demo_context import get_radio_block_context, get_radio_group_context
+from insight_ui.configs.base import IconConfig
+from insight_ui.configs.input import CheckboxConfig, CheckboxGroupConfig, CheckboxItemConfig, SliderConfig, ToggleConfig
+from insight_ui.configs.list import TableConfig
+from insight_ui.configs.navigation import (
+    FooterConfig,
+    FooterContactConfig,
+    FooterDescriptionConfig,
+    NavbarBrandConfig,
+    NavbarConfig,
+    NavbarLinkConfig,
+)
+from insight_ui.configs.popup import ModalConfig
+from insight_ui.configs.utils import CopyrightNoticeConfig, LogoConfig
 
 
 class TemplateTagsTestCase(TestCase):
@@ -44,23 +58,31 @@ class NavbarTemplateTagTest(TemplateTagsTestCase):
 
     def test_navbar(self) -> None:
         """Test für grundlegende navbar Funktionalität."""
-        nav_config = {
-            "brand": {"title": "Django Insight UI NavBar"},
-            "links": [
-                {
-                    "text": "Startseite",
-                    "view_name": "storybook_view",
-                    "view_kwargs": {"storybook_name": "components"},
-                    "active": True,
-                    "need_auth": False,
-                    "staff_only": False,
-                }
+        nav_config = NavbarConfig(
+            NavbarBrandConfig(
+                "Insight UI",
+                "/",
+                LogoConfig(
+                    "insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="2rem"
+                ),
+                "0.5rem",
+            ),
+            [
+                NavbarLinkConfig("Startpage", "/", IconConfig("home", "s")),
+                NavbarLinkConfig(
+                    "About",
+                    modal=ModalConfig(
+                        "about-modal",
+                        "About Insight-UI",
+                        "A modern UI library for Django applications to get started quickly.",
+                    ),
+                ),
             ],
-            "show_searchbar": True,
-            "show_usermenu": True,
-            "show_language_selector": True,
-            "show_theme_toggle": True,
-        }
+            "/",
+            True,
+            True,
+            True,
+        )
 
         template_string = """
         {% load insight_tags %}
@@ -68,12 +90,12 @@ class NavbarTemplateTagTest(TemplateTagsTestCase):
         """
 
         rendered = self.render_template(template_string, context={"nav_config": nav_config})
-        assert "Django Insight UI NavBar" in rendered
+        assert "Insight UI" in rendered
 
     def test_navbar_user_menu_is_hidden_until_opened(self) -> None:
         """Authenticated user menus must not push navbar controls into a second row."""
         nav_config = {
-            "brand": {"title": "Django Insight UI NavBar"},
+            "brand": {"title": "Insight UI NavBar"},
             "links": [],
             "show_usermenu": True,
             "show_language_selector": True,
@@ -81,11 +103,11 @@ class NavbarTemplateTagTest(TemplateTagsTestCase):
         }
         template_string = """
         {% load insight_tags %}
-        {% navbar config=nav_config user=user user_dropdown_links=user_dropdown_links show_login=True %}
+        {% navbar config=nav_config user_dropdown_links=user_dropdown_links %}
         """
 
         rendered = self.render_template(
-            template_string, context={"nav_config": nav_config, "user": self.user, "user_dropdown_links": []}
+            template_string, context={"nav_config": nav_config, "user_dropdown_links": [], "user": self.user}
         )
         soup = BeautifulSoup(rendered, "html.parser")
 
@@ -158,14 +180,14 @@ class CopyrightNoticeTemplateTagTest(TemplateTagsTestCase):
 
     def test_copyright_notice_renders_full_legal_line(self) -> None:
         """Check copyright notice output with license metadata."""
-        config = {
-            "year": 2026,
-            "holder": "Alpin Insight Solutions GmbH & Co. KG",
-            "source_label": "Open Source",
-            "license_text": "AGPL-3.0",
-            "license_url": "https://example.com/license",
-            "rights_text": "All rights reserved.",
-        }
+        config = CopyrightNoticeConfig(
+            2026,
+            "Alpin Insight Solutions GmbH & Co. KG",
+            "Open Source",
+            "AGPL-3.0",
+            "https://example.com/license",
+            rights_text="All rights reserved.",
+        )
         template_string = """
         {% load insight_tags %}
         {% copyright_notice config=config %}
@@ -183,19 +205,6 @@ class CopyrightNoticeTemplateTagTest(TemplateTagsTestCase):
         assert notice.find("a", href="https://example.com/license").get_text(strip=True) == "AGPL-3.0"
         assert len(notice.select("span[aria-hidden='true']")) == 3  # noqa: PLR2004
 
-    def test_copyright_notice_supports_app_name_fallback(self) -> None:
-        """Existing footer copyright configuration with app_name should continue to work."""
-        template_string = """
-        {% load insight_tags %}
-        {% copyright_notice year=2026 app_name="Insight UI" rights_text="All rights reserved." %}
-        """
-        rendered = self.render_template(template_string)
-        soup = BeautifulSoup(rendered, "html.parser")
-
-        notice = soup.find("p")
-        assert notice is not None
-        assert "© 2026 Insight UI" in notice.get_text(" ", strip=True)
-
 
 class LogoTemplateTagTest(TemplateTagsTestCase):
     """Tests for the logo template tag."""
@@ -204,21 +213,21 @@ class LogoTemplateTagTest(TemplateTagsTestCase):
         """SVG logo assets should render as static image tags."""
         template_string = """
         {% load insight_tags %}
-        {% logo logo_type="svg" url="insight_ui/svg/ai-logo.svg" alt="Insight UI Logo" height="3rem" %}
+        {% logo url="insight_ui/svg/ai-logo.svg" alt="Insight UI Logo" height="3rem" %}
         """
         rendered = self.render_template(template_string)
         soup = BeautifulSoup(rendered, "html.parser")
 
-        logo = soup.find(attrs={"data-insight-logo-type": "svg"})
+        logo = soup.find("img")
         assert logo is not None
         assert logo.name == "img"
         assert logo.get("src") == "/static/insight_ui/svg/ai-logo.svg"
         assert logo.get("alt") == "Insight UI Logo"
         assert "height: 3rem" in logo.get("style")
 
-    def test_logo_renders_dark_variant_without_script(self) -> None:
-        """Dark logo variants should render with dark-mode classes and no inline script."""
-        config = {"type": "image", "url": "light.png", "url_dark": "dark.png", "alt": "Theme-aware logo"}
+    def test_logo_renders_dark_variant(self) -> None:
+        """Dark logo variants should render with dark-mode classes."""
+        config = LogoConfig("light.png", "dark.png", "Insight UI Logo")
         template_string = """
         {% load insight_tags %}
         {% logo config=config %}
@@ -226,17 +235,16 @@ class LogoTemplateTagTest(TemplateTagsTestCase):
         rendered = self.render_template(template_string, context={"config": config})
         soup = BeautifulSoup(rendered, "html.parser")
 
-        logos = soup.find_all(attrs={"data-insight-logo-type": "image"})
+        logos = soup.find_all("img")
         assert len(logos) == 2  # noqa: PLR2004
         assert logos[0].get("src") == "/static/light.png"
         assert "dark:hidden" in logos[0].get("class")
         assert logos[1].get("src") == "/static/dark.png"
         assert "dark:inline-block" in logos[1].get("class")
-        assert not soup.find("script")
 
     def test_logo_renders_icon(self) -> None:
         """Icon logos should use the existing Insight UI icon set."""
-        config = {"type": "icon", "icon": {"name": "sparkles", "size": "big"}, "alt": "Product mark"}
+        config = LogoConfig(icon=IconConfig("sparkles", "xl"), alt="Decorative product icon")
         template_string = """
         {% load insight_tags %}
         {% logo config=config %}
@@ -244,7 +252,7 @@ class LogoTemplateTagTest(TemplateTagsTestCase):
         rendered = self.render_template(template_string, context={"config": config})
         soup = BeautifulSoup(rendered, "html.parser")
 
-        wrapper = soup.find("span", attrs={"role": "img", "aria-label": "Product mark"})
+        wrapper = soup.find("span", attrs={"role": "img", "aria-label": "Decorative product icon"})
         assert wrapper is not None
         assert wrapper.find("svg") is not None
 
@@ -256,7 +264,7 @@ class LiveContentTemplateTagTest(TemplateTagsTestCase):
         """Test für grundlegende live_content Funktionalität."""
         template_string = """
         {% load insight_tags %}
-        {% live_content url="/api/live-data/" %}
+        {% live_content request_url="/api/live-data/" %}
         """
         rendered = self.render_template(template_string)
         assert "/api/live-data/" in rendered
@@ -265,7 +273,7 @@ class LiveContentTemplateTagTest(TemplateTagsTestCase):
         """Test für live_content mit Intervall."""
         template_string = """
         {% load insight_tags %}
-        {% live_content url="/api/live-data/" interval=5000 %}
+        {% live_content request_url="/api/live-data/" interval=5000 %}
         """
         rendered = self.render_template(template_string)
         assert "/api/live-data/" in rendered
@@ -278,7 +286,7 @@ class WebsocketTemplateTagTest(TemplateTagsTestCase):
         """Test für grundlegende WebSocket Funktionalität."""
         template_string = """
         {% load insight_tags %}
-        {% insight_websocket url="/runtime/stream/" %}
+        {% insight_websocket request_url="/runtime/stream/" %}
         """
         rendered = self.render_template(template_string)
         assert "/runtime/stream/" in rendered
@@ -290,7 +298,7 @@ class WebsocketTemplateTagTest(TemplateTagsTestCase):
         """Leere tag_id Werte sollten keine unbrauchbaren HTML-IDs erzeugen."""
         template_string = """
         {% load insight_tags %}
-        {% insight_websocket url="/runtime/stream/" %}
+        {% insight_websocket request_url="/runtime/stream/" %}
         """
         rendered = self.render_template(template_string)
         assert 'id="-output"' not in rendered
@@ -304,7 +312,7 @@ class InfiniteScrollTemplateTagTest(TemplateTagsTestCase):
         """Test für grundlegende infinite_scroll Funktionalität."""
         template_string = """
         {% load insight_tags %}
-        {% infinite_scroll view_name="more_items" %}
+        {% infinite_scroll request_url="/api/more-items/" %}
         """
         rendered = self.render_template(template_string)
         assert "/api/more-items/" in rendered
@@ -370,38 +378,24 @@ class SidebarTemplateTagTest(TemplateTagsTestCase):
         assert "hidden xl:block sticky" in rendered
 
 
-class BreadcrumbsTemplateTagTest(TemplateTagsTestCase):
-    """Tests für den breadcrumbs Template Tag."""
-
-    def test_breadcrumbs_basic(self) -> None:
-        """Test für grundlegende breadcrumbs Funktionalität."""
-        template_string = """
-        {% load insight_tags %}
-        {% breadcrumbs %}
-        """
-        rendered = self.render_template(template_string)
-        assert rendered is not None
-
-
 class TableTemplateTagTest(TemplateTagsTestCase):
     """Tests für den table Template Tag."""
 
     def test_table_basic(self) -> None:
         """Test für grundlegende table Funktionalität."""
-        table = {
-            "caption": "Alle registrierten Nutzer und ihr aktueller Status.",
-            "empty_msg": "Keine Daten vorhanden!",
-            "headers": ["Name", "E-Mail", "Status"],
-            "rows": [
-                ["Max Mustermann", "max@example.com", "Aktiv"],
-                ["Max Mustermann", "max@example.com", "Aktiv"],
-                ["Max Mustermann", "max@example.com", "Aktiv"],
+        table = TableConfig(
+            ["Name", "E-Mail", "Status", "Actions"],
+            [
+                ["Max Mustermann", "max@example.com", "Active", '<button class="btn btn-primary">Edit</button>'],
+                ["Anna Schmidt", "anna@example.com", "Inactive", '<button class="btn btn-primary">Edit</button>'],
+                ["Tom Weber", "tom@example.com", "Active", '<button class="btn btn-primary">Edit</button>'],
             ],
-        }
+            "Example of a table component.",
+        )
 
         template_string = """
         {% load insight_tags %}
-        {% table data=user_data %}
+        {% table config=user_data %}
         """
         rendered = self.render_template(template_string, context={"user_data": table})
         soup = BeautifulSoup(rendered, "html.parser")
@@ -412,13 +406,13 @@ class TableTemplateTagTest(TemplateTagsTestCase):
 
         header_row = table.find("thead").find("tr")
         headers = [th.get_text(strip=True) for th in header_row.find_all("th")]
-        assert headers == ["Name", "E-Mail", "Status"]
+        assert headers == ["Name", "E-Mail", "Status", "Actions"]
 
         rows = table.find("tbody").find_all("tr")
         assert len(rows) == 3  # noqa: PLR2004
 
         first_row = [td.get_text(strip=True) for td in rows[0].find_all("td")]
-        assert first_row == ["Max Mustermann", "max@example.com", "Aktiv"]
+        assert first_row == ["Max Mustermann", "max@example.com", "Active", "Edit"]
 
 
 class ModalTemplateTagTest(TemplateTagsTestCase):
@@ -447,37 +441,6 @@ class CardTemplateTagTest(TemplateTagsTestCase):
         rendered = self.render_template(template_string)
         assert "Test Card" in rendered
 
-    def test_app_card_uses_stable_catalog_card_layout(self) -> None:
-        """The app card should fill its grid cell without hover-driven reflow."""
-        card = {
-            "title": "Catalog Product",
-            "content": "Reusable product description.",
-            "tags": ["SSO", "Demo"],
-            "image": {"url": "/static/product.png", "alt": "Product preview"},
-            "actions": [
-                {"text": "More information", "url": "/demo/product", "type": "secondary"},
-                {"text": "Not live yet", "url": "#", "type": "disabled", "disabled": True},
-            ],
-        }
-        template_string = """
-        {% load insight_tags %}
-        {% app_card title=card.title content=card.content tags=card.tags image=card.image actions=card.actions %}
-        """
-
-        rendered = self.render_template(template_string, context={"card": card})
-        soup = BeautifulSoup(rendered, "html.parser")
-        wrapper = soup.find("div")
-        classes = wrapper["class"]
-
-        assert "h-full" in classes
-        assert "w-full" in classes
-        assert "border" in classes
-        assert "max-w-72" not in classes
-        assert "hover:scale-105" not in classes
-        assert soup.find("img")["class"] == ["h-56", "w-full", "bg-gray-100", "object-cover", "dark:bg-gray-700"]
-        assert soup.find("div", id="card-tags")["class"] == ["flex", "flex-wrap", "gap-1", "px-4", "pb-2"]
-        assert soup.find("span", attrs={"aria-disabled": "true"}).text.strip() == "Not live yet"
-
 
 class FormTemplateTagTest(TemplateTagsTestCase):
     """Tests für den form Template Tag."""
@@ -486,7 +449,7 @@ class FormTemplateTagTest(TemplateTagsTestCase):
         """Test für grundlegende form Funktionalität."""
         template_string = """
         {% load insight_tags %}
-        {% form title="Test Form" view_name="form_submit" %}
+        {% form title="Test Form" request_url="/api/form_submit/" %}
         """
         rendered = self.render_template(template_string)
         assert "Test Form" in rendered
@@ -497,33 +460,29 @@ class FooterTemplateTagTest(TemplateTagsTestCase):
 
     def test_footer_basic(self) -> None:
         """Test für grundlegende footer Funktionalität."""
-        footer_data = {
-            "description": {
-                "title": "Insight UI",
-                "text": "A modern, accessible, and responsive UI library for Django projects.",
-            },
-            "links": [
-                {"text": "Startpage", "icon": {"name": "home", "size": "xs"}, "view_name": "index_view"},
-                {"text": "Storybook", "view_name": "index_view"},
-                {"text": "Documentation", "view_name": "index_view"},
+        footer_data = FooterConfig(
+            FooterDescriptionConfig(
+                "Insight UI",
+                "A modern UI library for Django applications to get started quickly.",
+                LogoConfig("insight_ui/svg/ai-logo.svg", alt="Insight UI Logo", height="6rem"),
+            ),
+            [
+                NavbarLinkConfig("Startpage", "/", IconConfig("home", "xs")),
+                NavbarLinkConfig("Storybook", "/"),
+                NavbarLinkConfig("Documentation", "/"),
             ],
-            "contact": {
-                "mail_url": "support@alpininsight.com",
-                "imprint": "https://alpininsight.com/imprint/",
-                "privacy": "https://alpininsight.com/privacy/",
-            },
-            "copyright": {
-                "year": 2025,
-                "holder": "Alpin Insight Solutions GmbH & Co. KG",
-                "source_label": "Open Source",
-                "license_text": "AGPL-3.0",
-                "license_url": "/docs/license/",
-            },
-        }
+            FooterContactConfig(
+                "support@alpininsight.com", "https://alpininsight.com/imprint/", "https://alpininsight.com/privacy/"
+            ),
+            CopyrightNoticeConfig(
+                2026, "Alpin Insight Solutions GmbH & Co. KG", "Open Source", "AGPL-3.0", reverse_lazy("license_view")
+            ),
+            "v1.0.0",
+        )
 
         template_string = """
         {% load insight_tags %}
-        {% footer data=footer_data %}
+        {% footer config=footer_data %}
         """
         rendered = self.render_template(template_string, context={"footer_data": footer_data})
         soup = BeautifulSoup(rendered, "html.parser")
@@ -533,14 +492,14 @@ class FooterTemplateTagTest(TemplateTagsTestCase):
         assert desc_title.get_text() == "Insight UI"
 
         desc_text = soup.find("p")
-        assert desc_text.get_text() == "A modern, accessible, and responsive UI library for Django projects."
+        assert desc_text.get_text() == "A modern UI library for Django applications to get started quickly."
 
         # --- Assert: links ---
         link_elements = soup.select("ul li a")
         assert len(link_elements) == 3  # noqa: PLR2004
-        for link, el in zip(footer_data["links"], link_elements):
+        for link, el in zip(footer_data.links, link_elements):
             assert el.get("href") == "/"
-            assert link["text"] in el.text
+            assert link.text in el.text
 
         # --- Assert: contact imprint ---
         imprint_el = soup.find("a", href="https://alpininsight.com/imprint/")
@@ -556,7 +515,7 @@ class FooterTemplateTagTest(TemplateTagsTestCase):
         assert "support@alpininsight.com" in mail_el.text
 
         # --- Assert: copyright ---
-        copyright_p = next((p for p in soup.find_all("p") if str(2025) in p.get_text(" ", strip=True)), None)
+        copyright_p = next((p for p in soup.find_all("p") if str(2026) in p.get_text(" ", strip=True)), None)
         assert copyright_p is not None
         assert "Alpin Insight Solutions GmbH & Co. KG" in copyright_p.text
         assert "Open Source" in copyright_p.text
@@ -566,132 +525,42 @@ class FooterTemplateTagTest(TemplateTagsTestCase):
         assert license_el is not None
         assert license_el.get_text(strip=True) == "AGPL-3.0"
 
-    def test_footer_copyright_supports_legacy_app_name(self) -> None:
-        """Legacy copyright data should keep rendering app_name."""
-        footer_data = {"copyright": {"year": 2025, "app_name": "Insight UI"}}
-
-        template_string = """
-        {% load insight_tags %}
-        {% footer data=footer_data %}
-        """
-        rendered = self.render_template(template_string, context={"footer_data": footer_data})
-        soup = BeautifulSoup(rendered, "html.parser")
-
-        copyright_p = next((p for p in soup.find_all("p") if str(2025) in p.get_text(" ", strip=True)), None)
-        assert copyright_p is not None
-        assert str(2025) in copyright_p.text
-        assert "Insight UI" in copyright_p.text
-        assert "·" in copyright_p.text
-        assert "All rights reserved." in copyright_p.text
-
-
-class HeadingDecorationTemplateTagTest(TemplateTagsTestCase):
-    """Tests for the heading_decoration template tag."""
-
-    def test_heading_decoration_default_waves(self) -> None:
-        """Test default heading decoration output."""
-        template_string = """
-        {% load insight_tags %}
-        {% heading_decoration %}
-        """
-        rendered = self.render_template(template_string)
-        soup = BeautifulSoup(rendered, "html.parser")
-
-        decoration = soup.find(attrs={"data-heading-decoration": "waves"})
-        assert decoration is not None
-        assert decoration.name == "svg"
-        assert decoration.get("aria-hidden") == "true"
-        assert decoration.get("viewbox") == "0 0 500 90"
-        assert len(decoration.find_all("polyline")) == 3  # noqa: PLR2004
-
-    def test_heading_decoration_variants(self) -> None:
-        """Test gradient and image heading decoration variants."""
-        template_string = """
-        {% load insight_tags %}
-        {% heading_decoration style="gradient" height=64 %}
-        {% heading_decoration style="image" image_url="/static/hero.jpg" height=120 %}
-        """
-        rendered = self.render_template(template_string)
-        soup = BeautifulSoup(rendered, "html.parser")
-
-        gradient = soup.find(attrs={"data-heading-decoration": "gradient"})
-        image = soup.find(attrs={"data-heading-decoration": "image"})
-
-        assert gradient is not None
-        assert "height: 64px" in gradient.get("style")
-        assert "linear-gradient" in gradient.get("style")
-
-        assert image is not None
-        assert "height: 120px" in image.get("style")
-        assert "/static/hero.jpg" in image.get("style")
-
-    def test_heading_decoration_config_and_color(self) -> None:
-        """Test config dictionary support and custom color propagation."""
-        config = {"style": "waves", "height": 120, "color": "#123456"}
-        template_string = """
-        {% load insight_tags %}
-        {% heading_decoration config=config %}
-        """
-        rendered = self.render_template(template_string, context={"config": config})
-        soup = BeautifulSoup(rendered, "html.parser")
-
-        decoration = soup.find(attrs={"data-heading-decoration": "waves"})
-        assert decoration is not None
-        assert decoration.get("viewbox") == "0 0 500 120"
-        assert "--heading-decoration-color: #123456" in decoration.get("style")
-
-    def test_heading_decoration_none_renders_no_markup(self) -> None:
-        """Test that style='none' renders no decoration element."""
-        template_string = """
-        {% load insight_tags %}
-        {% heading_decoration style="none" %}
-        """
-        rendered = self.render_template(template_string)
-
-        assert "data-heading-decoration" not in rendered
-
 
 class CheckboxTemplateTagTest(TemplateTagsTestCase):
     """Tests for the {% checkbox %} component."""
 
-    def test_checkbox_config_dict(self) -> None:
-        """Test the {% checkbox %} tag with a config dictionary."""
-        config = {
-            "tag_id": "agb-box",
-            "name": "accept_agb",
-            "value": "accept_agb",
-            "checked": False,
-            "disabled": False,
-            "label": "Accept AGBs",
-        }
+    def test_checkbox_config(self) -> None:
+        """Test the {% checkbox %} tag with config dataclass."""
+        config = CheckboxConfig(
+            "accept-terms", "accept_terms", "I accept the terms and conditions", required=True, value="accepted"
+        )
 
         result = insight_ui.templatetags.insight_tags.checkbox(config=config)
-        print(result)
-        assert result == config
+        assert result["checkbox_config"] == config
 
     def test_checkbox_single_params(self) -> None:
         """Test the {% checkbox %} tag with single params."""
         template_string = """
         {% load insight_tags %}
-        {% checkbox tag_id="agb-box" name="accept_agb" value="accept_agb" checked=False disabled=False label="Accept AGBs" %}
-        {% checkbox tag_id="newsletter-box" name="newsletter" value="newsletter" checked=True disabled=True label="Subscribe for Newsletter" %}
+        {% checkbox tag_id="accept-terms" name="accept_terms" value="accepted" checked=False disabled=False label="I accept the terms and conditions" %}
+        {% checkbox tag_id="newsletter-box" name="newsletter" value="subscribed" checked=True disabled=True label="Subscribe for Newsletter" %}
         """
         rendered = self.render_template(template_string)
         soup = BeautifulSoup(rendered, "html.parser")
 
         checkboxes = soup.find_all("input")
         label_spans = soup.find_all("span")
-        assert checkboxes[0]["id"] == "agb-box"
-        assert checkboxes[0]["name"] == "accept_agb"
-        assert checkboxes[0]["value"] == "accept_agb"
+        assert checkboxes[0]["id"] == "accept-terms"
+        assert checkboxes[0]["name"] == "accept_terms"
+        assert checkboxes[0]["value"] == "accepted"
         assert not checkboxes[0].has_attr("checked")
         assert not checkboxes[0].has_attr("disabled")
-        assert label_spans[0].get_text() == "Accept AGBs"
+        assert label_spans[0].get_text() == "I accept the terms and conditions"
         assert "text-primary" in label_spans[0]["class"]
 
         assert checkboxes[1]["id"] == "newsletter-box"
         assert checkboxes[1]["name"] == "newsletter"
-        assert checkboxes[1]["value"] == "newsletter"
+        assert checkboxes[1]["value"] == "subscribed"
         assert checkboxes[1].has_attr("checked")
         assert checkboxes[1].has_attr("disabled")
         assert label_spans[1].get_text() == "Subscribe for Newsletter"
@@ -699,16 +568,20 @@ class CheckboxTemplateTagTest(TemplateTagsTestCase):
 
     def test_checkbox_group(self) -> None:
         """Test the {% checkbox_group %} tag."""
-        checkbox_context = {
-            "name": "language_select",
-            "label": "Choose languages:",
-            "as_row": True,
-            "items": [
-                {"id": "lang1", "value": "english", "label": "English", "disabled": False},
-                {"id": "lang2", "value": "german", "label": "German", "checked": True, "disabled": False},
-                {"id": "lang3", "value": "italian", "label": "Italian (currently not available)", "disabled": True},
+        checkbox_context = CheckboxGroupConfig(
+            "language",
+            "Choose languages: (max. 3)",
+            [
+                CheckboxItemConfig("english", "English", "english"),
+                CheckboxItemConfig("german", "German", "german", checked=True),
+                CheckboxItemConfig("french", "French", "french"),
+                CheckboxItemConfig("spanish", "Spanish", "spanish"),
+                CheckboxItemConfig("italian", "Italian (currently not available)", "italian", True),
             ],
-        }
+            True,
+            1,
+            3,
+        )
 
         template_string = """
         {% load insight_tags %}
@@ -719,11 +592,11 @@ class CheckboxTemplateTagTest(TemplateTagsTestCase):
         soup = BeautifulSoup(rendered, "html.parser")
 
         wrapper = soup.find("div", {"data-insight-checkbox-group": True})
-        assert wrapper["data-minimum-checked"] == "-1"
+        assert wrapper["data-minimum-checked"] == "1"
 
         # Check label
         label_span = wrapper.find("span")
-        assert label_span.text == "Choose languages:"
+        assert label_span.text == "Choose languages: (max. 3)"
 
         # Check layout
         container = wrapper.find("div", class_="flex")
@@ -732,66 +605,44 @@ class CheckboxTemplateTagTest(TemplateTagsTestCase):
         # Check count of checkboxes
         inputs = container.find_all("input", type="checkbox")
         label_spans = container.find_all("span")
-        assert len(inputs) == 3  # noqa: PLR2004
-        assert len(label_spans) == 3  # noqa: PLR2004
+        assert len(inputs) == 5  # noqa: PLR2004
+        assert len(label_spans) == 5  # noqa: PLR2004
 
         # First checkbox
-        assert inputs[0]["id"] == "lang1"
-        assert inputs[0]["name"] == "language_select"
+        assert inputs[0]["id"] == "english"
+        assert inputs[0]["name"] == "language"
         assert inputs[0]["value"] == "english"
         assert not inputs[0].has_attr("checked")
         assert not inputs[0].has_attr("disabled")
         assert label_spans[0].get_text() == "English"
 
         # Second checkbox
-        assert inputs[1]["id"] == "lang2"
-        assert inputs[1]["name"] == "language_select"
+        assert inputs[1]["id"] == "german"
+        assert inputs[1]["name"] == "language"
         assert inputs[1]["value"] == "german"
         assert inputs[1].has_attr("checked")
         assert not inputs[1].has_attr("disabled")
         assert label_spans[1].get_text() == "German"
 
         # Third checkbox
-        assert inputs[2]["id"] == "lang3"
-        assert inputs[2]["name"] == "language_select"
-        assert inputs[2]["value"] == "italian"
-        assert not inputs[2].has_attr("checked")
-        assert inputs[2].has_attr("disabled")
-        assert label_spans[2].get_text() == "Italian (currently not available)"
+        assert inputs[4]["id"] == "italian"
+        assert inputs[4]["name"] == "language"
+        assert inputs[4]["value"] == "italian"
+        assert not inputs[4].has_attr("checked")
+        assert inputs[4].has_attr("disabled")
+        assert label_spans[4].get_text() == "Italian (currently not available)"
 
 
 class RadioGroupTemplateTagTest(TemplateTagsTestCase):
     """Tests for the {% radio_group %} component."""
 
-    @pytest.mark.skip(reason="Needs to be finished!")
     def test_radio_block_block(self) -> None:
         """Test the {% radio_block %} tag."""
-        context = {
-            "current_value": "BERT",
-            "view_name": "index",
-            "query_params": "lang=german",
-            "target_id": "test-container",
-            "method": "loadOptions",
-            "integrated": False,
-            "radio_group_config": {
-                "name": "model_select",
-                "label": "Choose model:",
-                "items": [
-                    {"id": "model1", "value": "BERT", "label": "BERT", "disabled": False},
-                    {"id": "model2", "value": "PaLM 2", "label": "PaLM 2", "disabled": False},
-                    {
-                        "id": "model3",
-                        "value": "LLaMA 2",
-                        "label": "LLaMA 2 (currently not available)",
-                        "disabled": True,
-                    },
-                ],
-            },
-        }
+        context = get_radio_block_context()
 
         template_string = """
         {% load insight_tags %}
-        {% radio_block radio_group_config current_value=current_value %}
+        {% radio_block size_radio_config %}
         """
 
         rendered = self.render_template(template_string, context)
@@ -801,9 +652,9 @@ class RadioGroupTemplateTagTest(TemplateTagsTestCase):
 
         # Check label
         label_span = wrapper.find("span")
-        assert label_span.text.strip() == "Choose model:"
+        assert label_span.text.strip() == "Select size:"
 
-        form = wrapper.find("form", id="model_select")
+        form = wrapper.find("form", id="size")
         assert form is not None
 
         # Check count of radios
@@ -812,60 +663,43 @@ class RadioGroupTemplateTagTest(TemplateTagsTestCase):
         assert len(inputs) == 3  # noqa: PLR2004
 
         # First radio
-        assert inputs[0]["id"] == "model1"
-        assert inputs[0]["name"] == "model_select"
-        assert inputs[0]["value"] == "BERT"
+        assert inputs[0]["id"] == "size-small-size"
+        assert inputs[0]["name"] == "size"
+        assert inputs[0]["value"] == "small"
         assert inputs[0].has_attr("checked")
         assert not inputs[0].has_attr("disabled")
         assert inputs[0].has_attr("hx-get")
         assert inputs[0].has_attr("hx-target")
         assert inputs[0].has_attr("hx-swap")
-        assert inputs[0].has_attr("onclick")
-        assert labels[0]["for"] == "model1"
-        assert labels[0].get_text() == "BERT"
+        assert inputs[0].has_attr("data-radio-callback")
+        assert labels[0]["for"] == "size-small-size"
+        assert labels[0].get_text().strip() == "s"
 
         # Second radio
-        assert inputs[1]["id"] == "model2"
-        assert inputs[1]["name"] == "model_select"
-        assert inputs[1]["value"] == "PaLM 2"
+        assert inputs[1]["id"] == "size-medium-size"
+        assert inputs[1]["name"] == "size"
+        assert inputs[1]["value"] == "medium"
         assert not inputs[1].has_attr("checked")
         assert not inputs[1].has_attr("disabled")
-        assert labels[1]["for"] == "model2"
-        assert labels[1].get_text() == "PaLM 2"
+        assert labels[1]["for"] == "size-medium-size"
+        assert labels[1].get_text().strip() == "m"
 
         # Third radio
-        assert inputs[2]["id"] == "model3"
-        assert inputs[2]["name"] == "model_select"
-        assert inputs[2]["value"] == "LLaMA 2"
+        assert inputs[2]["id"] == "size-large-size"
+        assert inputs[2]["name"] == "size"
+        assert inputs[2]["value"] == "large"
         assert not inputs[2].has_attr("checked")
         assert inputs[2].has_attr("disabled")
-        assert labels[2]["for"] == "model3"
-        assert labels[2].get_text() == "LLaMA 2 (currently not available)"
+        assert labels[2]["for"] == "size-large-size"
+        assert labels[2].get_text().strip() == "l"
 
     def test_radio_group(self) -> None:
         """Test the {% radio_group %} tag."""
-        context = {
-            "current_value": "BERT",
-            "radio_group_config": {
-                "name": "model_select",
-                "label": "Choose model:",
-                "as_row": True,
-                "items": [
-                    {"tag_id": "model1", "value": "BERT", "label": "BERT", "disabled": False},
-                    {"tag_id": "model2", "value": "PaLM 2", "label": "PaLM 2", "disabled": False},
-                    {
-                        "tag_id": "model3",
-                        "value": "LLaMA 2",
-                        "label": "LLaMA 2 (currently not available)",
-                        "disabled": True,
-                    },
-                ],
-            },
-        }
+        context = get_radio_group_context()
 
         template_string = """
         {% load insight_tags %}
-        {% radio_group config=radio_group_config current_value=current_value %}
+        {% radio_group config=model_radio_config %}
         """
 
         rendered = self.render_template(template_string, context)
@@ -875,11 +709,11 @@ class RadioGroupTemplateTagTest(TemplateTagsTestCase):
 
         # Check label
         label_span = wrapper.find("span")
-        assert label_span.text.strip() == "Choose model:"
+        assert label_span.text.strip() == "Select AI Model:"
 
         # Check layout
         container = wrapper.find("div", class_="flex")
-        assert "space-x-4" in container["class"]
+        assert "space-y-1" in container["class"]
 
         # Check count of radios
         inputs = container.find_all("input", type="radio")
@@ -888,7 +722,7 @@ class RadioGroupTemplateTagTest(TemplateTagsTestCase):
 
         # First radio
         assert inputs[0]["id"] == "model1"
-        assert inputs[0]["name"] == "model_select"
+        assert inputs[0]["name"] == "model"
         assert inputs[0]["value"] == "BERT"
         assert inputs[0].has_attr("checked")
         assert not inputs[0].has_attr("disabled")
@@ -896,7 +730,7 @@ class RadioGroupTemplateTagTest(TemplateTagsTestCase):
 
         # Second radio
         assert inputs[1]["id"] == "model2"
-        assert inputs[1]["name"] == "model_select"
+        assert inputs[1]["name"] == "model"
         assert inputs[1]["value"] == "PaLM 2"
         assert not inputs[1].has_attr("checked")
         assert not inputs[1].has_attr("disabled")
@@ -904,7 +738,7 @@ class RadioGroupTemplateTagTest(TemplateTagsTestCase):
 
         # Third radio
         assert inputs[2]["id"] == "model3"
-        assert inputs[2]["name"] == "model_select"
+        assert inputs[2]["name"] == "model"
         assert inputs[2]["value"] == "LLaMA 2"
         assert not inputs[2].has_attr("checked")
         assert inputs[2].has_attr("disabled")
@@ -914,25 +748,12 @@ class RadioGroupTemplateTagTest(TemplateTagsTestCase):
 class ToggleButtonTemplateTagTest(TemplateTagsTestCase):
     """Tests for the {% toggle %} component."""
 
-    def test_toggle_config_dict(self) -> None:
-        """Test the {% toggle %} tag with a config dictionary."""
-        config = {
-            "tag_id": "theme-toggle",
-            "name": "toggle_theme",
-            "value": "toggle_theme",
-            "checked": False,
-            "disabled": False,
-            "label": "Dark",
-            "icon": {"name": "moon"},
-            "switch": True,
-        }
-
+    def test_toggle_config(self) -> None:
+        """Test the {% toggle %} tag with config dataclass."""
+        config = ToggleConfig("toggle-switch", "toggle-switch", "Click me!", switch=True)
         result = insight_ui.templatetags.insight_tags.toggle(config=config)
 
-        # Add 'method' parameter to dict, to match with the result dict
-        # 'method' is an additional parameter.
-        config["method"] = ""
-        assert result == config
+        assert result["toggle_config"] == config
 
     def test_toggle(self) -> None:
         """Test the {% toggle %} tag."""
@@ -983,26 +804,21 @@ class ToggleButtonTemplateTagTest(TemplateTagsTestCase):
 class SliderTemplateTagTest(TemplateTagsTestCase):
     """Tests for the {% toggle %} component."""
 
-    def test_slider_config_dict(self) -> None:
-        """Test the {% slider %} tag with a config dictionary."""
-        config = {
-            "tag_id": "cpu-cores",
-            "name": "cpu_core_count",
-            "value": 4,
-            "dual": False,
-            "value_min": None,
-            "value_max": None,
-            "minimum": 2,
-            "maximum": 8,
-            "step_size": 2,
-            "disabled": False,
-            "label": "Choose amount of CPU-Cores:",
-            "legend_mode": "static",
-            "items": ["2", "4", "6", "8"],
-        }
+    def test_slider_config(self) -> None:
+        """Test the {% slider %} tag with config dataclass."""
+        config = SliderConfig(
+            "range-slider-skip",
+            "range_slider_skip",
+            "Legend Mode: Skip",
+            value=6,
+            minimum=1,
+            maximum=12,
+            items=["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            legend_mode="skip",
+        )
 
         result = insight_ui.templatetags.insight_tags.slider(config=config)
-        assert result == config
+        assert result["slider_config"] == config
 
     def test_slider(self) -> None:
         """Test the {% slider %} tag."""
@@ -1090,14 +906,14 @@ class BrandLockupTemplateTagTest(TemplateTagsTestCase):
         assert "M2.25 6a3 3" in rendered
 
     def test_brand_lockup_develop_variant_uses_rocket_icon(self) -> None:
-        """develop renders the public rocket icon."""
+        """Develop renders the public rocket icon."""
         rendered = self.render_template('{% load insight_tags %}{% brand_lockup variant="develop" %}')
         svg = BeautifulSoup(rendered, "html.parser").find("svg")
         assert svg.get("viewbox") == "0 0 24 24"
         assert "M15.59 14.37" in rendered
 
     def test_brand_lockup_candidate_variant_uses_sparkles_icon(self) -> None:
-        """candidate renders the public sparkles icon."""
+        """Candidate renders the public sparkles icon."""
         rendered = self.render_template('{% load insight_tags %}{% brand_lockup variant="candidate" %}')
         assert "M9.813 15.904" in rendered
 
