@@ -7,6 +7,8 @@ from insight_ui.config import CONFIG_DEFAULTS
 
 THEME_ROOT = Path(__file__).resolve().parents[2] / "insight_ui/static/insight_ui/css/themes"
 INPUT_CSS = Path(__file__).resolve().parents[2] / "insight_ui/utils/input.css"
+TAILWIND_CSS = Path(__file__).resolve().parents[2] / "insight_ui/static/insight_ui/css/tailwind.css"
+TAILWIND_MIN_CSS = Path(__file__).resolve().parents[2] / "insight_ui/static/insight_ui/css/tailwind.min.css"
 BOOTSWATCH_THEMES = set(CONFIG_DEFAULTS["design_themes"]["stylesheets"]) - {"default", "alpin", "foundry"}
 SEMANTIC_ROLES = ("primary", "secondary", "success", "info", "warning", "danger")
 
@@ -53,6 +55,21 @@ class DesignThemeCssTest(SimpleTestCase):
             ".insight-focus-ring",
         ):
             assert semantic_class in input_css
+
+    def test_generated_tailwind_css_includes_semantic_surface_and_radius_classes(self) -> None:
+        """Packaged CSS must include semantic classes used by component templates."""
+        for css_file in (TAILWIND_CSS, TAILWIND_MIN_CSS):
+            css = css_file.read_text()
+
+            for selector in (
+                ".insight-surface-page",
+                ".insight-surface-base",
+                ".insight-surface-soft",
+                ".insight-radius-control",
+                ".insight-radius-surface",
+                ".insight-radius-pill",
+            ):
+                assert selector in css
 
     def test_bootswatch_themes_define_text_and_button_foreground_tokens(self) -> None:
         """Every Bootswatch theme must include text and button font color tokens."""

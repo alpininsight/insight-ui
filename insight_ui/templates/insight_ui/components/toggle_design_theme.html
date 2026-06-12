@@ -14,7 +14,7 @@
     {% for theme_name, theme_path in design_themes.stylesheets.items %}
       <option
         value="{{ theme_name }}"
-        data-theme-href="{% insight_asset theme_path %}"
+        data-theme-href="{% design_theme_asset theme_path %}"
         {% if theme_name == design_themes.default %}selected{% endif %}
       >
         {% with theme_label=design_themes.labels|get_item:theme_name %}

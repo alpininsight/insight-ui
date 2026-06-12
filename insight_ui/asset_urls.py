@@ -61,3 +61,14 @@ def insight_asset_url(asset_path: str, *, minified: bool | None = None) -> str:
     relative_path = _cdn_relative_path(resolved_path)
 
     return f"{base_url}/{prefix}/{version}/{relative_path}"
+
+
+def design_theme_asset_url(asset_path: str) -> str:
+    """Resolve design theme stylesheets without rewriting host-owned assets."""
+    if asset_path.startswith("insight_ui/"):
+        return insight_asset_url(asset_path)
+
+    if asset_path.startswith(("http://", "https://", "/", "data:")):
+        return asset_path
+
+    return static(asset_path)

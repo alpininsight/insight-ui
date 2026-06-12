@@ -4,7 +4,7 @@ import pytest
 from django.conf import settings
 from django.template import Context, Template
 from django.test import override_settings
-from insight_ui.asset_urls import insight_asset_url, to_minified_asset_path
+from insight_ui.asset_urls import design_theme_asset_url, insight_asset_url, to_minified_asset_path
 from insight_ui.config import get_config
 
 
@@ -68,6 +68,23 @@ def test_insight_asset_url_keeps_branch_cdn_aliases(cdn_version: str) -> None:
             insight_asset_url("insight_ui/css/tailwind.css")
             == f"https://cdn.alpininsight.ai/insight-ui/{cdn_version}/css/tailwind.min.css"
         )
+
+
+@override_settings(INSIGHT_UI={"assets": {"use_minified": True, "cdn_enabled": True, "cdn_version": "develop"}})
+def test_design_theme_asset_url_preserves_host_owned_stylesheets() -> None:
+    """Host-owned design themes must not be minified or moved to the Insight UI CDN."""
+    assert design_theme_asset_url("custom/theme.css") == "/static/custom/theme.css"
+    assert design_theme_asset_url("/assets/theme.css") == "/assets/theme.css"
+    assert design_theme_asset_url("https://example.test/theme.css") == "https://example.test/theme.css"
+
+
+@override_settings(INSIGHT_UI={"assets": {"use_minified": True, "cdn_enabled": True, "cdn_version": "develop"}})
+def test_design_theme_asset_url_rewrites_insight_ui_owned_stylesheets() -> None:
+    """Built-in design themes still use Insight UI asset delivery rules."""
+    assert (
+        design_theme_asset_url("insight_ui/css/themes/cerulean.css")
+        == "https://cdn.alpininsight.ai/insight-ui/develop/css/themes/cerulean.min.css"
+    )
 
 
 @override_settings(INSIGHT_UI={"assets": {"cdn_enabled": True}})

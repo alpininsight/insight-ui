@@ -10,7 +10,7 @@
                     defaultTheme: "{{ INSIGHT_UI.design_themes.default|escapejs }}",
                     assets: {
                         {% for theme_name, theme_path in INSIGHT_UI.design_themes.stylesheets.items %}
-                            {% insight_asset theme_path as theme_asset_url %}
+                            {% design_theme_asset theme_path as theme_asset_url %}
                             "{{ theme_name|escapejs }}": "{{ theme_asset_url|escapejs }}"{% if not forloop.last %},{% endif %}
                         {% endfor %}
                     }
