@@ -17,7 +17,10 @@
                 };
                 (function() {
                     const config = window.INSIGHT_UI_DESIGN_THEMES;
-                    const savedTheme = window.localStorage.getItem(config.storageKey);
+                    let savedTheme = null;
+                    try {
+                        savedTheme = window.localStorage.getItem(config.storageKey);
+                    } catch (error) {}
                     const selectedTheme = Object.prototype.hasOwnProperty.call(config.assets, savedTheme)
                         ? savedTheme
                         : config.defaultTheme;

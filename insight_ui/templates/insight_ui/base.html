@@ -29,7 +29,10 @@
         <!-- Set theme before loading any stylesheets -->
         <script>
             (function() {
-                const theme = localStorage.getItem('insight-ui-theme') || 'light';
+                let theme = 'light';
+                try {
+                    theme = localStorage.getItem('insight-ui-theme') || 'light';
+                } catch (error) {}
                 document.documentElement.setAttribute('data-theme', theme);
                 document.cookie = "theme=" + theme + "; path=/";
             })();
@@ -81,7 +84,10 @@
                 };
                 (function() {
                     const config = window.INSIGHT_UI_DESIGN_THEMES;
-                    const savedTheme = window.localStorage.getItem(config.storageKey);
+                    let savedTheme = null;
+                    try {
+                        savedTheme = window.localStorage.getItem(config.storageKey);
+                    } catch (error) {}
                     const selectedTheme = Object.prototype.hasOwnProperty.call(config.assets, savedTheme)
                         ? savedTheme
                         : config.defaultTheme;

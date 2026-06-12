@@ -71,6 +71,16 @@ class DesignThemeCssTest(SimpleTestCase):
             ):
                 assert selector in css
 
+    def test_input_css_exposes_dark_states_for_subtle_buttons(self) -> None:
+        """Subtle buttons need dark surface tokens for dark navbars and menus."""
+        input_css = INPUT_CSS.read_text()
+
+        assert ".btn-subtil:where([data-theme=dark], [data-theme=dark] *)" in input_css
+        assert "background-color: var(--color-insight-surface-soft-dark);" in input_css
+        assert "border-color: var(--color-insight-border-surface-dark);" in input_css
+        assert "background-color: var(--color-insight-surface-muted-dark);" in input_css
+        assert "border-color: var(--color-insight-border-muted-dark);" in input_css
+
     def test_bootswatch_themes_define_text_and_button_foreground_tokens(self) -> None:
         """Every Bootswatch theme must include text and button font color tokens."""
         for theme_name in BOOTSWATCH_THEMES:

@@ -394,19 +394,36 @@
         background-color: var(--color-insight-surface-soft);
         border-color: var(--color-insight-border-surface);
     }
+    .btn-subtil2:hover:where([data-theme=dark], [data-theme=dark] *) {
+        background-color: var(--color-insight-surface-soft-dark);
+        border-color: var(--color-insight-border-surface-dark);
+    }
     .btn-subtil2:active {
         background-color: var(--color-insight-surface-muted);
         border-color: var(--color-insight-border-muted);
+    }
+    .btn-subtil2:active:where([data-theme=dark], [data-theme=dark] *) {
+        background-color: var(--color-insight-surface-muted-dark);
+        border-color: var(--color-insight-border-muted-dark);
     }
     .btn-subtil {
         @apply text-insight-text-secondary dark:text-insight-text-secondary-dark;
         background-color: var(--color-insight-surface-soft);
         border-color: var(--color-insight-border-surface);
     }
+    .btn-subtil:where([data-theme=dark], [data-theme=dark] *) {
+        background-color: var(--color-insight-surface-soft-dark);
+        border-color: var(--color-insight-border-surface-dark);
+    }
     .btn-subtil:active,
     .btn-subtil:hover {
         background-color: var(--color-insight-surface-muted);
         border-color: var(--color-insight-border-muted);
+    }
+    .btn-subtil:active:where([data-theme=dark], [data-theme=dark] *),
+    .btn-subtil:hover:where([data-theme=dark], [data-theme=dark] *) {
+        background-color: var(--color-insight-surface-muted-dark);
+        border-color: var(--color-insight-border-muted-dark);
     }
     .btn-primary {
         --insight-button-border-color: var(--color-insight-button-border, var(--color-insight-primary-border, var(--color-insight-primary)));
