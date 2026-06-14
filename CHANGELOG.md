@@ -80,6 +80,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Use central reusable container workflow
 - **container:** Enable manual django image builds
 - **cdn:** Upload static assets by branch alias
+- Use central reusable workflows
 
 ### Documentation
 
@@ -191,6 +192,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Correct linting
 - Merge develop into dataclasses branch
 - Fix merge issues
+- Normalize changelog whitespace
 
 ### Refactoring
 
