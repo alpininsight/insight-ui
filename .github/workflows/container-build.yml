@@ -1,13 +1,30 @@
-name: Django container build
+---
+# =============================================================================
+# Alpine Insight workflow contract
+# Source:
+#   - private backend:
+#     - alpininsight/.github-private/.github/workflows/python-django-container-build-reusable.yml@main
+#     - alpininsight/.github-private/.github/workflows/image-digest-pin-bot-reusable.yml@main
+# Purpose:
+#   - validates the Django runtime contract on pull requests
+#   - publishes develop images for the demo lane
+#   - promotes the already tested tree digest on main without rebuilding
+#   - opens GitOps digest-pin PRs for green/develop and blue/main slots
+# Required repo secret:
+#   - IMAGE_DIGEST_PIN_TOKEN writes digest-pin PRs to insight-lima-k8s-capi
+# =============================================================================
+
+name: Container Build (Alpine Insight)
 
 on:
   pull_request:
-    branches: [main, develop]
+    branches: [develop, main]
     types: [opened, reopened, synchronize, ready_for_review, edited]
     paths:
       - ".github/workflows/container-build.yml"
       - ".dockerignore"
       - ".env.example"
+      - "CHANGELOG.md"
       - "Dockerfile"
       - "docker/**"
       - "core/**"
@@ -15,12 +32,14 @@ on:
       - "manage.py"
       - "pyproject.toml"
       - "requirements.txt"
+      - "uv.lock"
   push:
     branches: [develop, main]
     paths:
       - ".github/workflows/container-build.yml"
       - ".dockerignore"
       - ".env.example"
+      - "CHANGELOG.md"
       - "Dockerfile"
       - "docker/**"
       - "core/**"
@@ -28,29 +47,19 @@ on:
       - "manage.py"
       - "pyproject.toml"
       - "requirements.txt"
+      - "uv.lock"
   workflow_dispatch:
 
 concurrency:
   group: container-${{ github.event.pull_request.number || github.ref || github.run_id }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   container_validate:
-    if: github.event_name == 'pull_request'
-    permissions:
-      contents: read
-    uses: alpininsight/.github-private/.github/workflows/python-django-container-build-reusable.yml@main
-    with:
-      image_name: ghcr.io/${{ github.repository_owner }}/insight-ui
-      service_name: insight-ui
-      platform_namespace: demo
-      public_base_url: https://insight-ui.demo.alpininsight.ai
-      platforms: linux/amd64,linux/arm64
-      local_image_tag: insight-ui:ci
-      smoke_env_file: ""
-
-  container_release:
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
     permissions:
       contents: read
       packages: write
@@ -63,5 +72,91 @@ jobs:
       platforms: linux/amd64,linux/arm64
       local_image_tag: insight-ui:ci
       smoke_env_file: ""
-      push: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/develop' }}
-      promote_existing_tree_digest: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main' }}
+      run_trivy_scan: true
+    secrets:
+      github_read_token: ${{ secrets.INSIGHT_TOKEN_RO }}
+      ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+  container_release:
+    if: github.event_name == 'push'
+    permissions:
+      contents: read
+      packages: write
+    uses: alpininsight/.github-private/.github/workflows/python-django-container-build-reusable.yml@main
+    with:
+      image_name: ghcr.io/${{ github.repository_owner }}/insight-ui
+      service_name: insight-ui
+      platform_namespace: demo
+      public_base_url: https://insight-ui.demo.alpininsight.ai
+      platforms: linux/amd64,linux/arm64
+      local_image_tag: insight-ui:ci
+      smoke_env_file: ""
+      run_trivy_scan: true
+      push: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' }}
+      promote_existing_tree_digest: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    secrets:
+      github_read_token: ${{ secrets.INSIGHT_TOKEN_RO }}
+      ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+  resolve_digest:
+    name: Resolve digest behind published alias
+    needs: container_release
+    if: github.event_name == 'push' && needs.container_release.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    outputs:
+      digest: ${{ steps.digest.outputs.digest }}
+      lane: ${{ steps.digest.outputs.lane }}
+      slot: ${{ steps.digest.outputs.slot }}
+    steps:
+      - name: Resolve GHCR digest
+        id: digest
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          case "${GITHUB_REF}" in
+            refs/heads/develop)
+              alias="candidate"; slot="green"; lane="develop" ;;
+            refs/heads/main)
+              alias="main"; slot="blue"; lane="main" ;;
+            *)
+              echo "::error::unsupported ref ${GITHUB_REF}"; exit 1 ;;
+          esac
+
+          digest="$(gh api \
+            "/orgs/alpininsight/packages/container/insight-ui/versions?per_page=50" \
+            --jq "[.[] | select(.metadata.container.tags[]? == \"${alias}\")][0].name")"
+          if ! [[ "$digest" =~ ^sha256:[0-9a-f]{64}$ ]]; then
+            echo "::error::resolved digest is not a sha256 reference: '$digest'"
+            exit 1
+          fi
+
+          {
+            echo "digest=$digest"
+            echo "lane=$lane"
+            echo "slot=$slot"
+          } >> "$GITHUB_OUTPUT"
+
+  pin_slot:
+    name: Pin ${{ needs.resolve_digest.outputs.slot }} slot digest
+    needs: resolve_digest
+    if: needs.resolve_digest.result == 'success'
+    permissions:
+      contents: read
+    uses: alpininsight/.github-private/.github/workflows/image-digest-pin-bot-reusable.yml@main
+    with:
+      consuming_repo: alpininsight/insight-lima-k8s-capi
+      overlay_path: >-
+        use-cases/management-cloud/demo/insight-ui/${{
+        needs.resolve_digest.outputs.slot }}/deployment.yaml
+      image_name: ghcr.io/alpininsight/insight-ui
+      image_digest: ${{ needs.resolve_digest.outputs.digest }}
+      slot: ${{ needs.resolve_digest.outputs.slot }}
+      lane: ${{ needs.resolve_digest.outputs.lane }}
+      app: insight-ui
+      pr_automerge: true
+    secrets:
+      consuming_repo_token: ${{ secrets.IMAGE_DIGEST_PIN_TOKEN }}

@@ -1,24 +1,25 @@
-name: Feature PR title validation
+---
+# =============================================================================
+# Alpine Insight workflow template
+# Source:
+#   - public template: alpininsight/.github/.github/workflow-templates/pr-title-lint.yml
+#   - private backend: alpininsight/.github-private/.github/workflows/reusable-pr-title.yml@main
+# Purpose:
+#   - copies a thin PR-title caller into the target repository
+#   - keeps org title validation logic private and centrally maintained
+# =============================================================================
+
+name: PR Title Lint (Alpine Insight)
+
 on:
+  # zizmor: ignore[dangerous-triggers] -- metadata-only validation; no PR code checkout
   pull_request_target:
-permissions:
-  pull-requests: read
+    types: [opened, reopened, synchronize, edited]
+
 jobs:
   lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: amannn/action-semantic-pull-request@v6
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          types: |
-            feat
-            fix
-            perf
-            refactor
-            docs
-            chore
-            ci
-            test
-            build
-            style
+    permissions:
+      pull-requests: write
+      statuses: write
+      checks: write
+    uses: alpininsight/.github-private/.github/workflows/reusable-pr-title.yml@main
