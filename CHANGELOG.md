@@ -175,6 +175,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **card:** Add formatted content demos
 - Rename 'insight_websocket' component to 'websocket'
 - Update component usage examples with new config dataclass examples
+- Add 'create_component' command which generates boilerplate code for new components
 
 ### Miscellaneous
 
@@ -193,6 +194,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Merge develop into dataclasses branch
 - Fix merge issues
 - Normalize changelog whitespace
+- Add missing __init__ files for new 'create_component' command
 
 ### Refactoring
 
