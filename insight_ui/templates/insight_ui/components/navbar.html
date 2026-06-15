@@ -117,7 +117,7 @@
           {% endif%}
           <div class="flex gap-2 h-10">
             {% if navbar_config.show_usermenu %}
-              {% include "insight_ui/components/user_dropdown.html" with user_dropdown_links=options.user_dropdown_links %}
+              {% include "insight_ui/components/user_dropdown.html" with user_dropdown_links=options.user_dropdown_links user_avatar_url=options.user_avatar_url user_avatar_alt=options.user_avatar_alt %}
             {% endif %}
             {% if navbar_config.show_language_selector %}
               {% include "insight_ui/components/toggle_language.html" %}

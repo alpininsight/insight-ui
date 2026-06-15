@@ -20,8 +20,9 @@ from insight_ui.component_details.demo_context import (
 )
 from insight_ui.component_details.git_path_mapping import SCRIPT_PATHS, TEMPLATE_PATHS
 from insight_ui.configs.base import IconConfig
+from insight_ui.configs.card import ToggleViewConfig
 from insight_ui.configs.input import RadioBlockConfig, RadioItemConfig
-from insight_ui.configs.list import PaginationIppConfig, TableConfig
+from insight_ui.configs.list import PaginationConfig, PaginationIppConfig, TableConfig
 from insight_ui.context import (
     get_base_context,
     get_demo_container_context,
@@ -165,10 +166,12 @@ def pagination(request: HttpRequest) -> HttpResponse:
             request,
             "insight_ui/components/pagination.html",
             {
-                "current_page": page_obj,
-                "surrounding_pages": surrounding_pages,
-                "items_per_page": ipp,
-                "ipp_config": ipp_config,
+                "pagination_config": PaginationConfig(
+                    request_url=reverse("pagination"),
+                    current_page=page_obj,
+                    surrounding_pages=surrounding_pages,
+                    ipp_config=ipp_config,
+                )
             },
         )
 
@@ -489,8 +492,7 @@ def toggle_view(request: HttpRequest) -> HttpResponse:
         logger.warning("log: toggle_view - Received invalid 'view' parameter: %s. Fallback to 'table'.", current_view)
         current_view = "table"
 
-    context = {"tag_id": "products-view"}
-    context["view_radio_config"] = RadioBlockConfig(
+    view_radio_config = RadioBlockConfig(
         "products-view-toggle",
         items=[
             RadioItemConfig("card-view", "card", icon=IconConfig("cards")),
@@ -503,19 +505,33 @@ def toggle_view(request: HttpRequest) -> HttpResponse:
 
     # Generate the base payload
     payload = generate_payload()
+    cards = []
+    table_config = None
     if current_view == "card":
-        context["cards"] = map_payload_to_cards(payload)
+        cards = map_payload_to_cards(payload)
         logger.debug("log: toggle_view - Card view selected")
     elif current_view == "carousel":
-        context["cards"] = map_payload_to_cards(payload)
+        cards = map_payload_to_cards(payload)
         logger.debug("log: toggle_view - Carousel view selected")
     else:
         # default: table view
         headers, rows = map_payload_to_table(payload)
-        context["table_config"] = TableConfig(headers, rows)
+        table_config = TableConfig(headers, rows)
         logger.debug("log: toggle_view - Table view selected")
 
-    return render(request, "insight_ui/components/toggle_view.html", context)
+    return render(
+        request,
+        "insight_ui/components/toggle_view.html",
+        {
+            "toggle_view_config": ToggleViewConfig(
+                tag_id="products-view",
+                cards=cards,
+                table_config=table_config,
+                view_radio_config=view_radio_config,
+                current_view=current_view,
+            )
+        },
+    )
 
 
 @require_GET

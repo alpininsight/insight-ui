@@ -5,9 +5,10 @@ from __future__ import annotations
 import math
 import re
 from collections.abc import Iterable, Mapping, Sequence
-from dataclasses import MISSING, fields, replace
+from dataclasses import MISSING, fields, is_dataclass, replace
 from difflib import HtmlDiff, ndiff, unified_diff
-from typing import Any, Final, Literal, TypeVar
+from types import UnionType
+from typing import Any, Final, Literal, TypeVar, get_args, get_origin, get_type_hints
 
 from django import template
 from django.core.paginator import Page
@@ -48,6 +49,7 @@ from insight_ui.configs import (
     GenericFilterConfig,
     GeoMapConfig,
     GeoMapDatasetConfig,
+    HeadingDecorationConfig,
     HeroConfig,
     HtmxConfig,
     IconConfig,
@@ -128,6 +130,70 @@ def ensure_list(value: str | Iterable[str] | None) -> list[str]:
     return list(value)
 
 
+def _is_dataclass_type(annotation: object) -> bool:
+    """Return whether a type annotation directly describes a dataclass config."""
+    return isinstance(annotation, type) and is_dataclass(annotation)
+
+
+def _coerce_mapping_to_config[T](cls: type[T], value: Mapping[str, Any]) -> T:
+    """Create a dataclass config from a mapping, including nested config values."""
+    type_hints = get_type_hints(cls)
+    coerced_values = {key: _coerce_config_value(item, type_hints.get(key, Any)) for key, item in value.items()}
+    return cls(**coerced_values)
+
+
+def _coerce_sequence_to_config(value: Sequence[Any], annotation: object) -> list[Any]:
+    """Convert list-like config values according to their annotated item type."""
+    origin = get_origin(annotation)
+    if origin in (list, Sequence):
+        args = get_args(annotation)
+        item_annotation = args[0] if args else Any
+        return [_coerce_config_value(item, item_annotation) for item in value]
+
+    if origin is UnionType:
+        for option in get_args(annotation):
+            option_origin = get_origin(option)
+            if option_origin in (list, Sequence):
+                return _coerce_sequence_to_config(value, option)
+
+    return list(value)
+
+
+def _expects_sequence_config(annotation: object) -> bool:
+    """Return whether an annotation expects a list-like config value."""
+    origin = get_origin(annotation)
+    if origin in (list, Sequence):
+        return True
+
+    if origin is UnionType:
+        return any(_expects_sequence_config(option) for option in get_args(annotation))
+
+    return False
+
+
+def _coerce_config_value(value: Any, annotation: object) -> Any:  # noqa: ANN401
+    """Coerce mapping and sequence values into annotated dataclass config types."""
+    origin = get_origin(annotation)
+
+    if isinstance(value, Mapping):
+        if _is_dataclass_type(annotation):
+            return _coerce_mapping_to_config(annotation, value)
+
+        if origin is UnionType:
+            for option in get_args(annotation):
+                if _is_dataclass_type(option):
+                    return _coerce_mapping_to_config(option, value)
+
+    if (
+        isinstance(value, Sequence)
+        and not isinstance(value, (str, bytes, bytearray))
+        and _expects_sequence_config(annotation)
+    ):
+        return _coerce_sequence_to_config(value, annotation)
+
+    return value
+
+
 def build_config[T](cls: type[T], config: T | None = None, **kwargs: Any) -> T:  # noqa: ANN401
     """
     Create or update a dataclass instance.
@@ -142,7 +208,10 @@ def build_config[T](cls: type[T], config: T | None = None, **kwargs: Any) -> T: 
     """
     overrides = {key: value for key, value in kwargs.items() if value is not UNSET}
 
-    if config is not None:
+    if isinstance(config, Mapping):
+        return _coerce_mapping_to_config(cls, dict(config) | overrides)
+
+    if config is not None and is_dataclass(config):
         return replace(config, **overrides)
 
     required_fields = [
@@ -226,6 +295,28 @@ def page_header(
     config.description = ensure_list(config.description)
 
     return {"page_header_config": config}
+
+
+@register.inclusion_tag("insight_ui/components/heading_decoration.html")
+def heading_decoration(
+    config: HeadingDecorationConfig | None = None,
+    *,
+    style: str | _Unset = UNSET,
+    color: str | _Unset = UNSET,
+    image_url: str | _Unset = UNSET,
+    height: int | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render the decorative transition below the page header."""
+    config = build_config(HeadingDecorationConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {
+        "style": config.style,
+        "color": config.color,
+        "image_url": config.image_url,
+        "height": config.height,
+        "wave_back_y": config.height,
+        "wave_middle_y": max(int(config.height * 0.75), 1),
+        "wave_front_y": max(int(config.height * 0.55), 1),
+    }
 
 
 @register.inclusion_tag("insight_ui/components/article.html")
@@ -892,7 +983,7 @@ def live_content(
 ) -> dict[str, Any]:
     """Render a container for live updates via HTMX."""
     config = build_config(LiveContentConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
-    htmx_config = {"request_url": request_url, "trigger": f"load, every {interval}s", "swap": "innerHTML"}
+    htmx_config = {"request_url": config.request_url, "trigger": f"load, every {config.interval}s", "swap": "innerHTML"}
 
     return {"live_content_config": config, "htmx_config": htmx_config}
 
