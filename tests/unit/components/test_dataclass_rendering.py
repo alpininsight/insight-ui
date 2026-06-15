@@ -173,13 +173,7 @@ class ComponentDataclassRenderingTests(TestCase):
             {% load insight_tags %}
             {% pagination config=pagination_config %}
             """,
-            {
-                "pagination_config": {
-                    "request_url": "/items/",
-                    "current_page": page,
-                    "surrounding_pages": [1, 2, 3],
-                }
-            },
+            {"pagination_config": {"request_url": "/items/", "current_page": page, "surrounding_pages": [1, 2, 3]}},
         )
 
         soup = BeautifulSoup(rendered, "html.parser")
