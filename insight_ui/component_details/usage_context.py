@@ -3,6 +3,12 @@ from django.utils.translation import gettext as _
 from insight_ui.component_details.component_context import register_component
 from insight_ui.component_details.components import Component
 
+# =============================================================
+#
+#   Layout Tags
+#
+# =============================================================
+
 
 @register_component(Component.PAGE_HEADER)
 def get_page_header_usage_context() -> dict[str, str]:
@@ -14,33 +20,6 @@ def get_page_header_usage_context() -> dict[str, str]:
         {% block heading %}
             {% page_header title="My indispensable app" description="This is a django application designed with the help of insight UI." %}
         {% endblock heading %}
-        """
-    }
-
-
-@register_component(Component.HEADING_DECORATION)
-def get_heading_decoration_usage_context() -> dict[str, str]:
-    """Serve usage documentation for the heading decoration component."""
-    return {
-        "usage": """
-        {% load insight_tags %}
-
-        {# Default waves, used by insight_ui/base.html #}
-        {% heading_decoration %}
-
-        {# Individual parameters #}
-        {% heading_decoration style="waves" height=120 %}
-        {% heading_decoration style="gradient" height=64 %}
-        {% heading_decoration style="image" image_url="/static/hero.jpg" height=160 %}
-        {% heading_decoration style="none" %}
-
-        {# Config dictionary from view context #}
-        {% heading_decoration config=heading_decoration_config %}
-
-        {# Override or remove the base-template default in extending templates #}
-        {% block heading_decoration %}
-            {% heading_decoration style="gradient" height=72 %}
-        {% endblock heading_decoration %}
         """
     }
 
@@ -77,34 +56,11 @@ def get_hero_usage_context() -> dict[str, str]:
     }
 
 
-@register_component(Component.CORNER_RIBBON)
-def get_corner_ribbon_usage_context() -> dict[str, str]:
-    """Serve usage documentation for the corner ribbon component."""
-    return {
-        "usage": """
-        {% load insight_tags %}
-
-        {# Basic usage with default top-right position #}
-        {% corner_ribbon text="New Feature" %}
-
-        {# Different positions #}
-        {% corner_ribbon text="Beta" position="top-left" %}
-        {% corner_ribbon text="Sale" position="bottom-right" %}
-        {% corner_ribbon text="Limited" position="bottom-left" %}
-
-        {# Different colors #}
-        {% corner_ribbon text="Success" color="success" %}
-        {% corner_ribbon text="Warning" color="warning" %}
-        {% corner_ribbon text="Error" color="danger" %}
-        {% corner_ribbon text="Info" color="info" %}
-
-        {# With custom ID for JavaScript #}
-        {% corner_ribbon text="Click Me" tag_id="promo-ribbon" position="top-right" %}
-
-        {# Using config dictionary from view context #}
-        {% corner_ribbon config=ribbon_config %}
-        """
-    }
+# =============================================================
+#
+#   Navigation Tags
+#
+# =============================================================
 
 
 @register_component(Component.NAVBAR)
@@ -232,6 +188,13 @@ def get_tabs_usage_context() -> dict[str, str]:
         {% tabs config=tabs_config %}
         """
     }
+
+
+# =============================================================
+#
+#   Input Tags
+#
+# =============================================================
 
 
 @register_component(Component.BUTTON)
@@ -454,6 +417,13 @@ def get_chat_usage_context() -> dict[str, str]:
     }
 
 
+# =============================================================
+#
+#   Popup Tags
+#
+# =============================================================
+
+
 @register_component(Component.ALERT)
 def get_alert_usage_context() -> dict[str, str]:
     """Serve usage documentation for the alert component."""
@@ -518,6 +488,13 @@ def get_tooltip_usage_context() -> dict[str, str]:
         </button>
         """,
     }
+
+
+# =============================================================
+#
+#   Util Tags
+#
+# =============================================================
 
 
 @register_component(Component.INFOBOX)
@@ -626,6 +603,36 @@ def get_brand_lockup_usage_context() -> dict[str, str]:
     }
 
 
+@register_component(Component.CORNER_RIBBON)
+def get_corner_ribbon_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the corner ribbon component."""
+    return {
+        "usage": """
+        {% load insight_tags %}
+
+        {# Basic usage with default top-right position #}
+        {% corner_ribbon text="New Feature" %}
+
+        {# Different positions #}
+        {% corner_ribbon text="Beta" position="top-left" %}
+        {% corner_ribbon text="Sale" position="bottom-right" %}
+        {% corner_ribbon text="Limited" position="bottom-left" %}
+
+        {# Different colors #}
+        {% corner_ribbon text="Success" color="success" %}
+        {% corner_ribbon text="Warning" color="warning" %}
+        {% corner_ribbon text="Error" color="danger" %}
+        {% corner_ribbon text="Info" color="info" %}
+
+        {# With custom ID for JavaScript #}
+        {% corner_ribbon text="Click Me" tag_id="promo-ribbon" position="top-right" %}
+
+        {# Using config dictionary from view context #}
+        {% corner_ribbon config=ribbon_config %}
+        """
+    }
+
+
 @register_component(Component.PROGRESS_BAR)
 def get_progress_bar_usage_context() -> dict[str, str]:
     """Serve usage documentation for the progress bar component."""
@@ -696,6 +703,13 @@ def get_web_socket_usage_context() -> dict[str, str]:
     }
 
 
+# =============================================================
+#
+#   List Tags
+#
+# =============================================================
+
+
 @register_component(Component.INFINITE_SCROLL)
 def get_infinite_scroll_usage_context() -> dict[str, str]:
     """Serve usage documentation for the infinite scroll component."""
@@ -746,16 +760,11 @@ def get_table_usage_context() -> dict[str, str]:
     }
 
 
-@register_component(Component.GENERIC_FILTER)
-def get_generic_filter_usage_context() -> dict[str, str]:
-    """Serve usage documentation for the generic filter component."""
-    return {
-        "usage": """
-        {% load insight_tags %}
-
-        {% generic_filter config=generic_filter_config %}
-        """
-    }
+# =============================================================
+#
+#   Filter Tags
+#
+# =============================================================
 
 
 @register_component(Component.SEARCH_BAR)
@@ -770,6 +779,18 @@ def get_search_bar_usage_context() -> dict[str, str]:
     }
 
 
+@register_component(Component.GENERIC_FILTER)
+def get_generic_filter_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the generic filter component."""
+    return {
+        "usage": """
+        {% load insight_tags %}
+
+        {% generic_filter config=generic_filter_config %}
+        """
+    }
+
+
 @register_component(Component.QUERY_BUILDER)
 def get_query_builder_usage_context() -> dict[str, str]:
     """Serve usage documentation for the query builder component."""
@@ -780,6 +801,13 @@ def get_query_builder_usage_context() -> dict[str, str]:
         {% query_builder config=query_builder_config %}
         """
     }
+
+
+# =============================================================
+#
+#   Card Tags
+#
+# =============================================================
 
 
 @register_component(Component.CARD)
@@ -888,6 +916,13 @@ def get_toggle_view_usage_context() -> dict[str, str]:
         {% toggle_view config=toggle_view_config %}
         """
     }
+
+
+# =============================================================
+#
+#   Form Tags
+#
+# =============================================================
 
 
 @register_component(Component.FORM)

@@ -78,7 +78,6 @@ class Component(Enum):
     """Enum of all available components with an additional member called 'group' to categorize components."""
 
     PAGE_HEADER = ("page_header", ComponentCategory.LAYOUT, PageHeaderConfig, True, False, False)
-    HEADING_DECORATION = ("heading_decoration", ComponentCategory.LAYOUT, None, False, False, True)
     ARTICLE = ("article", ComponentCategory.LAYOUT, ArticleConfig)
     HERO = ("hero", ComponentCategory.LAYOUT, HeroConfig, False, False, False)
     NAVBAR = ("navbar", ComponentCategory.NAVIGATION, NavbarConfig, True, False, False)

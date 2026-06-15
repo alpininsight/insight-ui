@@ -4,6 +4,12 @@ from django.utils.translation import gettext as _
 from insight_ui.component_details.component_context import register_component
 from insight_ui.component_details.components import Component
 
+# =============================================================
+#
+#   Layout Tags
+#
+# =============================================================
+
 
 @register_component(Component.PAGE_HEADER)
 def get_page_header_a11y_context() -> dict[str, list[str]]:
@@ -12,17 +18,6 @@ def get_page_header_a11y_context() -> dict[str, list[str]]:
         "a11y": [
             _("The title is rendered as a semantic `<h1>` element."),
             _("The description uses a `<p>` element with sufficient color contrast (grey on blue)."),
-        ]
-    }
-
-
-@register_component(Component.HEADING_DECORATION)
-def get_heading_decoration_a11y_context() -> dict[str, list[str]]:
-    """Serve a11y documentation for the heading decoration component."""
-    return {
-        "a11y": [
-            _("All rendered variants are decorative and use `aria-hidden='true'`."),
-            _("The 'none' style renders no markup and therefore adds no extra accessibility tree content."),
         ]
     }
 
@@ -51,6 +46,13 @@ def get_hero_a11y_context() -> dict[str, list[str]]:
     }
 
 
+# =============================================================
+#
+#   Navigation Tags
+#
+# =============================================================
+
+
 @register_component(Component.NAVBAR)
 def get_navbar_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the navbar component."""
@@ -73,7 +75,7 @@ def get_footer_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the footer component."""
     return {
         "a11y": [
-            _("The headings of the three columns use `<h4>` tags so that a screennreader can switch between them."),
+            _("The headings of the three columns use `<h4>` tags so that a Screenreader can switch between them."),
             _("The listing of the links uses a semantically correct `<ul>` tag with corresponding `<li>` tags."),
         ]
     }
@@ -96,7 +98,7 @@ def get_step_bar_a11y_context() -> dict[str, list[str]]:
     return {
         "a11y": [
             _(
-                "If the graphical element at the start of every entry is not a number, it will be ignored by screenreaders through `aria-hidden`, since it is purely decorative."
+                "If the graphical element at the start of every entry is not a number, it will be ignored by Screenreaders through `aria-hidden`, since it is purely decorative."
             )
         ]
     }
@@ -147,6 +149,13 @@ def get_tabs_a11y_context() -> dict[str, list[str]]:
             _("The component supports keyboard navigation using the arrow keys (left/right) and Home/End keys."),
         ]
     }
+
+
+# =============================================================
+#
+#   Input Tags
+#
+# =============================================================
 
 
 @register_component(Component.BUTTON)
@@ -272,6 +281,13 @@ def get_chat_a11y_context() -> dict[str, list[str]]:
     return {"a11y": [_("The `<label>` and its associated `<input>` are linked using `for` / `id`.")]}
 
 
+# =============================================================
+#
+#   Popup Tags
+#
+# =============================================================
+
+
 @register_component(Component.ALERT)
 def get_alert_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the alert component."""
@@ -311,15 +327,16 @@ def get_tooltip_a11y_context() -> dict[str, list[str]]:
     return {"a11y": [_("**TODO: Add keyboard support!**")]}
 
 
+# =============================================================
+#
+#   Util Tags
+#
+# =============================================================
+
+
 @register_component(Component.INFOBOX)
 def get_infobox_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the infobox component."""
-    return {"a11y": []}
-
-
-@register_component(Component.CORNER_RIBBON)
-def get_corner_ribbon_a11y_context() -> dict[str, list[str]]:
-    """Serve a11y documentation for the corner ribbon component."""
     return {"a11y": []}
 
 
@@ -372,6 +389,12 @@ def get_brand_lockup_a11y_context() -> dict[str, list[str]]:
     }
 
 
+@register_component(Component.CORNER_RIBBON)
+def get_corner_ribbon_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y documentation for the corner ribbon component."""
+    return {"a11y": []}
+
+
 @register_component(Component.PROGRESS_BAR)
 def get_progress_bar_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the progress bar component."""
@@ -402,6 +425,13 @@ def get_web_socket_a11y_context() -> dict[str, list[str]]:
     return {"a11y": ["**TODO**"]}
 
 
+# =============================================================
+#
+#   List Tags
+#
+# =============================================================
+
+
 @register_component(Component.INFINITE_SCROLL)
 def get_infinite_scroll_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the infinite scroll component."""
@@ -427,10 +457,11 @@ def get_table_a11y_context() -> dict[str, list[str]]:
     return {"a11y": ["**TODO**"]}
 
 
-@register_component(Component.GENERIC_FILTER)
-def get_generic_filter_a11y_context() -> dict[str, list[str]]:
-    """Serve a11y documentation for the generic filter component."""
-    return {"a11y": ["**TODO**"]}
+# =============================================================
+#
+#   Filter Tags
+#
+# =============================================================
 
 
 @register_component(Component.SEARCH_BAR)
@@ -439,10 +470,23 @@ def get_search_bar_a11y_context() -> dict[str, list[str]]:
     return {"a11y": [_("The text input field has an extra title ('Search') for screen readers.")]}
 
 
+@register_component(Component.GENERIC_FILTER)
+def get_generic_filter_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y documentation for the generic filter component."""
+    return {"a11y": ["**TODO**"]}
+
+
 @register_component(Component.QUERY_BUILDER)
 def get_query_builder_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the query builder component."""
     return {"a11y": ["**TODO**"]}
+
+
+# =============================================================
+#
+#   Card Tags
+#
+# =============================================================
 
 
 @register_component(Component.CARD)
@@ -492,6 +536,13 @@ def get_toggle_view_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the toggle view component."""
     radio_group_url = reverse("component_detail_page_view", args=[Component.RADIO_GROUP.value])
     return {"a11y": [_("See [Radio Group](%(url)s).") % {"url": radio_group_url}]}
+
+
+# =============================================================
+#
+#   Form Tags
+#
+# =============================================================
 
 
 @register_component(Component.FORM)

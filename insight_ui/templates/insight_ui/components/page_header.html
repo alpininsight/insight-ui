@@ -1,25 +1,28 @@
-{% load i18n %}
-
-<div class="-mb-16">
-    <svg viewBox="0 0 500 15" class="absolute">
-        <polyline class="fill-white/25 drop-shadow-xs drop-shadow-gray-500 dark:drop-shadow-gray-800" points="-10,0 500,0 -10,15"/>
-    </svg>
-    <div class="bg-insight-primary text-white leading-loose text-lg px-4 md:px-16 pt-20 pb-4">
+<div class="relative overflow-hidden bg-gray-100/75 dark:bg-black/50 border-b-8 border-insight-primary">
+    <div class="px-4 md:px-16 pt-16 pb-8">
         {% if page_header_config.title %}
-            <h1 class="text-white text-4xl md:text-5xl font-bold">{{ page_header_config.title }}</h1>
+            <h1 class="text-primary text-4xl md:text-5xl font-bold">
+                {{ page_header_config.title }}
+            </h1>
         {% endif %}
 
         {% for paragraph in page_header_config.description %}
-            <p class="text-gray-200 leading-loose text-lg mt-4">{{ paragraph }}</p>
+            <p class="text-secondary leading-loose text-lg mt-4">
+                {{ paragraph }}
+            </p>
         {% endfor %}
 
         {% if page_header_config.cta %}
-            <a href="{{ page_header_config.cta.url }}" class="btn btn-white btn-l font-bold w-fit">{{ page_header_config.cta.label }}</a>
+            <a href="{{ page_header_config.cta.url }}"
+               class="btn btn-white btn-l font-bold w-fit">
+                {{ page_header_config.cta.label }}
+            </a>
         {% endif %}
     </div>
-    <svg viewBox="0 0 500 50" class="-z-10">
-        <polyline class="fill-insight-primary/25 drop-shadow-xs drop-shadow-gray-500 dark:drop-shadow-gray-800" points="-10,0 450,0 -10,30"/>
-        <polyline class="fill-insight-primary/25 drop-shadow-xs drop-shadow-gray-500 dark:drop-shadow-gray-800" points="-10,0 225,0 -10,45"/>
-        <polyline class="fill-insight-primary drop-shadow-xs drop-shadow-gray-500 dark:drop-shadow-gray-800" points="-10,0 510,0 -10,15"/>
-    </svg>
+    <div aria-hidden="true" class="absolute -z-10 top-0 left-1/2 -translate-x-1/2 blur-3xl">
+        <div
+            style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"
+            class="aspect-4/1 w-400 bg-linear-to-tr from-purple-800 to-purple-500 opacity-70"
+        ></div>
+    </div>
 </div>

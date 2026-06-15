@@ -173,20 +173,6 @@ def get_login_screen_context() -> dict:
 # =============================================================
 
 
-@register_demo_context(Component.HEADING_DECORATION)
-def get_heading_decoration_context() -> dict:
-    """Serve demo context for the heading decoration component."""
-    image_url = (
-        "data:image/svg+xml,"
-        "%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20500%20120%22%3E"
-        "%3Crect%20width%3D%22500%22%20height%3D%22120%22%20fill%3D%22%233b82f6%22/%3E"
-        "%3Ccircle%20cx%3D%22120%22%20cy%3D%2260%22%20r%3D%2248%22%20fill%3D%22%23ffffff%22%20fill-opacity%3D%22.35%22/%3E"
-        "%3Ccircle%20cx%3D%22260%22%20cy%3D%2270%22%20r%3D%2264%22%20fill%3D%22%230f172a%22%20fill-opacity%3D%22.18%22/%3E"
-        "%3C/svg%3E"
-    )
-    return {"heading_decoration_image_url": image_url}
-
-
 @register_demo_context(Component.HERO)
 def get_hero_context() -> dict:
     """Serve demo context for the hero component."""
