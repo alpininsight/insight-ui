@@ -5,7 +5,7 @@
     <div class="flex gap-4 items-end w-full">
         <div class="flex flex-1 gap-1 justify-between w-full h-fit">
             <!-- Previous and first -->
-            {% if current_page.has_previous %}
+            {% if pagination_config.current_page.has_previous %}
                 <a
                     href="{{ pagination_config.request_url }}?page={{ pagination_config.current_page.previous_page_number }}"
                     hx-get="{{ pagination_config.request_url }}?page={{ pagination_config.current_page.previous_page_number }}"

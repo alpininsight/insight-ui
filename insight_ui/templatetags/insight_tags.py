@@ -5,7 +5,7 @@ from __future__ import annotations
 import math
 import re
 from collections.abc import Iterable, Mapping, Sequence
-from dataclasses import MISSING, fields, replace
+from dataclasses import MISSING, fields, is_dataclass, replace
 from difflib import HtmlDiff, ndiff, unified_diff
 from typing import Any, Final, Literal, TypeVar
 
@@ -48,6 +48,7 @@ from insight_ui.configs import (
     GenericFilterConfig,
     GeoMapConfig,
     GeoMapDatasetConfig,
+    HeadingDecorationConfig,
     HeroConfig,
     HtmxConfig,
     IconConfig,
@@ -142,7 +143,10 @@ def build_config[T](cls: type[T], config: T | None = None, **kwargs: Any) -> T: 
     """
     overrides = {key: value for key, value in kwargs.items() if value is not UNSET}
 
-    if config is not None:
+    if isinstance(config, Mapping):
+        return cls(**(dict(config) | overrides))
+
+    if config is not None and is_dataclass(config):
         return replace(config, **overrides)
 
     required_fields = [
@@ -226,6 +230,28 @@ def page_header(
     config.description = ensure_list(config.description)
 
     return {"page_header_config": config}
+
+
+@register.inclusion_tag("insight_ui/components/heading_decoration.html")
+def heading_decoration(
+    config: HeadingDecorationConfig | None = None,
+    *,
+    style: str | _Unset = UNSET,
+    color: str | _Unset = UNSET,
+    image_url: str | _Unset = UNSET,
+    height: int | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render the decorative transition below the page header."""
+    config = build_config(HeadingDecorationConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {
+        "style": config.style,
+        "color": config.color,
+        "image_url": config.image_url,
+        "height": config.height,
+        "wave_back_y": config.height,
+        "wave_middle_y": max(int(config.height * 0.75), 1),
+        "wave_front_y": max(int(config.height * 0.55), 1),
+    }
 
 
 @register.inclusion_tag("insight_ui/components/article.html")
@@ -892,7 +918,7 @@ def live_content(
 ) -> dict[str, Any]:
     """Render a container for live updates via HTMX."""
     config = build_config(LiveContentConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
-    htmx_config = {"request_url": request_url, "trigger": f"load, every {interval}s", "swap": "innerHTML"}
+    htmx_config = {"request_url": config.request_url, "trigger": f"load, every {config.interval}s", "swap": "innerHTML"}
 
     return {"live_content_config": config, "htmx_config": htmx_config}
 

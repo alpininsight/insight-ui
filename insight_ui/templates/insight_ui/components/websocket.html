@@ -5,7 +5,7 @@
   data-insight-websocket
   data-insight-stream-mode="htmx-ws-html"
   hx-ext="ws"
-  ws-connect="{{ websocket_config..request_url }}"
+  ws-connect="{{ websocket_config.request_url }}"
 >
   <div
     {% if websocket_config.tag_id %}id="{{ websocket_config.tag_id }}-output"{% endif %}
