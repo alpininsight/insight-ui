@@ -210,9 +210,10 @@ class TestNavbar(TemplateTagsTestCase):
         assert theme_selector is not None
         assert theme_selector.select_one('option[value="default"]').get_text(strip=True) == "Original"
         assert (
-            theme_selector.select_one('option[value="cerulean"]')["data-theme-href"]
-            == "/static/insight_ui/css/themes/cerulean.css"
+            theme_selector.select_one('option[value="drawn"]')["data-theme-href"]
+            == "/static/insight_ui/css/themes/drawn.css"
         )
+        assert theme_selector.select_one('option[value="cerulean"]') is None
         assert soup.select_one("#search") is not None
         assert (
             rendered.index('data-insight-dropdown="components-menu"')

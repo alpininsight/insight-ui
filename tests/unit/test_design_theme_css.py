@@ -9,7 +9,8 @@ THEME_ROOT = Path(__file__).resolve().parents[2] / "insight_ui/static/insight_ui
 INPUT_CSS = Path(__file__).resolve().parents[2] / "insight_ui/utils/input.css"
 TAILWIND_CSS = Path(__file__).resolve().parents[2] / "insight_ui/static/insight_ui/css/tailwind.css"
 TAILWIND_MIN_CSS = Path(__file__).resolve().parents[2] / "insight_ui/static/insight_ui/css/tailwind.min.css"
-BOOTSWATCH_THEMES = set(CONFIG_DEFAULTS["design_themes"]["stylesheets"]) - {"default", "alpin", "foundry"}
+PROJECT_THEMES = {"default", "alpin", "foundry", "drawn"}
+BOOTSWATCH_THEMES = set(CONFIG_DEFAULTS["design_themes"]["stylesheets"]) - PROJECT_THEMES
 SEMANTIC_ROLES = ("primary", "secondary", "success", "info", "warning", "danger")
 DARK_BOOTSWATCH_THEMES = ("cyborg", "darkly", "quartz", "slate", "solar", "superhero", "vapor")
 WHITE_SECONDARY_THEMES = ("lux", "materia", "simplex", "zephyr")
@@ -35,9 +36,27 @@ class DesignThemeCssTest(SimpleTestCase):
             "--color-insight-surface-sunken:",
             "--color-insight-disabled:",
             "--color-insight-focus-ring:",
+            "--insight-border-width-control:",
+            "--insight-border-width-surface:",
+            "--insight-border-style-control:",
+            "--insight-surface-texture:",
+            "--insight-background-pattern:",
+            "--insight-gradient-surface:",
+            "--insight-gradient-button:",
             "--insight-radius-sm:",
             "--insight-radius-lg:",
             "--insight-radius-pill:",
+            "--insight-shadow-inset:",
+            "--insight-shadow-raised:",
+            "--insight-shadow-offset:",
+            "--insight-backdrop-blur:",
+            "--insight-motion-duration-normal:",
+            "--insight-motion-easing-standard:",
+            "--insight-density-control-x:",
+            "--insight-density-surface-y:",
+            "--insight-font-display:",
+            "--insight-icon-family:",
+            "--insight-sketch-line-offset:",
             "--insight-tracking-display:",
             "--insight-tracking-caption:",
         ):
@@ -55,8 +74,27 @@ class DesignThemeCssTest(SimpleTestCase):
             ".insight-radius-surface",
             ".insight-radius-pill",
             ".insight-focus-ring",
+            ".insight-border-control-width",
+            ".insight-border-surface-width",
+            ".insight-surface-textured",
+            ".insight-gradient-surface",
+            ".insight-shadow-inset",
+            ".insight-glass",
+            ".insight-motion-standard",
+            ".insight-density-control",
+            ".insight-font-display",
+            ".insight-sketch-border",
         ):
             assert semantic_class in input_css
+
+    def test_design_theme_switcher_has_curated_display_order(self) -> None:
+        """The default selector should expose style families, not every color variant."""
+        design_themes = CONFIG_DEFAULTS["design_themes"]
+        display_order = design_themes["display_order"]
+
+        assert display_order == ("default", "alpin", "foundry", "brite", "morph", "sketchy", "drawn", "darkly")
+        assert set(display_order) <= set(design_themes["stylesheets"])
+        assert set(display_order) <= set(design_themes["labels"])
 
     def test_generated_tailwind_css_includes_semantic_surface_and_radius_classes(self) -> None:
         """Packaged CSS must include semantic classes used by component templates."""
@@ -70,8 +108,31 @@ class DesignThemeCssTest(SimpleTestCase):
                 ".insight-radius-control",
                 ".insight-radius-surface",
                 ".insight-radius-pill",
+                ".insight-gradient-surface",
+                ".insight-shadow-inset",
+                ".insight-glass",
+                ".insight-density-control",
+                ".insight-font-display",
+                ".insight-sketch-border",
             ):
                 assert selector in css
+
+    def test_drawn_theme_defines_semantic_style_tokens(self) -> None:
+        """The drawn style should be CSS-only and driven by the public token contract."""
+        drawn_css = (THEME_ROOT / "drawn.css").read_text()
+
+        for token in (
+            "--insight-design-theme-name: drawn;",
+            "--insight-border-width-control:",
+            "--insight-surface-texture:",
+            "--insight-background-pattern:",
+            "--insight-gradient-surface:",
+            "--insight-shadow-button:",
+            "--insight-radius-md:",
+            "--insight-sketch-line-offset:",
+            "--insight-sketch-shadow:",
+        ):
+            assert token in drawn_css
 
     def test_input_css_exposes_dark_states_for_subtle_buttons(self) -> None:
         """Subtle buttons need dark surface tokens for dark navbars and menus."""

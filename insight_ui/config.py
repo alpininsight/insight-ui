@@ -33,6 +33,7 @@ CONFIG_DEFAULTS: dict[str, Any] = {
             "cosmo": "Cosmo",
             "cyborg": "Cyborg",
             "darkly": "Darkly",
+            "drawn": "Drawn",
             "flatly": "Flatly",
             "journal": "Journal",
             "litera": "Litera",
@@ -64,6 +65,7 @@ CONFIG_DEFAULTS: dict[str, Any] = {
             "cosmo": "insight_ui/css/themes/cosmo.css",
             "cyborg": "insight_ui/css/themes/cyborg.css",
             "darkly": "insight_ui/css/themes/darkly.css",
+            "drawn": "insight_ui/css/themes/drawn.css",
             "flatly": "insight_ui/css/themes/flatly.css",
             "journal": "insight_ui/css/themes/journal.css",
             "litera": "insight_ui/css/themes/litera.css",
@@ -86,6 +88,7 @@ CONFIG_DEFAULTS: dict[str, Any] = {
             "yeti": "insight_ui/css/themes/yeti.css",
             "zephyr": "insight_ui/css/themes/zephyr.css",
         },
+        "display_order": ("default", "alpin", "foundry", "brite", "morph", "sketchy", "drawn", "darkly"),
     },
     "assets": {
         "use_minified": False,

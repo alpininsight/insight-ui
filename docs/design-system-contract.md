@@ -62,7 +62,7 @@ without editing every button, form, heading, or documentation example.
 
 | Concern | Source of truth | Rule |
 |---|---|---|
-| Theme tokens | `insight_ui/utils/input.css` in `@theme` | Add stable brand, semantic, text, surface, and state tokens here. |
+| Theme tokens | `insight_ui/utils/input.css` in `@theme` | Add stable brand, semantic, text, surface, state, density, motion, and style-family tokens here. |
 | Base element styles | `insight_ui/utils/input.css` in `@layer base` | Use for generic HTML behavior such as headings, horizontal rules, and cursor behavior. |
 | Reusable utility/component classes | `insight_ui/utils/input.css` in `@layer components` | Use for reusable classes such as `.btn`, `.input`, `.component-container`, or `.inline-tag`. |
 | Component structure | `insight_ui/templates/insight_ui/components/` | Put semantic HTML, ARIA attributes, layout composition, and component anatomy here. |
@@ -118,6 +118,14 @@ and host applications should inherit before introducing domain-specific variants
 | Border hierarchy | `--color-insight-border-surface`, `--color-insight-border-control`, `insight-border-*` | Themeable boundaries for cards, docs surfaces, forms, inputs, and controls. |
 | Shadow hierarchy | `--insight-shadow-*`, `insight-shadow-*` | Themeable elevation and neobrutalist offsets mapped from the project design language, with Tailwind values as defaults. |
 | Radius hierarchy | `--insight-radius-*`, `insight-radius-*` | Themeable corner treatment for controls, cards, pills, and overlays. |
+| Border weight and style | `--insight-border-width-*`, `--insight-border-style-*`, `insight-border-*-width` | Themeable line weight and line style for controls, surfaces, emphasis, and sketch-like styles. |
+| Texture and gradients | `--insight-surface-texture`, `--insight-background-pattern`, `--insight-gradient-*`, `insight-surface-textured`, `insight-gradient-*` | Optional CSS-only style-family effects such as paper texture, patterns, or expressive gradients. |
+| Glass treatment | `--insight-backdrop-blur`, `--insight-surface-opacity`, `--insight-overlay-opacity`, `insight-glass` | Themeable translucent surfaces and overlay intensity without adding component-specific CSS. |
+| Motion hierarchy | `--insight-motion-duration-*`, `--insight-motion-easing-*`, `insight-motion-*` | Shared transition speed and easing for components that should move consistently. |
+| Density hierarchy | `--insight-density-*`, `insight-density-*` | Shared spacing density for controls, surfaces, and sections. |
+| Font roles | `--insight-font-body`, `--insight-font-display`, `--insight-font-code`, `insight-font-*` | Semantic font roles that can be remapped by a theme without replacing component templates. |
+| Icon family | `--insight-icon-family` | Public placeholder for future icon-family switching; actual icon registry work remains separate. |
+| Sketch styling | `--insight-sketch-*`, `insight-sketch-border` | CSS-only hand-drawn line treatment for drawn/sketch-style themes. |
 | Tracking hierarchy | `--insight-tracking-display`, `--insight-tracking-caption` | Optional letter spacing for display headings and caption-like text. |
 | Disabled and focus states | `--color-insight-disabled-*`, `--color-insight-focus-ring` | Shared disabled, muted, and keyboard-focus behavior. |
 | Surfaces | `.component-container`, `.example-container`, cards, panels, modal body, semantic surface classes | Visual containers that separate content from the page background. |
@@ -145,6 +153,10 @@ should live:
 - Reusable borders and shadows should use `--color-insight-border-*` and
   `--insight-shadow-*` tokens instead of direct `border-gray-*` or `shadow-*`
   utilities when the visual rule is part of the component contract.
+- Reusable density, motion, texture, gradient, glass, and sketch treatments
+  should use the corresponding `--insight-*` tokens and helper classes instead
+  of hard-coded component CSS when the style should change with the selected
+  design family.
 - Semantic HTML, ARIA, component anatomy, and data hooks belong in templates.
 - JavaScript behavior belongs in `insight_ui/static/insight_ui/js/`.
 - Django-facing API normalization belongs in template tags.

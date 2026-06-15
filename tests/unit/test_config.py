@@ -20,3 +20,13 @@ class ConfigMergeTest(SimpleTestCase):
         assert design_themes["stylesheets"]["cerulean"] == "insight_ui/css/themes/cerulean.css"
         assert design_themes["labels"]["default"] == "Original"
         assert design_themes["labels"]["cerulean"] == "Cerulean"
+        assert design_themes["display_order"] == (
+            "default",
+            "alpin",
+            "foundry",
+            "brite",
+            "morph",
+            "sketchy",
+            "drawn",
+            "darkly",
+        )
