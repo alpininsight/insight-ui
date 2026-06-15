@@ -181,6 +181,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update component usage examples with new config dataclass examples
 - Add 'create_component' command which generates boilerplate code for new components
 - **navbar:** Support user avatar trigger
+- Add links to the component demos that lead to the corresponding files in the Git repository
 
 ### Miscellaneous
 
