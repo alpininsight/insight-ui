@@ -1,85 +1,96 @@
-# Paths are relative to the installed `insight_ui` package inside the running
-# container. They are deliberately allowlisted before being exposed by views.
-TEMPLATE_BASE = "templates/insight_ui/components/"
-SCRIPT_BASE = "static/insight_ui/js/"
+# Base paths
+GIT_BASE_FILE = "https://github.com/alpininsight/insight-ui/blob/develop/insight_ui/templates/insight_ui/components/"
+GIT_BASE_DIR = "https://github.com/alpininsight/insight-ui/tree/develop/insight_ui/templates/insight_ui/components/"
+GIT_BASE_SCRIPT_FILE = "https://github.com/alpininsight/insight-ui/blob/develop/insight_ui/static/insight_ui/js/"
 
-# Mapping-Table between components and their respective template files.
+# Mapping-Table between components and their respective template files
 TEMPLATE_PATHS = {
-    "card": TEMPLATE_BASE + "cards/card.html",
-    "flip_card": TEMPLATE_BASE + "cards/flip_card.html",
-    "app_card": TEMPLATE_BASE + "cards/app_card.html",
-    "3d_carousel": TEMPLATE_BASE + "carousels/3D_carousel.html",
-    "card_carousel": TEMPLATE_BASE + "carousels/card_carousel.html",
-    "image_carousel": TEMPLATE_BASE + "carousels/image_carousel.html",
-    "chart": TEMPLATE_BASE + "charts/bar_chart.html",
-    "query_builder": TEMPLATE_BASE + "search_query_builder/sq_builder.html",
-    "accordion": TEMPLATE_BASE + "accordion.html",
-    "alert": TEMPLATE_BASE + "alert.html",
-    "breadcrumbs": TEMPLATE_BASE + "breadcrumbs.html",
-    "brand_lockup": TEMPLATE_BASE + "brand_lockup.html",
-    "bullet_point_list": TEMPLATE_BASE + "bullet_point_list.html",
-    "carousel": TEMPLATE_BASE + "carousel.html",
-    "chat": TEMPLATE_BASE + "chat.html",
-    "checkbox": TEMPLATE_BASE + "checkbox.html",
-    "checkbox_group": TEMPLATE_BASE + "checkbox_group.html",
-    "copyright_notice": TEMPLATE_BASE + "copyright_notice.html",
-    "dropdown": TEMPLATE_BASE + "dropdown.html",
-    "footer": TEMPLATE_BASE + "footer.html",
-    "form": TEMPLATE_BASE + "form.html",
-    "generic_filter": TEMPLATE_BASE + "generic_filter.html",
-    "geo_map": TEMPLATE_BASE + "geo_map.html",
-    "infinite_scroll": TEMPLATE_BASE + "infinite_scroll.html",
-    "infobox": TEMPLATE_BASE + "infobox.html",
-    "input_field": TEMPLATE_BASE + "input.html",
-    "live_content": TEMPLATE_BASE + "live_content.html",
-    "logo": TEMPLATE_BASE + "logo.html",
-    "minimal_step_bar": TEMPLATE_BASE + "minimal_step_bar.html",
-    "modal": TEMPLATE_BASE + "modal.html",
-    "multiselect": TEMPLATE_BASE + "multiselect.html",
-    "navbar": TEMPLATE_BASE + "navbar.html",
-    "pagination": TEMPLATE_BASE + "pagination.html",
-    "progress_bar": TEMPLATE_BASE + "progress_bar.html",
-    "radio_block": TEMPLATE_BASE + "radio_block.html",
-    "radio_group": TEMPLATE_BASE + "radio_group.html",
-    "range_slider": TEMPLATE_BASE + "range_slider.html",
-    "search_bar": TEMPLATE_BASE + "search_bar.html",
-    "select": TEMPLATE_BASE + "select.html",
-    "sidebar": TEMPLATE_BASE + "sidebar.html",
-    "step_bar": TEMPLATE_BASE + "step_bar.html",
-    "table": TEMPLATE_BASE + "table.html",
-    "tabs": TEMPLATE_BASE + "tabs.html",
-    "textarea": TEMPLATE_BASE + "textarea.html",
-    "toggle": TEMPLATE_BASE + "toggle_button.html",
-    "toggle_language": TEMPLATE_BASE + "toggle_language.html",
-    "toggle_theme": TEMPLATE_BASE + "toggle_theme.html",
-    "toggle_view": TEMPLATE_BASE + "toggle_view.html",
-    "tooltip": TEMPLATE_BASE + "tooltip.html",
-    "user_dropdown": TEMPLATE_BASE + "user_dropdown.html",
-    "web_socket": TEMPLATE_BASE + "websocket.html",
-    "page_header": TEMPLATE_BASE + "page_header.html",
-    "heading_decoration": TEMPLATE_BASE + "heading_decoration.html",
-    "article": TEMPLATE_BASE + "article.html",
-    "hero": TEMPLATE_BASE + "hero.html",
-    "corner_ribbon": TEMPLATE_BASE + "corner_ribbon.html",
+    # Layout
+    "page_header": GIT_BASE_FILE + "page_header.html",
+    "article": GIT_BASE_FILE + "article.html",
+    "hero": GIT_BASE_FILE + "hero.html",
+    # Navigation
+    "navbar": GIT_BASE_FILE + "navbar.html",
+    "sidebar": GIT_BASE_FILE + "sidebar.html",
+    "footer": GIT_BASE_FILE + "footer.html",
+    "breadcrumbs": GIT_BASE_FILE + "breadcrumbs.html",
+    "step_bar": GIT_BASE_FILE + "step_bar.html",
+    "minimal_step_bar": GIT_BASE_FILE + "minimal_step_bar.html",
+    "bullet_point_list": GIT_BASE_FILE + "bullet_point_list.html",
+    "accordion": GIT_BASE_FILE + "accordion.html",
+    "tabs": GIT_BASE_FILE + "tabs.html",
+    # Inputs
+    "input": GIT_BASE_FILE + "input.html",
+    "textarea": GIT_BASE_FILE + "textarea.html",
+    "checkbox": GIT_BASE_FILE + "checkbox.html",
+    "checkbox_group": GIT_BASE_FILE + "checkbox_group.html",
+    "dropdown": GIT_BASE_FILE + "dropdown.html",
+    "radio_group": GIT_BASE_FILE + "radio_group.html",
+    "radio_block": GIT_BASE_FILE + "radio_block.html",
+    "range_slider": GIT_BASE_FILE + "range_slider.html",
+    "toggle": GIT_BASE_FILE + "toggle_button.html",
+    "select": GIT_BASE_FILE + "select.html",
+    "multiselect": GIT_BASE_FILE + "multiselect.html",
+    "chat": GIT_BASE_FILE + "chat.html",
+    # Popups
+    "alert": GIT_BASE_FILE + "alert.html",
+    "modal": GIT_BASE_FILE + "modal.html",
+    "tooltip": GIT_BASE_FILE + "tooltip.html",
+    # Utils
+    "infobox": GIT_BASE_FILE + "infobox.html",
+    "copyright_notice": GIT_BASE_FILE + "copyright_notice.html",
+    "logo": GIT_BASE_FILE + "logo.html",
+    "brand_lockup": GIT_BASE_FILE + "brand_lockup.html",
+    "corner_ribbon": GIT_BASE_FILE + "corner_ribbon.html",
+    "progress_bar": GIT_BASE_FILE + "progress_bar.html",
+    "geo_map": GIT_BASE_FILE + "geo_map.html",
+    "bar_chart": GIT_BASE_FILE + "charts/bar_chart.html",
+    "line_chart": GIT_BASE_FILE + "charts/line_chart.html",
+    "live_content": GIT_BASE_FILE + "live_content.html",
+    "web_socket": GIT_BASE_FILE + "websocket.html",
+    # Lists
+    "infinite_scroll": GIT_BASE_FILE + "infinite_scroll.html",
+    "pagination": GIT_BASE_FILE + "pagination.html",
+    "table": GIT_BASE_FILE + "table.html",
+    # Filters
+    "search_bar": GIT_BASE_FILE + "search_bar.html",
+    "generic_filter": GIT_BASE_FILE + "generic_filter.html",
+    "query_builder": GIT_BASE_DIR + "search_query_builder",
+    # Cards
+    "card": GIT_BASE_FILE + "cards/card.html",
+    "app_card": GIT_BASE_FILE + "cards/app_card.html",
+    "flip_card": GIT_BASE_FILE + "cards/flip_card.html",
+    "carousel": GIT_BASE_FILE + "carousel.html",
+    "card_carousel": GIT_BASE_FILE + "carousels/card_carousel.html",
+    "image_carousel": GIT_BASE_FILE + "carousels/image_carousel.html",
+    "3D_carousel": GIT_BASE_FILE + "carousels/3D_carousel.html",
+    "toggle_view": GIT_BASE_FILE + "toggle_view.html",
+    # Forms
+    "form": GIT_BASE_FILE + "form.html",
 }
 
-# Mapping-Table between components and their respective script files.
+# Mapping-Table between components and their respective script files
 SCRIPT_PATHS = {
-    "3d_carousel": SCRIPT_BASE + "insight-ui-3D-carousel.js",
-    "accordion": SCRIPT_BASE + "insight-ui-accordion.js",
-    "carousel": SCRIPT_BASE + "insight-ui-carousel.js",
-    "checkbox": SCRIPT_BASE + "insight-ui-checkbox.js",
-    "checkbox_group": SCRIPT_BASE + "insight-ui-checkbox.js",
-    "code_block": SCRIPT_BASE + "insight-ui-code-block.js",
-    "collapsible": SCRIPT_BASE + "insight-ui-collapsible.js",
-    "dropdown": SCRIPT_BASE + "insight-ui-dropdown.js",
-    "tooltip": SCRIPT_BASE + "insight-ui-floater.js",
-    "popover": SCRIPT_BASE + "insight-ui-floater.js",
-    "modal": SCRIPT_BASE + "insight-ui-modal.js",
-    "multiselect": SCRIPT_BASE + "insight-ui-multiselect.js",
-    "range_slider": SCRIPT_BASE + "insight-ui-range-slider.js",
-    "sidebar": SCRIPT_BASE + "insight-ui-sidebar.js",
-    "tabs": SCRIPT_BASE + "insight-ui-tabs.js",
-    "toggle_theme": SCRIPT_BASE + "insight-ui-theme-toggle.js",
-    "web_socket": SCRIPT_BASE + "insight-ui-websocket.js",
+    # Layout
+    # Navigation
+    "sidebar": GIT_BASE_SCRIPT_FILE + "insight-ui-sidebar.js",
+    "accordion": GIT_BASE_SCRIPT_FILE + "insight-ui-accordion.js",
+    "tabs": GIT_BASE_SCRIPT_FILE + "insight-ui-tabs.js",
+    # Inputs
+    "checkbox_group": GIT_BASE_SCRIPT_FILE + "insight-ui-checkbox.js",
+    "dropdown": GIT_BASE_SCRIPT_FILE + "insight-ui-dropdown.js",
+    "multiselect": GIT_BASE_SCRIPT_FILE + "insight-ui-multiselect.js",
+    # Popups
+    "modal": GIT_BASE_SCRIPT_FILE + "insight-ui-modal.js",
+    "popover": GIT_BASE_SCRIPT_FILE + "insight-ui-floater.js",
+    "tooltip": GIT_BASE_SCRIPT_FILE + "insight-ui-floater.js",
+    # Utils
+    "code_block": GIT_BASE_SCRIPT_FILE + "insight-ui-code_block.js",
+    "websocket": GIT_BASE_SCRIPT_FILE + "insight-ui-websocket.js",
+    # Lists
+    # Filters
+    # Cards
+    "carousel": GIT_BASE_SCRIPT_FILE + "insight-ui-carousel.js",
+    "3D_carousel": GIT_BASE_SCRIPT_FILE + "insight-ui-3D-carousel.js",
+    # Forms
 }
