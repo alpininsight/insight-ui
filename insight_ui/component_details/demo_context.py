@@ -1,3 +1,5 @@
+import dataclasses
+
 from django.templatetags.static import static
 from django.urls import reverse, reverse_lazy
 from django.utils.lorem_ipsum import paragraphs
@@ -6,7 +8,69 @@ from django.utils.translation import gettext as _
 from insight_ui import config
 from insight_ui.component_details.component_context import get_demo_context, register_demo_context
 from insight_ui.component_details.components import Component
-from insight_ui.demo_utils import generate_payload, map_payload_to_cards, map_payload_to_table
+from insight_ui.configs import (
+    AccordionConfig,
+    AccordionItemConfig,
+    ActionConfig,
+    AppCardConfig,
+    BadgeConfig,
+    BreadcrumbItemConfig,
+    BulletPointItemConfig,
+    CardCarouselConfig,
+    CardConfig,
+    ChartConfig,
+    ChartDatasetConfig,
+    CheckboxConfig,
+    CheckboxGroupConfig,
+    CheckboxItemConfig,
+    CopyrightNoticeConfig,
+    CornerRibbonConfig,
+    DropdownConfig,
+    DropdownItemConfig,
+    FilterConfig,
+    FlipCardConfig,
+    FooterConfig,
+    FooterContactConfig,
+    FooterDescriptionConfig,
+    FormConfig,
+    FormFieldConfig,
+    GenericFilterConfig,
+    GeoMapConfig,
+    HeroConfig,
+    HtmxConfig,
+    IconConfig,
+    ImageCarouselConfig,
+    ImageCarouselItemConfig,
+    ImageConfig,
+    InfiniteScrollConfig,
+    LogoConfig,
+    MinimalStepBarConfig,
+    ModalConfig,
+    MultiselectConfig,
+    NavbarBrandConfig,
+    NavbarConfig,
+    NavbarLinkConfig,
+    PaginationConfig,
+    PaginationIppConfig,
+    QueryBuilderFieldConfig,
+    RadioBlockConfig,
+    RadioGroupConfig,
+    RadioItemConfig,
+    SelectConfig,
+    SidebarCategoryConfig,
+    SidebarConfig,
+    SidebarDataConfig,
+    SidebarItemConfig,
+    SliderConfig,
+    StepBarItemConfig,
+    TabConfig,
+    TableConfig,
+    TabsConfig,
+    ThreeDCarouselConfig,
+    ToggleConfig,
+    ToggleViewConfig,
+)
+from insight_ui.demo_utils import generate_payload, map_payload_to_cards
 from insight_ui.utils.pagination import get_page
 
 # Some example filters for the filter example
@@ -39,45 +103,41 @@ DEMO_CARD_IMAGE_PATH = "insight_ui/favicon/android-chrome-512x512.png"
 
 # Some example data for the query builder filter
 DEMO_FIELDS = [
-    {
-        "field": "title",
-        "name": _("Title"),
-        "type": "text",
-        "operations": {
+    QueryBuilderFieldConfig(
+        "title",
+        _("Title"),
+        "text",
+        {
             "iexact": _("is exact"),
             "icontains": _("contains"),
             "contains": _("contains (case sensitive)"),
             "istartswith": _("starts with"),
             "iendswith": _("ends with"),
         },
-        "values": {},
-    },
-    {
-        "field": "description",
-        "name": _("Description"),
-        "type": "text",
-        "operations": {"icontains": _("contains"), "contains": _("contains (case sensitive)")},
-        "values": {},
-    },
-    {
-        "field": "deadline",
-        "name": _("Deadline"),
-        "type": "date",
-        "operations": {"date": _("is exact"), "date__gte": _("is not before"), "date__lte": _("is not after")},
-        "values": {},
-    },
-    {
-        "field": "client__name",
-        "name": _("Client"),
-        "type": "text",
-        "operations": {
+    ),
+    QueryBuilderFieldConfig(
+        "description",
+        _("Description"),
+        "text",
+        {"icontains": _("contains"), "contains": _("contains (case sensitive)")},
+    ),
+    QueryBuilderFieldConfig(
+        "deadline",
+        _("Deadline"),
+        "date",
+        {"date": _("is exact"), "date__gte": _("is not before"), "date__lte": _("is not after")},
+    ),
+    QueryBuilderFieldConfig(
+        "client__name",
+        _("Client"),
+        "text",
+        {
             "iexact": _("is exact"),
             "icontains": _("contains"),
             "istartswith": _("starts with"),
             "iendswith": _("ends with"),
         },
-        "values": {},
-    },
+    ),
 ]
 
 
@@ -97,18 +157,20 @@ def get_login_screen_context() -> dict:
         config.get_config()
         | get_footer_context()
         | {
-            "logo": {
-                "url": "svg/ai-logo.svg",
-                "url_dark": "svg/ai-logo.svg",
-                "alt": _("Our Logo"),
-                "height": "8rem",
-                "position": "center",
-            },
+            "logo_config": LogoConfig("insight_ui/svg/ai-logo.svg", alt=_("Insight UI Logo"), height="8rem"),
+            "show_theme_toggle": True,
             "forgot_password": {"url": "#"},
             "alt_login": {"url": "#", "title": _("Login with OIDC")},
             "sign_up": {"url": "#"},
         }
     )
+
+
+# =============================================================
+#
+#   Layout Tags
+#
+# =============================================================
 
 
 @register_demo_context(Component.HEADING_DECORATION)
@@ -125,64 +187,77 @@ def get_heading_decoration_context() -> dict:
     return {"heading_decoration_image_url": image_url}
 
 
+@register_demo_context(Component.HERO)
+def get_hero_context() -> dict:
+    """Serve demo context for the hero component."""
+    return {
+        "hero_config": HeroConfig(
+            "Insight UI",
+            _("Front-end Design Made Easy"),
+            _("A modern UI library for Django applications to get started quickly."),
+            ActionConfig(_("Get Started"), "#", "primary", icon=IconConfig("rocket")),
+            ActionConfig(_("Learn more"), "#", "secondary"),
+            badge=BadgeConfig("Django UI Library", IconConfig("sparkles")),
+        )
+    }
+
+
+# =============================================================
+#
+#   Navigation Tags
+#
+# =============================================================
+
+
 @register_demo_context(Component.NAVBAR)
 def get_navbar_context() -> dict:
     """Serve data for navbar detailpage."""
     return {
-        "demo_nav_config": {
-            "brand": {
-                "title": "Insight UI",
-                "view_name": "index_view",
-                "gap": "0.5rem",
-                "logo": {
-                    "url": "insight_ui/svg/ai-logo.svg",
-                    "url_dark": "insight_ui/svg/ai-logo.svg",
-                    "alt": "Insight UI Logo",
-                    "height": "2rem",
-                },
-            },
-            "links": [
-                {
-                    "text": _("Startpage"),
-                    "icon": {"name": "home", "size": "s"},
-                    "view_name": "index_view",
-                    "active": True,
-                    "need_auth": False,
-                    "staff_only": False,
-                },
-                {
-                    "text": _("About"),
-                    "open_modal": "about-modal",
-                    "active": False,
-                    "need_auth": False,
-                    "staff_only": False,
-                },
-                {"text": _("Test"), "view_name": "index_view", "active": False, "need_auth": True, "staff_only": False},
-                {"text": _("Test2"), "view_name": "index_view", "active": False, "need_auth": True, "staff_only": True},
+        "demo_nav_config": NavbarConfig(
+            NavbarBrandConfig(
+                "Insight UI",
+                "/",
+                LogoConfig(
+                    "insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="2rem"
+                ),
+                "0.5rem",
+            ),
+            [
+                NavbarLinkConfig(_("Startpage"), "/", IconConfig("home", "s")),
+                NavbarLinkConfig(
+                    _("About"),
+                    modal=ModalConfig(
+                        "about-modal",
+                        _("About Insight-UI"),
+                        _("A modern UI library for Django applications to get started quickly."),
+                    ),
+                ),
+                NavbarLinkConfig(_("Test"), "/", need_auth=True),
+                NavbarLinkConfig(_("Test2"), "/", need_auth=True, staff_only=True),
             ],
-            "searchbar_request_view": "index_view",
-            "show_usermenu": True,
-            "show_language_selector": True,
-            "show_theme_toggle": True,
-        },
+            "/",
+            True,
+            True,
+            True,
+        ),
         "user_dropdown_links": [
             {
                 "text": _("Settings"),
-                "view_name": "index_view",
+                "request_url": reverse("index_view"),
                 "staff_only": False,
-                "icon": {"name": "gear", "size": "s"},
+                "icon": IconConfig("gear", "s"),
             },
             {
                 "text": _("Administration"),
-                "view_name": "admin:index",
+                "request_url": reverse("admin:index"),
                 "staff_only": True,
-                "icon": {"name": "home", "size": "s"},
+                "icon": IconConfig("home", "s"),
             },
             {
                 "text": _("Translation"),
-                "view_name": "index_view",
+                "request_url": reverse("index_view"),
                 "staff_only": True,
-                "icon": {"name": "globe", "size": "s"},
+                "icon": IconConfig("globe", "s"),
             },
         ],
     }
@@ -191,96 +266,62 @@ def get_navbar_context() -> dict:
 @register_demo_context(Component.SIDEBAR)
 def get_drawer_context() -> dict:
     """Serve data for sidebar detailpage."""
-    return {
-        "demo_sidebar": {
-            "title": _("Personal Settings"),
-            "icon": {"name": "home", "size": "s"},
-            "categories": [
-                {
-                    "caption": "Work",
-                    "icon": {"name": "office", "size": "s"},
-                    "items": [
-                        {
-                            "text": _("Notifications"),
-                            "icon": {"name": "bell", "size": "s"},
-                            "url": reverse("index_view"),
-                        },
-                        {
-                            "text": _("Messages"),
-                            "icon": {"name": "chat-bubble", "size": "s"},
-                            "url": reverse("index_view"),
-                        },
-                        {"text": _("Tasks"), "icon": {"name": "checklist", "size": "s"}, "url": reverse("index_view")},
+    left_sidebar_config = SidebarConfig(
+        SidebarDataConfig(
+            _("Settings"),
+            IconConfig("tools", "s"),
+            [
+                SidebarCategoryConfig(
+                    _("Work"),
+                    IconConfig("office", "s"),
+                    [
+                        SidebarItemConfig(_("Notifications"), reverse("index_view"), IconConfig("bell", "s")),
+                        SidebarItemConfig(_("Messages"), reverse("index_view"), IconConfig("chat-bubble", "s")),
+                        SidebarItemConfig(_("Tasks"), reverse("index_view"), IconConfig("checklist", "s")),
                     ],
-                },
-                {
-                    "caption": "Management",
-                    "icon": {"name": "gear", "size": "s"},
-                    "items": [
-                        {
-                            "text": _("Calendar"),
-                            "icon": {"name": "calendar", "size": "s"},
-                            "url": reverse("index_view"),
-                        },
-                        {"text": _("Profile"), "icon": {"name": "user", "size": "s"}, "url": reverse("index_view")},
+                ),
+                SidebarCategoryConfig(
+                    _("Management"),
+                    IconConfig("gear", "s"),
+                    [
+                        SidebarItemConfig(_("Calendar"), reverse("index_view"), IconConfig("calendar", "s")),
+                        SidebarItemConfig(_("Profile"), reverse("index_view"), IconConfig("user", "s")),
                     ],
-                },
+                ),
             ],
-        }
-    }
+        ),
+        "left",
+        True,
+    )
+
+    right_drawer_config = dataclasses.replace(left_sidebar_config)
+    right_drawer_config.side = "right"
+    right_drawer_config.static = False
+
+    return {"left_sidebar_config": left_sidebar_config, "right_drawer_config": right_drawer_config}
 
 
 @register_demo_context(Component.FOOTER)
 def get_footer_context() -> dict:
     """Server data for footer detailpage."""
     return {
-        "footer_data": {
-            "description": {
-                "title": "Insight UI",
-                "text": _("A modern, accessible, and responsive UI library for Django projects."),
-                "image": {
-                    "url": "insight_ui/favicon/android-chrome-192x192.png",
-                    "url_dark": "insight_ui/favicon/android-chrome-192x192.png",
-                    "alt": "Footer image",
-                    "height": "6rem",
-                },
-            },
-            "links": [
-                {"text": _("Startpage"), "icon": {"name": "home", "size": "xs"}, "view_name": "index_view"},
-                {"text": _("Storybook"), "view_name": "index_view"},
-                {"text": _("Documentation"), "view_name": "index_view"},
+        "footer_config": FooterConfig(
+            FooterDescriptionConfig(
+                "Insight UI",
+                _("A modern UI library for Django applications to get started quickly."),
+                LogoConfig("insight_ui/svg/ai-logo.svg", alt="Insight UI Logo", height="6rem"),
+            ),
+            [
+                NavbarLinkConfig(_("Startpage"), "/", IconConfig("home", "xs")),
+                NavbarLinkConfig(_("Storybook"), "/"),
+                NavbarLinkConfig(_("Documentation"), "/"),
             ],
-            "contact": {
-                "mail_url": "support@alpininsight.com",
-                "imprint": "https://alpininsight.com/imprint/",
-                "privacy": "https://alpininsight.com/privacy/",
-            },
-            "copyright": {
-                "year": 2026,
-                "holder": "Alpin Insight Solutions GmbH & Co. KG",
-                "source_label": "Open Source",
-                "license_text": "AGPL-3.0",
-                "license_url": reverse_lazy("license_view"),
-            },
-            "version": "v1.0.0",
-        }
-    }
-
-
-@register_demo_context(Component.ALERT)
-def get_alert_context() -> dict:
-    """Serve data for alert detailpage."""
-    return {
-        "params": {
-            "caption": _("Parameter of the alert component."),
-            "empty_msg": _("No data available!"),
-            "headers": [_("Parameter"), _("Type"), _("Default"), _("Description")],
-            "rows": [
-                ["message", "str", "''", _("The main message of the notification.")],
-                ["type", "str", "info", _("The type of the notification ('info', 'success', 'warning', 'error')")],
-                ["dismissible", "bool", "True", _("Whether the notification should be dismissible.")],
-            ],
-        }
+            FooterContactConfig(
+                "support@alpininsight.com", "https://alpininsight.com/imprint/", "https://alpininsight.com/privacy/"
+            ),
+            get_copyright_notice_context()["copyright_notice_config"],
+            "v1.0.0",
+        )
     }
 
 
@@ -289,11 +330,302 @@ def get_breadcrumb_context() -> dict:
     """Serve data for breadcrumbs detailpage."""
     return {
         "breadcrumb_items": [
-            {"text": _("Startpage"), "request_url": "/", "icon": {"name": "home", "size": "s"}},
-            {"text": _("Components"), "request_url": "/"},
-            {"text": _("Breadcrumbs")},
+            BreadcrumbItemConfig(_("Startpage"), "/", IconConfig("home", "s")),
+            BreadcrumbItemConfig(_("Components"), "/"),
+            BreadcrumbItemConfig(_("Breadcrumbs")),
         ],
-        "single_breadcrumb_item": [{"text": _("Startpage"), "icon": {"name": "home", "size": "s"}}],
+        "single_breadcrumb_item": [BreadcrumbItemConfig(_("Startpage"), icon=IconConfig("home", "s"))],
+    }
+
+
+@register_demo_context(Component.STEP_BAR)
+def get_step_bar_context() -> dict:
+    """Serve data for step bar detailpage."""
+    return {
+        "step_bar_items": [
+            StepBarItemConfig(_("Contact Details"), _("Information about the person and address."), success=True),
+            StepBarItemConfig(_("Payment Method"), _("Select the payment method."), current=True),
+            StepBarItemConfig(_("Review"), _("Review the data and pay.")),
+        ],
+        "step_bar_items_failed": [
+            StepBarItemConfig(_("Contact Details"), _("Information about the person and address."), success=True),
+            StepBarItemConfig(_("Payment Method"), _("Select the payment method."), success=True),
+            StepBarItemConfig(_("Review"), _("Review the data and pay."), failed=True),
+        ],
+    }
+
+
+@register_demo_context(Component.MINIMAL_STEP_BAR)
+def get_minimal_step_bar_context() -> dict:
+    """Serve data for minimal step bar detailpage."""
+    return {
+        "min_step_bar": MinimalStepBarConfig(step_count=5, current_step=3),
+        "min_step_bar_with_list": MinimalStepBarConfig(["success", "success", "failed", "active", ""]),
+    }
+
+
+@register_demo_context(Component.BULLET_POINT_LIST)
+def get_bullet_point_list_context() -> dict:
+    """Server data for bullet point list detailpage."""
+    return {
+        "bullet_points_items": [
+            BulletPointItemConfig(_("Contact Details"), _("Information about the person and address."), completed=True),
+            BulletPointItemConfig(_("Payment Method"), _("Select the payment method."), current=True),
+            BulletPointItemConfig(_("Review"), _("Review the data and pay.")),
+        ]
+    }
+
+
+@register_demo_context(Component.ACCORDION)
+def get_accordion_context() -> dict:
+    """Serve data for accordion detailpage."""
+    return {
+        "accordion_config": AccordionConfig(
+            "faq",
+            [
+                AccordionItemConfig(_("What is Django?"), _("Django is a web framework for Python.")),
+                AccordionItemConfig(_("What is Tailwind?"), _("Tailwind is a CSS utility framework")),
+                AccordionItemConfig(_("What is ARIA?"), _("ARIA is short for Accessible Rich Internet Applications.")),
+            ],
+            False,
+        )
+    }
+
+
+@register_demo_context(Component.TABS)
+def get_tabs_context() -> dict:
+    """Serve data for tabs detailpage."""
+    return {
+        "tabs_config": TabsConfig(
+            "settings-tabs",
+            [
+                TabConfig("general", _("General"), reverse("tabs_view", kwargs={"tab_id": "first"})),
+                TabConfig("security", _("Security"), reverse("tabs_view", kwargs={"tab_id": "second"})),
+                TabConfig("notification", _("Notification"), reverse("tabs_view", kwargs={"tab_id": "third"})),
+            ],
+            _("Settings"),
+        )
+    }
+
+
+# =============================================================
+#
+#   Input Tags
+#
+# =============================================================
+
+
+@register_demo_context(Component.CHECKBOX)
+def get_checkbox_context() -> dict:
+    """Serve data for checkbox detailpage."""
+    return {
+        "checkbox_config": CheckboxConfig(
+            "accept-terms", "accept_terms", _("I accept the terms and conditions"), required=True, value="accepted"
+        )
+    }
+
+
+@register_demo_context(Component.CHECKBOX_GROUP)
+def get_checkbox_group_context() -> dict:
+    """Serve data for checkbox group detailpage."""
+    return {
+        "checkbox_group_config": CheckboxGroupConfig(
+            "language",
+            _("Choose languages: (max. 3)"),
+            [
+                CheckboxItemConfig("english", _("English"), "english"),
+                CheckboxItemConfig("german", _("German"), "german"),
+                CheckboxItemConfig("french", _("French"), "french"),
+                CheckboxItemConfig("spanish", _("Spanish"), "spanish"),
+                CheckboxItemConfig("italian", _("Italian (currently not available)"), "italian", True),
+            ],
+            True,
+            1,
+            3,
+        )
+    }
+
+
+@register_demo_context(Component.DROPDOWN)
+def get_dropdown_context() -> dict:
+    """Serve data for dropdown detailpage."""
+    return {
+        "user_dropdown_config": DropdownConfig(
+            "user",
+            _("User"),
+            items=[
+                DropdownItemConfig(_("Profile"), "/", IconConfig("user", "s")),
+                DropdownItemConfig(_("Settings"), "/", IconConfig("gear", "s")),
+                DropdownItemConfig(_("Logout"), "/", IconConfig("leave", "s")),
+            ],
+        ),
+        "settings_dropdown_config": DropdownConfig(
+            "settings",
+            _("Settings"),
+            False,
+            [
+                DropdownItemConfig(_("Personal Information"), "/", IconConfig("user", "s")),
+                DropdownItemConfig(_("Appearance"), "/", IconConfig("gear", "s")),
+            ],
+        ),
+    }
+
+
+@register_demo_context(Component.RADIO_GROUP)
+def get_radio_group_context() -> dict:
+    """Serve data for radio group detailpage."""
+    return get_radio_block_context() | {
+        "model_radio_config": RadioGroupConfig(
+            "model",
+            _("Select AI Model:"),
+            [
+                RadioItemConfig("model1", "BERT", _("BERT")),
+                RadioItemConfig("model2", "PaLM 2", _("PaLM 2")),
+                RadioItemConfig("model3", "LLaMA 2", _("LLaMA 2 (currently not available)"), disabled=True),
+            ],
+        )
+    }
+
+
+@register_demo_context(Component.RADIO_BLOCK)
+def get_radio_block_context() -> dict:
+    """Serve data for radio block detailpage."""
+    return {
+        "view_radio_config": RadioBlockConfig(
+            "view",
+            _("Select view mode:"),
+            items=[
+                RadioItemConfig("card-view", "card", icon=IconConfig("cards")),
+                RadioItemConfig("table", "table", icon=IconConfig("list")),
+                RadioItemConfig("card-carousel", "carousel", icon=IconConfig("carousel")),
+            ],
+        ),
+        "size_radio_config": RadioBlockConfig(
+            "size",
+            _("Select size:"),
+            items=[
+                RadioItemConfig("small-size", "small", "s"),
+                RadioItemConfig("medium-size", "medium", "m"),
+                RadioItemConfig("large-size", "large", "l", disabled=True),
+            ],
+            as_row=True,
+            request_url="/",
+            hx_target_id="#test",
+            method="changeSize()",
+        ),
+    }
+
+
+@register_demo_context(Component.RANGE_SLIDER)
+def get_range_slider_context() -> dict:
+    """Serve data for range-slider detailpage."""
+    return {
+        "slider_skip_config": SliderConfig(
+            "range-slider-skip",
+            "range_slider_skip",
+            _("Legend Mode: Skip"),
+            value=6,
+            minimum=1,
+            maximum=12,
+            items=["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            legend_mode="skip",
+        ),
+        "slider_rotate_config": SliderConfig(
+            "range-slider-rotate",
+            "range_slider_rotate",
+            _("Legend Mode: Rotate"),
+            value=6,
+            minimum=1,
+            maximum=12,
+            items=["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            legend_mode="rotate",
+        ),
+        "slider_dual_config": SliderConfig(
+            "range-slider-dual",
+            "range_slider_dual",
+            _("Dual Range Slider"),
+            minimum=0,
+            maximum=1000,
+            value_min=200,
+            value_max=800,
+            items=["0€", "250€", "500€", "750€", "1000€"],
+            dual=True,
+        ),
+    }
+
+
+@register_demo_context(Component.TOGGLE)
+def get_toggle_button_context() -> dict:
+    """Serve data for toggle-button detailpage."""
+    return {
+        "switch_config": ToggleConfig("toggle-switch", "toggle-switch", _("Click me!"), switch=True),
+        "toggle_config": ToggleConfig("toggle-button", "toggle-button", _("Click me!")),
+    }
+
+
+@register_demo_context(Component.SELECT)
+def get_select_context() -> dict:
+    """Serve data for select detailpage."""
+    return {
+        "select_config": SelectConfig(
+            "capital", "capital", _("Capitals:"), options=[_("Berlin"), _("Rome"), _("London")]
+        )
+    }
+
+
+@register_demo_context(Component.MULTISELECT)
+def get_multiselect_context() -> dict:
+    """Serve data for multiselect detailpage."""
+    return {
+        "multiselect_config": MultiselectConfig(
+            "capital",
+            "capital",
+            _("Capitals:"),
+            maximum=3,
+            show_buttons=True,
+            options=[_("Berlin"), _("Rome"), _("London"), _("Brussels"), _("Paris"), _("Warsaw")],
+            selected_options=[_("Rome"), _("Berlin")],
+        )
+    }
+
+
+# =============================================================
+#
+#   Popup Tags
+#
+# =============================================================
+
+
+@register_demo_context(Component.MODAL)
+def get_modal_context() -> dict:
+    """Serve data for the modal detailpage."""
+    return {
+        "confirm_modal_config": ModalConfig(
+            "action-demo-modal",
+            _("Demo modal"),
+            _("This is an example of a standard modal."),
+            [
+                ActionConfig(_("Yes, confirm"), "#", "primary", "alert('Confirmed!')"),
+                ActionConfig(_("Abort"), "#", "cancel", dismiss=True),
+            ],
+        )
+    }
+
+
+# =============================================================
+#
+#   Util Tags
+#
+# =============================================================
+
+
+@register_demo_context(Component.COPYRIGHT_NOTICE)
+def get_copyright_notice_context() -> dict:
+    """Serve data for copyright notice detailpage."""
+    return {
+        "copyright_notice_config": CopyrightNoticeConfig(
+            2026, "Alpin Insight Solutions GmbH & Co. KG", "Open Source", "AGPL-3.0", reverse_lazy("license_view")
+        )
     }
 
 
@@ -303,39 +635,68 @@ def get_differentiator_context() -> dict:
     return {"textA": _("The cat is sleeping on the red sofa."), "textB": _("This is a completely different sentence!")}
 
 
-@register_demo_context(Component.COPYRIGHT_NOTICE)
-def get_copyright_notice_context() -> dict:
-    """Serve data for copyright notice detailpage."""
-    return {
-        "copyright_notice_config": {
-            "year": 2026,
-            "holder": "Alpin Insight Solutions GmbH & Co. KG",
-            "source_label": "Open Source",
-            "license_text": "AGPL-3.0",
-            "license_url": reverse_lazy("license_view"),
-        },
-        "copyright_notice_legacy_config": {"year": 2026, "app_name": "Insight UI"},
-    }
-
-
 @register_demo_context(Component.LOGO)
 def get_logo_context() -> dict:
     """Serve data for logo detailpage."""
     return {
-        "logo_svg": {
-            "type": "svg",
-            "url": "insight_ui/svg/ai-logo.svg",
-            "url_dark": "insight_ui/svg/ai-logo.svg",
-            "alt": "Insight UI Logo",
-            "height": "3rem",
+        "logo_svg_config": LogoConfig(
+            "insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="3rem"
+        ),
+        "logo_image_config": LogoConfig(
+            "insight_ui/favicon/android-chrome-192x192.png", alt="Insight UI app icon", height="3rem"
+        ),
+        "logo_icon_config": LogoConfig(icon=IconConfig("sparkles", "xl"), alt="Decorative product icon"),
+    }
+
+
+@register_demo_context(Component.BRAND_LOCKUP)
+def get_brand_lockup_context() -> dict:
+    """Serve data for brand lockup detailpage."""
+    return {
+        "brand_lockup_default": {
+            "primary_text": "Alpin Insight",
+            "secondary_text": "Solutions",
+            "variant": "main",
+            "height": "2rem",
         },
-        "logo_image": {
-            "type": "image",
-            "url": "insight_ui/favicon/android-chrome-192x192.png",
-            "alt": "Insight UI app icon",
-            "height": "3rem",
+        "brand_lockup_develop": {
+            "primary_text": "Alpin Insight",
+            "secondary_text": "Develop",
+            "variant": "develop",
+            "height": "2rem",
         },
-        "logo_icon": {"type": "icon", "icon": {"name": "sparkles", "size": "big"}, "alt": "Decorative product icon"},
+        "brand_lockup_candidate": {
+            "primary_text": "Alpin Insight",
+            "secondary_text": "Candidate",
+            "variant": "candidate",
+            "height": "2rem",
+        },
+        "brand_lockup_end": {
+            "primary_text": "Alpin Insight",
+            "secondary_text": "Platform",
+            "logo_position": "end",
+            "variant": "main",
+            "height": "2rem",
+            "class": "w-full",
+        },
+        "brand_lockup_nav_config": {
+            "brand": {
+                "title": "Alpin Insight Develop",
+                "aria_label": "Alpin Insight Develop Startseite",
+                "view_name": "index_view",
+                "gap": "0.75rem",
+                "lockup": {
+                    "primary_text": "Alpin Insight",
+                    "secondary_text": "Develop",
+                    "variant": "develop",
+                    "height": "1.75rem",
+                },
+            },
+            "links": [],
+            "show_usermenu": False,
+            "show_language_selector": False,
+            "show_theme_toggle": False,
+        },
     }
 
 
@@ -343,572 +704,11 @@ def get_logo_context() -> dict:
 def get_corner_ribbon_context() -> dict:
     """Serve data for corner ribbon detailpage."""
     return {
-        "ribbon_top_right": {"text": _("New Feature"), "position": "top-right", "color": "primary"},
-        "ribbon_top_left": {"text": _("Verified"), "position": "top-left", "color": "success"},
-        "ribbon_bottom_right": {"text": _("Beta"), "position": "bottom-right", "color": "warning"},
-        "ribbon_bottom_left": {"text": _("Limited"), "position": "bottom-left", "color": "danger"},
-        "ribbon_info": {"text": _("Info"), "position": "top-right", "color": "info"},
-    }
-
-
-@register_demo_context(Component.DROPDOWN)
-def get_dropdown_context() -> dict:
-    """Serve data for dropdown detailpage."""
-    return {
-        "user_dropdown": {
-            "tag_id": "DD_user",
-            "title": _("User"),
-            "show_arrow": True,
-            "items": [
-                {"text": _("Profile"), "request_url": "/", "icon": {"name": "user", "size": "s"}},
-                {"text": _("Settings"), "request_url": "/", "icon": {"name": "gear", "size": "s"}},
-                {"text": _("Logout"), "request_url": "/", "icon": {"name": "leave", "size": "s"}},
-            ],
-        },
-        "settings_dropdown": {
-            "tag_id": "DD_settings",
-            "title": _("Settings"),
-            "show_arrow": False,
-            "items": [
-                {"text": _("Personal Information"), "request_url": "/", "icon": {"name": "user", "size": "s"}},
-                {"text": _("Appearance"), "request_url": "/", "icon": {"name": "gear", "size": "s"}},
-            ],
-        },
-    }
-
-
-@register_demo_context(Component.MODAL)
-def get_modal_context() -> dict:
-    """Serve data for the modal detailpage."""
-    return {
-        "confirm_modal_actions": [
-            {"text": _("Yes, confirm"), "type": "primary", "onclick": 'alert("Confirmed!")'},
-            {"text": _("Abort"), "type": "cancel", "dismiss": True},
-        ]
-    }
-
-
-@register_demo_context(Component.STEP_BAR)
-def get_step_bar_context() -> dict:
-    """Serve data for step bar detailpage."""
-    return {
-        "step_bar_items": [
-            {
-                "title": _("Contact Details"),
-                "description": _("Information about the person and address."),
-                "success": True,
-            },
-            {"title": _("Payment Method"), "description": _("Select the payment method."), "current": True},
-            {"title": _("Review"), "description": _("Review the data and pay.")},
-        ],
-        "step_bar_items_failed": [
-            {
-                "title": _("Contact Details"),
-                "description": _("Information about the person and address."),
-                "success": True,
-            },
-            {"title": _("Payment Method"), "description": _("Select the payment method."), "success": True},
-            {"title": _("Review"), "description": _("Review the data and pay."), "failed": True},
-        ],
-    }
-
-
-@register_demo_context(Component.MINIMAL_STEP_BAR)
-def get_minimal_step_bar_context() -> dict:
-    """Serve data for minimal step bar detailpage."""
-    return {
-        "min_step_bar": {"step_count": 5, "current_step": 3, "icon_size": "xs"},
-        "min_step_bar_with_list": {"items": ["success", "success", "failed", "active", ""], "icon_size": "xs"},
-    }
-
-
-@register_demo_context(Component.CHECKBOX)
-def get_checkbox_context() -> dict:
-    """Serve data for checkbox detailpage."""
-    return {
-        "example_checkbox": {
-            "tag_id": "accept-gtc",
-            "name": "accept_gtc",
-            "value": "GTC",
-            "label": _("Accept GTC"),
-            "disabled": False,
-        }
-    }
-
-
-@register_demo_context(Component.CHECKBOX_GROUP)
-def get_checkbox_group_context() -> dict:
-    """Serve data for checkbox group detailpage."""
-    return {
-        "example_checkbox_group": {
-            "name": "language_select",
-            "label": "Choose languages: (max. 3)",
-            "as_row": True,
-            "minimum_checked": 1,
-            "maximum_checked": 3,
-            "items": [
-                {"tag_id": "english", "value": "english", "label": _("English"), "disabled": False},
-                {"tag_id": "german", "value": "german", "label": _("German"), "disabled": False},
-                {"tag_id": "french", "value": "french", "label": _("French"), "disabled": False},
-                {"tag_id": "spanish", "value": "spanish", "label": _("Spanish"), "disabled": False},
-                {
-                    "tag_id": "italian",
-                    "value": "italian",
-                    "label": _("Italian (currently not available)"),
-                    "disabled": True,
-                },
-            ],
-        }
-    }
-
-
-@register_demo_context(Component.RADIO_GROUP)
-def get_radio_group_context() -> dict:
-    """Serve data for radio group detailpage."""
-    return get_radio_block_context() | {
-        "example_radio": {
-            "name": "radio-example1",
-            "items": [
-                {"tag_id": "model1", "value": "BERT", "label": _("BERT"), "disabled": False},
-                {"tag_id": "model2", "value": "PaLM 2", "label": _("PaLM 2"), "disabled": False},
-                {
-                    "tag_id": "model3",
-                    "value": "LLaMA 2",
-                    "label": _("LLaMA 2 (currently not available)"),
-                    "disabled": True,
-                },
-            ],
-        }
-    }
-
-
-@register_demo_context(Component.RADIO_BLOCK)
-def get_radio_block_context() -> dict:
-    """Serve data for radio block detailpage."""
-    return {
-        "view_radio_config": {
-            "name": "view",
-            "items": [
-                {"tag_id": "card-view", "value": "card", "icon": {"name": "cards"}},
-                {"tag_id": "table-view", "value": "table", "icon": {"name": "list"}},
-                {"tag_id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},
-            ],
-        },
-        "size_radio_config": {
-            "name": "size",
-            "items": [
-                {"tag_id": "small-size", "value": "small", "label": "sm"},
-                {"tag_id": "medium-size", "value": "medium", "label": "md"},
-                {"tag_id": "large-size", "value": "large", "label": "lg"},
-            ],
-            "as_row": False,
-        },
-    }
-
-
-@register_demo_context(Component.TOGGLE)
-def get_toggle_button_context() -> dict:
-    """Serve data for toggle-button detailpage."""
-    return {
-        "example_switch": {"tag_id": "toggle_switch_example", "label": _("Click me!"), "switch": True},
-        "example_toggle": {"tag_id": "toggle_button_example", "label": _("Click me!"), "switch": False},
-    }
-
-
-@register_demo_context(Component.SELECT)
-def get_select_context() -> dict:
-    """Serve data for select detailpage."""
-    return {
-        "select_config": {"name": "capital", "label": _("Capitals:"), "options": [_("Berlin"), _("Rome"), _("London")]}
-    }
-
-
-@register_demo_context(Component.MULTISELECT)
-def get_multiselect_context() -> dict:
-    """Serve data for multiselect detailpage."""
-    return {
-        "multiselect_config": {
-            "name": "capital",
-            "label": _("Capitals:"),
-            "maximum": 3,
-            "show_buttons": False,
-            "options": [_("Berlin"), _("Rome"), _("London"), _("Brussels"), _("Paris"), _("Warsaw")],
-            "selected_options": [_("Rome"), _("Paris"), _("Berlin")],
-        }
-    }
-
-
-@register_demo_context(Component.RANGE_SLIDER)
-def get_range_slider_context() -> dict:
-    """Serve data for range-slider detailpage."""
-    many_items = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-    return {
-        "example_slider": {
-            "tag_id": "range_slider_example",
-            "name": "range_slider_example",
-            "label": "Range Slider Title",
-            "value": 1000,
-            "minimum": 100,
-            "maximum": 1500,
-            "items": [_("100€ (minimum)"), "500€", "750€", "1000€", _("1500€ (maximum)")],
-        },
-        "example_slider_skip": {
-            "tag_id": "range_slider_skip",
-            "name": "range_slider_skip",
-            "label": _("Legend Mode: Skip"),
-            "value": 6,
-            "minimum": 1,
-            "maximum": 12,
-            "items": many_items,
-            "legend_mode": "skip",
-        },
-        "example_slider_rotate": {
-            "tag_id": "range_slider_rotate",
-            "name": "range_slider_rotate",
-            "label": _("Legend Mode: Rotate"),
-            "value": 6,
-            "minimum": 1,
-            "maximum": 12,
-            "items": many_items,
-            "legend_mode": "rotate",
-        },
-        "example_slider_dual": {
-            "tag_id": "range_slider_dual",
-            "name": "price_range",
-            "label": _("Dual Range Slider (Price Range)"),
-            "minimum": 0,
-            "maximum": 1000,
-            "value_min": 200,
-            "value_max": 800,
-            "dual": True,
-            "items": ["0€", "250€", "500€", "750€", "1000€"],
-        },
-    }
-
-
-register_demo_context(Component.INFINITE_SCROLL)
-
-
-def get_infinite_scroll_context() -> dict:
-    """Serve data for infinite scroll detailpage."""
-    return {
-        "scroll_items": [
-            {"title": _("Element %(i)s") % {"i": i}, "content": _("Content for element %(i)s") % {"i": i}}
-            for i in range(1, 11)
-        ]
-    }
-
-
-@register_demo_context(Component.PAGINATION)
-def get_pagination_context() -> dict:
-    """Serve data for pagination detailpage."""
-    page_obj, surrounding_pages = get_page(generate_payload(500))
-    ipp_config = {"name": "ipp", "label": _("Items per page"), "options": [10, 20, 30]}
-
-    return {"start_page": page_obj, "surrounding_pages": surrounding_pages, "ipp_config": ipp_config}
-
-
-@register_demo_context(Component.TABLE)
-def get_table_context() -> dict:
-    """Serve data for table detailpage."""
-    return {
-        "table": {
-            "caption": _("Example of a table component."),
-            "empty_msg": _("No data available!"),
-            "headers": [_("Name"), _("E-mail"), _("Status"), _("Actions")],
-            "rows": [
-                [
-                    "Max Mustermann",
-                    "max@example.com",
-                    _("Active"),
-                    '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>',  # noqa: E501
-                ],
-                [
-                    "Anna Schmidt",
-                    "anna@example.com",
-                    _("Inactive"),
-                    '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>',  # noqa: E501
-                ],
-                [
-                    "Tom Weber",
-                    "tom@example.com",
-                    _("Active"),
-                    '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>',  # noqa: E501
-                ],
-            ],
-        }
-    }
-
-
-@register_demo_context(Component.GENERIC_FILTER)
-def get_generic_filter_context() -> dict:
-    """Serve data for generic filter detailpage."""
-    return {
-        "filters": [
-            {
-                "label": _("AI model type"),
-                "icon": {"name": "rocket", "size": "s"},
-                "name": "model_type_filter",
-                "options": model_type_options,
-                "explanation": _("To filter by the type of AI-Model."),
-            },
-            {
-                "label": _("Runtime"),
-                "icon": {"name": "clock", "size": "s"},
-                "name": "runtime_filter",
-                "options": runtime_options,
-                "explanation": _("To filter by the runtime."),
-            },
-            {
-                "label": _("License"),
-                "icon": {"name": "doc", "size": "s"},
-                "name": "license_filter",
-                "options": license_options,
-            },
-        ],
-        "filter_view_name": "index_view",
-    }
-
-
-@register_demo_context(Component.QUERY_BUILDER)
-def get_query_builder_context() -> dict:
-    """Serve data for the query-builder detailpage."""
-    return {"model_fields": DEMO_FIELDS}
-
-
-@register_demo_context(Component.CARD)
-def get_card_context() -> dict:
-    """Serve data for card detailpage."""
-    return {
-        "cards": [
-            {
-                "title": _("Example Card"),
-                "subtitle": _("Subtitle"),
-                "content": _("This is the card content."),
-                "actions": [
-                    {"text": _("Learn more"), "url": "#", "type": "secondary"},
-                    {"text": _("Share"), "url": "#", "type": "primary"},
-                ],
-            },
-            {
-                "title": _("Card with actions"),
-                "content": _("This card has some action buttons."),
-                "actions": [
-                    {"text": _("Learn more"), "url": "#", "type": "secondary"},
-                    {"text": _("Share"), "url": "#", "type": "primary"},
-                ],
-            },
-        ]
-    }
-
-
-@register_demo_context(Component.APP_CARD)
-def get_app_card_context() -> dict:
-    """Serve data for app card detailpage."""
-    return {
-        "app_card": {
-            "title": _("App Card"),
-            "content": _("A card with its content arranged horizontally."),
-            "image": {"url": static(DEMO_CARD_IMAGE_PATH), "alt": _("Card-Image")},
-            "tags": [_("Insight UI"), _("Layout"), _("Card")],
-            "actions": [
-                {"text": _("Learn more"), "url": "#", "type": "secondary"},
-                {"text": _("Share"), "url": "#", "type": "primary"},
-            ],
-        }
-    }
-
-
-@register_demo_context(Component.FLIP_CARD)
-def get_flip_card_context() -> dict:
-    """Serve data for flip card detailpage."""
-    return {
-        "flip_card": {
-            "title": _("Flip Card"),
-            "content": _("A card that rotates 180° and has additional content on the back."),
-            "image": {"url": static(DEMO_CARD_IMAGE_PATH), "alt": _("Card-Image")},
-            "tags": [_("Insight UI"), _("Layout"), _("Card")],
-            "actions": [
-                {"text": _("Learn more"), "url": "#", "type": "secondary"},
-                {"text": _("Share"), "url": "#", "type": "primary"},
-            ],
-        }
-    }
-
-
-@register_demo_context(Component.CARD_CAROUSEL)
-def get_card_carousel_context() -> dict:
-    """Serve data for card carousel detailpage."""
-    return {"carousel_items": map_payload_to_cards(generate_payload())}
-
-
-@register_demo_context(Component.IMAGE_CAROUSEL)
-def get_image_carousel_context() -> dict:
-    """Serve data for image carousel detailpage."""
-    seeds = ["neuschwanstein", "berlin-night", "hamburg-harbour"]
-    lorem_blocks = paragraphs(len(seeds), common=False)
-
-    image_carousel_items = [
-        {
-            "description": lorem_blocks[index],
-            "url": f"https://picsum.photos/seed/{seed}/1200/675",
-            "alt": _("Placeholder image %(index)s") % {"index": index + 1},
-        }
-        for index, seed in enumerate(seeds)
-    ]
-
-    return {"image_carousel_items": image_carousel_items}
-
-
-@register_demo_context(Component.TOGGLE_VIEW)
-def get_toggle_view_context() -> dict:
-    """Serve data for toggle-view detailpage."""
-    payload = generate_payload()
-    headers, rows = map_payload_to_table(payload)
-
-    return {
-        "toggle_table": {"empty_msg": _("No data available!"), "headers": headers, "rows": rows},
-        "toggle_start_view": "table",
-        "view_radio_config": {
-            "name": "view",
-            "items": [
-                {"tag_id": "card-view", "value": "card", "icon": {"name": "cards"}},
-                {"tag_id": "table-view", "value": "table", "icon": {"name": "list"}},
-                {"tag_id": "carousel-view", "value": "carousel", "icon": {"name": "carousel"}},
-            ],
-        },
-    }
-
-
-@register_demo_context(Component.FORM)
-def get_form_context() -> dict:
-    """Serve data for form detailpage."""
-    return {
-        "form_fields": [
-            {
-                "input_type": "select",
-                "tag_id": "title",
-                "name": "title",
-                "label": _("Title"),
-                "placeholder": _("Your title"),
-                "options": [_("No title"), "Prof.", "Dr.", _("King")],
-            },
-            {
-                "input_type": "text",
-                "tag_id": "firstname",
-                "name": "firstname",
-                "label": _("First name"),
-                "placeholder": _("Type in your first name"),
-                "required": True,
-            },
-            {
-                "input_type": "text",
-                "tag_id": "lastname",
-                "name": "lastname",
-                "label": _("Last name"),
-                "placeholder": _("Type in your last name"),
-                "required": True,
-            },
-            {
-                "input_type": "email",
-                "tag_id": "email",
-                "name": "email",
-                "label": _("E-mail"),
-                "placeholder": _("Type in your.email@example.com"),
-                "required": True,
-            },
-            {
-                "input_type": "password",
-                "tag_id": "password",
-                "name": "password",
-                "label": _("Password"),
-                "placeholder": _("Type in your password"),
-                "required": True,
-            },
-            {
-                "input_type": "textarea",
-                "tag_id": "message",
-                "name": "message",
-                "label": _("Message"),
-                "placeholder": _("Do you want to tell us something?..."),
-                "rows": 3,
-            },
-        ],
-        "show_reset_button": True,
-        "htmx_config": {"target": "#htmx-form", "swap": "innerHTML"},
-    }
-
-
-@register_demo_context(Component.BULLET_POINT_LIST)
-def get_bullet_point_list_context() -> dict:
-    """Server data for bullet point list detailpage."""
-    return {
-        "bulletpoints": [
-            {
-                "title": _("Contact Details"),
-                "description": _("Information about the person and address."),
-                "completed": True,
-            },
-            {"title": _("Payment Method"), "description": _("Select the payment method."), "current": True},
-            {"title": _("Review"), "description": _("Review the data and pay.")},
-        ]
-    }
-
-
-@register_demo_context(Component.ACCORDION)
-def get_accordion_context() -> dict:
-    """Serve data for accordion detailpage."""
-    return {
-        "accordion_items": [
-            {"title": _("What is Django?"), "content": _("Django is a web framework for Python.")},
-            {"title": _("What is Tailwind?"), "content": _("Tailwind is a CSS utility framework")},
-            {"title": _("What is ARIA?"), "content": _("ARIA is short for Accessible Rich Internet Applications.")},
-        ]
-    }
-
-
-@register_demo_context(Component.TABS)
-def get_tabs_context() -> dict:
-    """Serve data for tabs detailpage."""
-    return {
-        "tabs_config": {
-            "tag_id": "example_tabs",
-            "label": _("Tabs Example"),
-            "tabs": [
-                {"tag_id": "first", "url": reverse("tabs_view", kwargs={"tab_id": "first"}), "title": _("First Tab")},
-                {
-                    "tag_id": "second",
-                    "url": reverse("tabs_view", kwargs={"tab_id": "second"}),
-                    "title": _("Second Tab"),
-                },
-                {"tag_id": "third", "url": reverse("tabs_view", kwargs={"tab_id": "third"}), "title": _("Third Tab")},
-            ],
-        }
-    }
-
-
-@register_demo_context(Component.THREE_D_CAROUSEL)
-def get_3d_carousel_context() -> dict:
-    """Serve data for 3D carousel detailpage."""
-    return {"3D_carousel": {"items": map_payload_to_cards(generate_payload())}}
-
-
-@register_demo_context(Component.CHART)
-def get_charts_context() -> dict:
-    """Serve data for charts detailpage."""
-    return {
-        "chart_data": {
-            "title": _("Chart Example"),
-            "x_axis_legend": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-            "series": ["Email", "Union Ads", "Video Ads", "Direct", "Search Engine"],
-            "data": [
-                [100, 302, 301, 334, 390, 330, 320],
-                [320, 132, 101, 134, 90, 230, 210],
-                [220, 182, 191, 234, 290, 330, 310],
-                [150, 212, 201, 154, 190, 330, 410],
-                [820, 832, 901, 934, 1290, 1330, 1320],
-            ],
-        }
+        "ribbon_top_right": CornerRibbonConfig(_("New Feature"), "top-right", "primary"),
+        "ribbon_top_left": CornerRibbonConfig(_("Verified"), "top-left", "success"),
+        "ribbon_bottom_right": CornerRibbonConfig(_("Beta"), "bottom-right", "warning"),
+        "ribbon_bottom_left": CornerRibbonConfig(_("Limited"), "bottom-left", "danger"),
+        "ribbon_info": CornerRibbonConfig(_("Info"), "top-right", "info"),
     }
 
 
@@ -916,10 +716,11 @@ def get_charts_context() -> dict:
 def get_geo_map_context() -> dict:
     """Serve data for geo-map detailpage."""
     return {
-        "geo_map_data": {
-            "initial_coords": [52.5200, 13.4050],
-            "initial_zoom": 8,
-            "datasets": [
+        "geo_map_config": GeoMapConfig(
+            [52.5200, 13.4050],
+            8,
+            36,
+            [
                 {
                     "name": "population",
                     "type": "circle",
@@ -1027,7 +828,273 @@ def get_geo_map_context() -> dict:
                     ],
                 },
             ],
-        }
+        )
+    }
+
+
+@register_demo_context(Component.CHART)
+def get_charts_context() -> dict:
+    """Serve data for charts detailpage."""
+    return {
+        "chart_config": ChartConfig(
+            "chart",
+            ChartDatasetConfig(
+                _("Chart Example"),
+                ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+                ["Email", "Union Ads", "Video Ads", "Direct", "Search Engine"],
+                [
+                    [100, 302, 301, 334, 390, 330, 320],
+                    [320, 132, 101, 134, 90, 230, 210],
+                    [220, 182, 191, 234, 290, 330, 310],
+                    [150, 212, 201, 154, 190, 330, 410],
+                    [820, 832, 901, 934, 1290, 1330, 1320],
+                ],
+            ),
+        )
+    }
+
+
+# =============================================================
+#
+#   List Tags
+#
+# =============================================================
+
+
+@register_demo_context(Component.INFINITE_SCROLL)
+def get_infinite_scroll_context() -> dict:
+    """Serve data for infinite scroll detailpage."""
+    return {
+        "infinite_scroll_config": InfiniteScrollConfig(
+            "news-feed",
+            reverse("more_items"),
+            [
+                {"title": _("Element %(i)s") % {"i": i}, "content": _("Content for element %(i)s") % {"i": i}}
+                for i in range(1, 11)
+            ],
+        )
+    }
+
+
+@register_demo_context(Component.PAGINATION)
+def get_pagination_context() -> dict:
+    """Serve data for pagination detailpage."""
+    page_obj, surrounding_pages = get_page(generate_payload(500))
+    ipp_config = PaginationIppConfig("ipp", _("Items per page"), options=[10, 20, 30])
+
+    return {"pagination_config": PaginationConfig(reverse("pagination"), page_obj, surrounding_pages, ipp_config)}
+
+
+@register_demo_context(Component.TABLE)
+def get_table_context() -> dict:
+    """Serve data for table detailpage."""
+    return {
+        "table_config": TableConfig(
+            [_("Name"), _("E-Mail"), _("Status"), _("Actions")],
+            [
+                ["Max Mustermann", "max@example.com", _("Active"), '<button class="btn btn-primary">Edit</button>'],
+                ["Anna Schmidt", "anna@example.com", _("Inactive"), '<button class="btn btn-primary">Edit</button>'],
+                ["Tom Weber", "tom@example.com", _("Active"), '<button class="btn btn-primary">Edit</button>'],
+            ],
+            _("Example of a table component."),
+        )
+    }
+
+
+# =============================================================
+#
+#   Filter Tags
+#
+# =============================================================
+
+
+@register_demo_context(Component.GENERIC_FILTER)
+def get_generic_filter_context() -> dict:
+    """Serve data for generic filter detailpage."""
+    return {
+        "generic_filter_config": GenericFilterConfig(
+            [
+                FilterConfig(
+                    "model_type_filter",
+                    _("AI model type"),
+                    model_type_options,
+                    _("To filter by the type of AI-Model."),
+                    IconConfig("rocket", "s"),
+                ),
+                FilterConfig(
+                    "runtime_filter",
+                    _("Runtime"),
+                    runtime_options,
+                    _("To filter by the runtime."),
+                    IconConfig("clock", "s"),
+                ),
+                FilterConfig("license_filter", _("License"), license_options, icon=IconConfig("doc", "s")),
+            ],
+            "/",
+        )
+    }
+
+
+@register_demo_context(Component.QUERY_BUILDER)
+def get_query_builder_context() -> dict:
+    """Serve data for the query-builder detailpage."""
+    return {"model_fields": DEMO_FIELDS}
+
+
+# =============================================================
+#
+#   Card Tags
+#
+# =============================================================
+
+
+@register_demo_context(Component.CARD)
+def get_card_context() -> dict:
+    """Serve data for card detailpage."""
+    return {
+        "cards_config": [
+            CardConfig(_("Example Card"), _("Subtitle"), _("This is the card content.")),
+            CardConfig(
+                _("Card with actions"),
+                content=_("This card has some action buttons."),
+                actions=[ActionConfig(_("Learn more"), "#", "secondary"), ActionConfig(_("Share"), "#", "primary")],
+            ),
+        ]
+    }
+
+
+@register_demo_context(Component.APP_CARD)
+def get_app_card_context() -> dict:
+    """Serve data for app card detailpage."""
+    return {
+        "app_card_config": AppCardConfig(
+            _("App Card"),
+            _("A card with its content arranged horizontally."),
+            image=ImageConfig(static(DEMO_CARD_IMAGE_PATH), _("Card-Image")),
+            tags=[_("Insight UI"), _("Layout"), _("Card")],
+            actions=[ActionConfig(_("Learn more"), "#", "secondary"), ActionConfig(_("Share"), "#", "primary")],
+        )
+    }
+
+
+@register_demo_context(Component.FLIP_CARD)
+def get_flip_card_context() -> dict:
+    """Serve data for flip card detailpage."""
+    return {
+        "flip_card_config": FlipCardConfig(
+            _("Flip Card"),
+            _("A card that rotates 180° and has additional content on the back."),
+            _("Here you can add more information, without taken more space."),
+            image=ImageConfig(static(DEMO_CARD_IMAGE_PATH), _("Card-Image")),
+            tags=[_("Insight UI"), _("Layout"), _("Card")],
+            actions=[ActionConfig(_("Learn more"), "#", "secondary"), ActionConfig(_("Share"), "#", "primary")],
+        )
+    }
+
+
+@register_demo_context(Component.CARD_CAROUSEL)
+def get_card_carousel_context() -> dict:
+    """Serve data for card carousel detailpage."""
+    return {
+        "carousel_config": CardCarouselConfig(
+            map_payload_to_cards(generate_payload()), show_index=True, items_per_slide=2
+        )
+    }
+
+
+@register_demo_context(Component.IMAGE_CAROUSEL)
+def get_image_carousel_context() -> dict:
+    """Serve data for image carousel detailpage."""
+    seeds = ["neuschwanstein", "berlin-night", "hamburg-harbour"]
+    lorem_blocks = paragraphs(len(seeds), common=False)
+
+    return {
+        "image_carousel_config": ImageCarouselConfig(
+            [
+                ImageCarouselItemConfig(
+                    f"https://picsum.photos/seed/{seed}/1200/675",
+                    _("Placeholder image %(index)s") % {"index": index + 1},
+                    lorem_blocks[index],
+                )
+                for index, seed in enumerate(seeds)
+            ],
+            show_index=True,
+        )
+    }
+
+
+@register_demo_context(Component.THREE_D_CAROUSEL)
+def get_3d_carousel_context() -> dict:
+    """Serve data for 3D carousel detailpage."""
+    return {
+        "3D_carousel_config": ThreeDCarouselConfig("showcase", map_payload_to_cards(generate_payload()), 300, -15, True)
+    }
+
+
+@register_demo_context(Component.TOGGLE_VIEW)
+def get_toggle_view_context() -> dict:
+    """Serve data for toggle-view detailpage."""
+    return {
+        "toggle_view_config": ToggleViewConfig(
+            "products-view",
+            cards=map_payload_to_cards(generate_payload()),
+            view_radio_config=RadioBlockConfig(
+                "products-view-toggle",
+                items=[
+                    RadioItemConfig("card-view", "card", icon=IconConfig("cards")),
+                    RadioItemConfig("table-view", "table", icon=IconConfig("list")),
+                    RadioItemConfig("carousel-view", "carousel", icon=IconConfig("carousel")),
+                ],
+                request_url=reverse("toggle_view"),
+            ),
+        )
+    }
+
+
+# =============================================================
+#
+#   Form Tags
+#
+# =============================================================
+
+
+@register_demo_context(Component.FORM)
+def get_form_context() -> dict:
+    """Serve data for form detailpage."""
+    return {
+        "form_config": FormConfig(
+            "register-form",
+            _("Registration"),
+            _("Sign up to get access to our whole product portfolio."),
+            [
+                FormFieldConfig(
+                    "select",
+                    "title",
+                    "title",
+                    _("Title"),
+                    _("Your title"),
+                    options=[_("No title"), "Prof.", "Dr.", _("King")],
+                ),
+                FormFieldConfig(
+                    "text", "firstname", "firstname", _("First name"), _("Type in your first name"), required=True
+                ),
+                FormFieldConfig(
+                    "text", "lastname", "lastname", _("Last name"), _("Type in your last name"), required=True
+                ),
+                FormFieldConfig(
+                    "email", "email", "email", _("E-mail"), _("Type in your.email@example.com"), required=True
+                ),
+                FormFieldConfig(
+                    "password", "password", "password", _("Password"), _("Type in your password"), required=True
+                ),
+                FormFieldConfig(
+                    "textarea", "message", "message", _("Message"), _("Do you want to tell us something?..."), rows=5
+                ),
+            ],
+            True,
+            reverse("form_submit"),
+            HtmxConfig("#htmx-form"),
+        )
     }
 
 

@@ -1,12 +1,12 @@
 {% load i18n %}
 
-<article class="text-secondary leading-loose">
-    {% if title %}
-        <h2 class="mb-4">{{ title }}</h2>
+<article>
+    {% if article_config.title %}
+        <h2>{{ article_config.title }}</h2>
     {% endif %}
 
-    <div style="columns: {{ columns }}; column-gap: {{ column_gap }}; column-rule: 1px solid currentColor; column-rule-color: var(--color-gray-300);"
-         class="text-justify [&>p]:mb-4 [&>p]:break-inside-avoid">
-        {{ content|safe }}
+    <div style="columns: {{ article_config.columns }}; column-gap: {{ article_config.column_gap }}; column-rule: 1px solid currentColor; column-rule-color: var(--color-gray-300);"
+         class="text-secondary leading-loose text-justify">
+        {{ article_config.content|safe }}
     </div>
 </article>

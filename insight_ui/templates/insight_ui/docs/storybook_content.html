@@ -1,8 +1,8 @@
 {% load insight_tags %}
 
-{% for component in components %}
-    <section class="component-container">
-        <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-tp-4 py-2 md:px-6 md:py-3">
+{% for component, demo in components %}
+    <section data-insight-demo-container="{{ demo.id }}" class="component-container">
+        <div class="w-full bg-gray-100 dark:bg-gray-900 rounded-tp-4 py-2 md:px-6 md:py-3">
             <h2 class="text-xl pb-0">
                 <a
                     href="{% url 'component_detail_page_view' component.value %}"
@@ -16,8 +16,8 @@
                 </a>
             </h2>
         </div>
-        <div class="p-4 md:p-6">
-            {% include "insight_ui/docs/component_demo.html" %}
+        <div class="bg-neutral-300 dark:bg-gray-950 w-full">
+            <iframe data-insight-demo-iframe="{{ demo.id }}" id="{{ demo.id }}" src="{{ demo.url }}" title="{{ demo.title }}" class="w-full mx-auto"></iframe>
         </div>
     </section>
 {% endfor %}

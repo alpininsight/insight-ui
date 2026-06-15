@@ -1,47 +1,27 @@
-name: PR Branch Guard
+---
+# =============================================================================
+# Alpine Insight workflow template
+# Source:
+#   - public template: alpininsight/.github/.github/workflow-templates/pr-branch-guard.yml
+#   - private backend: alpininsight/.github-private/.github/workflows/repository-policy-reusable.yml@main
+# Purpose:
+#   - copies a thin branch-routing caller into the target repository
+#   - keeps org branch policy logic private and centrally maintained
+# =============================================================================
+
+name: PR Branch Guard (Alpine Insight)
 
 on:
   pull_request:
     types: [opened, reopened, synchronize, edited]
 
-permissions:
-  contents: read
-
 jobs:
-  validate-source-target:
-    name: branch-policy
-    runs-on: ubuntu-latest
-    steps:
-      - name: Validate PR branch routing policy
-        env:
-          BASE_REF: ${{ github.base_ref }}
-          HEAD_REF: ${{ github.head_ref }}
-        run: |
-          set -euo pipefail
-
-          echo "base=$BASE_REF head=$HEAD_REF"
-
-          conventional_branch_regex='^(feature|feat|fix|refactor|perf|chore|docs|style|test|build|ci|hotfix|release)/.+$'
-
-          if [[ "$BASE_REF" == "main" ]]; then
-            if [[ "$HEAD_REF" == "develop" || "$HEAD_REF" =~ ^release/.+$ ]]; then
-              exit 0
-            fi
-            echo "ERROR: PRs into main are only allowed from develop or release/* branches."
-            exit 1
-          fi
-
-          if [[ "$BASE_REF" == "develop" ]]; then
-            if [[ "$HEAD_REF" =~ $conventional_branch_regex ]]; then
-              exit 0
-            fi
-            echo "ERROR: PRs into develop must use a conventional prefix (feat/, fix/, refactor/, perf/, chore/, docs/, style/, test/, build/, ci/, hotfix/, release/)."
-            exit 1
-          fi
-
-          if [[ "$BASE_REF" =~ $conventional_branch_regex && "$HEAD_REF" =~ $conventional_branch_regex ]]; then
-            exit 0
-          fi
-
-          echo "ERROR: PR target branch '$BASE_REF' is not allowed by policy."
-          exit 1
+  branch-policy:
+    permissions:
+      contents: read
+      pull-requests: read
+    uses: alpininsight/.github-private/.github/workflows/repository-policy-reusable.yml@main
+    with:
+      require_conventional_title: false
+      require_conventional_commits: false
+      allow_main_realignment_pr: true

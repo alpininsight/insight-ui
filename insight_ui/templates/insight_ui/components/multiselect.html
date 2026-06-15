@@ -1,24 +1,24 @@
 {% load i18n %}
 
-<div data-insight-multiselect data-name="{{ name }}" data-max="{{ maximum }}" data-selected="{{ selected_options|default:"" }}">
-    <label id="{{ name }}-label" class="block text-sm font-bold text-primary mb-1">{{ label }}</label>
-    {% if show_buttons %}
+<div data-insight-multiselect data-name="{{ multiselect_config.name }}" data-max="{{ multiselect_config.maximum }}" data-selected="{{ multiselect_config.selected_options|default:"" }}">
+    <label id="{{ multiselect_config.name }}-label" class="block text-sm font-bold text-primary mb-1">{{ multiselect_config.label }}</label>
+    {% if multiselect_config.show_buttons %}
         <div class="flex gap-2 mb-1">
             <button type="button" class="select-all btn btn-primary btn-sm">{% trans "Select all" %}</button>
             <button type="button" class="deselect-all btn btn-primary btn-sm">{% trans "Deselect all" %}</button>
         </div>
     {% endif %}
-    <div class="relative" role="combobox" aria-labelledby="{{ name }}-label" aria-haspopup="listbox" aria-expanded="false" aria-owns="{{ name }}-listbox">
-        <div class="selected flex flex-wrap items-center gap-1 input" aria-controls="{{ name }}-listbox" aria-activedescendant="" aria-autocomplete="list" aria-multiselectable="true">
+    <div class="relative" role="combobox" aria-labelledby="{{ multiselect_config.name }}-label" aria-haspopup="listbox" aria-expanded="false" aria-owns="{{ multiselect_config.name }}-listbox">
+        <div class="selected flex flex-wrap items-center gap-1 input" aria-controls="{{ multiselect_config.name }}-listbox" aria-activedescendant="" aria-autocomplete="list" aria-multiselectable="true">
             <span class="tags flex flex-wrap gap-1"></span>
-            <input id="{{ name }}-search" type="text" class="search flex-1 outline-none text-sm min-w-[60px] placeholder-gray-400" placeholder={% trans "Type to search..." %} aria-label={% trans "Search {{ label }}" %} />
+            <input id="{{ multiselect_config.name }}-search" type="text" class="search flex-1 outline-none text-sm min-w-[60px] placeholder-gray-400" placeholder={% trans "Type to search..." %} aria-label={% trans "Search {{ multiselect_config.label }}" %} />
         </div>
         <span class="ml-auto text-gray-400 text-xs info"></span>
-        <div id="{{ name }}-listbox" role="listbox" class="options hidden absolute mt-1 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg max-h-48 overflow-y-auto z-10">
-            {% for item in options %}
-                <div id="{{ name }}-opt-{{ forloop.counter }}" role="option" aria-selected="false" tabindex="-1" class="option text-primary px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer">{{ item }}</div>
+        <div id="{{ multiselect_config.name }}-listbox" role="listbox" class="options hidden absolute mt-1 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg max-h-48 overflow-y-auto z-10">
+            {% for item in multiselect_config.options %}
+                <div id="{{ multiselect_config.name }}-opt-{{ forloop.counter }}" role="option" aria-selected="false" tabindex="-1" class="option text-primary px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer">{{ item }}</div>
             {% endfor %}
         </div>
     </div>
-    <div class="sr-only" aria-live="polite" id="{{ name }}-aria-status"></div>
+    <div class="sr-only" aria-live="polite" id="{{ multiselect_config.name }}-aria-status"></div>
 </div>

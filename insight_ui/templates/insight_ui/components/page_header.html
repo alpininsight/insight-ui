@@ -5,16 +5,16 @@
         <polyline class="fill-white/25 drop-shadow-xs drop-shadow-gray-500 dark:drop-shadow-gray-800" points="-10,0 500,0 -10,15"/>
     </svg>
     <div class="bg-insight-primary text-white leading-loose text-lg px-4 md:px-16 pt-20 pb-4">
-        {% if title %}
-            <h1 class="text-white text-4xl md:text-5xl font-bold">{{ title }}</h1>
+        {% if page_header_config.title %}
+            <h1 class="text-white text-4xl md:text-5xl font-bold">{{ page_header_config.title }}</h1>
         {% endif %}
 
-        {% for paragraph in description %}
+        {% for paragraph in page_header_config.description %}
             <p class="text-gray-200 leading-loose text-lg mt-4">{{ paragraph }}</p>
         {% endfor %}
 
-        {% if cta %}
-            <a href="{{ cta.url }}" class="btn btn-white btn-l font-bold w-fit">{{ cta.label }}</a>
+        {% if page_header_config.cta %}
+            <a href="{{ page_header_config.cta.url }}" class="btn btn-white btn-l font-bold w-fit">{{ page_header_config.cta.label }}</a>
         {% endif %}
     </div>
     <svg viewBox="0 0 500 50" class="-z-10">

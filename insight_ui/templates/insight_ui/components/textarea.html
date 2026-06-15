@@ -1,27 +1,27 @@
 {% load i18n insight_tags %}
 
 <div class="flex flex-col w-full">
-    <label for={{ name }} class="flex gap-1 text-sm font-bold text-primary mb-1">
-        {% if icon %}
-            {% icon icon %}
+    <label for={{ textarea_config.name }} class="flex gap-1 text-sm font-bold text-primary mb-1">
+        {% if textarea_config.icon %}
+            {% icon textarea_config.icon %}
         {% endif %}
-        <span class="self-end">{{ label }}</span>
-        {% if required %}<span class="text-red-500" aria-label="{% trans 'Required' %}">*</span>{% endif %}
-        {% if explanation %}
-            <div class="text-secondary" data-insight-tooltip="{{ explanation }}" data-position="top">
+        <span class="self-end">{{ textarea_config.label }}</span>
+        {% if textarea_config.required %}<span class="text-red-500" aria-label="{% trans 'Required' %}">*</span>{% endif %}
+        {% if textarea_config.explanation %}
+            <div class="text-secondary" data-insight-tooltip="{{ textarea_config.explanation }}" data-position="top">
                 {% icon name="question-mark" size="xs" %}
             </div>
         {% endif %}
     </label>
     <textarea
         type="textarea"
-        {% if tag_id %}id="{{ tag_id }}"{% endif %}
-        {% if name %}name="{{ name }}"{% endif %}
-        {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
-        {% if rows %}rows="{{ rows }}"{% endif %}
-        {% if cols %}cols="{{ cols }}"{% endif %}
-        {% if required %}required{% endif %}
-        {% if disabled %}disabled{% endif %}
+        {% if textarea_config.tag_id %}id="{{ textarea_config.tag_id }}"{% endif %}
+        {% if textarea_config.name %}name="{{ textarea_config.name }}"{% endif %}
+        {% if textarea_config.placeholder %}placeholder="{{ textarea_config.placeholder }}"{% endif %}
+        {% if textarea_config.rows %}rows="{{ textarea_config.rows }}"{% endif %}
+        {% if textarea_config.cols %}cols="{{ textarea_config.cols }}"{% endif %}
+        {% if textarea_config.required %}required{% endif %}
+        {% if textarea_config.disabled %}disabled{% endif %}
         class="input w-full"
-    >{{ value|default:"" }}</textarea>
+    >{{ textarea_config.value|default:"" }}</textarea>
 </div>

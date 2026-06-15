@@ -1,75 +1,60 @@
-name: Feature CI (quality checks)
+---
+# =============================================================================
+# Alpine Insight workflow contract
+# Source:
+#   - public template: alpininsight/.github/.github/workflow-templates/feature-ci.yml
+#   - repository policy backend:
+#     - alpininsight/.github-private/.github/workflows/repository-policy-reusable.yml@main
+#   - quality backend:
+#     - alpininsight/.github-private/.github/workflows/python-django-quality-reusable.yml@main
+# Purpose:
+#   - keeps repository policy centralized
+#   - keeps Python/Django quality centralized
+#   - preserves insight-ui's Django 5.2/6.0 compatibility checks inside the
+#     central quality reusable because the reusable currently only matrices
+#     Python versions, not Django versions.
+# =============================================================================
+
+name: Standard CI (Alpine Insight)
 
 on:
   pull_request:
-    branches: [ main, develop ]
+    branches: [develop, main]
+  push:
+    branches: [develop, main]
 
 permissions:
   contents: read
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ci-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
-  test:
-    name: Test (Python ${{ matrix.python-version }}, Django ${{ matrix.django-version }})
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.12", "3.13", "3.14"]
-        django-version: ["5.2", "6.0"]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
+  repository-policy:
+    if: ${{ github.event_name == 'pull_request' }}
+    permissions:
+      contents: read
+      pull-requests: read
+    uses: alpininsight/.github-private/.github/workflows/repository-policy-reusable.yml@main
+    with:
+      allow_main_realignment_pr: true
 
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Set up uv
-        uses: astral-sh/setup-uv@v7
-
-      - name: Sync environment
-        run: uv sync --all-groups
-
-      - name: Install Django ${{ matrix.django-version }}
-        run: uv pip install "django~=${{ matrix.django-version }}.0"
-
-      - name: Lint (ruff)
-        if: matrix.django-version == '6.0'
-        run: uv run ruff check .
-
-      - name: Tests (pytest)
-        run: uv run pytest
-
-  required-test-3-12:
-    name: test (3.12)
-    runs-on: ubuntu-latest
-    needs: test
-    if: ${{ always() }}
-    steps:
-      - name: Mirror matrix success for branch protection
-        run: test "${{ needs.test.result }}" = "success"
-
-  required-test-3-13:
-    name: test (3.13)
-    runs-on: ubuntu-latest
-    needs: test
-    if: ${{ always() }}
-    steps:
-      - name: Mirror matrix success for branch protection
-        run: test "${{ needs.test.result }}" = "success"
-
-  required-test-3-14:
-    name: test (3.14)
-    runs-on: ubuntu-latest
-    needs: test
-    if: ${{ always() }}
-    steps:
-      - name: Mirror matrix success for branch protection
-        run: test "${{ needs.test.result }}" = "success"
+  quality:
+    name: Python/Django Quality
+    uses: alpininsight/.github-private/.github/workflows/python-django-quality-reusable.yml@main
+    with:
+      python_versions: '["3.12", "3.13", "3.14"]'
+      uv_sync_args: --frozen --all-groups
+      django_check_command: uv run python manage.py check
+      test_command: |
+        uv pip install "django~=5.2.0"
+        uv run pytest
+        uv pip install "django~=6.0.0"
+        uv run pytest
+    secrets:
+      github_read_token: ${{ secrets.INSIGHT_TOKEN_RO }}
+      ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
