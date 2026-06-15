@@ -365,8 +365,8 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
     """
     demo_info = {
         "url": reverse("component_demo_view", kwargs={"component_name": component_name}),
-        "template_source_url": _component_source_url(component_name, "html"),
-        "script_source_url": _component_source_url(component_name, "js"),
+        "template_repo_url": TEMPLATE_PATHS.get(component_name, ""),
+        "script_repo_url": SCRIPT_PATHS.get(component_name, ""),
         "title": component_name,
         "id": component_name,
     }
