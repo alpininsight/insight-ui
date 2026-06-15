@@ -24,3 +24,4 @@ jobs:
     with:
       require_conventional_title: false
       require_conventional_commits: false
+      allow_main_realignment_pr: true
