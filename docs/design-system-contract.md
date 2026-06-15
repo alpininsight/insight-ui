@@ -113,7 +113,7 @@ and host applications should inherit before introducing domain-specific variants
 | Interaction variants | `*-hover`, `*-active` color tokens | Pointer and pressed states for interactive elements. |
 | Status colors | `success`, `warning`, `danger`, `info` tokens | Semantic user feedback and system state. |
 | Text hierarchy | `text-primary`, `text-secondary`, `text-link` | Primary content, secondary content, and navigable text. |
-| Dark mode | `@custom-variant dark` and dark text tokens | Theme-aware rendering via `data-theme=dark`. |
+| Dark mode | `[data-theme="dark"]` CSS-variable overrides | Theme-aware rendering should override the same semantic tokens used in light mode. Existing `*-dark` tokens remain compatibility aliases until template cleanup is complete. |
 | Surface hierarchy | `--color-insight-surface-*`, `insight-surface-*` | Page/base/soft/muted surfaces plus Brand-compatible tonal aliases `canvas`, `panel`, `raised`, `sunken`, and overlays/code surfaces. |
 | Border hierarchy | `--color-insight-border-surface`, `--color-insight-border-control`, `insight-border-*` | Themeable boundaries for cards, docs surfaces, forms, inputs, and controls. |
 | Shadow hierarchy | `--insight-shadow-*`, `insight-shadow-*` | Themeable elevation and neobrutalist offsets mapped from the project design language, with Tailwind values as defaults. |
@@ -165,6 +165,28 @@ should live:
 
 Data attributes should stay behavior-oriented. They are part of the JavaScript
 contract and should not be introduced as purely decorative markers.
+
+## Style-family themes
+
+The default design-theme selector should expose style families, not a long list
+of color variations. Color-heavy compatibility themes may remain packaged, but
+new demos should prefer these families:
+
+| Era | Theme key | Design intent | Token emphasis |
+|---|---|---|---|
+| 2007-2012 | `skeuomorphic` | Tactile surfaces, bevels, realistic depth | Gradients, textures, inset/raised shadows |
+| 2012-2016 | `flat` | Minimal flat blocks and clear color hierarchy | Semantic colors, low radius, no shadows |
+| 2014-2019 | `material` | Tonal elevation, cards, predictable depth | Surface hierarchy and elevation shadows |
+| 2019-2021 | `neumorphic` | Soft extruded controls and inset surfaces | Large radius, paired light/dark shadows |
+| 2020-2022 | `glass` | Translucent panels and blurred overlays | Backdrop blur, transparent surfaces, gradients |
+| 2021-2024 | `brite` | Neo-brutalist contrast and offset shadows | Thick borders, hard offset shadows |
+| 2023-2026 | `bento` | Calm dashboard surfaces and grouped cards | Tonal elevation, soft radius, quiet shadows |
+| 2024-2026 | `drawn` | CSS-only hand-drawn/paper treatment | Sketch line tokens, paper texture, irregular radius |
+
+Each style-family CSS file must define light defaults in `:root` and dark
+values in `[data-theme="dark"]` by overriding the same semantic tokens. For
+compatibility with older templates, the dark block should also map the old
+`*-dark` aliases back to the active semantic tokens.
 
 ## Extension contract
 

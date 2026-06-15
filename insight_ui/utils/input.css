@@ -187,6 +187,25 @@
 
     [data-theme="dark"] {
         color-scheme: dark;
+        --color-insight-text-primary: var(--color-insight-text-primary-dark);
+        --color-insight-text-secondary: var(--color-insight-text-secondary-dark);
+        --color-insight-text-disabled: var(--color-insight-text-disabled-dark);
+        --color-insight-surface-page: var(--color-insight-surface-page-dark);
+        --color-insight-surface-base: var(--color-insight-surface-base-dark);
+        --color-insight-surface-soft: var(--color-insight-surface-soft-dark);
+        --color-insight-surface-muted: var(--color-insight-surface-muted-dark);
+        --color-insight-surface-code: var(--color-insight-surface-code-dark);
+        --color-insight-surface-canvas: var(--color-insight-surface-canvas-dark);
+        --color-insight-surface-panel: var(--color-insight-surface-panel-dark);
+        --color-insight-surface-raised: var(--color-insight-surface-raised-dark);
+        --color-insight-surface-sunken: var(--color-insight-surface-sunken-dark);
+        --color-insight-border-surface: var(--color-insight-border-surface-dark);
+        --color-insight-border-control: var(--color-insight-border-control-dark);
+        --color-insight-border-muted: var(--color-insight-border-muted-dark);
+        --color-insight-border-disabled: var(--color-insight-border-disabled-dark);
+        --color-insight-disabled: var(--color-insight-disabled-dark);
+        --color-insight-disabled-foreground: var(--color-insight-disabled-foreground-dark);
+        --color-insight-focus-ring-offset: var(--color-insight-focus-ring-offset-dark);
     }
 
     /* Custom scrollbar styling for Chromium browsers */
@@ -229,43 +248,37 @@
     button:not(:disabled), [role="button"]:not(:disabled) { cursor: pointer; }
 
     h1 {
-        @apply text-3xl font-bold text-insight-text-primary dark:text-insight-text-primary-dark pb-4;
+        @apply text-3xl font-bold text-insight-text-primary pb-4;
     }
     h2 {
-        @apply text-2xl font-semibold text-insight-text-primary dark:text-insight-text-primary-dark pb-4;
+        @apply text-2xl font-semibold text-insight-text-primary pb-4;
     }
     h3 {
-        @apply text-xl font-semibold text-insight-text-primary dark:text-insight-text-primary-dark pb-2;
+        @apply text-xl font-semibold text-insight-text-primary pb-2;
     }
     h4 {
-        @apply text-lg font-semibold text-insight-text-primary dark:text-insight-text-primary-dark pb-1;
+        @apply text-lg font-semibold text-insight-text-primary pb-1;
     }
     h5 {
-        @apply text-base font-semibold text-insight-text-primary dark:text-insight-text-primary-dark pb-1;
+        @apply text-base font-semibold text-insight-text-primary pb-1;
     }
     hr {
         border-color: var(--color-insight-border-surface);
-    }
-    hr:where([data-theme=dark], [data-theme=dark] *) {
-        border-color: var(--color-insight-border-surface-dark);
     }
 }
 
 @layer components {
     .text-primary {
-        @apply text-insight-text-primary dark:text-insight-text-primary-dark;
+        @apply text-insight-text-primary;
     }
     .text-secondary {
-        @apply text-insight-text-secondary dark:text-insight-text-secondary-dark;
+        @apply text-insight-text-secondary;
     }
     .text-link {
         @apply text-insight-text-link hover:text-insight-text-link-hover underline;
     }
     .text-disabled {
         color: var(--color-insight-text-disabled);
-    }
-    .text-disabled:where([data-theme=dark], [data-theme=dark] *) {
-        color: var(--color-insight-text-disabled-dark);
     }
     .text-inverse {
         color: var(--color-insight-surface-inverse-foreground);
@@ -280,26 +293,14 @@
     .insight-surface-page {
         background-color: var(--color-insight-surface-page);
     }
-    .insight-surface-page:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-page-dark);
-    }
     .insight-surface-base {
         background-color: var(--color-insight-surface-base);
-    }
-    .insight-surface-base:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-base-dark);
     }
     .insight-surface-soft {
         background-color: var(--color-insight-surface-soft);
     }
-    .insight-surface-soft:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-soft-dark);
-    }
     .insight-surface-muted {
         background-color: var(--color-insight-surface-muted);
-    }
-    .insight-surface-muted:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-muted-dark);
     }
     .insight-surface-inverse {
         background-color: var(--color-insight-surface-inverse);
@@ -311,59 +312,32 @@
     .insight-surface-code {
         background-color: var(--color-insight-surface-code);
     }
-    .insight-surface-code:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-code-dark);
-    }
     .insight-surface-canvas {
         background-color: var(--color-insight-surface-canvas);
-    }
-    .insight-surface-canvas:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-canvas-dark);
     }
     .insight-surface-panel {
         background-color: var(--color-insight-surface-panel);
     }
-    .insight-surface-panel:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-panel-dark);
-    }
     .insight-surface-raised {
         background-color: var(--color-insight-surface-raised);
     }
-    .insight-surface-raised:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-raised-dark);
-    }
     .insight-surface-sunken {
         background-color: var(--color-insight-surface-sunken);
-    }
-    .insight-surface-sunken:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-sunken-dark);
     }
 
     .insight-border-surface {
         border-color: var(--color-insight-border-surface);
         border-style: var(--insight-border-style-surface);
     }
-    .insight-border-surface:where([data-theme=dark], [data-theme=dark] *) {
-        border-color: var(--color-insight-border-surface-dark);
-    }
     .insight-border-control {
         border-color: var(--color-insight-border-control);
         border-style: var(--insight-border-style-control);
     }
-    .insight-border-control:where([data-theme=dark], [data-theme=dark] *) {
-        border-color: var(--color-insight-border-control-dark);
-    }
     .insight-border-muted {
         border-color: var(--color-insight-border-muted);
     }
-    .insight-border-muted:where([data-theme=dark], [data-theme=dark] *) {
-        border-color: var(--color-insight-border-muted-dark);
-    }
     .insight-border-disabled {
         border-color: var(--color-insight-border-disabled);
-    }
-    .insight-border-disabled:where([data-theme=dark], [data-theme=dark] *) {
-        border-color: var(--color-insight-border-disabled-dark);
     }
     .insight-border-none-width {
         border-width: var(--insight-border-width-none);
@@ -440,9 +414,6 @@
         @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
         --tw-ring-color: var(--color-insight-focus-ring);
         --tw-ring-offset-color: var(--color-insight-focus-ring-offset);
-    }
-    .insight-focus-ring:where([data-theme=dark], [data-theme=dark] *) {
-        --tw-ring-offset-color: var(--color-insight-focus-ring-offset-dark);
     }
     .insight-glass {
         opacity: var(--insight-surface-opacity);
@@ -537,43 +508,26 @@
     }
 
     .btn-subtil2 {
-        @apply text-insight-text-secondary dark:text-insight-text-secondary-dark;
+        color: var(--color-insight-text-secondary);
         border-color: transparent;
     }
     .btn-subtil2:hover {
         background-color: var(--color-insight-surface-soft);
         border-color: var(--color-insight-border-surface);
     }
-    .btn-subtil2:hover:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-soft-dark);
-        border-color: var(--color-insight-border-surface-dark);
-    }
     .btn-subtil2:active {
         background-color: var(--color-insight-surface-muted);
         border-color: var(--color-insight-border-muted);
     }
-    .btn-subtil2:active:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-muted-dark);
-        border-color: var(--color-insight-border-muted-dark);
-    }
     .btn-subtil {
-        @apply text-insight-text-secondary dark:text-insight-text-secondary-dark;
+        color: var(--color-insight-text-secondary);
         background-color: var(--color-insight-surface-soft);
         border-color: var(--color-insight-border-surface);
-    }
-    .btn-subtil:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-soft-dark);
-        border-color: var(--color-insight-border-surface-dark);
     }
     .btn-subtil:active,
     .btn-subtil:hover {
         background-color: var(--color-insight-surface-muted);
         border-color: var(--color-insight-border-muted);
-    }
-    .btn-subtil:active:where([data-theme=dark], [data-theme=dark] *),
-    .btn-subtil:hover:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-muted-dark);
-        border-color: var(--color-insight-border-muted-dark);
     }
     .btn-primary {
         --insight-button-border-color: var(--color-insight-button-border, var(--color-insight-primary-border, var(--color-insight-primary)));
@@ -659,14 +613,10 @@
         border-color: var(--color-insight-border-disabled);
         color: var(--color-insight-disabled-foreground);
     }
-    .btn-disabled:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-disabled-dark);
-        border-color: var(--color-insight-border-disabled-dark);
-        color: var(--color-insight-disabled-foreground-dark);
-    }
     .btn-close {
-        @apply p-2 border-0 text-insight-text-secondary dark:text-insight-text-secondary-dark;
+        @apply p-2 border-0;
         background-color: var(--color-insight-surface-soft);
+        color: var(--color-insight-text-secondary);
     }
     .btn-close:hover,
     .btn-close:active {
@@ -755,10 +705,6 @@
         border-color: var(--color-insight-border-disabled);
         color: var(--color-insight-disabled-foreground);
     }
-    .btn-outline-disabled:where([data-theme=dark], [data-theme=dark] *) {
-        border-color: var(--color-insight-border-disabled-dark);
-        color: var(--color-insight-disabled-foreground-dark);
-    }
 
     .component-container {
         border-radius: var(--insight-radius-md);
@@ -768,10 +714,6 @@
         border-style: var(--insight-border-style-surface);
         border-width: var(--insight-border-width-surface);
         box-shadow: var(--insight-shadow-surface);
-    }
-    .component-container:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-base-dark);
-        border-color: var(--color-insight-border-surface-dark);
     }
 
     .example-container {
@@ -786,10 +728,6 @@
         box-shadow: var(--insight-shadow-surface-subtle);
         padding-block: var(--insight-density-section-y);
     }
-    .example-container:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-base-dark);
-        border-color: var(--color-insight-border-surface-dark);
-    }
 
     .info-container {
         @apply text-base px-4 py-1;
@@ -802,22 +740,20 @@
         border-width: var(--insight-border-width-surface);
         border-inline-start-width: 4px;
     }
-    .info-container:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-soft-dark);
-        border-color: var(--color-insight-border-surface-dark);
-    }
 
     .inline-tag {
-        @apply font-mono text-insight-primary dark:text-insight-primary-active text-nowrap px-1 py-px;
+        @apply font-mono text-nowrap px-1 py-px;
         border-radius: var(--insight-radius-sm);
         background-color: var(--color-insight-surface-muted);
+        color: var(--color-insight-primary);
     }
-    .inline-tag:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-muted-dark);
+    .inline-tag:hover,
+    .inline-tag:focus {
+        color: var(--color-insight-primary-active);
     }
 
     .input {
-        @apply w-full px-3 py-2 text-sm focus:ring-2 focus:ring-insight-primary dark:text-insight-text-primary-dark transition-colors duration-200;
+        @apply w-full px-3 py-2 text-sm focus:ring-2 focus:ring-insight-primary transition-colors duration-200;
         border-radius: var(--insight-radius-sm);
         background-color: var(--color-insight-surface-base);
         border-color: var(--color-insight-border-control);
@@ -828,10 +764,7 @@
         padding-inline: var(--insight-density-control-x);
         transition-duration: var(--insight-motion-duration-normal);
         transition-timing-function: var(--insight-motion-easing-standard);
-    }
-    .input:where([data-theme=dark], [data-theme=dark] *) {
-        background-color: var(--color-insight-surface-soft-dark);
-        border-color: var(--color-insight-border-control-dark);
+        color: var(--color-insight-text-primary);
     }
     .input:focus {
         border-color: var(--color-insight-primary);
@@ -841,10 +774,6 @@
         --range-progress: 0%;
         --slider-track-active: var(--color-insight-primary);
         --slider-track-inactive: var(--color-insight-surface-muted);
-    }
-
-    .dark .slider-wrapper {
-        --slider-track-inactive: var(--color-insight-surface-muted-dark);
     }
 
     .range-custom::-webkit-slider-runnable-track {

@@ -87,6 +87,16 @@ def test_design_theme_asset_url_rewrites_insight_ui_owned_stylesheets() -> None:
     )
 
 
+@pytest.mark.parametrize("theme_name", ["skeuomorphic", "flat", "material", "neumorphic", "glass", "bento", "drawn"])
+@override_settings(INSIGHT_UI={"assets": {"use_minified": True, "cdn_enabled": True, "cdn_version": "develop"}})
+def test_style_family_theme_assets_use_versioned_cdn_minified_files(theme_name: str) -> None:
+    """Packaged style-family themes should publish through the same CDN contract."""
+    assert (
+        design_theme_asset_url(f"insight_ui/css/themes/{theme_name}.css")
+        == f"https://cdn.alpininsight.ai/insight-ui/develop/css/themes/{theme_name}.min.css"
+    )
+
+
 @override_settings(INSIGHT_UI={"assets": {"cdn_enabled": True}})
 def test_config_merges_nested_asset_defaults() -> None:
     """Partial asset settings should keep default CDN metadata."""

@@ -9,7 +9,8 @@ THEME_ROOT = Path(__file__).resolve().parents[2] / "insight_ui/static/insight_ui
 INPUT_CSS = Path(__file__).resolve().parents[2] / "insight_ui/utils/input.css"
 TAILWIND_CSS = Path(__file__).resolve().parents[2] / "insight_ui/static/insight_ui/css/tailwind.css"
 TAILWIND_MIN_CSS = Path(__file__).resolve().parents[2] / "insight_ui/static/insight_ui/css/tailwind.min.css"
-PROJECT_THEMES = {"default", "alpin", "foundry", "drawn"}
+STYLE_FAMILY_THEMES = {"skeuomorphic", "flat", "material", "neumorphic", "glass", "bento", "drawn"}
+PROJECT_THEMES = {"default", "alpin", "foundry"} | STYLE_FAMILY_THEMES
 BOOTSWATCH_THEMES = set(CONFIG_DEFAULTS["design_themes"]["stylesheets"]) - PROJECT_THEMES
 SEMANTIC_ROLES = ("primary", "secondary", "success", "info", "warning", "danger")
 DARK_BOOTSWATCH_THEMES = ("cyborg", "darkly", "quartz", "slate", "solar", "superhero", "vapor")
@@ -62,6 +63,11 @@ class DesignThemeCssTest(SimpleTestCase):
         ):
             assert token in input_css
 
+        assert '[data-theme="dark"] {' in input_css
+        assert "--color-insight-text-primary: var(--color-insight-text-primary-dark);" in input_css
+        assert "--color-insight-surface-panel: var(--color-insight-surface-panel-dark);" in input_css
+        assert "--color-insight-border-control: var(--color-insight-border-control-dark);" in input_css
+
         for semantic_class in (
             ".insight-surface-page",
             ".insight-surface-base",
@@ -92,7 +98,17 @@ class DesignThemeCssTest(SimpleTestCase):
         design_themes = CONFIG_DEFAULTS["design_themes"]
         display_order = design_themes["display_order"]
 
-        assert display_order == ("default", "alpin", "foundry", "brite", "morph", "sketchy", "drawn", "darkly")
+        assert display_order == (
+            "default",
+            "skeuomorphic",
+            "flat",
+            "material",
+            "neumorphic",
+            "glass",
+            "brite",
+            "bento",
+            "drawn",
+        )
         assert set(display_order) <= set(design_themes["stylesheets"])
         assert set(display_order) <= set(design_themes["labels"])
 
@@ -134,15 +150,43 @@ class DesignThemeCssTest(SimpleTestCase):
         ):
             assert token in drawn_css
 
-    def test_input_css_exposes_dark_states_for_subtle_buttons(self) -> None:
-        """Subtle buttons need dark surface tokens for dark navbars and menus."""
+    def test_style_family_themes_define_light_and_dark_semantic_tokens(self) -> None:
+        """Style families should override semantic tokens instead of component CSS."""
+        for theme_name in STYLE_FAMILY_THEMES:
+            theme_css = (THEME_ROOT / f"{theme_name}.css").read_text()
+
+            assert f"--insight-design-theme-name: {theme_name};" in theme_css
+            assert "--color-insight-text-primary:" in theme_css
+            assert "--color-insight-surface-page:" in theme_css
+            assert "--color-insight-surface-panel:" in theme_css
+            assert "--color-insight-border-control:" in theme_css
+            assert '[data-theme="dark"]' in theme_css
+            assert "--color-insight-text-primary-dark: var(--color-insight-text-primary);" in theme_css
+            assert "--color-insight-surface-panel-dark: var(--color-insight-surface-panel);" in theme_css
+            assert "--color-insight-border-control-dark: var(--color-insight-border-control);" in theme_css
+
+    def test_input_css_uses_semantic_tokens_for_core_utilities(self) -> None:
+        """Core utilities should inherit dark values through central token overrides."""
         input_css = INPUT_CSS.read_text()
 
-        assert ".btn-subtil:where([data-theme=dark], [data-theme=dark] *)" in input_css
-        assert "background-color: var(--color-insight-surface-soft-dark);" in input_css
-        assert "border-color: var(--color-insight-border-surface-dark);" in input_css
-        assert "background-color: var(--color-insight-surface-muted-dark);" in input_css
-        assert "border-color: var(--color-insight-border-muted-dark);" in input_css
+        for selector in (
+            ".btn-subtil",
+            ".btn-disabled",
+            ".component-container",
+            ".example-container",
+            ".info-container",
+            ".inline-tag",
+            ".input",
+            ".slider-wrapper",
+        ):
+            assert selector in input_css
+
+        assert ".btn-subtil:where([data-theme=dark], [data-theme=dark] *)" not in input_css
+        assert ".component-container:where([data-theme=dark], [data-theme=dark] *)" not in input_css
+        assert ".input:where([data-theme=dark], [data-theme=dark] *)" not in input_css
+        assert ".dark .slider-wrapper" not in input_css
+        assert "background-color: var(--color-insight-surface-soft);" in input_css
+        assert "border-color: var(--color-insight-border-surface);" in input_css
 
     def test_bootswatch_themes_define_text_and_button_foreground_tokens(self) -> None:
         """Every Bootswatch theme must include text and button font color tokens."""

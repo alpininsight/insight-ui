@@ -22,11 +22,12 @@ class ConfigMergeTest(SimpleTestCase):
         assert design_themes["labels"]["cerulean"] == "Cerulean"
         assert design_themes["display_order"] == (
             "default",
-            "alpin",
-            "foundry",
+            "skeuomorphic",
+            "flat",
+            "material",
+            "neumorphic",
+            "glass",
             "brite",
-            "morph",
-            "sketchy",
+            "bento",
             "drawn",
-            "darkly",
         )

@@ -1,18 +1,18 @@
-"""Tests for the minimal_step_bar component."""
+"""Tests for the minimal_stepper component."""
 
 from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
 # TODO: Implement tests for MinimalStepBar component  # noqa: TD002, TD003
 
 
-class TestMinimalStepBar(TemplateTagsTestCase):
-    """Test suite for the minimal_step_bar component."""
+class TestMinimalStepper(TemplateTagsTestCase):
+    """Test suite for the minimal_stepper component."""
 
-    def test_minimal_step_bar_uses_status_foreground_tokens(self) -> None:
+    def test_minimal_stepper_uses_status_foreground_tokens(self) -> None:
         """Status segments must use theme foreground tokens instead of fixed white text."""
         template_string = """
         {% load insight_tags %}
-        {% minimal_step_bar items=items %}
+        {% minimal_stepper items=items %}
         """
         rendered = self.render_template(template_string, context={"items": ["success", "failed", "active", ""]})
 

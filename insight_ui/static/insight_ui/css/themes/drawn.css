@@ -105,17 +105,30 @@
 
 :root[data-theme="dark"],
 [data-theme="dark"] {
-    --color-insight-text-primary-dark: #fffaf0;
-    --color-insight-text-secondary-dark: #d8c9ad;
-    --color-insight-surface-page-dark: #171411;
-    --color-insight-surface-base-dark: #221d18;
-    --color-insight-surface-soft-dark: #30281f;
-    --color-insight-surface-muted-dark: #423528;
-    --color-insight-surface-canvas-dark: var(--color-insight-surface-page-dark);
-    --color-insight-surface-panel-dark: var(--color-insight-surface-base-dark);
-    --color-insight-surface-raised-dark: var(--color-insight-surface-soft-dark);
-    --color-insight-surface-sunken-dark: var(--color-insight-surface-muted-dark);
-    --color-insight-border-surface-dark: #d8c9ad;
-    --color-insight-border-control-dark: #d8c9ad;
-    --color-insight-border-muted-dark: #a7977c;
+    --color-insight-text-primary: #fffaf0;
+    --color-insight-text-secondary: #d8c9ad;
+    --color-insight-surface-page: #171411;
+    --color-insight-surface-base: #221d18;
+    --color-insight-surface-soft: #30281f;
+    --color-insight-surface-muted: #423528;
+    --color-insight-surface-canvas: var(--color-insight-surface-page);
+    --color-insight-surface-panel: var(--color-insight-surface-base);
+    --color-insight-surface-raised: var(--color-insight-surface-soft);
+    --color-insight-surface-sunken: var(--color-insight-surface-muted);
+    --color-insight-border-surface: #d8c9ad;
+    --color-insight-border-control: #d8c9ad;
+    --color-insight-border-muted: #a7977c;
+    --color-insight-text-primary-dark: var(--color-insight-text-primary);
+    --color-insight-text-secondary-dark: var(--color-insight-text-secondary);
+    --color-insight-surface-page-dark: var(--color-insight-surface-page);
+    --color-insight-surface-base-dark: var(--color-insight-surface-base);
+    --color-insight-surface-soft-dark: var(--color-insight-surface-soft);
+    --color-insight-surface-muted-dark: var(--color-insight-surface-muted);
+    --color-insight-surface-canvas-dark: var(--color-insight-surface-canvas);
+    --color-insight-surface-panel-dark: var(--color-insight-surface-panel);
+    --color-insight-surface-raised-dark: var(--color-insight-surface-raised);
+    --color-insight-surface-sunken-dark: var(--color-insight-surface-sunken);
+    --color-insight-border-surface-dark: var(--color-insight-border-surface);
+    --color-insight-border-control-dark: var(--color-insight-border-control);
+    --color-insight-border-muted-dark: var(--color-insight-border-muted);
 }
