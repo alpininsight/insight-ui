@@ -86,6 +86,53 @@ class TestNavbar(TemplateTagsTestCase):
         assert "absolute" in menu.get("class", [])
         assert "top-full" in menu.get("class", [])
 
+    def test_navbar_user_menu_renders_avatar_image_when_configured(self) -> None:
+        """Host apps can provide a user avatar URL without replacing the dropdown."""
+        nav_config = NavbarConfig(NavbarBrandConfig("Insight UI", "/"), show_usermenu=True)
+
+        template_string = """
+        {% load insight_tags %}
+        {% navbar config=nav_config user_dropdown_links=user_dropdown_links user_avatar_url=user_avatar_url user_avatar_alt=user_avatar_alt %}
+        """
+
+        rendered = self.render_template(
+            template_string,
+            context={
+                "nav_config": nav_config,
+                "user_dropdown_links": [],
+                "user": self.user,
+                "user_avatar_url": "/media/avatars/demo.webp",
+                "user_avatar_alt": "Demo user avatar",
+            },
+        )
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        trigger = soup.select_one('button[data-insight-dropdown="user-menu"]')
+        avatar = trigger.find("img") if trigger else None
+
+        assert trigger is not None
+        assert trigger.get("aria-label") == "Demo user avatar"
+        assert avatar is not None
+        assert avatar.get("src") == "/media/avatars/demo.webp"
+        assert avatar.get("alt") == "Demo user avatar"
+        assert "object-cover" in avatar.get("class", [])
+
+    def test_navbar_user_menu_keeps_initials_fallback_without_avatar(self) -> None:
+        """Existing initials fallback remains the default user menu trigger."""
+        nav_config = NavbarConfig(NavbarBrandConfig("Insight UI", "/"), show_usermenu=True)
+
+        rendered = self.render_template(
+            "{% load insight_tags %}{% navbar config=nav_config user_dropdown_links=user_dropdown_links %}",
+            context={"nav_config": nav_config, "user_dropdown_links": [], "user": self.user},
+        )
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        trigger = soup.select_one('button[data-insight-dropdown="user-menu"]')
+
+        assert trigger is not None
+        assert trigger.find("img") is None
+        assert trigger.get_text(strip=True) == self.user.get_username()[:1].upper()
+
     def test_navbar_renders_brand_lockup_when_configured(self) -> None:
         """Navbar can render a controlled brand lockup instead of logo plus title."""
         nav_config = NavbarConfig(
