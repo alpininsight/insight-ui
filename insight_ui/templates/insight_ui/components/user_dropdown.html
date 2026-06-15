@@ -3,8 +3,12 @@
 {% if user.is_authenticated %}
     {# User-Dropdown menu #}
     <div class="relative h-full">
-        <button type="button" data-insight-dropdown="user-menu" class="btn-subtil rounded-full size-10">
-            {{ user.get_username|default:''|slice:":1"|upper }}
+        <button type="button" data-insight-dropdown="user-menu" class="btn-subtil rounded-full size-10 overflow-hidden" aria-label="{{ user_avatar_alt|default:user.get_username }}">
+            {% if user_avatar_url %}
+                <img src="{{ user_avatar_url }}" alt="{{ user_avatar_alt|default:user.get_username }}" class="size-full rounded-full object-cover">
+            {% else %}
+                {{ user.get_username|default:''|slice:":1"|upper }}
+            {% endif %}
         </button>
         <div class="hidden absolute top-full z-50 mt-2 min-w-56 text-lg bg-neutral-100 dark:bg-gray-700 border border-gray-200 dark:border-0 rounded shadow-lg divide-y divide-gray-300 dark:divide-gray-500 ltr:right-0 rtl:left-0" id="user-menu">
             <span class="flex flex-col gap-1 text-xs px-6 py-1">
