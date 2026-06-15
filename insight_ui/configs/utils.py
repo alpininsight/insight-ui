@@ -433,6 +433,8 @@ class WebSocketConfig:
         )
         """
 
-    tag_id: str = field(default="", metadata={"doc": _("Container ID.")})
+    tag_id: str = field(
+        default="", metadata={"doc": _("Container ID. This ID must be included in the WebSocket's HTML message.")}
+    )
     request_url: str = field(default="", metadata={"doc": _("WebSocket endpoint URL.")})
     initial_content: str = field(default="", metadata={"doc": _("Initial content.")})

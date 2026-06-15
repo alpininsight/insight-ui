@@ -117,7 +117,7 @@ class Component(Enum):
     GEO_MAP = ("geo_map", ComponentCategory.UTIL, GeoMapConfig)
     CHART = ("chart", ComponentCategory.UTIL, ChartConfig)
     LIVE_CONTENT = ("live_content", ComponentCategory.UTIL, LiveContentConfig, False, True, False)
-    WEB_SOCKET = ("web_socket", ComponentCategory.UTIL, WebSocketConfig, False, True, True)
+    WEB_SOCKET = ("web_socket", ComponentCategory.UTIL, WebSocketConfig, False, True, False)
     INFINITE_SCROLL = ("infinite_scroll", ComponentCategory.LIST, InfiniteScrollConfig, False, True, False)
     PAGINATION = ("pagination", ComponentCategory.LIST, PaginationConfig, False, True, False)
     TABLE = ("table", ComponentCategory.LIST, TableConfig)

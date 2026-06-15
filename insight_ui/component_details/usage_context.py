@@ -698,7 +698,7 @@ def get_web_socket_usage_context() -> dict[str, str]:
 
         <!-- or -->
 
-        {% websocket tag_id="runtime-stream" url="/runtime/stream/" initial_content="Waiting for runtime updates…" %}
+        {% websocket tag_id="demo-websocket" request_url="ws://127.0.0.1:8765" initial_content="<p>Waiting for runtime updates…</p>" %}
         """
     }
 

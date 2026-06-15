@@ -263,8 +263,7 @@
 {% elif component.value == "live_content" %}
     {% live_content tag_id="live-content" request_url="/api/live-data/" interval=10 %}
 {% elif component.value == "web_socket" %}
-    <i class="text-secondary">Work in progress...</i>
-    {# {% websocket tag_id="runtime-stream" request_url="/runtime/stream/" initial_content="<p>Waiting for runtime updates…</p>" %} #}
+    {% websocket tag_id="demo-websocket" request_url="ws://127.0.0.1:8765" initial_content="<p>Waiting for runtime updates…</p>" %}
 {% elif component.value == "infinite_scroll" %}
     {% infinite_scroll config=infinite_scroll_config %}
 {% elif component.value == "pagination" %}
