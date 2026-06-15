@@ -13,6 +13,9 @@
     --color-insight-secondary: #fff;
     --color-insight-secondary-hover: white;
     --color-insight-secondary-active: white;
+    --color-insight-secondary-border: #dee2e6;
+    --color-insight-secondary-border-hover: #ced4da;
+    --color-insight-secondary-border-active: #adb5bd;
     --color-insight-secondary-foreground: #000;
     --color-insight-secondary-foreground-hover: #000;
     --color-insight-secondary-foreground-active: #000;

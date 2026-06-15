@@ -11,6 +11,8 @@ TAILWIND_CSS = Path(__file__).resolve().parents[2] / "insight_ui/static/insight_
 TAILWIND_MIN_CSS = Path(__file__).resolve().parents[2] / "insight_ui/static/insight_ui/css/tailwind.min.css"
 BOOTSWATCH_THEMES = set(CONFIG_DEFAULTS["design_themes"]["stylesheets"]) - {"default", "alpin", "foundry"}
 SEMANTIC_ROLES = ("primary", "secondary", "success", "info", "warning", "danger")
+DARK_BOOTSWATCH_THEMES = ("cyborg", "darkly", "quartz", "slate", "solar", "superhero", "vapor")
+WHITE_SECONDARY_THEMES = ("lux", "materia", "simplex", "zephyr")
 
 
 class DesignThemeCssTest(SimpleTestCase):
@@ -100,6 +102,7 @@ class DesignThemeCssTest(SimpleTestCase):
         """Representative Bootswatch values should remain sourced from Bootswatch CSS."""
         brite_css = (THEME_ROOT / "brite.css").read_text()
         cerulean_css = (THEME_ROOT / "cerulean.css").read_text()
+        zephyr_css = (THEME_ROOT / "zephyr.css").read_text()
 
         assert "--color-insight-secondary: #fff;" in brite_css
         assert "--color-insight-button-border: #000;" in brite_css
@@ -110,3 +113,34 @@ class DesignThemeCssTest(SimpleTestCase):
         assert "--color-insight-text-secondary: rgba(73, 80, 87, 0.75);" in cerulean_css
         assert "--color-insight-primary-foreground: #fff;" in cerulean_css
         assert "--color-insight-secondary-foreground: #000;" in cerulean_css
+        assert "--color-insight-secondary-border: #dee2e6;" in zephyr_css
+
+    def test_dark_bootswatch_themes_define_dark_surface_and_border_tokens(self) -> None:
+        """Dark design themes need dark aliases for semantic surface classes."""
+        for theme_name in DARK_BOOTSWATCH_THEMES:
+            theme_css = (THEME_ROOT / f"{theme_name}.css").read_text()
+
+            for token in (
+                "--color-insight-surface-page-dark:",
+                "--color-insight-surface-base-dark:",
+                "--color-insight-surface-soft-dark:",
+                "--color-insight-surface-muted-dark:",
+                "--color-insight-surface-canvas-dark:",
+                "--color-insight-surface-panel-dark:",
+                "--color-insight-surface-raised-dark:",
+                "--color-insight-surface-sunken-dark:",
+                "--color-insight-border-surface-dark:",
+                "--color-insight-border-control-dark:",
+                "--color-insight-border-muted-dark:",
+            ):
+                assert token in theme_css
+
+    def test_white_secondary_bootswatch_themes_define_visible_secondary_borders(self) -> None:
+        """White secondary buttons need visible border tokens on white surfaces."""
+        for theme_name in WHITE_SECONDARY_THEMES:
+            theme_css = (THEME_ROOT / f"{theme_name}.css").read_text()
+
+            assert "--color-insight-secondary: #fff;" in theme_css
+            assert "--color-insight-secondary-border: #dee2e6;" in theme_css
+            assert "--color-insight-secondary-border-hover: #ced4da;" in theme_css
+            assert "--color-insight-secondary-border-active: #adb5bd;" in theme_css

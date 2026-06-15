@@ -4,6 +4,18 @@
     --color-insight-text-secondary: rgba(255, 255, 255, 0.75);
     --color-insight-text-link: #fff;
     --color-insight-text-link-hover: #cccccc;
+    --color-insight-surface-page-dark: #170f2f;
+    --color-insight-surface-base-dark: #2a2048;
+    --color-insight-surface-soft-dark: rgba(255, 255, 255, 0.12);
+    --color-insight-surface-muted-dark: rgba(255, 255, 255, 0.2);
+    --color-insight-surface-canvas-dark: var(--color-insight-surface-page-dark);
+    --color-insight-surface-panel-dark: var(--color-insight-surface-base-dark);
+    --color-insight-surface-raised-dark: var(--color-insight-surface-soft-dark);
+    --color-insight-surface-sunken-dark: var(--color-insight-surface-muted-dark);
+    --color-insight-border-surface-dark: rgba(255, 255, 255, 0.25);
+    --color-insight-border-control-dark: rgba(255, 255, 255, 0.35);
+    --color-insight-border-muted-dark: rgba(255, 255, 255, 0.45);
+    --color-insight-focus-ring-offset-dark: var(--color-insight-surface-base-dark);
     --color-insight-primary: #e83283;
     --color-insight-primary-hover: #c52b6f;
     --color-insight-primary-active: #ba2869;

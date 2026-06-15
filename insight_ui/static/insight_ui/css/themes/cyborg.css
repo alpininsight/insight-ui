@@ -4,6 +4,18 @@
     --color-insight-text-secondary: rgba(173, 175, 174, 0.75);
     --color-insight-text-link: #2a9fd6;
     --color-insight-text-link-hover: #227fab;
+    --color-insight-surface-page-dark: #060606;
+    --color-insight-surface-base-dark: #222;
+    --color-insight-surface-soft-dark: #2a2a2a;
+    --color-insight-surface-muted-dark: #333;
+    --color-insight-surface-canvas-dark: var(--color-insight-surface-page-dark);
+    --color-insight-surface-panel-dark: var(--color-insight-surface-base-dark);
+    --color-insight-surface-raised-dark: var(--color-insight-surface-soft-dark);
+    --color-insight-surface-sunken-dark: var(--color-insight-surface-muted-dark);
+    --color-insight-border-surface-dark: #444;
+    --color-insight-border-control-dark: #555;
+    --color-insight-border-muted-dark: #666;
+    --color-insight-focus-ring-offset-dark: var(--color-insight-surface-base-dark);
     --color-insight-primary: #2a9fd6;
     --color-insight-primary-hover: #2487b6;
     --color-insight-primary-active: #227fab;
