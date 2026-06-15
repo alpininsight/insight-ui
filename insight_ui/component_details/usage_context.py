@@ -126,26 +126,26 @@ def get_breadcrumb_usage_context() -> dict[str, str]:
     }
 
 
-@register_component(Component.STEP_BAR)
-def get_step_bar_usage_context() -> dict[str, str]:
+@register_component(Component.STEPPER)
+def get_stepper_usage_context() -> dict[str, str]:
     """Serve usage documentation for the step bar component."""
     return {
         "usage": """
         {% load insight_tags %}
 
-        {% step_bar items=step_bar_items %}
+        {% stepper items=stepper_items %}
         """
     }
 
 
-@register_component(Component.MINIMAL_STEP_BAR)
-def get_minimal_step_bar_usage_context() -> dict[str, str]:
+@register_component(Component.MINIMAL_STEPPER)
+def get_minimal_stepper_usage_context() -> dict[str, str]:
     """Serve usage documentation for the minimal step bar component."""
     return {
         "usage": """
         {% load insight_tags %}
 
-        {% minimal_step_bar config=min_step_bar_config %}
+        {% minimal_stepper config=min_stepper_config %}
         """
     }
 

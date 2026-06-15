@@ -16,7 +16,7 @@ from insight_ui.component_details.components import Component, ComponentCategory
 from insight_ui.component_details.demo_context import (
     DEMO_FIELDS,
     get_component_demo_context,
-    get_minimal_step_bar_context,
+    get_minimal_stepper_context,
 )
 from insight_ui.component_details.git_path_mapping import SCRIPT_PATHS, TEMPLATE_PATHS
 from insight_ui.configs.base import IconConfig
@@ -343,7 +343,7 @@ def icon_view(request: HttpRequest) -> HttpResponse:
 @require_GET
 def playground_view(request: HttpRequest) -> HttpResponse:
     """Render playground page."""
-    context = get_base_context() | get_sidebar_context() | get_minimal_step_bar_context()
+    context = get_base_context() | get_sidebar_context() | get_minimal_stepper_context()
 
     return render(request, "insight_ui/playground.html", context)
 

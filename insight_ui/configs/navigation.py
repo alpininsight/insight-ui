@@ -443,9 +443,9 @@ class BreadcrumbsConfig:
 
 
 @dataclass
-class StepBarItemConfig:
+class StepperItemConfig:
     """
-    Configuration for a step in the step_bar component.
+    Configuration for a step in the stepper component.
 
     Attributes:
         title: Title of the step.
@@ -458,7 +458,7 @@ class StepBarItemConfig:
     """
 
     __example__ = """
-        StepBarItemConfig(title="Address", description="Enter shipping address", success=True)
+        StepperItemConfig(title="Address", description="Enter shipping address", success=True)
         """
 
     title: str = field(metadata={"doc": _("Title of the step.")})
@@ -470,9 +470,9 @@ class StepBarItemConfig:
 
 
 @dataclass
-class StepBarConfig:
+class StepperConfig:
     """
-    Configuration for the step_bar component.
+    Configuration for the stepper component.
 
     Renders a graphical representation of process steps.
 
@@ -482,22 +482,22 @@ class StepBarConfig:
     """
 
     __example__ = """
-        StepBarConfig(
+        StepperConfig(
             items=[
-                StepBarItemConfig(title="Address", description="Enter shipping address", success=True),
-                StepBarItemConfig(title="Payment", description="Select payment method", current=True),
-                StepBarItemConfig(title="Review", description="Review and confirm"),
+                StepperItemConfig(title="Address", description="Enter shipping address", success=True),
+                StepperItemConfig(title="Payment", description="Select payment method", current=True),
+                StepperItemConfig(title="Review", description="Review and confirm"),
             ],
         )
         """
 
-    items: list[StepBarItemConfig] = field(default_factory=list, metadata={"doc": _("List of step configurations.")})
+    items: list[StepperItemConfig] = field(default_factory=list, metadata={"doc": _("List of step configurations.")})
 
 
 @dataclass
-class MinimalStepBarConfig:
+class MinimalStepperConfig:
     """
-    Configuration for the minimal_step_bar component.
+    Configuration for the minimal_stepper component.
 
     Renders a compact progress indicator.
 
@@ -511,7 +511,7 @@ class MinimalStepBarConfig:
     """
 
     __example__ = """
-        MinimalStepBarConfig(step_count=5, current_step=3)
+        MinimalStepperConfig(step_count=5, current_step=3)
         """
 
     items: list[Literal["success", "failed", "active", ""]] = field(

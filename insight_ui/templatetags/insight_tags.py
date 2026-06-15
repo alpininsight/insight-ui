@@ -61,7 +61,7 @@ from insight_ui.configs import (
     InputFieldConfig,
     LiveContentConfig,
     LogoConfig,
-    MinimalStepBarConfig,
+    MinimalStepperConfig,
     ModalConfig,
     MultiselectConfig,
     NavbarConfig,
@@ -78,8 +78,8 @@ from insight_ui.configs import (
     SidebarConfig,
     SidebarDataConfig,
     SliderConfig,
-    StepBarConfig,
-    StepBarItemConfig,
+    StepperConfig,
+    StepperItemConfig,
     TableConfig,
     TabsConfig,
     TextareaConfig,
@@ -406,18 +406,18 @@ def breadcrumbs(
     return {"items": config.items, "htmx": config.htmx}
 
 
-@register.inclusion_tag("insight_ui/components/step_bar.html")
-def step_bar(
-    config: StepBarConfig | None = None, *, items: list[StepBarItemConfig] | None | _Unset = UNSET
+@register.inclusion_tag("insight_ui/components/stepper.html")
+def stepper(
+    config: StepperConfig | None = None, *, items: list[StepperItemConfig] | None | _Unset = UNSET
 ) -> dict[str, Any]:
     """Render a graphical representation of process steps."""
-    config = build_config(StepBarConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(StepperConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
     return {"items": config.items}
 
 
-@register.inclusion_tag("insight_ui/components/minimal_step_bar.html")
-def minimal_step_bar(
-    config: MinimalStepBarConfig | None = None,
+@register.inclusion_tag("insight_ui/components/minimal_stepper.html")
+def minimal_stepper(
+    config: MinimalStepperConfig | None = None,
     *,
     items: list[Literal["active", "success", "failed", ""]] | _Unset = UNSET,
     step_count: int | _Unset = UNSET,
@@ -426,7 +426,7 @@ def minimal_step_bar(
     icon_size: Literal["xs", "s", "m", "l", "xl"] | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a compact graphical representation of process steps."""
-    config = build_config(MinimalStepBarConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(MinimalStepperConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
 
     # Generate items from step_count if not provided
     if not config.items and config.step_count > 0:

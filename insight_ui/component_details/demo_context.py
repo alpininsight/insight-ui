@@ -44,7 +44,7 @@ from insight_ui.configs import (
     ImageConfig,
     InfiniteScrollConfig,
     LogoConfig,
-    MinimalStepBarConfig,
+    MinimalStepperConfig,
     ModalConfig,
     MultiselectConfig,
     NavbarBrandConfig,
@@ -62,7 +62,7 @@ from insight_ui.configs import (
     SidebarDataConfig,
     SidebarItemConfig,
     SliderConfig,
-    StepBarItemConfig,
+    StepperItemConfig,
     TabConfig,
     TableConfig,
     TabsConfig,
@@ -324,29 +324,29 @@ def get_breadcrumb_context() -> dict:
     }
 
 
-@register_demo_context(Component.STEP_BAR)
-def get_step_bar_context() -> dict:
+@register_demo_context(Component.STEPPER)
+def get_stepper_context() -> dict:
     """Serve data for step bar detailpage."""
     return {
-        "step_bar_items": [
-            StepBarItemConfig(_("Contact Details"), _("Information about the person and address."), success=True),
-            StepBarItemConfig(_("Payment Method"), _("Select the payment method."), current=True),
-            StepBarItemConfig(_("Review"), _("Review the data and pay.")),
+        "stepper_items": [
+            StepperItemConfig(_("Contact Details"), _("Information about the person and address."), success=True),
+            StepperItemConfig(_("Payment Method"), _("Select the payment method."), current=True),
+            StepperItemConfig(_("Review"), _("Review the data and pay.")),
         ],
-        "step_bar_items_failed": [
-            StepBarItemConfig(_("Contact Details"), _("Information about the person and address."), success=True),
-            StepBarItemConfig(_("Payment Method"), _("Select the payment method."), success=True),
-            StepBarItemConfig(_("Review"), _("Review the data and pay."), failed=True),
+        "stepper_items_failed": [
+            StepperItemConfig(_("Contact Details"), _("Information about the person and address."), success=True),
+            StepperItemConfig(_("Payment Method"), _("Select the payment method."), success=True),
+            StepperItemConfig(_("Review"), _("Review the data and pay."), failed=True),
         ],
     }
 
 
-@register_demo_context(Component.MINIMAL_STEP_BAR)
-def get_minimal_step_bar_context() -> dict:
+@register_demo_context(Component.MINIMAL_STEPPER)
+def get_minimal_stepper_context() -> dict:
     """Serve data for minimal step bar detailpage."""
     return {
-        "min_step_bar": MinimalStepBarConfig(step_count=5, current_step=3),
-        "min_step_bar_with_list": MinimalStepBarConfig(["success", "success", "failed", "active", ""]),
+        "min_stepper": MinimalStepperConfig(step_count=5, current_step=3),
+        "min_stepper_with_list": MinimalStepperConfig(["success", "success", "failed", "active", ""]),
     }
 
 

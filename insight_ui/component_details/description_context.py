@@ -116,25 +116,25 @@ def get_breadcrumb_description_context() -> dict[str, list[str]]:
     }
 
 
-@register_component(Component.STEP_BAR)
-def get_step_bar_description_context() -> dict[str, list[str]]:
+@register_component(Component.STEPPER)
+def get_stepper_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the step bar component."""
     return {
         "description": [
             _(
-                "The `step_bar` component can be used to show the user the progress of a manual process. This refers, for example, to a typical checkout process. This typically consists of several steps, such as entering an address, selecting a payment method, and then reviewing the entries once more. The component shows the user where they currently are and which steps remain."
+                "The `stepper` component can be used to show the user the progress of a manual process. This refers, for example, to a typical checkout process. This typically consists of several steps, such as entering an address, selecting a payment method, and then reviewing the entries once more. The component shows the user where they currently are and which steps remain."
             )
         ]
     }
 
 
-@register_component(Component.MINIMAL_STEP_BAR)
-def get_minimal_step_bar_description_context() -> dict[str, list[str]]:
+@register_component(Component.MINIMAL_STEPPER)
+def get_minimal_stepper_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the minimal step bar component."""
     return {
         "description": [
             _(
-                "The `minimal_step_bar` component can be used to graphically display progress in a multi-step process in a simple way."
+                "The `minimal_stepper` component can be used to graphically display progress in a multi-step process in a simple way."
             )
         ]
     }

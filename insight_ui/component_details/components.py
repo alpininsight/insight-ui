@@ -29,7 +29,7 @@ from insight_ui.configs import (
     InputFieldConfig,
     LiveContentConfig,
     LogoConfig,
-    MinimalStepBarConfig,
+    MinimalStepperConfig,
     ModalConfig,
     MultiselectConfig,
     NavbarConfig,
@@ -42,7 +42,7 @@ from insight_ui.configs import (
     SelectConfig,
     SidebarConfig,
     SliderConfig,
-    StepBarConfig,
+    StepperConfig,
     TableConfig,
     TabsConfig,
     TextareaConfig,
@@ -84,8 +84,8 @@ class Component(Enum):
     SIDEBAR = ("sidebar", ComponentCategory.NAVIGATION, SidebarConfig, True, False, False)
     FOOTER = ("footer", ComponentCategory.NAVIGATION, FooterConfig, True, False, False)
     BREADCRUMBS = ("breadcrumbs", ComponentCategory.NAVIGATION)
-    STEP_BAR = ("step_bar", ComponentCategory.NAVIGATION, StepBarConfig)
-    MINIMAL_STEP_BAR = ("minimal_step_bar", ComponentCategory.NAVIGATION, MinimalStepBarConfig)
+    STEPPER = ("stepper", ComponentCategory.NAVIGATION, StepperConfig)
+    MINIMAL_STEPPER = ("minimal_stepper", ComponentCategory.NAVIGATION, MinimalStepperConfig)
     BULLET_POINT_LIST = ("bullet_point_list", ComponentCategory.NAVIGATION, BulletPointListConfig)
     ACCORDION = ("accordion", ComponentCategory.NAVIGATION, AccordionConfig)
     TABS = ("tabs", ComponentCategory.NAVIGATION, TabsConfig, False, True, False)

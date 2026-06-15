@@ -92,8 +92,8 @@ def get_breadcrumb_a11y_context() -> dict[str, list[str]]:
     }
 
 
-@register_component(Component.STEP_BAR)
-def get_step_bar_a11y_context() -> dict[str, list[str]]:
+@register_component(Component.STEPPER)
+def get_stepper_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the step bar component."""
     return {
         "a11y": [
@@ -104,8 +104,8 @@ def get_step_bar_a11y_context() -> dict[str, list[str]]:
     }
 
 
-@register_component(Component.MINIMAL_STEP_BAR)
-def get_minimal_step_bar_a11y_context() -> dict[str, list[str]]:
+@register_component(Component.MINIMAL_STEPPER)
+def get_minimal_stepper_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the minimal step bar component."""
     return {"a11y": []}
 
