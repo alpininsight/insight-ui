@@ -16,11 +16,6 @@
                         value="{{ item.value }}"
                         {% if radio_block_config.current_value == item.value or not radio_block_config.current_value and forloop.first %}checked{% endif %}
                         {% if item.disabled %}disabled{% endif %}
-                        {% if radio_block_config.request_url and radio_block_config.hx_target_id %}
-                            hx-get="{{ radio_block_config.request_url }}"
-                            hx-target="#{{ radio_block_config.hx_target_id }}"
-                            hx-swap="{{ radio_block_config.hx_swap_method|default:"outerHTML" }}"
-                        {% endif %}
                         {% if radio_block_config.method %}
                             data-radio-callback="{{ radio_block_config.method }}"
                         {% endif %}

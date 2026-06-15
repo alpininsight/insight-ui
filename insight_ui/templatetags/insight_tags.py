@@ -131,16 +131,19 @@ def ensure_list(value: str | Iterable[str] | None) -> list[str]:
 
 
 def _is_dataclass_type(annotation: object) -> bool:
+    """Return whether a type annotation directly describes a dataclass config."""
     return isinstance(annotation, type) and is_dataclass(annotation)
 
 
 def _coerce_mapping_to_config[T](cls: type[T], value: Mapping[str, Any]) -> T:
+    """Create a dataclass config from a mapping, including nested config values."""
     type_hints = get_type_hints(cls)
     coerced_values = {key: _coerce_config_value(item, type_hints.get(key, Any)) for key, item in value.items()}
     return cls(**coerced_values)
 
 
 def _coerce_sequence_to_config(value: Sequence[Any], annotation: object) -> list[Any]:
+    """Convert list-like config values according to their annotated item type."""
     origin = get_origin(annotation)
     if origin in (list, Sequence):
         args = get_args(annotation)
@@ -157,6 +160,7 @@ def _coerce_sequence_to_config(value: Sequence[Any], annotation: object) -> list
 
 
 def _coerce_config_value(value: Any, annotation: object) -> Any:  # noqa: ANN401
+    """Coerce mapping and sequence values into annotated dataclass config types."""
     origin = get_origin(annotation)
 
     if isinstance(value, Mapping):
