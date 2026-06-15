@@ -29,6 +29,9 @@
     --color-insight-border-muted: #a7b8a0;
     --insight-gradient-surface: linear-gradient(145deg, rgb(255 255 255 / 0.95), rgb(238 243 237 / 0.72));
     --insight-shadow-control: 0 1px 2px rgb(23 32 51 / 0.08);
+    --insight-shadow-button: 0 4px 12px rgb(23 32 51 / 0.08);
+    --insight-shadow-button-hover: 0 8px 18px rgb(23 32 51 / 0.12);
+    --insight-shadow-button-active: inset 0 2px 6px rgb(23 32 51 / 0.12);
     --insight-shadow-surface-subtle: 0 8px 22px rgb(23 32 51 / 0.06);
     --insight-shadow-surface: 0 18px 40px rgb(23 32 51 / 0.09);
     --insight-shadow-overlay: 0 28px 70px rgb(23 32 51 / 0.18);
@@ -53,6 +56,9 @@
     --color-insight-border-surface: #24324a;
     --color-insight-border-control: #334155;
     --color-insight-border-muted: #475569;
+    --insight-shadow-button: 0 4px 12px rgb(0 0 0 / 0.22);
+    --insight-shadow-button-hover: 0 8px 18px rgb(0 0 0 / 0.28);
+    --insight-shadow-button-active: inset 0 2px 6px rgb(0 0 0 / 0.28);
     --color-insight-text-primary-dark: var(--color-insight-text-primary);
     --color-insight-text-secondary-dark: var(--color-insight-text-secondary);
     --color-insight-surface-page-dark: var(--color-insight-surface-page);

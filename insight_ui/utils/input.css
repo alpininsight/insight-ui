@@ -293,15 +293,23 @@
 
     .insight-surface-page {
         background-color: var(--color-insight-surface-page);
+        background-image: var(--insight-background-pattern);
+        background-size: var(--insight-background-pattern-size);
     }
     .insight-surface-base {
         background-color: var(--color-insight-surface-base);
+        backdrop-filter: blur(var(--insight-backdrop-blur));
+        -webkit-backdrop-filter: blur(var(--insight-backdrop-blur));
     }
     .insight-surface-soft {
         background-color: var(--color-insight-surface-soft);
+        backdrop-filter: blur(var(--insight-backdrop-blur));
+        -webkit-backdrop-filter: blur(var(--insight-backdrop-blur));
     }
     .insight-surface-muted {
         background-color: var(--color-insight-surface-muted);
+        backdrop-filter: blur(var(--insight-backdrop-blur));
+        -webkit-backdrop-filter: blur(var(--insight-backdrop-blur));
     }
     .insight-surface-inverse {
         background-color: var(--color-insight-surface-inverse);
@@ -315,15 +323,23 @@
     }
     .insight-surface-canvas {
         background-color: var(--color-insight-surface-canvas);
+        background-image: var(--insight-background-pattern);
+        background-size: var(--insight-background-pattern-size);
     }
     .insight-surface-panel {
         background-color: var(--color-insight-surface-panel);
+        backdrop-filter: blur(var(--insight-backdrop-blur));
+        -webkit-backdrop-filter: blur(var(--insight-backdrop-blur));
     }
     .insight-surface-raised {
         background-color: var(--color-insight-surface-raised);
+        backdrop-filter: blur(var(--insight-backdrop-blur));
+        -webkit-backdrop-filter: blur(var(--insight-backdrop-blur));
     }
     .insight-surface-sunken {
         background-color: var(--color-insight-surface-sunken);
+        backdrop-filter: blur(var(--insight-backdrop-blur));
+        -webkit-backdrop-filter: blur(var(--insight-backdrop-blur));
     }
 
     .insight-border-surface {
@@ -476,6 +492,7 @@
 
     .btn {
         @apply flex gap-2 items-center justify-center border-2 border-transparent px-5 py-1.5 transition-colors;
+        background-image: var(--insight-gradient-button);
         border-radius: var(--insight-radius-sm);
         border-style: var(--insight-border-style-control);
         border-width: var(--insight-border-width-emphasis);
@@ -711,6 +728,8 @@
         border-radius: var(--insight-radius-md);
         background-color: var(--color-insight-surface-base);
         background-image: var(--insight-gradient-surface), var(--insight-surface-texture);
+        backdrop-filter: blur(var(--insight-backdrop-blur));
+        -webkit-backdrop-filter: blur(var(--insight-backdrop-blur));
         border-color: var(--color-insight-border-surface);
         border-style: var(--insight-border-style-surface);
         border-width: var(--insight-border-width-surface);
@@ -723,6 +742,8 @@
         background-color: var(--color-insight-surface-base);
         background-image: var(--insight-background-pattern), var(--insight-gradient-surface), var(--insight-surface-texture);
         background-size: var(--insight-background-pattern-size), auto, auto;
+        backdrop-filter: blur(var(--insight-backdrop-blur));
+        -webkit-backdrop-filter: blur(var(--insight-backdrop-blur));
         border-color: var(--color-insight-border-surface);
         border-style: var(--insight-border-style-surface);
         border-width: var(--insight-border-width-surface);
@@ -736,6 +757,8 @@
         border-end-end-radius: var(--insight-radius-sm);
         background-color: var(--color-insight-surface-soft);
         background-image: var(--insight-surface-texture);
+        backdrop-filter: blur(var(--insight-backdrop-blur));
+        -webkit-backdrop-filter: blur(var(--insight-backdrop-blur));
         border-color: var(--color-insight-border-surface);
         border-style: var(--insight-border-style-surface);
         border-width: var(--insight-border-width-surface);

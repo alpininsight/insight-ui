@@ -32,6 +32,9 @@
     --insight-radius-md: 1rem;
     --insight-radius-lg: 1.5rem;
     --insight-shadow-control: 6px 6px 12px rgb(159 174 196 / 0.5), -6px -6px 12px rgb(255 255 255 / 0.85);
+    --insight-shadow-button: 5px 5px 11px rgb(159 174 196 / 0.42), -5px -5px 11px rgb(255 255 255 / 0.85);
+    --insight-shadow-button-hover: 7px 7px 14px rgb(159 174 196 / 0.46), -7px -7px 14px rgb(255 255 255 / 0.9);
+    --insight-shadow-button-active: inset 4px 4px 8px rgb(159 174 196 / 0.45), inset -4px -4px 8px rgb(255 255 255 / 0.8);
     --insight-shadow-inset: inset 4px 4px 8px rgb(159 174 196 / 0.45), inset -4px -4px 8px rgb(255 255 255 / 0.8);
     --insight-shadow-surface-subtle: 8px 8px 18px rgb(159 174 196 / 0.35), -8px -8px 18px rgb(255 255 255 / 0.8);
     --insight-shadow-surface: 12px 12px 26px rgb(159 174 196 / 0.45), -12px -12px 26px rgb(255 255 255 / 0.85);
@@ -53,6 +56,9 @@
     --color-insight-border-control: rgb(255 255 255 / 0.12);
     --color-insight-border-muted: #344154;
     --insight-shadow-control: 6px 6px 12px rgb(0 0 0 / 0.35), -6px -6px 12px rgb(255 255 255 / 0.04);
+    --insight-shadow-button: 5px 5px 11px rgb(0 0 0 / 0.32), -5px -5px 11px rgb(255 255 255 / 0.04);
+    --insight-shadow-button-hover: 7px 7px 14px rgb(0 0 0 / 0.38), -7px -7px 14px rgb(255 255 255 / 0.05);
+    --insight-shadow-button-active: inset 4px 4px 8px rgb(0 0 0 / 0.35), inset -4px -4px 8px rgb(255 255 255 / 0.04);
     --insight-shadow-inset: inset 4px 4px 8px rgb(0 0 0 / 0.35), inset -4px -4px 8px rgb(255 255 255 / 0.04);
     --insight-shadow-surface-subtle: 8px 8px 18px rgb(0 0 0 / 0.28), -8px -8px 18px rgb(255 255 255 / 0.03);
     --insight-shadow-surface: 12px 12px 26px rgb(0 0 0 / 0.36), -12px -12px 26px rgb(255 255 255 / 0.04);

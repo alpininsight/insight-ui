@@ -68,6 +68,9 @@ class DesignThemeCssTest(SimpleTestCase):
         assert "--color-insight-text-primary: var(--color-insight-text-primary-dark);" in input_css
         assert "--color-insight-surface-panel: var(--color-insight-surface-panel-dark);" in input_css
         assert "--color-insight-border-control: var(--color-insight-border-control-dark);" in input_css
+        assert "background-image: var(--insight-background-pattern);" in input_css
+        assert "backdrop-filter: blur(var(--insight-backdrop-blur));" in input_css
+        assert "background-image: var(--insight-gradient-button);" in input_css
 
         for semantic_class in (
             ".insight-surface-page",
@@ -161,10 +164,25 @@ class DesignThemeCssTest(SimpleTestCase):
             assert "--color-insight-surface-page:" in theme_css
             assert "--color-insight-surface-panel:" in theme_css
             assert "--color-insight-border-control:" in theme_css
+            assert "--insight-shadow-button:" in theme_css
             assert '[data-theme="dark"]' in theme_css
             assert "--color-insight-text-primary-dark: var(--color-insight-text-primary);" in theme_css
             assert "--color-insight-surface-panel-dark: var(--color-insight-surface-panel);" in theme_css
             assert "--color-insight-border-control-dark: var(--color-insight-border-control);" in theme_css
+
+    def test_glass_theme_defines_visible_glass_effect_tokens(self) -> None:
+        """Glassmorphism needs translucency, blur, a background pattern, and shadows."""
+        glass_css = (THEME_ROOT / "glass.css").read_text()
+
+        for token in (
+            "--color-insight-surface-base: rgb(255 255 255 / 0.72);",
+            "--insight-backdrop-blur: 18px;",
+            "--insight-background-pattern:",
+            "--insight-background-pattern-size:",
+            "--insight-shadow-button:",
+            "--insight-shadow-surface:",
+        ):
+            assert token in glass_css
 
     def test_input_css_uses_semantic_tokens_for_core_utilities(self) -> None:
         """Core utilities should inherit dark values through central token overrides."""

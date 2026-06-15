@@ -30,9 +30,13 @@
     --insight-backdrop-blur: 18px;
     --insight-surface-opacity: 1;
     --insight-overlay-opacity: 0.68;
-    --insight-background-pattern: radial-gradient(circle at 12% 10%, rgb(37 99 235 / 0.22), transparent 28%), radial-gradient(circle at 82% 18%, rgb(124 58 237 / 0.18), transparent 24%), radial-gradient(circle at 55% 88%, rgb(14 165 233 / 0.14), transparent 32%);
+    --insight-background-pattern: radial-gradient(circle at 12% 10%, rgb(37 99 235 / 0.26), transparent 28%), radial-gradient(circle at 82% 18%, rgb(124 58 237 / 0.22), transparent 24%), radial-gradient(circle at 55% 88%, rgb(14 165 233 / 0.18), transparent 32%);
+    --insight-background-pattern-size: 100% 100%;
     --insight-gradient-surface: linear-gradient(135deg, rgb(255 255 255 / 0.55), rgb(255 255 255 / 0.18));
     --insight-gradient-button: linear-gradient(135deg, rgb(255 255 255 / 0.2), rgb(0 0 0 / 0.08));
+    --insight-shadow-button: 0 8px 24px rgb(15 23 42 / 0.14);
+    --insight-shadow-button-hover: 0 12px 30px rgb(15 23 42 / 0.18);
+    --insight-shadow-button-active: inset 0 2px 8px rgb(15 23 42 / 0.16);
     --insight-shadow-surface-subtle: 0 10px 30px rgb(15 23 42 / 0.08);
     --insight-shadow-surface: 0 18px 44px rgb(15 23 42 / 0.12);
     --insight-shadow-overlay: 0 28px 60px rgb(15 23 42 / 0.2);
@@ -55,6 +59,7 @@
     --color-insight-border-surface: rgb(255 255 255 / 0.16);
     --color-insight-border-control: rgb(148 163 184 / 0.32);
     --color-insight-border-muted: rgb(203 213 225 / 0.24);
+    --insight-background-pattern: radial-gradient(circle at 12% 10%, rgb(37 99 235 / 0.34), transparent 28%), radial-gradient(circle at 82% 18%, rgb(124 58 237 / 0.32), transparent 24%), radial-gradient(circle at 55% 88%, rgb(14 165 233 / 0.24), transparent 32%);
     --color-insight-text-primary-dark: var(--color-insight-text-primary);
     --color-insight-text-secondary-dark: var(--color-insight-text-secondary);
     --color-insight-surface-page-dark: var(--color-insight-surface-page);
