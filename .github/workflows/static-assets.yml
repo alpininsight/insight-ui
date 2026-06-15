@@ -16,8 +16,28 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  static-assets:
+  static-assets-check:
+    if: github.event_name == 'pull_request'
     uses: alpininsight/.github-private/.github/workflows/static-assets-reusable.yml@main
     with:
       mode: check
       upload_cdn: false
+
+  static-assets-cdn:
+    if: >-
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
+      (github.ref_name == 'develop' || github.ref_name == 'main')
+    uses: alpininsight/.github-private/.github/workflows/static-assets-reusable.yml@main
+    with:
+      mode: build
+      upload_cdn: true
+      cdn_upload_immutable: false
+      update_latest: false
+      asset_directory: insight_ui/static/insight_ui
+      cdn_prefix: insight-ui
+      cdn_aliases: ${{ github.ref_name }}
+      cdn_base_url: https://cdn.alpininsight.ai
+    secrets:
+      r2_access_key_id: ${{ secrets.R2_ACCESS_KEY_ID }}
+      r2_secret_access_key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      r2_endpoint: ${{ secrets.R2_ENDPOINT }}

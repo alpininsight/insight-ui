@@ -1,26 +1,26 @@
 {% load i18n insight_tags %}
 
 <div class="flex flex-col w-full">
-    <label for={{ name }} class="flex gap-1 text-sm font-bold text-primary mb-1">
-        {% if icon %}
-            {% icon icon %}
+    <label for="{{ select_config.tag_id }}" class="flex gap-1 text-sm font-bold text-primary mb-1">
+        {% if select_config.icon %}
+            {% icon select_config.icon %}
         {% endif %}
-        <span class="self-end">{{ label }}</span>
-        {% if required %}<span class="text-red-500" aria-label="{% trans 'Required' %}">*</span>{% endif %}
-        {% if explanation %}
-            <div class="text-secondary" data-insight-tooltip="{{ explanation }}" data-position="top">
+        <span class="self-end">{{ select_config.label }}</span>
+        {% if select_config.required %}<span class="text-red-500" aria-label="{% trans 'Required' %}">*</span>{% endif %}
+        {% if select_config.explanation %}
+            <div class="text-secondary" data-insight-tooltip="{{ select_config.explanation }}" data-position="top">
                 {% icon name="question-mark" size="xs" %}
             </div>
         {% endif %}
     </label>
     <select
-        {% if tag_id %}id="{{ tag_id }}"{% endif %}
-        {% if name %}name="{{ name }}"{% endif %}
+        {% if select_config.tag_id %}id="{{ select_config.tag_id }}"{% endif %}
+        {% if select_config.name %}name="{{ select_config.name }}"{% endif %}
         class="input w-full"
     >
-        {% for option, text in options.items %}
+        {% for option, text in select_config.options.items %}
             <option
-                value="{{ option }}" {% if option == selected_option %}selected{% endif %}
+                value="{{ option }}" {% if option == select_config.selected_option %}selected{% endif %}
                 {% if option == "-" %}disabled{% elif option == "placeholder" %}class="text-gray-400"{% endif %}
             >
                 {{ text }}

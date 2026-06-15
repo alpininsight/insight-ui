@@ -60,6 +60,16 @@ def test_insight_asset_template_tag_uses_latest_cdn_alias() -> None:
     assert template.render(Context()) == "https://cdn.alpininsight.ai/insight-ui/latest/css/prism.min.css"
 
 
+@pytest.mark.parametrize("cdn_version", ["develop", "main"])
+def test_insight_asset_url_keeps_branch_cdn_aliases(cdn_version: str) -> None:
+    """Branch aliases should not be normalized as immutable SemVer paths."""
+    with override_settings(INSIGHT_UI={"assets": {"cdn_enabled": True, "cdn_version": cdn_version}}):
+        assert (
+            insight_asset_url("insight_ui/css/tailwind.css")
+            == f"https://cdn.alpininsight.ai/insight-ui/{cdn_version}/css/tailwind.min.css"
+        )
+
+
 @override_settings(INSIGHT_UI={"assets": {"cdn_enabled": True}})
 def test_config_merges_nested_asset_defaults() -> None:
     """Partial asset settings should keep default CDN metadata."""

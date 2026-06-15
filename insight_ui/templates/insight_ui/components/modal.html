@@ -1,44 +1,45 @@
 {% load static i18n insight_tags %}
 
 <div
-    {% if tag_id %}id="{{ tag_id }}"{% endif %}
+    {% if modal_config.tag_id %}id="{{ modal_config.tag_id }}"{% endif %}
     role="dialog"
     aria-modal="true"
-    aria-labelledby="{{ tag_id }}-title"
-    {% if description %}aria-describedby="{{ tag_id }}-description"{% endif %}
+    aria-labelledby="{{ modal_config.tag_id }}-title"
+    {% if description %}aria-describedby="{{ modal_config.tag_id }}-description"{% endif %}
     tabindex="-1"
     class="fixed inset-0 z-50 overflow-y-auto hidden"
 >
-    <!-- Modal Backdrop -->
+    {# Modal Backdrop #}
     <div class="fixed inset-0 bg-black/50 transition-opacity" data-insight-dismiss="modal"></div>
 
-    <!-- Wrapper to centralize the modal on screen -->
+    {# Wrapper to centralize the modal on screen #}
     <div class="flex items-center justify-center min-h-screen p-4">
-        <!-- Modal -->
-        <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full mx-auto transform transition-all", style="max-width: {{ width|default:32 }}rem;">
-            <!-- Modal Header -->
+        {# Modal #}
+        <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full mx-auto transform transition-all", style="max-width: {{ modal_config.width|default:32 }}rem;">
+            {# Modal Header #}
             <div class="flex items-start justify-between h-fit p-6 border-b border-gray-200 dark:border-gray-700">
-                <h2 id="{{ tag_id }}-title" class="pb-0">{{ title }}</h2>
+                <h2 id="{{ modal_config.tag_id }}-title" class="pb-0">{{ modal_config.title }}</h2>
                 <button aria-label="{% trans 'Close' %}" class="btn btn-close" data-insight-dismiss="modal">
                     {% icon name="x-mark" size="xs" %}
                 </button>
             </div>
 
-            <!-- Modal Body -->
-            <div id="{{ tag_id }}-description" class="p-6 space-y-4">
+            {# Modal Body #}
+            <div id="{{ modal_config.tag_id }}-description" class="p-6 space-y-4">
                 {% block modal_content %}
                     <div class="space-y-4">
-                        {% for paragraph in description %}
+                        {% for paragraph in modal_config.description %}
                             <p class="text-secondary flex items-center">{{ paragraph }}</p>
                         {% endfor %}
                     </div>
                 {% endblock %}
             </div>
 
-            <!-- Modal Footer -->
+            {# Modal Footer #}
             <div class="flex justify-end gap-2 p-6 border-t border-gray-200 dark:border-gray-700">
-                {% if actions %}
-                    {% for action in actions %}
+                {% if modal_config.actions %}
+
+                    {% for action in modal_config.actions %}
                         {% if action.type == 'cancel' or action.dismiss %}
                             <button class="btn btn-secondary" data-insight-dismiss="modal">
                                 {{ action.text|default:"Abbrechen" }}
@@ -54,7 +55,7 @@
                         {% endif %}
                     {% endfor %}
                 {% else %}
-                    <!-- Default close button -->
+                    {# Default close button #}
                     <button class="btn btn-secondary" data-insight-dismiss="modal">
                         {% trans 'Close' %}
                     </button>

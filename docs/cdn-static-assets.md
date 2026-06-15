@@ -29,8 +29,18 @@ npm run check:js-build
 
 ## CDN Upload
 
+The `Static Assets` workflow runs on protected branch pushes and uploads the
+generated assets via the shared `.github-private` workflow into branch-specific
+mutable aliases:
+
+- development alias: `https://cdn.alpininsight.ai/insight-ui/develop/`
+- production alias: `https://cdn.alpininsight.ai/insight-ui/main/`
+
+These branch aliases are intentionally separate. `develop` must not update the
+production-facing `main/` alias and must not update `latest/`.
+
 The `CDN Deploy` workflow runs on GitHub Release publication and uploads the
-generated assets via the shared `.github-private` workflow:
+generated assets via the same shared `.github-private` workflow:
 
 - immutable version path: `https://cdn.alpininsight.ai/insight-ui/vX.Y.Z/`
 - mutable latest alias: `https://cdn.alpininsight.ai/insight-ui/latest/`
@@ -67,4 +77,6 @@ INSIGHT_UI_CDN_PREFIX=insight-ui
 INSIGHT_UI_CDN_VERSION=1.2.3
 ```
 
-`INSIGHT_UI_CDN_VERSION` may be passed with or without the leading `v`.
+`INSIGHT_UI_CDN_VERSION` may be passed with or without the leading `v` for
+SemVer versions. Branch aliases such as `develop`, `main`, and `latest` are
+used as-is.

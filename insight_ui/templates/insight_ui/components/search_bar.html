@@ -1,15 +1,18 @@
 {% load i18n insight_tags %}
 
 <form
-    {% if request_url %}
-        {% if htmx %}
-            hx-get="{% url request_url %}"
-            hx-target="{{ htmx.target }}"
-            hx-swap="{{ htmx.swap|default:'innerHTML' }}"
-            hx-trigger="submit"
+    {% if search_bar_config.request_url %}
+        {% if search_bar_config.htmx_config %}
+            hx-get="{{ search_bar_config.request_url }}"
+            hx-target="{{ search_bar_config.htmx_config.target }}"
+            hx-swap="{{ search_bar_config.htmx_config.swap|default:'innerHTML' }}"
+            hx-trigger="{{ search_bar_config.htmx_config.trigger|default:'submit' }}"
+            hx-vals="{{ search_bar_config.htmx_config.vals }}"
+            hx-indicator="{{ search_bar_config.htmx_config.indicator|default:'#loading-indicator' }}"
+            hx-push-url="{{ search_bar_config.htmx_config.push_url|default:'False' }}"
             hx-ext="progressive-enhancement"
         {% else %}
-            action="{% url request_url %}"
+            action="{{ search_bar_config.request_url }}"
             method="get"
         {% endif %}
     {% endif %}
@@ -24,11 +27,11 @@
             type="search"
             id="search"
             name="search"
-            placeholder="{% trans "Browse..." %}"
-            value="{{ search_query }}"
-            class="block size-full px-3 {% if simple %}text-sm py-2{% else %}py-3 pe-32{% endif %} ps-10 text-neutral-700 d dark:text-white border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-sm focus:outline-none focus:ring-2 ring-insight-primary-active"
+            placeholder="{% trans 'Browse...' %}"
+            value="{{ search_bar_config.search_query }}"
+            class="block size-full px-3 {% if search_bar_config.simple %}text-sm py-2{% else %}py-3 pe-32{% endif %} ps-10 text-neutral-700 d dark:text-white border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-sm focus:outline-none focus:ring-2 ring-insight-primary-active"
         />
-        {% if not simple %}
+        {% if not search_bar_config.simple %}
             <button class="absolute inset-y-0 end-0 btn btn-primary btn-l rounded-s-none">
                 {% trans "Search" %}
             </button>

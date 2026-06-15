@@ -8,6 +8,7 @@
                 <th class="text-start text-nowrap text-sm px-4 py-2" scope="col">{% trans "Type" %}</th>
                 <th class="text-start text-nowrap text-sm px-4 py-2" scope="col">{% trans "Description" %}</th>
                 <th class="text-start text-nowrap text-sm px-4 py-2" scope="col">{% trans "Default value" %}</th>
+                <th class="text-start text-nowrap text-sm px-4 py-2" scope="col">{% trans "Required" %}</th>
             </tr>
         </thead>
         <tbody class="text-primary">
@@ -17,6 +18,14 @@
                     <td class="text-start text-sm px-4 py-3"><i>{{ row.type }}</i></td>
                     <td class="text-start text-sm px-4 py-3">{{ row.description|markdownify }}</td>
                     <td class="text-start text-sm px-4 py-3"><b>{{ row.default }}</b></td>
+                    <td class="text-start text-sm px-4 py-3">
+                        <span class="sr-only">{{ row.required }}</span>
+                        {% if row.required %}
+                            {% icon name="tick" %}
+                        {% else %}
+                            {% icon name="x-mark" %}
+                        {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>

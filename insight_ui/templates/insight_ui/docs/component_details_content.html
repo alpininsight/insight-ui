@@ -2,7 +2,7 @@
 
 {% include "insight_ui/components/htmx_loading_indicator.html" %}
 
-{% comment %} Component Demo and features {% endcomment %}
+{# Component Demo and features #}
 <section>
     {% if description_notes_begin %}
         <div class="mb-4">
@@ -38,7 +38,7 @@
 
 <hr class="text-gray-300 dark:text-gray-600">
 
-{% comment %} Component Documentation {% endcomment %}
+{# Component Documentation #}
 <section>
     <h2>{% trans "Usage" %}</h2>
     <div class="mb-4">
@@ -71,7 +71,7 @@
     {% endif %}
 </section>
 
-{% comment %} Parameter {% endcomment %}
+{# Parameter #}
 <section>
     <h3>{% trans "Parameter" %}</h3>
     {% if params_notes_begin %}
@@ -82,30 +82,25 @@
         </div>
     {% endif %}
     {% for param in params %}
-        {% if forloop.first %}
-            {% include "insight_ui/components/parameter_table.html" with rows=param %}
+        <div class="mt-8">
+            {% if param.details %}
+                <h4 class="mb-0">{{ param.details.name }} <i>({{ param.details.type }})</i></h4>
+                <p class="mb-2">{{ param.details.description }}</p>
+            {% endif %}
+
             {% for note in param.notes %}
                 {% infobox info_type=note.type message=note.message %}
             {% endfor %}
-        {% else %}
-            <div class="mt-8">
-                <h4 class="mb-0">{{ param.details.name }} <i>({{ param.details.type }})</i></h4>
-                <p class="mb-2">{{ param.details.description }}</p>
 
-                {% for note in param.notes %}
-                    {% infobox info_type=note.type message=note.message %}
-                {% endfor %}
-
-                {% if param.example_data %}
-                    <div class="space-y-4">
-                        <div data-insight-code-block="python">{{ param.example_data }}</div>
-                        {% include "insight_ui/components/parameter_table.html" with rows=param.params_table %}
-                    </div>
-                {% else %}
+            {% if param.example_data %}
+                <div class="space-y-4">
                     {% include "insight_ui/components/parameter_table.html" with rows=param.params_table %}
-                {% endif %}
-            </div>
-        {% endif %}
+                    <div data-insight-code-block="python">{{ param.example_data }}</div>
+                </div>
+            {% else %}
+                {% include "insight_ui/components/parameter_table.html" with rows=param.params_table %}
+            {% endif %}
+        </div>
     {% endfor %}
     {% if params_notes_end %}
         <div class="mt-4">
@@ -116,7 +111,7 @@
     {% endif %}
 </section>
 
-{% comment %} A11y {% endcomment %}
+{# A11y #}
 <section>
     <h2>{% trans "Accessability" %}</h2>
     {% for note in a11y_notes_begin %}
@@ -136,7 +131,7 @@
 
 <hr class="text-gray-300 dark:text-gray-600">
 
-{% comment %} Related {% endcomment %}
+{# Related #}
 <section>
     <h2>{% trans "Related topics" %}</h2>
     <ul class="list-disc leading-relaxed ms-8 mt-6">

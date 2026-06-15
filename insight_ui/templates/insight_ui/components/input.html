@@ -1,31 +1,31 @@
 {% load i18n insight_tags %}
 
 <div class="flex flex-col w-full">
-    <label for={{ tag_id }} class="flex gap-1 text-sm font-bold text-primary mb-1">
-        {% if icon %}
-            {% icon icon %}
+    <label for={{ input_config.tag_id }} class="flex gap-1 text-sm font-bold text-primary mb-1">
+        {% if input_config.icon %}
+            {% icon input_config.icon %}
         {% endif %}
-        <span class="self-end">{{ label }}</span>
-        {% if required %}<span class="text-red-500" aria-label="{% trans 'Required' %}">*</span>{% endif %}
-        {% if explanation %}
-            <div class="text-secondary" data-insight-tooltip="{{ explanation }}" data-position="top">
+        <span class="self-end">{{ input_config.label }}</span>
+        {% if input_config.required %}<span class="text-red-500" aria-label="{% trans 'Required' %}">*</span>{% endif %}
+        {% if input_config.explanation %}
+            <div class="text-secondary" data-insight-tooltip="{{ input_config.explanation }}" data-position="top">
                 {% icon name="question-mark" size="xs" %}
             </div>
         {% endif %}
     </label>
     <input
-        type="{{ input_type }}"
-        {% if tag_id %}id="{{ tag_id }}"{% endif %}
-        {% if name %}name="{{ name }}"{% endif %}
-        {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
-        {% if value %}value="{{ value }}"{% endif %}
-        {% if minimum %}min="{{ minimum }}"{% endif %}
-        {% if maximum %}max="{{ maximum }}"{% endif %}
-        {% if min_length %}minlength="{{ min_length }}"{% endif %}
-        {% if max_length %}maxlength="{{ max_length }}"{% endif %}
-        {% if checked %}checked{% endif %}
-        {% if required %}required{% endif %}
-        {% if disabled %}disabled{% endif %}
+        type="{{ input_config.input_type }}"
+        {% if input_config.tag_id %}id="{{ input_config.tag_id }}"{% endif %}
+        {% if input_config.name %}name="{{ input_config.name }}"{% endif %}
+        {% if input_config.placeholder %}placeholder="{{ input_config.placeholder }}"{% endif %}
+        {% if input_config.value %}value="{{ input_config.value }}"{% endif %}
+        {% if input_config.minimum %}min="{{ input_config.minimum }}"{% endif %}
+        {% if input_config.maximum %}max="{{ input_config.maximum }}"{% endif %}
+        {% if input_config.min_length %}minlength="{{ input_config.min_length }}"{% endif %}
+        {% if input_config.max_length %}maxlength="{{ input_config.max_length }}"{% endif %}
+        {% if input_config.checked %}checked{% endif %}
+        {% if input_config.required %}required{% endif %}
+        {% if input_config.disabled %}disabled{% endif %}
         class="input w-full"
     >
 </div>
