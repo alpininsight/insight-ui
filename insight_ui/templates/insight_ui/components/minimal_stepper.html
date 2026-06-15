@@ -2,7 +2,7 @@
 
 <div class="flex items-stretch gap-0.5 h-full w-full insight-surface-base insight-radius-surface-lg overflow-hidden">
     {% for item in items %}
-        <div class="flex-1 flex items-center justify-center {% if item == "success" %}bg-insight-success{% elif item == "failed" %}bg-insight-danger{% elif item == "active" %}bg-insight-primary{% else %}bg-insight-pending{% endif %} text-white {% if forloop.first %}chevron-start{% elif forloop.last %}chevron-end{% else %}chevron-mid{% endif %} group">
+        <div class="flex-1 flex items-center justify-center {% if item == "success" %}bg-insight-success text-insight-success-foreground{% elif item == "failed" %}bg-insight-danger text-insight-danger-foreground{% elif item == "active" %}bg-insight-primary text-insight-primary-foreground{% else %}bg-insight-pending text-insight-pending-foreground{% endif %} {% if forloop.first %}chevron-start{% elif forloop.last %}chevron-end{% else %}chevron-mid{% endif %} group">
             {% if item == "success" %}
                 {% icon name="tick" size=icon_size %}
             {% elif item == "failed" %}

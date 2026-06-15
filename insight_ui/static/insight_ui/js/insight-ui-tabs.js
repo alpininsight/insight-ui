@@ -74,12 +74,12 @@ export class Tabs {
             tab.setAttribute('aria-selected', isSelected ? 'true' : 'false');
 
             if (isSelected) {
-                tab.classList.remove('border-gray-300', 'text-primary', 'border-b');
+                tab.classList.remove('insight-border-surface', 'text-primary', 'border-b');
                 tab.classList.add('border-insight-primary', 'text-insight-primary', 'border-b-3');
                 this.tabContent.setAttribute('aria-label', tab.id);
             } else {
                 tab.classList.remove('border-insight-primary', 'text-insight-primary', 'border-b-3');
-                tab.classList.add('border-gray-300', 'text-primary', 'border-b');
+                tab.classList.add('insight-border-surface', 'text-primary', 'border-b');
             }
         });
     }

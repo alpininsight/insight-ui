@@ -71,8 +71,9 @@ describe('Tabs Component', () => {
       expect(tabs[1].classList.contains('text-insight-primary')).toBe(true);
       expect(tabs[1].classList.contains('border-b-3')).toBe(true);
 
-      // Inactive tab should have gray border
-      expect(tabs[0].classList.contains('border-gray-300')).toBe(true);
+      // Inactive tab should keep the semantic border used by the template.
+      expect(tabs[0].classList.contains('insight-border-surface')).toBe(true);
+      expect(tabs[0].classList.contains('border-gray-300')).toBe(false);
       expect(tabs[0].classList.contains('text-primary')).toBe(true);
       expect(tabs[0].classList.contains('border-b')).toBe(true);
     });

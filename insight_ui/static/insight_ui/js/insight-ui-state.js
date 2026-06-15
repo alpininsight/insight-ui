@@ -35,9 +35,9 @@
                 }
 
                 if (isActive)
-                    el.setAttribute("class", "flex gap-2 px-2 py-1 text-sm text-primary font-semibold bg-gray-100 dark:bg-gray-700 border-s-2 border-insight-primary hover:border-insight-primary-hover");
+                    el.setAttribute("class", "flex gap-2 px-2 py-1 text-sm text-primary font-semibold insight-surface-soft border-s-2 border-insight-primary hover:border-insight-primary-hover");
                 else
-                    el.setAttribute("class", "flex gap-2 px-2 py-1 text-sm text-primary border-s border-gray-200 dark:border-gray-700 hover:border-gray-400 hover:text-gray-400")
+                    el.setAttribute("class", "flex gap-2 px-2 py-1 text-sm text-primary border-s insight-border-surface hover:border-insight-border-muted hover:text-insight-text-secondary");
             });
         });
     }
