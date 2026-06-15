@@ -4,6 +4,12 @@ from django.utils.translation import gettext as _
 from insight_ui.component_details.component_context import register_component
 from insight_ui.component_details.components import Component
 
+# =============================================================
+#
+#   Layout Tags
+#
+# =============================================================
+
 
 @register_component(Component.PAGE_HEADER)
 def get_page_header_description_context() -> dict[str, list[str]]:
@@ -13,21 +19,6 @@ def get_page_header_description_context() -> dict[str, list[str]]:
             _(
                 "The `page_header` component can be used to display a header featuring geometric decorations, along with a title, an optional description, and buttons. The header is displayed in the selected primary color to stand out from the rest of the page."
             )
-        ]
-    }
-
-
-@register_component(Component.HEADING_DECORATION)
-def get_heading_decoration_description_context() -> dict[str, list[str]]:
-    """Serve description documentation for the heading decoration component."""
-    return {
-        "description": [
-            _(
-                "The heading_decoration component renders the decorative transition between the base template heading and the page content."
-            ),
-            _(
-                "It is available as a template tag so host applications can keep the default waves, change the visual style, or remove the decoration through the heading_decoration block."
-            ),
         ]
     }
 
@@ -56,19 +47,11 @@ def get_hero_description_context() -> dict[str, list[str]]:
     }
 
 
-@register_component(Component.CORNER_RIBBON)
-def get_corner_ribbon_description_context() -> dict[str, list[str]]:
-    """Serve description documentation for the corner ribbon component."""
-    return {
-        "description": [
-            _(
-                "The `corner_ribbon` component displays a decorative diagonal text ribbon positioned in any of the four browser corners. It's ideal for highlighting new features, displaying status indicators, or adding promotional badges."
-            ),
-            _(
-                "The ribbon appears above most page content, but you can click on elements located behind the component. It supports RTL layouts and multiple color variants for different semantic meanings."
-            ),
-        ]
-    }
+# =============================================================
+#
+#   Navigation Tags
+#
+# =============================================================
 
 
 @register_component(Component.NAVBAR)
@@ -133,25 +116,25 @@ def get_breadcrumb_description_context() -> dict[str, list[str]]:
     }
 
 
-@register_component(Component.STEP_BAR)
-def get_step_bar_description_context() -> dict[str, list[str]]:
+@register_component(Component.STEPPER)
+def get_stepper_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the step bar component."""
     return {
         "description": [
             _(
-                "The `step_bar` component can be used to show the user the progress of a manual process. This refers, for example, to a typical checkout process. This typically consists of several steps, such as entering an address, selecting a payment method, and then reviewing the entries once more. The component shows the user where they currently are and which steps remain."
+                "The `stepper` component can be used to show the user the progress of a manual process. This refers, for example, to a typical checkout process. This typically consists of several steps, such as entering an address, selecting a payment method, and then reviewing the entries once more. The component shows the user where they currently are and which steps remain."
             )
         ]
     }
 
 
-@register_component(Component.MINIMAL_STEP_BAR)
-def get_minimal_step_bar_description_context() -> dict[str, list[str]]:
+@register_component(Component.MINIMAL_STEPPER)
+def get_minimal_stepper_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the minimal step bar component."""
     return {
         "description": [
             _(
-                "The `minimal_step_bar` component can be used to graphically display progress in a multi-step process in a simple way."
+                "The `minimal_stepper` component can be used to graphically display progress in a multi-step process in a simple way."
             )
         ]
     }
@@ -191,6 +174,13 @@ def get_tabs_description_context() -> dict[str, list[str]]:
             )
         ]
     }
+
+
+# =============================================================
+#
+#   Input Tags
+#
+# =============================================================
 
 
 @register_component(Component.BUTTON)
@@ -347,6 +337,13 @@ def get_chat_description_context() -> dict[str, list[str]]:
     }
 
 
+# =============================================================
+#
+#   Popup Tags
+#
+# =============================================================
+
+
 @register_component(Component.ALERT)
 def get_alert_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the alert component."""
@@ -399,6 +396,13 @@ def get_tooltip_description_context() -> dict[str, list[str]]:
             ),
         ]
     }
+
+
+# =============================================================
+#
+#   Util Tags
+#
+# =============================================================
 
 
 @register_component(Component.INFOBOX)
@@ -497,6 +501,21 @@ def get_brand_lockup_description_context() -> dict[str, list[str]]:
     }
 
 
+@register_component(Component.CORNER_RIBBON)
+def get_corner_ribbon_description_context() -> dict[str, list[str]]:
+    """Serve description documentation for the corner ribbon component."""
+    return {
+        "description": [
+            _(
+                "The `corner_ribbon` component displays a decorative diagonal text ribbon positioned in any of the four browser corners. It's ideal for highlighting new features, displaying status indicators, or adding promotional badges."
+            ),
+            _(
+                "The ribbon appears above most page content, but you can click on elements located behind the component. It supports RTL layouts and multiple color variants for different semantic meanings."
+            ),
+        ]
+    }
+
+
 @register_component(Component.PROGRESS_BAR)
 def get_progress_bar_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the progress bar component."""
@@ -569,6 +588,13 @@ def get_web_socket_description_context() -> dict[str, list[str]]:
     }
 
 
+# =============================================================
+#
+#   List Tags
+#
+# =============================================================
+
+
 @register_component(Component.INFINITE_SCROLL)
 def get_infinite_scroll_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the infinite scroll component."""
@@ -608,17 +634,11 @@ def get_table_description_context() -> dict[str, list[str]]:
     }
 
 
-@register_component(Component.GENERIC_FILTER)
-def get_generic_filter_description_context() -> dict[str, list[str]]:
-    """Serve description documentation for the generic filter component."""
-    return {
-        "description": [
-            _(
-                "The `generic_filter` component can be used to build relatively simple standard filters consisting of &lt;select&gt; tags. The filter automatically makes a request to the corresponding endpoint when a change is made and updates the data area using HTMX."
-            ),
-            _("An alternative is the more flexible but also more complex Query Builder."),
-        ]
-    }
+# =============================================================
+#
+#   Filter Tags
+#
+# =============================================================
 
 
 @register_component(Component.SEARCH_BAR)
@@ -629,6 +649,19 @@ def get_search_bar_description_context() -> dict[str, list[str]]:
             _(
                 "The `search_bar` component provides a simple text input field with a large button on the right end. When submitted, a request is sent to the specified endpoint. The search_bar component also supports HTMX requests."
             )
+        ]
+    }
+
+
+@register_component(Component.GENERIC_FILTER)
+def get_generic_filter_description_context() -> dict[str, list[str]]:
+    """Serve description documentation for the generic filter component."""
+    return {
+        "description": [
+            _(
+                "The `generic_filter` component can be used to build relatively simple standard filters consisting of &lt;select&gt; tags. The filter automatically makes a request to the corresponding endpoint when a change is made and updates the data area using HTMX."
+            ),
+            _("An alternative is the more flexible but also more complex Query Builder."),
         ]
     }
 
@@ -648,6 +681,13 @@ def get_query_builder_description_context() -> dict[str, list[str]]:
             _("Similar to the other filter variant, only a dictionary with the desired properties is needed here."),
         ]
     }
+
+
+# =============================================================
+#
+#   Card Tags
+#
+# =============================================================
 
 
 @register_component(Component.CARD)
@@ -746,6 +786,13 @@ def get_toggle_view_description_context() -> dict[str, list[str]]:
             )
         ]
     }
+
+
+# =============================================================
+#
+#   Form Tags
+#
+# =============================================================
 
 
 @register_component(Component.FORM)

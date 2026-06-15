@@ -45,6 +45,10 @@ Once all changes are complete and the runners have run through the tests and lin
 
 In this section, we explain all the steps necessary to add a new component.
 
+We recommend using the command `python manage.py create_component`. This command automatically generates the necessary boilerplate code for the documentation and sets up a basic framework for the new component. The command requires the name of the new component, its category, and whether or not the component requires JavaScript.
+
+The following steps assume that this command was not used. Please read through the following points, as they contain additional information.
+
 ### Part 1: Creating a component
 
 1. Create a new template for the component under `insight_ui/templates/insight_ui/components`, e.g., `accordion.html`. If necessary, you can also create multiple templates.
@@ -53,10 +57,11 @@ In this section, we explain all the steps necessary to add a new component.
     - Corresponding instances are found and created in the DOM using `data attributes`.
 3. Implement the new component.
     - Tailwind CSS is the default styling implementation.
-    - For new reusable components, prefer semantic Insight UI classes and tokens over raw Tailwind utility classes in public component markup when the concept is stable enough to name.
+    - For new reusable components, prefer semantic Insight UI classes and tokens over raw Tailwind utility classes in public component markup.
+    - Tailwind utilities are still acceptable if there is no corresponding token.
     - Use the mapping table in [Naming Conventions](naming_conventions.md#css-classes-and-design-semantics) to decide whether a repeated Tailwind utility pattern should become an `insight-*` class.
-    - Tailwind utilities are still acceptable for local layout details, experiments, and the current default implementation, but they should not become the long-term public design contract of reusable components.
-4. Create a new inclusion tag in `insight_ui/templatetags/insight_tags.py`.
+4. Create a new config Dataclass for the component in `insight_ui/configs/*.py`, this also contains the parameter documentation of the component.
+5. Create a new inclusion tag in `insight_ui/templatetags/insight_tags.py`.
 
 ### Part 2: Documenting New Components
 
@@ -68,7 +73,7 @@ See the checklist for package-local source-of-truth expectations.
 1. Document the new component for future users. Our component documentation is context-based and is divided into several files in this directory: `insight_ui/component_details/`
     - `a11y_context.py`: Contains documentation for all accessibility topics related to the component.
     - `description_context.py`: Contains a summary description of the component.
-    - `parameter_context.py`: Contains an explanation of the component's parameters.
+    - `parameter_context.py`: Contains an explanation of the component's parameters (only if there is not config Dataclass).
     - `related_components_context.py`: Contains a list of all components that are similar or related to the topic.
     - `usage_context.py`: Contains an example of the source code required to integrate the component.
     - `git_path_mapping.py`: Contains the URL to the component file(s) and, if applicable, the script file(s) in the Git repository.
