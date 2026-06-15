@@ -1,7 +1,7 @@
-<p class="text-secondary text-sm {{ css_class }}">
-    &copy;{% if year %} {{ year }}{% endif %}{% if holder %} {{ holder }}{% endif %}
+<p class="text-secondary text-sm">
+    &copy;{% if copyright_config.year %} {{ copyright_config.year }}{% endif %}{% if copyright_config.holder %} {{ copyright_config.holder }}{% endif %}
     {% for item in metadata %}
-        <span aria-hidden="true">{{ separator }}</span>
+        <span aria-hidden="true">{{ copyright_config.separator }}</span>
         {% if item.url %}
             <a href="{{ item.url }}" class="text-link">{{ item.text }}</a>
         {% else %}

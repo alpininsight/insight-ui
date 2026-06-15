@@ -1,6 +1,6 @@
 {% load i18n insight_tags %}
 
-<div data-insight-tabs="{{ config.id }}">
+<div data-insight-tabs="{{ config.tag_id }}">
   <div
     role="tablist"
     aria-label="{{ config.label }}"
@@ -8,11 +8,11 @@
   >
     {% for tab in config.tabs %}
       <button
-        id="{{ tab.id }}"
+        id="{{ tab.tag_id }}"
         role="tab"
         aria-controls="panel-{{ forloop.counter }}"
         hx-get="{{ tab.url }}"
-        hx-target="#{{ config.id }}-tab-content"
+        hx-target="#{{ config.tag_id }}-tab-content"
         hx-swap="innerHTML"
         class="px-4 py-2 -mb-px border-b border-gray-200 dark:border-gray-500 font-semibold text-primary hover:border-insight-primary-hover hover:text-insight-primary-hover focus:outline-none focus:border-insight-primary-active focus:text-insight-primary-active transition-colors duration-300"
       >
@@ -24,7 +24,7 @@
     {% endfor %}
   </div>
   <div
-    id="{{ config.id }}-tab-content"
+    id="{{ config.tag_id }}-tab-content"
     role="tabpanel"
     aria-label="{% trans 'Tab content' %}"
   >

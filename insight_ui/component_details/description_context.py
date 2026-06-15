@@ -1,3 +1,4 @@
+from django.urls import reverse
 from django.utils.translation import gettext as _
 
 from insight_ui.component_details.component_context import register_component
@@ -219,11 +220,13 @@ def get_textarea_description_context() -> dict[str, list[str]]:
 @register_component(Component.CHECKBOX)
 def get_checkbox_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the checkbox component."""
+    checkbox_group_url = reverse("component_detail_page_view", args=[Component.CHECKBOX_GROUP.value])
     return {
         "description": [
             _(
-                "The `checkbox` component can be used to integrate individual checkbox elements. For a group of interconnected checkbox elements, see `checkbox_group`."
+                "The `checkbox` component can be used to integrate individual checkbox elements. For a group of interconnected checkbox elements, see [Checkbox Group](%(url)s)."
             )
+            % {"url": checkbox_group_url}
         ]
     }
 
@@ -474,6 +477,26 @@ def get_logo_description_context() -> dict[str, list[str]]:
     }
 
 
+@register_component(Component.BRAND_LOCKUP)
+def get_brand_lockup_description_context() -> dict[str, list[str]]:
+    """Serve description documentation for the brand lockup component."""
+    return {
+        "description": [
+            _(
+                "The `brand_lockup` component renders a controlled brand unit made of a public Insight UI icon and a two-tone wordmark."
+            ),
+            _(
+                "Use it when an application needs a recognizable wordmark without embedding private assets in the open-source package."
+            ),
+        ],
+        "features": [
+            _("Uses Insight UI design tokens for the primary and secondary brand colours."),
+            _("Maps main, develop, and candidate variants to existing public icons from the Insight UI icon list."),
+            _("Can be used directly or as the optional `brand.lockup` mode inside the navbar component."),
+        ],
+    }
+
+
 @register_component(Component.PROGRESS_BAR)
 def get_progress_bar_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the progress bar component."""
@@ -684,6 +707,7 @@ def get_card_carousel_description_context() -> dict[str, list[str]]:
 @register_component(Component.IMAGE_CAROUSEL)
 def get_image_carousel_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the image carousel component."""
+    carousel_url = reverse("component_detail_page_view", args=[Component.CARD_CAROUSEL.value])
     return {
         "description": [
             _("The `image_carousel` component is a variant of the carousel component adapted for displaying images.")
@@ -692,8 +716,9 @@ def get_image_carousel_description_context() -> dict[str, list[str]]:
             {
                 "type": "info",
                 "message": _(
-                    "This documentation applies only to the image carousel. For more information about the carousel in general, see 'Carousel'"
-                ),
+                    "This documentation applies only to the image carousel. For more information about the carousel in general, see [Card Carousel](%(url)s)."
+                )
+                % {"url": carousel_url},
             }
         ],
     }

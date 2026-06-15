@@ -33,9 +33,7 @@ def get_runtime_instance_id() -> str:
 def build_runtime_info() -> dict[str, Any]:
     """Build the canonical runtime identity payload for HTTP callers."""
     deployment: dict[str, Any] = {
-        "environment": {
-            "name": settings.DEPLOYMENT_ENVIRONMENT,
-        },
+        "environment": {"name": settings.DEPLOYMENT_ENVIRONMENT},
         "platform_namespace": settings.PLATFORM_NAMESPACE,
     }
     if settings.DEPLOYMENT_LANE:
@@ -51,9 +49,7 @@ def build_runtime_info() -> dict[str, Any]:
             "instance_id": get_runtime_instance_id(),
         },
         "deployment": deployment,
-        "build": {
-            "revision": settings.GIT_COMMIT_SHA,
-        },
+        "build": {"revision": settings.GIT_COMMIT_SHA},
     }
 
     if settings.PUBLIC_BASE_URL:

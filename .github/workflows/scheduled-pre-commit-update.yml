@@ -1,44 +1,26 @@
-name: Scheduled pre-commit update
+---
+# =============================================================================
+# Alpine Insight workflow template
+# Source:
+#   - public template: alpininsight/.github/.github/workflow-templates/scheduled-pre-commit-update.yml
+#   - private backend: alpininsight/.github-private/.github/workflows/scheduled-pre-commit-update-reusable.yml@main
+# Purpose:
+#   - copies a thin pre-commit automation caller into the target repository
+#   - keeps org automation logic private and centrally maintained
+# =============================================================================
+
+name: Scheduled pre-commit update (Alpine Insight)
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 6 * * 1"  # Mondays at 06:00 UTC
+    - cron: "0 6 * * 1"
 
 jobs:
   autoupdate:
     permissions:
       contents: write
       pull-requests: write
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-
-      - uses: astral-sh/setup-uv@v7
-
-      - name: Run pre-commit autoupdate
-        run: uvx pre-commit autoupdate
-
-      - name: Check for changes
-        id: changes
-        run: |
-          if git diff --quiet .pre-commit-config.yaml; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Create Pull Request
-        if: steps.changes.outputs.changed == 'true'
-        uses: peter-evans/create-pull-request@v8
-        with:
-          # PAT required so the PR triggers CI workflows (GITHUB_TOKEN cannot)
-          token: ${{ secrets.INSIGHT_TOKEN }}
-          commit-message: "chore(pre-commit): autoupdate hooks"
-          title: "chore(pre-commit): autoupdate hooks"
-          body: |
-            Automated update of pre-commit hook versions.
-          branch: chore/pre-commit-autoupdate
-          labels: chore, ci
+    uses: alpininsight/.github-private/.github/workflows/scheduled-pre-commit-update-reusable.yml@main
+    secrets:
+      automation_token: ${{ secrets.INSIGHT_TOKEN }}

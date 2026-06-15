@@ -1,0 +1,89 @@
+"""Configuration classes for popup components."""
+
+from dataclasses import dataclass, field
+from typing import Literal
+
+from django.utils.translation import gettext_lazy as _
+
+from insight_ui.configs.base import ActionConfig
+
+
+@dataclass
+class AlertConfig:
+    """
+    Configuration for the alert component.
+
+    Renders a notification/alert box.
+
+    Attributes:
+        tag_id: Optional, unique tag ID for identifying the element in JavaScript.
+        message: Message displayed in the alert.
+        type: Type of the alert. Possible values are 'info', 'success', 'warning' and 'error'.
+        dismissible: Shows a button to close the alert at the end of the alert container.
+
+    """
+
+    __example__ = """
+        AlertConfig(
+            message="Your changes have been saved successfully!",
+            type="success",
+            dismissible=True,
+        )
+        """
+
+    tag_id: str = field(
+        default="", metadata={"doc": _("Optional, unique tag ID for identifying the element in JavaScript.")}
+    )
+    message: str = field(default="", metadata={"doc": _("Message displayed in the alert.")})
+    type: Literal["info", "success", "warning", "error"] = field(
+        default="info",
+        metadata={"doc": _("Type of the alert. Possible values are 'info', 'success', 'warning' and 'error'.")},
+    )
+    dismissible: bool = field(
+        default=True, metadata={"doc": _("Shows a button to close the alert at the end of the alert container.")}
+    )
+
+
+@dataclass
+class ModalConfig:
+    """
+    Configuration for the modal component.
+
+    Renders an accessible modal dialog.
+
+    Attributes:
+        tag_id: Optional, unique tag ID for identifying the element in JavaScript.
+        title: Heading of the modal dialog.
+        description: A text in the center of the modal dialog. This can be exchanged by extending the template.
+        actions: List of buttons displayed at the bottom of the dialog.
+        width: The maximum width of the dialog box relative to the screen in 'rem'.
+
+    """
+
+    __example__ = """
+        ModalConfig(
+            tag_id="delete-confirm",
+            title="Confirm Deletion",
+            description="Are you sure you want to delete this item? This action cannot be undone.",
+            actions=[
+                ActionConfig(text="Delete", type="danger", onclick="deleteItem()"),
+                ActionConfig(text="Cancel", type="cancel", dismiss=True),
+            ],
+            width=24,
+        )
+        """
+
+    tag_id: str = field(metadata={"doc": _("Optional, unique tag ID for identifying the element in JavaScript.")})
+    title: str = field(metadata={"doc": _("Heading of the modal dialog.")})
+    description: str | list[str] = field(
+        default="",
+        metadata={
+            "doc": _("A text in the center of the modal dialog. This can be exchanged by extending the template.")
+        },
+    )
+    actions: list[ActionConfig] = field(
+        default_factory=list, metadata={"doc": _("List of buttons displayed at the bottom of the dialog.")}
+    )
+    width: int = field(
+        default=32, metadata={"doc": _("The maximum width of the dialog box relative to the screen in 'rem'.")}
+    )

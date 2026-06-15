@@ -1,3 +1,4 @@
+import re
 from collections.abc import Mapping
 from typing import Any
 
@@ -5,6 +6,7 @@ from django.conf import settings
 from django.templatetags.static import static
 
 MINIFIABLE_EXTENSIONS = (".css", ".js")
+SEMVER_PATTERN = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+$")
 
 
 def to_minified_asset_path(asset_path: str) -> str:
@@ -20,7 +22,7 @@ def to_minified_asset_path(asset_path: str) -> str:
 
 
 def _normalise_cdn_version(version: str) -> str:
-    if version == "latest" or version.startswith("v"):
+    if version == "latest" or version.startswith("v") or not SEMVER_PATTERN.match(version):
         return version
     return f"v{version}"
 

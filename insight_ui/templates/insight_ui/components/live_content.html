@@ -1,26 +1,25 @@
 {% load i18n %}
 
 <div
-    class="insight-live-content"
-    {% if tag_id %}id="{{ tag_id }}"{% endif %}
-    hx-get="{{ htmx.url }}"
-    hx-trigger="{{ htmx.trigger }}"
-    hx-swap="{{ htmx.swap }}"
+    {% if live_content_config.tag_id %}id="{{ live_content_config.tag_id }}"{% endif %}
+    hx-get="{{ htmx_config.request_url }}"
+    hx-trigger="{{ htmx_config.trigger }}"
+    hx-swap="{{ htmx_config.swap }}"
     hx-ext="progressive-enhancement"
     data-loading-class="insight-live-content--loading"
     aria-live="polite"
     aria-busy="false"
     tabindex="-1"
 >
-    <!-- Loading Spinner -->
+    {# Loading Spinner #}
     <div class="htmx-spinner" style="display: none;" role="status">
         <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-insight-primary" aria-hidden="true"></div>
         <span class="ml-2 text-sm text-secondary">{% trans 'Loading...' %}</span>
     </div>
 
-    <!-- Content is loaded here -->
-    {% if initial_content %}
-        {{ initial_content|safe }}
+    {# Content #}
+    {% if live_content_config.initial_content %}
+        {{ live_content_config.initial_content|safe }}
     {% else %}
         <div>
             <p class="text-secondary">{% trans 'Content is loading...' %}</p>

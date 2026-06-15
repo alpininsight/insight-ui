@@ -1,21 +1,93 @@
 """Template-Tags for Insight UI-Components."""
 
+from __future__ import annotations
+
 import math
+import re
 from collections.abc import Iterable, Mapping, Sequence
-from copy import deepcopy
+from dataclasses import MISSING, fields, is_dataclass, replace
 from difflib import HtmlDiff, ndiff, unified_diff
-from typing import Any
+from types import UnionType
+from typing import Any, Final, Literal, TypeVar, get_args, get_origin, get_type_hints
 
 from django import template
 from django.core.paginator import Page
 from django.templatetags.static import static
-from django.urls import reverse
 from django.utils.functional import Promise
 from django.utils.safestring import SafeString, mark_safe
 from django.utils.translation import gettext as _
 from markdown import markdown
 
 from insight_ui.config import get_config
+from insight_ui.configs import (
+    AccordionConfig,
+    ActionConfig,
+    AlertConfig,
+    AppCardConfig,
+    ArticleConfig,
+    BadgeConfig,
+    BrandLockupConfig,
+    BreadcrumbItemConfig,
+    BreadcrumbsConfig,
+    BulletPointItemConfig,
+    BulletPointListConfig,
+    CardCarouselConfig,
+    CardConfig,
+    CarouselItemConfig,
+    ChartConfig,
+    ChartDatasetConfig,
+    ChatConfig,
+    CheckboxConfig,
+    CheckboxGroupConfig,
+    CopyrightNoticeConfig,
+    CornerRibbonConfig,
+    DropdownConfig,
+    FlipCardConfig,
+    FooterConfig,
+    FormConfig,
+    FormFieldConfig,
+    GenericFilterConfig,
+    GeoMapConfig,
+    GeoMapDatasetConfig,
+    HeadingDecorationConfig,
+    HeroConfig,
+    HtmxConfig,
+    IconConfig,
+    ImageCarouselConfig,
+    ImageCarouselItemConfig,
+    ImageConfig,
+    InfiniteScrollConfig,
+    InfoboxConfig,
+    InputFieldConfig,
+    LiveContentConfig,
+    LogoConfig,
+    MinimalStepBarConfig,
+    ModalConfig,
+    MultiselectConfig,
+    NavbarConfig,
+    PageHeaderConfig,
+    PaginationConfig,
+    PaginationIppConfig,
+    QueryBuilderConfig,
+    QueryBuilderFieldConfig,
+    RadioBlockConfig,
+    RadioGroupConfig,
+    RadioItemConfig,
+    SearchBarConfig,
+    SelectConfig,
+    SidebarConfig,
+    SidebarDataConfig,
+    SliderConfig,
+    StepBarConfig,
+    StepBarItemConfig,
+    TableConfig,
+    TabsConfig,
+    TextareaConfig,
+    ThreeDCarouselConfig,
+    ToggleConfig,
+    ToggleViewConfig,
+    WebSocketConfig,
+)
 from insight_ui.utils.diff import file_template, styles
 
 register = template.Library()
@@ -26,87 +98,13 @@ type JsonSequence = list["JsonValue"]
 type JsonValue = JsonPrimitive | JsonMapping | JsonSequence
 
 
-@register.filter
-def markdownify(value: str) -> SafeString:
-    """Convert markdown to html."""
-    html = markdown(value)
-
-    html = html.replace("<code>", '<span class="inline-tag">')
-    html = html.replace("</code>", "</span>")
-
-    return mark_safe(html)  # nosec  # noqa: S308
+class _Unset:
+    def __repr__(self) -> Literal["UNSET"]:
+        return "UNSET"
 
 
-def _resolve_view_urls(value: JsonValue) -> JsonValue:
-    """Resolve `view_name` entries within nested structures to concrete URLs."""
-    if isinstance(value, list):
-        return [_resolve_view_urls(item) for item in value]
-
-    if isinstance(value, dict):
-        return _resolve_mapping(value)
-
-    return value
-
-
-def _resolve_mapping(mapping: JsonMapping) -> JsonMapping:
-    """Return a copy of the given mapping with resolved view-based URLs."""
-    result: JsonMapping = deepcopy(mapping)
-    _ensure_resolved_url(result)
-
-    for key, nested_value in list(result.items()):
-        if isinstance(nested_value, list | dict):
-            result[key] = _resolve_view_urls(nested_value)
-
-    href_value = result.get("href") or result.get("url") or ""
-    result["href"] = href_value
-    return result
-
-
-def _ensure_resolved_url(mapping: JsonMapping) -> None:
-    """Populate the `url` field when a `view_name` (and optional args) are provided."""
-    view_name = mapping.get("view_name")
-    if not isinstance(view_name, str) or not view_name:
-        return
-
-    view_args = mapping.get("view_args")
-    view_arg = mapping.get("view_arg")
-    view_kwargs = mapping.get("view_kwargs")
-
-    if isinstance(view_args, list | tuple):
-        mapping["url"] = reverse(view_name, args=list(view_args))
-    elif view_arg is not None:
-        mapping["url"] = reverse(view_name, args=[view_arg])
-    elif isinstance(view_kwargs, dict):
-        mapping["url"] = reverse(view_name, kwargs=view_kwargs)
-    else:
-        mapping["url"] = reverse(view_name)
-
-
-@register.filter
-def get_item(dictionary: dict, key: str) -> Any:  # noqa: ANN401
-    """Get the specified item of a dictionary."""
-    return dictionary.get(key)
-
-
-@register.inclusion_tag("insight_ui/components/icons.html")
-def icon(name: str = "", size: str = "") -> dict[str, Any]:
-    """
-    Render specified icon with given size.
-
-    Arguments:
-    ---------
-        name (str or dict): name of the icon or a dict with "name" and "size".
-        size (str): size of the icon.
-
-    Returns:
-    -------
-        icon_dict (dict): a dictionary with the information about the icon.
-
-    """
-    if isinstance(name, dict):
-        return {"name": name.get("name", ""), "size": name.get("size", "")}
-
-    return {"name": name, "size": size}
+UNSET: Final = _Unset()
+T = TypeVar("T")
 
 
 def _resolve_asset_url(value: object) -> str:
@@ -121,170 +119,666 @@ def _resolve_asset_url(value: object) -> str:
     return static(url)
 
 
-@register.inclusion_tag("insight_ui/components/logo.html")
-def logo(  # noqa: PLR0913 (too many arguments)
-    logo_type: str | None = None,
-    url: str | None = None,
-    url_dark: str | None = None,
-    alt: str | None = None,
-    icon_name: str | None = None,
-    icon_size: str | None = None,
-    height: str | None = None,
-    width: str | None = None,
-    css_class: str | None = None,
-    config: Mapping[str, Any] | None = None,
+def ensure_list(value: str | Iterable[str] | None) -> list[str]:
+    """Take a string or a list of strings and return in both cases a list of strings."""
+    if value is None:
+        return []
+
+    if isinstance(value, (str, Promise)):
+        return [value]
+
+    return list(value)
+
+
+def _is_dataclass_type(annotation: object) -> bool:
+    """Return whether a type annotation directly describes a dataclass config."""
+    return isinstance(annotation, type) and is_dataclass(annotation)
+
+
+def _coerce_mapping_to_config[T](cls: type[T], value: Mapping[str, Any]) -> T:
+    """Create a dataclass config from a mapping, including nested config values."""
+    type_hints = get_type_hints(cls)
+    coerced_values = {key: _coerce_config_value(item, type_hints.get(key, Any)) for key, item in value.items()}
+    return cls(**coerced_values)
+
+
+def _coerce_sequence_to_config(value: Sequence[Any], annotation: object) -> list[Any]:
+    """Convert list-like config values according to their annotated item type."""
+    origin = get_origin(annotation)
+    if origin in (list, Sequence):
+        args = get_args(annotation)
+        item_annotation = args[0] if args else Any
+        return [_coerce_config_value(item, item_annotation) for item in value]
+
+    if origin is UnionType:
+        for option in get_args(annotation):
+            option_origin = get_origin(option)
+            if option_origin in (list, Sequence):
+                return _coerce_sequence_to_config(value, option)
+
+    return list(value)
+
+
+def _expects_sequence_config(annotation: object) -> bool:
+    """Return whether an annotation expects a list-like config value."""
+    origin = get_origin(annotation)
+    if origin in (list, Sequence):
+        return True
+
+    if origin is UnionType:
+        return any(_expects_sequence_config(option) for option in get_args(annotation))
+
+    return False
+
+
+def _coerce_config_value(value: Any, annotation: object) -> Any:  # noqa: ANN401
+    """Coerce mapping and sequence values into annotated dataclass config types."""
+    origin = get_origin(annotation)
+
+    if isinstance(value, Mapping):
+        if _is_dataclass_type(annotation):
+            return _coerce_mapping_to_config(annotation, value)
+
+        if origin is UnionType:
+            for option in get_args(annotation):
+                if _is_dataclass_type(option):
+                    return _coerce_mapping_to_config(option, value)
+
+    if (
+        isinstance(value, Sequence)
+        and not isinstance(value, (str, bytes, bytearray))
+        and _expects_sequence_config(annotation)
+    ):
+        return _coerce_sequence_to_config(value, annotation)
+
+    return value
+
+
+def build_config[T](cls: type[T], config: T | None = None, **kwargs: Any) -> T:  # noqa: ANN401
+    """
+    Create or update a dataclass instance.
+
+    Parameters with value UNSET are ignored.
+
+    If config is None:
+        Creates a new instance and validates required fields.
+
+    If config is given:
+        Returns a copy with provided overrides applied.
+    """
+    overrides = {key: value for key, value in kwargs.items() if value is not UNSET}
+
+    if isinstance(config, Mapping):
+        return _coerce_mapping_to_config(cls, dict(config) | overrides)
+
+    if config is not None and is_dataclass(config):
+        return replace(config, **overrides)
+
+    required_fields = [
+        field.name for field in fields(cls) if field.default is MISSING and field.default_factory is MISSING
+    ]
+
+    missing = [field_name for field_name in required_fields if field_name not in overrides]
+
+    if missing:
+        raise ValueError(f"Missing required fields for {cls.__name__}: {', '.join(missing)}")  # noqa: TRY003
+
+    return cls(**overrides)
+
+
+def merge_config(config: Any, **overrides) -> Any:  # noqa: ANN401
+    """Take a component config Dataclass and overwrite the respective member with the kwargs."""
+    if config is None:
+        return config.__class__(**overrides)
+
+    values = {}
+    for field in fields(config):
+        override = overrides.get(field.name)
+        if override:
+            values[field.name] = override
+        else:
+            values[field.name] = getattr(config, field.name)
+
+    return replace(config, **values)
+
+
+@register.filter
+def markdownify(value: str) -> SafeString:
+    """Convert markdown to html."""
+    html = markdown(value)
+
+    # Assign "inline-tag" class to <code> elements
+    html = html.replace("<code>", '<span class="inline-tag">')
+    html = html.replace("</code>", "</span>")
+
+    # Assign text style to <a> elements
+    html = html.replace("<a", '<a class="text-link"')
+
+    return mark_safe(html)  # nosec  # noqa: S308
+
+
+@register.filter
+def get_item(dictionary: dict, key: str) -> Any:  # noqa: ANN401
+    """Get the specified item of a dictionary."""
+    return dictionary.get(key)
+
+
+@register.inclusion_tag("insight_ui/components/icons.html")
+def icon(
+    config: IconConfig | None = None,
+    *,
+    name: str | _Unset = UNSET,
+    size: str | _Unset = UNSET,
+    color: str | _Unset = UNSET,
 ) -> dict[str, Any]:
-    """
-    Render a brand logo as an image, SVG asset, or Insight UI icon.
+    """Render specified icon with given size."""
+    config = build_config(IconConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"icon_config": config}
 
-    Args:
-    ----
-        logo_type (str): One of 'image', 'svg', or 'icon'. In config dictionaries, 'type' is also supported.
-        url (str): Static, absolute, root-relative, or data URL for image/svg logos.
-        url_dark (str): Optional dark-theme URL for image/svg logos.
-        alt (str): Accessible text. Empty values mark image/svg logos as decorative.
-        icon_name (str): Insight UI icon name when logo_type is 'icon'.
-        icon_size (str): Insight UI icon size when logo_type is 'icon'.
-        height (str): CSS height for image/svg logos.
-        width (str): Optional CSS width for image/svg logos.
-        css_class (str): Extra classes for the rendered logo root.
-        config (dict[str, Any]): Alternative configuration with keys corresponding to the previous parameters.
 
-    Returns:
-    -------
-        A dict with context variables for the template.
+# =============================================================
+#
+#   Layout Tags
+#
+# =============================================================
 
-    """
-    if config is not None:
-        logo_type = config.get("type", config.get("logo_type", logo_type))
-        url = config.get("url", config.get("src", url))
-        url_dark = config.get("url_dark", config.get("src_dark", url_dark))
-        alt = config.get("alt", alt)
-        icon_size = config.get("icon_size", icon_size)
-        height = config.get("height", height)
-        width = config.get("width", width)
-        css_class = config.get("class", config.get("css_class", css_class))
 
-        icon_config = config.get("icon")
-        if isinstance(icon_config, Mapping):
-            icon_name = icon_config.get("name", icon_name)
-            icon_size = icon_config.get("size", icon_size)
-        elif isinstance(icon_config, str):
-            icon_name = icon_config
+@register.inclusion_tag("insight_ui/components/page_header.html")
+def page_header(
+    config: PageHeaderConfig | None = None,
+    *,
+    title: str | _Unset = UNSET,
+    description: str | list[str] | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a page header in the base template."""
+    config = build_config(PageHeaderConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config.description = ensure_list(config.description)
 
-        icon_name = config.get("icon_name", icon_name)
+    return {"page_header_config": config}
 
-    inferred_type = logo_type or (
-        "icon" if icon_name else "svg" if str(url or "").lower().endswith(".svg") else "image"
-    )
-    normalized_type = str(inferred_type).strip().lower()
-    if normalized_type not in {"image", "svg", "icon"}:
-        normalized_type = "image"
 
-    src = _resolve_asset_url(url)
-    dark_src = _resolve_asset_url(url_dark)
-
+@register.inclusion_tag("insight_ui/components/heading_decoration.html")
+def heading_decoration(
+    config: HeadingDecorationConfig | None = None,
+    *,
+    style: str | _Unset = UNSET,
+    color: str | _Unset = UNSET,
+    image_url: str | _Unset = UNSET,
+    height: int | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render the decorative transition below the page header."""
+    config = build_config(HeadingDecorationConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
     return {
-        "type": normalized_type,
-        "src": src,
-        "dark_src": dark_src,
-        "has_dark_variant": bool(dark_src and dark_src != src),
-        "alt": alt or "",
-        "icon": {"name": icon_name or "", "size": icon_size or "m"},
-        "height": height or "2rem",
-        "width": width or "",
-        "css_class": css_class or "",
+        "style": config.style,
+        "color": config.color,
+        "image_url": config.image_url,
+        "height": config.height,
+        "wave_back_y": config.height,
+        "wave_middle_y": max(int(config.height * 0.75), 1),
+        "wave_front_y": max(int(config.height * 0.55), 1),
     }
+
+
+@register.inclusion_tag("insight_ui/components/article.html")
+def article(
+    config: ArticleConfig | None = None,
+    *,
+    content: str | _Unset = UNSET,
+    columns: int | _Unset = UNSET,
+    column_gap: str | _Unset = UNSET,
+    title: str | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render an article in newspaper style with a multi-column layout."""
+    config = build_config(ArticleConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"article_config": config}
+
+
+@register.inclusion_tag("insight_ui/components/hero.html")
+def hero(
+    config: HeroConfig | None = None,
+    *,
+    title: str | _Unset = UNSET,
+    subtitle: str | _Unset = UNSET,
+    description: str | _Unset = UNSET,
+    cta_primary: ActionConfig | _Unset = UNSET,
+    cta_secondary: ActionConfig | _Unset = UNSET,
+    background_image_url: str | _Unset = UNSET,
+    badge: BadgeConfig | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a hero section with optional background image."""
+    config = build_config(HeroConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"hero_config": config}
+
+
+# =============================================================
+#
+#   Navigation Tags
+#
+# =============================================================
+
+
+@register.inclusion_tag("insight_ui/components/navbar.html", takes_context=True)
+def navbar(context: dict[str, Any], config: NavbarConfig, **kwargs: JsonValue) -> dict[str, Any]:
+    """Render a configurable navigation bar."""
+    return {
+        "user": context.get("user"),
+        "navbar_config": config,
+        "fixed": get_config("navbar_fixed"),
+        "options": {**kwargs},
+    }
+
+
+@register.inclusion_tag("insight_ui/components/sidebar.html")
+def sidebar(
+    config: SidebarConfig | None = None,
+    *,
+    sidebar_data: SidebarDataConfig | _Unset = UNSET,
+    side: str | _Unset = UNSET,
+    static: bool | _Unset = UNSET,
+    auto_close: bool | _Unset = UNSET,
+    mobile_hidden: bool | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a configurable page navigation."""
+    config = build_config(SidebarConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {
+        "sidebar_config": config,
+        "sidebar_data": config.sidebar_data,
+        "side": config.side,
+        "static": config.static,
+        "auto_close": config.auto_close,
+        "mobile_hidden": config.mobile_hidden,
+        "navbar_fixed": get_config("navbar_fixed"),
+    }
+
+
+@register.inclusion_tag("insight_ui/components/footer.html")
+def footer(config: FooterConfig) -> dict[str, Any]:
+    """Render a footer with optional description, links, and a copyright line."""
+    return {"footer_config": config}
+
+
+@register.inclusion_tag("insight_ui/components/breadcrumbs.html")
+def breadcrumbs(
+    config: BreadcrumbsConfig | None = None, *, items: list[BreadcrumbItemConfig] | None | _Unset = UNSET
+) -> dict[str, Any]:
+    """Render breadcrumb navigation."""
+    config = build_config(BreadcrumbsConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"items": config.items, "htmx": config.htmx}
+
+
+@register.inclusion_tag("insight_ui/components/step_bar.html")
+def step_bar(
+    config: StepBarConfig | None = None, *, items: list[StepBarItemConfig] | None | _Unset = UNSET
+) -> dict[str, Any]:
+    """Render a graphical representation of process steps."""
+    config = build_config(StepBarConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"items": config.items}
+
+
+@register.inclusion_tag("insight_ui/components/minimal_step_bar.html")
+def minimal_step_bar(
+    config: MinimalStepBarConfig | None = None,
+    *,
+    items: list[Literal["active", "success", "failed", ""]] | _Unset = UNSET,
+    step_count: int | _Unset = UNSET,
+    current_step: int | _Unset = UNSET,
+    current_step_status: Literal["active", "success", "failed"] | _Unset = UNSET,
+    icon_size: Literal["xs", "s", "m", "l", "xl"] | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a compact graphical representation of process steps."""
+    config = build_config(MinimalStepBarConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+
+    # Generate items from step_count if not provided
+    if not config.items and config.step_count > 0:
+        config.items = []
+        for step in range(config.step_count):
+            if step < config.current_step:
+                config.items.append("success")
+            elif step == config.current_step:
+                config.items.append(config.current_step_status)
+            else:
+                config.items.append("")
+
+    return {"items": config.items, "icon_size": config.icon_size}
+
+
+@register.inclusion_tag("insight_ui/components/bullet_point_list.html")
+def bullet_point_list(
+    config: BulletPointListConfig | None = None, *, items: list[BulletPointItemConfig] | None | _Unset = UNSET
+) -> dict[str, Any]:
+    """Render a graphical representation of a bullet point list."""
+    config = build_config(BulletPointListConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"items": config.items, "htmx": config.htmx}
+
+
+@register.inclusion_tag("insight_ui/components/accordion.html")
+def accordion(config: AccordionConfig) -> dict[str, Any]:
+    """Render an accordion that can have one or more sections open."""
+    return {"accordion_config": config}
+
+
+@register.inclusion_tag("insight_ui/components/tabs.html")
+def tabs(config: TabsConfig) -> dict[str, Any]:
+    """Render a group of tabs and a container for the content of each tab."""
+    return {"config": config}
+
+
+# =============================================================
+#
+#   Input Tags
+#
+# =============================================================
+
+
+@register.inclusion_tag("insight_ui/components/input.html")
+def input_field(
+    config: InputFieldConfig | None = None,
+    *,
+    tag_id: str | None | _Unset = UNSET,
+    name: str | None | _Unset = UNSET,
+    input_type: str | _Unset = UNSET,
+    placeholder: str | _Unset = UNSET,
+    value: str | int | float | None | _Unset = UNSET,
+    minimum: int | None | _Unset = UNSET,
+    maximum: int | None | _Unset = UNSET,
+    min_length: int | None | _Unset = UNSET,
+    max_length: int | None | _Unset = UNSET,
+    checked: bool | _Unset = UNSET,
+    required: bool | _Unset = UNSET,
+    disabled: bool | _Unset = UNSET,
+    label: str | None | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render any <input> field."""
+    config = build_config(InputFieldConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"input_config": config}
+
+
+@register.inclusion_tag("insight_ui/components/textarea.html")
+def textarea(
+    config: TextareaConfig | None = None,
+    *,
+    tag_id: str | None | _Unset = UNSET,
+    name: str | None | _Unset = UNSET,
+    placeholder: str | _Unset = UNSET,
+    value: str | _Unset = UNSET,
+    rows: int | _Unset = UNSET,
+    cols: int | None | _Unset = UNSET,
+    required: bool | _Unset = UNSET,
+    disabled: bool | _Unset = UNSET,
+    label: str | None | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a <textarea> field."""
+    config = build_config(TextareaConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"textarea_config": config}
+
+
+@register.inclusion_tag("insight_ui/components/checkbox.html")
+def checkbox(
+    config: CheckboxConfig | None = None,
+    *,
+    tag_id: str | None | _Unset = UNSET,
+    name: str | None | _Unset = UNSET,
+    value: str | _Unset = UNSET,
+    label: str | None | _Unset = UNSET,
+    checked: bool | _Unset = UNSET,
+    disabled: bool | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a checkbox with label text."""
+    config = build_config(CheckboxConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"checkbox_config": config}
+
+
+@register.inclusion_tag("insight_ui/components/checkbox_group.html")
+def checkbox_group(config: CheckboxGroupConfig) -> dict[str, Any]:
+    """Render a group of checkbox elements."""
+    return {"checkbox_group_config": config}
+
+
+@register.inclusion_tag("insight_ui/components/dropdown.html")
+def dropdown(config: DropdownConfig) -> dict[str, Any]:
+    """Render a dropdown menu."""
+    return {"dropdown_config": config}
+
+
+@register.inclusion_tag("insight_ui/components/radio_group.html")
+def radio_group(
+    config: RadioGroupConfig | None = None,
+    *,
+    name: str | _Unset = UNSET,
+    label: str | _Unset = UNSET,
+    items: list[RadioItemConfig] | None | _Unset = UNSET,
+    as_row: bool | _Unset = UNSET,
+    current_value: str | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a group of radio buttons."""
+    config = build_config(RadioGroupConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"radio_group_config": config}
+
+
+@register.inclusion_tag("insight_ui/components/radio_block.html")
+def radio_block(
+    config: RadioBlockConfig | None = None,
+    *,
+    name: str | _Unset = UNSET,
+    label: str | _Unset = UNSET,
+    items: list[RadioItemConfig] | None | _Unset = UNSET,
+    integrated: bool | _Unset = UNSET,
+    as_row: bool | _Unset = UNSET,
+    request_url: str | _Unset = UNSET,
+    hx_target_id: str | _Unset = UNSET,
+    hx_swap_method: str | _Unset = UNSET,
+    method: str | _Unset = UNSET,
+    current_value: str | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a group of radio buttons as a block."""
+    config = build_config(RadioBlockConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"radio_block_config": config}
+
+
+@register.inclusion_tag("insight_ui/components/range_slider.html")
+def slider(
+    config: SliderConfig | None = None,
+    *,
+    tag_id: str | None | _Unset = UNSET,
+    name: str | None | _Unset = UNSET,
+    value: int | None | _Unset = UNSET,
+    minimum: int | _Unset = UNSET,
+    maximum: int | _Unset = UNSET,
+    step_size: int | _Unset = UNSET,
+    label: str | None | _Unset = UNSET,
+    disabled: bool | _Unset = UNSET,
+    items: list[str] | None | _Unset = UNSET,
+    legend_mode: str | _Unset = UNSET,
+    dual: bool | _Unset = UNSET,
+    value_min: int | None | _Unset = UNSET,
+    value_max: int | None | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a range slider."""
+    config = build_config(SliderConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"slider_config": config}
+
+
+@register.inclusion_tag("insight_ui/components/toggle_button.html")
+def toggle(
+    config: ToggleConfig | None = None,
+    *,
+    tag_id: str | None | _Unset = UNSET,
+    name: str | None | _Unset = UNSET,
+    value: str | _Unset = UNSET,
+    label: str | None | _Unset = UNSET,
+    icon: IconConfig | None | _Unset = UNSET,
+    checked: bool | _Unset = UNSET,
+    disabled: bool | _Unset = UNSET,
+    switch: bool | _Unset = UNSET,
+    method: str | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a toggle button."""
+    config = build_config(ToggleConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"toggle_config": config}
+
+
+@register.inclusion_tag("insight_ui/components/select.html")
+def select(
+    config: SelectConfig | None = None,
+    *,
+    tag_id: str | None | _Unset = UNSET,
+    name: str | None | _Unset = UNSET,
+    label: str | None | _Unset = UNSET,
+    required: bool | _Unset = UNSET,
+    explanation: str | _Unset = UNSET,
+    options: list[str] | dict[str, str] | None | _Unset = UNSET,
+    selected_option: str | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a selection box."""
+    if config is None:
+        if isinstance(options, list):
+            options = dict(zip(options, options))
+    elif isinstance(config.options, list):
+        config.options = dict(zip(config.options, config.options))
+
+    config = build_config(SelectConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"select_config": config}
+
+
+@register.inclusion_tag("insight_ui/components/multiselect.html")
+def multiselect(
+    config: MultiselectConfig | None = None,
+    *,
+    name: str | None | _Unset = UNSET,
+    label: str | None | _Unset = UNSET,
+    maximum: int | None | _Unset = UNSET,
+    show_buttons: bool | _Unset = UNSET,
+    options: list[str] | dict[str, str] | None | _Unset = UNSET,
+    selected_options: list[str] | None | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a selection box that allows multiple values."""
+    if config is None:
+        if isinstance(options, list):
+            options = dict(zip(options, options))
+    elif isinstance(config.options, list):
+        config.options = dict(zip(config.options, config.options))
+
+    config = build_config(MultiselectConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"multiselect_config": config}
+
+
+@register.inclusion_tag("insight_ui/components/chat.html")
+def chat(config: ChatConfig | None = None, *, request_url: str | _Unset = UNSET) -> dict[str, Any]:
+    """Render a chat with an input line and a place for the response."""
+    config = build_config(ChatConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"request_url": config.request_url}
+
+
+# =============================================================
+#
+#   Popup Tags
+#
+# =============================================================
+
+
+@register.inclusion_tag("insight_ui/components/alert.html")
+def alert(
+    config: AlertConfig | None = None,
+    *,
+    tag_id: str | _Unset = UNSET,
+    message: str | _Unset = UNSET,
+    type: str | _Unset = UNSET,  # noqa: A002
+    dismissible: bool | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a closable notification."""
+    config = build_config(AlertConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"alert_config": config}
+
+
+@register.inclusion_tag("insight_ui/components/modal.html")
+def modal(
+    config: ModalConfig | None = None,
+    *,
+    tag_id: str | _Unset = UNSET,
+    title: str | _Unset = UNSET,
+    description: str | list[str] | _Unset = UNSET,
+    actions: Sequence[ActionConfig] | None | _Unset = UNSET,
+    width: int | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render an accessible modal dialog."""
+    config = build_config(ModalConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config.description = ensure_list(config.description)
+    return {"modal_config": config}
+
+
+# =============================================================
+#
+#   Util Tags
+#
+# =============================================================
+
+
+@register.inclusion_tag("insight_ui/components/infobox.html")
+def infobox(
+    config: InfoboxConfig | None = None, *, info_type: str | _Unset = UNSET, message: str | _Unset = UNSET, **kwargs
+) -> dict[str, Any]:
+    """Render a small box of information."""
+    config = build_config(InfoboxConfig, config, info_type=info_type, message=message)
+
+    if kwargs:
+        try:
+            config.message = config.message.format(**kwargs)
+        except (KeyError, ValueError):
+            config.message = config.message
+
+    return {"info_config": config}
 
 
 @register.inclusion_tag("insight_ui/components/copyright_notice.html")
-def copyright_notice(  # noqa: PLR0913
-    year: int | str | None = None,
-    holder: str | None = None,
-    app_name: str | None = None,
-    source_label: str | None = None,
-    license_text: str | None = None,
-    license_url: str | None = None,
-    separator: str | None = None,
-    rights_text: str | None = None,
-    css_class: str | None = None,
-    config: Mapping[str, Any] | None = None,
+def copyright_notice(
+    config: CopyrightNoticeConfig | None = None,
+    *,
+    year: int | str | None | _Unset = UNSET,
+    holder: str | None | _Unset = UNSET,
+    source_label: str | None | _Unset = UNSET,
+    license_text: str | None | _Unset = UNSET,
+    license_url: str | None | _Unset = UNSET,
+    separator: str | None | _Unset = UNSET,
+    rights_text: str | None | _Unset = UNSET,
 ) -> dict[str, Any]:
-    """
-    Render a reusable copyright and legal notice line.
-
-    Args:
-    ----
-        year: Optional copyright year.
-        holder: Copyright holder name.
-        app_name: Backwards-compatible fallback for the holder name.
-        source_label: Optional source/distribution label, for example "Open Source".
-        license_text: Optional license label.
-        license_url: Optional URL for the license label.
-        separator: Separator between legal metadata parts. Defaults to a middle dot.
-        rights_text: Optional rights statement.
-        css_class: Additional CSS classes for the rendered notice.
-        config: Alternative dictionary-based configuration for all parameters.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    if config is not None:
-        year = config.get("year", year)
-        holder = config.get("holder", holder)
-        app_name = config.get("app_name", app_name)
-        source_label = config.get("source_label", source_label)
-        license_text = config.get("license_text", license_text)
-        license_url = config.get("license_url", license_url)
-        separator = config.get("separator", separator)
-        rights_text = config.get("rights_text", rights_text)
-        css_class = config.get("class", config.get("css_class", css_class))
-
-    notice_holder = holder or app_name or ""
+    """Render a reusable copyright and legal notice line."""
+    config = build_config(CopyrightNoticeConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
     metadata = [
-        {"text": source_label or "", "url": ""},
-        {"text": license_text or "", "url": license_url or ""},
-        {"text": rights_text or _("All rights reserved."), "url": ""},
+        {"text": config.source_label or "", "url": ""},
+        {"text": config.license_text or "", "url": config.license_url or ""},
+        {"text": config.rights_text or _("All rights reserved."), "url": ""},
     ]
 
-    return {
-        "year": year or "",
-        "holder": notice_holder,
-        "metadata": [item for item in metadata if item["text"]],
-        "separator": separator or "\u00b7",
-        "css_class": css_class or "",
-    }
+    return {"copyright_config": config, "metadata": [item for item in metadata if item["text"]]}
 
 
 @register.filter
 def diff(a: str, b: str, simple: bool = True) -> str:
     """
-    Generate a visualization of the differences between to texts.
+    Generate a visualization of the differences between two texts.
 
-    Arguments:
-    ---------
-        a (str): The original version of the text.
-        b (str): The modified version of the text.
-        simple (bool): 'True' for a simplified display.
+    Args:
+    ----
+        a: The original version of the text.
+        b: The modified version of the text.
+        simple: 'True' for a simplified display.
 
     Returns:
     -------
-        diff (str): The HTML code for the graphical representation of the differences.
+        The HTML code for the graphical representation of the differences.
 
     """
     if not simple:
         differentiator = HtmlDiff()
         differentiator._file_template = file_template
         differentiator._styles = styles
-        diff = unified_diff(a.splitlines(), b.splitlines(), lineterm="")
-        return "\n".join(list(diff))
+        diff_result = unified_diff(a.splitlines(), b.splitlines(), lineterm="")
+        return "\n".join(list(diff_result))
 
-    diff = ndiff(a.split(), b.split())
+    diff_result = ndiff(a.split(), b.split())
     html = ""
 
-    for word in diff:
+    for word in diff_result:
         if word.startswith("  "):
             html += f"{word[2:]} "
         elif word.startswith("- "):
@@ -294,1523 +788,451 @@ def diff(a: str, b: str, simple: bool = True) -> str:
 
     return f"""
         <style>
-            .del {{ background-color: #f8d7da; color: #721c24; text-decoration: line-through; }}
-            .ins {{ background-color: #d4edda; color: #155724; }}
+            .del {{ background-color: #ffbbbb; color: #721c24; text-decoration: line-through; }}
+            .ins {{ background-color: #bbffbb; color: #155724; }}
         </style>
         <p class='text-primary'>{html}</p>
     """
 
 
-@register.inclusion_tag("insight_ui/components/navbar.html")
-def navbar(config: Mapping[str, Any], **kwargs: JsonValue) -> dict[str, Any]:
-    """
-    Render a configurable navigation bar.
-
-    Args:
-    ----
-        config (dict): Navbar configuration.
-        **kwargs: Additional options for the navigation bar.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    brand = _resolve_view_urls(config.get("brand")) if config.get("brand") else None
-    links = _resolve_view_urls(config.get("links", []))
-
-    return {
-        "brand": brand,
-        "links": links,
-        "searchbar_request_view": config.get("searchbar_request_view"),
-        "show_usermenu": config.get("show_usermenu"),
-        "show_language_selector": config.get("show_language_selector"),
-        "show_theme_toggle": config.get("show_theme_toggle"),
-        "fixed": get_config("navbar_fixed"),
-        "options": {**kwargs},
-    }
-
-
-@register.inclusion_tag("insight_ui/components/step_bar.html")
-def step_bar(items: list) -> dict:
-    """
-    Render a graphical representation of process steps.
-
-    Arguments:
-    ---------
-        items (list): A list of the individual steps.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {"items": items}
-
-
-@register.inclusion_tag("insight_ui/components/minimal_step_bar.html")
-def minimal_step_bar(config: dict) -> dict:
-    """
-    Render a graphical representation of process steps.
-
-    Arguments:
-    ---------
-        config (dict): Configuration of the individual steps of the Step Bar.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    items = config.get("items", [])
-    if items == []:
-        for step in range(0, config.get("step_count")):
-            if step < config.get("current_step"):
-                items.append("success")
-            elif step == config.get("current_step"):
-                items.append(config.get("current_step_status", "active"))
-            else:
-                items.append("")
-
-    return {"items": items, "icon_size": config.get("icon_size", "xs")}
-
-
-@register.inclusion_tag("insight_ui/components/bullet_point_list.html")
-def bullet_point_list(items: list = []) -> dict:
-    """
-    Render a graphical representation of a bullet point list.
-
-    Arguments:
-    ---------
-        items (list): A list of the individual bullet points.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {"items": items}
-
-
-@register.inclusion_tag("insight_ui/components/input.html")
-def input_field(  # noqa: PLR0913 (too many arguments)
-    tag_id: str | None = None,
-    name: str | None = None,
-    input_type: str | None = None,
-    placeholder: str | None = None,
-    value: str | None = None,
-    minimum: int | None = None,
-    maximum: int | None = None,
-    min_length: int | None = None,
-    max_length: int | None = None,
-    checked: bool | None = None,
-    required: bool | None = None,
-    disabled: bool | None = None,
-    label: str | None = None,
-    config: dict | None = None,
-) -> dict:
-    """
-    Render any <input> field.
-
-    Arguments:
-    ---------
-        tag_id (str): An optional, unique ID for JavaScript.
-        name (str): Required for a <form> as the name of the request parameter.
-        input_type (str): The type of input field, e.g. "text", "password", "date" etc..
-        placeholder (str): Placeholder text.
-        value (str): The value of the input field (for type="checkbox", see 'checked').
-        minimum (int): Determines the minimum value of the input.
-        maximum (int): Determines the minimum value of the input.
-        min_length (int): Determines the minimum number of characters in a text field.
-        max_length (int): Determines the minimum number of characters in a text field.
-        checked (bool): 'True' if type="checkbox" and the checkbox should be selected.
-        required (bool): 'True' if the field must be filled in.
-        disabled (bool): 'True' if the field should be disabled, otherwise 'False'.
-        label (str): A label text that is displayed above the input field.
-        config (dict[str, Any]): An alternative configuration with keys corresponding to the previous parameters.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    if config is not None:
-        tag_id = config.get("tag_id", tag_id)
-        name = config.get("name", name)
-        input_type = config.get("input_type", input_type)
-        placeholder = config.get("placeholder", placeholder)
-        value = config.get("value", value)
-        minimum = config.get("minimum", minimum)
-        maximum = config.get("maximum", maximum)
-        min_length = config.get("min_length", min_length)
-        max_length = config.get("max_length", max_length)
-        label = config.get("label", label)
-        checked = config.get("checked", checked)
-        required = config.get("required", required)
-        disabled = config.get("disabled", disabled)
-
-    return {
-        "tag_id": tag_id,
-        "name": name,
-        "input_type": input_type,
-        "placeholder": placeholder,
-        "value": value,
-        "minimum": minimum,
-        "maximum": maximum,
-        "min_length": min_length,
-        "max_length": max_length,
-        "label": label,
-        "checked": checked,
-        "required": required,
-        "disabled": disabled,
-    }
-
-
-@register.inclusion_tag("insight_ui/components/textarea.html")
-def textarea(  # noqa: PLR0913 (too many arguments)
-    tag_id: str | None = None,
-    name: str | None = None,
-    placeholder: str | None = None,
-    value: str | None = None,
-    rows: int | None = None,
-    cols: int | None = None,
-    required: bool | None = None,
-    disabled: bool | None = None,
-    label: str | None = None,
-    config: dict | None = None,
-) -> dict:
-    """
-    Render a <textarea> field.
-
-    Arguments:
-    ---------
-        tag_id (str): An optional, unique ID for JavaScript.
-        name (str): Required for a <form> as the name of the request parameter.
-        placeholder (str): Placeholder text.
-        value (str): The value of the text field.
-        rows (int): Determines the number of lines.
-        cols (int): Determines the number of characters in a line.
-        required (bool): 'True' if the field must be filled in.
-        disabled (bool): 'True' if the field should be disabled, otherwise 'False'.
-        label (str): A label text that is displayed above the text field.
-        config (dict[str, Any]): An alternative configuration with keys corresponding to the previous parameters.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    if config is not None:
-        tag_id = config.get("tag_id", tag_id)
-        name = config.get("name", name)
-        placeholder = config.get("placeholder", placeholder)
-        value = config.get("value", value)
-        rows = config.get("rows", rows)
-        cols = config.get("cols", cols)
-        label = config.get("label", label)
-        required = config.get("required", required)
-        disabled = config.get("disabled", disabled)
-
-    return {
-        "tag_id": tag_id,
-        "name": name,
-        "placeholder": placeholder,
-        "value": value,
-        "rows": rows,
-        "cols": cols,
-        "label": label,
-        "required": required,
-        "disabled": disabled,
-    }
-
-
-@register.inclusion_tag("insight_ui/components/dropdown.html")
-def dropdown(config: dict) -> dict:
-    """
-    Render a dropdown menu.
-
-    Arguments:
-    ---------
-        config (dict): A dictionary that describes the dropdown menu.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return config
-
-
-@register.inclusion_tag("insight_ui/components/checkbox.html")
-def checkbox(  # noqa: PLR0913 (too many arguments)
-    tag_id: str | None = None,
-    name: str | None = None,
-    value: str | None = None,
-    label: str | None = None,
-    checked: bool | None = None,
-    disabled: bool | None = None,
-    config: dict | None = None,
-) -> dict:
-    """
-    Render a checkbox with label text.
-
-    Arguments:
-    ---------
-        tag_id (str): An optional, unique ID for JavaScript.
-        name (str): Required for a <form> as the name of the request parameter.
-        value (str): The value of the checkbox (this is not the state, see 'checked' for that).
-        label (str): A label text that is displayed above the checkbox.
-        checked (bool): 'True' if the checkbox should be selected, otherwise 'False'.
-        disabled (bool): 'True' if the checkbox should be disabled, otherwise 'False'.
-        config (dict[str, Any]): An alternative configuration with keys corresponding to the previous parameters.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    if config is not None:
-        tag_id = config.get("tag_id", tag_id)
-        name = config.get("name", name)
-        value = config.get("value", value)
-        label = config.get("label", label)
-        checked = config.get("checked", checked)
-        disabled = config.get("disabled", disabled)
-
-    return {"tag_id": tag_id, "name": name, "value": value, "label": label, "checked": checked, "disabled": disabled}
-
-
-@register.inclusion_tag("insight_ui/components/checkbox_group.html")
-def checkbox_group(config: dict) -> dict:
-    """
-    Render a group of checkbox elements.
-
-    Arguments:
-    ---------
-        config (dict): Describes the checkbox groups component.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {"config": config}
-
-
-@register.inclusion_tag("insight_ui/components/radio_group.html")
-def radio_group(  # noqa: PLR0913 (too many arguments)
-    name: str = "",
-    label: str = "",
-    items: list[dict[str, Any]] = [],
-    as_row: bool = True,
-    current_value: str = "",
-    config: dict[str, Any] = {},
-) -> dict:
-    """
-    Render a group of radio buttons.
-
-    Arguments:
-    ---------
-        name (str): The name of the radio group, required for identification in requests etc.
-        label (str): A label text that is displayed above the radio buttons.
-        items (list[dict[str, Any]]): A list of radio-button configurations.
-        as_row (bool): 'False' if the elements are to be arranged in a column.
-        current_value (str): The name of the currently selected radio button.
-        config (dict[str, Any]): An alternative configuration with keys corresponding to the previous parameters.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    if config is not None:
-        name = config.get("name", name)
-        label = config.get("label", label)
-        items = config.get("items", items)
-        as_row = config.get("as_row", as_row)
-        current_value = config.get("current_value", current_value)
-
-    return {"name": name, "label": label, "items": items, "as_row": as_row, "current_value": current_value}
-
-
-@register.inclusion_tag("insight_ui/components/radio_block.html")
-def radio_block(  # noqa: PLR0913 (too many arguments)
-    name: str = "",
-    label: str = "",
-    items: list[dict[str, Any]] = [],
-    integrated: bool = False,
-    as_row: bool = True,
-    view_name: str = "",
-    query_params: str = "",
-    hx_target_id: str = "",
-    hx_swap_method: str = "outerHTML",
-    method: str = "",
-    current_value: str = "",
-    config: dict[str, Any] = {},
-) -> dict:
-    """
-    Render a group of radio buttons.
-
-    Arguments:
-    ---------
-        name (str): The name of the entire radio block, required for referencing in JavaScript code.
-        label (str): A label text that is displayed above the radio buttons.
-        items (list[dict[str, Any]]): A list of radio-button configurations.
-        integrated (bool): 'False' if the component should have its own <form> element.
-        as_row (bool): 'False' if the elements are to be arranged in a column.
-        view_name (str): The name of the view to which the request should be sent when switching.
-        query_params (str): A string of query parameters.
-        hx_target_id (str): The ID of the HTML tag that should be replaced when the value changes.
-        hx_swap_method (str): The way in which the target is to be replaced (see: https://htmx.org/attributes/hx-swap/).
-        method (str): The name of the JavaScript method to be executed.
-        current_value (str): The name of the currently selected radio button.
-        config (dict[str, Any]): An alternative configuration with keys corresponding to the previous parameters.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    if config is not None:
-        name = config.get("name", name)
-        label = config.get("label", label)
-        items = config.get("items", items)
-        integrated = config.get("integrated", integrated)
-        as_row = config.get("as_row", as_row)
-        view_name = config.get("view_name", view_name)
-        query_params = config.get("query_params", query_params)
-        hx_target_id = config.get("hx_target_id", hx_target_id)
-        hx_swap_method = config.get("hx_swap_method", hx_swap_method)
-        method = config.get("method", method)
-        current_value = config.get("current_value", current_value)
-
-    return {
-        "name": name,
-        "label": label,
-        "items": items,
-        "current_value": current_value,
-        "view_name": view_name,
-        "query_params": query_params,
-        "hx_target_id": hx_target_id,
-        "hx_swap_method": hx_swap_method,
-        "method": method,
-        "integrated": integrated,
-        "as_row": as_row,
-    }
-
-
-@register.inclusion_tag("insight_ui/components/toggle_button.html")
-def toggle(  # noqa: PLR0913 (too many arguments)
-    tag_id: str | None = None,
-    name: str | None = None,
-    value: str | None = None,
-    label: str | None = None,
-    icon: dict[str, str] | None = None,
-    checked: bool | None = None,
-    disabled: bool | None = None,
-    switch: bool | None = None,
-    config: dict | None = None,
-    method: str = "",
-) -> dict:
-    """
-    Render a toggle button.
-
-    Arguments:
-    ---------
-        tag_id (str): A unique ID for linking <input> and <label>, as well as JavaScript.
-        name (str): Required for a <form> as the name of the request parameter.
-        value (str): The value of the toggle (this is not the state, see 'checked' for that).
-        label (str): A label text that is displayed above the toggle.
-        icon (dict[str, str]): An icon displayed next to the text.
-        checked (bool): 'True' if the toggle should be selected, otherwise 'False'.
-        disabled (bool): 'True' if the toggle should be disabled, otherwise 'False'.
-        switch (bool): 'True' if the toggle button should look like a typical switch select.
-        config (dict[str, Any]): An alternative configuration with keys corresponding to the previous parameters.
-        method (str): The name of the JavaScript method to be executed.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    if config is not None:
-        tag_id = config.get("tag_id", tag_id)
-        name = config.get("name", name)
-        value = config.get("value", value)
-        label = config.get("label", label)
-        icon = config.get("icon", icon)
-        checked = config.get("checked", checked)
-        disabled = config.get("disabled", disabled)
-        switch = config.get("switch", switch)
-
-    return {
-        "tag_id": tag_id,
-        "name": name,
-        "value": value,
-        "label": label,
-        "icon": icon,
-        "checked": checked,
-        "disabled": disabled,
-        "switch": switch,
-        "method": method,
-    }
-
-
-@register.inclusion_tag("insight_ui/components/range_slider.html")
-def slider(  # noqa: PLR0913 (too many arguments)
-    tag_id: str | None = None,
-    name: str | None = None,
-    value: int | None = None,
-    minimum: int | None = None,
-    maximum: int | None = None,
-    step_size: int | None = None,
-    label: str | None = None,
-    disabled: bool | None = None,
-    items: list[str] | None = None,
-    legend_mode: str | None = None,
-    dual: bool | None = None,
-    value_min: int | None = None,
-    value_max: int | None = None,
-    config: dict | None = None,
-) -> dict:
-    """
-    Render a range slider.
-
-    Arguments:
-    ---------
-        tag_id (str): A unique ID for linking <input> and <label>, as well as JavaScript.
-        name (str): Required for a <form> as the name of the request parameter.
-        value (int): The value of the slider (single-thumb mode only).
-        minimum (int): The smallest value of the slider.
-        maximum (int): The largest value of the slider.
-        step_size (int): The size of the slider's steps.
-        label (str): A label text that is displayed above the slider.
-        disabled (bool): 'True' if the slider should be disabled, otherwise 'False'.
-        items (list[str]): A list of texts that are displayed as captions below the slider.
-        legend_mode (str): Controls responsive legend behavior. Options:
-            - 'static' (default): No responsive adjustment, legend items are always visible.
-            - 'skip': Progressively hides legend items (every 2nd, then 4th, etc.) when space is limited.
-            - 'rotate': Rotates legend text vertically when space is limited.
-        dual (bool): If True, enables dual-thumb mode for range selection.
-        value_min (int): The minimum value in dual-thumb mode (defaults to minimum).
-        value_max (int): The maximum value in dual-thumb mode (defaults to maximum).
-        config (dict[str, Any]): An alternative configuration with keys corresponding to the previous parameters.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    if config is not None:
-        tag_id = config.get("tag_id", tag_id)
-        name = config.get("name", name)
-        value = config.get("value", value)
-        minimum = config.get("minimum", minimum)
-        maximum = config.get("maximum", maximum)
-        step_size = config.get("step_size", step_size)
-        label = config.get("label", label)
-        disabled = config.get("disabled", disabled)
-        items = config.get("items", items)
-        legend_mode = config.get("legend_mode", legend_mode)
-        dual = config.get("dual", dual)
-        value_min = config.get("value_min", value_min)
-        value_max = config.get("value_max", value_max)
-
-    return {
-        "tag_id": tag_id,
-        "name": name,
-        "value": value,
-        "minimum": minimum,
-        "maximum": maximum,
-        "step_size": step_size,
-        "label": label,
-        "disabled": disabled,
-        "items": items,
-        "legend_mode": legend_mode,
-        "dual": dual,
-        "value_min": value_min,
-        "value_max": value_max,
-    }
-
-
-@register.inclusion_tag("insight_ui/components/chat.html")
-def chat(request_url: str) -> dict:
-    """
-    Render a chat with an input line and a place for the response.
-
-    Arguments:
-    ---------
-        request_url (str): The URL to which the request should be sent.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {"request_url": request_url}
-
-
-@register.inclusion_tag("insight_ui/components/geo_map.html")
-def geo_map(data: dict = {}, map_height: int = 36) -> dict:
-    """
-    Render an integrated geographic map.
-
-    Arguments:
-    ---------
-        data (dict): Settings for the map and data to be displayed on the map.
-        map_height (int): The height of the map in 'rem'.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {"data": data, "map_height": map_height}
-
-
-@register.inclusion_tag("insight_ui/components/pagination.html")
-def pagination(current_page: Page, surrounding_pages: list[int], ipp_config: dict[str, Any] = {}) -> dict:
-    """
-    Render pagination with items per page selection and display of adjacent pages.
-
-    Arguments:
-    ---------
-        current_page (Page): A pagination object generated by Django for the current page.
-        surrounding_pages (list[int]): A list of neighboring pages.
-            See: from insight_ui.utils.pagination import get_page
-        ipp_config (dict[str, Any]): Configuration an "Items per Page" select (select component).
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {"current_page": current_page, "surrounding_pages": surrounding_pages, "ipp_config": ipp_config}
-
-
-@register.inclusion_tag("insight_ui/components/generic_filter.html")
-def generic_filter(  # noqa: PLR0913 (too many arguments)
-    filters: list = [],
-    request_url: str = "",
-    vertical: bool = False,
-    htmx_config: Mapping[str, Any] | None = None,
-    query_params: dict[str, str] = {},
-) -> dict:
-    """
-    Render a generic filter consisting of one or more <select> fields.
-
-    Arguments:
-    ---------
-        filters (list): A list of individual filters (<select> fields).
-        request_url (str): The URL to which the request should be sent.
-        vertical (bool): 'True' if the filters should be arranged one above the other.
-        htmx_config ([str, str]): HTMX configuration for AJAX requests.
-        query_params (dict[str, str]): A dictionary to set the values of the filters.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {
-        "filters": filters,
-        "request_url": request_url,
-        "vertical": vertical,
-        "htmx": htmx_config,
-        "query_params": query_params,
-    }
-
-
-@register.inclusion_tag("insight_ui/components/search_bar.html")
-def search_bar(request_view: str, simple: bool = False, search_query: str = "") -> dict:
-    """
-    Render text input with a button for a search function.
-
-    Arguments:
-    ---------
-        request_view (str): The name of the view to which the request should be sent.
-        simple (bool): 'True' if the search bar should be displayed without buttons and smaller.
-        search_query (str): An optional value that appears automatically in the text field.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {"request_view": request_view, "simple": simple, "search_query": search_query}
-
-
-@register.inclusion_tag("insight_ui/components/search_query_builder/sq_builder.html")
-def query_builder(model_fields: list[dict[str, Any]]) -> dict:
-    """
-    Render a filter that can be used to construct your own search query. Based on an SQL query.
-
-    Arguments:
-    ---------
-        model_fields (list[dict[str, Any]]): A list of model fields with possible operators.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {"model_fields": model_fields}
-
-
-@register.inclusion_tag("insight_ui/components/toggle_view.html")
-def toggle_view(tag_id: str, data: list, view_radio_config: dict, current_view: str) -> dict:
-    """
-    Render a view of data that can be displayed in various ways.
-
-    Arguments:
-    ---------
-        tag_id (str): A unique ID for the component. (Required for changing the view).
-        data (list): The data to be displayed.
-        view_radio_config (dict): The configuration of the radio group for changing the view type.
-        current_view (str): The name of the current view type.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {"tag_id": tag_id, "data": data, "view_radio_config": view_radio_config, "current_view": current_view}
-
-
-@register.inclusion_tag("insight_ui/components/live_content.html")
-def live_content(tag_id: str = "", url: str = "", interval: int = 10, initial_content: str = "") -> dict[str, Any]:
-    """
-    Render a container for live updates via HTMX.
-
-    Args:
-    ----
-        tag_id (str): An optional, unique ID for JavaScript.
-        url (str): The URL to which the request for updating the content should be sent.
-        interval (int): The interval for automatic updates in seconds.
-        initial_content (str): Optional initial content.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    htmx_config = {"url": url, "trigger": f"load, every {interval}s", "swap": "innerHTML"}
-
-    return {"tag_id": tag_id, "initial_content": initial_content, "htmx": htmx_config}
-
-
-@register.inclusion_tag("insight_ui/components/websocket.html")
-def insight_websocket(tag_id: str = "", url: str = "", initial_content: str = "") -> dict[str, Any]:
-    """
-    Render a WebSocket component as a thin wrapper for the HTMX ws extension.
-
-    Args:
-    ----
-        tag_id: The ID of the WebSocket container.
-        url: The WebSocket endpoint URL (for example `/runtime/stream/`).
-        initial_content: Initial content.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {"tag_id": tag_id, "url": url, "initial_content": initial_content}
-
-
-@register.inclusion_tag("insight_ui/components/infinite_scroll.html")
-def infinite_scroll(  # noqa: PLR0913 (Too many arguments)
-    tag_id: str = "",
-    view_name: str = "",
-    items: Sequence[Any] | None = None,
-    page: int = 1,
-    has_next: bool = True,
-    auto_fetch: bool = True,
-    threshold: int = 100,
+@register.inclusion_tag("insight_ui/components/logo.html")
+def logo(
+    config: LogoConfig | None = None,
+    *,
+    url: str | None | _Unset = UNSET,
+    url_dark: str | None | _Unset = UNSET,
+    alt: str | None | _Unset = UNSET,
+    icon_name: str | None | _Unset = UNSET,
+    icon_size: str | None | _Unset = UNSET,
+    height: str | None | _Unset = UNSET,
+    width: str | None | _Unset = UNSET,
 ) -> dict[str, Any]:
-    """
-    Render a container for infinite scroll with an optional 'Fetch more' button.
+    """Render a brand logo as an image, SVG asset, or Insight UI icon."""
+    # Only override icon if icon_name was explicitly provided
+    icon: IconConfig | None | _Unset = UNSET
+    if icon_name is not UNSET:
+        icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "md") if icon_name else None
 
-    Args:
-    ----
-        tag_id (str): An optional, unique ID for JavaScript.
-        view_name (str): Name of the view for loading additional elements.
-        items (list): List of items already loaded.
-        page (int): The number of the current "page" to be loaded.
-        has_next (bool): 'True' if further elements are available.
-        auto_fetch (bool): 'False' if the user should actively request additional elements via a button.
-        threshold (int): The pixel threshold for loading additional elements.
+    config = build_config(
+        LogoConfig,
+        config,
+        url=url,
+        url_dark=url_dark,
+        alt=alt,
+        icon=icon,
+        icon_name="",
+        icon_size="",
+        height=height,
+        width=width,
+    )
 
-    Returns:
-    -------
-        A dict with context variables for the template.
+    config.url = _resolve_asset_url(config.url)
+    config.url_dark = _resolve_asset_url(config.url_dark)
 
-    """
     return {
-        "tag_id": tag_id,
-        "items": items,
-        "view_name": view_name,
-        "page": page,
-        "has_next": has_next,
-        "auto_fetch": auto_fetch,
-        "threshold": threshold,
+        "logo_config": config,
+        "type": "icon" if config.icon else "svg" if str(config.url or "").lower().endswith(".svg") else "image",
+        "has_dark_variant": bool(config.url_dark and config.url_dark != config.url),
     }
 
 
-@register.inclusion_tag("insight_ui/components/alert.html")
-def alert(tag_id: str = "", message: str = "", type: str = "info", dismissible: bool = True) -> dict[str, Any]:  # noqa: A002
-    """
-    Render a closable notification.
-
-    Args:
-    ----
-        tag_id (str): An optional, unique ID for JavaScript.
-        message: The message of the notification.
-        type: The type of notification ('info', 'success', 'warning', 'error').
-        dismissible: 'True' if the notification should be closable.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {"tag_id": tag_id, "message": message, "type": type, "dismissible": dismissible}
+BRAND_LOCKUP_VARIANTS = ("main", "develop", "candidate")
+BRAND_LOCKUP_ICON_BY_VARIANT = {"main": "app", "develop": "rocket", "candidate": "sparkles"}
+CSS_SIZE_PATTERN = re.compile(r"^-?(?:\d+(?:\.\d+)?|\.\d+)(?:px|rem|em|vh|vw|vmin|vmax|%|ch|ex|lh|rlh)$")
 
 
-@register.inclusion_tag("insight_ui/components/sidebar.html")
-def sidebar(
-    sidebar_data: Mapping[str, Any] | None = None,
-    side: str = "right",
-    static: bool = True,
-    auto_close: bool = False,
-    mobile_hidden: bool = False,
+def _looks_like_css_size(value: object) -> bool:
+    """Return true when a positional value is intended as a CSS size."""
+    normalized = str(value).strip().lower()
+    return normalized in {"auto", "inherit", "initial", "revert", "unset"} or bool(CSS_SIZE_PATTERN.match(normalized))
+
+
+def _normalize_brand_lockup_variant(value: object) -> str:
+    """Normalize public variants and a small set of legacy aliases."""
+    normalized = str(value).strip().lower()
+    if normalized in BRAND_LOCKUP_VARIANTS:
+        return normalized
+    return "main"
+
+
+@register.inclusion_tag("insight_ui/components/brand_lockup.html")
+def brand_lockup(  # noqa: PLR0913
+    primary_text: str = "Alpin Insight",
+    secondary_text: str = "Solutions",
+    logo_position: str = "start",
+    height: str = "1.75rem",
+    variant: str = "main",
+    css_class: str | None = None,
+    config: BrandLockupConfig | Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """
-    Render a configurable page navigation.
+    """Render a public icon plus a two-tone wordmark."""
+    if config is None:
+        height_or_variant = str(height).strip().lower()
+        variant_or_height = str(variant).strip().lower()
+        if height_or_variant not in BRAND_LOCKUP_VARIANTS and not _looks_like_css_size(height):
+            if variant != "main" and _looks_like_css_size(variant):
+                height, variant = variant, height
+            elif variant == "main":
+                variant = height
+                height = "1.75rem"
+        elif variant == "main" and height_or_variant in BRAND_LOCKUP_VARIANTS:
+            variant = height
+            height = "1.75rem"
+        elif variant != "main" and variant_or_height not in BRAND_LOCKUP_VARIANTS and _looks_like_css_size(variant):
+            height, variant = variant, height
 
-    Args:
-    ----
-        sidebar_data (dict): The content of the sidebar (title and navigation elements).
-        side (str): Specifies on which side the sidebar should be displayed.
-        static (bool): 'True' if the sidebar should not be collapsible.
-        auto_close (bool): 'True' if the sidebar should close automatically when the cursor leaves it.
-        mobile_hidden (bool): 'True' if a static sidebar should be hidden on smaller viewports.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    resolved_sidebar = _resolve_view_urls(dict(sidebar_data)) if sidebar_data else {}
+        config = BrandLockupConfig(
+            primary_text=primary_text,
+            secondary_text=secondary_text,
+            logo_position="end" if str(logo_position).strip().lower() == "end" else "start",
+            height=height,
+            variant=_normalize_brand_lockup_variant(variant),
+            css_class=css_class or "",
+        )
+    elif isinstance(config, Mapping):
+        config = BrandLockupConfig(
+            primary_text=str(config.get("primary_text", primary_text) or ""),
+            secondary_text=str(config.get("secondary_text", secondary_text) or ""),
+            logo_position=(
+                "end" if str(config.get("logo_position", logo_position)).strip().lower() == "end" else "start"
+            ),
+            height=str(config.get("height", height) or "1.75rem"),
+            variant=_normalize_brand_lockup_variant(config.get("variant", variant)),
+            css_class=str(config.get("css_class", config.get("class", css_class or "")) or ""),
+        )
+    else:
+        config = replace(
+            config,
+            logo_position="end" if str(config.logo_position).strip().lower() == "end" else "start",
+            variant=_normalize_brand_lockup_variant(config.variant),
+        )
 
     return {
-        "sidebar_data": resolved_sidebar,
-        "side": side,
-        "static": static,
-        "auto_close": auto_close,
-        "mobile_hidden": mobile_hidden,
-        "navbar_fixed": get_config("navbar_fixed"),
-    }
-
-
-@register.inclusion_tag("insight_ui/components/breadcrumbs.html")
-def breadcrumbs(items: Sequence[Mapping[str, Any]] | None = None) -> dict[str, Any]:
-    """
-    Render breadcrumb navigation.
-
-    Args:
-    ----
-        items (list): List of dictionaries containing the breadcrumb elements.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    resolved_items = [dict(item) for item in items] if items is not None else []
-    return {"items": resolved_items}
-
-
-@register.inclusion_tag("insight_ui/components/table.html")
-def table(data: dict) -> dict[str, Any]:
-    """
-    Render a simple table.
-
-    Args:
-    ----
-        data (dict): Dictionary with headers, rows, a title and an empty message if not data is available.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {
-        "caption": data.get("caption"),
-        "empty_msg": data.get("empty_msg"),
-        "headers": data.get("headers"),
-        "rows": data.get("rows"),
-    }
-
-
-@register.inclusion_tag("insight_ui/components/modal.html")
-def modal(  # noqa: PLR0913 (too many args)
-    tag_id: str,
-    title: str,
-    description: str | list[str] = [],
-    actions: Sequence[Mapping[str, str]] = [],
-    width: int = 32,
-) -> dict[str, Any]:
-    """
-    Render an accessible modal dialog.
-
-    Args:
-    ----
-        tag_id (str): A unique ID for the modal.
-        title (str): The title of the modal.
-        description (list[str]): An optional text description of the modal.
-        actions (list): A list of action buttons.
-        width (int): The maximum width of the dialog box relative to the screen in 'rem'.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    # Convert a single string or a 'lazy translation objects' which is a Promise to a list.
-    if isinstance(description, (str, Promise)) or not isinstance(description, Iterable):
-        description = [description]
-
-    return {
-        "tag_id": tag_id,
-        "title": title,
-        "description": description,
-        "actions": [dict(action) for action in actions] if actions is not None else [],
-        "width": width,
-    }
-
-
-@register.inclusion_tag("insight_ui/components/carousels/card_carousel.html")
-def carousel(  # noqa: PLR0913 (too many args)
-    carousel_items: Sequence[Mapping[str, Any]] = [],
-    autoplay: bool = False,
-    show_dots: bool = True,
-    show_index: bool = False,
-    items_per_slide: int = 1,
-) -> dict[str, Any]:
-    """
-    Render a card carousel.
-
-    Args:
-    ----
-        carousel_items (list): Content to be displayed (cards).
-        autoplay (bool): Automatically switch to the next page after a certain amount of time (5 seconds).
-        show_dots (bool): Show pagination dots below the content.
-        show_index (bool): Display number and current page in the lower right corner.
-        items_per_slide (int): Number of items per page.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {
-        "carousel_items": carousel_items,
-        "autoplay": autoplay,
-        "show_dots": show_dots,
-        "show_index": show_index,
-        "slides_count": range(math.ceil(len(carousel_items) / items_per_slide)),
-        "items_per_slide": items_per_slide,
-    }
-
-
-@register.inclusion_tag("insight_ui/components/carousels/image_carousel.html")
-def image_carousel(  # noqa: PLR0913 (too many args)
-    images: Sequence[Mapping[str, Any]] = [],
-    autoplay: bool = False,
-    show_dots: bool = True,
-    show_index: bool = False,
-    items_per_slide: int = 1,
-) -> dict[str, Any]:
-    """
-    Render an image carousel.
-
-    Args:
-    ----
-        images (list): Images to be displayed within the carousel.
-        autoplay (bool): Automatically switch to the next page after a certain amount of time (5 seconds).
-        show_dots (bool): Show pagination dots below the content.
-        show_index (bool): Display number and current page in the lower right corner.
-        items_per_slide (int): Number of items per page.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {
-        "carousel_items": images,
-        "autoplay": autoplay,
-        "show_dots": show_dots,
-        "show_index": show_index,
-        "slides_count": range(math.ceil(len(images) / items_per_slide)),
-        "items_per_slide": items_per_slide,
-    }
-
-
-@register.inclusion_tag("insight_ui/components/cards/card.html")
-def card(
-    title: str, content: str, subtitle: str = "", image: dict[str, str] = {}, actions: list[dict[str, str]] = []
-) -> dict[str, Any]:
-    """
-    Render a card with an aspect ratio of 16:9, which is approximately the same as a business card.
-
-    Args:
-    ----
-        title (str): The title of the card.
-        content (str): The main content of the card.
-        subtitle (str): An optional subtitle for the card.
-        image (dict[url: str, alt: str]): Information about the image on the card.
-        actions (list[dict[text: str, url: str, type: str]]): A list of action buttons.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {"title": title, "subtitle": subtitle, "content": content, "image": image, "actions": actions}
-
-
-@register.inclusion_tag("insight_ui/components/cards/app_card.html")
-def app_card(  # noqa: PLR0913 (too many args)
-    title: str,
-    content: str,
-    tags: list[str] = [],
-    url: str = "",
-    image: dict[str, str] = {},
-    actions: list[dict[str, str]] = [],
-) -> dict[str, Any]:
-    """
-    Render a vertically aligned card.
-
-    The card starts with a fixed-height image preview. Below it is the title and content,
-    as well as a list of tags, if specified. At the end, if available, the action buttons
-    are displayed one above the other.
-
-    Args:
-    ----
-        title (str): The title of the card.
-        content (str): The main content of the card.
-        tags (list[str]): A list of buttons.
-        url (str): A URL that is called up when the user clicks on the title.
-        image (dict[url: str, alt: str]): Information about the image on the card.
-        actions (list[dict[text: str, url: str, type: str]]): A list of action buttons.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {"title": title, "content": content, "tags": tags, "url": url, "image": image, "actions": actions}
-
-
-@register.inclusion_tag("insight_ui/components/cards/flip_card.html")
-def flip_card(  # noqa: PLR0913 (too many args)
-    title: str,
-    content: str,
-    tags: list[str] = [],
-    url: str = "",
-    image: dict[str, str] = {},
-    actions: list[dict[str, str]] = [],
-) -> dict[str, Any]:
-    """
-    Render a card that can be rotated 180° and contains additional information on the back.
-
-    Args:
-    ----
-        title (str): The title of the card.
-        content (str): The main content of the card.
-        tags (list[str]): A list of buttons.
-        url (str): A URL that is called up when the user clicks on the title.
-        image (dict[url: str, alt: str]): Information about the image on the card.
-        actions (list[dict[text: str, url: str, type: str]]): A list of action buttons.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {"title": title, "content": content, "tags": tags, "url": url, "image": image, "actions": actions}
-
-
-@register.inclusion_tag("insight_ui/components/form.html")
-def form(  # noqa: PLR0913 (too many args)
-    tag_id: str = "",
-    title: str = "",
-    description: str = "",
-    fields: Sequence[Mapping[str, Any]] | None = [],
-    show_reset_button: bool = False,
-    view_name: str = "",
-    htmx_config: Mapping[str, Any] | None = None,
-) -> dict[str, Any]:
-    """
-    Render a form with HTMX support.
-
-    Args:
-    ----
-        tag_id (str): An optional, unique ID for JavaScript.
-        title (str): The title of the form.
-        description (str): An optional description.
-        fields (list): A list of form fields.
-        show_reset_button (bool): Displays a "Reset" button next to the "Submit" button.
-        view_name (str): The name of the endpoint for form submission.
-        htmx_config (dict): HTMX configuration for AJAX requests.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {
-        "tag_id": tag_id,
-        "title": title,
-        "description": description,
-        "fields": fields,
-        "show_reset_button": show_reset_button,
-        "view_name": view_name,
-        "htmx": htmx_config,
-    }
-
-
-@register.inclusion_tag("insight_ui/components/footer.html")
-def footer(data: dict) -> dict[str, Any]:
-    """
-    Render a footer with optional description, links, and a copyright line.
-
-    Args:
-    ----
-        data (dict): The data that should be displayed in the footer.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {
-        "description": data.get("description"),
-        "links": data.get("links"),
-        "contact": data.get("contact"),
-        "copyright": data.get("copyright"),
-        "version": data.get("version"),
-    }
-
-
-@register.inclusion_tag("insight_ui/components/accordion.html")
-def accordion(items: list, tag_id: str = "accordion", exclusive: bool = True) -> dict:
-    """
-    Render an accordion that can have one or more sections open.
-
-    Args:
-    ----
-        items (list): The individual sections with captions and content.
-        tag_id (str): A unique ID for the accordion.
-        exclusive (bool): 'True' if only one area may be open at a time.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {"items": items, "tag_id": tag_id, "exclusive": exclusive}
-
-
-@register.inclusion_tag("insight_ui/components/tabs.html")
-def tabs(config: dict) -> dict:
-    """
-    Render a group of tabs and a container for the content of each tab.
-
-    Args:
-    ----
-        config (dict): Contains the individual tabs and some general information about the component.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {"config": config}
-
-
-@register.inclusion_tag("insight_ui/components/carousels/3D_carousel.html")
-def three_d_carousel(
-    tag_id: str,
-    velocity: int = 1000,
-    tilt: int = 0,
-    face_camera: bool = False,
-    carousel_items: Sequence[Mapping[str, Any]] = [],
-) -> dict[str, Any]:
-    """
-    Render a 3D version of the carousel component.
-
-    Args:
-    ----
-        tag_id (str): A unique ID for the carousel.
-        velocity (int): The speed at which the carousel should rotate.
-        tilt (int): The inclination of the carousel toward the camera.
-        face_camera (bool): 'True' if the cards should always be oriented toward the camera.
-        carousel_items (list): Content to be displayed (card).
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {
-        "id": tag_id,
-        "velocity": velocity,
-        "tilt": tilt,
-        "face_camera": face_camera,
-        "carousel_items": carousel_items,
-    }
-
-
-@register.inclusion_tag("insight_ui/components/select.html")
-def select(  # noqa: PLR0913 (too many args)
-    name: str | None = None,
-    label: str | None = None,
-    explanation: str = "",
-    options: list[str] | dict[str, str] | None = None,
-    selected_option: str | None = None,
-    config: dict[str, Any] | None = None,
-) -> dict[str, Any]:
-    """
-    Render a selection box.
-
-    Args:
-    ----
-        name (str): The name of the select element.
-        label (str): A short title that appears above the select box.
-        explanation (str): A brief description of the filter that appears in a tooltip.
-        options (list[str] or dict[str, str]): All values that can be selected.
-        selected_option (str): A value that has already been selected.
-        config (dict[str, Any]): An alternative configuration with keys corresponding to the previous parameters.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    if config is not None:
-        name = config.get("name", name)
-        label = config.get("label", label)
-        explanation = config.get("explanation", explanation)
-        options = config.get("options", options)
-        selected_option = config.get("selected_option", selected_option)
-
-    if isinstance(options, list):
-        options = dict(zip(options, options))
-
-    return {
-        "name": name,
-        "label": label,
-        "explanation": explanation,
-        "options": options,
-        "selected_option": selected_option,
-    }
-
-
-@register.inclusion_tag("insight_ui/components/multiselect.html")
-def multiselect(  # noqa: PLR0913 (too many arguments)
-    name: str | None = None,
-    label: str | None = None,
-    maximum: int | None = None,
-    show_buttons: bool | None = None,
-    options: list[str] | dict[str, str] | None = None,
-    selected_options: list[str] | None = None,
-    config: dict[str, Any] | None = None,
-) -> dict[str, Any]:
-    """
-    Render a selection box that allows multiple selected values and has an integrated search bar.
-
-    Args:
-    ----
-        name (str): The name of the multiselect element.
-        label (str): A short title that appears above the multiselect.
-        maximum (int): Specifies the maximum number of values that may be selected.
-        show_buttons (bool): 'True' additionally displays "Select All" and "Deselect All" buttons.
-        options (list[str] or dict[str, str]): All values that can be selected.
-        selected_options (list[str]): All values that should already be selected.
-        config (dict[str, Any]): An alternative configuration with keys corresponding to the previous parameters.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    if config is not None:
-        name = config.get("name", name)
-        label = config.get("label", label)
-        maximum = config.get("maximum", maximum)
-        show_buttons = config.get("show_buttons", show_buttons)
-        options = config.get("options", options)
-        selected_options = config.get("selected_options", selected_options)
-
-    if isinstance(options, list):
-        options = dict(zip(options, options))
-
-    return {
-        "name": name,
-        "label": label,
-        "maximum": maximum,
-        "show_buttons": show_buttons,
-        "options": options,
-        "selected_options": selected_options,
-    }
-
-
-@register.inclusion_tag("insight_ui/components/page_header.html")
-def page_header(title: str = "", description: str | list[str] = []) -> dict[str, Any]:
-    """
-    Render a page header for the blue header in the base template.
-
-    Args:
-    ----
-        title (str): The title of the page.
-        description (str): An optional description below the title.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    # Convert a single string or a 'lazy translation objects' which is a Promise to a list.
-    if isinstance(description, (str, Promise)) or not isinstance(description, Iterable):
-        description = [description]
-
-    return {"title": title, "description": description}
-
-
-def _coerce_heading_decoration_height(value: object, default: int = 90) -> int:
-    """Return a positive integer height for the heading decoration."""
-    try:
-        height = int(value)
-    except (TypeError, ValueError):
-        return default
-
-    return max(height, 1)
-
-
-@register.inclusion_tag("insight_ui/components/heading_decoration.html")
-def heading_decoration(
-    style: str | None = None,
-    color: str | None = None,
-    image_url: str | None = None,
-    height: int | str | None = None,
-    config: Mapping[str, Any] | None = None,
-) -> dict[str, Any]:
-    """
-    Render a decorative transition between the base-template heading and content area.
-
-    Args:
-    ----
-        style (str): One of 'waves', 'image', 'gradient', or 'none'. Defaults to 'waves'.
-        color (str): Optional CSS color override. Defaults to --color-insight-primary.
-        image_url (str): Optional background image URL used by the 'image' style.
-        height (int): Decoration height in px. Defaults to 90.
-        config (dict[str, Any]): Alternative configuration with keys corresponding to the previous parameters.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    if config is not None:
-        style = config.get("style", style)
-        color = config.get("color", color)
-        image_url = config.get("image_url", image_url)
-        height = config.get("height", height)
-
-    normalized_style = (style or "waves").strip().lower()
-    if normalized_style not in {"waves", "image", "gradient", "none"}:
-        normalized_style = "waves"
-
-    height_px = _coerce_heading_decoration_height(height)
-    color_value = color or "var(--color-insight-primary, #3b82f6)"
-
-    return {
-        "style": normalized_style,
-        "color": color_value,
-        "image_url": image_url or "",
-        "height": height_px,
-        "wave_back_y": max(height_px - 25, 0),
-        "wave_middle_y": max(height_px - 10, 0),
-        "wave_front_y": max(height_px - 55, 0),
-    }
-
-
-@register.inclusion_tag("insight_ui/components/article.html")
-def article(content: str = "", columns: int = 2, column_gap: str = "2rem", title: str = "") -> dict[str, Any]:
-    """
-    Render an article in newspaper style with a multi-column layout.
-
-    Args:
-    ----
-        content (str): The text content of the article (may contain HTML).
-        columns (int): The number of columns (default: 2).
-        column_gap (str): The distance between columns (default: '2rem').
-        title (str): An optional title above the article.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {"content": content, "columns": columns, "column_gap": column_gap, "title": title}
-
-
-@register.inclusion_tag("insight_ui/components/hero.html")
-def hero(  # noqa: PLR0913 (too many arguments)
-    title: str = "",
-    subtitle: str = "",
-    description: str = "",
-    cta_primary: dict = {},
-    cta_secondary: dict = {},
-    background_image_url: str = "",
-    badge: dict = {},
-) -> dict[str, Any]:
-    """
-    Render a hero section with optional background image.
-
-    Args:
-    ----
-        title (str): Title of the hero section.
-        subtitle (str): Subtitle of the hero section, which is displayed under the title.
-        description (str): Description of the hero section, which is displayed under the title or subtitle.
-        cta_primary (dict): Primary 'Call-to-Action' button.
-        cta_secondary (dict): Secondary 'Call-to-Action' button.
-        background_image_url (str): URL of the background image.
-        badge (dict): A badge with an icon and text.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {
-        "title": title,
-        "subtitle": subtitle,
-        "description": description,
-        "cta_primary": cta_primary,
-        "cta_secondary": cta_secondary,
-        "background_image_url": background_image_url,
-        "badge": badge,
+        "primary_text": config.primary_text,
+        "secondary_text": config.secondary_text,
+        "logo_position": config.logo_position,
+        "variant": config.variant,
+        "icon_name": BRAND_LOCKUP_ICON_BY_VARIANT[config.variant],
+        "icon_size": "l",
+        "height": config.height,
+        "css_class": config.css_class,
     }
 
 
 @register.inclusion_tag("insight_ui/components/corner_ribbon.html")
 def corner_ribbon(
-    text: str = "",
-    position: str = "top-right",
-    color: str = "primary",
-    tag_id: str | None = None,
-    config: dict[str, Any] | None = None,
+    config: CornerRibbonConfig | None = None,
+    *,
+    text: str | _Unset = UNSET,
+    position: str | _Unset = UNSET,
+    color: str | _Unset = UNSET,
 ) -> dict[str, Any]:
-    """
-    Render a corner ribbon positioned in any browser corner.
-
-    Args:
-    ----
-        text (str): The text displayed in the ribbon.
-        position (str): Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'.
-        color (str): Color variant: 'primary', 'success', 'warning', 'danger', 'info'.
-        tag_id (str): An optional, unique ID for JavaScript/CSS targeting.
-        config (dict[str, Any]): An alternative configuration dictionary.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    if config is not None:
-        text = config.get("text", text)
-        position = config.get("position", position)
-        color = config.get("color", color)
-        tag_id = config.get("tag_id", tag_id)
-
-    # Validate position
-    valid_positions = ["top-right", "top-left", "bottom-right", "bottom-left"]
-    normalized_position = position.lower().strip() if position else "top-right"
-    if normalized_position not in valid_positions:
-        normalized_position = "top-right"
-
-    # Validate color
-    valid_colors = ["primary", "success", "warning", "danger", "info"]
-    normalized_color = color.lower().strip() if color else "primary"
-    if normalized_color not in valid_colors:
-        normalized_color = "primary"
-
-    return {"text": text, "position": normalized_position, "color": normalized_color, "tag_id": tag_id}
+    """Render a corner ribbon positioned in any browser corner."""
+    config = build_config(CornerRibbonConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"corner_ribbon_config": config}
 
 
-@register.inclusion_tag("insight_ui/components/infobox.html")
-def infobox(info_type: str = "", message: str = "", **kwargs) -> dict[str, Any]:
-    """
-    Render a small box of information.
-
-    Args:
-    ----
-        info_type (str): importance level of the message e.g 'info', 'warn' or 'danger'.
-        message (str): Descriptive message.
-        kwargs: A list of variables that are inserted into the message using 'format'.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    formatted_message = message
-    if kwargs:
-        try:
-            formatted_message = message.format(**kwargs)
-        except (KeyError, ValueError):
-            formatted_message = message
-
-    return {"type": info_type, "message": formatted_message}
+@register.inclusion_tag("insight_ui/components/geo_map.html")
+def geo_map(
+    config: GeoMapConfig | None = None,
+    *,
+    initial_coords: list[float] | _Unset = UNSET,
+    initial_zoom: int | _Unset = UNSET,
+    map_height: int | _Unset = UNSET,
+    datasets: list[GeoMapDatasetConfig] | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render an integrated geographic map."""
+    config = build_config(GeoMapConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"map_config": config}
 
 
 @register.inclusion_tag("insight_ui/components/charts/bar_chart.html")
-def bar_chart(chart_id: str, chart: dict, chart_height: int = 24) -> dict:
-    """
-    Render a bar chart with Apache ECharts.
-
-    Args:
-    ----
-        chart_id (str): A unique ID for the chart.
-        chart (dict): Contains the information and data from the chart.
-        chart_height (int): The height of the chart in 'rem'.
-
-    Returns:
-    -------
-        A dict with context variables for the template.
-
-    """
-    return {"chart_id": chart_id, "chart": chart, "chart_height": chart_height}
+def bar_chart(
+    config: ChartConfig | None = None,
+    *,
+    tag_id: str | _Unset = UNSET,
+    dataset: ChartDatasetConfig | None | _Unset = UNSET,
+    chart_height: int | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a bar chart with Apache ECharts."""
+    config = build_config(ChartConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"chart_config": config}
 
 
 @register.inclusion_tag("insight_ui/components/charts/line_chart.html")
-def line_chart(chart_id: str, chart: dict, chart_height: int = 24) -> dict:
-    """
-    Render a line chart with Apache ECharts.
+def line_chart(
+    config: ChartConfig | None = None,
+    *,
+    tag_id: str | _Unset = UNSET,
+    dataset: ChartDatasetConfig | None | _Unset = UNSET,
+    chart_height: int | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a line chart with Apache ECharts."""
+    config = build_config(ChartConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"chart_config": config}
 
-    Args:
-    ----
-        chart_id (str): A unique ID for the chart.
-        chart (dict): Contains the information and data from the chart.
-        chart_height (int): The height of the chart in 'rem'.
 
-    Returns:
-    -------
-        A dict with context variables for the template.
+@register.inclusion_tag("insight_ui/components/live_content.html")
+def live_content(
+    config: LiveContentConfig | None = None,
+    *,
+    tag_id: str | _Unset = UNSET,
+    request_url: str | _Unset = UNSET,
+    interval: int | _Unset = UNSET,
+    initial_content: str | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a container for live updates via HTMX."""
+    config = build_config(LiveContentConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    htmx_config = {"request_url": config.request_url, "trigger": f"load, every {config.interval}s", "swap": "innerHTML"}
 
-    """
-    return {"chart_id": chart_id, "chart": chart, "chart_height": chart_height}
+    return {"live_content_config": config, "htmx_config": htmx_config}
+
+
+@register.inclusion_tag("insight_ui/components/websocket.html")
+def websocket(
+    config: WebSocketConfig | None = None,
+    *,
+    tag_id: str | _Unset = UNSET,
+    request_url: str | _Unset = UNSET,
+    initial_content: str | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a WebSocket component as a thin wrapper for the HTMX ws extension."""
+    config = build_config(WebSocketConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"websocket_config": config}
+
+
+# =============================================================
+#
+#   List Tags
+#
+# =============================================================
+
+
+@register.inclusion_tag("insight_ui/components/infinite_scroll.html")
+def infinite_scroll(
+    config: InfiniteScrollConfig | None = None,
+    *,
+    tag_id: str | _Unset = UNSET,
+    request_url: str | _Unset = UNSET,
+    items: Sequence[Any] | None | _Unset = UNSET,
+    page: int | _Unset = UNSET,
+    has_next: bool | _Unset = UNSET,
+    auto_fetch: bool | _Unset = UNSET,
+    threshold: int | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a container for infinite scroll."""
+    config = build_config(InfiniteScrollConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"infinite_scroll_config": config}
+
+
+@register.inclusion_tag("insight_ui/components/pagination.html")
+def pagination(
+    config: PaginationConfig | None = None,
+    *,
+    request_url: str | _Unset = UNSET,
+    current_page: Page | _Unset = UNSET,
+    surrounding_pages: list[int] | _Unset = UNSET,
+    ipp_config: PaginationIppConfig | None | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render pagination with items per page selection."""
+    config = build_config(PaginationConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"pagination_config": config}
+
+
+@register.inclusion_tag("insight_ui/components/table.html")
+def table(config: TableConfig) -> dict[str, Any]:
+    """Render a simple table."""
+    return {"table_config": config}
+
+
+# =============================================================
+#
+#   Filter Tags
+#
+# =============================================================
+
+
+@register.inclusion_tag("insight_ui/components/search_bar.html")
+def search_bar(
+    config: SearchBarConfig | None = None,
+    *,
+    request_url: str | _Unset = UNSET,
+    simple: bool | _Unset = UNSET,
+    search_query: str | _Unset = UNSET,
+    htmx_config: HtmxConfig | None | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render text input with a button for a search function."""
+    config = build_config(SearchBarConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"search_bar_config": config}
+
+
+@register.inclusion_tag("insight_ui/components/generic_filter.html")
+def generic_filter(
+    config: GenericFilterConfig | None = None,
+    *,
+    filters: list | None | _Unset = UNSET,
+    request_url: str | _Unset = UNSET,
+    vertical: bool | _Unset = UNSET,
+    htmx_config: HtmxConfig | None | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a generic filter consisting of one or more <select> fields."""
+    config = build_config(GenericFilterConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"generic_filter_config": config}
+
+
+@register.inclusion_tag("insight_ui/components/search_query_builder/sq_builder.html")
+def query_builder(
+    config: QueryBuilderConfig | None = None, *, model_fields: list[QueryBuilderFieldConfig] | None | _Unset = UNSET
+) -> dict[str, Any]:
+    """Render a filter for constructing custom search queries."""
+    config = build_config(QueryBuilderConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"model_fields": config.model_fields}
+
+
+# =============================================================
+#
+#   Card Tags
+#
+# =============================================================
+
+
+@register.inclusion_tag("insight_ui/components/cards/card.html")
+def card(
+    config: CardConfig | None = None,
+    *,
+    title: str | _Unset = UNSET,
+    content: str | _Unset = UNSET,
+    subtitle: str | _Unset = UNSET,
+    image: ImageConfig | None | _Unset = UNSET,
+    actions: list[ActionConfig] | None | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a card with an aspect ratio of 16:9."""
+    config = build_config(CardConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"card_config": config}
+
+
+@register.inclusion_tag("insight_ui/components/cards/app_card.html")
+def app_card(
+    config: AppCardConfig | None = None,
+    *,
+    title: str | _Unset = UNSET,
+    content: str | _Unset = UNSET,
+    tags: list[str] | None | _Unset = UNSET,
+    request_url: str | _Unset = UNSET,
+    image: ImageConfig | None | _Unset = UNSET,
+    actions: list[ActionConfig] | None | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a vertically aligned card."""
+    config = build_config(AppCardConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"app_card_config": config}
+
+
+@register.inclusion_tag("insight_ui/components/cards/flip_card.html")
+def flip_card(
+    config: FlipCardConfig | None = None,
+    *,
+    title: str | _Unset = UNSET,
+    content: str | _Unset = UNSET,
+    tags: list[str] | None | _Unset = UNSET,
+    request_url: str | _Unset = UNSET,
+    image: ImageConfig | None | _Unset = UNSET,
+    actions: list[ActionConfig] | None | _Unset = UNSET,
+    back_content: str | None | _Unset = UNSET,
+    back_style: str | None | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a card that can be rotated 180°."""
+    config = build_config(FlipCardConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"flip_card_config": config}
+
+
+@register.inclusion_tag("insight_ui/components/carousels/card_carousel.html")
+def carousel(
+    config: CardCarouselConfig | None = None,
+    *,
+    carousel_items: Sequence[CardConfig] | None | _Unset = UNSET,
+    autoplay: bool | _Unset = UNSET,
+    show_dots: bool | _Unset = UNSET,
+    show_index: bool | _Unset = UNSET,
+    items_per_slide: int | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a card carousel."""
+    config = build_config(CardCarouselConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {
+        "carousel_config": config,
+        "slides_count": range(math.ceil(len(config.carousel_items) / config.items_per_slide))
+        if config.carousel_items
+        else range(0),
+    }
+
+
+@register.inclusion_tag("insight_ui/components/carousels/image_carousel.html")
+def image_carousel(
+    config: ImageCarouselConfig | None = None,
+    *,
+    carousel_items: Sequence[ImageCarouselItemConfig] | None | _Unset = UNSET,
+    autoplay: bool | _Unset = UNSET,
+    show_dots: bool | _Unset = UNSET,
+    show_index: bool | _Unset = UNSET,
+    items_per_slide: int | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render an image carousel."""
+    config = build_config(ImageCarouselConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {
+        "carousel_config": config,
+        "slides_count": range(math.ceil(len(config.carousel_items) / config.items_per_slide))
+        if config.carousel_items
+        else range(0),
+    }
+
+
+@register.inclusion_tag("insight_ui/components/carousels/3D_carousel.html")
+def three_d_carousel(
+    config: ThreeDCarouselConfig | None = None,
+    *,
+    tag_id: str | _Unset = UNSET,
+    velocity: int | _Unset = UNSET,
+    tilt: int | _Unset = UNSET,
+    face_camera: bool | _Unset = UNSET,
+    carousel_items: Sequence[CarouselItemConfig] | None | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a 3D version of the carousel component."""
+    config = build_config(ThreeDCarouselConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"carousel_config": config}
+
+
+@register.inclusion_tag("insight_ui/components/toggle_view.html")
+def toggle_view(
+    config: ToggleViewConfig | None = None,
+    *,
+    tag_id: str | _Unset = UNSET,
+    cards: list[CardConfig] | _Unset = UNSET,
+    table_config: TableConfig | _Unset = UNSET,
+    view_radio_config: RadioBlockConfig | None | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a view of data that can be displayed in various ways."""
+    config = build_config(ToggleViewConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"toggle_view_config": config}
+
+
+# =============================================================
+#
+#   Form Tags
+#
+# =============================================================
+
+
+@register.inclusion_tag("insight_ui/components/form.html")
+def form(
+    config: FormConfig | None = None,
+    *,
+    tag_id: str | _Unset = UNSET,
+    title: str | _Unset = UNSET,
+    description: str | _Unset = UNSET,
+    fields: Sequence[FormFieldConfig] | None | _Unset = UNSET,
+    show_reset_button: bool | _Unset = UNSET,
+    request_url: str | _Unset = UNSET,
+    htmx_config: HtmxConfig | None | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a form with HTMX support."""
+    config = build_config(FormConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"form_config": config}

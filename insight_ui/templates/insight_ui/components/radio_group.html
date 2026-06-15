@@ -1,17 +1,17 @@
 <div>
-    {% if label %}
-        <span class="flex gap-1 text-sm font-bold text-primary mb-1">{{ label }}</span>
+    {% if radio_group_config.label %}
+        <span class="flex gap-1 text-sm font-bold text-primary mb-1">{{ radio_group_config.label }}</span>
     {% endif %}
     <div class="flex {% if not as_row %}flex-col space-y-1{% else %}space-x-4{% endif %}">
-        {% for item in items %}
+        {% for item in radio_group_config.items %}
             <label class="flex items-center gap-1">
                 <input
                     type="radio"
                     {% if item.tag_id %}id="{{ item.tag_id }}"{% endif %}
-                    name="{{ name }}"
+                    name="{{ radio_group_config.name }}"
                     value="{{ item.value }}"
                     {% if item.disabled %}disabled{% endif %}
-                    {% if current_value == item.value %}checked{% endif %}
+                    {% if radio_group_config.current_value == item.value %}checked{% endif %}
                 >
                 <span class="{% if item.disabled %}text-secondary{% else %}text-primary{% endif %} text-sm">{{ item.label }}</span>
             </label>
