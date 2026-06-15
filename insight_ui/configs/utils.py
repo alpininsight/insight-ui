@@ -419,7 +419,7 @@ class WebSocketConfig:
     Renders a WebSocket-connected container using HTMX ws extension.
 
     Attributes:
-        tag_id: Container ID.
+        tag_id: Container ID. This ID must be included in the WebSocket's HTML message.
         request_url: WebSocket endpoint URL.
         initial_content: Initial content.
 
