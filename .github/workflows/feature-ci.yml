@@ -40,6 +40,8 @@ jobs:
       contents: read
       pull-requests: read
     uses: alpininsight/.github-private/.github/workflows/repository-policy-reusable.yml@main
+    with:
+      allow_main_realignment_pr: true
 
   quality:
     name: Python/Django Quality
