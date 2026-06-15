@@ -4,7 +4,7 @@
     {% if radio_block_config.label %}
         <span class="flex gap-1 text-sm font-bold text-primary mb-1">{{ radio_block_config.label }}</span>
     {% endif %}
-    {% if integrated %}
+    {% if radio_block_config.integrated %}
         {# To use with other elements in a extern <form> #}
         <div id="{{ radio_block_config.name }}" class="flex w-fit {% if radio_block_config.as_row == False %}flex-col{% endif %}">
             {% for item in radio_block_config.items %}
@@ -23,13 +23,12 @@
                     >
                     <label
                         for="{{ radio_block_config.name|add:'-'|add:item.tag_id }}"
-                        {% if sr_only %}aria-label="{{ item.label }}"{% endif %}
-                        class="flex items-center peer-focus:outline-2 outline-insight-primary-hover peer-checked:bg-insight-primary-active peer-checked:border-insight-primary-active bg-insight-primary border-insight-primary {% if forloop.first %}border-2 {% if as_row == False %}rounded-t-sm{% else %}rounded-s-sm{% endif %}{% elif forloop.last %}border-2 {% if as_row == False %}rounded-b-sm{% else %}rounded-e-sm{% endif %}{% else %}border-y-2{% endif %} text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition cursor-pointer"
+                        class="flex items-center peer-focus:outline-2 outline-insight-primary-hover peer-checked:bg-insight-primary-active peer-checked:border-insight-primary-active bg-insight-primary border-insight-primary {% if forloop.first %}border-2 {% if radio_block_config.as_row == False %}rounded-t-sm{% else %}rounded-s-sm{% endif %}{% elif forloop.last %}border-2 {% if radio_block_config.as_row == False %}rounded-b-sm{% else %}rounded-e-sm{% endif %}{% else %}border-y-2{% endif %} text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition cursor-pointer"
                     >
                         {% if item.icon %}
                             {% icon item.icon %}
                         {% endif %}
-                        <span {% if sr_only %}class="sr-only"{% endif %}>{{ item.label }}</span>
+                        <span>{{ item.label }}</span>
                     </label>
                 </div>
             {% endfor %}
@@ -57,13 +56,12 @@
                     >
                     <label
                         for="{{ radio_block_config.name|add:'-'|add:item.tag_id }}"
-                        {% if sr_only %}aria-label="{{ item.label }}"{% endif %}
                         class="flex items-center peer-focus:outline-2 outline-insight-primary-hover peer-checked:bg-insight-primary-active peer-checked:border-insight-primary-active bg-insight-primary border-insight-primary {% if forloop.first %}border-2 {% if radio_block_config.as_row == False %}rounded-t-sm{% else %}rounded-s-sm{% endif %}{% elif forloop.last %}border-2 {% if radio_block_config.as_row == False %}rounded-b-sm{% else %}rounded-e-sm{% endif %}{% else %}border-y-2{% endif %} text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition cursor-pointer"
                     >
                         {% if item.icon %}
                             {% icon item.icon %}
                         {% endif %}
-                        <span {% if sr_only %}class="sr-only"{% endif %}>{{ item.label }}</span>
+                        <span>{{ item.label }}</span>
                     </label>
                 </div>
             {% endfor %}
