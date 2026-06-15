@@ -74,6 +74,20 @@ The WebSocket demo lives in `utils/main.py`:
 uv run ./utils/main.py
 ```
 
+## Static Assets and CDN
+Insight UI ships readable JavaScript and CSS sources together with generated
+`.min.js` and `.min.css` distribution files. The generated files are committed
+next to their sources and verified in CI.
+
+CDN delivery uses the shared `.github-private` static-assets workflow. Release
+assets should be consumed from immutable version paths such as
+`https://cdn.alpininsight.ai/insight-ui/vX.Y.Z/`. Branch aliases
+`develop/` and `main/` are reserved for preview and demo comparisons, while
+`latest/` is only a convenience smoke-test alias.
+
+The full CDN contract, required secrets, runtime settings, and cache rules are
+documented in [CDN Static Assets](docs/cdn-static-assets.md).
+
 ## Testing
 ```bash
 # Python code
@@ -95,6 +109,7 @@ The `docs/` directory is reserved for repository-level developer and governance 
 - [Documentation Architecture](docs/docs-architecture.md)
 - [Naming Conventions](docs/naming_conventions.md)
 - [Design System Contract](docs/design-system-contract.md)
+- [CDN Static Assets](docs/cdn-static-assets.md)
 - [Accessibility](docs/accessibility.md)
 - [Internationalization](docs/i18n.md)
 
