@@ -159,6 +159,18 @@ def _coerce_sequence_to_config(value: Sequence[Any], annotation: object) -> list
     return list(value)
 
 
+def _expects_sequence_config(annotation: object) -> bool:
+    """Return whether an annotation expects a list-like config value."""
+    origin = get_origin(annotation)
+    if origin in (list, Sequence):
+        return True
+
+    if origin is UnionType:
+        return any(_expects_sequence_config(option) for option in get_args(annotation))
+
+    return False
+
+
 def _coerce_config_value(value: Any, annotation: object) -> Any:  # noqa: ANN401
     """Coerce mapping and sequence values into annotated dataclass config types."""
     origin = get_origin(annotation)
@@ -172,7 +184,11 @@ def _coerce_config_value(value: Any, annotation: object) -> Any:  # noqa: ANN401
                 if _is_dataclass_type(option):
                     return _coerce_mapping_to_config(option, value)
 
-    if isinstance(value, Sequence) and not isinstance(value, (str, bytes, bytearray)):
+    if (
+        isinstance(value, Sequence)
+        and not isinstance(value, (str, bytes, bytearray))
+        and _expects_sequence_config(annotation)
+    ):
         return _coerce_sequence_to_config(value, annotation)
 
     return value

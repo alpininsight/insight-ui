@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from bs4 import BeautifulSoup
+from django.core.paginator import Paginator
 from django.template import Context, Template
 from django.test import TestCase
 from django.urls import reverse
@@ -163,6 +164,31 @@ class ComponentDataclassRenderingTests(TestCase):
         assert radio_input["id"] == "view-table"
         assert radio_input["value"] == "table"
         assert radio_input["hx-get"] == "/switch/"
+
+    def test_dict_config_preserves_pagination_page_objects(self) -> None:
+        """Page objects must keep paginator metadata when dict configs are coerced."""
+        page = Paginator(["one", "two", "three"], 1).page(2)
+        rendered = self.render_template(
+            """
+            {% load insight_tags %}
+            {% pagination config=pagination_config %}
+            """,
+            {
+                "pagination_config": {
+                    "request_url": "/items/",
+                    "current_page": page,
+                    "surrounding_pages": [1, 2, 3],
+                }
+            },
+        )
+
+        soup = BeautifulSoup(rendered, "html.parser")
+        previous_link = soup.find("a", {"hx-get": "/items/?page=1"})
+        next_link = soup.find("a", {"hx-get": "/items/?page=3"})
+
+        assert previous_link is not None
+        assert next_link is not None
+        assert "Page 2 of 3." in rendered
 
     def test_accordion_panel_ids_use_config_tag_id(self) -> None:
         """Accordion IDs must stay unique for each configured accordion."""
