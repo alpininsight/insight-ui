@@ -1,4 +1,4 @@
-"""Regression tests for review findings from the main release PR."""
+"""Component rendering tests for dataclass-backed configuration."""
 
 from __future__ import annotations
 
@@ -21,8 +21,8 @@ from insight_ui.configs import (
 HTTP_OK = 200
 
 
-class Pr291ReviewRegressionTests(TestCase):
-    """Keep Dataclass migration regressions covered by focused tests."""
+class ComponentDataclassRenderingTests(TestCase):
+    """Keep dataclass-backed component rendering contracts covered."""
 
     def render_template(self, template_string: str, context: dict | None = None) -> str:
         """Render a small template snippet with Insight UI tags loaded."""
@@ -113,8 +113,8 @@ class Pr291ReviewRegressionTests(TestCase):
         assert "Beta" in rendered
         assert "warning" in rendered
 
-    def test_integrated_radio_block_does_not_render_nested_form(self) -> None:
-        """Integrated radio blocks are meant to live inside an existing form."""
+    def test_integrated_radio_block_does_not_render_nested_form_or_htmx_request(self) -> None:
+        """Integrated radio blocks rely on their surrounding form for submission."""
         rendered = self.render_template(
             """
             {% load insight_tags %}
@@ -136,8 +136,9 @@ class Pr291ReviewRegressionTests(TestCase):
         assert soup.find("div", id="view") is not None
         radio_input = soup.find("input", {"name": "view"})
         assert radio_input is not None
-        assert radio_input["hx-get"] == "/switch/"
-        assert radio_input["hx-target"] == "#target"
+        assert not radio_input.has_attr("hx-get")
+        assert not radio_input.has_attr("hx-target")
+        assert not radio_input.has_attr("hx-swap")
 
     def test_nested_dict_config_values_are_converted_to_dataclasses(self) -> None:
         """Legacy dict configs should coerce nested dataclass values too."""
