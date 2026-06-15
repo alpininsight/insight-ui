@@ -30,7 +30,7 @@ class Pr291ReviewRegressionTests(TestCase):
 
     def test_hx_pagination_renders_config_backed_previous_link(self) -> None:
         """HTMX pagination partials must keep working after page one."""
-        response = self.client.get(reverse("pagination"), {"page": 2}, HTTP_HX_REQUEST="true")
+        response = self.client.get(reverse("pagination"), {"page": 2}, headers={"hx-request": "true"})
 
         assert response.status_code == HTTP_OK
         html = response.content.decode()
