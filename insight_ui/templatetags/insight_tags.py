@@ -49,7 +49,6 @@ from insight_ui.configs import (
     GenericFilterConfig,
     GeoMapConfig,
     GeoMapDatasetConfig,
-    HeadingDecorationConfig,
     HeroConfig,
     HtmxConfig,
     IconConfig,
@@ -295,28 +294,6 @@ def page_header(
     config.description = ensure_list(config.description)
 
     return {"page_header_config": config}
-
-
-@register.inclusion_tag("insight_ui/components/heading_decoration.html")
-def heading_decoration(
-    config: HeadingDecorationConfig | None = None,
-    *,
-    style: str | _Unset = UNSET,
-    color: str | _Unset = UNSET,
-    image_url: str | _Unset = UNSET,
-    height: int | _Unset = UNSET,
-) -> dict[str, Any]:
-    """Render the decorative transition below the page header."""
-    config = build_config(HeadingDecorationConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
-    return {
-        "style": config.style,
-        "color": config.color,
-        "image_url": config.image_url,
-        "height": config.height,
-        "wave_back_y": config.height,
-        "wave_middle_y": max(int(config.height * 0.75), 1),
-        "wave_front_y": max(int(config.height * 0.55), 1),
-    }
 
 
 @register.inclusion_tag("insight_ui/components/article.html")
