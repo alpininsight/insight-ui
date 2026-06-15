@@ -68,6 +68,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **card:** Keep actions inside long content cards
 - **card:** Restore template and constrain actions
 - **card:** Preserve image card sizing
+- Repair dataclass component regressions
+- Preserve nested config behavior
+- Align radio block integration semantics
+- Preserve pagination page configs
 
 ### CI/CD
 
@@ -210,6 +214,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Get_component_demo_context() linter warning
 
+### Styling
+
+- Format pagination dataclass test
+
 ### Testing
 
 - Improve smoke tests for storybooks and fix loginscreen test
@@ -218,6 +226,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update tests to use dataclass based config system for the component tests
 - Fix tests
 - Split component tests into seperate files
+- Apply django-upgrade header style
 
 ## [1.9.1] - 2026-02-24
 
