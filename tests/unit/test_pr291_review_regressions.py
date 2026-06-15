@@ -122,7 +122,11 @@ class Pr291ReviewRegressionTests(TestCase):
             """,
             {
                 "radio_config": RadioBlockConfig(
-                    name="view", integrated=True, items=[RadioItemConfig(tag_id="table", value="table", label="Table")]
+                    name="view",
+                    integrated=True,
+                    request_url="/switch/",
+                    hx_target_id="target",
+                    items=[RadioItemConfig(tag_id="table", value="table", label="Table")],
                 )
             },
         )
@@ -130,6 +134,34 @@ class Pr291ReviewRegressionTests(TestCase):
         soup = BeautifulSoup(rendered, "html.parser")
         assert soup.find("form") is None
         assert soup.find("div", id="view") is not None
+        radio_input = soup.find("input", {"name": "view"})
+        assert radio_input is not None
+        assert radio_input["hx-get"] == "/switch/"
+        assert radio_input["hx-target"] == "#target"
+
+    def test_nested_dict_config_values_are_converted_to_dataclasses(self) -> None:
+        """Legacy dict configs should coerce nested dataclass values too."""
+        rendered = self.render_template(
+            """
+            {% load insight_tags %}
+            {% radio_block config=radio_config %}
+            """,
+            {
+                "radio_config": {
+                    "name": "view",
+                    "items": [{"tag_id": "table", "value": "table", "label": "Table"}],
+                    "request_url": "/switch/",
+                    "hx_target_id": "target",
+                }
+            },
+        )
+
+        soup = BeautifulSoup(rendered, "html.parser")
+        radio_input = soup.find("input", {"name": "view"})
+        assert radio_input is not None
+        assert radio_input["id"] == "view-table"
+        assert radio_input["value"] == "table"
+        assert radio_input["hx-get"] == "/switch/"
 
     def test_accordion_panel_ids_use_config_tag_id(self) -> None:
         """Accordion IDs must stay unique for each configured accordion."""

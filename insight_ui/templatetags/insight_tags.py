@@ -7,7 +7,8 @@ import re
 from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import MISSING, fields, is_dataclass, replace
 from difflib import HtmlDiff, ndiff, unified_diff
-from typing import Any, Final, Literal, TypeVar
+from types import UnionType
+from typing import Any, Final, Literal, TypeVar, get_args, get_origin, get_type_hints
 
 from django import template
 from django.core.paginator import Page
@@ -129,6 +130,50 @@ def ensure_list(value: str | Iterable[str] | None) -> list[str]:
     return list(value)
 
 
+def _is_dataclass_type(annotation: object) -> bool:
+    return isinstance(annotation, type) and is_dataclass(annotation)
+
+
+def _coerce_mapping_to_config[T](cls: type[T], value: Mapping[str, Any]) -> T:
+    type_hints = get_type_hints(cls)
+    coerced_values = {key: _coerce_config_value(item, type_hints.get(key, Any)) for key, item in value.items()}
+    return cls(**coerced_values)
+
+
+def _coerce_sequence_to_config(value: Sequence[Any], annotation: object) -> list[Any]:
+    origin = get_origin(annotation)
+    if origin in (list, Sequence):
+        args = get_args(annotation)
+        item_annotation = args[0] if args else Any
+        return [_coerce_config_value(item, item_annotation) for item in value]
+
+    if origin is UnionType:
+        for option in get_args(annotation):
+            option_origin = get_origin(option)
+            if option_origin in (list, Sequence):
+                return _coerce_sequence_to_config(value, option)
+
+    return list(value)
+
+
+def _coerce_config_value(value: Any, annotation: object) -> Any:  # noqa: ANN401
+    origin = get_origin(annotation)
+
+    if isinstance(value, Mapping):
+        if _is_dataclass_type(annotation):
+            return _coerce_mapping_to_config(annotation, value)
+
+        if origin is UnionType:
+            for option in get_args(annotation):
+                if _is_dataclass_type(option):
+                    return _coerce_mapping_to_config(option, value)
+
+    if isinstance(value, Sequence) and not isinstance(value, (str, bytes, bytearray)):
+        return _coerce_sequence_to_config(value, annotation)
+
+    return value
+
+
 def build_config[T](cls: type[T], config: T | None = None, **kwargs: Any) -> T:  # noqa: ANN401
     """
     Create or update a dataclass instance.
@@ -144,7 +189,7 @@ def build_config[T](cls: type[T], config: T | None = None, **kwargs: Any) -> T: 
     overrides = {key: value for key, value in kwargs.items() if value is not UNSET}
 
     if isinstance(config, Mapping):
-        return cls(**(dict(config) | overrides))
+        return _coerce_mapping_to_config(cls, dict(config) | overrides)
 
     if config is not None and is_dataclass(config):
         return replace(config, **overrides)
