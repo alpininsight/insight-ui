@@ -1,7 +1,6 @@
 """Configuration classes for layout components."""
 
 from dataclasses import dataclass, field
-from typing import Literal
 
 from django.utils.translation import gettext_lazy as _
 
@@ -30,47 +29,6 @@ class PageHeaderConfig:
 
     title: str = field(metadata={"doc": _("The page title, displayed as h1 in white text.")})
     description: str | list[str] = field(default="", metadata={"doc": _("An optional description below the title.")})
-
-
-@dataclass
-class HeadingDecorationConfig:
-    """
-    Configuration for the heading_decoration component.
-
-    Renders the decorative transition between header and content.
-
-    Attributes:
-        style: Decoration style: 'waves', 'image', 'gradient', or 'none'. Unknown values fall back to 'waves'.
-        color: Optional CSS color override. By default the component follows --color-insight-primary.
-        image_url: Background image URL used when style is 'image'.
-        height: Decoration height in pixels.
-
-    """
-
-    __example__ = """
-        HeadingDecorationConfig(
-            style="gradient",
-            color="var(--color-insight-primary)",
-            height=72,
-        )
-        """
-
-    style: Literal["waves", "image", "gradient", "none"] = field(
-        default="waves",
-        metadata={
-            "doc": _("Decoration style: 'waves', 'image', 'gradient', or 'none'. Unknown values fall back to 'waves'.")
-        },
-    )
-    color: str = field(
-        default="var(--color-insight-primary, #3b82f6)",
-        metadata={"doc": _("Optional CSS color override. By default the component follows --color-insight-primary.")},
-    )
-    image_url: str = field(default="", metadata={"doc": _("Background image URL used when style is 'image'.")})
-    height: int = field(default=90, metadata={"doc": _("Decoration height in pixels.")})
-
-    def __post_init__(self) -> None:
-        """Validate height is positive."""
-        self.height = max(self.height, 1)
 
 
 @dataclass
