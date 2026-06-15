@@ -8,12 +8,7 @@ class ConfigMergeTest(SimpleTestCase):
     """Verify host settings extend nested defaults without dropping siblings."""
 
     @override_settings(
-        INSIGHT_UI={
-            "design_themes": {
-                "stylesheets": {"custom": "custom/theme.css"},
-                "labels": {"custom": "Custom"},
-            }
-        }
+        INSIGHT_UI={"design_themes": {"stylesheets": {"custom": "custom/theme.css"}, "labels": {"custom": "Custom"}}}
     )
     def test_nested_design_theme_overrides_preserve_defaults(self) -> None:
         """Adding one host theme should not remove built-in theme assets or labels."""

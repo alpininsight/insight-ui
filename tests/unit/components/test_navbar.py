@@ -190,9 +190,7 @@ class TestNavbar(TemplateTagsTestCase):
                 NavbarLinkConfig(
                     "Components",
                     dropdown=DropdownConfig(
-                        "components-menu",
-                        "",
-                        items=[DropdownItemConfig("Button", "/docs/components/button/")],
+                        "components-menu", "", items=[DropdownItemConfig("Button", "/docs/components/button/")]
                     ),
                 )
             ],
