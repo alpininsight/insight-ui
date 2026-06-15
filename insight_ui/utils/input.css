@@ -64,6 +64,7 @@
     --color-insight-text-link-hover: #93c5fd;
     --color-insight-text-disabled: oklch(70.8% 0 0);
     --color-insight-text-disabled-dark: oklch(55.6% 0 0);
+    --color-insight-white-button-foreground: oklch(21% 0.034 264.665);
     --color-insight-surface-page: oklch(96.7% 0.003 264.542);
     --color-insight-surface-page-dark: oklch(13% 0.028 261.692);
     --color-insight-surface-base: #fff;
@@ -603,7 +604,7 @@
     }
     .btn-white {
         @apply bg-white border-white hover:bg-insight-info-hover active:bg-insight-info-active hover:border-insight-info-hover active:border-insight-info-active;
-        color: var(--color-insight-text-primary);
+        color: var(--color-insight-white-button-foreground);
     }
     .btn-link {
         @apply border-0 underline text-insight-text-link px-6 py-2 hover:text-insight-text-link-hover;

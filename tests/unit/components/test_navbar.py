@@ -220,3 +220,24 @@ class TestNavbar(TemplateTagsTestCase):
             < rendered.index('id="insight-ui-design-theme-selector"')
             < rendered.index('id="search"')
         )
+
+    @override_settings(INSIGHT_UI={"design_themes": {"enabled": True, "default": "cerulean"}})
+    def test_navbar_design_theme_selector_includes_configured_valid_default(self) -> None:
+        """A valid default outside the curated list remains selectable and selected."""
+        nav_config = NavbarConfig(
+            brand=NavbarBrandConfig(title="Django Insight UI NavBar", request_url="/"),
+            show_design_theme_selector=True,
+        )
+
+        rendered = self.render_template(
+            "{% load insight_tags %}{% navbar config=nav_config %}", context={"nav_config": nav_config}
+        )
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        theme_selector = soup.select_one("#insight-ui-design-theme-selector")
+        assert theme_selector is not None
+
+        cerulean_option = theme_selector.select_one('option[value="cerulean"]')
+        assert cerulean_option is not None
+        assert cerulean_option.get("selected") == ""
+        assert cerulean_option["data-theme-href"] == "/static/insight_ui/css/themes/cerulean.css"

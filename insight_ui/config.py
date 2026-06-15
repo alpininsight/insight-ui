@@ -133,10 +133,29 @@ def _merge_config(defaults: Mapping[str, Any], user_config: Mapping[str, Any]) -
     return merged
 
 
+def _normalise_design_themes(config: dict[str, Any]) -> None:
+    design_themes = config.get("design_themes")
+    if not isinstance(design_themes, dict):
+        return
+
+    default_theme = design_themes.get("default")
+    stylesheets = design_themes.get("stylesheets")
+    display_order = tuple(design_themes.get("display_order", ()))
+
+    if (
+        isinstance(default_theme, str)
+        and isinstance(stylesheets, Mapping)
+        and default_theme in stylesheets
+        and default_theme not in display_order
+    ):
+        design_themes["display_order"] = (default_theme, *display_order)
+
+
 def get_config(attribute_name: str = "") -> object:
     """Serve insight-ui configuration."""
     user_config = cast(Mapping[str, Any], getattr(settings, "INSIGHT_UI", {}))
     resolved_config = _merge_config(CONFIG_DEFAULTS, user_config)
+    _normalise_design_themes(resolved_config)
 
     if attribute_name != "":
         return resolved_config[attribute_name]

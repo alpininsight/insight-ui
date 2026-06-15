@@ -28,6 +28,7 @@ class DesignThemeCssTest(SimpleTestCase):
             "--font-display:",
             "--font-mono:",
             "--color-insight-pending:",
+            "--color-insight-white-button-foreground:",
             "--color-insight-surface-page:",
             "--color-insight-surface-base:",
             "--color-insight-surface-soft:",
@@ -187,6 +188,8 @@ class DesignThemeCssTest(SimpleTestCase):
         assert ".dark .slider-wrapper" not in input_css
         assert "background-color: var(--color-insight-surface-soft);" in input_css
         assert "border-color: var(--color-insight-border-surface);" in input_css
+        assert ".btn-white" in input_css
+        assert "color: var(--color-insight-white-button-foreground);" in input_css
 
     def test_bootswatch_themes_define_text_and_button_foreground_tokens(self) -> None:
         """Every Bootswatch theme must include text and button font color tokens."""

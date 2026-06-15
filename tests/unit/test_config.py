@@ -31,3 +31,20 @@ class ConfigMergeTest(SimpleTestCase):
             "bento",
             "drawn",
         )
+
+    @override_settings(INSIGHT_UI={"design_themes": {"default": "cerulean"}})
+    def test_design_theme_default_is_added_to_display_order_when_valid(self) -> None:
+        """A valid configured default must be selectable in the navbar switcher."""
+        design_themes = get_config("design_themes")
+
+        assert design_themes["default"] == "cerulean"
+        assert design_themes["display_order"][0] == "cerulean"
+        assert design_themes["display_order"].count("cerulean") == 1
+
+    @override_settings(INSIGHT_UI={"design_themes": {"default": "missing-theme"}})
+    def test_invalid_design_theme_default_does_not_change_display_order(self) -> None:
+        """Invalid defaults are ignored instead of rendering broken selector options."""
+        design_themes = get_config("design_themes")
+
+        assert design_themes["default"] == "missing-theme"
+        assert "missing-theme" not in design_themes["display_order"]
