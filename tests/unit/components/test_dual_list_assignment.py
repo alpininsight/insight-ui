@@ -61,10 +61,7 @@ class TestDualListAssignment(TemplateTagsTestCase):
             {% dual_list_assignment name="role_slugs" options=options selected_values=selected_values %}
             """,
             {
-                "options": {
-                    "organization-member": "Organization Member",
-                    "organization-admin": "Organization Admin",
-                },
+                "options": {"organization-member": "Organization Member", "organization-admin": "Organization Admin"},
                 "selected_values": ["organization-admin"],
             },
         )
