@@ -670,8 +670,10 @@ class DualListAssignmentConfig(BaseFormFieldConfig):
 
     Attributes:
         tag_id: Optional, unique tag ID for identifying the element in JavaScript.
-        name: Required for a `<form>`, as the repeated request parameter.
-        label: A text label displayed above the control.
+        name: Required for a `<form>`, as the name of the request parameter.
+        label: A text label displayed above the field.
+        disabled: **True** if the field should be disabled.
+        required: **True** if the field must be filled in.
         help_text: Optional helper text below the label.
         available_label: Label for the source list.
         assigned_label: Label for the target list.
