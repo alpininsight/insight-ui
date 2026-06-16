@@ -145,8 +145,11 @@
     .btn-xs {
         @apply text-xs px-2 py-0.5;
     }
-    .btn-sm {
+    .btn-s {
         @apply text-sm px-4 py-1;
+    }
+    .btn-m {
+        @apply text-sm px-5 py-1.5;
     }
     .btn-l {
         @apply text-lg px-6 py-2;
@@ -154,16 +157,10 @@
     .btn-xl {
         @apply text-lg px-8 py-3;
     }
-    .btn-square {
+    .btn-icon {
         @apply p-2 border-0;
     }
 
-    .btn-subtil2 {
-        @apply text-insight-text-secondary dark:text-insight-text-secondary-dark hover:bg-gray-200 dark:hover:bg-gray-600 active:bg-gray-300 dark:active:bg-gray-500 hover:border-gray-200 dark:hover:border-gray-600 active:border-gray-300 dark:active:border-gray-500;
-    }
-    .btn-subtil {
-        @apply text-insight-text-secondary dark:text-insight-text-secondary-dark bg-gray-100 dark:bg-gray-700 border-gray-100 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 active:bg-gray-300 dark:active:bg-gray-500 hover:border-gray-200 dark:hover:border-gray-600 active:border-gray-300 dark:active:border-gray-500;
-    }
     .btn-primary {
         @apply bg-insight-primary border-insight-primary hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active;
     }
@@ -191,9 +188,6 @@
     .btn-disabled {
         @apply bg-neutral-300 dark:bg-neutral-600 border-neutral-300 dark:border-neutral-600 text-neutral-400;
     }
-    .btn-close {
-        @apply p-2 border-0 text-insight-text-secondary dark:text-insight-text-secondary-dark bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 active:bg-gray-300 dark:active:bg-gray-500;
-    }
 
     .btn-outline-primary {
         @apply border-insight-primary text-insight-primary hover:text-white hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active;
@@ -215,6 +209,28 @@
     }
     .btn-outline-disabled {
         @apply border-neutral-300 dark:border-neutral-600 text-neutral-400;
+    }
+
+    .btn-subtil-primary {
+        @apply text-insight-primary hover:text-insight-primary-hover active:text-insight-primary-active hover:bg-insight-primary-hover/25 active:bg-insight-primary-active/25
+    }
+    .btn-subtil-secondary {
+        @apply text-insight-secondary hover:text-insight-secondary-hover active:text-insight-secondary-active hover:bg-insight-secondary-hover/25 active:bg-insight-secondary-active/25
+    }
+    .btn-subtil-success {
+        @apply text-insight-success hover:text-insight-success-hover active:text-insight-success-active hover:bg-insight-success-hover/25 active:bg-insight-success-active/25
+    }
+    .btn-subtil-warning {
+        @apply text-insight-warning hover:text-insight-warning-hover active:text-insight-warning-active hover:bg-insight-warning-hover/25 active:bg-insight-warning-active/25
+    }
+    .btn-subtil-danger {
+        @apply text-insight-danger hover:text-insight-danger-hover active:text-insight-danger-active hover:bg-insight-danger-hover/25 active:bg-insight-danger-active/25
+    }
+    .btn-subtil-info {
+        @apply text-insight-info hover:text-insight-info-hover active:text-insight-info-active hover:bg-insight-info-hover/25 active:bg-insight-info-active/25
+    }
+    .btn-subtil-disabled {
+        @apply text-neutral-400;
     }
 
     .component-container {

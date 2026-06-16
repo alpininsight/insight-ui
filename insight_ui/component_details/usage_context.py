@@ -202,28 +202,22 @@ def get_button_usage_context() -> dict[str, str]:
     """Serve usage documentation for the button component."""
     return {
         "usage": """
-        <button class="btn btn-primary">{% trans "Primary" %}</button>
-        <button class="btn btn-secondary">{% trans "Secondary" %}</button>
-        <button class="btn btn-success">{% trans "Success" %}</button>
-        <button class="btn btn-warning">{% trans "Warning" %}</button>
-        <button class="btn btn-danger">{% trans "Danger" %}</button>
-        <button class="btn btn-info">{% trans "Info" %}</button>
-        <button disabled class="btn btn-disabled">{% trans "Disabled" %}</button>
-        <button aria-label="{% trans 'Close' %}" class="btn btn-close">{% icon name="x-mark" size="xs" %}</button>
-        <a href="#" class="btn-link">{% trans "Link" %}</a>
+        {% button label=_("Primary") type="primary" %}
+        {% button label=_("Secondary") type="secondary" %}
+        {% button label=_("Success") type="success" %}
+        {% button label=_("Warning") type="warning" %}
+        {% button label=_("Danger") type="danger" %}
+        {% button label=_("Info") type="info" %}
+        {% button label=_("Primary") disabled=True %}
 
-        <button class="btn btn-outline-primary">{% trans "Primary" %}</button>
-        <button class="btn btn-outline-secondary">{% trans "Secondary" %}</button>
-        <button class="btn btn-outline-success">{% trans "Success" %}</button>
-        <button class="btn btn-outline-warning">{% trans "Warning" %}</button>
-        <button class="btn btn-outline-danger">{% trans "Danger" %}</button>
-        <button class="btn btn-outline-info">{% trans "Info" %}</button>
-        <button disabled class="btn btn-outline-disabled">{% trans "Disabled" %}</button>
+        {% button label=_("Primary") type="primary" outline=True %}
+        {% button label=_("Primary") type="primary" subtil=True %}
 
-        <button class="btn btn-primary btn-large">{% trans "Click me!" %}</button>
-        <button class="btn btn-primary">{% trans "Click me!" %}</button>
-        <button class="btn btn-primary btn-sm">{% trans "Click me!" %}</button>
-        <button class="btn btn-primary btn-xs">{% trans "Click me!" %}</button>
+        {% button label=_("Click me!") type="primary" size="xl" %}
+        {% button label=_("Click me!") type="primary" size="l" %}
+        {% button label=_("Click me!") type="primary" size="m" %}
+        {% button label=_("Click me!") type="primary" size="s" %}
+        {% button label=_("Click me!") type="primary" size="xs" %}
         """
     }
 

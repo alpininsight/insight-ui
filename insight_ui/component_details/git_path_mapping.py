@@ -20,6 +20,7 @@ TEMPLATE_PATHS = {
     "accordion": GIT_BASE_FILE + "accordion.html",
     "tabs": GIT_BASE_FILE + "tabs.html",
     # Inputs
+    "button": GIT_BASE_FILE + "button.html",
     "input": GIT_BASE_FILE + "input.html",
     "textarea": GIT_BASE_FILE + "textarea.html",
     "checkbox": GIT_BASE_FILE + "checkbox.html",

@@ -11,13 +11,13 @@
                     hx-get="{{ pagination_config.request_url }}?page={{ pagination_config.current_page.previous_page_number }}"
                     hx-target="#list-container"
                     hx-include="#ipp"
-                    class="btn btn-primary btn-sm"
+                    class="btn btn-primary btn-s"
                 >
                     {% icon name="chevron_left" size="s" %}
                     <span class="sr-only">{% trans "To previous page" %}</span>
                 </a>
             {% else %}
-                <a class="btn btn-disabled btn-sm">
+                <a class="btn btn-disabled btn-s">
                     {% icon name="chevron_left" size="s" %}
                     <span class="sr-only">{% trans "To previous page (Deactivated because there are no more previous pages)" %}</span>
                 </a>
@@ -27,7 +27,7 @@
             <div class="hidden md:flex gap-1 justify-center">
                 {% for num in pagination_config.surrounding_pages %}
                     {% if num == pagination_config.current_page.number %}
-                        <span class="btn btn-sm bg-insight-primary-active">{{ num }}</span>
+                        <span class="btn btn-s bg-insight-primary-active">{{ num }}</span>
                     {% elif num == -1 %}
                         <span class="text-neutral-400 px-4 py-1">...</span>
                     {% else %}
@@ -36,7 +36,7 @@
                             hx-get="{{ pagination_config.request_url }}?page={{ num }}"
                             hx-target="#list-container"
                             hx-include="#ipp"
-                            class="btn btn-primary btn-sm"
+                            class="btn btn-primary btn-s"
                         >
                             {{ num }}
                         </a>
@@ -51,13 +51,13 @@
                     hx-get="{{ pagination_config.request_url }}?page={{ pagination_config.current_page.next_page_number }}"
                     hx-target="#list-container"
                     hx-include="#ipp"
-                    class="btn btn-primary btn-sm"
+                    class="btn btn-primary btn-s"
                 >
                     {% icon name="chevron_right" size="s" %}
                     <span class="sr-only">{% trans "To next page" %}</span>
                 </a>
             {% else %}
-                <a class="btn btn-disabled btn-sm">
+                <a class="btn btn-disabled btn-s">
                     {% icon name="chevron_right" size="s" %}
                     <span class="sr-only">{% trans "To next page (Deactivated because there are no more next pages)" %}</span>
                 </a>

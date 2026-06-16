@@ -51,6 +51,7 @@ from insight_ui.configs.filter import (
 )
 from insight_ui.configs.forms import FormConfig, FormFieldConfig
 from insight_ui.configs.input import (
+    ButtonConfig,
     ChatConfig,
     CheckboxConfig,
     CheckboxGroupConfig,
@@ -148,6 +149,7 @@ __all__ = [
     "SliderConfig",
     "TextareaConfig",
     "ToggleConfig",
+    "ButtonConfig",
     # Layout
     "ArticleConfig",
     "BadgeConfig",

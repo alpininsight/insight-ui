@@ -63,34 +63,49 @@
 {% elif component.value == "tabs" %}
     {% tabs config=tabs_config %}
 {% elif component.value == "button" %}
-    <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
-        <button class="btn btn-primary">{% trans "Primary" %}</button>
-        <button class="btn btn-secondary">{% trans "Secondary" %}</button>
-        <button class="btn btn-success">{% trans "Success" %}</button>
-        <button class="btn btn-warning">{% trans "Warning" %}</button>
-        <button class="btn btn-danger">{% trans "Danger" %}</button>
-        <button class="btn btn-info">{% trans "Info" %}</button>
-        <button disabled class="btn btn-disabled">{% trans "Disabled" %}</button>
-        <button aria-label="{% trans 'Close' %}" class="btn btn-close">{% icon name="x-mark" size="xs" %}</button>
-        <a href="#" class="btn-link">{% trans "Link" %}</a>
-    </div>
-{% elif component.value == "outline_button" %}
-    <div class="flex flex-col md:flex-row items-stretch flex-wrap gap-1">
-        <button class="btn btn-outline-primary">{% trans "Primary" %}</button>
-        <button class="btn btn-outline-secondary">{% trans "Secondary" %}</button>
-        <button class="btn btn-outline-success">{% trans "Success" %}</button>
-        <button class="btn btn-outline-warning">{% trans "Warning" %}</button>
-        <button class="btn btn-outline-danger">{% trans "Danger" %}</button>
-        <button class="btn btn-outline-info">{% trans "Info" %}</button>
-        <button disabled class="btn btn-outline-disabled">{% trans "Disabled" %}</button>
-    </div>
-{% elif component.value == "button_sizes" %}
-    <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
-        <button class="btn btn-primary btn-xl">{% trans "Click me!" %}</button>
-        <button class="btn btn-primary btn-l">{% trans "Click me!" %}</button>
-        <button class="btn btn-primary">{% trans "Click me!" %}</button>
-        <button class="btn btn-primary btn-sm">{% trans "Click me!" %}</button>
-        <button class="btn btn-primary btn-xs">{% trans "Click me!" %}</button>
+    <div class="space-y-4">
+        <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
+            {% button label=_("Primary") type="primary" %}
+            {% button label=_("Secondary") type="secondary" %}
+            {% button label=_("Success") type="success" %}
+            {% button label=_("Warning") type="warning" %}
+            {% button label=_("Danger") type="danger" %}
+            {% button label=_("Info") type="info" %}
+            {% button label=_("Disabled") type="disabled" %}
+        </div>
+        <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
+            {% button label=_("Primary") type="primary" outline=True %}
+            {% button label=_("Secondary") type="secondary" outline=True %}
+            {% button label=_("Success") type="success" outline=True %}
+            {% button label=_("Warning") type="warning" outline=True %}
+            {% button label=_("Danger") type="danger" outline=True %}
+            {% button label=_("Info") type="info" outline=True %}
+            {% button label=_("Disabled") type="disabled" outline=True %}
+        </div>
+        <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
+            {% button label=_("Primary") type="primary" subtil=True %}
+            {% button label=_("Secondary") type="secondary" subtil=True %}
+            {% button label=_("Success") type="success" subtil=True %}
+            {% button label=_("Warning") type="warning" subtil=True %}
+            {% button label=_("Danger") type="danger" subtil=True %}
+            {% button label=_("Info") type="info" subtil=True %}
+            {% button label=_("Disabled") type="disabled" subtil=True %}
+        </div>
+        <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
+            {% button label=_("Click me!") type="primary" size="xl" %}
+            {% button label=_("Click me!") type="primary" size="l" %}
+            {% button label=_("Click me!") type="primary" size="m" %}
+            {% button label=_("Click me!") type="primary" size="s" %}
+            {% button label=_("Click me!") type="primary" size="xs" %}
+        </div>
+        <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
+            {% button label=_("With Icon") type="primary" icon_name="rocket" %}
+            {% button label=_("With Icon") type="primary" icon_name="rocket" icon_end=True %}
+            {% button label=_("Icon only") type="primary" icon_name="rocket" icon_only=True %}
+        </div>
+        <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
+            {% button label=_("As hyperlink") type="primary" request_url="#" %}
+        </div>
     </div>
 {% elif component.value == "input_field" %}
     <div class="space-y-6">
@@ -174,7 +189,7 @@
                 </p>
             </div>
             <div class="bg-gray-100 dark:bg-gray-900 p-4 rounded-b-sm">
-                <button class="btn btn-primary btn-sm">{% trans "Learn more" %}</button>
+                <button class="btn btn-primary btn-s">{% trans "Learn more" %}</button>
             </div>
         </div>
     </div>

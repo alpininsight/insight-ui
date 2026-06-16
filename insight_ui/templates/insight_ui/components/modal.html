@@ -19,7 +19,7 @@
             {# Modal Header #}
             <div class="flex items-start justify-between h-fit p-6 border-b border-gray-200 dark:border-gray-700">
                 <h2 id="{{ modal_config.tag_id }}-title" class="pb-0">{{ modal_config.title }}</h2>
-                <button aria-label="{% trans 'Close' %}" class="btn btn-close" data-insight-dismiss="modal">
+                <button aria-label="{% trans 'Close' %}" class="bg-white h-fit rounded-sm p-2 text-insight-text-primary hover:bg-gray-100 hover:dark:bg-gray-300 transition" data-insight-dismiss="modal">
                     {% icon name="x-mark" size="xs" %}
                 </button>
             </div>

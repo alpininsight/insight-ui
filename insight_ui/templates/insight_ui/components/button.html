@@ -1,0 +1,53 @@
+{% load insight_tags %}
+
+{% if button_config.request_url %}
+    <a
+        {% if button_config.tag_id %}id="{{ button_config.tag_id }}"{% endif %}
+        href="{{ button_config.request_url }}"
+        {% if button_config.htmx_config %}
+            hx-{{ button_config.htmx_config.method }}="{{ button_config.htmx_config.request_url }}"
+            hx-target="{{ button_config.htmx_config.target }}"
+            hx-swap="{{ button_config.htmx_config.swap_method }}"
+            hx-push-url="{{ button_config.htmx_config.push_url|default:'true' }}"
+            hx-indicator="{{ button_config.htmx_config.loading_indicator_id|default:'#loading-indicator' }}"
+            hx-trigger="submit, {{ button_config.htmx_config.trigger }}"
+        {% endif %}
+        {% if button_config.disabled == "disabled" %}disabled{% endif %}
+        {% if button_config.icon_only %}aria-label="{{ button_config.label }}"{% endif %}
+        {% if button_config.tooltip %}data-insight-tooltip="{{ button_config.tooltip }}"{% endif %}
+        class="btn btn-{% if button_config.outline %}outline-{% endif %}{% if button_config.subtil %}subtil-{% endif %}{{ button_config.type }} {% if button_config.icon_only %}btn-icon{% else %}btn-{{ button_config.size }}{% endif %}"
+    >
+{% else %}
+    <button
+        {% if button_config.tag_id %}id="{{ button_config.tag_id }}"{% endif %}
+        {% if button_config.on_click %}onclick="{{ button_config.on_click }}"{% endif %}
+        {% if button_config.htmx_config %}
+            hx-{{ button_config.htmx_config.method }}="{{ button_config.htmx_config.request_url }}"
+            hx-target="{{ button_config.htmx_config.target }}"
+            hx-swap="{{ button_config.htmx_config.swap_method }}"
+            hx-push-url="{{ button_config.htmx_config.push_url|default:'true' }}"
+            hx-indicator="{{ button_config.htmx_config.loading_indicator_id|default:'#loading-indicator' }}"
+            hx-trigger="submit, {{ button_config.htmx_config.trigger }}"
+        {% endif %}
+        {% if button_config.type == "disabled" %}disabled{% endif %}
+        {% if button_config.icon_only %}aria-label="{{ button_config.label }}"{% endif %}
+        {% if button_config.tooltip %}data-insight-tooltip="{{ button_config.tooltip }}"{% endif %}
+        class="btn btn-{% if button_config.outline %}outline-{% endif %}{% if button_config.subtil %}subtil-{% endif %}{{ button_config.type }} {% if button_config.icon_only %}btn-icon{% else %}btn-{{ button_config.size }}{% endif %}"
+    >
+{% endif %}
+{% if button_config.icon and button_config.icon_only %}
+    {% icon config=button_config.icon %}
+{% else %}
+    {% if button_config.icon and not button_config.icon_end %}
+        {% icon config=button_config.icon %}
+    {% endif %}
+    {{ button_config.label }}
+    {% if button_config.icon and button_config.icon_end %}
+        {% icon config=button_config.icon %}
+    {% endif %}
+{% endif %}
+{% if button_config.request_url %}
+    </a>
+{% else %}
+    </button>
+{% endif %}

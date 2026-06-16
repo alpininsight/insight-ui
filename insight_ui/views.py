@@ -374,25 +374,7 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
     context = get_demo_container_context() | component_context.get_component_context(Component(component_name))
     context["demo"] = demo_info
 
-    # Temporary fix for the button component
-    if component_name == "button":
-        context["outline_button_demo"] = {
-            "url": reverse("component_demo_view", kwargs={"component_name": "outline_button"}),
-            "title": "outline_button",
-            "id": "outline_button",
-        }
-
-        context["button_sizes_demo"] = {
-            "url": reverse("component_demo_view", kwargs={"component_name": "button_sizes"}),
-            "title": "button_sizes",
-            "id": "button_sizes",
-        }
-
     if request.headers.get("HX-Request") and not request.headers.get("HX-History-Restore-Request"):
-        # Temporary fix for the button component
-        if component_name in ["button"]:
-            return render(request, f"insight_ui/docs/partial/{component_name}_detailpage.html", context)
-
         return render(request, "insight_ui/docs/component_detailpage_partial.html", context)
 
     context |= get_base_context() | get_sidebar_context()

@@ -4,8 +4,8 @@
     <label id="{{ multiselect_config.name }}-label" class="block text-sm font-bold text-primary mb-1">{{ multiselect_config.label }}</label>
     {% if multiselect_config.show_buttons %}
         <div class="flex gap-2 mb-1">
-            <button type="button" class="select-all btn btn-primary btn-sm">{% trans "Select all" %}</button>
-            <button type="button" class="deselect-all btn btn-primary btn-sm">{% trans "Deselect all" %}</button>
+            <button type="button" class="select-all btn btn-primary btn-s">{% trans "Select all" %}</button>
+            <button type="button" class="deselect-all btn btn-primary btn-s">{% trans "Deselect all" %}</button>
         </div>
     {% endif %}
     <div class="relative" role="combobox" aria-labelledby="{{ multiselect_config.name }}-label" aria-haspopup="listbox" aria-expanded="false" aria-owns="{{ multiselect_config.name }}-listbox">

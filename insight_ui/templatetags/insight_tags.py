@@ -31,6 +31,7 @@ from insight_ui.configs import (
     BreadcrumbsConfig,
     BulletPointItemConfig,
     BulletPointListConfig,
+    ButtonConfig,
     CardCarouselConfig,
     CardConfig,
     CarouselItemConfig,
@@ -223,22 +224,6 @@ def build_config[T](cls: type[T], config: T | None = None, **kwargs: Any) -> T: 
         raise ValueError(f"Missing required fields for {cls.__name__}: {', '.join(missing)}")  # noqa: TRY003
 
     return cls(**overrides)
-
-
-def merge_config(config: Any, **overrides) -> Any:  # noqa: ANN401
-    """Take a component config Dataclass and overwrite the respective member with the kwargs."""
-    if config is None:
-        return config.__class__(**overrides)
-
-    values = {}
-    for field in fields(config):
-        override = overrides.get(field.name)
-        if override:
-            values[field.name] = override
-        else:
-            values[field.name] = getattr(config, field.name)
-
-    return replace(config, **values)
 
 
 @register.filter
@@ -646,6 +631,50 @@ def chat(config: ChatConfig | None = None, *, request_url: str | _Unset = UNSET)
     return {"request_url": config.request_url}
 
 
+@register.inclusion_tag("insight_ui/components/button.html")
+def button(
+    config: ButtonConfig | None = None,
+    *,
+    tag_id: str | _Unset = UNSET,
+    label: str | _Unset = UNSET,
+    request_url: str | _Unset = UNSET,
+    on_click: str | _Unset = UNSET,
+    icon_name: str | _Unset = UNSET,
+    icon_size: str | _Unset = UNSET,
+    icon_end: bool | _Unset = UNSET,
+    icon_only: bool | _Unset = UNSET,
+    type: str | _Unset = UNSET,  # noqa: A002
+    size: str | _Unset = UNSET,
+    outline: bool | _Unset = UNSET,
+    subtil: bool | _Unset = UNSET,
+    tooltip: str | _Unset = UNSET,
+    htmx_config: HtmxConfig | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render the button component."""
+    icon: IconConfig | None | _Unset = UNSET
+    if icon_name is not UNSET:
+        icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "m") if icon_name else None
+
+    config = build_config(
+        ButtonConfig,
+        config,
+        tag_id=tag_id,
+        label=label,
+        request_url=request_url,
+        on_click=on_click,
+        icon=icon,
+        icon_end=icon_end,
+        icon_only=icon_only,
+        type=type,
+        size=size,
+        outline=outline,
+        subtil=subtil,
+        tooltip=tooltip,
+        htmx_config=htmx_config,
+    )
+    return {"button_config": config}
+
+
 # =============================================================
 #
 #   Popup Tags
@@ -788,7 +817,7 @@ def logo(
     # Only override icon if icon_name was explicitly provided
     icon: IconConfig | None | _Unset = UNSET
     if icon_name is not UNSET:
-        icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "md") if icon_name else None
+        icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "m") if icon_name else None
 
     config = build_config(
         LogoConfig,

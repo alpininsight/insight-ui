@@ -5,7 +5,81 @@ from typing import Literal
 
 from django.utils.translation import gettext_lazy as _
 
-from insight_ui.configs.base import BaseFormFieldConfig, IconConfig
+from insight_ui.configs.base import BaseFormFieldConfig, HtmxConfig, IconConfig
+
+
+@dataclass
+class ButtonConfig:
+    """
+    Configuration for the button component.
+
+    Renders a button element.
+
+    Attributes:
+        tag_id: Unique ID for JavaScript/CSS targeting.
+        label: The text on the button or for Screenreader if the icon shows only a icon.
+        request_url: The URL to be called when clicking on the button.
+        on_click: The name of the JavaScript method to be called when clicking on the button.
+        icon: Icon config for an optional icon.
+        icon_end: **True** if the icon should be shown after the label, otherwise the icon is shown in front of the label.
+        icon_only: **True** if only the icon should be shown. In this case the `label` will be used for Screenreader.
+        type: Defines the color of the button.
+        size: Defines the size of the button.
+        outline: **True** to use the outline design of the button.
+        subtil: **True** to use the subtil design of the button.
+        disabled: Disables user interaction.
+        tooltip: Optional text for a tooltip shown on hover.
+        htmx_config: Configuration for asynchronous requests.
+
+    """
+
+    __example__ = """
+        ButtonConfig(
+            tag_id="my-button",
+            label="Click Me!",
+            request_url="",
+            on_click="calculateSomething()",
+            icon=IconConfig("rocket", "m"),
+            icon_end=True,
+            icon_only=False,
+            type="primary",
+            size="xl",
+            outline=False,
+            subtil=False,
+            tooltip="Click to calculate something",
+            htmx_config=HtmxConfig(...)
+        )
+        """
+
+    tag_id: str = field(default="", metadata={"doc": _("Unique ID for JavaScript/CSS targeting.")})
+    label: str = field(
+        default="", metadata={"doc": "The text on the button or for Screenreader if the button shows only an icon."}
+    )
+    request_url: str = field(default="", metadata={"doc": "The URL to be called when clicking on the button."})
+    on_click: str = field(
+        default="", metadata={"doc": "The name of the JavaScript method to be called when clicking on the button."}
+    )
+    icon: IconConfig = field(default=None, metadata={"doc": "Icon config for an optional icon."})
+    icon_end: bool = field(
+        default=False,
+        metadata={
+            "doc": "**True** if the icon should be shown after the label, otherwise the icon is shown in front of the label."
+        },
+    )
+    icon_only: bool = field(
+        default=False,
+        metadata={
+            "doc": "**True** if only the icon should be shown. In this case the `label` will be used for Screenreader."
+        },
+    )
+    type: Literal["primary", "secondary", "info", "success", "warning", "danger", "disabled"] = field(
+        default="primary", metadata={"doc": "Defines the color of the button."}
+    )
+    size: Literal["xs", "s", "m", "l", "xl"] = field(default="m", metadata={"doc": "Defines the size of the button."})
+    outline: bool = field(default=False, metadata={"doc": "**True** to use the outline design of the button."})
+    subtil: bool = field(default=False, metadata={"doc": "**True** to use the subtil design of the button."})
+    tooltip: str = field(default="", metadata={"doc": "Optional text for a tooltip shown on hover."})
+    htmx_config: HtmxConfig = field(default=None, metadata={"doc": "Configuration for asynchronous requests."})
 
 
 @dataclass
@@ -356,7 +430,7 @@ class RadioBlockConfig:
         items: A list of the radio elements.
         integrated: **True** if the group is inside a `<form>`. If **False** the group gets its own `<form>`.
         as_row: **True** if the radio elements should be displayed side by side.
-        request_url: Name of the URL to which the request should be sent when clicking one of the radio buttons.
+        request_url: The URL to which the request should be sent when clicking one of the radio buttons.
         hx_target_id: The ID of the HTML tag to be replaced when switching the radio button.
         hx_swap_method: The way in which the target is to be replaced.
         method: Name of the JavaScript method to be executed when clicking one of the radio buttons.
@@ -390,9 +464,7 @@ class RadioBlockConfig:
     )
     request_url: str = field(
         default="",
-        metadata={
-            "doc": _("Name of the URL to which the request should be sent when clicking one of the radio buttons.")
-        },
+        metadata={"doc": _("The URL to which the request should be sent when clicking one of the radio buttons.")},
     )
     hx_target_id: str = field(
         default="", metadata={"doc": _("The ID of the HTML tag to be replaced when switching the radio button.")}
