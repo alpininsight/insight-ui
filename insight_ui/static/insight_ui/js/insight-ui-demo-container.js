@@ -107,7 +107,10 @@ export class DemoIframeController {
             if (this.themeToggle) this.themeToggle.checked = true;
         }
 
-        const config = { attributes: true };
+        const config = {
+            attributes: true,
+            attributeFilter: ["class", "data-theme"]
+        };
 
         this.themeObserver = new MutationObserver(this.onThemeMutation);
         this.themeObserver.observe(document.documentElement, config);

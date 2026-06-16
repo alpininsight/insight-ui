@@ -225,8 +225,7 @@ class TestNavbar(TemplateTagsTestCase):
     def test_navbar_design_theme_selector_includes_configured_valid_default(self) -> None:
         """A valid default outside the curated list remains selectable and selected."""
         nav_config = NavbarConfig(
-            brand=NavbarBrandConfig(title="Django Insight UI NavBar", request_url="/"),
-            show_design_theme_selector=True,
+            brand=NavbarBrandConfig(title="Django Insight UI NavBar", request_url="/"), show_design_theme_selector=True
         )
 
         rendered = self.render_template(
