@@ -45,6 +45,8 @@
 [data-theme="dark"] {
     --color-insight-text-primary-dark: #dfd7ca;
     --color-insight-text-secondary-dark: rgba(223, 215, 202, 0.75);
+    --color-insight-text-primary: var(--color-insight-text-primary-dark);
+    --color-insight-text-secondary: var(--color-insight-text-secondary-dark);
     --color-insight-text-link: #849eb8;
     --color-insight-text-link-hover: #9db1c6;
 }

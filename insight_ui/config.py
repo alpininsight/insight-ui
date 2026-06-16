@@ -142,6 +142,10 @@ def _normalise_design_themes(config: dict[str, Any]) -> None:
     stylesheets = design_themes.get("stylesheets")
     display_order = tuple(design_themes.get("display_order", ()))
 
+    if isinstance(default_theme, str) and isinstance(stylesheets, Mapping) and default_theme not in stylesheets:
+        design_themes["default"] = "default" if "default" in stylesheets else next(iter(stylesheets), "")
+        default_theme = design_themes["default"]
+
     if (
         isinstance(default_theme, str)
         and isinstance(stylesheets, Mapping)

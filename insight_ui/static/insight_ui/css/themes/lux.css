@@ -48,6 +48,8 @@
 [data-theme="dark"] {
     --color-insight-text-primary-dark: #e0e1e2;
     --color-insight-text-secondary-dark: rgba(224, 225, 226, 0.75);
+    --color-insight-text-primary: var(--color-insight-text-primary-dark);
+    --color-insight-text-secondary: var(--color-insight-text-secondary-dark);
     --color-insight-text-link: #767676;
     --color-insight-text-link-hover: #919191;
 }

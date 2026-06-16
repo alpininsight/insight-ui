@@ -88,15 +88,19 @@
                     try {
                         savedTheme = window.localStorage.getItem(config.storageKey);
                     } catch (error) {}
+                    const fallbackTheme = Object.prototype.hasOwnProperty.call(config.assets, config.defaultTheme)
+                        ? config.defaultTheme
+                        : "default";
                     const selectedTheme = Object.prototype.hasOwnProperty.call(config.assets, savedTheme)
                         ? savedTheme
-                        : config.defaultTheme;
+                        : fallbackTheme;
+                    const selectedThemeHref = config.assets[selectedTheme] || config.assets[fallbackTheme] || Object.values(config.assets)[0];
                     document.documentElement.setAttribute("data-insight-design-theme", selectedTheme);
                     const themeLink = document.createElement("link");
                     themeLink.id = "insight-ui-theme-stylesheet";
                     themeLink.rel = "stylesheet";
-                    themeLink.href = config.assets[selectedTheme] || config.assets[config.defaultTheme];
-                    themeLink.dataset.defaultTheme = config.defaultTheme;
+                    themeLink.href = selectedThemeHref;
+                    themeLink.dataset.defaultTheme = fallbackTheme;
                     document.currentScript.after(themeLink);
                 })();
             </script>

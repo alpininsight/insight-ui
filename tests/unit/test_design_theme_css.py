@@ -298,6 +298,9 @@ class DesignThemeCssTest(SimpleTestCase):
             ):
                 assert token in theme_css
 
+            assert "--color-insight-text-primary: var(--color-insight-text-primary-dark);" in theme_css
+            assert "--color-insight-text-secondary: var(--color-insight-text-secondary-dark);" in theme_css
+
     def test_white_secondary_bootswatch_themes_define_visible_secondary_borders(self) -> None:
         """White secondary buttons need visible border tokens on white surfaces."""
         for theme_name in WHITE_SECONDARY_THEMES:

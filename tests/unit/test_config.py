@@ -42,9 +42,9 @@ class ConfigMergeTest(SimpleTestCase):
         assert design_themes["display_order"].count("cerulean") == 1
 
     @override_settings(INSIGHT_UI={"design_themes": {"default": "missing-theme"}})
-    def test_invalid_design_theme_default_does_not_change_display_order(self) -> None:
-        """Invalid defaults are ignored instead of rendering broken selector options."""
+    def test_invalid_design_theme_default_falls_back_to_available_default(self) -> None:
+        """Invalid defaults are reset before templates can render broken stylesheet URLs."""
         design_themes = get_config("design_themes")
 
-        assert design_themes["default"] == "missing-theme"
+        assert design_themes["default"] == "default"
         assert "missing-theme" not in design_themes["display_order"]

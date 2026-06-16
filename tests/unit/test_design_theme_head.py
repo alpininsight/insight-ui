@@ -24,7 +24,13 @@ class DesignThemeHeadTest(SimpleTestCase):
         assert 'themeLink.id = "insight-ui-theme-stylesheet";' in rendered
         assert "try {" in rendered
         assert "savedTheme = window.localStorage.getItem(config.storageKey);" in rendered
-        assert "themeLink.href = config.assets[selectedTheme] || config.assets[config.defaultTheme];" in rendered
+        assert "const fallbackTheme = Object.prototype.hasOwnProperty.call" in rendered
+        assert "config.assets, config.defaultTheme" in rendered
+        assert "const selectedThemeHref = config.assets[selectedTheme]" in rendered
+        assert "config.assets[fallbackTheme]" in rendered
+        assert "Object.values(config.assets)[0]" in rendered
+        assert "themeLink.href = selectedThemeHref;" in rendered
+        assert "themeLink.dataset.defaultTheme = fallbackTheme;" in rendered
         assert '"/static/insight_ui/css/themes/alpin.css"' in rendered
         assert '"/static/insight_ui/css/themes/cerulean.css"' in rendered
 
