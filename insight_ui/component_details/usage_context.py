@@ -429,7 +429,7 @@ def get_dual_list_assignment_usage_context() -> dict[str, str]:
         <!-- or -->
 
         {% dual_list_assignment name="role_slugs" label="Organization roles" options=role_options selected_values=selected_role_slugs %}
-        """,
+        """
     }
 
 

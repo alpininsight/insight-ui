@@ -649,10 +649,7 @@ def _normalize_dual_list_assignment_options(
         return []
 
     if isinstance(options, Mapping):
-        return [
-            DualListAssignmentItemConfig(value=str(value), label=str(label))
-            for value, label in options.items()
-        ]
+        return [DualListAssignmentItemConfig(value=str(value), label=str(label)) for value, label in options.items()]
 
     normalized = []
     for item in options:
@@ -704,9 +701,7 @@ def dual_list_assignment(
         selected_values = []
 
     config = build_config(
-        DualListAssignmentConfig,
-        config,
-        **{k: v for k, v in locals().items() if k not in {"config"}},
+        DualListAssignmentConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}}
     )
     return {"dual_list_assignment_config": config}
 

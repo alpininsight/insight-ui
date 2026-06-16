@@ -350,7 +350,9 @@ def get_dual_list_assignment_description_context() -> dict[str, list[str]]:
             _("**Available and assigned lists**: Operators can move selected values between the two sides."),
             _("**Search per list**: Both sides can be filtered without changing the submitted values."),
             _("**Stable submitted values**: The form posts the configured `name` once per assigned value."),
-            _("**Display labels stay separate**: The UI label can differ from the technical value used by policies or claims."),
+            _(
+                "**Display labels stay separate**: The UI label can differ from the technical value used by policies or claims."
+            ),
         ],
     }
 

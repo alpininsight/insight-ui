@@ -707,9 +707,7 @@ class DualListAssignmentConfig(BaseFormFieldConfig):
     options: list[DualListAssignmentItemConfig] = field(
         default_factory=list, metadata={"doc": _("List of values that can be assigned.")}
     )
-    selected_values: list[str] = field(
-        default_factory=list, metadata={"doc": _("List of currently assigned values.")}
-    )
+    selected_values: list[str] = field(default_factory=list, metadata={"doc": _("List of currently assigned values.")})
 
 
 @dataclass

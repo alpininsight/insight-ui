@@ -404,7 +404,9 @@ def get_dual_list_assignment_a11y_context() -> dict[str, list[str]]:
             _("Move buttons expose explicit `aria-label` and `title` text for assign and remove actions."),
             _("Each list has an accessible label and an optional search input scoped to that list."),
             _("A polite live region announces the assigned item count after changes."),
-            _("Submitted values are stored as hidden inputs so all assigned items are posted, not only highlighted options."),
+            _(
+                "Submitted values are stored as hidden inputs so all assigned items are posted, not only highlighted options."
+            ),
         ]
     }
 
