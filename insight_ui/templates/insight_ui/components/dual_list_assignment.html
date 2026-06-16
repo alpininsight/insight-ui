@@ -17,8 +17,8 @@
         <p class="text-sm text-secondary">{{ dual_list_assignment_config.help_text }}</p>
     {% endif %}
 
-    <div class="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:items-end">
-        <section class="min-w-0 space-y-2" aria-label="{{ dual_list_assignment_config.available_label }}">
+    <div class="flex flex-col gap-3 lg:flex-row">
+        <section class="min-w-0 flex-1 space-y-2" aria-label="{{ dual_list_assignment_config.available_label }}">
             <div class="flex items-center justify-between gap-2">
                 <span class="text-sm font-semibold text-primary">{{ dual_list_assignment_config.available_label }}</span>
                 <span class="text-xs text-secondary" data-insight-dual-list-available-count></span>
@@ -54,7 +54,7 @@
             </select>
         </section>
 
-        <div class="flex justify-center gap-2 md:flex-col md:pb-1" aria-label="{% trans 'Assignment actions' %}">
+        <div class="flex shrink-0 flex-col justify-center gap-2" aria-label="{% trans 'Assignment actions' %}">
             <button
                 type="button"
                 class="btn btn-primary btn-sm"
@@ -73,7 +73,7 @@
             >&larr;</button>
         </div>
 
-        <section class="min-w-0 space-y-2" aria-label="{{ dual_list_assignment_config.assigned_label }}">
+        <section class="min-w-0 flex-1 space-y-2" aria-label="{{ dual_list_assignment_config.assigned_label }}">
             <div class="flex items-center justify-between gap-2">
                 <span class="text-sm font-semibold text-primary">{{ dual_list_assignment_config.assigned_label }}</span>
                 <span class="text-xs text-secondary" data-insight-dual-list-assigned-count></span>

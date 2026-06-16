@@ -52,3 +52,24 @@ class TestDualListAssignment(TemplateTagsTestCase):
         assert 'name="role_slugs" value="organization-developer"' in rendered
         assert "Organization Member" in rendered
         assert "Organization Developer" in rendered
+
+    def test_uses_side_by_side_desktop_layout(self) -> None:
+        """Keep the control close to Django Admin's horizontal M2M selector."""
+        rendered = self.render_template(
+            """
+            {% load insight_tags %}
+            {% dual_list_assignment name="role_slugs" options=options selected_values=selected_values %}
+            """,
+            {
+                "options": {
+                    "organization-member": "Organization Member",
+                    "organization-admin": "Organization Admin",
+                },
+                "selected_values": ["organization-admin"],
+            },
+        )
+
+        assert "flex flex-col gap-3 lg:flex-row" in rendered
+        assert "flex shrink-0 flex-col justify-center gap-2" in rendered
+        list_count = 2
+        assert rendered.count("min-w-0 flex-1 space-y-2") == list_count
