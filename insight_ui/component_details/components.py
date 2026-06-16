@@ -29,7 +29,7 @@ from insight_ui.configs import (
     InputFieldConfig,
     LiveContentConfig,
     LogoConfig,
-    MinimalStepBarConfig,
+    MinimalStepperConfig,
     ModalConfig,
     MultiselectConfig,
     NavbarConfig,
@@ -42,7 +42,7 @@ from insight_ui.configs import (
     SelectConfig,
     SidebarConfig,
     SliderConfig,
-    StepBarConfig,
+    StepperConfig,
     TableConfig,
     TabsConfig,
     TextareaConfig,
@@ -78,15 +78,14 @@ class Component(Enum):
     """Enum of all available components with an additional member called 'group' to categorize components."""
 
     PAGE_HEADER = ("page_header", ComponentCategory.LAYOUT, PageHeaderConfig, True, False, False)
-    HEADING_DECORATION = ("heading_decoration", ComponentCategory.LAYOUT, None, False, False, True)
     ARTICLE = ("article", ComponentCategory.LAYOUT, ArticleConfig)
     HERO = ("hero", ComponentCategory.LAYOUT, HeroConfig, False, False, False)
     NAVBAR = ("navbar", ComponentCategory.NAVIGATION, NavbarConfig, True, False, False)
     SIDEBAR = ("sidebar", ComponentCategory.NAVIGATION, SidebarConfig, True, False, False)
     FOOTER = ("footer", ComponentCategory.NAVIGATION, FooterConfig, True, False, False)
     BREADCRUMBS = ("breadcrumbs", ComponentCategory.NAVIGATION)
-    STEP_BAR = ("step_bar", ComponentCategory.NAVIGATION, StepBarConfig)
-    MINIMAL_STEP_BAR = ("minimal_step_bar", ComponentCategory.NAVIGATION, MinimalStepBarConfig)
+    STEPPER = ("stepper", ComponentCategory.NAVIGATION, StepperConfig)
+    MINIMAL_STEPPER = ("minimal_stepper", ComponentCategory.NAVIGATION, MinimalStepperConfig)
     BULLET_POINT_LIST = ("bullet_point_list", ComponentCategory.NAVIGATION, BulletPointListConfig)
     ACCORDION = ("accordion", ComponentCategory.NAVIGATION, AccordionConfig)
     TABS = ("tabs", ComponentCategory.NAVIGATION, TabsConfig, False, True, False)
@@ -118,7 +117,7 @@ class Component(Enum):
     GEO_MAP = ("geo_map", ComponentCategory.UTIL, GeoMapConfig)
     CHART = ("chart", ComponentCategory.UTIL, ChartConfig)
     LIVE_CONTENT = ("live_content", ComponentCategory.UTIL, LiveContentConfig, False, True, False)
-    WEB_SOCKET = ("web_socket", ComponentCategory.UTIL, WebSocketConfig, False, True, True)
+    WEB_SOCKET = ("web_socket", ComponentCategory.UTIL, WebSocketConfig, False, True, False)
     INFINITE_SCROLL = ("infinite_scroll", ComponentCategory.LIST, InfiniteScrollConfig, False, True, False)
     PAGINATION = ("pagination", ComponentCategory.LIST, PaginationConfig, False, True, False)
     TABLE = ("table", ComponentCategory.LIST, TableConfig)
