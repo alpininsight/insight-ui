@@ -93,8 +93,8 @@ class TableOfContents {
             a.textContent = heading.textContent;
             a.className = `
         pe-2 py-1 text-sm text-primary line-clamp-1
-        border-s border-gray-200 dark:border-gray-700
-        hover:border-gray-400 hover:text-gray-400
+        border-s insight-border-surface
+        hover:border-insight-border-muted hover:text-insight-text-secondary
         aria-[current=location]:font-bold
         aria-[current=location]:text-insight-primary-hover
         focus-visible:outline focus-visible:outline-2

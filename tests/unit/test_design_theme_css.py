@@ -5,10 +5,15 @@ from pathlib import Path
 from django.test import SimpleTestCase
 from insight_ui.config import CONFIG_DEFAULTS
 
-THEME_ROOT = Path(__file__).resolve().parents[2] / "insight_ui/static/insight_ui/css/themes"
-INPUT_CSS = Path(__file__).resolve().parents[2] / "insight_ui/utils/input.css"
-TAILWIND_CSS = Path(__file__).resolve().parents[2] / "insight_ui/static/insight_ui/css/tailwind.css"
-TAILWIND_MIN_CSS = Path(__file__).resolve().parents[2] / "insight_ui/static/insight_ui/css/tailwind.min.css"
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+THEME_ROOT = PROJECT_ROOT / "insight_ui/static/insight_ui/css/themes"
+INPUT_CSS = PROJECT_ROOT / "insight_ui/utils/input.css"
+TAILWIND_CSS = PROJECT_ROOT / "insight_ui/static/insight_ui/css/tailwind.css"
+TAILWIND_MIN_CSS = PROJECT_ROOT / "insight_ui/static/insight_ui/css/tailwind.min.css"
+CODE_BLOCK_JS = PROJECT_ROOT / "insight_ui/static/insight_ui/js/insight-ui-code-block.js"
+FLOATER_JS = PROJECT_ROOT / "insight_ui/static/insight_ui/js/insight-ui-floater.js"
+TOC_GENERATOR_JS = PROJECT_ROOT / "insight_ui/static/insight_ui/js/insight-ui-toc-generator.js"
+FORM_SUCCESS_TEMPLATE = PROJECT_ROOT / "insight_ui/templates/insight_ui/components/form_success.html"
 STYLE_FAMILY_THEMES = {"skeuomorphic", "flat", "material", "neumorphic", "glass", "bento", "drawn"}
 PROJECT_THEMES = {"default", "alpin", "foundry"} | STYLE_FAMILY_THEMES
 BOOTSWATCH_THEMES = set(CONFIG_DEFAULTS["design_themes"]["stylesheets"]) - PROJECT_THEMES
@@ -136,6 +141,38 @@ class DesignThemeCssTest(SimpleTestCase):
                 ".insight-sketch-border",
             ):
                 assert selector in css
+
+    def test_js_generated_components_use_semantic_theme_classes(self) -> None:
+        """JavaScript-generated component markup must follow the same theme tokens as templates."""
+        code_block_js = CODE_BLOCK_JS.read_text()
+        floater_js = FLOATER_JS.read_text()
+        toc_generator_js = TOC_GENERATOR_JS.read_text()
+
+        assert "insight-surface-code" in code_block_js
+        assert "insight-surface-muted" in code_block_js
+        assert "insight-surface-soft" in code_block_js
+        assert "bg-[#f9fafb]" not in code_block_js
+        assert "dark:bg-[#030712]" not in code_block_js
+        assert "bg-gray-200" not in code_block_js
+
+        assert "insight-surface-base" in floater_js
+        assert "insight-border-surface" in floater_js
+        assert "border-b-insight-surface-base" in floater_js
+        assert "bg-white" not in floater_js
+        assert "dark:bg-gray-600" not in floater_js
+        assert "border-gray-300" not in floater_js
+
+        assert "hover:border-insight-border-muted" in toc_generator_js
+        assert "hover:text-insight-text-secondary" in toc_generator_js
+        assert "hover:border-gray-400" not in toc_generator_js
+        assert "hover:text-gray-400" not in toc_generator_js
+
+    def test_form_success_feedback_uses_semantic_success_tokens(self) -> None:
+        """Success feedback should not mix themed surfaces with fixed Tailwind greens."""
+        template = FORM_SUCCESS_TEMPLATE.read_text()
+
+        assert "text-insight-success" in template
+        assert "text-green-" not in template
 
     def test_drawn_theme_defines_semantic_style_tokens(self) -> None:
         """The drawn style should be CSS-only and driven by the public token contract."""

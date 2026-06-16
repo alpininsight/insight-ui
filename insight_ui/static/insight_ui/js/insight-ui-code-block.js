@@ -55,19 +55,19 @@ export class CodeBlock {
      */
     #createToolbar(lang, filename) {
         const toolbar = document.createElement('div');
-        toolbar.classList.add('flex', 'justify-between', 'bg-gray-200', 'dark:bg-gray-900', 'rounded-t', 'p-2');
+        toolbar.classList.add('flex', 'justify-between', 'insight-surface-muted', 'rounded-t', 'p-2');
 
         const infobox = document.createElement('div');
         infobox.classList.add('flex');
 
         const langSpan = document.createElement('span');
-        langSpan.classList.add('text-secondary', 'leading-loose', 'bg-gray-50', 'dark:bg-gray-700', 'rounded-sm', 'px-2');
+        langSpan.classList.add('text-secondary', 'leading-loose', 'insight-surface-soft', 'insight-radius-control', 'px-2', 'py-1');
         langSpan.textContent = lang;
         infobox.appendChild(langSpan);
 
         if (filename) {
             const fileSpan = document.createElement('span');
-            fileSpan.classList.add('text-secondary', 'leading-loose', 'bg-gray-50', 'dark:bg-gray-700', 'rounded-sm', 'px-2', 'ms-2');
+            fileSpan.classList.add('text-secondary', 'leading-loose', 'insight-surface-soft', 'insight-radius-control', 'px-2', 'py-1', 'ms-2');
             fileSpan.textContent = filename;
             infobox.appendChild(fileSpan);
         }
@@ -184,7 +184,7 @@ export class CodeBlock {
      */
     generateCodeBlock(id, lang, filename, code) {
         const wrapper = document.createElement('div');
-        wrapper.classList.add('flex', 'flex-col', 'bg-[#f9fafb]', 'dark:bg-[#030712]', 'rounded', 'border', 'border-gray-300', 'dark:border-gray-700');
+        wrapper.classList.add('flex', 'flex-col', 'insight-surface-code', 'insight-radius-surface', 'border', 'insight-border-surface');
         wrapper.id = id;
 
         const toolbar = this.#createToolbar(lang, filename);
