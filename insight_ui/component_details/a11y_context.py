@@ -395,6 +395,20 @@ def get_chat_a11y_context() -> dict[str, list[str]]:
     }
 
 
+@register_component(Component.DUAL_LIST_ASSIGNMENT)
+def get_dual_list_assignment_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y context documentation for the dual list assignment component."""
+    return {
+        "a11y": [
+            _("The component uses native `<select multiple>` controls for keyboard and screen-reader support."),
+            _("Move buttons expose explicit `aria-label` and `title` text for assign and remove actions."),
+            _("Each list has an accessible label and an optional search input scoped to that list."),
+            _("A polite live region announces the assigned item count after changes."),
+            _("Submitted values are stored as hidden inputs so all assigned items are posted, not only highlighted options."),
+        ]
+    }
+
+
 # =============================================================
 #
 #   Popup Tags

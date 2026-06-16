@@ -42,6 +42,8 @@ from insight_ui.configs import (
     CopyrightNoticeConfig,
     CornerRibbonConfig,
     DropdownConfig,
+    DualListAssignmentConfig,
+    DualListAssignmentItemConfig,
     FlipCardConfig,
     FooterConfig,
     FormConfig,
@@ -639,11 +641,74 @@ def multiselect(
     return {"multiselect_config": config}
 
 
+def _normalize_dual_list_assignment_options(
+    options: list[str] | dict[str, str] | list[DualListAssignmentItemConfig] | None,
+) -> list[DualListAssignmentItemConfig]:
+    """Normalize simple option inputs into typed dual-list assignment items."""
+    if options is None:
+        return []
+
+    if isinstance(options, Mapping):
+        return [
+            DualListAssignmentItemConfig(value=str(value), label=str(label))
+            for value, label in options.items()
+        ]
+
+    normalized = []
+    for item in options:
+        if isinstance(item, DualListAssignmentItemConfig):
+            normalized.append(item)
+        elif isinstance(item, Mapping):
+            normalized.append(
+                DualListAssignmentItemConfig(
+                    value=str(item.get("value", "")),
+                    label=str(item.get("label", item.get("value", ""))),
+                    description=str(item.get("description", "")),
+                    disabled=bool(item.get("disabled", False)),
+                )
+            )
+        else:
+            normalized.append(DualListAssignmentItemConfig(value=str(item), label=str(item)))
+
+    return normalized
+
+
 @register.inclusion_tag("insight_ui/components/chat.html")
 def chat(config: ChatConfig | None = None, *, request_url: str | _Unset = UNSET) -> dict[str, Any]:
     """Render a chat with an input line and a place for the response."""
     config = build_config(ChatConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
     return {"request_url": config.request_url}
+
+
+@register.inclusion_tag("insight_ui/components/dual_list_assignment.html")
+def dual_list_assignment(
+    config: DualListAssignmentConfig | None = None,
+    *,
+    tag_id: str | None | _Unset = UNSET,
+    name: str | None | _Unset = UNSET,
+    label: str | None | _Unset = UNSET,
+    help_text: str | _Unset = UNSET,
+    available_label: str | _Unset = UNSET,
+    assigned_label: str | _Unset = UNSET,
+    available_search_placeholder: str | _Unset = UNSET,
+    assigned_search_placeholder: str | _Unset = UNSET,
+    options: list[str] | dict[str, str] | list[DualListAssignmentItemConfig] | None | _Unset = UNSET,
+    selected_values: list[str] | None | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a two-list assignment control for many-to-many selections."""
+    if config is None and options is not UNSET:
+        options = _normalize_dual_list_assignment_options(options)
+    elif config is not None:
+        config.options = _normalize_dual_list_assignment_options(config.options)
+    if selected_values is None:
+        selected_values = []
+
+    config = build_config(
+        DualListAssignmentConfig,
+        config,
+        **{k: v for k, v in locals().items() if k not in {"config"}},
+    )
+    return {"dual_list_assignment_config": config}
 
 
 # =============================================================

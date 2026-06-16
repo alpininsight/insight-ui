@@ -27,6 +27,8 @@ from insight_ui.configs import (
     CornerRibbonConfig,
     DropdownConfig,
     DropdownItemConfig,
+    DualListAssignmentConfig,
+    DualListAssignmentItemConfig,
     FilterConfig,
     FlipCardConfig,
     FooterConfig,
@@ -571,6 +573,43 @@ def get_multiselect_context() -> dict:
             show_buttons=True,
             options=[_("Berlin"), _("Rome"), _("London"), _("Brussels"), _("Paris"), _("Warsaw")],
             selected_options=[_("Rome"), _("Berlin")],
+        )
+    }
+
+
+@register_demo_context(Component.DUAL_LIST_ASSIGNMENT)
+def get_dual_list_assignment_context() -> dict:
+    """Serve context documentation for the dual list assignment component."""
+    return {
+        "dual_list_assignment_config": DualListAssignmentConfig(
+            name="role_slugs",
+            label=_("Organization roles"),
+            help_text=_("Move roles into Assigned to grant them to the selected organization member."),
+            available_label=_("Available roles"),
+            assigned_label=_("Assigned roles"),
+            options=[
+                DualListAssignmentItemConfig(
+                    value="organization-member",
+                    label=_("Organization Member"),
+                    description=_("Receives organization claims for normal application access."),
+                ),
+                DualListAssignmentItemConfig(
+                    value="organization-developer",
+                    label=_("Organization Developer"),
+                    description=_("Can manage organization applications and client settings."),
+                ),
+                DualListAssignmentItemConfig(
+                    value="organization-admin",
+                    label=_("Organization Admin"),
+                    description=_("Can manage members and organization settings."),
+                ),
+                DualListAssignmentItemConfig(
+                    value="organization-owner",
+                    label=_("Organization Owner"),
+                    description=_("Can transfer ownership and administer the organization."),
+                ),
+            ],
+            selected_values=["organization-member", "organization-developer"],
         )
     }
 

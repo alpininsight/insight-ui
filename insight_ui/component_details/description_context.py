@@ -337,6 +337,24 @@ def get_chat_description_context() -> dict[str, list[str]]:
     }
 
 
+@register_component(Component.DUAL_LIST_ASSIGNMENT)
+def get_dual_list_assignment_description_context() -> dict[str, list[str]]:
+    """Serve description context documentation for the dual list assignment component."""
+    return {
+        "description": [
+            _(
+                "The `dual_list_assignment` component renders a Django Admin-style two-list control for assigning many-to-many values. It is intended for workflows such as assigning roles, capabilities, groups, or scopes where available choices and assigned values should remain visible at the same time."
+            )
+        ],
+        "features": [
+            _("**Available and assigned lists**: Operators can move selected values between the two sides."),
+            _("**Search per list**: Both sides can be filtered without changing the submitted values."),
+            _("**Stable submitted values**: The form posts the configured `name` once per assigned value."),
+            _("**Display labels stay separate**: The UI label can differ from the technical value used by policies or claims."),
+        ],
+    }
+
+
 # =============================================================
 #
 #   Popup Tags

@@ -9,6 +9,7 @@ import { CodeBlock } from "./insight-ui-code-block.js";
 import { Collapsible } from "./insight-ui-collapsible.js";
 import { DemoIframeController } from "./insight-ui-demo-container.js";
 import { Dropdown } from "./insight-ui-dropdown.js";
+import { DualListAssignment } from "./insight-ui-dual-list-assignment.js";
 import { Floater } from "./insight-ui-floater.js";
 import { Modal } from "./insight-ui-modal.js";
 import { Multiselect } from "./insight-ui-multiselect.js";
@@ -28,6 +29,7 @@ Object.assign(window.InsightUI, {
 	Collapsible,
 	DemoIframeController,
 	Dropdown,
+	DualListAssignment,
 	Floater,
 	Modal,
 	Multiselect,
@@ -46,6 +48,7 @@ function initAll() {
 	Collapsible.initAll();
 	DemoIframeController.initAll();
 	Dropdown.initAll();
+	DualListAssignment.initAll();
 	Floater.initAll();
 	Modal.initAll();
 	Multiselect.initAll();

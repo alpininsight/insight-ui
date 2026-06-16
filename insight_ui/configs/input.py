@@ -633,6 +633,86 @@ class MultiselectConfig(BaseFormFieldConfig):
 
 
 @dataclass
+class DualListAssignmentItemConfig:
+    """
+    Configuration for one assignable option in the dual_list_assignment component.
+
+    Attributes:
+        value: Stable value submitted by the form.
+        label: Human-readable label shown in both lists.
+        description: Optional secondary text shown below the label.
+        disabled: **True** if the option should be visible but cannot be moved.
+
+    """
+
+    __example__ = """
+        DualListAssignmentItemConfig(
+            value="organization-admin",
+            label="Organization Admin",
+            description="Can manage members and organization settings.",
+        )
+        """
+
+    value: str = field(metadata={"doc": _("Stable value submitted by the form.")})
+    label: str = field(metadata={"doc": _("Human-readable label shown in both lists.")})
+    description: str = field(default="", metadata={"doc": _("Optional secondary text shown below the label.")})
+    disabled: bool = field(
+        default=False, metadata={"doc": _("**True** if the option should be visible but cannot be moved.")}
+    )
+
+
+@dataclass
+class DualListAssignmentConfig(BaseFormFieldConfig):
+    """
+    Configuration for the dual_list_assignment component.
+
+    Renders a Django Admin-style two-list assignment control for many-to-many choices.
+
+    Attributes:
+        tag_id: Optional, unique tag ID for identifying the element in JavaScript.
+        name: Required for a `<form>`, as the repeated request parameter.
+        label: A text label displayed above the control.
+        help_text: Optional helper text below the label.
+        available_label: Label for the source list.
+        assigned_label: Label for the target list.
+        available_search_placeholder: Placeholder for source-list filtering.
+        assigned_search_placeholder: Placeholder for target-list filtering.
+        options: List of values that can be assigned.
+        selected_values: List of currently assigned values.
+
+    """
+
+    __example__ = """
+        DualListAssignmentConfig(
+            name="role_slugs",
+            label="Organization roles",
+            help_text="Move roles into Assigned to grant them to the member.",
+            options=[
+                DualListAssignmentItemConfig("organization-member", "Organization Member"),
+                DualListAssignmentItemConfig("organization-admin", "Organization Admin"),
+            ],
+            selected_values=["organization-member"],
+        )
+        """
+
+    help_text: str = field(default="", metadata={"doc": _("Optional helper text below the label.")})
+    available_label: str = field(default=_("Available"), metadata={"doc": _("Label for the source list.")})
+    assigned_label: str = field(default=_("Assigned"), metadata={"doc": _("Label for the target list.")})
+    available_search_placeholder: str = field(
+        default=_("Filter available options"), metadata={"doc": _("Placeholder for source-list filtering.")}
+    )
+    assigned_search_placeholder: str = field(
+        default=_("Filter assigned options"), metadata={"doc": _("Placeholder for target-list filtering.")}
+    )
+    options: list[DualListAssignmentItemConfig] = field(
+        default_factory=list, metadata={"doc": _("List of values that can be assigned.")}
+    )
+    selected_values: list[str] = field(
+        default_factory=list, metadata={"doc": _("List of currently assigned values.")}
+    )
+
+
+@dataclass
 class ChatConfig:
     """
     Configuration for the chat component.

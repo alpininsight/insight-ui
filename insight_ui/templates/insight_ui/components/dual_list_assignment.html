@@ -1,0 +1,121 @@
+{% load i18n %}
+
+<div
+    {% if dual_list_assignment_config.tag_id %}id="{{ dual_list_assignment_config.tag_id }}"{% endif %}
+    class="space-y-2"
+    data-insight-dual-list-assignment
+    data-name="{{ dual_list_assignment_config.name|default:'dual_list_assignment' }}"
+>
+    {% if dual_list_assignment_config.label %}
+        <label class="block text-sm font-bold text-primary">
+            {{ dual_list_assignment_config.label }}
+            {% if dual_list_assignment_config.required %}<span aria-hidden="true">*</span>{% endif %}
+        </label>
+    {% endif %}
+
+    {% if dual_list_assignment_config.help_text %}
+        <p class="text-sm text-secondary">{{ dual_list_assignment_config.help_text }}</p>
+    {% endif %}
+
+    <div class="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:items-end">
+        <section class="min-w-0 space-y-2" aria-label="{{ dual_list_assignment_config.available_label }}">
+            <div class="flex items-center justify-between gap-2">
+                <span class="text-sm font-semibold text-primary">{{ dual_list_assignment_config.available_label }}</span>
+                <span class="text-xs text-secondary" data-insight-dual-list-available-count></span>
+            </div>
+            <input
+                type="search"
+                class="input w-full"
+                placeholder="{{ dual_list_assignment_config.available_search_placeholder }}"
+                aria-label="{% trans 'Filter available options' %}"
+                data-insight-dual-list-filter="available"
+                {% if dual_list_assignment_config.disabled %}disabled{% endif %}
+            >
+            <select
+                class="input min-h-48 w-full"
+                multiple
+                size="10"
+                aria-label="{{ dual_list_assignment_config.available_label }}"
+                data-insight-dual-list-available
+                {% if dual_list_assignment_config.disabled %}disabled{% endif %}
+            >
+                {% for item in dual_list_assignment_config.options %}
+                    {% if item.value not in dual_list_assignment_config.selected_values %}
+                        <option
+                            value="{{ item.value }}"
+                            data-index="{{ forloop.counter0 }}"
+                            {% if item.description %}data-description="{{ item.description }}"{% endif %}
+                            {% if item.disabled %}disabled{% endif %}
+                        >
+                            {{ item.label }}{% if item.description %} - {{ item.description }}{% endif %}
+                        </option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </section>
+
+        <div class="flex justify-center gap-2 md:flex-col md:pb-1" aria-label="{% trans 'Assignment actions' %}">
+            <button
+                type="button"
+                class="btn btn-primary btn-sm"
+                aria-label="{% trans 'Assign selected options' %}"
+                title="{% trans 'Assign selected options' %}"
+                data-insight-dual-list-add
+                {% if dual_list_assignment_config.disabled %}disabled{% endif %}
+            >&rarr;</button>
+            <button
+                type="button"
+                class="btn btn-secondary btn-sm"
+                aria-label="{% trans 'Remove selected options' %}"
+                title="{% trans 'Remove selected options' %}"
+                data-insight-dual-list-remove
+                {% if dual_list_assignment_config.disabled %}disabled{% endif %}
+            >&larr;</button>
+        </div>
+
+        <section class="min-w-0 space-y-2" aria-label="{{ dual_list_assignment_config.assigned_label }}">
+            <div class="flex items-center justify-between gap-2">
+                <span class="text-sm font-semibold text-primary">{{ dual_list_assignment_config.assigned_label }}</span>
+                <span class="text-xs text-secondary" data-insight-dual-list-assigned-count></span>
+            </div>
+            <input
+                type="search"
+                class="input w-full"
+                placeholder="{{ dual_list_assignment_config.assigned_search_placeholder }}"
+                aria-label="{% trans 'Filter assigned options' %}"
+                data-insight-dual-list-filter="assigned"
+                {% if dual_list_assignment_config.disabled %}disabled{% endif %}
+            >
+            <select
+                class="input min-h-48 w-full"
+                multiple
+                size="10"
+                aria-label="{{ dual_list_assignment_config.assigned_label }}"
+                data-insight-dual-list-assigned
+                {% if dual_list_assignment_config.disabled %}disabled{% endif %}
+            >
+                {% for item in dual_list_assignment_config.options %}
+                    {% if item.value in dual_list_assignment_config.selected_values %}
+                        <option
+                            value="{{ item.value }}"
+                            data-index="{{ forloop.counter0 }}"
+                            {% if item.description %}data-description="{{ item.description }}"{% endif %}
+                            {% if item.disabled %}disabled{% endif %}
+                        >
+                            {{ item.label }}{% if item.description %} - {{ item.description }}{% endif %}
+                        </option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </section>
+    </div>
+
+    <div data-insight-dual-list-hidden>
+        {% for item in dual_list_assignment_config.options %}
+            {% if item.value in dual_list_assignment_config.selected_values %}
+                <input type="hidden" name="{{ dual_list_assignment_config.name }}" value="{{ item.value }}">
+            {% endif %}
+        {% endfor %}
+    </div>
+    <p class="sr-only" aria-live="polite" data-insight-dual-list-status></p>
+</div>

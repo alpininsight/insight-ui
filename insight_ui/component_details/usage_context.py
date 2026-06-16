@@ -417,6 +417,22 @@ def get_chat_usage_context() -> dict[str, str]:
     }
 
 
+@register_component(Component.DUAL_LIST_ASSIGNMENT)
+def get_dual_list_assignment_usage_context() -> dict[str, str]:
+    """Serve usage context documentation for the dual list assignment component."""
+    return {
+        "usage": """
+        {% load insight_tags %}
+
+        {% dual_list_assignment config=dual_list_assignment_config %}
+
+        <!-- or -->
+
+        {% dual_list_assignment name="role_slugs" label="Organization roles" options=role_options selected_values=selected_role_slugs %}
+        """,
+    }
+
+
 # =============================================================
 #
 #   Popup Tags

@@ -17,6 +17,7 @@ from insight_ui.configs import (
     CopyrightNoticeConfig,
     CornerRibbonConfig,
     DropdownConfig,
+    DualListAssignmentConfig,
     FlipCardConfig,
     FooterConfig,
     FormConfig,
@@ -101,6 +102,7 @@ class Component(Enum):
     TOGGLE = ("toggle", ComponentCategory.INPUT, ToggleConfig)
     SELECT = ("select", ComponentCategory.INPUT, SelectConfig)
     MULTISELECT = ("multiselect", ComponentCategory.INPUT, MultiselectConfig)
+    DUAL_LIST_ASSIGNMENT = ("dual_list_assignment", ComponentCategory.INPUT, DualListAssignmentConfig)
     CHAT = ("chat", ComponentCategory.INPUT, ChatConfig, False, True, False)
     ALERT = ("alert", ComponentCategory.POPUP, AlertConfig)
     MODAL = ("modal", ComponentCategory.POPUP, ModalConfig)
