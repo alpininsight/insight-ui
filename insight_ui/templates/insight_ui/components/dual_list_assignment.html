@@ -5,6 +5,7 @@
     class="space-y-2"
     data-insight-dual-list-assignment
     data-name="{{ dual_list_assignment_config.name|default:'dual_list_assignment' }}"
+    {% if dual_list_assignment_config.disabled %}data-disabled="true"{% endif %}
 >
     {% if dual_list_assignment_config.label %}
         <label class="block text-sm font-bold text-primary">
@@ -32,7 +33,7 @@
                 {% if dual_list_assignment_config.disabled %}disabled{% endif %}
             >
             <select
-                class="input min-h-48 w-full"
+                class="input h-56 w-full"
                 multiple
                 size="10"
                 aria-label="{{ dual_list_assignment_config.available_label }}"
@@ -87,7 +88,7 @@
                 {% if dual_list_assignment_config.disabled %}disabled{% endif %}
             >
             <select
-                class="input min-h-48 w-full"
+                class="input h-56 w-full"
                 multiple
                 size="10"
                 aria-label="{{ dual_list_assignment_config.assigned_label }}"
@@ -113,9 +114,26 @@
     <div data-insight-dual-list-hidden>
         {% for item in dual_list_assignment_config.options %}
             {% if item.value in dual_list_assignment_config.selected_values %}
-                <input type="hidden" name="{{ dual_list_assignment_config.name }}" value="{{ item.value }}">
+                <input
+                    type="hidden"
+                    name="{{ dual_list_assignment_config.name }}"
+                    value="{{ item.value }}"
+                    {% if dual_list_assignment_config.disabled %}disabled{% endif %}
+                >
             {% endif %}
         {% endfor %}
     </div>
+    {% if dual_list_assignment_config.required %}
+        <input
+            class="sr-only"
+            type="text"
+            value="{% if dual_list_assignment_config.selected_values %}assigned{% endif %}"
+            aria-hidden="true"
+            tabindex="-1"
+            required
+            data-insight-dual-list-required
+            {% if dual_list_assignment_config.disabled %}disabled{% endif %}
+        >
+    {% endif %}
     <p class="sr-only" aria-live="polite" data-insight-dual-list-status></p>
 </div>

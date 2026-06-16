@@ -11,7 +11,9 @@ export class DualListAssignment {
         this.available = element.querySelector("[data-insight-dual-list-available]");
         this.assigned = element.querySelector("[data-insight-dual-list-assigned]");
         this.hidden = element.querySelector("[data-insight-dual-list-hidden]");
+        this.requiredInput = element.querySelector("[data-insight-dual-list-required]");
         this.status = element.querySelector("[data-insight-dual-list-status]");
+        this.disabled = element.dataset.disabled === "true";
         this.availableCount = element.querySelector("[data-insight-dual-list-available-count]");
         this.assignedCount = element.querySelector("[data-insight-dual-list-assigned-count]");
         this.addButton = element.querySelector("[data-insight-dual-list-add]");
@@ -81,8 +83,13 @@ export class DualListAssignment {
         const normalizedTerm = term.trim().toLocaleLowerCase();
         Array.from(select.options).forEach(option => {
             const text = option.textContent.toLocaleLowerCase();
-            option.hidden = Boolean(normalizedTerm) && !text.includes(normalizedTerm);
+            const hidden = Boolean(normalizedTerm) && !text.includes(normalizedTerm);
+            option.hidden = hidden;
+            if (hidden) {
+                option.selected = false;
+            }
         });
+        this.updateButtons();
     }
 
     sync() {
@@ -101,6 +108,7 @@ export class DualListAssignment {
             input.type = "hidden";
             input.name = this.name;
             input.value = option.value;
+            input.disabled = this.disabled;
             this.hidden.appendChild(input);
         });
     }
@@ -127,6 +135,10 @@ export class DualListAssignment {
         if (!this.status || !this.assigned) return;
 
         this.status.textContent = `${this.assigned.options.length} assigned`;
+        if (this.requiredInput) {
+            this.requiredInput.value = this.assigned.options.length > 0 ? "assigned" : "";
+            this.requiredInput.disabled = this.disabled;
+        }
     }
 
     dispatchChange() {

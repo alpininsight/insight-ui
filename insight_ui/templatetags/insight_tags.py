@@ -684,6 +684,8 @@ def dual_list_assignment(
     tag_id: str | None | _Unset = UNSET,
     name: str | None | _Unset = UNSET,
     label: str | None | _Unset = UNSET,
+    required: bool | _Unset = UNSET,
+    disabled: bool | _Unset = UNSET,
     help_text: str | _Unset = UNSET,
     available_label: str | _Unset = UNSET,
     assigned_label: str | _Unset = UNSET,
@@ -693,8 +695,11 @@ def dual_list_assignment(
     selected_values: list[str] | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a two-list assignment control for many-to-many selections."""
-    if config is None and options is not UNSET:
+    if options is not UNSET:
         options = _normalize_dual_list_assignment_options(options)
+    elif isinstance(config, Mapping):
+        config = dict(config)
+        config["options"] = _normalize_dual_list_assignment_options(config.get("options"))
     elif config is not None:
         config.options = _normalize_dual_list_assignment_options(config.options)
     if selected_values is None:

@@ -29,7 +29,8 @@ class TestDualListAssignment(TemplateTagsTestCase):
         )
 
         assert "data-insight-dual-list-assignment" in rendered
-        assert 'name="role_slugs" value="organization-member"' in rendered
+        assert 'name="role_slugs"' in rendered
+        assert 'value="organization-member"' in rendered
         assert 'value="organization-admin"' in rendered
         assert "Organization Admin" in rendered
 
@@ -49,7 +50,8 @@ class TestDualListAssignment(TemplateTagsTestCase):
             },
         )
 
-        assert 'name="role_slugs" value="organization-developer"' in rendered
+        assert 'name="role_slugs"' in rendered
+        assert 'value="organization-developer"' in rendered
         assert "Organization Member" in rendered
         assert "Organization Developer" in rendered
 
@@ -68,5 +70,73 @@ class TestDualListAssignment(TemplateTagsTestCase):
 
         assert "flex flex-col gap-3 lg:flex-row" in rendered
         assert "flex shrink-0 flex-col justify-center gap-2" in rendered
+        assert "input h-56 w-full" in rendered
         list_count = 2
         assert rendered.count("min-w-0 flex-1 space-y-2") == list_count
+
+    def test_accepts_mapping_config_options(self) -> None:
+        """Normalize dict-backed configs before dataclass coercion."""
+        rendered = self.render_template(
+            """
+            {% load insight_tags %}
+            {% dual_list_assignment config=config %}
+            """,
+            {
+                "config": {
+                    "name": "role_slugs",
+                    "options": {
+                        "organization-member": "Organization Member",
+                        "organization-admin": "Organization Admin",
+                    },
+                    "selected_values": ["organization-admin"],
+                }
+            },
+        )
+
+        assert 'name="role_slugs"' in rendered
+        assert 'value="organization-admin"' in rendered
+        assert "Organization Member" in rendered
+
+    def test_normalizes_options_override_for_existing_config(self) -> None:
+        """Allow simple options overrides when a base config is provided."""
+        rendered = self.render_template(
+            """
+            {% load insight_tags %}
+            {% dual_list_assignment config=config options=options selected_values=selected_values %}
+            """,
+            {
+                "config": DualListAssignmentConfig(
+                    name="role_slugs", options=[DualListAssignmentItemConfig("old-role", "Old Role")]
+                ),
+                "options": {"organization-admin": "Organization Admin"},
+                "selected_values": ["organization-admin"],
+            },
+        )
+
+        assert "Old Role" not in rendered
+        assert 'name="role_slugs"' in rendered
+        assert 'value="organization-admin"' in rendered
+
+    def test_required_and_disabled_state_are_enforceable(self) -> None:
+        """Render enforceable required state without submitting disabled values."""
+        rendered = self.render_template(
+            """
+            {% load insight_tags %}
+            {% dual_list_assignment config=config %}
+            """,
+            {
+                "config": DualListAssignmentConfig(
+                    name="role_slugs",
+                    options=[DualListAssignmentItemConfig("organization-admin", "Organization Admin")],
+                    selected_values=["organization-admin"],
+                    required=True,
+                    disabled=True,
+                )
+            },
+        )
+
+        assert 'data-disabled="true"' in rendered
+        assert "data-insight-dual-list-required" in rendered
+        assert "required" in rendered
+        assert 'name="role_slugs"' in rendered
+        assert "disabled" in rendered

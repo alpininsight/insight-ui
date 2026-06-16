@@ -34,6 +34,7 @@ function createDualListDOM() {
       <span data-insight-dual-list-available-count></span>
       <span data-insight-dual-list-assigned-count></span>
       <div data-insight-dual-list-hidden></div>
+      <input data-insight-dual-list-required type="text" required>
       <p data-insight-dual-list-status></p>
     </div>
   `);
@@ -97,5 +98,19 @@ describe('DualListAssignment Component', () => {
 
     expect(assigned.options[0].hidden).toBe(true);
     expect(element.querySelector('input[type="hidden"]').value).toBe('organization-developer');
+    expect(assigned.options[0].selected).toBe(false);
+  });
+
+  it('disables generated hidden inputs when the component is disabled', () => {
+    const container = createDualListDOM();
+    const element = container.querySelector('[data-insight-dual-list-assignment]');
+    element.dataset.disabled = 'true';
+
+    new InsightUI.DualListAssignment(element);
+
+    const hiddenInput = element.querySelector('input[type="hidden"]');
+    const requiredInput = element.querySelector('[data-insight-dual-list-required]');
+    expect(hiddenInput.disabled).toBe(true);
+    expect(requiredInput.disabled).toBe(true);
   });
 });
