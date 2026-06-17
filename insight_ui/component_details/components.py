@@ -33,6 +33,7 @@ from insight_ui.configs import (
     ModalConfig,
     MultiselectConfig,
     NavbarConfig,
+    NavbarNotificationsConfig,
     PageHeaderConfig,
     PaginationConfig,
     QueryBuilderConfig,
@@ -81,6 +82,7 @@ class Component(Enum):
     ARTICLE = ("article", ComponentCategory.LAYOUT, ArticleConfig)
     HERO = ("hero", ComponentCategory.LAYOUT, HeroConfig, False, False, False)
     NAVBAR = ("navbar", ComponentCategory.NAVIGATION, NavbarConfig, True, False, False)
+    NAVBAR_NOTIFICATIONS = ("navbar_notifications", ComponentCategory.NAVIGATION, NavbarNotificationsConfig)
     SIDEBAR = ("sidebar", ComponentCategory.NAVIGATION, SidebarConfig, True, False, False)
     FOOTER = ("footer", ComponentCategory.NAVIGATION, FooterConfig, True, False, False)
     BREADCRUMBS = ("breadcrumbs", ComponentCategory.NAVIGATION)

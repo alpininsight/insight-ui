@@ -4,7 +4,13 @@
 
 from bs4 import BeautifulSoup
 from insight_ui.configs.base import IconConfig
-from insight_ui.configs.navigation import NavbarBrandConfig, NavbarConfig, NavbarLinkConfig
+from insight_ui.configs.navigation import (
+    NavbarBrandConfig,
+    NavbarConfig,
+    NavbarLinkConfig,
+    NavbarNotificationItemConfig,
+    NavbarNotificationsConfig,
+)
 from insight_ui.configs.popup import ModalConfig
 from insight_ui.configs.utils import BrandLockupConfig, LogoConfig
 
@@ -178,3 +184,75 @@ class TestNavbar(TemplateTagsTestCase):
         assert brand_link is not None
         assert brand_link.find("span", string="Insight UI") is not None
         assert brand_link.find("img") is not None
+
+    def test_navbar_notifications_renders_badge_and_items(self) -> None:
+        """The standalone notification dropdown renders unread count and list items."""
+        notifications_config = NavbarNotificationsConfig(
+            items=[
+                NavbarNotificationItemConfig(
+                    "Pipeline finished",
+                    "The develop image is ready.",
+                    "Now",
+                    icon=IconConfig("rocket", "s"),
+                    priority="success",
+                    unread=True,
+                ),
+                NavbarNotificationItemConfig(
+                    "Review requested",
+                    "A reviewer left a comment.",
+                    "5 min ago",
+                    icon=IconConfig("chat-bubble", "s"),
+                    unread=True,
+                ),
+            ],
+            all_notifications_url="/notifications/",
+        )
+
+        rendered = self.render_template(
+            "{% load insight_tags %}{% navbar_notifications config=notifications_config %}",
+            context={"notifications_config": notifications_config},
+        )
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        trigger = soup.select_one('button[data-insight-dropdown="navbar-notifications-menu"]')
+        menu = soup.select_one("#navbar-notifications-menu")
+
+        assert trigger is not None
+        assert trigger.get("aria-label") == "Open notifications"
+        assert trigger.get_text(" ", strip=True) == "2"
+        assert menu is not None
+        assert menu.get("role") == "menu"
+        assert "Pipeline finished" in menu.get_text(" ", strip=True)
+        assert "Review requested" in menu.get_text(" ", strip=True)
+        assert menu.find("a", href="/notifications/") is not None
+
+    def test_navbar_notifications_empty_state(self) -> None:
+        """Empty notification dropdowns should render an explanatory empty state."""
+        notifications_config = NavbarNotificationsConfig(items=[])
+
+        rendered = self.render_template(
+            "{% load insight_tags %}{% navbar_notifications config=notifications_config %}",
+            context={"notifications_config": notifications_config},
+        )
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        assert "No notifications." in soup.get_text(" ", strip=True)
+        assert soup.select_one('button[data-insight-dropdown="navbar-notifications-menu"]') is not None
+
+    def test_navbar_embeds_notifications_when_configured(self) -> None:
+        """Navbar renders the notification control when NavbarConfig includes it."""
+        nav_config = NavbarConfig(
+            NavbarBrandConfig("Insight UI", "/"),
+            notifications=NavbarNotificationsConfig(
+                items=[NavbarNotificationItemConfig("Deployment", "Ready", unread=True)]
+            ),
+        )
+
+        rendered = self.render_template(
+            "{% load insight_tags %}{% navbar config=nav_config %}",
+            context={"nav_config": nav_config, "user": self.user},
+        )
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        assert soup.select_one("[data-insight-navbar-notifications]") is not None
+        assert soup.select_one('button[data-insight-dropdown="navbar-notifications-menu"]') is not None

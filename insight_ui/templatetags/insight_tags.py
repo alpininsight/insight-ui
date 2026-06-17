@@ -64,6 +64,8 @@ from insight_ui.configs import (
     ModalConfig,
     MultiselectConfig,
     NavbarConfig,
+    NavbarNotificationItemConfig,
+    NavbarNotificationsConfig,
     PageHeaderConfig,
     PaginationConfig,
     PaginationIppConfig,
@@ -342,6 +344,36 @@ def navbar(context: dict[str, Any], config: NavbarConfig, **kwargs: JsonValue) -
         "navbar_config": config,
         "fixed": get_config("navbar_fixed"),
         "options": {**kwargs},
+    }
+
+
+@register.inclusion_tag("insight_ui/components/navbar_notifications.html")
+def navbar_notifications(
+    config: NavbarNotificationsConfig | None = None,
+    *,
+    tag_id: str | _Unset = UNSET,
+    label: str | _Unset = UNSET,
+    title: str | _Unset = UNSET,
+    empty_text: str | _Unset = UNSET,
+    items: list[NavbarNotificationItemConfig] | None | _Unset = UNSET,
+    all_notifications_url: str | _Unset = UNSET,
+    all_notifications_label: str | _Unset = UNSET,
+    show_badge: bool | _Unset = UNSET,
+    max_items: int | None | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a bell-triggered navbar notification dropdown."""
+    config = build_config(
+        NavbarNotificationsConfig,
+        config,
+        **{k: v for k, v in locals().items() if k not in {"config"}},
+    )
+    unread_count = sum(1 for item in config.items if item.unread)
+    visible_items = config.items[: config.max_items] if config.max_items is not None else config.items
+    return {
+        "notifications_config": config,
+        "notifications_menu_id": f"{config.tag_id}-menu",
+        "unread_count": unread_count,
+        "visible_items": visible_items,
     }
 
 

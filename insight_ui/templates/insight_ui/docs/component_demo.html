@@ -16,6 +16,24 @@
             nav.classList.add("absolute");
         </script>
     </div>
+{% elif component.value == "navbar_notifications" %}
+    <div class="flex min-h-96 items-start justify-center bg-gray-100 p-8 dark:bg-gray-900">
+        <div class="w-full space-y-4" style="max-width: 36rem;" data-insight-navbar-notifications-demo>
+            <p class="text-sm text-secondary">
+                {% trans "The notification bell is embedded into the navbar. The menu is opened in this demo so the notification list is visible immediately." %}
+            </p>
+            <div class="relative flex h-16 w-full items-center justify-start rounded bg-white px-6 shadow dark:bg-gray-800">
+                {% navbar_notifications config=navbar_notifications_config %}
+            </div>
+        </div>
+        <style>
+            [data-insight-navbar-notifications-demo] #navbar-notifications-menu {
+                display: block !important;
+                left: 0 !important;
+                right: auto !important;
+            }
+        </style>
+    </div>
 {% elif component.value == "sidebar" %}
     <div class="flex grow bg-gray-50 dark:bg-gray-700 h-96">
         <div class="flex">

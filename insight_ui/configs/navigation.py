@@ -85,6 +85,100 @@ class NavbarLinkConfig:
 
 
 @dataclass
+class NavbarNotificationItemConfig:
+    """
+    Configuration for one navbar notification item.
+
+    Attributes:
+        title: Notification title.
+        message: Short notification body text.
+        timestamp: Optional human-readable timestamp.
+        href: Optional target URL for the notification.
+        icon: Optional icon displayed next to the item.
+        unread: Marks the notification as unread.
+        priority: Visual priority: 'info', 'success', 'warning', or 'error'.
+
+    """
+
+    __example__ = """
+        NavbarNotificationItemConfig(
+            title="Build completed",
+            message="The latest container image is available.",
+            timestamp="2 min ago",
+            href="/notifications/build-42/",
+            icon=IconConfig("rocket", "s"),
+            unread=True,
+            priority="success",
+        )
+        """
+
+    title: str = field(metadata={"doc": _("Notification title.")})
+    message: str = field(default="", metadata={"doc": _("Short notification body text.")})
+    timestamp: str = field(default="", metadata={"doc": _("Optional human-readable timestamp.")})
+    href: str = field(default="", metadata={"doc": _("Optional target URL for the notification.")})
+    icon: IconConfig | None = field(default=None, metadata={"doc": _("Optional icon displayed next to the item.")})
+    unread: bool = field(default=False, metadata={"doc": _("Marks the notification as unread.")})
+    priority: Literal["info", "success", "warning", "error"] = field(
+        default="info", metadata={"doc": _("Visual priority: 'info', 'success', 'warning', or 'error'.")}
+    )
+
+
+@dataclass
+class NavbarNotificationsConfig:
+    """
+    Configuration for the navbar notifications dropdown.
+
+    Attributes:
+        tag_id: Unique ID used for the dropdown menu.
+        label: Accessible label for the notification trigger.
+        title: Dropdown headline.
+        empty_text: Text shown when there are no notifications.
+        items: Notifications displayed in the dropdown.
+        all_notifications_url: Optional URL for a full notification center.
+        all_notifications_label: Label for the full notification center link.
+        show_badge: Shows an unread-count badge on the bell trigger.
+        max_items: Optional maximum number of items rendered in the dropdown.
+
+    """
+
+    __example__ = """
+        NavbarNotificationsConfig(
+            title="Notifications",
+            items=[
+                NavbarNotificationItemConfig(
+                    title="Pipeline failed",
+                    message="Static assets CDN upload needs attention.",
+                    timestamp="5 min ago",
+                    priority="error",
+                    unread=True,
+                ),
+            ],
+            all_notifications_url="/notifications/",
+        )
+        """
+
+    tag_id: str = field(default="navbar-notifications", metadata={"doc": _("Unique ID used for the dropdown menu.")})
+    label: str = field(default=_("Open notifications"), metadata={"doc": _("Accessible label for the trigger.")})
+    title: str = field(default=_("Notifications"), metadata={"doc": _("Dropdown headline.")})
+    empty_text: str = field(
+        default=_("No notifications."), metadata={"doc": _("Text shown when there are no notifications.")}
+    )
+    items: list[NavbarNotificationItemConfig] = field(
+        default_factory=list, metadata={"doc": _("Notifications displayed in the dropdown.")}
+    )
+    all_notifications_url: str = field(
+        default="", metadata={"doc": _("Optional URL for a full notification center.")}
+    )
+    all_notifications_label: str = field(
+        default=_("View all notifications"), metadata={"doc": _("Label for the full notification center link.")}
+    )
+    show_badge: bool = field(default=True, metadata={"doc": _("Shows an unread-count badge on the bell trigger.")})
+    max_items: int | None = field(
+        default=None, metadata={"doc": _("Optional maximum number of items rendered in the dropdown.")}
+    )
+
+
+@dataclass
 class NavbarConfig:
     """
     Configuration for the navbar component.
@@ -98,6 +192,7 @@ class NavbarConfig:
         show_usermenu: Displays a dropdown menu with at least a logout button.
         show_language_selector: Displays a dropdown menu for selecting the display language (if defined).
         show_theme_toggle: Displays a button to switch between the light and dark theme of the page.
+        notifications: Optional notification dropdown displayed with the navbar controls.
 
     """
 
@@ -138,6 +233,9 @@ class NavbarConfig:
     )
     show_theme_toggle: bool = field(
         default=False, metadata={"doc": _("Displays a button to switch between the light and dark theme of the page.")}
+    )
+    notifications: NavbarNotificationsConfig | None = field(
+        default=None, metadata={"doc": _("Optional notification dropdown displayed with the navbar controls.")}
     )
 
 

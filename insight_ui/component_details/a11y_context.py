@@ -70,6 +70,19 @@ def get_navbar_a11y_context() -> dict[str, list[str]]:
     }
 
 
+@register_component(Component.NAVBAR_NOTIFICATIONS)
+def get_navbar_notifications_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y documentation for the navbar notifications component."""
+    return {
+        "a11y": [
+            _("The trigger button has an accessible label and uses the existing dropdown interaction."),
+            _("The dropdown menu exposes `role='menu'` and each notification link uses `role='menuitem'`."),
+            _("Unread state is represented visually by a badge and dot; item titles remain readable without color alone."),
+            _("Empty state text is rendered when no notifications are available."),
+        ]
+    }
+
+
 @register_component(Component.SIDEBAR)
 def get_sidebar_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the sidebar component."""

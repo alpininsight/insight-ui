@@ -80,6 +80,28 @@ def get_navbar_usage_context() -> dict[str, str]:
     }
 
 
+@register_component(Component.NAVBAR_NOTIFICATIONS)
+def get_navbar_notifications_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the navbar notifications component."""
+    return {
+        "usage_summary": _(
+            "Use `navbar_notifications` directly for a standalone bell dropdown, or pass `notifications` to `NavbarConfig` to show it in the navbar control group."
+        ),
+        "usage": """
+        {% load insight_tags %}
+
+        {% navbar_notifications config=notifications_config %}
+
+        <!-- or inside NavbarConfig -->
+
+        NavbarConfig(
+            brand=NavbarBrandConfig("Insight UI", "/"),
+            notifications=NavbarNotificationsConfig(items=notification_items),
+        )
+        """,
+    }
+
+
 @register_component(Component.SIDEBAR)
 def get_sidebar_usage_context() -> dict[str, str]:
     """Serve usage documentation for the sidebar component."""

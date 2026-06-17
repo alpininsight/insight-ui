@@ -116,6 +116,9 @@
             </div>
           {% endif%}
           <div class="flex gap-2 h-10">
+            {% if navbar_config.notifications %}
+              {% navbar_notifications config=navbar_config.notifications %}
+            {% endif %}
             {% if navbar_config.show_usermenu %}
               {% include "insight_ui/components/user_dropdown.html" with user_dropdown_links=options.user_dropdown_links user_avatar_url=options.user_avatar_url user_avatar_alt=options.user_avatar_alt %}
             {% endif %}

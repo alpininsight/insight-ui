@@ -78,6 +78,24 @@ def get_navbar_description_context() -> dict[str, list[str]]:
     }
 
 
+@register_component(Component.NAVBAR_NOTIFICATIONS)
+def get_navbar_notifications_description_context() -> dict[str, list[str]]:
+    """Serve description documentation for the navbar notifications component."""
+    return {
+        "description": [
+            _(
+                "The `navbar_notifications` component renders a compact bell trigger with an unread badge and a dropdown list of recent notifications. It can be used standalone or as part of the `navbar` component."
+            )
+        ],
+        "features": [
+            _("**Unread badge**: Shows how many notifications still need attention."),
+            _("**Priority colors**: Supports info, success, warning, and error visual states."),
+            _("**Dropdown list**: Keeps short operational messages close to the navbar without taking over the page."),
+            _("**Optional full view link**: Can point users to a dedicated notification center."),
+        ],
+    }
+
+
 @register_component(Component.SIDEBAR)
 def get_sidebar_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the sidebar component."""

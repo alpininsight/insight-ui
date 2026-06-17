@@ -50,6 +50,8 @@ from insight_ui.configs import (
     NavbarBrandConfig,
     NavbarConfig,
     NavbarLinkConfig,
+    NavbarNotificationItemConfig,
+    NavbarNotificationsConfig,
     PaginationConfig,
     PaginationIppConfig,
     QueryBuilderFieldConfig,
@@ -225,6 +227,27 @@ def get_navbar_context() -> dict:
             True,
             True,
             True,
+            notifications=NavbarNotificationsConfig(
+                items=[
+                    NavbarNotificationItemConfig(
+                        _("Build completed"),
+                        _("The newest container image is available for develop."),
+                        _("2 min ago"),
+                        icon=IconConfig("rocket", "s"),
+                        priority="success",
+                        unread=True,
+                    ),
+                    NavbarNotificationItemConfig(
+                        _("CDN upload warning"),
+                        _("Static assets were built, but the CDN upload should be checked."),
+                        _("12 min ago"),
+                        icon=IconConfig("warning", "s"),
+                        priority="warning",
+                        unread=True,
+                    ),
+                ],
+                all_notifications_url="#",
+            ),
         ),
         "user_dropdown_links": [
             {
@@ -246,6 +269,41 @@ def get_navbar_context() -> dict:
                 "icon": IconConfig("globe", "s"),
             },
         ],
+    }
+
+
+@register_demo_context(Component.NAVBAR_NOTIFICATIONS)
+def get_navbar_notifications_context() -> dict:
+    """Serve data for navbar notifications detailpage."""
+    return {
+        "navbar_notifications_config": NavbarNotificationsConfig(
+            items=[
+                NavbarNotificationItemConfig(
+                    _("Pipeline finished"),
+                    _("The develop image was built and is ready for deployment."),
+                    _("Now"),
+                    icon=IconConfig("rocket", "s"),
+                    priority="success",
+                    unread=True,
+                ),
+                NavbarNotificationItemConfig(
+                    _("Review requested"),
+                    _("Matti asked for a small wording change in the pull request."),
+                    _("8 min ago"),
+                    icon=IconConfig("chat-bubble", "s"),
+                    priority="info",
+                    unread=True,
+                ),
+                NavbarNotificationItemConfig(
+                    _("Certificate renewal"),
+                    _("The public demo certificate was renewed successfully."),
+                    _("Yesterday"),
+                    icon=IconConfig("tick", "s"),
+                    priority="success",
+                ),
+            ],
+            all_notifications_url="#",
+        )
     }
 
 
