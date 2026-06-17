@@ -438,3 +438,37 @@ class WebSocketConfig:
     )
     request_url: str = field(default="", metadata={"doc": _("WebSocket endpoint URL.")})
     initial_content: str = field(default="", metadata={"doc": _("Initial content.")})
+
+
+@dataclass
+class BadgeConfig:
+    """
+    Configuration for a badge element.
+
+    Used in hero sections and other components.
+
+    Attributes:
+        label: Badge label.
+        icon: An optional icon displayed before the text.
+        icon_end: **True** if the icon should be shown after the label, otherwise the icon is shown in front of the label.
+        type: Defines the color of the badge.
+        size: Defines the size of the badge.
+
+    """
+
+    __example__ = """
+        BadgeConfig("New Feature", IconConfig("sparkles", "s"))
+    """
+
+    label: str = field(metadata={"doc": _("Badge label.")})
+    icon: IconConfig | None = field(default=None, metadata={"doc": _("An optional icon displayed before the text.")})
+    icon_end: bool = field(
+        default=False,
+        metadata={
+            "doc": "**True** if the icon should be shown after the label, otherwise the icon is shown in front of the label."
+        },
+    )
+    type: Literal["primary", "secondary", "info", "success", "warning", "danger", "disabled"] = field(
+        default="primary", metadata={"doc": "Defines the color of the badge."}
+    )
+    size: Literal["xs", "s", "m", "l", "xl"] = field(default="m", metadata={"doc": "Defines the size of the badge."})

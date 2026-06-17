@@ -321,4 +321,10 @@
     {% toggle_view config=toggle_view_config %}
 {% elif component.value == "form" %}
     {% form config=form_config %}
+{% elif component.value == "badge" %}
+    <div class="flex items-start gap-2">
+        {% badge label=_("New Feature") icon_name="sparkles" %}
+        {% badge label=_("New Feature") icon_name="sparkles" icon_end=True %}
+        {% badge label=_("New Feature") icon_name="sparkles" icon_size="s" size="s" %}
+    </div>
 {% endif %}

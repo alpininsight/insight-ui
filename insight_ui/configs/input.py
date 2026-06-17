@@ -17,7 +17,7 @@ class ButtonConfig:
 
     Attributes:
         tag_id: Unique ID for JavaScript/CSS targeting.
-        label: The text on the button or for Screenreader if the icon shows only a icon.
+        label: The text on the button or for Screenreader if the button shows only an icon.
         request_url: The URL to be called when clicking on the button.
         on_click: The name of the JavaScript method to be called when clicking on the button.
         icon: Icon config for an optional icon.
@@ -27,7 +27,6 @@ class ButtonConfig:
         size: Defines the size of the button.
         outline: **True** to use the outline design of the button.
         subtil: **True** to use the subtil design of the button.
-        disabled: Disables user interaction.
         tooltip: Optional text for a tooltip shown on hover.
         htmx_config: Configuration for asynchronous requests.
 

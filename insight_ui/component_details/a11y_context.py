@@ -630,6 +630,12 @@ def get_web_socket_a11y_context() -> dict[str, list[str]]:
     }
 
 
+@register_component(Component.BADGE)
+def get_badge_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y context documentation for the badge component."""
+    return {"a11y": []}
+
+
 # =============================================================
 #
 #   List Tags

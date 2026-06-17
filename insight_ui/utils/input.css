@@ -233,6 +233,10 @@
         @apply text-neutral-400;
     }
 
+    .badge {
+        @apply inline-flex items-center gap-2 rounded-full bg-insight-primary/10 dark:bg-insight-primary/10 px-4 py-1.5 text-insight-primary;
+    }
+
     .component-container {
         @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded shadow-md;
     }

@@ -183,7 +183,7 @@ def get_hero_context() -> dict:
             _("A modern UI library for Django applications to get started quickly."),
             ActionConfig(_("Get Started"), "#", "primary", icon=IconConfig("rocket")),
             ActionConfig(_("Learn more"), "#", "secondary"),
-            badge=BadgeConfig("Django UI Library", IconConfig("sparkles")),
+            badge_config=BadgeConfig("Django UI Library", IconConfig("sparkles")),
         )
     }
 

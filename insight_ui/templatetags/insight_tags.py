@@ -305,7 +305,7 @@ def hero(
     cta_primary: ActionConfig | _Unset = UNSET,
     cta_secondary: ActionConfig | _Unset = UNSET,
     background_image_url: str | _Unset = UNSET,
-    badge: BadgeConfig | _Unset = UNSET,
+    badge_config: BadgeConfig | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a hero section with optional background image."""
     config = build_config(HeroConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
@@ -430,6 +430,50 @@ def tabs(config: TabsConfig) -> dict[str, Any]:
 #   Input Tags
 #
 # =============================================================
+
+
+@register.inclusion_tag("insight_ui/components/button.html")
+def button(
+    config: ButtonConfig | None = None,
+    *,
+    tag_id: str | _Unset = UNSET,
+    label: str | _Unset = UNSET,
+    request_url: str | _Unset = UNSET,
+    on_click: str | _Unset = UNSET,
+    icon_name: str | _Unset = UNSET,
+    icon_size: str | _Unset = UNSET,
+    icon_end: bool | _Unset = UNSET,
+    icon_only: bool | _Unset = UNSET,
+    type: Literal["primary", "secondary", "info", "success", "warning", "danger", "disabled"] | _Unset = UNSET,  # noqa: A002
+    size: Literal["xs", "s", "m", "l", "xl"] | _Unset = UNSET,
+    outline: bool | _Unset = UNSET,
+    subtil: bool | _Unset = UNSET,
+    tooltip: str | _Unset = UNSET,
+    htmx_config: HtmxConfig | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render the button component."""
+    icon: IconConfig | None | _Unset = UNSET
+    if icon_name is not UNSET:
+        icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "m") if icon_name else None
+
+    config = build_config(
+        ButtonConfig,
+        config,
+        tag_id=tag_id,
+        label=label,
+        request_url=request_url,
+        on_click=on_click,
+        icon=icon,
+        icon_end=icon_end,
+        icon_only=icon_only,
+        type=type,
+        size=size,
+        outline=outline,
+        subtil=subtil,
+        tooltip=tooltip,
+        htmx_config=htmx_config,
+    )
+    return {"button_config": config}
 
 
 @register.inclusion_tag("insight_ui/components/input.html")
@@ -629,50 +673,6 @@ def chat(config: ChatConfig | None = None, *, request_url: str | _Unset = UNSET)
     """Render a chat with an input line and a place for the response."""
     config = build_config(ChatConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
     return {"request_url": config.request_url}
-
-
-@register.inclusion_tag("insight_ui/components/button.html")
-def button(
-    config: ButtonConfig | None = None,
-    *,
-    tag_id: str | _Unset = UNSET,
-    label: str | _Unset = UNSET,
-    request_url: str | _Unset = UNSET,
-    on_click: str | _Unset = UNSET,
-    icon_name: str | _Unset = UNSET,
-    icon_size: str | _Unset = UNSET,
-    icon_end: bool | _Unset = UNSET,
-    icon_only: bool | _Unset = UNSET,
-    type: str | _Unset = UNSET,  # noqa: A002
-    size: str | _Unset = UNSET,
-    outline: bool | _Unset = UNSET,
-    subtil: bool | _Unset = UNSET,
-    tooltip: str | _Unset = UNSET,
-    htmx_config: HtmxConfig | _Unset = UNSET,
-) -> dict[str, Any]:
-    """Render the button component."""
-    icon: IconConfig | None | _Unset = UNSET
-    if icon_name is not UNSET:
-        icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "m") if icon_name else None
-
-    config = build_config(
-        ButtonConfig,
-        config,
-        tag_id=tag_id,
-        label=label,
-        request_url=request_url,
-        on_click=on_click,
-        icon=icon,
-        icon_end=icon_end,
-        icon_only=icon_only,
-        type=type,
-        size=size,
-        outline=outline,
-        subtil=subtil,
-        tooltip=tooltip,
-        htmx_config=htmx_config,
-    )
-    return {"button_config": config}
 
 
 # =============================================================
@@ -1005,6 +1005,26 @@ def websocket(
     """Render a WebSocket component as a thin wrapper for the HTMX ws extension."""
     config = build_config(WebSocketConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
     return {"websocket_config": config}
+
+
+@register.inclusion_tag("insight_ui/components/badge.html")
+def badge(
+    config: BadgeConfig | None = None,
+    *,
+    label: str | _Unset = UNSET,
+    icon_name: str | _Unset = UNSET,
+    icon_size: str | _Unset = UNSET,
+    icon_end: bool | _Unset = UNSET,
+    type: Literal["primary", "secondary", "info", "success", "warning", "danger", "disabled"] | _Unset = UNSET,  # noqa: A002
+    size: Literal["xs", "s", "m", "l", "xl"] | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render the badge component."""
+    icon: IconConfig | None | _Unset = UNSET
+    if icon_name is not UNSET:
+        icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "m") if icon_name else None
+
+    config = build_config(BadgeConfig, config, label=label, icon=icon, icon_end=icon_end, type=type, size=size)
+    return {"badge_config": config}
 
 
 # =============================================================

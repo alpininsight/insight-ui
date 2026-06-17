@@ -588,6 +588,18 @@ def get_web_socket_description_context() -> dict[str, list[str]]:
     }
 
 
+@register_component(Component.BADGE)
+def get_badge_description_context() -> dict[str, list[str]]:
+    """Serve description context documentation for the badge component."""
+    return {
+        "description": [
+            _(
+                "The badge component displays a small pill-shaped icon with text and an optional icon. The badge can be displayed in various sizes and colors."
+            )
+        ]
+    }
+
+
 # =============================================================
 #
 #   List Tags

@@ -68,7 +68,7 @@ from insight_ui.configs.input import (
     TextareaConfig,
     ToggleConfig,
 )
-from insight_ui.configs.layout import ArticleConfig, BadgeConfig, HeroConfig, PageHeaderConfig
+from insight_ui.configs.layout import ArticleConfig, HeroConfig, PageHeaderConfig
 from insight_ui.configs.list import InfiniteScrollConfig, PaginationConfig, PaginationIppConfig, TableConfig
 from insight_ui.configs.navigation import (
     AccordionConfig,
@@ -95,6 +95,7 @@ from insight_ui.configs.navigation import (
 )
 from insight_ui.configs.popup import AlertConfig, ModalConfig
 from insight_ui.configs.utils import (
+    BadgeConfig,
     BrandLockupConfig,
     ChartConfig,
     ChartDatasetConfig,
@@ -197,4 +198,5 @@ __all__ = [
     "LiveContentConfig",
     "LogoConfig",
     "WebSocketConfig",
+    "BadgeConfig",
 ]

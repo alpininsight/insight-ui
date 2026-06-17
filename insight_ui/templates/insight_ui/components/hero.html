@@ -7,12 +7,9 @@
     {% endif %}
 
     <div class="max-w-4xl{% if not hero_config.background_image_url %} mx-auto text-center{% endif %}">
-        {% if hero_config.badge %}
-            <div class="inline-flex items-center gap-2 rounded-full bg-insight-primary/10 dark:bg-insight-primary/20 px-4 py-1.5 mb-6 text-insight-primary">
-                {% if hero_config.badge.icon %}
-                    {% icon name=hero_config.badge.icon.name size="s" %}
-                {% endif %}
-                <span class="text-sm font-medium">{{ hero_config.badge.text }}</span>
+        {% if hero_config.badge_config %}
+            <div class="mb-4">
+                {% badge config=hero_config.badge_config %}
             </div>
         {% endif %}
 

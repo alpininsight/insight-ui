@@ -118,6 +118,7 @@ class Component(Enum):
     CHART = ("chart", ComponentCategory.UTIL, ChartConfig)
     LIVE_CONTENT = ("live_content", ComponentCategory.UTIL, LiveContentConfig, False, True, False)
     WEB_SOCKET = ("web_socket", ComponentCategory.UTIL, WebSocketConfig, False, True, False)
+    BADGE = ("badge", ComponentCategory.UTIL)
     INFINITE_SCROLL = ("infinite_scroll", ComponentCategory.LIST, InfiniteScrollConfig, False, True, False)
     PAGINATION = ("pagination", ComponentCategory.LIST, PaginationConfig, False, True, False)
     TABLE = ("table", ComponentCategory.LIST, TableConfig)

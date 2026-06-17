@@ -4,7 +4,8 @@ from dataclasses import dataclass, field
 
 from django.utils.translation import gettext_lazy as _
 
-from insight_ui.configs.base import ActionConfig, IconConfig
+from insight_ui.configs.base import ActionConfig
+from insight_ui.configs.utils import BadgeConfig
 
 
 @dataclass
@@ -62,27 +63,6 @@ class ArticleConfig:
 
 
 @dataclass
-class BadgeConfig:
-    """
-    Configuration for a badge element.
-
-    Used in hero sections and other components.
-
-    Attributes:
-        text: Badge label.
-        icon: An optional icon displayed before the text.
-
-    """
-
-    __example__ = """
-        BadgeConfig("/newsletter", "Subscribe to Newsletter")
-    """
-
-    text: str = field(metadata={"doc": _("Badge label.")})
-    icon: IconConfig | None = field(default=None, metadata={"doc": _("An optional icon displayed before the text.")})
-
-
-@dataclass
 class HeroConfig:
     """
     Configuration for the hero component.
@@ -96,7 +76,7 @@ class HeroConfig:
         cta_primary: Primary 'Call-to-Action' button.
         cta_secondary: Secondary 'Call-to-Action' button.
         background_image_url: URL of the background image.
-        badge: A badge with icon and text.
+        badge_config: A badge with icon and text.
 
     """
 
@@ -107,7 +87,7 @@ class HeroConfig:
             description="Build amazing applications with modern tools.",
             cta_primary=ActionConfig(text="Get Started", url="/signup/", type="primary"),
             cta_secondary=ActionConfig(text="Learn More", url="/docs/", type="secondary"),
-            badge=BadgeConfig(text="New!", icon=IconConfig(name="sparkles")),
+            badge_config=BadgeConfig(text="New!", icon=IconConfig(name="sparkles")),
         )
         """
 
@@ -119,4 +99,4 @@ class HeroConfig:
     cta_primary: ActionConfig | None = field(default=None, metadata={"doc": _("Primary 'Call-to-Action' button.")})
     cta_secondary: ActionConfig | None = field(default=None, metadata={"doc": _("Secondary 'Call-to-Action' button.")})
     background_image_url: str = field(default="", metadata={"doc": _("URL of the background image.")})
-    badge: BadgeConfig | None = field(default=None, metadata={"doc": _("A badge with icon and text.")})
+    badge_config: BadgeConfig | None = field(default=None, metadata={"doc": _("A badge with icon and text.")})

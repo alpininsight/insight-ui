@@ -697,6 +697,20 @@ def get_web_socket_usage_context() -> dict[str, str]:
     }
 
 
+@register_component(Component.BADGE)
+def get_badge_usage_context() -> dict[str, str]:
+    """Serve usage context documentation for the badge component."""
+    return {
+        "usage": """
+        {% load insight_tags %}
+
+        {% badge label=_("New Feature") icon_name="sparkles" %}
+        {% badge label=_("New Feature") icon_name="sparkles" icon_end=True %}
+        {% badge label=_("New Feature") icon_name="sparkles" icon_size="s" size="s" %}
+        """
+    }
+
+
 # =============================================================
 #
 #   List Tags
