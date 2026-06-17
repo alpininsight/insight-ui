@@ -51,6 +51,8 @@ from insight_ui.configs import (
     ToggleViewConfig,
     WebSocketConfig,
 )
+from insight_ui.configs.input import ButtonConfig
+from insight_ui.configs.utils import BadgeConfig
 
 
 class ComponentCategory(Enum):
@@ -89,7 +91,7 @@ class Component(Enum):
     BULLET_POINT_LIST = ("bullet_point_list", ComponentCategory.NAVIGATION, BulletPointListConfig)
     ACCORDION = ("accordion", ComponentCategory.NAVIGATION, AccordionConfig)
     TABS = ("tabs", ComponentCategory.NAVIGATION, TabsConfig, False, True, False)
-    BUTTON = ("button", ComponentCategory.INPUT, None, False, False, True)
+    BUTTON = ("button", ComponentCategory.INPUT, ButtonConfig)
     INPUT_FIELD = ("input_field", ComponentCategory.INPUT, InputFieldConfig)
     TEXTAREA = ("textarea", ComponentCategory.INPUT, TextareaConfig)
     CHECKBOX = ("checkbox", ComponentCategory.INPUT, CheckboxConfig)
@@ -118,7 +120,7 @@ class Component(Enum):
     CHART = ("chart", ComponentCategory.UTIL, ChartConfig)
     LIVE_CONTENT = ("live_content", ComponentCategory.UTIL, LiveContentConfig, False, True, False)
     WEB_SOCKET = ("web_socket", ComponentCategory.UTIL, WebSocketConfig, False, True, False)
-    BADGE = ("badge", ComponentCategory.UTIL)
+    BADGE = ("badge", ComponentCategory.UTIL, BadgeConfig)
     INFINITE_SCROLL = ("infinite_scroll", ComponentCategory.LIST, InfiniteScrollConfig, False, True, False)
     PAGINATION = ("pagination", ComponentCategory.LIST, PaginationConfig, False, True, False)
     TABLE = ("table", ComponentCategory.LIST, TableConfig)
