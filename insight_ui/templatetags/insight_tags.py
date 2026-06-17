@@ -88,6 +88,7 @@ from insight_ui.configs import (
     ToggleViewConfig,
     WebSocketConfig,
 )
+from insight_ui.configs.utils import ProgressBarConfig
 from insight_ui.utils.diff import file_template, styles
 
 register = template.Library()
@@ -936,6 +937,15 @@ def corner_ribbon(
     """Render a corner ribbon positioned in any browser corner."""
     config = build_config(CornerRibbonConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
     return {"corner_ribbon_config": config}
+
+
+@register.inclusion_tag("insight_ui/components/progress_bar.html")
+def progress_bar(
+    config: ProgressBarConfig | None = None, *, tag_id: str | _Unset = UNSET, value: int | _Unset = UNSET
+) -> dict[str, Any]:
+    """Render a simple progress bar."""
+    config = build_config(ProgressBarConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"progress_bar_config": config}
 
 
 @register.inclusion_tag("insight_ui/components/geo_map.html")

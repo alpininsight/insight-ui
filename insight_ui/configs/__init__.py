@@ -106,6 +106,7 @@ from insight_ui.configs.utils import (
     InfoboxConfig,
     LiveContentConfig,
     LogoConfig,
+    ProgressBarConfig,
     WebSocketConfig,
 )
 
@@ -192,6 +193,7 @@ __all__ = [
     "ChartDatasetConfig",
     "CopyrightNoticeConfig",
     "CornerRibbonConfig",
+    "ProgressBarConfig",
     "GeoMapConfig",
     "GeoMapDatasetConfig",
     "InfoboxConfig",

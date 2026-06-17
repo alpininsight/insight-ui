@@ -1,6 +1,5 @@
-
 <div class="w-full bg-gray-200 h-4 rounded-full">
-    <div class="bg-blue-600 h-4 rounded-full animate-progress-bar" id="progress-bar" style="width: 0%"></div>
+    <div id="{{ progress_bar_config.tag_id }}" class="bg-blue-600 h-4 rounded-full animate-progress-bar" style="width: {{ progress_bar_config.value }}%"></div>
 </div>
 
 <style>
@@ -8,19 +7,3 @@
         transition: width 0.5s ease-in-out;
     }
 </style>
-
-<script>
-    let progress = 0;
-    const progressBar = document.getElementById("progress-bar");
-
-    function simulateDownload() {
-        if (progress < 100) {
-            progress += 1;
-            progressBar.style.width = progress + "%";
-        } else {
-            clearInterval(downloadInterval);
-        }
-    }
-
-    const downloadInterval = setInterval(simulateDownload, 100);
-</script>

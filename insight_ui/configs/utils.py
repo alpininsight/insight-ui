@@ -196,6 +196,28 @@ class CornerRibbonConfig:
 
 
 @dataclass
+class ProgressBarConfig:
+    """
+    Configuration for a simple progress bar.
+
+    Attributes:
+        tag_id: Unique ID for JavaScript/CSS targeting.
+        value: Current progress in percent.
+
+    """
+
+    __example__ = """
+        ProgressBarConfig(
+            tag_id="download",
+            value=97,
+        )
+        """
+
+    tag_id: str = field(default="", metadata={"doc": _("Unique ID for JavaScript/CSS targeting.")})
+    value: int = field(default=0, metadata={"doc": _("Current progress in percent.")})
+
+
+@dataclass
 class GeoMapMarkerConfig:
     """
     Configuration for a marker on a geo map.

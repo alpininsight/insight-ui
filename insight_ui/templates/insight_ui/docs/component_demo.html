@@ -269,7 +269,26 @@
         {% corner_ribbon text="New Version" position="bottom-right" %}
     </div>
 {% elif component.value == "progress_bar" %}
-    {% include "insight_ui/components/progress_bar.html" %}
+    <div class="space-y-4">
+        {% progress_bar tag_id="progress-bar" value=66 %}
+        {% progress_bar tag_id="download" value=0 %}
+        <script>
+            // Simulate progress
+            let progress = 0;
+            const progressBar = document.getElementById("download");
+
+            function simulateDownload() {
+                if (progress < 100) {
+                    progress += 1;
+                    progressBar.style.width = progress + "%";
+                } else {
+                    clearInterval(downloadInterval);
+                }
+            }
+
+            const downloadInterval = setInterval(simulateDownload, 100);
+        </script>
+    </div>
 {% elif component.value == "geo_map" %}
     {% geo_map config=geo_map_config map_height=40 %}
 {% elif component.value == "chart" %}

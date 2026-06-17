@@ -6,8 +6,10 @@ from insight_ui.configs import (
     AlertConfig,
     AppCardConfig,
     ArticleConfig,
+    BadgeConfig,
     BrandLockupConfig,
     BulletPointListConfig,
+    ButtonConfig,
     CardCarouselConfig,
     CardConfig,
     ChartConfig,
@@ -35,6 +37,7 @@ from insight_ui.configs import (
     NavbarConfig,
     PageHeaderConfig,
     PaginationConfig,
+    ProgressBarConfig,
     QueryBuilderConfig,
     RadioBlockConfig,
     RadioGroupConfig,
@@ -51,8 +54,6 @@ from insight_ui.configs import (
     ToggleViewConfig,
     WebSocketConfig,
 )
-from insight_ui.configs.input import ButtonConfig
-from insight_ui.configs.utils import BadgeConfig
 
 
 class ComponentCategory(Enum):
@@ -115,7 +116,7 @@ class Component(Enum):
     LOGO = ("logo", ComponentCategory.UTIL, LogoConfig)
     BRAND_LOCKUP = ("brand_lockup", ComponentCategory.UTIL, BrandLockupConfig)
     CORNER_RIBBON = ("corner_ribbon", ComponentCategory.UTIL, CornerRibbonConfig)
-    PROGRESS_BAR = ("progress_bar", ComponentCategory.UTIL, None, False, False, True)
+    PROGRESS_BAR = ("progress_bar", ComponentCategory.UTIL, ProgressBarConfig, False, False, True)
     GEO_MAP = ("geo_map", ComponentCategory.UTIL, GeoMapConfig)
     CHART = ("chart", ComponentCategory.UTIL, ChartConfig)
     LIVE_CONTENT = ("live_content", ComponentCategory.UTIL, LiveContentConfig, False, True, False)

@@ -632,7 +632,13 @@ def get_progress_bar_usage_context() -> dict[str, str]:
     """Serve usage documentation for the progress bar component."""
     return {
         "usage": """
-        {% include "insight_ui/components/progress_bar.html" %}
+        {% load insight_tags %}
+
+        {% progress_bar config=progress_bar_config %}
+
+        <!-- or -->
+
+        {% progress_bar tag_id="download" value=66 %}
         """
     }
 
