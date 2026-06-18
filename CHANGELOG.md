@@ -9,6 +9,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug Fixes
 
+- **ci:** Run container publish on every branch push
+
+### Miscellaneous
+
+- **ci:** Retrigger repository policy after workflow promotion
+
+## [1.10.2] - 2026-05-27
+
+### Bug Fixes
+
+- **navbar:** Position user dropdown below trigger
+
+### Miscellaneous
+
+- Release develop to main
+
+## [1.10.0] - 2026-04-08
+
+### Bug Fixes
+
 - **alert:** Correct tage_id typo in alert template tag return dict
 - DestroyAllIn() container-as-root bug and Floater selector mismatch
 - Merge issues in the carousel components
@@ -203,6 +223,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix merge issues
 - Normalize changelog whitespace
 - Add missing __init__ files for new 'create_component' command
+- Release insight-ui — sync develop→main (5 months of work)
 
 ### Refactoring
 
