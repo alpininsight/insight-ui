@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug Fixes
 
 - **ci:** Run container publish on every branch push
+- **ci:** Pin only published container digests
 
 ### Miscellaneous
 
