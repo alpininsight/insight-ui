@@ -202,19 +202,29 @@ class ProgressBarConfig:
 
     Attributes:
         tag_id: Unique ID for JavaScript/CSS targeting.
+        label: Optional heading/title for the progress bar.
         value: Current progress in percent.
+        show_value: Whether to display the value as text.
+        min_value: Minimum value (default 0).
+        max_value: Maximum value (default 100).
 
     """
 
     __example__ = """
         ProgressBarConfig(
             tag_id="download",
+            label="Download Progress",
             value=97,
+            show_value=True,
         )
         """
 
     tag_id: str = field(default="", metadata={"doc": _("Unique ID for JavaScript/CSS targeting.")})
+    label: str = field(default="", metadata={"doc": _("Optional heading/title for the progress bar.")})
     value: int = field(default=0, metadata={"doc": _("Current progress in percent.")})
+    show_value: bool = field(default=True, metadata={"doc": _("Whether to display the value as text.")})
+    min_value: int = field(default=0, metadata={"doc": _("Minimum value.")})
+    max_value: int = field(default=100, metadata={"doc": _("Maximum value.")})
 
 
 @dataclass

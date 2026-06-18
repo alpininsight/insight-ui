@@ -211,25 +211,25 @@
         @apply border-neutral-300 dark:border-neutral-600 text-neutral-400;
     }
 
-    .btn-subtil-primary {
+    .btn-subtle-primary {
         @apply text-insight-primary hover:text-insight-primary-hover active:text-insight-primary-active hover:bg-insight-primary-hover/25 active:bg-insight-primary-active/25
     }
-    .btn-subtil-secondary {
+    .btn-subtle-secondary {
         @apply text-insight-secondary hover:text-insight-secondary-hover active:text-insight-secondary-active hover:bg-insight-secondary-hover/25 active:bg-insight-secondary-active/25
     }
-    .btn-subtil-success {
+    .btn-subtle-success {
         @apply text-insight-success hover:text-insight-success-hover active:text-insight-success-active hover:bg-insight-success-hover/25 active:bg-insight-success-active/25
     }
-    .btn-subtil-warning {
+    .btn-subtle-warning {
         @apply text-insight-warning hover:text-insight-warning-hover active:text-insight-warning-active hover:bg-insight-warning-hover/25 active:bg-insight-warning-active/25
     }
-    .btn-subtil-danger {
+    .btn-subtle-danger {
         @apply text-insight-danger hover:text-insight-danger-hover active:text-insight-danger-active hover:bg-insight-danger-hover/25 active:bg-insight-danger-active/25
     }
-    .btn-subtil-info {
+    .btn-subtle-info {
         @apply text-insight-info hover:text-insight-info-hover active:text-insight-info-active hover:bg-insight-info-hover/25 active:bg-insight-info-active/25
     }
-    .btn-subtil-disabled {
+    .btn-subtle-disabled {
         @apply text-neutral-400;
     }
 

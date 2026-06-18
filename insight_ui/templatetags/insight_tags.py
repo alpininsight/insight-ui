@@ -448,7 +448,7 @@ def button(
     type: Literal["primary", "secondary", "info", "success", "warning", "danger", "disabled"] | _Unset = UNSET,  # noqa: A002
     size: Literal["xs", "s", "m", "l", "xl"] | _Unset = UNSET,
     outline: bool | _Unset = UNSET,
-    subtil: bool | _Unset = UNSET,
+    subtle: bool | _Unset = UNSET,
     tooltip: str | _Unset = UNSET,
     htmx_config: HtmxConfig | _Unset = UNSET,
 ) -> dict[str, Any]:
@@ -470,7 +470,7 @@ def button(
         type=type,
         size=size,
         outline=outline,
-        subtil=subtil,
+        subtle=subtle,
         tooltip=tooltip,
         htmx_config=htmx_config,
     )
@@ -941,7 +941,14 @@ def corner_ribbon(
 
 @register.inclusion_tag("insight_ui/components/progress_bar.html")
 def progress_bar(
-    config: ProgressBarConfig | None = None, *, tag_id: str | _Unset = UNSET, value: int | _Unset = UNSET
+    config: ProgressBarConfig | None = None,
+    *,
+    tag_id: str | _Unset = UNSET,
+    value: int | _Unset = UNSET,
+    label: str | _Unset = UNSET,
+    show_value: bool | _Unset = UNSET,
+    min_value: int | _Unset = UNSET,
+    max_value: int | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a simple progress bar."""
     config = build_config(ProgressBarConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})

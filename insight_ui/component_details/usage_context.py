@@ -211,7 +211,7 @@ def get_button_usage_context() -> dict[str, str]:
         {% button label=_("Primary") disabled=True %}
 
         {% button label=_("Primary") type="primary" outline=True %}
-        {% button label=_("Primary") type="primary" subtil=True %}
+        {% button label=_("Primary") type="primary" subtle=True %}
 
         {% button label=_("Click me!") type="primary" size="xl" %}
         {% button label=_("Click me!") type="primary" size="l" %}

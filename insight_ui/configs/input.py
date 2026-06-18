@@ -26,7 +26,7 @@ class ButtonConfig:
         type: Defines the color of the button.
         size: Defines the size of the button.
         outline: **True** to use the outline design of the button.
-        subtil: **True** to use the subtil design of the button.
+        subtle: **True** to use the subtle design of the button.
         tooltip: Optional text for a tooltip shown on hover.
         htmx_config: Configuration for asynchronous requests.
 
@@ -44,7 +44,7 @@ class ButtonConfig:
             type="primary",
             size="xl",
             outline=False,
-            subtil=False,
+            subtle=False,
             tooltip="Click to calculate something",
             htmx_config=HtmxConfig(...)
         )
@@ -76,7 +76,7 @@ class ButtonConfig:
     )
     size: Literal["xs", "s", "m", "l", "xl"] = field(default="m", metadata={"doc": "Defines the size of the button."})
     outline: bool = field(default=False, metadata={"doc": "**True** to use the outline design of the button."})
-    subtil: bool = field(default=False, metadata={"doc": "**True** to use the subtil design of the button."})
+    subtle: bool = field(default=False, metadata={"doc": "**True** to use the subtle design of the button."})
     tooltip: str = field(default="", metadata={"doc": "Optional text for a tooltip shown on hover."})
     htmx_config: HtmxConfig = field(default=None, metadata={"doc": "Configuration for asynchronous requests."})
 

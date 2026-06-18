@@ -3,7 +3,7 @@
 {% if user.is_authenticated %}
     {# User-Dropdown menu #}
     <div class="relative h-full">
-        <button type="button" data-insight-dropdown="user-menu" class="btn-subtil-secondary rounded-full size-10 overflow-hidden" aria-label="{{ user_avatar_alt|default:user.get_username }}">
+        <button type="button" data-insight-dropdown="user-menu" class="btn-subtle-secondary rounded-full size-10 overflow-hidden" aria-label="{{ user_avatar_alt|default:user.get_username }}">
             {% if user_avatar_url %}
                 <img src="{{ user_avatar_url }}" alt="{{ user_avatar_alt|default:user.get_username }}" class="size-full rounded-full object-cover">
             {% else %}
@@ -39,7 +39,7 @@
     </div>
 {% else %}
     {# Login btn #}
-    <a href="{% url 'login' %}" class="btn btn-subtil btn-s">
+    <a href="{% url 'login' %}" class="btn btn-subtle btn-s">
         {% icon name="user" size="s" %}
         <span class="lg:hidden xl:inline-block">{% trans "Login" %}</span>
     </a>

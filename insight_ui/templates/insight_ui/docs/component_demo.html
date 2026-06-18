@@ -83,13 +83,13 @@
             {% button label=_("Disabled") type="disabled" outline=True %}
         </div>
         <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
-            {% button label=_("Primary") type="primary" subtil=True %}
-            {% button label=_("Secondary") type="secondary" subtil=True %}
-            {% button label=_("Success") type="success" subtil=True %}
-            {% button label=_("Warning") type="warning" subtil=True %}
-            {% button label=_("Danger") type="danger" subtil=True %}
-            {% button label=_("Info") type="info" subtil=True %}
-            {% button label=_("Disabled") type="disabled" subtil=True %}
+            {% button label=_("Primary") type="primary" subtle=True %}
+            {% button label=_("Secondary") type="secondary" subtle=True %}
+            {% button label=_("Success") type="success" subtle=True %}
+            {% button label=_("Warning") type="warning" subtle=True %}
+            {% button label=_("Danger") type="danger" subtle=True %}
+            {% button label=_("Info") type="info" subtle=True %}
+            {% button label=_("Disabled") type="disabled" subtle=True %}
         </div>
         <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
             {% button label=_("Click me!") type="primary" size="xl" %}
@@ -269,24 +269,46 @@
         {% corner_ribbon text="New Version" position="bottom-right" %}
     </div>
 {% elif component.value == "progress_bar" %}
-    <div class="space-y-4">
-        {% progress_bar tag_id="progress-bar" value=66 %}
-        {% progress_bar tag_id="download" value=0 %}
+    <div class="space-y-6">
+        {% progress_bar tag_id="progress-static" value=66 label=_("Static Progress") %}
+        {% progress_bar tag_id="download" value=0 label=_("Download Progress") %}
         <script>
             // Simulate progress
-            let progress = 0;
-            const progressBar = document.getElementById("download");
+            (function() {
+                let progress = 0;
+                const fillElement = document.getElementById("download");
+                const track = fillElement.closest('[role="progressbar"]');
+                const valueDisplay = document.getElementById("download-value");
+                const label = "{% trans 'Download Progress' %}";
 
-            function simulateDownload() {
-                if (progress < 100) {
-                    progress += 1;
-                    progressBar.style.width = progress + "%";
-                } else {
-                    clearInterval(downloadInterval);
+                function updateProgressBar(value) {
+                    // Update the fill width
+                    fillElement.style.width = value + "%";
+
+                    // Update data attribute (triggers tooltip update via MutationObserver)
+                    fillElement.dataset.value = value;
+
+                    // Update ARIA attributes for accessibility
+                    track.setAttribute("aria-valuenow", value);
+                    track.setAttribute("aria-valuetext", value + "% " + label);
+
+                    // Update visible text value
+                    if (valueDisplay) {
+                        valueDisplay.textContent = value + "%";
+                    }
                 }
-            }
 
-            const downloadInterval = setInterval(simulateDownload, 100);
+                function simulateDownload() {
+                    if (progress < 100) {
+                        progress += 1;
+                        updateProgressBar(progress);
+                    } else {
+                        clearInterval(downloadInterval);
+                    }
+                }
+
+                const downloadInterval = setInterval(simulateDownload, 100);
+            })();
         </script>
     </div>
 {% elif component.value == "geo_map" %}
