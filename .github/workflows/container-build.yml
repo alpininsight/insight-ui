@@ -39,7 +39,7 @@ on:
 
 concurrency:
   group: container-${{ github.event.pull_request.number || github.ref || github.run_id }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 permissions:
   contents: read
@@ -85,52 +85,13 @@ jobs:
       github_read_token: ${{ secrets.INSIGHT_TOKEN_RO }}
       ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-  resolve_digest:
-    name: Resolve digest behind published alias
-    needs: container_release
-    if: github.event_name == 'push' && needs.container_release.result == 'success'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: read
-    outputs:
-      digest: ${{ steps.digest.outputs.digest }}
-      lane: ${{ steps.digest.outputs.lane }}
-      slot: ${{ steps.digest.outputs.slot }}
-    steps:
-      - name: Resolve GHCR digest
-        id: digest
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          set -euo pipefail
-          case "${GITHUB_REF}" in
-            refs/heads/develop)
-              alias="candidate"; slot="green"; lane="develop" ;;
-            refs/heads/main)
-              alias="main"; slot="blue"; lane="main" ;;
-            *)
-              echo "::error::unsupported ref ${GITHUB_REF}"; exit 1 ;;
-          esac
-
-          digest="$(gh api \
-            "/orgs/alpininsight/packages/container/insight-ui/versions?per_page=50" \
-            --jq "[.[] | select(.metadata.container.tags[]? == \"${alias}\")][0].name")"
-          if ! [[ "$digest" =~ ^sha256:[0-9a-f]{64}$ ]]; then
-            echo "::error::resolved digest is not a sha256 reference: '$digest'"
-            exit 1
-          fi
-
-          {
-            echo "digest=$digest"
-            echo "lane=$lane"
-            echo "slot=$slot"
-          } >> "$GITHUB_OUTPUT"
-
   pin_slot:
-    name: Pin ${{ needs.resolve_digest.outputs.slot }} slot digest
-    needs: resolve_digest
-    if: needs.resolve_digest.result == 'success'
+    name: Pin ${{ needs.container_release.outputs.slot }} slot digest
+    needs: container_release
+    if: >-
+      github.event_name == 'push' &&
+      needs.container_release.result == 'success' &&
+      needs.container_release.outputs.published == 'true'
     permissions:
       contents: read
     uses: alpininsight/.github-private/.github/workflows/image-digest-pin-bot-reusable.yml@main
@@ -138,11 +99,11 @@ jobs:
       consuming_repo: alpininsight/insight-lima-k8s-capi
       overlay_path: >-
         use-cases/management-cloud/demo/insight-ui/${{
-        needs.resolve_digest.outputs.slot }}/deployment.yaml
+        needs.container_release.outputs.slot }}/deployment.yaml
       image_name: ghcr.io/alpininsight/insight-ui
-      image_digest: ${{ needs.resolve_digest.outputs.digest }}
-      slot: ${{ needs.resolve_digest.outputs.slot }}
-      lane: ${{ needs.resolve_digest.outputs.lane }}
+      image_digest: ${{ needs.container_release.outputs.image_digest }}
+      slot: ${{ needs.container_release.outputs.slot }}
+      lane: ${{ needs.container_release.outputs.lane }}
       app: insight-ui
       pr_automerge: true
     secrets:
