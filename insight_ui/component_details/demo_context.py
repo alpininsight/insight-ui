@@ -44,7 +44,7 @@ from insight_ui.configs import (
     ImageConfig,
     InfiniteScrollConfig,
     LogoConfig,
-    MinimalStepBarConfig,
+    MinimalStepperConfig,
     ModalConfig,
     MultiselectConfig,
     NavbarBrandConfig,
@@ -62,7 +62,7 @@ from insight_ui.configs import (
     SidebarDataConfig,
     SidebarItemConfig,
     SliderConfig,
-    StepBarItemConfig,
+    StepperItemConfig,
     TabConfig,
     TableConfig,
     TabsConfig,
@@ -171,20 +171,6 @@ def get_login_screen_context() -> dict:
 #   Layout Tags
 #
 # =============================================================
-
-
-@register_demo_context(Component.HEADING_DECORATION)
-def get_heading_decoration_context() -> dict:
-    """Serve demo context for the heading decoration component."""
-    image_url = (
-        "data:image/svg+xml,"
-        "%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20500%20120%22%3E"
-        "%3Crect%20width%3D%22500%22%20height%3D%22120%22%20fill%3D%22%233b82f6%22/%3E"
-        "%3Ccircle%20cx%3D%22120%22%20cy%3D%2260%22%20r%3D%2248%22%20fill%3D%22%23ffffff%22%20fill-opacity%3D%22.35%22/%3E"
-        "%3Ccircle%20cx%3D%22260%22%20cy%3D%2270%22%20r%3D%2264%22%20fill%3D%22%230f172a%22%20fill-opacity%3D%22.18%22/%3E"
-        "%3C/svg%3E"
-    )
-    return {"heading_decoration_image_url": image_url}
 
 
 @register_demo_context(Component.HERO)
@@ -338,29 +324,29 @@ def get_breadcrumb_context() -> dict:
     }
 
 
-@register_demo_context(Component.STEP_BAR)
-def get_step_bar_context() -> dict:
+@register_demo_context(Component.STEPPER)
+def get_stepper_context() -> dict:
     """Serve data for step bar detailpage."""
     return {
-        "step_bar_items": [
-            StepBarItemConfig(_("Contact Details"), _("Information about the person and address."), success=True),
-            StepBarItemConfig(_("Payment Method"), _("Select the payment method."), current=True),
-            StepBarItemConfig(_("Review"), _("Review the data and pay.")),
+        "stepper_items": [
+            StepperItemConfig(_("Contact Details"), _("Information about the person and address."), success=True),
+            StepperItemConfig(_("Payment Method"), _("Select the payment method."), current=True),
+            StepperItemConfig(_("Review"), _("Review the data and pay.")),
         ],
-        "step_bar_items_failed": [
-            StepBarItemConfig(_("Contact Details"), _("Information about the person and address."), success=True),
-            StepBarItemConfig(_("Payment Method"), _("Select the payment method."), success=True),
-            StepBarItemConfig(_("Review"), _("Review the data and pay."), failed=True),
+        "stepper_items_failed": [
+            StepperItemConfig(_("Contact Details"), _("Information about the person and address."), success=True),
+            StepperItemConfig(_("Payment Method"), _("Select the payment method."), success=True),
+            StepperItemConfig(_("Review"), _("Review the data and pay."), failed=True),
         ],
     }
 
 
-@register_demo_context(Component.MINIMAL_STEP_BAR)
-def get_minimal_step_bar_context() -> dict:
+@register_demo_context(Component.MINIMAL_STEPPER)
+def get_minimal_stepper_context() -> dict:
     """Serve data for minimal step bar detailpage."""
     return {
-        "min_step_bar": MinimalStepBarConfig(step_count=5, current_step=3),
-        "min_step_bar_with_list": MinimalStepBarConfig(["success", "success", "failed", "active", ""]),
+        "min_stepper": MinimalStepperConfig(step_count=5, current_step=3),
+        "min_stepper_with_list": MinimalStepperConfig(["success", "success", "failed", "active", ""]),
     }
 
 

@@ -67,7 +67,7 @@ from insight_ui.configs.input import (
     TextareaConfig,
     ToggleConfig,
 )
-from insight_ui.configs.layout import ArticleConfig, BadgeConfig, HeadingDecorationConfig, HeroConfig, PageHeaderConfig
+from insight_ui.configs.layout import ArticleConfig, BadgeConfig, HeroConfig, PageHeaderConfig
 from insight_ui.configs.list import InfiniteScrollConfig, PaginationConfig, PaginationIppConfig, TableConfig
 from insight_ui.configs.navigation import (
     AccordionConfig,
@@ -79,7 +79,7 @@ from insight_ui.configs.navigation import (
     FooterConfig,
     FooterContactConfig,
     FooterDescriptionConfig,
-    MinimalStepBarConfig,
+    MinimalStepperConfig,
     NavbarBrandConfig,
     NavbarConfig,
     NavbarLinkConfig,
@@ -87,8 +87,8 @@ from insight_ui.configs.navigation import (
     SidebarConfig,
     SidebarDataConfig,
     SidebarItemConfig,
-    StepBarConfig,
-    StepBarItemConfig,
+    StepperConfig,
+    StepperItemConfig,
     TabConfig,
     TabsConfig,
 )
@@ -151,7 +151,6 @@ __all__ = [
     # Layout
     "ArticleConfig",
     "BadgeConfig",
-    "HeadingDecorationConfig",
     "HeroConfig",
     "PageHeaderConfig",
     # Lists
@@ -169,7 +168,7 @@ __all__ = [
     "FooterConfig",
     "FooterContactConfig",
     "FooterDescriptionConfig",
-    "MinimalStepBarConfig",
+    "MinimalStepperConfig",
     "NavbarBrandConfig",
     "NavbarConfig",
     "NavbarLinkConfig",
@@ -177,8 +176,8 @@ __all__ = [
     "SidebarConfig",
     "SidebarDataConfig",
     "SidebarItemConfig",
-    "StepBarConfig",
-    "StepBarItemConfig",
+    "StepperConfig",
+    "StepperItemConfig",
     "TabConfig",
     "TabsConfig",
     # Popups

@@ -47,14 +47,14 @@
         {% breadcrumbs items=breadcrumb_items %}
         {% breadcrumbs items=single_breadcrumb_item %}
     </div>
-{% elif component.value == "step_bar" %}
+{% elif component.value == "stepper" %}
     <div class="space-y-4">
-        {% step_bar items=step_bar_items %}
-        {% step_bar items=step_bar_items_failed %}
+        {% stepper items=stepper_items %}
+        {% stepper items=stepper_items_failed %}
     </div>
-{% elif component.value == "minimal_step_bar" %}
+{% elif component.value == "minimal_stepper" %}
     <div class="w-40">
-        {% minimal_step_bar config=min_step_bar %}
+        {% minimal_stepper config=min_stepper %}
     </div>
 {% elif component.value == "bullet_point_list" %}
     {% bullet_point_list items=bullet_points_items %}
@@ -263,8 +263,7 @@
 {% elif component.value == "live_content" %}
     {% live_content tag_id="live-content" request_url="/api/live-data/" interval=10 %}
 {% elif component.value == "web_socket" %}
-    <i class="text-secondary">Work in progress...</i>
-    {# {% websocket tag_id="runtime-stream" request_url="/runtime/stream/" initial_content="<p>Waiting for runtime updates…</p>" %} #}
+    {% websocket tag_id="demo-websocket" request_url="ws://127.0.0.1:8765" initial_content="<p>Waiting for runtime updates…</p>" %}
 {% elif component.value == "infinite_scroll" %}
     {% infinite_scroll config=infinite_scroll_config %}
 {% elif component.value == "pagination" %}
