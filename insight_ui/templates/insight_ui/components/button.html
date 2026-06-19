@@ -15,7 +15,8 @@
         {% if button_config.disabled == "disabled" %}disabled{% endif %}
         {% if button_config.icon_only %}aria-label="{{ button_config.label }}"{% endif %}
         {% if button_config.tooltip %}data-insight-tooltip="{{ button_config.tooltip }}"{% endif %}
-        class="btn btn-{% if button_config.outline %}outline-{% endif %}{% if button_config.subtle %}subtle-{% endif %}{{ button_config.type }} {% if button_config.icon_only %}btn-icon{% else %}btn-{{ button_config.size }}{% endif %}"
+        {% for attr in button_config.data_attrs %}data-{{ attr.name }}="{{ attr.value }}"{% endfor %}
+        class="btn btn-{% if button_config.outline %}outline-{% endif %}{% if button_config.subtle %}subtle-{% endif %}{{ button_config.type }} {% if button_config.icon_only %}btn-icon{% else %}btn-{{ button_config.size }}{% endif %}{% if button_config.hidden %} hidden{% endif %}"
     >
 {% else %}
     <button
@@ -32,7 +33,8 @@
         {% if button_config.type == "disabled" %}disabled{% endif %}
         {% if button_config.icon_only %}aria-label="{{ button_config.label }}"{% endif %}
         {% if button_config.tooltip %}data-insight-tooltip="{{ button_config.tooltip }}"{% endif %}
-        class="btn btn-{% if button_config.outline %}outline-{% endif %}{% if button_config.subtle %}subtle-{% endif %}{{ button_config.type }} {% if button_config.icon_only %}btn-icon{% else %}btn-{{ button_config.size }}{% endif %}"
+        {% for attr in button_config.data_attrs %}data-{{ attr.name }}="{{ attr.value }}"{% endfor %}
+        class="btn btn-{% if button_config.outline %}outline-{% endif %}{% if button_config.subtle %}subtle-{% endif %}{{ button_config.type }} {% if button_config.icon_only %}btn-icon{% else %}btn-{{ button_config.size }}{% endif %}{% if button_config.hidden %} hidden{% endif %}"
     >
 {% endif %}
 {% if button_config.icon and button_config.icon_only %}
