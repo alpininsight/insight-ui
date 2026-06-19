@@ -203,16 +203,15 @@ class ProgressBarConfig:
     Attributes:
         tag_id: Unique ID for JavaScript/CSS targeting.
         label: Optional heading/title for the progress bar.
-        value: Current progress in percent.
-        show_value: Whether to display the value as text.
-        min_value: Minimum value.
-        max_value: Maximum value.
         request_url: URL to poll for progress updates. Expected JSON: {"value": 75}.
         interval: Polling interval in milliseconds.
         sse_url: Server-Sent Events URL for real-time progress updates.
+        min_value: Minimum value.
+        max_value: Maximum value.
+        value: Current progress in percent.
+        show_value: Whether to display the value as text.
         hide_on_complete: Hide progress bar when reaching max_value.
         complete_delay: Delay in ms before hiding after completion.
-        error: Initial error message to display.
         stop_on_error: Stop polling/SSE when an error is received.
         show_cancel: Show a cancel button during progress.
         cancel_label: Label for the cancel button.
@@ -260,18 +259,17 @@ class ProgressBarConfig:
 
     tag_id: str = field(default="", metadata={"doc": _("Unique ID for JavaScript/CSS targeting.")})
     label: str = field(default="", metadata={"doc": _("Optional heading/title for the progress bar.")})
-    value: int = field(default=0, metadata={"doc": _("Current progress in percent.")})
-    show_value: bool = field(default=True, metadata={"doc": _("Whether to display the value as text.")})
-    min_value: int = field(default=0, metadata={"doc": _("Minimum value.")})
-    max_value: int = field(default=100, metadata={"doc": _("Maximum value.")})
     request_url: str = field(
         default="", metadata={"doc": _('URL to poll for progress updates. Expected JSON: {"value": 75}.')}
     )
     interval: int = field(default=1000, metadata={"doc": _("Polling interval in milliseconds.")})
     sse_url: str = field(default="", metadata={"doc": _("Server-Sent Events URL for real-time progress updates.")})
+    min_value: int = field(default=0, metadata={"doc": _("Minimum value.")})
+    max_value: int = field(default=100, metadata={"doc": _("Maximum value.")})
+    value: int = field(default=0, metadata={"doc": _("Current progress in percent.")})
+    show_value: bool = field(default=True, metadata={"doc": _("Whether to display the value as text.")})
     hide_on_complete: bool = field(default=False, metadata={"doc": _("Hide progress bar when reaching max_value.")})
     complete_delay: int = field(default=500, metadata={"doc": _("Delay in ms before hiding after completion.")})
-    error: str = field(default="", metadata={"doc": _("Initial error message to display.")})
     stop_on_error: bool = field(default=False, metadata={"doc": _("Stop polling/SSE when an error is received.")})
     show_cancel: bool = field(default=False, metadata={"doc": _("Show a cancel button during progress.")})
     cancel_label: str = field(default="", metadata={"doc": _("Label for the cancel button.")})

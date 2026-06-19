@@ -271,72 +271,85 @@
 {% elif component.value == "progress_bar" %}
     <div class="space-y-6">
         {% progress_bar tag_id="progress-static" value=66 label=_("Static Progress") %}
-        {% progress_bar tag_id="download" value=0 label=_("Download Progress") show_cancel=True %}
-        {% progress_bar tag_id="upload-warning" value=45 label=_("Upload (Warning Demo)") %}
-        {% progress_bar tag_id="import-error" value=30 label=_("Import (Error Demo)") error=_("Connection lost") show_retry=True %}
+        {% progress_bar tag_id="download" value=0 label=_("Download Progress") show_cancel=True show_retry=True %}
+        {% progress_bar tag_id="upload-demo" value=0 label=_("Upload (Warning → Error → Retry)") show_retry=True %}
         <script>
             // Simulate progress using the InsightUI.ProgressBar API
-            (function() {
+            function initProgressBarDemo() {
+                // Download demo with cancel/retry
                 let downloadProgress = 0;
                 let downloadInterval = null;
+                const downloadBar = InsightUI.ProgressBar.get("download");
 
                 function startDownload() {
+                    if (downloadInterval) clearInterval(downloadInterval);
                     downloadInterval = setInterval(function() {
                         if (downloadProgress < 100) {
                             downloadProgress += 1;
-                            InsightUI.ProgressBar.update("download", downloadProgress);
+                            downloadBar.update(downloadProgress);
                         } else {
                             clearInterval(downloadInterval);
+                            downloadInterval = null;
                         }
                     }, 100);
                 }
 
-                // Start download simulation
+                // Use callback properties instead of event listeners
+                downloadBar.onCancel = () => {
+                    clearInterval(downloadInterval);
+                    downloadInterval = null;
+                };
+                downloadBar.onRetry = () => {
+                    downloadProgress = 0;
+                    startDownload();
+                };
+
                 startDownload();
 
-                // Listen for cancel event to stop interval
-                document.querySelector('[data-insight-progress-bar="download"]')
-                ?.addEventListener('insight-ui:progress-cancel', function() {
-                    clearInterval(downloadInterval);
-                });
+                // Upload demo: Warning at 50%, fatal error at 70%, retry continues to 100%
+                const uploadBar = InsightUI.ProgressBar.get("upload-demo");
+                let uploadProgress = 0;
+                let uploadInterval = null;
+                let hasShownError = false;
 
-                // Listen for retry event to restart
-                document.querySelector('[data-insight-progress-bar="download"]')
-                ?.addEventListener('insight-ui:progress-retry', function() {
-                    startDownload();
-                });
+                function startUpload() {
+                    if (uploadInterval) clearInterval(uploadInterval);
+                    uploadInterval = setInterval(function() {
+                        if (uploadProgress < 100) {
+                            uploadProgress += 1;
+                            uploadBar.update(uploadProgress);
 
-                // Demo: Show warning at 60%, clear at 80%
-                let uploadProgress = 45;
-                const uploadInterval = setInterval(function() {
-                    if (uploadProgress < 100) {
-                        uploadProgress += 1;
-                        InsightUI.ProgressBar.update("upload-warning", uploadProgress);
-
-                        if (uploadProgress === 60) {
-                            InsightUI.ProgressBar.setError("upload-warning", "{% trans 'Slow connection, retrying...' %}", false);
-                        } else if (uploadProgress === 80) {
-                            InsightUI.ProgressBar.clearError("upload-warning");
-                        }
-                    } else {
-                        clearInterval(uploadInterval);
-                    }
-                }, 150);
-
-                // Listen for retry on import-error demo
-                document.querySelector('[data-insight-progress-bar="import-error"]')
-                ?.addEventListener('insight-ui:progress-retry', function() {
-                    let importProgress = 30;
-                    const importInterval = setInterval(function() {
-                        if (importProgress < 100) {
-                            importProgress += 2;
-                            InsightUI.ProgressBar.update("import-error", importProgress);
+                            // Show warning at 30%
+                            if (uploadProgress === 30) {
+                                uploadBar.setError("{% trans 'Slow connection...' %}", false);
+                            }
+                            // Fatal error at 70% (only first time)
+                            else if (uploadProgress === 60 && !hasShownError) {
+                                hasShownError = true;
+                                clearInterval(uploadInterval);
+                                uploadInterval = null;
+                                uploadBar.setError("{% trans 'Connection lost' %}", true);
+                            }
                         } else {
-                            clearInterval(importInterval);
+                            clearInterval(uploadInterval);
+                            uploadInterval = null;
                         }
-                    }, 100);
-                });
-            })();
+                    }, 150);
+                }
+
+                uploadBar.onRetry = () => {
+                    startUpload();
+                };
+
+                startUpload();
+            }
+
+            // Wait for InsightUI to be ready, or run immediately if already initialized
+            if (window.InsightUI?.ProgressBar) {
+                initProgressBarDemo();
+            } else {
+                document.addEventListener('insightui:ready', initProgressBarDemo);
+            }
         </script>
     </div>
 {% elif component.value == "geo_map" %}

@@ -60,8 +60,7 @@ export class ProgressBar {
         this.container = element;
         this.tagId = element.dataset.insightProgressBar;
         this.fill = element.querySelector('[data-progress-fill]');
-        this.track = element.querySelector('[role="progressbar"]');
-        this.tooltip = element.querySelector('[role="tooltip"]');
+        this.track = element.querySelector('[data-progress-track]');
         this.valueDisplay = element.querySelector('[data-progress-value]');
         this.labelDisplay = element.querySelector('[data-progress-label]');
         this.errorContainer = element.querySelector('[data-progress-error]');
@@ -70,6 +69,7 @@ export class ProgressBar {
         this.errorIconError = element.querySelector('[data-error-icon-error]');
         this.cancelButton = element.querySelector('[data-progress-cancel]');
         this.retryButton = element.querySelector('[data-progress-retry]');
+        this.announceElement = element.querySelector('[data-progress-announce]');
 
         if (!this.fill || !this.track) {
             console.warn('ProgressBar: Missing required elements for', this.tagId);
@@ -86,20 +86,23 @@ export class ProgressBar {
             maxValue: parseInt(element.dataset.maxValue, 10) || 100,
             minValue: parseInt(element.dataset.minValue, 10) || 0,
             stopOnError: element.dataset.stopOnError === 'true',
-            initialError: element.dataset.initialError || '',
             cancelUrl: element.dataset.cancelUrl || '',
+            announceInterval: parseInt(element.dataset.announceInterval, 10) || 10,
         };
 
         // State
         this.pollingInterval = null;
+        this.lastAnnouncedValue = -1;
         this.eventSource = null;
         this.hasError = false;
         this.isFatalError = false;
         this.isCancelled = false;
 
+        // User-defined callbacks (optional, called in addition to events)
+        this.onCancel = null;
+        this.onRetry = null;
+
         // Store bound handlers for cleanup
-        this.boundMouseMove = null;
-        this.boundFocus = null;
         this.boundCancelClick = null;
         this.boundRetryClick = null;
         this.observer = null;
@@ -117,28 +120,9 @@ export class ProgressBar {
 
     init() {
         this.updateTooltipContent();
-
-        // Handle initial error state
-        if (this.config.initialError) {
-            this.hasError = true;
-            this.isFatalError = true;
-            this.updateButtonVisibility();
-        }
     }
 
     bindEvents() {
-        // Tooltip position on mouse move
-        this.boundMouseMove = (e) => this.updateTooltipPosition(e);
-        this.track.addEventListener('mousemove', this.boundMouseMove);
-
-        // Tooltip position on focus
-        this.boundFocus = () => {
-            if (!this.tooltip) return;
-            const fillWidth = this.fill.offsetWidth;
-            this.tooltip.style.left = `${Math.max(20, fillWidth)}px`;
-        };
-        this.track.addEventListener('focus', this.boundFocus);
-
         // Cancel button
         if (this.cancelButton) {
             this.boundCancelClick = (e) => {
@@ -275,6 +259,41 @@ export class ProgressBar {
     }
 
     /**
+     * Announce progress to screen readers at configured intervals.
+     * @param {number} value - Current progress value
+     * @param {string} label - Current label
+     */
+    announceProgress(value, label) {
+        if (!this.announceElement) return;
+
+        // Announce at interval thresholds (e.g., every 10%)
+        const interval = this.config.announceInterval;
+        const currentThreshold = Math.floor(value / interval) * interval;
+        const lastThreshold = Math.floor(this.lastAnnouncedValue / interval) * interval;
+
+        if (currentThreshold > lastThreshold || this.lastAnnouncedValue === -1) {
+            const message = label
+                ? `${label}: ${value}%`
+                : `${value}%`;
+            this.announceElement.textContent = message;
+            this.lastAnnouncedValue = value;
+        }
+    }
+
+    /**
+     * Announce a message to screen readers immediately.
+     * @param {string} message - Message to announce
+     */
+    announce(message) {
+        if (!this.announceElement) return;
+        // Clear and set to trigger announcement
+        this.announceElement.textContent = '';
+        setTimeout(() => {
+            this.announceElement.textContent = message;
+        }, 50);
+    }
+
+    /**
      * Update the progress bar value and optionally the label.
      * @param {number} value - The new progress value
      * @param {string} [label] - Optional new label text
@@ -299,6 +318,9 @@ export class ProgressBar {
         this.track.setAttribute('aria-valuenow', clampedValue);
         const currentLabel = this.fill.dataset.label || '';
         this.track.setAttribute('aria-valuetext', clampedValue + '% ' + currentLabel);
+
+        // Announce progress to screen readers at intervals
+        this.announceProgress(clampedValue, currentLabel);
 
         // Update visible text value
         if (this.valueDisplay) {
@@ -360,6 +382,10 @@ export class ProgressBar {
         // Update button visibility
         this.updateButtonVisibility();
 
+        // Announce error to screen readers
+        const errorType = isFatal ? 'Error' : 'Warning';
+        this.announce(`${errorType}: ${message}`);
+
         // Dispatch error event
         this.container.dispatchEvent(new CustomEvent('insight-ui:progress-error', {
             bubbles: true,
@@ -407,11 +433,15 @@ export class ProgressBar {
         // Call cancel URL if configured
         if (this.config.cancelUrl) {
             try {
+                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+                const headers = { 'Content-Type': 'application/json' };
+                if (csrfToken) {
+                    headers['X-CSRFToken'] = csrfToken;
+                }
                 await fetch(this.config.cancelUrl, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers,
+                    credentials: 'same-origin',
                 });
             } catch (error) {
                 console.error('ProgressBar cancel request failed:', error);
@@ -420,6 +450,11 @@ export class ProgressBar {
 
         // Show cancelled state
         this.setError('Cancelled', true);
+
+        // Call user-defined callback
+        if (typeof this.onCancel === 'function') {
+            this.onCancel();
+        }
 
         // Dispatch cancel event
         this.container.dispatchEvent(new CustomEvent('insight-ui:progress-cancel', {
@@ -436,8 +471,13 @@ export class ProgressBar {
         this.isCancelled = false;
         this.clearError();
 
-        // Restart auto-update
+        // Restart auto-update (for polling/SSE)
         this.startAutoUpdate();
+
+        // Call user-defined callback
+        if (typeof this.onRetry === 'function') {
+            this.onRetry();
+        }
 
         // Dispatch retry event
         this.container.dispatchEvent(new CustomEvent('insight-ui:progress-retry', {
@@ -498,7 +538,8 @@ export class ProgressBar {
      * @returns {number}
      */
     getValue() {
-        return parseInt(this.fill.dataset.value, 10);
+        const value = parseInt(this.fill?.dataset?.value, 10);
+        return isNaN(value) ? this.config.minValue : value;
     }
 
     /**
@@ -516,6 +557,11 @@ export class ProgressBar {
 
         // Update button visibility
         this.updateButtonVisibility();
+
+        // Announce completion to screen readers
+        const label = this.getLabel();
+        const message = label ? `${label}: Complete` : 'Progress complete';
+        this.announce(message);
 
         // Dispatch completion event
         this.container.dispatchEvent(new CustomEvent('insight-ui:progress-complete', {
@@ -536,65 +582,13 @@ export class ProgressBar {
     }
 
     updateTooltipContent() {
-        if (!this.tooltip) return;
-        const value = this.fill.dataset.value;
+        if (!this.track) return;
+        const value = this.fill.dataset.value || '0';
         const label = this.fill.dataset.label;
-        const arrow = this.tooltip.querySelector('span');
-        this.tooltip.textContent = label ? `${label}: ${value}%` : `${value}%`;
-        if (arrow) this.tooltip.appendChild(arrow);
-    }
+        const text = label ? `${label}: ${value}%` : `${value}%`;
 
-    updateTooltipPosition(event) {
-        if (!this.tooltip) return;
-        const rect = this.track.getBoundingClientRect();
-        const x = Math.max(0, Math.min(event.clientX - rect.left, rect.width));
-        this.tooltip.style.left = `${x}px`;
-    }
-
-    /**
-     * Destroys the progress bar instance and removes all event listeners.
-     * Call this before removing the element from DOM.
-     */
-    destroy() {
-        debugLog("Destroy progress bar:", this.tagId);
-
-        // Stop auto-update
-        this.stopPolling();
-        this.stopSSE();
-
-        // Remove event listeners
-        if (this.boundMouseMove) {
-            this.track.removeEventListener('mousemove', this.boundMouseMove);
-        }
-        if (this.boundFocus) {
-            this.track.removeEventListener('focus', this.boundFocus);
-        }
-        if (this.boundCancelClick && this.cancelButton) {
-            this.cancelButton.removeEventListener('click', this.boundCancelClick);
-        }
-        if (this.boundRetryClick && this.retryButton) {
-            this.retryButton.removeEventListener('click', this.boundRetryClick);
-        }
-
-        // Disconnect observer
-        if (this.observer) {
-            this.observer.disconnect();
-            this.observer = null;
-        }
-
-        // Clean up references
-        ProgressBar.instances.delete(this.container);
-        delete ProgressBar.registry[this.tagId];
-        delete this.container.__insightInstance;
-
-        this.container = null;
-        this.fill = null;
-        this.track = null;
-        this.tooltip = null;
-        this.errorContainer = null;
-        this.errorMessage = null;
-        this.cancelButton = null;
-        this.retryButton = null;
+        // Update the data-insight-tooltip attribute for the Floater system
+        this.track.setAttribute('data-insight-tooltip', text);
     }
 
     /**
@@ -689,6 +683,46 @@ export class ProgressBar {
         if (instance) {
             instance.complete();
         }
+    }
+
+    /**
+     * Destroys the progress bar instance and removes all event listeners.
+     * Call this before removing the element from DOM.
+     */
+    destroy() {
+        debugLog("Destroy progress bar:", this.tagId);
+
+        // Stop auto-update
+        this.stopPolling();
+        this.stopSSE();
+
+        // Remove event listeners
+        if (this.boundCancelClick && this.cancelButton) {
+            this.cancelButton.removeEventListener('click', this.boundCancelClick);
+        }
+        if (this.boundRetryClick && this.retryButton) {
+            this.retryButton.removeEventListener('click', this.boundRetryClick);
+        }
+
+        // Disconnect observer
+        if (this.observer) {
+            this.observer.disconnect();
+            this.observer = null;
+        }
+
+        // Clean up references
+        ProgressBar.instances.delete(this.container);
+        delete ProgressBar.registry[this.tagId];
+        delete this.container.__insightInstance;
+
+        this.container = null;
+        this.fill = null;
+        this.track = null;
+        this.errorContainer = null;
+        this.errorMessage = null;
+        this.cancelButton = null;
+        this.retryButton = null;
+        this.announceElement = null;
     }
 
     // Static method for initializing all progress bars
