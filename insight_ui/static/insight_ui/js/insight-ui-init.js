@@ -104,4 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	});
 
 	debugLog('Finished with initialization!');
+
+	// Signal that InsightUI is fully initialized
+	document.dispatchEvent(new CustomEvent('insightui:ready', { bubbles: true }));
 });
