@@ -7,6 +7,26 @@ from django.utils.translation import gettext_lazy as _
 
 
 @dataclass
+class DataAttrConfig:
+    """
+    Configuration for a custom data attribute.
+
+    Attributes:
+        name: Attribute name without 'data-' prefix (e.g., 'testid' becomes 'data-testid').
+        value: Attribute value. Empty string for marker attributes.
+
+    """
+
+    __example__ = """
+        DataAttrConfig(name="testid", value="submit-btn")
+        DataAttrConfig(name="progress-retry", value="")
+        """
+
+    name: str = field(default="", metadata={"doc": _("Attribute name without 'data-' prefix.")})
+    value: str = field(default="", metadata={"doc": _("Attribute value. Empty string for marker attributes.")})
+
+
+@dataclass
 class IconConfig:
     """
     Configuration for an icon.

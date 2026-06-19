@@ -42,6 +42,7 @@ from insight_ui.configs import (
     CheckboxGroupConfig,
     CopyrightNoticeConfig,
     CornerRibbonConfig,
+    DataAttrConfig,
     DropdownConfig,
     FlipCardConfig,
     FooterConfig,
@@ -445,17 +446,34 @@ def button(
     icon_size: str | _Unset = UNSET,
     icon_end: bool | _Unset = UNSET,
     icon_only: bool | _Unset = UNSET,
-    type: Literal["primary", "secondary", "info", "success", "warning", "danger", "disabled"] | _Unset = UNSET,  # noqa: A002
+    type: Literal["primary", "secondary", "info", "success", "warning", "danger", "disabled", "link"] | _Unset = UNSET,  # noqa: A002
     size: Literal["xs", "s", "m", "l", "xl"] | _Unset = UNSET,
     outline: bool | _Unset = UNSET,
     subtle: bool | _Unset = UNSET,
     tooltip: str | _Unset = UNSET,
     htmx_config: HtmxConfig | _Unset = UNSET,
+    hidden: bool | _Unset = UNSET,
+    **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
-    """Render the button component."""
+    """
+    Render the button component.
+
+    Supports data_* kwargs for custom data attributes, e.g.:
+        {% button label="Retry" data_progress_retry="" data_retry="retry-btn" %}
+    becomes:
+        <button data-progress-retry="" data-retry="retry-btn">Retry</button>
+    """
     icon: IconConfig | None | _Unset = UNSET
     if icon_name is not UNSET:
         icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "m") if icon_name else None
+
+    # Collect data_* kwargs and convert to DataAttrConfig list
+    data_attrs: list[DataAttrConfig] | _Unset = UNSET
+    data_kwargs = {k: v for k, v in kwargs.items() if k.startswith("data_")}
+    if data_kwargs:
+        data_attrs = [
+            DataAttrConfig(name=key[5:].replace("_", "-"), value=str(value)) for key, value in data_kwargs.items()
+        ]
 
     config = build_config(
         ButtonConfig,
@@ -473,6 +491,8 @@ def button(
         subtle=subtle,
         tooltip=tooltip,
         htmx_config=htmx_config,
+        hidden=hidden,
+        data_attrs=data_attrs,
     )
     return {"button_config": config}
 
@@ -944,17 +964,16 @@ def progress_bar(
     config: ProgressBarConfig | None = None,
     *,
     tag_id: str | _Unset = UNSET,
-    value: int | _Unset = UNSET,
     label: str | _Unset = UNSET,
-    show_value: bool | _Unset = UNSET,
-    min_value: int | _Unset = UNSET,
-    max_value: int | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
     interval: int | _Unset = UNSET,
     sse_url: str | _Unset = UNSET,
+    min_value: int | _Unset = UNSET,
+    max_value: int | _Unset = UNSET,
+    value: int | _Unset = UNSET,
+    show_value: bool | _Unset = UNSET,
     hide_on_complete: bool | _Unset = UNSET,
     complete_delay: int | _Unset = UNSET,
-    error: str | _Unset = UNSET,
     stop_on_error: bool | _Unset = UNSET,
     show_cancel: bool | _Unset = UNSET,
     cancel_label: str | _Unset = UNSET,
