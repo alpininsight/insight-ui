@@ -949,6 +949,18 @@ def progress_bar(
     show_value: bool | _Unset = UNSET,
     min_value: int | _Unset = UNSET,
     max_value: int | _Unset = UNSET,
+    request_url: str | _Unset = UNSET,
+    interval: int | _Unset = UNSET,
+    sse_url: str | _Unset = UNSET,
+    hide_on_complete: bool | _Unset = UNSET,
+    complete_delay: int | _Unset = UNSET,
+    error: str | _Unset = UNSET,
+    stop_on_error: bool | _Unset = UNSET,
+    show_cancel: bool | _Unset = UNSET,
+    cancel_label: str | _Unset = UNSET,
+    cancel_url: str | _Unset = UNSET,
+    show_retry: bool | _Unset = UNSET,
+    retry_label: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a simple progress bar."""
     config = build_config(ProgressBarConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})

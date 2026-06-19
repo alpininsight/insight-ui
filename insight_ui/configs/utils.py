@@ -198,24 +198,63 @@ class CornerRibbonConfig:
 @dataclass
 class ProgressBarConfig:
     """
-    Configuration for a simple progress bar.
+    Configuration for a simple progress bar with optional auto-update modes.
 
     Attributes:
         tag_id: Unique ID for JavaScript/CSS targeting.
         label: Optional heading/title for the progress bar.
         value: Current progress in percent.
         show_value: Whether to display the value as text.
-        min_value: Minimum value (default 0).
-        max_value: Maximum value (default 100).
+        min_value: Minimum value.
+        max_value: Maximum value.
+        request_url: URL to poll for progress updates. Expected JSON: {"value": 75}.
+        interval: Polling interval in milliseconds.
+        sse_url: Server-Sent Events URL for real-time progress updates.
+        hide_on_complete: Hide progress bar when reaching max_value.
+        complete_delay: Delay in ms before hiding after completion.
+        error: Initial error message to display.
+        stop_on_error: Stop polling/SSE when an error is received.
+        show_cancel: Show a cancel button during progress.
+        cancel_label: Label for the cancel button.
+        cancel_url: Optional URL to call when cancelling (POST request).
+        show_retry: Show a retry button when an error occurs.
+        retry_label: Label for the retry button.
+
+    JSON Response Format:
+        {
+            "value": 75,
+            "label": "Uploading...",      // Optional: update label
+            "error": "Connection lost",   // Optional: show error message
+            "complete": true              // Optional: signal completion
+        }
 
     """
 
     __example__ = """
+        # Static progress bar
         ProgressBarConfig(
             tag_id="download",
             label="Download Progress",
             value=97,
             show_value=True,
+        )
+
+        # Auto-updating via polling with cancel button
+        ProgressBarConfig(
+            tag_id="server-task",
+            label="Processing...",
+            request_url="/api/task/123/progress/",
+            interval=500,
+            show_cancel=True,
+            cancel_url="/api/task/123/cancel/",
+        )
+
+        # With retry on error
+        ProgressBarConfig(
+            tag_id="upload",
+            label="Uploading...",
+            request_url="/api/upload/progress/",
+            show_retry=True,
         )
         """
 
@@ -225,6 +264,20 @@ class ProgressBarConfig:
     show_value: bool = field(default=True, metadata={"doc": _("Whether to display the value as text.")})
     min_value: int = field(default=0, metadata={"doc": _("Minimum value.")})
     max_value: int = field(default=100, metadata={"doc": _("Maximum value.")})
+    request_url: str = field(
+        default="", metadata={"doc": _('URL to poll for progress updates. Expected JSON: {"value": 75}.')}
+    )
+    interval: int = field(default=1000, metadata={"doc": _("Polling interval in milliseconds.")})
+    sse_url: str = field(default="", metadata={"doc": _("Server-Sent Events URL for real-time progress updates.")})
+    hide_on_complete: bool = field(default=False, metadata={"doc": _("Hide progress bar when reaching max_value.")})
+    complete_delay: int = field(default=500, metadata={"doc": _("Delay in ms before hiding after completion.")})
+    error: str = field(default="", metadata={"doc": _("Initial error message to display.")})
+    stop_on_error: bool = field(default=False, metadata={"doc": _("Stop polling/SSE when an error is received.")})
+    show_cancel: bool = field(default=False, metadata={"doc": _("Show a cancel button during progress.")})
+    cancel_label: str = field(default="", metadata={"doc": _("Label for the cancel button.")})
+    cancel_url: str = field(default="", metadata={"doc": _("Optional URL to call when cancelling (POST request).")})
+    show_retry: bool = field(default=False, metadata={"doc": _("Show a retry button when an error occurs.")})
+    retry_label: str = field(default="", metadata={"doc": _("Label for the retry button.")})
 
 
 @dataclass

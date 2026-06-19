@@ -1,18 +1,31 @@
-<div class="relative">
+{% load i18n %}
+
+<div data-insight-progress-bar="{{ progress_bar_config.tag_id }}"
+     data-request-url="{{ progress_bar_config.request_url }}"
+     data-interval="{{ progress_bar_config.interval }}"
+     data-sse-url="{{ progress_bar_config.sse_url }}"
+     data-hide-on-complete="{{ progress_bar_config.hide_on_complete|yesno:'true,false' }}"
+     data-complete-delay="{{ progress_bar_config.complete_delay }}"
+     data-min-value="{{ progress_bar_config.min_value }}"
+     data-max-value="{{ progress_bar_config.max_value }}"
+     data-stop-on-error="{{ progress_bar_config.stop_on_error|yesno:'true,false' }}"
+     data-initial-error="{{ progress_bar_config.error }}"
+     data-cancel-url="{{ progress_bar_config.cancel_url }}"
+     class="relative">
     {% if progress_bar_config.label %}
         <div class="flex justify-between items-center mb-1">
-            <span id="{{ progress_bar_config.tag_id }}-label" class="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <span data-progress-label class="text-sm font-medium text-gray-700 dark:text-gray-300">
                 {{ progress_bar_config.label }}
             </span>
             {% if progress_bar_config.show_value %}
-                <span id="{{ progress_bar_config.tag_id }}-value" class="text-sm font-medium text-gray-700 dark:text-gray-300" aria-hidden="true">
+                <span data-progress-value class="text-sm font-medium text-gray-700 dark:text-gray-300" aria-hidden="true">
                     {{ progress_bar_config.value }}%
                 </span>
             {% endif %}
         </div>
     {% elif progress_bar_config.show_value %}
         <div class="flex justify-end mb-1">
-            <span id="{{ progress_bar_config.tag_id }}-value" class="text-sm font-medium text-gray-700 dark:text-gray-300" aria-hidden="true">
+            <span data-progress-value class="text-sm font-medium text-gray-700 dark:text-gray-300" aria-hidden="true">
                 {{ progress_bar_config.value }}%
             </span>
         </div>
@@ -23,12 +36,12 @@
          aria-valuenow="{{ progress_bar_config.value }}"
          aria-valuemin="{{ progress_bar_config.min_value }}"
          aria-valuemax="{{ progress_bar_config.max_value }}"
-         {% if progress_bar_config.label %}aria-labelledby="{{ progress_bar_config.tag_id }}-label"{% endif %}
+         {% if progress_bar_config.label %}aria-label="{{ progress_bar_config.label }}"{% endif %}
          aria-valuetext="{{ progress_bar_config.value }}% {% if progress_bar_config.label %}{{ progress_bar_config.label }}{% endif %}"
          tabindex="0">
-        <div class="w-full h-4 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-            <div id="{{ progress_bar_config.tag_id }}"
-                 class="h-full bg-blue-600 rounded-full transition-all duration-500 ease-in-out"
+        <div data-progress-track class="w-full h-4 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+            <div data-progress-fill
+                 class="h-full rounded-full transition-all duration-500 ease-in-out {% if progress_bar_config.error %}bg-red-500{% else %}bg-blue-600{% endif %}"
                  style="width: {{ progress_bar_config.value }}%"
                  data-value="{{ progress_bar_config.value }}"
                  data-label="{{ progress_bar_config.label }}">
@@ -40,50 +53,36 @@
             <span class="absolute top-full left-1/2 -translate-x-1/2 border-x-[6px] border-t-[6px] border-x-transparent border-t-gray-800"></span>
         </span>
     </div>
+
+    <div class="flex items-center justify-between mt-2">
+        <div data-progress-error
+             class="flex items-center gap-2 text-sm {% if progress_bar_config.error %}text-red-600 dark:text-red-400{% else %}text-amber-600 dark:text-amber-400 hidden{% endif %}"
+             role="alert"
+             aria-live="polite">
+            <svg data-error-icon-warning class="w-4 h-4 shrink-0 {% if progress_bar_config.error %}hidden{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+            <svg data-error-icon-error class="w-4 h-4 shrink-0 {% if not progress_bar_config.error %}hidden{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span data-error-message>{{ progress_bar_config.error }}</span>
+        </div>
+
+        <div class="flex items-center gap-2">
+            {% if progress_bar_config.show_cancel %}
+                <button data-progress-cancel
+                        type="button"
+                        class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 underline transition-colors {% if progress_bar_config.error %}hidden{% endif %}">
+                    {{ progress_bar_config.cancel_label|default:_("Cancel") }}
+                </button>
+            {% endif %}
+            {% if progress_bar_config.show_retry %}
+                <button data-progress-retry
+                        type="button"
+                        class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 underline transition-colors hidden">
+                    {{ progress_bar_config.retry_label|default:_("Retry") }}
+                </button>
+            {% endif %}
+        </div>
+    </div>
 </div>
-
-<script>
-    (function() {
-        const tagId = '{{ progress_bar_config.tag_id }}';
-        const fill = document.getElementById(tagId);
-        if (!fill) return;
-
-        const track = fill.closest('[role="progressbar"]');
-        if (!track) return;
-
-        const tooltip = track.querySelector('[role="tooltip"]');
-        if (!tooltip) return;
-
-        function updateTooltipContent() {
-            const value = fill.dataset.value;
-            const label = fill.dataset.label;
-            const arrow = tooltip.querySelector('span');
-            tooltip.textContent = label ? `${label}: ${value}%` : `${value}%`;
-            if (arrow) tooltip.appendChild(arrow);
-        }
-
-        function updateTooltipPosition(event) {
-            const rect = track.getBoundingClientRect();
-            const x = Math.max(0, Math.min(event.clientX - rect.left, rect.width));
-            tooltip.style.left = `${x}px`;
-        }
-
-        updateTooltipContent();
-
-        track.addEventListener('mousemove', updateTooltipPosition);
-        track.addEventListener('focus', function() {
-            const fillWidth = fill.offsetWidth;
-            tooltip.style.left = `${Math.max(20, fillWidth)}px`;
-        });
-
-        // Support dynamic value updates
-        const observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                if (mutation.type === 'attributes' && mutation.attributeName === 'data-value') {
-                    updateTooltipContent();
-                }
-            });
-        });
-        observer.observe(fill, { attributes: true });
-    })();
-</script>
