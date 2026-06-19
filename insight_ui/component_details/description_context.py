@@ -527,10 +527,7 @@ def get_progress_bar_description_context() -> dict[str, list[str]]:
             _(
                 "For a progress indicator where progress is made through active user interaction, our Step Bar component is suitable."
             ),
-        ],
-        "description_notes_begin": [
-            {"type": "warning", "message": "Diese Komponente befindet sich noch in Bearbeitung!"}
-        ],
+        ]
     }
 
 

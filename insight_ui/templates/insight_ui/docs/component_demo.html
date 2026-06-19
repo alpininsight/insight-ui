@@ -71,6 +71,7 @@
             {% button label=_("Warning") type="warning" %}
             {% button label=_("Danger") type="danger" %}
             {% button label=_("Info") type="info" %}
+            {% button label=_("Neutral") type="neutral" %}
             {% button label=_("Disabled") type="disabled" %}
         </div>
         <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
@@ -404,9 +405,26 @@
 {% elif component.value == "form" %}
     {% form config=form_config %}
 {% elif component.value == "badge" %}
-    <div class="flex items-start gap-2">
-        {% badge label=_("New Feature") icon_name="sparkles" %}
-        {% badge label=_("New Feature") icon_name="sparkles" icon_end=True %}
-        {% badge label=_("New Feature") icon_name="sparkles" icon_size="s" size="s" %}
+    <div class="space-y-4">
+        <div class="flex flex-col md:flex-row items-start flex-wrap gap-2">
+            {% badge label=_("Primary") type="primary" %}
+            {% badge label=_("Secondary") type="secondary" %}
+            {% badge label=_("Success") type="success" %}
+            {% badge label=_("Warning") type="warning" %}
+            {% badge label=_("Danger") type="danger" %}
+            {% badge label=_("Info") type="info" %}
+            {% badge label=_("Neutral") type="neutral" %}
+        </div>
+        <div class="flex flex-col md:flex-row items-start flex-wrap gap-2">
+            {% badge label=_("New!") type="primary" size="xl" %}
+            {% badge label=_("New!") type="primary" size="l" %}
+            {% badge label=_("New!") type="primary" size="m" %}
+            {% badge label=_("New!") type="primary" size="s" %}
+            {% badge label=_("New!") type="primary" size="xs" %}
+        </div>
+        <div class="flex flex-col md:flex-row items-start flex-wrap gap-2">
+            {% badge label=_("New!") icon_name="sparkles" %}
+            {% badge label=_("New!") icon_name="sparkles" icon_end=True %}
+        </div>
     </div>
 {% endif %}

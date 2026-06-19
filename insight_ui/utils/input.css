@@ -129,6 +129,13 @@
 }
 
 @layer components {
+
+    /*
+    * ========================================================
+    *   Text
+    * ========================================================
+    */
+
     .text-primary {
         @apply text-insight-text-primary dark:text-insight-text-primary-dark;
     }
@@ -139,9 +146,18 @@
         @apply text-insight-text-link hover:text-insight-text-link-hover underline;
     }
 
+    /*
+    * ========================================================
+    *   Button
+    * ========================================================
+    */
+
     .btn {
         @apply flex gap-2 items-center justify-center border-2 border-transparent rounded-sm text-white px-5 py-1.5 transition-colors;
     }
+
+    /* Button-Size */
+
     .btn-xs {
         @apply text-xs px-2 py-0.5;
     }
@@ -161,6 +177,8 @@
         @apply p-2 border-0;
     }
 
+    /* Button-Fill */
+
     .btn-primary {
         @apply bg-insight-primary border-insight-primary hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active;
     }
@@ -179,8 +197,8 @@
     .btn-info {
         @apply bg-insight-info border-insight-info hover:bg-insight-info-hover active:bg-insight-info-active hover:border-insight-info-hover active:border-insight-info-active;
     }
-    .btn-white {
-        @apply bg-white border-white hover:bg-insight-info-hover active:bg-insight-info-active hover:border-insight-info-hover active:border-insight-info-active text-gray-900;
+    .btn-neutral {
+        @apply bg-white dark:border-white hover:bg-gray-200 active:bg-gray-300 hover:border-gray-200 active:border-gray-300 text-insight-text-primary;
     }
     .btn-link {
         @apply border-0 underline text-insight-text-link px-6 py-2 hover:text-insight-text-link-hover;
@@ -188,6 +206,8 @@
     .btn-disabled {
         @apply bg-neutral-300 dark:bg-neutral-600 border-neutral-300 dark:border-neutral-600 text-neutral-400;
     }
+
+    /* Button-Outline */
 
     .btn-outline-primary {
         @apply border-insight-primary text-insight-primary hover:text-white hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active;
@@ -211,6 +231,8 @@
         @apply border-neutral-300 dark:border-neutral-600 text-neutral-400;
     }
 
+    /* Button-Subtle */
+
     .btn-subtle-primary {
         @apply text-insight-primary hover:text-insight-primary-hover active:text-insight-primary-active hover:bg-insight-primary-hover/25 active:bg-insight-primary-active/25
     }
@@ -233,9 +255,63 @@
         @apply text-neutral-400;
     }
 
+    /*
+    * ========================================================
+    *   Badge
+    * ========================================================
+    */
+
     .badge {
-        @apply inline-flex items-center gap-2 rounded-full bg-insight-primary/10 dark:bg-insight-primary/10 px-4 py-1.5 text-insight-primary;
+        @apply inline-flex items-center gap-2 rounded-full shadow px-4 py-1.5;
     }
+
+    /* Badge-Size */
+
+    .badge-xs {
+        @apply text-xs px-2 py-1;
+    }
+    .badge-s {
+        @apply text-sm px-4 py-1;
+    }
+    .badge-m {
+        @apply text-sm px-4 py-1.5;
+    }
+    .badge-l {
+        @apply text-lg px-6 py-2;
+    }
+    .badge-xl {
+        @apply text-lg px-8 py-3;
+    }
+
+    /* Badge-Color */
+
+    .badge-primary {
+        @apply bg-insight-primary/10 text-insight-primary dark:text-insight-primary-hover;
+    }
+    .badge-secondary {
+        @apply bg-insight-secondary/10 text-insight-secondary dark:text-insight-secondary-hover;
+    }
+    .badge-success {
+        @apply bg-insight-success/10 text-insight-success;
+    }
+    .badge-warning {
+        @apply bg-insight-warning/10 text-insight-warning;
+    }
+    .badge-danger {
+        @apply bg-insight-danger/10 text-insight-danger;
+    }
+    .badge-info {
+        @apply bg-insight-info/10 text-insight-info;
+    }
+    .badge-neutral {
+        @apply bg-white border border-gray-300 text-insight-secondary dark:bg-gray-900 dark:border-gray-700 dark:text-insight-text-secondary-dark;
+    }
+
+    /*
+    * ========================================================
+    *   Container
+    * ========================================================
+    */
 
     .component-container {
         @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded shadow-md;
@@ -248,6 +324,12 @@
     .info-container {
         @apply bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 border-s-4 rounded-e-sm text-base px-4 py-1;
     }
+
+    /*
+    * ========================================================
+    *   Utils
+    * ========================================================
+    */
 
     .inline-tag {
         @apply bg-gray-200 dark:bg-gray-700 font-mono text-insight-primary dark:text-insight-primary-active text-nowrap rounded-sm px-1 py-px;

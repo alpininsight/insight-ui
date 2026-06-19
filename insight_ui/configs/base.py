@@ -12,7 +12,7 @@ class DataAttrConfig:
     Configuration for a custom data attribute.
 
     Attributes:
-        name: Attribute name without 'data-' prefix (e.g., 'testid' becomes 'data-testid').
+        name: Attribute name without 'data-' prefix.
         value: Attribute value. Empty string for marker attributes.
 
     """
