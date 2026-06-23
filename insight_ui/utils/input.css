@@ -176,6 +176,9 @@
     .btn-icon {
         @apply p-2 border-0;
     }
+    .btn-round {
+        @apply rounded-full;
+    }
 
     /* Button-Fill */
 

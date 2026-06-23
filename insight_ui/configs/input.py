@@ -27,9 +27,9 @@ class ButtonConfig:
         size: Defines the size of the button.
         outline: **True** to use the outline design of the button.
         subtle: **True** to use the subtle design of the button.
+        round: **True** for full rounded corners.
         tooltip: Optional text for a tooltip shown on hover.
         htmx_config: Configuration for asynchronous requests.
-
         hidden: **True** to render the button with CSS 'hidden' class for JS-controlled visibility.
         data_attrs: List of custom data attributes to add to the button element.
 
@@ -48,9 +48,10 @@ class ButtonConfig:
             size="xl",
             outline=False,
             subtle=False,
-            hidden=False,
+            round=False,
             tooltip="Click to calculate something",
             htmx_config=HtmxConfig(...),
+            hidden=False,
             data_attrs=[DataAttrConfig(name="testid", value="submit-btn")],
         )
         """
@@ -82,12 +83,13 @@ class ButtonConfig:
     size: Literal["xs", "s", "m", "l", "xl"] = field(default="m", metadata={"doc": "Defines the size of the button."})
     outline: bool = field(default=False, metadata={"doc": "**True** to use the outline design of the button."})
     subtle: bool = field(default=False, metadata={"doc": "**True** to use the subtle design of the button."})
+    round: bool = field(default=False, metadata={"doc": "**True** for full rounded corners."})
+    tooltip: str = field(default="", metadata={"doc": "Optional text for a tooltip shown on hover."})
+    htmx_config: HtmxConfig = field(default=None, metadata={"doc": "Configuration for asynchronous requests."})
     hidden: bool = field(
         default=False,
         metadata={"doc": "**True** to render the button with CSS 'hidden' class for JS-controlled visibility."},
     )
-    tooltip: str = field(default="", metadata={"doc": "Optional text for a tooltip shown on hover."})
-    htmx_config: HtmxConfig = field(default=None, metadata={"doc": "Configuration for asynchronous requests."})
     data_attrs: list[DataAttrConfig] = field(
         default_factory=list, metadata={"doc": "List of custom data attributes to add to the button element."}
     )

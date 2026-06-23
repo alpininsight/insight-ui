@@ -450,6 +450,7 @@ def button(
     size: Literal["xs", "s", "m", "l", "xl"] | _Unset = UNSET,
     outline: bool | _Unset = UNSET,
     subtle: bool | _Unset = UNSET,
+    round: bool | _Unset = UNSET,  # noqa: A002
     tooltip: str | _Unset = UNSET,
     htmx_config: HtmxConfig | _Unset = UNSET,
     hidden: bool | _Unset = UNSET,
@@ -489,6 +490,7 @@ def button(
         size=size,
         outline=outline,
         subtle=subtle,
+        round=round,
         tooltip=tooltip,
         htmx_config=htmx_config,
         hidden=hidden,
