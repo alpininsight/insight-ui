@@ -14,67 +14,71 @@
 @theme {
     --font-sans: "insight-ui", sans-serif;
 
-    --color-insight-primary: #3b82f6;
-    --color-insight-primary-hover: #60a5fa;
-    --color-insight-primary-active: #93c5fd;
-    --color-insight-secondary: #0d9488;
-    --color-insight-secondary-hover: #14b8a6;
-    --color-insight-secondary-active: #2dd4bf;
-    --color-insight-success: #10b981;
-    --color-insight-success-hover: #34d399;
-    --color-insight-success-active: #6ee7b7;
-    --color-insight-warning: #f59e0b;
-    --color-insight-warning-hover: #fbbf24;
-    --color-insight-warning-active: #fcd34d;
-    --color-insight-danger: #ef4444;
-    --color-insight-danger-hover: #f87171;
-    --color-insight-danger-active: #fca5a5;
-    --color-insight-info: #06b6d4;
-    --color-insight-info-hover: #22d3ee;
-    --color-insight-info-active: #67e8f9;
-    --color-insight-text-primary: oklch(26.9% 0 0);
-    --color-insight-text-secondary: oklch(55.6% 0 0);
-    --color-insight-text-primary-dark: oklch(92.2% 0 0);
-    --color-insight-text-secondary-dark: oklch(70.8% 0 0);
-    --color-insight-text-link: #3b82f6;
-    --color-insight-text-link-hover: #93c5fd;
+    /* Background colors */
+    --color-insight-main-background: #FFFFFF;
+    --color-insight-main-background-dark: #121212;
+    --color-insight-secondary-background: #FFFFFF;
+    --color-insight-secondary-background-dark: #0F161E;
 
-    /*
-    * Semantic surface, border, state, radius and shadow roles.
-    * Components should map their local tokens to these roles instead of
-    * introducing component-specific gray/blue/red/green values.
-    */
-    /*
-    * Each surface role reads the brand colour contract
-    * (--color-insight-surface-*) with the current grey literal kept as the
-    * fallback. With no brand theme loaded the fallback wins, so the computed
-    * styles are byte-identical to before; when a brand theme sets the
-    * --color-insight-surface-* names (light in :root, dark overrides in
-    * html[data-theme="dark"]) the surfaces re-skin. The light and dark tokens
-    * point at the SAME brand name on purpose: the brand contract exposes one
-    * theme-aware name per role. "subtle" reconciles to the brand "soft" role;
-    * "disabled" has no brand counterpart and stays a literal grey.
-    */
-    --insight-surface-page: var(--color-insight-surface-page, #f9fafb); /* gray-50 */
-    --insight-surface-page-dark: var(--color-insight-surface-page, #111827); /* gray-900 */
-    --insight-surface-base: var(--color-insight-surface-base, #ffffff);
-    --insight-surface-base-dark: var(--color-insight-surface-base, #1f2937); /* gray-800 */
-    --insight-surface-muted: var(--color-insight-surface-muted, #f3f4f6); /* gray-100 */
-    --insight-surface-muted-dark: var(--color-insight-surface-muted, #374151); /* gray-700 */
-    --insight-surface-subtle: var(--color-insight-surface-soft, #f9fafb); /* gray-50 */
-    --insight-surface-subtle-dark: var(--color-insight-surface-soft, #374151); /* gray-700 */
-    --insight-surface-raised: var(--color-insight-surface-raised, #ffffff);
-    --insight-surface-raised-dark: var(--color-insight-surface-raised, #1f2937); /* gray-800 */
-    --insight-surface-disabled: #d1d5dc; /* gray-300 */
-    --insight-surface-disabled-dark: #4b5563; /* gray-600 */
+    /* Primary color */
+    --color-insight-primary: #4183EA;
+    --color-insight-primary-hover: #256CD8;
+    --color-insight-primary-active: #0856C0;
+    --color-insight-primary-hover-dark: #72AEFF;
+    --color-insight-primary-active-dark: #90C5FF;
 
-    --insight-border-subtle: #e5e7eb; /* gray-200 */
-    --insight-border-subtle-dark: #374151; /* gray-700 */
-    --insight-border-default: #d1d5dc; /* gray-300 */
-    --insight-border-default-dark: #6b7280; /* gray-500 */
-    --insight-border-strong: #9ca3af; /* gray-400 */
-    --insight-border-strong-dark: #6b7280; /* gray-500 */
+    /* Secondary color */
+    --color-insight-secondary: #1B9388;
+    --color-insight-secondary-hover: #008074;
+    --color-insight-secondary-active: #006B60;
+    --color-insight-secondary-hover-dark: #51BCB0;
+    --color-insight-secondary-active-dark: #75D1C5;
 
+    /* Success color */
+    --color-insight-success: #2EA55C;
+    --color-insight-success-hover: #009144;
+    --color-insight-success-active: #007B2F;
+    --color-insight-success-hover-dark: #67CD87;
+    --color-insight-success-active-dark: #8CE1A4;
+
+    /* Warning color */
+    --color-insight-warning: #E8A127;
+    --color-insight-warning-hover: #DC8900;
+    --color-insight-warning-active: #CC7300;
+    --color-insight-warning-hover-dark: #FFBC5E;
+    --color-insight-warning-active-dark: #FFCD86;
+
+    /* Danger color */
+    --color-insight-danger: #E6443D;
+    --color-insight-danger-hover: #D01D21;
+    --color-insight-danger-active: #B70002;
+    --color-insight-danger-hover-dark: #FF7A6E;
+    --color-insight-danger-active-dark: #FF988B;
+
+    /* Info color */
+    --color-insight-info: #00A3CB;
+    --color-insight-info-hover: #008EB8;
+    --color-insight-info-active: #0078A2;
+    --color-insight-info-hover-dark: #50CBF2;
+    --color-insight-info-active-dark: #77E1FF;
+
+    /* Elevated / Tooltip */
+    --color-insight-tooltip: #F3F4F6;
+    --color-insight-tooltip-dark: #242424;
+
+    /* Card Color */
+    --color-insight-card: #1C1C1E;
+    --color-insight-card-dark: #1C1C1E;
+
+    /* Text color */
+    --color-insight-text-primary: #1C1C1E;
+    --color-insight-text-secondary: #CED2D7;
+    --color-insight-text-primary-dark: #FAFAFA;
+    --color-insight-text-secondary-dark: #CED2D7;
+    --color-insight-text-link: #256CD8;
+    --color-insight-text-link-hover: #72AEFF;
+    
+    /* Radius */
     --insight-radius-none: 0;
     --insight-radius-sm: var(--radius-sm);
     --insight-radius-md: var(--radius-md);
@@ -86,52 +90,13 @@
     --insight-radius-raised: var(--insight-radius-lg);
     --insight-radius-overlay: var(--insight-radius-sm);
 
+    /* Shadow */
     --insight-shadow-none: none;
     --insight-shadow-subtle: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); /* shadow-sm */
     --insight-shadow-surface: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); /* shadow-md */
     --insight-shadow-raised: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); /* shadow-lg */
     --insight-shadow-overlay: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); /* shadow-xl */
     --insight-shadow-focus: 0 0 0 2px var(--color-insight-primary);
-
-    --insight-state-danger-surface: var(--color-red-50);
-    --insight-state-danger-surface-dark: color-mix(in srgb, var(--color-red-900) 20%, transparent);
-    --insight-state-danger-border: var(--color-red-200);
-    --insight-state-danger-border-dark: var(--color-red-800);
-    --insight-state-danger-icon: var(--color-red-400);
-    --insight-state-danger-title: var(--color-red-800);
-    --insight-state-danger-title-dark: var(--color-red-200);
-    --insight-state-danger-body: var(--color-red-700);
-    --insight-state-danger-body-dark: var(--color-red-300);
-
-    --insight-state-success-surface: var(--color-green-50);
-    --insight-state-success-surface-dark: color-mix(in srgb, var(--color-green-900) 20%, transparent);
-    --insight-state-success-border: var(--color-green-200);
-    --insight-state-success-border-dark: var(--color-green-800);
-    --insight-state-success-icon: var(--color-green-400);
-    --insight-state-success-title: var(--color-green-800);
-    --insight-state-success-title-dark: var(--color-green-200);
-    --insight-state-success-body: var(--color-green-700);
-    --insight-state-success-body-dark: var(--color-green-300);
-
-    --insight-state-info-surface: var(--color-blue-50);
-    --insight-state-info-surface-dark: color-mix(in srgb, var(--color-blue-900) 20%, transparent);
-    --insight-state-info-border: var(--color-blue-200);
-    --insight-state-info-border-dark: var(--color-blue-700);
-    --insight-state-info-icon: var(--color-blue-400);
-    --insight-state-info-title: var(--color-blue-800, var(--color-blue-700));
-    --insight-state-info-title-dark: var(--color-blue-200);
-    --insight-state-info-body: var(--color-blue-700);
-    --insight-state-info-body-dark: var(--color-blue-300);
-
-    --insight-state-warning-surface: var(--color-amber-50, #fffbeb);
-    --insight-state-warning-surface-dark: color-mix(in srgb, var(--color-amber-900, #78350f) 20%, transparent);
-    --insight-state-warning-border: var(--color-amber-200, #fde68a);
-    --insight-state-warning-border-dark: var(--color-amber-800, #92400e);
-    --insight-state-warning-icon: var(--color-amber-400);
-    --insight-state-warning-title: var(--color-amber-800, #92400e);
-    --insight-state-warning-title-dark: var(--color-amber-200, #fde68a);
-    --insight-state-warning-body: var(--color-amber-700, #b45309);
-    --insight-state-warning-body-dark: var(--color-amber-300, #fcd34d);
 
     /* Navbar role tokens — defaults preserve today's look; a theme overrides these to re-skin the navbar (e.g. brand: borderless + rounded-button tabs). */
     --insight-nav-bg: var(--insight-surface-raised);
@@ -282,6 +247,49 @@
 
     [data-theme="dark"] {
         color-scheme: dark;
+
+        /* Background */
+        --color-insight-main-background: var(--color-insight-main-background-dark);
+        --color-insight-secondary-background: var(--color-insight-secondary-background-dark);
+        /* Primary */
+        --color-insight-primary-hover: var(--color-insight-primary-hover-dark);
+        --color-insight-primary-active: var(--color-insight-primary-active-dark);
+        /* Secondary */
+        --color-insight-secondary-hover: var(--color-insight-secondary-hover-dark);
+        --color-insight-secondary-active: var(--color-insight-secondary-active-dark);
+        /* Success */
+        --color-insight-success-hover: var(--color-insight-success-hover-dark);
+        --color-insight-success-active: var(--color-insight-success-active-dark);
+        /* Warning */
+        --color-insight-warning-hover: var(--color-insight-warning-hover-dark);
+        --color-insight-warning-active: var(--color-insight-warning-active-dark);
+        /* Danger */
+        --color-insight-danger-hover: var(--color-insight-danger-hover-dark);
+        --color-insight-danger-active: var(--color-insight-danger-active-dark);
+        /* Info */
+        --color-insight-info-hover: var(--color-insight-info-hover-dark);
+        --color-insight-info-active: var(--color-insight-info-active-dark);
+        /* Text */
+        --color-insight-text-primary: var(--color-insight-text-primary-dark);
+        --color-insight-text-secondary: var(--color-insight-text-secondary-dark);
+        /* Elevated / Tooltip */
+        --color-insight-tooltip: var(--color-insight-tooltip-dark);
+        /* Card */
+        --color-insight-card: var(--color-insight-card-dark);
+    }
+
+    .tooltip-arrow {
+        @apply relative;
+    }
+
+    .tooltip-arrow::before {
+        content: "";
+        @apply absolute left-1/2 -top-[9px] h-4 w-4 -translate-x-1/2 rotate-45 bg-insight-tooltip;
+    }
+
+    .tooltip-arrow::after {
+        content: "";
+        @apply absolute left-1/2 -top-2 h-4 w-4 -translate-x-1/2 rotate-45 bg-insight-tooltip;
     }
 
     /* Layout-Tags */
@@ -341,19 +349,19 @@
     button:not(:disabled), [role="button"]:not(:disabled) { cursor: pointer; }
 
     h1 {
-        @apply text-4xl md:text-5xl font-bold text-insight-text-primary dark:text-white pb-4;
+        @apply text-4xl md:text-5xl font-bold text-insight-text-primary pb-4;
     }
     h2 {
-        @apply text-2xl md:text-3xl font-semibold text-insight-text-primary dark:text-white pb-4;
+        @apply text-2xl md:text-3xl font-semibold text-insight-text-primary pb-4;
     }
     h3 {
-        @apply text-xl md:text-2xl font-semibold text-insight-text-primary dark:text-white pb-2;
+        @apply text-xl md:text-2xl font-semibold text-insight-text-primary pb-2;
     }
     h4 {
-        @apply text-lg md:text-xl font-semibold text-insight-text-primary dark:text-white pb-1;
+        @apply text-lg md:text-xl font-semibold text-insight-text-primary pb-1;
     }
     h5 {
-        @apply text-base md:text-lg font-semibold text-insight-text-primary dark:text-white pb-1;
+        @apply text-base md:text-lg font-semibold text-insight-text-primary pb-1;
     }
     hr {
         @apply text-gray-300 dark:text-gray-600;
@@ -387,10 +395,10 @@
     */
 
     .text-primary {
-        @apply text-insight-text-primary dark:text-insight-text-primary-dark;
+        @apply text-insight-text-primary;
     }
     .text-secondary {
-        @apply text-insight-text-secondary dark:text-insight-text-secondary-dark;
+        @apply text-insight-text-secondary;
     }
     .text-link {
         @apply text-insight-text-link hover:text-insight-text-link-hover underline;

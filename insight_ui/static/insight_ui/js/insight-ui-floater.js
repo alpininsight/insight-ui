@@ -16,12 +16,12 @@ export class Floater {
 
         if (this.trigger.getAttribute("data-show-arrow")) {
             this.arrow = document.createElement('div');
-            this.arrow.classList.add("absolute", "left-1/2", "-top-2", "-translate-x-1/2", "size-0", "border-10", "border-t-0", "border-transparent", "border-b-white", "dark:border-b-gray-600");
+            this.arrow.classList.add("absolute", "left-1/2", "-translate-x-1/2", "rotate-45", "size-4", "bg-insight-tooltip", "border-r", "border-b", "border-gray-300", "dark:border-gray-600");
         }
 
         if (type == "tooltip") {
             this.target = document.createElement('span');
-            this.target.classList.add("text-primary", "bg-white", "dark:bg-gray-600", "px-3", "py-1", "border", "border-gray-300", "dark:border-0", "rounded-sm", "insight-shadow-subtle", "whitespace-nowrap");
+            this.target.classList.add("text-primary", "bg-insight-tooltip", "px-3", "py-1", "border", "border-gray-300", "dark:border-gray-600", "rounded-sm", "insight-shadow-subtle", "whitespace-nowrap");
             this.target.textContent = this.trigger.getAttribute("data-insight-tooltip");
         }
         else {
@@ -175,30 +175,33 @@ export class Floater {
         const position = this.trigger.getAttribute('data-position') || "top";
         const rect = this.trigger.getBoundingClientRect();
         const scrollY = window.scrollY || document.documentElement.scrollTop;
+        const distanceToTarget = 12;
+        const arrowSize = 8;
 
+        // Some directions need slight adjustments, like + or - 1px.
         switch (position) {
             case 'top':
-                this.target.style.top = `${rect.top + scrollY - this.target.offsetHeight - 8}px`;
+                this.target.style.top = `${rect.top + scrollY - this.target.offsetHeight - distanceToTarget}px`;
                 this.target.style.left = `${rect.left + rect.width / 2 - this.target.offsetWidth / 2}px`;
-                if (this.arrow) { this.arrow.classList.add('rotate-180'); this.arrow.style.top = `${this.target.offsetHeight - 2}px`; }
+                if (this.arrow) { this.arrow.style.top = `${this.target.offsetHeight - (arrowSize + 1)}px`; }
                 break;
 
             case 'bottom':
-                this.target.style.top = `${rect.bottom + scrollY + 8}px`;
+                this.target.style.top = `${rect.bottom + scrollY + distanceToTarget}px`;
                 this.target.style.left = `${rect.left + rect.width / 2 - this.target.offsetWidth / 2}px`;
-                if (this.arrow) { this.arrow.classList.remove('rotate-180'); this.arrow.style.top = ''; }
+                if (this.arrow) { this.arrow.classList.add('rotate-225'); this.arrow.style.top = `${-this.target.offsetHeight / 2 + arrowSize}px`; }
                 break;
 
             case 'left':
                 this.target.style.top = `${rect.top + rect.height / 2 - this.target.offsetHeight / 2 + scrollY}px`;
-                this.target.style.left = `${rect.left - this.target.offsetWidth - 8}px`;
-                if (this.arrow) { this.arrow.classList.add('rotate-90'); this.arrow.style.top = `${this.target.offsetHeight / 2 - 5}px`; this.arrow.style.left = `${this.target.offsetWidth + 3}px`; }
+                this.target.style.left = `${rect.left - this.target.offsetWidth - distanceToTarget}px`;
+                if (this.arrow) { this.arrow.classList.add('rotate-315'); this.arrow.style.top = `${this.target.offsetHeight / 2 - arrowSize}px`; this.arrow.style.left = `${this.target.offsetWidth - 1}px`; }
                 break;
 
             case 'right':
                 this.target.style.top = `${rect.top + rect.height / 2 - this.target.offsetHeight / 2 + scrollY}px`;
-                this.target.style.left = `${rect.right + 8}px`;
-                if (this.arrow) { this.arrow.classList.add('-rotate-90'); this.arrow.style.top = `${this.target.offsetHeight / 2 - 5}px`; this.arrow.style.left = `-3px`; }
+                this.target.style.left = `${rect.right + distanceToTarget}px`;
+                if (this.arrow) { this.arrow.classList.add('rotate-135'); this.arrow.style.top = `${this.target.offsetHeight / 2 - arrowSize}px`; this.arrow.style.left = `-1px`; }
                 break;
         }
     }
