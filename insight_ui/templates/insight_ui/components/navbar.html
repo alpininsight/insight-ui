@@ -8,7 +8,7 @@
 <nav
   role="navigation"
   aria-label="{% trans 'Main navigation' %}"
-  class="{% if fixed %}fixed{% else %}absolute{% endif %} w-full h-16 z-50 bg-[var(--insight-nav-bg)] dark:bg-[var(--insight-nav-bg-dark)] border-b border-[var(--insight-nav-border)] dark:border-[var(--insight-nav-border-dark)] insight-nav-shadow px-4 md:px-16"
+  class="{% if fixed %}fixed{% else %}absolute{% endif %} w-full h-16 z-50 bg-insight-secondary-background shadow-lg border-b border-gray-200 dark:border-gray-700 px-4 md:px-16"
 >
   {# Desktop Navigation #}
   <div class="flex flex-wrap lg:flex-nowrap justify-between items-center gap-1 h-full">
@@ -40,7 +40,7 @@
     </div>
 
     <div id="navigation-menu" class="hidden lg:block h-full w-full lg:w-fit grow lg:py-3">
-      <div class="flex flex-col lg:flex-row justify-end gap-6 w-full lg:h-full p-2 lg:p-0 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 insight-shadow-raised lg:insight-shadow-none lg:bg-transparent lg:border-none insight-radius-surface">
+      <div class="flex flex-col lg:flex-row justify-end gap-6 w-full lg:h-full p-2 lg:p-0 bg-insight-secondary-background border border-gray-300 dark:border-gray-600 insight-shadow-raised lg:insight-shadow-none lg:bg-transparent lg:border-none insight-radius-surface">
         {# Main-Navigation #}
         {% if navbar_config.links %}
           <ul class="flex flex-col lg:flex-row justify-items-stretch lg:items-center w-full lg:w-fit">
