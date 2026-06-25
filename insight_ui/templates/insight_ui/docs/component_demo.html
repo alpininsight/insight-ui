@@ -501,7 +501,7 @@
         {% endhbox %}
     {% endvbox %}
 {% elif component.value == "navbar" %}
-    <div class="relative bg-gray-50 dark:bg-gray-700 h-80 w-full">
+    <div class="relative bg-insight-primary-background h-80 w-full">
         {% navbar config=demo_nav_config user_dropdown_links=user_dropdown_links %}
         <script>
             // Demo fix
@@ -511,7 +511,7 @@
         </script>
     </div>
 {% elif component.value == "sidebar" %}
-    <div class="flex grow bg-gray-50 dark:bg-gray-700 h-96">
+    <div class="flex grow bg-insight-primary-background h-96">
         <div class="flex">
             {% sidebar config=left_sidebar_config %}
         </div>
@@ -534,7 +534,7 @@
         </script>
     </div>
 {% elif component.value == "footer" %}
-    <div class="bg-gray-50 dark:bg-gray-700 h-24"></div>
+    <div class="bg-insight-primary-background h-24"></div>
     {% footer config=footer_config %}
 {% elif component.value == "breadcrumbs" %}
     <div class="space-y-4">
@@ -700,16 +700,16 @@
 {% elif component.value == "popover" %}
     <div class="flex items-end justify-center gap-12 h-64">
         {% button label="Hover me!" type="primary" data_insight_popover="demo-popover" data_show_arrow="true" %}
-        <div id="demo-popover" class="bg-white dark:bg-gray-700 w-64 border border-gray-300 dark:border-0 rounded-sm insight-shadow-subtle">
+        <div id="demo-popover" class="bg-insight-secondary-background w-64 border border-insight-primary-border rounded-sm insight-shadow-subtle">
             <div class="p-4">
-                <span class="text-primary block font-semibold w-full border-b-2 border-gray-300 dark:border-gray-500 pb-2">
+                <span class="text-primary block font-semibold w-full border-b-2 border-insight-primary-border pb-2">
                     {% trans "This is a popover." %}
                 </span>
                 <p class="text-secondary text-sm mt-4">
                     {% trans "A popover can have more content than a tooltip, e.g. interactive elements like buttons." %}
                 </p>
             </div>
-            <div class="bg-gray-100 dark:bg-gray-900 p-4 rounded-b-sm">
+            <div class="bg-insight-primary-background p-4 rounded-b-sm">
                 {% button label=_("Learn more") type="primary" size="s" %}
             </div>
         </div>

@@ -1,6 +1,6 @@
 {% load i18n insight_tags %}
 
-<div class="insight-table-surface">
+<div class="bg-insight-primary-background rounded-sm overflow-auto">
     <table class="table-auto w-full">
         {% if table_config.caption %}
             <caption class="text-sm text-secondary">{{ table_config.caption }}</caption>
@@ -8,7 +8,7 @@
 
         {% if table_config.headers %}
             <thead class="text-primary">
-                <tr class="insight-table-header-row">
+                <tr class="border-b border-insight-primary-border">
                     {% for header in table_config.headers %}
                         <th class="text-start text-sm px-4 py-2" scope="col">
                             {% if sortable %}
@@ -27,7 +27,7 @@
 
         <tbody class="text-primary">
             {% for row in table_config.rows %}
-                <tr class="insight-table-row">
+                <tr class="odd:bg-insight-tertiary-background even:bg-insight-primary-background">
                     {% for cell in row %}
                         <td class="text-start text-sm px-4 py-3">{{ cell|safe }}</td>
                     {% endfor %}
@@ -35,7 +35,7 @@
             {% empty %}
                 <tfoot>
                     <tr>
-                        <td colspan="{{ table_config.headers|length }}" class="insight-table-empty">
+                        <td colspan="{{ table_config.headers|length }}" class="w-full border-t border-insight-primary-border text-secondary text-center pt-16">
                             {{ table_config.empty_msg }}
                         </td>
                     </tr>

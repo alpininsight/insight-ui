@@ -1,6 +1,6 @@
 {% load i18n insight_tags %}
 
-<footer class="z-10 bg-insight-secondary-background border-t border-gray-200 dark:border-gray-700 px-4 md:px-16 mt-auto">
+<footer class="z-10 bg-insight-secondary-background border-t border-insight-primary-border px-4 md:px-16 mt-auto">
     <div class="mx-auto py-6">
         <div class="flex flex-col md:flex-row justify-stretch gap-6">
             {% if footer_config.description %}
@@ -46,7 +46,7 @@
             </div>
         </div>
         {% if footer_config.copyright or footer_config.version %}
-            <div class="flex justify-center border-t border-gray-200 dark:border-gray-700 mt-6 pt-4">
+            <div class="flex justify-center border-t border-insight-primary-border mt-6 pt-4">
                 {% if footer_config.copyright %}
                     {% copyright_notice config=footer_config.copyright %}
                 {% endif %}

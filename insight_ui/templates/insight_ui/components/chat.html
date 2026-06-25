@@ -10,7 +10,7 @@
         hx-swap="beforeend"
         hx-target="#response"
         hx-on::after-request="if(event.detail.successful) this.reset()"
-        class="mt-16 space-y-2"
+        class="mt-8 space-y-2"
     >
         {% csrf_token %}
         <label class="block text-sm font-medium text-secondary" for="msg">

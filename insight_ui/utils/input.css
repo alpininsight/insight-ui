@@ -15,10 +15,22 @@
     --font-sans: "insight-ui", sans-serif;
 
     /* Background colors */
-    --color-insight-main-background: #FFFFFF;
-    --color-insight-main-background-dark: #121212;
+    --color-insight-primary-background: #F6F7F9;
+    --color-insight-primary-background-dark: #030712;
     --color-insight-secondary-background: #FFFFFF;
-    --color-insight-secondary-background-dark: #0F161E;
+    --color-insight-secondary-background-dark: #0E1525;
+    --color-insight-tertiary-background: #EEF0F3;
+    --color-insight-tertiary-background-dark: #1A2336;
+    --color-insight-quaternary-background: #E9EAEB;
+    --color-insight-quaternary-background-dark: #202A3D;
+
+    /* Border colors */
+    --color-insight-primary-border: #E5E7EB;
+    --color-insight-primary-border-dark: #1E2940;
+    --color-insight-secondary-border: #E5E7EB;
+    --color-insight-secondary-border-dark: #1E2940;
+    --color-insight-tertiary-border: #E5E7EB;
+    --color-insight-tertiary-border-dark: #2F3B54;
 
     /* Primary color */
     --color-insight-primary: #4183EA;
@@ -78,15 +90,11 @@
     --color-insight-tooltip: #F3F4F6;
     --color-insight-tooltip-dark: #242424;
 
-    /* Card Color */
-    --color-insight-card: #1C1C1E;
-    --color-insight-card-dark: #1C1C1E;
-
     /* Text color */
     --color-insight-text-primary: #1C1C1E;
-    --color-insight-text-secondary: #CED2D7;
-    --color-insight-text-primary-dark: #FAFAFA;
-    --color-insight-text-secondary-dark: #CED2D7;
+    --color-insight-text-primary-dark: #F5F8FC;
+    --color-insight-text-secondary: #364153;
+    --color-insight-text-secondary-dark: #9BA3B4;
     --color-insight-text-link: #256CD8;
     --color-insight-text-link-hover: #72AEFF;
     
@@ -261,8 +269,14 @@
         color-scheme: dark;
 
         /* Background */
-        --color-insight-main-background: var(--color-insight-main-background-dark);
+        --color-insight-primary-background: var(--color-insight-primary-background-dark);
         --color-insight-secondary-background: var(--color-insight-secondary-background-dark);
+        --color-insight-tertiary-background: var(--color-insight-tertiary-background-dark);
+        --color-insight-quaternary-background: var(--color-insight-quaternary-background-dark);
+        /* Border */
+        --color-insight-primary-border: var(--color-insight-primary-border-dark);
+        --color-insight-secondary-border: var(--color-insight-secondary-border-dark);
+        --color-insight-tertiary-border: var(--color-insight-tertiary-border-dark);
         /* Primary */
         --color-insight-primary-soft: var(--color-insight-primary-soft-dark);
         --color-insight-primary-hover: var(--color-insight-primary-hover-dark);
