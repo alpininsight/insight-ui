@@ -55,7 +55,7 @@ export class CodeBlock {
      */
     #createToolbar(lang, filename) {
         const toolbar = document.createElement('div');
-        toolbar.classList.add('flex', 'justify-between', 'bg-gray-200', 'dark:bg-gray-900', 'rounded-t', 'p-2');
+        toolbar.classList.add('flex', 'justify-between', 'bg-insight-tertiary-background', 'rounded-t', 'p-2');
 
         const infobox = document.createElement('div');
         infobox.classList.add('flex');
@@ -184,7 +184,7 @@ export class CodeBlock {
      */
     generateCodeBlock(id, lang, filename, code) {
         const wrapper = document.createElement('div');
-        wrapper.classList.add('flex', 'flex-col', 'bg-[#f9fafb]', 'dark:bg-[#030712]', 'rounded', 'border', 'border-gray-300', 'dark:border-gray-700');
+        wrapper.classList.add('flex', 'flex-col', 'bg-[#f9fafb]', 'dark:bg-[#030712]', 'rounded', 'border', 'border-insight-primary-border');
         wrapper.id = id;
 
         const toolbar = this.#createToolbar(lang, filename);

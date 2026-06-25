@@ -16,12 +16,12 @@ export class Floater {
 
         if (this.trigger.getAttribute("data-show-arrow")) {
             this.arrow = document.createElement('div');
-            this.arrow.classList.add("absolute", "left-1/2", "-translate-x-1/2", "rotate-45", "size-4", "bg-insight-tooltip", "border-r", "border-b", "border-gray-300", "dark:border-gray-600");
+            this.arrow.classList.add("absolute", "left-1/2", "-translate-x-1/2", "rotate-45", "size-4", "bg-insight-secondary-background", "border-r", "border-b", "border-insight-primary-border");
         }
 
         if (type == "tooltip") {
             this.target = document.createElement('span');
-            this.target.classList.add("text-primary", "bg-insight-tooltip", "px-3", "py-1", "border", "border-gray-300", "dark:border-gray-600", "rounded-sm", "insight-shadow-subtle", "whitespace-nowrap");
+            this.target.classList.add("text-primary", "bg-insight-secondary-background", "px-3", "py-1", "border", "border-insight-primary-border", "rounded-sm", "insight-shadow-subtle", "whitespace-nowrap");
             this.target.textContent = this.trigger.getAttribute("data-insight-tooltip");
         }
         else {
