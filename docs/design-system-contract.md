@@ -110,6 +110,7 @@ and host applications should inherit before introducing domain-specific variants
 | Concept | Current representation | Design meaning |
 |---|---|---|
 | Brand colors | `--color-insight-primary`, `--color-insight-secondary` | Main product actions and secondary accents. |
+| Brand-compatible aliases | `--color-blue`, `--color-orange`, `--color-surface-*`, `--color-text`, `--radius-*`, `--shadow-*`, `--gradient-*` | Import and mapping layer for the Brand repo token vocabulary. Components should continue to consume the `--color-insight-*` and `--insight-*` contract. |
 | Interaction variants | `*-hover`, `*-active` color tokens | Pointer and pressed states for interactive elements. |
 | Status colors | `success`, `warning`, `danger`, `info` tokens | Semantic user feedback and system state. |
 | Text hierarchy | `text-primary`, `text-secondary`, `text-link` | Primary content, secondary content, and navigable text. |
@@ -150,6 +151,10 @@ should live:
   `canvas`, `panel`, `raised`, and `sunken`; existing Insight UI components may
   keep the older `page`, `base`, `soft`, and `muted` names where that preserves
   compatibility.
+- Brand-compatible short tokens such as `--color-blue`, `--color-surface`,
+  `--radius-control`, `--shadow-card`, and `--gradient-brand` are import aliases.
+  They exist so Brand CSS can be mapped into Insight UI predictably. Core
+  components should still consume the semantic Insight UI tokens directly.
 - Reusable borders and shadows should use `--color-insight-border-*` and
   `--insight-shadow-*` tokens instead of direct `border-gray-*` or `shadow-*`
   utilities when the visual rule is part of the component contract.
