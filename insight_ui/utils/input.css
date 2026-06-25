@@ -22,43 +22,55 @@
 
     /* Primary color */
     --color-insight-primary: #4183EA;
+    --color-insight-primary-soft: #E3EFFF;
     --color-insight-primary-hover: #256CD8;
     --color-insight-primary-active: #0856C0;
+    --color-insight-primary-soft-dark: #203351;
     --color-insight-primary-hover-dark: #72AEFF;
     --color-insight-primary-active-dark: #90C5FF;
 
     /* Secondary color */
     --color-insight-secondary: #1B9388;
+    --color-insight-secondary-soft: #DDF4F1;
     --color-insight-secondary-hover: #008074;
     --color-insight-secondary-active: #006B60;
+    --color-insight-secondary-soft-dark: #133A36;
     --color-insight-secondary-hover-dark: #51BCB0;
     --color-insight-secondary-active-dark: #75D1C5;
 
     /* Success color */
     --color-insight-success: #2EA55C;
+    --color-insight-success-soft: #E0F5E5;
     --color-insight-success-hover: #009144;
     --color-insight-success-active: #007B2F;
+    --color-insight-success-soft-dark: #1E3A26;
     --color-insight-success-hover-dark: #67CD87;
     --color-insight-success-active-dark: #8CE1A4;
 
     /* Warning color */
     --color-insight-warning: #E8A127;
+    --color-insight-warning-soft: #FFF0D4;
     --color-insight-warning-hover: #DC8900;
     --color-insight-warning-active: #CC7300;
+    --color-insight-warning-soft-dark: #433215;
     --color-insight-warning-hover-dark: #FFBC5E;
     --color-insight-warning-active-dark: #FFCD86;
 
     /* Danger color */
     --color-insight-danger: #E6443D;
+    --color-insight-danger-soft: #FFE7E4;
     --color-insight-danger-hover: #D01D21;
     --color-insight-danger-active: #B70002;
+    --color-insight-danger-soft-dark: #4D2622;
     --color-insight-danger-hover-dark: #FF7A6E;
     --color-insight-danger-active-dark: #FF988B;
 
     /* Info color */
     --color-insight-info: #00A3CB;
+    --color-insight-info-soft: #DAF4FD;
     --color-insight-info-hover: #008EB8;
     --color-insight-info-active: #0078A2;
+    --color-insight-info-soft-dark: #0F3845;
     --color-insight-info-hover-dark: #50CBF2;
     --color-insight-info-active-dark: #77E1FF;
 
@@ -252,21 +264,27 @@
         --color-insight-main-background: var(--color-insight-main-background-dark);
         --color-insight-secondary-background: var(--color-insight-secondary-background-dark);
         /* Primary */
+        --color-insight-primary-soft: var(--color-insight-primary-soft-dark);
         --color-insight-primary-hover: var(--color-insight-primary-hover-dark);
         --color-insight-primary-active: var(--color-insight-primary-active-dark);
         /* Secondary */
+        --color-insight-secondary-soft: var(--color-insight-secondary-soft-dark);
         --color-insight-secondary-hover: var(--color-insight-secondary-hover-dark);
         --color-insight-secondary-active: var(--color-insight-secondary-active-dark);
         /* Success */
+        --color-insight-success-soft: var(--color-insight-success-soft-dark);
         --color-insight-success-hover: var(--color-insight-success-hover-dark);
         --color-insight-success-active: var(--color-insight-success-active-dark);
         /* Warning */
+        --color-insight-warning-soft: var(--color-insight-warning-soft-dark);
         --color-insight-warning-hover: var(--color-insight-warning-hover-dark);
         --color-insight-warning-active: var(--color-insight-warning-active-dark);
         /* Danger */
+        --color-insight-danger-soft: var(--color-insight-danger-soft-dark);
         --color-insight-danger-hover: var(--color-insight-danger-hover-dark);
         --color-insight-danger-active: var(--color-insight-danger-active-dark);
         /* Info */
+        --color-insight-info-soft: var(--color-insight-info-soft-dark);
         --color-insight-info-hover: var(--color-insight-info-hover-dark);
         --color-insight-info-active: var(--color-insight-info-active-dark);
         /* Text */
