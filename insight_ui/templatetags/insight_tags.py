@@ -469,6 +469,11 @@ def button(
         {% button label="Menu" aria_expanded="false" aria_controls="menu-id" %}
     becomes:
         <button aria-expanded="false" aria-controls="menu-id">Menu</button>
+
+    Supports hx_* kwargs for HTMX attributes, e.g.:
+        {% button label="Load" hx_get="/api/data" hx_swap="outerHTML" %}
+    becomes:
+        <button hx-get="/api/data" hx-swap="outerHTML">Load</button>
     """
     icon: IconConfig | None | _Unset = UNSET
     if icon_name is not UNSET:
@@ -488,6 +493,14 @@ def button(
     if aria_kwargs:
         aria_attrs = [
             DataAttrConfig(name=key[5:].replace("_", "-"), value=str(value)) for key, value in aria_kwargs.items()
+        ]
+
+    # Collect hx_* kwargs and convert to DataAttrConfig list
+    hx_attrs: list[DataAttrConfig] | _Unset = UNSET
+    hx_kwargs = {k: v for k, v in kwargs.items() if k.startswith("hx_")}
+    if hx_kwargs:
+        hx_attrs = [
+            DataAttrConfig(name=key[3:].replace("_", "-"), value=str(value)) for key, value in hx_kwargs.items()
         ]
 
     config = build_config(
@@ -512,6 +525,7 @@ def button(
         extra_classes=extra_classes,
         data_attrs=data_attrs,
         aria_attrs=aria_attrs,
+        hx_attrs=hx_attrs,
     )
     return {"button_config": config}
 

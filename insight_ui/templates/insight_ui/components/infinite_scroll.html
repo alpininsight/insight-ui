@@ -1,15 +1,11 @@
-{% load i18n %}
+{% load i18n insight_tags %}
 
 <div
   {% if infinite_scroll_config.tag_id %}id="{{ infinite_scroll_config.tag_id }}"{% endif %}
   {% if infinite_scroll_config.auto_fetch %}
     hx-get="{{ infinite_scroll_config.request_url }}?page={{ infinite_scroll_config.page }}"
     hx-swap="afterend"
-    hx-trigger="revealed"
-    hx-infinite-scroll
-    data-threshold="{{ threshold|default:100 }}"
-    data-next-url="{{ infinite_scroll_config.request_url }}?page={{ infinite_scroll_config.page }}"
-    hx-ext="infinite-scroll,progressive-enhancement"
+    hx-trigger="revealed threshold:{{ threshold|default:100 }}px"
   {% endif %}
 >
   <!-- Existing Content -->
@@ -23,19 +19,13 @@
   </div>
 
   {% if not infinite_scroll_config.auto_fetch %}
-    <button
-      class="btn btn-primary btn-l mx-auto"
-      hx-get="{{ infinite_scroll_config.request_url }}?page={{ infinite_scroll_config.page }}&auto_fetch={{ infinite_scroll_config.auto_fetch }}"
-      hx-swap="outerHTML"
-      hx-trigger="click"
-      hx-ext="progressive-enhancement"
-    >
-      {% trans "Load more" %}
-    </button>
+    {% with url=infinite_scroll_config.request_url|add:"?page="|add:infinite_scroll_config.page|add:"&auto_fetch="|add:infinite_scroll_config.auto_fetch %}
+      {% button label=_("Load more") size="l" extra_classes="mx-auto" hx_get=url hx_swap="outerHTML" hx_trigger="click" hx_indicator=".htmx-indicator" %}
+    {% endwith %}
   {% endif %}
 
   <!-- Loading Indicator -->
-  <div class="htmx-spinner" style="display: none;">
+  <div class="htmx-indicator">
     <div class="flex items-center justify-center py-4">
       <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-insight-primary"></div>
       <span class="ml-2 text-sm text-secondary">{% trans 'More content is loading...' %}</span>

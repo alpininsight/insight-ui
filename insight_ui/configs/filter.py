@@ -98,7 +98,7 @@ class GenericFilterConfig:
                     options={"": "All", "tech": "Technology", "science": "Science"},
                 ),
             ],
-            htmx_config=HtmxConfig(target="#results", swap="innerHTML"),
+            htmx_config=HtmxConfig(target="#results", swap_method="innerHTML"),
         )
         """
 

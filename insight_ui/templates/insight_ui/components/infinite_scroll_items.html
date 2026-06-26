@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n insight_tags %}
 
 {% for item in items %}
     <div class="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4 mb-4">
@@ -9,15 +9,9 @@
 
 {% if has_next %}
     {% if auto_fetch == "False" %}
-        <button
-            class="btn btn-primary btn-l mx-auto"
-            hx-get="{{ request_url }}?page={{ page }}&auto_fetch={{ auto_fetch }}"
-            hx-swap="outerHTML"
-            hx-trigger="click"
-            hx-ext="progressive-enhancement"
-        >
-            {% trans "Load more" %}
-        </button>
+        {% with url=request_url|add:"?page="|add:page|add:"&auto_fetch="|add:auto_fetch %}
+            {% button label=_("Load more") size="l" extra_classes="mx-auto" hx_get=url hx_swap="outerHTML" hx_trigger="click" %}
+        {% endwith %}
     {% else %}
         <div
             hx-get="{{ request_url }}?page={{ page }}&auto_fetch={{ auto_fetch }}"

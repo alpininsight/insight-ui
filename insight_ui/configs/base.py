@@ -84,38 +84,42 @@ class HtmxConfig:
     Configuration for HTMX attributes.
 
     Attributes:
-        url: The URL for the HTMX request (hx-get/hx-post).
+        request_url: The URL for the HTMX request (hx-get/hx-post).
         target: CSS selector for the target element (hx-target).
-        swap: The way in which the target is to be replaced (hx-swap).
+        swap_method: The way in which the target is to be replaced (hx-swap).
         trigger: Event trigger (hx-trigger).
         method: HTTP method ('get' or 'post').
-        indicator: CSS selector for loading indicator.
-        push_url: Whether to push URL to browser history.
-        confirm: Confirmation message before request.
-        vals: Additional values to include in request.
+        loading_indicator_id: CSS selector for loading indicator (hx-indicator).
+        push_url: Whether to push URL to browser history (hx-push-url).
+        confirm: Confirmation message before request (hx-confirm).
+        vals: Additional values to include in request (hx-vals).
 
     """
 
     __example__ = """
         HtmxConfig(
-            url="/api/search/",
+            request_url="/api/search/",
             target="#results",
-            swap="innerHTML",
+            swap_method="innerHTML",
             trigger="keyup changed delay:300ms",
         )
         """
 
-    url: str = field(default="", metadata={"doc": _("The URL for the HTMX request (hx-get/hx-post).")})
+    request_url: str = field(default="", metadata={"doc": _("The URL for the HTMX request (hx-get/hx-post).")})
     target: str = field(default="", metadata={"doc": _("CSS selector for the target element (hx-target).")})
-    swap: Literal["innerHTML", "outerHTML", "beforebegin", "afterbegin", "beforeend", "afterend", "delete", "none"] = (
-        field(default="innerHTML", metadata={"doc": _("The way in which the target is to be replaced (hx-swap).")})
-    )
+    swap_method: Literal[
+        "innerHTML", "outerHTML", "beforebegin", "afterbegin", "beforeend", "afterend", "delete", "none"
+    ] = field(default="innerHTML", metadata={"doc": _("The way in which the target is to be replaced (hx-swap).")})
     trigger: str = field(default="submit", metadata={"doc": _("Event trigger (hx-trigger).")})
     method: Literal["get", "post"] = field(default="get", metadata={"doc": _("HTTP method ('get' or 'post').")})
-    indicator: str = field(default="", metadata={"doc": _("CSS selector for loading indicator.")})
-    push_url: bool = field(default=False, metadata={"doc": _("Whether to push URL to browser history.")})
-    confirm: str = field(default="", metadata={"doc": _("Confirmation message before request.")})
-    vals: dict[str, Any] = field(default_factory=dict, metadata={"doc": _("Additional values to include in request.")})
+    loading_indicator_id: str = field(
+        default="", metadata={"doc": _("CSS selector for loading indicator (hx-indicator).")}
+    )
+    push_url: bool = field(default=False, metadata={"doc": _("Whether to push URL to browser history (hx-push-url).")})
+    confirm: str = field(default="", metadata={"doc": _("Confirmation message before request (hx-confirm).")})
+    vals: dict[str, Any] = field(
+        default_factory=dict, metadata={"doc": _("Additional values to include in request (hx-vals).")}
+    )
 
 
 @dataclass

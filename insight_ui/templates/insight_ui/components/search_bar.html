@@ -10,7 +10,6 @@
             hx-vals="{{ search_bar_config.htmx_config.vals }}"
             hx-indicator="{{ search_bar_config.htmx_config.indicator|default:'#loading-indicator' }}"
             hx-push-url="{{ search_bar_config.htmx_config.push_url|default:'False' }}"
-            hx-ext="progressive-enhancement"
         {% else %}
             action="{{ search_bar_config.request_url }}"
             method="get"

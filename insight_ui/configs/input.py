@@ -36,6 +36,7 @@ class ButtonConfig:
         data_attrs: List of custom data attributes to add to the button element.
         external: **True** to open link in new tab (adds target='_blank' and rel='noopener'). Only applies when request_url is set.
         aria_attrs: List of ARIA attributes to add to the button element.
+        hx_attrs: List of HTMX attributes to add to the button element.
 
     """
 
@@ -113,6 +114,9 @@ class ButtonConfig:
     )
     aria_attrs: list[DataAttrConfig] = field(
         default_factory=list, metadata={"doc": "List of ARIA attributes to add to the button element."}
+    )
+    hx_attrs: list[DataAttrConfig] = field(
+        default_factory=list, metadata={"doc": "List of HTMX attributes to add to the button element."}
     )
 
 

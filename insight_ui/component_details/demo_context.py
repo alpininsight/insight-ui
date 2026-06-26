@@ -1091,7 +1091,7 @@ def get_form_context() -> dict:
             ],
             True,
             reverse("form_submit"),
-            HtmxConfig("#htmx-form"),
+            HtmxConfig(target="#htmx-form"),
         )
     }
 
