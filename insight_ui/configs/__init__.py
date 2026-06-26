@@ -30,7 +30,7 @@ Example usage:
     )
 """
 
-from insight_ui.configs.base import ActionConfig, DataAttrConfig, HtmxConfig, IconConfig, ImageConfig
+from insight_ui.configs.base import DataAttrConfig, HtmxConfig, IconConfig, ImageConfig
 from insight_ui.configs.card import (
     AppCardConfig,
     CardCarouselConfig,
@@ -112,7 +112,6 @@ from insight_ui.configs.utils import (
 
 __all__ = [
     # Base
-    "ActionConfig",
     "DataAttrConfig",
     "HtmxConfig",
     "IconConfig",

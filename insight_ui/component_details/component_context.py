@@ -102,7 +102,7 @@ def _get_nested_dataclass_type(field_type: Any) -> type | None:  # noqa: ANN401,
 
     origin = get_origin(field_type)
 
-    # Handle Union types (e.g., ActionConfig | None, Optional[ActionConfig])
+    # Handle Union types (e.g., ButtonConfig | None, Optional[ButtonConfig])
     if origin in (Union, types.UnionType):
         for arg in get_args(field_type):
             if arg is not type(None) and is_dataclass(arg) and isinstance(arg, type):

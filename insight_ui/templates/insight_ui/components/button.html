@@ -4,6 +4,7 @@
     <a
         {% if button_config.tag_id %}id="{{ button_config.tag_id }}"{% endif %}
         href="{{ button_config.request_url }}"
+        {% if button_config.external %}target="_blank" rel="noopener"{% endif %}
         {% if button_config.htmx_config %}
             hx-{{ button_config.htmx_config.method }}="{{ button_config.htmx_config.request_url }}"
             hx-target="{{ button_config.htmx_config.target }}"
@@ -16,10 +17,12 @@
         {% if button_config.icon_only %}aria-label="{{ button_config.label }}"{% endif %}
         {% if button_config.tooltip %}data-insight-tooltip="{{ button_config.tooltip }}"{% endif %}
         {% for attr in button_config.data_attrs %}data-{{ attr.name }}="{{ attr.value }}"{% endfor %}
-        class="btn btn-{% if button_config.outline %}outline-{% endif %}{% if button_config.subtle %}subtle-{% endif %}{{ button_config.type }}{% if button_config.icon_only %} btn-icon{% else %} btn-{{ button_config.size }}{% endif %}{% if button_config.round %} btn-round{% endif %}{% if button_config.hidden %} hidden{% endif %}"
+        {% for attr in button_config.aria_attrs %}aria-{{ attr.name }}="{{ attr.value }}"{% endfor %}
+        class="btn btn-{% if button_config.outline %}outline-{% endif %}{% if button_config.subtle %}subtle-{% endif %}{{ button_config.type }}{% if button_config.icon_only %} btn-icon{% else %} btn-{{ button_config.size }}{% endif %}{% if button_config.round %} btn-round{% endif %}{% if button_config.hidden %} hidden{% endif %}{% if button_config.extra_classes %} {{ button_config.extra_classes }}{% endif %}"
     >
 {% else %}
     <button
+        type="{{ button_config.button_type }}"
         {% if button_config.tag_id %}id="{{ button_config.tag_id }}"{% endif %}
         {% if button_config.on_click %}onclick="{{ button_config.on_click }}"{% endif %}
         {% if button_config.htmx_config %}
@@ -34,7 +37,8 @@
         {% if button_config.icon_only %}aria-label="{{ button_config.label }}"{% endif %}
         {% if button_config.tooltip %}data-insight-tooltip="{{ button_config.tooltip }}"{% endif %}
         {% for attr in button_config.data_attrs %}data-{{ attr.name }}="{{ attr.value }}"{% endfor %}
-        class="btn btn-{% if button_config.outline %}outline-{% endif %}{% if button_config.subtle %}subtle-{% endif %}{{ button_config.type }}{% if button_config.icon_only %} btn-icon{% else %} btn-{{ button_config.size }}{% endif %}{% if button_config.round %} btn-round{% endif %}{% if button_config.hidden %} hidden{% endif %}"
+        {% for attr in button_config.aria_attrs %}aria-{{ attr.name }}="{{ attr.value }}"{% endfor %}
+        class="btn btn-{% if button_config.outline %}outline-{% endif %}{% if button_config.subtle %}subtle-{% endif %}{{ button_config.type }}{% if button_config.icon_only %} btn-icon{% else %} btn-{{ button_config.size }}{% endif %}{% if button_config.round %} btn-round{% endif %}{% if button_config.hidden %} hidden{% endif %}{% if button_config.extra_classes %} {{ button_config.extra_classes }}{% endif %}"
     >
 {% endif %}
 {% if button_config.icon and button_config.icon_only %}

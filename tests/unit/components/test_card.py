@@ -3,6 +3,7 @@
 # ruff: noqa: E501
 
 from bs4 import BeautifulSoup
+from insight_ui.configs import ButtonConfig
 
 from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
@@ -36,7 +37,7 @@ class TestCard(TemplateTagsTestCase):
                 "and a short list:</p><ul><li>Safe developer supplied markup</li>"
                 "<li>Structured text in cards</li><li>Additional content that should scroll</li></ul>"
             ),
-            "actions": [{"text": "Learn more", "url": "/docs/", "type": "primary"}],
+            "actions": [ButtonConfig(label="Learn more", request_url="/docs/", type="primary")],
         }
         template_string = """
         {% load insight_tags %}
@@ -68,6 +69,7 @@ class TestCard(TemplateTagsTestCase):
         actions = outer_card.find("div", class_="mt-auto")
         assert actions is not None
         assert "flex-wrap" in actions.get("class", [])
-        action_link = actions.find("a")
+        # Button with request_url renders as <a> tag
+        action_link = actions.find("a", class_="btn")
         assert action_link is not None
         assert action_link.get_text(strip=True) == "Learn more"

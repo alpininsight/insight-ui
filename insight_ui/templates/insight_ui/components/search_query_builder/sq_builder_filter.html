@@ -43,9 +43,6 @@
         >
     </div>
     {% if index != 0 %}
-        <button type="button" class="remove-filter btn btn-outline-danger h-9">
-            {% icon name="x-mark" size="s" %}
-            <span class="sr-only">{% trans "Remove filter" %}</span>
-        </button>
+        {% button label=_("Remove filter") type="danger" outline=True button_type="button" icon_name="x-mark" icon_size="s" icon_only=True extra_classes="remove-filter h-9" %}
     {% endif %}
 </div>

@@ -5,8 +5,8 @@ from typing import Literal
 
 from django.utils.translation import gettext_lazy as _
 
-from insight_ui.configs.base import ActionConfig, ImageConfig
-from insight_ui.configs.input import RadioBlockConfig
+from insight_ui.configs.base import ImageConfig
+from insight_ui.configs.input import ButtonConfig, RadioBlockConfig
 from insight_ui.configs.list import TableConfig
 
 
@@ -32,7 +32,7 @@ class CardConfig:
             subtitle="Getting Started",
             content="Learn how to use our platform.",
             actions=[
-                ActionConfig(text="Learn More", url="/docs/", type="primary"),
+                ButtonConfig(label="Learn More", request_url="/docs/", type="primary"),
             ],
         )
         """
@@ -41,7 +41,7 @@ class CardConfig:
     content: str = field(metadata={"doc": _("Main card content.")})
     subtitle: str = field(default="", metadata={"doc": _("Optional subtitle.")})
     image: ImageConfig | None = field(default=None, metadata={"doc": _("Optional card image.")})
-    actions: list[ActionConfig] = field(default_factory=list, metadata={"doc": _("List of action buttons.")})
+    actions: list[ButtonConfig] = field(default_factory=list, metadata={"doc": _("List of action buttons.")})
 
 
 @dataclass
@@ -68,7 +68,7 @@ class AppCardConfig:
             request_url="/apps/analytics/",
             image=ImageConfig(url="img/analytics.png", alt="Analytics"),
             tags=["New", "Featured"],
-            actions=[ActionConfig(text="Open", url="/apps/analytics/", type="primary")],
+            actions=[ButtonConfig(label="Open", request_url="/apps/analytics/", type="primary")],
         )
         """
 
@@ -77,7 +77,7 @@ class AppCardConfig:
     request_url: str = field(default="", metadata={"doc": _("URL when title is clicked.")})
     image: ImageConfig | None = field(default=None, metadata={"doc": _("Card image (displayed as square at top).")})
     tags: list[str] = field(default_factory=list, metadata={"doc": _("List of tag labels.")})
-    actions: list[ActionConfig] = field(default_factory=list, metadata={"doc": _("List of action buttons.")})
+    actions: list[ButtonConfig] = field(default_factory=list, metadata={"doc": _("List of action buttons.")})
 
 
 @dataclass
@@ -105,7 +105,7 @@ class FlipCardConfig:
             back_content="Detailed description shown on the back side.",
             image=ImageConfig(url="img/product.png", alt="Product"),
             tags=["Sale", "-20%"],
-            actions=[ActionConfig(text="Buy", url="/buy/", type="primary")],
+            actions=[ButtonConfig(label="Buy", request_url="/buy/", type="primary")],
         )
         """
 
@@ -115,7 +115,7 @@ class FlipCardConfig:
     request_url: str = field(default="", metadata={"doc": _("URL when title is clicked.")})
     image: ImageConfig | None = field(default=None, metadata={"doc": _("Front side image.")})
     tags: list[str] = field(default_factory=list, metadata={"doc": _("List of tag labels.")})
-    actions: list[ActionConfig] = field(default_factory=list, metadata={"doc": _("List of action buttons.")})
+    actions: list[ButtonConfig] = field(default_factory=list, metadata={"doc": _("List of action buttons.")})
 
 
 @dataclass

@@ -17,14 +17,8 @@
   </div>
 
   <!-- Navigation Buttons -->
-  <button class="carousel-prev absolute top-1/2 ltr:left-4 rtl:right-4 -translate-y-1/2 bg-insight-primary rounded-full text-white p-2 hover:bg-insight-primary-hover active:bg-insight-primary-active transition">
-    {% icon name="chevron_left" %}
-    <span class="sr-only">{% trans "To previous page" %}</span>
-  </button>
-  <button class="carousel-next absolute top-1/2 ltr:right-4 rtl:left-4 -translate-y-1/2 bg-insight-primary rounded-full text-white p-2 hover:bg-insight-primary-hover active:bg-insight-primary-active transition">
-    {% icon name="chevron_right" %}
-    <span class="sr-only">{% trans "To next page" %}</span>
-  </button>
+  {% button label=_("To previous page") icon_name="chevron_left" icon_only=True round=True extra_classes="carousel-prev absolute top-1/2 ltr:left-4 rtl:right-4 -translate-y-1/2" %}
+  {% button label=_("To next page") icon_name="chevron_right" icon_only=True round=True extra_classes="carousel-next absolute top-1/2 ltr:right-4 rtl:left-4 -translate-y-1/2" %}
 
   <!-- Pagination Dots -->
   {% if carousel_config.show_dots %}

@@ -193,21 +193,17 @@
     <div class="h-72">
         <div class="flex flex-col items-center gap-4">
             <!-- Standard -->
-            <button class="btn btn-primary w-72" data-insight-modal="demo-modal">
-                {% trans "Standard modal" %}
-            </button>
+            {% button label=_("Standard modal") type="primary" data_insight_modal="demo-modal" %}
             {% modal tag_id="demo-modal" title=_("Demo modal") description=_("This is an example of a standard modal.") %}
 
             <!-- Action-Buttons -->
-            <button class="btn btn-danger w-72" data-insight-modal="{{ confirm_modal_config.tag_id }}">
-                {% trans "Modal with Action Buttons" %}
-            </button>
+            {% button label=_("Modal with Action Buttons") type="danger" data_insight_modal=confirm_modal_config.tag_id %}
             {% modal config=confirm_modal_config %}
         </div>
     </div>
 {% elif component.value == "popover" %}
     <div class="flex items-end justify-center gap-12 h-64">
-        <button data-insight-popover="demo-popover" data-show-arrow="true" class="btn btn-primary h-fit">Hover me!</button>
+        {% button label="Hover me!" type="primary" data_insight_popover="demo-popover" data_show_arrow="true" %}
         <div id="demo-popover" class="bg-white dark:bg-gray-700 w-64 border border-gray-300 dark:border-0 rounded-sm shadow">
             <div class="p-4">
                 <span class="text-primary block font-semibold w-full border-b-2 border-gray-300 dark:border-gray-500 pb-2">
@@ -218,16 +214,16 @@
                 </p>
             </div>
             <div class="bg-gray-100 dark:bg-gray-900 p-4 rounded-b-sm">
-                <button class="btn btn-primary btn-s">{% trans "Learn more" %}</button>
+                {% button label=_("Learn more") type="primary" size="s" %}
             </div>
         </div>
     </div>
 {% elif component.value == "tooltip" %}
     <div class="flex flex-col md:flex-row items-center justify-center gap-12 py-8">
-        <button data-insight-tooltip="This is a tooltip." data-show-arrow="true" data-position="top" class="btn btn-primary">{% trans "Top" %}</button>
-        <button data-insight-tooltip="This is a tooltip." data-position="bottom" class="btn btn-primary">{% trans "Bottom" %}</button>
-        <button data-insight-tooltip="This is a tooltip." data-show-arrow="true" data-position="right" class="btn btn-primary">{% trans "Right" %}</button>
-        <button data-insight-tooltip="This is a tooltip." data-position="left" class="btn btn-primary">{% trans "Left" %}</button>
+        {% button label=_("Top") type="primary" tooltip="This is a tooltip." data_show_arrow="true" data_position="top" %}
+        {% button label=_("Bottom") type="primary" tooltip="This is a tooltip." data_position="bottom" %}
+        {% button label=_("Right") type="primary" tooltip="This is a tooltip." data_show_arrow="true" data_position="right" %}
+        {% button label=_("Left") type="primary" tooltip="This is a tooltip." data_position="left" %}
     </div>
 {% elif component.value == "infobox" %}
     {% infobox info_type="info" message="This is an informative message." %}

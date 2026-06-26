@@ -19,12 +19,6 @@
   </div>
 
   {% if alert_config.dismissible %}
-    <button
-      class="bg-white h-fit rounded-sm p-2 text-insight-text-primary hover:bg-gray-100 hover:dark:bg-gray-300 transition"
-      aria-label="{% trans 'Close' %}"
-      data-insight-dismiss="alert"
-    >
-      {% icon name="x-mark" size="xs" %}
-    </button>
+    {% button label=_("Close") icon_name="x-mark" icon_size="xs" icon_only=True type="secondary" size="s" outline=True data_insight_dismiss="alert" %}
   {% endif %}
 </div>

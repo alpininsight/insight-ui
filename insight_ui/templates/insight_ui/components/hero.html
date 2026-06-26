@@ -26,20 +26,10 @@
         {% if hero_config.cta_primary or hero_config.cta_secondary %}
             <div class="flex flex-wrap gap-4{% if not hero_config.background_image_url %} justify-center{% endif %}">
                 {% if hero_config.cta_primary %}
-                    <a href="{{ hero_config.cta_primary.url }}" class="btn btn-primary btn-lg">
-                        {% if hero_config.cta_primary.icon %}
-                            {% icon config=hero_config.cta_primary.icon %}
-                        {% endif %}
-                        {{ hero_config.cta_primary.text }}
-                    </a>
+                    {% button config=hero_config.cta_primary size="l" %}
                 {% endif %}
                 {% if hero_config.cta_secondary %}
-                    <a href="{{ hero_config.cta_secondary.url }}" class="btn btn-outline-primary btn-lg">
-                        {% if hero_config.cta_secondary.icon %}
-                            {% icon config=hero_config.cta_secondary.icon %}
-                        {% endif %}
-                        {{ hero_config.cta_secondary.text }}
-                    </a>
+                    {% button config=hero_config.cta_secondary size="l" outline=True %}
                 {% endif %}
             </div>
         {% endif %}

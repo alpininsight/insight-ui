@@ -21,7 +21,6 @@ from markdown import markdown
 from insight_ui.config import get_config
 from insight_ui.configs import (
     AccordionConfig,
-    ActionConfig,
     AlertConfig,
     AppCardConfig,
     ArticleConfig,
@@ -304,8 +303,8 @@ def hero(
     title: str | _Unset = UNSET,
     subtitle: str | _Unset = UNSET,
     description: str | _Unset = UNSET,
-    cta_primary: ActionConfig | _Unset = UNSET,
-    cta_secondary: ActionConfig | _Unset = UNSET,
+    cta_primary: ButtonConfig | _Unset = UNSET,
+    cta_secondary: ButtonConfig | _Unset = UNSET,
     background_image_url: str | _Unset = UNSET,
     badge_config: BadgeConfig | _Unset = UNSET,
 ) -> dict[str, Any]:
@@ -454,6 +453,8 @@ def button(
     tooltip: str | _Unset = UNSET,
     htmx_config: HtmxConfig | _Unset = UNSET,
     hidden: bool | _Unset = UNSET,
+    button_type: Literal["button", "submit", "reset"] | _Unset = UNSET,
+    extra_classes: str | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
     """
@@ -463,6 +464,11 @@ def button(
         {% button label="Retry" data_progress_retry="" data_retry="retry-btn" %}
     becomes:
         <button data-progress-retry="" data-retry="retry-btn">Retry</button>
+
+    Supports aria_* kwargs for ARIA attributes, e.g.:
+        {% button label="Menu" aria_expanded="false" aria_controls="menu-id" %}
+    becomes:
+        <button aria-expanded="false" aria-controls="menu-id">Menu</button>
     """
     icon: IconConfig | None | _Unset = UNSET
     if icon_name is not UNSET:
@@ -474,6 +480,14 @@ def button(
     if data_kwargs:
         data_attrs = [
             DataAttrConfig(name=key[5:].replace("_", "-"), value=str(value)) for key, value in data_kwargs.items()
+        ]
+
+    # Collect aria_* kwargs and convert to DataAttrConfig list
+    aria_attrs: list[DataAttrConfig] | _Unset = UNSET
+    aria_kwargs = {k: v for k, v in kwargs.items() if k.startswith("aria_")}
+    if aria_kwargs:
+        aria_attrs = [
+            DataAttrConfig(name=key[5:].replace("_", "-"), value=str(value)) for key, value in aria_kwargs.items()
         ]
 
     config = build_config(
@@ -494,7 +508,10 @@ def button(
         tooltip=tooltip,
         htmx_config=htmx_config,
         hidden=hidden,
+        button_type=button_type,
+        extra_classes=extra_classes,
         data_attrs=data_attrs,
+        aria_attrs=aria_attrs,
     )
     return {"button_config": config}
 
@@ -726,7 +743,7 @@ def modal(
     tag_id: str | _Unset = UNSET,
     title: str | _Unset = UNSET,
     description: str | list[str] | _Unset = UNSET,
-    actions: Sequence[ActionConfig] | None | _Unset = UNSET,
+    actions: Sequence[ButtonConfig] | None | _Unset = UNSET,
     width: int | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render an accessible modal dialog."""
@@ -1180,7 +1197,7 @@ def card(
     content: str | _Unset = UNSET,
     subtitle: str | _Unset = UNSET,
     image: ImageConfig | None | _Unset = UNSET,
-    actions: list[ActionConfig] | None | _Unset = UNSET,
+    actions: list[ButtonConfig] | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a card with an aspect ratio of 16:9."""
     config = build_config(CardConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
@@ -1196,7 +1213,7 @@ def app_card(
     tags: list[str] | None | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
     image: ImageConfig | None | _Unset = UNSET,
-    actions: list[ActionConfig] | None | _Unset = UNSET,
+    actions: list[ButtonConfig] | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a vertically aligned card."""
     config = build_config(AppCardConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
@@ -1212,7 +1229,7 @@ def flip_card(
     tags: list[str] | None | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
     image: ImageConfig | None | _Unset = UNSET,
-    actions: list[ActionConfig] | None | _Unset = UNSET,
+    actions: list[ButtonConfig] | None | _Unset = UNSET,
     back_content: str | None | _Unset = UNSET,
     back_style: str | None | _Unset = UNSET,
 ) -> dict[str, Any]:

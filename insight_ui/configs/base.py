@@ -79,48 +79,6 @@ class ImageConfig:
 
 
 @dataclass
-class ActionConfig:
-    """
-    Configuration for an action button.
-
-    Used in cards, modals, and other components that have action buttons.
-
-    Attributes:
-        text: Button label.
-        url: Target URL for link-style actions.
-        type: Describes the importance of the button (purely visual): 'primary', 'secondary', 'cancel', or 'danger'.
-        onclick: Call a JavaScript function, e.g.: alert('Confirmed!').
-        dismiss: Closes the dialog on click.
-        icon: Optional icon configuration.
-
-    """
-
-    __example__ = """
-        ActionConfig(
-            text="Learn more",
-            url="/details/",
-            type="primary",
-        )
-        """
-
-    text: str = field(metadata={"doc": _("Button label.")})
-    url: str = field(default="", metadata={"doc": _("Target URL for link-style actions.")})
-    type: Literal["primary", "secondary", "cancel", "danger"] = field(
-        default="primary",
-        metadata={
-            "doc": _(
-                "Describes the importance of the button (purely visual): 'primary', 'secondary', 'cancel', or 'danger'."
-            )
-        },
-    )
-    onclick: str | None = field(
-        default=None, metadata={"doc": _("Call a JavaScript function, e.g.: alert('Confirmed!').")}
-    )
-    dismiss: bool = field(default=False, metadata={"doc": _("Closes the dialog on click.")})
-    icon: IconConfig | None = field(default=None, metadata={"doc": _("Optional icon configuration.")})
-
-
-@dataclass
 class HtmxConfig:
     """
     Configuration for HTMX attributes.
@@ -187,24 +145,3 @@ class BaseFormFieldConfig:
     label: str | None = field(default=None, metadata={"doc": _("A text label displayed above the field.")})
     disabled: bool = field(default=False, metadata={"doc": _("**True** if the field should be disabled.")})
     required: bool = field(default=False, metadata={"doc": _("**True** if the field must be filled in.")})
-
-
-@dataclass
-class BaseCardConfig:
-    """
-    Base configuration for card components.
-
-    Shared attributes for card, app_card, and flip_card.
-
-    Attributes:
-        title: Card title.
-        content: Main card content.
-        image: Optional card image configuration.
-        actions: List of action buttons.
-
-    """
-
-    title: str = field(metadata={"doc": _("Card title.")})
-    content: str = field(metadata={"doc": _("Main card content.")})
-    image: ImageConfig | None = field(default=None, metadata={"doc": _("Optional card image configuration.")})
-    actions: list[ActionConfig] = field(default_factory=list, metadata={"doc": _("List of action buttons.")})

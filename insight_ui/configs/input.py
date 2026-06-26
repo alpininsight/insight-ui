@@ -31,7 +31,11 @@ class ButtonConfig:
         tooltip: Optional text for a tooltip shown on hover.
         htmx_config: Configuration for asynchronous requests.
         hidden: **True** to render the button with CSS 'hidden' class for JS-controlled visibility.
+        button_type: HTML type attribute: 'button', 'submit', or 'reset'.
+        extra_classes: Additional CSS classes to append to the button element.
         data_attrs: List of custom data attributes to add to the button element.
+        external: **True** to open link in new tab (adds target='_blank' and rel='noopener'). Only applies when request_url is set.
+        aria_attrs: List of ARIA attributes to add to the button element.
 
     """
 
@@ -52,6 +56,8 @@ class ButtonConfig:
             tooltip="Click to calculate something",
             htmx_config=HtmxConfig(...),
             hidden=False,
+            button_type="submit",
+            extra_classes="w-full",
             data_attrs=[DataAttrConfig(name="testid", value="submit-btn")],
         )
         """
@@ -90,8 +96,23 @@ class ButtonConfig:
         default=False,
         metadata={"doc": "**True** to render the button with CSS 'hidden' class for JS-controlled visibility."},
     )
+    button_type: Literal["button", "submit", "reset"] = field(
+        default="button", metadata={"doc": _("HTML type attribute: 'button', 'submit', or 'reset'.")}
+    )
+    extra_classes: str = field(
+        default="", metadata={"doc": _("Additional CSS classes to append to the button element.")}
+    )
     data_attrs: list[DataAttrConfig] = field(
         default_factory=list, metadata={"doc": "List of custom data attributes to add to the button element."}
+    )
+    external: bool = field(
+        default=False,
+        metadata={
+            "doc": "**True** to open link in new tab (adds target='_blank' and rel='noopener'). Only applies when request_url is set."
+        },
+    )
+    aria_attrs: list[DataAttrConfig] = field(
+        default_factory=list, metadata={"doc": "List of ARIA attributes to add to the button element."}
     )
 
 
