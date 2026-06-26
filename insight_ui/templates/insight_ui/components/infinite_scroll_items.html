@@ -9,8 +9,10 @@
 
 {% if has_next %}
     {% if auto_fetch == "False" %}
-        {% with url=request_url|add:"?page="|add:page|add:"&auto_fetch="|add:auto_fetch %}
-            {% button label=_("Load more") size="l" extra_classes="mx-auto" hx_get=url hx_swap="outerHTML" hx_trigger="click" %}
+        {% with page_num=page|stringformat:"s" %}
+            {% with url=request_url|add:"?page="|add:page_num|add:"&auto_fetch="|add:auto_fetch %}
+                {% button label=_("Load more") size="l" extra_classes="mx-auto" hx_get=url hx_swap="outerHTML" hx_trigger="click" %}
+            {% endwith %}
         {% endwith %}
     {% else %}
         <div

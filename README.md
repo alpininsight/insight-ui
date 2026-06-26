@@ -88,6 +88,12 @@ assets should be consumed from immutable version paths such as
 The full CDN contract, required secrets, runtime settings, and cache rules are
 documented in [CDN Static Assets](docs/cdn-static-assets.md).
 
+### Build minified assets
+```bash
+# Compile via docker container (no local node.js required due docker container)
+docker run --rm -it -v ${PWD}:/app -w /app  node:25-alpine sh -c "npm install && npm run build:js
+```
+
 ## Testing
 ```bash
 # Python code

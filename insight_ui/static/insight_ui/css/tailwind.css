@@ -337,6 +337,9 @@
   .top-0 {
     top: 0;
   }
+  .top-1 {
+    top: var(--spacing);
+  }
   .top-1\/2 {
     top: calc(1 / 2 * 100%);
   }
@@ -375,6 +378,9 @@
   }
   .bottom-16 {
     bottom: calc(var(--spacing) * 16);
+  }
+  .left-1 {
+    left: var(--spacing);
   }
   .left-1\/2 {
     left: calc(1 / 2 * 100%);
@@ -448,6 +454,9 @@
   .mx-auto {
     margin-inline: auto;
   }
+  .-my-1 {
+    margin-block: calc(var(--spacing) * -1);
+  }
   .-my-1\.5 {
     margin-block: calc(var(--spacing) * -1.5);
   }
@@ -486,6 +495,9 @@
   }
   .me-1 {
     margin-inline-end: var(--spacing);
+  }
+  .mt-0 {
+    margin-top: 0;
   }
   .mt-0\.5 {
     margin-top: calc(var(--spacing) * 0.5);
@@ -589,6 +601,10 @@
   .size-0 {
     width: 0;
     height: 0;
+  }
+  .size-2 {
+    width: calc(var(--spacing) * 2);
+    height: calc(var(--spacing) * 2);
   }
   .size-2\.5 {
     width: calc(var(--spacing) * 2.5);
@@ -803,6 +819,9 @@
   .max-w-2xs {
     max-width: var(--container-2xs);
   }
+  .max-w-3 {
+    max-width: calc(var(--spacing) * 3);
+  }
   .max-w-3\/4 {
     max-width: calc(3 / 4 * 100%);
   }
@@ -848,8 +867,16 @@
   .table-auto {
     table-layout: auto;
   }
+  .-translate-x-1 {
+    --tw-translate-x: calc(var(--spacing) * -1);
+    translate: var(--tw-translate-x) var(--tw-translate-y);
+  }
   .-translate-x-1\/2 {
     --tw-translate-x: calc(calc(1 / 2 * 100%) * -1);
+    translate: var(--tw-translate-x) var(--tw-translate-y);
+  }
+  .-translate-y-1 {
+    --tw-translate-y: calc(var(--spacing) * -1);
     translate: var(--tw-translate-x) var(--tw-translate-y);
   }
   .-translate-y-1\/2 {
@@ -955,6 +982,9 @@
   }
   .justify-items-stretch {
     justify-items: stretch;
+  }
+  .gap-0 {
+    gap: 0;
   }
   .gap-0\.5 {
     gap: calc(var(--spacing) * 0.5);
@@ -1230,6 +1260,9 @@
   .bg-\[\#f9fafb\] {
     background-color: #f9fafb;
   }
+  .bg-black {
+    background-color: var(--color-black);
+  }
   .bg-black\/50 {
     background-color: color-mix(in srgb, #000 50%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -1281,6 +1314,9 @@
       background-color: color-mix(in oklab, var(--color-insight-danger) 15%, transparent);
     }
   }
+  .bg-insight-info {
+    background-color: var(--color-insight-info);
+  }
   .bg-insight-info\/15 {
     background-color: color-mix(in srgb, #06b6d4 15%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -1302,6 +1338,9 @@
       background-color: color-mix(in oklab, var(--color-insight-success) 15%, transparent);
     }
   }
+  .bg-insight-warning {
+    background-color: var(--color-insight-warning);
+  }
   .bg-insight-warning\/15 {
     background-color: color-mix(in srgb, #f59e0b 15%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -1313,6 +1352,9 @@
   }
   .bg-neutral-300 {
     background-color: var(--color-neutral-300);
+  }
+  .bg-neutral-700 {
+    background-color: var(--color-neutral-700);
   }
   .bg-neutral-700\/75 {
     background-color: color-mix(in srgb, oklch(37.1% 0 0) 75%, transparent);
@@ -1359,6 +1401,10 @@
   }
   .to-purple-500 {
     --tw-gradient-to: var(--color-purple-500);
+    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+  }
+  .to-white {
+    --tw-gradient-to: var(--color-white);
     --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
   }
   .to-white\/60 {
@@ -2425,6 +2471,13 @@
       box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
     }
   }
+  .lg\:\*\:hidden {
+    @media (width >= 64rem) {
+      :is(& > *) {
+        display: none;
+      }
+    }
+  }
   .xl\:block {
     @media (width >= 80rem) {
       display: block;
@@ -2443,6 +2496,13 @@
   .xl\:w-64 {
     @media (width >= 80rem) {
       width: calc(var(--spacing) * 64);
+    }
+  }
+  .xl\:\*\:inline-block {
+    @media (width >= 80rem) {
+      :is(& > *) {
+        display: inline-block;
+      }
     }
   }
   .\32 xl\:block {

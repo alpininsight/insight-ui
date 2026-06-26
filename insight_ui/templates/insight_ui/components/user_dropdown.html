@@ -39,8 +39,6 @@
     </div>
 {% else %}
     {# Login btn #}
-    <a href="{% url 'login' %}" class="btn btn-subtle btn-s">
-        {% icon name="user" size="s" %}
-        <span class="lg:hidden xl:inline-block">{% trans "Login" %}</span>
-    </a>
+    {% url 'login' as login_url %}
+    {% button request_url=login_url label=_("Login") icon_name="user" icon_size="s" type="secondary" size="s" subtle=True extra_classes="lg:*:hidden xl:*:inline-block" %}
 {% endif %}
