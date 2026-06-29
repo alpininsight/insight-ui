@@ -86,7 +86,7 @@ class FormConfig:
                 FormFieldConfig(input_type="textarea", name="message", label="Message", rows=5),
             ],
             show_reset_button=True,
-            htmx_config=HtmxConfig(url="/contact_submission", target="#form-response", swap="innerHTML"),
+            htmx_config=HtmxConfig(request_url="/contact_submission", target="#form-response", swap_method="innerHTML"),
         )
         """
 

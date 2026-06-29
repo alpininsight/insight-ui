@@ -7,7 +7,7 @@
     hx-target="{{ form_config.htmx_config.target }}"
     hx-swap="{{ form_config.htmx_config.swap|default:'innerHTML' }}"
     hx-trigger="submit"
-    hx-ext="progressive-enhancement"
+    hx-indicator=".htmx-indicator"
   {% else %}
     action="{{ form_config.request_url }}"
     method="post"
@@ -38,9 +38,9 @@
 
   <div class="flex justify-end gap-2 pt-4 border-t border-gray-200 dark:border-gray-700">
     {% if form_config.show_reset_button %}
-      <button type="reset" class="btn btn-secondary">{% trans "Reset" %}</button>
+      {% button label=_("Reset") type="secondary" button_type="reset" %}
     {% endif %}
-    <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+    {% button label=_("Submit") type="primary" button_type="submit" %}
   </div>
 
   {% if form_config.htmx_config %}

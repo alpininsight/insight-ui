@@ -20,6 +20,7 @@ TEMPLATE_PATHS = {
     "accordion": GIT_BASE_FILE + "accordion.html",
     "tabs": GIT_BASE_FILE + "tabs.html",
     # Inputs
+    "button": GIT_BASE_FILE + "button.html",
     "input": GIT_BASE_FILE + "input.html",
     "textarea": GIT_BASE_FILE + "textarea.html",
     "checkbox": GIT_BASE_FILE + "checkbox.html",
@@ -48,6 +49,7 @@ TEMPLATE_PATHS = {
     "line_chart": GIT_BASE_FILE + "charts/line_chart.html",
     "live_content": GIT_BASE_FILE + "live_content.html",
     "web_socket": GIT_BASE_FILE + "websocket.html",
+    "badge": GIT_BASE_FILE + "badge.html",
     # Lists
     "infinite_scroll": GIT_BASE_FILE + "infinite_scroll.html",
     "pagination": GIT_BASE_FILE + "pagination.html",

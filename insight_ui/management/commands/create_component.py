@@ -233,7 +233,7 @@ class Command(BaseCommand):
         """
         enum_name = name.upper().replace(" ", "_").replace("-", "_")
         slug = name.lower().replace(" ", "_").replace("-", "_")
-        class_name = name.replace(" ", "").replace("-", "").replace("_", "")
+        class_name = name.capitalize().replace(" ", "").replace("-", "").replace("_", "")
         return ComponentNames(
             name=name,
             enum_name=enum_name,
@@ -711,8 +711,9 @@ def {full_func_name}() -> {config.return_type}:
 
         # Create new inclusion tag with config parameter
         new_tag = f"""@register.inclusion_tag("insight_ui/components/{slug}.html")
-def {func_name}(config: {config_class_name}) -> dict[str, Any]:
+def {func_name}(config: {config_class_name} | None = None, *, tag_id: str | _Unset = UNSET) -> dict[str, Any]:
     \"\"\"Render the {name.lower()} component.\"\"\"
+    config = build_config(WebSocketConfig, config, **{{k: v for k, v in locals().items() if k not in {{"config"}}}})
     return {{"{func_name}_config": config}}
 
 

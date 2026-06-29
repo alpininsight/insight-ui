@@ -1,0 +1,63 @@
+{% load insight_tags %}
+
+{% if button_config.request_url %}
+    <a
+        {% if button_config.tag_id %}id="{{ button_config.tag_id }}"{% endif %}
+        href="{{ button_config.request_url }}"
+        {% if button_config.external %}target="_blank" rel="noopener"{% endif %}
+        {% if button_config.htmx_config %}
+            hx-{{ button_config.htmx_config.method }}="{{ button_config.htmx_config.request_url }}"
+            {% if button_config.htmx_config.target %}hx-target="{{ button_config.htmx_config.target }}"{% endif %}
+            hx-swap="{{ button_config.htmx_config.swap_method }}"
+            {% if button_config.htmx_config.push_url %}hx-push-url="true"{% endif %}
+            {% if button_config.htmx_config.loading_indicator_id %}hx-indicator="{{ button_config.htmx_config.loading_indicator_id }}"{% endif %}
+            hx-trigger="{{ button_config.htmx_config.trigger }}"
+            {% if button_config.htmx_config.confirm %}hx-confirm="{{ button_config.htmx_config.confirm }}"{% endif %}
+        {% endif %}
+        {% if button_config.disabled == "disabled" %}disabled{% endif %}
+        {% if button_config.icon_only %}aria-label="{{ button_config.label }}"{% endif %}
+        {% if button_config.tooltip %}data-insight-tooltip="{{ button_config.tooltip }}"{% endif %}
+        {% for attr in button_config.data_attrs %}data-{{ attr.name }}="{{ attr.value }}"{% endfor %}
+        {% for attr in button_config.aria_attrs %}aria-{{ attr.name }}="{{ attr.value }}"{% endfor %}
+        {% for attr in button_config.hx_attrs %}hx-{{ attr.name }}="{{ attr.value }}"{% endfor %}
+        class="btn btn-{% if button_config.outline %}outline-{% endif %}{% if button_config.subtle %}subtle-{% endif %}{{ button_config.type }}{% if button_config.icon_only %} btn-icon{% else %} btn-{{ button_config.size }}{% endif %}{% if button_config.round %} btn-round{% endif %}{% if button_config.hidden %} hidden{% endif %}{% if button_config.extra_classes %} {{ button_config.extra_classes }}{% endif %}"
+    >
+{% else %}
+    <button
+        type="{{ button_config.button_type }}"
+        {% if button_config.tag_id %}id="{{ button_config.tag_id }}"{% endif %}
+        {% if button_config.on_click %}onclick="{{ button_config.on_click }}"{% endif %}
+        {% if button_config.htmx_config %}
+            hx-{{ button_config.htmx_config.method }}="{{ button_config.htmx_config.request_url }}"
+            {% if button_config.htmx_config.target %}hx-target="{{ button_config.htmx_config.target }}"{% endif %}
+            hx-swap="{{ button_config.htmx_config.swap_method }}"
+            {% if button_config.htmx_config.push_url %}hx-push-url="true"{% endif %}
+            {% if button_config.htmx_config.loading_indicator_id %}hx-indicator="{{ button_config.htmx_config.loading_indicator_id }}"{% endif %}
+            hx-trigger="{{ button_config.htmx_config.trigger }}"
+            {% if button_config.htmx_config.confirm %}hx-confirm="{{ button_config.htmx_config.confirm }}"{% endif %}
+        {% endif %}
+        {% if button_config.type == "disabled" %}disabled{% endif %}
+        {% if button_config.icon_only %}aria-label="{{ button_config.label }}"{% endif %}
+        {% if button_config.tooltip %}data-insight-tooltip="{{ button_config.tooltip }}"{% endif %}
+        {% for attr in button_config.data_attrs %}data-{{ attr.name }}="{{ attr.value }}"{% endfor %}
+        {% for attr in button_config.aria_attrs %}aria-{{ attr.name }}="{{ attr.value }}"{% endfor %}
+        {% for attr in button_config.hx_attrs %}hx-{{ attr.name }}="{{ attr.value }}"{% endfor %}
+        class="btn btn-{% if button_config.outline %}outline-{% endif %}{% if button_config.subtle %}subtle-{% endif %}{{ button_config.type }}{% if button_config.icon_only %} btn-icon{% else %} btn-{{ button_config.size }}{% endif %}{% if button_config.round %} btn-round{% endif %}{% if button_config.hidden %} hidden{% endif %}{% if button_config.extra_classes %} {{ button_config.extra_classes }}{% endif %}"
+    >
+{% endif %}
+{% if button_config.icon and button_config.icon_only %}
+    {% icon config=button_config.icon %}
+{% else %}
+    {% if button_config.icon and not button_config.icon_end %}
+        {% icon config=button_config.icon %}
+    {% endif %}
+    {{ button_config.label }}
+    {% if button_config.icon and button_config.icon_end %}
+        {% icon config=button_config.icon %}
+    {% endif %}
+{% endif %}
+{% if button_config.request_url %}
+    </a>
+{% else %}
+    </button>
+{% endif %}

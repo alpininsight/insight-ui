@@ -1,4 +1,4 @@
-{% load static i18n %}
+{% load static i18n insight_tags %}
 
 <div class="bg-gray-50 dark:bg-gray-700 flex min-h-56 w-full max-w-96 flex-col border border-gray-200 dark:border-gray-600 shadow-lg rounded">
   {% if card_config.image %}
@@ -26,9 +26,7 @@
     {% if card_config.actions %}
       <div class="mt-auto flex flex-wrap gap-2">
         {% for action in card_config.actions %}
-          <a href="{{ action.url }}" class="btn btn-{{ action.type }}" {% if action.external %}target="_blank" rel="noopener"{% endif %}>
-            {{ action.text }}
-          </a>
+          {% button config=action %}
         {% endfor %}
       </div>
     {% endif %}

@@ -30,7 +30,7 @@ Example usage:
     )
 """
 
-from insight_ui.configs.base import ActionConfig, HtmxConfig, IconConfig, ImageConfig
+from insight_ui.configs.base import DataAttrConfig, HtmxConfig, IconConfig, ImageConfig
 from insight_ui.configs.card import (
     AppCardConfig,
     CardCarouselConfig,
@@ -51,6 +51,7 @@ from insight_ui.configs.filter import (
 )
 from insight_ui.configs.forms import FormConfig, FormFieldConfig
 from insight_ui.configs.input import (
+    ButtonConfig,
     ChatConfig,
     CheckboxConfig,
     CheckboxGroupConfig,
@@ -67,7 +68,7 @@ from insight_ui.configs.input import (
     TextareaConfig,
     ToggleConfig,
 )
-from insight_ui.configs.layout import ArticleConfig, BadgeConfig, HeroConfig, PageHeaderConfig
+from insight_ui.configs.layout import ArticleConfig, HeroConfig, PageHeaderConfig
 from insight_ui.configs.list import InfiniteScrollConfig, PaginationConfig, PaginationIppConfig, TableConfig
 from insight_ui.configs.navigation import (
     AccordionConfig,
@@ -94,6 +95,7 @@ from insight_ui.configs.navigation import (
 )
 from insight_ui.configs.popup import AlertConfig, ModalConfig
 from insight_ui.configs.utils import (
+    BadgeConfig,
     BrandLockupConfig,
     ChartConfig,
     ChartDatasetConfig,
@@ -104,12 +106,13 @@ from insight_ui.configs.utils import (
     InfoboxConfig,
     LiveContentConfig,
     LogoConfig,
+    ProgressBarConfig,
     WebSocketConfig,
 )
 
 __all__ = [
     # Base
-    "ActionConfig",
+    "DataAttrConfig",
     "HtmxConfig",
     "IconConfig",
     "ImageConfig",
@@ -148,6 +151,7 @@ __all__ = [
     "SliderConfig",
     "TextareaConfig",
     "ToggleConfig",
+    "ButtonConfig",
     # Layout
     "ArticleConfig",
     "BadgeConfig",
@@ -189,10 +193,12 @@ __all__ = [
     "ChartDatasetConfig",
     "CopyrightNoticeConfig",
     "CornerRibbonConfig",
+    "ProgressBarConfig",
     "GeoMapConfig",
     "GeoMapDatasetConfig",
     "InfoboxConfig",
     "LiveContentConfig",
     "LogoConfig",
     "WebSocketConfig",
+    "BadgeConfig",
 ]

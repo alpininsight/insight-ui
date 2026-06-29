@@ -7,6 +7,26 @@ from django.utils.translation import gettext_lazy as _
 
 
 @dataclass
+class DataAttrConfig:
+    """
+    Configuration for a custom data attribute.
+
+    Attributes:
+        name: Attribute name without 'data-' prefix.
+        value: Attribute value. Empty string for marker attributes.
+
+    """
+
+    __example__ = """
+        DataAttrConfig(name="testid", value="submit-btn")
+        DataAttrConfig(name="progress-retry", value="")
+        """
+
+    name: str = field(default="", metadata={"doc": _("Attribute name without 'data-' prefix.")})
+    value: str = field(default="", metadata={"doc": _("Attribute value. Empty string for marker attributes.")})
+
+
+@dataclass
 class IconConfig:
     """
     Configuration for an icon.
@@ -59,85 +79,47 @@ class ImageConfig:
 
 
 @dataclass
-class ActionConfig:
-    """
-    Configuration for an action button.
-
-    Used in cards, modals, and other components that have action buttons.
-
-    Attributes:
-        text: Button label.
-        url: Target URL for link-style actions.
-        type: Describes the importance of the button (purely visual): 'primary', 'secondary', 'cancel', or 'danger'.
-        onclick: Call a JavaScript function, e.g.: alert('Confirmed!').
-        dismiss: Closes the dialog on click.
-        icon: Optional icon configuration.
-
-    """
-
-    __example__ = """
-        ActionConfig(
-            text="Learn more",
-            url="/details/",
-            type="primary",
-        )
-        """
-
-    text: str = field(metadata={"doc": _("Button label.")})
-    url: str = field(default="", metadata={"doc": _("Target URL for link-style actions.")})
-    type: Literal["primary", "secondary", "cancel", "danger"] = field(
-        default="primary",
-        metadata={
-            "doc": _(
-                "Describes the importance of the button (purely visual): 'primary', 'secondary', 'cancel', or 'danger'."
-            )
-        },
-    )
-    onclick: str | None = field(
-        default=None, metadata={"doc": _("Call a JavaScript function, e.g.: alert('Confirmed!').")}
-    )
-    dismiss: bool = field(default=False, metadata={"doc": _("Closes the dialog on click.")})
-    icon: IconConfig | None = field(default=None, metadata={"doc": _("Optional icon configuration.")})
-
-
-@dataclass
 class HtmxConfig:
     """
     Configuration for HTMX attributes.
 
     Attributes:
-        url: The URL for the HTMX request (hx-get/hx-post).
+        request_url: The URL for the HTMX request (hx-get/hx-post).
         target: CSS selector for the target element (hx-target).
-        swap: The way in which the target is to be replaced (hx-swap).
+        swap_method: The way in which the target is to be replaced (hx-swap).
         trigger: Event trigger (hx-trigger).
         method: HTTP method ('get' or 'post').
-        indicator: CSS selector for loading indicator.
-        push_url: Whether to push URL to browser history.
-        confirm: Confirmation message before request.
-        vals: Additional values to include in request.
+        loading_indicator_id: CSS selector for loading indicator (hx-indicator).
+        push_url: Whether to push URL to browser history (hx-push-url).
+        confirm: Confirmation message before request (hx-confirm).
+        vals: Additional values to include in request (hx-vals).
 
     """
 
     __example__ = """
         HtmxConfig(
-            url="/api/search/",
+            request_url="/api/search/",
             target="#results",
-            swap="innerHTML",
+            swap_method="innerHTML",
             trigger="keyup changed delay:300ms",
         )
         """
 
-    url: str = field(default="", metadata={"doc": _("The URL for the HTMX request (hx-get/hx-post).")})
+    request_url: str = field(default="", metadata={"doc": _("The URL for the HTMX request (hx-get/hx-post).")})
     target: str = field(default="", metadata={"doc": _("CSS selector for the target element (hx-target).")})
-    swap: Literal["innerHTML", "outerHTML", "beforebegin", "afterbegin", "beforeend", "afterend", "delete", "none"] = (
-        field(default="innerHTML", metadata={"doc": _("The way in which the target is to be replaced (hx-swap).")})
-    )
+    swap_method: Literal[
+        "innerHTML", "outerHTML", "beforebegin", "afterbegin", "beforeend", "afterend", "delete", "none"
+    ] = field(default="innerHTML", metadata={"doc": _("The way in which the target is to be replaced (hx-swap).")})
     trigger: str = field(default="submit", metadata={"doc": _("Event trigger (hx-trigger).")})
     method: Literal["get", "post"] = field(default="get", metadata={"doc": _("HTTP method ('get' or 'post').")})
-    indicator: str = field(default="", metadata={"doc": _("CSS selector for loading indicator.")})
-    push_url: bool = field(default=False, metadata={"doc": _("Whether to push URL to browser history.")})
-    confirm: str = field(default="", metadata={"doc": _("Confirmation message before request.")})
-    vals: dict[str, Any] = field(default_factory=dict, metadata={"doc": _("Additional values to include in request.")})
+    loading_indicator_id: str = field(
+        default="", metadata={"doc": _("CSS selector for loading indicator (hx-indicator).")}
+    )
+    push_url: bool = field(default=False, metadata={"doc": _("Whether to push URL to browser history (hx-push-url).")})
+    confirm: str = field(default="", metadata={"doc": _("Confirmation message before request (hx-confirm).")})
+    vals: dict[str, Any] = field(
+        default_factory=dict, metadata={"doc": _("Additional values to include in request (hx-vals).")}
+    )
 
 
 @dataclass
@@ -167,24 +149,3 @@ class BaseFormFieldConfig:
     label: str | None = field(default=None, metadata={"doc": _("A text label displayed above the field.")})
     disabled: bool = field(default=False, metadata={"doc": _("**True** if the field should be disabled.")})
     required: bool = field(default=False, metadata={"doc": _("**True** if the field must be filled in.")})
-
-
-@dataclass
-class BaseCardConfig:
-    """
-    Base configuration for card components.
-
-    Shared attributes for card, app_card, and flip_card.
-
-    Attributes:
-        title: Card title.
-        content: Main card content.
-        image: Optional card image configuration.
-        actions: List of action buttons.
-
-    """
-
-    title: str = field(metadata={"doc": _("Card title.")})
-    content: str = field(metadata={"doc": _("Main card content.")})
-    image: ImageConfig | None = field(default=None, metadata={"doc": _("Optional card image configuration.")})
-    actions: list[ActionConfig] = field(default_factory=list, metadata={"doc": _("List of action buttons.")})

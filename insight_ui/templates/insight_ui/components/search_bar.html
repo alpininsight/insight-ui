@@ -10,7 +10,6 @@
             hx-vals="{{ search_bar_config.htmx_config.vals }}"
             hx-indicator="{{ search_bar_config.htmx_config.indicator|default:'#loading-indicator' }}"
             hx-push-url="{{ search_bar_config.htmx_config.push_url|default:'False' }}"
-            hx-ext="progressive-enhancement"
         {% else %}
             action="{{ search_bar_config.request_url }}"
             method="get"
@@ -32,9 +31,7 @@
             class="block size-full px-3 {% if search_bar_config.simple %}text-sm py-2{% else %}py-3 pe-32{% endif %} ps-10 text-neutral-700 d dark:text-white border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-sm focus:outline-none focus:ring-2 ring-insight-primary-active"
         />
         {% if not search_bar_config.simple %}
-            <button class="absolute inset-y-0 end-0 btn btn-primary btn-l rounded-s-none">
-                {% trans "Search" %}
-            </button>
+            {% button label=_("Search") type="primary" size="l" button_type="submit" extra_classes="absolute inset-y-0 end-0 rounded-s-none" %}
         {% endif %}
     </div>
 </form>

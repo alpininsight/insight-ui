@@ -527,10 +527,7 @@ def get_progress_bar_description_context() -> dict[str, list[str]]:
             _(
                 "For a progress indicator where progress is made through active user interaction, our Step Bar component is suitable."
             ),
-        ],
-        "description_notes_begin": [
-            {"type": "warning", "message": "Diese Komponente befindet sich noch in Bearbeitung!"}
-        ],
+        ]
     }
 
 
@@ -584,6 +581,18 @@ def get_web_socket_description_context() -> dict[str, list[str]]:
             _(
                 "By default the component expects HTML fragments that HTMX can swap into the DOM. Non-HTML frames are surfaced as browser events so host adapters can decide how to render them."
             ),
+        ]
+    }
+
+
+@register_component(Component.BADGE)
+def get_badge_description_context() -> dict[str, list[str]]:
+    """Serve description context documentation for the badge component."""
+    return {
+        "description": [
+            _(
+                "The badge component displays a small pill-shaped icon with text and an optional icon. The badge can be displayed in various sizes and colors."
+            )
         ]
     }
 

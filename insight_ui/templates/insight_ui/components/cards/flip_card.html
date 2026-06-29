@@ -1,4 +1,4 @@
-{% load static i18n %}
+{% load static i18n insight_tags %}
 
 <div class="group relative w-72 perspective-distant">
     <div class="relative size-full transform-3d group-hover:rotate-y-180 transition-transform duration-500">
@@ -21,9 +21,7 @@
             {% if flip_card_config.tags %}
                 <div id="card-tags" class="flex flex-wrap gap-1 px-4">
                     {% for tag in flip_card_config.tags %}
-                        <button class="btn btn-primary btn-xs">
-                            {{ tag }}
-                        </button>
+                        {% button label=tag type="primary" size="xs" %}
                     {% endfor %}
                 </div>
             {% endif %}
@@ -31,13 +29,7 @@
             {# Start and more #}
             <div class="flex flex-col gap-2 pt-4 m-4 border-t border-gray-200 dark:border-gray-600">
                 {% for action in flip_card_config.actions %}
-                    {% if action.disabled %}
-                        <span class="btn btn-{{ action.type }}" aria-disabled="true">{{ action.text }}</span>
-                    {% else %}
-                        <a href="{{ action.url }}" class="btn btn-{{ action.type }}" {% if action.external %}target="_blank" rel="noopener"{% endif %}>
-                            {{ action.text }}
-                        </a>
-                    {% endif %}
+                    {% button config=action %}
                 {% endfor %}
             </div>
         </div>

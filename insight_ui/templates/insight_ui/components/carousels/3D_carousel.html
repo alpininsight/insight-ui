@@ -17,12 +17,8 @@
     </div>
     <!-- Controls -->
     <div class="absolute flex justify-between gap-4 bottom-10 sm:bottom-10 left-1/2 -translate-x-1/2 px-8 lg:px-0">
-        <button class="btn btn-primary">
-            {% icon name="chevron_left" %}{% trans 'Back' %}
-        </button>
-        <button class="btn btn-primary">
-            {% trans 'Next' %}{% icon name="chevron_right" %}
-        </button>
+        {% button label=_("Back") type="primary" icon_name="chevron_left" %}
+        {% button label=_("Next") type="primary" icon_name="chevron_right" icon_end=True %}
     </div>
 </div>
 

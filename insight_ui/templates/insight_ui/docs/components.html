@@ -28,9 +28,6 @@
         <!-- Apache ECharts -->
         <script defer src="https://cdnjs.cloudflare.com/ajax/libs/echarts/6.0.0/echarts.min.js" integrity="sha512-4/g9GAdOdTpUP2mKClpKsEzaK7FQNgMjq+No0rX8XZlfrCGtbi4r+T/p5fnacsEC3zIAmHKLJUL7sh3/yVA4OQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-        <!-- Insight UI Modular Utils  -->
-        <script defer src="{% insight_asset 'insight_ui/js/insight-ui-utils.js' %}"></script>
-
         <!-- Main stylesheet -->
         <link rel="stylesheet" href="{% insight_asset INSIGHT_UI.stylesheet %}">
     </head>
@@ -38,28 +35,12 @@
         {% include "insight_ui/docs/component_demo.html" %}
     </body>
 
-    <!-- Insight UI Modular JavaScript -->
+    <!-- Insight UI JavaScript -->
     <script>
         window.JS_DEBUG = {{ INSIGHT_UI.JS_DEBUG|yesno:"true,false" }};
     </script>
     <script defer src="{% insight_asset 'insight_ui/js/insight-ui-debug.js' %}"></script>
     <script defer src="{% insight_asset 'insight_ui/js/insight-ui-utils.js' %}"></script>
-    <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-3D-carousel.js' %}"></script>
-    <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-accordion.js' %}"></script>
-    <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-carousel.js' %}"></script>
-    <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-checkbox.js' %}"></script>
-    <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-code-block.js' %}"></script>
-    <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-collapsible.js' %}"></script>
-    <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-demo-container.js' %}"></script>
-    <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-dropdown.js' %}"></script>
-    <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-floater.js' %}"></script>
-    <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-modal.js' %}"></script>
-    <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-multiselect.js' %}"></script>
-    <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-sidebar.js' %}"></script>
-    <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-tabs.js' %}"></script>
-    <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-theme-toggle.js' %}"></script>
     <script defer src="{% insight_asset 'insight_ui/js/insight-ui-websocket.js' %}"></script>
     <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-init.js' %}"></script>
-    <!-- HTMX Extensions -->
-    <script defer src="{% insight_asset 'insight_ui/js/insight-ui-htmx-extensions.js' %}"></script>
 </html>

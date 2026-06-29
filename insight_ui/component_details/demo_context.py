@@ -11,11 +11,11 @@ from insight_ui.component_details.components import Component
 from insight_ui.configs import (
     AccordionConfig,
     AccordionItemConfig,
-    ActionConfig,
     AppCardConfig,
     BadgeConfig,
     BreadcrumbItemConfig,
     BulletPointItemConfig,
+    ButtonConfig,
     CardCarouselConfig,
     CardConfig,
     ChartConfig,
@@ -25,6 +25,7 @@ from insight_ui.configs import (
     CheckboxItemConfig,
     CopyrightNoticeConfig,
     CornerRibbonConfig,
+    DataAttrConfig,
     DropdownConfig,
     DropdownItemConfig,
     FilterConfig,
@@ -181,9 +182,9 @@ def get_hero_context() -> dict:
             "Insight UI",
             _("Front-end Design Made Easy"),
             _("A modern UI library for Django applications to get started quickly."),
-            ActionConfig(_("Get Started"), "#", "primary", icon=IconConfig("rocket")),
-            ActionConfig(_("Learn more"), "#", "secondary"),
-            badge=BadgeConfig("Django UI Library", IconConfig("sparkles")),
+            ButtonConfig(label=_("Get Started"), request_url="#", type="primary", icon=IconConfig("rocket")),
+            ButtonConfig(label=_("Learn more"), request_url="#", type="secondary"),
+            badge_config=BadgeConfig("Django UI Library", IconConfig("sparkles")),
         )
     }
 
@@ -591,8 +592,10 @@ def get_modal_context() -> dict:
             _("Demo modal"),
             _("This is an example of a standard modal."),
             [
-                ActionConfig(_("Yes, confirm"), "#", "primary", "alert('Confirmed!')"),
-                ActionConfig(_("Abort"), "#", "cancel", dismiss=True),
+                ButtonConfig(label=_("Yes, confirm"), type="primary", on_click="alert('Confirmed!')"),
+                ButtonConfig(
+                    label=_("Abort"), type="secondary", data_attrs=[DataAttrConfig("insight-dismiss", "modal")]
+                ),
             ],
         )
     }
@@ -943,7 +946,10 @@ def get_card_context() -> dict:
             CardConfig(
                 _("Card with actions"),
                 content=_("This card has some action buttons."),
-                actions=[ActionConfig(_("Learn more"), "#", "secondary"), ActionConfig(_("Share"), "#", "primary")],
+                actions=[
+                    ButtonConfig(label=_("Learn more"), request_url="#", type="secondary"),
+                    ButtonConfig(label=_("Share"), request_url="#", type="primary"),
+                ],
             ),
         ]
     }
@@ -958,7 +964,10 @@ def get_app_card_context() -> dict:
             _("A card with its content arranged horizontally."),
             image=ImageConfig(static(DEMO_CARD_IMAGE_PATH), _("Card-Image")),
             tags=[_("Insight UI"), _("Layout"), _("Card")],
-            actions=[ActionConfig(_("Learn more"), "#", "secondary"), ActionConfig(_("Share"), "#", "primary")],
+            actions=[
+                ButtonConfig(label=_("Learn more"), request_url="#", type="secondary"),
+                ButtonConfig(label=_("Share"), request_url="#", type="primary"),
+            ],
         )
     }
 
@@ -973,7 +982,10 @@ def get_flip_card_context() -> dict:
             _("Here you can add more information, without taken more space."),
             image=ImageConfig(static(DEMO_CARD_IMAGE_PATH), _("Card-Image")),
             tags=[_("Insight UI"), _("Layout"), _("Card")],
-            actions=[ActionConfig(_("Learn more"), "#", "secondary"), ActionConfig(_("Share"), "#", "primary")],
+            actions=[
+                ButtonConfig(label=_("Learn more"), request_url="#", type="secondary"),
+                ButtonConfig(label=_("Share"), request_url="#", type="primary"),
+            ],
         )
     }
 
@@ -1079,7 +1091,7 @@ def get_form_context() -> dict:
             ],
             True,
             reverse("form_submit"),
-            HtmxConfig("#htmx-form"),
+            HtmxConfig(target="#htmx-form"),
         )
     }
 

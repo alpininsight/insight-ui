@@ -1,11 +1,11 @@
-{% load i18n %}
+{% load i18n insight_tags %}
 
 <div data-insight-multiselect data-name="{{ multiselect_config.name }}" data-max="{{ multiselect_config.maximum }}" data-selected="{{ multiselect_config.selected_options|default:"" }}">
     <label id="{{ multiselect_config.name }}-label" class="block text-sm font-bold text-primary mb-1">{{ multiselect_config.label }}</label>
     {% if multiselect_config.show_buttons %}
         <div class="flex gap-2 mb-1">
-            <button type="button" class="select-all btn btn-primary btn-sm">{% trans "Select all" %}</button>
-            <button type="button" class="deselect-all btn btn-primary btn-sm">{% trans "Deselect all" %}</button>
+            {% button label=_("Select all") type="primary" size="s" button_type="button" extra_classes="select-all" %}
+            {% button label=_("Deselect all") type="primary" size="s" button_type="button" extra_classes="deselect-all" %}
         </div>
     {% endif %}
     <div class="relative" role="combobox" aria-labelledby="{{ multiselect_config.name }}-label" aria-haspopup="listbox" aria-expanded="false" aria-owns="{{ multiselect_config.name }}-listbox">

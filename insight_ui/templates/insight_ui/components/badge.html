@@ -1,0 +1,11 @@
+{% load insight_tags %}
+
+<div class="badge badge-{{ badge_config.type }} badge-{{ badge_config.size }}">
+    {% if badge_config.icon and not badge_config.icon_end %}
+        {% icon config=badge_config.icon %}
+    {% endif %}
+    <span class="font-medium">{{ badge_config.label }}</span>
+    {% if badge_config.icon and badge_config.icon_end %}
+        {% icon config=badge_config.icon %}
+    {% endif %}
+</div>

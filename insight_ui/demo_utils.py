@@ -1,6 +1,6 @@
 from django.utils.translation import gettext as _
 
-from insight_ui.configs import CardConfig
+from insight_ui.configs import ButtonConfig, CardConfig
 
 
 def generate_payload(count: int = 5) -> list:
@@ -22,8 +22,8 @@ def generate_payload(count: int = 5) -> list:
             "content": _("Content for element %(i)s") % {"i": i},
             "status": _("Active") if i % 2 == 0 else _("Inactive"),
             "actions": [
-                {"text": _("Learn more"), "url": "#", "type": "primary"},
-                {"text": _("Share"), "url": "#", "type": "secondary"},
+                ButtonConfig(label=_("Learn more"), request_url="#", type="primary"),
+                ButtonConfig(label=_("Share"), request_url="#", type="secondary"),
             ],
             "action_link": _(
                 "<a href='#' class='underline text-insight-text-link hover:text-insight-text-link-hover'>Details %(i)s</a>"  # noqa: E501
@@ -47,7 +47,7 @@ def map_payload_to_cards(payload: list) -> list[CardConfig]:
         data (list): transformed data.
 
     """
-    return [CardConfig(item["title"], content=item["content"], actions=item["actions"]) for item in payload]
+    return [CardConfig(title=item["title"], content=item["content"], actions=item["actions"]) for item in payload]
 
 
 def map_payload_to_table(payload: list) -> tuple[list[str], list]:

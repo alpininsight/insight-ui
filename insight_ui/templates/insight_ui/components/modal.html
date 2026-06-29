@@ -19,9 +19,7 @@
             {# Modal Header #}
             <div class="flex items-start justify-between h-fit p-6 border-b border-gray-200 dark:border-gray-700">
                 <h2 id="{{ modal_config.tag_id }}-title" class="pb-0">{{ modal_config.title }}</h2>
-                <button aria-label="{% trans 'Close' %}" class="btn btn-close" data-insight-dismiss="modal">
-                    {% icon name="x-mark" size="xs" %}
-                </button>
+                {% button label=_("Close") type="secondary" subtle=True icon_name="x-mark" icon_size="xs" icon_only=True data_insight_dismiss="modal" %}
             </div>
 
             {# Modal Body #}
@@ -38,27 +36,12 @@
             {# Modal Footer #}
             <div class="flex justify-end gap-2 p-6 border-t border-gray-200 dark:border-gray-700">
                 {% if modal_config.actions %}
-
                     {% for action in modal_config.actions %}
-                        {% if action.type == 'cancel' or action.dismiss %}
-                            <button class="btn btn-secondary" data-insight-dismiss="modal">
-                                {{ action.text|default:"Abbrechen" }}
-                            </button>
-                        {% elif action.type == 'primary' %}
-                            <button class="btn btn-primary" {% if action.onclick %}onclick="{{ action.onclick }}"{% endif %}>
-                                {{ action.text }}
-                            </button>
-                        {% else %}
-                            <button class="btn btn-secondary" {% if action.onclick %}onclick="{{ action.onclick }}"{% endif %}>
-                                {{ action.text }}
-                            </button>
-                        {% endif %}
+                        {% button config=action %}
                     {% endfor %}
                 {% else %}
                     {# Default close button #}
-                    <button class="btn btn-secondary" data-insight-dismiss="modal">
-                        {% trans 'Close' %}
-                    </button>
+                    {% button label=_("Close") type="secondary" data_insight_dismiss="modal" %}
                 {% endif %}
             </div>
         </div>

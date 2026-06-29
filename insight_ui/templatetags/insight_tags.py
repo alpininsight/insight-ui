@@ -21,7 +21,6 @@ from markdown import markdown
 from insight_ui.config import get_config
 from insight_ui.configs import (
     AccordionConfig,
-    ActionConfig,
     AlertConfig,
     AppCardConfig,
     ArticleConfig,
@@ -31,6 +30,7 @@ from insight_ui.configs import (
     BreadcrumbsConfig,
     BulletPointItemConfig,
     BulletPointListConfig,
+    ButtonConfig,
     CardCarouselConfig,
     CardConfig,
     CarouselItemConfig,
@@ -41,6 +41,7 @@ from insight_ui.configs import (
     CheckboxGroupConfig,
     CopyrightNoticeConfig,
     CornerRibbonConfig,
+    DataAttrConfig,
     DropdownConfig,
     FlipCardConfig,
     FooterConfig,
@@ -87,6 +88,7 @@ from insight_ui.configs import (
     ToggleViewConfig,
     WebSocketConfig,
 )
+from insight_ui.configs.utils import ProgressBarConfig
 from insight_ui.utils.diff import file_template, styles
 
 register = template.Library()
@@ -225,22 +227,6 @@ def build_config[T](cls: type[T], config: T | None = None, **kwargs: Any) -> T: 
     return cls(**overrides)
 
 
-def merge_config(config: Any, **overrides) -> Any:  # noqa: ANN401
-    """Take a component config Dataclass and overwrite the respective member with the kwargs."""
-    if config is None:
-        return config.__class__(**overrides)
-
-    values = {}
-    for field in fields(config):
-        override = overrides.get(field.name)
-        if override:
-            values[field.name] = override
-        else:
-            values[field.name] = getattr(config, field.name)
-
-    return replace(config, **values)
-
-
 @register.filter
 def markdownify(value: str) -> SafeString:
     """Convert markdown to html."""
@@ -317,10 +303,10 @@ def hero(
     title: str | _Unset = UNSET,
     subtitle: str | _Unset = UNSET,
     description: str | _Unset = UNSET,
-    cta_primary: ActionConfig | _Unset = UNSET,
-    cta_secondary: ActionConfig | _Unset = UNSET,
+    cta_primary: ButtonConfig | _Unset = UNSET,
+    cta_secondary: ButtonConfig | _Unset = UNSET,
     background_image_url: str | _Unset = UNSET,
-    badge: BadgeConfig | _Unset = UNSET,
+    badge_config: BadgeConfig | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a hero section with optional background image."""
     config = build_config(HeroConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
@@ -445,6 +431,103 @@ def tabs(config: TabsConfig) -> dict[str, Any]:
 #   Input Tags
 #
 # =============================================================
+
+
+@register.inclusion_tag("insight_ui/components/button.html")
+def button(
+    config: ButtonConfig | None = None,
+    *,
+    tag_id: str | _Unset = UNSET,
+    label: str | _Unset = UNSET,
+    request_url: str | _Unset = UNSET,
+    on_click: str | _Unset = UNSET,
+    icon_name: str | _Unset = UNSET,
+    icon_size: str | _Unset = UNSET,
+    icon_end: bool | _Unset = UNSET,
+    icon_only: bool | _Unset = UNSET,
+    type: Literal["primary", "secondary", "info", "success", "warning", "danger", "disabled", "link"] | _Unset = UNSET,  # noqa: A002
+    size: Literal["xs", "s", "m", "l", "xl"] | _Unset = UNSET,
+    outline: bool | _Unset = UNSET,
+    subtle: bool | _Unset = UNSET,
+    round: bool | _Unset = UNSET,  # noqa: A002
+    tooltip: str | _Unset = UNSET,
+    htmx_config: HtmxConfig | _Unset = UNSET,
+    hidden: bool | _Unset = UNSET,
+    button_type: Literal["button", "submit", "reset"] | _Unset = UNSET,
+    extra_classes: str | _Unset = UNSET,
+    **kwargs: Any,  # noqa: ANN401
+) -> dict[str, Any]:
+    """
+    Render the button component.
+
+    Supports data_* kwargs for custom data attributes, e.g.:
+        {% button label="Retry" data_progress_retry="" data_retry="retry-btn" %}
+    becomes:
+        <button data-progress-retry="" data-retry="retry-btn">Retry</button>
+
+    Supports aria_* kwargs for ARIA attributes, e.g.:
+        {% button label="Menu" aria_expanded="false" aria_controls="menu-id" %}
+    becomes:
+        <button aria-expanded="false" aria-controls="menu-id">Menu</button>
+
+    Supports hx_* kwargs for HTMX attributes, e.g.:
+        {% button label="Load" hx_get="/api/data" hx_swap="outerHTML" %}
+    becomes:
+        <button hx-get="/api/data" hx-swap="outerHTML">Load</button>
+    """
+    icon: IconConfig | None | _Unset = UNSET
+    if icon_name is not UNSET:
+        icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "m") if icon_name else None
+
+    # Collect data_* kwargs and convert to DataAttrConfig list
+    data_attrs: list[DataAttrConfig] | _Unset = UNSET
+    data_kwargs = {k: v for k, v in kwargs.items() if k.startswith("data_")}
+    if data_kwargs:
+        data_attrs = [
+            DataAttrConfig(name=key[5:].replace("_", "-"), value=str(value)) for key, value in data_kwargs.items()
+        ]
+
+    # Collect aria_* kwargs and convert to DataAttrConfig list
+    aria_attrs: list[DataAttrConfig] | _Unset = UNSET
+    aria_kwargs = {k: v for k, v in kwargs.items() if k.startswith("aria_")}
+    if aria_kwargs:
+        aria_attrs = [
+            DataAttrConfig(name=key[5:].replace("_", "-"), value=str(value)) for key, value in aria_kwargs.items()
+        ]
+
+    # Collect hx_* kwargs and convert to DataAttrConfig list
+    hx_attrs: list[DataAttrConfig] | _Unset = UNSET
+    hx_kwargs = {k: v for k, v in kwargs.items() if k.startswith("hx_")}
+    if hx_kwargs:
+        hx_attrs = [
+            DataAttrConfig(name=key[3:].replace("_", "-"), value=str(value)) for key, value in hx_kwargs.items()
+        ]
+
+    config = build_config(
+        ButtonConfig,
+        config,
+        tag_id=tag_id,
+        label=label,
+        request_url=request_url,
+        on_click=on_click,
+        icon=icon,
+        icon_end=icon_end,
+        icon_only=icon_only,
+        type=type,
+        size=size,
+        outline=outline,
+        subtle=subtle,
+        round=round,
+        tooltip=tooltip,
+        htmx_config=htmx_config,
+        hidden=hidden,
+        button_type=button_type,
+        extra_classes=extra_classes,
+        data_attrs=data_attrs,
+        aria_attrs=aria_attrs,
+        hx_attrs=hx_attrs,
+    )
+    return {"button_config": config}
 
 
 @register.inclusion_tag("insight_ui/components/input.html")
@@ -674,7 +757,7 @@ def modal(
     tag_id: str | _Unset = UNSET,
     title: str | _Unset = UNSET,
     description: str | list[str] | _Unset = UNSET,
-    actions: Sequence[ActionConfig] | None | _Unset = UNSET,
+    actions: Sequence[ButtonConfig] | None | _Unset = UNSET,
     width: int | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render an accessible modal dialog."""
@@ -788,7 +871,7 @@ def logo(
     # Only override icon if icon_name was explicitly provided
     icon: IconConfig | None | _Unset = UNSET
     if icon_name is not UNSET:
-        icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "md") if icon_name else None
+        icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "m") if icon_name else None
 
     config = build_config(
         LogoConfig,
@@ -909,6 +992,33 @@ def corner_ribbon(
     return {"corner_ribbon_config": config}
 
 
+@register.inclusion_tag("insight_ui/components/progress_bar.html")
+def progress_bar(
+    config: ProgressBarConfig | None = None,
+    *,
+    tag_id: str | _Unset = UNSET,
+    label: str | _Unset = UNSET,
+    request_url: str | _Unset = UNSET,
+    interval: int | _Unset = UNSET,
+    sse_url: str | _Unset = UNSET,
+    min_value: int | _Unset = UNSET,
+    max_value: int | _Unset = UNSET,
+    value: int | _Unset = UNSET,
+    show_value: bool | _Unset = UNSET,
+    hide_on_complete: bool | _Unset = UNSET,
+    complete_delay: int | _Unset = UNSET,
+    stop_on_error: bool | _Unset = UNSET,
+    show_cancel: bool | _Unset = UNSET,
+    cancel_label: str | _Unset = UNSET,
+    cancel_url: str | _Unset = UNSET,
+    show_retry: bool | _Unset = UNSET,
+    retry_label: str | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a simple progress bar."""
+    config = build_config(ProgressBarConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    return {"progress_bar_config": config}
+
+
 @register.inclusion_tag("insight_ui/components/geo_map.html")
 def geo_map(
     config: GeoMapConfig | None = None,
@@ -976,6 +1086,26 @@ def websocket(
     """Render a WebSocket component as a thin wrapper for the HTMX ws extension."""
     config = build_config(WebSocketConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
     return {"websocket_config": config}
+
+
+@register.inclusion_tag("insight_ui/components/badge.html")
+def badge(
+    config: BadgeConfig | None = None,
+    *,
+    label: str | _Unset = UNSET,
+    icon_name: str | _Unset = UNSET,
+    icon_size: str | _Unset = UNSET,
+    icon_end: bool | _Unset = UNSET,
+    type: Literal["primary", "secondary", "info", "success", "warning", "danger", "disabled"] | _Unset = UNSET,  # noqa: A002
+    size: Literal["xs", "s", "m", "l", "xl"] | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render the badge component."""
+    icon: IconConfig | None | _Unset = UNSET
+    if icon_name is not UNSET:
+        icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "m") if icon_name else None
+
+    config = build_config(BadgeConfig, config, label=label, icon=icon, icon_end=icon_end, type=type, size=size)
+    return {"badge_config": config}
 
 
 # =============================================================
@@ -1081,7 +1211,7 @@ def card(
     content: str | _Unset = UNSET,
     subtitle: str | _Unset = UNSET,
     image: ImageConfig | None | _Unset = UNSET,
-    actions: list[ActionConfig] | None | _Unset = UNSET,
+    actions: list[ButtonConfig] | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a card with an aspect ratio of 16:9."""
     config = build_config(CardConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
@@ -1097,7 +1227,7 @@ def app_card(
     tags: list[str] | None | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
     image: ImageConfig | None | _Unset = UNSET,
-    actions: list[ActionConfig] | None | _Unset = UNSET,
+    actions: list[ButtonConfig] | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a vertically aligned card."""
     config = build_config(AppCardConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
@@ -1113,7 +1243,7 @@ def flip_card(
     tags: list[str] | None | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
     image: ImageConfig | None | _Unset = UNSET,
-    actions: list[ActionConfig] | None | _Unset = UNSET,
+    actions: list[ButtonConfig] | None | _Unset = UNSET,
     back_content: str | None | _Unset = UNSET,
     back_style: str | None | _Unset = UNSET,
 ) -> dict[str, Any]:

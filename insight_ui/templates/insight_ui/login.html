@@ -37,7 +37,7 @@
       </div>
       <!-- Submit -->
       <div class="flex justify-center mt-8">
-        <button type="submit" class="btn btn-primary w-full">{% trans 'Sign in' %}</button>
+        {% button label=_("Sign in") type="primary" button_type="submit" extra_classes="w-full" %}
       </div>
     </form>
     {% if alt_login %}

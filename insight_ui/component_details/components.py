@@ -6,8 +6,10 @@ from insight_ui.configs import (
     AlertConfig,
     AppCardConfig,
     ArticleConfig,
+    BadgeConfig,
     BrandLockupConfig,
     BulletPointListConfig,
+    ButtonConfig,
     CardCarouselConfig,
     CardConfig,
     ChartConfig,
@@ -35,6 +37,7 @@ from insight_ui.configs import (
     NavbarConfig,
     PageHeaderConfig,
     PaginationConfig,
+    ProgressBarConfig,
     QueryBuilderConfig,
     RadioBlockConfig,
     RadioGroupConfig,
@@ -89,7 +92,7 @@ class Component(Enum):
     BULLET_POINT_LIST = ("bullet_point_list", ComponentCategory.NAVIGATION, BulletPointListConfig)
     ACCORDION = ("accordion", ComponentCategory.NAVIGATION, AccordionConfig)
     TABS = ("tabs", ComponentCategory.NAVIGATION, TabsConfig, False, True, False)
-    BUTTON = ("button", ComponentCategory.INPUT, None, False, False, True)
+    BUTTON = ("button", ComponentCategory.INPUT, ButtonConfig)
     INPUT_FIELD = ("input_field", ComponentCategory.INPUT, InputFieldConfig)
     TEXTAREA = ("textarea", ComponentCategory.INPUT, TextareaConfig)
     CHECKBOX = ("checkbox", ComponentCategory.INPUT, CheckboxConfig)
@@ -113,11 +116,12 @@ class Component(Enum):
     LOGO = ("logo", ComponentCategory.UTIL, LogoConfig)
     BRAND_LOCKUP = ("brand_lockup", ComponentCategory.UTIL, BrandLockupConfig)
     CORNER_RIBBON = ("corner_ribbon", ComponentCategory.UTIL, CornerRibbonConfig)
-    PROGRESS_BAR = ("progress_bar", ComponentCategory.UTIL, None, False, False, True)
+    PROGRESS_BAR = ("progress_bar", ComponentCategory.UTIL, ProgressBarConfig)
     GEO_MAP = ("geo_map", ComponentCategory.UTIL, GeoMapConfig)
     CHART = ("chart", ComponentCategory.UTIL, ChartConfig)
     LIVE_CONTENT = ("live_content", ComponentCategory.UTIL, LiveContentConfig, False, True, False)
     WEB_SOCKET = ("web_socket", ComponentCategory.UTIL, WebSocketConfig, False, True, False)
+    BADGE = ("badge", ComponentCategory.UTIL, BadgeConfig)
     INFINITE_SCROLL = ("infinite_scroll", ComponentCategory.LIST, InfiniteScrollConfig, False, True, False)
     PAGINATION = ("pagination", ComponentCategory.LIST, PaginationConfig, False, True, False)
     TABLE = ("table", ComponentCategory.LIST, TableConfig)
@@ -126,7 +130,7 @@ class Component(Enum):
     QUERY_BUILDER = ("query_builder", ComponentCategory.FILTER, QueryBuilderConfig, False, True, False)
     CARD = ("card", ComponentCategory.CARD, CardConfig)
     APP_CARD = ("app_card", ComponentCategory.CARD, AppCardConfig)
-    FLIP_CARD = ("flip_card", ComponentCategory.CARD, FlipCardConfig)
+    FLIP_CARD = ("flip_card", ComponentCategory.CARD, FlipCardConfig, False, False, True)
     CARD_CAROUSEL = ("card_carousel", ComponentCategory.CARD, CardCarouselConfig)
     IMAGE_CAROUSEL = ("image_carousel", ComponentCategory.CARD, ImageCarouselConfig)
     THREE_D_CAROUSEL = ("3d_carousel", ComponentCategory.CARD, ThreeDCarouselConfig, False, True, False)

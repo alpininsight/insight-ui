@@ -8,7 +8,7 @@
   <input name="next" type="hidden" value="{{ redirect_to }}" />
   <div class="relative h-full">
     <!-- Language Button -->
-    <button type="button" data-insight-dropdown="language-menu" class="btn btn-subtil btn-sm h-full">
+    <button type="button" data-insight-dropdown="language-menu" class="btn btn-subtle-secondary btn-s h-full">
       {% icon name="globe" %}
       {% for lang_code, lang_name in LANGUAGES %}
         {% if lang_code == LANGUAGE_CODE %}
