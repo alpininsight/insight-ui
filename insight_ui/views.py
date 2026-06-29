@@ -19,9 +19,10 @@ from insight_ui.component_details.demo_context import (
     get_minimal_stepper_context,
 )
 from insight_ui.component_details.git_path_mapping import SCRIPT_PATHS, TEMPLATE_PATHS
-from insight_ui.configs.base import IconConfig
+from insight_ui.configs.base import ActionConfig, IconConfig
 from insight_ui.configs.card import ToggleViewConfig
 from insight_ui.configs.input import RadioBlockConfig, RadioItemConfig
+from insight_ui.configs.layout import BadgeConfig, HeroConfig
 from insight_ui.configs.list import PaginationConfig, PaginationIppConfig, TableConfig
 from insight_ui.context import (
     get_base_context,
@@ -309,6 +310,68 @@ def form_submit(request: HttpRequest) -> HttpResponse | JsonResponse:
 def index_view(request: HttpRequest) -> HttpResponse:
     """Render index page."""
     context = get_base_context() | get_sidebar_context()
+    context["hero"] = HeroConfig(
+        title="Insight UI",
+        subtitle=_("A Django Component Framework"),
+        description=_(
+            "60+ production-ready, WCAG 2.1 AA-compliant components. "
+            "Build accessible Django applications without frontend expertise."
+        ),
+        cta_primary=ActionConfig(_("Get started"), reverse("installation_view"), "primary"),
+        cta_secondary=ActionConfig(
+            _("Browse components"), reverse("storybook_view", kwargs={"storybook_name": "input"}), "secondary"
+        ),
+        badge=BadgeConfig(text=_("Open Source"), icon=IconConfig(name="git", size="s")),
+    )
+    context["features"] = [
+        {
+            "icon": "rectangles",
+            "title": _("60+ Components"),
+            "description": _("Pre-built, production-ready components from buttons to charts and data tables."),
+        },
+        {
+            "icon": "tick",
+            "title": _("WCAG 2.1 AA"),
+            "description": _(
+                "Full accessibility compliance built-in. Screen reader support, keyboard navigation, ARIA."
+            ),
+        },
+        {
+            "icon": "rocket",
+            "title": _("HTMX-Powered"),
+            "description": _(
+                "Interactive components without JavaScript complexity. Partial page updates out of the box."
+            ),
+        },
+        {
+            "icon": "code",
+            "title": _("Django-Native"),
+            "description": _("Template tags and dataclass configs. Use Python, not JavaScript, to build your UI."),
+        },
+        {
+            "icon": "moon",
+            "title": _("Dark Mode"),
+            "description": _("Light and dark themes with smooth transitions. Respects user system preferences."),
+        },
+        {
+            "icon": "globe",
+            "title": _("RTL Support"),
+            "description": _("Full right-to-left layout support for Arabic, Hebrew, Persian and other RTL languages."),
+        },
+    ]
+    context["stats"] = [
+        {"value": "60+", "label": _("Components")},
+        {"value": "WCAG 2.1", "label": _("Accessibility")},
+        {"value": "RTL", "label": _("Layout Support")},
+        {"value": "0", "label": _("JavaScript Required")},
+    ]
+    context["checklist"] = [
+        _("You have a Django application that needs a frontend?"),
+        _("You need to quickly prototype a PoC?"),
+        _("You prefer backend development over frontend?"),
+        _("You want accessibility compliance without the complexity?"),
+        _("You'd rather not design basic UI components from scratch?"),
+    ]
     return render(request, "insight_ui/index.html", context)
 
 
