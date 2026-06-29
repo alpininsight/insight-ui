@@ -11,10 +11,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **ci:** Run container publish on every branch push
 - **ci:** Pin only published container digests
+- Add missing data-attribute support to the template file of the 'button' component
+
+### Features
+
+- Add 'button' component
+- Add 'badge' component
+- Set configs for 'button' and 'badge' in components.py
+- Add 'progress_bar' component
+- Add label, process text and tooltip to 'progress_bar'
+- Add request functionality to 'progress_bar' for polling or via sse
+- Add custom 'data-attribute' support to 'button' component
+- Add mouse-follow and text update support to 'tooltip' component
+- Use 'button' and 'tooltip' component in 'progress_bar' component
+- Add badge color variants and badge size variants
+- Add round button design
+- Replace 'ActionConfig' with 'ButtonConfig'
+- Remove obsolete htmx-extension.js and use corresponding htmx-attributes instead
+- Replace raw href tag with 'button' component for 'pagination' and 'user_dropdown'
 
 ### Miscellaneous
 
 - **ci:** Retrigger repository policy after workflow promotion
+- Regenerate minified assets
+- Regenerate minified stylesheet
+
+### Refactoring
+
+- Remove redundant loading of script files in base.html and components.html
 
 ## [1.10.2] - 2026-05-27
 
