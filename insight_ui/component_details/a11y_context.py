@@ -48,6 +48,78 @@ def get_hero_a11y_context() -> dict[str, list[str]]:
     }
 
 
+@register_component(Component.PAGE)
+def get_page_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y documentation for the page layout tag."""
+    return {
+        "a11y": [
+            _("The page container is a semantic `<div>` with no specific ARIA role."),
+            _("Content within should use appropriate semantic HTML elements."),
+            _("Consider wrapping main content in a `<main>` element for landmark navigation."),
+        ]
+    }
+
+
+@register_component(Component.HBOX)
+def get_hbox_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y documentation for the hbox layout tag."""
+    return {
+        "a11y": [
+            _("The flex container is rendered as a `<div>` element."),
+            _("Visual layout does not affect the reading order for screen readers."),
+            _("Ensure content order in the source matches the intended reading order."),
+        ]
+    }
+
+
+@register_component(Component.VBOX)
+def get_vbox_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y documentation for the vbox layout tag."""
+    return {
+        "a11y": [
+            _("The flex container is rendered as a `<div>` element."),
+            _("Content order in the DOM matches the visual order (top to bottom)."),
+            _("Screen readers will announce items in their source order."),
+        ]
+    }
+
+
+@register_component(Component.GRID)
+def get_grid_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y documentation for the grid layout tag."""
+    return {
+        "a11y": [
+            _("The grid container is rendered as a `<div>` element with CSS Grid."),
+            _("Content order in the DOM matches the visual reading order."),
+            _("Screen readers will announce items in their source order, regardless of visual layout."),
+        ]
+    }
+
+
+@register_component(Component.SPACER)
+def get_spacer_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y documentation for the spacer layout tag."""
+    return {
+        "a11y": [
+            _("The spacer is a purely presentational empty element."),
+            _("Screen readers will skip over the spacer element."),
+            _("Use CSS margins/padding instead when possible to avoid extra DOM elements."),
+        ]
+    }
+
+
+@register_component(Component.DIVIDER)
+def get_divider_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y documentation for the divider layout tag."""
+    return {
+        "a11y": [
+            _("The divider is a purely visual element with no semantic meaning."),
+            _("Screen readers will skip over the divider element."),
+            _("Consider using `<hr>` with `role='separator'` for semantic section breaks."),
+        ]
+    }
+
+
 # =============================================================
 #
 #   Navigation Tags

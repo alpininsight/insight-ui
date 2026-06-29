@@ -79,6 +79,20 @@
         color-scheme: dark;
     }
 
+    /* Spacing */
+    .gap-xs { @apply gap-1; }
+    .gap-s { @apply gap-2; }
+    .gap-m { @apply gap-4; }
+    .gap-l { @apply gap-6; }
+    .gap-xl { @apply gap-8; }
+
+    /* Padding */
+    .p-xs { @apply p-1; }
+    .p-s { @apply p-2; }
+    .p-m { @apply p-4; }
+    .p-l { @apply p-6; }
+    .p-xl { @apply p-8; }
+
     /* Custom scrollbar styling for Chromium browsers */
     ::-webkit-scrollbar {
         width: 12px;
@@ -404,5 +418,27 @@
 
     .range-custom::-moz-range-thumb {
         @apply w-4 h-4 bg-white border-2 border-insight-primary rounded-full cursor-pointer;
+    }
+
+    .demo-pattern {
+        background-color: #f8fafc;
+        background-image: repeating-linear-gradient(
+            -45deg,
+            transparent,
+            transparent 8px,
+            #e2e8f0 8px,
+            #e2e8f0 9px
+        );
+    }
+
+    [data-theme="dark"] .demo-pattern {
+        background-color: #0f172a;
+        background-image: repeating-linear-gradient(
+            -45deg,
+            transparent,
+            transparent 8px,
+            #1e293b 8px,
+            #1e293b 9px
+        );
     }
 }

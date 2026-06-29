@@ -1,4 +1,4 @@
-{% load static i18n insight_tags %}
+{% load static i18n insight_tags layout_tags %}
 
 {% if component.value == "page_header" %}
     {% page_header title=_("Example Page") description=_("This is an example description for the page header component.") %}
@@ -6,6 +6,79 @@
     {% article title=_("Newsletter") columns=3 content="<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>" %}
 {% elif component.value == "hero" %}
     {% hero config=hero_config %}
+{% elif component.value == "page" %}
+    <div class="h-96">
+        {% page padding="m" %}
+            <h1>{% trans "Page One" %}</h1>
+            <p class="text-secondary">{% trans "A page container with consistent padding." %}</p>
+        {% endpage %}
+    </div>
+{% elif component.value == "hbox" %}
+    <div class="space-y-4">
+        {% hbox gap="m" align="center" %}
+            <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 1" %}</div>
+            <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 2" %}</div>
+            <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 3" %}</div>
+        {% endhbox %}
+        {% hbox gap="s" align="center" justify="between" %}
+            <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 1" %}</div>
+            <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 2" %}</div>
+            <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 3" %}</div>
+        {% endhbox %}
+    </div>
+{% elif component.value == "vbox" %}
+    {% vbox gap="m" %}
+        <div class="bg-insight-primary/10 p-4 rounded">{% trans "Top" %}</div>
+        <div class="bg-insight-primary/10 p-4 rounded">{% trans "Middle" %}</div>
+        <div class="bg-insight-primary/10 p-4 rounded">{% trans "Bottom" %}</div>
+    {% endvbox %}
+{% elif component.value == "grid" %}
+    <div class="space-y-8">
+        <div>
+            <p class="text-sm text-secondary mb-2">{% trans "Auto-fit mode (resize window to see items wrap):" %}</p>
+            {% grid gap="m" min="150px" %}
+                <div class="bg-insight-primary/10 p-4 rounded text-center">1</div>
+                <div class="bg-insight-primary/10 p-4 rounded text-center">2</div>
+                <div class="bg-insight-primary/10 p-4 rounded text-center">3</div>
+                <div class="bg-insight-primary/10 p-4 rounded text-center">4</div>
+                <div class="bg-insight-primary/10 p-4 rounded text-center">5</div>
+                <div class="bg-insight-primary/10 p-4 rounded text-center">6</div>
+            {% endgrid %}
+        </div>
+        <div>
+            <p class="text-sm text-secondary mb-2">{% trans "Fixed 3 columns with responsive breakpoints:" %}</p>
+            {% grid cols=3 gap="m" %}
+                <div class="bg-insight-secondary/10 p-4 rounded text-center">A</div>
+                <div class="bg-insight-secondary/10 p-4 rounded text-center">B</div>
+                <div class="bg-insight-secondary/10 p-4 rounded text-center">C</div>
+            {% endgrid %}
+        </div>
+    </div>
+{% elif component.value == "spacer" %}
+    {% hbox gap="xs" align="center" %}
+        <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 1" %}</div>
+        {% spacer size="xs" %}
+        <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 2" %}</div>
+        {% spacer size="s" %}
+        <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 3" %}</div>
+        {% spacer size="m" %}
+        <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 4" %}</div>
+        {% spacer size="l" %}
+        <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 5" %}</div>
+        {% spacer size="xl" %}
+        <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 6" %}</div>
+    {% endhbox %}
+{% elif component.value == "divider" %}
+    {% vbox gap="s" %}
+        <p class="text-secondary">{% trans "Content above the divider" %}</p>
+        {% divider %}
+        <p class="text-secondary">{% trans "Content below the divider" %}</p>
+    {% endvbox %}
+    {% hbox gap="s" %}
+        <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 3" %}</div>
+        {% divider direction="vertical" %}
+        <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 3" %}</div>
+    {% endhbox %}
 {% elif component.value == "navbar" %}
     <div class="relative bg-gray-50 dark:bg-gray-700 h-80 w-full">
         {% navbar config=demo_nav_config user_dropdown_links=user_dropdown_links %}

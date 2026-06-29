@@ -47,6 +47,115 @@ def get_hero_description_context() -> dict[str, list[str]]:
     }
 
 
+@register_component(Component.PAGE)
+def get_page_description_context() -> dict[str, list[str]]:
+    """Serve description documentation for the page layout tag."""
+    return {
+        "description": [
+            _(
+                "The `page` block tag provides a full-width page container with consistent padding. "
+                "Use it as the outermost wrapper for page content to ensure uniform spacing across your application."
+            )
+        ],
+        "features": [
+            _("**padding**: Configurable inner padding using the spacing scale (xs/s/m/l/xl)."),
+            _("**full_height**: Optional viewport-filling height (min-h-screen)."),
+        ],
+    }
+
+
+@register_component(Component.HBOX)
+def get_hbox_description_context() -> dict[str, list[str]]:
+    """Serve description documentation for the hbox layout tag."""
+    return {
+        "description": [
+            _(
+                "The `hbox` block tag creates a horizontal flex container (row direction). "
+                "Child elements are arranged horizontally with configurable gap, alignment, and justification."
+            )
+        ],
+        "features": [
+            _("**gap**: Consistent spacing between children (xs/s/m/l/xl)."),
+            _("**align**: Cross-axis alignment (items-start/center/end/stretch/baseline)."),
+            _("**justify**: Main-axis alignment (justify-start/center/end/between/around/evenly)."),
+            _("**wrap**: Optional flex-wrap for responsive layouts."),
+        ],
+    }
+
+
+@register_component(Component.VBOX)
+def get_vbox_description_context() -> dict[str, list[str]]:
+    """Serve description documentation for the vbox layout tag."""
+    return {
+        "description": [
+            _(
+                "The `vbox` block tag creates a vertical flex container (column direction). "
+                "Child elements are stacked vertically with configurable gap, alignment, and justification."
+            )
+        ],
+        "features": [
+            _("**gap**: Consistent spacing between children (xs/s/m/l/xl)."),
+            _("**align**: Cross-axis alignment (items-start/center/end/stretch/baseline)."),
+            _("**justify**: Main-axis alignment (justify-start/center/end/between/around/evenly)."),
+        ],
+    }
+
+
+@register_component(Component.GRID)
+def get_grid_description_context() -> dict[str, list[str]]:
+    """Serve description documentation for the grid layout tag."""
+    return {
+        "description": [
+            _(
+                "The `grid` block tag creates a CSS Grid container for arranging items in columns. "
+                "It supports two modes: **auto-fit** (items wrap automatically based on available space) "
+                "and **fixed columns** (specific number of columns with automatic responsive breakpoints)."
+            ),
+            _(
+                "The grid tag is designed for users without frontend knowledge - responsive behavior "
+                "is handled automatically when using fixed columns."
+            ),
+        ],
+        "features": [
+            _("**Auto-fit mode**: Items wrap based on available space. Set `min` for minimum item width."),
+            _("**Fixed columns**: Set `cols` (1-6) for specific column count with automatic breakpoints."),
+            _("**gap**: Consistent spacing between items (xs/s/m/l/xl)."),
+            _("**fixed**: Disable automatic responsive breakpoints when needed."),
+        ],
+    }
+
+
+@register_component(Component.SPACER)
+def get_spacer_description_context() -> dict[str, list[str]]:
+    """Serve description documentation for the spacer layout tag."""
+    return {
+        "description": [
+            _(
+                "The `spacer` tag inserts a fixed-size spacer element. "
+                "Use it to add explicit spacing between elements in flex or block layouts."
+            )
+        ],
+        "features": [
+            _("**size**: Spacer size using the spacing scale (xs/s/m/l/xl)."),
+            _("**Flex-shrink**: Does not shrink in flex containers."),
+        ],
+    }
+
+
+@register_component(Component.DIVIDER)
+def get_divider_description_context() -> dict[str, list[str]]:
+    """Serve description documentation for the divider layout tag."""
+    return {
+        "description": [
+            _("The `divider` tag inserts a visual divider line. Use it to separate content sections visually.")
+        ],
+        "features": [
+            _("**direction**: Orientation of the divider (horizontal/vertical)."),
+            _("**size**: Margin around the divider using the spacing scale (xs/s/m/l/xl)."),
+        ],
+    }
+
+
 # =============================================================
 #
 #   Navigation Tags

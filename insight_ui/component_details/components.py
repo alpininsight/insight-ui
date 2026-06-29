@@ -18,12 +18,15 @@ from insight_ui.configs import (
     CheckboxGroupConfig,
     CopyrightNoticeConfig,
     CornerRibbonConfig,
+    DividerConfig,
     DropdownConfig,
     FlipCardConfig,
     FooterConfig,
     FormConfig,
     GenericFilterConfig,
     GeoMapConfig,
+    GridConfig,
+    HBoxConfig,
     HeroConfig,
     ImageCarouselConfig,
     InfiniteScrollConfig,
@@ -35,6 +38,7 @@ from insight_ui.configs import (
     ModalConfig,
     MultiselectConfig,
     NavbarConfig,
+    PageConfig,
     PageHeaderConfig,
     PaginationConfig,
     ProgressBarConfig,
@@ -45,6 +49,7 @@ from insight_ui.configs import (
     SelectConfig,
     SidebarConfig,
     SliderConfig,
+    SpacerConfig,
     StepperConfig,
     TableConfig,
     TabsConfig,
@@ -52,6 +57,7 @@ from insight_ui.configs import (
     ThreeDCarouselConfig,
     ToggleConfig,
     ToggleViewConfig,
+    VBoxConfig,
     WebSocketConfig,
 )
 
@@ -83,6 +89,13 @@ class Component(Enum):
     PAGE_HEADER = ("page_header", ComponentCategory.LAYOUT, PageHeaderConfig, True, False, False)
     ARTICLE = ("article", ComponentCategory.LAYOUT, ArticleConfig)
     HERO = ("hero", ComponentCategory.LAYOUT, HeroConfig, False, False, False)
+    # Layout Block Tags (layout_tags.py)
+    PAGE = ("page", ComponentCategory.LAYOUT, PageConfig, True, False, False)
+    HBOX = ("hbox", ComponentCategory.LAYOUT, HBoxConfig, False, False, False)
+    VBOX = ("vbox", ComponentCategory.LAYOUT, VBoxConfig, False, False, False)
+    GRID = ("grid", ComponentCategory.LAYOUT, GridConfig, False, False, False)
+    SPACER = ("spacer", ComponentCategory.LAYOUT, SpacerConfig, False, False, False)
+    DIVIDER = ("divider", ComponentCategory.LAYOUT, DividerConfig, False, False, False)
     NAVBAR = ("navbar", ComponentCategory.NAVIGATION, NavbarConfig, True, False, False)
     SIDEBAR = ("sidebar", ComponentCategory.NAVIGATION, SidebarConfig, True, False, False)
     FOOTER = ("footer", ComponentCategory.NAVIGATION, FooterConfig, True, False, False)

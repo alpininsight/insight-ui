@@ -63,6 +63,242 @@ class ArticleConfig:
 
 
 @dataclass
+class BadgeConfig:
+    """
+    Configuration for a badge element.
+
+    Used in hero sections and other components.
+
+    Attributes:
+        text: Badge label.
+        icon: An optional icon displayed before the text.
+
+    """
+
+    __example__ = """
+        BadgeConfig("/newsletter", "Subscribe to Newsletter")
+    """
+
+    text: str = field(metadata={"doc": _("Badge label.")})
+    icon: IconConfig | None = field(default=None, metadata={"doc": _("An optional icon displayed before the text.")})
+
+
+@dataclass
+class PageConfig:
+    """
+    Configuration for the page block tag.
+
+    Block-level page container with consistent padding.
+
+    Attributes:
+        padding: Inner padding size (xs|s|m|l|xl).
+        full_height: Fill the viewport height (min-h-screen).
+
+    """
+
+    __example__ = """
+        {% load layout_tags %}
+        {% page padding="l" class="bg-primary" %}
+            <h1>Hero</h1>
+        {% endpage %}
+        """
+
+    padding: str = field(default="m", metadata={"doc": _("Inner padding size (xs|s|m|l|xl).")})
+    full_height: bool = field(default=False, metadata={"doc": _("Fill the viewport height (min-h-screen).")})
+
+
+@dataclass
+class HBoxConfig:
+    """
+    Configuration for the hbox block tag.
+
+    Horizontal flex container (row direction).
+
+    Attributes:
+        gap: Space between children (xs|s|m|l|xl).
+        align: Cross-axis alignment (start|center|end|stretch|baseline).
+        justify: Main-axis alignment (start|center|end|between|around|evenly).
+        wrap: Allow flex items to wrap.
+
+    """
+
+    __example__ = """
+        {% load layout_tags %}
+        {% hbox gap="s" align="center" justify="between" %}
+            <span>Left</span>
+            <span>Right</span>
+        {% endhbox %}
+        """
+
+    gap: str = field(default="m", metadata={"doc": _("Space between children (xs|s|m|l|xl).")})
+    align: str = field(
+        default="stretch", metadata={"doc": _("Cross-axis alignment (start|center|end|stretch|baseline).")}
+    )
+    justify: str = field(
+        default="start", metadata={"doc": _("Main-axis alignment (start|center|end|between|around|evenly).")}
+    )
+    wrap: bool = field(default=False, metadata={"doc": _("Allow flex items to wrap.")})
+
+
+@dataclass
+class VBoxConfig:
+    """
+    Configuration for the vbox block tag.
+
+    Vertical flex container (column direction).
+
+    Attributes:
+        gap: Space between children (xs|s|m|l|xl).
+        align: Cross-axis alignment (start|center|end|stretch|baseline).
+        justify: Main-axis alignment (start|center|end|between|around|evenly).
+
+    """
+
+    __example__ = """
+        {% load layout_tags %}
+        {% vbox gap="m" align="stretch" %}
+            <div>Top</div>
+            <div>Bottom</div>
+        {% endvbox %}
+        """
+
+    gap: str = field(default="m", metadata={"doc": _("Space between children (xs|s|m|l|xl).")})
+    align: str = field(
+        default="stretch", metadata={"doc": _("Cross-axis alignment (start|center|end|stretch|baseline).")}
+    )
+    justify: str = field(
+        default="start", metadata={"doc": _("Main-axis alignment (start|center|end|between|around|evenly).")}
+    )
+
+
+@dataclass
+class CenterConfig:
+    """
+    Configuration for the center block tag.
+
+    Centers content horizontally and vertically.
+
+    Attributes:
+        padding: Optional inner padding (xs|s|m|l|xl).
+
+    """
+
+    __example__ = """
+        {% load layout_tags %}
+        {% center padding="m" %}
+            <p>Centered content</p>
+        {% endcenter %}
+        """
+
+    padding: str | None = field(default=None, metadata={"doc": _("Optional inner padding (xs|s|m|l|xl).")})
+
+
+@dataclass
+class StackConfig:
+    """
+    Configuration for the stack block tag.
+
+    Overlapping elements using CSS Grid.
+
+    Attributes:
+        align: Vertical alignment (start|center|end).
+        justify: Horizontal alignment (start|center|end).
+
+    """
+
+    __example__ = """
+        {% load layout_tags %}
+        {% stack align="center" justify="center" %}
+            <div class="[grid-area:1/1]">Background</div>
+            <div class="[grid-area:1/1]">Foreground</div>
+        {% endstack %}
+        """
+
+    align: str = field(default="center", metadata={"doc": _("Vertical alignment (start|center|end).")})
+    justify: str = field(default="center", metadata={"doc": _("Horizontal alignment (start|center|end).")})
+
+
+@dataclass
+class SpacerConfig:
+    """
+    Configuration for the spacer simple tag.
+
+    Fixed-size spacer element.
+
+    Attributes:
+        size: Spacer size (xs|s|m|l|xl).
+
+    """
+
+    __example__ = """
+        {% load layout_tags %}
+        {% spacer size="l" %}
+        """
+
+    size: str = field(default="m", metadata={"doc": _("Spacer size (xs|s|m|l|xl).")})
+
+
+@dataclass
+class DividerConfig:
+    """
+    Configuration for the divider simple tag.
+
+    Visual divider line.
+
+    Attributes:
+        direction: Orientation (horizontal|vertical).
+        size: Margin size (xs|s|m|l|xl).
+
+    """
+
+    __example__ = """
+        {% load layout_tags %}
+        {% divider direction="horizontal" size="m" %}
+        """
+
+    direction: str = field(default="horizontal", metadata={"doc": _("Orientation (horizontal|vertical).")})
+    size: str = field(default="m", metadata={"doc": _("Margin size (xs|s|m|l|xl).")})
+
+
+@dataclass
+class GridConfig:
+    """
+    Configuration for the grid block tag.
+
+    CSS Grid container with responsive or auto-fit columns.
+
+    Attributes:
+        cols: Number of columns (1-6). If not set, uses auto-fit mode.
+        gap: Space between grid items (xs|s|m|l|xl).
+        min: Minimum item width for auto-fit mode.
+        fixed: Disable responsive breakpoints.
+
+    """
+
+    __example__ = """
+        {% load layout_tags %}
+
+        {# Auto-fit mode #}
+        {% grid gap="l" %}
+            <div>Item 1</div>
+            <div>Item 2</div>
+        {% endgrid %}
+
+        {# Fixed columns with responsive breakpoints #}
+        {% grid cols=3 gap="m" %}
+            ...
+        {% endgrid %}
+        """
+
+    cols: int | None = field(
+        default=None, metadata={"doc": _("Number of columns (1-6). If not set, uses auto-fit mode.")}
+    )
+    gap: str = field(default="m", metadata={"doc": _("Space between grid items (xs|s|m|l|xl).")})
+    min: str = field(default="250px", metadata={"doc": _("Minimum item width for auto-fit mode.")})
+    fixed: bool = field(default=False, metadata={"doc": _("Disable responsive breakpoints.")})
+
+
+@dataclass
 class HeroConfig:
     """
     Configuration for the hero component.
