@@ -68,7 +68,19 @@ from insight_ui.configs.input import (
     TextareaConfig,
     ToggleConfig,
 )
-from insight_ui.configs.layout import ArticleConfig, HeroConfig, PageHeaderConfig
+from insight_ui.configs.layout import (
+    ArticleConfig,
+    CenterConfig,
+    DividerConfig,
+    GridConfig,
+    HBoxConfig,
+    HeroConfig,
+    PageConfig,
+    PageHeaderConfig,
+    SpacerConfig,
+    StackConfig,
+    VBoxConfig,
+)
 from insight_ui.configs.list import InfiniteScrollConfig, PaginationConfig, PaginationIppConfig, TableConfig
 from insight_ui.configs.navigation import (
     AccordionConfig,
@@ -155,8 +167,16 @@ __all__ = [
     # Layout
     "ArticleConfig",
     "BadgeConfig",
+    "CenterConfig",
+    "DividerConfig",
+    "GridConfig",
+    "HBoxConfig",
     "HeroConfig",
+    "PageConfig",
     "PageHeaderConfig",
+    "SpacerConfig",
+    "StackConfig",
+    "VBoxConfig",
     # Lists
     "InfiniteScrollConfig",
     "PaginationConfig",

@@ -2,9 +2,15 @@ from insight_ui.component_details.components import Component as C  # noqa: N817
 
 RELATED_COMPONENTS = {
     # Layout
-    C.PAGE_HEADER: [],
+    C.PAGE_HEADER: [C.PAGE, C.HERO],
     C.ARTICLE: [],
-    C.HERO: [C.BADGE, C.BUTTON],
+    C.HERO: [C.PAGE, C.PAGE_HEADER, C.BADGE, C.BUTTON],
+    C.PAGE: [C.VBOX, C.GRID, C.HERO, C.PAGE_HEADER],
+    C.HBOX: [C.VBOX, C.GRID, C.SPACER],
+    C.VBOX: [C.HBOX, C.GRID, C.PAGE, C.DIVIDER],
+    C.GRID: [C.HBOX, C.VBOX, C.PAGE],
+    C.SPACER: [C.DIVIDER, C.HBOX, C.VBOX],
+    C.DIVIDER: [C.SPACER, C.HBOX, C.VBOX],
     # Navigation
     C.NAVBAR: [C.FOOTER, C.SIDEBAR, C.LOGO, C.BRAND_LOCKUP],
     C.SIDEBAR: [C.NAVBAR, C.FOOTER, C.MODAL],

@@ -56,6 +56,156 @@ def get_hero_usage_context() -> dict[str, str]:
     }
 
 
+@register_component(Component.PAGE)
+def get_page_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the page layout tag."""
+    return {
+        "usage": """
+        {% load layout_tags %}
+
+        {% page padding="l" %}
+            <h1>Page Title</h1>
+            <p>Page content goes here.</p>
+        {% endpage %}
+
+        <!-- Full viewport height -->
+        {% page full_height=True %}
+            <main>Full-screen content</main>
+        {% endpage %}
+        """
+    }
+
+
+@register_component(Component.HBOX)
+def get_hbox_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the hbox layout tag."""
+    return {
+        "usage": """
+        {% load layout_tags %}
+
+        {% hbox gap="s" align="center" justify="between" %}
+            <span>Left</span>
+            <span>Right</span>
+        {% endhbox %}
+
+        <!-- With wrapping enabled -->
+        {% hbox gap="m" wrap=True %}
+            <div>Item 1</div>
+            <div>Item 2</div>
+            <div>Item 3</div>
+        {% endhbox %}
+        """
+    }
+
+
+@register_component(Component.VBOX)
+def get_vbox_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the vbox layout tag."""
+    return {
+        "usage": """
+        {% load layout_tags %}
+
+        {% vbox gap="m" %}
+            <div>Top</div>
+            <div>Middle</div>
+            <div>Bottom</div>
+        {% endvbox %}
+
+        <!-- With custom alignment -->
+        {% vbox gap="l" align="center" justify="between" %}
+            <header>Header</header>
+            <main>Content</main>
+            <footer>Footer</footer>
+        {% endvbox %}
+        """
+    }
+
+
+@register_component(Component.GRID)
+def get_grid_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the grid layout tag."""
+    return {
+        "usage": """
+        {% load layout_tags %}
+
+        <!-- Auto-fit mode: items wrap based on available space -->
+        {% grid gap="l" %}
+            <div>Item 1</div>
+            <div>Item 2</div>
+            <div>Item 3</div>
+            <div>Item 4</div>
+        {% endgrid %}
+
+        <!-- Auto-fit with custom minimum width -->
+        {% grid min="300px" gap="m" %}
+            <div>Card 1</div>
+            <div>Card 2</div>
+        {% endgrid %}
+
+        <!-- Fixed columns with automatic responsive breakpoints -->
+        {% grid cols=3 gap="l" %}
+            <div>Column 1</div>
+            <div>Column 2</div>
+            <div>Column 3</div>
+        {% endgrid %}
+
+        <!-- Fixed columns without responsive behavior -->
+        {% grid cols=4 fixed=True %}
+            <div>Always 4 columns</div>
+        {% endgrid %}
+        """
+    }
+
+
+@register_component(Component.SPACER)
+def get_spacer_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the spacer layout tag."""
+    return {
+        "usage": """
+        {% load layout_tags %}
+
+        {% hbox gap="xs" align="center" %}
+            <span>Left</span>
+            {% spacer size="xl" %}
+            <span>Right</span>
+        {% endhbox %}
+
+        <!-- Using default size (m) -->
+        {% vbox %}
+            <div>Above</div>
+            {% spacer %}
+            <div>Below</div>
+        {% endvbox %}
+        """
+    }
+
+
+@register_component(Component.DIVIDER)
+def get_divider_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the divider layout tag."""
+    return {
+        "usage": """
+        {% load layout_tags %}
+
+        {% vbox gap="m" %}
+            <p>Content above</p>
+            {% divider %}
+            <p>Content below</p>
+        {% endvbox %}
+
+        <!-- Vertical divider -->
+        {% hbox gap="m" align="stretch" %}
+            <div>Left</div>
+            {% divider direction="vertical" %}
+            <div>Right</div>
+        {% endhbox %}
+
+        <!-- With custom margin size -->
+        {% divider size="xl" %}
+        """
+    }
+
+
 # =============================================================
 #
 #   Navigation Tags
