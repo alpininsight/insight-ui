@@ -7,7 +7,6 @@
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
     monospace;
     --color-red-50: oklch(97.1% 0.013 17.38);
-    --color-red-100: oklch(93.6% 0.032 17.717);
     --color-red-200: oklch(88.5% 0.062 18.334);
     --color-red-300: oklch(80.8% 0.114 19.571);
     --color-red-400: oklch(70.4% 0.191 22.216);
@@ -881,9 +880,6 @@
   .min-w-\[60px\] {
     min-width: 60px;
   }
-  .min-w-\[300px\] {
-    min-width: 300px;
-  }
   .flex-1 {
     flex: 1;
   }
@@ -1143,9 +1139,6 @@
   .overflow-hidden {
     overflow: hidden;
   }
-  .overflow-x-auto {
-    overflow-x: auto;
-  }
   .overflow-x-scroll {
     overflow-x: scroll;
   }
@@ -1304,9 +1297,6 @@
   }
   .border-transparent {
     border-color: transparent;
-  }
-  .border-white {
-    border-color: var(--color-white);
   }
   .border-s-insight-danger {
     border-inline-start-color: var(--color-insight-danger);
@@ -1554,9 +1544,6 @@
   .py-16 {
     padding-block: calc(var(--spacing) * 16);
   }
-  .py-24 {
-    padding-block: calc(var(--spacing) * 24);
-  }
   .ps-3 {
     padding-inline-start: calc(var(--spacing) * 3);
   }
@@ -1724,9 +1711,6 @@
   .text-blue-700 {
     color: var(--color-blue-700);
   }
-  .text-gray-100 {
-    color: var(--color-gray-100);
-  }
   .text-gray-200 {
     color: var(--color-gray-200);
   }
@@ -1775,6 +1759,9 @@
   .text-insight-text-primary {
     color: var(--color-insight-text-primary);
   }
+  .text-insight-text-primary-dark {
+    color: var(--color-insight-text-primary-dark);
+  }
   .text-insight-text-secondary {
     color: var(--color-insight-text-secondary);
   }
@@ -1804,12 +1791,6 @@
   }
   .text-white {
     color: var(--color-white);
-  }
-  .text-white\/80 {
-    color: color-mix(in srgb, #fff 80%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      color: color-mix(in oklab, var(--color-white) 80%, transparent);
-    }
   }
   .uppercase {
     text-transform: uppercase;
@@ -2164,16 +2145,6 @@
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-insight-primary-hover);
-      }
-    }
-  }
-  .hover\:bg-white\/10 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: color-mix(in srgb, #fff 10%, transparent);
-        @supports (color: color-mix(in lab, red, red)) {
-          background-color: color-mix(in oklab, var(--color-white) 10%, transparent);
-        }
       }
     }
   }
@@ -3877,6 +3848,36 @@
       background-color: var(--color-insight-info-active);
     }
   }
+  .btn-outline-neutral {
+    border-color: var(--color-white);
+    color: var(--color-insight-text-primary);
+    &:hover {
+      @media (hover: hover) {
+        border-color: var(--color-gray-200);
+      }
+    }
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-gray-200);
+      }
+    }
+    &:active {
+      border-color: var(--color-gray-300);
+    }
+    &:active {
+      background-color: var(--color-gray-300);
+    }
+    &:where([data-theme=dark], [data-theme=dark] *) {
+      color: var(--color-insight-text-primary-dark);
+    }
+    &:where([data-theme=dark], [data-theme=dark] *) {
+      &:hover {
+        @media (hover: hover) {
+          color: var(--color-insight-text-primary);
+        }
+      }
+    }
+  }
   .btn-outline-disabled {
     border-color: var(--color-neutral-300);
     color: var(--color-neutral-400);
@@ -4032,6 +4033,26 @@
     }
     &:active {
       color: var(--color-insight-info-active);
+    }
+  }
+  .btn-subtle-neutral {
+    color: var(--color-insight-text-primary);
+    &:hover {
+      @media (hover: hover) {
+        background-color: color-mix(in srgb, #fff 20%, transparent);
+        @supports (color: color-mix(in lab, red, red)) {
+          background-color: color-mix(in oklab, var(--color-white) 20%, transparent);
+        }
+      }
+    }
+    &:active {
+      background-color: color-mix(in srgb, #fff 30%, transparent);
+      @supports (color: color-mix(in lab, red, red)) {
+        background-color: color-mix(in oklab, var(--color-white) 30%, transparent);
+      }
+    }
+    &:where([data-theme=dark], [data-theme=dark] *) {
+      color: var(--color-insight-text-primary-dark);
     }
   }
   .btn-subtle-disabled {
