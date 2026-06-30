@@ -91,7 +91,7 @@ def get_sidebar_usage_context() -> dict[str, str]:
         {% load insight_tags %}
 
         {% block drawers %}
-            {% sidebar sidebar_data=right_sidebar side="right" auto_close=False %}
+            {% sidebar config=sidebar_config side="right" auto_close=False %}
         {% endblock drawers %}
         """,
     }
@@ -108,7 +108,7 @@ def get_footer_usage_context() -> dict[str, str]:
         {% load insight_tags %}
 
         {% block footer %}
-            {% footer data=footer_data %}
+            {% footer config=footer_config %}
         {% endblock footer %}
         """,
     }
@@ -851,7 +851,7 @@ def get_app_card_usage_context() -> dict[str, str]:
 
         <!-- or -->
 
-        {% app_card title="Insight UI" content="Django UI Framework for ..." url="/insight-ui/" %}
+        {% app_card title="Insight UI" content="Django UI Framework for ..." request_url="/insight-ui/" %}
         """
     }
 

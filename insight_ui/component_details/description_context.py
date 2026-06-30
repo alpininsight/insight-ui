@@ -466,10 +466,7 @@ def get_logo_description_context() -> dict[str, list[str]]:
         "description": [
             _(
                 "The `logo` component renders a brand mark from one consistent API. It supports image assets, SVG assets, and Insight UI icons."
-            ),
-            _(
-                "Use `type='svg'` for SVG files stored as static assets, `type='image'` for bitmap images, and `type='icon'` for symbols from the Insight UI icon set. This avoids repeated ad-hoc SVG and dark-mode logo handling in application templates."
-            ),
+            )
         ],
         "features": [
             _(
