@@ -12,18 +12,20 @@
     <div class="fixed bg-linear-to-r from-white from-30% to-white/60 dark:from-gray-900 dark:to-gray-900/75 -z-10 w-full h-dvh"></div>
 {% endblock background_image %}
 
+{% comment %}
 {% block sidebar_left %}
     {% sidebar sidebar_data=left_sidebar side="left" %}
 {% endblock sidebar_left %}
+{% endcomment %}
 
 {% block content %}
     {# ===== HERO SECTION ===== #}
-    {% page padding="xl" class="min-h-[80vh] flex items-center" %}
+    {% page padding="xl" class="min-h-[80vh]" %}
         {% hero config=hero %}
     {% endpage %}
 
     {# ===== STATS BAR ===== #}
-    <div class="w-full bg-insight-primary/5 dark:bg-insight-primary/10 border-y border-insight-primary/20">
+    {% page padding="xl" class="bg-insight-primary/5 dark:bg-insight-primary/10 border-y border-insight-primary/20" %}
         {% page padding="l" %}
             {% hbox gap="xl" justify="evenly" wrap=True class="py-4" %}
                 {% for stat in stats %}
@@ -34,17 +36,17 @@
                 {% endfor %}
             {% endhbox %}
         {% endpage %}
-    </div>
+    {% endpage %}
 
     {# ===== FEATURES GRID ===== #}
-    {% page padding="xl" class="py-24" %}
+    {% page padding="xl" %}
         {% vbox gap="xl" align="center" %}
-            <div class="text-center max-w-2xl">
-                <h2 class="text-3xl font-bold mb-4">{% trans "Everything you need" %}</h2>
+            {% vbox align="center" %}
+                <h2>{% trans "Everything you need" %}</h2>
                 <p class="text-secondary text-lg">
                     {% trans "Build professional Django applications with a complete component library. No frontend expertise required." %}
                 </p>
-            </div>
+            {% endvbox %}
 
             {% grid cols=3 gap="l" class="w-full max-w-6xl mt-8" %}
                 {% for feature in features %}
@@ -63,16 +65,16 @@
     {% endpage %}
 
     {# ===== WHAT IS INSIGHT UI ===== #}
-    {% page padding="xl" class="py-24 bg-gray-50 dark:bg-gray-800/50" %}
+    {% page padding="xl" class="bg-gray-50 dark:bg-gray-800/50" %}
         {% vbox gap="xl" class="max-w-4xl mx-auto" %}
-            <div class="text-center">
-                <h2 class="text-3xl font-bold mb-4">{% trans "What is Insight UI?" %}</h2>
-            </div>
+            {% vbox align="center" %}
+                <h2>{% trans "What is Insight UI?" %}</h2>
+            {% endvbox %}
 
             {% hbox gap="xl" wrap=True align="start" %}
-                {% vbox gap="m" class="flex-1 min-w-[300px]" %}
-                    <h3 class="text-xl font-semibold text-insight-primary">{% trans "Django-First Design" %}</h3>
-                    <p class="text-secondary leading-relaxed">
+                {% vbox gap="m" class="flex-1" %}
+                    <h3 class="text-insight-primary">{% trans "Django-First Design" %}</h3>
+                    <p class="text-secondary">
                         {% blocktrans %}
                             Insight UI is a CSS/JavaScript framework dedicated to Django applications. Unlike other frameworks,
                             you don't need solid frontend knowledge. It's designed for <b>Rapid Prototyping</b> and developers
@@ -81,9 +83,9 @@
                     </p>
                 {% endvbox %}
 
-                {% vbox gap="m" class="flex-1 min-w-[300px]" %}
-                    <h3 class="text-xl font-semibold text-insight-primary">{% trans "Template Tags, Not JavaScript" %}</h3>
-                    <p class="text-secondary leading-relaxed">
+                {% vbox gap="m" class="flex-1" %}
+                    <h3 class="text-insight-primary">{% trans "Template Tags, Not JavaScript" %}</h3>
+                    <p class="text-secondary">
                         {% blocktrans %}
                             Insert components directly into your templates and populate them with data.
                             All components are implemented with <b>accessibility</b> in mind and support
@@ -96,79 +98,65 @@
             {% divider size="l" %}
 
             {# Code Example #}
-            <div class="w-full">
-                <h3 class="text-xl font-semibold mb-4">{% trans "Simple to use" %}</h3>
-                <div class="rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-900 p-4">
-                    <pre class="text-sm text-gray-100 overflow-x-auto"><code>{% verbatim %}{% load insight_tags %}
+            <div id="code" data-insight-code-block="Django">
+                {% verbatim %}
+                {% load insight_tags %}
 
-{# A button with icon #}
-{% button label="Save" type="primary" icon="save" %}
+                {# A button with icon #}
+                {% button label="Save" type="primary" icon="save" %}
 
-{# A data table with pagination #}
-{% table config=table_config %}
-{% pagination config=pagination_config %}
+                {# A data table with pagination #}
+                {% table config=table_config %}
+                {% pagination config=pagination_config %}
 
-{# An interactive modal #}
-{% modal config=modal_config %}
-    &lt;p&gt;Are you sure you want to continue?&lt;/p&gt;
-{% endmodal %}{% endverbatim %}</code></pre>
-                </div>
+                {# An interactive modal #}
+                {% modal config=modal_config %}
+                    &lt;p&gt;Are you sure you want to continue?&lt;/p&gt;
+                {% endmodal %}
+                {% endverbatim %}
             </div>
         {% endvbox %}
     {% endpage %}
 
     {# ===== IS IT RIGHT FOR ME? ===== #}
-    {% page padding="xl" class="py-24" %}
+    {% page padding="xl" %}
         {% vbox gap="xl" class="max-w-3xl mx-auto" %}
-            <div class="text-center">
-                <h2 class="text-3xl font-bold mb-4">{% trans "Is Insight UI right for you?" %}</h2>
+            {% vbox align="center" %}
+                <h2>{% trans "Is Insight UI right for you?" %}</h2>
                 <p class="text-secondary text-lg">{% trans "Check if our framework matches your needs:" %}</p>
-            </div>
-
-            <div class="space-y-4">
+            {% endvbox %}
+            {% vbox %}
                 {% for item in checklist %}
                     <div class="flex items-center gap-4 p-4 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-                        <div class="flex-shrink-0 w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                        <div class="shrink-0 w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
                             {% icon name="tick" size="s" %}
                         </div>
                         <span class="text-secondary">{{ item }}</span>
                     </div>
                 {% endfor %}
-            </div>
-
-            {% hbox gap="m" justify="center" class="mt-8" %}
-                <a href="{% url 'installation_view' %}" class="btn btn-primary btn-l">
-                    {% icon name="rocket" size="s" %}
-                    {% trans "Get started" %}
-                </a>
-                <a href="{% url 'storybook_view' storybook_name='input' %}" class="btn btn-secondary btn-l">
-                    {% icon name="rectangles" size="s" %}
-                    {% trans "Browse components" %}
-                </a>
+            {% endvbox %}
+            {% hbox justify="center" %}
+                {% url 'installation_view' as installation_url %}
+                {% url 'storybook_view' storybook_name='input' as storybook_url %}
+                {% button label=_("Get started") request_url=installation_url type="primary" size="l" icon_name="rocket" %}
+                {% button label=_("Browse components") request_url=storybook_url type="secondary" size="l" icon_name="rectangles" %}
             {% endhbox %}
         {% endvbox %}
     {% endpage %}
 
     {# ===== FINAL CTA ===== #}
-    <div class="w-full bg-insight-primary text-white">
-        {% page padding="xl" class="py-16" %}
-            {% vbox gap="l" align="center" class="text-center" %}
-                <h2 class="text-3xl font-bold">{% trans "Ready to build something amazing?" %}</h2>
-                <p class="text-white/80 text-lg max-w-2xl">
-                    {% trans "Start building accessible, professional Django applications in minutes. No frontend expertise required." %}
-                </p>
-                {% hbox gap="m" justify="center" %}
-                    <a href="{% url 'installation_view' %}" class="btn btn-l bg-white text-insight-primary hover:bg-gray-100">
-                        {% trans "Get started for free" %}
-                    </a>
-                    <a href="https://github.com/alpininsight/insight-ui" target="_blank" rel="noopener" class="btn btn-l border-2 border-white text-white hover:bg-white/10">
-                        {% icon name="git" size="s" %}
-                        {% trans "View on GitHub" %}
-                    </a>
-                {% endhbox %}
-            {% endvbox %}
-        {% endpage %}
-    </div>
+    {% page padding="xl" class="bg-insight-primary" %}
+        {% vbox gap="l" align="center" %}
+            <h2 class="text-white">{% trans "Ready to build something amazing?" %}</h2>
+            <p class="text-white text-center max-w-2xl">
+                {% trans "Start building accessible, professional Django applications in minutes. No frontend expertise required." %}
+            </p>
+            {% hbox gap="m" justify="center" %}
+                {% button label=_("Get started for free") request_url=installation_url type="neutral" size="l" %}
+                {% button label=_("View on GitHub") request_url="https://github.com/alpininsight/insight-ui" external=True type="neutral" outline=True size="l" icon_name="git" extra_classes="text-insight-text-primary-dark hover:text-insight-text-primary" %}
+            {% endhbox %}
+        {% endvbox %}
+    {% endpage %}
 {% endblock content %}
 
 {% block footer %}
