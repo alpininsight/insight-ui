@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **ci:** Run container publish on every branch push
 - **ci:** Pin only published container digests
 - Add missing data-attribute support to the template file of the 'button' component
+- Update usage documentation parameter of the 'footer', 'sidebar' and 'app_card' component
+- Remove the reference to the deprecated 'type' parameter of the 'logo' component from the docuemntation
 
 ### Features
 
