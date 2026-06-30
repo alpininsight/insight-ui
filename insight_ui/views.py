@@ -19,9 +19,9 @@ from insight_ui.component_details.demo_context import (
     get_minimal_stepper_context,
 )
 from insight_ui.component_details.git_path_mapping import SCRIPT_PATHS, TEMPLATE_PATHS
-from insight_ui.configs.base import ActionConfig, IconConfig
+from insight_ui.configs.base import IconConfig
 from insight_ui.configs.card import ToggleViewConfig
-from insight_ui.configs.input import RadioBlockConfig, RadioItemConfig
+from insight_ui.configs.input import ButtonConfig, RadioBlockConfig, RadioItemConfig
 from insight_ui.configs.layout import BadgeConfig, HeroConfig
 from insight_ui.configs.list import PaginationConfig, PaginationIppConfig, TableConfig
 from insight_ui.context import (
@@ -317,11 +317,13 @@ def index_view(request: HttpRequest) -> HttpResponse:
             "60+ production-ready, WCAG 2.1 AA-compliant components. "
             "Build accessible Django applications without frontend expertise."
         ),
-        cta_primary=ActionConfig(_("Get started"), reverse("installation_view"), "primary"),
-        cta_secondary=ActionConfig(
-            _("Browse components"), reverse("storybook_view", kwargs={"storybook_name": "input"}), "secondary"
+        cta_primary=ButtonConfig(label=_("Get started"), request_url=reverse("installation_view"), type="primary"),
+        cta_secondary=ButtonConfig(
+            label=_("Browse components"),
+            request_url=reverse("storybook_view", kwargs={"storybook_name": "input"}),
+            type="secondary",
         ),
-        badge=BadgeConfig(text=_("Open Source"), icon=IconConfig(name="git", size="s")),
+        badge_config=BadgeConfig(label=_("Open Source"), icon=IconConfig(name="git", size="s")),
     )
     context["features"] = [
         {
