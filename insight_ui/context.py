@@ -78,9 +78,6 @@ def get_navbar_context() -> dict:
             show_theme_toggle=True,
         ),
         "navbar_fixed": True,
-        "white_bg": True,
-        "default_padding": True,
-        "use_default_loading_indicator": False,
     }
 
 
@@ -127,7 +124,12 @@ def get_footer_context() -> dict:
 
 def get_base_context() -> dict:
     """Serve basic context data, like navbar, footer and settings."""
-    return config.get_config() | get_navbar_context() | get_footer_context()
+    return (
+        config.get_config()
+        | get_navbar_context()
+        | get_footer_context()
+        | {"white_bg": True, "default_padding": True, "use_default_loading_indicator": False}
+    )
 
 
 def get_icon_context() -> dict:
