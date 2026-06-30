@@ -63,27 +63,6 @@ class ArticleConfig:
 
 
 @dataclass
-class BadgeConfig:
-    """
-    Configuration for a badge element.
-
-    Used in hero sections and other components.
-
-    Attributes:
-        text: Badge label.
-        icon: An optional icon displayed before the text.
-
-    """
-
-    __example__ = """
-        BadgeConfig("/newsletter", "Subscribe to Newsletter")
-    """
-
-    text: str = field(metadata={"doc": _("Badge label.")})
-    icon: IconConfig | None = field(default=None, metadata={"doc": _("An optional icon displayed before the text.")})
-
-
-@dataclass
 class PageConfig:
     """
     Configuration for the page block tag.
