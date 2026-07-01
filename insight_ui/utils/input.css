@@ -11,31 +11,96 @@
 
 @theme {
     --font-sans: "insight-ui", sans-serif;
+    --font-display: var(--font-sans);
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
     --color-insight-primary: #3b82f6;
     --color-insight-primary-hover: #60a5fa;
     --color-insight-primary-active: #93c5fd;
+    --color-insight-primary-foreground: #fff;
+    --color-insight-primary-foreground-hover: #fff;
+    --color-insight-primary-foreground-active: #fff;
     --color-insight-secondary: #0d9488;
     --color-insight-secondary-hover: #14b8a6;
     --color-insight-secondary-active: #2dd4bf;
+    --color-insight-secondary-foreground: #fff;
+    --color-insight-secondary-foreground-hover: #fff;
+    --color-insight-secondary-foreground-active: #fff;
     --color-insight-success: #10b981;
     --color-insight-success-hover: #34d399;
     --color-insight-success-active: #6ee7b7;
+    --color-insight-success-foreground: #fff;
+    --color-insight-success-foreground-hover: #fff;
+    --color-insight-success-foreground-active: #fff;
     --color-insight-warning: #f59e0b;
     --color-insight-warning-hover: #fbbf24;
     --color-insight-warning-active: #fcd34d;
+    --color-insight-warning-foreground: #fff;
+    --color-insight-warning-foreground-hover: #fff;
+    --color-insight-warning-foreground-active: #fff;
     --color-insight-danger: #ef4444;
     --color-insight-danger-hover: #f87171;
     --color-insight-danger-active: #fca5a5;
+    --color-insight-danger-foreground: #fff;
+    --color-insight-danger-foreground-hover: #fff;
+    --color-insight-danger-foreground-active: #fff;
     --color-insight-info: #06b6d4;
     --color-insight-info-hover: #22d3ee;
     --color-insight-info-active: #67e8f9;
+    --color-insight-info-foreground: #fff;
+    --color-insight-info-foreground-hover: #fff;
+    --color-insight-info-foreground-active: #fff;
+    --color-insight-pending: #64748b;
+    --color-insight-pending-hover: #94a3b8;
+    --color-insight-pending-active: #cbd5e1;
+    --color-insight-pending-foreground: #fff;
+    --color-insight-pending-foreground-hover: #0f172a;
+    --color-insight-pending-foreground-active: #0f172a;
     --color-insight-text-primary: oklch(26.9% 0 0);
     --color-insight-text-secondary: oklch(55.6% 0 0);
     --color-insight-text-primary-dark: oklch(92.2% 0 0);
     --color-insight-text-secondary-dark: oklch(70.8% 0 0);
     --color-insight-text-link: #3b82f6;
     --color-insight-text-link-hover: #93c5fd;
+    --color-insight-text-disabled: oklch(70.8% 0 0);
+    --color-insight-text-disabled-dark: oklch(55.6% 0 0);
+    --color-insight-white-button-foreground: oklch(21% 0.034 264.665);
+    --color-insight-surface-page: oklch(96.7% 0.003 264.542);
+    --color-insight-surface-page-dark: oklch(13% 0.028 261.692);
+    --color-insight-surface-base: #fff;
+    --color-insight-surface-base-dark: oklch(27.8% 0.033 256.848);
+    --color-insight-surface-soft: oklch(92.8% 0.006 264.531);
+    --color-insight-surface-soft-dark: oklch(37.3% 0.034 259.733);
+    --color-insight-surface-muted: oklch(87.2% 0.01 258.338);
+    --color-insight-surface-muted-dark: oklch(44.6% 0.03 256.802);
+    --color-insight-surface-inverse: oklch(21% 0.034 264.665);
+    --color-insight-surface-inverse-foreground: #fff;
+    --color-insight-surface-overlay: rgb(17 24 39 / 0.75);
+    --color-insight-surface-code: #f9fafb;
+    --color-insight-surface-code-dark: #030712;
+    --color-insight-surface-canvas: var(--color-insight-surface-page);
+    --color-insight-surface-canvas-dark: var(--color-insight-surface-page-dark);
+    --color-insight-surface-panel: var(--color-insight-surface-base);
+    --color-insight-surface-panel-dark: var(--color-insight-surface-base-dark);
+    --color-insight-surface-raised: var(--color-insight-surface-soft);
+    --color-insight-surface-raised-dark: var(--color-insight-surface-soft-dark);
+    --color-insight-surface-sunken: var(--color-insight-surface-muted);
+    --color-insight-surface-sunken-dark: var(--color-insight-surface-muted-dark);
+    --color-insight-border-surface: oklch(92.8% 0.006 264.531);
+    --color-insight-border-surface-dark: oklch(37.3% 0.034 259.733);
+    --color-insight-border-control: oklch(87.2% 0.01 258.338);
+    --color-insight-border-control-dark: oklch(44.6% 0.03 256.802);
+    --color-insight-border-muted: oklch(70.7% 0.022 261.325);
+    --color-insight-border-muted-dark: oklch(55.1% 0.027 264.364);
+    --color-insight-border-disabled: oklch(87.2% 0.01 258.338);
+    --color-insight-border-disabled-dark: oklch(44.6% 0.03 256.802);
+    --color-insight-disabled: oklch(87.2% 0.01 258.338);
+    --color-insight-disabled-dark: oklch(44.6% 0.03 256.802);
+    --color-insight-disabled-foreground: oklch(70.8% 0 0);
+    --color-insight-disabled-foreground-dark: oklch(55.6% 0 0);
+    --color-insight-focus-ring: var(--color-insight-primary);
+    --color-insight-focus-ring-offset: var(--color-insight-surface-base);
+    --color-insight-focus-ring-offset-dark: var(--color-insight-surface-base-dark);
 
     /* Navbar role tokens — defaults preserve today's look; a theme overrides these to re-skin the navbar (e.g. brand: borderless + rounded-button tabs). */
     --insight-nav-bg: #ffffff;
@@ -47,6 +112,157 @@
     --insight-nav-item-ring: none;
     --insight-nav-item-active-ring: none;
 
+    /* Brand-compatible aliases.
+       Insight UI owns the --color-insight-* contract; these short aliases
+       mirror the Brand repo token vocabulary so downstream brand files can
+       map one-to-one without teaching components a second naming system. */
+    --color-blue: var(--color-insight-primary);
+    --color-blue-foreground: var(--color-insight-primary-foreground);
+    --color-orange: var(--color-insight-warning);
+    --color-orange-foreground: var(--color-insight-warning-foreground);
+    --color-bg: var(--color-insight-surface-page);
+    --color-surface: var(--color-insight-surface-base);
+    --color-surface-soft: var(--color-insight-surface-soft);
+    --color-surface-canvas: var(--color-insight-surface-canvas);
+    --color-surface-page: var(--color-insight-surface-page);
+    --color-surface-panel: var(--color-insight-surface-panel);
+    --color-surface-raised: var(--color-insight-surface-raised);
+    --color-surface-overlay: var(--color-insight-surface-overlay);
+    --color-surface-sunken: var(--color-insight-surface-sunken);
+    --color-surface-muted: var(--color-insight-surface-muted);
+    --color-surface-code: var(--color-insight-surface-code);
+    --color-surface-inverse: var(--color-insight-surface-inverse);
+    --color-surface-inverse-foreground: var(--color-insight-surface-inverse-foreground);
+    --color-text: var(--color-insight-text-primary);
+    --color-muted: var(--color-insight-text-secondary);
+    --color-text-link: var(--color-insight-text-link);
+    --color-text-link-hover: var(--color-insight-text-link-hover);
+    --color-text-disabled: var(--color-insight-text-disabled);
+    --color-line: var(--color-insight-border-surface);
+    --color-border-control: var(--color-insight-border-control);
+    --color-border-muted: var(--color-insight-border-muted);
+    --color-border-disabled: var(--color-insight-border-disabled);
+    --color-disabled: var(--color-insight-disabled);
+    --color-disabled-foreground: var(--color-insight-disabled-foreground);
+    --color-focus-ring: var(--color-insight-focus-ring);
+    --color-focus-ring-offset: var(--color-insight-focus-ring-offset);
+    --color-success: var(--color-insight-success);
+    --color-success-foreground: var(--color-insight-success-foreground);
+    --color-info: var(--color-insight-info);
+    --color-info-foreground: var(--color-insight-info-foreground);
+    --color-warning: var(--color-insight-warning);
+    --color-warning-foreground: var(--color-insight-warning-foreground);
+    --color-error: var(--color-insight-danger);
+    --color-error-foreground: var(--color-insight-danger-foreground);
+    --color-pending: var(--color-insight-pending);
+    --color-pending-foreground: var(--color-insight-pending-foreground);
+
+    --insight-border-width-none: 0;
+    --insight-border-width-hairline: 1px;
+    --insight-border-width-control: 1px;
+    --insight-border-width-surface: 1px;
+    --insight-border-width-emphasis: 2px;
+    --insight-border-style-control: solid;
+    --insight-border-style-surface: solid;
+    --insight-border-style-emphasis: solid;
+
+    --insight-surface-texture: none;
+    --insight-surface-paper: var(--color-insight-surface-base);
+    --insight-background-pattern: none;
+    --insight-background-pattern-size: auto;
+    --background-pattern: var(--insight-background-pattern);
+    --background-pattern-size: var(--insight-background-pattern-size);
+    --insight-gradient-surface: none;
+    --insight-gradient-button: none;
+    --insight-gradient-accent: none;
+    --gradient-surface: var(--insight-gradient-surface);
+    --gradient-button: var(--insight-gradient-button);
+    --gradient-brand: var(--insight-gradient-accent);
+    --gradient-aurora: var(--insight-gradient-accent);
+    --gradient-horizon: var(--insight-gradient-surface);
+    --color-glass-light: rgb(255 255 255 / var(--insight-surface-opacity));
+    --color-glass-dark: rgb(15 23 42 / var(--insight-surface-opacity));
+    --color-glass-border: var(--color-insight-border-surface);
+
+    --insight-shadow-button: none;
+    --insight-shadow-button-hover: var(--insight-shadow-button);
+    --insight-shadow-button-active: var(--insight-shadow-button-hover);
+    --insight-shadow-control: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --insight-shadow-surface-subtle: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --insight-shadow-surface: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --insight-shadow-overlay: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --insight-shadow-inset: inset 0 1px 2px rgb(0 0 0 / 0.06);
+    --insight-shadow-raised: var(--insight-shadow-surface);
+    --insight-shadow-offset: 0 0 #0000;
+    --shadow-button-primary: var(--insight-shadow-button);
+    --shadow-button-hover: var(--insight-shadow-button-hover);
+    --shadow-button-active: var(--insight-shadow-button-active);
+    --shadow-control: var(--insight-shadow-control);
+    --shadow-surface-subtle: var(--insight-shadow-surface-subtle);
+    --shadow-surface: var(--insight-shadow-surface);
+    --shadow-card: var(--insight-shadow-surface);
+    --shadow-overlay: var(--insight-shadow-overlay);
+    --shadow-glass: var(--insight-shadow-overlay);
+
+    --insight-radius-none: 0;
+    --insight-radius-sm: 0.125rem;
+    --insight-radius-md: 0.25rem;
+    --insight-radius-lg: 0.5rem;
+    --insight-radius-pill: 9999px;
+    --radius-none: var(--insight-radius-none);
+    --radius-sm: var(--insight-radius-sm);
+    --radius-md: var(--insight-radius-md);
+    --radius-lg: var(--insight-radius-lg);
+    --radius-pill: var(--insight-radius-pill);
+    --radius-control: var(--insight-radius-sm);
+    --radius-surface: var(--insight-radius-md);
+    --radius-overlay: var(--insight-radius-lg);
+    --insight-backdrop-blur: 0;
+    --backdrop-blur: var(--insight-backdrop-blur);
+    --insight-surface-opacity: 1;
+    --surface-opacity: var(--insight-surface-opacity);
+    --insight-overlay-opacity: 0.75;
+    --insight-motion-duration-fast: 120ms;
+    --insight-motion-duration-normal: 200ms;
+    --insight-motion-duration-slow: 320ms;
+    --insight-motion-easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
+    --insight-motion-easing-expressive: cubic-bezier(0.2, 0.8, 0.2, 1);
+    --duration-instant: 80ms;
+    --duration-fast: var(--insight-motion-duration-fast);
+    --duration-normal: var(--insight-motion-duration-normal);
+    --duration-slow: var(--insight-motion-duration-slow);
+    --ease-out: var(--insight-motion-easing-standard);
+    --ease-in-out: var(--insight-motion-easing-standard);
+    --ease-spring: var(--insight-motion-easing-expressive);
+    --blur-sm: 6px;
+    --blur-md: 12px;
+    --blur-lg: 18px;
+    --insight-density-control-x: 1.25rem;
+    --insight-density-control-y: 0.375rem;
+    --insight-density-surface-x: 1rem;
+    --insight-density-surface-y: 1rem;
+    --insight-density-section-y: 3rem;
+    --insight-font-body: var(--font-sans);
+    --insight-font-display: var(--font-display);
+    --insight-font-code: var(--font-mono);
+    --insight-icon-family: default;
+    --insight-sketch-line-offset: 2px;
+    --insight-sketch-line-rotation: -0.25deg;
+    --insight-sketch-shadow: 2px 2px 0 var(--color-insight-border-surface);
+    --insight-sketch-border-radius: var(--insight-radius-md);
+    --insight-tracking-display: normal;
+    --insight-tracking-caption: 0.08em;
+    --tracking-display: var(--insight-tracking-display);
+    --tracking-caption: var(--insight-tracking-caption);
+    --spacing: 0.25rem;
+    --variation-hero: var(--insight-gradient-accent);
+    --variation-hero-text: var(--color-insight-text-primary);
+    --variation-card-bg: var(--color-insight-surface-panel);
+    --variation-card-ring: var(--color-insight-border-surface);
+    --variation-card-shadow: var(--insight-shadow-surface);
+    --variation-card-blur: var(--insight-backdrop-blur);
+    --variation-motion-dur: var(--insight-motion-duration-normal);
+    --variation-motion-ease: var(--insight-motion-easing-standard);
     --range-progress: 0%;
 
     --animate-blink: blink 2s step-start infinite;
@@ -77,6 +293,25 @@
 
     [data-theme="dark"] {
         color-scheme: dark;
+        --color-insight-text-primary: var(--color-insight-text-primary-dark);
+        --color-insight-text-secondary: var(--color-insight-text-secondary-dark);
+        --color-insight-text-disabled: var(--color-insight-text-disabled-dark);
+        --color-insight-surface-page: var(--color-insight-surface-page-dark);
+        --color-insight-surface-base: var(--color-insight-surface-base-dark);
+        --color-insight-surface-soft: var(--color-insight-surface-soft-dark);
+        --color-insight-surface-muted: var(--color-insight-surface-muted-dark);
+        --color-insight-surface-code: var(--color-insight-surface-code-dark);
+        --color-insight-surface-canvas: var(--color-insight-surface-canvas-dark);
+        --color-insight-surface-panel: var(--color-insight-surface-panel-dark);
+        --color-insight-surface-raised: var(--color-insight-surface-raised-dark);
+        --color-insight-surface-sunken: var(--color-insight-surface-sunken-dark);
+        --color-insight-border-surface: var(--color-insight-border-surface-dark);
+        --color-insight-border-control: var(--color-insight-border-control-dark);
+        --color-insight-border-muted: var(--color-insight-border-muted-dark);
+        --color-insight-border-disabled: var(--color-insight-border-disabled-dark);
+        --color-insight-disabled: var(--color-insight-disabled-dark);
+        --color-insight-disabled-foreground: var(--color-insight-disabled-foreground-dark);
+        --color-insight-focus-ring-offset: var(--color-insight-focus-ring-offset-dark);
     }
 
     /* Custom scrollbar styling for Chromium browsers */
@@ -404,5 +639,284 @@
 
     .range-custom::-moz-range-thumb {
         @apply w-4 h-4 bg-white border-2 border-insight-primary rounded-full cursor-pointer;
+    }
+
+    /*
+    * ========================================================
+    *   Semantic token utilities (surface / border / text / radius / shadow / density / motion)
+    *   Additive token-driven helpers so components can reference semantic roles.
+    * ========================================================
+    */
+
+    .text-disabled {
+        color: var(--color-insight-text-disabled);
+    }
+
+    .text-inverse {
+        color: var(--color-insight-surface-inverse-foreground);
+    }
+
+    .insight-tracking-display {
+        letter-spacing: var(--insight-tracking-display);
+    }
+
+    .insight-tracking-caption {
+        letter-spacing: var(--insight-tracking-caption);
+    }
+
+    .insight-surface-page {
+        background-color: var(--color-insight-surface-page);
+        background-image: var(--insight-background-pattern);
+        background-size: var(--insight-background-pattern-size);
+    }
+
+    .insight-surface-base {
+        background-color: var(--color-insight-surface-base);
+        backdrop-filter: blur(var(--insight-backdrop-blur));
+        -webkit-backdrop-filter: blur(var(--insight-backdrop-blur));
+    }
+
+    .insight-surface-soft {
+        background-color: var(--color-insight-surface-soft);
+        backdrop-filter: blur(var(--insight-backdrop-blur));
+        -webkit-backdrop-filter: blur(var(--insight-backdrop-blur));
+    }
+
+    .insight-surface-muted {
+        background-color: var(--color-insight-surface-muted);
+        backdrop-filter: blur(var(--insight-backdrop-blur));
+        -webkit-backdrop-filter: blur(var(--insight-backdrop-blur));
+    }
+
+    .insight-surface-inverse {
+        background-color: var(--color-insight-surface-inverse);
+        color: var(--color-insight-surface-inverse-foreground);
+    }
+
+    .insight-surface-overlay {
+        background-color: var(--color-insight-surface-overlay);
+    }
+
+    .insight-surface-code {
+        background-color: var(--color-insight-surface-code);
+    }
+
+    .insight-surface-canvas {
+        background-color: var(--color-insight-surface-canvas);
+        background-image: var(--insight-background-pattern);
+        background-size: var(--insight-background-pattern-size);
+    }
+
+    .insight-surface-panel {
+        background-color: var(--color-insight-surface-panel);
+        backdrop-filter: blur(var(--insight-backdrop-blur));
+        -webkit-backdrop-filter: blur(var(--insight-backdrop-blur));
+    }
+
+    .insight-surface-raised {
+        background-color: var(--color-insight-surface-raised);
+        backdrop-filter: blur(var(--insight-backdrop-blur));
+        -webkit-backdrop-filter: blur(var(--insight-backdrop-blur));
+    }
+
+    .insight-surface-sunken {
+        background-color: var(--color-insight-surface-sunken);
+        backdrop-filter: blur(var(--insight-backdrop-blur));
+        -webkit-backdrop-filter: blur(var(--insight-backdrop-blur));
+    }
+
+    .insight-border-surface {
+        border-color: var(--color-insight-border-surface);
+        border-style: var(--insight-border-style-surface);
+    }
+
+    .insight-border-control {
+        border-color: var(--color-insight-border-control);
+        border-style: var(--insight-border-style-control);
+    }
+
+    .insight-border-muted {
+        border-color: var(--color-insight-border-muted);
+    }
+
+    .insight-border-disabled {
+        border-color: var(--color-insight-border-disabled);
+    }
+
+    .insight-border-none-width {
+        border-width: var(--insight-border-width-none);
+    }
+
+    .insight-border-hairline-width {
+        border-width: var(--insight-border-width-hairline);
+    }
+
+    .insight-border-control-width {
+        border-width: var(--insight-border-width-control);
+    }
+
+    .insight-border-surface-width {
+        border-width: var(--insight-border-width-surface);
+    }
+
+    .insight-border-emphasis-width {
+        border-width: var(--insight-border-width-emphasis);
+        border-style: var(--insight-border-style-emphasis);
+    }
+
+    .insight-surface-textured {
+        background-image: var(--insight-surface-texture);
+    }
+
+    .insight-surface-paper {
+        background-color: var(--insight-surface-paper);
+    }
+
+    .insight-background-pattern {
+        background-image: var(--insight-background-pattern);
+        background-size: var(--insight-background-pattern-size);
+    }
+
+    .insight-gradient-surface {
+        background-image: var(--insight-gradient-surface);
+    }
+
+    .insight-gradient-button {
+        background-image: var(--insight-gradient-button);
+    }
+
+    .insight-gradient-accent {
+        background-image: var(--insight-gradient-accent);
+    }
+
+    .insight-shadow-control {
+        box-shadow: var(--insight-shadow-control);
+    }
+
+    .insight-shadow-surface-subtle {
+        box-shadow: var(--insight-shadow-surface-subtle);
+    }
+
+    .insight-shadow-surface {
+        box-shadow: var(--insight-shadow-surface);
+    }
+
+    .insight-shadow-overlay {
+        box-shadow: var(--insight-shadow-overlay);
+    }
+
+    .insight-shadow-inset {
+        box-shadow: var(--insight-shadow-inset);
+    }
+
+    .insight-shadow-raised {
+        box-shadow: var(--insight-shadow-raised);
+    }
+
+    .insight-shadow-offset {
+        box-shadow: var(--insight-shadow-offset);
+    }
+
+    .insight-radius-none {
+        border-radius: var(--insight-radius-none);
+    }
+
+    .insight-radius-control {
+        border-radius: var(--insight-radius-sm);
+    }
+
+    .insight-radius-surface {
+        border-radius: var(--insight-radius-md);
+    }
+
+    .insight-radius-surface-lg {
+        border-radius: var(--insight-radius-lg);
+    }
+
+    .insight-radius-pill {
+        border-radius: var(--insight-radius-pill);
+    }
+
+    .insight-focus-ring {
+        @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+        --tw-ring-color: var(--color-insight-focus-ring);
+        --tw-ring-offset-color: var(--color-insight-focus-ring-offset);
+    }
+
+    .insight-glass {
+        opacity: var(--insight-surface-opacity);
+        backdrop-filter: blur(var(--insight-backdrop-blur));
+        -webkit-backdrop-filter: blur(var(--insight-backdrop-blur));
+    }
+
+    .insight-overlay {
+        opacity: var(--insight-overlay-opacity);
+    }
+
+    .insight-motion-standard {
+        transition-duration: var(--insight-motion-duration-normal);
+        transition-timing-function: var(--insight-motion-easing-standard);
+    }
+
+    .insight-motion-expressive {
+        transition-duration: var(--insight-motion-duration-slow);
+        transition-timing-function: var(--insight-motion-easing-expressive);
+    }
+
+    .insight-density-control {
+        padding-inline: var(--insight-density-control-x);
+        padding-block: var(--insight-density-control-y);
+    }
+
+    .insight-density-surface {
+        padding-inline: var(--insight-density-surface-x);
+        padding-block: var(--insight-density-surface-y);
+    }
+
+    .insight-density-section {
+        padding-block: var(--insight-density-section-y);
+    }
+
+    .insight-font-body {
+        font-family: var(--insight-font-body);
+    }
+
+    .insight-font-display {
+        font-family: var(--insight-font-display);
+    }
+
+    .insight-font-code {
+        font-family: var(--insight-font-code);
+    }
+
+    .insight-sketch-border {
+        position: relative;
+        border-color: var(--color-insight-border-surface);
+        border-radius: var(--insight-sketch-border-radius);
+        border-style: var(--insight-border-style-surface);
+        border-width: var(--insight-border-width-surface);
+        box-shadow: var(--insight-sketch-shadow);
+        transform: rotate(var(--insight-sketch-line-rotation));
+    }
+
+    .insight-sketch-border::after {
+        border-color: currentColor;
+        border-radius: inherit;
+        border-style: inherit;
+        border-width: var(--insight-border-width-hairline);
+        content: "";
+        inset: var(--insight-sketch-line-offset);
+        opacity: 0.35;
+        pointer-events: none;
+        position: absolute;
+        transform: rotate(calc(var(--insight-sketch-line-rotation) * -2));
+    }
+
+    html[dir='rtl'] .range-custom::-webkit-slider-runnable-track {
+        background: linear-gradient(to left, var(--slider-track-active) var(--range-progress), var(--slider-track-inactive) var(--range-progress));
+    }
+
+    html[dir='rtl'] .range-custom::-moz-range-track {
+        background: linear-gradient(to left, var(--slider-track-active) var(--range-progress), var(--slider-track-inactive) var(--range-progress));
     }
 }
