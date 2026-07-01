@@ -8,7 +8,7 @@
 <nav
   role="navigation"
   aria-label="{% trans 'Main navigation' %}"
-  class="{% if fixed %}fixed{% else %}absolute{% endif %} w-full h-16 z-50 bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700 px-4 md:px-16"
+  class="{% if fixed %}fixed{% else %}absolute{% endif %} w-full h-16 z-50 bg-[var(--insight-nav-bg)] dark:bg-[var(--insight-nav-bg-dark)] border-b border-[var(--insight-nav-border)] dark:border-[var(--insight-nav-border-dark)] shadow-[var(--insight-nav-shadow)] px-4 md:px-16"
 >
   {# Desktop Navigation #}
   <div class="flex flex-wrap lg:flex-nowrap justify-between items-center gap-1 h-full">
@@ -56,7 +56,7 @@
                   {% if link.url %}
                     <a
                       href="{{ link.url }}"
-                      class="flex gap-2 h-full whitespace-nowrap text-secondary hover:text-insight-text-link px-4 py-2 text-sm transition-colors duration-200"
+                      class="flex gap-2 h-full whitespace-nowrap text-secondary hover:text-insight-text-link px-4 py-2 text-sm transition-colors duration-200 rounded-[var(--insight-nav-item-radius)] {% if link.active %}shadow-[var(--insight-nav-item-active-ring)]{% else %}shadow-[var(--insight-nav-item-ring)]{% endif %}"
                       {% if link.active %}aria-current="page"{% endif %}
                       {% if link.external %}target="_blank" rel="noopener"{% endif %}
                     >
