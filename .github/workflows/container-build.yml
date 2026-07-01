@@ -105,6 +105,8 @@ jobs:
       slot: ${{ needs.container_release.outputs.slot }}
       lane: ${{ needs.container_release.outputs.lane }}
       app: insight-ui
+      app_id: ${{ vars.DIGEST_PIN_APP_ID }}
       pr_automerge: true
+      forbid_oauth_scopes: true
     secrets:
-      consuming_repo_token: ${{ secrets.IMAGE_DIGEST_PIN_TOKEN }}
+      app_private_key: ${{ secrets.DIGEST_PIN_APP_PRIVATE_KEY }}
