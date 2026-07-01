@@ -72,6 +72,7 @@ class PageConfig:
     Attributes:
         padding: Inner padding size (xs|s|m|l|xl).
         full_height: Fill the viewport height (min-h-screen).
+        v_align: Vertical alignment (start|center|end|between|around|evenly). Enables flex layout.
 
     """
 
@@ -80,10 +81,30 @@ class PageConfig:
         {% page padding="l" class="bg-primary" %}
             <h1>Hero</h1>
         {% endpage %}
+
+        {# Centered content (useful with full_height) #}
+        {% page full_height=True v_align="center" %}
+            <div>Centered on page</div>
+        {% endpage %}
+
+        {# Content at bottom #}
+        {% page full_height=True v_align="end" %}
+            <footer>Footer</footer>
+        {% endpage %}
+
+        {# Space between elements #}
+        {% page full_height=True v_align="between" %}
+            <header>Top</header>
+            <footer>Bottom</footer>
+        {% endpage %}
         """
 
     padding: str = field(default="m", metadata={"doc": _("Inner padding size (xs|s|m|l|xl).")})
     full_height: bool = field(default=False, metadata={"doc": _("Fill the viewport height (min-h-screen).")})
+    v_align: str = field(
+        default="",
+        metadata={"doc": _("Vertical alignment (start|center|end|between|around|evenly). Enables flex layout.")},
+    )
 
 
 @dataclass
@@ -95,26 +116,26 @@ class HBoxConfig:
 
     Attributes:
         gap: Space between children (xs|s|m|l|xl).
-        align: Cross-axis alignment (start|center|end|stretch|baseline).
-        justify: Main-axis alignment (start|center|end|between|around|evenly).
+        h_align: Horizontal alignment (start|center|end|between|around|evenly).
+        v_align: Vertical alignment (start|center|end|stretch|baseline).
         wrap: Allow flex items to wrap.
 
     """
 
     __example__ = """
         {% load layout_tags %}
-        {% hbox gap="s" align="center" justify="between" %}
+        {% hbox gap="s" v_align="center" h_align="between" %}
             <span>Left</span>
             <span>Right</span>
         {% endhbox %}
         """
 
     gap: str = field(default="m", metadata={"doc": _("Space between children (xs|s|m|l|xl).")})
-    align: str = field(
-        default="stretch", metadata={"doc": _("Cross-axis alignment (start|center|end|stretch|baseline).")}
+    h_align: str = field(
+        default="start", metadata={"doc": _("Horizontal alignment (start|center|end|between|around|evenly).")}
     )
-    justify: str = field(
-        default="start", metadata={"doc": _("Main-axis alignment (start|center|end|between|around|evenly).")}
+    v_align: str = field(
+        default="stretch", metadata={"doc": _("Vertical alignment (start|center|end|stretch|baseline).")}
     )
     wrap: bool = field(default=False, metadata={"doc": _("Allow flex items to wrap.")})
 
@@ -128,25 +149,25 @@ class VBoxConfig:
 
     Attributes:
         gap: Space between children (xs|s|m|l|xl).
-        align: Cross-axis alignment (start|center|end|stretch|baseline).
-        justify: Main-axis alignment (start|center|end|between|around|evenly).
+        h_align: Horizontal alignment (start|center|end|stretch|baseline).
+        v_align: Vertical alignment (start|center|end|between|around|evenly).
 
     """
 
     __example__ = """
         {% load layout_tags %}
-        {% vbox gap="m" align="stretch" %}
+        {% vbox gap="m" h_align="stretch" %}
             <div>Top</div>
             <div>Bottom</div>
         {% endvbox %}
         """
 
     gap: str = field(default="m", metadata={"doc": _("Space between children (xs|s|m|l|xl).")})
-    align: str = field(
-        default="stretch", metadata={"doc": _("Cross-axis alignment (start|center|end|stretch|baseline).")}
+    h_align: str = field(
+        default="stretch", metadata={"doc": _("Horizontal alignment (start|center|end|stretch|baseline).")}
     )
-    justify: str = field(
-        default="start", metadata={"doc": _("Main-axis alignment (start|center|end|between|around|evenly).")}
+    v_align: str = field(
+        default="start", metadata={"doc": _("Vertical alignment (start|center|end|between|around|evenly).")}
     )
 
 
@@ -180,21 +201,21 @@ class StackConfig:
     Overlapping elements using CSS Grid.
 
     Attributes:
-        align: Vertical alignment (start|center|end).
-        justify: Horizontal alignment (start|center|end).
+        h_align: Horizontal alignment (start|center|end).
+        v_align: Vertical alignment (start|center|end).
 
     """
 
     __example__ = """
         {% load layout_tags %}
-        {% stack align="center" justify="center" %}
+        {% stack v_align="center" h_align="center" %}
             <div class="[grid-area:1/1]">Background</div>
             <div class="[grid-area:1/1]">Foreground</div>
         {% endstack %}
         """
 
-    align: str = field(default="center", metadata={"doc": _("Vertical alignment (start|center|end).")})
-    justify: str = field(default="center", metadata={"doc": _("Horizontal alignment (start|center|end).")})
+    h_align: str = field(default="center", metadata={"doc": _("Horizontal alignment (start|center|end).")})
+    v_align: str = field(default="center", metadata={"doc": _("Vertical alignment (start|center|end).")})
 
 
 @dataclass

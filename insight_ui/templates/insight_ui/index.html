@@ -8,8 +8,44 @@
 {% endblock navbar %}
 
 {% block background_image %}
-    <img src="{% static "svg/ai-logo.svg" %}" alt="" aria-hidden="true" class="fixed left-1/2 top-1/2 -z-10 h-[70dvh] w-[70dvh] -translate-x-1/2 -translate-y-1/2 opacity-10">
-    <div class="fixed bg-linear-to-r from-white from-30% to-white/60 dark:from-gray-900 dark:to-gray-900/75 -z-10 w-full h-dvh"></div>
+    {# Floating blobs animation (using radial gradients = no blur calculation per frame) #}
+    <div class="fixed inset-0 -z-20 overflow-hidden" aria-hidden="true">
+        {# Primary (blue) blobs #}
+        <div
+            class="absolute top-[5%] left-[10%] w-[600px] h-[600px] rounded-full transform-gpu will-change-transform motion-safe:animate-[blob-float_20s_ease-in-out_infinite]"
+            style="background: radial-gradient(circle, oklch(62.3% 0.214 255.1 / 0.2) 0%, transparent 70%);"
+        ></div>
+        <div
+            class="absolute top-[60%] right-[5%] w-[400px] h-[400px] rounded-full transform-gpu will-change-transform motion-safe:animate-[blob-float_28s_ease-in-out_infinite_3s]"
+            style="background: radial-gradient(circle, oklch(62.3% 0.214 255.1 / 0.15) 0%, transparent 70%);"
+        ></div>
+
+        {# Secondary (teal) blobs #}
+        <div
+            class="absolute top-[35%] right-[15%] w-[550px] h-[550px] rounded-full transform-gpu will-change-transform motion-safe:animate-[blob-float-reverse_25s_ease-in-out_infinite]"
+            style="background: radial-gradient(circle, oklch(63.7% 0.149 181.4 / 0.2) 0%, transparent 70%);"
+        ></div>
+        <div
+            class="absolute top-[70%] left-[25%] w-[350px] h-[350px] rounded-full transform-gpu will-change-transform motion-safe:animate-[blob-float-reverse_22s_ease-in-out_infinite_5s]"
+            style="background: radial-gradient(circle, oklch(63.7% 0.149 181.4 / 0.15) 0%, transparent 70%);"
+        ></div>
+
+        {# Purple blobs #}
+        <div
+            class="absolute bottom-[20%] left-[45%] w-[500px] h-[500px] rounded-full transform-gpu will-change-transform motion-safe:animate-[blob-float_18s_ease-in-out_infinite_2s]"
+            style="background: radial-gradient(circle, oklch(58.5% 0.233 277.1 / 0.15) 0%, transparent 70%);"
+        ></div>
+        <div
+            class="absolute top-[15%] right-[30%] w-[300px] h-[300px] rounded-full transform-gpu will-change-transform motion-safe:animate-[blob-float_24s_ease-in-out_infinite_4s]"
+            style="background: radial-gradient(circle, oklch(58.5% 0.233 277.1 / 0.12) 0%, transparent 70%);"
+        ></div>
+
+        {# Cyan accent blob #}
+        <div
+            class="absolute top-[50%] left-[5%] w-[450px] h-[450px] rounded-full transform-gpu will-change-transform motion-safe:animate-[blob-float-reverse_30s_ease-in-out_infinite_1s]"
+            style="background: radial-gradient(circle, oklch(78.9% 0.154 211.5 / 0.12) 0%, transparent 70%);"
+        ></div>
+    </div>
 {% endblock background_image %}
 
 {% comment %}
@@ -20,16 +56,16 @@
 
 {% block content %}
     {# ===== HERO SECTION ===== #}
-    {% page padding="xl" class="min-h-[80vh]" %}
+    {% page padding="xl" v_align="center" class="min-h-[85vh]" %}
         {% hero config=hero %}
     {% endpage %}
 
     {# ===== STATS BAR ===== #}
     {% page padding="xl" class="bg-insight-primary/5 dark:bg-insight-primary/10 border-y border-insight-primary/20" %}
         {% page padding="l" %}
-            {% hbox gap="xl" justify="evenly" wrap=True class="py-4" %}
+            {% hbox gap="xl" h_align="evenly" wrap=True class="py-4" %}
                 {% for stat in stats %}
-                    {% vbox gap="xs" align="center" %}
+                    {% vbox gap="xs" h_align="center" %}
                         <span class="text-3xl font-bold text-insight-primary">{{ stat.value }}</span>
                         <span class="text-sm text-secondary">{{ stat.label }}</span>
                     {% endvbox %}
@@ -40,8 +76,8 @@
 
     {# ===== FEATURES GRID ===== #}
     {% page padding="xl" %}
-        {% vbox gap="xl" align="center" %}
-            {% vbox align="center" %}
+        {% vbox gap="xl" h_align="center" %}
+            {% vbox h_align="center" %}
                 <h2>{% trans "Everything you need" %}</h2>
                 <p class="text-secondary text-lg">
                     {% trans "Build professional Django applications with a complete component library. No frontend expertise required." %}
@@ -67,11 +103,11 @@
     {# ===== WHAT IS INSIGHT UI ===== #}
     {% page padding="xl" class="bg-gray-50 dark:bg-gray-800/50" %}
         {% vbox gap="xl" class="max-w-4xl mx-auto" %}
-            {% vbox align="center" %}
+            {% vbox h_align="center" %}
                 <h2>{% trans "What is Insight UI?" %}</h2>
             {% endvbox %}
 
-            {% hbox gap="xl" wrap=True align="start" %}
+            {% hbox gap="xl" wrap=True v_align="start" %}
                 {% vbox gap="m" class="flex-1" %}
                     <h3 class="text-insight-primary">{% trans "Django-First Design" %}</h3>
                     <p class="text-secondary">
@@ -118,10 +154,223 @@
         {% endvbox %}
     {% endpage %}
 
+    {# ===== BASE TEMPLATE ===== #}
+    {% page padding="xl" %}
+        {% vbox gap="xl" class="max-w-5xl mx-auto" %}
+            {% vbox h_align="center" %}
+                <h2>{% trans "Ready-to-use page structure" %}</h2>
+                <p class="text-secondary text-lg text-center">
+                    {% trans "Extend our base template and focus on your content. Navigation, sidebars, dark mode — all included." %}
+                </p>
+            {% endvbox %}
+
+            {% hbox gap="xl" wrap=True v_align="start" class="mt-8" %}
+                {# Visual representation #}
+                {% vbox gap="m" class="flex-1 min-w-[300px]" %}
+                    <div class="rounded-xl border-2 border-gray-300 dark:border-gray-600 overflow-hidden bg-white dark:bg-gray-800">
+                        {# Navbar mockup #}
+                        <div class="h-10 bg-insight-primary/10 border-b border-gray-200 dark:border-gray-700 flex items-center px-3 gap-2">
+                            <div class="w-6 h-6 rounded bg-insight-primary/30"></div>
+                            <div class="flex-1"></div>
+                            <div class="w-16 h-4 rounded bg-gray-200 dark:bg-gray-600"></div>
+                            <div class="w-16 h-4 rounded bg-gray-200 dark:bg-gray-600"></div>
+                        </div>
+                        {# Main area #}
+                        {% hbox class="min-h-[180px]" %}
+                            {# Sidebar left #}
+                            <div class="w-24 border-e border-gray-200 dark:border-gray-700 p-2 hidden sm:block">
+                                {% vbox gap="xs" %}
+                                    <div class="w-full h-3 rounded bg-gray-200 dark:bg-gray-600"></div>
+                                    <div class="w-3/4 h-3 rounded bg-gray-200 dark:bg-gray-600"></div>
+                                    <div class="w-full h-3 rounded bg-gray-200 dark:bg-gray-600"></div>
+                                {% endvbox %}
+                            </div>
+                            {# Content #}
+                            <div class="flex-1 p-3">
+                                {% vbox gap="s" %}
+                                    <div class="w-1/2 h-4 rounded bg-insight-primary/30"></div>
+                                    <div class="w-full h-3 rounded bg-gray-200 dark:bg-gray-600"></div>
+                                    <div class="w-full h-3 rounded bg-gray-200 dark:bg-gray-600"></div>
+                                    <div class="w-3/4 h-3 rounded bg-gray-200 dark:bg-gray-600"></div>
+                                {% endvbox %}
+                            </div>
+                            {# Sidebar right #}
+                            <div class="w-20 border-s border-gray-200 dark:border-gray-700 p-2 hidden md:block">
+                                {% vbox gap="xs" %}
+                                    <div class="w-full h-3 rounded bg-gray-200 dark:bg-gray-600"></div>
+                                    <div class="w-2/3 h-3 rounded bg-gray-200 dark:bg-gray-600"></div>
+                                {% endvbox %}
+                            </div>
+                        {% endhbox %}
+                        {# Footer mockup #}
+                        <div class="h-8 bg-gray-100 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-700"></div>
+                    </div>
+                {% endvbox %}
+
+                {# Block list #}
+                {% vbox gap="m" class="flex-1 min-w-[300px]" %}
+                    {% for block in base_template_blocks %}
+                        {% hbox gap="m" v_align="center" class="p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700" %}
+                            <div class="shrink-0 w-8 h-8 rounded-lg bg-insight-primary/10 flex items-center justify-center">
+                                {% icon name=block.icon size="s" %}
+                            </div>
+                            {% vbox %}
+                                <span class="font-mono text-sm text-insight-primary">{{ block.name }}</span>
+                                <span class="text-xs text-secondary">{{ block.description }}</span>
+                            {% endvbox %}
+                        {% endhbox %}
+                    {% endfor %}
+                {% endvbox %}
+            {% endhbox %}
+
+            {% hbox h_align="center" class="mt-4" %}
+                {% url 'base_template_view' as base_template_url %}
+                {% button label=_("Learn more") request_url=base_template_url type="secondary" size="m" icon_name="arrow_right" icon_position="right" %}
+            {% endhbox %}
+        {% endvbox %}
+    {% endpage %}
+
+    {# ===== CUSTOMIZATION ===== #}
+    {% page padding="xl" class="bg-gray-50 dark:bg-gray-800/50" %}
+        {% vbox gap="xl" class="max-w-5xl mx-auto" %}
+            {% vbox h_align="center" %}
+                <h2>{% trans "Make it yours" %}</h2>
+                <p class="text-secondary text-lg text-center">
+                    {% trans "Three ways to customize — from simple color changes to complete component overrides." %}
+                </p>
+            {% endvbox %}
+
+            {% grid cols=3 gap="l" class="w-full mt-8" %}
+                {% for option in customization_options %}
+                    <div class="p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                        {% vbox gap="m" %}
+                            <div class="w-12 h-12 rounded-lg bg-insight-secondary/10 flex items-center justify-center">
+                                {% icon name=option.icon size="l" %}
+                            </div>
+                            <h3 class="text-lg font-semibold">{{ option.title }}</h3>
+                            <p class="text-secondary text-sm">{{ option.description }}</p>
+                            <div class="mt-auto pt-2">
+                                <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">{{ option.file }}</code>
+                            </div>
+                        {% endvbox %}
+                    </div>
+                {% endfor %}
+            {% endgrid %}
+
+            {% hbox h_align="center" class="mt-4" %}
+                {% url 'customization_view' as customization_url %}
+                {% button label=_("Customization guide") request_url=customization_url type="secondary" size="m" icon_name="arrow_right" icon_position="right" %}
+            {% endhbox %}
+        {% endvbox %}
+    {% endpage %}
+
+    {# ===== ACCESSIBILITY ===== #}
+    {% page padding="xl" %}
+        {% vbox gap="l" class="max-w-4xl mx-auto" %}
+            {% hbox gap="xl" wrap=True v_align="center" %}
+                {% vbox gap="m" class="flex-1 min-w-[280px]" %}
+                    {% hbox gap="m" v_align="center" %}
+                        <div class="w-14 h-14 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400">
+                            {% icon name="tick" size="l" %}
+                        </div>
+                        <h2 class="pb-0">{% trans "Built for everyone" %}</h2>
+                    {% endhbox %}
+                    <p class="text-secondary">
+                        {% trans "Accessibility isn't an afterthought. Every component is designed with WCAG 2.1 AA compliance from the start." %}
+                    </p>
+                {% endvbox %}
+
+                {% vbox class="flex-1 min-w-[280px]" %}
+                    {% grid cols=2 gap="s" %}
+                        {% for item in a11y_features %}
+                            {% hbox gap="s" v_align="center" class="p-2" %}
+                                <span class="text-green-600 dark:text-green-400 shrink-0">{% icon name="tick" size="xs" %}</span>
+                                <span class="text-sm text-secondary">{{ item }}</span>
+                            {% endhbox %}
+                        {% endfor %}
+                    {% endgrid %}
+                {% endvbox %}
+            {% endhbox %}
+        {% endvbox %}
+    {% endpage %}
+
+    {# ===== COMPONENT CATEGORIES ===== #}
+    {% page padding="xl" class="bg-gray-50 dark:bg-gray-800/50" %}
+        {% vbox gap="xl" class="max-w-5xl mx-auto" %}
+            {% vbox h_align="center" %}
+                <h2>{% trans "Explore by category" %}</h2>
+                <p class="text-secondary text-lg text-center">
+                    {% trans "From layout primitives to complex data components — find what you need." %}
+                </p>
+            {% endvbox %}
+
+            {% grid cols=3 gap="m" class="w-full mt-8" %}
+                {% for category in component_categories %}
+                    <a href="{{ category.url }}" class="group p-5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-insight-primary/50 hover:shadow-lg transition-all duration-300">
+                        {% hbox gap="m" v_align="center" %}
+                            <div class="w-10 h-10 rounded-lg bg-insight-primary/10 group-hover:bg-insight-primary/20 flex items-center justify-center transition-colors">
+                                {% icon name=category.icon size="m" %}
+                            </div>
+                            {% vbox %}
+                                <span class="font-semibold group-hover:text-insight-primary transition-colors">{{ category.name }}</span>
+                                <span class="text-xs text-secondary">{{ category.count }} {% trans "components" %}</span>
+                            {% endvbox %}
+                        {% endhbox %}
+                    </a>
+                {% endfor %}
+            {% endgrid %}
+
+            {% hbox h_align="center" class="mt-4" %}
+                {% url 'storybook_view' storybook_name='input' as storybook_url %}
+                {% button label=_("View all components") request_url=storybook_url type="primary" size="m" icon_name="rectangles" %}
+            {% endhbox %}
+        {% endvbox %}
+    {% endpage %}
+
+    {# ===== ADD-ON PACKAGES ===== #}
+    {% page padding="xl" %}
+        {% vbox gap="xl" class="max-w-5xl mx-auto" %}
+            {% vbox h_align="center" %}
+                <h2>{% trans "Extend with add-ons" %}</h2>
+                <p class="text-secondary text-lg text-center">
+                    {% trans "Specialized packages for common application patterns — built on top of Insight UI." %}
+                </p>
+            {% endvbox %}
+
+            {% grid cols=2 gap="l" class="w-full mt-8" %}
+                {% for addon in addon_packages %}
+                    <div class="p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 {% if addon.status == 'planned' %}opacity-75{% endif %}">
+                        {% hbox gap="m" v_align="start" %}
+                            <div class="shrink-0 w-12 h-12 rounded-lg bg-insight-primary/10 flex items-center justify-center">
+                                {% icon name=addon.icon size="l" %}
+                            </div>
+                            {% vbox gap="s" class="flex-1" %}
+                                {% hbox gap="s" v_align="center" wrap=True %}
+                                    <h3 class="text-lg font-semibold !mb-0">{{ addon.name }}</h3>
+                                    {% if addon.status == 'available' %}
+                                        {% badge label=_("Available") type="success" size="xs" %}
+                                    {% elif addon.status == 'early' %}
+                                        {% badge label=_("Early Stage") type="warning" size="xs" %}
+                                    {% elif addon.status == 'planned' %}
+                                        {% badge label=_("Planned") type="neutral" size="xs" %}
+                                    {% endif %}
+                                {% endhbox %}
+                                <p class="text-secondary text-sm">{{ addon.description }}</p>
+                                {% if addon.url %}
+                                    <a href="{{ addon.url }}" class="text-link text-sm mt-1">{% trans "Learn more" %} →</a>
+                                {% endif %}
+                            {% endvbox %}
+                        {% endhbox %}
+                    </div>
+                {% endfor %}
+            {% endgrid %}
+        {% endvbox %}
+    {% endpage %}
+
     {# ===== IS IT RIGHT FOR ME? ===== #}
     {% page padding="xl" %}
         {% vbox gap="xl" class="max-w-3xl mx-auto" %}
-            {% vbox align="center" %}
+            {% vbox h_align="center" %}
                 <h2>{% trans "Is Insight UI right for you?" %}</h2>
                 <p class="text-secondary text-lg">{% trans "Check if our framework matches your needs:" %}</p>
             {% endvbox %}
@@ -135,7 +384,7 @@
                     </div>
                 {% endfor %}
             {% endvbox %}
-            {% hbox justify="center" %}
+            {% hbox h_align="center" %}
                 {% url 'installation_view' as installation_url %}
                 {% url 'storybook_view' storybook_name='input' as storybook_url %}
                 {% button label=_("Get started") request_url=installation_url type="primary" size="l" icon_name="rocket" %}
@@ -146,12 +395,12 @@
 
     {# ===== FINAL CTA ===== #}
     {% page padding="xl" class="bg-insight-primary" %}
-        {% vbox gap="l" align="center" %}
+        {% vbox gap="l" h_align="center" %}
             <h2 class="text-white">{% trans "Ready to build something amazing?" %}</h2>
             <p class="text-white text-center max-w-2xl">
                 {% trans "Start building accessible, professional Django applications in minutes. No frontend expertise required." %}
             </p>
-            {% hbox gap="m" justify="center" %}
+            {% hbox gap="m" h_align="center" %}
                 {% button label=_("Get started for free") request_url=installation_url type="neutral" size="l" %}
                 {% button label=_("View on GitHub") request_url="https://github.com/alpininsight/insight-ui" external=True type="neutral" outline=True size="l" icon_name="git" extra_classes="text-insight-text-primary-dark hover:text-insight-text-primary" %}
             {% endhbox %}
