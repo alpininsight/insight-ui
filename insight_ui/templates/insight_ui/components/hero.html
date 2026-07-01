@@ -6,21 +6,21 @@
         <div class="absolute inset-0 bg-linear-to-r from-white from-30% to-white/60 dark:from-gray-900 dark:to-gray-900/75 -z-10"></div>
     {% endif %}
 
-    <div class="max-w-4xl{% if not hero_config.background_image_url %} mx-auto text-center{% endif %}">
+    <div class="max-w-4xl space-y-4 xl:space-y-8{% if not hero_config.background_image_url %} mx-auto text-center{% endif %}">
         {% if hero_config.badge_config %}
             <div class="mb-4">
                 {% badge config=hero_config.badge_config %}
             </div>
         {% endif %}
 
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-primary mb-4">{{ hero_config.title }}</h1>
+        <h1 class="text-4xl md:text-5xl lg:text-6xl xl:text-8xl font-bold text-primary pb-0 xl:pb-4">{{ hero_config.title }}</h1>
 
         {% if hero_config.subtitle %}
-            <p class="text-xl md:text-2xl font-medium text-insight-primary mb-4">{{ hero_config.subtitle }}</p>
+            <p class="text-xl md:text-2xl xl:text-3xl font-medium text-insight-primary">{{ hero_config.subtitle }}</p>
         {% endif %}
 
         {% if hero_config.description %}
-            <p class="text-lg text-secondary leading-relaxed mb-4 max-w-2xl{% if not hero_config.background_image_url %} mx-auto{% endif %}">{{ hero_config.description }}</p>
+            <p class="text-lg xl:text-xl text-secondary leading-relaxed max-w-2xl{% if not hero_config.background_image_url %} mx-auto{% endif %}">{{ hero_config.description }}</p>
         {% endif %}
 
         {% if hero_config.cta_primary or hero_config.cta_secondary %}

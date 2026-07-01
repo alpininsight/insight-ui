@@ -83,7 +83,7 @@ def get_hbox_usage_context() -> dict[str, str]:
         "usage": """
         {% load layout_tags %}
 
-        {% hbox gap="s" align="center" justify="between" %}
+        {% hbox gap="s" v_align="center" h_align="between" %}
             <span>Left</span>
             <span>Right</span>
         {% endhbox %}
@@ -112,7 +112,7 @@ def get_vbox_usage_context() -> dict[str, str]:
         {% endvbox %}
 
         <!-- With custom alignment -->
-        {% vbox gap="l" align="center" justify="between" %}
+        {% vbox gap="l" h_align="center" v_align="between" %}
             <header>Header</header>
             <main>Content</main>
             <footer>Footer</footer>
@@ -164,7 +164,7 @@ def get_spacer_usage_context() -> dict[str, str]:
         "usage": """
         {% load layout_tags %}
 
-        {% hbox gap="xs" align="center" %}
+        {% hbox gap="xs" v_align="center" %}
             <span>Left</span>
             {% spacer size="xl" %}
             <span>Right</span>
@@ -194,7 +194,7 @@ def get_divider_usage_context() -> dict[str, str]:
         {% endvbox %}
 
         <!-- Vertical divider -->
-        {% hbox gap="m" align="stretch" %}
+        {% hbox gap="m" v_align="stretch" %}
             <div>Left</div>
             {% divider direction="vertical" %}
             <div>Right</div>

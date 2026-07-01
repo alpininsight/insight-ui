@@ -15,12 +15,12 @@
     </div>
 {% elif component.value == "hbox" %}
     <div class="space-y-4">
-        {% hbox gap="m" align="center" %}
+        {% hbox gap="m" v_align="center" %}
             <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 1" %}</div>
             <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 2" %}</div>
             <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 3" %}</div>
         {% endhbox %}
-        {% hbox gap="s" align="center" justify="between" %}
+        {% hbox gap="s" v_align="center" h_align="between" %}
             <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 1" %}</div>
             <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 2" %}</div>
             <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 3" %}</div>
@@ -55,7 +55,7 @@
         </div>
     </div>
 {% elif component.value == "spacer" %}
-    {% hbox gap="xs" align="center" %}
+    {% hbox gap="xs" v_align="center" %}
         <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 1" %}</div>
         {% spacer size="xs" %}
         <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 2" %}</div>

@@ -375,6 +375,100 @@ def index_view(request: HttpRequest) -> HttpResponse:
         _("You want accessibility compliance without the complexity?"),
         _("You'd rather not design basic UI components from scratch?"),
     ]
+    context["base_template_blocks"] = [
+        {"name": "{% block navbar %}", "icon": "bars", "description": _("Fixed navigation bar")},
+        {"name": "{% block sidebar_left %}", "icon": "rectangles", "description": _("Static left sidebar")},
+        {"name": "{% block content %}", "icon": "doc", "description": _("Main content area")},
+        {"name": "{% block sidebar_right %}", "icon": "rectangles", "description": _("Static right sidebar")},
+        {"name": "{% block footer %}", "icon": "app", "description": _("Page footer")},
+    ]
+    context["customization_options"] = [
+        {
+            "icon": "settings",
+            "title": _("Settings"),
+            "description": _("Configure favicons, SEO, external libraries, and UI behavior via Django settings."),
+            "file": "settings.py",
+        },
+        {
+            "icon": "sparkles",
+            "title": _("Theming"),
+            "description": _("Define colors, fonts, and component styles with CSS tokens. Dark mode included."),
+            "file": "input.css",
+        },
+        {
+            "icon": "code",
+            "title": _("Templates"),
+            "description": _("Override any component template by placing it in your project's template directory."),
+            "file": "templates/",
+        },
+    ]
+    context["a11y_features"] = [
+        _("Semantic HTML elements"),
+        _("ARIA labels & roles"),
+        _("Keyboard navigation"),
+        _("Screen reader support"),
+        _("Focus management"),
+        _("4.5:1 contrast ratios"),
+    ]
+    # Build component categories with counts
+    category_icons = {
+        ComponentCategory.LAYOUT: "rectangles",
+        ComponentCategory.NAVIGATION: "globe",
+        ComponentCategory.INPUT: "cursor-click",
+        ComponentCategory.POPUP: "chat-bubble",
+        ComponentCategory.UTIL: "tools",
+        ComponentCategory.LIST: "list",
+        ComponentCategory.FILTER: "search",
+        ComponentCategory.CARD: "cards",
+        ComponentCategory.FORM: "clipboard",
+    }
+    category_counts: dict[ComponentCategory, int] = {}
+    for component in Component:
+        category_counts[component.group] = category_counts.get(component.group, 0) + 1
+    context["component_categories"] = [
+        {
+            "name": category.formatted_name,
+            "icon": category_icons.get(category, "rectangles"),
+            "count": category_counts.get(category, 0),
+            "url": reverse("storybook_view", kwargs={"storybook_name": category.value}),
+        }
+        for category in ComponentCategory
+    ]
+    context["addon_packages"] = [
+        {
+            "name": "Insight UI User",
+            "icon": "user",
+            "status": "available",
+            "description": _("User profile components — avatars, profile cards, account settings, and activity feeds."),
+            "url": "#",
+        },
+        {
+            "name": "Insight UI Flows",
+            "icon": "blueprint",
+            "status": "available",
+            "description": _(
+                "Visual node editor for workflows — perfect for AI agent pipelines, "
+                "automation builders, or logic designers."
+            ),
+            "url": "#",
+        },
+        {
+            "name": "Insight UI WebGL",
+            "icon": "desktop",
+            "status": "early",
+            "description": _(
+                "3D components for web applications — scene viewers, model inspectors, and interactive visualizations."
+            ),
+            "url": "#",
+        },
+        {
+            "name": "Insight UI Diagrams",
+            "icon": "share",
+            "status": "planned",
+            "description": _("Diagram components — flowcharts, org charts, mind maps, and data visualizations."),
+            "url": "#",
+        },
+    ]
     return render(request, "insight_ui/index.html", context)
 
 

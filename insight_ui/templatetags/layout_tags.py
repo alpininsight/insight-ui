@@ -20,10 +20,10 @@ Block tags (require closing tag):
     {% page padding="m" %}...{% endpage %}
         Full-width page container with consistent padding.
 
-    {% hbox gap="s" align="center" justify="between" wrap=True %}...{% endhbox %}
+    {% hbox gap="s" v_align="center" h_align="between" wrap=True %}...{% endhbox %}
         Horizontal flex container (row direction).
 
-    {% vbox gap="m" align="stretch" justify="start" %}...{% endvbox %}
+    {% vbox gap="m" h_align="stretch" v_align="start" %}...{% endvbox %}
         Vertical flex container (column direction).
 
     {% grid cols=3 gap="m" %}...{% endgrid %}
@@ -300,14 +300,17 @@ class FlexNode(LayoutNode):
     """
     Base class for flex containers (hbox, vbox).
 
-    Provides shared validation and class building for gap, align, justify.
+    Provides shared validation and class building for gap, h_align, v_align.
     Subclasses set :attr:`flex_direction` to "row" or "col".
+
+    For flex-row (hbox): h_align controls main-axis (justify), v_align controls cross-axis (items).
+    For flex-col (vbox): v_align controls main-axis (justify), h_align controls cross-axis (items).
     """
 
     flex_direction: str = "row"  # Override in subclass
 
     def build_classes(self, kwargs: dict[str, object]) -> list[str]:
-        """Build flex container CSS classes with gap, align, and justify."""
+        """Build flex container CSS classes with gap, h_align, and v_align."""
         classes = ["flex", f"flex-{self.flex_direction}"]
 
         gap = kwargs.get("gap", "m")
@@ -315,13 +318,21 @@ class FlexNode(LayoutNode):
             _validate(str(gap), VALID_SPACING, "gap", self.tag_name)
             classes.append(GAP_CLASSES[str(gap)])
 
-        align = str(kwargs.get("align", "stretch"))
-        _validate(align, VALID_ALIGN, "align", self.tag_name)
-        classes.append(ALIGN_CLASSES[align])
+        h_align = str(kwargs.get("h_align", "stretch" if self.flex_direction == "col" else "start"))
+        v_align = str(kwargs.get("v_align", "stretch" if self.flex_direction == "row" else "start"))
 
-        justify = str(kwargs.get("justify", "start"))
-        _validate(justify, VALID_JUSTIFY, "justify", self.tag_name)
-        classes.append(JUSTIFY_CLASSES[justify])
+        if self.flex_direction == "row":
+            # flex-row: h_align = main-axis (justify), v_align = cross-axis (items)
+            _validate(h_align, VALID_JUSTIFY, "h_align", self.tag_name)
+            _validate(v_align, VALID_ALIGN, "v_align", self.tag_name)
+            classes.append(JUSTIFY_CLASSES[h_align])
+            classes.append(ALIGN_CLASSES[v_align])
+        else:
+            # flex-col: v_align = main-axis (justify), h_align = cross-axis (items)
+            _validate(v_align, VALID_JUSTIFY, "v_align", self.tag_name)
+            _validate(h_align, VALID_ALIGN, "h_align", self.tag_name)
+            classes.append(JUSTIFY_CLASSES[v_align])
+            classes.append(ALIGN_CLASSES[h_align])
 
         if kwargs.get("wrap"):
             classes.append("flex-wrap")
@@ -344,6 +355,12 @@ class PageNode(LayoutNode):
         # Optional full viewport height
         if kwargs.get("full_height", False):
             classes.append("min-h-screen")
+
+        # Optional vertical alignment (enables flex layout)
+        v_align = str(kwargs.get("v_align", ""))
+        if v_align:
+            _validate(v_align, VALID_JUSTIFY, "v_align", self.tag_name)
+            classes.extend(["flex", "flex-col", JUSTIFY_CLASSES[v_align]])
 
         padding = str(kwargs.get("padding", "m"))
         _validate(padding, VALID_SPACING, "padding", self.tag_name)
