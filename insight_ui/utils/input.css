@@ -37,6 +37,14 @@
     --color-insight-text-link: #3b82f6;
     --color-insight-text-link-hover: #93c5fd;
 
+    /* Navbar role tokens — defaults preserve today's look; a theme overrides these to re-skin the navbar (e.g. brand: borderless + rounded-button tabs). */
+    --insight-nav-bg: #ffffff;
+    --insight-nav-border: #e5e7eb; /* gray-200 */
+    --insight-nav-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); /* shadow-lg */
+    --insight-nav-item-radius: 0px;
+    --insight-nav-item-border: transparent;
+    --insight-nav-item-active-border: transparent;
+
     --range-progress: 0%;
 
     --animate-blink: blink 2s step-start infinite;
@@ -67,6 +75,9 @@
 
     [data-theme="dark"] {
         color-scheme: dark;
+
+        --insight-nav-bg: #1f2937; /* gray-800 */
+        --insight-nav-border: #374151; /* gray-700 */
     }
 
     /* Custom scrollbar styling for Chromium browsers */

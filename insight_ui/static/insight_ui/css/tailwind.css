@@ -124,6 +124,12 @@
     --color-insight-text-secondary-dark: oklch(70.8% 0 0);
     --color-insight-text-link: #3b82f6;
     --color-insight-text-link-hover: #93c5fd;
+    --insight-nav-bg: #ffffff;
+    --insight-nav-border: #e5e7eb;
+    --insight-nav-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --insight-nav-item-radius: 0px;
+    --insight-nav-item-border: transparent;
+    --insight-nav-item-active-border: transparent;
     --range-progress: 0%;
     --animate-blink: blink 2s step-start infinite;
     --animate-shake: shake 0.3s;
@@ -1111,6 +1117,9 @@
   .rounded {
     border-radius: 0.25rem;
   }
+  .rounded-\[var\(--insight-nav-item-radius\)\] {
+    border-radius: var(--insight-nav-item-radius);
+  }
   .rounded-full {
     border-radius: calc(infinity * 1px);
   }
@@ -1209,6 +1218,15 @@
     border-left-style: var(--tw-border-style);
     border-left-width: 4px;
   }
+  .border-\[var\(--insight-nav-border\)\] {
+    border-color: var(--insight-nav-border);
+  }
+  .border-\[var\(--insight-nav-item-active-border\)\] {
+    border-color: var(--insight-nav-item-active-border);
+  }
+  .border-\[var\(--insight-nav-item-border\)\] {
+    border-color: var(--insight-nav-item-border);
+  }
   .border-blue-200 {
     border-color: var(--color-blue-200);
   }
@@ -1259,6 +1277,9 @@
   }
   .bg-\[\#f9fafb\] {
     background-color: #f9fafb;
+  }
+  .bg-\[var\(--insight-nav-bg\)\] {
+    background-color: var(--insight-nav-bg);
   }
   .bg-black {
     background-color: var(--color-black);
@@ -1749,6 +1770,10 @@
   }
   .shadow {
     --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .shadow-\[var\(--insight-nav-shadow\)\] {
+    --tw-shadow: var(--insight-nav-shadow);
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
   .shadow-lg {
@@ -3129,6 +3154,8 @@
   }
   [data-theme="dark"] {
     color-scheme: dark;
+    --insight-nav-bg: #1f2937;
+    --insight-nav-border: #374151;
   }
   ::-webkit-scrollbar {
     width: 12px;
