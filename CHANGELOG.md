@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Replace 'ActionConfig' with 'ButtonConfig'
 - Remove obsolete htmx-extension.js and use corresponding htmx-attributes instead
 - Replace raw href tag with 'button' component for 'pagination' and 'user_dropdown'
+- **navbar:** Tokenize bar surface/border/shadow + item radius for theming
 
 ### Miscellaneous
 
