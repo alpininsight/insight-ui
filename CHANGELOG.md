@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Migrate digest-pin to least-privilege app token
 
+### Documentation
+
+- **ci:** Refresh digest-pin token comment to app-token setup
+
 ### Features
 
 - Add 'button' component
