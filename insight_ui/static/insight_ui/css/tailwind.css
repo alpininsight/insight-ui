@@ -843,9 +843,6 @@
   .min-h-\[180px\] {
     min-height: 180px;
   }
-  .min-h-full {
-    min-height: 100%;
-  }
   .min-h-screen {
     min-height: 100vh;
   }
@@ -1010,9 +1007,6 @@
   }
   .min-w-\[300px\] {
     min-width: 300px;
-  }
-  .min-w-fit {
-    min-width: fit-content;
   }
   .flex-1 {
     flex: 1;
@@ -1383,10 +1377,6 @@
     border-top-style: var(--tw-border-style);
     border-top-width: 0px;
   }
-  .border-t-8 {
-    border-top-style: var(--tw-border-style);
-    border-top-width: 8px;
-  }
   .border-b {
     border-bottom-style: var(--tw-border-style);
     border-bottom-width: 1px;
@@ -1410,6 +1400,9 @@
   .border-dashed {
     --tw-border-style: dashed;
     border-style: dashed;
+  }
+  .border-\[var\(--insight-nav-border\)\] {
+    border-color: var(--insight-nav-border);
   }
   .border-blue-200 {
     border-color: var(--color-blue-200);
@@ -1467,6 +1460,9 @@
   }
   .bg-\[\#f9fafb\] {
     background-color: #f9fafb;
+  }
+  .bg-\[var\(--insight-nav-bg\)\] {
+    background-color: var(--insight-nav-bg);
   }
   .bg-black\/50 {
     background-color: color-mix(in srgb, #000 50%, transparent);
@@ -1666,9 +1662,6 @@
   .p-8 {
     padding: calc(var(--spacing) * 8);
   }
-  .px-1\.5 {
-    padding-inline: calc(var(--spacing) * 1.5);
-  }
   .px-2 {
     padding-inline: calc(var(--spacing) * 2);
   }
@@ -1692,9 +1685,6 @@
   }
   .px-24 {
     padding-inline: calc(var(--spacing) * 24);
-  }
-  .py-0\.5 {
-    padding-block: calc(var(--spacing) * 0.5);
   }
   .py-1 {
     padding-block: var(--spacing);
@@ -1756,9 +1746,6 @@
   .pt-16 {
     padding-top: calc(var(--spacing) * 16);
   }
-  .pt-20 {
-    padding-top: calc(var(--spacing) * 20);
-  }
   .pb-0 {
     padding-bottom: 0;
   }
@@ -1770,9 +1757,6 @@
   }
   .pb-8 {
     padding-bottom: calc(var(--spacing) * 8);
-  }
-  .pb-12 {
-    padding-bottom: calc(var(--spacing) * 12);
   }
   .pb-16 {
     padding-bottom: calc(var(--spacing) * 16);
@@ -3139,11 +3123,6 @@
   .dark\:border-gray-700 {
     &:where([data-theme=dark], [data-theme=dark] *) {
       border-color: var(--color-gray-700);
-    }
-  }
-  .dark\:border-gray-800 {
-    &:where([data-theme=dark], [data-theme=dark] *) {
-      border-color: var(--color-gray-800);
     }
   }
   .dark\:border-green-800 {
