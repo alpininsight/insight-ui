@@ -55,11 +55,14 @@ def get_page_description_context() -> dict[str, list[str]]:
             _(
                 "The `page` block tag provides a full-width page container with consistent padding. "
                 "Use it as the outermost wrapper for page content to ensure uniform spacing across your application."
-            )
+            ),
+            _("For advanced layout control (max-width, alignment), use a `vbox` inside the page container."),
         ],
         "features": [
             _("**padding**: Configurable inner padding using the spacing scale (xs/s/m/l/xl)."),
-            _("**full_height**: Optional viewport-filling height (min-h-screen)."),
+            _(
+                "**height**: Height behavior - `auto` (fits content), `full` (viewport height), or `peek` (shows next section). When set to `full` or `peek`, the page becomes a flex-col container so children can use `full_height=True` to fill available space."
+            ),
         ],
     }
 
@@ -76,8 +79,11 @@ def get_hbox_description_context() -> dict[str, list[str]]:
         ],
         "features": [
             _("**gap**: Consistent spacing between children (xs/s/m/l/xl)."),
-            _("**align**: Cross-axis alignment (items-start/center/end/stretch/baseline)."),
-            _("**justify**: Main-axis alignment (justify-start/center/end/between/around/evenly)."),
+            _("**padding**: Inner padding (xs/s/m/l/xl). Optional."),
+            _("**max_width**: Maximum container width (xs/s/m/l/xl/fit/full)."),
+            _("**full_height**: Fill available height in parent container."),
+            _("**h_align**: Horizontal/main-axis alignment (start/center/end/between/around/evenly)."),
+            _("**v_align**: Vertical/cross-axis alignment (start/center/end/stretch/baseline)."),
             _("**wrap**: Optional flex-wrap for responsive layouts."),
         ],
     }
@@ -95,8 +101,11 @@ def get_vbox_description_context() -> dict[str, list[str]]:
         ],
         "features": [
             _("**gap**: Consistent spacing between children (xs/s/m/l/xl)."),
-            _("**align**: Cross-axis alignment (items-start/center/end/stretch/baseline)."),
-            _("**justify**: Main-axis alignment (justify-start/center/end/between/around/evenly)."),
+            _("**padding**: Inner padding (xs/s/m/l/xl). Optional."),
+            _("**max_width**: Maximum container width (xs/s/m/l/xl/fit/full)."),
+            _("**full_height**: Fill available height in parent container."),
+            _("**h_align**: Horizontal/cross-axis alignment (start/center/end/stretch/baseline)."),
+            _("**v_align**: Vertical/main-axis alignment (start/center/end/between/around/evenly)."),
         ],
     }
 
@@ -151,7 +160,7 @@ def get_divider_description_context() -> dict[str, list[str]]:
         ],
         "features": [
             _("**direction**: Orientation of the divider (horizontal/vertical)."),
-            _("**size**: Margin around the divider using the spacing scale (xs/s/m/l/xl)."),
+            _("**spacing**: Margin around the divider using the spacing scale (xs/s/m/l/xl)."),
         ],
     }
 

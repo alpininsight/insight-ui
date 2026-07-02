@@ -70,7 +70,6 @@ from insight_ui.configs.input import (
 )
 from insight_ui.configs.layout import (
     ArticleConfig,
-    CenterConfig,
     DividerConfig,
     GridConfig,
     HBoxConfig,
@@ -78,7 +77,6 @@ from insight_ui.configs.layout import (
     PageConfig,
     PageHeaderConfig,
     SpacerConfig,
-    StackConfig,
     VBoxConfig,
 )
 from insight_ui.configs.list import InfiniteScrollConfig, PaginationConfig, PaginationIppConfig, TableConfig
@@ -167,7 +165,6 @@ __all__ = [
     # Layout
     "ArticleConfig",
     "BadgeConfig",
-    "CenterConfig",
     "DividerConfig",
     "GridConfig",
     "HBoxConfig",
@@ -175,7 +172,6 @@ __all__ = [
     "PageConfig",
     "PageHeaderConfig",
     "SpacerConfig",
-    "StackConfig",
     "VBoxConfig",
     # Lists
     "InfiniteScrollConfig",
