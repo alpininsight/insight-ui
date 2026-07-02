@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update usage documentation parameter of the 'footer', 'sidebar' and 'app_card' component
 - Remove the reference to the deprecated 'type' parameter of the 'logo' component from the docuemntation
 
+### CI/CD
+
+- Migrate digest-pin to least-privilege app token
+
 ### Features
 
 - Add 'button' component
