@@ -37,6 +37,7 @@ dependencies = [
     "structlog>=25.5.0",
     "python-decouple==3.8",
     "markdown>=3.8",
+    "defusedxml>=0.7.1",
 ]
 
 [tool.uv]
