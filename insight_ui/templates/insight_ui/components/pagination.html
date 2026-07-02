@@ -8,11 +8,11 @@
             {% if pagination_config.current_page.has_previous %}
                 {% with page_num=pagination_config.current_page.previous_page_number|stringformat:"s" %}
                     {% with url=pagination_config.request_url|add:"?page="|add:page_num %}
-                        {% button request_url=url label=_("To previous page") icon_name="chevron_left" icon_size="s" icon_only=True size="s" hx_get=url hx_target="#list-container" hx_include="#ipp" %}
+                        {% button request_url=url label=_("To previous page") icon_name="chevron-left" icon_size="s" icon_only=True size="s" hx_get=url hx_target="#list-container" hx_include="#ipp" %}
                     {% endwith %}
                 {% endwith %}
             {% else %}
-                {% button label=_("To previous page (Deactivated because there are no more previous pages)") icon_name="chevron_left" icon_size="s" icon_only=True type="disabled" size="s" %}
+                {% button label=_("To previous page (Deactivated because there are no more previous pages)") icon_name="chevron-left" icon_size="s" icon_only=True type="disabled" size="s" %}
             {% endif %}
 
             <!-- Neighbor Pages -->
@@ -36,11 +36,11 @@
             {% if pagination_config.current_page.has_next %}
                 {% with page_num=pagination_config.current_page.next_page_number|stringformat:"s" %}
                     {% with url=pagination_config.request_url|add:"?page="|add:page_num %}
-                        {% button request_url=url label=_("To next page") icon_name="chevron_right" icon_size="s" icon_only=True size="s" hx_get=url hx_target="#list-container" hx_include="#ipp" %}
+                        {% button request_url=url label=_("To next page") icon_name="chevron-right" icon_size="s" icon_only=True size="s" hx_get=url hx_target="#list-container" hx_include="#ipp" %}
                     {% endwith %}
                 {% endwith %}
             {% else %}
-                {% button label=_("To next page (Deactivated because there are no more next pages)") icon_name="chevron_right" icon_size="s" icon_only=True type="disabled" size="s" %}
+                {% button label=_("To next page (Deactivated because there are no more next pages)") icon_name="chevron-right" icon_size="s" icon_only=True type="disabled" size="s" %}
             {% endif %}
         </div>
 
