@@ -67,44 +67,37 @@ class PageConfig:
     """
     Configuration for the page block tag.
 
-    Block-level page container with consistent padding.
+    Block-level page container with consistent padding and optional height control.
 
     Attributes:
         padding: Inner padding size (xs|s|m|l|xl).
-        full_height: Fill the viewport height (min-h-screen).
-        v_align: Vertical alignment (start|center|end|between|around|evenly). Enables flex layout.
+        height: Height behavior (auto|full|peek).
 
     """
 
     __example__ = """
         {% load layout_tags %}
-        {% page padding="l" class="bg-primary" %}
-            <h1>Hero</h1>
+
+        {# Standard - fits content #}
+        {% page padding="l" %}
+            <h1>Welcome</h1>
         {% endpage %}
 
-        {# Centered content (useful with full_height) #}
-        {% page full_height=True v_align="center" %}
-            <div>Centered on page</div>
+        {# Full viewport height with centered content #}
+        {% page height="full" %}
+            {% vbox v_align="center" full_height=True %}
+                <div>Vertically centered</div>
+            {% endvbox %}
         {% endpage %}
 
-        {# Content at bottom #}
-        {% page full_height=True v_align="end" %}
-            <footer>Footer</footer>
-        {% endpage %}
-
-        {# Space between elements #}
-        {% page full_height=True v_align="between" %}
-            <header>Top</header>
-            <footer>Bottom</footer>
+        {# Peek - shows next section is coming #}
+        {% page height="peek" %}
+            <h1>Hero Section</h1>
         {% endpage %}
         """
 
     padding: str = field(default="m", metadata={"doc": _("Inner padding size (xs|s|m|l|xl).")})
-    full_height: bool = field(default=False, metadata={"doc": _("Fill the viewport height (min-h-screen).")})
-    v_align: str = field(
-        default="",
-        metadata={"doc": _("Vertical alignment (start|center|end|between|around|evenly). Enables flex layout.")},
-    )
+    height: str = field(default="auto", metadata={"doc": _("Height behavior (auto|full|peek).")})
 
 
 @dataclass
@@ -116,6 +109,9 @@ class HBoxConfig:
 
     Attributes:
         gap: Space between children (xs|s|m|l|xl).
+        padding: Inner padding (xs|s|m|l|xl). Optional.
+        max_width: Maximum width (xs|s|m|l|xl|fit|full).
+        full_height: Fill available height in parent container.
         h_align: Horizontal alignment (start|center|end|between|around|evenly).
         v_align: Vertical alignment (start|center|end|stretch|baseline).
         wrap: Allow flex items to wrap.
@@ -128,9 +124,23 @@ class HBoxConfig:
             <span>Left</span>
             <span>Right</span>
         {% endhbox %}
+
+        {# Fill parent height - useful inside page with height="full" #}
+        {% hbox full_height=True %}
+            {% vbox %}Column 1{% endvbox %}
+            {% vbox %}Column 2{% endvbox %}
+        {% endhbox %}
+
+        {# With max width #}
+        {% hbox max_width="m" class="mx-auto" %}
+            <div>Centered container</div>
+        {% endhbox %}
         """
 
     gap: str = field(default="m", metadata={"doc": _("Space between children (xs|s|m|l|xl).")})
+    padding: str | None = field(default=None, metadata={"doc": _("Inner padding (xs|s|m|l|xl). Optional.")})
+    max_width: str = field(default="full", metadata={"doc": _("Maximum width (xs|s|m|l|xl|fit|full).")})
+    full_height: bool = field(default=False, metadata={"doc": _("Fill available height in parent container.")})
     h_align: str = field(
         default="start", metadata={"doc": _("Horizontal alignment (start|center|end|between|around|evenly).")}
     )
@@ -149,6 +159,9 @@ class VBoxConfig:
 
     Attributes:
         gap: Space between children (xs|s|m|l|xl).
+        padding: Inner padding (xs|s|m|l|xl). Optional.
+        max_width: Maximum width (xs|s|m|l|xl|fit|full).
+        full_height: Fill available height in parent container.
         h_align: Horizontal alignment (start|center|end|stretch|baseline).
         v_align: Vertical alignment (start|center|end|between|around|evenly).
 
@@ -160,62 +173,28 @@ class VBoxConfig:
             <div>Top</div>
             <div>Bottom</div>
         {% endvbox %}
+
+        {# Fill parent height and center content vertically #}
+        {% vbox full_height=True v_align="center" %}
+            <div>Vertically centered</div>
+        {% endvbox %}
+
+        {# With max width #}
+        {% vbox max_width="l" class="mx-auto" %}
+            <article>Content</article>
+        {% endvbox %}
         """
 
     gap: str = field(default="m", metadata={"doc": _("Space between children (xs|s|m|l|xl).")})
+    padding: str | None = field(default=None, metadata={"doc": _("Inner padding (xs|s|m|l|xl). Optional.")})
+    max_width: str = field(default="full", metadata={"doc": _("Maximum width (xs|s|m|l|xl|fit|full).")})
+    full_height: bool = field(default=False, metadata={"doc": _("Fill available height in parent container.")})
     h_align: str = field(
         default="stretch", metadata={"doc": _("Horizontal alignment (start|center|end|stretch|baseline).")}
     )
     v_align: str = field(
         default="start", metadata={"doc": _("Vertical alignment (start|center|end|between|around|evenly).")}
     )
-
-
-@dataclass
-class CenterConfig:
-    """
-    Configuration for the center block tag.
-
-    Centers content horizontally and vertically.
-
-    Attributes:
-        padding: Optional inner padding (xs|s|m|l|xl).
-
-    """
-
-    __example__ = """
-        {% load layout_tags %}
-        {% center padding="m" %}
-            <p>Centered content</p>
-        {% endcenter %}
-        """
-
-    padding: str | None = field(default=None, metadata={"doc": _("Optional inner padding (xs|s|m|l|xl).")})
-
-
-@dataclass
-class StackConfig:
-    """
-    Configuration for the stack block tag.
-
-    Overlapping elements using CSS Grid.
-
-    Attributes:
-        h_align: Horizontal alignment (start|center|end).
-        v_align: Vertical alignment (start|center|end).
-
-    """
-
-    __example__ = """
-        {% load layout_tags %}
-        {% stack v_align="center" h_align="center" %}
-            <div class="[grid-area:1/1]">Background</div>
-            <div class="[grid-area:1/1]">Foreground</div>
-        {% endstack %}
-        """
-
-    h_align: str = field(default="center", metadata={"doc": _("Horizontal alignment (start|center|end).")})
-    v_align: str = field(default="center", metadata={"doc": _("Vertical alignment (start|center|end).")})
 
 
 @dataclass
@@ -247,17 +226,17 @@ class DividerConfig:
 
     Attributes:
         direction: Orientation (horizontal|vertical).
-        size: Margin size (xs|s|m|l|xl).
+        spacing: Spacing size (xs|s|m|l|xl).
 
     """
 
     __example__ = """
         {% load layout_tags %}
-        {% divider direction="horizontal" size="m" %}
+        {% divider direction="horizontal" spacing="m" %}
         """
 
     direction: str = field(default="horizontal", metadata={"doc": _("Orientation (horizontal|vertical).")})
-    size: str = field(default="m", metadata={"doc": _("Margin size (xs|s|m|l|xl).")})
+    spacing: str = field(default="m", metadata={"doc": _("Spacing size (xs|s|m|l|xl).")})
 
 
 @dataclass

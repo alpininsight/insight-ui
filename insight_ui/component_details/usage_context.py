@@ -68,9 +68,16 @@ def get_page_usage_context() -> dict[str, str]:
             <p>Page content goes here.</p>
         {% endpage %}
 
-        <!-- Full viewport height -->
-        {% page full_height=True %}
-            <main>Full-screen content</main>
+        <!-- Full viewport height with centered content -->
+        {% page height="full" %}
+            {% vbox v_align="center" full_height=True %}
+                <main>Vertically centered content</main>
+            {% endvbox %}
+        {% endpage %}
+
+        <!-- Peek: shows next section is coming -->
+        {% page height="peek" %}
+            <h1>Hero Section</h1>
         {% endpage %}
         """
     }
@@ -86,6 +93,12 @@ def get_hbox_usage_context() -> dict[str, str]:
         {% hbox gap="s" v_align="center" h_align="between" %}
             <span>Left</span>
             <span>Right</span>
+        {% endhbox %}
+
+        <!-- Fill parent height - useful inside page with height="full" -->
+        {% hbox full_height=True %}
+            {% vbox %}Column 1{% endvbox %}
+            {% vbox %}Column 2{% endvbox %}
         {% endhbox %}
 
         <!-- With wrapping enabled -->
@@ -111,8 +124,13 @@ def get_vbox_usage_context() -> dict[str, str]:
             <div>Bottom</div>
         {% endvbox %}
 
-        <!-- With custom alignment -->
-        {% vbox gap="l" h_align="center" v_align="between" %}
+        <!-- Fill parent height and center content vertically -->
+        {% vbox full_height=True v_align="center" %}
+            <div>Vertically centered</div>
+        {% endvbox %}
+
+        <!-- Full-height layout with vertical distribution -->
+        {% vbox full_height=True h_align="center" v_align="between" %}
             <header>Header</header>
             <main>Content</main>
             <footer>Footer</footer>
@@ -200,8 +218,8 @@ def get_divider_usage_context() -> dict[str, str]:
             <div>Right</div>
         {% endhbox %}
 
-        <!-- With custom margin size -->
-        {% divider size="xl" %}
+        <!-- With custom margin spacing -->
+        {% divider spacing="xl" %}
         """
     }
 

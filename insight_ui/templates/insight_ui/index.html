@@ -56,22 +56,22 @@
 
 {% block content %}
     {# ===== HERO SECTION ===== #}
-    {% page padding="xl" v_align="center" class="min-h-[85vh]" %}
-        {% hero config=hero %}
+    {% page padding="xl" height="peek" %}
+        {% vbox v_align="center" full_height=True %}
+            {% hero config=hero %}
+        {% endvbox %}
     {% endpage %}
 
     {# ===== STATS BAR ===== #}
     {% page padding="xl" class="bg-insight-primary/5 dark:bg-insight-primary/10 border-y border-insight-primary/20" %}
-        {% page padding="l" %}
-            {% hbox gap="xl" h_align="evenly" wrap=True class="py-4" %}
-                {% for stat in stats %}
-                    {% vbox gap="xs" h_align="center" %}
-                        <span class="text-3xl font-bold text-insight-primary">{{ stat.value }}</span>
-                        <span class="text-sm text-secondary">{{ stat.label }}</span>
-                    {% endvbox %}
-                {% endfor %}
-            {% endhbox %}
-        {% endpage %}
+        {% hbox gap="xl" h_align="evenly" wrap=True class="py-4" %}
+            {% for stat in stats %}
+                {% vbox gap="xs" h_align="center" %}
+                    <span class="text-3xl font-bold text-insight-primary">{{ stat.value }}</span>
+                    <span class="text-sm text-secondary">{{ stat.label }}</span>
+                {% endvbox %}
+            {% endfor %}
+        {% endhbox %}
     {% endpage %}
 
     {# ===== FEATURES GRID ===== #}
@@ -131,7 +131,7 @@
                 {% endvbox %}
             {% endhbox %}
 
-            {% divider size="l" %}
+            {% divider spacing="l" %}
 
             {# Code Example #}
             <div id="code" data-insight-code-block="Django">

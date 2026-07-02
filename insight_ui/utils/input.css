@@ -109,6 +109,9 @@
         color-scheme: dark;
     }
 
+    /* Layout-Tags */
+    .page-peek { @apply min-h-[calc(100vh-10rem)]; }
+
     /* Spacing */
     .gap-xs { @apply gap-1; }
     .gap-s { @apply gap-2; }

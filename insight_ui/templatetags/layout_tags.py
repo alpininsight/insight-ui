@@ -5,7 +5,7 @@ Provides block-level layout components for consistent spacing and alignment.
 
 Spacing System
 --------------
-All spacing parameters (gap, padding, size) use a fixed scale:
+All spacing parameters (gap, padding, size, spacing) use a fixed scale:
 
     xs  = 0.25rem (4px)   -> Tailwind: gap-1, p-1
     s   = 0.5rem  (8px)   -> Tailwind: gap-2, p-2
@@ -17,13 +17,13 @@ Available Tags
 --------------
 Block tags (require closing tag):
 
-    {% page padding="m" %}...{% endpage %}
-        Full-width page container with consistent padding.
+    {% page padding="m" height="full" %}...{% endpage %}
+        Full-width page container with consistent padding and optional height.
 
-    {% hbox gap="s" v_align="center" h_align="between" wrap=True %}...{% endhbox %}
+    {% hbox gap="s" v_align="center" h_align="between" full_height=True %}...{% endhbox %}
         Horizontal flex container (row direction).
 
-    {% vbox gap="m" h_align="stretch" v_align="start" %}...{% endvbox %}
+    {% vbox gap="m" v_align="center" full_height=True %}...{% endvbox %}
         Vertical flex container (column direction).
 
     {% grid cols=3 gap="m" %}...{% endgrid %}
@@ -34,7 +34,7 @@ Simple tags:
     {% spacer size="m" %}
         Fixed-size spacer element.
 
-    {% divider direction="horizontal" size="m" %}
+    {% divider direction="horizontal" spacing="m" %}
         Visual divider line (horizontal or vertical).
 
 Parameter Reference
@@ -43,16 +43,32 @@ gap : xs | s | m | l | xl
     Space between children. Default: "m"
 
 padding : xs | s | m | l | xl
-    Inner padding of container. Default: "m" (page)
+    Inner padding. Default: "m" for page, optional for hbox/vbox
+
+height : auto | full | peek
+    Page height behavior (page only). Default: "auto"
+    - auto: Fits content
+    - full: Full viewport height (min-h-screen)
+    - peek: Almost full, shows next section peeking
+    When set to full or peek, page becomes flex-col so children can use class="grow".
+
+max_width : xs | s | m | l | xl | fit | full
+    Maximum container width (hbox/vbox only). Default: "full"
+
+full_height : True | False
+    Fill available height in parent container (hbox/vbox only). Default: False
 
 size : xs | s | m | l | xl
-    Size of spacer/divider margin. Default: "m"
+    Size of spacer. Default: "m"
 
-align : start | center | end | stretch | baseline
-    Cross-axis alignment (items-*). Default: "stretch" (hbox/vbox)
+spacing : xs | s | m | l | xl
+    Margin around divider. Default: "m"
 
-justify : start | center | end | between | around | evenly
-    Main-axis alignment (justify-*). Default: "start" (hbox/vbox)
+h_align : start | center | end | between | around | evenly (hbox) | start | center | end | stretch | baseline (vbox)
+    Horizontal alignment. For hbox: main-axis (justify). For vbox: cross-axis (items).
+
+v_align : start | center | end | stretch | baseline (hbox) | start | center | end | between | around | evenly (vbox)
+    Vertical alignment. For hbox: cross-axis (items). For vbox: main-axis (justify).
 
 wrap : True | False
     Allow flex items to wrap. Default: False (hbox only)
@@ -125,6 +141,8 @@ VALID_SPACING: frozenset[str] = frozenset({"xs", "s", "m", "l", "xl"})
 VALID_ALIGN: frozenset[str] = frozenset({"start", "center", "end", "stretch", "baseline"})
 VALID_JUSTIFY: frozenset[str] = frozenset({"start", "center", "end", "between", "around", "evenly"})
 VALID_DIRECTION: frozenset[str] = frozenset({"horizontal", "vertical"})
+VALID_HEIGHT: frozenset[str] = frozenset({"auto", "full", "peek"})
+VALID_MAX_WIDTH: frozenset[str] = frozenset({"xs", "s", "m", "l", "xl", "fit", "full"})
 
 # Class mappings (classes are defined in input.css or are tailwind classes)
 GAP_CLASSES: dict[str, str] = {"xs": "gap-xs", "s": "gap-s", "m": "gap-m", "l": "gap-l", "xl": "gap-xl"}
@@ -144,6 +162,20 @@ JUSTIFY_CLASSES: dict[str, str] = {
     "between": "justify-between",
     "around": "justify-around",
     "evenly": "justify-evenly",
+}
+MAX_WIDTH_CLASSES: dict[str, str] = {
+    "xs": "max-w-sm",  # 24rem (384px)
+    "s": "max-w-xl",  # 36rem (576px)
+    "m": "max-w-3xl",  # 48rem (768px)
+    "l": "max-w-5xl",  # 64rem (1024px)
+    "xl": "max-w-7xl",  # 80rem (1280px)
+    "fit": "max-w-fit",
+    "full": "",  # No max-width constraint
+}
+HEIGHT_CLASSES: dict[str, str] = {
+    "auto": "",  # No height constraint
+    "full": "min-h-screen",  # Full viewport height
+    "peek": "page-peek",  # Shows next section peeking
 }
 
 # Responsive grid column mappings: cols -> (mobile, sm, md, lg)
@@ -300,7 +332,7 @@ class FlexNode(LayoutNode):
     """
     Base class for flex containers (hbox, vbox).
 
-    Provides shared validation and class building for gap, h_align, v_align.
+    Provides shared validation and class building for gap, padding, h_align, v_align.
     Subclasses set :attr:`flex_direction` to "row" or "col".
 
     For flex-row (hbox): h_align controls main-axis (justify), v_align controls cross-axis (items).
@@ -310,8 +342,24 @@ class FlexNode(LayoutNode):
     flex_direction: str = "row"  # Override in subclass
 
     def build_classes(self, kwargs: dict[str, object]) -> list[str]:
-        """Build flex container CSS classes with gap, h_align, and v_align."""
+        """Build flex container CSS classes with gap, padding, max_width, h_align, and v_align."""
         classes = ["flex", f"flex-{self.flex_direction}"]
+
+        # Optional full height (flex-grow: 1)
+        if kwargs.get("full_height", False):
+            classes.append("grow")
+
+        # Optional max width
+        max_width = str(kwargs.get("max_width", "full"))
+        _validate(max_width, VALID_MAX_WIDTH, "max_width", self.tag_name)
+        if MAX_WIDTH_CLASSES[max_width]:
+            classes.append(MAX_WIDTH_CLASSES[max_width])
+
+        # Optional padding
+        padding = kwargs.get("padding")
+        if padding:
+            _validate(str(padding), VALID_SPACING, "padding", self.tag_name)
+            classes.append(PADDING_CLASSES[str(padding)])
 
         gap = kwargs.get("gap", "m")
         if gap:
@@ -346,42 +394,24 @@ class FlexNode(LayoutNode):
 
 
 class PageNode(LayoutNode):
-    """Page container with full width and optional min-height."""
+    """Page container with full width, consistent padding, and optional height control."""
 
     def build_classes(self, kwargs: dict[str, object]) -> list[str]:
         """Build page container CSS classes."""
         classes = ["w-full"]
 
-        # Optional full viewport height
-        if kwargs.get("full_height", False):
-            classes.append("min-h-screen")
-
-        # Optional vertical alignment (enables flex layout)
-        v_align = str(kwargs.get("v_align", ""))
-        if v_align:
-            _validate(v_align, VALID_JUSTIFY, "v_align", self.tag_name)
-            classes.extend(["flex", "flex-col", JUSTIFY_CLASSES[v_align]])
-
         padding = str(kwargs.get("padding", "m"))
         _validate(padding, VALID_SPACING, "padding", self.tag_name)
         classes.append(PADDING_CLASSES[padding])
 
+        height = str(kwargs.get("height", "auto"))
+        _validate(height, VALID_HEIGHT, "height", self.tag_name)
+        if HEIGHT_CLASSES[height]:
+            classes.append(HEIGHT_CLASSES[height])
+            # Enable flex layout so children can use grow/flex-1
+            classes.extend(["flex", "flex-col"])
+
         return classes
-
-    def render(self, context: Context) -> str:
-        """Render the page node."""
-        resolved = self.resolve_kwargs(context)
-        classes = self.build_classes(resolved)
-
-        # Append user-provided extra classes
-        extra_classes = resolved.get("class", "")
-        if extra_classes:
-            classes.append(str(extra_classes))
-
-        content = self.nodelist.render(context)
-        class_str = " ".join(classes)
-
-        return f'<div class="{class_str}">{content}</div>'
 
 
 class HBoxNode(FlexNode):
@@ -498,13 +528,13 @@ def spacer(size: str = "m") -> str:
 
 
 @register.simple_tag
-def divider(direction: str = "horizontal", size: str = "m") -> str:
+def divider(direction: str = "horizontal", spacing: str = "m") -> str:
     """
     Insert a visual divider line.
 
     Args:
         direction: "horizontal" or "vertical". Default: "horizontal"
-        size: Margin size (xs, s, m, l, xl). Default: "m"
+        spacing: Margin spacing (xs, s, m, l, xl). Default: "m"
 
     Returns:
         HTML div element styled as a divider.
@@ -512,10 +542,10 @@ def divider(direction: str = "horizontal", size: str = "m") -> str:
     Example:
         {% divider %}
         {% divider direction="vertical" %}
-        {% divider size="l" %}
+        {% divider spacing="l" %}
 
     """
-    _validate(size, VALID_SPACING, "size", "divider")
+    _validate(spacing, VALID_SPACING, "spacing", "divider")
     _validate(direction, VALID_DIRECTION, "direction", "divider")
 
     # Margin classes based on direction
@@ -531,7 +561,7 @@ def divider(direction: str = "horizontal", size: str = "m") -> str:
         ("vertical", "l"): "mx-6",
         ("vertical", "xl"): "mx-8",
     }
-    margin = margin_map[(direction, size)]
+    margin = margin_map[(direction, spacing)]
     classes = (
         f"w-px self-stretch bg-gray-200 {margin}" if direction == "vertical" else f"h-px w-full bg-gray-200 {margin}"
     )

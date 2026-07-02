@@ -14,71 +14,487 @@
         {% endpage %}
     </div>
 {% elif component.value == "hbox" %}
-    <div class="space-y-4">
-        {% hbox gap="m" v_align="center" %}
-            <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 1" %}</div>
-            <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 2" %}</div>
-            <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 3" %}</div>
-        {% endhbox %}
-        {% hbox gap="s" v_align="center" h_align="between" %}
-            <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 1" %}</div>
-            <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 2" %}</div>
-            <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 3" %}</div>
-        {% endhbox %}
-    </div>
+    {% vbox %}
+        {# Gap sizes #}
+        {% vbox %}
+            <p class="text-sm font-semibold text-secondary">{% trans "Gap sizes (xs, s, m, l, xl):" %}</p>
+            {% vbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">gap="xs"</p>
+                    {% hbox gap="xs" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">gap="s"</p>
+                    {% hbox gap="s" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">gap="m"</p>
+                    {% hbox gap="m" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">gap="l"</p>
+                    {% hbox gap="l" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">gap="xl"</p>
+                    {% hbox gap="xl" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+            {% endvbox %}
+        {% endvbox %}
+
+        {# Horizontal alignment (h_align) #}
+        {% vbox %}
+            <p class="text-sm font-semibold text-secondary">{% trans "Horizontal alignment (h_align):" %}</p>
+            {% vbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">h_align="start"</p>
+                    {% hbox gap="s" h_align="start" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">h_align="center"</p>
+                    {% hbox gap="s" h_align="center" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">h_align="end"</p>
+                    {% hbox gap="s" h_align="end" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">h_align="between"</p>
+                    {% hbox gap="s" h_align="between" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">h_align="around"</p>
+                    {% hbox gap="s" h_align="around" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">h_align="evenly"</p>
+                    {% hbox gap="s" h_align="evenly" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+            {% endvbox %}
+        {% endvbox %}
+
+        {# Vertical alignment (v_align) #}
+        {% vbox %}
+            <p class="text-sm font-semibold text-secondary">{% trans "Vertical alignment (v_align):" %}</p>
+            {% hbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">v_align="start"</p>
+                    {% hbox gap="s" v_align="start" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-6 py-2 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-6 py-6 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">v_align="center"</p>
+                    {% hbox gap="s" v_align="center" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-6 py-2 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-6 py-6 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">v_align="end"</p>
+                    {% hbox gap="s" v_align="end" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-6 py-2 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-6 py-6 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">v_align="stretch"</p>
+                    {% hbox gap="s" v_align="stretch" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-6 py-2 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-6 py-2 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">v_align="baseline"</p>
+                    {% hbox gap="s" v_align="baseline" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-6 py-2 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-6 py-6 rounded text-lg text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+            {% endhbox %}
+        {% endvbox %}
+
+        {# Wrap #}
+        {% vbox %}
+            <p class="text-sm font-semibold text-secondary">{% trans "Wrap (items wrap to next line):" %}</p>
+            {% vbox gap="xs" %}
+                <p class="text-xs text-secondary">wrap=True and max_width="xs"</p>
+                {% hbox gap="s" max_width="xs" wrap=True class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                {% endhbox %}
+            {% endvbox %}
+        {% endvbox %}
+
+        {# Padding #}
+        {% vbox %}
+            <p class="text-sm font-semibold text-secondary">{% trans "Padding (xs, s, m, l, xl):" %}</p>
+            {% hbox gap="xs" %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">padding="xs"</p>
+                    {% hbox gap="s" padding="xs" class="h-fit border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">padding="s"</p>
+                    {% hbox gap="s" padding="s" class="h-fit border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">padding="m"</p>
+                    {% hbox gap="s" padding="m" class="h-fit border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">padding="l"</p>
+                    {% hbox gap="s" padding="l" class="h-fit border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">padding="xl"</p>
+                    {% hbox gap="s" padding="xl" class="h-fit border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+            {% endhbox %}
+        {% endvbox %}
+    {% endvbox %}
 {% elif component.value == "vbox" %}
-    {% vbox gap="m" %}
-        <div class="bg-insight-primary/10 p-4 rounded">{% trans "Top" %}</div>
-        <div class="bg-insight-primary/10 p-4 rounded">{% trans "Middle" %}</div>
-        <div class="bg-insight-primary/10 p-4 rounded">{% trans "Bottom" %}</div>
+    {% vbox %}
+        {# Gap sizes #}
+        {% vbox %}
+            <p class="text-sm font-semibold text-secondary">{% trans "Gap sizes (xs, s, m, l, xl):" %}</p>
+            {% hbox v_align="stretch" %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">gap="xs"</p>
+                    {% vbox gap="xs" class="h-full border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">gap="s"</p>
+                    {% vbox gap="s" class="h-full border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">gap="m"</p>
+                    {% vbox gap="m" class="h-full border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">gap="l"</p>
+                    {% vbox gap="l" class="h-full border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">gap="xl"</p>
+                    {% vbox gap="xl" class="h-full border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+            {% endhbox %}
+        {% endvbox %}
+
+        {# Horizontal alignment (h_align) #}
+        {% vbox %}
+            <p class="text-sm font-semibold text-secondary">{% trans "Horizontal alignment (h_align):" %}</p>
+            {% hbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">h_align="start"</p>
+                    {% vbox gap="xs" h_align="start" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-24 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">h_align="center"</p>
+                    {% vbox gap="xs" h_align="center" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-24 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">h_align="end"</p>
+                    {% vbox gap="xs" h_align="end" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-24 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">h_align="stretch"</p>
+                    {% vbox gap="xs" h_align="stretch" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-24 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+            {% endhbox %}
+        {% endvbox %}
+
+        {# Vertical alignment (v_align) #}
+        {% vbox %}
+            <p class="text-sm font-semibold text-secondary">{% trans "Vertical alignment (v_align):" %}</p>
+            {% hbox v_align="stretch" class="h-96" %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">v_align="start"</p>
+                    {% vbox gap="xs" v_align="start" class="h-full border border-dashed border-gray-300 dark:border-gray-600 rounded"  %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">v_align="center"</p>
+                    {% vbox gap="xs" v_align="center" class="h-full border border-dashed border-gray-300 dark:border-gray-600 rounded"  %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">v_align="end"</p>
+                    {% vbox gap="xs" v_align="end" class="h-full border border-dashed border-gray-300 dark:border-gray-600 rounded"  %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">v_align="between"</p>
+                    {% vbox gap="xs" v_align="between" class="h-full border border-dashed border-gray-300 dark:border-gray-600 rounded"  %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">v_align="around"</p>
+                    {% vbox gap="xs" v_align="around" class="h-full border border-dashed border-gray-300 dark:border-gray-600 rounded"  %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">v_align="evenly"</p>
+                    {% vbox gap="xs" v_align="evenly" class="h-full border border-dashed border-gray-300 dark:border-gray-600 rounded"  %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+            {% endhbox %}
+        {% endvbox %}
+
+        {# Padding #}
+        {% vbox %}
+            <p class="text-sm font-semibold text-secondary">{% trans "Padding (xs, s, m, l, xl):" %}</p>
+            {% hbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">padding="xs"</p>
+                    {% vbox gap="xs" padding="xs" class="border border-dashed border-gray-300 dark:border-gray-600 rounded"  %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">padding="s"</p>
+                    {% vbox gap="xs" padding="s" class="border border-dashed border-gray-300 dark:border-gray-600 rounded"  %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">padding="m"</p>
+                    {% vbox gap="xs" padding="m" class="border border-dashed border-gray-300 dark:border-gray-600 rounded"  %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">padding="l"</p>
+                    {% vbox gap="xs" padding="l" class="border border-dashed border-gray-300 dark:border-gray-600 rounded"  %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">padding="xl"</p>
+                    {% vbox gap="xs" padding="xl" class="border border-dashed border-gray-300 dark:border-gray-600 rounded"  %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+            {% endhbox %}
+        {% endvbox %}
     {% endvbox %}
 {% elif component.value == "grid" %}
     <div class="space-y-8">
         <div>
             <p class="text-sm text-secondary mb-2">{% trans "Auto-fit mode (resize window to see items wrap):" %}</p>
             {% grid gap="m" min="150px" %}
-                <div class="bg-insight-primary/10 p-4 rounded text-center">1</div>
-                <div class="bg-insight-primary/10 p-4 rounded text-center">2</div>
-                <div class="bg-insight-primary/10 p-4 rounded text-center">3</div>
-                <div class="bg-insight-primary/10 p-4 rounded text-center">4</div>
-                <div class="bg-insight-primary/10 p-4 rounded text-center">5</div>
-                <div class="bg-insight-primary/10 p-4 rounded text-center">6</div>
+                <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">1</div>
+                <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">2</div>
+                <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">3</div>
+                <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">4</div>
+                <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">5</div>
+                <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">6</div>
             {% endgrid %}
         </div>
         <div>
             <p class="text-sm text-secondary mb-2">{% trans "Fixed 3 columns with responsive breakpoints:" %}</p>
             {% grid cols=3 gap="m" %}
-                <div class="bg-insight-secondary/10 p-4 rounded text-center">A</div>
-                <div class="bg-insight-secondary/10 p-4 rounded text-center">B</div>
-                <div class="bg-insight-secondary/10 p-4 rounded text-center">C</div>
+                <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
             {% endgrid %}
         </div>
     </div>
 {% elif component.value == "spacer" %}
-    {% hbox gap="xs" v_align="center" %}
-        <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 1" %}</div>
-        {% spacer size="xs" %}
-        <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 2" %}</div>
-        {% spacer size="s" %}
-        <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 3" %}</div>
-        {% spacer size="m" %}
-        <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 4" %}</div>
-        {% spacer size="l" %}
-        <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 5" %}</div>
-        {% spacer size="xl" %}
-        <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 6" %}</div>
-    {% endhbox %}
-{% elif component.value == "divider" %}
-    {% vbox gap="s" %}
-        <p class="text-secondary">{% trans "Content above the divider" %}</p>
-        {% divider %}
-        <p class="text-secondary">{% trans "Content below the divider" %}</p>
+    {% vbox %}
+        {% vbox gap="xs" %}
+            <p class="text-xs text-secondary">size="xs"</p>
+            {% hbox %}
+                {% hbox gap="xs" %}
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                {% endhbox %}
+                {% spacer size="xs" %}
+                {% hbox gap="xs" %}
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                {% endhbox %}
+            {% endhbox %}
+        {% endvbox %}
+        {% vbox gap="xs" %}
+            <p class="text-xs text-secondary">size="s"</p>
+            {% hbox %}
+                {% hbox gap="xs" %}
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                {% endhbox %}
+                {% spacer size="s" %}
+                {% hbox gap="xs" %}
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                {% endhbox %}
+            {% endhbox %}
+        {% endvbox %}
+        {% vbox gap="xs" %}
+            <p class="text-xs text-secondary">size="m"</p>
+            {% hbox %}
+                {% hbox gap="xs" %}
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                {% endhbox %}
+                {% spacer size="m" %}
+                {% hbox gap="xs" %}
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                {% endhbox %}
+            {% endhbox %}
+        {% endvbox %}
+        {% vbox gap="xs" %}
+            <p class="text-xs text-secondary">size="l"</p>
+            {% hbox %}
+                {% hbox gap="xs" %}
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                {% endhbox %}
+                {% spacer size="l" %}
+                {% hbox gap="xs" %}
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                {% endhbox %}
+            {% endhbox %}
+        {% endvbox %}
+        {% vbox gap="xs" %}
+            <p class="text-xs text-secondary">size="xl"</p>
+            {% hbox %}
+                {% hbox gap="xs" %}
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                {% endhbox %}
+                {% spacer size="xl" %}
+                {% hbox gap="xs" %}
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                {% endhbox %}
+            {% endhbox %}
+        {% endvbox %}
     {% endvbox %}
-    {% hbox gap="s" %}
-        <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 3" %}</div>
-        {% divider direction="vertical" %}
-        <div class="bg-insight-primary/10 p-4 rounded">{% trans "Item 3" %}</div>
-    {% endhbox %}
+{% elif component.value == "divider" %}
+    {% vbox gap="xl" %}
+        {% vbox gap="s" %}
+            <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+            {% divider %}
+            <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+        {% endvbox %}
+        {% hbox gap="s" %}
+            <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+            {% divider direction="vertical" %}
+            <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+        {% endhbox %}
+    {% endvbox %}
 {% elif component.value == "navbar" %}
     <div class="relative bg-gray-50 dark:bg-gray-700 h-80 w-full">
         {% navbar config=demo_nav_config user_dropdown_links=user_dropdown_links %}
