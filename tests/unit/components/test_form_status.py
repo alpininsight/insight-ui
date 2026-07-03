@@ -32,7 +32,10 @@ class TestFormStatus(TemplateTagsTestCase):
     def test_form_success_uses_semantic_status_classes(self) -> None:
         """Form success uses semantic status classes instead of hard-coded green classes."""
         rendered = self.render_template(
-            '{% include "insight_ui/components/form_success.html" with title=title firstname=firstname lastname=lastname %}',
+            (
+                '{% include "insight_ui/components/form_success.html" '
+                "with title=title firstname=firstname lastname=lastname %}"
+            ),
             context={"title": "Dr.", "firstname": "Ada", "lastname": "Lovelace"},
         )
         soup = BeautifulSoup(rendered, "html.parser")
