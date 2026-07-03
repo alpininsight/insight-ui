@@ -91,8 +91,7 @@ class TestNavbar(TemplateTagsTestCase):
         nav_config = NavbarConfig(NavbarBrandConfig("Insight UI", "/"))
 
         rendered = self.render_template(
-            "{% load insight_tags %}{% navbar config=nav_config %}",
-            context={"nav_config": nav_config},
+            "{% load insight_tags %}{% navbar config=nav_config %}", context={"nav_config": nav_config}
         )
         soup = BeautifulSoup(rendered, "html.parser")
 
