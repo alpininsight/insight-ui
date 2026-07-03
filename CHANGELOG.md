@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update usage documentation parameter of the 'footer', 'sidebar' and 'app_card' component
 - Remove the reference to the deprecated 'type' parameter of the 'logo' component from the docuemntation
 - Minimal_stepper retains its size even after all steps have been completed
+- Move special base template parameters from get_navbar_context to get_base_context
+- Fix typo in usage example of the command for generating minified assets
 
 ### CI/CD
 
@@ -41,16 +43,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove obsolete htmx-extension.js and use corresponding htmx-attributes instead
 - Replace raw href tag with 'button' component for 'pagination' and 'user_dropdown'
 - **navbar:** Tokenize bar surface/border/shadow + item radius for theming
+- Add layout components 'page', 'vbox', 'hbox', 'grid', 'spacer' and 'divider'
+- Add index page
+- Add neutral type for the outline and subtle button variants
+- Increase h tag font size
+- Add v_align parameter to 'page' component and rename align and justify to v_align and h_align
+- Improve documentation and examples of the 'page', 'vbox', 'hbox', 'spacer' and 'divider'
 
 ### Miscellaneous
 
 - **ci:** Retrigger repository policy after workflow promotion
 - Regenerate minified assets
 - Regenerate minified stylesheet
+- Fix merge issues
+- Regenerate minfied stylesheet
 
 ### Refactoring
 
 - Remove redundant loading of script files in base.html and components.html
+- Reduce hardcoded index page tokens
 
 ## [1.10.2] - 2026-05-27
 
