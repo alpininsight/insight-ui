@@ -132,11 +132,71 @@
     --color-insight-text-secondary-dark: oklch(70.8% 0 0);
     --color-insight-text-link: #3b82f6;
     --color-insight-text-link-hover: #93c5fd;
-    --insight-nav-bg: #ffffff;
-    --insight-nav-bg-dark: #1f2937;
-    --insight-nav-border: #e5e7eb;
-    --insight-nav-border-dark: #374151;
-    --insight-nav-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --insight-surface-page: #f9fafb;
+    --insight-surface-page-dark: #111827;
+    --insight-surface-base: #ffffff;
+    --insight-surface-base-dark: #1f2937;
+    --insight-surface-muted: #f3f4f6;
+    --insight-surface-muted-dark: #374151;
+    --insight-surface-subtle: #f9fafb;
+    --insight-surface-subtle-dark: #374151;
+    --insight-surface-raised: #ffffff;
+    --insight-surface-raised-dark: #1f2937;
+    --insight-surface-disabled: #d1d5dc;
+    --insight-surface-disabled-dark: #4b5563;
+    --insight-border-subtle: #e5e7eb;
+    --insight-border-subtle-dark: #374151;
+    --insight-border-default: #d1d5dc;
+    --insight-border-default-dark: #6b7280;
+    --insight-border-strong: #9ca3af;
+    --insight-border-strong-dark: #6b7280;
+    --insight-radius-sm: var(--radius-sm);
+    --insight-radius-md: var(--radius-md);
+    --insight-radius-lg: var(--radius-lg);
+    --insight-radius-pill: 9999px;
+    --insight-shadow-surface: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --insight-shadow-overlay: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --insight-state-danger-surface: var(--color-red-50);
+    --insight-state-danger-surface-dark: color-mix(in srgb, var(--color-red-900) 20%, transparent);
+    --insight-state-danger-border: var(--color-red-200);
+    --insight-state-danger-border-dark: var(--color-red-800);
+    --insight-state-danger-icon: var(--color-red-400);
+    --insight-state-danger-title: var(--color-red-800);
+    --insight-state-danger-title-dark: var(--color-red-200);
+    --insight-state-danger-body: var(--color-red-700);
+    --insight-state-danger-body-dark: var(--color-red-300);
+    --insight-state-success-surface: var(--color-green-50);
+    --insight-state-success-surface-dark: color-mix(in srgb, var(--color-green-900) 20%, transparent);
+    --insight-state-success-border: var(--color-green-200);
+    --insight-state-success-border-dark: var(--color-green-800);
+    --insight-state-success-icon: var(--color-green-400);
+    --insight-state-success-title: var(--color-green-800);
+    --insight-state-success-title-dark: var(--color-green-200);
+    --insight-state-success-body: var(--color-green-700);
+    --insight-state-success-body-dark: var(--color-green-300);
+    --insight-state-info-surface: var(--color-blue-50);
+    --insight-state-info-surface-dark: color-mix(in srgb, var(--color-blue-900) 20%, transparent);
+    --insight-state-info-border: var(--color-blue-200);
+    --insight-state-info-border-dark: var(--color-blue-700);
+    --insight-state-info-icon: var(--color-blue-400);
+    --insight-state-info-title: var(--color-blue-800, var(--color-blue-700));
+    --insight-state-info-title-dark: var(--color-blue-200);
+    --insight-state-info-body: var(--color-blue-700);
+    --insight-state-info-body-dark: var(--color-blue-300);
+    --insight-state-warning-surface: var(--color-amber-50, #fffbeb);
+    --insight-state-warning-surface-dark: color-mix(in srgb, var(--color-amber-900, #78350f) 20%, transparent);
+    --insight-state-warning-border: var(--color-amber-200, #fde68a);
+    --insight-state-warning-border-dark: var(--color-amber-800, #92400e);
+    --insight-state-warning-icon: var(--color-amber-400);
+    --insight-state-warning-title: var(--color-amber-800, #92400e);
+    --insight-state-warning-title-dark: var(--color-amber-200, #fde68a);
+    --insight-state-warning-body: var(--color-amber-700, #b45309);
+    --insight-state-warning-body-dark: var(--color-amber-300, #fcd34d);
+    --insight-nav-bg: var(--insight-surface-raised);
+    --insight-nav-bg-dark: var(--insight-surface-raised-dark);
+    --insight-nav-border: var(--insight-border-subtle);
+    --insight-nav-border-dark: var(--insight-border-subtle-dark);
+    --insight-nav-shadow: var(--insight-shadow-overlay);
     --insight-nav-item-radius: 0px;
     --insight-nav-item-ring: none;
     --insight-nav-item-active-ring: none;
@@ -3762,6 +3822,55 @@
         color: var(--color-insight-text-link-hover);
       }
     }
+  }
+  .insight-surface-page {
+    background-color: var(--insight-surface-page);
+  }
+  [data-theme="dark"] .insight-surface-page {
+    background-color: var(--insight-surface-page-dark);
+  }
+  .insight-surface-base {
+    background-color: var(--insight-surface-base);
+  }
+  [data-theme="dark"] .insight-surface-base {
+    background-color: var(--insight-surface-base-dark);
+  }
+  .insight-surface-muted {
+    background-color: var(--insight-surface-muted);
+  }
+  [data-theme="dark"] .insight-surface-muted {
+    background-color: var(--insight-surface-muted-dark);
+  }
+  .insight-surface-subtle {
+    background-color: var(--insight-surface-subtle);
+  }
+  [data-theme="dark"] .insight-surface-subtle {
+    background-color: var(--insight-surface-subtle-dark);
+  }
+  .insight-surface-raised {
+    background-color: var(--insight-surface-raised);
+    box-shadow: var(--insight-shadow-surface);
+  }
+  [data-theme="dark"] .insight-surface-raised {
+    background-color: var(--insight-surface-raised-dark);
+  }
+  .insight-border-subtle {
+    border-color: var(--insight-border-subtle);
+  }
+  [data-theme="dark"] .insight-border-subtle {
+    border-color: var(--insight-border-subtle-dark);
+  }
+  .insight-border-default {
+    border-color: var(--insight-border-default);
+  }
+  [data-theme="dark"] .insight-border-default {
+    border-color: var(--insight-border-default-dark);
+  }
+  .insight-border-strong {
+    border-color: var(--insight-border-strong);
+  }
+  [data-theme="dark"] .insight-border-strong {
+    border-color: var(--insight-border-strong-dark);
   }
   .btn {
     display: flex;
