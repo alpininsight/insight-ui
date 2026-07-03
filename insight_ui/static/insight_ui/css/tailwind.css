@@ -200,11 +200,13 @@
     --insight-nav-item-radius: 0px;
     --insight-nav-item-ring: none;
     --insight-nav-item-active-ring: none;
-    --insight-sidebar-icon-button-radius: var(--insight-radius-md);
-    --insight-sidebar-icon-button-hover-bg: var(--insight-surface-muted);
-    --insight-sidebar-icon-button-hover-bg-dark: var(--insight-surface-muted-dark);
-    --insight-sidebar-icon-button-hover-text: var(--color-insight-text-primary);
-    --insight-sidebar-icon-button-hover-text-dark: var(--color-insight-text-primary-dark);
+    --insight-user-dropdown-bg: var(--insight-surface-muted);
+    --insight-user-dropdown-bg-dark: var(--insight-surface-muted-dark);
+    --insight-user-dropdown-border: var(--insight-border-subtle);
+    --insight-user-dropdown-divider: var(--insight-border-default);
+    --insight-user-dropdown-divider-dark: var(--insight-border-default-dark);
+    --insight-user-dropdown-radius: var(--insight-radius-sm);
+    --insight-user-dropdown-shadow: var(--insight-shadow-overlay);
     --range-progress: 0%;
     --animate-blink: blink 2s step-start infinite;
     --animate-shake: shake 0.3s;
@@ -3877,34 +3879,41 @@
   [data-theme="dark"] .insight-border-strong {
     border-color: var(--insight-border-strong-dark);
   }
-  .insight-nav-icon-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: calc(var(--spacing) * 2);
-    color: var(--color-insight-text-secondary);
-    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
-    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
-    transition-duration: var(--tw-duration, var(--default-transition-duration));
-    --tw-duration: 200ms;
-    transition-duration: 200ms;
-    &:where([data-theme=dark], [data-theme=dark] *) {
-      color: var(--color-insight-text-secondary-dark);
+  .insight-user-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    z-index: 50;
+    margin-top: calc(var(--spacing) * 2);
+    min-width: calc(var(--spacing) * 56);
+    border-style: var(--tw-border-style);
+    border-width: 1px;
+    font-size: var(--text-lg);
+    line-height: var(--tw-leading, var(--text-lg--line-height));
+    &:where(:dir(ltr), [dir="ltr"], [dir="ltr"] *) {
+      right: calc(var(--spacing) * 0);
     }
-    border-radius: var(--insight-nav-icon-button-radius);
+    &:where(:dir(rtl), [dir="rtl"], [dir="rtl"] *) {
+      left: calc(var(--spacing) * 0);
+    }
+    background-color: var(--insight-user-dropdown-bg);
+    border-color: var(--insight-user-dropdown-border);
+    border-radius: var(--insight-user-dropdown-radius);
+    box-shadow: var(--insight-user-dropdown-shadow);
   }
-  .insight-nav-icon-button:hover {
-    color: var(--insight-nav-icon-button-hover-text);
-    background-color: var(--insight-nav-icon-button-hover-bg);
+  .insight-user-dropdown-menu > :not(:last-child) {
+    --tw-divide-y-reverse: 0;
+    border-bottom-style: var(--tw-border-style);
+    border-top-style: var(--tw-border-style);
+    border-top-width: calc(1px * var(--tw-divide-y-reverse));
+    border-bottom-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
+    border-color: var(--insight-user-dropdown-divider);
   }
-  [data-theme="dark"] .insight-nav-icon-button:hover, [data-theme="dark"].insight-nav-icon-button:hover {
-    color: var(--insight-nav-icon-button-hover-text-dark);
-    background-color: var(--insight-nav-icon-button-hover-bg-dark);
+  [data-theme="dark"] .insight-user-dropdown-menu, [data-theme="dark"].insight-user-dropdown-menu {
+    background-color: var(--insight-user-dropdown-bg-dark);
+    border-width: 0;
   }
-  .insight-nav-icon-button:focus {
-    outline: 2px solid transparent;
-    outline-offset: 2px;
-    box-shadow: inset 0 0 0 2px var(--insight-nav-focus-ring);
+  [data-theme="dark"] .insight-user-dropdown-menu > :not(:last-child), [data-theme="dark"].insight-user-dropdown-menu > :not(:last-child) {
+    border-color: var(--insight-user-dropdown-divider-dark);
   }
   .btn {
     display: flex;

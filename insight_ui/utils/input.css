@@ -135,6 +135,15 @@
     --insight-nav-icon-button-hover-text-dark: var(--color-insight-primary-hover);
     --insight-nav-focus-ring: var(--color-insight-primary);
 
+    /* User dropdown role tokens - mapped to central surface, border, radius and shadow roles. */
+    --insight-user-dropdown-bg: var(--insight-surface-muted);
+    --insight-user-dropdown-bg-dark: var(--insight-surface-muted-dark);
+    --insight-user-dropdown-border: var(--insight-border-subtle);
+    --insight-user-dropdown-divider: var(--insight-border-default);
+    --insight-user-dropdown-divider-dark: var(--insight-border-default-dark);
+    --insight-user-dropdown-radius: var(--insight-radius-sm);
+    --insight-user-dropdown-shadow: var(--insight-shadow-overlay);
+
     --range-progress: 0%;
 
     --animate-blink: blink 2s step-start infinite;
@@ -414,6 +423,40 @@
     [data-theme="dark"].insight-sidebar-icon-button:hover {
         color: var(--insight-sidebar-icon-button-hover-text-dark);
         background-color: var(--insight-sidebar-icon-button-hover-bg-dark);
+    }
+
+    /*
+    * ========================================================
+    *   User Dropdown
+    * ========================================================
+    */
+
+    .insight-user-dropdown-menu {
+        @apply absolute top-full z-50 mt-2 min-w-56 text-lg border ltr:right-0 rtl:left-0;
+        background-color: var(--insight-user-dropdown-bg);
+        border-color: var(--insight-user-dropdown-border);
+        border-radius: var(--insight-user-dropdown-radius);
+        box-shadow: var(--insight-user-dropdown-shadow);
+    }
+
+    .insight-user-dropdown-menu > :not(:last-child) {
+        --tw-divide-y-reverse: 0;
+        border-bottom-style: var(--tw-border-style);
+        border-top-style: var(--tw-border-style);
+        border-top-width: calc(1px * var(--tw-divide-y-reverse));
+        border-bottom-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
+        border-color: var(--insight-user-dropdown-divider);
+    }
+
+    [data-theme="dark"] .insight-user-dropdown-menu,
+    [data-theme="dark"].insight-user-dropdown-menu {
+        background-color: var(--insight-user-dropdown-bg-dark);
+        border-width: 0;
+    }
+
+    [data-theme="dark"] .insight-user-dropdown-menu > :not(:last-child),
+    [data-theme="dark"].insight-user-dropdown-menu > :not(:last-child) {
+        border-color: var(--insight-user-dropdown-divider-dark);
     }
 
     /*

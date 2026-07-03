@@ -83,8 +83,10 @@ class TestNavbar(TemplateTagsTestCase):
         assert trigger.find_parent("div", class_="relative") is not None
         assert menu is not None
         assert "hidden" in menu.get("class", [])
-        assert "absolute" in menu.get("class", [])
-        assert "top-full" in menu.get("class", [])
+        assert "insight-user-dropdown-menu" in menu.get("class", [])
+        assert "shadow-lg" not in menu.get("class", [])
+        assert "bg-neutral-100" not in menu.get("class", [])
+        assert "dark:bg-gray-700" not in menu.get("class", [])
 
     def test_navbar_mobile_toggle_uses_semantic_icon_button_class(self) -> None:
         """The mobile navbar toggle uses the semantic nav icon button class."""
