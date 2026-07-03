@@ -7,5 +7,3 @@ from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
 class TestBreadcrumbs(TemplateTagsTestCase):
     """Test suite for the breadcrumbs component."""
-
-    pass

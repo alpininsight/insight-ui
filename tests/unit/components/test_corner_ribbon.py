@@ -7,5 +7,3 @@ from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
 class TestCornerRibbon(TemplateTagsTestCase):
     """Test suite for the corner_ribbon component."""
-
-    pass

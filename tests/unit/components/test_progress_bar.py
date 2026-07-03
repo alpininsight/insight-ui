@@ -7,5 +7,3 @@ from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
 class TestProgressBar(TemplateTagsTestCase):
     """Test suite for the progress_bar component."""
-
-    pass

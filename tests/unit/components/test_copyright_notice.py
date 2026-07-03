@@ -1,7 +1,5 @@
 """Tests for the copyright_notice component."""
 
-# ruff: noqa: E501
-
 from bs4 import BeautifulSoup
 from insight_ui.configs.utils import CopyrightNoticeConfig
 

@@ -15,7 +15,8 @@ class PageHeaderConfig:
 
     Renders a page header with title and optional description.
 
-    Attributes:
+    Attributes
+    ----------
         title: The page title, displayed as h1 in white text.
         description: An optional description below the title.
 
@@ -39,7 +40,8 @@ class ArticleConfig:
 
     Renders text in newspaper-style multi-column layout.
 
-    Attributes:
+    Attributes
+    ----------
         content: The text content of the article (can contain HTML).
         columns: The number of columns for the CSS columns layout.
         column_gap: The gap between the columns (CSS unit).
@@ -284,7 +286,8 @@ class HeroConfig:
 
     Renders a prominent banner section.
 
-    Attributes:
+    Attributes
+    ----------
         title: Title of the Hero section.
         subtitle: Subtitle of the Hero section, displayed below the title.
         description: Description of the Hero section, displayed below the title and subtitle.

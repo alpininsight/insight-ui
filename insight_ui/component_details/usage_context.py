@@ -1,3 +1,5 @@
+"""Usage example context for UI components."""
+
 from django.utils.translation import gettext as _
 
 from insight_ui.component_details.component_context import register_component
@@ -479,7 +481,7 @@ def get_radio_group_usage_context() -> dict[str, str]:
 
 
 @register_component(Component.RADIO_BLOCK)
-def get_radio_group_usage_context() -> dict[str, str]:
+def get_radio_block_usage_context() -> dict[str, str]:
     """Serve usage documentation for the radio_block component."""
     return {
         "usage": """

@@ -1,3 +1,5 @@
+"""URL utilities for resolving static asset paths."""
+
 import re
 from collections.abc import Mapping
 from typing import Any

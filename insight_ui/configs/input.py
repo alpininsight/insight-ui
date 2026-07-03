@@ -15,7 +15,8 @@ class ButtonConfig:
 
     Renders a button element.
 
-    Attributes:
+    Attributes
+    ----------
         tag_id: Unique ID for JavaScript/CSS targeting.
         label: The text on the button or for Screenreader if the button shows only an icon.
         request_url: The URL to be called when clicking on the button.
@@ -127,7 +128,8 @@ class InputFieldConfig(BaseFormFieldConfig):
 
     Renders any HTML <input> element with proper styling and accessibility.
 
-    Attributes:
+    Attributes
+    ----------
         tag_id: Optional, unique tag ID for identifying the element in JavaScript.
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
@@ -196,7 +198,8 @@ class TextareaConfig(BaseFormFieldConfig):
 
     Renders a multi-line text input field.
 
-    Attributes:
+    Attributes
+    ----------
         tag_id: Optional, unique tag ID for identifying the element in JavaScript.
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
@@ -234,7 +237,8 @@ class CheckboxConfig(BaseFormFieldConfig):
 
     Renders a single checkbox with label.
 
-    Attributes:
+    Attributes
+    ----------
         tag_id: Optional, unique tag ID for identifying the element in JavaScript.
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
@@ -265,7 +269,8 @@ class CheckboxItemConfig:
     """
     Configuration for a single checkbox within a checkbox group.
 
-    Attributes:
+    Attributes
+    ----------
         tag_id: Unique ID for this checkbox.
         label: Label text.
         value: Value submitted when checked.
@@ -292,7 +297,8 @@ class CheckboxGroupConfig:
 
     Renders a group of linked checkboxes with optional constraints.
 
-    Attributes:
+    Attributes
+    ----------
         name: Required for a `<form>`, as the name of the request parameter.
         label: Text label displayed above the checkbox elements.
         items: List of the checkbox elements.
@@ -335,7 +341,8 @@ class DropdownItemConfig:
     """
     Configuration for an item within a dropdown menu.
 
-    Attributes:
+    Attributes
+    ----------
         text: Label of the dropdown element.
         request_url: The URL to be called when clicking on the respective item.
         icon: An optional icon displayed before the label.
@@ -360,7 +367,8 @@ class DropdownConfig:
 
     Renders a dropdown menu with a trigger button.
 
-    Attributes:
+    Attributes
+    ----------
         tag_id: Optional, unique tag ID for identifying the element in JavaScript.
         title: Label of the dropdown button.
         show_arrow: **True** displays an arrow behind the title.
@@ -392,7 +400,8 @@ class RadioItemConfig:
     """
     Configuration for a single radio button within a group.
 
-    Attributes:
+    Attributes
+    ----------
         tag_id: Optional, unique tag ID for identifying the element in JavaScript.
         value: Value of the respective radio button.
         label: Label of the respective radio button.
@@ -419,7 +428,8 @@ class RadioGroupConfig:
 
     Renders a group of standard radio buttons.
 
-    Attributes:
+    Attributes
+    ----------
         name: Optional, unique tag ID for identifying the element in JavaScript.
         label: A text label displayed above the radio elements.
         items: A list of the radio elements.
@@ -462,7 +472,8 @@ class RadioBlockConfig:
 
     Renders radio buttons as a compact block that can trigger requests.
 
-    Attributes:
+    Attributes
+    ----------
         name: Optional, unique tag ID for identifying the element in JavaScript.
         label: A text label displayed above the radio elements.
         items: A list of the radio elements.
@@ -529,7 +540,8 @@ class SliderConfig(BaseFormFieldConfig):
 
     Renders a range slider for selecting numeric values.
 
-    Attributes:
+    Attributes
+    ----------
         tag_id: Optional, unique tag ID for identifying the element in JavaScript.
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
@@ -616,7 +628,8 @@ class ToggleConfig(BaseFormFieldConfig):
 
     Renders a toggle button or switch.
 
-    Attributes:
+    Attributes
+    ----------
         tag_id: Optional, unique tag ID for identifying the element in JavaScript.
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
@@ -658,7 +671,8 @@ class SelectConfig(BaseFormFieldConfig):
 
     Renders a dropdown selection box.
 
-    Attributes:
+    Attributes
+    ----------
         tag_id: Optional, unique tag ID for identifying the element in JavaScript.
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
@@ -703,7 +717,8 @@ class MultiselectConfig(BaseFormFieldConfig):
 
     Renders a selection box allowing multiple selections with search.
 
-    Attributes:
+    Attributes
+    ----------
         tag_id: Optional, unique tag ID for identifying the element in JavaScript.
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
@@ -749,7 +764,8 @@ class ChatConfig:
 
     Renders a chat interface with an input line and a response container.
 
-    Attributes:
+    Attributes
+    ----------
         request_url: URL for sending chat messages via HTMX POST.
 
     """

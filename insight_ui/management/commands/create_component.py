@@ -148,7 +148,7 @@ class Command(BaseCommand):
         ---------
             name (str | None): The component name from command options, or None.
 
-        Returns:
+        Returns
         -------
             name (str | None): The validated component name, or None if validation failed.
 
@@ -181,7 +181,7 @@ class Command(BaseCommand):
         ---------
             category (str | None): The category from command options, or None.
 
-        Returns:
+        Returns
         -------
             category (str | None): The selected category name, or None if selection failed.
 
@@ -217,7 +217,7 @@ class Command(BaseCommand):
         ---------
             js_option (bool | None): The --js flag from command options, or None.
 
-        Returns:
+        Returns
         -------
             needs_js (bool): True if JavaScript file should be created, False otherwise.
 
@@ -238,7 +238,7 @@ class Command(BaseCommand):
         ---------
             name (str): The component name in Title Case (e.g., 'My Component').
 
-        Returns:
+        Returns
         -------
             names (ComponentNames): A dataclass containing all derived name variants.
 
@@ -289,7 +289,7 @@ class Command(BaseCommand):
         base_path = Path(__file__).resolve().parent.parent.parent  # insight_ui/
         self._scaffold_component(base_path, names, category, needs_js, git_user)
 
-    def _scaffold_component(  # noqa: PLR0913
+    def _scaffold_component(
         self, base_path: Path, names: ComponentNames, category: str, needs_js: bool, git_user: str
     ) -> None:
         """
@@ -444,7 +444,7 @@ class Command(BaseCommand):
             content (str): The file content to search in.
             category (str): The category name to find the section for.
 
-        Returns:
+        Returns
         -------
             position (int | None): The character position of the section end, or None if not found.
 
@@ -479,7 +479,7 @@ class Command(BaseCommand):
         ---------
             file_path (Path): The path to the file to read.
 
-        Returns:
+        Returns
         -------
             content (str | None): The file contents, or None if reading failed.
 
@@ -502,7 +502,7 @@ class Command(BaseCommand):
             file_path (Path): The path to the file to write.
             content (str): The content to write to the file.
 
-        Returns:
+        Returns
         -------
             success (bool): True if writing succeeded, False otherwise.
 

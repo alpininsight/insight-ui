@@ -1,3 +1,5 @@
+"""Related component mappings for cross-referencing documentation."""
+
 from insight_ui.component_details.components import Component as C  # noqa: N817
 
 RELATED_COMPONENTS = {

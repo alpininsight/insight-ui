@@ -7,5 +7,3 @@ from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
 class TestDifferentiator(TemplateTagsTestCase):
     """Test suite for the differentiator component."""
-
-    pass

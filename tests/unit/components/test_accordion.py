@@ -7,5 +7,3 @@ from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
 class TestAccordion(TemplateTagsTestCase):
     """Test suite for the accordion component."""
-
-    pass

@@ -14,7 +14,8 @@ class InfiniteScrollConfig:
 
     Renders a container that loads more content on scroll.
 
-    Attributes:
+    Attributes
+    ----------
         tag_id: Unique ID for JavaScript/CSS targeting.
         request_url: URL for loading more items.
         items: Initial items to display.
@@ -51,7 +52,8 @@ class PaginationIppConfig:
     """
     Configuration for items-per-page selector in pagination.
 
-    Attributes:
+    Attributes
+    ----------
         name: Form field name.
         label: Selector label.
         explanation: Tooltip explanation text.
@@ -94,7 +96,8 @@ class TableConfig:
 
     Renders a simple data table.
 
-    Attributes:
+    Attributes
+    ----------
         headers: List of column header texts.
         rows: List of row data (each row is a list of cell values).
         caption: Optional table caption.
@@ -131,7 +134,8 @@ class PaginationConfig:
 
     Renders pagination controls with items per page selection.
 
-    Attributes:
+    Attributes
+    ----------
         request_url: URL for changing page.
         current_page: Django pagination Page object for the current page.
         surrounding_pages: List of neighboring page numbers to display. Use -1 for ellipsis.

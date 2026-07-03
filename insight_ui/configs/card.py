@@ -17,7 +17,8 @@ class CardConfig:
 
     Renders a card with 16:9 aspect ratio (business card style).
 
-    Attributes:
+    Attributes
+    ----------
         title: Card title.
         content: Main card content.
         subtitle: Optional subtitle.
@@ -51,7 +52,8 @@ class AppCardConfig:
 
     Renders a vertically-oriented card ideal for app/product listings.
 
-    Attributes:
+    Attributes
+    ----------
         title: Card title.
         content: Card description.
         request_url: URL when title is clicked.
@@ -87,7 +89,8 @@ class FlipCardConfig:
 
     Renders a card that rotates 180° on hover to show back content.
 
-    Attributes:
+    Attributes
+    ----------
         title: Card title.
         content: Front side content.
         back_content: Back side content.
@@ -123,7 +126,8 @@ class CarouselItemConfig:
     """
     Configuration for a carousel item.
 
-    Attributes:
+    Attributes
+    ----------
         title: Item title.
         content: Item content/description.
         image: Optional image configuration.
@@ -148,7 +152,8 @@ class CardCarouselConfig:
 
     Renders a card carousel with navigation.
 
-    Attributes:
+    Attributes
+    ----------
         carousel_items: List of items to display.
         autoplay: Auto-advance slides every 5 seconds.
         show_dots: Show pagination dots.
@@ -181,7 +186,8 @@ class ImageCarouselItemConfig:
     """
     Configuration for an image carousel item.
 
-    Attributes:
+    Attributes
+    ----------
         url: Image URL.
         alt: Image alt text.
         description: Optional caption/description.
@@ -204,7 +210,8 @@ class ImageCarouselConfig:
 
     Renders an image-focused carousel.
 
-    Attributes:
+    Attributes
+    ----------
         carousel_items: List of image configurations.
         autoplay: Auto-advance slides.
         show_dots: Show pagination dots.
@@ -239,7 +246,8 @@ class ThreeDCarouselConfig:
 
     Renders items in a 3D circular arrangement.
 
-    Attributes:
+    Attributes
+    ----------
         tag_id: Unique ID for the carousel.
         carousel_items: List of items to display.
         velocity: Rotation speed.
@@ -274,7 +282,8 @@ class ToggleViewConfig:
 
     Allows switching between different data views (cards, table, carousel).
 
-    Attributes:
+    Attributes
+    ----------
         tag_id: Unique ID for the component.
         cards: The cards to be displayed.
         table_config: Configuration of the table view.

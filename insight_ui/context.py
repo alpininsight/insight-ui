@@ -1,3 +1,5 @@
+"""Context utilities for Insight UI templates."""
+
 from typing import Any
 
 from core.context_processor import get_app_version

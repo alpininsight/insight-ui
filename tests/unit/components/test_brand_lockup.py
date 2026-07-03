@@ -1,7 +1,5 @@
 """Tests for the brand_lockup component."""
 
-# ruff: noqa: E501
-
 from bs4 import BeautifulSoup
 
 from tests.unit.components.test_template_tags import TemplateTagsTestCase

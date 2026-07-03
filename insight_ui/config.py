@@ -1,3 +1,5 @@
+"""Insight UI configuration utilities."""
+
 from collections.abc import Mapping
 from typing import Any, cast
 
@@ -34,7 +36,7 @@ def _merge_config(defaults: Mapping[str, Any], user_config: Mapping[str, Any]) -
     merged = dict(defaults)
     for key, value in user_config.items():
         if isinstance(merged.get(key), Mapping) and isinstance(value, Mapping):
-            merged[key] = {**cast(Mapping[str, Any], merged[key]), **value}
+            merged[key] = {**cast("Mapping[str, Any]", merged[key]), **value}
         else:
             merged[key] = value
     return merged
@@ -42,7 +44,7 @@ def _merge_config(defaults: Mapping[str, Any], user_config: Mapping[str, Any]) -
 
 def get_config(attribute_name: str = "") -> object:
     """Serve insight-ui configuration."""
-    user_config = cast(Mapping[str, Any], getattr(settings, "INSIGHT_UI", {}))
+    user_config = cast("Mapping[str, Any]", getattr(settings, "INSIGHT_UI", {}))
     resolved_config = _merge_config(CONFIG_DEFAULTS, user_config)
 
     if attribute_name != "":

@@ -15,7 +15,8 @@ class InfoboxConfig:
 
     Renders a bordered information box (less prominent than alert).
 
-    Attributes:
+    Attributes
+    ----------
         message: Descriptive message.
         info_type: Importance level of the message. Possible values are 'info', 'success', 'warn' or 'danger'.
 
@@ -44,7 +45,8 @@ class CopyrightNoticeConfig:
 
     Renders a compact copyright and legal notice line.
 
-    Attributes:
+    Attributes
+    ----------
         year: Typically the current year (not strictly required).
         holder: The copyright holder.
         source_label: Optional source model label, for example Open Source.
@@ -83,7 +85,8 @@ class LogoConfig:
 
     Renders a brand logo as an image, SVG, or icon.
 
-    Attributes:
+    Attributes
+    ----------
         url: Static, absolute, root-relative, or data URL for image/svg logos.
         url_dark: Optional dark-theme URL for image/svg logos.
         alt: Accessible text. Empty values make image/svg logos decorative.
@@ -123,7 +126,8 @@ class BrandLockupConfig:
 
     Renders a public Insight UI icon plus a two-tone wordmark.
 
-    Attributes:
+    Attributes
+    ----------
         primary_text: First wordmark run.
         secondary_text: Second wordmark run.
         logo_position: Logo position, either 'start' or 'end'.
@@ -161,7 +165,8 @@ class CornerRibbonConfig:
 
     Renders a decorative diagonal ribbon in a browser corner.
 
-    Attributes:
+    Attributes
+    ----------
         text: The text displayed in the ribbon.
         position: Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'. Invalid values fall back to 'top-right'.
         color: Color variant: 'primary', 'success', 'warning', 'danger', 'info'. Invalid values fall back to 'primary'.
@@ -200,7 +205,8 @@ class ProgressBarConfig:
     """
     Configuration for a simple progress bar with optional auto-update modes.
 
-    Attributes:
+    Attributes
+    ----------
         tag_id: Unique ID for JavaScript/CSS targeting.
         label: Optional heading/title for the progress bar.
         request_url: URL to poll for progress updates. Expected JSON: {"value": 75}.
@@ -283,7 +289,8 @@ class GeoMapMarkerConfig:
     """
     Configuration for a marker on a geo map.
 
-    Attributes:
+    Attributes
+    ----------
         title: Marker title/label.
         lat: Latitude coordinate.
         lon: Longitude coordinate.
@@ -308,7 +315,8 @@ class GeoMapDatasetConfig:
     """
     Configuration for a dataset layer on a geo map.
 
-    Attributes:
+    Attributes
+    ----------
         name: Dataset name.
         type: Marker type ('marker' or 'circle').
         data: List of marker configurations.
@@ -346,7 +354,8 @@ class GeoMapConfig:
 
     Renders an interactive Leaflet map.
 
-    Attributes:
+    Attributes
+    ----------
         initial_coords: Starting map center [lat, lon].
         initial_zoom: Starting zoom level.
         map_height: The height of the map in 'rem'.
@@ -385,7 +394,8 @@ class ChartSeriesConfig:
     """
     Configuration for a chart data series.
 
-    Attributes:
+    Attributes
+    ----------
         name: Series name (shown in legend).
         data: Data points for this series.
 
@@ -402,7 +412,8 @@ class ChartDatasetConfig:
     """
     Configuration for chart data.
 
-    Attributes:
+    Attributes
+    ----------
         title: Chart title.
         x_axis_legend: Labels for X-axis categories.
         series: Series names (for legend).
@@ -437,7 +448,8 @@ class ChartConfig:
 
     Renders a chart with Apache ECharts.
 
-    Attributes:
+    Attributes
+    ----------
         tag_id: Unique ID for the chart element.
         dataset: Chart data and configuration.
         chart_height: Height of the chart in 'rem'.
@@ -471,7 +483,8 @@ class LiveContentConfig:
 
     Renders a container that auto-refreshes via HTMX polling.
 
-    Attributes:
+    Attributes
+    ----------
         tag_id: Unique ID for JavaScript/CSS targeting.
         request_url: URL for content updates.
         interval: Update interval in seconds.
@@ -501,7 +514,8 @@ class WebSocketConfig:
 
     Renders a WebSocket-connected container using HTMX ws extension.
 
-    Attributes:
+    Attributes
+    ----------
         tag_id: Container ID. This ID must be included in the WebSocket's HTML message.
         request_url: WebSocket endpoint URL.
         initial_content: Initial content.
@@ -530,7 +544,8 @@ class BadgeConfig:
 
     Used in hero sections and other components.
 
-    Attributes:
+    Attributes
+    ----------
         label: Badge label.
         icon: An optional icon displayed before the text.
         icon_end: **True** if the icon should be shown after the label, otherwise the icon is shown in front of the label.

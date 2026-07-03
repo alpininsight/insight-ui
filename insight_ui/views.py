@@ -1,3 +1,5 @@
+"""Views for Insight UI documentation and component demos."""
+
 from datetime import UTC, datetime
 from importlib import metadata
 from pathlib import Path
@@ -518,7 +520,7 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
         request (HttpRequest): request object.
         component_name (str): name of the component.
 
-    Returns:
+    Returns
     -------
         response (HttpResponse): response object.
 
@@ -542,13 +544,13 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
 
 
 @require_GET
-def component_source_view(request: HttpRequest, component_name: str, source_kind: str) -> HttpResponse:
+def component_source_view(_request: HttpRequest, component_name: str, source_kind: str) -> HttpResponse:
     """Serve component source code from the deployed container package."""
     return _plain_text_response(_resolve_component_source_path(component_name, source_kind))
 
 
 @require_GET
-def license_view(request: HttpRequest) -> HttpResponse:
+def license_view(_request: HttpRequest) -> HttpResponse:
     """Serve the license text from the deployed container instead of GitHub."""
     return _plain_text_response(_resolve_license_path())
 
@@ -564,7 +566,7 @@ def component_demo_view(request: HttpRequest, component_name: str) -> HttpRespon
         request (HttpRequest): request object.
         component_name (str): name of the component.
 
-    Returns:
+    Returns
     -------
         response (HttpResponse): response object.
 
@@ -587,7 +589,7 @@ def storybook_view(request: HttpRequest, storybook_name: str) -> HttpResponse:
         request (HttpRequest): request object.
         storybook_name (str): name of the storybook.
 
-    Returns:
+    Returns
     -------
         response (HttpResponse): response object.
 
@@ -608,7 +610,7 @@ def storybook_view(request: HttpRequest, storybook_name: str) -> HttpResponse:
     ]
 
     # Connect components with related demo information
-    context["components"] = zip(context["components"], demos)
+    context["components"] = zip(context["components"], demos, strict=True)
 
     if not context:
         return HttpResponse("Page not found", status=404)

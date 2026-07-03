@@ -1,3 +1,5 @@
+"""Component enumeration and configuration mapping."""
+
 from enum import Enum
 from typing import Any
 
@@ -170,7 +172,8 @@ class Component(Enum):
             allow_requests (bool): 'True' if the component is allowed to do requests in the demo (just for demonstration).
             in_development (bool): 'True' if the component is not finished yet (shows a hint on the detailpage and in the nav-list).
 
-        Returns:
+        Returns
+        -------
             component: The newly created component object.
 
         """

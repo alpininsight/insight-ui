@@ -13,7 +13,8 @@ class SearchBarConfig:
     """
     Configuration for the search_bar component.
 
-    Attributes:
+    Attributes
+    ----------
         request_url: URL for search requests.
         simple: If True, render compact/minimal style.
         search_query: Initial search query value.
@@ -41,7 +42,8 @@ class FilterConfig:
     """
     Configuration for a single filter in generic_filter.
 
-    Attributes:
+    Attributes
+    ----------
         name: Filter field name.
         label: Filter label.
         options: Available filter options (dict maps value→label).
@@ -76,7 +78,8 @@ class GenericFilterConfig:
 
     Renders a filter bar with multiple select elements.
 
-    Attributes:
+    Attributes
+    ----------
         filters: List of filter configurations.
         request_url: URL for filter requests.
         vertical: If True, arrange filters vertically.
@@ -115,7 +118,8 @@ class QueryBuilderFieldConfig:
     """
     Configuration for a field in the query builder.
 
-    Attributes:
+    Attributes
+    ----------
         field: Database field name.
         label: Display name.
         type: Field type (text, date, number).
@@ -155,7 +159,8 @@ class QueryBuilderConfig:
 
     Renders a filter for constructing custom search queries.
 
-    Attributes:
+    Attributes
+    ----------
         model_fields: List of model fields with possible operators.
 
     """

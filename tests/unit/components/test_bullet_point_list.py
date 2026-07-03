@@ -7,5 +7,3 @@ from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
 class TestBulletPointList(TemplateTagsTestCase):
     """Test suite for the bullet_point_list component."""
-
-    pass

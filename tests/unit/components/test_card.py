@@ -1,7 +1,5 @@
 """Tests for the card component."""
 
-# ruff: noqa: E501
-
 from bs4 import BeautifulSoup
 from insight_ui.configs import ButtonConfig
 

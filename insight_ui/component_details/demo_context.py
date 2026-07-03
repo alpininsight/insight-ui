@@ -1,3 +1,5 @@
+"""Demo rendering context for UI components."""
+
 import dataclasses
 
 from django.templatetags.static import static
@@ -746,7 +748,7 @@ def get_geo_map_context() -> dict:
                             "title": "Lübeck",
                             "lat": 53.8655,
                             "lon": 10.6866,
-                            "description": "Hauptstadt der Hanse („Königin der Hanse“); Sitz der Hansetage und Zentrum des Ostseehandels.",  # noqa: E501
+                            "description": "Hauptstadt der Hanse („Königin der Hanse“); Sitz der Hansetage und Zentrum des Ostseehandels.",
                         },
                         {
                             "title": "Hamburg",
@@ -776,7 +778,7 @@ def get_geo_map_context() -> dict:
                             "title": "Riga",
                             "lat": 56.9496,
                             "lon": 24.1052,
-                            "description": "Zentrum des Hansehandels im Baltikum; Umschlagplatz für Waren aus Russland und Skandinavien.",  # noqa: E501
+                            "description": "Zentrum des Hansehandels im Baltikum; Umschlagplatz für Waren aus Russland und Skandinavien.",
                         },
                         {
                             "title": "Reval (Tallinn)",
@@ -812,7 +814,7 @@ def get_geo_map_context() -> dict:
                             "title": "Nowgorod",
                             "lat": 58.5215,
                             "lon": 31.2755,
-                            "description": "Östlichstes Hansekontor; Handel mit Fellen, Wachs und Honig im Russlandgeschäft.",  # noqa: E501
+                            "description": "Östlichstes Hansekontor; Handel mit Fellen, Wachs und Honig im Russlandgeschäft.",
                         },
                     ],
                 },

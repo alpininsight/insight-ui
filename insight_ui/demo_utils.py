@@ -1,3 +1,5 @@
+"""Utility functions for component demos."""
+
 from django.utils.translation import gettext as _
 
 from insight_ui.configs import ButtonConfig, CardConfig
@@ -11,7 +13,7 @@ def generate_payload(count: int = 5) -> list:
     ---------
         count (int): the amount of generated entries.
 
-    Returns:
+    Returns
     -------
         data (list): a list of generated entries.
 
@@ -42,7 +44,7 @@ def map_payload_to_cards(payload: list) -> list[CardConfig]:
     ---------
         payload (list): data to be transformed.
 
-    Returns:
+    Returns
     -------
         data (list): transformed data.
 
@@ -58,7 +60,7 @@ def map_payload_to_table(payload: list) -> tuple[list[str], list]:
     ---------
         payload (list): data to be transformed.
 
-    Returns:
+    Returns
     -------
         data (list): transformed data.
 

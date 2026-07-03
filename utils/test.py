@@ -6,10 +6,12 @@ import asyncio
 import json
 import logging
 import signal
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import websockets
-from websockets.client import WebSocketClientProtocol
+
+if TYPE_CHECKING:
+    from websockets.client import WebSocketClientProtocol
 
 LOGGER = logging.getLogger(__name__)
 if not LOGGER.handlers:
@@ -19,7 +21,7 @@ WEBSOCKET_URL = "ws://localhost:8765"
 _SHUTDOWN_EVENT = asyncio.Event()
 
 
-def _shutdown_handler(signum: int, frame: Any) -> None:  # noqa: D401, ANN401
+def _shutdown_handler(signum: int, _frame: Any) -> None:  # noqa: ANN401
     """Set the shutdown flag when the process receives a termination signal."""
     LOGGER.info("Client wird beendet (Signal %s empfangen)", signum)
     _SHUTDOWN_EVENT.set()
@@ -44,7 +46,7 @@ async def run_client() -> None:
     try:
         async with websockets.connect(WEBSOCKET_URL) as websocket:
             await _consume_messages(websocket)
-    except Exception:  # noqa: BLE001
+    except Exception:
         LOGGER.exception("Verbindungsfehler beim Aufbau der WebSocket-Verbindung")
 
 
@@ -56,7 +58,7 @@ async def _consume_messages(websocket: WebSocketClientProtocol) -> None:
             message = await asyncio.wait_for(websocket.recv(), timeout=10)
             await _log_message(message)
         except TimeoutError:
-            LOGGER.debug("Timeout – keine Nachricht empfangen")
+            LOGGER.debug("Timeout - keine Nachricht empfangen")
 
 
 if __name__ == "__main__":

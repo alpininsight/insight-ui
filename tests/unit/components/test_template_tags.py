@@ -1,7 +1,5 @@
 """Tests für Insight UI Template Tags."""
 
-# ruff: noqa: E501
-
 from django.contrib.auth.models import User
 from django.template import Context, Template
 from django.test import TestCase
@@ -17,10 +15,10 @@ class TemplateTagsTestCase(TestCase):
         self.user = User.objects.create_user(username="testuser", email="test@example.com", password="testpass123")  # noqa: S106
         activate("en")
 
-    def render_template(self, template_string: str, context: dict = {}) -> SafeText:
+    def render_template(self, template_string: str, context: dict | None = None) -> SafeText:
         """Hilfsmethode zum Rendern von Templates."""
         template = Template(template_string)
-        return template.render(Context(context))
+        return template.render(Context(context or {}))
 
 
 class LanguageSelectorTemplateTagTest(TemplateTagsTestCase):

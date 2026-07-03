@@ -7,5 +7,3 @@ from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
 class TestChat(TemplateTagsTestCase):
     """Test suite for the chat component."""
-
-    pass

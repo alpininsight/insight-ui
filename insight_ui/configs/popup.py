@@ -15,7 +15,8 @@ class AlertConfig:
 
     Renders a notification/alert box.
 
-    Attributes:
+    Attributes
+    ----------
         tag_id: Optional, unique tag ID for identifying the element in JavaScript.
         message: Message displayed in the alert.
         type: Type of the alert. Possible values are 'info', 'success', 'warning' and 'error'.
@@ -51,7 +52,8 @@ class ModalConfig:
 
     Renders an accessible modal dialog.
 
-    Attributes:
+    Attributes
+    ----------
         tag_id: Optional, unique tag ID for identifying the element in JavaScript.
         title: Heading of the modal dialog.
         description: A text in the center of the modal dialog. This can be exchanged by extending the template.

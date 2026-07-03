@@ -1,3 +1,5 @@
+"""Pytest configuration and fixtures for Insight UI tests."""
+
 import os
 
 import django

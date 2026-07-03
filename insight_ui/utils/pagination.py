@@ -1,3 +1,5 @@
+"""Pagination utilities for Insight UI."""
+
 from collections.abc import Sequence
 
 from django.core.paginator import Page, Paginator
@@ -18,7 +20,7 @@ def get_page(
         page (int): desired page number.
         max_neighbor_pages (int): the maximal amount of pages, next to the desired page.
 
-    Returns:
+    Returns
     -------
         page, neighbor_pages (Page[object], List[int]): the desired page and a list of neighboring pages.
 

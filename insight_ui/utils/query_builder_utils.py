@@ -1,3 +1,5 @@
+"""Query builder utilities for dynamic filtering."""
+
 from collections.abc import Iterable, Mapping
 from typing import Any
 
@@ -53,7 +55,7 @@ def build_dynamic_query(filters: list[Mapping[str, Any]]) -> tuple[Q, dict[str, 
     ---------
         filters (dict): A dictionaries of filters used to generate the query.
 
-    Returns:
+    Returns
     -------
         query (tuple): The generated query, a Dict with annotations and a Dict with the annotation filters.
 
