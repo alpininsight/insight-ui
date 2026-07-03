@@ -1,15 +1,15 @@
 {% load i18n insight_tags %}
 
-<div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md p-4">
+<div class="insight-form-status insight-form-status-success">
     <div class="flex">
-        <div class="shrink-0 text-green-400">
+        <div class="shrink-0 insight-form-status-icon-success">
             {% icon name="tick" size="s" %}
         </div>
         <div class="ml-3">
-            <h3 class="text-sm font-medium text-green-800 dark:text-green-200">
+            <h3 class="text-sm font-medium insight-form-status-title-success">
                 {% trans 'Successfully submitted!' %}
             </h3>
-            <div class="mt-2 text-sm text-green-700 dark:text-green-300">
+            <div class="mt-2 text-sm insight-form-status-body-success">
                 <p class="text-lg">Welcome, {% if title != _("No title") %}{{ title }}{% endif %} {{ firstname }} {{ lastname }}!</p>
             </div>
         </div>
