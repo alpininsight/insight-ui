@@ -98,7 +98,6 @@
     --font-weight-semibold: 600;
     --font-weight-bold: 700;
     --tracking-tight: -0.025em;
-    --tracking-wide: 0.025em;
     --leading-relaxed: 1.625;
     --leading-loose: 2;
     --radius-sm: 0.25rem;
@@ -162,6 +161,30 @@
     --insight-radius-pill: 9999px;
     --insight-shadow-surface: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     --insight-shadow-overlay: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --insight-state-danger-surface: var(--color-red-50);
+    --insight-state-danger-surface-dark: color-mix(in srgb, oklch(39.6% 0.141 25.723) 20%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      --insight-state-danger-surface-dark: color-mix(in srgb, var(--color-red-900) 20%, transparent);
+    }
+    --insight-state-danger-border: var(--color-red-200);
+    --insight-state-danger-border-dark: var(--color-red-800);
+    --insight-state-danger-icon: var(--color-red-400);
+    --insight-state-danger-title: var(--color-red-800);
+    --insight-state-danger-title-dark: var(--color-red-200);
+    --insight-state-danger-body: var(--color-red-700);
+    --insight-state-danger-body-dark: var(--color-red-300);
+    --insight-state-success-surface: var(--color-green-50);
+    --insight-state-success-surface-dark: color-mix(in srgb, oklch(39.3% 0.095 152.535) 20%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      --insight-state-success-surface-dark: color-mix(in srgb, var(--color-green-900) 20%, transparent);
+    }
+    --insight-state-success-border: var(--color-green-200);
+    --insight-state-success-border-dark: var(--color-green-800);
+    --insight-state-success-icon: var(--color-green-400);
+    --insight-state-success-title: var(--color-green-800);
+    --insight-state-success-title-dark: var(--color-green-200);
+    --insight-state-success-body: var(--color-green-700);
+    --insight-state-success-body-dark: var(--color-green-300);
     --insight-nav-bg: var(--insight-surface-raised);
     --insight-nav-bg-dark: var(--insight-surface-raised-dark);
     --insight-nav-border: var(--insight-border-subtle);
@@ -210,6 +233,25 @@
     --insight-table-row-even-bg-dark: var(--insight-surface-base-dark);
     --insight-table-empty-border: var(--insight-border-strong);
     --insight-table-empty-border-dark: var(--insight-border-default-dark);
+    --insight-form-status-radius: var(--insight-radius-md);
+    --insight-form-error-bg: var(--insight-state-danger-surface);
+    --insight-form-error-bg-dark: var(--insight-state-danger-surface-dark);
+    --insight-form-error-border: var(--insight-state-danger-border);
+    --insight-form-error-border-dark: var(--insight-state-danger-border-dark);
+    --insight-form-error-icon: var(--insight-state-danger-icon);
+    --insight-form-error-title: var(--insight-state-danger-title);
+    --insight-form-error-title-dark: var(--insight-state-danger-title-dark);
+    --insight-form-error-body: var(--insight-state-danger-body);
+    --insight-form-error-body-dark: var(--insight-state-danger-body-dark);
+    --insight-form-success-bg: var(--insight-state-success-surface);
+    --insight-form-success-bg-dark: var(--insight-state-success-surface-dark);
+    --insight-form-success-border: var(--insight-state-success-border);
+    --insight-form-success-border-dark: var(--insight-state-success-border-dark);
+    --insight-form-success-icon: var(--insight-state-success-icon);
+    --insight-form-success-title: var(--insight-state-success-title);
+    --insight-form-success-title-dark: var(--insight-state-success-title-dark);
+    --insight-form-success-body: var(--insight-state-success-body);
+    --insight-form-success-body-dark: var(--insight-state-success-body-dark);
     --range-progress: 0%;
     --animate-blink: blink 2s step-start infinite;
     --animate-shake: shake 0.3s;
@@ -1451,9 +1493,6 @@
   .border-gray-400 {
     border-color: var(--color-gray-400);
   }
-  .border-green-200 {
-    border-color: var(--color-green-200);
-  }
   .border-insight-primary {
     border-color: var(--color-insight-primary);
   }
@@ -1462,9 +1501,6 @@
     @supports (color: color-mix(in lab, red, red)) {
       border-color: color-mix(in oklab, var(--color-insight-primary) 20%, transparent);
     }
-  }
-  .border-red-200 {
-    border-color: var(--color-red-200);
   }
   .border-red-500 {
     border-color: var(--color-red-500);
@@ -1911,9 +1947,6 @@
   .text-gray-700 {
     color: var(--color-gray-700);
   }
-  .text-green-400 {
-    color: var(--color-green-400);
-  }
   .text-green-600 {
     color: var(--color-green-600);
   }
@@ -1964,9 +1997,6 @@
   }
   .text-neutral-700 {
     color: var(--color-neutral-700);
-  }
-  .text-red-400 {
-    color: var(--color-red-400);
   }
   .text-red-500 {
     color: var(--color-red-500);
@@ -3114,16 +3144,6 @@
       border-color: var(--color-gray-700);
     }
   }
-  .dark\:border-green-800 {
-    &:where([data-theme=dark], [data-theme=dark] *) {
-      border-color: var(--color-green-800);
-    }
-  }
-  .dark\:border-red-800 {
-    &:where([data-theme=dark], [data-theme=dark] *) {
-      border-color: var(--color-red-800);
-    }
-  }
   .dark\:border-b-gray-600 {
     &:where([data-theme=dark], [data-theme=dark] *) {
       border-bottom-color: var(--color-gray-600);
@@ -3277,16 +3297,6 @@
       color: var(--color-gray-700);
     }
   }
-  .dark\:text-green-200 {
-    &:where([data-theme=dark], [data-theme=dark] *) {
-      color: var(--color-green-200);
-    }
-  }
-  .dark\:text-green-300 {
-    &:where([data-theme=dark], [data-theme=dark] *) {
-      color: var(--color-green-300);
-    }
-  }
   .dark\:text-green-400 {
     &:where([data-theme=dark], [data-theme=dark] *) {
       color: var(--color-green-400);
@@ -3300,16 +3310,6 @@
   .dark\:text-insight-text-secondary-dark {
     &:where([data-theme=dark], [data-theme=dark] *) {
       color: var(--color-insight-text-secondary-dark);
-    }
-  }
-  .dark\:text-red-200 {
-    &:where([data-theme=dark], [data-theme=dark] *) {
-      color: var(--color-red-200);
-    }
-  }
-  .dark\:text-red-300 {
-    &:where([data-theme=dark], [data-theme=dark] *) {
-      color: var(--color-red-300);
     }
   }
   .dark\:text-red-400 {
@@ -3956,6 +3956,58 @@
   }
   [data-theme="dark"] .insight-table-empty, [data-theme="dark"].insight-table-empty {
     border-color: var(--insight-table-empty-border-dark);
+  }
+  .insight-form-status {
+    border-style: var(--tw-border-style);
+    border-width: 1px;
+    padding: calc(var(--spacing) * 4);
+    border-radius: var(--insight-form-status-radius);
+  }
+  .insight-form-status-error {
+    background-color: var(--insight-form-error-bg);
+    border-color: var(--insight-form-error-border);
+  }
+  [data-theme="dark"] .insight-form-status-error, [data-theme="dark"].insight-form-status-error {
+    background-color: var(--insight-form-error-bg-dark);
+    border-color: var(--insight-form-error-border-dark);
+  }
+  .insight-form-status-success {
+    background-color: var(--insight-form-success-bg);
+    border-color: var(--insight-form-success-border);
+  }
+  [data-theme="dark"] .insight-form-status-success, [data-theme="dark"].insight-form-status-success {
+    background-color: var(--insight-form-success-bg-dark);
+    border-color: var(--insight-form-success-border-dark);
+  }
+  .insight-form-status-icon-error {
+    color: var(--insight-form-error-icon);
+  }
+  .insight-form-status-icon-success {
+    color: var(--insight-form-success-icon);
+  }
+  .insight-form-status-title-error {
+    color: var(--insight-form-error-title);
+  }
+  [data-theme="dark"] .insight-form-status-title-error, [data-theme="dark"].insight-form-status-title-error {
+    color: var(--insight-form-error-title-dark);
+  }
+  .insight-form-status-title-success {
+    color: var(--insight-form-success-title);
+  }
+  [data-theme="dark"] .insight-form-status-title-success, [data-theme="dark"].insight-form-status-title-success {
+    color: var(--insight-form-success-title-dark);
+  }
+  .insight-form-status-body-error {
+    color: var(--insight-form-error-body);
+  }
+  [data-theme="dark"] .insight-form-status-body-error, [data-theme="dark"].insight-form-status-body-error {
+    color: var(--insight-form-error-body-dark);
+  }
+  .insight-form-status-body-success {
+    color: var(--insight-form-success-body);
+  }
+  [data-theme="dark"] .insight-form-status-body-success, [data-theme="dark"].insight-form-status-body-success {
+    color: var(--insight-form-success-body-dark);
   }
   .btn {
     display: flex;
