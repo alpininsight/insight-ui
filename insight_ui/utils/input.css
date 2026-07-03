@@ -144,6 +144,13 @@
     --insight-user-dropdown-radius: var(--insight-radius-sm);
     --insight-user-dropdown-shadow: var(--insight-shadow-overlay);
 
+    /* Progress bar role tokens - mapped to central surface, radius and brand roles. */
+    --insight-progress-track-bg: var(--insight-border-subtle);
+    --insight-progress-track-bg-dark: var(--insight-surface-muted-dark);
+    --insight-progress-radius: var(--insight-radius-pill);
+    --insight-progress-fill-bg: var(--color-insight-primary);
+    --insight-progress-fill-transition-duration: 500ms;
+
     --range-progress: 0%;
 
     --animate-blink: blink 2s step-start infinite;
@@ -457,6 +464,30 @@
     [data-theme="dark"] .insight-user-dropdown-menu > :not(:last-child),
     [data-theme="dark"].insight-user-dropdown-menu > :not(:last-child) {
         border-color: var(--insight-user-dropdown-divider-dark);
+    }
+
+    /*
+    * ========================================================
+    *   Progress Bar
+    * ========================================================
+    */
+
+    .insight-progress-track {
+        @apply w-full h-4 overflow-hidden;
+        background-color: var(--insight-progress-track-bg);
+        border-radius: var(--insight-progress-radius);
+    }
+
+    [data-theme="dark"] .insight-progress-track,
+    [data-theme="dark"].insight-progress-track {
+        background-color: var(--insight-progress-track-bg-dark);
+    }
+
+    .insight-progress-fill {
+        @apply h-full transition-all ease-in-out;
+        background-color: var(--insight-progress-fill-bg);
+        border-radius: var(--insight-progress-radius);
+        transition-duration: var(--insight-progress-fill-transition-duration);
     }
 
     /*
