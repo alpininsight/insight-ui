@@ -151,6 +151,14 @@
     --insight-progress-fill-bg: var(--color-insight-primary);
     --insight-progress-fill-transition-duration: 500ms;
 
+    /* Chat response role tokens - mapped to central surface, border and radius roles. */
+    --insight-chat-message-border: var(--insight-border-subtle);
+    --insight-chat-message-radius: var(--insight-radius-lg);
+    --insight-chat-message-own-bg: var(--insight-surface-subtle);
+    --insight-chat-message-own-bg-dark: var(--insight-surface-muted-dark);
+    --insight-chat-message-response-bg: var(--insight-surface-muted);
+    --insight-chat-message-response-bg-dark: var(--insight-surface-disabled-dark);
+
     --range-progress: 0%;
 
     --animate-blink: blink 2s step-start infinite;
@@ -488,6 +496,43 @@
         background-color: var(--insight-progress-fill-bg);
         border-radius: var(--insight-progress-radius);
         transition-duration: var(--insight-progress-fill-transition-duration);
+    }
+
+    /*
+    * ========================================================
+    *   Chat Response
+    * ========================================================
+    */
+
+    .insight-chat-message {
+        @apply w-fit border px-4 py-2;
+        border-color: var(--insight-chat-message-border);
+        border-radius: var(--insight-chat-message-radius);
+    }
+
+    [data-theme="dark"] .insight-chat-message,
+    [data-theme="dark"].insight-chat-message {
+        border-width: 0;
+    }
+
+    .insight-chat-message-own {
+        @apply rounded-ee-none place-self-end;
+        background-color: var(--insight-chat-message-own-bg);
+    }
+
+    [data-theme="dark"] .insight-chat-message-own,
+    [data-theme="dark"].insight-chat-message-own {
+        background-color: var(--insight-chat-message-own-bg-dark);
+    }
+
+    .insight-chat-message-response {
+        @apply rounded-es-none place-self-start;
+        background-color: var(--insight-chat-message-response-bg);
+    }
+
+    [data-theme="dark"] .insight-chat-message-response,
+    [data-theme="dark"].insight-chat-message-response {
+        background-color: var(--insight-chat-message-response-bg-dark);
     }
 
     /*
