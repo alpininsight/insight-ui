@@ -200,6 +200,12 @@
     --insight-nav-item-radius: 0px;
     --insight-nav-item-ring: none;
     --insight-nav-item-active-ring: none;
+    --insight-nav-icon-button-radius: var(--insight-radius-md);
+    --insight-nav-icon-button-hover-bg: var(--insight-surface-muted);
+    --insight-nav-icon-button-hover-bg-dark: var(--insight-surface-muted-dark);
+    --insight-nav-icon-button-hover-text: var(--color-insight-text-link);
+    --insight-nav-icon-button-hover-text-dark: var(--color-insight-primary-hover);
+    --insight-nav-focus-ring: var(--color-insight-primary);
     --range-progress: 0%;
     --animate-blink: blink 2s step-start infinite;
     --animate-shake: shake 0.3s;
@@ -3871,6 +3877,35 @@
   }
   [data-theme="dark"] .insight-border-strong {
     border-color: var(--insight-border-strong-dark);
+  }
+  .insight-nav-icon-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: calc(var(--spacing) * 2);
+    color: var(--color-insight-text-secondary);
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+    --tw-duration: 200ms;
+    transition-duration: 200ms;
+    &:where([data-theme=dark], [data-theme=dark] *) {
+      color: var(--color-insight-text-secondary-dark);
+    }
+    border-radius: var(--insight-nav-icon-button-radius);
+  }
+  .insight-nav-icon-button:hover {
+    color: var(--insight-nav-icon-button-hover-text);
+    background-color: var(--insight-nav-icon-button-hover-bg);
+  }
+  [data-theme="dark"] .insight-nav-icon-button:hover, [data-theme="dark"].insight-nav-icon-button:hover {
+    color: var(--insight-nav-icon-button-hover-text-dark);
+    background-color: var(--insight-nav-icon-button-hover-bg-dark);
+  }
+  .insight-nav-icon-button:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: inset 0 0 0 2px var(--insight-nav-focus-ring);
   }
   .btn {
     display: flex;
