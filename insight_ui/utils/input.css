@@ -159,6 +159,19 @@
     --insight-chat-message-response-bg: var(--insight-surface-muted);
     --insight-chat-message-response-bg-dark: var(--insight-surface-disabled-dark);
 
+    /* Table role tokens - mapped to central surface, border and radius roles. */
+    --insight-table-bg: var(--insight-surface-base);
+    --insight-table-bg-dark: var(--insight-surface-base-dark);
+    --insight-table-radius: var(--insight-radius-sm);
+    --insight-table-header-border: var(--insight-border-default);
+    --insight-table-header-border-dark: var(--insight-border-subtle-dark);
+    --insight-table-row-odd-bg: var(--insight-surface-muted);
+    --insight-table-row-even-bg: var(--insight-surface-base);
+    --insight-table-row-odd-bg-dark: var(--insight-surface-page-dark);
+    --insight-table-row-even-bg-dark: var(--insight-surface-base-dark);
+    --insight-table-empty-border: var(--insight-border-strong);
+    --insight-table-empty-border-dark: var(--insight-border-default-dark);
+
     --range-progress: 0%;
 
     --animate-blink: blink 2s step-start infinite;
@@ -397,7 +410,7 @@
     */
 
     .insight-nav-icon-button {
-        @apply inline-flex items-center justify-center p-2 text-secondary transition-colors duration-200;
+        @apply inline-flex items-center justify-center p-2 text-insight-text-secondary dark:text-insight-text-secondary-dark transition-colors duration-200;
         border-radius: var(--insight-nav-icon-button-radius);
     }
 
@@ -425,7 +438,7 @@
     */
 
     .insight-sidebar-icon-button {
-        @apply inline-flex items-center justify-center p-2 text-sm text-secondary transition-colors duration-200;
+        @apply inline-flex items-center justify-center p-2 text-sm text-insight-text-secondary dark:text-insight-text-secondary-dark transition-colors duration-200;
         border-radius: var(--insight-sidebar-icon-button-radius);
     }
 
@@ -533,6 +546,61 @@
     [data-theme="dark"] .insight-chat-message-response,
     [data-theme="dark"].insight-chat-message-response {
         background-color: var(--insight-chat-message-response-bg-dark);
+    }
+
+    /*
+    * ========================================================
+    *   Table
+    * ========================================================
+    */
+
+    .insight-table-surface {
+        @apply overflow-auto;
+        background-color: var(--insight-table-bg);
+        border-radius: var(--insight-table-radius);
+    }
+
+    [data-theme="dark"] .insight-table-surface,
+    [data-theme="dark"].insight-table-surface {
+        background-color: var(--insight-table-bg-dark);
+    }
+
+    .insight-table-header-row {
+        @apply border-b;
+        border-color: var(--insight-table-header-border);
+    }
+
+    [data-theme="dark"] .insight-table-header-row,
+    [data-theme="dark"].insight-table-header-row {
+        border-color: var(--insight-table-header-border-dark);
+    }
+
+    .insight-table-row:nth-child(odd) {
+        background-color: var(--insight-table-row-odd-bg);
+    }
+
+    .insight-table-row:nth-child(even) {
+        background-color: var(--insight-table-row-even-bg);
+    }
+
+    [data-theme="dark"] .insight-table-row:nth-child(odd),
+    [data-theme="dark"].insight-table-row:nth-child(odd) {
+        background-color: var(--insight-table-row-odd-bg-dark);
+    }
+
+    [data-theme="dark"] .insight-table-row:nth-child(even),
+    [data-theme="dark"].insight-table-row:nth-child(even) {
+        background-color: var(--insight-table-row-even-bg-dark);
+    }
+
+    .insight-table-empty {
+        @apply w-full border-t text-insight-text-secondary dark:text-insight-text-secondary-dark text-center pt-16;
+        border-color: var(--insight-table-empty-border);
+    }
+
+    [data-theme="dark"] .insight-table-empty,
+    [data-theme="dark"].insight-table-empty {
+        border-color: var(--insight-table-empty-border-dark);
     }
 
     /*

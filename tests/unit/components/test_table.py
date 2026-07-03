@@ -29,15 +29,22 @@ class TestTable(TemplateTagsTestCase):
         soup = BeautifulSoup(rendered, "html.parser")
 
         table = soup.find("table")
+        surface = table.find_parent("div")
 
+        assert surface is not None
+        assert "insight-table-surface" in surface.get("class", [])
         assert table.find("caption") is not None
 
         header_row = table.find("thead").find("tr")
+        assert header_row.get("class") == ["insight-table-header-row"]
         headers = [th.get_text(strip=True) for th in header_row.find_all("th")]
         assert headers == ["Name", "E-Mail", "Status", "Actions"]
 
         rows = table.find("tbody").find_all("tr")
         assert len(rows) == 3  # noqa: PLR2004
+        assert rows[0].get("class") == ["insight-table-row"]
 
         first_row = [td.get_text(strip=True) for td in rows[0].find_all("td")]
         assert first_row == ["Max Mustermann", "max@example.com", "Active", "Edit"]
+        assert "odd:bg-gray-100" not in rendered
+        assert "dark:bg-gray-800" not in surface.get("class", [])
