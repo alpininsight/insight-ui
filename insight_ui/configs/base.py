@@ -8,11 +8,9 @@ from django.utils.translation import gettext_lazy as _
 
 @dataclass
 class DataAttrConfig:
-    """
-    Configuration for a custom data attribute.
+    """Configuration for a custom data attribute.
 
-    Attributes
-    ----------
+    Attributes:
         name: Attribute name without 'data-' prefix.
         value: Attribute value. Empty string for marker attributes.
 
@@ -29,11 +27,9 @@ class DataAttrConfig:
 
 @dataclass
 class IconConfig:
-    """
-    Configuration for an icon.
+    """Configuration for an icon.
 
-    Attributes
-    ----------
+    Attributes:
         name: Name of the Insight UI icon.
         size: Icon size: 'xl', 'l', 'm', 's', or 'xs'.
         color: Color Hex-Code of the icon.
@@ -53,11 +49,9 @@ class IconConfig:
 
 @dataclass
 class ImageConfig:
-    """
-    Configuration for an image element.
+    """Configuration for an image element.
 
-    Attributes
-    ----------
+    Attributes:
         url: Static, absolute, root-relative, or data URL for the image.
         alt: Accessible text. Empty values make the image decorative.
         url_dark: Optional dark-theme URL.
@@ -83,11 +77,9 @@ class ImageConfig:
 
 @dataclass
 class HtmxConfig:
-    """
-    Configuration for HTMX attributes.
+    """Configuration for HTMX attributes.
 
-    Attributes
-    ----------
+    Attributes:
         request_url: The URL for the HTMX request (hx-get/hx-post).
         target: CSS selector for the target element (hx-target).
         swap_method: The way in which the target is to be replaced (hx-swap).
@@ -128,15 +120,13 @@ class HtmxConfig:
 
 @dataclass
 class BaseFormFieldConfig:
-    """
-    Base configuration for form field components.
+    """Base configuration for form field components.
 
     This is the base class for all form input components (input, textarea,
     checkbox, select, etc.). It contains common attributes shared by all
     form fields.
 
-    Attributes
-    ----------
+    Attributes:
         tag_id: Optional, unique tag ID for identifying the element in JavaScript.
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.

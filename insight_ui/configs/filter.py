@@ -10,11 +10,9 @@ from insight_ui.configs.base import HtmxConfig, IconConfig
 
 @dataclass
 class SearchBarConfig:
-    """
-    Configuration for the search_bar component.
+    """Configuration for the search_bar component.
 
-    Attributes
-    ----------
+    Attributes:
         request_url: URL for search requests.
         simple: If True, render compact/minimal style.
         search_query: Initial search query value.
@@ -39,11 +37,9 @@ class SearchBarConfig:
 
 @dataclass
 class FilterConfig:
-    """
-    Configuration for a single filter in generic_filter.
+    """Configuration for a single filter in generic_filter.
 
-    Attributes
-    ----------
+    Attributes:
         name: Filter field name.
         label: Filter label.
         options: Available filter options (dict maps value→label).
@@ -73,13 +69,11 @@ class FilterConfig:
 
 @dataclass
 class GenericFilterConfig:
-    """
-    Configuration for the generic_filter component.
+    """Configuration for the generic_filter component.
 
     Renders a filter bar with multiple select elements.
 
-    Attributes
-    ----------
+    Attributes:
         filters: List of filter configurations.
         request_url: URL for filter requests.
         vertical: If True, arrange filters vertically.
@@ -115,11 +109,9 @@ class GenericFilterConfig:
 
 @dataclass
 class QueryBuilderFieldConfig:
-    """
-    Configuration for a field in the query builder.
+    """Configuration for a field in the query builder.
 
-    Attributes
-    ----------
+    Attributes:
         field: Database field name.
         label: Display name.
         type: Field type (text, date, number).
@@ -154,13 +146,11 @@ class QueryBuilderFieldConfig:
 
 @dataclass
 class QueryBuilderConfig:
-    """
-    Configuration for the query_builder component.
+    """Configuration for the query_builder component.
 
     Renders a filter for constructing custom search queries.
 
-    Attributes
-    ----------
+    Attributes:
         model_fields: List of model fields with possible operators.
 
     """

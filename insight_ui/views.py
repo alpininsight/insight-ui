@@ -52,7 +52,19 @@ PACKAGE_DISTRIBUTION_NAME = "insight-ui"
 
 
 def _resolve_component_source_path(component_name: str, source_kind: str) -> Path:
-    """Resolve an allow-listed component source file from the deployed package."""
+    """Resolve an allow-listed component source file from the deployed package.
+
+    Args:
+        component_name: The name of the component to look up.
+        source_kind: The type of source file ('html' or 'js').
+
+    Returns:
+        The resolved path to the source file.
+
+    Raises:
+        Http404: If component, source type, or file is not found.
+
+    """
     try:
         Component(component_name)
     except ValueError as exc:
@@ -74,7 +86,16 @@ def _resolve_component_source_path(component_name: str, source_kind: str) -> Pat
 
 
 def _component_source_url(component_name: str, source_kind: str) -> str:
-    """Return an internal source URL only when the deployed file exists."""
+    """Return an internal source URL only when the deployed file exists.
+
+    Args:
+        component_name: The name of the component.
+        source_kind: The type of source file ('html' or 'js').
+
+    Returns:
+        The URL to the source file, or empty string if not found.
+
+    """
     try:
         _resolve_component_source_path(component_name, source_kind)
     except Http404:
@@ -84,7 +105,12 @@ def _component_source_url(component_name: str, source_kind: str) -> str:
 
 
 def _distribution_license_path() -> Path | None:
-    """Resolve the license file from installed wheel metadata when available."""
+    """Resolve the license file from installed wheel metadata when available.
+
+    Returns:
+        The path to the license file, or None if not found.
+
+    """
     try:
         distribution = metadata.distribution(PACKAGE_DISTRIBUTION_NAME)
     except metadata.PackageNotFoundError:
@@ -102,7 +128,12 @@ def _distribution_license_path() -> Path | None:
 
 
 def _source_tree_license_path() -> Path | None:
-    """Resolve the license file from a local source-tree checkout."""
+    """Resolve the license file from a local source-tree checkout.
+
+    Returns:
+        The path to the license file, or None if not found.
+
+    """
     license_path = (SOURCE_ROOT.parent / LICENSE_FILE_NAME).resolve()
     if not license_path.is_file():
         return None
@@ -111,7 +142,15 @@ def _source_tree_license_path() -> Path | None:
 
 
 def _resolve_license_path() -> Path:
-    """Resolve the license file from the package, independent of host BASE_DIR."""
+    """Resolve the license file from the package, independent of host BASE_DIR.
+
+    Returns:
+        The path to the license file.
+
+    Raises:
+        Http404: If the license file is not found.
+
+    """
     license_path = _distribution_license_path() or _source_tree_license_path()
     if license_path is None:
         raise Http404(LICENSE_FILE_NOT_FOUND)
@@ -119,7 +158,15 @@ def _resolve_license_path() -> Path:
 
 
 def _plain_text_response(file_path: Path) -> HttpResponse:
-    """Serve source-like files inline without relying on a remote repository."""
+    """Serve source-like files inline without relying on a remote repository.
+
+    Args:
+        file_path: The path to the file to serve.
+
+    Returns:
+        An HTTP response with the file contents as plain text.
+
+    """
     response = HttpResponse(file_path.read_text(encoding="utf-8"), content_type="text/plain; charset=utf-8")
     response["Content-Disposition"] = f'inline; filename="{file_path.name}"'
     response["X-Content-Type-Options"] = "nosniff"
@@ -128,7 +175,15 @@ def _plain_text_response(file_path: Path) -> HttpResponse:
 
 @require_GET
 def get_allowed_operators(request: HttpRequest) -> JsonResponse:
-    """Retrieve all allowed operator of the given model field."""
+    """Retrieve all allowed operators of the given model field.
+
+    Args:
+        request: The HTTP request containing 'field' parameter.
+
+    Returns:
+        JSON response with operators, values, and input type.
+
+    """
     field = request.GET.get("field")
 
     if not field:
@@ -140,7 +195,15 @@ def get_allowed_operators(request: HttpRequest) -> JsonResponse:
 
 @require_POST
 def chat_response(request: HttpRequest) -> HttpResponse:
-    """Chat request endpoint to answer on chat messages."""
+    """Chat request endpoint to answer on chat messages.
+
+    Args:
+        request: The HTTP request containing the chat message.
+
+    Returns:
+        Rendered chat response or 204 No Content if invalid.
+
+    """
     form = ChatForm(request.POST)
 
     if form.is_valid():
@@ -151,7 +214,15 @@ def chat_response(request: HttpRequest) -> HttpResponse:
 
 @require_GET
 def pagination(request: HttpRequest) -> HttpResponse:
-    """Pagination endpoint to retrieve data of the desired page."""
+    """Pagination endpoint to retrieve data of the desired page.
+
+    Args:
+        request: The HTTP request with 'page' and 'ipp' parameters.
+
+    Returns:
+        Rendered pagination component or full storybook page.
+
+    """
     page_param = request.GET.get("page")
     ipp_param = request.GET.get("ipp")
     try:
@@ -188,7 +259,15 @@ def pagination(request: HttpRequest) -> HttpResponse:
 
 @require_GET
 def sort_table(request: HttpRequest) -> HttpResponse:
-    """Endpoint to sort table data."""
+    """Endpoint to sort table data.
+
+    Args:
+        request: The HTTP request with 'sort' and 'dir' parameters.
+
+    Returns:
+        Rendered table component or full storybook page.
+
+    """
     sort = request.GET.get("sort", "name")
     direction = request.GET.get("dir", "asc")
 
@@ -204,7 +283,15 @@ def sort_table(request: HttpRequest) -> HttpResponse:
 
 @require_GET
 def live_data_view(request: HttpRequest) -> HttpResponse | JsonResponse:
-    """HTMX endpoint for live data feed demo."""
+    """HTMX endpoint for live data feed demo.
+
+    Args:
+        request: The HTTP request.
+
+    Returns:
+        Rendered partial template for HTMX or JSON response.
+
+    """
     current_time = datetime.now(tz=UTC).strftime("%H:%M:%S")
     data = {
         "time": current_time,
@@ -222,7 +309,15 @@ def live_data_view(request: HttpRequest) -> HttpResponse | JsonResponse:
 
 @require_GET
 def more_items_view(request: HttpRequest) -> HttpResponse | JsonResponse:
-    """HTMX endpoint for infinite scroll demo."""
+    """HTMX endpoint for infinite scroll demo.
+
+    Args:
+        request: The HTTP request with 'page' and 'auto_fetch' parameters.
+
+    Returns:
+        Rendered partial template for HTMX or JSON response.
+
+    """
     page = int(request.GET.get("page", 1))
     items_per_page = 5
 
@@ -262,8 +357,7 @@ def more_items_view(request: HttpRequest) -> HttpResponse | JsonResponse:
 
 @require_POST
 def form_submit(request: HttpRequest) -> HttpResponse | JsonResponse:
-    """
-    Endpoint for form demo validation and handling.
+    """Endpoint for form demo validation and handling.
 
     Works with standard and htmx requests. Handle form issues and return either
     partial template data if this is a htmx request or do a whole page reload.
@@ -512,17 +606,14 @@ def playground_view(request: HttpRequest) -> HttpResponse:
 
 @require_GET
 def component_detail_page_view(request: HttpRequest, component_name: str) -> HttpResponse:
-    """
-    Render detailpage of the specified component.
+    """Render detailpage of the specified component.
 
-    Arguments:
-    ---------
-        request (HttpRequest): request object.
-        component_name (str): name of the component.
+    Args:
+        request: The HTTP request object.
+        component_name: Name of the component.
 
-    Returns
-    -------
-        response (HttpResponse): response object.
+    Returns:
+        Rendered component detail page or partial template for HTMX.
 
     """
     demo_info = {
@@ -558,17 +649,14 @@ def license_view(_request: HttpRequest) -> HttpResponse:
 @require_GET
 @xframe_options_exempt
 def component_demo_view(request: HttpRequest, component_name: str) -> HttpResponse:
-    """
-    Render a demo of the specified component.
+    """Render a demo of the specified component.
 
-    Arguments:
-    ---------
-        request (HttpRequest): request object.
-        component_name (str): name of the component.
+    Args:
+        request: The HTTP request object.
+        component_name: Name of the component.
 
-    Returns
-    -------
-        response (HttpResponse): response object.
+    Returns:
+        Rendered component demo page.
 
     """
     component = Component(component_name)
@@ -581,17 +669,14 @@ def component_demo_view(request: HttpRequest, component_name: str) -> HttpRespon
 
 @require_GET
 def storybook_view(request: HttpRequest, storybook_name: str) -> HttpResponse:
-    """
-    Render all components of the specified storybook.
+    """Render all components of the specified storybook.
 
-    Arguments:
-    ---------
-        request (HttpRequest): request object.
-        storybook_name (str): name of the storybook.
+    Args:
+        request: The HTTP request object.
+        storybook_name: Name of the storybook category.
 
-    Returns
-    -------
-        response (HttpResponse): response object.
+    Returns:
+        Rendered storybook page or partial template for HTMX.
 
     """
     storybook = ComponentCategory(storybook_name)
@@ -624,10 +709,16 @@ def storybook_view(request: HttpRequest, storybook_name: str) -> HttpResponse:
 
 @require_GET
 def toggle_view(request: HttpRequest) -> HttpResponse:
-    """
-    Toggle between table and card views, based on the `view` GET parameter.
+    """Toggle between table and card views, based on the `view` GET parameter.
 
-    Load and map payload data to the appropriate format.
+    Loads and maps payload data to the appropriate format.
+
+    Args:
+        request: The HTTP request with 'products-view-toggle' parameter.
+
+    Returns:
+        Rendered toggle view component.
+
     """
     current_view = request.GET.get("products-view-toggle", "table")
     valid_views = {"table", "card", "carousel"}
@@ -680,7 +771,16 @@ def toggle_view(request: HttpRequest) -> HttpResponse:
 
 @require_GET
 def tabs_view(request: HttpRequest, tab_id: str) -> HttpResponse:
-    """Switch content of the Tabs-Component corresponding to the given 'tab_id'."""
+    """Switch content of the Tabs-Component corresponding to the given 'tab_id'.
+
+    Args:
+        request: The HTTP request.
+        tab_id: The identifier of the tab to display ('second', 'third', etc.).
+
+    Returns:
+        Rendered tab content template.
+
+    """
     msg = _("This is the content of the first tab!")
     match tab_id:
         case "second":

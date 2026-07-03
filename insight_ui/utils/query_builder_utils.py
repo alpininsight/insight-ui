@@ -27,17 +27,14 @@ def _coerce_values(values: object) -> dict[str, str]:
 def get_filter_settings_for_field(
     fields: list[QueryBuilderFieldConfig], field: QueryBuilderFieldConfig
 ) -> tuple[str, list[str], dict[str, str]]:
-    """
-    Retrieve the allowed operators based on the type of field.
+    """Retrieve the allowed operators based on the type of field.
 
-    Arguments:
-    ---------
-        fields (list): A list of all available fields.
-        field (object): The field to get the desired information from.
+    Args:
+        fields: A list of all available fields.
+        field: The field to get the desired information from.
 
-    Return:
-    ------
-        information (tuple): The desired information.
+    Returns:
+        A tuple of input type, allowed operators, and possible values.
 
     """
     for config in fields:
@@ -48,16 +45,13 @@ def get_filter_settings_for_field(
 
 
 def build_dynamic_query(filters: list[Mapping[str, Any]]) -> tuple[Q, dict[str, Any], dict[str, Any]]:
-    """
-    Build django query by the given filters.
+    """Build django query by the given filters.
 
-    Arguments:
-    ---------
-        filters (dict): A dictionaries of filters used to generate the query.
+    Args:
+        filters: A list of filter dictionaries used to generate the query.
 
-    Returns
-    -------
-        query (tuple): The generated query, a Dict with annotations and a Dict with the annotation filters.
+    Returns:
+        A tuple of the generated Q object, annotations dict, and annotation filters dict.
 
     """
     if not filters:

@@ -11,7 +11,7 @@ class TemplateTagsTestCase(TestCase):
     """Basis-Testklasse für Template Tags."""
 
     def setUp(self) -> None:
-        """Setup für Tests."""  # noqa: D401 (It's not in imperative mood o_O)
+        """Setup für Tests."""
         self.user = User.objects.create_user(username="testuser", email="test@example.com", password="testpass123")  # noqa: S106
         activate("en")
 

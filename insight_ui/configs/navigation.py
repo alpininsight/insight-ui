@@ -13,13 +13,11 @@ from insight_ui.configs.utils import BrandLockupConfig, CopyrightNoticeConfig, L
 
 @dataclass
 class NavbarBrandConfig:
-    """
-    Configuration for the navbar brand section.
+    """Configuration for the navbar brand section.
 
     Describes the title and the logo of the application in the navbar.
 
-    Attributes
-    ----------
+    Attributes:
         title: The title of the application.
         request_url: Name of the URL to be called when clicking on the title.
         logo: Describes the logo that is displayed next to the title.
@@ -55,11 +53,9 @@ class NavbarBrandConfig:
 
 @dataclass
 class NavbarLinkConfig:
-    """
-    Configuration for a navbar navigation link.
+    """Configuration for a navbar navigation link.
 
-    Attributes
-    ----------
+    Attributes:
         text: Label of the link.
         url: The URL to be called when clicking on the link, if not opening a modal or dropdown menu.
         icon: An optional icon displayed before the text.
@@ -88,13 +84,11 @@ class NavbarLinkConfig:
 
 @dataclass
 class NavbarConfig:
-    """
-    Configuration for the navbar component.
+    """Configuration for the navbar component.
 
     Renders a full navigation bar with brand, links, and optional features.
 
-    Attributes
-    ----------
+    Attributes:
         brand: Describes the title and the logo of the application in the navbar.
         links: Contains and describes the navigation items of the navbar.
         searchbar_request_url: The URL to be called when performing a search. If empty, no search bar will be displayed.
@@ -146,11 +140,9 @@ class NavbarConfig:
 
 @dataclass
 class SidebarItemConfig:
-    """
-    Configuration for a sidebar navigation item.
+    """Configuration for a sidebar navigation item.
 
-    Attributes
-    ----------
+    Attributes:
         text: Label of the item.
         request_url: The URL to be called when clicking on the item.
         icon: An optional icon displayed before the text.
@@ -172,11 +164,9 @@ class SidebarItemConfig:
 
 @dataclass
 class SidebarCategoryConfig:
-    """
-    Configuration for a sidebar category (group of items).
+    """Configuration for a sidebar category (group of items).
 
-    Attributes
-    ----------
+    Attributes:
         caption: Category header text.
         icon: Optional category icon.
         items: List of items in this category.
@@ -202,11 +192,9 @@ class SidebarCategoryConfig:
 
 @dataclass
 class SidebarDataConfig:
-    """
-    Configuration for sidebar content.
+    """Configuration for sidebar content.
 
-    Attributes
-    ----------
+    Attributes:
         title: Sidebar title.
         icon: Optional title icon.
         categories: List of navigation categories.
@@ -237,13 +225,11 @@ class SidebarDataConfig:
 
 @dataclass
 class SidebarConfig:
-    """
-    Configuration for the sidebar component.
+    """Configuration for the sidebar component.
 
     Renders a side navigation panel.
 
-    Attributes
-    ----------
+    Attributes:
         sidebar_data: Content of the sidebar (title and navigation elements).
         side: Determines on which side the sidebar should be placed.
         static: **True** if the sidebar should not be collapsible.
@@ -288,13 +274,11 @@ class SidebarConfig:
 
 @dataclass
 class FooterDescriptionConfig:
-    """
-    Configuration for the footer description section.
+    """Configuration for the footer description section.
 
     Brief description of the application with optional image.
 
-    Attributes
-    ----------
+    Attributes:
         title: Heading of the description.
         text: Brief summary of the application.
         logo: Optional image displayed below the description text.
@@ -317,13 +301,11 @@ class FooterDescriptionConfig:
 
 @dataclass
 class FooterContactConfig:
-    """
-    Configuration for footer contact information.
+    """Configuration for footer contact information.
 
     Contact information, link to the imprint, privacy policy and a contact email address.
 
-    Attributes
-    ----------
+    Attributes:
         mail_url: URL of a contact email address.
         imprint: Link to an imprint.
         privacy: Link to a privacy policy.
@@ -345,13 +327,11 @@ class FooterContactConfig:
 
 @dataclass
 class FooterConfig:
-    """
-    Configuration for the footer component.
+    """Configuration for the footer component.
 
     Renders a complete page footer.
 
-    Attributes
-    ----------
+    Attributes:
         description: Brief description of the application with optional image.
         links: List of the main navigation items of the application.
         contact: Contact information, link to the imprint, privacy policy and a contact email address.
@@ -402,11 +382,9 @@ class FooterConfig:
 
 @dataclass
 class BreadcrumbItemConfig:
-    """
-    Configuration for a breadcrumb navigation item.
+    """Configuration for a breadcrumb navigation item.
 
-    Attributes
-    ----------
+    Attributes:
         text: Label of the link.
         request_url: The URL to be called when clicking on the link.
         icon: Optional icon (typically for home item).
@@ -424,13 +402,11 @@ class BreadcrumbItemConfig:
 
 @dataclass
 class BreadcrumbsConfig:
-    """
-    Configuration for the breadcrumbs component.
+    """Configuration for the breadcrumbs component.
 
     Renders a breadcrumb navigation trail.
 
-    Attributes
-    ----------
+    Attributes:
         items: List of breadcrumb navigation items.
         htmx: Optional HTMX configuration for AJAX navigation.
 
@@ -456,11 +432,9 @@ class BreadcrumbsConfig:
 
 @dataclass
 class StepperItemConfig:
-    """
-    Configuration for a step in the stepper component.
+    """Configuration for a step in the stepper component.
 
-    Attributes
-    ----------
+    Attributes:
         title: Title of the step.
         description: Additional description of the step below the title.
         url: URL called when the user clicks on the title of the step.
@@ -484,13 +458,11 @@ class StepperItemConfig:
 
 @dataclass
 class StepperConfig:
-    """
-    Configuration for the stepper component.
+    """Configuration for the stepper component.
 
     Renders a graphical representation of process steps.
 
-    Attributes
-    ----------
+    Attributes:
         items: List of step configurations.
 
     """
@@ -510,13 +482,11 @@ class StepperConfig:
 
 @dataclass
 class MinimalStepperConfig:
-    """
-    Configuration for the minimal_stepper component.
+    """Configuration for the minimal_stepper component.
 
     Renders a compact progress indicator.
 
-    Attributes
-    ----------
+    Attributes:
         items: List of states for the process steps. Possible values: 'success', 'failed', 'active' and '' for inactive.
         step_count: Number of process steps. (Only if 'items' is not set!)
         current_step: Current step of the process. (Only if 'items' is not set!)
@@ -551,11 +521,9 @@ class MinimalStepperConfig:
 
 @dataclass
 class BulletPointItemConfig:
-    """
-    Configuration for an item in the bullet_point_list component.
+    """Configuration for an item in the bullet_point_list component.
 
-    Attributes
-    ----------
+    Attributes:
         title: Title of the item.
         description: Additional description of the item below the title.
         request_url: The URL to be called when clicking on the respective item.
@@ -579,13 +547,11 @@ class BulletPointItemConfig:
 
 @dataclass
 class BulletPointListConfig:
-    """
-    Configuration for the bullet_point_list component.
+    """Configuration for the bullet_point_list component.
 
     Renders a graphical representation of a bullet point list.
 
-    Attributes
-    ----------
+    Attributes:
         items: List of bullet point items.
         htmx: Optional HTMX configuration for AJAX navigation.
 
@@ -609,11 +575,9 @@ class BulletPointListConfig:
 
 @dataclass
 class AccordionItemConfig:
-    """
-    Configuration for an accordion section.
+    """Configuration for an accordion section.
 
-    Attributes
-    ----------
+    Attributes:
         title: Section title.
         content: Section content.
         open: Whether section is initially open.
@@ -631,13 +595,11 @@ class AccordionItemConfig:
 
 @dataclass
 class AccordionConfig:
-    """
-    Configuration for the accordion component.
+    """Configuration for the accordion component.
 
     Renders expandable/collapsible sections.
 
-    Attributes
-    ----------
+    Attributes:
         tag_id: Unique tag ID for identifying the element in JavaScript.
         items: List of individual sections.
         exclusive: If **True** only one section can be open at a time.
@@ -664,11 +626,9 @@ class AccordionConfig:
 
 @dataclass
 class TabConfig:
-    """
-    Configuration for a single tab.
+    """Configuration for a single tab.
 
-    Attributes
-    ----------
+    Attributes:
         tag_id: Unique tag ID for identifying the element in JavaScript.
         title: Label of the tab button.
         url: The URL to be called when the tab is clicked.
@@ -688,13 +648,11 @@ class TabConfig:
 
 @dataclass
 class TabsConfig:
-    """
-    Configuration for the tabs component.
+    """Configuration for the tabs component.
 
     Renders a tabbed interface with HTMX content loading.
 
-    Attributes
-    ----------
+    Attributes:
         tag_id: Unique tag ID for identifying the element in JavaScript.
         tabs: List of tab buttons.
         label: Non-visible additional title that is to be read aloud by screen readers.

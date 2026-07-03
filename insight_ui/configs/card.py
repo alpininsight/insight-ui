@@ -12,13 +12,11 @@ from insight_ui.configs.list import TableConfig
 
 @dataclass
 class CardConfig:
-    """
-    Configuration for the card component.
+    """Configuration for the card component.
 
     Renders a card with 16:9 aspect ratio (business card style).
 
-    Attributes
-    ----------
+    Attributes:
         title: Card title.
         content: Main card content.
         subtitle: Optional subtitle.
@@ -47,13 +45,11 @@ class CardConfig:
 
 @dataclass
 class AppCardConfig:
-    """
-    Configuration for the app_card component.
+    """Configuration for the app_card component.
 
     Renders a vertically-oriented card ideal for app/product listings.
 
-    Attributes
-    ----------
+    Attributes:
         title: Card title.
         content: Card description.
         request_url: URL when title is clicked.
@@ -84,13 +80,11 @@ class AppCardConfig:
 
 @dataclass
 class FlipCardConfig:
-    """
-    Configuration for the flip_card component.
+    """Configuration for the flip_card component.
 
     Renders a card that rotates 180° on hover to show back content.
 
-    Attributes
-    ----------
+    Attributes:
         title: Card title.
         content: Front side content.
         back_content: Back side content.
@@ -123,11 +117,9 @@ class FlipCardConfig:
 
 @dataclass
 class CarouselItemConfig:
-    """
-    Configuration for a carousel item.
+    """Configuration for a carousel item.
 
-    Attributes
-    ----------
+    Attributes:
         title: Item title.
         content: Item content/description.
         image: Optional image configuration.
@@ -147,13 +139,11 @@ class CarouselItemConfig:
 
 @dataclass
 class CardCarouselConfig:
-    """
-    Configuration for the carousel (card carousel) component.
+    """Configuration for the carousel (card carousel) component.
 
     Renders a card carousel with navigation.
 
-    Attributes
-    ----------
+    Attributes:
         carousel_items: List of items to display.
         autoplay: Auto-advance slides every 5 seconds.
         show_dots: Show pagination dots.
@@ -183,11 +173,9 @@ class CardCarouselConfig:
 
 @dataclass
 class ImageCarouselItemConfig:
-    """
-    Configuration for an image carousel item.
+    """Configuration for an image carousel item.
 
-    Attributes
-    ----------
+    Attributes:
         url: Image URL.
         alt: Image alt text.
         description: Optional caption/description.
@@ -205,13 +193,11 @@ class ImageCarouselItemConfig:
 
 @dataclass
 class ImageCarouselConfig:
-    """
-    Configuration for the image_carousel component.
+    """Configuration for the image_carousel component.
 
     Renders an image-focused carousel.
 
-    Attributes
-    ----------
+    Attributes:
         carousel_items: List of image configurations.
         autoplay: Auto-advance slides.
         show_dots: Show pagination dots.
@@ -241,13 +227,11 @@ class ImageCarouselConfig:
 
 @dataclass
 class ThreeDCarouselConfig:
-    """
-    Configuration for the three_d_carousel component.
+    """Configuration for the three_d_carousel component.
 
     Renders items in a 3D circular arrangement.
 
-    Attributes
-    ----------
+    Attributes:
         tag_id: Unique ID for the carousel.
         carousel_items: List of items to display.
         velocity: Rotation speed.
@@ -277,13 +261,11 @@ class ThreeDCarouselConfig:
 
 @dataclass
 class ToggleViewConfig:
-    """
-    Configuration for the toggle_view component.
+    """Configuration for the toggle_view component.
 
     Allows switching between different data views (cards, table, carousel).
 
-    Attributes
-    ----------
+    Attributes:
         tag_id: Unique ID for the component.
         cards: The cards to be displayed.
         table_config: Configuration of the table view.

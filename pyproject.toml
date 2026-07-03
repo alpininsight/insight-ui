@@ -266,7 +266,7 @@ fixture-parentheses = false
 mark-parentheses  = false
 
 [tool.ruff.lint.pydocstyle]
-convention = "numpy"
+convention = "google"
 
 [tool.hatch.build.targets.wheel]
 packages = ["insight_ui"]

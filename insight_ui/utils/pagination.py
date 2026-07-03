@@ -8,21 +8,18 @@ from django.core.paginator import Page, Paginator
 def get_page(
     data: Sequence[object], items_per_page: int = 10, page: int = 1, max_neighbor_pages: int = 2
 ) -> tuple[Page[object], list[int]]:
-    """
-    Create pagination for given data.
+    """Create pagination for given data.
 
-    Retrieve data of the desired page and calculate page number of neighboring pages.
+    Retrieves data of the desired page and calculates page numbers of neighboring pages.
 
-    Arguments:
-    ---------
-        data (Sequence[object]): data to create pagination for.
-        items_per_page (int): the amount of items per page.
-        page (int): desired page number.
-        max_neighbor_pages (int): the maximal amount of pages, next to the desired page.
+    Args:
+        data: Data to create pagination for.
+        items_per_page: The amount of items per page.
+        page: Desired page number.
+        max_neighbor_pages: The maximal amount of pages next to the desired page.
 
-    Returns
-    -------
-        page, neighbor_pages (Page[object], List[int]): the desired page and a list of neighboring pages.
+    Returns:
+        A tuple of the desired page and a list of neighboring page numbers.
 
     """
     paginator = Paginator(data, items_per_page)

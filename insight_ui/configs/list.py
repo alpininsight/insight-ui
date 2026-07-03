@@ -9,13 +9,11 @@ from django.utils.translation import gettext_lazy as _
 
 @dataclass
 class InfiniteScrollConfig:
-    """
-    Configuration for the infinite_scroll component.
+    """Configuration for the infinite_scroll component.
 
     Renders a container that loads more content on scroll.
 
-    Attributes
-    ----------
+    Attributes:
         tag_id: Unique ID for JavaScript/CSS targeting.
         request_url: URL for loading more items.
         items: Initial items to display.
@@ -49,11 +47,9 @@ class InfiniteScrollConfig:
 
 @dataclass
 class PaginationIppConfig:
-    """
-    Configuration for items-per-page selector in pagination.
+    """Configuration for items-per-page selector in pagination.
 
-    Attributes
-    ----------
+    Attributes:
         name: Form field name.
         label: Selector label.
         explanation: Tooltip explanation text.
@@ -91,13 +87,11 @@ class PaginationIppConfig:
 
 @dataclass
 class TableConfig:
-    """
-    Configuration for the table component.
+    """Configuration for the table component.
 
     Renders a simple data table.
 
-    Attributes
-    ----------
+    Attributes:
         headers: List of column header texts.
         rows: List of row data (each row is a list of cell values).
         caption: Optional table caption.
@@ -129,13 +123,11 @@ class TableConfig:
 
 @dataclass
 class PaginationConfig:
-    """
-    Configuration for the pagination component.
+    """Configuration for the pagination component.
 
     Renders pagination controls with items per page selection.
 
-    Attributes
-    ----------
+    Attributes:
         request_url: URL for changing page.
         current_page: Django pagination Page object for the current page.
         surrounding_pages: List of neighboring page numbers to display. Use -1 for ellipsis.

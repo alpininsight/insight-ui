@@ -111,7 +111,15 @@ T = TypeVar("T")
 
 
 def _resolve_asset_url(value: object) -> str:
-    """Resolve static asset paths while preserving absolute, root-relative, and data URLs."""
+    """Resolve static asset paths while preserving absolute, root-relative, and data URLs.
+
+    Args:
+        value: The asset path or URL to resolve.
+
+    Returns:
+        The resolved URL, or empty string if value is falsy.
+
+    """
     if not value:
         return ""
 
@@ -123,7 +131,15 @@ def _resolve_asset_url(value: object) -> str:
 
 
 def ensure_list(value: str | Iterable[str] | None) -> list[str]:
-    """Take a string or a list of strings and return in both cases a list of strings."""
+    """Take a string or a list of strings and return in both cases a list of strings.
+
+    Args:
+        value: A string, iterable of strings, or None.
+
+    Returns:
+        A list of strings, empty list if value is None.
+
+    """
     if value is None:
         return []
 
@@ -134,19 +150,45 @@ def ensure_list(value: str | Iterable[str] | None) -> list[str]:
 
 
 def _is_dataclass_type(annotation: object) -> bool:
-    """Return whether a type annotation directly describes a dataclass config."""
+    """Return whether a type annotation directly describes a dataclass config.
+
+    Args:
+        annotation: The type annotation to check.
+
+    Returns:
+        True if annotation is a dataclass type, False otherwise.
+
+    """
     return isinstance(annotation, type) and is_dataclass(annotation)
 
 
 def _coerce_mapping_to_config[T](cls: type[T], value: Mapping[str, Any]) -> T:
-    """Create a dataclass config from a mapping, including nested config values."""
+    """Create a dataclass config from a mapping, including nested config values.
+
+    Args:
+        cls: The dataclass type to instantiate.
+        value: The mapping of field names to values.
+
+    Returns:
+        An instance of the dataclass with coerced values.
+
+    """
     type_hints = get_type_hints(cls)
     coerced_values = {key: _coerce_config_value(item, type_hints.get(key, Any)) for key, item in value.items()}
     return cls(**coerced_values)
 
 
 def _coerce_sequence_to_config(value: Sequence[Any], annotation: object) -> list[Any]:
-    """Convert list-like config values according to their annotated item type."""
+    """Convert list-like config values according to their annotated item type.
+
+    Args:
+        value: The sequence to convert.
+        annotation: The type annotation describing the expected item type.
+
+    Returns:
+        A list with items coerced to the annotated type.
+
+    """
     origin = get_origin(annotation)
     if origin in (list, Sequence):
         args = get_args(annotation)
@@ -163,7 +205,15 @@ def _coerce_sequence_to_config(value: Sequence[Any], annotation: object) -> list
 
 
 def _expects_sequence_config(annotation: object) -> bool:
-    """Return whether an annotation expects a list-like config value."""
+    """Return whether an annotation expects a list-like config value.
+
+    Args:
+        annotation: The type annotation to check.
+
+    Returns:
+        True if annotation expects a sequence, False otherwise.
+
+    """
     origin = get_origin(annotation)
     if origin in (list, Sequence):
         return True
@@ -175,7 +225,16 @@ def _expects_sequence_config(annotation: object) -> bool:
 
 
 def _coerce_config_value(value: Any, annotation: object) -> Any:  # noqa: ANN401
-    """Coerce mapping and sequence values into annotated dataclass config types."""
+    """Coerce mapping and sequence values into annotated dataclass config types.
+
+    Args:
+        value: The value to coerce.
+        annotation: The target type annotation.
+
+    Returns:
+        The coerced value, or unchanged if no coercion applies.
+
+    """
     origin = get_origin(annotation)
 
     if isinstance(value, Mapping):
@@ -198,16 +257,23 @@ def _coerce_config_value(value: Any, annotation: object) -> Any:  # noqa: ANN401
 
 
 def build_config[T](cls: type[T], config: T | None = None, **kwargs: Any) -> T:  # noqa: ANN401
-    """
-    Create or update a dataclass instance.
+    """Create or update a dataclass instance.
 
-    Parameters with value UNSET are ignored.
+    Parameters with value UNSET are ignored. If config is None, creates a new
+    instance and validates required fields. If config is given, returns a copy
+    with provided overrides applied.
 
-    If config is None:
-        Creates a new instance and validates required fields.
+    Args:
+        cls: The dataclass type to create or update.
+        config: An existing config instance to update, or None to create new.
+        **kwargs: Field values to set or override.
 
-    If config is given:
-        Returns a copy with provided overrides applied.
+    Returns:
+        A new or updated dataclass instance.
+
+    Raises:
+        ValueError: If required fields are missing when creating a new instance.
+
     """
     overrides = {key: value for key, value in kwargs.items() if value is not UNSET}
 
@@ -459,8 +525,7 @@ def button(
     extra_classes: str | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
-    """
-    Render the button component.
+    """Render the button component.
 
     Supports data_* kwargs for custom data attributes, e.g.:
         {% button label="Retry" data_progress_retry="" data_retry="retry-btn" %}
@@ -816,17 +881,14 @@ def copyright_notice(
 
 @register.filter
 def diff(a: str, b: str, simple: bool = True) -> str:
-    """
-    Generate a visualization of the differences between two texts.
+    """Generate a visualization of the differences between two texts.
 
     Args:
-    ----
         a: The original version of the text.
         b: The modified version of the text.
         simple: 'True' for a simplified display.
 
-    Returns
-    -------
+    Returns:
         The HTML code for the graphical representation of the differences.
 
     """
@@ -904,13 +966,29 @@ CSS_SIZE_PATTERN = re.compile(r"^-?(?:\d+(?:\.\d+)?|\.\d+)(?:px|rem|em|vh|vw|vmi
 
 
 def _looks_like_css_size(value: object) -> bool:
-    """Return true when a positional value is intended as a CSS size."""
+    """Return true when a positional value is intended as a CSS size.
+
+    Args:
+        value: The value to check.
+
+    Returns:
+        True if value looks like a CSS size (e.g., '1rem', '100px'), False otherwise.
+
+    """
     normalized = str(value).strip().lower()
     return normalized in {"auto", "inherit", "initial", "revert", "unset"} or bool(CSS_SIZE_PATTERN.match(normalized))
 
 
 def _normalize_brand_lockup_variant(value: object) -> str:
-    """Normalize public variants and a small set of legacy aliases."""
+    """Normalize public variants and a small set of legacy aliases.
+
+    Args:
+        value: The variant value to normalize.
+
+    Returns:
+        A valid variant name ('main', 'develop', or 'candidate').
+
+    """
     normalized = str(value).strip().lower()
     if normalized in BRAND_LOCKUP_VARIANTS:
         return normalized

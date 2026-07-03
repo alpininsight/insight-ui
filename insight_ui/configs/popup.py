@@ -10,13 +10,11 @@ from insight_ui.configs.input import ButtonConfig
 
 @dataclass
 class AlertConfig:
-    """
-    Configuration for the alert component.
+    """Configuration for the alert component.
 
     Renders a notification/alert box.
 
-    Attributes
-    ----------
+    Attributes:
         tag_id: Optional, unique tag ID for identifying the element in JavaScript.
         message: Message displayed in the alert.
         type: Type of the alert. Possible values are 'info', 'success', 'warning' and 'error'.
@@ -47,13 +45,11 @@ class AlertConfig:
 
 @dataclass
 class ModalConfig:
-    """
-    Configuration for the modal component.
+    """Configuration for the modal component.
 
     Renders an accessible modal dialog.
 
-    Attributes
-    ----------
+    Attributes:
         tag_id: Optional, unique tag ID for identifying the element in JavaScript.
         title: Heading of the modal dialog.
         description: A text in the center of the modal dialog. This can be exchanged by extending the template.

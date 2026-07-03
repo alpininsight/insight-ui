@@ -31,7 +31,12 @@ from insight_ui.configs import (
 
 
 def get_main_page_links() -> list[dict[str, Any]]:
-    """Serve a list of links to the main pages."""
+    """Serve a list of links to the main pages.
+
+    Returns:
+        List of NavbarLinkConfig objects for main navigation.
+
+    """
     return [
         NavbarLinkConfig(_("Home"), reverse("index_view"), IconConfig("home", "s")),
         NavbarLinkConfig(_("Installation"), reverse("installation_view"), IconConfig("download", "s")),
@@ -42,7 +47,12 @@ def get_main_page_links() -> list[dict[str, Any]]:
 
 
 def get_navbar_context() -> dict:
-    """Serve data for main navbar."""
+    """Serve data for main navbar.
+
+    Returns:
+        Context dict with navbar configuration and display options.
+
+    """
     links = get_main_page_links()
     links.append(
         NavbarLinkConfig(
@@ -84,7 +94,12 @@ def get_navbar_context() -> dict:
 
 
 def get_sidebar_context() -> dict:
-    """Serve data for the main sidebar."""
+    """Serve data for the main sidebar.
+
+    Returns:
+        Context dict with sidebar categories and component items.
+
+    """
     categories = [{"caption": category.formatted_name, "items": []} for category in ComponentCategory]
 
     for component in Component:
@@ -104,7 +119,12 @@ def get_sidebar_context() -> dict:
 
 
 def get_footer_context() -> dict:
-    """Server data for main footer."""
+    """Serve data for main footer.
+
+    Returns:
+        Context dict with footer configuration.
+
+    """
     links = get_main_page_links()
 
     return {
@@ -125,7 +145,12 @@ def get_footer_context() -> dict:
 
 
 def get_base_context() -> dict:
-    """Serve basic context data, like navbar, footer and settings."""
+    """Serve basic context data, like navbar, footer and settings.
+
+    Returns:
+        Combined context dict with config, navbar, and footer data.
+
+    """
     return (
         config.get_config()
         | get_navbar_context()
@@ -135,7 +160,12 @@ def get_base_context() -> dict:
 
 
 def get_icon_context() -> dict:
-    """Serve context for the icon detailpage."""
+    """Serve context for the icon detailpage.
+
+    Returns:
+        Context dict with icon parameters, icon table, and size table.
+
+    """
     main_params = [
         ParameterDetails("name", "str", _("Name of the icon (see table below)."), "question-mark"),
         ParameterDetails("size", "str", _("Size of the icon. Possible values are: 'xl', 'l', 'm', 's' and 'xs'."), "m"),
@@ -444,7 +474,12 @@ def get_icon_context() -> dict:
 
 
 def get_demo_container_context() -> dict:
-    """Serve data of the device switch, etc. for component demos."""
+    """Serve data of the device switch, etc. for component demos.
+
+    Returns:
+        Context dict with device radio items and theme toggle icon.
+
+    """
     return {
         "device_radio_items": [
             RadioItemConfig("mobile", "mobile", icon=IconConfig("smartphone")),
@@ -456,7 +491,15 @@ def get_demo_container_context() -> dict:
 
 
 def get_storybook_context(storybook: ComponentCategory) -> dict:  # noqa: C901
-    """Serve the base context and the context for each component in the list."""
+    """Serve the base context and the context for each component in the list.
+
+    Args:
+        storybook: The component category to display.
+
+    Returns:
+        Context dict with base context, components, and category description.
+
+    """
     context = get_base_context() | get_sidebar_context()
     components = []
     for component in Component:

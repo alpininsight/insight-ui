@@ -10,14 +10,12 @@ from insight_ui.configs.base import HtmxConfig
 
 @dataclass
 class FormFieldConfig:
-    """
-    Configuration for a single field within the form component.
+    """Configuration for a single field within the form component.
 
     This is used within FormConfig.fields to define form structure.
     It supports multiple field types including input, textarea, and select.
 
-    Attributes
-    ----------
+    Attributes:
         input_type: Type of form field (text, email, password, textarea, select).
         tag_id: Unique ID for the field.
         name: Form field name.
@@ -60,13 +58,11 @@ class FormFieldConfig:
 
 @dataclass
 class FormConfig:
-    """
-    Configuration for the form component.
+    """Configuration for the form component.
 
     Renders a complete form with multiple fields and HTMX support.
 
-    Attributes
-    ----------
+    Attributes:
         tag_id: Unique ID for the form element.
         title: Form title displayed at the top.
         description: Optional description below the title.

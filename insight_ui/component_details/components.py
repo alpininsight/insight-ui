@@ -161,20 +161,21 @@ class Component(Enum):
         allow_requests: bool = False,
         in_development: bool = False,
     ):
-        """
-        Create new Component entry where 'value' is the value.
+        """Create new Component entry where 'value' is the value.
 
-        Arguments:
-            value (str): The name of the component.
-            group (ComponentCategory): The category of the component.
-            config_class (Any): Configuration Dataclass of the component.
-            no_padding (bool): 'True' if the component have to touch the edge of the demo container (just for demonstration).
-            allow_requests (bool): 'True' if the component is allowed to do requests in the demo (just for demonstration).
-            in_development (bool): 'True' if the component is not finished yet (shows a hint on the detailpage and in the nav-list).
+        Args:
+            value: The name of the component.
+            group: The category of the component.
+            config_class: Configuration Dataclass of the component.
+            no_padding: 'True' if the component have to touch the edge of the
+                demo container (just for demonstration).
+            allow_requests: 'True' if the component is allowed to do requests
+                in the demo (just for demonstration).
+            in_development: 'True' if the component is not finished yet
+                (shows a hint on the detailpage and in the nav-list).
 
-        Returns
-        -------
-            component: The newly created component object.
+        Returns:
+            The newly created component object.
 
         """
         obj = object.__new__(cls)

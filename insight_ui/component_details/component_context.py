@@ -129,8 +129,7 @@ def _get_nested_dataclass_type(field_type: Any) -> type | None:  # noqa: ANN401,
 
 
 def get_component_parameter_doc(config: Any, _main_config: bool = False) -> list[ParameterDoc]:  # noqa: ANN401
-    """
-    Generate ParameterDoc objects for a config dataclass and its nested dataclass fields.
+    """Generate ParameterDoc objects for a config dataclass and its nested dataclass fields.
 
     Recursively processes all nested dataclasses, including those inside lists.
 
@@ -138,8 +137,7 @@ def get_component_parameter_doc(config: Any, _main_config: bool = False) -> list
         config: The dataclass config to document.
         main_config: If True, includes the top-level 'config' parameter in the docs.
 
-    Returns
-    -------
+    Returns:
         A list of ParameterDoc objects for the main config and all nested dataclass fields.
 
     """

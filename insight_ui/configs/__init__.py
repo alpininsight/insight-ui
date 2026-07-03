@@ -1,5 +1,4 @@
-"""
-Dataclass configurations for Insight UI components.
+"""Dataclass configurations for Insight UI components.
 
 This module provides type-safe configuration classes for all Insight UI template tags.
 Using these dataclasses instead of plain dictionaries gives you:
