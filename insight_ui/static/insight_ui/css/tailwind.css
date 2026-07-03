@@ -200,12 +200,11 @@
     --insight-nav-item-radius: 0px;
     --insight-nav-item-ring: none;
     --insight-nav-item-active-ring: none;
-    --insight-nav-icon-button-radius: var(--insight-radius-md);
-    --insight-nav-icon-button-hover-bg: var(--insight-surface-muted);
-    --insight-nav-icon-button-hover-bg-dark: var(--insight-surface-muted-dark);
-    --insight-nav-icon-button-hover-text: var(--color-insight-text-link);
-    --insight-nav-icon-button-hover-text-dark: var(--color-insight-primary-hover);
-    --insight-nav-focus-ring: var(--color-insight-primary);
+    --insight-sidebar-icon-button-radius: var(--insight-radius-md);
+    --insight-sidebar-icon-button-hover-bg: var(--insight-surface-muted);
+    --insight-sidebar-icon-button-hover-bg-dark: var(--insight-surface-muted-dark);
+    --insight-sidebar-icon-button-hover-text: var(--color-insight-text-primary);
+    --insight-sidebar-icon-button-hover-text-dark: var(--color-insight-text-primary-dark);
     --range-progress: 0%;
     --animate-blink: blink 2s step-start infinite;
     --animate-shake: shake 0.3s;
