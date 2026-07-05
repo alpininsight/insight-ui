@@ -64,10 +64,16 @@
     --insight-border-strong: #9ca3af; /* gray-400 */
     --insight-border-strong-dark: #6b7280; /* gray-500 */
 
+    --insight-radius-none: 0;
     --insight-radius-sm: var(--radius-sm);
     --insight-radius-md: var(--radius-md);
     --insight-radius-lg: var(--radius-lg);
+    --insight-radius-xl: var(--radius-xl);
     --insight-radius-pill: 9999px;
+    --insight-radius-control: var(--insight-radius-sm);
+    --insight-radius-surface: var(--insight-radius-md);
+    --insight-radius-raised: var(--insight-radius-lg);
+    --insight-radius-overlay: var(--insight-radius-sm);
 
     --insight-shadow-none: none;
     --insight-shadow-subtle: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); /* shadow-sm */
@@ -464,6 +470,50 @@
         border-color: var(--insight-border-strong-dark);
     }
 
+    .insight-radius-none {
+        border-radius: var(--insight-radius-none);
+    }
+    .insight-radius-control {
+        border-radius: var(--insight-radius-control);
+    }
+    .insight-radius-surface {
+        border-radius: var(--insight-radius-surface);
+    }
+    .insight-radius-raised {
+        border-radius: var(--insight-radius-raised);
+    }
+    .insight-radius-overlay {
+        border-radius: var(--insight-radius-overlay);
+    }
+    .insight-radius-pill {
+        border-radius: var(--insight-radius-pill);
+    }
+    .insight-radius-control-top {
+        border-top-left-radius: var(--insight-radius-control);
+        border-top-right-radius: var(--insight-radius-control);
+    }
+    .insight-radius-control-bottom {
+        border-bottom-right-radius: var(--insight-radius-control);
+        border-bottom-left-radius: var(--insight-radius-control);
+    }
+    .insight-radius-control-start {
+        border-start-start-radius: var(--insight-radius-control);
+        border-end-start-radius: var(--insight-radius-control);
+    }
+    .insight-radius-control-end {
+        border-start-end-radius: var(--insight-radius-control);
+        border-end-end-radius: var(--insight-radius-control);
+    }
+    .insight-radius-end-none {
+        border-end-end-radius: var(--insight-radius-none);
+    }
+    .insight-radius-start-none {
+        border-end-start-radius: var(--insight-radius-none);
+    }
+    .insight-nav-item-radius {
+        border-radius: var(--insight-nav-item-radius);
+    }
+
     /*
     * ========================================================
     *   Navbar
@@ -748,7 +798,8 @@
     */
 
     .btn {
-        @apply flex gap-2 items-center justify-center border-2 border-transparent rounded-sm text-white px-5 py-1.5 transition-colors;
+        @apply flex gap-2 items-center justify-center border-2 border-transparent text-white px-5 py-1.5 transition-colors;
+        border-radius: var(--insight-radius-control);
     }
 
     /* Button-Size */
@@ -772,7 +823,7 @@
         @apply p-1.5;
     }
     .btn-round {
-        @apply rounded-full;
+        border-radius: var(--insight-radius-pill);
     }
 
     /* Button-Fill */
@@ -866,7 +917,8 @@
     */
 
     .badge {
-        @apply inline-flex items-center gap-2 rounded-full px-4 py-1.5;
+        @apply inline-flex items-center gap-2 px-4 py-1.5;
+        border-radius: var(--insight-radius-pill);
         box-shadow: var(--insight-shadow-subtle);
     }
 
@@ -919,17 +971,21 @@
     */
 
     .component-container {
-        @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded;
+        @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700;
+        border-radius: var(--insight-radius-surface);
         box-shadow: var(--insight-shadow-surface);
     }
 
     .example-container {
-        @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-8 py-16 my-12;
+        @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-8 py-16 my-12;
+        border-radius: var(--insight-radius-raised);
         box-shadow: var(--insight-shadow-subtle);
     }
 
     .info-container {
-        @apply bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 border-s-4 rounded-e-sm text-base px-4 py-1;
+        @apply bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 border-s-4 text-base px-4 py-1;
+        border-start-end-radius: var(--insight-radius-control);
+        border-end-end-radius: var(--insight-radius-control);
     }
 
     /*
@@ -939,11 +995,13 @@
     */
 
     .inline-tag {
-        @apply bg-gray-200 dark:bg-gray-700 font-mono text-insight-primary dark:text-insight-primary-active text-nowrap rounded-sm px-1 py-px;
+        @apply bg-gray-200 dark:bg-gray-700 font-mono text-insight-primary dark:text-insight-primary-active text-nowrap px-1 py-px;
+        border-radius: var(--insight-radius-control);
     }
 
     .input {
-        @apply w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm text-sm focus:ring-2 focus:ring-insight-primary focus:border-insight-primary bg-white dark:bg-gray-700 dark:text-white transition-colors duration-200;
+        @apply w-full px-3 py-2 border border-gray-300 dark:border-gray-600 text-sm focus:ring-2 focus:ring-insight-primary focus:border-insight-primary bg-white dark:bg-gray-700 dark:text-white transition-colors duration-200;
+        border-radius: var(--insight-radius-control);
         box-shadow: var(--insight-shadow-subtle);
     }
 
