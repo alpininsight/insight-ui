@@ -5,7 +5,7 @@
   <button
     data-sidebar-target="{{ sidebar_config.side }}"
     aria-label="{% trans 'Open sidebar' %}"
-    class="open-btn fixed top-20 {% if sidebar_config.side == "right" %}ltr:right-4 rtl:left-4{% else %}ltr:left-4 rtl:right-4 rotate-180{% endif %} z-40 text-white bg-insight-primary rounded-full insight-shadow-subtle p-2 hover:bg-insight-primary-hover active:bg-insight-primary-active"
+    class="open-btn fixed top-20 {% if sidebar_config.side == "right" %}ltr:right-4 rtl:left-4{% else %}ltr:left-4 rtl:right-4 rotate-180{% endif %} z-40 text-white bg-insight-primary insight-radius-pill insight-shadow-subtle p-2 hover:bg-insight-primary-hover active:bg-insight-primary-active"
   >
     {% icon name="chevron_left" size="s" %}
   </button>

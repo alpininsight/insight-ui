@@ -627,7 +627,7 @@ def get_popover_usage_context() -> dict[str, str]:
         ),
         "usage": """
         <button data-insight-popover="demo-popover" data-show-arrow="true" data-position="top" class="btn btn-primary">Hover me!</button>
-        <div id="demo-popover" class="bg-white dark:bg-gray-500 w-64 border border-gray-300 dark:border-0 rounded-sm insight-shadow-subtle">
+        <div id="demo-popover" class="bg-white dark:bg-gray-500 w-64 border border-gray-300 dark:border-0 insight-radius-overlay insight-shadow-subtle">
             <!-- Content -->
         </div>
         """,
