@@ -2,25 +2,25 @@
 
 {% if corner_ribbon_config.position == "top-left" %}
   <div class="fixed ltr:-left-24 rtl:-right-24 top-16 w-96 z-50 pointer-events-none">
-    <div class="py-4 text-center bg-insight-{{ corner_ribbon_config.color }} text-white font-bold shadow-lg ltr:transform-[rotate(-45deg)] rtl:transform-[rotate(45deg)] opacity-85">
+    <div class="py-4 text-center bg-insight-{{ corner_ribbon_config.color }} text-white font-bold insight-shadow-raised ltr:transform-[rotate(-45deg)] rtl:transform-[rotate(45deg)] opacity-85">
       {{ corner_ribbon_config.text }}
     </div>
   </div>
 {% elif corner_ribbon_config.position == "bottom-right" %}
   <div class="fixed ltr:-right-24 rtl:-left-24 bottom-16 w-96 z-50 pointer-events-none">
-    <div class="py-4 text-center bg-insight-{{ corner_ribbon_config.color }} text-white font-bold shadow-lg ltr:transform-[rotate(-45deg)] rtl:transform-[rotate(45deg)] opacity-85">
+    <div class="py-4 text-center bg-insight-{{ corner_ribbon_config.color }} text-white font-bold insight-shadow-raised ltr:transform-[rotate(-45deg)] rtl:transform-[rotate(45deg)] opacity-85">
       {{ corner_ribbon_config.text }}
     </div>
   </div>
 {% elif corner_ribbon_config.position == "bottom-left" %}
   <div class="fixed ltr:-left-24 rtl:-right-24 bottom-16 w-96 z-50 pointer-events-none">
-    <div class="py-4 text-center bg-insight-{{ corner_ribbon_config.color }} text-white font-bold shadow-lg ltr:transform-[rotate(45deg)] rtl:transform-[rotate(-45deg)] opacity-85">
+    <div class="py-4 text-center bg-insight-{{ corner_ribbon_config.color }} text-white font-bold insight-shadow-raised ltr:transform-[rotate(45deg)] rtl:transform-[rotate(-45deg)] opacity-85">
       {{ corner_ribbon_config.text }}
     </div>
   </div>
 {% else %}
   <div class="fixed ltr:-right-24 rtl:-left-24 top-16 w-96 z-50 pointer-events-none">
-    <div class="py-4 text-center bg-insight-{{ corner_ribbon_config.color }} text-white font-bold shadow-lg ltr:transform-[rotate(45deg)] rtl:transform-[rotate(-45deg)] opacity-85">
+    <div class="py-4 text-center bg-insight-{{ corner_ribbon_config.color }} text-white font-bold insight-shadow-raised ltr:transform-[rotate(45deg)] rtl:transform-[rotate(-45deg)] opacity-85">
       {{ corner_ribbon_config.text }}
     </div>
   </div>

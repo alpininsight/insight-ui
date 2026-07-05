@@ -8,7 +8,7 @@
 <nav
   role="navigation"
   aria-label="{% trans 'Main navigation' %}"
-  class="{% if fixed %}fixed{% else %}absolute{% endif %} w-full h-16 z-50 bg-[var(--insight-nav-bg)] dark:bg-[var(--insight-nav-bg-dark)] border-b border-[var(--insight-nav-border)] dark:border-[var(--insight-nav-border-dark)] shadow-[var(--insight-nav-shadow)] px-4 md:px-16"
+  class="{% if fixed %}fixed{% else %}absolute{% endif %} w-full h-16 z-50 bg-[var(--insight-nav-bg)] dark:bg-[var(--insight-nav-bg-dark)] border-b border-[var(--insight-nav-border)] dark:border-[var(--insight-nav-border-dark)] insight-nav-shadow px-4 md:px-16"
 >
   {# Desktop Navigation #}
   <div class="flex flex-wrap lg:flex-nowrap justify-between items-center gap-1 h-full">
@@ -46,7 +46,7 @@
     </div>
 
     <div id="navigation-menu" class="hidden lg:block h-full w-full lg:w-fit grow lg:py-3">
-      <div class="flex flex-col lg:flex-row justify-end gap-6 w-full lg:h-full p-2 lg:p-0 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 shadow-lg lg:shadow-none lg:bg-transparent lg:border-none rounded">
+      <div class="flex flex-col lg:flex-row justify-end gap-6 w-full lg:h-full p-2 lg:p-0 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 insight-shadow-raised lg:insight-shadow-none lg:bg-transparent lg:border-none rounded">
         {# Main-Navigation #}
         {% if navbar_config.links %}
           <ul class="flex flex-col lg:flex-row justify-items-stretch lg:items-center w-full lg:w-fit">
@@ -56,7 +56,7 @@
                   {% if link.url %}
                     <a
                       href="{{ link.url }}"
-                      class="flex gap-2 h-full whitespace-nowrap text-secondary hover:text-insight-text-link px-4 py-2 text-sm transition-colors duration-200 rounded-[var(--insight-nav-item-radius)] {% if link.active %}shadow-[var(--insight-nav-item-active-ring)]{% else %}shadow-[var(--insight-nav-item-ring)]{% endif %}"
+                      class="flex gap-2 h-full whitespace-nowrap text-secondary hover:text-insight-text-link px-4 py-2 text-sm transition-colors duration-200 rounded-[var(--insight-nav-item-radius)] {% if link.active %}insight-nav-item-shadow-active{% else %}insight-nav-item-shadow{% endif %}"
                       {% if link.active %}aria-current="page"{% endif %}
                       {% if link.external %}target="_blank" rel="noopener"{% endif %}
                     >
@@ -76,7 +76,7 @@
                           {% icon name="chevron_down" size="s" %}
                         {% endif %}
                       </button>
-                      <div id="{{ link.dropdown.tag_id }}" class="hidden bg-white border border-gray-300 dark:border-0 rounded-sm shadow-lg">
+                      <div id="{{ link.dropdown.tag_id }}" class="hidden bg-white border border-gray-300 dark:border-0 rounded-sm insight-shadow-overlay">
                         <div class="py-1">
                           {% for item in link.dropdown.items %}
                             <a

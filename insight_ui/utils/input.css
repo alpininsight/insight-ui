@@ -69,8 +69,12 @@
     --insight-radius-lg: var(--radius-lg);
     --insight-radius-pill: 9999px;
 
+    --insight-shadow-none: none;
+    --insight-shadow-subtle: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); /* shadow-sm */
     --insight-shadow-surface: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); /* shadow-md */
-    --insight-shadow-overlay: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); /* shadow-lg */
+    --insight-shadow-raised: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); /* shadow-lg */
+    --insight-shadow-overlay: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); /* shadow-xl */
+    --insight-shadow-focus: 0 0 0 2px var(--color-insight-primary);
 
     --insight-state-danger-surface: var(--color-red-50);
     --insight-state-danger-surface-dark: color-mix(in srgb, var(--color-red-900) 20%, transparent);
@@ -117,7 +121,7 @@
     --insight-nav-bg-dark: var(--insight-surface-raised-dark);
     --insight-nav-border: var(--insight-border-subtle);
     --insight-nav-border-dark: var(--insight-border-subtle-dark);
-    --insight-nav-shadow: var(--insight-shadow-overlay);
+    --insight-nav-shadow: var(--insight-shadow-raised);
     --insight-nav-item-radius: 0px;
     --insight-nav-item-ring: none;
     --insight-nav-item-active-ring: none;
@@ -403,6 +407,42 @@
     }
     [data-theme="dark"] .insight-surface-raised {
         background-color: var(--insight-surface-raised-dark);
+    }
+
+    .insight-shadow-none {
+        box-shadow: var(--insight-shadow-none);
+    }
+    .insight-shadow-subtle {
+        box-shadow: var(--insight-shadow-subtle);
+    }
+    .insight-shadow-surface {
+        box-shadow: var(--insight-shadow-surface);
+    }
+    .insight-shadow-raised {
+        box-shadow: var(--insight-shadow-raised);
+    }
+    .insight-shadow-overlay {
+        box-shadow: var(--insight-shadow-overlay);
+    }
+    .insight-hover-shadow-raised:hover {
+        box-shadow: var(--insight-shadow-raised);
+    }
+    .insight-hover-shadow-overlay:hover {
+        box-shadow: var(--insight-shadow-overlay);
+    }
+    .insight-nav-shadow {
+        box-shadow: var(--insight-nav-shadow);
+    }
+    .insight-nav-item-shadow {
+        box-shadow: var(--insight-nav-item-ring);
+    }
+    .insight-nav-item-shadow-active {
+        box-shadow: var(--insight-nav-item-active-ring);
+    }
+    @media (min-width: 64rem) {
+        .lg\:insight-shadow-none {
+            box-shadow: var(--insight-shadow-none);
+        }
     }
 
     .insight-border-subtle {
@@ -826,7 +866,8 @@
     */
 
     .badge {
-        @apply inline-flex items-center gap-2 rounded-full shadow px-4 py-1.5;
+        @apply inline-flex items-center gap-2 rounded-full px-4 py-1.5;
+        box-shadow: var(--insight-shadow-subtle);
     }
 
     /* Badge-Size */
@@ -878,11 +919,13 @@
     */
 
     .component-container {
-        @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded shadow-md;
+        @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded;
+        box-shadow: var(--insight-shadow-surface);
     }
 
     .example-container {
-        @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow px-8 py-16 my-12;
+        @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-8 py-16 my-12;
+        box-shadow: var(--insight-shadow-subtle);
     }
 
     .info-container {
@@ -900,7 +943,8 @@
     }
 
     .input {
-        @apply w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm shadow-sm text-sm focus:ring-2 focus:ring-insight-primary focus:border-insight-primary bg-white dark:bg-gray-700 dark:text-white transition-colors duration-200;
+        @apply w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm text-sm focus:ring-2 focus:ring-insight-primary focus:border-insight-primary bg-white dark:bg-gray-700 dark:text-white transition-colors duration-200;
+        box-shadow: var(--insight-shadow-subtle);
     }
 
     .slider-wrapper {
