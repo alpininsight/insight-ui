@@ -2,7 +2,7 @@
 
 <div class="group relative w-72 perspective-distant">
     <div class="relative size-full transform-3d group-hover:rotate-y-180 transition-transform duration-500">
-        <div class="flex flex-col overflow-hidden size-full bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 shadow-lg rounded backface-hidden">
+        <div class="flex flex-col overflow-hidden size-full bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 insight-shadow-raised rounded backface-hidden">
             <img class="w-full backface-hidden" src="{{ flip_card_config.image.url }}" alt="{{ flip_card_config.image.alt }}">
 
             {# Title and description #}
@@ -33,7 +33,7 @@
                 {% endfor %}
             </div>
         </div>
-        <div class="absolute inset-0 flex flex-col overflow-hidden size-full bg-gray-50 dark:bg-gray-700 border-gray-100 dark:border-none shadow-lg rounded rotate-y-180 backface-hidden">
+        <div class="absolute inset-0 flex flex-col overflow-hidden size-full bg-gray-50 dark:bg-gray-700 border-gray-100 dark:border-none insight-shadow-raised rounded rotate-y-180 backface-hidden">
             <div class="flex justify-center items-center h-full p-4">
                 <div class="text-lg">{{ flip_card_config.back_content|safe }}</div>
             </div>

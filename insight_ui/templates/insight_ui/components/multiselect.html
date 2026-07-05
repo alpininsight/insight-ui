@@ -14,7 +14,7 @@
             <input id="{{ multiselect_config.name }}-search" type="text" class="search flex-1 outline-none text-sm min-w-[60px] placeholder-gray-400" placeholder={% trans "Type to search..." %} aria-label={% trans "Search {{ multiselect_config.label }}" %} />
         </div>
         <span class="ml-auto text-gray-400 text-xs info"></span>
-        <div id="{{ multiselect_config.name }}-listbox" role="listbox" class="options hidden absolute mt-1 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg max-h-48 overflow-y-auto z-10">
+        <div id="{{ multiselect_config.name }}-listbox" role="listbox" class="options hidden absolute mt-1 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md insight-shadow-overlay max-h-48 overflow-y-auto z-10">
             {% for item in multiselect_config.options %}
                 <div id="{{ multiselect_config.name }}-opt-{{ forloop.counter }}" role="option" aria-selected="false" tabindex="-1" class="option text-primary px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer">{{ item }}</div>
             {% endfor %}

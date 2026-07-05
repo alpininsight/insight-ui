@@ -5,7 +5,7 @@
   <button
     data-sidebar-target="{{ sidebar_config.side }}"
     aria-label="{% trans 'Open sidebar' %}"
-    class="open-btn fixed top-20 {% if sidebar_config.side == "right" %}ltr:right-4 rtl:left-4{% else %}ltr:left-4 rtl:right-4 rotate-180{% endif %} z-40 text-white bg-insight-primary rounded-full shadow p-2 hover:bg-insight-primary-hover active:bg-insight-primary-active"
+    class="open-btn fixed top-20 {% if sidebar_config.side == "right" %}ltr:right-4 rtl:left-4{% else %}ltr:left-4 rtl:right-4 rotate-180{% endif %} z-40 text-white bg-insight-primary rounded-full insight-shadow-subtle p-2 hover:bg-insight-primary-hover active:bg-insight-primary-active"
   >
     {% icon name="chevron_left" size="s" %}
   </button>
@@ -26,7 +26,7 @@
   <aside
     role="complementary"
     aria-label="{% trans 'Side navigation' %}"
-    class="{% if sidebar_config.static %}{% if sidebar_config.mobile_hidden %}hidden xl:block {% endif %}sticky {% if navbar_fixed %}top-16 h-[calc(100vh-4rem)]{% else %}top-0 h-screen{% endif %}{% else %}fixed h-screen{% endif %} {% if sidebar_config.side == "right" %}ltr:right-0 ltr:border-l rtl:left-0 rtl:border-r{% else %}ltr:left-0 ltr:border-r rtl:right-0 rtl:border-l{% endif %} overflow-y-auto bg-white dark:bg-gray-800 dark:border-gray-600 border-gray-200 shadow-md transition"
+    class="{% if sidebar_config.static %}{% if sidebar_config.mobile_hidden %}hidden xl:block {% endif %}sticky {% if navbar_fixed %}top-16 h-[calc(100vh-4rem)]{% else %}top-0 h-screen{% endif %}{% else %}fixed h-screen{% endif %} {% if sidebar_config.side == "right" %}ltr:right-0 ltr:border-l rtl:left-0 rtl:border-r{% else %}ltr:left-0 ltr:border-r rtl:right-0 rtl:border-l{% endif %} overflow-y-auto bg-white dark:bg-gray-800 dark:border-gray-600 border-gray-200 insight-shadow-surface transition"
     style="width: {{ sidebar_config.sidebar_data.width|default:'18rem' }}"
     data-auto-close="{{ sidebar_config.auto_close|yesno:'true,false' }}"
   >
