@@ -49,6 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Increase h tag font size
 - Add v_align parameter to 'page' component and rename align and justify to v_align and h_align
 - Improve documentation and examples of the 'page', 'vbox', 'hbox', 'spacer' and 'divider'
+- **theme:** Introduce semantic surface tokens
 
 ### Miscellaneous
 
