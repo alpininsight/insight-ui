@@ -2,11 +2,11 @@
 
 from pathlib import Path
 
-
 INPUT_CSS = Path("insight_ui/utils/input.css")
 
 
 def test_radius_role_tokens_are_available() -> None:
+    """Ensure semantic radius tokens remain available in the source stylesheet."""
     css = INPUT_CSS.read_text()
 
     for token in (
@@ -25,6 +25,7 @@ def test_radius_role_tokens_are_available() -> None:
 
 
 def test_radius_role_classes_are_available() -> None:
+    """Ensure semantic radius utility classes remain available."""
     css = INPUT_CSS.read_text()
 
     for class_name in (
