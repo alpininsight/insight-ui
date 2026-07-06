@@ -33,6 +33,18 @@ CONFIG_DEFAULTS: dict[str, Any] = {
 
 
 def _merge_config(defaults: Mapping[str, Any], user_config: Mapping[str, Any]) -> dict[str, Any]:
+    """Deep-merge user configuration into default configuration.
+
+    Nested mappings are merged recursively; scalar values are overwritten.
+
+    Args:
+        defaults: The default configuration mapping.
+        user_config: User-provided configuration to merge in.
+
+    Returns:
+        A new dictionary with user values merged into defaults.
+
+    """
     merged = dict(defaults)
     for key, value in user_config.items():
         if isinstance(merged.get(key), Mapping) and isinstance(value, Mapping):
@@ -43,7 +55,20 @@ def _merge_config(defaults: Mapping[str, Any], user_config: Mapping[str, Any]) -
 
 
 def get_config(attribute_name: str = "") -> object:
-    """Serve insight-ui configuration."""
+    """Retrieve Insight UI configuration from Django settings.
+
+    Merges user-defined settings from ``settings.INSIGHT_UI`` with
+    the library defaults in ``CONFIG_DEFAULTS``.
+
+    Args:
+        attribute_name: Optional key to retrieve a specific configuration
+            value. If empty, returns the entire configuration dictionary.
+
+    Returns:
+        The value for the requested attribute, or a dictionary containing
+        the full merged configuration under the key ``INSIGHT_UI``.
+
+    """
     user_config = cast("Mapping[str, Any]", getattr(settings, "INSIGHT_UI", {}))
     resolved_config = _merge_config(CONFIG_DEFAULTS, user_config)
 

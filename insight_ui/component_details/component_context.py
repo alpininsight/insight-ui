@@ -40,7 +40,18 @@ class ParameterDoc:
 
 
 def format_type(t: object) -> str:  # noqa: PLR0911
-    """Create a readable string representation of the type of 't'."""
+    """Create a readable string representation of a type annotation.
+
+    Handles generic types like list, dict, tuple, Union, and Literal,
+    converting them to human-readable format for documentation.
+
+    Args:
+        t: A type annotation object to format.
+
+    Returns:
+        A human-readable string representation of the type.
+
+    """
     origin = get_origin(t)
 
     if origin is None:
@@ -66,7 +77,18 @@ def format_type(t: object) -> str:  # noqa: PLR0911
 
 
 def _field_to_parameter_details(f: Field) -> ParameterDetails:
-    """Convert a dataclass field to a ParameterDetails object."""
+    """Convert a dataclass field to a ParameterDetails object.
+
+    Extracts name, type, description, default value, and required status
+    from a dataclass field definition.
+
+    Args:
+        f: A dataclass Field object to convert.
+
+    Returns:
+        A ParameterDetails instance containing the field's documentation.
+
+    """
     if f.default is not MISSING:
         default = f.default
     elif f.default_factory is not MISSING:
@@ -86,7 +108,20 @@ def _field_to_parameter_details(f: Field) -> ParameterDetails:
 
 
 def get_dataclass_docs(config: Any, main_config: bool = False) -> list[ParameterDetails]:  # noqa: ANN401
-    """Retrieve parameter documentation from given component config Dataclass."""
+    """Retrieve parameter documentation from a component config dataclass.
+
+    Extracts documentation for all fields defined in the dataclass,
+    optionally including a top-level 'config' parameter entry.
+
+    Args:
+        config: A dataclass type to extract documentation from.
+        main_config: If True, prepends a 'config' parameter entry that
+            references the dataclass itself.
+
+    Returns:
+        A list of ParameterDetails for each field in the dataclass.
+
+    """
     result = []
     if main_config:
         result.append(ParameterDetails("config", config.__name__, _("Dataclass for component configuration."), "None"))
@@ -97,7 +132,19 @@ def get_dataclass_docs(config: Any, main_config: bool = False) -> list[Parameter
 
 
 def _get_nested_dataclass_type(field_type: Any) -> type | None:  # noqa: ANN401, C901
-    """Extract the dataclass type from a field type, handling Optional/Union types and lists."""
+    """Extract a dataclass type from a field type annotation.
+
+    Handles complex type annotations including Optional, Union, and list types
+    to find nested dataclass definitions that need documentation.
+
+    Args:
+        field_type: A type annotation that may contain a nested dataclass.
+
+    Returns:
+        The dataclass type if found, or None if the field type does not
+        contain a dataclass.
+
+    """
     # Check if the type itself is a dataclass
     if is_dataclass(field_type) and isinstance(field_type, type):
         return field_type
@@ -179,7 +226,19 @@ def get_component_parameter_doc(config: Any, _main_config: bool = False) -> list
 
 
 def register_component(component: Component) -> Callable[[ContextBuilder], ContextBuilder]:
-    """Register context method for the specified component."""
+    """Register a context builder function for a component.
+
+    Use as a decorator to register functions that provide context data
+    for component documentation pages. Multiple builders can be registered
+    for the same component; their outputs are merged.
+
+    Args:
+        component: The Component enum member to register the builder for.
+
+    Returns:
+        A decorator that registers the function and returns it unchanged.
+
+    """
 
     def decorator(func: ContextBuilder) -> ContextBuilder:
         COMPONENT_CONTEXT_BUILDERS[component.value].append(func)
@@ -189,7 +248,22 @@ def register_component(component: Component) -> Callable[[ContextBuilder], Conte
 
 
 def get_component_context(component: Component) -> dict:
-    """Serve docs of the specified component."""
+    """Build the complete documentation context for a component.
+
+    Aggregates context from all registered builders, adds related components,
+    and includes parameter documentation from the component's config class.
+
+    Args:
+        component: The Component enum member to build context for.
+
+    Returns:
+        A dictionary containing all context data for rendering the
+        component's documentation page.
+
+    Raises:
+        ValueError: If the component has no registered context builders.
+
+    """
     if component.value not in COMPONENT_CONTEXT_BUILDERS:
         raise ValueError(  # noqa: TRY003
             f"Unknown component: {component.value} accessible components are {COMPONENT_CONTEXT_BUILDERS.keys()}."
@@ -212,7 +286,22 @@ def get_component_context(component: Component) -> dict:
 
 
 def register_demo_context(component: Component) -> Callable[[ContextBuilder], ContextBuilder]:
-    """Register a demo context method for the specified component."""
+    """Register a demo context builder for a component.
+
+    Use as a decorator to register the function that provides context data
+    for rendering component demos. Only one demo builder can be registered
+    per component.
+
+    Args:
+        component: The Component enum member to register the demo builder for.
+
+    Returns:
+        A decorator that registers the function and returns it unchanged.
+
+    Raises:
+        ValueError: If the component already has a registered demo context.
+
+    """
 
     def decorator(func: ContextBuilder) -> ContextBuilder:
         key = component.value
@@ -227,5 +316,14 @@ def register_demo_context(component: Component) -> Callable[[ContextBuilder], Co
 
 
 def get_demo_context(component: Component) -> dict | None:
-    """Serve demo context of the specified component."""
+    """Retrieve the demo context builder for a component.
+
+    Args:
+        component: The Component enum member to get the demo builder for.
+
+    Returns:
+        The registered demo context builder function, or None if no demo
+        context has been registered for this component.
+
+    """
     return DEMO_CONTEXT_BUILDERS.get(component.value)
