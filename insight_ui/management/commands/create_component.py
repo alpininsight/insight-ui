@@ -55,6 +55,18 @@ CATEGORY_TO_INIT_SECTION = {
     "form": "# Forms",
 }
 
+CATEGORY_TO_GIT_MAPPING_SECTION = {
+    "layout": "# Layout",
+    "navigation": "# Navigation",
+    "input": "# Inputs",
+    "popup": "# Popups",
+    "util": "# Utils",
+    "list": "# Lists",
+    "filter": "# Filters",
+    "card": "# Cards",
+    "form": "# Forms",
+}
+
 # Regex pattern for valid component names
 COMPONENT_NAME_PATTERN = re.compile(r"^[a-zA-Z][a-zA-Z0-9 ]*$")
 
@@ -231,9 +243,10 @@ class Command(BaseCommand):
             names (ComponentNames): A dataclass containing all derived name variants.
 
         """
-        enum_name = name.upper().replace(" ", "_").replace("-", "_")
-        slug = name.lower().replace(" ", "_").replace("-", "_")
-        class_name = name.capitalize().replace(" ", "").replace("-", "").replace("_", "")
+        words = re.findall(r"[a-zA-Z0-9]+", name)
+        enum_name = "_".join(word.upper() for word in words)
+        slug = "_".join(word.lower() for word in words)
+        class_name = "".join(word[:1].upper() + word[1:] for word in words)
         return ComponentNames(
             name=name,
             enum_name=enum_name,
@@ -296,7 +309,7 @@ class Command(BaseCommand):
 
         """
         # 1. Add to components.py
-        self._add_to_components_py(base_path, names.enum_name, names.slug, category)
+        self._add_to_components_py(base_path, names.enum_name, names.slug, category, names.config_class_name)
 
         # 2. Add to context files
         context_configs = self._get_context_configs()
@@ -324,6 +337,9 @@ class Command(BaseCommand):
         # 8. Add demo entry to component_demo.html
         self._add_to_component_demo(base_path, names.slug, names.func_name)
 
+        # 9. Add GitHub source links for self-documentation
+        self._add_to_git_path_mapping(base_path, names.slug, names.js_slug, category, needs_js)
+
         self._print_success(names, category, needs_js)
 
     def _get_context_configs(self) -> list[ContextFileConfig]:
@@ -331,7 +347,7 @@ class Command(BaseCommand):
         Return the list of context file configurations.
 
         Defines the configuration for each context file that needs a function added
-        when creating a new component (a11y, demo, description, usage).
+        when creating a new component (a11y, demo, description, usage, parameters).
 
         Returns
         -------
@@ -371,6 +387,28 @@ class Command(BaseCommand):
         {{% {func_name} config={func_name}_config %}}
         \"\"\"
     }}  # TODO({git_user}): Update usage example""",
+            ),
+            ContextFileConfig(
+                file_name="parameter_context.py",
+                func_suffix="parameter_context",
+                decorator="@register_component",
+                return_type="dict[str, list[str]]",
+                template="""{{
+        "params": [
+            ParameterDoc(
+                None,
+                [
+                    ParameterDetails(
+                        "tag_id",
+                        "str",
+                        _("Optional unique ID for JavaScript/CSS targeting."),
+                        "''",
+                    ),
+                ],
+                "",
+            )
+        ]
+    }}  # TODO({git_user}): Add component-specific parameter documentation""",
             ),
         ]
 
@@ -559,7 +597,9 @@ def {full_func_name}() -> {config.return_type}:
         if self._write_file(file_path, new_content):
             self.stdout.write(self.style.SUCCESS(f"  [OK] Added {full_func_name} to {config.file_name}"))
 
-    def _add_to_components_py(self, base_path: Path, enum_name: str, slug: str, category: str) -> None:
+    def _add_to_components_py(
+        self, base_path: Path, enum_name: str, slug: str, category: str, config_class_name: str
+    ) -> None:
         """
         Add enum entry to components.py.
 
@@ -569,6 +609,7 @@ def {full_func_name}() -> {config.return_type}:
             enum_name (str): The enum name of the component (e.g., 'MY_COMPONENT').
             slug (str): The component slug (e.g., 'my_component').
             category (str): The component category (e.g., 'layout', 'input').
+            config_class_name (str): The generated config class name.
 
         """
         file_path = base_path / "component_details" / "components.py"
@@ -580,6 +621,8 @@ def {full_func_name}() -> {config.return_type}:
         if f"{enum_name} = " in content:
             self.stdout.write(f"  [SKIP] Component {enum_name} already exists in components.py")
             return
+
+        content = self._add_config_import(content, config_class_name)
 
         # Find the last entry for this category in the Component enum
         category_upper = category.upper()
@@ -593,14 +636,29 @@ def {full_func_name}() -> {config.return_type}:
             last_match = matches[-1]
             insert_pos = last_match.end()
 
-            # Create new enum entry (without config class for now)
-            new_entry = f'\n    {enum_name} = ("{slug}", ComponentCategory.{category_upper})'
+            new_entry = f'\n    {enum_name} = ("{slug}", ComponentCategory.{category_upper}, {config_class_name})'
 
             new_content = content[:insert_pos] + new_entry + content[insert_pos:]
             if self._write_file(file_path, new_content):
                 self.stdout.write(self.style.SUCCESS(f"  [OK] Added {enum_name} to components.py"))
         else:
             self.stderr.write(self.style.WARNING(f"  [WARN] Could not find category {category} in components.py"))
+
+    def _add_config_import(self, content: str, config_class_name: str) -> str:
+        """Add a config class to the parenthesized ``insight_ui.configs`` import block."""
+        if re.search(rf"^\s+{re.escape(config_class_name)},$", content, re.MULTILINE):
+            return content
+
+        import_pattern = r"(from insight_ui\.configs import \(\n)((?:\s+\w+,\n)+)"
+        match = re.search(import_pattern, content)
+        if not match:
+            return content
+
+        imports = match.group(2).splitlines()
+        imports.append(f"    {config_class_name},")
+        imports = sorted(set(imports), key=str.lower)
+        replacement = match.group(1) + "\n".join(imports) + "\n"
+        return content[: match.start()] + replacement + content[match.end() :]
 
     def _add_to_related_components(self, base_path: Path, enum_name: str, category: str) -> None:
         """
@@ -700,7 +758,7 @@ def {full_func_name}() -> {config.return_type}:
             self.stdout.write(f"  [SKIP] Inclusion tag {func_name} already exists")
             return
 
-        # Find the end of the category section
+        content = self._add_config_import(content, config_class_name)
         section_end = self._find_category_section_end(content, category)
 
         if section_end is None:
@@ -713,7 +771,7 @@ def {full_func_name}() -> {config.return_type}:
         new_tag = f"""@register.inclusion_tag("insight_ui/components/{slug}.html")
 def {func_name}(config: {config_class_name} | None = None, *, tag_id: str | _Unset = UNSET) -> dict[str, Any]:
     \"\"\"Render the {name.lower()} component.\"\"\"
-    config = build_config(WebSocketConfig, config, **{{k: v for k, v in locals().items() if k not in {{"config"}}}})
+    config = build_config({config_class_name}, config, tag_id=tag_id)
     return {{"{func_name}_config": config}}
 
 
@@ -722,6 +780,57 @@ def {func_name}(config: {config_class_name} | None = None, *, tag_id: str | _Uns
         new_content = content[:section_end] + new_tag + content[section_end:]
         if self._write_file(file_path, new_content):
             self.stdout.write(self.style.SUCCESS(f"  [OK] Added {func_name} inclusion tag to insight_tags.py"))
+
+    def _add_to_git_path_mapping(self, base_path: Path, slug: str, js_slug: str, category: str, needs_js: bool) -> None:
+        """Add template and optional script source links to git_path_mapping.py."""
+        file_path = base_path / "component_details" / "git_path_mapping.py"
+        content = self._read_file(file_path)
+        if content is None:
+            return
+
+        section_comment = CATEGORY_TO_GIT_MAPPING_SECTION.get(category, f"# {category.title()}")
+        content = self._add_mapping_entry(
+            content,
+            mapping_name="TEMPLATE_PATHS",
+            section_comment=section_comment,
+            key=slug,
+            value=f'GIT_BASE_FILE + "{slug}.html"',
+        )
+        if needs_js:
+            content = self._add_mapping_entry(
+                content,
+                mapping_name="SCRIPT_PATHS",
+                section_comment=section_comment,
+                key=slug,
+                value=f'GIT_BASE_SCRIPT_FILE + "insight-ui-{js_slug}.js"',
+            )
+
+        if self._write_file(file_path, content):
+            self.stdout.write(self.style.SUCCESS(f"  [OK] Updated git_path_mapping.py for {slug}"))
+
+    def _add_mapping_entry(self, content: str, *, mapping_name: str, section_comment: str, key: str, value: str) -> str:
+        """Insert a dict entry in a documented section when the key is not present."""
+        mapping_start = content.find(f"{mapping_name} = {{")
+        if mapping_start == -1:
+            return content
+
+        mapping_end = content.find("\n}", mapping_start)
+        if mapping_end == -1:
+            return content
+
+        mapping_content = content[mapping_start:mapping_end]
+        if re.search(rf'^\s+"{re.escape(key)}":', mapping_content, re.MULTILINE):
+            return content
+
+        section_start = content.find(f"    {section_comment}", mapping_start, mapping_end)
+        if section_start == -1:
+            insert_pos = mapping_end
+        else:
+            next_section = content.find("\n    # ", section_start + 1, mapping_end)
+            insert_pos = next_section if next_section != -1 else mapping_end
+
+        new_entry = f'    "{key}": {value},\n'
+        return content[:insert_pos] + new_entry + content[insert_pos:]
 
     def _create_javascript(self, base_path: Path, js_slug: str, class_name: str, slug: str, git_user: str) -> None:
         """
