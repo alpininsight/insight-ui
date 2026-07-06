@@ -54,8 +54,7 @@ class Component(Enum):
     content = components_file.read_text(encoding="utf-8")
     assert "    DeveloperAccessCardConfig," in content
     assert (
-        '    DEVELOPER_ACCESS_CARD = ("developer_access_card", '
-        "ComponentCategory.CARD, DeveloperAccessCardConfig)"
+        '    DEVELOPER_ACCESS_CARD = ("developer_access_card", ComponentCategory.CARD, DeveloperAccessCardConfig)'
     ) in content
 
 
@@ -148,7 +147,4 @@ SCRIPT_PATHS = {
     )
 
     assert '"developer_access_card": GIT_BASE_FILE + "developer_access_card.html",' in content
-    assert (
-        '"developer_access_card": GIT_BASE_SCRIPT_FILE + "insight-ui-developer-access-card.js",'
-        in content
-    )
+    assert '"developer_access_card": GIT_BASE_SCRIPT_FILE + "insight-ui-developer-access-card.js",' in content

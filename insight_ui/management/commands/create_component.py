@@ -781,9 +781,7 @@ def {func_name}(config: {config_class_name} | None = None, *, tag_id: str | _Uns
         if self._write_file(file_path, new_content):
             self.stdout.write(self.style.SUCCESS(f"  [OK] Added {func_name} inclusion tag to insight_tags.py"))
 
-    def _add_to_git_path_mapping(
-        self, base_path: Path, slug: str, js_slug: str, category: str, needs_js: bool
-    ) -> None:
+    def _add_to_git_path_mapping(self, base_path: Path, slug: str, js_slug: str, category: str, needs_js: bool) -> None:
         """Add template and optional script source links to git_path_mapping.py."""
         file_path = base_path / "component_details" / "git_path_mapping.py"
         content = self._read_file(file_path)
@@ -810,9 +808,7 @@ def {func_name}(config: {config_class_name} | None = None, *, tag_id: str | _Uns
         if self._write_file(file_path, content):
             self.stdout.write(self.style.SUCCESS(f"  [OK] Updated git_path_mapping.py for {slug}"))
 
-    def _add_mapping_entry(
-        self, content: str, *, mapping_name: str, section_comment: str, key: str, value: str
-    ) -> str:
+    def _add_mapping_entry(self, content: str, *, mapping_name: str, section_comment: str, key: str, value: str) -> str:
         """Insert a dict entry in a documented section when the key is not present."""
         mapping_start = content.find(f"{mapping_name} = {{")
         if mapping_start == -1:
