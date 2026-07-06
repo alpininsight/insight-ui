@@ -59,6 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Regenerate minified stylesheet
 - Fix merge issues
 - Regenerate minfied stylesheet
+- Linting
 
 ### Refactoring
 
