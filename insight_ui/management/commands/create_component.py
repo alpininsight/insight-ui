@@ -676,12 +676,29 @@ def {full_func_name}() -> {config.return_type}:
             self.stdout.write(f"  [SKIP] Template {slug}.html already exists")
             return
 
+        container_classes = " ".join(
+            (
+                "insight-surface-base",
+                "insight-border-default",
+                "rounded-[var(--insight-radius-md)]",
+                "border",
+                "p-4",
+                "text-insight-text-primary",
+                "dark:text-insight-text-primary-dark",
+            )
+        )
+        placeholder_classes = " ".join(
+            (
+                "text-insight-text-secondary",
+                "dark:text-insight-text-secondary-dark",
+            )
+        )
         template_content = f"""{{% load insight_tags %}}
 
 <!-- {name} Component -->
-<div class="text-primary">
+<div class="{container_classes}">
     <!-- TODO({git_user}): Implement {name} component -->
-    <p>{name} component placeholder</p>
+    <p class="{placeholder_classes}">{name} component placeholder</p>
 </div>
 """
         if self._write_file(template_path, template_content):

@@ -1,5 +1,6 @@
 """Tests for the component scaffold management command."""
 
+import re
 from pathlib import Path
 
 from insight_ui.management.commands.create_component import Command
@@ -118,6 +119,25 @@ def test_context_configs_include_parameter_documentation() -> None:
     file_names = {config.file_name for config in command._get_context_configs()}
 
     assert "parameter_context.py" in file_names
+
+
+def test_create_template_uses_current_semantic_tokens(tmp_path: Path) -> None:
+    """Verify scaffolded templates do not reintroduce legacy token aliases."""
+    command = Command()
+    template_dir = tmp_path / "templates" / "insight_ui" / "components"
+    template_dir.mkdir(parents=True)
+
+    command._create_template(tmp_path, "developer_access_card", "Developer Access Card", "Test User")
+
+    content = (template_dir / "developer_access_card.html").read_text(encoding="utf-8")
+    class_tokens = {token for class_attr in re.findall(r'class="([^"]+)"', content) for token in class_attr.split()}
+
+    assert "text-primary" not in class_tokens
+    assert "insight-surface-base" in class_tokens
+    assert "insight-border-default" in class_tokens
+    assert "text-insight-text-primary" in class_tokens
+    assert "text-insight-text-secondary" in class_tokens
+    assert "rounded-[var(--insight-radius-md)]" in class_tokens
 
 
 def test_add_mapping_entry_adds_template_and_script_links() -> None:
