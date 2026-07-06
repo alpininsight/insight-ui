@@ -1,3 +1,5 @@
+"""Tests for pagination utilities."""
+
 import pytest
 from django.core.paginator import Page
 from insight_ui.utils.pagination import get_page
@@ -25,7 +27,7 @@ def test_get_page_last_page_with_custom_items_per_page(sample_data: list) -> Non
     """Test page numbers of the last page with custom item count."""
     page, _ = get_page(sample_data, page=5, items_per_page=20)
     assert page.number == 5  # noqa: PLR2004
-    # Page 5 contains items 81–100
+    # Page 5 contains items 81-100
     assert page.object_list == list(range(81, 101))
 
 
@@ -36,7 +38,7 @@ def test_neighbor_links_with_custom_items_per_page(sample_data: list) -> None:
     """Test neighbor page generation at the beginning of the list."""
     # 100 items, 20 per page -> 5 pages
     _, links = get_page(sample_data, page=3, items_per_page=20, max_neighbor_pages=4)
-    # half = 2 → Pages 1–5, but total pages = 5 → all pages
+    # half = 2 -> Pages 1-5, but total pages = 5 -> all pages
     assert links == [1, 2, 3, 4, 5]
 
 
@@ -44,7 +46,7 @@ def test_neighbor_links_small_items_per_page(sample_data: list) -> None:
     """Test neighbor page generation in the middle of the list."""
     # items_per_page = 5 → 20 pages
     _, links = get_page(sample_data, page=10, items_per_page=5, max_neighbor_pages=6)
-    # 6 neighbors each side of page 10 → Pages 4–16
+    # 6 neighbors each side of page 10 -> Pages 4-16
     assert links == [1, -1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, -1, 20]
 
 
@@ -53,7 +55,7 @@ def test_neighbor_links_small_items_per_page(sample_data: list) -> None:
 
 def test_small_dataset_less_than_one_page() -> None:
     """Test with a data set that is so small that it only results in a single page."""
-    data = list(range(0, 8))
+    data = list(range(8))
     page, links = get_page(data, page=1, items_per_page=10)
     assert page.number == 1
     assert links == [1]  # only one page

@@ -1,7 +1,5 @@
 """Tests for the radio_block component."""
 
-# ruff: noqa: E501
-
 from bs4 import BeautifulSoup
 from insight_ui.component_details.demo_context import get_radio_block_context
 

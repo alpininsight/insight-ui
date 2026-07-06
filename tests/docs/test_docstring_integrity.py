@@ -2,21 +2,24 @@ from dataclasses import fields
 
 import pytest
 from django.utils.translation import activate
-from docstring_parser import parse
+from docstring_parser import DocstringStyle, parse
+
 from insight_ui import configs
 
 
 def validate_config_docs(cls) -> None:  # noqa: ANN001
-    """
-    Verify that all members of the component Config Dataclass are documented consistently.
+    """Verify that all members of the component Config Dataclass are documented consistently.
 
     To ensure consistent documentation, the following is checked:
     - A docstring is present for each member.
     - metadata["doc"] is present for each member.
     - The description is exactly the same for both (for consistency).
+
+    Args:
+        cls: The dataclass config class to validate.
     """
-    parsed = parse(cls.__doc__ or "")
-    doc_params = {param.arg_name: (param.description or "").strip() for param in parsed.params}
+    parsed = parse(cls.__doc__ or "", style=DocstringStyle.GOOGLE)
+    doc_params = {attr.arg_name: (attr.description or "").strip() for attr in parsed.meta if attr.args[0] == "attribute"}
     field_names = {field.name for field in fields(cls)}
 
     # Verify that every field is documented

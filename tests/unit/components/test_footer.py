@@ -1,7 +1,5 @@
 """Tests for the footer component."""
 
-# ruff: noqa: E501
-
 from bs4 import BeautifulSoup
 from django.urls import reverse_lazy
 from insight_ui.configs.base import IconConfig
@@ -53,7 +51,7 @@ class TestFooter(TemplateTagsTestCase):
         # --- Assert: links ---
         link_elements = soup.select("ul li a")
         assert len(link_elements) == 3  # noqa: PLR2004
-        for link, el in zip(footer_data.links, link_elements):
+        for link, el in zip(footer_data.links, link_elements, strict=True):
             assert el.get("href") == "/"
             assert link.text in el.text
 

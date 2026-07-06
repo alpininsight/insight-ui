@@ -1,3 +1,5 @@
+"""Tests for asset URL resolution."""
+
 from http import HTTPStatus
 
 import pytest

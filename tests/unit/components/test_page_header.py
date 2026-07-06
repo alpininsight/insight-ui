@@ -7,5 +7,3 @@ from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
 class TestPageHeader(TemplateTagsTestCase):
     """Test suite for the page_header component."""
-
-    pass

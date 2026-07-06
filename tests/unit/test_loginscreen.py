@@ -1,3 +1,5 @@
+"""Tests for login screen component rendering."""
+
 import pytest
 from django.template.loader import render_to_string
 from django.utils.translation import activate

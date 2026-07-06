@@ -8,11 +8,13 @@ from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import MISSING, fields, is_dataclass, replace
 from difflib import HtmlDiff, ndiff, unified_diff
 from types import UnionType
-from typing import Any, Final, Literal, TypeVar, get_args, get_origin, get_type_hints
+from typing import TYPE_CHECKING, Any, Final, Literal, TypeVar, get_args, get_origin, get_type_hints
 
 from django import template
-from django.core.paginator import Page
 from django.templatetags.static import static
+
+if TYPE_CHECKING:
+    from django.core.paginator import Page
 from django.utils.functional import Promise
 from django.utils.safestring import SafeString, mark_safe
 from django.utils.translation import gettext as _
@@ -109,7 +111,15 @@ T = TypeVar("T")
 
 
 def _resolve_asset_url(value: object) -> str:
-    """Resolve static asset paths while preserving absolute, root-relative, and data URLs."""
+    """Resolve static asset paths while preserving absolute, root-relative, and data URLs.
+
+    Args:
+        value: The asset path or URL to resolve.
+
+    Returns:
+        The resolved URL, or empty string if value is falsy.
+
+    """
     if not value:
         return ""
 
@@ -121,7 +131,15 @@ def _resolve_asset_url(value: object) -> str:
 
 
 def ensure_list(value: str | Iterable[str] | None) -> list[str]:
-    """Take a string or a list of strings and return in both cases a list of strings."""
+    """Take a string or a list of strings and return in both cases a list of strings.
+
+    Args:
+        value: A string, iterable of strings, or None.
+
+    Returns:
+        A list of strings, empty list if value is None.
+
+    """
     if value is None:
         return []
 
@@ -132,19 +150,45 @@ def ensure_list(value: str | Iterable[str] | None) -> list[str]:
 
 
 def _is_dataclass_type(annotation: object) -> bool:
-    """Return whether a type annotation directly describes a dataclass config."""
+    """Return whether a type annotation directly describes a dataclass config.
+
+    Args:
+        annotation: The type annotation to check.
+
+    Returns:
+        True if annotation is a dataclass type, False otherwise.
+
+    """
     return isinstance(annotation, type) and is_dataclass(annotation)
 
 
 def _coerce_mapping_to_config[T](cls: type[T], value: Mapping[str, Any]) -> T:
-    """Create a dataclass config from a mapping, including nested config values."""
+    """Create a dataclass config from a mapping, including nested config values.
+
+    Args:
+        cls: The dataclass type to instantiate.
+        value: The mapping of field names to values.
+
+    Returns:
+        An instance of the dataclass with coerced values.
+
+    """
     type_hints = get_type_hints(cls)
     coerced_values = {key: _coerce_config_value(item, type_hints.get(key, Any)) for key, item in value.items()}
     return cls(**coerced_values)
 
 
 def _coerce_sequence_to_config(value: Sequence[Any], annotation: object) -> list[Any]:
-    """Convert list-like config values according to their annotated item type."""
+    """Convert list-like config values according to their annotated item type.
+
+    Args:
+        value: The sequence to convert.
+        annotation: The type annotation describing the expected item type.
+
+    Returns:
+        A list with items coerced to the annotated type.
+
+    """
     origin = get_origin(annotation)
     if origin in (list, Sequence):
         args = get_args(annotation)
@@ -161,7 +205,15 @@ def _coerce_sequence_to_config(value: Sequence[Any], annotation: object) -> list
 
 
 def _expects_sequence_config(annotation: object) -> bool:
-    """Return whether an annotation expects a list-like config value."""
+    """Return whether an annotation expects a list-like config value.
+
+    Args:
+        annotation: The type annotation to check.
+
+    Returns:
+        True if annotation expects a sequence, False otherwise.
+
+    """
     origin = get_origin(annotation)
     if origin in (list, Sequence):
         return True
@@ -173,7 +225,16 @@ def _expects_sequence_config(annotation: object) -> bool:
 
 
 def _coerce_config_value(value: Any, annotation: object) -> Any:  # noqa: ANN401
-    """Coerce mapping and sequence values into annotated dataclass config types."""
+    """Coerce mapping and sequence values into annotated dataclass config types.
+
+    Args:
+        value: The value to coerce.
+        annotation: The target type annotation.
+
+    Returns:
+        The coerced value, or unchanged if no coercion applies.
+
+    """
     origin = get_origin(annotation)
 
     if isinstance(value, Mapping):
@@ -196,16 +257,23 @@ def _coerce_config_value(value: Any, annotation: object) -> Any:  # noqa: ANN401
 
 
 def build_config[T](cls: type[T], config: T | None = None, **kwargs: Any) -> T:  # noqa: ANN401
-    """
-    Create or update a dataclass instance.
+    """Create or update a dataclass instance.
 
-    Parameters with value UNSET are ignored.
+    Parameters with value UNSET are ignored. If config is None, creates a new
+    instance and validates required fields. If config is given, returns a copy
+    with provided overrides applied.
 
-    If config is None:
-        Creates a new instance and validates required fields.
+    Args:
+        cls: The dataclass type to create or update.
+        config: An existing config instance to update, or None to create new.
+        **kwargs: Field values to set or override.
 
-    If config is given:
-        Returns a copy with provided overrides applied.
+    Returns:
+        A new or updated dataclass instance.
+
+    Raises:
+        ValueError: If required fields are missing when creating a new instance.
+
     """
     overrides = {key: value for key, value in kwargs.items() if value is not UNSET}
 
@@ -257,7 +325,7 @@ def icon(
     color: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render specified icon with given size."""
-    config = build_config(IconConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(IconConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"icon_config": config}
 
 
@@ -276,7 +344,7 @@ def page_header(
     description: str | list[str] | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a page header in the base template."""
-    config = build_config(PageHeaderConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(PageHeaderConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     config.description = ensure_list(config.description)
 
     return {"page_header_config": config}
@@ -292,7 +360,7 @@ def article(
     title: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render an article in newspaper style with a multi-column layout."""
-    config = build_config(ArticleConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(ArticleConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"article_config": config}
 
 
@@ -309,7 +377,7 @@ def hero(
     badge_config: BadgeConfig | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a hero section with optional background image."""
-    config = build_config(HeroConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(HeroConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"hero_config": config}
 
 
@@ -342,7 +410,7 @@ def sidebar(
     mobile_hidden: bool | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a configurable page navigation."""
-    config = build_config(SidebarConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(SidebarConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {
         "sidebar_config": config,
         "sidebar_data": config.sidebar_data,
@@ -365,7 +433,7 @@ def breadcrumbs(
     config: BreadcrumbsConfig | None = None, *, items: list[BreadcrumbItemConfig] | None | _Unset = UNSET
 ) -> dict[str, Any]:
     """Render breadcrumb navigation."""
-    config = build_config(BreadcrumbsConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(BreadcrumbsConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"items": config.items, "htmx": config.htmx}
 
 
@@ -374,7 +442,7 @@ def stepper(
     config: StepperConfig | None = None, *, items: list[StepperItemConfig] | None | _Unset = UNSET
 ) -> dict[str, Any]:
     """Render a graphical representation of process steps."""
-    config = build_config(StepperConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(StepperConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"items": config.items}
 
 
@@ -389,7 +457,7 @@ def minimal_stepper(
     icon_size: Literal["xs", "s", "m", "l", "xl"] | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a compact graphical representation of process steps."""
-    config = build_config(MinimalStepperConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(MinimalStepperConfig, config, **{k: v for k, v in locals().items() if k != "config"})
 
     # Generate items from step_count if not provided
     if not config.items and config.step_count > 0:
@@ -410,7 +478,7 @@ def bullet_point_list(
     config: BulletPointListConfig | None = None, *, items: list[BulletPointItemConfig] | None | _Unset = UNSET
 ) -> dict[str, Any]:
     """Render a graphical representation of a bullet point list."""
-    config = build_config(BulletPointListConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(BulletPointListConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"items": config.items, "htmx": config.htmx}
 
 
@@ -457,8 +525,7 @@ def button(
     extra_classes: str | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
-    """
-    Render the button component.
+    """Render the button component.
 
     Supports data_* kwargs for custom data attributes, e.g.:
         {% button label="Retry" data_progress_retry="" data_retry="retry-btn" %}
@@ -549,7 +616,7 @@ def input_field(
     label: str | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render any <input> field."""
-    config = build_config(InputFieldConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(InputFieldConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"input_config": config}
 
 
@@ -568,7 +635,7 @@ def textarea(
     label: str | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a <textarea> field."""
-    config = build_config(TextareaConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(TextareaConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"textarea_config": config}
 
 
@@ -584,7 +651,7 @@ def checkbox(
     disabled: bool | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a checkbox with label text."""
-    config = build_config(CheckboxConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(CheckboxConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"checkbox_config": config}
 
 
@@ -611,7 +678,7 @@ def radio_group(
     current_value: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a group of radio buttons."""
-    config = build_config(RadioGroupConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(RadioGroupConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"radio_group_config": config}
 
 
@@ -631,7 +698,7 @@ def radio_block(
     current_value: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a group of radio buttons as a block."""
-    config = build_config(RadioBlockConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(RadioBlockConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"radio_block_config": config}
 
 
@@ -654,7 +721,7 @@ def slider(
     value_max: int | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a range slider."""
-    config = build_config(SliderConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(SliderConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"slider_config": config}
 
 
@@ -673,7 +740,7 @@ def toggle(
     method: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a toggle button."""
-    config = build_config(ToggleConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(ToggleConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"toggle_config": config}
 
 
@@ -692,11 +759,11 @@ def select(
     """Render a selection box."""
     if config is None:
         if isinstance(options, list):
-            options = dict(zip(options, options))
+            options = dict(zip(options, options, strict=True))
     elif isinstance(config.options, list):
-        config.options = dict(zip(config.options, config.options))
+        config.options = dict(zip(config.options, config.options, strict=True))
 
-    config = build_config(SelectConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(SelectConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"select_config": config}
 
 
@@ -714,18 +781,18 @@ def multiselect(
     """Render a selection box that allows multiple values."""
     if config is None:
         if isinstance(options, list):
-            options = dict(zip(options, options))
+            options = dict(zip(options, options, strict=True))
     elif isinstance(config.options, list):
-        config.options = dict(zip(config.options, config.options))
+        config.options = dict(zip(config.options, config.options, strict=True))
 
-    config = build_config(MultiselectConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(MultiselectConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"multiselect_config": config}
 
 
 @register.inclusion_tag("insight_ui/components/chat.html")
 def chat(config: ChatConfig | None = None, *, request_url: str | _Unset = UNSET) -> dict[str, Any]:
     """Render a chat with an input line and a place for the response."""
-    config = build_config(ChatConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(ChatConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"request_url": config.request_url}
 
 
@@ -746,7 +813,7 @@ def alert(
     dismissible: bool | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a closable notification."""
-    config = build_config(AlertConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(AlertConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"alert_config": config}
 
 
@@ -761,7 +828,7 @@ def modal(
     width: int | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render an accessible modal dialog."""
-    config = build_config(ModalConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(ModalConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     config.description = ensure_list(config.description)
     return {"modal_config": config}
 
@@ -802,7 +869,7 @@ def copyright_notice(
     rights_text: str | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a reusable copyright and legal notice line."""
-    config = build_config(CopyrightNoticeConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(CopyrightNoticeConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     metadata = [
         {"text": config.source_label or "", "url": ""},
         {"text": config.license_text or "", "url": config.license_url or ""},
@@ -814,17 +881,14 @@ def copyright_notice(
 
 @register.filter
 def diff(a: str, b: str, simple: bool = True) -> str:
-    """
-    Generate a visualization of the differences between two texts.
+    """Generate a visualization of the differences between two texts.
 
     Args:
-    ----
         a: The original version of the text.
         b: The modified version of the text.
         simple: 'True' for a simplified display.
 
     Returns:
-    -------
         The HTML code for the graphical representation of the differences.
 
     """
@@ -902,13 +966,29 @@ CSS_SIZE_PATTERN = re.compile(r"^-?(?:\d+(?:\.\d+)?|\.\d+)(?:px|rem|em|vh|vw|vmi
 
 
 def _looks_like_css_size(value: object) -> bool:
-    """Return true when a positional value is intended as a CSS size."""
+    """Return true when a positional value is intended as a CSS size.
+
+    Args:
+        value: The value to check.
+
+    Returns:
+        True if value looks like a CSS size (e.g., '1rem', '100px'), False otherwise.
+
+    """
     normalized = str(value).strip().lower()
     return normalized in {"auto", "inherit", "initial", "revert", "unset"} or bool(CSS_SIZE_PATTERN.match(normalized))
 
 
 def _normalize_brand_lockup_variant(value: object) -> str:
-    """Normalize public variants and a small set of legacy aliases."""
+    """Normalize public variants and a small set of legacy aliases.
+
+    Args:
+        value: The variant value to normalize.
+
+    Returns:
+        A valid variant name ('main', 'develop', or 'candidate').
+
+    """
     normalized = str(value).strip().lower()
     if normalized in BRAND_LOCKUP_VARIANTS:
         return normalized
@@ -916,7 +996,7 @@ def _normalize_brand_lockup_variant(value: object) -> str:
 
 
 @register.inclusion_tag("insight_ui/components/brand_lockup.html")
-def brand_lockup(  # noqa: PLR0913
+def brand_lockup(
     primary_text: str = "Alpin Insight",
     secondary_text: str = "Solutions",
     logo_position: str = "start",
@@ -988,7 +1068,7 @@ def corner_ribbon(
     color: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a corner ribbon positioned in any browser corner."""
-    config = build_config(CornerRibbonConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(CornerRibbonConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"corner_ribbon_config": config}
 
 
@@ -1015,7 +1095,7 @@ def progress_bar(
     retry_label: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a simple progress bar."""
-    config = build_config(ProgressBarConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(ProgressBarConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"progress_bar_config": config}
 
 
@@ -1029,7 +1109,7 @@ def geo_map(
     datasets: list[GeoMapDatasetConfig] | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render an integrated geographic map."""
-    config = build_config(GeoMapConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(GeoMapConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"map_config": config}
 
 
@@ -1042,7 +1122,7 @@ def bar_chart(
     chart_height: int | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a bar chart with Apache ECharts."""
-    config = build_config(ChartConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(ChartConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"chart_config": config}
 
 
@@ -1055,7 +1135,7 @@ def line_chart(
     chart_height: int | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a line chart with Apache ECharts."""
-    config = build_config(ChartConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(ChartConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"chart_config": config}
 
 
@@ -1069,7 +1149,7 @@ def live_content(
     initial_content: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a container for live updates via HTMX."""
-    config = build_config(LiveContentConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(LiveContentConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     htmx_config = {"request_url": config.request_url, "trigger": f"load, every {config.interval}s", "swap": "innerHTML"}
 
     return {"live_content_config": config, "htmx_config": htmx_config}
@@ -1084,7 +1164,7 @@ def websocket(
     initial_content: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a WebSocket component as a thin wrapper for the HTMX ws extension."""
-    config = build_config(WebSocketConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(WebSocketConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"websocket_config": config}
 
 
@@ -1128,7 +1208,7 @@ def infinite_scroll(
     threshold: int | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a container for infinite scroll."""
-    config = build_config(InfiniteScrollConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(InfiniteScrollConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"infinite_scroll_config": config}
 
 
@@ -1142,7 +1222,7 @@ def pagination(
     ipp_config: PaginationIppConfig | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render pagination with items per page selection."""
-    config = build_config(PaginationConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(PaginationConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"pagination_config": config}
 
 
@@ -1169,7 +1249,7 @@ def search_bar(
     htmx_config: HtmxConfig | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render text input with a button for a search function."""
-    config = build_config(SearchBarConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(SearchBarConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"search_bar_config": config}
 
 
@@ -1183,7 +1263,7 @@ def generic_filter(
     htmx_config: HtmxConfig | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a generic filter consisting of one or more <select> fields."""
-    config = build_config(GenericFilterConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(GenericFilterConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"generic_filter_config": config}
 
 
@@ -1192,7 +1272,7 @@ def query_builder(
     config: QueryBuilderConfig | None = None, *, model_fields: list[QueryBuilderFieldConfig] | None | _Unset = UNSET
 ) -> dict[str, Any]:
     """Render a filter for constructing custom search queries."""
-    config = build_config(QueryBuilderConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(QueryBuilderConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"model_fields": config.model_fields}
 
 
@@ -1214,7 +1294,7 @@ def card(
     actions: list[ButtonConfig] | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a card with an aspect ratio of 16:9."""
-    config = build_config(CardConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(CardConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"card_config": config}
 
 
@@ -1230,7 +1310,7 @@ def app_card(
     actions: list[ButtonConfig] | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a vertically aligned card."""
-    config = build_config(AppCardConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(AppCardConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"app_card_config": config}
 
 
@@ -1248,7 +1328,7 @@ def flip_card(
     back_style: str | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a card that can be rotated 180°."""
-    config = build_config(FlipCardConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(FlipCardConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"flip_card_config": config}
 
 
@@ -1263,7 +1343,7 @@ def carousel(
     items_per_slide: int | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a card carousel."""
-    config = build_config(CardCarouselConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(CardCarouselConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {
         "carousel_config": config,
         "slides_count": range(math.ceil(len(config.carousel_items) / config.items_per_slide))
@@ -1283,7 +1363,7 @@ def image_carousel(
     items_per_slide: int | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render an image carousel."""
-    config = build_config(ImageCarouselConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(ImageCarouselConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {
         "carousel_config": config,
         "slides_count": range(math.ceil(len(config.carousel_items) / config.items_per_slide))
@@ -1303,7 +1383,7 @@ def three_d_carousel(
     carousel_items: Sequence[CarouselItemConfig] | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a 3D version of the carousel component."""
-    config = build_config(ThreeDCarouselConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(ThreeDCarouselConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"carousel_config": config}
 
 
@@ -1317,7 +1397,7 @@ def toggle_view(
     view_radio_config: RadioBlockConfig | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a view of data that can be displayed in various ways."""
-    config = build_config(ToggleViewConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(ToggleViewConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"toggle_view_config": config}
 
 
@@ -1341,5 +1421,5 @@ def form(
     htmx_config: HtmxConfig | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a form with HTMX support."""
-    config = build_config(FormConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(FormConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"form_config": config}

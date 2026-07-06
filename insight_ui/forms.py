@@ -1,3 +1,5 @@
+"""Django form definitions for Insight UI."""
+
 from django import forms
 
 

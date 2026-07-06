@@ -7,5 +7,3 @@ from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
 class TestTooltip(TemplateTagsTestCase):
     """Test suite for the tooltip component."""
-
-    pass

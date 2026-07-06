@@ -1,3 +1,5 @@
+"""Structured logging configuration with structlog."""
+
 import logging
 import os
 

@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 import os
-from pathlib import Path
 from socket import gethostname
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 from django.conf import settings
 from django.db import connections

@@ -7,5 +7,3 @@ from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
 class TestPagination(TemplateTagsTestCase):
     """Test suite for the pagination component."""
-
-    pass

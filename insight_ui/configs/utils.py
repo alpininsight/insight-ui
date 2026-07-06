@@ -10,8 +10,7 @@ from insight_ui.configs.base import IconConfig
 
 @dataclass
 class InfoboxConfig:
-    """
-    Configuration for the infobox component.
+    """Configuration for the infobox component.
 
     Renders a bordered information box (less prominent than alert).
 
@@ -39,8 +38,7 @@ class InfoboxConfig:
 
 @dataclass
 class CopyrightNoticeConfig:
-    """
-    Configuration for the copyright_notice component.
+    """Configuration for the copyright_notice component.
 
     Renders a compact copyright and legal notice line.
 
@@ -78,8 +76,7 @@ class CopyrightNoticeConfig:
 
 @dataclass
 class LogoConfig:
-    """
-    Configuration for the logo component.
+    """Configuration for the logo component.
 
     Renders a brand logo as an image, SVG, or icon.
 
@@ -118,8 +115,7 @@ class LogoConfig:
 
 @dataclass
 class BrandLockupConfig:
-    """
-    Configuration for the brand_lockup component.
+    """Configuration for the brand_lockup component.
 
     Renders a public Insight UI icon plus a two-tone wordmark.
 
@@ -156,8 +152,7 @@ class BrandLockupConfig:
 
 @dataclass
 class CornerRibbonConfig:
-    """
-    Configuration for the corner_ribbon component.
+    """Configuration for the corner_ribbon component.
 
     Renders a decorative diagonal ribbon in a browser corner.
 
@@ -197,8 +192,7 @@ class CornerRibbonConfig:
 
 @dataclass
 class ProgressBarConfig:
-    """
-    Configuration for a simple progress bar with optional auto-update modes.
+    """Configuration for a simple progress bar with optional auto-update modes.
 
     Attributes:
         tag_id: Unique ID for JavaScript/CSS targeting.
@@ -280,8 +274,7 @@ class ProgressBarConfig:
 
 @dataclass
 class GeoMapMarkerConfig:
-    """
-    Configuration for a marker on a geo map.
+    """Configuration for a marker on a geo map.
 
     Attributes:
         title: Marker title/label.
@@ -305,8 +298,7 @@ class GeoMapMarkerConfig:
 
 @dataclass
 class GeoMapDatasetConfig:
-    """
-    Configuration for a dataset layer on a geo map.
+    """Configuration for a dataset layer on a geo map.
 
     Attributes:
         name: Dataset name.
@@ -341,8 +333,7 @@ class GeoMapDatasetConfig:
 
 @dataclass
 class GeoMapConfig:
-    """
-    Configuration for the geo_map component.
+    """Configuration for the geo_map component.
 
     Renders an interactive Leaflet map.
 
@@ -382,8 +373,7 @@ class GeoMapConfig:
 
 @dataclass
 class ChartSeriesConfig:
-    """
-    Configuration for a chart data series.
+    """Configuration for a chart data series.
 
     Attributes:
         name: Series name (shown in legend).
@@ -399,8 +389,7 @@ class ChartSeriesConfig:
 
 @dataclass
 class ChartDatasetConfig:
-    """
-    Configuration for chart data.
+    """Configuration for chart data.
 
     Attributes:
         title: Chart title.
@@ -432,8 +421,7 @@ class ChartDatasetConfig:
 
 @dataclass
 class ChartConfig:
-    """
-    Configuration for chart components (e.g. bar_chart, line_chart).
+    """Configuration for chart components (e.g. bar_chart, line_chart).
 
     Renders a chart with Apache ECharts.
 
@@ -466,8 +454,7 @@ class ChartConfig:
 
 @dataclass
 class LiveContentConfig:
-    """
-    Configuration for the live_content component.
+    """Configuration for the live_content component.
 
     Renders a container that auto-refreshes via HTMX polling.
 
@@ -496,8 +483,7 @@ class LiveContentConfig:
 
 @dataclass
 class WebSocketConfig:
-    """
-    Configuration for the websocket component.
+    """Configuration for the websocket component.
 
     Renders a WebSocket-connected container using HTMX ws extension.
 
@@ -525,8 +511,7 @@ class WebSocketConfig:
 
 @dataclass
 class BadgeConfig:
-    """
-    Configuration for a badge element.
+    """Configuration for a badge element.
 
     Used in hero sections and other components.
 

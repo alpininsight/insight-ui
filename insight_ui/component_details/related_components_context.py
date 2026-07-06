@@ -1,3 +1,5 @@
+"""Related component mappings for cross-referencing documentation."""
+
 from insight_ui.component_details.components import Component as C  # noqa: N817
 
 RELATED_COMPONENTS = {
@@ -76,7 +78,19 @@ RELATED_COMPONENTS = {
 
 
 def get_related_components_context(component: C) -> list[dict[str, str]]:
-    """Serve related components context of the specified component."""
+    """Build context data for related component links.
+
+    Looks up the component in ``RELATED_COMPONENTS`` and returns
+    metadata for rendering cross-reference links in documentation.
+
+    Args:
+        component: The Component enum member to get related components for.
+
+    Returns:
+        A list of dictionaries, each containing ``component_name`` (the
+        enum value) and ``formatted_name`` (human-readable display name).
+
+    """
     return [
         {"component_name": related_component.value, "formatted_name": related_component.formatted_name}
         for related_component in RELATED_COMPONENTS[component]

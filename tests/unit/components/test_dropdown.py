@@ -7,5 +7,3 @@ from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
 class TestDropdown(TemplateTagsTestCase):
     """Test suite for the dropdown component."""
-
-    pass

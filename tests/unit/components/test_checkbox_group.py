@@ -1,7 +1,5 @@
 """Tests for the checkbox_group component."""
 
-# ruff: noqa: E501
-
 from bs4 import BeautifulSoup
 from insight_ui.configs.input import CheckboxGroupConfig, CheckboxItemConfig
 

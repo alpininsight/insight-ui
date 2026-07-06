@@ -7,5 +7,3 @@ from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
 class TestQueryBuilder(TemplateTagsTestCase):
     """Test suite for the query_builder component."""
-
-    pass

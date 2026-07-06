@@ -12,8 +12,7 @@ from insight_ui.configs.list import TableConfig
 
 @dataclass
 class CardConfig:
-    """
-    Configuration for the card component.
+    """Configuration for the card component.
 
     Renders a card with 16:9 aspect ratio (business card style).
 
@@ -46,8 +45,7 @@ class CardConfig:
 
 @dataclass
 class AppCardConfig:
-    """
-    Configuration for the app_card component.
+    """Configuration for the app_card component.
 
     Renders a vertically-oriented card ideal for app/product listings.
 
@@ -82,8 +80,7 @@ class AppCardConfig:
 
 @dataclass
 class FlipCardConfig:
-    """
-    Configuration for the flip_card component.
+    """Configuration for the flip_card component.
 
     Renders a card that rotates 180° on hover to show back content.
 
@@ -120,8 +117,7 @@ class FlipCardConfig:
 
 @dataclass
 class CarouselItemConfig:
-    """
-    Configuration for a carousel item.
+    """Configuration for a carousel item.
 
     Attributes:
         title: Item title.
@@ -143,8 +139,7 @@ class CarouselItemConfig:
 
 @dataclass
 class CardCarouselConfig:
-    """
-    Configuration for the carousel (card carousel) component.
+    """Configuration for the carousel (card carousel) component.
 
     Renders a card carousel with navigation.
 
@@ -178,8 +173,7 @@ class CardCarouselConfig:
 
 @dataclass
 class ImageCarouselItemConfig:
-    """
-    Configuration for an image carousel item.
+    """Configuration for an image carousel item.
 
     Attributes:
         url: Image URL.
@@ -199,8 +193,7 @@ class ImageCarouselItemConfig:
 
 @dataclass
 class ImageCarouselConfig:
-    """
-    Configuration for the image_carousel component.
+    """Configuration for the image_carousel component.
 
     Renders an image-focused carousel.
 
@@ -234,8 +227,7 @@ class ImageCarouselConfig:
 
 @dataclass
 class ThreeDCarouselConfig:
-    """
-    Configuration for the three_d_carousel component.
+    """Configuration for the three_d_carousel component.
 
     Renders items in a 3D circular arrangement.
 
@@ -269,8 +261,7 @@ class ThreeDCarouselConfig:
 
 @dataclass
 class ToggleViewConfig:
-    """
-    Configuration for the toggle_view component.
+    """Configuration for the toggle_view component.
 
     Allows switching between different data views (cards, table, carousel).
 

@@ -7,5 +7,3 @@ from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
 class TestCodeBlock(TemplateTagsTestCase):
     """Test suite for the code_block component."""
-
-    pass

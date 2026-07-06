@@ -7,5 +7,3 @@ from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
 class TestCardCarousel(TemplateTagsTestCase):
     """Test suite for the card_carousel component."""
-
-    pass

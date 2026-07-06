@@ -1,3 +1,5 @@
+"""Tests for sidebar layout rendering."""
+
 from http import HTTPStatus
 
 import pytest

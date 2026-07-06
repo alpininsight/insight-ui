@@ -10,8 +10,7 @@ from insight_ui.configs.input import ButtonConfig
 
 @dataclass
 class AlertConfig:
-    """
-    Configuration for the alert component.
+    """Configuration for the alert component.
 
     Renders a notification/alert box.
 
@@ -46,8 +45,7 @@ class AlertConfig:
 
 @dataclass
 class ModalConfig:
-    """
-    Configuration for the modal component.
+    """Configuration for the modal component.
 
     Renders an accessible modal dialog.
 

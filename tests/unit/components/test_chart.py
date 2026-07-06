@@ -7,5 +7,3 @@ from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
 class TestChart(TemplateTagsTestCase):
     """Test suite for the chart component."""
-
-    pass

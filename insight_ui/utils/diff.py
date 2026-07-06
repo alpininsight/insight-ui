@@ -1,3 +1,5 @@
+"""HTML diff generation utilities."""
+
 file_template = """
 <!DOCTYPE html">
 <html>

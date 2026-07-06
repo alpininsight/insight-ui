@@ -1,3 +1,5 @@
+"""Accessibility documentation context for UI components."""
+
 from django.urls import reverse
 from django.utils.translation import gettext as _
 
