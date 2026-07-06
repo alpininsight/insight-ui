@@ -86,6 +86,22 @@ class TestNavbar(TemplateTagsTestCase):
         assert "absolute" in menu.get("class", [])
         assert "top-full" in menu.get("class", [])
 
+    def test_navbar_mobile_toggle_uses_semantic_icon_button_class(self) -> None:
+        """The mobile navbar toggle uses the semantic nav icon button class."""
+        nav_config = NavbarConfig(NavbarBrandConfig("Insight UI", "/"))
+
+        rendered = self.render_template(
+            "{% load insight_tags %}{% navbar config=nav_config %}", context={"nav_config": nav_config}
+        )
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        trigger = soup.select_one('button[data-insight-collapsible="navigation-menu"]')
+
+        assert trigger is not None
+        assert trigger.get("class") == ["insight-nav-icon-button"]
+        assert "hover:bg-gray-100" not in rendered
+        assert "focus:ring-blue-500" not in rendered
+
     def test_navbar_user_menu_renders_avatar_image_when_configured(self) -> None:
         """Host apps can provide a user avatar URL without replacing the dropdown."""
         nav_config = NavbarConfig(NavbarBrandConfig("Insight UI", "/"), show_usermenu=True)
