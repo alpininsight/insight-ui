@@ -1,3 +1,5 @@
+"""Django context processors for the core application."""
+
 import importlib
 import tomllib
 from functools import lru_cache
@@ -54,6 +56,6 @@ def get_app_version() -> str:
     return f"v{version}" if version else "dev"
 
 
-def project_context(request: HttpRequest) -> dict:
+def project_context(_request: HttpRequest) -> dict:
     """Contains information of the project."""
     return {}

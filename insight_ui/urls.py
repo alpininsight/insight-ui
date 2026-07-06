@@ -1,3 +1,5 @@
+"""URL configuration for Insight UI."""
+
 from django.urls import path
 from django.views.i18n import set_language
 

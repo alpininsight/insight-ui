@@ -1,3 +1,5 @@
+"""GitHub URL mappings for component source files."""
+
 # Base paths
 GIT_BASE_FILE = "https://github.com/alpininsight/insight-ui/blob/develop/insight_ui/templates/insight_ui/components/"
 GIT_BASE_DIR = "https://github.com/alpininsight/insight-ui/tree/develop/insight_ui/templates/insight_ui/components/"

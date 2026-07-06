@@ -10,8 +10,7 @@ from insight_ui.configs.base import HtmxConfig, IconConfig
 
 @dataclass
 class SearchBarConfig:
-    """
-    Configuration for the search_bar component.
+    """Configuration for the search_bar component.
 
     Attributes:
         request_url: URL for search requests.
@@ -38,8 +37,7 @@ class SearchBarConfig:
 
 @dataclass
 class FilterConfig:
-    """
-    Configuration for a single filter in generic_filter.
+    """Configuration for a single filter in generic_filter.
 
     Attributes:
         name: Filter field name.
@@ -71,8 +69,7 @@ class FilterConfig:
 
 @dataclass
 class GenericFilterConfig:
-    """
-    Configuration for the generic_filter component.
+    """Configuration for the generic_filter component.
 
     Renders a filter bar with multiple select elements.
 
@@ -112,8 +109,7 @@ class GenericFilterConfig:
 
 @dataclass
 class QueryBuilderFieldConfig:
-    """
-    Configuration for a field in the query builder.
+    """Configuration for a field in the query builder.
 
     Attributes:
         field: Database field name.
@@ -150,8 +146,7 @@ class QueryBuilderFieldConfig:
 
 @dataclass
 class QueryBuilderConfig:
-    """
-    Configuration for the query_builder component.
+    """Configuration for the query_builder component.
 
     Renders a filter for constructing custom search queries.
 

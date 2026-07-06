@@ -7,5 +7,3 @@ from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
 class TestInfobox(TemplateTagsTestCase):
     """Test suite for the infobox component."""
-
-    pass

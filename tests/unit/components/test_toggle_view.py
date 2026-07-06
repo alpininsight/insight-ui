@@ -7,5 +7,3 @@ from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
 class TestToggleView(TemplateTagsTestCase):
     """Test suite for the toggle_view component."""
-
-    pass

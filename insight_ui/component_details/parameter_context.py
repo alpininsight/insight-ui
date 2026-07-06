@@ -1,3 +1,5 @@
+"""Parameter documentation context for UI components."""
+
 from django.utils.translation import gettext as _
 
 from insight_ui.component_details.component_context import ParameterDetails, ParameterDoc, register_component

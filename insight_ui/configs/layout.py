@@ -10,8 +10,7 @@ from insight_ui.configs.utils import BadgeConfig
 
 @dataclass
 class PageHeaderConfig:
-    """
-    Configuration for the page_header component.
+    """Configuration for the page_header component.
 
     Renders a page header with title and optional description.
 
@@ -34,8 +33,7 @@ class PageHeaderConfig:
 
 @dataclass
 class ArticleConfig:
-    """
-    Configuration for the article component.
+    """Configuration for the article component.
 
     Renders text in newspaper-style multi-column layout.
 
@@ -279,8 +277,7 @@ class GridConfig:
 
 @dataclass
 class HeroConfig:
-    """
-    Configuration for the hero component.
+    """Configuration for the hero component.
 
     Renders a prominent banner section.
 

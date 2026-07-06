@@ -1,4 +1,4 @@
-# websocket_main.py
+"""WebSocket server for real-time communication."""
 
 import asyncio
 import json
@@ -126,6 +126,6 @@ if __name__ == "__main__":
         asyncio.run(main())
     except KeyboardInterrupt:
         logger.info("Server stopped via CTRL+C")
-    except Exception:  # noqa: BLE001
+    except Exception:
         logger.critical("Server crashed unexpectedly", exc_info=DEBUG)
         traceback.print_exc()

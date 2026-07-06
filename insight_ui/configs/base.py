@@ -8,8 +8,7 @@ from django.utils.translation import gettext_lazy as _
 
 @dataclass
 class DataAttrConfig:
-    """
-    Configuration for a custom data attribute.
+    """Configuration for a custom data attribute.
 
     Attributes:
         name: Attribute name without 'data-' prefix.
@@ -28,8 +27,7 @@ class DataAttrConfig:
 
 @dataclass
 class IconConfig:
-    """
-    Configuration for an icon.
+    """Configuration for an icon.
 
     Attributes:
         name: Name of the Insight UI icon.
@@ -51,8 +49,7 @@ class IconConfig:
 
 @dataclass
 class ImageConfig:
-    """
-    Configuration for an image element.
+    """Configuration for an image element.
 
     Attributes:
         url: Static, absolute, root-relative, or data URL for the image.
@@ -80,8 +77,7 @@ class ImageConfig:
 
 @dataclass
 class HtmxConfig:
-    """
-    Configuration for HTMX attributes.
+    """Configuration for HTMX attributes.
 
     Attributes:
         request_url: The URL for the HTMX request (hx-get/hx-post).
@@ -124,8 +120,7 @@ class HtmxConfig:
 
 @dataclass
 class BaseFormFieldConfig:
-    """
-    Base configuration for form field components.
+    """Base configuration for form field components.
 
     This is the base class for all form input components (input, textarea,
     checkbox, select, etc.). It contains common attributes shared by all

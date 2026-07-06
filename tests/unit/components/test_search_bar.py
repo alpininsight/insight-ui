@@ -7,5 +7,3 @@ from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
 class TestSearchBar(TemplateTagsTestCase):
     """Test suite for the search_bar component."""
-
-    pass

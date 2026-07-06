@@ -10,8 +10,7 @@ from insight_ui.configs.base import BaseFormFieldConfig, DataAttrConfig, HtmxCon
 
 @dataclass
 class ButtonConfig:
-    """
-    Configuration for the button component.
+    """Configuration for the button component.
 
     Renders a button element.
 
@@ -122,8 +121,7 @@ class ButtonConfig:
 
 @dataclass
 class InputFieldConfig(BaseFormFieldConfig):
-    """
-    Configuration for the input_field component.
+    """Configuration for the input_field component.
 
     Renders any HTML <input> element with proper styling and accessibility.
 
@@ -191,8 +189,7 @@ class InputFieldConfig(BaseFormFieldConfig):
 
 @dataclass
 class TextareaConfig(BaseFormFieldConfig):
-    """
-    Configuration for the textarea component.
+    """Configuration for the textarea component.
 
     Renders a multi-line text input field.
 
@@ -229,8 +226,7 @@ class TextareaConfig(BaseFormFieldConfig):
 
 @dataclass
 class CheckboxConfig(BaseFormFieldConfig):
-    """
-    Configuration for the checkbox component.
+    """Configuration for the checkbox component.
 
     Renders a single checkbox with label.
 
@@ -262,8 +258,7 @@ class CheckboxConfig(BaseFormFieldConfig):
 
 @dataclass
 class CheckboxItemConfig:
-    """
-    Configuration for a single checkbox within a checkbox group.
+    """Configuration for a single checkbox within a checkbox group.
 
     Attributes:
         tag_id: Unique ID for this checkbox.
@@ -287,8 +282,7 @@ class CheckboxItemConfig:
 
 @dataclass
 class CheckboxGroupConfig:
-    """
-    Configuration for the checkbox_group component.
+    """Configuration for the checkbox_group component.
 
     Renders a group of linked checkboxes with optional constraints.
 
@@ -332,8 +326,7 @@ class CheckboxGroupConfig:
 
 @dataclass
 class DropdownItemConfig:
-    """
-    Configuration for an item within a dropdown menu.
+    """Configuration for an item within a dropdown menu.
 
     Attributes:
         text: Label of the dropdown element.
@@ -355,8 +348,7 @@ class DropdownItemConfig:
 
 @dataclass
 class DropdownConfig:
-    """
-    Configuration for the dropdown component.
+    """Configuration for the dropdown component.
 
     Renders a dropdown menu with a trigger button.
 
@@ -389,8 +381,7 @@ class DropdownConfig:
 
 @dataclass
 class RadioItemConfig:
-    """
-    Configuration for a single radio button within a group.
+    """Configuration for a single radio button within a group.
 
     Attributes:
         tag_id: Optional, unique tag ID for identifying the element in JavaScript.
@@ -414,8 +405,7 @@ class RadioItemConfig:
 
 @dataclass
 class RadioGroupConfig:
-    """
-    Configuration for the radio_group component.
+    """Configuration for the radio_group component.
 
     Renders a group of standard radio buttons.
 
@@ -457,8 +447,7 @@ class RadioGroupConfig:
 
 @dataclass
 class RadioBlockConfig:
-    """
-    Configuration for the radio_block component.
+    """Configuration for the radio_block component.
 
     Renders radio buttons as a compact block that can trigger requests.
 
@@ -524,8 +513,7 @@ class RadioBlockConfig:
 
 @dataclass
 class SliderConfig(BaseFormFieldConfig):
-    """
-    Configuration for the slider (range slider) component.
+    """Configuration for the slider (range slider) component.
 
     Renders a range slider for selecting numeric values.
 
@@ -611,8 +599,7 @@ class SliderConfig(BaseFormFieldConfig):
 
 @dataclass
 class ToggleConfig(BaseFormFieldConfig):
-    """
-    Configuration for the toggle component.
+    """Configuration for the toggle component.
 
     Renders a toggle button or switch.
 
@@ -653,8 +640,7 @@ class ToggleConfig(BaseFormFieldConfig):
 
 @dataclass
 class SelectConfig(BaseFormFieldConfig):
-    """
-    Configuration for the select component.
+    """Configuration for the select component.
 
     Renders a dropdown selection box.
 
@@ -698,8 +684,7 @@ class SelectConfig(BaseFormFieldConfig):
 
 @dataclass
 class MultiselectConfig(BaseFormFieldConfig):
-    """
-    Configuration for the multiselect component.
+    """Configuration for the multiselect component.
 
     Renders a selection box allowing multiple selections with search.
 
@@ -744,8 +729,7 @@ class MultiselectConfig(BaseFormFieldConfig):
 
 @dataclass
 class ChatConfig:
-    """
-    Configuration for the chat component.
+    """Configuration for the chat component.
 
     Renders a chat interface with an input line and a response container.
 

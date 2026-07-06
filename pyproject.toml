@@ -45,7 +45,6 @@ default-groups = ["dev"]
 # For uv and poetry
 [dependency-groups]
 dev = [
-    "isort>=7.0.0",
     "mypy>=1.19.1",
     "django-stubs==5.2.9",
     "ruff>=0.14.14",
@@ -86,10 +85,6 @@ tag-pattern = "v(?P<version>.*)"
 version-file = "insight_ui/_version.py"
 
 
-[tool.isort]
-profile = "black"
-line_length = 88
-
 [tool.mypy]
 python_version = "3.12"
 warn_return_any = true
@@ -117,7 +112,7 @@ omit = [
 [tool.ruff]
 fix = true
 
-src = ["app"]
+src = ["insight_ui", "core", "tests", "utils"]
 
 # Exclude a variety of commonly ignored directories.
 exclude = [
@@ -143,6 +138,7 @@ exclude = [
     "__pypackages__",
     "__pycache__",
     "_build",
+    "_wt",
     "buck-out",
     "build",
     "dist",
@@ -164,9 +160,6 @@ indent-width = 4
 target-version = "py312"
 
 [tool.ruff.lint]
-# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
-# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
-
 select = [
     "I",        # isort
     "N",        # pep8-naming
@@ -175,16 +168,19 @@ select = [
     "E",        # Pycodestyle (Errors)
     "W",        # Pycodestyle (Warnings)
     "UP",       # pyupgrade
+    "B",        # flake8-bugbear
     "ASYNC",    # flake8-async
     "S",        # flake8-bandit
     "BLE",      # flake8-blind-except
     "A",        # flake8-builtins
     "C4",       # flake8-comprehensions
     "DTZ",      # flake8-datetimez
+    "T10",      # flake8-debugger
     "EXE",      # flake8-executable
     "ICN",      # flake8-import-conventions
     "G",        # flake8-logging-format
     "INP",      # flake8-no-pep420
+    "PIE",      # flake8-pie
     "T20",      # flake8-print
     "PT",       # flake8-pytest-style
     "Q",        # flake8-quotes
@@ -196,32 +192,26 @@ select = [
     "TD",       # flake8-todos
     "PGH",      # pygrep-hooks
     "ERA",      # eradicate (commented-out-code)
-    "PD",       # pandas-vet
     "PL",       # Pylint
     "TRY",      # tryceratops
-    "NPY",      # NumPy
     "PERF",     # Perflint
     "LOG",      # flake8-logging
+    "RUF",      # Ruff-specific rules
     "D",        # pydocstyle
     "ANN",      # flake8-annotations
     "DJ",       # flake8-django
+    "FURB",     # refurb (modern Python patterns)
+    "TC",       # flake8-type-checking
     # "FBT",      # flake8-boolean-trap
 ]
 
 ignore = [
-  "ANN101",   # Missing type annotation for `self` in method (deprecated)
   "ANN002",   # Missing type annotation for `*args`
   "ANN003",   # Missing type annotation for `**kwargs`
-  "S101",     # (Bandit) Use of `assert` detected
   "S113",     # (Bandit) Probable use of requests call without timeout
-  "ARG001",   # Unused function argument (common for fixtures)
-  "F811",     # Redefinition of unused `xxx` from fixtures
-  "D203",     # incorrect-blank-line-before-class (incompatible with D211)
+  "D203",     # one-blank-line-before-class (incompatible with D211)
   "D212",     # multi-line-summary-first-line (incompatible with D213)
-  "D100",     # Missing docstring in public module (maybe later)
-  "D104",     # Missing docstring in public package (maybe later)
-  "D400",     # First line should end with a period (unnecessary because of D415)
-  "PTH118",   # prefer pathlib over os.path join (existing code uses os.path)
+  "D400",     # First line should end with a period (superseded by D415)
 ]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
@@ -236,6 +226,12 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 "insight_ui/component_details/**.py" = ["E501"]
 "insight_ui/configs/**.py" = ["E501"]
 "insight_ui/templatetags/insight_tags.py" = ["PLR0913"]
+# Test-specific ignores
+"tests/**/*.py" = [
+    "S101",    # assert is expected in tests
+    "ARG001",  # Unused function arguments (fixtures)
+    "F811",    # Redefinition of unused name (fixtures)
+]
 
 [tool.ruff.format]
 # Like Black, use double quotes for strings.
@@ -245,7 +241,7 @@ quote-style = "double"
 indent-style = "space"
 
 # Like Black, respect magic trailing commas.
-skip-magic-trailing-comma = true
+skip-magic-trailing-comma = false
 
 # Keep test(a, b)
 line-ending = "auto"
@@ -257,26 +253,21 @@ line-ending = "auto"
 # to be opt-out in the future.
 docstring-code-format = false
 
-# Set the line length limit used when formatting code snippets in
-# docstrings.
-#
-# This only has an effect when the `docstring-code-format` setting is
-# enabled.
+# Set the line length limit used when formatting code snippets in docstrings.
+# This only has an effect when the `docstring-code-format` setting is enabled.
 docstring-code-line-length = "dynamic"
-
-[tool.ruff.lint.flake8-import-conventions.aliases]
-numpy = "np"
-pandas = "pd"
 
 [tool.ruff.lint.isort]
 combine-as-imports = true
-#include-trailing-comma = true
 split-on-trailing-comma = false
 
 
 [tool.ruff.lint.flake8-pytest-style]
 fixture-parentheses = false
 mark-parentheses  = false
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
 
 [tool.hatch.build.targets.wheel]
 packages = ["insight_ui"]

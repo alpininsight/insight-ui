@@ -1,6 +1,5 @@
 """Django settings."""
 
-import os
 from pathlib import Path
 from typing import Any
 
@@ -145,7 +144,7 @@ USE_TZ = True
 
 LANGUAGES = [("de", "Deutsch"), ("en", "English")]
 
-LOCALE_PATHS = [os.path.join(BASE_DIR, "insight_ui", "locale")]
+LOCALE_PATHS = [BASE_DIR / "insight_ui" / "locale"]
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = "/static/"
@@ -154,7 +153,7 @@ STATIC_ROOT.mkdir(parents=True, exist_ok=True)
 STATICFILES_DIRS = [BASE_DIR / "insight_ui/static/insight_ui/"]
 
 # Tailwind source file
-TAILWIND_CLI_SRC_CSS = os.path.join(BASE_DIR, "insight_ui/utils/input.css")
+TAILWIND_CLI_SRC_CSS = BASE_DIR / "insight_ui" / "utils" / "input.css"
 
 # WhiteNoise configuration
 STORAGES = {
