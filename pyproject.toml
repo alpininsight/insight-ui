@@ -138,6 +138,7 @@ exclude = [
     "__pypackages__",
     "__pycache__",
     "_build",
+    "_wt",
     "buck-out",
     "build",
     "dist",

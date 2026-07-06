@@ -1,3 +1,5 @@
+"""Tests for the component scaffold management command."""
+
 from pathlib import Path
 
 from insight_ui.management.commands.create_component import Command
