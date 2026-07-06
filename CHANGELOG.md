@@ -52,6 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add v_align parameter to 'page' component and rename align and justify to v_align and h_align
 - Improve documentation and examples of the 'page', 'vbox', 'hbox', 'spacer' and 'divider'
 - **theme:** Introduce semantic surface tokens
+- **navbar:** Introduce semantic icon button token
 
 ### Miscellaneous
 
@@ -60,6 +61,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Regenerate minified stylesheet
 - Fix merge issues
 - Regenerate minfied stylesheet
+- **navbar:** Apply formatter output
 - Linting
 
 ### Refactoring
