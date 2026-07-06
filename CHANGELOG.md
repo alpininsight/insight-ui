@@ -58,6 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **user-dropdown:** Introduce semantic panel tokens
 - **progress-bar:** Introduce semantic track tokens
 - **chat:** Introduce semantic response bubble tokens
+- **table:** Introduce semantic surface tokens
 
 ### Miscellaneous
 
