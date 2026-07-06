@@ -56,6 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **navbar:** Introduce semantic icon button token
 - **sidebar:** Introduce semantic icon button token
 - **user-dropdown:** Introduce semantic panel tokens
+- **progress-bar:** Introduce semantic track tokens
 
 ### Miscellaneous
 
@@ -66,6 +67,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Regenerate minfied stylesheet
 - **navbar:** Apply formatter output
 - Linting
+- Regenerate minified stylesheet
 - Regenerate minified stylesheet
 - Regenerate minified stylesheet
 
