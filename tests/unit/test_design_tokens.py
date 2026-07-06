@@ -2,7 +2,6 @@
 
 from pathlib import Path
 
-
 INPUT_CSS = Path("insight_ui/utils/input.css")
 
 
