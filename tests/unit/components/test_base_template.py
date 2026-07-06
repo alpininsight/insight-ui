@@ -16,11 +16,7 @@ class TestBaseTemplate(TestCase):
 
     @override_settings(
         ROOT_URLCONF=__name__,
-        STORAGES={
-            "staticfiles": {
-                "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-            },
-        },
+        STORAGES={"staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"}},
     )
     def test_base_template_does_not_require_javascript_catalog_url(self) -> None:
         """Host apps may render the base template without installing Django's JavaScriptCatalog URL."""
