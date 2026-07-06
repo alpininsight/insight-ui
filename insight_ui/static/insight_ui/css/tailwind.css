@@ -200,13 +200,11 @@
     --insight-nav-item-radius: 0px;
     --insight-nav-item-ring: none;
     --insight-nav-item-active-ring: none;
-    --insight-user-dropdown-bg: var(--insight-surface-muted);
-    --insight-user-dropdown-bg-dark: var(--insight-surface-muted-dark);
-    --insight-user-dropdown-border: var(--insight-border-subtle);
-    --insight-user-dropdown-divider: var(--insight-border-default);
-    --insight-user-dropdown-divider-dark: var(--insight-border-default-dark);
-    --insight-user-dropdown-radius: var(--insight-radius-sm);
-    --insight-user-dropdown-shadow: var(--insight-shadow-overlay);
+    --insight-progress-track-bg: var(--insight-border-subtle);
+    --insight-progress-track-bg-dark: var(--insight-surface-muted-dark);
+    --insight-progress-radius: var(--insight-radius-pill);
+    --insight-progress-fill-bg: var(--color-insight-primary);
+    --insight-progress-fill-transition-duration: 500ms;
     --range-progress: 0%;
     --animate-blink: blink 2s step-start infinite;
     --animate-shake: shake 0.3s;
@@ -3879,41 +3877,23 @@
   [data-theme="dark"] .insight-border-strong {
     border-color: var(--insight-border-strong-dark);
   }
-  .insight-user-dropdown-menu {
-    position: absolute;
-    top: 100%;
-    z-index: 50;
-    margin-top: calc(var(--spacing) * 2);
-    min-width: calc(var(--spacing) * 56);
-    border-style: var(--tw-border-style);
-    border-width: 1px;
-    font-size: var(--text-lg);
-    line-height: var(--tw-leading, var(--text-lg--line-height));
-    &:where(:dir(ltr), [dir="ltr"], [dir="ltr"] *) {
-      right: calc(var(--spacing) * 0);
-    }
-    &:where(:dir(rtl), [dir="rtl"], [dir="rtl"] *) {
-      left: calc(var(--spacing) * 0);
-    }
-    background-color: var(--insight-user-dropdown-bg);
-    border-color: var(--insight-user-dropdown-border);
-    border-radius: var(--insight-user-dropdown-radius);
-    box-shadow: var(--insight-user-dropdown-shadow);
+  .insight-progress-track {
+    height: calc(var(--spacing) * 4);
+    width: 100%;
+    overflow: hidden;
+    background-color: var(--insight-progress-track-bg);
+    border-radius: var(--insight-progress-radius);
   }
-  .insight-user-dropdown-menu > :not(:last-child) {
-    --tw-divide-y-reverse: 0;
-    border-bottom-style: var(--tw-border-style);
-    border-top-style: var(--tw-border-style);
-    border-top-width: calc(1px * var(--tw-divide-y-reverse));
-    border-bottom-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
-    border-color: var(--insight-user-dropdown-divider);
+  [data-theme="dark"] .insight-progress-track, [data-theme="dark"].insight-progress-track {
+    background-color: var(--insight-progress-track-bg-dark);
   }
-  [data-theme="dark"] .insight-user-dropdown-menu, [data-theme="dark"].insight-user-dropdown-menu {
-    background-color: var(--insight-user-dropdown-bg-dark);
-    border-width: 0;
-  }
-  [data-theme="dark"] .insight-user-dropdown-menu > :not(:last-child), [data-theme="dark"].insight-user-dropdown-menu > :not(:last-child) {
-    border-color: var(--insight-user-dropdown-divider-dark);
+  .insight-progress-fill {
+    height: 100%;
+    background-color: var(--insight-progress-fill-bg);
+    border-radius: var(--insight-progress-radius);
+    transition-property: all;
+    transition-timing-function: var(--ease-in-out);
+    transition-duration: var(--insight-progress-fill-transition-duration);
   }
   .btn {
     display: flex;

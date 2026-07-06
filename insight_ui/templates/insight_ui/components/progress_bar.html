@@ -50,10 +50,10 @@
         data-follow-mouse="true"
     >
         {# Track #}
-        <div class="w-full h-4 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+        <div class="insight-progress-track">
             <div
                 data-progress-fill
-                class="h-full rounded-full transition-all duration-500 ease-in-out bg-blue-600"
+                class="insight-progress-fill"
                 style="width: {{ progress_bar_config.value }}%"
                 data-value="{{ progress_bar_config.value }}"
                 data-label="{{ progress_bar_config.label }}"
