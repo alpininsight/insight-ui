@@ -59,6 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **progress-bar:** Introduce semantic track tokens
 - **chat:** Introduce semantic response bubble tokens
 - **table:** Introduce semantic surface tokens
+- **forms:** Introduce semantic status tokens
 
 ### Miscellaneous
 
@@ -78,6 +79,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Remove redundant loading of script files in base.html and components.html
 - Reduce hardcoded index page tokens
+
+### Testing
+
+- **forms:** Keep status include within line limit
 
 ## [1.10.2] - 2026-05-27
 
