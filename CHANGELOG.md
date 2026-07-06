@@ -53,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improve documentation and examples of the 'page', 'vbox', 'hbox', 'spacer' and 'divider'
 - **theme:** Introduce semantic surface tokens
 - **navbar:** Introduce semantic icon button token
+- **sidebar:** Introduce semantic icon button token
 
 ### Miscellaneous
 
@@ -63,6 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Regenerate minfied stylesheet
 - **navbar:** Apply formatter output
 - Linting
+- Regenerate minified stylesheet
 
 ### Refactoring
 
