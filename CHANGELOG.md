@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Minimal_stepper retains its size even after all steps have been completed
 - Move special base template parameters from get_navbar_context to get_base_context
 - Fix typo in usage example of the command for generating minified assets
+- **component-scaffold:** Align generated component contracts
 
 ### CI/CD
 
