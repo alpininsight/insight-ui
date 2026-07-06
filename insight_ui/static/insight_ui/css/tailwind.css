@@ -200,11 +200,12 @@
     --insight-nav-item-radius: 0px;
     --insight-nav-item-ring: none;
     --insight-nav-item-active-ring: none;
-    --insight-progress-track-bg: var(--insight-border-subtle);
-    --insight-progress-track-bg-dark: var(--insight-surface-muted-dark);
-    --insight-progress-radius: var(--insight-radius-pill);
-    --insight-progress-fill-bg: var(--color-insight-primary);
-    --insight-progress-fill-transition-duration: 500ms;
+    --insight-chat-message-border: var(--insight-border-subtle);
+    --insight-chat-message-radius: var(--insight-radius-lg);
+    --insight-chat-message-own-bg: var(--insight-surface-subtle);
+    --insight-chat-message-own-bg-dark: var(--insight-surface-muted-dark);
+    --insight-chat-message-response-bg: var(--insight-surface-muted);
+    --insight-chat-message-response-bg-dark: var(--insight-surface-disabled-dark);
     --range-progress: 0%;
     --animate-blink: blink 2s step-start infinite;
     --animate-shake: shake 0.3s;
@@ -3877,23 +3878,33 @@
   [data-theme="dark"] .insight-border-strong {
     border-color: var(--insight-border-strong-dark);
   }
-  .insight-progress-track {
-    height: calc(var(--spacing) * 4);
-    width: 100%;
-    overflow: hidden;
-    background-color: var(--insight-progress-track-bg);
-    border-radius: var(--insight-progress-radius);
+  .insight-chat-message {
+    width: fit-content;
+    border-style: var(--tw-border-style);
+    border-width: 1px;
+    padding-inline: calc(var(--spacing) * 4);
+    padding-block: calc(var(--spacing) * 2);
+    border-color: var(--insight-chat-message-border);
+    border-radius: var(--insight-chat-message-radius);
   }
-  [data-theme="dark"] .insight-progress-track, [data-theme="dark"].insight-progress-track {
-    background-color: var(--insight-progress-track-bg-dark);
+  [data-theme="dark"] .insight-chat-message, [data-theme="dark"].insight-chat-message {
+    border-width: 0;
   }
-  .insight-progress-fill {
-    height: 100%;
-    background-color: var(--insight-progress-fill-bg);
-    border-radius: var(--insight-progress-radius);
-    transition-property: all;
-    transition-timing-function: var(--ease-in-out);
-    transition-duration: var(--insight-progress-fill-transition-duration);
+  .insight-chat-message-own {
+    place-self: end;
+    border-end-end-radius: 0;
+    background-color: var(--insight-chat-message-own-bg);
+  }
+  [data-theme="dark"] .insight-chat-message-own, [data-theme="dark"].insight-chat-message-own {
+    background-color: var(--insight-chat-message-own-bg-dark);
+  }
+  .insight-chat-message-response {
+    place-self: start;
+    border-end-start-radius: 0;
+    background-color: var(--insight-chat-message-response-bg);
+  }
+  [data-theme="dark"] .insight-chat-message-response, [data-theme="dark"].insight-chat-message-response {
+    background-color: var(--insight-chat-message-response-bg-dark);
   }
   .btn {
     display: flex;
