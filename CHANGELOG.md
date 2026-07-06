@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### CI/CD
 
 - Migrate digest-pin to least-privilege app token
+- **user-dropdown:** Refresh required checks
 
 ### Documentation
 
@@ -54,6 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **theme:** Introduce semantic surface tokens
 - **navbar:** Introduce semantic icon button token
 - **sidebar:** Introduce semantic icon button token
+- **user-dropdown:** Introduce semantic panel tokens
 
 ### Miscellaneous
 
@@ -64,6 +66,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Regenerate minfied stylesheet
 - **navbar:** Apply formatter output
 - Linting
+- Regenerate minified stylesheet
 - Regenerate minified stylesheet
 
 ### Refactoring
