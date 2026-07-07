@@ -7,9 +7,9 @@
             <span id="{{ slider_config.tag_id }}_label" class="flex gap-1 text-sm font-bold text-primary">{{ slider_config.label }}</span>
             <div class="slider-dual-container relative h-2 mt-1">
                 {# Background track #}
-                <div class="absolute inset-0 bg-gray-200 dark:bg-gray-700 rounded-md" aria-hidden="true"></div>
+                <div class="insight-range-track absolute inset-0" aria-hidden="true"></div>
                 {# Highlighted range track #}
-                <div class="slider-track absolute top-0 h-full bg-blue-500 rounded-md pointer-events-none" aria-hidden="true"></div>
+                <div class="slider-track insight-range-fill absolute top-0 h-full pointer-events-none" aria-hidden="true"></div>
                 {# Min thumb input #}
                 <input
                     type="range"
@@ -59,7 +59,7 @@
             aria-valuemin="{{ slider_config.minimum }}"
             aria-valuemax="{{ slider_config.maximum }}"
             aria-valuenow="{{ slider_config.value }}"
-            class="range-custom w-full h-2 bg-gray-200 dark:bg-gray-700 accent-insight-primary rounded-sm appearance-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-insight-primary focus-visible:ring-offset-2"
+            class="range-custom w-full h-2 accent-insight-primary appearance-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-insight-primary focus-visible:ring-offset-2"
         >
     {% endif %}
     {% if slider_config.items %}

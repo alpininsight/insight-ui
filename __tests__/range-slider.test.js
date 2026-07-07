@@ -89,7 +89,7 @@ describe('RangeSlider Component', () => {
 
       new InsightUI.RangeSlider(element);
 
-      expect(element.style.getPropertyValue('--range-progress')).toBe('50%');
+      expect(element.style.getPropertyValue('--insight-control-range-progress')).toBe('50%');
     });
 
     it('should update progress on input change', () => {
@@ -102,7 +102,7 @@ describe('RangeSlider Component', () => {
       input.value = '75';
       input.dispatchEvent(new Event('input', { bubbles: true }));
 
-      expect(element.style.getPropertyValue('--range-progress')).toBe('75%');
+      expect(element.style.getPropertyValue('--insight-control-range-progress')).toBe('75%');
     });
 
     it('should update aria-valuenow on input change', () => {
@@ -135,8 +135,8 @@ describe('RangeSlider Component', () => {
 
       new InsightUI.RangeSlider(element);
 
-      expect(element.style.getPropertyValue('--range-min')).toBe('25%');
-      expect(element.style.getPropertyValue('--range-max')).toBe('75%');
+      expect(element.style.getPropertyValue('--insight-control-range-min')).toBe('25%');
+      expect(element.style.getPropertyValue('--insight-control-range-max')).toBe('75%');
     });
 
     it('should update track width on dual range', () => {
@@ -213,7 +213,7 @@ describe('RangeSlider Component', () => {
       slider.setValue(80);
 
       expect(input.value).toBe('80');
-      expect(element.style.getPropertyValue('--range-progress')).toBe('80%');
+      expect(element.style.getPropertyValue('--insight-control-range-progress')).toBe('80%');
     });
 
     it('should set dual range values', () => {

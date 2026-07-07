@@ -203,7 +203,15 @@
     --insight-form-success-body: var(--insight-state-success-body);
     --insight-form-success-body-dark: var(--insight-state-success-body-dark);
 
-    --range-progress: 0%;
+    /* Range control role tokens - mapped to central surface, brand and radius roles. */
+    --insight-control-range-progress: 0%;
+    --insight-control-range-track: var(--insight-border-subtle);
+    --insight-control-range-track-dark: var(--insight-surface-muted-dark);
+    --insight-control-range-fill: var(--color-insight-primary);
+    --insight-control-range-radius: var(--insight-radius-control);
+    --insight-control-range-thumb-bg: var(--insight-surface-base);
+    --insight-control-range-thumb-border: var(--color-insight-primary);
+    --insight-control-range-thumb-radius: var(--insight-radius-pill);
 
     --animate-blink: blink 2s step-start infinite;
 
@@ -1005,40 +1013,75 @@
         box-shadow: var(--insight-shadow-subtle);
     }
 
-    .slider-wrapper {
-        --range-progress: 0%;
-        --slider-track-active: #3b82f6;
-        --slider-track-inactive: #e5e7eb;
+    .insight-range-track {
+        background-color: var(--insight-control-range-track);
+        border-radius: var(--insight-control-range-radius);
     }
 
-    .dark .slider-wrapper {
-        --slider-track-inactive: #374151;
+    [data-theme="dark"] .insight-range-track,
+    [data-theme="dark"].insight-range-track {
+        background-color: var(--insight-control-range-track-dark);
+    }
+
+    .insight-range-fill {
+        background-color: var(--insight-control-range-fill);
+        border-radius: var(--insight-control-range-radius);
     }
 
     .range-custom::-webkit-slider-runnable-track {
-        @apply h-2 rounded-md;
-        background: linear-gradient(to right, var(--slider-track-active) var(--range-progress), var(--slider-track-inactive) var(--range-progress));
+        @apply h-2;
+        border-radius: var(--insight-control-range-radius);
+        background: linear-gradient(to right, var(--insight-control-range-fill) var(--insight-control-range-progress), var(--insight-control-range-track) var(--insight-control-range-progress));
     }
 
     .range-custom::-moz-range-track {
-        @apply h-2 rounded-md;
-        background: linear-gradient(to right, var(--slider-track-active) var(--range-progress), var(--slider-track-inactive) var(--range-progress));
+        @apply h-2;
+        border-radius: var(--insight-control-range-radius);
+        background: linear-gradient(to right, var(--insight-control-range-fill) var(--insight-control-range-progress), var(--insight-control-range-track) var(--insight-control-range-progress));
+    }
+
+    [data-theme="dark"] .range-custom::-webkit-slider-runnable-track,
+    [data-theme="dark"].range-custom::-webkit-slider-runnable-track {
+        background: linear-gradient(to right, var(--insight-control-range-fill) var(--insight-control-range-progress), var(--insight-control-range-track-dark) var(--insight-control-range-progress));
+    }
+
+    [data-theme="dark"] .range-custom::-moz-range-track,
+    [data-theme="dark"].range-custom::-moz-range-track {
+        background: linear-gradient(to right, var(--insight-control-range-fill) var(--insight-control-range-progress), var(--insight-control-range-track-dark) var(--insight-control-range-progress));
     }
 
     html[dir='rtl'] .range-custom::-webkit-slider-runnable-track {
-        background: linear-gradient(to left, var(--slider-track-active) var(--range-progress), var(--slider-track-inactive) var(--range-progress));
+        background: linear-gradient(to left, var(--insight-control-range-fill) var(--insight-control-range-progress), var(--insight-control-range-track) var(--insight-control-range-progress));
     }
 
     html[dir='rtl'] .range-custom::-moz-range-track {
-        background: linear-gradient(to left, var(--slider-track-active) var(--range-progress), var(--slider-track-inactive) var(--range-progress));
+        background: linear-gradient(to left, var(--insight-control-range-fill) var(--insight-control-range-progress), var(--insight-control-range-track) var(--insight-control-range-progress));
+    }
+
+    html[dir='rtl'][data-theme="dark"] .range-custom::-webkit-slider-runnable-track,
+    html[dir='rtl'] [data-theme="dark"] .range-custom::-webkit-slider-runnable-track,
+    html[dir='rtl'] [data-theme="dark"].range-custom::-webkit-slider-runnable-track {
+        background: linear-gradient(to left, var(--insight-control-range-fill) var(--insight-control-range-progress), var(--insight-control-range-track-dark) var(--insight-control-range-progress));
+    }
+
+    html[dir='rtl'][data-theme="dark"] .range-custom::-moz-range-track,
+    html[dir='rtl'] [data-theme="dark"] .range-custom::-moz-range-track,
+    html[dir='rtl'] [data-theme="dark"].range-custom::-moz-range-track {
+        background: linear-gradient(to left, var(--insight-control-range-fill) var(--insight-control-range-progress), var(--insight-control-range-track-dark) var(--insight-control-range-progress));
     }
 
     .range-custom::-webkit-slider-thumb {
-        @apply w-4 h-4 bg-white border-2 border-insight-primary rounded-full cursor-pointer -mt-1;
+        @apply w-4 h-4 border-2 cursor-pointer -mt-1;
+        background-color: var(--insight-control-range-thumb-bg);
+        border-color: var(--insight-control-range-thumb-border);
+        border-radius: var(--insight-control-range-thumb-radius);
     }
 
     .range-custom::-moz-range-thumb {
-        @apply w-4 h-4 bg-white border-2 border-insight-primary rounded-full cursor-pointer;
+        @apply w-4 h-4 border-2 cursor-pointer;
+        background-color: var(--insight-control-range-thumb-bg);
+        border-color: var(--insight-control-range-thumb-border);
+        border-radius: var(--insight-control-range-thumb-radius);
     }
 
     .demo-pattern {
