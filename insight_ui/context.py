@@ -8,6 +8,7 @@ from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext as _
 
 from insight_ui import config
+from insight_ui.brand import get_footer_description_defaults, get_navbar_brand_defaults
 from insight_ui.component_details.components import Component, ComponentCategory
 from insight_ui.component_details.demo_context import get_component_demo_context
 from insight_ui.component_details.parameter_context import ParameterDetails
@@ -17,11 +18,8 @@ from insight_ui.configs import (
     DropdownItemConfig,
     FooterConfig,
     FooterContactConfig,
-    FooterDescriptionConfig,
     HtmxConfig,
     IconConfig,
-    LogoConfig,
-    NavbarBrandConfig,
     NavbarConfig,
     NavbarLinkConfig,
     RadioItemConfig,
@@ -73,17 +71,7 @@ def get_navbar_context() -> dict:
 
     return {
         "nav_config": NavbarConfig(
-            NavbarBrandConfig(
-                "Insight UI",
-                "/",
-                LogoConfig(
-                    url="insight_ui/svg/ai-logo.svg",
-                    url_dark="insight_ui/svg/ai-logo.svg",
-                    alt="Insight UI Logo",
-                    height="2rem",
-                ),
-                "0.5rem",
-            ),
+            get_navbar_brand_defaults(),
             links,
             "/",
             show_language_selector=True,
@@ -129,9 +117,7 @@ def get_footer_context() -> dict:
 
     return {
         "footer_config": FooterConfig(
-            FooterDescriptionConfig(
-                "Insight UI", _("A modern, accessible, and responsive UI library for Django projects.")
-            ),
+            get_footer_description_defaults(),
             links,
             FooterContactConfig(
                 "support@alpininsight.com", "https://alpininsight.com/imprint/", "https://alpininsight.com/privacy/"

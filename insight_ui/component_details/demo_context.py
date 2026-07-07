@@ -8,6 +8,7 @@ from django.utils.lorem_ipsum import paragraphs
 from django.utils.translation import gettext as _
 
 from insight_ui import config
+from insight_ui.brand import get_brand_logo_config, get_footer_description_defaults, get_navbar_brand_defaults
 from insight_ui.component_details.component_context import get_demo_context, register_demo_context
 from insight_ui.component_details.components import Component
 from insight_ui.configs import (
@@ -34,7 +35,6 @@ from insight_ui.configs import (
     FlipCardConfig,
     FooterConfig,
     FooterContactConfig,
-    FooterDescriptionConfig,
     FormConfig,
     FormFieldConfig,
     GenericFilterConfig,
@@ -50,7 +50,6 @@ from insight_ui.configs import (
     MinimalStepperConfig,
     ModalConfig,
     MultiselectConfig,
-    NavbarBrandConfig,
     NavbarConfig,
     NavbarLinkConfig,
     PaginationConfig,
@@ -160,7 +159,7 @@ def get_login_screen_context() -> dict:
         config.get_config()
         | get_footer_context()
         | {
-            "logo_config": LogoConfig("insight_ui/svg/ai-logo.svg", alt=_("Insight UI Logo"), height="8rem"),
+            "logo_config": get_brand_logo_config(height="8rem"),
             "show_theme_toggle": True,
             "forgot_password": {"url": "#"},
             "alt_login": {"url": "#", "title": _("Login with OIDC")},
@@ -203,14 +202,7 @@ def get_navbar_context() -> dict:
     """Serve data for navbar detailpage."""
     return {
         "demo_nav_config": NavbarConfig(
-            NavbarBrandConfig(
-                "Insight UI",
-                "/",
-                LogoConfig(
-                    "insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="2rem"
-                ),
-                "0.5rem",
-            ),
+            get_navbar_brand_defaults(),
             [
                 NavbarLinkConfig(_("Startpage"), "/", IconConfig("home", "s")),
                 NavbarLinkConfig(
@@ -295,11 +287,7 @@ def get_footer_context() -> dict:
     """Server data for footer detailpage."""
     return {
         "footer_config": FooterConfig(
-            FooterDescriptionConfig(
-                "Insight UI",
-                _("A modern UI library for Django applications to get started quickly."),
-                LogoConfig("insight_ui/svg/ai-logo.svg", alt="Insight UI Logo", height="6rem"),
-            ),
+            get_footer_description_defaults(),
             [
                 NavbarLinkConfig(_("Startpage"), "/", IconConfig("home", "xs")),
                 NavbarLinkConfig(_("Storybook"), "/"),

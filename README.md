@@ -115,6 +115,7 @@ The `docs/` directory is reserved for repository-level developer and governance 
 - [Documentation Architecture](docs/docs-architecture.md)
 - [Naming Conventions](docs/naming_conventions.md)
 - [Design System Contract](docs/design-system-contract.md)
+- [Brand Settings](docs/brand-settings.md)
 - [CDN Static Assets](docs/cdn-static-assets.md)
 - [Accessibility](docs/accessibility.md)
 - [Internationalization](docs/i18n.md)
