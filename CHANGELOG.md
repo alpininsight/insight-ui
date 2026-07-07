@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **component-scaffold:** Align generated component contracts
 - **component-scaffold:** Use semantic token classes
 - **test:** Document radius token checks
+- **i18n:** Compile translations in container build
 
 ### CI/CD
 
@@ -87,6 +88,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **forms:** Keep status include within line limit
 - **theme:** Document shadow token checks
+- **i18n:** Document container translation contract
 
 ## [1.10.2] - 2026-05-27
 
