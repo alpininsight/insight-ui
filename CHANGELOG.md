@@ -60,6 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **chat:** Introduce semantic response bubble tokens
 - **table:** Introduce semantic surface tokens
 - **forms:** Introduce semantic status tokens
+- **theme:** Introduce semantic shadow roles
 
 ### Miscellaneous
 
@@ -83,6 +84,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Testing
 
 - **forms:** Keep status include within line limit
+- **theme:** Document shadow token checks
 
 ## [1.10.2] - 2026-05-27
 
