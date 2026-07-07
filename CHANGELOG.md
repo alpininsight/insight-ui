@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **component-scaffold:** Use semantic token classes
 - **test:** Document radius token checks
 - **i18n:** Compile translations in container build
+- **theme:** Preserve generated css newline
 
 ### CI/CD
 
@@ -83,6 +84,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Remove redundant loading of script files in base.html and components.html
 - Reduce hardcoded index page tokens
+- **theme:** Semantic range control tokens
 
 ### Testing
 
