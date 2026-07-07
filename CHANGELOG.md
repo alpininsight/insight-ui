@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix typo in usage example of the command for generating minified assets
 - **component-scaffold:** Align generated component contracts
 - **component-scaffold:** Use semantic token classes
+- **test:** Document radius token checks
 
 ### CI/CD
 
@@ -61,6 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **table:** Introduce semantic surface tokens
 - **forms:** Introduce semantic status tokens
 - **theme:** Introduce semantic shadow roles
+- **theme:** Introduce semantic radius roles
 
 ### Miscellaneous
 
