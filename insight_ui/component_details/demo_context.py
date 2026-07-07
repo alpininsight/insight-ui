@@ -15,6 +15,7 @@ from insight_ui.configs import (
     AccordionItemConfig,
     AppCardConfig,
     BadgeConfig,
+    BrandLockupConfig,
     BreadcrumbItemConfig,
     BulletPointItemConfig,
     ButtonConfig,
@@ -65,6 +66,7 @@ from insight_ui.configs import (
     SidebarDataConfig,
     SidebarItemConfig,
     SliderConfig,
+    StatusScreenConfig,
     StepperItemConfig,
     TabConfig,
     TableConfig,
@@ -188,6 +190,36 @@ def get_hero_context() -> dict:
             ButtonConfig(label=_("Learn more"), request_url="#", type="secondary"),
             badge_config=BadgeConfig("Django UI Library", IconConfig("sparkles")),
         )
+    }
+
+
+@register_demo_context(Component.STATUS_SCREEN)
+def get_status_screen_context() -> dict:
+    """Serve demo context for the status screen component."""
+    return {
+        "status_screen_success": StatusScreenConfig(
+            title=_("You're signed in"),
+            description=[
+                _("The authentication flow completed successfully."),
+                _("You can now continue to the application."),
+            ],
+            status="success",
+            brand=BrandLockupConfig(primary_text="Insight", secondary_text="UI", variant="main"),
+            notice_title=_("Session ready"),
+            notice=_("This screen is generic and can be reused for auth, deployment, or workflow states."),
+            primary_action=ButtonConfig(label=_("Continue"), request_url="#", type="primary"),
+            secondary_action=ButtonConfig(label=_("Back to start"), request_url="#", type="secondary"),
+        ),
+        "status_screen_error": StatusScreenConfig(
+            title=_("Sign-in failed"),
+            description=_("The SSO process could not be completed."),
+            status="error",
+            brand=BrandLockupConfig(primary_text="Insight", secondary_text="UI", variant="develop"),
+            notice_title=_("What happened?"),
+            notice=_("Please try again or contact support if the issue persists."),
+            primary_action=ButtonConfig(label=_("Try again"), request_url="#", type="primary"),
+            secondary_action=ButtonConfig(label=_("Contact support"), request_url="#", type="secondary"),
+        ),
     }
 
 

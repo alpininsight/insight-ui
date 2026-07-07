@@ -11,6 +11,7 @@ TEMPLATE_PATHS = {
     "page_header": GIT_BASE_FILE + "page_header.html",
     "article": GIT_BASE_FILE + "article.html",
     "hero": GIT_BASE_FILE + "hero.html",
+    "status_screen": GIT_BASE_FILE + "status_screen.html",
     # Navigation
     "navbar": GIT_BASE_FILE + "navbar.html",
     "sidebar": GIT_BASE_FILE + "sidebar.html",

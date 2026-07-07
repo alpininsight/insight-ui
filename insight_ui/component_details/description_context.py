@@ -49,6 +49,27 @@ def get_hero_description_context() -> dict[str, list[str]]:
     }
 
 
+@register_component(Component.STATUS_SCREEN)
+def get_status_screen_description_context() -> dict[str, list[str]]:
+    """Serve description documentation for the status screen component."""
+    return {
+        "description": [
+            _(
+                "The `status_screen` component renders a reusable full-page status view. It combines brand, surface, status icon, title, description, notice and actions for common application states."
+            ),
+            _(
+                "It is intentionally generic. Use it for authentication failures, expired sessions, access states, deployment states, empty starts or workflow results without coupling the component to auth logic."
+            ),
+        ],
+        "features": [
+            _("**Semantic status**: Supports `info`, `success`, `warning` and `error`."),
+            _("**Reusable actions**: Uses the standard `button` component and `ButtonConfig`."),
+            _("**Token-based surface**: Uses Insight UI surface, border, radius and shadow tokens."),
+            _("**Optional brand**: Can show a `brand_lockup` above the status card."),
+        ],
+    }
+
+
 @register_component(Component.PAGE)
 def get_page_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the page layout tag."""

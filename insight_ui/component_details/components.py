@@ -52,6 +52,7 @@ from insight_ui.configs import (
     SidebarConfig,
     SliderConfig,
     SpacerConfig,
+    StatusScreenConfig,
     StepperConfig,
     TableConfig,
     TabsConfig,
@@ -91,6 +92,7 @@ class Component(Enum):
     PAGE_HEADER = ("page_header", ComponentCategory.LAYOUT, PageHeaderConfig, True, False, False)
     ARTICLE = ("article", ComponentCategory.LAYOUT, ArticleConfig)
     HERO = ("hero", ComponentCategory.LAYOUT, HeroConfig, False, False, False)
+    STATUS_SCREEN = ("status_screen", ComponentCategory.LAYOUT, StatusScreenConfig, False, False, False)
     # Layout Block Tags (layout_tags.py)
     PAGE = ("page", ComponentCategory.LAYOUT, PageConfig, True, False, False)
     HBOX = ("hbox", ComponentCategory.LAYOUT, HBoxConfig, False, False, False)

@@ -8,7 +8,7 @@ from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import MISSING, fields, is_dataclass, replace
 from difflib import HtmlDiff, ndiff, unified_diff
 from types import UnionType
-from typing import TYPE_CHECKING, Any, Final, Literal, TypeVar, get_args, get_origin, get_type_hints
+from typing import TYPE_CHECKING, Any, Final, Literal, TypeVar, cast, get_args, get_origin, get_type_hints
 
 from django import template
 from django.templatetags.static import static
@@ -80,6 +80,7 @@ from insight_ui.configs import (
     SidebarConfig,
     SidebarDataConfig,
     SliderConfig,
+    StatusScreenConfig,
     StepperConfig,
     StepperItemConfig,
     TableConfig,
@@ -379,6 +380,60 @@ def hero(
     """Render a hero section with optional background image."""
     config = build_config(HeroConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"hero_config": config}
+
+
+STATUS_SCREEN_ICON_BY_STATUS = {"info": "info", "success": "tick", "warning": "warning", "error": "danger"}
+STATUS_SCREEN_STATUSES: Final = frozenset(STATUS_SCREEN_ICON_BY_STATUS)
+type StatusScreenStatus = Literal["info", "success", "warning", "error"]
+
+
+def _validate_status_screen_status(value: object) -> StatusScreenStatus:
+    """Validate status_screen status values before template lookup."""
+    if value in STATUS_SCREEN_STATUSES:
+        return cast("StatusScreenStatus", value)
+    message = "status_screen status must be one of: info, success, warning, error"
+    raise ValueError(message)
+
+
+def _prepare_status_screen_action(action: ButtonConfig) -> ButtonConfig:
+    """Normalize action configs before handing them to the generic button component."""
+    if action.type != "disabled":
+        return action
+    return replace(action, request_url="", on_click="")
+
+
+@register.inclusion_tag("insight_ui/components/status_screen.html")
+def status_screen(
+    config: StatusScreenConfig | None = None,
+    *,
+    title: str | _Unset = UNSET,
+    description: str | list[str] | _Unset = UNSET,
+    status: Literal["info", "success", "warning", "error"] | _Unset = UNSET,
+    brand: BrandLockupConfig | None | _Unset = UNSET,
+    notice_title: str | _Unset = UNSET,
+    notice: str | _Unset = UNSET,
+    primary_action: ButtonConfig | _Unset = UNSET,
+    secondary_action: ButtonConfig | _Unset = UNSET,
+    actions: list[ButtonConfig] | _Unset = UNSET,
+    css_class: str | _Unset = UNSET,
+    card_css_class: str | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a generic centered status screen."""
+    config = build_config(StatusScreenConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    config.description = ensure_list(config.description)
+    config.status = _validate_status_screen_status(config.status)
+
+    status_screen_actions = [
+        _prepare_status_screen_action(action)
+        for action in [config.primary_action, config.secondary_action, *config.actions]
+        if action
+    ]
+
+    return {
+        "status_screen_config": config,
+        "status_screen_actions": status_screen_actions,
+        "status_screen_icon": STATUS_SCREEN_ICON_BY_STATUS[config.status],
+    }
 
 
 # =============================================================
