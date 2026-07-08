@@ -85,6 +85,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove redundant loading of script files in base.html and components.html
 - Reduce hardcoded index page tokens
 - **theme:** Semantic range control tokens
+- **brand:** Rename brand mark component
 
 ### Testing
 
