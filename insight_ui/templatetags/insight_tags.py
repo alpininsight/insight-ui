@@ -409,7 +409,7 @@ def status_screen(
     title: str | _Unset = UNSET,
     description: str | list[str] | _Unset = UNSET,
     status: Literal["info", "success", "warning", "error"] | _Unset = UNSET,
-    brand: BrandLockupConfig | None | _Unset = UNSET,
+    brand: BrandMarkConfig | None | _Unset = UNSET,
     notice_title: str | _Unset = UNSET,
     notice: str | _Unset = UNSET,
     primary_action: ButtonConfig | _Unset = UNSET,

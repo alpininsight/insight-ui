@@ -161,7 +161,7 @@ class StatusScreenConfig:
         title: Main status title.
         description: Supporting status description.
         status: Visual status: 'info', 'success', 'warning', or 'error'.
-        brand: Optional brand lockup shown above the card.
+        brand: Optional brand mark shown above the card.
         notice_title: Optional notice heading.
         notice: Optional notice text.
         primary_action: Primary button action.
@@ -189,8 +189,8 @@ class StatusScreenConfig:
     status: Literal["info", "success", "warning", "error"] = field(
         default="info", metadata={"doc": _("Visual status: 'info', 'success', 'warning', or 'error'.")}
     )
-    brand: BrandLockupConfig | None = field(
-        default_factory=BrandLockupConfig, metadata={"doc": _("Optional brand lockup shown above the card.")}
+    brand: BrandMarkConfig | None = field(
+        default_factory=BrandMarkConfig, metadata={"doc": _("Optional brand mark shown above the card.")}
     )
     notice_title: str = field(default="", metadata={"doc": _("Optional notice heading.")})
     notice: str = field(default="", metadata={"doc": _("Optional notice text.")})
