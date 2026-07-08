@@ -17,7 +17,7 @@ INSIGHT_UI = {
             "alt": "Insight UI Logo",
             "height": "2rem",
         },
-        "lockup": None,
+        "mark": None,
         "footer_text": "A modern, accessible, and responsive UI library for Django projects.",
     }
 }
@@ -30,7 +30,7 @@ Use `settings.py` for stable brand defaults:
 - app title
 - home URL
 - logo asset
-- optional brand lockup
+- optional brand mark
 - footer description text
 
 Use component configs for concrete app composition:

@@ -202,7 +202,7 @@ INSIGHT_UI = {
         "logo": LogoConfig(
             "insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="2rem"
         ),
-        "lockup": None,
+        "mark": None,
         "footer_text": "A modern, accessible, and responsive UI library for Django projects.",
     },
     "assets": {
