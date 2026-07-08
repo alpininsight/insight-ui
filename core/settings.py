@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Any
 
 from decouple import UndefinedValueError, config
+from insight_ui.configs.utils import LogoConfig
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -198,12 +199,9 @@ INSIGHT_UI = {
     "brand": {
         "title": "Insight UI",
         "home_url": "/",
-        "logo": {
-            "url": "insight_ui/svg/ai-logo.svg",
-            "url_dark": "insight_ui/svg/ai-logo.svg",
-            "alt": "Insight UI Logo",
-            "height": "2rem",
-        },
+        "logo": LogoConfig(
+            "insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="2rem"
+        ),
         "lockup": None,
         "footer_text": "A modern, accessible, and responsive UI library for Django projects.",
     },
