@@ -3,6 +3,8 @@
 from enum import Enum
 from typing import Any
 
+from django.utils.translation import gettext_lazy as _
+
 from insight_ui.configs import (
     AccordionConfig,
     AlertConfig,
@@ -68,21 +70,21 @@ from insight_ui.configs import (
 class ComponentCategory(Enum):
     """Enum of all available component categories."""
 
-    LAYOUT = "layout"
-    NAVIGATION = "navigation"
-    INPUT = "input"
-    POPUP = "popup"
-    UTIL = "util"
-    LIST = "list"
-    FILTER = "filter"
-    CARD = "card"
-    FORM = "form"
+    LAYOUT = ("layout", _("Layout"))
+    NAVIGATION = ("navigation", _("Navigation"))
+    INPUT = ("input", _("Input"))
+    POPUP = ("popup", _("Popup"))
+    UTIL = ("util", _("Utilities"))
+    LIST = ("list", _("Lists"))
+    FILTER = ("filter", _("Filters"))
+    CARD = ("card", _("Cards"))
+    FORM = ("form", _("Forms"))
 
-    def __new__(cls, value: str):  # noqa: ANN204
+    def __new__(cls, value: str, formatted_name: str):  # noqa: ANN204
         """Create new ComponentCategory entry."""
         obj = object.__new__(cls)
         obj._value_ = value
-        obj.formatted_name = value.replace("_", " ").title()
+        obj.formatted_name = formatted_name
         return obj
 
 
