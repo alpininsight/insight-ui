@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Any
 
 from decouple import UndefinedValueError, config
+from insight_ui.configs.utils import LogoConfig
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -195,6 +196,15 @@ INSIGHT_UI = {
     "load_echarts": True,  # Turn to 'True' to use Chart-Components
     "JS_DEBUG": INSIGHT_UI_JS_DEBUG,  # Turn to 'True' to enable build in browser console logging
     "use_tailwind_cli": USE_TAILWIND_CLI,  # Turn to 'True' to enable the tailwind cli, if you want to modify the styles
+    "brand": {
+        "title": "Insight UI",
+        "home_url": "/",
+        "logo": LogoConfig(
+            "insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="2rem"
+        ),
+        "mark": None,
+        "footer_text": "A modern, accessible, and responsive UI library for Django projects.",
+    },
     "assets": {
         "use_minified": INSIGHT_UI_USE_MINIFIED_ASSETS,
         "cdn_enabled": INSIGHT_UI_CDN_ENABLED,
