@@ -598,13 +598,13 @@ def get_logo_description_context() -> dict[str, list[str]]:
     }
 
 
-@register_component(Component.BRAND_LOCKUP)
-def get_brand_lockup_description_context() -> dict[str, list[str]]:
-    """Serve description documentation for the brand lockup component."""
+@register_component(Component.BRAND_MARK)
+def get_brand_mark_description_context() -> dict[str, list[str]]:
+    """Serve description documentation for the brand mark component."""
     return {
         "description": [
             _(
-                "The `brand_lockup` component renders a controlled brand unit made of a public Insight UI icon and a two-tone wordmark."
+                "The `brand_mark` component renders a controlled brand unit made of a public Insight UI icon and a two-tone wordmark."
             ),
             _(
                 "Use it when an application needs a recognizable wordmark without embedding private assets in the open-source package."
@@ -613,7 +613,7 @@ def get_brand_lockup_description_context() -> dict[str, list[str]]:
         "features": [
             _("Uses Insight UI design tokens for the primary and secondary brand colours."),
             _("Maps main, develop, and candidate variants to existing public icons from the Insight UI icon list."),
-            _("Can be used directly or as the optional `brand.lockup` mode inside the navbar component."),
+            _("Can be used directly or as the optional `brand.mark` mode inside the navbar component."),
         ],
     }
 

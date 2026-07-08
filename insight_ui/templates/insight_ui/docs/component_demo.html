@@ -747,30 +747,30 @@
             {% logo config=logo_icon_config %}
         </div>
     </div>
-{% elif component.value == "brand_lockup" %}
+{% elif component.value == "brand_mark" %}
     <div class="space-y-8">
         <div class="grid gap-8 lg:grid-cols-3">
             <div class="space-y-3 rounded-lg border border-gray-200 p-6 dark:border-gray-700">
                 <p class="font-semibold text-secondary">Main / default</p>
-                {% brand_lockup config=brand_lockup_default %}
+                {% brand_mark config=brand_mark_default %}
             </div>
             <div class="space-y-3 rounded-lg border border-gray-200 p-6 dark:border-gray-700">
                 <p class="font-semibold text-secondary">Develop</p>
-                {% brand_lockup config=brand_lockup_develop %}
+                {% brand_mark config=brand_mark_develop %}
             </div>
             <div class="space-y-3 rounded-lg border border-gray-200 p-6 dark:border-gray-700">
                 <p class="font-semibold text-secondary">Candidate</p>
-                {% brand_lockup config=brand_lockup_candidate %}
+                {% brand_mark config=brand_mark_candidate %}
             </div>
         </div>
         <div class="space-y-3 rounded-lg border border-gray-200 p-6 dark:border-gray-700">
             <p class="font-semibold text-secondary">Logo position end</p>
-            {% brand_lockup config=brand_lockup_end %}
+            {% brand_mark config=brand_mark_end %}
         </div>
         <div class="space-y-3">
-            <p class="font-semibold text-secondary">Navbar brand.lockup mode</p>
+            <p class="font-semibold text-secondary">Navbar brand.mark mode</p>
             <div class="relative bg-gray-50 dark:bg-gray-700 h-24 w-full">
-                {% navbar config=brand_lockup_nav_config %}
+                {% navbar config=brand_mark_nav_config %}
                 <script>
                     // Demo fix
                     var nav = document.currentScript.parentElement.querySelector("nav");

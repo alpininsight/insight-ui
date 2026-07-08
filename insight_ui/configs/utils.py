@@ -114,8 +114,8 @@ class LogoConfig:
 
 
 @dataclass
-class BrandLockupConfig:
-    """Configuration for the brand_lockup component.
+class BrandMarkConfig:
+    """Configuration for the brand_mark component.
 
     Renders a public Insight UI icon plus a two-tone wordmark.
 
@@ -130,7 +130,7 @@ class BrandLockupConfig:
     """
 
     __example__ = """
-        BrandLockupConfig(
+        BrandMarkConfig(
             primary_text="Alpin Insight",
             secondary_text="Develop",
             variant="develop",

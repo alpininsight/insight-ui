@@ -105,7 +105,7 @@ from insight_ui.configs.navigation import (
 from insight_ui.configs.popup import AlertConfig, ModalConfig
 from insight_ui.configs.utils import (
     BadgeConfig,
-    BrandLockupConfig,
+    BrandMarkConfig,
     ChartConfig,
     ChartDatasetConfig,
     CopyrightNoticeConfig,
@@ -130,7 +130,7 @@ __all__ = [
     "ArticleConfig",
     "BadgeConfig",
     "BadgeConfig",
-    "BrandLockupConfig",
+    "BrandMarkConfig",
     "BreadcrumbItemConfig",
     "BreadcrumbItemConfig",
     "BreadcrumbsConfig",
