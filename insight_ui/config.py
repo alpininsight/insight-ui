@@ -5,6 +5,8 @@ from typing import Any, cast
 
 from django.conf import settings
 
+from insight_ui.configs.utils import LogoConfig
+
 CONFIG_DEFAULTS: dict[str, Any] = {
     "favicon": "insight_ui/favicon/favicon.ico",
     "favicon_32": "insight_ui/favicon/favicon-32x32.png",
@@ -13,10 +15,9 @@ CONFIG_DEFAULTS: dict[str, Any] = {
     "safari_mask_icon": "insight_ui/svg/logo.svg",  # Used by Safari pinned tab
     "msapplication_TileColor": "#da532c",  # Sets the background color for a live tile (MS Edge only)
     "theme_color": "#ffffff",  # For the search bar on mobile devices
-    "stylesheet": "insight_ui/css/tailwind.css",  # Only change in case of using alternative stylesheet (currently not supported)  # noqa: E501
-    "navbar_fixed": True,  # Should the navigation stick at the top of the window (has impact on the sidebars as well)
-    "title": "My indispensable app",  # Default title if the {% title %} block is not overridden
     "meta": {"seo": {"description": "My indispensable app", "keywords": "Django, Insight UI", "author": "It's me"}},
+    "stylesheet": "insight_ui/css/tailwind.css",  # Only change in case of using alternative stylesheet name
+    "navbar_fixed": True,  # Should the navigation stick at the top of the window (has impact on the sidebars as well)
     "load_prism": False,  # Turn to 'True' to use syntax highlighting
     "load_leaflet": False,  # Turn to 'True' to use geo-maps
     "load_echarts": False,  # Turn to 'True' to use Chart-Components
@@ -25,12 +26,9 @@ CONFIG_DEFAULTS: dict[str, Any] = {
     "brand": {
         "title": "Insight UI",
         "home_url": "/",
-        "logo": {
-            "url": "insight_ui/svg/ai-logo.svg",
-            "url_dark": "insight_ui/svg/ai-logo.svg",
-            "alt": "Insight UI Logo",
-            "height": "2rem",
-        },
+        "logo": LogoConfig(
+            "insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="2rem"
+        ),
         "lockup": None,
         "footer_text": "A modern, accessible, and responsive UI library for Django projects.",
     },

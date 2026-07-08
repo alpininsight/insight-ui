@@ -1,6 +1,7 @@
 """Brand default builders for reusable Insight UI contexts."""
 
 from collections.abc import Mapping
+from dataclasses import replace
 from typing import Any, cast
 
 from insight_ui.config import get_config
@@ -27,11 +28,10 @@ def get_brand_logo_config(*, height: str | None = None) -> LogoConfig | None:
     if not logo:
         return None
 
-    logo_data = dict(cast("Mapping[str, Any]", logo))
     if height is not None:
-        logo_data["height"] = height
+        return replace(logo, height=height)
 
-    return LogoConfig(**logo_data)
+    return logo
 
 
 def get_brand_lockup_config() -> BrandLockupConfig | None:
@@ -41,7 +41,7 @@ def get_brand_lockup_config() -> BrandLockupConfig | None:
     if not lockup:
         return None
 
-    return BrandLockupConfig(**dict(cast("Mapping[str, Any]", lockup)))
+    return lockup
 
 
 def get_navbar_brand_defaults() -> NavbarBrandConfig:
