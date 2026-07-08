@@ -20,8 +20,8 @@
         style="gap: {{ navbar_config.brand.gap|default:'0.5rem' }}"
         {% if navbar_config.brand.aria_label %}aria-label="{{ navbar_config.brand.aria_label }}"{% elif navbar_config.brand.title %}aria-label="{{ navbar_config.brand.title }}"{% endif %}
       >
-        {% if navbar_config.brand.lockup %}
-          {% brand_lockup config=navbar_config.brand.lockup %}
+        {% if navbar_config.brand.mark %}
+          {% brand_mark config=navbar_config.brand.mark %}
         {% else %}
           {% if navbar_config.brand.logo %}
             {% logo config=navbar_config.brand.logo %}

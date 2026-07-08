@@ -1,13 +1,13 @@
 {% load i18n insight_tags %}
 {% comment %}
-  Brand lockup: a public icon + two-tone wordmark.
+  Brand mark: a public icon + two-tone wordmark.
 
   `variant` picks an existing Insight UI icon from the public icon list.
   The open-source component must not embed private assets.
 
   Colours are inline `var(--color-insight-*)` references on purpose:
   the icon inherits currentColor, and using the same tokens for the
-  wordmark keeps the lockup theme-following without depending on a
+  wordmark keeps the mark theme-following without depending on a
   `text-insight-secondary` utility that isn't always compiled.
 
   Layout: a single icon placement (no per-position duplication). When

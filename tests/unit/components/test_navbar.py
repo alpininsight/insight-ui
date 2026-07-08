@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from insight_ui.configs.base import IconConfig
 from insight_ui.configs.navigation import NavbarBrandConfig, NavbarConfig, NavbarLinkConfig
 from insight_ui.configs.popup import ModalConfig
-from insight_ui.configs.utils import BrandLockupConfig, LogoConfig
+from insight_ui.configs.utils import BrandMarkConfig, LogoConfig
 
 from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
@@ -151,14 +151,14 @@ class TestNavbar(TemplateTagsTestCase):
         assert trigger.find("img") is None
         assert trigger.get_text(strip=True) == self.user.get_username()[:1].upper()
 
-    def test_navbar_renders_brand_lockup_when_configured(self) -> None:
-        """Navbar can render a controlled brand lockup instead of logo plus title."""
+    def test_navbar_renders_brand_mark_when_configured(self) -> None:
+        """Navbar can render a controlled brand mark instead of logo plus title."""
         nav_config = NavbarConfig(
             NavbarBrandConfig(
                 "Insight UI",
                 "/",
                 aria_label="Alpin Insight Develop Startseite",
-                lockup=BrandLockupConfig("Alpin Insight", "Develop", height="2rem", variant="develop"),
+                mark=BrandMarkConfig("Alpin Insight", "Develop", height="2rem", variant="develop"),
             )
         )
 
@@ -174,7 +174,7 @@ class TestNavbar(TemplateTagsTestCase):
         assert brand_link.find("svg") is not None
         assert brand_link.find("img") is None
 
-    def test_navbar_keeps_logo_title_fallback_without_lockup(self) -> None:
+    def test_navbar_keeps_logo_title_fallback_without_mark(self) -> None:
         """Existing logo plus title configuration remains the fallback mode."""
         nav_config = NavbarConfig(
             NavbarBrandConfig(

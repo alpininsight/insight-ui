@@ -9,7 +9,7 @@ from insight_ui.configs import (
     AppCardConfig,
     ArticleConfig,
     BadgeConfig,
-    BrandLockupConfig,
+    BrandMarkConfig,
     BulletPointListConfig,
     ButtonConfig,
     CardCarouselConfig,
@@ -129,7 +129,7 @@ class Component(Enum):
     COPYRIGHT_NOTICE = ("copyright_notice", ComponentCategory.UTIL, CopyrightNoticeConfig)
     DIFFERENTIATOR = ("differentiator", ComponentCategory.UTIL)
     LOGO = ("logo", ComponentCategory.UTIL, LogoConfig)
-    BRAND_LOCKUP = ("brand_lockup", ComponentCategory.UTIL, BrandLockupConfig)
+    BRAND_MARK = ("brand_mark", ComponentCategory.UTIL, BrandMarkConfig)
     CORNER_RIBBON = ("corner_ribbon", ComponentCategory.UTIL, CornerRibbonConfig)
     PROGRESS_BAR = ("progress_bar", ComponentCategory.UTIL, ProgressBarConfig)
     GEO_MAP = ("geo_map", ComponentCategory.UTIL, GeoMapConfig)

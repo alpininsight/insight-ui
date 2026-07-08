@@ -1714,7 +1714,7 @@ msgstr ""
 
 #: .\insight_ui\component_details\description_context.py:490
 msgid ""
-"The `brand_lockup` component renders a controlled brand unit made of a "
+"The `brand_mark` component renders a controlled brand unit made of a "
 "public Insight UI icon and a two-tone wordmark."
 msgstr ""
 
@@ -1737,7 +1737,7 @@ msgstr ""
 
 #: .\insight_ui\component_details\description_context.py:499
 msgid ""
-"Can be used directly or as the optional `brand.lockup` mode inside the "
+"Can be used directly or as the optional `brand.mark` mode inside the "
 "navbar component."
 msgstr ""
 
@@ -2205,7 +2205,7 @@ msgstr ""
 
 #: .\insight_ui\component_details\usage_context.py:599
 msgid ""
-"Use `brand.lockup` in the navbar when the wordmark should be the clickable "
+"Use `brand.mark` in the navbar when the wordmark should be the clickable "
 "brand element. Keep `brand.logo` plus `brand.title` for generic application "
 "names."
 msgstr ""
@@ -3211,7 +3211,7 @@ msgid "Optional accessible label for the brand link."
 msgstr "Optionales Icon, welches vor der Beschriftung angezeigt wird."
 
 #: .\insight_ui\configs\navigation.py:51
-msgid "Optional controlled brand lockup rendered instead of logo plus title."
+msgid "Optional controlled brand mark rendered instead of logo plus title."
 msgstr ""
 
 #: .\insight_ui\configs\navigation.py:75

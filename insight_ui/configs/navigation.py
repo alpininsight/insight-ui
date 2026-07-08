@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from insight_ui.configs.base import HtmxConfig, IconConfig
 from insight_ui.configs.input import DropdownConfig
 from insight_ui.configs.popup import ModalConfig
-from insight_ui.configs.utils import BrandLockupConfig, CopyrightNoticeConfig, LogoConfig
+from insight_ui.configs.utils import BrandMarkConfig, CopyrightNoticeConfig, LogoConfig
 
 
 @dataclass
@@ -23,7 +23,7 @@ class NavbarBrandConfig:
         logo: Describes the logo that is displayed next to the title.
         gap: This value determines the spacing between the logo and the title.
         aria_label: Optional accessible label for the brand link.
-        lockup: Optional controlled brand lockup rendered instead of logo plus title.
+        mark: Optional controlled brand mark rendered instead of logo plus title.
 
     """
 
@@ -46,8 +46,8 @@ class NavbarBrandConfig:
         default="0.5rem", metadata={"doc": _("This value determines the spacing between the logo and the title.")}
     )
     aria_label: str = field(default="", metadata={"doc": _("Optional accessible label for the brand link.")})
-    lockup: BrandLockupConfig | None = field(
-        default=None, metadata={"doc": _("Optional controlled brand lockup rendered instead of logo plus title.")}
+    mark: BrandMarkConfig | None = field(
+        default=None, metadata={"doc": _("Optional controlled brand mark rendered instead of logo plus title.")}
     )
 
 

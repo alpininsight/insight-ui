@@ -604,9 +604,9 @@ def get_logo_a11y_context() -> dict[str, list[str]]:
     }
 
 
-@register_component(Component.BRAND_LOCKUP)
-def get_brand_lockup_a11y_context() -> dict[str, list[str]]:
-    """Serve a11y documentation for the brand lockup component."""
+@register_component(Component.BRAND_MARK)
+def get_brand_mark_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y documentation for the brand mark component."""
     return {
         "a11y": [
             _("The wordmark is rendered as readable text so assistive technologies can announce the brand name."),
