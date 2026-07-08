@@ -6,6 +6,7 @@ from typing import Literal
 from django.utils.translation import gettext_lazy as _
 
 from insight_ui.configs.base import IconConfig
+from insight_ui.configs.input import ButtonConfig
 
 
 @dataclass
@@ -148,6 +149,56 @@ class BrandMarkConfig:
         default="main", metadata={"doc": _("Public icon variant: 'main', 'develop', or 'candidate'.")}
     )
     css_class: str = field(default="", metadata={"doc": _("Optional CSS classes for the root element.")})
+
+
+@dataclass
+class StatusScreenConfig:
+    """Configuration for the status_screen component.
+
+    Renders a centered full-page status view from reusable Insight UI building blocks.
+
+    Attributes:
+        title: Main status title.
+        description: Supporting status description.
+        status: Visual status: 'info', 'success', 'warning', or 'error'.
+        brand: Optional brand mark shown above the card.
+        notice_title: Optional notice heading.
+        notice: Optional notice text.
+        primary_action: Primary button action.
+        secondary_action: Secondary button action.
+        actions: Additional button actions.
+        css_class: Optional CSS classes for the outer section.
+        card_css_class: Optional CSS classes for the status card.
+
+    """
+
+    __example__ = """
+        StatusScreenConfig(
+            title="Sign-in failed",
+            description="The SSO process could not be completed.",
+            status="error",
+            notice_title="What happened?",
+            notice="Please try again or contact support if the issue persists.",
+            primary_action=ButtonConfig(label="Try again", request_url="/login/", type="primary"),
+            secondary_action=ButtonConfig(label="Back to start", request_url="/", type="secondary"),
+        )
+        """
+
+    title: str = field(metadata={"doc": _("Main status title.")})
+    description: str | list[str] = field(default="", metadata={"doc": _("Supporting status description.")})
+    status: Literal["info", "success", "warning", "error"] = field(
+        default="info", metadata={"doc": _("Visual status: 'info', 'success', 'warning', or 'error'.")}
+    )
+    brand: BrandMarkConfig | None = field(
+        default_factory=BrandMarkConfig, metadata={"doc": _("Optional brand mark shown above the card.")}
+    )
+    notice_title: str = field(default="", metadata={"doc": _("Optional notice heading.")})
+    notice: str = field(default="", metadata={"doc": _("Optional notice text.")})
+    primary_action: ButtonConfig | None = field(default=None, metadata={"doc": _("Primary button action.")})
+    secondary_action: ButtonConfig | None = field(default=None, metadata={"doc": _("Secondary button action.")})
+    actions: list[ButtonConfig] = field(default_factory=list, metadata={"doc": _("Additional button actions.")})
+    css_class: str = field(default="", metadata={"doc": _("Optional CSS classes for the outer section.")})
+    card_css_class: str = field(default="", metadata={"doc": _("Optional CSS classes for the status card.")})
 
 
 @dataclass

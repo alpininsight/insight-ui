@@ -116,6 +116,7 @@ from insight_ui.configs.utils import (
     LiveContentConfig,
     LogoConfig,
     ProgressBarConfig,
+    StatusScreenConfig,
     WebSocketConfig,
 )
 
@@ -215,6 +216,7 @@ __all__ = [
     "SliderConfig",
     "SliderConfig",
     "SpacerConfig",
+    "StatusScreenConfig",
     "StepperConfig",
     "StepperItemConfig",
     "TabConfig",

@@ -50,6 +50,19 @@ def get_hero_a11y_context() -> dict[str, list[str]]:
     }
 
 
+@register_component(Component.STATUS_SCREEN)
+def get_status_screen_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y documentation for the status screen component."""
+    return {
+        "a11y": [
+            _("The status title is rendered as a semantic `<h1>` element."),
+            _("The decorative status icon is hidden from assistive technologies with `aria-hidden`."),
+            _("Error notices use `role='alert'`; all other notices use `role='status'`."),
+            _("Actions are rendered through the standard button component with clear labels."),
+        ]
+    }
+
+
 @register_component(Component.PAGE)
 def get_page_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the page layout tag."""

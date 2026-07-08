@@ -58,6 +58,26 @@ def get_hero_usage_context() -> dict[str, str]:
     }
 
 
+@register_component(Component.STATUS_SCREEN)
+def get_status_screen_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the status screen component."""
+    return {
+        "usage": """
+        {% load insight_tags %}
+
+        {% status_screen
+            title="Sign-in failed"
+            description="The SSO process could not be completed."
+            status="error"
+            notice_title="What happened?"
+            notice="Please try again or contact support if the issue persists."
+            primary_action=retry_button
+            secondary_action=support_button
+        %}
+        """
+    }
+
+
 @register_component(Component.PAGE)
 def get_page_usage_context() -> dict[str, str]:
     """Serve usage documentation for the page layout tag."""
