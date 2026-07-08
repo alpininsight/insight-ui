@@ -3,7 +3,7 @@
 from django.test import override_settings
 from insight_ui.brand import get_brand_logo_config, get_navbar_brand_defaults
 from insight_ui.component_details.demo_context import get_login_screen_context
-from insight_ui.configs import BrandLockupConfig, LogoConfig
+from insight_ui.configs import BrandMarkConfig, LogoConfig
 from insight_ui.context import get_footer_context, get_navbar_context
 
 
@@ -64,7 +64,7 @@ def test_login_context_uses_brand_logo_with_login_specific_height() -> None:
 @override_settings(
     INSIGHT_UI={
         "brand": {
-            "lockup": BrandLockupConfig(
+            "mark": BrandMarkConfig(
                 primary_text="Acme",
                 secondary_text="Develop",
                 variant="develop",
@@ -72,11 +72,11 @@ def test_login_context_uses_brand_logo_with_login_specific_height() -> None:
         }
     }
 )
-def test_navbar_brand_defaults_can_use_configured_lockup() -> None:
-    """A configured lockup should be available to default navbar brand composition."""
+def test_navbar_brand_defaults_can_use_configured_mark() -> None:
+    """A configured brand mark should be available to default navbar brand composition."""
     brand = get_navbar_brand_defaults()
 
-    assert brand.lockup is not None
-    assert brand.lockup.primary_text == "Acme"
-    assert brand.lockup.secondary_text == "Develop"
-    assert brand.lockup.variant == "develop"
+    assert brand.mark is not None
+    assert brand.mark.primary_text == "Acme"
+    assert brand.mark.secondary_text == "Develop"
+    assert brand.mark.variant == "develop"

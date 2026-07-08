@@ -5,7 +5,7 @@ from dataclasses import replace
 from typing import Any, cast
 
 from insight_ui.config import get_config
-from insight_ui.configs import BrandLockupConfig, FooterDescriptionConfig, LogoConfig, NavbarBrandConfig
+from insight_ui.configs import BrandMarkConfig, FooterDescriptionConfig, LogoConfig, NavbarBrandConfig
 
 
 def get_brand_defaults() -> Mapping[str, Any]:
@@ -34,14 +34,14 @@ def get_brand_logo_config(*, height: str | None = None) -> LogoConfig | None:
     return logo
 
 
-def get_brand_lockup_config() -> BrandLockupConfig | None:
-    """Build an optional brand lockup from central brand defaults."""
+def get_brand_mark_config() -> BrandMarkConfig | None:
+    """Build an optional brand mark from central brand defaults."""
     brand = get_brand_defaults()
-    lockup = brand.get("lockup")
-    if not lockup:
+    mark = brand.get("mark")
+    if not mark:
         return None
 
-    return lockup
+    return mark
 
 
 def get_navbar_brand_defaults() -> NavbarBrandConfig:
@@ -52,7 +52,7 @@ def get_navbar_brand_defaults() -> NavbarBrandConfig:
         request_url=str(brand.get("home_url", "")),
         logo=get_brand_logo_config(),
         gap="0.5rem",
-        lockup=get_brand_lockup_config(),
+        mark=get_brand_mark_config(),
     )
 
 
