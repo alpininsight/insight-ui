@@ -185,7 +185,7 @@ def get_hero_context() -> dict:
             "Insight UI",
             _("Front-end Design Made Easy"),
             _("A modern UI library for Django applications to get started quickly."),
-            ButtonConfig(label=_("Get Started"), request_url="#", type="primary", icon=IconConfig("rocket")),
+            ButtonConfig(label=_("Get Started"), request_url="#", type="primary", icon=IconConfig("rocket-launch")),
             ButtonConfig(label=_("Learn more"), request_url="#", type="secondary"),
             badge_config=BadgeConfig("Django UI Library", IconConfig("sparkles")),
         )
@@ -258,7 +258,7 @@ def get_navbar_context() -> dict:
                 "text": _("Settings"),
                 "request_url": reverse("index_view"),
                 "staff_only": False,
-                "icon": IconConfig("gear", "s"),
+                "icon": IconConfig("cog-8-tooth", "s"),
             },
             {
                 "text": _("Administration"),
@@ -270,7 +270,7 @@ def get_navbar_context() -> dict:
                 "text": _("Translation"),
                 "request_url": reverse("index_view"),
                 "staff_only": True,
-                "icon": IconConfig("globe", "s"),
+                "icon": IconConfig("globe-alt", "s"),
             },
         ],
     }
@@ -282,20 +282,24 @@ def get_drawer_context() -> dict:
     left_sidebar_config = SidebarConfig(
         SidebarDataConfig(
             _("Settings"),
-            IconConfig("tools", "s"),
+            IconConfig("wrench-screwdriver", "s"),
             [
                 SidebarCategoryConfig(
                     _("Work"),
-                    IconConfig("office", "s"),
+                    IconConfig("building-office-2", "s"),
                     [
                         SidebarItemConfig(_("Notifications"), reverse("index_view"), IconConfig("bell", "s")),
-                        SidebarItemConfig(_("Messages"), reverse("index_view"), IconConfig("chat-bubble", "s")),
-                        SidebarItemConfig(_("Tasks"), reverse("index_view"), IconConfig("checklist", "s")),
+                        SidebarItemConfig(
+                            _("Messages"), reverse("index_view"), IconConfig("chat-bubble-left-right", "s")
+                        ),
+                        SidebarItemConfig(
+                            _("Tasks"), reverse("index_view"), IconConfig("clipboard-document-check", "s")
+                        ),
                     ],
                 ),
                 SidebarCategoryConfig(
                     _("Management"),
-                    IconConfig("gear", "s"),
+                    IconConfig("cog-8-tooth", "s"),
                     [
                         SidebarItemConfig(_("Calendar"), reverse("index_view"), IconConfig("calendar", "s")),
                         SidebarItemConfig(_("Profile"), reverse("index_view"), IconConfig("user", "s")),
@@ -464,8 +468,8 @@ def get_dropdown_context() -> dict:
             _("User"),
             items=[
                 DropdownItemConfig(_("Profile"), "/", IconConfig("user", "s")),
-                DropdownItemConfig(_("Settings"), "/", IconConfig("gear", "s")),
-                DropdownItemConfig(_("Logout"), "/", IconConfig("leave", "s")),
+                DropdownItemConfig(_("Settings"), "/", IconConfig("cog-8-tooth", "s")),
+                DropdownItemConfig(_("Logout"), "/", IconConfig("arrow-left-on-rectangle", "s")),
             ],
         ),
         "settings_dropdown_config": DropdownConfig(
@@ -474,7 +478,7 @@ def get_dropdown_context() -> dict:
             False,
             [
                 DropdownItemConfig(_("Personal Information"), "/", IconConfig("user", "s")),
-                DropdownItemConfig(_("Appearance"), "/", IconConfig("gear", "s")),
+                DropdownItemConfig(_("Appearance"), "/", IconConfig("cog-8-tooth", "s")),
             ],
         ),
     }
@@ -504,9 +508,9 @@ def get_radio_block_context() -> dict:
             "view",
             _("Select view mode:"),
             items=[
-                RadioItemConfig("card-view", "card", icon=IconConfig("cards")),
-                RadioItemConfig("table", "table", icon=IconConfig("list")),
-                RadioItemConfig("card-carousel", "carousel", icon=IconConfig("carousel")),
+                RadioItemConfig("card-view", "card", icon=IconConfig("squares-2x2")),
+                RadioItemConfig("table", "table", icon=IconConfig("list-bullet")),
+                RadioItemConfig("card-carousel", "carousel", icon=IconConfig("square-3-stack-3d")),
             ],
         ),
         "size_radio_config": RadioBlockConfig(
@@ -930,7 +934,7 @@ def get_generic_filter_context() -> dict:
                     _("AI model type"),
                     model_type_options,
                     _("To filter by the type of AI-Model."),
-                    IconConfig("rocket", "s"),
+                    IconConfig("rocket-launch", "s"),
                 ),
                 FilterConfig(
                     "runtime_filter",
@@ -939,7 +943,7 @@ def get_generic_filter_context() -> dict:
                     _("To filter by the runtime."),
                     IconConfig("clock", "s"),
                 ),
-                FilterConfig("license_filter", _("License"), license_options, icon=IconConfig("doc", "s")),
+                FilterConfig("license_filter", _("License"), license_options, icon=IconConfig("document-text", "s")),
             ],
             "/",
         )
@@ -1061,9 +1065,9 @@ def get_toggle_view_context() -> dict:
             view_radio_config=RadioBlockConfig(
                 "products-view-toggle",
                 items=[
-                    RadioItemConfig("card-view", "card", icon=IconConfig("cards")),
-                    RadioItemConfig("table-view", "table", icon=IconConfig("list")),
-                    RadioItemConfig("carousel-view", "carousel", icon=IconConfig("carousel")),
+                    RadioItemConfig("card-view", "card", icon=IconConfig("squares-2x2")),
+                    RadioItemConfig("table-view", "table", icon=IconConfig("list-bullet")),
+                    RadioItemConfig("carousel-view", "carousel", icon=IconConfig("square-3-stack-3d")),
                 ],
                 request_url=reverse("toggle_view"),
             ),

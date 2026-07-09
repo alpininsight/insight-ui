@@ -1016,7 +1016,7 @@ def logo(
 
 
 BRAND_MARK_VARIANTS = ("main", "develop", "candidate")
-BRAND_MARK_ICON_BY_VARIANT = {"main": "app", "develop": "rocket", "candidate": "sparkles"}
+BRAND_MARK_ICON_BY_VARIANT = {"main": "computer-desktop", "develop": "rocket", "candidate": "sparkles"}
 CSS_SIZE_PATTERN = re.compile(r"^-?(?:\d+(?:\.\d+)?|\.\d+)(?:px|rem|em|vh|vw|vmin|vmax|%|ch|ex|lh|rlh)$")
 
 
