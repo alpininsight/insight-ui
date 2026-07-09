@@ -382,7 +382,12 @@ def hero(
     return {"hero_config": config}
 
 
-STATUS_SCREEN_ICON_BY_STATUS = {"info": "info", "success": "tick", "warning": "warning", "error": "danger"}
+STATUS_SCREEN_ICON_BY_STATUS = {
+    "info": "information-circle",
+    "success": "check",
+    "warning": "exclamation-triangle",
+    "error": "exclamation-circle",
+}
 STATUS_SCREEN_STATUSES: Final = frozenset(STATUS_SCREEN_ICON_BY_STATUS)
 type StatusScreenStatus = Literal["info", "success", "warning", "error"]
 
@@ -393,13 +398,6 @@ def _validate_status_screen_status(value: object) -> StatusScreenStatus:
         return cast("StatusScreenStatus", value)
     message = "status_screen status must be one of: info, success, warning, error"
     raise ValueError(message)
-
-
-def _prepare_status_screen_action(action: ButtonConfig) -> ButtonConfig:
-    """Normalize action configs before handing them to the generic button component."""
-    if action.type != "disabled":
-        return action
-    return replace(action, request_url="", on_click="")
 
 
 @register.inclusion_tag("insight_ui/components/status_screen.html")
@@ -423,15 +421,11 @@ def status_screen(
     config.description = ensure_list(config.description)
     config.status = _validate_status_screen_status(config.status)
 
-    status_screen_actions = [
-        _prepare_status_screen_action(action)
-        for action in [config.primary_action, config.secondary_action, *config.actions]
-        if action
-    ]
+    all_actions = [action for action in [config.primary_action, config.secondary_action, *config.actions] if action]
+    config.actions = all_actions
 
     return {
         "status_screen_config": config,
-        "status_screen_actions": status_screen_actions,
         "status_screen_icon": STATUS_SCREEN_ICON_BY_STATUS[config.status],
     }
 

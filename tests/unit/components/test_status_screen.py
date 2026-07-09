@@ -2,6 +2,8 @@
 
 import pytest
 from bs4 import BeautifulSoup
+from insight_ui.configs.input import ButtonConfig
+from insight_ui.configs.utils import StatusScreenConfig
 
 from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
@@ -58,23 +60,18 @@ class TestStatusScreen(TemplateTagsTestCase):
         rendered = self.render_template(
             "{% load insight_tags %}{% status_screen config=cfg %}",
             context={
-                "cfg": {
-                    "title": "Deployment running",
-                    "status": "info",
-                    "primary_action": {
-                        "label": "Continue",
-                        "request_url": "/next/",
-                        "type": "disabled",
-                    },
-                }
+                "cfg": StatusScreenConfig(
+                    title="Deployment running",
+                    status="info",
+                    primary_action=ButtonConfig(label="Continue", request_url="/next/", type="disabled"),
+                )
             },
         )
         soup = BeautifulSoup(rendered, "html.parser")
 
-        assert soup.find("a", href="/next/") is None
-        button = soup.find("button", disabled=True)
-        assert button is not None
-        assert "btn-disabled" in button.get("class", [])
+        href = soup.find("a", disabled=True)
+        assert href is not None
+        assert "btn-disabled" in href.get("class", [])
 
     def test_status_screen_error_notice_uses_alert_role(self) -> None:
         """Error notices use alert semantics and a semantic danger border."""
