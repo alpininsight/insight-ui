@@ -24,12 +24,10 @@ class Command(BaseCommand):
     )
 
     def add_arguments(self, parser: ArgumentParser) -> None:
-        """
-        Add command arguments.
+        """Add command arguments.
 
-        Arguments:
-        ---------
-            parser (ArgumentParser): The argument parser to add arguments to.
+        Args:
+            parser: The argument parser to add arguments to.
 
         """
         parser.add_argument("--dir", type=str, help="Directory containing individual SVG files")
@@ -42,13 +40,11 @@ class Command(BaseCommand):
         parser.add_argument("--list-bundled", action="store_true", help="List all bundled icon names and exit")
 
     def handle(self, *args: Any, **options: Any) -> None:  # noqa: ANN401, ARG002
-        """
-        Execute the command.
+        """Execute the command.
 
-        Arguments:
-        ---------
-            *args (Any): Positional arguments (unused).
-            **options (Any): Command options from argparse.
+        Args:
+            *args: Positional arguments (unused).
+            **options: Command options from argparse.
 
         """
         if options.get("list_bundled"):
@@ -95,16 +91,13 @@ class Command(BaseCommand):
             self.stdout.write(f"  - {name}")
 
     def _read_icons_from_directory(self, directory: Path) -> dict[str, str]:
-        """
-        Read individual SVG files from a directory.
+        """Read individual SVG files from a directory.
 
-        Arguments:
-        ---------
-            directory (Path): Path to directory containing SVG files.
+        Args:
+            directory: Path to directory containing SVG files.
 
         Returns:
-        -------
-            icons (dict[str, str]): Dictionary mapping icon names to SVG content.
+            Dictionary mapping icon names to SVG content.
 
         """
         if not directory.exists():
@@ -127,16 +120,13 @@ class Command(BaseCommand):
         return icons
 
     def _read_icons_from_sprite(self, sprite_path: Path) -> dict[str, str]:
-        """
-        Read icons from an SVG sprite sheet (extracts <symbol> elements).
+        """Read icons from an SVG sprite sheet (extracts <symbol> elements).
 
-        Arguments:
-        ---------
-            sprite_path (Path): Path to the SVG sprite sheet file.
+        Args:
+            sprite_path: Path to the SVG sprite sheet file.
 
         Returns:
-        -------
-            icons (dict[str, str]): Dictionary mapping icon names to SVG content.
+            Dictionary mapping icon names to SVG content.
 
         """
         if not sprite_path.exists():
@@ -185,16 +175,13 @@ class Command(BaseCommand):
         return icons
 
     def _get_element_inner_xml(self, element: Element) -> str:
-        """
-        Get the inner XML content of an element (children as string).
+        """Get the inner XML content of an element (children as string).
 
-        Arguments:
-        ---------
-            element (Element): XML element to extract inner content from.
+        Args:
+            element: XML element to extract inner content from.
 
         Returns:
-        -------
-            inner_xml (str): String representation of all child elements.
+            String representation of all child elements.
 
         """
         inner_parts = []
@@ -204,16 +191,13 @@ class Command(BaseCommand):
         return "".join(inner_parts)
 
     def _normalize_icon_name(self, name: str) -> str:
-        """
-        Normalize icon name to consistent format (lowercase, hyphens to underscores).
+        """Normalize icon name to consistent format (lowercase with hyphens).
 
-        Arguments:
-        ---------
-            name (str): Raw icon name from filename or symbol ID.
+        Args:
+            name: Raw icon name from filename or symbol ID.
 
         Returns:
-        -------
-            normalized_name (str): Normalized icon name in lowercase with hyphens.
+            Normalized icon name in lowercase with hyphens.
 
         """
         # Remove common prefixes
@@ -223,16 +207,13 @@ class Command(BaseCommand):
         return name.lower().replace("_", "-")
 
     def _extract_svg_content(self, svg_text: str) -> str | None:
-        """
-        Extract the SVG element from text, preserving internal structure.
+        """Extract the SVG element from text, preserving internal structure.
 
-        Arguments:
-        ---------
-            svg_text (str): Raw SVG file content.
+        Args:
+            svg_text: Raw SVG file content.
 
         Returns:
-        -------
-            svg (str | None): Cleaned SVG element string, or None if no SVG found.
+            Cleaned SVG element string, or None if no SVG found.
 
         """
         # Find the <svg> element and its contents
@@ -246,16 +227,13 @@ class Command(BaseCommand):
         return None
 
     def _get_output_path(self, output_option: str | None) -> Path:
-        """
-        Determine the output path for the generated template.
+        """Determine the output path for the generated template.
 
-        Arguments:
-        ---------
-            output_option (str | None): User-specified output path, or None for default.
+        Args:
+            output_option: User-specified output path, or None for default.
 
         Returns:
-        -------
-            output_path (Path): Path where the icons.html template will be written.
+            Path where the icons.html template will be written.
 
         """
         if output_option:
@@ -275,16 +253,13 @@ class Command(BaseCommand):
         return output_dir / "icons.html"
 
     def _generate_template(self, icons: dict[str, str]) -> str:
-        """
-        Generate the icons.html template content.
+        """Generate the icons.html template content.
 
-        Arguments:
-        ---------
-            icons (dict[str, str]): Dictionary mapping icon names to SVG content.
+        Args:
+            icons: Dictionary mapping icon names to SVG content.
 
         Returns:
-        -------
-            template (str): Complete icons.html template as string.
+            Complete icons.html template as string.
 
         """
         lines = [
@@ -306,18 +281,17 @@ class Command(BaseCommand):
             lines.append(indented_svg)
 
         # Add fallback for unknown icons (question mark)
-        lines.append("    {% else %}")
-        lines.append(
-            '        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" '
-            'stroke-width="1.5" stroke="currentColor" aria-hidden="true">'
-        )
-        lines.append(
-            '            <path stroke-linecap="round" stroke-linejoin="round" '
+        fallback_svg = (
+            '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" '
+            'stroke-width="1.5" stroke="currentColor" aria-hidden="true">\n'
+            '    <path stroke-linecap="round" stroke-linejoin="round" '
             'd="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 '
             "3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 "
-            '1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />'
+            '1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />\n'
+            "</svg>"
         )
-        lines.append("        </svg>")
+        lines.append("    {% else %}")
+        lines.append(self._indent_svg(fallback_svg, spaces=8))
         lines.append("    {% endif %}")
         lines.append("</div>")
         lines.append("")  # Trailing newline
@@ -325,45 +299,62 @@ class Command(BaseCommand):
         return "\n".join(lines)
 
     def _indent_svg(self, svg: str, spaces: int = 8) -> str:
-        """
-        Properly indent SVG content.
+        """Properly indent SVG content.
 
-        Arguments:
-        ---------
-            svg (str): SVG content to indent.
-            spaces (int): Number of spaces for indentation.
+        Removes existing indentation and applies consistent indentation,
+        preserving relative indentation within the SVG.
+
+        Args:
+            svg: SVG content to indent.
+            spaces: Number of spaces for indentation.
 
         Returns:
-        -------
-            indented_svg (str): Indented SVG content.
+            Indented SVG content.
 
         """
         indent = " " * spaces
-        # Split into lines and indent each
         svg_lines = svg.strip().split("\n")
-        indented_lines = [indent + line if line.strip() else line for line in svg_lines]
-        return "\n".join(indented_lines)
+
+        # Find minimum indentation of non-empty lines (excluding first line)
+        min_indent = float("inf")
+        for line in svg_lines[1:]:
+            if line.strip():
+                leading = len(line) - len(line.lstrip())
+                min_indent = min(min_indent, leading)
+
+        if min_indent == float("inf"):
+            min_indent = 0
+
+        # Remove common indentation and apply new indentation
+        result_lines = []
+        for i, line in enumerate(svg_lines):
+            if not line.strip():
+                result_lines.append(line)
+            elif i == 0:
+                result_lines.append(indent + line.strip())
+            else:
+                # Remove min_indent and add new base indent
+                dedented = line[min_indent:] if len(line) >= min_indent else line.lstrip()
+                result_lines.append(indent + dedented)
+
+        return "\n".join(result_lines)
 
     def _write_output(self, output_path: Path, content: str) -> None:
-        """
-        Write the generated template to file.
+        """Write the generated template to file.
 
-        Arguments:
-        ---------
-            output_path (Path): Destination path for the template.
-            content (str): Template content to write.
+        Args:
+            output_path: Destination path for the template.
+            content: Template content to write.
 
         """
         output_path.parent.mkdir(parents=True, exist_ok=True)
         output_path.write_text(content, encoding="utf-8")
 
     def _get_bundled_icons(self) -> dict[str, str]:
-        """
-        Return the bundled icons from insight-ui.
+        """Return the bundled icons from insight-ui.
 
-        Returns
-        -------
-            icons (dict[str, str]): Dictionary of bundled icon names to SVG content.
+        Returns:
+            Dictionary of bundled icon names to SVG content.
 
         """
         from insight_ui.icons import BUNDLED_ICONS  # noqa: PLC0415
