@@ -3,7 +3,7 @@
 {% if button_config.request_url %}
     <a
         {% if button_config.tag_id %}id="{{ button_config.tag_id }}"{% endif %}
-        href="{{ button_config.request_url }}"
+        {% if button_config.type != "disabled" %}href="{{ button_config.request_url }}"{% endif %}
         {% if button_config.external %}target="_blank" rel="noopener"{% endif %}
         {% if button_config.htmx_config %}
             hx-{{ button_config.htmx_config.method }}="{{ button_config.htmx_config.request_url }}"
@@ -14,7 +14,7 @@
             hx-trigger="{{ button_config.htmx_config.trigger }}"
             {% if button_config.htmx_config.confirm %}hx-confirm="{{ button_config.htmx_config.confirm }}"{% endif %}
         {% endif %}
-        {% if button_config.disabled == "disabled" %}disabled{% endif %}
+        {% if button_config.type == "disabled" %}disabled{% endif %}
         {% if button_config.icon_only %}aria-label="{{ button_config.label }}"{% endif %}
         {% if button_config.tooltip %}data-insight-tooltip="{{ button_config.tooltip }}"{% endif %}
         {% for attr in button_config.data_attrs %}
