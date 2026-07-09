@@ -313,7 +313,9 @@
                             </div>
                             {% vbox %}
                                 <span class="font-semibold group-hover:text-insight-primary transition-colors">{{ category.name }}</span>
-                                <span class="text-xs text-secondary">{{ category.count }} {% trans "components" %}</span>
+                                <span class="text-xs text-secondary">
+                                    {% blocktrans count count=category.count %}{{ count }} component{% plural %}{{ count }} components{% endblocktrans %}
+                                </span>
                             {% endvbox %}
                         {% endhbox %}
                     </a>
