@@ -22,7 +22,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **test:** Document radius token checks
 - **i18n:** Compile translations in container build
 - **theme:** Preserve generated css newline
+- Change 'BrandLockupConfig' to 'BrandMarkConfig' in 'status_screen' component
 - **brand:** Align defaults with brand mark
+- **i18n:** Translate homepage copy
 
 ### Build System
 
@@ -70,6 +72,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **forms:** Introduce semantic status tokens
 - **theme:** Introduce semantic shadow roles
 - **theme:** Introduce semantic radius roles
+- **status-screen:** Align component with semantic tokens
 - **brand:** Add settings based brand defaults
 - Remove obsolete title config member
 
@@ -99,6 +102,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **forms:** Keep status include within line limit
 - **theme:** Document shadow token checks
 - **i18n:** Document container translation contract
+- **i18n:** Avoid compiled catalog dependency
 
 ## [1.10.2] - 2026-05-27
 
