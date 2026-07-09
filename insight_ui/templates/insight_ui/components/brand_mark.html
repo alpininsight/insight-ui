@@ -1,30 +1,11 @@
 {% load i18n insight_tags %}
-{% comment %}
-  Brand mark: a public icon + two-tone wordmark.
 
-  `variant` picks an existing Insight UI icon from the public icon list.
-  The open-source component must not embed private assets.
-
-  Colours are inline `var(--color-insight-*)` references on purpose:
-  the icon inherits currentColor, and using the same tokens for the
-  wordmark keeps the mark theme-following without depending on a
-  `text-insight-secondary` utility that isn't always compiled.
-
-  Layout: a single icon placement (no per-position duplication). When
-  logo_position == "end", the icon wrapper gets `order: 2` so the wordmark
-  sits left and the icon is pushed to the far edge via justify-between;
-  inline `order` avoids depending on a Tailwind order-* utility.
-
-  Wordmark text is a brand name and is intentionally not wrapped in
-  {% trans %}. The icon is decorative (aria-hidden) because the wordmark
-  text is already read by assistive tech.
-{% endcomment %}
-<div class="flex gap-3 items-center {% if logo_position == 'end' %}justify-between{% endif %} {{ css_class }}">
-    <span class="shrink-0" style="color: var(--color-insight-primary);{% if logo_position == 'end' %} order: 2;{% endif %}" aria-hidden="true">
-        {% icon name=icon_name size=icon_size color=icon_color %}
+<div class="flex gap-3 items-center {% if brand_mark_config.logo_position == 'end' %}justify-between{% endif %} {{ brand_mark_config.css_class }}">
+    <span class="shrink-0 {% if brand_mark_config.logo_position == 'end' %} order-2{% endif %}" aria-hidden="true">
+        {% logo config=brand_mark_config.logo %}
     </span>
     <span class="text-base font-bold tracking-tight whitespace-nowrap">
-        <span style="color: var(--color-insight-primary)">{{ primary_text }}</span>
-        <span style="color: var(--color-insight-secondary)">{{ secondary_text }}</span>
+        <span class="text-insight-text-primary">{{ brand_mark_config.primary_text }}</span>
+        <span class="text-insight-primary">{{ brand_mark_config.secondary_text }}</span>
     </span>
 </div>

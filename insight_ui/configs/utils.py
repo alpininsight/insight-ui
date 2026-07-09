@@ -123,9 +123,8 @@ class BrandMarkConfig:
     Attributes:
         primary_text: First wordmark run.
         secondary_text: Second wordmark run.
+        logo: Public logo configuration.
         logo_position: Logo position, either 'start' or 'end'.
-        height: CSS height for the public icon.
-        variant: Public icon variant: 'main', 'develop', or 'candidate'.
         css_class: Optional CSS classes for the root element.
 
     """
@@ -134,19 +133,20 @@ class BrandMarkConfig:
         BrandMarkConfig(
             primary_text="Alpin Insight",
             secondary_text="Develop",
-            variant="develop",
-            height="2rem",
+            logo=LogoConfig(
+                url="img/logo.svg",
+                url_dark="img/logo-dark.svg",
+                alt="Company Logo",
+                height="2rem",
+            ),
         )
         """
 
     primary_text: str = field(default="Alpin Insight", metadata={"doc": _("First wordmark run.")})
     secondary_text: str = field(default="Solutions", metadata={"doc": _("Second wordmark run.")})
+    logo: LogoConfig = field(default_factory=LogoConfig, metadata={"doc": _("Public logo configuration.")})
     logo_position: Literal["start", "end"] = field(
         default="start", metadata={"doc": _("Logo position, either 'start' or 'end'.")}
-    )
-    height: str = field(default="1.75rem", metadata={"doc": _("CSS height for the public icon.")})
-    variant: Literal["main", "develop", "candidate"] = field(
-        default="main", metadata={"doc": _("Public icon variant: 'main', 'develop', or 'candidate'.")}
     )
     css_class: str = field(default="", metadata={"doc": _("Optional CSS classes for the root element.")})
 
