@@ -45,7 +45,7 @@ class ButtonConfig:
             label="Click Me!",
             request_url="",
             on_click="calculateSomething()",
-            icon=IconConfig("rocket", "m"),
+            icon=IconConfig("rocket-launch", "m"),
             icon_end=True,
             icon_only=False,
             type="primary",
@@ -367,8 +367,8 @@ class DropdownConfig:
             show_arrow=True,
             items=[
                 DropdownItemConfig(text="Profile", request_url="/profile/", icon=IconConfig(name="user")),
-                DropdownItemConfig(text="Settings", request_url="/settings/", icon=IconConfig(name="gear")),
-                DropdownItemConfig(text="Logout", request_url="/logout/", icon=IconConfig(name="leave")),
+                DropdownItemConfig(text="Settings", request_url="/settings/", icon=IconConfig(name="cog-8-tooth")),
+                DropdownItemConfig(text="Logout", request_url="/logout/", icon=IconConfig(name="arrow-left-on-rectangle")),
             ],
         )
         """
@@ -469,8 +469,8 @@ class RadioBlockConfig:
         RadioBlockConfig(
             name="view",
             items=[
-                RadioItemConfig(tag_id="card", value="card", icon=IconConfig(name="cards")),
-                RadioItemConfig(tag_id="table", value="table", icon=IconConfig(name="list")),
+                RadioItemConfig(tag_id="card", value="card", icon=IconConfig(name="squares-2x2")),
+                RadioItemConfig(tag_id="table", value="table", icon=IconConfig(name="list-bullet")),
             ],
             current_value="card",
             hx_target_id="content-area",

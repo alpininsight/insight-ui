@@ -429,14 +429,14 @@ def index_view(request: HttpRequest) -> HttpResponse:
             "description": _("Pre-built, production-ready components from buttons to charts and data tables."),
         },
         {
-            "icon": "tick",
+            "icon": "check",
             "title": _("WCAG 2.1 AA"),
             "description": _(
                 "Full accessibility compliance built-in. Screen reader support, keyboard navigation, ARIA."
             ),
         },
         {
-            "icon": "rocket",
+            "icon": "rocket-launch",
             "title": _("HTMX-Powered"),
             "description": _(
                 "Interactive components without JavaScript complexity. Partial page updates out of the box."
@@ -453,7 +453,7 @@ def index_view(request: HttpRequest) -> HttpResponse:
             "description": _("Light and dark themes with smooth transitions. Respects user system preferences."),
         },
         {
-            "icon": "globe",
+            "icon": "globe-alt",
             "title": _("RTL Support"),
             "description": _("Full right-to-left layout support for Arabic, Hebrew, Persian and other RTL languages."),
         },
@@ -474,13 +474,13 @@ def index_view(request: HttpRequest) -> HttpResponse:
     context["base_template_blocks"] = [
         {"name": "{% block navbar %}", "icon": "bars", "description": _("Fixed navigation bar")},
         {"name": "{% block sidebar_left %}", "icon": "rectangles", "description": _("Static left sidebar")},
-        {"name": "{% block content %}", "icon": "doc", "description": _("Main content area")},
+        {"name": "{% block content %}", "icon": "document-text", "description": _("Main content area")},
         {"name": "{% block sidebar_right %}", "icon": "rectangles", "description": _("Static right sidebar")},
-        {"name": "{% block footer %}", "icon": "app", "description": _("Page footer")},
+        {"name": "{% block footer %}", "icon": "computer-desktop", "description": _("Page footer")},
     ]
     context["customization_options"] = [
         {
-            "icon": "settings",
+            "icon": "adjustments-horizontal",
             "title": _("Settings"),
             "description": _("Configure favicons, SEO, external libraries, and UI behavior via Django settings."),
             "file": "settings.py",
@@ -510,12 +510,12 @@ def index_view(request: HttpRequest) -> HttpResponse:
     category_icons = {
         ComponentCategory.LAYOUT: "rectangles",
         ComponentCategory.NAVIGATION: "globe",
-        ComponentCategory.INPUT: "cursor-click",
+        ComponentCategory.INPUT: "cursor-arrow-rays",
         ComponentCategory.POPUP: "chat-bubble",
         ComponentCategory.UTIL: "tools",
         ComponentCategory.LIST: "list",
-        ComponentCategory.FILTER: "search",
-        ComponentCategory.CARD: "cards",
+        ComponentCategory.FILTER: "magnifying-glass",
+        ComponentCategory.CARD: "squares-2x2",
         ComponentCategory.FORM: "clipboard",
     }
     category_counts: dict[ComponentCategory, int] = {}
@@ -540,7 +540,7 @@ def index_view(request: HttpRequest) -> HttpResponse:
         },
         {
             "name": "Insight UI Flows",
-            "icon": "blueprint",
+            "icon": "cube-transparent",
             "status": "available",
             "description": _(
                 "Visual node editor for workflows — perfect for AI agent pipelines, "
@@ -550,7 +550,7 @@ def index_view(request: HttpRequest) -> HttpResponse:
         },
         {
             "name": "Insight UI WebGL",
-            "icon": "desktop",
+            "icon": "computer-desktop",
             "status": "early",
             "description": _(
                 "3D components for web applications — scene viewers, model inspectors, and interactive visualizations."
@@ -730,9 +730,9 @@ def toggle_view(request: HttpRequest) -> HttpResponse:
     view_radio_config = RadioBlockConfig(
         "products-view-toggle",
         items=[
-            RadioItemConfig("card-view", "card", icon=IconConfig("cards")),
-            RadioItemConfig("table-view", "table", icon=IconConfig("list")),
-            RadioItemConfig("carousel-view", "carousel", icon=IconConfig("carousel")),
+            RadioItemConfig("card-view", "card", icon=IconConfig("squares-2x2")),
+            RadioItemConfig("table-view", "table", icon=IconConfig("list-bullet")),
+            RadioItemConfig("carousel-view", "carousel", icon=IconConfig("square-3-stack-3d")),
         ],
         request_url=reverse("toggle_view"),
         current_value=current_view,

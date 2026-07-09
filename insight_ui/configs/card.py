@@ -282,8 +282,8 @@ class ToggleViewConfig:
             view_radio_config=RadioBlockConfig(
                 name="view",
                 items=[
-                    RadioItemConfig(tag_id="card", value="card", icon=IconConfig(name="cards")),
-                    RadioItemConfig(tag_id="table", value="table", icon=IconConfig(name="list")),
+                    RadioItemConfig(tag_id="card", value="card", icon=IconConfig(name="squares-2x2")),
+                    RadioItemConfig(tag_id="table", value="table", icon=IconConfig(name="list-bullet")),
                 ],
             ),
             current_view="card",

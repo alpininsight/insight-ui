@@ -7,7 +7,7 @@
 >
   <div class="flex items-center gap-2 {% if alert_config.type == "success" %}text-insight-success{% elif alert_config.type == "warning" %}text-insight-warning{% elif alert_config.type == "error" %}text-insight-danger{% else %}text-insight-info{% endif %}">
     {% if alert_config.type == 'success' %}
-      {% icon name="tick" %}
+      {% icon name="check" %}
     {% elif alert_config.type == 'warning' %}
       {% icon name="warning" %}
     {% elif alert_config.type == 'error' %}
