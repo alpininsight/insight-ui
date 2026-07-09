@@ -41,9 +41,9 @@
             </div>
         {% endif %}
 
-        {% if status_screen_actions %}
+        {% if status_screen_config.actions %}
             <div class="mt-8 flex flex-wrap justify-center gap-3">
-                {% for action in status_screen_actions %}
+                {% for action in status_screen_config.actions %}
                     {% button config=action %}
                 {% endfor %}
             </div>
