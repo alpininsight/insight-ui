@@ -144,7 +144,7 @@ class BrandMarkConfig:
 
     primary_text: str = field(default="Alpin Insight", metadata={"doc": _("First wordmark run.")})
     secondary_text: str = field(default="Solutions", metadata={"doc": _("Second wordmark run.")})
-    logo: LogoConfig = field(default_factory=LogoConfig, metadata={"doc": _("Public logo configuration.")})
+    logo: LogoConfig = field(default=None, metadata={"doc": _("Public logo configuration.")})
     logo_position: Literal["start", "end"] = field(
         default="start", metadata={"doc": _("Logo position, either 'start' or 'end'.")}
     )
@@ -190,7 +190,7 @@ class StatusScreenConfig:
         default="info", metadata={"doc": _("Visual status: 'info', 'success', 'warning', or 'error'.")}
     )
     brand: BrandMarkConfig | None = field(
-        default_factory=BrandMarkConfig, metadata={"doc": _("Optional brand mark shown above the card.")}
+        default=None, metadata={"doc": _("Optional brand mark shown above the card.")}
     )
     notice_title: str = field(default="", metadata={"doc": _("Optional notice heading.")})
     notice: str = field(default="", metadata={"doc": _("Optional notice text.")})
