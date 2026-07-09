@@ -1,9 +1,11 @@
 """Context utilities for Insight UI templates."""
 
+import re
+from pathlib import Path
 from typing import Any
 
 from core.context_processor import get_app_version
-from django.template.loader import render_to_string
+from django.template.loader import get_template, render_to_string
 from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext as _
 
@@ -37,9 +39,9 @@ def get_main_page_links() -> list[dict[str, Any]]:
     """
     return [
         NavbarLinkConfig(_("Home"), reverse("index_view"), IconConfig("home", "s")),
-        NavbarLinkConfig(_("Installation"), reverse("installation_view"), IconConfig("download", "s")),
-        NavbarLinkConfig(_("Base Template"), reverse("base_template_view"), IconConfig("blueprint", "s")),
-        NavbarLinkConfig(_("Customization"), reverse("customization_view"), IconConfig("settings", "s")),
+        NavbarLinkConfig(_("Installation"), reverse("installation_view"), IconConfig("arrow-down-tray", "s")),
+        NavbarLinkConfig(_("Base Template"), reverse("base_template_view"), IconConfig("cube-transparent", "s")),
+        NavbarLinkConfig(_("Customization"), reverse("customization_view"), IconConfig("adjustments-horizontal", "s")),
         NavbarLinkConfig(_("Icons"), reverse("icon_view"), IconConfig("sparkles", "s")),
     ]
 
@@ -55,7 +57,7 @@ def get_navbar_context() -> dict:
     links.append(
         NavbarLinkConfig(
             _("Components"),
-            icon=IconConfig("cards", "s"),
+            icon=IconConfig("squares-2x2", "s"),
             dropdown=DropdownConfig(
                 "components-menu",
                 "",
@@ -97,7 +99,7 @@ def get_sidebar_context() -> dict:
                     SidebarItemConfig(
                         component.formatted_name,
                         reverse("component_detail_page_view", kwargs={"component_name": component.value}),
-                        IconConfig("tools", "s") if component.in_development else None,
+                        IconConfig("wrench-screwdriver", "s") if component.in_development else None,
                         HtmxConfig(target="#content"),
                     )
                 )
@@ -149,300 +151,31 @@ def get_icon_context() -> dict:
     """Serve context for the icon detailpage.
 
     Returns:
-        Context dict with icon parameters, icon table, and size table.
+        Context dict with icon parameters, icons list, and size table.
 
     """
     main_params = [
-        ParameterDetails("name", "str", _("Name of the icon (see table below)."), "question-mark"),
+        ParameterDetails("name", "str", _("Name of the icon (see grid below)."), "question-mark"),
         ParameterDetails("size", "str", _("Size of the icon. Possible values are: 'xl', 'l', 'm', 's' and 'xs'."), "m"),
     ]
 
-    table_rows = [
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("home")}),
-            "home",
-            _("Typically used for links to the home page."),
-            "Heroicons - home",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("office")}),
-            "office",
-            _("Topics related to the office or work."),
-            "Heroicons - building-office",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("globe")}),
-            "globe",
-            _("Language selection elements."),
-            "Heroicons - globe-alt",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("gear")}),
-            "gear",
-            _("General settings."),
-            "Heroicons - cog-6-tooth",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("leave")}),
-            "leave",
-            _("As a logout button or for leaving a section."),
-            "Heroicons - arrow-left-start-on-rectangle",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("cards")}),
-            "cards",
-            _("Card-based dashboards, grid views, etc."),
-            "Flowbite - grid",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("list")}),
-            "list",
-            _("List views of all kinds."),
-            "Heroicons - list-bullet",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("carousel")}),
-            "carousel",
-            _("Specifically for our carousel components. <b>(This icon is to be replaced soon!)</b>"),
-            "Heroicons - square-3-stack-3d",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("chevron-down")}),
-            "chevron-down",
-            _("Classic for dropdowns, accordions, and everything that can be expanded."),
-            "Heroicons - chevron-down",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("chevron-up")}),
-            "chevron-up",
-            _("Classic for dropdowns, accordions, and everything that can be collapsed."),
-            "Heroicons - chevron-up",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("chevron-both")}),
-            "chevron-both",
-            _("Classic for indicating a sorting option."),
-            "Heroicons - chevron-up-down",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("chevron-left")}),
-            "chevron-left",
-            _("Carousels, pagination or expandable elements such as a drawer."),
-            "Heroicons - chevron-left",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("chevron-right")}),
-            "chevron-right",
-            _("Carousels, pagination or expandable elements such as a drawer."),
-            "Heroicons - chevron-right",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("tick")}),
-            "tick",
-            _("Checklists."),
-            "Heroicons - check",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("x-mark")}),
-            "x-mark",
-            _("Classic for buttons to close dialogs, alerts, etc."),
-            "Heroicons - x-mark",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("question-mark")}),
-            "question-mark",
-            _("Indicator for additional information or FAQs."),
-            "Heroicons - question-mark-circle",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("sparkles")}),
-            "sparkles",
-            _("For special cases where something unique is needed, or simply no other icon fits :)."),
-            "Heroicons - sparkles",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("tools")}),
-            "tools",
-            _("Settings or as a maintenance symbol."),
-            "Heroicons - wrench-screwdriver",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("search")}),
-            "search",
-            _("Classic for any search bar."),
-            "Heroicons - magnifying-glass",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("rectangles")}),
-            "rectangles",
-            _("Groups of different objects, for example components or dashboards."),
-            "Heroicons - rectangle-group",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("app")}),
-            "app",
-            _("Indicator for applications, programs or dialog windows."),
-            "Heroicons - window",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("doc")}),
-            "doc",
-            _("Classic for documents."),
-            "Heroicons - document-text",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("clipboard")}),
-            "clipboard",
-            _("Classic for copy and paste."),
-            "Heroicons - clipboard-document-check",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("cursor-click")}),
-            "cursor-click",
-            _("Indicator for a clickable element."),
-            "Heroicons - cursor-arrow-rays",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("link")}),
-            "link",
-            _("Classic for attachments or links to documents."),
-            "Heroicons - link",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("open-link")}),
-            "open-link",
-            _("Classic for links to other, often external pages or for opening a dialog window."),
-            "Heroicons - arrow-top-right-on-square",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("share")}),
-            "share",
-            _("Classic for sharing content."),
-            "Heroicons - share",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("smartphone")}),
-            "smartphone",
-            _("Indicates smartphone usage."),
-            "Heroicons - device-phone-mobile",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("tablet")}),
-            "tablet",
-            _("Indicates tablet usage."),
-            "Heroicons - device-tablet",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("desktop")}),
-            "desktop",
-            _("Indicates desktop PC usage."),
-            "Heroicons - computer-desktop",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("sun")}),
-            "sun",
-            _("Classic for light/dark mode switches."),
-            "Heroicons - sun",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("moon")}),
-            "moon",
-            _("Classic for light/dark mode switches."),
-            "Heroicons - moon",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("git")}),
-            "git",
-            _("Links to GitHub."),
-            "Flowbite - github",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("user")}),
-            "user",
-            _("Typical user icon, user profile, settings, etc."),
-            "Heroicons - user",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("clock")}),
-            "clock",
-            _("Everything related to time."),
-            "Heroicons - clock",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("calendar")}),
-            "calendar",
-            _("Dates, deadlines, appointments."),
-            "Heroicons - calendar-days",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("bell")}),
-            "bell",
-            _("Typical for notifications."),
-            "Heroicons - bell",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("chat-bubble")}),
-            "chat-bubble",
-            _("Interactive chats."),
-            "Heroicons - chat-bubble-bottom-center-text",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("rocket")}),
-            "rocket",
-            _("Special things or as an indicator for 'Let's get started!'."),
-            "Heroicons - rocket-launch",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("terminal")}),
-            "terminal",
-            _("Indicator for the use of the terminal or command line."),
-            "Heroicons - command-line",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("code")}),
-            "code",
-            _("Indicates source code."),
-            "Heroicons - code-bracket",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("download")}),
-            "download",
-            _("Classic for downloads."),
-            "Heroicons - arrow-down-tray",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("settings")}),
-            "settings",
-            _("Customizations, settings, more for fine-grained settings."),
-            "Heroicons - adjustments-horizontal",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("blueprint")}),
-            "blueprint",
-            _("Customizations, settings, more for fine-grained settings."),
-            "Heroicons - cube-transparent",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("info")}),
-            "info",
-            _("Information and notes."),
-            "Heroicons - information-circle",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("warning")}),
-            "warning",
-            _("Warnings, issues, minor errors."),
-            "Heroicons - exclamation-triangle",
-        ],
-        [
-            render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("danger")}),
-            "danger",
-            _("Major errors, critical issues or dangerous actions."),
-            "Heroicons - exclamation-circle",
-        ],
+    # Extract icon names from icons.html template
+    template = get_template("insight_ui/components/icons.html")
+    template_path = Path(template.origin.name)
+    template_content = template_path.read_text(encoding="utf-8")
+
+    # Match icon names from: icon_config.name == "name"
+    icon_names = re.findall(r'icon_config\.name == "([^"]+)"', template_content)
+
+    # Generate icon list
+    icons = [
+        {
+            "name": name,
+            "svg": render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig(name)}),
+        }
+        for name in sorted(set(icon_names))
     ]
 
-    icon_table = TableConfig([_("Icon"), _("Name"), _("Example usages"), _("Source")], table_rows)
     size_table = TableConfig(
         ["xs", "s", "m", "l", "xl"],
         [
@@ -456,7 +189,7 @@ def get_icon_context() -> dict:
         ],
     )
 
-    return {"main_params": main_params, "icon_table": icon_table, "size_table": size_table}
+    return {"main_params": main_params, "icons": icons, "size_table": size_table}
 
 
 def get_demo_container_context() -> dict:
@@ -468,9 +201,9 @@ def get_demo_container_context() -> dict:
     """
     return {
         "device_radio_items": [
-            RadioItemConfig("mobile", "mobile", icon=IconConfig("smartphone")),
-            RadioItemConfig("tablet", "tablet", icon=IconConfig("tablet")),
-            RadioItemConfig("desktop", "desktop", icon=IconConfig("desktop")),
+            RadioItemConfig("mobile", "mobile", icon=IconConfig("device-phone-mobile")),
+            RadioItemConfig("tablet", "tablet", icon=IconConfig("device-tablet")),
+            RadioItemConfig("desktop", "desktop", icon=IconConfig("computer-desktop")),
         ],
         "theme_toggle_icon": IconConfig("moon"),
     }
