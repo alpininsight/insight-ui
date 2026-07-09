@@ -754,35 +754,13 @@
     </div>
 {% elif component.value == "brand_mark" %}
     <div class="space-y-8">
-        <div class="grid gap-8 lg:grid-cols-3">
-            <div class="space-y-3 rounded-lg border border-gray-200 p-6 dark:border-gray-700">
-                <p class="font-semibold text-secondary">Main / default</p>
-                {% brand_mark config=brand_mark_default %}
-            </div>
-            <div class="space-y-3 rounded-lg border border-gray-200 p-6 dark:border-gray-700">
-                <p class="font-semibold text-secondary">Develop</p>
-                {% brand_mark config=brand_mark_develop %}
-            </div>
-            <div class="space-y-3 rounded-lg border border-gray-200 p-6 dark:border-gray-700">
-                <p class="font-semibold text-secondary">Candidate</p>
-                {% brand_mark config=brand_mark_candidate %}
-            </div>
+        <div class="space-y-3 w-fit rounded-lg border border-gray-200 p-6 dark:border-gray-700">
+            <p class="font-semibold text-secondary">Logo position start</p>
+            {% brand_mark config=brand_mark_default %}
         </div>
-        <div class="space-y-3 rounded-lg border border-gray-200 p-6 dark:border-gray-700">
+        <div class="space-y-3 w-fit rounded-lg border border-gray-200 p-6 dark:border-gray-700">
             <p class="font-semibold text-secondary">Logo position end</p>
             {% brand_mark config=brand_mark_end %}
-        </div>
-        <div class="space-y-3">
-            <p class="font-semibold text-secondary">Navbar brand.mark mode</p>
-            <div class="relative bg-gray-50 dark:bg-gray-700 h-24 w-full">
-                {% navbar config=brand_mark_nav_config %}
-                <script>
-                    // Demo fix
-                    var nav = document.currentScript.parentElement.querySelector("nav");
-                    nav.classList.remove("fixed");
-                    nav.classList.add("absolute");
-                </script>
-            </div>
         </div>
     </div>
 {% elif component.value == "corner_ribbon" %}

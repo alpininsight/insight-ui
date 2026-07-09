@@ -600,6 +600,9 @@
   .z-50 {
     z-index: 50;
   }
+  .order-2 {
+    order: 2;
+  }
   .container {
     width: 100%;
     @media (width >= 40rem) {
@@ -2052,9 +2055,6 @@
   }
   .text-insight-primary-hover {
     color: var(--color-insight-primary-hover);
-  }
-  .text-insight-secondary {
-    color: var(--color-insight-secondary);
   }
   .text-insight-success {
     color: var(--color-insight-success);

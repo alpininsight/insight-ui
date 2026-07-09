@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import math
-import re
 from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import MISSING, fields, is_dataclass, replace
 from difflib import HtmlDiff, ndiff, unified_diff
@@ -1009,116 +1008,19 @@ def logo(
     }
 
 
-BRAND_MARK_VARIANTS = ("main", "develop", "candidate")
-BRAND_MARK_ICON_BY_VARIANT = {"main": "computer-desktop", "develop": "rocket", "candidate": "sparkles"}
-CSS_SIZE_PATTERN = re.compile(r"^-?(?:\d+(?:\.\d+)?|\.\d+)(?:px|rem|em|vh|vw|vmin|vmax|%|ch|ex|lh|rlh)$")
-
-
-def _looks_like_css_size(value: object) -> bool:
-    """Return true when a positional value is intended as a CSS size.
-
-    Args:
-        value: The value to check.
-
-    Returns:
-        True if value looks like a CSS size (e.g., '1rem', '100px'), False otherwise.
-
-    """
-    normalized = str(value).strip().lower()
-    return normalized in {"auto", "inherit", "initial", "revert", "unset"} or bool(CSS_SIZE_PATTERN.match(normalized))
-
-
-def _normalize_brand_mark_variant(value: object) -> str:
-    """Normalize public variants and a small set of legacy aliases.
-
-    Args:
-        value: The variant value to normalize.
-
-    Returns:
-        A valid variant name ('main', 'develop', or 'candidate').
-
-    """
-    normalized = str(value).strip().lower()
-    if normalized in BRAND_MARK_VARIANTS:
-        return normalized
-    return "main"
-
-
-def _build_brand_mark_context(
-    primary_text: str = "Alpin Insight",
-    secondary_text: str = "Solutions",
-    logo_position: str = "start",
-    height: str = "1.75rem",
-    variant: str = "main",
-    css_class: str | None = None,
-    config: BrandMarkConfig | Mapping[str, Any] | None = None,
-) -> dict[str, Any]:
-    """Build context for a public icon plus a two-tone wordmark."""
-    if config is None:
-        height_or_variant = str(height).strip().lower()
-        variant_or_height = str(variant).strip().lower()
-        if height_or_variant not in BRAND_MARK_VARIANTS and not _looks_like_css_size(height):
-            if variant != "main" and _looks_like_css_size(variant):
-                height, variant = variant, height
-            elif variant == "main":
-                variant = height
-                height = "1.75rem"
-        elif variant == "main" and height_or_variant in BRAND_MARK_VARIANTS:
-            variant = height
-            height = "1.75rem"
-        elif variant != "main" and variant_or_height not in BRAND_MARK_VARIANTS and _looks_like_css_size(variant):
-            height, variant = variant, height
-
-        config = BrandMarkConfig(
-            primary_text=primary_text,
-            secondary_text=secondary_text,
-            logo_position="end" if str(logo_position).strip().lower() == "end" else "start",
-            height=height,
-            variant=_normalize_brand_mark_variant(variant),
-            css_class=css_class or "",
-        )
-    elif isinstance(config, Mapping):
-        config = BrandMarkConfig(
-            primary_text=str(config.get("primary_text", primary_text) or ""),
-            secondary_text=str(config.get("secondary_text", secondary_text) or ""),
-            logo_position=(
-                "end" if str(config.get("logo_position", logo_position)).strip().lower() == "end" else "start"
-            ),
-            height=str(config.get("height", height) or "1.75rem"),
-            variant=_normalize_brand_mark_variant(config.get("variant", variant)),
-            css_class=str(config.get("css_class", config.get("class", css_class or "")) or ""),
-        )
-    else:
-        config = replace(
-            config,
-            logo_position="end" if str(config.logo_position).strip().lower() == "end" else "start",
-            variant=_normalize_brand_mark_variant(config.variant),
-        )
-
-    return {
-        "primary_text": config.primary_text,
-        "secondary_text": config.secondary_text,
-        "logo_position": config.logo_position,
-        "variant": config.variant,
-        "icon_name": BRAND_MARK_ICON_BY_VARIANT[config.variant],
-        "icon_size": "l",
-        "height": config.height,
-        "css_class": config.css_class,
-    }
-
-
 @register.inclusion_tag("insight_ui/components/brand_mark.html")
 def brand_mark(
-    primary_text: str = "Alpin Insight",
-    secondary_text: str = "Solutions",
-    logo_position: str = "start",
-    height: str = "1.75rem",
-    variant: str = "main",
-    css_class: str | None = None,
-    config: BrandMarkConfig | Mapping[str, Any] | None = None,
+    config: BrandMarkConfig | None = None,
+    *,
+    primary_text: str | _Unset = UNSET,
+    secondary_text: str | _Unset = UNSET,
+    logo: LogoConfig | _Unset = UNSET,
+    logo_position: str | _Unset = UNSET,
+    css_class: str | _Unset = UNSET,
 ) -> dict[str, Any]:
-    """Render a public icon plus a two-tone wordmark."""
-    return _build_brand_mark_context(primary_text, secondary_text, logo_position, height, variant, css_class, config)
+    """Render a public logo plus a two-tone wordmark."""
+    config = build_config(BrandMarkConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    return {"brand_mark_config": config}
 
 
 @register.inclusion_tag("insight_ui/components/corner_ribbon.html")

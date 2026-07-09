@@ -67,7 +67,7 @@ def test_login_context_uses_brand_logo_with_login_specific_height() -> None:
             "mark": BrandMarkConfig(
                 primary_text="Acme",
                 secondary_text="Develop",
-                variant="develop",
+                logo=LogoConfig(url="acme.svg", url_dark="acme.svg", alt="Acme Login Logo", height="3rem"),
             )
         }
     }
@@ -79,4 +79,4 @@ def test_navbar_brand_defaults_can_use_configured_mark() -> None:
     assert brand.mark is not None
     assert brand.mark.primary_text == "Acme"
     assert brand.mark.secondary_text == "Develop"
-    assert brand.mark.variant == "develop"
+    assert brand.mark.logo.alt == "Acme Login Logo"

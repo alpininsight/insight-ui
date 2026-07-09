@@ -680,50 +680,17 @@ def get_logo_context() -> dict:
 def get_brand_mark_context() -> dict:
     """Serve data for brand mark detailpage."""
     return {
-        "brand_mark_default": {
-            "primary_text": "Alpin Insight",
-            "secondary_text": "Solutions",
-            "variant": "main",
-            "height": "2rem",
-        },
-        "brand_mark_develop": {
-            "primary_text": "Alpin Insight",
-            "secondary_text": "Develop",
-            "variant": "develop",
-            "height": "2rem",
-        },
-        "brand_mark_candidate": {
-            "primary_text": "Alpin Insight",
-            "secondary_text": "Candidate",
-            "variant": "candidate",
-            "height": "2rem",
-        },
-        "brand_mark_end": {
-            "primary_text": "Alpin Insight",
-            "secondary_text": "Platform",
-            "logo_position": "end",
-            "variant": "main",
-            "height": "2rem",
-            "class": "w-full",
-        },
-        "brand_mark_nav_config": {
-            "brand": {
-                "title": "Alpin Insight Develop",
-                "aria_label": "Alpin Insight Develop Startseite",
-                "view_name": "index_view",
-                "gap": "0.75rem",
-                "mark": {
-                    "primary_text": "Alpin Insight",
-                    "secondary_text": "Develop",
-                    "variant": "develop",
-                    "height": "1.75rem",
-                },
-            },
-            "links": [],
-            "show_usermenu": False,
-            "show_language_selector": False,
-            "show_theme_toggle": False,
-        },
+        "brand_mark_default": BrandMarkConfig(
+            "Alpin Insight",
+            "Solutions",
+            LogoConfig("insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="3rem"),
+        ),
+        "brand_mark_end": BrandMarkConfig(
+            "Alpin Insight",
+            "Platform",
+            LogoConfig("insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="3rem"),
+            "end",
+        ),
     }
 
 

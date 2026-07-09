@@ -157,8 +157,14 @@ class TestNavbar(TemplateTagsTestCase):
             NavbarBrandConfig(
                 "Insight UI",
                 "/",
-                aria_label="Alpin Insight Develop Startseite",
-                mark=BrandMarkConfig("Alpin Insight", "Develop", height="2rem", variant="develop"),
+                aria_label="Insight UI Indexpage",
+                mark=BrandMarkConfig(
+                    "Insight",
+                    "UI",
+                    LogoConfig(
+                        "insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="2rem"
+                    ),
+                ),
             )
         )
 
@@ -167,12 +173,12 @@ class TestNavbar(TemplateTagsTestCase):
         )
         soup = BeautifulSoup(rendered, "html.parser")
 
-        brand_link = soup.find("a", attrs={"aria-label": "Alpin Insight Develop Startseite"})
+        brand_link = soup.find("a", attrs={"aria-label": "Insight UI Indexpage"})
         assert brand_link is not None
-        assert "Alpin Insight" in brand_link.get_text(" ", strip=True)
-        assert "Develop" in brand_link.get_text(" ", strip=True)
-        assert brand_link.find("svg") is not None
-        assert brand_link.find("img") is None
+        assert "Insight" in brand_link.get_text(" ", strip=True)
+        assert "UI" in brand_link.get_text(" ", strip=True)
+        assert brand_link.find("img") is not None
+        assert brand_link.find("svg") is None
 
     def test_navbar_keeps_logo_title_fallback_without_mark(self) -> None:
         """Existing logo plus title configuration remains the fallback mode."""
