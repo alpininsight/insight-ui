@@ -25,13 +25,22 @@ repo contract:
 namespace, artifact version, runtime instance, deployment environment, lane,
 blue/green slot, platform namespace, and git revision.
 
-## Demo target
+## Production and demo targets
 
-For the first public demo rollout, the intended platform-side target is:
+The production canonical host for the public Insight UI package website is:
 
-- host: `insight-ui.demo.alpininsight.ai`
+- host: `insight-ui.com`
 - namespace class: `demo`
 - service name: `insight-ui`
+
+The previous production demo host remains a transition alias while DNS,
+Cloudflare Tunnel, Istio, oauth2-proxy, and monitoring are cut over:
+
+- transition alias: `insight-ui.demo.alpininsight.ai`
+
+The develop lane remains separate and is not changed by production promotion:
+
+- develop host: `insight-ui.dev.demo.alpininsight.ai`
 
 ## Blue/Green model
 
@@ -48,7 +57,7 @@ Rules:
   physical slot (`blue` or `green`) so the running pod can be identified
   during cutover and rollback.
 
-Example candidate slot for `insight-ui.demo.alpininsight.ai`:
+Example candidate/develop slot:
 
 ```env
 SERVICE_NAMESPACE=alpininsight
@@ -57,9 +66,9 @@ PLATFORM_NAMESPACE=demo
 DEPLOYMENT_ENVIRONMENT=develop
 DEPLOYMENT_LANE=develop
 DEPLOYMENT_SLOT=green
-PUBLIC_BASE_URL=https://insight-ui.demo.alpininsight.ai
-ALLOWED_HOSTS=insight-ui.demo.alpininsight.ai
-CSRF_TRUSTED_ORIGINS=https://insight-ui.demo.alpininsight.ai
+PUBLIC_BASE_URL=https://insight-ui.dev.demo.alpininsight.ai
+ALLOWED_HOSTS=insight-ui.dev.demo.alpininsight.ai,.demo.alpininsight.ai
+CSRF_TRUSTED_ORIGINS=https://insight-ui.dev.demo.alpininsight.ai
 USE_X_FORWARDED_HOST=true
 TRUST_X_FORWARDED_PROTO=true
 SECURE_SSL_REDIRECT=true
@@ -80,9 +89,9 @@ PLATFORM_NAMESPACE=demo
 DEPLOYMENT_ENVIRONMENT=production
 DEPLOYMENT_LANE=main
 DEPLOYMENT_SLOT=blue
-PUBLIC_BASE_URL=https://insight-ui.demo.alpininsight.ai
-ALLOWED_HOSTS=insight-ui.demo.alpininsight.ai
-CSRF_TRUSTED_ORIGINS=https://insight-ui.demo.alpininsight.ai
+PUBLIC_BASE_URL=https://insight-ui.com
+ALLOWED_HOSTS=insight-ui.com,insight-ui.demo.alpininsight.ai,.demo.alpininsight.ai
+CSRF_TRUSTED_ORIGINS=https://insight-ui.com,https://insight-ui.demo.alpininsight.ai
 USE_X_FORWARDED_HOST=true
 TRUST_X_FORWARDED_PROTO=true
 SECURE_SSL_REDIRECT=true
@@ -106,6 +115,10 @@ Notes:
   `tree-<git-tree-sha>` image instead of pushing a newly rebuilt digest.
 - The platform decides which slot/lane receives which digest and runtime env
   values.
+- Production canonical cutover to `insight-ui.com` also requires platform-side
+  Cloudflare DNS/Tunnel routing, Istio host routing, and oauth2-proxy redirect
+  allowlist changes; the app repository only declares the expected runtime
+  contract.
 - Promotion means switching the tested digest from the candidate lane/slot to
   the live lane/slot. It does not require a new `main` container build.
 - Rollback means switching traffic back to the previous slot while keeping the

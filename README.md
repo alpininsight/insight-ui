@@ -67,7 +67,8 @@ For blue/green promotion, the repo publishes one slot-neutral image. The
 platform moves the tested digest between `develop` and `main` aliases by
 changing the slot wiring, not by rebuilding a second `main` image.
 
-The deployment-specific prep for `insight-ui.demo.alpininsight.ai` is documented in [Deployment Contract](docs/deployment.md).
+The deployment-specific prep for production `insight-ui.com` and the demo
+blue/green lanes is documented in [Deployment Contract](docs/deployment.md).
 
 The WebSocket demo lives in `utils/main.py`:
 ```bash
