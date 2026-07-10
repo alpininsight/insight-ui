@@ -25,6 +25,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Change 'BrandLockupConfig' to 'BrandMarkConfig' in 'status_screen' component
 - **brand:** Align defaults with brand mark
 - **i18n:** Translate homepage copy
+- Set default for LogoConfig in BrandMarkConfig to None and BrandMarkConfig in StatusScreenConfig too
+- **static:** Update generated tailwind asset
 
 ### Build System
 
@@ -75,6 +77,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **status-screen:** Align component with semantic tokens
 - **brand:** Add settings based brand defaults
 - Remove obsolete title config member
+- Replace underscores with hyphens in icon names
+- Add 'compile_icons' command to generate icons.html from svg files
+- Update indentation calculation and docstrings of the 'compile_icons' command
+- Add all outline heroicons to icon library and add 'compile_icons' command description to icons detailpage
+- Update used icons by using official heroicons name and no alias
+- Href in the 'button' component is no longer set when disabled
+- Update icons of the 'status_screen' component to use new names
+- Make 'brand_mark' using 'logo' component instead of hardcoded icons
+- Add translations for the icons detailpage and fix fuzzy translations
 
 ### Miscellaneous
 
@@ -89,6 +100,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Regenerate minified stylesheet
 - Regenerate minified stylesheet
 - Regenerate minified stylesheet
+- Update stylesheet
 
 ### Refactoring
 
@@ -103,6 +115,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **theme:** Document shadow token checks
 - **i18n:** Document container translation contract
 - **i18n:** Avoid compiled catalog dependency
+- Fix tests
 
 ## [1.10.2] - 2026-05-27
 
