@@ -52,7 +52,7 @@ class AppCardConfig:
     Attributes:
         title: Card title.
         content: Card description.
-        request_url: URL when title is clicked.
+        request_url: The URL to be called when title is clicked.
         image: Card image (displayed as square at top).
         tags: List of tag labels.
         actions: List of action buttons.
@@ -72,7 +72,7 @@ class AppCardConfig:
 
     title: str = field(metadata={"doc": _("Card title.")})
     content: str = field(metadata={"doc": _("Card description.")})
-    request_url: str = field(default="", metadata={"doc": _("URL when title is clicked.")})
+    request_url: str = field(default="", metadata={"doc": _("The URL to be called when title is clicked.")})
     image: ImageConfig | None = field(default=None, metadata={"doc": _("Card image (displayed as square at top).")})
     tags: list[str] = field(default_factory=list, metadata={"doc": _("List of tag labels.")})
     actions: list[ButtonConfig] = field(default_factory=list, metadata={"doc": _("List of action buttons.")})
@@ -88,7 +88,7 @@ class FlipCardConfig:
         title: Card title.
         content: Front side content.
         back_content: Back side content.
-        request_url: URL when title is clicked.
+        request_url: The URL to be called when title is clicked.
         image: Front side image.
         tags: List of tag labels.
         actions: List of action buttons.
@@ -109,7 +109,7 @@ class FlipCardConfig:
     title: str = field(metadata={"doc": _("Card title.")})
     content: str = field(metadata={"doc": _("Front side content.")})
     back_content: str = field(metadata={"doc": _("Back side content.")})
-    request_url: str = field(default="", metadata={"doc": _("URL when title is clicked.")})
+    request_url: str = field(default="", metadata={"doc": _("The URL to be called when title is clicked.")})
     image: ImageConfig | None = field(default=None, metadata={"doc": _("Front side image.")})
     tags: list[str] = field(default_factory=list, metadata={"doc": _("List of tag labels.")})
     actions: list[ButtonConfig] = field(default_factory=list, metadata={"doc": _("List of action buttons.")})
