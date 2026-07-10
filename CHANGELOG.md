@@ -86,6 +86,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update icons of the 'status_screen' component to use new names
 - Make 'brand_mark' using 'logo' component instead of hardcoded icons
 - Add translations for the icons detailpage and fix fuzzy translations
+- **deployment:** Set insight-ui.com production canonical
 
 ### Miscellaneous
 
