@@ -10,8 +10,12 @@
 #   - publishes develop images for the demo lane
 #   - promotes the already tested tree digest on main without rebuilding
 #   - opens GitOps digest-pin PRs for green/develop and blue/main slots
-# Required repo secret:
-#   - IMAGE_DIGEST_PIN_TOKEN writes digest-pin PRs to insight-lima-k8s-capi
+# Digest-pin authentication:
+#   - the reusable digest-pin bot mints a least-privilege GitHub App
+#     installation token (contents:write + pull-requests:write) to open
+#     digest-pin PRs against insight-lima-k8s-capi
+#   - App: alpininsight-digest-pin-bot, installed on insight-lima-k8s-capi
+#   - repo variable DIGEST_PIN_APP_ID + secret DIGEST_PIN_APP_PRIVATE_KEY
 # =============================================================================
 
 name: Container Build (Alpine Insight)
@@ -55,7 +59,7 @@ jobs:
       image_name: ghcr.io/${{ github.repository_owner }}/insight-ui
       service_name: insight-ui
       platform_namespace: demo
-      public_base_url: https://insight-ui.demo.alpininsight.ai
+      public_base_url: https://insight-ui.com
       platforms: linux/amd64,linux/arm64
       local_image_tag: insight-ui:ci
       smoke_env_file: ""
@@ -74,7 +78,7 @@ jobs:
       image_name: ghcr.io/${{ github.repository_owner }}/insight-ui
       service_name: insight-ui
       platform_namespace: demo
-      public_base_url: https://insight-ui.demo.alpininsight.ai
+      public_base_url: https://insight-ui.com
       platforms: linux/amd64,linux/arm64
       local_image_tag: insight-ui:ci
       smoke_env_file: ""
@@ -105,6 +109,8 @@ jobs:
       slot: ${{ needs.container_release.outputs.slot }}
       lane: ${{ needs.container_release.outputs.lane }}
       app: insight-ui
+      app_id: ${{ vars.DIGEST_PIN_APP_ID }}
       pr_automerge: true
+      forbid_oauth_scopes: true
     secrets:
-      consuming_repo_token: ${{ secrets.IMAGE_DIGEST_PIN_TOKEN }}
+      app_private_key: ${{ secrets.DIGEST_PIN_APP_PRIVATE_KEY }}

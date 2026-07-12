@@ -1,3 +1,5 @@
+"""Demo rendering context for UI components."""
+
 import dataclasses
 
 from django.templatetags.static import static
@@ -6,16 +8,18 @@ from django.utils.lorem_ipsum import paragraphs
 from django.utils.translation import gettext as _
 
 from insight_ui import config
+from insight_ui.brand import get_brand_logo_config, get_footer_description_defaults, get_navbar_brand_defaults
 from insight_ui.component_details.component_context import get_demo_context, register_demo_context
 from insight_ui.component_details.components import Component
 from insight_ui.configs import (
     AccordionConfig,
     AccordionItemConfig,
-    ActionConfig,
     AppCardConfig,
     BadgeConfig,
+    BrandMarkConfig,
     BreadcrumbItemConfig,
     BulletPointItemConfig,
+    ButtonConfig,
     CardCarouselConfig,
     CardConfig,
     ChartConfig,
@@ -25,13 +29,13 @@ from insight_ui.configs import (
     CheckboxItemConfig,
     CopyrightNoticeConfig,
     CornerRibbonConfig,
+    DataAttrConfig,
     DropdownConfig,
     DropdownItemConfig,
     FilterConfig,
     FlipCardConfig,
     FooterConfig,
     FooterContactConfig,
-    FooterDescriptionConfig,
     FormConfig,
     FormFieldConfig,
     GenericFilterConfig,
@@ -47,7 +51,6 @@ from insight_ui.configs import (
     MinimalStepperConfig,
     ModalConfig,
     MultiselectConfig,
-    NavbarBrandConfig,
     NavbarConfig,
     NavbarLinkConfig,
     PaginationConfig,
@@ -62,6 +65,7 @@ from insight_ui.configs import (
     SidebarDataConfig,
     SidebarItemConfig,
     SliderConfig,
+    StatusScreenConfig,
     StepperItemConfig,
     TabConfig,
     TableConfig,
@@ -157,7 +161,7 @@ def get_login_screen_context() -> dict:
         config.get_config()
         | get_footer_context()
         | {
-            "logo_config": LogoConfig("insight_ui/svg/ai-logo.svg", alt=_("Insight UI Logo"), height="8rem"),
+            "logo_config": get_brand_logo_config(height="8rem"),
             "show_theme_toggle": True,
             "forgot_password": {"url": "#"},
             "alt_login": {"url": "#", "title": _("Login with OIDC")},
@@ -181,10 +185,52 @@ def get_hero_context() -> dict:
             "Insight UI",
             _("Front-end Design Made Easy"),
             _("A modern UI library for Django applications to get started quickly."),
-            ActionConfig(_("Get Started"), "#", "primary", icon=IconConfig("rocket")),
-            ActionConfig(_("Learn more"), "#", "secondary"),
-            badge=BadgeConfig("Django UI Library", IconConfig("sparkles")),
+            ButtonConfig(label=_("Get Started"), request_url="#", type="primary", icon=IconConfig("rocket-launch")),
+            ButtonConfig(label=_("Learn more"), request_url="#", type="secondary"),
+            badge_config=BadgeConfig("Django UI Library", IconConfig("sparkles")),
         )
+    }
+
+
+@register_demo_context(Component.STATUS_SCREEN)
+def get_status_screen_context() -> dict:
+    """Serve demo context for the status screen component."""
+    return {
+        "status_screen_success": StatusScreenConfig(
+            _("You're signed in"),
+            [
+                _("The authentication flow completed successfully."),
+                _("You can now continue to the application."),
+            ],
+            "success",
+            BrandMarkConfig(
+                "Insight",
+                "UI",
+                LogoConfig(
+                    "insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="3rem"
+                ),
+            ),
+            _("Session ready"),
+            _("This screen is generic and can be reused for auth, deployment, or workflow states."),
+            ButtonConfig(label=_("Continue"), request_url="#", type="primary"),
+            ButtonConfig(label=_("Back to start"), request_url="#", type="secondary"),
+        ),
+        "status_screen_error": StatusScreenConfig(
+            _("Sign-in failed"),
+            _("The SSO process could not be completed."),
+            "error",
+            BrandMarkConfig(
+                "Insight",
+                "UI",
+                LogoConfig(
+                    "insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="3rem"
+                ),
+            ),
+            _("What happened?"),
+            _("Please try again or contact support if the issue persists."),
+            ButtonConfig(label=_("Try again"), request_url="#", type="primary"),
+            ButtonConfig(label=_("Contact support"), request_url="#", type="secondary"),
+        ),
     }
 
 
@@ -200,14 +246,7 @@ def get_navbar_context() -> dict:
     """Serve data for navbar detailpage."""
     return {
         "demo_nav_config": NavbarConfig(
-            NavbarBrandConfig(
-                "Insight UI",
-                "/",
-                LogoConfig(
-                    "insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="2rem"
-                ),
-                "0.5rem",
-            ),
+            get_navbar_brand_defaults(),
             [
                 NavbarLinkConfig(_("Startpage"), "/", IconConfig("home", "s")),
                 NavbarLinkConfig(
@@ -231,7 +270,7 @@ def get_navbar_context() -> dict:
                 "text": _("Settings"),
                 "request_url": reverse("index_view"),
                 "staff_only": False,
-                "icon": IconConfig("gear", "s"),
+                "icon": IconConfig("cog-8-tooth", "s"),
             },
             {
                 "text": _("Administration"),
@@ -243,7 +282,7 @@ def get_navbar_context() -> dict:
                 "text": _("Translation"),
                 "request_url": reverse("index_view"),
                 "staff_only": True,
-                "icon": IconConfig("globe", "s"),
+                "icon": IconConfig("globe-alt", "s"),
             },
         ],
     }
@@ -255,20 +294,24 @@ def get_drawer_context() -> dict:
     left_sidebar_config = SidebarConfig(
         SidebarDataConfig(
             _("Settings"),
-            IconConfig("tools", "s"),
+            IconConfig("wrench-screwdriver", "s"),
             [
                 SidebarCategoryConfig(
                     _("Work"),
-                    IconConfig("office", "s"),
+                    IconConfig("building-office-2", "s"),
                     [
                         SidebarItemConfig(_("Notifications"), reverse("index_view"), IconConfig("bell", "s")),
-                        SidebarItemConfig(_("Messages"), reverse("index_view"), IconConfig("chat-bubble", "s")),
-                        SidebarItemConfig(_("Tasks"), reverse("index_view"), IconConfig("checklist", "s")),
+                        SidebarItemConfig(
+                            _("Messages"), reverse("index_view"), IconConfig("chat-bubble-left-right", "s")
+                        ),
+                        SidebarItemConfig(
+                            _("Tasks"), reverse("index_view"), IconConfig("clipboard-document-check", "s")
+                        ),
                     ],
                 ),
                 SidebarCategoryConfig(
                     _("Management"),
-                    IconConfig("gear", "s"),
+                    IconConfig("cog-8-tooth", "s"),
                     [
                         SidebarItemConfig(_("Calendar"), reverse("index_view"), IconConfig("calendar", "s")),
                         SidebarItemConfig(_("Profile"), reverse("index_view"), IconConfig("user", "s")),
@@ -292,11 +335,7 @@ def get_footer_context() -> dict:
     """Server data for footer detailpage."""
     return {
         "footer_config": FooterConfig(
-            FooterDescriptionConfig(
-                "Insight UI",
-                _("A modern UI library for Django applications to get started quickly."),
-                LogoConfig("insight_ui/svg/ai-logo.svg", alt="Insight UI Logo", height="6rem"),
-            ),
+            get_footer_description_defaults(),
             [
                 NavbarLinkConfig(_("Startpage"), "/", IconConfig("home", "xs")),
                 NavbarLinkConfig(_("Storybook"), "/"),
@@ -441,8 +480,8 @@ def get_dropdown_context() -> dict:
             _("User"),
             items=[
                 DropdownItemConfig(_("Profile"), "/", IconConfig("user", "s")),
-                DropdownItemConfig(_("Settings"), "/", IconConfig("gear", "s")),
-                DropdownItemConfig(_("Logout"), "/", IconConfig("leave", "s")),
+                DropdownItemConfig(_("Settings"), "/", IconConfig("cog-8-tooth", "s")),
+                DropdownItemConfig(_("Logout"), "/", IconConfig("arrow-left-on-rectangle", "s")),
             ],
         ),
         "settings_dropdown_config": DropdownConfig(
@@ -451,7 +490,7 @@ def get_dropdown_context() -> dict:
             False,
             [
                 DropdownItemConfig(_("Personal Information"), "/", IconConfig("user", "s")),
-                DropdownItemConfig(_("Appearance"), "/", IconConfig("gear", "s")),
+                DropdownItemConfig(_("Appearance"), "/", IconConfig("cog-8-tooth", "s")),
             ],
         ),
     }
@@ -481,9 +520,9 @@ def get_radio_block_context() -> dict:
             "view",
             _("Select view mode:"),
             items=[
-                RadioItemConfig("card-view", "card", icon=IconConfig("cards")),
-                RadioItemConfig("table", "table", icon=IconConfig("list")),
-                RadioItemConfig("card-carousel", "carousel", icon=IconConfig("carousel")),
+                RadioItemConfig("card-view", "card", icon=IconConfig("squares-2x2")),
+                RadioItemConfig("table", "table", icon=IconConfig("list-bullet")),
+                RadioItemConfig("card-carousel", "carousel", icon=IconConfig("square-3-stack-3d")),
             ],
         ),
         "size_radio_config": RadioBlockConfig(
@@ -591,8 +630,10 @@ def get_modal_context() -> dict:
             _("Demo modal"),
             _("This is an example of a standard modal."),
             [
-                ActionConfig(_("Yes, confirm"), "#", "primary", "alert('Confirmed!')"),
-                ActionConfig(_("Abort"), "#", "cancel", dismiss=True),
+                ButtonConfig(label=_("Yes, confirm"), type="primary", on_click="alert('Confirmed!')"),
+                ButtonConfig(
+                    label=_("Abort"), type="secondary", data_attrs=[DataAttrConfig("insight-dismiss", "modal")]
+                ),
             ],
         )
     }
@@ -635,54 +676,21 @@ def get_logo_context() -> dict:
     }
 
 
-@register_demo_context(Component.BRAND_LOCKUP)
-def get_brand_lockup_context() -> dict:
-    """Serve data for brand lockup detailpage."""
+@register_demo_context(Component.BRAND_MARK)
+def get_brand_mark_context() -> dict:
+    """Serve data for brand mark detailpage."""
     return {
-        "brand_lockup_default": {
-            "primary_text": "Alpin Insight",
-            "secondary_text": "Solutions",
-            "variant": "main",
-            "height": "2rem",
-        },
-        "brand_lockup_develop": {
-            "primary_text": "Alpin Insight",
-            "secondary_text": "Develop",
-            "variant": "develop",
-            "height": "2rem",
-        },
-        "brand_lockup_candidate": {
-            "primary_text": "Alpin Insight",
-            "secondary_text": "Candidate",
-            "variant": "candidate",
-            "height": "2rem",
-        },
-        "brand_lockup_end": {
-            "primary_text": "Alpin Insight",
-            "secondary_text": "Platform",
-            "logo_position": "end",
-            "variant": "main",
-            "height": "2rem",
-            "class": "w-full",
-        },
-        "brand_lockup_nav_config": {
-            "brand": {
-                "title": "Alpin Insight Develop",
-                "aria_label": "Alpin Insight Develop Startseite",
-                "view_name": "index_view",
-                "gap": "0.75rem",
-                "lockup": {
-                    "primary_text": "Alpin Insight",
-                    "secondary_text": "Develop",
-                    "variant": "develop",
-                    "height": "1.75rem",
-                },
-            },
-            "links": [],
-            "show_usermenu": False,
-            "show_language_selector": False,
-            "show_theme_toggle": False,
-        },
+        "brand_mark_default": BrandMarkConfig(
+            "Alpin Insight",
+            "Solutions",
+            LogoConfig("insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="3rem"),
+        ),
+        "brand_mark_end": BrandMarkConfig(
+            "Alpin Insight",
+            "Platform",
+            LogoConfig("insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="3rem"),
+            "end",
+        ),
     }
 
 
@@ -743,7 +751,7 @@ def get_geo_map_context() -> dict:
                             "title": "Lübeck",
                             "lat": 53.8655,
                             "lon": 10.6866,
-                            "description": "Hauptstadt der Hanse („Königin der Hanse“); Sitz der Hansetage und Zentrum des Ostseehandels.",  # noqa: E501
+                            "description": "Hauptstadt der Hanse („Königin der Hanse“); Sitz der Hansetage und Zentrum des Ostseehandels.",
                         },
                         {
                             "title": "Hamburg",
@@ -773,7 +781,7 @@ def get_geo_map_context() -> dict:
                             "title": "Riga",
                             "lat": 56.9496,
                             "lon": 24.1052,
-                            "description": "Zentrum des Hansehandels im Baltikum; Umschlagplatz für Waren aus Russland und Skandinavien.",  # noqa: E501
+                            "description": "Zentrum des Hansehandels im Baltikum; Umschlagplatz für Waren aus Russland und Skandinavien.",
                         },
                         {
                             "title": "Reval (Tallinn)",
@@ -809,7 +817,7 @@ def get_geo_map_context() -> dict:
                             "title": "Nowgorod",
                             "lat": 58.5215,
                             "lon": 31.2755,
-                            "description": "Östlichstes Hansekontor; Handel mit Fellen, Wachs und Honig im Russlandgeschäft.",  # noqa: E501
+                            "description": "Östlichstes Hansekontor; Handel mit Fellen, Wachs und Honig im Russlandgeschäft.",
                         },
                     ],
                 },
@@ -905,7 +913,7 @@ def get_generic_filter_context() -> dict:
                     _("AI model type"),
                     model_type_options,
                     _("To filter by the type of AI-Model."),
-                    IconConfig("rocket", "s"),
+                    IconConfig("rocket-launch", "s"),
                 ),
                 FilterConfig(
                     "runtime_filter",
@@ -914,7 +922,7 @@ def get_generic_filter_context() -> dict:
                     _("To filter by the runtime."),
                     IconConfig("clock", "s"),
                 ),
-                FilterConfig("license_filter", _("License"), license_options, icon=IconConfig("doc", "s")),
+                FilterConfig("license_filter", _("License"), license_options, icon=IconConfig("document-text", "s")),
             ],
             "/",
         )
@@ -943,7 +951,10 @@ def get_card_context() -> dict:
             CardConfig(
                 _("Card with actions"),
                 content=_("This card has some action buttons."),
-                actions=[ActionConfig(_("Learn more"), "#", "secondary"), ActionConfig(_("Share"), "#", "primary")],
+                actions=[
+                    ButtonConfig(label=_("Learn more"), request_url="#", type="secondary"),
+                    ButtonConfig(label=_("Share"), request_url="#", type="primary"),
+                ],
             ),
         ]
     }
@@ -958,7 +969,10 @@ def get_app_card_context() -> dict:
             _("A card with its content arranged horizontally."),
             image=ImageConfig(static(DEMO_CARD_IMAGE_PATH), _("Card-Image")),
             tags=[_("Insight UI"), _("Layout"), _("Card")],
-            actions=[ActionConfig(_("Learn more"), "#", "secondary"), ActionConfig(_("Share"), "#", "primary")],
+            actions=[
+                ButtonConfig(label=_("Learn more"), request_url="#", type="secondary"),
+                ButtonConfig(label=_("Share"), request_url="#", type="primary"),
+            ],
         )
     }
 
@@ -973,7 +987,10 @@ def get_flip_card_context() -> dict:
             _("Here you can add more information, without taken more space."),
             image=ImageConfig(static(DEMO_CARD_IMAGE_PATH), _("Card-Image")),
             tags=[_("Insight UI"), _("Layout"), _("Card")],
-            actions=[ActionConfig(_("Learn more"), "#", "secondary"), ActionConfig(_("Share"), "#", "primary")],
+            actions=[
+                ButtonConfig(label=_("Learn more"), request_url="#", type="secondary"),
+                ButtonConfig(label=_("Share"), request_url="#", type="primary"),
+            ],
         )
     }
 
@@ -1027,9 +1044,9 @@ def get_toggle_view_context() -> dict:
             view_radio_config=RadioBlockConfig(
                 "products-view-toggle",
                 items=[
-                    RadioItemConfig("card-view", "card", icon=IconConfig("cards")),
-                    RadioItemConfig("table-view", "table", icon=IconConfig("list")),
-                    RadioItemConfig("carousel-view", "carousel", icon=IconConfig("carousel")),
+                    RadioItemConfig("card-view", "card", icon=IconConfig("squares-2x2")),
+                    RadioItemConfig("table-view", "table", icon=IconConfig("list-bullet")),
+                    RadioItemConfig("carousel-view", "carousel", icon=IconConfig("square-3-stack-3d")),
                 ],
                 request_url=reverse("toggle_view"),
             ),
@@ -1079,7 +1096,7 @@ def get_form_context() -> dict:
             ],
             True,
             reverse("form_submit"),
-            HtmxConfig("#htmx-form"),
+            HtmxConfig(target="#htmx-form"),
         )
     }
 

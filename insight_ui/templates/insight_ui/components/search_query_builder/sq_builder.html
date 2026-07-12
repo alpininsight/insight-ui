@@ -16,14 +16,8 @@
             {% endfor %}
         </div>
         <div class="flex gap-1 mt-6">
-            <button id="add-filter-btn" onclick="addFilter()" type="button" class="btn btn-outline-primary">
-                {% icon name="plus" %}
-                <span class="sr-only">{% trans "Add another filter" %}</span>
-            </button>
-            <button type="submit" class="btn btn-primary">
-                {% trans "Apply" %}
-                {% icon name="refresh" size="s" %}
-            </button>
+            {% button tag_id="add-filter-btn" label=_("Add another filter") on_click="addFilter()" type="primary" outline=True icon_name="plus" icon_only=True %}
+            {% button label=_("Apply") type="primary" icon_name="arrow-path" icon_size="s" icon_end=True %}
         </div>
     </form>
 </div>

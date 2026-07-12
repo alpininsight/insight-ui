@@ -8,13 +8,12 @@ from django.utils.translation import gettext_lazy as _
 from insight_ui.configs.base import HtmxConfig, IconConfig
 from insight_ui.configs.input import DropdownConfig
 from insight_ui.configs.popup import ModalConfig
-from insight_ui.configs.utils import BrandLockupConfig, CopyrightNoticeConfig, LogoConfig
+from insight_ui.configs.utils import BrandMarkConfig, CopyrightNoticeConfig, LogoConfig
 
 
 @dataclass
 class NavbarBrandConfig:
-    """
-    Configuration for the navbar brand section.
+    """Configuration for the navbar brand section.
 
     Describes the title and the logo of the application in the navbar.
 
@@ -24,7 +23,7 @@ class NavbarBrandConfig:
         logo: Describes the logo that is displayed next to the title.
         gap: This value determines the spacing between the logo and the title.
         aria_label: Optional accessible label for the brand link.
-        lockup: Optional controlled brand lockup rendered instead of logo plus title.
+        mark: Optional controlled brand mark rendered instead of logo plus title.
 
     """
 
@@ -47,15 +46,14 @@ class NavbarBrandConfig:
         default="0.5rem", metadata={"doc": _("This value determines the spacing between the logo and the title.")}
     )
     aria_label: str = field(default="", metadata={"doc": _("Optional accessible label for the brand link.")})
-    lockup: BrandLockupConfig | None = field(
-        default=None, metadata={"doc": _("Optional controlled brand lockup rendered instead of logo plus title.")}
+    mark: BrandMarkConfig | None = field(
+        default=None, metadata={"doc": _("Optional controlled brand mark rendered instead of logo plus title.")}
     )
 
 
 @dataclass
 class NavbarLinkConfig:
-    """
-    Configuration for a navbar navigation link.
+    """Configuration for a navbar navigation link.
 
     Attributes:
         text: Label of the link.
@@ -86,8 +84,7 @@ class NavbarLinkConfig:
 
 @dataclass
 class NavbarConfig:
-    """
-    Configuration for the navbar component.
+    """Configuration for the navbar component.
 
     Renders a full navigation bar with brand, links, and optional features.
 
@@ -143,8 +140,7 @@ class NavbarConfig:
 
 @dataclass
 class SidebarItemConfig:
-    """
-    Configuration for a sidebar navigation item.
+    """Configuration for a sidebar navigation item.
 
     Attributes:
         text: Label of the item.
@@ -168,8 +164,7 @@ class SidebarItemConfig:
 
 @dataclass
 class SidebarCategoryConfig:
-    """
-    Configuration for a sidebar category (group of items).
+    """Configuration for a sidebar category (group of items).
 
     Attributes:
         caption: Category header text.
@@ -197,8 +192,7 @@ class SidebarCategoryConfig:
 
 @dataclass
 class SidebarDataConfig:
-    """
-    Configuration for sidebar content.
+    """Configuration for sidebar content.
 
     Attributes:
         title: Sidebar title.
@@ -231,8 +225,7 @@ class SidebarDataConfig:
 
 @dataclass
 class SidebarConfig:
-    """
-    Configuration for the sidebar component.
+    """Configuration for the sidebar component.
 
     Renders a side navigation panel.
 
@@ -281,8 +274,7 @@ class SidebarConfig:
 
 @dataclass
 class FooterDescriptionConfig:
-    """
-    Configuration for the footer description section.
+    """Configuration for the footer description section.
 
     Brief description of the application with optional image.
 
@@ -309,8 +301,7 @@ class FooterDescriptionConfig:
 
 @dataclass
 class FooterContactConfig:
-    """
-    Configuration for footer contact information.
+    """Configuration for footer contact information.
 
     Contact information, link to the imprint, privacy policy and a contact email address.
 
@@ -336,8 +327,7 @@ class FooterContactConfig:
 
 @dataclass
 class FooterConfig:
-    """
-    Configuration for the footer component.
+    """Configuration for the footer component.
 
     Renders a complete page footer.
 
@@ -392,8 +382,7 @@ class FooterConfig:
 
 @dataclass
 class BreadcrumbItemConfig:
-    """
-    Configuration for a breadcrumb navigation item.
+    """Configuration for a breadcrumb navigation item.
 
     Attributes:
         text: Label of the link.
@@ -413,8 +402,7 @@ class BreadcrumbItemConfig:
 
 @dataclass
 class BreadcrumbsConfig:
-    """
-    Configuration for the breadcrumbs component.
+    """Configuration for the breadcrumbs component.
 
     Renders a breadcrumb navigation trail.
 
@@ -444,8 +432,7 @@ class BreadcrumbsConfig:
 
 @dataclass
 class StepperItemConfig:
-    """
-    Configuration for a step in the stepper component.
+    """Configuration for a step in the stepper component.
 
     Attributes:
         title: Title of the step.
@@ -471,8 +458,7 @@ class StepperItemConfig:
 
 @dataclass
 class StepperConfig:
-    """
-    Configuration for the stepper component.
+    """Configuration for the stepper component.
 
     Renders a graphical representation of process steps.
 
@@ -496,8 +482,7 @@ class StepperConfig:
 
 @dataclass
 class MinimalStepperConfig:
-    """
-    Configuration for the minimal_stepper component.
+    """Configuration for the minimal_stepper component.
 
     Renders a compact progress indicator.
 
@@ -536,8 +521,7 @@ class MinimalStepperConfig:
 
 @dataclass
 class BulletPointItemConfig:
-    """
-    Configuration for an item in the bullet_point_list component.
+    """Configuration for an item in the bullet_point_list component.
 
     Attributes:
         title: Title of the item.
@@ -563,8 +547,7 @@ class BulletPointItemConfig:
 
 @dataclass
 class BulletPointListConfig:
-    """
-    Configuration for the bullet_point_list component.
+    """Configuration for the bullet_point_list component.
 
     Renders a graphical representation of a bullet point list.
 
@@ -592,8 +575,7 @@ class BulletPointListConfig:
 
 @dataclass
 class AccordionItemConfig:
-    """
-    Configuration for an accordion section.
+    """Configuration for an accordion section.
 
     Attributes:
         title: Section title.
@@ -613,8 +595,7 @@ class AccordionItemConfig:
 
 @dataclass
 class AccordionConfig:
-    """
-    Configuration for the accordion component.
+    """Configuration for the accordion component.
 
     Renders expandable/collapsible sections.
 
@@ -645,8 +626,7 @@ class AccordionConfig:
 
 @dataclass
 class TabConfig:
-    """
-    Configuration for a single tab.
+    """Configuration for a single tab.
 
     Attributes:
         tag_id: Unique tag ID for identifying the element in JavaScript.
@@ -668,8 +648,7 @@ class TabConfig:
 
 @dataclass
 class TabsConfig:
-    """
-    Configuration for the tabs component.
+    """Configuration for the tabs component.
 
     Renders a tabbed interface with HTMX content loading.
 

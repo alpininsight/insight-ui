@@ -8,7 +8,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}{{ INSIGHT_UI.title }}{% endblock %}</title>
+        <title>{% block title %}{{ INSIGHT_UI.brand.title }}{% endblock %}</title>
 
         <!-- Favicon -->
         <link rel="manifest" href="{% static 'insight_ui/favicon/site.webmanifest' %}">
@@ -35,7 +35,10 @@
             })();
         </script>
 
-        <script src="{% url 'javascript-catalog' %}"></script>
+        {% url 'javascript-catalog' as javascript_catalog_url %}
+        {% if javascript_catalog_url %}
+            <script src="{{ javascript_catalog_url }}"></script>
+        {% endif %}
 
         <!-- HTMX CDN -->
         <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js" integrity="sha384-/TgkGk7p307TH7EXJDuUlgG3Ce1UVolAOFopFekQkkXihi5u/6OCvVKyz1W+idaz" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -61,8 +64,6 @@
             <script defer src="https://cdnjs.cloudflare.com/ajax/libs/echarts/6.0.0/echarts.min.js" integrity="sha512-4/g9GAdOdTpUP2mKClpKsEzaK7FQNgMjq+No0rX8XZlfrCGtbi4r+T/p5fnacsEC3zIAmHKLJUL7sh3/yVA4OQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         {% endif %}
 
-        <!-- Insight UI Modular Utils  -->
-        <script defer src="{% insight_asset 'insight_ui/js/insight-ui-utils.js' %}"></script>
         <script src="{% insight_asset 'insight_ui/js/insight-ui-toc-generator.js' %}"></script>
 
         <!-- Main stylesheet -->
@@ -118,31 +119,15 @@
             </div>
         {% endif %}
 
-        <!-- Insight UI Modular JavaScript -->
+        <!-- Insight UI JavaScript -->
         <script>
             window.JS_DEBUG = {{ INSIGHT_UI.JS_DEBUG|yesno:"true,false" }};
         </script>
         <script defer src="{% insight_asset 'insight_ui/js/insight-ui-debug.js' %}"></script>
         <script defer src="{% insight_asset 'insight_ui/js/insight-ui-utils.js' %}"></script>
-        <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-3D-carousel.js' %}"></script>
-        <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-accordion.js' %}"></script>
-        <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-carousel.js' %}"></script>
-        <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-checkbox.js' %}"></script>
-        <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-code-block.js' %}"></script>
-        <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-collapsible.js' %}"></script>
-        <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-demo-container.js' %}"></script>
-        <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-dropdown.js' %}"></script>
-        <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-floater.js' %}"></script>
-        <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-modal.js' %}"></script>
-        <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-multiselect.js' %}"></script>
-        <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-sidebar.js' %}"></script>
-        <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-tabs.js' %}"></script>
-        <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-theme-toggle.js' %}"></script>
         <script defer src="{% insight_asset 'insight_ui/js/insight-ui-websocket.js' %}"></script>
         <script type="module" defer src="{% insight_asset 'insight_ui/js/insight-ui-init.js' %}"></script>
         <script defer src="{% insight_asset 'insight_ui/js/insight-ui-state.js' %}"></script>
-        <!-- HTMX Extensions -->
-        <script defer src="{% insight_asset 'insight_ui/js/insight-ui-htmx-extensions.js' %}"></script>
 
         {% block extra_scripts %}{% endblock %}
     </body>

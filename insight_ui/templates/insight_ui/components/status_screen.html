@@ -1,0 +1,52 @@
+{% load insight_tags i18n %}
+
+<section class="mx-auto flex w-full max-w-2xl items-center justify-center px-4 py-8 {{ status_screen_config.css_class }}">
+    <div class="w-full border insight-border-subtle insight-surface-raised insight-radius-raised insight-shadow-raised p-8 text-center {{ status_screen_config.card_css_class }}">
+        {% if status_screen_config.brand %}
+            <div class="mb-8 flex justify-center">
+                {% brand_mark config=status_screen_config.brand %}
+            </div>
+        {% endif %}
+
+        <div
+            class="mx-auto mb-4 flex size-12 items-center justify-center insight-radius-pill {% if status_screen_config.status == 'success' %}bg-insight-success/15 text-insight-success{% elif status_screen_config.status == 'warning' %}bg-insight-warning/15 text-insight-warning{% elif status_screen_config.status == 'error' %}bg-insight-danger/15 text-insight-danger{% else %}bg-insight-info/15 text-insight-info{% endif %}"
+            aria-hidden="true"
+        >
+            {% icon name=status_screen_icon size="l" %}
+        </div>
+
+        <h1 class="text-3xl font-bold text-primary">{{ status_screen_config.title }}</h1>
+
+        {% if status_screen_config.description %}
+            <div class="mt-4 space-y-2 text-secondary">
+                {% for paragraph in status_screen_config.description %}
+                    <p>{{ paragraph }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if status_screen_config.notice or status_screen_config.notice_title %}
+            <div
+                class="mx-auto mt-6 max-w-lg border border-s-4 insight-border-subtle insight-surface-muted insight-radius-control-end px-4 py-2 text-start {% if status_screen_config.status == 'success' %}border-s-insight-success{% elif status_screen_config.status == 'warning' %}border-s-insight-warning{% elif status_screen_config.status == 'error' %}border-s-insight-danger{% else %}border-s-insight-info{% endif %}"
+                role="{% if status_screen_config.status == 'error' %}alert{% else %}status{% endif %}"
+            >
+                {% if status_screen_config.notice_title %}
+                    <p class="font-semibold text-primary">{{ status_screen_config.notice_title }}</p>
+                {% endif %}
+                {% if status_screen_config.notice %}
+                    <p class="{% if status_screen_config.notice_title %}mt-1 {% endif %}text-sm text-secondary">
+                        {{ status_screen_config.notice }}
+                    </p>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if status_screen_config.actions %}
+            <div class="mt-8 flex flex-wrap justify-center gap-3">
+                {% for action in status_screen_config.actions %}
+                    {% button config=action %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</section>

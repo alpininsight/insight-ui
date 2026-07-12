@@ -5,15 +5,14 @@ from typing import Literal
 
 from django.utils.translation import gettext_lazy as _
 
-from insight_ui.configs.base import ActionConfig, ImageConfig
-from insight_ui.configs.input import RadioBlockConfig
+from insight_ui.configs.base import ImageConfig
+from insight_ui.configs.input import ButtonConfig, RadioBlockConfig
 from insight_ui.configs.list import TableConfig
 
 
 @dataclass
 class CardConfig:
-    """
-    Configuration for the card component.
+    """Configuration for the card component.
 
     Renders a card with 16:9 aspect ratio (business card style).
 
@@ -32,7 +31,7 @@ class CardConfig:
             subtitle="Getting Started",
             content="Learn how to use our platform.",
             actions=[
-                ActionConfig(text="Learn More", url="/docs/", type="primary"),
+                ButtonConfig(label="Learn More", request_url="/docs/", type="primary"),
             ],
         )
         """
@@ -41,20 +40,19 @@ class CardConfig:
     content: str = field(metadata={"doc": _("Main card content.")})
     subtitle: str = field(default="", metadata={"doc": _("Optional subtitle.")})
     image: ImageConfig | None = field(default=None, metadata={"doc": _("Optional card image.")})
-    actions: list[ActionConfig] = field(default_factory=list, metadata={"doc": _("List of action buttons.")})
+    actions: list[ButtonConfig] = field(default_factory=list, metadata={"doc": _("List of action buttons.")})
 
 
 @dataclass
 class AppCardConfig:
-    """
-    Configuration for the app_card component.
+    """Configuration for the app_card component.
 
     Renders a vertically-oriented card ideal for app/product listings.
 
     Attributes:
         title: Card title.
         content: Card description.
-        request_url: URL when title is clicked.
+        request_url: The URL to be called when title is clicked.
         image: Card image (displayed as square at top).
         tags: List of tag labels.
         actions: List of action buttons.
@@ -68,22 +66,21 @@ class AppCardConfig:
             request_url="/apps/analytics/",
             image=ImageConfig(url="img/analytics.png", alt="Analytics"),
             tags=["New", "Featured"],
-            actions=[ActionConfig(text="Open", url="/apps/analytics/", type="primary")],
+            actions=[ButtonConfig(label="Open", request_url="/apps/analytics/", type="primary")],
         )
         """
 
     title: str = field(metadata={"doc": _("Card title.")})
     content: str = field(metadata={"doc": _("Card description.")})
-    request_url: str = field(default="", metadata={"doc": _("URL when title is clicked.")})
+    request_url: str = field(default="", metadata={"doc": _("The URL to be called when title is clicked.")})
     image: ImageConfig | None = field(default=None, metadata={"doc": _("Card image (displayed as square at top).")})
     tags: list[str] = field(default_factory=list, metadata={"doc": _("List of tag labels.")})
-    actions: list[ActionConfig] = field(default_factory=list, metadata={"doc": _("List of action buttons.")})
+    actions: list[ButtonConfig] = field(default_factory=list, metadata={"doc": _("List of action buttons.")})
 
 
 @dataclass
 class FlipCardConfig:
-    """
-    Configuration for the flip_card component.
+    """Configuration for the flip_card component.
 
     Renders a card that rotates 180° on hover to show back content.
 
@@ -91,7 +88,7 @@ class FlipCardConfig:
         title: Card title.
         content: Front side content.
         back_content: Back side content.
-        request_url: URL when title is clicked.
+        request_url: The URL to be called when title is clicked.
         image: Front side image.
         tags: List of tag labels.
         actions: List of action buttons.
@@ -105,23 +102,22 @@ class FlipCardConfig:
             back_content="Detailed description shown on the back side.",
             image=ImageConfig(url="img/product.png", alt="Product"),
             tags=["Sale", "-20%"],
-            actions=[ActionConfig(text="Buy", url="/buy/", type="primary")],
+            actions=[ButtonConfig(label="Buy", request_url="/buy/", type="primary")],
         )
         """
 
     title: str = field(metadata={"doc": _("Card title.")})
     content: str = field(metadata={"doc": _("Front side content.")})
     back_content: str = field(metadata={"doc": _("Back side content.")})
-    request_url: str = field(default="", metadata={"doc": _("URL when title is clicked.")})
+    request_url: str = field(default="", metadata={"doc": _("The URL to be called when title is clicked.")})
     image: ImageConfig | None = field(default=None, metadata={"doc": _("Front side image.")})
     tags: list[str] = field(default_factory=list, metadata={"doc": _("List of tag labels.")})
-    actions: list[ActionConfig] = field(default_factory=list, metadata={"doc": _("List of action buttons.")})
+    actions: list[ButtonConfig] = field(default_factory=list, metadata={"doc": _("List of action buttons.")})
 
 
 @dataclass
 class CarouselItemConfig:
-    """
-    Configuration for a carousel item.
+    """Configuration for a carousel item.
 
     Attributes:
         title: Item title.
@@ -143,8 +139,7 @@ class CarouselItemConfig:
 
 @dataclass
 class CardCarouselConfig:
-    """
-    Configuration for the carousel (card carousel) component.
+    """Configuration for the carousel (card carousel) component.
 
     Renders a card carousel with navigation.
 
@@ -178,8 +173,7 @@ class CardCarouselConfig:
 
 @dataclass
 class ImageCarouselItemConfig:
-    """
-    Configuration for an image carousel item.
+    """Configuration for an image carousel item.
 
     Attributes:
         url: Image URL.
@@ -199,8 +193,7 @@ class ImageCarouselItemConfig:
 
 @dataclass
 class ImageCarouselConfig:
-    """
-    Configuration for the image_carousel component.
+    """Configuration for the image_carousel component.
 
     Renders an image-focused carousel.
 
@@ -234,8 +227,7 @@ class ImageCarouselConfig:
 
 @dataclass
 class ThreeDCarouselConfig:
-    """
-    Configuration for the three_d_carousel component.
+    """Configuration for the three_d_carousel component.
 
     Renders items in a 3D circular arrangement.
 
@@ -269,8 +261,7 @@ class ThreeDCarouselConfig:
 
 @dataclass
 class ToggleViewConfig:
-    """
-    Configuration for the toggle_view component.
+    """Configuration for the toggle_view component.
 
     Allows switching between different data views (cards, table, carousel).
 
@@ -291,8 +282,8 @@ class ToggleViewConfig:
             view_radio_config=RadioBlockConfig(
                 name="view",
                 items=[
-                    RadioItemConfig(tag_id="card", value="card", icon=IconConfig(name="cards")),
-                    RadioItemConfig(tag_id="table", value="table", icon=IconConfig(name="list")),
+                    RadioItemConfig(tag_id="card", value="card", icon=IconConfig(name="squares-2x2")),
+                    RadioItemConfig(tag_id="table", value="table", icon=IconConfig(name="list-bullet")),
                 ],
             ),
             current_view="card",

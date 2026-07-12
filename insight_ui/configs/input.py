@@ -5,13 +5,123 @@ from typing import Literal
 
 from django.utils.translation import gettext_lazy as _
 
-from insight_ui.configs.base import BaseFormFieldConfig, IconConfig
+from insight_ui.configs.base import BaseFormFieldConfig, DataAttrConfig, HtmxConfig, IconConfig
+
+
+@dataclass
+class ButtonConfig:
+    """Configuration for the button component.
+
+    Renders a button element.
+
+    Attributes:
+        tag_id: Unique ID for JavaScript/CSS targeting.
+        label: The text on the button or for Screenreader if the button shows only an icon.
+        request_url: The URL to be called when clicking on the button.
+        on_click: The name of the JavaScript method to be called when clicking on the button.
+        icon: Icon config for an optional icon.
+        icon_end: **True** if the icon should be shown after the label, otherwise the icon is shown in front of the label.
+        icon_only: **True** if only the icon should be shown. In this case the `label` will be used for Screenreader.
+        type: Defines the color of the button.
+        size: Defines the size of the button.
+        outline: **True** to use the outline design of the button.
+        subtle: **True** to use the subtle design of the button.
+        round: **True** for full rounded corners.
+        tooltip: Optional text for a tooltip shown on hover.
+        htmx_config: Configuration for asynchronous requests.
+        hidden: **True** to render the button with CSS 'hidden' class for JS-controlled visibility.
+        button_type: HTML type attribute: 'button', 'submit', or 'reset'.
+        extra_classes: Additional CSS classes to append to the button element.
+        data_attrs: List of custom data attributes to add to the button element.
+        external: **True** to open link in new tab (adds target='_blank' and rel='noopener'). Only applies when request_url is set.
+        aria_attrs: List of ARIA attributes to add to the button element.
+        hx_attrs: List of HTMX attributes to add to the button element.
+
+    """
+
+    __example__ = """
+        ButtonConfig(
+            tag_id="my-button",
+            label="Click Me!",
+            request_url="",
+            on_click="calculateSomething()",
+            icon=IconConfig("rocket-launch", "m"),
+            icon_end=True,
+            icon_only=False,
+            type="primary",
+            size="xl",
+            outline=False,
+            subtle=False,
+            round=False,
+            tooltip="Click to calculate something",
+            htmx_config=HtmxConfig(...),
+            hidden=False,
+            button_type="submit",
+            extra_classes="w-full",
+            data_attrs=[DataAttrConfig(name="testid", value="submit-btn")],
+        )
+        """
+
+    tag_id: str = field(default="", metadata={"doc": _("Unique ID for JavaScript/CSS targeting.")})
+    label: str = field(
+        default="", metadata={"doc": "The text on the button or for Screenreader if the button shows only an icon."}
+    )
+    request_url: str = field(default="", metadata={"doc": "The URL to be called when clicking on the button."})
+    on_click: str = field(
+        default="", metadata={"doc": "The name of the JavaScript method to be called when clicking on the button."}
+    )
+    icon: IconConfig = field(default=None, metadata={"doc": "Icon config for an optional icon."})
+    icon_end: bool = field(
+        default=False,
+        metadata={
+            "doc": "**True** if the icon should be shown after the label, otherwise the icon is shown in front of the label."
+        },
+    )
+    icon_only: bool = field(
+        default=False,
+        metadata={
+            "doc": "**True** if only the icon should be shown. In this case the `label` will be used for Screenreader."
+        },
+    )
+    type: Literal["primary", "secondary", "info", "success", "warning", "danger", "disabled", "link"] = field(
+        default="primary", metadata={"doc": "Defines the color of the button."}
+    )
+    size: Literal["xs", "s", "m", "l", "xl"] = field(default="m", metadata={"doc": "Defines the size of the button."})
+    outline: bool = field(default=False, metadata={"doc": "**True** to use the outline design of the button."})
+    subtle: bool = field(default=False, metadata={"doc": "**True** to use the subtle design of the button."})
+    round: bool = field(default=False, metadata={"doc": "**True** for full rounded corners."})
+    tooltip: str = field(default="", metadata={"doc": "Optional text for a tooltip shown on hover."})
+    htmx_config: HtmxConfig = field(default=None, metadata={"doc": "Configuration for asynchronous requests."})
+    hidden: bool = field(
+        default=False,
+        metadata={"doc": "**True** to render the button with CSS 'hidden' class for JS-controlled visibility."},
+    )
+    button_type: Literal["button", "submit", "reset"] = field(
+        default="button", metadata={"doc": _("HTML type attribute: 'button', 'submit', or 'reset'.")}
+    )
+    extra_classes: str = field(
+        default="", metadata={"doc": _("Additional CSS classes to append to the button element.")}
+    )
+    data_attrs: list[DataAttrConfig] = field(
+        default_factory=list, metadata={"doc": "List of custom data attributes to add to the button element."}
+    )
+    external: bool = field(
+        default=False,
+        metadata={
+            "doc": "**True** to open link in new tab (adds target='_blank' and rel='noopener'). Only applies when request_url is set."
+        },
+    )
+    aria_attrs: list[DataAttrConfig] = field(
+        default_factory=list, metadata={"doc": "List of ARIA attributes to add to the button element."}
+    )
+    hx_attrs: list[DataAttrConfig] = field(
+        default_factory=list, metadata={"doc": "List of HTMX attributes to add to the button element."}
+    )
 
 
 @dataclass
 class InputFieldConfig(BaseFormFieldConfig):
-    """
-    Configuration for the input_field component.
+    """Configuration for the input_field component.
 
     Renders any HTML <input> element with proper styling and accessibility.
 
@@ -79,8 +189,7 @@ class InputFieldConfig(BaseFormFieldConfig):
 
 @dataclass
 class TextareaConfig(BaseFormFieldConfig):
-    """
-    Configuration for the textarea component.
+    """Configuration for the textarea component.
 
     Renders a multi-line text input field.
 
@@ -117,8 +226,7 @@ class TextareaConfig(BaseFormFieldConfig):
 
 @dataclass
 class CheckboxConfig(BaseFormFieldConfig):
-    """
-    Configuration for the checkbox component.
+    """Configuration for the checkbox component.
 
     Renders a single checkbox with label.
 
@@ -150,8 +258,7 @@ class CheckboxConfig(BaseFormFieldConfig):
 
 @dataclass
 class CheckboxItemConfig:
-    """
-    Configuration for a single checkbox within a checkbox group.
+    """Configuration for a single checkbox within a checkbox group.
 
     Attributes:
         tag_id: Unique ID for this checkbox.
@@ -175,8 +282,7 @@ class CheckboxItemConfig:
 
 @dataclass
 class CheckboxGroupConfig:
-    """
-    Configuration for the checkbox_group component.
+    """Configuration for the checkbox_group component.
 
     Renders a group of linked checkboxes with optional constraints.
 
@@ -220,8 +326,7 @@ class CheckboxGroupConfig:
 
 @dataclass
 class DropdownItemConfig:
-    """
-    Configuration for an item within a dropdown menu.
+    """Configuration for an item within a dropdown menu.
 
     Attributes:
         text: Label of the dropdown element.
@@ -243,8 +348,7 @@ class DropdownItemConfig:
 
 @dataclass
 class DropdownConfig:
-    """
-    Configuration for the dropdown component.
+    """Configuration for the dropdown component.
 
     Renders a dropdown menu with a trigger button.
 
@@ -263,8 +367,8 @@ class DropdownConfig:
             show_arrow=True,
             items=[
                 DropdownItemConfig(text="Profile", request_url="/profile/", icon=IconConfig(name="user")),
-                DropdownItemConfig(text="Settings", request_url="/settings/", icon=IconConfig(name="gear")),
-                DropdownItemConfig(text="Logout", request_url="/logout/", icon=IconConfig(name="leave")),
+                DropdownItemConfig(text="Settings", request_url="/settings/", icon=IconConfig(name="cog-8-tooth")),
+                DropdownItemConfig(text="Logout", request_url="/logout/", icon=IconConfig(name="arrow-left-on-rectangle")),
             ],
         )
         """
@@ -277,8 +381,7 @@ class DropdownConfig:
 
 @dataclass
 class RadioItemConfig:
-    """
-    Configuration for a single radio button within a group.
+    """Configuration for a single radio button within a group.
 
     Attributes:
         tag_id: Optional, unique tag ID for identifying the element in JavaScript.
@@ -302,8 +405,7 @@ class RadioItemConfig:
 
 @dataclass
 class RadioGroupConfig:
-    """
-    Configuration for the radio_group component.
+    """Configuration for the radio_group component.
 
     Renders a group of standard radio buttons.
 
@@ -345,8 +447,7 @@ class RadioGroupConfig:
 
 @dataclass
 class RadioBlockConfig:
-    """
-    Configuration for the radio_block component.
+    """Configuration for the radio_block component.
 
     Renders radio buttons as a compact block that can trigger requests.
 
@@ -356,7 +457,7 @@ class RadioBlockConfig:
         items: A list of the radio elements.
         integrated: **True** if the group is inside a `<form>`. If **False** the group gets its own `<form>`.
         as_row: **True** if the radio elements should be displayed side by side.
-        request_url: Name of the URL to which the request should be sent when clicking one of the radio buttons.
+        request_url: The URL to which the request should be sent when clicking one of the radio buttons.
         hx_target_id: The ID of the HTML tag to be replaced when switching the radio button.
         hx_swap_method: The way in which the target is to be replaced.
         method: Name of the JavaScript method to be executed when clicking one of the radio buttons.
@@ -368,8 +469,8 @@ class RadioBlockConfig:
         RadioBlockConfig(
             name="view",
             items=[
-                RadioItemConfig(tag_id="card", value="card", icon=IconConfig(name="cards")),
-                RadioItemConfig(tag_id="table", value="table", icon=IconConfig(name="list")),
+                RadioItemConfig(tag_id="card", value="card", icon=IconConfig(name="squares-2x2")),
+                RadioItemConfig(tag_id="table", value="table", icon=IconConfig(name="list-bullet")),
             ],
             current_value="card",
             hx_target_id="content-area",
@@ -390,9 +491,7 @@ class RadioBlockConfig:
     )
     request_url: str = field(
         default="",
-        metadata={
-            "doc": _("Name of the URL to which the request should be sent when clicking one of the radio buttons.")
-        },
+        metadata={"doc": _("The URL to which the request should be sent when clicking one of the radio buttons.")},
     )
     hx_target_id: str = field(
         default="", metadata={"doc": _("The ID of the HTML tag to be replaced when switching the radio button.")}
@@ -414,8 +513,7 @@ class RadioBlockConfig:
 
 @dataclass
 class SliderConfig(BaseFormFieldConfig):
-    """
-    Configuration for the slider (range slider) component.
+    """Configuration for the slider (range slider) component.
 
     Renders a range slider for selecting numeric values.
 
@@ -501,8 +599,7 @@ class SliderConfig(BaseFormFieldConfig):
 
 @dataclass
 class ToggleConfig(BaseFormFieldConfig):
-    """
-    Configuration for the toggle component.
+    """Configuration for the toggle component.
 
     Renders a toggle button or switch.
 
@@ -543,8 +640,7 @@ class ToggleConfig(BaseFormFieldConfig):
 
 @dataclass
 class SelectConfig(BaseFormFieldConfig):
-    """
-    Configuration for the select component.
+    """Configuration for the select component.
 
     Renders a dropdown selection box.
 
@@ -588,8 +684,7 @@ class SelectConfig(BaseFormFieldConfig):
 
 @dataclass
 class MultiselectConfig(BaseFormFieldConfig):
-    """
-    Configuration for the multiselect component.
+    """Configuration for the multiselect component.
 
     Renders a selection box allowing multiple selections with search.
 
@@ -634,8 +729,7 @@ class MultiselectConfig(BaseFormFieldConfig):
 
 @dataclass
 class ChatConfig:
-    """
-    Configuration for the chat component.
+    """Configuration for the chat component.
 
     Renders a chat interface with an input line and a response container.
 

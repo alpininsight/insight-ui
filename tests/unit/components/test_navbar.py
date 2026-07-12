@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from insight_ui.configs.base import IconConfig
 from insight_ui.configs.navigation import NavbarBrandConfig, NavbarConfig, NavbarLinkConfig
 from insight_ui.configs.popup import ModalConfig
-from insight_ui.configs.utils import BrandLockupConfig, LogoConfig
+from insight_ui.configs.utils import BrandMarkConfig, LogoConfig
 
 from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
@@ -83,8 +83,26 @@ class TestNavbar(TemplateTagsTestCase):
         assert trigger.find_parent("div", class_="relative") is not None
         assert menu is not None
         assert "hidden" in menu.get("class", [])
-        assert "absolute" in menu.get("class", [])
-        assert "top-full" in menu.get("class", [])
+        assert "insight-user-dropdown-menu" in menu.get("class", [])
+        assert "shadow-lg" not in menu.get("class", [])
+        assert "bg-neutral-100" not in menu.get("class", [])
+        assert "dark:bg-gray-700" not in menu.get("class", [])
+
+    def test_navbar_mobile_toggle_uses_semantic_icon_button_class(self) -> None:
+        """The mobile navbar toggle uses the semantic nav icon button class."""
+        nav_config = NavbarConfig(NavbarBrandConfig("Insight UI", "/"))
+
+        rendered = self.render_template(
+            "{% load insight_tags %}{% navbar config=nav_config %}", context={"nav_config": nav_config}
+        )
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        trigger = soup.select_one('button[data-insight-collapsible="navigation-menu"]')
+
+        assert trigger is not None
+        assert trigger.get("class") == ["insight-nav-icon-button"]
+        assert "hover:bg-gray-100" not in rendered
+        assert "focus:ring-blue-500" not in rendered
 
     def test_navbar_user_menu_renders_avatar_image_when_configured(self) -> None:
         """Host apps can provide a user avatar URL without replacing the dropdown."""
@@ -133,14 +151,20 @@ class TestNavbar(TemplateTagsTestCase):
         assert trigger.find("img") is None
         assert trigger.get_text(strip=True) == self.user.get_username()[:1].upper()
 
-    def test_navbar_renders_brand_lockup_when_configured(self) -> None:
-        """Navbar can render a controlled brand lockup instead of logo plus title."""
+    def test_navbar_renders_brand_mark_when_configured(self) -> None:
+        """Navbar can render a controlled brand mark instead of logo plus title."""
         nav_config = NavbarConfig(
             NavbarBrandConfig(
                 "Insight UI",
                 "/",
-                aria_label="Alpin Insight Develop Startseite",
-                lockup=BrandLockupConfig("Alpin Insight", "Develop", height="2rem", variant="develop"),
+                aria_label="Insight UI Indexpage",
+                mark=BrandMarkConfig(
+                    "Insight",
+                    "UI",
+                    LogoConfig(
+                        "insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="2rem"
+                    ),
+                ),
             )
         )
 
@@ -149,14 +173,14 @@ class TestNavbar(TemplateTagsTestCase):
         )
         soup = BeautifulSoup(rendered, "html.parser")
 
-        brand_link = soup.find("a", attrs={"aria-label": "Alpin Insight Develop Startseite"})
+        brand_link = soup.find("a", attrs={"aria-label": "Insight UI Indexpage"})
         assert brand_link is not None
-        assert "Alpin Insight" in brand_link.get_text(" ", strip=True)
-        assert "Develop" in brand_link.get_text(" ", strip=True)
-        assert brand_link.find("svg") is not None
-        assert brand_link.find("img") is None
+        assert "Insight" in brand_link.get_text(" ", strip=True)
+        assert "UI" in brand_link.get_text(" ", strip=True)
+        assert brand_link.find("img") is not None
+        assert brand_link.find("svg") is None
 
-    def test_navbar_keeps_logo_title_fallback_without_lockup(self) -> None:
+    def test_navbar_keeps_logo_title_fallback_without_mark(self) -> None:
         """Existing logo plus title configuration remains the fallback mode."""
         nav_config = NavbarConfig(
             NavbarBrandConfig(

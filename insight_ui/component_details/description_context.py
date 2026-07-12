@@ -1,3 +1,5 @@
+"""Component description documentation context."""
+
 from django.urls import reverse
 from django.utils.translation import gettext as _
 
@@ -44,6 +46,145 @@ def get_hero_description_context() -> dict[str, list[str]]:
                 "The `hero` component renders a prominent banner section with title, subtitle, description and Call-to-Action buttons."
             )
         ]
+    }
+
+
+@register_component(Component.STATUS_SCREEN)
+def get_status_screen_description_context() -> dict[str, list[str]]:
+    """Serve description documentation for the status screen component."""
+    return {
+        "description": [
+            _(
+                "The `status_screen` component renders a reusable full-page status view. It combines brand, surface, status icon, title, description, notice and actions for common application states."
+            ),
+            _(
+                "It is intentionally generic. Use it for authentication failures, expired sessions, access states, deployment states, empty starts or workflow results without coupling the component to auth logic."
+            ),
+        ],
+        "features": [
+            _("**Semantic status**: Supports `info`, `success`, `warning` and `error`."),
+            _("**Reusable actions**: Uses the standard `button` component and `ButtonConfig`."),
+            _("**Token-based surface**: Uses Insight UI surface, border, radius and shadow tokens."),
+            _("**Optional brand**: Can show a `brand_mark` above the status card."),
+        ],
+    }
+
+
+@register_component(Component.PAGE)
+def get_page_description_context() -> dict[str, list[str]]:
+    """Serve description documentation for the page layout tag."""
+    return {
+        "description": [
+            _(
+                "The `page` block tag provides a full-width page container with consistent padding. "
+                "Use it as the outermost wrapper for page content to ensure uniform spacing across your application."
+            ),
+            _("For advanced layout control (max-width, alignment), use a `vbox` inside the page container."),
+        ],
+        "features": [
+            _("**padding**: Configurable inner padding using the spacing scale (xs/s/m/l/xl)."),
+            _(
+                "**height**: Height behavior - `auto` (fits content), `full` (viewport height), or `peek` (shows next section). When set to `full` or `peek`, the page becomes a flex-col container so children can use `full_height=True` to fill available space."
+            ),
+        ],
+    }
+
+
+@register_component(Component.HBOX)
+def get_hbox_description_context() -> dict[str, list[str]]:
+    """Serve description documentation for the hbox layout tag."""
+    return {
+        "description": [
+            _(
+                "The `hbox` block tag creates a horizontal flex container (row direction). "
+                "Child elements are arranged horizontally with configurable gap, alignment, and justification."
+            )
+        ],
+        "features": [
+            _("**gap**: Consistent spacing between children (xs/s/m/l/xl)."),
+            _("**padding**: Inner padding (xs/s/m/l/xl). Optional."),
+            _("**max_width**: Maximum container width (xs/s/m/l/xl/fit/full)."),
+            _("**full_height**: Fill available height in parent container."),
+            _("**h_align**: Horizontal/main-axis alignment (start/center/end/between/around/evenly)."),
+            _("**v_align**: Vertical/cross-axis alignment (start/center/end/stretch/baseline)."),
+            _("**wrap**: Optional flex-wrap for responsive layouts."),
+        ],
+    }
+
+
+@register_component(Component.VBOX)
+def get_vbox_description_context() -> dict[str, list[str]]:
+    """Serve description documentation for the vbox layout tag."""
+    return {
+        "description": [
+            _(
+                "The `vbox` block tag creates a vertical flex container (column direction). "
+                "Child elements are stacked vertically with configurable gap, alignment, and justification."
+            )
+        ],
+        "features": [
+            _("**gap**: Consistent spacing between children (xs/s/m/l/xl)."),
+            _("**padding**: Inner padding (xs/s/m/l/xl). Optional."),
+            _("**max_width**: Maximum container width (xs/s/m/l/xl/fit/full)."),
+            _("**full_height**: Fill available height in parent container."),
+            _("**h_align**: Horizontal/cross-axis alignment (start/center/end/stretch/baseline)."),
+            _("**v_align**: Vertical/main-axis alignment (start/center/end/between/around/evenly)."),
+        ],
+    }
+
+
+@register_component(Component.GRID)
+def get_grid_description_context() -> dict[str, list[str]]:
+    """Serve description documentation for the grid layout tag."""
+    return {
+        "description": [
+            _(
+                "The `grid` block tag creates a CSS Grid container for arranging items in columns. "
+                "It supports two modes: **auto-fit** (items wrap automatically based on available space) "
+                "and **fixed columns** (specific number of columns with automatic responsive breakpoints)."
+            ),
+            _(
+                "The grid tag is designed for users without frontend knowledge - responsive behavior "
+                "is handled automatically when using fixed columns."
+            ),
+        ],
+        "features": [
+            _("**Auto-fit mode**: Items wrap based on available space. Set `min` for minimum item width."),
+            _("**Fixed columns**: Set `cols` (1-6) for specific column count with automatic breakpoints."),
+            _("**gap**: Consistent spacing between items (xs/s/m/l/xl)."),
+            _("**fixed**: Disable automatic responsive breakpoints when needed."),
+        ],
+    }
+
+
+@register_component(Component.SPACER)
+def get_spacer_description_context() -> dict[str, list[str]]:
+    """Serve description documentation for the spacer layout tag."""
+    return {
+        "description": [
+            _(
+                "The `spacer` tag inserts a fixed-size spacer element. "
+                "Use it to add explicit spacing between elements in flex or block layouts."
+            )
+        ],
+        "features": [
+            _("**size**: Spacer size using the spacing scale (xs/s/m/l/xl)."),
+            _("**Flex-shrink**: Does not shrink in flex containers."),
+        ],
+    }
+
+
+@register_component(Component.DIVIDER)
+def get_divider_description_context() -> dict[str, list[str]]:
+    """Serve description documentation for the divider layout tag."""
+    return {
+        "description": [
+            _("The `divider` tag inserts a visual divider line. Use it to separate content sections visually.")
+        ],
+        "features": [
+            _("**direction**: Orientation of the divider (horizontal/vertical)."),
+            _("**spacing**: Margin around the divider using the spacing scale (xs/s/m/l/xl)."),
+        ],
     }
 
 
@@ -466,10 +607,7 @@ def get_logo_description_context() -> dict[str, list[str]]:
         "description": [
             _(
                 "The `logo` component renders a brand mark from one consistent API. It supports image assets, SVG assets, and Insight UI icons."
-            ),
-            _(
-                "Use `type='svg'` for SVG files stored as static assets, `type='image'` for bitmap images, and `type='icon'` for symbols from the Insight UI icon set. This avoids repeated ad-hoc SVG and dark-mode logo handling in application templates."
-            ),
+            )
         ],
         "features": [
             _(
@@ -481,13 +619,13 @@ def get_logo_description_context() -> dict[str, list[str]]:
     }
 
 
-@register_component(Component.BRAND_LOCKUP)
-def get_brand_lockup_description_context() -> dict[str, list[str]]:
-    """Serve description documentation for the brand lockup component."""
+@register_component(Component.BRAND_MARK)
+def get_brand_mark_description_context() -> dict[str, list[str]]:
+    """Serve description documentation for the brand mark component."""
     return {
         "description": [
             _(
-                "The `brand_lockup` component renders a controlled brand unit made of a public Insight UI icon and a two-tone wordmark."
+                "The `brand_mark` component renders a controlled brand unit made of a public Insight UI icon and a two-tone wordmark."
             ),
             _(
                 "Use it when an application needs a recognizable wordmark without embedding private assets in the open-source package."
@@ -496,7 +634,7 @@ def get_brand_lockup_description_context() -> dict[str, list[str]]:
         "features": [
             _("Uses Insight UI design tokens for the primary and secondary brand colours."),
             _("Maps main, develop, and candidate variants to existing public icons from the Insight UI icon list."),
-            _("Can be used directly or as the optional `brand.lockup` mode inside the navbar component."),
+            _("Can be used directly or as the optional `brand.mark` mode inside the navbar component."),
         ],
     }
 
@@ -527,10 +665,7 @@ def get_progress_bar_description_context() -> dict[str, list[str]]:
             _(
                 "For a progress indicator where progress is made through active user interaction, our Step Bar component is suitable."
             ),
-        ],
-        "description_notes_begin": [
-            {"type": "warning", "message": "Diese Komponente befindet sich noch in Bearbeitung!"}
-        ],
+        ]
     }
 
 
@@ -584,6 +719,18 @@ def get_web_socket_description_context() -> dict[str, list[str]]:
             _(
                 "By default the component expects HTML fragments that HTMX can swap into the DOM. Non-HTML frames are surfaced as browser events so host adapters can decide how to render them."
             ),
+        ]
+    }
+
+
+@register_component(Component.BADGE)
+def get_badge_description_context() -> dict[str, list[str]]:
+    """Serve description context documentation for the badge component."""
+    return {
+        "description": [
+            _(
+                "The badge component displays a small pill-shaped icon with text and an optional icon. The badge can be displayed in various sizes and colors."
+            )
         ]
     }
 

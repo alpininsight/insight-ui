@@ -7,5 +7,3 @@ from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
 class TestHero(TemplateTagsTestCase):
     """Test suite for the hero component."""
-
-    pass

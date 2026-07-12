@@ -12,6 +12,7 @@ import { Dropdown } from "./insight-ui-dropdown.js";
 import { Floater } from "./insight-ui-floater.js";
 import { Modal } from "./insight-ui-modal.js";
 import { Multiselect } from "./insight-ui-multiselect.js";
+import { ProgressBar } from "./insight-ui-progress-bar.js";
 import { RangeSlider } from "./insight-ui-range-slider.js";
 import { Sidebar } from "./insight-ui-sidebar.js";
 import { Tabs } from "./insight-ui-tabs.js";
@@ -31,6 +32,7 @@ Object.assign(window.InsightUI, {
 	Floater,
 	Modal,
 	Multiselect,
+	ProgressBar,
 	RangeSlider,
 	Sidebar,
 	Tabs,
@@ -49,6 +51,7 @@ function initAll() {
 	Floater.initAll();
 	Modal.initAll();
 	Multiselect.initAll();
+	ProgressBar.initAll();
 	RangeSlider.initAll();
 	Sidebar.initAll();
 	Tabs.initAll();
@@ -101,4 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	});
 
 	debugLog('Finished with initialization!');
+
+	// Signal that InsightUI is fully initialized
+	document.dispatchEvent(new CustomEvent('insightui:ready', { bubbles: true }));
 });

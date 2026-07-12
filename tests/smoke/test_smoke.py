@@ -16,7 +16,7 @@ from insight_ui.component_details.components import Component, ComponentCategory
 
 @pytest.mark.smoke
 @pytest.mark.django_db
-def test_root_url_responds_ok(client: Client) -> None:  # noqa: ANN001
+def test_root_url_responds_ok(client: Client) -> None:
     """Basic smoke test for the index page."""
     response = client.get("/")
 
@@ -26,7 +26,7 @@ def test_root_url_responds_ok(client: Client) -> None:  # noqa: ANN001
 
 
 @pytest.mark.smoke
-def test_healthz_responds_ok(client: Client) -> None:  # noqa: ANN001
+def test_healthz_responds_ok(client: Client) -> None:
     """Health endpoint should stay cheap and stable for probes."""
     response = client.get("/healthz")
 
@@ -36,7 +36,7 @@ def test_healthz_responds_ok(client: Client) -> None:  # noqa: ANN001
 
 @pytest.mark.smoke
 @pytest.mark.django_db
-def test_readyz_responds_ok(client: Client) -> None:  # noqa: ANN001
+def test_readyz_responds_ok(client: Client) -> None:
     """Readiness endpoint should confirm cheap local prerequisites."""
     response = client.get("/readyz")
 
@@ -46,7 +46,7 @@ def test_readyz_responds_ok(client: Client) -> None:  # noqa: ANN001
 
 @pytest.mark.smoke
 @pytest.mark.django_db
-def test_api_info_responds_ok(client: Client) -> None:  # noqa: ANN001
+def test_api_info_responds_ok(client: Client) -> None:
     """Runtime identity endpoint should expose the canonical service metadata."""
     response = client.get("/api/info")
 
@@ -60,7 +60,7 @@ def test_api_info_responds_ok(client: Client) -> None:  # noqa: ANN001
 
 @pytest.mark.smoke
 @pytest.mark.django_db
-def test_login_url_responds_ok(client: Client) -> None:  # noqa: ANN001
+def test_login_url_responds_ok(client: Client) -> None:
     """Basic smoke test for the login page."""
     response = client.get("/login/")
 
@@ -71,7 +71,7 @@ def test_login_url_responds_ok(client: Client) -> None:  # noqa: ANN001
 @pytest.mark.smoke
 @pytest.mark.django_db
 @pytest.mark.parametrize("category", list(ComponentCategory))
-def test_storybook_urls_responds_ok(category: ComponentCategory, client: Client) -> None:  # noqa: ANN001
+def test_storybook_urls_responds_ok(category: ComponentCategory, client: Client) -> None:
     """Basic smoke test for the storybook pages."""
     response = client.get(reverse("storybook_view", kwargs={"storybook_name": category.value}))
 
@@ -81,7 +81,7 @@ def test_storybook_urls_responds_ok(category: ComponentCategory, client: Client)
 @pytest.mark.smoke
 @pytest.mark.django_db
 @pytest.mark.parametrize("component", list(Component))
-def test_component_urls_responds_ok(component: Component, client: Client) -> None:  # noqa: ANN001
+def test_component_urls_responds_ok(component: Component, client: Client) -> None:
     """Basic smoke test for the component pages."""
     response = client.get(reverse("component_detail_page_view", kwargs={"component_name": component.value}))
 
@@ -91,7 +91,7 @@ def test_component_urls_responds_ok(component: Component, client: Client) -> Non
 @pytest.mark.smoke
 @pytest.mark.django_db
 @pytest.mark.parametrize("component_name", COMPONENT_CONTEXT_BUILDERS.keys())
-def test_component_demo_urls_responds_ok(component_name: str, client: Client) -> None:  # noqa: ANN001
+def test_component_demo_urls_responds_ok(component_name: str, client: Client) -> None:
     """Basic smoke test for the component demo pages."""
     response = client.get(reverse("component_demo_view", kwargs={"component_name": component_name}))
 

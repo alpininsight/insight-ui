@@ -1,14 +1,14 @@
 {% load i18n insight_tags %}
 
 {# Skip-Link for Accessibility, placed BEFORE nav #}
-<a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-insight-primary text-white p-2 rounded">
+<a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-insight-primary text-white p-2 insight-radius-control">
   {% trans 'Jump to main content' %}
 </a>
 
 <nav
   role="navigation"
   aria-label="{% trans 'Main navigation' %}"
-  class="{% if fixed %}fixed{% else %}absolute{% endif %} w-full h-16 z-50 bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700 px-4 md:px-16"
+  class="{% if fixed %}fixed{% else %}absolute{% endif %} w-full h-16 z-50 bg-[var(--insight-nav-bg)] dark:bg-[var(--insight-nav-bg-dark)] border-b border-[var(--insight-nav-border)] dark:border-[var(--insight-nav-border-dark)] insight-nav-shadow px-4 md:px-16"
 >
   {# Desktop Navigation #}
   <div class="flex flex-wrap lg:flex-nowrap justify-between items-center gap-1 h-full">
@@ -20,8 +20,8 @@
         style="gap: {{ navbar_config.brand.gap|default:'0.5rem' }}"
         {% if navbar_config.brand.aria_label %}aria-label="{{ navbar_config.brand.aria_label }}"{% elif navbar_config.brand.title %}aria-label="{{ navbar_config.brand.title }}"{% endif %}
       >
-        {% if navbar_config.brand.lockup %}
-          {% brand_lockup config=navbar_config.brand.lockup %}
+        {% if navbar_config.brand.mark %}
+          {% brand_mark config=navbar_config.brand.mark %}
         {% else %}
           {% if navbar_config.brand.logo %}
             {% logo config=navbar_config.brand.logo %}
@@ -35,7 +35,7 @@
     <div class="lg:hidden flex items-center gap-2 py-3">
       {# Mobile Menu Toggle #}
       <button
-        class="inline-flex items-center justify-center p-2 rounded-md text-secondary hover:text-insight-text-link dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+        class="insight-nav-icon-button"
         aria-expanded="false"
         aria-controls="navigation-menu"
         aria-label="{% trans 'Open menu' %}"
@@ -46,7 +46,7 @@
     </div>
 
     <div id="navigation-menu" class="hidden lg:block h-full w-full lg:w-fit grow lg:py-3">
-      <div class="flex flex-col lg:flex-row justify-end gap-6 w-full lg:h-full p-2 lg:p-0 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 shadow-lg lg:shadow-none lg:bg-transparent lg:border-none rounded">
+      <div class="flex flex-col lg:flex-row justify-end gap-6 w-full lg:h-full p-2 lg:p-0 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 insight-shadow-raised lg:insight-shadow-none lg:bg-transparent lg:border-none insight-radius-surface">
         {# Main-Navigation #}
         {% if navbar_config.links %}
           <ul class="flex flex-col lg:flex-row justify-items-stretch lg:items-center w-full lg:w-fit">
@@ -56,7 +56,7 @@
                   {% if link.url %}
                     <a
                       href="{{ link.url }}"
-                      class="flex gap-2 h-full whitespace-nowrap text-secondary hover:text-insight-text-link px-4 py-2 text-sm transition-colors duration-200"
+                      class="flex gap-2 h-full whitespace-nowrap text-secondary hover:text-insight-text-link px-4 py-2 text-sm transition-colors duration-200 insight-nav-item-radius {% if link.active %}insight-nav-item-shadow-active{% else %}insight-nav-item-shadow{% endif %}"
                       {% if link.active %}aria-current="page"{% endif %}
                       {% if link.external %}target="_blank" rel="noopener"{% endif %}
                     >
@@ -73,10 +73,10 @@
                         {% endif %}
                         {{ link.text }}
                         {% if link.chevron %}
-                          {% icon name="chevron_down" size="s" %}
+                          {% icon name="chevron-down" size="s" %}
                         {% endif %}
                       </button>
-                      <div id="{{ link.dropdown.tag_id }}" class="hidden bg-white border border-gray-300 dark:border-0 rounded-sm shadow-lg">
+                      <div id="{{ link.dropdown.tag_id }}" class="hidden bg-white border border-gray-300 dark:border-0 insight-radius-overlay insight-shadow-overlay">
                         <div class="py-1">
                           {% for item in link.dropdown.items %}
                             <a

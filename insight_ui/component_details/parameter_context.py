@@ -1,3 +1,5 @@
+"""Parameter documentation context for UI components."""
+
 from django.utils.translation import gettext as _
 
 from insight_ui.component_details.component_context import ParameterDetails, ParameterDoc, register_component
@@ -32,6 +34,7 @@ def get_popover_parameter_context() -> dict[str, list[str]]:
                         _("Shows an arrow at the edge of the popover pointing to the triggering object."),
                         "False",
                     ),
+                    ParameterDetails("data-follow-mouse", "bool", _("Popup follows mouse position."), "False"),
                 ],
                 """""",
             )
@@ -67,6 +70,7 @@ def get_tooltip_parameter_context() -> dict[str, list[str]]:
                         _("Shows an arrow at the edge of the tooltip pointing to the triggering object."),
                         "False",
                     ),
+                    ParameterDetails("data-follow-mouse", "bool", _("Tooltip follows mouse position."), "False"),
                 ],
                 """""",
             )

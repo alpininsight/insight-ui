@@ -7,5 +7,3 @@ from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
 class TestSelect(TemplateTagsTestCase):
     """Test suite for the select component."""
-
-    pass

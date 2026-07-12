@@ -118,7 +118,7 @@ function validateCssOutput(sourceFile, source, output) {
         [".fill-insight-primary", /\.fill-insight-primary\{[^}]*fill:\s*var\(--color-insight-primary\)/],
         [".text-insight-primary", /\.text-insight-primary\{[^}]*color:\s*var\(--color-insight-primary\)/],
         [".btn-primary", /\.btn-primary\{/],
-        [".btn-white", /\.btn-white\{/],
+        [".btn-neutral", /\.btn-neutral\{/],
         [".lg:flex-row", /\.lg\\:flex-row\{/],
         [".lg:hidden", /\.lg\\:hidden\{/],
         [".xl:block", /\.xl\\:block\{/],

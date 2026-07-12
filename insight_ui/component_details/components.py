@@ -1,13 +1,19 @@
+"""Component enumeration and configuration mapping."""
+
 from enum import Enum
 from typing import Any
+
+from django.utils.translation import gettext_lazy as _
 
 from insight_ui.configs import (
     AccordionConfig,
     AlertConfig,
     AppCardConfig,
     ArticleConfig,
-    BrandLockupConfig,
+    BadgeConfig,
+    BrandMarkConfig,
     BulletPointListConfig,
+    ButtonConfig,
     CardCarouselConfig,
     CardConfig,
     ChartConfig,
@@ -16,12 +22,15 @@ from insight_ui.configs import (
     CheckboxGroupConfig,
     CopyrightNoticeConfig,
     CornerRibbonConfig,
+    DividerConfig,
     DropdownConfig,
     FlipCardConfig,
     FooterConfig,
     FormConfig,
     GenericFilterConfig,
     GeoMapConfig,
+    GridConfig,
+    HBoxConfig,
     HeroConfig,
     ImageCarouselConfig,
     InfiniteScrollConfig,
@@ -33,8 +42,10 @@ from insight_ui.configs import (
     ModalConfig,
     MultiselectConfig,
     NavbarConfig,
+    PageConfig,
     PageHeaderConfig,
     PaginationConfig,
+    ProgressBarConfig,
     QueryBuilderConfig,
     RadioBlockConfig,
     RadioGroupConfig,
@@ -42,6 +53,8 @@ from insight_ui.configs import (
     SelectConfig,
     SidebarConfig,
     SliderConfig,
+    SpacerConfig,
+    StatusScreenConfig,
     StepperConfig,
     TableConfig,
     TabsConfig,
@@ -49,6 +62,7 @@ from insight_ui.configs import (
     ThreeDCarouselConfig,
     ToggleConfig,
     ToggleViewConfig,
+    VBoxConfig,
     WebSocketConfig,
 )
 
@@ -56,21 +70,21 @@ from insight_ui.configs import (
 class ComponentCategory(Enum):
     """Enum of all available component categories."""
 
-    LAYOUT = "layout"
-    NAVIGATION = "navigation"
-    INPUT = "input"
-    POPUP = "popup"
-    UTIL = "util"
-    LIST = "list"
-    FILTER = "filter"
-    CARD = "card"
-    FORM = "form"
+    LAYOUT = ("layout", _("Layout"))
+    NAVIGATION = ("navigation", _("Navigation"))
+    INPUT = ("input", _("Input"))
+    POPUP = ("popup", _("Popup"))
+    UTIL = ("util", _("Utilities"))
+    LIST = ("list", _("Lists"))
+    FILTER = ("filter", _("Filters"))
+    CARD = ("card", _("Cards"))
+    FORM = ("form", _("Forms"))
 
-    def __new__(cls, value: str):  # noqa: ANN204
+    def __new__(cls, value: str, formatted_name: str):  # noqa: ANN204
         """Create new ComponentCategory entry."""
         obj = object.__new__(cls)
         obj._value_ = value
-        obj.formatted_name = value.replace("_", " ").title()
+        obj.formatted_name = formatted_name
         return obj
 
 
@@ -80,6 +94,14 @@ class Component(Enum):
     PAGE_HEADER = ("page_header", ComponentCategory.LAYOUT, PageHeaderConfig, True, False, False)
     ARTICLE = ("article", ComponentCategory.LAYOUT, ArticleConfig)
     HERO = ("hero", ComponentCategory.LAYOUT, HeroConfig, False, False, False)
+    STATUS_SCREEN = ("status_screen", ComponentCategory.LAYOUT, StatusScreenConfig, False, False, False)
+    # Layout Block Tags (layout_tags.py)
+    PAGE = ("page", ComponentCategory.LAYOUT, PageConfig, True, False, False)
+    HBOX = ("hbox", ComponentCategory.LAYOUT, HBoxConfig, False, False, False)
+    VBOX = ("vbox", ComponentCategory.LAYOUT, VBoxConfig, False, False, False)
+    GRID = ("grid", ComponentCategory.LAYOUT, GridConfig, False, False, False)
+    SPACER = ("spacer", ComponentCategory.LAYOUT, SpacerConfig, False, False, False)
+    DIVIDER = ("divider", ComponentCategory.LAYOUT, DividerConfig, False, False, False)
     NAVBAR = ("navbar", ComponentCategory.NAVIGATION, NavbarConfig, True, False, False)
     SIDEBAR = ("sidebar", ComponentCategory.NAVIGATION, SidebarConfig, True, False, False)
     FOOTER = ("footer", ComponentCategory.NAVIGATION, FooterConfig, True, False, False)
@@ -89,7 +111,7 @@ class Component(Enum):
     BULLET_POINT_LIST = ("bullet_point_list", ComponentCategory.NAVIGATION, BulletPointListConfig)
     ACCORDION = ("accordion", ComponentCategory.NAVIGATION, AccordionConfig)
     TABS = ("tabs", ComponentCategory.NAVIGATION, TabsConfig, False, True, False)
-    BUTTON = ("button", ComponentCategory.INPUT, None, False, False, True)
+    BUTTON = ("button", ComponentCategory.INPUT, ButtonConfig)
     INPUT_FIELD = ("input_field", ComponentCategory.INPUT, InputFieldConfig)
     TEXTAREA = ("textarea", ComponentCategory.INPUT, TextareaConfig)
     CHECKBOX = ("checkbox", ComponentCategory.INPUT, CheckboxConfig)
@@ -111,13 +133,14 @@ class Component(Enum):
     COPYRIGHT_NOTICE = ("copyright_notice", ComponentCategory.UTIL, CopyrightNoticeConfig)
     DIFFERENTIATOR = ("differentiator", ComponentCategory.UTIL)
     LOGO = ("logo", ComponentCategory.UTIL, LogoConfig)
-    BRAND_LOCKUP = ("brand_lockup", ComponentCategory.UTIL, BrandLockupConfig)
+    BRAND_MARK = ("brand_mark", ComponentCategory.UTIL, BrandMarkConfig)
     CORNER_RIBBON = ("corner_ribbon", ComponentCategory.UTIL, CornerRibbonConfig)
-    PROGRESS_BAR = ("progress_bar", ComponentCategory.UTIL, None, False, False, True)
+    PROGRESS_BAR = ("progress_bar", ComponentCategory.UTIL, ProgressBarConfig)
     GEO_MAP = ("geo_map", ComponentCategory.UTIL, GeoMapConfig)
     CHART = ("chart", ComponentCategory.UTIL, ChartConfig)
     LIVE_CONTENT = ("live_content", ComponentCategory.UTIL, LiveContentConfig, False, True, False)
     WEB_SOCKET = ("web_socket", ComponentCategory.UTIL, WebSocketConfig, False, True, False)
+    BADGE = ("badge", ComponentCategory.UTIL, BadgeConfig)
     INFINITE_SCROLL = ("infinite_scroll", ComponentCategory.LIST, InfiniteScrollConfig, False, True, False)
     PAGINATION = ("pagination", ComponentCategory.LIST, PaginationConfig, False, True, False)
     TABLE = ("table", ComponentCategory.LIST, TableConfig)
@@ -126,7 +149,7 @@ class Component(Enum):
     QUERY_BUILDER = ("query_builder", ComponentCategory.FILTER, QueryBuilderConfig, False, True, False)
     CARD = ("card", ComponentCategory.CARD, CardConfig)
     APP_CARD = ("app_card", ComponentCategory.CARD, AppCardConfig)
-    FLIP_CARD = ("flip_card", ComponentCategory.CARD, FlipCardConfig)
+    FLIP_CARD = ("flip_card", ComponentCategory.CARD, FlipCardConfig, False, False, True)
     CARD_CAROUSEL = ("card_carousel", ComponentCategory.CARD, CardCarouselConfig)
     IMAGE_CAROUSEL = ("image_carousel", ComponentCategory.CARD, ImageCarouselConfig)
     THREE_D_CAROUSEL = ("3d_carousel", ComponentCategory.CARD, ThreeDCarouselConfig, False, True, False)
@@ -142,19 +165,21 @@ class Component(Enum):
         allow_requests: bool = False,
         in_development: bool = False,
     ):
-        """
-        Create new Component entry where 'value' is the value.
+        """Create new Component entry where 'value' is the value.
 
-        Arguments:
-            value (str): The name of the component.
-            group (ComponentCategory): The category of the component.
-            config_class (Any): Configuration Dataclass of the component.
-            no_padding (bool): 'True' if the component have to touch the edge of the demo container (just for demonstration).
-            allow_requests (bool): 'True' if the component is allowed to do requests in the demo (just for demonstration).
-            in_development (bool): 'True' if the component is not finished yet (shows a hint on the detailpage and in the nav-list).
+        Args:
+            value: The name of the component.
+            group: The category of the component.
+            config_class: Configuration Dataclass of the component.
+            no_padding: 'True' if the component have to touch the edge of the
+                demo container (just for demonstration).
+            allow_requests: 'True' if the component is allowed to do requests
+                in the demo (just for demonstration).
+            in_development: 'True' if the component is not finished yet
+                (shows a hint on the detailpage and in the nav-list).
 
         Returns:
-            component: The newly created component object.
+            The newly created component object.
 
         """
         obj = object.__new__(cls)

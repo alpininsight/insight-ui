@@ -1,4 +1,4 @@
-{% load static i18n insight_tags %}
+{% load static i18n insight_tags layout_tags %}
 
 {% if component.value == "page_header" %}
     {% page_header title=_("Example Page") description=_("This is an example description for the page header component.") %}
@@ -6,6 +6,500 @@
     {% article title=_("Newsletter") columns=3 content="<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>" %}
 {% elif component.value == "hero" %}
     {% hero config=hero_config %}
+{% elif component.value == "status_screen" %}
+    <div class="grid gap-8 lg:grid-cols-2">
+        {% status_screen config=status_screen_success %}
+        {% status_screen config=status_screen_error %}
+    </div>
+{% elif component.value == "page" %}
+    <div class="h-96">
+        {% page padding="m" %}
+            <h1>{% trans "Page One" %}</h1>
+            <p class="text-secondary">{% trans "A page container with consistent padding." %}</p>
+        {% endpage %}
+    </div>
+{% elif component.value == "hbox" %}
+    {% vbox %}
+        {# Gap sizes #}
+        {% vbox %}
+            <p class="text-sm font-semibold text-secondary">{% trans "Gap sizes (xs, s, m, l, xl):" %}</p>
+            {% vbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">gap="xs"</p>
+                    {% hbox gap="xs" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">gap="s"</p>
+                    {% hbox gap="s" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">gap="m"</p>
+                    {% hbox gap="m" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">gap="l"</p>
+                    {% hbox gap="l" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">gap="xl"</p>
+                    {% hbox gap="xl" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+            {% endvbox %}
+        {% endvbox %}
+
+        {# Horizontal alignment (h_align) #}
+        {% vbox %}
+            <p class="text-sm font-semibold text-secondary">{% trans "Horizontal alignment (h_align):" %}</p>
+            {% vbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">h_align="start"</p>
+                    {% hbox gap="s" h_align="start" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">h_align="center"</p>
+                    {% hbox gap="s" h_align="center" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">h_align="end"</p>
+                    {% hbox gap="s" h_align="end" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">h_align="between"</p>
+                    {% hbox gap="s" h_align="between" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">h_align="around"</p>
+                    {% hbox gap="s" h_align="around" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">h_align="evenly"</p>
+                    {% hbox gap="s" h_align="evenly" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+            {% endvbox %}
+        {% endvbox %}
+
+        {# Vertical alignment (v_align) #}
+        {% vbox %}
+            <p class="text-sm font-semibold text-secondary">{% trans "Vertical alignment (v_align):" %}</p>
+            {% hbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">v_align="start"</p>
+                    {% hbox gap="s" v_align="start" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-6 py-2 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-6 py-6 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">v_align="center"</p>
+                    {% hbox gap="s" v_align="center" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-6 py-2 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-6 py-6 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">v_align="end"</p>
+                    {% hbox gap="s" v_align="end" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-6 py-2 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-6 py-6 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">v_align="stretch"</p>
+                    {% hbox gap="s" v_align="stretch" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-6 py-2 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-6 py-2 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">v_align="baseline"</p>
+                    {% hbox gap="s" v_align="baseline" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-6 py-2 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-6 py-6 rounded text-lg text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+            {% endhbox %}
+        {% endvbox %}
+
+        {# Wrap #}
+        {% vbox %}
+            <p class="text-sm font-semibold text-secondary">{% trans "Wrap (items wrap to next line):" %}</p>
+            {% vbox gap="xs" %}
+                <p class="text-xs text-secondary">wrap=True and max_width="xs"</p>
+                {% hbox gap="s" max_width="xs" wrap=True class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                {% endhbox %}
+            {% endvbox %}
+        {% endvbox %}
+
+        {# Padding #}
+        {% vbox %}
+            <p class="text-sm font-semibold text-secondary">{% trans "Padding (xs, s, m, l, xl):" %}</p>
+            {% hbox gap="xs" %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">padding="xs"</p>
+                    {% hbox gap="s" padding="xs" class="h-fit border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">padding="s"</p>
+                    {% hbox gap="s" padding="s" class="h-fit border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">padding="m"</p>
+                    {% hbox gap="s" padding="m" class="h-fit border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">padding="l"</p>
+                    {% hbox gap="s" padding="l" class="h-fit border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">padding="xl"</p>
+                    {% hbox gap="s" padding="xl" class="h-fit border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endhbox %}
+                {% endvbox %}
+            {% endhbox %}
+        {% endvbox %}
+    {% endvbox %}
+{% elif component.value == "vbox" %}
+    {% vbox %}
+        {# Gap sizes #}
+        {% vbox %}
+            <p class="text-sm font-semibold text-secondary">{% trans "Gap sizes (xs, s, m, l, xl):" %}</p>
+            {% hbox v_align="stretch" %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">gap="xs"</p>
+                    {% vbox gap="xs" class="h-full border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">gap="s"</p>
+                    {% vbox gap="s" class="h-full border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">gap="m"</p>
+                    {% vbox gap="m" class="h-full border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">gap="l"</p>
+                    {% vbox gap="l" class="h-full border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">gap="xl"</p>
+                    {% vbox gap="xl" class="h-full border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+            {% endhbox %}
+        {% endvbox %}
+
+        {# Horizontal alignment (h_align) #}
+        {% vbox %}
+            <p class="text-sm font-semibold text-secondary">{% trans "Horizontal alignment (h_align):" %}</p>
+            {% hbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">h_align="start"</p>
+                    {% vbox gap="xs" h_align="start" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-24 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">h_align="center"</p>
+                    {% vbox gap="xs" h_align="center" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-24 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">h_align="end"</p>
+                    {% vbox gap="xs" h_align="end" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-24 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">h_align="stretch"</p>
+                    {% vbox gap="xs" h_align="stretch" class="border border-dashed border-gray-300 dark:border-gray-600 rounded" %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-24 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+            {% endhbox %}
+        {% endvbox %}
+
+        {# Vertical alignment (v_align) #}
+        {% vbox %}
+            <p class="text-sm font-semibold text-secondary">{% trans "Vertical alignment (v_align):" %}</p>
+            {% hbox v_align="stretch" class="h-96" %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">v_align="start"</p>
+                    {% vbox gap="xs" v_align="start" class="h-full border border-dashed border-gray-300 dark:border-gray-600 rounded"  %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">v_align="center"</p>
+                    {% vbox gap="xs" v_align="center" class="h-full border border-dashed border-gray-300 dark:border-gray-600 rounded"  %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">v_align="end"</p>
+                    {% vbox gap="xs" v_align="end" class="h-full border border-dashed border-gray-300 dark:border-gray-600 rounded"  %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">v_align="between"</p>
+                    {% vbox gap="xs" v_align="between" class="h-full border border-dashed border-gray-300 dark:border-gray-600 rounded"  %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">v_align="around"</p>
+                    {% vbox gap="xs" v_align="around" class="h-full border border-dashed border-gray-300 dark:border-gray-600 rounded"  %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">v_align="evenly"</p>
+                    {% vbox gap="xs" v_align="evenly" class="h-full border border-dashed border-gray-300 dark:border-gray-600 rounded"  %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+            {% endhbox %}
+        {% endvbox %}
+
+        {# Padding #}
+        {% vbox %}
+            <p class="text-sm font-semibold text-secondary">{% trans "Padding (xs, s, m, l, xl):" %}</p>
+            {% hbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">padding="xs"</p>
+                    {% vbox gap="xs" padding="xs" class="border border-dashed border-gray-300 dark:border-gray-600 rounded"  %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">padding="s"</p>
+                    {% vbox gap="xs" padding="s" class="border border-dashed border-gray-300 dark:border-gray-600 rounded"  %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">padding="m"</p>
+                    {% vbox gap="xs" padding="m" class="border border-dashed border-gray-300 dark:border-gray-600 rounded"  %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">padding="l"</p>
+                    {% vbox gap="xs" padding="l" class="border border-dashed border-gray-300 dark:border-gray-600 rounded"  %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">padding="xl"</p>
+                    {% vbox gap="xs" padding="xl" class="border border-dashed border-gray-300 dark:border-gray-600 rounded"  %}
+                        <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    {% endvbox %}
+                {% endvbox %}
+            {% endhbox %}
+        {% endvbox %}
+    {% endvbox %}
+{% elif component.value == "grid" %}
+    <div class="space-y-8">
+        <div>
+            <p class="text-sm text-secondary mb-2">{% trans "Auto-fit mode (resize window to see items wrap):" %}</p>
+            {% grid gap="m" min="150px" %}
+                <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">1</div>
+                <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">2</div>
+                <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">3</div>
+                <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">4</div>
+                <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">5</div>
+                <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">6</div>
+            {% endgrid %}
+        </div>
+        <div>
+            <p class="text-sm text-secondary mb-2">{% trans "Fixed 3 columns with responsive breakpoints:" %}</p>
+            {% grid cols=3 gap="m" %}
+                <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+            {% endgrid %}
+        </div>
+    </div>
+{% elif component.value == "spacer" %}
+    {% vbox %}
+        {% vbox gap="xs" %}
+            <p class="text-xs text-secondary">size="xs"</p>
+            {% hbox %}
+                {% hbox gap="xs" %}
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                {% endhbox %}
+                {% spacer size="xs" %}
+                {% hbox gap="xs" %}
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                {% endhbox %}
+            {% endhbox %}
+        {% endvbox %}
+        {% vbox gap="xs" %}
+            <p class="text-xs text-secondary">size="s"</p>
+            {% hbox %}
+                {% hbox gap="xs" %}
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                {% endhbox %}
+                {% spacer size="s" %}
+                {% hbox gap="xs" %}
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                {% endhbox %}
+            {% endhbox %}
+        {% endvbox %}
+        {% vbox gap="xs" %}
+            <p class="text-xs text-secondary">size="m"</p>
+            {% hbox %}
+                {% hbox gap="xs" %}
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                {% endhbox %}
+                {% spacer size="m" %}
+                {% hbox gap="xs" %}
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                {% endhbox %}
+            {% endhbox %}
+        {% endvbox %}
+        {% vbox gap="xs" %}
+            <p class="text-xs text-secondary">size="l"</p>
+            {% hbox %}
+                {% hbox gap="xs" %}
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                {% endhbox %}
+                {% spacer size="l" %}
+                {% hbox gap="xs" %}
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                {% endhbox %}
+            {% endhbox %}
+        {% endvbox %}
+        {% vbox gap="xs" %}
+            <p class="text-xs text-secondary">size="xl"</p>
+            {% hbox %}
+                {% hbox gap="xs" %}
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                {% endhbox %}
+                {% spacer size="xl" %}
+                {% hbox gap="xs" %}
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                    <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+                {% endhbox %}
+            {% endhbox %}
+        {% endvbox %}
+    {% endvbox %}
+{% elif component.value == "divider" %}
+    {% vbox gap="xl" %}
+        {% vbox gap="s" %}
+            <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+            {% divider %}
+            <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+        {% endvbox %}
+        {% hbox gap="s" %}
+            <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+            {% divider direction="vertical" %}
+            <div class="bg-insight-primary px-10 py-4 rounded text-sm text-white">Item</div>
+        {% endhbox %}
+    {% endvbox %}
 {% elif component.value == "navbar" %}
     <div class="relative bg-gray-50 dark:bg-gray-700 h-80 w-full">
         {% navbar config=demo_nav_config user_dropdown_links=user_dropdown_links %}
@@ -63,34 +557,80 @@
 {% elif component.value == "tabs" %}
     {% tabs config=tabs_config %}
 {% elif component.value == "button" %}
-    <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
-        <button class="btn btn-primary">{% trans "Primary" %}</button>
-        <button class="btn btn-secondary">{% trans "Secondary" %}</button>
-        <button class="btn btn-success">{% trans "Success" %}</button>
-        <button class="btn btn-warning">{% trans "Warning" %}</button>
-        <button class="btn btn-danger">{% trans "Danger" %}</button>
-        <button class="btn btn-info">{% trans "Info" %}</button>
-        <button disabled class="btn btn-disabled">{% trans "Disabled" %}</button>
-        <button aria-label="{% trans 'Close' %}" class="btn btn-close">{% icon name="x-mark" size="xs" %}</button>
-        <a href="#" class="btn-link">{% trans "Link" %}</a>
-    </div>
-{% elif component.value == "outline_button" %}
-    <div class="flex flex-col md:flex-row items-stretch flex-wrap gap-1">
-        <button class="btn btn-outline-primary">{% trans "Primary" %}</button>
-        <button class="btn btn-outline-secondary">{% trans "Secondary" %}</button>
-        <button class="btn btn-outline-success">{% trans "Success" %}</button>
-        <button class="btn btn-outline-warning">{% trans "Warning" %}</button>
-        <button class="btn btn-outline-danger">{% trans "Danger" %}</button>
-        <button class="btn btn-outline-info">{% trans "Info" %}</button>
-        <button disabled class="btn btn-outline-disabled">{% trans "Disabled" %}</button>
-    </div>
-{% elif component.value == "button_sizes" %}
-    <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
-        <button class="btn btn-primary btn-xl">{% trans "Click me!" %}</button>
-        <button class="btn btn-primary btn-l">{% trans "Click me!" %}</button>
-        <button class="btn btn-primary">{% trans "Click me!" %}</button>
-        <button class="btn btn-primary btn-sm">{% trans "Click me!" %}</button>
-        <button class="btn btn-primary btn-xs">{% trans "Click me!" %}</button>
+    <div class="space-y-4">
+        <div>
+            <h3>{% trans "Standard / Filled" %}</h3>
+            <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
+                {% button label=_("Primary") type="primary" %}
+                {% button label=_("Secondary") type="secondary" %}
+                {% button label=_("Success") type="success" %}
+                {% button label=_("Warning") type="warning" %}
+                {% button label=_("Danger") type="danger" %}
+                {% button label=_("Info") type="info" %}
+                {% button label=_("Neutral") type="neutral" %}
+                {% button label=_("Disabled") type="disabled" %}
+            </div>
+        </div>
+        <div>
+            <h3>{% trans "Outline / Ghost" %}</h3>
+            <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
+                {% button label=_("Primary") type="primary" outline=True %}
+                {% button label=_("Secondary") type="secondary" outline=True %}
+                {% button label=_("Success") type="success" outline=True %}
+                {% button label=_("Warning") type="warning" outline=True %}
+                {% button label=_("Danger") type="danger" outline=True %}
+                {% button label=_("Info") type="info" outline=True %}
+                {% button label=_("Info") type="neutral" outline=True %}
+                {% button label=_("Disabled") type="disabled" outline=True %}
+            </div>
+        </div>
+        <div>
+            <h3>{% trans "Subtle" %}</h3>
+            <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
+                {% button label=_("Primary") type="primary" subtle=True %}
+                {% button label=_("Secondary") type="secondary" subtle=True %}
+                {% button label=_("Success") type="success" subtle=True %}
+                {% button label=_("Warning") type="warning" subtle=True %}
+                {% button label=_("Danger") type="danger" subtle=True %}
+                {% button label=_("Info") type="info" subtle=True %}
+                {% button label=_("Info") type="neutral" subtle=True %}
+                {% button label=_("Disabled") type="disabled" subtle=True %}
+            </div>
+        </div>
+
+        <div>
+            <h3>{% trans "Sizes" %}</h3>
+            <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
+                {% button label=_("Click me!") type="primary" size="xl" %}
+                {% button label=_("Click me!") type="primary" size="l" %}
+                {% button label=_("Click me!") type="primary" size="m" %}
+                {% button label=_("Click me!") type="primary" size="s" %}
+                {% button label=_("Click me!") type="primary" size="xs" %}
+            </div>
+        </div>
+        <div>
+            <h3>{% trans "Round (combinable)" %}</h3>
+            <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
+                {% button label=_("Primary") type="primary" round=True size="l" %}
+                {% button label=_("Primary") type="secondary" outline=True round=True %}
+                {% button label=_("Primary") type="success" subtle=True round=True size="s" %}
+            </div>
+        </div>
+        <div>
+            <h3>{% trans "Icons" %}</h3>
+            <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
+                {% button label=_("With Icon") type="primary" icon_name="rocket-launch" %}
+                {% button label=_("With Icon") type="primary" icon_name="rocket-launch" icon_end=True %}
+                {% button label=_("Icon only") type="primary" icon_name="rocket-launch" icon_only=True %}
+                {% button label=_("Icon only") type="primary" icon_name="rocket-launch" icon_only=True round=True %}
+            </div>
+        </div>
+        <div>
+            <h3>{% trans "Hyperlink" %}</h3>
+            <div class="flex flex-col md:flex-row items-start flex-wrap gap-1">
+                {% button label=_("As hyperlink") type="primary" request_url="#" %}
+            </div>
+        </div>
     </div>
 {% elif component.value == "input_field" %}
     <div class="space-y-6">
@@ -149,22 +689,18 @@
     <div class="h-72">
         <div class="flex flex-col items-center gap-4">
             <!-- Standard -->
-            <button class="btn btn-primary w-72" data-insight-modal="demo-modal">
-                {% trans "Standard modal" %}
-            </button>
+            {% button label=_("Standard modal") type="primary" data_insight_modal="demo-modal" %}
             {% modal tag_id="demo-modal" title=_("Demo modal") description=_("This is an example of a standard modal.") %}
 
             <!-- Action-Buttons -->
-            <button class="btn btn-danger w-72" data-insight-modal="{{ confirm_modal_config.tag_id }}">
-                {% trans "Modal with Action Buttons" %}
-            </button>
+            {% button label=_("Modal with Action Buttons") type="danger" data_insight_modal=confirm_modal_config.tag_id %}
             {% modal config=confirm_modal_config %}
         </div>
     </div>
 {% elif component.value == "popover" %}
     <div class="flex items-end justify-center gap-12 h-64">
-        <button data-insight-popover="demo-popover" data-show-arrow="true" class="btn btn-primary h-fit">Hover me!</button>
-        <div id="demo-popover" class="bg-white dark:bg-gray-700 w-64 border border-gray-300 dark:border-0 rounded-sm shadow">
+        {% button label="Hover me!" type="primary" data_insight_popover="demo-popover" data_show_arrow="true" %}
+        <div id="demo-popover" class="bg-white dark:bg-gray-700 w-64 border border-gray-300 dark:border-0 rounded-sm insight-shadow-subtle">
             <div class="p-4">
                 <span class="text-primary block font-semibold w-full border-b-2 border-gray-300 dark:border-gray-500 pb-2">
                     {% trans "This is a popover." %}
@@ -174,16 +710,16 @@
                 </p>
             </div>
             <div class="bg-gray-100 dark:bg-gray-900 p-4 rounded-b-sm">
-                <button class="btn btn-primary btn-sm">{% trans "Learn more" %}</button>
+                {% button label=_("Learn more") type="primary" size="s" %}
             </div>
         </div>
     </div>
 {% elif component.value == "tooltip" %}
     <div class="flex flex-col md:flex-row items-center justify-center gap-12 py-8">
-        <button data-insight-tooltip="This is a tooltip." data-show-arrow="true" data-position="top" class="btn btn-primary">{% trans "Top" %}</button>
-        <button data-insight-tooltip="This is a tooltip." data-position="bottom" class="btn btn-primary">{% trans "Bottom" %}</button>
-        <button data-insight-tooltip="This is a tooltip." data-show-arrow="true" data-position="right" class="btn btn-primary">{% trans "Right" %}</button>
-        <button data-insight-tooltip="This is a tooltip." data-position="left" class="btn btn-primary">{% trans "Left" %}</button>
+        {% button label=_("Top") type="primary" tooltip="This is a tooltip." data_show_arrow="true" data_position="top" %}
+        {% button label=_("Bottom") type="primary" tooltip="This is a tooltip." data_position="bottom" %}
+        {% button label=_("Right") type="primary" tooltip="This is a tooltip." data_show_arrow="true" data_position="right" %}
+        {% button label=_("Left") type="primary" tooltip="This is a tooltip." data_position="left" %}
     </div>
 {% elif component.value == "infobox" %}
     {% infobox info_type="info" message="This is an informative message." %}
@@ -216,37 +752,15 @@
             {% logo config=logo_icon_config %}
         </div>
     </div>
-{% elif component.value == "brand_lockup" %}
+{% elif component.value == "brand_mark" %}
     <div class="space-y-8">
-        <div class="grid gap-8 lg:grid-cols-3">
-            <div class="space-y-3 rounded-lg border border-gray-200 p-6 dark:border-gray-700">
-                <p class="font-semibold text-secondary">Main / default</p>
-                {% brand_lockup config=brand_lockup_default %}
-            </div>
-            <div class="space-y-3 rounded-lg border border-gray-200 p-6 dark:border-gray-700">
-                <p class="font-semibold text-secondary">Develop</p>
-                {% brand_lockup config=brand_lockup_develop %}
-            </div>
-            <div class="space-y-3 rounded-lg border border-gray-200 p-6 dark:border-gray-700">
-                <p class="font-semibold text-secondary">Candidate</p>
-                {% brand_lockup config=brand_lockup_candidate %}
-            </div>
+        <div class="space-y-3 w-fit rounded-lg border border-gray-200 p-6 dark:border-gray-700">
+            <p class="font-semibold text-secondary">Logo position start</p>
+            {% brand_mark config=brand_mark_default %}
         </div>
-        <div class="space-y-3 rounded-lg border border-gray-200 p-6 dark:border-gray-700">
+        <div class="space-y-3 w-fit rounded-lg border border-gray-200 p-6 dark:border-gray-700">
             <p class="font-semibold text-secondary">Logo position end</p>
-            {% brand_lockup config=brand_lockup_end %}
-        </div>
-        <div class="space-y-3">
-            <p class="font-semibold text-secondary">Navbar brand.lockup mode</p>
-            <div class="relative bg-gray-50 dark:bg-gray-700 h-24 w-full">
-                {% navbar config=brand_lockup_nav_config %}
-                <script>
-                    // Demo fix
-                    var nav = document.currentScript.parentElement.querySelector("nav");
-                    nav.classList.remove("fixed");
-                    nav.classList.add("absolute");
-                </script>
-            </div>
+            {% brand_mark config=brand_mark_end %}
         </div>
     </div>
 {% elif component.value == "corner_ribbon" %}
@@ -254,7 +768,89 @@
         {% corner_ribbon text="New Version" position="bottom-right" %}
     </div>
 {% elif component.value == "progress_bar" %}
-    {% include "insight_ui/components/progress_bar.html" %}
+    <div class="space-y-6">
+        {% progress_bar tag_id="progress-static" value=66 label=_("Static Progress") %}
+        {% progress_bar tag_id="download" value=0 label=_("Download Progress") show_cancel=True show_retry=True %}
+        {% progress_bar tag_id="upload-demo" value=0 label=_("Upload (Warning → Error → Retry)") show_retry=True %}
+        <script>
+            // Simulate progress using the InsightUI.ProgressBar API
+            function initProgressBarDemo() {
+                // Download demo with cancel/retry
+                let downloadProgress = 0;
+                let downloadInterval = null;
+                const downloadBar = InsightUI.ProgressBar.get("download");
+
+                function startDownload() {
+                    if (downloadInterval) clearInterval(downloadInterval);
+                    downloadInterval = setInterval(function() {
+                        if (downloadProgress < 100) {
+                            downloadProgress += 1;
+                            downloadBar.update(downloadProgress);
+                        } else {
+                            clearInterval(downloadInterval);
+                            downloadInterval = null;
+                        }
+                    }, 100);
+                }
+
+                // Use callback properties instead of event listeners
+                downloadBar.onCancel = () => {
+                    clearInterval(downloadInterval);
+                    downloadInterval = null;
+                };
+                downloadBar.onRetry = () => {
+                    downloadProgress = 0;
+                    startDownload();
+                };
+
+                startDownload();
+
+                // Upload demo: Warning at 50%, fatal error at 70%, retry continues to 100%
+                const uploadBar = InsightUI.ProgressBar.get("upload-demo");
+                let uploadProgress = 0;
+                let uploadInterval = null;
+                let hasShownError = false;
+
+                function startUpload() {
+                    if (uploadInterval) clearInterval(uploadInterval);
+                    uploadInterval = setInterval(function() {
+                        if (uploadProgress < 100) {
+                            uploadProgress += 1;
+                            uploadBar.update(uploadProgress);
+
+                            // Show warning at 30%
+                            if (uploadProgress === 30) {
+                                uploadBar.setError("{% trans 'Slow connection...' %}", false);
+                            }
+                            // Fatal error at 70% (only first time)
+                            else if (uploadProgress === 60 && !hasShownError) {
+                                hasShownError = true;
+                                clearInterval(uploadInterval);
+                                uploadInterval = null;
+                                uploadBar.setError("{% trans 'Connection lost' %}", true);
+                            }
+                        } else {
+                            clearInterval(uploadInterval);
+                            uploadInterval = null;
+                        }
+                    }, 150);
+                }
+
+                uploadBar.onRetry = () => {
+                    startUpload();
+                };
+
+                startUpload();
+            }
+
+            // Wait for InsightUI to be ready, or run immediately if already initialized
+            if (window.InsightUI?.ProgressBar) {
+                initProgressBarDemo();
+            } else {
+                document.addEventListener('insightui:ready', initProgressBarDemo);
+            }
+        </script>
+    </div>
 {% elif component.value == "geo_map" %}
     {% geo_map config=geo_map_config map_height=40 %}
 {% elif component.value == "chart" %}
@@ -306,4 +902,27 @@
     {% toggle_view config=toggle_view_config %}
 {% elif component.value == "form" %}
     {% form config=form_config %}
+{% elif component.value == "badge" %}
+    <div class="space-y-4">
+        <div class="flex flex-col md:flex-row items-start flex-wrap gap-2">
+            {% badge label=_("Primary") type="primary" %}
+            {% badge label=_("Secondary") type="secondary" %}
+            {% badge label=_("Success") type="success" %}
+            {% badge label=_("Warning") type="warning" %}
+            {% badge label=_("Danger") type="danger" %}
+            {% badge label=_("Info") type="info" %}
+            {% badge label=_("Neutral") type="neutral" %}
+        </div>
+        <div class="flex flex-col md:flex-row items-start flex-wrap gap-2">
+            {% badge label=_("New!") type="primary" size="xl" %}
+            {% badge label=_("New!") type="primary" size="l" %}
+            {% badge label=_("New!") type="primary" size="m" %}
+            {% badge label=_("New!") type="primary" size="s" %}
+            {% badge label=_("New!") type="primary" size="xs" %}
+        </div>
+        <div class="flex flex-col md:flex-row items-start flex-wrap gap-2">
+            {% badge label=_("New!") icon_name="sparkles" %}
+            {% badge label=_("New!") icon_name="sparkles" icon_end=True %}
+        </div>
+    </div>
 {% endif %}

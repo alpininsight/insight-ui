@@ -67,7 +67,8 @@ For blue/green promotion, the repo publishes one slot-neutral image. The
 platform moves the tested digest between `develop` and `main` aliases by
 changing the slot wiring, not by rebuilding a second `main` image.
 
-The deployment-specific prep for `insight-ui.demo.alpininsight.ai` is documented in [Deployment Contract](docs/deployment.md).
+The deployment-specific prep for production `insight-ui.com` and the demo
+blue/green lanes is documented in [Deployment Contract](docs/deployment.md).
 
 The WebSocket demo lives in `utils/main.py`:
 ```bash
@@ -87,6 +88,12 @@ assets should be consumed from immutable version paths such as
 
 The full CDN contract, required secrets, runtime settings, and cache rules are
 documented in [CDN Static Assets](docs/cdn-static-assets.md).
+
+### Build minified assets
+```bash
+# Compile via docker container (no local node.js required due docker container)
+docker run --rm -it -v ${PWD}:/app -w /app  node:25-alpine sh -c "npm install && npm run build:js"
+```
 
 ## Testing
 ```bash
@@ -109,6 +116,7 @@ The `docs/` directory is reserved for repository-level developer and governance 
 - [Documentation Architecture](docs/docs-architecture.md)
 - [Naming Conventions](docs/naming_conventions.md)
 - [Design System Contract](docs/design-system-contract.md)
+- [Brand Settings](docs/brand-settings.md)
 - [CDN Static Assets](docs/cdn-static-assets.md)
 - [Accessibility](docs/accessibility.md)
 - [Internationalization](docs/i18n.md)

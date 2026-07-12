@@ -7,5 +7,3 @@ from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
 class TestStepBar(TemplateTagsTestCase):
     """Test suite for the step_bar component."""
-
-    pass

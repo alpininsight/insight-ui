@@ -1,3 +1,5 @@
+"""Tests for component source code view endpoints."""
+
 from http import HTTPStatus
 from pathlib import Path
 

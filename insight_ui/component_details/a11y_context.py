@@ -1,3 +1,5 @@
+"""Accessibility documentation context for UI components."""
+
 from django.urls import reverse
 from django.utils.translation import gettext as _
 
@@ -44,6 +46,91 @@ def get_hero_a11y_context() -> dict[str, list[str]]:
             _("The title is rendered as a semantic `<h1>` element."),
             _("CTA buttons are implemented as link elements with clear labels."),
             _("Background images are denoted with `aria-hidden`."),
+        ]
+    }
+
+
+@register_component(Component.STATUS_SCREEN)
+def get_status_screen_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y documentation for the status screen component."""
+    return {
+        "a11y": [
+            _("The status title is rendered as a semantic `<h1>` element."),
+            _("The decorative status icon is hidden from assistive technologies with `aria-hidden`."),
+            _("Error notices use `role='alert'`; all other notices use `role='status'`."),
+            _("Actions are rendered through the standard button component with clear labels."),
+        ]
+    }
+
+
+@register_component(Component.PAGE)
+def get_page_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y documentation for the page layout tag."""
+    return {
+        "a11y": [
+            _("The page container is a semantic `<div>` with no specific ARIA role."),
+            _("Content within should use appropriate semantic HTML elements."),
+            _("Consider wrapping main content in a `<main>` element for landmark navigation."),
+        ]
+    }
+
+
+@register_component(Component.HBOX)
+def get_hbox_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y documentation for the hbox layout tag."""
+    return {
+        "a11y": [
+            _("The flex container is rendered as a `<div>` element."),
+            _("Visual layout does not affect the reading order for screen readers."),
+            _("Ensure content order in the source matches the intended reading order."),
+        ]
+    }
+
+
+@register_component(Component.VBOX)
+def get_vbox_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y documentation for the vbox layout tag."""
+    return {
+        "a11y": [
+            _("The flex container is rendered as a `<div>` element."),
+            _("Content order in the DOM matches the visual order (top to bottom)."),
+            _("Screen readers will announce items in their source order."),
+        ]
+    }
+
+
+@register_component(Component.GRID)
+def get_grid_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y documentation for the grid layout tag."""
+    return {
+        "a11y": [
+            _("The grid container is rendered as a `<div>` element with CSS Grid."),
+            _("Content order in the DOM matches the visual reading order."),
+            _("Screen readers will announce items in their source order, regardless of visual layout."),
+        ]
+    }
+
+
+@register_component(Component.SPACER)
+def get_spacer_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y documentation for the spacer layout tag."""
+    return {
+        "a11y": [
+            _("The spacer is a purely presentational empty element."),
+            _("Screen readers will skip over the spacer element."),
+            _("Use CSS margins/padding instead when possible to avoid extra DOM elements."),
+        ]
+    }
+
+
+@register_component(Component.DIVIDER)
+def get_divider_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y documentation for the divider layout tag."""
+    return {
+        "a11y": [
+            _("The divider is a purely visual element with no semantic meaning."),
+            _("Screen readers will skip over the divider element."),
+            _("Consider using `<hr>` with `role='separator'` for semantic section breaks."),
         ]
     }
 
@@ -530,9 +617,9 @@ def get_logo_a11y_context() -> dict[str, list[str]]:
     }
 
 
-@register_component(Component.BRAND_LOCKUP)
-def get_brand_lockup_a11y_context() -> dict[str, list[str]]:
-    """Serve a11y documentation for the brand lockup component."""
+@register_component(Component.BRAND_MARK)
+def get_brand_mark_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y documentation for the brand mark component."""
     return {
         "a11y": [
             _("The wordmark is rendered as readable text so assistive technologies can announce the brand name."),
@@ -628,6 +715,12 @@ def get_web_socket_a11y_context() -> dict[str, list[str]]:
             _("**TODO: Consider adding `role='log'` to the output container for message history.**"),
         ]
     }
+
+
+@register_component(Component.BADGE)
+def get_badge_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y context documentation for the badge component."""
+    return {"a11y": []}
 
 
 # =============================================================

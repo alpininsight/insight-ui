@@ -1,3 +1,5 @@
+"""GitHub URL mappings for component source files."""
+
 # Base paths
 GIT_BASE_FILE = "https://github.com/alpininsight/insight-ui/blob/develop/insight_ui/templates/insight_ui/components/"
 GIT_BASE_DIR = "https://github.com/alpininsight/insight-ui/tree/develop/insight_ui/templates/insight_ui/components/"
@@ -9,6 +11,7 @@ TEMPLATE_PATHS = {
     "page_header": GIT_BASE_FILE + "page_header.html",
     "article": GIT_BASE_FILE + "article.html",
     "hero": GIT_BASE_FILE + "hero.html",
+    "status_screen": GIT_BASE_FILE + "status_screen.html",
     # Navigation
     "navbar": GIT_BASE_FILE + "navbar.html",
     "sidebar": GIT_BASE_FILE + "sidebar.html",
@@ -20,6 +23,7 @@ TEMPLATE_PATHS = {
     "accordion": GIT_BASE_FILE + "accordion.html",
     "tabs": GIT_BASE_FILE + "tabs.html",
     # Inputs
+    "button": GIT_BASE_FILE + "button.html",
     "input": GIT_BASE_FILE + "input.html",
     "textarea": GIT_BASE_FILE + "textarea.html",
     "checkbox": GIT_BASE_FILE + "checkbox.html",
@@ -40,7 +44,7 @@ TEMPLATE_PATHS = {
     "infobox": GIT_BASE_FILE + "infobox.html",
     "copyright_notice": GIT_BASE_FILE + "copyright_notice.html",
     "logo": GIT_BASE_FILE + "logo.html",
-    "brand_lockup": GIT_BASE_FILE + "brand_lockup.html",
+    "brand_mark": GIT_BASE_FILE + "brand_mark.html",
     "corner_ribbon": GIT_BASE_FILE + "corner_ribbon.html",
     "progress_bar": GIT_BASE_FILE + "progress_bar.html",
     "geo_map": GIT_BASE_FILE + "geo_map.html",
@@ -48,6 +52,7 @@ TEMPLATE_PATHS = {
     "line_chart": GIT_BASE_FILE + "charts/line_chart.html",
     "live_content": GIT_BASE_FILE + "live_content.html",
     "web_socket": GIT_BASE_FILE + "websocket.html",
+    "badge": GIT_BASE_FILE + "badge.html",
     # Lists
     "infinite_scroll": GIT_BASE_FILE + "infinite_scroll.html",
     "pagination": GIT_BASE_FILE + "pagination.html",

@@ -4,12 +4,12 @@
     <div class="flex items-center justify-between gap-4 bg-gray-200 dark:bg-gray-900 h-12 p-1.5">
         <div class="flex items-center justify-center gap-1 h-full">
             {% if demo.template_repo_url %}
-                <a href="{{ demo.template_repo_url }}" class="btn btn-sm btn-outline-secondary">
+                <a href="{{ demo.template_repo_url }}" class="btn btn-s btn-outline-secondary">
                     {% icon name="git" %}<b>HTML</b>
                 </a>
             {% endif %}
             {% if demo.script_repo_url %}
-                <a href="{{ demo.script_repo_url }}" class="btn btn-sm btn-outline-secondary h-full">
+                <a href="{{ demo.script_repo_url }}" class="btn btn-s btn-outline-secondary h-full">
                     {% icon name="git" %}<b>JS</b>
                 </a>
             {% endif %}
@@ -20,7 +20,7 @@
             {% toggle tag_id="theme-toggle-"|add:demo.id name="theme-toggle-"|add:demo.id icon=theme_toggle_icon %}
         </div>
     </div>
-    <div class="bg-neutral-300 dark:bg-gray-950 w-full">
+    <div class="demo-pattern w-full">
         <iframe data-insight-demo-iframe="{{ demo.id }}" id="{{ demo.id }}" src="{{ demo.url }}" title="{{ demo.title }}" class="w-full mx-auto"></iframe>
     </div>
 </div>

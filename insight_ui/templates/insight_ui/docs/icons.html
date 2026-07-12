@@ -50,15 +50,125 @@
         </section>
         <section class="space-y-4">
             <h2>{% trans "Icon Portfolio" %}</h2>
-            {% with heroicons='<a href="https://heroicons.com/" class="text-link">Heroicons</a>'|safe flowbite_icons='<a href="https://flowbite.com/icons/" class="text-link">Flowbite</a>'|safe %}
-                {% infobox message="The icons shown here come from {heroicons} and {flowbite_icons}. Both sources provide their icons under the <b>MIT</b> license. Our goal is not to build a generic icon library, but to adapt it to the API of our icon component so that icons can also be specified from within the Django context." heroicons=heroicons flowbite_icons=flowbite_icons %}
+            {% with heroicons='<a href="https://heroicons.com/" class="text-link">Heroicons</a>'|safe %}
+                {% infobox message=_("The icons shown here come from {heroicons}. Heroicons provides icons under the <b>MIT</b> license. Currently we only provide the outline variants.") heroicons=heroicons %}
             {% endwith %}
-            {% table config=icon_table %}
+            <div class="relative">
+                <input
+                    type="text"
+                    id="icon-search"
+                    class="input w-full"
+                    placeholder="{% trans 'Search icons...' %}"
+                    oninput="filterIcons(this.value)"
+                >
+                <span id="icon-count" class="absolute right-3 top-2.5 text-sm text-secondary">Icons: {{ icons|length }}</span>
+            </div>
+            <span><i>{% trans "Click on the Icon to copy the tag with corresponding icon name to clipboard." %}</i></span>
+            <div id="icon-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4 mt-2">
+                {% for icon in icons %}
+                    <button
+                        type="button"
+                        class="icon-item flex flex-col items-center gap-2 border border-gray-100 dark:border-gray-700 p-3 shadow rounded-lg hover:bg-gray-50 hover:dark:bg-gray-700 transition-colors cursor-pointer group relative"
+                        data-icon-name="{{ icon.name }}"
+                        onclick="copyIconCode(this)"
+                    >
+                        <div class="text-secondary">{{ icon.svg|safe }}</div>
+                        <span class="text-xs text-secondary text-center whitespace-normal group-hover:text-primary transition-colors">{{ icon.name }}</span>
+                        <span class="absolute top-0 flex items-center justify-center size-full text-base bg-gray-50 dark:bg-gray-700 text-insight-primary rounded-lg opacity-0 pointer-events-none transition-opacity whitespace-nowrap" data-copied-tooltip>{% trans "Copied!" %}</span>
+                    </button>
+                {% endfor %}
+            </div>
+            <p id="no-results" class="hidden text-center text-secondary py-8">{% trans "No icons found." %}</p>
+            <script>
+                function filterIcons(query) {
+                    const normalizedQuery = query.toLowerCase().trim();
+                    const icons = document.querySelectorAll('.icon-item');
+                    const countEl = document.getElementById('icon-count');
+                    const noResults = document.getElementById('no-results');
+                    let visibleCount = 0;
+
+                    icons.forEach(icon => {
+                        const name = icon.dataset.iconName.toLowerCase();
+                        const matches = name.includes(normalizedQuery);
+                        icon.classList.toggle('hidden', !matches);
+                        if (matches) visibleCount++;
+                    });
+
+                    countEl.textContent = "Icons: " + visibleCount;
+                    noResults.classList.toggle('hidden', visibleCount > 0);
+                }
+
+                function copyIconCode(element) {
+                    const iconName = element.dataset.iconName;
+                    const code = '{' + '% icon name="' + iconName + '" %' + '}';
+                    navigator.clipboard.writeText(code).then(() => {
+                        const tooltip = element.querySelector('[data-copied-tooltip]');
+                        tooltip.classList.remove('opacity-0');
+                        tooltip.classList.add('opacity-100');
+                        setTimeout(() => {
+                            tooltip.classList.remove('opacity-100');
+                            tooltip.classList.add('opacity-0');
+                        }, 1500);
+                    });
+                }
+            </script>
         </section>
         <section class="space-y-4">
             <h2>{% trans "Sizes" %}</h2>
             <p>{% trans "All icons can be used in different sizes:" %}</p>
             {% table config=size_table %}
+        </section>
+        <section class="space-y-4">
+            <h2>{% trans "Adding Custom Icons" %}</h2>
+            <p>
+                {% blocktrans trimmed %}
+                    You can add your own icons using the <code>compile_icons</code> management command.
+                    This command generates a new <code>icons.html</code> template by merging your custom icons
+                    with the bundled icons. Custom icons override bundled icons with the same name.
+                {% endblocktrans %}
+            </p>
+            <h3>{% trans "Basic Usage" %}</h3>
+            <div data-insight-code-block="Shell">
+                # From a directory of SVG files
+                python manage.py compile_icons --dir path/to/icons/
+
+                # From an SVG sprite sheet
+                python manage.py compile_icons --sprite path/to/sprite.svg
+
+                # Combine both sources
+                python manage.py compile_icons --dir path/to/icons/ --sprite path/to/sprite.svg
+            </div>
+            <h3>{% trans "Options" %}</h3>
+            <ul class="list-disc list-inside space-y-2 ml-4">
+                <li><code class="inline-tag">--dir</code> &ndash; {% trans "Directory containing individual SVG files" %}</li>
+                <li><code class="inline-tag">--sprite</code> &ndash; {% trans "Path to an SVG sprite sheet file (extracts &lt;symbol&gt; elements)" %}</li>
+                <li><code class="inline-tag">--output</code> &ndash; {% trans "Custom output path (default: templates/insight_ui/components/icons.html)" %}</li>
+                <li><code class="inline-tag">--list-bundled</code> &ndash; {% trans "List all bundled icon names and exit" %}</li>
+            </ul>
+            <h3>{% trans "Icon Naming" %}</h3>
+            <p>
+                {% blocktrans trimmed %}
+                    Icon names are derived from filenames (for directories) or symbol IDs (for sprites).
+                    Names are normalized: converted to lowercase, underscores become hyphens, and common prefixes
+                    like <code>icon-</code> or <code>ic_</code> are removed.
+                {% endblocktrans %}
+            </p>
+            <div data-insight-code-block="Text">
+                my_custom_icon.svg  →  my-custom-icon
+                Icon-ArrowLeft.svg  →  arrowleft
+                ic_home.svg         →  home
+            </div>
+            <h3>{% trans "Example: Override a Bundled Icon" %}</h3>
+            <p>
+                {% blocktrans trimmed %}
+                    To replace the bundled <code>home</code> icon with your own version,
+                    create a file named <code>home.svg</code> in your icons directory:
+                {% endblocktrans %}
+            </p>
+            <div data-insight-code-block="Shell">
+                python manage.py compile_icons --dir my_project/icons/
+                # Output: Total icons: 287 (1 custom, 287 bundled)
+            </div>
         </section>
     </div>
 {% endblock content %}

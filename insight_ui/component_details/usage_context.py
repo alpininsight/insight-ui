@@ -1,3 +1,5 @@
+"""Usage example context for UI components."""
+
 from django.utils.translation import gettext as _
 
 from insight_ui.component_details.component_context import register_component
@@ -56,6 +58,194 @@ def get_hero_usage_context() -> dict[str, str]:
     }
 
 
+@register_component(Component.STATUS_SCREEN)
+def get_status_screen_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the status screen component."""
+    return {
+        "usage": """
+        {% load insight_tags %}
+
+        {% status_screen
+            title="Sign-in failed"
+            description="The SSO process could not be completed."
+            status="error"
+            notice_title="What happened?"
+            notice="Please try again or contact support if the issue persists."
+            primary_action=retry_button
+            secondary_action=support_button
+        %}
+        """
+    }
+
+
+@register_component(Component.PAGE)
+def get_page_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the page layout tag."""
+    return {
+        "usage": """
+        {% load layout_tags %}
+
+        {% page padding="l" %}
+            <h1>Page Title</h1>
+            <p>Page content goes here.</p>
+        {% endpage %}
+
+        <!-- Full viewport height with centered content -->
+        {% page height="full" %}
+            {% vbox v_align="center" full_height=True %}
+                <main>Vertically centered content</main>
+            {% endvbox %}
+        {% endpage %}
+
+        <!-- Peek: shows next section is coming -->
+        {% page height="peek" %}
+            <h1>Hero Section</h1>
+        {% endpage %}
+        """
+    }
+
+
+@register_component(Component.HBOX)
+def get_hbox_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the hbox layout tag."""
+    return {
+        "usage": """
+        {% load layout_tags %}
+
+        {% hbox gap="s" v_align="center" h_align="between" %}
+            <span>Left</span>
+            <span>Right</span>
+        {% endhbox %}
+
+        <!-- Fill parent height - useful inside page with height="full" -->
+        {% hbox full_height=True %}
+            {% vbox %}Column 1{% endvbox %}
+            {% vbox %}Column 2{% endvbox %}
+        {% endhbox %}
+
+        <!-- With wrapping enabled -->
+        {% hbox gap="m" wrap=True %}
+            <div>Item 1</div>
+            <div>Item 2</div>
+            <div>Item 3</div>
+        {% endhbox %}
+        """
+    }
+
+
+@register_component(Component.VBOX)
+def get_vbox_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the vbox layout tag."""
+    return {
+        "usage": """
+        {% load layout_tags %}
+
+        {% vbox gap="m" %}
+            <div>Top</div>
+            <div>Middle</div>
+            <div>Bottom</div>
+        {% endvbox %}
+
+        <!-- Fill parent height and center content vertically -->
+        {% vbox full_height=True v_align="center" %}
+            <div>Vertically centered</div>
+        {% endvbox %}
+
+        <!-- Full-height layout with vertical distribution -->
+        {% vbox full_height=True h_align="center" v_align="between" %}
+            <header>Header</header>
+            <main>Content</main>
+            <footer>Footer</footer>
+        {% endvbox %}
+        """
+    }
+
+
+@register_component(Component.GRID)
+def get_grid_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the grid layout tag."""
+    return {
+        "usage": """
+        {% load layout_tags %}
+
+        <!-- Auto-fit mode: items wrap based on available space -->
+        {% grid gap="l" %}
+            <div>Item 1</div>
+            <div>Item 2</div>
+            <div>Item 3</div>
+            <div>Item 4</div>
+        {% endgrid %}
+
+        <!-- Auto-fit with custom minimum width -->
+        {% grid min="300px" gap="m" %}
+            <div>Card 1</div>
+            <div>Card 2</div>
+        {% endgrid %}
+
+        <!-- Fixed columns with automatic responsive breakpoints -->
+        {% grid cols=3 gap="l" %}
+            <div>Column 1</div>
+            <div>Column 2</div>
+            <div>Column 3</div>
+        {% endgrid %}
+
+        <!-- Fixed columns without responsive behavior -->
+        {% grid cols=4 fixed=True %}
+            <div>Always 4 columns</div>
+        {% endgrid %}
+        """
+    }
+
+
+@register_component(Component.SPACER)
+def get_spacer_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the spacer layout tag."""
+    return {
+        "usage": """
+        {% load layout_tags %}
+
+        {% hbox gap="xs" v_align="center" %}
+            <span>Left</span>
+            {% spacer size="xl" %}
+            <span>Right</span>
+        {% endhbox %}
+
+        <!-- Using default size (m) -->
+        {% vbox %}
+            <div>Above</div>
+            {% spacer %}
+            <div>Below</div>
+        {% endvbox %}
+        """
+    }
+
+
+@register_component(Component.DIVIDER)
+def get_divider_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the divider layout tag."""
+    return {
+        "usage": """
+        {% load layout_tags %}
+
+        {% vbox gap="m" %}
+            <p>Content above</p>
+            {% divider %}
+            <p>Content below</p>
+        {% endvbox %}
+
+        <!-- Vertical divider -->
+        {% hbox gap="m" v_align="stretch" %}
+            <div>Left</div>
+            {% divider direction="vertical" %}
+            <div>Right</div>
+        {% endhbox %}
+
+        <!-- With custom margin spacing -->
+        {% divider spacing="xl" %}
+        """
+    }
+
+
 # =============================================================
 #
 #   Navigation Tags
@@ -91,7 +281,7 @@ def get_sidebar_usage_context() -> dict[str, str]:
         {% load insight_tags %}
 
         {% block drawers %}
-            {% sidebar sidebar_data=right_sidebar side="right" auto_close=False %}
+            {% sidebar config=sidebar_config side="right" auto_close=False %}
         {% endblock drawers %}
         """,
     }
@@ -108,7 +298,7 @@ def get_footer_usage_context() -> dict[str, str]:
         {% load insight_tags %}
 
         {% block footer %}
-            {% footer data=footer_data %}
+            {% footer config=footer_config %}
         {% endblock footer %}
         """,
     }
@@ -202,28 +392,22 @@ def get_button_usage_context() -> dict[str, str]:
     """Serve usage documentation for the button component."""
     return {
         "usage": """
-        <button class="btn btn-primary">{% trans "Primary" %}</button>
-        <button class="btn btn-secondary">{% trans "Secondary" %}</button>
-        <button class="btn btn-success">{% trans "Success" %}</button>
-        <button class="btn btn-warning">{% trans "Warning" %}</button>
-        <button class="btn btn-danger">{% trans "Danger" %}</button>
-        <button class="btn btn-info">{% trans "Info" %}</button>
-        <button disabled class="btn btn-disabled">{% trans "Disabled" %}</button>
-        <button aria-label="{% trans 'Close' %}" class="btn btn-close">{% icon name="x-mark" size="xs" %}</button>
-        <a href="#" class="btn-link">{% trans "Link" %}</a>
+        {% button label=_("Primary") type="primary" %}
+        {% button label=_("Secondary") type="secondary" %}
+        {% button label=_("Success") type="success" %}
+        {% button label=_("Warning") type="warning" %}
+        {% button label=_("Danger") type="danger" %}
+        {% button label=_("Info") type="info" %}
+        {% button label=_("Primary") disabled=True %}
 
-        <button class="btn btn-outline-primary">{% trans "Primary" %}</button>
-        <button class="btn btn-outline-secondary">{% trans "Secondary" %}</button>
-        <button class="btn btn-outline-success">{% trans "Success" %}</button>
-        <button class="btn btn-outline-warning">{% trans "Warning" %}</button>
-        <button class="btn btn-outline-danger">{% trans "Danger" %}</button>
-        <button class="btn btn-outline-info">{% trans "Info" %}</button>
-        <button disabled class="btn btn-outline-disabled">{% trans "Disabled" %}</button>
+        {% button label=_("Primary") type="primary" outline=True %}
+        {% button label=_("Primary") type="primary" subtle=True %}
 
-        <button class="btn btn-primary btn-large">{% trans "Click me!" %}</button>
-        <button class="btn btn-primary">{% trans "Click me!" %}</button>
-        <button class="btn btn-primary btn-sm">{% trans "Click me!" %}</button>
-        <button class="btn btn-primary btn-xs">{% trans "Click me!" %}</button>
+        {% button label=_("Click me!") type="primary" size="xl" %}
+        {% button label=_("Click me!") type="primary" size="l" %}
+        {% button label=_("Click me!") type="primary" size="m" %}
+        {% button label=_("Click me!") type="primary" size="s" %}
+        {% button label=_("Click me!") type="primary" size="xs" %}
         """
     }
 
@@ -317,7 +501,7 @@ def get_radio_group_usage_context() -> dict[str, str]:
 
 
 @register_component(Component.RADIO_BLOCK)
-def get_radio_group_usage_context() -> dict[str, str]:
+def get_radio_block_usage_context() -> dict[str, str]:
     """Serve usage documentation for the radio_block component."""
     return {
         "usage": """
@@ -463,7 +647,7 @@ def get_popover_usage_context() -> dict[str, str]:
         ),
         "usage": """
         <button data-insight-popover="demo-popover" data-show-arrow="true" data-position="top" class="btn btn-primary">Hover me!</button>
-        <div id="demo-popover" class="bg-white dark:bg-gray-500 w-64 border border-gray-300 dark:border-0 rounded-sm shadow">
+        <div id="demo-popover" class="bg-white dark:bg-gray-500 w-64 border border-gray-300 dark:border-0 insight-radius-overlay insight-shadow-subtle">
             <!-- Content -->
         </div>
         """,
@@ -576,18 +760,18 @@ def get_logo_usage_context() -> dict[str, str]:
     }
 
 
-@register_component(Component.BRAND_LOCKUP)
-def get_brand_lockup_usage_context() -> dict[str, str]:
-    """Serve usage documentation for the brand lockup component."""
+@register_component(Component.BRAND_MARK)
+def get_brand_mark_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the brand mark component."""
     return {
         "usage": """
         {% load insight_tags %}
 
         {# Direct use with defaults #}
-        {% brand_lockup %}
+        {% brand_mark %}
 
         {# Deployment-lane variant #}
-        {% brand_lockup primary_text="Alpin Insight" secondary_text="Develop" variant="develop" %}
+        {% brand_mark primary_text="Alpin Insight" secondary_text="Develop" variant="develop" %}
 
         {# Navbar brand mode #}
         {% navbar config=navbar_config %}
@@ -596,7 +780,7 @@ def get_brand_lockup_usage_context() -> dict[str, str]:
             {
                 "type": "info",
                 "message": _(
-                    "Use `brand.lockup` in the navbar when the wordmark should be the clickable brand element. Keep `brand.logo` plus `brand.title` for generic application names."
+                    "Use `brand.mark` in the navbar when the wordmark should be the clickable brand element. Keep `brand.logo` plus `brand.title` for generic application names."
                 ),
             }
         ],
@@ -638,7 +822,13 @@ def get_progress_bar_usage_context() -> dict[str, str]:
     """Serve usage documentation for the progress bar component."""
     return {
         "usage": """
-        {% include "insight_ui/components/progress_bar.html" %}
+        {% load insight_tags %}
+
+        {% progress_bar config=progress_bar_config %}
+
+        <!-- or -->
+
+        {% progress_bar tag_id="download" value=66 %}
         """
     }
 
@@ -699,6 +889,20 @@ def get_web_socket_usage_context() -> dict[str, str]:
         <!-- or -->
 
         {% websocket tag_id="demo-websocket" request_url="ws://127.0.0.1:8765" initial_content="<p>Waiting for runtime updates…</p>" %}
+        """
+    }
+
+
+@register_component(Component.BADGE)
+def get_badge_usage_context() -> dict[str, str]:
+    """Serve usage context documentation for the badge component."""
+    return {
+        "usage": """
+        {% load insight_tags %}
+
+        {% badge label=_("New Feature") icon_name="sparkles" %}
+        {% badge label=_("New Feature") icon_name="sparkles" icon_end=True %}
+        {% badge label=_("New Feature") icon_name="sparkles" icon_size="s" size="s" %}
         """
     }
 
@@ -837,7 +1041,7 @@ def get_app_card_usage_context() -> dict[str, str]:
 
         <!-- or -->
 
-        {% app_card title="Insight UI" content="Django UI Framework for ..." url="/insight-ui/" %}
+        {% app_card title="Insight UI" content="Django UI Framework for ..." request_url="/insight-ui/" %}
         """
     }
 

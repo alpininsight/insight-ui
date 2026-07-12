@@ -6,12 +6,12 @@ from typing import Literal
 from django.utils.translation import gettext_lazy as _
 
 from insight_ui.configs.base import IconConfig
+from insight_ui.configs.input import ButtonConfig
 
 
 @dataclass
 class InfoboxConfig:
-    """
-    Configuration for the infobox component.
+    """Configuration for the infobox component.
 
     Renders a bordered information box (less prominent than alert).
 
@@ -39,8 +39,7 @@ class InfoboxConfig:
 
 @dataclass
 class CopyrightNoticeConfig:
-    """
-    Configuration for the copyright_notice component.
+    """Configuration for the copyright_notice component.
 
     Renders a compact copyright and legal notice line.
 
@@ -78,8 +77,7 @@ class CopyrightNoticeConfig:
 
 @dataclass
 class LogoConfig:
-    """
-    Configuration for the logo component.
+    """Configuration for the logo component.
 
     Renders a brand logo as an image, SVG, or icon.
 
@@ -117,47 +115,95 @@ class LogoConfig:
 
 
 @dataclass
-class BrandLockupConfig:
-    """
-    Configuration for the brand_lockup component.
+class BrandMarkConfig:
+    """Configuration for the brand_mark component.
 
     Renders a public Insight UI icon plus a two-tone wordmark.
 
     Attributes:
         primary_text: First wordmark run.
         secondary_text: Second wordmark run.
+        logo: Public logo configuration.
         logo_position: Logo position, either 'start' or 'end'.
-        height: CSS height for the public icon.
-        variant: Public icon variant: 'main', 'develop', or 'candidate'.
         css_class: Optional CSS classes for the root element.
 
     """
 
     __example__ = """
-        BrandLockupConfig(
+        BrandMarkConfig(
             primary_text="Alpin Insight",
             secondary_text="Develop",
-            variant="develop",
-            height="2rem",
+            logo=LogoConfig(
+                url="img/logo.svg",
+                url_dark="img/logo-dark.svg",
+                alt="Company Logo",
+                height="2rem",
+            ),
         )
         """
 
     primary_text: str = field(default="Alpin Insight", metadata={"doc": _("First wordmark run.")})
     secondary_text: str = field(default="Solutions", metadata={"doc": _("Second wordmark run.")})
+    logo: LogoConfig = field(default=None, metadata={"doc": _("Public logo configuration.")})
     logo_position: Literal["start", "end"] = field(
         default="start", metadata={"doc": _("Logo position, either 'start' or 'end'.")}
-    )
-    height: str = field(default="1.75rem", metadata={"doc": _("CSS height for the public icon.")})
-    variant: Literal["main", "develop", "candidate"] = field(
-        default="main", metadata={"doc": _("Public icon variant: 'main', 'develop', or 'candidate'.")}
     )
     css_class: str = field(default="", metadata={"doc": _("Optional CSS classes for the root element.")})
 
 
 @dataclass
-class CornerRibbonConfig:
+class StatusScreenConfig:
+    """Configuration for the status_screen component.
+
+    Renders a centered full-page status view from reusable Insight UI building blocks.
+
+    Attributes:
+        title: Main status title.
+        description: Supporting status description.
+        status: Visual status: 'info', 'success', 'warning', or 'error'.
+        brand: Optional brand mark shown above the card.
+        notice_title: Optional notice heading.
+        notice: Optional notice text.
+        primary_action: Primary button action.
+        secondary_action: Secondary button action.
+        actions: Additional button actions.
+        css_class: Optional CSS classes for the outer section.
+        card_css_class: Optional CSS classes for the status card.
+
     """
-    Configuration for the corner_ribbon component.
+
+    __example__ = """
+        StatusScreenConfig(
+            title="Sign-in failed",
+            description="The SSO process could not be completed.",
+            status="error",
+            notice_title="What happened?",
+            notice="Please try again or contact support if the issue persists.",
+            primary_action=ButtonConfig(label="Try again", request_url="/login/", type="primary"),
+            secondary_action=ButtonConfig(label="Back to start", request_url="/", type="secondary"),
+        )
+        """
+
+    title: str = field(metadata={"doc": _("Main status title.")})
+    description: str | list[str] = field(default="", metadata={"doc": _("Supporting status description.")})
+    status: Literal["info", "success", "warning", "error"] = field(
+        default="info", metadata={"doc": _("Visual status: 'info', 'success', 'warning', or 'error'.")}
+    )
+    brand: BrandMarkConfig | None = field(
+        default=None, metadata={"doc": _("Optional brand mark shown above the card.")}
+    )
+    notice_title: str = field(default="", metadata={"doc": _("Optional notice heading.")})
+    notice: str = field(default="", metadata={"doc": _("Optional notice text.")})
+    primary_action: ButtonConfig | None = field(default=None, metadata={"doc": _("Primary button action.")})
+    secondary_action: ButtonConfig | None = field(default=None, metadata={"doc": _("Secondary button action.")})
+    actions: list[ButtonConfig] = field(default_factory=list, metadata={"doc": _("Additional button actions.")})
+    css_class: str = field(default="", metadata={"doc": _("Optional CSS classes for the outer section.")})
+    card_css_class: str = field(default="", metadata={"doc": _("Optional CSS classes for the status card.")})
+
+
+@dataclass
+class CornerRibbonConfig:
+    """Configuration for the corner_ribbon component.
 
     Renders a decorative diagonal ribbon in a browser corner.
 
@@ -196,9 +242,90 @@ class CornerRibbonConfig:
 
 
 @dataclass
-class GeoMapMarkerConfig:
+class ProgressBarConfig:
+    """Configuration for a simple progress bar with optional auto-update modes.
+
+    Attributes:
+        tag_id: Unique ID for JavaScript/CSS targeting.
+        label: Optional heading/title for the progress bar.
+        request_url: URL to poll for progress updates. Expected JSON: {"value": 75}.
+        interval: Polling interval in milliseconds.
+        sse_url: Server-Sent Events URL for real-time progress updates.
+        min_value: Minimum value.
+        max_value: Maximum value.
+        value: Current progress in percent.
+        show_value: Whether to display the value as text.
+        hide_on_complete: Hide progress bar when reaching max_value.
+        complete_delay: Delay in ms before hiding after completion.
+        stop_on_error: Stop polling/SSE when an error is received.
+        show_cancel: Show a cancel button during progress.
+        cancel_label: Label for the cancel button.
+        cancel_url: Optional URL to call when cancelling (POST request).
+        show_retry: Show a retry button when an error occurs.
+        retry_label: Label for the retry button.
+
+    JSON Response Format:
+        {
+            "value": 75,
+            "label": "Uploading...",      // Optional: update label
+            "error": "Connection lost",   // Optional: show error message
+            "complete": true              // Optional: signal completion
+        }
+
     """
-    Configuration for a marker on a geo map.
+
+    __example__ = """
+        # Static progress bar
+        ProgressBarConfig(
+            tag_id="download",
+            label="Download Progress",
+            value=97,
+            show_value=True,
+        )
+
+        # Auto-updating via polling with cancel button
+        ProgressBarConfig(
+            tag_id="server-task",
+            label="Processing...",
+            request_url="/api/task/123/progress/",
+            interval=500,
+            show_cancel=True,
+            cancel_url="/api/task/123/cancel/",
+        )
+
+        # With retry on error
+        ProgressBarConfig(
+            tag_id="upload",
+            label="Uploading...",
+            request_url="/api/upload/progress/",
+            show_retry=True,
+        )
+        """
+
+    tag_id: str = field(default="", metadata={"doc": _("Unique ID for JavaScript/CSS targeting.")})
+    label: str = field(default="", metadata={"doc": _("Optional heading/title for the progress bar.")})
+    request_url: str = field(
+        default="", metadata={"doc": _('URL to poll for progress updates. Expected JSON: {"value": 75}.')}
+    )
+    interval: int = field(default=1000, metadata={"doc": _("Polling interval in milliseconds.")})
+    sse_url: str = field(default="", metadata={"doc": _("Server-Sent Events URL for real-time progress updates.")})
+    min_value: int = field(default=0, metadata={"doc": _("Minimum value.")})
+    max_value: int = field(default=100, metadata={"doc": _("Maximum value.")})
+    value: int = field(default=0, metadata={"doc": _("Current progress in percent.")})
+    show_value: bool = field(default=True, metadata={"doc": _("Whether to display the value as text.")})
+    hide_on_complete: bool = field(default=False, metadata={"doc": _("Hide progress bar when reaching max_value.")})
+    complete_delay: int = field(default=500, metadata={"doc": _("Delay in ms before hiding after completion.")})
+    stop_on_error: bool = field(default=False, metadata={"doc": _("Stop polling/SSE when an error is received.")})
+    show_cancel: bool = field(default=False, metadata={"doc": _("Show a cancel button during progress.")})
+    cancel_label: str = field(default="", metadata={"doc": _("Label for the cancel button.")})
+    cancel_url: str = field(default="", metadata={"doc": _("Optional URL to call when cancelling (POST request).")})
+    show_retry: bool = field(default=False, metadata={"doc": _("Show a retry button when an error occurs.")})
+    retry_label: str = field(default="", metadata={"doc": _("Label for the retry button.")})
+
+
+@dataclass
+class GeoMapMarkerConfig:
+    """Configuration for a marker on a geo map.
 
     Attributes:
         title: Marker title/label.
@@ -222,8 +349,7 @@ class GeoMapMarkerConfig:
 
 @dataclass
 class GeoMapDatasetConfig:
-    """
-    Configuration for a dataset layer on a geo map.
+    """Configuration for a dataset layer on a geo map.
 
     Attributes:
         name: Dataset name.
@@ -258,8 +384,7 @@ class GeoMapDatasetConfig:
 
 @dataclass
 class GeoMapConfig:
-    """
-    Configuration for the geo_map component.
+    """Configuration for the geo_map component.
 
     Renders an interactive Leaflet map.
 
@@ -299,8 +424,7 @@ class GeoMapConfig:
 
 @dataclass
 class ChartSeriesConfig:
-    """
-    Configuration for a chart data series.
+    """Configuration for a chart data series.
 
     Attributes:
         name: Series name (shown in legend).
@@ -316,8 +440,7 @@ class ChartSeriesConfig:
 
 @dataclass
 class ChartDatasetConfig:
-    """
-    Configuration for chart data.
+    """Configuration for chart data.
 
     Attributes:
         title: Chart title.
@@ -349,8 +472,7 @@ class ChartDatasetConfig:
 
 @dataclass
 class ChartConfig:
-    """
-    Configuration for chart components (e.g. bar_chart, line_chart).
+    """Configuration for chart components (e.g. bar_chart, line_chart).
 
     Renders a chart with Apache ECharts.
 
@@ -383,8 +505,7 @@ class ChartConfig:
 
 @dataclass
 class LiveContentConfig:
-    """
-    Configuration for the live_content component.
+    """Configuration for the live_content component.
 
     Renders a container that auto-refreshes via HTMX polling.
 
@@ -413,8 +534,7 @@ class LiveContentConfig:
 
 @dataclass
 class WebSocketConfig:
-    """
-    Configuration for the websocket component.
+    """Configuration for the websocket component.
 
     Renders a WebSocket-connected container using HTMX ws extension.
 
@@ -438,3 +558,36 @@ class WebSocketConfig:
     )
     request_url: str = field(default="", metadata={"doc": _("WebSocket endpoint URL.")})
     initial_content: str = field(default="", metadata={"doc": _("Initial content.")})
+
+
+@dataclass
+class BadgeConfig:
+    """Configuration for a badge element.
+
+    Used in hero sections and other components.
+
+    Attributes:
+        label: Badge label.
+        icon: An optional icon displayed before the text.
+        icon_end: **True** if the icon should be shown after the label, otherwise the icon is shown in front of the label.
+        type: Defines the color of the badge.
+        size: Defines the size of the badge.
+
+    """
+
+    __example__ = """
+        BadgeConfig("New Feature", IconConfig("sparkles", "s"))
+    """
+
+    label: str = field(metadata={"doc": _("Badge label.")})
+    icon: IconConfig | None = field(default=None, metadata={"doc": _("An optional icon displayed before the text.")})
+    icon_end: bool = field(
+        default=False,
+        metadata={
+            "doc": "**True** if the icon should be shown after the label, otherwise the icon is shown in front of the label."
+        },
+    )
+    type: Literal["primary", "secondary", "info", "success", "warning", "danger", "disabled"] = field(
+        default="primary", metadata={"doc": "Defines the color of the badge."}
+    )
+    size: Literal["xs", "s", "m", "l", "xl"] = field(default="m", metadata={"doc": "Defines the size of the badge."})

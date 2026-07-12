@@ -5,13 +5,12 @@ from typing import Literal
 
 from django.utils.translation import gettext_lazy as _
 
-from insight_ui.configs.base import ActionConfig
+from insight_ui.configs.input import ButtonConfig
 
 
 @dataclass
 class AlertConfig:
-    """
-    Configuration for the alert component.
+    """Configuration for the alert component.
 
     Renders a notification/alert box.
 
@@ -46,8 +45,7 @@ class AlertConfig:
 
 @dataclass
 class ModalConfig:
-    """
-    Configuration for the modal component.
+    """Configuration for the modal component.
 
     Renders an accessible modal dialog.
 
@@ -66,8 +64,8 @@ class ModalConfig:
             title="Confirm Deletion",
             description="Are you sure you want to delete this item? This action cannot be undone.",
             actions=[
-                ActionConfig(text="Delete", type="danger", onclick="deleteItem()"),
-                ActionConfig(text="Cancel", type="cancel", dismiss=True),
+                ButtonConfig(label="Delete", type="danger", on_click="deleteItem()"),
+                ButtonConfig(label="Cancel", type="secondary", data_attrs=[DataAttrConfig("insight-dismiss", "modal")]),
             ],
             width=24,
         )
@@ -81,7 +79,7 @@ class ModalConfig:
             "doc": _("A text in the center of the modal dialog. This can be exchanged by extending the template.")
         },
     )
-    actions: list[ActionConfig] = field(
+    actions: list[ButtonConfig] = field(
         default_factory=list, metadata={"doc": _("List of buttons displayed at the bottom of the dialog.")}
     )
     width: int = field(

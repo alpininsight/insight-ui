@@ -66,10 +66,15 @@ COPY --chown=app:app . /app
 COPY --chown=app:app docker/entrypoint.sh /entrypoint.sh
 
 RUN chmod 755 /entrypoint.sh \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends gettext \
     && mkdir -p /home/app \
     && mkdir -p /app/staticfiles \
+    && SECRET_KEY="$(python -c "import secrets; print(secrets.token_urlsafe(64))")" python manage.py compilemessages --locale de --verbosity 0 \
     && SECRET_KEY="$(python -c "import secrets; print(secrets.token_urlsafe(64))")" python manage.py collectstatic --noinput \
     && SECRET_KEY="$(python -c "import secrets; print(secrets.token_urlsafe(64))")" python manage.py check \
+    && apt-get purge -y --auto-remove gettext \
+    && rm -rf /var/lib/apt/lists/* \
     && chown -R app:app /app /home/app
 
 USER app

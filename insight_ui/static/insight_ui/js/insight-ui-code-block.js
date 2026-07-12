@@ -83,7 +83,7 @@ export class CodeBlock {
      */
     #createCopyButton() {
         const button = document.createElement('button');
-        button.classList.add('btn', 'btn-secondary', 'btn-sm');
+        button.classList.add('btn', 'btn-secondary', 'btn-s');
 
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');

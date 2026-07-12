@@ -7,5 +7,3 @@ from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
 class TestMultiselect(TemplateTagsTestCase):
     """Test suite for the multiselect component."""
-
-    pass

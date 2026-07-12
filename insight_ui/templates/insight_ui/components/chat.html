@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n insight_tags %}
 
 <div class="w-full lg:w-3xl mx-auto">
     <!-- Response-container -->
@@ -18,9 +18,7 @@
         </label>
         <div class="flex gap-2">
             <input class="input w-full" id="msg" name="msg" type="text" placeholder="{% trans 'Write something...' %}">
-            <button class="btn btn-primary" type="submit">
-                {% trans "Send" %}
-            </button>
+            {% button label=_("Send") type="primary" button_type="submit" %}
         </div>
     </form>
 </div>

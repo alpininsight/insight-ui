@@ -205,6 +205,15 @@ wheels = [
 ]
 
 [[package]]
+name = "defusedxml"
+version = "0.7.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/0f/d5/c66da9b79e5bdb124974bfe172b4daf3c984ebd9c2a06e2b8a4dc7331c72/defusedxml-0.7.1.tar.gz", hash = "sha256:1bb3032db185915b62d7c6209c5a8792be6a32ab2fedacc84e01b52c51aa3e69", size = 75520, upload-time = "2021-03-08T10:59:26.269Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/07/6c/aa3f2f849e01cb6a001cd8554a88d4c77c5c1a31c95bdf1cf9301e6d9ef4/defusedxml-0.7.1-py2.py3-none-any.whl", hash = "sha256:a352e7e428770286cc899e2542b6cdaedb2b4953ff269a210103ec58f6198a61", size = 25604, upload-time = "2021-03-08T10:59:24.45Z" },
+]
+
+[[package]]
 name = "distlib"
 version = "0.4.0"
 source = { registry = "https://pypi.org/simple" }
@@ -346,6 +355,7 @@ wheels = [
 name = "insight-ui"
 source = { editable = "." }
 dependencies = [
+    { name = "defusedxml" },
     { name = "django" },
     { name = "markdown" },
     { name = "python-decouple" },
@@ -367,7 +377,6 @@ dev = [
     { name = "django-rosetta" },
     { name = "django-stubs" },
     { name = "django-tailwind-cli" },
-    { name = "isort" },
     { name = "mypy" },
     { name = "pre-commit" },
     { name = "ruff" },
@@ -383,6 +392,7 @@ pytest = [
 [package.metadata]
 requires-dist = [
     { name = "beautifulsoup4", marker = "extra == 'test'", specifier = ">=4.14.3" },
+    { name = "defusedxml", specifier = ">=0.7.1" },
     { name = "django", specifier = ">=5.2.12,<7" },
     { name = "docstring-parser", marker = "extra == 'test'", specifier = ">=0.18.0" },
     { name = "markdown", specifier = ">=3.8" },
@@ -400,7 +410,6 @@ dev = [
     { name = "django-rosetta", specifier = ">=0.10.3" },
     { name = "django-stubs", specifier = "==5.2.9" },
     { name = "django-tailwind-cli", specifier = ">=4.5.1" },
-    { name = "isort", specifier = ">=7.0.0" },
     { name = "mypy", specifier = ">=1.19.1" },
     { name = "pre-commit", specifier = ">=4.5.1" },
     { name = "ruff", specifier = ">=0.14.14" },
@@ -411,15 +420,6 @@ pytest = [
     { name = "pytest", specifier = "==9.0.3" },
     { name = "pytest-cov", specifier = "==7.0.0" },
     { name = "pytest-django", specifier = "==4.11.1" },
-]
-
-[[package]]
-name = "isort"
-version = "8.0.1"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/ef/7c/ec4ab396d31b3b395e2e999c8f46dec78c5e29209fac49d1f4dace04041d/isort-8.0.1.tar.gz", hash = "sha256:171ac4ff559cdc060bcfff550bc8404a486fee0caab245679c2abe7cb253c78d", size = 769592, upload-time = "2026-02-28T10:08:20.685Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/3e/95/c7c34aa53c16353c56d0b802fba48d5f5caa2cdee7958acbcb795c830416/isort-8.0.1-py3-none-any.whl", hash = "sha256:28b89bc70f751b559aeca209e6120393d43fbe2490de0559662be7a9787e3d75", size = 89733, upload-time = "2026-02-28T10:08:19.466Z" },
 ]
 
 [[package]]

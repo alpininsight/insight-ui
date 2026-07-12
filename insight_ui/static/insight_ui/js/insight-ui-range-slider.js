@@ -165,8 +165,8 @@ export class RangeSlider {
         const minPercent = ((minVal - min) / (max - min)) * 100;
         const maxPercent = ((maxVal - min) / (max - min)) * 100;
 
-        this.element.style.setProperty("--range-min", `${minPercent}%`);
-        this.element.style.setProperty("--range-max", `${maxPercent}%`);
+        this.element.style.setProperty("--insight-control-range-min", `${minPercent}%`);
+        this.element.style.setProperty("--insight-control-range-max", `${maxPercent}%`);
 
         // Update track highlight position (handle RTL)
         if (this.track) {
@@ -202,7 +202,7 @@ export class RangeSlider {
         const val = Number(this.input.value);
 
         const percent = ((val - min) / (max - min)) * 100;
-        this.element.style.setProperty("--range-progress", `${percent}%`);
+        this.element.style.setProperty("--insight-control-range-progress", `${percent}%`);
 
         // Update ARIA attribute for screen readers
         this.input.setAttribute("aria-valuenow", val);

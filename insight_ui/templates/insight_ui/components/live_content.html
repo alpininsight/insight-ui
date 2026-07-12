@@ -5,14 +5,13 @@
     hx-get="{{ htmx_config.request_url }}"
     hx-trigger="{{ htmx_config.trigger }}"
     hx-swap="{{ htmx_config.swap }}"
-    hx-ext="progressive-enhancement"
-    data-loading-class="insight-live-content--loading"
+    hx-indicator=".htmx-indicator"
     aria-live="polite"
     aria-busy="false"
     tabindex="-1"
 >
     {# Loading Spinner #}
-    <div class="htmx-spinner" style="display: none;" role="status">
+    <div class="htmx-indicator" role="status">
         <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-insight-primary" aria-hidden="true"></div>
         <span class="ml-2 text-sm text-secondary">{% trans 'Loading...' %}</span>
     </div>

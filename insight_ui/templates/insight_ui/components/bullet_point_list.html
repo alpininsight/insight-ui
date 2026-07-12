@@ -23,7 +23,7 @@
                 <span class="flex items-center h-9">
                     <span class="relative z-10 flex items-center justify-center size-8 border-2 {% if not item.completed and not item.current %}border-gray-100 dark:border-gray-600{% else %}border-gray-300{% endif %} rounded-full text-primary">
                         {% if item.completed %}
-                            {% icon name="tick" size="s" %}
+                            {% icon name="check" size="s" %}
                         {% elif item.bullet_icon %}
                             {% icon item.bullet_icon %}
                         {% elif item.bullet_text %}

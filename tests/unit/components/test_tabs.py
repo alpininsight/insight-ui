@@ -7,5 +7,3 @@ from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
 class TestTabs(TemplateTagsTestCase):
     """Test suite for the tabs component."""
-
-    pass

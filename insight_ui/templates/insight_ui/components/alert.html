@@ -3,11 +3,11 @@
 <div
   {% if alert_config.tag_id %}id="{{ alert_config.tag_id }}"{% endif %}
   role="alert"
-  class="flex justify-between w-full h-fit shadow p-4 rounded {% if alert_config.type == "success" %}bg-insight-success/15{% elif alert_config.type == "warning" %}bg-insight-warning/15{% elif alert_config.type == "error" %}bg-insight-danger/15{% else %}bg-insight-info/15{% endif %}"
+  class="flex justify-between w-full h-fit insight-shadow-subtle p-4 insight-radius-surface {% if alert_config.type == "success" %}bg-insight-success/15{% elif alert_config.type == "warning" %}bg-insight-warning/15{% elif alert_config.type == "error" %}bg-insight-danger/15{% else %}bg-insight-info/15{% endif %}"
 >
   <div class="flex items-center gap-2 {% if alert_config.type == "success" %}text-insight-success{% elif alert_config.type == "warning" %}text-insight-warning{% elif alert_config.type == "error" %}text-insight-danger{% else %}text-insight-info{% endif %}">
     {% if alert_config.type == 'success' %}
-      {% icon name="tick" %}
+      {% icon name="check" %}
     {% elif alert_config.type == 'warning' %}
       {% icon name="warning" %}
     {% elif alert_config.type == 'error' %}
@@ -19,12 +19,6 @@
   </div>
 
   {% if alert_config.dismissible %}
-    <button
-      class="bg-white h-fit rounded-sm p-2 text-insight-text-primary hover:bg-gray-100 hover:dark:bg-gray-300 transition"
-      aria-label="{% trans 'Close' %}"
-      data-insight-dismiss="alert"
-    >
-      {% icon name="x-mark" size="xs" %}
-    </button>
+    {% button label=_("Close") icon_name="x-mark" icon_size="xs" icon_only=True type="secondary" size="s" outline=True data_insight_dismiss="alert" %}
   {% endif %}
 </div>

@@ -1,26 +1,100 @@
+{% load i18n insight_tags %}
 
-<div class="w-full bg-gray-200 h-4 rounded-full">
-    <div class="bg-blue-600 h-4 rounded-full animate-progress-bar" id="progress-bar" style="width: 0%"></div>
+<div
+    data-insight-progress-bar="{{ progress_bar_config.tag_id }}"
+    data-announce-interval="10"
+    data-request-url="{{ progress_bar_config.request_url }}"
+    data-interval="{{ progress_bar_config.interval }}"
+    data-sse-url="{{ progress_bar_config.sse_url }}"
+    data-hide-on-complete="{{ progress_bar_config.hide_on_complete|yesno:'true,false' }}"
+    data-complete-delay="{{ progress_bar_config.complete_delay }}"
+    data-min-value="{{ progress_bar_config.min_value }}"
+    data-max-value="{{ progress_bar_config.max_value }}"
+    data-stop-on-error="{{ progress_bar_config.stop_on_error|yesno:'true,false' }}"
+    data-cancel-url="{{ progress_bar_config.cancel_url }}"
+    class="relative"
+>
+    {# Label #}
+    {% if progress_bar_config.label %}
+        <div class="flex justify-between items-center mb-1">
+            <span data-progress-label class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                {{ progress_bar_config.label }}
+            </span>
+            {% if progress_bar_config.show_value %}
+                <span data-progress-value class="text-sm font-medium text-gray-700 dark:text-gray-300" aria-hidden="true">
+                    {{ progress_bar_config.value }}%
+                </span>
+            {% endif %}
+        </div>
+    {% elif progress_bar_config.show_value %}
+        <div class="flex justify-end mb-1">
+            <span data-progress-value class="text-sm font-medium text-gray-700 dark:text-gray-300" aria-hidden="true">
+                {{ progress_bar_config.value }}%
+            </span>
+        </div>
+    {% endif %}
+
+    {# Progress bar #}
+    <div
+        data-progress-track
+        class="relative cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800 rounded-full"
+        role="progressbar"
+        aria-valuenow="{{ progress_bar_config.value }}"
+        aria-valuemin="{{ progress_bar_config.min_value }}"
+        aria-valuemax="{{ progress_bar_config.max_value }}"
+        {% if progress_bar_config.label %}aria-label="{{ progress_bar_config.label }}"{% endif %}
+        aria-valuetext="{{ progress_bar_config.value }}% {% if progress_bar_config.label %}{{ progress_bar_config.label }}{% endif %}"
+        tabindex="0"
+        data-insight-tooltip="{% if progress_bar_config.label %}{{ progress_bar_config.label }}: {% endif %}{{ progress_bar_config.value }}%"
+        data-position="top"
+        data-follow-mouse="true"
+    >
+        {# Track #}
+        <div class="insight-progress-track">
+            <div
+                data-progress-fill
+                class="insight-progress-fill"
+                style="width: {{ progress_bar_config.value }}%"
+                data-value="{{ progress_bar_config.value }}"
+                data-label="{{ progress_bar_config.label }}"
+            >
+            </div>
+        </div>
+    </div>
+
+    {# Screen reader announcements for progress updates #}
+    <div
+        data-progress-announce
+        class="sr-only"
+        aria-live="polite"
+        aria-atomic="true"
+    ></div>
+
+    <div class="flex items-center justify-between mt-2">
+        {# Status message #}
+        <div
+            data-progress-error
+            class="flex items-center gap-2 text-sm text-amber-600 dark:text-amber-400 hidden"
+            role="alert"
+            aria-live="polite"
+        >
+            <svg data-error-icon-warning class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+            <svg data-error-icon-error class="w-4 h-4 shrink-0 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span data-error-message></span>
+        </div>
+
+        {# Controls #}
+        <div class="flex items-center gap-2">
+            {% if progress_bar_config.show_cancel %}
+                {% button type="link" size="s" label=progress_bar_config.cancel_label|default:_("Cancel") data_progress_cancel="" %}
+            {% endif %}
+            {% if progress_bar_config.show_retry %}
+                {% button type="link" size="s" label=progress_bar_config.retry_label|default:_("Retry") data_progress_retry="" hidden=True %}
+            {% endif %}
+        </div>
+    </div>
 </div>
-
-<style>
-    .animate-progress-bar {
-        transition: width 0.5s ease-in-out;
-    }
-</style>
-
-<script>
-    let progress = 0;
-    const progressBar = document.getElementById("progress-bar");
-
-    function simulateDownload() {
-        if (progress < 100) {
-            progress += 1;
-            progressBar.style.width = progress + "%";
-        } else {
-            clearInterval(downloadInterval);
-        }
-    }
-
-    const downloadInterval = setInterval(simulateDownload, 100);
-</script>

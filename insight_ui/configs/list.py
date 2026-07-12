@@ -9,8 +9,7 @@ from django.utils.translation import gettext_lazy as _
 
 @dataclass
 class InfiniteScrollConfig:
-    """
-    Configuration for the infinite_scroll component.
+    """Configuration for the infinite_scroll component.
 
     Renders a container that loads more content on scroll.
 
@@ -48,8 +47,7 @@ class InfiniteScrollConfig:
 
 @dataclass
 class PaginationIppConfig:
-    """
-    Configuration for items-per-page selector in pagination.
+    """Configuration for items-per-page selector in pagination.
 
     Attributes:
         name: Form field name.
@@ -89,8 +87,7 @@ class PaginationIppConfig:
 
 @dataclass
 class TableConfig:
-    """
-    Configuration for the table component.
+    """Configuration for the table component.
 
     Renders a simple data table.
 
@@ -126,8 +123,7 @@ class TableConfig:
 
 @dataclass
 class PaginationConfig:
-    """
-    Configuration for the pagination component.
+    """Configuration for the pagination component.
 
     Renders pagination controls with items per page selection.
 

@@ -1,10 +1,10 @@
 """Django settings."""
 
-import os
 from pathlib import Path
 from typing import Any
 
 from decouple import UndefinedValueError, config
+from insight_ui.configs.utils import LogoConfig
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -145,7 +145,7 @@ USE_TZ = True
 
 LANGUAGES = [("de", "Deutsch"), ("en", "English")]
 
-LOCALE_PATHS = [os.path.join(BASE_DIR, "insight_ui", "locale")]
+LOCALE_PATHS = [BASE_DIR / "insight_ui" / "locale"]
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = "/static/"
@@ -154,7 +154,7 @@ STATIC_ROOT.mkdir(parents=True, exist_ok=True)
 STATICFILES_DIRS = [BASE_DIR / "insight_ui/static/insight_ui/"]
 
 # Tailwind source file
-TAILWIND_CLI_SRC_CSS = os.path.join(BASE_DIR, "insight_ui/utils/input.css")
+TAILWIND_CLI_SRC_CSS = BASE_DIR / "insight_ui" / "utils" / "input.css"
 
 # WhiteNoise configuration
 STORAGES = {
@@ -196,6 +196,15 @@ INSIGHT_UI = {
     "load_echarts": True,  # Turn to 'True' to use Chart-Components
     "JS_DEBUG": INSIGHT_UI_JS_DEBUG,  # Turn to 'True' to enable build in browser console logging
     "use_tailwind_cli": USE_TAILWIND_CLI,  # Turn to 'True' to enable the tailwind cli, if you want to modify the styles
+    "brand": {
+        "title": "Insight UI",
+        "home_url": "/",
+        "logo": LogoConfig(
+            "insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="2rem"
+        ),
+        "mark": None,
+        "footer_text": "A modern, accessible, and responsive UI library for Django projects.",
+    },
     "assets": {
         "use_minified": INSIGHT_UI_USE_MINIFIED_ASSETS,
         "cdn_enabled": INSIGHT_UI_CDN_ENABLED,

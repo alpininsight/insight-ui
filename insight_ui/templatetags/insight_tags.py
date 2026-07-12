@@ -3,16 +3,17 @@
 from __future__ import annotations
 
 import math
-import re
 from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import MISSING, fields, is_dataclass, replace
 from difflib import HtmlDiff, ndiff, unified_diff
 from types import UnionType
-from typing import Any, Final, Literal, TypeVar, get_args, get_origin, get_type_hints
+from typing import TYPE_CHECKING, Any, Final, Literal, TypeVar, cast, get_args, get_origin, get_type_hints
 
 from django import template
-from django.core.paginator import Page
 from django.templatetags.static import static
+
+if TYPE_CHECKING:
+    from django.core.paginator import Page
 from django.utils.functional import Promise
 from django.utils.safestring import SafeString, mark_safe
 from django.utils.translation import gettext as _
@@ -21,16 +22,16 @@ from markdown import markdown
 from insight_ui.config import get_config
 from insight_ui.configs import (
     AccordionConfig,
-    ActionConfig,
     AlertConfig,
     AppCardConfig,
     ArticleConfig,
     BadgeConfig,
-    BrandLockupConfig,
+    BrandMarkConfig,
     BreadcrumbItemConfig,
     BreadcrumbsConfig,
     BulletPointItemConfig,
     BulletPointListConfig,
+    ButtonConfig,
     CardCarouselConfig,
     CardConfig,
     CarouselItemConfig,
@@ -41,6 +42,7 @@ from insight_ui.configs import (
     CheckboxGroupConfig,
     CopyrightNoticeConfig,
     CornerRibbonConfig,
+    DataAttrConfig,
     DropdownConfig,
     FlipCardConfig,
     FooterConfig,
@@ -77,6 +79,7 @@ from insight_ui.configs import (
     SidebarConfig,
     SidebarDataConfig,
     SliderConfig,
+    StatusScreenConfig,
     StepperConfig,
     StepperItemConfig,
     TableConfig,
@@ -87,6 +90,7 @@ from insight_ui.configs import (
     ToggleViewConfig,
     WebSocketConfig,
 )
+from insight_ui.configs.utils import ProgressBarConfig
 from insight_ui.utils.diff import file_template, styles
 
 register = template.Library()
@@ -107,7 +111,15 @@ T = TypeVar("T")
 
 
 def _resolve_asset_url(value: object) -> str:
-    """Resolve static asset paths while preserving absolute, root-relative, and data URLs."""
+    """Resolve static asset paths while preserving absolute, root-relative, and data URLs.
+
+    Args:
+        value: The asset path or URL to resolve.
+
+    Returns:
+        The resolved URL, or empty string if value is falsy.
+
+    """
     if not value:
         return ""
 
@@ -119,7 +131,15 @@ def _resolve_asset_url(value: object) -> str:
 
 
 def ensure_list(value: str | Iterable[str] | None) -> list[str]:
-    """Take a string or a list of strings and return in both cases a list of strings."""
+    """Take a string or a list of strings and return in both cases a list of strings.
+
+    Args:
+        value: A string, iterable of strings, or None.
+
+    Returns:
+        A list of strings, empty list if value is None.
+
+    """
     if value is None:
         return []
 
@@ -130,19 +150,45 @@ def ensure_list(value: str | Iterable[str] | None) -> list[str]:
 
 
 def _is_dataclass_type(annotation: object) -> bool:
-    """Return whether a type annotation directly describes a dataclass config."""
+    """Return whether a type annotation directly describes a dataclass config.
+
+    Args:
+        annotation: The type annotation to check.
+
+    Returns:
+        True if annotation is a dataclass type, False otherwise.
+
+    """
     return isinstance(annotation, type) and is_dataclass(annotation)
 
 
 def _coerce_mapping_to_config[T](cls: type[T], value: Mapping[str, Any]) -> T:
-    """Create a dataclass config from a mapping, including nested config values."""
+    """Create a dataclass config from a mapping, including nested config values.
+
+    Args:
+        cls: The dataclass type to instantiate.
+        value: The mapping of field names to values.
+
+    Returns:
+        An instance of the dataclass with coerced values.
+
+    """
     type_hints = get_type_hints(cls)
     coerced_values = {key: _coerce_config_value(item, type_hints.get(key, Any)) for key, item in value.items()}
     return cls(**coerced_values)
 
 
 def _coerce_sequence_to_config(value: Sequence[Any], annotation: object) -> list[Any]:
-    """Convert list-like config values according to their annotated item type."""
+    """Convert list-like config values according to their annotated item type.
+
+    Args:
+        value: The sequence to convert.
+        annotation: The type annotation describing the expected item type.
+
+    Returns:
+        A list with items coerced to the annotated type.
+
+    """
     origin = get_origin(annotation)
     if origin in (list, Sequence):
         args = get_args(annotation)
@@ -159,7 +205,15 @@ def _coerce_sequence_to_config(value: Sequence[Any], annotation: object) -> list
 
 
 def _expects_sequence_config(annotation: object) -> bool:
-    """Return whether an annotation expects a list-like config value."""
+    """Return whether an annotation expects a list-like config value.
+
+    Args:
+        annotation: The type annotation to check.
+
+    Returns:
+        True if annotation expects a sequence, False otherwise.
+
+    """
     origin = get_origin(annotation)
     if origin in (list, Sequence):
         return True
@@ -171,7 +225,16 @@ def _expects_sequence_config(annotation: object) -> bool:
 
 
 def _coerce_config_value(value: Any, annotation: object) -> Any:  # noqa: ANN401
-    """Coerce mapping and sequence values into annotated dataclass config types."""
+    """Coerce mapping and sequence values into annotated dataclass config types.
+
+    Args:
+        value: The value to coerce.
+        annotation: The target type annotation.
+
+    Returns:
+        The coerced value, or unchanged if no coercion applies.
+
+    """
     origin = get_origin(annotation)
 
     if isinstance(value, Mapping):
@@ -194,16 +257,23 @@ def _coerce_config_value(value: Any, annotation: object) -> Any:  # noqa: ANN401
 
 
 def build_config[T](cls: type[T], config: T | None = None, **kwargs: Any) -> T:  # noqa: ANN401
-    """
-    Create or update a dataclass instance.
+    """Create or update a dataclass instance.
 
-    Parameters with value UNSET are ignored.
+    Parameters with value UNSET are ignored. If config is None, creates a new
+    instance and validates required fields. If config is given, returns a copy
+    with provided overrides applied.
 
-    If config is None:
-        Creates a new instance and validates required fields.
+    Args:
+        cls: The dataclass type to create or update.
+        config: An existing config instance to update, or None to create new.
+        **kwargs: Field values to set or override.
 
-    If config is given:
-        Returns a copy with provided overrides applied.
+    Returns:
+        A new or updated dataclass instance.
+
+    Raises:
+        ValueError: If required fields are missing when creating a new instance.
+
     """
     overrides = {key: value for key, value in kwargs.items() if value is not UNSET}
 
@@ -223,22 +293,6 @@ def build_config[T](cls: type[T], config: T | None = None, **kwargs: Any) -> T: 
         raise ValueError(f"Missing required fields for {cls.__name__}: {', '.join(missing)}")  # noqa: TRY003
 
     return cls(**overrides)
-
-
-def merge_config(config: Any, **overrides) -> Any:  # noqa: ANN401
-    """Take a component config Dataclass and overwrite the respective member with the kwargs."""
-    if config is None:
-        return config.__class__(**overrides)
-
-    values = {}
-    for field in fields(config):
-        override = overrides.get(field.name)
-        if override:
-            values[field.name] = override
-        else:
-            values[field.name] = getattr(config, field.name)
-
-    return replace(config, **values)
 
 
 @register.filter
@@ -271,7 +325,7 @@ def icon(
     color: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render specified icon with given size."""
-    config = build_config(IconConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(IconConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"icon_config": config}
 
 
@@ -290,7 +344,7 @@ def page_header(
     description: str | list[str] | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a page header in the base template."""
-    config = build_config(PageHeaderConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(PageHeaderConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     config.description = ensure_list(config.description)
 
     return {"page_header_config": config}
@@ -306,7 +360,7 @@ def article(
     title: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render an article in newspaper style with a multi-column layout."""
-    config = build_config(ArticleConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(ArticleConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"article_config": config}
 
 
@@ -317,14 +371,62 @@ def hero(
     title: str | _Unset = UNSET,
     subtitle: str | _Unset = UNSET,
     description: str | _Unset = UNSET,
-    cta_primary: ActionConfig | _Unset = UNSET,
-    cta_secondary: ActionConfig | _Unset = UNSET,
+    cta_primary: ButtonConfig | _Unset = UNSET,
+    cta_secondary: ButtonConfig | _Unset = UNSET,
     background_image_url: str | _Unset = UNSET,
-    badge: BadgeConfig | _Unset = UNSET,
+    badge_config: BadgeConfig | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a hero section with optional background image."""
-    config = build_config(HeroConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(HeroConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"hero_config": config}
+
+
+STATUS_SCREEN_ICON_BY_STATUS = {
+    "info": "information-circle",
+    "success": "check",
+    "warning": "exclamation-triangle",
+    "error": "exclamation-circle",
+}
+STATUS_SCREEN_STATUSES: Final = frozenset(STATUS_SCREEN_ICON_BY_STATUS)
+type StatusScreenStatus = Literal["info", "success", "warning", "error"]
+
+
+def _validate_status_screen_status(value: object) -> StatusScreenStatus:
+    """Validate status_screen status values before template lookup."""
+    if value in STATUS_SCREEN_STATUSES:
+        return cast("StatusScreenStatus", value)
+    message = "status_screen status must be one of: info, success, warning, error"
+    raise ValueError(message)
+
+
+@register.inclusion_tag("insight_ui/components/status_screen.html")
+def status_screen(
+    config: StatusScreenConfig | None = None,
+    *,
+    title: str | _Unset = UNSET,
+    description: str | list[str] | _Unset = UNSET,
+    status: Literal["info", "success", "warning", "error"] | _Unset = UNSET,
+    brand: BrandMarkConfig | None | _Unset = UNSET,
+    notice_title: str | _Unset = UNSET,
+    notice: str | _Unset = UNSET,
+    primary_action: ButtonConfig | _Unset = UNSET,
+    secondary_action: ButtonConfig | _Unset = UNSET,
+    actions: list[ButtonConfig] | _Unset = UNSET,
+    css_class: str | _Unset = UNSET,
+    card_css_class: str | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a generic centered status screen."""
+    config = build_config(StatusScreenConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    config.description = ensure_list(config.description)
+    config.status = _validate_status_screen_status(config.status)
+
+    all_actions = [action for action in [config.primary_action, config.secondary_action, *config.actions] if action]
+    config.actions = all_actions
+
+    return {
+        "status_screen_config": config,
+        "status_screen_icon": STATUS_SCREEN_ICON_BY_STATUS[config.status],
+    }
 
 
 # =============================================================
@@ -356,7 +458,7 @@ def sidebar(
     mobile_hidden: bool | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a configurable page navigation."""
-    config = build_config(SidebarConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(SidebarConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {
         "sidebar_config": config,
         "sidebar_data": config.sidebar_data,
@@ -379,7 +481,7 @@ def breadcrumbs(
     config: BreadcrumbsConfig | None = None, *, items: list[BreadcrumbItemConfig] | None | _Unset = UNSET
 ) -> dict[str, Any]:
     """Render breadcrumb navigation."""
-    config = build_config(BreadcrumbsConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(BreadcrumbsConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"items": config.items, "htmx": config.htmx}
 
 
@@ -388,7 +490,7 @@ def stepper(
     config: StepperConfig | None = None, *, items: list[StepperItemConfig] | None | _Unset = UNSET
 ) -> dict[str, Any]:
     """Render a graphical representation of process steps."""
-    config = build_config(StepperConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(StepperConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"items": config.items}
 
 
@@ -403,7 +505,7 @@ def minimal_stepper(
     icon_size: Literal["xs", "s", "m", "l", "xl"] | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a compact graphical representation of process steps."""
-    config = build_config(MinimalStepperConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(MinimalStepperConfig, config, **{k: v for k, v in locals().items() if k != "config"})
 
     # Generate items from step_count if not provided
     if not config.items and config.step_count > 0:
@@ -424,7 +526,7 @@ def bullet_point_list(
     config: BulletPointListConfig | None = None, *, items: list[BulletPointItemConfig] | None | _Unset = UNSET
 ) -> dict[str, Any]:
     """Render a graphical representation of a bullet point list."""
-    config = build_config(BulletPointListConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(BulletPointListConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"items": config.items, "htmx": config.htmx}
 
 
@@ -447,6 +549,102 @@ def tabs(config: TabsConfig) -> dict[str, Any]:
 # =============================================================
 
 
+@register.inclusion_tag("insight_ui/components/button.html")
+def button(
+    config: ButtonConfig | None = None,
+    *,
+    tag_id: str | _Unset = UNSET,
+    label: str | _Unset = UNSET,
+    request_url: str | _Unset = UNSET,
+    on_click: str | _Unset = UNSET,
+    icon_name: str | _Unset = UNSET,
+    icon_size: str | _Unset = UNSET,
+    icon_end: bool | _Unset = UNSET,
+    icon_only: bool | _Unset = UNSET,
+    type: Literal["primary", "secondary", "info", "success", "warning", "danger", "disabled", "link"] | _Unset = UNSET,  # noqa: A002
+    size: Literal["xs", "s", "m", "l", "xl"] | _Unset = UNSET,
+    outline: bool | _Unset = UNSET,
+    subtle: bool | _Unset = UNSET,
+    round: bool | _Unset = UNSET,  # noqa: A002
+    tooltip: str | _Unset = UNSET,
+    htmx_config: HtmxConfig | _Unset = UNSET,
+    hidden: bool | _Unset = UNSET,
+    button_type: Literal["button", "submit", "reset"] | _Unset = UNSET,
+    extra_classes: str | _Unset = UNSET,
+    **kwargs: Any,  # noqa: ANN401
+) -> dict[str, Any]:
+    """Render the button component.
+
+    Supports data_* kwargs for custom data attributes, e.g.:
+        {% button label="Retry" data_progress_retry="" data_retry="retry-btn" %}
+    becomes:
+        <button data-progress-retry="" data-retry="retry-btn">Retry</button>
+
+    Supports aria_* kwargs for ARIA attributes, e.g.:
+        {% button label="Menu" aria_expanded="false" aria_controls="menu-id" %}
+    becomes:
+        <button aria-expanded="false" aria-controls="menu-id">Menu</button>
+
+    Supports hx_* kwargs for HTMX attributes, e.g.:
+        {% button label="Load" hx_get="/api/data" hx_swap="outerHTML" %}
+    becomes:
+        <button hx-get="/api/data" hx-swap="outerHTML">Load</button>
+    """
+    icon: IconConfig | None | _Unset = UNSET
+    if icon_name is not UNSET:
+        icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "m") if icon_name else None
+
+    # Collect data_* kwargs and convert to DataAttrConfig list
+    data_attrs: list[DataAttrConfig] | _Unset = UNSET
+    data_kwargs = {k: v for k, v in kwargs.items() if k.startswith("data_")}
+    if data_kwargs:
+        data_attrs = [
+            DataAttrConfig(name=key[5:].replace("_", "-"), value=str(value)) for key, value in data_kwargs.items()
+        ]
+
+    # Collect aria_* kwargs and convert to DataAttrConfig list
+    aria_attrs: list[DataAttrConfig] | _Unset = UNSET
+    aria_kwargs = {k: v for k, v in kwargs.items() if k.startswith("aria_")}
+    if aria_kwargs:
+        aria_attrs = [
+            DataAttrConfig(name=key[5:].replace("_", "-"), value=str(value)) for key, value in aria_kwargs.items()
+        ]
+
+    # Collect hx_* kwargs and convert to DataAttrConfig list
+    hx_attrs: list[DataAttrConfig] | _Unset = UNSET
+    hx_kwargs = {k: v for k, v in kwargs.items() if k.startswith("hx_")}
+    if hx_kwargs:
+        hx_attrs = [
+            DataAttrConfig(name=key[3:].replace("_", "-"), value=str(value)) for key, value in hx_kwargs.items()
+        ]
+
+    config = build_config(
+        ButtonConfig,
+        config,
+        tag_id=tag_id,
+        label=label,
+        request_url=request_url,
+        on_click=on_click,
+        icon=icon,
+        icon_end=icon_end,
+        icon_only=icon_only,
+        type=type,
+        size=size,
+        outline=outline,
+        subtle=subtle,
+        round=round,
+        tooltip=tooltip,
+        htmx_config=htmx_config,
+        hidden=hidden,
+        button_type=button_type,
+        extra_classes=extra_classes,
+        data_attrs=data_attrs,
+        aria_attrs=aria_attrs,
+        hx_attrs=hx_attrs,
+    )
+    return {"button_config": config}
+
+
 @register.inclusion_tag("insight_ui/components/input.html")
 def input_field(
     config: InputFieldConfig | None = None,
@@ -466,7 +664,7 @@ def input_field(
     label: str | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render any <input> field."""
-    config = build_config(InputFieldConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(InputFieldConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"input_config": config}
 
 
@@ -485,7 +683,7 @@ def textarea(
     label: str | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a <textarea> field."""
-    config = build_config(TextareaConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(TextareaConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"textarea_config": config}
 
 
@@ -501,7 +699,7 @@ def checkbox(
     disabled: bool | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a checkbox with label text."""
-    config = build_config(CheckboxConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(CheckboxConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"checkbox_config": config}
 
 
@@ -528,7 +726,7 @@ def radio_group(
     current_value: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a group of radio buttons."""
-    config = build_config(RadioGroupConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(RadioGroupConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"radio_group_config": config}
 
 
@@ -548,7 +746,7 @@ def radio_block(
     current_value: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a group of radio buttons as a block."""
-    config = build_config(RadioBlockConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(RadioBlockConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"radio_block_config": config}
 
 
@@ -571,7 +769,7 @@ def slider(
     value_max: int | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a range slider."""
-    config = build_config(SliderConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(SliderConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"slider_config": config}
 
 
@@ -590,7 +788,7 @@ def toggle(
     method: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a toggle button."""
-    config = build_config(ToggleConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(ToggleConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"toggle_config": config}
 
 
@@ -609,11 +807,11 @@ def select(
     """Render a selection box."""
     if config is None:
         if isinstance(options, list):
-            options = dict(zip(options, options))
+            options = dict(zip(options, options, strict=True))
     elif isinstance(config.options, list):
-        config.options = dict(zip(config.options, config.options))
+        config.options = dict(zip(config.options, config.options, strict=True))
 
-    config = build_config(SelectConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(SelectConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"select_config": config}
 
 
@@ -631,18 +829,18 @@ def multiselect(
     """Render a selection box that allows multiple values."""
     if config is None:
         if isinstance(options, list):
-            options = dict(zip(options, options))
+            options = dict(zip(options, options, strict=True))
     elif isinstance(config.options, list):
-        config.options = dict(zip(config.options, config.options))
+        config.options = dict(zip(config.options, config.options, strict=True))
 
-    config = build_config(MultiselectConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(MultiselectConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"multiselect_config": config}
 
 
 @register.inclusion_tag("insight_ui/components/chat.html")
 def chat(config: ChatConfig | None = None, *, request_url: str | _Unset = UNSET) -> dict[str, Any]:
     """Render a chat with an input line and a place for the response."""
-    config = build_config(ChatConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(ChatConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"request_url": config.request_url}
 
 
@@ -663,7 +861,7 @@ def alert(
     dismissible: bool | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a closable notification."""
-    config = build_config(AlertConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(AlertConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"alert_config": config}
 
 
@@ -674,11 +872,11 @@ def modal(
     tag_id: str | _Unset = UNSET,
     title: str | _Unset = UNSET,
     description: str | list[str] | _Unset = UNSET,
-    actions: Sequence[ActionConfig] | None | _Unset = UNSET,
+    actions: Sequence[ButtonConfig] | None | _Unset = UNSET,
     width: int | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render an accessible modal dialog."""
-    config = build_config(ModalConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(ModalConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     config.description = ensure_list(config.description)
     return {"modal_config": config}
 
@@ -719,7 +917,7 @@ def copyright_notice(
     rights_text: str | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a reusable copyright and legal notice line."""
-    config = build_config(CopyrightNoticeConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(CopyrightNoticeConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     metadata = [
         {"text": config.source_label or "", "url": ""},
         {"text": config.license_text or "", "url": config.license_url or ""},
@@ -731,17 +929,14 @@ def copyright_notice(
 
 @register.filter
 def diff(a: str, b: str, simple: bool = True) -> str:
-    """
-    Generate a visualization of the differences between two texts.
+    """Generate a visualization of the differences between two texts.
 
     Args:
-    ----
         a: The original version of the text.
         b: The modified version of the text.
         simple: 'True' for a simplified display.
 
     Returns:
-    -------
         The HTML code for the graphical representation of the differences.
 
     """
@@ -788,7 +983,7 @@ def logo(
     # Only override icon if icon_name was explicitly provided
     icon: IconConfig | None | _Unset = UNSET
     if icon_name is not UNSET:
-        icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "md") if icon_name else None
+        icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "m") if icon_name else None
 
     config = build_config(
         LogoConfig,
@@ -813,87 +1008,19 @@ def logo(
     }
 
 
-BRAND_LOCKUP_VARIANTS = ("main", "develop", "candidate")
-BRAND_LOCKUP_ICON_BY_VARIANT = {"main": "app", "develop": "rocket", "candidate": "sparkles"}
-CSS_SIZE_PATTERN = re.compile(r"^-?(?:\d+(?:\.\d+)?|\.\d+)(?:px|rem|em|vh|vw|vmin|vmax|%|ch|ex|lh|rlh)$")
-
-
-def _looks_like_css_size(value: object) -> bool:
-    """Return true when a positional value is intended as a CSS size."""
-    normalized = str(value).strip().lower()
-    return normalized in {"auto", "inherit", "initial", "revert", "unset"} or bool(CSS_SIZE_PATTERN.match(normalized))
-
-
-def _normalize_brand_lockup_variant(value: object) -> str:
-    """Normalize public variants and a small set of legacy aliases."""
-    normalized = str(value).strip().lower()
-    if normalized in BRAND_LOCKUP_VARIANTS:
-        return normalized
-    return "main"
-
-
-@register.inclusion_tag("insight_ui/components/brand_lockup.html")
-def brand_lockup(  # noqa: PLR0913
-    primary_text: str = "Alpin Insight",
-    secondary_text: str = "Solutions",
-    logo_position: str = "start",
-    height: str = "1.75rem",
-    variant: str = "main",
-    css_class: str | None = None,
-    config: BrandLockupConfig | Mapping[str, Any] | None = None,
+@register.inclusion_tag("insight_ui/components/brand_mark.html")
+def brand_mark(
+    config: BrandMarkConfig | None = None,
+    *,
+    primary_text: str | _Unset = UNSET,
+    secondary_text: str | _Unset = UNSET,
+    logo: LogoConfig | _Unset = UNSET,
+    logo_position: str | _Unset = UNSET,
+    css_class: str | _Unset = UNSET,
 ) -> dict[str, Any]:
-    """Render a public icon plus a two-tone wordmark."""
-    if config is None:
-        height_or_variant = str(height).strip().lower()
-        variant_or_height = str(variant).strip().lower()
-        if height_or_variant not in BRAND_LOCKUP_VARIANTS and not _looks_like_css_size(height):
-            if variant != "main" and _looks_like_css_size(variant):
-                height, variant = variant, height
-            elif variant == "main":
-                variant = height
-                height = "1.75rem"
-        elif variant == "main" and height_or_variant in BRAND_LOCKUP_VARIANTS:
-            variant = height
-            height = "1.75rem"
-        elif variant != "main" and variant_or_height not in BRAND_LOCKUP_VARIANTS and _looks_like_css_size(variant):
-            height, variant = variant, height
-
-        config = BrandLockupConfig(
-            primary_text=primary_text,
-            secondary_text=secondary_text,
-            logo_position="end" if str(logo_position).strip().lower() == "end" else "start",
-            height=height,
-            variant=_normalize_brand_lockup_variant(variant),
-            css_class=css_class or "",
-        )
-    elif isinstance(config, Mapping):
-        config = BrandLockupConfig(
-            primary_text=str(config.get("primary_text", primary_text) or ""),
-            secondary_text=str(config.get("secondary_text", secondary_text) or ""),
-            logo_position=(
-                "end" if str(config.get("logo_position", logo_position)).strip().lower() == "end" else "start"
-            ),
-            height=str(config.get("height", height) or "1.75rem"),
-            variant=_normalize_brand_lockup_variant(config.get("variant", variant)),
-            css_class=str(config.get("css_class", config.get("class", css_class or "")) or ""),
-        )
-    else:
-        config = replace(
-            config,
-            logo_position="end" if str(config.logo_position).strip().lower() == "end" else "start",
-            variant=_normalize_brand_lockup_variant(config.variant),
-        )
-
-    return {
-        "primary_text": config.primary_text,
-        "secondary_text": config.secondary_text,
-        "logo_position": config.logo_position,
-        "variant": config.variant,
-        "icon_name": BRAND_LOCKUP_ICON_BY_VARIANT[config.variant],
-        "icon_size": "l",
-        "height": config.height,
-        "css_class": config.css_class,
-    }
+    """Render a public logo plus a two-tone wordmark."""
+    config = build_config(BrandMarkConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    return {"brand_mark_config": config}
 
 
 @register.inclusion_tag("insight_ui/components/corner_ribbon.html")
@@ -905,8 +1032,35 @@ def corner_ribbon(
     color: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a corner ribbon positioned in any browser corner."""
-    config = build_config(CornerRibbonConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(CornerRibbonConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"corner_ribbon_config": config}
+
+
+@register.inclusion_tag("insight_ui/components/progress_bar.html")
+def progress_bar(
+    config: ProgressBarConfig | None = None,
+    *,
+    tag_id: str | _Unset = UNSET,
+    label: str | _Unset = UNSET,
+    request_url: str | _Unset = UNSET,
+    interval: int | _Unset = UNSET,
+    sse_url: str | _Unset = UNSET,
+    min_value: int | _Unset = UNSET,
+    max_value: int | _Unset = UNSET,
+    value: int | _Unset = UNSET,
+    show_value: bool | _Unset = UNSET,
+    hide_on_complete: bool | _Unset = UNSET,
+    complete_delay: int | _Unset = UNSET,
+    stop_on_error: bool | _Unset = UNSET,
+    show_cancel: bool | _Unset = UNSET,
+    cancel_label: str | _Unset = UNSET,
+    cancel_url: str | _Unset = UNSET,
+    show_retry: bool | _Unset = UNSET,
+    retry_label: str | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a simple progress bar."""
+    config = build_config(ProgressBarConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    return {"progress_bar_config": config}
 
 
 @register.inclusion_tag("insight_ui/components/geo_map.html")
@@ -919,7 +1073,7 @@ def geo_map(
     datasets: list[GeoMapDatasetConfig] | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render an integrated geographic map."""
-    config = build_config(GeoMapConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(GeoMapConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"map_config": config}
 
 
@@ -932,7 +1086,7 @@ def bar_chart(
     chart_height: int | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a bar chart with Apache ECharts."""
-    config = build_config(ChartConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(ChartConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"chart_config": config}
 
 
@@ -945,7 +1099,7 @@ def line_chart(
     chart_height: int | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a line chart with Apache ECharts."""
-    config = build_config(ChartConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(ChartConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"chart_config": config}
 
 
@@ -959,7 +1113,7 @@ def live_content(
     initial_content: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a container for live updates via HTMX."""
-    config = build_config(LiveContentConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(LiveContentConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     htmx_config = {"request_url": config.request_url, "trigger": f"load, every {config.interval}s", "swap": "innerHTML"}
 
     return {"live_content_config": config, "htmx_config": htmx_config}
@@ -974,8 +1128,28 @@ def websocket(
     initial_content: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a WebSocket component as a thin wrapper for the HTMX ws extension."""
-    config = build_config(WebSocketConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(WebSocketConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"websocket_config": config}
+
+
+@register.inclusion_tag("insight_ui/components/badge.html")
+def badge(
+    config: BadgeConfig | None = None,
+    *,
+    label: str | _Unset = UNSET,
+    icon_name: str | _Unset = UNSET,
+    icon_size: str | _Unset = UNSET,
+    icon_end: bool | _Unset = UNSET,
+    type: Literal["primary", "secondary", "info", "success", "warning", "danger", "disabled"] | _Unset = UNSET,  # noqa: A002
+    size: Literal["xs", "s", "m", "l", "xl"] | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render the badge component."""
+    icon: IconConfig | None | _Unset = UNSET
+    if icon_name is not UNSET:
+        icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "m") if icon_name else None
+
+    config = build_config(BadgeConfig, config, label=label, icon=icon, icon_end=icon_end, type=type, size=size)
+    return {"badge_config": config}
 
 
 # =============================================================
@@ -998,7 +1172,7 @@ def infinite_scroll(
     threshold: int | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a container for infinite scroll."""
-    config = build_config(InfiniteScrollConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(InfiniteScrollConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"infinite_scroll_config": config}
 
 
@@ -1012,7 +1186,7 @@ def pagination(
     ipp_config: PaginationIppConfig | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render pagination with items per page selection."""
-    config = build_config(PaginationConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(PaginationConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"pagination_config": config}
 
 
@@ -1039,7 +1213,7 @@ def search_bar(
     htmx_config: HtmxConfig | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render text input with a button for a search function."""
-    config = build_config(SearchBarConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(SearchBarConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"search_bar_config": config}
 
 
@@ -1053,7 +1227,7 @@ def generic_filter(
     htmx_config: HtmxConfig | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a generic filter consisting of one or more <select> fields."""
-    config = build_config(GenericFilterConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(GenericFilterConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"generic_filter_config": config}
 
 
@@ -1062,7 +1236,7 @@ def query_builder(
     config: QueryBuilderConfig | None = None, *, model_fields: list[QueryBuilderFieldConfig] | None | _Unset = UNSET
 ) -> dict[str, Any]:
     """Render a filter for constructing custom search queries."""
-    config = build_config(QueryBuilderConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(QueryBuilderConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"model_fields": config.model_fields}
 
 
@@ -1081,10 +1255,10 @@ def card(
     content: str | _Unset = UNSET,
     subtitle: str | _Unset = UNSET,
     image: ImageConfig | None | _Unset = UNSET,
-    actions: list[ActionConfig] | None | _Unset = UNSET,
+    actions: list[ButtonConfig] | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a card with an aspect ratio of 16:9."""
-    config = build_config(CardConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(CardConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"card_config": config}
 
 
@@ -1097,10 +1271,10 @@ def app_card(
     tags: list[str] | None | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
     image: ImageConfig | None | _Unset = UNSET,
-    actions: list[ActionConfig] | None | _Unset = UNSET,
+    actions: list[ButtonConfig] | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a vertically aligned card."""
-    config = build_config(AppCardConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(AppCardConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"app_card_config": config}
 
 
@@ -1113,12 +1287,12 @@ def flip_card(
     tags: list[str] | None | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
     image: ImageConfig | None | _Unset = UNSET,
-    actions: list[ActionConfig] | None | _Unset = UNSET,
+    actions: list[ButtonConfig] | None | _Unset = UNSET,
     back_content: str | None | _Unset = UNSET,
     back_style: str | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a card that can be rotated 180°."""
-    config = build_config(FlipCardConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(FlipCardConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"flip_card_config": config}
 
 
@@ -1133,7 +1307,7 @@ def carousel(
     items_per_slide: int | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a card carousel."""
-    config = build_config(CardCarouselConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(CardCarouselConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {
         "carousel_config": config,
         "slides_count": range(math.ceil(len(config.carousel_items) / config.items_per_slide))
@@ -1153,7 +1327,7 @@ def image_carousel(
     items_per_slide: int | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render an image carousel."""
-    config = build_config(ImageCarouselConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(ImageCarouselConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {
         "carousel_config": config,
         "slides_count": range(math.ceil(len(config.carousel_items) / config.items_per_slide))
@@ -1173,7 +1347,7 @@ def three_d_carousel(
     carousel_items: Sequence[CarouselItemConfig] | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a 3D version of the carousel component."""
-    config = build_config(ThreeDCarouselConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(ThreeDCarouselConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"carousel_config": config}
 
 
@@ -1187,7 +1361,7 @@ def toggle_view(
     view_radio_config: RadioBlockConfig | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a view of data that can be displayed in various ways."""
-    config = build_config(ToggleViewConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(ToggleViewConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"toggle_view_config": config}
 
 
@@ -1211,5 +1385,5 @@ def form(
     htmx_config: HtmxConfig | None | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a form with HTMX support."""
-    config = build_config(FormConfig, config, **{k: v for k, v in locals().items() if k not in {"config"}})
+    config = build_config(FormConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"form_config": config}

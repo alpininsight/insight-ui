@@ -1,6 +1,6 @@
 {% load i18n insight_tags %}
 
-<div class="bg-white dark:bg-gray-800 rounded-sm overflow-auto">
+<div class="insight-table-surface">
     <table class="table-auto w-full">
         {% if table_config.caption %}
             <caption class="text-sm text-secondary">{{ table_config.caption }}</caption>
@@ -8,13 +8,13 @@
 
         {% if table_config.headers %}
             <thead class="text-primary">
-                <tr class="border-b border-gray-300 dark:border-gray-700">
+                <tr class="insight-table-header-row">
                     {% for header in table_config.headers %}
                         <th class="text-start text-sm px-4 py-2" scope="col">
                             {% if sortable %}
                                 <div class="flex items-center gap-1">
                                     <span>{{ header }}</span>
-                                    {% icon name="chevron_both" size="xs" %}
+                                    {% icon name="chevron-up-down" size="xs" %}
                                 </div>
                             {% else %}
                                 {{ header }}
@@ -27,7 +27,7 @@
 
         <tbody class="text-primary">
             {% for row in table_config.rows %}
-                <tr class="odd:bg-gray-100 even:bg-white odd:dark:bg-gray-900 even:dark:bg-gray-800">
+                <tr class="insight-table-row">
                     {% for cell in row %}
                         <td class="text-start text-sm px-4 py-3">{{ cell|safe }}</td>
                     {% endfor %}
@@ -35,7 +35,7 @@
             {% empty %}
                 <tfoot>
                     <tr>
-                        <td colspan="{{ table_config.headers|length }}" class="w-full border-t border-gray-400 dark:border-gray-500 text-secondary text-center pt-16">
+                        <td colspan="{{ table_config.headers|length }}" class="insight-table-empty">
                             {{ table_config.empty_msg }}
                         </td>
                     </tr>
