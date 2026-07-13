@@ -187,6 +187,12 @@ SLIDER_LEGEND_MODE_VALUES: tuple[str, ...] = ("static", "skip", "rotate")
 # Type alias for slider legend modes
 type SliderLegendMode = Literal["static", "skip", "rotate"]
 
+# Tuple of valid toggle view type values
+TOGGLE_VIEW_TYPE_VALUES: tuple[str, ...] = ("card", "table", "carousel")
+
+# Type alias for toggle view types
+type ToggleViewType = Literal["card", "table", "carousel"]
+
 
 def _validate_literal(value: str, allowed: tuple[str, ...], field_name: str) -> None:
     """Validate that a value is one of the allowed values.
@@ -442,6 +448,20 @@ def validate_slider_legend_mode(value: str, field_name: str = "legend_mode") -> 
 
     """
     _validate_literal(value, SLIDER_LEGEND_MODE_VALUES, field_name)
+
+
+def validate_toggle_view_type(value: str, field_name: str = "current_view") -> None:
+    """Validate that a toggle view type value is one of the allowed values.
+
+    Args:
+        value: The toggle view type value to validate.
+        field_name: Name of the field for error messages.
+
+    Raises:
+        ValueError: If the value is not a valid toggle view type.
+
+    """
+    _validate_literal(value, TOGGLE_VIEW_TYPE_VALUES, field_name)
 
 
 @dataclass
