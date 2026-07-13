@@ -5,7 +5,7 @@ from typing import Literal
 
 from django.utils.translation import gettext_lazy as _
 
-from insight_ui.configs.base import HtmxConfig, IconConfig
+from insight_ui.configs.base import HtmxConfig, IconConfig, Size, validate_size
 from insight_ui.configs.input import DropdownConfig
 from insight_ui.configs.popup import ModalConfig
 from insight_ui.configs.utils import BrandMarkConfig, CopyrightNoticeConfig, LogoConfig
@@ -514,9 +514,11 @@ class MinimalStepperConfig:
     current_step_status: Literal["active", "success", "failed"] = field(
         default="active", metadata={"doc": _("Status of the current step. (Only if 'items' is not set!)")}
     )
-    icon_size: Literal["xs", "s", "m", "l", "xl"] = field(
-        default="xs", metadata={"doc": _("Size of the icons in the progress bar.")}
-    )
+    icon_size: Size = field(default="xs", metadata={"doc": _("Size of the icons in the progress bar.")})
+
+    def __post_init__(self) -> None:
+        """Validate icon_size after initialization."""
+        validate_size(self.icon_size, "icon_size")
 
 
 @dataclass

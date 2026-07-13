@@ -5,6 +5,29 @@ from typing import Any, Literal
 
 from django.utils.translation import gettext_lazy as _
 
+# Tuple of valid size values for runtime validation
+SIZE_VALUES: tuple[str, ...] = ("xs", "s", "m", "l", "xl")
+
+# Type alias for component sizes
+type Size = Literal["xs", "s", "m", "l", "xl"]
+
+
+def validate_size(value: str, field_name: str = "size") -> None:
+    """Validate that a size value is one of the allowed sizes.
+
+    Args:
+        value: The size value to validate.
+        field_name: Name of the field for error messages.
+
+    Raises:
+        ValueError: If the value is not a valid size.
+
+    """
+    if value not in SIZE_VALUES:
+        raise ValueError(  # noqa: TRY003
+            f"Invalid {field_name} '{value}'. Allowed values are: {', '.join(repr(s) for s in SIZE_VALUES)}"
+        )
+
 
 @dataclass
 class DataAttrConfig:
@@ -41,10 +64,12 @@ class IconConfig:
         """
 
     name: str = field(metadata={"doc": _("Name of the Insight UI icon.")})
-    size: Literal["xs", "s", "m", "l", "xl"] = field(
-        default="m", metadata={"doc": _("Icon size: 'xl', 'l', 'm', 's', or 'xs'.")}
-    )
+    size: Size = field(default="m", metadata={"doc": _("Icon size: 'xl', 'l', 'm', 's', or 'xs'.")})
     color: str = field(default="", metadata={"doc": _("Color Hex-Code of the icon.")})
+
+    def __post_init__(self) -> None:
+        """Validate size after initialization."""
+        validate_size(self.size, "size")
 
 
 @dataclass

@@ -1,4 +1,4 @@
-from dataclasses import fields
+from dataclasses import fields, is_dataclass
 
 import pytest
 from django.utils.translation import activate
@@ -55,7 +55,7 @@ def validate_config_docs(cls) -> None:  # noqa: ANN001
 
 def get_config_classes() -> list:
     """Retrieve all component config dataclasses."""
-    return [getattr(configs, name) for name in configs.__all__]
+    return [getattr(configs, name) for name in configs.__all__ if is_dataclass(getattr(configs, name))]
 
 
 @pytest.mark.parametrize("config_cls", get_config_classes())

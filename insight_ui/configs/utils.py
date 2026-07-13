@@ -5,7 +5,7 @@ from typing import Literal
 
 from django.utils.translation import gettext_lazy as _
 
-from insight_ui.configs.base import IconConfig
+from insight_ui.configs.base import IconConfig, Size, validate_size
 from insight_ui.configs.input import ButtonConfig
 
 
@@ -590,4 +590,8 @@ class BadgeConfig:
     type: Literal["primary", "secondary", "info", "success", "warning", "danger", "disabled"] = field(
         default="primary", metadata={"doc": "Defines the color of the badge."}
     )
-    size: Literal["xs", "s", "m", "l", "xl"] = field(default="m", metadata={"doc": "Defines the size of the badge."})
+    size: Size = field(default="m", metadata={"doc": "Defines the size of the badge."})
+
+    def __post_init__(self) -> None:
+        """Validate size after initialization."""
+        validate_size(self.size, "size")

@@ -29,7 +29,15 @@ Example usage:
     )
 """
 
-from insight_ui.configs.base import DataAttrConfig, HtmxConfig, IconConfig, ImageConfig
+from insight_ui.configs.base import (
+    SIZE_VALUES,
+    DataAttrConfig,
+    HtmxConfig,
+    IconConfig,
+    ImageConfig,
+    Size,
+    validate_size,
+)
 from insight_ui.configs.card import (
     AppCardConfig,
     CardCarouselConfig,
@@ -121,6 +129,7 @@ from insight_ui.configs.utils import (
 )
 
 __all__ = [
+    "SIZE_VALUES",
     "AccordionConfig",
     "AccordionConfig",
     "AccordionItemConfig",
@@ -213,6 +222,7 @@ __all__ = [
     "SidebarConfig",
     "SidebarDataConfig",
     "SidebarItemConfig",
+    "Size",
     "SliderConfig",
     "SliderConfig",
     "SpacerConfig",
@@ -231,4 +241,5 @@ __all__ = [
     "ToggleViewConfig",
     "VBoxConfig",
     "WebSocketConfig",
+    "validate_size",
 ]
