@@ -1,11 +1,10 @@
 """Configuration classes for form components."""
 
 from dataclasses import dataclass, field
-from typing import Literal
 
 from django.utils.translation import gettext_lazy as _
 
-from insight_ui.configs.base import HtmxConfig
+from insight_ui.configs.base import FormFieldType, HtmxConfig, validate_form_field_type
 
 
 @dataclass
@@ -40,7 +39,7 @@ class FormFieldConfig:
         )
         """
 
-    input_type: Literal["text", "password", "email", "number", "tel", "url", "date", "textarea", "select"] = field(
+    input_type: FormFieldType = field(
         default="text", metadata={"doc": _("Type of form field (text, email, password, textarea, select).")}
     )
     tag_id: str = field(default="", metadata={"doc": _("Unique ID for the field.")})
@@ -54,6 +53,10 @@ class FormFieldConfig:
     options: list[str] = field(default_factory=list, metadata={"doc": _("List of options for select fields.")})
     selected_option: str = field(default="", metadata={"doc": _("Currently selected value.")})
     rows: int = field(default=3, metadata={"doc": _("Number of rows for textarea fields.")})
+
+    def __post_init__(self) -> None:
+        """Validate input_type after initialization."""
+        validate_form_field_type(self.input_type, "input_type")
 
 
 @dataclass

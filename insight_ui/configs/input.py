@@ -10,11 +10,13 @@ from insight_ui.configs.base import (
     ButtonType,
     DataAttrConfig,
     HtmlButtonType,
+    HtmlInputType,
     HtmxConfig,
     IconConfig,
     Size,
     validate_button_type,
     validate_html_button_type,
+    validate_html_input_type,
     validate_size,
 )
 
@@ -167,24 +169,7 @@ class InputFieldConfig(BaseFormFieldConfig):
         )
         """
 
-    input_type: Literal[
-        "text",
-        "password",
-        "email",
-        "number",
-        "tel",
-        "url",
-        "date",
-        "time",
-        "datetime-local",
-        "month",
-        "week",
-        "color",
-        "file",
-        "hidden",
-        "checkbox",
-        "radio",
-    ] = field(
+    input_type: HtmlInputType = field(
         default="text", metadata={"doc": _("The type of the input field, e.g.: 'text', 'password', 'date', etc.")}
     )
     placeholder: str = field(
@@ -200,6 +185,10 @@ class InputFieldConfig(BaseFormFieldConfig):
     checked: bool = field(
         default=False, metadata={"doc": _("**True** if `input_type='checkbox'` and the checkbox should be selected.")}
     )
+
+    def __post_init__(self) -> None:
+        """Validate input_type after initialization."""
+        validate_html_input_type(self.input_type, "input_type")
 
 
 @dataclass
