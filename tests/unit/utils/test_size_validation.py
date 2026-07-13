@@ -8,8 +8,10 @@ from insight_ui.configs import (
     COLOR_TYPE_VALUES,
     CORNER_POSITION_VALUES,
     FILTER_FIELD_TYPE_VALUES,
+    FORM_FIELD_TYPE_VALUES,
     HORIZONTAL_SIDE_VALUES,
     HTML_BUTTON_TYPE_VALUES,
+    HTML_INPUT_TYPE_VALUES,
     INLINE_POSITION_VALUES,
     SIZE_VALUES,
     STEP_STATUS_VALUES,
@@ -18,8 +20,10 @@ from insight_ui.configs import (
     BrandMarkConfig,
     ButtonConfig,
     CornerRibbonConfig,
+    FormFieldConfig,
     IconConfig,
     InfoboxConfig,
+    InputFieldConfig,
     MinimalStepperConfig,
     QueryBuilderFieldConfig,
     SidebarConfig,
@@ -30,8 +34,10 @@ from insight_ui.configs import (
     validate_color_type,
     validate_corner_position,
     validate_filter_field_type,
+    validate_form_field_type,
     validate_horizontal_side,
     validate_html_button_type,
+    validate_html_input_type,
     validate_inline_position,
     validate_size,
     validate_step_status,
@@ -848,3 +854,144 @@ def test_query_builder_field_config_default_type() -> None:
     """Test QueryBuilderFieldConfig has correct default type."""
     config = QueryBuilderFieldConfig(field="test", label="Test")
     assert config.type == "text"
+
+
+# =============================================================================
+# HTML Input Type Validation
+# =============================================================================
+
+
+# --- HTML_INPUT_TYPE_VALUES constant ----------------------------------------
+
+
+def test_html_input_type_values_contains_expected_values() -> None:
+    """Test that HTML_INPUT_TYPE_VALUES contains all expected values."""
+    expected = (
+        "text",
+        "password",
+        "email",
+        "number",
+        "tel",
+        "url",
+        "date",
+        "time",
+        "datetime-local",
+        "month",
+        "week",
+        "color",
+        "file",
+        "hidden",
+        "checkbox",
+        "radio",
+    )
+    assert expected == HTML_INPUT_TYPE_VALUES
+
+
+def test_html_input_type_values_is_tuple() -> None:
+    """Test that HTML_INPUT_TYPE_VALUES is immutable (tuple)."""
+    assert isinstance(HTML_INPUT_TYPE_VALUES, tuple)
+
+
+# --- validate_html_input_type function --------------------------------------
+
+
+def test_validate_html_input_type_accepts_valid_values() -> None:
+    """Test that validate_html_input_type accepts all valid values."""
+    for input_type in HTML_INPUT_TYPE_VALUES:
+        validate_html_input_type(input_type)  # Should not raise
+
+
+def test_validate_html_input_type_rejects_invalid_value() -> None:
+    """Test that validate_html_input_type raises ValueError for invalid values."""
+    with pytest.raises(ValueError, match="Invalid input_type 'invalid'"):
+        validate_html_input_type("invalid")
+
+
+def test_validate_html_input_type_custom_field_name() -> None:
+    """Test that validate_html_input_type uses the custom field name in error messages."""
+    with pytest.raises(ValueError, match="Invalid type 'bad'"):
+        validate_html_input_type("bad", field_name="type")
+
+
+# --- InputFieldConfig input_type validation ---------------------------------
+
+
+def test_input_field_config_accepts_valid_input_type() -> None:
+    """Test InputFieldConfig accepts valid input_type values."""
+    for input_type in HTML_INPUT_TYPE_VALUES:
+        config = InputFieldConfig(input_type=input_type)
+        assert config.input_type == input_type
+
+
+def test_input_field_config_rejects_invalid_input_type() -> None:
+    """Test InputFieldConfig raises ValueError for invalid input_type."""
+    with pytest.raises(ValueError, match="Invalid input_type"):
+        InputFieldConfig(input_type="invalid")
+
+
+def test_input_field_config_default_input_type() -> None:
+    """Test InputFieldConfig has correct default input_type."""
+    config = InputFieldConfig()
+    assert config.input_type == "text"
+
+
+# =============================================================================
+# Form Field Type Validation
+# =============================================================================
+
+
+# --- FORM_FIELD_TYPE_VALUES constant ----------------------------------------
+
+
+def test_form_field_type_values_contains_expected_values() -> None:
+    """Test that FORM_FIELD_TYPE_VALUES contains all expected values."""
+    expected = ("text", "password", "email", "number", "tel", "url", "date", "textarea", "select")
+    assert expected == FORM_FIELD_TYPE_VALUES
+
+
+def test_form_field_type_values_is_tuple() -> None:
+    """Test that FORM_FIELD_TYPE_VALUES is immutable (tuple)."""
+    assert isinstance(FORM_FIELD_TYPE_VALUES, tuple)
+
+
+# --- validate_form_field_type function --------------------------------------
+
+
+def test_validate_form_field_type_accepts_valid_values() -> None:
+    """Test that validate_form_field_type accepts all valid values."""
+    for field_type in FORM_FIELD_TYPE_VALUES:
+        validate_form_field_type(field_type)  # Should not raise
+
+
+def test_validate_form_field_type_rejects_invalid_value() -> None:
+    """Test that validate_form_field_type raises ValueError for invalid values."""
+    with pytest.raises(ValueError, match="Invalid input_type 'invalid'"):
+        validate_form_field_type("invalid")
+
+
+def test_validate_form_field_type_custom_field_name() -> None:
+    """Test that validate_form_field_type uses the custom field name in error messages."""
+    with pytest.raises(ValueError, match="Invalid type 'bad'"):
+        validate_form_field_type("bad", field_name="type")
+
+
+# --- FormFieldConfig input_type validation ----------------------------------
+
+
+def test_form_field_config_accepts_valid_input_type() -> None:
+    """Test FormFieldConfig accepts valid input_type values."""
+    for field_type in FORM_FIELD_TYPE_VALUES:
+        config = FormFieldConfig(input_type=field_type)
+        assert config.input_type == field_type
+
+
+def test_form_field_config_rejects_invalid_input_type() -> None:
+    """Test FormFieldConfig raises ValueError for invalid input_type."""
+    with pytest.raises(ValueError, match="Invalid input_type"):
+        FormFieldConfig(input_type="invalid")
+
+
+def test_form_field_config_default_input_type() -> None:
+    """Test FormFieldConfig has correct default input_type."""
+    config = FormFieldConfig()
+    assert config.input_type == "text"
