@@ -56,6 +56,7 @@ from insight_ui.configs import (
     GeoMapConfig,
     GeoMapDatasetConfig,
     HeroConfig,
+    HtmlButtonType,
     HtmxConfig,
     IconConfig,
     ImageCarouselConfig,
@@ -564,7 +565,7 @@ def button(
     tooltip: str | _Unset = UNSET,
     htmx_config: HtmxConfig | _Unset = UNSET,
     hidden: bool | _Unset = UNSET,
-    button_type: Literal["button", "submit", "reset"] | _Unset = UNSET,
+    button_type: HtmlButtonType | _Unset = UNSET,
     extra_classes: str | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:

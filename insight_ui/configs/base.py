@@ -49,6 +49,12 @@ ALERT_TYPE_VALUES: tuple[str, ...] = ("info", "success", "warning", "error")
 # Type alias for alert/notification types
 type AlertType = Literal["info", "success", "warning", "error"]
 
+# Tuple of valid HTML button type values (native <button> type attribute)
+HTML_BUTTON_TYPE_VALUES: tuple[str, ...] = ("button", "submit", "reset")
+
+# Type alias for HTML button types
+type HtmlButtonType = Literal["button", "submit", "reset"]
+
 
 def _validate_literal(value: str, allowed: tuple[str, ...], field_name: str) -> None:
     """Validate that a value is one of the allowed values.
@@ -150,6 +156,20 @@ def validate_alert_type(value: str, field_name: str = "type") -> None:
 
     """
     _validate_literal(value, ALERT_TYPE_VALUES, field_name)
+
+
+def validate_html_button_type(value: str, field_name: str = "button_type") -> None:
+    """Validate that an HTML button type value is one of the allowed values.
+
+    Args:
+        value: The HTML button type value to validate.
+        field_name: Name of the field for error messages.
+
+    Raises:
+        ValueError: If the value is not a valid HTML button type.
+
+    """
+    _validate_literal(value, HTML_BUTTON_TYPE_VALUES, field_name)
 
 
 @dataclass
