@@ -7,23 +7,29 @@ from insight_ui.configs import (
     BUTTON_TYPE_VALUES,
     COLOR_TYPE_VALUES,
     CORNER_POSITION_VALUES,
+    HORIZONTAL_SIDE_VALUES,
     HTML_BUTTON_TYPE_VALUES,
+    INLINE_POSITION_VALUES,
     SIZE_VALUES,
     STEP_STATUS_VALUES,
     AlertConfig,
     BadgeConfig,
+    BrandMarkConfig,
     ButtonConfig,
     CornerRibbonConfig,
     IconConfig,
     InfoboxConfig,
     MinimalStepperConfig,
+    SidebarConfig,
     StatusScreenConfig,
     validate_alert_type,
     validate_badge_type,
     validate_button_type,
     validate_color_type,
     validate_corner_position,
+    validate_horizontal_side,
     validate_html_button_type,
+    validate_inline_position,
     validate_size,
     validate_step_status,
 )
@@ -656,3 +662,125 @@ def test_corner_ribbon_config_default_position() -> None:
     """Test CornerRibbonConfig has correct default position."""
     config = CornerRibbonConfig(text="Test")
     assert config.position == "top-right"
+
+
+# =============================================================================
+# Horizontal Side Validation
+# =============================================================================
+
+
+# --- HORIZONTAL_SIDE_VALUES constant ----------------------------------------
+
+
+def test_horizontal_side_values_contains_expected_values() -> None:
+    """Test that HORIZONTAL_SIDE_VALUES contains all expected values."""
+    assert HORIZONTAL_SIDE_VALUES == ("left", "right")
+
+
+def test_horizontal_side_values_is_tuple() -> None:
+    """Test that HORIZONTAL_SIDE_VALUES is immutable (tuple)."""
+    assert isinstance(HORIZONTAL_SIDE_VALUES, tuple)
+
+
+# --- validate_horizontal_side function --------------------------------------
+
+
+def test_validate_horizontal_side_accepts_valid_values() -> None:
+    """Test that validate_horizontal_side accepts all valid values."""
+    for side in HORIZONTAL_SIDE_VALUES:
+        validate_horizontal_side(side)  # Should not raise
+
+
+def test_validate_horizontal_side_rejects_invalid_value() -> None:
+    """Test that validate_horizontal_side raises ValueError for invalid values."""
+    with pytest.raises(ValueError, match="Invalid side 'center'"):
+        validate_horizontal_side("center")
+
+
+def test_validate_horizontal_side_custom_field_name() -> None:
+    """Test that validate_horizontal_side uses the custom field name in error messages."""
+    with pytest.raises(ValueError, match="Invalid panel_side 'bad'"):
+        validate_horizontal_side("bad", field_name="panel_side")
+
+
+# --- SidebarConfig side validation ------------------------------------------
+
+
+def test_sidebar_config_accepts_valid_side() -> None:
+    """Test SidebarConfig accepts valid side values."""
+    for side in HORIZONTAL_SIDE_VALUES:
+        config = SidebarConfig(side=side)
+        assert config.side == side
+
+
+def test_sidebar_config_rejects_invalid_side() -> None:
+    """Test SidebarConfig raises ValueError for invalid side."""
+    with pytest.raises(ValueError, match="Invalid side"):
+        SidebarConfig(side="center")
+
+
+def test_sidebar_config_default_side() -> None:
+    """Test SidebarConfig has correct default side."""
+    config = SidebarConfig()
+    assert config.side == "right"
+
+
+# =============================================================================
+# Inline Position Validation
+# =============================================================================
+
+
+# --- INLINE_POSITION_VALUES constant ----------------------------------------
+
+
+def test_inline_position_values_contains_expected_values() -> None:
+    """Test that INLINE_POSITION_VALUES contains all expected values."""
+    assert INLINE_POSITION_VALUES == ("start", "end")
+
+
+def test_inline_position_values_is_tuple() -> None:
+    """Test that INLINE_POSITION_VALUES is immutable (tuple)."""
+    assert isinstance(INLINE_POSITION_VALUES, tuple)
+
+
+# --- validate_inline_position function --------------------------------------
+
+
+def test_validate_inline_position_accepts_valid_values() -> None:
+    """Test that validate_inline_position accepts all valid values."""
+    for position in INLINE_POSITION_VALUES:
+        validate_inline_position(position)  # Should not raise
+
+
+def test_validate_inline_position_rejects_invalid_value() -> None:
+    """Test that validate_inline_position raises ValueError for invalid values."""
+    with pytest.raises(ValueError, match="Invalid position 'middle'"):
+        validate_inline_position("middle")
+
+
+def test_validate_inline_position_custom_field_name() -> None:
+    """Test that validate_inline_position uses the custom field name in error messages."""
+    with pytest.raises(ValueError, match="Invalid logo_position 'bad'"):
+        validate_inline_position("bad", field_name="logo_position")
+
+
+# --- BrandMarkConfig logo_position validation -------------------------------
+
+
+def test_brand_mark_config_accepts_valid_logo_position() -> None:
+    """Test BrandMarkConfig accepts valid logo_position values."""
+    for position in INLINE_POSITION_VALUES:
+        config = BrandMarkConfig(logo_position=position)
+        assert config.logo_position == position
+
+
+def test_brand_mark_config_rejects_invalid_logo_position() -> None:
+    """Test BrandMarkConfig raises ValueError for invalid logo_position."""
+    with pytest.raises(ValueError, match="Invalid logo_position"):
+        BrandMarkConfig(logo_position="middle")
+
+
+def test_brand_mark_config_default_logo_position() -> None:
+    """Test BrandMarkConfig has correct default logo_position."""
+    config = BrandMarkConfig()
+    assert config.logo_position == "start"

@@ -11,11 +11,13 @@ from insight_ui.configs.base import (
     ColorType,
     CornerPosition,
     IconConfig,
+    InlinePosition,
     Size,
     validate_alert_type,
     validate_badge_type,
     validate_color_type,
     validate_corner_position,
+    validate_inline_position,
     validate_size,
 )
 from insight_ui.configs.input import ButtonConfig
@@ -156,10 +158,14 @@ class BrandMarkConfig:
     primary_text: str = field(default="Alpin Insight", metadata={"doc": _("First wordmark run.")})
     secondary_text: str = field(default="Solutions", metadata={"doc": _("Second wordmark run.")})
     logo: LogoConfig = field(default=None, metadata={"doc": _("Public logo configuration.")})
-    logo_position: Literal["start", "end"] = field(
+    logo_position: InlinePosition = field(
         default="start", metadata={"doc": _("Logo position, either 'start' or 'end'.")}
     )
     css_class: str = field(default="", metadata={"doc": _("Optional CSS classes for the root element.")})
+
+    def __post_init__(self) -> None:
+        """Validate logo_position after initialization."""
+        validate_inline_position(self.logo_position, "logo_position")
 
 
 @dataclass
