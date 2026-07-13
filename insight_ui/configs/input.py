@@ -1,7 +1,6 @@
 """Configuration classes for input and control components."""
 
 from dataclasses import dataclass, field
-from typing import Literal
 
 from django.utils.translation import gettext_lazy as _
 
@@ -15,11 +14,13 @@ from insight_ui.configs.base import (
     HtmxSwapMethod,
     IconConfig,
     Size,
+    SliderLegendMode,
     validate_button_type,
     validate_html_button_type,
     validate_html_input_type,
     validate_htmx_swap_method,
     validate_size,
+    validate_slider_legend_mode,
 )
 
 
@@ -570,7 +571,7 @@ class SliderConfig(BaseFormFieldConfig):
     items: list[str] = field(
         default_factory=list, metadata={"doc": _("A list of texts displayed as a legend below the slider.")}
     )
-    legend_mode: Literal["static", "skip", "rotate"] = field(
+    legend_mode: SliderLegendMode = field(
         default="static",
         metadata={
             "doc": _(
@@ -591,6 +592,7 @@ class SliderConfig(BaseFormFieldConfig):
 
     def __post_init__(self) -> None:
         """Validate slider configuration."""
+        validate_slider_legend_mode(self.legend_mode, "legend_mode")
         if self.minimum >= self.maximum:
             raise ValueError(f"minimum ({self.minimum}) must be less than maximum ({self.maximum})")  # noqa: TRY003
         if self.value is not None and not (self.minimum <= self.value <= self.maximum):
