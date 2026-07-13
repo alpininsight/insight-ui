@@ -6,10 +6,12 @@ from typing import Literal
 from django.utils.translation import gettext_lazy as _
 
 from insight_ui.configs.base import (
+    AlertType,
     BadgeType,
     ColorType,
     IconConfig,
     Size,
+    validate_alert_type,
     validate_badge_type,
     validate_color_type,
     validate_size,
@@ -25,7 +27,7 @@ class InfoboxConfig:
 
     Attributes:
         message: Descriptive message.
-        info_type: Importance level of the message. Possible values are 'info', 'success', 'warn' or 'danger'.
+        info_type: Importance level of the message.
 
     """
 
@@ -37,12 +39,11 @@ class InfoboxConfig:
         """
 
     message: str = field(metadata={"doc": _("Descriptive message.")})
-    info_type: Literal["info", "warn", "danger"] = field(
-        default="info",
-        metadata={
-            "doc": _("Importance level of the message. Possible values are 'info', 'success', 'warn' or 'danger'.")
-        },
-    )
+    info_type: AlertType = field(default="info", metadata={"doc": _("Importance level of the message.")})
+
+    def __post_init__(self) -> None:
+        """Validate info_type after initialization."""
+        validate_alert_type(self.info_type, "info_type")
 
 
 @dataclass
@@ -168,7 +169,7 @@ class StatusScreenConfig:
     Attributes:
         title: Main status title.
         description: Supporting status description.
-        status: Visual status: 'info', 'success', 'warning', or 'error'.
+        status: Visual status type.
         brand: Optional brand mark shown above the card.
         notice_title: Optional notice heading.
         notice: Optional notice text.
@@ -194,9 +195,7 @@ class StatusScreenConfig:
 
     title: str = field(metadata={"doc": _("Main status title.")})
     description: str | list[str] = field(default="", metadata={"doc": _("Supporting status description.")})
-    status: Literal["info", "success", "warning", "error"] = field(
-        default="info", metadata={"doc": _("Visual status: 'info', 'success', 'warning', or 'error'.")}
-    )
+    status: AlertType = field(default="info", metadata={"doc": _("Visual status type.")})
     brand: BrandMarkConfig | None = field(
         default=None, metadata={"doc": _("Optional brand mark shown above the card.")}
     )
@@ -207,6 +206,10 @@ class StatusScreenConfig:
     actions: list[ButtonConfig] = field(default_factory=list, metadata={"doc": _("Additional button actions.")})
     css_class: str = field(default="", metadata={"doc": _("Optional CSS classes for the outer section.")})
     card_css_class: str = field(default="", metadata={"doc": _("Optional CSS classes for the status card.")})
+
+    def __post_init__(self) -> None:
+        """Validate status after initialization."""
+        validate_alert_type(self.status, "status")
 
 
 @dataclass

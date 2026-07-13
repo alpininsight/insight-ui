@@ -392,13 +392,13 @@ def form_submit(request: HttpRequest) -> HttpResponse | JsonResponse:
 
     # Return error with partial template as it is a htmx request
     if request.headers.get("HX-Request"):
-        html = render_to_string("insight_ui/components/form_errors.html", {"errors": form.errors, "type": "error"})
+        html = render_to_string("insight_ui/components/form_errors.html", {"errors": form.errors, "type": "danger"})
         return HttpResponse(html, status=400)
 
     # Retrieve necessary context data and perform a whole page reload to present form issues
     context = get_storybook_context(ComponentCategory.FORM)
     context["errors"] = form.errors
-    context["type"] = "error"
+    context["type"] = "danger"
     return render(request, "insight_ui/storybook.html", context)
 
 

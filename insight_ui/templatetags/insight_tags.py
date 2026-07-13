@@ -7,7 +7,7 @@ from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import MISSING, fields, is_dataclass, replace
 from difflib import HtmlDiff, ndiff, unified_diff
 from types import UnionType
-from typing import TYPE_CHECKING, Any, Final, Literal, TypeVar, cast, get_args, get_origin, get_type_hints
+from typing import TYPE_CHECKING, Any, Final, Literal, TypeVar, get_args, get_origin, get_type_hints
 
 from django import template
 from django.templatetags.static import static
@@ -23,6 +23,7 @@ from insight_ui.config import get_config
 from insight_ui.configs import (
     AccordionConfig,
     AlertConfig,
+    AlertType,
     AppCardConfig,
     ArticleConfig,
     BadgeConfig,
@@ -392,16 +393,6 @@ STATUS_SCREEN_ICON_BY_STATUS = {
     "warning": "exclamation-triangle",
     "error": "exclamation-circle",
 }
-STATUS_SCREEN_STATUSES: Final = frozenset(STATUS_SCREEN_ICON_BY_STATUS)
-type StatusScreenStatus = Literal["info", "success", "warning", "error"]
-
-
-def _validate_status_screen_status(value: object) -> StatusScreenStatus:
-    """Validate status_screen status values before template lookup."""
-    if value in STATUS_SCREEN_STATUSES:
-        return cast("StatusScreenStatus", value)
-    message = "status_screen status must be one of: info, success, warning, error"
-    raise ValueError(message)
 
 
 @register.inclusion_tag("insight_ui/components/status_screen.html")
@@ -410,7 +401,7 @@ def status_screen(
     *,
     title: str | _Unset = UNSET,
     description: str | list[str] | _Unset = UNSET,
-    status: Literal["info", "success", "warning", "error"] | _Unset = UNSET,
+    status: AlertType | _Unset = UNSET,
     brand: BrandMarkConfig | None | _Unset = UNSET,
     notice_title: str | _Unset = UNSET,
     notice: str | _Unset = UNSET,
@@ -423,7 +414,6 @@ def status_screen(
     """Render a generic centered status screen."""
     config = build_config(StatusScreenConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     config.description = ensure_list(config.description)
-    config.status = _validate_status_screen_status(config.status)
 
     all_actions = [action for action in [config.primary_action, config.secondary_action, *config.actions] if action]
     config.actions = all_actions
@@ -862,7 +852,7 @@ def alert(
     *,
     tag_id: str | _Unset = UNSET,
     message: str | _Unset = UNSET,
-    type: str | _Unset = UNSET,  # noqa: A002
+    type: AlertType | _Unset = UNSET,  # noqa: A002
     dismissible: bool | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a closable notification."""
@@ -895,7 +885,11 @@ def modal(
 
 @register.inclusion_tag("insight_ui/components/infobox.html")
 def infobox(
-    config: InfoboxConfig | None = None, *, info_type: str | _Unset = UNSET, message: str | _Unset = UNSET, **kwargs
+    config: InfoboxConfig | None = None,
+    *,
+    info_type: AlertType | _Unset = UNSET,
+    message: str | _Unset = UNSET,
+    **kwargs: str,
 ) -> dict[str, Any]:
     """Render a small box of information."""
     config = build_config(InfoboxConfig, config, info_type=info_type, message=message)
