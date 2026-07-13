@@ -181,6 +181,12 @@ GEO_MAP_MARKER_TYPE_VALUES: tuple[str, ...] = ("marker", "circle")
 # Type alias for geo map marker types
 type GeoMapMarkerType = Literal["marker", "circle"]
 
+# Tuple of valid slider legend mode values
+SLIDER_LEGEND_MODE_VALUES: tuple[str, ...] = ("static", "skip", "rotate")
+
+# Type alias for slider legend modes
+type SliderLegendMode = Literal["static", "skip", "rotate"]
+
 
 def _validate_literal(value: str, allowed: tuple[str, ...], field_name: str) -> None:
     """Validate that a value is one of the allowed values.
@@ -422,6 +428,20 @@ def validate_geo_map_marker_type(value: str, field_name: str = "type") -> None:
 
     """
     _validate_literal(value, GEO_MAP_MARKER_TYPE_VALUES, field_name)
+
+
+def validate_slider_legend_mode(value: str, field_name: str = "legend_mode") -> None:
+    """Validate that a slider legend mode value is one of the allowed values.
+
+    Args:
+        value: The slider legend mode value to validate.
+        field_name: Name of the field for error messages.
+
+    Raises:
+        ValueError: If the value is not a valid slider legend mode.
+
+    """
+    _validate_literal(value, SLIDER_LEGEND_MODE_VALUES, field_name)
 
 
 @dataclass

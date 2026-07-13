@@ -17,6 +17,7 @@ from insight_ui.configs import (
     HTMX_SWAP_METHOD_VALUES,
     INLINE_POSITION_VALUES,
     SIZE_VALUES,
+    SLIDER_LEGEND_MODE_VALUES,
     STEP_STATUS_VALUES,
     AlertConfig,
     BadgeConfig,
@@ -33,6 +34,7 @@ from insight_ui.configs import (
     QueryBuilderFieldConfig,
     RadioBlockConfig,
     SidebarConfig,
+    SliderConfig,
     StatusScreenConfig,
     validate_alert_type,
     validate_badge_type,
@@ -49,6 +51,7 @@ from insight_ui.configs import (
     validate_htmx_swap_method,
     validate_inline_position,
     validate_size,
+    validate_slider_legend_mode,
     validate_step_status,
 )
 
@@ -1219,3 +1222,64 @@ def test_geo_map_dataset_config_default_type() -> None:
     """Test GeoMapDatasetConfig has correct default type."""
     config = GeoMapDatasetConfig(name="test")
     assert config.type == "marker"
+
+
+# =============================================================================
+# Slider Legend Mode Validation
+# =============================================================================
+
+
+# --- SLIDER_LEGEND_MODE_VALUES constant --------------------------------------
+
+
+def test_slider_legend_mode_values_contains_expected_values() -> None:
+    """Test that SLIDER_LEGEND_MODE_VALUES contains all expected values."""
+    assert SLIDER_LEGEND_MODE_VALUES == ("static", "skip", "rotate")
+
+
+def test_slider_legend_mode_values_is_tuple() -> None:
+    """Test that SLIDER_LEGEND_MODE_VALUES is immutable (tuple)."""
+    assert isinstance(SLIDER_LEGEND_MODE_VALUES, tuple)
+
+
+# --- validate_slider_legend_mode function ------------------------------------
+
+
+def test_validate_slider_legend_mode_accepts_valid_values() -> None:
+    """Test that validate_slider_legend_mode accepts all valid values."""
+    for mode in SLIDER_LEGEND_MODE_VALUES:
+        validate_slider_legend_mode(mode)  # Should not raise
+
+
+def test_validate_slider_legend_mode_rejects_invalid_value() -> None:
+    """Test that validate_slider_legend_mode raises ValueError for invalid values."""
+    with pytest.raises(ValueError, match="Invalid legend_mode 'hide'"):
+        validate_slider_legend_mode("hide")
+
+
+def test_validate_slider_legend_mode_custom_field_name() -> None:
+    """Test that validate_slider_legend_mode uses the custom field name in error messages."""
+    with pytest.raises(ValueError, match="Invalid mode 'bad'"):
+        validate_slider_legend_mode("bad", field_name="mode")
+
+
+# --- SliderConfig legend_mode validation -------------------------------------
+
+
+def test_slider_config_accepts_valid_legend_mode() -> None:
+    """Test SliderConfig accepts valid legend_mode values."""
+    for mode in SLIDER_LEGEND_MODE_VALUES:
+        config = SliderConfig(legend_mode=mode)
+        assert config.legend_mode == mode
+
+
+def test_slider_config_rejects_invalid_legend_mode() -> None:
+    """Test SliderConfig raises ValueError for invalid legend_mode."""
+    with pytest.raises(ValueError, match="Invalid legend_mode"):
+        SliderConfig(legend_mode="hide")
+
+
+def test_slider_config_default_legend_mode() -> None:
+    """Test SliderConfig has correct default legend_mode."""
+    config = SliderConfig()
+    assert config.legend_mode == "static"

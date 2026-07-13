@@ -45,6 +45,7 @@ from insight_ui.configs.base import (
     HTMX_SWAP_METHOD_VALUES,
     INLINE_POSITION_VALUES,
     SIZE_VALUES,
+    SLIDER_LEGEND_MODE_VALUES,
     STEP_STATUS_VALUES,
     AlertType,
     BadgeType,
@@ -65,6 +66,7 @@ from insight_ui.configs.base import (
     ImageConfig,
     InlinePosition,
     Size,
+    SliderLegendMode,
     StepStatus,
     validate_alert_type,
     validate_badge_type,
@@ -81,6 +83,7 @@ from insight_ui.configs.base import (
     validate_htmx_swap_method,
     validate_inline_position,
     validate_size,
+    validate_slider_legend_mode,
     validate_step_status,
 )
 from insight_ui.configs.card import (
@@ -189,6 +192,7 @@ __all__ = [
     "HTMX_SWAP_METHOD_VALUES",
     "INLINE_POSITION_VALUES",
     "SIZE_VALUES",
+    "SLIDER_LEGEND_MODE_VALUES",
     "STEP_STATUS_VALUES",
     "AccordionConfig",
     "AccordionItemConfig",
@@ -278,6 +282,7 @@ __all__ = [
     "SidebarItemConfig",
     "Size",
     "SliderConfig",
+    "SliderLegendMode",
     "SpacerConfig",
     "StatusScreenConfig",
     "StepStatus",
@@ -307,5 +312,6 @@ __all__ = [
     "validate_htmx_swap_method",
     "validate_inline_position",
     "validate_size",
+    "validate_slider_legend_mode",
     "validate_step_status",
 ]
