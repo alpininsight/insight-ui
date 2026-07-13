@@ -7,6 +7,7 @@ from insight_ui.configs import (
     BUTTON_TYPE_VALUES,
     COLOR_TYPE_VALUES,
     CORNER_POSITION_VALUES,
+    FILTER_FIELD_TYPE_VALUES,
     HORIZONTAL_SIDE_VALUES,
     HTML_BUTTON_TYPE_VALUES,
     INLINE_POSITION_VALUES,
@@ -20,6 +21,7 @@ from insight_ui.configs import (
     IconConfig,
     InfoboxConfig,
     MinimalStepperConfig,
+    QueryBuilderFieldConfig,
     SidebarConfig,
     StatusScreenConfig,
     validate_alert_type,
@@ -27,6 +29,7 @@ from insight_ui.configs import (
     validate_button_type,
     validate_color_type,
     validate_corner_position,
+    validate_filter_field_type,
     validate_horizontal_side,
     validate_html_button_type,
     validate_inline_position,
@@ -784,3 +787,64 @@ def test_brand_mark_config_default_logo_position() -> None:
     """Test BrandMarkConfig has correct default logo_position."""
     config = BrandMarkConfig()
     assert config.logo_position == "start"
+
+
+# =============================================================================
+# Filter Field Type Validation
+# =============================================================================
+
+
+# --- FILTER_FIELD_TYPE_VALUES constant --------------------------------------
+
+
+def test_filter_field_type_values_contains_expected_values() -> None:
+    """Test that FILTER_FIELD_TYPE_VALUES contains all expected values."""
+    assert FILTER_FIELD_TYPE_VALUES == ("text", "number", "date", "datetime", "time", "boolean", "choice")
+
+
+def test_filter_field_type_values_is_tuple() -> None:
+    """Test that FILTER_FIELD_TYPE_VALUES is immutable (tuple)."""
+    assert isinstance(FILTER_FIELD_TYPE_VALUES, tuple)
+
+
+# --- validate_filter_field_type function ------------------------------------
+
+
+def test_validate_filter_field_type_accepts_valid_values() -> None:
+    """Test that validate_filter_field_type accepts all valid values."""
+    for field_type in FILTER_FIELD_TYPE_VALUES:
+        validate_filter_field_type(field_type)  # Should not raise
+
+
+def test_validate_filter_field_type_rejects_invalid_value() -> None:
+    """Test that validate_filter_field_type raises ValueError for invalid values."""
+    with pytest.raises(ValueError, match="Invalid type 'invalid'"):
+        validate_filter_field_type("invalid")
+
+
+def test_validate_filter_field_type_custom_field_name() -> None:
+    """Test that validate_filter_field_type uses the custom field name in error messages."""
+    with pytest.raises(ValueError, match="Invalid field_type 'bad'"):
+        validate_filter_field_type("bad", field_name="field_type")
+
+
+# --- QueryBuilderFieldConfig type validation --------------------------------
+
+
+def test_query_builder_field_config_accepts_valid_type() -> None:
+    """Test QueryBuilderFieldConfig accepts valid type values."""
+    for field_type in FILTER_FIELD_TYPE_VALUES:
+        config = QueryBuilderFieldConfig(field="test", label="Test", type=field_type)
+        assert config.type == field_type
+
+
+def test_query_builder_field_config_rejects_invalid_type() -> None:
+    """Test QueryBuilderFieldConfig raises ValueError for invalid type."""
+    with pytest.raises(ValueError, match="Invalid type"):
+        QueryBuilderFieldConfig(field="test", label="Test", type="invalid")
+
+
+def test_query_builder_field_config_default_type() -> None:
+    """Test QueryBuilderFieldConfig has correct default type."""
+    config = QueryBuilderFieldConfig(field="test", label="Test")
+    assert config.type == "text"

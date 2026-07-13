@@ -73,6 +73,12 @@ INLINE_POSITION_VALUES: tuple[str, ...] = ("start", "end")
 # Type alias for inline positions
 type InlinePosition = Literal["start", "end"]
 
+# Tuple of valid filter field type values (for query builders, model filters, etc.)
+FILTER_FIELD_TYPE_VALUES: tuple[str, ...] = ("text", "number", "date", "datetime", "time", "boolean", "choice")
+
+# Type alias for filter field types
+type FilterFieldType = Literal["text", "number", "date", "datetime", "time", "boolean", "choice"]
+
 
 def _validate_literal(value: str, allowed: tuple[str, ...], field_name: str) -> None:
     """Validate that a value is one of the allowed values.
@@ -230,6 +236,20 @@ def validate_inline_position(value: str, field_name: str = "position") -> None:
 
     """
     _validate_literal(value, INLINE_POSITION_VALUES, field_name)
+
+
+def validate_filter_field_type(value: str, field_name: str = "type") -> None:
+    """Validate that a filter field type value is one of the allowed values.
+
+    Args:
+        value: The filter field type value to validate.
+        field_name: Name of the field for error messages.
+
+    Raises:
+        ValueError: If the value is not a valid filter field type.
+
+    """
+    _validate_literal(value, FILTER_FIELD_TYPE_VALUES, field_name)
 
 
 @dataclass
