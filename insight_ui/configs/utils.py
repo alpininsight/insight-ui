@@ -9,11 +9,13 @@ from insight_ui.configs.base import (
     AlertType,
     BadgeType,
     ColorType,
+    CornerPosition,
     IconConfig,
     Size,
     validate_alert_type,
     validate_badge_type,
     validate_color_type,
+    validate_corner_position,
     validate_size,
 )
 from insight_ui.configs.input import ButtonConfig
@@ -220,7 +222,7 @@ class CornerRibbonConfig:
 
     Attributes:
         text: The text displayed in the ribbon.
-        position: Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'. Invalid values fall back to 'top-right'.
+        position: Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'.
         color: Color variant for the ribbon.
 
     """
@@ -234,13 +236,9 @@ class CornerRibbonConfig:
         """
 
     text: str = field(metadata={"doc": _("The text displayed in the ribbon.")})
-    position: Literal["top-right", "top-left", "bottom-right", "bottom-left"] = field(
+    position: CornerPosition = field(
         default="top-right",
-        metadata={
-            "doc": _(
-                "Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'. Invalid values fall back to 'top-right'."
-            )
-        },
+        metadata={"doc": _("Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'.")},
     )
     color: ColorType = field(
         default="primary",
@@ -248,7 +246,8 @@ class CornerRibbonConfig:
     )
 
     def __post_init__(self) -> None:
-        """Validate color after initialization."""
+        """Validate position and color after initialization."""
+        validate_corner_position(self.position, "position")
         validate_color_type(self.color, "color")
 
 

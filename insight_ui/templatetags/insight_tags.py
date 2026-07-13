@@ -45,6 +45,7 @@ from insight_ui.configs import (
     CheckboxGroupConfig,
     ColorType,
     CopyrightNoticeConfig,
+    CornerPosition,
     CornerRibbonConfig,
     DataAttrConfig,
     DropdownConfig,
@@ -1028,7 +1029,7 @@ def corner_ribbon(
     config: CornerRibbonConfig | None = None,
     *,
     text: str | _Unset = UNSET,
-    position: Literal["top-right", "top-left", "bottom-right", "bottom-left"] | _Unset = UNSET,
+    position: CornerPosition | _Unset = UNSET,
     color: ColorType | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a corner ribbon positioned in any browser corner."""
