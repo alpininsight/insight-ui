@@ -6,6 +6,7 @@ from insight_ui.configs import (
     BADGE_TYPE_VALUES,
     BUTTON_TYPE_VALUES,
     COLOR_TYPE_VALUES,
+    HTML_BUTTON_TYPE_VALUES,
     SIZE_VALUES,
     STEP_STATUS_VALUES,
     AlertConfig,
@@ -20,6 +21,7 @@ from insight_ui.configs import (
     validate_badge_type,
     validate_button_type,
     validate_color_type,
+    validate_html_button_type,
     validate_size,
     validate_step_status,
 )
@@ -530,3 +532,64 @@ def test_status_screen_config_default_status() -> None:
     """Test StatusScreenConfig has correct default status."""
     config = StatusScreenConfig(title="Test")
     assert config.status == "info"
+
+
+# =============================================================================
+# HTML Button Type Validation
+# =============================================================================
+
+
+# --- HTML_BUTTON_TYPE_VALUES constant ---------------------------------------
+
+
+def test_html_button_type_values_contains_expected_values() -> None:
+    """Test that HTML_BUTTON_TYPE_VALUES contains all expected values."""
+    assert HTML_BUTTON_TYPE_VALUES == ("button", "submit", "reset")
+
+
+def test_html_button_type_values_is_tuple() -> None:
+    """Test that HTML_BUTTON_TYPE_VALUES is immutable (tuple)."""
+    assert isinstance(HTML_BUTTON_TYPE_VALUES, tuple)
+
+
+# --- validate_html_button_type function -------------------------------------
+
+
+def test_validate_html_button_type_accepts_valid_values() -> None:
+    """Test that validate_html_button_type accepts all valid values."""
+    for button_type in HTML_BUTTON_TYPE_VALUES:
+        validate_html_button_type(button_type)  # Should not raise
+
+
+def test_validate_html_button_type_rejects_invalid_value() -> None:
+    """Test that validate_html_button_type raises ValueError for invalid types."""
+    with pytest.raises(ValueError, match="Invalid button_type 'invalid'"):
+        validate_html_button_type("invalid")
+
+
+def test_validate_html_button_type_custom_field_name() -> None:
+    """Test that validate_html_button_type uses the custom field name in error messages."""
+    with pytest.raises(ValueError, match="Invalid html_type 'bad'"):
+        validate_html_button_type("bad", field_name="html_type")
+
+
+# --- ButtonConfig button_type validation ------------------------------------
+
+
+def test_button_config_accepts_valid_button_type() -> None:
+    """Test ButtonConfig accepts valid button_type values."""
+    for button_type in HTML_BUTTON_TYPE_VALUES:
+        config = ButtonConfig(button_type=button_type)
+        assert config.button_type == button_type
+
+
+def test_button_config_rejects_invalid_button_type() -> None:
+    """Test ButtonConfig raises ValueError for invalid button_type."""
+    with pytest.raises(ValueError, match="Invalid button_type"):
+        ButtonConfig(button_type="invalid")
+
+
+def test_button_config_default_button_type() -> None:
+    """Test ButtonConfig has correct default button_type."""
+    config = ButtonConfig()
+    assert config.button_type == "button"

@@ -9,10 +9,12 @@ from insight_ui.configs.base import (
     BaseFormFieldConfig,
     ButtonType,
     DataAttrConfig,
+    HtmlButtonType,
     HtmxConfig,
     IconConfig,
     Size,
     validate_button_type,
+    validate_html_button_type,
     validate_size,
 )
 
@@ -103,7 +105,7 @@ class ButtonConfig:
         default=False,
         metadata={"doc": "**True** to render the button with CSS 'hidden' class for JS-controlled visibility."},
     )
-    button_type: Literal["button", "submit", "reset"] = field(
+    button_type: HtmlButtonType = field(
         default="button", metadata={"doc": _("HTML type attribute: 'button', 'submit', or 'reset'.")}
     )
     extra_classes: str = field(
@@ -126,9 +128,10 @@ class ButtonConfig:
     )
 
     def __post_init__(self) -> None:
-        """Validate type and size after initialization."""
+        """Validate type, size, and button_type after initialization."""
         validate_button_type(self.type, "type")
         validate_size(self.size, "size")
+        validate_html_button_type(self.button_type, "button_type")
 
 
 @dataclass
