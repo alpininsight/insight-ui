@@ -4,15 +4,12 @@ from dataclasses import dataclass, field
 
 from django.utils.translation import gettext_lazy as _
 
-from insight_ui.configs.base import (
-    BaseFormFieldConfig,
+from insight_ui.configs.base import BaseFormFieldConfig, DataAttrConfig, HtmxConfig, IconConfig
+from insight_ui.configs.types import (
     ButtonType,
-    DataAttrConfig,
     HtmlButtonType,
     HtmlInputType,
-    HtmxConfig,
     HtmxSwapMethod,
-    IconConfig,
     Size,
     SliderLegendMode,
     validate_button_type,

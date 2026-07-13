@@ -4,9 +4,10 @@ from dataclasses import dataclass, field
 
 from django.utils.translation import gettext_lazy as _
 
-from insight_ui.configs.base import ImageConfig, ToggleViewType, validate_toggle_view_type
+from insight_ui.configs.base import ImageConfig
 from insight_ui.configs.input import ButtonConfig, RadioBlockConfig
 from insight_ui.configs.list import TableConfig
+from insight_ui.configs.types import ToggleViewType, validate_toggle_view_type
 
 
 @dataclass

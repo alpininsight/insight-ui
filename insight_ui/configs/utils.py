@@ -4,13 +4,14 @@ from dataclasses import dataclass, field
 
 from django.utils.translation import gettext_lazy as _
 
-from insight_ui.configs.base import (
+from insight_ui.configs.base import IconConfig
+from insight_ui.configs.input import ButtonConfig
+from insight_ui.configs.types import (
     AlertType,
     BadgeType,
     ColorType,
     CornerPosition,
     GeoMapMarkerType,
-    IconConfig,
     InlinePosition,
     Size,
     validate_alert_type,
@@ -21,7 +22,6 @@ from insight_ui.configs.base import (
     validate_inline_position,
     validate_size,
 )
-from insight_ui.configs.input import ButtonConfig
 
 
 @dataclass
