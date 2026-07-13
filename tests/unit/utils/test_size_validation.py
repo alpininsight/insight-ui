@@ -9,6 +9,7 @@ from insight_ui.configs import (
     CORNER_POSITION_VALUES,
     FILTER_FIELD_TYPE_VALUES,
     FORM_FIELD_TYPE_VALUES,
+    GEO_MAP_MARKER_TYPE_VALUES,
     HORIZONTAL_SIDE_VALUES,
     HTML_BUTTON_TYPE_VALUES,
     HTML_INPUT_TYPE_VALUES,
@@ -23,6 +24,7 @@ from insight_ui.configs import (
     ButtonConfig,
     CornerRibbonConfig,
     FormFieldConfig,
+    GeoMapDatasetConfig,
     HtmxConfig,
     IconConfig,
     InfoboxConfig,
@@ -39,6 +41,7 @@ from insight_ui.configs import (
     validate_corner_position,
     validate_filter_field_type,
     validate_form_field_type,
+    validate_geo_map_marker_type,
     validate_horizontal_side,
     validate_html_button_type,
     validate_html_input_type,
@@ -1155,3 +1158,64 @@ def test_htmx_config_default_method() -> None:
     """Test HtmxConfig has correct default method."""
     config = HtmxConfig()
     assert config.method == "get"
+
+
+# =============================================================================
+# Geo Map Marker Type Validation
+# =============================================================================
+
+
+# --- GEO_MAP_MARKER_TYPE_VALUES constant -------------------------------------
+
+
+def test_geo_map_marker_type_values_contains_expected_values() -> None:
+    """Test that GEO_MAP_MARKER_TYPE_VALUES contains all expected values."""
+    assert GEO_MAP_MARKER_TYPE_VALUES == ("marker", "circle")
+
+
+def test_geo_map_marker_type_values_is_tuple() -> None:
+    """Test that GEO_MAP_MARKER_TYPE_VALUES is immutable (tuple)."""
+    assert isinstance(GEO_MAP_MARKER_TYPE_VALUES, tuple)
+
+
+# --- validate_geo_map_marker_type function -----------------------------------
+
+
+def test_validate_geo_map_marker_type_accepts_valid_values() -> None:
+    """Test that validate_geo_map_marker_type accepts all valid values."""
+    for marker_type in GEO_MAP_MARKER_TYPE_VALUES:
+        validate_geo_map_marker_type(marker_type)  # Should not raise
+
+
+def test_validate_geo_map_marker_type_rejects_invalid_value() -> None:
+    """Test that validate_geo_map_marker_type raises ValueError for invalid values."""
+    with pytest.raises(ValueError, match="Invalid type 'polygon'"):
+        validate_geo_map_marker_type("polygon")
+
+
+def test_validate_geo_map_marker_type_custom_field_name() -> None:
+    """Test that validate_geo_map_marker_type uses the custom field name in error messages."""
+    with pytest.raises(ValueError, match="Invalid marker_type 'bad'"):
+        validate_geo_map_marker_type("bad", field_name="marker_type")
+
+
+# --- GeoMapDatasetConfig type validation -------------------------------------
+
+
+def test_geo_map_dataset_config_accepts_valid_type() -> None:
+    """Test GeoMapDatasetConfig accepts valid type values."""
+    for marker_type in GEO_MAP_MARKER_TYPE_VALUES:
+        config = GeoMapDatasetConfig(name="test", type=marker_type)
+        assert config.type == marker_type
+
+
+def test_geo_map_dataset_config_rejects_invalid_type() -> None:
+    """Test GeoMapDatasetConfig raises ValueError for invalid type."""
+    with pytest.raises(ValueError, match="Invalid type"):
+        GeoMapDatasetConfig(name="test", type="polygon")
+
+
+def test_geo_map_dataset_config_default_type() -> None:
+    """Test GeoMapDatasetConfig has correct default type."""
+    config = GeoMapDatasetConfig(name="test")
+    assert config.type == "marker"
