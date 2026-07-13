@@ -5,7 +5,7 @@ from typing import Literal
 
 from django.utils.translation import gettext_lazy as _
 
-from insight_ui.configs.base import BaseFormFieldConfig, DataAttrConfig, HtmxConfig, IconConfig
+from insight_ui.configs.base import BaseFormFieldConfig, DataAttrConfig, HtmxConfig, IconConfig, Size, validate_size
 
 
 @dataclass
@@ -86,7 +86,7 @@ class ButtonConfig:
     type: Literal["primary", "secondary", "info", "success", "warning", "danger", "disabled", "link"] = field(
         default="primary", metadata={"doc": "Defines the color of the button."}
     )
-    size: Literal["xs", "s", "m", "l", "xl"] = field(default="m", metadata={"doc": "Defines the size of the button."})
+    size: Size = field(default="m", metadata={"doc": "Defines the size of the button."})
     outline: bool = field(default=False, metadata={"doc": "**True** to use the outline design of the button."})
     subtle: bool = field(default=False, metadata={"doc": "**True** to use the subtle design of the button."})
     round: bool = field(default=False, metadata={"doc": "**True** for full rounded corners."})
@@ -117,6 +117,10 @@ class ButtonConfig:
     hx_attrs: list[DataAttrConfig] = field(
         default_factory=list, metadata={"doc": "List of HTMX attributes to add to the button element."}
     )
+
+    def __post_init__(self) -> None:
+        """Validate size after initialization."""
+        validate_size(self.size, "size")
 
 
 @dataclass

@@ -78,6 +78,7 @@ from insight_ui.configs import (
     SelectConfig,
     SidebarConfig,
     SidebarDataConfig,
+    Size,
     SliderConfig,
     StatusScreenConfig,
     StepperConfig,
@@ -502,7 +503,7 @@ def minimal_stepper(
     step_count: int | _Unset = UNSET,
     current_step: int | _Unset = UNSET,
     current_step_status: Literal["active", "success", "failed"] | _Unset = UNSET,
-    icon_size: Literal["xs", "s", "m", "l", "xl"] | _Unset = UNSET,
+    icon_size: Size | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a compact graphical representation of process steps."""
     config = build_config(MinimalStepperConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -562,7 +563,7 @@ def button(
     icon_end: bool | _Unset = UNSET,
     icon_only: bool | _Unset = UNSET,
     type: Literal["primary", "secondary", "info", "success", "warning", "danger", "disabled", "link"] | _Unset = UNSET,  # noqa: A002
-    size: Literal["xs", "s", "m", "l", "xl"] | _Unset = UNSET,
+    size: Size | _Unset = UNSET,
     outline: bool | _Unset = UNSET,
     subtle: bool | _Unset = UNSET,
     round: bool | _Unset = UNSET,  # noqa: A002
@@ -1141,7 +1142,7 @@ def badge(
     icon_size: str | _Unset = UNSET,
     icon_end: bool | _Unset = UNSET,
     type: Literal["primary", "secondary", "info", "success", "warning", "danger", "disabled"] | _Unset = UNSET,  # noqa: A002
-    size: Literal["xs", "s", "m", "l", "xl"] | _Unset = UNSET,
+    size: Size | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render the badge component."""
     icon: IconConfig | None | _Unset = UNSET
