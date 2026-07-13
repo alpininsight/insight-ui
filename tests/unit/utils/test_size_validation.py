@@ -1,7 +1,26 @@
-"""Tests for size validation utilities."""
+"""Tests for size and type validation utilities."""
 
 import pytest
-from insight_ui.configs import SIZE_VALUES, BadgeConfig, ButtonConfig, IconConfig, MinimalStepperConfig, validate_size
+from insight_ui.configs import (
+    BADGE_TYPE_VALUES,
+    BUTTON_TYPE_VALUES,
+    COLOR_TYPE_VALUES,
+    SIZE_VALUES,
+    BadgeConfig,
+    ButtonConfig,
+    CornerRibbonConfig,
+    IconConfig,
+    MinimalStepperConfig,
+    validate_badge_type,
+    validate_button_type,
+    validate_color_type,
+    validate_size,
+)
+
+# =============================================================================
+# Size Validation
+# =============================================================================
+
 
 # --- validate_size function ------------------------------------------------
 
@@ -43,7 +62,7 @@ def test_size_values_is_tuple() -> None:
     assert isinstance(SIZE_VALUES, tuple)
 
 
-# --- Config validation via __post_init__ -----------------------------------
+# --- Config size validation via __post_init__ ------------------------------
 
 
 def test_icon_config_accepts_valid_size() -> None:
@@ -98,7 +117,7 @@ def test_minimal_stepper_config_rejects_invalid_icon_size() -> None:
         MinimalStepperConfig(icon_size="medium")
 
 
-# --- Default values --------------------------------------------------------
+# --- Default size values ---------------------------------------------------
 
 
 def test_icon_config_default_size() -> None:
@@ -123,3 +142,181 @@ def test_minimal_stepper_config_default_icon_size() -> None:
     """Test MinimalStepperConfig has correct default icon_size."""
     config = MinimalStepperConfig()
     assert config.icon_size == "xs"
+
+
+# =============================================================================
+# Type Validation
+# =============================================================================
+
+
+# --- Type value constants --------------------------------------------------
+
+
+def test_color_type_values_contains_expected_values() -> None:
+    """Test that COLOR_TYPE_VALUES contains all expected color type values."""
+    assert COLOR_TYPE_VALUES == (
+        "primary",
+        "secondary",
+        "neutral",
+        "info",
+        "success",
+        "warning",
+        "danger",
+    )
+
+
+def test_badge_type_values_extends_color_types() -> None:
+    """Test that BADGE_TYPE_VALUES includes all color types plus 'disabled'."""
+    for color in COLOR_TYPE_VALUES:
+        assert color in BADGE_TYPE_VALUES
+    assert "disabled" in BADGE_TYPE_VALUES
+
+
+def test_button_type_values_extends_color_types() -> None:
+    """Test that BUTTON_TYPE_VALUES includes all color types plus 'disabled' and 'link'."""
+    for color in COLOR_TYPE_VALUES:
+        assert color in BUTTON_TYPE_VALUES
+    assert "disabled" in BUTTON_TYPE_VALUES
+    assert "link" in BUTTON_TYPE_VALUES
+
+
+def test_type_values_are_tuples() -> None:
+    """Test that all type value constants are immutable (tuples)."""
+    assert isinstance(COLOR_TYPE_VALUES, tuple)
+    assert isinstance(BADGE_TYPE_VALUES, tuple)
+    assert isinstance(BUTTON_TYPE_VALUES, tuple)
+
+
+# --- validate_color_type function ------------------------------------------
+
+
+def test_validate_color_type_accepts_valid_values() -> None:
+    """Test that validate_color_type accepts all valid color type values."""
+    for color_type in COLOR_TYPE_VALUES:
+        validate_color_type(color_type)  # Should not raise
+
+
+def test_validate_color_type_rejects_invalid_value() -> None:
+    """Test that validate_color_type raises ValueError for invalid types."""
+    with pytest.raises(ValueError, match="Invalid type 'invalid'"):
+        validate_color_type("invalid")
+
+
+def test_validate_color_type_rejects_disabled() -> None:
+    """Test that validate_color_type rejects 'disabled' (not a color)."""
+    with pytest.raises(ValueError, match="Invalid type 'disabled'"):
+        validate_color_type("disabled")
+
+
+# --- validate_badge_type function ------------------------------------------
+
+
+def test_validate_badge_type_accepts_valid_values() -> None:
+    """Test that validate_badge_type accepts all valid badge type values."""
+    for badge_type in BADGE_TYPE_VALUES:
+        validate_badge_type(badge_type)  # Should not raise
+
+
+def test_validate_badge_type_rejects_invalid_value() -> None:
+    """Test that validate_badge_type raises ValueError for invalid types."""
+    with pytest.raises(ValueError, match="Invalid type 'invalid'"):
+        validate_badge_type("invalid")
+
+
+def test_validate_badge_type_rejects_link() -> None:
+    """Test that validate_badge_type rejects 'link' (button-only type)."""
+    with pytest.raises(ValueError, match="Invalid type 'link'"):
+        validate_badge_type("link")
+
+
+# --- validate_button_type function -----------------------------------------
+
+
+def test_validate_button_type_accepts_valid_values() -> None:
+    """Test that validate_button_type accepts all valid button type values."""
+    for button_type in BUTTON_TYPE_VALUES:
+        validate_button_type(button_type)  # Should not raise
+
+
+def test_validate_button_type_rejects_invalid_value() -> None:
+    """Test that validate_button_type raises ValueError for invalid types."""
+    with pytest.raises(ValueError, match="Invalid type 'invalid'"):
+        validate_button_type("invalid")
+
+
+# --- Config type validation via __post_init__ ------------------------------
+
+
+def test_button_config_accepts_valid_type() -> None:
+    """Test ButtonConfig accepts valid type values."""
+    for button_type in BUTTON_TYPE_VALUES:
+        config = ButtonConfig(type=button_type)
+        assert config.type == button_type
+
+
+def test_button_config_rejects_invalid_type() -> None:
+    """Test ButtonConfig raises ValueError for invalid type."""
+    with pytest.raises(ValueError, match="Invalid type"):
+        ButtonConfig(type="invalid")
+
+
+def test_badge_config_accepts_valid_type() -> None:
+    """Test BadgeConfig accepts valid type values."""
+    for badge_type in BADGE_TYPE_VALUES:
+        config = BadgeConfig(label="Test", type=badge_type)
+        assert config.type == badge_type
+
+
+def test_badge_config_rejects_invalid_type() -> None:
+    """Test BadgeConfig raises ValueError for invalid type."""
+    with pytest.raises(ValueError, match="Invalid type"):
+        BadgeConfig(label="Test", type="invalid")
+
+
+def test_badge_config_rejects_link_type() -> None:
+    """Test BadgeConfig raises ValueError for 'link' type (button-only)."""
+    with pytest.raises(ValueError, match="Invalid type 'link'"):
+        BadgeConfig(label="Test", type="link")
+
+
+# --- Default type values ---------------------------------------------------
+
+
+def test_button_config_default_type() -> None:
+    """Test ButtonConfig has correct default type."""
+    config = ButtonConfig()
+    assert config.type == "primary"
+
+
+def test_badge_config_default_type() -> None:
+    """Test BadgeConfig has correct default type."""
+    config = BadgeConfig(label="Test")
+    assert config.type == "primary"
+
+
+def test_corner_ribbon_config_default_color() -> None:
+    """Test CornerRibbonConfig has correct default color."""
+    config = CornerRibbonConfig(text="Test")
+    assert config.color == "primary"
+
+
+# --- CornerRibbonConfig color validation -----------------------------------
+
+
+def test_corner_ribbon_config_accepts_valid_color() -> None:
+    """Test CornerRibbonConfig accepts valid color values."""
+    for color in COLOR_TYPE_VALUES:
+        config = CornerRibbonConfig(text="Test", color=color)
+        assert config.color == color
+
+
+def test_corner_ribbon_config_rejects_invalid_color() -> None:
+    """Test CornerRibbonConfig raises ValueError for invalid color."""
+    with pytest.raises(ValueError, match="Invalid color"):
+        CornerRibbonConfig(text="Test", color="invalid")
+
+
+def test_corner_ribbon_config_rejects_disabled_color() -> None:
+    """Test CornerRibbonConfig rejects 'disabled' (not a color)."""
+    with pytest.raises(ValueError, match="Invalid color 'disabled'"):
+        CornerRibbonConfig(text="Test", color="disabled")

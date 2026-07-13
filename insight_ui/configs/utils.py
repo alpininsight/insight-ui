@@ -5,7 +5,15 @@ from typing import Literal
 
 from django.utils.translation import gettext_lazy as _
 
-from insight_ui.configs.base import IconConfig, Size, validate_size
+from insight_ui.configs.base import (
+    BadgeType,
+    ColorType,
+    IconConfig,
+    Size,
+    validate_badge_type,
+    validate_color_type,
+    validate_size,
+)
 from insight_ui.configs.input import ButtonConfig
 
 
@@ -210,7 +218,7 @@ class CornerRibbonConfig:
     Attributes:
         text: The text displayed in the ribbon.
         position: Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'. Invalid values fall back to 'top-right'.
-        color: Color variant: 'primary', 'success', 'warning', 'danger', 'info'. Invalid values fall back to 'primary'.
+        color: Color variant for the ribbon.
 
     """
 
@@ -231,14 +239,14 @@ class CornerRibbonConfig:
             )
         },
     )
-    color: Literal["primary", "success", "warning", "danger", "info"] = field(
+    color: ColorType = field(
         default="primary",
-        metadata={
-            "doc": _(
-                "Color variant: 'primary', 'success', 'warning', 'danger', 'info'. Invalid values fall back to 'primary'."
-            )
-        },
+        metadata={"doc": _("Color variant for the ribbon.")},
     )
+
+    def __post_init__(self) -> None:
+        """Validate color after initialization."""
+        validate_color_type(self.color, "color")
 
 
 @dataclass
@@ -587,11 +595,10 @@ class BadgeConfig:
             "doc": "**True** if the icon should be shown after the label, otherwise the icon is shown in front of the label."
         },
     )
-    type: Literal["primary", "secondary", "info", "success", "warning", "danger", "disabled"] = field(
-        default="primary", metadata={"doc": "Defines the color of the badge."}
-    )
+    type: BadgeType = field(default="primary", metadata={"doc": "Defines the color of the badge."})
     size: Size = field(default="m", metadata={"doc": "Defines the size of the badge."})
 
     def __post_init__(self) -> None:
-        """Validate size after initialization."""
+        """Validate type and size after initialization."""
+        validate_badge_type(self.type, "type")
         validate_size(self.size, "size")
