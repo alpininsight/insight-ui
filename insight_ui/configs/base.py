@@ -145,6 +145,36 @@ type FormFieldType = Literal[
     "select",
 ]
 
+# Tuple of valid HTMX swap method values
+HTMX_SWAP_METHOD_VALUES: tuple[str, ...] = (
+    "innerHTML",
+    "outerHTML",
+    "beforebegin",
+    "afterbegin",
+    "beforeend",
+    "afterend",
+    "delete",
+    "none",
+)
+
+# Type alias for HTMX swap methods
+type HtmxSwapMethod = Literal[
+    "innerHTML",
+    "outerHTML",
+    "beforebegin",
+    "afterbegin",
+    "beforeend",
+    "afterend",
+    "delete",
+    "none",
+]
+
+# Tuple of valid HTMX HTTP method values
+HTMX_METHOD_VALUES: tuple[str, ...] = ("get", "post")
+
+# Type alias for HTMX HTTP methods
+type HtmxMethod = Literal["get", "post"]
+
 
 def _validate_literal(value: str, allowed: tuple[str, ...], field_name: str) -> None:
     """Validate that a value is one of the allowed values.
@@ -346,6 +376,34 @@ def validate_form_field_type(value: str, field_name: str = "input_type") -> None
     _validate_literal(value, FORM_FIELD_TYPE_VALUES, field_name)
 
 
+def validate_htmx_swap_method(value: str, field_name: str = "swap_method") -> None:
+    """Validate that an HTMX swap method value is one of the allowed values.
+
+    Args:
+        value: The HTMX swap method value to validate.
+        field_name: Name of the field for error messages.
+
+    Raises:
+        ValueError: If the value is not a valid HTMX swap method.
+
+    """
+    _validate_literal(value, HTMX_SWAP_METHOD_VALUES, field_name)
+
+
+def validate_htmx_method(value: str, field_name: str = "method") -> None:
+    """Validate that an HTMX HTTP method value is one of the allowed values.
+
+    Args:
+        value: The HTMX HTTP method value to validate.
+        field_name: Name of the field for error messages.
+
+    Raises:
+        ValueError: If the value is not a valid HTMX HTTP method.
+
+    """
+    _validate_literal(value, HTMX_METHOD_VALUES, field_name)
+
+
 @dataclass
 class DataAttrConfig:
     """Configuration for a custom data attribute.
@@ -445,11 +503,11 @@ class HtmxConfig:
 
     request_url: str = field(default="", metadata={"doc": _("The URL for the HTMX request (hx-get/hx-post).")})
     target: str = field(default="", metadata={"doc": _("CSS selector for the target element (hx-target).")})
-    swap_method: Literal[
-        "innerHTML", "outerHTML", "beforebegin", "afterbegin", "beforeend", "afterend", "delete", "none"
-    ] = field(default="innerHTML", metadata={"doc": _("The way in which the target is to be replaced (hx-swap).")})
+    swap_method: HtmxSwapMethod = field(
+        default="innerHTML", metadata={"doc": _("The way in which the target is to be replaced (hx-swap).")}
+    )
     trigger: str = field(default="submit", metadata={"doc": _("Event trigger (hx-trigger).")})
-    method: Literal["get", "post"] = field(default="get", metadata={"doc": _("HTTP method ('get' or 'post').")})
+    method: HtmxMethod = field(default="get", metadata={"doc": _("HTTP method ('get' or 'post').")})
     loading_indicator_id: str = field(
         default="", metadata={"doc": _("CSS selector for loading indicator (hx-indicator).")}
     )
@@ -458,6 +516,11 @@ class HtmxConfig:
     vals: dict[str, Any] = field(
         default_factory=dict, metadata={"doc": _("Additional values to include in request (hx-vals).")}
     )
+
+    def __post_init__(self) -> None:
+        """Validate swap_method and method after initialization."""
+        validate_htmx_swap_method(self.swap_method, "swap_method")
+        validate_htmx_method(self.method, "method")
 
 
 @dataclass

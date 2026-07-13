@@ -12,11 +12,13 @@ from insight_ui.configs.base import (
     HtmlButtonType,
     HtmlInputType,
     HtmxConfig,
+    HtmxSwapMethod,
     IconConfig,
     Size,
     validate_button_type,
     validate_html_button_type,
     validate_html_input_type,
+    validate_htmx_swap_method,
     validate_size,
 )
 
@@ -500,7 +502,7 @@ class RadioBlockConfig:
     hx_target_id: str = field(
         default="", metadata={"doc": _("The ID of the HTML tag to be replaced when switching the radio button.")}
     )
-    hx_swap_method: Literal["innerHTML", "outerHTML", "beforebegin", "afterbegin", "beforeend", "afterend"] = field(
+    hx_swap_method: HtmxSwapMethod = field(
         default="outerHTML", metadata={"doc": _("The way in which the target is to be replaced.")}
     )
     method: str = field(
@@ -510,7 +512,8 @@ class RadioBlockConfig:
     current_value: str = field(default="", metadata={"doc": _("The value of the currently selected radio button.")})
 
     def __post_init__(self) -> None:
-        """Set first option for current_value if empty."""
+        """Validate hx_swap_method and set first option for current_value if empty."""
+        validate_htmx_swap_method(self.hx_swap_method, "hx_swap_method")
         if not self.current_value and self.items:
             self.current_value = self.items[0].value
 
