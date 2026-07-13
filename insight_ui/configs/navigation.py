@@ -1,11 +1,19 @@
 """Configuration classes for navigation components."""
 
 from dataclasses import dataclass, field
-from typing import Literal
 
 from django.utils.translation import gettext_lazy as _
 
-from insight_ui.configs.base import HtmxConfig, IconConfig, Size, StepStatus, validate_size, validate_step_status
+from insight_ui.configs.base import (
+    HorizontalSide,
+    HtmxConfig,
+    IconConfig,
+    Size,
+    StepStatus,
+    validate_horizontal_side,
+    validate_size,
+    validate_step_status,
+)
 from insight_ui.configs.input import DropdownConfig
 from insight_ui.configs.popup import ModalConfig
 from insight_ui.configs.utils import BrandMarkConfig, CopyrightNoticeConfig, LogoConfig
@@ -260,7 +268,7 @@ class SidebarConfig:
     sidebar_data: SidebarDataConfig | None = field(
         default=None, metadata={"doc": _("Content of the sidebar (title and navigation elements).")}
     )
-    side: Literal["left", "right"] = field(
+    side: HorizontalSide = field(
         default="right", metadata={"doc": _("Determines on which side the sidebar should be placed.")}
     )
     static: bool = field(default=True, metadata={"doc": _("**True** if the sidebar should not be collapsible.")})
@@ -270,6 +278,10 @@ class SidebarConfig:
     mobile_hidden: bool = field(
         default=False, metadata={"doc": _("If **True** the static sidebar is hidden on a smaller viewport.")}
     )
+
+    def __post_init__(self) -> None:
+        """Validate side after initialization."""
+        validate_horizontal_side(self.side, "side")
 
 
 @dataclass
