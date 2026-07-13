@@ -4,8 +4,8 @@ from dataclasses import dataclass, field
 
 from django.utils.translation import gettext_lazy as _
 
-from insight_ui.configs.base import AlertType, validate_alert_type
 from insight_ui.configs.input import ButtonConfig
+from insight_ui.configs.types import AlertType, validate_alert_type
 
 
 @dataclass

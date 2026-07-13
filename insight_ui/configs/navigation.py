@@ -4,18 +4,17 @@ from dataclasses import dataclass, field
 
 from django.utils.translation import gettext_lazy as _
 
-from insight_ui.configs.base import (
+from insight_ui.configs.base import HtmxConfig, IconConfig
+from insight_ui.configs.input import DropdownConfig
+from insight_ui.configs.popup import ModalConfig
+from insight_ui.configs.types import (
     HorizontalSide,
-    HtmxConfig,
-    IconConfig,
     Size,
     StepStatus,
     validate_horizontal_side,
     validate_size,
     validate_step_status,
 )
-from insight_ui.configs.input import DropdownConfig
-from insight_ui.configs.popup import ModalConfig
 from insight_ui.configs.utils import BrandMarkConfig, CopyrightNoticeConfig, LogoConfig
 
 

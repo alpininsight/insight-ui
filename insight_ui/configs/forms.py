@@ -4,7 +4,8 @@ from dataclasses import dataclass, field
 
 from django.utils.translation import gettext_lazy as _
 
-from insight_ui.configs.base import FormFieldType, HtmxConfig, validate_form_field_type
+from insight_ui.configs.base import HtmxConfig
+from insight_ui.configs.types import FormFieldType, validate_form_field_type
 
 
 @dataclass
