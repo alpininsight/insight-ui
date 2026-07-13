@@ -11,6 +11,50 @@ SIZE_VALUES: tuple[str, ...] = ("xs", "s", "m", "l", "xl")
 # Type alias for component sizes
 type Size = Literal["xs", "s", "m", "l", "xl"]
 
+# Tuple of valid color type values (base palette)
+COLOR_TYPE_VALUES: tuple[str, ...] = (
+    "primary",
+    "secondary",
+    "neutral",
+    "info",
+    "success",
+    "warning",
+    "danger",
+)
+
+# Type alias for base color types
+type ColorType = Literal["primary", "secondary", "neutral", "info", "success", "warning", "danger"]
+
+# Tuple of valid badge type values (colors + disabled)
+BADGE_TYPE_VALUES: tuple[str, ...] = (*COLOR_TYPE_VALUES, "disabled")
+
+# Type alias for badge types
+type BadgeType = Literal["primary", "secondary", "neutral", "info", "success", "warning", "danger", "disabled"]
+
+# Tuple of valid button type values (colors + disabled + link)
+BUTTON_TYPE_VALUES: tuple[str, ...] = (*COLOR_TYPE_VALUES, "disabled", "link")
+
+# Type alias for button types
+type ButtonType = Literal["primary", "secondary", "neutral", "info", "success", "warning", "danger", "disabled", "link"]
+
+
+def _validate_literal(value: str, allowed: tuple[str, ...], field_name: str) -> None:
+    """Validate that a value is one of the allowed values.
+
+    Args:
+        value: The value to validate.
+        allowed: Tuple of allowed values.
+        field_name: Name of the field for error messages.
+
+    Raises:
+        ValueError: If the value is not in the allowed values.
+
+    """
+    if value not in allowed:
+        raise ValueError(  # noqa: TRY003
+            f"Invalid {field_name} '{value}'. Allowed values are: {', '.join(repr(s) for s in allowed)}"
+        )
+
 
 def validate_size(value: str, field_name: str = "size") -> None:
     """Validate that a size value is one of the allowed sizes.
@@ -23,10 +67,49 @@ def validate_size(value: str, field_name: str = "size") -> None:
         ValueError: If the value is not a valid size.
 
     """
-    if value not in SIZE_VALUES:
-        raise ValueError(  # noqa: TRY003
-            f"Invalid {field_name} '{value}'. Allowed values are: {', '.join(repr(s) for s in SIZE_VALUES)}"
-        )
+    _validate_literal(value, SIZE_VALUES, field_name)
+
+
+def validate_color_type(value: str, field_name: str = "type") -> None:
+    """Validate that a color type value is one of the allowed types.
+
+    Args:
+        value: The color type value to validate.
+        field_name: Name of the field for error messages.
+
+    Raises:
+        ValueError: If the value is not a valid color type.
+
+    """
+    _validate_literal(value, COLOR_TYPE_VALUES, field_name)
+
+
+def validate_badge_type(value: str, field_name: str = "type") -> None:
+    """Validate that a badge type value is one of the allowed types.
+
+    Args:
+        value: The badge type value to validate.
+        field_name: Name of the field for error messages.
+
+    Raises:
+        ValueError: If the value is not a valid badge type.
+
+    """
+    _validate_literal(value, BADGE_TYPE_VALUES, field_name)
+
+
+def validate_button_type(value: str, field_name: str = "type") -> None:
+    """Validate that a button type value is one of the allowed types.
+
+    Args:
+        value: The button type value to validate.
+        field_name: Name of the field for error messages.
+
+    Raises:
+        ValueError: If the value is not a valid button type.
+
+    """
+    _validate_literal(value, BUTTON_TYPE_VALUES, field_name)
 
 
 @dataclass

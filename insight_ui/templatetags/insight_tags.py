@@ -26,12 +26,14 @@ from insight_ui.configs import (
     AppCardConfig,
     ArticleConfig,
     BadgeConfig,
+    BadgeType,
     BrandMarkConfig,
     BreadcrumbItemConfig,
     BreadcrumbsConfig,
     BulletPointItemConfig,
     BulletPointListConfig,
     ButtonConfig,
+    ButtonType,
     CardCarouselConfig,
     CardConfig,
     CarouselItemConfig,
@@ -40,6 +42,7 @@ from insight_ui.configs import (
     ChatConfig,
     CheckboxConfig,
     CheckboxGroupConfig,
+    ColorType,
     CopyrightNoticeConfig,
     CornerRibbonConfig,
     DataAttrConfig,
@@ -562,7 +565,7 @@ def button(
     icon_size: str | _Unset = UNSET,
     icon_end: bool | _Unset = UNSET,
     icon_only: bool | _Unset = UNSET,
-    type: Literal["primary", "secondary", "info", "success", "warning", "danger", "disabled", "link"] | _Unset = UNSET,  # noqa: A002
+    type: ButtonType | _Unset = UNSET,  # noqa: A002
     size: Size | _Unset = UNSET,
     outline: bool | _Unset = UNSET,
     subtle: bool | _Unset = UNSET,
@@ -1029,8 +1032,8 @@ def corner_ribbon(
     config: CornerRibbonConfig | None = None,
     *,
     text: str | _Unset = UNSET,
-    position: str | _Unset = UNSET,
-    color: str | _Unset = UNSET,
+    position: Literal["top-right", "top-left", "bottom-right", "bottom-left"] | _Unset = UNSET,
+    color: ColorType | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a corner ribbon positioned in any browser corner."""
     config = build_config(CornerRibbonConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -1141,7 +1144,7 @@ def badge(
     icon_name: str | _Unset = UNSET,
     icon_size: str | _Unset = UNSET,
     icon_end: bool | _Unset = UNSET,
-    type: Literal["primary", "secondary", "info", "success", "warning", "danger", "disabled"] | _Unset = UNSET,  # noqa: A002
+    type: BadgeType | _Unset = UNSET,  # noqa: A002
     size: Size | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render the badge component."""

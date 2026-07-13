@@ -5,7 +5,16 @@ from typing import Literal
 
 from django.utils.translation import gettext_lazy as _
 
-from insight_ui.configs.base import BaseFormFieldConfig, DataAttrConfig, HtmxConfig, IconConfig, Size, validate_size
+from insight_ui.configs.base import (
+    BaseFormFieldConfig,
+    ButtonType,
+    DataAttrConfig,
+    HtmxConfig,
+    IconConfig,
+    Size,
+    validate_button_type,
+    validate_size,
+)
 
 
 @dataclass
@@ -83,9 +92,7 @@ class ButtonConfig:
             "doc": "**True** if only the icon should be shown. In this case the `label` will be used for Screenreader."
         },
     )
-    type: Literal["primary", "secondary", "info", "success", "warning", "danger", "disabled", "link"] = field(
-        default="primary", metadata={"doc": "Defines the color of the button."}
-    )
+    type: ButtonType = field(default="primary", metadata={"doc": "Defines the color of the button."})
     size: Size = field(default="m", metadata={"doc": "Defines the size of the button."})
     outline: bool = field(default=False, metadata={"doc": "**True** to use the outline design of the button."})
     subtle: bool = field(default=False, metadata={"doc": "**True** to use the subtle design of the button."})
@@ -119,7 +126,8 @@ class ButtonConfig:
     )
 
     def __post_init__(self) -> None:
-        """Validate size after initialization."""
+        """Validate type and size after initialization."""
+        validate_button_type(self.type, "type")
         validate_size(self.size, "size")
 
 
