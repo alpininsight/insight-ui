@@ -34,6 +34,7 @@ from insight_ui.configs.base import (
     BUTTON_TYPE_VALUES,
     COLOR_TYPE_VALUES,
     SIZE_VALUES,
+    STEP_STATUS_VALUES,
     BadgeType,
     ButtonType,
     ColorType,
@@ -42,10 +43,12 @@ from insight_ui.configs.base import (
     IconConfig,
     ImageConfig,
     Size,
+    StepStatus,
     validate_badge_type,
     validate_button_type,
     validate_color_type,
     validate_size,
+    validate_step_status,
 )
 from insight_ui.configs.card import (
     AppCardConfig,
@@ -142,6 +145,7 @@ __all__ = [
     "BUTTON_TYPE_VALUES",
     "COLOR_TYPE_VALUES",
     "SIZE_VALUES",
+    "STEP_STATUS_VALUES",
     "AccordionConfig",
     "AccordionItemConfig",
     "AlertConfig",
@@ -221,6 +225,7 @@ __all__ = [
     "SliderConfig",
     "SpacerConfig",
     "StatusScreenConfig",
+    "StepStatus",
     "StepperConfig",
     "StepperItemConfig",
     "TabConfig",
@@ -236,4 +241,5 @@ __all__ = [
     "validate_button_type",
     "validate_color_type",
     "validate_size",
+    "validate_step_status",
 ]

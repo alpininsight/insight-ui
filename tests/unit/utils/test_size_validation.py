@@ -6,6 +6,7 @@ from insight_ui.configs import (
     BUTTON_TYPE_VALUES,
     COLOR_TYPE_VALUES,
     SIZE_VALUES,
+    STEP_STATUS_VALUES,
     BadgeConfig,
     ButtonConfig,
     CornerRibbonConfig,
@@ -15,6 +16,7 @@ from insight_ui.configs import (
     validate_button_type,
     validate_color_type,
     validate_size,
+    validate_step_status,
 )
 
 # =============================================================================
@@ -320,3 +322,77 @@ def test_corner_ribbon_config_rejects_disabled_color() -> None:
     """Test CornerRibbonConfig rejects 'disabled' (not a color)."""
     with pytest.raises(ValueError, match="Invalid color 'disabled'"):
         CornerRibbonConfig(text="Test", color="disabled")
+
+
+# =============================================================================
+# Step Status Validation
+# =============================================================================
+
+
+# --- STEP_STATUS_VALUES constant -------------------------------------------
+
+
+def test_step_status_values_contains_expected_values() -> None:
+    """Test that STEP_STATUS_VALUES contains all expected values."""
+    assert STEP_STATUS_VALUES == ("active", "success", "failed", "")
+
+
+def test_step_status_values_is_tuple() -> None:
+    """Test that STEP_STATUS_VALUES is immutable (tuple)."""
+    assert isinstance(STEP_STATUS_VALUES, tuple)
+
+
+# --- validate_step_status function -----------------------------------------
+
+
+def test_validate_step_status_accepts_valid_values() -> None:
+    """Test that validate_step_status accepts all valid step status values."""
+    for status in STEP_STATUS_VALUES:
+        validate_step_status(status)  # Should not raise
+
+
+def test_validate_step_status_rejects_invalid_value() -> None:
+    """Test that validate_step_status raises ValueError for invalid status."""
+    with pytest.raises(ValueError, match="Invalid status 'invalid'"):
+        validate_step_status("invalid")
+
+
+def test_validate_step_status_custom_field_name() -> None:
+    """Test that validate_step_status uses the custom field name in error messages."""
+    with pytest.raises(ValueError, match="Invalid current_step_status 'bad'"):
+        validate_step_status("bad", field_name="current_step_status")
+
+
+# --- MinimalStepperConfig step status validation ---------------------------
+
+
+def test_minimal_stepper_config_accepts_valid_current_step_status() -> None:
+    """Test MinimalStepperConfig accepts valid current_step_status values."""
+    for status in ("active", "success", "failed", ""):
+        config = MinimalStepperConfig(current_step_status=status)
+        assert config.current_step_status == status
+
+
+def test_minimal_stepper_config_rejects_invalid_current_step_status() -> None:
+    """Test MinimalStepperConfig raises ValueError for invalid current_step_status."""
+    with pytest.raises(ValueError, match="Invalid current_step_status"):
+        MinimalStepperConfig(current_step_status="pending")
+
+
+def test_minimal_stepper_config_accepts_valid_items() -> None:
+    """Test MinimalStepperConfig accepts valid items list."""
+    items = ["success", "success", "active", "", ""]
+    config = MinimalStepperConfig(items=items)
+    assert config.items == items
+
+
+def test_minimal_stepper_config_rejects_invalid_items() -> None:
+    """Test MinimalStepperConfig raises ValueError for invalid items."""
+    with pytest.raises(ValueError, match=r"Invalid items\[2\]"):
+        MinimalStepperConfig(items=["success", "active", "invalid", ""])
+
+
+def test_minimal_stepper_config_default_current_step_status() -> None:
+    """Test MinimalStepperConfig has correct default current_step_status."""
+    config = MinimalStepperConfig()
+    assert config.current_step_status == "active"

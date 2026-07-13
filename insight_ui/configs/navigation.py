@@ -5,7 +5,7 @@ from typing import Literal
 
 from django.utils.translation import gettext_lazy as _
 
-from insight_ui.configs.base import HtmxConfig, IconConfig, Size, validate_size
+from insight_ui.configs.base import HtmxConfig, IconConfig, Size, StepStatus, validate_size, validate_step_status
 from insight_ui.configs.input import DropdownConfig
 from insight_ui.configs.popup import ModalConfig
 from insight_ui.configs.utils import BrandMarkConfig, CopyrightNoticeConfig, LogoConfig
@@ -499,7 +499,7 @@ class MinimalStepperConfig:
         MinimalStepperConfig(step_count=5, current_step=3)
         """
 
-    items: list[Literal["success", "failed", "active", ""]] = field(
+    items: list[StepStatus] = field(
         default_factory=list,
         metadata={
             "doc": _(
@@ -511,14 +511,17 @@ class MinimalStepperConfig:
     current_step: int = field(
         default=0, metadata={"doc": _("Current step of the process. (Only if 'items' is not set!)")}
     )
-    current_step_status: Literal["active", "success", "failed"] = field(
+    current_step_status: StepStatus = field(
         default="active", metadata={"doc": _("Status of the current step. (Only if 'items' is not set!)")}
     )
     icon_size: Size = field(default="xs", metadata={"doc": _("Size of the icons in the progress bar.")})
 
     def __post_init__(self) -> None:
-        """Validate icon_size after initialization."""
+        """Validate icon_size and step status values after initialization."""
         validate_size(self.icon_size, "icon_size")
+        validate_step_status(self.current_step_status, "current_step_status")
+        for i, status in enumerate(self.items):
+            validate_step_status(status, f"items[{i}]")
 
 
 @dataclass
