@@ -175,6 +175,12 @@ HTMX_METHOD_VALUES: tuple[str, ...] = ("get", "post")
 # Type alias for HTMX HTTP methods
 type HtmxMethod = Literal["get", "post"]
 
+# Tuple of valid geo map marker type values
+GEO_MAP_MARKER_TYPE_VALUES: tuple[str, ...] = ("marker", "circle")
+
+# Type alias for geo map marker types
+type GeoMapMarkerType = Literal["marker", "circle"]
+
 
 def _validate_literal(value: str, allowed: tuple[str, ...], field_name: str) -> None:
     """Validate that a value is one of the allowed values.
@@ -402,6 +408,20 @@ def validate_htmx_method(value: str, field_name: str = "method") -> None:
 
     """
     _validate_literal(value, HTMX_METHOD_VALUES, field_name)
+
+
+def validate_geo_map_marker_type(value: str, field_name: str = "type") -> None:
+    """Validate that a geo map marker type value is one of the allowed values.
+
+    Args:
+        value: The geo map marker type value to validate.
+        field_name: Name of the field for error messages.
+
+    Raises:
+        ValueError: If the value is not a valid geo map marker type.
+
+    """
+    _validate_literal(value, GEO_MAP_MARKER_TYPE_VALUES, field_name)
 
 
 @dataclass

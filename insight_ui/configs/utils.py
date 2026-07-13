@@ -1,7 +1,6 @@
 """Configuration classes for utility components (differentiator, charts, maps, etc.)."""
 
 from dataclasses import dataclass, field
-from typing import Literal
 
 from django.utils.translation import gettext_lazy as _
 
@@ -10,6 +9,7 @@ from insight_ui.configs.base import (
     BadgeType,
     ColorType,
     CornerPosition,
+    GeoMapMarkerType,
     IconConfig,
     InlinePosition,
     Size,
@@ -17,6 +17,7 @@ from insight_ui.configs.base import (
     validate_badge_type,
     validate_color_type,
     validate_corner_position,
+    validate_geo_map_marker_type,
     validate_inline_position,
     validate_size,
 )
@@ -390,12 +391,14 @@ class GeoMapDatasetConfig:
         """
 
     name: str = field(metadata={"doc": _("Dataset name.")})
-    type: Literal["marker", "circle"] = field(
-        default="marker", metadata={"doc": _("Marker type ('marker' or 'circle').")}
-    )
+    type: GeoMapMarkerType = field(default="marker", metadata={"doc": _("Marker type ('marker' or 'circle').")})
     data: list[GeoMapMarkerConfig] = field(default_factory=list, metadata={"doc": _("List of marker configurations.")})
     min: int | float = field(default=0, metadata={"doc": _("Minimum value for circle scaling.")})
     max: int | float = field(default=100, metadata={"doc": _("Maximum value for circle scaling.")})
+
+    def __post_init__(self) -> None:
+        """Validate type after initialization."""
+        validate_geo_map_marker_type(self.type, "type")
 
 
 @dataclass
