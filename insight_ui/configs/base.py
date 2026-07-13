@@ -43,6 +43,12 @@ STEP_STATUS_VALUES: tuple[str, ...] = ("active", "success", "failed", "")
 # Type alias for step status
 type StepStatus = Literal["active", "success", "failed", ""]
 
+# Tuple of valid alert/notification type values
+ALERT_TYPE_VALUES: tuple[str, ...] = ("info", "success", "warning", "error")
+
+# Type alias for alert/notification types
+type AlertType = Literal["info", "success", "warning", "error"]
+
 
 def _validate_literal(value: str, allowed: tuple[str, ...], field_name: str) -> None:
     """Validate that a value is one of the allowed values.
@@ -130,6 +136,20 @@ def validate_step_status(value: str, field_name: str = "status") -> None:
 
     """
     _validate_literal(value, STEP_STATUS_VALUES, field_name)
+
+
+def validate_alert_type(value: str, field_name: str = "type") -> None:
+    """Validate that an alert type value is one of the allowed values.
+
+    Args:
+        value: The alert type value to validate.
+        field_name: Name of the field for error messages.
+
+    Raises:
+        ValueError: If the value is not a valid alert type.
+
+    """
+    _validate_literal(value, ALERT_TYPE_VALUES, field_name)
 
 
 @dataclass

@@ -62,7 +62,7 @@ def get_status_screen_description_context() -> dict[str, list[str]]:
             ),
         ],
         "features": [
-            _("**Semantic status**: Supports `info`, `success`, `warning` and `error`."),
+            _("**Semantic status**: Supports `info`, `success`, `warning` and `danger`."),
             _("**Reusable actions**: Uses the standard `button` component and `ButtonConfig`."),
             _("**Token-based surface**: Uses Insight UI surface, border, radius and shadow tokens."),
             _("**Optional brand**: Can show a `brand_mark` above the status card."),

@@ -2,16 +2,21 @@
 
 import pytest
 from insight_ui.configs import (
+    ALERT_TYPE_VALUES,
     BADGE_TYPE_VALUES,
     BUTTON_TYPE_VALUES,
     COLOR_TYPE_VALUES,
     SIZE_VALUES,
     STEP_STATUS_VALUES,
+    AlertConfig,
     BadgeConfig,
     ButtonConfig,
     CornerRibbonConfig,
     IconConfig,
+    InfoboxConfig,
     MinimalStepperConfig,
+    StatusScreenConfig,
+    validate_alert_type,
     validate_badge_type,
     validate_button_type,
     validate_color_type,
@@ -396,3 +401,132 @@ def test_minimal_stepper_config_default_current_step_status() -> None:
     """Test MinimalStepperConfig has correct default current_step_status."""
     config = MinimalStepperConfig()
     assert config.current_step_status == "active"
+
+
+# =============================================================================
+# Alert Type Validation
+# =============================================================================
+
+
+# --- ALERT_TYPE_VALUES constant ---------------------------------------------
+
+
+def test_alert_type_values_contains_expected_values() -> None:
+    """Test that ALERT_TYPE_VALUES contains all expected values."""
+    assert ALERT_TYPE_VALUES == ("info", "success", "warning", "error")
+
+
+def test_alert_type_values_is_tuple() -> None:
+    """Test that ALERT_TYPE_VALUES is immutable (tuple)."""
+    assert isinstance(ALERT_TYPE_VALUES, tuple)
+
+
+def test_alert_type_values_uses_error_not_danger() -> None:
+    """Test that ALERT_TYPE_VALUES uses 'error' (semantic) not 'danger' (color token)."""
+    assert "error" in ALERT_TYPE_VALUES
+    assert "danger" not in ALERT_TYPE_VALUES
+
+
+# --- validate_alert_type function -------------------------------------------
+
+
+def test_validate_alert_type_accepts_valid_values() -> None:
+    """Test that validate_alert_type accepts all valid alert type values."""
+    for alert_type in ALERT_TYPE_VALUES:
+        validate_alert_type(alert_type)  # Should not raise
+
+
+def test_validate_alert_type_rejects_invalid_value() -> None:
+    """Test that validate_alert_type raises ValueError for invalid types."""
+    with pytest.raises(ValueError, match="Invalid type 'invalid'"):
+        validate_alert_type("invalid")
+
+
+def test_validate_alert_type_rejects_danger() -> None:
+    """Test that validate_alert_type rejects 'danger' (use 'error' instead)."""
+    with pytest.raises(ValueError, match="Invalid type 'danger'"):
+        validate_alert_type("danger")
+
+
+def test_validate_alert_type_custom_field_name() -> None:
+    """Test that validate_alert_type uses the custom field name in error messages."""
+    with pytest.raises(ValueError, match="Invalid status 'bad'"):
+        validate_alert_type("bad", field_name="status")
+
+
+# --- AlertConfig type validation --------------------------------------------
+
+
+def test_alert_config_accepts_valid_type() -> None:
+    """Test AlertConfig accepts valid type values."""
+    for alert_type in ALERT_TYPE_VALUES:
+        config = AlertConfig(type=alert_type)
+        assert config.type == alert_type
+
+
+def test_alert_config_rejects_invalid_type() -> None:
+    """Test AlertConfig raises ValueError for invalid type."""
+    with pytest.raises(ValueError, match="Invalid type"):
+        AlertConfig(type="invalid")
+
+
+def test_alert_config_rejects_danger_type() -> None:
+    """Test AlertConfig rejects 'danger' type (use 'error' instead)."""
+    with pytest.raises(ValueError, match="Invalid type 'danger'"):
+        AlertConfig(type="danger")
+
+
+def test_alert_config_default_type() -> None:
+    """Test AlertConfig has correct default type."""
+    config = AlertConfig()
+    assert config.type == "info"
+
+
+# --- InfoboxConfig info_type validation -------------------------------------
+
+
+def test_infobox_config_accepts_valid_info_type() -> None:
+    """Test InfoboxConfig accepts valid info_type values."""
+    for alert_type in ALERT_TYPE_VALUES:
+        config = InfoboxConfig(message="Test", info_type=alert_type)
+        assert config.info_type == alert_type
+
+
+def test_infobox_config_rejects_invalid_info_type() -> None:
+    """Test InfoboxConfig raises ValueError for invalid info_type."""
+    with pytest.raises(ValueError, match="Invalid info_type"):
+        InfoboxConfig(message="Test", info_type="invalid")
+
+
+def test_infobox_config_default_info_type() -> None:
+    """Test InfoboxConfig has correct default info_type."""
+    config = InfoboxConfig(message="Test")
+    assert config.info_type == "info"
+
+
+# --- StatusScreenConfig status validation -----------------------------------
+
+
+def test_status_screen_config_accepts_valid_status() -> None:
+    """Test StatusScreenConfig accepts valid status values."""
+    for alert_type in ALERT_TYPE_VALUES:
+        config = StatusScreenConfig(title="Test", status=alert_type)
+        assert config.status == alert_type
+
+
+def test_status_screen_config_rejects_invalid_status() -> None:
+    """Test StatusScreenConfig raises ValueError for invalid status."""
+    with pytest.raises(ValueError, match="Invalid status"):
+        StatusScreenConfig(title="Test", status="invalid")
+
+
+def test_status_screen_config_rejects_danger_status() -> None:
+    """Test StatusScreenConfig rejects 'danger' status (use 'error' instead)."""
+    with pytest.raises(ValueError, match="Invalid status 'danger'"):
+        StatusScreenConfig(title="Test", status="danger")
+
+
+def test_status_screen_config_default_status() -> None:
+    """Test StatusScreenConfig has correct default status."""
+    config = StatusScreenConfig(title="Test")
+    assert config.status == "info"
