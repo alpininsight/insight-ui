@@ -19,6 +19,7 @@ from insight_ui.configs import (
     SIZE_VALUES,
     SLIDER_LEGEND_MODE_VALUES,
     STEP_STATUS_VALUES,
+    TOGGLE_VIEW_TYPE_VALUES,
     AlertConfig,
     BadgeConfig,
     BrandMarkConfig,
@@ -36,6 +37,7 @@ from insight_ui.configs import (
     SidebarConfig,
     SliderConfig,
     StatusScreenConfig,
+    ToggleViewConfig,
     validate_alert_type,
     validate_badge_type,
     validate_button_type,
@@ -53,6 +55,7 @@ from insight_ui.configs import (
     validate_size,
     validate_slider_legend_mode,
     validate_step_status,
+    validate_toggle_view_type,
 )
 
 # =============================================================================
@@ -1283,3 +1286,64 @@ def test_slider_config_default_legend_mode() -> None:
     """Test SliderConfig has correct default legend_mode."""
     config = SliderConfig()
     assert config.legend_mode == "static"
+
+
+# =============================================================================
+# Toggle View Type Validation
+# =============================================================================
+
+
+# --- TOGGLE_VIEW_TYPE_VALUES constant ----------------------------------------
+
+
+def test_toggle_view_type_values_contains_expected_values() -> None:
+    """Test that TOGGLE_VIEW_TYPE_VALUES contains all expected values."""
+    assert TOGGLE_VIEW_TYPE_VALUES == ("card", "table", "carousel")
+
+
+def test_toggle_view_type_values_is_tuple() -> None:
+    """Test that TOGGLE_VIEW_TYPE_VALUES is immutable (tuple)."""
+    assert isinstance(TOGGLE_VIEW_TYPE_VALUES, tuple)
+
+
+# --- validate_toggle_view_type function --------------------------------------
+
+
+def test_validate_toggle_view_type_accepts_valid_values() -> None:
+    """Test that validate_toggle_view_type accepts all valid values."""
+    for view_type in TOGGLE_VIEW_TYPE_VALUES:
+        validate_toggle_view_type(view_type)  # Should not raise
+
+
+def test_validate_toggle_view_type_rejects_invalid_value() -> None:
+    """Test that validate_toggle_view_type raises ValueError for invalid values."""
+    with pytest.raises(ValueError, match="Invalid current_view 'grid'"):
+        validate_toggle_view_type("grid")
+
+
+def test_validate_toggle_view_type_custom_field_name() -> None:
+    """Test that validate_toggle_view_type uses the custom field name in error messages."""
+    with pytest.raises(ValueError, match="Invalid view 'bad'"):
+        validate_toggle_view_type("bad", field_name="view")
+
+
+# --- ToggleViewConfig current_view validation --------------------------------
+
+
+def test_toggle_view_config_accepts_valid_current_view() -> None:
+    """Test ToggleViewConfig accepts valid current_view values."""
+    for view_type in TOGGLE_VIEW_TYPE_VALUES:
+        config = ToggleViewConfig(tag_id="test", current_view=view_type)
+        assert config.current_view == view_type
+
+
+def test_toggle_view_config_rejects_invalid_current_view() -> None:
+    """Test ToggleViewConfig raises ValueError for invalid current_view."""
+    with pytest.raises(ValueError, match="Invalid current_view"):
+        ToggleViewConfig(tag_id="test", current_view="grid")
+
+
+def test_toggle_view_config_default_current_view() -> None:
+    """Test ToggleViewConfig has correct default current_view."""
+    config = ToggleViewConfig(tag_id="test")
+    assert config.current_view == "card"

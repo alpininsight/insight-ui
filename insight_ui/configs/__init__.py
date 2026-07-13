@@ -47,6 +47,7 @@ from insight_ui.configs.base import (
     SIZE_VALUES,
     SLIDER_LEGEND_MODE_VALUES,
     STEP_STATUS_VALUES,
+    TOGGLE_VIEW_TYPE_VALUES,
     AlertType,
     BadgeType,
     ButtonType,
@@ -68,6 +69,7 @@ from insight_ui.configs.base import (
     Size,
     SliderLegendMode,
     StepStatus,
+    ToggleViewType,
     validate_alert_type,
     validate_badge_type,
     validate_button_type,
@@ -85,6 +87,7 @@ from insight_ui.configs.base import (
     validate_size,
     validate_slider_legend_mode,
     validate_step_status,
+    validate_toggle_view_type,
 )
 from insight_ui.configs.card import (
     AppCardConfig,
@@ -194,6 +197,7 @@ __all__ = [
     "SIZE_VALUES",
     "SLIDER_LEGEND_MODE_VALUES",
     "STEP_STATUS_VALUES",
+    "TOGGLE_VIEW_TYPE_VALUES",
     "AccordionConfig",
     "AccordionItemConfig",
     "AlertConfig",
@@ -295,6 +299,7 @@ __all__ = [
     "ThreeDCarouselConfig",
     "ToggleConfig",
     "ToggleViewConfig",
+    "ToggleViewType",
     "VBoxConfig",
     "WebSocketConfig",
     "validate_alert_type",
@@ -314,4 +319,5 @@ __all__ = [
     "validate_size",
     "validate_slider_legend_mode",
     "validate_step_status",
+    "validate_toggle_view_type",
 ]
