@@ -12,6 +12,8 @@ from insight_ui.configs import (
     HORIZONTAL_SIDE_VALUES,
     HTML_BUTTON_TYPE_VALUES,
     HTML_INPUT_TYPE_VALUES,
+    HTMX_METHOD_VALUES,
+    HTMX_SWAP_METHOD_VALUES,
     INLINE_POSITION_VALUES,
     SIZE_VALUES,
     STEP_STATUS_VALUES,
@@ -21,11 +23,13 @@ from insight_ui.configs import (
     ButtonConfig,
     CornerRibbonConfig,
     FormFieldConfig,
+    HtmxConfig,
     IconConfig,
     InfoboxConfig,
     InputFieldConfig,
     MinimalStepperConfig,
     QueryBuilderFieldConfig,
+    RadioBlockConfig,
     SidebarConfig,
     StatusScreenConfig,
     validate_alert_type,
@@ -38,6 +42,8 @@ from insight_ui.configs import (
     validate_horizontal_side,
     validate_html_button_type,
     validate_html_input_type,
+    validate_htmx_method,
+    validate_htmx_swap_method,
     validate_inline_position,
     validate_size,
     validate_step_status,
@@ -995,3 +1001,157 @@ def test_form_field_config_default_input_type() -> None:
     """Test FormFieldConfig has correct default input_type."""
     config = FormFieldConfig()
     assert config.input_type == "text"
+
+
+# =============================================================================
+# HTMX Swap Method Validation
+# =============================================================================
+
+
+# --- HTMX_SWAP_METHOD_VALUES constant ----------------------------------------
+
+
+def test_htmx_swap_method_values_contains_expected_values() -> None:
+    """Test that HTMX_SWAP_METHOD_VALUES contains all expected values."""
+    expected = (
+        "innerHTML",
+        "outerHTML",
+        "beforebegin",
+        "afterbegin",
+        "beforeend",
+        "afterend",
+        "delete",
+        "none",
+    )
+    assert expected == HTMX_SWAP_METHOD_VALUES
+
+
+def test_htmx_swap_method_values_is_tuple() -> None:
+    """Test that HTMX_SWAP_METHOD_VALUES is immutable (tuple)."""
+    assert isinstance(HTMX_SWAP_METHOD_VALUES, tuple)
+
+
+# --- validate_htmx_swap_method function --------------------------------------
+
+
+def test_validate_htmx_swap_method_accepts_valid_values() -> None:
+    """Test that validate_htmx_swap_method accepts all valid values."""
+    for swap_method in HTMX_SWAP_METHOD_VALUES:
+        validate_htmx_swap_method(swap_method)  # Should not raise
+
+
+def test_validate_htmx_swap_method_rejects_invalid_value() -> None:
+    """Test that validate_htmx_swap_method raises ValueError for invalid values."""
+    with pytest.raises(ValueError, match="Invalid swap_method 'invalid'"):
+        validate_htmx_swap_method("invalid")
+
+
+def test_validate_htmx_swap_method_custom_field_name() -> None:
+    """Test that validate_htmx_swap_method uses the custom field name in error messages."""
+    with pytest.raises(ValueError, match="Invalid hx_swap 'bad'"):
+        validate_htmx_swap_method("bad", field_name="hx_swap")
+
+
+# --- HtmxConfig swap_method validation ---------------------------------------
+
+
+def test_htmx_config_accepts_valid_swap_method() -> None:
+    """Test HtmxConfig accepts valid swap_method values."""
+    for swap_method in HTMX_SWAP_METHOD_VALUES:
+        config = HtmxConfig(swap_method=swap_method)
+        assert config.swap_method == swap_method
+
+
+def test_htmx_config_rejects_invalid_swap_method() -> None:
+    """Test HtmxConfig raises ValueError for invalid swap_method."""
+    with pytest.raises(ValueError, match="Invalid swap_method"):
+        HtmxConfig(swap_method="invalid")
+
+
+def test_htmx_config_default_swap_method() -> None:
+    """Test HtmxConfig has correct default swap_method."""
+    config = HtmxConfig()
+    assert config.swap_method == "innerHTML"
+
+
+# --- RadioBlockConfig hx_swap_method validation ------------------------------
+
+
+def test_radio_block_config_accepts_valid_hx_swap_method() -> None:
+    """Test RadioBlockConfig accepts valid hx_swap_method values."""
+    for swap_method in HTMX_SWAP_METHOD_VALUES:
+        config = RadioBlockConfig(name="test", hx_swap_method=swap_method)
+        assert config.hx_swap_method == swap_method
+
+
+def test_radio_block_config_rejects_invalid_hx_swap_method() -> None:
+    """Test RadioBlockConfig raises ValueError for invalid hx_swap_method."""
+    with pytest.raises(ValueError, match="Invalid hx_swap_method"):
+        RadioBlockConfig(name="test", hx_swap_method="invalid")
+
+
+def test_radio_block_config_default_hx_swap_method() -> None:
+    """Test RadioBlockConfig has correct default hx_swap_method."""
+    config = RadioBlockConfig(name="test")
+    assert config.hx_swap_method == "outerHTML"
+
+
+# =============================================================================
+# HTMX Method Validation
+# =============================================================================
+
+
+# --- HTMX_METHOD_VALUES constant ---------------------------------------------
+
+
+def test_htmx_method_values_contains_expected_values() -> None:
+    """Test that HTMX_METHOD_VALUES contains all expected values."""
+    assert HTMX_METHOD_VALUES == ("get", "post")
+
+
+def test_htmx_method_values_is_tuple() -> None:
+    """Test that HTMX_METHOD_VALUES is immutable (tuple)."""
+    assert isinstance(HTMX_METHOD_VALUES, tuple)
+
+
+# --- validate_htmx_method function -------------------------------------------
+
+
+def test_validate_htmx_method_accepts_valid_values() -> None:
+    """Test that validate_htmx_method accepts all valid values."""
+    for method in HTMX_METHOD_VALUES:
+        validate_htmx_method(method)  # Should not raise
+
+
+def test_validate_htmx_method_rejects_invalid_value() -> None:
+    """Test that validate_htmx_method raises ValueError for invalid values."""
+    with pytest.raises(ValueError, match="Invalid method 'put'"):
+        validate_htmx_method("put")
+
+
+def test_validate_htmx_method_custom_field_name() -> None:
+    """Test that validate_htmx_method uses the custom field name in error messages."""
+    with pytest.raises(ValueError, match="Invalid http_method 'bad'"):
+        validate_htmx_method("bad", field_name="http_method")
+
+
+# --- HtmxConfig method validation --------------------------------------------
+
+
+def test_htmx_config_accepts_valid_method() -> None:
+    """Test HtmxConfig accepts valid method values."""
+    for method in HTMX_METHOD_VALUES:
+        config = HtmxConfig(method=method)
+        assert config.method == method
+
+
+def test_htmx_config_rejects_invalid_method() -> None:
+    """Test HtmxConfig raises ValueError for invalid method."""
+    with pytest.raises(ValueError, match="Invalid method"):
+        HtmxConfig(method="delete")
+
+
+def test_htmx_config_default_method() -> None:
+    """Test HtmxConfig has correct default method."""
+    config = HtmxConfig()
+    assert config.method == "get"
