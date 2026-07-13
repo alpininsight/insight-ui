@@ -86,6 +86,7 @@ from insight_ui.configs import (
     StatusScreenConfig,
     StepperConfig,
     StepperItemConfig,
+    StepStatus,
     TableConfig,
     TabsConfig,
     TextareaConfig,
@@ -502,10 +503,10 @@ def stepper(
 def minimal_stepper(
     config: MinimalStepperConfig | None = None,
     *,
-    items: list[Literal["active", "success", "failed", ""]] | _Unset = UNSET,
+    items: list[StepStatus] | _Unset = UNSET,
     step_count: int | _Unset = UNSET,
     current_step: int | _Unset = UNSET,
-    current_step_status: Literal["active", "success", "failed"] | _Unset = UNSET,
+    current_step_status: StepStatus | _Unset = UNSET,
     icon_size: Size | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a compact graphical representation of process steps."""

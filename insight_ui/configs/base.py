@@ -37,6 +37,12 @@ BUTTON_TYPE_VALUES: tuple[str, ...] = (*COLOR_TYPE_VALUES, "disabled", "link")
 # Type alias for button types
 type ButtonType = Literal["primary", "secondary", "neutral", "info", "success", "warning", "danger", "disabled", "link"]
 
+# Tuple of valid step status values (for stepper components)
+STEP_STATUS_VALUES: tuple[str, ...] = ("active", "success", "failed", "")
+
+# Type alias for step status
+type StepStatus = Literal["active", "success", "failed", ""]
+
 
 def _validate_literal(value: str, allowed: tuple[str, ...], field_name: str) -> None:
     """Validate that a value is one of the allowed values.
@@ -110,6 +116,20 @@ def validate_button_type(value: str, field_name: str = "type") -> None:
 
     """
     _validate_literal(value, BUTTON_TYPE_VALUES, field_name)
+
+
+def validate_step_status(value: str, field_name: str = "status") -> None:
+    """Validate that a step status value is one of the allowed values.
+
+    Args:
+        value: The step status value to validate.
+        field_name: Name of the field for error messages.
+
+    Raises:
+        ValueError: If the value is not a valid step status.
+
+    """
+    _validate_literal(value, STEP_STATUS_VALUES, field_name)
 
 
 @dataclass
