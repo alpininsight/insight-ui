@@ -55,6 +55,12 @@ HTML_BUTTON_TYPE_VALUES: tuple[str, ...] = ("button", "submit", "reset")
 # Type alias for HTML button types
 type HtmlButtonType = Literal["button", "submit", "reset"]
 
+# Tuple of valid corner position values (for corner ribbons, badges, etc.)
+CORNER_POSITION_VALUES: tuple[str, ...] = ("top-right", "top-left", "bottom-right", "bottom-left")
+
+# Type alias for corner positions
+type CornerPosition = Literal["top-right", "top-left", "bottom-right", "bottom-left"]
+
 
 def _validate_literal(value: str, allowed: tuple[str, ...], field_name: str) -> None:
     """Validate that a value is one of the allowed values.
@@ -170,6 +176,20 @@ def validate_html_button_type(value: str, field_name: str = "button_type") -> No
 
     """
     _validate_literal(value, HTML_BUTTON_TYPE_VALUES, field_name)
+
+
+def validate_corner_position(value: str, field_name: str = "position") -> None:
+    """Validate that a corner position value is one of the allowed values.
+
+    Args:
+        value: The corner position value to validate.
+        field_name: Name of the field for error messages.
+
+    Raises:
+        ValueError: If the value is not a valid corner position.
+
+    """
+    _validate_literal(value, CORNER_POSITION_VALUES, field_name)
 
 
 @dataclass

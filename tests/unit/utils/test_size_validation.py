@@ -6,6 +6,7 @@ from insight_ui.configs import (
     BADGE_TYPE_VALUES,
     BUTTON_TYPE_VALUES,
     COLOR_TYPE_VALUES,
+    CORNER_POSITION_VALUES,
     HTML_BUTTON_TYPE_VALUES,
     SIZE_VALUES,
     STEP_STATUS_VALUES,
@@ -21,6 +22,7 @@ from insight_ui.configs import (
     validate_badge_type,
     validate_button_type,
     validate_color_type,
+    validate_corner_position,
     validate_html_button_type,
     validate_size,
     validate_step_status,
@@ -593,3 +595,64 @@ def test_button_config_default_button_type() -> None:
     """Test ButtonConfig has correct default button_type."""
     config = ButtonConfig()
     assert config.button_type == "button"
+
+
+# =============================================================================
+# Corner Position Validation
+# =============================================================================
+
+
+# --- CORNER_POSITION_VALUES constant ----------------------------------------
+
+
+def test_corner_position_values_contains_expected_values() -> None:
+    """Test that CORNER_POSITION_VALUES contains all expected values."""
+    assert CORNER_POSITION_VALUES == ("top-right", "top-left", "bottom-right", "bottom-left")
+
+
+def test_corner_position_values_is_tuple() -> None:
+    """Test that CORNER_POSITION_VALUES is immutable (tuple)."""
+    assert isinstance(CORNER_POSITION_VALUES, tuple)
+
+
+# --- validate_corner_position function --------------------------------------
+
+
+def test_validate_corner_position_accepts_valid_values() -> None:
+    """Test that validate_corner_position accepts all valid values."""
+    for position in CORNER_POSITION_VALUES:
+        validate_corner_position(position)  # Should not raise
+
+
+def test_validate_corner_position_rejects_invalid_value() -> None:
+    """Test that validate_corner_position raises ValueError for invalid values."""
+    with pytest.raises(ValueError, match="Invalid position 'center'"):
+        validate_corner_position("center")
+
+
+def test_validate_corner_position_custom_field_name() -> None:
+    """Test that validate_corner_position uses the custom field name in error messages."""
+    with pytest.raises(ValueError, match="Invalid ribbon_position 'bad'"):
+        validate_corner_position("bad", field_name="ribbon_position")
+
+
+# --- CornerRibbonConfig position validation ---------------------------------
+
+
+def test_corner_ribbon_config_accepts_valid_position() -> None:
+    """Test CornerRibbonConfig accepts valid position values."""
+    for position in CORNER_POSITION_VALUES:
+        config = CornerRibbonConfig(text="Test", position=position)
+        assert config.position == position
+
+
+def test_corner_ribbon_config_rejects_invalid_position() -> None:
+    """Test CornerRibbonConfig raises ValueError for invalid position."""
+    with pytest.raises(ValueError, match="Invalid position"):
+        CornerRibbonConfig(text="Test", position="center")
+
+
+def test_corner_ribbon_config_default_position() -> None:
+    """Test CornerRibbonConfig has correct default position."""
+    config = CornerRibbonConfig(text="Test")
+    assert config.position == "top-right"
