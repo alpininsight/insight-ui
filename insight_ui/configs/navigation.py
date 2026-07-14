@@ -30,7 +30,7 @@ class NavbarBrandConfig:
         logo: Describes the logo that is displayed next to the title.
         gap: This value determines the spacing between the logo and the title.
         aria_label: Optional accessible label for the brand link.
-        mark: Optional controlled brand mark rendered instead of logo plus title.
+        mark: Brand with logo and wordmark.
 
     """
 
@@ -53,9 +53,7 @@ class NavbarBrandConfig:
         default="0.5rem", metadata={"doc": _("This value determines the spacing between the logo and the title.")}
     )
     aria_label: str = field(default="", metadata={"doc": _("Optional accessible label for the brand link.")})
-    mark: BrandMarkConfig | None = field(
-        default=None, metadata={"doc": _("Optional controlled brand mark rendered instead of logo plus title.")}
-    )
+    mark: BrandMarkConfig | None = field(default=None, metadata={"doc": _("Brand with logo and wordmark")})
 
 
 @dataclass
@@ -166,7 +164,6 @@ class SidebarItemConfig:
     request_url: str = field(default="", metadata={"doc": _("The URL to be called when clicking on the item.")})
     icon: IconConfig | None = field(default=None, metadata={"doc": _("An optional icon displayed before the text.")})
     htmx: HtmxConfig | None = field(default=None, metadata={"doc": _("HTMX configuration for AJAX page changes.")})
-    url: str = field(default="", metadata={"doc": _("Backwards-compatible alias for dictionary-based sidebar items.")})
 
 
 @dataclass
@@ -177,7 +174,6 @@ class SidebarCategoryConfig:
         caption: Category header text.
         icon: Optional category icon.
         items: List of items in this category.
-        collapsed: Whether category is initially collapsed.
 
     """
 
@@ -194,7 +190,6 @@ class SidebarCategoryConfig:
     caption: str = field(metadata={"doc": _("Category header text.")})
     icon: IconConfig | None = field(default=None, metadata={"doc": _("Optional category icon.")})
     items: list[SidebarItemConfig] = field(default_factory=list, metadata={"doc": _("List of items in this category.")})
-    collapsed: bool = field(default=False, metadata={"doc": _("Whether category is initially collapsed.")})
 
 
 @dataclass
