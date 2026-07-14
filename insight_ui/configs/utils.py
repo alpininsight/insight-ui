@@ -145,8 +145,8 @@ class BrandMarkConfig:
 
     __example__ = """
         BrandMarkConfig(
-            primary_text="Alpin Insight",
-            secondary_text="Develop",
+            primary_text="Insight",
+            secondary_text="UI",
             logo=LogoConfig(
                 url="img/logo.svg",
                 url_dark="img/logo-dark.svg",
@@ -156,8 +156,8 @@ class BrandMarkConfig:
         )
         """
 
-    primary_text: str = field(default="Alpin Insight", metadata={"doc": _("First wordmark run.")})
-    secondary_text: str = field(default="Solutions", metadata={"doc": _("Second wordmark run.")})
+    primary_text: str = field(default="", metadata={"doc": _("First wordmark run.")})
+    secondary_text: str = field(default="", metadata={"doc": _("Second wordmark run.")})
     logo: LogoConfig = field(default=None, metadata={"doc": _("Public logo configuration.")})
     logo_position: InlinePosition = field(
         default="start", metadata={"doc": _("Logo position, either 'start' or 'end'.")}

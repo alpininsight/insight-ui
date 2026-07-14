@@ -22,38 +22,28 @@ from insight_ui.configs.utils import BrandMarkConfig, CopyrightNoticeConfig, Log
 class NavbarBrandConfig:
     """Configuration for the navbar brand section.
 
-    Describes the title and the logo of the application in the navbar.
+    Describes the brand of the application in the navbar.
 
     Attributes:
-        title: The title of the application.
-        request_url: Name of the URL to be called when clicking on the title.
-        logo: Describes the logo that is displayed next to the title.
-        gap: This value determines the spacing between the logo and the title.
+        request_url: URL to navigate to when clicking on the brand.
         aria_label: Optional accessible label for the brand link.
-        mark: Brand with logo and wordmark.
+        mark: Brand mark with logo and wordmark.
 
     """
 
     __example__ = """
         NavbarBrandConfig(
-            title="My App",
             request_url=reverse("index"),
-            logo=LogoConfig(url="img/logo.svg", height="2rem"),
+            mark=BrandMarkConfig(
+                primary_text="My App",
+                logo=LogoConfig(url="img/logo.svg", height="2rem"),
+            ),
         )
         """
 
-    title: str = field(default="", metadata={"doc": _("The title of the application.")})
-    request_url: str = field(
-        default="", metadata={"doc": _("Name of the URL to be called when clicking on the title.")}
-    )
-    logo: LogoConfig | None = field(
-        default=None, metadata={"doc": _("Describes the logo that is displayed next to the title.")}
-    )
-    gap: str = field(
-        default="0.5rem", metadata={"doc": _("This value determines the spacing between the logo and the title.")}
-    )
+    request_url: str = field(default="", metadata={"doc": _("URL to navigate to when clicking on the brand.")})
     aria_label: str = field(default="", metadata={"doc": _("Optional accessible label for the brand link.")})
-    mark: BrandMarkConfig | None = field(default=None, metadata={"doc": _("Brand with logo and wordmark")})
+    mark: BrandMarkConfig | None = field(default=None, metadata={"doc": _("Brand mark with logo and wordmark.")})
 
 
 @dataclass
@@ -106,9 +96,11 @@ class NavbarConfig:
     __example__ = """
         NavbarConfig(
             brand=NavbarBrandConfig(
-                title="My App",
                 request_url=reverse("index"),
-                logo=LogoConfig(url="img/logo.svg", height="2rem"),
+                mark=BrandMarkConfig(
+                    primary_text="My App",
+                    logo=LogoConfig(url="img/logo.svg", height="2rem"),
+                ),
             ),
             links=[
                 NavbarLinkConfig(text="Home", url=reverse("index")),
@@ -152,7 +144,6 @@ class SidebarItemConfig:
         request_url: The URL to be called when clicking on the item.
         icon: An optional icon displayed before the text.
         htmx: HTMX configuration for AJAX page changes.
-        url: Backwards-compatible alias for dictionary-based sidebar items.
 
     """
 

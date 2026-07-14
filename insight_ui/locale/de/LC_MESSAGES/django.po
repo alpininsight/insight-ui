@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django-insight-ui 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-14 17:39+0200\n"
-"PO-Revision-Date: 2026-07-14 17:41+0200\n"
+"POT-Creation-Date: 2026-07-14 19:05+0200\n"
+"PO-Revision-Date: 2026-07-14 19:06+0200\n"
 "Last-Translator:   <>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -730,8 +730,8 @@ msgid "The decorative public icon is hidden from assistive technologies with `ar
 msgstr "Das Logo/Icon wird mithilfe von `aria-hidden='true'` für assistiven Technologien ausgeblendet."
 
 #: .\insight_ui\component_details\a11y_context.py:628
-msgid "When used inside the navbar, provide `brand.aria_label` or `brand.title` so the surrounding link has a clear accessible name."
-msgstr "Bei Verwendung innerhalb der Navigationsleiste sollte `brand.aria_label` oder `brand.title` angeben werden, damit der zugehörige Link einen eindeutigen, barrierefreien Namen erhält."
+msgid "When used inside the navbar, provide `brand.aria_label` or `brand.mark.primary_text` so the surrounding link has a clear accessible name."
+msgstr "Bei Verwendung innerhalb der Navigationsleiste sollte `brand.aria_label` oder `brand.mark.primary_text` angegeben werden, damit der zugehörige Link einen eindeutigen, barrierefreien Namen erhält."
 
 #: .\insight_ui\component_details\a11y_context.py:639
 msgid "The ribbon text is readable by screen readers."
@@ -2263,7 +2263,6 @@ msgid "Use it when an application needs a recognizable wordmark without embeddin
 msgstr "Es kann verwendet werden, wenn eine Anwendung ein Logo mit oder ohne Wortmarke als Text benötigt, ohne dass eigene Assets in das Open-Source-Paket eingebettet werden müssen."
 
 #: .\insight_ui\component_details\description_context.py:634
-#| msgid "Uses Insight UI design tokens for the primary and secondary brand colours."
 msgid "Uses Insight UI design tokens for the primary and secondary brand colors."
 msgstr "Verwendet Insight-UI-Design-Tokens für die primären und sekundären Markenfarben."
 
@@ -2968,7 +2967,7 @@ msgstr "Anzahl der Checkbox-Elemente, die gleichzeitig ausgewählt sein dürfen.
 msgid "Label of the dropdown element."
 msgstr "Beschriftung des Dropdown-Elements."
 
-#: .\insight_ui\configs\input.py:348 .\insight_ui\configs\navigation.py:555
+#: .\insight_ui\configs\input.py:348 .\insight_ui\configs\navigation.py:544
 msgid "The URL to be called when clicking on the respective item."
 msgstr "Die URL, die beim Klicken auf den jeweiligen Eintrag aufgerufen werden soll."
 
@@ -3316,311 +3315,301 @@ msgstr "Liste der anzuzeigenden benachbarten Seitenzahlen. -1 für Auslassungspu
 msgid "Optional configuration for the items-per-page selector."
 msgstr "Optionale Konfiguration für die Auswahl der Anzahl der Einträge pro Seite."
 
+#: .\insight_ui\configs\navigation.py:44
+#| msgid "The URL to be called when clicking on the link."
+msgid "URL to navigate to when clicking on the brand."
+msgstr "URL, zu welcher der Nutzer gelangt, wenn dieser auf die Marke klickt."
+
 #: .\insight_ui\configs\navigation.py:45
-msgid "The title of the application."
-msgstr "Der Titel der Anwendung."
-
-#: .\insight_ui\configs\navigation.py:47
-msgid "Name of the URL to be called when clicking on the title."
-msgstr "Name der URL, welche beim Anklicken des Titels aufgerufen werden soll."
-
-#: .\insight_ui\configs\navigation.py:50
-msgid "Describes the logo that is displayed next to the title."
-msgstr "Beschreibt das Logo, welches neben dem Titel angezeigt wird."
-
-#: .\insight_ui\configs\navigation.py:53
-msgid "This value determines the spacing between the logo and the title."
-msgstr "Dieser Wert bestimmt den Abstand zwischen Logo und Titel."
-
-#: .\insight_ui\configs\navigation.py:55
 msgid "Optional accessible label for the brand link."
 msgstr "Optionales barrierefreies Label für den Link des Logo / der Wortmarke."
 
-#: .\insight_ui\configs\navigation.py:57
-msgid "Brand with logo and wordmark"
-msgstr "Markenzeichen mit Logo und Wortmarke"
+#: .\insight_ui\configs\navigation.py:46
+#| msgid "Brand with logo and wordmark"
+msgid "Brand mark with logo and wordmark."
+msgstr "Markenzeichen mit Logo und Wortmarke."
 
-#: .\insight_ui\configs\navigation.py:80 .\insight_ui\configs\navigation.py:406
+#: .\insight_ui\configs\navigation.py:68 .\insight_ui\configs\navigation.py:395
 msgid "Label of the link."
 msgstr "Beschriftung des Links."
 
-#: .\insight_ui\configs\navigation.py:83
+#: .\insight_ui\configs\navigation.py:71
 msgid "The URL to be called when clicking on the link, if not opening a modal or dropdown menu."
 msgstr "Die URL, die beim Klicken auf den Link aufgerufen werden soll, sofern kein Dialogfenster oder Dropdown-Menü geöffnet wird."
 
-#: .\insight_ui\configs\navigation.py:85 .\insight_ui\configs\navigation.py:167
+#: .\insight_ui\configs\navigation.py:73 .\insight_ui\configs\navigation.py:156
 #: .\insight_ui\configs\utils.py:602
 msgid "An optional icon displayed before the text."
 msgstr "Ein optionales Icon, das vor dem Text angezeigt wird."
 
-#: .\insight_ui\configs\navigation.py:86
+#: .\insight_ui\configs\navigation.py:74
 msgid "The link is only displayed for logged-in users."
 msgstr "Der Link wird nur für angemeldete Nutzer angezeigt."
 
-#: .\insight_ui\configs\navigation.py:87
+#: .\insight_ui\configs\navigation.py:75
 msgid "The link is only displayed for administrators."
 msgstr "Der Link wird nur für Administratoren angezeigt."
 
-#: .\insight_ui\configs\navigation.py:88
+#: .\insight_ui\configs\navigation.py:76
 msgid "Configuration of a modal dialog."
 msgstr "Konfiguration eines modalen Dialogfensters."
 
-#: .\insight_ui\configs\navigation.py:89
+#: .\insight_ui\configs\navigation.py:77
 msgid "Configuration of a dropdown menu."
 msgstr "Konfiguration der Stepper."
 
-#: .\insight_ui\configs\navigation.py:126
+#: .\insight_ui\configs\navigation.py:116
 msgid "Describes the title and the logo of the application in the navbar."
 msgstr "Beschreibt den Titel und das Logo der Anwendung in der Navbar."
 
-#: .\insight_ui\configs\navigation.py:129
+#: .\insight_ui\configs\navigation.py:119
 msgid "Contains and describes the navigation items of the navbar."
 msgstr "Enthält und beschreibt die Navigationspunkte der Navbar."
 
-#: .\insight_ui\configs\navigation.py:134
+#: .\insight_ui\configs\navigation.py:124
 msgid "The URL to be called when performing a search. If empty, no search bar will be displayed."
 msgstr "Die URL, welche bei der Suche aufgerufen werden soll. In dem Fall, dass keine angegeben ist, wird keine Suchzeile angezeigt."
 
-#: .\insight_ui\configs\navigation.py:138
+#: .\insight_ui\configs\navigation.py:128
 msgid "Displays a dropdown menu with at least a logout button."
 msgstr "Zeigt ein Dropdown-Menü mit zumindest einem Logout-Button."
 
-#: .\insight_ui\configs\navigation.py:141
+#: .\insight_ui\configs\navigation.py:131
 msgid "Displays a dropdown menu for selecting the display language (if defined)."
 msgstr "Zeigt ein Dropdown-Menü zum Auswählen der Anzeigesprache (sofern definiert)."
 
-#: .\insight_ui\configs\navigation.py:144
+#: .\insight_ui\configs\navigation.py:134
 msgid "Displays a button to switch between the light and dark theme of the page."
 msgstr "Zeigt ein Button zum Wechsel zwischen der hellen und der dunklen Darstellung der Seite."
 
-#: .\insight_ui\configs\navigation.py:165
+#: .\insight_ui\configs\navigation.py:154
 msgid "Label of the item."
 msgstr "Beschriftung des Elemente."
 
-#: .\insight_ui\configs\navigation.py:166
+#: .\insight_ui\configs\navigation.py:155
 msgid "The URL to be called when clicking on the item."
 msgstr "Die URL, die beim Klicken auf das Element aufgerufen werden soll."
 
-#: .\insight_ui\configs\navigation.py:168
+#: .\insight_ui\configs\navigation.py:157
 msgid "HTMX configuration for AJAX page changes."
 msgstr "HTMX-Konfiguration für AJAX-Seitenwechsel."
 
-#: .\insight_ui\configs\navigation.py:192
+#: .\insight_ui\configs\navigation.py:181
 msgid "Category header text."
 msgstr "Text der Kategorieüberschrift."
 
-#: .\insight_ui\configs\navigation.py:193
+#: .\insight_ui\configs\navigation.py:182
 msgid "Optional category icon."
 msgstr "Optionales Kategorie-Icon."
 
-#: .\insight_ui\configs\navigation.py:194
+#: .\insight_ui\configs\navigation.py:183
 msgid "List of items in this category."
 msgstr "Liste der Elemente in dieser Kategorie."
 
-#: .\insight_ui\configs\navigation.py:223
+#: .\insight_ui\configs\navigation.py:212
 msgid "Sidebar title."
 msgstr "Titel der Sidebar."
 
-#: .\insight_ui\configs\navigation.py:224
+#: .\insight_ui\configs\navigation.py:213
 msgid "Optional title icon."
 msgstr "Optionales Titel-Icon."
 
-#: .\insight_ui\configs\navigation.py:226
+#: .\insight_ui\configs\navigation.py:215
 msgid "List of navigation categories."
 msgstr "Liste der Navigationskategorien."
 
-#: .\insight_ui\configs\navigation.py:265
+#: .\insight_ui\configs\navigation.py:254
 msgid "Content of the sidebar (title and navigation elements)."
 msgstr "Inhalt der Sidebar (Titel und Navigations-Elemente)."
 
-#: .\insight_ui\configs\navigation.py:268
+#: .\insight_ui\configs\navigation.py:257
 msgid "Determines on which side the sidebar should be placed."
 msgstr "Bestimmt, auf welcher Seite die Sidebar platziert wird."
 
-#: .\insight_ui\configs\navigation.py:270
+#: .\insight_ui\configs\navigation.py:259
 msgid "**True** if the sidebar should not be collapsible."
 msgstr "**True** wenn die Sidebar nicht einklappbar sein soll."
 
-#: .\insight_ui\configs\navigation.py:272
+#: .\insight_ui\configs\navigation.py:261
 msgid "If **True** the sidebar closes as soon as the cursor leaves it."
 msgstr "Bei **True** schließt sich die Sidebar, sobald der Cursor sie verlässt."
 
-#: .\insight_ui\configs\navigation.py:275
+#: .\insight_ui\configs\navigation.py:264
 msgid "If **True** the static sidebar is hidden on a smaller viewport."
 msgstr "Bei **True** wird eine statische Sidebar auf einem kleineren Viewport ausgeblendet."
 
-#: .\insight_ui\configs\navigation.py:303
+#: .\insight_ui\configs\navigation.py:292
 msgid "Heading of the description."
 msgstr "Überschrift der Beschreibung."
 
-#: .\insight_ui\configs\navigation.py:304
+#: .\insight_ui\configs\navigation.py:293
 msgid "Brief summary of the application."
 msgstr "Kurze Zusammenfassung der Anwendung."
 
-#: .\insight_ui\configs\navigation.py:306
+#: .\insight_ui\configs\navigation.py:295
 msgid "Optional image displayed below the description text."
 msgstr "Optionales Bild, welches unter dem Text der Beschreibung angezeigt wird."
 
-#: .\insight_ui\configs\navigation.py:331
+#: .\insight_ui\configs\navigation.py:320
 msgid "URL of a contact email address."
 msgstr "URL einer Kontaktmailadresse."
 
-#: .\insight_ui\configs\navigation.py:332
+#: .\insight_ui\configs\navigation.py:321
 msgid "Link to an imprint."
 msgstr "Verlinkung zu einem Impressum."
 
-#: .\insight_ui\configs\navigation.py:333
+#: .\insight_ui\configs\navigation.py:322
 msgid "Link to a privacy policy."
 msgstr "Verlinkung zu einer Datenschutzerklärung."
 
-#: .\insight_ui\configs\navigation.py:375
+#: .\insight_ui\configs\navigation.py:364
 msgid "Brief description of the application with optional image."
 msgstr "Kurzbeschreibung der Anwendung mit optionalen Bild."
 
-#: .\insight_ui\configs\navigation.py:378
+#: .\insight_ui\configs\navigation.py:367
 msgid "List of the main navigation items of the application."
 msgstr "Liste der Hauptnavigationspunkte der Anwendung."
 
-#: .\insight_ui\configs\navigation.py:382
+#: .\insight_ui\configs\navigation.py:371
 msgid "Contact information, link to the imprint, privacy policy and a contact email address."
 msgstr "Kontaktinformationen, Link zum Impressum, Datenschutz und eine Kontaktmailadresse."
 
-#: .\insight_ui\configs\navigation.py:386
+#: .\insight_ui\configs\navigation.py:375
 msgid "Copyright information, such as the year, holder, source label, and license text."
 msgstr "Informationen zum Urheberrecht, wie beispielsweise das Jahr, der Urheberrechtsinhaber, die Quellenangabe und der Lizenztext."
 
-#: .\insight_ui\configs\navigation.py:388
+#: .\insight_ui\configs\navigation.py:377
 msgid "Information about the current version."
 msgstr "Angabe zur aktuellen Version."
 
-#: .\insight_ui\configs\navigation.py:407
+#: .\insight_ui\configs\navigation.py:396
 msgid "The URL to be called when clicking on the link."
 msgstr "Die URL, die beim Klicken auf den Link aufgerufen werden soll."
 
-#: .\insight_ui\configs\navigation.py:408
+#: .\insight_ui\configs\navigation.py:397
 msgid "Optional icon (typically for home item)."
 msgstr "Optionales Symbol (in der Regel für das Startelement)."
 
-#: .\insight_ui\configs\navigation.py:434
+#: .\insight_ui\configs\navigation.py:423
 msgid "List of breadcrumb navigation items."
 msgstr "Liste der Elemente der Breadcrumb-Navigation."
 
-#: .\insight_ui\configs\navigation.py:437
-#: .\insight_ui\configs\navigation.py:585
+#: .\insight_ui\configs\navigation.py:426
+#: .\insight_ui\configs\navigation.py:574
 msgid "Optional HTMX configuration for AJAX navigation."
 msgstr "Optionale HTMX-Konfiguration für die AJAX-Navigation."
 
-#: .\insight_ui\configs\navigation.py:459
+#: .\insight_ui\configs\navigation.py:448
 msgid "Title of the step."
 msgstr "Titel des Schritts."
 
-#: .\insight_ui\configs\navigation.py:460
+#: .\insight_ui\configs\navigation.py:449
 msgid "Additional description of the step below the title."
 msgstr "Zusätzliche Beschreibung des Schritts unter dem Titel."
 
-#: .\insight_ui\configs\navigation.py:461
+#: .\insight_ui\configs\navigation.py:450
 msgid "URL called when the user clicks on the title of the step."
 msgstr "URL, welche aufgerufen wird, wenn der Nutzer auf den Titel des Schritts klickt."
 
-#: .\insight_ui\configs\navigation.py:462
+#: .\insight_ui\configs\navigation.py:451
 msgid "Displays a checkmark instead of the step number."
 msgstr "Zeigt statt der Schrittzahl einen Haken an."
 
-#: .\insight_ui\configs\navigation.py:463
+#: .\insight_ui\configs\navigation.py:452
 msgid "Displays an X instead of the step number."
 msgstr "Zeigt statt der Schrittzahl ein Kreuz (X) an."
 
-#: .\insight_ui\configs\navigation.py:464
+#: .\insight_ui\configs\navigation.py:453
 msgid "Highlights the title in color and makes the text pulse."
 msgstr "Hebt den Titel farblich hervor und lässt den Text pulsieren."
 
-#: .\insight_ui\configs\navigation.py:488
+#: .\insight_ui\configs\navigation.py:477
 msgid "List of step configurations."
 msgstr "Liste der Schrittkonfigurationen."
 
-#: .\insight_ui\configs\navigation.py:514
+#: .\insight_ui\configs\navigation.py:503
 msgid "List of states for the process steps. Possible values: 'success', 'failed', 'active' and '' for inactive."
 msgstr "Liste der Zustände der Prozessschritte. Mögliche Werte: 'success' (Erfolg), 'failed' (Fehlschlag), 'active' (Aktiv) und '' (Inaktiv)."
 
-#: .\insight_ui\configs\navigation.py:518
+#: .\insight_ui\configs\navigation.py:507
 msgid "Number of process steps. (Only if 'items' is not set!)"
 msgstr "Anzahl der Prozessschritte. (Nur wenn 'items' nicht gesetzt ist!)"
 
-#: .\insight_ui\configs\navigation.py:520
+#: .\insight_ui\configs\navigation.py:509
 msgid "Current step of the process. (Only if 'items' is not set!)"
 msgstr "Aktueller Schritt des Prozesses. (Nur wenn 'items' nicht gesetzt ist!)"
 
-#: .\insight_ui\configs\navigation.py:523
+#: .\insight_ui\configs\navigation.py:512
 msgid "Status of the current step. (Only if 'items' is not set!)"
 msgstr "Status des aktuellen Schritts. (Nur wenn 'items' nicht gesetzt ist!)"
 
-#: .\insight_ui\configs\navigation.py:525
+#: .\insight_ui\configs\navigation.py:514
 msgid "Size of the icons in the progress bar."
 msgstr "Größe der Icons auf der Fortschrittsanzeige."
 
-#: .\insight_ui\configs\navigation.py:552
+#: .\insight_ui\configs\navigation.py:541
 msgid "Title of the item."
 msgstr "Titel des Elements."
 
-#: .\insight_ui\configs\navigation.py:553
+#: .\insight_ui\configs\navigation.py:542
 msgid "Additional description of the item below the title."
 msgstr "Zusätzliche Beschreibung des Schritts unter dem Titel."
 
-#: .\insight_ui\configs\navigation.py:557
+#: .\insight_ui\configs\navigation.py:546
 msgid "Displays a checkmark instead of a bullet point."
 msgstr "Zeigt statt des Punktes einen Haken an."
 
-#: .\insight_ui\configs\navigation.py:558
+#: .\insight_ui\configs\navigation.py:547
 msgid "Highlights the title by color."
 msgstr "Hebt den Titel farblich hervor."
 
-#: .\insight_ui\configs\navigation.py:583
+#: .\insight_ui\configs\navigation.py:572
 msgid "List of bullet point items."
 msgstr "Liste der Bulletpoints."
 
-#: .\insight_ui\configs\navigation.py:604
+#: .\insight_ui\configs\navigation.py:593
 msgid "Section title."
 msgstr "Titel des Abschnitts."
 
-#: .\insight_ui\configs\navigation.py:605
+#: .\insight_ui\configs\navigation.py:594
 msgid "Section content."
 msgstr "Inhalt des Abschnitts."
 
-#: .\insight_ui\configs\navigation.py:606
+#: .\insight_ui\configs\navigation.py:595
 msgid "Whether section is initially open."
 msgstr "Ob der Abschnitt anfangs geöffnet ist."
 
-#: .\insight_ui\configs\navigation.py:634
-#: .\insight_ui\configs\navigation.py:656
-#: .\insight_ui\configs\navigation.py:687
+#: .\insight_ui\configs\navigation.py:623
+#: .\insight_ui\configs\navigation.py:645
+#: .\insight_ui\configs\navigation.py:676
 msgid "Unique tag ID for identifying the element in JavaScript."
 msgstr "Eindeutige Tag-ID für die Identifizierung des Elements im JavaScript."
 
-#: .\insight_ui\configs\navigation.py:636
+#: .\insight_ui\configs\navigation.py:625
 msgid "List of individual sections."
 msgstr "Liste der einzelnen Abschnitte."
 
-#: .\insight_ui\configs\navigation.py:637
+#: .\insight_ui\configs\navigation.py:626
 msgid "If **True** only one section can be open at a time."
 msgstr "Bei **True** kann immer nur ein Abschnitt gleichzeitig geöffnet sein."
 
-#: .\insight_ui\configs\navigation.py:657
+#: .\insight_ui\configs\navigation.py:646
 msgid "Label of the tab button."
 msgstr "Beschriftung des Tab-Buttons."
 
-#: .\insight_ui\configs\navigation.py:658
+#: .\insight_ui\configs\navigation.py:647
 msgid "The URL to be called when the tab is clicked."
 msgstr "Die URL, welche beim Anklicken auf den Reiter aufgerufen werden soll."
 
-#: .\insight_ui\configs\navigation.py:659
+#: .\insight_ui\configs\navigation.py:648
 msgid "Whether this tab is initially active."
 msgstr "Ob diese Registerkarte initial aktiv ist."
 
-#: .\insight_ui\configs\navigation.py:688
+#: .\insight_ui\configs\navigation.py:677
 msgid "List of tab buttons."
 msgstr "Liste der Tab-Buttons."
 
-#: .\insight_ui\configs\navigation.py:690
+#: .\insight_ui\configs\navigation.py:679
 msgid "Non-visible additional title that is to be read aloud by screen readers."
 msgstr "Nicht sichtbarer, zusätzlicher Titel, welcher nur von Screenreadern vorgelesen wird."
 
@@ -4216,7 +4205,7 @@ msgstr "Zum Hauptinhalt springen"
 msgid "Main navigation"
 msgstr "Hauptnavigation"
 
-#: .\insight_ui\templates\insight_ui\components\navbar.html:41
+#: .\insight_ui\templates\insight_ui\components\navbar.html:35
 msgid "Open menu"
 msgstr "Menü öffnen"
 
