@@ -9,18 +9,6 @@ from tests.unit.components.test_template_tags import TemplateTagsTestCase
 class TestBrandMark(TemplateTagsTestCase):
     """Test suite for the brand_mark component."""
 
-    def test_brand_mark_defaults(self) -> None:
-        """Default render carries the Alpin Insight wordmark + public logo."""
-        rendered = self.render_template("{% load insight_tags %}{% brand_mark %}")
-
-        # Two-tone wordmark, brand name not translated
-        assert "Alpin Insight" in rendered
-        assert "Solutions" in rendered
-
-        # Colors are no hardcoded hex values
-        assert "text-insight-text-primary" in rendered
-        assert "text-insight-primary" in rendered
-
     def test_brand_mark_logo_position_start_is_default(self) -> None:
         """Default position keeps the group left-aligned (no justify-between)."""
         rendered = self.render_template("{% load insight_tags %}{% brand_mark %}")

@@ -5,7 +5,7 @@ from typing import Any, cast
 
 from django.conf import settings
 
-from insight_ui.configs.utils import LogoConfig
+from insight_ui.configs.utils import BrandMarkConfig, LogoConfig
 
 CONFIG_DEFAULTS: dict[str, Any] = {
     "favicon": "insight_ui/favicon/favicon.ico",
@@ -24,12 +24,12 @@ CONFIG_DEFAULTS: dict[str, Any] = {
     "JS_DEBUG": False,  # Turn to 'True' to enable build in browser console logging
     "use_tailwind_cli": False,  # Turn to 'True' to enable the tailwind cli, if you want to modify the styles
     "brand": {
-        "title": "Insight UI",
         "home_url": "/",
-        "logo": LogoConfig(
-            "insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="2rem"
+        "mark": BrandMarkConfig(
+            "Insight",
+            "UI",
+            LogoConfig("insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="2rem"),
         ),
-        "mark": None,
         "footer_text": "A modern, accessible, and responsive UI library for Django projects.",
     },
     "assets": {

@@ -625,7 +625,7 @@ def get_brand_mark_a11y_context() -> dict[str, list[str]]:
             _("The wordmark is rendered as readable text so assistive technologies can announce the brand name."),
             _("The decorative public icon is hidden from assistive technologies with `aria-hidden='true'`."),
             _(
-                "When used inside the navbar, provide `brand.aria_label` or `brand.title` so the surrounding link has a clear accessible name."
+                "When used inside the navbar, provide `brand.aria_label` or `brand.mark.primary_text` so the surrounding link has a clear accessible name."
             ),
         ]
     }

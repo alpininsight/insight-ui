@@ -4,8 +4,8 @@
     <span class="shrink-0 {% if brand_mark_config.logo_position == 'end' %} order-2{% endif %}" aria-hidden="true">
         {% logo config=brand_mark_config.logo %}
     </span>
-    <span class="text-base font-bold tracking-tight whitespace-nowrap">
-        <span class="text-insight-text-primary">{{ brand_mark_config.primary_text }}</span>
-        <span class="text-insight-primary">{{ brand_mark_config.secondary_text }}</span>
+    <span class="text-xl tracking-tight whitespace-nowrap">
+        <span class="text-insight-text-primary font-medium">{{ brand_mark_config.primary_text }}</span>
+        <span class="text-insight-primary font-bold">{{ brand_mark_config.secondary_text }}</span>
     </span>
 </div>
