@@ -87,6 +87,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Make 'brand_mark' using 'logo' component instead of hardcoded icons
 - Add translations for the icons detailpage and fix fuzzy translations
 - **deployment:** Set insight-ui.com production canonical
+- Add 'Size' type and a validation function instead of repeatedly using hardcoded Literals
+- Add types for the 'corner_ribbon', 'button' and 'badge' color values
+- Add 'StepStatus' type for 'minimal_stepper'
+- Add 'AlertType' type for 'alert', 'status_screen' and 'infobox' component
+- Add 'HtmlButtonType' type for the 'button' component
+- Add 'CornerPosition' type for the 'corner_ribbon' component
+- Add 'HorizontaleSide' and 'InlinePosition' type
+- Add 'FilterFildType' for the 'query_builder' component
+- Add 'HtmlInputType' and 'FormFieldType' for generel input fields and for explicit form fields
+- Add 'HtmxSwapMethod' and 'HtmxMethod' type for the HTMXConfig
+- Add 'GeoMapMarkerType' type for the 'geo_map' component
+- Add 'SliderLegendMode' type for the 'range_slider' component
+- Add 'ToggleViewType' type for the 'toggle_view' component
 
 ### Miscellaneous
 
@@ -109,6 +122,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Reduce hardcoded index page tokens
 - **theme:** Semantic range control tokens
 - **brand:** Rename brand mark component
+- Move type definitions to separate file
 
 ### Testing
 
