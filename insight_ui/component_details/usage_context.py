@@ -775,15 +775,7 @@ def get_brand_mark_usage_context() -> dict[str, str]:
 
         {# Navbar brand mode #}
         {% navbar config=navbar_config %}
-        """,
-        "usage_notes_end": [
-            {
-                "type": "info",
-                "message": _(
-                    "Use `brand.mark` in the navbar when the wordmark should be the clickable brand element. Keep `brand.logo` plus `brand.title` for generic application names."
-                ),
-            }
-        ],
+        """
     }
 
 
