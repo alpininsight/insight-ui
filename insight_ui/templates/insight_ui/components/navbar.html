@@ -17,16 +17,10 @@
       <a
         href="{{ navbar_config.brand.request_url }}"
         class="flex items-center text-xl font-bold text-primary"
-        style="gap: {{ navbar_config.brand.gap|default:'0.5rem' }}"
-        {% if navbar_config.brand.aria_label %}aria-label="{{ navbar_config.brand.aria_label }}"{% elif navbar_config.brand.title %}aria-label="{{ navbar_config.brand.title }}"{% endif %}
+        {% if navbar_config.brand.aria_label %}aria-label="{{ navbar_config.brand.aria_label }}"{% elif navbar_config.brand.mark.primary_text %}aria-label="{{ navbar_config.brand.mark.primary_text }}"{% endif %}
       >
         {% if navbar_config.brand.mark %}
           {% brand_mark config=navbar_config.brand.mark %}
-        {% else %}
-          {% if navbar_config.brand.logo %}
-            {% logo config=navbar_config.brand.logo %}
-          {% endif %}
-          <span>{{ navbar_config.brand.title }}</span>
         {% endif %}
       </a>
     {% endif %}

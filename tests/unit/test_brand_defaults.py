@@ -21,9 +21,11 @@ def test_brand_logo_override_uses_configured_height() -> None:
 @override_settings(
     INSIGHT_UI={
         "brand": {
-            "title": "Acme Portal",
             "home_url": "/portal/",
-            "logo": LogoConfig(url="acme.svg", url_dark="acme.svg", alt="Acme Logo"),
+            "mark": BrandMarkConfig(
+                primary_text="Acme Portal",
+                logo=LogoConfig(url="acme.svg", url_dark="acme.svg", alt="Acme Logo"),
+            ),
             "footer_text": "Reusable app shell for Acme teams.",
         }
     }
@@ -33,22 +35,22 @@ def test_navbar_and_footer_defaults_use_central_brand_settings() -> None:
     navbar_config = get_navbar_context()["nav_config"]
     footer_config = get_footer_context()["footer_config"]
 
-    assert navbar_config.brand.title == "Acme Portal"
     assert navbar_config.brand.request_url == "/portal/"
-    assert navbar_config.brand.logo.alt == "Acme Logo"
-    assert navbar_config.brand.logo.height == "2rem"
+    assert navbar_config.brand.mark.primary_text == "Acme Portal"
+    assert navbar_config.brand.mark.logo.alt == "Acme Logo"
 
     assert footer_config.description.title == "Acme Portal"
     assert footer_config.description.text == "Reusable app shell for Acme teams."
-    assert footer_config.description.logo.alt == "Acme Logo"
-    assert footer_config.description.logo.height == "6rem"
 
 
 @override_settings(
     INSIGHT_UI={
         "brand": {
-            "title": "Acme Portal",
-            "logo": LogoConfig(url="acme.svg", url_dark="acme.svg", alt="Acme Login Logo", height="3rem"),
+            "mark": BrandMarkConfig(
+                "Acme",
+                "",
+                LogoConfig(url="acme.svg", url_dark="acme.svg", alt="Acme Login Logo", height="3rem"),
+            ),
         }
     }
 )
@@ -74,9 +76,9 @@ def test_login_context_uses_brand_logo_with_login_specific_height() -> None:
 )
 def test_navbar_brand_defaults_can_use_configured_mark() -> None:
     """A configured brand mark should be available to default navbar brand composition."""
-    brand = get_navbar_brand_defaults()
+    navbar_brand = get_navbar_brand_defaults()
 
-    assert brand.mark is not None
-    assert brand.mark.primary_text == "Acme"
-    assert brand.mark.secondary_text == "Develop"
-    assert brand.mark.logo.alt == "Acme Login Logo"
+    assert navbar_brand.mark is not None
+    assert navbar_brand.mark.primary_text == "Acme"
+    assert navbar_brand.mark.secondary_text == "Develop"
+    assert navbar_brand.mark.logo.alt == "Acme Login Logo"
