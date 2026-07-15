@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django-insight-ui 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-14 19:05+0200\n"
-"PO-Revision-Date: 2026-07-14 19:06+0200\n"
+"POT-Creation-Date: 2026-07-15 10:52+0200\n"
+"PO-Revision-Date: 2026-07-15 11:02+0200\n"
 "Last-Translator:   <>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -1108,7 +1108,8 @@ msgid "Dataclass for component configuration."
 msgstr "Dataclass für die Komponentenkonfiguration."
 
 #: .\insight_ui\component_details\component_context.py:195
-msgid " or as kwargs or as combination of both"
+#| msgid " or as kwargs or as combination of both"
+msgid "or as kwargs or as combination of both"
 msgstr "oder als kwargs oder als Kombination aus beidem"
 
 #: .\insight_ui\component_details\components.py:73
@@ -1918,7 +1919,7 @@ msgstr "Die `status_screen`-Komponente rendert eine wiederverwendbare, ganzseiti
 
 #: .\insight_ui\component_details\description_context.py:61
 msgid "It is intentionally generic. Use it for authentication failures, expired sessions, access states, deployment states, empty starts or workflow results without coupling the component to auth logic."
-msgstr "Die Komponente ist bewusst allgemein gehalten. Sie für Authentifizierungsfehler, abgelaufene Sitzungen, Zugriffszustände, Bereitstellungszustände, leere Starts oder Workflow-Ergebnisse verwendet werden, ohne die Komponente an die Authentifizierungslogik zu koppeln."
+msgstr "Die Komponente ist bewusst allgemein gehalten. Diese kann für Authentifizierungsfehler, abgelaufene Sitzungen, Zugriffszustände, Bereitstellungszustände, leere Starts oder Workflow-Ergebnisse verwendet werden, ohne die Komponente an die Authentifizierungslogik zu koppeln."
 
 #: .\insight_ui\component_details\description_context.py:65
 msgid "**Semantic status**: Supports `info`, `success`, `warning` and `danger`."
@@ -1938,11 +1939,11 @@ msgstr "**Optionales Markenzeichen**: Kann ein `brand_mark` über der Statuskart
 
 #: .\insight_ui\component_details\description_context.py:79
 msgid "The `page` block tag provides a full-width page container with consistent padding. Use it as the outermost wrapper for page content to ensure uniform spacing across your application."
-msgstr "Das Block-Tag `page` stellt einen Seitencontainer in voller Breite mit einheitlichem Abstand bereit. Verwenden Sie es als äußersten Container für Seiteninhalte, um einheitliche Abstände in Ihrer gesamten Anwendung zu gewährleisten."
+msgstr "Das Block-Tag `page` stellt einen Seitencontainer in voller Breite mit einheitlichem Abstand bereit. Verwende es als äußersten Container für Seiteninhalte, um einheitliche Abstände in gesamten Anwendung zu gewährleisten."
 
 #: .\insight_ui\component_details\description_context.py:82
 msgid "For advanced layout control (max-width, alignment), use a `vbox` inside the page container."
-msgstr "Für eine erweiterte Layoutsteuerung (max-width, Ausrichtung) verwenden Sie eine `vbox` innerhalb des Seiten-Containers."
+msgstr "Für eine erweiterte Layoutsteuerung (max-width, Ausrichtung) verwende eine `vbox` innerhalb des Seiten-Containers."
 
 #: .\insight_ui\component_details\description_context.py:85
 msgid "**padding**: Configurable inner padding using the spacing scale (xs/s/m/l/xl)."
@@ -3316,7 +3317,6 @@ msgid "Optional configuration for the items-per-page selector."
 msgstr "Optionale Konfiguration für die Auswahl der Anzahl der Einträge pro Seite."
 
 #: .\insight_ui\configs\navigation.py:44
-#| msgid "The URL to be called when clicking on the link."
 msgid "URL to navigate to when clicking on the brand."
 msgstr "URL, zu welcher der Nutzer gelangt, wenn dieser auf die Marke klickt."
 
@@ -3325,7 +3325,6 @@ msgid "Optional accessible label for the brand link."
 msgstr "Optionales barrierefreies Label für den Link des Logo / der Wortmarke."
 
 #: .\insight_ui\configs\navigation.py:46
-#| msgid "Brand with logo and wordmark"
 msgid "Brand mark with logo and wordmark."
 msgstr "Markenzeichen mit Logo und Wortmarke."
 
@@ -4874,7 +4873,7 @@ msgstr ""
 
 #: .\insight_ui\templates\insight_ui\docs\customization.html:99
 msgid "Start with your corporate identity"
-msgstr "Beginnen Sie mit eurer Corporate Identity"
+msgstr "Beginne mit der Corporate Identity"
 
 #: .\insight_ui\templates\insight_ui\docs\customization.html:101
 #, python-format
