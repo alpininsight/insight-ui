@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **i18n:** Translate homepage copy
 - Set default for LogoConfig in BrandMarkConfig to None and BrandMarkConfig in StatusScreenConfig too
 - **static:** Update generated tailwind asset
+- **static:** Refresh generated tailwind asset
 
 ### Build System
 
@@ -100,6 +101,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add 'GeoMapMarkerType' type for the 'geo_map' component
 - Add 'SliderLegendMode' type for the 'range_slider' component
 - Add 'ToggleViewType' type for the 'toggle_view' component
+- Add missing translations
+- Remove 'title' and 'logo' from NavbarBrandConfig and use BrandMarkConfig instead
 
 ### Miscellaneous
 
