@@ -9,16 +9,16 @@
     {% if alert_config.type == 'success' %}
       {% icon name="check" %}
     {% elif alert_config.type == 'warning' %}
-      {% icon name="warning" %}
+      {% icon name="exclamation-triangle" %}
     {% elif alert_config.type == 'error' %}
-      {% icon name="danger" %}
+      {% icon name="exclamation-circle" %}
     {% else %}
-      {% icon name="info" %}
+      {% icon name="information-circle" %}
     {% endif %}
     <p>{{ alert_config.message }}</p>
   </div>
 
   {% if alert_config.dismissible %}
-    {% button label=_("Close") icon_name="x-mark" icon_size="xs" icon_only=True type="secondary" size="s" outline=True data_insight_dismiss="alert" %}
+    {% button label=_("Close") icon_name="x-mark" icon_size="xs" icon_only=True type="neutral" size="s" subtle=True data_insight_dismiss="alert" %}
   {% endif %}
 </div>
