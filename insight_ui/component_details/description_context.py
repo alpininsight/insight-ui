@@ -871,7 +871,7 @@ def get_flip_card_description_context() -> dict[str, list[str]]:
             )
         ],
         "description_notes_begin": [
-            {"type": "info", "message": _("The component is currently still under development.")}
+            {"type": "warning", "message": _("The component is currently still under development.")}
         ],
     }
 

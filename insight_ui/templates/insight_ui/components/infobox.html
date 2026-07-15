@@ -1,8 +1,8 @@
 {% load insight_tags %}
 
-<div class="info-container text-primary mt-4 {% if info_config.type == "success" %}border-s-insight-success{% elif info_config.type == "warning" %}border-s-insight-warning{% elif info_config.type == "error" %}border-s-insight-danger{% else %}border-s-insight-info{% endif %}">
-    <span class="block font-bold italic text-lg {% if info_config.type == "success" %}text-insight-success{% elif info_config.type == "warning" %}text-insight-warning{% elif info_config.type == "error" %}text-insight-danger{% else %}text-insight-info{% endif %}">
-        {{ info_config.type|default:"Info"|upper }}:
+<div class="info-container text-primary mt-4 {% if info_config.info_type == "success" %}border-s-insight-success{% elif info_config.info_type == "warning" %}border-s-insight-warning{% elif info_config.info_type == "error" %}border-s-insight-danger{% else %}border-s-insight-info{% endif %}">
+    <span class="block font-bold italic text-lg {% if info_config.info_type == "success" %}text-insight-success{% elif info_config.info_type == "warning" %}text-insight-warning{% elif info_config.info_type == "error" %}text-insight-danger{% else %}text-insight-info{% endif %}">
+        {{ info_config.info_type|default:"Info"|upper }}:
     </span>
     {{ info_config.message|markdownify }}
 </div>
