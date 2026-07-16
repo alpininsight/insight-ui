@@ -51,7 +51,9 @@
             data-search-results
             role="listbox"
             aria-label="{% trans 'Search results' %}"
-            class="hidden absolute z-50 w-full mt-1 bg-insight-bg-raised border border-insight-border-raised rounded-md shadow-lg max-h-96 overflow-y-auto"
+            class="hidden absolute z-50 w-full mt-1 bg-insight-bg-raised border border-insight-border-raised rounded-insight-raised shadow-insight-raised max-h-96 overflow-y-auto"
         ></div>
+
+        {% include "insight_ui/components/search_bar_result_templates.html" %}
     {% endif %}
 </div>

@@ -22,10 +22,14 @@ export class Search {
         this.element = element;
         this.input = element.querySelector('input[type="search"]');
         this.resultsContainer = element.querySelector('[data-search-results]');
+        this.resultTemplate = element.querySelector('[data-search-template="result"]');
+        this.noResultsTemplate = element.querySelector('[data-search-template="no-results"]');
+        this.iconContainer = element.querySelector('[data-search-icons]');
         this.fuse = null;
         this.focusedIndex = -1;
         this.isOpen = false;
         this.searchIndex = [];
+        this.categoryLabels = this.loadCategoryLabels();
 
         if (!this.input || !this.resultsContainer) {
             debugLog("Search: Missing required elements (input or results container)");
@@ -165,82 +169,89 @@ export class Search {
     }
 
     renderResults(results) {
+        this.resultsContainer.innerHTML = '';
+
         if (results.length === 0) {
-            this.resultsContainer.innerHTML = this.renderNoResults();
+            this.resultsContainer.appendChild(this.renderNoResults());
             this.open();
             return;
         }
 
-        const html = results.map((result, index) => this.renderResultItem(result.item, index)).join('');
-        this.resultsContainer.innerHTML = html;
+        const fragment = document.createDocumentFragment();
+        results.forEach((result, index) => {
+            fragment.appendChild(this.renderResultItem(result.item, index));
+        });
+        this.resultsContainer.appendChild(fragment);
         this.focusedIndex = -1;
         this.open();
     }
 
     renderResultItem(item, index) {
-        const categoryIcon = this.getCategoryIcon(item.category);
-        const categoryLabel = this.getCategoryLabel(item.category);
+        if (!this.resultTemplate) {
+            debugLog("Search: Missing result template");
+            return document.createElement('div');
+        }
 
-        return `
-            <div role="option" id="search-result-${index}" class="search-result-item"
-                 aria-selected="false" data-index="${index}">
-                <a href="${item.url}"
-                   class="flex items-start gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700
-                          focus:bg-gray-100 dark:focus:bg-gray-700 focus:outline-none transition-colors">
-                    <span class="flex-shrink-0 w-5 h-5 mt-0.5 text-gray-400 dark:text-gray-500">
-                        ${categoryIcon}
-                    </span>
-                    <div class="flex-1 min-w-0">
-                        <div class="flex items-center gap-2">
-                            <span class="font-medium text-gray-900 dark:text-white truncate">
-                                ${this.escapeHtml(item.name)}
-                            </span>
-                            <span class="flex-shrink-0 text-xs px-1.5 py-0.5 rounded
-                                         bg-gray-100 dark:bg-gray-700
-                                         text-gray-500 dark:text-gray-400">
-                                ${categoryLabel}
-                            </span>
-                        </div>
-                        <div class="text-sm text-gray-500 dark:text-gray-400 truncate">
-                            ${item.group}${item.description ? ' · ' + this.escapeHtml(item.description) : ''}
-                        </div>
-                    </div>
-                </a>
-            </div>
-        `;
+        const clone = this.resultTemplate.content.cloneNode(true);
+        const el = clone.querySelector('[role="option"]');
+
+        el.id = `search-result-${index}`;
+        el.dataset.index = index;
+
+        const link = el.querySelector('a');
+        link.href = item.url;
+
+        el.querySelector('[data-slot="name"]').textContent = item.name;
+        el.querySelector('[data-slot="category"]').textContent = this.getCategoryLabel(item.category);
+        el.querySelector('[data-slot="description"]').textContent =
+            item.group + (item.description ? ' · ' + item.description : '');
+
+        // Clone and insert category icon
+        const iconSlot = el.querySelector('[data-slot="icon"]');
+        const icon = this.getCategoryIcon(item.category);
+        if (icon) {
+            iconSlot.appendChild(icon);
+        }
+
+        return el;
     }
 
     renderNoResults() {
-        return `
-            <div class="px-4 py-6 text-center text-gray-500 dark:text-gray-400">
-                <p class="text-sm">No results found</p>
-                <p class="text-xs mt-1">Try a different search term</p>
-            </div>
-        `;
+        if (!this.noResultsTemplate) {
+            debugLog("Search: Missing no-results template");
+            const div = document.createElement('div');
+            div.textContent = 'No results found';
+            return div;
+        }
+        return this.noResultsTemplate.content.cloneNode(true);
     }
 
     getCategoryIcon(category) {
-        const icons = {
-            component: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
-                <path d="M14.5 10a4.5 4.5 0 0 0-4.284-4.493v-1.49A6.001 6.001 0 0 1 16 10h-1.5Zm-4.284 4.493a4.5 4.5 0 0 0 4.284-4.493H16a6.001 6.001 0 0 1-5.784 5.983v-1.49ZM5.5 10a4.5 4.5 0 0 0 4.284 4.493v1.49A6.001 6.001 0 0 1 4 10h1.5Zm4.284-4.493A4.5 4.5 0 0 0 5.5 10H4a6.001 6.001 0 0 1 5.784-5.983v1.49Z"/>
-            </svg>`,
-            type: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
-                <path fill-rule="evenodd" d="M6.28 5.22a.75.75 0 0 1 0 1.06L2.56 10l3.72 3.72a.75.75 0 0 1-1.06 1.06L.97 10.53a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Zm7.44 0a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L17.44 10l-3.72-3.72a.75.75 0 0 1 0-1.06ZM11.377 2.011a.75.75 0 0 1 .612.867l-2.5 14.5a.75.75 0 0 1-1.478-.255l2.5-14.5a.75.75 0 0 1 .866-.612Z" clip-rule="evenodd"/>
-            </svg>`,
-            category: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
-                <path fill-rule="evenodd" d="M2 4.75A.75.75 0 0 1 2.75 4h14.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 4.75Zm7 10.5a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5a.75.75 0 0 1-.75-.75ZM2 10a.75.75 0 0 1 .75-.75h14.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 10Z" clip-rule="evenodd"/>
-            </svg>`
-        };
-        return icons[category] || icons.component;
+        if (!this.iconContainer) return null;
+        const iconEl = this.iconContainer.querySelector(`[data-icon="${category}"]`);
+        if (!iconEl) {
+            // Fallback to component icon
+            const fallback = this.iconContainer.querySelector('[data-icon="component"]');
+            return fallback ? fallback.cloneNode(true).firstElementChild : null;
+        }
+        return iconEl.cloneNode(true).firstElementChild;
     }
 
     getCategoryLabel(category) {
-        const labels = {
-            component: 'Component',
-            type: 'Type',
-            category: 'Category'
-        };
-        return labels[category] || category;
+        return this.categoryLabels[category] || category;
+    }
+
+    loadCategoryLabels() {
+        const script = this.element.querySelector('[data-search-labels]');
+        if (!script) {
+            return { component: 'Component', type: 'Type', category: 'Category' };
+        }
+        try {
+            return JSON.parse(script.textContent);
+        } catch (e) {
+            debugLog("Search: Failed to parse category labels", e);
+            return { component: 'Component', type: 'Type', category: 'Category' };
+        }
     }
 
     highlightItem(items) {
@@ -287,12 +298,6 @@ export class Search {
         }
     }
 
-    escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
-
     debounce(func, wait) {
         let timeout;
         return (...args) => {
@@ -324,7 +329,11 @@ export class Search {
         this.element = null;
         this.input = null;
         this.resultsContainer = null;
+        this.resultTemplate = null;
+        this.noResultsTemplate = null;
+        this.iconContainer = null;
         this.fuse = null;
+        this.categoryLabels = null;
     }
 
     // Static method for initializing all search instances
