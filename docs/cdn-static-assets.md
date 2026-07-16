@@ -9,6 +9,9 @@ The readable source files stay in:
 
 - `insight_ui/static/insight_ui/js/*.js`
 - `insight_ui/static/insight_ui/css/*.css`
+- `insight_ui/static/insight_ui/font/*`
+- `insight_ui/static/insight_ui/favicon/*`
+- `insight_ui/static/insight_ui/svg/*`
 
 Generated distributable files are committed next to them:
 
@@ -39,6 +42,11 @@ mutable aliases:
 These branch aliases are intentionally separate. `develop` must not update the
 production-facing `main/` alias and must not update `latest/`.
 
+The upload includes all runtime browser assets that packaged CSS or templates
+can reference directly: JavaScript, CSS, SVGs, favicons, web manifests, fonts,
+and common image formats. This is required because CSS font URLs are resolved
+relative to the CDN stylesheet path.
+
 The `CDN Deploy` workflow runs on GitHub Release publication and uploads the
 generated assets via the same shared `.github-private` workflow:
 
@@ -47,6 +55,13 @@ generated assets via the same shared `.github-private` workflow:
 
 Production consumers should use the immutable version path. `latest/` is only a
 convenience alias for demos and development checks.
+
+The repository release is created by the `Release (Alpine Insight)` workflow.
+Because GitHub does not reliably start a second workflow from a release event
+created by another workflow token, `CDN Deploy` also listens for a successful
+release workflow completion. It then resolves the matching release tag from the
+completed commit SHA and calls the shared `.github-private` static asset
+publisher with that explicit version.
 
 Runtime deployments must not rely on `latest/` for application rendering. New
 paths can be negatively cached at the Cloudflare edge before the first upload,

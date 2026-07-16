@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Change old icon names in the 'alert' component and in the component demo container
 - Adjust 'type' to 'info_type' in the 'infobox' template
 - Using proper text color class for the 'brand_mark' component
+- **cdn:** Publish insight ui browser assets
+- **cdn:** Trigger release asset publishing
 
 ### Miscellaneous
 
