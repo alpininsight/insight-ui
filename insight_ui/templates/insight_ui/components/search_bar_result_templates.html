@@ -1,0 +1,42 @@
+{% load i18n insight_tags %}
+{# Templates for client-side search result rendering #}
+
+{# Search result item template #}
+<template data-search-template="result">
+    <div role="option" class="search-result-item" aria-selected="false">
+        <a href="#" class="flex items-start gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 focus:bg-gray-100 dark:focus:bg-gray-700 focus:outline-none transition-colors">
+            <span class="shrink-0 w-5 h-5 mt-0.5 text-gray-400 dark:text-gray-500" data-slot="icon"></span>
+            <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2">
+                    <span class="font-medium text-gray-900 dark:text-white truncate" data-slot="name"></span>
+                    <span class="shrink-0 text-xs px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400" data-slot="category"></span>
+                </div>
+                <div class="text-sm text-gray-500 dark:text-gray-400 truncate" data-slot="description"></div>
+            </div>
+        </a>
+    </div>
+</template>
+
+{# No results template #}
+<template data-search-template="no-results">
+    <div class="px-4 py-6 text-center text-gray-500 dark:text-gray-400">
+        <p class="text-sm">{% trans "No results found" %}</p>
+        <p class="text-xs mt-1">{% trans "Try a different search term" %}</p>
+    </div>
+</template>
+
+{# Category icons (hidden, cloned by JS) #}
+<div data-search-icons class="hidden">
+    <span data-icon="component">{% icon name="puzzle-piece" size="s" %}</span>
+    <span data-icon="type">{% icon name="code-bracket" size="s" %}</span>
+    <span data-icon="category">{% icon name="queue-list" size="s" %}</span>
+</div>
+
+{# Category labels (for i18n) #}
+<script type="application/json" data-search-labels>
+    {
+        "component": "{% trans 'Component' %}",
+        "type": "{% trans 'Type' %}",
+        "category": "{% trans 'Category' %}"
+    }
+</script>
