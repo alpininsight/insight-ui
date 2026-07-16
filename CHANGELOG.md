@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug Fixes
 
+- Issues related to latest translation changes
+- Change old icon names in the 'alert' component and in the component demo container
+- Adjust 'type' to 'info_type' in the 'infobox' template
+- Using proper text color class for the 'brand_mark' component
+
+### Miscellaneous
+
+- Regenerate minified stylesheet
+
+## [1.11.0] - 2026-06-18
+
+### Bug Fixes
+
 - **ci:** Run container publish on every branch push
 - **ci:** Pin only published container digests
 - Add missing data-attribute support to the template file of the 'button' component
