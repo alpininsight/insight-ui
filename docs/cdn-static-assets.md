@@ -9,6 +9,9 @@ The readable source files stay in:
 
 - `insight_ui/static/insight_ui/js/*.js`
 - `insight_ui/static/insight_ui/css/*.css`
+- `insight_ui/static/insight_ui/font/*`
+- `insight_ui/static/insight_ui/favicon/*`
+- `insight_ui/static/insight_ui/svg/*`
 
 Generated distributable files are committed next to them:
 
@@ -38,6 +41,11 @@ mutable aliases:
 
 These branch aliases are intentionally separate. `develop` must not update the
 production-facing `main/` alias and must not update `latest/`.
+
+The upload includes all runtime browser assets that packaged CSS or templates
+can reference directly: JavaScript, CSS, SVGs, favicons, web manifests, fonts,
+and common image formats. This is required because CSS font URLs are resolved
+relative to the CDN stylesheet path.
 
 The `CDN Deploy` workflow runs on GitHub Release publication and uploads the
 generated assets via the same shared `.github-private` workflow:

@@ -28,6 +28,7 @@ jobs:
       cdn_prefix: insight-ui
       cdn_version: ${{ github.event_name == 'workflow_dispatch' && inputs.version || '' }}
       cdn_base_url: https://cdn.alpininsight.ai
+      cdn_asset_globs: "*.js,*.css,*.svg,*.png,*.ico,*.webmanifest,*.ttf,*.woff,*.woff2,*.jpg,*.jpeg,*.webp,*.gif"
     secrets:
       r2_access_key_id: ${{ secrets.R2_ACCESS_KEY_ID }}
       r2_secret_access_key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
