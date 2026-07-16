@@ -118,6 +118,29 @@ and host applications should inherit before introducing domain-specific variants
 | Data hooks | `data-insight-*` and component-specific `data-*` attributes | Stable JavaScript initialization and behavior contracts. |
 | Accessibility hooks | ARIA attributes, semantic HTML, focus handling | WCAG-aligned component behavior. |
 
+## Semantic non-color roles
+
+Color, radius, shadow, and surface tokens already use Insight UI semantic
+roles. Motion, blur, and density should follow the same pattern when they become
+public component behavior.
+
+Technical primitives such as `--duration-fast`, `--ease-out`, `--blur-lg`, or
+raw spacing values may remain implementation building blocks. Components should
+not expose those primitives as their public API when the value describes a
+stable UI purpose. Instead, define an Insight UI role token first and map that
+role to the technical primitive.
+
+| Area | Semantic role examples | Technical implementation examples | Rule |
+|---|---|---|---|
+| Motion duration | `--insight-motion-duration-fast`, `--insight-motion-duration-normal`, `--insight-motion-duration-slow` | `--duration-fast`, `--duration-normal`, `--duration-slow` | Components choose the semantic role that describes the interaction speed. |
+| Motion easing | `--insight-motion-ease-standard`, `--insight-motion-ease-emphasized`, `--insight-motion-ease-enter`, `--insight-motion-ease-exit` | `--ease-out`, `--ease-in-out`, cubic-bezier values | Components should describe the motion intent, not the curve implementation. |
+| Backdrop and glass blur | `--insight-backdrop-blur`, `--insight-overlay-backdrop-blur`, `--insight-glass-backdrop-blur` | `--blur-sm`, `--blur-md`, `--blur-lg`, `backdrop-filter` | Overlay and glass effects should be themeable without editing templates. |
+| Density and spacing | `--insight-density-control-x`, `--insight-density-control-y`, `--insight-density-panel-x`, `--insight-density-panel-y` | Tailwind spacing scale, padding utilities | Components should expose density roles when spacing is part of the reusable component contract. |
+
+This keeps the public contract independent from Tailwind's token names. If a
+future implementation replaces Tailwind or changes its primitive naming, the
+Insight UI role tokens can continue to describe the same component behavior.
+
 ## Implementation rules
 
 Use the following placement rules when deciding where a design-system concept
@@ -130,6 +153,8 @@ should live:
 - Django-facing API normalization belongs in template tags.
 - Examples, parameter documentation, and component explanations belong in the
   self-documenting docs.
+- Motion, blur, and density values should be promoted into `--insight-*` role
+  tokens before they become configurable public component behavior.
 
 Data attributes should stay behavior-oriented. They are part of the JavaScript
 contract and should not be introduced as purely decorative markers.
