@@ -10,7 +10,7 @@
                 {{ user.get_username|default:''|slice:":1"|upper }}
             {% endif %}
         </button>
-        <div class="hidden insight-user-dropdown-menu" id="user-menu">
+        <div class="hidden absolute top-full z-50 mt-2 min-w-56 text-lg bg-insight-secondary-background border border-insight-secondary-border rounded shadow-lg divide-y divide-insight-secondary-border ltr:right-0 rtl:left-0" id="user-menu">
             <span class="flex flex-col gap-1 text-xs px-6 py-1">
                 <span class="text-secondary">{% trans "Logged in as" %}: </span>
                 <span class="font-bold ">{{ user.get_username }}</span>
