@@ -12,23 +12,46 @@ The readable source files stay in:
 - `insight_ui/static/insight_ui/font/*`
 - `insight_ui/static/insight_ui/favicon/*`
 - `insight_ui/static/insight_ui/svg/*`
+- `insight_ui/utils/input.css`
 
 Generated distributable files are committed next to them:
 
 - `*.min.js`
 - `*.min.css`
 
-Run:
+`insight_ui/utils/input.css` is the Tailwind source of truth. When it changes,
+regenerate the packaged stylesheet first:
 
 ```bash
-npm run build:js
+npm run build:tailwind
 ```
+
+Then regenerate minified distributable assets:
+
+```bash
+npm run build:static
+```
+
+For local convenience, run both steps with:
+
+```bash
+npm run build:static-all
+```
+
+`build:static` intentionally only minifies existing assets. It does not compile
+Tailwind from `input.css`, because the shared `.github-private` CDN workflow is
+Node-only and must be able to rebuild/upload distributable files without
+requiring Python, Django, or the Tailwind CLI at CDN publication time.
 
 CI verifies the generated files are current with:
 
 ```bash
-npm run check:js-build
+npm run check:static-build
 ```
+
+The check first compares generated Insight UI theme tokens in `tailwind.css`
+against `input.css`, then verifies the committed `.min.js` and `.min.css` files.
+This catches stale `tailwind.css` before assets are uploaded to the CDN.
 
 ## CDN Upload
 
