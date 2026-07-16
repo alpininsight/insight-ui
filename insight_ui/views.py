@@ -36,6 +36,7 @@ from insight_ui.demo_utils import generate_payload, map_payload_to_cards, map_pa
 from insight_ui.forms import ChatForm
 from insight_ui.utils.pagination import get_page
 from insight_ui.utils.query_builder_utils import get_filter_settings_for_field
+from insight_ui.utils.type_registry import get_all_type_definitions
 
 logger = structlog.get_logger(__name__)
 
@@ -546,6 +547,14 @@ def icon_view(request: HttpRequest) -> HttpResponse:
     """Render icon page."""
     context = get_icon_context() | get_base_context() | get_sidebar_context()
     return render(request, "insight_ui/docs/icons.html", context)
+
+
+@require_GET
+def types_view(request: HttpRequest) -> HttpResponse:
+    """Render types documentation page."""
+    context = get_base_context() | get_sidebar_context()
+    context["type_definitions"] = get_all_type_definitions()
+    return render(request, "insight_ui/docs/types.html", context)
 
 
 @require_GET

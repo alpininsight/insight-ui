@@ -29,7 +29,11 @@ export class Floater {
             this.target = document.getElementById(this.targetId);
         }
 
-        if (!this.target) return;
+        if (!this.target)
+        {
+            debugLog("No floater target for: ", this.trigger, " found!");
+            return;
+        }
         if (this.arrow) { this.target.appendChild(this.arrow); }
 
         this.target.classList.add("absolute", "hidden", "z-50");
@@ -175,32 +179,39 @@ export class Floater {
         const position = this.trigger.getAttribute('data-position') || "top";
         const rect = this.trigger.getBoundingClientRect();
         const scrollY = window.scrollY || document.documentElement.scrollTop;
+        const scrollX = window.scrollX || document.documentElement.scrollLeft;
+
+        // Get the offset parent's position to account for containing blocks with position: relative
+        const offsetParent = this.target.offsetParent || document.body;
+        const offsetRect = offsetParent.getBoundingClientRect();
+        const offsetTop = offsetRect.top + scrollY;
+        const offsetLeft = offsetRect.left + scrollX;
         const distanceToTarget = 12;
         const arrowSize = 8;
 
         // Some directions need slight adjustments, like + or - 1px.
         switch (position) {
             case 'top':
-                this.target.style.top = `${rect.top + scrollY - this.target.offsetHeight - distanceToTarget}px`;
-                this.target.style.left = `${rect.left + rect.width / 2 - this.target.offsetWidth / 2}px`;
+                this.target.style.top = `${rect.top + scrollY - this.target.offsetHeight - distanceToTarget - offsetTop}px`;
+                this.target.style.left = `${rect.left + scrollX + rect.width / 2 - this.target.offsetWidth / 2 - offsetLeft}px`;
                 if (this.arrow) { this.arrow.style.top = `${this.target.offsetHeight - (arrowSize + 1)}px`; }
                 break;
 
             case 'bottom':
-                this.target.style.top = `${rect.bottom + scrollY + distanceToTarget}px`;
-                this.target.style.left = `${rect.left + rect.width / 2 - this.target.offsetWidth / 2}px`;
+                this.target.style.top = `${rect.bottom + scrollY + distanceToTarget - offsetTop}px`;
+                this.target.style.left = `${rect.left + scrollX + rect.width / 2 - this.target.offsetWidth / 2 - offsetLeft}px`;
                 if (this.arrow) { this.arrow.classList.add('rotate-225'); this.arrow.style.top = `${-this.target.offsetHeight / 2 + arrowSize}px`; }
                 break;
 
             case 'left':
-                this.target.style.top = `${rect.top + rect.height / 2 - this.target.offsetHeight / 2 + scrollY}px`;
-                this.target.style.left = `${rect.left - this.target.offsetWidth - distanceToTarget}px`;
+                this.target.style.top = `${rect.top + rect.height / 2 - this.target.offsetHeight / 2 + scrollY - offsetTop}px`;
+                this.target.style.left = `${rect.left + scrollX - this.target.offsetWidth - distanceToTarget - offsetLeft}px`;
                 if (this.arrow) { this.arrow.classList.add('rotate-315'); this.arrow.style.top = `${this.target.offsetHeight / 2 - arrowSize}px`; this.arrow.style.left = `${this.target.offsetWidth - 1}px`; }
                 break;
 
             case 'right':
-                this.target.style.top = `${rect.top + rect.height / 2 - this.target.offsetHeight / 2 + scrollY}px`;
-                this.target.style.left = `${rect.right + distanceToTarget}px`;
+                this.target.style.top = `${rect.top + rect.height / 2 - this.target.offsetHeight / 2 + scrollY - offsetTop}px`;
+                this.target.style.left = `${rect.right + scrollX + distanceToTarget - offsetLeft}px`;
                 if (this.arrow) { this.arrow.classList.add('rotate-135'); this.arrow.style.top = `${this.target.offsetHeight / 2 - arrowSize}px`; this.arrow.style.left = `-1px`; }
                 break;
         }

@@ -1,0 +1,121 @@
+{% extends "insight_ui/base.html" %}
+{% load static insight_tags i18n %}
+
+{% block title %}{% trans "Insight UI - Types" %}{% endblock title %}
+
+{% block navbar %}
+    {% navbar config=nav_config user_dropdown_links=user_dropdown_links search_query=search_query %}
+{% endblock navbar %}
+
+{% block sidebar_left %}
+    {% sidebar sidebar_data=left_sidebar side="left" %}
+{% endblock sidebar_left %}
+
+{% block sidebar_right %}
+    {% include "insight_ui/components/toc_sidebar.html" with side="right" static=True navbar_fixed=True mobile_hidden=True %}
+{% endblock sidebar_right %}
+
+{% block heading %}
+    {% page_header title=_("Types") %}
+{% endblock heading %}
+
+{% block content %}
+    <div class="w-full space-y-12 text-secondary leading-loose">
+        <div class="space-y-8">
+            <p>
+                {% blocktrans trimmed %}
+                    Insight UI uses type literals to ensure type safety and provide autocompletion
+                    in your IDE. These types define the allowed values for component parameters
+                    like sizes, colors, and positions.
+                {% endblocktrans %}
+            </p>
+            <p>
+                {% blocktrans trimmed %}
+                    All types are defined in <code>insight_ui.configs.types</code> and can be imported
+                    for type annotations in your own code.
+                {% endblocktrans %}
+            </p>
+        </div>
+        <hr>
+
+        <section class="space-y-4">
+            <h2>{% trans "Usage Example" %}</h2>
+            <div data-insight-code-block="Python">
+                {# fmt:off #}
+                from insight_ui.configs.types import Size, ColorType
+
+                # Type hints for function parameters
+                def create_button(size: Size = "m", color: ColorType = "primary"):
+                    ...
+
+                # Direct value usage in templates
+                {% templatetag openblock %} button label="Click" size="l" type="secondary" {% templatetag closeblock %}
+                {# fmt:on #}
+            </div>
+        </section>
+
+        <section class="space-y-4">
+            <h2>{% trans "Quick Navigation" %}</h2>
+            <div class="flex flex-wrap gap-2">
+                {% for type_def in type_definitions %}
+                    <a
+                        href="#{{ type_def.anchor }}"
+                        class="px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition-colors"
+                    >
+                        {{ type_def.name }}
+                    </a>
+                {% endfor %}
+            </div>
+        </section>
+
+        <hr>
+
+        <section class="space-y-8">
+            <h2>{% trans "Type Reference" %}</h2>
+
+            {% for type_def in type_definitions %}
+                <article id="{{ type_def.anchor }}" class="scroll-mt-8 space-y-4 p-6 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md">
+                    <div class="flex items-center justify-between">
+                        <h3>{{ type_def.name }}</h3>
+                    </div>
+
+                    <p class="text-secondary">{{ type_def.description }}</p>
+
+                    <div class="space-y-2">
+                        <h4 class="text-sm font-medium text-secondary uppercase tracking-wide">{% trans "Values" %}</h4>
+                        <div class="flex flex-wrap gap-2">
+                            {% for value in type_def.values %}
+                                <code class="px-2 py-1 text-sm bg-gray-100 dark:bg-gray-800 rounded">{{ value }}</code>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
+        </section>
+
+        <section class="space-y-4">
+            <h2>{% trans "Validation" %}</h2>
+            <p>
+                {% blocktrans trimmed %}
+                    Each type has a corresponding validation function that raises a <code>ValueError</code>
+                    if an invalid value is passed. These validators are automatically called in config
+                    dataclasses during initialization.
+                {% endblocktrans %}
+            </p>
+            <div data-insight-code-block="Python">
+                from insight_ui.configs.types import validate_size, validate_color_type
+
+                # Raises ValueError for invalid values
+                validate_size("invalid")  # ValueError: Invalid size 'invalid'. ...
+                validate_color_type("primary")  # OK
+
+                # Validators support custom field names for error messages
+                validate_size("xl", field_name="icon_size")  # Uses 'icon_size' in error message
+            </div>
+        </section>
+    </div>
+{% endblock content %}
+
+{% block footer %}
+    {% footer config=footer_config %}
+{% endblock footer %}
