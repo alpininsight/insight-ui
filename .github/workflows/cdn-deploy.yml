@@ -4,6 +4,10 @@ name: CDN Deploy
 on:
   release:
     types: [published]
+  workflow_run:
+    workflows: ["Release (Alpine Insight)"]
+    types: [completed]
+    branches: [main]
   workflow_dispatch:
     inputs:
       version:
@@ -19,15 +23,68 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  resolve-cdn-version:
+    if: >-
+      github.event_name != 'workflow_run' ||
+      github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - name: Resolve CDN version
+        id: version
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          GH_TOKEN: ${{ github.token }}
+          INPUT_VERSION: ${{ github.event_name == 'workflow_dispatch' && inputs.version || '' }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          REPOSITORY: ${{ github.repository }}
+          WORKFLOW_RUN_HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          set -euo pipefail
+
+          version="$INPUT_VERSION"
+
+          if [[ "$EVENT_NAME" == "release" ]]; then
+            version="${RELEASE_TAG#v}"
+          elif [[ "$EVENT_NAME" == "workflow_run" ]]; then
+            tag="$(
+              gh api "repos/${REPOSITORY}/releases" \
+                --jq ".[] | select(.target_commitish == \"${WORKFLOW_RUN_HEAD_SHA}\") | .tag_name" \
+                | head -n 1
+            )"
+
+            if [[ -z "$tag" ]]; then
+              tag="$(
+                gh api "repos/${REPOSITORY}/git/matching-refs/tags/v" \
+                  --jq ".[] | select(.object.sha == \"${WORKFLOW_RUN_HEAD_SHA}\") | .ref" \
+                  | sed 's#^refs/tags/##' \
+                  | sort -V \
+                  | tail -n 1
+              )"
+            fi
+
+            version="${tag#v}"
+          fi
+
+          if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Invalid or missing CDN version '$version'. Expected X.Y.Z."
+            exit 1
+          fi
+
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
   static-assets-cdn:
+    needs: resolve-cdn-version
     uses: alpininsight/.github-private/.github/workflows/static-assets-reusable.yml@main
     with:
       mode: build
       upload_cdn: true
       asset_directory: insight_ui/static/insight_ui
       cdn_prefix: insight-ui
-      cdn_version: ${{ github.event_name == 'workflow_dispatch' && inputs.version || '' }}
+      cdn_version: ${{ needs.resolve-cdn-version.outputs.version }}
       cdn_base_url: https://cdn.alpininsight.ai
+      cdn_asset_globs: "*.js,*.css,*.svg,*.png,*.ico,*.webmanifest,*.ttf,*.woff,*.woff2,*.jpg,*.jpeg,*.webp,*.gif"
     secrets:
       r2_access_key_id: ${{ secrets.R2_ACCESS_KEY_ID }}
       r2_secret_access_key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
