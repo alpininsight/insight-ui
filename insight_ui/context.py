@@ -75,7 +75,7 @@ def get_navbar_context() -> dict:
         "nav_config": NavbarConfig(
             get_navbar_brand_defaults(),
             links,
-            "/",
+            enable_doc_search=True,
             show_language_selector=True,
             show_theme_toggle=True,
         ),

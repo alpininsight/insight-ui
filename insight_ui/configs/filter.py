@@ -17,6 +17,7 @@ class SearchBarConfig:
         simple: If True, render compact/minimal style.
         search_query: Initial search query value.
         htmx_config: HTMX configuration for AJAX requests.
+        enable_search: If True, enable client-side documentation search with Fuse.js.
 
     """
 
@@ -27,11 +28,14 @@ class SearchBarConfig:
         )
         """
 
-    request_url: str = dc_field(metadata={"doc": _("URL for search requests.")})
+    request_url: str = dc_field(default="", metadata={"doc": _("URL for search requests.")})
     simple: bool = dc_field(default=False, metadata={"doc": _("If True, render compact/minimal style.")})
     search_query: str = dc_field(default="", metadata={"doc": _("Initial search query value.")})
     htmx_config: HtmxConfig | None = dc_field(
         default=None, metadata={"doc": _("HTMX configuration for AJAX requests.")}
+    )
+    enable_search: bool = dc_field(
+        default=False, metadata={"doc": _("If True, enable client-side documentation search with Fuse.js.")}
     )
 
 

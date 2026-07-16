@@ -1212,6 +1212,7 @@ def search_bar(
     simple: bool | _Unset = UNSET,
     search_query: str | _Unset = UNSET,
     htmx_config: HtmxConfig | None | _Unset = UNSET,
+    enable_search: bool | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render text input with a button for a search function."""
     config = build_config(SearchBarConfig, config, **{k: v for k, v in locals().items() if k != "config"})

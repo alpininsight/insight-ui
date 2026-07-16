@@ -87,6 +87,7 @@ class NavbarConfig:
         brand: Describes the brand mark of the application in the navbar.
         links: Contains and describes the navigation items of the navbar.
         searchbar_request_url: The URL to be called when performing a search. If empty, no search bar will be displayed.
+        enable_doc_search: If True, enable client-side documentation search with Fuse.js in the navbar.
         show_usermenu: Displays a dropdown menu with at least a logout button.
         show_language_selector: Displays a dropdown menu for selecting the display language (if defined).
         show_theme_toggle: Displays a button to switch between the light and dark theme of the page.
@@ -123,6 +124,10 @@ class NavbarConfig:
         metadata={
             "doc": _("The URL to be called when performing a search. If empty, no search bar will be displayed.")
         },
+    )
+    enable_doc_search: bool = field(
+        default=False,
+        metadata={"doc": _("If True, enable client-side documentation search with Fuse.js in the navbar.")},
     )
     show_usermenu: bool = field(
         default=False, metadata={"doc": _("Displays a dropdown menu with at least a logout button.")}

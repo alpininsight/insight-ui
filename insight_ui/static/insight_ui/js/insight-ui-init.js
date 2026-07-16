@@ -14,6 +14,7 @@ import { Modal } from "./insight-ui-modal.js";
 import { Multiselect } from "./insight-ui-multiselect.js";
 import { ProgressBar } from "./insight-ui-progress-bar.js";
 import { RangeSlider } from "./insight-ui-range-slider.js";
+import { Search } from "./insight-ui-search.js";
 import { Sidebar } from "./insight-ui-sidebar.js";
 import { Tabs } from "./insight-ui-tabs.js";
 import { ThemeToggle } from "./insight-ui-theme-toggle.js";
@@ -34,6 +35,7 @@ Object.assign(window.InsightUI, {
 	Multiselect,
 	ProgressBar,
 	RangeSlider,
+	Search,
 	Sidebar,
 	Tabs,
 	ThemeToggle,
@@ -53,6 +55,7 @@ function initAll() {
 	Multiselect.initAll();
 	ProgressBar.initAll();
 	RangeSlider.initAll();
+	Search.initAll();
 	Sidebar.initAll();
 	Tabs.initAll();
 	ThemeToggle.initAll();
