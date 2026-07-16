@@ -37,6 +37,7 @@ jobs:
       cdn_prefix: insight-ui
       cdn_aliases: ${{ github.ref_name }}
       cdn_base_url: https://cdn.alpininsight.ai
+      cdn_asset_globs: "*.js,*.css,*.svg,*.png,*.ico,*.webmanifest,*.ttf,*.woff,*.woff2,*.jpg,*.jpeg,*.webp,*.gif"
     secrets:
       r2_access_key_id: ${{ secrets.R2_ACCESS_KEY_ID }}
       r2_secret_access_key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
