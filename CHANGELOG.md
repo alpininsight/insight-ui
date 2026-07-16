@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **cdn:** Publish insight ui browser assets
 - **cdn:** Trigger release asset publishing
 
+### Features
+
+- **theme:** Bridge surface role tokens to the brand colour contract
+
 ### Miscellaneous
 
 - Regenerate minified stylesheet
