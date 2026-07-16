@@ -1,4 +1,4 @@
-{% load i18n insight_tags %}
+{% load i18n insight_tags docs_tags %}
 
 <div class="overflow-auto">
     <table class="table-auto w-full">
@@ -15,7 +15,13 @@
             {% for row in rows %}
                 <tr class="odd:bg-insight-bg-raised even:bg-insight-bg-base">
                     <td class="text-start text-sm px-4 py-3"><span class="inline-tag">{{ row.name }}</span></td>
-                    <td class="text-start text-sm px-4 py-3"><i>{{ row.type }}</i></td>
+                    <td class="text-start text-sm px-4 py-3">
+                        {% if row.type|is_known_type %}
+                            {% type_popover row.type %}
+                        {% else %}
+                            <i>{{ row.type }}</i>
+                        {% endif %}
+                    </td>
                     <td class="text-start text-sm px-4 py-3">{{ row.description|markdownify }}</td>
                     <td class="text-start text-sm px-4 py-3"><b>{{ row.default }}</b></td>
                     <td class="text-start text-sm px-4 py-3">
