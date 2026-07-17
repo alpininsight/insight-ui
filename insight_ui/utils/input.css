@@ -130,17 +130,16 @@
     * ========================================================
     */
 
-    --radius-insight-radius-none: 0;
-    --radius-insight-radius-xs: 0.125rem;
-    --radius-insight-radius-s: 0.25rem;
-    --radius-insight-radius-m: 0.375rem;
-    --radius-insight-radius-l: 0.5rem;
-    --radius-insight-radius-xl: 0.75rem;
-    --radius-insight-radius-pill: 9999px;
-    --radius-insight-radius-control: var(--radius-insight-radius-s);
-    --radius-insight-radius-surface: var(--radius-insight-radius-m);
-    --radius-insight-radius-raised: var(--radius-insight-radius-l);
-    --radius-insight-radius-overlay: var(--radius-insight-radius-s);
+    --radius-insight-xs: 0.125rem;
+    --radius-insight-s: 0.25rem;
+    --radius-insight-m: 0.375rem;
+    --radius-insight-l: 0.5rem;
+    --radius-insight-xl: 0.75rem;
+    --radius-insight-full: 9999px;
+    --radius-insight-control: var(--radius-insight-s);
+    --radius-insight-surface: var(--radius-insight-m);
+    --radius-insight-raised: var(--radius-insight-l);
+    --radius-insight-overlay: var(--radius-insight-s);
 
     /*
     * ========================================================
@@ -148,75 +147,12 @@
     * ========================================================
     */
 
-    --shadow-insight-shadow-none: none;
-    --shadow-insight-shadow-subtle: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); /* shadow-sm */
-    --shadow-insight-shadow-surface: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); /* shadow-md */
-    --shadow-insight-shadow-raised: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); /* shadow-lg */
-    --shadow-insight-shadow-overlay: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); /* shadow-xl */
-    --shadow-insight-shadow-focus: 0 0 0 2px var(--color-insight-primary);
-
-    /*
-    * ========================================================
-    *   Per component tokens
-    * ========================================================
-    */
-
-    /* Navbar */
-    --insight-nav-bg: var(--insight-surface-raised);
-    --insight-nav-bg-dark: var(--insight-surface-raised-dark);
-    --insight-nav-border: var(--insight-border-subtle);
-    --insight-nav-border-dark: var(--insight-border-subtle-dark);
-    --insight-nav-shadow: var(--insight-shadow-raised);
-    --insight-nav-item-radius: 0px;
-    --insight-nav-item-ring: none;
-    --insight-nav-item-active-ring: none;
-
-    /* Sidebar */
-    --insight-sidebar-icon-button-radius: var(--insight-radius-md);
-    --insight-sidebar-icon-button-hover-bg: var(--insight-surface-muted);
-    --insight-sidebar-icon-button-hover-bg-dark: var(--insight-surface-muted-dark);
-    --insight-sidebar-icon-button-hover-text: var(--color-insight-text-primary);
-    --insight-sidebar-icon-button-hover-text-dark: var(--color-insight-text-primary-dark);
-    --insight-nav-icon-button-radius: var(--insight-radius-md);
-    --insight-nav-icon-button-hover-bg: var(--insight-surface-muted);
-    --insight-nav-icon-button-hover-bg-dark: var(--insight-surface-muted-dark);
-    --insight-nav-icon-button-hover-text: var(--color-insight-text-link);
-    --insight-nav-icon-button-hover-text-dark: var(--color-insight-primary-hover);
-    --insight-nav-focus-ring: var(--color-insight-primary);
-
-    /* User dropdown */
-    --insight-user-dropdown-bg: var(--insight-surface-muted);
-    --insight-user-dropdown-bg-dark: var(--insight-surface-muted-dark);
-    --insight-user-dropdown-border: var(--insight-border-subtle);
-    --insight-user-dropdown-divider: var(--insight-border-default);
-    --insight-user-dropdown-divider-dark: var(--insight-border-default-dark);
-    --insight-user-dropdown-radius: var(--insight-radius-sm);
-    --insight-user-dropdown-shadow: var(--insight-shadow-overlay);
-
-    /* Progress bar */
-    --insight-progress-track-bg: var(--insight-border-subtle);
-    --insight-progress-track-bg-dark: var(--insight-surface-muted-dark);
-    --insight-progress-radius: var(--insight-radius-pill);
-    --insight-progress-fill-bg: var(--color-insight-primary);
-    --insight-progress-fill-transition-duration: 500ms;
-
-    /* Chat response */
-    --insight-chat-message-border: var(--insight-border-subtle);
-    --insight-chat-message-radius: var(--insight-radius-lg);
-    --insight-chat-message-own-bg: var(--insight-surface-subtle);
-    --insight-chat-message-own-bg-dark: var(--insight-surface-muted-dark);
-    --insight-chat-message-response-bg: var(--insight-surface-muted);
-    --insight-chat-message-response-bg-dark: var(--insight-surface-disabled-dark);
-
-    /* Range control */
-    --insight-control-range-progress: 0%;
-    --insight-control-range-track: var(--insight-border-subtle);
-    --insight-control-range-track-dark: var(--insight-surface-muted-dark);
-    --insight-control-range-fill: var(--color-insight-primary);
-    --insight-control-range-radius: var(--insight-radius-control);
-    --insight-control-range-thumb-bg: var(--insight-surface-base);
-    --insight-control-range-thumb-border: var(--color-insight-primary);
-    --insight-control-range-thumb-radius: var(--insight-radius-pill);
+    --shadow-insight-none: none;
+    --shadow-insight-subtle: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); /* shadow-sm */
+    --shadow-insight-surface: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); /* shadow-md */
+    --shadow-insight-raised: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); /* shadow-lg */
+    --shadow-insight-overlay: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); /* shadow-xl */
+    --shadow-insight-focus: 0 0 0 2px var(--color-insight-primary);
 
     /*
     * ========================================================
@@ -416,36 +352,19 @@
     */
 
     .btn {
-        @apply flex gap-2 items-center justify-center border-2 border-transparent text-white px-5 py-1.5 transition-colors;
-        border-radius: var(--insight-radius-control);
+        @apply flex gap-2 items-center justify-center border-2 border-transparent rounded-insight-control px-5 py-1.5 text-white transition-colors;
     }
 
     /* Button-Size */
-
-    .btn-xs {
-        @apply text-xs px-2 py-0.5;
-    }
-    .btn-s {
-        @apply text-sm px-4 py-1;
-    }
-    .btn-m {
-        @apply text-sm px-5 py-1.5;
-    }
-    .btn-l {
-        @apply text-lg px-6 py-2;
-    }
-    .btn-xl {
-        @apply text-lg px-8 py-3;
-    }
-    .btn-icon {
-        @apply p-1.5;
-    }
-    .btn-round {
-        border-radius: var(--insight-radius-pill);
-    }
+    .btn-xs { @apply text-xs px-2 py-0.5; }
+    .btn-s { @apply text-sm px-4 py-1; }
+    .btn-m { @apply text-sm px-5 py-1.5; }
+    .btn-l { @apply text-lg px-6 py-2; }
+    .btn-xl { @apply text-lg px-8 py-3; }
+    .btn-icon { @apply p-1.5; }
+    .btn-round { @apply rounded-insight-full; }
 
     /* Button-Fill */
-
     .btn-primary {
         @apply bg-insight-primary border-insight-primary hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active;
     }
@@ -475,7 +394,6 @@
     }
 
     /* Button-Outline */
-
     .btn-outline-primary {
         @apply border-insight-primary text-insight-primary hover:text-white hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active;
     }
@@ -502,7 +420,6 @@
     }
 
     /* Button-Subtle */
-
     .btn-subtle-primary {
         @apply text-insight-primary hover:text-insight-primary-hover active:text-insight-primary-active hover:bg-insight-primary-hover/25 active:bg-insight-primary-active/25;
     }
@@ -534,32 +451,16 @@
     * ========================================================
     */
 
-    .badge {
-        @apply inline-flex items-center gap-2 px-4 py-1.5;
-        border-radius: var(--insight-radius-pill);
-        box-shadow: var(--insight-shadow-subtle);
-    }
+    .badge { @apply inline-flex items-center gap-2 px-4 py-1.5 rounded-insight-full shadow-insight-subtle; }
 
     /* Badge-Size */
-
-    .badge-xs {
-        @apply text-xs px-2 py-1;
-    }
-    .badge-s {
-        @apply text-sm px-4 py-1;
-    }
-    .badge-m {
-        @apply text-sm px-4 py-1.5;
-    }
-    .badge-l {
-        @apply text-lg px-6 py-2;
-    }
-    .badge-xl {
-        @apply text-lg px-8 py-3;
-    }
+    .badge-xs { @apply text-xs px-2 py-1; }
+    .badge-s { @apply text-sm px-4 py-1; }
+    .badge-m { @apply text-sm px-4 py-1.5; }
+    .badge-l { @apply text-lg px-6 py-2; }
+    .badge-xl { @apply text-lg px-8 py-3; }
 
     /* Badge-Color */
-
     .badge-primary {
         @apply bg-insight-primary/10 text-insight-primary dark:text-insight-primary-hover;
     }
@@ -589,21 +490,15 @@
     */
 
     .component-container {
-        @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700;
-        border-radius: var(--insight-radius-surface);
-        box-shadow: var(--insight-shadow-surface);
+        @apply bg-insight-primary-background border border-insight-primary-border rounded-insight-surface shadow-insight-surface;
     }
 
     .example-container {
-        @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-8 py-16 my-12;
-        border-radius: var(--insight-radius-raised);
-        box-shadow: var(--insight-shadow-subtle);
+        @apply bg-insight-primary-background border border-insight-primary-border rounded-insight-raised shadow-insight-subtle px-8 py-16 my-12;
     }
 
     .info-container {
-        @apply bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 border-s-4 text-base px-4 py-1;
-        border-start-end-radius: var(--insight-radius-control);
-        border-end-end-radius: var(--insight-radius-control);
+        @apply bg-insight-secondary-background border border-insight-secondary-border border-s-4 rounded-e-insight-control px-4 py-1 text-base;
     }
 
     /*
@@ -613,87 +508,63 @@
     */
 
     .inline-tag {
-        @apply bg-gray-200 dark:bg-gray-700 font-mono text-insight-primary dark:text-insight-primary-active text-nowrap px-1 py-px;
-        border-radius: var(--insight-radius-control);
+        @apply bg-gray-200 dark:bg-gray-700 font-mono text-insight-primary dark:text-insight-primary-active rounded-insight-control px-1 py-px text-nowrap;
     }
 
     .input {
-        @apply w-full px-3 py-2 border border-gray-300 dark:border-gray-600 text-sm focus:ring-2 focus:ring-insight-primary focus:border-insight-primary bg-white dark:bg-gray-700 dark:text-white transition-colors duration-200;
-        border-radius: var(--insight-radius-control);
-        box-shadow: var(--insight-shadow-subtle);
+        @apply w-full bg-insight-primary-background border border-insight-primary-border rounded-insight-control shadow-insight-subtle px-3 py-2 text-sm text-insight-text-primary focus:ring-2 focus:ring-insight-primary focus:border-insight-primary transition-colors duration-200;
     }
 
-    .insight-range-track {
-        background-color: var(--insight-control-range-track);
-        border-radius: var(--insight-control-range-radius);
-    }
-
-    [data-theme="dark"] .insight-range-track,
-    [data-theme="dark"].insight-range-track {
-        background-color: var(--insight-control-range-track-dark);
-    }
-
-    .insight-range-fill {
-        background-color: var(--insight-control-range-fill);
-        border-radius: var(--insight-control-range-radius);
-    }
-
+    /* Range slider (single thumb) */
     .range-custom::-webkit-slider-runnable-track {
-        @apply h-2;
-        border-radius: var(--insight-control-range-radius);
-        background: linear-gradient(to right, var(--insight-control-range-fill) var(--insight-control-range-progress), var(--insight-control-range-track) var(--insight-control-range-progress));
+        @apply h-2 rounded-insight-control;
+        background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-tertiary-background) var(--insight-control-range-progress));
     }
 
     .range-custom::-moz-range-track {
-        @apply h-2;
-        border-radius: var(--insight-control-range-radius);
-        background: linear-gradient(to right, var(--insight-control-range-fill) var(--insight-control-range-progress), var(--insight-control-range-track) var(--insight-control-range-progress));
+        @apply h-2 rounded-insight-control;
+        background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-tertiary-background) var(--insight-control-range-progress));
     }
 
     [data-theme="dark"] .range-custom::-webkit-slider-runnable-track,
     [data-theme="dark"].range-custom::-webkit-slider-runnable-track {
-        background: linear-gradient(to right, var(--insight-control-range-fill) var(--insight-control-range-progress), var(--insight-control-range-track-dark) var(--insight-control-range-progress));
+        background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-tertiary-background-dark) var(--insight-control-range-progress));
     }
 
     [data-theme="dark"] .range-custom::-moz-range-track,
     [data-theme="dark"].range-custom::-moz-range-track {
-        background: linear-gradient(to right, var(--insight-control-range-fill) var(--insight-control-range-progress), var(--insight-control-range-track-dark) var(--insight-control-range-progress));
+        background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-tertiary-background-dark) var(--insight-control-range-progress));
     }
 
     html[dir='rtl'] .range-custom::-webkit-slider-runnable-track {
-        background: linear-gradient(to left, var(--insight-control-range-fill) var(--insight-control-range-progress), var(--insight-control-range-track) var(--insight-control-range-progress));
+        background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-tertiary-background) var(--insight-control-range-progress));
     }
 
     html[dir='rtl'] .range-custom::-moz-range-track {
-        background: linear-gradient(to left, var(--insight-control-range-fill) var(--insight-control-range-progress), var(--insight-control-range-track) var(--insight-control-range-progress));
+        background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-tertiary-background) var(--insight-control-range-progress));
     }
 
     html[dir='rtl'][data-theme="dark"] .range-custom::-webkit-slider-runnable-track,
     html[dir='rtl'] [data-theme="dark"] .range-custom::-webkit-slider-runnable-track,
     html[dir='rtl'] [data-theme="dark"].range-custom::-webkit-slider-runnable-track {
-        background: linear-gradient(to left, var(--insight-control-range-fill) var(--insight-control-range-progress), var(--insight-control-range-track-dark) var(--insight-control-range-progress));
+        background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-tertiary-background-dark) var(--insight-control-range-progress));
     }
 
     html[dir='rtl'][data-theme="dark"] .range-custom::-moz-range-track,
     html[dir='rtl'] [data-theme="dark"] .range-custom::-moz-range-track,
     html[dir='rtl'] [data-theme="dark"].range-custom::-moz-range-track {
-        background: linear-gradient(to left, var(--insight-control-range-fill) var(--insight-control-range-progress), var(--insight-control-range-track-dark) var(--insight-control-range-progress));
+        background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-tertiary-background-dark) var(--insight-control-range-progress));
     }
 
     .range-custom::-webkit-slider-thumb {
-        @apply w-4 h-4 border-2 cursor-pointer -mt-1;
-        background-color: var(--insight-control-range-thumb-bg);
-        border-color: var(--insight-control-range-thumb-border);
-        border-radius: var(--insight-control-range-thumb-radius);
+        @apply size-4 bg-insight-primary-background border-2 border-insight-primary rounded-insight-full cursor-pointer -mt-1;
     }
 
     .range-custom::-moz-range-thumb {
-        @apply w-4 h-4 border-2 cursor-pointer;
-        background-color: var(--insight-control-range-thumb-bg);
-        border-color: var(--insight-control-range-thumb-border);
-        border-radius: var(--insight-control-range-thumb-radius);
+        @apply size-4 bg-insight-primary-background border-2 border-insight-primary rounded-insight-full cursor-pointer;
     }
 
+    /* Background pattern for the demo containers */
     .demo-pattern {
         background-color: #f8fafc;
         background-image: repeating-linear-gradient(

@@ -21,7 +21,7 @@
             >
                 <!-- Bullet -->
                 <span class="flex items-center h-9">
-                    <span class="relative z-10 flex items-center justify-center size-8 border-2 {% if not item.completed and not item.current %}border-gray-100 dark:border-gray-600{% else %}border-gray-300{% endif %} rounded-full text-primary">
+                    <span class="relative z-10 flex items-center justify-center size-8 border-2 {% if not item.completed and not item.current %}border-gray-100 dark:border-gray-600{% else %}border-gray-300{% endif %} rounded-insight-full text-primary">
                         {% if item.completed %}
                             {% icon name="check" size="s" %}
                         {% elif item.bullet_icon %}
@@ -29,7 +29,7 @@
                         {% elif item.bullet_text %}
                             <span>{{ item.bullet_text }}</span>
                         {% else %}
-                            <span class="{% if not item.completed and not item.current %}bg-gray-100 dark:bg-gray-600{% else %}bg-gray-300{% endif %} size-2.5 rounded-full"></span>
+                            <span class="{% if not item.completed and not item.current %}bg-gray-100 dark:bg-gray-600{% else %}bg-gray-300{% endif %} size-2.5 rounded-insight-full"></span>
                         {% endif %}
                     </span>
                 </span>

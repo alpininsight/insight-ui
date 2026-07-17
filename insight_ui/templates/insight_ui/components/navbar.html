@@ -1,7 +1,7 @@
 {% load i18n insight_tags %}
 
 {# Skip-Link for Accessibility, placed BEFORE nav #}
-<a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-insight-primary text-white p-2 insight-radius-control">
+<a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-insight-primary text-white p-2 rounded-insight-control">
   {% trans 'Jump to main content' %}
 </a>
 
@@ -29,7 +29,7 @@
     <div class="lg:hidden flex items-center gap-2 py-3">
       {# Mobile Menu Toggle #}
       <button
-        class="inline-flex items-center justify-center text-insight-text-secondary rounded-insight-radius-control p-2 hover:text-insight-text-link-hover focus:ring-insight-primary transition-colors duration-200"
+        class="inline-flex items-center justify-center text-insight-text-secondary rounded-insight-control p-2 hover:text-insight-text-link-hover focus:ring-insight-primary transition-colors duration-200"
         aria-expanded="false"
         aria-controls="navigation-menu"
         aria-label="{% trans 'Open menu' %}"
@@ -40,7 +40,7 @@
     </div>
 
     <div id="navigation-menu" class="hidden lg:block h-full w-full lg:w-fit grow lg:py-3">
-      <div class="flex flex-col lg:flex-row justify-end gap-6 w-full lg:h-full p-2 lg:p-0 bg-insight-secondary-background border border-insight-primary-border insight-shadow-raised lg:insight-shadow-none lg:bg-transparent lg:border-none insight-radius-surface">
+      <div class="flex flex-col lg:flex-row justify-end gap-6 w-full lg:h-full p-2 lg:p-0 bg-insight-secondary-background border border-insight-primary-border insight-shadow-raised lg:insight-shadow-none lg:bg-transparent lg:border-none rounded-insight-surface">
         {# Main-Navigation #}
         {% if navbar_config.links %}
           <ul class="flex flex-col lg:flex-row justify-items-stretch lg:items-center w-full lg:w-fit">
@@ -70,7 +70,7 @@
                           {% icon name="chevron-down" size="s" %}
                         {% endif %}
                       </button>
-                      <div id="{{ link.dropdown.tag_id }}" class="hidden bg-insight-secondary-background border border-insight-primary-border insight-radius-overlay insight-shadow-overlay">
+                      <div id="{{ link.dropdown.tag_id }}" class="hidden bg-insight-secondary-background border border-insight-primary-border rounded-insight-overlay insight-shadow-overlay">
                         <div class="py-1">
                           {% for item in link.dropdown.items %}
                             <a

@@ -21,7 +21,7 @@ export class Floater {
 
         if (type == "tooltip") {
             this.target = document.createElement('span');
-            this.target.classList.add("text-primary", "bg-insight-secondary-background", "px-3", "py-1", "border", "border-insight-primary-border", "rounded-sm", "insight-shadow-subtle", "whitespace-nowrap");
+            this.target.classList.add("text-primary", "bg-insight-secondary-background", "px-3", "py-1", "border", "border-insight-primary-border", "rounded-insight-overlay", "insight-shadow-subtle", "whitespace-nowrap");
             this.target.textContent = this.trigger.getAttribute("data-insight-tooltip");
         }
         else {

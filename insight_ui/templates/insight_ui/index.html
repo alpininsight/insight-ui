@@ -12,37 +12,37 @@
     <div class="fixed inset-0 -z-20 overflow-hidden" aria-hidden="true">
         {# Primary (blue) blobs #}
         <div
-            class="absolute top-[5%] left-[10%] w-[600px] h-[600px] rounded-full transform-gpu will-change-transform motion-safe:animate-[blob-float_20s_ease-in-out_infinite]"
+            class="absolute top-[5%] left-[10%] w-[600px] h-[600px] rounded-insight-full transform-gpu will-change-transform motion-safe:animate-[blob-float_20s_ease-in-out_infinite]"
             style="background: radial-gradient(circle, oklch(62.3% 0.214 255.1 / 0.2) 0%, transparent 70%);"
         ></div>
         <div
-            class="absolute top-[60%] right-[5%] w-[400px] h-[400px] rounded-full transform-gpu will-change-transform motion-safe:animate-[blob-float_28s_ease-in-out_infinite_3s]"
+            class="absolute top-[60%] right-[5%] w-[400px] h-[400px] rounded-insight-full transform-gpu will-change-transform motion-safe:animate-[blob-float_28s_ease-in-out_infinite_3s]"
             style="background: radial-gradient(circle, oklch(62.3% 0.214 255.1 / 0.15) 0%, transparent 70%);"
         ></div>
 
         {# Secondary (teal) blobs #}
         <div
-            class="absolute top-[35%] right-[15%] w-[550px] h-[550px] rounded-full transform-gpu will-change-transform motion-safe:animate-[blob-float-reverse_25s_ease-in-out_infinite]"
+            class="absolute top-[35%] right-[15%] w-[550px] h-[550px] rounded-insight-full transform-gpu will-change-transform motion-safe:animate-[blob-float-reverse_25s_ease-in-out_infinite]"
             style="background: radial-gradient(circle, oklch(63.7% 0.149 181.4 / 0.2) 0%, transparent 70%);"
         ></div>
         <div
-            class="absolute top-[70%] left-[25%] w-[350px] h-[350px] rounded-full transform-gpu will-change-transform motion-safe:animate-[blob-float-reverse_22s_ease-in-out_infinite_5s]"
+            class="absolute top-[70%] left-[25%] w-[350px] h-[350px] rounded-insight-full transform-gpu will-change-transform motion-safe:animate-[blob-float-reverse_22s_ease-in-out_infinite_5s]"
             style="background: radial-gradient(circle, oklch(63.7% 0.149 181.4 / 0.15) 0%, transparent 70%);"
         ></div>
 
         {# Purple blobs #}
         <div
-            class="absolute bottom-[20%] left-[45%] w-[500px] h-[500px] rounded-full transform-gpu will-change-transform motion-safe:animate-[blob-float_18s_ease-in-out_infinite_2s]"
+            class="absolute bottom-[20%] left-[45%] w-[500px] h-[500px] rounded-insight-full transform-gpu will-change-transform motion-safe:animate-[blob-float_18s_ease-in-out_infinite_2s]"
             style="background: radial-gradient(circle, oklch(58.5% 0.233 277.1 / 0.15) 0%, transparent 70%);"
         ></div>
         <div
-            class="absolute top-[15%] right-[30%] w-[300px] h-[300px] rounded-full transform-gpu will-change-transform motion-safe:animate-[blob-float_24s_ease-in-out_infinite_4s]"
+            class="absolute top-[15%] right-[30%] w-[300px] h-[300px] rounded-insight-full transform-gpu will-change-transform motion-safe:animate-[blob-float_24s_ease-in-out_infinite_4s]"
             style="background: radial-gradient(circle, oklch(58.5% 0.233 277.1 / 0.12) 0%, transparent 70%);"
         ></div>
 
         {# Cyan accent blob #}
         <div
-            class="absolute top-[50%] left-[5%] w-[450px] h-[450px] rounded-full transform-gpu will-change-transform motion-safe:animate-[blob-float-reverse_30s_ease-in-out_infinite_1s]"
+            class="absolute top-[50%] left-[5%] w-[450px] h-[450px] rounded-insight-full transform-gpu will-change-transform motion-safe:animate-[blob-float-reverse_30s_ease-in-out_infinite_1s]"
             style="background: radial-gradient(circle, oklch(78.9% 0.154 211.5 / 0.12) 0%, transparent 70%);"
         ></div>
     </div>
@@ -86,9 +86,9 @@
 
             {% grid cols=3 gap="l" class="w-full max-w-6xl mt-8" %}
                 {% for feature in features %}
-                    <div class="p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-insight-primary/50 insight-hover-shadow-raised transition-all duration-300">
+                    <div class="p-6 rounded-insight-surface bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-insight-primary/50 insight-hover-shadow-raised transition-all duration-300">
                         {% vbox gap="m" %}
-                            <div class="w-12 h-12 rounded-lg bg-insight-primary/10 flex items-center justify-center">
+                            <div class="w-12 h-12 rounded-insight-surface bg-insight-primary/10 flex items-center justify-center">
                                 {% icon name=feature.icon size="l" %}
                             </div>
                             <h3 class="text-xl font-semibold">{{ feature.title }}</h3>
@@ -167,7 +167,7 @@
             {% hbox gap="xl" wrap=True v_align="start" class="mt-8" %}
                 {# Visual representation #}
                 {% vbox gap="m" class="flex-1 min-w-[300px]" %}
-                    <div class="rounded-xl border-2 border-gray-300 dark:border-gray-600 overflow-hidden bg-white dark:bg-gray-800">
+                    <div class="rounded-insight-surface border-2 border-gray-300 dark:border-gray-600 overflow-hidden bg-white dark:bg-gray-800">
                         {# Navbar mockup #}
                         <div class="h-10 bg-insight-primary/10 border-b border-gray-200 dark:border-gray-700 flex items-center px-3 gap-2">
                             <div class="w-6 h-6 rounded bg-insight-primary/30"></div>
@@ -210,8 +210,8 @@
                 {# Block list #}
                 {% vbox gap="m" class="flex-1 min-w-[300px]" %}
                     {% for block in base_template_blocks %}
-                        {% hbox gap="m" v_align="center" class="p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700" %}
-                            <div class="shrink-0 w-8 h-8 rounded-lg bg-insight-primary/10 flex items-center justify-center">
+                        {% hbox gap="m" v_align="center" class="p-3 rounded-insight-surface bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700" %}
+                            <div class="shrink-0 w-8 h-8 rounded-insight-surface bg-insight-primary/10 flex items-center justify-center">
                                 {% icon name=block.icon size="s" %}
                             </div>
                             {% vbox %}
@@ -242,9 +242,9 @@
 
             {% grid cols=3 gap="l" class="w-full mt-8" %}
                 {% for option in customization_options %}
-                    <div class="p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                    <div class="p-6 rounded-insight-surface bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
                         {% vbox gap="m" %}
-                            <div class="w-12 h-12 rounded-lg bg-insight-secondary/10 flex items-center justify-center">
+                            <div class="w-12 h-12 rounded-insight-surface bg-insight-secondary/10 flex items-center justify-center">
                                 {% icon name=option.icon size="l" %}
                             </div>
                             <h3 class="text-lg font-semibold">{{ option.title }}</h3>
@@ -270,7 +270,7 @@
             {% hbox gap="xl" wrap=True v_align="center" %}
                 {% vbox gap="m" class="flex-1 min-w-[280px]" %}
                     {% hbox gap="m" v_align="center" %}
-                        <div class="w-14 h-14 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400">
+                        <div class="w-14 h-14 rounded-insight-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400">
                             {% icon name="check" size="l" %}
                         </div>
                         <h2 class="pb-0">{% trans "Built for everyone" %}</h2>
@@ -306,9 +306,9 @@
 
             {% grid cols=3 gap="m" class="w-full mt-8" %}
                 {% for category in component_categories %}
-                    <a href="{{ category.url }}" class="group p-5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-insight-primary/50 insight-hover-shadow-raised transition-all duration-300">
+                    <a href="{{ category.url }}" class="group p-5 rounded-insight-surface bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-insight-primary/50 insight-hover-shadow-raised transition-all duration-300">
                         {% hbox gap="m" v_align="center" %}
-                            <div class="w-10 h-10 rounded-lg bg-insight-primary/10 group-hover:bg-insight-primary/20 flex items-center justify-center transition-colors">
+                            <div class="w-10 h-10 rounded-insight-surface bg-insight-primary/10 group-hover:bg-insight-primary/20 flex items-center justify-center transition-colors">
                                 {% icon name=category.icon size="m" %}
                             </div>
                             {% vbox %}
@@ -341,14 +341,14 @@
 
             {% grid cols=2 gap="l" class="w-full mt-8" %}
                 {% for addon in addon_packages %}
-                    <div class="p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 {% if addon.status == 'planned' %}opacity-75{% endif %}">
+                    <div class="p-6 rounded-insight-surface bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 {% if addon.status == 'planned' %}opacity-75{% endif %}">
                         {% hbox gap="m" v_align="start" %}
-                            <div class="shrink-0 w-12 h-12 rounded-lg bg-insight-primary/10 flex items-center justify-center">
+                            <div class="shrink-0 w-12 h-12 rounded-insight-surface bg-insight-primary/10 flex items-center justify-center">
                                 {% icon name=addon.icon size="l" %}
                             </div>
                             {% vbox gap="s" class="flex-1" %}
                                 {% hbox gap="s" v_align="center" wrap=True %}
-                                    <h3 class="text-lg font-semibold !mb-0">{{ addon.name }}</h3>
+                                    <h3 class="text-lg font-semibold mb-0">{{ addon.name }}</h3>
                                     {% if addon.status == 'available' %}
                                         {% badge label=_("Available") type="success" size="xs" %}
                                     {% elif addon.status == 'early' %}
@@ -378,8 +378,8 @@
             {% endvbox %}
             {% vbox %}
                 {% for item in checklist %}
-                    <div class="flex items-center gap-4 p-4 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-                        <div class="shrink-0 w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                    <div class="flex items-center gap-4 p-4 rounded-insight-surface bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                        <div class="shrink-0 w-8 h-8 rounded-insight-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
                             {% icon name="check" size="s" %}
                         </div>
                         <span class="text-secondary">{{ item }}</span>

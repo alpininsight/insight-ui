@@ -5,7 +5,7 @@
   <button
     data-sidebar-target="{{ sidebar_config.side }}"
     aria-label="{% trans 'Open sidebar' %}"
-    class="open-btn fixed top-20 {% if sidebar_config.side == "right" %}ltr:right-4 rtl:left-4{% else %}ltr:left-4 rtl:right-4 rotate-180{% endif %} z-40 text-white bg-insight-primary insight-radius-pill insight-shadow-subtle p-2 hover:bg-insight-primary-hover active:bg-insight-primary-active"
+    class="open-btn fixed top-20 {% if sidebar_config.side == "right" %}ltr:right-4 rtl:left-4{% else %}ltr:left-4 rtl:right-4 rotate-180{% endif %} z-40 text-white bg-insight-primary rounded-insight-full insight-shadow-subtle p-2 hover:bg-insight-primary-hover active:bg-insight-primary-active"
   >
     {% icon name="chevron-left" size="s" %}
   </button>
@@ -48,7 +48,7 @@
           {% if not sidebar_config.auto_close and not sidebar_config.static %}
             <button
               id="{{ sidebar_config.side }}-sidebar-close"
-              class="inline-flex items-center justify-center text-sm text-insight-text-secondary rounded-insight-radius-control p-2 hover:text-insight-text-link-hover focus:ring-insight-primary transition-colors duration-200"
+              class="inline-flex items-center justify-center text-sm text-insight-text-secondary rounded-insight-control p-2 hover:text-insight-text-link-hover focus:ring-insight-primary transition-colors duration-200"
               aria-label="{% trans 'Close sidebar' %}"
               data-insight-dismiss="sidebar"
             >

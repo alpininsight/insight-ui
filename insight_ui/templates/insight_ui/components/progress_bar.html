@@ -37,7 +37,7 @@
     {# Progress bar #}
     <div
         data-progress-track
-        class="relative cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-insight-primary focus-visible:ring-offset-2 rounded-full"
+        class="relative cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-insight-primary focus-visible:ring-offset-2 rounded-insight-full"
         role="progressbar"
         aria-valuenow="{{ progress_bar_config.value }}"
         aria-valuemin="{{ progress_bar_config.min_value }}"
@@ -50,10 +50,10 @@
         data-follow-mouse="true"
     >
         {# Track #}
-        <div class="w-full h-4 bg-insight-tertiary-background rounded-full overflow-hidden">
+        <div class="w-full h-4 bg-insight-tertiary-background rounded-insight-full overflow-hidden">
             <div
                 data-progress-fill
-                class="h-full rounded-full transition-all duration-500 ease-in-out bg-insight-info"
+                class="h-full rounded-insight-full transition-all duration-500 ease-in-out bg-insight-info"
                 style="width: {{ progress_bar_config.value }}%"
                 data-value="{{ progress_bar_config.value }}"
                 data-label="{{ progress_bar_config.label }}"

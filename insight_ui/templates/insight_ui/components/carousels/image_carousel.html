@@ -7,12 +7,12 @@
         {% if item.description %}
             {# Description overlay #}
             <div class="absolute z-30 top-4 flex justify-center w-full px-2">
-                <div class="bg-neutral-700/75 px-4 py-1 w-fit max-w-3/4 rounded-lg">
+                <div class="bg-neutral-700/75 px-4 py-1 w-fit max-w-3/4 rounded-insight-overlay">
                     <p class="text-white text-xs md:text-lg md:font-semibold">{{ item.description }}</p>
                 </div>
             </div>
         {% endif %}
-        <div class="flex justify-center h-full bg-insight-secondary-background rounded-lg">
+        <div class="flex justify-center h-full bg-insight-secondary-background rounded-insight-surface">
             <img src="{{ item.url }}" alt="{{ item.alt }}" class="p-2 max-h-full m-auto">
         </div>
     </div>
