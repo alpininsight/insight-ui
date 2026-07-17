@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **cdn:** Publish insight ui browser assets
 - **cdn:** Trigger release asset publishing
 
+### CI/CD
+
+- **static:** Guard Tailwind theme asset sync
+
 ### Documentation
 
 - **theme:** Document semantic motion roles
@@ -27,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Miscellaneous
 
 - Regenerate minified stylesheet
+- **ignore:** Exclude playwright cli artifacts
 
 ## [1.11.0] - 2026-06-18
 
