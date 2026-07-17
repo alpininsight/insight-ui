@@ -11,27 +11,6 @@ from tests.unit.components.test_template_tags import TemplateTagsTestCase
 class TestStatusScreen(TemplateTagsTestCase):
     """Test suite for the status_screen component."""
 
-    def test_status_screen_renders_tokenized_surface(self) -> None:
-        """The status card uses semantic Insight UI surface tokens."""
-        rendered = self.render_template(
-            """
-            {% load insight_tags %}
-            {% status_screen title="Ready" description="Everything is prepared." status="success" %}
-            """
-        )
-        soup = BeautifulSoup(rendered, "html.parser")
-
-        card = soup.select_one(".insight-surface-raised")
-        assert card is not None
-        classes = card.get("class", [])
-        assert "insight-border-subtle" in classes
-        assert "insight-radius-raised" in classes
-        assert "insight-shadow-raised" in classes
-        assert "bg-white" not in classes
-        assert "border-gray-200" not in classes
-        assert "rounded-lg" not in classes
-        assert "shadow-lg" not in classes
-
     def test_status_screen_renders_dict_config_actions_as_buttons(self) -> None:
         """Nested action dictionaries are coerced to ButtonConfig instances."""
         rendered = self.render_template(

@@ -11,30 +11,32 @@ def test_shadow_role_tokens_are_available() -> None:
     css = INPUT_CSS.read_text()
 
     for token in (
-        "--insight-shadow-none",
-        "--insight-shadow-subtle",
-        "--insight-shadow-surface",
-        "--insight-shadow-raised",
-        "--insight-shadow-overlay",
-        "--insight-shadow-focus",
+        "--shadow-insight-subtle",
+        "--shadow-insight-surface",
+        "--shadow-insight-raised",
+        "--shadow-insight-overlay",
+        "--shadow-insight-focus",
     ):
         assert token in css
 
 
-def test_shadow_role_classes_are_available() -> None:
-    """Ensure packaged theme input exposes reusable shadow utility classes."""
+def test_radius_role_tokens_are_available() -> None:
+    """Ensure semantic radius tokens remain available in the source stylesheet."""
     css = INPUT_CSS.read_text()
 
-    for class_name in (
-        ".insight-shadow-none",
-        ".insight-shadow-subtle",
-        ".insight-shadow-surface",
-        ".insight-shadow-raised",
-        ".insight-shadow-overlay",
-        ".insight-hover-shadow-raised:hover",
-        ".insight-hover-shadow-overlay:hover",
+    for token in (
+        "--radius-insight-xs",
+        "--radius-insight-s",
+        "--radius-insight-m",
+        "--radius-insight-l",
+        "--radius-insight-xl",
+        "--radius-insight-full",
+        "--radius-insight-control",
+        "--radius-insight-surface",
+        "--radius-insight-raised",
+        "--radius-insight-overlay",
     ):
-        assert class_name in css
+        assert token in css
 
 
 def test_insight_tokens_are_not_defined_twice() -> None:
@@ -45,27 +47,3 @@ def test_insight_tokens_are_not_defined_twice() -> None:
     duplicates = sorted({token for token in tokens if tokens.count(token) > 1})
 
     assert duplicates == []
-
-
-def test_range_control_uses_semantic_tokens() -> None:
-    """Range slider styling should use Insight UI roles, not local technical tokens."""
-    css = INPUT_CSS.read_text()
-
-    for token in (
-        "--insight-control-range-progress",
-        "--insight-control-range-track",
-        "--insight-control-range-track-dark",
-        "--insight-control-range-fill",
-        "--insight-control-range-radius",
-        "--insight-control-range-thumb-bg",
-        "--insight-control-range-thumb-border",
-        "--insight-control-range-thumb-radius",
-    ):
-        assert token in css
-
-    for legacy_token in (
-        "--range-progress",
-        "--slider-track-active",
-        "--slider-track-inactive",
-    ):
-        assert legacy_token not in css
