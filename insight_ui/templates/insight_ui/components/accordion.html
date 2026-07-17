@@ -3,7 +3,7 @@
 <div
   data-insight-accordion="{{ accordion_config.tag_id }}"
   data-exclusive="{{ accordion_config.exclusive|yesno:'true,false' }}"
-  class="rounded-sm overflow-hidden"
+  class="overflow-hidden"
 >
   {% for item in accordion_config.items %}
     {% with forloop.counter0|stringformat:"s" as idx %}

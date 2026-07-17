@@ -7,9 +7,9 @@
             <span id="{{ slider_config.tag_id }}_label" class="flex gap-1 text-sm font-bold text-primary">{{ slider_config.label }}</span>
             <div class="slider-dual-container relative h-2 mt-1">
                 {# Background track #}
-                <div class="insight-range-track absolute inset-0" aria-hidden="true"></div>
+                <div class="absolute inset-0 bg-insight-tertiary-background rounded-insight-full" aria-hidden="true"></div>
                 {# Highlighted range track #}
-                <div class="slider-track insight-range-fill absolute top-0 h-full pointer-events-none" aria-hidden="true"></div>
+                <div class="slider-track absolute top-0 h-full bg-blue-500 rounded-insight-full pointer-events-none" aria-hidden="true"></div>
                 {# Min thumb input #}
                 <input
                     type="range"
@@ -24,8 +24,8 @@
                     aria-valuemin="{{ slider_config.minimum }}"
                     aria-valuemax="{{ slider_config.maximum }}"
                     aria-valuenow="{{ slider_config.value_min|default:slider_config.minimum }}"
-                    class="slider-input-min absolute inset-0 w-full h-full bg-transparent appearance-none cursor-pointer pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-moz-range-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-insight-primary [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:-mt-1 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-insight-primary [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:cursor-pointer focus-visible:outline-none [&:focus-visible::-webkit-slider-thumb]:ring-2 [&:focus-visible::-webkit-slider-thumb]:ring-insight-primary [&:focus-visible::-webkit-slider-thumb]:ring-offset-2 [&:focus-visible::-moz-range-thumb]:ring-2 [&:focus-visible::-moz-range-thumb]:ring-insight-primary [&:focus-visible::-moz-range-thumb]:ring-offset-2"
-                >
+                    class="slider-input-min absolute inset-0 w-full h-full bg-transparent appearance-none cursor-pointer pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-moz-range-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-insight-primary-background [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-insight-primary [&::-webkit-slider-thumb]:rounded-insight-full [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:-mt-1 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:bg-insight-primary-background  [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-insight-primary [&::-moz-range-thumb]:rounded-insight-full [&::-moz-range-thumb]:cursor-pointer focus-visible:outline-none [&:focus-visible::-webkit-slider-thumb]:ring-2 [&:focus-visible::-webkit-slider-thumb]:ring-insight-primary [&:focus-visible::-webkit-slider-thumb]:ring-offset-2 [&:focus-visible::-moz-range-thumb]:ring-2 [&:focus-visible::-moz-range-thumb]:ring-insight-primary [&:focus-visible::-moz-range-thumb]:ring-offset-2"
+                >s
                 {# Max thumb input #}
                 <input
                     type="range"
@@ -40,7 +40,7 @@
                     aria-valuemin="{{ slider_config.minimum }}"
                     aria-valuemax="{{ slider_config.maximum }}"
                     aria-valuenow="{{ slider_config.value_max|default:slider_config.maximum }}"
-                    class="slider-input-max absolute inset-0 w-full h-full bg-transparent appearance-none cursor-pointer pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-moz-range-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-insight-primary [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:-mt-1 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-insight-primary [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:cursor-pointer focus-visible:outline-none [&:focus-visible::-webkit-slider-thumb]:ring-2 [&:focus-visible::-webkit-slider-thumb]:ring-insight-primary [&:focus-visible::-webkit-slider-thumb]:ring-offset-2 [&:focus-visible::-moz-range-thumb]:ring-2 [&:focus-visible::-moz-range-thumb]:ring-insight-primary [&:focus-visible::-moz-range-thumb]:ring-offset-2"
+                    class="slider-input-max absolute inset-0 w-full h-full bg-transparent appearance-none cursor-pointer pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-moz-range-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-insight-primary-background [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-insight-primary [&::-webkit-slider-thumb]:rounded-insight-full [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:-mt-1 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:bg-insight-primary-background  [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-insight-primary [&::-moz-range-thumb]:rounded-insight-full [&::-moz-range-thumb]:cursor-pointer focus-visible:outline-none [&:focus-visible::-webkit-slider-thumb]:ring-2 [&:focus-visible::-webkit-slider-thumb]:ring-insight-primary [&:focus-visible::-webkit-slider-thumb]:ring-offset-2 [&:focus-visible::-moz-range-thumb]:ring-2 [&:focus-visible::-moz-range-thumb]:ring-insight-primary [&:focus-visible::-moz-range-thumb]:ring-offset-2"
                 >
             </div>
         </div>
@@ -59,7 +59,7 @@
             aria-valuemin="{{ slider_config.minimum }}"
             aria-valuemax="{{ slider_config.maximum }}"
             aria-valuenow="{{ slider_config.value }}"
-            class="range-custom w-full h-2 bg-insight-tertiary-background accent-insight-primary rounded-sm appearance-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-insight-primary focus-visible:ring-offset-2"
+            class="range-custom w-full h-2 bg-insight-tertiary-background accent-insight-primary rounded-insight-full appearance-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-insight-primary focus-visible:ring-offset-2"
         >
     {% endif %}
     {% if slider_config.items %}

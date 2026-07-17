@@ -700,7 +700,7 @@
 {% elif component.value == "popover" %}
     <div class="flex items-end justify-center gap-12 h-64">
         {% button label="Hover me!" type="primary" data_insight_popover="demo-popover" data_show_arrow="true" %}
-        <div id="demo-popover" class="bg-insight-secondary-background w-64 border border-insight-primary-border rounded-sm insight-shadow-subtle">
+        <div id="demo-popover" class="bg-insight-secondary-background w-64 border border-insight-primary-border rounded-insight-raised insight-shadow-subtle">
             <div class="p-4">
                 <span class="text-primary block font-semibold w-full border-b-2 border-insight-primary-border pb-2">
                     {% trans "This is a popover." %}
@@ -709,7 +709,7 @@
                     {% trans "A popover can have more content than a tooltip, e.g. interactive elements like buttons." %}
                 </p>
             </div>
-            <div class="bg-insight-primary-background p-4 rounded-b-sm">
+            <div class="bg-insight-primary-background p-4 rounded-b-insight-raised">
                 {% button label=_("Learn more") type="primary" size="s" %}
             </div>
         </div>
@@ -754,11 +754,11 @@
     </div>
 {% elif component.value == "brand_mark" %}
     <div class="space-y-8">
-        <div class="space-y-3 w-fit rounded-lg border border-gray-200 p-6 dark:border-gray-700">
+        <div class="space-y-3 w-fit rounded-insight-surface border border-gray-200 p-6 dark:border-gray-700">
             <p class="font-semibold text-secondary">Logo position start</p>
             {% brand_mark config=brand_mark_default %}
         </div>
-        <div class="space-y-3 w-fit rounded-lg border border-gray-200 p-6 dark:border-gray-700">
+        <div class="space-y-3 w-fit rounded-insight-surface border border-gray-200 p-6 dark:border-gray-700">
             <p class="font-semibold text-secondary">Logo position end</p>
             {% brand_mark config=brand_mark_end %}
         </div>

@@ -2,7 +2,7 @@
 
 {% for component, demo in components %}
     <section data-insight-demo-container="{{ demo.id }}" class="component-container">
-        <div class="w-full bg-insight-tertiary-background rounded-tp-4 py-2 md:px-6 md:py-3">
+        <div class="w-full bg-insight-tertiary-background rounded-t-insight-surface p-4 py-2 md:px-6 md:py-3">
             <h2 class="text-xl pb-0">
                 <a
                     href="{% url 'component_detail_page_view' component.value %}"
@@ -16,7 +16,7 @@
                 </a>
             </h2>
         </div>
-        <div class="bg-insight-primary-background w-full">
+        <div class="bg-insight-primary-background w-full rounded-b-insight-surface overflow-hidden">
             <iframe data-insight-demo-iframe="{{ demo.id }}" id="{{ demo.id }}" src="{{ demo.url }}" title="{{ demo.title }}" class="w-full mx-auto"></iframe>
         </div>
     </section>
