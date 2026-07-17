@@ -1,7 +1,7 @@
 {% load insight_tags i18n %}
 
 <section class="mx-auto flex w-full max-w-2xl items-center justify-center px-4 py-8 {{ status_screen_config.css_class }}">
-    <div class="w-full border insight-border-subtle insight-surface-raised rounded-insight-raised insight-shadow-raised p-8 text-center {{ status_screen_config.card_css_class }}">
+    <div class="w-full border insight-border-subtle insight-surface-raised rounded-insight-raised shadow-insight-raised p-8 text-center {{ status_screen_config.card_css_class }}">
         {% if status_screen_config.brand %}
             <div class="mb-8 flex justify-center">
                 {% brand_mark config=status_screen_config.brand %}

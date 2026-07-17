@@ -6,7 +6,7 @@
     {% else %}
         {% button label=dropdown_config.title data_insight_dropdown=dropdown_config.tag_id %}
     {% endif %}
-    <div id="{{ dropdown_config.tag_id }}" class="hidden border border-insight-primary-border rounded-insight-overlay insight-shadow-overlay">
+    <div id="{{ dropdown_config.tag_id }}" class="hidden border border-insight-primary-border rounded-insight-overlay shadow-insight-overlay">
         {% for item in dropdown_config.items %}
             <a
                 href="{{ item.request_url|default:'#' }}"
