@@ -145,8 +145,20 @@ VALID_HEIGHT: frozenset[str] = frozenset({"auto", "full", "peek"})
 VALID_MAX_WIDTH: frozenset[str] = frozenset({"xs", "s", "m", "l", "xl", "fit", "full"})
 
 # Class mappings (classes are defined in input.css or are tailwind classes)
-GAP_CLASSES: dict[str, str] = {"xs": "gap-xs", "s": "gap-s", "m": "gap-m", "l": "gap-l", "xl": "gap-xl"}
-PADDING_CLASSES: dict[str, str] = {"xs": "p-xs", "s": "p-s", "m": "p-m", "l": "p-l", "xl": "p-xl"}
+GAP_CLASSES: dict[str, str] = {
+    "xs": "gap-insight-xs",
+    "s": "gap-insight-s",
+    "m": "gap-insight-m",
+    "l": "gap-insight-l",
+    "xl": "gap-insight-xl",
+}
+PADDING_CLASSES: dict[str, str] = {
+    "xs": "p-insight-xs",
+    "s": "p-insight-s",
+    "m": "p-insight-m",
+    "l": "p-insight-l",
+    "xl": "p-insight-xl",
+}
 SPACER_CLASSES: dict[str, str] = {"xs": "h-1 w-1", "s": "h-2 w-2", "m": "h-4 w-4", "l": "h-6 w-6", "xl": "h-8 w-8"}
 ALIGN_CLASSES: dict[str, str] = {
     "start": "items-start",

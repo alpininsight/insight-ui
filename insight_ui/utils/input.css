@@ -110,19 +110,11 @@
     * ========================================================
     */
 
-    /* Gaps */
-    --spacing-insight-gap-xs: 0.25rem;
-    --spacing-insight-gap-s: 0.5rem;
-    --spacing-insight-gap-m: 1rem;
-    --spacing-insight-gap-l: 1.5rem;
-    --spacing-insight-gap-xl: 2rem;
-
-    /* Padding */
-    --spacing-insight-p-xs: 0.25rem;
-    --spacing-insight-p-s: 0.5rem;
-    --spacing-insight-p-m: 1rem;
-    --spacing-insight-p-l: 1.5rem;
-    --spacing-insight-p-xl: 2rem;
+    --spacing-insight-xs: 0.25rem;
+    --spacing-insight-s: 0.5rem;
+    --spacing-insight-m: 1rem;
+    --spacing-insight-l: 1.5rem;
+    --spacing-insight-xl: 2rem;
 
     /*
     * ========================================================
