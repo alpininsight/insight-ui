@@ -10,7 +10,7 @@
   <div
     {% if websocket_config.tag_id %}id="{{ websocket_config.tag_id }}-output"{% endif %}
     data-insight-websocket-output
-    class="bg-insight-secondary-background rounded insight-shadow-subtle px-4 py-2 mt-4"
+    class="bg-insight-secondary-background rounded-insight-surface shadow-insight-surface px-4 py-2 mt-4"
   >
     {% if websocket_config.initial_content %}
       {{ websocket_config.initial_content|safe }}
