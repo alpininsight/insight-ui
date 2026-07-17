@@ -219,3 +219,4 @@ img/
 staticfiles/
 node_modules/
 .playwright-mcp/
+.playwright-cli/
