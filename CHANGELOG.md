@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### CI/CD
 
 - **static:** Guard Tailwind theme asset sync
+- **cdn:** Publish release assets from release workflow
 
 ### Documentation
 
