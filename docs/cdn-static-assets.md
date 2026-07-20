@@ -94,6 +94,22 @@ so a deployment that points at `latest/` can keep seeing a stale `404` until the
 edge TTL expires. Use a versioned `INSIGHT_UI_CDN_VERSION` value for runtime
 deployments and reserve `latest/` for manual smoke checks.
 
+## GitOps Version Pinning
+
+The container workflow pins the runtime CDN version together with the image
+digest when it opens the generated GitOps PR against
+`alpininsight/insight-lima-k8s-capi`.
+
+- `develop` pins the green slot to CDN alias `develop`.
+- `main` pins the blue slot to the GitVersion `MajorMinorPatch` release
+  version, for example `1.11.1`.
+- The generated GitOps PR updates both the deployment annotation
+  `insight.ai/cdn-version` and the ConfigMap key `INSIGHT_UI_CDN_VERSION`.
+
+This is intentionally CI/CD configuration, not Django settings code. The
+runtime still only reads the existing `INSIGHT_UI_CDN_*` environment variables
+from the deployed ConfigMap.
+
 Required GitHub secrets:
 
 - `R2_ACCESS_KEY_ID`
