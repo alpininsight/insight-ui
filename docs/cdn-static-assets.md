@@ -70,8 +70,8 @@ can reference directly: JavaScript, CSS, SVGs, favicons, web manifests, fonts,
 and common image formats. This is required because CSS font URLs are resolved
 relative to the CDN stylesheet path.
 
-The `CDN Deploy` workflow runs on GitHub Release publication and uploads the
-generated assets via the same shared `.github-private` workflow:
+The `Release (Alpine Insight)` workflow creates the GitHub Release and then
+uploads the generated assets via the same shared `.github-private` workflow:
 
 - immutable version path: `https://cdn.alpininsight.ai/insight-ui/vX.Y.Z/`
 - mutable latest alias: `https://cdn.alpininsight.ai/insight-ui/latest/`
@@ -79,12 +79,14 @@ generated assets via the same shared `.github-private` workflow:
 Production consumers should use the immutable version path. `latest/` is only a
 convenience alias for demos and development checks.
 
-The repository release is created by the `Release (Alpine Insight)` workflow.
-Because GitHub does not reliably start a second workflow from a release event
-created by another workflow token, `CDN Deploy` also listens for a successful
-release workflow completion. It then resolves the matching release tag from the
-completed commit SHA and calls the shared `.github-private` static asset
-publisher with that explicit version.
+The release workflow consumes the version output from the central reusable
+GitVersion release workflow. This keeps release creation and immutable CDN
+publication in one workflow run and avoids relying on a second workflow trigger
+created by another GitHub Actions token.
+
+The separate `CDN Deploy` workflow is a manual backfill tool. Use it only when a
+known release version needs to be republished, for example after CDN credentials
+or cache policy fixes.
 
 Runtime deployments must not rely on `latest/` for application rendering. New
 paths can be negatively cached at the Cloudflare edge before the first upload,

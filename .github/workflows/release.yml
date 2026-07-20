@@ -25,3 +25,23 @@ jobs:
     permissions:
       contents: write
     uses: alpininsight/.github-private/.github/workflows/reusable-release.yml@main
+
+  cdn_release_assets:
+    name: Publish release CDN assets
+    needs: release
+    if: needs.release.result == 'success' && needs.release.outputs.version != ''
+    permissions:
+      contents: read
+    uses: alpininsight/.github-private/.github/workflows/static-assets-reusable.yml@main
+    with:
+      mode: build
+      upload_cdn: true
+      asset_directory: insight_ui/static/insight_ui
+      cdn_prefix: insight-ui
+      cdn_version: ${{ needs.release.outputs.version }}
+      cdn_base_url: https://cdn.alpininsight.ai
+      cdn_asset_globs: "*.js,*.css,*.svg,*.png,*.ico,*.webmanifest,*.ttf,*.woff,*.woff2,*.jpg,*.jpeg,*.webp,*.gif"
+    secrets:
+      r2_access_key_id: ${{ secrets.R2_ACCESS_KEY_ID }}
+      r2_secret_access_key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      r2_endpoint: ${{ secrets.R2_ENDPOINT }}
