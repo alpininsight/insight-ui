@@ -1,13 +1,13 @@
 """Configuration classes for card components."""
 
 from dataclasses import dataclass, field
-from typing import Literal
 
 from django.utils.translation import gettext_lazy as _
 
 from insight_ui.configs.base import ImageConfig
 from insight_ui.configs.input import ButtonConfig, RadioBlockConfig
 from insight_ui.configs.list import TableConfig
+from insight_ui.configs.types import ToggleViewType, validate_toggle_view_type
 
 
 @dataclass
@@ -296,6 +296,10 @@ class ToggleViewConfig:
     view_radio_config: RadioBlockConfig | None = field(
         default=None, metadata={"doc": _("Radio block config for view switching.")}
     )
-    current_view: Literal["card", "table", "carousel"] = field(
+    current_view: ToggleViewType = field(
         default="card", metadata={"doc": _("Currently active view ('card', 'table', 'carousel').")}
     )
+
+    def __post_init__(self) -> None:
+        """Validate current_view after initialization."""
+        validate_toggle_view_type(self.current_view, "current_view")

@@ -44,16 +44,27 @@
     * Components should map their local tokens to these roles instead of
     * introducing component-specific gray/blue/red/green values.
     */
-    --insight-surface-page: #f9fafb; /* gray-50 */
-    --insight-surface-page-dark: #111827; /* gray-900 */
-    --insight-surface-base: #ffffff;
-    --insight-surface-base-dark: #1f2937; /* gray-800 */
-    --insight-surface-muted: #f3f4f6; /* gray-100 */
-    --insight-surface-muted-dark: #374151; /* gray-700 */
-    --insight-surface-subtle: #f9fafb; /* gray-50 */
-    --insight-surface-subtle-dark: #374151; /* gray-700 */
-    --insight-surface-raised: #ffffff;
-    --insight-surface-raised-dark: #1f2937; /* gray-800 */
+    /*
+    * Each surface role reads the brand colour contract
+    * (--color-insight-surface-*) with the current grey literal kept as the
+    * fallback. With no brand theme loaded the fallback wins, so the computed
+    * styles are byte-identical to before; when a brand theme sets the
+    * --color-insight-surface-* names (light in :root, dark overrides in
+    * html[data-theme="dark"]) the surfaces re-skin. The light and dark tokens
+    * point at the SAME brand name on purpose: the brand contract exposes one
+    * theme-aware name per role. "subtle" reconciles to the brand "soft" role;
+    * "disabled" has no brand counterpart and stays a literal grey.
+    */
+    --insight-surface-page: var(--color-insight-surface-page, #f9fafb); /* gray-50 */
+    --insight-surface-page-dark: var(--color-insight-surface-page, #111827); /* gray-900 */
+    --insight-surface-base: var(--color-insight-surface-base, #ffffff);
+    --insight-surface-base-dark: var(--color-insight-surface-base, #1f2937); /* gray-800 */
+    --insight-surface-muted: var(--color-insight-surface-muted, #f3f4f6); /* gray-100 */
+    --insight-surface-muted-dark: var(--color-insight-surface-muted, #374151); /* gray-700 */
+    --insight-surface-subtle: var(--color-insight-surface-soft, #f9fafb); /* gray-50 */
+    --insight-surface-subtle-dark: var(--color-insight-surface-soft, #374151); /* gray-700 */
+    --insight-surface-raised: var(--color-insight-surface-raised, #ffffff);
+    --insight-surface-raised-dark: var(--color-insight-surface-raised, #1f2937); /* gray-800 */
     --insight-surface-disabled: #d1d5dc; /* gray-300 */
     --insight-surface-disabled-dark: #4b5563; /* gray-600 */
 

@@ -1,13 +1,20 @@
 """Configuration classes for navigation components."""
 
 from dataclasses import dataclass, field
-from typing import Literal
 
 from django.utils.translation import gettext_lazy as _
 
 from insight_ui.configs.base import HtmxConfig, IconConfig
 from insight_ui.configs.input import DropdownConfig
 from insight_ui.configs.popup import ModalConfig
+from insight_ui.configs.types import (
+    HorizontalSide,
+    Size,
+    StepStatus,
+    validate_horizontal_side,
+    validate_size,
+    validate_step_status,
+)
 from insight_ui.configs.utils import BrandMarkConfig, CopyrightNoticeConfig, LogoConfig
 
 
@@ -15,40 +22,28 @@ from insight_ui.configs.utils import BrandMarkConfig, CopyrightNoticeConfig, Log
 class NavbarBrandConfig:
     """Configuration for the navbar brand section.
 
-    Describes the title and the logo of the application in the navbar.
+    Describes the brand of the application in the navbar.
 
     Attributes:
-        title: The title of the application.
-        request_url: Name of the URL to be called when clicking on the title.
-        logo: Describes the logo that is displayed next to the title.
-        gap: This value determines the spacing between the logo and the title.
+        request_url: URL to navigate to when clicking on the brand.
         aria_label: Optional accessible label for the brand link.
-        mark: Optional controlled brand mark rendered instead of logo plus title.
+        mark: Brand mark with logo and wordmark.
 
     """
 
     __example__ = """
         NavbarBrandConfig(
-            title="My App",
             request_url=reverse("index"),
-            logo=LogoConfig(url="img/logo.svg", height="2rem"),
+            mark=BrandMarkConfig(
+                primary_text="My App",
+                logo=LogoConfig(url="img/logo.svg", height="2rem"),
+            ),
         )
         """
 
-    title: str = field(default="", metadata={"doc": _("The title of the application.")})
-    request_url: str = field(
-        default="", metadata={"doc": _("Name of the URL to be called when clicking on the title.")}
-    )
-    logo: LogoConfig | None = field(
-        default=None, metadata={"doc": _("Describes the logo that is displayed next to the title.")}
-    )
-    gap: str = field(
-        default="0.5rem", metadata={"doc": _("This value determines the spacing between the logo and the title.")}
-    )
+    request_url: str = field(default="", metadata={"doc": _("URL to navigate to when clicking on the brand.")})
     aria_label: str = field(default="", metadata={"doc": _("Optional accessible label for the brand link.")})
-    mark: BrandMarkConfig | None = field(
-        default=None, metadata={"doc": _("Optional controlled brand mark rendered instead of logo plus title.")}
-    )
+    mark: BrandMarkConfig | None = field(default=None, metadata={"doc": _("Brand mark with logo and wordmark.")})
 
 
 @dataclass
@@ -89,7 +84,7 @@ class NavbarConfig:
     Renders a full navigation bar with brand, links, and optional features.
 
     Attributes:
-        brand: Describes the title and the logo of the application in the navbar.
+        brand: Describes the brand mark of the application in the navbar.
         links: Contains and describes the navigation items of the navbar.
         searchbar_request_url: The URL to be called when performing a search. If empty, no search bar will be displayed.
         show_usermenu: Displays a dropdown menu with at least a logout button.
@@ -101,9 +96,11 @@ class NavbarConfig:
     __example__ = """
         NavbarConfig(
             brand=NavbarBrandConfig(
-                title="My App",
                 request_url=reverse("index"),
-                logo=LogoConfig(url="img/logo.svg", height="2rem"),
+                mark=BrandMarkConfig(
+                    primary_text="My App",
+                    logo=LogoConfig(url="img/logo.svg", height="2rem"),
+                ),
             ),
             links=[
                 NavbarLinkConfig(text="Home", url=reverse("index")),
@@ -116,7 +113,7 @@ class NavbarConfig:
         """
 
     brand: NavbarBrandConfig | None = field(
-        default=None, metadata={"doc": _("Describes the title and the logo of the application in the navbar.")}
+        default=None, metadata={"doc": _("Describes the brand mark of the application in the navbar.")}
     )
     links: list[NavbarLinkConfig] = field(
         default_factory=list, metadata={"doc": _("Contains and describes the navigation items of the navbar.")}
@@ -147,7 +144,6 @@ class SidebarItemConfig:
         request_url: The URL to be called when clicking on the item.
         icon: An optional icon displayed before the text.
         htmx: HTMX configuration for AJAX page changes.
-        url: Backwards-compatible alias for dictionary-based sidebar items.
 
     """
 
@@ -159,7 +155,6 @@ class SidebarItemConfig:
     request_url: str = field(default="", metadata={"doc": _("The URL to be called when clicking on the item.")})
     icon: IconConfig | None = field(default=None, metadata={"doc": _("An optional icon displayed before the text.")})
     htmx: HtmxConfig | None = field(default=None, metadata={"doc": _("HTMX configuration for AJAX page changes.")})
-    url: str = field(default="", metadata={"doc": _("Backwards-compatible alias for dictionary-based sidebar items.")})
 
 
 @dataclass
@@ -170,7 +165,6 @@ class SidebarCategoryConfig:
         caption: Category header text.
         icon: Optional category icon.
         items: List of items in this category.
-        collapsed: Whether category is initially collapsed.
 
     """
 
@@ -187,7 +181,6 @@ class SidebarCategoryConfig:
     caption: str = field(metadata={"doc": _("Category header text.")})
     icon: IconConfig | None = field(default=None, metadata={"doc": _("Optional category icon.")})
     items: list[SidebarItemConfig] = field(default_factory=list, metadata={"doc": _("List of items in this category.")})
-    collapsed: bool = field(default=False, metadata={"doc": _("Whether category is initially collapsed.")})
 
 
 @dataclass
@@ -260,7 +253,7 @@ class SidebarConfig:
     sidebar_data: SidebarDataConfig | None = field(
         default=None, metadata={"doc": _("Content of the sidebar (title and navigation elements).")}
     )
-    side: Literal["left", "right"] = field(
+    side: HorizontalSide = field(
         default="right", metadata={"doc": _("Determines on which side the sidebar should be placed.")}
     )
     static: bool = field(default=True, metadata={"doc": _("**True** if the sidebar should not be collapsible.")})
@@ -270,6 +263,10 @@ class SidebarConfig:
     mobile_hidden: bool = field(
         default=False, metadata={"doc": _("If **True** the static sidebar is hidden on a smaller viewport.")}
     )
+
+    def __post_init__(self) -> None:
+        """Validate side after initialization."""
+        validate_horizontal_side(self.side, "side")
 
 
 @dataclass
@@ -499,7 +496,7 @@ class MinimalStepperConfig:
         MinimalStepperConfig(step_count=5, current_step=3)
         """
 
-    items: list[Literal["success", "failed", "active", ""]] = field(
+    items: list[StepStatus] = field(
         default_factory=list,
         metadata={
             "doc": _(
@@ -511,12 +508,17 @@ class MinimalStepperConfig:
     current_step: int = field(
         default=0, metadata={"doc": _("Current step of the process. (Only if 'items' is not set!)")}
     )
-    current_step_status: Literal["active", "success", "failed"] = field(
+    current_step_status: StepStatus = field(
         default="active", metadata={"doc": _("Status of the current step. (Only if 'items' is not set!)")}
     )
-    icon_size: Literal["xs", "s", "m", "l", "xl"] = field(
-        default="xs", metadata={"doc": _("Size of the icons in the progress bar.")}
-    )
+    icon_size: Size = field(default="xs", metadata={"doc": _("Size of the icons in the progress bar.")})
+
+    def __post_init__(self) -> None:
+        """Validate icon_size and step status values after initialization."""
+        validate_size(self.icon_size, "icon_size")
+        validate_step_status(self.current_step_status, "current_step_status")
+        for i, status in enumerate(self.items):
+            validate_step_status(status, f"items[{i}]")
 
 
 @dataclass

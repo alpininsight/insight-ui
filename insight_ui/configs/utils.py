@@ -1,12 +1,27 @@
 """Configuration classes for utility components (differentiator, charts, maps, etc.)."""
 
 from dataclasses import dataclass, field
-from typing import Literal
 
 from django.utils.translation import gettext_lazy as _
 
 from insight_ui.configs.base import IconConfig
 from insight_ui.configs.input import ButtonConfig
+from insight_ui.configs.types import (
+    AlertType,
+    BadgeType,
+    ColorType,
+    CornerPosition,
+    GeoMapMarkerType,
+    InlinePosition,
+    Size,
+    validate_alert_type,
+    validate_badge_type,
+    validate_color_type,
+    validate_corner_position,
+    validate_geo_map_marker_type,
+    validate_inline_position,
+    validate_size,
+)
 
 
 @dataclass
@@ -17,7 +32,7 @@ class InfoboxConfig:
 
     Attributes:
         message: Descriptive message.
-        info_type: Importance level of the message. Possible values are 'info', 'success', 'warn' or 'danger'.
+        info_type: Importance level of the message.
 
     """
 
@@ -29,12 +44,11 @@ class InfoboxConfig:
         """
 
     message: str = field(metadata={"doc": _("Descriptive message.")})
-    info_type: Literal["info", "warn", "danger"] = field(
-        default="info",
-        metadata={
-            "doc": _("Importance level of the message. Possible values are 'info', 'success', 'warn' or 'danger'.")
-        },
-    )
+    info_type: AlertType = field(default="info", metadata={"doc": _("Importance level of the message.")})
+
+    def __post_init__(self) -> None:
+        """Validate info_type after initialization."""
+        validate_alert_type(self.info_type, "info_type")
 
 
 @dataclass
@@ -131,8 +145,8 @@ class BrandMarkConfig:
 
     __example__ = """
         BrandMarkConfig(
-            primary_text="Alpin Insight",
-            secondary_text="Develop",
+            primary_text="Insight",
+            secondary_text="UI",
             logo=LogoConfig(
                 url="img/logo.svg",
                 url_dark="img/logo-dark.svg",
@@ -142,13 +156,17 @@ class BrandMarkConfig:
         )
         """
 
-    primary_text: str = field(default="Alpin Insight", metadata={"doc": _("First wordmark run.")})
-    secondary_text: str = field(default="Solutions", metadata={"doc": _("Second wordmark run.")})
+    primary_text: str = field(default="", metadata={"doc": _("First wordmark run.")})
+    secondary_text: str = field(default="", metadata={"doc": _("Second wordmark run.")})
     logo: LogoConfig = field(default=None, metadata={"doc": _("Public logo configuration.")})
-    logo_position: Literal["start", "end"] = field(
+    logo_position: InlinePosition = field(
         default="start", metadata={"doc": _("Logo position, either 'start' or 'end'.")}
     )
     css_class: str = field(default="", metadata={"doc": _("Optional CSS classes for the root element.")})
+
+    def __post_init__(self) -> None:
+        """Validate logo_position after initialization."""
+        validate_inline_position(self.logo_position, "logo_position")
 
 
 @dataclass
@@ -160,7 +178,7 @@ class StatusScreenConfig:
     Attributes:
         title: Main status title.
         description: Supporting status description.
-        status: Visual status: 'info', 'success', 'warning', or 'error'.
+        status: Visual status type.
         brand: Optional brand mark shown above the card.
         notice_title: Optional notice heading.
         notice: Optional notice text.
@@ -186,9 +204,7 @@ class StatusScreenConfig:
 
     title: str = field(metadata={"doc": _("Main status title.")})
     description: str | list[str] = field(default="", metadata={"doc": _("Supporting status description.")})
-    status: Literal["info", "success", "warning", "error"] = field(
-        default="info", metadata={"doc": _("Visual status: 'info', 'success', 'warning', or 'error'.")}
-    )
+    status: AlertType = field(default="info", metadata={"doc": _("Visual status type.")})
     brand: BrandMarkConfig | None = field(
         default=None, metadata={"doc": _("Optional brand mark shown above the card.")}
     )
@@ -200,6 +216,10 @@ class StatusScreenConfig:
     css_class: str = field(default="", metadata={"doc": _("Optional CSS classes for the outer section.")})
     card_css_class: str = field(default="", metadata={"doc": _("Optional CSS classes for the status card.")})
 
+    def __post_init__(self) -> None:
+        """Validate status after initialization."""
+        validate_alert_type(self.status, "status")
+
 
 @dataclass
 class CornerRibbonConfig:
@@ -209,8 +229,8 @@ class CornerRibbonConfig:
 
     Attributes:
         text: The text displayed in the ribbon.
-        position: Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'. Invalid values fall back to 'top-right'.
-        color: Color variant: 'primary', 'success', 'warning', 'danger', 'info'. Invalid values fall back to 'primary'.
+        position: Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'.
+        color: Color variant for the ribbon.
 
     """
 
@@ -223,22 +243,19 @@ class CornerRibbonConfig:
         """
 
     text: str = field(metadata={"doc": _("The text displayed in the ribbon.")})
-    position: Literal["top-right", "top-left", "bottom-right", "bottom-left"] = field(
+    position: CornerPosition = field(
         default="top-right",
-        metadata={
-            "doc": _(
-                "Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'. Invalid values fall back to 'top-right'."
-            )
-        },
+        metadata={"doc": _("Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'.")},
     )
-    color: Literal["primary", "success", "warning", "danger", "info"] = field(
+    color: ColorType = field(
         default="primary",
-        metadata={
-            "doc": _(
-                "Color variant: 'primary', 'success', 'warning', 'danger', 'info'. Invalid values fall back to 'primary'."
-            )
-        },
+        metadata={"doc": _("Color variant for the ribbon.")},
     )
+
+    def __post_init__(self) -> None:
+        """Validate position and color after initialization."""
+        validate_corner_position(self.position, "position")
+        validate_color_type(self.color, "color")
 
 
 @dataclass
@@ -374,12 +391,14 @@ class GeoMapDatasetConfig:
         """
 
     name: str = field(metadata={"doc": _("Dataset name.")})
-    type: Literal["marker", "circle"] = field(
-        default="marker", metadata={"doc": _("Marker type ('marker' or 'circle').")}
-    )
+    type: GeoMapMarkerType = field(default="marker", metadata={"doc": _("Marker type ('marker' or 'circle').")})
     data: list[GeoMapMarkerConfig] = field(default_factory=list, metadata={"doc": _("List of marker configurations.")})
     min: int | float = field(default=0, metadata={"doc": _("Minimum value for circle scaling.")})
     max: int | float = field(default=100, metadata={"doc": _("Maximum value for circle scaling.")})
+
+    def __post_init__(self) -> None:
+        """Validate type after initialization."""
+        validate_geo_map_marker_type(self.type, "type")
 
 
 @dataclass
@@ -587,7 +606,10 @@ class BadgeConfig:
             "doc": "**True** if the icon should be shown after the label, otherwise the icon is shown in front of the label."
         },
     )
-    type: Literal["primary", "secondary", "info", "success", "warning", "danger", "disabled"] = field(
-        default="primary", metadata={"doc": "Defines the color of the badge."}
-    )
-    size: Literal["xs", "s", "m", "l", "xl"] = field(default="m", metadata={"doc": "Defines the size of the badge."})
+    type: BadgeType = field(default="primary", metadata={"doc": "Defines the color of the badge."})
+    size: Size = field(default="m", metadata={"doc": "Defines the size of the badge."})
+
+    def __post_init__(self) -> None:
+        """Validate type and size after initialization."""
+        validate_badge_type(self.type, "type")
+        validate_size(self.size, "size")

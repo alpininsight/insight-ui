@@ -145,6 +145,9 @@ On branch pushes, the workflow then behaves as follows:
 - `develop`: publish the candidate digest to GHCR
 - `main`: promote the previously published `tree-<git-tree-sha>` digest to the
   stable aliases without creating a new deploy-relevant image
+- generated GitOps PRs pin the image digest and matching CDN runtime version
+  together: `develop` for the green slot and the GitVersion release version for
+  the blue slot
 
 That keeps the repo-side runtime contract explicit before the K8s repo wires
 the actual ArgoCD, ingress, secret, and namespace manifests.

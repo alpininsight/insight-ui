@@ -90,7 +90,7 @@ class TestStatusScreen(TemplateTagsTestCase):
 
     def test_status_screen_rejects_unknown_status(self) -> None:
         """Unknown status values fail early instead of rendering broken classes."""
-        with pytest.raises(ValueError, match="status_screen status must be one of"):
+        with pytest.raises(ValueError, match=r"Invalid status 'unknown'\. Allowed values are:"):
             self.render_template(
                 """
                 {% load insight_tags %}

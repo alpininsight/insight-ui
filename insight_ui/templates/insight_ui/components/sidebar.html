@@ -72,14 +72,15 @@
                     {% for item in category.items %}
                       <li data-insight-side-nav>
                         <a
+
                           {% if item.htmx %}
-                            hx-get="{{ item.request_url|default:item.url }}"
+                            hx-get="{{ item.htmx.request_url|default:item.request_url }}"
                             hx-target="{{ item.htmx.target }}"
                             hx-swap="{{ item.htmx.swap|default:'innerHTML' }} show:window:top"
                             hx-push-url="true"
                             hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
                           {% endif %}
-                          href="{{ item.request_url|default:item.url }}"
+                          href="{{ item.request_url }}"
                           class="flex gap-2 px-2 py-1 text-sm text-primary border-s border-gray-200 dark:border-gray-700 hover:border-gray-400 hover:text-gray-400"
                         >
                           {% if item.icon %}

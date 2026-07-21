@@ -1,11 +1,24 @@
 """Configuration classes for input and control components."""
 
 from dataclasses import dataclass, field
-from typing import Literal
 
 from django.utils.translation import gettext_lazy as _
 
 from insight_ui.configs.base import BaseFormFieldConfig, DataAttrConfig, HtmxConfig, IconConfig
+from insight_ui.configs.types import (
+    ButtonType,
+    HtmlButtonType,
+    HtmlInputType,
+    HtmxSwapMethod,
+    Size,
+    SliderLegendMode,
+    validate_button_type,
+    validate_html_button_type,
+    validate_html_input_type,
+    validate_htmx_swap_method,
+    validate_size,
+    validate_slider_legend_mode,
+)
 
 
 @dataclass
@@ -83,10 +96,8 @@ class ButtonConfig:
             "doc": "**True** if only the icon should be shown. In this case the `label` will be used for Screenreader."
         },
     )
-    type: Literal["primary", "secondary", "info", "success", "warning", "danger", "disabled", "link"] = field(
-        default="primary", metadata={"doc": "Defines the color of the button."}
-    )
-    size: Literal["xs", "s", "m", "l", "xl"] = field(default="m", metadata={"doc": "Defines the size of the button."})
+    type: ButtonType = field(default="primary", metadata={"doc": "Defines the color of the button."})
+    size: Size = field(default="m", metadata={"doc": "Defines the size of the button."})
     outline: bool = field(default=False, metadata={"doc": "**True** to use the outline design of the button."})
     subtle: bool = field(default=False, metadata={"doc": "**True** to use the subtle design of the button."})
     round: bool = field(default=False, metadata={"doc": "**True** for full rounded corners."})
@@ -96,7 +107,7 @@ class ButtonConfig:
         default=False,
         metadata={"doc": "**True** to render the button with CSS 'hidden' class for JS-controlled visibility."},
     )
-    button_type: Literal["button", "submit", "reset"] = field(
+    button_type: HtmlButtonType = field(
         default="button", metadata={"doc": _("HTML type attribute: 'button', 'submit', or 'reset'.")}
     )
     extra_classes: str = field(
@@ -117,6 +128,12 @@ class ButtonConfig:
     hx_attrs: list[DataAttrConfig] = field(
         default_factory=list, metadata={"doc": "List of HTMX attributes to add to the button element."}
     )
+
+    def __post_init__(self) -> None:
+        """Validate type, size, and button_type after initialization."""
+        validate_button_type(self.type, "type")
+        validate_size(self.size, "size")
+        validate_html_button_type(self.button_type, "button_type")
 
 
 @dataclass
@@ -152,24 +169,7 @@ class InputFieldConfig(BaseFormFieldConfig):
         )
         """
 
-    input_type: Literal[
-        "text",
-        "password",
-        "email",
-        "number",
-        "tel",
-        "url",
-        "date",
-        "time",
-        "datetime-local",
-        "month",
-        "week",
-        "color",
-        "file",
-        "hidden",
-        "checkbox",
-        "radio",
-    ] = field(
+    input_type: HtmlInputType = field(
         default="text", metadata={"doc": _("The type of the input field, e.g.: 'text', 'password', 'date', etc.")}
     )
     placeholder: str = field(
@@ -185,6 +185,10 @@ class InputFieldConfig(BaseFormFieldConfig):
     checked: bool = field(
         default=False, metadata={"doc": _("**True** if `input_type='checkbox'` and the checkbox should be selected.")}
     )
+
+    def __post_init__(self) -> None:
+        """Validate input_type after initialization."""
+        validate_html_input_type(self.input_type, "input_type")
 
 
 @dataclass
@@ -496,7 +500,7 @@ class RadioBlockConfig:
     hx_target_id: str = field(
         default="", metadata={"doc": _("The ID of the HTML tag to be replaced when switching the radio button.")}
     )
-    hx_swap_method: Literal["innerHTML", "outerHTML", "beforebegin", "afterbegin", "beforeend", "afterend"] = field(
+    hx_swap_method: HtmxSwapMethod = field(
         default="outerHTML", metadata={"doc": _("The way in which the target is to be replaced.")}
     )
     method: str = field(
@@ -506,7 +510,8 @@ class RadioBlockConfig:
     current_value: str = field(default="", metadata={"doc": _("The value of the currently selected radio button.")})
 
     def __post_init__(self) -> None:
-        """Set first option for current_value if empty."""
+        """Validate hx_swap_method and set first option for current_value if empty."""
+        validate_htmx_swap_method(self.hx_swap_method, "hx_swap_method")
         if not self.current_value and self.items:
             self.current_value = self.items[0].value
 
@@ -563,7 +568,7 @@ class SliderConfig(BaseFormFieldConfig):
     items: list[str] = field(
         default_factory=list, metadata={"doc": _("A list of texts displayed as a legend below the slider.")}
     )
-    legend_mode: Literal["static", "skip", "rotate"] = field(
+    legend_mode: SliderLegendMode = field(
         default="static",
         metadata={
             "doc": _(
@@ -584,6 +589,7 @@ class SliderConfig(BaseFormFieldConfig):
 
     def __post_init__(self) -> None:
         """Validate slider configuration."""
+        validate_slider_legend_mode(self.legend_mode, "legend_mode")
         if self.minimum >= self.maximum:
             raise ValueError(f"minimum ({self.minimum}) must be less than maximum ({self.maximum})")  # noqa: TRY003
         if self.value is not None and not (self.minimum <= self.value <= self.maximum):

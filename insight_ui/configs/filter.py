@@ -1,11 +1,11 @@
 """Configuration classes for data filter components."""
 
 from dataclasses import dataclass, field as dc_field
-from typing import Literal
 
 from django.utils.translation import gettext_lazy as _
 
 from insight_ui.configs.base import HtmxConfig, IconConfig
+from insight_ui.configs.types import FilterFieldType, validate_filter_field_type
 
 
 @dataclass
@@ -114,7 +114,7 @@ class QueryBuilderFieldConfig:
     Attributes:
         field: Database field name.
         label: Display name.
-        type: Field type (text, date, number).
+        type: Field type for filtering.
         operations: Available operations (maps operation→label).
         values: Predefined values (optional).
 
@@ -135,13 +135,15 @@ class QueryBuilderFieldConfig:
 
     field: str = dc_field(metadata={"doc": _("Database field name.")})
     label: str = dc_field(metadata={"doc": _("Display name.")})
-    type: Literal["text", "date", "number"] = dc_field(
-        default="text", metadata={"doc": _("Field type (text, date, number).")}
-    )
+    type: FilterFieldType = dc_field(default="text", metadata={"doc": _("Field type for filtering.")})
     operations: dict[str, str] = dc_field(
         default_factory=dict, metadata={"doc": _("Available operations (maps operation→label).")}
     )
     values: dict[str, str] = dc_field(default_factory=dict, metadata={"doc": _("Predefined values (optional).")})
+
+    def __post_init__(self) -> None:
+        """Validate type after initialization."""
+        validate_filter_field_type(self.type, "type")
 
 
 @dataclass

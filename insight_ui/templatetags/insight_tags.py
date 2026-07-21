@@ -7,7 +7,7 @@ from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import MISSING, fields, is_dataclass, replace
 from difflib import HtmlDiff, ndiff, unified_diff
 from types import UnionType
-from typing import TYPE_CHECKING, Any, Final, Literal, TypeVar, cast, get_args, get_origin, get_type_hints
+from typing import TYPE_CHECKING, Any, Final, Literal, TypeVar, get_args, get_origin, get_type_hints
 
 from django import template
 from django.templatetags.static import static
@@ -23,15 +23,18 @@ from insight_ui.config import get_config
 from insight_ui.configs import (
     AccordionConfig,
     AlertConfig,
+    AlertType,
     AppCardConfig,
     ArticleConfig,
     BadgeConfig,
+    BadgeType,
     BrandMarkConfig,
     BreadcrumbItemConfig,
     BreadcrumbsConfig,
     BulletPointItemConfig,
     BulletPointListConfig,
     ButtonConfig,
+    ButtonType,
     CardCarouselConfig,
     CardConfig,
     CarouselItemConfig,
@@ -40,7 +43,9 @@ from insight_ui.configs import (
     ChatConfig,
     CheckboxConfig,
     CheckboxGroupConfig,
+    ColorType,
     CopyrightNoticeConfig,
+    CornerPosition,
     CornerRibbonConfig,
     DataAttrConfig,
     DropdownConfig,
@@ -52,6 +57,7 @@ from insight_ui.configs import (
     GeoMapConfig,
     GeoMapDatasetConfig,
     HeroConfig,
+    HtmlButtonType,
     HtmxConfig,
     IconConfig,
     ImageCarouselConfig,
@@ -78,10 +84,12 @@ from insight_ui.configs import (
     SelectConfig,
     SidebarConfig,
     SidebarDataConfig,
+    Size,
     SliderConfig,
     StatusScreenConfig,
     StepperConfig,
     StepperItemConfig,
+    StepStatus,
     TableConfig,
     TabsConfig,
     TextareaConfig,
@@ -387,16 +395,6 @@ STATUS_SCREEN_ICON_BY_STATUS = {
     "warning": "exclamation-triangle",
     "error": "exclamation-circle",
 }
-STATUS_SCREEN_STATUSES: Final = frozenset(STATUS_SCREEN_ICON_BY_STATUS)
-type StatusScreenStatus = Literal["info", "success", "warning", "error"]
-
-
-def _validate_status_screen_status(value: object) -> StatusScreenStatus:
-    """Validate status_screen status values before template lookup."""
-    if value in STATUS_SCREEN_STATUSES:
-        return cast("StatusScreenStatus", value)
-    message = "status_screen status must be one of: info, success, warning, error"
-    raise ValueError(message)
 
 
 @register.inclusion_tag("insight_ui/components/status_screen.html")
@@ -405,7 +403,7 @@ def status_screen(
     *,
     title: str | _Unset = UNSET,
     description: str | list[str] | _Unset = UNSET,
-    status: Literal["info", "success", "warning", "error"] | _Unset = UNSET,
+    status: AlertType | _Unset = UNSET,
     brand: BrandMarkConfig | None | _Unset = UNSET,
     notice_title: str | _Unset = UNSET,
     notice: str | _Unset = UNSET,
@@ -418,7 +416,6 @@ def status_screen(
     """Render a generic centered status screen."""
     config = build_config(StatusScreenConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     config.description = ensure_list(config.description)
-    config.status = _validate_status_screen_status(config.status)
 
     all_actions = [action for action in [config.primary_action, config.secondary_action, *config.actions] if action]
     config.actions = all_actions
@@ -498,11 +495,11 @@ def stepper(
 def minimal_stepper(
     config: MinimalStepperConfig | None = None,
     *,
-    items: list[Literal["active", "success", "failed", ""]] | _Unset = UNSET,
+    items: list[StepStatus] | _Unset = UNSET,
     step_count: int | _Unset = UNSET,
     current_step: int | _Unset = UNSET,
-    current_step_status: Literal["active", "success", "failed"] | _Unset = UNSET,
-    icon_size: Literal["xs", "s", "m", "l", "xl"] | _Unset = UNSET,
+    current_step_status: StepStatus | _Unset = UNSET,
+    icon_size: Size | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a compact graphical representation of process steps."""
     config = build_config(MinimalStepperConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -561,15 +558,15 @@ def button(
     icon_size: str | _Unset = UNSET,
     icon_end: bool | _Unset = UNSET,
     icon_only: bool | _Unset = UNSET,
-    type: Literal["primary", "secondary", "info", "success", "warning", "danger", "disabled", "link"] | _Unset = UNSET,  # noqa: A002
-    size: Literal["xs", "s", "m", "l", "xl"] | _Unset = UNSET,
+    type: ButtonType | _Unset = UNSET,  # noqa: A002
+    size: Size | _Unset = UNSET,
     outline: bool | _Unset = UNSET,
     subtle: bool | _Unset = UNSET,
     round: bool | _Unset = UNSET,  # noqa: A002
     tooltip: str | _Unset = UNSET,
     htmx_config: HtmxConfig | _Unset = UNSET,
     hidden: bool | _Unset = UNSET,
-    button_type: Literal["button", "submit", "reset"] | _Unset = UNSET,
+    button_type: HtmlButtonType | _Unset = UNSET,
     extra_classes: str | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -857,7 +854,7 @@ def alert(
     *,
     tag_id: str | _Unset = UNSET,
     message: str | _Unset = UNSET,
-    type: str | _Unset = UNSET,  # noqa: A002
+    type: AlertType | _Unset = UNSET,  # noqa: A002
     dismissible: bool | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a closable notification."""
@@ -890,7 +887,11 @@ def modal(
 
 @register.inclusion_tag("insight_ui/components/infobox.html")
 def infobox(
-    config: InfoboxConfig | None = None, *, info_type: str | _Unset = UNSET, message: str | _Unset = UNSET, **kwargs
+    config: InfoboxConfig | None = None,
+    *,
+    info_type: AlertType | _Unset = UNSET,
+    message: str | _Unset = UNSET,
+    **kwargs: str,
 ) -> dict[str, Any]:
     """Render a small box of information."""
     config = build_config(InfoboxConfig, config, info_type=info_type, message=message)
@@ -1028,8 +1029,8 @@ def corner_ribbon(
     config: CornerRibbonConfig | None = None,
     *,
     text: str | _Unset = UNSET,
-    position: str | _Unset = UNSET,
-    color: str | _Unset = UNSET,
+    position: CornerPosition | _Unset = UNSET,
+    color: ColorType | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a corner ribbon positioned in any browser corner."""
     config = build_config(CornerRibbonConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -1140,8 +1141,8 @@ def badge(
     icon_name: str | _Unset = UNSET,
     icon_size: str | _Unset = UNSET,
     icon_end: bool | _Unset = UNSET,
-    type: Literal["primary", "secondary", "info", "success", "warning", "danger", "disabled"] | _Unset = UNSET,  # noqa: A002
-    size: Literal["xs", "s", "m", "l", "xl"] | _Unset = UNSET,
+    type: BadgeType | _Unset = UNSET,  # noqa: A002
+    size: Size | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render the badge component."""
     icon: IconConfig | None | _Unset = UNSET

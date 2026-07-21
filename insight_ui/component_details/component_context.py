@@ -192,7 +192,7 @@ def get_component_parameter_doc(config: Any, _main_config: bool = False) -> list
         ParameterDoc(
             ParameterDetails(
                 "config",
-                config.__name__ + _(" or as kwargs or as combination of both"),
+                " ".join([config.__name__, _("or as kwargs or as combination of both")]),
                 _("Dataclass for component configuration."),
                 "None",
             ),

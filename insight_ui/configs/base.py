@@ -1,9 +1,18 @@
 """Base configuration classes shared across multiple components."""
 
 from dataclasses import dataclass, field
-from typing import Any, Literal
+from typing import Any
 
 from django.utils.translation import gettext_lazy as _
+
+from insight_ui.configs.types import (
+    HtmxMethod,
+    HtmxSwapMethod,
+    Size,
+    validate_htmx_method,
+    validate_htmx_swap_method,
+    validate_size,
+)
 
 
 @dataclass
@@ -41,10 +50,12 @@ class IconConfig:
         """
 
     name: str = field(metadata={"doc": _("Name of the Insight UI icon.")})
-    size: Literal["xs", "s", "m", "l", "xl"] = field(
-        default="m", metadata={"doc": _("Icon size: 'xl', 'l', 'm', 's', or 'xs'.")}
-    )
+    size: Size = field(default="m", metadata={"doc": _("Icon size: 'xl', 'l', 'm', 's', or 'xs'.")})
     color: str = field(default="", metadata={"doc": _("Color Hex-Code of the icon.")})
+
+    def __post_init__(self) -> None:
+        """Validate size after initialization."""
+        validate_size(self.size, "size")
 
 
 @dataclass
@@ -103,11 +114,11 @@ class HtmxConfig:
 
     request_url: str = field(default="", metadata={"doc": _("The URL for the HTMX request (hx-get/hx-post).")})
     target: str = field(default="", metadata={"doc": _("CSS selector for the target element (hx-target).")})
-    swap_method: Literal[
-        "innerHTML", "outerHTML", "beforebegin", "afterbegin", "beforeend", "afterend", "delete", "none"
-    ] = field(default="innerHTML", metadata={"doc": _("The way in which the target is to be replaced (hx-swap).")})
+    swap_method: HtmxSwapMethod = field(
+        default="innerHTML", metadata={"doc": _("The way in which the target is to be replaced (hx-swap).")}
+    )
     trigger: str = field(default="submit", metadata={"doc": _("Event trigger (hx-trigger).")})
-    method: Literal["get", "post"] = field(default="get", metadata={"doc": _("HTTP method ('get' or 'post').")})
+    method: HtmxMethod = field(default="get", metadata={"doc": _("HTTP method ('get' or 'post').")})
     loading_indicator_id: str = field(
         default="", metadata={"doc": _("CSS selector for loading indicator (hx-indicator).")}
     )
@@ -116,6 +127,11 @@ class HtmxConfig:
     vals: dict[str, Any] = field(
         default_factory=dict, metadata={"doc": _("Additional values to include in request (hx-vals).")}
     )
+
+    def __post_init__(self) -> None:
+        """Validate swap_method and method after initialization."""
+        validate_htmx_swap_method(self.swap_method, "swap_method")
+        validate_htmx_method(self.method, "method")
 
 
 @dataclass

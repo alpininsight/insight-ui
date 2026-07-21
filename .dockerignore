@@ -59,6 +59,7 @@ ai-notes/
 .github/copilot*
 copilot-instructions.md
 .aider*
+.playwright-cli/
 
 # Documentation
 docs/_build/

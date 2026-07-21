@@ -62,7 +62,7 @@ def get_status_screen_description_context() -> dict[str, list[str]]:
             ),
         ],
         "features": [
-            _("**Semantic status**: Supports `info`, `success`, `warning` and `error`."),
+            _("**Semantic status**: Supports `info`, `success`, `warning` and `danger`."),
             _("**Reusable actions**: Uses the standard `button` component and `ButtonConfig`."),
             _("**Token-based surface**: Uses Insight UI surface, border, radius and shadow tokens."),
             _("**Optional brand**: Can show a `brand_mark` above the status card."),
@@ -582,7 +582,6 @@ def get_copyright_notice_description_context() -> dict[str, list[str]]:
         ],
         "features": [
             _("Supports a holder name, source label, license text, optional license link, and rights text."),
-            _("Keeps `app_name` as a backwards-compatible fallback for existing footer configuration."),
             _("Uses a dot-style separator by default instead of hyphens."),
         ],
     }
@@ -632,9 +631,7 @@ def get_brand_mark_description_context() -> dict[str, list[str]]:
             ),
         ],
         "features": [
-            _("Uses Insight UI design tokens for the primary and secondary brand colours."),
-            _("Maps main, develop, and candidate variants to existing public icons from the Insight UI icon list."),
-            _("Can be used directly or as the optional `brand.mark` mode inside the navbar component."),
+            _("Uses Insight UI design tokens for the primary and secondary brand colors."),
         ],
     }
 
@@ -874,7 +871,7 @@ def get_flip_card_description_context() -> dict[str, list[str]]:
             )
         ],
         "description_notes_begin": [
-            {"type": "info", "message": _("The component is currently still under development.")}
+            {"type": "warning", "message": _("The component is currently still under development.")}
         ],
     }
 

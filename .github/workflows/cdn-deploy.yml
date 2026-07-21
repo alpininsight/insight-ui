@@ -2,13 +2,11 @@
 name: CDN Deploy
 
 on:
-  release:
-    types: [published]
   workflow_dispatch:
     inputs:
       version:
-        description: "Version to deploy, for example 1.2.3. Leave empty for release events."
-        required: false
+        description: "Version to deploy, for example 1.2.3."
+        required: true
         type: string
 
 permissions:
@@ -19,15 +17,39 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  resolve-cdn-version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - name: Resolve CDN version
+        id: version
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+
+          version="$INPUT_VERSION"
+          version="${version#v}"
+
+          if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Invalid or missing CDN version '$version'. Expected X.Y.Z."
+            exit 1
+          fi
+
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
   static-assets-cdn:
+    needs: resolve-cdn-version
     uses: alpininsight/.github-private/.github/workflows/static-assets-reusable.yml@main
     with:
       mode: build
       upload_cdn: true
       asset_directory: insight_ui/static/insight_ui
       cdn_prefix: insight-ui
-      cdn_version: ${{ github.event_name == 'workflow_dispatch' && inputs.version || '' }}
+      cdn_version: ${{ needs.resolve-cdn-version.outputs.version }}
       cdn_base_url: https://cdn.alpininsight.ai
+      cdn_asset_globs: "*.js,*.css,*.svg,*.png,*.ico,*.webmanifest,*.ttf,*.woff,*.woff2,*.jpg,*.jpeg,*.webp,*.gif"
     secrets:
       r2_access_key_id: ${{ secrets.R2_ACCESS_KEY_ID }}
       r2_secret_access_key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
