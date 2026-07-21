@@ -3358,8 +3358,8 @@ msgid "Configuration of a dropdown menu."
 msgstr "Konfiguration der Stepper."
 
 #: .\insight_ui\configs\navigation.py:116
-msgid "Describes the title and the logo of the application in the navbar."
-msgstr "Beschreibt den Titel und das Logo der Anwendung in der Navbar."
+msgid "Describes the brand mark of the application in the navbar."
+msgstr "Beschreibt das Markenzeichen der Anwendung in der Navbar."
 
 #: .\insight_ui\configs\navigation.py:119
 msgid "Contains and describes the navigation items of the navbar."
