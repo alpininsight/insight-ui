@@ -84,7 +84,7 @@ class NavbarConfig:
     Renders a full navigation bar with brand, links, and optional features.
 
     Attributes:
-        brand: Describes the title and the logo of the application in the navbar.
+        brand: Describes the brand mark of the application in the navbar.
         links: Contains and describes the navigation items of the navbar.
         searchbar_request_url: The URL to be called when performing a search. If empty, no search bar will be displayed.
         show_usermenu: Displays a dropdown menu with at least a logout button.
@@ -113,7 +113,7 @@ class NavbarConfig:
         """
 
     brand: NavbarBrandConfig | None = field(
-        default=None, metadata={"doc": _("Describes the title and the logo of the application in the navbar.")}
+        default=None, metadata={"doc": _("Describes the brand mark of the application in the navbar.")}
     )
     links: list[NavbarLinkConfig] = field(
         default_factory=list, metadata={"doc": _("Contains and describes the navigation items of the navbar.")}
