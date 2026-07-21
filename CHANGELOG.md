@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - **theme:** Bridge surface role tokens to the brand colour contract
+- **cards:** Tokenize card + image_carousel surfaces/borders to semantic roles
 
 ### Miscellaneous
 
