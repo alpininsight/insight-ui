@@ -1,6 +1,6 @@
 {% load static i18n insight_tags %}
 
-<div class="bg-gray-50 dark:bg-gray-700 flex min-h-56 w-full max-w-96 flex-col border border-gray-200 dark:border-gray-600 insight-shadow-raised insight-radius-surface">
+<div class="insight-surface-subtle flex min-h-56 w-full max-w-96 flex-col border insight-border-subtle insight-shadow-raised insight-radius-surface">
   {% if card_config.image %}
     <div class="w-full h-24 overflow-hidden">
       <img src="{% static card_config.image.url %}" alt="{{ card_config.image.alt|default:'' }}" class="w-full object-cover" />
