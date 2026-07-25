@@ -11,7 +11,7 @@ rollout.
 - Service name: `insight-ui`
 - Production canonical host: `https://insight-ui.com`
 - Transition alias: `https://insight-ui.demo.alpininsight.ai`
-- Develop host: `https://insight-ui.dev.demo.alpininsight.ai`
+- Develop host: `https://insight-ui.dev.alpininsight.ai`
 - Target namespace class: `demo`
 - Promotion model: build once on `develop`, promote the same digest on `main`
 
