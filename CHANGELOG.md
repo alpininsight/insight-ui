@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **theme:** Document semantic motion roles
 - **brand:** Align settings example with brand mark
+- **deployment:** Use canonical insight ui develop host
 
 ### Features
 
