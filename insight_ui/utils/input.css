@@ -92,6 +92,10 @@
     --color-insight-info-hover-dark: #50CBF2;
     --color-insight-info-active-dark: #77E1FF;
 
+    /* Focus */
+    --color-insight-focus: #4183EA;
+    --color-insight-focus-dark: #4183EA;
+
     /* Elevated / Tooltip */
     --color-insight-tooltip: #F3F4F6;
     --color-insight-tooltip-dark: #242424;
@@ -101,6 +105,8 @@
     --color-insight-text-primary-dark: #F5F8FC;
     --color-insight-text-secondary: #364153;
     --color-insight-text-secondary-dark: #9BA3B4;
+    --color-insight-text-hint: #d1d5dc;
+    --color-insight-text-hint-dark: #364153;
     --color-insight-text-link: #256CD8;
     --color-insight-text-link-hover: #72AEFF;
 
@@ -243,9 +249,12 @@
         --color-insight-info-soft: var(--color-insight-info-soft-dark);
         --color-insight-info-hover: var(--color-insight-info-hover-dark);
         --color-insight-info-active: var(--color-insight-info-active-dark);
+        /* Focus */
+        --color-insight-focus: var(--color-insight-focus-dark);
         /* Text */
         --color-insight-text-primary: var(--color-insight-text-primary-dark);
         --color-insight-text-secondary: var(--color-insight-text-secondary-dark);
+        --color-insight-text-hint: var(--color-insight-text-hint-dark);
         /* Elevated / Tooltip */
         --color-insight-tooltip: var(--color-insight-tooltip-dark);
         /* Card */

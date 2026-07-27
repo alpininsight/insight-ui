@@ -21,7 +21,7 @@
                     {% if num == pagination_config.current_page.number %}
                         <span class="btn btn-s bg-insight-primary-active">{{ num }}</span>
                     {% elif num == -1 %}
-                        <span class="text-neutral-400 px-4 py-1">...</span>
+                        <span class="text-insight-text-secondary px-4 py-1">...</span>
                     {% else %}
                         {% with page_num=num|stringformat:"s" %}
                             {% with url=pagination_config.request_url|add:"?page="|add:page_num %}

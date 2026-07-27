@@ -6,7 +6,7 @@
             {% icon select_config.icon %}
         {% endif %}
         <span class="self-end">{{ select_config.label }}</span>
-        {% if select_config.required %}<span class="text-red-500" aria-label="{% trans 'Required' %}">*</span>{% endif %}
+        {% if select_config.required %}<span class="text-insight-danger" aria-label="{% trans 'Required' %}">*</span>{% endif %}
         {% if select_config.explanation %}
             <div class="text-secondary" data-insight-tooltip="{{ select_config.explanation }}" data-position="top">
                 {% icon name="question-mark" size="xs" %}
@@ -21,7 +21,7 @@
         {% for option, text in select_config.options.items %}
             <option
                 value="{{ option }}" {% if option == select_config.selected_option %}selected{% endif %}
-                {% if option == "-" %}disabled{% elif option == "placeholder" %}class="text-gray-400"{% endif %}
+                {% if option == "-" %}disabled{% elif option == "placeholder" %}class="text-secondary"{% endif %}
             >
                 {{ text }}
             </option>

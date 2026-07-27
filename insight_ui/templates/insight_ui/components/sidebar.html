@@ -48,7 +48,7 @@
           {% if not sidebar_config.auto_close and not sidebar_config.static %}
             <button
               id="{{ sidebar_config.side }}-sidebar-close"
-              class="inline-flex items-center justify-center text-sm text-insight-text-secondary rounded-insight-control p-2 hover:text-insight-text-link-hover focus:ring-insight-primary transition-colors duration-200"
+              class="inline-flex items-center justify-center text-sm text-insight-text-secondary rounded-insight-control p-2 hover:text-insight-text-link-hover focus:ring-insight-focus transition-colors duration-200"
               aria-label="{% trans 'Close sidebar' %}"
               data-insight-dismiss="sidebar"
             >
@@ -81,7 +81,7 @@
                             hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
                           {% endif %}
                           href="{{ item.request_url }}"
-                          class="flex gap-2 px-2 py-1 text-sm text-primary border-s border-insight-primary-border hover:border-gray-400 hover:text-gray-400"
+                          class="flex gap-2 px-2 py-1 text-sm text-primary border-s border-insight-primary-border hover:border-insight-text-secondary hover:text-insight-text-secondary"
                         >
                           {% if item.icon %}
                             {% icon item.icon %}

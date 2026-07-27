@@ -6,7 +6,7 @@
             {% icon textarea_config.icon %}
         {% endif %}
         <span class="self-end">{{ textarea_config.label }}</span>
-        {% if textarea_config.required %}<span class="text-red-500" aria-label="{% trans 'Required' %}">*</span>{% endif %}
+        {% if textarea_config.required %}<span class="text-insight-danger" aria-label="{% trans 'Required' %}">*</span>{% endif %}
         {% if textarea_config.explanation %}
             <div class="text-secondary" data-insight-tooltip="{{ textarea_config.explanation }}" data-position="top">
                 {% icon name="question-mark" size="xs" %}

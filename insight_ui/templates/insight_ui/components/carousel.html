@@ -24,7 +24,7 @@
   {% if carousel_config.show_dots %}
     <div class="carousel-dots absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
       {% for i in slides_count %}
-        <button class="carousel-dot size-3 rounded-insight-full bg-transparent border border-gray-400 transition" data-index="{{ i }}">
+        <button class="carousel-dot size-3 rounded-insight-full bg-transparent border border-insight-primary-border transition" data-index="{{ i }}">
           <span class="sr-only">{% trans "Go to page:" %} {{ i }}</span>
         </button>
       {% endfor %}
