@@ -332,7 +332,7 @@
                     {% endblocktrans%}
                 </p>
                 <p>
-                    {% blocktrans with caption='<span class="inline-tag">&lt;h1&gt;</span>'|safe caption_red='<span class="inline-tag">&lt;h1 class="text-red-500&gt;</span>'|safe %}
+                    {% blocktrans with caption='<span class="inline-tag">&lt;h1&gt;</span>'|safe caption_red='<span class="inline-tag">&lt;h1 class="text-insight-danger&gt;</span>'|safe %}
                         The directive below for the {{ caption }} tag specifies that the CSS classes listed there should be applied to every %(caption)s tag.
                         This means that these classes do not need to be added manually to each tag. If exceptions are wanted, additional CSS classes can still be added or overridden in the template.
                         For example, headings with {{ caption_red }} will still be displayed in red.

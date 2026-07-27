@@ -31,7 +31,7 @@
             </ul>
             <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}
-                <button type="submit" class="flex items-center gap-2 text-sm text-red-500 text-start w-full rounded-insight-control-bottom px-6 py-2 hover:bg-insight-primary-background">
+                <button type="submit" class="flex items-center gap-2 text-sm text-insight-danger text-start w-full rounded-insight-control-bottom px-6 py-2 hover:bg-insight-primary-background">
                     {% icon name="arrow-left-on-rectangle" size="s" %}{% trans "Logout" %}
                 </button>
             </form>

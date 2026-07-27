@@ -15,19 +15,19 @@
     {% endif %}
     <h2 class="text-primary text-center text-3xl font-bold leading-9">{% trans "Login" %}</h2>
     <form class="space-y-2" action="{{ app_path }}" method="post">{% csrf_token %}
-      <div class="text-red-500 mb-4">
+      <div class="text-insight-danger mb-4">
         {{ form.non_field_errors }}
       </div>
       <!-- Username -->
       <div>
         {% if show_labels %} <label for="{{ form.username.id_for_label }}" class="block text-sm font-medium text-secondary mb-1">{% trans "Username" %}</label> {% endif %}
-        <input id="username" name="username" type="text" placeholder="{% trans "Enter username" %}" required class="w-full px-3 py-2 border border-insight-primary-border rounded-insight-control shadow-insight-subtle focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-colors duration-200">
+        <input id="username" name="username" type="text" placeholder="{% trans "Enter username" %}" required class="input w-full">
         {{ form.username.errors }}
       </div>
       <!-- Password -->
       <div>
         {% if show_labels %} <label for="{{ form.password.id_for_label }}" class="block text-sm font-medium text-secondary mb-1">{% trans "Password" %}</label> {% endif %}
-        <input id="password" name="password" type="password" placeholder="{% trans "Enter password" %}" required class="w-full px-3 py-2 border border-insight-primary-border rounded-insight-control shadow-insight-subtle focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-colors duration-200">
+        <input id="password" name="password" type="password" placeholder="{% trans "Enter password" %}" required class="input w-full">
         {{ form.password.errors }}
         {% if forgot_password %}
           <div class="flex justify-end mt-1">

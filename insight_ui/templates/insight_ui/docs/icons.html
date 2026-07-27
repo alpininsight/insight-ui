@@ -68,13 +68,13 @@
                 {% for icon in icons %}
                     <button
                         type="button"
-                        class="icon-item flex flex-col items-center gap-2 border border-gray-100 dark:border-gray-700 p-3 shadow rounded-insight-control hover:bg-gray-50 hover:dark:bg-gray-700 transition-colors cursor-pointer group relative"
+                        class="icon-item flex flex-col items-center gap-2 border border-insight-primary-border p-3 shadow-insight-surface rounded-insight-control hover:bg-insight-tertiary-background transition-colors cursor-pointer group relative"
                         data-icon-name="{{ icon.name }}"
                         onclick="copyIconCode(this)"
                     >
                         <div class="text-secondary">{{ icon.svg|safe }}</div>
                         <span class="text-xs text-secondary text-center whitespace-normal group-hover:text-primary transition-colors">{{ icon.name }}</span>
-                        <span class="absolute top-0 flex items-center justify-center size-full text-base bg-gray-50 dark:bg-gray-700 text-insight-primary rounded-insight-control opacity-0 pointer-events-none transition-opacity whitespace-nowrap" data-copied-tooltip>{% trans "Copied!" %}</span>
+                        <span class="absolute top-0 flex items-center justify-center size-full text-base bg-insight-tertiary-background text-insight-primary rounded-insight-control opacity-0 pointer-events-none transition-opacity whitespace-nowrap" data-copied-tooltip>{% trans "Copied!" %}</span>
                     </button>
                 {% endfor %}
             </div>
