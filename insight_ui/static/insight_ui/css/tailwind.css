@@ -113,20 +113,20 @@
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
-    --color-insight-primary-background: #F6F7F9;
-    --color-insight-primary-background-dark: #030712;
-    --color-insight-secondary-background: #FFFFFF;
-    --color-insight-secondary-background-dark: #0E1525;
-    --color-insight-tertiary-background: #EEF0F3;
-    --color-insight-tertiary-background-dark: #1A2336;
-    --color-insight-quaternary-background: #E9EAEB;
-    --color-insight-quaternary-background-dark: #202A3D;
-    --color-insight-primary-border: #E5E7EB;
-    --color-insight-primary-border-dark: #1E2940;
-    --color-insight-secondary-border: #E5E7EB;
-    --color-insight-secondary-border-dark: #1E2940;
-    --color-insight-tertiary-border: #E5E7EB;
-    --color-insight-tertiary-border-dark: #2F3B54;
+    --color-insight-bg-base: #FFFFFF;
+    --color-insight-bg-base-dark: #030712;
+    --color-insight-bg-surface: #F6F7F9;
+    --color-insight-bg-surface-dark: #0E1525;
+    --color-insight-bg-raised: #EEF0F3;
+    --color-insight-bg-raised-dark: #1A2336;
+    --color-insight-bg-overlay: #E9EAEB;
+    --color-insight-bg-overlay-dark: #202A3D;
+    --color-insight-border-surface: #E5E7EB;
+    --color-insight-border-surface-dark: #1E2940;
+    --color-insight-border-raised: #E5E7EB;
+    --color-insight-border-raised-dark: #1E2940;
+    --color-insight-border-overlay: #E5E7EB;
+    --color-insight-border-overlay-dark: #2F3B54;
     --color-insight-primary: #4183EA;
     --color-insight-primary-hover: #256CD8;
     --color-insight-primary-active: #0856C0;
@@ -560,6 +560,9 @@
     @media (width >= 96rem) {
       max-width: 96rem;
     }
+  }
+  .\!m-0 {
+    margin: 0px !important;
   }
   .m-4 {
     margin: calc(var(--spacing) * 4);
@@ -1330,11 +1333,11 @@
     border-top-width: calc(1px * var(--tw-divide-y-reverse));
     border-bottom-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
   }
-  :where(.divide-insight-primary-border > :not(:last-child)) {
-    border-color: var(--color-insight-primary-border);
+  :where(.divide-insight-border-raised > :not(:last-child)) {
+    border-color: var(--color-insight-border-raised);
   }
-  :where(.divide-insight-secondary-border > :not(:last-child)) {
-    border-color: var(--color-insight-secondary-border);
+  :where(.divide-insight-border-surface > :not(:last-child)) {
+    border-color: var(--color-insight-border-surface);
   }
   .place-self-end {
     place-self: end;
@@ -1353,11 +1356,17 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+  .\!overflow-visible {
+    overflow: visible !important;
+  }
   .overflow-auto {
     overflow: auto;
   }
   .overflow-hidden {
     overflow: hidden;
+  }
+  .overflow-x-auto {
+    overflow-x: auto;
   }
   .overflow-x-scroll {
     overflow-x: scroll;
@@ -1550,11 +1559,17 @@
   .border-gray-300 {
     border-color: var(--color-gray-300);
   }
+  .border-insight-border-overlay {
+    border-color: var(--color-insight-border-overlay);
+  }
+  .border-insight-border-raised {
+    border-color: var(--color-insight-border-raised);
+  }
+  .border-insight-border-surface {
+    border-color: var(--color-insight-border-surface);
+  }
   .border-insight-primary {
     border-color: var(--color-insight-primary);
-  }
-  .border-insight-primary-border {
-    border-color: var(--color-insight-primary-border);
   }
   .border-insight-primary\/20 {
     border-color: color-mix(in srgb, #4183EA 20%, transparent);
@@ -1562,14 +1577,8 @@
       border-color: color-mix(in oklab, var(--color-insight-primary) 20%, transparent);
     }
   }
-  .border-insight-secondary-border {
-    border-color: var(--color-insight-secondary-border);
-  }
   .border-insight-success {
     border-color: var(--color-insight-success);
-  }
-  .border-insight-tertiary-border {
-    border-color: var(--color-insight-tertiary-border);
   }
   .border-insight-text-hint {
     border-color: var(--color-insight-text-hint);
@@ -1622,6 +1631,24 @@
   .bg-gray-300 {
     background-color: var(--color-gray-300);
   }
+  .bg-insight-bg-base {
+    background-color: var(--color-insight-bg-base);
+  }
+  .bg-insight-bg-base-dark {
+    background-color: var(--color-insight-bg-base-dark);
+  }
+  .bg-insight-bg-base\/75 {
+    background-color: color-mix(in srgb, #FFFFFF 75%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-insight-bg-base) 75%, transparent);
+    }
+  }
+  .bg-insight-bg-raised {
+    background-color: var(--color-insight-bg-raised);
+  }
+  .bg-insight-bg-surface {
+    background-color: var(--color-insight-bg-surface);
+  }
   .bg-insight-danger {
     background-color: var(--color-insight-danger);
   }
@@ -1652,18 +1679,6 @@
   .bg-insight-primary-active {
     background-color: var(--color-insight-primary-active);
   }
-  .bg-insight-primary-background {
-    background-color: var(--color-insight-primary-background);
-  }
-  .bg-insight-primary-background-dark {
-    background-color: var(--color-insight-primary-background-dark);
-  }
-  .bg-insight-primary-background\/75 {
-    background-color: color-mix(in srgb, #F6F7F9 75%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-insight-primary-background) 75%, transparent);
-    }
-  }
   .bg-insight-primary\/5 {
     background-color: color-mix(in srgb, #4183EA 5%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -1682,12 +1697,6 @@
       background-color: color-mix(in oklab, var(--color-insight-primary) 30%, transparent);
     }
   }
-  .bg-insight-quaternary-background {
-    background-color: var(--color-insight-quaternary-background);
-  }
-  .bg-insight-secondary-background {
-    background-color: var(--color-insight-secondary-background);
-  }
   .bg-insight-secondary\/10 {
     background-color: color-mix(in srgb, #1B9388 10%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -1705,9 +1714,6 @@
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-insight-success) 15%, transparent);
     }
-  }
-  .bg-insight-tertiary-background {
-    background-color: var(--color-insight-tertiary-background);
   }
   .bg-insight-text-hint {
     background-color: var(--color-insight-text-hint);
@@ -1862,11 +1868,17 @@
   .ps-10 {
     padding-inline-start: calc(var(--spacing) * 10);
   }
+  .\!pe-6 {
+    padding-inline-end: calc(var(--spacing) * 6) !important;
+  }
   .pe-2 {
     padding-inline-end: calc(var(--spacing) * 2);
   }
   .pe-4 {
     padding-inline-end: calc(var(--spacing) * 4);
+  }
+  .pe-6 {
+    padding-inline-end: calc(var(--spacing) * 6);
   }
   .pe-32 {
     padding-inline-end: calc(var(--spacing) * 32);
@@ -2171,11 +2183,11 @@
     outline-style: var(--tw-outline-style);
     outline-width: 1px;
   }
+  .outline-insight-border-raised {
+    outline-color: var(--color-insight-border-raised);
+  }
   .outline-insight-primary-hover {
     outline-color: var(--color-insight-primary-hover);
-  }
-  .outline-insight-tertiary-border {
-    outline-color: var(--color-insight-tertiary-border);
   }
   .blur {
     --tw-blur: blur(8px);
@@ -2283,8 +2295,8 @@
     border-bottom-style: var(--tw-border-style);
     border-bottom-width: 1px;
   }
-  :is(.\*\:border-insight-primary-border > *) {
-    border-color: var(--color-insight-primary-border);
+  :is(.\*\:border-insight-border-surface > *) {
+    border-color: var(--color-insight-border-surface);
   }
   @media (hover: hover) {
     .group-hover\:rotate-y-180:is(:where(.group):hover *) {
@@ -2324,9 +2336,9 @@
     content: var(--tw-content);
     position: absolute;
   }
-  .after\:start-\[-3px\]::after {
+  .after\:-start-0\.75::after {
     content: var(--tw-content);
-    inset-inline-start: -3px;
+    inset-inline-start: calc(var(--spacing) * -0.75);
   }
   .after\:-top-1\.5::after {
     content: var(--tw-content);
@@ -2346,13 +2358,13 @@
     border-style: var(--tw-border-style);
     border-width: 1px;
   }
-  .after\:border-insight-primary-border::after {
+  .after\:border-insight-border-surface::after {
     content: var(--tw-content);
-    border-color: var(--color-insight-primary-border);
+    border-color: var(--color-insight-border-surface);
   }
-  .after\:bg-insight-secondary-background::after {
+  .after\:bg-insight-bg-surface::after {
     content: var(--tw-content);
-    background-color: var(--color-insight-secondary-background);
+    background-color: var(--color-insight-bg-surface);
   }
   .after\:transition-all::after {
     content: var(--tw-content);
@@ -2369,11 +2381,11 @@
     --tw-translate-x: 100%;
     translate: var(--tw-translate-x) var(--tw-translate-y);
   }
-  .odd\:bg-insight-tertiary-background:nth-child(odd) {
-    background-color: var(--color-insight-tertiary-background);
+  .odd\:bg-insight-bg-raised:nth-child(odd) {
+    background-color: var(--color-insight-bg-raised);
   }
-  .even\:bg-insight-primary-background:nth-child(even) {
-    background-color: var(--color-insight-primary-background);
+  .even\:bg-insight-bg-base:nth-child(even) {
+    background-color: var(--color-insight-bg-base);
   }
   @media (hover: hover) {
     .hover\:scale-105:hover {
@@ -2399,14 +2411,14 @@
     .hover\:border-insight-text-secondary:hover {
       border-color: var(--color-insight-text-secondary);
     }
-    .hover\:bg-insight-primary-background:hover {
-      background-color: var(--color-insight-primary-background);
+    .hover\:bg-insight-bg-base:hover {
+      background-color: var(--color-insight-bg-base);
+    }
+    .hover\:bg-insight-bg-raised:hover {
+      background-color: var(--color-insight-bg-raised);
     }
     .hover\:bg-insight-primary-hover:hover {
       background-color: var(--color-insight-primary-hover);
-    }
-    .hover\:bg-insight-tertiary-background:hover {
-      background-color: var(--color-insight-tertiary-background);
     }
     .hover\:text-blue-700:hover {
       color: var(--color-blue-700);
@@ -2926,8 +2938,8 @@
   .\[\&\:\:-moz-range-thumb\]\:border-insight-primary::-moz-range-thumb {
     border-color: var(--color-insight-primary);
   }
-  .\[\&\:\:-moz-range-thumb\]\:bg-insight-primary-background::-moz-range-thumb {
-    background-color: var(--color-insight-primary-background);
+  .\[\&\:\:-moz-range-thumb\]\:bg-insight-bg-base::-moz-range-thumb {
+    background-color: var(--color-insight-bg-base);
   }
   .\[\&\:\:-webkit-slider-thumb\]\:pointer-events-auto::-webkit-slider-thumb {
     pointer-events: auto;
@@ -2957,8 +2969,8 @@
   .\[\&\:\:-webkit-slider-thumb\]\:border-insight-primary::-webkit-slider-thumb {
     border-color: var(--color-insight-primary);
   }
-  .\[\&\:\:-webkit-slider-thumb\]\:bg-insight-primary-background::-webkit-slider-thumb {
-    background-color: var(--color-insight-primary-background);
+  .\[\&\:\:-webkit-slider-thumb\]\:bg-insight-bg-base::-webkit-slider-thumb {
+    background-color: var(--color-insight-bg-base);
   }
   .\[\&\:focus-visible\:\:-moz-range-thumb\]\:ring-2:focus-visible::-moz-range-thumb {
     --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
@@ -2993,13 +3005,13 @@
   }
   [data-theme="dark"] {
     color-scheme: dark;
-    --color-insight-primary-background: var(--color-insight-primary-background-dark);
-    --color-insight-secondary-background: var(--color-insight-secondary-background-dark);
-    --color-insight-tertiary-background: var(--color-insight-tertiary-background-dark);
-    --color-insight-quaternary-background: var(--color-insight-quaternary-background-dark);
-    --color-insight-primary-border: var(--color-insight-primary-border-dark);
-    --color-insight-secondary-border: var(--color-insight-secondary-border-dark);
-    --color-insight-tertiary-border: var(--color-insight-tertiary-border-dark);
+    --color-insight-bg-base: var(--color-insight-bg-base-dark);
+    --color-insight-bg-surface: var(--color-insight-bg-surface-dark);
+    --color-insight-bg-raised: var(--color-insight-bg-raised-dark);
+    --color-insight-bg-overlay: var(--color-insight-bg-overlay-dark);
+    --color-insight-border-surface: var(--color-insight-border-surface-dark);
+    --color-insight-border-raised: var(--color-insight-border-raised-dark);
+    --color-insight-border-overlay: var(--color-insight-border-overlay-dark);
     --color-insight-primary-soft: var(--color-insight-primary-soft-dark);
     --color-insight-primary-hover: var(--color-insight-primary-hover-dark);
     --color-insight-primary-active: var(--color-insight-primary-active-dark);
@@ -3089,36 +3101,40 @@
     }
   }
   hr {
-    color: var(--color-gray-300);
-    &:where([data-theme=dark], [data-theme=dark] *) {
-      color: var(--color-gray-600);
-    }
+    color: var(--color-insight-text-hint);
+  }
+  .overflow-auto, .overflow-scroll, .overflow-x-auto, .overflow-x-scroll, .overflow-y-auto, .overflow-y-scroll {
+    scrollbar-width: auto;
+    scrollbar-color: #757575 var(--color-insight-bg-overlay);
+  }
+  [data-theme="dark"] .overflow-auto, [data-theme="dark"] .overflow-scroll, [data-theme="dark"] .overflow-x-auto, [data-theme="dark"] .overflow-x-scroll, [data-theme="dark"] .overflow-y-auto, [data-theme="dark"] .overflow-y-scroll {
+    scrollbar-color: #9CA3AF var(--color-insight-bg-overlay);
   }
   ::-webkit-scrollbar {
     width: 12px;
     height: 12px;
   }
   ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: var(--color-insight-bg-overlay);
     border-radius: 6px;
   }
   ::-webkit-scrollbar-thumb {
-    background: #c1c1c1;
+    background: #757575;
     border-radius: 6px;
-    border: 2px solid #f1f1f1;
+    border: 2px solid var(--color-insight-bg-overlay);
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #a1a1a1;
+    background: #5C5C5C;
   }
   [data-theme="dark"] ::-webkit-scrollbar-track, [data-theme="dark"]::-webkit-scrollbar-track {
-    background: #1f2937;
+    background: var(--color-insight-bg-overlay);
   }
   [data-theme="dark"] ::-webkit-scrollbar-thumb, [data-theme="dark"]::-webkit-scrollbar-thumb {
-    background: #4b5563;
-    border-color: #1f2937;
+    background: #9CA3AF;
+    border-color: var(--color-insight-bg-overlay);
   }
   [data-theme="dark"] ::-webkit-scrollbar-thumb:hover, [data-theme="dark"]::-webkit-scrollbar-thumb:hover {
-    background: #6b7280;
+    background: #D1D5DB;
   }
 }
 @layer components {
@@ -3832,41 +3848,6 @@
       color: var(--color-insight-text-secondary-dark);
     }
   }
-  .component-container {
-    border-radius: var(--radius-insight-surface);
-    border-style: var(--tw-border-style);
-    border-width: 1px;
-    border-color: var(--color-insight-primary-border);
-    background-color: var(--color-insight-primary-background);
-    --tw-shadow: 0 4px 6px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 2px 4px -2px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
-    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-  }
-  .example-container {
-    margin-block: calc(var(--spacing) * 12);
-    border-radius: var(--radius-insight-raised);
-    border-style: var(--tw-border-style);
-    border-width: 1px;
-    border-color: var(--color-insight-primary-border);
-    background-color: var(--color-insight-primary-background);
-    padding-inline: calc(var(--spacing) * 8);
-    padding-block: calc(var(--spacing) * 16);
-    --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
-    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-  }
-  .info-container {
-    border-start-end-radius: var(--radius-insight-control);
-    border-end-end-radius: var(--radius-insight-control);
-    border-style: var(--tw-border-style);
-    border-width: 1px;
-    border-inline-start-style: var(--tw-border-style);
-    border-inline-start-width: 4px;
-    border-color: var(--color-insight-secondary-border);
-    background-color: var(--color-insight-secondary-background);
-    padding-inline: calc(var(--spacing) * 4);
-    padding-block: var(--spacing);
-    font-size: var(--text-base);
-    line-height: var(--tw-leading, var(--text-base--line-height));
-  }
   .inline-tag {
     border-radius: var(--radius-insight-control);
     background-color: var(--color-gray-200);
@@ -3887,8 +3868,8 @@
     border-radius: var(--radius-insight-control);
     border-style: var(--tw-border-style);
     border-width: 1px;
-    border-color: var(--color-insight-primary-border);
-    background-color: var(--color-insight-primary-background);
+    border-color: var(--color-insight-border-surface);
+    background-color: var(--color-insight-bg-base);
     padding-inline: calc(var(--spacing) * 3);
     padding-block: calc(var(--spacing) * 2);
     font-size: var(--text-sm);
@@ -3915,30 +3896,30 @@
   .range-custom::-webkit-slider-runnable-track {
     height: calc(var(--spacing) * 2);
     border-radius: var(--radius-insight-control);
-    background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-tertiary-background) var(--insight-control-range-progress));
+    background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised) var(--insight-control-range-progress));
   }
   .range-custom::-moz-range-track {
     height: calc(var(--spacing) * 2);
     border-radius: var(--radius-insight-control);
-    background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-tertiary-background) var(--insight-control-range-progress));
+    background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised) var(--insight-control-range-progress));
   }
   [data-theme="dark"] .range-custom::-webkit-slider-runnable-track, [data-theme="dark"].range-custom::-webkit-slider-runnable-track {
-    background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-tertiary-background-dark) var(--insight-control-range-progress));
+    background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised-dark) var(--insight-control-range-progress));
   }
   [data-theme="dark"] .range-custom::-moz-range-track, [data-theme="dark"].range-custom::-moz-range-track {
-    background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-tertiary-background-dark) var(--insight-control-range-progress));
+    background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised-dark) var(--insight-control-range-progress));
   }
   html[dir='rtl'] .range-custom::-webkit-slider-runnable-track {
-    background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-tertiary-background) var(--insight-control-range-progress));
+    background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised) var(--insight-control-range-progress));
   }
   html[dir='rtl'] .range-custom::-moz-range-track {
-    background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-tertiary-background) var(--insight-control-range-progress));
+    background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised) var(--insight-control-range-progress));
   }
   html[dir='rtl'][data-theme="dark"] .range-custom::-webkit-slider-runnable-track, html[dir='rtl'] [data-theme="dark"] .range-custom::-webkit-slider-runnable-track, html[dir='rtl'] [data-theme="dark"].range-custom::-webkit-slider-runnable-track {
-    background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-tertiary-background-dark) var(--insight-control-range-progress));
+    background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised-dark) var(--insight-control-range-progress));
   }
   html[dir='rtl'][data-theme="dark"] .range-custom::-moz-range-track, html[dir='rtl'] [data-theme="dark"] .range-custom::-moz-range-track, html[dir='rtl'] [data-theme="dark"].range-custom::-moz-range-track {
-    background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-tertiary-background-dark) var(--insight-control-range-progress));
+    background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised-dark) var(--insight-control-range-progress));
   }
   .range-custom::-webkit-slider-thumb {
     margin-top: calc(var(--spacing) * -1);
@@ -3949,7 +3930,7 @@
     border-style: var(--tw-border-style);
     border-width: 2px;
     border-color: var(--color-insight-primary);
-    background-color: var(--color-insight-primary-background);
+    background-color: var(--color-insight-bg-base);
   }
   .range-custom::-moz-range-thumb {
     width: calc(var(--spacing) * 4);
@@ -3959,7 +3940,7 @@
     border-style: var(--tw-border-style);
     border-width: 2px;
     border-color: var(--color-insight-primary);
-    background-color: var(--color-insight-primary-background);
+    background-color: var(--color-insight-bg-base);
   }
   .demo-pattern {
     background-color: #f8fafc;

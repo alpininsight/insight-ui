@@ -55,19 +55,19 @@ export class CodeBlock {
      */
     #createToolbar(lang, filename) {
         const toolbar = document.createElement('div');
-        toolbar.classList.add('flex', 'justify-between', 'bg-insight-tertiary-background', 'rounded-t-insight-surface', 'p-2');
+        toolbar.classList.add('flex', 'justify-between', 'bg-insight-bg-raised', 'rounded-t-insight-surface', 'p-2');
 
         const infobox = document.createElement('div');
         infobox.classList.add('flex');
 
         const langSpan = document.createElement('span');
-        langSpan.classList.add('text-secondary', 'leading-loose', 'bg-insight-primary-background', 'rounded-insight-control', 'px-2');
+        langSpan.classList.add('text-secondary', 'leading-loose', 'bg-insight-bg-base', 'rounded-insight-control', 'px-2');
         langSpan.textContent = lang;
         infobox.appendChild(langSpan);
 
         if (filename) {
             const fileSpan = document.createElement('span');
-            fileSpan.classList.add('text-secondary', 'leading-loose', 'bg-insight-primary-background', 'rounded-insight-control', 'px-2', 'ms-2');
+            fileSpan.classList.add('text-secondary', 'leading-loose', 'bg-insight-bg-base', 'rounded-insight-control', 'px-2', 'ms-2');
             fileSpan.textContent = filename;
             infobox.appendChild(fileSpan);
         }
@@ -118,14 +118,15 @@ export class CodeBlock {
      */
     #createCodeArea(lang, code) {
         const wrapper = document.createElement('div');
-        wrapper.classList.add('w-full', 'overflow-x-scroll');
+        wrapper.classList.add('w-full', 'overflow-x-auto');
         // Code is always LTR, even in RTL layouts
         wrapper.dir = 'ltr';
 
         const pre = document.createElement('pre');
-        pre.classList.add('line-numbers', `language-${lang}`);
+        pre.classList.add('line-numbers', `language-${lang}`, '!overflow-visible', '!m-0');
 
         const codeElement = document.createElement('code');
+        codeElement.classList.add('block', 'w-fit', 'pe-6');
         codeElement.textContent = this.cleanIndentation(code).trim();
 
         pre.appendChild(codeElement);
@@ -184,7 +185,7 @@ export class CodeBlock {
      */
     generateCodeBlock(id, lang, filename, code) {
         const wrapper = document.createElement('div');
-        wrapper.classList.add('flex', 'flex-col', 'bg-[#f9fafb]', 'dark:bg-[#030712]', 'rounded-insight-surface', 'border', 'border-insight-primary-border');
+        wrapper.classList.add('flex', 'flex-col', 'bg-[#f9fafb]', 'dark:bg-[#030712]', 'rounded-insight-surface', 'border', 'border-insight-border-surface');
         wrapper.id = id;
 
         const toolbar = this.#createToolbar(lang, filename);

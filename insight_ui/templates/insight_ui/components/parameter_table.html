@@ -3,7 +3,7 @@
 <div class="overflow-auto">
     <table class="table-auto w-full">
         <thead class="text-primary">
-            <tr class="border-b border-insight-primary-border">
+            <tr class="border-b border-insight-border-surface">
                 <th class="text-start text-nowrap text-sm px-4 py-2" scope="col">{% trans "Name" %}</th>
                 <th class="text-start text-nowrap text-sm px-4 py-2" scope="col">{% trans "Type" %}</th>
                 <th class="text-start text-nowrap text-sm px-4 py-2" scope="col">{% trans "Description" %}</th>
@@ -13,7 +13,7 @@
         </thead>
         <tbody class="text-primary">
             {% for row in rows %}
-                <tr class="odd:bg-insight-tertiary-background even:bg-insight-primary-background">
+                <tr class="odd:bg-insight-bg-raised even:bg-insight-bg-base">
                     <td class="text-start text-sm px-4 py-3"><span class="inline-tag">{{ row.name }}</span></td>
                     <td class="text-start text-sm px-4 py-3"><i>{{ row.type }}</i></td>
                     <td class="text-start text-sm px-4 py-3">{{ row.description|markdownify }}</td>

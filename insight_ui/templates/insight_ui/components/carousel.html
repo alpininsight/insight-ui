@@ -24,7 +24,7 @@
   {% if carousel_config.show_dots %}
     <div class="carousel-dots absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
       {% for i in slides_count %}
-        <button class="carousel-dot size-3 rounded-insight-full bg-transparent border border-insight-primary-border transition" data-index="{{ i }}">
+        <button class="carousel-dot size-3 rounded-insight-full bg-transparent border border-insight-border-surface transition" data-index="{{ i }}">
           <span class="sr-only">{% trans "Go to page:" %} {{ i }}</span>
         </button>
       {% endfor %}
@@ -33,7 +33,7 @@
 
   <!-- Page number -->
   {% if carousel_config.show_index %}
-    <div class="carousel-index absolute bottom-4 right-4 text-sm bg-insight-secondary-background px-3 py-1 rounded-insight-overlay">
+    <div class="carousel-index absolute bottom-4 right-4 text-sm bg-insight-bg-surface px-3 py-1 rounded-insight-overlay">
       <span class="carousel-index-text text-secondary"></span>
     </div>
   {% endif %}

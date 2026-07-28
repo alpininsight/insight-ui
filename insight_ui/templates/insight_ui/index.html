@@ -80,7 +80,7 @@
 
             {% grid cols=3 gap="l" class="w-full max-w-6xl mt-8" %}
                 {% for feature in features %}
-                    <div class="p-6 rounded-insight-surface bg-insight-secondary-background border border-insight-primary-border hover:border-insight-primary/50 hover:shadow-insight-raised transition-all duration-300">
+                    <div class="p-6 rounded-insight-surface bg-insight-bg-surface border border-insight-border-surface hover:border-insight-primary/50 hover:shadow-insight-raised transition-all duration-300">
                         {% vbox gap="m" %}
                             <div class="size-12 rounded-insight-surface bg-insight-primary/10 flex items-center justify-center">
                                 {% icon name=feature.icon size="l" %}
@@ -95,7 +95,7 @@
     {% endpage %}
 
     {# ===== WHAT IS INSIGHT UI ===== #}
-    {% page padding="xl" class="bg-insight-primary-background/75" %}
+    {% page padding="xl" class="bg-insight-bg-base/75" %}
         {% vbox gap="xl" class="max-w-4xl mx-auto" %}
             {% vbox h_align="center" %}
                 <h2>{% trans "What is Insight UI?" %}</h2>
@@ -161,50 +161,50 @@
             {% hbox gap="xl" wrap=True v_align="start" class="mt-8" %}
                 {# Visual representation #}
                 {% vbox gap="m" class="flex-1 min-w-75" %}
-                    <div class="rounded-insight-surface border-2 border-insight-primary-border overflow-hidden bg-insight-secondary-background">
+                    <div class="rounded-insight-surface border-2 border-insight-border-surface overflow-hidden bg-insight-bg-base">
                         {# Navbar mockup #}
-                        <div class="h-10 bg-insight-primary/10 border-b border-insight-primary-border flex items-center px-3 gap-2">
+                        <div class="h-10 bg-insight-primary/10 border-b border-insight-border-surface flex items-center px-3 gap-2">
                             <div class="w-6 h-6 rounded-insight-surface bg-insight-primary/30"></div>
                             <div class="flex-1"></div>
-                            <div class="w-16 h-4 rounded-insight-surface bg-insight-secondary-background"></div>
-                            <div class="w-16 h-4 rounded-insight-surface bg-insight-secondary-background"></div>
+                            <div class="w-16 h-4 rounded-insight-surface bg-insight-bg-base"></div>
+                            <div class="w-16 h-4 rounded-insight-surface bg-insight-bg-base"></div>
                         </div>
                         {# Main area #}
                         {% hbox class="min-h-45" %}
                             {# Sidebar left #}
-                            <div class="w-24 border-e border-insight-primary-border p-2 hidden sm:block">
+                            <div class="w-24 border-e border-insight-border-surface p-2 hidden sm:block">
                                 {% vbox gap="xs" %}
-                                    <div class="w-full h-3 rounded-insight-surface bg-insight-tertiary-background"></div>
-                                    <div class="w-3/4 h-3 rounded-insight-surface bg-insight-tertiary-background"></div>
-                                    <div class="w-full h-3 rounded-insight-surface bg-insight-tertiary-background"></div>
+                                    <div class="w-full h-3 rounded-insight-surface bg-insight-bg-surface"></div>
+                                    <div class="w-3/4 h-3 rounded-insight-surface bg-insight-bg-surface"></div>
+                                    <div class="w-full h-3 rounded-insight-surface bg-insight-bg-surface"></div>
                                 {% endvbox %}
                             </div>
                             {# Content #}
                             <div class="flex-1 p-3">
                                 {% vbox gap="s" %}
                                     <div class="w-1/2 h-4 rounded-insight-surface bg-insight-primary/30"></div>
-                                    <div class="w-full h-3 rounded-insight-surface bg-insight-tertiary-background"></div>
-                                    <div class="w-full h-3 rounded-insight-surface bg-insight-tertiary-background"></div>
-                                    <div class="w-3/4 h-3 rounded-insight-surface bg-insight-tertiary-background"></div>
+                                    <div class="w-full h-3 rounded-insight-surface bg-insight-bg-surface"></div>
+                                    <div class="w-full h-3 rounded-insight-surface bg-insight-bg-surface"></div>
+                                    <div class="w-3/4 h-3 rounded-insight-surface bg-insight-bg-surface"></div>
                                 {% endvbox %}
                             </div>
                             {# Sidebar right #}
-                            <div class="w-20 border-s border-insight-primary-border p-2 hidden md:block">
+                            <div class="w-20 border-s border-insight-border-surface p-2 hidden md:block">
                                 {% vbox gap="xs" %}
-                                    <div class="w-full h-3 rounded-insight-surface bg-insight-tertiary-background"></div>
-                                    <div class="w-2/3 h-3 rounded-insight-surface bg-insight-tertiary-background"></div>
+                                    <div class="w-full h-3 rounded-insight-surface bg-insight-bg-surface"></div>
+                                    <div class="w-2/3 h-3 rounded-insight-surface bg-insight-bg-surface"></div>
                                 {% endvbox %}
                             </div>
                         {% endhbox %}
                         {# Footer mockup #}
-                        <div class="h-8 bg-insight-tertiary-background border-t border-insight-primary-border"></div>
+                        <div class="h-8 bg-insight-bg-surface border-t border-insight-border-surface"></div>
                     </div>
                 {% endvbox %}
 
                 {# Block list #}
                 {% vbox gap="m" class="flex-1 min-w-75" %}
                     {% for block in base_template_blocks %}
-                        {% hbox gap="m" v_align="center" class="p-3 rounded-insight-surface bg-insight-secondary-background border border-insight-primary-border" %}
+                        {% hbox gap="m" v_align="center" class="p-3 rounded-insight-surface bg-insight-bg-surface border border-insight-border-surface" %}
                             <div class="shrink-0 w-8 h-8 rounded-insight-surface bg-insight-primary/10 flex items-center justify-center">
                                 {% icon name=block.icon size="s" %}
                             </div>
@@ -225,7 +225,7 @@
     {% endpage %}
 
     {# ===== CUSTOMIZATION ===== #}
-    {% page padding="xl" class="bg-insight-primary-background/75" %}
+    {% page padding="xl" class="bg-insight-bg-base/75" %}
         {% vbox gap="xl" class="max-w-5xl mx-auto" %}
             {% vbox h_align="center" %}
                 <h2>{% trans "Make it yours" %}</h2>
@@ -236,7 +236,7 @@
 
             {% grid cols=3 gap="l" class="w-full mt-8" %}
                 {% for option in customization_options %}
-                    <div class="p-6 rounded-insight-surface bg-insight-secondary-background border border-insight-primary-border">
+                    <div class="p-6 rounded-insight-surface bg-insight-bg-surface border border-insight-border-surface">
                         {% vbox gap="m" %}
                             <div class="w-12 h-12 rounded-insight-surface bg-insight-secondary/10 flex items-center justify-center">
                                 {% icon name=option.icon size="l" %}
@@ -244,7 +244,7 @@
                             <h3 class="text-lg font-semibold">{{ option.title }}</h3>
                             <p class="text-secondary text-sm">{{ option.description }}</p>
                             <div class="mt-auto pt-2">
-                                <code class="text-xs bg-insight-tertiary-background px-2 py-1 rounded-insight-control">{{ option.file }}</code>
+                                <code class="text-xs bg-insight-bg-raised px-2 py-1 rounded-insight-control">{{ option.file }}</code>
                             </div>
                         {% endvbox %}
                     </div>
@@ -289,7 +289,7 @@
     {% endpage %}
 
     {# ===== COMPONENT CATEGORIES ===== #}
-    {% page padding="xl" class="bg-insight-primary-background/75" %}
+    {% page padding="xl" class="bg-insight-bg-base/75" %}
         {% vbox gap="xl" class="max-w-5xl mx-auto" %}
             {% vbox h_align="center" %}
                 <h2>{% trans "Explore by category" %}</h2>
@@ -300,7 +300,7 @@
 
             {% grid cols=3 gap="m" class="w-full mt-8" %}
                 {% for category in component_categories %}
-                    <a href="{{ category.url }}" class="group p-5 rounded-insight-surface bg-insight-secondary-background border border-insight-primary-border hover:border-insight-primary/50 hover:shadow-insight-raised transition-all duration-300">
+                    <a href="{{ category.url }}" class="group p-5 rounded-insight-surface bg-insight-bg-surface border border-insight-border-surface hover:border-insight-primary/50 hover:shadow-insight-raised transition-all duration-300">
                         {% hbox gap="m" v_align="center" %}
                             <div class="size-10 rounded-insight-surface bg-insight-primary/10 group-hover:bg-insight-primary/20 flex items-center justify-center transition-colors">
                                 {% icon name=category.icon size="m" %}
@@ -335,7 +335,7 @@
 
             {% grid cols=2 gap="l" class="w-full mt-8" %}
                 {% for addon in addon_packages %}
-                    <div class="p-6 rounded-insight-surface bg-insight-secondary-background border border-insight-primary-border {% if addon.status == 'planned' %}opacity-75{% endif %}">
+                    <div class="p-6 rounded-insight-surface bg-insight-bg-surface border border-insight-border-surface {% if addon.status == 'planned' %}opacity-75{% endif %}">
                         {% hbox gap="m" v_align="start" %}
                             <div class="shrink-0 w-12 h-12 rounded-insight-surface bg-insight-primary/10 flex items-center justify-center">
                                 {% icon name=addon.icon size="l" %}
@@ -372,7 +372,7 @@
             {% endvbox %}
             {% vbox %}
                 {% for item in checklist %}
-                    <div class="flex items-center gap-4 p-4 rounded-insight-surface bg-insight-secondary-background border border-insight-primary-border">
+                    <div class="flex items-center gap-4 p-4 rounded-insight-surface bg-insight-bg-surface border border-insight-border-surface">
                         <div class="shrink-0 w-8 h-8 rounded-insight-full bg-insight-success-soft flex items-center justify-center">
                             {% icon name="check" size="s" %}
                         </div>

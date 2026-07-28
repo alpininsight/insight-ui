@@ -21,22 +21,22 @@
     */
 
     /* Background colors */
-    --color-insight-primary-background: #F6F7F9;
-    --color-insight-primary-background-dark: #030712;
-    --color-insight-secondary-background: #FFFFFF;
-    --color-insight-secondary-background-dark: #0E1525;
-    --color-insight-tertiary-background: #EEF0F3;
-    --color-insight-tertiary-background-dark: #1A2336;
-    --color-insight-quaternary-background: #E9EAEB;
-    --color-insight-quaternary-background-dark: #202A3D;
+    --color-insight-bg-base: #FFFFFF;
+    --color-insight-bg-base-dark: #030712;
+    --color-insight-bg-surface: #F6F7F9;
+    --color-insight-bg-surface-dark: #0E1525;
+    --color-insight-bg-raised: #EEF0F3;
+    --color-insight-bg-raised-dark: #1A2336;
+    --color-insight-bg-overlay: #E9EAEB;
+    --color-insight-bg-overlay-dark: #202A3D;
 
     /* Border colors */
-    --color-insight-primary-border: #E5E7EB;
-    --color-insight-primary-border-dark: #1E2940;
-    --color-insight-secondary-border: #E5E7EB;
-    --color-insight-secondary-border-dark: #1E2940;
-    --color-insight-tertiary-border: #E5E7EB;
-    --color-insight-tertiary-border-dark: #2F3B54;
+    --color-insight-border-surface: #E5E7EB;
+    --color-insight-border-surface-dark: #1E2940;
+    --color-insight-border-raised: #E5E7EB;
+    --color-insight-border-raised-dark: #1E2940;
+    --color-insight-border-overlay: #E5E7EB;
+    --color-insight-border-overlay-dark: #2F3B54;
 
     /* Primary color */
     --color-insight-primary: #4183EA;
@@ -217,14 +217,14 @@
         color-scheme: dark;
 
         /* Background */
-        --color-insight-primary-background: var(--color-insight-primary-background-dark);
-        --color-insight-secondary-background: var(--color-insight-secondary-background-dark);
-        --color-insight-tertiary-background: var(--color-insight-tertiary-background-dark);
-        --color-insight-quaternary-background: var(--color-insight-quaternary-background-dark);
+        --color-insight-bg-base: var(--color-insight-bg-base-dark);
+        --color-insight-bg-surface: var(--color-insight-bg-surface-dark);
+        --color-insight-bg-raised: var(--color-insight-bg-raised-dark);
+        --color-insight-bg-overlay: var(--color-insight-bg-overlay-dark);
         /* Border */
-        --color-insight-primary-border: var(--color-insight-primary-border-dark);
-        --color-insight-secondary-border: var(--color-insight-secondary-border-dark);
-        --color-insight-tertiary-border: var(--color-insight-tertiary-border-dark);
+        --color-insight-border-surface: var(--color-insight-border-surface-dark);
+        --color-insight-border-raised: var(--color-insight-border-raised-dark);
+        --color-insight-border-overlay: var(--color-insight-border-overlay-dark);
         /* Primary */
         --color-insight-primary-soft: var(--color-insight-primary-soft-dark);
         --color-insight-primary-hover: var(--color-insight-primary-hover-dark);
@@ -272,43 +272,63 @@
     h5 { @apply text-base md:text-lg font-semibold text-insight-text-primary pb-1; }
 
     /* Default horizontale rule styling */
-    hr { @apply text-gray-300 dark:text-gray-600;}
+    hr { @apply text-insight-text-hint;}
 
-    /* Custom scrollbar styling for Chromium browsers */
+    /* Firefox / Standard (scrollbar-color) - only on elements with overflow */
+    .overflow-auto,
+    .overflow-scroll,
+    .overflow-x-auto,
+    .overflow-x-scroll,
+    .overflow-y-auto,
+    .overflow-y-scroll {
+        scrollbar-width: auto;
+        scrollbar-color: #757575 var(--color-insight-bg-overlay);
+    }
+
+    [data-theme="dark"] .overflow-auto,
+    [data-theme="dark"] .overflow-scroll,
+    [data-theme="dark"] .overflow-x-auto,
+    [data-theme="dark"] .overflow-x-scroll,
+    [data-theme="dark"] .overflow-y-auto,
+    [data-theme="dark"] .overflow-y-scroll {
+        scrollbar-color: #9CA3AF var(--color-insight-bg-overlay);
+    }
+
+    /* Chromium / WebKit */
     ::-webkit-scrollbar {
         width: 12px;
         height: 12px;
     }
 
     ::-webkit-scrollbar-track {
-        background: #f1f1f1;
+        background: var(--color-insight-bg-overlay);
         border-radius: 6px;
     }
 
     ::-webkit-scrollbar-thumb {
-        background: #c1c1c1;
+        background: #757575;
         border-radius: 6px;
-        border: 2px solid #f1f1f1;
+        border: 2px solid var(--color-insight-bg-overlay);
     }
 
     ::-webkit-scrollbar-thumb:hover {
-        background: #a1a1a1;
+        background: #5C5C5C;
     }
 
     [data-theme="dark"] ::-webkit-scrollbar-track,
     [data-theme="dark"]::-webkit-scrollbar-track {
-        background: #1f2937;
+        background: var(--color-insight-bg-overlay);
     }
 
     [data-theme="dark"] ::-webkit-scrollbar-thumb,
     [data-theme="dark"]::-webkit-scrollbar-thumb {
-        background: #4b5563;
-        border-color: #1f2937;
+        background: #9CA3AF;
+        border-color: var(--color-insight-bg-overlay);
     }
 
     [data-theme="dark"] ::-webkit-scrollbar-thumb:hover,
     [data-theme="dark"]::-webkit-scrollbar-thumb:hover {
-        background: #6b7280;
+        background: #D1D5DB;
     }
 }
 
@@ -485,24 +505,6 @@
 
     /*
     * ========================================================
-    *   Container
-    * ========================================================
-    */
-
-    .component-container {
-        @apply bg-insight-primary-background border border-insight-primary-border rounded-insight-surface shadow-insight-surface;
-    }
-
-    .example-container {
-        @apply bg-insight-primary-background border border-insight-primary-border rounded-insight-raised shadow-insight-subtle px-8 py-16 my-12;
-    }
-
-    .info-container {
-        @apply bg-insight-secondary-background border border-insight-secondary-border border-s-4 rounded-e-insight-control px-4 py-1 text-base;
-    }
-
-    /*
-    * ========================================================
     *   Utils
     * ========================================================
     */
@@ -512,56 +514,56 @@
     }
 
     .input {
-        @apply w-full bg-insight-primary-background border border-insight-primary-border rounded-insight-control shadow-insight-subtle px-3 py-2 text-sm text-insight-text-primary focus:ring-2 focus:ring-insight-primary focus:border-insight-primary transition-colors duration-200;
+        @apply w-full bg-insight-bg-base border border-insight-border-surface rounded-insight-control shadow-insight-subtle px-3 py-2 text-sm text-insight-text-primary focus:ring-2 focus:ring-insight-primary focus:border-insight-primary transition-colors duration-200;
     }
 
     /* Range slider (single thumb) */
     .range-custom::-webkit-slider-runnable-track {
         @apply h-2 rounded-insight-control;
-        background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-tertiary-background) var(--insight-control-range-progress));
+        background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised) var(--insight-control-range-progress));
     }
 
     .range-custom::-moz-range-track {
         @apply h-2 rounded-insight-control;
-        background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-tertiary-background) var(--insight-control-range-progress));
+        background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised) var(--insight-control-range-progress));
     }
 
     [data-theme="dark"] .range-custom::-webkit-slider-runnable-track,
     [data-theme="dark"].range-custom::-webkit-slider-runnable-track {
-        background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-tertiary-background-dark) var(--insight-control-range-progress));
+        background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised-dark) var(--insight-control-range-progress));
     }
 
     [data-theme="dark"] .range-custom::-moz-range-track,
     [data-theme="dark"].range-custom::-moz-range-track {
-        background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-tertiary-background-dark) var(--insight-control-range-progress));
+        background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised-dark) var(--insight-control-range-progress));
     }
 
     html[dir='rtl'] .range-custom::-webkit-slider-runnable-track {
-        background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-tertiary-background) var(--insight-control-range-progress));
+        background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised) var(--insight-control-range-progress));
     }
 
     html[dir='rtl'] .range-custom::-moz-range-track {
-        background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-tertiary-background) var(--insight-control-range-progress));
+        background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised) var(--insight-control-range-progress));
     }
 
     html[dir='rtl'][data-theme="dark"] .range-custom::-webkit-slider-runnable-track,
     html[dir='rtl'] [data-theme="dark"] .range-custom::-webkit-slider-runnable-track,
     html[dir='rtl'] [data-theme="dark"].range-custom::-webkit-slider-runnable-track {
-        background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-tertiary-background-dark) var(--insight-control-range-progress));
+        background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised-dark) var(--insight-control-range-progress));
     }
 
     html[dir='rtl'][data-theme="dark"] .range-custom::-moz-range-track,
     html[dir='rtl'] [data-theme="dark"] .range-custom::-moz-range-track,
     html[dir='rtl'] [data-theme="dark"].range-custom::-moz-range-track {
-        background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-tertiary-background-dark) var(--insight-control-range-progress));
+        background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised-dark) var(--insight-control-range-progress));
     }
 
     .range-custom::-webkit-slider-thumb {
-        @apply size-4 bg-insight-primary-background border-2 border-insight-primary rounded-insight-full cursor-pointer -mt-1;
+        @apply size-4 bg-insight-bg-base border-2 border-insight-primary rounded-insight-full cursor-pointer -mt-1;
     }
 
     .range-custom::-moz-range-thumb {
-        @apply size-4 bg-insight-primary-background border-2 border-insight-primary rounded-insight-full cursor-pointer;
+        @apply size-4 bg-insight-bg-base border-2 border-insight-primary rounded-insight-full cursor-pointer;
     }
 
     /* Background pattern for the demo containers */
