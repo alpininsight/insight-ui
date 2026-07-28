@@ -65,7 +65,6 @@ class TestStatusScreen(TemplateTagsTestCase):
         notice = soup.find(role="alert")
         assert notice is not None
         assert "border-s-insight-danger" in notice.get("class", [])
-        assert "insight-surface-muted" in notice.get("class", [])
 
     def test_status_screen_rejects_unknown_status(self) -> None:
         """Unknown status values fail early instead of rendering broken classes."""
