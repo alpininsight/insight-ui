@@ -26,14 +26,14 @@
   <aside
     role="complementary"
     aria-label="{% trans 'Side navigation' %}"
-    class="{% if sidebar_config.static %}{% if sidebar_config.mobile_hidden %}hidden xl:block {% endif %}sticky {% if navbar_fixed %}top-16 h-[calc(100vh-4rem)]{% else %}top-0 h-screen{% endif %}{% else %}fixed h-screen{% endif %} {% if sidebar_config.side == "right" %}ltr:right-0 ltr:border-l rtl:left-0 rtl:border-r{% else %}ltr:left-0 ltr:border-r rtl:right-0 rtl:border-l{% endif %} overflow-y-auto bg-insight-secondary-background border-insight-primary-border shadow-insight-surface transition"
+    class="{% if sidebar_config.static %}{% if sidebar_config.mobile_hidden %}hidden xl:block {% endif %}sticky {% if navbar_fixed %}top-16 h-[calc(100vh-4rem)]{% else %}top-0 h-screen{% endif %}{% else %}fixed h-screen{% endif %} {% if sidebar_config.side == "right" %}ltr:right-0 ltr:border-l rtl:left-0 rtl:border-r{% else %}ltr:left-0 ltr:border-r rtl:right-0 rtl:border-l{% endif %} overflow-y-auto bg-insight-bg-base border-insight-border-surface shadow-insight-surface transition"
     style="width: {{ sidebar_config.sidebar_data.width|default:'18rem' }}"
     data-auto-close="{{ sidebar_config.auto_close|yesno:'true,false' }}"
   >
     <div class="flex flex-col {% if sidebar_config.side == "right" %}ps-4 pe-4 md:pe-16{% else %}ps-4 md:ps-16 pe-4{% endif %} {% if sidebar_config.static %}py-8{% else %}pb-8{% endif %}">
       {% block sidebar_content %}
         {# Sidebar head with internal close button #}
-        <div class="flex justify-between items-center {% if not sidebar_config.static %}h-16{% else %}pb-4{% endif %} border-b border-insight-primary-border mb-4">
+        <div class="flex justify-between items-center {% if not sidebar_config.static %}h-16{% else %}pb-4{% endif %} border-b border-insight-border-surface mb-4">
           {% if sidebar_config.sidebar_data.title %}
             <h2 class="flex items-center gap-2 text-lg pb-0">
               {% if sidebar_config.sidebar_data.icon %}
@@ -81,7 +81,7 @@
                             hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
                           {% endif %}
                           href="{{ item.request_url }}"
-                          class="flex gap-2 px-2 py-1 text-sm text-primary border-s border-insight-primary-border hover:border-insight-text-secondary hover:text-insight-text-secondary"
+                          class="flex gap-2 px-2 py-1 text-sm text-primary border-s border-insight-border-surface hover:border-insight-text-secondary hover:text-insight-text-secondary"
                         >
                           {% if item.icon %}
                             {% icon item.icon %}

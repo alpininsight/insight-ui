@@ -4,7 +4,7 @@
   <div
     role="tablist"
     aria-label="{{ config.label }}"
-    class="flex border-b border-insight-primary-border"
+    class="flex border-b border-insight-border-surface"
   >
     {% for tab in config.tabs %}
       <button
@@ -14,7 +14,7 @@
         hx-get="{{ tab.url }}"
         hx-target="#{{ config.tag_id }}-tab-content"
         hx-swap="innerHTML"
-        class="px-4 py-2 -mb-px border-b border-insight-primary-border font-semibold text-primary hover:border-insight-primary-hover hover:text-insight-primary-hover focus:outline-none focus:border-insight-primary-active focus:text-insight-primary-active transition-colors duration-300"
+        class="px-4 py-2 -mb-px border-b border-insight-border-surface font-semibold text-primary hover:border-insight-primary-hover hover:text-insight-primary-hover focus:outline-none focus:border-insight-primary-active focus:text-insight-primary-active transition-colors duration-300"
       >
         {% if tab.icon %}
           {% icon tab.icon %}

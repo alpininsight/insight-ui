@@ -1,8 +1,8 @@
 {% load insight_tags %}
 
 {% for component, demo in components %}
-    <section data-insight-demo-container="{{ demo.id }}" class="component-container">
-        <div class="w-full bg-insight-tertiary-background rounded-t-insight-surface p-4 py-2 md:px-6 md:py-3">
+    <section data-insight-demo-container="{{ demo.id }}" class="bg-insight-bg-base border border-insight-border-surface rounded-insight-surface shadow-insight-surface">
+        <div class="w-full bg-insight-bg-raised rounded-t-insight-surface p-4 py-2 md:px-6 md:py-3">
             <h2 class="text-xl pb-0">
                 <a
                     href="{% url 'component_detail_page_view' component.value %}"
@@ -16,7 +16,7 @@
                 </a>
             </h2>
         </div>
-        <div class="bg-insight-primary-background w-full rounded-b-insight-surface overflow-hidden">
+        <div class="bg-insight-bg-base w-full rounded-b-insight-surface overflow-hidden">
             <iframe data-insight-demo-iframe="{{ demo.id }}" id="{{ demo.id }}" src="{{ demo.url }}" title="{{ demo.title }}" class="w-full mx-auto"></iframe>
         </div>
     </section>

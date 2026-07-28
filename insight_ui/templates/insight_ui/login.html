@@ -2,7 +2,7 @@
 {% load i18n insight_tags %}
 
 {% block content %}
-  <div class="relative flex max-w-96 flex-col justify-center bg-insight-secondary-background border border-insight-primary-border rounded-insight-surface shadow-insight-surface p-6 lg:p-8 mb-16 mx-auto">
+  <div class="relative flex max-w-96 flex-col justify-center bg-insight-bg-surface border border-insight-border-surface rounded-insight-surface shadow-insight-surface p-6 lg:p-8 mb-16 mx-auto">
     {% if show_theme_toggle %}
       <div class="absolute top-2 right-2">
         {% include "insight_ui/components/toggle_theme.html" %}
@@ -43,9 +43,9 @@
     {% if alt_login %}
       <!-- Alternative login section -->
       <div class="flex items-center gap-4 w-full mt-6">
-        <div class="border-b border-insight-primary-border w-full"></div>
+        <div class="border-b border-insight-border-surface w-full"></div>
         <span>{% trans "Or" %}</span>
-        <div class="border-b border-insight-primary-border w-full"></div>
+        <div class="border-b border-insight-border-surface w-full"></div>
       </div>
       <div class="flex justify-center mt-2">
         <a href="{{ alt_login.url }}" class="btn btn-link">

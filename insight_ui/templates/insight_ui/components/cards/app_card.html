@@ -1,6 +1,6 @@
 {% load static i18n insight_tags %}
 
-<div class="flex flex-col overflow-hidden max-w-72 bg-insight-secondary-background border border-insight-primary-border shadow-insight-surface rounded-insight-surface hover:scale-105 hover:shadow-insight-raised transition-transform duration-500">
+<div class="flex flex-col overflow-hidden max-w-72 bg-insight-bg-surface border border-insight-border-surface shadow-insight-surface rounded-insight-surface hover:scale-105 hover:shadow-insight-raised transition-transform duration-500">
     <img class="w-full" src="{{ app_card_config.image.url }}" alt="{{ app_card_config.image.alt }}">
 
     {# Title and description #}
@@ -25,7 +25,7 @@
     {% endif %}
 
     {# Start and more #}
-    <div class="flex flex-col gap-2 pt-4 m-4 border-t border-insight-primary-border">
+    <div class="flex flex-col gap-2 pt-4 m-4 border-t border-insight-border-surface">
         {% for action in app_card_config.actions %}
             {% button config=action %}
         {% endfor %}

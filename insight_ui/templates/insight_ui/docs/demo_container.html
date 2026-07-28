@@ -1,7 +1,7 @@
 {% load insight_tags %}
 
-<div data-insight-demo-container="{{ demo.id }}" class="bg-white dark:bg-black border border-insight-primary-border shadow-insight-surface rounded-insight-surface overflow-hidden mt-8">
-    <div class="flex items-center justify-between gap-4 bg-insight-tertiary-background h-12 p-1.5">
+<div data-insight-demo-container="{{ demo.id }}" class="bg-white dark:bg-black border border-insight-border-surface shadow-insight-surface rounded-insight-surface overflow-hidden mt-8">
+    <div class="flex items-center justify-between gap-4 bg-insight-bg-raised h-12 p-1.5">
         <div class="flex items-center justify-center gap-1 h-full">
             {% if demo.template_repo_url %}
                 <a href="{{ demo.template_repo_url }}" class="btn btn-s btn-outline-secondary">

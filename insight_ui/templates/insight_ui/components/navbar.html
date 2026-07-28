@@ -8,7 +8,7 @@
 <nav
   role="navigation"
   aria-label="{% trans 'Main navigation' %}"
-  class="{% if fixed %}fixed{% else %}absolute{% endif %} w-full h-16 z-50 bg-insight-secondary-background shadow-insight-surface border-b border-insight-primary-border px-4 md:px-16"
+  class="{% if fixed %}fixed{% else %}absolute{% endif %} w-full h-16 z-50 bg-insight-bg-base shadow-insight-surface border-b border-insight-border-surface px-4 md:px-16"
 >
   {# Desktop Navigation #}
   <div class="flex flex-wrap lg:flex-nowrap justify-between items-center gap-1 h-full">
@@ -40,7 +40,7 @@
     </div>
 
     <div id="navigation-menu" class="hidden lg:block h-full w-full lg:w-fit grow lg:py-3">
-      <div class="flex flex-col lg:flex-row justify-end gap-6 w-full lg:h-full p-2 lg:p-0 bg-insight-secondary-background border border-insight-primary-border shadow-insight-raised lg:shadow-none lg:bg-transparent lg:border-none rounded-insight-surface">
+      <div class="flex flex-col lg:flex-row justify-end gap-6 w-full lg:h-full p-2 lg:p-0 bg-insight-bg-surface border border-insight-border-surface shadow-insight-raised lg:shadow-none lg:bg-transparent lg:border-none rounded-insight-surface">
         {# Main-Navigation #}
         {% if navbar_config.links %}
           <ul class="flex flex-col lg:flex-row justify-items-stretch lg:items-center w-full lg:w-fit">
@@ -70,7 +70,7 @@
                           {% icon name="chevron-down" size="s" %}
                         {% endif %}
                       </button>
-                      <div id="{{ link.dropdown.tag_id }}" class="hidden bg-insight-secondary-background border border-insight-primary-border rounded-insight-overlay shadow-insight-overlay">
+                      <div id="{{ link.dropdown.tag_id }}" class="hidden bg-insight-bg-surface border border-insight-border-surface rounded-insight-overlay shadow-insight-overlay">
                         <div class="py-1">
                           {% for item in link.dropdown.items %}
                             <a
@@ -81,7 +81,7 @@
                                 hx-push-url="true"
                               {% endif %}
                               href="{{ item.request_url|default:'' }}"
-                              class="block px-4 py-2 text-sm text-primary hover:bg-insight-primary-background"
+                              class="block px-4 py-2 text-sm text-primary hover:bg-insight-bg-base"
                             >{{ item.text }}</a>
                           {% endfor %}
                         </div>
