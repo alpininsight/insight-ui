@@ -29,6 +29,12 @@ Block tags (require closing tag):
     {% grid cols=3 gap="m" %}...{% endgrid %}
         CSS Grid container with responsive columns.
 
+    {% surface padding="m" variant="subtle" radius="m" %}...{% endsurface %}
+        Styled container with background, border, and optional shadow.
+
+    {% link_surface href="/path" padding="m" %}...{% endlink_surface %}
+        Clickable surface container with hover effects (renders as <a>).
+
 Simple tags:
 
     {% spacer size="m" %}
@@ -75,6 +81,21 @@ wrap : True | False
 
 direction : horizontal | vertical
     Divider orientation. Default: "horizontal"
+
+variant : subtle | raised | outline
+    Surface visual style. Default: "subtle"
+    - subtle: Light background with border
+    - raised: Light background with border and shadow
+    - outline: Border only, transparent background
+
+radius : xs | s | m | l | xl | none
+    Border radius for surface. Default: "m"
+
+href : str
+    URL for link_surface. Required for link_surface.
+
+external : True | False
+    Open link in new tab (link_surface only). Default: False
 
 cols : int (2-6)
     Number of grid columns. If not set, uses auto-fit mode.
@@ -143,6 +164,8 @@ VALID_JUSTIFY: frozenset[str] = frozenset({"start", "center", "end", "between", 
 VALID_DIRECTION: frozenset[str] = frozenset({"horizontal", "vertical"})
 VALID_HEIGHT: frozenset[str] = frozenset({"auto", "full", "peek"})
 VALID_MAX_WIDTH: frozenset[str] = frozenset({"xs", "s", "m", "l", "xl", "fit", "full"})
+VALID_SURFACE_VARIANT: frozenset[str] = frozenset({"subtle", "raised", "outline"})
+VALID_RADIUS: frozenset[str] = frozenset({"xs", "s", "m", "l", "xl", "none"})
 
 # Class mappings (classes are defined in input.css or are tailwind classes)
 GAP_CLASSES: dict[str, str] = {
@@ -189,6 +212,26 @@ HEIGHT_CLASSES: dict[str, str] = {
     "full": "min-h-screen",  # Full viewport height
     "peek": "page-peek",  # Shows next section peeking
 }
+
+# Surface variant classes
+SURFACE_VARIANT_CLASSES: dict[str, str] = {
+    "subtle": "insight-surface-subtle border insight-border-subtle",
+    "raised": "insight-surface-subtle border insight-border-subtle insight-shadow-raised",
+    "outline": "border insight-border-subtle",
+}
+
+# Surface radius classes
+RADIUS_CLASSES: dict[str, str] = {
+    "xs": "rounded-sm",
+    "s": "rounded",
+    "m": "rounded-lg",
+    "l": "rounded-xl",
+    "xl": "rounded-2xl",
+    "none": "",
+}
+
+# Link surface hover classes (added to base surface classes)
+LINK_SURFACE_HOVER_CLASSES: str = "hover:border-insight-primary transition-colors group"
 
 # Responsive grid column mappings: cols -> (mobile, sm, md, lg)
 # These provide sensible defaults so users don't need to think about breakpoints
@@ -503,6 +546,114 @@ class GridNode(LayoutNode):
         return f'<div class="{class_str}">{content}</div>'
 
 
+class SurfaceNode(LayoutNode):
+    """
+    Surface container with background, border, and optional shadow.
+
+    A styled container for grouping content with consistent visual treatment.
+    Combine with vbox/hbox inside for layout control.
+
+    Example::
+
+        {% surface padding="l" variant="raised" %}
+            {% vbox gap="m" %}
+                <h3>Title</h3>
+                <p>Content goes here</p>
+            {% endvbox %}
+        {% endsurface %}
+
+    """
+
+    def build_classes(self, kwargs: dict[str, object]) -> list[str]:
+        """Build surface container CSS classes."""
+        variant = str(kwargs.get("variant", "subtle"))
+        _validate(variant, VALID_SURFACE_VARIANT, "variant", self.tag_name)
+        classes = [SURFACE_VARIANT_CLASSES[variant]]
+
+        # Padding
+        padding = str(kwargs.get("padding", "m"))
+        _validate(padding, VALID_SPACING, "padding", self.tag_name)
+        classes.append(PADDING_CLASSES[padding])
+
+        # Border radius
+        radius = str(kwargs.get("radius", "m"))
+        _validate(radius, VALID_RADIUS, "radius", self.tag_name)
+        if RADIUS_CLASSES[radius]:
+            classes.append(RADIUS_CLASSES[radius])
+
+        return classes
+
+
+class LinkSurfaceNode(LayoutNode):
+    """
+    Clickable surface container that renders as an anchor element.
+
+    A styled link container with hover effects for navigation cards.
+    Content is fully customizable - combine with hbox/vbox for layout.
+
+    Example::
+
+        {% link_surface href="/components" %}
+            {% hbox gap="m" v_align="center" %}
+                {% icon name="grid" size="l" %}
+                {% vbox gap="xs" %}
+                    <span class="font-semibold group-hover:text-insight-primary">Browse Components</span>
+                    <span class="text-sm text-secondary">60+ components</span>
+                {% endvbox %}
+            {% endhbox %}
+        {% endlink_surface %}
+
+    Note:
+        The container has ``class="group"`` so children can use ``group-hover:`` utilities.
+
+    """
+
+    def build_classes(self, kwargs: dict[str, object]) -> list[str]:
+        """Build link surface container CSS classes."""
+        variant = str(kwargs.get("variant", "subtle"))
+        _validate(variant, VALID_SURFACE_VARIANT, "variant", self.tag_name)
+        classes = [SURFACE_VARIANT_CLASSES[variant]]
+
+        # Padding
+        padding = str(kwargs.get("padding", "m"))
+        _validate(padding, VALID_SPACING, "padding", self.tag_name)
+        classes.append(PADDING_CLASSES[padding])
+
+        # Border radius
+        radius = str(kwargs.get("radius", "m"))
+        _validate(radius, VALID_RADIUS, "radius", self.tag_name)
+        if RADIUS_CLASSES[radius]:
+            classes.append(RADIUS_CLASSES[radius])
+
+        # Add hover effects and group class
+        classes.append(LINK_SURFACE_HOVER_CLASSES)
+
+        return classes
+
+    def render(self, context: Context) -> str:
+        """Render the link surface as an anchor element."""
+        resolved = self.resolve_kwargs(context)
+        classes = self.build_classes(resolved)
+
+        href = resolved.get("href", "#")
+        external = resolved.get("external", False)
+
+        # Append user-provided extra classes
+        extra_classes = resolved.get("class", "")
+        if extra_classes:
+            classes.append(str(extra_classes))
+
+        content = self.nodelist.render(context)
+        class_str = " ".join(classes)
+
+        # Build attributes
+        attrs = f'href="{href}" class="{class_str}"'
+        if external:
+            attrs += ' target="_blank" rel="noopener noreferrer"'
+
+        return f"<a {attrs}>{content}</a>"
+
+
 # =============================================================================
 # Tag Registration
 # =============================================================================
@@ -512,6 +663,8 @@ register.tag("page", _make_block_tag(PageNode))
 register.tag("hbox", _make_block_tag(HBoxNode))
 register.tag("vbox", _make_block_tag(VBoxNode))
 register.tag("grid", _make_block_tag(GridNode))
+register.tag("surface", _make_block_tag(SurfaceNode))
+register.tag("link_surface", _make_block_tag(LinkSurfaceNode))
 
 
 # =============================================================================
