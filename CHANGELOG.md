@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **cdn:** Publish insight ui browser assets
 - **cdn:** Trigger release asset publishing
 - **theme:** Use semantic tokens for search UI
+- Whitespace handling in the new sort_utility_classes script
+- Set executable bit on sort_utility_classes.py
 
 ### CI/CD
 
@@ -54,10 +56,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Mark check_design_tokens script as executable
 - Regenerate minified styesheet
 - Regenerate stylesheet
+- Regenerate stylesheet
+- Regenerate minified stylesheet
 
 ### Refactoring
 
 - Move html code for the search results to a separate template file
+- Sort css classes in all templates
 
 ### Testing
 
