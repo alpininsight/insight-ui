@@ -1,7 +1,7 @@
 {% load i18n insight_tags %}
 
-<div class="flex gap-3 items-center {% if brand_mark_config.logo_position == 'end' %} justify-between {% endif %} {{ brand_mark_config.css_class }}">
-    <span class="shrink-0 {% if brand_mark_config.logo_position == 'end' %} order-2 {% endif %}" aria-hidden="true">
+<div class="flex gap-3 items-center {% if brand_mark_config.logo_position == 'end' %}justify-between{% endif %} {{ brand_mark_config.css_class }}">
+    <span class="shrink-0 {% if brand_mark_config.logo_position == 'end' %} order-2{% endif %}" aria-hidden="true">
         {% logo config=brand_mark_config.logo %}
     </span>
     <span class="text-xl tracking-tight whitespace-nowrap">

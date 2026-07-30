@@ -9,7 +9,7 @@
       </div>
     {% endif %}
     {% if logo_config %}
-      <div class="flex {% if logo.position == 'start' %} justify-start {% elif logo.position == 'end' %} justify-end {% else %} justify-center {% endif %}">
+      <div class="flex {% if logo.position == 'start' %}justify-start{% elif logo.position == 'end' %}justify-end{% else %}justify-center{% endif %}">
         {% logo config=logo_config %}
       </div>
     {% endif %}

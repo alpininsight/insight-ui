@@ -9,7 +9,7 @@
     <div style="--quantity: {{ carousel_config.carousel_items|length }}; --carousel-tilt: {{ carousel_config.tilt }}deg" class="threeD_carousel absolute top-5 left-1/2 w-full h-[35vh]">
         {% for item in carousel_config.carousel_items %}
             <div style="--position: {{ forloop.counter }}; --item-tilt: {% if carousel_config.face_camera %}0deg{% else %}{{ carousel_config.tilt }}deg{% endif %}" class="item_wrapper absolute inset-0">
-                <div class="{% if carousel_config.face_camera %} item {% endif %} flex justify-center size-full">
+                <div class="{% if carousel_config.face_camera %}item{% endif %} flex justify-center size-full">
                     {% card title=item.title subtitle=item.subtitle content=item.content actions=item.actions %}
                 </div>
             </div>

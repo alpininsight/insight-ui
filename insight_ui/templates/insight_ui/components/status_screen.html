@@ -1,7 +1,7 @@
 {% load i18n insight_tags %}
 
-<section class="{{ status_screen_config.css_class }} flex justify-center items-center px-4 py-8 mx-auto w-full max-w-2xl">
-    <div class="{{ status_screen_config.card_css_class }} p-8 w-full text-center border border-insight-border-surface rounded-insight-raised shadow-insight-raised">
+<section class="flex justify-center items-center px-4 py-8 mx-auto w-full max-w-2xl {{ status_screen_config.css_class }}">
+    <div class="p-8 w-full text-center border border-insight-border-surface rounded-insight-raised shadow-insight-raised {{ status_screen_config.card_css_class }}">
         {% if status_screen_config.brand %}
             <div class="flex justify-center mb-8">
                 {% brand_mark config=status_screen_config.brand %}
@@ -9,7 +9,7 @@
         {% endif %}
 
         <div
-            class="flex justify-center items-center mx-auto mb-4 size-12 rounded-insight-full {% if status_screen_config.status == 'success' %} text-insight-success bg-insight-success/15 {% elif status_screen_config.status == 'warning' %} text-insight-warning bg-insight-warning/15 {% elif status_screen_config.status == 'error' %} text-insight-danger bg-insight-danger/15 {% else %} text-insight-info bg-insight-info/15 {% endif %}"
+            class="flex justify-center items-center mx-auto mb-4 size-12 rounded-insight-full {% if status_screen_config.status == 'success' %}text-insight-success bg-insight-success/15{% elif status_screen_config.status == 'warning' %}text-insight-warning bg-insight-warning/15{% elif status_screen_config.status == 'error' %}text-insight-danger bg-insight-danger/15{% else %}text-insight-info bg-insight-info/15{% endif %}"
             aria-hidden="true"
         >
             {% icon name=status_screen_icon size="l" %}
@@ -27,14 +27,14 @@
 
         {% if status_screen_config.notice or status_screen_config.notice_title %}
             <div
-                class="px-4 py-2 mx-auto mt-6 max-w-lg text-start border border-s-4 border-insight-border-surface rounded-e-insight-control {% if status_screen_config.status == 'success' %} border-s-insight-success {% elif status_screen_config.status == 'warning' %} border-s-insight-warning {% elif status_screen_config.status == 'error' %} border-s-insight-danger {% else %} border-s-insight-info {% endif %}"
+                class="px-4 py-2 mx-auto mt-6 max-w-lg text-start border border-s-4 border-insight-border-surface rounded-e-insight-control {% if status_screen_config.status == 'success' %}border-s-insight-success{% elif status_screen_config.status == 'warning' %}border-s-insight-warning{% elif status_screen_config.status == 'error' %}border-s-insight-danger{% else %}border-s-insight-info{% endif %}"
                 role="{% if status_screen_config.status == 'error' %}alert{% else %}status{% endif %}"
             >
                 {% if status_screen_config.notice_title %}
                     <p class="font-semibold text-primary">{{ status_screen_config.notice_title }}</p>
                 {% endif %}
                 {% if status_screen_config.notice %}
-                    <p class="{% if status_screen_config.notice_title %} mt-1 {% endif %} text-sm text-secondary">
+                    <p class="{% if status_screen_config.notice_title %}mt-1 {% endif %}text-sm text-secondary">
                         {{ status_screen_config.notice }}
                     </p>
                 {% endif %}

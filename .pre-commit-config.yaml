@@ -81,9 +81,9 @@ repos:
   # Sort Tailwind CSS classes, check used design tokens
   - repo: local
     hooks:
-      - id: tailwind-sort
-        name: Sort Tailwind CSS classes
-        entry: uv run python scripts/sort_tailwind_classes.py
+      - id: utility-sort
+        name: Sort utility CSS classes
+        entry: uv run python scripts/sort_utility_classes.py
         language: system
         files: '(^|/)templates/.*\.html$'
 

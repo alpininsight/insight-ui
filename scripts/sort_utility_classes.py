@@ -337,38 +337,62 @@ def sort_classes(class_string: str) -> str:
     utility classes in their recommended order. Django template tags
     within the class string are preserved in their original position.
 
+    Whitespace is normalized: multiple spaces become one, leading/trailing
+    whitespace is removed. However, the presence or absence of whitespace
+    at template tag boundaries is preserved to maintain class concatenation
+    patterns like `btn-{% if x %}outline-{% endif %}`.
+
     Args:
         class_string: Space-separated CSS class names, may include
-            Django template tags like {% if %}.
+            Django template tags like {% if %} or {{ variable }}.
 
     Returns:
-        The sorted class string with the same whitespace structure.
+        The sorted class string with normalized whitespace.
 
     Examples:
         >>> sort_classes("mt-4 flex custom-class bg-red-500")
         'custom-class flex mt-4 bg-red-500'
         >>> sort_classes("flex {% if x %}hidden{% endif %} mt-4")
         'flex {% if x %}hidden{% endif %} mt-4'
+        >>> sort_classes("flex  mt-4")  # double space normalized
+        'flex mt-4'
 
     """
-    # Preserve Django template tags as-is
-    if "{%" in class_string:
-        # Split into static classes and template parts
-        parts = re.split(r"(\{%.*?%\})", class_string)
-        result: list[str] = []
-        for part in parts:
-            if part.startswith("{%"):
-                result.append(part)
-            else:
-                classes = part.split()
-                if classes:
-                    sorted_classes = sorted(classes, key=get_class_priority)
-                    result.append(" ".join(sorted_classes))
-        return " ".join(filter(None, result))
+    # Check if there are any Django template constructs
+    if "{%" not in class_string and "{{" not in class_string:
+        classes = class_string.split()
+        sorted_classes = sorted(classes, key=get_class_priority)
+        return " ".join(sorted_classes)
 
-    classes = class_string.split()
-    sorted_classes = sorted(classes, key=get_class_priority)
-    return " ".join(sorted_classes)
+    # Split into template tags/variables and static parts, preserving delimiters
+    # Match both {% ... %} and {{ ... }}
+    parts = re.split(r"(\{%.*?%\}|\{\{.*?\}\})", class_string)
+
+    result: list[str] = []
+    for part in parts:
+        if part.startswith(("{%", "{{")):
+            # Template tag or variable - preserve as-is
+            result.append(part)
+        elif part:
+            # Static text - normalize whitespace while preserving boundary presence
+            has_leading_ws = part[0].isspace()
+            has_trailing_ws = part[-1].isspace()
+
+            # Sort the classes
+            classes = part.split()
+            if classes:
+                sorted_part = " ".join(sorted(classes, key=get_class_priority))
+                # Add single space if original had whitespace at boundary
+                if has_leading_ws:
+                    sorted_part = " " + sorted_part
+                if has_trailing_ws:
+                    sorted_part = sorted_part + " "
+                result.append(sorted_part)
+            elif has_leading_ws or has_trailing_ws:
+                # Only whitespace - normalize to single space
+                result.append(" ")
+
+    return "".join(result).strip()
 
 
 def process_file(filepath: Path) -> bool:
