@@ -5,7 +5,7 @@
         <img src="{% static hero_config.background_image_url %}" alt="" aria-hidden="true" class="object-cover -z-10 absolute inset-0 w-full h-full opacity-20">
     {% endif %}
 
-    <div class="space-y-4 max-w-4xl xl:space-y-8 {% if not hero_config.background_image_url %} mx-auto text-center {% endif %}">
+    <div class="space-y-4 max-w-4xl xl:space-y-8{% if not hero_config.background_image_url %} mx-auto text-center{% endif %}">
         {% if hero_config.badge_config %}
             <div class="mb-4">
                 {% badge config=hero_config.badge_config %}
@@ -19,11 +19,11 @@
         {% endif %}
 
         {% if hero_config.description %}
-            <p class="max-w-2xl text-lg text-secondary leading-relaxed xl:text-xl {% if not hero_config.background_image_url %} mx-auto {% endif %}">{{ hero_config.description }}</p>
+            <p class="max-w-2xl text-lg text-secondary leading-relaxed xl:text-xl{% if not hero_config.background_image_url %} mx-auto{% endif %}">{{ hero_config.description }}</p>
         {% endif %}
 
         {% if hero_config.cta_primary or hero_config.cta_secondary %}
-            <div class="flex flex-wrap gap-4 {% if not hero_config.background_image_url %} justify-center {% endif %}">
+            <div class="flex flex-wrap gap-4{% if not hero_config.background_image_url %} justify-center{% endif %}">
                 {% if hero_config.cta_primary %}
                     {% button config=hero_config.cta_primary size="l" %}
                 {% endif %}

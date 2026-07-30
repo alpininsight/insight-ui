@@ -11,7 +11,7 @@
     <img
         src="{{ logo_config.url }}"
         alt="{{ logo_config.alt }}"
-        class="object-contain inline-block w-auto {% if has_dark_variant %} dark:hidden {% endif %}"
+        class="object-contain inline-block w-auto {% if has_dark_variant %}dark:hidden{% endif %}"
         style="height: {{ logo_config.height }}{% if logo_config.width %}; width: {{ logo_config.width }}{% endif %}"
     >
     {% if has_dark_variant %}

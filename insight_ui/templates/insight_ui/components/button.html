@@ -26,7 +26,7 @@
         {% for attr in button_config.hx_attrs %}
             hx-{{ attr.name }}="{{ attr.value }}"
         {% endfor %}
-        class="btn btn- {% if button_config.outline %} outline- {% endif %} {% if button_config.subtle %} subtle- {% endif %} {{ button_config.type }} {% if button_config.icon_only %} btn-icon {% else %} btn-{{ button_config.size }} {% endif %} {% if button_config.round %} btn-round {% endif %} {% if button_config.hidden %} hidden {% endif %} {% if button_config.extra_classes %} {{ button_config.extra_classes }} {% endif %}"
+        class="btn btn-{% if button_config.outline %}outline-{% endif %}{% if button_config.subtle %}subtle-{% endif %}{{ button_config.type }}{% if button_config.icon_only %} btn-icon{% else %} btn-{{ button_config.size }}{% endif %}{% if button_config.round %} btn-round{% endif %}{% if button_config.hidden %} hidden{% endif %}{% if button_config.extra_classes %} {{ button_config.extra_classes }}{% endif %}"
     >
 {% else %}
     <button
@@ -54,7 +54,7 @@
         {% for attr in button_config.hx_attrs %}
             hx-{{ attr.name }}="{{ attr.value }}"
         {% endfor %}
-        class="btn btn- {% if button_config.outline %} outline- {% endif %} {% if button_config.subtle %} subtle- {% endif %} {{ button_config.type }} {% if button_config.icon_only %} btn-icon {% else %} btn-{{ button_config.size }} {% endif %} {% if button_config.round %} btn-round {% endif %} {% if button_config.hidden %} hidden {% endif %} {% if button_config.extra_classes %} {{ button_config.extra_classes }} {% endif %}"
+        class="btn btn-{% if button_config.outline %}outline-{% endif %}{% if button_config.subtle %}subtle-{% endif %}{{ button_config.type }}{% if button_config.icon_only %} btn-icon{% else %} btn-{{ button_config.size }}{% endif %}{% if button_config.round %} btn-round{% endif %}{% if button_config.hidden %} hidden{% endif %}{% if button_config.extra_classes %} {{ button_config.extra_classes }}{% endif %}"
     >
 {% endif %}
 {% if button_config.icon and button_config.icon_only %}

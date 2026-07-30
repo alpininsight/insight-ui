@@ -8,7 +8,7 @@
 <nav
   role="navigation"
   aria-label="{% trans 'Main navigation' %}"
-  class="{% if fixed %} fixed {% else %} absolute {% endif %} z-50 px-4 w-full h-16 bg-insight-bg-base border-b border-insight-border-surface shadow-insight-surface md:px-16"
+  class="{% if fixed %}fixed{% else %}absolute{% endif %} z-50 px-4 w-full h-16 bg-insight-bg-base border-b border-insight-border-surface shadow-insight-surface md:px-16"
 >
   {# Desktop Navigation #}
   <div class="flex flex-wrap gap-1 justify-between items-center h-full lg:flex-nowrap">
@@ -50,7 +50,7 @@
                   {% if link.url %}
                     <a
                       href="{{ link.url }}"
-                      class="insight-nav-item-radius flex gap-2 px-4 py-2 h-full text-secondary text-sm whitespace-nowrap transition-colors duration-200 hover:text-insight-text-link {% if link.active %} text-insight-primary {% endif %}"
+                      class="insight-nav-item-radius flex gap-2 px-4 py-2 h-full text-secondary text-sm whitespace-nowrap transition-colors duration-200 hover:text-insight-text-link {% if link.active %}text-insight-primary{% endif %}"
                       {% if link.active %}aria-current="page"{% endif %}
                       {% if link.external %}target="_blank" rel="noopener"{% endif %}
                     >
@@ -61,7 +61,7 @@
                     </a>
                   {% elif link.dropdown %}
                     <div class="relative">
-                      <button data-insight-dropdown="{{ link.dropdown.tag_id }}" class="flex gap-2 h-full whitespace-nowrap {% if link.active %} text-insight-text-link {% else %} text-secondary hover:text-insight-text-link {% endif %} px-4 py-2 text-sm transition-colors duration-200">
+                      <button data-insight-dropdown="{{ link.dropdown.tag_id }}" class="flex gap-2 h-full whitespace-nowrap {% if link.active %}text-insight-text-link{% else %}text-secondary hover:text-insight-text-link{% endif %} px-4 py-2 text-sm transition-colors duration-200">
                         {% if link.icon %}
                           {% icon link.icon %}
                         {% endif %}

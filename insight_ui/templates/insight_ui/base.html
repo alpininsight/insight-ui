@@ -86,7 +86,7 @@
         {% block drawers %}
         {% endblock drawers %}
 
-        <main id="main" class="flex grow {% if navbar_fixed %} pt-16 {% endif %}">
+        <main id="main" class="flex grow {% if navbar_fixed %}pt-16{% endif %}">
             <div id="left-aside" class="flex">
                 {% block sidebar_left %}{% endblock sidebar_left %}
             </div>
@@ -94,7 +94,7 @@
                 <div id="heading">
                     {% block heading %}{% endblock heading %}
                 </div>
-                <div id="content" class="space-y-12 w-full leading-loose {% if default_padding is not False %} px-4 py-16 md:px-16 {% endif %}">
+                <div id="content" class="space-y-12 w-full leading-loose {% if default_padding is not False %}px-4 py-16 md:px-16{% endif %}">
                     {% if use_default_loading_indicator is not False %}{% include "insight_ui/components/htmx_loading_indicator.html" %}{% endif %}
                     {% block content %}{% endblock content %}
                 </div>

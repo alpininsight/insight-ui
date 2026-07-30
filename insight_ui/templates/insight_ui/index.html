@@ -335,7 +335,7 @@
 
             {% grid cols=2 gap="l" class="mt-8 w-full" %}
                 {% for addon in addon_packages %}
-                    <div class="p-6 bg-insight-bg-surface border border-insight-border-surface rounded-insight-surface {% if addon.status == 'planned' %} opacity-75 {% endif %}">
+                    <div class="p-6 bg-insight-bg-surface border border-insight-border-surface rounded-insight-surface {% if addon.status == 'planned' %}opacity-75{% endif %}">
                         {% hbox gap="m" v_align="start" %}
                             <div class="flex shrink-0 justify-center items-center w-12 h-12 bg-insight-primary/10 rounded-insight-surface">
                                 {% icon name=addon.icon size="l" %}
