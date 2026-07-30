@@ -16,7 +16,7 @@
                     hx-swap="{{ htmx.swap|default:'innerHTML' }}"
                     hx-trigger="submit"
                 {% endif %}
-                class="flex items-center gap-1 px-4 py-2 text-sm text-primary bg-insight-bg-surface hover:bg-insight-bg-base {% if forloop.first %}rounded-insight-control-top{% elif forloop.last %}rounded-insight-control-bottom{% endif %}"
+                class="flex gap-1 items-center px-4 py-2 text-sm text-primary bg-insight-bg-surface hover:bg-insight-bg-base {% if forloop.first %} rounded-insight-control-top {% elif forloop.last %} rounded-insight-control-bottom {% endif %}"
             >
                 {% if item.icon %}
                     <div>

@@ -9,22 +9,22 @@
     {% with forloop.counter0|stringformat:"s" as idx %}
       {% with accordion_config.tag_id|add:"-panel-"|add:idx as panel_id %}
         <div>
-          <h3 class="text-primary mb-1">
+          <h3 class="mb-1 text-primary">
             <button
-              class="flex justify-between items-center w-full border-b border-insight-border-surface px-4 py-3 scroll-mt-24 focus:outline-none focus-visible:ring-2 ring-insight-focus"
+              class="flex justify-between items-center px-4 py-3 w-full border-b border-insight-border-surface ring-insight-focus scroll-mt-24 focus:outline-none focus-visible:ring-2"
               aria-expanded="false"
               aria-controls="{{ panel_id }}"
               id="{{ panel_id }}-header"
             >
               <span>{{ item.title }}</span>
-              <div class="ml-2 transform transition-transform duration-300">
+              <div class="ml-2 transition-transform duration-300 transform">
                 {% icon name="chevron-down" size="xs" %}
               </div>
             </button>
           </h3>
           <div
             id="{{ panel_id }}"
-            class="accordion-content px-4 overflow-hidden transition-all duration-300 ease-in-out"
+            class="accordion-content px-4 transition-all duration-300 ease-in-out overflow-hidden"
             role="region"
             aria-labelledby="{{ panel_id }}-header"
             style="height: 0; opacity: 0;"

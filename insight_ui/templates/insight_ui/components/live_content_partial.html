@@ -1,6 +1,6 @@
 {% load i18n insight_tags %}
 
-<div class="bg-insight-bg-surface border border-insight-border-surface rounded-insight-surface p-4">
+<div class="p-4 bg-insight-bg-surface border border-insight-border-surface rounded-insight-surface">
     <div class="flex items-center">
         <div class="shrink-0">
             {% icon name="clock" %}
@@ -9,7 +9,7 @@
             <p class="text-sm text-insight-text-primary">
                 {{ data.message }}
             </p>
-            <p class="text-xs text-insight-text-secondary mt-1">
+            <p class="mt-1 text-xs text-insight-text-secondary">
                 {% trans "Status" %}: {{ data.status }} | {% trans "Timestamp" %}: {{ timestamp }}
             </p>
         </div>

@@ -1,9 +1,9 @@
 {% load i18n insight_tags %}
 
-<div class="flex flex-col lg:flex-row gap-1">
+<div class="flex flex-col gap-1 lg:flex-row">
     {% if index != 0 %}
         {# Logic #}
-        <div class="flex gap-1 items-center text-primary pe-2">
+        <div class="flex gap-1 items-center pe-2 text-primary">
             <input type="radio" id="optionAND" name="logic{{ index }}" value="AND" {% if not selected_logic or selected_logic == "AND" %}checked{% endif %}>
             <label for="optionAND" class="pe-2">
                 AND
@@ -17,7 +17,7 @@
     <div class="w-full lg:w-48 xl:w-64">
         {# Field #}
         <label for="field" class="sr-only">{% trans "Select the field of the filter" %}</label>
-        <select id="field" name="field" class="field-select block w-full h-9 input">
+        <select id="field" name="field" class="field-select input block w-full h-9">
             <option value="" {% if not selected_value %}selected{% endif %}>{% trans "-- Attribute --" %}</option>
             {% for field in model_fields %}
                 <option value="{{ field.field }}" {% if selected_field == field.field %}selected{% endif %}>{{ field.label }}</option>
@@ -27,7 +27,7 @@
     <div class="w-full lg:w-48 xl:w-64">
         {# Operator #}
         <label for="operator" class="sr-only">{% trans "Select the operator of the filter" %}</label>
-        <select id="operator" name="operator" class="operator-select block w-full h-9 input">
+        <select id="operator" name="operator" class="operator-select input block w-full h-9">
             {# This option is used to retain the selected value #}
             <option value="{{ filter_operator }}" selected>{{ filter_operator }}</option>
             {# Operators are loaded dynamically here #}
@@ -39,7 +39,7 @@
         <input
             type="text" id="value" name="value" placeholder="{% trans 'Value' %}"
             {% if filter_value %} value="{{ filter_value }}" {% endif %}
-            class="value-field block w-full h-9 input"
+            class="value-field input block w-full h-9"
         >
     </div>
     {% if index != 0 %}

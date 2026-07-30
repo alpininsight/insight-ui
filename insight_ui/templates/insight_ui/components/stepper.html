@@ -1,18 +1,18 @@
 {% load insight_tags %}
 
-<ol class="flex flex-col md:flex-row divide-y md:divide-y-0 divide-insight-border-surface w-full border bg-insight-bg-surface border-insight-border-surface rounded-insight-surface">
+<ol class="divide-y divide-insight-border-surface flex flex-col w-full bg-insight-bg-surface border border-insight-border-surface rounded-insight-surface md:flex-row md:divide-y-0">
     {% for item in items %}
-        <li class="flex items-center gap-4 w-full h-20 px-6">
+        <li class="flex gap-4 items-center px-6 w-full h-20">
             {% if item.success %}
-                <div class="flex items-center justify-center size-12 rounded-insight-full bg-insight-primary text-white">
+                <div class="flex justify-center items-center size-12 text-white bg-insight-primary rounded-insight-full">
                     {% icon name="check" size="xl" %}
                 </div>
             {% elif item.failed %}
-                <div class="flex items-center justify-center size-12 rounded-insight-full bg-insight-danger text-white">
+                <div class="flex justify-center items-center size-12 text-white bg-insight-danger rounded-insight-full">
                     {% icon name="x-mark" size="xl" %}
                 </div>
             {% else %}
-                <div class="flex items-center justify-center size-12 rounded-insight-full border-2 {% if not item.current %}border-insight-border-surface text-insight-text-hint{% elif item.current %}text-insight-primary animate-pulse{% else %}border-insight-primary{% endif %}">
+                <div class="flex justify-center items-center size-12 border-2 rounded-insight-full {% if not item.current %} text-insight-text-hint border-insight-border-surface {% elif item.current %} animate-pulse text-insight-primary {% else %} border-insight-primary {% endif %}">
                     {% if item.icon %}
                         {% icon item.icon %}
                     {% else %}
@@ -26,15 +26,15 @@
                         <span class="block font-semibold text-insight-danger">{{ item.title }}</span>
                         <span class="block text-sm text-insight-danger-hover">{{ item.description }}</span>
                     {% else %}
-                        <span class="block font-semibold {% if not item.success and not item.current %}text-insight-text-hint{% elif item.current %}text-insight-primary{% else %}text-primary{% endif %}">{{ item.title }}</span>
-                        <span class="block text-sm {% if not item.success and not item.current %}text-insight-text-hint{% else %}text-secondary{% endif %}">{{ item.description }}</span>
+                        <span class="block font-semibold {% if not item.success and not item.current %} text-insight-text-hint {% elif item.current %} text-insight-primary {% else %} text-primary {% endif %}">{{ item.title }}</span>
+                        <span class="block text-sm {% if not item.success and not item.current %} text-insight-text-hint {% else %} text-secondary {% endif %}">{{ item.description }}</span>
                     {% endif %}
                 </a>
             </div>
         </li>
         {% if not forloop.last %}
-            <div class="text-insight-text-hint hidden md:block">
-                <svg viewBox="0 0 22 80" fill="none" preserveAspectRatio="none" aria-hidden="true" class="h-20 w-6 rtl:rotate-180">
+            <div class="hidden text-insight-text-hint md:block">
+                <svg viewBox="0 0 22 80" fill="none" preserveAspectRatio="none" aria-hidden="true" class="rtl:rotate-180 w-6 h-20">
                     <path d="M0 -2L20 40L0 82" stroke="currentcolor" vector-effect="non-scaling-stroke" stroke-linejoin="round"></path>
                 </svg>
             </div>

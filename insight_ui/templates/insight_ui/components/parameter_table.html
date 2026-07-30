@@ -1,30 +1,30 @@
 {% load i18n insight_tags docs_tags %}
 
 <div class="overflow-auto">
-    <table class="table-auto w-full">
+    <table class="w-full table-auto">
         <thead class="text-primary">
             <tr class="border-b border-insight-border-surface">
-                <th class="text-start text-nowrap text-sm px-4 py-2" scope="col">{% trans "Name" %}</th>
-                <th class="text-start text-nowrap text-sm px-4 py-2" scope="col">{% trans "Type" %}</th>
-                <th class="text-start text-nowrap text-sm px-4 py-2" scope="col">{% trans "Description" %}</th>
-                <th class="text-start text-nowrap text-sm px-4 py-2" scope="col">{% trans "Default value" %}</th>
-                <th class="text-start text-nowrap text-sm px-4 py-2" scope="col">{% trans "Required" %}</th>
+                <th class="px-4 py-2 text-start text-nowrap text-sm" scope="col">{% trans "Name" %}</th>
+                <th class="px-4 py-2 text-start text-nowrap text-sm" scope="col">{% trans "Type" %}</th>
+                <th class="px-4 py-2 text-start text-nowrap text-sm" scope="col">{% trans "Description" %}</th>
+                <th class="px-4 py-2 text-start text-nowrap text-sm" scope="col">{% trans "Default value" %}</th>
+                <th class="px-4 py-2 text-start text-nowrap text-sm" scope="col">{% trans "Required" %}</th>
             </tr>
         </thead>
         <tbody class="text-primary">
             {% for row in rows %}
                 <tr class="odd:bg-insight-bg-raised even:bg-insight-bg-base">
-                    <td class="text-start text-sm px-4 py-3"><span class="inline-tag">{{ row.name }}</span></td>
-                    <td class="text-start text-sm px-4 py-3">
+                    <td class="px-4 py-3 text-start text-sm"><span class="inline-tag">{{ row.name }}</span></td>
+                    <td class="px-4 py-3 text-start text-sm">
                         {% if row.type|is_known_type %}
                             {% type_popover row.type %}
                         {% else %}
                             <i>{{ row.type }}</i>
                         {% endif %}
                     </td>
-                    <td class="text-start text-sm px-4 py-3">{{ row.description|markdownify }}</td>
-                    <td class="text-start text-sm px-4 py-3"><b>{{ row.default }}</b></td>
-                    <td class="text-start text-sm px-4 py-3">
+                    <td class="px-4 py-3 text-start text-sm">{{ row.description|markdownify }}</td>
+                    <td class="px-4 py-3 text-start text-sm"><b>{{ row.default }}</b></td>
+                    <td class="px-4 py-3 text-start text-sm">
                         <span class="sr-only">{{ row.required }}</span>
                         {% if row.required %}
                             {% icon name="check" %}

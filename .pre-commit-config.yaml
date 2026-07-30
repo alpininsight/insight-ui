@@ -78,9 +78,15 @@ repos:
       - id: djhtml
         files: '(^|/)templates/.*\.html$'
 
-  # Sort Tailwind CSS classes (Python script, no external dependencies)
+  # Sort Tailwind CSS classes, check used design tokens
   - repo: local
     hooks:
+      - id: tailwind-sort
+        name: Sort Tailwind CSS classes
+        entry: uv run python scripts/sort_tailwind_classes.py
+        language: system
+        files: '(^|/)templates/.*\.html$'
+
       - id: design-tokens
         name: Check design token usage
         entry: uv run python scripts/check_design_tokens.py

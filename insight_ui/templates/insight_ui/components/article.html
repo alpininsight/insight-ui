@@ -6,7 +6,7 @@
     {% endif %}
 
     <div style="columns: {{ article_config.columns }}; column-gap: {{ article_config.column_gap }}; column-rule: 1px solid currentColor; column-rule-color: var(--color-gray-300);"
-         class="text-secondary leading-loose text-justify">
+         class="text-secondary text-justify leading-loose">
         {{ article_config.content|safe }}
     </div>
 </article>

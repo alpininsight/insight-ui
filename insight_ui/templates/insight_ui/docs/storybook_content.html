@@ -2,22 +2,22 @@
 
 {% for component, demo in components %}
     <section data-insight-demo-container="{{ demo.id }}" class="bg-insight-bg-base border border-insight-border-surface rounded-insight-surface shadow-insight-surface">
-        <div class="w-full bg-insight-bg-raised rounded-t-insight-surface p-4 py-2 md:px-6 md:py-3">
-            <h2 class="text-xl pb-0">
+        <div class="p-4 py-2 w-full bg-insight-bg-raised rounded-t-insight-surface md:px-6 md:py-3">
+            <h2 class="pb-0 text-xl">
                 <a
                     href="{% url 'component_detail_page_view' component.value %}"
                     hx-get="{% url 'component_detail_page_view' component.value %}"
                     hx-target="#content"
                     hx-swap="innerHTML show:window:top"
                     hx-push-url="true"
-                    class="inline-flex items-center gap-1 text-link"
+                    class="inline-flex gap-1 items-center text-link"
                 >
                     {{ component.formatted_name }} {% icon name="arrow-top-right-on-square" size="s" %}
                 </a>
             </h2>
         </div>
-        <div class="bg-insight-bg-base w-full rounded-b-insight-surface overflow-hidden">
-            <iframe data-insight-demo-iframe="{{ demo.id }}" id="{{ demo.id }}" src="{{ demo.url }}" title="{{ demo.title }}" class="w-full mx-auto"></iframe>
+        <div class="w-full bg-insight-bg-base rounded-b-insight-surface overflow-hidden">
+            <iframe data-insight-demo-iframe="{{ demo.id }}" id="{{ demo.id }}" src="{{ demo.url }}" title="{{ demo.title }}" class="mx-auto w-full"></iframe>
         </div>
     </section>
 {% endfor %}

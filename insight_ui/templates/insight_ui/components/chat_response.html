@@ -1,10 +1,10 @@
 <div class="flex flex-col gap-4">
     <!-- Own message -->
-    <div class="bg-insight-bg-surface w-fit border border-insight-border-raised px-4 py-2 rounded-insight-surface rounded-ee-none place-self-end">
-        <p class="italic text-secondary">{{ msg }}</p>
+    <div class="place-self-end px-4 py-2 w-fit bg-insight-bg-surface border border-insight-border-raised rounded-insight-surface rounded-ee-none">
+        <p class="text-secondary italic">{{ msg }}</p>
     </div>
     <!-- Response message -->
-    <div class="bg-insight-bg-raised w-fit border border-insight-border-overlay px-4 py-2 rounded-insight-surface rounded-es-none place-self-start">
+    <div class="place-self-start px-4 py-2 w-fit bg-insight-bg-raised border border-insight-border-overlay rounded-insight-surface rounded-es-none">
         <p class="text-primary">{% lorem 30 w %}</p>
     </div>
 </div>
