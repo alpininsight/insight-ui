@@ -1,29 +1,29 @@
 {% load static i18n insight_tags %}
 
-<section class="relative overflow-hidden py-8 md:py-12 px-4 md:px-12">
+<section class="relative px-4 py-8 overflow-hidden md:py-12 md:px-12">
     {% if hero_config.background_image_url %}
-        <img src="{% static hero_config.background_image_url %}" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover opacity-20 -z-10">
+        <img src="{% static hero_config.background_image_url %}" alt="" aria-hidden="true" class="object-cover -z-10 absolute inset-0 w-full h-full opacity-20">
     {% endif %}
 
-    <div class="max-w-4xl space-y-4 xl:space-y-8{% if not hero_config.background_image_url %} mx-auto text-center{% endif %}">
+    <div class="space-y-4 max-w-4xl xl:space-y-8 {% if not hero_config.background_image_url %} mx-auto text-center {% endif %}">
         {% if hero_config.badge_config %}
             <div class="mb-4">
                 {% badge config=hero_config.badge_config %}
             </div>
         {% endif %}
 
-        <h1 class="text-4xl md:text-5xl lg:text-6xl xl:text-8xl font-bold text-primary pb-0 xl:pb-4">{{ hero_config.title }}</h1>
+        <h1 class="pb-0 font-bold text-4xl text-primary md:text-5xl lg:text-6xl xl:text-8xl xl:pb-4">{{ hero_config.title }}</h1>
 
         {% if hero_config.subtitle %}
-            <p class="text-xl md:text-2xl xl:text-3xl font-medium text-insight-primary">{{ hero_config.subtitle }}</p>
+            <p class="font-medium text-xl text-insight-primary md:text-2xl xl:text-3xl">{{ hero_config.subtitle }}</p>
         {% endif %}
 
         {% if hero_config.description %}
-            <p class="text-lg xl:text-xl text-secondary leading-relaxed max-w-2xl{% if not hero_config.background_image_url %} mx-auto{% endif %}">{{ hero_config.description }}</p>
+            <p class="max-w-2xl text-lg text-secondary leading-relaxed xl:text-xl {% if not hero_config.background_image_url %} mx-auto {% endif %}">{{ hero_config.description }}</p>
         {% endif %}
 
         {% if hero_config.cta_primary or hero_config.cta_secondary %}
-            <div class="flex flex-wrap gap-4{% if not hero_config.background_image_url %} justify-center{% endif %}">
+            <div class="flex flex-wrap gap-4 {% if not hero_config.background_image_url %} justify-center {% endif %}">
                 {% if hero_config.cta_primary %}
                     {% button config=hero_config.cta_primary size="l" %}
                 {% endif %}

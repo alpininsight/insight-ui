@@ -3,23 +3,23 @@
 {% if user.is_authenticated %}
     {# User-Dropdown menu #}
     <div class="relative h-full">
-        <button type="button" data-insight-dropdown="user-menu" class="btn-subtle-secondary rounded-insight-full size-10 overflow-hidden" aria-label="{{ user_avatar_alt|default:user.get_username }}">
+        <button type="button" data-insight-dropdown="user-menu" class="btn-subtle-secondary size-10 rounded-insight-full overflow-hidden" aria-label="{{ user_avatar_alt|default:user.get_username }}">
             {% if user_avatar_url %}
-                <img src="{{ user_avatar_url }}" alt="{{ user_avatar_alt|default:user.get_username }}" class="size-full rounded-insight-full object-cover">
+                <img src="{{ user_avatar_url }}" alt="{{ user_avatar_alt|default:user.get_username }}" class="object-cover size-full rounded-insight-full">
             {% else %}
                 {{ user.get_username|default:''|slice:":1"|upper }}
             {% endif %}
         </button>
-        <div class="hidden absolute top-full z-50 mt-2 min-w-56 text-lg bg-insight-bg-surface border border-insight-border-raised rounded-insight-overlay shadow-insight-overlay divide-y divide-insight-border-raised ltr:right-0 rtl:left-0" id="user-menu">
-            <span class="flex flex-col gap-1 text-xs px-6 py-1">
+        <div class="divide-y divide-insight-border-raised hidden absolute top-full ltr:right-0 rtl:left-0 z-50 mt-2 min-w-56 text-lg bg-insight-bg-surface border border-insight-border-raised rounded-insight-overlay shadow-insight-overlay" id="user-menu">
+            <span class="flex flex-col gap-1 px-6 py-1 text-xs">
                 <span class="text-secondary">{% trans "Logged in as" %}: </span>
-                <span class="font-bold ">{{ user.get_username }}</span>
+                <span class="font-bold">{{ user.get_username }}</span>
             </span>
             <ul>
                 {% for link in user_dropdown_links %}
                     <li>
                         {% if not link.staff_only or user.is_staff %}
-                            <a href="{{ link.request_url }}" class="flex items-center gap-2 text-sm w-full px-6 py-2 hover:bg-insight-bg-base">
+                            <a href="{{ link.request_url }}" class="flex gap-2 items-center px-6 py-2 w-full text-sm hover:bg-insight-bg-base">
                                 {% if link.icon %}
                                     {% icon link.icon %}
                                 {% endif %}
@@ -31,7 +31,7 @@
             </ul>
             <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}
-                <button type="submit" class="flex items-center gap-2 text-sm text-insight-danger text-start w-full rounded-insight-control-bottom px-6 py-2 hover:bg-insight-bg-base">
+                <button type="submit" class="flex gap-2 items-center px-6 py-2 w-full text-sm text-insight-danger text-start rounded-insight-control-bottom hover:bg-insight-bg-base">
                     {% icon name="arrow-left-on-rectangle" size="s" %}{% trans "Logout" %}
                 </button>
             </form>

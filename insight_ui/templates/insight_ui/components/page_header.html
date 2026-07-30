@@ -1,5 +1,5 @@
 {% if page_header_config.style == "easy" %}
-    <div class="bg-insight-bg-surface px-4 md:px-16">
+    <div class="px-4 bg-insight-bg-surface md:px-16">
         <div class="pt-20 pb-12">
             {% if page_header_config.title %}
                 <h1 class="text-primary">
@@ -9,7 +9,7 @@
 
             <div class="max-w-5xl">
                 {% for paragraph in page_header_config.description %}
-                    <p class="text-secondary leading-loose text-lg mt-4">
+                    <p class="mt-4 text-secondary text-lg leading-loose">
                         {{ paragraph }}
                     </p>
                 {% endfor %}
@@ -17,8 +17,8 @@
         </div>
     </div>
 {% elif page_header_config.style == "docs" %}
-    <div class="border-t-8 border-insight-primary px-4 md:px-16">
-        <div class="border-b-2 border-insight-text-hint pt-20 pb-12">
+    <div class="px-4 border-t-8 border-insight-primary md:px-16">
+        <div class="pt-20 pb-12 border-b-2 border-insight-text-hint">
             {% if page_header_config.title %}
                 <h1 class="text-primary">
                     {{ page_header_config.title }}
@@ -27,7 +27,7 @@
 
             <div class="max-w-5xl">
                 {% for paragraph in page_header_config.description %}
-                    <p class="text-secondary leading-loose text-lg mt-4">
+                    <p class="mt-4 text-secondary text-lg leading-loose">
                         {{ paragraph }}
                     </p>
                 {% endfor %}
@@ -35,23 +35,23 @@
         </div>
     </div>
 {% elif page_header_config.style == "fancy" %}
-    <div class="relative overflow-hidden primary-back px-4 md:px-16">
+    <div class="primary-back relative px-4 overflow-hidden md:px-16">
         <div class="pt-20 pb-12">
             {% if page_header_config.title %}
-                <h1 class="text-primary text-4xl md:text-5xl font-bold">
+                <h1 class="font-bold text-primary text-4xl md:text-5xl">
                     {{ page_header_config.title }}
                 </h1>
             {% endif %}
 
             <div class="max-w-5xl">
                 {% for paragraph in page_header_config.description %}
-                    <p class="text-secondary leading-loose text-lg font-medium mt-4">
+                    <p class="mt-4 font-medium text-secondary text-lg leading-loose">
                         {{ paragraph }}
                     </p>
                 {% endfor %}
             </div>
         </div>
-        <div aria-hidden="true" class="absolute -z-10 top-0 left-1/2 -translate-x-1/2 blur-3xl">
+        <div aria-hidden="true" class="-z-10 -translate-x-1/2 absolute top-0 left-1/2 blur-3xl">
             <div
                 style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"
                 class="aspect-4/1 w-400 bg-linear-to-tr from-insight-primary to-insight-primary/50 opacity-70"
@@ -59,8 +59,8 @@
         </div>
     </div>
 {% else %}
-    <div class="border-t-8 border-insight-primary px-4 md:px-16">
-        <div class="border-b-2 border-insight-text-hint pt-20 pb-12">
+    <div class="px-4 border-t-8 border-insight-primary md:px-16">
+        <div class="pt-20 pb-12 border-b-2 border-insight-text-hint">
             {% if page_header_config.title %}
                 <h1 class="text-primary">
                     {{ page_header_config.title }}
@@ -69,7 +69,7 @@
 
             <div class="max-w-5xl">
                 {% for paragraph in page_header_config.description %}
-                    <p class="text-secondary leading-loose text-lg mt-4">
+                    <p class="mt-4 text-secondary text-lg leading-loose">
                         {{ paragraph }}
                     </p>
                 {% endfor %}

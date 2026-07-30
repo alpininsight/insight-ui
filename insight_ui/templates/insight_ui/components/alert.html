@@ -3,9 +3,9 @@
 <div
   {% if alert_config.tag_id %}id="{{ alert_config.tag_id }}"{% endif %}
   role="alert"
-  class="flex justify-between w-full h-fit shadow-insight-subtle p-4 rounded-insight-surface {% if alert_config.type == "success" %}bg-insight-success-soft{% elif alert_config.type == "warning" %}bg-insight-warning-soft{% elif alert_config.type == "error" %}bg-insight-danger-soft{% else %}bg-insight-info-soft{% endif %}"
+  class="flex justify-between p-4 w-full h-fit rounded-insight-surface shadow-insight-subtle {% if alert_config.type == 'success' %} bg-insight-success-soft {% elif alert_config.type == 'warning' %} bg-insight-warning-soft {% elif alert_config.type == 'error' %} bg-insight-danger-soft {% else %} bg-insight-info-soft {% endif %}"
 >
-  <div class="flex items-center gap-2 {% if alert_config.type == "success" %}text-insight-success{% elif alert_config.type == "warning" %}text-insight-warning{% elif alert_config.type == "error" %}text-insight-danger{% else %}text-insight-info{% endif %}">
+  <div class="flex gap-2 items-center {% if alert_config.type == 'success' %} text-insight-success {% elif alert_config.type == 'warning' %} text-insight-warning {% elif alert_config.type == 'error' %} text-insight-danger {% else %} text-insight-info {% endif %}">
     {% if alert_config.type == 'success' %}
       {% icon name="check" %}
     {% elif alert_config.type == 'warning' %}

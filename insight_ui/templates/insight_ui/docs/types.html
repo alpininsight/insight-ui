@@ -20,7 +20,7 @@
 {% endblock heading %}
 
 {% block content %}
-    <div class="w-full space-y-12 text-secondary leading-loose">
+    <div class="space-y-12 w-full text-secondary leading-loose">
         <div class="space-y-8">
             <p>
                 {% blocktrans trimmed %}
@@ -60,7 +60,7 @@
                 {% for type_def in type_definitions %}
                     <a
                         href="#{{ type_def.anchor }}"
-                        class="px-3 py-1.5 text-sm bg-insight-bg-base hover:bg-insight-bg-raised rounded-insight-control transition-colors"
+                        class="px-3 py-1.5 text-sm bg-insight-bg-base rounded-insight-control transition-colors hover:bg-insight-bg-raised"
                     >
                         {{ type_def.name }}
                     </a>
@@ -74,15 +74,15 @@
             <h2>{% trans "Type Reference" %}</h2>
 
             {% for type_def in type_definitions %}
-                <article id="{{ type_def.anchor }}" class="scroll-mt-8 space-y-4 p-6 border border-insight-border-surface rounded-insight-surface shadow-insight-surface">
-                    <div class="flex items-center justify-between">
+                <article id="{{ type_def.anchor }}" class="p-6 space-y-4 border border-insight-border-surface rounded-insight-surface shadow-insight-surface scroll-mt-8">
+                    <div class="flex justify-between items-center">
                         <h3>{{ type_def.name }}</h3>
                     </div>
 
                     <p class="text-secondary">{{ type_def.description }}</p>
 
                     <div class="space-y-2">
-                        <h4 class="text-sm font-medium text-secondary uppercase tracking-wide">{% trans "Values" %}</h4>
+                        <h4 class="font-medium text-sm text-secondary tracking-wide uppercase">{% trans "Values" %}</h4>
                         <div class="flex flex-wrap gap-2">
                             {% for value in type_def.values %}
                                 <code class="px-2 py-1 text-sm bg-insight-bg-base rounded-insight-control">{{ value }}</code>

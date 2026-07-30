@@ -20,7 +20,7 @@
 {% endblock heading %}
 
 {% block content %}
-    <div class="w-full space-y-12 text-secondary leading-loose">
+    <div class="space-y-12 w-full text-secondary leading-loose">
         <div class="space-y-8">
             <p>
                 {% blocktrans with icon='<span class="inline-tag">&lcub;% icon %&rcub;</span>'|safe %}
@@ -61,24 +61,24 @@
                     placeholder="{% trans 'Search icons...' %}"
                     oninput="filterIcons(this.value)"
                 >
-                <span id="icon-count" class="absolute right-3 top-2.5 text-sm text-secondary">Icons: {{ icons|length }}</span>
+                <span id="icon-count" class="absolute top-2.5 right-3 text-sm text-secondary">Icons: {{ icons|length }}</span>
             </div>
             <span><i>{% trans "Click on the Icon to copy the tag with corresponding icon name to clipboard." %}</i></span>
-            <div id="icon-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4 mt-2">
+            <div id="icon-grid" class="grid grid-cols-2 gap-4 mt-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
                 {% for icon in icons %}
                     <button
                         type="button"
-                        class="icon-item flex flex-col items-center gap-2 border border-insight-border-surface p-3 shadow-insight-surface rounded-insight-control hover:bg-insight-bg-raised transition-colors cursor-pointer group relative"
+                        class="icon-item flex flex-col relative gap-2 items-center p-3 border border-insight-border-surface rounded-insight-control shadow-insight-surface transition-colors cursor-pointer group hover:bg-insight-bg-raised"
                         data-icon-name="{{ icon.name }}"
                         onclick="copyIconCode(this)"
                     >
                         <div class="text-secondary">{{ icon.svg|safe }}</div>
-                        <span class="text-xs text-secondary text-center whitespace-normal group-hover:text-primary transition-colors">{{ icon.name }}</span>
-                        <span class="absolute top-0 flex items-center justify-center size-full text-base bg-insight-bg-raised text-insight-primary rounded-insight-control opacity-0 pointer-events-none transition-opacity whitespace-nowrap" data-copied-tooltip>{% trans "Copied!" %}</span>
+                        <span class="text-xs text-secondary text-center whitespace-normal transition-colors group-hover:text-primary">{{ icon.name }}</span>
+                        <span class="flex absolute top-0 justify-center items-center size-full text-base text-insight-primary whitespace-nowrap bg-insight-bg-raised rounded-insight-control opacity-0 transition-opacity pointer-events-none" data-copied-tooltip>{% trans "Copied!" %}</span>
                     </button>
                 {% endfor %}
             </div>
-            <p id="no-results" class="hidden text-center text-secondary py-8">{% trans "No icons found." %}</p>
+            <p id="no-results" class="hidden py-8 text-center text-secondary">{% trans "No icons found." %}</p>
             <script>
                 function filterIcons(query) {
                     const normalizedQuery = query.toLowerCase().trim();
@@ -139,7 +139,7 @@
                 python manage.py compile_icons --dir path/to/icons/ --sprite path/to/sprite.svg
             </div>
             <h3>{% trans "Options" %}</h3>
-            <ul class="list-disc list-inside space-y-2 ml-4">
+            <ul class="list-disc list-inside ml-4 space-y-2">
                 <li><code class="inline-tag">--dir</code> &ndash; {% trans "Directory containing individual SVG files" %}</li>
                 <li><code class="inline-tag">--sprite</code> &ndash; {% trans "Path to an SVG sprite sheet file (extracts &lt;symbol&gt; elements)" %}</li>
                 <li><code class="inline-tag">--output</code> &ndash; {% trans "Custom output path (default: templates/insight_ui/components/icons.html)" %}</li>

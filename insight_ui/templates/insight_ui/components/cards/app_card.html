@@ -1,18 +1,18 @@
 {% load static i18n insight_tags %}
 
-<div class="flex flex-col overflow-hidden max-w-72 bg-insight-bg-surface border border-insight-border-surface shadow-insight-surface rounded-insight-surface hover:scale-105 hover:shadow-insight-raised transition-transform duration-500">
+<div class="flex flex-col max-w-72 bg-insight-bg-surface border border-insight-border-surface rounded-insight-surface shadow-insight-surface transition-transform duration-500 overflow-hidden hover:scale-105 hover:shadow-insight-raised">
     <img class="w-full" src="{{ app_card_config.image.url }}" alt="{{ app_card_config.image.alt }}">
 
     {# Title and description #}
     <div class="flex flex-1 flex-col px-4 py-2">
         {% if app_card_config.request_url %}
             <a href="{{ app_card_config.request_url }}">
-                <p id="card-title" class="text-primary font-bold text-xl hover:text-insight-text-link-hover mb-2">{{ app_card_config.title }}</p>
+                <p id="card-title" class="mb-2 font-bold text-primary text-xl hover:text-insight-text-link-hover">{{ app_card_config.title }}</p>
             </a>
         {% else %}
-            <p id="card-title" class="text-primary font-bold text-xl mb-2">{{ app_card_config.title }}</p>
+            <p id="card-title" class="mb-2 font-bold text-primary text-xl">{{ app_card_config.title }}</p>
         {% endif %}
-        <p id="card-description" class="text-secondary text-base text-justify hyphens-auto" lang="de">{{ app_card_config.content|safe }}</p>
+        <p id="card-description" class="hyphens-auto text-secondary text-base text-justify" lang="de">{{ app_card_config.content|safe }}</p>
     </div>
 
     {# Tags #}

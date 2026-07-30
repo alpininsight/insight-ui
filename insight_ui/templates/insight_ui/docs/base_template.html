@@ -20,7 +20,7 @@
 {% endblock heading %}
 
 {% block content %}
-    <div class="w-full space-y-12 text-secondary leading-loose">
+    <div class="space-y-12 w-full text-secondary leading-loose">
         <div class="space-y-8">
             <h2>{% trans "Usage" %}</h1>
             <p>
@@ -39,7 +39,7 @@
                 <h2>&lt;head&gt;</h2>
                 <p>{% trans "In the <b>Head</b>, all required JavaScript libraries are linked and the SEO and favicon are defined." %}</p>
 
-                <ul class="list-disc ms-8 space-y-2 *:border-b *:border-insight-border-surface">
+                <ul class="list-disc *:border-b *:border-insight-border-surface ms-8 space-y-2">
                     <li>
                         <span class="inline-tag">&lcub;% block title %&rcub;</span>
                         <p>{% trans "Defines the title of the page, which is displayed on the browser tab among other places." %}</p>
@@ -64,7 +64,7 @@
                     {% endblocktrans %}
                 </p>
 
-                <ul class="list-disc ms-8 space-y-2 *:border-b *:border-insight-border-surface">
+                <ul class="list-disc *:border-b *:border-insight-border-surface ms-8 space-y-2">
                     <li>
                         <span class="inline-tag">&lcub;% block background_image %&rcub;</span>
                         <p>{% trans "This block displays something behind all other blocks." %}</p>
@@ -111,7 +111,7 @@
                 <div data-insight-code-block="Django">
                     {# fmt:off #}
                     &lcub;% block background_image %&rcub;
-                        &lt;img src="&lcub;% static "img/my_bg_image.png" %&rcub;" alt="My awesome background image." class="fixed left-1/4 -z-10 w-full h-dvh object-cover opacity-25"&gt;
+                        &lt;img src="&lcub;% static "img/my_bg_image.png" %&rcub;" alt="My awesome background image." class="-z-10 object-cover fixed left-1/4 w-full h-dvh opacity-25"&gt;
                     &lcub;% endblock background_image %&rcub;
                     {# fmt:on #}
                 </div>

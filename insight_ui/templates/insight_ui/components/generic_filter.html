@@ -15,7 +15,7 @@
     class="w-full"
 >
     <!-- Filters -->
-    <div class="flex flex-col {% if not generic_filter_config.vertical %}lg:flex-row{% endif %} gap-2 space-y-4">
+    <div class="flex flex-col {% if not generic_filter_config.vertical %} lg:flex-row {% endif %} gap-2 space-y-4">
         {% for filter in generic_filter_config.filters %}
             {% select config=filter %}
         {% endfor %}

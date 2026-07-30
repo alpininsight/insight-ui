@@ -3,14 +3,14 @@
 <!-- Filter -->
 <div class="flex flex-col gap-6">
     <form id="filter-form" class="w-full">
-        <p class="text-secondary pb-2">{% trans "The following conditions must be met:" %}</p>
+        <p class="pb-2 text-secondary">{% trans "The following conditions must be met:" %}</p>
         <div id="filters" class="flex flex-col gap-2">
             {% for filter in custom_filters %}
-                <div class="filter flex flex-col gap-2">
+                <div class="flex flex-col gap-2 filter">
                     {% include "insight_ui/components/search_query_builder/sq_builder_filter.html" with index=forloop.counter0 selected_field=filter.field filter_operator=filter.operator filter_value=filter.value selected_logic=filter.logic %}
                 </div>
             {% empty %}
-                <div class="filter flex flex-col gap-2">
+                <div class="flex flex-col gap-2 filter">
                     {% include "insight_ui/components/search_query_builder/sq_builder_filter.html" with index=0 %}
                 </div>
             {% endfor %}

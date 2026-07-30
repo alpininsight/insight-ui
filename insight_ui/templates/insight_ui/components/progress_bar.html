@@ -17,18 +17,18 @@
     {# Label #}
     {% if progress_bar_config.label %}
         <div class="flex justify-between items-center mb-1">
-            <span data-progress-label class="text-sm font-medium text-insight-text-primary">
+            <span data-progress-label class="font-medium text-sm text-insight-text-primary">
                 {{ progress_bar_config.label }}
             </span>
             {% if progress_bar_config.show_value %}
-                <span data-progress-value class="text-sm font-medium text-insight-text-primary" aria-hidden="true">
+                <span data-progress-value class="font-medium text-sm text-insight-text-primary" aria-hidden="true">
                     {{ progress_bar_config.value }}%
                 </span>
             {% endif %}
         </div>
     {% elif progress_bar_config.show_value %}
         <div class="flex justify-end mb-1">
-            <span data-progress-value class="text-sm font-medium text-insight-text-primary" aria-hidden="true">
+            <span data-progress-value class="font-medium text-sm text-insight-text-primary" aria-hidden="true">
                 {{ progress_bar_config.value }}%
             </span>
         </div>
@@ -37,7 +37,7 @@
     {# Progress bar #}
     <div
         data-progress-track
-        class="relative cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-insight-focus focus-visible:ring-offset-2 rounded-insight-full"
+        class="relative rounded-insight-full cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-insight-focus focus-visible:ring-offset-2"
         role="progressbar"
         aria-valuenow="{{ progress_bar_config.value }}"
         aria-valuemin="{{ progress_bar_config.min_value }}"
@@ -53,7 +53,7 @@
         <div class="w-full h-4 bg-insight-bg-raised rounded-insight-full overflow-hidden">
             <div
                 data-progress-fill
-                class="h-full rounded-insight-full transition-all duration-500 ease-in-out bg-insight-info"
+                class="h-full bg-insight-info rounded-insight-full transition-all duration-500 ease-in-out"
                 style="width: {{ progress_bar_config.value }}%"
                 data-value="{{ progress_bar_config.value }}"
                 data-label="{{ progress_bar_config.label }}"
@@ -70,25 +70,25 @@
         aria-atomic="true"
     ></div>
 
-    <div class="flex items-center justify-between mt-2">
+    <div class="flex justify-between items-center mt-2">
         {# Status message #}
         <div
             data-progress-error
-            class="flex items-center gap-2 text-sm text-insight-warning hidden"
+            class="flex hidden gap-2 items-center text-sm text-insight-warning"
             role="alert"
             aria-live="polite"
         >
-            <svg data-error-icon-warning class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <svg data-error-icon-warning class="shrink-0 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
             </svg>
-            <svg data-error-icon-error class="w-4 h-4 shrink-0 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <svg data-error-icon-error class="hidden shrink-0 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
             <span data-error-message></span>
         </div>
 
         {# Controls #}
-        <div class="flex items-center gap-2">
+        <div class="flex gap-2 items-center">
             {% if progress_bar_config.show_cancel %}
                 {% button type="link" size="s" label=progress_bar_config.cancel_label|default:_("Cancel") data_progress_cancel="" %}
             {% endif %}

@@ -4,18 +4,18 @@
   id="{{ side }}-sidebar"
   data-insight-sidebar="{{ side }}"
   data-static="{{ static }}"
-  class="{% if not static %}fixed inset-0 z-50 hidden{% endif %}"
+  class="{% if not static %} hidden fixed inset-0 z-50 {% endif %}"
 >
   <aside
     role="complementary"
     aria-label="{% trans 'Table of contents' %}"
-    class="{% if static %}{% if mobile_hidden %}hidden xl:block {% endif %}sticky {% if navbar_fixed %}top-16 h-[calc(100vh-4rem)]{% else %}top-0 h-screen{% endif %}{% else %}fixed h-screen{% endif %} {% if side == 'right' %}ltr:right-0 ltr:border-l rtl:left-0 rtl:border-r{% else %}ltr:left-0 ltr:border-r rtl:right-0 rtl:border-l{% endif %} overflow-y-auto bg-insight-bg-base border-insight-border-surface shadow-insight-surface transition"
+    class="{% if static %} {% if mobile_hidden %} hidden xl:block {% endif %} sticky {% if navbar_fixed %} top-16 h-[calc(100vh-4rem)] {% else %} top-0 h-screen {% endif %} {% else %} fixed h-screen {% endif %} {% if side == 'right' %} ltr:right-0 ltr:border-l rtl:left-0 rtl:border-r {% else %} ltr:left-0 ltr:border-r rtl:right-0 rtl:border-l {% endif %} bg-insight-bg-base border-insight-border-surface shadow-insight-surface transition overflow-y-auto"
     style="width: 18rem"
     data-auto-close="false"
   >
-    <div class="flex flex-col {% if side == 'right' %}ps-4 pe-4 md:pe-16{% else %}ps-4 md:ps-16 pe-4{% endif %} {% if static %}py-8{% else %}pb-8{% endif %}">
-      <div class="flex justify-between items-center pb-4 border-b border-insight-border-base mb-4">
-        <h2 class="text-lg pb-0">{% trans "Table of Contents" %}</h2>
+    <div class="flex flex-col {% if side == 'right' %} ps-4 pe-4 md:pe-16 {% else %} ps-4 pe-4 md:ps-16 {% endif %} {% if static %} py-8 {% else %} pb-8 {% endif %}">
+      <div class="flex justify-between items-center pb-4 mb-4 border-b border-insight-border-base">
+        <h2 class="pb-0 text-lg">{% trans "Table of Contents" %}</h2>
       </div>
       <div id="toc"></div>
     </div>

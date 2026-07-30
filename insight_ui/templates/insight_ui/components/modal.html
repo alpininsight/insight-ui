@@ -7,17 +7,17 @@
     aria-labelledby="{{ modal_config.tag_id }}-title"
     {% if description %}aria-describedby="{{ modal_config.tag_id }}-description"{% endif %}
     tabindex="-1"
-    class="fixed inset-0 z-50 overflow-y-auto hidden"
+    class="hidden fixed inset-0 z-50 overflow-y-auto"
 >
     {# Modal Backdrop #}
     <div class="fixed inset-0 bg-black/50 transition-opacity" data-insight-dismiss="modal"></div>
 
     {# Wrapper to centralize the modal on screen #}
-    <div class="flex items-center justify-center min-h-screen p-4">
+    <div class="flex justify-center items-center p-4 min-h-screen">
         {# Modal #}
-        <div class="relative bg-insight-bg-base rounded-insight-overlay shadow-insight-overlay w-full mx-auto transform transition-all", style="max-width: {{ modal_config.width|default:32 }}rem;">
+        <div class="relative mx-auto w-full bg-insight-bg-base rounded-insight-overlay shadow-insight-overlay transition-all transform", style="max-width: {{ modal_config.width|default:32 }}rem;">
             {# Modal Header #}
-            <div class="flex items-start justify-between h-fit p-6 border-b border-insight-border-surface">
+            <div class="flex justify-between items-start p-6 h-fit border-b border-insight-border-surface">
                 <h2 id="{{ modal_config.tag_id }}-title" class="pb-0">{{ modal_config.title }}</h2>
                 {% button label=_("Close") type="secondary" subtle=True icon_name="x-mark" icon_size="xs" icon_only=True data_insight_dismiss="modal" %}
             </div>
@@ -27,14 +27,14 @@
                 {% block modal_content %}
                     <div class="space-y-4">
                         {% for paragraph in modal_config.description %}
-                            <p class="text-secondary flex items-center">{{ paragraph }}</p>
+                            <p class="flex items-center text-secondary">{{ paragraph }}</p>
                         {% endfor %}
                     </div>
                 {% endblock %}
             </div>
 
             {# Modal Footer #}
-            <div class="flex justify-end gap-2 p-6 border-t border-insight-border-surface">
+            <div class="flex gap-2 justify-end p-6 border-t border-insight-border-surface">
                 {% if modal_config.actions %}
                     {% for action in modal_config.actions %}
                         {% button config=action %}

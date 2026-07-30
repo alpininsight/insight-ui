@@ -1,7 +1,7 @@
 {% load insight_tags %}
 
-<div class="bg-insight-bg-surface border border-insight-border-raised border-s-4 rounded-e-insight-control px-4 py-1 text-base text-primary mt-4 {% if info_config.info_type == "success" %}border-s-insight-success{% elif info_config.info_type == "warning" %}border-s-insight-warning{% elif info_config.info_type == "error" %}border-s-insight-danger{% else %}border-s-insight-info{% endif %}">
-    <span class="block font-bold italic text-lg {% if info_config.info_type == "success" %}text-insight-success{% elif info_config.info_type == "warning" %}text-insight-warning{% elif info_config.info_type == "error" %}text-insight-danger{% else %}text-insight-info{% endif %}">
+<div class="px-4 py-1 mt-4 text-base text-primary bg-insight-bg-surface border border-insight-border-raised border-s-4 rounded-e-insight-control {% if info_config.info_type == 'success' %} border-s-insight-success {% elif info_config.info_type == 'warning' %} border-s-insight-warning {% elif info_config.info_type == 'error' %} border-s-insight-danger {% else %} border-s-insight-info {% endif %}">
+    <span class="block font-bold text-lg italic {% if info_config.info_type == 'success' %} text-insight-success {% elif info_config.info_type == 'warning' %} text-insight-warning {% elif info_config.info_type == 'error' %} text-insight-danger {% else %} text-insight-info {% endif %}">
         {{ info_config.info_type|default:"Info"|upper }}:
     </span>
     {{ info_config.message|markdownify }}

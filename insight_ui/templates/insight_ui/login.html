@@ -2,32 +2,32 @@
 {% load i18n insight_tags %}
 
 {% block content %}
-  <div class="relative flex max-w-96 flex-col justify-center bg-insight-bg-surface border border-insight-border-surface rounded-insight-surface shadow-insight-surface p-6 lg:p-8 mb-16 mx-auto">
+  <div class="flex flex-col relative justify-center p-6 mx-auto mb-16 max-w-96 bg-insight-bg-surface border border-insight-border-surface rounded-insight-surface shadow-insight-surface lg:p-8">
     {% if show_theme_toggle %}
       <div class="absolute top-2 right-2">
         {% include "insight_ui/components/toggle_theme.html" %}
       </div>
     {% endif %}
     {% if logo_config %}
-      <div class="flex {% if logo.position == "start" %}justify-start{% elif logo.position == "end" %}justify-end{% else %}justify-center{% endif %}">
+      <div class="flex {% if logo.position == 'start' %} justify-start {% elif logo.position == 'end' %} justify-end {% else %} justify-center {% endif %}">
         {% logo config=logo_config %}
       </div>
     {% endif %}
-    <h2 class="text-primary text-center text-3xl font-bold leading-9">{% trans "Login" %}</h2>
+    <h2 class="font-bold text-primary text-center text-3xl leading-9">{% trans "Login" %}</h2>
     <form class="space-y-2" action="{{ app_path }}" method="post">{% csrf_token %}
-      <div class="text-insight-danger mb-4">
+      <div class="mb-4 text-insight-danger">
         {{ form.non_field_errors }}
       </div>
       <!-- Username -->
       <div>
-        {% if show_labels %} <label for="{{ form.username.id_for_label }}" class="block text-sm font-medium text-secondary mb-1">{% trans "Username" %}</label> {% endif %}
-        <input id="username" name="username" type="text" placeholder="{% trans "Enter username" %}" required class="input w-full">
+        {% if show_labels %} <label for="{{ form.username.id_for_label }}" class="block mb-1 font-medium text-sm text-secondary">{% trans "Username" %}</label> {% endif %}
+        <input id="username" name="username" type="text" placeholder="{% trans 'Enter username' %}" required class="input w-full">
         {{ form.username.errors }}
       </div>
       <!-- Password -->
       <div>
-        {% if show_labels %} <label for="{{ form.password.id_for_label }}" class="block text-sm font-medium text-secondary mb-1">{% trans "Password" %}</label> {% endif %}
-        <input id="password" name="password" type="password" placeholder="{% trans "Enter password" %}" required class="input w-full">
+        {% if show_labels %} <label for="{{ form.password.id_for_label }}" class="block mb-1 font-medium text-sm text-secondary">{% trans "Password" %}</label> {% endif %}
+        <input id="password" name="password" type="password" placeholder="{% trans 'Enter password' %}" required class="input w-full">
         {{ form.password.errors }}
         {% if forgot_password %}
           <div class="flex justify-end mt-1">
@@ -42,10 +42,10 @@
     </form>
     {% if alt_login %}
       <!-- Alternative login section -->
-      <div class="flex items-center gap-4 w-full mt-6">
-        <div class="border-b border-insight-border-surface w-full"></div>
+      <div class="flex gap-4 items-center mt-6 w-full">
+        <div class="w-full border-b border-insight-border-surface"></div>
         <span>{% trans "Or" %}</span>
-        <div class="border-b border-insight-border-surface w-full"></div>
+        <div class="w-full border-b border-insight-border-surface"></div>
       </div>
       <div class="flex justify-center mt-2">
         <a href="{{ alt_login.url }}" class="btn btn-link">

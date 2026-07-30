@@ -1,6 +1,6 @@
 {% load i18n insight_tags %}
 
-<div class="relative{% if search_bar_config.enable_search %} h-full{% endif %}"{% if search_bar_config.enable_search %} data-insight-search{% endif %}>
+<div class="relative {% if search_bar_config.enable_search %} h-full {% endif %}"{% if search_bar_config.enable_search %} data-insight-search{% endif %}>
     <form
         {% if search_bar_config.request_url %}
             {% if search_bar_config.htmx_config %}
@@ -20,7 +20,7 @@
     >
         <label for="search" class="sr-only">{% trans "Search" %}</label>
         <div class="relative h-full">
-            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none text-secondary">
+            <div class="start-0 flex absolute inset-y-0 items-center ps-3 text-secondary pointer-events-none">
                 {% icon name="magnifying-glass" size="s" %}
             </div>
             <input
@@ -37,7 +37,7 @@
                     aria-autocomplete="list"
                     aria-haspopup="listbox"
                 {% endif %}
-                class="block size-full px-3 {% if search_bar_config.simple %}text-sm py-2{% else %}py-3 pe-32{% endif %} ps-10 text-primary bg-insight-bg-surface border border-insight-border-surface rounded-insight-control focus:outline-none focus:ring-2 ring-insight-focus"
+                class="block px-3 size-full {% if search_bar_config.simple %} py-2 text-sm {% else %} py-3 pe-32 {% endif %} ps-10 text-primary bg-insight-bg-surface border border-insight-border-surface rounded-insight-control ring-insight-focus focus:outline-none focus:ring-2"
             />
             {% if not search_bar_config.simple and not search_bar_config.enable_search %}
                 {% button label=_("Search") type="primary" size="l" button_type="submit" extra_classes="absolute inset-y-0 end-0 rounded-s-none" %}
@@ -51,7 +51,7 @@
             data-search-results
             role="listbox"
             aria-label="{% trans 'Search results' %}"
-            class="hidden absolute z-50 w-full mt-1 bg-insight-bg-raised border border-insight-border-raised rounded-insight-raised shadow-insight-raised max-h-96 overflow-y-auto"
+            class="hidden absolute z-50 mt-1 w-full max-h-96 bg-insight-bg-raised border border-insight-border-raised rounded-insight-raised shadow-insight-raised overflow-y-auto"
         ></div>
 
         {% include "insight_ui/components/search_bar_result_templates.html" %}

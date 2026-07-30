@@ -19,7 +19,7 @@
     {% if features %}
         <div class="mt-6">
             <h2>{% trans "Features" %}</h2>
-            <ul class="list-disc leading-relaxed ms-8">
+            <ul class="list-disc ms-8 leading-relaxed">
                 {% for feature in features %}
                     <li>{{ feature|markdownify }}</li>
                 {% endfor %}
@@ -117,7 +117,7 @@
     {% for note in a11y_notes_begin %}
         {% infobox info_type=note.type message=note.message %}
     {% endfor %}
-    <ul class="list-disc leading-relaxed ms-8 mt-6">
+    <ul class="list-disc ms-8 mt-6 leading-relaxed">
         {% for point in a11y %}
             <li>{{ point|markdownify }}</li>
         {% empty %}
@@ -134,7 +134,7 @@
 {# Related #}
 <section>
     <h2>{% trans "Related topics" %}</h2>
-    <ul class="list-disc leading-relaxed ms-8 mt-6">
+    <ul class="list-disc ms-8 mt-6 leading-relaxed">
         {% for topic in related_topics %}
             <li>
                 <a
