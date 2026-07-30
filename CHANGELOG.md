@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Using proper text color class for the 'brand_mark' component
 - **cdn:** Publish insight ui browser assets
 - **cdn:** Trigger release asset publishing
+- **theme:** Use semantic tokens for search UI
 
 ### CI/CD
 
@@ -32,11 +33,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **theme:** Bridge surface role tokens to the brand colour contract
 - **cards:** Tokenize card + image_carousel surfaces/borders to semantic roles
+- Add new colors
+- Add soft colors
+- Add background and border colors
+- Replace Tailwind tokens for rounded corners with custom tokens controlled via input.css
+- Use custom spacing tokens for layout tags
+- Replace Tailwind tokens for shadows with custom tokens controlled via input.css
+- Replace all hardcoded colors, shadows and roundings with design tokens
+- Use proper names for background colors
+- Add search functionality for the documentation via the search bar in the navbar
+- Add custom types detailpage and add popups to the parameter tables for the custom types
 
 ### Miscellaneous
 
 - Regenerate minified stylesheet
 - **ignore:** Exclude playwright cli artifacts
+- Fix merge issues
+- Add pre-commit hook for checking used design tokens in templates
+- Regenerate minified assets
+- Mark check_design_tokens script as executable
+- Regenerate minified styesheet
+- Regenerate stylesheet
+
+### Refactoring
+
+- Move html code for the search results to a separate template file
+
+### Testing
+
+- Fix tests
+- Fix tests
 
 ## [1.11.0] - 2026-06-18
 
