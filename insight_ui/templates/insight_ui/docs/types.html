@@ -60,7 +60,7 @@
                 {% for type_def in type_definitions %}
                     <a
                         href="#{{ type_def.anchor }}"
-                        class="px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition-colors"
+                        class="px-3 py-1.5 text-sm bg-insight-bg-base hover:bg-insight-bg-raised rounded-insight-control transition-colors"
                     >
                         {{ type_def.name }}
                     </a>
@@ -74,7 +74,7 @@
             <h2>{% trans "Type Reference" %}</h2>
 
             {% for type_def in type_definitions %}
-                <article id="{{ type_def.anchor }}" class="scroll-mt-8 space-y-4 p-6 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md">
+                <article id="{{ type_def.anchor }}" class="scroll-mt-8 space-y-4 p-6 border border-insight-border-surface rounded-insight-surface shadow-insight-surface">
                     <div class="flex items-center justify-between">
                         <h3>{{ type_def.name }}</h3>
                     </div>
@@ -85,7 +85,7 @@
                         <h4 class="text-sm font-medium text-secondary uppercase tracking-wide">{% trans "Values" %}</h4>
                         <div class="flex flex-wrap gap-2">
                             {% for value in type_def.values %}
-                                <code class="px-2 py-1 text-sm bg-gray-100 dark:bg-gray-800 rounded">{{ value }}</code>
+                                <code class="px-2 py-1 text-sm bg-insight-bg-base rounded-insight-control">{{ value }}</code>
                             {% endfor %}
                         </div>
                     </div>
