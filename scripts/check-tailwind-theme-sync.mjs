@@ -4,24 +4,25 @@ const sourceUrl = new URL("../insight_ui/utils/input.css", import.meta.url);
 const compiledUrl = new URL("../insight_ui/static/insight_ui/css/tailwind.css", import.meta.url);
 
 const REQUIRED_COMPILED_TOKENS = [
+    "--color-insight-bg-base",
+    "--color-insight-bg-surface",
+    "--color-insight-bg-raised",
+    "--color-insight-bg-overlay",
+    "--color-insight-border-surface",
+    "--color-insight-border-raised",
+    "--color-insight-border-overlay",
     "--color-insight-primary",
     "--color-insight-secondary",
     "--color-insight-text-primary",
     "--color-insight-text-secondary",
-    "--insight-surface-page",
-    "--insight-surface-page-dark",
-    "--insight-surface-base",
-    "--insight-surface-base-dark",
-    "--insight-surface-muted",
-    "--insight-surface-muted-dark",
-    "--insight-surface-subtle",
-    "--insight-surface-subtle-dark",
-    "--insight-surface-raised",
-    "--insight-surface-raised-dark",
-    "--insight-border-subtle",
-    "--insight-border-default",
-    "--insight-radius-control",
-    "--insight-shadow-surface",
+    "--radius-insight-control",
+    "--radius-insight-surface",
+    "--radius-insight-raised",
+    "--radius-insight-overlay",
+    "--shadow-insight-subtle",
+    "--shadow-insight-surface",
+    "--shadow-insight-raised",
+    "--shadow-insight-overlay",
 ];
 
 const COMPARABLE_TOKEN_PREFIXES = [
@@ -44,6 +45,17 @@ function stripCssComments(css) {
     return css.replace(/\/\*[\s\S]*?\*\//g, "");
 }
 
+function extractCompiledThemeLayer(css) {
+    const themeStart = css.indexOf("@layer theme");
+    const baseStart = css.indexOf("@layer base", themeStart);
+
+    if (themeStart === -1 || baseStart === -1) {
+        return css;
+    }
+
+    return css.slice(themeStart, baseStart);
+}
+
 function extractCustomProperties(css) {
     const declarations = new Map();
     const declarationPattern = /(--[a-zA-Z0-9_-]+)\s*:\s*([^;{}]+);/g;
@@ -59,7 +71,27 @@ function extractCustomProperties(css) {
 }
 
 function normalizeValue(value) {
-    return value.trim().replace(/\s+/g, " ");
+    return value
+        .trim()
+        .replace(/\s+/g, " ")
+        .replace(/#([0-9a-fA-F]{6})([0-9a-fA-F]{2})?/g, normalizeHex)
+        .replace(/rgb\(0 0 0 \/ 0\.1\)/g, "#0000001a");
+}
+
+function normalizeHex(match, color, alpha = "") {
+    const lowerColor = color.toLowerCase();
+    const lowerAlpha = alpha.toLowerCase();
+
+    if (
+        !lowerAlpha &&
+        lowerColor[0] === lowerColor[1] &&
+        lowerColor[2] === lowerColor[3] &&
+        lowerColor[4] === lowerColor[5]
+    ) {
+        return `#${lowerColor[0]}${lowerColor[2]}${lowerColor[4]}`;
+    }
+
+    return `#${lowerColor}${lowerAlpha}`;
 }
 
 function isComparableToken(name, sourceValue) {
@@ -85,7 +117,7 @@ const [sourceCss, compiledCss] = await Promise.all([
 ]);
 
 const sourceTokens = extractCustomProperties(sourceCss);
-const compiledTokens = extractCustomProperties(compiledCss);
+const compiledTokens = extractCustomProperties(extractCompiledThemeLayer(compiledCss));
 const missingRequiredTokens = REQUIRED_COMPILED_TOKENS.filter((token) => !compiledTokens.has(token));
 
 const mismatches = [];

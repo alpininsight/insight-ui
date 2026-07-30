@@ -13,17 +13,17 @@
     </span>
 
     {# Popover Content #}
-    <div id="{{ popover_id }}" class="bg-white dark:bg-gray-700 w-72 border border-gray-300 dark:border-0 insight-radius-overlay insight-shadow-subtle">
+    <div id="{{ popover_id }}" class="bg-insight-bg-raised w-72 border border-insight-border-raised rounded-insight-overlay shadow-insight-subtle">
         <div class="p-4 space-y-3">
             <span class="font-semibold text-primary">{{ type_info.name }}</span>
             <p class="text-sm text-secondary">{{ type_info.description }}</p>
             <div class="flex flex-wrap gap-1">
                 {% for value in type_info.values %}
-                    <code class="px-1.5 py-0.5 text-xs bg-gray-100 dark:bg-gray-800 rounded text-primary">{{ value|default:"(empty)" }}</code>
+                    <code class="px-1.5 py-0.5 text-xs bg-insight-bg-base rounded-insight-control text-primary">{{ value|default:"(empty)" }}</code>
                 {% endfor %}
             </div>
         </div>
-        <div class="bg-gray-100 dark:bg-gray-900 px-4 py-2 rounded-b-sm">
+        <div class="bg-insight-bg-base px-4 py-2 rounded-b-insight-control">
             <a href="{% url 'types_view' %}#{{ type_info.anchor }}" class="text-sm text-insight-text-link hover:underline">
                 {% trans "Types documentation" %} &rarr;
             </a>
