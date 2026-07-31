@@ -80,7 +80,7 @@
 
             {% grid cols=3 gap="l" class="mt-8 w-full max-w-6xl" %}
                 {% for feature in features %}
-                    <div class="p-6 bg-insight-bg-surface border border-insight-border-surface rounded-insight-surface transition-all duration-300 hover:border-insight-primary/50 hover:shadow-insight-raised">
+                    {% surface padding="l" radius="xl" class="transition-all duration-300 hover:shadow-insight-raised hover:border-insight-primary/50" %}
                         {% vbox gap="m" %}
                             <div class="flex justify-center items-center size-12 bg-insight-primary/10 rounded-insight-surface">
                                 {% icon name=feature.icon size="l" %}
@@ -88,7 +88,7 @@
                             <h3 class="font-semibold text-xl">{{ feature.title }}</h3>
                             <p class="text-secondary">{{ feature.description }}</p>
                         {% endvbox %}
-                    </div>
+                    {% endsurface %}
                 {% endfor %}
             {% endgrid %}
         {% endvbox %}
@@ -204,15 +204,17 @@
                 {# Block list #}
                 {% vbox gap="m" class="flex-1 min-w-75" %}
                     {% for block in base_template_blocks %}
-                        {% hbox gap="m" v_align="center" class="p-3 bg-insight-bg-surface border border-insight-border-surface rounded-insight-surface" %}
-                            <div class="flex shrink-0 justify-center items-center w-8 h-8 bg-insight-primary/10 rounded-insight-surface">
-                                {% icon name=block.icon size="s" %}
-                            </div>
-                            {% vbox %}
-                                <span class="font-mono text-sm text-insight-primary">{{ block.name }}</span>
-                                <span class="text-xs text-secondary">{{ block.description }}</span>
-                            {% endvbox %}
-                        {% endhbox %}
+                        {% surface padding="s" radius="s" %}
+                            {% hbox gap="m" v_align="center" %}
+                                <div class="flex shrink-0 justify-center items-center w-8 h-8 bg-insight-primary/10 rounded-insight-l">
+                                    {% icon name=block.icon size="s" %}
+                                </div>
+                                {% vbox %}
+                                    <span class="font-mono text-sm text-insight-primary">{{ block.name }}</span>
+                                    <span class="text-xs text-secondary">{{ block.description }}</span>
+                                {% endvbox %}
+                            {% endhbox %}
+                        {% endsurface %}
                     {% endfor %}
                 {% endvbox %}
             {% endhbox %}
@@ -236,7 +238,7 @@
 
             {% grid cols=3 gap="l" class="mt-8 w-full" %}
                 {% for option in customization_options %}
-                    <div class="p-6 bg-insight-bg-surface border border-insight-border-surface rounded-insight-surface">
+                    {% surface padding="l" radius="xl" %}
                         {% vbox gap="m" %}
                             <div class="flex justify-center items-center w-12 h-12 bg-insight-secondary/10 rounded-insight-surface">
                                 {% icon name=option.icon size="l" %}
@@ -247,7 +249,7 @@
                                 <code class="px-2 py-1 text-xs bg-insight-bg-raised rounded-insight-control">{{ option.file }}</code>
                             </div>
                         {% endvbox %}
-                    </div>
+                    {% endsurface %}
                 {% endfor %}
             {% endgrid %}
 
@@ -300,7 +302,7 @@
 
             {% grid cols=3 gap="m" class="mt-8 w-full" %}
                 {% for category in component_categories %}
-                    <a href="{{ category.url }}" class="p-5 bg-insight-bg-surface border border-insight-border-surface rounded-insight-surface transition-all duration-300 group hover:border-insight-primary/50 hover:shadow-insight-raised">
+                    {% link_surface href=category.url padding="l" radius="xl" class="transition-all duration-300 hover:shadow-insight-raised" %}
                         {% hbox gap="m" v_align="center" %}
                             <div class="flex justify-center items-center size-10 bg-insight-primary/10 rounded-insight-surface transition-colors group-hover:bg-insight-primary/20">
                                 {% icon name=category.icon size="m" %}
@@ -312,7 +314,7 @@
                                 </span>
                             {% endvbox %}
                         {% endhbox %}
-                    </a>
+                    {% endlink_surface %}
                 {% endfor %}
             {% endgrid %}
 
@@ -335,28 +337,30 @@
 
             {% grid cols=2 gap="l" class="mt-8 w-full" %}
                 {% for addon in addon_packages %}
-                    <div class="p-6 bg-insight-bg-surface border border-insight-border-surface rounded-insight-surface {% if addon.status == 'planned' %}opacity-75{% endif %}">
-                        {% hbox gap="m" v_align="start" %}
-                            <div class="flex shrink-0 justify-center items-center w-12 h-12 bg-insight-primary/10 rounded-insight-surface">
-                                {% icon name=addon.icon size="l" %}
-                            </div>
-                            {% vbox gap="s" class="flex-1" %}
-                                {% hbox gap="s" v_align="center" wrap=True %}
-                                    <h3 class="mb-0 font-semibold text-lg">{{ addon.name }}</h3>
-                                    {% if addon.status == 'available' %}
-                                        {% badge label=_("Available") type="success" size="xs" %}
-                                    {% elif addon.status == 'early' %}
-                                        {% badge label=_("Early Stage") type="warning" size="xs" %}
-                                    {% elif addon.status == 'planned' %}
-                                        {% badge label=_("Planned") type="neutral" size="xs" %}
+                    <div {% if addon.status == 'planned' %}class="opacity-75"{% endif %}>
+                        {% surface padding="l" radius="xl" %}
+                            {% hbox gap="m" v_align="start" %}
+                                <div class="flex shrink-0 justify-center items-center w-12 h-12 bg-insight-primary/10 rounded-insight-l">
+                                    {% icon name=addon.icon size="l" %}
+                                </div>
+                                {% vbox gap="s" class="flex-1" %}
+                                    {% hbox gap="s" v_align="center" wrap=True %}
+                                        <h3 class="mb-0! font-semibold text-lg">{{ addon.name }}</h3>
+                                        {% if addon.status == 'available' %}
+                                            {% badge label=_("Available") type="success" size="xs" %}
+                                        {% elif addon.status == 'early' %}
+                                            {% badge label=_("Early Stage") type="warning" size="xs" %}
+                                        {% elif addon.status == 'planned' %}
+                                            {% badge label=_("Planned") type="neutral" size="xs" %}
+                                        {% endif %}
+                                    {% endhbox %}
+                                    <p class="text-secondary text-sm">{{ addon.description }}</p>
+                                    {% if addon.url %}
+                                        <a href="{{ addon.url }}" class="mt-1 text-link text-sm">{% trans "Learn more" %} →</a>
                                     {% endif %}
-                                {% endhbox %}
-                                <p class="text-secondary text-sm">{{ addon.description }}</p>
-                                {% if addon.url %}
-                                    <a href="{{ addon.url }}" class="mt-1 text-link text-sm">{% trans "Learn more" %} →</a>
-                                {% endif %}
-                            {% endvbox %}
-                        {% endhbox %}
+                                {% endvbox %}
+                            {% endhbox %}
+                        {% endsurface %}
                     </div>
                 {% endfor %}
             {% endgrid %}
@@ -372,12 +376,14 @@
             {% endvbox %}
             {% vbox %}
                 {% for item in checklist %}
-                    <div class="flex gap-4 items-center p-4 bg-insight-bg-surface border border-insight-border-surface rounded-insight-surface">
-                        <div class="flex shrink-0 justify-center items-center w-8 h-8 bg-insight-success-soft rounded-insight-full">
-                            {% icon name="check" size="s" %}
-                        </div>
-                        <span class="text-secondary">{{ item }}</span>
-                    </div>
+                    {% surface padding="m" radius="s" %}
+                        {% hbox gap="m" v_align="center" %}
+                            <div class="flex shrink-0 justify-center items-center w-8 h-8 bg-insight-success-soft rounded-insight-full">
+                                {% icon name="check" size="s" %}
+                            </div>
+                            <span class="text-secondary">{{ item }}</span>
+                        {% endhbox %}
+                    {% endsurface %}
                 {% endfor %}
             {% endvbox %}
             {% hbox h_align="center" %}
