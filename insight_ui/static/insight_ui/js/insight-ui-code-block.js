@@ -123,7 +123,7 @@ export class CodeBlock {
         wrapper.dir = 'ltr';
 
         const pre = document.createElement('pre');
-        pre.classList.add('line-numbers', `language-${lang}`, '!overflow-visible', '!m-0');
+        pre.classList.add('line-numbers', `language-${lang}`, '!overflow-visible', '!m-0', 'rounded-insight-surface');
 
         const codeElement = document.createElement('code');
         codeElement.classList.add('block', 'w-fit', 'pe-6');
@@ -185,7 +185,7 @@ export class CodeBlock {
      */
     generateCodeBlock(id, lang, filename, code) {
         const wrapper = document.createElement('div');
-        wrapper.classList.add('flex', 'flex-col', 'bg-[#f9fafb]', 'dark:bg-[#030712]', 'rounded-insight-surface', 'border', 'border-insight-border-surface');
+        wrapper.classList.add('flex', 'flex-col', 'bg-insight-bg-surface', 'rounded-insight-surface', 'border', 'border-insight-border-surface');
         wrapper.id = id;
 
         const toolbar = this.#createToolbar(lang, filename);
