@@ -1,4 +1,4 @@
-"""Tests for size and type validation utilities."""
+"""Tests for config validation utilities."""
 
 import pytest
 from insight_ui.configs import (
@@ -10,7 +10,6 @@ from insight_ui.configs import (
     FILTER_FIELD_TYPE_VALUES,
     FORM_FIELD_TYPE_VALUES,
     GEO_MAP_MARKER_TYPE_VALUES,
-    HORIZONTAL_SIDE_VALUES,
     HTML_BUTTON_TYPE_VALUES,
     HTML_INPUT_TYPE_VALUES,
     HTMX_METHOD_VALUES,
@@ -34,7 +33,6 @@ from insight_ui.configs import (
     MinimalStepperConfig,
     QueryBuilderFieldConfig,
     RadioBlockConfig,
-    SidebarConfig,
     SliderConfig,
     StatusScreenConfig,
     ToggleViewConfig,
@@ -46,7 +44,6 @@ from insight_ui.configs import (
     validate_filter_field_type,
     validate_form_field_type,
     validate_geo_map_marker_type,
-    validate_horizontal_side,
     validate_html_button_type,
     validate_html_input_type,
     validate_htmx_method,
@@ -686,67 +683,6 @@ def test_corner_ribbon_config_default_position() -> None:
     """Test CornerRibbonConfig has correct default position."""
     config = CornerRibbonConfig(text="Test")
     assert config.position == "top-right"
-
-
-# =============================================================================
-# Horizontal Side Validation
-# =============================================================================
-
-
-# --- HORIZONTAL_SIDE_VALUES constant ----------------------------------------
-
-
-def test_horizontal_side_values_contains_expected_values() -> None:
-    """Test that HORIZONTAL_SIDE_VALUES contains all expected values."""
-    assert HORIZONTAL_SIDE_VALUES == ("left", "right")
-
-
-def test_horizontal_side_values_is_tuple() -> None:
-    """Test that HORIZONTAL_SIDE_VALUES is immutable (tuple)."""
-    assert isinstance(HORIZONTAL_SIDE_VALUES, tuple)
-
-
-# --- validate_horizontal_side function --------------------------------------
-
-
-def test_validate_horizontal_side_accepts_valid_values() -> None:
-    """Test that validate_horizontal_side accepts all valid values."""
-    for side in HORIZONTAL_SIDE_VALUES:
-        validate_horizontal_side(side)  # Should not raise
-
-
-def test_validate_horizontal_side_rejects_invalid_value() -> None:
-    """Test that validate_horizontal_side raises ValueError for invalid values."""
-    with pytest.raises(ValueError, match="Invalid side 'center'"):
-        validate_horizontal_side("center")
-
-
-def test_validate_horizontal_side_custom_field_name() -> None:
-    """Test that validate_horizontal_side uses the custom field name in error messages."""
-    with pytest.raises(ValueError, match="Invalid panel_side 'bad'"):
-        validate_horizontal_side("bad", field_name="panel_side")
-
-
-# --- SidebarConfig side validation ------------------------------------------
-
-
-def test_sidebar_config_accepts_valid_side() -> None:
-    """Test SidebarConfig accepts valid side values."""
-    for side in HORIZONTAL_SIDE_VALUES:
-        config = SidebarConfig(side=side)
-        assert config.side == side
-
-
-def test_sidebar_config_rejects_invalid_side() -> None:
-    """Test SidebarConfig raises ValueError for invalid side."""
-    with pytest.raises(ValueError, match="Invalid side"):
-        SidebarConfig(side="center")
-
-
-def test_sidebar_config_default_side() -> None:
-    """Test SidebarConfig has correct default side."""
-    config = SidebarConfig()
-    assert config.side == "right"
 
 
 # =============================================================================

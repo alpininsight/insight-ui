@@ -1,7 +1,5 @@
 """Demo rendering context for UI components."""
 
-import dataclasses
-
 from django.templatetags.static import static
 from django.urls import reverse, reverse_lazy
 from django.utils.lorem_ipsum import paragraphs
@@ -61,7 +59,6 @@ from insight_ui.configs import (
     RadioItemConfig,
     SelectConfig,
     SidebarCategoryConfig,
-    SidebarConfig,
     SidebarDataConfig,
     SidebarItemConfig,
     SliderConfig,
@@ -291,43 +288,31 @@ def get_navbar_context() -> dict:
 @register_demo_context(Component.SIDEBAR)
 def get_drawer_context() -> dict:
     """Serve data for sidebar detailpage."""
-    left_sidebar_config = SidebarConfig(
-        SidebarDataConfig(
-            _("Settings"),
-            IconConfig("wrench-screwdriver", "s"),
-            [
-                SidebarCategoryConfig(
-                    _("Work"),
-                    IconConfig("building-office-2", "s"),
-                    [
-                        SidebarItemConfig(_("Notifications"), reverse("index_view"), IconConfig("bell", "s")),
-                        SidebarItemConfig(
-                            _("Messages"), reverse("index_view"), IconConfig("chat-bubble-left-right", "s")
-                        ),
-                        SidebarItemConfig(
-                            _("Tasks"), reverse("index_view"), IconConfig("clipboard-document-check", "s")
-                        ),
-                    ],
-                ),
-                SidebarCategoryConfig(
-                    _("Management"),
-                    IconConfig("cog-8-tooth", "s"),
-                    [
-                        SidebarItemConfig(_("Calendar"), reverse("index_view"), IconConfig("calendar", "s")),
-                        SidebarItemConfig(_("Profile"), reverse("index_view"), IconConfig("user", "s")),
-                    ],
-                ),
-            ],
-        ),
-        "left",
-        True,
+    sidebar_data = SidebarDataConfig(
+        _("Settings"),
+        IconConfig("wrench-screwdriver", "s"),
+        [
+            SidebarCategoryConfig(
+                _("Work"),
+                IconConfig("building-office-2", "s"),
+                [
+                    SidebarItemConfig(_("Notifications"), reverse("index_view"), IconConfig("bell", "s")),
+                    SidebarItemConfig(_("Messages"), reverse("index_view"), IconConfig("chat-bubble-left-right", "s")),
+                    SidebarItemConfig(_("Tasks"), reverse("index_view"), IconConfig("clipboard-document-check", "s")),
+                ],
+            ),
+            SidebarCategoryConfig(
+                _("Management"),
+                IconConfig("cog-8-tooth", "s"),
+                [
+                    SidebarItemConfig(_("Calendar"), reverse("index_view"), IconConfig("calendar", "s")),
+                    SidebarItemConfig(_("Profile"), reverse("index_view"), IconConfig("user", "s")),
+                ],
+            ),
+        ],
     )
 
-    right_drawer_config = dataclasses.replace(left_sidebar_config)
-    right_drawer_config.side = "right"
-    right_drawer_config.static = False
-
-    return {"left_sidebar_config": left_sidebar_config, "right_drawer_config": right_drawer_config}
+    return {"demo_sidebar_data": sidebar_data}
 
 
 @register_demo_context(Component.FOOTER)

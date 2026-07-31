@@ -134,7 +134,6 @@ def test_type_definitions_contains_expected_types() -> None:
         "HtmlInputType",
         "FormFieldType",
         "CornerPosition",
-        "HorizontalSide",
         "InlinePosition",
         "HtmxSwapMethod",
         "HtmxMethod",

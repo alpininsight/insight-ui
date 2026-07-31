@@ -189,6 +189,9 @@ VALID_HEIGHT: frozenset[str] = frozenset({"auto", "full", "peek"})
 VALID_MAX_WIDTH: frozenset[str] = frozenset({"xs", "s", "m", "l", "xl", "fit", "full"})
 VALID_SURFACE_VARIANT: frozenset[str] = frozenset({"surface", "raised", "outline"})
 VALID_RADIUS: frozenset[str] = frozenset({"xs", "s", "m", "l", "xl", "none"})
+VALID_SIDE: frozenset[str] = frozenset({"left", "right"})
+VALID_WIDTH: frozenset[str] = frozenset({"narrow", "normal", "wide"})
+VALID_MOBILE_BEHAVIOR: frozenset[str] = frozenset({"hidden", "drawer"})
 
 # Class mappings (classes are defined in input.css or are tailwind classes)
 GAP_CLASSES: dict[str, str] = {
@@ -277,6 +280,13 @@ FIXED_GRID_CLASSES: dict[int, str] = {
 }
 
 VALID_COLS: frozenset[int] = frozenset({1, 2, 3, 4, 5, 6})
+
+# Sidebar width classes (direct Tailwind classes)
+SIDEBAR_WIDTH_CLASSES: dict[str, str] = {
+    "narrow": "w-56",  # 14rem (224px)
+    "normal": "w-72",  # 18rem (288px) - default
+    "wide": "w-156",  # 24rem (384px)
+}
 
 
 # =============================================================================
@@ -715,13 +725,91 @@ class CollapsibleNode(LayoutNode):
             "content": self.nodelist.render(context),
         }
 
-        tpl = get_template("insight_ui/layout/collapsible.html")
+        tpl = get_template("insight_ui/components/layout/collapsible.html")
         return tpl.render(template_context)
 
 
 # =============================================================================
 # Tabs Component
 # =============================================================================
+
+
+class SidebarNode(LayoutNode):
+    """
+    Sidebar layout container.
+
+    A flexible container for sidebar content that can be positioned on either side,
+    with configurable width and mobile behavior.
+
+    Parameters:
+        side: Position of sidebar ("left" or "right"). Auto-detected from block context
+            when used inside ``{% block sidebar_left %}`` or ``{% block sidebar_right %}``.
+            Falls back to "right" if not specified and not in a sidebar block.
+        static: If True, sidebar is sticky; if False, it's a drawer. Default: True
+        width: Sidebar width ("narrow", "normal", "wide"). Default: "normal"
+        mobile_behavior: How to behave on mobile ("hidden", "drawer"). Default: "hidden"
+        class: Additional CSS classes to append.
+
+    Example::
+
+        {# Inside sidebar blocks, side is auto-detected - no need to specify #}
+        {% block sidebar_left %}
+            {% sidebar %}
+                {% include "components/sidebar_nav.html" %}
+            {% endsidebar %}
+        {% endblock %}
+
+        {% block sidebar_right %}
+            {% sidebar width="wide" mobile_behavior="drawer" %}
+                <h2>Table of Contents</h2>
+            {% endsidebar %}
+        {% endblock %}
+
+        {# Outside blocks, specify side explicitly #}
+        {% sidebar width="wide" %}
+            <h2>Custom Title</h2>
+            <nav>...</nav>
+        {% endsidebar %}
+
+    """
+
+    def render(self, context: Context) -> str:
+        """Render the sidebar container."""
+        resolved = self.resolve_kwargs(context)
+
+        # Get side from explicit parameter, context variable, or default
+        # Context variable _sidebar_side is set by base.html when using sidebar blocks
+        side_default = context.get("_sidebar_side", "right")
+        side = str(resolved.get("side", side_default))
+        _validate(side, VALID_SIDE, "side", self.tag_name)
+
+        static = resolved.get("static", True)
+        if isinstance(static, str):
+            static = static.lower() == "true"
+
+        width = str(resolved.get("width", "normal"))
+        _validate(width, VALID_WIDTH, "width", self.tag_name)
+
+        mobile_behavior = str(resolved.get("mobile_behavior", "hidden"))
+        _validate(mobile_behavior, VALID_MOBILE_BEHAVIOR, "mobile_behavior", self.tag_name)
+
+        # Get navbar_fixed from context (set by context processor)
+        navbar_fixed = context.get("navbar_fixed", False)
+
+        # Build template context
+        template_context = {
+            "side": side,
+            "static": static,
+            "width": width,
+            "width_class": SIDEBAR_WIDTH_CLASSES[width],
+            "mobile_behavior": mobile_behavior,
+            "navbar_fixed": navbar_fixed,
+            "wrapper_class": str(resolved.get("class", "")),
+            "content": self.nodelist.render(context),
+        }
+
+        tpl = get_template("insight_ui/components/layout/sidebar.html")
+        return tpl.render(template_context)
 
 
 class TabNode(Node):
@@ -869,7 +957,7 @@ class TabsNode(Node):
             "tabs": tabs_data,
         }
 
-        tpl = get_template("insight_ui/layout/tabs.html")
+        tpl = get_template("insight_ui/components/layout/tabs.html")
         return tpl.render(template_context)
 
 
@@ -952,6 +1040,7 @@ register.tag("grid", _make_block_tag(GridNode))
 register.tag("surface", _make_block_tag(SurfaceNode))
 register.tag("link_surface", _make_block_tag(LinkSurfaceNode))
 register.tag("collapsible", _make_block_tag(CollapsibleNode))
+register.tag("sidebar", _make_block_tag(SidebarNode))
 register.tag("tabs", do_tabs)
 
 

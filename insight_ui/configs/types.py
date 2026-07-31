@@ -161,12 +161,6 @@ CORNER_POSITION_VALUES: tuple[str, ...] = ("top-right", "top-left", "bottom-righ
 # Type alias for corner positions
 type CornerPosition = Literal["top-right", "top-left", "bottom-right", "bottom-left"]
 
-# Tuple of valid horizontal side values (for sidebars, panels, etc.)
-HORIZONTAL_SIDE_VALUES: tuple[str, ...] = ("left", "right")
-
-# Type alias for horizontal sides
-type HorizontalSide = Literal["left", "right"]
-
 # Tuple of valid inline position values (for logos, icons in text flow, etc.)
 INLINE_POSITION_VALUES: tuple[str, ...] = ("start", "end")
 
@@ -369,20 +363,6 @@ def validate_corner_position(value: str, field_name: str = "position") -> None:
 
     """
     _validate_literal(value, CORNER_POSITION_VALUES, field_name)
-
-
-def validate_horizontal_side(value: str, field_name: str = "side") -> None:
-    """Validate that a horizontal side value is one of the allowed values.
-
-    Args:
-        value: The horizontal side value to validate.
-        field_name: Name of the field for error messages.
-
-    Raises:
-        ValueError: If the value is not a valid horizontal side.
-
-    """
-    _validate_literal(value, HORIZONTAL_SIDE_VALUES, field_name)
 
 
 def validate_inline_position(value: str, field_name: str = "position") -> None:
