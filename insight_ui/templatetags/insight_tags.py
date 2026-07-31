@@ -91,7 +91,6 @@ from insight_ui.configs import (
     StepperItemConfig,
     StepStatus,
     TableConfig,
-    TabsConfig,
     TextareaConfig,
     ThreeDCarouselConfig,
     ToggleConfig,
@@ -531,12 +530,6 @@ def bullet_point_list(
 def accordion(config: AccordionConfig) -> dict[str, Any]:
     """Render an accordion that can have one or more sections open."""
     return {"accordion_config": config}
-
-
-@register.inclusion_tag("insight_ui/components/tabs.html")
-def tabs(config: TabsConfig) -> dict[str, Any]:
-    """Render a group of tabs and a container for the content of each tab."""
-    return {"config": config}
 
 
 # =============================================================

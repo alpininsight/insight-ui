@@ -555,7 +555,7 @@
 {% elif component.value == "accordion" %}
     {% accordion config=accordion_config %}
 {% elif component.value == "tabs" %}
-    {% tabs config=tabs_config %}
+    {% tabs config=tabs_config %}{% endtabs %}
 {% elif component.value == "button" %}
     <div class="space-y-4">
         <div>
