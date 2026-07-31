@@ -2,8 +2,8 @@
     <div class="px-4 bg-insight-bg-surface md:px-16">
         <div class="pt-20 pb-12">
             {% if page_header_config.title %}
-                <h1 class="text-primary">
-                    {{ page_header_config.title }}
+                <h1 class="text-4xl md:text-5xl">
+                    {% if page_header_config.prefix %}<span class="font-normal text-secondary">{{ page_header_config.prefix }} </span>{% endif %}<span class="font-bold text-insight-primary">{{ page_header_config.title }}</span>
                 </h1>
             {% endif %}
 
@@ -20,8 +20,8 @@
     <div class="px-4 border-t-8 border-insight-primary md:px-16">
         <div class="pt-20 pb-12 border-b-2 border-insight-text-hint">
             {% if page_header_config.title %}
-                <h1 class="text-primary">
-                    {{ page_header_config.title }}
+                <h1 class="text-4xl md:text-5xl">
+                    {% if page_header_config.prefix %}<span class="font-normal text-secondary">{{ page_header_config.prefix }} </span>{% endif %}<span class="font-bold text-insight-primary">{{ page_header_config.title }}</span>
                 </h1>
             {% endif %}
 
@@ -38,8 +38,8 @@
     <div class="primary-back relative px-4 overflow-hidden md:px-16">
         <div class="pt-20 pb-12">
             {% if page_header_config.title %}
-                <h1 class="font-bold text-primary text-4xl md:text-5xl">
-                    {{ page_header_config.title }}
+                <h1 class="text-4xl md:text-5xl">
+                    {% if page_header_config.prefix %}<span class="font-normal text-secondary">{{ page_header_config.prefix }} </span>{% endif %}<span class="font-bold text-insight-primary">{{ page_header_config.title }}</span>
                 </h1>
             {% endif %}
 
@@ -60,14 +60,14 @@
     </div>
 {% else %}
     <div class="px-4 border-t-8 border-insight-primary md:px-16">
-        <div class="pt-20 pb-12 border-b-2 border-insight-text-hint">
+        <div class="pt-20 pb-12 mx-auto max-w-4xl border-b-2 border-insight-text-hint">
             {% if page_header_config.title %}
-                <h1 class="text-primary">
-                    {{ page_header_config.title }}
+                <h1 class="text-4xl md:text-5xl">
+                    {% if page_header_config.prefix %}<span class="font-normal text-secondary">{{ page_header_config.prefix }} </span>{% endif %}<span class="font-bold text-insight-primary">{{ page_header_config.title }}</span>
                 </h1>
             {% endif %}
 
-            <div class="max-w-5xl">
+            <div class="max-w-4xl">
                 {% for paragraph in page_header_config.description %}
                     <p class="mt-4 text-secondary text-lg leading-loose">
                         {{ paragraph }}
