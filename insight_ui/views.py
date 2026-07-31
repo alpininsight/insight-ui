@@ -359,7 +359,6 @@ def more_items_view(request: HttpRequest) -> HttpResponse | JsonResponse:
 def index_view(request: HttpRequest) -> HttpResponse:
     """Render index page."""
     context = get_base_context() | get_sidebar_context()
-    context["default_padding"] = False
     context["hero"] = HeroConfig(
         title="Insight UI",
         subtitle=_("A Django Component Framework"),
