@@ -140,12 +140,7 @@ def get_base_context() -> dict:
         Combined context dict with config, navbar, and footer data.
 
     """
-    return (
-        config.get_config()
-        | get_navbar_context()
-        | get_footer_context()
-        | {"white_bg": True, "default_padding": True, "use_default_loading_indicator": False}
-    )
+    return config.get_config() | get_navbar_context() | get_footer_context() | {"use_default_loading_indicator": False}
 
 
 def get_icon_context() -> dict:
