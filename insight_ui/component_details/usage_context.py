@@ -20,7 +20,11 @@ def get_page_header_usage_context() -> dict[str, str]:
         {% load insight_tags %}
 
         {% block heading %}
-            {% page_header title="My indispensable app" description="This is a django application designed with the help of insight UI." %}
+            {# With prefix for hierarchical titles #}
+            {% page_header prefix="My App" title="Dashboard" description="Welcome to your personal dashboard." %}
+
+            {# Without prefix for standalone pages #}
+            {% page_header title="About Us" description="Learn more about our company." %}
         {% endblock heading %}
         """
     }
@@ -275,14 +279,23 @@ def get_sidebar_usage_context() -> dict[str, str]:
     """Serve usage documentation for the sidebar component."""
     return {
         "usage_summary": _(
-            "The sidebar is integrated using the `sidebar` tag. The _base template_ includes blocks designated for the sidebar, where it should be placed. There is one block for the right side and one for the left side. If the sidebar is collapsible, there is an additional block called _Drawers_ for this purpose. If the component is used outside of these blocks, layout issues may occur."
+            "The sidebar is integrated using the `sidebar` layout tag from `layout_tags`. The _base template_ includes blocks designated for the sidebar, where it should be placed. There is one block for the right side and one for the left side. If the sidebar is collapsible, set `static=False` to create a drawer. If the component is used outside of these blocks, layout issues may occur."
         ),
         "usage": """
-        {% load insight_tags %}
+        {% load layout_tags %}
 
-        {% block drawers %}
-            {% sidebar config=sidebar_config side="right" auto_close=False %}
-        {% endblock drawers %}
+        {% block sidebar_left %}
+            {% sidebar %}
+                {% include "components/sidebar_nav.html" with sidebar_data=nav_data %}
+            {% endsidebar %}
+        {% endblock sidebar_left %}
+
+        {% block sidebar_right %}
+            {% sidebar width="wide" %}
+                <h2>Table of Contents</h2>
+                <div id="toc"></div>
+            {% endsidebar %}
+        {% endblock sidebar_right %}
         """,
     }
 

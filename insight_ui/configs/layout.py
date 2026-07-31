@@ -15,19 +15,22 @@ class PageHeaderConfig:
     Renders a page header with title and optional description.
 
     Attributes:
-        title: The page title, displayed as h1 in white text.
+        title: The main page title, displayed prominently in primary color.
+        prefix: Optional prefix displayed before the title in muted style.
         description: An optional description below the title.
 
     """
 
     __example__ = """
         PageHeaderConfig(
-            title="Dashboard",
-            description="Welcome to your personal dashboard.",
+            prefix="Insight UI",
+            title="Page Header",
+            description="A header component for documentation pages.",
         )
         """
 
-    title: str = field(metadata={"doc": _("The page title, displayed as h1 in white text.")})
+    title: str = field(metadata={"doc": _("The main page title, displayed prominently in primary color.")})
+    prefix: str = field(default="", metadata={"doc": _("Optional prefix displayed before the title in muted style.")})
     description: str | list[str] = field(default="", metadata={"doc": _("An optional description below the title.")})
 
 
