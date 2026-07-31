@@ -30,7 +30,7 @@
     style="width: {{ sidebar_config.sidebar_data.width|default:'18rem' }}"
     data-auto-close="{{ sidebar_config.auto_close|yesno:'true,false' }}"
   >
-    <div class="flex flex-col {% if sidebar_config.side == 'right' %}ps-4 pe-4 md:pe-16{% else %}ps-4 pe-4 md:ps-16{% endif %} {% if sidebar_config.static %}py-8{% else %}pb-8{% endif %}">
+    <div class="flex flex-col {% if sidebar_config.side == 'right' %}ps-4 pe-4 md:pe-6{% else %}ps-4 pe-4 md:ps-6{% endif %} {% if sidebar_config.static %}py-8{% else %}pb-8{% endif %}">
       {% block sidebar_content %}
         {# Sidebar head with internal close button #}
         <div class="flex justify-between items-center {% if not sidebar_config.static %}h-16{% else %}pb-4{% endif %} mb-4 border-b border-insight-border-surface">
@@ -66,7 +66,7 @@
                     {% if category.icon %}
                       {% icon category.icon %}
                     {% endif %}
-                    <span class="font-semibold">{{ category.caption }}</span>
+                    <span class="font-semibold tracking-wide">{{ category.caption }}</span>
                   </div>
                   <ul>
                     {% for item in category.items %}
@@ -81,7 +81,7 @@
                             hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
                           {% endif %}
                           href="{{ item.request_url }}"
-                          class="flex gap-2 px-2 py-1 text-sm text-primary border-s border-insight-border-surface hover:border-insight-text-secondary hover:text-insight-text-secondary"
+                          class="flex gap-2 px-4 py-1 text-sm text-primary tracking-wide border-s border-insight-border-surface hover:border-insight-text-secondary hover:text-insight-text-secondary"
                         >
                           {% if item.icon %}
                             {% icon item.icon %}
