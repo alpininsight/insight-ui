@@ -1,0 +1,48 @@
+<div data-insight-tabs{% if tag_id %}="{{ tag_id }}"{% endif %}>
+  <div
+    role="tablist"
+    aria-label="{{ label }}"
+    class="flex border-b border-insight-border-surface"
+  >
+    {% for tab in tabs %}
+      <button
+        id="{{ tab.id }}"
+        role="tab"
+        aria-selected="{{ tab.active|yesno:'true,false' }}"
+        aria-controls="{% if is_htmx %}{{ tag_id }}-tab-content{% else %}{{ tab.panel_id }}{% endif %}"
+        tabindex="{% if tab.active %}0{% else %}-1{% endif %}"
+        {% if tab.url %}
+          hx-get="{{ tab.url }}"
+          hx-target="#{{ tag_id }}-tab-content"
+          hx-swap="innerHTML"
+        {% elif not is_htmx %}
+          data-tab-panel="{{ tab.panel_id }}"
+        {% endif %}
+        class="px-4 py-2 -mb-px font-semibold border-b-2 transition-colors hover:text-insight-primary focus:outline-none focus:text-insight-primary {% if tab.active %}text-insight-primary border-insight-primary{% else %}text-secondary border-transparent{% endif %}"
+      >
+        {% if tab.icon %}<span class="mr-2">{{ tab.icon }}</span>{% endif %}
+        {{ tab.label }}
+      </button>
+    {% endfor %}
+  </div>
+  {% if is_htmx %}
+    <div id="{{ tag_id }}-tab-content" role="tabpanel" class="mt-4">
+      <!-- Content loaded via HTMX -->
+    </div>
+  {% else %}
+    <div data-tab-panels class="mt-4">
+      {% for tab in tabs %}
+        {% if tab.content %}
+          <div
+            id="{{ tab.panel_id }}"
+            role="tabpanel"
+            aria-hidden="{{ tab.active|yesno:'false,true' }}"
+            {% if not tab.active %}class="hidden"{% endif %}
+          >
+            {{ tab.content }}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>

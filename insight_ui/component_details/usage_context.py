@@ -373,9 +373,20 @@ def get_tabs_usage_context() -> dict[str, str]:
     """Serve usage documentation for the tabs component."""
     return {
         "usage": """
-        {% load insight_tags %}
+        {% load layout_tags %}
 
-        {% tabs config=tabs_config %}
+        {# Config mode (HTMX) #}
+        {% tabs config=tabs_config %}{% endtabs %}
+
+        {# Block mode (static content) #}
+        {% tabs id="example" label="Example Tabs" %}
+            {% tab id="first" label="First Tab" active=True %}
+                <p>First tab content</p>
+            {% endtab %}
+            {% tab id="second" label="Second Tab" %}
+                <p>Second tab content</p>
+            {% endtab %}
+        {% endtabs %}
         """
     }
 

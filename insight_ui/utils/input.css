@@ -23,7 +23,7 @@
     /* Background colors */
     --color-insight-bg-base: #FFFFFF;
     --color-insight-bg-base-dark: #030712;
-    --color-insight-bg-surface: #F6F7F9;
+    --color-insight-bg-surface: #FFFFFF;
     --color-insight-bg-surface-dark: #0E1525;
     --color-insight-bg-raised: #EEF0F3;
     --color-insight-bg-raised-dark: #1A2336;
@@ -119,8 +119,8 @@
     --spacing-insight-xs: 0.25rem;
     --spacing-insight-s: 0.5rem;
     --spacing-insight-m: 1rem;
-    --spacing-insight-l: 1.5rem;
-    --spacing-insight-xl: 2rem;
+    --spacing-insight-l: 2rem;
+    --spacing-insight-xl: 4rem;
 
     /*
     * ========================================================
