@@ -68,10 +68,12 @@ pre[class*=language-] {
     text-shadow: 0 1px #fff;
 }
 
+/*
 :not(pre) > code[class*=language-],
 pre[class*=language-] {
     background: #f9fafb;
 }
+*/
 
 code[class*=language-]::selection,
 pre[class*=language-]::selection,
@@ -141,7 +143,7 @@ pre[class*=language-]::-moz-selection {
 }
 
 /* =========================================================
-   Dark Theme (WCAG-verbessert)
+   Dark Theme
    Aktiv via .dark
    ========================================================= */
 
@@ -151,10 +153,12 @@ pre[class*=language-]::-moz-selection {
     text-shadow: 0 -0.1em 0.2em #000;
 }
 
+/*
 .dark :not(pre) > code[class*=language-],
 .dark pre[class*=language-] {
     background: #030712;
 }
+*/
 
 .dark code[class*=language-]::selection,
 .dark pre[class*=language-]::selection,
