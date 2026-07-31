@@ -16,53 +16,15 @@
 {% endblock sidebar_right %}
 
 {% block heading %}
-    {% page_header title=_("Get started") %}
+    {% page_header title=_("Get started") description=_("How to integrate Insight UI into your project and make use of all the components.") %}
 {% endblock heading %}
 
 {% block content %}
-    <div class="w-full text-secondary leading-loose">
+    <div class="mx-auto w-full max-w-4xl text-secondary leading-loose">
         {% vbox gap="xl" %}
-
-        {# ===== Feature Highlights ===== #}
-            {% vbox gap="l" %}
-                <p class="text-lg">
-                    {% trans "Insight UI is a Django component framework with 60+ reusable, accessible UI components. Build beautiful interfaces without writing CSS from scratch." %}
-                </p>
-                {% grid cols=4 gap="m" %}
-                    {% surface padding="l" class="text-center" %}
-                        {% vbox gap="xs" h_align="center" %}
-                            {% icon name="rectangle-group" size="xl" color="text-insight-primary" %}
-                            <span class="font-semibold text-primary">60+ {% trans "Components" %}</span>
-                            <span class="text-sm">{% trans "Buttons, Forms, Cards, Charts, and more" %}</span>
-                        {% endvbox %}
-                    {% endsurface %}
-                    {% surface padding="l" class="text-center" %}
-                        {% vbox gap="xs" h_align="center" %}
-                            {% icon name="user" size="xl" color="text-insight-primary" %}
-                            <span class="font-semibold text-primary">WCAG 2.1 AA</span>
-                            <span class="text-sm">{% trans "Accessible by default" %}</span>
-                        {% endvbox %}
-                    {% endsurface %}
-                    {% surface padding="l" class="text-center" %}
-                        {% vbox gap="xs" h_align="center" %}
-                            {% icon name="moon" size="xl" color="text-insight-primary" %}
-                            <span class="font-semibold text-primary">{% trans "Dark Mode" %}</span>
-                            <span class="text-sm">{% trans "Built-in theme switching" %}</span>
-                        {% endvbox %}
-                    {% endsurface %}
-                    {% surface padding="l" class="text-center" %}
-                        {% vbox gap="xs" h_align="center" %}
-                            {% icon name="rocket-launch" size="xl" color="text-insight-primary" %}
-                            <span class="font-semibold text-primary">HTMX Ready</span>
-                            <span class="text-sm">{% trans "Interactive without heavy JS" %}</span>
-                        {% endvbox %}
-                    {% endsurface %}
-                {% endgrid %}
-            {% endvbox %}
-
-        {# ===== Requirements ===== #}
+            {# ===== Requirements ===== #}
             {% vbox gap="m" %}
-                <h2>{% trans "Requirements" %}</h2>
+                <h2 class="pb-0">{% trans "Requirements" %}</h2>
                 {% hbox gap="s" wrap=True %}
                     {% badge label="Python 3.12+" type="info" size="m" %}
                     {% badge label="Django 5.2 - 6.0" type="info" size="m" %}
@@ -70,172 +32,141 @@
                 {% infobox info_type="info" message=_("Insight UI includes Tailwind CSS and HTMX out of the box. No additional setup required.") %}
             {% endvbox %}
 
-        {# ===== Installation ===== #}
+            {# ===== Installation ===== #}
             {% vbox gap="m" %}
-                <h2>{% trans "Installation" %}</h2>
+                <h2 class="pb-0">{% trans "Installation" %}</h2>
                 <p>{% trans "Install Insight UI with your preferred package manager:" %}</p>
 
-            {# TODO: Consider implementing static_tabs for client-side content switching #}
-                <div data-insight-install-tabs>
-                    {% vbox gap="m" %}
-                        {% hbox class="border-b border-gray-200 dark:border-gray-600" %}
-                            <button
-                                type="button"
-                                role="tab"
-                                aria-selected="true"
-                                data-tab="uv"
-                                class="px-4 py-2 -mb-px border-b-2 border-insight-primary font-semibold text-insight-primary transition-colors"
-                            >
-                                uv {% trans "(recommended)" %}
-                            </button>
-                            <button
-                                type="button"
-                                role="tab"
-                                aria-selected="false"
-                                data-tab="pip"
-                                class="px-4 py-2 -mb-px border-b-2 border-transparent font-semibold text-secondary hover:text-primary transition-colors"
-                            >
-                                pip
-                            </button>
-                        {% endhbox %}
-                        <div data-tab-content="uv">
-                            <div data-insight-code-block="bash">
-                        {# fmt:off #}
-                        uv add insight-ui
-                        {# fmt:on #}
-                            </div>
-                        </div>
-                        <div data-tab-content="pip" class="hidden">
-                            <div data-insight-code-block="bash">
-                        {# fmt:off #}
-                        pip install insight-ui
-                        {# fmt:on #}
-                            </div>
-                        </div>
-                    {% endvbox %}
-                </div>
-
-            {# TODO: Consider implementing details/collapsible tag #}
-                <details class="mt-4">
-                    <summary class="cursor-pointer text-primary font-medium hover:text-insight-primary">
-                        {% trans "Install from Git repository" %}
-                    </summary>
-                    <div class="mt-3">
+                {% tabs id="install" label=_("Package Manager") %}
+                    {% tab id="uv" label="uv (recommended)" active=True %}
                         <div data-insight-code-block="bash">
+                            {# fmt:off #}
+                            uv add insight-ui
+                            {# fmt:on #}
+                        </div>
+                    {% endtab %}
+                    {% tab id="pip" label="pip" %}
+                        <div data-insight-code-block="bash">
+                            {# fmt:off #}
+                            pip install insight-ui
+                            {# fmt:on #}
+                        </div>
+                    {% endtab %}
+                {% endtabs %}
+
+                {% collapsible summary=_("Install from Git repository") %}
+                    <div data-insight-code-block="bash">
                         {# fmt:off #}
                         uv add "git+https://github.com/alpininsight/insight-ui@main"
                         {# fmt:on #}
-                        </div>
                     </div>
-                </details>
+                {% endcollapsible %}
             {% endvbox %}
 
-        {# ===== Quick Start with Stepper ===== #}
+            {# ===== Quick Start with Stepper ===== #}
             {% vbox gap="l" %}
-                <h2>{% trans "Quick start" %}</h2>
+                <h2 class="pb-0">{% trans "Quick start" %}</h2>
 
-            {# Step 1 #}
+                {# Step 1 #}
                 {% hbox gap="m" %}
-                    <div class="shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-insight-primary text-white font-bold">1</div>
-                    {% vbox gap="m" class="grow" %}
-                        <h3 class="text-lg font-semibold text-primary mt-0.5">{% trans "Add to INSTALLED_APPS" %}</h3>
+                    <div class="flex shrink-0 justify-center items-center w-8 h-8 font-bold text-white bg-insight-primary rounded-insight-full">1</div>
+                    {% vbox gap="s" class="grow" %}
+                        <h3 class="pb-0 mt-0.5 font-semibold text-lg text-primary">{% trans "Add to INSTALLED_APPS" %}</h3>
                         <p>
                             {% blocktrans with insight_ui='<span class="inline-tag">insight_ui</span>'|safe %}
                                 Add {{ insight_ui }} to your Django settings:
                             {% endblocktrans %}
                         </p>
                         <div data-insight-code-block="python" data-filename="settings.py">
-                        {# fmt:off #}
-                        INSTALLED_APPS = [
-                            # ...
-                            'insight_ui',
-                            # ...
-                        ]
-                        {# fmt:on #}
+                            {# fmt:off #}
+                            INSTALLED_APPS = [
+                                # ...
+                                'insight_ui',
+                                # ...
+                            ]
+                            {# fmt:on #}
                         </div>
                     {% endvbox %}
                 {% endhbox %}
 
-            {# Step 2 #}
+                {# Step 2 #}
                 {% hbox gap="m" %}
-                    <div class="shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-insight-primary text-white font-bold">2</div>
-                    {% vbox gap="m" class="grow" %}
-                        <h3 class="text-lg font-semibold text-primary mt-0.5">{% trans "Extend the base template" %}</h3>
+                    <div class="flex shrink-0 justify-center items-center w-8 h-8 font-bold text-white bg-insight-primary rounded-insight-full">2</div>
+                    {% vbox gap="s" class="grow" %}
+                        <h3 class="pb-0 mt-0.5 font-semibold text-lg text-primary">{% trans "Extend the base template" %}</h3>
                         <p>
                             {% blocktrans with link_open='<a href="https://github.com/alpininsight/insight-ui/blob/develop/insight_ui/templates/insight_ui/base.html" class="text-link">'|safe link_close='</a>'|safe %}
                                 Extend our {{ link_open }}base template{{ link_close }} to get all features (navbar, sidebar, footer, theme switching):
                             {% endblocktrans %}
                         </p>
                         <div data-insight-code-block="Django" data-filename="my_template.html">
-                        {# fmt:off #}
-                        &lcub;% extends "insight_ui/base.html" %&rcub;
+                            {# fmt:off #}
+                            &lcub;% extends "insight_ui/base.html" %&rcub;
 
-                        &lcub;% load insight_tags %&rcub;
-                        {# fmt:on #}
+                            &lcub;% load insight_tags %&rcub;
+                            {# fmt:on #}
                         </div>
                     {% endvbox %}
                 {% endhbox %}
 
-            {# Step 3 #}
+                {# Step 3 #}
                 {% hbox gap="m" %}
-                    <div class="shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-insight-primary text-white font-bold">3</div>
-                    {% vbox gap="m" class="grow" %}
-                        <h3 class="text-lg font-semibold text-primary mt-0.5">{% trans "Pass configuration to template" %}</h3>
+                    <div class="flex shrink-0 justify-center items-center w-8 h-8 font-bold text-white bg-insight-primary rounded-insight-full">3</div>
+                    {% vbox gap="s" class="grow" %}
+                        <h3 class="pb-0 mt-0.5 font-semibold text-lg text-primary">{% trans "Pass configuration to template" %}</h3>
                         <p>
                             {% blocktrans with link_open='<a href="/docs/customization#settings" class="text-link">'|safe link_close='</a>'|safe %}
                                 Pass the Insight UI configuration in your view. See {{ link_open }}Customization{{ link_close }} for all options.
                             {% endblocktrans %}
                         </p>
                         <div data-insight-code-block="python" data-filename="views.py">
-                        {# fmt:off #}
-                        from django.http import HttpRequest, HttpResponse
-                        from django.shortcuts import render
-                        from insight_ui import config
+                            {# fmt:off #}
+                            from django.http import HttpRequest, HttpResponse
+                            from django.shortcuts import render
+                            from insight_ui import config
 
-                        def my_view(request: HttpRequest) -> HttpResponse:
-                            """Render my page with Insight UI."""
-                            context = config.get_config()
-                            return render(request, "my_app/my_template.html", context)
-                        {# fmt:on #}
+                            def my_view(request: HttpRequest) -> HttpResponse:
+                                """Render my page with Insight UI."""
+                                context = config.get_config()
+                                return render(request, "my_app/my_template.html", context)
+                            {# fmt:on #}
                         </div>
                     {% endvbox %}
                 {% endhbox %}
 
-            {# Step 4 #}
+                {# Step 4 #}
                 {% hbox gap="m" %}
-                    <div class="shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-insight-primary text-white font-bold">4</div>
-                    {% vbox gap="m" class="grow" %}
-                        <h3 class="text-lg font-semibold text-primary mt-0.5">{% trans "Use components" %}</h3>
+                    <div class="flex shrink-0 justify-center items-center w-8 h-8 font-bold text-white bg-insight-primary rounded-insight-full">4</div>
+                    {% vbox gap="s" class="grow" %}
+                        <h3 class="pb-0 mt-0.5 font-semibold text-lg text-primary">{% trans "Use components" %}</h3>
                         <p>{% trans "Start using components in your templates:" %}</p>
                         <div data-insight-code-block="Django" data-filename="my_template.html">
-                        {# fmt:off #}
-                        &lcub;% extends "insight_ui/base.html" %&rcub;
+                            {# fmt:off #}
+                            &lcub;% extends "insight_ui/base.html" %&rcub;
 
-                        &lcub;% load insight_tags %&rcub;
+                            &lcub;% load insight_tags %&rcub;
 
-                        &lcub;% block content %&rcub;
-                            &lcub;% alert message="It works!" type="success" dismissible=True %&rcub;
-
-                            &lcub;% button label="Click me" type="primary" %&rcub;
-                        &lcub;% endblock content %&rcub;
-                        {# fmt:on #}
+                            &lcub;% block content %&rcub;
+                                &lcub;% alert message="It works!" type="success" dismissible=True %&rcub;
+                            &lcub;% endblock content %&rcub;
+                            {# fmt:on #}
                         </div>
                     {% endvbox %}
                 {% endhbox %}
             {% endvbox %}
 
-        {# ===== Live Demo ===== #}
+            {# ===== Live Demo ===== #}
             {% vbox gap="m" %}
-                <h2>{% trans "Live preview" %}</h2>
+                <h2 class="pb-0">{% trans "Live preview" %}</h2>
                 <p>{% trans "Here's what the alert from the example above looks like:" %}</p>
                 {% surface padding="l" %}
                     {% alert message=_("It works!") type="success" dismissible=True %}
                 {% endsurface %}
             {% endvbox %}
 
-        {# ===== Next Steps ===== #}
+            {# ===== Next Steps ===== #}
             {% vbox gap="m" %}
-                <h2>{% trans "Next steps" %}</h2>
+                <h2 class="pb-0">{% trans "Next steps" %}</h2>
                 {% grid cols=2 gap="m" %}
                     {% link_surface href="/components" %}
                         {% hbox gap="m" v_align="center" %}
@@ -260,38 +191,6 @@
 
         {% endvbox %}
     </div>
-
-    {# Tab switching script for installation tabs #}
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const container = document.querySelector('[data-insight-install-tabs]');
-            if (!container) return;
-
-            const tabs = container.querySelectorAll('[role="tab"]');
-            const contents = container.querySelectorAll('[data-tab-content]');
-
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    const targetTab = tab.dataset.tab;
-
-                    // Update tab styles
-                    tabs.forEach(t => {
-                        const isActive = t.dataset.tab === targetTab;
-                        t.setAttribute('aria-selected', isActive);
-                        t.classList.toggle('border-insight-primary', isActive);
-                        t.classList.toggle('text-insight-primary', isActive);
-                        t.classList.toggle('border-transparent', !isActive);
-                        t.classList.toggle('text-secondary', !isActive);
-                    });
-
-                    // Show/hide content
-                    contents.forEach(content => {
-                        content.classList.toggle('hidden', content.dataset.tabContent !== targetTab);
-                    });
-                });
-            });
-        });
-    </script>
 {% endblock content %}
 
 {% block footer %}
