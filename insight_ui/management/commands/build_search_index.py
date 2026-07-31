@@ -35,7 +35,6 @@ TYPE_DEFINITIONS: dict[str, tuple[str, ...]] = {
     "HtmlInputType": types.HTML_INPUT_TYPE_VALUES,
     "FormFieldType": types.FORM_FIELD_TYPE_VALUES,
     "CornerPosition": types.CORNER_POSITION_VALUES,
-    "HorizontalSide": types.HORIZONTAL_SIDE_VALUES,
     "InlinePosition": types.INLINE_POSITION_VALUES,
     "HtmxSwapMethod": types.HTMX_SWAP_METHOD_VALUES,
     "HtmxMethod": types.HTMX_METHOD_VALUES,

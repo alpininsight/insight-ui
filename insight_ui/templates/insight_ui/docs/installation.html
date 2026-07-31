@@ -8,11 +8,15 @@
 {% endblock navbar %}
 
 {% block sidebar_left %}
-    {% sidebar sidebar_data=left_sidebar side="left" %}
+    {% sidebar %}
+        {% include "insight_ui/components/sidebar_nav.html" with sidebar_data=left_sidebar %}
+    {% endsidebar %}
 {% endblock sidebar_left %}
 
 {% block sidebar_right %}
-    {% include "insight_ui/components/toc_sidebar.html" with side="right" static=True navbar_fixed=True mobile_hidden=True %}
+    {% sidebar %}
+        {% include "insight_ui/components/toc_content.html" %}
+    {% endsidebar %}
 {% endblock sidebar_right %}
 
 {% block heading %}

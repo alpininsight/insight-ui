@@ -65,11 +65,6 @@ TYPE_DEFINITIONS: dict[str, dict] = {
         "values": types.CORNER_POSITION_VALUES,
         "description": _("Corner positions for ribbons, badges, and overlays."),
     },
-    "HorizontalSide": {
-        "anchor": "horizontalside",
-        "values": types.HORIZONTAL_SIDE_VALUES,
-        "description": _("Horizontal side positions for sidebars and panels."),
-    },
     "InlinePosition": {
         "anchor": "inlineposition",
         "values": types.INLINE_POSITION_VALUES,

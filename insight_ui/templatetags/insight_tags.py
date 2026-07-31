@@ -82,8 +82,6 @@ from insight_ui.configs import (
     RadioItemConfig,
     SearchBarConfig,
     SelectConfig,
-    SidebarConfig,
-    SidebarDataConfig,
     Size,
     SliderConfig,
     StatusScreenConfig,
@@ -348,6 +346,7 @@ def page_header(
     config: PageHeaderConfig | None = None,
     *,
     title: str | _Unset = UNSET,
+    prefix: str | _Unset = UNSET,
     description: str | list[str] | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a page header in the base template."""
@@ -440,29 +439,6 @@ def navbar(context: dict[str, Any], config: NavbarConfig, **kwargs: JsonValue) -
         "navbar_config": config,
         "fixed": get_config("navbar_fixed"),
         "options": {**kwargs},
-    }
-
-
-@register.inclusion_tag("insight_ui/components/sidebar.html")
-def sidebar(
-    config: SidebarConfig | None = None,
-    *,
-    sidebar_data: SidebarDataConfig | _Unset = UNSET,
-    side: str | _Unset = UNSET,
-    static: bool | _Unset = UNSET,
-    auto_close: bool | _Unset = UNSET,
-    mobile_hidden: bool | _Unset = UNSET,
-) -> dict[str, Any]:
-    """Render a configurable page navigation."""
-    config = build_config(SidebarConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    return {
-        "sidebar_config": config,
-        "sidebar_data": config.sidebar_data,
-        "side": config.side,
-        "static": config.static,
-        "auto_close": config.auto_close,
-        "mobile_hidden": config.mobile_hidden,
-        "navbar_fixed": get_config("navbar_fixed"),
     }
 
 

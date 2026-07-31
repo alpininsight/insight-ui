@@ -513,23 +513,22 @@
 {% elif component.value == "sidebar" %}
     <div class="flex grow h-96 bg-insight-bg-base">
         <div class="flex">
-            {% sidebar config=left_sidebar_config %}
+            {% sidebar %}
+                {% include "insight_ui/components/sidebar_nav.html" with sidebar_data=demo_sidebar_data %}
+            {% endsidebar %}
         </div>
         <div class="relative w-full min-w-0"></div>
         <div class="flex">
-            {% sidebar config=right_drawer_config %}
+            {% sidebar static=False %}
+                {% include "insight_ui/components/sidebar_nav.html" with sidebar_data=demo_sidebar_data %}
+            {% endsidebar %}
         </div>
         <script>
-            // Demo fix
-            var openBtn = document.currentScript.parentElement.querySelector(".open-btn");
-            openBtn.classList.remove("top-20");
-            openBtn.classList.add("top-4");
-
+            // Demo fix: adjust sidebar positioning for demo container
             var asides = document.currentScript.parentElement.querySelectorAll("aside");
-            for (let aside of asides)
-            {
-                aside.classList.remove("top-16", "h-[calc(100vh-4rem)]");
-                aside.classList.add("h-96");
+            for (let aside of asides) {
+                aside.classList.remove("hidden", "xl:block", "top-16", "h-[calc(100vh-4rem)]");
+                aside.classList.add("block", "h-96");
             }
         </script>
     </div>
