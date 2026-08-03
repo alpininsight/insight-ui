@@ -667,6 +667,7 @@ class SurfaceNode(LayoutNode):
         variant: Visual style (surface|raised|outline). Default: "surface"
         padding: Inner padding (xs|s|m|l|xl). Default: "m"
         radius: Border radius override (xs|s|m|l|xl|none). Default: uses variant's radius.
+        id: HTML id attribute for anchor links and JavaScript targeting.
         href: URL for clickable surface (renders as <a> instead of <div>).
         external: Open link in new tab (only when href is set).
         class: Additional CSS classes to append.
@@ -733,16 +734,20 @@ class SurfaceNode(LayoutNode):
         content = self.nodelist.render(context)
         class_str = " ".join(classes)
 
+        # Build id attribute if provided
+        element_id = resolved.get("id", "")
+        id_attr = f' id="{element_id}"' if element_id else ""
+
         if is_link:
             # Render as anchor element
             external = resolved.get("external", False)
-            attrs = f'href="{href}" class="{class_str}"'
+            attrs = f'href="{href}"{id_attr} class="{class_str}"'
             if external:
                 attrs += ' target="_blank" rel="noopener noreferrer"'
             return f"<a {attrs}>{content}</a>"
 
         # Render as div element
-        return f'<div class="{class_str}">{content}</div>'
+        return f'<div{id_attr} class="{class_str}">{content}</div>'
 
 
 class CollapsibleNode(LayoutNode):
