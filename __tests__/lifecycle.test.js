@@ -254,9 +254,9 @@ describe('Component Lifecycle - global listener cleanup', () => {
     it('should remove document.body htmx:afterSwap listener on destroy', () => {
       const container = TestUtils.createDOM(`
         <div data-insight-tabs>
-          <div>
-            <button>Tab 1</button>
-            <button>Tab 2</button>
+          <div role="tablist">
+            <button role="tab">Tab 1</button>
+            <button role="tab">Tab 2</button>
           </div>
           <div id="tab-content">Content</div>
         </div>

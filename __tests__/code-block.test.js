@@ -186,6 +186,66 @@ describe('CodeBlock Component', () => {
       // Code should be trimmed and indentation normalized
       expect(codeElement.textContent).not.toMatch(/^\s{8}/);
     });
+
+    it('should use minimum indentation across all lines', () => {
+      // First content line has 4 spaces, nested has 8 - should remove 4 from all
+      const indentedCode = `
+    def outer():
+        return inner()`;
+      const container = TestUtils.createCodeBlock('cb-min-indent', 'python', indentedCode);
+      const originalElement = container.querySelector('[data-insight-code-block]');
+
+      new InsightUI.CodeBlock(originalElement);
+
+      const newElement = document.getElementById('cb-min-indent');
+      const codeElement = newElement.querySelector('code');
+      // First line should start without indentation, second should have 4 spaces
+      expect(codeElement.textContent).toMatch(/^def outer\(\):/m);
+      expect(codeElement.textContent).toMatch(/^    return inner\(\)/m);
+    });
+
+    it('should handle single-line code', () => {
+      const singleLine = '    print("hello")';
+      const container = TestUtils.createCodeBlock('cb-single', 'python', singleLine);
+      const originalElement = container.querySelector('[data-insight-code-block]');
+
+      new InsightUI.CodeBlock(originalElement);
+
+      const newElement = document.getElementById('cb-single');
+      const codeElement = newElement.querySelector('code');
+      expect(codeElement.textContent.trim()).toBe('print("hello")');
+    });
+
+    it('should preserve relative indentation', () => {
+      const nestedCode = `
+          class Foo:
+              def bar(self):
+                  pass`;
+      const container = TestUtils.createCodeBlock('cb-nested', 'python', nestedCode);
+      const originalElement = container.querySelector('[data-insight-code-block]');
+
+      new InsightUI.CodeBlock(originalElement);
+
+      const newElement = document.getElementById('cb-nested');
+      const codeElement = newElement.querySelector('code');
+      const lines = codeElement.textContent.trim().split('\n');
+      // class should have no indent, def should have 4, pass should have 8
+      expect(lines[0]).toBe('class Foo:');
+      expect(lines[1]).toBe('    def bar(self):');
+      expect(lines[2]).toBe('        pass');
+    });
+
+    it('should handle code with no indentation', () => {
+      const noIndent = 'print(1)\nprint(2)';
+      const container = TestUtils.createCodeBlock('cb-no-indent', 'python', noIndent);
+      const originalElement = container.querySelector('[data-insight-code-block]');
+
+      new InsightUI.CodeBlock(originalElement);
+
+      const newElement = document.getElementById('cb-no-indent');
+      const codeElement = newElement.querySelector('code');
+      expect(codeElement.textContent.trim()).toBe('print(1)\nprint(2)');
+    });
   });
 
   describe('Code Area', () => {
@@ -196,7 +256,7 @@ describe('CodeBlock Component', () => {
       new InsightUI.CodeBlock(originalElement);
 
       const newElement = document.getElementById('cb-ltr');
-      const codeWrapper = newElement.querySelector('.overflow-x-scroll');
+      const codeWrapper = newElement.querySelector('.overflow-x-auto');
       expect(codeWrapper.dir).toBe('ltr');
     });
 
