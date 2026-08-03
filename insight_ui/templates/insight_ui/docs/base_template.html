@@ -1,5 +1,5 @@
 {% extends "insight_ui/base.html" %}
-{% load static insight_tags layout_tags i18n %}
+{% load static i18n insight_tags layout_tags %}
 
 {% block title %}{% trans "Insight UI - Base Template" %}{% endblock title %}
 
@@ -40,12 +40,12 @@
 
         {# Head section #}
         {% section id="head" gap="m" %}
-            <h2>&lt;head&gt;</h2>
+            <h2 class="font-mono">&lt;head&gt;</h2>
             <p>{% trans "The head section loads all required assets and defines page metadata. The head section serves some blocks the titel and additional scripts:" %}</p>
 
             <ul class="list-disc ms-8 space-y-2">
-                <li><code class="inline-tag">title</code> - {% trans "Page title shown in browser tab" %}</li>
-                <li><code class="inline-tag">extra_head</code> - {% trans "Additional stylesheets or meta tags" %}</li>
+                <li><span class="inline-tag">title</span> - {% trans "Page title shown in browser tab" %}</li>
+                <li><span class="inline-tag">extra_head</span> - {% trans "Additional stylesheets or meta tags" %}</li>
             </ul>
 
             {% infobox message=_("Favicon, SEO settings, and other meta information are configured via **INSIGHT_UI** in `settings.py`.") %}
@@ -53,24 +53,24 @@
 
         {# Body overview #}
         {% section gap="m" %}
-            <h2>&lt;body&gt;</h2>
+            <h2 class="font-mono">&lt;body&gt;</h2>
             <p>{% trans "The body contains all visible page elements, organized into blocks:" %}</p>
 
             <ul class="list-disc ms-8 space-y-1">
-                <li><code class="inline-tag">background_image</code> - {% trans "Fixed background behind all content" %}</li>
-                <li><code class="inline-tag">navbar</code> - {% trans "Navigation bar at the top" %}</li>
-                <li><code class="inline-tag">drawers</code> - {% trans "Overlay sidebars (outside main layout)" %}</li>
-                <li><code class="inline-tag">sidebar_left</code> / <code class="inline-tag">sidebar_right</code> - {% trans "Static sidebars" %}</li>
-                <li><code class="inline-tag">heading</code> - {% trans "Page header with title" %}</li>
-                <li><code class="inline-tag">content</code> - {% trans "Main content area" %}</li>
-                <li><code class="inline-tag">footer</code> - {% trans "Page footer" %}</li>
-                <li><code class="inline-tag">extra_scripts</code> - {% trans "Additional JavaScript" %}</li>
+                <li><span class="inline-tag">background_image</span> - {% trans "Fixed background behind all content" %}</li>
+                <li><span class="inline-tag">navbar</span> - {% trans "Navigation bar at the top" %}</li>
+                <li><span class="inline-tag">drawers</span> - {% trans "Overlay sidebars (outside main layout)" %}</li>
+                <li><span class="inline-tag">sidebar_left</span> / <span class="inline-tag">sidebar_right</span> - {% trans "Static sidebars" %}</li>
+                <li><span class="inline-tag">heading</span> - {% trans "Page header with title" %}</li>
+                <li><span class="inline-tag">content</span> - {% trans "Main content area" %}</li>
+                <li><span class="inline-tag">footer</span> - {% trans "Page footer" %}</li>
+                <li><span class="inline-tag">extra_scripts</span> - {% trans "Additional JavaScript" %}</li>
             </ul>
         {% endsection %}
 
         {# Background Image #}
         {% section id="block-background" gap="m" %}
-            <h3>&lcub;% block background_image %&rcub;</h3>
+            <h3 class="font-mono">&lcub;% block background_image %&rcub;</h3>
             <p>{% trans "Add a fixed background image that stays in place while scrolling:" %}</p>
 
             <div data-insight-code-block="Django">
@@ -87,7 +87,7 @@
         {# Navbar block #}
         {% section id="block-navbar" gap="l" %}
             {% vbox gap="m" %}
-                <h3>&lcub;% block navbar %&rcub;</h3>
+                <h3 class="font-mono">&lcub;% block navbar %&rcub;</h3>
                 <p>{% trans "The navigation bar appears at the top of every page:" %}</p>
 
                 <div data-insight-code-block="Django">
@@ -101,14 +101,14 @@
                 </div>
 
                 <p class="text-sm">
-                    {% trans "See" %}
-                    <a href="{% url 'component_detail_page_view' 'navbar' %}" class="text-link">{% trans "Navbar component" %}</a>
-                    {% trans "for configuration options." %}
+                    {% blocktrans with link_open='<a href="/component/navbar" class="text-link">'|safe link_close='</a>'|safe %}
+                        See {{ link_open }}Navbar component{{ link_close }} for configuration options.
+                    {% endblocktrans %}
                 </p>
             {% endvbox %}
 
             {% vbox gap="m" %}
-                <h4>navbar_fixed</h4>
+                <h4 class="font-mono">navbar_fixed</h4>
                 <p>{% trans "Controls whether the navbar sticks to the top of the viewport. Set in" %} <code>settings.py</code>:</p>
 
                 <div data-insight-code-block="Python">
@@ -128,7 +128,7 @@
         {# Sidebar blocks #}
         {% section id="block-sidebar" gap="l" %}
             {% vbox gap="m" %}
-                <h3>&lcub;% block sidebar_left %&rcub; / &lcub;% block sidebar_right %&rcub;</h3>
+                <h3 class="font-mono">&lcub;% block sidebar_left %&rcub; / &lcub;% block sidebar_right %&rcub;</h3>
                 <p>{% trans "Sidebars for navigation or supplementary content. The side is automatically detected from the block context:" %}</p>
 
                 <div data-insight-code-block="Django">
@@ -148,25 +148,25 @@
                 <h4>{% trans "Parameters" %}</h4>
                 <ul class="list-disc ms-8 space-y-2">
                     <li>
-                        <code>width</code> - {% trans "Sidebar width" %}
+                        <span class="inline-tag">width</span> - {% trans "Sidebar width" %}
                         <ul class="list-disc ms-6 mt-1 text-sm">
-                            <li><code>"narrow"</code> - 224px</li>
-                            <li><code>"normal"</code> - 288px ({% trans "default" %})</li>
-                            <li><code>"wide"</code> - 384px</li>
+                            <li><span class="inline-tag">"narrow"</span> - 224px</li>
+                            <li><span class="inline-tag">"normal"</span> - 288px ({% trans "default" %})</li>
+                            <li><span class="inline-tag">"wide"</span> - 384px</li>
                         </ul>
                     </li>
                     <li>
-                        <code>static</code> - {% trans "Sidebar behavior" %}
+                        <span class="inline-tag">static</span> - {% trans "Sidebar behavior" %}
                         <ul class="list-disc ms-6 mt-1 text-sm">
-                            <li><code>True</code> - {% trans "Sticky sidebar alongside content (default)" %}</li>
-                            <li><code>False</code> - {% trans "Drawer that slides in as overlay" %}</li>
+                            <li><span class="inline-tag">True</span> - {% trans "Sticky sidebar alongside content (default)" %}</li>
+                            <li><span class="inline-tag">False</span> - {% trans "Drawer that slides in as overlay" %}</li>
                         </ul>
                     </li>
                     <li>
-                        <code>mobile_behavior</code> - {% trans "Behavior on small screens (only for static sidebars)" %}
+                        <span class="inline-tag">mobile_behavior</span> - {% trans "Behavior on small screens (only for static sidebars)" %}
                         <ul class="list-disc ms-6 mt-1 text-sm">
-                            <li><code>"hidden"</code> - {% trans "Hidden on mobile (default)" %}</li>
-                            <li><code>"drawer"</code> - {% trans "Toggle button appears, opens as drawer" %}</li>
+                            <li><span class="inline-tag">"hidden"</span> - {% trans "Hidden on mobile (default)" %}</li>
+                            <li><span class="inline-tag">"drawer"</span> - {% trans "Toggle button appears, opens as drawer" %}</li>
                         </ul>
                     </li>
                 </ul>
@@ -190,7 +190,7 @@
 
         {# Heading block #}
         {% section id="block-heading" gap="m" %}
-            <h3>&lcub;% block heading %&rcub;</h3>
+            <h3 class="font-mono">&lcub;% block heading %&rcub;</h3>
             <p>{% trans "Display a page header with title and optional description:" %}</p>
 
             <div data-insight-code-block="Django">
@@ -207,7 +207,7 @@
         {# Content block #}
         {% section id="block-content" gap="l" %}
             {% vbox gap="m" %}
-                <h3>&lcub;% block content %&rcub;</h3>
+                <h3 class="font-mono">&lcub;% block content %&rcub;</h3>
                 <p>{% trans "The main content area of your page. This block expands to fill available space, keeping the footer at the bottom." %}</p>
 
                 <div data-insight-code-block="Django">
@@ -223,7 +223,7 @@
             {% endvbox %}
 
             {% vbox gap="m" %}
-                <h4>use_default_loading_indicator</h4>
+                <h4 class="font-mono">use_default_loading_indicator</h4>
                 <p>{% trans "The content block includes a default HTMX loading spinner that shows during requests. Disable it in your view when using components with their own loading indicators (e.g., pagination, tables):" %}</p>
 
                 <div data-insight-code-block="Python">
@@ -239,7 +239,7 @@
 
         {# Footer block #}
         {% section id="block-footer" gap="m" %}
-            <h3>&lcub;% block footer %&rcub;</h3>
+            <h3 class="font-mono">&lcub;% block footer %&rcub;</h3>
             <p>{% trans "The footer appears at the bottom of every page:" %}</p>
 
             <div data-insight-code-block="Django">
@@ -253,15 +253,15 @@
             </div>
 
             <p class="text-sm">
-                {% trans "See" %}
-                <a href="{% url 'component_detail_page_view' 'footer' %}" class="text-link">{% trans "Footer component" %}</a>
-                {% trans "for configuration options." %}
+                {% blocktrans with link_open='<a href="/component/footer" class="text-link">'|safe link_close='</a>'|safe %}
+                    See {{ link_open }}Footer component{{ link_close }} for configuration options.
+                {% endblocktrans %}
             </p>
         {% endsection %}
 
         {# Extra scripts block #}
         {% section gap="m" %}
-            <h3>&lcub;% block extra_scripts %&rcub;</h3>
+            <h3 class="font-mono">&lcub;% block extra_scripts %&rcub;</h3>
             <p>{% trans "Load additional JavaScript at the end of the page:" %}</p>
 
             <div data-insight-code-block="Django">

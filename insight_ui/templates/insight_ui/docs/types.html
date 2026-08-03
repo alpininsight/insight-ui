@@ -3,6 +3,10 @@
 
 {% block title %}{% trans "Insight UI - Types" %}{% endblock title %}
 
+{% block extra_head %}
+    <style>html { scroll-behavior: smooth; }</style>
+{% endblock extra_head %}
+
 {% block navbar %}
     {% navbar config=nav_config user_dropdown_links=user_dropdown_links search_query=search_query %}
 {% endblock navbar %}
@@ -20,21 +24,12 @@
 {% endblock sidebar_right %}
 
 {% block heading %}
-    {% page_header chapter=_("Components") title=_("Types") description="Insight UI uses type literals to ensure type safety and provide autocompletion in your IDE. These types define the allowed values for component parameters like sizes, colors, and positions." %}
+    {% page_header chapter=_("Components") title=_("Types") description="Insight UI uses type literals to ensure type safety and provide autocompletion in your IDE. These types define the allowed values for component parameters like sizes, colors, and positions. All types are defined in `insight_ui.configs.types` and can be imported for type annotations in your own code." %}
 {% endblock heading %}
 
 {% block content %}
     {% vbox padding="xl" gap="xl" max_width="l" class="mx-auto" %}
-        <div class="space-y-8">
-            <p>
-                {% blocktrans trimmed %}
-                    All types are defined in <code class="inline-tag">insight_ui.configs.types</code> and can be imported
-                    for type annotations in your own code.
-                {% endblocktrans %}
-            </p>
-        </div>
-
-        <section class="space-y-4">
+        {% section gap="m" %}
             <h2>{% trans "Usage Example" %}</h2>
             <div data-insight-code-block="Python">
                 {# fmt:off #}
@@ -48,48 +43,42 @@
                 {% templatetag openblock %} button label="Click" size="l" type="secondary" {% templatetag closeblock %}
                 {# fmt:on #}
             </div>
-        </section>
+        {% endsection %}
 
-        <section class="space-y-4">
+        {% section gap="m" %}
             <h2>{% trans "Quick Navigation" %}</h2>
-            <div class="flex flex-wrap gap-2">
+            {% hbox gap="s" wrap="wrap" %}
                 {% for type_def in type_definitions %}
-                    <a
-                        href="#{{ type_def.anchor }}"
-                        class="px-3 py-1.5 text-sm bg-insight-bg-base rounded-insight-control transition-colors hover:bg-insight-bg-raised"
-                    >
-                        {{ type_def.name }}
-                    </a>
+                    {% with anchor_url="#"|add:type_def.anchor %}
+                        {% button label=type_def.name request_url=anchor_url subtle=True size="s" %}
+                    {% endwith %}
                 {% endfor %}
-            </div>
-        </section>
+            {% endhbox %}
+        {% endsection %}
 
-        <hr>
+        {% divider spacing="none" %}
 
-        <section class="space-y-8">
+        {% section gap="xl" %}
             <h2>{% trans "Type Reference" %}</h2>
 
             {% for type_def in type_definitions %}
-                <article id="{{ type_def.anchor }}" class="p-6 space-y-4 border border-insight-border-surface rounded-insight-surface shadow-insight-surface scroll-mt-8">
-                    <div class="flex justify-between items-center">
-                        <h3>{{ type_def.name }}</h3>
-                    </div>
-
+                {% surface id=type_def.anchor padding="l" class="space-y-4 scroll-mt-8" %}
+                    <h3>{{ type_def.name }}</h3>
                     <p class="text-secondary">{{ type_def.description }}</p>
 
-                    <div class="space-y-2">
+                    {% vbox gap="s" %}
                         <h4 class="font-medium text-sm text-secondary tracking-wide uppercase">{% trans "Values" %}</h4>
-                        <div class="flex flex-wrap gap-2">
+                        {% hbox gap="s" wrap="wrap" %}
                             {% for value in type_def.values %}
-                                <code class="px-2 py-1 text-sm bg-insight-bg-base rounded-insight-control">{{ value }}</code>
+                                <code class="inline-tag px-4">{{ value }}</code>
                             {% endfor %}
-                        </div>
-                    </div>
-                </article>
+                        {% endhbox %}
+                    {% endvbox %}
+                {% endsurface %}
             {% endfor %}
-        </section>
+        {% endsection %}
 
-        <section class="space-y-4">
+        {% section gap="m" %}
             <h2>{% trans "Validation" %}</h2>
             <p>
                 {% blocktrans trimmed %}
@@ -108,7 +97,7 @@
                 # Validators support custom field names for error messages
                 validate_size("xl", field_name="icon_size")  # Uses 'icon_size' in error message
             </div>
-        </section>
+        {% endsection %}
     {% endvbox %}
 {% endblock content %}
 
