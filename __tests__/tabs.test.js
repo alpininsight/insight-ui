@@ -19,7 +19,7 @@ function loadComponent(filename) {
 
 function createTabsDOM(tabCount = 3) {
   const tabButtons = Array.from({ length: tabCount }, (_, i) =>
-    `<button id="tab-${i}" aria-selected="${i === 0 ? 'true' : 'false'}">Tab ${i + 1}</button>`
+    `<button id="tab-${i}" role="tab" aria-selected="${i === 0 ? 'true' : 'false'}" tabindex="${i === 0 ? '0' : '-1'}">Tab ${i + 1}</button>`
   ).join('');
 
   return TestUtils.createDOM(`
@@ -43,7 +43,7 @@ describe('Tabs Component', () => {
     it('should activate tab on click', () => {
       const container = createTabsDOM();
       const element = container.querySelector('[data-insight-tabs]');
-      const tabs = element.querySelectorAll('button');
+      const tabs = element.querySelectorAll('[role="tab"]');
 
       new InsightUI.Tabs(element);
 
@@ -60,27 +60,25 @@ describe('Tabs Component', () => {
     it('should update CSS classes on activation', () => {
       const container = createTabsDOM();
       const element = container.querySelector('[data-insight-tabs]');
-      const tabs = element.querySelectorAll('button');
+      const tabs = element.querySelectorAll('[role="tab"]');
 
       new InsightUI.Tabs(element);
 
       TestUtils.click(tabs[1]);
 
-      // Active tab should have primary border
+      // Active tab should have primary styling
       expect(tabs[1].classList.contains('border-insight-primary')).toBe(true);
       expect(tabs[1].classList.contains('text-insight-primary')).toBe(true);
-      expect(tabs[1].classList.contains('border-b-3')).toBe(true);
 
-      // Inactive tab should have gray border
-      expect(tabs[0].classList.contains('border-gray-300')).toBe(true);
-      expect(tabs[0].classList.contains('text-primary')).toBe(true);
-      expect(tabs[0].classList.contains('border-b')).toBe(true);
+      // Inactive tab should have transparent/secondary styling
+      expect(tabs[0].classList.contains('border-transparent')).toBe(true);
+      expect(tabs[0].classList.contains('text-secondary')).toBe(true);
     });
 
     it('should update tab content aria-label', () => {
       const container = createTabsDOM();
       const element = container.querySelector('[data-insight-tabs]');
-      const tabs = element.querySelectorAll('button');
+      const tabs = element.querySelectorAll('[role="tab"]');
       const content = element.querySelector('#tab-content');
 
       new InsightUI.Tabs(element);
@@ -95,7 +93,7 @@ describe('Tabs Component', () => {
     it('should move focus to next tab on ArrowRight', () => {
       const container = createTabsDOM();
       const element = container.querySelector('[data-insight-tabs]');
-      const tabs = element.querySelectorAll('button');
+      const tabs = element.querySelectorAll('[role="tab"]');
 
       new InsightUI.Tabs(element);
 
@@ -108,7 +106,7 @@ describe('Tabs Component', () => {
     it('should move focus to previous tab on ArrowLeft', () => {
       const container = createTabsDOM();
       const element = container.querySelector('[data-insight-tabs]');
-      const tabs = element.querySelectorAll('button');
+      const tabs = element.querySelectorAll('[role="tab"]');
 
       new InsightUI.Tabs(element);
 
@@ -121,7 +119,7 @@ describe('Tabs Component', () => {
     it('should wrap focus from last to first on ArrowRight', () => {
       const container = createTabsDOM();
       const element = container.querySelector('[data-insight-tabs]');
-      const tabs = element.querySelectorAll('button');
+      const tabs = element.querySelectorAll('[role="tab"]');
 
       new InsightUI.Tabs(element);
 
@@ -134,7 +132,7 @@ describe('Tabs Component', () => {
     it('should wrap focus from first to last on ArrowLeft', () => {
       const container = createTabsDOM();
       const element = container.querySelector('[data-insight-tabs]');
-      const tabs = element.querySelectorAll('button');
+      const tabs = element.querySelectorAll('[role="tab"]');
 
       new InsightUI.Tabs(element);
 
@@ -147,7 +145,7 @@ describe('Tabs Component', () => {
     it('should move focus to first tab on Home', () => {
       const container = createTabsDOM();
       const element = container.querySelector('[data-insight-tabs]');
-      const tabs = element.querySelectorAll('button');
+      const tabs = element.querySelectorAll('[role="tab"]');
 
       new InsightUI.Tabs(element);
 
@@ -160,7 +158,7 @@ describe('Tabs Component', () => {
     it('should move focus to last tab on End', () => {
       const container = createTabsDOM();
       const element = container.querySelector('[data-insight-tabs]');
-      const tabs = element.querySelectorAll('button');
+      const tabs = element.querySelectorAll('[role="tab"]');
 
       new InsightUI.Tabs(element);
 
@@ -200,7 +198,7 @@ describe('Tabs Component', () => {
     it('should remove tab event listeners', () => {
       const container = createTabsDOM();
       const element = container.querySelector('[data-insight-tabs]');
-      const tabButtons = element.querySelectorAll('button');
+      const tabButtons = element.querySelectorAll('[role="tab"]');
 
       const tabs = new InsightUI.Tabs(element);
 
@@ -220,7 +218,7 @@ describe('Tabs Component', () => {
       tabs.destroy();
 
       expect(tabs.element).toBeNull();
-      expect(tabs.tabContent).toBeNull();
+      expect(tabs.panelContainer).toBeNull();
     });
   });
 });
