@@ -135,6 +135,32 @@ def get_divider_a11y_context() -> dict[str, list[str]]:
     }
 
 
+@register_component(Component.SECTION)
+def get_section_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y documentation for the section layout tag."""
+    return {
+        "a11y": [
+            _("The `<section>` element is a landmark region that screen readers announce."),
+            _("Use `aria_label` or `aria_labelledby` to provide a descriptive name for the section."),
+            _("Each section should ideally have a heading (`<h2>`-`<h6>`) as its first child."),
+            _("Sections create a document outline that assistive technologies use for navigation."),
+        ]
+    }
+
+
+@register_component(Component.SURFACE)
+def get_surface_a11y_context() -> dict[str, list[str]]:
+    """Serve a11y documentation for the surface layout tag."""
+    return {
+        "a11y": [
+            _("Static surfaces (`<div>`) are presentational and have no semantic meaning."),
+            _("Clickable surfaces (`<a>`) are fully keyboard accessible via Tab and Enter."),
+            _("When used as a link, ensure the surface contains descriptive text or an `aria-label`."),
+            _("The `group-hover:` utility classes provide visual feedback on hover for clickable surfaces."),
+        ]
+    }
+
+
 # =============================================================
 #
 #   Navigation Tags

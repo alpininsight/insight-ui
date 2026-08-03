@@ -17,6 +17,9 @@ Available Tags
 --------------
 Block tags (require closing tag):
 
+    {% section id="intro" gap="m" aria_label="Introduction" %}...{% endsection %}
+        Semantic section container for content groupings (renders <section>).
+
     {% page padding="m" height="full" %}...{% endpage %}
         Full-width page container with consistent padding and optional height.
 
@@ -31,9 +34,7 @@ Block tags (require closing tag):
 
     {% surface padding="m" variant="surface" radius="m" %}...{% endsurface %}
         Styled container with background, border, and optional shadow.
-
-    {% link_surface href="/path" padding="m" %}...{% endlink_surface %}
-        Clickable surface container with hover effects (renders as <a>).
+        When href is provided, renders as clickable <a> with hover effects.
 
     {% collapsible summary="Show details" open=False icon=True %}...{% endcollapsible %}
         Expandable/collapsible section with toggle button.
@@ -239,11 +240,11 @@ HEIGHT_CLASSES: dict[str, str] = {
     "peek": "page-peek",  # Shows next section peeking
 }
 
-# Surface variant classes
+# Surface variant classes (using combined CSS classes from input.css)
 SURFACE_VARIANT_CLASSES: dict[str, str] = {
-    "surface": "bg-insight-bg-surface border border-insight-border-surface shadow-insight-surface",
-    "raised": "bg-insight-bg-raised border border-insight-border-raised shadow-insight-raised",
-    "outline": "border border-insight-border-surface",
+    "surface": "insight-surface",
+    "raised": "insight-raised",
+    "outline": "border border-insight-surface",  # outline has no bg/shadow
 }
 
 # Surface radius classes
@@ -486,6 +487,76 @@ class FlexNode(LayoutNode):
 # =============================================================================
 
 
+class SectionNode(LayoutNode):
+    """
+    Semantic section container for content groupings.
+
+    Renders a ``<section>`` element for proper document semantics and accessibility.
+    Combines vertical flex layout with semantic HTML structure.
+
+    Parameters:
+        id: Optional anchor ID (adds scroll-mt-24 for fixed navbar offset).
+        gap: Space between children (xs, s, m, l, xl). Default: "m"
+        aria_label: Accessible label for the section.
+        aria_labelledby: ID of element that labels this section.
+        class: Additional CSS classes to append.
+
+    Example::
+
+        {% section id="installation" gap="m" %}
+            <h2>Installation</h2>
+            <p>Instructions here...</p>
+        {% endsection %}
+
+    """
+
+    def build_classes(self, kwargs: dict[str, object]) -> list[str]:
+        """Build section container CSS classes."""
+        classes = ["flex", "flex-col"]
+
+        # Add scroll margin if section has an ID (for fixed navbar offset)
+        if kwargs.get("id"):
+            classes.append("scroll-mt-24")
+
+        # Gap between children
+        gap = str(kwargs.get("gap", "m"))
+        _validate(gap, VALID_SPACING, "gap", self.tag_name)
+        classes.append(GAP_CLASSES[gap])
+
+        return classes
+
+    def render(self, context: Context) -> str:
+        """Render the section element with semantic HTML."""
+        resolved = self.resolve_kwargs(context)
+        classes = self.build_classes(resolved)
+
+        # Append user-provided extra classes
+        extra_classes = resolved.get("class", "")
+        if extra_classes:
+            classes.append(str(extra_classes))
+
+        content = self.nodelist.render(context)
+        class_str = " ".join(classes)
+
+        # Build attributes
+        attrs = [f'class="{class_str}"']
+
+        section_id = resolved.get("id")
+        if section_id:
+            attrs.append(f'id="{section_id}"')
+
+        aria_label = resolved.get("aria_label")
+        if aria_label:
+            attrs.append(f'aria-label="{aria_label}"')
+
+        aria_labelledby = resolved.get("aria_labelledby")
+        if aria_labelledby:
+            attrs.append(f'aria-labelledby="{aria_labelledby}"')
+
+        attrs_str = " ".join(attrs)
+        return f"<section {attrs_str}>{content}</section>"
+
+
 class PageNode(LayoutNode):
     """Page container with full width, consistent padding, and optional height control."""
 
@@ -589,10 +660,19 @@ class SurfaceNode(LayoutNode):
     Surface container with background, border, and optional shadow.
 
     A styled container for grouping content with consistent visual treatment.
-    Combine with vbox/hbox inside for layout control.
+    When ``href`` is provided, renders as a clickable ``<a>`` element with hover effects.
+
+    Parameters:
+        variant: Visual style (surface|raised|outline). Default: "surface"
+        padding: Inner padding (xs|s|m|l|xl). Default: "m"
+        radius: Border radius override (xs|s|m|l|xl|none). Default: uses variant's radius.
+        href: URL for clickable surface (renders as <a> instead of <div>).
+        external: Open link in new tab (only when href is set).
+        class: Additional CSS classes to append.
 
     Example::
 
+        {# Static container (renders as <div>) #}
         {% surface padding="l" variant="raised" %}
             {% vbox gap="m" %}
                 <h3>Title</h3>
@@ -600,9 +680,18 @@ class SurfaceNode(LayoutNode):
             {% endvbox %}
         {% endsurface %}
 
+        {# Clickable surface (renders as <a>) #}
+        {% surface href="/components" padding="m" %}
+            <span class="group-hover:text-insight-primary">Browse Components</span>
+        {% endsurface %}
+
+    Note:
+        When ``href`` is set, the container has ``class="group"`` so children
+        can use ``group-hover:`` utilities for hover effects.
+
     """
 
-    def build_classes(self, kwargs: dict[str, object]) -> list[str]:
+    def build_classes(self, kwargs: dict[str, object], is_link: bool = False) -> list[str]:
         """Build surface container CSS classes."""
         variant = str(kwargs.get("variant", "surface"))
         _validate(variant, VALID_SURFACE_VARIANT, "variant", self.tag_name)
@@ -613,68 +702,27 @@ class SurfaceNode(LayoutNode):
         _validate(padding, VALID_SPACING, "padding", self.tag_name)
         classes.append(PADDING_CLASSES[padding])
 
-        # Border radius
-        radius = str(kwargs.get("radius", "m"))
-        _validate(radius, VALID_RADIUS, "radius", self.tag_name)
-        if RADIUS_CLASSES[radius]:
-            classes.append(RADIUS_CLASSES[radius])
+        # Border radius (only add if explicitly set, otherwise use variant's default)
+        if "radius" in kwargs:
+            radius = str(kwargs.get("radius"))
+            _validate(radius, VALID_RADIUS, "radius", self.tag_name)
+            if RADIUS_CLASSES[radius]:
+                classes.append(RADIUS_CLASSES[radius])
 
-        return classes
-
-
-class LinkSurfaceNode(LayoutNode):
-    """
-    Clickable surface container that renders as an anchor element.
-
-    A styled link container with hover effects for navigation cards.
-    Content is fully customizable - combine with hbox/vbox for layout.
-
-    Example::
-
-        {% link_surface href="/components" %}
-            {% hbox gap="m" v_align="center" %}
-                {% icon name="grid" size="l" %}
-                {% vbox gap="xs" %}
-                    <span class="font-semibold group-hover:text-insight-primary">Browse Components</span>
-                    <span class="text-sm text-secondary">60+ components</span>
-                {% endvbox %}
-            {% endhbox %}
-        {% endlink_surface %}
-
-    Note:
-        The container has ``class="group"`` so children can use ``group-hover:`` utilities.
-
-    """
-
-    def build_classes(self, kwargs: dict[str, object]) -> list[str]:
-        """Build link surface container CSS classes."""
-        variant = str(kwargs.get("variant", "surface"))
-        _validate(variant, VALID_SURFACE_VARIANT, "variant", self.tag_name)
-        classes = [SURFACE_VARIANT_CLASSES[variant]]
-
-        # Padding
-        padding = str(kwargs.get("padding", "m"))
-        _validate(padding, VALID_SPACING, "padding", self.tag_name)
-        classes.append(PADDING_CLASSES[padding])
-
-        # Border radius
-        radius = str(kwargs.get("radius", "m"))
-        _validate(radius, VALID_RADIUS, "radius", self.tag_name)
-        if RADIUS_CLASSES[radius]:
-            classes.append(RADIUS_CLASSES[radius])
-
-        # Add hover effects and group class
-        classes.append(LINK_SURFACE_HOVER_CLASSES)
+        # Add hover effects and group class for clickable surfaces
+        if is_link:
+            classes.append(LINK_SURFACE_HOVER_CLASSES)
 
         return classes
 
     def render(self, context: Context) -> str:
-        """Render the link surface as an anchor element."""
+        """Render the surface as either <div> or <a> based on href."""
         resolved = self.resolve_kwargs(context)
-        classes = self.build_classes(resolved)
 
-        href = resolved.get("href", "#")
-        external = resolved.get("external", False)
+        href = resolved.get("href", "")
+        is_link = bool(href)
+
+        classes = self.build_classes(resolved, is_link=is_link)
 
         # Append user-provided extra classes
         extra_classes = resolved.get("class", "")
@@ -684,12 +732,16 @@ class LinkSurfaceNode(LayoutNode):
         content = self.nodelist.render(context)
         class_str = " ".join(classes)
 
-        # Build attributes
-        attrs = f'href="{href}" class="{class_str}"'
-        if external:
-            attrs += ' target="_blank" rel="noopener noreferrer"'
+        if is_link:
+            # Render as anchor element
+            external = resolved.get("external", False)
+            attrs = f'href="{href}" class="{class_str}"'
+            if external:
+                attrs += ' target="_blank" rel="noopener noreferrer"'
+            return f"<a {attrs}>{content}</a>"
 
-        return f"<a {attrs}>{content}</a>"
+        # Render as div element
+        return f'<div class="{class_str}">{content}</div>'
 
 
 class CollapsibleNode(LayoutNode):
@@ -1033,12 +1085,12 @@ def do_tab(parser: Parser, token: Token) -> TabNode:
 # =============================================================================
 
 
+register.tag("section", _make_block_tag(SectionNode))
 register.tag("page", _make_block_tag(PageNode))
 register.tag("hbox", _make_block_tag(HBoxNode))
 register.tag("vbox", _make_block_tag(VBoxNode))
 register.tag("grid", _make_block_tag(GridNode))
 register.tag("surface", _make_block_tag(SurfaceNode))
-register.tag("link_surface", _make_block_tag(LinkSurfaceNode))
 register.tag("collapsible", _make_block_tag(CollapsibleNode))
 register.tag("sidebar", _make_block_tag(SidebarNode))
 register.tag("tabs", do_tabs)

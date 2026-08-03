@@ -250,6 +250,83 @@ def get_divider_usage_context() -> dict[str, str]:
     }
 
 
+@register_component(Component.SECTION)
+def get_section_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the section layout tag."""
+    return {
+        "usage": """
+        {% load layout_tags %}
+
+        <!-- Basic section with anchor ID -->
+        {% section id="installation" gap="m" %}
+            <h2>Installation</h2>
+            <p>Follow these steps to install the package.</p>
+            <pre><code>pip install insight-ui</code></pre>
+        {% endsection %}
+
+        <!-- Section without ID (no scroll offset) -->
+        {% section gap="s" %}
+            <h3>Quick Start</h3>
+            <p>Get started in minutes.</p>
+        {% endsection %}
+
+        <!-- With accessibility label -->
+        {% section id="features" aria_label="Product features and capabilities" %}
+            <h2>Features</h2>
+            <ul>
+                <li>Feature 1</li>
+                <li>Feature 2</li>
+            </ul>
+        {% endsection %}
+
+        <!-- Section labeled by its heading -->
+        {% section id="faq" aria_labelledby="faq-heading" %}
+            <h2 id="faq-heading">Frequently Asked Questions</h2>
+            <p>Common questions answered.</p>
+        {% endsection %}
+        """
+    }
+
+
+@register_component(Component.SURFACE)
+def get_surface_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the surface layout tag."""
+    return {
+        "usage": """
+        {% load layout_tags %}
+
+        <!-- Static container (renders as <div>) -->
+        {% surface variant="surface" padding="l" %}
+            <h3>Card Title</h3>
+            <p>This is a basic surface container.</p>
+        {% endsurface %}
+
+        <!-- Raised variant with shadow -->
+        {% surface variant="raised" padding="m" radius="l" %}
+            <h4>Elevated Content</h4>
+            <p>Content with visual prominence.</p>
+        {% endsurface %}
+
+        <!-- Outline variant (border only) -->
+        {% surface variant="outline" padding="s" %}
+            <span>Minimal container</span>
+        {% endsurface %}
+
+        <!-- Clickable surface (renders as <a>) -->
+        {% surface href="/components" padding="m" %}
+            {% hbox gap="s" v_align="center" %}
+                <span class="group-hover:text-insight-primary">Browse Components</span>
+            {% endhbox %}
+        {% endsurface %}
+
+        <!-- External link with new tab -->
+        {% surface href="https://github.com/example/repo" external=True padding="m" %}
+            <span>View on GitHub</span>
+        {% endsurface %}
+        """
+    }
+
+
 # =============================================================
 #
 #   Navigation Tags

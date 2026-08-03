@@ -50,12 +50,14 @@ from insight_ui.configs import (
     RadioBlockConfig,
     RadioGroupConfig,
     SearchBarConfig,
+    SectionConfig,
     SelectConfig,
     SidebarConfig,
     SliderConfig,
     SpacerConfig,
     StatusScreenConfig,
     StepperConfig,
+    SurfaceConfig,
     TableConfig,
     TabsConfig,
     TextareaConfig,
@@ -102,6 +104,8 @@ class Component(Enum):
     GRID = ("grid", ComponentCategory.LAYOUT, GridConfig, False, False, False)
     SPACER = ("spacer", ComponentCategory.LAYOUT, SpacerConfig, False, False, False)
     DIVIDER = ("divider", ComponentCategory.LAYOUT, DividerConfig, False, False, False)
+    SECTION = ("section", ComponentCategory.LAYOUT, SectionConfig, False, False, False)
+    SURFACE = ("surface", ComponentCategory.LAYOUT, SurfaceConfig, False, False, False)
     NAVBAR = ("navbar", ComponentCategory.NAVIGATION, NavbarConfig, True, False, False)
     SIDEBAR = ("sidebar", ComponentCategory.NAVIGATION, SidebarConfig, True, False, False)
     FOOTER = ("footer", ComponentCategory.NAVIGATION, FooterConfig, True, False, False)
