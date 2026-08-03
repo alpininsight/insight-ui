@@ -3,6 +3,10 @@
 
 {% block title %}{% trans "Insight UI - Customization" %}{% endblock title %}
 
+{% block extra_head %}
+    <style>html { scroll-behavior: smooth; }</style>
+{% endblock extra_head %}
+
 {% block navbar %}
     {% navbar config=nav_config user_dropdown_links=user_dropdown_links search_query=search_query %}
 {% endblock navbar %}
@@ -24,8 +28,7 @@
 {% endblock heading %}
 
 {% block content %}
-    {% vbox padding="xl" gap="l" max_width="l" class="mx-auto" %}
-
+    {% vbox padding="xl" gap="xl" max_width="l" class="mx-auto" %}
         {# === OVERVIEW === #}
         {% section gap="m" %}
             <p class="text-lg">
@@ -74,7 +77,7 @@
             {% endgrid %}
         {% endsection %}
 
-        {% divider spacing="xs" %}
+        {% divider spacing="none" %}
 
         {# === SETTINGS === #}
         {% section id="settings" gap="l" %}
@@ -153,7 +156,7 @@
             {% endsection %}
         {% endsection %}
 
-        {% divider spacing="xs" %}
+        {% divider spacing="none" %}
 
         {# === THEMING === #}
         {% section id="theming" gap="l" %}
@@ -245,7 +248,7 @@
                         {# fmt:on #}
                     </div>
 
-                    {% infobox info_type="info" message=_("The `@source` directive tells Tailwind which files to scan for utility classes. Without it, unused classes will be purged from the final CSS.") %}
+                    {% infobox message=_("The `@source` directive tells Tailwind which files to scan for utility classes. Without it, unused classes will be purged from the final CSS.") %}
                 {% endvbox %}
             {% endsection %}
 
@@ -369,7 +372,7 @@
                             <code class="text-secondary leading-normal">border-insight-overlay</code>
                         {% endvbox %}
                     {% endhbox %}
-                    {% infobox info_type="info" message=_("You can use these utilities directly, or use our [combined surface classes](#surfaces) for quick container styling.") %}
+                    {% infobox message=_("You can use these utilities directly, or use our [combined surface classes](#surfaces) for quick container styling.") %}
                 {% endvbox %}
 
                 {# Text Colors #}
@@ -479,7 +482,7 @@
                             {# fmt:on #}
                         </div>
                         <p>
-                            {% infobox info_type="info" message=_("The default font **Atkinson Hyperlegible Next** is optimized for readability and accessibility. When choosing a replacement, consider legibility at various sizes and weights.") %}
+                            {% infobox message=_("The default font **Atkinson Hyperlegible Next** is optimized for readability and accessibility. When choosing a replacement, consider legibility at various sizes and weights.") %}
                         </p>
                     {% endvbox %}
                 {% endvbox %}
@@ -554,7 +557,7 @@
                 {# Text Size & Line Height #}
                 {% vbox gap="m" %}
                     <h4 class="font-medium tracking-wide uppercase">{% trans "Text Size & Line Height" %}</h4>
-                    {% infobox info_type="info" message=_("Text size and line height tokens are planned but not yet available. Currently, use Tailwind's default text utilities (`text-sm`, `text-base`, `text-lg`, etc.).") %}
+                    {% infobox message=_("Text size and line height tokens are planned but not yet available. Currently, use Tailwind's default text utilities (`text-sm`, `text-base`, `text-lg`, etc.).") %}
                 {% endvbox %}
             {% endsection %}
 
@@ -639,7 +642,7 @@
                 <p>
                     {% trans "Semantic radius tokens map to specific use cases:" %}
                 </p>
-                <ul class="list-disc list-inside">
+                <ul class="list-disc list-inside space-y-1">
                     <li><code class="inline-tag">rounded-insight-control</code> {% trans "for buttons, inputs" %}</li>
                     <li><code class="inline-tag">rounded-insight-surface</code> {% trans "for cards, panels" %}</li>
                     <li><code class="inline-tag">rounded-insight-raised</code> {% trans "for elevated elements" %}</li>
@@ -877,7 +880,7 @@
 
         {% endsection %}
 
-        {% divider spacing="xs" %}
+        {% divider spacing="none" %}
 
         {# === TEMPLATES === #}
         {% section id="templates" gap="m" %}
@@ -907,7 +910,7 @@
             </p>
         {% endsection %}
 
-        {% divider spacing="xs" %}
+        {% divider spacing="none" %}
 
         {# === ICONS === #}
         {% section id="icons" gap="m" %}
@@ -944,7 +947,7 @@
             </p>
         {% endsection %}
 
-        {% divider spacing="xs" %}
+        {% divider spacing="none" %}
 
         {# === TOKEN REFERENCE === #}
         {% section id="reference" gap="m" %}
