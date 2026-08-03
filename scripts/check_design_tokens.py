@@ -417,7 +417,29 @@ def get_suggestion(class_name: str, config: TokenConfig) -> str | None:
     return None
 
 
-def find_violations(
+def extract_class_attributes(line: str) -> list[tuple[int, int, str]]:
+    """Extract all class attribute values from a line.
+
+    Args:
+        line: The line content to parse.
+
+    Returns:
+        List of tuples (start_pos, end_pos, class_value) for each class attribute.
+
+    """
+    # Match class="..." or class='...'
+    # Also handles Django template syntax like class="foo {{ bar }}"
+    class_pattern = re.compile(r'\bclass\s*=\s*(["\'])([^"\']*)\1')
+    results = []
+    for match in class_pattern.finditer(line):
+        start = match.start(2)  # Start of the class value
+        end = match.end(2)  # End of the class value
+        value = match.group(2)
+        results.append((start, end, value))
+    return results
+
+
+def find_violations(  # noqa: C901
     filepath: Path,
     configs: list[TokenConfig],
 ) -> list[TokenViolation]:
@@ -446,46 +468,48 @@ def find_violations(
         if has_exception_marker(line):
             continue
 
-        # Check each token type
-        for config in configs:
-            for match in config.pattern.finditer(line):
-                class_name = match.group(1)
-                match_end = match.end()
+        # Only search within class="..." attributes
+        class_attrs = extract_class_attributes(line)
+        if not class_attrs:
+            continue
 
-                # Skip if this is part of an insight- token
-                # e.g., "rounded" in "rounded-insight-surface"
-                # or "rounded" in "rounded-t-insight-control"
-                remaining = line[match_end:]
-                # Check if -insight appears before the next space or end of attribute
-                next_space = remaining.find(" ")
-                next_quote = remaining.find('"')
-                end_pos = min(
-                    next_space if next_space != -1 else len(remaining),
-                    next_quote if next_quote != -1 else len(remaining),
-                )
-                rest_of_class = remaining[:end_pos]
-                if "-insight" in rest_of_class:
-                    continue
+        # Check each token type within each class attribute
+        for _start, _end, class_value in class_attrs:
+            for config in configs:
+                for match in config.pattern.finditer(class_value):
+                    class_name = match.group(1)
+                    match_end = match.end()
 
-                # Skip if this ends with -none (removing styles is always allowed)
-                # e.g., "rounded" in "rounded-ee-none" or "shadow" in "shadow-none"
-                if rest_of_class.endswith("-none"):
-                    continue
+                    # Skip if this is part of an insight- token
+                    # e.g., "rounded" in "rounded-insight-surface"
+                    # or "rounded" in "rounded-t-insight-control"
+                    remaining = class_value[match_end:]
+                    # Check if -insight appears before the next space or end of attribute
+                    next_space = remaining.find(" ")
+                    end_pos = next_space if next_space != -1 else len(remaining)
+                    rest_of_class = remaining[:end_pos]
+                    if "-insight" in rest_of_class:
+                        continue
 
-                # Skip whitelisted classes
-                if is_whitelisted(class_name, config):
-                    continue
+                    # Skip if this ends with -none (removing styles is always allowed)
+                    # e.g., "rounded" in "rounded-ee-none" or "shadow" in "shadow-none"
+                    if rest_of_class.endswith("-none"):
+                        continue
 
-                suggestion = get_suggestion(class_name, config)
-                violations.append(
-                    TokenViolation(
-                        filepath=filepath,
-                        line_number=line_number,
-                        class_name=class_name,
-                        token_type=config.name,
-                        suggestion=suggestion,
+                    # Skip whitelisted classes
+                    if is_whitelisted(class_name, config):
+                        continue
+
+                    suggestion = get_suggestion(class_name, config)
+                    violations.append(
+                        TokenViolation(
+                            filepath=filepath,
+                            line_number=line_number,
+                            class_name=class_name,
+                            token_type=config.name,
+                            suggestion=suggestion,
+                        )
                     )
-                )
 
     return violations
 
