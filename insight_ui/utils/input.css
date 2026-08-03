@@ -265,14 +265,14 @@
     button:not(:disabled), [role="button"]:not(:disabled) { cursor: pointer; }
 
     /* Default heading styling */
-    h1 { @apply text-4xl md:text-5xl font-bold text-insight-text-primary pb-4; }
-    h2 { @apply text-2xl md:text-3xl font-semibold text-insight-text-primary pb-4; }
-    h3 { @apply text-xl md:text-2xl font-semibold text-insight-text-primary pb-2; }
-    h4 { @apply text-lg md:text-xl font-semibold text-insight-text-primary pb-1; }
-    h5 { @apply text-base md:text-lg font-semibold text-insight-text-primary pb-1; }
+    h1 { @apply text-4xl md:text-5xl font-bold text-insight-text-primary; }
+    h2 { @apply text-2xl md:text-3xl font-medium text-insight-text-primary; }
+    h3 { @apply text-xl md:text-2xl font-medium text-insight-text-primary; }
+    h4 { @apply text-lg md:text-xl font-normal text-insight-text-primary; }
+    h5 { @apply text-base md:text-lg font-normal text-insight-text-primary; }
 
     /* Default horizontale rule styling */
-    hr { @apply text-insight-text-hint;}
+    hr { @apply text-insight-text-hint; }
 
     /* Firefox / Standard (scrollbar-color) - only on elements with overflow */
     .overflow-auto,
@@ -332,7 +332,75 @@
     }
 }
 
+@layer utilities {
+    /*
+    * ========================================================
+    *   Simplified Surface Utilities
+    * ========================================================
+    *   Usage: bg-insight-surface (not bg-insight-bg-surface)
+    *          border-insight-surface (not border-insight-border-surface)
+    */
+
+    /* Background Utilities */
+    .bg-insight-base {
+        background-color: var(--color-insight-bg-base);
+    }
+    .bg-insight-surface {
+        background-color: var(--color-insight-bg-surface);
+    }
+    .bg-insight-raised {
+        background-color: var(--color-insight-bg-raised);
+    }
+    .bg-insight-overlay {
+        background-color: var(--color-insight-bg-overlay);
+    }
+
+    /* Border Color Utilities */
+    .border-insight-surface {
+        border-color: var(--color-insight-border-surface);
+    }
+    .border-insight-raised {
+        border-color: var(--color-insight-border-raised);
+    }
+    .border-insight-overlay {
+        border-color: var(--color-insight-border-overlay);
+    }
+
+    /* Text Color Utilities */
+    .text-primary { @apply text-insight-text-primary; }
+    .text-secondary { @apply text-insight-text-secondary; }
+}
+
 @layer components {
+
+    /*
+    * ========================================================
+    *   Combined Surface Classes
+    * ========================================================
+    *   All-in-one classes that apply bg, border, shadow, and radius
+    *   for each elevation level.
+    */
+
+    .insight-surface {
+        background-color: var(--color-insight-bg-surface);
+        border: 1px solid var(--color-insight-border-surface);
+        box-shadow: var(--shadow-insight-surface);
+        border-radius: var(--radius-insight-surface);
+    }
+
+    .insight-raised {
+        background-color: var(--color-insight-bg-raised);
+        border: 1px solid var(--color-insight-border-raised);
+        box-shadow: var(--shadow-insight-raised);
+        border-radius: var(--radius-insight-raised);
+    }
+
+    .insight-overlay {
+        background-color: var(--color-insight-bg-overlay);
+        border: 1px solid var(--color-insight-border-overlay);
+        box-shadow: var(--shadow-insight-overlay);
+        border-radius: var(--radius-insight-overlay);
+    }
 
     /* Layout-Tags */
     .page-peek { @apply min-h-[calc(100vh-10rem)]; }
@@ -361,8 +429,6 @@
     * ========================================================
     */
 
-    .text-primary { @apply text-insight-text-primary; }
-    .text-secondary { @apply text-insight-text-secondary; }
     .text-link { @apply text-insight-text-link hover:text-insight-text-link-hover underline; }
 
     /*
