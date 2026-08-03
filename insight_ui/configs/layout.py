@@ -290,6 +290,7 @@ class SurfaceConfig:
         variant: Visual style (surface|raised|outline).
         padding: Inner padding (xs|s|m|l|xl).
         radius: Border radius (xs|s|m|l|xl|none).
+        id: HTML id attribute for anchor links and JavaScript targeting.
         href: URL for clickable surface (renders as <a> instead of <div>).
         external: Open link in new tab (only when href is set).
 
@@ -318,6 +319,7 @@ class SurfaceConfig:
     variant: str = field(default="surface", metadata={"doc": _("Visual style (surface|raised|outline).")})
     padding: str = field(default="m", metadata={"doc": _("Inner padding (xs|s|m|l|xl).")})
     radius: str = field(default="m", metadata={"doc": _("Border radius (xs|s|m|l|xl|none).")})
+    id: str = field(default="", metadata={"doc": _("HTML id attribute for anchor links and JavaScript targeting.")})
     href: str = field(default="", metadata={"doc": _("URL for clickable surface (renders as <a> instead of <div>).")})
     external: bool = field(default=False, metadata={"doc": _("Open link in new tab (only when href is set).")})
 
