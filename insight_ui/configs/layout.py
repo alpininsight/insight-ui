@@ -227,7 +227,7 @@ class DividerConfig:
 
     Attributes:
         direction: Orientation (horizontal|vertical).
-        spacing: Spacing size (xs|s|m|l|xl).
+        spacing: Spacing size (none|xs|s|m|l|xl).
 
     """
 
@@ -237,7 +237,7 @@ class DividerConfig:
         """
 
     direction: str = field(default="horizontal", metadata={"doc": _("Orientation (horizontal|vertical).")})
-    spacing: str = field(default="m", metadata={"doc": _("Spacing size (xs|s|m|l|xl).")})
+    spacing: str = field(default="m", metadata={"doc": _("Spacing size (none|xs|s|m|l|xl).")})
 
 
 @dataclass
