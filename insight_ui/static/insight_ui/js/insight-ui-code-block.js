@@ -26,22 +26,36 @@ export class CodeBlock {
     }
 
     /**
-     * Remove the indentation of the HTML-Tag, measured by the indentation of the first line.
+     * Remove common leading indentation from code.
+     *
+     * Finds the minimum indentation across all non-empty lines and removes
+     * that amount from every line. This ensures code displays flush-left
+     * regardless of how it was indented in the HTML template.
      *
      * @param {string} code The code to clean the indentation from.
-     * @returns The cleaned code.
+     * @returns {string} The cleaned code.
      */
     cleanIndentation(code) {
         const lines = code.split('\n');
 
-        // Measure the indentation of the first line
-        const indentMatch = lines[1].match(/^\s*/);
-        const indentLength = indentMatch ? indentMatch[0].length : 0;
+        // Find minimum indentation across all non-empty lines
+        let minIndent = Infinity;
+        for (const line of lines) {
+            // Skip empty or whitespace-only lines
+            if (line.trim().length === 0) continue;
 
-        // Remove the measured number of spaces in all lines.
-        const cleanedLines = lines.map(line => {
-            return line.slice(indentLength);
-        });
+            const indentMatch = line.match(/^\s*/);
+            const indentLength = indentMatch ? indentMatch[0].length : 0;
+            minIndent = Math.min(minIndent, indentLength);
+        }
+
+        // If no non-empty lines found or no indentation, return as-is
+        if (minIndent === Infinity || minIndent === 0) {
+            return code;
+        }
+
+        // Remove the minimum indent from all lines
+        const cleanedLines = lines.map(line => line.slice(minIndent));
 
         return cleanedLines.join('\n');
     }
