@@ -15,31 +15,31 @@
 
 {% block sidebar_right %}
     {% sidebar width="wide" mobile_behavior="drawer" %}
-        <div class="flex justify-between items-center pb-4 mb-4 border-b border-insight-border-surface">
+        {% hbox h_align="between" v_align="center" class="pb-4 mb-4 border-b border-insight-border-surface" %}
             <h2 class="pb-0 text-lg">{% trans "Page Structure" %}</h2>
-        </div>
+        {% endhbox %}
         {% include "insight_ui/docs/base_template_mockup.html" %}
     {% endsidebar %}
 {% endblock sidebar_right %}
 
 {% block heading %}
-    {% page_header title=_("Base Template") description=_("The base template provides a complete page structure with navbar, sidebars, content area, and footer. It handles JavaScript loading, theming, SEO meta tags, and favicon configuration.") %}
+    {% page_header chapter=_("Get started") title=_("Base Template") description=_("The base template provides a complete page structure with navbar, sidebars, content area, and footer. It handles JavaScript loading, theming, SEO meta tags, and favicon configuration.") %}
 {% endblock heading %}
 
 {% block content %}
-    <div class="mx-auto space-y-12 w-full max-w-4xl text-secondary leading-loose">
+    {% vbox padding="xl" gap="xl" max_width="l" class="mx-auto" %}
         {# Usage section #}
-        <section class="space-y-4">
+        {% section gap="m" %}
             <h2>{% trans "Usage" %}</h2>
             <p>{% trans "Extend the base template to use Insight UI's page structure:" %}</p>
 
             <div data-insight-code-block="Django">
                 &lcub;% extends "insight_ui/base.html" %&rcub;
             </div>
-        </section>
+        {% endsection %}
 
         {# Head section #}
-        <section id="head" class="space-y-4 scroll-mt-24">
+        {% section id="head" gap="m" %}
             <h2>&lt;head&gt;</h2>
             <p>{% trans "The head section loads all required assets and defines page metadata. The head section serves some blocks the titel and additional scripts:" %}</p>
 
@@ -49,10 +49,10 @@
             </ul>
 
             {% infobox message=_("Favicon, SEO settings, and other meta information are configured via **INSIGHT_UI** in `settings.py`.") %}
-        </section>
+        {% endsection %}
 
         {# Body overview #}
-        <section class="space-y-4">
+        {% section gap="m" %}
             <h2>&lt;body&gt;</h2>
             <p>{% trans "The body contains all visible page elements, organized into blocks:" %}</p>
 
@@ -66,10 +66,10 @@
                 <li><code class="inline-tag">footer</code> - {% trans "Page footer" %}</li>
                 <li><code class="inline-tag">extra_scripts</code> - {% trans "Additional JavaScript" %}</li>
             </ul>
-        </section>
+        {% endsection %}
 
         {# Background Image #}
-        <section id="block-background" class="space-y-4 scroll-mt-24">
+        {% section id="block-background" gap="m" %}
             <h3>&lcub;% block background_image %&rcub;</h3>
             <p>{% trans "Add a fixed background image that stays in place while scrolling:" %}</p>
 
@@ -82,11 +82,11 @@
                 &lcub;% endblock background_image %&rcub;
                 {# fmt:on #}
             </div>
-        </section>
+        {% endsection %}
 
         {# Navbar block #}
-        <section id="block-navbar" class="space-y-6 scroll-mt-24">
-            <div class="space-y-4">
+        {% section id="block-navbar" gap="l" %}
+            {% vbox gap="m" %}
                 <h3>&lcub;% block navbar %&rcub;</h3>
                 <p>{% trans "The navigation bar appears at the top of every page:" %}</p>
 
@@ -105,9 +105,9 @@
                     <a href="{% url 'component_detail_page_view' 'navbar' %}" class="text-link">{% trans "Navbar component" %}</a>
                     {% trans "for configuration options." %}
                 </p>
-            </div>
+            {% endvbox %}
 
-            <div class="space-y-4">
+            {% vbox gap="m" %}
                 <h4>navbar_fixed</h4>
                 <p>{% trans "Controls whether the navbar sticks to the top of the viewport. Set in" %} <code>settings.py</code>:</p>
 
@@ -122,12 +122,12 @@
                 <p class="text-sm text-insight-text-secondary">
                     {% trans "When enabled, static sidebars automatically adjust their position to start below the navbar. Drawers are not affected as they overlay the entire screen." %}
                 </p>
-            </div>
-        </section>
+            {% endvbox %}
+        {% endsection %}
 
         {# Sidebar blocks #}
-        <section id="block-sidebar" class="space-y-6 scroll-mt-24">
-            <div class="space-y-4">
+        {% section id="block-sidebar" gap="l" %}
+            {% vbox gap="m" %}
                 <h3>&lcub;% block sidebar_left %&rcub; / &lcub;% block sidebar_right %&rcub;</h3>
                 <p>{% trans "Sidebars for navigation or supplementary content. The side is automatically detected from the block context:" %}</p>
 
@@ -142,9 +142,9 @@
                     &lcub;% endblock sidebar_left %&rcub;
                     {# fmt:on #}
                 </div>
-            </div>
+            {% endvbox %}
 
-            <div class="space-y-4">
+            {% vbox gap="m" %}
                 <h4>{% trans "Parameters" %}</h4>
                 <ul class="list-disc ms-8 space-y-2">
                     <li>
@@ -170,9 +170,9 @@
                         </ul>
                     </li>
                 </ul>
-            </div>
+            {% endvbox %}
 
-            <div class="space-y-4">
+            {% vbox gap="m" %}
                 <h4>{% trans "Drawer Example" %}</h4>
                 <p>{% trans "Create an overlay sidebar that slides in from the side:" %}</p>
 
@@ -185,11 +185,11 @@
                     &lcub;% endblock sidebar_left %&rcub;
                     {# fmt:on #}
                 </div>
-            </div>
-        </section>
+            {% endvbox %}
+        {% endsection %}
 
         {# Heading block #}
-        <section id="block-heading" class="space-y-4 scroll-mt-24">
+        {% section id="block-heading" gap="m" %}
             <h3>&lcub;% block heading %&rcub;</h3>
             <p>{% trans "Display a page header with title and optional description:" %}</p>
 
@@ -202,11 +202,11 @@
                 &lcub;% endblock heading %&rcub;
                 {# fmt:on #}
             </div>
-        </section>
+        {% endsection %}
 
         {# Content block #}
-        <section id="block-content" class="space-y-6 scroll-mt-24">
-            <div class="space-y-4">
+        {% section id="block-content" gap="l" %}
+            {% vbox gap="m" %}
                 <h3>&lcub;% block content %&rcub;</h3>
                 <p>{% trans "The main content area of your page. This block expands to fill available space, keeping the footer at the bottom." %}</p>
 
@@ -220,9 +220,9 @@
                     &lcub;% endblock content %&rcub;
                     {# fmt:on #}
                 </div>
-            </div>
+            {% endvbox %}
 
-            <div class="space-y-4">
+            {% vbox gap="m" %}
                 <h4>use_default_loading_indicator</h4>
                 <p>{% trans "The content block includes a default HTMX loading spinner that shows during requests. Disable it in your view when using components with their own loading indicators (e.g., pagination, tables):" %}</p>
 
@@ -234,11 +234,11 @@
                         return render(request, "my_template.html", context)
                     {# fmt:on #}
                 </div>
-            </div>
-        </section>
+            {% endvbox %}
+        {% endsection %}
 
         {# Footer block #}
-        <section id="block-footer" class="space-y-4 scroll-mt-24">
+        {% section id="block-footer" gap="m" %}
             <h3>&lcub;% block footer %&rcub;</h3>
             <p>{% trans "The footer appears at the bottom of every page:" %}</p>
 
@@ -257,10 +257,10 @@
                 <a href="{% url 'component_detail_page_view' 'footer' %}" class="text-link">{% trans "Footer component" %}</a>
                 {% trans "for configuration options." %}
             </p>
-        </section>
+        {% endsection %}
 
         {# Extra scripts block #}
-        <section class="space-y-4">
+        {% section gap="m" %}
             <h3>&lcub;% block extra_scripts %&rcub;</h3>
             <p>{% trans "Load additional JavaScript at the end of the page:" %}</p>
 
@@ -271,8 +271,8 @@
                 &lcub;% endblock extra_scripts %&rcub;
                 {# fmt:on #}
             </div>
-        </section>
-    </div>
+        {% endsection %}
+    {% endvbox %}
 {% endblock content %}
 
 {% block footer %}

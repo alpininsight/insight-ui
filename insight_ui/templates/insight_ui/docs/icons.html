@@ -1,5 +1,5 @@
 {% extends "insight_ui/base.html" %}
-{% load static insight_tags layout_tags i18n %}
+{% load static i18n insight_tags layout_tags %}
 
 {% block title %}{% trans "Insight UI - Icons" %}{% endblock title %}
 
@@ -20,22 +20,12 @@
 {% endblock sidebar_right %}
 
 {% block heading %}
-    {% page_header title=_("Icons") %}
+    {% page_header chapter=_("Components") title=_("Icons") description=_("Many of our components have the ability to display an optional icon. Wherever a component expects an icon, one of the icons listed here can be specified. More icons can be inserted anywhere using the `icon` component.") %}
 {% endblock heading %}
 
 {% block content %}
-    <div class="space-y-12 w-full text-secondary leading-loose">
-        <div class="space-y-8">
-            <p>
-                {% blocktrans with icon='<span class="inline-tag">&lcub;% icon %&rcub;</span>'|safe %}
-                    Many of our components have the ability to display an optional icon.
-                    Wherever a component expects an icon, one of the icons listed here can be specified.
-                    More icons can be inserted anywhere using the {{ icon }} component.
-                {% endblocktrans %}
-            </p>
-        </div>
-        <hr>
-        <section class="space-y-4">
+    {% vbox padding="xl" gap="xl" max_width="l" class="mx-auto" %}
+        {% section gap="m" %}
             <h2>{% trans "Usage" %}</h2>
             <p class="mb-4">
                 {% blocktrans with icon='<span class="inline-tag">&lcub;% icon %&rcub;</span>'|safe %}
@@ -47,12 +37,12 @@
 
                 &lcub;% icon name="home" size="m" %&rcub;
             </div>
-            <section>
+            {% section %}
                 <h3>{% trans "Parameter" %}</h3>
                 {% include "insight_ui/components/parameter_table.html" with rows=main_params %}
-            </section>
-        </section>
-        <section class="space-y-4">
+            {% endsection %}
+        {% endsection %}
+        {% section gap="m" %}
             <h2>{% trans "Icon Portfolio" %}</h2>
             {% with heroicons='<a href="https://heroicons.com/" class="text-link">Heroicons</a>'|safe %}
                 {% infobox message=_("The icons shown here come from {heroicons}. Heroicons provides icons under the <b>MIT</b> license. Currently we only provide the outline variants.") heroicons=heroicons %}
@@ -116,13 +106,13 @@
                     });
                 }
             </script>
-        </section>
-        <section class="space-y-4">
+        {% endsection %}
+        {% section gap="m" %}
             <h2>{% trans "Sizes" %}</h2>
             <p>{% trans "All icons can be used in different sizes:" %}</p>
             {% table config=size_table %}
-        </section>
-        <section class="space-y-4">
+        {% endsection %}
+        {% section gap="m" %}
             <h2>{% trans "Adding Custom Icons" %}</h2>
             <p>
                 {% blocktrans trimmed %}
@@ -173,8 +163,8 @@
                 python manage.py compile_icons --dir my_project/icons/
                 # Output: Total icons: 287 (1 custom, 287 bundled)
             </div>
-        </section>
-    </div>
+        {% endsection %}
+    {% endvbox %}
 {% endblock content %}
 
 {% block footer %}
