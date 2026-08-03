@@ -75,7 +75,9 @@ from insight_ui.configs.layout import (
     HeroConfig,
     PageConfig,
     PageHeaderConfig,
+    SectionConfig,
     SpacerConfig,
+    SurfaceConfig,
     VBoxConfig,
 )
 from insight_ui.configs.list import InfiniteScrollConfig, PaginationConfig, PaginationIppConfig, TableConfig
@@ -271,6 +273,7 @@ __all__ = [
     "RadioGroupConfig",
     "RadioItemConfig",
     "SearchBarConfig",
+    "SectionConfig",
     "SelectConfig",
     "SidebarCategoryConfig",
     "SidebarConfig",
@@ -284,6 +287,7 @@ __all__ = [
     "StepStatus",
     "StepperConfig",
     "StepperItemConfig",
+    "SurfaceConfig",
     "TabConfig",
     "TableConfig",
     "TabsConfig",

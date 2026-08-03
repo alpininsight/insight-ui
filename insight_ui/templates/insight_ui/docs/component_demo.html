@@ -500,6 +500,68 @@
             <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
         {% endhbox %}
     {% endvbox %}
+{% elif component.value == "section" %}
+    {% vbox gap="l" %}
+        <p class="text-sm text-secondary">{% trans "Semantic sections with anchor IDs:" %}</p>
+        {% section id="intro" gap="s" %}
+            <h3>{% trans "Introduction" %}</h3>
+            <p>{% trans "This section has an anchor ID for navigation. Click the link below to scroll here." %}</p>
+        {% endsection %}
+        {% section id="features" gap="s" aria_label="Product features" %}
+            <h3>{% trans "Features" %}</h3>
+            <p>{% trans "This section has an aria-label for accessibility." %}</p>
+            <ul class="list-disc ms-6">
+                <li>{% trans "Feature one" %}</li>
+                <li>{% trans "Feature two" %}</li>
+            </ul>
+        {% endsection %}
+        <p class="text-sm text-secondary">{% trans "Try clicking:" %} <a href="#intro" class="text-link">{% trans "Jump to Introduction" %}</a></p>
+    {% endvbox %}
+{% elif component.value == "surface" %}
+    {% vbox gap="l" %}
+        <p class="text-sm text-secondary">{% trans "Surface variants:" %}</p>
+        {% grid cols=3 gap="m" %}
+            {% surface variant="surface" padding="m" %}
+                {% vbox gap="xs" %}
+                    <span class="font-semibold">{% trans "Surface" %}</span>
+                    <span class="text-sm text-secondary">{% trans "Default style with border" %}</span>
+                {% endvbox %}
+            {% endsurface %}
+            {% surface variant="raised" padding="m" %}
+                {% vbox gap="xs" %}
+                    <span class="font-semibold">{% trans "Raised" %}</span>
+                    <span class="text-sm text-secondary">{% trans "With shadow" %}</span>
+                {% endvbox %}
+            {% endsurface %}
+            {% surface variant="outline" padding="m" %}
+                {% vbox gap="xs" %}
+                    <span class="font-semibold">{% trans "Outline" %}</span>
+                    <span class="text-sm text-secondary">{% trans "Border only" %}</span>
+                {% endvbox %}
+            {% endsurface %}
+        {% endgrid %}
+        <p class="text-sm text-secondary">{% trans "Clickable surfaces (with href):" %}</p>
+        {% grid cols=2 gap="m" %}
+            {% surface href="#" padding="m" %}
+                {% hbox gap="m" v_align="center" %}
+                    {% icon name="document-text" size="l" color="text-insight-primary" %}
+                    {% vbox gap="xs" %}
+                        <span class="font-semibold group-hover:text-insight-primary">{% trans "Documentation" %}</span>
+                        <span class="text-sm text-secondary">{% trans "Hover to see effect" %}</span>
+                    {% endvbox %}
+                {% endhbox %}
+            {% endsurface %}
+            {% surface href="https://example.com" external=True padding="m" %}
+                {% hbox gap="m" v_align="center" %}
+                    {% icon name="arrow-top-right-on-square" size="l" color="text-insight-primary" %}
+                    {% vbox gap="xs" %}
+                        <span class="font-semibold group-hover:text-insight-primary">{% trans "External Link" %}</span>
+                        <span class="text-sm text-secondary">{% trans "Opens in new tab" %}</span>
+                    {% endvbox %}
+                {% endhbox %}
+            {% endsurface %}
+        {% endgrid %}
+    {% endvbox %}
 {% elif component.value == "navbar" %}
     <div class="relative w-full h-80 bg-insight-bg-base">
         {% navbar config=demo_nav_config user_dropdown_links=user_dropdown_links %}
