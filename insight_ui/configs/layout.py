@@ -16,21 +16,21 @@ class PageHeaderConfig:
 
     Attributes:
         title: The main page title, displayed prominently in primary color.
-        prefix: Optional prefix displayed before the title in muted style.
+        chapter: Optional chapter displayed before the title in muted style.
         description: An optional description below the title.
 
     """
 
     __example__ = """
         PageHeaderConfig(
-            prefix="Insight UI",
             title="Page Header",
+            chapter="Insight UI",
             description="A header component for documentation pages.",
         )
         """
 
     title: str = field(metadata={"doc": _("The main page title, displayed prominently in primary color.")})
-    prefix: str = field(default="", metadata={"doc": _("Optional prefix displayed before the title in muted style.")})
+    chapter: str = field(default="", metadata={"doc": _("Optional chapter displayed before the title in muted style.")})
     description: str | list[str] = field(default="", metadata={"doc": _("An optional description below the title.")})
 
 

@@ -1,9 +1,11 @@
+{% load insight_tags %}
+
 {% if page_header_config.style == "easy" %}
     <div class="px-4 bg-insight-bg-surface md:px-16">
         <div class="pt-20 pb-12">
             {% if page_header_config.title %}
                 <h1 class="text-4xl md:text-5xl">
-                    {% if page_header_config.prefix %}<span class="font-normal text-secondary">{{ page_header_config.prefix }} </span>{% endif %}<span class="font-bold text-insight-primary">{{ page_header_config.title }}</span>
+                    <span class="font-bold text-insight-primary">{{ page_header_config.title }}</span>{% if page_header_config.chapter %} <span class="font-normal text-xl text-insight-text-secondary">{{ page_header_config.chapter }}</span>{% endif %}
                 </h1>
             {% endif %}
 
@@ -21,7 +23,7 @@
         <div class="pt-20 pb-12 border-b-2 border-insight-text-hint">
             {% if page_header_config.title %}
                 <h1 class="text-4xl md:text-5xl">
-                    {% if page_header_config.prefix %}<span class="font-normal text-secondary">{{ page_header_config.prefix }} </span>{% endif %}<span class="font-bold text-insight-primary">{{ page_header_config.title }}</span>
+                    <span class="font-bold text-insight-primary">{{ page_header_config.title }}</span>{% if page_header_config.chapter %} <span class="font-normal text-xl text-insight-text-secondary">{{ page_header_config.chapter }}</span>{% endif %}
                 </h1>
             {% endif %}
 
@@ -39,7 +41,7 @@
         <div class="pt-20 pb-12">
             {% if page_header_config.title %}
                 <h1 class="text-4xl md:text-5xl">
-                    {% if page_header_config.prefix %}<span class="font-normal text-secondary">{{ page_header_config.prefix }} </span>{% endif %}<span class="font-bold text-insight-primary">{{ page_header_config.title }}</span>
+                    <span class="font-bold text-insight-primary">{{ page_header_config.title }}</span>{% if page_header_config.chapter %} <span class="font-normal text-xl text-insight-text-secondary">{{ page_header_config.chapter }}</span>{% endif %}
                 </h1>
             {% endif %}
 
@@ -63,15 +65,15 @@
         <div class="pt-20 pb-12 mx-auto max-w-4xl border-b-2 border-insight-text-hint">
             {% if page_header_config.title %}
                 <h1 class="text-4xl md:text-5xl">
-                    {% if page_header_config.prefix %}<span class="font-normal text-secondary">{{ page_header_config.prefix }} </span>{% endif %}<span class="font-bold text-insight-primary">{{ page_header_config.title }}</span>
+                    <span class="font-bold text-insight-primary">{{ page_header_config.title }}</span>{% if page_header_config.chapter %} <span class="font-normal text-xl text-insight-text-secondary">{{ page_header_config.chapter }}</span>{% endif %}
                 </h1>
             {% endif %}
 
-            <div class="max-w-4xl">
+            <div class="max-w-4xl text-insight-text-primary text-lg leading-loose">
                 {% for paragraph in page_header_config.description %}
-                    <p class="mt-4 text-secondary text-lg leading-loose">
-                        {{ paragraph }}
-                    </p>
+                    <div class="mt-4">
+                        {{ paragraph|markdownify }}
+                    </div>
                 {% endfor %}
             </div>
         </div>
