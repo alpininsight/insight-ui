@@ -302,7 +302,7 @@
 
             {% grid cols=3 gap="m" class="mt-8 w-full" %}
                 {% for category in component_categories %}
-                    {% link_surface href=category.url padding="l" radius="xl" class="transition-all duration-300 hover:shadow-insight-raised" %}
+                    {% surface href=category.url padding="l" radius="xl" class="transition-all duration-300 hover:shadow-insight-raised" %}
                         {% hbox gap="m" v_align="center" %}
                             <div class="flex justify-center items-center size-10 bg-insight-primary/10 rounded-insight-surface transition-colors group-hover:bg-insight-primary/20">
                                 {% icon name=category.icon size="m" %}
@@ -314,7 +314,7 @@
                                 </span>
                             {% endvbox %}
                         {% endhbox %}
-                    {% endlink_surface %}
+                    {% endsurface %}
                 {% endfor %}
             {% endgrid %}
 
