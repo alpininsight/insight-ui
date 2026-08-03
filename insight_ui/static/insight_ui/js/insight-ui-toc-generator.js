@@ -6,6 +6,7 @@
  * - Highlights active heading while scrolling
  * - Different logic for scrolling down vs up
  * - Stable handling of anchor jumps & hash navigation
+ * - Supports excluding headings via `data-toc-ignore` attribute
  */
 class TableOfContents {
     /**
@@ -29,7 +30,7 @@ class TableOfContents {
 
         this.headings = Array.from(
             this.content.querySelectorAll(headingSelector)
-        );
+        ).filter(heading => !heading.hasAttribute("data-toc-ignore"));
         if (!this.headings.length) return;
 
         this.offsetTop = offsetTop;
