@@ -27,7 +27,7 @@
 
         <tbody class="text-primary">
             {% for row in table_config.rows %}
-                <tr class="odd:bg-insight-bg-raised even:bg-insight-bg-base">
+                <tr class="odd:bg-insight-bg-raised/50 even:bg-insight-bg-base">
                     {% for cell in row %}
                         <td class="px-4 py-3 text-start text-sm">{{ cell|safe }}</td>
                     {% endfor %}
