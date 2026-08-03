@@ -13,7 +13,7 @@
         </thead>
         <tbody class="text-primary">
             {% for row in rows %}
-                <tr class="odd:bg-insight-bg-raised even:bg-insight-bg-base">
+                <tr class="odd:bg-insight-bg-raised/50 even:bg-insight-bg-base">
                     <td class="px-4 py-3 text-start text-sm"><span class="inline-tag">{{ row.name }}</span></td>
                     <td class="px-4 py-3 text-start text-sm">
                         {% if row.type|is_known_type %}
