@@ -183,6 +183,7 @@ register = template.Library()
 # =============================================================================
 
 VALID_SPACING: frozenset[str] = frozenset({"xs", "s", "m", "l", "xl"})
+VALID_SPACING_WITH_NONE: frozenset[str] = frozenset({"none", "xs", "s", "m", "l", "xl"})
 VALID_ALIGN: frozenset[str] = frozenset({"start", "center", "end", "stretch", "baseline"})
 VALID_JUSTIFY: frozenset[str] = frozenset({"start", "center", "end", "between", "around", "evenly"})
 VALID_DIRECTION: frozenset[str] = frozenset({"horizontal", "vertical"})
@@ -1128,7 +1129,7 @@ def divider(direction: str = "horizontal", spacing: str = "m") -> str:
 
     Args:
         direction: "horizontal" or "vertical". Default: "horizontal"
-        spacing: Margin spacing (xs, s, m, l, xl). Default: "m"
+        spacing: Margin spacing (none, xs, s, m, l, xl). Default: "m"
 
     Returns:
         HTML div element styled as a divider.
@@ -1139,16 +1140,18 @@ def divider(direction: str = "horizontal", spacing: str = "m") -> str:
         {% divider spacing="l" %}
 
     """
-    _validate(spacing, VALID_SPACING, "spacing", "divider")
+    _validate(spacing, VALID_SPACING_WITH_NONE, "spacing", "divider")
     _validate(direction, VALID_DIRECTION, "direction", "divider")
 
     # Margin classes based on direction
     margin_map = {
+        ("horizontal", "none"): "",
         ("horizontal", "xs"): "my-1",
         ("horizontal", "s"): "my-2",
         ("horizontal", "m"): "my-4",
         ("horizontal", "l"): "my-6",
         ("horizontal", "xl"): "my-8",
+        ("vertical", "none"): "",
         ("vertical", "xs"): "mx-1",
         ("vertical", "s"): "mx-2",
         ("vertical", "m"): "mx-4",
@@ -1156,8 +1159,7 @@ def divider(direction: str = "horizontal", spacing: str = "m") -> str:
         ("vertical", "xl"): "mx-8",
     }
     margin = margin_map[(direction, spacing)]
-    classes = (
-        f"w-px self-stretch bg-gray-200 {margin}" if direction == "vertical" else f"h-px w-full bg-gray-200 {margin}"
-    )
+    base_classes = "w-px self-stretch bg-gray-200" if direction == "vertical" else "h-px w-full bg-gray-200"
+    classes = f"{base_classes} {margin}".strip()
 
     return mark_safe(f'<div class="{classes}"></div>')  # noqa: S308, # nosec B308, B703
