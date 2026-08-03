@@ -1,155 +1,162 @@
-{% load i18n insight_tags %}
+{% load i18n insight_tags layout_tags %}
 
 {% include "insight_ui/components/htmx_loading_indicator.html" %}
 
-{# Component Demo and features #}
-<section>
-    {% if description_notes_begin %}
-        <div class="mb-4">
-            {% for note in description_notes_begin %}
-                {% infobox info_type=note.type message=note.message %}
-            {% endfor %}
-        </div>
-    {% endif %}
-    <div class="space-y-6">
-        {% for paragraph in description %}
-            {{ paragraph|markdownify }}
-        {% endfor %}
-    </div>
-    {% if features %}
-        <div class="mt-6">
-            <h2>{% trans "Features" %}</h2>
-            <ul class="list-disc ms-8 leading-relaxed">
-                {% for feature in features %}
-                    <li>{{ feature|markdownify }}</li>
+{% vbox padding="xl" gap="xl" max_width="l" class="mx-auto" %}
+    {# Component Demo and features #}
+    {% section %}
+        {% if description_notes_begin %}
+            {% vbox gap="s" %}
+                {% for note in description_notes_begin %}
+                    {% infobox info_type=note.type message=note.message %}
                 {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
-    {% if description_notes_end %}
-        <div class="mb-4">
-            {% for note in description_notes_end %}
-                {% infobox info_type=note.type message=note.message %}
-            {% endfor %}
-        </div>
-    {% endif %}
-    {% include "insight_ui/docs/demo_container.html" %}
-</section>
-
-<hr>
-
-{# Component Documentation #}
-<section>
-    <h2>{% trans "Usage" %}</h2>
-    <div class="mb-4">
-        {% if usage_summary %}
-            {{ usage_summary|markdownify }}
-        {% else %}
-            <p>
-                {% blocktrans with span_open='<span class="inline-tag">'|safe span_close='</span>'|safe %}
-                    The component is included via the {{ span_open }}{{ component_name }}{{ span_close }} tag.
-                {% endblocktrans %}
-            </p>
+            {% endvbox %}
         {% endif %}
-    </div>
-    {% if usage_notes_begin %}
-        <div class="mb-4">
-            {% for note in usage_notes_begin %}
-                {% infobox info_type=note.type message=note.message %}
-            {% endfor %}
-        </div>
-    {% endif %}
-    <div data-insight-code-block="Django">
-        {{ usage }}
-    </div>
-    {% if usage_notes_end %}
-        <div class="mb-4">
-            {% for note in usage_notes_end %}
-                {% infobox info_type=note.type message=note.message %}
-            {% endfor %}
-        </div>
-    {% endif %}
-</section>
+        {% if features %}
+            {% vbox gap="m" %}
+                <h2>{% trans "Features" %}</h2>
+                <ul class="list-disc ms-8 leading-relaxed">
+                    {% for feature in features %}
+                        <li>{{ feature|markdownify }}</li>
+                    {% endfor %}
+                </ul>
+            {% endvbox %}
+        {% endif %}
+        {% if description_notes_end %}
+            {% vbox gap="s" %}
+                {% for note in description_notes_end %}
+                    {% infobox info_type=note.type message=note.message %}
+                {% endfor %}
+            {% endvbox %}
+        {% endif %}
+        {% include "insight_ui/docs/demo_container.html" %}
+    {% endsection %}
 
-{# Parameter #}
-<section>
-    <h3>{% trans "Parameter" %}</h3>
-    {% if params_notes_begin %}
-        <div class="mb-4">
-            {% for note in params_notes_begin %}
-                {% infobox info_type=note.type message=note.message %}
-            {% endfor %}
-        </div>
-    {% endif %}
-    {% for param in params %}
-        <div class="mt-8">
-            {% if param.details %}
-                <h4 class="mb-0">{{ param.details.name }} <i>({{ param.details.type }})</i></h4>
-                <p class="mb-2">{{ param.details.description }}</p>
-            {% endif %}
+    {% divider spacing="none" %}
 
-            {% for note in param.notes %}
-                {% infobox info_type=note.type message=note.message %}
-            {% endfor %}
-
-            {% if param.example_data %}
-                <div class="space-y-4">
-                    {% include "insight_ui/components/parameter_table.html" with rows=param.params_table %}
-                    <div data-insight-code-block="python">{{ param.example_data }}</div>
-                </div>
+    {# Component Documentation #}
+    {% section %}
+        <h2>{% trans "Usage" %}</h2>
+        {% vbox gap="s" %}
+            {% if usage_summary %}
+                {{ usage_summary|markdownify }}
             {% else %}
-                {% include "insight_ui/components/parameter_table.html" with rows=param.params_table %}
+                <p>
+                    {% blocktrans with span_open='<span class="inline-tag">'|safe span_close='</span>'|safe %}
+                        The component is included via the {{ span_open }}{{ component_name }}{{ span_close }} tag.
+                    {% endblocktrans %}
+                </p>
             {% endif %}
+        {% endvbox %}
+        {% if usage_notes_begin %}
+            {% vbox gap="s" %}
+                {% for note in usage_notes_begin %}
+                    {% infobox info_type=note.type message=note.message %}
+                {% endfor %}
+            {% endvbox %}
+        {% endif %}
+        <div data-insight-code-block="Django">
+            {{ usage }}
         </div>
-    {% endfor %}
-    {% if params_notes_end %}
-        <div class="mt-4">
-            {% for note in params_notes_end %}
-                {% infobox info_type=note.type message=note.message %}
+        {% if usage_notes_end %}
+            {% vbox gap="s" %}
+                {% for note in usage_notes_end %}
+                    {% infobox info_type=note.type message=note.message %}
+                {% endfor %}
+            {% endvbox %}
+        {% endif %}
+    {% endsection %}
+
+    {# Parameter #}
+    {% section %}
+        <h3>{% trans "Parameter" %}</h3>
+        {% if params_notes_begin %}
+            {% vbox gap="s" %}
+                {% for note in params_notes_begin %}
+                    {% infobox info_type=note.type message=note.message %}
+                {% endfor %}
+            {% endvbox %}
+        {% endif %}
+        {% vbox gap="l" %}
+            {% for param in params %}
+                {% vbox gap="s" %}
+                    {% if param.details %}
+                        <h4>{{ param.details.name }} <i>({{ param.details.type }})</i></h4>
+                        <p>{{ param.details.description }}</p>
+                    {% endif %}
+
+                    {% for note in param.notes %}
+                        {% infobox info_type=note.type message=note.message %}
+                    {% endfor %}
+
+                    {% if param.example_data %}
+                        {% vbox gap="s" %}
+                            {% include "insight_ui/components/parameter_table.html" with rows=param.params_table %}
+                            <div data-insight-code-block="python">{{ param.example_data }}</div>
+                        {% endvbox %}
+                    {% else %}
+                        {% include "insight_ui/components/parameter_table.html" with rows=param.params_table %}
+                    {% endif %}
+                {% endvbox %}
             {% endfor %}
-        </div>
-    {% endif %}
-</section>
+        {% endvbox %}
+        {% if params_notes_end %}
+            {% vbox gap="s" %}
+                {% for note in params_notes_end %}
+                    {% infobox info_type=note.type message=note.message %}
+                {% endfor %}
+            {% endvbox %}
+        {% endif %}
+    {% endsection %}
 
-{# A11y #}
-<section>
-    <h2>{% trans "Accessability" %}</h2>
-    {% for note in a11y_notes_begin %}
-        {% infobox info_type=note.type message=note.message %}
-    {% endfor %}
-    <ul class="list-disc ms-8 mt-6 leading-relaxed">
-        {% for point in a11y %}
-            <li>{{ point|markdownify }}</li>
-        {% empty %}
-            <li><i>{% trans "No comments." %}</i></li>
-        {% endfor %}
-    </ul>
-    {% for note in a11y_notes_end %}
-        {% infobox info_type=note.type message=note.message %}
-    {% endfor %}
-</section>
+    {# A11y #}
+    {% section %}
+        <h2>{% trans "Accessability" %}</h2>
+        {% if a11y_notes_begin %}
+            {% vbox gap="s" %}
+                {% for note in a11y_notes_begin %}
+                    {% infobox info_type=note.type message=note.message %}
+                {% endfor %}
+            {% endvbox %}
+        {% endif %}
+        <ul class="list-disc ms-8 mt-6 leading-relaxed">
+            {% for point in a11y %}
+                <li>{{ point|markdownify }}</li>
+            {% empty %}
+                <li><i>{% trans "No comments." %}</i></li>
+            {% endfor %}
+        </ul>
+        {% if a11y_notes_end %}
+            {% vbox gap="s" %}
+                {% for note in a11y_notes_end %}
+                    {% infobox info_type=note.type message=note.message %}
+                {% endfor %}
+            {% endvbox %}
+        {% endif %}
+    {% endsection %}
 
-<hr>
+    {% divider spacing="none" %}
 
-{# Related #}
-<section>
-    <h2>{% trans "Related topics" %}</h2>
-    <ul class="list-disc ms-8 mt-6 leading-relaxed">
-        {% for topic in related_topics %}
-            <li>
-                <a
-                    href="{% url 'component_detail_page_view' topic.component_name %}"
-                    hx-get="{% url 'component_detail_page_view' topic.component_name %}"
-                    hx-target="#content"
-                    hx-swap="innerHTML show:window:top"
-                    hx-push-url="true"
-                    class="text-link"
-                >
-                    {{ topic.formatted_name }}
-                </a>
-            </li>
-        {% empty %}
-            <li><i>{% trans "No related components available." %}</i></li>
-        {% endfor %}
-    </ul>
-</section>
+    {# Related #}
+    {% section %}
+        <h2>{% trans "Related topics" %}</h2>
+        <ul class="list-disc ms-8 mt-6 leading-relaxed">
+            {% for topic in related_topics %}
+                <li>
+                    <a
+                        href="{% url 'component_detail_page_view' topic.component_name %}"
+                        hx-get="{% url 'component_detail_page_view' topic.component_name %}"
+                        hx-target="#content"
+                        hx-swap="innerHTML show:window:top"
+                        hx-push-url="true"
+                        class="text-link"
+                    >
+                        {{ topic.formatted_name }}
+                    </a>
+                </li>
+            {% empty %}
+                <li><i>{% trans "No related components available." %}</i></li>
+            {% endfor %}
+        </ul>
+    {% endsection %}
+{% endvbox %}
