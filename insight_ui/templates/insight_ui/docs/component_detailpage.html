@@ -20,13 +20,11 @@
 {% endblock sidebar_right %}
 
 {% block heading %}
-    {% page_header prefix="Insight UI" title=formatted_name %}
+    {% page_header chapter=category_name title=formatted_name %}
 {% endblock heading %}
 
 {% block content %}
-    {% vbox padding="xl" max_width="l" class="mx-auto" %}
-        {% include "insight_ui/docs/component_details_content.html" %}
-    {% endvbox %}
+    {% include "insight_ui/docs/component_details_content.html" %}
 {% endblock content %}
 
 {% block footer %}

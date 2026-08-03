@@ -1,5 +1,5 @@
 {% extends "insight_ui/base.html" %}
-{% load static insight_tags layout_tags i18n %}
+{% load static i18n insight_tags layout_tags %}
 
 {% block title %}{% trans "Insight UI - Types" %}{% endblock title %}
 
@@ -20,27 +20,19 @@
 {% endblock sidebar_right %}
 
 {% block heading %}
-    {% page_header title=_("Types") %}
+    {% page_header chapter=_("Components") title=_("Types") description="Insight UI uses type literals to ensure type safety and provide autocompletion in your IDE. These types define the allowed values for component parameters like sizes, colors, and positions." %}
 {% endblock heading %}
 
 {% block content %}
-    <div class="space-y-12 w-full text-secondary leading-loose">
+    {% vbox padding="xl" gap="xl" max_width="l" class="mx-auto" %}
         <div class="space-y-8">
             <p>
                 {% blocktrans trimmed %}
-                    Insight UI uses type literals to ensure type safety and provide autocompletion
-                    in your IDE. These types define the allowed values for component parameters
-                    like sizes, colors, and positions.
-                {% endblocktrans %}
-            </p>
-            <p>
-                {% blocktrans trimmed %}
-                    All types are defined in <code>insight_ui.configs.types</code> and can be imported
+                    All types are defined in <code class="inline-tag">insight_ui.configs.types</code> and can be imported
                     for type annotations in your own code.
                 {% endblocktrans %}
             </p>
         </div>
-        <hr>
 
         <section class="space-y-4">
             <h2>{% trans "Usage Example" %}</h2>
@@ -117,7 +109,7 @@
                 validate_size("xl", field_name="icon_size")  # Uses 'icon_size' in error message
             </div>
         </section>
-    </div>
+    {% endvbox %}
 {% endblock content %}
 
 {% block footer %}

@@ -346,7 +346,7 @@ def page_header(
     config: PageHeaderConfig | None = None,
     *,
     title: str | _Unset = UNSET,
-    prefix: str | _Unset = UNSET,
+    chapter: str | _Unset = UNSET,
     description: str | list[str] | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a page header in the base template."""

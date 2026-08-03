@@ -20,10 +20,10 @@ def get_page_header_usage_context() -> dict[str, str]:
         {% load insight_tags %}
 
         {% block heading %}
-            {# With prefix for hierarchical titles #}
-            {% page_header prefix="My App" title="Dashboard" description="Welcome to your personal dashboard." %}
+            {# With chapter for hierarchical titles #}
+            {% page_header chapter="My App" title="Dashboard" description="Welcome to your personal dashboard." %}
 
-            {# Without prefix for standalone pages #}
+            {# Without chapter for standalone pages #}
             {% page_header title="About Us" description="Learn more about our company." %}
         {% endblock heading %}
         """
