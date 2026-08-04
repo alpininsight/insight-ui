@@ -8,7 +8,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const jsDir = path.join(__dirname, '../insight_ui/static/insight_ui/js');
+const jsDir = path.join(__dirname, '../../insight_ui/static/insight_ui/js');
 
 function loadComponent(filename) {
   const filepath = path.join(jsDir, filename);
