@@ -32,11 +32,11 @@ classifiers = [
 ]
 
 dependencies = [
-    "django>=5.2.12,<7",
-    "whitenoise>=6.11.0",
-    "structlog>=25.5.0",
+    "django>=5.2.17,<7",
+    "whitenoise>=6.12.0",
+    "structlog>=26.1.0",
     "python-decouple==3.8",
-    "markdown>=3.8",
+    "markdown>=3.10.3",
     "defusedxml>=0.7.1",
 ]
 
@@ -46,28 +46,28 @@ default-groups = ["dev"]
 # For uv and poetry
 [dependency-groups]
 dev = [
-    "mypy>=1.19.1",
-    "django-stubs==5.2.9",
-    "ruff>=0.14.14",
-    "pre-commit>=4.5.1",
+    "mypy>=2.3.0",
+    "django-stubs==6.0.7",
+    "ruff>=0.16.1",
+    "pre-commit>=4.6.1",
     "django-rosetta>=0.10.3",
-    "django-tailwind-cli>=4.5.1",
+    "django-tailwind-cli>=4.6.2",
 ]
 pytest = [
-    "pytest==9.0.3",
-    "pytest-django==4.11.1",
-    "pytest-cov==7.0.0",
-    "beautifulsoup4>=4.14.3",
+    "pytest==9.1.1",
+    "pytest-django==4.12.0",
+    "pytest-cov==7.1.0",
+    "beautifulsoup4>=4.15.0",
     "docstring-parser>=0.18.0",
 ]
 
 # For pip
 [project.optional-dependencies]
 test = [
-    "pytest==9.0.3",
-    "pytest-django==4.11.1",
-    "pytest-cov==7.0.0",
-    "beautifulsoup4>=4.14.3",
+    "pytest==9.1.1",
+    "pytest-django==4.12.0",
+    "pytest-cov==7.1.0",
+    "beautifulsoup4>=4.15.0",
     "docstring-parser>=0.18.0",
 ]
 
