@@ -11,14 +11,16 @@
  */
 
 export class RangeSlider {
-    // Weak references used to prevent multiple initialization of the same instance
+    /** @type {WeakMap<HTMLElement, RangeSlider>} Weak references to prevent multiple initialization */
     static instances = new WeakMap();
 
-    // Tailwind classes for hidden items
+    /** @type {string[]} Tailwind classes for hidden items */
     static HIDDEN_CLASSES = ["invisible", "w-0", "overflow-hidden"];
-    // Tailwind classes for rotated legend container
+
+    /** @type {string[]} Tailwind classes for rotated legend container */
     static ROTATE_MODE_CLASSES = ["items-start", "h-auto", "min-h-16"];
-    // Tailwind classes for rotated items
+
+    /** @type {string[]} Tailwind classes for rotated items */
     static ROTATED_CLASSES = [
         "[writing-mode:vertical-rl]",
         "[text-orientation:mixed]",
@@ -29,6 +31,11 @@ export class RangeSlider {
         "text-ellipsis"
     ];
 
+    /**
+     * Creates a new RangeSlider instance.
+     *
+     * @param {HTMLElement} element - The slider container element with data-insight-range-slider attribute
+     */
     constructor(element) {
         // If an instance for this element already exists, return it
         if (RangeSlider.instances.has(element)) {
@@ -349,7 +356,9 @@ export class RangeSlider {
     }
 
     /**
-     * Static method for initializing all range sliders.
+     * Initializes all range slider instances on the page.
+     *
+     * @static
      */
     static initAll() {
         document.querySelectorAll("[data-insight-range-slider]").forEach(el => new RangeSlider(el));

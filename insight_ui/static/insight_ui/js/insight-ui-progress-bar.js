@@ -14,13 +14,13 @@
  */
 
 export class ProgressBar {
-    // Weak references used to prevent multiple initialization of the same instance
+    /** @type {WeakMap<HTMLElement, ProgressBar>} Weak references to prevent multiple initialization */
     static instances = new WeakMap();
 
-    // Registry by tag ID for easy access via InsightUI.ProgressBar.get()
+    /** @type {Object.<string, ProgressBar>} Registry by tag ID for easy access via InsightUI.ProgressBar.get() */
     static registry = {};
 
-    // CSS classes for different states (arrays for multi-class values)
+    /** @type {Object} CSS classes for different states (arrays for multi-class values) */
     static classes = {
         fillNormal: ['bg-blue-600'],
         fillError: ['bg-red-500'],
@@ -51,6 +51,11 @@ export class ProgressBar {
         }
     }
 
+    /**
+     * Creates a new ProgressBar instance.
+     *
+     * @param {HTMLElement} element - The progress bar container element with data-insight-progress-bar attribute
+     */
     constructor(element) {
         // If an instance for this element already exists, return it
         if (ProgressBar.instances.has(element)) {
@@ -118,10 +123,16 @@ export class ProgressBar {
         debugLog("New progress bar created:", this.tagId);
     }
 
+    /**
+     * Initializes the progress bar state.
+     */
     init() {
         this.updateTooltipContent();
     }
 
+    /**
+     * Binds event listeners for cancel/retry buttons and data attribute changes.
+     */
     bindEvents() {
         // Cancel button
         if (this.cancelButton) {
@@ -152,6 +163,9 @@ export class ProgressBar {
         this.observer.observe(this.fill, { attributes: true });
     }
 
+    /**
+     * Starts automatic progress updates via polling or SSE based on configuration.
+     */
     startAutoUpdate() {
         // Don't start if cancelled
         if (this.isCancelled) return;
@@ -227,6 +241,9 @@ export class ProgressBar {
         }
     }
 
+    /**
+     * Stops the polling interval if active.
+     */
     stopPolling() {
         if (this.pollingInterval) {
             clearInterval(this.pollingInterval);
@@ -234,6 +251,9 @@ export class ProgressBar {
         }
     }
 
+    /**
+     * Closes the SSE connection if active.
+     */
     stopSSE() {
         if (this.eventSource) {
             this.eventSource.close();
@@ -550,6 +570,10 @@ export class ProgressBar {
         return this.fill.dataset.label || '';
     }
 
+    /**
+     * Handles progress completion - stops updates, announces to screen readers,
+     * dispatches event, and optionally hides the progress bar.
+     */
     onComplete() {
         // Stop auto-update
         this.stopPolling();
@@ -581,6 +605,9 @@ export class ProgressBar {
         }
     }
 
+    /**
+     * Updates the tooltip content to reflect current progress value and label.
+     */
     updateTooltipContent() {
         if (!this.track) return;
         const value = this.fill.dataset.value || '0';
@@ -725,7 +752,11 @@ export class ProgressBar {
         this.announceElement = null;
     }
 
-    // Static method for initializing all progress bars
+    /**
+     * Initializes all progress bar instances on the page.
+     *
+     * @static
+     */
     static initAll() {
         document.querySelectorAll('[data-insight-progress-bar]').forEach(el => new ProgressBar(el));
     }

@@ -1,7 +1,31 @@
+/**
+ * Carousel component for Insight UI.
+ *
+ * A responsive image/content carousel with support for autoplay, pagination dots,
+ * touch gestures, keyboard navigation, and RTL layouts.
+ *
+ * @example
+ * // HTML structure
+ * <div data-insight-carousel data-autoplay="true" data-show-dots="true">
+ *   <div class="carousel-track">
+ *     <div class="carousel-item">...</div>
+ *   </div>
+ *   <button class="carousel-prev">Previous</button>
+ *   <button class="carousel-next">Next</button>
+ * </div>
+ *
+ * // JavaScript initialization
+ * Carousel.initAll();
+ */
 export class Carousel {
-    // Weak references used to prevent multiple initialization of the same instance
+    /** @type {WeakMap<HTMLElement, Carousel>} Weak references to prevent multiple initialization */
     static instances = new WeakMap();
 
+    /**
+     * Creates a new Carousel instance.
+     *
+     * @param {HTMLElement} element - The carousel container element with data-insight-carousel attribute
+     */
     constructor(element) {
         // If an instance for this element already exists, return it
         if (Carousel.instances.has(element)) {
@@ -95,6 +119,11 @@ export class Carousel {
         });
     }
 
+    /**
+     * Handles touch end events for swipe navigation.
+     *
+     * @param {TouchEvent} e - The touch end event
+     */
     handleTouchEnd(e) {
         const endX = e.changedTouches[0].clientX;
         const diff = endX - this.startX;
@@ -185,7 +214,11 @@ export class Carousel {
      */
     updateIndexText() {
         if (this.indexText) {
-            this.indexText.textContent = `Seite ${this.index + 1} / ${this.totalSlides}`;
+            const text = gettext('Page %(current)s / %(total)s');
+            this.indexText.textContent = interpolate(text, {
+                current: this.index + 1,
+                total: this.totalSlides
+            }, true);
         }
     }
 
@@ -222,8 +255,13 @@ export class Carousel {
         this.element = null;
     }
 
-    // Static method for initializing all carousels
+    /**
+     * Initializes all carousel instances on the page.
+     * Finds all elements with `data-insight-carousel` attribute and creates Carousel instances.
+     *
+     * @static
+     */
     static initAll() {
         document.querySelectorAll('[data-insight-carousel]').forEach(el => new Carousel(el));
     }
-};
+}

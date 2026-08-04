@@ -5,12 +5,17 @@
  * mobile drawer behavior where static sidebars become drawers on small screens.
  */
 export class Sidebar {
-	// Weak references used to prevent multiple initialization of the same instance
+	/** @type {WeakMap<HTMLElement, Sidebar>} Weak references to prevent multiple initialization */
 	static instances = new WeakMap();
 
-	// XL breakpoint (1280px) - matches Tailwind's xl: breakpoint
+	/** @type {number} XL breakpoint (1280px) - matches Tailwind's xl: breakpoint */
 	static XL_BREAKPOINT = 1280;
 
+	/**
+	 * Creates a new Sidebar instance.
+	 *
+	 * @param {HTMLElement} wrapper - The sidebar wrapper element with data-insight-sidebar attribute
+	 */
 	constructor(wrapper) {
 		// If an instance for this element already exists, return it
 		if (Sidebar.instances.has(wrapper)) {
@@ -48,6 +53,9 @@ export class Sidebar {
 		debugLog("New sidebar created: ", this.sidebar, this.side, { isStatic: this.isStatic, mobileBehavior: this.mobileBehavior });
 	}
 
+	/**
+	 * Initializes the sidebar by setting up event listeners and initial state.
+	 */
 	init() {
 		if (!this.wrapper || !this.sidebar) return;
 
@@ -90,6 +98,10 @@ export class Sidebar {
 		}
 	}
 
+	/**
+	 * Initializes the sidebar transform for off-screen positioning.
+	 * Handles RTL layouts by inverting the transform direction.
+	 */
 	initSidebar() {
 		if (document.documentElement.dir === "rtl") {
 			if (this.side === "right") this.sidebar.style.transform = 'translateX(-100%)';
@@ -125,6 +137,11 @@ export class Sidebar {
 		}
 	}
 
+	/**
+	 * Closes the mobile drawer with animation.
+	 *
+	 * @param {HTMLElement} mobileDrawer - The mobile drawer element to close
+	 */
 	closeMobileDrawer(mobileDrawer) {
 		const aside = mobileDrawer.getElementsByTagName("aside")[0];
 		if (aside) {
@@ -141,12 +158,18 @@ export class Sidebar {
 		}, { once: true });
 	}
 
+	/**
+	 * Opens the sidebar with focus trapping.
+	 */
 	openSidebar() {
 		this.wrapper.classList.remove("hidden");
 		InsightUI.utils.trapFocus(this.wrapper);
 		this.sidebar.style.transform = 'translateX(0)';
 	}
 
+	/**
+	 * Closes the sidebar with animation.
+	 */
 	closeSidebar() {
 		// Check if this is a mobile drawer
 		if (this.isMobileDrawer) {
@@ -168,6 +191,10 @@ export class Sidebar {
 		}, { once: true });
 	}
 
+	/**
+	 * Sets up auto-close behavior where the sidebar opens when mouse approaches
+	 * the window edge and closes when mouse leaves the sidebar.
+	 */
 	setupAutoClose() {
 		// Open when mouse is near window edge
 		this.boundMouseMove = (e) => {
@@ -240,7 +267,11 @@ export class Sidebar {
 		this.sidebar = null;
 	}
 
-	// Static method for initializing all sidebar/drawers
+	/**
+	 * Initializes all sidebar instances on the page.
+	 *
+	 * @static
+	 */
 	static initAll() {
 		document.querySelectorAll('[data-insight-sidebar]').forEach(wrapper => new Sidebar(wrapper));
 	}

@@ -1,16 +1,33 @@
 /**
- * A select field which allows multiple selected values.
+ * Multiselect component for Insight UI.
  *
- * The multiselect has an integrated searchfield to search for specific values.
- * Selected values are shows as badges in the searchfield and can be easily removed.
+ * A select field which allows multiple selected values with an integrated
+ * search field to filter options. Selected values are shown as removable badges.
+ * Supports configurable maximum selections and select/deselect all buttons.
  *
- * There are optional buttons to select or deselect all values at once and the maximum amount
- * of selected values is customizable.
+ * @example
+ * // HTML structure
+ * <div data-insight-multiselect data-name="tags" data-max="5" data-selected="['Tag1']">
+ *   <div role="combobox" aria-expanded="false">
+ *     <div class="selected">
+ *       <div class="tags"></div>
+ *       <input type="text" class="search">
+ *     </div>
+ *   </div>
+ *   <div class="options hidden">
+ *     <div class="option" id="opt-1">Option 1</div>
+ *   </div>
+ * </div>
  */
 export class Multiselect {
-    // Weak references used to prevent multiple initialization of the same instance
+    /** @type {WeakMap<HTMLElement, Multiselect>} Weak references to prevent multiple initialization */
     static instances = new WeakMap();
 
+    /**
+     * Creates a new Multiselect instance.
+     *
+     * @param {HTMLElement} element - The multiselect container element with data-insight-multiselect attribute
+     */
     constructor(element) {
         // If an instance for this element already exists, return it
         if (Multiselect.instances.has(element)) {
@@ -57,7 +74,7 @@ export class Multiselect {
     }
 
     /**
-     * Bind all EventListener to the searchfield, buttons and options.
+     * Binds all event listeners to the search field, buttons, and options.
      */
     bindEvents() {
         // Bind handlers for proper cleanup
@@ -90,6 +107,12 @@ export class Multiselect {
         if (this.deselectAllBtn) this.deselectAllBtn.addEventListener('click', this.boundDeselectAll);
     }
 
+    /**
+     * Handles keyboard navigation in the search field.
+     * Supports Arrow keys, Enter, Backspace, Escape, and Tab.
+     *
+     * @param {KeyboardEvent} e - The keydown event
+     */
     handleSearchKeydown(e) {
         const visible = this.optionItems.filter(o => o.style.display !== 'none');
         if (e.key === 'ArrowDown') {
@@ -118,6 +141,11 @@ export class Multiselect {
         else if (e.key === 'Escape' || e.key === 'Tab') this.toggleDropdown(false);
     }
 
+    /**
+     * Handles clicks outside the multiselect to close the dropdown.
+     *
+     * @param {MouseEvent} e - The click event
+     */
     handleDocumentClick(e) {
         if (!this.element.contains(e.target)) this.toggleDropdown(false);
     }
@@ -201,7 +229,6 @@ export class Multiselect {
         });
         this.renderSelected();
         this.dispatchEvent();
-        // this.toggleDropdown(true);
         this.search.focus();
     }
 
@@ -366,7 +393,11 @@ export class Multiselect {
         this.element = null;
     }
 
-    // Static method for initializing all multiselect elements
+    /**
+     * Initializes all multiselect instances on the page.
+     *
+     * @static
+     */
     static initAll() {
         document.querySelectorAll('[data-insight-multiselect]').forEach(el => new Multiselect(el));
     }

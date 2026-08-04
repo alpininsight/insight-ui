@@ -20,8 +20,14 @@
  * ```
  */
 export class Tabs {
+	/** @type {WeakMap<HTMLElement, Tabs>} Weak references to prevent multiple initialization */
 	static instances = new WeakMap();
 
+	/**
+	 * Creates a new Tabs instance.
+	 *
+	 * @param {HTMLElement} element - The tabs container element with data-insight-tabs attribute
+	 */
 	constructor(element) {
 		if (Tabs.instances.has(element)) {
 			return Tabs.instances.get(element);
@@ -47,6 +53,9 @@ export class Tabs {
 		debugLog("New tabs created (static=" + this.isStatic + "): ", this.element);
 	}
 
+	/**
+	 * Binds click and keyboard event listeners to tabs.
+	 */
 	bindEvents() {
 		this.tabs.forEach((tab, index) => {
 			const keydownHandler = (e) => this.handleKeyDown(e, index);
@@ -70,6 +79,12 @@ export class Tabs {
 		}
 	}
 
+	/**
+	 * Handles keyboard navigation between tabs.
+	 *
+	 * @param {KeyboardEvent} e - The keydown event
+	 * @param {number} index - The current tab index
+	 */
 	handleKeyDown(e, index) {
 		let newIndex = null;
 		const length = this.tabs.length;
@@ -99,6 +114,11 @@ export class Tabs {
 		}
 	}
 
+	/**
+	 * Activates a tab and shows its associated panel.
+	 *
+	 * @param {HTMLElement} selectedTab - The tab element to activate
+	 */
 	activateTab(selectedTab) {
 		this.tabs.forEach(tab => {
 			const isSelected = tab === selectedTab;
@@ -133,6 +153,10 @@ export class Tabs {
 		}
 	}
 
+	/**
+	 * Destroys the tabs instance and removes all event listeners.
+	 * Call this before removing the element from DOM.
+	 */
 	destroy() {
 		debugLog("Destroy tabs: ", this.element);
 
@@ -154,6 +178,11 @@ export class Tabs {
 		this.panelContainer = null;
 	}
 
+	/**
+	 * Initializes all tabs instances on the page.
+	 *
+	 * @static
+	 */
 	static initAll() {
 		document.querySelectorAll("[data-insight-tabs]").forEach(el => new Tabs(el));
 	}

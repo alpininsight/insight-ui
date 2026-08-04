@@ -1,10 +1,29 @@
+/**
+ * Dropdown menu component for Insight UI.
+ *
+ * Creates a toggleable dropdown menu that closes when clicking outside.
+ * Only one dropdown can be open at a time.
+ *
+ * @example
+ * // HTML structure
+ * <button data-insight-dropdown="menu1">Open Menu</button>
+ * <div id="menu1" class="hidden">
+ *   <a href="#">Item 1</a>
+ *   <a href="#">Item 2</a>
+ * </div>
+ */
 export class Dropdown {
-    // Weak references used to prevent multiple initialization of the same instance
+    /** @type {WeakMap<HTMLElement, Dropdown>} Weak references to prevent multiple initialization */
     static instances = new WeakMap();
 
-    // Handle of the open dropdown
+    /** @type {Dropdown|null} Currently open dropdown instance */
     static currentOpen = null;
 
+    /**
+     * Creates a new Dropdown instance.
+     *
+     * @param {HTMLElement} trigger - The trigger button element with data-insight-dropdown attribute
+     */
     constructor(trigger) {
         // If an instance for this element already exists, return it
         if (Dropdown.instances.has(trigger)) {
@@ -34,6 +53,12 @@ export class Dropdown {
         debugLog("New dropdown created: ", this.trigger, this.menu);
     }
 
+    /**
+     * Handles click on the dropdown trigger button.
+     * Closes any other open dropdown before toggling this one.
+     *
+     * @param {Event} e - The click event
+     */
     handleToggleClick(e) {
         e.stopPropagation();
         if (Dropdown.currentOpen && Dropdown.currentOpen !== this) {
@@ -43,15 +68,24 @@ export class Dropdown {
         Dropdown.currentOpen = this.menu.classList.contains("hidden") ? null : this;
     }
 
+    /**
+     * Handles clicks outside the dropdown to close it.
+     */
     handleDocumentClick() {
         this.hide();
     }
 
+    /**
+     * Binds event listeners to the trigger and document.
+     */
     bindEvents() {
         this.trigger.addEventListener("click", this.boundToggleClick);
         document.addEventListener("click", this.boundDocumentClick);
     }
 
+    /**
+     * Hides the dropdown menu.
+     */
     hide() {
         if (!this.menu.classList.contains("hidden")) {
             this.menu.classList.add("hidden");
@@ -82,7 +116,11 @@ export class Dropdown {
         this.menu = null;
     }
 
-    // Static method for initializing all dropdown menus
+    /**
+     * Initializes all dropdown instances on the page.
+     *
+     * @static
+     */
     static initAll() {
         document.querySelectorAll("[data-insight-dropdown]").forEach(openButton => new Dropdown(openButton));
     }
