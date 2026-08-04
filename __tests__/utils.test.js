@@ -152,6 +152,93 @@ describe('InsightUI.utils', () => {
       // Button should be first focusable, not the tabindex="-1" div
       expect(document.activeElement).toBe(btn);
     });
+
+    it('should return a cleanup function', () => {
+      const container = TestUtils.createDOM(`
+        <div id="modal">
+          <button id="first">First</button>
+          <button id="last">Last</button>
+        </div>
+      `);
+      const modal = container.querySelector('#modal');
+
+      const cleanup = InsightUI.utils.trapFocus(modal);
+
+      expect(typeof cleanup).toBe('function');
+    });
+
+    it('should remove keydown listener when cleanup is called', () => {
+      const container = TestUtils.createDOM(`
+        <div id="modal">
+          <button id="first">First</button>
+          <button id="last">Last</button>
+        </div>
+      `);
+      const modal = container.querySelector('#modal');
+      const first = modal.querySelector('#first');
+      const last = modal.querySelector('#last');
+
+      const removeSpy = vi.spyOn(modal, 'removeEventListener');
+
+      const cleanup = InsightUI.utils.trapFocus(modal);
+
+      // Verify trap works before cleanup
+      last.focus();
+      modal.dispatchEvent(new KeyboardEvent('keydown', {
+        key: 'Tab',
+        bubbles: true,
+        cancelable: true,
+      }));
+      expect(document.activeElement).toBe(first);
+
+      // Call cleanup
+      cleanup();
+
+      expect(removeSpy).toHaveBeenCalledWith('keydown', expect.any(Function));
+    });
+
+    it('should not trap focus after cleanup is called', () => {
+      const container = TestUtils.createDOM(`
+        <div id="modal">
+          <button id="first">First</button>
+          <button id="last">Last</button>
+        </div>
+        <button id="outside">Outside</button>
+      `);
+      const modal = container.querySelector('#modal');
+      const last = modal.querySelector('#last');
+
+      const cleanup = InsightUI.utils.trapFocus(modal);
+      cleanup();
+
+      // Focus last element
+      last.focus();
+
+      // Tab should not be prevented anymore (no wrap to first)
+      const event = new KeyboardEvent('keydown', {
+        key: 'Tab',
+        bubbles: true,
+        cancelable: true,
+      });
+      const preventDefaultSpy = vi.spyOn(event, 'preventDefault');
+
+      modal.dispatchEvent(event);
+
+      // preventDefault should NOT have been called since handler was removed
+      expect(preventDefaultSpy).not.toHaveBeenCalled();
+    });
+
+    it('should handle modal with no focusable elements', () => {
+      const container = TestUtils.createDOM(`
+        <div id="modal">
+          <p>No focusable elements here</p>
+        </div>
+      `);
+      const modal = container.querySelector('#modal');
+
+      // Should not throw
+      expect(() => InsightUI.utils.trapFocus(modal)).not.toThrow();
+    });
   });
 
   describe('blockScroll()', () => {

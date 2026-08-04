@@ -174,6 +174,49 @@ describe('Checkbox Group Component', () => {
   });
 
   describe('Edge Cases', () => {
+    it('should correctly parse string values for min/max (type coercion)', () => {
+      // This tests the bug where "10" < "2" would be true with string comparison
+      const container = TestUtils.createDOM(`
+        <div data-insight-checkbox-group data-minimum-checked="2" data-maximum-checked="10">
+          <input type="checkbox" id="cb-0" value="0">
+          <input type="checkbox" id="cb-1" value="1">
+          <input type="checkbox" id="cb-2" value="2">
+        </div>
+      `);
+      const element = container.querySelector('[data-insight-checkbox-group]');
+      const checkboxes = element.querySelectorAll('input');
+
+      const checkbox = new InsightUI.Checkbox(element);
+
+      // minChecked should be 2 (number), not "2" (string)
+      expect(checkbox.minChecked).toBe(2);
+      expect(checkbox.maxChecked).toBe(10);
+
+      // First 2 should be auto-checked to meet minimum
+      expect(checkboxes[0].checked).toBe(true);
+      expect(checkboxes[1].checked).toBe(true);
+    });
+
+    it('should handle two-digit max values correctly', () => {
+      // Regression test: "10" < "2" is true with string comparison
+      const container = TestUtils.createDOM(`
+        <div data-insight-checkbox-group data-minimum-checked="1" data-maximum-checked="12">
+          <input type="checkbox" id="cb-0" value="0" checked>
+          <input type="checkbox" id="cb-1" value="1" checked>
+          <input type="checkbox" id="cb-2" value="2" checked>
+        </div>
+      `);
+      const element = container.querySelector('[data-insight-checkbox-group]');
+      const checkboxes = element.querySelectorAll('input');
+
+      new InsightUI.Checkbox(element);
+
+      // All 3 should remain checked (3 < 12)
+      expect(checkboxes[0].checked).toBe(true);
+      expect(checkboxes[1].checked).toBe(true);
+      expect(checkboxes[2].checked).toBe(true);
+    });
+
     it('should handle min equal to max', () => {
       const container = createCheckboxGroup({
         min: 2,

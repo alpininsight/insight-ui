@@ -415,6 +415,38 @@ describe('Multiselect Component', () => {
       expect(multiselect.selectedValues.length).toBe(4);
     });
 
+    it('should respect max limit when selecting all', () => {
+      const container = createMultiselectDOM({ withButtons: true, max: '2' });
+      const element = container.querySelector('[data-insight-multiselect]');
+      const selectAllBtn = element.querySelector('.select-all');
+
+      const multiselect = new InsightUI.Multiselect(element);
+
+      TestUtils.click(selectAllBtn);
+
+      // Should only select up to max (2), not all 4
+      expect(multiselect.selectedValues.length).toBe(2);
+    });
+
+    it('should respect max limit when some options are already selected', () => {
+      const container = createMultiselectDOM({
+        withButtons: true,
+        max: '3',
+        selected: "['Option A']"
+      });
+      const element = container.querySelector('[data-insight-multiselect]');
+      const selectAllBtn = element.querySelector('.select-all');
+
+      const multiselect = new InsightUI.Multiselect(element);
+
+      expect(multiselect.selectedValues.length).toBe(1);
+
+      TestUtils.click(selectAllBtn);
+
+      // Should add 2 more (up to max of 3)
+      expect(multiselect.selectedValues.length).toBe(3);
+    });
+
     it('should deselect all options', () => {
       const container = createMultiselectDOM({
         withButtons: true,
