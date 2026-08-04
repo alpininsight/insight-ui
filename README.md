@@ -110,19 +110,19 @@ CI runs tests against Python 3.12, 3.13, and 3.14. Note that Python 3.14 is stil
 
 The application is self-documenting. Run it locally and open it in your browser to read component documentation, examples, parameters, and accessibility notes on the corresponding pages.
 
-The `docs/` directory is reserved for repository-level developer and governance references:
-- [Contributing Guide](docs/contributing.md)
-- [New Component Self-Documentation Checklist](docs/new-component-self-documentation-checklist.md)
-- [Documentation Architecture](docs/docs-architecture.md)
-- [Naming Conventions](docs/naming_conventions.md)
-- [Design System Contract](docs/design-system-contract.md)
-- [Brand Settings](docs/brand-settings.md)
-- [CDN Static Assets](docs/cdn-static-assets.md)
-- [Accessibility](docs/accessibility.md)
-- [Internationalization](docs/i18n.md)
+The `docs/` directory contains developer references:
+- [Getting Started](docs/getting-started.md) - Installation and configuration
+- [Using Components](docs/components.md) - How to use components in templates
+- [Design System](docs/design-system.md) - Tokens, contracts, and extension rules
+- [Contributing](docs/contributing.md) - Workflow and guidelines
+- [New Component Checklist](docs/new-component-checklist.md) - Required steps for new components
+- [Conventions](docs/conventions.md) - Naming rules for code and assets
+- [Testing](docs/testing.md) - Test structure and commands
+- [Accessibility](docs/accessibility.md) - WCAG compliance guidelines
+- [Internationalization](docs/i18n.md) - i18n and RTL support
 
 ## Contributing
-We welcome improvements! Please read the [Contributor Guide](docs/contributing.md) alongside the [Naming Conventions](docs/naming_conventions.md) before opening a pull request.
+We welcome improvements! Please read the [Contributing Guide](docs/contributing.md) alongside the [Conventions](docs/conventions.md) before opening a pull request.
 
 Code ownership and review for this repository are managed via `.github/CODEOWNERS`. By default, changes are owned by the `@alpininsight` organization, with CI/CD workflows under `.github/workflows/` explicitly covered.
 
