@@ -40,7 +40,7 @@ export class Floater {
             this.arrow.classList.add("absolute", "left-1/2", "-translate-x-1/2", "rotate-45", "size-4", "bg-insight-bg-surface", "border-r", "border-b", "border-insight-border-surface");
         }
 
-        if (type == "tooltip") {
+        if (type === "tooltip") {
             this.target = document.createElement('span');
             this.target.classList.add("text-primary", "bg-insight-bg-surface", "px-3", "py-1", "border", "border-insight-border-surface", "rounded-insight-overlay", "shadow-insight-overlay", "whitespace-nowrap");
             this.target.textContent = this.trigger.getAttribute("data-insight-tooltip");
@@ -82,14 +82,37 @@ export class Floater {
         this.trigger.__insightInstance = this;
         Floater.instances.set(trigger, this);
 
-        if (type == "popover") debugLog("New popover created: ", this.trigger, this.target);
+        if (type === "popover") debugLog("New popover created: ", this.trigger, this.target);
         else debugLog("New tooltip created: ", this.trigger, this.target);
     }
 
-    /** @param {MouseEvent} e */ handleTriggerMouseover(e) { e.stopPropagation(); this.show(); }
-    /** @param {MouseEvent} e */ handleTriggerMouseout(e) { e.stopPropagation(); this.hideWithDelay(); }
-    /** @param {MouseEvent} e */ handleTargetMouseover(e) { e.stopPropagation(); this.show(); }
-    /** @param {MouseEvent} e */ handleTargetMouseout(e) { e.stopPropagation(); this.hideWithDelay(); }
+    /**
+     * Handles mouseover on the trigger element.
+     *
+     * @param {MouseEvent} e - The mouseover event
+     */
+    handleTriggerMouseover(e) { e.stopPropagation(); this.show(); }
+
+    /**
+     * Handles mouseout from the trigger element.
+     *
+     * @param {MouseEvent} e - The mouseout event
+     */
+    handleTriggerMouseout(e) { e.stopPropagation(); this.hideWithDelay(); }
+
+    /**
+     * Handles mouseover on the target element.
+     *
+     * @param {MouseEvent} e - The mouseover event
+     */
+    handleTargetMouseover(e) { e.stopPropagation(); this.show(); }
+
+    /**
+     * Handles mouseout from the target element.
+     *
+     * @param {MouseEvent} e - The mouseout event
+     */
+    handleTargetMouseout(e) { e.stopPropagation(); this.hideWithDelay(); }
     /**
      * Handles mouse movement for follow-mouse mode.
      *
@@ -245,6 +268,13 @@ export class Floater {
         const distanceToTarget = 12;
         const arrowSize = 8;
 
+        // Reset arrow position and rotation classes before applying new ones
+        if (this.arrow) {
+            this.arrow.classList.remove('rotate-135', 'rotate-225', 'rotate-315');
+            this.arrow.style.top = '';
+            this.arrow.style.left = '';
+        }
+
         // Some directions need slight adjustments, like + or - 1px.
         switch (position) {
             case 'top':
@@ -298,6 +328,13 @@ export class Floater {
 
         this.target.style.left = `${left}px`;
 
+        // Reset arrow classes before applying new ones
+        if (this.arrow) {
+            this.arrow.classList.remove('rotate-180');
+            this.arrow.style.top = '';
+            this.arrow.style.left = '';
+        }
+
         // Vertical position relative to parent
         switch (position) {
             case 'top':
@@ -312,8 +349,6 @@ export class Floater {
             case 'bottom':
                 this.target.style.top = `${triggerRect.bottom - parentRect.top + 8}px`;
                 if (this.arrow) {
-                    this.arrow.classList.remove('rotate-180');
-                    this.arrow.style.top = '';
                     this.arrow.style.left = '50%';
                 }
                 break;

@@ -29,8 +29,8 @@ export class Checkbox {
 
         this.element = element;
         this.checkboxes = element.getElementsByTagName('input');
-        this.minChecked = element.dataset.minimumChecked;
-        this.maxChecked = element.dataset.maximumChecked;
+        this.minChecked = parseInt(element.dataset.minimumChecked, 10) || 0;
+        this.maxChecked = parseInt(element.dataset.maximumChecked, 10) || Infinity;
 
         // Store bound handlers for cleanup
         this.boundChangeHandlers = [];

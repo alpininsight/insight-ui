@@ -100,8 +100,8 @@ export class ThreeDCarousel {
 
         /* apply animation */
         return [
-            { transform: "translateX(-50%) perspective(1000px) translateZ(" + distance + "px) rotateX(var(--carousel-tilt)) rotateY(" + (fromIndex * this.angle) + "deg)" },
-            { transform: "translateX(-50%) perspective(1000px) translateZ(" + distance + "px) rotateX(var(--carousel-tilt)) rotateY(" + (index * this.angle) + "deg)" },
+            { transform: `translateX(-50%) perspective(1000px) translateZ(${distance}px) rotateX(var(--carousel-tilt)) rotateY(${fromIndex * this.angle}deg)` },
+            { transform: `translateX(-50%) perspective(1000px) translateZ(${distance}px) rotateX(var(--carousel-tilt)) rotateY(${index * this.angle}deg)` },
         ];
     }
 
@@ -111,7 +111,7 @@ export class ThreeDCarousel {
     rotateFaceCamera() {
         if (!this.faceCamera) return;
 
-        for (let item of this.carousel.children) {
+        for (const item of this.carousel.children) {
             item.firstElementChild.animate([
                 {
                     transform: `rotateY(calc((var(--position) + ${this.currentIndex} - 1) * (360 / var(--quantity)) * -1deg)) rotateX(calc(var(--carousel-tilt) * -1))`
@@ -128,8 +128,10 @@ export class ThreeDCarousel {
         this.carousel.animate(this.spin(this.currentIndex, false), this.spinSettings);
 
         if (this.faceCamera) {
-            for (let item of this.carousel.children) {
-                item.firstElementChild.animate([{ transform: "rotateY(calc((var(--position) + " + this.currentIndex + " - 1) * (360 / var(--quantity)) * -1deg)) rotateX(calc(var(--carousel-tilt) * -1))" }], this.spinSettings);
+            for (const item of this.carousel.children) {
+                item.firstElementChild.animate([{
+                    transform: `rotateY(calc((var(--position) + ${this.currentIndex} - 1) * (360 / var(--quantity)) * -1deg)) rotateX(calc(var(--carousel-tilt) * -1))`
+                }], this.spinSettings);
             }
         }
     }
@@ -142,8 +144,10 @@ export class ThreeDCarousel {
         this.carousel.animate(this.spin(this.currentIndex, true), this.spinSettings);
 
         if (this.faceCamera) {
-            for (let item of this.carousel.children) {
-                item.firstElementChild.animate([{ transform: "rotateY(calc((var(--position) + " + this.currentIndex + " - 1) * (360 / var(--quantity)) * -1deg)) rotateX(calc(var(--carousel-tilt) * -1))" }], this.spinSettings);
+            for (const item of this.carousel.children) {
+                item.firstElementChild.animate([{
+                    transform: `rotateY(calc((var(--position) + ${this.currentIndex} - 1) * (360 / var(--quantity)) * -1deg)) rotateX(calc(var(--carousel-tilt) * -1))`
+                }], this.spinSettings);
             }
         }
     }

@@ -105,13 +105,14 @@ window.InsightUI.utils = {
      * This is essential for accessibility (WCAG 2.1 AA compliance).
      *
      * @param {HTMLElement} modal - The modal/dialog element to trap focus within
+     * @returns {Function} Cleanup function to remove the event listener
      */
     trapFocus: function (modal) {
         const focusableElements = modal.querySelectorAll('a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])');
         const firstFocusableElement = focusableElements[0];
         const lastFocusableElement = focusableElements[focusableElements.length - 1];
 
-        modal.addEventListener('keydown', function (e) {
+        const handler = function (e) {
             if (e.key === 'Tab') {
                 if (e.shiftKey) { // Shift + Tab
                     if (document.activeElement === firstFocusableElement) {
@@ -125,10 +126,19 @@ window.InsightUI.utils = {
                     }
                 }
             }
-        });
+        };
+
+        modal.addEventListener('keydown', handler);
 
         // Focus on the first element when the modal opens
-        firstFocusableElement.focus();
+        if (firstFocusableElement) {
+            firstFocusableElement.focus();
+        }
+
+        // Return cleanup function
+        return function () {
+            modal.removeEventListener('keydown', handler);
+        };
     },
 
     /**

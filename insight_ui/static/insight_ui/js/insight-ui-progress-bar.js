@@ -17,8 +17,8 @@ export class ProgressBar {
     /** @type {WeakMap<HTMLElement, ProgressBar>} Weak references to prevent multiple initialization */
     static instances = new WeakMap();
 
-    /** @type {Object.<string, ProgressBar>} Registry by tag ID for easy access via InsightUI.ProgressBar.get() */
-    static registry = {};
+    /** @type {Object.<string, ProgressBar>} Registry by tag ID for easy access via ProgressBar.get() */
+    static REGISTRY = {};
 
     /** @type {Object} CSS classes for different states (arrays for multi-class values) */
     static classes = {
@@ -118,7 +118,7 @@ export class ProgressBar {
 
         this.container.__insightInstance = this;
         ProgressBar.instances.set(element, this);
-        ProgressBar.registry[this.tagId] = this;
+        ProgressBar.REGISTRY[this.tagId] = this;
 
         debugLog("New progress bar created:", this.tagId);
     }
@@ -165,28 +165,14 @@ export class ProgressBar {
 
     /**
      * Starts automatic progress updates via polling or SSE based on configuration.
+     * SSE takes precedence over polling if both are configured.
      */
     startAutoUpdate() {
-        // Don't start if cancelled
+        // Don't start if cancelled or already running
         if (this.isCancelled) return;
+        if (this.pollingInterval || this.eventSource) return;
 
-        // Polling mode
-        if (this.config.requestUrl) {
-            this.pollingInterval = setInterval(async () => {
-                try {
-                    const response = await fetch(this.config.requestUrl);
-                    if (!response.ok) throw new Error('Network response was not ok');
-
-                    const data = await response.json();
-                    this.handleServerResponse(data);
-                } catch (error) {
-                    console.error('ProgressBar polling error:', error);
-                    this.setError(error.message, false);
-                }
-            }, this.config.interval);
-        }
-
-        // SSE mode
+        // SSE mode takes precedence over polling
         if (this.config.sseUrl) {
             this.eventSource = new EventSource(this.config.sseUrl);
 
@@ -205,6 +191,21 @@ export class ProgressBar {
                 this.setError('Connection lost', true);
                 this.stopSSE();
             };
+        }
+        // Polling mode (only if SSE is not configured)
+        else if (this.config.requestUrl) {
+            this.pollingInterval = setInterval(async () => {
+                try {
+                    const response = await fetch(this.config.requestUrl);
+                    if (!response.ok) throw new Error('Network response was not ok');
+
+                    const data = await response.json();
+                    this.handleServerResponse(data);
+                } catch (error) {
+                    console.error('ProgressBar polling error:', error);
+                    this.setError(error.message, false);
+                }
+            }, this.config.interval);
         }
     }
 
@@ -624,7 +625,7 @@ export class ProgressBar {
      * @returns {ProgressBar|null}
      */
     static get(tagId) {
-        return ProgressBar.registry[tagId] || null;
+        return ProgressBar.REGISTRY[tagId] || null;
     }
 
     /**
@@ -739,7 +740,7 @@ export class ProgressBar {
 
         // Clean up references
         ProgressBar.instances.delete(this.container);
-        delete ProgressBar.registry[this.tagId];
+        delete ProgressBar.REGISTRY[this.tagId];
         delete this.container.__insightInstance;
 
         this.container = null;

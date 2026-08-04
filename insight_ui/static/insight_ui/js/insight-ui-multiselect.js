@@ -313,15 +313,19 @@ export class Multiselect {
     }
 
     /**
-     * Select every option, so that all is selected.
+     * Select options up to the maximum allowed limit.
      *
-     * Add every option to the list of selected values, set 'aria-selected' to 'true' and
-     * 'hidden' to 'true' for every option. Update DOM.
+     * Adds options to the selected values until the max limit is reached.
+     * If max is not set (Infinity), selects all options.
      */
     selectAll() {
         this.optionItems.forEach(opt => {
             const value = opt.textContent.trim();
             if (!this.selectedValues.includes(value)) {
+                // Respect max limit
+                if (this.selectedValues.length >= this.max) {
+                    return;
+                }
                 this.selectedValues.push(value);
                 opt.setAttribute('aria-selected', 'true');
                 opt.hidden = true;

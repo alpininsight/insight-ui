@@ -101,19 +101,19 @@ export class Carousel {
         window.addEventListener("resize", this.boundWindowResize);
 
         // Add MutationObserver for "dir" changes
-        const observer = new MutationObserver((mutations) => {
+        this.dirObserver = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
                 if (
                     mutation.type === 'attributes' &&
                     mutation.attributeName === 'dir'
                 ) {
-                    this.isRTL = document.documentElement.getAttribute('dir') == "rtl";
+                    this.isRTL = document.documentElement.getAttribute('dir') === "rtl";
                     this.update();
                 }
             });
         });
 
-        observer.observe(document.documentElement, {
+        this.dirObserver.observe(document.documentElement, {
             attributes: true,
             attributeFilter: ['dir']
         });
@@ -248,6 +248,12 @@ export class Carousel {
             element.removeEventListener("click", handler);
         });
         this.boundDotClicks = [];
+
+        // Disconnect RTL observer
+        if (this.dirObserver) {
+            this.dirObserver.disconnect();
+            this.dirObserver = null;
+        }
 
         Carousel.instances.delete(this.element);
         delete this.element.__insightInstance;

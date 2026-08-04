@@ -126,15 +126,12 @@ export class Accordion {
         panel.style.height = "0px";
         panel.style.opacity = "0";
 
-        const handler = (event) => {
+        panel.addEventListener("transitionend", (event) => {
             if (event.propertyName === "height") {
-                panel.removeEventListener("transitionend", handler);
                 panel.style.transition = "";
                 panel.style.height = "0px";
             }
-        };
-
-        panel.addEventListener("transitionend", handler);
+        }, { once: true });
     }
 
     /**
@@ -158,15 +155,12 @@ export class Accordion {
         panel.style.height = height;
         panel.style.opacity = "1";
 
-        const handler = (event) => {
+        panel.addEventListener("transitionend", (event) => {
             if (event.propertyName === "height") {
-                panel.removeEventListener("transitionend", handler);
                 panel.style.transition = "";
                 panel.style.height = "auto";
             }
-        };
-
-        panel.addEventListener("transitionend", handler);
+        }, { once: true });
     }
 
     /**

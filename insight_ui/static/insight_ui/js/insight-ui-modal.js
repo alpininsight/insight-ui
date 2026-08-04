@@ -40,6 +40,7 @@ export class Modal {
         this.boundButtonClick = null;
         this.boundCloseButtons = [];
         this.boundModalClick = null;
+        this.releaseFocusTrap = null;
 
         this.bindEvents();
 
@@ -87,7 +88,7 @@ export class Modal {
         Modal.currentOpen = this;
 
         InsightUI.utils.blockScroll();
-        InsightUI.utils.trapFocus(this.modal);
+        this.releaseFocusTrap = InsightUI.utils.trapFocus(this.modal);
     }
 
     /**
@@ -97,6 +98,12 @@ export class Modal {
         this.modal.style.display = 'none';
         if (Modal.currentOpen === this) {
             Modal.currentOpen = null;
+        }
+
+        // Release focus trap
+        if (this.releaseFocusTrap) {
+            this.releaseFocusTrap();
+            this.releaseFocusTrap = null;
         }
 
         InsightUI.utils.unblockScroll();
