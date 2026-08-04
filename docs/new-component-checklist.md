@@ -1,4 +1,4 @@
-# New component self-documentation checklist
+# New Component Checklist
 
 This checklist is mandatory for contributors adding or changing reusable UI
 components in the Insight UI ecosystem.
@@ -45,8 +45,8 @@ Use this table as the PR file checklist for a new component.
 | Demo presentation | `insight_ui/templates/insight_ui/docs/component_demo.html`, only when the generic demo renderer cannot display the component |
 | Template tag tests | `insight_ui/tests/test_template_tags.py` or a focused test module |
 | JavaScript tests, if behavior changes | Existing JS test suite or a new focused test |
-| Design contract, if a token/class changes | `docs/design-system-contract.md` and `insight_ui/utils/input.css` |
-| Naming contract, if a hook changes | `docs/naming_conventions.md` |
+| Design contract, if a token/class changes | `docs/design-system.md` and `insight_ui/utils/input.css` |
+| Naming contract, if a hook changes | `docs/conventions.md` |
 
 ## Minimal example: `status_pill`
 

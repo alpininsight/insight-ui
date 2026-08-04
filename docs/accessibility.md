@@ -1,72 +1,178 @@
-# Accessibility (a11y)
+# Accessibility
 
-Insight UI should be developed with accessibility in mind. All components must comply with WCAG 2.1 AA guidelines and should provide an optimal user experience for all users, regardless of their abilities or the technology they use.
+Insight UI components are designed to comply with WCAG 2.1 AA guidelines. This document explains accessibility features and how to maintain them when contributing.
 
-## Accessibility features
+## Built-in Accessibility Features
 
-### Keyboard navigation
+### Semantic HTML
 
-All interactive elements are fully accessible via the keyboard:
+Components use appropriate HTML elements:
 
-- Focus order follows the natural document flow
-- Visible focus indicator for all interactive elements
-- Keyboard shortcuts for frequently used actions
-- Skip links for skipping navigation blocks
+- Buttons use `<button>`, not `<div>` with click handlers
+- Navigation uses `<nav>` with proper list structure
+- Headings use `<h1>`-`<h6>` in logical order
+- Articles use `<article>`, sections use `<section>`
 
-### Screen reader support
+### ARIA Attributes
 
-All components are optimized for screen readers:
+Components include ARIA attributes where needed:
 
-- Semantic HTML with correct ARIA attributes
-- Meaningful alt text for images
-- ARIA live regions for dynamic content
-- Descriptive labels for form elements
+```html
+<!-- Modal with proper ARIA -->
+<div role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <h2 id="modal-title">Modal Title</h2>
+</div>
 
-### Color contrast and visibility
+<!-- Status notifications -->
+<div role="status">Operation successful</div>
+<div role="alert">Error: Something went wrong</div>
 
-- All text and UI elements meet WCAG 2.1 AA contrast requirements
-- High contrast mode for users with visual impairments
-- No information conveyed solely by color
-- Responsive designs with customizable text size
+<!-- Decorative elements hidden -->
+<svg aria-hidden="true">...</svg>
+```
 
-### Responsive Design
+### Keyboard Navigation
 
-- Fully responsive layouts for all screen sizes
-- Support for zoom up to 400% without loss of functionality
-- Adaptation to different input methods (mouse, keyboard, touch)
+All interactive components support keyboard navigation:
 
-Accessibility Checklist
+| Component | Keyboard Support |
+|-----------|-----------------|
+| Modal | `Escape` to close, focus trap |
+| Dropdown | `Escape` to close, arrow keys to navigate |
+| Tabs | Arrow keys to switch tabs |
+| Accordion | `Enter`/`Space` to expand/collapse |
+| Carousel | Arrow keys for navigation |
 
-Here is a checklist you can use to ensure your application remains accessible:
+### Focus Management
 
-- [ ] All images have meaningful alt text
-- [ ] Color contrast meets WCAG 2.1 AA requirements (4.5:1 for normal text, 3:1 for large text)
-- [ ] All functions are accessible via the keyboard
-- [ ] Focus order is logical and intuitive
-- [ ] Form elements have descriptive labels
-- [ ] Dynamic content uses ARIA live regions
-- [ ] No information is conveyed solely through color
-- [ ] Page is still usable at 200% zoom
-- [ ] Semantic HTML is used
-- [ ] Skip links are available
+- Visible focus indicators on all interactive elements
+- Focus trap in modals and overlays
+- Focus restoration when modals close
+- Skip links for navigation blocks
 
-## Testing for accessibility
+### Color and Contrast
 
-### Automated tests
+- Text meets WCAG AA contrast ratios (4.5:1 normal, 3:1 large)
+- Information is not conveyed by color alone
+- Support for high contrast mode
+- Dark mode with appropriate contrast
 
-- _May be available at some point._
+## Component Accessibility Documentation
 
-### Manual testing
+Each component has specific accessibility notes in `insight_ui/component_details/a11y_context.py`. These are displayed on component detail pages.
 
-- Test with a screen reader (e.g., NVDA, JAWS, VoiceOver)
-- Navigate through your application using only the keyboard
-- Test with different zoom levels
-- Check color contrast with tools such as the WAVE Browser Extension
-- Test in high contrast mode
+Examples from actual components:
+
+**Modal:**
+- Uses `role="dialog"` and `aria-modal="true"`
+- Focus is trapped within the modal
+- `Escape` key closes the modal
+- Focus returns to trigger element on close
+
+**Status Screen:**
+- Title rendered as semantic `<h1>`
+- Decorative icons use `aria-hidden`
+- Error notices use `role="alert"`
+- Other notices use `role="status"`
+
+**Tabs:**
+- Tab list uses `role="tablist"`
+- Tabs use `role="tab"` with `aria-selected`
+- Panels use `role="tabpanel"` with `aria-labelledby`
+- Arrow keys navigate between tabs
+
+## Accessibility Checklist for Contributors
+
+When adding or modifying components:
+
+- [ ] Use semantic HTML elements (`<button>`, `<nav>`, `<main>`, etc.)
+- [ ] Add ARIA attributes where HTML semantics are insufficient
+- [ ] Ensure keyboard navigation works (Tab, Enter, Escape, arrows)
+- [ ] Maintain visible focus indicators
+- [ ] Hide decorative elements with `aria-hidden="true"`
+- [ ] Test color contrast (4.5:1 for normal text, 3:1 for large text)
+- [ ] Ensure information is not conveyed by color alone
+- [ ] Update `a11y_context.py` with accessibility notes
+- [ ] Test with keyboard-only navigation
+
+## Testing Accessibility
+
+### Manual Testing
+
+1. **Keyboard navigation**: Tab through the page, interact without a mouse
+2. **Screen reader**: Test with NVDA (Windows), VoiceOver (macOS), or Orca (Linux)
+3. **Zoom**: Verify functionality at 200% and 400% zoom
+4. **Color contrast**: Use browser DevTools or [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)
+5. **High contrast mode**: Test in Windows High Contrast mode
+
+### Browser Tools
+
+- Chrome DevTools Accessibility panel
+- Firefox Accessibility Inspector
+- [WAVE Browser Extension](https://wave.webaim.org/extension/)
+- [axe DevTools](https://www.deque.com/axe/devtools/)
+
+### Quick Checks
+
+```bash
+# Check for missing alt text
+grep -r "<img" insight_ui/templates | grep -v "alt="
+
+# Check for clickable divs (should be buttons)
+grep -r "onclick" insight_ui/templates | grep "<div"
+```
+
+## Common Patterns
+
+### Interactive Elements
+
+```html
+<!-- Correct: Button for actions -->
+<button type="button" onclick="doSomething()">Click me</button>
+
+<!-- Incorrect: Div with click handler -->
+<div onclick="doSomething()">Click me</div>
+```
+
+### Images
+
+```html
+<!-- Informative image -->
+<img src="chart.png" alt="Sales increased 25% in Q4">
+
+<!-- Decorative image -->
+<img src="decoration.png" alt="" role="presentation">
+
+<!-- Icon with visible label -->
+<button>
+    <svg aria-hidden="true">...</svg>
+    Save
+</button>
+
+<!-- Icon-only button -->
+<button aria-label="Close">
+    <svg aria-hidden="true">...</svg>
+</button>
+```
+
+### Dynamic Content
+
+```html
+<!-- Status message -->
+<div role="status" aria-live="polite">
+    File uploaded successfully
+</div>
+
+<!-- Error message (more urgent) -->
+<div role="alert" aria-live="assertive">
+    Upload failed: File too large
+</div>
+```
 
 ## Resources
 
 - [WCAG 2.1 Guidelines](https://www.w3.org/TR/WCAG21/)
 - [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)
 - [The A11Y Project](https://www.a11yproject.com/)
-- [MDN Web Docs: Accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility)
+- [MDN Accessibility Guide](https://developer.mozilla.org/en-US/docs/Web/Accessibility)
+- [ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/)
