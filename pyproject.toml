@@ -51,6 +51,7 @@ dev = [
     "pre-commit>=4.6.1",
     "django-rosetta>=0.10.3",
     "django-tailwind-cli>=4.6.2",
+    "uvicorn[standard]>=0.52.1",
 ]
 pytest = [
     "pytest==9.1.1",
@@ -112,7 +113,7 @@ omit = [
 [tool.ruff]
 fix = true
 
-src = ["insight_ui", "core", "tests", "utils"]
+src = ["insight_ui", "core", "tests"]
 
 # Exclude a variety of commonly ignored directories.
 exclude = [
@@ -271,9 +272,3 @@ convention = "google"
 
 [tool.hatch.build.targets.wheel]
 packages = ["insight_ui"]
-
-
-[tool.uv.workspace]
-members = [
-    "utils",
-]
