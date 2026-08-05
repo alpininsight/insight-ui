@@ -1,7 +1,32 @@
+/**
+ * 3D Carousel component for Insight UI.
+ *
+ * Creates a rotating 3D carousel effect with perspective transforms.
+ * Supports configurable rotation velocity and optional "face camera" mode
+ * where items rotate to face the viewer.
+ *
+ * @example
+ * // HTML structure
+ * <div data-insight-3D-carousel data-velocity="800" data-face-camera="true">
+ *   <div class="carousel-track">
+ *     <div><div>Item 1</div></div>
+ *     <div><div>Item 2</div></div>
+ *   </div>
+ *   <div>
+ *     <button>Previous</button>
+ *     <button>Next</button>
+ *   </div>
+ * </div>
+ */
 export class ThreeDCarousel {
-    // Weak references used to prevent multiple initialization of the same instance
+    /** @type {WeakMap<HTMLElement, ThreeDCarousel>} Weak references to prevent multiple initialization */
     static instances = new WeakMap();
 
+    /**
+     * Creates a new ThreeDCarousel instance.
+     *
+     * @param {HTMLElement} element - The carousel container element with data-insight-3D-carousel attribute
+     */
     constructor(element) {
         // If an instance for this element already exists, return it
         if (ThreeDCarousel.instances.has(element)) {
@@ -42,11 +67,21 @@ export class ThreeDCarousel {
         debugLog("New 3D carousel created: ", this.element);
     }
 
+    /**
+     * Binds click event listeners to navigation buttons.
+     */
     bindEvents() {
         this.previousBtn.addEventListener("click", this.boundGotoPrevious);
         this.nextBtn.addEventListener("click", this.boundGotoNext);
     }
 
+    /**
+     * Creates animation keyframes for spinning to a specific index.
+     *
+     * @param {number} index - The target index to spin to
+     * @param {boolean} toRight - True if spinning clockwise, false for counter-clockwise
+     * @returns {Keyframe[]} Animation keyframes array
+     */
     spin(index, toRight) {
         /* get the correct distance for the current window width (media-query) */
         let distance = -850;
@@ -65,15 +100,18 @@ export class ThreeDCarousel {
 
         /* apply animation */
         return [
-            { transform: "translateX(-50%) perspective(1000px) translateZ(" + distance + "px) rotateX(var(--carousel-tilt)) rotateY(" + (fromIndex * this.angle) + "deg)" },
-            { transform: "translateX(-50%) perspective(1000px) translateZ(" + distance + "px) rotateX(var(--carousel-tilt)) rotateY(" + (index * this.angle) + "deg)" },
+            { transform: `translateX(-50%) perspective(1000px) translateZ(${distance}px) rotateX(var(--carousel-tilt)) rotateY(${fromIndex * this.angle}deg)` },
+            { transform: `translateX(-50%) perspective(1000px) translateZ(${distance}px) rotateX(var(--carousel-tilt)) rotateY(${index * this.angle}deg)` },
         ];
     }
 
+    /**
+     * Rotates items to face the camera when faceCamera mode is enabled.
+     */
     rotateFaceCamera() {
         if (!this.faceCamera) return;
 
-        for (let item of this.carousel.children) {
+        for (const item of this.carousel.children) {
             item.firstElementChild.animate([
                 {
                     transform: `rotateY(calc((var(--position) + ${this.currentIndex} - 1) * (360 / var(--quantity)) * -1deg)) rotateX(calc(var(--carousel-tilt) * -1))`
@@ -82,24 +120,34 @@ export class ThreeDCarousel {
         }
     }
 
+    /**
+     * Navigates to the previous item in the carousel (counter-clockwise rotation).
+     */
     gotoPrevious() {
         this.currentIndex++;
         this.carousel.animate(this.spin(this.currentIndex, false), this.spinSettings);
 
         if (this.faceCamera) {
-            for (let item of this.carousel.children) {
-                item.firstElementChild.animate([{ transform: "rotateY(calc((var(--position) + " + this.currentIndex + " - 1) * (360 / var(--quantity)) * -1deg)) rotateX(calc(var(--carousel-tilt) * -1))" }], this.spinSettings);
+            for (const item of this.carousel.children) {
+                item.firstElementChild.animate([{
+                    transform: `rotateY(calc((var(--position) + ${this.currentIndex} - 1) * (360 / var(--quantity)) * -1deg)) rotateX(calc(var(--carousel-tilt) * -1))`
+                }], this.spinSettings);
             }
         }
     }
 
+    /**
+     * Navigates to the next item in the carousel (clockwise rotation).
+     */
     gotoNext() {
         this.currentIndex--;
         this.carousel.animate(this.spin(this.currentIndex, true), this.spinSettings);
 
         if (this.faceCamera) {
-            for (let item of this.carousel.children) {
-                item.firstElementChild.animate([{ transform: "rotateY(calc((var(--position) + " + this.currentIndex + " - 1) * (360 / var(--quantity)) * -1deg)) rotateX(calc(var(--carousel-tilt) * -1))" }], this.spinSettings);
+            for (const item of this.carousel.children) {
+                item.firstElementChild.animate([{
+                    transform: `rotateY(calc((var(--position) + ${this.currentIndex} - 1) * (360 / var(--quantity)) * -1deg)) rotateX(calc(var(--carousel-tilt) * -1))`
+                }], this.spinSettings);
             }
         }
     }
@@ -121,7 +169,11 @@ export class ThreeDCarousel {
         this.carousel = null;
     }
 
-    // Static method for initializing all 3D carousels
+    /**
+     * Initializes all 3D carousel instances on the page.
+     *
+     * @static
+     */
     static initAll() {
         document.querySelectorAll("[data-insight-3D-carousel]").forEach(el => new ThreeDCarousel(el));
     }

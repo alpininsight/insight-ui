@@ -1,11 +1,23 @@
 /**
- * Insight UI Theme Toggle.
- * Setzt sowohl .dark (für Tailwind) als auch [data-theme] (für Insight UI CSS)
+ * Theme toggle component for Insight UI.
+ *
+ * Manages light/dark theme switching with persistence via localStorage and cookies.
+ * Sets both the `.dark` class (for Tailwind) and `data-theme` attribute (for Insight UI CSS).
+ * Respects system color scheme preferences on initial load.
+ *
+ * @example
+ * // HTML structure
+ * <button data-insight-theme-toggle>Toggle Theme</button>
  */
 export class ThemeToggle {
-    // Weak references used to prevent multiple initialization of the same instance
+    /** @type {WeakMap<HTMLElement, ThemeToggle>} Weak references to prevent multiple initialization */
     static instances = new WeakMap();
 
+    /**
+     * Creates a new ThemeToggle instance.
+     *
+     * @param {HTMLElement} trigger - The toggle button element with data-insight-theme-toggle attribute
+     */
     constructor(trigger) {
         // If an instance for this element already exists, return it
         if (ThemeToggle.instances.has(trigger)) {
@@ -31,6 +43,9 @@ export class ThemeToggle {
         debugLog("New theme toggle created: ", this.trigger);
     }
 
+    /**
+     * Initializes the theme toggle by binding the click handler and loading saved theme.
+     */
     init() {
         this.trigger.addEventListener("click", this.clickHandler);
 
@@ -38,6 +53,11 @@ export class ThemeToggle {
         this.loadSavedTheme();
     }
 
+    /**
+     * Sets the theme and persists it to localStorage and cookies.
+     *
+     * @param {string} theme - The theme to set: "light" or "dark"
+     */
     setTheme(theme) {
         this.root.classList.toggle('dark', theme === 'dark');
         this.root.setAttribute('data-theme', theme);
@@ -45,6 +65,9 @@ export class ThemeToggle {
         document.cookie = "theme=" + theme + "; path=/; max-age=31536000";
     }
 
+    /**
+     * Loads and applies the saved theme from localStorage, or falls back to system preference.
+     */
     loadSavedTheme() {
         const savedTheme = localStorage.getItem(this.themeKey);
         if (savedTheme === 'dark' || savedTheme === 'light') {
@@ -70,8 +93,12 @@ export class ThemeToggle {
         this.trigger = null;
     }
 
-    // Static method for initializing all toggle buttons
+    /**
+     * Initializes all theme toggle instances on the page.
+     *
+     * @static
+     */
     static initAll() {
         document.querySelectorAll('[data-insight-theme-toggle]').forEach(toggleButton => new ThemeToggle(toggleButton));
     }
-};
+}

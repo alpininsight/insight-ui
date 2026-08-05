@@ -1,10 +1,29 @@
+/**
+ * Modal dialog component for Insight UI.
+ *
+ * Creates accessible modal dialogs with focus trapping, backdrop click to close,
+ * and scroll blocking. Only one modal can be open at a time.
+ *
+ * @example
+ * // HTML structure
+ * <button data-insight-modal="modal1">Open Modal</button>
+ * <div id="modal1" style="display: none;">
+ *   <div>Modal content</div>
+ *   <button data-insight-dismiss="modal">Close</button>
+ * </div>
+ */
 export class Modal {
-    // Weak references used to prevent multiple initialization of the same instance
+    /** @type {WeakMap<HTMLElement, Modal>} Weak references to prevent multiple initialization */
     static instances = new WeakMap();
 
-    // Handle of the open dialog
+    /** @type {Modal|null} Currently open modal instance */
     static currentOpen = null;
 
+    /**
+     * Creates a new Modal instance.
+     *
+     * @param {HTMLElement} trigger - The trigger button element with data-insight-modal attribute
+     */
     constructor(trigger) {
         // If an instance for this element already exists, return it
         if (Modal.instances.has(trigger)) {
@@ -21,6 +40,7 @@ export class Modal {
         this.boundButtonClick = null;
         this.boundCloseButtons = [];
         this.boundModalClick = null;
+        this.releaseFocusTrap = null;
 
         this.bindEvents();
 
@@ -30,6 +50,9 @@ export class Modal {
         debugLog("New modal created: ", this.trigger, this.modal);
     }
 
+    /**
+     * Binds event listeners to the trigger, close buttons, and modal backdrop.
+     */
     bindEvents() {
         this.boundButtonClick = (e) => {
             e.preventDefault();
@@ -52,6 +75,10 @@ export class Modal {
         this.modal.addEventListener('click', this.boundModalClick);
     }
 
+    /**
+     * Opens the modal dialog.
+     * Closes any other open modal, blocks scroll, and traps focus.
+     */
     open() {
         if (Modal.currentOpen && Modal.currentOpen !== this) {
             Modal.currentOpen.close();
@@ -61,13 +88,22 @@ export class Modal {
         Modal.currentOpen = this;
 
         InsightUI.utils.blockScroll();
-        InsightUI.utils.trapFocus(this.modal);
+        this.releaseFocusTrap = InsightUI.utils.trapFocus(this.modal);
     }
 
+    /**
+     * Closes the modal dialog and restores scroll.
+     */
     close() {
         this.modal.style.display = 'none';
         if (Modal.currentOpen === this) {
             Modal.currentOpen = null;
+        }
+
+        // Release focus trap
+        if (this.releaseFocusTrap) {
+            this.releaseFocusTrap();
+            this.releaseFocusTrap = null;
         }
 
         InsightUI.utils.unblockScroll();
@@ -108,8 +144,12 @@ export class Modal {
         this.modal = null;
     }
 
-    // Static method for initializing all modals
+    /**
+     * Initializes all modal instances on the page.
+     *
+     * @static
+     */
     static initAll() {
         document.querySelectorAll('[data-insight-modal]').forEach(openButton => new Modal(openButton));
     }
-};
+}

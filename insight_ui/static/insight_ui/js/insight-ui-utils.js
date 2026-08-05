@@ -1,16 +1,27 @@
 /**
  * Insight UI - Shared Utilities
+ *
+ * Provides shared utility functions and lifecycle management for all Insight UI components.
+ * Includes focus trapping, scroll blocking, HTMX cleanup hooks, and event delegation handlers.
+ *
+ * @namespace InsightUI
  */
 window.InsightUI = window.InsightUI || {};
 
 /**
  * Component lifecycle utilities for proper cleanup and memory management.
  * All components should use these patterns to prevent memory leaks.
+ *
+ * @namespace InsightUI.lifecycle
  */
 window.InsightUI.lifecycle = {
     /**
      * Registers HTMX lifecycle hooks for automatic component cleanup.
+     * Listens for `htmx:beforeCleanupElement` and calls `destroy()` on any
+     * attached Insight UI component instance.
      * Call this once during initialization.
+     *
+     * @function
      */
     registerHTMXHooks: function() {
         if (typeof htmx === 'undefined') return;
@@ -27,11 +38,16 @@ window.InsightUI.lifecycle = {
 /**
  * Event delegation handlers for components that use data attributes
  * instead of inline onclick handlers (security hardening).
+ *
+ * @namespace InsightUI.handlers
  */
 window.InsightUI.handlers = {
     /**
-     * Initialize delegated event handlers.
+     * Initializes delegated event handlers for radio callbacks, alert dismissal,
+     * and form error dismissal.
      * Call this once during initialization.
+     *
+     * @function
      */
     init: function() {
         debugLog("Register event listeners...");
@@ -77,20 +93,26 @@ window.InsightUI.handlers = {
     }
 };
 
+/**
+ * General utility functions for Insight UI components.
+ *
+ * @namespace InsightUI.utils
+ */
 window.InsightUI.utils = {
     /**
-     * This function is used to lock the keyboard focus within a modal dialog,
-     * i.e., to implement what is known as focus trapping.
-     * This is particularly important for accessibility,
-     * so that users who navigate with the keyboard (e.g., using the tab key)
-     * cannot accidentally move the focus out of the open modal.
+     * Traps keyboard focus within a modal or dialog element.
+     * Implements focus cycling so Tab/Shift+Tab stays within the container.
+     * This is essential for accessibility (WCAG 2.1 AA compliance).
+     *
+     * @param {HTMLElement} modal - The modal/dialog element to trap focus within
+     * @returns {Function} Cleanup function to remove the event listener
      */
     trapFocus: function (modal) {
         const focusableElements = modal.querySelectorAll('a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])');
         const firstFocusableElement = focusableElements[0];
         const lastFocusableElement = focusableElements[focusableElements.length - 1];
 
-        modal.addEventListener('keydown', function (e) {
+        const handler = function (e) {
             if (e.key === 'Tab') {
                 if (e.shiftKey) { // Shift + Tab
                     if (document.activeElement === firstFocusableElement) {
@@ -104,19 +126,34 @@ window.InsightUI.utils = {
                     }
                 }
             }
-        });
+        };
+
+        modal.addEventListener('keydown', handler);
 
         // Focus on the first element when the modal opens
-        firstFocusableElement.focus();
+        if (firstFocusableElement) {
+            firstFocusableElement.focus();
+        }
+
+        // Return cleanup function
+        return function () {
+            modal.removeEventListener('keydown', handler);
+        };
     },
 
+    /**
+     * Blocks page scrolling by setting `overflow: hidden` on the body.
+     * Use when opening modals or drawers to prevent background scrolling.
+     */
     blockScroll: function () {
-        // Prevents scrolling of the body
         document.body.style.overflow = 'hidden';
     },
 
+    /**
+     * Restores page scrolling by removing the overflow style from the body.
+     * Call when closing modals or drawers.
+     */
     unblockScroll: function () {
-        // Enables scrolling of the body again
         document.body.style.overflow = '';
     }
 };

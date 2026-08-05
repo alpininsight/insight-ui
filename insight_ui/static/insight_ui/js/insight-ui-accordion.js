@@ -1,7 +1,26 @@
+/**
+ * Accordion component for Insight UI.
+ *
+ * Creates an expandable/collapsible accordion with smooth animations,
+ * keyboard navigation, URL state management, and optional exclusive mode
+ * where only one panel can be open at a time.
+ *
+ * @example
+ * // HTML structure
+ * <div data-insight-accordion data-exclusive="true">
+ *   <button aria-controls="panel1" aria-expanded="false">Section 1</button>
+ *   <div id="panel1">Content 1</div>
+ * </div>
+ */
 export class Accordion {
-    // Weak references used to prevent multiple initialization of the same instance
+    /** @type {WeakMap<HTMLElement, Accordion>} Weak references to prevent multiple initialization */
     static instances = new WeakMap();
 
+    /**
+     * Creates a new Accordion instance.
+     *
+     * @param {HTMLElement} element - The accordion container element with data-insight-accordion attribute
+     */
     constructor(element) {
         // If an instance for this element already exists, return it
         if (Accordion.instances.has(element)) {
@@ -25,6 +44,10 @@ export class Accordion {
         debugLog("New accordion created: ", this.element);
     }
 
+    /**
+     * Binds click and keyboard event listeners to accordion buttons.
+     * Supports Arrow keys, Home, and End for keyboard navigation.
+     */
     bindEvents() {
         this.buttons.forEach((button, index) => {
             const panelId = button.getAttribute("aria-controls");
@@ -86,6 +109,12 @@ export class Accordion {
         });
     }
 
+    /**
+     * Closes an accordion panel with animation.
+     *
+     * @param {HTMLElement} button - The trigger button element
+     * @param {HTMLElement} panel - The panel element to close
+     */
     closePanel(button, panel) {
         button.setAttribute("aria-expanded", "false");
         button.querySelector("div")?.classList.remove("rotate-180");
@@ -97,17 +126,21 @@ export class Accordion {
         panel.style.height = "0px";
         panel.style.opacity = "0";
 
-        const handler = (event) => {
+        panel.addEventListener("transitionend", (event) => {
             if (event.propertyName === "height") {
-                panel.removeEventListener("transitionend", handler);
                 panel.style.transition = "";
                 panel.style.height = "0px";
             }
-        };
-
-        panel.addEventListener("transitionend", handler);
+        }, { once: true });
     }
 
+    /**
+     * Opens an accordion panel with animation.
+     *
+     * @param {HTMLElement} button - The trigger button element
+     * @param {HTMLElement} panel - The panel element to open
+     * @param {boolean} [scroll=true] - Whether to scroll the panel into view
+     */
     openPanel(button, panel, scroll = true) {
         button.setAttribute("aria-expanded", "true");
         button.querySelector("div")?.classList.add("rotate-180");
@@ -122,23 +155,28 @@ export class Accordion {
         panel.style.height = height;
         panel.style.opacity = "1";
 
-        const handler = (event) => {
+        panel.addEventListener("transitionend", (event) => {
             if (event.propertyName === "height") {
-                panel.removeEventListener("transitionend", handler);
                 panel.style.transition = "";
                 panel.style.height = "auto";
             }
-        };
-
-        panel.addEventListener("transitionend", handler);
+        }, { once: true });
     }
 
+    /**
+     * Updates the URL with the currently open panel ID.
+     *
+     * @param {string} id - The panel ID to store in the URL
+     */
     updateURL(id) {
         const url = new URL(window.location);
         url.searchParams.set("open", id);
         window.history.replaceState({}, "", url);
     }
 
+    /**
+     * Handles initial panel opening based on URL query parameter.
+     */
     handleInitialOpen() {
         const params = new URLSearchParams(window.location.search);
         const openId = params.get("open");
@@ -180,7 +218,11 @@ export class Accordion {
         this.element = null;
     }
 
-    // Static method for initializing all accordions
+    /**
+     * Initializes all accordion instances on the page.
+     *
+     * @static
+     */
     static initAll() {
         document.querySelectorAll("[data-insight-accordion]").forEach(el => new Accordion(el));
     }

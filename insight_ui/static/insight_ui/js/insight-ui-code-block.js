@@ -1,7 +1,30 @@
+/**
+ * Code block component for Insight UI.
+ *
+ * Transforms code elements into styled code blocks with syntax highlighting (via Prism.js),
+ * a toolbar showing language and optional filename, and a copy-to-clipboard button.
+ * Automatically removes common leading indentation for cleaner display.
+ *
+ * @example
+ * // HTML structure (before initialization)
+ * <pre id="example" data-insight-code-block="javascript" data-filename="app.js">
+ *   const greeting = "Hello, World!";
+ *   console.log(greeting);
+ * </pre>
+ *
+ * // JavaScript
+ * CodeBlock.initAll();
+ */
 export class CodeBlock {
-    // Weak references used to prevent multiple initialization of the same instance
+    /** @type {WeakMap<HTMLElement, CodeBlock>} Weak references to prevent multiple initialization */
     static instances = new WeakMap();
 
+    /**
+     * Creates a new CodeBlock instance.
+     * Replaces the original element with a styled code block component.
+     *
+     * @param {HTMLElement} originalElement - The pre/code element with data-insight-code-block attribute
+     */
     constructor(originalElement) {
         // If an instance for this element already exists, return it
         if (CodeBlock.instances.has(originalElement)) {
@@ -237,7 +260,11 @@ export class CodeBlock {
         this.element = null;
     }
 
-    // Static method for initializing all code blocks
+    /**
+     * Initializes all code block instances on the page.
+     *
+     * @static
+     */
     static initAll() {
         document.querySelectorAll("[data-insight-code-block]").forEach(el => new CodeBlock(el));
     }

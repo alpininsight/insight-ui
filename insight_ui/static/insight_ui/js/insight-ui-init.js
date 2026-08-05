@@ -1,5 +1,11 @@
 /**
  * Insight UI - Component Initializer
+ *
+ * This module serves as the main entry point for Insight UI JavaScript components.
+ * It imports all component classes, exposes them globally via `window.InsightUI`,
+ * and initializes all components on DOMContentLoaded and after HTMX content swaps.
+ *
+ * @module insight-ui-init
  */
 
 import { Accordion } from "./insight-ui-accordion.js";
@@ -44,6 +50,10 @@ Object.assign(window.InsightUI, {
 	ThreeDCarousel,
 });
 
+/**
+ * Initializes all Insight UI component instances.
+ * Called on DOMContentLoaded and after HTMX content swaps.
+ */
 function initAll() {
 	Accordion.initAll();
 	Carousel.initAll();

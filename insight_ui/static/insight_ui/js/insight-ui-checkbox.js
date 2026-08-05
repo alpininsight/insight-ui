@@ -1,7 +1,26 @@
+/**
+ * Checkbox group component for Insight UI.
+ *
+ * Manages a group of checkboxes with configurable minimum and maximum
+ * selection constraints. Automatically enforces these constraints when
+ * checkboxes are toggled.
+ *
+ * @example
+ * // HTML structure
+ * <div data-insight-checkbox-group data-minimum-checked="1" data-maximum-checked="3">
+ *   <input type="checkbox" name="options" value="1">
+ *   <input type="checkbox" name="options" value="2">
+ * </div>
+ */
 export class Checkbox {
-    // Weak references used to prevent multiple initialization of the same instance
+    /** @type {WeakMap<HTMLElement, Checkbox>} Weak references to prevent multiple initialization */
     static instances = new WeakMap();
 
+    /**
+     * Creates a new Checkbox group instance.
+     *
+     * @param {HTMLElement} element - The container element with data-insight-checkbox-group attribute
+     */
     constructor(element) {
         // If an instance for this element already exists, return it
         if (Checkbox.instances.has(element)) {
@@ -10,8 +29,8 @@ export class Checkbox {
 
         this.element = element;
         this.checkboxes = element.getElementsByTagName('input');
-        this.minChecked = element.dataset.minimumChecked;
-        this.maxChecked = element.dataset.maximumChecked;
+        this.minChecked = parseInt(element.dataset.minimumChecked, 10) || 0;
+        this.maxChecked = parseInt(element.dataset.maximumChecked, 10) || Infinity;
 
         // Store bound handlers for cleanup
         this.boundChangeHandlers = [];
@@ -25,6 +44,10 @@ export class Checkbox {
         debugLog("New checkbox group created: ", this.element);
     }
 
+    /**
+     * Initializes the checkbox group by enforcing min/max constraints.
+     * Automatically checks or unchecks boxes to meet the configured limits.
+     */
     init() {
         const checkedCount = [...this.checkboxes].filter(b => b.checked).length;
         if (checkedCount < this.minChecked) {
@@ -44,6 +67,10 @@ export class Checkbox {
         }
     }
 
+    /**
+     * Binds change event listeners to all checkboxes in the group.
+     * Prevents selections that would violate min/max constraints.
+     */
     bindEvents() {
         for (let box of this.checkboxes) {
             const handler = () => {
@@ -74,7 +101,11 @@ export class Checkbox {
         this.element = null;
     }
 
-    // Static method for initializing all checkboxes
+    /**
+     * Initializes all checkbox group instances on the page.
+     *
+     * @static
+     */
     static initAll() {
         document.querySelectorAll('[data-insight-checkbox-group]').forEach(el => new Checkbox(el));
     }

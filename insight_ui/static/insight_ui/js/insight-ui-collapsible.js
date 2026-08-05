@@ -1,7 +1,25 @@
+/**
+ * Collapsible component for Insight UI.
+ *
+ * Creates a simple toggle button that shows/hides a target element.
+ * Supports icon rotation and ARIA accessibility attributes.
+ *
+ * @example
+ * // HTML structure
+ * <button data-insight-collapsible="content1" aria-expanded="false">
+ *   Toggle <span data-collapsible-icon>▶</span>
+ * </button>
+ * <div id="content1" class="hidden">Hidden content</div>
+ */
 export class Collapsible {
-    // Weak references used to prevent multiple initialization of the same instance
+    /** @type {WeakMap<HTMLElement, Collapsible>} Weak references to prevent multiple initialization */
     static instances = new WeakMap();
 
+    /**
+     * Creates a new Collapsible instance.
+     *
+     * @param {HTMLElement} trigger - The trigger button element with data-insight-collapsible attribute
+     */
     constructor(trigger) {
         // If an instance for this element already exists, return it
         if (Collapsible.instances.has(trigger)) {
@@ -23,6 +41,9 @@ export class Collapsible {
         debugLog("New collapsible created: ", this.trigger, this.targetElement);
     }
 
+    /**
+     * Initializes the collapsible by binding the click handler.
+     */
     init() {
         this.trigger.addEventListener("click", this.clickHandler);
     }
@@ -59,7 +80,11 @@ export class Collapsible {
         this.targetElement = null;
     }
 
-    // Static method for initializing all collapsible
+    /**
+     * Initializes all collapsible instances on the page.
+     *
+     * @static
+     */
     static initAll() {
         document.querySelectorAll('[data-insight-collapsible]').forEach(el => new Collapsible(el));
     }

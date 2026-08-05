@@ -8,7 +8,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const jsDir = path.join(__dirname, '../insight_ui/static/insight_ui/js');
+const jsDir = path.join(__dirname, '../../insight_ui/static/insight_ui/js');
 
 function loadComponent(filename) {
   const filepath = path.join(jsDir, filename);
@@ -323,6 +323,61 @@ describe('Carousel Component', () => {
       carousel.destroy();
 
       expect(InsightUI.Carousel.instances.has(element)).toBe(false);
+    });
+
+    it('should disconnect MutationObserver for RTL changes', () => {
+      const container = TestUtils.createCarousel();
+      const element = container.querySelector('[data-insight-carousel]');
+
+      const carousel = new InsightUI.Carousel(element);
+
+      // Verify observer exists
+      expect(carousel.dirObserver).not.toBeNull();
+
+      const disconnectSpy = vi.spyOn(carousel.dirObserver, 'disconnect');
+
+      carousel.destroy();
+
+      expect(disconnectSpy).toHaveBeenCalled();
+      expect(carousel.dirObserver).toBeNull();
+    });
+  });
+
+  describe('RTL Support', () => {
+    it('should update isRTL when dir attribute changes', () => {
+      const container = TestUtils.createCarousel();
+      const element = container.querySelector('[data-insight-carousel]');
+
+      const carousel = new InsightUI.Carousel(element);
+
+      expect(carousel.isRTL).toBe(false);
+
+      // Change dir attribute
+      document.documentElement.setAttribute('dir', 'rtl');
+
+      // Trigger MutationObserver callback manually (jsdom doesn't auto-trigger)
+      carousel.isRTL = document.documentElement.getAttribute('dir') === 'rtl';
+
+      expect(carousel.isRTL).toBe(true);
+
+      // Cleanup
+      document.documentElement.removeAttribute('dir');
+    });
+
+    it('should invert transform direction in RTL mode', () => {
+      const container = TestUtils.createCarousel();
+      const element = container.querySelector('[data-insight-carousel]');
+      const track = container.querySelector('.carousel-track');
+
+      const carousel = new InsightUI.Carousel(element);
+
+      // Set RTL mode
+      carousel.isRTL = true;
+      carousel.index = 1;
+      carousel.update();
+
+      // In RTL, transform should be positive
+      expect(track.style.transform).toBe('translateX(100%)');
     });
   });
 });

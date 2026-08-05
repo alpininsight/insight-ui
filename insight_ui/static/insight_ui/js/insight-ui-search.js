@@ -6,12 +6,17 @@
  */
 
 export class Search {
-    // Weak references used to prevent multiple initialization of the same instance
+    /** @type {WeakMap<HTMLElement, Search>} Weak references to prevent multiple initialization */
     static instances = new WeakMap();
 
-    // Currently open search dropdown (only one can be open)
+    /** @type {Search|null} Currently open search dropdown instance */
     static currentOpen = null;
 
+    /**
+     * Creates a new Search instance.
+     *
+     * @param {HTMLElement} element - The search container element with data-insight-search attribute
+     */
     constructor(element) {
         // If an instance for this element already exists, return it
         if (Search.instances.has(element)) {
@@ -51,6 +56,11 @@ export class Search {
         debugLog("New search created: ", this.element);
     }
 
+    /**
+     * Initializes the search by loading the index and setting up Fuse.js.
+     *
+     * @async
+     */
     async init() {
         try {
             // Load search index for current locale
@@ -86,6 +96,9 @@ export class Search {
         }
     }
 
+    /**
+     * Binds event listeners for input, keyboard navigation, and outside clicks.
+     */
     bindEvents() {
         this.input.addEventListener('input', this.boundHandleInput);
         this.input.addEventListener('keydown', this.boundHandleKeydown);
@@ -94,11 +107,17 @@ export class Search {
         document.addEventListener('click', this.boundHandleDocumentClick);
     }
 
+    /**
+     * Handles input changes and triggers search.
+     */
     handleInput() {
         const query = this.input.value.trim();
         this.search(query);
     }
 
+    /**
+     * Handles focus on the search input.
+     */
     handleFocus() {
         const query = this.input.value.trim();
         if (query.length >= 2 && this.fuse) {
@@ -106,6 +125,11 @@ export class Search {
         }
     }
 
+    /**
+     * Handles keyboard navigation within search results.
+     *
+     * @param {KeyboardEvent} e - The keydown event
+     */
     handleKeydown(e) {
         if (!this.isOpen) return;
 
@@ -141,6 +165,11 @@ export class Search {
         }
     }
 
+    /**
+     * Handles global keyboard shortcuts (Ctrl+K or Cmd+K to focus search).
+     *
+     * @param {KeyboardEvent} e - The keydown event
+     */
     handleGlobalKeydown(e) {
         // Ctrl+K or Cmd+K to focus search
         if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
@@ -150,12 +179,22 @@ export class Search {
         }
     }
 
+    /**
+     * Handles clicks outside the search to close results.
+     *
+     * @param {MouseEvent} e - The click event
+     */
     handleDocumentClick(e) {
         if (!this.element.contains(e.target)) {
             this.close();
         }
     }
 
+    /**
+     * Performs a fuzzy search with the given query.
+     *
+     * @param {string} query - The search query
+     */
     search(query) {
         if (!this.fuse) return;
 
@@ -168,6 +207,11 @@ export class Search {
         this.renderResults(results);
     }
 
+    /**
+     * Renders search results to the results container.
+     *
+     * @param {Array} results - Fuse.js search results
+     */
     renderResults(results) {
         this.resultsContainer.innerHTML = '';
 
@@ -186,6 +230,13 @@ export class Search {
         this.open();
     }
 
+    /**
+     * Renders a single search result item.
+     *
+     * @param {Object} item - The search result item
+     * @param {number} index - The item index
+     * @returns {HTMLElement} The rendered result element
+     */
     renderResultItem(item, index) {
         if (!this.resultTemplate) {
             debugLog("Search: Missing result template");
@@ -216,6 +267,11 @@ export class Search {
         return el;
     }
 
+    /**
+     * Renders the "no results" message.
+     *
+     * @returns {DocumentFragment|HTMLElement} The no results element
+     */
     renderNoResults() {
         if (!this.noResultsTemplate) {
             debugLog("Search: Missing no-results template");
@@ -226,6 +282,12 @@ export class Search {
         return this.noResultsTemplate.content.cloneNode(true);
     }
 
+    /**
+     * Gets the icon element for a category.
+     *
+     * @param {string} category - The category name
+     * @returns {HTMLElement|null} The cloned icon element or null
+     */
     getCategoryIcon(category) {
         if (!this.iconContainer) return null;
         const iconEl = this.iconContainer.querySelector(`[data-icon="${category}"]`);
@@ -237,10 +299,21 @@ export class Search {
         return iconEl.cloneNode(true).firstElementChild;
     }
 
+    /**
+     * Gets the localized label for a category.
+     *
+     * @param {string} category - The category name
+     * @returns {string} The localized label
+     */
     getCategoryLabel(category) {
         return this.categoryLabels[category] || category;
     }
 
+    /**
+     * Loads category labels from the embedded JSON script element.
+     *
+     * @returns {Object} Map of category names to localized labels
+     */
     loadCategoryLabels() {
         const script = this.element.querySelector('[data-search-labels]');
         if (!script) {
@@ -254,6 +327,11 @@ export class Search {
         }
     }
 
+    /**
+     * Highlights the focused search result item.
+     *
+     * @param {NodeList} items - List of result item elements
+     */
     highlightItem(items) {
         items.forEach((item, index) => {
             const isHighlighted = index === this.focusedIndex;
@@ -275,6 +353,9 @@ export class Search {
         }
     }
 
+    /**
+     * Opens the search results dropdown.
+     */
     open() {
         if (Search.currentOpen && Search.currentOpen !== this) {
             Search.currentOpen.close();
@@ -286,6 +367,9 @@ export class Search {
         Search.currentOpen = this;
     }
 
+    /**
+     * Closes the search results dropdown.
+     */
     close() {
         this.resultsContainer.classList.add('hidden');
         this.input.setAttribute('aria-expanded', 'false');
@@ -298,6 +382,13 @@ export class Search {
         }
     }
 
+    /**
+     * Creates a debounced version of a function.
+     *
+     * @param {Function} func - The function to debounce
+     * @param {number} wait - The debounce delay in milliseconds
+     * @returns {Function} The debounced function
+     */
     debounce(func, wait) {
         let timeout;
         return (...args) => {
@@ -336,7 +427,11 @@ export class Search {
         this.categoryLabels = null;
     }
 
-    // Static method for initializing all search instances
+    /**
+     * Initializes all search instances on the page.
+     *
+     * @static
+     */
     static initAll() {
         document.querySelectorAll("[data-insight-search]").forEach(el => new Search(el));
     }

@@ -51,6 +51,7 @@ export class MockupTOC {
 		// Bound handlers for cleanup
 		this.boundScrollHandler = null;
 		this.boundClickHandlers = [];
+		this.boundKeydownHandlers = [];
 
 		this.init();
 		debugLog("MockupTOC initialized", { regions: this.regions.length, offsetTop: this.offsetTop });
@@ -78,13 +79,15 @@ export class MockupTOC {
 			this.boundClickHandlers.push({ element: region, handler });
 
 			// Keyboard support
-			region.addEventListener('keydown', (e) => {
+			const keydownHandler = (e) => {
 				if (e.key === 'Enter' || e.key === ' ') {
 					e.preventDefault();
 					const targetId = region.getAttribute('data-mockup-region');
 					this.navigateToSection(targetId);
 				}
-			});
+			};
+			region.addEventListener('keydown', keydownHandler);
+			this.boundKeydownHandlers.push({ element: region, handler: keydownHandler });
 		});
 	}
 
@@ -206,6 +209,12 @@ export class MockupTOC {
 			element.removeEventListener('click', handler);
 		});
 		this.boundClickHandlers = [];
+
+		// Remove keydown handlers
+		this.boundKeydownHandlers.forEach(({ element, handler }) => {
+			element.removeEventListener('keydown', handler);
+		});
+		this.boundKeydownHandlers = [];
 
 		debugLog("MockupTOC destroyed");
 	}

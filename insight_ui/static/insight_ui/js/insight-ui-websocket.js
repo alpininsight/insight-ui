@@ -4,14 +4,33 @@
  * This layer stays transport-neutral and does not render payload-specific UI.
  * HTML messages remain owned by HTMX, while non-HTML frames are surfaced as
  * DOM events so host adapters can decide how to render them.
+ *
+ * @namespace InsightUI.WebSocket
+ * @example
+ * // HTML structure
+ * <div data-insight-websocket hx-ext="ws" ws-connect="/ws/endpoint">
+ *   <span data-insight-websocket-status></span>
+ * </div>
+ *
+ * // Listen for custom events
+ * element.addEventListener('insight-ui:websocket-message', (e) => {
+ *   console.log(e.detail.message, e.detail.data);
+ * });
  */
 window.InsightUI = window.InsightUI || {};
 InsightUI.WebSocket = InsightUI.WebSocket || {};
 
 Object.assign(InsightUI.WebSocket, {
+  /** @type {boolean} Whether the WebSocket bridge has been initialized */
   initialized: InsightUI.WebSocket.initialized || false,
+
+  /** @type {Object} Event handler references for cleanup */
   handlers: InsightUI.WebSocket.handlers || {},
 
+  /**
+   * Initializes the WebSocket bridge by registering HTMX event listeners.
+   * Safe to call multiple times - will only initialize once.
+   */
   init: function() {
     if (this.initialized || typeof htmx === 'undefined' || !document.body) {
       return;
@@ -34,6 +53,9 @@ Object.assign(InsightUI.WebSocket, {
     this.initialized = true;
   },
 
+  /**
+   * Destroys the WebSocket bridge and removes all event listeners.
+   */
   destroy: function() {
     if (!this.initialized || !document.body) {
       return;
@@ -49,6 +71,12 @@ Object.assign(InsightUI.WebSocket, {
     this.initialized = false;
   },
 
+  /**
+   * Handles WebSocket status events (open, close, error, connecting).
+   *
+   * @param {Event} evt - The HTMX WebSocket event
+   * @param {string} state - The connection state: "connected", "disconnected", "error", or "connecting"
+   */
   handleStatusEvent: function(evt, state) {
     const component = this.getComponent(evt.target);
     if (!component) {
@@ -58,6 +86,12 @@ Object.assign(InsightUI.WebSocket, {
     this.updateStatus(component, state);
   },
 
+  /**
+   * Handles incoming WebSocket messages.
+   * HTML messages are ignored (handled by HTMX), non-HTML messages trigger custom events.
+   *
+   * @param {Event} evt - The HTMX wsAfterMessage event
+   */
   handleMessageEvent: function(evt) {
     const component = this.getComponent(evt.target);
     const message = evt.detail?.message;
@@ -96,6 +130,12 @@ Object.assign(InsightUI.WebSocket, {
     }
   },
 
+  /**
+   * Finds the closest WebSocket component ancestor of an element.
+   *
+   * @param {HTMLElement} target - The element to search from
+   * @returns {HTMLElement|null} The WebSocket component element or null
+   */
   getComponent: function(target) {
     if (!target || typeof target.closest !== 'function') {
       return null;
@@ -104,10 +144,22 @@ Object.assign(InsightUI.WebSocket, {
     return target.closest('[data-insight-websocket]');
   },
 
+  /**
+   * Gets the status display element within a WebSocket component.
+   *
+   * @param {HTMLElement} component - The WebSocket component element
+   * @returns {HTMLElement|null} The status element or null
+   */
   getStatusElement: function(component) {
     return component?.querySelector('[data-insight-websocket-status]') || null;
   },
 
+  /**
+   * Updates the status display and dispatches a status event.
+   *
+   * @param {HTMLElement} component - The WebSocket component element
+   * @param {string} state - The connection state
+   */
   updateStatus: function(component, state) {
     const statusElement = this.getStatusElement(component);
     const stateConfig = this.statusMap[state];
@@ -126,6 +178,12 @@ Object.assign(InsightUI.WebSocket, {
     );
   },
 
+  /**
+   * Attempts to parse a message as JSON.
+   *
+   * @param {string} message - The message to parse
+   * @returns {Object|null} The parsed JSON object or null if parsing fails
+   */
   parseJsonMessage: function(message) {
     try {
       return JSON.parse(message);
@@ -134,6 +192,10 @@ Object.assign(InsightUI.WebSocket, {
     }
   },
 
+  /**
+   * Status configuration map with display text and CSS classes for each state.
+   * @type {Object.<string, {text: string, className: string}>}
+   */
   statusMap: {
     connected: {
       text: 'Connected',

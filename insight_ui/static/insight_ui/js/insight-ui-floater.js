@@ -1,10 +1,31 @@
+/**
+ * Floater component for Insight UI (tooltips and popovers).
+ *
+ * Creates floating UI elements that appear on hover or click, with support for
+ * multiple positions (top, bottom, left, right), arrows, auto-close behavior,
+ * and mouse-following tooltips.
+ *
+ * @example
+ * // Tooltip
+ * <span data-insight-tooltip="Help text" data-position="top">Hover me</span>
+ *
+ * // Popover
+ * <button data-insight-popover="popover1" data-trigger="click">Click me</button>
+ * <div id="popover1">Popover content</div>
+ */
 export class Floater {
-    // Weak references used to prevent multiple initialization of the same instance
+    /** @type {WeakMap<HTMLElement, Floater>} Weak references to prevent multiple initialization */
     static instances = new WeakMap();
 
-    // Handle of the open floater
+    /** @type {Floater|null} Currently open floater instance */
     static currentOpen = null;
 
+    /**
+     * Creates a new Floater instance (tooltip or popover).
+     *
+     * @param {HTMLElement} trigger - The trigger element
+     * @param {string} [type='popover'] - The floater type: "tooltip" or "popover"
+     */
     constructor(trigger, type = 'popover') {
         // If an instance for this element already exists, return it
         if (Floater.instances.has(trigger)) {
@@ -19,7 +40,7 @@ export class Floater {
             this.arrow.classList.add("absolute", "left-1/2", "-translate-x-1/2", "rotate-45", "size-4", "bg-insight-bg-surface", "border-r", "border-b", "border-insight-border-surface");
         }
 
-        if (type == "tooltip") {
+        if (type === "tooltip") {
             this.target = document.createElement('span');
             this.target.classList.add("text-primary", "bg-insight-bg-surface", "px-3", "py-1", "border", "border-insight-border-surface", "rounded-insight-overlay", "shadow-insight-overlay", "whitespace-nowrap");
             this.target.textContent = this.trigger.getAttribute("data-insight-tooltip");
@@ -61,14 +82,42 @@ export class Floater {
         this.trigger.__insightInstance = this;
         Floater.instances.set(trigger, this);
 
-        if (type == "popover") debugLog("New popover created: ", this.trigger, this.target);
+        if (type === "popover") debugLog("New popover created: ", this.trigger, this.target);
         else debugLog("New tooltip created: ", this.trigger, this.target);
     }
 
+    /**
+     * Handles mouseover on the trigger element.
+     *
+     * @param {MouseEvent} e - The mouseover event
+     */
     handleTriggerMouseover(e) { e.stopPropagation(); this.show(); }
+
+    /**
+     * Handles mouseout from the trigger element.
+     *
+     * @param {MouseEvent} e - The mouseout event
+     */
     handleTriggerMouseout(e) { e.stopPropagation(); this.hideWithDelay(); }
+
+    /**
+     * Handles mouseover on the target element.
+     *
+     * @param {MouseEvent} e - The mouseover event
+     */
     handleTargetMouseover(e) { e.stopPropagation(); this.show(); }
+
+    /**
+     * Handles mouseout from the target element.
+     *
+     * @param {MouseEvent} e - The mouseout event
+     */
     handleTargetMouseout(e) { e.stopPropagation(); this.hideWithDelay(); }
+    /**
+     * Handles mouse movement for follow-mouse mode.
+     *
+     * @param {MouseEvent} e - The mousemove event
+     */
     handleTriggerMousemove(e) {
         if (this.followMouse) {
             this.updatePositionFollowMouse(e);
@@ -104,17 +153,33 @@ export class Floater {
             }
         }
     }
+    /**
+     * Handles click on the trigger for click-triggered floaters.
+     *
+     * @param {MouseEvent} e - The click event
+     */
     handleTriggerClick(e) {
         e.stopPropagation();
         this.target.classList.contains("hidden") ? this.show() : this.hide();
     }
+
+    /**
+     * Handles clicks outside the floater to close it (for auto-close mode).
+     *
+     * @param {MouseEvent} e - The click event
+     */
     handleDocumentClick(e) {
         if (!this.target.contains(e.target) && !this.trigger.contains(e.target)) {
             this.hide();
         }
     }
+
+    /** Updates position on scroll. */
     handleWindowScroll() { this.updatePosition(); }
 
+    /**
+     * Binds event listeners based on trigger type (hover or click).
+     */
     bindEvents() {
         if (this.triggerType === 'hover') {
             this.trigger.addEventListener("mouseover", this.boundTriggerMouseover);
@@ -134,6 +199,10 @@ export class Floater {
         window.addEventListener("scroll", this.boundWindowScroll);
     }
 
+    /**
+     * Shows the floater and updates its position.
+     * Closes any other open floater first.
+     */
     show() {
         // Close currently open popover or tooltip
         if (Floater.currentOpen && Floater.currentOpen !== this) {
@@ -164,10 +233,16 @@ export class Floater {
         Floater.currentOpen = this;
     }
 
+    /**
+     * Hides the floater after a short delay (for hover mode).
+     */
     hideWithDelay() {
         this.hideTimeout = setTimeout(() => this.hide(), 100);
     }
 
+    /**
+     * Immediately hides the floater.
+     */
     hide() {
         this.target.classList.add("hidden");
         if (Floater.currentOpen === this) {
@@ -175,6 +250,10 @@ export class Floater {
         }
     }
 
+    /**
+     * Updates the floater position based on trigger location and configured position.
+     * Handles top, bottom, left, and right positions with arrow placement.
+     */
     updatePosition() {
         const position = this.trigger.getAttribute('data-position') || "top";
         const rect = this.trigger.getBoundingClientRect();
@@ -188,6 +267,13 @@ export class Floater {
         const offsetLeft = offsetRect.left + scrollX;
         const distanceToTarget = 12;
         const arrowSize = 8;
+
+        // Reset arrow position and rotation classes before applying new ones
+        if (this.arrow) {
+            this.arrow.classList.remove('rotate-135', 'rotate-225', 'rotate-315');
+            this.arrow.style.top = '';
+            this.arrow.style.left = '';
+        }
 
         // Some directions need slight adjustments, like + or - 1px.
         switch (position) {
@@ -242,6 +328,13 @@ export class Floater {
 
         this.target.style.left = `${left}px`;
 
+        // Reset arrow classes before applying new ones
+        if (this.arrow) {
+            this.arrow.classList.remove('rotate-180');
+            this.arrow.style.top = '';
+            this.arrow.style.left = '';
+        }
+
         // Vertical position relative to parent
         switch (position) {
             case 'top':
@@ -256,8 +349,6 @@ export class Floater {
             case 'bottom':
                 this.target.style.top = `${triggerRect.bottom - parentRect.top + 8}px`;
                 if (this.arrow) {
-                    this.arrow.classList.remove('rotate-180');
-                    this.arrow.style.top = '';
                     this.arrow.style.left = '50%';
                 }
                 break;
@@ -312,7 +403,11 @@ export class Floater {
         this.target = null;
     }
 
-    // Static method for initializing all popovers and tooltips
+    /**
+     * Initializes all popover and tooltip instances on the page.
+     *
+     * @static
+     */
     static initAll() {
         document.querySelectorAll("[data-insight-popover]").forEach(trigger => new Floater(trigger, 'popover'));
         document.querySelectorAll("[data-insight-tooltip]").forEach(trigger => new Floater(trigger, 'tooltip'));
