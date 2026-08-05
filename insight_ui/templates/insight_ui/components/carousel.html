@@ -1,10 +1,15 @@
 {% load i18n insight_tags %}
 
-<div data-insight-carousel class="flex relative rtl:flex-row-reverse w-full"
-     data-autoplay="{{ carousel_config.autoplay|yesno:'true,false' }}"
-     data-show-dots="{{ carousel_config.show_dots|yesno:'true,false' }}"
-     data-show-index="{{ carousel_config.show_index|yesno:'true,false' }}"
-     data-items-per-slide="{{ carousel_config.items_per_slide|default:1 }}"
+<div
+  data-insight-carousel
+  data-autoplay="{{ carousel_config.autoplay|yesno:'true,false' }}"
+  data-show-dots="{{ carousel_config.show_dots|yesno:'true,false' }}"
+  data-show-index="{{ carousel_config.show_index|yesno:'true,false' }}"
+  data-items-per-slide="{{ carousel_config.items_per_slide|default:1 }}"
+  role="region"
+  aria-roledescription="{% trans 'carousel' %}"
+  aria-label="{{ carousel_config.label|default:_('Content carousel') }}"
+  class="flex relative rtl:flex-row-reverse w-full"
 >
   <div class="mx-auto max-w-5xl overflow-hidden">
     <div class="carousel-track flex pt-6 pb-16 transition-transform duration-500 ease-in-out">

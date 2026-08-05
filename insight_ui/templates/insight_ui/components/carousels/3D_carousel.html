@@ -4,6 +4,9 @@
     data-insight-3D-carousel="{{ carousel_config.tag_id }}"
     data-velocity="{{ carousel_config.velocity|default:1000 }}"
     data-face-camera="{{ carousel_config.face_camera|yesno:'true,false' }}"
+    role="region"
+    aria-roledescription="{% trans 'carousel' %}"
+    aria-label="{{ carousel_config.label|default:_('3D carousel') }}"
     class="carousel_wrapper relative size-full overflow-hidden"
 >
     <div style="--quantity: {{ carousel_config.carousel_items|length }}; --carousel-tilt: {{ carousel_config.tilt }}deg" class="threeD_carousel absolute top-5 left-1/2 w-full h-[35vh]">
