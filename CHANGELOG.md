@@ -23,10 +23,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Miscellaneous
 
 - Regenerate minified assets
+- Update dependencies
+- Update node dependencies
+- Update pre commit hooks and fix linting
+- Format websocket demo readme
 
 ### Refactoring
 
 - Change indentation mode from tabs to spaces for the 'tabs' and 'sidebar' script files
+- Replace structlog with stdlib logging
 
 ### Testing
 
