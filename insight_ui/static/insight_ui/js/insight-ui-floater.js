@@ -44,10 +44,21 @@ export class Floater {
             this.target = document.createElement('span');
             this.target.classList.add("text-primary", "bg-insight-bg-surface", "px-3", "py-1", "border", "border-insight-border-surface", "rounded-insight-overlay", "shadow-insight-overlay", "whitespace-nowrap");
             this.target.textContent = this.trigger.getAttribute("data-insight-tooltip");
+            // Generate unique ID for tooltip and set ARIA attributes
+            this.targetId = `tooltip-${Math.random().toString(36).substring(2, 9)}`;
+            this.target.id = this.targetId;
+            this.target.setAttribute("role", "tooltip");
+            this.trigger.setAttribute("aria-describedby", this.targetId);
         }
         else {
             this.targetId = trigger.getAttribute("data-insight-popover");
             this.target = document.getElementById(this.targetId);
+            // Set ARIA attributes for popover
+            if (this.target) {
+                this.target.setAttribute("role", "dialog");
+                this.trigger.setAttribute("aria-expanded", "false");
+                this.trigger.setAttribute("aria-controls", this.targetId);
+            }
         }
 
         if (!this.target)
@@ -290,6 +301,11 @@ export class Floater {
 
         this.target.classList.remove("hidden");
 
+        // Update aria-expanded for popovers
+        if (this.type === "popover") {
+            this.trigger.setAttribute("aria-expanded", "true");
+        }
+
         // Only update position if tooltip was not already visible
         // For followMouse tooltips that are already visible, keep current position
         if (!wasVisible) {
@@ -311,6 +327,12 @@ export class Floater {
      */
     hide() {
         this.target.classList.add("hidden");
+
+        // Update aria-expanded for popovers
+        if (this.type === "popover") {
+            this.trigger.setAttribute("aria-expanded", "false");
+        }
+
         if (Floater.currentOpen === this) {
             Floater.currentOpen = null;
         }
