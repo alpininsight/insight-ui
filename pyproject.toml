@@ -225,7 +225,7 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 # Ignore long lines in the component detail (docs) strings
 "insight_ui/component_details/**.py" = ["E501"]
 "insight_ui/configs/**.py" = ["E501"]
-"insight_ui/templatetags/insight_tags.py" = ["PLR0913"]
+"insight_ui/templatetags/insight_tags.py" = ["PLR0913", "PLR0917"]
 # Test-specific ignores
 "tests/**/*.py" = [
     "S101",    # assert is expected in tests
