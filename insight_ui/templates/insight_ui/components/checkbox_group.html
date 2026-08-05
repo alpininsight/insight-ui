@@ -1,9 +1,11 @@
-{% load insight_tags %}
+{% load i18n insight_tags %}
 
 <fieldset
     data-insight-checkbox-group
     data-minimum-checked="{{ checkbox_group_config.minimum_checked|default:-1 }}"
     data-maximum-checked="{{ checkbox_group_config.maximum_checked|default:1000000 }}"
+    data-msg-min-reached="{% trans 'Minimum selection reached. At least one option must remain selected.' %}"
+    data-msg-max-reached="{% trans 'Maximum selection reached. Deselect an option first.' %}"
 >
     {% if checkbox_group_config.label %}
         <legend class="flex gap-1 mb-1 font-bold text-sm text-primary">{{ checkbox_group_config.label }}</legend>
@@ -13,4 +15,6 @@
             {% checkbox tag_id=item.tag_id name=checkbox_group_config.name value=item.value checked=item.checked disabled=item.disabled label=item.label %}
         {% endfor %}
     </div>
+    {# Live region for constraint violation announcements #}
+    <span class="sr-only" aria-live="assertive" aria-atomic="true" data-checkbox-announcement></span>
 </fieldset>

@@ -32,6 +32,11 @@ export class Checkbox {
         this.minChecked = parseInt(element.dataset.minimumChecked, 10) || 0;
         this.maxChecked = parseInt(element.dataset.maximumChecked, 10) || Infinity;
 
+        // Live region for screen reader announcements
+        this.announcer = element.querySelector('[data-checkbox-announcement]');
+        this.msgMinReached = element.dataset.msgMinReached || 'Minimum selection reached.';
+        this.msgMaxReached = element.dataset.msgMaxReached || 'Maximum selection reached.';
+
         // Store bound handlers for cleanup
         this.boundChangeHandlers = [];
 
@@ -69,18 +74,39 @@ export class Checkbox {
 
     /**
      * Binds change event listeners to all checkboxes in the group.
-     * Prevents selections that would violate min/max constraints.
+     * Prevents selections that would violate min/max constraints and announces violations.
      */
     bindEvents() {
         for (let box of this.checkboxes) {
             const handler = () => {
                 const checkedCount = [...this.checkboxes].filter(b => b.checked).length;
-                if (checkedCount < this.minChecked) { box.checked = true; }
-                else if (checkedCount > this.maxChecked) { box.checked = false; }
+                if (checkedCount < this.minChecked) {
+                    box.checked = true;
+                    this.announce(this.msgMinReached);
+                }
+                else if (checkedCount > this.maxChecked) {
+                    box.checked = false;
+                    this.announce(this.msgMaxReached);
+                }
             };
             this.boundChangeHandlers.push({ element: box, handler });
             box.addEventListener('change', handler);
         }
+    }
+
+    /**
+     * Announces a message to screen readers via the live region.
+     *
+     * @param {string} message - The message to announce
+     */
+    announce(message) {
+        if (!this.announcer) return;
+        // Clear and re-set to ensure announcement even if same message
+        this.announcer.textContent = '';
+        // Use setTimeout to ensure the clearing is processed first
+        setTimeout(() => {
+            this.announcer.textContent = message;
+        }, 50);
     }
 
     /**
