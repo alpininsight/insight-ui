@@ -194,8 +194,8 @@ def get_sidebar_a11y_context() -> dict[str, list[str]]:
             _("Navigation uses semantic `<nav>` and nested `<ul>`/`<li>` structure."),
             _("The drawer variant has a close button to be accessible via keyboard."),
             _("Focus trapping is implemented when the drawer is open."),
-            _("**TODO: Add Escape key handler to close the drawer.**"),
-            _("**TODO: Return focus to the trigger element when drawer closes.**"),
+            _("Pressing Escape closes the drawer."),
+            _("Focus returns to the trigger element when the drawer closes."),
         ]
     }
 
@@ -382,12 +382,12 @@ def get_dropdown_a11y_context() -> dict[str, list[str]]:
         "a11y": [
             _("Icons displayed in links or menu items are decorative."),
             _("The dropdown closes when clicking outside."),
+            _("Full keyboard navigation: Arrow Up/Down to navigate items, Home/End to jump to first/last."),
+            _("Pressing Escape closes the dropdown and returns focus to the trigger."),
+            _("The chevron icon inherits `aria-hidden='true'` from the icon component."),
             _("**TODO: Add `aria-expanded` to the trigger button.**"),
             _("**TODO: Add `aria-haspopup='menu'` and `role='menu'` to the dropdown container.**"),
             _("**TODO: Add `role='menuitem'` to dropdown items.**"),
-            _("**TODO: Add keyboard navigation with Arrow Up/Down keys.**"),
-            _("**TODO: Add Escape key handler to close the dropdown.**"),
-            _("**TODO: The chevron icon should have `aria-hidden='true'`.**"),
         ]
     }
 
@@ -540,8 +540,8 @@ def get_modal_a11y_context() -> dict[str, list[str]]:
             _("Action buttons have descriptive text labels."),
             _("Focus trapping is implemented to keep keyboard focus within the modal."),
             _("Page scroll is blocked while the modal is open."),
-            _("**TODO: Add Escape key handler to close the modal.**"),
-            _("**TODO: Return focus to the trigger element when modal closes.**"),
+            _("Pressing Escape closes the modal."),
+            _("Focus returns to the trigger element when the modal closes."),
         ]
     }
 
@@ -553,10 +553,10 @@ def get_popover_a11y_context() -> dict[str, list[str]]:
         "a11y": [
             _("The popover closes when clicking outside (for click-triggered popovers with `auto-close`)."),
             _("Position updates on scroll to remain visible."),
+            _("Keyboard support: Enter/Space toggles click-triggered popovers, Escape closes."),
             _("**TODO: Add `role='dialog'` or appropriate ARIA role to the popover.**"),
             _("**TODO: Add `aria-expanded` on the trigger button.**"),
             _("**TODO: Add `aria-controls` on the trigger pointing to the popover ID.**"),
-            _("**TODO: Add keyboard support - toggle on Enter/Space, close on Escape.**"),
             _("**TODO: Implement focus trapping when popover contains interactive elements.**"),
         ]
     }
@@ -571,9 +571,8 @@ def get_tooltip_a11y_context() -> dict[str, list[str]]:
             _("The tooltip uses `role='tooltip'` for proper screen reader identification."),
             _("The tooltip closes when clicking outside (for click-triggered tooltips)."),
             _("Position updates on scroll to remain visible."),
+            _("Keyboard support: tooltip shows on focus, hides on blur, Escape dismisses."),
             _("**TODO: Add `aria-describedby` on the trigger element pointing to the tooltip ID.**"),
-            _("**TODO: Add keyboard support - show tooltip on focus, hide on blur.**"),
-            _("**TODO: Add Escape key to dismiss the tooltip.**"),
         ]
     }
 
