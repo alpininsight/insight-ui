@@ -7,6 +7,9 @@
     hx-swap="afterend"
     hx-trigger="revealed threshold:{{ threshold|default:100 }}px"
   {% endif %}
+  role="feed"
+  aria-live="polite"
+  aria-busy="false"
 >
   {# Existing Content #}
   <div>
