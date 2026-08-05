@@ -10,9 +10,9 @@ https://docs.djangoproject.com/en/5.2/howto/deployment/asgi/
 import os
 
 from django.core.asgi import get_asgi_application
-from logging_config import setup_structlog
+from logging_config import setup_logging
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")
-setup_structlog()
+setup_logging()
 
 application = get_asgi_application()

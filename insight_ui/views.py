@@ -1,10 +1,10 @@
 """Views for Insight UI documentation and component demos."""
 
+import logging
 from datetime import UTC, datetime
 from importlib import metadata
 from pathlib import Path
 
-import structlog
 from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
@@ -38,7 +38,7 @@ from insight_ui.utils.pagination import get_page
 from insight_ui.utils.query_builder_utils import get_filter_settings_for_field
 from insight_ui.utils.type_registry import get_all_type_definitions
 
-logger = structlog.get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 SOURCE_ROOT = Path(__file__).resolve().parent
 SOURCE_PATHS = {"html": TEMPLATE_PATHS, "js": SCRIPT_PATHS}

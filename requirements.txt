@@ -12,8 +12,6 @@ python-decouple==3.8
     # via insight-ui
 sqlparse==0.5.5
     # via django
-structlog==26.1.0
-    # via insight-ui
 tzdata==2026.1 ; sys_platform == 'win32'
     # via django
 whitenoise==6.12.0

@@ -5,12 +5,12 @@ build-backend = "hatchling.build"
 [project]
 name = "insight-ui"
 dynamic = ["version"]
-description = "Ein modernes, barrierefreies UI-Framework für Django"
+description = "A modern, accessible UI framework for Django"
 readme = "README.md"
 requires-python = ">=3.12"
 license = {file = "LICENSE"}
 authors = [
-    {name = "Django Insight UI Team"},
+    {name = "Insight UI Team"},
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -34,7 +34,6 @@ classifiers = [
 dependencies = [
     "django>=5.2.17,<7",
     "whitenoise>=6.12.0",
-    "structlog>=26.1.0",
     "python-decouple==3.8",
     "markdown>=3.10.3",
     "defusedxml>=0.7.1",
