@@ -14,6 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Documentation
 
 - Add missing docstrings to JavaScript code
+- Reorganize and cleanup developer documentation
+- Remove 'assets' directory from developer documentation
+- Update 'Documentation' part of the README
+- Update readme
+- Remove internal operations details
 
 ### Miscellaneous
 
