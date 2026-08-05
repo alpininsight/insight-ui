@@ -14,215 +14,148 @@
 @theme {
     --font-sans: "insight-ui", sans-serif;
 
-    --color-insight-primary: #3b82f6;
-    --color-insight-primary-hover: #60a5fa;
-    --color-insight-primary-active: #93c5fd;
-    --color-insight-secondary: #0d9488;
-    --color-insight-secondary-hover: #14b8a6;
-    --color-insight-secondary-active: #2dd4bf;
-    --color-insight-success: #10b981;
-    --color-insight-success-hover: #34d399;
-    --color-insight-success-active: #6ee7b7;
-    --color-insight-warning: #f59e0b;
-    --color-insight-warning-hover: #fbbf24;
-    --color-insight-warning-active: #fcd34d;
-    --color-insight-danger: #ef4444;
-    --color-insight-danger-hover: #f87171;
-    --color-insight-danger-active: #fca5a5;
-    --color-insight-info: #06b6d4;
-    --color-insight-info-hover: #22d3ee;
-    --color-insight-info-active: #67e8f9;
-    --color-insight-text-primary: oklch(26.9% 0 0);
-    --color-insight-text-secondary: oklch(55.6% 0 0);
-    --color-insight-text-primary-dark: oklch(92.2% 0 0);
-    --color-insight-text-secondary-dark: oklch(70.8% 0 0);
-    --color-insight-text-link: #3b82f6;
-    --color-insight-text-link-hover: #93c5fd;
+    /*
+    * ========================================================
+    *   Colors
+    * ========================================================
+    */
+
+    /* Background colors */
+    --color-insight-bg-base: #FFFFFF;
+    --color-insight-bg-base-dark: #030712;
+    --color-insight-bg-surface: #FFFFFF;
+    --color-insight-bg-surface-dark: #0E1525;
+    --color-insight-bg-raised: #EEF0F3;
+    --color-insight-bg-raised-dark: #1A2336;
+    --color-insight-bg-overlay: #E9EAEB;
+    --color-insight-bg-overlay-dark: #202A3D;
+
+    /* Border colors */
+    --color-insight-border-surface: #E5E7EB;
+    --color-insight-border-surface-dark: #1E2940;
+    --color-insight-border-raised: #E5E7EB;
+    --color-insight-border-raised-dark: #1E2940;
+    --color-insight-border-overlay: #E5E7EB;
+    --color-insight-border-overlay-dark: #2F3B54;
+
+    /* Primary color */
+    --color-insight-primary: #4183EA;
+    --color-insight-primary-soft: #E3EFFF;
+    --color-insight-primary-hover: #256CD8;
+    --color-insight-primary-active: #0856C0;
+    --color-insight-primary-soft-dark: #203351;
+    --color-insight-primary-hover-dark: #72AEFF;
+    --color-insight-primary-active-dark: #90C5FF;
+
+    /* Secondary color */
+    --color-insight-secondary: #1B9388;
+    --color-insight-secondary-soft: #DDF4F1;
+    --color-insight-secondary-hover: #008074;
+    --color-insight-secondary-active: #006B60;
+    --color-insight-secondary-soft-dark: #133A36;
+    --color-insight-secondary-hover-dark: #51BCB0;
+    --color-insight-secondary-active-dark: #75D1C5;
+
+    /* Success color */
+    --color-insight-success: #2EA55C;
+    --color-insight-success-soft: #E0F5E5;
+    --color-insight-success-hover: #009144;
+    --color-insight-success-active: #007B2F;
+    --color-insight-success-soft-dark: #1E3A26;
+    --color-insight-success-hover-dark: #67CD87;
+    --color-insight-success-active-dark: #8CE1A4;
+
+    /* Warning color */
+    --color-insight-warning: #E8A127;
+    --color-insight-warning-soft: #FFF0D4;
+    --color-insight-warning-hover: #DC8900;
+    --color-insight-warning-active: #CC7300;
+    --color-insight-warning-soft-dark: #433215;
+    --color-insight-warning-hover-dark: #FFBC5E;
+    --color-insight-warning-active-dark: #FFCD86;
+
+    /* Danger color */
+    --color-insight-danger: #E6443D;
+    --color-insight-danger-soft: #FFE7E4;
+    --color-insight-danger-hover: #D01D21;
+    --color-insight-danger-active: #B70002;
+    --color-insight-danger-soft-dark: #4D2622;
+    --color-insight-danger-hover-dark: #FF7A6E;
+    --color-insight-danger-active-dark: #FF988B;
+
+    /* Info color */
+    --color-insight-info: #00A3CB;
+    --color-insight-info-soft: #DAF4FD;
+    --color-insight-info-hover: #008EB8;
+    --color-insight-info-active: #0078A2;
+    --color-insight-info-soft-dark: #0F3845;
+    --color-insight-info-hover-dark: #50CBF2;
+    --color-insight-info-active-dark: #77E1FF;
+
+    /* Focus */
+    --color-insight-focus: #4183EA;
+    --color-insight-focus-dark: #4183EA;
+
+    /* Elevated / Tooltip */
+    --color-insight-tooltip: #F3F4F6;
+    --color-insight-tooltip-dark: #242424;
+
+    /* Text color */
+    --color-insight-text-primary: #1C1C1E;
+    --color-insight-text-primary-dark: #F5F8FC;
+    --color-insight-text-secondary: #364153;
+    --color-insight-text-secondary-dark: #9BA3B4;
+    --color-insight-text-hint: #d1d5dc;
+    --color-insight-text-hint-dark: #364153;
+    --color-insight-text-link: #256CD8;
+    --color-insight-text-link-hover: #72AEFF;
 
     /*
-    * Semantic surface, border, state, radius and shadow roles.
-    * Components should map their local tokens to these roles instead of
-    * introducing component-specific gray/blue/red/green values.
+    * ========================================================
+    *   Spacing
+    * ========================================================
     */
+
+    --spacing-insight-xs: 0.25rem;
+    --spacing-insight-s: 0.5rem;
+    --spacing-insight-m: 1rem;
+    --spacing-insight-l: 2rem;
+    --spacing-insight-xl: 4rem;
+
     /*
-    * Each surface role reads the brand colour contract
-    * (--color-insight-surface-*) with the current grey literal kept as the
-    * fallback. With no brand theme loaded the fallback wins, so the computed
-    * styles are byte-identical to before; when a brand theme sets the
-    * --color-insight-surface-* names (light in :root, dark overrides in
-    * html[data-theme="dark"]) the surfaces re-skin. The light and dark tokens
-    * point at the SAME brand name on purpose: the brand contract exposes one
-    * theme-aware name per role. "subtle" reconciles to the brand "soft" role;
-    * "disabled" has no brand counterpart and stays a literal grey.
+    * ========================================================
+    *   Radii
+    * ========================================================
     */
-    --insight-surface-page: var(--color-insight-surface-page, #f9fafb); /* gray-50 */
-    --insight-surface-page-dark: var(--color-insight-surface-page, #111827); /* gray-900 */
-    --insight-surface-base: var(--color-insight-surface-base, #ffffff);
-    --insight-surface-base-dark: var(--color-insight-surface-base, #1f2937); /* gray-800 */
-    --insight-surface-muted: var(--color-insight-surface-muted, #f3f4f6); /* gray-100 */
-    --insight-surface-muted-dark: var(--color-insight-surface-muted, #374151); /* gray-700 */
-    --insight-surface-subtle: var(--color-insight-surface-soft, #f9fafb); /* gray-50 */
-    --insight-surface-subtle-dark: var(--color-insight-surface-soft, #374151); /* gray-700 */
-    --insight-surface-raised: var(--color-insight-surface-raised, #ffffff);
-    --insight-surface-raised-dark: var(--color-insight-surface-raised, #1f2937); /* gray-800 */
-    --insight-surface-disabled: #d1d5dc; /* gray-300 */
-    --insight-surface-disabled-dark: #4b5563; /* gray-600 */
 
-    --insight-border-subtle: #e5e7eb; /* gray-200 */
-    --insight-border-subtle-dark: #374151; /* gray-700 */
-    --insight-border-default: #d1d5dc; /* gray-300 */
-    --insight-border-default-dark: #6b7280; /* gray-500 */
-    --insight-border-strong: #9ca3af; /* gray-400 */
-    --insight-border-strong-dark: #6b7280; /* gray-500 */
+    --radius-insight-xs: 0.125rem;
+    --radius-insight-s: 0.25rem;
+    --radius-insight-m: 0.375rem;
+    --radius-insight-l: 0.5rem;
+    --radius-insight-xl: 0.75rem;
+    --radius-insight-full: 9999px;
+    --radius-insight-control: var(--radius-insight-s);
+    --radius-insight-surface: var(--radius-insight-m);
+    --radius-insight-raised: var(--radius-insight-l);
+    --radius-insight-overlay: var(--radius-insight-s);
 
-    --insight-radius-none: 0;
-    --insight-radius-sm: var(--radius-sm);
-    --insight-radius-md: var(--radius-md);
-    --insight-radius-lg: var(--radius-lg);
-    --insight-radius-xl: var(--radius-xl);
-    --insight-radius-pill: 9999px;
-    --insight-radius-control: var(--insight-radius-sm);
-    --insight-radius-surface: var(--insight-radius-md);
-    --insight-radius-raised: var(--insight-radius-lg);
-    --insight-radius-overlay: var(--insight-radius-sm);
+    /*
+    * ========================================================
+    *   Shadows
+    * ========================================================
+    */
 
-    --insight-shadow-none: none;
-    --insight-shadow-subtle: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); /* shadow-sm */
-    --insight-shadow-surface: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); /* shadow-md */
-    --insight-shadow-raised: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); /* shadow-lg */
-    --insight-shadow-overlay: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); /* shadow-xl */
-    --insight-shadow-focus: 0 0 0 2px var(--color-insight-primary);
+    --shadow-insight-subtle: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); /* shadow-sm */
+    --shadow-insight-surface: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); /* shadow-md */
+    --shadow-insight-raised: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); /* shadow-lg */
+    --shadow-insight-overlay: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); /* shadow-xl */
+    --shadow-insight-focus: 0 0 0 2px var(--color-insight-primary);
 
-    --insight-state-danger-surface: var(--color-red-50);
-    --insight-state-danger-surface-dark: color-mix(in srgb, var(--color-red-900) 20%, transparent);
-    --insight-state-danger-border: var(--color-red-200);
-    --insight-state-danger-border-dark: var(--color-red-800);
-    --insight-state-danger-icon: var(--color-red-400);
-    --insight-state-danger-title: var(--color-red-800);
-    --insight-state-danger-title-dark: var(--color-red-200);
-    --insight-state-danger-body: var(--color-red-700);
-    --insight-state-danger-body-dark: var(--color-red-300);
-
-    --insight-state-success-surface: var(--color-green-50);
-    --insight-state-success-surface-dark: color-mix(in srgb, var(--color-green-900) 20%, transparent);
-    --insight-state-success-border: var(--color-green-200);
-    --insight-state-success-border-dark: var(--color-green-800);
-    --insight-state-success-icon: var(--color-green-400);
-    --insight-state-success-title: var(--color-green-800);
-    --insight-state-success-title-dark: var(--color-green-200);
-    --insight-state-success-body: var(--color-green-700);
-    --insight-state-success-body-dark: var(--color-green-300);
-
-    --insight-state-info-surface: var(--color-blue-50);
-    --insight-state-info-surface-dark: color-mix(in srgb, var(--color-blue-900) 20%, transparent);
-    --insight-state-info-border: var(--color-blue-200);
-    --insight-state-info-border-dark: var(--color-blue-700);
-    --insight-state-info-icon: var(--color-blue-400);
-    --insight-state-info-title: var(--color-blue-800, var(--color-blue-700));
-    --insight-state-info-title-dark: var(--color-blue-200);
-    --insight-state-info-body: var(--color-blue-700);
-    --insight-state-info-body-dark: var(--color-blue-300);
-
-    --insight-state-warning-surface: var(--color-amber-50, #fffbeb);
-    --insight-state-warning-surface-dark: color-mix(in srgb, var(--color-amber-900, #78350f) 20%, transparent);
-    --insight-state-warning-border: var(--color-amber-200, #fde68a);
-    --insight-state-warning-border-dark: var(--color-amber-800, #92400e);
-    --insight-state-warning-icon: var(--color-amber-400);
-    --insight-state-warning-title: var(--color-amber-800, #92400e);
-    --insight-state-warning-title-dark: var(--color-amber-200, #fde68a);
-    --insight-state-warning-body: var(--color-amber-700, #b45309);
-    --insight-state-warning-body-dark: var(--color-amber-300, #fcd34d);
-
-    /* Navbar role tokens — defaults preserve today's look; a theme overrides these to re-skin the navbar (e.g. brand: borderless + rounded-button tabs). */
-    --insight-nav-bg: var(--insight-surface-raised);
-    --insight-nav-bg-dark: var(--insight-surface-raised-dark);
-    --insight-nav-border: var(--insight-border-subtle);
-    --insight-nav-border-dark: var(--insight-border-subtle-dark);
-    --insight-nav-shadow: var(--insight-shadow-raised);
-    --insight-nav-item-radius: 0px;
-    --insight-nav-item-ring: none;
-    --insight-nav-item-active-ring: none;
-
-    /* Sidebar role tokens - mapped to central surface and radius roles. */
-    --insight-sidebar-icon-button-radius: var(--insight-radius-md);
-    --insight-sidebar-icon-button-hover-bg: var(--insight-surface-muted);
-    --insight-sidebar-icon-button-hover-bg-dark: var(--insight-surface-muted-dark);
-    --insight-sidebar-icon-button-hover-text: var(--color-insight-text-primary);
-    --insight-sidebar-icon-button-hover-text-dark: var(--color-insight-text-primary-dark);
-    --insight-nav-icon-button-radius: var(--insight-radius-md);
-    --insight-nav-icon-button-hover-bg: var(--insight-surface-muted);
-    --insight-nav-icon-button-hover-bg-dark: var(--insight-surface-muted-dark);
-    --insight-nav-icon-button-hover-text: var(--color-insight-text-link);
-    --insight-nav-icon-button-hover-text-dark: var(--color-insight-primary-hover);
-    --insight-nav-focus-ring: var(--color-insight-primary);
-
-    /* User dropdown role tokens - mapped to central surface, border, radius and shadow roles. */
-    --insight-user-dropdown-bg: var(--insight-surface-muted);
-    --insight-user-dropdown-bg-dark: var(--insight-surface-muted-dark);
-    --insight-user-dropdown-border: var(--insight-border-subtle);
-    --insight-user-dropdown-divider: var(--insight-border-default);
-    --insight-user-dropdown-divider-dark: var(--insight-border-default-dark);
-    --insight-user-dropdown-radius: var(--insight-radius-sm);
-    --insight-user-dropdown-shadow: var(--insight-shadow-overlay);
-
-    /* Progress bar role tokens - mapped to central surface, radius and brand roles. */
-    --insight-progress-track-bg: var(--insight-border-subtle);
-    --insight-progress-track-bg-dark: var(--insight-surface-muted-dark);
-    --insight-progress-radius: var(--insight-radius-pill);
-    --insight-progress-fill-bg: var(--color-insight-primary);
-    --insight-progress-fill-transition-duration: 500ms;
-
-    /* Chat response role tokens - mapped to central surface, border and radius roles. */
-    --insight-chat-message-border: var(--insight-border-subtle);
-    --insight-chat-message-radius: var(--insight-radius-lg);
-    --insight-chat-message-own-bg: var(--insight-surface-subtle);
-    --insight-chat-message-own-bg-dark: var(--insight-surface-muted-dark);
-    --insight-chat-message-response-bg: var(--insight-surface-muted);
-    --insight-chat-message-response-bg-dark: var(--insight-surface-disabled-dark);
-
-    /* Table role tokens - mapped to central surface, border and radius roles. */
-    --insight-table-bg: var(--insight-surface-base);
-    --insight-table-bg-dark: var(--insight-surface-base-dark);
-    --insight-table-radius: var(--insight-radius-sm);
-    --insight-table-header-border: var(--insight-border-default);
-    --insight-table-header-border-dark: var(--insight-border-subtle-dark);
-    --insight-table-row-odd-bg: var(--insight-surface-muted);
-    --insight-table-row-even-bg: var(--insight-surface-base);
-    --insight-table-row-odd-bg-dark: var(--insight-surface-page-dark);
-    --insight-table-row-even-bg-dark: var(--insight-surface-base-dark);
-    --insight-table-empty-border: var(--insight-border-strong);
-    --insight-table-empty-border-dark: var(--insight-border-default-dark);
-
-    /* Form status role tokens - mapped to central state and radius roles. */
-    --insight-form-status-radius: var(--insight-radius-md);
-    --insight-form-error-bg: var(--insight-state-danger-surface);
-    --insight-form-error-bg-dark: var(--insight-state-danger-surface-dark);
-    --insight-form-error-border: var(--insight-state-danger-border);
-    --insight-form-error-border-dark: var(--insight-state-danger-border-dark);
-    --insight-form-error-icon: var(--insight-state-danger-icon);
-    --insight-form-error-title: var(--insight-state-danger-title);
-    --insight-form-error-title-dark: var(--insight-state-danger-title-dark);
-    --insight-form-error-body: var(--insight-state-danger-body);
-    --insight-form-error-body-dark: var(--insight-state-danger-body-dark);
-    --insight-form-success-bg: var(--insight-state-success-surface);
-    --insight-form-success-bg-dark: var(--insight-state-success-surface-dark);
-    --insight-form-success-border: var(--insight-state-success-border);
-    --insight-form-success-border-dark: var(--insight-state-success-border-dark);
-    --insight-form-success-icon: var(--insight-state-success-icon);
-    --insight-form-success-title: var(--insight-state-success-title);
-    --insight-form-success-title-dark: var(--insight-state-success-title-dark);
-    --insight-form-success-body: var(--insight-state-success-body);
-    --insight-form-success-body-dark: var(--insight-state-success-body-dark);
-
-    /* Range control role tokens - mapped to central surface, brand and radius roles. */
-    --insight-control-range-progress: 0%;
-    --insight-control-range-track: var(--insight-border-subtle);
-    --insight-control-range-track-dark: var(--insight-surface-muted-dark);
-    --insight-control-range-fill: var(--color-insight-primary);
-    --insight-control-range-radius: var(--insight-radius-control);
-    --insight-control-range-thumb-bg: var(--insight-surface-base);
-    --insight-control-range-thumb-border: var(--color-insight-primary);
-    --insight-control-range-thumb-radius: var(--insight-radius-pill);
+    /*
+    * ========================================================
+    *   Animations
+    * ========================================================
+    */
 
     --animate-blink: blink 2s step-start infinite;
 
@@ -282,85 +215,195 @@
 
     [data-theme="dark"] {
         color-scheme: dark;
+
+        /* Background */
+        --color-insight-bg-base: var(--color-insight-bg-base-dark);
+        --color-insight-bg-surface: var(--color-insight-bg-surface-dark);
+        --color-insight-bg-raised: var(--color-insight-bg-raised-dark);
+        --color-insight-bg-overlay: var(--color-insight-bg-overlay-dark);
+        /* Border */
+        --color-insight-border-surface: var(--color-insight-border-surface-dark);
+        --color-insight-border-raised: var(--color-insight-border-raised-dark);
+        --color-insight-border-overlay: var(--color-insight-border-overlay-dark);
+        /* Primary */
+        --color-insight-primary-soft: var(--color-insight-primary-soft-dark);
+        --color-insight-primary-hover: var(--color-insight-primary-hover-dark);
+        --color-insight-primary-active: var(--color-insight-primary-active-dark);
+        /* Secondary */
+        --color-insight-secondary-soft: var(--color-insight-secondary-soft-dark);
+        --color-insight-secondary-hover: var(--color-insight-secondary-hover-dark);
+        --color-insight-secondary-active: var(--color-insight-secondary-active-dark);
+        /* Success */
+        --color-insight-success-soft: var(--color-insight-success-soft-dark);
+        --color-insight-success-hover: var(--color-insight-success-hover-dark);
+        --color-insight-success-active: var(--color-insight-success-active-dark);
+        /* Warning */
+        --color-insight-warning-soft: var(--color-insight-warning-soft-dark);
+        --color-insight-warning-hover: var(--color-insight-warning-hover-dark);
+        --color-insight-warning-active: var(--color-insight-warning-active-dark);
+        /* Danger */
+        --color-insight-danger-soft: var(--color-insight-danger-soft-dark);
+        --color-insight-danger-hover: var(--color-insight-danger-hover-dark);
+        --color-insight-danger-active: var(--color-insight-danger-active-dark);
+        /* Info */
+        --color-insight-info-soft: var(--color-insight-info-soft-dark);
+        --color-insight-info-hover: var(--color-insight-info-hover-dark);
+        --color-insight-info-active: var(--color-insight-info-active-dark);
+        /* Focus */
+        --color-insight-focus: var(--color-insight-focus-dark);
+        /* Text */
+        --color-insight-text-primary: var(--color-insight-text-primary-dark);
+        --color-insight-text-secondary: var(--color-insight-text-secondary-dark);
+        --color-insight-text-hint: var(--color-insight-text-hint-dark);
+        /* Elevated / Tooltip */
+        --color-insight-tooltip: var(--color-insight-tooltip-dark);
+        /* Card */
+        --color-insight-card: var(--color-insight-card-dark);
     }
 
-    /* Layout-Tags */
-    .page-peek { @apply min-h-[calc(100vh-10rem)]; }
+    /* Use pointer cursor for buttons as default */
+    button:not(:disabled), [role="button"]:not(:disabled) { cursor: pointer; }
 
-    /* Spacing */
-    .gap-xs { @apply gap-1; }
-    .gap-s { @apply gap-2; }
-    .gap-m { @apply gap-4; }
-    .gap-l { @apply gap-6; }
-    .gap-xl { @apply gap-8; }
+    /* Default heading styling */
+    h1 { @apply text-4xl md:text-5xl font-bold text-insight-text-primary; }
+    h2 { @apply text-2xl md:text-3xl font-medium text-insight-text-primary; }
+    h3 { @apply text-xl md:text-2xl font-medium text-insight-text-primary; }
+    h4 { @apply text-lg md:text-xl font-normal text-insight-text-primary; }
+    h5 { @apply text-base md:text-lg font-normal text-insight-text-primary; }
 
-    /* Padding */
-    .p-xs { @apply p-1; }
-    .p-s { @apply p-2; }
-    .p-m { @apply p-4; }
-    .p-l { @apply p-6; }
-    .p-xl { @apply p-8; }
+    /* Default horizontale rule styling */
+    hr { @apply text-insight-text-hint; }
 
-    /* Custom scrollbar styling for Chromium browsers */
+    /* Firefox / Standard (scrollbar-color) - only on elements with overflow */
+    .overflow-auto,
+    .overflow-scroll,
+    .overflow-x-auto,
+    .overflow-x-scroll,
+    .overflow-y-auto,
+    .overflow-y-scroll {
+        scrollbar-width: auto;
+        scrollbar-color: #757575 var(--color-insight-bg-overlay);
+    }
+
+    [data-theme="dark"] .overflow-auto,
+    [data-theme="dark"] .overflow-scroll,
+    [data-theme="dark"] .overflow-x-auto,
+    [data-theme="dark"] .overflow-x-scroll,
+    [data-theme="dark"] .overflow-y-auto,
+    [data-theme="dark"] .overflow-y-scroll {
+        scrollbar-color: #9CA3AF var(--color-insight-bg-overlay);
+    }
+
+    /* Chromium / WebKit */
     ::-webkit-scrollbar {
         width: 12px;
         height: 12px;
     }
 
     ::-webkit-scrollbar-track {
-        background: #f1f1f1;
+        background: var(--color-insight-bg-overlay);
         border-radius: 6px;
     }
 
     ::-webkit-scrollbar-thumb {
-        background: #c1c1c1;
+        background: #757575;
         border-radius: 6px;
-        border: 2px solid #f1f1f1;
+        border: 2px solid var(--color-insight-bg-overlay);
     }
 
     ::-webkit-scrollbar-thumb:hover {
-        background: #a1a1a1;
+        background: #5C5C5C;
     }
 
     [data-theme="dark"] ::-webkit-scrollbar-track,
     [data-theme="dark"]::-webkit-scrollbar-track {
-        background: #1f2937;
+        background: var(--color-insight-bg-overlay);
     }
 
     [data-theme="dark"] ::-webkit-scrollbar-thumb,
     [data-theme="dark"]::-webkit-scrollbar-thumb {
-        background: #4b5563;
-        border-color: #1f2937;
+        background: #9CA3AF;
+        border-color: var(--color-insight-bg-overlay);
     }
 
     [data-theme="dark"] ::-webkit-scrollbar-thumb:hover,
     [data-theme="dark"]::-webkit-scrollbar-thumb:hover {
-        background: #6b7280;
-    }
-
-    button:not(:disabled), [role="button"]:not(:disabled) { cursor: pointer; }
-
-    h1 {
-        @apply text-4xl md:text-5xl font-bold text-insight-text-primary dark:text-white pb-4;
-    }
-    h2 {
-        @apply text-2xl md:text-3xl font-semibold text-insight-text-primary dark:text-white pb-4;
-    }
-    h3 {
-        @apply text-xl md:text-2xl font-semibold text-insight-text-primary dark:text-white pb-2;
-    }
-    h4 {
-        @apply text-lg md:text-xl font-semibold text-insight-text-primary dark:text-white pb-1;
-    }
-    h5 {
-        @apply text-base md:text-lg font-semibold text-insight-text-primary dark:text-white pb-1;
-    }
-    hr {
-        @apply text-gray-300 dark:text-gray-600;
+        background: #D1D5DB;
     }
 }
 
+@layer utilities {
+    /*
+    * ========================================================
+    *   Simplified Surface Utilities
+    * ========================================================
+    *   Usage: bg-insight-surface (not bg-insight-bg-surface)
+    *          border-insight-surface (not border-insight-border-surface)
+    */
+
+    /* Background Utilities */
+    .bg-insight-base {
+        background-color: var(--color-insight-bg-base);
+    }
+    .bg-insight-surface {
+        background-color: var(--color-insight-bg-surface);
+    }
+    .bg-insight-raised {
+        background-color: var(--color-insight-bg-raised);
+    }
+    .bg-insight-overlay {
+        background-color: var(--color-insight-bg-overlay);
+    }
+
+    /* Border Color Utilities */
+    .border-insight-surface {
+        border-color: var(--color-insight-border-surface);
+    }
+    .border-insight-raised {
+        border-color: var(--color-insight-border-raised);
+    }
+    .border-insight-overlay {
+        border-color: var(--color-insight-border-overlay);
+    }
+
+    /* Text Color Utilities */
+    .text-primary { @apply text-insight-text-primary; }
+    .text-secondary { @apply text-insight-text-secondary; }
+}
+
 @layer components {
+
+    /*
+    * ========================================================
+    *   Combined Surface Classes
+    * ========================================================
+    *   All-in-one classes that apply bg, border, shadow, and radius
+    *   for each elevation level.
+    */
+
+    .insight-surface {
+        background-color: var(--color-insight-bg-surface);
+        border: 1px solid var(--color-insight-border-surface);
+        box-shadow: var(--shadow-insight-surface);
+        border-radius: var(--radius-insight-surface);
+    }
+
+    .insight-raised {
+        background-color: var(--color-insight-bg-raised);
+        border: 1px solid var(--color-insight-border-raised);
+        box-shadow: var(--shadow-insight-raised);
+        border-radius: var(--radius-insight-raised);
+    }
+
+    .insight-overlay {
+        background-color: var(--color-insight-bg-overlay);
+        border: 1px solid var(--color-insight-border-overlay);
+        box-shadow: var(--shadow-insight-overlay);
+        border-radius: var(--radius-insight-overlay);
+    }
+
+    /* Layout-Tags */
+    .page-peek { @apply min-h-[calc(100vh-10rem)]; }
 
     /*
     * ========================================================
@@ -386,429 +429,7 @@
     * ========================================================
     */
 
-    .text-primary {
-        @apply text-insight-text-primary dark:text-insight-text-primary-dark;
-    }
-    .text-secondary {
-        @apply text-insight-text-secondary dark:text-insight-text-secondary-dark;
-    }
-    .text-link {
-        @apply text-insight-text-link hover:text-insight-text-link-hover underline;
-    }
-
-    /*
-    * ========================================================
-    *   Semantic Surfaces
-    * ========================================================
-    */
-
-    .insight-surface-page {
-        background-color: var(--insight-surface-page);
-    }
-    [data-theme="dark"] .insight-surface-page {
-        background-color: var(--insight-surface-page-dark);
-    }
-    .insight-surface-base {
-        background-color: var(--insight-surface-base);
-    }
-    [data-theme="dark"] .insight-surface-base {
-        background-color: var(--insight-surface-base-dark);
-    }
-    .insight-surface-muted {
-        background-color: var(--insight-surface-muted);
-    }
-    [data-theme="dark"] .insight-surface-muted {
-        background-color: var(--insight-surface-muted-dark);
-    }
-    .insight-surface-subtle {
-        background-color: var(--insight-surface-subtle);
-    }
-    [data-theme="dark"] .insight-surface-subtle {
-        background-color: var(--insight-surface-subtle-dark);
-    }
-    .insight-surface-raised {
-        background-color: var(--insight-surface-raised);
-        box-shadow: var(--insight-shadow-surface);
-    }
-    [data-theme="dark"] .insight-surface-raised {
-        background-color: var(--insight-surface-raised-dark);
-    }
-
-    .insight-shadow-none {
-        box-shadow: var(--insight-shadow-none);
-    }
-    .insight-shadow-subtle {
-        box-shadow: var(--insight-shadow-subtle);
-    }
-    .insight-shadow-surface {
-        box-shadow: var(--insight-shadow-surface);
-    }
-    .insight-shadow-raised {
-        box-shadow: var(--insight-shadow-raised);
-    }
-    .insight-shadow-overlay {
-        box-shadow: var(--insight-shadow-overlay);
-    }
-    .insight-hover-shadow-raised:hover {
-        box-shadow: var(--insight-shadow-raised);
-    }
-    .insight-hover-shadow-overlay:hover {
-        box-shadow: var(--insight-shadow-overlay);
-    }
-    .insight-nav-shadow {
-        box-shadow: var(--insight-nav-shadow);
-    }
-    .insight-nav-item-shadow {
-        box-shadow: var(--insight-nav-item-ring);
-    }
-    .insight-nav-item-shadow-active {
-        box-shadow: var(--insight-nav-item-active-ring);
-    }
-    @media (min-width: 64rem) {
-        .lg\:insight-shadow-none {
-            box-shadow: var(--insight-shadow-none);
-        }
-    }
-
-    .insight-border-subtle {
-        border-color: var(--insight-border-subtle);
-    }
-    [data-theme="dark"] .insight-border-subtle {
-        border-color: var(--insight-border-subtle-dark);
-    }
-    .insight-border-default {
-        border-color: var(--insight-border-default);
-    }
-    [data-theme="dark"] .insight-border-default {
-        border-color: var(--insight-border-default-dark);
-    }
-    .insight-border-strong {
-        border-color: var(--insight-border-strong);
-    }
-    [data-theme="dark"] .insight-border-strong {
-        border-color: var(--insight-border-strong-dark);
-    }
-
-    .insight-radius-none {
-        border-radius: var(--insight-radius-none);
-    }
-    .insight-radius-control {
-        border-radius: var(--insight-radius-control);
-    }
-    .insight-radius-surface {
-        border-radius: var(--insight-radius-surface);
-    }
-    .insight-radius-raised {
-        border-radius: var(--insight-radius-raised);
-    }
-    .insight-radius-overlay {
-        border-radius: var(--insight-radius-overlay);
-    }
-    .insight-radius-pill {
-        border-radius: var(--insight-radius-pill);
-    }
-    .insight-radius-control-top {
-        border-top-left-radius: var(--insight-radius-control);
-        border-top-right-radius: var(--insight-radius-control);
-    }
-    .insight-radius-control-bottom {
-        border-bottom-right-radius: var(--insight-radius-control);
-        border-bottom-left-radius: var(--insight-radius-control);
-    }
-    .insight-radius-control-start {
-        border-start-start-radius: var(--insight-radius-control);
-        border-end-start-radius: var(--insight-radius-control);
-    }
-    .insight-radius-control-end {
-        border-start-end-radius: var(--insight-radius-control);
-        border-end-end-radius: var(--insight-radius-control);
-    }
-    .insight-radius-end-none {
-        border-end-end-radius: var(--insight-radius-none);
-    }
-    .insight-radius-start-none {
-        border-end-start-radius: var(--insight-radius-none);
-    }
-    .insight-nav-item-radius {
-        border-radius: var(--insight-nav-item-radius);
-    }
-
-    /*
-    * ========================================================
-    *   Navbar
-    * ========================================================
-    */
-
-    .insight-nav-icon-button {
-        @apply inline-flex items-center justify-center p-2 text-insight-text-secondary dark:text-insight-text-secondary-dark transition-colors duration-200;
-        border-radius: var(--insight-nav-icon-button-radius);
-    }
-
-    .insight-nav-icon-button:hover {
-        color: var(--insight-nav-icon-button-hover-text);
-        background-color: var(--insight-nav-icon-button-hover-bg);
-    }
-
-    [data-theme="dark"] .insight-nav-icon-button:hover,
-    [data-theme="dark"].insight-nav-icon-button:hover {
-        color: var(--insight-nav-icon-button-hover-text-dark);
-        background-color: var(--insight-nav-icon-button-hover-bg-dark);
-    }
-
-    .insight-nav-icon-button:focus {
-        outline: 2px solid transparent;
-        outline-offset: 2px;
-        box-shadow: inset 0 0 0 2px var(--insight-nav-focus-ring);
-    }
-
-    /*
-    * ========================================================
-    *   Sidebar
-    * ========================================================
-    */
-
-    .insight-sidebar-icon-button {
-        @apply inline-flex items-center justify-center p-2 text-sm text-insight-text-secondary dark:text-insight-text-secondary-dark transition-colors duration-200;
-        border-radius: var(--insight-sidebar-icon-button-radius);
-    }
-
-    .insight-sidebar-icon-button:hover {
-        color: var(--insight-sidebar-icon-button-hover-text);
-        background-color: var(--insight-sidebar-icon-button-hover-bg);
-    }
-
-    [data-theme="dark"] .insight-sidebar-icon-button:hover,
-    [data-theme="dark"].insight-sidebar-icon-button:hover {
-        color: var(--insight-sidebar-icon-button-hover-text-dark);
-        background-color: var(--insight-sidebar-icon-button-hover-bg-dark);
-    }
-
-    /*
-    * ========================================================
-    *   User Dropdown
-    * ========================================================
-    */
-
-    .insight-user-dropdown-menu {
-        @apply absolute top-full z-50 mt-2 min-w-56 text-lg border ltr:right-0 rtl:left-0;
-        background-color: var(--insight-user-dropdown-bg);
-        border-color: var(--insight-user-dropdown-border);
-        border-radius: var(--insight-user-dropdown-radius);
-        box-shadow: var(--insight-user-dropdown-shadow);
-    }
-
-    .insight-user-dropdown-menu > :not(:last-child) {
-        --tw-divide-y-reverse: 0;
-        border-bottom-style: var(--tw-border-style);
-        border-top-style: var(--tw-border-style);
-        border-top-width: calc(1px * var(--tw-divide-y-reverse));
-        border-bottom-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
-        border-color: var(--insight-user-dropdown-divider);
-    }
-
-    [data-theme="dark"] .insight-user-dropdown-menu,
-    [data-theme="dark"].insight-user-dropdown-menu {
-        background-color: var(--insight-user-dropdown-bg-dark);
-        border-width: 0;
-    }
-
-    [data-theme="dark"] .insight-user-dropdown-menu > :not(:last-child),
-    [data-theme="dark"].insight-user-dropdown-menu > :not(:last-child) {
-        border-color: var(--insight-user-dropdown-divider-dark);
-    }
-
-    /*
-    * ========================================================
-    *   Progress Bar
-    * ========================================================
-    */
-
-    .insight-progress-track {
-        @apply w-full h-4 overflow-hidden;
-        background-color: var(--insight-progress-track-bg);
-        border-radius: var(--insight-progress-radius);
-    }
-
-    [data-theme="dark"] .insight-progress-track,
-    [data-theme="dark"].insight-progress-track {
-        background-color: var(--insight-progress-track-bg-dark);
-    }
-
-    .insight-progress-fill {
-        @apply h-full transition-all ease-in-out;
-        background-color: var(--insight-progress-fill-bg);
-        border-radius: var(--insight-progress-radius);
-        transition-duration: var(--insight-progress-fill-transition-duration);
-    }
-
-    /*
-    * ========================================================
-    *   Chat Response
-    * ========================================================
-    */
-
-    .insight-chat-message {
-        @apply w-fit border px-4 py-2;
-        border-color: var(--insight-chat-message-border);
-        border-radius: var(--insight-chat-message-radius);
-    }
-
-    [data-theme="dark"] .insight-chat-message,
-    [data-theme="dark"].insight-chat-message {
-        border-width: 0;
-    }
-
-    .insight-chat-message-own {
-        @apply rounded-ee-none place-self-end;
-        background-color: var(--insight-chat-message-own-bg);
-    }
-
-    [data-theme="dark"] .insight-chat-message-own,
-    [data-theme="dark"].insight-chat-message-own {
-        background-color: var(--insight-chat-message-own-bg-dark);
-    }
-
-    .insight-chat-message-response {
-        @apply rounded-es-none place-self-start;
-        background-color: var(--insight-chat-message-response-bg);
-    }
-
-    [data-theme="dark"] .insight-chat-message-response,
-    [data-theme="dark"].insight-chat-message-response {
-        background-color: var(--insight-chat-message-response-bg-dark);
-    }
-
-    /*
-    * ========================================================
-    *   Table
-    * ========================================================
-    */
-
-    .insight-table-surface {
-        @apply overflow-auto;
-        background-color: var(--insight-table-bg);
-        border-radius: var(--insight-table-radius);
-    }
-
-    [data-theme="dark"] .insight-table-surface,
-    [data-theme="dark"].insight-table-surface {
-        background-color: var(--insight-table-bg-dark);
-    }
-
-    .insight-table-header-row {
-        @apply border-b;
-        border-color: var(--insight-table-header-border);
-    }
-
-    [data-theme="dark"] .insight-table-header-row,
-    [data-theme="dark"].insight-table-header-row {
-        border-color: var(--insight-table-header-border-dark);
-    }
-
-    .insight-table-row:nth-child(odd) {
-        background-color: var(--insight-table-row-odd-bg);
-    }
-
-    .insight-table-row:nth-child(even) {
-        background-color: var(--insight-table-row-even-bg);
-    }
-
-    [data-theme="dark"] .insight-table-row:nth-child(odd),
-    [data-theme="dark"].insight-table-row:nth-child(odd) {
-        background-color: var(--insight-table-row-odd-bg-dark);
-    }
-
-    [data-theme="dark"] .insight-table-row:nth-child(even),
-    [data-theme="dark"].insight-table-row:nth-child(even) {
-        background-color: var(--insight-table-row-even-bg-dark);
-    }
-
-    .insight-table-empty {
-        @apply w-full border-t text-insight-text-secondary dark:text-insight-text-secondary-dark text-center pt-16;
-        border-color: var(--insight-table-empty-border);
-    }
-
-    [data-theme="dark"] .insight-table-empty,
-    [data-theme="dark"].insight-table-empty {
-        border-color: var(--insight-table-empty-border-dark);
-    }
-
-    /*
-    * ========================================================
-    *   Form Status
-    * ========================================================
-    */
-
-    .insight-form-status {
-        @apply border p-4;
-        border-radius: var(--insight-form-status-radius);
-    }
-
-    .insight-form-status-error {
-        background-color: var(--insight-form-error-bg);
-        border-color: var(--insight-form-error-border);
-    }
-
-    [data-theme="dark"] .insight-form-status-error,
-    [data-theme="dark"].insight-form-status-error {
-        background-color: var(--insight-form-error-bg-dark);
-        border-color: var(--insight-form-error-border-dark);
-    }
-
-    .insight-form-status-success {
-        background-color: var(--insight-form-success-bg);
-        border-color: var(--insight-form-success-border);
-    }
-
-    [data-theme="dark"] .insight-form-status-success,
-    [data-theme="dark"].insight-form-status-success {
-        background-color: var(--insight-form-success-bg-dark);
-        border-color: var(--insight-form-success-border-dark);
-    }
-
-    .insight-form-status-icon-error {
-        color: var(--insight-form-error-icon);
-    }
-
-    .insight-form-status-icon-success {
-        color: var(--insight-form-success-icon);
-    }
-
-    .insight-form-status-title-error {
-        color: var(--insight-form-error-title);
-    }
-
-    [data-theme="dark"] .insight-form-status-title-error,
-    [data-theme="dark"].insight-form-status-title-error {
-        color: var(--insight-form-error-title-dark);
-    }
-
-    .insight-form-status-title-success {
-        color: var(--insight-form-success-title);
-    }
-
-    [data-theme="dark"] .insight-form-status-title-success,
-    [data-theme="dark"].insight-form-status-title-success {
-        color: var(--insight-form-success-title-dark);
-    }
-
-    .insight-form-status-body-error {
-        color: var(--insight-form-error-body);
-    }
-
-    [data-theme="dark"] .insight-form-status-body-error,
-    [data-theme="dark"].insight-form-status-body-error {
-        color: var(--insight-form-error-body-dark);
-    }
-
-    .insight-form-status-body-success {
-        color: var(--insight-form-success-body);
-    }
-
-    [data-theme="dark"] .insight-form-status-body-success,
-    [data-theme="dark"].insight-form-status-body-success {
-        color: var(--insight-form-success-body-dark);
-    }
+    .text-link { @apply text-insight-text-link hover:text-insight-text-link-hover underline; }
 
     /*
     * ========================================================
@@ -817,36 +438,19 @@
     */
 
     .btn {
-        @apply flex gap-2 items-center justify-center border-2 border-transparent text-white px-5 py-1.5 transition-colors;
-        border-radius: var(--insight-radius-control);
+        @apply flex gap-2 items-center justify-center border-2 border-transparent rounded-insight-control px-5 py-1.5 text-white transition-colors;
     }
 
     /* Button-Size */
-
-    .btn-xs {
-        @apply text-xs px-2 py-0.5;
-    }
-    .btn-s {
-        @apply text-sm px-4 py-1;
-    }
-    .btn-m {
-        @apply text-sm px-5 py-1.5;
-    }
-    .btn-l {
-        @apply text-lg px-6 py-2;
-    }
-    .btn-xl {
-        @apply text-lg px-8 py-3;
-    }
-    .btn-icon {
-        @apply p-1.5;
-    }
-    .btn-round {
-        border-radius: var(--insight-radius-pill);
-    }
+    .btn-xs { @apply text-xs px-2 py-0.5; }
+    .btn-s { @apply text-sm px-4 py-1; }
+    .btn-m { @apply text-sm px-5 py-1.5; }
+    .btn-l { @apply text-lg px-6 py-2; }
+    .btn-xl { @apply text-lg px-8 py-3; }
+    .btn-icon { @apply p-1.5; }
+    .btn-round { @apply rounded-insight-full; }
 
     /* Button-Fill */
-
     .btn-primary {
         @apply bg-insight-primary border-insight-primary hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active;
     }
@@ -876,7 +480,6 @@
     }
 
     /* Button-Outline */
-
     .btn-outline-primary {
         @apply border-insight-primary text-insight-primary hover:text-white hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active;
     }
@@ -903,7 +506,6 @@
     }
 
     /* Button-Subtle */
-
     .btn-subtle-primary {
         @apply text-insight-primary hover:text-insight-primary-hover active:text-insight-primary-active hover:bg-insight-primary-hover/25 active:bg-insight-primary-active/25;
     }
@@ -935,32 +537,16 @@
     * ========================================================
     */
 
-    .badge {
-        @apply inline-flex items-center gap-2 px-4 py-1.5;
-        border-radius: var(--insight-radius-pill);
-        box-shadow: var(--insight-shadow-subtle);
-    }
+    .badge { @apply inline-flex items-center gap-2 px-4 py-1.5 rounded-insight-full shadow-insight-subtle; }
 
     /* Badge-Size */
-
-    .badge-xs {
-        @apply text-xs px-2 py-1;
-    }
-    .badge-s {
-        @apply text-sm px-4 py-1;
-    }
-    .badge-m {
-        @apply text-sm px-4 py-1.5;
-    }
-    .badge-l {
-        @apply text-lg px-6 py-2;
-    }
-    .badge-xl {
-        @apply text-lg px-8 py-3;
-    }
+    .badge-xs { @apply text-xs px-2 py-1; }
+    .badge-s { @apply text-sm px-4 py-1; }
+    .badge-m { @apply text-sm px-4 py-1.5; }
+    .badge-l { @apply text-lg px-6 py-2; }
+    .badge-xl { @apply text-lg px-8 py-3; }
 
     /* Badge-Color */
-
     .badge-primary {
         @apply bg-insight-primary/10 text-insight-primary dark:text-insight-primary-hover;
     }
@@ -985,116 +571,68 @@
 
     /*
     * ========================================================
-    *   Container
-    * ========================================================
-    */
-
-    .component-container {
-        @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700;
-        border-radius: var(--insight-radius-surface);
-        box-shadow: var(--insight-shadow-surface);
-    }
-
-    .example-container {
-        @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-8 py-16 my-12;
-        border-radius: var(--insight-radius-raised);
-        box-shadow: var(--insight-shadow-subtle);
-    }
-
-    .info-container {
-        @apply bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 border-s-4 text-base px-4 py-1;
-        border-start-end-radius: var(--insight-radius-control);
-        border-end-end-radius: var(--insight-radius-control);
-    }
-
-    /*
-    * ========================================================
     *   Utils
     * ========================================================
     */
 
     .inline-tag {
-        @apply bg-gray-200 dark:bg-gray-700 font-mono text-insight-primary dark:text-insight-primary-active text-nowrap px-1 py-px;
-        border-radius: var(--insight-radius-control);
+        @apply bg-gray-200 dark:bg-gray-700 font-mono text-insight-primary dark:text-insight-primary-active rounded-insight-control px-1 py-px text-nowrap;
     }
 
     .input {
-        @apply w-full px-3 py-2 border border-gray-300 dark:border-gray-600 text-sm focus:ring-2 focus:ring-insight-primary focus:border-insight-primary bg-white dark:bg-gray-700 dark:text-white transition-colors duration-200;
-        border-radius: var(--insight-radius-control);
-        box-shadow: var(--insight-shadow-subtle);
+        @apply w-full bg-insight-bg-base border border-insight-border-surface rounded-insight-control shadow-insight-subtle px-3 py-2 text-sm text-insight-text-primary focus:ring-2 focus:ring-insight-primary focus:border-insight-primary transition-colors duration-200;
     }
 
-    .insight-range-track {
-        background-color: var(--insight-control-range-track);
-        border-radius: var(--insight-control-range-radius);
-    }
-
-    [data-theme="dark"] .insight-range-track,
-    [data-theme="dark"].insight-range-track {
-        background-color: var(--insight-control-range-track-dark);
-    }
-
-    .insight-range-fill {
-        background-color: var(--insight-control-range-fill);
-        border-radius: var(--insight-control-range-radius);
-    }
-
+    /* Range slider (single thumb) */
     .range-custom::-webkit-slider-runnable-track {
-        @apply h-2;
-        border-radius: var(--insight-control-range-radius);
-        background: linear-gradient(to right, var(--insight-control-range-fill) var(--insight-control-range-progress), var(--insight-control-range-track) var(--insight-control-range-progress));
+        @apply h-2 rounded-insight-control;
+        background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised) var(--insight-control-range-progress));
     }
 
     .range-custom::-moz-range-track {
-        @apply h-2;
-        border-radius: var(--insight-control-range-radius);
-        background: linear-gradient(to right, var(--insight-control-range-fill) var(--insight-control-range-progress), var(--insight-control-range-track) var(--insight-control-range-progress));
+        @apply h-2 rounded-insight-control;
+        background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised) var(--insight-control-range-progress));
     }
 
     [data-theme="dark"] .range-custom::-webkit-slider-runnable-track,
     [data-theme="dark"].range-custom::-webkit-slider-runnable-track {
-        background: linear-gradient(to right, var(--insight-control-range-fill) var(--insight-control-range-progress), var(--insight-control-range-track-dark) var(--insight-control-range-progress));
+        background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised-dark) var(--insight-control-range-progress));
     }
 
     [data-theme="dark"] .range-custom::-moz-range-track,
     [data-theme="dark"].range-custom::-moz-range-track {
-        background: linear-gradient(to right, var(--insight-control-range-fill) var(--insight-control-range-progress), var(--insight-control-range-track-dark) var(--insight-control-range-progress));
+        background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised-dark) var(--insight-control-range-progress));
     }
 
     html[dir='rtl'] .range-custom::-webkit-slider-runnable-track {
-        background: linear-gradient(to left, var(--insight-control-range-fill) var(--insight-control-range-progress), var(--insight-control-range-track) var(--insight-control-range-progress));
+        background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised) var(--insight-control-range-progress));
     }
 
     html[dir='rtl'] .range-custom::-moz-range-track {
-        background: linear-gradient(to left, var(--insight-control-range-fill) var(--insight-control-range-progress), var(--insight-control-range-track) var(--insight-control-range-progress));
+        background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised) var(--insight-control-range-progress));
     }
 
     html[dir='rtl'][data-theme="dark"] .range-custom::-webkit-slider-runnable-track,
     html[dir='rtl'] [data-theme="dark"] .range-custom::-webkit-slider-runnable-track,
     html[dir='rtl'] [data-theme="dark"].range-custom::-webkit-slider-runnable-track {
-        background: linear-gradient(to left, var(--insight-control-range-fill) var(--insight-control-range-progress), var(--insight-control-range-track-dark) var(--insight-control-range-progress));
+        background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised-dark) var(--insight-control-range-progress));
     }
 
     html[dir='rtl'][data-theme="dark"] .range-custom::-moz-range-track,
     html[dir='rtl'] [data-theme="dark"] .range-custom::-moz-range-track,
     html[dir='rtl'] [data-theme="dark"].range-custom::-moz-range-track {
-        background: linear-gradient(to left, var(--insight-control-range-fill) var(--insight-control-range-progress), var(--insight-control-range-track-dark) var(--insight-control-range-progress));
+        background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised-dark) var(--insight-control-range-progress));
     }
 
     .range-custom::-webkit-slider-thumb {
-        @apply w-4 h-4 border-2 cursor-pointer -mt-1;
-        background-color: var(--insight-control-range-thumb-bg);
-        border-color: var(--insight-control-range-thumb-border);
-        border-radius: var(--insight-control-range-thumb-radius);
+        @apply size-4 bg-insight-bg-base border-2 border-insight-primary rounded-insight-full cursor-pointer -mt-1;
     }
 
     .range-custom::-moz-range-thumb {
-        @apply w-4 h-4 border-2 cursor-pointer;
-        background-color: var(--insight-control-range-thumb-bg);
-        border-color: var(--insight-control-range-thumb-border);
-        border-radius: var(--insight-control-range-thumb-radius);
+        @apply size-4 bg-insight-bg-base border-2 border-insight-primary rounded-insight-full cursor-pointer;
     }
 
+    /* Background pattern for the demo containers */
     .demo-pattern {
         background-color: #f8fafc;
         background-image: repeating-linear-gradient(

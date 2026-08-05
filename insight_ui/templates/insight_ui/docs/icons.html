@@ -1,5 +1,5 @@
 {% extends "insight_ui/base.html" %}
-{% load static insight_tags i18n %}
+{% load static i18n insight_tags layout_tags %}
 
 {% block title %}{% trans "Insight UI - Icons" %}{% endblock title %}
 
@@ -8,30 +8,24 @@
 {% endblock navbar %}
 
 {% block sidebar_left %}
-    {% sidebar sidebar_data=left_sidebar side="left" %}
+    {% sidebar %}
+        {% include "insight_ui/components/sidebar_nav.html" with sidebar_data=left_sidebar %}
+    {% endsidebar %}
 {% endblock sidebar_left %}
 
 {% block sidebar_right %}
-    {% include "insight_ui/components/toc_sidebar.html" with side="right" static=True navbar_fixed=True mobile_hidden=True %}
+    {% sidebar %}
+        {% include "insight_ui/components/toc_content.html" %}
+    {% endsidebar %}
 {% endblock sidebar_right %}
 
 {% block heading %}
-    {% page_header title=_("Icons") %}
+    {% page_header chapter=_("Components") title=_("Icons") description=_("Many of our components have the ability to display an optional icon. Wherever a component expects an icon, one of the icons listed here can be specified. More icons can be inserted anywhere using the `icon` component.") %}
 {% endblock heading %}
 
 {% block content %}
-    <div class="w-full space-y-12 text-secondary leading-loose">
-        <div class="space-y-8">
-            <p>
-                {% blocktrans with icon='<span class="inline-tag">&lcub;% icon %&rcub;</span>'|safe %}
-                    Many of our components have the ability to display an optional icon.
-                    Wherever a component expects an icon, one of the icons listed here can be specified.
-                    More icons can be inserted anywhere using the {{ icon }} component.
-                {% endblocktrans %}
-            </p>
-        </div>
-        <hr>
-        <section class="space-y-4">
+    {% vbox padding="xl" gap="xl" max_width="l" class="mx-auto" %}
+        {% section gap="m" %}
             <h2>{% trans "Usage" %}</h2>
             <p class="mb-4">
                 {% blocktrans with icon='<span class="inline-tag">&lcub;% icon %&rcub;</span>'|safe %}
@@ -43,12 +37,12 @@
 
                 &lcub;% icon name="home" size="m" %&rcub;
             </div>
-            <section>
+            {% section %}
                 <h3>{% trans "Parameter" %}</h3>
                 {% include "insight_ui/components/parameter_table.html" with rows=main_params %}
-            </section>
-        </section>
-        <section class="space-y-4">
+            {% endsection %}
+        {% endsection %}
+        {% section gap="m" %}
             <h2>{% trans "Icon Portfolio" %}</h2>
             {% with heroicons='<a href="https://heroicons.com/" class="text-link">Heroicons</a>'|safe %}
                 {% infobox message=_("The icons shown here come from {heroicons}. Heroicons provides icons under the <b>MIT</b> license. Currently we only provide the outline variants.") heroicons=heroicons %}
@@ -61,24 +55,24 @@
                     placeholder="{% trans 'Search icons...' %}"
                     oninput="filterIcons(this.value)"
                 >
-                <span id="icon-count" class="absolute right-3 top-2.5 text-sm text-secondary">Icons: {{ icons|length }}</span>
+                <span id="icon-count" class="absolute top-2.5 right-3 text-sm text-secondary">Icons: {{ icons|length }}</span>
             </div>
             <span><i>{% trans "Click on the Icon to copy the tag with corresponding icon name to clipboard." %}</i></span>
-            <div id="icon-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4 mt-2">
+            <div id="icon-grid" class="grid grid-cols-2 gap-4 mt-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
                 {% for icon in icons %}
                     <button
                         type="button"
-                        class="icon-item flex flex-col items-center gap-2 border border-gray-100 dark:border-gray-700 p-3 shadow rounded-lg hover:bg-gray-50 hover:dark:bg-gray-700 transition-colors cursor-pointer group relative"
+                        class="icon-item flex flex-col relative gap-2 items-center p-3 border border-insight-border-surface rounded-insight-control shadow-insight-surface transition-colors cursor-pointer group hover:bg-insight-bg-raised"
                         data-icon-name="{{ icon.name }}"
                         onclick="copyIconCode(this)"
                     >
                         <div class="text-secondary">{{ icon.svg|safe }}</div>
-                        <span class="text-xs text-secondary text-center whitespace-normal group-hover:text-primary transition-colors">{{ icon.name }}</span>
-                        <span class="absolute top-0 flex items-center justify-center size-full text-base bg-gray-50 dark:bg-gray-700 text-insight-primary rounded-lg opacity-0 pointer-events-none transition-opacity whitespace-nowrap" data-copied-tooltip>{% trans "Copied!" %}</span>
+                        <span class="text-xs text-secondary text-center whitespace-normal transition-colors group-hover:text-primary">{{ icon.name }}</span>
+                        <span class="flex absolute top-0 justify-center items-center size-full text-base text-insight-primary whitespace-nowrap bg-insight-bg-raised rounded-insight-control opacity-0 transition-opacity pointer-events-none" data-copied-tooltip>{% trans "Copied!" %}</span>
                     </button>
                 {% endfor %}
             </div>
-            <p id="no-results" class="hidden text-center text-secondary py-8">{% trans "No icons found." %}</p>
+            <p id="no-results" class="hidden py-8 text-center text-secondary">{% trans "No icons found." %}</p>
             <script>
                 function filterIcons(query) {
                     const normalizedQuery = query.toLowerCase().trim();
@@ -112,13 +106,13 @@
                     });
                 }
             </script>
-        </section>
-        <section class="space-y-4">
+        {% endsection %}
+        {% section gap="m" %}
             <h2>{% trans "Sizes" %}</h2>
             <p>{% trans "All icons can be used in different sizes:" %}</p>
             {% table config=size_table %}
-        </section>
-        <section class="space-y-4">
+        {% endsection %}
+        {% section gap="m" %}
             <h2>{% trans "Adding Custom Icons" %}</h2>
             <p>
                 {% blocktrans trimmed %}
@@ -139,7 +133,7 @@
                 python manage.py compile_icons --dir path/to/icons/ --sprite path/to/sprite.svg
             </div>
             <h3>{% trans "Options" %}</h3>
-            <ul class="list-disc list-inside space-y-2 ml-4">
+            <ul class="list-disc list-inside ms-4 space-y-2">
                 <li><code class="inline-tag">--dir</code> &ndash; {% trans "Directory containing individual SVG files" %}</li>
                 <li><code class="inline-tag">--sprite</code> &ndash; {% trans "Path to an SVG sprite sheet file (extracts &lt;symbol&gt; elements)" %}</li>
                 <li><code class="inline-tag">--output</code> &ndash; {% trans "Custom output path (default: templates/insight_ui/components/icons.html)" %}</li>
@@ -169,8 +163,8 @@
                 python manage.py compile_icons --dir my_project/icons/
                 # Output: Total icons: 287 (1 custom, 287 bundled)
             </div>
-        </section>
-    </div>
+        {% endsection %}
+    {% endvbox %}
 {% endblock content %}
 
 {% block footer %}

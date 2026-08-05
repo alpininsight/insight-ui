@@ -16,12 +16,12 @@ export class Floater {
 
         if (this.trigger.getAttribute("data-show-arrow")) {
             this.arrow = document.createElement('div');
-            this.arrow.classList.add("absolute", "left-1/2", "-top-2", "-translate-x-1/2", "size-0", "border-10", "border-t-0", "border-transparent", "border-b-white", "dark:border-b-gray-600");
+            this.arrow.classList.add("absolute", "left-1/2", "-translate-x-1/2", "rotate-45", "size-4", "bg-insight-bg-surface", "border-r", "border-b", "border-insight-border-surface");
         }
 
         if (type == "tooltip") {
             this.target = document.createElement('span');
-            this.target.classList.add("text-primary", "bg-white", "dark:bg-gray-600", "px-3", "py-1", "border", "border-gray-300", "dark:border-0", "rounded-sm", "insight-shadow-subtle", "whitespace-nowrap");
+            this.target.classList.add("text-primary", "bg-insight-bg-surface", "px-3", "py-1", "border", "border-insight-border-surface", "rounded-insight-overlay", "shadow-insight-overlay", "whitespace-nowrap");
             this.target.textContent = this.trigger.getAttribute("data-insight-tooltip");
         }
         else {
@@ -29,7 +29,11 @@ export class Floater {
             this.target = document.getElementById(this.targetId);
         }
 
-        if (!this.target) return;
+        if (!this.target)
+        {
+            debugLog("No floater target for: ", this.trigger, " found!");
+            return;
+        }
         if (this.arrow) { this.target.appendChild(this.arrow); }
 
         this.target.classList.add("absolute", "hidden", "z-50");
@@ -175,30 +179,40 @@ export class Floater {
         const position = this.trigger.getAttribute('data-position') || "top";
         const rect = this.trigger.getBoundingClientRect();
         const scrollY = window.scrollY || document.documentElement.scrollTop;
+        const scrollX = window.scrollX || document.documentElement.scrollLeft;
 
+        // Get the offset parent's position to account for containing blocks with position: relative
+        const offsetParent = this.target.offsetParent || document.body;
+        const offsetRect = offsetParent.getBoundingClientRect();
+        const offsetTop = offsetRect.top + scrollY;
+        const offsetLeft = offsetRect.left + scrollX;
+        const distanceToTarget = 12;
+        const arrowSize = 8;
+
+        // Some directions need slight adjustments, like + or - 1px.
         switch (position) {
             case 'top':
-                this.target.style.top = `${rect.top + scrollY - this.target.offsetHeight - 8}px`;
-                this.target.style.left = `${rect.left + rect.width / 2 - this.target.offsetWidth / 2}px`;
-                if (this.arrow) { this.arrow.classList.add('rotate-180'); this.arrow.style.top = `${this.target.offsetHeight - 2}px`; }
+                this.target.style.top = `${rect.top + scrollY - this.target.offsetHeight - distanceToTarget - offsetTop}px`;
+                this.target.style.left = `${rect.left + scrollX + rect.width / 2 - this.target.offsetWidth / 2 - offsetLeft}px`;
+                if (this.arrow) { this.arrow.style.top = `${this.target.offsetHeight - (arrowSize + 1)}px`; }
                 break;
 
             case 'bottom':
-                this.target.style.top = `${rect.bottom + scrollY + 8}px`;
-                this.target.style.left = `${rect.left + rect.width / 2 - this.target.offsetWidth / 2}px`;
-                if (this.arrow) { this.arrow.classList.remove('rotate-180'); this.arrow.style.top = ''; }
+                this.target.style.top = `${rect.bottom + scrollY + distanceToTarget - offsetTop}px`;
+                this.target.style.left = `${rect.left + scrollX + rect.width / 2 - this.target.offsetWidth / 2 - offsetLeft}px`;
+                if (this.arrow) { this.arrow.classList.add('rotate-225'); this.arrow.style.top = `${-this.target.offsetHeight / 2 + arrowSize}px`; }
                 break;
 
             case 'left':
-                this.target.style.top = `${rect.top + rect.height / 2 - this.target.offsetHeight / 2 + scrollY}px`;
-                this.target.style.left = `${rect.left - this.target.offsetWidth - 8}px`;
-                if (this.arrow) { this.arrow.classList.add('rotate-90'); this.arrow.style.top = `${this.target.offsetHeight / 2 - 5}px`; this.arrow.style.left = `${this.target.offsetWidth + 3}px`; }
+                this.target.style.top = `${rect.top + rect.height / 2 - this.target.offsetHeight / 2 + scrollY - offsetTop}px`;
+                this.target.style.left = `${rect.left + scrollX - this.target.offsetWidth - distanceToTarget - offsetLeft}px`;
+                if (this.arrow) { this.arrow.classList.add('rotate-315'); this.arrow.style.top = `${this.target.offsetHeight / 2 - arrowSize}px`; this.arrow.style.left = `${this.target.offsetWidth - 1}px`; }
                 break;
 
             case 'right':
-                this.target.style.top = `${rect.top + rect.height / 2 - this.target.offsetHeight / 2 + scrollY}px`;
-                this.target.style.left = `${rect.right + 8}px`;
-                if (this.arrow) { this.arrow.classList.add('-rotate-90'); this.arrow.style.top = `${this.target.offsetHeight / 2 - 5}px`; this.arrow.style.left = `-3px`; }
+                this.target.style.top = `${rect.top + rect.height / 2 - this.target.offsetHeight / 2 + scrollY - offsetTop}px`;
+                this.target.style.left = `${rect.right + scrollX + distanceToTarget - offsetLeft}px`;
+                if (this.arrow) { this.arrow.classList.add('rotate-135'); this.arrow.style.top = `${this.target.offsetHeight / 2 - arrowSize}px`; this.arrow.style.left = `-1px`; }
                 break;
         }
     }

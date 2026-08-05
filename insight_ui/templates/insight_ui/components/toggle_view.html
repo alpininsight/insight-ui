@@ -1,7 +1,7 @@
 {% load i18n insight_tags %}
 
 <div id="{{ toggle_view_config.tag_id }}">
-  <div class="flex justify-end w-full mb-2">
+  <div class="flex justify-end mb-2 w-full">
     {% radio_block config=toggle_view_config.view_radio_config hx_target_id=toggle_view_config.tag_id %}
   </div>
   {% if toggle_view_config.view_radio_config.current_value == 'carousel' %}

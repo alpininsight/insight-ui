@@ -8,15 +8,13 @@
 {% endblock navbar %}
 
 {% block sidebar_left %}
-    {% sidebar sidebar_data=left_sidebar side="left" static=False %}
+    {% sidebar static=False %}
+        {% include "insight_ui/components/sidebar_nav.html" with sidebar_data=left_sidebar %}
+    {% endsidebar %}
 {% endblock sidebar_left %}
 
-{% block sidebar_right %}
-    {% sidebar side="right" static=False %}
-{% endblock sidebar_right %}
-
 {% block content %}
-    <div id="content" class="w-full space-y-16">
+    <div id="content" class="space-y-16 w-full">
         <div class="w-40">
             {% corner_ribbon text="New Feature" %}
             {% minimal_stepper config=min_stepper %}

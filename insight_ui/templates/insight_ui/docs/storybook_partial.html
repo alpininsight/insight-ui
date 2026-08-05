@@ -1,16 +1,16 @@
-{% load i18n insight_tags %}
+{% load i18n insight_tags layout_tags %}
 
 {% include "insight_ui/components/htmx_loading_indicator.html" %}
 
 {% comment %} Titel and summarize (out of bands) {% endcomment %}
 <div id="heading" hx-swap-oob="true">
-    {% with "Insight UI "|add:storybook.formatted_name as full_title %}
-        {% page_header title=full_title description=description %}
-    {% endwith %}
+    {% page_header chapter=_("Components") title=storybook.formatted_name description=description %}
 </div>
 
 <div id="right-aside" hx-swap-oob="true" class="flex">
-    {% include "insight_ui/components/toc_sidebar.html" with side="right" static=True navbar_fixed=True mobile_hidden=True %}
+    {% sidebar %}
+        {% include "insight_ui/components/toc_content.html" %}
+    {% endsidebar %}
 </div>
 
 {% include "insight_ui/docs/storybook_content.html" %}

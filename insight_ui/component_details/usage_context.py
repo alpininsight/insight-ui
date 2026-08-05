@@ -20,7 +20,11 @@ def get_page_header_usage_context() -> dict[str, str]:
         {% load insight_tags %}
 
         {% block heading %}
-            {% page_header title="My indispensable app" description="This is a django application designed with the help of insight UI." %}
+            {# With chapter for hierarchical titles #}
+            {% page_header chapter="My App" title="Dashboard" description="Welcome to your personal dashboard." %}
+
+            {# Without chapter for standalone pages #}
+            {% page_header title="About Us" description="Learn more about our company." %}
         {% endblock heading %}
         """
     }
@@ -246,6 +250,83 @@ def get_divider_usage_context() -> dict[str, str]:
     }
 
 
+@register_component(Component.SECTION)
+def get_section_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the section layout tag."""
+    return {
+        "usage": """
+        {% load layout_tags %}
+
+        <!-- Basic section with anchor ID -->
+        {% section id="installation" gap="m" %}
+            <h2>Installation</h2>
+            <p>Follow these steps to install the package.</p>
+            <pre><code>pip install insight-ui</code></pre>
+        {% endsection %}
+
+        <!-- Section without ID (no scroll offset) -->
+        {% section gap="s" %}
+            <h3>Quick Start</h3>
+            <p>Get started in minutes.</p>
+        {% endsection %}
+
+        <!-- With accessibility label -->
+        {% section id="features" aria_label="Product features and capabilities" %}
+            <h2>Features</h2>
+            <ul>
+                <li>Feature 1</li>
+                <li>Feature 2</li>
+            </ul>
+        {% endsection %}
+
+        <!-- Section labeled by its heading -->
+        {% section id="faq" aria_labelledby="faq-heading" %}
+            <h2 id="faq-heading">Frequently Asked Questions</h2>
+            <p>Common questions answered.</p>
+        {% endsection %}
+        """
+    }
+
+
+@register_component(Component.SURFACE)
+def get_surface_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the surface layout tag."""
+    return {
+        "usage": """
+        {% load layout_tags %}
+
+        <!-- Static container (renders as <div>) -->
+        {% surface variant="surface" padding="l" %}
+            <h3>Card Title</h3>
+            <p>This is a basic surface container.</p>
+        {% endsurface %}
+
+        <!-- Raised variant with shadow -->
+        {% surface variant="raised" padding="m" radius="l" %}
+            <h4>Elevated Content</h4>
+            <p>Content with visual prominence.</p>
+        {% endsurface %}
+
+        <!-- Outline variant (border only) -->
+        {% surface variant="outline" padding="s" %}
+            <span>Minimal container</span>
+        {% endsurface %}
+
+        <!-- Clickable surface (renders as <a>) -->
+        {% surface href="/components" padding="m" %}
+            {% hbox gap="s" v_align="center" %}
+                <span class="group-hover:text-insight-primary">Browse Components</span>
+            {% endhbox %}
+        {% endsurface %}
+
+        <!-- External link with new tab -->
+        {% surface href="https://github.com/example/repo" external=True padding="m" %}
+            <span>View on GitHub</span>
+        {% endsurface %}
+        """
+    }
+
+
 # =============================================================
 #
 #   Navigation Tags
@@ -275,14 +356,23 @@ def get_sidebar_usage_context() -> dict[str, str]:
     """Serve usage documentation for the sidebar component."""
     return {
         "usage_summary": _(
-            "The sidebar is integrated using the `sidebar` tag. The _base template_ includes blocks designated for the sidebar, where it should be placed. There is one block for the right side and one for the left side. If the sidebar is collapsible, there is an additional block called _Drawers_ for this purpose. If the component is used outside of these blocks, layout issues may occur."
+            "The sidebar is integrated using the `sidebar` layout tag from `layout_tags`. The _base template_ includes blocks designated for the sidebar, where it should be placed. There is one block for the right side and one for the left side. If the sidebar is collapsible, set `static=False` to create a drawer. If the component is used outside of these blocks, layout issues may occur."
         ),
         "usage": """
-        {% load insight_tags %}
+        {% load layout_tags %}
 
-        {% block drawers %}
-            {% sidebar config=sidebar_config side="right" auto_close=False %}
-        {% endblock drawers %}
+        {% block sidebar_left %}
+            {% sidebar %}
+                {% include "components/sidebar_nav.html" with sidebar_data=nav_data %}
+            {% endsidebar %}
+        {% endblock sidebar_left %}
+
+        {% block sidebar_right %}
+            {% sidebar width="wide" %}
+                <h2>Table of Contents</h2>
+                <div id="toc"></div>
+            {% endsidebar %}
+        {% endblock sidebar_right %}
         """,
     }
 
@@ -373,9 +463,20 @@ def get_tabs_usage_context() -> dict[str, str]:
     """Serve usage documentation for the tabs component."""
     return {
         "usage": """
-        {% load insight_tags %}
+        {% load layout_tags %}
 
-        {% tabs config=tabs_config %}
+        {# Config mode (HTMX) #}
+        {% tabs config=tabs_config %}{% endtabs %}
+
+        {# Block mode (static content) #}
+        {% tabs id="example" label="Example Tabs" %}
+            {% tab id="first" label="First Tab" active=True %}
+                <p>First tab content</p>
+            {% endtab %}
+            {% tab id="second" label="Second Tab" %}
+                <p>Second tab content</p>
+            {% endtab %}
+        {% endtabs %}
         """
     }
 
@@ -647,7 +748,7 @@ def get_popover_usage_context() -> dict[str, str]:
         ),
         "usage": """
         <button data-insight-popover="demo-popover" data-show-arrow="true" data-position="top" class="btn btn-primary">Hover me!</button>
-        <div id="demo-popover" class="bg-white dark:bg-gray-500 w-64 border border-gray-300 dark:border-0 insight-radius-overlay insight-shadow-subtle">
+        <div id="demo-popover" class="bg-white dark:bg-gray-500 w-64 border border-gray-300 dark:border-0 rounded-insight-overlay shadow-insight-overlay">
             <!-- Content -->
         </div>
         """,

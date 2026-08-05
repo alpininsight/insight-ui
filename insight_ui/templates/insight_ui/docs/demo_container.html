@@ -1,8 +1,8 @@
 {% load insight_tags %}
 
-<div data-insight-demo-container="{{ demo.id }}" class="bg-gray-300 dark:bg-gray-950 border border-gray-300 dark:border-gray-700 rounded-sm overflow-hidden mt-8">
-    <div class="flex items-center justify-between gap-4 bg-gray-200 dark:bg-gray-900 h-12 p-1.5">
-        <div class="flex items-center justify-center gap-1 h-full">
+<div data-insight-demo-container="{{ demo.id }}" class="mt-8 bg-white border border-insight-border-surface rounded-insight-surface shadow-insight-surface overflow-hidden dark:bg-black">
+    <div class="flex gap-4 justify-between items-center p-1.5 h-12 bg-insight-bg-raised">
+        <div class="flex gap-1 justify-center items-center h-full">
             {% if demo.template_repo_url %}
                 <a href="{{ demo.template_repo_url }}" class="btn btn-s btn-outline-secondary">
                     {% icon name="git" %}<b>HTML</b>
@@ -15,12 +15,12 @@
             {% endif %}
         </div>
         {% radio_block items=device_radio_items current_value="desktop" name="width-toggle-"|add:demo.id %}
-        <div class="flex items-center justify-center gap-1 h-full">
+        <div class="flex gap-1 justify-center items-center h-full">
             {% toggle tag_id="dir-toggle-"|add:demo.id name="dir-toggle-"|add:demo.id label=_("RTL") %}
             {% toggle tag_id="theme-toggle-"|add:demo.id name="theme-toggle-"|add:demo.id icon=theme_toggle_icon %}
         </div>
     </div>
     <div class="demo-pattern w-full">
-        <iframe data-insight-demo-iframe="{{ demo.id }}" id="{{ demo.id }}" src="{{ demo.url }}" title="{{ demo.title }}" class="w-full mx-auto"></iframe>
+        <iframe data-insight-demo-iframe="{{ demo.id }}" id="{{ demo.id }}" src="{{ demo.url }}" title="{{ demo.title }}" class="mx-auto w-full"></iframe>
     </div>
 </div>

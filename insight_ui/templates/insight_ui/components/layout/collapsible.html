@@ -1,0 +1,26 @@
+<div{% if wrapper_class %} class="{{ wrapper_class }}"{% endif %}>
+  <button
+    type="button"
+    class="flex gap-2 items-center font-medium text-primary transition-colors cursor-pointer hover:text-insight-primary"
+    data-insight-collapsible="{{ collapsible_id }}"
+    aria-expanded="{{ is_open|yesno:'true,false' }}"
+    aria-controls="{{ collapsible_id }}"
+  >
+    {% if show_icon %}
+      <svg
+        class="w-4 h-4 transition-transform"
+        data-collapsible-icon
+        style="transform: rotate({% if is_open %}90{% else %}0{% endif %}deg);"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+      </svg>
+    {% endif %}
+    <span>{{ summary }}</span>
+  </button>
+  <div id="{{ collapsible_id }}" class="mt-3{% if not is_open %} hidden{% endif %}">
+    {{ content }}
+  </div>
+</div>

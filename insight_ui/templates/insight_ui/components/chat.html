@@ -1,8 +1,8 @@
 {% load i18n insight_tags %}
 
-<div class="w-full lg:w-3xl mx-auto">
+<div class="mx-auto w-full lg:w-3xl">
     <!-- Response-container -->
-    <div class="my-2 grow" id="response"></div>
+    <div class="grow my-2" id="response"></div>
 
     <!-- Input-container -->
     <form
@@ -10,10 +10,10 @@
         hx-swap="beforeend"
         hx-target="#response"
         hx-on::after-request="if(event.detail.successful) this.reset()"
-        class="mt-16 space-y-2"
+        class="mt-8 space-y-2"
     >
         {% csrf_token %}
-        <label class="block text-sm font-medium text-secondary" for="msg">
+        <label class="block font-medium text-sm text-secondary" for="msg">
             {% trans "Message" %}
         </label>
         <div class="flex gap-2">

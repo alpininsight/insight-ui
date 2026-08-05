@@ -1,8 +1,8 @@
 {% load insight_tags %}
 
 {% if toggle_config.switch %}
-    <label class="inline-flex flex-col cursor-pointer w-fit">
-        <span class="flex gap-1 text-sm font-bold text-primary mb-2">{{ toggle_config.label }}</span>
+    <label class="inline-flex flex-col w-fit cursor-pointer">
+        <span class="flex gap-1 mb-2 font-bold text-sm text-primary">{{ toggle_config.label }}</span>
         <input
             type="checkbox"
             {% if toggle_config.tag_id %}id="{{ toggle_config.tag_id }}"{% endif %}
@@ -11,12 +11,12 @@
             {% if toggle_config.checked %}checked{% endif %}
             {% if toggle_config.disabled %}disabled{% endif %}
             {% if toggle_config.method %}onclick="{{ toggle_config.method }}()"{% endif %}
-            class="peer sr-only"
+            class="sr-only peer"
         >
-        <div class="relative w-10 h-3 bg-gray-300 rounded-full peer peer-focus:outline-2 outline-gray-400 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full after:content-[''] after:absolute after:-top-1.5 after:start-[-3px] after:bg-white after:border-gray-300 after:dark:border-gray-700 after:border after:rounded-full after:size-6 after:transition-all peer-checked:bg-insight-primary transition"></div>
+        <div class="after:content-[''] after:absolute after:-top-1.5 after:-start-0.75 after:bg-insight-bg-surface after:border-insight-border-surface after:border after:rounded-insight-full after:size-6 after:transition-all relative rtl:peer-checked:after:-translate-x-full w-10 h-3 bg-insight-bg-raised rounded-insight-full outline-insight-border-raised transition peer peer-focus:outline-2 peer-checked:after:translate-x-full peer-checked:bg-insight-primary"></div>
     </label>
 {% else %}
-    <div class="inline-block h-full w-fit">
+    <div class="inline-block w-fit h-full">
         <input
             type="checkbox"
             {% if toggle_config.tag_id %}id="{{ toggle_config.tag_id }}"{% endif %}
@@ -25,11 +25,11 @@
             {% if toggle_config.checked %}checked{% endif %}
             {% if toggle_config.disabled %}disabled{% endif %}
             {% if toggle_config.method %}onclick="{{ toggle_config.method }}()"{% endif %}
-            class="peer sr-only"
+            class="sr-only peer"
         >
         <label
             for="{{ toggle_config.tag_id }}"
-            class="btn btn-s btn-primary h-full cursor-pointer select-none peer-focus:outline-2 outline-insight-primary-hover peer-checked:bg-insight-primary-active peer-checked:border-insight-primary-active"
+            class="btn btn-s btn-primary h-full outline-insight-primary-hover cursor-pointer select-none peer-focus:outline-2 peer-checked:bg-insight-primary-active peer-checked:border-insight-primary-active"
         >
             {% if toggle_config.icon %}
                 {% icon toggle_config.icon %}

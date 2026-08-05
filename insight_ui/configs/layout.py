@@ -15,19 +15,22 @@ class PageHeaderConfig:
     Renders a page header with title and optional description.
 
     Attributes:
-        title: The page title, displayed as h1 in white text.
+        title: The main page title, displayed prominently in primary color.
+        chapter: Optional chapter displayed before the title in muted style.
         description: An optional description below the title.
 
     """
 
     __example__ = """
         PageHeaderConfig(
-            title="Dashboard",
-            description="Welcome to your personal dashboard.",
+            title="Page Header",
+            chapter="Insight UI",
+            description="A header component for documentation pages.",
         )
         """
 
-    title: str = field(metadata={"doc": _("The page title, displayed as h1 in white text.")})
+    title: str = field(metadata={"doc": _("The main page title, displayed prominently in primary color.")})
+    chapter: str = field(default="", metadata={"doc": _("Optional chapter displayed before the title in muted style.")})
     description: str | list[str] = field(default="", metadata={"doc": _("An optional description below the title.")})
 
 
@@ -224,7 +227,7 @@ class DividerConfig:
 
     Attributes:
         direction: Orientation (horizontal|vertical).
-        spacing: Spacing size (xs|s|m|l|xl).
+        spacing: Spacing size (none|xs|s|m|l|xl).
 
     """
 
@@ -234,7 +237,91 @@ class DividerConfig:
         """
 
     direction: str = field(default="horizontal", metadata={"doc": _("Orientation (horizontal|vertical).")})
-    spacing: str = field(default="m", metadata={"doc": _("Spacing size (xs|s|m|l|xl).")})
+    spacing: str = field(default="m", metadata={"doc": _("Spacing size (none|xs|s|m|l|xl).")})
+
+
+@dataclass
+class SectionConfig:
+    """
+    Configuration for the section block tag.
+
+    Semantic section container for content groupings.
+    Renders a ``<section>`` element for proper document semantics and accessibility.
+
+    Attributes:
+        id: Anchor ID for navigation (adds scroll-mt-24 for fixed navbar offset).
+        gap: Space between children (xs|s|m|l|xl).
+        aria_label: Accessible label for the section.
+        aria_labelledby: ID of element that labels this section.
+
+    """
+
+    __example__ = """
+        {% load layout_tags %}
+
+        {% section id="installation" gap="m" %}
+            <h2>Installation</h2>
+            <p>Follow these steps...</p>
+        {% endsection %}
+
+        {# With accessibility label #}
+        {% section id="features" aria_label="Product features" %}
+            ...
+        {% endsection %}
+        """
+
+    id: str = field(
+        default="", metadata={"doc": _("Anchor ID for navigation (adds scroll-mt-24 for fixed navbar offset).")}
+    )
+    gap: str = field(default="m", metadata={"doc": _("Space between children (xs|s|m|l|xl).")})
+    aria_label: str = field(default="", metadata={"doc": _("Accessible label for the section.")})
+    aria_labelledby: str = field(default="", metadata={"doc": _("ID of element that labels this section.")})
+
+
+@dataclass
+class SurfaceConfig:
+    """
+    Configuration for the surface block tag.
+
+    Styled container with background, border, and optional shadow.
+    When ``href`` is provided, renders as a clickable ``<a>`` element with hover effects.
+
+    Attributes:
+        variant: Visual style (surface|raised|outline).
+        padding: Inner padding (xs|s|m|l|xl).
+        radius: Border radius (xs|s|m|l|xl|none).
+        id: HTML id attribute for anchor links and JavaScript targeting.
+        href: URL for clickable surface (renders as <a> instead of <div>).
+        external: Open link in new tab (only when href is set).
+
+    """
+
+    __example__ = """
+        {% load layout_tags %}
+
+        {# Static container #}
+        {% surface variant="raised" padding="l" %}
+            <h3>Card Title</h3>
+            <p>Content here</p>
+        {% endsurface %}
+
+        {# Clickable surface (renders as <a>) #}
+        {% surface href="/components" padding="m" %}
+            <span class="group-hover:text-insight-primary">Browse Components</span>
+        {% endsurface %}
+
+        {# External link #}
+        {% surface href="https://example.com" external=True %}
+            External Resource
+        {% endsurface %}
+        """
+
+    variant: str = field(default="surface", metadata={"doc": _("Visual style (surface|raised|outline).")})
+    padding: str = field(default="m", metadata={"doc": _("Inner padding (xs|s|m|l|xl).")})
+    radius: str = field(default="m", metadata={"doc": _("Border radius (xs|s|m|l|xl|none).")})
+    id: str = field(default="", metadata={"doc": _("HTML id attribute for anchor links and JavaScript targeting.")})
+    href: str = field(default="", metadata={"doc": _("URL for clickable surface (renders as <a> instead of <div>).")})
+    external: bool = field(default=False, metadata={"doc": _("Open link in new tab (only when href is set).")})
 
 
 @dataclass

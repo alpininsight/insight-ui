@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Using proper text color class for the 'brand_mark' component
 - **cdn:** Publish insight ui browser assets
 - **cdn:** Trigger release asset publishing
+- **theme:** Use semantic tokens for search UI
+- Whitespace handling in the new sort_utility_classes script
+- Set executable bit on sort_utility_classes.py
+- Rename 'surface_link' to 'surface' in the index page template
+- Correct a measuring bug in cleanIndentation method of the 'code_block' component
+- Remove inconsistencies and minor issues on the documentation pages
 
 ### CI/CD
 
@@ -26,15 +32,72 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **theme:** Document semantic motion roles
 - **brand:** Align settings example with brand mark
+- **deployment:** Use canonical insight ui develop host
 
 ### Features
 
 - **theme:** Bridge surface role tokens to the brand colour contract
+- **cards:** Tokenize card + image_carousel surfaces/borders to semantic roles
+- Add new colors
+- Add soft colors
+- Add background and border colors
+- Replace Tailwind tokens for rounded corners with custom tokens controlled via input.css
+- Use custom spacing tokens for layout tags
+- Replace Tailwind tokens for shadows with custom tokens controlled via input.css
+- Replace all hardcoded colors, shadows and roundings with design tokens
+- Use proper names for background colors
+- Add search functionality for the documentation via the search bar in the navbar
+- Add custom types detailpage and add popups to the parameter tables for the custom types
+- Add new installation page layout with further information
+- Add surface and link_surface layout tags and use layout tags for the installation page layout
+- Refactor 'tabs' and 'collapsible' components to layout tags
+- Use 'tabs' and 'collapsible' components on installation page
+- Use new 'surface' and 'link_surface' layout tag on the index page
+- Use design tokens for colors in the 'code_block' component
+- Reduce padding for the sidebars and the navbar
+- Refactor sidebar to layout tag
+- Add 'prefix' parameter to 'page_header' for adding a prefix to the title
+- Improve 'base template' page with example mockup and updated texts
+- Add 'section' layout tag and merge 'link_surface' and 'surface' to 'surface'
+- Modify the 'check_design_token' script to search only in class strings for tokens
+- Place 'prefix' in the 'page_header' component after the title and rename the parameter to 'chapter'
+- Remove top margin from 'infobox' component
+- Use 'section' layout tag in the base_template and the icons template
+- Remove default padding from h tags and add utility classes for some colors and combined surface classes
+- Update heading and pb 0 from h tags on installation page
+- Improve 'customization' page with graphical elements and more information
+- Add 'none' as valid value for 'divider' spacing
+- Add 'id' parameter to 'surface' layout tag
+- Use more subtle color for odd rows in 'table' components
+- Improve component detailpage layout
+- Wrap storybook pages in a vbox
+- Add 'ignore' flag to toc generator to ignore single headings
 
 ### Miscellaneous
 
 - Regenerate minified stylesheet
 - **ignore:** Exclude playwright cli artifacts
+- Fix merge issues
+- Add pre-commit hook for checking used design tokens in templates
+- Regenerate minified assets
+- Mark check_design_tokens script as executable
+- Regenerate minified styesheet
+- Regenerate stylesheet
+- Regenerate stylesheet
+- Regenerate minified stylesheet
+- Regenerate minified assets
+
+### Refactoring
+
+- Move html code for the search results to a separate template file
+- Sort css classes in all templates
+- Move 'layout' directory to components directory
+
+### Testing
+
+- Fix tests
+- Fix tests
+- Update JavaScript tests
 
 ## [1.11.0] - 2026-06-18
 

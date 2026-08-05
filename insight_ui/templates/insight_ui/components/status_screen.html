@@ -1,21 +1,21 @@
-{% load insight_tags i18n %}
+{% load i18n insight_tags %}
 
-<section class="mx-auto flex w-full max-w-2xl items-center justify-center px-4 py-8 {{ status_screen_config.css_class }}">
-    <div class="w-full border insight-border-subtle insight-surface-raised insight-radius-raised insight-shadow-raised p-8 text-center {{ status_screen_config.card_css_class }}">
+<section class="flex justify-center items-center px-4 py-8 mx-auto w-full max-w-2xl {{ status_screen_config.css_class }}">
+    <div class="p-8 w-full text-center border border-insight-border-surface rounded-insight-raised shadow-insight-raised {{ status_screen_config.card_css_class }}">
         {% if status_screen_config.brand %}
-            <div class="mb-8 flex justify-center">
+            <div class="flex justify-center mb-8">
                 {% brand_mark config=status_screen_config.brand %}
             </div>
         {% endif %}
 
         <div
-            class="mx-auto mb-4 flex size-12 items-center justify-center insight-radius-pill {% if status_screen_config.status == 'success' %}bg-insight-success/15 text-insight-success{% elif status_screen_config.status == 'warning' %}bg-insight-warning/15 text-insight-warning{% elif status_screen_config.status == 'error' %}bg-insight-danger/15 text-insight-danger{% else %}bg-insight-info/15 text-insight-info{% endif %}"
+            class="flex justify-center items-center mx-auto mb-4 size-12 rounded-insight-full {% if status_screen_config.status == 'success' %}text-insight-success bg-insight-success/15{% elif status_screen_config.status == 'warning' %}text-insight-warning bg-insight-warning/15{% elif status_screen_config.status == 'error' %}text-insight-danger bg-insight-danger/15{% else %}text-insight-info bg-insight-info/15{% endif %}"
             aria-hidden="true"
         >
             {% icon name=status_screen_icon size="l" %}
         </div>
 
-        <h1 class="text-3xl font-bold text-primary">{{ status_screen_config.title }}</h1>
+        <h1 class="font-bold text-3xl text-primary">{{ status_screen_config.title }}</h1>
 
         {% if status_screen_config.description %}
             <div class="mt-4 space-y-2 text-secondary">
@@ -27,7 +27,7 @@
 
         {% if status_screen_config.notice or status_screen_config.notice_title %}
             <div
-                class="mx-auto mt-6 max-w-lg border border-s-4 insight-border-subtle insight-surface-muted insight-radius-control-end px-4 py-2 text-start {% if status_screen_config.status == 'success' %}border-s-insight-success{% elif status_screen_config.status == 'warning' %}border-s-insight-warning{% elif status_screen_config.status == 'error' %}border-s-insight-danger{% else %}border-s-insight-info{% endif %}"
+                class="px-4 py-2 mx-auto mt-6 max-w-lg text-start border border-s-4 border-insight-border-surface rounded-e-insight-control {% if status_screen_config.status == 'success' %}border-s-insight-success{% elif status_screen_config.status == 'warning' %}border-s-insight-warning{% elif status_screen_config.status == 'error' %}border-s-insight-danger{% else %}border-s-insight-info{% endif %}"
                 role="{% if status_screen_config.status == 'error' %}alert{% else %}status{% endif %}"
             >
                 {% if status_screen_config.notice_title %}
@@ -42,7 +42,7 @@
         {% endif %}
 
         {% if status_screen_config.actions %}
-            <div class="mt-8 flex flex-wrap justify-center gap-3">
+            <div class="flex flex-wrap gap-3 justify-center mt-8">
                 {% for action in status_screen_config.actions %}
                     {% button config=action %}
                 {% endfor %}

@@ -31,7 +31,7 @@ function createSidebarDOM(options = {}) {
 
   return TestUtils.createDOM(`
     ${openButton}
-    <div data-insight-sidebar="${side}" data-static="${isStatic ? 'True' : 'False'}">
+    <div data-insight-sidebar="${side}" data-static="${isStatic ? 'true' : 'false'}">
       <aside data-auto-close="${autoClose}">
         <button data-insight-dismiss="sidebar">Close</button>
         <nav>Sidebar content</nav>

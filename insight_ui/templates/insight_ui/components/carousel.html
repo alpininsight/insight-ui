@@ -1,15 +1,15 @@
 {% load i18n insight_tags %}
 
-<div data-insight-carousel class="relative flex w-full rtl:flex-row-reverse"
+<div data-insight-carousel class="flex relative rtl:flex-row-reverse w-full"
      data-autoplay="{{ carousel_config.autoplay|yesno:'true,false' }}"
      data-show-dots="{{ carousel_config.show_dots|yesno:'true,false' }}"
      data-show-index="{{ carousel_config.show_index|yesno:'true,false' }}"
      data-items-per-slide="{{ carousel_config.items_per_slide|default:1 }}"
 >
-  <div class="max-w-5xl mx-auto overflow-hidden">
+  <div class="mx-auto max-w-5xl overflow-hidden">
     <div class="carousel-track flex pt-6 pb-16 transition-transform duration-500 ease-in-out">
       {% for item in carousel_config.carousel_items %}
-        <div class="flex justify-center carousel-item px-2">
+        <div class="carousel-item flex justify-center px-2">
           {% block carousel_content %}{% endblock carousel_content %}
         </div>
       {% endfor %}
@@ -22,18 +22,18 @@
 
   <!-- Pagination Dots -->
   {% if carousel_config.show_dots %}
-    <div class="carousel-dots absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+    <div class="carousel-dots -translate-x-1/2 flex absolute bottom-4 left-1/2 gap-2">
       {% for i in slides_count %}
-        <button class="carousel-dot size-3 rounded-full bg-transparent border border-gray-400 transition" data-index="{{ i }}">
+        <button class="carousel-dot size-3 bg-transparent border border-insight-border-surface rounded-insight-full transition" data-index="{{ i }}">
           <span class="sr-only">{% trans "Go to page:" %} {{ i }}</span>
         </button>
       {% endfor %}
     </div>
   {% endif %}
 
-  <!-- Seitennummer -->
+  <!-- Page number -->
   {% if carousel_config.show_index %}
-    <div class="carousel-index absolute bottom-4 right-4 text-sm bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-sm">
+    <div class="carousel-index absolute right-4 bottom-4 px-3 py-1 text-sm bg-insight-bg-surface rounded-insight-overlay">
       <span class="carousel-index-text text-secondary"></span>
     </div>
   {% endif %}

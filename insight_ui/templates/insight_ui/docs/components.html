@@ -34,7 +34,7 @@
         <!-- Main stylesheet -->
         <link rel="stylesheet" href="{% insight_asset INSIGHT_UI.stylesheet %}">
     </head>
-    <body class="bg-white dark:bg-gray-800 {% if not component.no_padding %}p-8{% endif %}">
+    <body class="bg-insight-bg-base {% if not component.no_padding %}p-8{% endif %}">
         {% include "insight_ui/docs/component_demo.html" %}
     </body>
 

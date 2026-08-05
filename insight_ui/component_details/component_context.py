@@ -269,7 +269,11 @@ def get_component_context(component: Component) -> dict:
             f"Unknown component: {component.value} accessible components are {COMPONENT_CONTEXT_BUILDERS.keys()}."
         )
 
-    context = {"component_name": component.value, "formatted_name": component.formatted_name}
+    context = {
+        "component_name": component.value,
+        "category_name": component.group.formatted_name,
+        "formatted_name": component.formatted_name,
+    }
 
     for builder in COMPONENT_CONTEXT_BUILDERS.get(component.value, []):
         part = builder()

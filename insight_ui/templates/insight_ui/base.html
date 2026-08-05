@@ -71,7 +71,7 @@
 
         {% block extra_head %}{% endblock %}
     </head>
-    <body class="flex flex-col size-full min-h-screen {% if white_bg == False %}bg-gray-100 dark:bg-gray-950{% else %}bg-white dark:bg-gray-900{% endif %} text-primary transition-colors duration-200" hx-indicator="#loading-indicator">
+    <body class="flex flex-col min-h-screen size-full text-insight-text-primary bg-insight-bg-base" hx-indicator="#loading-indicator">
 
         {% block background_image %}
         {% endblock background_image %}
@@ -83,24 +83,21 @@
             {% endblock navbar %}
         </header>
 
-        {% block drawers %}
-        {% endblock drawers %}
-
         <main id="main" class="flex grow {% if navbar_fixed %}pt-16{% endif %}">
             <div id="left-aside" class="flex">
-                {% block sidebar_left %}{% endblock sidebar_left %}
+                {% with _sidebar_side="left" %}{% block sidebar_left %}{% endblock sidebar_left %}{% endwith %}
             </div>
             <div id="main-content" class="relative w-full min-w-0">
                 <div id="heading">
                     {% block heading %}{% endblock heading %}
                 </div>
-                <div id="content" class="w-full space-y-12 leading-loose {% if default_padding is not False %}px-4 md:px-16 py-16{% endif %}">
+                <div id="content" class="space-y-12 w-full leading-loose">
                     {% if use_default_loading_indicator is not False %}{% include "insight_ui/components/htmx_loading_indicator.html" %}{% endif %}
                     {% block content %}{% endblock content %}
                 </div>
             </div>
             <div id="right-aside" class="flex">
-                {% block sidebar_right %}{% endblock sidebar_right %}
+                {% with _sidebar_side="right" %}{% block sidebar_right %}{% endblock sidebar_right %}{% endwith %}
             </div>
         </main>
 
@@ -109,13 +106,13 @@
 
         {% if INSIGHT_UI.show_current_media_breakpoint %}
             <!-- Helper to visualize media breakpoints -->
-            <div class="fixed flex items-center z-30 bottom-2 left-2 bg-gray-900 rounded-full size-10 text-white text-xs">
+            <div class="flex fixed bottom-2 left-2 z-30 items-center size-10 text-white text-xs bg-insight-bg-base-dark rounded-insight-full">
                 <span class="w-full text-center sm:hidden">-</span>
-                <span class="w-full text-center hidden sm:block md:hidden">sm</span>
-                <span class="w-full text-center hidden md:block lg:hidden">md</span>
-                <span class="w-full text-center hidden lg:block xl:hidden">lg</span>
-                <span class="w-full text-center hidden xl:block 2xl:hidden">xl</span>
-                <span class="w-full text-center hidden 2xl:block">2xl</span>
+                <span class="hidden w-full text-center sm:block md:hidden">sm</span>
+                <span class="hidden w-full text-center md:block lg:hidden">md</span>
+                <span class="hidden w-full text-center lg:block xl:hidden">lg</span>
+                <span class="hidden w-full text-center xl:block 2xl:hidden">xl</span>
+                <span class="hidden w-full text-center 2xl:block">2xl</span>
             </div>
         {% endif %}
 

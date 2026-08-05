@@ -1,18 +1,18 @@
 {% load i18n insight_tags %}
 
-<div class="insight-table-surface">
-    <table class="table-auto w-full">
+<div class="overflow-auto">
+    <table class="w-full table-auto">
         {% if table_config.caption %}
             <caption class="text-sm text-secondary">{{ table_config.caption }}</caption>
         {% endif %}
 
         {% if table_config.headers %}
             <thead class="text-primary">
-                <tr class="insight-table-header-row">
+                <tr class="border-b border-insight-border-surface">
                     {% for header in table_config.headers %}
-                        <th class="text-start text-sm px-4 py-2" scope="col">
+                        <th class="px-4 py-2 text-start text-sm" scope="col">
                             {% if sortable %}
-                                <div class="flex items-center gap-1">
+                                <div class="flex gap-1 items-center">
                                     <span>{{ header }}</span>
                                     {% icon name="chevron-up-down" size="xs" %}
                                 </div>
@@ -27,15 +27,15 @@
 
         <tbody class="text-primary">
             {% for row in table_config.rows %}
-                <tr class="insight-table-row">
+                <tr class="odd:bg-insight-bg-raised/50 even:bg-insight-bg-base">
                     {% for cell in row %}
-                        <td class="text-start text-sm px-4 py-3">{{ cell|safe }}</td>
+                        <td class="px-4 py-3 text-start text-sm">{{ cell|safe }}</td>
                     {% endfor %}
                 </tr>
             {% empty %}
                 <tfoot>
                     <tr>
-                        <td colspan="{{ table_config.headers|length }}" class="insight-table-empty">
+                        <td colspan="{{ table_config.headers|length }}" class="pt-16 w-full text-secondary text-center border-t border-insight-border-surface">
                             {{ table_config.empty_msg }}
                         </td>
                     </tr>

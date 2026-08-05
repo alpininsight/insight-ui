@@ -1,37 +1,59 @@
 {% load i18n insight_tags %}
 
-<form
-    {% if search_bar_config.request_url %}
-        {% if search_bar_config.htmx_config %}
-            hx-get="{{ search_bar_config.request_url }}"
-            hx-target="{{ search_bar_config.htmx_config.target }}"
-            hx-swap="{{ search_bar_config.htmx_config.swap|default:'innerHTML' }}"
-            hx-trigger="{{ search_bar_config.htmx_config.trigger|default:'submit' }}"
-            hx-vals="{{ search_bar_config.htmx_config.vals }}"
-            hx-indicator="{{ search_bar_config.htmx_config.indicator|default:'#loading-indicator' }}"
-            hx-push-url="{{ search_bar_config.htmx_config.push_url|default:'False' }}"
-        {% else %}
-            action="{{ search_bar_config.request_url }}"
-            method="get"
+<div class="relative{% if search_bar_config.enable_search %} h-full{% endif %}"{% if search_bar_config.enable_search %} data-insight-search{% endif %}>
+    <form
+        {% if search_bar_config.request_url %}
+            {% if search_bar_config.htmx_config %}
+                hx-get="{{ search_bar_config.request_url }}"
+                hx-target="{{ search_bar_config.htmx_config.target }}"
+                hx-swap="{{ search_bar_config.htmx_config.swap|default:'innerHTML' }}"
+                hx-trigger="{{ search_bar_config.htmx_config.trigger|default:'submit' }}"
+                hx-vals="{{ search_bar_config.htmx_config.vals }}"
+                hx-indicator="{{ search_bar_config.htmx_config.indicator|default:'#loading-indicator' }}"
+                hx-push-url="{{ search_bar_config.htmx_config.push_url|default:'False' }}"
+            {% else %}
+                action="{{ search_bar_config.request_url }}"
+                method="get"
+            {% endif %}
         {% endif %}
-    {% endif %}
-    class="h-full"
->
-    <label for="search" class="sr-only">{% trans "Search" %}</label>
-    <div class="relative h-full">
-        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none text-secondary">
-            {% icon name="magnifying-glass" size="s" %}
+        class="h-full"
+    >
+        <label for="search" class="sr-only">{% trans "Search" %}</label>
+        <div class="relative h-full">
+            <div class="start-0 flex absolute inset-y-0 items-center ps-3 text-secondary pointer-events-none">
+                {% icon name="magnifying-glass" size="s" %}
+            </div>
+            <input
+                type="search"
+                id="search"
+                name="search"
+                placeholder="{% if search_bar_config.enable_search %}{% trans 'Search docs...' %} (Ctrl+K){% else %}{% trans 'Browse...' %}{% endif %}"
+                value="{{ search_bar_config.search_query }}"
+                autocomplete="off"
+                {% if search_bar_config.enable_search %}
+                    role="combobox"
+                    aria-expanded="false"
+                    aria-controls="search-results"
+                    aria-autocomplete="list"
+                    aria-haspopup="listbox"
+                {% endif %}
+                class="block px-3 size-full {% if search_bar_config.simple %}py-2 text-sm{% else %}py-3 pe-32{% endif %} ps-10 text-primary bg-insight-bg-surface border border-insight-border-surface rounded-insight-control ring-insight-focus focus:outline-none focus:ring-2"
+            />
+            {% if not search_bar_config.simple and not search_bar_config.enable_search %}
+                {% button label=_("Search") type="primary" size="l" button_type="submit" extra_classes="absolute inset-y-0 end-0 rounded-s-none" %}
+            {% endif %}
         </div>
-        <input
-            type="search"
-            id="search"
-            name="search"
-            placeholder="{% trans 'Browse...' %}"
-            value="{{ search_bar_config.search_query }}"
-            class="block size-full px-3 {% if search_bar_config.simple %}text-sm py-2{% else %}py-3 pe-32{% endif %} ps-10 text-neutral-700 d dark:text-white border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-sm focus:outline-none focus:ring-2 ring-insight-primary-active"
-        />
-        {% if not search_bar_config.simple %}
-            {% button label=_("Search") type="primary" size="l" button_type="submit" extra_classes="absolute inset-y-0 end-0 rounded-s-none" %}
-        {% endif %}
-    </div>
-</form>
+    </form>
+
+    {% if search_bar_config.enable_search %}
+        <div
+            id="search-results"
+            data-search-results
+            role="listbox"
+            aria-label="{% trans 'Search results' %}"
+            class="hidden absolute z-50 mt-1 w-full max-h-96 bg-insight-bg-raised border border-insight-border-raised rounded-insight-raised shadow-insight-raised overflow-y-auto"
+        ></div>
+
+        {% include "insight_ui/components/search_bar_result_templates.html" %}
+    {% endif %}
+</div>

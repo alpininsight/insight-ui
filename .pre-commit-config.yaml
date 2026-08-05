@@ -78,6 +78,22 @@ repos:
       - id: djhtml
         files: '(^|/)templates/.*\.html$'
 
+  # Sort Tailwind CSS classes, check used design tokens
+  - repo: local
+    hooks:
+      - id: utility-sort
+        name: Sort utility CSS classes
+        entry: uv run python scripts/sort_utility_classes.py
+        language: system
+        files: '(^|/)templates/.*\.html$'
+
+      - id: design-tokens
+        name: Check design token usage
+        entry: uv run python scripts/check_design_tokens.py
+        language: system
+        files: '(^|/)templates/.*\.html$'
+        require_serial: true
+
   # Optional: pytest, migrations, and system checks for the demo Django project
   - repo: local
     hooks:

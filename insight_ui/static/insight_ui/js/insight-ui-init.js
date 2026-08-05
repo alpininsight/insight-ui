@@ -11,9 +11,11 @@ import { DemoIframeController } from "./insight-ui-demo-container.js";
 import { Dropdown } from "./insight-ui-dropdown.js";
 import { Floater } from "./insight-ui-floater.js";
 import { Modal } from "./insight-ui-modal.js";
+import { MockupTOC } from "./insight-ui-mockup-toc.js";
 import { Multiselect } from "./insight-ui-multiselect.js";
 import { ProgressBar } from "./insight-ui-progress-bar.js";
 import { RangeSlider } from "./insight-ui-range-slider.js";
+import { Search } from "./insight-ui-search.js";
 import { Sidebar } from "./insight-ui-sidebar.js";
 import { Tabs } from "./insight-ui-tabs.js";
 import { ThemeToggle } from "./insight-ui-theme-toggle.js";
@@ -31,9 +33,11 @@ Object.assign(window.InsightUI, {
 	Dropdown,
 	Floater,
 	Modal,
+	MockupTOC,
 	Multiselect,
 	ProgressBar,
 	RangeSlider,
+	Search,
 	Sidebar,
 	Tabs,
 	ThemeToggle,
@@ -50,9 +54,11 @@ function initAll() {
 	Dropdown.initAll();
 	Floater.initAll();
 	Modal.initAll();
+	MockupTOC.initAll();
 	Multiselect.initAll();
 	ProgressBar.initAll();
 	RangeSlider.initAll();
+	Search.initAll();
 	Sidebar.initAll();
 	Tabs.initAll();
 	ThemeToggle.initAll();

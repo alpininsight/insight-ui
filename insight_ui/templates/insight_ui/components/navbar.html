@@ -1,22 +1,22 @@
 {% load i18n insight_tags %}
 
 {# Skip-Link for Accessibility, placed BEFORE nav #}
-<a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-insight-primary text-white p-2 insight-radius-control">
+<a href="#main-content" class="p-2 text-white bg-insight-primary rounded-insight-control sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0">
   {% trans 'Jump to main content' %}
 </a>
 
 <nav
   role="navigation"
   aria-label="{% trans 'Main navigation' %}"
-  class="{% if fixed %}fixed{% else %}absolute{% endif %} w-full h-16 z-50 bg-[var(--insight-nav-bg)] dark:bg-[var(--insight-nav-bg-dark)] border-b border-[var(--insight-nav-border)] dark:border-[var(--insight-nav-border-dark)] insight-nav-shadow px-4 md:px-16"
+  class="{% if fixed %}fixed{% else %}absolute{% endif %} z-50 px-4 w-full h-16 bg-insight-bg-base border-b border-insight-border-surface shadow-insight-surface md:px-6"
 >
   {# Desktop Navigation #}
-  <div class="flex flex-wrap lg:flex-nowrap justify-between items-center gap-1 h-full">
+  <div class="flex flex-wrap gap-1 justify-between items-center h-full lg:flex-nowrap">
     {# Brand Logo #}
     {% if navbar_config.brand %}
       <a
         href="{{ navbar_config.brand.request_url }}"
-        class="flex items-center text-xl font-bold text-primary"
+        class="flex items-center font-bold text-xl text-primary"
         {% if navbar_config.brand.aria_label %}aria-label="{{ navbar_config.brand.aria_label }}"{% elif navbar_config.brand.mark.primary_text %}aria-label="{{ navbar_config.brand.mark.primary_text }}"{% endif %}
       >
         {% if navbar_config.brand.mark %}
@@ -26,31 +26,31 @@
     {% endif %}
 
     {# Mobile menu button #}
-    <div class="lg:hidden flex items-center gap-2 py-3">
+    <div class="flex gap-2 items-center py-3 lg:hidden">
       {# Mobile Menu Toggle #}
       <button
-        class="insight-nav-icon-button"
+        class="inline-flex justify-center items-center p-2 text-insight-text-secondary rounded-insight-control transition-colors duration-200 hover:text-insight-text-link-hover focus:ring-insight-focus"
         aria-expanded="false"
         aria-controls="navigation-menu"
         aria-label="{% trans 'Open menu' %}"
         data-insight-collapsible="navigation-menu"
       >
-        {% icon name="bars" %}
+        {% icon name="bars-3" %}
       </button>
     </div>
 
-    <div id="navigation-menu" class="hidden lg:block h-full w-full lg:w-fit grow lg:py-3">
-      <div class="flex flex-col lg:flex-row justify-end gap-6 w-full lg:h-full p-2 lg:p-0 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 insight-shadow-raised lg:insight-shadow-none lg:bg-transparent lg:border-none insight-radius-surface">
+    <div id="navigation-menu" class="hidden grow w-full h-full lg:block lg:w-fit lg:py-3">
+      <div class="flex flex-col gap-6 justify-end p-2 w-full bg-insight-bg-surface border border-insight-border-surface rounded-insight-surface shadow-insight-raised lg:flex-row lg:h-full lg:p-0 lg:shadow-none lg:bg-transparent lg:border-none">
         {# Main-Navigation #}
         {% if navbar_config.links %}
-          <ul class="flex flex-col lg:flex-row justify-items-stretch lg:items-center w-full lg:w-fit">
+          <ul class="flex flex-col justify-items-stretch w-full lg:flex-row lg:items-center lg:w-fit">
             {% for link in navbar_config.links %}
               {% if not link.need_auth or options.user.is_authenticated and not link.staff_only or options.user.is_staff %}
                 <li data-insight-nav>
                   {% if link.url %}
                     <a
                       href="{{ link.url }}"
-                      class="flex gap-2 h-full whitespace-nowrap text-secondary hover:text-insight-text-link px-4 py-2 text-sm transition-colors duration-200 insight-nav-item-radius {% if link.active %}insight-nav-item-shadow-active{% else %}insight-nav-item-shadow{% endif %}"
+                      class="insight-nav-item-radius flex gap-2 px-4 py-2 h-full text-secondary text-sm whitespace-nowrap transition-colors duration-200 hover:text-insight-text-link {% if link.active %}text-insight-primary{% endif %}"
                       {% if link.active %}aria-current="page"{% endif %}
                       {% if link.external %}target="_blank" rel="noopener"{% endif %}
                     >
@@ -70,7 +70,7 @@
                           {% icon name="chevron-down" size="s" %}
                         {% endif %}
                       </button>
-                      <div id="{{ link.dropdown.tag_id }}" class="hidden bg-white border border-gray-300 dark:border-0 insight-radius-overlay insight-shadow-overlay">
+                      <div id="{{ link.dropdown.tag_id }}" class="hidden bg-insight-bg-surface border border-insight-border-surface rounded-insight-overlay shadow-insight-overlay">
                         <div class="py-1">
                           {% for item in link.dropdown.items %}
                             <a
@@ -81,7 +81,7 @@
                                 hx-push-url="true"
                               {% endif %}
                               href="{{ item.request_url|default:'' }}"
-                              class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                              class="block px-4 py-2 text-sm text-primary hover:bg-insight-bg-base"
                             >{{ item.text }}</a>
                           {% endfor %}
                         </div>
@@ -89,7 +89,7 @@
                     </div>
                   {% elif link.modal %}
                     <button
-                      class="text-secondary hover:text-insight-text-link px-4 py-2 text-sm transition-colors duration-200"
+                      class="px-4 py-2 text-secondary text-sm transition-colors duration-200 hover:text-insight-text-link"
                       data-insight-modal="{{ link.modal.tag_id }}"
                     >
                       {{ link.text }}
@@ -103,10 +103,10 @@
         {% endif %}
 
         {# Other Nav-Elements #}
-        <div class="flex flex-col lg:flex-row gap-2 w-full lg:w-fit">
-          {% if navbar_config.searchbar_request_url %}
+        <div class="flex flex-col gap-2 w-full lg:flex-row lg:w-fit">
+          {% if navbar_config.searchbar_request_url or navbar_config.enable_doc_search %}
             <div class="flex-1 lg:max-w-72">
-              {% search_bar request_url=navbar_config.searchbar_request_url simple=True search_query=options.search_query %}
+              {% search_bar request_url=navbar_config.searchbar_request_url simple=True search_query=options.search_query enable_search=navbar_config.enable_doc_search %}
             </div>
           {% endif%}
           <div class="flex gap-2 h-10">

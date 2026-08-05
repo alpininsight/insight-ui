@@ -43,6 +43,7 @@ def get_main_page_links() -> list[dict[str, Any]]:
         NavbarLinkConfig(_("Base Template"), reverse("base_template_view"), IconConfig("cube-transparent", "s")),
         NavbarLinkConfig(_("Customization"), reverse("customization_view"), IconConfig("adjustments-horizontal", "s")),
         NavbarLinkConfig(_("Icons"), reverse("icon_view"), IconConfig("sparkles", "s")),
+        NavbarLinkConfig(_("Types"), reverse("types_view"), IconConfig("code-bracket", "s")),
     ]
 
 
@@ -75,7 +76,7 @@ def get_navbar_context() -> dict:
         "nav_config": NavbarConfig(
             get_navbar_brand_defaults(),
             links,
-            "/",
+            enable_doc_search=True,
             show_language_selector=True,
             show_theme_toggle=True,
         ),
@@ -139,12 +140,7 @@ def get_base_context() -> dict:
         Combined context dict with config, navbar, and footer data.
 
     """
-    return (
-        config.get_config()
-        | get_navbar_context()
-        | get_footer_context()
-        | {"white_bg": True, "default_padding": True, "use_default_loading_indicator": False}
-    )
+    return config.get_config() | get_navbar_context() | get_footer_context() | {"use_default_loading_indicator": False}
 
 
 def get_icon_context() -> dict:

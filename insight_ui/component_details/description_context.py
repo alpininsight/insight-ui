@@ -188,6 +188,55 @@ def get_divider_description_context() -> dict[str, list[str]]:
     }
 
 
+@register_component(Component.SECTION)
+def get_section_description_context() -> dict[str, list[str]]:
+    """Serve description documentation for the section layout tag."""
+    return {
+        "description": [
+            _(
+                "The `section` block tag creates a semantic HTML5 `<section>` element for content groupings. "
+                "Unlike `vbox` which renders a `<div>`, `section` provides proper document semantics for accessibility and SEO."
+            ),
+            _(
+                "Use `section` for thematic content groupings within a page, such as 'Installation', 'Features', or 'FAQ'. "
+                "For pure layout purposes without semantic meaning, use `vbox` instead."
+            ),
+        ],
+        "features": [
+            _("**Semantic HTML**: Renders a `<section>` element for proper document structure."),
+            _("**id**: Anchor ID for navigation links (automatically adds `scroll-mt-24` for fixed navbar offset)."),
+            _("**gap**: Consistent spacing between children using the spacing scale (xs/s/m/l/xl)."),
+            _("**Accessibility**: Supports `aria_label` and `aria_labelledby` for screen readers."),
+        ],
+    }
+
+
+@register_component(Component.SURFACE)
+def get_surface_description_context() -> dict[str, list[str]]:
+    """Serve description documentation for the surface layout tag."""
+    return {
+        "description": [
+            _(
+                "The `surface` block tag creates a styled container with background, border, and optional shadow. "
+                "Use it to visually group content within a consistent design language."
+            ),
+            _(
+                "When `href` is provided, the surface becomes clickable and renders as an `<a>` element with hover effects. "
+                "This makes it ideal for navigation cards, feature links, or any clickable content block."
+            ),
+        ],
+        "features": [
+            _(
+                "**variant**: Visual style - `surface` (light background), `raised` (with shadow), or `outline` (border only)."
+            ),
+            _("**padding**: Inner padding using the spacing scale (xs/s/m/l/xl)."),
+            _("**radius**: Border radius from the design system (xs/s/m/l/xl/none)."),
+            _("**href**: When set, renders as `<a>` with hover effects and `group` class for child styling."),
+            _("**external**: Opens link in new tab with proper `rel` attributes (only when `href` is set)."),
+        ],
+    }
+
+
 # =============================================================
 #
 #   Navigation Tags

@@ -17,6 +17,9 @@ Available Tags
 --------------
 Block tags (require closing tag):
 
+    {% section id="intro" gap="m" aria_label="Introduction" %}...{% endsection %}
+        Semantic section container for content groupings (renders <section>).
+
     {% page padding="m" height="full" %}...{% endpage %}
         Full-width page container with consistent padding and optional height.
 
@@ -28,6 +31,22 @@ Block tags (require closing tag):
 
     {% grid cols=3 gap="m" %}...{% endgrid %}
         CSS Grid container with responsive columns.
+
+    {% surface padding="m" variant="surface" radius="m" %}...{% endsurface %}
+        Styled container with background, border, and optional shadow.
+        When href is provided, renders as clickable <a> with hover effects.
+
+    {% collapsible summary="Show details" open=False icon=True %}...{% endcollapsible %}
+        Expandable/collapsible section with toggle button.
+
+    {% tabs id="my-tabs" label="Tab Label" %}
+        {% tab id="tab1" label="Tab 1" active=True %}...{% endtab %}
+        {% tab id="tab2" label="Tab 2" %}...{% endtab %}
+    {% endtabs %}
+        Tabbed interface with static content or HTMX loading.
+
+    {% tabs config=tabs_config %}{% endtabs %}
+        Tabbed interface using a TabsConfig object (HTMX mode).
 
 Simple tags:
 
@@ -76,6 +95,30 @@ wrap : True | False
 direction : horizontal | vertical
     Divider orientation. Default: "horizontal"
 
+variant : surface | raised | outline
+    Surface visual style. Default: "surface"
+    - surface: Light background with border
+    - raised: Light background with border and shadow
+    - outline: Border only, transparent background
+
+radius : xs | s | m | l | xl | none
+    Border radius for surface. Default: "m"
+
+href : str
+    URL for link_surface. Required for link_surface.
+
+external : True | False
+    Open link in new tab (link_surface only). Default: False
+
+summary : str
+    Text displayed on the collapsible trigger button.
+
+open : True | False
+    Whether the collapsible is initially expanded. Default: False
+
+icon : True | False
+    Show chevron icon on trigger button. Default: True
+
 cols : int (2-6)
     Number of grid columns. If not set, uses auto-fit mode.
 
@@ -120,10 +163,12 @@ Grid Examples
 
 from __future__ import annotations
 
+import uuid
 from typing import TYPE_CHECKING
 
 from django import template
-from django.template.base import Node, NodeList, token_kwargs
+from django.template.base import Node, NodeList, TokenType, token_kwargs
+from django.template.loader import get_template
 from django.utils.safestring import mark_safe
 
 if TYPE_CHECKING:
@@ -138,15 +183,33 @@ register = template.Library()
 # =============================================================================
 
 VALID_SPACING: frozenset[str] = frozenset({"xs", "s", "m", "l", "xl"})
+VALID_SPACING_WITH_NONE: frozenset[str] = frozenset({"none", "xs", "s", "m", "l", "xl"})
 VALID_ALIGN: frozenset[str] = frozenset({"start", "center", "end", "stretch", "baseline"})
 VALID_JUSTIFY: frozenset[str] = frozenset({"start", "center", "end", "between", "around", "evenly"})
 VALID_DIRECTION: frozenset[str] = frozenset({"horizontal", "vertical"})
 VALID_HEIGHT: frozenset[str] = frozenset({"auto", "full", "peek"})
 VALID_MAX_WIDTH: frozenset[str] = frozenset({"xs", "s", "m", "l", "xl", "fit", "full"})
+VALID_SURFACE_VARIANT: frozenset[str] = frozenset({"surface", "raised", "outline"})
+VALID_RADIUS: frozenset[str] = frozenset({"xs", "s", "m", "l", "xl", "none"})
+VALID_SIDE: frozenset[str] = frozenset({"left", "right"})
+VALID_WIDTH: frozenset[str] = frozenset({"narrow", "normal", "wide"})
+VALID_MOBILE_BEHAVIOR: frozenset[str] = frozenset({"hidden", "drawer"})
 
 # Class mappings (classes are defined in input.css or are tailwind classes)
-GAP_CLASSES: dict[str, str] = {"xs": "gap-xs", "s": "gap-s", "m": "gap-m", "l": "gap-l", "xl": "gap-xl"}
-PADDING_CLASSES: dict[str, str] = {"xs": "p-xs", "s": "p-s", "m": "p-m", "l": "p-l", "xl": "p-xl"}
+GAP_CLASSES: dict[str, str] = {
+    "xs": "gap-insight-xs",
+    "s": "gap-insight-s",
+    "m": "gap-insight-m",
+    "l": "gap-insight-l",
+    "xl": "gap-insight-xl",
+}
+PADDING_CLASSES: dict[str, str] = {
+    "xs": "p-insight-xs",
+    "s": "p-insight-s",
+    "m": "p-insight-m",
+    "l": "p-insight-l",
+    "xl": "p-insight-xl",
+}
 SPACER_CLASSES: dict[str, str] = {"xs": "h-1 w-1", "s": "h-2 w-2", "m": "h-4 w-4", "l": "h-6 w-6", "xl": "h-8 w-8"}
 ALIGN_CLASSES: dict[str, str] = {
     "start": "items-start",
@@ -178,6 +241,26 @@ HEIGHT_CLASSES: dict[str, str] = {
     "peek": "page-peek",  # Shows next section peeking
 }
 
+# Surface variant classes (using combined CSS classes from input.css)
+SURFACE_VARIANT_CLASSES: dict[str, str] = {
+    "surface": "insight-surface",
+    "raised": "insight-raised",
+    "outline": "border border-insight-surface",  # outline has no bg/shadow
+}
+
+# Surface radius classes
+RADIUS_CLASSES: dict[str, str] = {
+    "xs": "rounded-sm",
+    "s": "rounded",
+    "m": "rounded-lg",
+    "l": "rounded-xl",
+    "xl": "rounded-2xl",
+    "none": "",
+}
+
+# Link surface hover classes (added to base surface classes)
+LINK_SURFACE_HOVER_CLASSES: str = "hover:border-insight-primary transition-colors group"
+
 # Responsive grid column mappings: cols -> (mobile, sm, md, lg)
 # These provide sensible defaults so users don't need to think about breakpoints
 RESPONSIVE_GRID_CLASSES: dict[int, str] = {
@@ -199,6 +282,13 @@ FIXED_GRID_CLASSES: dict[int, str] = {
 }
 
 VALID_COLS: frozenset[int] = frozenset({1, 2, 3, 4, 5, 6})
+
+# Sidebar width classes (direct Tailwind classes)
+SIDEBAR_WIDTH_CLASSES: dict[str, str] = {
+    "narrow": "w-56",  # 14rem (224px)
+    "normal": "w-72",  # 18rem (288px) - default
+    "wide": "w-156",  # 24rem (384px)
+}
 
 
 # =============================================================================
@@ -240,12 +330,17 @@ def _parse_kwargs(kwargs: dict[str, FilterExpression]) -> dict[str, object]:
     resolved: dict[str, object] = {}
     for key, value in kwargs.items():
         if hasattr(value, "var"):
-            # FilterExpression - check if it's a literal
-            if hasattr(value.var, "literal") and value.var.literal is not None:
-                resolved[key] = value.var.literal
-            else:
-                # Variable reference, keep for runtime
+            var = value.var
+            # Check if it's a literal (number, True, False, None, or quoted string)
+            if hasattr(var, "literal") and var.literal is not None:
+                # Numeric or boolean literal
+                resolved[key] = var.literal
+            elif hasattr(var, "var") and var.var is not None:
+                # It's a variable reference, keep FilterExpression for runtime
                 resolved[key] = value
+            else:
+                # String literal (var contains the unquoted string value)
+                resolved[key] = str(var)
         else:
             resolved[key] = value
     return resolved
@@ -393,6 +488,76 @@ class FlexNode(LayoutNode):
 # =============================================================================
 
 
+class SectionNode(LayoutNode):
+    """
+    Semantic section container for content groupings.
+
+    Renders a ``<section>`` element for proper document semantics and accessibility.
+    Combines vertical flex layout with semantic HTML structure.
+
+    Parameters:
+        id: Optional anchor ID (adds scroll-mt-24 for fixed navbar offset).
+        gap: Space between children (xs, s, m, l, xl). Default: "m"
+        aria_label: Accessible label for the section.
+        aria_labelledby: ID of element that labels this section.
+        class: Additional CSS classes to append.
+
+    Example::
+
+        {% section id="installation" gap="m" %}
+            <h2>Installation</h2>
+            <p>Instructions here...</p>
+        {% endsection %}
+
+    """
+
+    def build_classes(self, kwargs: dict[str, object]) -> list[str]:
+        """Build section container CSS classes."""
+        classes = ["flex", "flex-col"]
+
+        # Add scroll margin if section has an ID (for fixed navbar offset)
+        if kwargs.get("id"):
+            classes.append("scroll-mt-24")
+
+        # Gap between children
+        gap = str(kwargs.get("gap", "m"))
+        _validate(gap, VALID_SPACING, "gap", self.tag_name)
+        classes.append(GAP_CLASSES[gap])
+
+        return classes
+
+    def render(self, context: Context) -> str:
+        """Render the section element with semantic HTML."""
+        resolved = self.resolve_kwargs(context)
+        classes = self.build_classes(resolved)
+
+        # Append user-provided extra classes
+        extra_classes = resolved.get("class", "")
+        if extra_classes:
+            classes.append(str(extra_classes))
+
+        content = self.nodelist.render(context)
+        class_str = " ".join(classes)
+
+        # Build attributes
+        attrs = [f'class="{class_str}"']
+
+        section_id = resolved.get("id")
+        if section_id:
+            attrs.append(f'id="{section_id}"')
+
+        aria_label = resolved.get("aria_label")
+        if aria_label:
+            attrs.append(f'aria-label="{aria_label}"')
+
+        aria_labelledby = resolved.get("aria_labelledby")
+        if aria_labelledby:
+            attrs.append(f'aria-labelledby="{aria_labelledby}"')
+
+        attrs_str = " ".join(attrs)
+        return f"<section {attrs_str}>{content}</section>"
+
+
 class PageNode(LayoutNode):
     """Page container with full width, consistent padding, and optional height control."""
 
@@ -491,15 +656,450 @@ class GridNode(LayoutNode):
         return f'<div class="{class_str}">{content}</div>'
 
 
+class SurfaceNode(LayoutNode):
+    """
+    Surface container with background, border, and optional shadow.
+
+    A styled container for grouping content with consistent visual treatment.
+    When ``href`` is provided, renders as a clickable ``<a>`` element with hover effects.
+
+    Parameters:
+        variant: Visual style (surface|raised|outline). Default: "surface"
+        padding: Inner padding (xs|s|m|l|xl). Default: "m"
+        radius: Border radius override (xs|s|m|l|xl|none). Default: uses variant's radius.
+        id: HTML id attribute for anchor links and JavaScript targeting.
+        href: URL for clickable surface (renders as <a> instead of <div>).
+        external: Open link in new tab (only when href is set).
+        class: Additional CSS classes to append.
+
+    Example::
+
+        {# Static container (renders as <div>) #}
+        {% surface padding="l" variant="raised" %}
+            {% vbox gap="m" %}
+                <h3>Title</h3>
+                <p>Content goes here</p>
+            {% endvbox %}
+        {% endsurface %}
+
+        {# Clickable surface (renders as <a>) #}
+        {% surface href="/components" padding="m" %}
+            <span class="group-hover:text-insight-primary">Browse Components</span>
+        {% endsurface %}
+
+    Note:
+        When ``href`` is set, the container has ``class="group"`` so children
+        can use ``group-hover:`` utilities for hover effects.
+
+    """
+
+    def build_classes(self, kwargs: dict[str, object], is_link: bool = False) -> list[str]:
+        """Build surface container CSS classes."""
+        variant = str(kwargs.get("variant", "surface"))
+        _validate(variant, VALID_SURFACE_VARIANT, "variant", self.tag_name)
+        classes = [SURFACE_VARIANT_CLASSES[variant]]
+
+        # Padding
+        padding = str(kwargs.get("padding", "m"))
+        _validate(padding, VALID_SPACING, "padding", self.tag_name)
+        classes.append(PADDING_CLASSES[padding])
+
+        # Border radius (only add if explicitly set, otherwise use variant's default)
+        if "radius" in kwargs:
+            radius = str(kwargs.get("radius"))
+            _validate(radius, VALID_RADIUS, "radius", self.tag_name)
+            if RADIUS_CLASSES[radius]:
+                classes.append(RADIUS_CLASSES[radius])
+
+        # Add hover effects and group class for clickable surfaces
+        if is_link:
+            classes.append(LINK_SURFACE_HOVER_CLASSES)
+
+        return classes
+
+    def render(self, context: Context) -> str:
+        """Render the surface as either <div> or <a> based on href."""
+        resolved = self.resolve_kwargs(context)
+
+        href = resolved.get("href", "")
+        is_link = bool(href)
+
+        classes = self.build_classes(resolved, is_link=is_link)
+
+        # Append user-provided extra classes
+        extra_classes = resolved.get("class", "")
+        if extra_classes:
+            classes.append(str(extra_classes))
+
+        content = self.nodelist.render(context)
+        class_str = " ".join(classes)
+
+        # Build id attribute if provided
+        element_id = resolved.get("id", "")
+        id_attr = f' id="{element_id}"' if element_id else ""
+
+        if is_link:
+            # Render as anchor element
+            external = resolved.get("external", False)
+            attrs = f'href="{href}"{id_attr} class="{class_str}"'
+            if external:
+                attrs += ' target="_blank" rel="noopener noreferrer"'
+            return f"<a {attrs}>{content}</a>"
+
+        # Render as div element
+        return f'<div{id_attr} class="{class_str}">{content}</div>'
+
+
+class CollapsibleNode(LayoutNode):
+    """
+    Collapsible container with toggle button.
+
+    Creates an expandable/collapsible section using the existing
+    insight-ui-collapsible.js module. The trigger button toggles
+    the visibility of the content.
+
+    Example::
+
+        {% collapsible summary="Show more details" %}
+            <p>Hidden content that can be revealed.</p>
+        {% endcollapsible %}
+
+        {% collapsible summary="Advanced options" open=True icon=False %}
+            <p>Initially visible content.</p>
+        {% endcollapsible %}
+
+    """
+
+    def render(self, context: Context) -> str:
+        """Render the collapsible container."""
+        resolved = self.resolve_kwargs(context)
+
+        template_context = {
+            "summary": resolved.get("summary", "Details"),
+            "is_open": resolved.get("open", False),
+            "show_icon": resolved.get("icon", True),
+            "collapsible_id": f"collapsible-{uuid.uuid4().hex[:8]}",
+            "wrapper_class": str(resolved.get("class", "")),
+            "content": self.nodelist.render(context),
+        }
+
+        tpl = get_template("insight_ui/components/layout/collapsible.html")
+        return tpl.render(template_context)
+
+
+# =============================================================================
+# Tabs Component
+# =============================================================================
+
+
+class SidebarNode(LayoutNode):
+    """
+    Sidebar layout container.
+
+    A flexible container for sidebar content that can be positioned on either side,
+    with configurable width and mobile behavior.
+
+    Parameters:
+        side: Position of sidebar ("left" or "right"). Auto-detected from block context
+            when used inside ``{% block sidebar_left %}`` or ``{% block sidebar_right %}``.
+            Falls back to "right" if not specified and not in a sidebar block.
+        static: If True, sidebar is sticky; if False, it's a drawer. Default: True
+        width: Sidebar width ("narrow", "normal", "wide"). Default: "normal"
+        mobile_behavior: How to behave on mobile ("hidden", "drawer"). Default: "hidden"
+        class: Additional CSS classes to append.
+
+    Example::
+
+        {# Inside sidebar blocks, side is auto-detected - no need to specify #}
+        {% block sidebar_left %}
+            {% sidebar %}
+                {% include "components/sidebar_nav.html" %}
+            {% endsidebar %}
+        {% endblock %}
+
+        {% block sidebar_right %}
+            {% sidebar width="wide" mobile_behavior="drawer" %}
+                <h2>Table of Contents</h2>
+            {% endsidebar %}
+        {% endblock %}
+
+        {# Outside blocks, specify side explicitly #}
+        {% sidebar width="wide" %}
+            <h2>Custom Title</h2>
+            <nav>...</nav>
+        {% endsidebar %}
+
+    """
+
+    def render(self, context: Context) -> str:
+        """Render the sidebar container."""
+        resolved = self.resolve_kwargs(context)
+
+        # Get side from explicit parameter, context variable, or default
+        # Context variable _sidebar_side is set by base.html when using sidebar blocks
+        side_default = context.get("_sidebar_side", "right")
+        side = str(resolved.get("side", side_default))
+        _validate(side, VALID_SIDE, "side", self.tag_name)
+
+        static = resolved.get("static", True)
+        if isinstance(static, str):
+            static = static.lower() == "true"
+
+        width = str(resolved.get("width", "normal"))
+        _validate(width, VALID_WIDTH, "width", self.tag_name)
+
+        mobile_behavior = str(resolved.get("mobile_behavior", "hidden"))
+        _validate(mobile_behavior, VALID_MOBILE_BEHAVIOR, "mobile_behavior", self.tag_name)
+
+        # Get navbar_fixed from context (set by context processor)
+        navbar_fixed = context.get("navbar_fixed", False)
+
+        # Build template context
+        template_context = {
+            "side": side,
+            "static": static,
+            "width": width,
+            "width_class": SIDEBAR_WIDTH_CLASSES[width],
+            "mobile_behavior": mobile_behavior,
+            "navbar_fixed": navbar_fixed,
+            "wrapper_class": str(resolved.get("class", "")),
+            "content": self.nodelist.render(context),
+        }
+
+        tpl = get_template("insight_ui/components/layout/sidebar.html")
+        return tpl.render(template_context)
+
+
+class TabNode(Node):
+    """
+    Single tab within a tabs container.
+
+    Used internally by TabsNode to collect tab definitions.
+    """
+
+    def __init__(  # noqa: PLR0913
+        self,
+        nodelist: NodeList,
+        *,
+        tab_id: str,
+        label: str,
+        active: bool = False,
+        url: str = "",
+        icon: str = "",
+    ) -> None:
+        """Initialize the tab node."""
+        self.nodelist = nodelist
+        self.tab_id = tab_id
+        self.label = label
+        self.active = active
+        self.url = url
+        self.icon = icon
+
+    def render(self, context: Context) -> str:
+        """Render the tab content (used for static tabs)."""
+        return self.nodelist.render(context)
+
+
+class TabsNode(Node):
+    """
+    Tabbed interface with support for both static content and HTMX loading.
+
+    Supports two modes:
+
+    1. **Block mode** - Define tabs inline with content::
+
+        {% tabs id="install" label="Installation" %}
+            {% tab id="uv" label="uv (recommended)" active=True %}
+                <p>uv content here</p>
+            {% endtab %}
+            {% tab id="pip" label="pip" %}
+                <p>pip content here</p>
+            {% endtab %}
+        {% endtabs %}
+
+    2. **Config mode** - Use a TabsConfig object (HTMX)::
+
+        {% tabs config=my_tabs_config %}{% endtabs %}
+
+    3. **HTMX mode** - Tabs with URLs load content via HTMX::
+
+        {% tabs id="settings" label="Settings" %}
+            {% tab id="general" label="General" url="/settings/general" active=True %}{% endtab %}
+            {% tab id="security" label="Security" url="/settings/security" %}{% endtab %}
+        {% endtabs %}
+
+    """
+
+    def __init__(
+        self,
+        tab_nodes: list[TabNode],
+        *,
+        tag_id: str = "",
+        label: str = "",
+        config: object | None = None,
+        **kwargs: object,
+    ) -> None:
+        """Initialize the tabs container."""
+        self.tab_nodes = tab_nodes
+        self.tag_id = tag_id
+        self.label = label
+        self.config = config
+        self.kwargs = kwargs
+
+    def resolve_kwargs(self, context: Context) -> dict[str, object]:
+        """Resolve any template variables in kwargs."""
+        resolved: dict[str, object] = {}
+        for key, value in self.kwargs.items():
+            if hasattr(value, "resolve"):
+                resolved[key] = value.resolve(context)
+            else:
+                resolved[key] = value
+        return resolved
+
+    def render(self, context: Context) -> str:
+        """Render the tabs container."""
+        resolved = self.resolve_kwargs(context)
+        config = resolved.get("config") or self.config
+
+        # Resolve config if it's a variable
+        if config is not None and hasattr(config, "resolve"):
+            config = config.resolve(context)
+
+        # Determine mode and build tabs list
+        if config is not None:
+            # Config mode (HTMX) - data comes from TabsConfig object
+            tag_id = config.tag_id
+            label = config.label
+            is_htmx = True
+            tabs_data = [
+                {
+                    "id": tab.tag_id,
+                    "label": tab.title,
+                    "active": tab.active,
+                    "url": tab.url,
+                    "icon": getattr(tab, "icon", ""),
+                    "panel_id": f"{tag_id}-{tab.tag_id}",
+                    "content": None,
+                }
+                for tab in config.tabs
+            ]
+        else:
+            # Block mode - data comes from inline {% tab %} blocks
+            tag_id = str(resolved.get("id", f"tabs-{uuid.uuid4().hex[:8]}"))
+            label = str(resolved.get("label", ""))
+            is_htmx = any(tab.url for tab in self.tab_nodes)
+
+            # Ensure at least one tab is active
+            has_active = any(tab.active for tab in self.tab_nodes)
+            if not has_active and self.tab_nodes:
+                self.tab_nodes[0].active = True
+
+            tabs_data = [
+                {
+                    "id": tab.tab_id,
+                    "label": tab.label,
+                    "active": tab.active,
+                    "url": tab.url if is_htmx else "",
+                    "icon": tab.icon,
+                    "panel_id": f"{tag_id}-{tab.tab_id}",
+                    # Content comes from internal template rendering, not user input
+                    "content": mark_safe(tab.render(context)) if not is_htmx else None,  # noqa: S308  # nosec B308 B703
+                }
+                for tab in self.tab_nodes
+            ]
+
+        template_context = {
+            "tag_id": tag_id,
+            "label": label,
+            "is_htmx": is_htmx,
+            "tabs": tabs_data,
+        }
+
+        tpl = get_template("insight_ui/components/layout/tabs.html")
+        return tpl.render(template_context)
+
+
+def do_tabs(parser: Parser, token: Token) -> TabsNode:
+    """
+    Parse the {% tabs %} block tag.
+
+    Collects all {% tab %}...{% endtab %} blocks within.
+    """
+    bits = token.split_contents()
+    remaining_bits = bits[1:]
+
+    # Parse kwargs for the tabs container
+    kwargs = token_kwargs(remaining_bits, parser) if remaining_bits else {}
+    parsed_kwargs = _parse_kwargs(kwargs)
+
+    # Collect tab nodes
+    tab_nodes: list[TabNode] = []
+    nodelist = NodeList()
+
+    while True:
+        token = parser.next_token()
+
+        if token.token_type == TokenType.BLOCK:
+            tag_name = token.split_contents()[0]
+
+            if tag_name == "endtabs":
+                break
+            if tag_name == "tab":
+                # Parse the tab tag
+                tab_node = do_tab(parser, token)
+                tab_nodes.append(tab_node)
+            else:
+                # Other block tag, add to nodelist
+                nodelist.append(parser.compile_filter(token.contents))
+        else:
+            # Text or variable, ignore (whitespace between tabs)
+            pass
+
+    return TabsNode(
+        tab_nodes,
+        tag_id=str(parsed_kwargs.get("id", "")),
+        label=str(parsed_kwargs.get("label", "")),
+        config=parsed_kwargs.get("config"),
+        **{k: v for k, v in parsed_kwargs.items() if k not in ("id", "label", "config")},
+    )
+
+
+def do_tab(parser: Parser, token: Token) -> TabNode:
+    """Parse a single {% tab %} block."""
+    bits = token.split_contents()
+    remaining_bits = bits[1:]
+
+    kwargs = token_kwargs(remaining_bits, parser) if remaining_bits else {}
+    parsed_kwargs = _parse_kwargs(kwargs)
+
+    # Parse content until {% endtab %}
+    nodelist = parser.parse(("endtab",))
+    parser.delete_first_token()
+
+    return TabNode(
+        nodelist,
+        tab_id=str(parsed_kwargs.get("id", f"tab-{uuid.uuid4().hex[:8]}")),
+        label=str(parsed_kwargs.get("label", "Tab")),
+        active=bool(parsed_kwargs.get("active", False)),
+        url=str(parsed_kwargs.get("url", "")),
+        icon=str(parsed_kwargs.get("icon", "")),
+    )
+
+
 # =============================================================================
 # Tag Registration
 # =============================================================================
 
 
+register.tag("section", _make_block_tag(SectionNode))
 register.tag("page", _make_block_tag(PageNode))
 register.tag("hbox", _make_block_tag(HBoxNode))
 register.tag("vbox", _make_block_tag(VBoxNode))
 register.tag("grid", _make_block_tag(GridNode))
+register.tag("surface", _make_block_tag(SurfaceNode))
+register.tag("collapsible", _make_block_tag(CollapsibleNode))
+register.tag("sidebar", _make_block_tag(SidebarNode))
+register.tag("tabs", do_tabs)
 
 
 # =============================================================================
@@ -534,7 +1134,7 @@ def divider(direction: str = "horizontal", spacing: str = "m") -> str:
 
     Args:
         direction: "horizontal" or "vertical". Default: "horizontal"
-        spacing: Margin spacing (xs, s, m, l, xl). Default: "m"
+        spacing: Margin spacing (none, xs, s, m, l, xl). Default: "m"
 
     Returns:
         HTML div element styled as a divider.
@@ -545,16 +1145,18 @@ def divider(direction: str = "horizontal", spacing: str = "m") -> str:
         {% divider spacing="l" %}
 
     """
-    _validate(spacing, VALID_SPACING, "spacing", "divider")
+    _validate(spacing, VALID_SPACING_WITH_NONE, "spacing", "divider")
     _validate(direction, VALID_DIRECTION, "direction", "divider")
 
     # Margin classes based on direction
     margin_map = {
+        ("horizontal", "none"): "",
         ("horizontal", "xs"): "my-1",
         ("horizontal", "s"): "my-2",
         ("horizontal", "m"): "my-4",
         ("horizontal", "l"): "my-6",
         ("horizontal", "xl"): "my-8",
+        ("vertical", "none"): "",
         ("vertical", "xs"): "mx-1",
         ("vertical", "s"): "mx-2",
         ("vertical", "m"): "mx-4",
@@ -562,8 +1164,7 @@ def divider(direction: str = "horizontal", spacing: str = "m") -> str:
         ("vertical", "xl"): "mx-8",
     }
     margin = margin_map[(direction, spacing)]
-    classes = (
-        f"w-px self-stretch bg-gray-200 {margin}" if direction == "vertical" else f"h-px w-full bg-gray-200 {margin}"
-    )
+    base_classes = "w-px self-stretch bg-gray-200" if direction == "vertical" else "h-px w-full bg-gray-200"
+    classes = f"{base_classes} {margin}".strip()
 
     return mark_safe(f'<div class="{classes}"></div>')  # noqa: S308, # nosec B308, B703

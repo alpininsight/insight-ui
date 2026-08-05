@@ -82,8 +82,6 @@ from insight_ui.configs import (
     RadioItemConfig,
     SearchBarConfig,
     SelectConfig,
-    SidebarConfig,
-    SidebarDataConfig,
     Size,
     SliderConfig,
     StatusScreenConfig,
@@ -91,7 +89,6 @@ from insight_ui.configs import (
     StepperItemConfig,
     StepStatus,
     TableConfig,
-    TabsConfig,
     TextareaConfig,
     ThreeDCarouselConfig,
     ToggleConfig,
@@ -349,6 +346,7 @@ def page_header(
     config: PageHeaderConfig | None = None,
     *,
     title: str | _Unset = UNSET,
+    chapter: str | _Unset = UNSET,
     description: str | list[str] | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a page header in the base template."""
@@ -444,29 +442,6 @@ def navbar(context: dict[str, Any], config: NavbarConfig, **kwargs: JsonValue) -
     }
 
 
-@register.inclusion_tag("insight_ui/components/sidebar.html")
-def sidebar(
-    config: SidebarConfig | None = None,
-    *,
-    sidebar_data: SidebarDataConfig | _Unset = UNSET,
-    side: str | _Unset = UNSET,
-    static: bool | _Unset = UNSET,
-    auto_close: bool | _Unset = UNSET,
-    mobile_hidden: bool | _Unset = UNSET,
-) -> dict[str, Any]:
-    """Render a configurable page navigation."""
-    config = build_config(SidebarConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    return {
-        "sidebar_config": config,
-        "sidebar_data": config.sidebar_data,
-        "side": config.side,
-        "static": config.static,
-        "auto_close": config.auto_close,
-        "mobile_hidden": config.mobile_hidden,
-        "navbar_fixed": get_config("navbar_fixed"),
-    }
-
-
 @register.inclusion_tag("insight_ui/components/footer.html")
 def footer(config: FooterConfig) -> dict[str, Any]:
     """Render a footer with optional description, links, and a copyright line."""
@@ -531,12 +506,6 @@ def bullet_point_list(
 def accordion(config: AccordionConfig) -> dict[str, Any]:
     """Render an accordion that can have one or more sections open."""
     return {"accordion_config": config}
-
-
-@register.inclusion_tag("insight_ui/components/tabs.html")
-def tabs(config: TabsConfig) -> dict[str, Any]:
-    """Render a group of tabs and a container for the content of each tab."""
-    return {"config": config}
 
 
 # =============================================================
@@ -1212,6 +1181,7 @@ def search_bar(
     simple: bool | _Unset = UNSET,
     search_query: str | _Unset = UNSET,
     htmx_config: HtmxConfig | None | _Unset = UNSET,
+    enable_search: bool | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render text input with a button for a search function."""
     config = build_config(SearchBarConfig, config, **{k: v for k, v in locals().items() if k != "config"})

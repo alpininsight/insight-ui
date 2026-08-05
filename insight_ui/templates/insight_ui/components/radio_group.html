@@ -1,10 +1,10 @@
 <div>
     {% if radio_group_config.label %}
-        <span class="flex gap-1 text-sm font-bold text-primary mb-1">{{ radio_group_config.label }}</span>
+        <span class="flex gap-1 mb-1 font-bold text-sm text-primary">{{ radio_group_config.label }}</span>
     {% endif %}
     <div class="flex {% if not as_row %}flex-col space-y-1{% else %}space-x-4{% endif %}">
         {% for item in radio_group_config.items %}
-            <label class="flex items-center gap-1">
+            <label class="flex gap-1 items-center">
                 <input
                     type="radio"
                     {% if item.tag_id %}id="{{ item.tag_id }}"{% endif %}

@@ -1,7 +1,7 @@
 {% load i18n insight_tags %}
 
 <div data-insight-multiselect data-name="{{ multiselect_config.name }}" data-max="{{ multiselect_config.maximum }}" data-selected="{{ multiselect_config.selected_options|default:"" }}">
-    <label id="{{ multiselect_config.name }}-label" class="block text-sm font-bold text-primary mb-1">{{ multiselect_config.label }}</label>
+    <label id="{{ multiselect_config.name }}-label" class="block mb-1 font-bold text-sm text-primary">{{ multiselect_config.label }}</label>
     {% if multiselect_config.show_buttons %}
         <div class="flex gap-2 mb-1">
             {% button label=_("Select all") type="primary" size="s" button_type="button" extra_classes="select-all" %}
@@ -9,14 +9,14 @@
         </div>
     {% endif %}
     <div class="relative" role="combobox" aria-labelledby="{{ multiselect_config.name }}-label" aria-haspopup="listbox" aria-expanded="false" aria-owns="{{ multiselect_config.name }}-listbox">
-        <div class="selected flex flex-wrap items-center gap-1 input" aria-controls="{{ multiselect_config.name }}-listbox" aria-activedescendant="" aria-autocomplete="list" aria-multiselectable="true">
+        <div class="selected input flex flex-wrap gap-1 items-center" aria-controls="{{ multiselect_config.name }}-listbox" aria-activedescendant="" aria-autocomplete="list" aria-multiselectable="true">
             <span class="tags flex flex-wrap gap-1"></span>
-            <input id="{{ multiselect_config.name }}-search" type="text" class="search flex-1 outline-none text-sm min-w-[60px] placeholder-gray-400" placeholder={% trans "Type to search..." %} aria-label={% trans "Search {{ multiselect_config.label }}" %} />
+            <input id="{{ multiselect_config.name }}-search" type="text" class="search placeholder-insight-text-secondary flex-1 min-w-15 text-sm outline-none" placeholder={% trans "Type to search..." %} aria-label={% trans "Search {{ multiselect_config.label }}" %} />
         </div>
-        <span class="ml-auto text-gray-400 text-xs info"></span>
-        <div id="{{ multiselect_config.name }}-listbox" role="listbox" class="options hidden absolute mt-1 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 insight-radius-surface insight-shadow-overlay max-h-48 overflow-y-auto z-10">
+        <span class="info ml-auto text-insight-text-secondary text-xs"></span>
+        <div id="{{ multiselect_config.name }}-listbox" role="listbox" class="options hidden absolute z-10 mt-1 w-full max-h-48 bg-insight-bg-surface border border-insight-border-surface rounded-insight-control shadow-insight-overlay overflow-y-auto">
             {% for item in multiselect_config.options %}
-                <div id="{{ multiselect_config.name }}-opt-{{ forloop.counter }}" role="option" aria-selected="false" tabindex="-1" class="option text-primary px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer">{{ item }}</div>
+                <div id="{{ multiselect_config.name }}-opt-{{ forloop.counter }}" role="option" aria-selected="false" tabindex="-1" class="option px-3 py-2 text-primary bg-insight-bg-surface cursor-pointer hover:bg-insight-bg-base">{{ item }}</div>
             {% endfor %}
         </div>
     </div>

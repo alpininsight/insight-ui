@@ -1,401 +1,1046 @@
 {% extends "insight_ui/base.html" %}
-{% load static insight_tags i18n %}
+{% load static i18n insight_tags layout_tags %}
 
 {% block title %}{% trans "Insight UI - Customization" %}{% endblock title %}
+
+{% block extra_head %}
+    <style>html { scroll-behavior: smooth; }</style>
+{% endblock extra_head %}
 
 {% block navbar %}
     {% navbar config=nav_config user_dropdown_links=user_dropdown_links search_query=search_query %}
 {% endblock navbar %}
 
 {% block sidebar_left %}
-    {% sidebar sidebar_data=left_sidebar side="left" %}
+    {% sidebar %}
+        {% include "insight_ui/components/sidebar_nav.html" with sidebar_data=left_sidebar %}
+    {% endsidebar %}
 {% endblock sidebar_left %}
 
 {% block sidebar_right %}
-    {% include "insight_ui/components/toc_sidebar.html" with side="right" static=True navbar_fixed=True mobile_hidden=True %}
+    {% sidebar %}
+        {% include "insight_ui/components/toc_content.html" %}
+    {% endsidebar %}
 {% endblock sidebar_right %}
 
 {% block heading %}
-    {% page_header title=_("Customization") description=_("Our UI framework not only offers a range of useful components, but can also be fully customized to suit additional needs.") %}
+    {% page_header chapter=_("Get started") title=_("Customization") description=_("Adapt Insight UI to your brand with design tokens, component theming, and template overrides.") %}
 {% endblock heading %}
 
 {% block content %}
-    <div class="w-full space-y-12 text-secondary leading-loose">
-        <section class="space-y-8">
-            <p>
+    {% vbox padding="xl" gap="xl" max_width="l" class="mx-auto" %}
+        {# === OVERVIEW === #}
+        {% section gap="m" %}
+            <p class="text-lg">
                 {% blocktrans %}
-                    Colors and recurring elements, such as the appearance of headings, can be adjusted in just one place and the design adapts immediately.
-                    New components can also be added and existing ones customized.
-                    Should a component not fit your needs completely, it can be adapted accordingly with relatively little effort.
-                {% endblocktrans%}
+                    Insight UI uses a token-based design system built on <b>Tailwind CSS</b>. Change colors, spacing, or typography in one place and the entire UI adapts.
+                    There are four levels of customization:
+                {% endblocktrans %}
             </p>
+            {% grid cols=2 gap="m" %}
+                <a href="#settings" class="p-4 border border-insight-border-surface rounded-insight-raised transition-colors group hover:border-insight-primary">
+                    {% vbox gap="s" %}
+                        <div class="flex gap-2 items-center text-insight-primary">
+                            {% icon name="cog-6-tooth" size="s" %}
+                            <span class="font-medium text-insight-text-primary group-hover:text-insight-primary">{% trans "Configuration" %}</span>
+                        </div>
+                        <p class="text-insight-text-secondary">{% trans "Favicons, meta tags, feature flags via settings.py" %}</p>
+                    {% endvbox %}
+                </a>
+                <a href="#theming" class="p-4 border border-insight-border-surface rounded-insight-raised transition-colors group hover:border-insight-primary">
+                    {% vbox gap="s" %}
+                        <div class="flex gap-2 items-center text-insight-primary">
+                            {% icon name="swatch" size="s" %}
+                            <span class="font-medium text-insight-text-primary group-hover:text-insight-primary">{% trans "Design Tokens" %}</span>
+                        </div>
+                        <p class="text-insight-text-secondary">{% trans "Colors, spacing, radii, shadows via input.css" %}</p>
+                    {% endvbox %}
+                </a>
+                <a href="#templates" class="p-4 border border-insight-border-surface rounded-insight-raised transition-colors group hover:border-insight-primary">
+                    {% vbox gap="s" %}
+                        <div class="flex gap-2 items-center text-insight-primary">
+                            {% icon name="code-bracket" size="s" %}
+                            <span class="font-medium text-insight-text-primary group-hover:text-insight-primary">{% trans "Templates" %}</span>
+                        </div>
+                        <p class="text-insight-text-secondary">{% trans "Override component HTML for structural changes" %}</p>
+                    {% endvbox %}
+                </a>
+                <a href="#icons" class="p-4 border border-insight-border-surface rounded-insight-raised transition-colors group hover:border-insight-primary">
+                    {% vbox gap="s" %}
+                        <div class="flex gap-2 items-center text-insight-primary">
+                            {% icon name="sparkles" size="s" %}
+                            <span class="font-medium text-insight-text-primary group-hover:text-insight-primary">{% trans "Icons" %}</span>
+                        </div>
+                        <p class="text-insight-text-secondary">{% trans "Add custom icons or replace existing ones" %}</p>
+                    {% endvbox %}
+                </a>
+            {% endgrid %}
+        {% endsection %}
+
+        {% divider spacing="none" %}
+
+        {# === SETTINGS === #}
+        {% section id="settings" gap="l" %}
+            <h2>{% trans "1. Configuration via settings.py" %}</h2>
             <p>
-                {% trans "The following sections describe the different customization options." %}
-            </p>
-        </section>
-        <hr>
-        <section class="space-y-4">
-            <h2>{% trans "Configuration via settings.py" %}</h2>
-            <p>
-                {% blocktrans with settings='<span class="inline-tag">settings.py</span>'|safe %}
-                    There are a number of things that can be defined via the {{ settings }}.
+                {% blocktrans with settings='<span class="inline-tag">INSIGHT_UI</span>'|safe %}
+                    The {{ settings }} dictionary in your Django settings controls app-level options like branding assets, SEO metadata, and feature flags.
                 {% endblocktrans %}
             </p>
 
-            <div id="settings" data-insight-code-block="python" data-filename="settings.py">
+            <div data-insight-code-block="python" data-filename="settings.py">
                 {# fmt:off #}
                 INSIGHT_UI = {
+                    # Branding
                     "favicon": "insight_ui/favicon/favicon.ico",
                     "favicon_32": "insight_ui/favicon/favicon-32x32.png",
                     "favicon_16": "insight_ui/favicon/favicon-16x16.png",
                     "apple_touch_icon": "insight_ui/favicon/apple-touch-icon.png",
-                    "safari_mask_icon": "insight_ui/svg/logo.svg",  # Used by Safari pinned tab
-                    "msapplication_TileColor": "#da532c",  # Sets the background color for a live tile (MS Edge only)
-                    "theme_color": "#ffffff",  # For the search bar on mobile devices
-                    "stylesheet": "insight_ui/css/tailwind.css",  # Only change in case of using an alternative name for the stylesheet
-                    "navbar_fixed": True,  # Should the navigation stick to the top of the window (has impact on the sidebars as well)
-                    "title": "My indispensable app",  # Default title if the &lcub;% title %&rcub; block is not overridden
+                    "safari_mask_icon": "insight_ui/svg/logo.svg",
+                    "msapplication_TileColor": "#da532c",
+                    "theme_color": "#ffffff",
+
+                    # Layout
+                    "title": "My App",
+                    "navbar_fixed": True,
+
+                    # SEO
                     "meta": {
                         "seo": {
-                            "description": "My indispensable app",
+                            "description": "My application description",
                             "keywords": "Django, Insight UI",
-                            "author": "It's me",
+                            "author": "Your Name",
                         }
                     },
-                    "load_prism": False,  # Turn to 'True' to use syntax highlighting
-                    "load_leaflet": False,  # Turn to 'True' to use geo-maps
-                    "load_echarts": False,  # Turn to 'True' to use Chart-Components
-                    "JS_DEBUG": False,  # Turn to 'True' to enable build in browser console logging
-                    "use_tailwind_cli": False, # Turn to 'True' to enable the tailwind cli, if you want to modify the styles
+
+                    # Feature flags
+                    "load_prism": False,      # Syntax highlighting
+                    "load_leaflet": False,    # Geo maps
+                    "load_echarts": False,    # Charts
+                    "JS_DEBUG": False,        # Console logging
+                    "use_tailwind_cli": False # Live CSS compilation
                 }
                 {# fmt:on #}
             </div>
-        </section>
-        <section class="space-y-12">
-            <div class="space-y-4">
-                <h2>{% trans "Theming (adapting to a corporate design)" %}</h2>
-                <p>
-                    {% blocktrans with tailwind='<a href="https://tailwindcss.com/" class="text-link">TailwindCSS</a>'|safe %}
-                        Our UI framework uses {{ tailwind }} as its default styling implementation.
-                        Tailwind uses a so-called <i>input.css</i> file in which a theme can be built.
-                        This includes defining basic properties such as colors, font sizes or fonts, but also creating custom CSS classes or animations.
-                        Thanks to Tailwind's Preflight function, standards can also be defined so that certain elements such as headings always look the same without needing a class specified in the HTML code.
-                        The individual options and sections of the <i>input.css</i> are explained in more detail in the following sections.
-                    {% endblocktrans %}
-                </p>
+
+            {# --- Loading Config in Views --- #}
+            {% section id="loading-config" gap="m" %}
+                <h3>{% trans "Loading the Config in Views" %}</h3>
                 <p>
                     {% blocktrans %}
-                        The public design contract is semantic: brand colors, status colors, text colors, surfaces, interaction states, and component behavior should stay meaningful even if the styling implementation changes in the future.
+                        To make the configuration available in your templates, import <code class="inline-tag">get_config</code> from <code class="inline-tag">insight_ui.config</code> and add it to your view context.
                     {% endblocktrans %}
                 </p>
-                <p>
-                    {% blocktrans with input='<a href="https://github.com/alpininsight/insight-ui/blob/develop/insight_ui/utils/input.css" class="text-link">insight_ui/utils/input.css</a>'|safe %}
-                        The default theme of the Insight UI framework is located in the file {{ input }}.
-                    {% endblocktrans %}
-                </p>
-            </div>
 
-            <section class="space-y-4">
-                <h3>{% trans "Start with your corporate identity" %}</h3>
-                <p>
-                    {% blocktrans with input='<span class="inline-tag">input.css</span>'|safe theme='<span class="inline-tag">@theme</span>'|safe %}
-                        The recommended starting point is to map your corporate identity to Insight UI's semantic tokens in {{ input }}.
-                        Put your brand colors, text colors, status colors, interaction states, and default font into the {{ theme }} block.
-                        Buttons, links, headings, forms, surfaces, and documentation examples then consume the same design decisions without changing every template.
-                    {% endblocktrans %}
-                </p>
-                <ul>
-                    <li>{% trans "Use primary and secondary colors for the main brand actions and supporting accents." %}</li>
-                    <li>{% trans "Use success, warning, danger, and info colors for product and system states." %}</li>
-                    <li>{% trans "Use text tokens for primary content, secondary content, and links." %}</li>
-                    <li>{% trans "Use component classes and template tags after the tokens are set, so the whole UI follows the same visual language." %}</li>
-                </ul>
-                <div data-insight-code-block="css" data-filename="input.css">
+                <div data-insight-code-block="python" data-filename="views.py">
                     {# fmt:off #}
-                    @theme {
-                        --font-sans: "Inter", sans-serif;
+                    from insight_ui.config import get_config
 
-                        --color-insight-primary: #0057b8;
-                        --color-insight-primary-hover: #0072ce;
-                        --color-insight-primary-active: #1d8fe3;
-                        --color-insight-secondary: #008578;
-                        --color-insight-secondary-hover: #00a992;
-                        --color-insight-secondary-active: #2cc8b4;
-
-                        --color-insight-success: #15803d;
-                        --color-insight-warning: #ca8a04;
-                        --color-insight-danger: #dc2626;
-                        --color-insight-info: #2563eb;
-
-                        --color-insight-text-primary: oklch(26.9% 0 0);
-                        --color-insight-text-secondary: oklch(55.6% 0 0);
-                        --color-insight-text-link: var(--color-insight-primary);
-                        --color-insight-text-link-hover: var(--color-insight-primary-hover);
-                    }
+                    def my_view(request):
+                        context = {
+                            **get_config(),  # Adds INSIGHT_UI to context
+                            # ... your other context variables
+                        }
+                        return render(request, "my_template.html", context)
                     {# fmt:on #}
                 </div>
-                <p>
-                    {% blocktrans with input='<span class="inline-tag">input.css</span>'|safe %}
-                        Change templates only when the structure, behavior, or component anatomy must change.
-                        For brand alignment, prefer {{ input }} first.
-                    {% endblocktrans %}
-                </p>
-            </section>
-
-            <section class="space-y-4">
-                <h3>{% trans "Setup" %}</h3>
-                <p>
-                    {% blocktrans with tailwind_cli='<a href="https://github.com/django-commons/django-tailwind-cli" class="text-link">django-tailwind-cli</a>'|safe %}
-                        To be able to customize the theming, a few steps need to be carried out first.
-                        Since our framework uses TailwindCSS, a <i>Tailwind Compiler</i> must be installed. This is most easily done via {{ tailwind_cli }}.
-                    {% endblocktrans %}
-                </p>
 
                 <p>
-                    {% blocktrans with uv='<a href="https://docs.astral.sh/uv/" class="text-link">uv</a>'|safe uv_add='<span class="inline-tag select-all">uv add django-tailwind-cli</span>'|safe %}
-                        First, <b>django-tailwind-cli</b> must be installed, for example via {{ uv }} with {{ uv_add }}.
+                    {% blocktrans %}
+                        The <code class="inline-tag">get_config()</code> function merges your <code class="inline-tag">settings.INSIGHT_UI</code> with the library defaults and returns a dictionary with the key <code class="inline-tag">INSIGHT_UI</code>.
+                    {% endblocktrans %}
+                    {% blocktrans %}
+                        Templates can then access the configuration via <code class="inline-tag">&#123;&#123; INSIGHT_UI.title &#125;&#125;</code>, etc.
+                    {% endblocktrans %}
+                </p>
+            {% endsection %}
+        {% endsection %}
+
+        {% divider spacing="none" %}
+
+        {# === THEMING === #}
+        {% section id="theming" gap="l" %}
+            <h2>{% trans "2. Design Tokens (input.css)" %}</h2>
+            <p>
+                {% blocktrans with input='<span class="inline-tag">input.css</span>'|safe theme='<span class="inline-tag">@theme</span>'|safe %}
+                    The {{ input }} file is the single source of truth for your visual design. All tokens are defined in the {{ theme }} block and automatically apply to all components.
+                {% endblocktrans %}
+            </p>
+
+            {# --- Setup (moved to top) --- #}
+            {% section id="setup" gap="m" %}
+                <h3>{% trans "Setup: Tailwind CLI" %}</h3>
+                <p>
+                    {% blocktrans %}
+                        To customize the theme, you need the Tailwind compiler. We recommend <b>django-tailwind-cli</b>.
                     {% endblocktrans %}
                 </p>
 
-                <p>
-                    {% blocktrans with installed_apps='<span class="inline-tag">INSTALLED_APPS</span>'|safe %}
-                        Then <b>django-tailwind-cli</b> must be added to the {{ installed_apps }}.
-                    {% endblocktrans %}
-                </p>
+                <div class="insight-raised p-4">
+                    {% vbox gap="m" %}
+                        <div class="flex gap-2 items-center">
+                            {% icon name="command-line" %}
+                            <span class="font-medium text-insight-text-primary">{% trans "Quick Setup" %}</span>
+                        </div>
+                        <ol class="list-decimal list-inside space-y-2">
+                            <li>{% trans "Install the package:" %} <code class="inline-tag">uv add django-tailwind-cli</code></li>
+                            <li>{% trans "Add to INSTALLED_APPS:" %} <code class="inline-tag">"django_tailwind_cli"</code></li>
+                            <li>{% trans "Copy input.css to your project (see below)" %}</li>
+                            <li>{% trans "Run setup:" %} <code class="inline-tag">python manage.py tailwind setup</code></li>
+                            <li>{% trans "Start dev server:" %} <code class="inline-tag">python manage.py tailwind runserver</code></li>
+                        </ol>
+                    {% endvbox %}
+                </div>
+
                 <div data-insight-code-block="python" data-filename="settings.py">
                     {# fmt:off #}
                     INSTALLED_APPS = [
                         # ...
                         "django_tailwind_cli",
-                        # ...
                     ]
-                    {# fmt:on #}
-                </div>
-                <p>{% trans "So that the compiler knows where to find the relevant files, a few settings need to be configured." %}</p>
-                <ul>
-                    <li><span class="inline-tag">STATICFILES_DIRS</span>: {% trans "The path to the static files must be defined." %}</li>
-                    <li><span class="inline-tag">TAILWIND_CLI_SRC_CSS</span>: {% blocktrans with input='<span class="inline-tag">input.css</span>'|safe %}The path to {{ input }}, which contains the theme configuration (more on this later).{% endblocktrans %}</li>
-                    <li><span class="inline-tag">TAILWIND_CLI_DIST_CSS</span>: {% trans "The path where the generated stylesheet should be saved." %}</li>
-                    <li><span class="inline-tag">TAILWIND_CLI_AUTOMATIC_DOWNLOAD</span>: {% trans "We recommend disabling the automatic updating of the Tailwind compiler, as it would consume more and more storage space and prevents error messages due to failed downloads." %}</li>
-                </ul>
-                <div data-insight-code-block="python" data-filename="settings.py">
-                    {# fmt:off #}
-                    # Configure static files directory
-                    STATICFILES_DIRS = [BASE_DIR / &lt;path/to/static_dir&gt;]
 
-                    # Tailwind source file
-                    TAILWIND_CLI_SRC_CSS = BASE_DIR / ".venv/Lib/site-packages/insight_ui/static/insight_ui/css/input.css"
-
-                    # Tailwind dist file
-                    TAILWIND_CLI_DIST_CSS = "insight_ui/css/tailwind.css"
-
-                    # Prevent automatic updating (recommended)
-                    # This is a silent process that can lead to silent problems if the process is terminated too quickly.
+                    # Point to your custom input.css
+                    TAILWIND_CLI_SRC_CSS = BASE_DIR / "my_app/static/css/input.css"
+                    TAILWIND_CLI_DIST_CSS = "css/tailwind.css"
                     TAILWIND_CLI_AUTOMATIC_DOWNLOAD = False
                     {# fmt:on #}
                 </div>
-                <p>{% trans "Next, the setup of <b>django-tailwind-cli</b> must be run once, during which the Tailwind CLI is also downloaded (~120MB)." %}</p>
-                <div data-insight-code-block="bash">
-                    python manage.py tailwind setup
-                </div>
+
+                {# --- Copying input.css --- #}
+                {% vbox gap="s" %}
+                    <h4 class="font-medium tracking-wide uppercase">{% trans "Copying input.css" %}</h4>
+                    <p>
+                        {% blocktrans %}
+                            Copy the default <code class="inline-tag">input.css</code> from the installed Insight UI package to your project's static directory.
+                        {% endblocktrans %}
+                    </p>
+
+                    <div data-insight-code-block="bash">
+                        {# fmt:off #}
+                        # Find the source file in your virtual environment
+                        # Linux/macOS:
+                        cp .venv/lib/python3.*/site-packages/insight_ui/utils/input.css \
+                           my_app/static/css/input.css
+
+                        # Windows (PowerShell):
+                        copy .venv\Lib\site-packages\insight_ui\utils\input.css `
+                             my_app\static\css\input.css
+                        {# fmt:on #}
+                    </div>
+
+                    <p>
+                        {% blocktrans %}
+                            Then update the <code class="inline-tag">@source</code> directive at the top of your copied file to include both your templates and the Insight UI templates:
+                        {% endblocktrans %}
+                    </p>
+
+                    <div data-insight-code-block="css" data-filename="input.css">
+                        {# fmt:off #}
+                        /* Your project templates */
+                        @source "../../templates";
+
+                        /* Insight UI templates (adjust path to your venv) */
+                        /* Linux/macOS: */
+                        @source "../../../.venv/lib/python3.12/site-packages/insight_ui/templates/insight_ui";
+
+                        /* Windows: */
+                        @source "../../../.venv/Lib/site-packages/insight_ui/templates/insight_ui";
+                        {# fmt:on #}
+                    </div>
+
+                    {% infobox message=_("The `@source` directive tells Tailwind which files to scan for utility classes. Without it, unused classes will be purged from the final CSS.") %}
+                {% endvbox %}
+            {% endsection %}
+
+            {# --- Color Palette --- #}
+            {% section id="colors" gap="m" %}
+                <h3>{% trans "Color System" %}</h3>
                 <p>
-                    {% blocktrans with runserver='<span class="inline-tag">runserver</span>'|safe tailwind='<span class="inline-tag">tailwind</span>'|safe %}
-                        After that, the development server can be started with %(tailwind)s, so this time {{ tailwind }} must be included before {{ runserver }}.
-                    {% endblocktrans %}
+                    {% trans "The color system includes brand colors, status colors, surface colors, and text colors. Each color has states for hover and active interactions." %}
                 </p>
-                <div data-insight-code-block="bash">
-                    python manage.py tailwind runserver
-                </div>
-            </section>
-            <section class="space-y-4">
-                <h3>{% trans "Customization" %}</h3>
-                <p>
-                    {% blocktrans with settings='<span class="inline-tag">settings.py</span>'|safe %}
-                        To customize the theming, this file must be copied and then specified in the <i>Insight UI</i> configuration in {{ settings }}.
-                    {% endblocktrans %}
-                </p>
-                <div id="settings2" data-insight-code-block="python" data-filename="settings.py">
-                    TAILWIND_CLI_SRC_CSS = "my-path/to/input.css"
-                </div>
-                <p>
-                    {% blocktrans with insight_ui='<span class="inline-tag">Insight-UI</span>'|safe %}
-                        In this file, the path to the {{ insight_ui }} templates must be adjusted:
-                    {% endblocktrans %}
-                </p>
-                <div id="settings3" data-insight-code-block="css" data-filename="input.css">
-                    @source "../templates/insight_ui/";
-                </div>
-                <p>{% trans "replace with:" %}</p>
-                <div id="settings4" data-insight-code-block="css" data-filename="input.css">
-                    @source ".venv/Lib/site-packages/insight_ui/templates/insight_ui";
-                </div>
-                <p>
-                    {% blocktrans with setup='<span class="inline-tag">python manage.py tailwind setup</span>'|safe %}
-                        Then {{ setup }} must be executed.
-                    {% endblocktrans %}
-                </p>
-            </section>
-            <section class="space-y-4">
-                <h3>{% trans "Contents of input.css" %}</h3>
-                <p>
-                    {% trans "The file contains the following components, which together make up the theme." %}
-                </p>
-                <p>
-                    {% blocktrans with import='<span class="inline-tag">@import</span>'|safe %}
-                        The first line contains the {{ import }} for Tailwind. This is needed so that Tailwind can later generate the corresponding stylesheet from this file.
-                    {% endblocktrans %}
-                </p>
-                <div id="settings5" data-insight-code-block="css" data-filename="input.css">
-                    @import "tailwindcss";
-                </div>
-                <p>
-                    {% blocktrans with source='<span class="inline-tag">@source</span>'|safe %}
-                        The next line contains the {{ source }} directive.
-                        This tells Tailwind where to look for the template files to find the CSS tags used inside.
-                        Normally Tailwind should find all project-specific templates on its own, but external packages occasionally cause issues, which is why the path to our templates is also specified here.
-                    {% endblocktrans %}
-                </p>
-                <div id="settings6" data-insight-code-block="css" data-filename="input.css">
-                    @source "../templates/insight_ui/";
-                </div>
-                <p>
-                    {% trans "The next line enables switching between light/dark mode." %}
-                </p>
-                <div id="settings7" data-insight-code-block="css" data-filename="input.css">
-                    @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
-                </div>
-                <p>
-                    {% blocktrans with font='<a href="https://fonts.google.com/specimen/Atkinson+Hyperlegible?query=Atkinson+Hyperlegible" class="text-link">Atkinson Hyperlegible</a>'|safe %}
-                        By default, Insight UI uses the font {{ font }}.
-                        This is not a standard system font, which is why it must be specified explicitly.
-                        If a different font is desired, it can be replaced or supplemented here.
-                        The path to the font is relative to the <i>input.css</i>, i.e. the file in which it is defined.
-                    {% endblocktrans %}
-                </p>
-                <div id="settings8" data-insight-code-block="css" data-filename="input.css">
-                    {# fmt:off #}
-                    @font-face {
-                        font-family: "insight-ui";
-                        src: url("../font/AtkinsonHyperlegibleNext-VariableFont_wght.ttf");
-                    }
-                    {# fmt:on #}
-                </div>
-                <p>
-                    {% blocktrans with theme='<span class="inline-tag">@theme</span>'|safe %}
-                        That's all very nice, but where are the colors?
-                        Apart from the font, the previous steps are necessary and their settings should not be changed without reason.
-                        The actual theming comes now. Fittingly, the block is declared with {{ theme }}.
-                        In this block all theme-specific variables are defined, including colors.
-                    {% endblocktrans %}
-                </p>
-                <p>
-                    {% blocktrans with font='<span class="inline-tag">--font-sans: "insight-ui", sans-serif;</span>'|safe %}
-                        But first, the font again. In the theme block, a default font can also be set that is used for all text throughout the entire project without having to specify it each time.
-                        The directive {{ font }} causes any text without serifs to use for example the font <i>Inter</i>.
-                    {% endblocktrans%}
-                </p>
-                <p>
-                    <i>{% trans "Todo: define multiple fonts." %}</i>
-                </p>
-                <div id="settings9" data-insight-code-block="css" data-filename="input.css">
+
+                {# Brand Colors #}
+                {% vbox gap="s" %}
+                    <h4 class="font-medium tracking-wide uppercase">{% trans "Brand Colors" %}</h4>
+                    {% hbox gap="m" wrap="wrap" %}
+                        {# Primary #}
+                        {% vbox gap="xs" class="min-w-48" %}
+                            <div class="flex w-fit rounded-insight-raised shadow-insight-subtle overflow-hidden">
+                                <div class="w-16 h-12 bg-insight-primary"></div>
+                                <div class="w-16 h-12 bg-insight-primary-hover"></div>
+                                <div class="w-16 h-12 bg-insight-primary-active"></div>
+                                <div class="w-16 h-12 bg-insight-primary-soft"></div>
+                            </div>
+                            <span class="font-medium">Primary</span>
+                            <code class="text-secondary">--color-insight-primary</code>
+                        {% endvbox %}
+                        {# Secondary #}
+                        {% vbox gap="xs" class="min-w-48" %}
+                            <div class="flex w-fit rounded-insight-raised shadow-insight-subtle overflow-hidden">
+                                <div class="w-16 h-12 bg-insight-secondary"></div>
+                                <div class="w-16 h-12 bg-insight-secondary-hover"></div>
+                                <div class="w-16 h-12 bg-insight-secondary-active"></div>
+                                <div class="w-16 h-12 bg-insight-secondary-soft"></div>
+                            </div>
+                            <span class="font-medium">Secondary</span>
+                            <code class="text-secondary">--color-insight-secondary</code>
+                        {% endvbox %}
+                    {% endhbox %}
+                {% endvbox %}
+
+                {# Status Colors #}
+                {% vbox gap="s" %}
+                    <h4 class="font-medium tracking-wide uppercase">{% trans "Status Colors" %}</h4>
+                    {% hbox gap="m" wrap="wrap" %}
+                        {# Success #}
+                        {% vbox gap="xs" %}
+                            <div class="flex w-fit rounded-insight-raised shadow-insight-subtle overflow-hidden">
+                                <div class="w-12 h-10 bg-insight-success"></div>
+                                <div class="w-12 h-10 bg-insight-success-hover"></div>
+                                <div class="w-12 h-10 bg-insight-success-active"></div>
+                                <div class="w-12 h-10 bg-insight-success-soft"></div>
+                            </div>
+                            <span class="font-medium">Success</span>
+                            <code class="text-secondary">--color-insight-success</code>
+                        {% endvbox %}
+                        {# Warning #}
+                        {% vbox gap="xs" %}
+                            <div class="flex w-fit rounded-insight-raised shadow-insight-subtle overflow-hidden">
+                                <div class="w-12 h-10 bg-insight-warning"></div>
+                                <div class="w-12 h-10 bg-insight-warning-hover"></div>
+                                <div class="w-12 h-10 bg-insight-warning-active"></div>
+                                <div class="w-12 h-10 bg-insight-warning-soft"></div>
+                            </div>
+                            <span class="font-medium">Warning</span>
+                            <code class="text-secondary">--color-insight-warning</code>
+                        {% endvbox %}
+                        {# Danger #}
+                        {% vbox gap="xs" %}
+                            <div class="flex w-fit rounded-insight-raised shadow-insight-subtle overflow-hidden">
+                                <div class="w-12 h-10 bg-insight-danger"></div>
+                                <div class="w-12 h-10 bg-insight-danger-hover"></div>
+                                <div class="w-12 h-10 bg-insight-danger-active"></div>
+                                <div class="w-12 h-10 bg-insight-danger-soft"></div>
+                            </div>
+                            <span class="font-medium">Danger</span>
+                            <code class="text-secondary">--color-insight-danger</code>
+                        {% endvbox %}
+                        {# Info #}
+                        {% vbox gap="xs" %}
+                            <div class="flex w-fit rounded-insight-raised shadow-insight-subtle overflow-hidden">
+                                <div class="w-12 h-10 bg-insight-info"></div>
+                                <div class="w-12 h-10 bg-insight-info-hover"></div>
+                                <div class="w-12 h-10 bg-insight-info-active"></div>
+                                <div class="w-12 h-10 bg-insight-info-soft"></div>
+                            </div>
+                            <span class="font-medium">Info</span>
+                            <code class="text-secondary">--color-insight-info</code>
+                        {% endvbox %}
+                    {% endhbox %}
+                {% endvbox %}
+
+                {# Surface Colors #}
+                {% vbox gap="s" %}
+                    <h4 class="font-medium tracking-wide uppercase">{% trans "Surface & Border Colors" %}</h4>
+                    <p>{% trans "Surfaces create visual hierarchy. Each level has a matching border color." %}</p>
+                    {% hbox gap="m" wrap="wrap" %}
+                        {% vbox gap="xs" %}
+                            <div class="flex justify-center items-center w-24 h-16 bg-insight-base rounded-insight-raised">
+                                <span>base</span>
+                            </div>
+                            <code class="text-secondary leading-normal">bg-insight-base</code>
+                        {% endvbox %}
+                        {% vbox gap="xs" %}
+                            <div class="flex justify-center items-center w-24 h-16 bg-insight-surface border border-insight-surface rounded-insight-raised">
+                                <span>surface</span>
+                            </div>
+                            <code class="text-secondary leading-normal">bg-insight-surface</code>
+                            <code class="text-secondary leading-normal">border-insight-surface</code>
+                        {% endvbox %}
+                        {% vbox gap="xs" %}
+                            <div class="flex justify-center items-center w-24 h-16 bg-insight-raised border border-insight-raised rounded-insight-raised">
+                                <span>raised</span>
+                            </div>
+                            <code class="text-secondary leading-normal">bg-insight-raised</code>
+                            <code class="text-secondary leading-normal">border-insight-raised</code>
+                        {% endvbox %}
+                        {% vbox gap="xs" %}
+                            <div class="flex justify-center items-center w-24 h-16 bg-insight-overlay border border-insight-overlay rounded-insight-raised">
+                                <span>overlay</span>
+                            </div>
+                            <code class="text-secondary leading-normal">bg-insight-overlay</code>
+                            <code class="text-secondary leading-normal">border-insight-overlay</code>
+                        {% endvbox %}
+                    {% endhbox %}
+                    {% infobox message=_("You can use these utilities directly, or use our [combined surface classes](#surfaces) for quick container styling.") %}
+                {% endvbox %}
+
+                {# Text Colors #}
+                {% vbox gap="s" %}
+                    <h4 class="font-medium tracking-wide uppercase">{% trans "Text Colors" %}</h4>
+                    {% hbox gap="l" wrap="wrap" %}
+                        {% vbox gap="xs" %}
+                            <span class="text-insight-text-primary">Primary text</span>
+                            <code class="text-secondary leading-normal">text-insight-text-primary</code>
+                        {% endvbox %}
+                        {% vbox gap="xs" %}
+                            <span class="text-insight-text-secondary">Secondary text</span>
+                            <code class="text-secondary leading-normal">text-insight-text-secondary</code>
+                        {% endvbox %}
+                        {% vbox gap="xs" %}
+                            <span class="text-insight-text-hint">Hint text</span>
+                            <code class="text-secondary leading-normal">text-insight-text-hint</code>
+                        {% endvbox %}
+                        {% vbox gap="xs" %}
+                            <span class="text-link">Link text</span>
+                            <code class="text-secondary leading-normal">text-link</code>
+                        {% endvbox %}
+                    {% endhbox %}
+                {% endvbox %}
+
+                {# Color Token Reference #}
+                <div data-insight-code-block="css" data-filename="input.css">
                     {# fmt:off #}
                     @theme {
-                        --font-sans: "Inter", sans-serif;
+                        /* Brand colors */
+                        --color-insight-primary: #4183EA;
+                        --color-insight-primary-soft: #E3EFFF;
+                        --color-insight-primary-hover: #256CD8;
+                        --color-insight-primary-active: #0856C0;
 
-                        --color-insight-primary: #3b82f6;
-                        ...
-                        --color-insight-text-link-hover: #93c5fd;
+                        --color-insight-secondary: #1B9388;
+                        --color-insight-secondary-soft: #DDF4F1;
+                        --color-insight-secondary-hover: #008074;
+                        --color-insight-secondary-active: #006B60;
 
-                        --animate-blink: blink 2s step-start infinite;
+                        /* Status colors (each has base, soft, hover, active) */
+                        --color-insight-success: #2EA55C;
+                        --color-insight-warning: #E8A127;
+                        --color-insight-danger: #E6443D;
+                        --color-insight-info: #00A3CB;
 
-                        @keyframes blink {
-                            0%, 100% {
-                            opacity: 0;
-                            }
-                            50% {
-                            opacity: 100;
-                            }
-                        }
+                        /* Surfaces */
+                        --color-insight-bg-base: #FFFFFF;
+                        --color-insight-bg-surface: #FFFFFF;
+                        --color-insight-bg-raised: #EEF0F3;
+                        --color-insight-bg-overlay: #E9EAEB;
+
+                        /* Borders */
+                        --color-insight-border-surface: #E5E7EB;
+                        --color-insight-border-raised: #E5E7EB;
+                        --color-insight-border-overlay: #E5E7EB;
+
+                        /* Text */
+                        --color-insight-text-primary: #1C1C1E;
+                        --color-insight-text-secondary: #364153;
+                        --color-insight-text-hint: #d1d5dc;
+                        --color-insight-text-link: #256CD8;
                     }
                     {# fmt:on #}
                 </div>
+            {% endsection %}
+
+            {# --- Typography --- #}
+            {% section id="typography" gap="m" %}
+                <h3>{% trans "Typography" %}</h3>
                 <p>
-                    {% blocktrans with caption='<span class="inline-tag">&lt;h&gt;</span>'|safe %}
-                        While the variables defined in the theme block can be manually applied to elements to adjust individual properties, complete designs for specific HTML tags can also be predefined.
-                        This works via Tailwind's <i>Preflight</i> module, which removes all default styles from HTML elements so that for example all {{ caption }} look the same.
-                        This is done partly to remove various browser defaults so that the page looks the same in every browser, and also to directly add styles for specific elements.
+                    {% blocktrans %}
+                        Insight UI uses a custom font loaded via <code class="inline-tag">@font-face</code>.
+                        To use your own font, replace the font file and update the references in <code class="inline-tag">input.css</code>.
                     {% endblocktrans %}
                 </p>
-                <p>
-                    {% blocktrans with button='<span class ="inline-tag">button:not(:disabled), [role="button"]:not(:disabled) { cursor: pointer; }</span>'|safe pointer='<span class ="inline-tag">pointer</span>'|safe %}
-                        The line {{ button }} ensures for example that all buttons show a {{ pointer }}, i.e. a hand cursor (no longer standard since Tailwind V.4.0 and therefore specified here).
-                    {% endblocktrans%}
-                </p>
-                <p>
-                    {% blocktrans with caption='<span class="inline-tag">&lt;h1&gt;</span>'|safe caption_red='<span class="inline-tag">&lt;h1 class="text-red-500&gt;</span>'|safe %}
-                        The directive below for the {{ caption }} tag specifies that the CSS classes listed there should be applied to every %(caption)s tag.
-                        This means that these classes do not need to be added manually to each tag. If exceptions are wanted, additional CSS classes can still be added or overridden in the template.
-                        For example, headings with {{ caption_red }} will still be displayed in red.
-                    {% endblocktrans %}
-                </p>
-                <div id="settings10" data-insight-code-block="css" data-filename="input.css">
+
+                {% vbox gap="m" %}
+                    {% vbox gap="s" %}
+                        <h4 class="font-medium tracking-wide uppercase">{% trans "Step 1: Load the font" %}</h4>
+                        <p>
+                            {% trans "Add a @font-face declaration with the path to your font file (relative to input.css)." %}
+                        </p>
+                        <div data-insight-code-block="css" data-filename="input.css">
+                            {# fmt:off #}
+                            @font-face {
+                                font-family: "my-brand-font";
+                                src: url("../font/MyBrandFont.woff2") format("woff2"),
+                                    url("../font/MyBrandFont.ttf") format("truetype");
+                                font-weight: 100 900;  /* Variable font weight range */
+                                font-display: swap;
+                            }
+                            {# fmt:on #}
+                        </div>
+                    {% endvbox %}
+
+                    {% vbox gap="s" %}
+                        <h4 class="font-medium tracking-wide uppercase">{% trans "Step 2: Set as default" %}</h4>
+                        <p>
+                            {% trans "Update the --font-sans variable in the @theme block to use your font." %}
+                        </p>
+                        <div data-insight-code-block="css" data-filename="input.css">
+                            {# fmt:off #}
+                            @theme {
+                                --font-sans: "my-brand-font", system-ui, sans-serif;
+                            }
+                            {# fmt:on #}
+                        </div>
+                        <p>
+                            {% infobox message=_("The default font **Atkinson Hyperlegible Next** is optimized for readability and accessibility. When choosing a replacement, consider legibility at various sizes and weights.") %}
+                        </p>
+                    {% endvbox %}
+                {% endvbox %}
+
+                {# Multiple Fonts #}
+                {% vbox gap="m" %}
+                    <h4 class="font-medium tracking-wide uppercase">{% trans "Using Multiple Fonts" %}</h4>
+                    <p>
+                        {% blocktrans %}
+                            You can define multiple font families for different purposes. Tailwind provides built-in variables for sans-serif, serif, and monospace fonts. You can also define custom font families for specific use cases like headings.
+                        {% endblocktrans %}
+                    </p>
+
+                    <div data-insight-code-block="css" data-filename="input.css">
+                        {# fmt:off #}
+                        /* Load multiple fonts */
+                        @font-face {
+                            font-family: "brand-sans";
+                            src: url("../font/BrandSans.woff2") format("woff2");
+                            font-weight: 100 900;
+                            font-display: swap;
+                        }
+
+                        @font-face {
+                            font-family: "brand-heading";
+                            src: url("../font/BrandHeading.woff2") format("woff2");
+                            font-weight: 400 700;
+                            font-display: swap;
+                        }
+
+                        @font-face {
+                            font-family: "brand-mono";
+                            src: url("../font/BrandMono.woff2") format("woff2");
+                            font-weight: 400;
+                            font-display: swap;
+                        }
+
+                        @theme {
+                            /* Body text */
+                            --font-sans: "brand-sans", system-ui, sans-serif;
+
+                            /* Code blocks */
+                            --font-mono: "brand-mono", ui-monospace, monospace;
+
+                            /* Custom: Headings (use with font-heading class) */
+                            --font-heading: "brand-heading", serif;
+                        }
+                        {# fmt:on #}
+                    </div>
+
+                    <p>
+                        {% blocktrans %}
+                            Use the fonts in your templates with Tailwind classes:
+                        {% endblocktrans %}
+                    </p>
+
+                    <div data-insight-code-block="html">
+                        {# fmt:off #}
+                        &lt;!-- Body text (default) --&gt;
+                        &lt;p class="font-sans"&gt;Regular body text&lt;/p&gt;
+
+                        &lt;!-- Code --&gt;
+                        &lt;code class="font-mono"&gt;const x = 42;&lt;/code&gt;
+
+                        &lt;!-- Custom heading font --&gt;
+                        &lt;h1 class="font-heading"&gt;Page Title&lt;/h1&gt;
+                        {# fmt:on #}
+                    </div>
+                {% endvbox %}
+
+                {# TODO: Text Size & Line Height tokens are not yet defined in input.css #}
+                {# Text Size & Line Height #}
+                {% vbox gap="m" %}
+                    <h4 class="font-medium tracking-wide uppercase">{% trans "Text Size & Line Height" %}</h4>
+                    {% infobox message=_("Text size and line height tokens are planned but not yet available. Currently, use Tailwind's default text utilities (`text-sm`, `text-base`, `text-lg`, etc.).") %}
+                {% endvbox %}
+            {% endsection %}
+
+            {# --- Spacing --- #}
+            {% section id="spacing" gap="m" %}
+                <h3>{% trans "Spacing Scale" %}</h3>
+                <p>{% trans "A consistent spacing scale for margins, padding, and gaps." %}</p>
+
+                {% vbox gap="xs" %}
+                    {% hbox gap="s" v_align="center" %}
+                        <code class="w-8 text-right text-secondary">xs</code>
+                        <div class="h-4 bg-insight-primary rounded-insight-surface" style="width: 0.25rem;"></div>
+                        <span>0.25rem (4px)</span>
+                    {% endhbox %}
+                    {% hbox gap="s" v_align="center" %}
+                        <code class="w-8 text-right text-secondary">s</code>
+                        <div class="h-4 bg-insight-primary rounded-insight-surface" style="width: 0.5rem;"></div>
+                        <span>0.5rem (8px)</span>
+                    {% endhbox %}
+                    {% hbox gap="s" v_align="center" %}
+                        <code class="w-8 text-right text-secondary">m</code>
+                        <div class="h-4 bg-insight-primary rounded-insight-surface" style="width: 1rem;"></div>
+                        <span>1rem (16px)</span>
+                    {% endhbox %}
+                    {% hbox gap="s" v_align="center" %}
+                        <code class="w-8 text-right text-secondary">l</code>
+                        <div class="h-4 bg-insight-primary rounded-insight-surface" style="width: 2rem;"></div>
+                        <span>2rem (32px)</span>
+                    {% endhbox %}
+                    {% hbox gap="s" v_align="center" %}
+                        <code class="w-8 text-right text-secondary">xl</code>
+                        <div class="h-4 bg-insight-primary rounded-insight-surface" style="width: 4rem;"></div>
+                        <span>4rem (64px)</span>
+                    {% endhbox %}
+                {% endvbox %}
+
+                <div data-insight-code-block="css" data-filename="input.css">
                     {# fmt:off #}
-                    @layer base {
-                        button:not(:disabled), [role="button"]:not(:disabled) { cursor: pointer; }
+                    @theme {
+                        --spacing-insight-xs: 0.25rem;
+                        --spacing-insight-s: 0.5rem;
+                        --spacing-insight-m: 1rem;
+                        --spacing-insight-l: 2rem;
+                        --spacing-insight-xl: 4rem;
+                    }
+                    {# fmt:on #}
+                </div>
+            {% endsection %}
 
-                        h1 {
-                            @apply text-3xl font-bold text-insight-text-primary dark:text-white mb-4;
+            {# --- Border Radius --- #}
+            {% section id="radii" gap="m" %}
+                <h3>{% trans "Border Radius" %}</h3>
+                <p>{% trans "Radius tokens for corners, from subtle to fully rounded." %}</p>
+
+                {% hbox gap="m" wrap="wrap" %}
+                    {% vbox gap="xs" v_align="center" %}
+                        <div class="size-16 bg-insight-primary rounded-insight-xs"></div>
+                        <code class="text-secondary">xs</code>
+                    {% endvbox %}
+                    {% vbox gap="xs" v_align="center" %}
+                        <div class="size-16 bg-insight-primary rounded-insight-s"></div>
+                        <code class="text-secondary">s</code>
+                    {% endvbox %}
+                    {% vbox gap="xs" v_align="center" %}
+                        <div class="size-16 bg-insight-primary rounded-insight-m"></div>
+                        <code class="text-secondary">m</code>
+                    {% endvbox %}
+                    {% vbox gap="xs" v_align="center" %}
+                        <div class="size-16 bg-insight-primary rounded-insight-l"></div>
+                        <code class="text-secondary">l</code>
+                    {% endvbox %}
+                    {% vbox gap="xs" v_align="center" %}
+                        <div class="size-16 bg-insight-primary rounded-insight-xl"></div>
+                        <code class="text-secondary">xl</code>
+                    {% endvbox %}
+                    {% vbox gap="xs" v_align="center" %}
+                        <div class="size-16 bg-insight-primary rounded-insight-full"></div>
+                        <code class="text-secondary">full</code>
+                    {% endvbox %}
+                {% endhbox %}
+
+                <p>
+                    {% trans "Semantic radius tokens map to specific use cases:" %}
+                </p>
+                <ul class="list-disc list-inside space-y-1">
+                    <li><code class="inline-tag">rounded-insight-control</code> {% trans "for buttons, inputs" %}</li>
+                    <li><code class="inline-tag">rounded-insight-surface</code> {% trans "for cards, panels" %}</li>
+                    <li><code class="inline-tag">rounded-insight-raised</code> {% trans "for elevated elements" %}</li>
+                    <li><code class="inline-tag">rounded-insight-overlay</code> {% trans "for modals, dropdowns" %}</li>
+                </ul>
+            {% endsection %}
+
+            {# --- Shadows --- #}
+            {% section id="shadows" gap="m" %}
+                <h3>{% trans "Shadows" %}</h3>
+                <p>{% trans "Elevation shadows create depth and visual hierarchy." %}</p>
+
+                {% hbox gap="l" wrap="wrap" %}
+                    {% vbox gap="xs" v_align="center" %}
+                        <div class="size-20 bg-insight-bg-surface rounded-insight-m shadow-insight-subtle"></div>
+                        <code class="text-secondary">subtle</code>
+                    {% endvbox %}
+                    {% vbox gap="xs" v_align="center" %}
+                        <div class="size-20 bg-insight-bg-surface rounded-insight-m shadow-insight-surface"></div>
+                        <code class="text-secondary">surface</code>
+                    {% endvbox %}
+                    {% vbox gap="xs" v_align="center" %}
+                        <div class="size-20 bg-insight-bg-surface rounded-insight-m shadow-insight-raised"></div>
+                        <code class="text-secondary">raised</code>
+                    {% endvbox %}
+                    {% vbox gap="xs" v_align="center" %}
+                        <div class="size-20 bg-insight-bg-surface rounded-insight-m shadow-insight-overlay"></div>
+                        <code class="text-secondary">overlay</code>
+                    {% endvbox %}
+                {% endhbox %}
+            {% endsection %}
+
+            {# --- Dark Mode --- #}
+            {% section id="dark-mode" gap="m" %}
+                <h3>{% trans "Dark Mode" %}</h3>
+                <p>
+                    {% blocktrans %}
+                        Every color token has a dark variant. The theme switches automatically based on the <code class="inline-tag">data-theme="dark"</code> attribute on the root element.
+                    {% endblocktrans %}
+                </p>
+
+                <div data-insight-code-block="css" data-filename="input.css">
+                    {# fmt:off #}
+                    @theme {
+                        /* Light mode (default) */
+                        --color-insight-bg-base: #FFFFFF;
+                        --color-insight-text-primary: #1C1C1E;
+
+                        /* Dark mode variants (applied via @layer base) */
+                        --color-insight-bg-base-dark: #030712;
+                        --color-insight-text-primary-dark: #F5F8FC;
+                    }
+
+                    @layer base {
+                        [data-theme="dark"] {
+                            --color-insight-bg-base: var(--color-insight-bg-base-dark);
+                            --color-insight-text-primary: var(--color-insight-text-primary-dark);
                         }
                     }
                     {# fmt:on #}
                 </div>
+
+                {# --- Activating Dark Mode --- #}
+                {% vbox gap="s" %}
+                    <h4 class="font-medium tracking-wide uppercase">{% trans "Activating Dark Mode" %}</h4>
+                    <p>
+                        {% blocktrans %}
+                            Set the <code class="inline-tag">data-theme</code> attribute on the <code class="inline-tag">&lt;html&gt;</code> element. You can use JavaScript to toggle it or respect the user's system preference.
+                        {% endblocktrans %}
+                    </p>
+
+                    <div data-insight-code-block="javascript" data-filename="theme.js">
+                        {# fmt:off #}
+                        // Toggle dark mode manually
+                        function toggleTheme() {
+                            const html = document.documentElement;
+                            const current = html.dataset.theme;
+                            html.dataset.theme = current === "dark" ? "light" : "dark";
+                            localStorage.setItem("theme", html.dataset.theme);
+                        }
+
+                        // Respect system preference on load
+                        function initTheme() {
+                            const saved = localStorage.getItem("theme");
+                            if (saved) {
+                                document.documentElement.dataset.theme = saved;
+                            } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                                document.documentElement.dataset.theme = "dark";
+                            }
+                        }
+
+                        // Listen for system preference changes
+                        window.matchMedia("(prefers-color-scheme: dark)")
+                            .addEventListener("change", (e) => {
+                                if (!localStorage.getItem("theme")) {
+                                    document.documentElement.dataset.theme = e.matches ? "dark" : "light";
+                                }
+                            });
+                        {# fmt:on #}
+                    </div>
+
+                    <p>
+                        {% blocktrans %}
+                            Insight UI includes a <code class="inline-tag">theme_toggle</code> component that handles this automatically. See the component documentation for usage.
+                        {% endblocktrans %}
+                    </p>
+                {% endvbox %}
+            {% endsection %}
+
+            {# --- Component Classes --- #}
+            {% section id="components" gap="m" %}
+                <h3>{% trans "Component Classes" %}</h3>
                 <p>
-                    {% blocktrans with components='<span class="inline-tag">components</span>'|safe %}
-                        The next block is called {{ components }} and contains custom CSS classes.
-                        Why are there no custom CSS classes in the actual stylesheet? There is technically no conventional stylesheet, since it is generated by Tailwind every time something changes in the templates, as long as the Tailwind compiler is running.
-                        Each time, the entire file is recreated and all manually added classes are lost. To still be able to use predefined constructs without having to copy CSS classes every time, {{ components }} can be defined.
+                    {% blocktrans %}
+                        The <code class="inline-tag">@layer components</code> block defines reusable CSS classes for buttons, badges, inputs, and more. These classes consume the design tokens.
                     {% endblocktrans %}
                 </p>
-                <p>
-                    {% blocktrans with button='<span class="inline-tag">&lt;button class="btn btn-s"&gt;</span>'|safe apply='<span class="inline-tag">@apply</span>'|safe %}
-                        In the <i>input.css</i>, for example, components for buttons are defined.
-                        These can be used in templates like a normal CSS class {{ button }}.
-                        The syntax has little to do with classic CSS. Instead, the respective Tailwind classes or other custom classes are added via {{ apply }}.
-                        This is an advantage for anyone who has previously worked with Tailwind.
-                    {% endblocktrans %}
-                </p>
-                <div id="settings11" data-insight-code-block="css" data-filename="input.css">
+
+                {# Button Examples #}
+                {% vbox gap="s" %}
+                    <h4 class="font-medium tracking-wide uppercase">{% trans "Button Variants" %}</h4>
+                    {% hbox gap="s" wrap="wrap" %}
+                        <button class="btn btn-primary btn-m">Primary</button>
+                        <button class="btn btn-secondary btn-m">Secondary</button>
+                        <button class="btn btn-outline-primary btn-m">Outline</button>
+                        <button class="btn btn-subtle-primary btn-m">Subtle</button>
+                    {% endhbox %}
+                {% endvbox %}
+
+                {# Badge Examples #}
+                {% vbox gap="s" %}
+                    <h4 class="font-medium tracking-wide uppercase">{% trans "Badge Variants" %}</h4>
+                    {% hbox gap="s" wrap="wrap" %}
+                        <span class="badge badge-primary badge-m">Primary</span>
+                        <span class="badge badge-success badge-m">Success</span>
+                        <span class="badge badge-warning badge-m">Warning</span>
+                        <span class="badge badge-danger badge-m">Danger</span>
+                        <span class="badge badge-info badge-m">Info</span>
+                    {% endhbox %}
+                {% endvbox %}
+
+                <div data-insight-code-block="css" data-filename="input.css">
                     {# fmt:off #}
                     @layer components {
                         .btn {
-                            @apply flex gap-2 items-center justify-center border-2 rounded-sm text-white px-5 py-1.5;
+                            @apply flex gap-2 items-center justify-center
+                                border-2 border-transparent rounded-insight-control
+                                px-5 py-1.5 text-white transition-colors;
                         }
-                        ...
+
+                        .btn-primary {
+                            @apply bg-insight-primary border-insight-primary
+                                hover:bg-insight-primary-hover active:bg-insight-primary-active;
+                        }
+
+                        .badge {
+                            @apply inline-flex items-center gap-2
+                                px-4 py-1.5 rounded-insight-full shadow-insight-subtle;
+                        }
+
+                        .badge-primary {
+                            @apply bg-insight-primary/10 text-insight-primary;
+                        }
                     }
                     {# fmt:on #}
                 </div>
-            </section>
-        </section>
-        <section class="space-y-4">
-            <h2>{% trans "Override template" %}</h2>
+            {% endsection %}
+
+            {# --- Surface Classes --- #}
+            {% section id="surfaces" gap="m" %}
+                <h3>{% trans "Surface Classes" %}</h3>
+                <p>
+                    {% blocktrans %}
+                        Combined classes that apply background, border, shadow, and border-radius for each elevation level. Use these for quick, consistent container styling.
+                    {% endblocktrans %}
+                </p>
+                {% hbox gap="m" wrap="wrap" %}
+                    <div class="insight-surface p-4">
+                        <code class="text-secondary">.insight-surface</code>
+                    </div>
+                    <div class="insight-raised p-4">
+                        <code class="text-secondary">.insight-raised</code>
+                    </div>
+                    <div class="insight-overlay p-4">
+                        <code class="text-secondary">.insight-overlay</code>
+                    </div>
+                {% endhbox %}
+                <div data-insight-code-block="css" data-filename="input.css">
+                    {# fmt:off #}
+                    @layer utilities {
+                        /* Background utilities */
+                        .bg-insight-base { background-color: var(--color-insight-bg-base); }
+                        .bg-insight-surface { background-color: var(--color-insight-bg-surface); }
+                        .bg-insight-raised { background-color: var(--color-insight-bg-raised); }
+                        .bg-insight-overlay { background-color: var(--color-insight-bg-overlay); }
+
+                        /* Border color utilities */
+                        .border-insight-surface { border-color: var(--color-insight-border-surface); }
+                        .border-insight-raised { border-color: var(--color-insight-border-raised); }
+                        .border-insight-overlay { border-color: var(--color-insight-border-overlay); }
+                    }
+
+                    @layer components {
+                        /* Combined surface classes */
+                        .insight-surface {
+                            background-color: var(--color-insight-bg-surface);
+                            border: 1px solid var(--color-insight-border-surface);
+                            box-shadow: var(--shadow-insight-surface);
+                            border-radius: var(--radius-insight-surface);
+                        }
+
+                        .insight-raised { /* ... */ }
+                        .insight-overlay { /* ... */ }
+                    }
+                    {# fmt:on #}
+                </div>
+                <p>
+                    {% blocktrans %}
+                        You can override individual properties with utility classes:
+                    {% endblocktrans %}
+                </p>
+                <div data-insight-code-block="html">
+                    {# fmt:off #}
+                    &lt;!-- Standard surface --&gt;
+                    &lt;div class="insight-surface p-4"&gt;...&lt;/div&gt;
+
+                    &lt;!-- Surface with stronger shadow --&gt;
+                    &lt;div class="insight-surface p-4 shadow-insight-overlay"&gt;...&lt;/div&gt;
+
+                    &lt;!-- Or use individual utilities for full control --&gt;
+                    &lt;div class="p-4 bg-insight-surface border border-insight-surface rounded-lg"&gt;...&lt;/div&gt;  {# tw-token-ok: reason #}
+                    {# fmt:on #}
+                </div>
+            {% endsection %}
+
+        {% endsection %}
+
+        {% divider spacing="none" %}
+
+        {# === TEMPLATES === #}
+        {% section id="templates" gap="m" %}
+            <h2>{% trans "3. Override Templates" %}</h2>
             <p>
-                {% blocktrans with path='<span class="inline-tag">templates/insight_ui/components/</span>'|safe %}
-                    It is possible to customize the provided components. To do so, simply copy the corresponding template of the component into your own project directory
-                    The only important thing is that the copied template is placed at this path {{ path }} and must be located in the root directory of the project.
+                {% blocktrans %}
+                    For structural changes that go beyond styling, override component templates in your project. Django's template loader prioritizes your templates over the package defaults.
                 {% endblocktrans %}
             </p>
-            <p>{% trans "Example:" %}</p>
-            <div id="settings11" data-insight-code-block="bash">
+
+            {% infobox info_type="warning" message=_("**Prefer tokens over template overrides.** Most branding needs can be met by adjusting input.css. Override templates only when you need to change HTML structure, add ARIA attributes, or modify component behavior.") %}
+
+            <div data-insight-code-block="bash">
                 {# fmt:off #}
                 myapp/
                 └── templates/
-                    │── insight_ui/
-                    └── components/
-                        └── navbar.html  # Overwrites the standard Navbar-Template
+                    └── insight_ui/
+                        └── components/
+                            └── navbar.html  {# Overrides the default navbar #}
                 {# fmt:on #}
             </div>
-        </section>
-    </div>
+
+            <p>
+                {% blocktrans %}
+                    The template path must match exactly: <code class="inline-tag">templates/insight_ui/components/&lt;component&gt;.html</code>
+                {% endblocktrans %}
+            </p>
+        {% endsection %}
+
+        {% divider spacing="none" %}
+
+        {# === ICONS === #}
+        {% section id="icons" gap="m" %}
+            <h2>{% trans "4. Custom Icons" %}</h2>
+            <p>
+                {% blocktrans %}
+                    Insight UI includes 280+ icons from Heroicons. You can add your own icons or replace existing ones using the <code class="inline-tag">compile_icons</code> management command.
+                {% endblocktrans %}
+            </p>
+
+            <div data-insight-code-block="bash">
+                {# fmt:off #}
+                # Add icons from a directory
+                python manage.py compile_icons --dir path/to/my-icons/
+
+                # Add icons from an SVG sprite sheet
+                python manage.py compile_icons --sprite path/to/sprite.svg
+
+                # Combine both sources
+                python manage.py compile_icons --dir path/to/icons/ --sprite path/to/sprite.svg
+                {# fmt:on #}
+            </div>
+
+            <p>
+                {% blocktrans %}
+                    Custom icons override bundled icons with the same name. Icon names are derived from filenames and normalized (lowercase, hyphens instead of underscores).
+                {% endblocktrans %}
+            </p>
+
+            <p>
+                <a href="{% url 'icon_view' %}" class="text-link">
+                    {% trans "View all available icons and detailed documentation" %} &rarr;
+                </a>
+            </p>
+        {% endsection %}
+
+        {% divider spacing="none" %}
+
+        {# === TOKEN REFERENCE === #}
+        {% section id="reference" gap="m" %}
+            <h2>{% trans "Quick Reference" %}</h2>
+            <p>{% trans "All available design tokens at a glance." %}</p>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-insight-border-surface">
+                            <th class="py-2 pr-4 font-medium text-left">{% trans "Category" %}</th>
+                            <th class="py-2 pr-4 font-medium text-left">{% trans "Tokens" %}</th>
+                            <th class="py-2 font-medium text-left">{% trans "CSS Variable Pattern" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-insight-border-surface">
+                        <tr>
+                            <td class="py-2 pr-4">Colors</td>
+                            <td class="py-2 pr-4">primary, secondary, success, warning, danger, info</td>
+                            <td class="py-2"><code>--color-insight-{name}</code></td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 pr-4">Surfaces</td>
+                            <td class="py-2 pr-4">base, surface, raised, overlay</td>
+                            <td class="py-2"><code>--color-insight-bg-{level}</code></td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 pr-4">Borders</td>
+                            <td class="py-2 pr-4">surface, raised, overlay</td>
+                            <td class="py-2"><code>--color-insight-border-{level}</code></td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 pr-4">Text</td>
+                            <td class="py-2 pr-4">text-primary, text-secondary, text-hint, text-link</td>
+                            <td class="py-2"><code>--color-insight-text-{role}</code></td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 pr-4">Spacing</td>
+                            <td class="py-2 pr-4">xs, s, m, l, xl</td>
+                            <td class="py-2"><code>--spacing-insight-{size}</code></td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 pr-4">Radii</td>
+                            <td class="py-2 pr-4">xs, s, m, l, xl, full, control, surface, raised, overlay</td>
+                            <td class="py-2"><code>--radius-insight-{size}</code></td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 pr-4">Shadows</td>
+                            <td class="py-2 pr-4">subtle, surface, raised, overlay, focus</td>
+                            <td class="py-2"><code>--shadow-insight-{level}</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="mt-8">{% trans "Utility Classes" %}</h3>
+            <p>{% trans "Simplified utility classes for common styling tasks." %}</p>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-insight-border-surface">
+                            <th class="py-2 pr-4 font-medium text-left">{% trans "Category" %}</th>
+                            <th class="py-2 pr-4 font-medium text-left">{% trans "Classes" %}</th>
+                            <th class="py-2 font-medium text-left">{% trans "Description" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-insight-border-surface">
+                        <tr>
+                            <td class="py-2 pr-4">Background</td>
+                            <td class="py-2 pr-4"><code>bg-insight-{base|surface|raised|overlay}</code></td>
+                            <td class="py-2">{% trans "Surface background colors" %}</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 pr-4">Border</td>
+                            <td class="py-2 pr-4"><code>border-insight-{surface|raised|overlay}</code></td>
+                            <td class="py-2">{% trans "Surface border colors" %}</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 pr-4">Text</td>
+                            <td class="py-2 pr-4"><code>text-primary</code>, <code>text-secondary</code></td>
+                            <td class="py-2">{% trans "Shorthand for text colors" %}</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 pr-4">Combined</td>
+                            <td class="py-2 pr-4"><code>insight-{surface|raised|overlay}</code></td>
+                            <td class="py-2">{% trans "All-in-one: bg + border + shadow + radius" %}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        {% endsection %}
+    {% endvbox %}
 {% endblock content %}
 
 {% block footer %}

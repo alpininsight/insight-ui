@@ -1,7 +1,7 @@
 {% load i18n insight_tags %}
 
 {% for item in items %}
-    <div class="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4 mb-4">
+    <div class="p-4 mb-4 bg-insight-bg-surface border border-insight-border-surface rounded-insight-surface">
         <h3>{{ item.title }}</h3>
         <p class="text-secondary">{{ item.content }}</p>
     </div>
@@ -11,7 +11,7 @@
     {% if auto_fetch == "False" %}
         {% with page_num=page|stringformat:"s" %}
             {% with url=request_url|add:"?page="|add:page_num|add:"&auto_fetch="|add:auto_fetch %}
-                {% button label=_("Load more") size="l" extra_classes="mx-auto" hx_get=url hx_swap="outerHTML" hx_trigger="click" %}
+                {% button label=_('Load more') size='l' extra_classes='mx-auto' hx_get=url hx_swap='outerHTML' hx_trigger='click' %}
             {% endwith %}
         {% endwith %}
     {% else %}
@@ -19,10 +19,10 @@
             hx-get="{{ request_url }}?page={{ page }}&auto_fetch={{ auto_fetch }}"
             hx-trigger="revealed"
             hx-swap="outerHTML"
-            class="text-center py-4"
+            class="py-4 text-center"
         >
             <div class="inline-flex items-center px-4 py-2 text-sm text-secondary">
-                <svg class="animate-spin -ml-1 mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24">
+                <svg class="animate-spin mr-3 -ml-1 w-5 h-5" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
@@ -32,6 +32,6 @@
     {% endif %}
 {% else %}
     <div>
-        <p class="text-center text-secondary py-4">{% trans 'All content loaded.' %}</p>
+        <p class="py-4 text-center text-secondary">{% trans 'All content loaded.' %}</p>
     </div>
 {% endif %}

@@ -8,10 +8,10 @@
     hx-trigger="revealed threshold:{{ threshold|default:100 }}px"
   {% endif %}
 >
-  <!-- Existing Content -->
+  {# Existing Content #}
   <div>
     {% for item in infinite_scroll_config.items %}
-      <div class="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4 mb-4">
+      <div class="p-4 mb-4 bg-insight-bg-surface border border-insight-border-surface rounded-insight-surface">
         <h3>{{ item.title }}</h3>
         <p class="text-secondary">{{ item.content }}</p>
       </div>
@@ -21,15 +21,15 @@
   {% if not infinite_scroll_config.auto_fetch %}
     {% with page_num=infinite_scroll_config.page|stringformat:"s" %}
       {% with url=infinite_scroll_config.request_url|add:"?page="|add:page_num|add:"&auto_fetch="|add:infinite_scroll_config.auto_fetch %}
-        {% button label=_("Load more") size="l" extra_classes="mx-auto" hx_get=url hx_swap="outerHTML" hx_trigger="click" hx_indicator=".htmx-indicator" %}
+        {% button label=_('Load more') size='l' extra_classes='mx-auto' hx_get=url hx_swap='outerHTML' hx_trigger='click' hx_indicator='.htmx-indicator' %}
       {% endwith %}
     {% endwith %}
   {% endif %}
 
-  <!-- Loading Indicator -->
+  {# Loading Indicator #}
   <div class="htmx-indicator">
-    <div class="flex items-center justify-center py-4">
-      <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-insight-primary"></div>
+    <div class="flex justify-center items-center py-4">
+      <div class="animate-spin w-6 h-6 border-b-2 border-insight-primary rounded-insight-full"></div>
       <span class="ml-2 text-sm text-secondary">{% trans 'More content is loading...' %}</span>
     </div>
   </div>

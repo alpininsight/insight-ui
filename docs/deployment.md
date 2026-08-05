@@ -40,7 +40,7 @@ Cloudflare Tunnel, Istio, oauth2-proxy, and monitoring are cut over:
 
 The develop lane remains separate and is not changed by production promotion:
 
-- develop host: `insight-ui.dev.demo.alpininsight.ai`
+- develop host: `insight-ui.dev.alpininsight.ai`
 
 ## Blue/Green model
 
@@ -66,9 +66,9 @@ PLATFORM_NAMESPACE=demo
 DEPLOYMENT_ENVIRONMENT=develop
 DEPLOYMENT_LANE=develop
 DEPLOYMENT_SLOT=green
-PUBLIC_BASE_URL=https://insight-ui.dev.demo.alpininsight.ai
-ALLOWED_HOSTS=insight-ui.dev.demo.alpininsight.ai,.demo.alpininsight.ai
-CSRF_TRUSTED_ORIGINS=https://insight-ui.dev.demo.alpininsight.ai
+PUBLIC_BASE_URL=https://insight-ui.dev.alpininsight.ai
+ALLOWED_HOSTS=insight-ui.dev.alpininsight.ai
+CSRF_TRUSTED_ORIGINS=https://insight-ui.dev.alpininsight.ai
 USE_X_FORWARDED_HOST=true
 TRUST_X_FORWARDED_PROTO=true
 SECURE_SSL_REDIRECT=true

@@ -8,24 +8,24 @@
             {% if pagination_config.current_page.has_previous %}
                 {% with page_num=pagination_config.current_page.previous_page_number|stringformat:"s" %}
                     {% with url=pagination_config.request_url|add:"?page="|add:page_num %}
-                        {% button request_url=url label=_("To previous page") icon_name="chevron-left" icon_size="s" icon_only=True size="s" hx_get=url hx_target="#list-container" hx_include="#ipp" %}
+                        {% button request_url=url label=_('To previous page') icon_name='chevron-left' icon_size='s' icon_only=True size='s' hx_get=url hx_target='#list-container' hx_include='#ipp' %}
                     {% endwith %}
                 {% endwith %}
             {% else %}
-                {% button label=_("To previous page (Deactivated because there are no more previous pages)") icon_name="chevron-left" icon_size="s" icon_only=True type="disabled" size="s" %}
+                {% button label=_('To previous page (Deactivated because there are no more previous pages)') icon_name='chevron-left' icon_size='s' icon_only=True type='disabled' size='s' %}
             {% endif %}
 
             <!-- Neighbor Pages -->
-            <div class="hidden md:flex gap-1 justify-center">
+            <div class="hidden gap-1 justify-center md:flex">
                 {% for num in pagination_config.surrounding_pages %}
                     {% if num == pagination_config.current_page.number %}
                         <span class="btn btn-s bg-insight-primary-active">{{ num }}</span>
                     {% elif num == -1 %}
-                        <span class="text-neutral-400 px-4 py-1">...</span>
+                        <span class="px-4 py-1 text-insight-text-secondary">...</span>
                     {% else %}
                         {% with page_num=num|stringformat:"s" %}
                             {% with url=pagination_config.request_url|add:"?page="|add:page_num %}
-                                {% button request_url=url label=num size="s" hx_get=url hx_target="#list-container" hx_include="#ipp" %}
+                                {% button request_url=url label=num size='s' hx_get=url hx_target='#list-container' hx_include='#ipp' %}
                             {% endwith %}
                         {% endwith %}
                     {% endif %}
@@ -34,13 +34,13 @@
 
             <!-- Next and last -->
             {% if pagination_config.current_page.has_next %}
-                {% with page_num=pagination_config.current_page.next_page_number|stringformat:"s" %}
-                    {% with url=pagination_config.request_url|add:"?page="|add:page_num %}
-                        {% button request_url=url label=_("To next page") icon_name="chevron-right" icon_size="s" icon_only=True size="s" hx_get=url hx_target="#list-container" hx_include="#ipp" %}
+                {% with page_num=pagination_config.current_page.next_page_number|stringformat:'s' %}
+                    {% with url=pagination_config.request_url|add:'?page='|add:page_num %}
+                        {% button request_url=url label=_('To next page') icon_name='chevron-right' icon_size='s' icon_only=True size='s' hx_get=url hx_target='#list-container' hx_include='#ipp' %}
                     {% endwith %}
                 {% endwith %}
             {% else %}
-                {% button label=_("To next page (Deactivated because there are no more next pages)") icon_name="chevron-right" icon_size="s" icon_only=True type="disabled" size="s" %}
+                {% button label=_('To next page (Deactivated because there are no more next pages)') icon_name='chevron-right' icon_size='s' icon_only=True type='disabled' size='s' %}
             {% endif %}
         </div>
 
@@ -59,7 +59,7 @@
     </div>
 
     <!-- Current Page -->
-    <span class="block md:hidden text-secondary mt-2">
+    <span class="block mt-2 text-secondary md:hidden">
         {% trans "Page" %} {{ pagination_config.current_page.number }} {% trans "of" %} {{ pagination_config.current_page.paginator.num_pages }}.
     </span>
 </div>

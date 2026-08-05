@@ -7,14 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from insight_ui.configs.base import HtmxConfig, IconConfig
 from insight_ui.configs.input import DropdownConfig
 from insight_ui.configs.popup import ModalConfig
-from insight_ui.configs.types import (
-    HorizontalSide,
-    Size,
-    StepStatus,
-    validate_horizontal_side,
-    validate_size,
-    validate_step_status,
-)
+from insight_ui.configs.types import Size, StepStatus, validate_size, validate_step_status
 from insight_ui.configs.utils import BrandMarkConfig, CopyrightNoticeConfig, LogoConfig
 
 
@@ -87,6 +80,7 @@ class NavbarConfig:
         brand: Describes the brand mark of the application in the navbar.
         links: Contains and describes the navigation items of the navbar.
         searchbar_request_url: The URL to be called when performing a search. If empty, no search bar will be displayed.
+        enable_doc_search: If True, enable client-side documentation search with Fuse.js in the navbar.
         show_usermenu: Displays a dropdown menu with at least a logout button.
         show_language_selector: Displays a dropdown menu for selecting the display language (if defined).
         show_theme_toggle: Displays a button to switch between the light and dark theme of the page.
@@ -123,6 +117,10 @@ class NavbarConfig:
         metadata={
             "doc": _("The URL to be called when performing a search. If empty, no search bar will be displayed.")
         },
+    )
+    enable_doc_search: bool = field(
+        default=False,
+        metadata={"doc": _("If True, enable client-side documentation search with Fuse.js in the navbar.")},
     )
     show_usermenu: bool = field(
         default=False, metadata={"doc": _("Displays a dropdown menu with at least a logout button.")}
@@ -224,7 +222,6 @@ class SidebarConfig:
 
     Attributes:
         sidebar_data: Content of the sidebar (title and navigation elements).
-        side: Determines on which side the sidebar should be placed.
         static: **True** if the sidebar should not be collapsible.
         auto_close: If **True** the sidebar closes as soon as the cursor leaves it.
         mobile_hidden: If **True** the static sidebar is hidden on a smaller viewport.
@@ -245,16 +242,12 @@ class SidebarConfig:
                     ),
                 ],
             ),
-            side="left",
             static=True,
         )
         """
 
     sidebar_data: SidebarDataConfig | None = field(
         default=None, metadata={"doc": _("Content of the sidebar (title and navigation elements).")}
-    )
-    side: HorizontalSide = field(
-        default="right", metadata={"doc": _("Determines on which side the sidebar should be placed.")}
     )
     static: bool = field(default=True, metadata={"doc": _("**True** if the sidebar should not be collapsible.")})
     auto_close: bool = field(
@@ -263,10 +256,6 @@ class SidebarConfig:
     mobile_hidden: bool = field(
         default=False, metadata={"doc": _("If **True** the static sidebar is hidden on a smaller viewport.")}
     )
-
-    def __post_init__(self) -> None:
-        """Validate side after initialization."""
-        validate_horizontal_side(self.side, "side")
 
 
 @dataclass

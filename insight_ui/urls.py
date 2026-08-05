@@ -8,7 +8,6 @@ from . import views
 urlpatterns = [
     path("api/live-data/", views.live_data_view, name="live_data"),
     path("api/more-items/", views.more_items_view, name="more_items"),
-    path("api/form-submit/", views.form_submit, name="form_submit"),
     path("api/chat-response/", views.chat_response, name="chat_response"),
     path("get-allowed-operators/", views.get_allowed_operators, name="get_allowed_operators"),
     path("toggle_view/", views.toggle_view, name="toggle_view"),
@@ -29,5 +28,6 @@ urlpatterns = [
     path("docs/installation", views.installation_view, name="installation_view"),
     path("docs/base_template", views.base_template_view, name="base_template_view"),
     path("docs/icons", views.icon_view, name="icon_view"),
+    path("docs/types", views.types_view, name="types_view"),
     path("", views.index_view, name="index_view"),
 ]

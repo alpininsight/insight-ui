@@ -7,7 +7,6 @@ from pathlib import Path
 import structlog
 from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render
-from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.views.decorators.clickjacking import xframe_options_exempt
@@ -34,9 +33,10 @@ from insight_ui.context import (
     get_storybook_context,
 )
 from insight_ui.demo_utils import generate_payload, map_payload_to_cards, map_payload_to_table
-from insight_ui.forms import ChatForm, FormDemoForm
+from insight_ui.forms import ChatForm
 from insight_ui.utils.pagination import get_page
 from insight_ui.utils.query_builder_utils import get_filter_settings_for_field
+from insight_ui.utils.type_registry import get_all_type_definitions
 
 logger = structlog.get_logger(__name__)
 
@@ -355,58 +355,10 @@ def more_items_view(request: HttpRequest) -> HttpResponse | JsonResponse:
     )
 
 
-@require_POST
-def form_submit(request: HttpRequest) -> HttpResponse | JsonResponse:
-    """Endpoint for form demo validation and handling.
-
-    Works with standard and htmx requests. Handle form issues and return either
-    partial template data if this is a htmx request or do a whole page reload.
-    """
-    logger.debug("Empfangene POST-Daten: %s", request.POST)
-
-    form = FormDemoForm(request.POST)
-    if form.is_valid():
-        # Return partial template without redirect as it is a htmx request
-        if request.headers.get("HX-Request"):
-            success_html = render_to_string(
-                "insight_ui/components/form_success.html",
-                {
-                    "message": _("AJAX form successfully submitted!"),
-                    "title": form.cleaned_data["title"],
-                    "firstname": form.cleaned_data["firstname"],
-                    "lastname": form.cleaned_data["lastname"],
-                    "type": "success",
-                },
-            )
-            return HttpResponse(success_html, status=200)
-
-        # Retrieve necessary context data and perform a whole page reload to present form success
-        context = get_storybook_context(ComponentCategory.FORM)
-        context["form_success"] = {
-            "message": _("Form successfully submitted!"),
-            "title": form.cleaned_data["title"],
-            "firstname": form.cleaned_data["firstname"],
-            "lastname": form.cleaned_data["lastname"],
-            "type": "success",
-        }
-
-    # Return error with partial template as it is a htmx request
-    if request.headers.get("HX-Request"):
-        html = render_to_string("insight_ui/components/form_errors.html", {"errors": form.errors, "type": "danger"})
-        return HttpResponse(html, status=400)
-
-    # Retrieve necessary context data and perform a whole page reload to present form issues
-    context = get_storybook_context(ComponentCategory.FORM)
-    context["errors"] = form.errors
-    context["type"] = "danger"
-    return render(request, "insight_ui/storybook.html", context)
-
-
 @require_GET
 def index_view(request: HttpRequest) -> HttpResponse:
     """Render index page."""
     context = get_base_context() | get_sidebar_context()
-    context["default_padding"] = False
     context["hero"] = HeroConfig(
         title="Insight UI",
         subtitle=_("A Django Component Framework"),
@@ -424,7 +376,7 @@ def index_view(request: HttpRequest) -> HttpResponse:
     )
     context["features"] = [
         {
-            "icon": "rectangles",
+            "icon": "rectangle-group",
             "title": _("60+ Components"),
             "description": _("Pre-built, production-ready components from buttons to charts and data tables."),
         },
@@ -443,7 +395,7 @@ def index_view(request: HttpRequest) -> HttpResponse:
             ),
         },
         {
-            "icon": "code",
+            "icon": "code-bracket",
             "title": _("Django-Native"),
             "description": _("Template tags and dataclass configs. Use Python, not JavaScript, to build your UI."),
         },
@@ -472,10 +424,10 @@ def index_view(request: HttpRequest) -> HttpResponse:
         _("You'd rather not design basic UI components from scratch?"),
     ]
     context["base_template_blocks"] = [
-        {"name": "{% block navbar %}", "icon": "bars", "description": _("Fixed navigation bar")},
-        {"name": "{% block sidebar_left %}", "icon": "rectangles", "description": _("Static left sidebar")},
+        {"name": "{% block navbar %}", "icon": "bars-3", "description": _("Fixed navigation bar")},
+        {"name": "{% block sidebar_left %}", "icon": "rectangle-group", "description": _("Static left sidebar")},
         {"name": "{% block content %}", "icon": "document-text", "description": _("Main content area")},
-        {"name": "{% block sidebar_right %}", "icon": "rectangles", "description": _("Static right sidebar")},
+        {"name": "{% block sidebar_right %}", "icon": "rectangle-group", "description": _("Static right sidebar")},
         {"name": "{% block footer %}", "icon": "computer-desktop", "description": _("Page footer")},
     ]
     context["customization_options"] = [
@@ -492,7 +444,7 @@ def index_view(request: HttpRequest) -> HttpResponse:
             "file": "input.css",
         },
         {
-            "icon": "code",
+            "icon": "code-bracket",
             "title": _("Templates"),
             "description": _("Override any component template by placing it in your project's template directory."),
             "file": "templates/",
@@ -508,12 +460,12 @@ def index_view(request: HttpRequest) -> HttpResponse:
     ]
     # Build component categories with counts
     category_icons = {
-        ComponentCategory.LAYOUT: "rectangles",
-        ComponentCategory.NAVIGATION: "globe",
+        ComponentCategory.LAYOUT: "rectangle-group",
+        ComponentCategory.NAVIGATION: "globe-alt",
         ComponentCategory.INPUT: "cursor-arrow-rays",
-        ComponentCategory.POPUP: "chat-bubble",
-        ComponentCategory.UTIL: "tools",
-        ComponentCategory.LIST: "list",
+        ComponentCategory.POPUP: "chat-bubble-bottom-center-text",
+        ComponentCategory.UTIL: "wrench-screwdriver",
+        ComponentCategory.LIST: "queue-list",
         ComponentCategory.FILTER: "magnifying-glass",
         ComponentCategory.CARD: "squares-2x2",
         ComponentCategory.FORM: "clipboard",
@@ -524,7 +476,7 @@ def index_view(request: HttpRequest) -> HttpResponse:
     context["component_categories"] = [
         {
             "name": category.formatted_name,
-            "icon": category_icons.get(category, "rectangles"),
+            "icon": category_icons.get(category, "rectangle-group"),
             "count": category_counts.get(category, 0),
             "url": reverse("storybook_view", kwargs={"storybook_name": category.value}),
         }
@@ -594,6 +546,14 @@ def icon_view(request: HttpRequest) -> HttpResponse:
     """Render icon page."""
     context = get_icon_context() | get_base_context() | get_sidebar_context()
     return render(request, "insight_ui/docs/icons.html", context)
+
+
+@require_GET
+def types_view(request: HttpRequest) -> HttpResponse:
+    """Render types documentation page."""
+    context = get_base_context() | get_sidebar_context()
+    context["type_definitions"] = get_all_type_definitions()
+    return render(request, "insight_ui/docs/types.html", context)
 
 
 @require_GET
