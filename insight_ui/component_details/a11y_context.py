@@ -221,7 +221,7 @@ def get_breadcrumb_a11y_context() -> dict[str, list[str]]:
             _("The component uses a `<nav>` tag with the corresponding `aria-label='Breadcrumb'`."),
             _("The active element has the attribute `aria-current='page'`."),
             _("The breadcrumb items are structured as a semantic list (`<ul>`, `<li>`)."),
-            _("**TODO: The separator chevron icons should have `aria-hidden='true'` since they are decorative.**"),
+            _("Separator chevron icons inherit `aria-hidden='true'` from the icon component."),
         ]
     }
 
@@ -235,8 +235,8 @@ def get_stepper_a11y_context() -> dict[str, list[str]]:
             _("Step numbers are displayed as text and readable by screen readers."),
             _("The separator SVG arrows are hidden with `aria-hidden='true'`."),
             _("Step status (success, failed, current) is communicated through text labels."),
+            _("Decorative status icons inherit `aria-hidden='true'` from the icon component."),
             _("**TODO: Add `aria-current='step'` to the current step.**"),
-            _("**TODO: The decorative status icons should have `aria-hidden='true'`.**"),
         ]
     }
 
@@ -247,9 +247,9 @@ def get_minimal_stepper_a11y_context() -> dict[str, list[str]]:
     return {
         "a11y": [
             _("The status icons (tick, danger, gear) convey step state visually."),
+            _("Decorative icons inherit `aria-hidden='true'` from the icon component."),
             _("**TODO: Add `aria-label` to each step to describe its state (e.g., 'Step 1: Completed').**"),
             _("**TODO: Add `role='progressbar'` or `role='list'` with `aria-current='step'` for the active step.**"),
-            _("**TODO: The decorative icons should have `aria-hidden='true'`.**"),
         ]
     }
 
@@ -262,7 +262,7 @@ def get_bullet_point_list_a11y_context() -> dict[str, list[str]]:
             _("The component uses a semantic `<ol>` element for the ordered list structure."),
             _("The current step is marked with `aria-current='step'`."),
             _("The connecting lines between items are hidden from screen readers using `aria-hidden='true'`."),
-            _("**TODO: The decorative bullet icons and graphical elements should have `aria-hidden='true'`.**"),
+            _("Bullet icons inherit `aria-hidden='true'` from the icon component."),
         ]
     }
 
@@ -279,7 +279,7 @@ def get_accordion_a11y_context() -> dict[str, list[str]]:
             _("Full keyboard navigation: Arrow Up/Down to move between headers, Home/End to jump to first/last."),
             _("Focus is moved programmatically when navigating with arrow keys."),
             _("A visible focus indicator (`focus-visible:ring`) is provided for keyboard navigation."),
-            _("**TODO: The decorative chevron icon should have `aria-hidden='true'`.**"),
+            _("The decorative chevron icon inherits `aria-hidden='true'` from the icon component."),
         ]
     }
 
@@ -522,9 +522,7 @@ def get_alert_a11y_context() -> dict[str, list[str]]:
         "a11y": [
             _("The alert box has the attribute `role='alert'` to support screen readers."),
             _("The close button is accessible via keyboard and has a corresponding `aria-label`."),
-            _(
-                "**TODO: The type icons (info, warning, error, success) should have `aria-hidden='true'` since they are decorative.**"
-            ),
+            _("Type icons (info, warning, error, success) inherit `aria-hidden='true'` from the icon component."),
         ]
     }
 
@@ -763,11 +761,9 @@ def get_infinite_scroll_a11y_context() -> dict[str, list[str]]:
         "a11y": [
             _("The 'Load more' button provides a manual alternative to automatic loading."),
             _("Content items use semantic `<h3>` headings for screen reader navigation."),
+            _("The loading indicator has `role='status'` and the visual spinner is hidden with `aria-hidden='true'`."),
             _("**TODO: Add `aria-live='polite'` to announce when new content is loaded.**"),
             _("**TODO: Add `role='feed'` to the container for infinite scroll semantics.**"),
-            _(
-                "**TODO: The loading spinner should have `role='status'` with `aria-hidden='true'` on the visual element.**"
-            ),
         ]
     }
 
@@ -796,10 +792,10 @@ def get_table_a11y_context() -> dict[str, list[str]]:
             _("Header cells use `scope='col'` to associate with their columns."),
             _("An optional `<caption>` element describes the table's purpose."),
             _("Empty state message is displayed in a `<tfoot>` element."),
+            _("Sort icons inherit `aria-hidden='true'` from the icon component."),
             _(
                 "**TODO: For sortable columns, add `aria-sort` to indicate sort direction (ascending/descending/none).**"
             ),
-            _("**TODO: The sort icons should have `aria-hidden='true'` since they are decorative.**"),
         ]
     }
 
@@ -979,7 +975,7 @@ def get_form_a11y_context() -> dict[str, list[str]]:
             _("The component uses the semantic `<form>` element."),
             _("Form fields use the corresponding input components with proper label associations."),
             _("Submit and reset buttons have descriptive text labels."),
-            _("**TODO: The loading indicator should have `role='status'` and `aria-live='polite'`.**"),
-            _("**TODO: The loading spinner SVG should have `aria-hidden='true'`.**"),
+            _("The loading indicator has `role='status'` and `aria-live='polite'` for screen reader announcements."),
+            _("The loading spinner SVG is hidden from assistive technologies with `aria-hidden='true'`."),
         ]
     }

@@ -27,9 +27,9 @@
   {% endif %}
 
   {# Loading Indicator #}
-  <div class="htmx-indicator">
+  <div class="htmx-indicator" role="status">
     <div class="flex justify-center items-center py-4">
-      <div class="animate-spin w-6 h-6 border-b-2 border-insight-primary rounded-insight-full"></div>
+      <div class="animate-spin w-6 h-6 border-b-2 border-insight-primary rounded-insight-full" aria-hidden="true"></div>
       <span class="ml-2 text-sm text-secondary">{% trans 'More content is loading...' %}</span>
     </div>
   </div>
