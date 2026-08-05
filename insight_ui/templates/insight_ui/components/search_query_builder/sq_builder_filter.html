@@ -1,23 +1,28 @@
 {% load i18n insight_tags %}
 
-<div class="flex flex-col gap-1 lg:flex-row">
+<div
+    class="flex flex-col gap-1 lg:flex-row"
+    role="group"
+    aria-label="{% blocktrans with num=index|add:1 %}Filter {{ num }}{% endblocktrans %}"
+    data-filter-index="{{ index }}"
+>
     {% if index != 0 %}
         {# Logic #}
         <div class="flex gap-1 items-center pe-2 text-primary">
-            <input type="radio" id="optionAND" name="logic{{ index }}" value="AND" {% if not selected_logic or selected_logic == "AND" %}checked{% endif %}>
-            <label for="optionAND" class="pe-2">
+            <input type="radio" id="optionAND-{{ index }}" name="logic-{{ index }}" value="AND" {% if not selected_logic or selected_logic == "AND" %}checked{% endif %}>
+            <label for="optionAND-{{ index }}" class="pe-2">
                 AND
             </label>
-            <input type="radio" id="optionOR" name="logic{{ index }}" value="OR" {% if selected_logic == "OR" %}checked{% endif %}>
-            <label for="optionOR">
+            <input type="radio" id="optionOR-{{ index }}" name="logic-{{ index }}" value="OR" {% if selected_logic == "OR" %}checked{% endif %}>
+            <label for="optionOR-{{ index }}">
                 OR
             </label>
         </div>
     {% endif %}
     <div class="w-full lg:w-48 xl:w-64">
         {# Field #}
-        <label for="field" class="sr-only">{% trans "Select the field of the filter" %}</label>
-        <select id="field" name="field" class="field-select input block w-full h-9">
+        <label for="field-{{ index }}" class="sr-only">{% trans "Select the field of the filter" %}</label>
+        <select id="field-{{ index }}" name="field" class="field-select input block w-full h-9">
             <option value="" {% if not selected_value %}selected{% endif %}>{% trans "-- Attribute --" %}</option>
             {% for field in model_fields %}
                 <option value="{{ field.field }}" {% if selected_field == field.field %}selected{% endif %}>{{ field.label }}</option>
@@ -26,8 +31,8 @@
     </div>
     <div class="w-full lg:w-48 xl:w-64">
         {# Operator #}
-        <label for="operator" class="sr-only">{% trans "Select the operator of the filter" %}</label>
-        <select id="operator" name="operator" class="operator-select input block w-full h-9">
+        <label for="operator-{{ index }}" class="sr-only">{% trans "Select the operator of the filter" %}</label>
+        <select id="operator-{{ index }}" name="operator" class="operator-select input block w-full h-9">
             {# This option is used to retain the selected value #}
             <option value="{{ filter_operator }}" selected>{{ filter_operator }}</option>
             {# Operators are loaded dynamically here #}
@@ -35,9 +40,9 @@
     </div>
     <div class="w-full lg:w-48 xl:w-64">
         {# Input #}
-        <label for="value" class="sr-only">{% trans "Specify the value of the filter" %}</label>
+        <label for="value-{{ index }}" class="sr-only">{% trans "Specify the value of the filter" %}</label>
         <input
-            type="text" id="value" name="value" placeholder="{% trans 'Value' %}"
+            type="text" id="value-{{ index }}" name="value" placeholder="{% trans 'Value' %}"
             {% if filter_value %} value="{{ filter_value }}" {% endif %}
             class="value-field input block w-full h-9"
         >

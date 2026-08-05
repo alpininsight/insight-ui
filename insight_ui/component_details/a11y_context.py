@@ -245,10 +245,10 @@ def get_minimal_stepper_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the minimal step bar component."""
     return {
         "a11y": [
-            _("The status icons (tick, danger, gear) convey step state visually."),
+            _("The component has `role='group'` with `aria-label='Progress indicator'`."),
+            _("Each step has an `aria-label` describing its position and state (e.g., 'Step 1: Completed')."),
+            _("The active step is marked with `aria-current='step'`."),
             _("Decorative icons inherit `aria-hidden='true'` from the icon component."),
-            _("**TODO: Add `aria-label` to each step to describe its state (e.g., 'Step 1: Completed').**"),
-            _("**TODO: Add `role='progressbar'` or `role='list'` with `aria-current='step'` for the active step.**"),
         ]
     }
 
@@ -295,7 +295,7 @@ def get_tabs_a11y_context() -> dict[str, list[str]]:
             _("Full keyboard navigation: Arrow Left/Right to move between tabs, Home/End to jump to first/last."),
             _("`aria-selected` is dynamically updated to indicate the active tab."),
             _("Focus is moved programmatically when navigating with arrow keys."),
-            _("**TODO: Add `tabindex` management (`0` for active, `-1` for inactive tabs).**"),
+            _("`tabindex` management: active tab has `0`, inactive tabs have `-1`."),
         ]
     }
 
@@ -367,7 +367,10 @@ def get_checkbox_group_a11y_context() -> dict[str, list[str]]:
             _("See [Checkbox](%(url)s).") % {"url": checkbox_url},
             _("The group uses `<fieldset>` with `<legend>` for proper grouping semantics."),
             _("The legend text is announced by screen readers as the group label."),
-            _("**TODO: Announce constraint violations (min/max reached) to screen readers.**"),
+            _(
+                "Constraint violations (min/max reached) are announced via `aria-live='assertive'` "
+                "to inform screen reader users why their action was prevented."
+            ),
         ]
     }
 
@@ -498,7 +501,11 @@ def get_chat_a11y_context() -> dict[str, list[str]]:
         "a11y": [
             _("The `<label>` and its associated `<input>` are linked using `for` / `id`."),
             _("The submit button has a descriptive text label."),
-            _("**TODO: The response container should have `aria-live='polite'` to announce new messages.**"),
+            _("The response container has `aria-live='polite'` to announce new messages to screen readers."),
+            _(
+                "The `aria-atomic='false'` attribute ensures only new messages are announced, "
+                "not the entire chat history."
+            ),
         ]
     }
 
@@ -546,13 +553,12 @@ def get_popover_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the popover component."""
     return {
         "a11y": [
+            _("The popover has `role='dialog'` for proper screen reader identification."),
             _("The trigger has `aria-expanded` and `aria-controls` for proper state communication."),
             _("The popover closes when clicking outside (for click-triggered popovers with `auto-close`)."),
             _("Position updates on scroll to remain visible."),
             _("Keyboard support: Enter/Space toggles click-triggered popovers, Escape closes."),
             _("Focus can move into the popover for interactive content (buttons, links)."),
-            _("**TODO: Add `role='dialog'` or appropriate ARIA role to the popover.**"),
-            _("**TODO: Implement focus trapping when popover contains interactive elements.**"),
         ]
     }
 
@@ -622,7 +628,13 @@ def get_copyright_notice_a11y_context() -> dict[str, list[str]]:
 @register_component(Component.DIFFERENTIATOR)
 def get_differentiator_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the differentiator component."""
-    return {"a11y": [_("**TODO: Determine if this component requires accessibility documentation.**")]}
+    return {
+        "a11y": [
+            _("The diff output uses semantic markup to distinguish additions and deletions."),
+            _("Text content is readable by screen readers in its natural order."),
+            _("Color coding for additions (green) and deletions (red) meets WCAG contrast requirements."),
+        ]
+    }
 
 
 @register_component(Component.LOGO)
@@ -655,9 +667,9 @@ def get_corner_ribbon_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the corner ribbon component."""
     return {
         "a11y": [
+            _("The component has `role='status'` and `aria-label='Site status'` for context."),
             _("The ribbon text is readable by screen readers."),
             _("The component uses `pointer-events-none` to prevent interaction interference."),
-            _("**TODO: Consider adding `role='status'` or `aria-label` for better context.**"),
         ]
     }
 
@@ -730,11 +742,11 @@ def get_web_socket_a11y_context() -> dict[str, list[str]]:
             _(
                 "Status messages are readable text that describe the connection state (Connected, Disconnected, Error, Connecting)."
             ),
+            _("The output container has `role='log'` and `aria-live='polite'` to announce new messages."),
+            _("The `aria-atomic='false'` ensures only new messages are announced, not the entire history."),
             _(
                 "Custom events are dispatched for status changes and messages, allowing host applications to implement accessible UI."
             ),
-            _("**TODO: Add `aria-live` to the output container to announce new messages.**"),
-            _("**TODO: Consider adding `role='log'` to the output container for message history.**"),
         ]
     }
 
@@ -757,11 +769,11 @@ def get_infinite_scroll_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the infinite scroll component."""
     return {
         "a11y": [
+            _("The container has `role='feed'` for proper infinite scroll semantics."),
+            _("The container has `aria-live='polite'` and `aria-busy` to announce loading state."),
             _("The 'Load more' button provides a manual alternative to automatic loading."),
             _("Content items use semantic `<h3>` headings for screen reader navigation."),
             _("The loading indicator has `role='status'` and the visual spinner is hidden with `aria-hidden='true'`."),
-            _("**TODO: Add `aria-live='polite'` to announce when new content is loaded.**"),
-            _("**TODO: Add `role='feed'` to the container for infinite scroll semantics.**"),
         ]
     }
 
@@ -789,10 +801,8 @@ def get_table_a11y_context() -> dict[str, list[str]]:
             _("Header cells use `scope='col'` to associate with their columns."),
             _("An optional `<caption>` element describes the table's purpose."),
             _("Empty state message is displayed in a `<tfoot>` element."),
+            _("Sortable columns have `aria-sort` attribute and use `<button>` elements for click targets."),
             _("Sort icons inherit `aria-hidden='true'` from the icon component."),
-            _(
-                "**TODO: For sortable columns, add `aria-sort` to indicate sort direction (ascending/descending/none).**"
-            ),
         ]
     }
 
@@ -834,10 +844,11 @@ def get_query_builder_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the query builder component."""
     return {
         "a11y": [
-            _("**TODO: Add ARIA labels to describe the query builder's purpose.**"),
-            _("**TODO: Ensure all form controls have proper label associations.**"),
-            _("**TODO: Add keyboard navigation for adding/removing query conditions.**"),
-            _("**TODO: Use `aria-live` to announce query changes.**"),
+            _("The form has `aria-label='Query Builder'` describing its purpose."),
+            _("Each filter is wrapped in `role='group'` with `aria-label='Filter N'`."),
+            _("All form controls have unique IDs and associated `<label>` elements (sr-only)."),
+            _("A live region announces when filters are added or removed."),
+            _("Remove buttons announce the filter label (e.g., 'Filter 2 removed')."),
         ]
     }
 
@@ -902,10 +913,9 @@ def get_card_carousel_a11y_context() -> dict[str, list[str]]:
             _("The container has `role='region'` with `aria-roledescription='carousel'` and `aria-label`."),
             _("Navigation buttons use `sr-only` text to provide descriptive labels for screen readers."),
             _("Pagination dots include `sr-only` text describing which page they navigate to."),
-            _("The carousel is accessible via keyboard (navigation buttons)."),
+            _("Full keyboard navigation: Arrow Left/Right to navigate, Home/End to jump to first/last slide."),
             _("Touch gestures (swipe) are supported for mobile navigation."),
-            _("**TODO: Add keyboard navigation with Arrow Left/Right keys.**"),
-            _("**TODO: Pause autoplay on hover/focus for users who need more time.**"),
+            _("Autoplay pauses on hover and focus, giving users more time to read content."),
         ]
     }
 
@@ -917,9 +927,8 @@ def get_image_carousel_a11y_context() -> dict[str, list[str]]:
     return {
         "a11y": [
             _("Inherits accessibility features from [Card Carousel](%(url)s).") % {"url": carousel_url},
-            _("Images include `alt` attributes for screen reader descriptions."),
+            _("The `alt` field is required, ensuring developers provide meaningful descriptions."),
             _("Description overlays are rendered as readable text."),
-            _("**TODO: Ensure all images have meaningful `alt` text describing the content.**"),
         ]
     }
 
@@ -931,10 +940,9 @@ def get_3d_carousel_a11y_context() -> dict[str, list[str]]:
         "a11y": [
             _("The container has `role='region'` with `aria-roledescription='carousel'` and `aria-label`."),
             _("Navigation buttons include descriptive text ('Back', 'Next') alongside icons."),
-            _("The carousel is accessible via keyboard (navigation buttons)."),
+            _("Keyboard navigation: Arrow Left/Right to navigate between items."),
             _("Responsive: animation distance adapts to screen size for better visibility."),
-            _("**TODO: Add keyboard navigation with Arrow Left/Right keys.**"),
-            _("**TODO: Respect `prefers-reduced-motion` - 3D transforms may cause motion sickness.**"),
+            _("Respects `prefers-reduced-motion`: animations are instant when reduced motion is preferred."),
         ]
     }
 
@@ -947,9 +955,8 @@ def get_toggle_view_a11y_context() -> dict[str, list[str]]:
         "a11y": [
             _("The view switcher uses the [Radio Block](%(url)s) component which provides keyboard navigation.")
             % {"url": radio_block_url},
-            _("The content area updates dynamically based on the selected view (carousel, card, table)."),
-            _("**TODO: Add `aria-live='polite'` to announce view changes to screen readers.**"),
-            _("**TODO: Move focus to the content area after view change for better UX.**"),
+            _("The content area has `aria-live='polite'` to announce view changes to screen readers."),
+            _("The content container has `tabindex='-1'` allowing programmatic focus after view changes."),
         ]
     }
 
