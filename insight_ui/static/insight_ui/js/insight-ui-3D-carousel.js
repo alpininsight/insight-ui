@@ -50,14 +50,18 @@ export class ThreeDCarousel {
         this.itemsCount = this.carousel.children.length;
         this.angle = 360 / this.itemsCount;
         this.currentIndex = 0;
+
+        // Respect prefers-reduced-motion for users sensitive to animations
+        this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         this.spinSettings = {
-            duration: parseInt(element.getAttribute("data-velocity")) || 1000,
+            duration: this.prefersReducedMotion ? 0 : (parseInt(element.getAttribute("data-velocity")) || 1000),
             fill: "forwards",
         };
 
         // Store bound handlers for cleanup
         this.boundGotoPrevious = this.gotoPrevious.bind(this);
         this.boundGotoNext = this.gotoNext.bind(this);
+        this.boundKeyDown = this.handleKeyDown.bind(this);
 
         this.bindEvents();
 
@@ -68,11 +72,30 @@ export class ThreeDCarousel {
     }
 
     /**
-     * Binds click event listeners to navigation buttons.
+     * Binds click and keyboard event listeners for navigation.
      */
     bindEvents() {
         this.previousBtn.addEventListener("click", this.boundGotoPrevious);
         this.nextBtn.addEventListener("click", this.boundGotoNext);
+        this.element.addEventListener("keydown", this.boundKeyDown);
+    }
+
+    /**
+     * Handles keyboard events for carousel navigation.
+     *
+     * @param {KeyboardEvent} e - The keyboard event
+     */
+    handleKeyDown(e) {
+        switch (e.key) {
+            case 'ArrowLeft':
+                e.preventDefault();
+                this.gotoPrevious();
+                break;
+            case 'ArrowRight':
+                e.preventDefault();
+                this.gotoNext();
+                break;
+        }
     }
 
     /**
@@ -161,6 +184,7 @@ export class ThreeDCarousel {
 
         this.previousBtn.removeEventListener("click", this.boundGotoPrevious);
         this.nextBtn.removeEventListener("click", this.boundGotoNext);
+        this.element.removeEventListener("keydown", this.boundKeyDown);
 
         ThreeDCarousel.instances.delete(this.element);
         delete this.element.__insightInstance;

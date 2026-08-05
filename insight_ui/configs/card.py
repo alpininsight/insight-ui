@@ -187,7 +187,7 @@ class ImageCarouselItemConfig:
         """
 
     url: str = field(metadata={"doc": _("Image URL.")})
-    alt: str = field(default="", metadata={"doc": _("Image alt text.")})
+    alt: str = field(metadata={"doc": _("Image alt text.")})
     description: str = field(default="", metadata={"doc": _("Optional caption/description.")})
 
 
