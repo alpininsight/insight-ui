@@ -9,6 +9,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug Fixes
 
+- Correct various issues in the JavaScript components
+
+### Documentation
+
+- Add missing docstrings to JavaScript code
+
+### Miscellaneous
+
+- Regenerate minified assets
+
+### Refactoring
+
+- Change indentation mode from tabs to spaces for the 'tabs' and 'sidebar' script files
+
+### Testing
+
+- Add new tests for JavaScript components
+- Move JavaScript tests to main tests directory
+
+## [1.11.2] - 2026-07-21
+
+### Bug Fixes
+
 - Issues related to latest translation changes
 - Change old icon names in the 'alert' component and in the component demo container
 - Adjust 'type' to 'info_type' in the 'infobox' template
