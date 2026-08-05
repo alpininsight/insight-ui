@@ -1,0 +1,190 @@
+# Using Components
+
+This guide explains how to use Insight UI components in your Django templates.
+
+## Component Anatomy
+
+Every Insight UI component consists of up to four parts:
+
+| Part | Location | Purpose |
+|------|----------|---------|
+| Config Dataclass | `insight_ui/configs/*.py` | Parameter definitions with types and defaults |
+| Template Tag | `insight_ui/templatetags/insight_tags.py` | Django API via `@register.inclusion_tag()` |
+| Template | `insight_ui/templates/insight_ui/components/` | Semantic HTML with Tailwind classes |
+| JavaScript Module | `insight_ui/static/insight_ui/js/` | Optional behavior via `data-insight-*` hooks |
+
+## Template Tag Pattern
+
+All component tags follow the same pattern:
+
+```django
+{% load insight_tags %}
+
+{# Using keyword arguments #}
+{% button label="Click" type="primary" size="m" %}
+
+{# Using a config object #}
+{% button config=my_button_config %}
+
+{# Config with overrides #}
+{% button config=my_button_config label="Override Label" %}
+```
+
+### Config vs Keyword Arguments
+
+- **Keyword arguments** are convenient for simple, inline usage
+- **Config objects** are useful when you need to reuse configuration or build it programmatically
+- **Both combined**: kwargs override config values
+
+### Data Attributes
+
+Pass `data_*` kwargs to add data attributes:
+
+```django
+{% button label="Submit" data_loading="true" data_action="submit" %}
+{# Renders: data-loading="true" data-action="submit" #}
+```
+
+## Components vs Layout Tags
+
+Insight UI provides two types of template tags:
+
+### Components
+
+Self-contained UI elements with specific behavior:
+
+```django
+{% load insight_tags %}
+
+{% button label="Click" type="primary" %}
+{% alert message="Success!" type="success" %}
+{% badge label="New" type="info" %}
+```
+
+### Layout Tags
+
+Structural primitives for page composition (require closing tags):
+
+```django
+{% load layout_tags %}
+
+{% page padding="m" %}
+    {% section id="intro" gap="m" %}
+        {% hbox gap="s" v_align="center" %}
+            {% vbox gap="m" %}
+                Content here
+            {% endvbox %}
+        {% endhbox %}
+    {% endsection %}
+{% endpage %}
+```
+
+| Tag | Purpose |
+|-----|---------|
+| `page` | Full-width container with padding and height control |
+| `section` | Semantic `<section>` container |
+| `hbox` | Horizontal flex container |
+| `vbox` | Vertical flex container |
+| `grid` | CSS grid with responsive columns |
+| `surface` | Styled container (bg, border, shadow) |
+| `collapsible` | Expandable/collapsible section |
+| `tabs` / `tab` | Tabbed interface |
+| `spacer` | Fixed-size spacing element |
+| `divider` | Visual separator line |
+
+### Common Layout Parameters
+
+| Parameter | Values | Description |
+|-----------|--------|-------------|
+| `gap` | `xs`, `s`, `m`, `l`, `xl` | Space between children |
+| `padding` | `xs`, `s`, `m`, `l`, `xl` | Inner padding |
+| `v_align` | `start`, `center`, `end`, `between`, `stretch` | Vertical alignment |
+| `h_align` | `start`, `center`, `end`, `between`, `stretch` | Horizontal alignment |
+
+## Design Tokens
+
+Insight UI uses semantic design tokens defined in `insight_ui/utils/input.css`. Use these in your templates:
+
+### Colors
+
+```html
+<div class="bg-insight-primary text-insight-text-primary">
+    Primary background with primary text
+</div>
+
+<span class="text-insight-success">Success message</span>
+<span class="text-insight-danger">Error message</span>
+```
+
+| Token Pattern | Examples |
+|---------------|----------|
+| `bg-insight-{color}` | `bg-insight-primary`, `bg-insight-success` |
+| `text-insight-{role}` | `text-insight-text-primary`, `text-insight-text-secondary` |
+| `border-insight-{variant}` | `border-insight-border-surface` |
+
+### Spacing
+
+```html
+<div class="p-insight-m gap-insight-s">
+    Medium padding, small gap
+</div>
+```
+
+| Token | Value | Use Case |
+|-------|-------|----------|
+| `insight-xs` | 0.25rem (4px) | Tight spacing |
+| `insight-s` | 0.5rem (8px) | Compact elements |
+| `insight-m` | 1rem (16px) | Default spacing |
+| `insight-l` | 2rem (32px) | Section spacing |
+| `insight-xl` | 4rem (64px) | Page sections |
+
+### Radii and Shadows
+
+```html
+<div class="rounded-insight-m shadow-insight-raised">
+    Medium radius, raised shadow
+</div>
+```
+
+## Dark Mode
+
+Dark mode activates via `data-theme="dark"` on the root element. All tokens have dark variants that apply automatically.
+
+```html
+<html data-theme="dark">
+```
+
+Use the theme toggle component:
+
+```django
+{% theme_toggle %}
+```
+
+## Finding Component Documentation
+
+Insight UI is self-documenting. Access the built-in documentation:
+
+1. Include the URLs in your project (see [Getting Started](getting-started.md))
+2. Visit `/docs/` to browse all components
+3. Each component page shows:
+   - Description and purpose
+   - Usage example (copyable)
+   - Parameter reference
+   - Accessibility notes
+   - Live demo
+
+The documentation is generated from `insight_ui/component_details/`:
+
+| File | Content |
+|------|---------|
+| `description_context.py` | Component descriptions |
+| `usage_context.py` | Code examples |
+| `parameter_context.py` | Parameter documentation |
+| `a11y_context.py` | Accessibility notes |
+| `demo_context.py` | Demo rendering context |
+
+## Next Steps
+
+- [Design System](design-system.md) - Token definitions and extension rules
+- [Contributing](contributing.md) - Add new components
+- [Conventions](conventions.md) - Naming rules
