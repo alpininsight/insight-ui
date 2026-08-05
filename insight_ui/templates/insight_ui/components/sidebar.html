@@ -1,0 +1,102 @@
+{% load static i18n insight_tags %}
+
+{# External open button #}
+{% if not sidebar_config.auto_close and not sidebar_config.static %}
+  <button
+    data-sidebar-target="{{ sidebar_config.side }}"
+    aria-label="{% trans 'Open sidebar' %}"
+    class="open-btn fixed top-20 {% if sidebar_config.side == "right" %}ltr:right-4 rtl:left-4{% else %}ltr:left-4 rtl:right-4 rotate-180{% endif %} z-40 text-white bg-insight-primary insight-radius-pill insight-shadow-subtle p-2 hover:bg-insight-primary-hover active:bg-insight-primary-active"
+  >
+    {% icon name="chevron-left" size="s" %}
+  </button>
+{% endif %}
+
+{# Sidebar wrapper #}
+<div
+  id="{{ sidebar_config.side }}-sidebar"
+  data-insight-sidebar="{{ sidebar_config.side }}"
+  data-static="{{ sidebar_config.static }}"
+  class="{% if not sidebar_config.static %}fixed inset-0 z-50 hidden{% endif %}"
+>
+  {# Backdrop for main content area (only for drawers) #}
+  {% if not sidebar_config.static %}
+    <div class="fixed inset-0 bg-black/50 transition-opacity" data-insight-dismiss="sidebar"></div>
+  {% endif %}
+  {# Actual sidebar #}
+  <aside
+    role="complementary"
+    aria-label="{% trans 'Side navigation' %}"
+    class="{% if sidebar_config.static %}{% if sidebar_config.mobile_hidden %}hidden xl:block {% endif %}sticky {% if navbar_fixed %}top-16 h-[calc(100vh-4rem)]{% else %}top-0 h-screen{% endif %}{% else %}fixed h-screen{% endif %} {% if sidebar_config.side == "right" %}ltr:right-0 ltr:border-l rtl:left-0 rtl:border-r{% else %}ltr:left-0 ltr:border-r rtl:right-0 rtl:border-l{% endif %} overflow-y-auto bg-white dark:bg-gray-800 dark:border-gray-600 border-gray-200 insight-shadow-surface transition"
+    style="width: {{ sidebar_config.sidebar_data.width|default:'18rem' }}"
+    data-auto-close="{{ sidebar_config.auto_close|yesno:'true,false' }}"
+  >
+    <div class="flex flex-col {% if sidebar_config.side == "right" %}ps-4 pe-4 md:pe-16{% else %}ps-4 md:ps-16 pe-4{% endif %} {% if sidebar_config.static %}py-8{% else %}pb-8{% endif %}">
+      {% block sidebar_content %}
+        {# Sidebar head with internal close button #}
+        <div class="flex justify-between items-center {% if not sidebar_config.static %}h-16{% else %}pb-4{% endif %} border-b border-gray-300 dark:border-gray-500 mb-4">
+          {% if sidebar_config.sidebar_data.title %}
+            <h2 class="flex items-center gap-2 text-lg pb-0">
+              {% if sidebar_config.sidebar_data.icon %}
+                <div>
+                  {% icon sidebar_config.sidebar_data.icon %}
+                </div>
+              {% endif %}
+              {{ sidebar_config.sidebar_data.title }}
+            </h2>
+          {% endif %}
+          {# Internal close button (only for drawers) #}
+          {% if not sidebar_config.auto_close and not sidebar_config.static %}
+            <button
+              id="{{ sidebar_config.side }}-sidebar-close"
+              class="insight-sidebar-icon-button"
+              aria-label="{% trans 'Close sidebar' %}"
+              data-insight-dismiss="sidebar"
+            >
+              {% icon name="x-mark" size="xs" %}
+            </button>
+          {% endif %}
+        </div>
+        {# Sidebar body #}
+        <div>
+          <nav class="space-y-2">
+            <ul>
+              {% for category in sidebar_config.sidebar_data.categories %}
+                <li>
+                  <div class="flex gap-1 pt-4 pb-2 text-insight-primary-hover">
+                    {% if category.icon %}
+                      {% icon category.icon %}
+                    {% endif %}
+                    <span class="font-semibold">{{ category.caption }}</span>
+                  </div>
+                  <ul>
+                    {% for item in category.items %}
+                      <li data-insight-side-nav>
+                        <a
+
+                          {% if item.htmx %}
+                            hx-get="{{ item.htmx.request_url|default:item.request_url }}"
+                            hx-target="{{ item.htmx.target }}"
+                            hx-swap="{{ item.htmx.swap|default:'innerHTML' }} show:window:top"
+                            hx-push-url="true"
+                            hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
+                          {% endif %}
+                          href="{{ item.request_url }}"
+                          class="flex gap-2 px-2 py-1 text-sm text-primary border-s border-gray-200 dark:border-gray-700 hover:border-gray-400 hover:text-gray-400"
+                        >
+                          {% if item.icon %}
+                            {% icon item.icon %}
+                          {% endif %}
+                          {{ item.text }}
+                        </a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </li>
+              {% endfor %}
+            </ul>
+          </nav>
+        </div>
+      {% endblock sidebar_content %}
+    </div>
+  </aside>
+</div>
