@@ -171,13 +171,19 @@ INSIGHT_UI = {
 |---------|------|---------|-------------|
 | `assets.use_minified` | bool | `False` | Use minified assets |
 | `assets.cdn_enabled` | bool | `False` | Serve assets from CDN |
-| `assets.cdn_base_url` | str | `"https://cdn.alpininsight.ai"` | CDN base URL |
+| `assets.cdn_base_url` | str | host-project setting | CDN base URL |
 | `assets.cdn_prefix` | str | `"insight-ui"` | CDN path prefix |
 | `assets.cdn_version` | str | `"latest"` | CDN version |
+
+For CDN examples and the static asset build contract, see
+[Static Assets](static-assets.md). Use your own CDN base URL in host
+applications; this public package documentation intentionally does not describe
+any organization's private CDN upload or deployment process.
 
 ## Next Steps
 
 - [Using Components](components.md) - Learn how to use components effectively
 - [Design System](design-system.md) - Understand tokens and styling
+- [Static Assets](static-assets.md) - Configure local staticfiles or host-owned CDN delivery
 - [Contributing](contributing.md) - Add new components
 - [Testing](testing.md) - Write tests for your changes

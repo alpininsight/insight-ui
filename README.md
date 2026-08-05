@@ -119,6 +119,7 @@ Developer references in `docs/`:
 | [Getting Started](docs/getting-started.md) | Installation and configuration |
 | [Using Components](docs/components.md) | Template tag API and patterns |
 | [Design System](docs/design-system.md) | Tokens, theming, and extension |
+| [Static Assets](docs/static-assets.md) | Staticfiles, CDN configuration, and asset build commands |
 | [Accessibility](docs/accessibility.md) | WCAG compliance guidelines |
 | [Internationalization](docs/i18n.md) | i18n and RTL support |
 | [Testing](docs/testing.md) | Test structure and commands |
