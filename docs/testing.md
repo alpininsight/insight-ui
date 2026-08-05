@@ -6,7 +6,7 @@ This document describes the test structure, tools, and conventions for Insight U
 
 All tests are located in the `tests/` directory:
 
-```
+```text
 tests/
 ├── js/                  # JavaScript tests (Vitest + jsdom)
 │   ├── setup.js         # Global test setup and utilities
@@ -42,7 +42,11 @@ uv run pytest -vvs
 ### JavaScript Tests
 
 ```bash
-# Run all JS tests (requires Docker)
+# Run all JS tests with local Node.js dependencies
+npm install
+npm test
+
+# Run all JS tests in Docker
 docker run --rm -v "$(pwd):/app" -w /app node:25-alpine sh -c "npm install && npx vitest run"
 
 # Run with coverage
@@ -51,8 +55,23 @@ docker run --rm -v "$(pwd):/app" -w /app node:25-alpine sh -c "npm install && np
 # Run specific test file
 docker run --rm -v "$(pwd):/app" -w /app node:25-alpine sh -c "npm install && npx vitest run carousel"
 
-# Watch mode (for local Node.js installation)
+# Watch mode
 npx vitest
+```
+
+### Static Asset Checks
+
+Generated CSS and minified browser assets must be current:
+
+```bash
+npm run check:static-build
+```
+
+When that check fails after changing `input.css` or browser assets, rebuild the
+generated files:
+
+```bash
+npm run build:static-all
 ```
 
 ### All Tests
@@ -70,7 +89,7 @@ make test
 |----------|----------|---------|
 | Unit | `tests/unit/` | Individual components, template tags, configs |
 | Integration | `tests/integration/` | Component interactions, form handling |
-| Smoke | `tests/smoke/` | Critical paths, deployment verification |
+| Smoke | `tests/smoke/` | Critical package paths |
 | Docs | `tests/docs/` | Documentation accuracy, example validation |
 
 ### JavaScript Tests
@@ -96,8 +115,8 @@ make test
 ### Python Test Conventions
 
 ```python
-import pytest
-from django.template import Template, Context
+from django.template import Context, Template
+
 
 class TestButtonComponent:
     """Tests for the button component."""
@@ -107,13 +126,13 @@ class TestButtonComponent:
         template = Template("{% load insight_tags %}{% button label='Click' %}")
         result = template.render(Context())
 
-        assert 'Click' in result
-        assert 'btn-' in result
+        assert "Click" in result
+        assert "btn-" in result
 
     def test_accepts_config_object(self, button_config):
         """Button accepts a config dataclass."""
         template = Template("{% load insight_tags %}{% button config=cfg %}")
-        result = template.render(Context({'cfg': button_config}))
+        result = template.render(Context({"cfg": button_config}))
 
         assert button_config.label in result
 ```
@@ -125,7 +144,6 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 describe('ComponentName', () => {
   beforeEach(() => {
-    // Setup InsightUI namespace
     globalThis.InsightUI = {};
     globalThis.window.InsightUI = globalThis.InsightUI;
     loadComponent('insight-ui-component.js');
@@ -160,15 +178,28 @@ describe('ComponentName', () => {
 
 - `@pytest.fixture` for common test data
 - Django test client setup
-- Template rendering helpers
+- template rendering helpers
 
 ### JavaScript (`tests/js/setup.js`)
 
-- `TestUtils.createDOM(html)` - Create DOM elements
-- `TestUtils.click(element)` - Simulate click events
-- `TestUtils.createCarousel()` - Component-specific helpers
-- `TestUtils.createAlert(type)` - Alert component helper
-- Mock for `debugLog()` function
+- `TestUtils.createDOM(html)` - create DOM elements
+- `TestUtils.click(element)` - simulate click events
+- `TestUtils.createCarousel()` - component-specific helpers
+- `TestUtils.createAlert(type)` - alert component helper
+- mock for `debugLog()` function
+
+## What To Test
+
+| Change type | Expected test coverage |
+|-------------|------------------------|
+| Template tag or Python config | Unit tests under `tests/` |
+| Component rendering | Template output tests and self-documentation demo update |
+| JavaScript behavior | Vitest test under the JavaScript test suite |
+| Static asset build behavior | Static asset check or script-level test |
+| Accessibility-sensitive markup | Semantic HTML, ARIA, and keyboard behavior checks where applicable |
+
+Keep tests focused on the public package contract. Private deployment behavior
+belongs in the operating organization's private platform tests and runbooks.
 
 ## Coverage
 
@@ -191,16 +222,16 @@ npx vitest run --coverage
 # Coverage is output to coverage/ directory
 ```
 
-**Coverage targets:**
+Coverage targets:
+
 - Python: 80% minimum
-- JavaScript: 70% minimum (UI components have browser-dependent behavior)
+- JavaScript: 70% minimum for browser-facing components
 
 ## CI Integration
 
 Tests run automatically on every pull request:
 
-1. **Python tests** - pytest with coverage
-2. **JavaScript tests** - Vitest in Docker container
-3. **Linting** - ruff, mypy, eslint
-
-See `.github/workflows/ci.yml` for the full CI configuration.
+1. Python tests with pytest.
+2. JavaScript tests with Vitest.
+3. Linting and quality checks.
+4. Static asset freshness checks when relevant.

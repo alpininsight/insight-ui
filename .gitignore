@@ -215,6 +215,7 @@ uv.lock
 
 .django_tailwind_cli/
 
+misc/
 img/
 staticfiles/
 node_modules/
