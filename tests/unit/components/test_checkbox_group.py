@@ -34,12 +34,12 @@ class TestCheckboxGroup(TemplateTagsTestCase):
         rendered = self.render_template(template_string, {"checkbox_config": checkbox_context})
         soup = BeautifulSoup(rendered, "html.parser")
 
-        wrapper = soup.find("div", {"data-insight-checkbox-group": True})
+        wrapper = soup.find("fieldset", {"data-insight-checkbox-group": True})
         assert wrapper["data-minimum-checked"] == "1"
 
-        # Check label
-        label_span = wrapper.find("span")
-        assert label_span.text == "Choose languages: (max. 3)"
+        # Check label (legend element for accessibility)
+        legend = wrapper.find("legend")
+        assert legend.text == "Choose languages: (max. 3)"
 
         # Check layout
         container = wrapper.find("div", class_="flex")
