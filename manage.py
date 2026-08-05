@@ -4,11 +4,11 @@
 import os
 import sys
 
-from logging_config import setup_structlog
+from logging_config import setup_logging
 
 if __name__ == "__main__":
     """Run administrative tasks."""
-    setup_structlog()
+    setup_logging()
 
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")
     try:

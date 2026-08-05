@@ -500,7 +500,7 @@ class Command(BaseCommand):
             pass  # git not installed
         return "Unknown"
 
-    def _add_to_context_file(  # noqa: PLR0913
+    def _add_to_context_file(  # noqa: PLR0913, PLR0917
         self, base_path: Path, enum_name: str, func_name: str, category: str, config: ContextFileConfig, git_user: str
     ) -> None:
         """Add a function to a context file using the provided configuration.
@@ -704,7 +704,7 @@ def {full_func_name}() -> {config.return_type}:
         if self._write_file(template_path, template_content):
             self.stdout.write(self.style.SUCCESS(f"  [OK] Created template {slug}.html"))
 
-    def _add_inclusion_tag(  # noqa: PLR0913
+    def _add_inclusion_tag(  # noqa: PLR0913, PLR0917
         self, base_path: Path, func_name: str, slug: str, category: str, name: str, config_class_name: str
     ) -> None:
         """Add inclusion tag to insight_tags.py.
@@ -922,7 +922,7 @@ def {func_name}(config: {config_class_name} | None = None, *, tag_id: str | _Uns
         if self._write_file(file_path, new_content):
             self.stdout.write(self.style.SUCCESS(f"  [OK] Added demo entry for {slug} to component_demo.html"))
 
-    def _create_config_dataclass(  # noqa: PLR0913
+    def _create_config_dataclass(  # noqa: PLR0913, PLR0917
         self, base_path: Path, config_class_name: str, func_name: str, category: str, name: str, git_user: str
     ) -> None:
         """Create config dataclass in the appropriate config file and update __init__.py.

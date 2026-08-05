@@ -40,17 +40,9 @@ By default, it runs on:
 
 ```py
 {
-  "timestamp": "2025-06-23T10:45:31.812496",
-  "disk": {
-    "total_gb": 500.11,
-    "used_gb": 245.73,
-    "free_gb": 254.38
-  },
-  "memory": {
-    "total_gb": 32.0,
-    "available_gb": 24.52,
-    "percent_used": 23.4
-  }
+    "timestamp": "2025-06-23T10:45:31.812496",
+    "disk": {"total_gb": 500.11, "used_gb": 245.73, "free_gb": 254.38},
+    "memory": {"total_gb": 32.0, "available_gb": 24.52, "percent_used": 23.4},
 }
 ```
 

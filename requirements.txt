@@ -2,16 +2,16 @@
 #    uv export --no-emit-project --no-hashes --no-dev --format requirements.txt -o requirements.txt
 asgiref==3.11.1
     # via django
+defusedxml==0.7.1
+    # via insight-ui
 django==6.0.4
     # via insight-ui
-markdown==3.10.2
+markdown==3.10.3
     # via insight-ui
 python-decouple==3.8
     # via insight-ui
 sqlparse==0.5.5
     # via django
-structlog==25.5.0
-    # via insight-ui
 tzdata==2026.1 ; sys_platform == 'win32'
     # via django
 whitenoise==6.12.0

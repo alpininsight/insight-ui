@@ -402,7 +402,7 @@ def status_screen(
     title: str | _Unset = UNSET,
     description: str | list[str] | _Unset = UNSET,
     status: AlertType | _Unset = UNSET,
-    brand: BrandMarkConfig | None | _Unset = UNSET,
+    brand: BrandMarkConfig | _Unset | None = UNSET,
     notice_title: str | _Unset = UNSET,
     notice: str | _Unset = UNSET,
     primary_action: ButtonConfig | _Unset = UNSET,
@@ -450,7 +450,7 @@ def footer(config: FooterConfig) -> dict[str, Any]:
 
 @register.inclusion_tag("insight_ui/components/breadcrumbs.html")
 def breadcrumbs(
-    config: BreadcrumbsConfig | None = None, *, items: list[BreadcrumbItemConfig] | None | _Unset = UNSET
+    config: BreadcrumbsConfig | None = None, *, items: list[BreadcrumbItemConfig] | _Unset | None = UNSET
 ) -> dict[str, Any]:
     """Render breadcrumb navigation."""
     config = build_config(BreadcrumbsConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -459,7 +459,7 @@ def breadcrumbs(
 
 @register.inclusion_tag("insight_ui/components/stepper.html")
 def stepper(
-    config: StepperConfig | None = None, *, items: list[StepperItemConfig] | None | _Unset = UNSET
+    config: StepperConfig | None = None, *, items: list[StepperItemConfig] | _Unset | None = UNSET
 ) -> dict[str, Any]:
     """Render a graphical representation of process steps."""
     config = build_config(StepperConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -495,7 +495,7 @@ def minimal_stepper(
 
 @register.inclusion_tag("insight_ui/components/bullet_point_list.html")
 def bullet_point_list(
-    config: BulletPointListConfig | None = None, *, items: list[BulletPointItemConfig] | None | _Unset = UNSET
+    config: BulletPointListConfig | None = None, *, items: list[BulletPointItemConfig] | _Unset | None = UNSET
 ) -> dict[str, Any]:
     """Render a graphical representation of a bullet point list."""
     config = build_config(BulletPointListConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -556,7 +556,7 @@ def button(
     becomes:
         <button hx-get="/api/data" hx-swap="outerHTML">Load</button>
     """
-    icon: IconConfig | None | _Unset = UNSET
+    icon: IconConfig | _Unset | None = UNSET
     if icon_name is not UNSET:
         icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "m") if icon_name else None
 
@@ -615,19 +615,19 @@ def button(
 def input_field(
     config: InputFieldConfig | None = None,
     *,
-    tag_id: str | None | _Unset = UNSET,
-    name: str | None | _Unset = UNSET,
+    tag_id: str | _Unset | None = UNSET,
+    name: str | _Unset | None = UNSET,
     input_type: str | _Unset = UNSET,
     placeholder: str | _Unset = UNSET,
-    value: str | int | float | None | _Unset = UNSET,
-    minimum: int | None | _Unset = UNSET,
-    maximum: int | None | _Unset = UNSET,
-    min_length: int | None | _Unset = UNSET,
-    max_length: int | None | _Unset = UNSET,
+    value: str | int | float | _Unset | None = UNSET,
+    minimum: int | _Unset | None = UNSET,
+    maximum: int | _Unset | None = UNSET,
+    min_length: int | _Unset | None = UNSET,
+    max_length: int | _Unset | None = UNSET,
     checked: bool | _Unset = UNSET,
     required: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
-    label: str | None | _Unset = UNSET,
+    label: str | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render any <input> field."""
     config = build_config(InputFieldConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -638,15 +638,15 @@ def input_field(
 def textarea(
     config: TextareaConfig | None = None,
     *,
-    tag_id: str | None | _Unset = UNSET,
-    name: str | None | _Unset = UNSET,
+    tag_id: str | _Unset | None = UNSET,
+    name: str | _Unset | None = UNSET,
     placeholder: str | _Unset = UNSET,
     value: str | _Unset = UNSET,
     rows: int | _Unset = UNSET,
-    cols: int | None | _Unset = UNSET,
+    cols: int | _Unset | None = UNSET,
     required: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
-    label: str | None | _Unset = UNSET,
+    label: str | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a <textarea> field."""
     config = build_config(TextareaConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -657,10 +657,10 @@ def textarea(
 def checkbox(
     config: CheckboxConfig | None = None,
     *,
-    tag_id: str | None | _Unset = UNSET,
-    name: str | None | _Unset = UNSET,
+    tag_id: str | _Unset | None = UNSET,
+    name: str | _Unset | None = UNSET,
     value: str | _Unset = UNSET,
-    label: str | None | _Unset = UNSET,
+    label: str | _Unset | None = UNSET,
     checked: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
 ) -> dict[str, Any]:
@@ -687,7 +687,7 @@ def radio_group(
     *,
     name: str | _Unset = UNSET,
     label: str | _Unset = UNSET,
-    items: list[RadioItemConfig] | None | _Unset = UNSET,
+    items: list[RadioItemConfig] | _Unset | None = UNSET,
     as_row: bool | _Unset = UNSET,
     current_value: str | _Unset = UNSET,
 ) -> dict[str, Any]:
@@ -702,7 +702,7 @@ def radio_block(
     *,
     name: str | _Unset = UNSET,
     label: str | _Unset = UNSET,
-    items: list[RadioItemConfig] | None | _Unset = UNSET,
+    items: list[RadioItemConfig] | _Unset | None = UNSET,
     integrated: bool | _Unset = UNSET,
     as_row: bool | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
@@ -720,19 +720,19 @@ def radio_block(
 def slider(
     config: SliderConfig | None = None,
     *,
-    tag_id: str | None | _Unset = UNSET,
-    name: str | None | _Unset = UNSET,
-    value: int | None | _Unset = UNSET,
+    tag_id: str | _Unset | None = UNSET,
+    name: str | _Unset | None = UNSET,
+    value: int | _Unset | None = UNSET,
     minimum: int | _Unset = UNSET,
     maximum: int | _Unset = UNSET,
     step_size: int | _Unset = UNSET,
-    label: str | None | _Unset = UNSET,
+    label: str | _Unset | None = UNSET,
     disabled: bool | _Unset = UNSET,
-    items: list[str] | None | _Unset = UNSET,
+    items: list[str] | _Unset | None = UNSET,
     legend_mode: str | _Unset = UNSET,
     dual: bool | _Unset = UNSET,
-    value_min: int | None | _Unset = UNSET,
-    value_max: int | None | _Unset = UNSET,
+    value_min: int | _Unset | None = UNSET,
+    value_max: int | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a range slider."""
     config = build_config(SliderConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -743,11 +743,11 @@ def slider(
 def toggle(
     config: ToggleConfig | None = None,
     *,
-    tag_id: str | None | _Unset = UNSET,
-    name: str | None | _Unset = UNSET,
+    tag_id: str | _Unset | None = UNSET,
+    name: str | _Unset | None = UNSET,
     value: str | _Unset = UNSET,
-    label: str | None | _Unset = UNSET,
-    icon: IconConfig | None | _Unset = UNSET,
+    label: str | _Unset | None = UNSET,
+    icon: IconConfig | _Unset | None = UNSET,
     checked: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
     switch: bool | _Unset = UNSET,
@@ -762,12 +762,12 @@ def toggle(
 def select(
     config: SelectConfig | None = None,
     *,
-    tag_id: str | None | _Unset = UNSET,
-    name: str | None | _Unset = UNSET,
-    label: str | None | _Unset = UNSET,
+    tag_id: str | _Unset | None = UNSET,
+    name: str | _Unset | None = UNSET,
+    label: str | _Unset | None = UNSET,
     required: bool | _Unset = UNSET,
     explanation: str | _Unset = UNSET,
-    options: list[str] | dict[str, str] | None | _Unset = UNSET,
+    options: list[str] | dict[str, str] | _Unset | None = UNSET,
     selected_option: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a selection box."""
@@ -785,12 +785,12 @@ def select(
 def multiselect(
     config: MultiselectConfig | None = None,
     *,
-    name: str | None | _Unset = UNSET,
-    label: str | None | _Unset = UNSET,
-    maximum: int | None | _Unset = UNSET,
+    name: str | _Unset | None = UNSET,
+    label: str | _Unset | None = UNSET,
+    maximum: int | _Unset | None = UNSET,
     show_buttons: bool | _Unset = UNSET,
-    options: list[str] | dict[str, str] | None | _Unset = UNSET,
-    selected_options: list[str] | None | _Unset = UNSET,
+    options: list[str] | dict[str, str] | _Unset | None = UNSET,
+    selected_options: list[str] | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a selection box that allows multiple values."""
     if config is None:
@@ -838,7 +838,7 @@ def modal(
     tag_id: str | _Unset = UNSET,
     title: str | _Unset = UNSET,
     description: str | list[str] | _Unset = UNSET,
-    actions: Sequence[ButtonConfig] | None | _Unset = UNSET,
+    actions: Sequence[ButtonConfig] | _Unset | None = UNSET,
     width: int | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render an accessible modal dialog."""
@@ -878,13 +878,13 @@ def infobox(
 def copyright_notice(
     config: CopyrightNoticeConfig | None = None,
     *,
-    year: int | str | None | _Unset = UNSET,
-    holder: str | None | _Unset = UNSET,
-    source_label: str | None | _Unset = UNSET,
-    license_text: str | None | _Unset = UNSET,
-    license_url: str | None | _Unset = UNSET,
-    separator: str | None | _Unset = UNSET,
-    rights_text: str | None | _Unset = UNSET,
+    year: int | str | _Unset | None = UNSET,
+    holder: str | _Unset | None = UNSET,
+    source_label: str | _Unset | None = UNSET,
+    license_text: str | _Unset | None = UNSET,
+    license_url: str | _Unset | None = UNSET,
+    separator: str | _Unset | None = UNSET,
+    rights_text: str | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a reusable copyright and legal notice line."""
     config = build_config(CopyrightNoticeConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -941,17 +941,17 @@ def diff(a: str, b: str, simple: bool = True) -> str:
 def logo(
     config: LogoConfig | None = None,
     *,
-    url: str | None | _Unset = UNSET,
-    url_dark: str | None | _Unset = UNSET,
-    alt: str | None | _Unset = UNSET,
-    icon_name: str | None | _Unset = UNSET,
-    icon_size: str | None | _Unset = UNSET,
-    height: str | None | _Unset = UNSET,
-    width: str | None | _Unset = UNSET,
+    url: str | _Unset | None = UNSET,
+    url_dark: str | _Unset | None = UNSET,
+    alt: str | _Unset | None = UNSET,
+    icon_name: str | _Unset | None = UNSET,
+    icon_size: str | _Unset | None = UNSET,
+    height: str | _Unset | None = UNSET,
+    width: str | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a brand logo as an image, SVG asset, or Insight UI icon."""
     # Only override icon if icon_name was explicitly provided
-    icon: IconConfig | None | _Unset = UNSET
+    icon: IconConfig | _Unset | None = UNSET
     if icon_name is not UNSET:
         icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "m") if icon_name else None
 
@@ -1052,7 +1052,7 @@ def bar_chart(
     config: ChartConfig | None = None,
     *,
     tag_id: str | _Unset = UNSET,
-    dataset: ChartDatasetConfig | None | _Unset = UNSET,
+    dataset: ChartDatasetConfig | _Unset | None = UNSET,
     chart_height: int | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a bar chart with Apache ECharts."""
@@ -1065,7 +1065,7 @@ def line_chart(
     config: ChartConfig | None = None,
     *,
     tag_id: str | _Unset = UNSET,
-    dataset: ChartDatasetConfig | None | _Unset = UNSET,
+    dataset: ChartDatasetConfig | _Unset | None = UNSET,
     chart_height: int | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a line chart with Apache ECharts."""
@@ -1114,7 +1114,7 @@ def badge(
     size: Size | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render the badge component."""
-    icon: IconConfig | None | _Unset = UNSET
+    icon: IconConfig | _Unset | None = UNSET
     if icon_name is not UNSET:
         icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "m") if icon_name else None
 
@@ -1135,7 +1135,7 @@ def infinite_scroll(
     *,
     tag_id: str | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
-    items: Sequence[Any] | None | _Unset = UNSET,
+    items: Sequence[Any] | _Unset | None = UNSET,
     page: int | _Unset = UNSET,
     has_next: bool | _Unset = UNSET,
     auto_fetch: bool | _Unset = UNSET,
@@ -1153,7 +1153,7 @@ def pagination(
     request_url: str | _Unset = UNSET,
     current_page: Page | _Unset = UNSET,
     surrounding_pages: list[int] | _Unset = UNSET,
-    ipp_config: PaginationIppConfig | None | _Unset = UNSET,
+    ipp_config: PaginationIppConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render pagination with items per page selection."""
     config = build_config(PaginationConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -1180,7 +1180,7 @@ def search_bar(
     request_url: str | _Unset = UNSET,
     simple: bool | _Unset = UNSET,
     search_query: str | _Unset = UNSET,
-    htmx_config: HtmxConfig | None | _Unset = UNSET,
+    htmx_config: HtmxConfig | _Unset | None = UNSET,
     enable_search: bool | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render text input with a button for a search function."""
@@ -1192,10 +1192,10 @@ def search_bar(
 def generic_filter(
     config: GenericFilterConfig | None = None,
     *,
-    filters: list | None | _Unset = UNSET,
+    filters: list | _Unset | None = UNSET,
     request_url: str | _Unset = UNSET,
     vertical: bool | _Unset = UNSET,
-    htmx_config: HtmxConfig | None | _Unset = UNSET,
+    htmx_config: HtmxConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a generic filter consisting of one or more <select> fields."""
     config = build_config(GenericFilterConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -1204,7 +1204,7 @@ def generic_filter(
 
 @register.inclusion_tag("insight_ui/components/search_query_builder/sq_builder.html")
 def query_builder(
-    config: QueryBuilderConfig | None = None, *, model_fields: list[QueryBuilderFieldConfig] | None | _Unset = UNSET
+    config: QueryBuilderConfig | None = None, *, model_fields: list[QueryBuilderFieldConfig] | _Unset | None = UNSET
 ) -> dict[str, Any]:
     """Render a filter for constructing custom search queries."""
     config = build_config(QueryBuilderConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -1225,8 +1225,8 @@ def card(
     title: str | _Unset = UNSET,
     content: str | _Unset = UNSET,
     subtitle: str | _Unset = UNSET,
-    image: ImageConfig | None | _Unset = UNSET,
-    actions: list[ButtonConfig] | None | _Unset = UNSET,
+    image: ImageConfig | _Unset | None = UNSET,
+    actions: list[ButtonConfig] | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a card with an aspect ratio of 16:9."""
     config = build_config(CardConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -1239,10 +1239,10 @@ def app_card(
     *,
     title: str | _Unset = UNSET,
     content: str | _Unset = UNSET,
-    tags: list[str] | None | _Unset = UNSET,
+    tags: list[str] | _Unset | None = UNSET,
     request_url: str | _Unset = UNSET,
-    image: ImageConfig | None | _Unset = UNSET,
-    actions: list[ButtonConfig] | None | _Unset = UNSET,
+    image: ImageConfig | _Unset | None = UNSET,
+    actions: list[ButtonConfig] | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a vertically aligned card."""
     config = build_config(AppCardConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -1255,12 +1255,12 @@ def flip_card(
     *,
     title: str | _Unset = UNSET,
     content: str | _Unset = UNSET,
-    tags: list[str] | None | _Unset = UNSET,
+    tags: list[str] | _Unset | None = UNSET,
     request_url: str | _Unset = UNSET,
-    image: ImageConfig | None | _Unset = UNSET,
-    actions: list[ButtonConfig] | None | _Unset = UNSET,
-    back_content: str | None | _Unset = UNSET,
-    back_style: str | None | _Unset = UNSET,
+    image: ImageConfig | _Unset | None = UNSET,
+    actions: list[ButtonConfig] | _Unset | None = UNSET,
+    back_content: str | _Unset | None = UNSET,
+    back_style: str | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a card that can be rotated 180°."""
     config = build_config(FlipCardConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -1271,7 +1271,7 @@ def flip_card(
 def carousel(
     config: CardCarouselConfig | None = None,
     *,
-    carousel_items: Sequence[CardConfig] | None | _Unset = UNSET,
+    carousel_items: Sequence[CardConfig] | _Unset | None = UNSET,
     autoplay: bool | _Unset = UNSET,
     show_dots: bool | _Unset = UNSET,
     show_index: bool | _Unset = UNSET,
@@ -1291,7 +1291,7 @@ def carousel(
 def image_carousel(
     config: ImageCarouselConfig | None = None,
     *,
-    carousel_items: Sequence[ImageCarouselItemConfig] | None | _Unset = UNSET,
+    carousel_items: Sequence[ImageCarouselItemConfig] | _Unset | None = UNSET,
     autoplay: bool | _Unset = UNSET,
     show_dots: bool | _Unset = UNSET,
     show_index: bool | _Unset = UNSET,
@@ -1315,7 +1315,7 @@ def three_d_carousel(
     velocity: int | _Unset = UNSET,
     tilt: int | _Unset = UNSET,
     face_camera: bool | _Unset = UNSET,
-    carousel_items: Sequence[CarouselItemConfig] | None | _Unset = UNSET,
+    carousel_items: Sequence[CarouselItemConfig] | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a 3D version of the carousel component."""
     config = build_config(ThreeDCarouselConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -1329,7 +1329,7 @@ def toggle_view(
     tag_id: str | _Unset = UNSET,
     cards: list[CardConfig] | _Unset = UNSET,
     table_config: TableConfig | _Unset = UNSET,
-    view_radio_config: RadioBlockConfig | None | _Unset = UNSET,
+    view_radio_config: RadioBlockConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a view of data that can be displayed in various ways."""
     config = build_config(ToggleViewConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -1350,10 +1350,10 @@ def form(
     tag_id: str | _Unset = UNSET,
     title: str | _Unset = UNSET,
     description: str | _Unset = UNSET,
-    fields: Sequence[FormFieldConfig] | None | _Unset = UNSET,
+    fields: Sequence[FormFieldConfig] | _Unset | None = UNSET,
     show_reset_button: bool | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
-    htmx_config: HtmxConfig | None | _Unset = UNSET,
+    htmx_config: HtmxConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a form with HTMX support."""
     config = build_config(FormConfig, config, **{k: v for k, v in locals().items() if k != "config"})

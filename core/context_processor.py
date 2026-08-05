@@ -1,19 +1,19 @@
 """Django context processors for the core application."""
 
 import importlib
+import logging
 import tomllib
 from functools import lru_cache
 from importlib.metadata import PackageNotFoundError
 from pathlib import Path
 
-import structlog
 from django.conf import settings
 from django.http import HttpRequest
 
 _PYPROJECT_PATH = Path(settings.BASE_DIR) / "pyproject.toml"
 
 
-logger = structlog.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 @lru_cache(maxsize=1)

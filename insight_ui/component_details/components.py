@@ -160,7 +160,7 @@ class Component(Enum):
     TOGGLE_VIEW = ("toggle_view", ComponentCategory.CARD, ToggleViewConfig, False, True, False)
     FORM = ("form", ComponentCategory.FORM, FormConfig)
 
-    def __new__(  # noqa: ANN204, PLR0913
+    def __new__(  # noqa: ANN204, PLR0913, PLR0917
         cls,
         value: str,
         group: ComponentCategory,
