@@ -2,7 +2,7 @@
 
 <ol class="divide-y divide-insight-border-surface flex flex-col w-full bg-insight-bg-surface border border-insight-border-surface rounded-insight-surface md:flex-row md:divide-y-0">
     {% for item in items %}
-        <li class="flex gap-4 items-center px-6 w-full h-20">
+        <li class="flex gap-4 items-center px-6 w-full h-20"{% if item.current %} aria-current="step"{% endif %}>
             {% if item.success %}
                 <div class="flex justify-center items-center size-12 text-white bg-insight-primary rounded-insight-full">
                     {% icon name="check" size="xl" %}

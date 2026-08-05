@@ -70,7 +70,9 @@ export class Dropdown {
             Dropdown.currentOpen.hide();
         }
         this.menu.classList.toggle("hidden");
-        Dropdown.currentOpen = this.menu.classList.contains("hidden") ? null : this;
+        const isOpen = !this.menu.classList.contains("hidden");
+        this.trigger.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        Dropdown.currentOpen = isOpen ? this : null;
     }
 
     /**
@@ -186,6 +188,7 @@ export class Dropdown {
     hide() {
         if (!this.menu.classList.contains("hidden")) {
             this.menu.classList.add("hidden");
+            this.trigger.setAttribute("aria-expanded", "false");
             this.currentFocusIndex = -1;
             if (Dropdown.currentOpen === this) {
                 Dropdown.currentOpen = null;
