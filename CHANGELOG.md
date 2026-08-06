@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug Fixes
 
 - Correct various issues in the JavaScript components
+- **static:** Preserve generated stylesheet newline
 
 ### Documentation
 
@@ -23,6 +24,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - Integrate new websocket demo into the main django application
+- Add missing aria hidden arguments to 'form' and 'infinite_scroll' components
+- Add escape event handler and keyboard navigation to 'dropdown', 'modal', 'sidebar' and 'popup' components
+- Add 'role' attributes to multiple components
+- Use 'fieldset' and 'legend' for 'radio_group', 'radio_block' and 'checkbox_group' components
+- Add 'role' and 'roledescription' to carosuel components
+- Add appropriate aria attributes to 'popup' and 'tooltip' components
+- Improve a11y for multiple components
+- Add keybord navigation to carousels and remove default value from 'alt' text parameter for the image carousel
+- Add announcement for reaching the min or max value of the 'checkbox_group' component
+- Improve a11y of the 'query_builder' component using groups and unique id's
 
 ### Miscellaneous
 
@@ -33,6 +44,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Format websocket demo readme
 - Regenerate minified stylesheet
 - Fix uv.lock
+- Regenerate minified assets
+- **static:** Regenerate assets after rebase
 
 ### Refactoring
 
@@ -44,6 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add new tests for JavaScript components
 - Move JavaScript tests to main tests directory
+- Adjust tests for new accessibility
 
 ## [1.11.2] - 2026-07-21
 
