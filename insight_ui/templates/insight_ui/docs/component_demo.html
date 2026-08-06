@@ -920,7 +920,7 @@
 {% elif component.value == "live_content" %}
     {% live_content tag_id="live-content" request_url="/api/live-data/" interval=10 %}
 {% elif component.value == "web_socket" %}
-    {% websocket tag_id="demo-websocket" request_url="ws://127.0.0.1:8765" initial_content="<p>Waiting for runtime updates…</p>" %}
+    {% websocket tag_id="demo-websocket" request_url="/ws/ticker/" initial_content="<p class='text-insight-text-hint'>Connecting to stock ticker...</p><p class='mt-2 text-xs'>Requires ASGI server: <code>uvicorn core.asgi:application --port 10800</code></p>" %}
 {% elif component.value == "infinite_scroll" %}
     {% infinite_scroll config=infinite_scroll_config %}
 {% elif component.value == "pagination" %}
