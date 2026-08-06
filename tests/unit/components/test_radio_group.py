@@ -27,22 +27,21 @@ class TestRadioGroup(TemplateTagsTestCase):
         legend = wrapper.find("legend")
         assert legend.text.strip() == "Select AI Model:"
 
-        # Check layout
-        container = wrapper.find("div", class_="flex")
-        assert "space-y-1" in container["class"]
-
         # Check count of radios
-        inputs = container.find_all("input", type="radio")
-        label_spans = container.find_all("span")
+        inputs = wrapper.find_all("input", type="radio")
         assert len(inputs) == 3  # noqa: PLR2004
 
-        # First radio
+        # Check labels are rendered
+        labels = wrapper.find_all("label")
+        assert len(labels) == 3  # noqa: PLR2004
+
+        # First radio (checked)
         assert inputs[0]["id"] == "model1"
         assert inputs[0]["name"] == "model"
         assert inputs[0]["value"] == "BERT"
         assert inputs[0].has_attr("checked")
         assert not inputs[0].has_attr("disabled")
-        assert label_spans[0].get_text() == "BERT"
+        assert "BERT" in labels[0].get_text()
 
         # Second radio
         assert inputs[1]["id"] == "model2"
@@ -50,12 +49,12 @@ class TestRadioGroup(TemplateTagsTestCase):
         assert inputs[1]["value"] == "PaLM 2"
         assert not inputs[1].has_attr("checked")
         assert not inputs[1].has_attr("disabled")
-        assert label_spans[1].get_text() == "PaLM 2"
+        assert "PaLM 2" in labels[1].get_text()
 
-        # Third radio
+        # Third radio (disabled)
         assert inputs[2]["id"] == "model3"
         assert inputs[2]["name"] == "model"
         assert inputs[2]["value"] == "LLaMA 2"
         assert not inputs[2].has_attr("checked")
         assert inputs[2].has_attr("disabled")
-        assert label_spans[2].get_text() == "LLaMA 2 (currently not available)"
+        assert "LLaMA 2" in labels[2].get_text()

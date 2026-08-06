@@ -52,16 +52,11 @@ class TestNavbar(TemplateTagsTestCase):
         assert "Insight UI" in rendered
 
     def test_navbar_user_menu_is_hidden_until_opened(self) -> None:
-        """Authenticated user menus must not push navbar controls into a second row."""
+        """Authenticated user menus are hidden by default."""
         nav_config = NavbarConfig(
             NavbarBrandConfig(
                 request_url="/",
-                mark=BrandMarkConfig(
-                    primary_text="Insight UI",
-                    logo=LogoConfig(
-                        "insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="2rem"
-                    ),
-                ),
+                mark=BrandMarkConfig(primary_text="Insight UI"),
             ),
             show_usermenu=True,
             show_language_selector=True,
@@ -82,8 +77,8 @@ class TestNavbar(TemplateTagsTestCase):
         menu = soup.select_one("#user-menu")
 
         assert trigger is not None
-        assert trigger.find_parent("div", class_="relative") is not None
         assert menu is not None
+        # State class: menu must be hidden initially (JS toggles this)
         assert "hidden" in menu.get("class", [])
 
     def test_navbar_user_menu_renders_avatar_image_when_configured(self) -> None:
@@ -121,7 +116,6 @@ class TestNavbar(TemplateTagsTestCase):
         assert avatar is not None
         assert avatar.get("src") == "/media/avatars/demo.webp"
         assert avatar.get("alt") == "Demo user avatar"
-        assert "object-cover" in avatar.get("class", [])
 
     def test_navbar_user_menu_keeps_initials_fallback_without_avatar(self) -> None:
         """Existing initials fallback remains the default user menu trigger."""

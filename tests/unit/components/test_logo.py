@@ -27,7 +27,7 @@ class TestLogo(TemplateTagsTestCase):
         assert "height: 3rem" in logo.get("style")
 
     def test_logo_renders_dark_variant(self) -> None:
-        """Dark logo variants should render with dark-mode classes."""
+        """Dark logo variants should render two images with theme-switching classes."""
         config = LogoConfig("light.png", "dark.png", "Insight UI Logo")
         template_string = """
         {% load insight_tags %}
@@ -39,9 +39,10 @@ class TestLogo(TemplateTagsTestCase):
         logos = soup.find_all("img")
         assert len(logos) == 2  # noqa: PLR2004
         assert logos[0].get("src") == "/static/light.png"
-        assert "dark:hidden" in logos[0].get("class")
         assert logos[1].get("src") == "/static/dark.png"
-        assert "dark:inline-block" in logos[1].get("class")
+        # Theme-switching requires these Tailwind classes to show/hide variants
+        assert "dark:hidden" in logos[0].get("class", [])
+        assert "dark:inline-block" in logos[1].get("class", [])
 
     def test_logo_renders_icon(self) -> None:
         """Icon logos should use the existing Insight UI icon set."""

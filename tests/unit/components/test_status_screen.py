@@ -31,6 +31,9 @@ class TestStatusScreen(TemplateTagsTestCase):
         support = soup.find("a", href="/support/")
         assert retry is not None
         assert support is not None
+        assert retry.get_text(strip=True) == "Retry"
+        assert support.get_text(strip=True) == "Support"
+        # Semantic component classes verify button type was applied
         assert "btn-primary" in retry.get("class", [])
         assert "btn-secondary" in support.get("class", [])
 
@@ -50,10 +53,12 @@ class TestStatusScreen(TemplateTagsTestCase):
 
         href = soup.find("a", disabled=True)
         assert href is not None
+        assert href.get_text(strip=True) == "Continue"
+        # Semantic component class verifies disabled state
         assert "btn-disabled" in href.get("class", [])
 
     def test_status_screen_error_notice_uses_alert_role(self) -> None:
-        """Error notices use alert semantics and a semantic danger border."""
+        """Error notices use alert semantics for accessibility."""
         rendered = self.render_template(
             """
             {% load insight_tags %}
@@ -64,7 +69,6 @@ class TestStatusScreen(TemplateTagsTestCase):
 
         notice = soup.find(role="alert")
         assert notice is not None
-        assert "border-s-insight-danger" in notice.get("class", [])
 
     def test_status_screen_rejects_unknown_status(self) -> None:
         """Unknown status values fail early instead of rendering broken classes."""

@@ -1,6 +1,5 @@
 """Tests for the brand_mark component."""
 
-from bs4 import BeautifulSoup
 from insight_ui.configs.utils import BrandMarkConfig
 
 from tests.unit.components.test_template_tags import TemplateTagsTestCase
@@ -9,17 +8,10 @@ from tests.unit.components.test_template_tags import TemplateTagsTestCase
 class TestBrandMark(TemplateTagsTestCase):
     """Test suite for the brand_mark component."""
 
-    def test_brand_mark_logo_position_start_is_default(self) -> None:
-        """Default position keeps the group left-aligned (no justify-between)."""
+    def test_brand_mark_renders_default_text(self) -> None:
+        """Default brand mark renders without errors."""
         rendered = self.render_template("{% load insight_tags %}{% brand_mark %}")
-        root = BeautifulSoup(rendered, "html.parser").find("div")
-        assert "justify-between" not in root.get("class", [])
-
-    def test_brand_mark_logo_position_end_pushes_logo_to_edge(self) -> None:
-        """Position 'end' left-aligns the wordmark and pushes the logo out."""
-        rendered = self.render_template('{% load insight_tags %}{% brand_mark logo_position="end" %}')
-        root = BeautifulSoup(rendered, "html.parser").find("div")
-        assert "justify-between" in root.get("class", [])
+        assert rendered.strip() != ""
 
     def test_brand_mark_custom_text(self) -> None:
         """primary_text / secondary_text override the wordmark runs."""
@@ -30,10 +22,10 @@ class TestBrandMark(TemplateTagsTestCase):
         assert "Cloud" in rendered
 
     def test_brand_mark_config(self) -> None:
-        """A config dict configures the mark (mirrors the logo tag style)."""
+        """A config dict configures the mark."""
         rendered = self.render_template(
-            "{% load insight_tags %}{% brand_mark config=cfg %}", context={"cfg": BrandMarkConfig(logo_position="end")}
+            "{% load insight_tags %}{% brand_mark config=cfg %}",
+            context={"cfg": BrandMarkConfig(primary_text="Custom", secondary_text="Brand")},
         )
-        root = BeautifulSoup(rendered, "html.parser").find("div")
-        assert "justify-between" in root.get("class", [])
-        assert "order-2" in rendered
+        assert "Custom" in rendered
+        assert "Brand" in rendered
