@@ -1,6 +1,7 @@
 {% load insight_tags %}
 
 <form
+    role="search"
     {% if generic_filter_config.htmx_config %}
         hx-get="{{ generic_filter_config.request_url }}"
         hx-target="{{ generic_filter_config.htmx_config.target }}"

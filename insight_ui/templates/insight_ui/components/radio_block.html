@@ -1,8 +1,8 @@
 {% load insight_tags %}
 
-<div>
+<fieldset>
     {% if radio_block_config.label %}
-        <span class="flex gap-1 mb-1 font-bold text-sm text-primary">{{ radio_block_config.label }}</span>
+        <legend class="flex gap-1 mb-1 font-bold text-sm text-primary">{{ radio_block_config.label }}</legend>
     {% endif %}
     {% if radio_block_config.integrated %}
         {# To use with other elements in a extern <form> #}
@@ -67,4 +67,4 @@
             {% endfor %}
         </form>
     {% endif %}
-</div>
+</fieldset>

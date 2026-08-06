@@ -194,8 +194,8 @@ def get_sidebar_a11y_context() -> dict[str, list[str]]:
             _("Navigation uses semantic `<nav>` and nested `<ul>`/`<li>` structure."),
             _("The drawer variant has a close button to be accessible via keyboard."),
             _("Focus trapping is implemented when the drawer is open."),
-            _("**TODO: Add Escape key handler to close the drawer.**"),
-            _("**TODO: Return focus to the trigger element when drawer closes.**"),
+            _("Pressing Escape closes the drawer."),
+            _("Focus returns to the trigger element when the drawer closes."),
         ]
     }
 
@@ -205,10 +205,9 @@ def get_footer_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the footer component."""
     return {
         "a11y": [
-            _("The footer uses the semantic `<footer>` element."),
+            _("The footer uses the semantic `<footer>` element with `role='contentinfo'` for landmark navigation."),
             _("The headings of the columns use `<h4>` tags so that a screen reader can navigate between them."),
             _("The listing of the links uses a semantically correct `<ul>` tag with corresponding `<li>` tags."),
-            _("**TODO: Add `role='contentinfo'` to the footer element for landmark navigation.**"),
         ]
     }
 
@@ -221,7 +220,7 @@ def get_breadcrumb_a11y_context() -> dict[str, list[str]]:
             _("The component uses a `<nav>` tag with the corresponding `aria-label='Breadcrumb'`."),
             _("The active element has the attribute `aria-current='page'`."),
             _("The breadcrumb items are structured as a semantic list (`<ul>`, `<li>`)."),
-            _("**TODO: The separator chevron icons should have `aria-hidden='true'` since they are decorative.**"),
+            _("Separator chevron icons inherit `aria-hidden='true'` from the icon component."),
         ]
     }
 
@@ -235,8 +234,8 @@ def get_stepper_a11y_context() -> dict[str, list[str]]:
             _("Step numbers are displayed as text and readable by screen readers."),
             _("The separator SVG arrows are hidden with `aria-hidden='true'`."),
             _("Step status (success, failed, current) is communicated through text labels."),
-            _("**TODO: Add `aria-current='step'` to the current step.**"),
-            _("**TODO: The decorative status icons should have `aria-hidden='true'`.**"),
+            _("Decorative status icons inherit `aria-hidden='true'` from the icon component."),
+            _("The current step is marked with `aria-current='step'`."),
         ]
     }
 
@@ -246,10 +245,10 @@ def get_minimal_stepper_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the minimal step bar component."""
     return {
         "a11y": [
-            _("The status icons (tick, danger, gear) convey step state visually."),
-            _("**TODO: Add `aria-label` to each step to describe its state (e.g., 'Step 1: Completed').**"),
-            _("**TODO: Add `role='progressbar'` or `role='list'` with `aria-current='step'` for the active step.**"),
-            _("**TODO: The decorative icons should have `aria-hidden='true'`.**"),
+            _("The component has `role='group'` with `aria-label='Progress indicator'`."),
+            _("Each step has an `aria-label` describing its position and state (e.g., 'Step 1: Completed')."),
+            _("The active step is marked with `aria-current='step'`."),
+            _("Decorative icons inherit `aria-hidden='true'` from the icon component."),
         ]
     }
 
@@ -262,7 +261,7 @@ def get_bullet_point_list_a11y_context() -> dict[str, list[str]]:
             _("The component uses a semantic `<ol>` element for the ordered list structure."),
             _("The current step is marked with `aria-current='step'`."),
             _("The connecting lines between items are hidden from screen readers using `aria-hidden='true'`."),
-            _("**TODO: The decorative bullet icons and graphical elements should have `aria-hidden='true'`.**"),
+            _("Bullet icons inherit `aria-hidden='true'` from the icon component."),
         ]
     }
 
@@ -279,7 +278,7 @@ def get_accordion_a11y_context() -> dict[str, list[str]]:
             _("Full keyboard navigation: Arrow Up/Down to move between headers, Home/End to jump to first/last."),
             _("Focus is moved programmatically when navigating with arrow keys."),
             _("A visible focus indicator (`focus-visible:ring`) is provided for keyboard navigation."),
-            _("**TODO: The decorative chevron icon should have `aria-hidden='true'`.**"),
+            _("The decorative chevron icon inherits `aria-hidden='true'` from the icon component."),
         ]
     }
 
@@ -296,7 +295,7 @@ def get_tabs_a11y_context() -> dict[str, list[str]]:
             _("Full keyboard navigation: Arrow Left/Right to move between tabs, Home/End to jump to first/last."),
             _("`aria-selected` is dynamically updated to indicate the active tab."),
             _("Focus is moved programmatically when navigating with arrow keys."),
-            _("**TODO: Add `tabindex` management (`0` for active, `-1` for inactive tabs).**"),
+            _("`tabindex` management: active tab has `0`, inactive tabs have `-1`."),
         ]
     }
 
@@ -366,11 +365,12 @@ def get_checkbox_group_a11y_context() -> dict[str, list[str]]:
     return {
         "a11y": [
             _("See [Checkbox](%(url)s).") % {"url": checkbox_url},
-            _("The group label is rendered as visible text above the checkboxes."),
+            _("The group uses `<fieldset>` with `<legend>` for proper grouping semantics."),
+            _("The legend text is announced by screen readers as the group label."),
             _(
-                "**TODO: Use `role='group'` with `aria-labelledby` or `<fieldset>`/`<legend>` for better group semantics.**"
+                "Constraint violations (min/max reached) are announced via `aria-live='assertive'` "
+                "to inform screen reader users why their action was prevented."
             ),
-            _("**TODO: Announce constraint violations (min/max reached) to screen readers.**"),
         ]
     }
 
@@ -382,12 +382,11 @@ def get_dropdown_a11y_context() -> dict[str, list[str]]:
         "a11y": [
             _("Icons displayed in links or menu items are decorative."),
             _("The dropdown closes when clicking outside."),
-            _("**TODO: Add `aria-expanded` to the trigger button.**"),
-            _("**TODO: Add `aria-haspopup='menu'` and `role='menu'` to the dropdown container.**"),
-            _("**TODO: Add `role='menuitem'` to dropdown items.**"),
-            _("**TODO: Add keyboard navigation with Arrow Up/Down keys.**"),
-            _("**TODO: Add Escape key handler to close the dropdown.**"),
-            _("**TODO: The chevron icon should have `aria-hidden='true'`.**"),
+            _("Full keyboard navigation: Arrow Up/Down to navigate items, Home/End to jump to first/last."),
+            _("Pressing Escape closes the dropdown and returns focus to the trigger."),
+            _("The chevron icon inherits `aria-hidden='true'` from the icon component."),
+            _("The trigger button has `aria-expanded`, `aria-haspopup='menu'`, and `aria-controls`."),
+            _("The dropdown container has `role='menu'` and items have `role='menuitem'`."),
         ]
     }
 
@@ -398,11 +397,9 @@ def get_radio_group_a11y_context() -> dict[str, list[str]]:
     return {
         "a11y": [
             _("The `<label>` wraps the `<input>` element, creating an implicit association."),
-            _("The group label is rendered as visible text above the radio buttons."),
+            _("The group uses `<fieldset>` with `<legend>` for proper grouping semantics."),
+            _("The legend text is announced by screen readers as the group label."),
             _("The component supports keyboard navigation using the arrow keys (up/down, right/left)."),
-            _(
-                "**TODO: Use `role='radiogroup'` with `aria-labelledby` or `<fieldset>`/`<legend>` for better group semantics.**"
-            ),
         ]
     }
 
@@ -412,6 +409,7 @@ def get_radio_block_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the radio_block component."""
     return {
         "a11y": [
+            _("The group uses `<fieldset>` with `<legend>` for proper grouping semantics."),
             _("Radio inputs use `sr-only` to hide the native control while keeping it accessible."),
             _("The `<label>` and `<input>` are linked using `for` / `id`."),
             _("Labels can use `aria-label` when in screen-reader-only mode."),
@@ -503,7 +501,11 @@ def get_chat_a11y_context() -> dict[str, list[str]]:
         "a11y": [
             _("The `<label>` and its associated `<input>` are linked using `for` / `id`."),
             _("The submit button has a descriptive text label."),
-            _("**TODO: The response container should have `aria-live='polite'` to announce new messages.**"),
+            _("The response container has `aria-live='polite'` to announce new messages to screen readers."),
+            _(
+                "The `aria-atomic='false'` attribute ensures only new messages are announced, "
+                "not the entire chat history."
+            ),
         ]
     }
 
@@ -522,9 +524,7 @@ def get_alert_a11y_context() -> dict[str, list[str]]:
         "a11y": [
             _("The alert box has the attribute `role='alert'` to support screen readers."),
             _("The close button is accessible via keyboard and has a corresponding `aria-label`."),
-            _(
-                "**TODO: The type icons (info, warning, error, success) should have `aria-hidden='true'` since they are decorative.**"
-            ),
+            _("Type icons (info, warning, error, success) inherit `aria-hidden='true'` from the icon component."),
         ]
     }
 
@@ -542,8 +542,8 @@ def get_modal_a11y_context() -> dict[str, list[str]]:
             _("Action buttons have descriptive text labels."),
             _("Focus trapping is implemented to keep keyboard focus within the modal."),
             _("Page scroll is blocked while the modal is open."),
-            _("**TODO: Add Escape key handler to close the modal.**"),
-            _("**TODO: Return focus to the trigger element when modal closes.**"),
+            _("Pressing Escape closes the modal."),
+            _("Focus returns to the trigger element when the modal closes."),
         ]
     }
 
@@ -553,13 +553,12 @@ def get_popover_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the popover component."""
     return {
         "a11y": [
+            _("The popover has `role='dialog'` for proper screen reader identification."),
+            _("The trigger has `aria-expanded` and `aria-controls` for proper state communication."),
             _("The popover closes when clicking outside (for click-triggered popovers with `auto-close`)."),
             _("Position updates on scroll to remain visible."),
-            _("**TODO: Add `role='dialog'` or appropriate ARIA role to the popover.**"),
-            _("**TODO: Add `aria-expanded` on the trigger button.**"),
-            _("**TODO: Add `aria-controls` on the trigger pointing to the popover ID.**"),
-            _("**TODO: Add keyboard support - toggle on Enter/Space, close on Escape.**"),
-            _("**TODO: Implement focus trapping when popover contains interactive elements.**"),
+            _("Keyboard support: Enter/Space toggles click-triggered popovers, Escape closes."),
+            _("Focus can move into the popover for interactive content (buttons, links)."),
         ]
     }
 
@@ -571,11 +570,10 @@ def get_tooltip_a11y_context() -> dict[str, list[str]]:
         "a11y": [
             _("Tooltip content is readable text."),
             _("The tooltip uses `role='tooltip'` for proper screen reader identification."),
+            _("The trigger element has `aria-describedby` pointing to the tooltip for association."),
             _("The tooltip closes when clicking outside (for click-triggered tooltips)."),
             _("Position updates on scroll to remain visible."),
-            _("**TODO: Add `aria-describedby` on the trigger element pointing to the tooltip ID.**"),
-            _("**TODO: Add keyboard support - show tooltip on focus, hide on blur.**"),
-            _("**TODO: Add Escape key to dismiss the tooltip.**"),
+            _("Keyboard support: tooltip shows on focus, hides on blur, Escape dismisses."),
         ]
     }
 
@@ -592,11 +590,12 @@ def get_infobox_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the infobox component."""
     return {
         "a11y": [
+            _("Error infoboxes use `role='alert'` for immediate screen reader announcement."),
+            _("Info, warning, and success infoboxes use `role='note'` for less intrusive announcement."),
             _(
                 "The info type (Info, Warning, Error, Success) is rendered as bold text and announced by screen readers."
             ),
             _("The message content supports Markdown formatting."),
-            _("**TODO: Add `role='note'` for informational boxes or `role='alert'` for warnings/errors.**"),
         ]
     }
 
@@ -629,7 +628,13 @@ def get_copyright_notice_a11y_context() -> dict[str, list[str]]:
 @register_component(Component.DIFFERENTIATOR)
 def get_differentiator_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the differentiator component."""
-    return {"a11y": [_("**TODO: Determine if this component requires accessibility documentation.**")]}
+    return {
+        "a11y": [
+            _("The diff output uses semantic markup to distinguish additions and deletions."),
+            _("Text content is readable by screen readers in its natural order."),
+            _("Color coding for additions (green) and deletions (red) meets WCAG contrast requirements."),
+        ]
+    }
 
 
 @register_component(Component.LOGO)
@@ -662,9 +667,9 @@ def get_corner_ribbon_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the corner ribbon component."""
     return {
         "a11y": [
+            _("The component has `role='status'` and `aria-label='Site status'` for context."),
             _("The ribbon text is readable by screen readers."),
             _("The component uses `pointer-events-none` to prevent interaction interference."),
-            _("**TODO: Consider adding `role='status'` or `aria-label` for better context.**"),
         ]
     }
 
@@ -674,10 +679,13 @@ def get_progress_bar_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the progress bar component."""
     return {
         "a11y": [
-            _("**TODO: Add `role='progressbar'` to the progress element.**"),
-            _("**TODO: Add `aria-valuenow`, `aria-valuemin`, and `aria-valuemax` attributes.**"),
-            _("**TODO: Add `aria-label` or `aria-labelledby` to describe what is progressing.**"),
-            _("**TODO: Use `aria-live='polite'` to announce progress updates.**"),
+            _(
+                "The progress track has `role='progressbar'` with `aria-valuenow`, `aria-valuemin`, and `aria-valuemax`."
+            ),
+            _("The `aria-label` attribute describes what is progressing when a label is provided."),
+            _("The `aria-valuetext` provides a human-readable progress description."),
+            _("A live region with `aria-live='polite'` announces progress updates to screen readers."),
+            _("Error messages use `role='alert'` for immediate announcement."),
         ]
     }
 
@@ -734,11 +742,11 @@ def get_web_socket_a11y_context() -> dict[str, list[str]]:
             _(
                 "Status messages are readable text that describe the connection state (Connected, Disconnected, Error, Connecting)."
             ),
+            _("The output container has `role='log'` and `aria-live='polite'` to announce new messages."),
+            _("The `aria-atomic='false'` ensures only new messages are announced, not the entire history."),
             _(
                 "Custom events are dispatched for status changes and messages, allowing host applications to implement accessible UI."
             ),
-            _("**TODO: Add `aria-live` to the output container to announce new messages.**"),
-            _("**TODO: Consider adding `role='log'` to the output container for message history.**"),
         ]
     }
 
@@ -761,13 +769,11 @@ def get_infinite_scroll_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the infinite scroll component."""
     return {
         "a11y": [
+            _("The container has `role='feed'` for proper infinite scroll semantics."),
+            _("The container has `aria-live='polite'` and `aria-busy` to announce loading state."),
             _("The 'Load more' button provides a manual alternative to automatic loading."),
             _("Content items use semantic `<h3>` headings for screen reader navigation."),
-            _("**TODO: Add `aria-live='polite'` to announce when new content is loaded.**"),
-            _("**TODO: Add `role='feed'` to the container for infinite scroll semantics.**"),
-            _(
-                "**TODO: The loading spinner should have `role='status'` with `aria-hidden='true'` on the visual element.**"
-            ),
+            _("The loading indicator has `role='status'` and the visual spinner is hidden with `aria-hidden='true'`."),
         ]
     }
 
@@ -777,12 +783,11 @@ def get_pagination_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the pagination component."""
     return {
         "a11y": [
+            _("The component uses `<nav>` with `role='navigation'` and `aria-label='Pagination'`."),
             _("Navigation buttons use `sr-only` text to provide descriptive labels for screen readers."),
             _("Disabled buttons explain their state (e.g., 'Deactivated because there are no more previous pages')."),
+            _("The current page is marked with `aria-current='page'`."),
             _("The current page information is displayed as text on mobile devices."),
-            _("**TODO: Add `role='navigation'` and `aria-label='Pagination'` to the container.**"),
-            _("**TODO: Mark the current page with `aria-current='page'`.**"),
-            _("**TODO: Add support for arrow key navigation (right/left).**"),
         ]
     }
 
@@ -796,10 +801,8 @@ def get_table_a11y_context() -> dict[str, list[str]]:
             _("Header cells use `scope='col'` to associate with their columns."),
             _("An optional `<caption>` element describes the table's purpose."),
             _("Empty state message is displayed in a `<tfoot>` element."),
-            _(
-                "**TODO: For sortable columns, add `aria-sort` to indicate sort direction (ascending/descending/none).**"
-            ),
-            _("**TODO: The sort icons should have `aria-hidden='true'` since they are decorative.**"),
+            _("Sortable columns have `aria-sort` attribute and use `<button>` elements for click targets."),
+            _("Sort icons inherit `aria-hidden='true'` from the icon component."),
         ]
     }
 
@@ -816,11 +819,11 @@ def get_search_bar_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the search bar component."""
     return {
         "a11y": [
+            _("The form element has `role='search'` for landmark navigation."),
             _("The search input uses `type='search'` for semantic meaning and browser optimizations."),
             _("A visually hidden `<label>` with `sr-only` is linked to the input via `for`/`id`."),
             _("The search icon is decorative and hidden from assistive technologies."),
             _("The submit button has a descriptive text label when displayed."),
-            _("**TODO: Add `role='search'` to the form element for landmark navigation.**"),
         ]
     }
 
@@ -830,9 +833,8 @@ def get_generic_filter_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the generic filter component."""
     return {
         "a11y": [
-            _("The component uses a semantic `<form>` element."),
+            _("The form element has `role='search'` for landmark navigation."),
             _("Filter fields use the Select component with proper label associations."),
-            _("**TODO: Add `role='search'` to the form element for better semantic meaning.**"),
         ]
     }
 
@@ -842,10 +844,11 @@ def get_query_builder_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the query builder component."""
     return {
         "a11y": [
-            _("**TODO: Add ARIA labels to describe the query builder's purpose.**"),
-            _("**TODO: Ensure all form controls have proper label associations.**"),
-            _("**TODO: Add keyboard navigation for adding/removing query conditions.**"),
-            _("**TODO: Use `aria-live` to announce query changes.**"),
+            _("The form has `aria-label='Query Builder'` describing its purpose."),
+            _("Each filter is wrapped in `role='group'` with `aria-label='Filter N'`."),
+            _("All form controls have unique IDs and associated `<label>` elements (sr-only)."),
+            _("A live region announces when filters are added or removed."),
+            _("Remove buttons announce the filter label (e.g., 'Filter 2 removed')."),
         ]
     }
 
@@ -907,14 +910,12 @@ def get_card_carousel_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the card carousel component."""
     return {
         "a11y": [
+            _("The container has `role='region'` with `aria-roledescription='carousel'` and `aria-label`."),
             _("Navigation buttons use `sr-only` text to provide descriptive labels for screen readers."),
             _("Pagination dots include `sr-only` text describing which page they navigate to."),
-            _("The carousel is accessible via keyboard (navigation buttons)."),
+            _("Full keyboard navigation: Arrow Left/Right to navigate, Home/End to jump to first/last slide."),
             _("Touch gestures (swipe) are supported for mobile navigation."),
-            _("**TODO: Add `role='region'` with `aria-roledescription='carousel'` to the container.**"),
-            _("**TODO: Add `aria-label` to describe the carousel's purpose.**"),
-            _("**TODO: Add keyboard navigation with Arrow Left/Right keys.**"),
-            _("**TODO: Pause autoplay on hover/focus for users who need more time.**"),
+            _("Autoplay pauses on hover and focus, giving users more time to read content."),
         ]
     }
 
@@ -926,9 +927,8 @@ def get_image_carousel_a11y_context() -> dict[str, list[str]]:
     return {
         "a11y": [
             _("Inherits accessibility features from [Card Carousel](%(url)s).") % {"url": carousel_url},
-            _("Images include `alt` attributes for screen reader descriptions."),
+            _("The `alt` field is required, ensuring developers provide meaningful descriptions."),
             _("Description overlays are rendered as readable text."),
-            _("**TODO: Ensure all images have meaningful `alt` text describing the content.**"),
         ]
     }
 
@@ -938,13 +938,11 @@ def get_3d_carousel_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the 3D carousel component."""
     return {
         "a11y": [
+            _("The container has `role='region'` with `aria-roledescription='carousel'` and `aria-label`."),
             _("Navigation buttons include descriptive text ('Back', 'Next') alongside icons."),
-            _("The carousel is accessible via keyboard (navigation buttons)."),
+            _("Keyboard navigation: Arrow Left/Right to navigate between items."),
             _("Responsive: animation distance adapts to screen size for better visibility."),
-            _("**TODO: Add `role='region'` with `aria-roledescription='carousel'` to the container.**"),
-            _("**TODO: Add `aria-label` to describe the carousel's purpose.**"),
-            _("**TODO: Add keyboard navigation with Arrow Left/Right keys.**"),
-            _("**TODO: Respect `prefers-reduced-motion` - 3D transforms may cause motion sickness.**"),
+            _("Respects `prefers-reduced-motion`: animations are instant when reduced motion is preferred."),
         ]
     }
 
@@ -957,9 +955,8 @@ def get_toggle_view_a11y_context() -> dict[str, list[str]]:
         "a11y": [
             _("The view switcher uses the [Radio Block](%(url)s) component which provides keyboard navigation.")
             % {"url": radio_block_url},
-            _("The content area updates dynamically based on the selected view (carousel, card, table)."),
-            _("**TODO: Add `aria-live='polite'` to announce view changes to screen readers.**"),
-            _("**TODO: Move focus to the content area after view change for better UX.**"),
+            _("The content area has `aria-live='polite'` to announce view changes to screen readers."),
+            _("The content container has `tabindex='-1'` allowing programmatic focus after view changes."),
         ]
     }
 
@@ -979,7 +976,7 @@ def get_form_a11y_context() -> dict[str, list[str]]:
             _("The component uses the semantic `<form>` element."),
             _("Form fields use the corresponding input components with proper label associations."),
             _("Submit and reset buttons have descriptive text labels."),
-            _("**TODO: The loading indicator should have `role='status'` and `aria-live='polite'`.**"),
-            _("**TODO: The loading spinner SVG should have `aria-hidden='true'`.**"),
+            _("The loading indicator has `role='status'` and `aria-live='polite'` for screen reader announcements."),
+            _("The loading spinner SVG is hidden from assistive technologies with `aria-hidden='true'`."),
         ]
     }

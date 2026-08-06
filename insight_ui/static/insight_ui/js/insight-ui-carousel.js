@@ -59,7 +59,13 @@ export class Carousel {
         this.boundTouchStart = (e) => { this.startX = e.touches[0].clientX; };
         this.boundTouchEnd = this.handleTouchEnd.bind(this);
         this.boundWindowResize = () => this.resizeItems();
+        this.boundKeyDown = this.handleKeyDown.bind(this);
+        this.boundMouseEnter = () => this.pauseAutoplay();
+        this.boundMouseLeave = () => this.resumeAutoplay();
+        this.boundFocusIn = () => this.pauseAutoplay();
+        this.boundFocusOut = () => this.resumeAutoplay();
         this.boundDotClicks = [];
+        this.autoplayPaused = false;
 
         this.dots = [...this.element.querySelectorAll(".carousel-dot")];
         this.dots.forEach((dot, i) => {
@@ -95,8 +101,16 @@ export class Carousel {
         this.nextBtn.addEventListener("click", this.boundNextClick);
         this.element.addEventListener("touchstart", this.boundTouchStart);
         this.element.addEventListener("touchend", this.boundTouchEnd);
+        this.element.addEventListener("keydown", this.boundKeyDown);
 
-        if (this.autoplayEnabled) this.startAutoplay();
+        // Pause autoplay on hover/focus for users who need more time
+        if (this.autoplayEnabled) {
+            this.element.addEventListener("mouseenter", this.boundMouseEnter);
+            this.element.addEventListener("mouseleave", this.boundMouseLeave);
+            this.element.addEventListener("focusin", this.boundFocusIn);
+            this.element.addEventListener("focusout", this.boundFocusOut);
+            this.startAutoplay();
+        }
 
         window.addEventListener("resize", this.boundWindowResize);
 
@@ -134,6 +148,58 @@ export class Carousel {
                 this.next();
             }
             this.restartAutoplay();
+        }
+    }
+
+    /**
+     * Handles keyboard events for carousel navigation.
+     *
+     * @param {KeyboardEvent} e - The keyboard event
+     */
+    handleKeyDown(e) {
+        switch (e.key) {
+            case 'ArrowLeft':
+                e.preventDefault();
+                if (this.isRTL) { this.next(); } else { this.prev(); }
+                this.restartAutoplay();
+                break;
+            case 'ArrowRight':
+                e.preventDefault();
+                if (this.isRTL) { this.prev(); } else { this.next(); }
+                this.restartAutoplay();
+                break;
+            case 'Home':
+                e.preventDefault();
+                this.index = 0;
+                this.update();
+                this.restartAutoplay();
+                break;
+            case 'End':
+                e.preventDefault();
+                this.index = this.totalSlides - 1;
+                this.update();
+                this.restartAutoplay();
+                break;
+        }
+    }
+
+    /**
+     * Pauses autoplay when user hovers or focuses the carousel.
+     */
+    pauseAutoplay() {
+        if (this.autoplayEnabled && !this.autoplayPaused) {
+            this.stopAutoplay();
+            this.autoplayPaused = true;
+        }
+    }
+
+    /**
+     * Resumes autoplay when user stops hovering or focus leaves the carousel.
+     */
+    resumeAutoplay() {
+        if (this.autoplayEnabled && this.autoplayPaused) {
+            this.startAutoplay();
+            this.autoplayPaused = false;
         }
     }
 
@@ -239,6 +305,15 @@ export class Carousel {
         // Remove touch listeners
         this.element.removeEventListener("touchstart", this.boundTouchStart);
         this.element.removeEventListener("touchend", this.boundTouchEnd);
+
+        // Remove keyboard listener
+        this.element.removeEventListener("keydown", this.boundKeyDown);
+
+        // Remove hover/focus listeners for autoplay pause
+        this.element.removeEventListener("mouseenter", this.boundMouseEnter);
+        this.element.removeEventListener("mouseleave", this.boundMouseLeave);
+        this.element.removeEventListener("focusin", this.boundFocusIn);
+        this.element.removeEventListener("focusout", this.boundFocusOut);
 
         // Remove window resize listener
         window.removeEventListener("resize", this.boundWindowResize);

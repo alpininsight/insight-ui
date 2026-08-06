@@ -2,8 +2,10 @@
 
 <!-- Filter -->
 <div class="flex flex-col gap-6">
-    <form id="filter-form" class="w-full">
+    <form id="filter-form" class="w-full" aria-label="{% trans 'Query Builder' %}">
         <p class="pb-2 text-secondary">{% trans "The following conditions must be met:" %}</p>
+        {# Live region for screen reader announcements #}
+        <span id="filter-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></span>
         <div id="filters" class="flex flex-col gap-2">
             {% for filter in custom_filters %}
                 <div class="flex flex-col gap-2 filter">
@@ -122,32 +124,75 @@
         updateOperators(fieldSelect, false);
     });
 
+    // Announce changes to screen readers
+    function announce(message) {
+        const announcer = document.getElementById('filter-announcer');
+        if (announcer) {
+            announcer.textContent = '';
+            setTimeout(() => { announcer.textContent = message; }, 50);
+        }
+    }
+
+    // Get next filter index
+    function getNextFilterIndex() {
+        const filters = document.querySelectorAll('#filters .filter > [data-filter-index]');
+        let maxIndex = -1;
+        filters.forEach(f => {
+            const idx = parseInt(f.dataset.filterIndex, 10);
+            if (idx > maxIndex) maxIndex = idx;
+        });
+        return maxIndex + 1;
+    }
+
     // Add Filter Button
     function addFilter() {
-        const uniqueGroupId = crypto.randomUUID();
+        const newIndex = getNextFilterIndex();
 
         // Create a new filter
         const filterDiv = document.createElement('div');
         filterDiv.classList.add('filter', 'flex', 'flex-col', 'gap-2');
         filterDiv.innerHTML = `{% include "insight_ui/components/search_query_builder/sq_builder_filter.html" %}`;
-        filterDiv.innerHTML = filterDiv.innerHTML.replace(/logic/g, "logic-" + uniqueGroupId);
+
+        // Update all index-based IDs and attributes
+        filterDiv.innerHTML = filterDiv.innerHTML
+            .replace(/data-filter-index="[^"]*"/g, `data-filter-index="${newIndex}"`)
+            .replace(/aria-label="[^"]*"/g, `aria-label="{% trans 'Filter' %} ${newIndex + 1}"`)
+            .replace(/id="field-[^"]*"/g, `id="field-${newIndex}"`)
+            .replace(/for="field-[^"]*"/g, `for="field-${newIndex}"`)
+            .replace(/id="operator-[^"]*"/g, `id="operator-${newIndex}"`)
+            .replace(/for="operator-[^"]*"/g, `for="operator-${newIndex}"`)
+            .replace(/id="value-[^"]*"/g, `id="value-${newIndex}"`)
+            .replace(/for="value-[^"]*"/g, `for="value-${newIndex}"`)
+            .replace(/id="optionAND-[^"]*"/g, `id="optionAND-${newIndex}"`)
+            .replace(/for="optionAND-[^"]*"/g, `for="optionAND-${newIndex}"`)
+            .replace(/id="optionOR-[^"]*"/g, `id="optionOR-${newIndex}"`)
+            .replace(/for="optionOR-[^"]*"/g, `for="optionOR-${newIndex}"`)
+            .replace(/name="logic-[^"]*"/g, `name="logic-${newIndex}"`);
+
         document.getElementById('filters').appendChild(filterDiv);
 
         // Update the operators for the new dropdown
         const fieldSelect = filterDiv.querySelector('.field-select');
         updateOperators(fieldSelect);
 
-		// Add event listener for the new dropdown
+        // Add event listener for the new dropdown
         fieldSelect.addEventListener('change', function() {
             updateOperators(fieldSelect);
         });
+
+        // Announce to screen readers
+        announce("{% trans 'Filter added' %}");
     };
 
     // Removing a filter
     document.addEventListener('click', function(e) {
         const removeButton = e.target.closest('.remove-filter');
         if (removeButton) {
+            const filterGroup = removeButton.closest('.filter')?.querySelector('[data-filter-index]');
+            const filterLabel = filterGroup?.getAttribute('aria-label') || "{% trans 'Filter' %}";
             removeButton.closest('.filter')?.remove();
+            // Announce removal with filter label
+            announce(filterLabel + " {% trans 'removed' %}");
         }
     });
 

@@ -1,7 +1,7 @@
 {% load i18n insight_tags %}
 
 <!-- Pagination -->
-<div class="pagination" hx-indicator="#loading-indicator">
+<nav role="navigation" aria-label="{% trans 'Pagination' %}" class="pagination" hx-indicator="#loading-indicator">
     <div class="flex gap-4 items-end w-full">
         <div class="flex flex-1 gap-1 justify-between w-full h-fit">
             <!-- Previous and first -->
@@ -19,7 +19,7 @@
             <div class="hidden gap-1 justify-center md:flex">
                 {% for num in pagination_config.surrounding_pages %}
                     {% if num == pagination_config.current_page.number %}
-                        <span class="btn btn-s bg-insight-primary-active">{{ num }}</span>
+                        <span class="btn btn-s bg-insight-primary-active" aria-current="page">{{ num }}</span>
                     {% elif num == -1 %}
                         <span class="px-4 py-1 text-insight-text-secondary">...</span>
                     {% else %}
@@ -62,4 +62,4 @@
     <span class="block mt-2 text-secondary md:hidden">
         {% trans "Page" %} {{ pagination_config.current_page.number }} {% trans "of" %} {{ pagination_config.current_page.paginator.num_pages }}.
     </span>
-</div>
+</nav>

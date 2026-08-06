@@ -2,6 +2,7 @@
 
 <div class="relative{% if search_bar_config.enable_search %} h-full{% endif %}"{% if search_bar_config.enable_search %} data-insight-search{% endif %}>
     <form
+        role="search"
         {% if search_bar_config.request_url %}
             {% if search_bar_config.htmx_config %}
                 hx-get="{{ search_bar_config.request_url }}"

@@ -44,6 +44,11 @@ export class Dropdown {
         // Bind handlers for proper cleanup
         this.boundToggleClick = this.handleToggleClick.bind(this);
         this.boundDocumentClick = this.handleDocumentClick.bind(this);
+        this.boundKeyDown = this.handleKeyDown.bind(this);
+
+        // Track focusable items in the menu
+        this.menuItems = [];
+        this.currentFocusIndex = -1;
 
         this.bindEvents();
 
@@ -65,7 +70,9 @@ export class Dropdown {
             Dropdown.currentOpen.hide();
         }
         this.menu.classList.toggle("hidden");
-        Dropdown.currentOpen = this.menu.classList.contains("hidden") ? null : this;
+        const isOpen = !this.menu.classList.contains("hidden");
+        this.trigger.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        Dropdown.currentOpen = isOpen ? this : null;
     }
 
     /**
@@ -76,11 +83,103 @@ export class Dropdown {
     }
 
     /**
+     * Handles keyboard navigation within the dropdown.
+     *
+     * @param {KeyboardEvent} e - The keyboard event
+     */
+    handleKeyDown(e) {
+        // Only handle if dropdown is open
+        if (this.menu.classList.contains("hidden")) return;
+
+        switch (e.key) {
+            case 'Escape':
+                e.preventDefault();
+                this.hide();
+                this.trigger.focus();
+                break;
+
+            case 'ArrowDown':
+                e.preventDefault();
+                this.focusNextItem();
+                break;
+
+            case 'ArrowUp':
+                e.preventDefault();
+                this.focusPreviousItem();
+                break;
+
+            case 'Home':
+                e.preventDefault();
+                this.focusFirstItem();
+                break;
+
+            case 'End':
+                e.preventDefault();
+                this.focusLastItem();
+                break;
+        }
+    }
+
+    /**
+     * Gets all focusable menu items.
+     *
+     * @returns {HTMLElement[]} Array of focusable elements
+     */
+    getMenuItems() {
+        return Array.from(this.menu.querySelectorAll('a, button, [tabindex]:not([tabindex="-1"])'));
+    }
+
+    /**
+     * Focuses the next menu item.
+     */
+    focusNextItem() {
+        const items = this.getMenuItems();
+        if (items.length === 0) return;
+
+        this.currentFocusIndex = (this.currentFocusIndex + 1) % items.length;
+        items[this.currentFocusIndex].focus();
+    }
+
+    /**
+     * Focuses the previous menu item.
+     */
+    focusPreviousItem() {
+        const items = this.getMenuItems();
+        if (items.length === 0) return;
+
+        this.currentFocusIndex = this.currentFocusIndex <= 0 ? items.length - 1 : this.currentFocusIndex - 1;
+        items[this.currentFocusIndex].focus();
+    }
+
+    /**
+     * Focuses the first menu item.
+     */
+    focusFirstItem() {
+        const items = this.getMenuItems();
+        if (items.length === 0) return;
+
+        this.currentFocusIndex = 0;
+        items[0].focus();
+    }
+
+    /**
+     * Focuses the last menu item.
+     */
+    focusLastItem() {
+        const items = this.getMenuItems();
+        if (items.length === 0) return;
+
+        this.currentFocusIndex = items.length - 1;
+        items[this.currentFocusIndex].focus();
+    }
+
+    /**
      * Binds event listeners to the trigger and document.
      */
     bindEvents() {
         this.trigger.addEventListener("click", this.boundToggleClick);
         document.addEventListener("click", this.boundDocumentClick);
+        document.addEventListener("keydown", this.boundKeyDown);
     }
 
     /**
@@ -89,6 +188,8 @@ export class Dropdown {
     hide() {
         if (!this.menu.classList.contains("hidden")) {
             this.menu.classList.add("hidden");
+            this.trigger.setAttribute("aria-expanded", "false");
+            this.currentFocusIndex = -1;
             if (Dropdown.currentOpen === this) {
                 Dropdown.currentOpen = null;
             }
@@ -104,6 +205,7 @@ export class Dropdown {
 
         this.trigger.removeEventListener("click", this.boundToggleClick);
         document.removeEventListener("click", this.boundDocumentClick);
+        document.removeEventListener("keydown", this.boundKeyDown);
 
         if (Dropdown.currentOpen === this) {
             Dropdown.currentOpen = null;

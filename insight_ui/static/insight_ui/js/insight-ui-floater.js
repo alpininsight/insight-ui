@@ -44,10 +44,21 @@ export class Floater {
             this.target = document.createElement('span');
             this.target.classList.add("text-primary", "bg-insight-bg-surface", "px-3", "py-1", "border", "border-insight-border-surface", "rounded-insight-overlay", "shadow-insight-overlay", "whitespace-nowrap");
             this.target.textContent = this.trigger.getAttribute("data-insight-tooltip");
+            // Generate unique ID for tooltip and set ARIA attributes
+            this.targetId = `tooltip-${Math.random().toString(36).substring(2, 9)}`;
+            this.target.id = this.targetId;
+            this.target.setAttribute("role", "tooltip");
+            this.trigger.setAttribute("aria-describedby", this.targetId);
         }
         else {
             this.targetId = trigger.getAttribute("data-insight-popover");
             this.target = document.getElementById(this.targetId);
+            // Set ARIA attributes for popover
+            if (this.target) {
+                this.target.setAttribute("role", "dialog");
+                this.trigger.setAttribute("aria-expanded", "false");
+                this.trigger.setAttribute("aria-controls", this.targetId);
+            }
         }
 
         if (!this.target)
@@ -75,6 +86,10 @@ export class Floater {
         this.boundDocumentClick = this.handleDocumentClick.bind(this);
         this.boundWindowScroll = this.handleWindowScroll.bind(this);
         this.boundTriggerMousemove = this.handleTriggerMousemove.bind(this);
+        this.boundTriggerFocus = this.handleTriggerFocus.bind(this);
+        this.boundTriggerBlur = this.handleTriggerBlur.bind(this);
+        this.boundTargetBlur = this.handleTargetBlur.bind(this);
+        this.boundKeyDown = this.handleKeyDown.bind(this);
 
         this.bindEvents();
         this.observeAttributeChanges();
@@ -178,6 +193,62 @@ export class Floater {
     handleWindowScroll() { this.updatePosition(); }
 
     /**
+     * Handles focus on the trigger element (for keyboard accessibility).
+     */
+    handleTriggerFocus() { this.show(); }
+
+    /**
+     * Handles blur from the trigger element.
+     * Only hides if focus moves outside both trigger and target.
+     *
+     * @param {FocusEvent} e - The blur event
+     */
+    handleTriggerBlur(e) {
+        // Check if focus is moving to the target (popover/tooltip content)
+        const relatedTarget = e.relatedTarget;
+        if (relatedTarget && (this.target.contains(relatedTarget) || this.trigger.contains(relatedTarget))) {
+            return; // Don't hide if focus is moving within the floater
+        }
+        this.hideWithDelay();
+    }
+
+    /**
+     * Handles blur from the target element (popover/tooltip content).
+     * Only hides if focus moves outside both trigger and target.
+     *
+     * @param {FocusEvent} e - The blur event
+     */
+    handleTargetBlur(e) {
+        const relatedTarget = e.relatedTarget;
+        if (relatedTarget && (this.target.contains(relatedTarget) || this.trigger.contains(relatedTarget))) {
+            return; // Don't hide if focus is moving within the floater
+        }
+        this.hideWithDelay();
+    }
+
+    /**
+     * Handles keyboard events for accessibility.
+     *
+     * @param {KeyboardEvent} e - The keyboard event
+     */
+    handleKeyDown(e) {
+        // Escape closes the floater
+        if (e.key === 'Escape' && !this.target.classList.contains("hidden")) {
+            e.preventDefault();
+            this.hide();
+            return;
+        }
+
+        // For click-triggered floaters, Enter/Space toggles
+        if (this.triggerType === 'click' && (e.key === 'Enter' || e.key === ' ')) {
+            if (document.activeElement === this.trigger) {
+                e.preventDefault();
+                this.target.classList.contains("hidden") ? this.show() : this.hide();
+            }
+        }
+    }
+
+    /**
      * Binds event listeners based on trigger type (hover or click).
      */
     bindEvents() {
@@ -186,6 +257,10 @@ export class Floater {
             this.trigger.addEventListener("mouseout", this.boundTriggerMouseout);
             this.target.addEventListener("mouseover", this.boundTargetMouseover);
             this.target.addEventListener("mouseout", this.boundTargetMouseout);
+            // Keyboard accessibility: show on focus, hide on blur
+            this.trigger.addEventListener("focus", this.boundTriggerFocus);
+            this.trigger.addEventListener("blur", this.boundTriggerBlur);
+            this.target.addEventListener("focusout", this.boundTargetBlur);
             if (this.followMouse) {
                 this.trigger.addEventListener("mousemove", this.boundTriggerMousemove);
             }
@@ -196,6 +271,8 @@ export class Floater {
             }
         }
 
+        // Keyboard support for both hover and click
+        this.trigger.addEventListener("keydown", this.boundKeyDown);
         window.addEventListener("scroll", this.boundWindowScroll);
     }
 
@@ -224,6 +301,11 @@ export class Floater {
 
         this.target.classList.remove("hidden");
 
+        // Update aria-expanded for popovers
+        if (this.type === "popover") {
+            this.trigger.setAttribute("aria-expanded", "true");
+        }
+
         // Only update position if tooltip was not already visible
         // For followMouse tooltips that are already visible, keep current position
         if (!wasVisible) {
@@ -245,6 +327,12 @@ export class Floater {
      */
     hide() {
         this.target.classList.add("hidden");
+
+        // Update aria-expanded for popovers
+        if (this.type === "popover") {
+            this.trigger.setAttribute("aria-expanded", "false");
+        }
+
         if (Floater.currentOpen === this) {
             Floater.currentOpen = null;
         }
@@ -374,6 +462,9 @@ export class Floater {
             this.trigger.removeEventListener("mouseout", this.boundTriggerMouseout);
             this.target.removeEventListener("mouseover", this.boundTargetMouseover);
             this.target.removeEventListener("mouseout", this.boundTargetMouseout);
+            this.trigger.removeEventListener("focus", this.boundTriggerFocus);
+            this.trigger.removeEventListener("blur", this.boundTriggerBlur);
+            this.target.removeEventListener("focusout", this.boundTargetBlur);
             if (this.followMouse) {
                 this.trigger.removeEventListener("mousemove", this.boundTriggerMousemove);
             }
@@ -384,6 +475,7 @@ export class Floater {
             }
         }
 
+        this.trigger.removeEventListener("keydown", this.boundKeyDown);
         window.removeEventListener("scroll", this.boundWindowScroll);
 
         // Disconnect attribute observer

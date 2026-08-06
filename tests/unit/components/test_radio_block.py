@@ -21,11 +21,11 @@ class TestRadioBlock(TemplateTagsTestCase):
         rendered = self.render_template(template_string, context)
         soup = BeautifulSoup(rendered, "html.parser")
 
-        wrapper = soup.find("div")
+        wrapper = soup.find("fieldset")
 
-        # Check label
-        label_span = wrapper.find("span")
-        assert label_span.text.strip() == "Select size:"
+        # Check label (legend element for accessibility)
+        legend = wrapper.find("legend")
+        assert legend.text.strip() == "Select size:"
 
         form = wrapper.find("form", id="size")
         assert form is not None

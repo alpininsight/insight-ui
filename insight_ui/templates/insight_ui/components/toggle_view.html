@@ -4,15 +4,17 @@
   <div class="flex justify-end mb-2 w-full">
     {% radio_block config=toggle_view_config.view_radio_config hx_target_id=toggle_view_config.tag_id %}
   </div>
-  {% if toggle_view_config.view_radio_config.current_value == 'carousel' %}
-    {% carousel carousel_items=toggle_view_config.cards show_index=True items_per_slide=2 %}
-  {% elif toggle_view_config.view_radio_config.current_value == 'card' %}
-    <div class="flex flex-wrap gap-6">
-      {% for card in toggle_view_config.cards %}
-        {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
-      {% endfor %}
-    </div>
-  {% else %}
-    {% table config=toggle_view_config.table_config %}
-  {% endif %}
+  <div aria-live="polite" aria-atomic="true" tabindex="-1" data-toggle-view-content>
+    {% if toggle_view_config.view_radio_config.current_value == 'carousel' %}
+      {% carousel carousel_items=toggle_view_config.cards show_index=True items_per_slide=2 %}
+    {% elif toggle_view_config.view_radio_config.current_value == 'card' %}
+      <div class="flex flex-wrap gap-6">
+        {% for card in toggle_view_config.cards %}
+          {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
+        {% endfor %}
+      </div>
+    {% else %}
+      {% table config=toggle_view_config.table_config %}
+    {% endif %}
+  </div>
 </div>

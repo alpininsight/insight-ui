@@ -10,12 +10,13 @@
             <thead class="text-primary">
                 <tr class="border-b border-insight-border-surface">
                     {% for header in table_config.headers %}
-                        <th class="px-4 py-2 text-start text-sm" scope="col">
+                        <th class="px-4 py-2 text-start text-sm" scope="col"{% if sortable %} aria-sort="none"{% endif %}>
                             {% if sortable %}
-                                <div class="flex gap-1 items-center">
+                                {# Note: When implementing client-side sorting, update aria-sort to 'ascending' or 'descending' #}
+                                <button type="button" class="flex gap-1 items-center hover:text-insight-primary">
                                     <span>{{ header }}</span>
                                     {% icon name="chevron-up-down" size="xs" %}
-                                </div>
+                                </button>
                             {% else %}
                                 {{ header }}
                             {% endif %}

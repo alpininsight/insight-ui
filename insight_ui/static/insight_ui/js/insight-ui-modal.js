@@ -40,7 +40,9 @@ export class Modal {
         this.boundButtonClick = null;
         this.boundCloseButtons = [];
         this.boundModalClick = null;
+        this.boundKeyDown = null;
         this.releaseFocusTrap = null;
+        this.triggerElement = null;
 
         this.bindEvents();
 
@@ -84,17 +86,35 @@ export class Modal {
             Modal.currentOpen.close();
         }
 
+        // Store trigger for focus return
+        this.triggerElement = document.activeElement;
+
         this.modal.style.display = 'block';
         Modal.currentOpen = this;
 
         InsightUI.utils.blockScroll();
         this.releaseFocusTrap = InsightUI.utils.trapFocus(this.modal);
+
+        // Add Escape key handler
+        this.boundKeyDown = (e) => {
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                this.close();
+            }
+        };
+        document.addEventListener('keydown', this.boundKeyDown);
     }
 
     /**
      * Closes the modal dialog and restores scroll.
      */
     close() {
+        // Remove Escape key handler
+        if (this.boundKeyDown) {
+            document.removeEventListener('keydown', this.boundKeyDown);
+            this.boundKeyDown = null;
+        }
+
         this.modal.style.display = 'none';
         if (Modal.currentOpen === this) {
             Modal.currentOpen = null;
@@ -107,6 +127,12 @@ export class Modal {
         }
 
         InsightUI.utils.unblockScroll();
+
+        // Return focus to trigger element
+        if (this.triggerElement && typeof this.triggerElement.focus === 'function') {
+            this.triggerElement.focus();
+        }
+        this.triggerElement = null;
     }
 
     /**
@@ -135,6 +161,11 @@ export class Modal {
         // Remove modal backdrop click handler
         if (this.boundModalClick) {
             this.modal.removeEventListener('click', this.boundModalClick);
+        }
+
+        // Remove keydown handler
+        if (this.boundKeyDown) {
+            document.removeEventListener('keydown', this.boundKeyDown);
         }
 
         Modal.instances.delete(this.trigger);

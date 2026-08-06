@@ -44,7 +44,9 @@ export class Sidebar {
         this.boundMouseMove = null;
         this.boundMouseLeave = null;
         this.boundResizeHandler = null;
+        this.boundKeyDown = null;
         this.releaseFocusTrap = null;
+        this.triggerElement = null;
 
         this.init();
 
@@ -124,6 +126,9 @@ export class Sidebar {
 
         const isHidden = mobileDrawer.classList.contains("hidden");
         if (isHidden) {
+            // Store trigger for focus return
+            this.triggerElement = document.activeElement;
+
             // Open the mobile drawer
             mobileDrawer.classList.remove("hidden");
             const aside = mobileDrawer.getElementsByTagName("aside")[0];
@@ -132,6 +137,15 @@ export class Sidebar {
             }
             this.releaseFocusTrap = InsightUI.utils.trapFocus(mobileDrawer);
             this.toggleBtn?.setAttribute("aria-expanded", "true");
+
+            // Add Escape key handler
+            this.boundKeyDown = (e) => {
+                if (e.key === 'Escape') {
+                    e.preventDefault();
+                    this.closeMobileDrawer(mobileDrawer);
+                }
+            };
+            document.addEventListener('keydown', this.boundKeyDown);
         } else {
             // Close the mobile drawer
             this.closeMobileDrawer(mobileDrawer);
@@ -144,6 +158,12 @@ export class Sidebar {
      * @param {HTMLElement} mobileDrawer - The mobile drawer element to close
      */
     closeMobileDrawer(mobileDrawer) {
+        // Remove Escape key handler
+        if (this.boundKeyDown) {
+            document.removeEventListener('keydown', this.boundKeyDown);
+            this.boundKeyDown = null;
+        }
+
         const aside = mobileDrawer.getElementsByTagName("aside")[0];
         if (aside) {
             if (document.documentElement.dir === "rtl") {
@@ -153,6 +173,9 @@ export class Sidebar {
             }
         }
 
+        // Store trigger reference for focus return after transition
+        const triggerToFocus = this.triggerElement;
+
         aside?.addEventListener('transitionend', () => {
             mobileDrawer.classList.add("hidden");
             this.toggleBtn?.setAttribute("aria-expanded", "false");
@@ -161,16 +184,34 @@ export class Sidebar {
                 this.releaseFocusTrap();
                 this.releaseFocusTrap = null;
             }
+            // Return focus to trigger element
+            if (triggerToFocus && typeof triggerToFocus.focus === 'function') {
+                triggerToFocus.focus();
+            }
         }, { once: true });
+
+        this.triggerElement = null;
     }
 
     /**
-     * Opens the sidebar with focus trapping.
+     * Opens the sidebar with focus trapping and keyboard support.
      */
     openSidebar() {
+        // Store trigger for focus return
+        this.triggerElement = document.activeElement;
+
         this.wrapper.classList.remove("hidden");
         this.releaseFocusTrap = InsightUI.utils.trapFocus(this.wrapper);
         this.sidebar.style.transform = 'translateX(0)';
+
+        // Add Escape key handler
+        this.boundKeyDown = (e) => {
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                this.closeSidebar();
+            }
+        };
+        document.addEventListener('keydown', this.boundKeyDown);
     }
 
     /**
@@ -183,6 +224,12 @@ export class Sidebar {
             return;
         }
 
+        // Remove Escape key handler
+        if (this.boundKeyDown) {
+            document.removeEventListener('keydown', this.boundKeyDown);
+            this.boundKeyDown = null;
+        }
+
         if (document.documentElement.dir === "rtl") {
             if (this.side === "right") this.sidebar.style.transform = 'translateX(-100%)';
             else if (this.side === "left") this.sidebar.style.transform = 'translateX(100%)';
@@ -190,6 +237,9 @@ export class Sidebar {
             if (this.side === "right") this.sidebar.style.transform = 'translateX(100%)';
             else if (this.side === "left") this.sidebar.style.transform = 'translateX(-100%)';
         }
+
+        // Store trigger reference for focus return after transition
+        const triggerToFocus = this.triggerElement;
 
         this.sidebar.addEventListener('transitionend', () => {
             this.wrapper.classList.add("hidden");
@@ -199,7 +249,13 @@ export class Sidebar {
                 this.releaseFocusTrap();
                 this.releaseFocusTrap = null;
             }
+            // Return focus to trigger element
+            if (triggerToFocus && typeof triggerToFocus.focus === 'function') {
+                triggerToFocus.focus();
+            }
         }, { once: true });
+
+        this.triggerElement = null;
     }
 
     /**
@@ -269,6 +325,11 @@ export class Sidebar {
         // Remove resize handler
         if (this.boundResizeHandler) {
             window.removeEventListener('resize', this.boundResizeHandler);
+        }
+
+        // Remove keydown handler
+        if (this.boundKeyDown) {
+            document.removeEventListener('keydown', this.boundKeyDown);
         }
 
         // Release focus trap
