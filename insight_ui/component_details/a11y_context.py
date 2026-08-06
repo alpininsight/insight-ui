@@ -870,11 +870,11 @@ def get_card_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the card component."""
     return {
         "a11y": [
+            _("The card uses the semantic `<article>` element for self-contained content."),
             _("The card title uses a semantic `<h3>` heading for screen reader navigation."),
             _("Images include an `alt` attribute for screen reader descriptions."),
             _("External links use `rel='noopener'` for security."),
             _("Action buttons have descriptive text labels."),
-            _("**TODO: Consider adding `role='article'` or wrapping in `<article>` element.**"),
         ]
     }
 
@@ -884,11 +884,10 @@ def get_app_card_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the app card component."""
     return {
         "a11y": [
+            _("The card title uses a semantic `<h3>` heading for screen reader navigation."),
             _("Images include an `alt` attribute for screen reader descriptions."),
             _("Disabled actions use `aria-disabled='true'` to communicate their state."),
             _("External links use `rel='noopener'` for security."),
-            _("**TODO: Use unique IDs instead of fixed `id='card-title'` to avoid duplicate IDs.**"),
-            _("**TODO: Consider using semantic heading elements for the title.**"),
         ]
     }
 
@@ -898,14 +897,13 @@ def get_flip_card_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the flip card component."""
     return {
         "a11y": [
+            _("The card title uses a semantic `<h3>` heading for screen reader navigation."),
+            _("The flip is triggered via a button, making it fully keyboard accessible (Enter/Space)."),
+            _("The inactive side uses `aria-hidden='true'` to prevent screen readers from reading hidden content."),
+            _("Focus moves to the visible side's flip button after the animation completes."),
             _("Images include an `alt` attribute for screen reader descriptions."),
             _("Disabled actions use `aria-disabled='true'` to communicate their state."),
             _("External links use `rel='noopener'` for security."),
-            _("**TODO: The flip animation may not be accessible via keyboard. Consider adding a button to flip.**"),
-            _(
-                "**TODO: The back content is hidden visually but may still be read by screen readers. Use `aria-hidden` on inactive side.**"
-            ),
-            _("**TODO: Use unique IDs instead of fixed `id='card-title'` to avoid duplicate IDs.**"),
         ]
     }
 
