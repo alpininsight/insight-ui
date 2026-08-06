@@ -21,6 +21,10 @@ jobs:
     uses: alpininsight/.github-private/.github/workflows/static-assets-reusable.yml@main
     with:
       mode: check
+      setup_python: true
+      setup_uv: true
+      check_command: npm run check:static-build
+      build_command: npm run build:static-all
       upload_cdn: false
 
   static-assets-cdn:
@@ -30,6 +34,9 @@ jobs:
     uses: alpininsight/.github-private/.github/workflows/static-assets-reusable.yml@main
     with:
       mode: build
+      setup_python: true
+      setup_uv: true
+      build_command: npm run build:static-all
       upload_cdn: true
       cdn_upload_immutable: false
       update_latest: false
