@@ -412,6 +412,7 @@ class GeoMapConfig:
         initial_zoom: Starting zoom level.
         map_height: The height of the map in 'rem'.
         datasets: List of data layers to display.
+        aria_label: Accessible label describing the map's purpose.
 
     """
 
@@ -419,6 +420,7 @@ class GeoMapConfig:
         GeoMapConfig(
             initial_coords=[52.52, 13.405],
             initial_zoom=10,
+            aria_label="Standorte unserer Filialen in Deutschland",
             datasets=[
                 GeoMapDatasetConfig(
                     name="offices",
@@ -438,6 +440,9 @@ class GeoMapConfig:
     map_height: int = field(default=36, metadata={"doc": _("The height of the map in 'rem'.")})
     datasets: list[GeoMapDatasetConfig] = field(
         default_factory=list, metadata={"doc": _("List of data layers to display.")}
+    )
+    aria_label: str = field(
+        default=_("Interactive map"), metadata={"doc": _("Accessible label describing the map's purpose.")}
     )
 
 

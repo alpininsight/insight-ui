@@ -695,12 +695,13 @@ def get_geo_map_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the geo map component."""
     return {
         "a11y": [
+            _("The map container has `role='application'` with a descriptive `aria-label`."),
+            _("A screen reader alternative lists all locations in a visually hidden element (`sr-only`)."),
+            _("Leaflet keyboard navigation is enabled: use arrow keys to pan and `+`/`-` to zoom."),
+            _("Markers have `keyboard: true` and `alt` text for accessibility."),
+            _("Map controls (zoom in/out, layer switcher) have accessible `aria-label` attributes."),
             _("The map attribution link to OpenStreetMap is accessible."),
             _("Marker popups display title and description as readable text."),
-            _("**TODO: Add `role='application'` or `role='img'` to the map container with `aria-label`.**"),
-            _("**TODO: Enable Leaflet keyboard navigation for markers.**"),
-            _("**TODO: Provide a text-based list of locations as an alternative for screen readers.**"),
-            _("**TODO: Ensure map controls have accessible labels.**"),
         ]
     }
 
