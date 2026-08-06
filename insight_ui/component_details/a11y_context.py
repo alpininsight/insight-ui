@@ -711,12 +711,16 @@ def get_charts_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the charts component."""
     return {
         "a11y": [
+            _("The chart container has `role='img'` with a descriptive `aria-label`."),
+            _("ECharts `aria` option is enabled for automatic ARIA labels and descriptions."),
+            _("A screen reader alternative provides the data as a hidden table (`sr-only`)."),
+            _("Decal patterns are enabled by default (`show_decal=True`) for colorblind accessibility."),
             _("The chart title is set via ECharts configuration and rendered as part of the chart."),
             _("ECharts provides built-in tooltip support for data exploration."),
-            _("**TODO: Enable ECharts `aria` option for automatic ARIA labels and descriptions.**"),
-            _("**TODO: Add `role='img'` and `aria-label` to the chart container describing the data.**"),
-            _("**TODO: Provide a data table alternative for screen reader users.**"),
-            _("**TODO: Ensure sufficient color contrast and consider colorblind-friendly palettes.**"),
+            _(
+                "**Note:** ECharts has limited keyboard accessibility. "
+                "See [GitHub Issue #18585](https://github.com/apache/echarts/issues/18585)."
+            ),
         ]
     }
 
