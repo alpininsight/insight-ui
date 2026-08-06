@@ -143,7 +143,7 @@ if (missingRequiredTokens.length > 0 || mismatches.length > 0) {
         console.error(mismatches.map(formatMismatch).join("\n"));
     }
 
-    console.error("Run `USE_TAILWIND_CLI=True uv run manage.py tailwind build --force` and then `npm run build:static`.");
+    console.error("Run `USE_TAILWIND_CLI=True uv run manage.py tailwind build --force --no-minify` and then `npm run build:static`.");
     process.exit(1);
 }
 
