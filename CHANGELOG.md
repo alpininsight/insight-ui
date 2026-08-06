@@ -20,6 +20,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update readme
 - Remove internal operations details
 
+### Features
+
+- Integrate new websocket demo into the main django application
+
 ### Miscellaneous
 
 - Regenerate minified assets
@@ -27,11 +31,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update node dependencies
 - Update pre commit hooks and fix linting
 - Format websocket demo readme
+- Regenerate minified stylesheet
+- Fix uv.lock
 
 ### Refactoring
 
 - Change indentation mode from tabs to spaces for the 'tabs' and 'sidebar' script files
 - Replace structlog with stdlib logging
+- Remove old websocket demo subproject 'utils'
 
 ### Testing
 
