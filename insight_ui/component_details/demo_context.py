@@ -953,7 +953,11 @@ def get_app_card_context() -> dict:
             _("App Card"),
             _("A card with its content arranged horizontally."),
             image=ImageConfig(static(DEMO_CARD_IMAGE_PATH), _("Card-Image")),
-            tags=[_("Insight UI"), _("Layout"), _("Card")],
+            tags=[
+                BadgeConfig(label=_("Insight UI"), type="primary", size="xs"),
+                BadgeConfig(label=_("Layout"), type="secondary", size="xs"),
+                BadgeConfig(label=_("Card"), type="info", size="xs"),
+            ],
             actions=[
                 ButtonConfig(label=_("Learn more"), request_url="#", type="secondary"),
                 ButtonConfig(label=_("Share"), request_url="#", type="primary"),
@@ -967,11 +971,19 @@ def get_flip_card_context() -> dict:
     """Serve data for flip card detailpage."""
     return {
         "flip_card_config": FlipCardConfig(
-            _("Flip Card"),
-            _("A card that rotates 180° and has additional content on the back."),
-            _("Here you can add more information, without taken more space."),
+            title=_("Flip Card"),
+            content=_("A card with additional details on the back. Click the arrow to flip."),
+            back_title=_("More Details"),
+            back_content=_("Here you can add extended information without taking more space on the page."),
+            back_actions=[
+                ButtonConfig(label=_("Contact"), request_url="#", type="primary", outline=True),
+            ],
             image=ImageConfig(static(DEMO_CARD_IMAGE_PATH), _("Card-Image")),
-            tags=[_("Insight UI"), _("Layout"), _("Card")],
+            tags=[
+                BadgeConfig(label=_("Insight UI"), type="primary", size="xs"),
+                BadgeConfig(label=_("Layout"), type="secondary", size="xs"),
+                BadgeConfig(label=_("Card"), type="info", size="xs"),
+            ],
             actions=[
                 ButtonConfig(label=_("Learn more"), request_url="#", type="secondary"),
                 ButtonConfig(label=_("Share"), request_url="#", type="primary"),

@@ -916,11 +916,9 @@ def get_flip_card_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `flip_card` component is a variation of the `app_card` and has the unique feature of rotating 180° when hovered over. This special feature allows additional information to be displayed on the back without taking up any extra space."
+                "The `flip_card` component is a variation of the `app_card` that rotates 180° when clicking the flip button. "
+                "This allows displaying additional information (title, content, actions) on the back without taking extra space."
             )
-        ],
-        "description_notes_begin": [
-            {"type": "warning", "message": _("The component is currently still under development.")}
         ],
     }
 

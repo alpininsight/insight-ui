@@ -8,6 +8,7 @@ from insight_ui.configs.base import ImageConfig
 from insight_ui.configs.input import ButtonConfig, RadioBlockConfig
 from insight_ui.configs.list import TableConfig
 from insight_ui.configs.types import ToggleViewType, validate_toggle_view_type
+from insight_ui.configs.utils import BadgeConfig
 
 
 @dataclass
@@ -54,7 +55,7 @@ class AppCardConfig:
         content: Card description.
         request_url: The URL to be called when title is clicked.
         image: Card image (displayed as square at top).
-        tags: List of tag labels.
+        tags: List of badge configurations for tags.
         actions: List of action buttons.
 
     """
@@ -65,7 +66,7 @@ class AppCardConfig:
             content="Real-time metrics and insights.",
             request_url="/apps/analytics/",
             image=ImageConfig(url="img/analytics.png", alt="Analytics"),
-            tags=["New", "Featured"],
+            tags=[BadgeConfig(label="New", type="success"), BadgeConfig(label="Featured", type="primary")],
             actions=[ButtonConfig(label="Open", request_url="/apps/analytics/", type="primary")],
         )
         """
@@ -74,7 +75,7 @@ class AppCardConfig:
     content: str = field(metadata={"doc": _("Card description.")})
     request_url: str = field(default="", metadata={"doc": _("The URL to be called when title is clicked.")})
     image: ImageConfig | None = field(default=None, metadata={"doc": _("Card image (displayed as square at top).")})
-    tags: list[str] = field(default_factory=list, metadata={"doc": _("List of tag labels.")})
+    tags: list[BadgeConfig] = field(default_factory=list, metadata={"doc": _("List of badge configurations for tags.")})
     actions: list[ButtonConfig] = field(default_factory=list, metadata={"doc": _("List of action buttons.")})
 
 
@@ -82,37 +83,43 @@ class AppCardConfig:
 class FlipCardConfig:
     """Configuration for the flip_card component.
 
-    Renders a card that rotates 180° on hover to show back content.
+    Renders a card that rotates 180° via button click to show back content.
 
     Attributes:
         title: Card title.
         content: Front side content.
+        back_title: Back side title.
         back_content: Back side content.
+        back_actions: Back side action buttons.
         request_url: The URL to be called when title is clicked.
         image: Front side image.
-        tags: List of tag labels.
-        actions: List of action buttons.
+        tags: List of badge configurations for tags.
+        actions: Front side action buttons.
 
     """
 
     __example__ = """
         FlipCardConfig(
             title="Product Name",
-            content="Detailed description shown on the front side.",
-            back_content="Detailed description shown on the back side.",
+            content="Short description on the front.",
+            back_title="Details",
+            back_content="Extended product information and specs.",
+            back_actions=[ButtonConfig(label="Contact", request_url="/contact/", type="outline-primary")],
             image=ImageConfig(url="img/product.png", alt="Product"),
-            tags=["Sale", "-20%"],
+            tags=[BadgeConfig(label="Sale", type="danger"), BadgeConfig(label="-20%", type="warning")],
             actions=[ButtonConfig(label="Buy", request_url="/buy/", type="primary")],
         )
         """
 
     title: str = field(metadata={"doc": _("Card title.")})
     content: str = field(metadata={"doc": _("Front side content.")})
-    back_content: str = field(metadata={"doc": _("Back side content.")})
+    back_title: str = field(default="", metadata={"doc": _("Back side title.")})
+    back_content: str = field(default="", metadata={"doc": _("Back side content.")})
+    back_actions: list[ButtonConfig] = field(default_factory=list, metadata={"doc": _("Back side action buttons.")})
     request_url: str = field(default="", metadata={"doc": _("The URL to be called when title is clicked.")})
     image: ImageConfig | None = field(default=None, metadata={"doc": _("Front side image.")})
-    tags: list[str] = field(default_factory=list, metadata={"doc": _("List of tag labels.")})
-    actions: list[ButtonConfig] = field(default_factory=list, metadata={"doc": _("List of action buttons.")})
+    tags: list[BadgeConfig] = field(default_factory=list, metadata={"doc": _("List of badge configurations for tags.")})
+    actions: list[ButtonConfig] = field(default_factory=list, metadata={"doc": _("Front side action buttons.")})
 
 
 @dataclass

@@ -2363,10 +2363,6 @@
     transform-style: preserve-3d;
   }
   @media (hover: hover) {
-    .group-hover\:rotate-y-180:is(:where(.group):hover *) {
-      --tw-rotate-y: rotateY(180deg);
-      transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);
-    }
     .group-hover\:bg-insight-primary\/20:is(:where(.group):hover *) {
       background-color: color-mix(in srgb, #4183EA 20%, transparent);
     }
