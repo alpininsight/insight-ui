@@ -1,6 +1,7 @@
 """Component enumeration and configuration mapping."""
 
 from enum import Enum
+from pathlib import Path
 from typing import Any
 
 from django.utils.translation import gettext_lazy as _
@@ -195,3 +196,10 @@ class Component(Enum):
         obj.allow_requests = allow_requests
         obj.in_development = in_development
         return obj
+
+    @property
+    def requires_js(self) -> bool:
+        """Check if this component has an associated JavaScript file."""
+        js_name = self.value.replace("_", "-")
+        js_path = Path(__file__).parent.parent / f"static/insight_ui/js/insight-ui-{js_name}.js"
+        return js_path.exists()

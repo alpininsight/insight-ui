@@ -587,6 +587,8 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
     context = get_demo_container_context() | component_context.get_component_context(Component(component_name))
     context["demo"] = demo_info
 
+    component = Component(component_name)
+
     wcag_disclaimer = _(
         "This is our own assessment based on manual review. "
         "It is not an official certification by an accredited testing authority."
@@ -596,6 +598,8 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
         header_badges.append(BadgeConfig(label="WCAG AA", type="success", tooltip=wcag_disclaimer))
     if context.get("wcag_aaa_compliant"):
         header_badges.append(BadgeConfig(label="WCAG AAA", type="info", tooltip=wcag_disclaimer))
+    if component.requires_js:
+        header_badges.append(BadgeConfig(label="JavaScript", type="warning"))
     context["header_badges"] = header_badges
 
     if request.headers.get("HX-Request") and not request.headers.get("HX-History-Restore-Request"):
