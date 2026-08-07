@@ -601,6 +601,7 @@ class BadgeConfig:
         icon_end: **True** if the icon should be shown after the label, otherwise the icon is shown in front of the label.
         type: Defines the color of the badge.
         size: Defines the size of the badge.
+        tooltip: Optional tooltip text displayed on hover.
 
     """
 
@@ -618,6 +619,7 @@ class BadgeConfig:
     )
     type: BadgeType = field(default="primary", metadata={"doc": "Defines the color of the badge."})
     size: Size = field(default="m", metadata={"doc": "Defines the size of the badge."})
+    tooltip: str = field(default="", metadata={"doc": _("Optional tooltip text displayed on hover.")})
 
     def __post_init__(self) -> None:
         """Validate type and size after initialization."""

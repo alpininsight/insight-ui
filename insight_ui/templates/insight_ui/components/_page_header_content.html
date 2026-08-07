@@ -1,0 +1,31 @@
+{% load insight_tags layout_tags %}
+
+{% if page_header_config.title %}
+    <h1 class="text-4xl md:text-5xl">
+        <span class="font-bold text-insight-primary">{{ page_header_config.title }}</span>{% if page_header_config.chapter %} <span class="font-normal text-xl text-insight-text-secondary">{{ page_header_config.chapter }}</span>{% endif %}
+    </h1>
+{% endif %}
+
+{% if page_header_config.description %}
+    <div class="{{ max_width|default:'max-w-4xl' }} space-y-4 text-insight-text-primary text-lg leading-loose">
+        {% for paragraph in page_header_config.description %}
+            {{ paragraph|markdownify }}
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% if page_header_config.badges %}
+    {% hbox gap="s" class="flex-wrap mt-4" %}
+        {% for badge_config in page_header_config.badges %}
+            {% badge config=badge_config %}
+        {% endfor %}
+    {% endhbox %}
+{% endif %}
+
+{% if page_header_config.buttons %}
+    {% hbox gap="s" class="flex-wrap mt-4" %}
+        {% for button_config in page_header_config.buttons %}
+            {% button config=button_config %}
+        {% endfor %}
+    {% endhbox %}
+{% endif %}
