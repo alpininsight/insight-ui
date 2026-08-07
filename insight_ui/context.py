@@ -15,6 +15,7 @@ from insight_ui.component_details.components import Component, ComponentCategory
 from insight_ui.component_details.demo_context import get_component_demo_context
 from insight_ui.component_details.parameter_context import ParameterDetails
 from insight_ui.configs import (
+    BadgeConfig,
     CopyrightNoticeConfig,
     DropdownConfig,
     DropdownItemConfig,
@@ -96,12 +97,20 @@ def get_sidebar_context() -> dict:
     for component in Component:
         for category in categories:
             if category["caption"] == component.group.formatted_name:
+                # Determine badge: New > Beta > None
+                badge = None
+                if component.is_new:
+                    badge = BadgeConfig(label=_("New"), type="primary", size="xs")
+                elif component.in_development:
+                    badge = BadgeConfig(label="Beta", type="warning", size="xs")
+
                 category["items"].append(
                     SidebarItemConfig(
                         component.formatted_name,
                         reverse("component_detail_page_view", kwargs={"component_name": component.value}),
                         IconConfig("wrench-screwdriver", "s") if component.in_development else None,
                         HtmxConfig(target="#content"),
+                        badge,
                     )
                 )
                 break

@@ -594,12 +594,35 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
         "It is not an official certification by an accredited testing authority."
     )
     header_badges = []
+
+    # Status badges (New, Beta)
+    if component.is_new:
+        header_badges.append(BadgeConfig(label=_("New"), type="primary"))
+    if component.in_development:
+        header_badges.append(BadgeConfig(label="Beta", type="warning"))
+
+    # Accessibility badges
     if context.get("wcag_aa_compliant"):
         header_badges.append(BadgeConfig(label="WCAG AA", type="success", tooltip=wcag_disclaimer))
     if context.get("wcag_aaa_compliant"):
         header_badges.append(BadgeConfig(label="WCAG AAA", type="info", tooltip=wcag_disclaimer))
+
+    # Technical badges
+    if component.is_block_tag:
+        header_badges.append(BadgeConfig(label="Block Tag", type="neutral"))
     if component.requires_js:
         header_badges.append(BadgeConfig(label="JavaScript", type="warning"))
+    if component.uses_htmx:
+        header_badges.append(BadgeConfig(label="HTMX", type="info"))
+    if component.external_dependency:
+        header_badges.append(
+            BadgeConfig(
+                label=component.external_dependency,
+                type="warning",
+                tooltip=_("This component requires the external library {}.").format(component.external_dependency),
+            )
+        )
+
     context["header_badges"] = header_badges
 
     if request.headers.get("HX-Request") and not request.headers.get("HX-History-Restore-Request"):

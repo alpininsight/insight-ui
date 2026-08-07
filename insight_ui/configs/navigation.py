@@ -8,7 +8,7 @@ from insight_ui.configs.base import HtmxConfig, IconConfig
 from insight_ui.configs.input import DropdownConfig
 from insight_ui.configs.popup import ModalConfig
 from insight_ui.configs.types import Size, StepStatus, validate_size, validate_step_status
-from insight_ui.configs.utils import BrandMarkConfig, CopyrightNoticeConfig, LogoConfig
+from insight_ui.configs.utils import BadgeConfig, BrandMarkConfig, CopyrightNoticeConfig, LogoConfig
 
 
 @dataclass
@@ -142,6 +142,7 @@ class SidebarItemConfig:
         request_url: The URL to be called when clicking on the item.
         icon: An optional icon displayed before the text.
         htmx: HTMX configuration for AJAX page changes.
+        badge: An optional badge displayed after the text.
 
     """
 
@@ -153,6 +154,7 @@ class SidebarItemConfig:
     request_url: str = field(default="", metadata={"doc": _("The URL to be called when clicking on the item.")})
     icon: IconConfig | None = field(default=None, metadata={"doc": _("An optional icon displayed before the text.")})
     htmx: HtmxConfig | None = field(default=None, metadata={"doc": _("HTMX configuration for AJAX page changes.")})
+    badge: BadgeConfig | None = field(default=None, metadata={"doc": _("An optional badge displayed after the text.")})
 
 
 @dataclass
