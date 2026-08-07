@@ -1,4 +1,4 @@
-{% load i18n insight_tags layout_tags %}
+{% load i18n insight_tags layout_tags docs_tags %}
 
 {% include "insight_ui/components/htmx_loading_indicator.html" %}
 
@@ -91,11 +91,11 @@
 
                     {% if param.example_data %}
                         {% vbox gap="s" %}
-                            {% include "insight_ui/components/parameter_table.html" with rows=param.params_table %}
+                            {% parameter_table rows=param.params_table %}
                             <div data-insight-code-block="python">{{ param.example_data }}</div>
                         {% endvbox %}
                     {% else %}
-                        {% include "insight_ui/components/parameter_table.html" with rows=param.params_table %}
+                        {% parameter_table rows=param.params_table %}
                     {% endif %}
                 {% endvbox %}
             {% endfor %}

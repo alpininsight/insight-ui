@@ -12,12 +12,43 @@
             </tr>
         </thead>
         <tbody class="text-primary">
-            {% for row in rows %}
-                <tr class="odd:bg-insight-bg-raised/50 even:bg-insight-bg-base">
-                    <td class="px-4 py-3 text-start text-sm"><span class="inline-tag">{{ row.name }}</span></td>
+            {% for row, row_id in rows %}
+                <tr class="border-b border-insight-border-surface">
+                    <td class="px-4 py-3 text-start text-sm">
+                        <div class="flex gap-1.5 items-center">
+                            {% if row_id %}
+                                {% blocktrans with name=row.name asvar aria_label %}Show details for {{ name }}{% endblocktrans %}
+                                <button
+                                    type="button"
+                                    class="text-insight-text-hint cursor-pointer hover:text-insight-primary"
+                                    data-insight-collapsible="{{ row_id }}"
+                                    aria-expanded="false"
+                                    aria-controls="{{ row_id }}"
+                                    aria-label="{{ aria_label }}"
+                                >
+                                    <svg class="w-3 h-3 transition-transform" data-collapsible-icon fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </button>
+                            {% elif row.nested and nesting_limit_reached %}
+                                {% blocktrans with name=row.name asvar nesting_hint %}{{ name }} contains further nested parameters. See the config reference.{% endblocktrans %}
+                                <a
+                                    href="{% url 'config_reference_view' %}#{{ row.type|config_type_anchor }}"
+                                    class="text-insight-text-hint hover:text-insight-primary"
+                                    data-insight-tooltip="{{ nesting_hint }}"
+                                    data-position="top"
+                                >
+                                    {% icon name="information-circle" size="xs" %}
+                                </a>
+                            {% endif %}
+                            <span class="inline-tag">{{ row.name }}</span>
+                        </div>
+                    </td>
                     <td class="px-4 py-3 text-start text-sm">
                         {% if row.type|is_known_type %}
                             {% type_popover row.type %}
+                        {% elif row.type|is_config_type %}
+                            <i>{% config_type_link row.type %}</i>
                         {% else %}
                             <i>{{ row.type }}</i>
                         {% endif %}
@@ -33,6 +64,17 @@
                         {% endif %}
                     </td>
                 </tr>
+                {% if row_id %}
+                    {# colspan must match the number of <th> columns in the thead above #}
+                    <tr id="{{ row_id }}" class="hidden">
+                        <td class="py-3 ps-6 shadow-[inset_2px_0_0_0_var(--color-insight-border-raised)]" colspan="5">
+                            {% parameter_table rows=row.nested.params_table depth=next_depth %}
+                            {% if row.nested.example_data %}
+                                <div data-insight-code-block="python">{{ row.nested.example_data }}</div>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
             {% endfor %}
         </tbody>
     </table>

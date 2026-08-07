@@ -34,6 +34,7 @@ from insight_ui.context import (
 )
 from insight_ui.demo_utils import generate_payload, map_payload_to_cards, map_payload_to_table
 from insight_ui.forms import ChatForm
+from insight_ui.utils.config_registry import get_all_config_definitions
 from insight_ui.utils.pagination import get_page
 from insight_ui.utils.query_builder_utils import get_filter_settings_for_field
 from insight_ui.utils.type_registry import get_all_type_definitions
@@ -554,6 +555,14 @@ def types_view(request: HttpRequest) -> HttpResponse:
     context = get_base_context() | get_sidebar_context()
     context["type_definitions"] = get_all_type_definitions()
     return render(request, "insight_ui/docs/types.html", context)
+
+
+@require_GET
+def config_reference_view(request: HttpRequest) -> HttpResponse:
+    """Render the config dataclass reference page."""
+    context = get_base_context() | get_sidebar_context()
+    context["config_definitions"] = get_all_config_definitions()
+    return render(request, "insight_ui/docs/config_reference.html", context)
 
 
 @require_GET

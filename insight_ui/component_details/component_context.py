@@ -27,6 +27,7 @@ class ParameterDetails:
     description: str
     default: str
     required: bool = False
+    nested: "ParameterDoc | None" = None
 
 
 @dataclass
@@ -176,53 +177,54 @@ def _get_nested_dataclass_type(field_type: Any) -> type | None:  # noqa: ANN401,
 
 
 def get_component_parameter_doc(config: Any, _main_config: bool = False) -> list[ParameterDoc]:  # noqa: ANN401
-    """Generate ParameterDoc objects for a config dataclass and its nested dataclass fields.
+    """Generate a ParameterDoc tree for a config dataclass and its nested dataclass fields.
 
     Recursively processes all nested dataclasses, including those inside lists.
+    Each row whose field references another dataclass gets that dataclass's
+    documentation attached via `ParameterDetails.nested`, instead of appending
+    it as a separate top-level entry - this preserves the parent/child
+    relationship so templates can render nested parameters inline (e.g. as an
+    expandable table row) rather than as a flat, unrelated sequence.
 
     Args:
         config: The dataclass config to document.
         main_config: If True, includes the top-level 'config' parameter in the docs.
 
     Returns:
-        A list of ParameterDoc objects for the main config and all nested dataclass fields.
+        A single-element list containing the root ParameterDoc for the main
+        config; nested dataclasses are reachable via `.nested` on the
+        corresponding rows in `params_table`.
 
     """
-    docs = [
-        ParameterDoc(
-            ParameterDetails(
-                "config",
-                " ".join([config.__name__, _("or as kwargs or as combination of both")]),
-                _("Dataclass for component configuration."),
-                "None",
-            ),
-            get_dataclass_docs(config, False),
-            getattr(config, "__example__", None),
-        )
-    ]
+    main_rows = get_dataclass_docs(config, False)
+    root = ParameterDoc(
+        ParameterDetails(
+            "config",
+            " ".join([config.__name__, _("or as kwargs or as combination of both")]),
+            _("Dataclass for component configuration."),
+            "None",
+        ),
+        main_rows,
+        getattr(config, "__example__", None),
+    )
 
-    # Track processed types to avoid duplicates
+    # Track processed types to avoid duplicates and infinite recursion on self-referencing dataclasses
     processed_types: set[type] = {config}
 
-    def process_dataclass(dc_type: type) -> None:
-        """Recursively process a dataclass and its nested dataclass fields."""
-        for f in fields(dc_type):
+    def attach_nested(rows: list[ParameterDetails], dc_type: type) -> None:
+        """Recursively attach nested ParameterDoc objects to the rows that reference them."""
+        for row, f in zip(rows, fields(dc_type), strict=True):
             nested_type = _get_nested_dataclass_type(f.type)
-            if nested_type is not None and nested_type not in processed_types:
-                processed_types.add(nested_type)
-                docs.append(
-                    ParameterDoc(
-                        _field_to_parameter_details(f),
-                        get_dataclass_docs(nested_type),
-                        getattr(nested_type, "__example__", None),
-                    )
-                )
-                # Recursively process nested dataclass
-                process_dataclass(nested_type)
+            if nested_type is None or nested_type in processed_types:
+                continue
+            processed_types.add(nested_type)
+            nested_rows = get_dataclass_docs(nested_type, False)
+            row.nested = ParameterDoc(None, nested_rows, getattr(nested_type, "__example__", None))
+            attach_nested(nested_rows, nested_type)
 
-    process_dataclass(config)
+    attach_nested(main_rows, config)
 
-    return docs
+    return [root]
 
 
 def register_component(component: Component) -> Callable[[ContextBuilder], ContextBuilder]:
