@@ -1,0 +1,25 @@
+{% load i18n %}
+{# Screen reader alternative: data table #}
+<div class="sr-only" id="{{ chart_config.tag_id }}-table">
+    <table>
+        <caption>{{ chart_config.dataset.title }}</caption>
+        <thead>
+            <tr>
+                <th scope="col">{% trans "Category" %}</th>
+                {% for series_name in chart_config.dataset.series %}
+                    <th scope="col">{{ series_name }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for label in chart_config.dataset.x_axis_legend %}
+                <tr>
+                    <th scope="row">{{ label }}</th>
+                    {% for series_data in chart_config.dataset.data %}
+                        <td>{{ series_data|slice:forloop.parentloop.counter0|first }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

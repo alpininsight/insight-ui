@@ -1148,9 +1148,9 @@ def get_flip_card_usage_context() -> dict[str, str]:
 
         {% flip_card config=card_config %}
 
-        <!-- or -->
+        <!-- or with inline parameters -->
 
-        {% flip_card title="Insight UI" content="Django UI Framework for ..." back_content="Features ..." %}
+        {% flip_card title="Product" content="Short description" back_title="Details" back_content="Extended info" %}
         """
     }
 

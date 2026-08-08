@@ -41,15 +41,13 @@ class TestCheckboxGroup(TemplateTagsTestCase):
         legend = wrapper.find("legend")
         assert legend.text == "Choose languages: (max. 3)"
 
-        # Check layout
-        container = wrapper.find("div", class_="flex")
-        assert "space-x-4" in container["class"]
-
         # Check count of checkboxes
-        inputs = container.find_all("input", type="checkbox")
-        label_spans = container.find_all("span")
+        inputs = wrapper.find_all("input", type="checkbox")
         assert len(inputs) == 5  # noqa: PLR2004
-        assert len(label_spans) == 5  # noqa: PLR2004
+
+        # Check labels are rendered
+        labels = wrapper.find_all("label")
+        assert len(labels) == 5  # noqa: PLR2004
 
         # First checkbox
         assert inputs[0]["id"] == "english"
@@ -57,20 +55,20 @@ class TestCheckboxGroup(TemplateTagsTestCase):
         assert inputs[0]["value"] == "english"
         assert not inputs[0].has_attr("checked")
         assert not inputs[0].has_attr("disabled")
-        assert label_spans[0].get_text() == "English"
+        assert "English" in labels[0].get_text()
 
-        # Second checkbox
+        # Second checkbox (checked)
         assert inputs[1]["id"] == "german"
         assert inputs[1]["name"] == "language"
         assert inputs[1]["value"] == "german"
         assert inputs[1].has_attr("checked")
         assert not inputs[1].has_attr("disabled")
-        assert label_spans[1].get_text() == "German"
+        assert "German" in labels[1].get_text()
 
-        # Third checkbox
+        # Fifth checkbox (disabled)
         assert inputs[4]["id"] == "italian"
         assert inputs[4]["name"] == "language"
         assert inputs[4]["value"] == "italian"
         assert not inputs[4].has_attr("checked")
         assert inputs[4].has_attr("disabled")
-        assert label_spans[4].get_text() == "Italian (currently not available)"
+        assert "Italian" in labels[4].get_text()

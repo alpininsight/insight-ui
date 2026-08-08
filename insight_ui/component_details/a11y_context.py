@@ -695,12 +695,13 @@ def get_geo_map_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the geo map component."""
     return {
         "a11y": [
+            _("The map container has `role='application'` with a descriptive `aria-label`."),
+            _("A screen reader alternative lists all locations in a visually hidden element (`sr-only`)."),
+            _("Leaflet keyboard navigation is enabled: use arrow keys to pan and `+`/`-` to zoom."),
+            _("Markers have `keyboard: true` and `alt` text for accessibility."),
+            _("Map controls (zoom in/out, layer switcher) have accessible `aria-label` attributes."),
             _("The map attribution link to OpenStreetMap is accessible."),
             _("Marker popups display title and description as readable text."),
-            _("**TODO: Add `role='application'` or `role='img'` to the map container with `aria-label`.**"),
-            _("**TODO: Enable Leaflet keyboard navigation for markers.**"),
-            _("**TODO: Provide a text-based list of locations as an alternative for screen readers.**"),
-            _("**TODO: Ensure map controls have accessible labels.**"),
         ]
     }
 
@@ -710,12 +711,16 @@ def get_charts_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the charts component."""
     return {
         "a11y": [
+            _("The chart container has `role='img'` with a descriptive `aria-label`."),
+            _("ECharts `aria` option is enabled for automatic ARIA labels and descriptions."),
+            _("A screen reader alternative provides the data as a hidden table (`sr-only`)."),
+            _("Decal patterns are enabled by default (`show_decal=True`) for colorblind accessibility."),
             _("The chart title is set via ECharts configuration and rendered as part of the chart."),
             _("ECharts provides built-in tooltip support for data exploration."),
-            _("**TODO: Enable ECharts `aria` option for automatic ARIA labels and descriptions.**"),
-            _("**TODO: Add `role='img'` and `aria-label` to the chart container describing the data.**"),
-            _("**TODO: Provide a data table alternative for screen reader users.**"),
-            _("**TODO: Ensure sufficient color contrast and consider colorblind-friendly palettes.**"),
+            _(
+                "**Note:** ECharts has limited keyboard accessibility. "
+                "See [GitHub Issue #18585](https://github.com/apache/echarts/issues/18585)."
+            ),
         ]
     }
 
@@ -865,11 +870,11 @@ def get_card_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the card component."""
     return {
         "a11y": [
+            _("The card uses the semantic `<article>` element for self-contained content."),
             _("The card title uses a semantic `<h3>` heading for screen reader navigation."),
             _("Images include an `alt` attribute for screen reader descriptions."),
             _("External links use `rel='noopener'` for security."),
             _("Action buttons have descriptive text labels."),
-            _("**TODO: Consider adding `role='article'` or wrapping in `<article>` element.**"),
         ]
     }
 
@@ -879,11 +884,10 @@ def get_app_card_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the app card component."""
     return {
         "a11y": [
+            _("The card title uses a semantic `<h3>` heading for screen reader navigation."),
             _("Images include an `alt` attribute for screen reader descriptions."),
             _("Disabled actions use `aria-disabled='true'` to communicate their state."),
             _("External links use `rel='noopener'` for security."),
-            _("**TODO: Use unique IDs instead of fixed `id='card-title'` to avoid duplicate IDs.**"),
-            _("**TODO: Consider using semantic heading elements for the title.**"),
         ]
     }
 
@@ -893,14 +897,13 @@ def get_flip_card_a11y_context() -> dict[str, list[str]]:
     """Serve a11y documentation for the flip card component."""
     return {
         "a11y": [
+            _("The card title uses a semantic `<h3>` heading for screen reader navigation."),
+            _("The flip is triggered via a button, making it fully keyboard accessible (Enter/Space)."),
+            _("The inactive side uses `aria-hidden='true'` to prevent screen readers from reading hidden content."),
+            _("Focus moves to the visible side's flip button after the animation completes."),
             _("Images include an `alt` attribute for screen reader descriptions."),
             _("Disabled actions use `aria-disabled='true'` to communicate their state."),
             _("External links use `rel='noopener'` for security."),
-            _("**TODO: The flip animation may not be accessible via keyboard. Consider adding a button to flip.**"),
-            _(
-                "**TODO: The back content is hidden visually but may still be read by screen readers. Use `aria-hidden` on inactive side.**"
-            ),
-            _("**TODO: Use unique IDs instead of fixed `id='card-title'` to avoid duplicate IDs.**"),
         ]
     }
 

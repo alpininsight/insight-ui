@@ -7,19 +7,19 @@
     <div class="flex flex-1 flex-col px-4 py-2">
         {% if app_card_config.request_url %}
             <a href="{{ app_card_config.request_url }}">
-                <p id="card-title" class="mb-2 font-bold text-primary text-xl hover:text-insight-text-link-hover">{{ app_card_config.title }}</p>
+                <h3 class="mb-2 font-bold text-primary text-xl hover:text-insight-text-link-hover">{{ app_card_config.title }}</h3>
             </a>
         {% else %}
-            <p id="card-title" class="mb-2 font-bold text-primary text-xl">{{ app_card_config.title }}</p>
+            <h3 class="mb-2 font-bold text-primary text-xl">{{ app_card_config.title }}</h3>
         {% endif %}
-        <p id="card-description" class="hyphens-auto text-secondary text-base text-justify" lang="de">{{ app_card_config.content|safe }}</p>
+        <p class="hyphens-auto text-secondary text-base text-justify" lang="de">{{ app_card_config.content|safe }}</p>
     </div>
 
     {# Tags #}
     {% if app_card_config.tags %}
-        <div id="card-tags" class="flex flex-wrap gap-1 px-4">
+        <div class="flex flex-wrap gap-1 px-4">
             {% for tag in app_card_config.tags %}
-                {% button label=tag type="primary" size="xs" %}
+                {% badge config=tag %}
             {% endfor %}
         </div>
     {% endif %}

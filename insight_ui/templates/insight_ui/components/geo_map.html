@@ -1,6 +1,25 @@
-{% load static %}
+{% load static i18n %}
 
-<div id="map" class="z-0" style="height: {{ map_config.map_height|default:36 }}rem"></div>
+{# Screen reader alternative: list of all locations #}
+<div class="sr-only" id="map-locations-list">
+  <h2>{% trans "Map locations" %}</h2>
+  <ul>
+    {% for dataset in map_config.datasets %}
+      {% for marker in dataset.data %}
+        <li>{{ marker.title }}{% if marker.description %}: {{ marker.description }}{% endif %}</li>
+      {% endfor %}
+    {% endfor %}
+  </ul>
+</div>
+
+<div
+  id="map"
+  class="z-0"
+  style="height: {{ map_config.map_height|default:36 }}rem"
+  role="application"
+  aria-label="{{ map_config.aria_label }}"
+  aria-describedby="map-locations-list"
+></div>
 
 <script>
   /**
@@ -13,7 +32,7 @@
     const t = (value - min) / (max - min);
     const r = Math.round(168 + (0 - 168) * t);
     const g = Math.round(207 + (51 - 207) * t);
-    const b = Math.round(255 + (102 - 255) * t);
+    const b = Math.round(255 + (0 - 255) * t);
     return `rgb(${r}, ${g}, ${b})`;
   }
 
@@ -27,7 +46,10 @@
     const newLayer = L.layerGroup();
     for (const entry of dataset)
     {
-      L.marker([entry.lat, entry.lon]).bindPopup("<b>" + entry.title + "</b><br>" + entry.description).addTo(newLayer);
+      L.marker([entry.lat, entry.lon], {
+        keyboard: true,
+        alt: entry.title
+      }).bindPopup("<b>" + entry.title + "</b><br>" + entry.description).addTo(newLayer);
     }
     return newLayer;
   }
@@ -47,7 +69,9 @@
         color: "#003366",
         fillColor: color(entry.value, min, max),
         fillOpacity: 0.7,
-        weight: 1
+        weight: 1,
+        keyboard: true,
+        alt: entry.title
       })
         .bindPopup("<b>" + entry.title + "</b><br>" + entry.description)
         .addTo(newLayer);
@@ -55,10 +79,37 @@
     return newLayer;
   }
 
-  var map = L.map('map').setView({{ map_config.initial_coords }}, {{ map_config.initial_zoom }});
+  /**
+   * Adds accessible labels to Leaflet map controls.
+   */
+  function labelMapControls()
+  {
+    const zoomIn = document.querySelector('.leaflet-control-zoom-in');
+    const zoomOut = document.querySelector('.leaflet-control-zoom-out');
+    const layerControl = document.querySelector('.leaflet-control-layers');
+
+    if (zoomIn) {
+      zoomIn.setAttribute('aria-label', '{% trans "Zoom in" %}');
+      zoomIn.setAttribute('title', '{% trans "Zoom in" %}');
+    }
+    if (zoomOut) {
+      zoomOut.setAttribute('aria-label', '{% trans "Zoom out" %}');
+      zoomOut.setAttribute('title', '{% trans "Zoom out" %}');
+    }
+    if (layerControl) {
+      layerControl.setAttribute('aria-label', '{% trans "Map layers" %}');
+    }
+  }
+
+  var map = L.map('map', {
+    keyboard: true,
+    keyboardPanDelta: 80
+  }).setView({{ map_config.initial_coords }}, {{ map_config.initial_zoom }});
+
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 18,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    referrerPolicy: 'strict-origin-when-cross-origin'
   }).addTo(map);
 
   var overlayMaps = {};
@@ -80,4 +131,7 @@
     overlayMaps[dataset.name] = newLayer;
   }
   L.control.layers(null, overlayMaps, { collapsed: false }).addTo(map);
+
+  // Add accessible labels after controls are rendered
+  labelMapControls();
 </script>

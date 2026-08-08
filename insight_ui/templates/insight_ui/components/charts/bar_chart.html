@@ -1,4 +1,14 @@
-<div id="{{ chart_config.tag_id }}" style="height: {{ chart_config.chart_height|default:24 }}rem"></div>
+{% load i18n %}
+
+{% include "insight_ui/components/charts/_data_table.html" %}
+
+<div
+    id="{{ chart_config.tag_id }}"
+    style="height: {{ chart_config.chart_height|default:24 }}rem"
+    role="img"
+    aria-label="{% if chart_config.aria_label %}{{ chart_config.aria_label }}{% else %}{% blocktrans with title=chart_config.dataset.title %}Bar chart: {{ title }}{% endblocktrans %}{% endif %}"
+    aria-describedby="{{ chart_config.tag_id }}-table"
+></div>
 
 <script type="module">
     var chartDom = document.getElementById("{{ chart_config.tag_id }}");
@@ -34,6 +44,12 @@
     });
 
     option = {
+        aria: {
+            enabled: true,
+            decal: {
+                show: {{ chart_config.show_decal|yesno:"true,false" }}
+            }
+        },
         title: {
             text: "{{ chart_config.dataset.title }}"
         },

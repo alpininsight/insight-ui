@@ -412,6 +412,7 @@ class GeoMapConfig:
         initial_zoom: Starting zoom level.
         map_height: The height of the map in 'rem'.
         datasets: List of data layers to display.
+        aria_label: Accessible label describing the map's purpose.
 
     """
 
@@ -419,6 +420,7 @@ class GeoMapConfig:
         GeoMapConfig(
             initial_coords=[52.52, 13.405],
             initial_zoom=10,
+            aria_label="Standorte unserer Filialen in Deutschland",
             datasets=[
                 GeoMapDatasetConfig(
                     name="offices",
@@ -438,6 +440,9 @@ class GeoMapConfig:
     map_height: int = field(default=36, metadata={"doc": _("The height of the map in 'rem'.")})
     datasets: list[GeoMapDatasetConfig] = field(
         default_factory=list, metadata={"doc": _("List of data layers to display.")}
+    )
+    aria_label: str = field(
+        default=_("Interactive map"), metadata={"doc": _("Accessible label describing the map's purpose.")}
     )
 
 
@@ -499,6 +504,8 @@ class ChartConfig:
         tag_id: Unique ID for the chart element.
         dataset: Chart data and configuration.
         chart_height: Height of the chart in 'rem'.
+        aria_label: Accessible label describing the chart's purpose.
+        show_decal: Show decal patterns for colorblind accessibility.
 
     """
 
@@ -512,6 +519,7 @@ class ChartConfig:
                 data=[[100, 150, 200], [80, 120, 160]],
             ),
             chart_height=24,
+            aria_label="Bar chart showing monthly sales for Product A and B",
         )
         """
 
@@ -520,6 +528,8 @@ class ChartConfig:
         default_factory=ChartDatasetConfig, metadata={"doc": _("Chart data and configuration.")}
     )
     chart_height: int = field(default=24, metadata={"doc": _("Height of the chart in 'rem'.")})
+    aria_label: str = field(default="", metadata={"doc": _("Accessible label describing the chart's purpose.")})
+    show_decal: bool = field(default=True, metadata={"doc": _("Show decal patterns for colorblind accessibility.")})
 
 
 @dataclass

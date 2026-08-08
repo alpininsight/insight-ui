@@ -1041,6 +1041,7 @@ def geo_map(
     initial_zoom: int | _Unset = UNSET,
     map_height: int | _Unset = UNSET,
     datasets: list[GeoMapDatasetConfig] | _Unset = UNSET,
+    aria_label: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render an integrated geographic map."""
     config = build_config(GeoMapConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -1054,6 +1055,8 @@ def bar_chart(
     tag_id: str | _Unset = UNSET,
     dataset: ChartDatasetConfig | _Unset | None = UNSET,
     chart_height: int | _Unset = UNSET,
+    aria_label: str | _Unset = UNSET,
+    show_decal: bool | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a bar chart with Apache ECharts."""
     config = build_config(ChartConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -1067,6 +1070,8 @@ def line_chart(
     tag_id: str | _Unset = UNSET,
     dataset: ChartDatasetConfig | _Unset | None = UNSET,
     chart_height: int | _Unset = UNSET,
+    aria_label: str | _Unset = UNSET,
+    show_decal: bool | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a line chart with Apache ECharts."""
     config = build_config(ChartConfig, config, **{k: v for k, v in locals().items() if k != "config"})
