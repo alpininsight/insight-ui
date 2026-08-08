@@ -34,6 +34,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add keybord navigation to carousels and remove default value from 'alt' text parameter for the image carousel
 - Add announcement for reaching the min or max value of the 'checkbox_group' component
 - Improve a11y of the 'query_builder' component using groups and unique id's
+- Add keybord navigation and aria labels to the 'geo_map' component
+- Add screenreader table, aria labels and decal pattern to chart components
+- Add flip button to  and use  component for the tags
+- Use semantic correct  tag for  component
 
 ### Miscellaneous
 
@@ -46,6 +50,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix uv.lock
 - Regenerate minified assets
 - **static:** Regenerate assets after rebase
+- Regenerate stylesheet
+- Regenerate minified assets
+- Add --no-minify to rebuild stylesheet command
 
 ### Refactoring
 
@@ -58,6 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add new tests for JavaScript components
 - Move JavaScript tests to main tests directory
 - Adjust tests for new accessibility
+- Adjust tests and remove unnecessary css class checks
 
 ## [1.11.2] - 2026-07-21
 
