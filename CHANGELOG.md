@@ -38,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add screenreader table, aria labels and decal pattern to chart components
 - Add flip button to  and use  component for the tags
 - Use semantic correct  tag for  component
+- Meta information
 
 ### Miscellaneous
 
