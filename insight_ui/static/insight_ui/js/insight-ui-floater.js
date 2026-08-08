@@ -42,7 +42,7 @@ export class Floater {
 
         if (type === "tooltip") {
             this.target = document.createElement('span');
-            this.target.classList.add("text-primary", "bg-insight-bg-surface", "px-3", "py-1", "border", "border-insight-border-surface", "rounded-insight-overlay", "shadow-insight-overlay", "whitespace-nowrap");
+            this.target.classList.add("text-primary", "bg-insight-bg-surface", "px-3", "py-2", "border", "border-insight-border-surface", "rounded-insight-overlay", "shadow-insight-overlay", "max-w-xs", "text-sm");
             this.target.textContent = this.trigger.getAttribute("data-insight-tooltip");
             // Generate unique ID for tooltip and set ARIA attributes
             this.targetId = `tooltip-${Math.random().toString(36).substring(2, 9)}`;

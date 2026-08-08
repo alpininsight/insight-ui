@@ -1,6 +1,6 @@
 {% load insight_tags %}
 
-<div class="badge badge-{{ badge_config.type }} badge-{{ badge_config.size }}">
+<div class="badge badge-{{ badge_config.type }} badge-{{ badge_config.size }}{% if badge_config.tooltip %} transition-opacity cursor-help hover:opacity-80{% endif %}"{% if badge_config.tooltip %} data-insight-tooltip="{{ badge_config.tooltip }}"{% endif %}>
     {% if badge_config.icon and not badge_config.icon_end %}
         {% icon config=badge_config.icon %}
     {% endif %}

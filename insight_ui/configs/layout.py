@@ -18,6 +18,8 @@ class PageHeaderConfig:
         title: The main page title, displayed prominently in primary color.
         chapter: Optional chapter displayed before the title in muted style.
         description: An optional description below the title.
+        badges: Optional list of badges displayed below the description.
+        buttons: Optional list of action buttons displayed below the badges.
 
     """
 
@@ -26,12 +28,20 @@ class PageHeaderConfig:
             title="Page Header",
             chapter="Insight UI",
             description="A header component for documentation pages.",
+            badges=[BadgeConfig(label="New", type="success")],
+            buttons=[ButtonConfig(label="Get Started", href="/start")],
         )
         """
 
     title: str = field(metadata={"doc": _("The main page title, displayed prominently in primary color.")})
     chapter: str = field(default="", metadata={"doc": _("Optional chapter displayed before the title in muted style.")})
     description: str | list[str] = field(default="", metadata={"doc": _("An optional description below the title.")})
+    badges: list[BadgeConfig] = field(
+        default_factory=list, metadata={"doc": _("Optional list of badges displayed below the description.")}
+    )
+    buttons: list[ButtonConfig] = field(
+        default_factory=list, metadata={"doc": _("Optional list of action buttons displayed below the badges.")}
+    )
 
 
 @dataclass

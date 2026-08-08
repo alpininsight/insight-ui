@@ -348,6 +348,8 @@ def page_header(
     title: str | _Unset = UNSET,
     chapter: str | _Unset = UNSET,
     description: str | list[str] | _Unset = UNSET,
+    badges: list[BadgeConfig] | _Unset = UNSET,
+    buttons: list[ButtonConfig] | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a page header in the base template."""
     config = build_config(PageHeaderConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -1117,13 +1119,16 @@ def badge(
     icon_end: bool | _Unset = UNSET,
     type: BadgeType | _Unset = UNSET,  # noqa: A002
     size: Size | _Unset = UNSET,
+    tooltip: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render the badge component."""
     icon: IconConfig | _Unset | None = UNSET
     if icon_name is not UNSET:
         icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "m") if icon_name else None
 
-    config = build_config(BadgeConfig, config, label=label, icon=icon, icon_end=icon_end, type=type, size=size)
+    config = build_config(
+        BadgeConfig, config, label=label, icon=icon, icon_end=icon_end, type=type, size=size, tooltip=tooltip
+    )
     return {"badge_config": config}
 
 

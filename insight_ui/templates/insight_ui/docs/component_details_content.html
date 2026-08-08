@@ -112,6 +112,43 @@
     {# A11y #}
     {% section %}
         <h2>{% trans "Accessability" %}</h2>
+
+        {# Compliance Status Grid #}
+        <table class="text-sm rounded-insight-surface overflow-hidden">
+            <thead class="">
+                <tr>
+                    <td class="demo-pattern px-4 py-2 w-24 bg-insight-bg-base border-r border-insight-border-surface"></td>
+                    <th scope="col" class="px-4 py-2 font-medium text-center">WCAG AA</th>
+                    <th scope="col" class="px-4 py-2 font-medium text-center">WCAG AAA</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="border-t border-insight-border-surface">
+                    <th scope="row" class="px-4 py-2 font-medium text-center border-r border-insight-border-surface">{% trans "Status" %}</th>
+                    <td class="px-4 py-2 bg-insight-bg-surface">
+                        <div class="flex justify-center">
+                            {% if wcag_aa_compliant %}
+                                <span class="text-insight-success">{% icon name="check" size="s" %}</span>
+                            {% else %}
+                                <span class="text-insight-danger">{% icon name="x-mark" size="s" %}</span>
+                            {% endif %}
+                        </div>
+                    </td>
+                    <td class="px-4 py-2 bg-insight-bg-surface">
+                        <div class="flex justify-center">
+                            {% if wcag_aaa_compliant %}
+                                <span class="text-insight-success">{% icon name="check" size="s" %}</span>
+                            {% elif a11y_aaa %}
+                                <span class="text-insight-danger">{% icon name="x-mark" size="s" %}</span>
+                            {% else %}
+                                <span class="text-insight-text-hint">N/A</span>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
         {% if a11y_notes_begin %}
             {% vbox gap="s" %}
                 {% for note in a11y_notes_begin %}
@@ -119,13 +156,48 @@
                 {% endfor %}
             {% endvbox %}
         {% endif %}
-        <ul class="list-disc ms-8 mt-6 leading-relaxed">
-            {% for point in a11y %}
-                <li>{{ point|markdownify }}</li>
-            {% empty %}
-                <li><i>{% trans "No comments." %}</i></li>
-            {% endfor %}
-        </ul>
+
+        {# WCAG AA #}
+        {% if a11y_aa %}
+            {% vbox gap="s" %}
+                <h3 class="font-medium text-lg tracking-wide uppercase">{% trans "WCAG AA (Basics)" %}</h3>
+                <ul class="list-disc ms-8 leading-relaxed">
+                    {% for point in a11y_aa %}
+                        <li>{{ point|markdownify }}</li>
+                    {% endfor %}
+                </ul>
+            {% endvbox %}
+        {% endif %}
+
+        {# WCAG AAA #}
+        {% if a11y_aaa %}
+            {% vbox gap="s" %}
+                <h3 class="font-medium text-lg tracking-wide uppercase">{% trans "WCAG AAA (Advanced)" %}</h3>
+                <ul class="list-disc ms-8 leading-relaxed">
+                    {% for point in a11y_aaa %}
+                        <li>{{ point|markdownify }}</li>
+                    {% endfor %}
+                </ul>
+            {% endvbox %}
+        {% endif %}
+
+        {# Open Issues #}
+        {% if a11y_issues %}
+            {% vbox gap="s" %}
+                <h3 class="font-medium text-lg tracking-wide uppercase">{% trans "Open Issues" %}</h3>
+                <ul class="list-disc ms-8 leading-relaxed">
+                    {% for issue in a11y_issues %}
+                        <li>{{ issue|markdownify }}</li>
+                    {% endfor %}
+                </ul>
+            {% endvbox %}
+        {% endif %}
+
+        {# Fallback #}
+        {% if not a11y_aa and not a11y_aaa and not a11y_issues %}
+            <p class="mt-6"><i>{% trans "No comments." %}</i></p>
+        {% endif %}
+
         {% if a11y_notes_end %}
             {% vbox gap="s" %}
                 {% for note in a11y_notes_end %}
@@ -140,7 +212,7 @@
     {# Related #}
     {% section %}
         <h2>{% trans "Related topics" %}</h2>
-        <ul class="list-disc ms-8 mt-6 leading-relaxed">
+        <ul class="list-disc ms-8 leading-relaxed">
             {% for topic in related_topics %}
                 <li>
                     <a

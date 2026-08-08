@@ -38,12 +38,15 @@
                   hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
                 {% endif %}
                 href="{{ item.request_url }}"
-                class="flex gap-2 px-4 py-1 text-sm text-primary tracking-wide border-s border-insight-border-surface hover:border-insight-text-secondary hover:text-insight-text-secondary"
+                class="flex gap-2 items-center px-4 py-1 text-sm text-primary tracking-wide border-s border-insight-border-surface hover:border-insight-text-secondary hover:text-insight-text-secondary"
               >
                 {% if item.icon %}
                   {% icon item.icon %}
                 {% endif %}
-                {{ item.text }}
+                <span class="flex-1">{{ item.text }}</span>
+                {% if item.badge %}
+                  {% badge config=item.badge %}
+                {% endif %}
               </a>
             </li>
           {% endfor %}
