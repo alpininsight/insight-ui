@@ -4,7 +4,7 @@ asgiref==3.12.1
     # via django
 defusedxml==0.7.1
     # via insight-ui
-django==6.0.7
+django==6.0.8
     # via insight-ui
 markdown==3.10.3
     # via insight-ui
@@ -12,7 +12,7 @@ python-decouple==3.8
     # via insight-ui
 sqlparse==0.5.5
     # via django
-tzdata==2026.1 ; sys_platform == 'win32'
+tzdata==2026.3 ; sys_platform == 'win32'
     # via django
 whitenoise==6.12.0
     # via insight-ui
