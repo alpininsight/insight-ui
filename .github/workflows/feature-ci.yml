@@ -47,7 +47,10 @@ jobs:
     with:
       python_versions: '["3.12", "3.13", "3.14"]'
       uv_sync_args: --frozen --all-groups
-      django_check_command: uv run python manage.py check
+      django_check_command: |
+        uv export --no-emit-project --no-hashes --no-dev --format requirements.txt -o requirements.txt
+        git diff --exit-code -- requirements.txt
+        uv run python manage.py check
       test_command: |
         uv pip install "django~=5.2.0"
         uv run pytest
