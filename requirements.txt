@@ -4,7 +4,7 @@ asgiref==3.12.1
     # via django
 defusedxml==0.7.1
     # via insight-ui
-django==6.0.8
+django==6.1
     # via insight-ui
 markdown==3.10.3
     # via insight-ui
