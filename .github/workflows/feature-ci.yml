@@ -10,7 +10,7 @@
 # Purpose:
 #   - keeps repository policy centralized
 #   - keeps Python/Django quality centralized
-#   - preserves insight-ui's Django 5.2/6.0 compatibility checks inside the
+#   - preserves insight-ui's Django 5.2/6.1 compatibility checks inside the
 #     central quality reusable because the reusable currently only matrices
 #     Python versions, not Django versions.
 # =============================================================================
@@ -53,9 +53,9 @@ jobs:
         uv run python manage.py check
       test_command: |
         uv pip install "django~=5.2.0"
-        uv run pytest
-        uv pip install "django~=6.0.0"
-        uv run pytest
+        uv run --no-sync pytest
+        uv pip install "django~=6.1.0"
+        uv run --no-sync pytest
     secrets:
       github_read_token: ${{ secrets.INSIGHT_TOKEN_RO }}
       ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
