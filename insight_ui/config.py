@@ -8,11 +8,13 @@ from django.conf import settings
 from insight_ui.configs.utils import BrandMarkConfig, LogoConfig
 
 CONFIG_DEFAULTS: dict[str, Any] = {
+    "webmanifest": "insight_ui/favicon/site.webmanifest",
     "favicon": "insight_ui/favicon/favicon.ico",
     "favicon_32": "insight_ui/favicon/favicon-32x32.png",
     "favicon_16": "insight_ui/favicon/favicon-16x16.png",
     "apple_touch_icon": "insight_ui/favicon/apple-touch-icon.png",
     "safari_mask_icon": "insight_ui/svg/logo.svg",  # Used by Safari pinned tab
+    "safari_mask_icon_color": "#5bbad5",
     "msapplication_TileColor": "#da532c",  # Sets the background color for a live tile (MS Edge only)
     "theme_color": "#ffffff",  # For the search bar on mobile devices
     "meta": {"seo": {"description": "My indispensable app", "keywords": "Django, Insight UI", "author": "It's me"}},

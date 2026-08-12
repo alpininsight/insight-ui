@@ -11,12 +11,12 @@
         <title>{% block title %}{{ INSIGHT_UI.brand.title }}{% endblock %}</title>
 
         <!-- Favicon -->
-        <link rel="manifest" href="{% static 'insight_ui/favicon/site.webmanifest' %}">
+        <link rel="manifest" href="{% static INSIGHT_UI.webmanifest %}">
         <link rel="icon" href="{% static INSIGHT_UI.favicon %}" type="image/x-icon">
-        <link rel="apple-touch-icon" href="{% static INSIGHT_UI.apple_touch_icon %}">
+        <link rel="apple-touch-icon" sizes="180x180" href="{% static INSIGHT_UI.apple_touch_icon %}">
         <link rel="icon" type="image/png" sizes="32x32" href="{% static INSIGHT_UI.favicon_32 %}">
         <link rel="icon" type="image/png" sizes="16x16" href="{% static INSIGHT_UI.favicon_16 %}">
-        <link rel="mask-icon" href="{% static INSIGHT_UI.safari_mask_icon %}" color="#5bbad5">
+        <link rel="mask-icon" href="{% static INSIGHT_UI.safari_mask_icon %}" color="{{ INSIGHT_UI.safari_mask_icon_color }}">
         <meta name="msapplication-TileColor" content="{{ INSIGHT_UI.msapplication_TileColor }}">
         <meta name="theme-color" content="{{ INSIGHT_UI.theme_color }}">
         <!-- CSRF Token for Django -->
