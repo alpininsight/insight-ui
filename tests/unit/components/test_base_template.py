@@ -26,3 +26,31 @@ class TestBaseTemplate(TestCase):
 
         assert "<!DOCTYPE html>" in rendered
         assert "javascript-catalog" not in rendered
+
+    @override_settings(
+        ROOT_URLCONF=__name__,
+        STORAGES={"staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"}},
+        INSIGHT_UI={"webmanifest": "example_app/favicon/site.webmanifest"},
+    )
+    def test_base_template_uses_configured_webmanifest(self) -> None:
+        """Host apps should be able to provide their own web app manifest."""
+        sys.modules[__name__].urlpatterns = []
+
+        rendered = render_to_string("insight_ui/base.html", get_config())
+
+        assert '<link rel="manifest" href="/static/example_app/favicon/site.webmanifest">' in rendered
+
+    @override_settings(
+        ROOT_URLCONF=__name__,
+        STORAGES={"staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"}},
+        INSIGHT_UI={"safari_mask_icon_color": "#123456"},
+    )
+    def test_base_template_renders_mobile_icon_contract(self) -> None:
+        """Default manifest and platform icon metadata should remain complete."""
+        sys.modules[__name__].urlpatterns = []
+
+        rendered = render_to_string("insight_ui/base.html", get_config())
+
+        assert '<link rel="manifest" href="/static/insight_ui/favicon/site.webmanifest">' in rendered
+        assert '<link rel="apple-touch-icon" sizes="180x180"' in rendered
+        assert 'color="#123456"' in rendered

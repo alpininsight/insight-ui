@@ -60,7 +60,8 @@ WORKDIR /app
 COPY --from=builder /wheels /wheels
 
 RUN pip install --no-cache-dir --no-index --find-links=/wheels /wheels/* \
-    && rm -rf /wheels
+    && rm -rf /wheels \
+    && python -m pip uninstall --yes pip
 
 COPY --chown=app:app . /app
 COPY --chown=app:app docker/entrypoint.sh /entrypoint.sh

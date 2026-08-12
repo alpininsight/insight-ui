@@ -127,13 +127,22 @@ INSIGHT_UI = {
 
 | Setting | Type | Default | Description |
 |---------|------|---------|-------------|
+| `webmanifest` | str | `"insight_ui/favicon/site.webmanifest"` | Web app manifest path for Android/PWA metadata and install icons |
 | `favicon` | str | `"insight_ui/favicon/favicon.ico"` | Main favicon path |
 | `favicon_32` | str | `"insight_ui/favicon/favicon-32x32.png"` | 32x32 favicon |
 | `favicon_16` | str | `"insight_ui/favicon/favicon-16x16.png"` | 16x16 favicon |
 | `apple_touch_icon` | str | `"insight_ui/favicon/apple-touch-icon.png"` | Apple touch icon |
 | `safari_mask_icon` | str | `"insight_ui/svg/logo.svg"` | Safari pinned tab icon |
+| `safari_mask_icon_color` | str | `"#5bbad5"` | Safari pinned tab icon color |
 | `msapplication_TileColor` | str | `"#da532c"` | MS Edge live tile background |
 | `theme_color` | str | `"#ffffff"` | Mobile browser search bar color |
+
+`apple_touch_icon` is the home-screen icon used by iOS and iPadOS. Android and
+installable PWAs discover their icons through the configured `webmanifest`.
+Insight UI's default manifest includes separate `purpose: "maskable"` icons so
+launchers can crop them safely. A branded consumer should provide its own
+manifest and icon files, then point `webmanifest` and `apple_touch_icon` at
+those static assets.
 
 ### SEO Meta Tags
 

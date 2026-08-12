@@ -44,6 +44,24 @@ uv run python manage.py collectstatic --noinput
 If you use the Insight UI base template, assets are resolved through Insight
 UI's asset helper and can use local staticfiles or a configured CDN.
 
+## Web App Icons
+
+The base template resolves the manifest path from `settings.INSIGHT_UI`, which
+lets each Django consumer provide its own app identity:
+
+```python
+INSIGHT_UI = {
+    "webmanifest": "my_app/favicon/site.webmanifest",
+    "apple_touch_icon": "my_app/favicon/apple-touch-icon.png",
+}
+```
+
+The Apple touch icon covers iOS and iPadOS home-screen bookmarks. Android and
+installable PWAs use the icons declared in the webmanifest. Include dedicated
+192x192 and 512x512 PNGs with `purpose: "maskable"`; keep important artwork in
+the central safe zone and use an opaque background. Manifest icon URLs should
+be relative to the manifest file so they remain valid below a static URL prefix.
+
 ## Build Commands For Contributors
 
 When `insight_ui/utils/input.css` changes, rebuild the packaged stylesheet:
