@@ -57,6 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Regenerate stylesheet
 - Regenerate minified assets
 - Add --no-minify to rebuild stylesheet command
+- **pre-commit:** Autoupdate hooks
 
 ### Refactoring
 
