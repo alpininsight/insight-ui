@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from io import StringIO
 
-from pytest_django.asserts import TYPE_CHECKING
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from pathlib import Path
