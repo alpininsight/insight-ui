@@ -10,8 +10,10 @@
                         {% if htmx %}
                             hx-get="{{ item.request_url }}"
                             hx-target="{{ htmx.target }}"
-                            hx-swap="{{ htmx.swap|default:'innerHTML' }}"
-                            hx-trigger="submit"
+                            hx-swap="{{ htmx.swap_method|default:'innerHTML' }}{% if htmx.swap_settle %} settle:{{ htmx.swap_settle }}{% endif %}"
+                            {% if htmx.trigger %}hx-trigger="{{ htmx.trigger }}"{% endif %}
+                            {% if htmx.push_url %}hx-push-url="true"{% endif %}
+                            {% if htmx.loading_indicator_id %}hx-indicator="{{ htmx.loading_indicator_id }}"{% endif %}
                         {% endif %}
                         class="inline-flex gap-1 text-link"
                     >

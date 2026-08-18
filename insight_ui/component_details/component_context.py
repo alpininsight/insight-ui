@@ -10,6 +10,8 @@ from django.utils.translation import gettext as _
 
 from insight_ui.component_details.components import Component
 from insight_ui.component_details.related_components_context import get_related_components_context
+from insight_ui.configs.base import HtmxConfig
+from insight_ui.configs.navigation import BreadcrumbItemConfig
 
 Context = dict[str, Any]
 ContextBuilder = Callable[[], Context]
@@ -38,6 +40,61 @@ class ParameterDoc:
     params_table: list[ParameterDetails]
     example_data: str
     notes: list[dict[str, str]] = None
+
+
+def resolve_parameter_path(root: ParameterDoc, path: str, base_url: str) -> dict[str, Any]:
+    """Resolve a dot-separated field path against a ParameterDoc tree.
+
+    Used to drive the parameter drill-down navigation on a component's
+    detail page: the path identifies which nested parameter table is
+    currently active, so only that single table needs to be rendered
+    instead of expanding the whole tree inline.
+
+    Args:
+        root: The root ParameterDoc for the component's config dataclass.
+        path: Dot-separated chain of field names to drill into (e.g.
+            "brand.mark"). An empty string resolves to the root itself.
+        base_url: The component detail page's own URL, used to build each
+            breadcrumb's link.
+
+    Returns:
+        Context dict with `active_param` (the resolved ParameterDoc, falling
+        back to the root if the path is empty or invalid), `param_breadcrumb_items`
+        (the trail from the root up to the active entry, as BreadcrumbItemConfig
+        for the breadcrumbs component), `breadcrumb_htmx` (the shared HtmxConfig
+        for those breadcrumb links) and `active_param_name` (the last
+        breadcrumb's label, or None while still at the root).
+
+    """
+    breadcrumb_items = [BreadcrumbItemConfig(text=_("Overview"), request_url=base_url)]
+    active = root
+    consumed: list[str] = []
+
+    for segment in path.split("."):
+        if not segment:
+            continue
+        row = next((r for r in active.params_table if r.name == segment), None)
+        if row is None or row.nested is None:
+            break
+        active = row.nested
+        consumed.append(segment)
+        breadcrumb_items.append(
+            BreadcrumbItemConfig(text=row.name, request_url=f"{base_url}?param={'.'.join(consumed)}")
+        )
+
+    return {
+        "active_param": active,
+        "param_breadcrumb_items": breadcrumb_items,
+        "breadcrumb_htmx": HtmxConfig(
+            target="#parameter-section",
+            swap_method="innerHTML",
+            swap_settle="300ms",
+            trigger="click",
+            push_url=True,
+            loading_indicator_id="#parameter-loading-indicator",
+        ),
+        "active_param_name": breadcrumb_items[-1].text if len(breadcrumb_items) > 1 else None,
+    }
 
 
 def format_type(t: object) -> str:  # noqa: PLR0911

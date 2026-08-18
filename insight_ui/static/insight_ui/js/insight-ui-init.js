@@ -108,6 +108,18 @@ document.addEventListener('DOMContentLoaded', function () {
 		debugLog("Initialize new instances...")
 		initAll();
 
+		// The parameter drill-down section is a narrow, self-contained fragment
+		// swap - it never introduces new headings, so skip the (visibly
+		// disruptive - the TOC panel blanks out and rebuilds) TOC regeneration
+		// below and just move focus into the new content instead.
+		if (evt.detail.target.id === "parameter-section") {
+			// preventScroll avoids a visible jump: the button that triggered the
+			// swap is already in view, so the browser doesn't need to scroll to it.
+			document.getElementById("parameter-section-heading")?.focus({ preventScroll: true });
+			debugLog("New instances initialized!")
+			return;
+		}
+
 		// Regenerate TOC after content swap
 		const tocEl = document.getElementById("toc");
 		if (tocEl) {
@@ -119,6 +131,7 @@ document.addEventListener('DOMContentLoaded', function () {
 				offsetBottom: 300
 			});
 		}
+
 		debugLog("New instances initialized!")
 	});
 

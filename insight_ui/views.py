@@ -4,6 +4,7 @@ import logging
 from datetime import UTC, datetime
 from importlib import metadata
 from pathlib import Path
+from typing import Any
 
 from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render
@@ -573,31 +574,8 @@ def playground_view(request: HttpRequest) -> HttpResponse:
     return render(request, "insight_ui/playground.html", context)
 
 
-@require_GET
-def component_detail_page_view(request: HttpRequest, component_name: str) -> HttpResponse:
-    """Render detailpage of the specified component.
-
-    Args:
-        request: The HTTP request object.
-        component_name: Name of the component.
-
-    Returns:
-        Rendered component detail page or partial template for HTMX.
-
-    """
-    demo_info = {
-        "url": reverse("component_demo_view", kwargs={"component_name": component_name}),
-        "template_repo_url": TEMPLATE_PATHS.get(component_name, ""),
-        "script_repo_url": SCRIPT_PATHS.get(component_name, ""),
-        "title": component_name,
-        "id": component_name,
-    }
-
-    context = get_demo_container_context() | component_context.get_component_context(Component(component_name))
-    context["demo"] = demo_info
-
-    component = Component(component_name)
-
+def _get_component_header_badges(component: Component, context: dict[str, Any]) -> list[BadgeConfig]:
+    """Build the status/accessibility/technical badges shown next to a component's title."""
     wcag_disclaimer = _(
         "This is our own assessment based on manual review. "
         "It is not an official certification by an accredited testing authority."
@@ -632,10 +610,48 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
             )
         )
 
-    context["header_badges"] = header_badges
+    return header_badges
+
+
+@require_GET
+def component_detail_page_view(request: HttpRequest, component_name: str) -> HttpResponse:
+    """Render detailpage of the specified component.
+
+    Args:
+        request: The HTTP request object.
+        component_name: Name of the component.
+
+    Returns:
+        Rendered component detail page or partial template for HTMX.
+
+    """
+    demo_info = {
+        "url": reverse("component_demo_view", kwargs={"component_name": component_name}),
+        "template_repo_url": TEMPLATE_PATHS.get(component_name, ""),
+        "script_repo_url": SCRIPT_PATHS.get(component_name, ""),
+        "title": component_name,
+        "id": component_name,
+    }
+
+    context = get_demo_container_context() | component_context.get_component_context(Component(component_name))
+    context["demo"] = demo_info
+
+    component = Component(component_name)
+    context["header_badges"] = _get_component_header_badges(component, context)
+
+    param_path = request.GET.get("param", "")
+    component_url = reverse("component_detail_page_view", kwargs={"component_name": component_name})
+    root_params = context.get("params") or []
+    if root_params:
+        context |= component_context.resolve_parameter_path(root_params[0], param_path, component_url)
+    context["param_path"] = param_path
+    context["component_url"] = component_url
+
+    if request.headers.get("HX-Target") == "parameter-section":
+        return render(request, "insight_ui/docs/parameter_section_content.html", context)
 
     if request.headers.get("HX-Request") and not request.headers.get("HX-History-Restore-Request"):
-        return render(request, "insight_ui/docs/component_detailpage_partial.html", context)
+        return render(request, "insight_ui/docs/parameter_section_content.html", context)
 
     context |= get_base_context() | get_sidebar_context()
     return render(request, "insight_ui/docs/component_detailpage.html", context)

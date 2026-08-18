@@ -68,45 +68,8 @@
     {% endsection %}
 
     {# Parameter #}
-    {% section %}
-        <h3>{% trans "Parameter" %}</h3>
-        {% if params_notes_begin %}
-            {% vbox gap="s" %}
-                {% for note in params_notes_begin %}
-                    {% infobox info_type=note.type message=note.message %}
-                {% endfor %}
-            {% endvbox %}
-        {% endif %}
-        {% vbox gap="l" %}
-            {% for param in params %}
-                {% vbox gap="s" %}
-                    {% if param.details %}
-                        <h4>{{ param.details.name }} <i>({{ param.details.type }})</i></h4>
-                        <p>{{ param.details.description }}</p>
-                    {% endif %}
-
-                    {% for note in param.notes %}
-                        {% infobox info_type=note.type message=note.message %}
-                    {% endfor %}
-
-                    {% if param.example_data %}
-                        {% vbox gap="s" %}
-                            {% parameter_table rows=param.params_table %}
-                            <div data-insight-code-block="python">{{ param.example_data }}</div>
-                        {% endvbox %}
-                    {% else %}
-                        {% parameter_table rows=param.params_table %}
-                    {% endif %}
-                {% endvbox %}
-            {% endfor %}
-        {% endvbox %}
-        {% if params_notes_end %}
-            {% vbox gap="s" %}
-                {% for note in params_notes_end %}
-                    {% infobox info_type=note.type message=note.message %}
-                {% endfor %}
-            {% endvbox %}
-        {% endif %}
+    {% section id="parameter-section" class="[&.htmx-settling]:bg-insight-primary-soft transition-colors duration-700 ease-out" %}
+        {% include "insight_ui/docs/parameter_section_content.html" %}
     {% endsection %}
 
     {# A11y #}

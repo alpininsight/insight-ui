@@ -94,6 +94,7 @@ class HtmxConfig:
         request_url: The URL for the HTMX request (hx-get/hx-post).
         target: CSS selector for the target element (hx-target).
         swap_method: The way in which the target is to be replaced (hx-swap).
+        swap_settle: Settle delay appended to hx-swap, e.g. '300ms', so CSS transitions have time to run.
         trigger: Event trigger (hx-trigger).
         method: HTTP method ('get' or 'post').
         loading_indicator_id: CSS selector for loading indicator (hx-indicator).
@@ -116,6 +117,10 @@ class HtmxConfig:
     target: str = field(default="", metadata={"doc": _("CSS selector for the target element (hx-target).")})
     swap_method: HtmxSwapMethod = field(
         default="innerHTML", metadata={"doc": _("The way in which the target is to be replaced (hx-swap).")}
+    )
+    swap_settle: str = field(
+        default="",
+        metadata={"doc": _("Settle delay appended to hx-swap, e.g. '300ms', so CSS transitions have time to run.")},
     )
     trigger: str = field(default="submit", metadata={"doc": _("Event trigger (hx-trigger).")})
     method: HtmxMethod = field(default="get", metadata={"doc": _("HTTP method ('get' or 'post').")})

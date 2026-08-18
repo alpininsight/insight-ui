@@ -911,9 +911,6 @@
   .w-2\/3 {
     width: calc(2 / 3 * 100%);
   }
-  .w-3 {
-    width: calc(var(--spacing) * 3);
-  }
   .w-3\/4 {
     width: calc(3 / 4 * 100%);
   }
@@ -1925,9 +1922,6 @@
   .ps-4 {
     padding-inline-start: calc(var(--spacing) * 4);
   }
-  .ps-6 {
-    padding-inline-start: calc(var(--spacing) * 6);
-  }
   .ps-10 {
     padding-inline-start: calc(var(--spacing) * 10);
   }
@@ -2213,10 +2207,6 @@
     --tw-shadow: 0 25px 50px -12px var(--tw-shadow-color, rgb(0 0 0 / 0.25));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
-  .shadow-\[inset_2px_0_0_0_var\(--color-insight-border-raised\)\] {
-    --tw-shadow: inset 2px 0 0 0 var(--tw-shadow-color, var(--color-insight-border-raised));
-    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-  }
   .shadow-inner {
     --tw-shadow: inset 0 2px 4px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.05));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
@@ -2344,6 +2334,10 @@
   .duration-500 {
     --tw-duration: 500ms;
     transition-duration: 500ms;
+  }
+  .duration-700 {
+    --tw-duration: 700ms;
+    transition-duration: 700ms;
   }
   .ease-in-out {
     --tw-ease: var(--ease-in-out);
@@ -3045,6 +3039,9 @@
     .dark\:hover\:text-insight-text-link-hover:where([data-theme=dark], [data-theme=dark] *):hover {
       color: var(--color-insight-text-link-hover);
     }
+  }
+  .\[\&\.htmx-settling\]\:bg-insight-primary-soft.htmx-settling {
+    background-color: var(--color-insight-primary-soft);
   }
   .\[\&\:\:-moz-range-thumb\]\:pointer-events-auto::-moz-range-thumb {
     pointer-events: auto;
