@@ -2,6 +2,21 @@
 Layout block tags for Insight UI.
 
 Provides block-level layout components for consistent spacing and alignment.
+All layout tags are **mobile-first and responsive by default**.
+
+Responsive Behavior
+-------------------
+Layout tags automatically adapt to screen size:
+
+**Spacing (gap, padding):**
+    - ``xs``, ``s``, ``m`` remain constant across all screen sizes
+    - ``l`` becomes ``m`` on mobile, ``l`` from md breakpoint
+    - ``xl`` becomes ``l`` on mobile, ``xl`` from md breakpoint
+
+**HBox direction:**
+    - Stacks vertically (column) on mobile by default
+    - Switches to horizontal (row) from md breakpoint
+    - Use ``inline=True`` for icon+text combos that should never stack
 
 Spacing System
 --------------
@@ -10,8 +25,8 @@ All spacing parameters (gap, padding, size, spacing) use a fixed scale:
     xs  = 0.25rem (4px)   -> Tailwind: gap-1, p-1
     s   = 0.5rem  (8px)   -> Tailwind: gap-2, p-2
     m   = 1rem   (16px)   -> Tailwind: gap-4, p-4  [default]
-    l   = 1.5rem (24px)   -> Tailwind: gap-6, p-6
-    xl  = 2rem   (32px)   -> Tailwind: gap-8, p-8
+    l   = 1.5rem (24px)   -> Tailwind: gap-6, p-6  (responsive: m on mobile)
+    xl  = 2rem   (32px)   -> Tailwind: gap-8, p-8  (responsive: l on mobile)
 
 Available Tags
 --------------
@@ -24,7 +39,8 @@ Block tags (require closing tag):
         Full-width page container with consistent padding and optional height.
 
     {% hbox gap="s" v_align="center" h_align="between" full_height=True %}...{% endhbox %}
-        Horizontal flex container (row direction).
+        Horizontal flex container. Stacks vertically on mobile, horizontal from md.
+        Use inline=True for icon+text combos that should never stack.
 
     {% vbox gap="m" v_align="center" full_height=True %}...{% endvbox %}
         Vertical flex container (column direction).
@@ -73,6 +89,11 @@ height : auto | full | peek
 
 max_width : xs | s | m | l | xl | fit | full
     Maximum container width (hbox/vbox only). Default: "full"
+    When set (except "fit" and "full"), container is also centered (mx-auto).
+
+inline : True | False
+    Prevent responsive stacking (hbox only). Default: False
+    Use for icon+text combinations that should stay horizontal on all screens.
 
 full_height : True | False
     Fill available height in parent container (hbox/vbox only). Default: False
@@ -196,19 +217,20 @@ VALID_WIDTH: frozenset[str] = frozenset({"narrow", "normal", "wide"})
 VALID_MOBILE_BEHAVIOR: frozenset[str] = frozenset({"hidden", "drawer"})
 
 # Class mappings (classes are defined in input.css or are tailwind classes)
+# Note: l and xl are responsive - smaller on mobile, full size from md breakpoint
 GAP_CLASSES: dict[str, str] = {
     "xs": "gap-insight-xs",
     "s": "gap-insight-s",
     "m": "gap-insight-m",
-    "l": "gap-insight-l",
-    "xl": "gap-insight-xl",
+    "l": "gap-insight-m md:gap-insight-l",
+    "xl": "gap-insight-l md:gap-insight-xl",
 }
 PADDING_CLASSES: dict[str, str] = {
     "xs": "p-insight-xs",
     "s": "p-insight-s",
     "m": "p-insight-m",
-    "l": "p-insight-l",
-    "xl": "p-insight-xl",
+    "l": "p-insight-m md:p-insight-l",
+    "xl": "p-insight-l md:p-insight-xl",
 }
 SPACER_CLASSES: dict[str, str] = {"xs": "h-1 w-1", "s": "h-2 w-2", "m": "h-4 w-4", "l": "h-6 w-6", "xl": "h-8 w-8"}
 ALIGN_CLASSES: dict[str, str] = {
@@ -227,11 +249,11 @@ JUSTIFY_CLASSES: dict[str, str] = {
     "evenly": "justify-evenly",
 }
 MAX_WIDTH_CLASSES: dict[str, str] = {
-    "xs": "max-w-sm",  # 24rem (384px)
-    "s": "max-w-xl",  # 36rem (576px)
-    "m": "max-w-3xl",  # 48rem (768px)
-    "l": "max-w-5xl",  # 64rem (1024px)
-    "xl": "max-w-7xl",  # 80rem (1280px)
+    "xs": "mx-auto max-w-sm",  # 24rem (384px), centered
+    "s": "mx-auto max-w-xl",  # 36rem (576px), centered
+    "m": "mx-auto max-w-3xl",  # 48rem (768px), centered
+    "l": "mx-auto max-w-5xl",  # 64rem (1024px), centered
+    "xl": "mx-auto max-w-7xl",  # 80rem (1280px), centered
     "fit": "max-w-fit",
     "full": "",  # No max-width constraint
 }
@@ -428,17 +450,30 @@ class FlexNode(LayoutNode):
     Base class for flex containers (hbox, vbox).
 
     Provides shared validation and class building for gap, padding, h_align, v_align.
-    Subclasses set :attr:`flex_direction` to "row" or "col".
+    Subclasses set :attr:`flex_direction` to "row" or "col" and :attr:`responsive_stack`
+    to control mobile behavior.
 
     For flex-row (hbox): h_align controls main-axis (justify), v_align controls cross-axis (items).
     For flex-col (vbox): v_align controls main-axis (justify), h_align controls cross-axis (items).
+
+    Note:
+        HBox is responsive by default - stacks vertically on mobile, horizontal from md breakpoint.
+        Use inline=True for compact layouts (icon+text) that should never stack.
     """
 
     flex_direction: str = "row"  # Override in subclass
+    responsive_stack: bool = False  # If True, stack on mobile (flex-col md:flex-row)
 
     def build_classes(self, kwargs: dict[str, object]) -> list[str]:
         """Build flex container CSS classes with gap, padding, max_width, h_align, and v_align."""
-        classes = ["flex", f"flex-{self.flex_direction}"]
+        # inline=True forces row layout on all screen sizes (for icon+text combos)
+        is_inline = kwargs.get("inline", False)
+
+        if self.responsive_stack and not is_inline:
+            # Mobile-first: stack vertically, horizontal from md
+            classes = ["flex", "flex-col", "md:flex-row"]
+        else:
+            classes = ["flex", f"flex-{self.flex_direction}"]
 
         # Optional full height (flex-grow: 1)
         if kwargs.get("full_height", False):
@@ -580,9 +615,15 @@ class PageNode(LayoutNode):
 
 
 class HBoxNode(FlexNode):
-    """Horizontal flex container (flex-row)."""
+    """
+    Horizontal flex container (flex-row).
+
+    Responsive by default: stacks vertically on mobile, horizontal from md breakpoint.
+    To force horizontal on all screens, add class="flex-row".
+    """
 
     flex_direction = "row"
+    responsive_stack = True
 
 
 class VBoxNode(FlexNode):
@@ -604,7 +645,7 @@ class GridNode(LayoutNode):
 
     def build_classes(self, kwargs: dict[str, object]) -> list[str]:
         """Build grid container CSS classes."""
-        classes = ["grid"]
+        classes = ["grid", "w-full"]
 
         # Gap
         gap = kwargs.get("gap", "m")
