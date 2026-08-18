@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
@@ -14,6 +15,7 @@ from django.utils import translation
 from insight_ui.component_details.component_context import get_component_context
 from insight_ui.component_details.components import Component, ComponentCategory
 from insight_ui.configs import types
+from insight_ui.utils.config_registry import get_config_classes
 
 if TYPE_CHECKING:
     from argparse import ArgumentParser
@@ -48,7 +50,7 @@ TYPE_DEFINITIONS: dict[str, tuple[str, ...]] = {
 class Command(BaseCommand):
     """Generate search-index.json for client-side documentation search."""
 
-    help = "Generates search-index.json containing components, types, and categories for Fuse.js search."
+    help = "Generates search-index.json containing components, types, categories, and configs for Fuse.js search."
 
     def add_arguments(self, parser: ArgumentParser) -> None:
         """Add command arguments.
@@ -112,6 +114,9 @@ class Command(BaseCommand):
 
             # Add categories
             index.extend(self._build_category_entries())
+
+            # Add config dataclasses
+            index.extend(self._build_config_entries())
 
             if options.get("dry_run"):
                 self.stdout.write(f"\n=== {locale.upper()} ===\n")
@@ -238,6 +243,57 @@ class Command(BaseCommand):
                     "description": f"{component_count} components",
                     "keywords": [category.value, formatted_name.lower()],
                     "url": reverse("storybook_view", kwargs={"storybook_name": category.value}),
+                }
+            )
+
+        return entries
+
+    def _build_config_entries(self) -> list[dict[str, Any]]:
+        """Build search index entries for config dataclasses.
+
+        Returns:
+            List of config search entries.
+
+        """
+        entries = []
+
+        for config_cls in get_config_classes():
+            name = config_cls.__name__
+            anchor = name.lower()
+
+            # Extract description from docstring (first line/paragraph)
+            description = ""
+            if config_cls.__doc__:
+                # Get first paragraph (up to empty line or Attributes:)
+                lines = config_cls.__doc__.strip().split("\n")
+                desc_lines = []
+                for line in lines:
+                    stripped = line.strip()
+                    if not stripped or stripped.startswith("Attributes:"):
+                        break
+                    desc_lines.append(stripped)
+                description = " ".join(desc_lines)
+
+            # Truncate description for index size
+            if len(description) > DESCRIPTION_MAX_LENGTH:
+                description = description[: DESCRIPTION_MAX_LENGTH - 3] + "..."
+
+            # Build keywords from class name parts
+            # E.g., "ButtonConfig" -> ["buttonconfig", "button", "config"]
+            keywords = [name.lower(), "config"]
+            # Split CamelCase into words
+            words = re.findall(r"[A-Z][a-z]+", name)
+            keywords.extend(word.lower() for word in words)
+
+            entries.append(
+                {
+                    "id": f"config:{name}",
+                    "name": name,
+                    "category": "config",
+                    "group": "Configs",
+                    "description": description,
+                    "keywords": keywords,
+                    "url": f"{reverse('config_reference_view')}#{anchor}",
                 }
             )
 

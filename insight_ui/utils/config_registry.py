@@ -8,7 +8,7 @@ from insight_ui.component_details.component_context import get_dataclass_docs
 
 
 @lru_cache(maxsize=1)
-def _get_config_classes() -> tuple[type, ...]:
+def get_config_classes() -> tuple[type, ...]:
     """Collect every config dataclass in insight_ui.configs, sorted alphabetically by name."""
     classes = (getattr(configs, name) for name in configs.__all__ if is_dataclass(getattr(configs, name)))
     return tuple(sorted(classes, key=lambda cls: cls.__name__))
@@ -34,7 +34,7 @@ def get_all_config_definitions() -> list[dict]:
             "params_table": get_dataclass_docs(cls, False),
             "example_data": getattr(cls, "__example__", None),
         }
-        for cls in _get_config_classes()
+        for cls in get_config_classes()
     ]
 
 
@@ -46,4 +46,4 @@ def get_config_class_names() -> frozenset[str]:
         A frozenset of every config dataclass's `__name__`.
 
     """
-    return frozenset(cls.__name__ for cls in _get_config_classes())
+    return frozenset(cls.__name__ for cls in get_config_classes())

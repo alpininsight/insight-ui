@@ -142,3 +142,19 @@ class TestBuildSearchIndexCommand:
         for entry in component_entries:
             # At least the component value should be lowercase
             assert entry["id"].split(":")[1] in entry["keywords"]
+
+    def test_command_includes_configs(self, temp_output_path: Path, temp_output_path_en: Path) -> None:
+        """The index should include config dataclass entries."""
+        call_command("build_search_index", output=str(temp_output_path), locale="en")
+
+        content = json.loads(temp_output_path_en.read_text(encoding="utf-8"))
+        config_entries = [e for e in content if e["category"] == "config"]
+
+        assert len(config_entries) > 0
+        # Check that ButtonConfig is included
+        button_config_entry = next((e for e in config_entries if e["name"] == "ButtonConfig"), None)
+        assert button_config_entry is not None
+        assert button_config_entry["id"] == "config:ButtonConfig"
+        assert button_config_entry["url"] == "/docs/configs#buttonconfig"
+        assert button_config_entry["group"] == "Configs"
+        assert "button" in button_config_entry["keywords"]
