@@ -360,8 +360,8 @@ def index_view(request: HttpRequest) -> HttpResponse:
     """Render index page."""
     context = get_base_context() | get_sidebar_context()
     context["hero"] = HeroConfig(
-        title="Insight UI",
-        subtitle=_("A Django Component Framework"),
+        title="Django Insight UI",
+        subtitle=_("A completely accessible Django Component Framework"),
         description=_(
             "60+ production-ready, WCAG 2.1 AA-compliant components. "
             "Build accessible Django applications without frontend expertise."
