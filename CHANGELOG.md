@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Use semantic correct  tag for  component
 - Meta information
 - Configure webmanifest and add maskable icons
+- Responsiveness
 
 ### Miscellaneous
 
