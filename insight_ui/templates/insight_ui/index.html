@@ -58,27 +58,27 @@
 
     {# ===== STATS BAR ===== #}
     {% page padding="xl" class="bg-insight-primary/5 border-y border-insight-primary/20 dark:bg-insight-primary/10" %}
-        {% hbox gap="xl" h_align="evenly" wrap=True class="py-4" %}
+        {% hbox gap="xl" h_align="evenly" wrap=True inline=True %}
             {% for stat in stats %}
                 {% vbox gap="xs" h_align="center" %}
-                    <span class="font-bold text-3xl text-insight-primary">{{ stat.value }}</span>
-                    <span class="text-sm text-secondary">{{ stat.label }}</span>
+                    <span class="font-bold text-2xl text-insight-primary md:text-3xl">{{ stat.value }}</span>
+                    <span class="text-xs text-secondary md:text-sm">{{ stat.label }}</span>
                 {% endvbox %}
             {% endfor %}
         {% endhbox %}
     {% endpage %}
 
     {# ===== FEATURES GRID ===== #}
-    {% page padding="xl" %}
+    {% page padding="xl" class="bg-insight-bg-raised/50" %}
         {% vbox gap="xl" h_align="center" %}
             {% vbox h_align="center" %}
                 <h2>{% trans "Everything you need" %}</h2>
-                <p class="text-secondary text-lg">
+                <p class="text-secondary text-base text-center md:text-lg">
                     {% trans "Build professional Django applications with a complete component library. No frontend expertise required." %}
                 </p>
             {% endvbox %}
 
-            {% grid cols=3 gap="l" class="mt-8 w-full max-w-6xl" %}
+            {% grid cols=3 gap="l" class="max-w-5xl" %}
                 {% for feature in features %}
                     {% surface padding="l" radius="xl" class="transition-all duration-300 hover:shadow-insight-raised hover:border-insight-primary/50" %}
                         {% vbox gap="m" %}
@@ -95,13 +95,13 @@
     {% endpage %}
 
     {# ===== WHAT IS INSIGHT UI ===== #}
-    {% page padding="xl" class="bg-insight-bg-base/75" %}
-        {% vbox gap="xl" class="mx-auto max-w-4xl" %}
+    {% page padding="xl" class="bg-insight-bg-base/50" %}
+        {% vbox gap="xl" max_width="l" %}
             {% vbox h_align="center" %}
                 <h2>{% trans "What is Insight UI?" %}</h2>
             {% endvbox %}
 
-            {% hbox gap="xl" wrap=True v_align="start" %}
+            {% hbox gap="xl" v_align="start" %}
                 {% vbox gap="m" class="flex-1" %}
                     <h3 class="text-insight-primary">{% trans "Django-First Design" %}</h3>
                     <p class="text-secondary">
@@ -125,7 +125,7 @@
                 {% endvbox %}
             {% endhbox %}
 
-            {% divider spacing="l" %}
+            {% divider spacing="none" %}
 
             {# Code Example #}
             <div id="code" data-insight-code-block="Django">
@@ -149,18 +149,18 @@
     {% endpage %}
 
     {# ===== BASE TEMPLATE ===== #}
-    {% page padding="xl" %}
-        {% vbox gap="xl" class="mx-auto max-w-5xl" %}
+    {% page padding="xl" class="bg-insight-bg-raised/50" %}
+        {% vbox gap="xl" max_width="l" %}
             {% vbox h_align="center" %}
                 <h2>{% trans "Ready-to-use page structure" %}</h2>
-                <p class="text-secondary text-lg text-center">
+                <p class="text-secondary text-base text-center md:text-lg">
                     {% trans "Extend our base template and focus on your content. Navigation, sidebars, dark mode — all included." %}
                 </p>
             {% endvbox %}
 
-            {% hbox gap="xl" wrap=True v_align="start" class="mt-8" %}
+            {% hbox gap="xl" v_align="start" %}
                 {# Visual representation #}
-                {% vbox gap="m" class="flex-1 min-w-75" %}
+                {% vbox gap="m" class="flex-1 min-w-0 md:min-w-75" %}
                     <div class="bg-insight-bg-base border-2 border-insight-border-surface rounded-insight-surface overflow-hidden">
                         {# Navbar mockup #}
                         <div class="flex gap-2 items-center px-3 h-10 bg-insight-primary/10 border-b border-insight-border-surface">
@@ -170,7 +170,7 @@
                             <div class="w-16 h-4 bg-insight-bg-base rounded-insight-surface"></div>
                         </div>
                         {# Main area #}
-                        {% hbox class="min-h-45" %}
+                        {% hbox inline=True class="min-h-45" %}
                             {# Sidebar left #}
                             <div class="hidden p-2 w-24 border-e border-insight-border-surface sm:block">
                                 {% vbox gap="xs" %}
@@ -202,10 +202,10 @@
                 {% endvbox %}
 
                 {# Block list #}
-                {% vbox gap="m" class="flex-1 min-w-75" %}
+                {% vbox gap="m" class="flex-1 min-w-0 md:min-w-75" %}
                     {% for block in base_template_blocks %}
                         {% surface padding="s" radius="s" %}
-                            {% hbox gap="m" v_align="center" %}
+                            {% hbox gap="m" v_align="center" inline=True %}
                                 <div class="flex shrink-0 justify-center items-center w-8 h-8 bg-insight-primary/10 rounded-insight-l">
                                     {% icon name=block.icon size="s" %}
                                 </div>
@@ -227,16 +227,16 @@
     {% endpage %}
 
     {# ===== CUSTOMIZATION ===== #}
-    {% page padding="xl" class="bg-insight-bg-base/75" %}
-        {% vbox gap="xl" class="mx-auto max-w-5xl" %}
+    {% page padding="xl" %}
+        {% vbox gap="xl" max_width="l" %}
             {% vbox h_align="center" %}
                 <h2>{% trans "Make it yours" %}</h2>
-                <p class="text-secondary text-lg text-center">
+                <p class="text-secondary text-base text-center md:text-lg">
                     {% trans "Three ways to customize — from simple color changes to complete component overrides." %}
                 </p>
             {% endvbox %}
 
-            {% grid cols=3 gap="l" class="mt-8 w-full" %}
+            {% grid cols=3 gap="l" %}
                 {% for option in customization_options %}
                     {% surface padding="l" radius="xl" %}
                         {% vbox gap="m" %}
@@ -261,12 +261,12 @@
     {% endpage %}
 
     {# ===== ACCESSIBILITY ===== #}
-    {% page padding="xl" %}
-        {% vbox gap="l" class="mx-auto max-w-4xl" %}
-            {% hbox gap="xl" wrap=True v_align="center" %}
-                {% vbox gap="m" class="flex-1 min-w-70" %}
-                    {% hbox gap="m" v_align="center" %}
-                        <div class="flex justify-center items-center size-14 text-insight-success bg-insight-success-soft rounded-insight-full">
+    {% page padding="xl" class="bg-insight-bg-base/50" %}
+        {% vbox gap="l" max_width="l" %}
+            {% hbox gap="xl" v_align="center" %}
+                {% vbox gap="m" class="flex-1 min-w-0 md:min-w-70" %}
+                    {% hbox gap="m" v_align="center" inline=True %}
+                        <div class="flex shrink-0 justify-center items-center size-12 text-insight-success bg-insight-success-soft rounded-insight-full md:size-14">
                             {% icon name="check" size="l" %}
                         </div>
                         <h2 class="pb-0">{% trans "Built for everyone" %}</h2>
@@ -276,10 +276,10 @@
                     </p>
                 {% endvbox %}
 
-                {% vbox class="flex-1 min-w-70" %}
-                    {% grid cols=2 gap="s" %}
+                {% vbox class="flex-1 min-w-0 md:min-w-70" %}
+                    {% grid cols=2 gap="s" fixed=True %}
                         {% for item in a11y_features %}
-                            {% hbox gap="s" v_align="center" class="p-2" %}
+                            {% hbox gap="s" v_align="center" inline=True class="p-2" %}
                                 <span class="shrink-0 text-insight-success">{% icon name="check" size="s" %}</span>
                                 <span class="text-sm text-secondary">{{ item }}</span>
                             {% endhbox %}
@@ -291,19 +291,19 @@
     {% endpage %}
 
     {# ===== COMPONENT CATEGORIES ===== #}
-    {% page padding="xl" class="bg-insight-bg-base/75" %}
-        {% vbox gap="xl" class="mx-auto max-w-5xl" %}
+    {% page padding="xl" class="bg-insight-bg-raised/50" %}
+        {% vbox gap="xl" max_width="l" %}
             {% vbox h_align="center" %}
                 <h2>{% trans "Explore by category" %}</h2>
-                <p class="text-secondary text-lg text-center">
+                <p class="text-secondary text-base text-center md:text-lg">
                     {% trans "From layout primitives to complex data components — find what you need." %}
                 </p>
             {% endvbox %}
 
-            {% grid cols=3 gap="m" class="mt-8 w-full" %}
+            {% grid cols=3 gap="m" %}
                 {% for category in component_categories %}
                     {% surface href=category.url padding="l" radius="xl" class="transition-all duration-300 hover:shadow-insight-raised" %}
-                        {% hbox gap="m" v_align="center" %}
+                        {% hbox gap="m" v_align="center" inline=True %}
                             <div class="flex justify-center items-center size-10 bg-insight-primary/10 rounded-insight-surface transition-colors group-hover:bg-insight-primary/20">
                                 {% icon name=category.icon size="m" %}
                             </div>
@@ -326,25 +326,25 @@
     {% endpage %}
 
     {# ===== ADD-ON PACKAGES ===== #}
-    {% page padding="xl" %}
-        {% vbox gap="xl" class="mx-auto max-w-5xl" %}
+    {% page padding="xl" class="bg-insight-bg-base/50" %}
+        {% vbox gap="xl" max_width="l" %}
             {% vbox h_align="center" %}
                 <h2>{% trans "Extend with add-ons" %}</h2>
-                <p class="text-secondary text-lg text-center">
+                <p class="text-secondary text-base text-center md:text-lg">
                     {% trans "Specialized packages for common application patterns — built on top of Insight UI." %}
                 </p>
             {% endvbox %}
 
-            {% grid cols=2 gap="l" class="mt-8 w-full" %}
+            {% grid cols=2 gap="l" %}
                 {% for addon in addon_packages %}
                     <div {% if addon.status == 'planned' %}class="opacity-75"{% endif %}>
                         {% surface padding="l" radius="xl" %}
-                            {% hbox gap="m" v_align="start" %}
+                            {% hbox gap="m" v_align="start" inline=True %}
                                 <div class="flex shrink-0 justify-center items-center w-12 h-12 bg-insight-primary/10 rounded-insight-l">
                                     {% icon name=addon.icon size="l" %}
                                 </div>
                                 {% vbox gap="s" class="flex-1" %}
-                                    {% hbox gap="s" v_align="center" wrap=True %}
+                                    {% hbox gap="s" v_align="center" wrap=True inline=True %}
                                         <h3 class="mb-0! font-semibold text-lg">{{ addon.name }}</h3>
                                         {% if addon.status == 'available' %}
                                             {% badge label=_("Available") type="success" size="xs" %}
@@ -369,15 +369,15 @@
 
     {# ===== IS IT RIGHT FOR ME? ===== #}
     {% page padding="xl" %}
-        {% vbox gap="xl" class="mx-auto max-w-3xl" %}
+        {% vbox gap="xl" max_width="m" %}
             {% vbox h_align="center" %}
                 <h2>{% trans "Is Insight UI right for you?" %}</h2>
-                <p class="text-secondary text-lg">{% trans "Check if our framework matches your needs:" %}</p>
+                <p class="text-secondary text-base md:text-lg">{% trans "Check if our framework matches your needs:" %}</p>
             {% endvbox %}
-            {% vbox %}
+            {% vbox gap="s" %}
                 {% for item in checklist %}
                     {% surface padding="m" radius="s" %}
-                        {% hbox gap="m" v_align="center" %}
+                        {% hbox gap="m" v_align="center" inline=True %}
                             <div class="flex shrink-0 justify-center items-center w-8 h-8 bg-insight-success-soft rounded-insight-full">
                                 {% icon name="check" size="s" %}
                             </div>
@@ -398,13 +398,13 @@
     {# ===== FINAL CTA ===== #}
     {% page padding="xl" class="bg-insight-primary" %}
         {% vbox gap="l" h_align="center" %}
-            <h2 class="text-white">{% trans "Ready to build something amazing?" %}</h2>
+            <h2 class="text-white text-center">{% trans "Ready to build something amazing?" %}</h2>
             <p class="max-w-2xl text-white text-center">
                 {% trans "Start building accessible, professional Django applications in minutes. No frontend expertise required." %}
             </p>
             {% hbox gap="m" h_align="center" %}
                 {% button label=_("Get started for free") request_url=installation_url type="neutral" size="l" %}
-                {% button label=_("View on GitHub") request_url="https://github.com/alpininsight/insight-ui" external=True type="neutral" outline=True size="l" icon_name="git" extra_classes="text-insight-text-primary-dark hover:text-insight-text-primary" %}
+                {% button label=_("View on GitHub") request_url="https://github.com/alpininsight/insight-ui" external=True type="neutral" outline=True size="l" icon_name="git" %}
             {% endhbox %}
         {% endvbox %}
     {% endpage %}

@@ -91,7 +91,7 @@
                 <div id="heading">
                     {% block heading %}{% endblock heading %}
                 </div>
-                <div id="content" class="space-y-12 w-full leading-loose">
+                <div id="content" class="w-full leading-loose">
                     {% if use_default_loading_indicator is not False %}{% include "insight_ui/components/htmx_loading_indicator.html" %}{% endif %}
                     {% block content %}{% endblock content %}
                 </div>
