@@ -45,6 +45,7 @@ def get_main_page_links() -> list[dict[str, Any]]:
         NavbarLinkConfig(_("Customization"), reverse("customization_view"), IconConfig("adjustments-horizontal", "s")),
         NavbarLinkConfig(_("Icons"), reverse("icon_view"), IconConfig("sparkles", "s")),
         NavbarLinkConfig(_("Types"), reverse("types_view"), IconConfig("code-bracket", "s")),
+        NavbarLinkConfig(_("Configs"), reverse("config_reference_view"), IconConfig("cube", "s")),
     ]
 
 

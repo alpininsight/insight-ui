@@ -29,5 +29,6 @@ urlpatterns = [
     path("docs/base_template", views.base_template_view, name="base_template_view"),
     path("docs/icons", views.icon_view, name="icon_view"),
     path("docs/types", views.types_view, name="types_view"),
+    path("docs/configs", views.config_reference_view, name="config_reference_view"),
     path("", views.index_view, name="index_view"),
 ]

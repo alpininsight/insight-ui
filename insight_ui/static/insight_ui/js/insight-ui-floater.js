@@ -374,7 +374,7 @@ export class Floater {
             case 'bottom':
                 this.target.style.top = `${rect.bottom + scrollY + distanceToTarget - offsetTop}px`;
                 this.target.style.left = `${rect.left + scrollX + rect.width / 2 - this.target.offsetWidth / 2 - offsetLeft}px`;
-                if (this.arrow) { this.arrow.classList.add('rotate-225'); this.arrow.style.top = `${-this.target.offsetHeight / 2 + arrowSize}px`; }
+                if (this.arrow) { this.arrow.classList.add('rotate-225'); this.arrow.style.top = `${-(arrowSize + 1)}px`; }
                 break;
 
             case 'left':

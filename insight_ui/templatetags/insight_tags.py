@@ -452,7 +452,10 @@ def footer(config: FooterConfig) -> dict[str, Any]:
 
 @register.inclusion_tag("insight_ui/components/breadcrumbs.html")
 def breadcrumbs(
-    config: BreadcrumbsConfig | None = None, *, items: list[BreadcrumbItemConfig] | _Unset | None = UNSET
+    config: BreadcrumbsConfig | None = None,
+    *,
+    items: list[BreadcrumbItemConfig] | _Unset | None = UNSET,
+    htmx: HtmxConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render breadcrumb navigation."""
     config = build_config(BreadcrumbsConfig, config, **{k: v for k, v in locals().items() if k != "config"})

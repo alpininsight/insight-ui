@@ -12,12 +12,31 @@
             </tr>
         </thead>
         <tbody class="text-primary">
-            {% for row in rows %}
-                <tr class="odd:bg-insight-bg-raised/50 even:bg-insight-bg-base">
-                    <td class="px-4 py-3 text-start text-sm"><span class="inline-tag">{{ row.name }}</span></td>
+            {% for row, child_path in rows %}
+                <tr class="border-b border-insight-border-surface">
+                    <td class="px-4 py-3 text-start text-sm">
+                        <span class="inline-tag">{{ row.name }}</span>
+                    </td>
                     <td class="px-4 py-3 text-start text-sm">
                         {% if row.type|is_known_type %}
                             {% type_popover row.type %}
+                        {% elif child_path %}
+                            {% blocktrans with name=row.name asvar drill_down_label %}Show parameters of {{ name }}{% endblocktrans %}
+                            <button
+                                type="button"
+                                class="flex gap-1 items-center text-insight-text-link cursor-pointer hover:underline"
+                                hx-get="{{ base_url }}?param={{ child_path|urlencode }}"
+                                hx-target="#parameter-section"
+                                hx-swap="innerHTML settle:300ms"
+                                hx-push-url="true"
+                                hx-indicator="#parameter-loading-indicator"
+                                aria-label="{{ drill_down_label }}"
+                            >
+                                <i>{{ row.type }}</i>
+                                {% icon name="information-circle" size="xs" %}
+                            </button>
+                        {% elif row.type|is_config_type %}
+                            <i>{% config_type_link row.type %}</i>
                         {% else %}
                             <i>{{ row.type }}</i>
                         {% endif %}

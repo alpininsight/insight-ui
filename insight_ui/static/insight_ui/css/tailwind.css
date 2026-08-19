@@ -824,6 +824,9 @@
   .h-24 {
     height: calc(var(--spacing) * 24);
   }
+  .h-56 {
+    height: calc(var(--spacing) * 56);
+  }
   .h-64 {
     height: calc(var(--spacing) * 64);
   }
@@ -962,6 +965,21 @@
   .w-400 {
     width: calc(var(--spacing) * 400);
   }
+  .w-\[10\%\] {
+    width: 10%;
+  }
+  .w-\[14\%\] {
+    width: 14%;
+  }
+  .w-\[18\%\] {
+    width: 18%;
+  }
+  .w-\[20\%\] {
+    width: 20%;
+  }
+  .w-\[38\%\] {
+    width: 38%;
+  }
   .w-auto {
     width: auto;
   }
@@ -1057,6 +1075,9 @@
   }
   .table-auto {
     table-layout: auto;
+  }
+  .table-fixed {
+    table-layout: fixed;
   }
   .-translate-x-1\/2 {
     --tw-translate-x: calc(calc(1 / 2 * 100%) * -1);
@@ -2314,6 +2335,10 @@
     --tw-duration: 500ms;
     transition-duration: 500ms;
   }
+  .duration-700 {
+    --tw-duration: 700ms;
+    transition-duration: 700ms;
+  }
   .ease-in-out {
     --tw-ease: var(--ease-in-out);
     transition-timing-function: var(--ease-in-out);
@@ -2356,6 +2381,10 @@
     transform-style: preserve-3d;
   }
   @media (hover: hover) {
+    .group-hover\:rotate-y-180:is(:where(.group):hover *) {
+      --tw-rotate-y: rotateY(180deg);
+      transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);
+    }
     .group-hover\:bg-insight-primary\/20:is(:where(.group):hover *) {
       background-color: color-mix(in srgb, #4183EA 20%, transparent);
     }
@@ -3010,6 +3039,9 @@
     .dark\:hover\:text-insight-text-link-hover:where([data-theme=dark], [data-theme=dark] *):hover {
       color: var(--color-insight-text-link-hover);
     }
+  }
+  .\[\&\.htmx-settling\]\:bg-insight-primary-soft.htmx-settling {
+    background-color: var(--color-insight-primary-soft);
   }
   .\[\&\:\:-moz-range-thumb\]\:pointer-events-auto::-moz-range-thumb {
     pointer-events: auto;
