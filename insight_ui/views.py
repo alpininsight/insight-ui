@@ -651,7 +651,7 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
         return render(request, "insight_ui/docs/parameter_section_content.html", context)
 
     if request.headers.get("HX-Request") and not request.headers.get("HX-History-Restore-Request"):
-        return render(request, "insight_ui/docs/parameter_section_content.html", context)
+        return render(request, "insight_ui/docs/component_detailpage_partial.html", context)
 
     context |= get_base_context() | get_sidebar_context()
     return render(request, "insight_ui/docs/component_detailpage.html", context)
