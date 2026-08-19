@@ -68,6 +68,7 @@ COPY --chown=app:app docker/entrypoint.sh /entrypoint.sh
 
 RUN chmod 755 /entrypoint.sh \
     && apt-get update \
+    && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends gettext \
     && mkdir -p /home/app \
     && mkdir -p /app/staticfiles \
