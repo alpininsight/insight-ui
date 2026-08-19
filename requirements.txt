@@ -10,7 +10,7 @@ markdown==3.10.3
     # via insight-ui
 python-decouple==3.8
     # via insight-ui
-sqlparse==0.5.5
+sqlparse==0.6.0
     # via django
 tzdata==2026.3 ; sys_platform == 'win32'
     # via django
