@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **static:** Preserve generated stylesheet newline
 - **static:** Build complete CDN assets
 - **deps:** Sync generated requirements with uv lock
+- **container:** Refresh Debian security packages
 
 ### Documentation
 

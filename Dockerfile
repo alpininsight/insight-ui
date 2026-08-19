@@ -67,7 +67,12 @@ COPY --chown=app:app . /app
 COPY --chown=app:app docker/entrypoint.sh /entrypoint.sh
 
 RUN chmod 755 /entrypoint.sh \
+    && if ! grep -Rqs "trixie-security" /etc/apt/sources.list /etc/apt/sources.list.d; then \
+        printf "deb http://deb.debian.org/debian-security trixie-security main\n" \
+        > /etc/apt/sources.list.d/trixie-security.list; \
+    fi \
     && apt-get update \
+    && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends gettext \
     && mkdir -p /home/app \
     && mkdir -p /app/staticfiles \
