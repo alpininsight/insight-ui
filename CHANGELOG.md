@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **static:** Build complete CDN assets
 - **deps:** Sync generated requirements with uv lock
 - **container:** Refresh Debian security packages
+- Use correct template for htmx swap of component detailpages
+- Add alternating row colors for parameter tables again
 
 ### Documentation
 
