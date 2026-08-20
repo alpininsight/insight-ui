@@ -1,7 +1,7 @@
 {% load insight_tags %}
 
 <div data-insight-demo-container="{{ demo.id }}" class="mt-8 bg-white border border-insight-border-surface rounded-insight-surface shadow-insight-surface overflow-hidden dark:bg-black">
-    <div class="flex gap-4 justify-between items-center p-1.5 h-12 bg-insight-bg-raised">
+    <div class="flex flex-wrap gap-1.5 justify-between items-center p-1.5 h-auto bg-insight-bg-raised">
         <div class="flex gap-1 justify-center items-center h-full">
             {% if demo.template_repo_url %}
                 <a href="{{ demo.template_repo_url }}" class="btn btn-s btn-outline-secondary">
