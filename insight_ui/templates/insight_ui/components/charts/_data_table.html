@@ -16,7 +16,7 @@
                 <tr>
                     <th scope="row">{{ label }}</th>
                     {% for series_data in chart_config.dataset.data %}
-                        <td>{{ series_data|slice:forloop.parentloop.counter0|first }}</td>
+                        <td>{{ series_data|slice:forloop.parentloop.counter|last }}</td>
                     {% endfor %}
                 </tr>
             {% endfor %}
