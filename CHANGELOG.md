@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **charts:** Correct accessible data table values
 - **docs:** Wrap demo controls on narrow screens
+- Correct polygon of 'minimal_stepper' for rtl mode
 
 ## [1.12.0] - 2026-08-20
 
