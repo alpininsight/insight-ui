@@ -27,15 +27,35 @@
             --chevron-offset: 4px;
         }
 
+        /* LTR: arrows point right -> */
         .chevron-start {
             clip-path: polygon(0% 0%, calc(100% - var(--chevron-offset)) 0%, 100% 50%, calc(100% - var(--chevron-offset)) 100%, 0% 100%);
         }
         .chevron-mid {
             clip-path: polygon(0% 0%, calc(100% - var(--chevron-offset)) 0%, 100% 50%, calc(100% - var(--chevron-offset)) 100%, 0% 100%, var(--chevron-offset) 50%);
-            margin-left: calc(-1 * var(--chevron-offset));}
+            margin-left: calc(-1 * var(--chevron-offset));
+        }
         .chevron-end {
             clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, var(--chevron-offset) 50%);
             margin-left: calc(-1 * var(--chevron-offset));
+        }
+
+        /* RTL: arrows point left <- */
+        [dir="rtl"] .chevron-start {
+            /* Arrow left, flat right */
+            clip-path: polygon(0% 50%, var(--chevron-offset) 0%, 100% 0%, 100% 100%, var(--chevron-offset) 100%);
+        }
+        [dir="rtl"] .chevron-mid {
+            /* Arrow left, notch right (notch points inward) */
+            clip-path: polygon(0% 50%, var(--chevron-offset) 0%, 100% 0%, calc(100% - var(--chevron-offset)) 50%, 100% 100%, var(--chevron-offset) 100%);
+            margin-left: 0;
+            margin-right: calc(-1 * var(--chevron-offset));
+        }
+        [dir="rtl"] .chevron-end {
+            /* Flat left, notch right */
+            clip-path: polygon(0% 0%, 100% 0%, calc(100% - var(--chevron-offset)) 50%, 100% 100%, 0% 100%);
+            margin-left: 0;
+            margin-right: calc(-1 * var(--chevron-offset));
         }
     </style>
 </div>
