@@ -59,4 +59,11 @@
     };
 
     option && myChart.setOption(option);
+
+    const resizeChart = () => myChart.resize();
+    window.addEventListener('resize', resizeChart);
+    if ('ResizeObserver' in window) {
+        const resizeObserver = new ResizeObserver(resizeChart);
+        resizeObserver.observe(chartDom);
+    }
 </script>
