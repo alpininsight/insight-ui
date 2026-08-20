@@ -218,45 +218,50 @@ class SidebarDataConfig:
 
 @dataclass
 class SidebarConfig:
-    """Configuration for the sidebar component.
+    """Configuration for the sidebar layout tag.
 
-    Renders a side navigation panel.
+    A flexible container for sidebar content that can be positioned on either side,
+    with configurable width and mobile behavior.
 
     Attributes:
-        sidebar_data: Content of the sidebar (title and navigation elements).
-        static: **True** if the sidebar should not be collapsible.
-        auto_close: If **True** the sidebar closes as soon as the cursor leaves it.
-        mobile_hidden: If **True** the static sidebar is hidden on a smaller viewport.
+        side: Position of the sidebar ("left" or "right"). Auto-detected from block context.
+        static: If **True**, the sidebar is sticky; if **False**, it's a drawer (collapsible).
+        width: Width of the sidebar ("narrow", "normal", "wide").
+        mobile_behavior: Behavior on mobile viewports ("hidden", "drawer").
+        sidebar_data: Content for the navigation variant (only used with ``sidebar_nav.html``).
 
     """
 
     __example__ = """
-        SidebarConfig(
-            sidebar_data=SidebarDataConfig(
-                title="Settings",
-                categories=[
-                    SidebarCategoryConfig(
-                        caption="Account",
-                        items=[
-                            SidebarItemConfig(text="Profile", request_url=reverse("profile")),
-                            SidebarItemConfig(text="Security", request_url=reverse("security")),
-                        ],
-                    ),
-                ],
-            ),
-            static=True,
-        )
+        {# Basic usage inside sidebar blocks #}
+        {% block sidebar_left %}
+            {% sidebar %}
+                {% include "components/sidebar_nav.html" with sidebar_data=nav_data %}
+            {% endsidebar %}
+        {% endblock %}
+
+        {# With explicit parameters #}
+        {% sidebar side="right" width="wide" mobile_behavior="drawer" %}
+            <h2>Table of Contents</h2>
+            <nav>...</nav>
+        {% endsidebar %}
         """
 
+    side: str = field(
+        default="right",
+        metadata={"doc": _('Position of the sidebar ("left" or "right"). Auto-detected from block context.')},
+    )
+    static: bool = field(
+        default=True,
+        metadata={"doc": _("If **True**, the sidebar is sticky; if **False**, it's a drawer (collapsible).")},
+    )
+    width: str = field(default="normal", metadata={"doc": _('Width of the sidebar ("narrow", "normal", "wide").')})
+    mobile_behavior: str = field(
+        default="hidden", metadata={"doc": _('Behavior on mobile viewports ("hidden", "drawer").')}
+    )
     sidebar_data: SidebarDataConfig | None = field(
-        default=None, metadata={"doc": _("Content of the sidebar (title and navigation elements).")}
-    )
-    static: bool = field(default=True, metadata={"doc": _("**True** if the sidebar should not be collapsible.")})
-    auto_close: bool = field(
-        default=False, metadata={"doc": _("If **True** the sidebar closes as soon as the cursor leaves it.")}
-    )
-    mobile_hidden: bool = field(
-        default=False, metadata={"doc": _("If **True** the static sidebar is hidden on a smaller viewport.")}
+        default=None,
+        metadata={"doc": _("Content for the navigation variant (only used with ``sidebar_nav.html``).")},
     )
 
 
