@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug Fixes
 
+- **charts:** Correct accessible data table values
+
+## [1.12.0] - 2026-08-20
+
+### Bug Fixes
+
 - Correct various issues in the JavaScript components
 - **static:** Preserve generated stylesheet newline
 - **static:** Build complete CDN assets
