@@ -21,6 +21,7 @@ from insight_ui.component_details.demo_context import (
     get_minimal_stepper_context,
 )
 from insight_ui.component_details.git_path_mapping import SCRIPT_PATHS, TEMPLATE_PATHS
+from insight_ui.config import get_config
 from insight_ui.configs.base import IconConfig
 from insight_ui.configs.card import ToggleViewConfig
 from insight_ui.configs.input import ButtonConfig, RadioBlockConfig, RadioItemConfig
@@ -651,6 +652,7 @@ def component_detail_page_view(request: HttpRequest, component_name: str) -> Htt
         return render(request, "insight_ui/docs/parameter_section_content.html", context)
 
     if request.headers.get("HX-Request") and not request.headers.get("HX-History-Restore-Request"):
+        context["navbar_fixed"] = get_config("navbar_fixed")
         return render(request, "insight_ui/docs/component_detailpage_partial.html", context)
 
     context |= get_base_context() | get_sidebar_context()
@@ -725,6 +727,7 @@ def storybook_view(request: HttpRequest, storybook_name: str) -> HttpResponse:
 
     if request.headers.get("HX-Request") and not request.headers.get("HX-History-Restore-Request"):
         context["search_query"] = request.GET.get("search", "")
+        context["navbar_fixed"] = get_config("navbar_fixed")
         return render(request, "insight_ui/docs/storybook_partial.html", context)
 
     return render(request, "insight_ui/docs/storybook.html", context)
