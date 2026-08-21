@@ -1,5 +1,6 @@
 """Configuration classes for data filter components."""
 
+import warnings
 from dataclasses import dataclass, field as dc_field
 
 from django.utils.translation import gettext_lazy as _
@@ -13,7 +14,7 @@ class SearchBarConfig:
     """Configuration for the search_bar component.
 
     Attributes:
-        request_url: URL for search requests.
+        request_url: URL for form action. Do not use together with htmx_config; use htmx_config.request_url instead for HTMX requests.
         simple: If True, render compact/minimal style.
         search_query: Initial search query value.
         htmx_config: HTMX configuration for AJAX requests.
@@ -28,7 +29,15 @@ class SearchBarConfig:
         )
         """
 
-    request_url: str = dc_field(default="", metadata={"doc": _("URL for search requests.")})
+    request_url: str = dc_field(
+        default="",
+        metadata={
+            "doc": _(
+                "URL for form action. Do not use together with htmx_config; "
+                "use htmx_config.request_url instead for HTMX requests."
+            )
+        },
+    )
     simple: bool = dc_field(default=False, metadata={"doc": _("If True, render compact/minimal style.")})
     search_query: str = dc_field(default="", metadata={"doc": _("Initial search query value.")})
     htmx_config: HtmxConfig | None = dc_field(
@@ -37,6 +46,17 @@ class SearchBarConfig:
     enable_search: bool = dc_field(
         default=False, metadata={"doc": _("If True, enable client-side documentation search with Fuse.js.")}
     )
+
+    def __post_init__(self) -> None:
+        """Validate that request_url and htmx_config are not both set."""
+        if self.request_url and self.htmx_config:
+            warnings.warn(
+                "SearchBarConfig has both 'request_url' and 'htmx_config' set. "
+                "This may cause conflicting behavior. Use 'request_url' for form action, or "
+                "'htmx_config.request_url' for HTMX requests, but not both.",
+                UserWarning,
+                stacklevel=2,
+            )
 
 
 @dataclass
@@ -79,7 +99,7 @@ class GenericFilterConfig:
 
     Attributes:
         filters: List of filter configurations.
-        request_url: URL for filter requests.
+        request_url: URL for form action. Do not use together with htmx_config; use htmx_config.request_url instead for HTMX requests.
         vertical: If True, arrange filters vertically.
         htmx_config: HTMX configuration for AJAX requests.
 
@@ -104,11 +124,30 @@ class GenericFilterConfig:
         """
 
     filters: list[FilterConfig] = dc_field(default_factory=list, metadata={"doc": _("List of filter configurations.")})
-    request_url: str = dc_field(default="", metadata={"doc": _("URL for filter requests.")})
+    request_url: str = dc_field(
+        default="",
+        metadata={
+            "doc": _(
+                "URL for form action. Do not use together with htmx_config; "
+                "use htmx_config.request_url instead for HTMX requests."
+            )
+        },
+    )
     vertical: bool = dc_field(default=False, metadata={"doc": _("If True, arrange filters vertically.")})
     htmx_config: HtmxConfig | None = dc_field(
         default=None, metadata={"doc": _("HTMX configuration for AJAX requests.")}
     )
+
+    def __post_init__(self) -> None:
+        """Validate that request_url and htmx_config are not both set."""
+        if self.request_url and self.htmx_config:
+            warnings.warn(
+                "GenericFilterConfig has both 'request_url' and 'htmx_config' set. "
+                "This may cause conflicting behavior. Use 'request_url' for form action, or "
+                "'htmx_config.request_url' for HTMX requests, but not both.",
+                UserWarning,
+                stacklevel=2,
+            )
 
 
 @dataclass
