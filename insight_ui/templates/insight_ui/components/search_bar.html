@@ -3,19 +3,17 @@
 <div class="relative{% if search_bar_config.enable_search %} h-full{% endif %}"{% if search_bar_config.enable_search %} data-insight-search{% endif %}>
     <form
         role="search"
-        {% if search_bar_config.request_url %}
-            {% if search_bar_config.htmx_config %}
-                hx-get="{{ search_bar_config.request_url }}"
-                hx-target="{{ search_bar_config.htmx_config.target }}"
-                hx-swap="{{ search_bar_config.htmx_config.swap|default:'innerHTML' }}"
-                hx-trigger="{{ search_bar_config.htmx_config.trigger|default:'submit' }}"
-                hx-vals="{{ search_bar_config.htmx_config.vals }}"
-                hx-indicator="{{ search_bar_config.htmx_config.indicator|default:'#loading-indicator' }}"
-                hx-push-url="{{ search_bar_config.htmx_config.push_url|default:'False' }}"
-            {% else %}
-                action="{{ search_bar_config.request_url }}"
-                method="get"
-            {% endif %}
+        {% if search_bar_config.htmx_config %}
+            hx-get="{{ search_bar_config.htmx_config.request_url }}"
+            hx-target="{{ search_bar_config.htmx_config.target }}"
+            hx-swap="{{ search_bar_config.htmx_config.swap|default:'innerHTML' }}"
+            hx-trigger="{{ search_bar_config.htmx_config.trigger|default:'submit' }}"
+            hx-vals="{{ search_bar_config.htmx_config.vals }}"
+            hx-indicator="{{ search_bar_config.htmx_config.indicator|default:'#loading-indicator' }}"
+            hx-push-url="{{ search_bar_config.htmx_config.push_url|default:'False' }}"
+        {% else %}
+            action="{{ search_bar_config.request_url }}"
+            method="get"
         {% endif %}
         class="h-full"
     >
