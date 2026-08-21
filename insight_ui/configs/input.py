@@ -1,5 +1,6 @@
 """Configuration classes for input and control components."""
 
+import warnings
 from dataclasses import dataclass, field
 
 from django.utils.translation import gettext_lazy as _
@@ -30,7 +31,7 @@ class ButtonConfig:
     Attributes:
         tag_id: Unique ID for JavaScript/CSS targeting.
         label: The text on the button or for Screenreader if the button shows only an icon.
-        request_url: The URL to be called when clicking on the button.
+        request_url: URL for navigation (renders as <a>). Do not use together with htmx_config; use htmx_config.request_url instead for HTMX requests.
         on_click: The name of the JavaScript method to be called when clicking on the button.
         icon: Icon config for an optional icon.
         icon_end: **True** if the icon should be shown after the label, otherwise the icon is shown in front of the label.
@@ -79,7 +80,12 @@ class ButtonConfig:
     label: str = field(
         default="", metadata={"doc": "The text on the button or for Screenreader if the button shows only an icon."}
     )
-    request_url: str = field(default="", metadata={"doc": "The URL to be called when clicking on the button."})
+    request_url: str = field(
+        default="",
+        metadata={
+            "doc": "URL for navigation (renders as <a>). Do not use together with htmx_config; use htmx_config.request_url instead for HTMX requests."
+        },
+    )
     on_click: str = field(
         default="", metadata={"doc": "The name of the JavaScript method to be called when clicking on the button."}
     )
@@ -134,6 +140,16 @@ class ButtonConfig:
         validate_button_type(self.type, "type")
         validate_size(self.size, "size")
         validate_html_button_type(self.button_type, "button_type")
+
+        if self.request_url and self.htmx_config:
+            warnings.warn(
+                "ButtonConfig has both 'request_url' and 'htmx_config' set. "
+                "This renders an <a> tag with both href and hx-* attributes, which may cause "
+                "conflicting behavior. Use 'request_url' for navigation links, or "
+                "'htmx_config.request_url' for HTMX requests, but not both.",
+                UserWarning,
+                stacklevel=2,
+            )
 
 
 @dataclass
