@@ -8,9 +8,6 @@ export class Sidebar {
     /** @type {WeakMap<HTMLElement, Sidebar>} Weak references to prevent multiple initialization */
     static instances = new WeakMap();
 
-    /** @type {number} XL breakpoint (1280px) - matches Tailwind's xl: breakpoint */
-    static XL_BREAKPOINT = 1280;
-
     /**
      * Creates a new Sidebar instance.
      *
