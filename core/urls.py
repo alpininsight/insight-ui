@@ -11,12 +11,12 @@ from core.runtime_views import api_info_view, healthz_view, readyz_view
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("accounts/", include("django.contrib.auth.urls")),
     path(
-        "login/",
+        "accounts/login/",
         auth_views.LoginView.as_view(template_name="insight_ui/login.html", extra_context=get_login_screen_context()),
         name="login",
     ),
+    path("accounts/", include("django.contrib.auth.urls")),
     path("healthz", healthz_view, name="healthz"),
     path("healthz/", healthz_view),
     path("readyz", readyz_view, name="readyz"),
