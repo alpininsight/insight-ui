@@ -38,7 +38,7 @@
                   hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
                 {% endif %}
                 href="{{ item.request_url }}"
-                class="flex gap-2 items-center px-4 py-1 text-sm text-primary tracking-wide border-s border-insight-border-surface hover:border-insight-text-secondary hover:text-insight-text-secondary"
+                class="insight-sidebar-link flex gap-2 items-center px-4 py-1 text-sm text-primary tracking-wide"
               >
                 {% if item.icon %}
                   {% icon item.icon %}
