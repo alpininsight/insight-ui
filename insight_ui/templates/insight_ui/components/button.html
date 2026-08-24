@@ -9,6 +9,7 @@
             hx-{{ button_config.htmx_config.method }}="{{ button_config.htmx_config.request_url }}"
             {% if button_config.htmx_config.target %}hx-target="{{ button_config.htmx_config.target }}"{% endif %}
             hx-swap="{{ button_config.htmx_config.swap_method }}"
+            {% if button_config.htmx_config.vals %}hx-vals="{{ button_config.htmx_config.vals|json_attribute }}"{% endif %}
             {% if button_config.htmx_config.push_url %}hx-push-url="true"{% endif %}
             {% if button_config.htmx_config.loading_indicator_id %}hx-indicator="{{ button_config.htmx_config.loading_indicator_id }}"{% endif %}
             hx-trigger="{{ button_config.htmx_config.trigger }}"
@@ -37,6 +38,7 @@
             hx-{{ button_config.htmx_config.method }}="{{ button_config.htmx_config.request_url }}"
             {% if button_config.htmx_config.target %}hx-target="{{ button_config.htmx_config.target }}"{% endif %}
             hx-swap="{{ button_config.htmx_config.swap_method }}"
+            {% if button_config.htmx_config.vals %}hx-vals="{{ button_config.htmx_config.vals|json_attribute }}"{% endif %}
             {% if button_config.htmx_config.push_url %}hx-push-url="true"{% endif %}
             {% if button_config.htmx_config.loading_indicator_id %}hx-indicator="{{ button_config.htmx_config.loading_indicator_id }}"{% endif %}
             hx-trigger="{{ button_config.htmx_config.trigger }}"

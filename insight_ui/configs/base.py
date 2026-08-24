@@ -100,7 +100,7 @@ class HtmxConfig:
         loading_indicator_id: CSS selector for loading indicator (hx-indicator).
         push_url: Whether to push URL to browser history (hx-push-url).
         confirm: Confirmation message before request (hx-confirm).
-        vals: Additional values to include in request (hx-vals).
+        vals: Additional JSON values to include in the request (hx-vals).
 
     """
 
@@ -130,7 +130,7 @@ class HtmxConfig:
     push_url: bool = field(default=False, metadata={"doc": _("Whether to push URL to browser history (hx-push-url).")})
     confirm: str = field(default="", metadata={"doc": _("Confirmation message before request (hx-confirm).")})
     vals: dict[str, Any] = field(
-        default_factory=dict, metadata={"doc": _("Additional values to include in request (hx-vals).")}
+        default_factory=dict, metadata={"doc": _("Additional JSON values to include in the request (hx-vals).")}
     )
 
     def __post_init__(self) -> None:
