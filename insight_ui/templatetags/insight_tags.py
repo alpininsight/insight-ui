@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import math
 from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import MISSING, fields, is_dataclass, replace
@@ -319,6 +320,16 @@ def markdownify(value: str) -> SafeString:
 def get_item(dictionary: dict, key: str) -> Any:  # noqa: ANN401
     """Get the specified item of a dictionary."""
     return dictionary.get(key)
+
+
+@register.filter
+def json_attribute(value: object) -> str:
+    """Serialize a value as JSON for an HTML attribute.
+
+    The returned string deliberately remains unsafe so Django's normal template
+    auto-escaping protects the surrounding HTML attribute.
+    """
+    return json.dumps(value, separators=(",", ":"), ensure_ascii=False, allow_nan=False)
 
 
 @register.inclusion_tag("insight_ui/components/icons.html")

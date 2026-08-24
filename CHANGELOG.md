@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Set 'navbar_fixed' for the toc sidebar to prevent the label from disappearing
 - Remove sidebar shift in mobile browsers
 - Remove the need to specify the 'request_url' twice for the 'search_bar' component
+- **htmx:** Serialize config values as JSON
 
 ### Features
 

@@ -8,7 +8,7 @@
             hx-target="{{ search_bar_config.htmx_config.target }}"
             hx-swap="{{ search_bar_config.htmx_config.swap|default:'innerHTML' }}"
             hx-trigger="{{ search_bar_config.htmx_config.trigger|default:'submit' }}"
-            hx-vals="{{ search_bar_config.htmx_config.vals }}"
+            hx-vals="{{ search_bar_config.htmx_config.vals|json_attribute }}"
             hx-indicator="{{ search_bar_config.htmx_config.indicator|default:'#loading-indicator' }}"
             hx-push-url="{{ search_bar_config.htmx_config.push_url|default:'False' }}"
         {% else %}
