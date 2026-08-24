@@ -3017,20 +3017,6 @@
       background-color: color-mix(in oklab, var(--color-insight-primary) 10%, transparent);
     }
   }
-  .dark\:from-insight-primary\/10:where([data-theme=dark], [data-theme=dark] *) {
-    --tw-gradient-from: color-mix(in srgb, #4183EA 10%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      --tw-gradient-from: color-mix(in oklab, var(--color-insight-primary) 10%, transparent);
-    }
-    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
-  }
-  .dark\:to-insight-secondary\/10:where([data-theme=dark], [data-theme=dark] *) {
-    --tw-gradient-to: color-mix(in srgb, #1B9388 10%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      --tw-gradient-to: color-mix(in oklab, var(--color-insight-secondary) 10%, transparent);
-    }
-    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
-  }
   .dark\:text-amber-400:where([data-theme=dark], [data-theme=dark] *) {
     color: var(--color-amber-400);
   }
