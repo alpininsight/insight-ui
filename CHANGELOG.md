@@ -12,6 +12,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **charts:** Correct accessible data table values
 - **docs:** Wrap demo controls on narrow screens
 - Correct polygon of 'minimal_stepper' for rtl mode
+- Correct animation and chevron direction of the sidebar component in RTL mode
+- Set 'navbar_fixed' for the toc sidebar to prevent the label from disappearing
+- Remove sidebar shift in mobile browsers
+
+### Features
+
+- Update 'sidebar' parameter description and example code
+- Sync navbar and sidebar response behavior
+
+### Miscellaneous
+
+- Regenerate minified assets
+
+### Refactoring
+
+- Return drawer context directly whitout creating temp variable
 
 ## [1.12.0] - 2026-08-20
 
