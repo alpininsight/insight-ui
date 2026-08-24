@@ -440,7 +440,7 @@
     *   JavaScript only toggles the attribute, CSS handles styling.
     */
 
-    /* Navbar link: secondary color by default, link color on hover and when active */
+    /* Navbar link */
     .insight-nav-link {
         @apply text-insight-text-secondary transition-colors duration-200;
     }
@@ -449,10 +449,10 @@
     }
     .insight-nav-link[aria-current="page"],
     .insight-nav-link[aria-current="true"] {
-        @apply text-insight-text-link;
+        @apply text-insight-text-link transition-none;
     }
 
-    /* Navbar dropdown item: primary color by default, highlighted background on hover/active */
+    /* Navbar dropdown item */
     .insight-nav-dropdown-item {
         @apply text-insight-text-primary transition-colors duration-200;
     }
@@ -463,8 +463,14 @@
         @apply text-insight-text-link bg-insight-primary-soft;
     }
 
-    /* Sidebar: active link gets bold text and prominent left border */
-    [data-insight-side-nav] a[aria-current="page"] {
+    /* Sidebar link*/
+    .insight-sidebar-link {
+        @apply border-s border-insight-border-surface transition-colors duration-200;
+    }
+    .insight-sidebar-link:hover {
+        @apply border-insight-text-secondary text-insight-text-secondary;
+    }
+    .insight-sidebar-link[aria-current="page"] {
         @apply font-semibold border-s-4 border-insight-primary;
     }
 
