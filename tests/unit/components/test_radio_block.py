@@ -1,7 +1,7 @@
 """Tests for the radio_block component."""
 
 from bs4 import BeautifulSoup
-from insight_ui.component_details.demo_context import get_radio_block_context
+from insight_ui.configs import RadioBlockConfig, RadioItemConfig
 
 from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
@@ -10,15 +10,28 @@ class TestRadioBlock(TemplateTagsTestCase):
     """Test suite for the radio_block component."""
 
     def test_radio_block(self) -> None:
-        """Test the {% radio_block %} tag."""
-        context = get_radio_block_context()
+        """Test the {% radio_block %} tag with HTMX attributes."""
+        # Create a test config with HTMX attributes (not using demo context)
+        config = RadioBlockConfig(
+            "size",
+            "Select size:",
+            items=[
+                RadioItemConfig("small-size", "small", "s"),
+                RadioItemConfig("medium-size", "medium", "m"),
+                RadioItemConfig("large-size", "large", "l", disabled=True),
+            ],
+            as_row=True,
+            request_url="/api/size/",
+            hx_target_id="size-target",
+            method="onSizeChange",
+        )
 
         template_string = """
         {% load insight_tags %}
-        {% radio_block size_radio_config %}
+        {% radio_block config %}
         """
 
-        rendered = self.render_template(template_string, context)
+        rendered = self.render_template(template_string, {"config": config})
         soup = BeautifulSoup(rendered, "html.parser")
 
         wrapper = soup.find("fieldset")
