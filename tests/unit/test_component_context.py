@@ -2,6 +2,7 @@
 
 from dataclasses import dataclass, field
 
+from django.utils import translation
 from insight_ui.component_details.component_context import get_component_parameter_doc, resolve_parameter_path
 from insight_ui.configs.navigation import NavbarConfig
 
@@ -103,43 +104,47 @@ def test_navbar_config_produces_a_deep_nested_tree() -> None:
 
 def test_resolve_parameter_path_empty_string_resolves_to_root() -> None:
     """An empty path resolves to the root doc with only the 'Overview' breadcrumb."""
-    root = get_component_parameter_doc(_BranchConfig, True)[0]
+    with translation.override("en"):
+        root = get_component_parameter_doc(_BranchConfig, True)[0]
 
-    result = resolve_parameter_path(root, "", "/docs/components/branch/")
+        result = resolve_parameter_path(root, "", "/docs/components/branch/")
 
-    assert result["active_param"] is root
-    assert [c.text for c in result["param_breadcrumb_items"]] == ["Overview"]
-    assert result["active_param_name"] is None
+        assert result["active_param"] is root
+        assert [c.text for c in result["param_breadcrumb_items"]] == ["Overview"]
+        assert result["active_param_name"] is None
 
 
 def test_resolve_parameter_path_walks_into_nested_doc() -> None:
     """A valid single-segment path resolves to the referenced nested doc and extends the breadcrumb."""
-    root = get_component_parameter_doc(_BranchConfig, True)[0]
-    leaf_doc = next(r for r in root.params_table if r.name == "leaf").nested
+    with translation.override("en"):
+        root = get_component_parameter_doc(_BranchConfig, True)[0]
+        leaf_doc = next(r for r in root.params_table if r.name == "leaf").nested
 
-    result = resolve_parameter_path(root, "leaf", "/docs/components/branch/")
+        result = resolve_parameter_path(root, "leaf", "/docs/components/branch/")
 
-    assert result["active_param"] is leaf_doc
-    assert [c.text for c in result["param_breadcrumb_items"]] == ["Overview", "leaf"]
-    assert result["active_param_name"] == "leaf"
+        assert result["active_param"] is leaf_doc
+        assert [c.text for c in result["param_breadcrumb_items"]] == ["Overview", "leaf"]
+        assert result["active_param_name"] == "leaf"
 
 
 def test_resolve_parameter_path_invalid_segment_stops_at_last_valid_step() -> None:
     """An unknown field name in the path is ignored, falling back to the deepest still-valid doc."""
-    root = get_component_parameter_doc(_BranchConfig, True)[0]
+    with translation.override("en"):
+        root = get_component_parameter_doc(_BranchConfig, True)[0]
 
-    result = resolve_parameter_path(root, "leaf.does_not_exist", "/docs/components/branch/")
+        result = resolve_parameter_path(root, "leaf.does_not_exist", "/docs/components/branch/")
 
-    leaf_doc = next(r for r in root.params_table if r.name == "leaf").nested
-    assert result["active_param"] is leaf_doc
-    assert [c.text for c in result["param_breadcrumb_items"]] == ["Overview", "leaf"]
+        leaf_doc = next(r for r in root.params_table if r.name == "leaf").nested
+        assert result["active_param"] is leaf_doc
+        assert [c.text for c in result["param_breadcrumb_items"]] == ["Overview", "leaf"]
 
 
 def test_resolve_parameter_path_non_nested_field_stops_immediately() -> None:
     """Pointing the path at a plain (non-nested) field falls back to the root."""
-    root = get_component_parameter_doc(_BranchConfig, True)[0]
+    with translation.override("en"):
+        root = get_component_parameter_doc(_BranchConfig, True)[0]
 
-    result = resolve_parameter_path(root, "title", "/docs/components/branch/")
+        result = resolve_parameter_path(root, "title", "/docs/components/branch/")
 
-    assert result["active_param"] is root
-    assert [c.text for c in result["param_breadcrumb_items"]] == ["Overview"]
+        assert result["active_param"] is root
+        assert [c.text for c in result["param_breadcrumb_items"]] == ["Overview"]
