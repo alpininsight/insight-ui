@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove sidebar shift in mobile browsers
 - Remove the need to specify the 'request_url' twice for the 'search_bar' component
 - **htmx:** Serialize config values as JSON
+- Make radio item gray if disabled and set default cursor
 
 ### Features
 
@@ -28,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Regenerate minified assets
 - **pre-commit:** Autoupdate hooks
+- Regenerate minified stylesheet
 
 ### Refactoring
 
