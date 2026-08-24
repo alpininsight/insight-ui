@@ -1,6 +1,7 @@
 """Tests for the button component."""
 
 import json
+import warnings
 
 from bs4 import BeautifulSoup
 from insight_ui.configs import ButtonConfig, HtmxConfig
@@ -31,20 +32,34 @@ class TestButton(TemplateTagsTestCase):
         assert button["hx-target"] == "#hub-login-dialog-panel"
 
     def test_button_serializes_htmx_vals_as_json(self) -> None:
-        """Button and anchor variants preserve typed additional HTMX values."""
+        """Button variant preserves typed additional HTMX values."""
         vals = {"parleq_id": "de--1", "tracked": False}
         htmx_config = HtmxConfig(request_url="/track/", target="#result", method="post", vals=vals)
-        configs = (
-            (ButtonConfig(label="Track", htmx_config=htmx_config), "button"),
-            (ButtonConfig(label="Track", request_url="/track/", htmx_config=htmx_config), "a"),
-        )
+        config = ButtonConfig(label="Track", htmx_config=htmx_config)
 
-        for config, element_name in configs:
+        rendered = self.render_template(
+            "{% load insight_tags %}{% button config=config %}",
+            {"config": config},
+        )
+        element = BeautifulSoup(rendered, "html.parser").find("button")
+
+        assert element is not None
+        assert json.loads(element["hx-vals"]) == vals
+
+    def test_anchor_serializes_htmx_vals_as_json(self) -> None:
+        """Anchor variant preserves typed additional HTMX values."""
+        vals = {"parleq_id": "de--1", "tracked": False}
+        htmx_config = HtmxConfig(request_url="/track/", target="#result", method="post", vals=vals)
+        # Intentionally sets both request_url and htmx_config.request_url to test anchor rendering
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", UserWarning)
+            config = ButtonConfig(label="Track", request_url="/track/", htmx_config=htmx_config)
             rendered = self.render_template(
                 "{% load insight_tags %}{% button config=config %}",
                 {"config": config},
             )
-            element = BeautifulSoup(rendered, "html.parser").find(element_name)
 
-            assert element is not None
-            assert json.loads(element["hx-vals"]) == vals
+        element = BeautifulSoup(rendered, "html.parser").find("a")
+
+        assert element is not None
+        assert json.loads(element["hx-vals"]) == vals

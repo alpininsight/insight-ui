@@ -48,10 +48,10 @@ class SearchBarConfig:
     )
 
     def __post_init__(self) -> None:
-        """Validate that request_url and htmx_config are not both set."""
-        if self.request_url and self.htmx_config:
+        """Validate that request_url and htmx_config.request_url are not both set."""
+        if self.request_url and self.htmx_config and self.htmx_config.request_url:
             warnings.warn(
-                "SearchBarConfig has both 'request_url' and 'htmx_config' set. "
+                "SearchBarConfig has both 'request_url' and 'htmx_config.request_url' set. "
                 "This may cause conflicting behavior. Use 'request_url' for form action, or "
                 "'htmx_config.request_url' for HTMX requests, but not both.",
                 UserWarning,
@@ -139,10 +139,10 @@ class GenericFilterConfig:
     )
 
     def __post_init__(self) -> None:
-        """Validate that request_url and htmx_config are not both set."""
-        if self.request_url and self.htmx_config:
+        """Validate that request_url and htmx_config.request_url are not both set."""
+        if self.request_url and self.htmx_config and self.htmx_config.request_url:
             warnings.warn(
-                "GenericFilterConfig has both 'request_url' and 'htmx_config' set. "
+                "GenericFilterConfig has both 'request_url' and 'htmx_config.request_url' set. "
                 "This may cause conflicting behavior. Use 'request_url' for form action, or "
                 "'htmx_config.request_url' for HTMX requests, but not both.",
                 UserWarning,
