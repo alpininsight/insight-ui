@@ -3,9 +3,9 @@
 {% if user.is_authenticated %}
     {# User-Dropdown menu #}
     <div class="relative h-full">
-        <button type="button" data-insight-dropdown="user-menu" class="btn-subtle-secondary size-10 rounded-insight-full overflow-hidden" aria-label="{{ user_avatar_alt|default:user.get_username }}">
-            {% if user_avatar_url %}
-                <img src="{{ user_avatar_url }}" alt="{{ user_avatar_alt|default:user.get_username }}" class="object-cover size-full rounded-insight-full">
+        <button type="button" data-insight-dropdown="user-menu" class="btn-subtle-secondary size-10 rounded-insight-full overflow-hidden" aria-label="{{ usermenu.avatar_alt|default:user.get_username }}">
+            {% if usermenu.avatar_url %}
+                <img src="{{ usermenu.avatar_url }}" alt="{{ usermenu.avatar_alt|default:user.get_username }}" class="object-cover size-full rounded-insight-full">
             {% else %}
                 {{ user.get_username|default:''|slice:":1"|upper }}
             {% endif %}
@@ -15,20 +15,22 @@
                 <span class="text-secondary">{% trans "Logged in as" %}: </span>
                 <span class="font-bold">{{ user.get_username }}</span>
             </span>
-            <ul>
-                {% for link in user_dropdown_links %}
-                    <li>
-                        {% if not link.staff_only or user.is_staff %}
-                            <a href="{{ link.request_url }}" class="flex gap-2 items-center px-6 py-2 w-full text-sm hover:bg-insight-bg-base">
-                                {% if link.icon %}
-                                    {% icon link.icon %}
-                                {% endif %}
-                                {{ link.text }}
-                            </a>
-                        {% endif %}
-                    </li>
-                {% endfor %}
-            </ul>
+            {% if usermenu.links %}
+                <ul>
+                    {% for link in usermenu.links %}
+                        <li>
+                            {% if not link.staff_only or user.is_staff %}
+                                <a href="{{ link.request_url }}" class="flex gap-2 items-center px-6 py-2 w-full text-sm hover:bg-insight-bg-base">
+                                    {% if link.icon %}
+                                        {% icon link.icon %}
+                                    {% endif %}
+                                    {{ link.text }}
+                                </a>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
             <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}
                 <button type="submit" class="flex gap-2 items-center px-6 py-2 w-full text-sm text-insight-danger text-start rounded-insight-control-bottom hover:bg-insight-bg-base">
@@ -37,8 +39,14 @@
             </form>
         </div>
     </div>
-{% else %}
-    {# Login btn #}
-    {% url 'login' as login_url %}
-    {% button request_url=login_url label=_("Login") icon_name="user" icon_size="s" type="secondary" size="s" subtle=True extra_classes="lg:*:hidden xl:*:inline-block" %}
+{% elif not hide_login %}
+    {# Login and Register buttons #}
+    <div class="flex gap-2">
+        {% if register_url %}
+            {% button request_url=register_url label=_("Register") type="secondary" size="s" extra_classes="lg:hidden xl:inline-flex" %}
+        {% endif %}
+        {% if login_url %}
+            {% button request_url=login_url label=_("Login") icon_name="user" icon_size="s" type="primary" size="s" extra_classes="lg:*:hidden xl:*:inline-block" %}
+        {% endif %}
+    </div>
 {% endif %}

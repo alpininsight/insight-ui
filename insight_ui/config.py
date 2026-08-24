@@ -25,6 +25,7 @@ CONFIG_DEFAULTS: dict[str, Any] = {
     "load_echarts": False,  # Turn to 'True' to use Chart-Components
     "JS_DEBUG": False,  # Turn to 'True' to enable build in browser console logging
     "use_tailwind_cli": False,  # Turn to 'True' to enable the tailwind cli, if you want to modify the styles
+    "register_url": "",  # URL or URL name for registration page (empty = no register button)
     "brand": {
         "home_url": "/",
         "mark": BrandMarkConfig(

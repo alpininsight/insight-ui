@@ -11,7 +11,9 @@ from types import UnionType
 from typing import TYPE_CHECKING, Any, Final, Literal, TypeVar, get_args, get_origin, get_type_hints
 
 from django import template
+from django.conf import settings
 from django.templatetags.static import static
+from django.urls import NoReverseMatch, reverse
 
 if TYPE_CHECKING:
     from django.core.paginator import Page
@@ -444,6 +446,26 @@ def status_screen(
 # =============================================================
 
 
+def _resolve_url(url_or_name: str) -> str:
+    """Resolve a URL name to a URL, or return the URL if already a path.
+
+    Args:
+        url_or_name: Either a URL path (starting with /) or a URL name.
+
+    Returns:
+        The resolved URL path, or empty string if resolution fails.
+
+    """
+    if not url_or_name:
+        return ""
+    if url_or_name.startswith(("/", "http")):
+        return url_or_name
+    try:
+        return reverse(url_or_name)
+    except NoReverseMatch:
+        return ""
+
+
 @register.inclusion_tag("insight_ui/components/navbar.html", takes_context=True)
 def navbar(context: dict[str, Any], config: NavbarConfig, **kwargs: JsonValue) -> dict[str, Any]:
     """Render a configurable navigation bar."""
@@ -451,6 +473,8 @@ def navbar(context: dict[str, Any], config: NavbarConfig, **kwargs: JsonValue) -
         "user": context.get("user"),
         "navbar_config": config,
         "fixed": get_config("navbar_fixed"),
+        "login_url": _resolve_url(getattr(settings, "LOGIN_URL", "login")),
+        "register_url": _resolve_url(str(get_config("register_url") or "")),
         "options": {**kwargs},
     }
 

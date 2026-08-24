@@ -71,17 +71,134 @@ class NavbarLinkConfig:
 
 
 @dataclass
+class UserMenuLinkConfig:
+    """Configuration for a user menu link.
+
+    Attributes:
+        text: Label of the link.
+        request_url: The URL to navigate to when clicking on the link.
+        icon: An optional icon displayed before the text.
+        staff_only: The link is only displayed for administrators.
+
+    """
+
+    __example__ = """
+        UserMenuLinkConfig(text="Profile", request_url=reverse("profile"), icon="user")
+        """
+
+    text: str = field(metadata={"doc": _("Label of the link.")})
+    request_url: str = field(metadata={"doc": _("The URL to navigate to when clicking on the link.")})
+    icon: str = field(default="", metadata={"doc": _("An optional icon displayed before the text.")})
+    staff_only: bool = field(default=False, metadata={"doc": _("The link is only displayed for administrators.")})
+
+
+@dataclass
+class UserMenuConfig:
+    """Configuration for the user dropdown menu.
+
+    Configures the dropdown menu shown for authenticated users.
+    A logout button is always included automatically.
+
+    Attributes:
+        links: Additional links to display above the logout button.
+        avatar_url: URL to the user's avatar image.
+        avatar_alt: Alt text for the avatar image.
+
+    """
+
+    __example__ = """
+        UserMenuConfig(
+            links=[
+                UserMenuLinkConfig(text="Profile", request_url=reverse("profile"), icon="user"),
+                UserMenuLinkConfig(text="Settings", request_url=reverse("settings"), icon="cog-6-tooth"),
+            ],
+            avatar_url=user.profile.avatar_url,
+        )
+        """
+
+    links: list[UserMenuLinkConfig] = field(
+        default_factory=list,
+        metadata={"doc": _("Additional links to display above the logout button.")},
+    )
+    avatar_url: str = field(default="", metadata={"doc": _("URL to the user's avatar image.")})
+    avatar_alt: str = field(default="", metadata={"doc": _("Alt text for the avatar image.")})
+
+
+@dataclass
+class LoginScreenConfig:
+    """Configuration for the login screen.
+
+    Configures the appearance and available options on the login page.
+
+    Attributes:
+        logo: Logo configuration for branding at the top of the login form.
+        show_theme_toggle: Show theme toggle button in the corner.
+        show_labels: Show labels above input fields instead of just placeholders.
+        forgot_password_url: URL for password reset. Empty hides the link.
+        alt_login_url: URL for alternative login (e.g., OIDC/SSO). Empty hides the section.
+        alt_login_title: Title for the alternative login button.
+        sign_up_url: URL for registration. Empty hides the link.
+
+    """
+
+    __example__ = """
+        LoginScreenConfig(
+            logo=LogoConfig(url="img/logo.svg", height="8rem"),
+            show_theme_toggle=True,
+            forgot_password_url=reverse("password_reset"),
+            alt_login_url=reverse("oidc_login"),
+            alt_login_title="Login with SSO",
+            sign_up_url=reverse("register"),
+        )
+        """
+
+    logo: LogoConfig | None = field(
+        default=None,
+        metadata={"doc": _("Logo configuration for branding at the top of the login form.")},
+    )
+    show_theme_toggle: bool = field(
+        default=True,
+        metadata={"doc": _("Show theme toggle button in the corner.")},
+    )
+    show_labels: bool = field(
+        default=False,
+        metadata={"doc": _("Show labels above input fields instead of just placeholders.")},
+    )
+    forgot_password_url: str = field(
+        default="",
+        metadata={"doc": _("URL for password reset. Empty hides the link.")},
+    )
+    alt_login_url: str = field(
+        default="",
+        metadata={"doc": _("URL for alternative login (e.g., OIDC/SSO). Empty hides the section.")},
+    )
+    alt_login_title: str = field(
+        default="",
+        metadata={"doc": _("Title for the alternative login button.")},
+    )
+    sign_up_url: str = field(
+        default="",
+        metadata={"doc": _("URL for registration. Empty hides the link.")},
+    )
+
+
+@dataclass
 class NavbarConfig:
     """Configuration for the navbar component.
 
     Renders a full navigation bar with brand, links, and optional features.
+
+    The user menu behavior is controlled by LOGIN_URL and the usermenu config:
+    - If LOGIN_URL is set and user is not authenticated: show login button (unless hide_login=True)
+    - If user is authenticated: show user dropdown with logout (and custom links from usermenu)
 
     Attributes:
         brand: Describes the brand mark of the application in the navbar.
         links: Contains and describes the navigation items of the navbar.
         searchbar_request_url: The URL to be called when performing a search. If empty, no search bar will be displayed.
         enable_doc_search: If True, enable client-side documentation search with Fuse.js in the navbar.
-        show_usermenu: Displays a dropdown menu with at least a logout button.
+        usermenu: Configuration for the user dropdown menu. None uses defaults (logout only).
+        hide_login: If True, hide the login button for unauthenticated users.
         show_language_selector: Displays a dropdown menu for selecting the display language (if defined).
         show_theme_toggle: Displays a button to switch between the light and dark theme of the page.
 
@@ -101,7 +218,11 @@ class NavbarConfig:
                 NavbarLinkConfig(text="About", url=reverse("about")),
                 NavbarLinkConfig(text="Admin", url=reverse("admin:index"), staff_only=True),
             ],
-            show_usermenu=True,
+            usermenu=UserMenuConfig(
+                links=[
+                    UserMenuLinkConfig(text="Profile", request_url=reverse("profile")),
+                ],
+            ),
             show_theme_toggle=True,
         )
         """
@@ -122,8 +243,13 @@ class NavbarConfig:
         default=False,
         metadata={"doc": _("If True, enable client-side documentation search with Fuse.js in the navbar.")},
     )
-    show_usermenu: bool = field(
-        default=False, metadata={"doc": _("Displays a dropdown menu with at least a logout button.")}
+    usermenu: UserMenuConfig | None = field(
+        default=None,
+        metadata={"doc": _("Configuration for the user dropdown menu. None uses defaults (logout only).")},
+    )
+    hide_login: bool = field(
+        default=False,
+        metadata={"doc": _("If True, hide the login button for unauthenticated users.")},
     )
     show_language_selector: bool = field(
         default=False, metadata={"doc": _("Displays a dropdown menu for selecting the display language (if defined).")}

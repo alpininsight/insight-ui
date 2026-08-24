@@ -110,8 +110,8 @@
             </div>
           {% endif%}
           <div class="flex gap-2 h-10">
-            {% if navbar_config.show_usermenu %}
-              {% include "insight_ui/components/user_dropdown.html" with user_dropdown_links=options.user_dropdown_links user_avatar_url=options.user_avatar_url user_avatar_alt=options.user_avatar_alt %}
+            {% if login_url or user.is_authenticated %}
+              {% include "insight_ui/components/user_dropdown.html" with usermenu=navbar_config.usermenu hide_login=navbar_config.hide_login login_url=login_url register_url=register_url %}
             {% endif %}
             {% if navbar_config.show_language_selector %}
               {% include "insight_ui/components/toggle_language.html" %}

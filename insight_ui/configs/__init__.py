@@ -91,6 +91,7 @@ from insight_ui.configs.navigation import (
     FooterConfig,
     FooterContactConfig,
     FooterDescriptionConfig,
+    LoginScreenConfig,
     MinimalStepperConfig,
     NavbarBrandConfig,
     NavbarConfig,
@@ -103,6 +104,8 @@ from insight_ui.configs.navigation import (
     StepperItemConfig,
     TabConfig,
     TabsConfig,
+    UserMenuConfig,
+    UserMenuLinkConfig,
 )
 from insight_ui.configs.popup import AlertConfig, ModalConfig
 from insight_ui.configs.types import (
@@ -255,6 +258,7 @@ __all__ = [
     "InlinePosition",
     "InputFieldConfig",
     "LiveContentConfig",
+    "LoginScreenConfig",
     "LogoConfig",
     "MinimalStepperConfig",
     "ModalConfig",
@@ -296,6 +300,8 @@ __all__ = [
     "ToggleConfig",
     "ToggleViewConfig",
     "ToggleViewType",
+    "UserMenuConfig",
+    "UserMenuLinkConfig",
     "VBoxConfig",
     "WebSocketConfig",
     "validate_alert_type",
