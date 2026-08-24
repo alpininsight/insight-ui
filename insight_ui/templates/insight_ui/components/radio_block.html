@@ -23,7 +23,7 @@
                     >
                     <label
                         for="{{ radio_block_config.name|add:'-'|add:item.tag_id }}"
-                        class="flex items-center bg-insight-primary border-insight-primary outline-insight-primary-hover peer-focus:outline-2 peer-checked:bg-insight-primary-active peer-checked:border-insight-primary-active {% if forloop.first %}border-2 {% if radio_block_config.as_row == False %}rounded-t-insight-control{% else %}rounded-s-insight-control{% endif %}{% elif forloop.last %}border-2 {% if radio_block_config.as_row == False %}rounded-b-insight-control{% else %}rounded-e-insight-control{% endif %}{% else %}border-y-2{% endif %} px-4 py-1 text-white transition cursor-pointer hover:bg-insight-primary-hover hover:border-insight-primary-hover active:bg-insight-primary-active active:border-insight-primary-active"
+                        class="flex items-center {% if item.disabled %}btn-disabled{% else %}btn-primary cursor-pointer{% endif %} outline-insight-primary-hover peer-focus:outline-2 peer-checked:bg-insight-primary-active peer-checked:border-insight-primary-active {% if forloop.first %}border-2 {% if radio_block_config.as_row == False %}rounded-t-insight-control{% else %}rounded-s-insight-control{% endif %}{% elif forloop.last %}border-2 {% if radio_block_config.as_row == False %}rounded-b-insight-control{% else %}rounded-e-insight-control{% endif %}{% else %}border-y-2{% endif %} px-4 py-1 transition"
                     >
                         {% if item.icon %}
                             {% icon item.icon %}
@@ -56,7 +56,7 @@
                     >
                     <label
                         for="{{ radio_block_config.name|add:'-'|add:item.tag_id }}"
-                        class="flex items-center bg-insight-primary border-insight-primary outline-insight-primary-hover peer-focus:outline-2 peer-checked:bg-insight-primary-active peer-checked:border-insight-primary-active {% if forloop.first %}border-2 {% if radio_block_config.as_row == False %}rounded-t-insight-control{% else %}rounded-s-insight-control{% endif %}{% elif forloop.last %}border-2 {% if radio_block_config.as_row == False %}rounded-b-insight-control{% else %}rounded-e-insight-control{% endif %}{% else %}border-y-2{% endif %} px-4 py-1 text-white transition cursor-pointer hover:bg-insight-primary-hover hover:border-insight-primary-hover active:bg-insight-primary-active active:border-insight-primary-active"
+                        class="flex items-center {% if item.disabled %}btn-disabled{% else %}btn-primary cursor-pointer{% endif %} outline-insight-primary-hover peer-focus:outline-2 peer-checked:bg-insight-primary-active peer-checked:border-insight-primary-active {% if forloop.first %}border-2 {% if radio_block_config.as_row == False %}rounded-t-insight-control{% else %}rounded-s-insight-control{% endif %}{% elif forloop.last %}border-2 {% if radio_block_config.as_row == False %}rounded-b-insight-control{% else %}rounded-e-insight-control{% endif %}{% else %}border-y-2{% endif %} px-4 py-1 transition"
                     >
                         {% if item.icon %}
                             {% icon item.icon %}
