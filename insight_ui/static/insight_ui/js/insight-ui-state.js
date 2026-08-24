@@ -19,45 +19,56 @@
     }
 
     /**
+     * Checks if a link href matches the current page URL.
+     *
+     * @param {string} href - The normalized href to check
+     * @param {string} current - The normalized current path
+     * @returns {boolean} True if the link is active
+     */
+    function isLinkActive(href, current) {
+        if (href === "/") {
+            return current === "/";
+        }
+        return current === href || current.startsWith(href + "/");
+    }
+
+    /**
      * Updates the active state of navigation links based on the current URL.
-     * Highlights links that match the current path or are ancestors of it.
+     * Sets aria-current="page" on active links and aria-current="true" on
+     * dropdown buttons that contain an active link. CSS handles the visual styling.
      */
     function updateActiveNav() {
         const current = normalize(window.location.pathname);
-        document.querySelectorAll("[data-insight-nav]").forEach(container => {
-            container.querySelectorAll("a[href]").forEach(el => {
-                const href = normalize(new URL(el.href, window.location.origin).pathname);
 
-                let isActive = false;
+        // Process navbar and sidebar navigation links
+        document.querySelectorAll("[data-insight-nav] a[href], [data-insight-side-nav] a[href]").forEach(el => {
+            const href = normalize(new URL(el.href, window.location.origin).pathname);
+            const isActive = isLinkActive(href, current);
 
-                if (href === "/") {
-                    isActive = current === "/";
-                } else {
-                    isActive = current === href || current.startsWith(href + "/");
-                }
-
-                el.classList.remove("transition-colors", "duration-200");
-                el.classList.toggle("text-insight-text-link", isActive);
-            });
+            if (isActive) {
+                el.setAttribute("aria-current", "page");
+            } else {
+                el.removeAttribute("aria-current");
+            }
         });
 
-        document.querySelectorAll("[data-insight-side-nav]").forEach(container => {
-            container.querySelectorAll("a[href]").forEach(el => {
-                const href = normalize(new URL(el.href, window.location.origin).pathname);
+        // Process dropdown buttons: highlight if any child link is active
+        document.querySelectorAll("[data-insight-nav] button[data-insight-dropdown]").forEach(button => {
+            const dropdownId = button.getAttribute("data-insight-dropdown");
+            const dropdown = document.getElementById(dropdownId);
+            if (!dropdown) return;
 
-                let isActive = false;
-
-                if (href === "/") {
-                    isActive = current === "/";
-                } else {
-                    isActive = current === href || current.startsWith(href + "/");
-                }
-
-                if (isActive)
-                    el.setAttribute("class", "flex gap-2 px-4 py-1 text-sm tracking-wide text-primary font-semibold border-s-4 border-insight-primary hover:border-insight-text-secondary hover:text-insight-text-secondary");
-                else
-                    el.setAttribute("class", "flex gap-2 px-4 py-1 text-sm tracking-wide text-primary border-s border-insight-border-surface hover:border-insight-text-secondary hover:text-insight-text-secondary")
+            // Check if any link in this dropdown is active
+            const hasActiveChild = Array.from(dropdown.querySelectorAll("a[href]")).some(link => {
+                const href = normalize(new URL(link.href, window.location.origin).pathname);
+                return isLinkActive(href, current);
             });
+
+            if (hasActiveChild) {
+                button.setAttribute("aria-current", "true");
+            } else {
+                button.removeAttribute("aria-current");
+            }
         });
     }
 
