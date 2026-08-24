@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove the need to specify the 'request_url' twice for the 'search_bar' component
 - **htmx:** Serialize config values as JSON
 - Make radio item gray if disabled and set default cursor
+- Use 'parameter_table' on icon detailpage instead of include the template directly
+- Correct check method for the 'double request_url' warning
 
 ### Features
 
@@ -30,10 +32,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Regenerate minified assets
 - **pre-commit:** Autoupdate hooks
 - Regenerate minified stylesheet
+- Regenerate minified stylesheet
 
 ### Refactoring
 
 - Return drawer context directly whitout creating temp variable
+
+### Testing
+
+- Add smoke tests for the docs pages
+- Change language to english for the component parameter context tests
 
 ## [1.12.0] - 2026-08-20
 
