@@ -811,18 +811,18 @@ def get_code_block_usage_context() -> dict[str, str]:
     }
 
 
-@register_component(Component.COPYRIGHT_NOTICE)
-def get_copyright_notice_usage_context() -> dict[str, str]:
-    """Serve usage documentation for the copyright notice component."""
+@register_component(Component.LEGAL_NOTICE)
+def get_legal_notice_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the legal notice component."""
     return {
         "usage": """
         {% load insight_tags %}
 
-        {% copyright_notice config=copyright %}
+        {% legal_notice config=legal %}
 
         <!-- or -->
 
-        {% copyright_notice year=2026 holder="Alpin Insight Solutions GmbH & Co. KG" source_label="Open Source" license_text="AGPL-3.0" %}
+        {% legal_notice year=2026 holder="Alpin Insight Solutions GmbH & Co. KG" source_label="Open Source" license_text="AGPL-3.0" %}
         """
     }
 

@@ -799,9 +799,9 @@
         }
         {# fmt:on #}
     </div>
-{% elif component.value == "copyright_notice" %}
+{% elif component.value == "legal_notice" %}
     <div class="space-y-6">
-        {% copyright_notice config=copyright_notice_config %}
+        {% legal_notice config=legal_notice_config %}
     </div>
 {% elif component.value == "differentiator" %}
     {{ textA|diff:textB|safe }}

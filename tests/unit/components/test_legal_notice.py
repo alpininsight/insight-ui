@@ -1,17 +1,17 @@
-"""Tests for the copyright_notice component."""
+"""Tests for the legal_notice component."""
 
 from bs4 import BeautifulSoup
-from insight_ui.configs.utils import CopyrightNoticeConfig
+from insight_ui.configs.utils import LegalNoticeConfig
 
 from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
 
-class TestCopyrightNotice(TemplateTagsTestCase):
-    """Test suite for the copyright_notice component."""
+class TestLegalNotice(TemplateTagsTestCase):
+    """Test suite for the legal_notice component."""
 
-    def test_copyright_notice_renders_full_legal_line(self) -> None:
-        """Check copyright notice output with license metadata."""
-        config = CopyrightNoticeConfig(
+    def test_legal_notice_renders_full_legal_line(self) -> None:
+        """Check legal notice output with license metadata."""
+        config = LegalNoticeConfig(
             2026,
             "Alpin Insight Solutions GmbH & Co. KG",
             "Open Source",
@@ -21,7 +21,7 @@ class TestCopyrightNotice(TemplateTagsTestCase):
         )
         template_string = """
         {% load insight_tags %}
-        {% copyright_notice config=config %}
+        {% legal_notice config=config %}
         """
         rendered = self.render_template(template_string, context={"config": config})
         soup = BeautifulSoup(rendered, "html.parser")

@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from django.urls import reverse_lazy
 from insight_ui.configs.base import IconConfig
 from insight_ui.configs.navigation import FooterConfig, FooterContactConfig, FooterDescriptionConfig, NavbarLinkConfig
-from insight_ui.configs.utils import CopyrightNoticeConfig, LogoConfig
+from insight_ui.configs.utils import LegalNoticeConfig, LogoConfig
 
 from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
@@ -28,7 +28,7 @@ class TestFooter(TemplateTagsTestCase):
             FooterContactConfig(
                 "support@alpininsight.com", "https://alpininsight.com/imprint/", "https://alpininsight.com/privacy/"
             ),
-            CopyrightNoticeConfig(
+            LegalNoticeConfig(
                 2026, "Alpin Insight Solutions GmbH & Co. KG", "Open Source", "AGPL-3.0", reverse_lazy("license_view")
             ),
             "v1.0.0",

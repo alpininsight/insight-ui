@@ -288,7 +288,7 @@ def get_footer_description_context() -> dict[str, list[str]]:
             _(
                 "A simple `footer` consisting of three columns with customizable content. The footer is an important part of every website; however, it does not only serve to visually close off the website. It typically contains at least a link to the imprint and the privacy policy. Often the footer also contains navigation to the most important pages of the website and a copyright notice."
             ),
-            _("The footer composes the reusable `copyright_notice` component for its legal notice line."),
+            _("The footer composes the reusable `legal_notice` component for its legal notice line."),
         ]
     }
 
@@ -619,12 +619,12 @@ def get_code_block_description_context() -> dict[str, list[str]]:
     }
 
 
-@register_component(Component.COPYRIGHT_NOTICE)
-def get_copyright_notice_description_context() -> dict[str, list[str]]:
+@register_component(Component.LEGAL_NOTICE)
+def get_legal_notice_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the copyright notice component."""
     return {
         "description": [
-            _("The `copyright_notice` component renders a compact, reusable copyright and legal notice line."),
+            _("The `legal_notice` component renders a compact, reusable copyright and legal notice line."),
             _(
                 "It can be used inside the footer or in other page shells where an application needs a consistent public legal notice."
             ),

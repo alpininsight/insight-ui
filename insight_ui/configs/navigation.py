@@ -8,7 +8,7 @@ from insight_ui.configs.base import HtmxConfig, IconConfig
 from insight_ui.configs.input import DropdownConfig
 from insight_ui.configs.popup import ModalConfig
 from insight_ui.configs.types import Size, StepStatus, validate_size, validate_step_status
-from insight_ui.configs.utils import BadgeConfig, BrandMarkConfig, CopyrightNoticeConfig, LogoConfig
+from insight_ui.configs.utils import BadgeConfig, BrandMarkConfig, LegalNoticeConfig, LogoConfig
 
 
 @dataclass
@@ -454,7 +454,7 @@ class FooterConfig:
         description: Brief description of the application with optional image.
         links: List of the main navigation items of the application.
         contact: Contact information, link to the imprint, privacy policy and a contact email address.
-        copyright: Copyright information, such as the year, holder, source label, and license text.
+        legal: Legal notice with copyright, license, and version information.
         version: Information about the current version.
 
     """
@@ -474,7 +474,7 @@ class FooterConfig:
                 imprint="/imprint/",
                 privacy="/privacy/",
             ),
-            copyright=CopyrightNoticeConfig(
+            legal=LegalNoticeConfig(
                 year=2026,
                 holder="My Company",
             ),
@@ -492,9 +492,9 @@ class FooterConfig:
         default=None,
         metadata={"doc": _("Contact information, link to the imprint, privacy policy and a contact email address.")},
     )
-    copyright: CopyrightNoticeConfig | None = field(
+    legal: LegalNoticeConfig | None = field(
         default=None,
-        metadata={"doc": _("Copyright information, such as the year, holder, source label, and license text.")},
+        metadata={"doc": _("Legal notice with copyright, license, and version information.")},
     )
     version: str = field(default="", metadata={"doc": _("Information about the current version.")})
 

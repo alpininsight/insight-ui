@@ -16,13 +16,13 @@ from insight_ui.component_details.demo_context import get_component_demo_context
 from insight_ui.component_details.parameter_context import ParameterDetails
 from insight_ui.configs import (
     BadgeConfig,
-    CopyrightNoticeConfig,
     DropdownConfig,
     DropdownItemConfig,
     FooterConfig,
     FooterContactConfig,
     HtmxConfig,
     IconConfig,
+    LegalNoticeConfig,
     NavbarConfig,
     NavbarLinkConfig,
     RadioItemConfig,
@@ -134,7 +134,7 @@ def get_footer_context() -> dict:
             FooterContactConfig(
                 "support@alpininsight.com", "https://alpininsight.com/imprint/", "https://alpininsight.com/privacy/"
             ),
-            CopyrightNoticeConfig(
+            LegalNoticeConfig(
                 2026, "Alpin Insight Solutions GmbH & Co. KG", "Open Source", "AGPL-3.0", reverse_lazy("license_view")
             ),
             get_app_version(),

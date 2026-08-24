@@ -773,9 +773,9 @@ def get_code_block_a11y_context() -> dict:
     }
 
 
-@register_component(Component.COPYRIGHT_NOTICE)
-def get_copyright_notice_a11y_context() -> dict:
-    """Serve a11y documentation for the copyright notice component."""
+@register_component(Component.LEGAL_NOTICE)
+def get_legal_notice_a11y_context() -> dict:
+    """Serve a11y documentation for the legal notice component."""
     return {
         "a11y_aa": [
             _("The legal notice is rendered as text so it remains readable by screen readers."),

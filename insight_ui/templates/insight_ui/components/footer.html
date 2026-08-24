@@ -45,17 +45,9 @@
                 {% endif %}
             </div>
         </div>
-        {% if footer_config.copyright or footer_config.version %}
+        {% if footer_config.legal or footer_config.version %}
             <div class="flex justify-center pt-4 mt-6 border-t border-insight-border-surface">
-                {% if footer_config.copyright %}
-                    {% copyright_notice config=footer_config.copyright %}
-                {% endif %}
-                {% if footer_config.version %}
-                    <span class="text-secondary text-sm">
-                        {% if copyright %}&nbsp;&centerdot;{% endif %}
-                        {% trans "Version:" %} {{ footer_config.version }}
-                    </span>
-                {% endif %}
+                {% legal_notice config=footer_config.legal version=footer_config.version %}
             </div>
         {% endif %}
     </div>

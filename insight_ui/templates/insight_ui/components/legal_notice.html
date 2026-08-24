@@ -1,0 +1,3 @@
+<p class="text-secondary text-sm">
+    &copy;{% if legal_config.year %} {{ legal_config.year }}{% endif %}{% if legal_config.holder %} {{ legal_config.holder }}{% endif %}{% for item in metadata %} <span aria-hidden="true">{{ legal_config.separator }}</span> {% if item.url %}<a href="{{ item.url }}" class="text-link">{{ item.text }}</a>{% else %}{{ item.text }}{% endif %}{% endfor %}
+</p>

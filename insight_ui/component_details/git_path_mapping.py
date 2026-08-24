@@ -42,7 +42,7 @@ TEMPLATE_PATHS = {
     "tooltip": GIT_BASE_FILE + "tooltip.html",
     # Utils
     "infobox": GIT_BASE_FILE + "infobox.html",
-    "copyright_notice": GIT_BASE_FILE + "copyright_notice.html",
+    "legal_notice": GIT_BASE_FILE + "legal_notice.html",
     "logo": GIT_BASE_FILE + "logo.html",
     "brand_mark": GIT_BASE_FILE + "brand_mark.html",
     "corner_ribbon": GIT_BASE_FILE + "corner_ribbon.html",

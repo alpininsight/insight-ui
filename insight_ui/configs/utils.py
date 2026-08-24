@@ -52,8 +52,8 @@ class InfoboxConfig:
 
 
 @dataclass
-class CopyrightNoticeConfig:
-    """Configuration for the copyright_notice component.
+class LegalNoticeConfig:
+    """Configuration for the legal_notice component.
 
     Renders a compact copyright and legal notice line.
 
@@ -65,16 +65,18 @@ class CopyrightNoticeConfig:
         license_url: Optional URL for the license label.
         separator: Separator between legal metadata parts.
         rights_text: Optional rights statement.
+        version: Optional version string, for example v1.2.3.
 
     """
 
     __example__ = """
-        CopyrightNoticeConfig(
+        LegalNoticeConfig(
             year=2026,
             holder="Alpin Insight Solutions GmbH",
             source_label="Open Source",
             license_text="AGPL-3.0",
             license_url="https://github.com/org/repo/blob/main/LICENSE",
+            version="v1.0.0",
         )
         """
 
@@ -87,6 +89,7 @@ class CopyrightNoticeConfig:
         default="\u00b7", metadata={"doc": _("Separator between legal metadata parts.")}
     )  # Middle dot
     rights_text: str = field(default="", metadata={"doc": _("Optional rights statement.")})
+    version: str = field(default="", metadata={"doc": _("Optional version string, for example v1.2.3.")})
 
 
 @dataclass
