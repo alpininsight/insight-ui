@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Miscellaneous
 
 - Regenerate minified assets
+- **pre-commit:** Autoupdate hooks
 
 ### Refactoring
 
