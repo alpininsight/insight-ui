@@ -1024,9 +1024,6 @@
   .min-w-56 {
     min-width: calc(var(--spacing) * 56);
   }
-  .min-w-64 {
-    min-width: calc(var(--spacing) * 64);
-  }
   .min-w-fit {
     min-width: fit-content;
   }
@@ -1547,9 +1544,6 @@
   .border-insight-text-hint {
     border-color: var(--color-insight-text-hint);
   }
-  .border-neutral-300 {
-    border-color: var(--color-neutral-300);
-  }
   .border-red-500 {
     border-color: var(--color-red-500);
   }
@@ -1762,9 +1756,6 @@
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-insight-warning) 15%, transparent);
     }
-  }
-  .bg-neutral-300 {
-    background-color: var(--color-neutral-300);
   }
   .bg-red-500 {
     background-color: var(--color-red-500);
@@ -2475,9 +2466,6 @@
     .hover\:border-insight-primary:hover {
       border-color: var(--color-insight-primary);
     }
-    .hover\:border-insight-primary-hover:hover {
-      border-color: var(--color-insight-primary-hover);
-    }
     .hover\:border-insight-primary\/50:hover {
       border-color: color-mix(in srgb, #4183EA 50%, transparent);
     }
@@ -2622,9 +2610,6 @@
   .focus-visible\:outline-none:focus-visible {
     --tw-outline-style: none;
     outline-style: none;
-  }
-  .active\:border-insight-primary-active:active {
-    border-color: var(--color-insight-primary-active);
   }
   .active\:bg-insight-primary-active:active {
     background-color: var(--color-insight-primary-active);
@@ -3007,9 +2992,6 @@
   .dark\:border-insight-border-surface-dark:where([data-theme=dark], [data-theme=dark] *) {
     border-color: var(--color-insight-border-surface-dark);
   }
-  .dark\:border-neutral-600:where([data-theme=dark], [data-theme=dark] *) {
-    border-color: var(--color-neutral-600);
-  }
   .dark\:bg-black:where([data-theme=dark], [data-theme=dark] *) {
     background-color: var(--color-black);
   }
@@ -3024,9 +3006,6 @@
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-insight-primary) 10%, transparent);
     }
-  }
-  .dark\:bg-neutral-600:where([data-theme=dark], [data-theme=dark] *) {
-    background-color: var(--color-neutral-600);
   }
   .dark\:text-amber-400:where([data-theme=dark], [data-theme=dark] *) {
     color: var(--color-amber-400);
