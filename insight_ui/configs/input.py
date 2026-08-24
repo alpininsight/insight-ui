@@ -141,9 +141,9 @@ class ButtonConfig:
         validate_size(self.size, "size")
         validate_html_button_type(self.button_type, "button_type")
 
-        if self.request_url and self.htmx_config:
+        if self.request_url and self.htmx_config and self.htmx_config.request_url:
             warnings.warn(
-                "ButtonConfig has both 'request_url' and 'htmx_config' set. "
+                "ButtonConfig has both 'request_url' and 'htmx_config.request_url' set. "
                 "This renders an <a> tag with both href and hx-* attributes, which may cause "
                 "conflicting behavior. Use 'request_url' for navigation links, or "
                 "'htmx_config.request_url' for HTMX requests, but not both.",
