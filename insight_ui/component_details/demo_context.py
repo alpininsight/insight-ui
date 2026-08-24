@@ -288,31 +288,35 @@ def get_navbar_context() -> dict:
 @register_demo_context(Component.SIDEBAR)
 def get_drawer_context() -> dict:
     """Serve data for sidebar detailpage."""
-    sidebar_data = SidebarDataConfig(
-        _("Settings"),
-        IconConfig("wrench-screwdriver", "s"),
-        [
-            SidebarCategoryConfig(
-                _("Work"),
-                IconConfig("building-office-2", "s"),
-                [
-                    SidebarItemConfig(_("Notifications"), reverse("index_view"), IconConfig("bell", "s")),
-                    SidebarItemConfig(_("Messages"), reverse("index_view"), IconConfig("chat-bubble-left-right", "s")),
-                    SidebarItemConfig(_("Tasks"), reverse("index_view"), IconConfig("clipboard-document-check", "s")),
-                ],
-            ),
-            SidebarCategoryConfig(
-                _("Management"),
-                IconConfig("cog-8-tooth", "s"),
-                [
-                    SidebarItemConfig(_("Calendar"), reverse("index_view"), IconConfig("calendar", "s")),
-                    SidebarItemConfig(_("Profile"), reverse("index_view"), IconConfig("user", "s")),
-                ],
-            ),
-        ],
-    )
-
-    return {"demo_sidebar_data": sidebar_data}
+    return {
+        "demo_sidebar_data": SidebarDataConfig(
+            _("Settings"),
+            IconConfig("wrench-screwdriver", "s"),
+            [
+                SidebarCategoryConfig(
+                    _("Work"),
+                    IconConfig("building-office-2", "s"),
+                    [
+                        SidebarItemConfig(_("Notifications"), reverse("index_view"), IconConfig("bell", "s")),
+                        SidebarItemConfig(
+                            _("Messages"), reverse("index_view"), IconConfig("chat-bubble-left-right", "s")
+                        ),
+                        SidebarItemConfig(
+                            _("Tasks"), reverse("index_view"), IconConfig("clipboard-document-check", "s")
+                        ),
+                    ],
+                ),
+                SidebarCategoryConfig(
+                    _("Management"),
+                    IconConfig("cog-8-tooth", "s"),
+                    [
+                        SidebarItemConfig(_("Calendar"), reverse("index_view"), IconConfig("calendar", "s")),
+                        SidebarItemConfig(_("Profile"), reverse("index_view"), IconConfig("user", "s")),
+                    ],
+                ),
+            ],
+        )
+    }
 
 
 @register_demo_context(Component.FOOTER)

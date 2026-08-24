@@ -8,9 +8,6 @@ export class Sidebar {
     /** @type {WeakMap<HTMLElement, Sidebar>} Weak references to prevent multiple initialization */
     static instances = new WeakMap();
 
-    /** @type {number} XL breakpoint (1280px) - matches Tailwind's xl: breakpoint */
-    static XL_BREAKPOINT = 1280;
-
     /**
      * Creates a new Sidebar instance.
      *
@@ -103,16 +100,9 @@ export class Sidebar {
 
     /**
      * Initializes the sidebar transform for off-screen positioning.
-     * Handles RTL layouts by inverting the transform direction.
      */
     initSidebar() {
-        if (document.documentElement.dir === "rtl") {
-            if (this.side === "right") this.sidebar.style.transform = 'translateX(-100%)';
-            else if (this.side === "left") this.sidebar.style.transform = 'translateX(100%)';
-        } else {
-            if (this.side === "right") this.sidebar.style.transform = 'translateX(100%)';
-            else if (this.side === "left") this.sidebar.style.transform = 'translateX(-100%)';
-        }
+        this.sidebar.style.transform = this.getOffscreenTransform();
     }
 
     /**
@@ -129,12 +119,22 @@ export class Sidebar {
             // Store trigger for focus return
             this.triggerElement = document.activeElement;
 
-            // Open the mobile drawer
-            mobileDrawer.classList.remove("hidden");
+            // Ensure sidebar starts off-screen before becoming visible
             const aside = mobileDrawer.getElementsByTagName("aside")[0];
             if (aside) {
-                aside.style.transform = 'translateX(0)';
+                aside.style.transform = this.getOffscreenTransform();
             }
+
+            // Open the mobile drawer
+            mobileDrawer.classList.remove("hidden");
+
+            // Animate to visible position in next frame
+            if (aside) {
+                requestAnimationFrame(() => {
+                    aside.style.transform = 'translateX(0)';
+                });
+            }
+
             this.releaseFocusTrap = InsightUI.utils.trapFocus(mobileDrawer);
             this.toggleBtn?.setAttribute("aria-expanded", "true");
 
@@ -166,11 +166,7 @@ export class Sidebar {
 
         const aside = mobileDrawer.getElementsByTagName("aside")[0];
         if (aside) {
-            if (document.documentElement.dir === "rtl") {
-                aside.style.transform = this.side === "right" ? 'translateX(-100%)' : 'translateX(100%)';
-            } else {
-                aside.style.transform = this.side === "right" ? 'translateX(100%)' : 'translateX(-100%)';
-            }
+            aside.style.transform = this.getOffscreenTransform();
         }
 
         // Store trigger reference for focus return after transition
@@ -194,15 +190,35 @@ export class Sidebar {
     }
 
     /**
+     * Gets the off-screen transform value based on side and RTL mode.
+     *
+     * @returns {string} The CSS transform value
+     */
+    getOffscreenTransform() {
+        const isRTL = document.documentElement.dir === "rtl";
+        if (isRTL) {
+            return this.side === "right" ? 'translateX(-100%)' : 'translateX(100%)';
+        }
+        return this.side === "right" ? 'translateX(100%)' : 'translateX(-100%)';
+    }
+
+    /**
      * Opens the sidebar with focus trapping and keyboard support.
      */
     openSidebar() {
         // Store trigger for focus return
         this.triggerElement = document.activeElement;
 
+        // Ensure sidebar starts off-screen before becoming visible
+        this.sidebar.style.transform = this.getOffscreenTransform();
         this.wrapper.classList.remove("hidden");
+
+        // Animate to visible position in next frame
+        requestAnimationFrame(() => {
+            this.sidebar.style.transform = 'translateX(0)';
+        });
+
         this.releaseFocusTrap = InsightUI.utils.trapFocus(this.wrapper);
-        this.sidebar.style.transform = 'translateX(0)';
 
         // Add Escape key handler
         this.boundKeyDown = (e) => {
@@ -230,13 +246,7 @@ export class Sidebar {
             this.boundKeyDown = null;
         }
 
-        if (document.documentElement.dir === "rtl") {
-            if (this.side === "right") this.sidebar.style.transform = 'translateX(-100%)';
-            else if (this.side === "left") this.sidebar.style.transform = 'translateX(100%)';
-        } else {
-            if (this.side === "right") this.sidebar.style.transform = 'translateX(100%)';
-            else if (this.side === "left") this.sidebar.style.transform = 'translateX(-100%)';
-        }
+        this.sidebar.style.transform = this.getOffscreenTransform();
 
         // Store trigger reference for focus return after transition
         const triggerToFocus = this.triggerElement;
