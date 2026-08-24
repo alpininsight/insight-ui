@@ -2490,9 +2490,6 @@
         border-color: color-mix(in oklab, var(--color-insight-primary) 50%, transparent);
       }
     }
-    .hover\:border-insight-text-secondary:hover {
-      border-color: var(--color-insight-text-secondary);
-    }
     .hover\:bg-insight-bg-base:hover {
       background-color: var(--color-insight-bg-base);
     }
@@ -2521,9 +2518,6 @@
     }
     .hover\:text-insight-text-link-hover:hover {
       color: var(--color-insight-text-link-hover);
-    }
-    .hover\:text-insight-text-secondary:hover {
-      color: var(--color-insight-text-secondary);
     }
     .hover\:underline:hover {
       text-decoration-line: underline;

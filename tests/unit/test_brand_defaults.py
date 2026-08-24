@@ -58,9 +58,9 @@ def test_login_context_uses_brand_logo_with_login_specific_height() -> None:
     """The login screen should share the brand logo while keeping its larger layout height."""
     login_context = get_login_screen_context()
 
-    assert login_context["logo_config"].alt == "Acme Login Logo"
-    assert login_context["logo_config"].url == "acme.svg"
-    assert login_context["logo_config"].height == "8rem"
+    assert login_context["login_config"].logo.alt == "Acme Login Logo"
+    assert login_context["login_config"].logo.url == "acme.svg"
+    assert login_context["login_config"].logo.height == "8rem"
 
 
 @override_settings(
