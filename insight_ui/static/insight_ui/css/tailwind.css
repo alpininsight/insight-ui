@@ -3374,7 +3374,21 @@
     background-color: var(--color-insight-primary-soft);
     color: var(--color-insight-text-link);
   }
-  [data-insight-side-nav] a[aria-current="page"] {
+  .insight-sidebar-link {
+    border-inline-start-style: var(--tw-border-style);
+    border-inline-start-width: 1px;
+    border-color: var(--color-insight-border-surface);
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+    --tw-duration: 200ms;
+    transition-duration: 200ms;
+  }
+  .insight-sidebar-link:hover {
+    border-color: var(--color-insight-text-secondary);
+    color: var(--color-insight-text-secondary);
+  }
+  .insight-sidebar-link[aria-current="page"] {
     border-inline-start-style: var(--tw-border-style);
     border-inline-start-width: 4px;
     border-color: var(--color-insight-primary);
