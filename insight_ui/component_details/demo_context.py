@@ -161,6 +161,7 @@ def get_login_screen_context() -> dict:
         config.get_config()
         | get_footer_context()
         | {
+            "content_fill": True,
             "login_config": LoginScreenConfig(
                 logo=get_brand_logo_config(height="8rem"),
                 show_theme_toggle=True,

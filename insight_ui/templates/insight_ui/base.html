@@ -87,11 +87,11 @@
             <div id="left-aside" class="flex">
                 {% with _sidebar_side="left" %}{% block sidebar_left %}{% endblock sidebar_left %}{% endwith %}
             </div>
-            <div id="main-content" class="relative w-full min-w-0">
+            <div id="main-content" class="relative w-full min-w-0 {% if content_fill %}flex flex-col{% endif %}">
                 <div id="heading">
                     {% block heading %}{% endblock heading %}
                 </div>
-                <div id="content" class="w-full leading-loose">
+                <div id="content" class="w-full leading-loose {% if content_fill %}flex flex-col grow{% endif %}">
                     {% if use_default_loading_indicator is not False %}{% include "insight_ui/components/htmx_loading_indicator.html" %}{% endif %}
                     {% block content %}{% endblock content %}
                 </div>
