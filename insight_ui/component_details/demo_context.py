@@ -45,6 +45,7 @@ from insight_ui.configs import (
     ImageCarouselItemConfig,
     ImageConfig,
     InfiniteScrollConfig,
+    LoginScreenConfig,
     LogoConfig,
     MinimalStepperConfig,
     ModalConfig,
@@ -70,6 +71,8 @@ from insight_ui.configs import (
     ThreeDCarouselConfig,
     ToggleConfig,
     ToggleViewConfig,
+    UserMenuConfig,
+    UserMenuLinkConfig,
 )
 from insight_ui.demo_utils import generate_payload, map_payload_to_cards
 from insight_ui.utils.pagination import get_page
@@ -158,11 +161,14 @@ def get_login_screen_context() -> dict:
         config.get_config()
         | get_footer_context()
         | {
-            "logo_config": get_brand_logo_config(height="8rem"),
-            "show_theme_toggle": True,
-            "forgot_password": {"url": "#"},
-            "alt_login": {"url": "#", "title": _("Login with OIDC")},
-            "sign_up": {"url": "#"},
+            "login_config": LoginScreenConfig(
+                logo=get_brand_logo_config(height="8rem"),
+                show_theme_toggle=True,
+                forgot_password_url="#",  # noqa: S106  # nosec B106 - placeholder URL
+                alt_login_url="#",
+                alt_login_title=_("Login with OIDC"),
+                sign_up_url="#",
+            ),
         }
     )
 
@@ -243,8 +249,8 @@ def get_navbar_context() -> dict:
     """Serve data for navbar detailpage."""
     return {
         "demo_nav_config": NavbarConfig(
-            get_navbar_brand_defaults(),
-            [
+            brand=get_navbar_brand_defaults(),
+            links=[
                 NavbarLinkConfig(_("Startpage"), "/", IconConfig("home", "s")),
                 NavbarLinkConfig(
                     _("About"),
@@ -257,31 +263,32 @@ def get_navbar_context() -> dict:
                 NavbarLinkConfig(_("Test"), "/", need_auth=True),
                 NavbarLinkConfig(_("Test2"), "/", need_auth=True, staff_only=True),
             ],
-            "/",
-            True,
-            True,
-            True,
+            searchbar_request_url="/",
+            enable_doc_search=True,
+            usermenu=UserMenuConfig(
+                links=[
+                    UserMenuLinkConfig(
+                        text=_("Settings"),
+                        request_url=reverse("index_view"),
+                        icon="cog-8-tooth",
+                    ),
+                    UserMenuLinkConfig(
+                        text=_("Administration"),
+                        request_url=reverse("admin:index"),
+                        staff_only=True,
+                        icon="home",
+                    ),
+                    UserMenuLinkConfig(
+                        text=_("Translation"),
+                        request_url=reverse("index_view"),
+                        staff_only=True,
+                        icon="globe-alt",
+                    ),
+                ],
+            ),
+            show_language_selector=True,
+            show_theme_toggle=True,
         ),
-        "user_dropdown_links": [
-            {
-                "text": _("Settings"),
-                "request_url": reverse("index_view"),
-                "staff_only": False,
-                "icon": IconConfig("cog-8-tooth", "s"),
-            },
-            {
-                "text": _("Administration"),
-                "request_url": reverse("admin:index"),
-                "staff_only": True,
-                "icon": IconConfig("home", "s"),
-            },
-            {
-                "text": _("Translation"),
-                "request_url": reverse("index_view"),
-                "staff_only": True,
-                "icon": IconConfig("globe-alt", "s"),
-            },
-        ],
     }
 
 
@@ -511,7 +518,7 @@ def get_radio_block_context() -> dict:
             items=[
                 RadioItemConfig("card-view", "card", icon=IconConfig("squares-2x2")),
                 RadioItemConfig("table", "table", icon=IconConfig("list-bullet")),
-                RadioItemConfig("card-carousel", "carousel", icon=IconConfig("square-3-stack-3d")),
+                RadioItemConfig("card-carousel", "carousel", icon=IconConfig("square-3-stack-3d"), disabled=True),
             ],
         ),
         "size_radio_config": RadioBlockConfig(
@@ -523,9 +530,6 @@ def get_radio_block_context() -> dict:
                 RadioItemConfig("large-size", "large", "l", disabled=True),
             ],
             as_row=True,
-            request_url="/",
-            hx_target_id="#test",
-            method="changeSize()",
         ),
     }
 

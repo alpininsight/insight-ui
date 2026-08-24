@@ -1,65 +1,113 @@
 {% extends "insight_ui/base.html" %}
 {% load i18n insight_tags %}
 
+{% comment %}
+  Login Template - Context Contract
+  =================================
+
+  Required context variables:
+    form        - Django form with credential fields. Supports both:
+                  - Django auth: form.username, form.password
+                  - django-allauth: form.login, form.password
+    app_path    - Form action URL (e.g., reverse('login'))
+
+  Optional context variables:
+    login_config    - LoginScreenConfig instance with:
+                      - logo: LogoConfig for branding
+                      - show_theme_toggle: bool (default: True)
+                      - show_labels: bool (default: False)
+                      - forgot_password_url: str for password reset link
+                      - alt_login_url: str for alternative login (e.g., SSO)
+                      - alt_login_title: str for alternative login button text
+                      - sign_up_url: str for registration link
+    footer_config   - FooterConfig instance for page footer
+{% endcomment %}
+
 {% block content %}
-  <div class="flex flex-col relative justify-center p-6 mx-auto mb-16 max-w-96 bg-insight-bg-surface border border-insight-border-surface rounded-insight-surface shadow-insight-surface lg:p-8">
-    {% if show_theme_toggle %}
-      <div class="absolute top-2 right-2">
-        {% include "insight_ui/components/toggle_theme.html" %}
-      </div>
-    {% endif %}
-    {% if logo_config %}
-      <div class="flex {% if logo.position == 'start' %}justify-start{% elif logo.position == 'end' %}justify-end{% else %}justify-center{% endif %}">
-        {% logo config=logo_config %}
-      </div>
-    {% endif %}
-    <h2 class="font-bold text-primary text-center text-3xl leading-9">{% trans "Login" %}</h2>
-    <form class="space-y-2" action="{{ app_path }}" method="post">{% csrf_token %}
-      <div class="mb-4 text-insight-danger">
-        {{ form.non_field_errors }}
-      </div>
-      <!-- Username -->
-      <div>
-        {% if show_labels %} <label for="{{ form.username.id_for_label }}" class="block mb-1 font-medium text-sm text-secondary">{% trans "Username" %}</label> {% endif %}
-        <input id="username" name="username" type="text" placeholder="{% trans 'Enter username' %}" required class="input w-full">
-        {{ form.username.errors }}
-      </div>
-      <!-- Password -->
-      <div>
-        {% if show_labels %} <label for="{{ form.password.id_for_label }}" class="block mb-1 font-medium text-sm text-secondary">{% trans "Password" %}</label> {% endif %}
-        <input id="password" name="password" type="password" placeholder="{% trans 'Enter password' %}" required class="input w-full">
-        {{ form.password.errors }}
-        {% if forgot_password %}
-          <div class="flex justify-end mt-1">
-            <a href="{{ forgot_password.url }}" class="text-link text-sm">{% trans "Forgot password?" %}</a>
+  <div class="flex flex-1 justify-center items-center py-8 bg-linear-to-br from-insight-primary/25 via-transparent to-insight-secondary/25 dark:from-insight-primary/10 dark:to-insight-secondary/10">
+    <div class="flex flex-col relative justify-center p-6 w-full max-w-96 bg-insight-bg-surface border border-insight-border-surface rounded-insight-surface shadow-insight-surface lg:p-8">
+      {% if login_config.show_theme_toggle %}
+        <div class="absolute top-2 right-2">
+          {% include "insight_ui/components/toggle_theme.html" %}
+        </div>
+      {% endif %}
+      {% if login_config.logo %}
+        <div class="flex {% if login_config.logo.position == 'start' %}justify-start{% elif login_config.logo.position == 'end' %}justify-end{% else %}justify-center{% endif %}">
+          {% logo config=login_config.logo %}
+        </div>
+      {% endif %}
+      <h2 class="font-bold text-primary text-center text-3xl leading-9">{% trans "Login" %}</h2>
+      <form class="space-y-2" action="{{ app_path }}" method="post">{% csrf_token %}
+        <div class="mb-4 text-insight-danger">
+          {{ form.non_field_errors }}
+        </div>
+      <!-- Username / Login field (supports both Django auth and allauth) -->
+        {% with credential_field=form.login|default:form.username %}
+          <div>
+            {% if login_config.show_labels %}
+              <label for="{{ credential_field.id_for_label }}" class="block mb-1 font-medium text-sm text-secondary">
+                {{ credential_field.label|default:_("Username") }}
+              </label>
+            {% endif %}
+            <input
+              id="{{ credential_field.id_for_label|default:'id_username' }}"
+              name="{{ credential_field.html_name|default:'username' }}"
+              type="text"
+              placeholder="{% if form.login %}{% trans 'Enter username or email' %}{% else %}{% trans 'Enter username' %}{% endif %}"
+              required
+              class="input w-full"
+            >
+            {{ credential_field.errors }}
           </div>
-        {% endif %}
-      </div>
+        {% endwith %}
+      <!-- Password -->
+        <div>
+          {% if login_config.show_labels %}
+            <label for="{{ form.password.id_for_label }}" class="block mb-1 font-medium text-sm text-secondary">
+              {{ form.password.label|default:_("Password") }}
+            </label>
+          {% endif %}
+          <input
+            id="{{ form.password.id_for_label|default:'id_password' }}"
+            name="{{ form.password.html_name|default:'password' }}"
+            type="password"
+            placeholder="{% trans 'Enter password' %}"
+            required
+            class="input w-full"
+          >
+          {{ form.password.errors }}
+          {% if login_config.forgot_password_url %}
+            <div class="flex justify-end mt-1">
+              <a href="{{ login_config.forgot_password_url }}" class="text-link text-sm">{% trans "Forgot password?" %}</a>
+            </div>
+          {% endif %}
+        </div>
       <!-- Submit -->
-      <div class="flex justify-center mt-8">
-        {% button label=_("Sign in") type="primary" button_type="submit" extra_classes="w-full" %}
-      </div>
-    </form>
-    {% if alt_login %}
+        <div class="flex justify-center mt-8">
+          {% button label=_("Sign in") type="primary" button_type="submit" extra_classes="w-full" %}
+        </div>
+      </form>
+      {% if login_config.alt_login_url %}
       <!-- Alternative login section -->
-      <div class="flex gap-4 items-center mt-6 w-full">
-        <div class="w-full border-b border-insight-border-surface"></div>
-        <span>{% trans "Or" %}</span>
-        <div class="w-full border-b border-insight-border-surface"></div>
-      </div>
-      <div class="flex justify-center mt-2">
-        <a href="{{ alt_login.url }}" class="btn btn-link">
-          {{ alt_login.title }}
-        </a>
-      </div>
-    {% endif %}
-    {% if sign_up %}
+        <div class="flex gap-4 items-center mt-6 w-full">
+          <div class="w-full border-b border-insight-border-surface"></div>
+          <span>{% trans "Or" %}</span>
+          <div class="w-full border-b border-insight-border-surface"></div>
+        </div>
+        <div class="flex justify-center mt-2">
+          <a href="{{ login_config.alt_login_url }}" class="btn btn-link">
+            {{ login_config.alt_login_title }}
+          </a>
+        </div>
+      {% endif %}
+      {% if login_config.sign_up_url %}
       <!-- Sign up section -->
-      <div class="mt-4">
-        <p class="text-secondary text-sm">{% trans "You do not have an account yet?" %}</p>
-        <a href="{{ sign_up.url }}" class="text-link text-sm">{% trans "Sign up here" %}</a>
-      </div>
-    {% endif %}
+        <div class="mt-4">
+          <p class="text-secondary text-sm">{% trans "You do not have an account yet?" %}</p>
+          <a href="{{ login_config.sign_up_url }}" class="text-link text-sm">{% trans "Sign up here" %}</a>
+        </div>
+      {% endif %}
+    </div>
   </div>
 {% endblock %}
 

@@ -345,7 +345,7 @@ def get_navbar_usage_context() -> dict[str, str]:
         {% load insight_tags %}
 
         {% block navbar %}
-            {% navbar config=nav_config user_dropdown_links=user_dropdown_links %}
+            {% navbar config=nav_config %}
         {% endblock navbar %}
         """,
     }
