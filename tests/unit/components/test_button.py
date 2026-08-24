@@ -1,6 +1,9 @@
 """Tests for the button component."""
 
+import json
+
 from bs4 import BeautifulSoup
+from insight_ui.configs import ButtonConfig, HtmxConfig
 
 from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
@@ -26,3 +29,22 @@ class TestButton(TemplateTagsTestCase):
         assert button["aria-controls"] == "hub-login-dialog-panel"
         assert button["hx-get"] == "/dialog/"
         assert button["hx-target"] == "#hub-login-dialog-panel"
+
+    def test_button_serializes_htmx_vals_as_json(self) -> None:
+        """Button and anchor variants preserve typed additional HTMX values."""
+        vals = {"parleq_id": "de--1", "tracked": False}
+        htmx_config = HtmxConfig(request_url="/track/", target="#result", method="post", vals=vals)
+        configs = (
+            (ButtonConfig(label="Track", htmx_config=htmx_config), "button"),
+            (ButtonConfig(label="Track", request_url="/track/", htmx_config=htmx_config), "a"),
+        )
+
+        for config, element_name in configs:
+            rendered = self.render_template(
+                "{% load insight_tags %}{% button config=config %}",
+                {"config": config},
+            )
+            element = BeautifulSoup(rendered, "html.parser").find(element_name)
+
+            assert element is not None
+            assert json.loads(element["hx-vals"]) == vals
