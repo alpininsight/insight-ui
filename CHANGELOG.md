@@ -15,11 +15,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Correct animation and chevron direction of the sidebar component in RTL mode
 - Set 'navbar_fixed' for the toc sidebar to prevent the label from disappearing
 - Remove sidebar shift in mobile browsers
+- Remove the need to specify the 'request_url' twice for the 'search_bar' component
 
 ### Features
 
 - Update 'sidebar' parameter description and example code
 - Sync navbar and sidebar response behavior
+- Show a warning when the developer sets both, the component 'request_url' and HTMXConfig 'request_url'
 
 ### Miscellaneous
 
