@@ -39,7 +39,6 @@ def get_main_page_links() -> list[dict[str, Any]]:
 
     """
     return [
-        NavbarLinkConfig(_("Home"), reverse("index_view"), IconConfig("home", "s")),
         NavbarLinkConfig(_("Installation"), reverse("installation_view"), IconConfig("arrow-down-tray", "s")),
         NavbarLinkConfig(_("Base Template"), reverse("base_template_view"), IconConfig("cube-transparent", "s")),
         NavbarLinkConfig(_("Customization"), reverse("customization_view"), IconConfig("adjustments-horizontal", "s")),
