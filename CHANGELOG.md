@@ -21,6 +21,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Use 'parameter_table' on icon detailpage instead of include the template directly
 - Correct check method for the 'double request_url' warning
 - **brand-mark:** Render the wordmark accent in Signal Orange
+- Use correct url for login screen
+- Use white text instead of base text color for the 'radio_block' component
+- Restore old active state design for sidebar navigation links
 
 ### CI/CD
 
@@ -31,6 +34,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update 'sidebar' parameter description and example code
 - Sync navbar and sidebar response behavior
 - Show a warning when the developer sets both, the component 'request_url' and HTMXConfig 'request_url'
+- Determine current page via aria attributes and add highlighting for navbar dropdown menus
+- Remove 'Home' from navbar
+- Use a more suitable icon for the language toggle
+- Add 'UserMenuConfig', 'LoginScreenConfig' and add 'register_url' to 'navbar' component
+- Add 'content_fill' option for the base template
 
 ### Miscellaneous
 
@@ -38,6 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **pre-commit:** Autoupdate hooks
 - Regenerate minified stylesheet
 - Regenerate minified stylesheet
+- Regenerate minified assets
 
 ### Refactoring
 
@@ -51,6 +60,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add smoke tests for the docs pages
 - Change language to english for the component parameter context tests
+- Update navbar and login screen tests
+- Update tests
 
 ## [1.12.0] - 2026-08-20
 
