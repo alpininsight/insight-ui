@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Use correct url for login screen
 - Use white text instead of base text color for the 'radio_block' component
 - Restore old active state design for sidebar navigation links
+- **brand-mark:** Stop rendering template comment
 
 ### CI/CD
 
@@ -67,6 +68,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Change language to english for the component parameter context tests
 - Update navbar and login screen tests
 - Update tests
+- **brand-mark:** Assert rendered wordmark contract
 
 ## [1.12.0] - 2026-08-20
 
