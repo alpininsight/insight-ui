@@ -12,15 +12,16 @@ class TestBrandMark(TemplateTagsTestCase):
         """Default brand mark renders without errors."""
         rendered = self.render_template("{% load insight_tags %}{% brand_mark %}")
         assert rendered.strip() != ""
-        assert "The two halves of the wordmark" not in rendered
+        assert '<span class="font-medium text-primary">' in rendered
+        assert '<span class="font-bold text-insight-secondary">' in rendered
 
     def test_brand_mark_custom_text(self) -> None:
         """primary_text / secondary_text override the wordmark runs."""
         rendered = self.render_template(
             '{% load insight_tags %}{% brand_mark primary_text="Foo Bar" secondary_text="Cloud" %}'
         )
-        assert "Foo Bar" in rendered
-        assert "Cloud" in rendered
+        assert '<span class="font-medium text-primary">Foo Bar</span>' in rendered
+        assert '<span class="font-bold text-insight-secondary">Cloud</span>' in rendered
 
     def test_brand_mark_config(self) -> None:
         """A config dict configures the mark."""
@@ -44,6 +45,7 @@ class TestBrandMark(TemplateTagsTestCase):
         are valid CSS and both render without error: nothing else in the suite
         can tell the difference.
         """
-        rendered = self.render_template("{% load insight_tags %}{% brand_mark %}")
-        assert "text-insight-secondary" in rendered
-        assert "font-bold text-insight-primary" not in rendered
+        rendered = self.render_template(
+            '{% load insight_tags %}{% brand_mark primary_text="Foo Bar" secondary_text="Cloud" %}'
+        )
+        assert '<span class="font-bold text-insight-secondary">Cloud</span>' in rendered
