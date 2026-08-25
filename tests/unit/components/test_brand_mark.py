@@ -12,6 +12,7 @@ class TestBrandMark(TemplateTagsTestCase):
         """Default brand mark renders without errors."""
         rendered = self.render_template("{% load insight_tags %}{% brand_mark %}")
         assert rendered.strip() != ""
+        assert "The two halves of the wordmark" not in rendered
 
     def test_brand_mark_custom_text(self) -> None:
         """primary_text / secondary_text override the wordmark runs."""
