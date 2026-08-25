@@ -20,6 +20,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Make radio item gray if disabled and set default cursor
 - Use 'parameter_table' on icon detailpage instead of include the template directly
 - Correct check method for the 'double request_url' warning
+- **brand-mark:** Render the wordmark accent in Signal Orange
+
+### CI/CD
+
+- **pypi:** Publish via Trusted Publishing instead of an API token
 
 ### Features
 
@@ -37,6 +42,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Refactoring
 
 - Return drawer context directly whitout creating temp variable
+
+### Reverted
+
+- **pypi:** Restore token-based publish until prerequisites exist
 
 ### Testing
 
