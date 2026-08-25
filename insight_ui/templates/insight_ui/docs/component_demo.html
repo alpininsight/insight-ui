@@ -625,10 +625,10 @@
 {% elif component.value == "tabs" %}
     {% tabs config=tabs_config %}{% endtabs %}
 {% elif component.value == "button" %}
-    <div class="space-y-4">
-        <div>
-            <h3>{% trans "Standard / Filled" %}</h3>
-            <div class="flex flex-col flex-wrap gap-1 items-start md:flex-row">
+    {% vbox gap="l" %}
+        {% vbox gap="s" %}
+            <h3 class="text-xl">{% trans "Standard / Filled" %}</h3>
+            {% hbox gap="xs" wrap=True %}
                 {% button label=_("Primary") type="primary" %}
                 {% button label=_("Secondary") type="secondary" %}
                 {% button label=_("Success") type="success" %}
@@ -637,11 +637,11 @@
                 {% button label=_("Info") type="info" %}
                 {% button label=_("Neutral") type="neutral" %}
                 {% button label=_("Disabled") disabled=True %}
-            </div>
-        </div>
-        <div>
-            <h3>{% trans "Outline / Ghost" %}</h3>
-            <div class="flex flex-col flex-wrap gap-1 items-start md:flex-row">
+            {% endhbox %}
+        {% endvbox %}
+        {% vbox gap="s" %}
+            <h3 class="text-xl">{% trans "Outline / Ghost" %}</h3>
+            {% hbox gap="xs" wrap=True %}
                 {% button label=_("Primary") type="primary" outline=True %}
                 {% button label=_("Secondary") type="secondary" outline=True %}
                 {% button label=_("Success") type="success" outline=True %}
@@ -650,11 +650,11 @@
                 {% button label=_("Info") type="info" outline=True %}
                 {% button label=_("Info") type="neutral" outline=True %}
                 {% button label=_("Disabled") disabled=True outline=True %}
-            </div>
-        </div>
-        <div>
-            <h3>{% trans "Subtle" %}</h3>
-            <div class="flex flex-col flex-wrap gap-1 items-start md:flex-row">
+            {% endhbox %}
+        {% endvbox %}
+        {% vbox gap="s" %}
+            <h3 class="text-xl">{% trans "Subtle" %}</h3>
+            {% hbox gap="xs" wrap=True %}
                 {% button label=_("Primary") type="primary" subtle=True %}
                 {% button label=_("Secondary") type="secondary" subtle=True %}
                 {% button label=_("Success") type="success" subtle=True %}
@@ -663,43 +663,48 @@
                 {% button label=_("Info") type="info" subtle=True %}
                 {% button label=_("Info") type="neutral" subtle=True %}
                 {% button label=_("Disabled") disabled=True subtle=True %}
-            </div>
-        </div>
-
-        <div>
-            <h3>{% trans "Sizes" %}</h3>
-            <div class="flex flex-col flex-wrap gap-1 items-start md:flex-row">
+            {% endhbox %}
+        {% endvbox %}
+        {% vbox gap="s" %}
+            <h3 class="text-xl">{% trans "Sizes" %}</h3>
+            {% hbox gap="xs" wrap=True %}
                 {% button label=_("Click me!") type="primary" size="xl" %}
                 {% button label=_("Click me!") type="primary" size="l" %}
                 {% button label=_("Click me!") type="primary" size="m" %}
                 {% button label=_("Click me!") type="primary" size="s" %}
                 {% button label=_("Click me!") type="primary" size="xs" %}
-            </div>
-        </div>
-        <div>
-            <h3>{% trans "Round (combinable)" %}</h3>
-            <div class="flex flex-col flex-wrap gap-1 items-start md:flex-row">
+            {% endhbox %}
+        {% endvbox %}
+        {% vbox gap="s" %}
+            <h3 class="text-xl">{% trans "Round (combinable)" %}</h3>
+            {% hbox gap="xs" wrap=True %}
                 {% button label=_("Primary") type="primary" round=True size="l" %}
                 {% button label=_("Primary") type="secondary" outline=True round=True %}
                 {% button label=_("Primary") type="success" subtle=True round=True size="s" %}
-            </div>
-        </div>
-        <div>
-            <h3>{% trans "Icons" %}</h3>
-            <div class="flex flex-col flex-wrap gap-1 items-start md:flex-row">
+            {% endhbox %}
+        {% endvbox %}
+        {% vbox gap="s" %}
+            <h3 class="text-xl">{% trans "Icons" %}</h3>
+            {% hbox gap="xs" wrap=True %}
                 {% button label=_("With Icon") type="primary" icon_name="rocket-launch" %}
                 {% button label=_("With Icon") type="primary" icon_name="rocket-launch" icon_end=True %}
                 {% button label=_("Icon only") type="primary" icon_name="rocket-launch" icon_only=True %}
                 {% button label=_("Icon only") type="primary" icon_name="rocket-launch" icon_only=True round=True %}
-            </div>
-        </div>
-        <div>
-            <h3>{% trans "Hyperlink" %}</h3>
-            <div class="flex flex-col flex-wrap gap-1 items-start md:flex-row">
+            {% endhbox %}
+        {% endvbox %}
+        {% vbox gap="s" %}
+            <h3 class="text-xl">{% trans "Tooltip" %}</h3>
+            {% hbox gap="xs" wrap=True %}
+                {% button label=_("With tooltip") type="primary" tooltip="This is a button." %}
+            {% endhbox %}
+        {% endvbox %}
+        {% vbox gap="s" %}
+            <h3 class="text-xl">{% trans "Hyperlink" %}</h3>
+            {% hbox gap="xs" wrap=True %}
                 {% button label=_("As hyperlink") type="primary" request_url="#" %}
-            </div>
-        </div>
-    </div>
+            {% endhbox %}
+        {% endvbox %}
+    {% endvbox %}
 {% elif component.value == "input_field" %}
     <div class="space-y-6">
         {% input_field tag_id="text" name="text_input" input_type="text" placeholder=_("Type your name") label=_("Name:") %}
@@ -928,6 +933,38 @@
     {% live_content tag_id="live-content" request_url="/api/live-data/" interval=10 %}
 {% elif component.value == "web_socket" %}
     {% websocket tag_id="demo-websocket" request_url="/ws/ticker/" initial_content="<p class='text-insight-text-hint'>Connecting to stock ticker...</p><p class='mt-2 text-xs'>Requires ASGI server: <code>uvicorn core.asgi:application --port 10800</code></p>" %}
+{% elif component.value == "badge" %}
+    {% vbox gap="l" %}
+        {% vbox gap="s" %}
+            <h3 class="text-xl">{% trans "Standard / Filled" %}</h3>
+            {% hbox gap="xs" wrap=True %}
+                {% badge label=_("Primary") type="primary" %}
+                {% badge label=_("Secondary") type="secondary" %}
+                {% badge label=_("Success") type="success" %}
+                {% badge label=_("Warning") type="warning" %}
+                {% badge label=_("Danger") type="danger" %}
+                {% badge label=_("Info") type="info" %}
+                {% badge label=_("Neutral") type="neutral" %}
+            {% endhbox %}
+        {% endvbox%}
+        {% vbox gap="s" %}
+            <h3 class="text-xl">{% trans "Sizes" %}</h3>
+            {% hbox gap="xs" wrap=True %}
+                {% badge label=_("New!") type="primary" size="xl" %}
+                {% badge label=_("New!") type="primary" size="l" %}
+                {% badge label=_("New!") type="primary" size="m" %}
+                {% badge label=_("New!") type="primary" size="s" %}
+                {% badge label=_("New!") type="primary" size="xs" %}
+            {% endhbox %}
+        {% endvbox%}
+        {% vbox gap="s" %}
+            <h3 class="text-xl">{% trans "Icons" %}</h3>
+            {% hbox gap="xs" wrap=True %}
+                {% badge label=_("New!") icon_name="sparkles" %}
+                {% badge label=_("New!") icon_name="sparkles" icon_end=True %}
+            {% endhbox %}
+        {% endvbox%}
+    {% endvbox%}
 {% elif component.value == "infinite_scroll" %}
     {% infinite_scroll config=infinite_scroll_config %}
 {% elif component.value == "pagination" %}
@@ -970,27 +1007,4 @@
     {% toggle_view config=toggle_view_config %}
 {% elif component.value == "form" %}
     {% form config=form_config %}
-{% elif component.value == "badge" %}
-    <div class="space-y-4">
-        <div class="flex flex-col flex-wrap gap-2 items-start md:flex-row">
-            {% badge label=_("Primary") type="primary" %}
-            {% badge label=_("Secondary") type="secondary" %}
-            {% badge label=_("Success") type="success" %}
-            {% badge label=_("Warning") type="warning" %}
-            {% badge label=_("Danger") type="danger" %}
-            {% badge label=_("Info") type="info" %}
-            {% badge label=_("Neutral") type="neutral" %}
-        </div>
-        <div class="flex flex-col flex-wrap gap-2 items-start md:flex-row">
-            {% badge label=_("New!") type="primary" size="xl" %}
-            {% badge label=_("New!") type="primary" size="l" %}
-            {% badge label=_("New!") type="primary" size="m" %}
-            {% badge label=_("New!") type="primary" size="s" %}
-            {% badge label=_("New!") type="primary" size="xs" %}
-        </div>
-        <div class="flex flex-col flex-wrap gap-2 items-start md:flex-row">
-            {% badge label=_("New!") icon_name="sparkles" %}
-            {% badge label=_("New!") icon_name="sparkles" icon_end=True %}
-        </div>
-    </div>
 {% endif %}
