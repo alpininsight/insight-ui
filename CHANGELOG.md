@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### CI/CD
 
 - **pypi:** Publish via Trusted Publishing instead of an API token
+- Rerun standard checks on PR title edits
 
 ### Features
 
@@ -39,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Use a more suitable icon for the language toggle
 - Add 'UserMenuConfig', 'LoginScreenConfig' and add 'register_url' to 'navbar' component
 - Add 'content_fill' option for the base template
+- Add version information to 'copyright_notice' and rename component to 'legal_notice'
 
 ### Miscellaneous
 
@@ -47,6 +49,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Regenerate minified stylesheet
 - Regenerate minified stylesheet
 - Regenerate minified assets
+- Regenerate minified stylesheet
+- Update stylesheet
+- Regenerate minified stylesheet
 
 ### Refactoring
 
