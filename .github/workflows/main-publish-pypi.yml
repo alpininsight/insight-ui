@@ -1,27 +1,64 @@
 name: Main publish (PyPI)
+
 on:
   release:
     types: [published]
+
+# Deny by default; each job grants only what it needs.
+permissions: {}
+
+concurrency:
+  group: publish-${{ github.ref }}
+  # Never cancel a publish in flight -- a half-uploaded release cannot be redone
+  # under the same version, PyPI rejects re-uploads of an existing file.
+  cancel-in-progress: false
+
 jobs:
-  build-and-publish:
+  build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: write
-    concurrency:
-      group: publish-${{ github.ref }}
-      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v7
         with:
+          # hatch-vcs derives the version from the tag, so the tag must be present.
           fetch-depth: 0
+          persist-credentials: false
+
       - uses: astral-sh/setup-uv@v10.0.1
+
       - name: Build wheel & sdist
         run: |
           uv build
           ls -lah dist/
+
+      - name: Verify the wheel installs and imports
+        run: |
+          uv run --isolated --no-project --with dist/*.whl \
+            python -c "import insight_ui; print(insight_ui.__version__)"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: dist
+          path: dist/
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/insight-ui
+    permissions:
+      # Trusted Publishing: the OIDC token replaces PYPI_API_TOKEN entirely.
+      # This job deliberately has no `contents` access and never checks out code.
+      id-token: write
+    steps:
+      - uses: astral-sh/setup-uv@v10.0.1
+
+      - uses: actions/download-artifact@v8
+        with:
+          name: dist
+          path: dist/
+
       - name: Publish to PyPI
-        if: success()
-        env:
-          UV_PUBLISH_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
-        run: uv publish --index https://upload.pypi.org/legacy/
+        run: uv publish
