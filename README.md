@@ -127,7 +127,10 @@ Developer references in `docs/`:
 
 ## Contributing
 
-We welcome contributions! Please read the [Contributing Guide](docs/contributing.md) and [Conventions](docs/conventions.md) before opening a pull request.
+We welcome contributions! Start with [CONTRIBUTING.md](CONTRIBUTING.md) — it covers the
+Contributor Licence Agreement every contributor signs once. The developer guide is
+[docs/contributing.md](docs/contributing.md), the code-level rules are in
+[Conventions](docs/conventions.md).
 
 ## Support
 

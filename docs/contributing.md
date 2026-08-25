@@ -2,6 +2,11 @@
 
 Welcome! We appreciate every helpful contribution to Insight UI.
 
+> Before your first pull request can be merged you need to sign the
+> [Contributor Licence Agreement](../CLA.md) once — Insight UI is
+> dual-licensed and that is what makes the commercial edition possible.
+> See [CONTRIBUTING.md](../CONTRIBUTING.md#licensing-and-the-cla).
+
 ## Prerequisites
 
 - Python 3.12+
