@@ -1,10 +1,12 @@
 # Insight UI Contributor Licence Agreement
 
 > **Status: draft — not yet in force.**
-> This document is adapted from the Harmony Agreements and still has open
-> placeholders (marked `TODO`). It must be reviewed by counsel before the CLA
-> bot is switched on. Do not present it to contributors as binding until that
-> review has happened.
+> Adapted from the Harmony Agreements. Governing law and the contracting party
+> are filled in; the remaining `TODO` markers are register details taken from
+> the commercial register. The document must be reviewed under German law
+> before the CLA bot is switched on — the open questions are collected in
+> [docs/cla-legal-review.md](docs/cla-legal-review.md). Do not present it to
+> contributors as binding until that review has happened.
 
 Thank you for your interest in contributing to Insight UI ("We" or "Us").
 
@@ -158,7 +160,7 @@ OTHERWISE) UPON WHICH THE CLAIM IS BASED.
 ### 6. Miscellaneous
 
 6.1 This Agreement will be governed by and construed in accordance with the laws
-of **TODO: JURISDICTION** excluding its conflicts of law provisions. Under
+of the Federal Republic of Germany excluding its conflicts of law provisions. Under
 certain circumstances, the governing law in this section might be superseded by
 the United Nations Convention on Contracts for the International Sale of Goods
 ("UN Convention") and the parties intend to avoid the application of the UN
@@ -186,6 +188,15 @@ closest to the meaning of the original provision and which is enforceable. The
 terms and conditions set forth in this Agreement shall apply notwithstanding any
 failure of essential purpose of this Agreement or any limited remedy to the
 maximum extent possible under law.
+
+6.6 To the extent legally permissible, the courts of Berlin, Germany shall have
+exclusive jurisdiction over any dispute arising out of or in connection with
+this Agreement.
+
+> Not part of the Harmony template — proposed addition, to be confirmed by
+> counsel. A venue clause is largely ineffective against contributors who
+> qualify as consumers (section 38 ZPO, Articles 17-19 Brussels Ia), which is
+> why it is qualified rather than absolute.
 
 ---
 
@@ -219,9 +230,24 @@ contact@alpininsight.com.
 
 ## Us
 
-Alpin Insight Solutions
-**TODO: legal entity name, registered address, authorised signatory**
+Alpin Insight Solutions GmbH & Co. KG
+Friedrichstrasse 171
+10117 Berlin
+Germany
+
+Registered: Amtsgericht Charlottenburg, HRA **TODO**
+
+Represented by its general partner **TODO: firm of the Komplementaer-GmbH**,
+Amtsgericht Charlottenburg, HRB **TODO**, itself represented by its managing
+director(s) **TODO**.
+
 contact@alpininsight.com
+
+> Three fields remain open because they cannot be derived from the address: the
+> KG's HRA number, the firm and HRB number of the general partner, and the
+> managing director(s). A GmbH & Co. KG is represented by its general partner,
+> which is in turn represented by its managing director — the chain has to be
+> stated in full for the signature block to be correct.
 
 ---
 

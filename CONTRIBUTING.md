@@ -40,6 +40,12 @@ Because of that dual licence, **every contributor signs the
 [Contributor Licence Agreement](CLA.md) once**, before their first pull request
 can be merged.
 
+> **Right now the agreement is still with our lawyers, and the signing bot is
+> switched off.** Please open your pull request anyway — we will review it and
+> work on it with you exactly as we normally would. Only the merge waits. When
+> the CLA is in force, the bot will ask you to sign in your pull request and we
+> take it from there. There is nothing for you to do in the meantime.
+
 You keep the copyright in your work. What you grant us is the additional right
 to license it commercially — and in exchange we are bound to keep licensing it
 under the open source licence too. We cannot take your contribution
