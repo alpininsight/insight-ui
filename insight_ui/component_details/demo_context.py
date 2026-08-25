@@ -25,7 +25,6 @@ from insight_ui.configs import (
     CheckboxConfig,
     CheckboxGroupConfig,
     CheckboxItemConfig,
-    CopyrightNoticeConfig,
     CornerRibbonConfig,
     DataAttrConfig,
     DropdownConfig,
@@ -45,6 +44,7 @@ from insight_ui.configs import (
     ImageCarouselItemConfig,
     ImageConfig,
     InfiniteScrollConfig,
+    LegalNoticeConfig,
     LoginScreenConfig,
     LogoConfig,
     MinimalStepperConfig,
@@ -341,7 +341,7 @@ def get_footer_context() -> dict:
             FooterContactConfig(
                 "support@alpininsight.com", "https://alpininsight.com/imprint/", "https://alpininsight.com/privacy/"
             ),
-            get_copyright_notice_context()["copyright_notice_config"],
+            get_legal_notice_context()["legal_notice_config"],
             "v1.0.0",
         )
     }
@@ -640,11 +640,11 @@ def get_modal_context() -> dict:
 # =============================================================
 
 
-@register_demo_context(Component.COPYRIGHT_NOTICE)
-def get_copyright_notice_context() -> dict:
-    """Serve data for copyright notice detailpage."""
+@register_demo_context(Component.LEGAL_NOTICE)
+def get_legal_notice_context() -> dict:
+    """Serve data for legal notice detailpage."""
     return {
-        "copyright_notice_config": CopyrightNoticeConfig(
+        "legal_notice_config": LegalNoticeConfig(
             2026, "Alpin Insight Solutions GmbH & Co. KG", "Open Source", "AGPL-3.0", reverse_lazy("license_view")
         )
     }

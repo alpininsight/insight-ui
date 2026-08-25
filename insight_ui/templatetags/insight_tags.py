@@ -47,7 +47,6 @@ from insight_ui.configs import (
     CheckboxConfig,
     CheckboxGroupConfig,
     ColorType,
-    CopyrightNoticeConfig,
     CornerPosition,
     CornerRibbonConfig,
     DataAttrConfig,
@@ -69,6 +68,7 @@ from insight_ui.configs import (
     InfiniteScrollConfig,
     InfoboxConfig,
     InputFieldConfig,
+    LegalNoticeConfig,
     LiveContentConfig,
     LogoConfig,
     MinimalStepperConfig,
@@ -481,7 +481,7 @@ def navbar(context: dict[str, Any], config: NavbarConfig, **kwargs: JsonValue) -
 
 @register.inclusion_tag("insight_ui/components/footer.html")
 def footer(config: FooterConfig) -> dict[str, Any]:
-    """Render a footer with optional description, links, and a copyright line."""
+    """Render a footer with optional description, links, and a legal notice line."""
     return {"footer_config": config}
 
 
@@ -914,9 +914,9 @@ def infobox(
     return {"info_config": config}
 
 
-@register.inclusion_tag("insight_ui/components/copyright_notice.html")
-def copyright_notice(
-    config: CopyrightNoticeConfig | None = None,
+@register.inclusion_tag("insight_ui/components/legal_notice.html")
+def legal_notice(
+    config: LegalNoticeConfig | None = None,
     *,
     year: int | str | _Unset | None = UNSET,
     holder: str | _Unset | None = UNSET,
@@ -925,16 +925,18 @@ def copyright_notice(
     license_url: str | _Unset | None = UNSET,
     separator: str | _Unset | None = UNSET,
     rights_text: str | _Unset | None = UNSET,
+    version: str | _Unset | None = UNSET,
 ) -> dict[str, Any]:
-    """Render a reusable copyright and legal notice line."""
-    config = build_config(CopyrightNoticeConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    """Render a reusable legal notice line with copyright, license, and version."""
+    config = build_config(LegalNoticeConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     metadata = [
+        {"text": config.rights_text or _("All rights reserved."), "url": ""},
         {"text": config.source_label or "", "url": ""},
         {"text": config.license_text or "", "url": config.license_url or ""},
-        {"text": config.rights_text or _("All rights reserved."), "url": ""},
+        {"text": config.version or "", "url": ""},
     ]
 
-    return {"copyright_config": config, "metadata": [item for item in metadata if item["text"]]}
+    return {"legal_config": config, "metadata": [item for item in metadata if item["text"]]}
 
 
 @register.filter

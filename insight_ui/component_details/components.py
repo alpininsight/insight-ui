@@ -21,7 +21,6 @@ from insight_ui.configs import (
     ChatConfig,
     CheckboxConfig,
     CheckboxGroupConfig,
-    CopyrightNoticeConfig,
     CornerRibbonConfig,
     DividerConfig,
     DropdownConfig,
@@ -37,6 +36,7 @@ from insight_ui.configs import (
     InfiniteScrollConfig,
     InfoboxConfig,
     InputFieldConfig,
+    LegalNoticeConfig,
     LiveContentConfig,
     LogoConfig,
     MinimalStepperConfig,
@@ -140,7 +140,7 @@ class Component(Enum):
     # Utility Components
     INFOBOX = ("infobox", ComponentCategory.UTIL, InfoboxConfig)
     CODE_BLOCK = ("code_block", ComponentCategory.UTIL)
-    COPYRIGHT_NOTICE = ("copyright_notice", ComponentCategory.UTIL, CopyrightNoticeConfig)
+    LEGAL_NOTICE = ("legal_notice", ComponentCategory.UTIL, LegalNoticeConfig)
     DIFFERENTIATOR = ("differentiator", ComponentCategory.UTIL)
     LOGO = ("logo", ComponentCategory.UTIL, LogoConfig)
     BRAND_MARK = ("brand_mark", ComponentCategory.UTIL, BrandMarkConfig)
