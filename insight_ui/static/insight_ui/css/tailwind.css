@@ -1643,6 +1643,9 @@
       background-color: color-mix(in oklab, var(--color-insight-bg-base) 75%, transparent);
     }
   }
+  .bg-insight-bg-overlay {
+    background-color: var(--color-insight-bg-overlay);
+  }
   .bg-insight-bg-raised {
     background-color: var(--color-insight-bg-raised);
   }
@@ -3447,6 +3450,7 @@
   }
   .btn {
     display: flex;
+    height: fit-content;
     align-items: center;
     justify-content: center;
     gap: calc(var(--spacing) * 2);
@@ -4024,6 +4028,7 @@
   }
   .badge {
     display: inline-flex;
+    height: fit-content;
     align-items: center;
     gap: calc(var(--spacing) * 2);
     border-radius: var(--radius-insight-full);

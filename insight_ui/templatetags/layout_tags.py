@@ -510,7 +510,7 @@ class FlexNode(LayoutNode):
             classes.append(GAP_CLASSES[str(gap)])
 
         h_align = str(kwargs.get("h_align", "stretch" if self.flex_direction == "col" else "start"))
-        v_align = str(kwargs.get("v_align", "start"))
+        v_align = str(kwargs.get("v_align", "stretch" if self.flex_direction == "row" else "start"))
 
         if self.flex_direction == "row":
             # flex-row: h_align = main-axis (justify), v_align = cross-axis (items)
