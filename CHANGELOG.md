@@ -22,6 +22,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Correct check method for the 'double request_url' warning
 - **brand-mark:** Render the wordmark accent in Signal Orange
 
+### CI/CD
+
+- **pypi:** Publish via Trusted Publishing instead of an API token
+
 ### Features
 
 - Update 'sidebar' parameter description and example code
