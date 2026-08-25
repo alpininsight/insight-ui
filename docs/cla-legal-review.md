@@ -36,7 +36,7 @@ später kaum herauslösen.
 | Outbound-Lizenz | **§2.3 Option Five** der Vorlage |
 | Anwendbares Recht | Deutschland (§6.1) |
 | Gerichtsstand | Berlin, als Vorschlag in §6.6 ergänzt |
-| Vertragspartei | Alpin Insight Solutions GmbH & Co. KG, Friedrichstraße 171, 10117 Berlin |
+| Vertragspartei | Alpin Insight Solutions GmbH & Co. KG, Friedrichstraße 171, 10117 Berlin, AG Berlin-Charlottenburg HRA 61945 B, vertreten durch die Alpin Insight Industrial GmbH, diese durch den Geschäftsführer Peter Rosemann |
 | Vertragsschluss | Kommentar des Contributors im ersten Pull Request, protokolliert durch einen Bot |
 
 Option Five bedeutet: wir dürfen einen Beitrag unter beliebiger Lizenz
@@ -48,10 +48,10 @@ nicht nachträglich closed-source-only werden.
 
 ### 1. Vollständigkeit der Vertragspartei
 
-Der Signaturblock nennt die KG mit Anschrift. Offen sind HRA-Nummer der KG,
-Firma und HRB-Nummer der Komplementär-GmbH sowie die Geschäftsführung. Bitte um
+Der Signaturblock ist bis auf ein Feld ausgefüllt: die HRB-Nummer der
+Komplementärin Alpin Insight Industrial GmbH fehlt uns noch. Bitte um
 Bestätigung, dass die Vertretungskette KG → Komplementärin → Geschäftsführer im
-Dokument korrekt abgebildet ist.
+Dokument im Übrigen korrekt abgebildet ist.
 
 Zusätzlich: Soll die KG selbst Rechteinhaberin sein, oder eine andere Einheit
 der Gruppe? Die Vereinbarung soll die gesamte `insight-ui*`-Familie abdecken,
@@ -117,7 +117,7 @@ zu veranlassen ist.
 
 1. Bestätigung oder Änderungsvorschläge zu den neun Punkten
 2. Freigabe des Textes zur Verwendung gegenüber Contributorn
-3. Die fehlenden Registerangaben für den Signaturblock
+3. Die HRB-Nummer der Komplementärin, sofern Ihnen vorliegend
 
 ## Beigefügte Unterlagen
 

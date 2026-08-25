@@ -2,9 +2,9 @@
 
 > **Status: draft — not yet in force.**
 > Adapted from the Harmony Agreements. Governing law and the contracting party
-> are filled in; the remaining `TODO` markers are register details taken from
-> the commercial register. The document must be reviewed under German law
-> before the CLA bot is switched on — the open questions are collected in
+> are filled in; one register number is still open, marked `TODO`. The document
+> must be reviewed under German law before the CLA bot is switched on — the open
+> questions are collected in
 > [docs/cla-legal-review.md](docs/cla-legal-review.md). Do not present it to
 > contributors as binding until that review has happened.
 
@@ -235,21 +235,18 @@ Friedrichstrasse 171
 10117 Berlin
 Germany
 
-Registered: Amtsgericht Charlottenburg, HRA **TODO**
+Commercial register: Amtsgericht Berlin-Charlottenburg, HRA 61945 B
 
-Represented by its general partner **TODO: firm of the Komplementaer-GmbH**,
-Amtsgericht Charlottenburg, HRB **TODO**, itself represented by its managing
-director(s) **TODO**.
+Represented by its general partner Alpin Insight Industrial GmbH,
+Amtsgericht Berlin-Charlottenburg, HRB **TODO**, itself represented by its
+managing director Peter Rosemann.
 
 contact@alpininsight.com
 
-> Three fields remain open because they cannot be derived from the address: the
-> KG's HRA number, the firm and HRB number of the general partner, and the
-> managing director(s). A GmbH & Co. KG is represented by its general partner,
-> which is in turn represented by its managing director — the chain has to be
-> stated in full for the signature block to be correct.
-
----
+> One field remains open: the HRB number of the general partner, Alpin Insight
+> Industrial GmbH. A GmbH & Co. KG is represented by its general partner, which
+> is in turn represented by its managing director — both registrations belong in
+> the signature block for the chain to be complete.
 
 ## Attribution
 
