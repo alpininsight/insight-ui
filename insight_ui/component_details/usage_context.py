@@ -505,22 +505,32 @@ def get_button_usage_context() -> dict[str, str]:
     """Serve usage documentation for the button component."""
     return {
         "usage": """
+        <!-- Standard / Filled -->
         {% button label=_("Primary") type="primary" %}
-        {% button label=_("Secondary") type="secondary" %}
-        {% button label=_("Success") type="success" %}
-        {% button label=_("Warning") type="warning" %}
-        {% button label=_("Danger") type="danger" %}
-        {% button label=_("Info") type="info" %}
-        {% button label=_("Primary") disabled=True %}
 
+        <!-- Outline / Ghost -->
         {% button label=_("Primary") type="primary" outline=True %}
+
+        <!-- Subtle -->
         {% button label=_("Primary") type="primary" subtle=True %}
 
+        <!-- Size -->
         {% button label=_("Click me!") type="primary" size="xl" %}
-        {% button label=_("Click me!") type="primary" size="l" %}
-        {% button label=_("Click me!") type="primary" size="m" %}
-        {% button label=_("Click me!") type="primary" size="s" %}
-        {% button label=_("Click me!") type="primary" size="xs" %}
+
+        <!-- All together -->
+        {% button label=_("Primary") type="success" subtle=True round=True size="s" %}
+
+        <!-- Icons -->
+        {% button label=_("With Icon") type="primary" icon_name="rocket-launch" %}
+        {% button label=_("With Icon") type="primary" icon_name="rocket-launch" icon_end=True %}
+        {% button label=_("Icon only") type="primary" icon_name="rocket-launch" icon_only=True %}
+        {% button label=_("Icon only") type="primary" icon_name="rocket-launch" icon_only=True round=True %}
+
+        <!-- Tooltip -->
+        {% button label=_("With tooltip") type="primary" tooltip="This is a button." %}
+
+        <!-- As hyperlink (creates <a> tag with href) -->
+        {% button label=_("As hyperlink") type="primary" request_url="#" %}
         """
     }
 
@@ -1005,9 +1015,15 @@ def get_badge_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% badge label=_("New Feature") icon_name="sparkles" %}
-        {% badge label=_("New Feature") icon_name="sparkles" icon_end=True %}
-        {% badge label=_("New Feature") icon_name="sparkles" icon_size="s" size="s" %}
+        <!-- Standard / Filled -->
+        {% badge label=_("Primary") type="primary" %}
+
+        <!-- Size -->
+        {% badge label=_("New!") type="primary" size="xl" %}
+
+        <!-- Icons -->
+        {% badge label=_("New!") icon_name="sparkles" %}
+        {% badge label=_("New!") icon_name="sparkles" icon_end=True %}
         """
     }
 
