@@ -241,6 +241,7 @@ class Component(Enum):
 # Component metadata sets (defined after enum so we can use Component members)
 # =============================================================================
 
+# Remove padding around component, useful for layout components
 _NO_PADDING: set[Component] = {
     Component.PAGE_HEADER,
     Component.PAGE,
@@ -249,6 +250,7 @@ _NO_PADDING: set[Component] = {
     Component.FOOTER,
 }
 
+# Allow the component to do requests in the demo
 _ALLOW_REQUESTS: set[Component] = {
     Component.TABS,
     Component.CHAT,
@@ -261,16 +263,17 @@ _ALLOW_REQUESTS: set[Component] = {
     Component.TOGGLE_VIEW,
 }
 
-_IN_DEVELOPMENT: set[Component] = {
-    Component.FLIP_CARD,
-}
+# Shows a hint on the detail page and an icon in the left sidebar
+_IN_DEVELOPMENT: set[Component] = {}
 
+# Shows a badge on the detail page and in the left sidebar
 _IS_NEW: set[Component] = {
     Component.FLIP_CARD,
     Component.SECTION,
     Component.SURFACE,
 }
 
+# Shows a badge on the detail page
 _IS_BLOCK_TAG: set[Component] = {
     Component.PAGE,
     Component.HBOX,
@@ -282,6 +285,7 @@ _IS_BLOCK_TAG: set[Component] = {
     Component.TABS,
 }
 
+# Shows a badge on the detail page
 _USES_HTMX: set[Component] = {
     Component.NAVBAR,
     Component.BREADCRUMBS,
@@ -301,6 +305,7 @@ _USES_HTMX: set[Component] = {
     Component.FORM,
 }
 
+# Shows a badge on the detail page
 _EXTERNAL_DEPENDENCIES: dict[Component, str] = {
     Component.CHART: "Chart.js",
     Component.GEO_MAP: "Leaflet",

@@ -393,27 +393,189 @@
         {% endvbox %}
     {% endvbox %}
 {% elif component.value == "grid" %}
-    <div class="space-y-8">
-        <div>
-            <p class="mb-2 text-sm text-secondary">{% trans "Auto-fit mode (resize window to see items wrap):" %}</p>
-            {% grid gap="m" min="150px" %}
-                <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">1</div>
-                <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">2</div>
-                <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">3</div>
-                <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">4</div>
-                <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">5</div>
-                <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">6</div>
-            {% endgrid %}
-        </div>
-        <div>
-            <p class="mb-2 text-sm text-secondary">{% trans "Fixed 3 columns with responsive breakpoints:" %}</p>
-            {% grid cols=3 gap="m" %}
-                <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
-                <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
-                <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
-            {% endgrid %}
-        </div>
-    </div>
+    {% vbox gap="l" %}
+        {# Column counts #}
+        {% vbox %}
+            <p class="font-semibold text-sm text-secondary">{% trans "Column counts (cols=2, 3, 4, 5, 6):" %}</p>
+            {% vbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">cols=2</p>
+                    {% grid cols=2 gap="s" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
+                    {% endgrid %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">cols=3</p>
+                    {% grid cols=3 gap="s" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">3</div>
+                    {% endgrid %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">cols=4</p>
+                    {% grid cols=4 gap="s" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">3</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">4</div>
+                    {% endgrid %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">cols=5</p>
+                    {% grid cols=5 gap="s" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">3</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">4</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">5</div>
+                    {% endgrid %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">cols=6</p>
+                    {% grid cols=6 gap="s" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">3</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">4</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">5</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">6</div>
+                    {% endgrid %}
+                {% endvbox %}
+            {% endvbox %}
+        {% endvbox %}
+
+        {# Gap sizes #}
+        {% vbox %}
+            <p class="font-semibold text-sm text-secondary">{% trans "Gap sizes (xs, s, m, l, xl):" %}</p>
+            {% hbox wrap=True %}
+                {% vbox gap="xs" class="flex-1 min-w-48" %}
+                    <p class="text-xs text-secondary">gap="xs"</p>
+                    {% grid cols=2 gap="xs" fixed=True class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">3</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">4</div>
+                    {% endgrid %}
+                {% endvbox %}
+                {% vbox gap="xs" class="flex-1 min-w-48" %}
+                    <p class="text-xs text-secondary">gap="s"</p>
+                    {% grid cols=2 gap="s" fixed=True class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">3</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">4</div>
+                    {% endgrid %}
+                {% endvbox %}
+                {% vbox gap="xs" class="flex-1 min-w-48" %}
+                    <p class="text-xs text-secondary">gap="m"</p>
+                    {% grid cols=2 gap="m" fixed=True class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">3</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">4</div>
+                    {% endgrid %}
+                {% endvbox %}
+                {% vbox gap="xs" class="flex-1 min-w-48" %}
+                    <p class="text-xs text-secondary">gap="l"</p>
+                    {% grid cols=2 gap="l" fixed=True class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">3</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">4</div>
+                    {% endgrid %}
+                {% endvbox %}
+                {% vbox gap="xs" class="flex-1 min-w-48" %}
+                    <p class="text-xs text-secondary">gap="xl"</p>
+                    {% grid cols=2 gap="xl" fixed=True class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">3</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">4</div>
+                    {% endgrid %}
+                {% endvbox %}
+            {% endhbox %}
+        {% endvbox %}
+
+        {# Auto-fit mode #}
+        {% vbox %}
+            <p class="font-semibold text-sm text-secondary">{% trans "Auto-fit mode (items wrap based on available space):" %}</p>
+            {% vbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">min="100px"</p>
+                    {% grid gap="s" min="100px" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">3</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">4</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">5</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">6</div>
+                    {% endgrid %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">min="200px"</p>
+                    {% grid gap="s" min="200px" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">3</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">4</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">5</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">6</div>
+                    {% endgrid %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">min="300px"</p>
+                    {% grid gap="s" min="300px" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">3</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">4</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">5</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">6</div>
+                    {% endgrid %}
+                {% endvbox %}
+            {% endvbox %}
+        {% endvbox %}
+
+        {# Responsive behavior (container-based) #}
+        {% vbox %}
+            <p class="font-semibold text-sm text-secondary">{% trans "Responsive behavior (adapts to container width):" %}</p>
+            {% vbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">{% trans "cols=4 in full width container" %}</p>
+                    {% grid cols=4 gap="s" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">3</div>
+                        <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">4</div>
+                    {% endgrid %}
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">{% trans "cols=4 in 500px container (automatically reduces columns)" %}</p>
+                    <div class="p-4 max-w-[500px] border border-dashed border-insight-border-surface rounded-insight-surface">
+                        {% grid cols=4 gap="s" %}
+                            <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
+                            <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
+                            <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">3</div>
+                            <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">4</div>
+                        {% endgrid %}
+                    </div>
+                {% endvbox %}
+                {% vbox gap="xs" %}
+                    <p class="text-xs text-secondary">{% trans "cols=4 fixed=True in 500px container (always 4 columns)" %}</p>
+                    <div class="p-4 max-w-[500px] border border-dashed border-insight-border-surface rounded-insight-surface">
+                        {% grid cols=4 gap="s" fixed=True %}
+                            <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
+                            <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
+                            <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">3</div>
+                            <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">4</div>
+                        {% endgrid %}
+                    </div>
+                {% endvbox %}
+            {% endvbox %}
+        {% endvbox %}
+    {% endvbox %}
 {% elif component.value == "spacer" %}
     {% vbox %}
         {% vbox gap="xs" %}
@@ -811,31 +973,31 @@
 {% elif component.value == "differentiator" %}
     {{ textA|diff:textB|safe }}
 {% elif component.value == "logo" %}
-    <div class="grid gap-8 sm:grid-cols-3">
-        <div class="space-y-2">
+    {% grid cols=3 responsive="container" %}
+        {% vbox gap="s" h_align="start" %}
             <p class="font-semibold text-secondary">SVG asset</p>
             {% logo config=logo_svg_config %}
-        </div>
-        <div class="space-y-2">
+        {% endvbox %}
+        {% vbox gap="s" h_align="start" %}
             <p class="font-semibold text-secondary">Image asset</p>
             {% logo config=logo_image_config %}
-        </div>
-        <div class="space-y-2">
+        {% endvbox %}
+        {% vbox gap="s" h_align="start" %}
             <p class="font-semibold text-secondary">Icon</p>
             {% logo config=logo_icon_config %}
-        </div>
-    </div>
+        {% endvbox %}
+    {% endgrid %}
 {% elif component.value == "brand_mark" %}
-    <div class="flex gap-8">
-        <div class="p-6 space-y-3 w-fit border border-insight-border-surface rounded-insight-surface">
-            <p class="font-semibold text-secondary">Logo position start</p>
+    {% hbox gap="xl" wrap=True %}
+        {% vbox gap="s" %}
+            <span class="font-semibold text-secondary">Logo position start</span>
             {% brand_mark config=brand_mark_default %}
-        </div>
-        <div class="p-6 space-y-3 w-fit border border-insight-border-surface rounded-insight-surface">
-            <p class="font-semibold text-secondary">Logo position end</p>
+        {% endvbox %}
+        {% vbox gap="s" %}
+            <span class="font-semibold text-secondary">Logo position end</span>
             {% brand_mark config=brand_mark_end %}
-        </div>
-    </div>
+        {% endvbox %}
+    {% endhbox %}
 {% elif component.value == "corner_ribbon" %}
     <div class="h-64">
         {% corner_ribbon text="New Version" position="bottom-right" %}

@@ -180,20 +180,20 @@ def get_grid_usage_context() -> dict[str, str]:
             <div>Item 4</div>
         {% endgrid %}
 
-        <!-- Auto-fit with custom minimum width -->
-        {% grid min="300px" gap="m" %}
+        <!-- Auto-fit with custom minimum width (supports px, rem, em, etc.) -->
+        {% grid min="15rem" gap="m" %}
             <div>Card 1</div>
             <div>Card 2</div>
         {% endgrid %}
 
-        <!-- Fixed columns with automatic responsive breakpoints -->
+        <!-- Fixed columns with responsive breakpoints (adapts to container width) -->
         {% grid cols=3 gap="l" %}
             <div>Column 1</div>
             <div>Column 2</div>
             <div>Column 3</div>
         {% endgrid %}
 
-        <!-- Fixed columns without responsive behavior -->
+        <!-- Fixed columns without responsive behavior (always 4 columns) -->
         {% grid cols=4 fixed=True %}
             <div>Always 4 columns</div>
         {% endgrid %}

@@ -283,16 +283,6 @@ RADIUS_CLASSES: dict[str, str] = {
 # Link surface hover classes (added to base surface classes)
 LINK_SURFACE_HOVER_CLASSES: str = "hover:border-insight-primary transition-colors group"
 
-# Responsive grid column mappings: cols -> (mobile, sm, md, lg)
-# These provide sensible defaults so users don't need to think about breakpoints
-RESPONSIVE_GRID_CLASSES: dict[int, str] = {
-    2: "grid-cols-1 md:grid-cols-2",
-    3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
-    4: "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4",
-    5: "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5",
-    6: "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6",
-}
-
 # Fixed grid column classes (no responsive behavior)
 FIXED_GRID_CLASSES: dict[int, str] = {
     1: "grid-cols-1",
@@ -301,6 +291,16 @@ FIXED_GRID_CLASSES: dict[int, str] = {
     4: "grid-cols-4",
     5: "grid-cols-5",
     6: "grid-cols-6",
+}
+
+# Responsive grid column classes (breakpoints based on container width)
+# Uses @container queries for true component isolation - grid adapts to available space
+RESPONSIVE_GRID_CLASSES: dict[int, str] = {
+    2: "grid-cols-1 @md:grid-cols-2",
+    3: "grid-cols-1 @md:grid-cols-2 @lg:grid-cols-3",
+    4: "grid-cols-1 @sm:grid-cols-2 @md:grid-cols-3 @lg:grid-cols-4",
+    5: "grid-cols-1 @sm:grid-cols-2 @md:grid-cols-3 @lg:grid-cols-5",
+    6: "grid-cols-2 @sm:grid-cols-3 @md:grid-cols-4 @lg:grid-cols-6",
 }
 
 VALID_COLS: frozenset[int] = frozenset({1, 2, 3, 4, 5, 6})
@@ -638,9 +638,14 @@ class GridNode(LayoutNode):
 
     Modes:
         - Auto-fit (default): Items wrap based on available space.
-          Use `min` parameter to set minimum item width.
+          Use `min` parameter to set minimum item width (supports any CSS unit: px, rem, em, etc.).
         - Fixed columns: Set `cols` parameter for specific column count.
-          Automatically applies responsive breakpoints unless `fixed=True`.
+          Automatically applies responsive breakpoints based on container width
+          unless `fixed=True`.
+
+    The grid uses CSS Container Queries for responsive behavior, meaning breakpoints
+    are based on the grid's container width, not the viewport. This ensures the grid
+    adapts correctly regardless of where it's placed (sidebar, modal, card, etc.).
     """
 
     def build_classes(self, kwargs: dict[str, object]) -> list[str]:
@@ -665,6 +670,7 @@ class GridNode(LayoutNode):
         fixed = resolved.get("fixed", False)
 
         style = ""
+        needs_container_wrapper = False
 
         if cols is not None:
             # Fixed column mode
@@ -678,8 +684,9 @@ class GridNode(LayoutNode):
                 # No responsive behavior
                 classes.append(FIXED_GRID_CLASSES[cols_int])
             else:
-                # Responsive breakpoints
+                # Container query responsive breakpoints
                 classes.append(RESPONSIVE_GRID_CLASSES[cols_int])
+                needs_container_wrapper = True
         else:
             # Auto-fit mode: items wrap based on available space
             style = f"grid-template-columns: repeat(auto-fit, minmax({min_width}, 1fr));"
@@ -692,9 +699,18 @@ class GridNode(LayoutNode):
         content = self.nodelist.render(context)
         class_str = " ".join(classes)
 
+        # Build the grid HTML
         if style:
-            return f'<div class="{class_str}" style="{style}">{content}</div>'
-        return f'<div class="{class_str}">{content}</div>'
+            grid_html = f'<div class="{class_str}" style="{style}">{content}</div>'
+        else:
+            grid_html = f'<div class="{class_str}">{content}</div>'
+
+        # Wrap in container element for container query support
+        # Container queries require @container on a parent element
+        if needs_container_wrapper:
+            return f'<div class="@container w-full">{grid_html}</div>'
+
+        return grid_html
 
 
 class SurfaceNode(LayoutNode):
