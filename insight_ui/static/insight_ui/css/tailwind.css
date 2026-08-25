@@ -146,6 +146,8 @@
     --color-insight-focus: #4183EA;
     --color-insight-focus-dark: #4183EA;
     --color-insight-tooltip-dark: #242424;
+    --color-insight-divider: #E5E7EB;
+    --color-insight-divider-dark: #1E2940;
     --color-insight-text-primary: #1C1C1E;
     --color-insight-text-primary-light: #1C1C1E;
     --color-insight-text-primary-dark: #F5F8FC;
@@ -782,6 +784,9 @@
   .size-full {
     width: 100%;
     height: 100%;
+  }
+  .h-0\.5 {
+    height: calc(var(--spacing) * 0.5);
   }
   .h-1 {
     height: var(--spacing);
@@ -1495,6 +1500,14 @@
     border-top-style: var(--tw-border-style);
     border-top-width: 1px;
   }
+  .border-t-2 {
+    border-top-style: var(--tw-border-style);
+    border-top-width: 2px;
+  }
+  .border-t-4 {
+    border-top-style: var(--tw-border-style);
+    border-top-width: 4px;
+  }
   .border-t-8 {
     border-top-style: var(--tw-border-style);
     border-top-width: 8px;
@@ -1515,9 +1528,21 @@
     border-left-style: var(--tw-border-style);
     border-left-width: 1px;
   }
+  .border-l-2 {
+    border-left-style: var(--tw-border-style);
+    border-left-width: 2px;
+  }
+  .border-l-4 {
+    border-left-style: var(--tw-border-style);
+    border-left-width: 4px;
+  }
   .border-dashed {
     --tw-border-style: dashed;
     border-style: dashed;
+  }
+  .border-dotted {
+    --tw-border-style: dotted;
+    border-style: dotted;
   }
   .border-gray-200 {
     border-color: var(--color-gray-200);
@@ -1533,6 +1558,9 @@
   }
   .border-insight-border-surface {
     border-color: var(--color-insight-border-surface);
+  }
+  .border-insight-divider {
+    border-color: var(--color-insight-divider);
   }
   .border-insight-primary {
     border-color: var(--color-insight-primary);
@@ -1581,9 +1609,6 @@
   }
   .bg-gray-100 {
     background-color: var(--color-gray-100);
-  }
-  .bg-gray-200 {
-    background-color: var(--color-gray-200);
   }
   .bg-gray-300 {
     background-color: var(--color-gray-300);
@@ -1647,6 +1672,9 @@
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-insight-danger) 15%, transparent);
     }
+  }
+  .bg-insight-divider {
+    background-color: var(--color-insight-divider);
   }
   .bg-insight-info {
     background-color: var(--color-insight-info);
@@ -3193,6 +3221,7 @@
     --color-insight-text-secondary: var(--color-insight-text-secondary-dark);
     --color-insight-text-hint: var(--color-insight-text-hint-dark);
     --color-insight-tooltip: var(--color-insight-tooltip-dark);
+    --color-insight-divider: var(--color-insight-divider-dark);
     --color-insight-card: var(--color-insight-card-dark);
   }
   button:not(:disabled), [role="button"]:not(:disabled) {

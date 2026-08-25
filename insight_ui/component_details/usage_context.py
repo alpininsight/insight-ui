@@ -246,6 +246,19 @@ def get_divider_usage_context() -> dict[str, str]:
 
         <!-- With custom margin spacing -->
         {% divider spacing="xl" %}
+
+        <!-- Line weight variations -->
+        {% divider weight="thin" %}
+        {% divider weight="medium" %}
+        {% divider weight="thick" %}
+
+        <!-- Line style variations -->
+        {% divider style="solid" %}
+        {% divider style="dashed" %}
+        {% divider style="dotted" %}
+
+        <!-- Combined: thick dashed divider -->
+        {% divider weight="thick" style="dashed" %}
         """
     }
 

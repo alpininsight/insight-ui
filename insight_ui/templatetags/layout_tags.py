@@ -69,7 +69,7 @@ Simple tags:
     {% spacer size="m" %}
         Fixed-size spacer element.
 
-    {% divider direction="horizontal" spacing="m" %}
+    {% divider direction="horizontal" spacing="m" weight="thin" style="solid" %}
         Visual divider line (horizontal or vertical).
 
 Parameter Reference
@@ -115,6 +115,12 @@ wrap : True | False
 
 direction : horizontal | vertical
     Divider orientation. Default: "horizontal"
+
+weight : thin | medium | thick
+    Divider line thickness. Default: "thin"
+
+style : solid | dashed | dotted
+    Divider line style. Default: "solid"
 
 variant : surface | raised | outline
     Surface visual style. Default: "surface"
@@ -215,6 +221,8 @@ VALID_RADIUS: frozenset[str] = frozenset({"xs", "s", "m", "l", "xl", "none"})
 VALID_SIDE: frozenset[str] = frozenset({"left", "right"})
 VALID_WIDTH: frozenset[str] = frozenset({"narrow", "normal", "wide"})
 VALID_MOBILE_BEHAVIOR: frozenset[str] = frozenset({"hidden", "drawer"})
+VALID_WEIGHT: frozenset[str] = frozenset({"thin", "medium", "thick"})
+VALID_LINE_STYLE: frozenset[str] = frozenset({"solid", "dashed", "dotted"})
 
 # Class mappings (classes are defined in input.css or are tailwind classes)
 # Note: l and xl are responsive - smaller on mobile, full size from md breakpoint
@@ -1185,13 +1193,20 @@ def spacer(size: str = "m") -> str:
 
 
 @register.simple_tag
-def divider(direction: str = "horizontal", spacing: str = "m") -> str:
+def divider(
+    direction: str = "horizontal",
+    spacing: str = "m",
+    weight: str = "thin",
+    style: str = "solid",
+) -> str:
     """
     Insert a visual divider line.
 
     Args:
         direction: "horizontal" or "vertical". Default: "horizontal"
         spacing: Margin spacing (none, xs, s, m, l, xl). Default: "m"
+        weight: Line thickness (thin, medium, thick). Default: "thin"
+        style: Line style (solid, dashed, dotted). Default: "solid"
 
     Returns:
         HTML div element styled as a divider.
@@ -1200,10 +1215,13 @@ def divider(direction: str = "horizontal", spacing: str = "m") -> str:
         {% divider %}
         {% divider direction="vertical" %}
         {% divider spacing="l" %}
+        {% divider weight="thick" style="dashed" %}
 
     """
     _validate(spacing, VALID_SPACING_WITH_NONE, "spacing", "divider")
     _validate(direction, VALID_DIRECTION, "direction", "divider")
+    _validate(weight, VALID_WEIGHT, "weight", "divider")
+    _validate(style, VALID_LINE_STYLE, "style", "divider")
 
     # Margin classes based on direction
     margin_map = {
@@ -1221,7 +1239,27 @@ def divider(direction: str = "horizontal", spacing: str = "m") -> str:
         ("vertical", "xl"): "mx-8",
     }
     margin = margin_map[(direction, spacing)]
-    base_classes = "w-px self-stretch bg-gray-200" if direction == "vertical" else "h-px w-full bg-gray-200"
+
+    # Build classes based on style and weight
+    # Note: All class names must be written out fully for Tailwind to detect them
+    if style == "solid":
+        # Use background color for solid lines
+        weight_h = {"thin": "h-px", "medium": "h-0.5", "thick": "h-1"}
+        weight_v = {"thin": "w-px", "medium": "w-0.5", "thick": "w-1"}
+        if direction == "vertical":
+            base_classes = f"{weight_v[weight]} self-stretch bg-insight-divider"
+        else:
+            base_classes = f"{weight_h[weight]} w-full bg-insight-divider"
+    else:
+        # Use border for dashed/dotted lines
+        border_style = {"dashed": "border-dashed", "dotted": "border-dotted"}[style]
+        border_h = {"thin": "border-t", "medium": "border-t-2", "thick": "border-t-4"}
+        border_v = {"thin": "border-l", "medium": "border-l-2", "thick": "border-l-4"}
+        if direction == "vertical":
+            base_classes = f"self-stretch {border_v[weight]} {border_style} border-insight-divider"
+        else:
+            base_classes = f"w-full {border_h[weight]} {border_style} border-insight-divider"
+
     classes = f"{base_classes} {margin}".strip()
 
     return mark_safe(f'<div class="{classes}"></div>')  # noqa: S308, # nosec B308, B703

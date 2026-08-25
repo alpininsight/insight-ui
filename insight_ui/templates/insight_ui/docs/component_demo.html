@@ -651,16 +651,40 @@
     {% endvbox %}
 {% elif component.value == "divider" %}
     {% vbox gap="xl" %}
+        {# Direction #}
         {% vbox gap="s" %}
+            <p class="text-xs text-insight-text-secondary">{% trans "Horizontal (default)" %}</p>
             <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
             {% divider %}
             <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
         {% endvbox %}
-        {% hbox gap="s" %}
-            <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
-            {% divider direction="vertical" %}
-            <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
-        {% endhbox %}
+        {% vbox gap="s" %}
+            <p class="text-xs text-insight-text-secondary">{% trans "Vertical" %}</p>
+            {% hbox gap="s" %}
+                <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
+                {% divider direction="vertical" %}
+                <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
+            {% endhbox %}
+        {% endvbox %}
+        {# Weight #}
+        {% vbox gap="s" %}
+            <p class="text-xs text-insight-text-secondary">{% trans "Weight: thin / medium / thick" %}</p>
+            {% divider weight="thin" %}
+            {% divider weight="medium" %}
+            {% divider weight="thick" %}
+        {% endvbox %}
+        {# Style #}
+        {% vbox gap="s" %}
+            <p class="text-xs text-insight-text-secondary">{% trans "Style: solid / dashed / dotted" %}</p>
+            {% divider style="solid" %}
+            {% divider style="dashed" %}
+            {% divider style="dotted" %}
+        {% endvbox %}
+        {# Combined #}
+        {% vbox gap="s" %}
+            <p class="text-xs text-insight-text-secondary">{% trans "Combined: thick + dashed" %}</p>
+            {% divider weight="thick" style="dashed" %}
+        {% endvbox %}
     {% endvbox %}
 {% elif component.value == "section" %}
     {% vbox gap="l" %}
