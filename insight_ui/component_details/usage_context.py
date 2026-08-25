@@ -259,6 +259,13 @@ def get_divider_usage_context() -> dict[str, str]:
 
         <!-- Combined: thick dashed divider -->
         {% divider weight="thick" style="dashed" %}
+
+        <!-- With centered label -->
+        {% divider label="or" %}
+        {% divider label="Section" style="dashed" %}
+
+        <!-- Vertical with rotated label -->
+        {% divider direction="vertical" label="OR" %}
         """
     }
 

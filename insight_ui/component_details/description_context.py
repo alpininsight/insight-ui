@@ -211,6 +211,7 @@ def get_divider_description_context() -> dict[str, list[str]]:
             _("**spacing**: Margin around the divider using the spacing scale (xs/s/m/l/xl)."),
             _("**weight**: Line thickness (thin/medium/thick)."),
             _("**style**: Line style (solid/dashed/dotted)."),
+            _("**label**: Optional text displayed in the center of the divider."),
         ],
     }
 

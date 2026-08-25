@@ -122,6 +122,10 @@ weight : thin | medium | thick
 style : solid | dashed | dotted
     Divider line style. Default: "solid"
 
+label : str
+    Optional text label displayed in the center of the divider.
+    For vertical dividers, the text is rotated 90°.
+
 variant : surface | raised | outline
     Surface visual style. Default: "surface"
     - surface: Light background with border
@@ -196,6 +200,7 @@ from typing import TYPE_CHECKING
 from django import template
 from django.template.base import Node, NodeList, TokenType, token_kwargs
 from django.template.loader import get_template
+from django.utils.html import escape
 from django.utils.safestring import mark_safe
 
 if TYPE_CHECKING:
@@ -1198,6 +1203,7 @@ def divider(
     spacing: str = "m",
     weight: str = "thin",
     style: str = "solid",
+    label: str = "",
 ) -> str:
     """
     Insert a visual divider line.
@@ -1207,6 +1213,7 @@ def divider(
         spacing: Margin spacing (none, xs, s, m, l, xl). Default: "m"
         weight: Line thickness (thin, medium, thick). Default: "thin"
         style: Line style (solid, dashed, dotted). Default: "solid"
+        label: Optional text label displayed in the center of the divider.
 
     Returns:
         HTML div element styled as a divider.
@@ -1216,6 +1223,7 @@ def divider(
         {% divider direction="vertical" %}
         {% divider spacing="l" %}
         {% divider weight="thick" style="dashed" %}
+        {% divider label="or" %}
 
     """
     _validate(spacing, VALID_SPACING_WITH_NONE, "spacing", "divider")
@@ -1240,26 +1248,47 @@ def divider(
     }
     margin = margin_map[(direction, spacing)]
 
-    # Build classes based on style and weight
+    # Build line classes based on style and weight
     # Note: All class names must be written out fully for Tailwind to detect them
     if style == "solid":
-        # Use background color for solid lines
         weight_h = {"thin": "h-px", "medium": "h-0.5", "thick": "h-1"}
         weight_v = {"thin": "w-px", "medium": "w-0.5", "thick": "w-1"}
         if direction == "vertical":
-            base_classes = f"{weight_v[weight]} self-stretch bg-insight-divider"
+            line_classes = f"{weight_v[weight]} flex-1 bg-insight-divider"
         else:
-            base_classes = f"{weight_h[weight]} w-full bg-insight-divider"
+            line_classes = f"{weight_h[weight]} flex-1 bg-insight-divider"
     else:
-        # Use border for dashed/dotted lines
         border_style = {"dashed": "border-dashed", "dotted": "border-dotted"}[style]
         border_h = {"thin": "border-t", "medium": "border-t-2", "thick": "border-t-4"}
         border_v = {"thin": "border-l", "medium": "border-l-2", "thick": "border-l-4"}
         if direction == "vertical":
-            base_classes = f"self-stretch {border_v[weight]} {border_style} border-insight-divider"
+            line_classes = f"flex-1 {border_v[weight]} {border_style} border-insight-divider"
         else:
-            base_classes = f"w-full {border_h[weight]} {border_style} border-insight-divider"
+            line_classes = f"flex-1 {border_h[weight]} {border_style} border-insight-divider"
 
-    classes = f"{base_classes} {margin}".strip()
+    # Without label: simple divider
+    if not label:
+        if direction == "vertical":
+            base_classes = line_classes.replace("flex-1", "self-stretch")
+        else:
+            base_classes = line_classes.replace("flex-1", "w-full")
+        classes = f"{base_classes} {margin}".strip()
+        return mark_safe(f'<div class="{classes}"></div>')  # noqa: S308, # nosec B308, B703
 
-    return mark_safe(f'<div class="{classes}"></div>')  # noqa: S308, # nosec B308, B703
+    # With label: flex container with two lines and text
+    escaped_label = escape(label)
+
+    if direction == "vertical":
+        container_classes = f"flex flex-col items-center gap-2 self-stretch {margin}".strip()
+        label_classes = "text-sm text-insight-text-secondary -rotate-90"
+    else:
+        container_classes = f"flex items-center gap-4 {margin}".strip()
+        label_classes = "text-sm text-insight-text-secondary whitespace-nowrap"
+
+    return mark_safe(  # noqa: S308, # nosec B308, B703
+        f'<div class="{container_classes}">'
+        f'<div class="{line_classes}"></div>'
+        f'<span class="{label_classes}">{escaped_label}</span>'
+        f'<div class="{line_classes}"></div>'
+        f"</div>"
+    )

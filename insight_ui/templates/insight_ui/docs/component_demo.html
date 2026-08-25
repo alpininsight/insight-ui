@@ -553,7 +553,7 @@
                 {% endvbox %}
                 {% vbox gap="xs" %}
                     <p class="text-xs text-secondary">{% trans "cols=4 in 500px container (automatically reduces columns)" %}</p>
-                    <div class="p-4 max-w-[500px] border border-dashed border-insight-border-surface rounded-insight-surface">
+                    <div class="p-4 max-w-125 border border-dashed border-insight-border-surface rounded-insight-surface">
                         {% grid cols=4 gap="s" %}
                             <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
                             <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
@@ -564,7 +564,7 @@
                 {% endvbox %}
                 {% vbox gap="xs" %}
                     <p class="text-xs text-secondary">{% trans "cols=4 fixed=True in 500px container (always 4 columns)" %}</p>
-                    <div class="p-4 max-w-[500px] border border-dashed border-insight-border-surface rounded-insight-surface">
+                    <div class="p-4 max-w-125 border border-dashed border-insight-border-surface rounded-insight-surface">
                         {% grid cols=4 gap="s" fixed=True %}
                             <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
                             <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
@@ -684,6 +684,21 @@
         {% vbox gap="s" %}
             <p class="text-xs text-insight-text-secondary">{% trans "Combined: thick + dashed" %}</p>
             {% divider weight="thick" style="dashed" %}
+        {% endvbox %}
+        {# Label #}
+        {% vbox gap="s" %}
+            <p class="text-xs text-insight-text-secondary">{% trans "With label" %}</p>
+            {% divider label="OR" %}
+            {% divider label="Section" style="dashed" %}
+        {% endvbox %}
+        {# Vertical with label #}
+        {% vbox gap="s" %}
+            <p class="text-xs text-insight-text-secondary">{% trans "Vertical with rotated label" %}</p>
+            {% hbox gap="s" width="full" class="h-32" %}
+                <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Left</div>
+                {% divider direction="vertical" label="OR" %}
+                <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Right</div>
+            {% endhbox %}
         {% endvbox %}
     {% endvbox %}
 {% elif component.value == "section" %}

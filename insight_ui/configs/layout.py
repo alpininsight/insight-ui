@@ -240,18 +240,21 @@ class DividerConfig:
         spacing: Spacing size (none|xs|s|m|l|xl).
         weight: Line thickness (thin|medium|thick).
         style: Line style (solid|dashed|dotted).
+        label: Optional text label displayed in the center.
 
     """
 
     __example__ = """
         {% load layout_tags %}
         {% divider direction="horizontal" spacing="m" weight="thin" style="solid" %}
+        {% divider label="or" %}
         """
 
     direction: str = field(default="horizontal", metadata={"doc": _("Orientation (horizontal|vertical).")})
     spacing: str = field(default="m", metadata={"doc": _("Spacing size (none|xs|s|m|l|xl).")})
     weight: str = field(default="thin", metadata={"doc": _("Line thickness (thin|medium|thick).")})
     style: str = field(default="solid", metadata={"doc": _("Line style (solid|dashed|dotted).")})
+    label: str = field(default="", metadata={"doc": _("Optional text label displayed in the center.")})
 
 
 @dataclass
