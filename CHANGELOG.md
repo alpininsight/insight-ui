@@ -43,6 +43,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Return drawer context directly whitout creating temp variable
 
+### Reverted
+
+- **pypi:** Restore token-based publish until prerequisites exist
+
 ### Testing
 
 - Add smoke tests for the docs pages
