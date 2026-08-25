@@ -4,8 +4,20 @@
     <span class="shrink-0 {% if brand_mark_config.logo_position == 'end' %} order-2{% endif %}" aria-hidden="true">
         {% logo config=brand_mark_config.logo %}
     </span>
+    {# The two halves of the wordmark follow different brand rules, hence two
+       different tokens.
+
+       `primary_text` is text. insight-brand DESIGN.md: "Light and Dark are two
+       separate palettes ... only surface and text colors change" -- so this
+       half is meant to flip with the theme, and `text-primary` does that.
+
+       `secondary_text` is the accent, and Signal Orange is constant across both
+       palettes: "Single accent only", "Orange is signal, never decoration".
+       It previously carried `text-insight-primary`, which is Berliner Blau --
+       never orange in either theme, and on the dark canvas that is dark navy
+       on near-black at roughly 1.3:1. Off-brand and unreadable in one move. #}
     <span class="text-xl tracking-tight whitespace-nowrap">
         <span class="font-medium text-primary">{{ brand_mark_config.primary_text }}</span>
-        <span class="font-bold text-insight-primary">{{ brand_mark_config.secondary_text }}</span>
+        <span class="font-bold text-insight-secondary">{{ brand_mark_config.secondary_text }}</span>
     </span>
 </div>
