@@ -769,6 +769,11 @@ class SelectConfig(BaseFormFieldConfig):
         },
     )
 
+    def __post_init__(self) -> None:
+        """Normalize options to dict format."""
+        if isinstance(self.options, list):
+            self.options = dict(zip(self.options, self.options, strict=True))
+
 
 @dataclass
 class MultiselectConfig(BaseFormFieldConfig):
@@ -814,6 +819,11 @@ class MultiselectConfig(BaseFormFieldConfig):
     selected_options: list[str] = field(
         default_factory=list, metadata={"doc": _("List of currently selected options.")}
     )
+
+    def __post_init__(self) -> None:
+        """Normalize options to dict format."""
+        if isinstance(self.options, list):
+            self.options = dict(zip(self.options, self.options, strict=True))
 
 
 @dataclass

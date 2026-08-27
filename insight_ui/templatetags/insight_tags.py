@@ -822,12 +822,6 @@ def select(
     selected_option: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a selection box."""
-    if config is None:
-        if isinstance(options, list):
-            options = dict(zip(options, options, strict=True))
-    elif isinstance(config.options, list):
-        config.options = dict(zip(config.options, config.options, strict=True))
-
     config = build_config(SelectConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"select_config": config}
 
@@ -846,12 +840,6 @@ def multiselect(
     selected_options: list[str] | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a selection box that allows multiple values."""
-    if config is None:
-        if isinstance(options, list):
-            options = dict(zip(options, options, strict=True))
-    elif isinstance(config.options, list):
-        config.options = dict(zip(config.options, config.options, strict=True))
-
     config = build_config(MultiselectConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"multiselect_config": config}
 
