@@ -35,7 +35,7 @@ später kaum herauslösen.
 | Variante | **CLA**, nicht CAA — keine Vollabtretung, Contributor behält sein Copyright |
 | Outbound-Lizenz | **§2.3 Option Five** der Vorlage |
 | Anwendbares Recht | Deutschland (§6.1) |
-| Gerichtsstand | Berlin, als Vorschlag in §6.6 ergänzt |
+| Gerichtsstand | Berlin — entschieden, in §6.6 ergänzt |
 | Vertragspartei | Alpin Insight Solutions GmbH & Co. KG, Friedrichstraße 171, 10117 Berlin, AG Berlin-Charlottenburg HRA 61945 B, vertreten durch die Alpin Insight Industrial GmbH, diese durch den Geschäftsführer Peter Rosemann |
 | Vertragsschluss | Kommentar des Contributors im ersten Pull Request, protokolliert durch einen Bot |
 
@@ -89,8 +89,8 @@ Protokoll als Nachweis der Rechteeinräumung?
 
 Beiträge kommen weltweit und überwiegend unentgeltlich von Privatpersonen.
 Soweit diese Verbraucher sind: welche Folgen hat Art. 6 Rom-I für die
-Rechtswahl, und ist die Gerichtsstandsklausel in §6.6 in der vorgeschlagenen
-eingeschränkten Fassung sinnvoll oder besser zu streichen?
+Rechtswahl? Der Gerichtsstand Berlin ist gesetzt; wir bitten um Prüfung der
+Formulierung in §6.6, nicht der Wahl.
 
 ### 7. Arbeitnehmer und Minderjährige
 

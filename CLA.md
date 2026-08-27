@@ -193,10 +193,12 @@ maximum extent possible under law.
 exclusive jurisdiction over any dispute arising out of or in connection with
 this Agreement.
 
-> Not part of the Harmony template — proposed addition, to be confirmed by
-> counsel. A venue clause is largely ineffective against contributors who
-> qualify as consumers (section 38 ZPO, Articles 17-19 Brussels Ia), which is
-> why it is qualified rather than absolute.
+> Not part of the Harmony template — added on the company's instruction, since
+> the registered seat and the agreed forum are both Berlin. Counsel is asked to
+> confirm the wording, not the choice. The clause is qualified rather than
+> absolute because a venue agreement is largely ineffective against
+> contributors who qualify as consumers (section 38 ZPO, Articles 17-19
+> Brussels Ia).
 
 ---
 
