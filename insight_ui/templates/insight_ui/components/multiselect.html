@@ -1,6 +1,6 @@
 {% load i18n insight_tags %}
 
-<div data-insight-multiselect data-name="{{ multiselect_config.name }}" data-max="{{ multiselect_config.maximum }}" data-selected="{{ multiselect_config.selected_options|default:"" }}"{% if multiselect_config.disabled %} data-disabled="true"{% endif %}>
+<div data-insight-multiselect data-name="{{ multiselect_config.name }}" data-max="{{ multiselect_config.maximum }}" data-selected="{{ multiselect_config.selected_options|default:"" }}"{% if multiselect_config.disabled %} data-disabled="true"{% endif %}{% if multiselect_config.disabled and multiselect_config.disabled_reason %} data-insight-tooltip="{{ multiselect_config.disabled_reason }}"{% endif %}>
     <label id="{{ multiselect_config.name }}-label" class="block mb-1 font-bold text-sm text-primary">{{ multiselect_config.label }}</label>
     {% if multiselect_config.show_buttons %}
         <div class="flex gap-2 mb-1">
@@ -11,7 +11,7 @@
     <div class="relative" role="combobox" aria-labelledby="{{ multiselect_config.name }}-label" aria-haspopup="listbox" aria-expanded="false" aria-owns="{{ multiselect_config.name }}-listbox">
         <div class="selected input flex flex-wrap gap-1 items-center" aria-controls="{{ multiselect_config.name }}-listbox" aria-activedescendant="" aria-autocomplete="list" aria-multiselectable="true">
             <span class="tags flex flex-wrap gap-1"></span>
-            <input id="{{ multiselect_config.name }}-search" type="text" class="search placeholder-insight-text-secondary flex-1 min-w-15 text-sm outline-none" placeholder={% trans "Type to search..." %} aria-label={% trans "Search {{ multiselect_config.label }}" %}{% if multiselect_config.disabled %} disabled{% endif %} />
+            <input id="{{ multiselect_config.name }}-search" type="text" class="search flex-1 min-w-15 text-sm outline-none" placeholder={% trans "Type to search..." %} aria-label={% trans "Search {{ multiselect_config.label }}" %}{% if multiselect_config.disabled %} disabled{% endif %} />
         </div>
         <span class="info ml-auto text-insight-text-secondary text-xs"></span>
         <div id="{{ multiselect_config.name }}-listbox" role="listbox" class="options hidden absolute z-10 mt-1 w-full max-h-48 bg-insight-bg-surface border border-insight-border-surface rounded-insight-control shadow-insight-overlay overflow-y-auto">

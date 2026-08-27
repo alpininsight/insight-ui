@@ -576,6 +576,7 @@ def button(
     htmx_config: HtmxConfig | _Unset = UNSET,
     hidden: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
+    disabled_reason: str | _Unset = UNSET,
     button_type: HtmlButtonType | _Unset = UNSET,
     extra_classes: str | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
@@ -644,6 +645,7 @@ def button(
         htmx_config=htmx_config,
         hidden=hidden,
         disabled=disabled,
+        disabled_reason=disabled_reason,
         button_type=button_type,
         extra_classes=extra_classes,
         data_attrs=data_attrs,
@@ -669,6 +671,7 @@ def input_field(
     checked: bool | _Unset = UNSET,
     required: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
+    disabled_reason: str | _Unset | None = UNSET,
     label: str | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render any <input> field."""
@@ -688,6 +691,7 @@ def textarea(
     cols: int | _Unset | None = UNSET,
     required: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
+    disabled_reason: str | _Unset | None = UNSET,
     label: str | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a <textarea> field."""
@@ -705,6 +709,7 @@ def checkbox(
     label: str | _Unset | None = UNSET,
     checked: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
+    disabled_reason: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a checkbox with label text."""
     config = build_config(CheckboxConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -770,6 +775,7 @@ def slider(
     step_size: int | _Unset = UNSET,
     label: str | _Unset | None = UNSET,
     disabled: bool | _Unset = UNSET,
+    disabled_reason: str | _Unset | None = UNSET,
     items: list[str] | _Unset | None = UNSET,
     legend_mode: str | _Unset = UNSET,
     dual: bool | _Unset = UNSET,
@@ -792,6 +798,7 @@ def toggle(
     icon: IconConfig | _Unset | None = UNSET,
     checked: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
+    disabled_reason: str | _Unset | None = UNSET,
     switch: bool | _Unset = UNSET,
     method: str | _Unset = UNSET,
 ) -> dict[str, Any]:
@@ -808,6 +815,8 @@ def select(
     name: str | _Unset | None = UNSET,
     label: str | _Unset | None = UNSET,
     required: bool | _Unset = UNSET,
+    disabled: bool | _Unset = UNSET,
+    disabled_reason: str | _Unset | None = UNSET,
     explanation: str | _Unset = UNSET,
     options: list[str] | dict[str, str] | _Unset | None = UNSET,
     selected_option: str | _Unset = UNSET,
@@ -831,6 +840,8 @@ def multiselect(
     label: str | _Unset | None = UNSET,
     maximum: int | _Unset | None = UNSET,
     show_buttons: bool | _Unset = UNSET,
+    disabled: bool | _Unset = UNSET,
+    disabled_reason: str | _Unset | None = UNSET,
     options: list[str] | dict[str, str] | _Unset | None = UNSET,
     selected_options: list[str] | _Unset | None = UNSET,
 ) -> dict[str, Any]:

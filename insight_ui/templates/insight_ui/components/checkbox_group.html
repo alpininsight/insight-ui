@@ -12,7 +12,7 @@
     {% endif %}
     <div class="flex {% if not checkbox_group_config.as_row %}flex-col space-y-1{% else %}space-x-4{% endif %}">
         {% for item in checkbox_group_config.items %}
-            {% checkbox tag_id=item.tag_id name=checkbox_group_config.name value=item.value checked=item.checked disabled=item.disabled label=item.label %}
+            {% checkbox tag_id=item.tag_id name=checkbox_group_config.name value=item.value checked=item.checked disabled=item.disabled disabled_reason=item.disabled_reason label=item.label %}
         {% endfor %}
     </div>
     {# Live region for constraint violation announcements #}

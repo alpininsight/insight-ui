@@ -22,6 +22,7 @@
         {% if textarea_config.cols %}cols="{{ textarea_config.cols }}"{% endif %}
         {% if textarea_config.required %}required{% endif %}
         {% if textarea_config.disabled %}disabled{% endif %}
+        {% if textarea_config.disabled and textarea_config.disabled_reason %}data-insight-tooltip="{{ textarea_config.disabled_reason }}"{% endif %}
         class="input w-full"
     >{{ textarea_config.value|default:"" }}</textarea>
 </div>

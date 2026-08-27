@@ -1,5 +1,6 @@
 """Base configuration classes shared across multiple components."""
 
+import warnings
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -152,6 +153,7 @@ class BaseFormFieldConfig:
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
+        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
 
     """
@@ -164,4 +166,21 @@ class BaseFormFieldConfig:
     )
     label: str | None = field(default=None, metadata={"doc": _("A text label displayed above the field.")})
     disabled: bool = field(default=False, metadata={"doc": _("**True** if the field should be disabled.")})
+    disabled_reason: str | None = field(
+        default=None,
+        metadata={
+            "doc": _(
+                "Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip."
+            )
+        },
+    )
     required: bool = field(default=False, metadata={"doc": _("**True** if the field must be filled in.")})
+
+    def __post_init__(self) -> None:
+        """Warn if disabled without a reason."""
+        if self.disabled and self.disabled_reason is None:
+            warnings.warn(
+                f"{self.__class__.__name__} {self.name} is disabled without a disabled_reason. "
+                "Consider providing a reason to improve accessibility, or set disabled_reason='' to suppress this warning.",
+                stacklevel=3,
+            )

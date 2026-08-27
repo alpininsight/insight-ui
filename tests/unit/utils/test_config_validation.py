@@ -211,10 +211,9 @@ def test_badge_type_values_extends_color_types() -> None:
 
 
 def test_button_type_values_extends_color_types() -> None:
-    """Test that BUTTON_TYPE_VALUES includes all color types plus 'disabled' and 'link'."""
+    """Test that BUTTON_TYPE_VALUES includes all color types plus 'link'."""
     for color in COLOR_TYPE_VALUES:
         assert color in BUTTON_TYPE_VALUES
-    assert "disabled" in BUTTON_TYPE_VALUES
     assert "link" in BUTTON_TYPE_VALUES
 
 

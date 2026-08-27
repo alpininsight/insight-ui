@@ -1,7 +1,7 @@
 {% load insight_tags %}
 
 {% if toggle_config.switch %}
-    <label class="inline-flex flex-col w-fit cursor-pointer">
+    <label class="inline-flex flex-col w-fit cursor-pointer"{% if toggle_config.disabled and toggle_config.disabled_reason %} data-insight-tooltip="{{ toggle_config.disabled_reason }}"{% endif %}>
         <span class="flex gap-1 mb-2 font-bold text-sm text-primary">{{ toggle_config.label }}</span>
         <input
             type="checkbox"
@@ -16,7 +16,7 @@
         <div class="after:content-[''] after:absolute after:-top-1.5 after:-start-0.75 after:bg-insight-bg-surface after:border-insight-border-surface after:border after:rounded-insight-full after:size-6 after:transition-all relative rtl:peer-checked:after:-translate-x-full w-10 h-3 bg-insight-bg-raised rounded-insight-full outline-insight-border-raised transition peer peer-focus:outline-2 peer-checked:after:translate-x-full peer-checked:bg-insight-primary"></div>
     </label>
 {% else %}
-    <div class="inline-block w-fit h-full">
+    <div class="inline-block w-fit h-full"{% if toggle_config.disabled and toggle_config.disabled_reason %} data-insight-tooltip="{{ toggle_config.disabled_reason }}"{% endif %}>
         <input
             type="checkbox"
             {% if toggle_config.tag_id %}id="{{ toggle_config.tag_id }}"{% endif %}
