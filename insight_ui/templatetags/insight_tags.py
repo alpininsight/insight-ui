@@ -371,18 +371,55 @@ def page_header(
     return {"page_header_config": config}
 
 
+# Responsive column classes using container queries
+_ARTICLE_COLUMN_CLASSES: dict[int, str] = {
+    1: "columns-1",
+    2: "columns-1 @sm:columns-2",
+    3: "columns-1 @sm:columns-2 @md:columns-3",
+    4: "columns-1 @sm:columns-2 @md:columns-3 @lg:columns-4",
+}
+
+# Fixed column classes (no container queries)
+_ARTICLE_FIXED_CLASSES: dict[int, str] = {
+    1: "columns-1",
+    2: "columns-2",
+    3: "columns-3",
+    4: "columns-4",
+}
+
+
 @register.inclusion_tag("insight_ui/components/article.html")
 def article(
     config: ArticleConfig | None = None,
     *,
     content: str | _Unset = UNSET,
-    columns: int | _Unset = UNSET,
+    max_columns: int | _Unset = UNSET,
     column_gap: str | _Unset = UNSET,
     title: str | _Unset = UNSET,
+    fixed: bool | _Unset = UNSET,
 ) -> dict[str, Any]:
-    """Render an article in newspaper style with a multi-column layout."""
+    """Render an article in newspaper style with a multi-column layout.
+
+    Uses CSS Container Queries to adapt the column count based on available width.
+    """
     config = build_config(ArticleConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    return {"article_config": config}
+
+    # Clamp columns to valid range
+    cols = max(1, min(4, config.max_columns))
+
+    # Select column classes based on mode
+    if config.fixed:
+        column_classes = _ARTICLE_FIXED_CLASSES[cols]
+        needs_container = False
+    else:
+        column_classes = _ARTICLE_COLUMN_CLASSES[cols]
+        needs_container = cols > 1
+
+    return {
+        "article_config": config,
+        "column_classes": column_classes,
+        "needs_container": needs_container,
+    }
 
 
 @register.inclusion_tag("insight_ui/components/hero.html")

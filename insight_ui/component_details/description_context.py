@@ -38,8 +38,10 @@ def get_article_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `article` component renders text content in newspaper-style multi-column layout. "
-                "Text flows automatically from one column to the next using CSS columns."
+                "The `article` component renders text content in newspaper style with multi-column CSS columns. "
+                "The text flows automatically from one column to the next. "
+                "Uses CSS Container Queries to adapt the column count based on available width, "
+                "ensuring readable text regardless of where the component is placed."
             )
         ],
         "features": [

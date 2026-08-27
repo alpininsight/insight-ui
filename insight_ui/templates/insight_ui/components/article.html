@@ -1,12 +1,12 @@
-{% load i18n %}
-
+{% if needs_container %}<div class="@container w-full">{% endif %}
 <article>
     {% if article_config.title %}
         <h2>{{ article_config.title }}</h2>
     {% endif %}
 
-    <div style="columns: {{ article_config.columns }}; column-gap: {{ article_config.column_gap }}; column-rule: 1px solid currentColor; column-rule-color: var(--color-gray-300);"
-         class="text-secondary text-justify leading-loose">
+    <div class="{{ column_classes }} text-insight-text-secondary text-justify leading-loose"
+         style="column-gap: {{ article_config.column_gap }}; column-rule: 1px solid var(--color-insight-border-surface);">
         {{ article_config.content|safe }}
     </div>
 </article>
+{% if needs_container %}</div>{% endif %}

@@ -48,13 +48,15 @@ class PageHeaderConfig:
 class ArticleConfig:
     """Configuration for the article component.
 
-    Renders text in newspaper-style multi-column layout.
+    Renders text in newspaper-style multi-column layout with responsive behavior.
+    Uses CSS Container Queries to adapt column count based on available width.
 
     Attributes:
         content: The text content of the article (can contain HTML).
-        columns: The number of columns for the CSS columns layout.
+        max_columns: Maximum number of columns (1-4). Fewer columns are shown on narrow containers.
         column_gap: The gap between the columns (CSS unit).
         title: An optional title above the article.
+        fixed: Disable responsive behavior and always use max_columns.
 
     """
 
@@ -62,15 +64,18 @@ class ArticleConfig:
         ArticleConfig(
             title="About Us",
             content="<p>Our company was founded in...</p>",
-            columns=2,
+            max_columns=3,
             column_gap="2rem",
         )
         """
 
     content: str = field(metadata={"doc": _("The text content of the article (can contain HTML).")})
-    columns: int = field(default=2, metadata={"doc": _("The number of columns for the CSS columns layout.")})
+    max_columns: int = field(
+        default=2, metadata={"doc": _("Maximum number of columns (1-4). Fewer columns are shown on narrow containers.")}
+    )
     column_gap: str = field(default="2rem", metadata={"doc": _("The gap between the columns (CSS unit).")})
     title: str = field(default="", metadata={"doc": _("An optional title above the article.")})
+    fixed: bool = field(default=False, metadata={"doc": _("Disable responsive behavior and always use max_columns.")})
 
 
 @dataclass

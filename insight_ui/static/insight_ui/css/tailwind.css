@@ -980,8 +980,14 @@
   .w-full {
     width: 100%;
   }
+  .w-lg {
+    width: var(--container-lg);
+  }
   .w-px {
     width: 1px;
+  }
+  .w-sm {
+    width: var(--container-sm);
   }
   .max-w-2xl {
     max-width: var(--container-2xl);
@@ -1150,6 +1156,18 @@
   }
   .appearance-none {
     appearance: none;
+  }
+  .columns-1 {
+    columns: 1;
+  }
+  .columns-2 {
+    columns: 2;
+  }
+  .columns-3 {
+    columns: 3;
+  }
+  .columns-4 {
+    columns: 4;
   }
   .grid-cols-1 {
     grid-template-columns: repeat(1, minmax(0, 1fr));
@@ -2921,6 +2939,9 @@
     }
   }
   @container (width >= 24rem) {
+    .\@sm\:columns-2 {
+      columns: 2;
+    }
     .\@sm\:grid-cols-2 {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -2929,6 +2950,9 @@
     }
   }
   @container (width >= 28rem) {
+    .\@md\:columns-3 {
+      columns: 3;
+    }
     .\@md\:grid-cols-2 {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -2940,6 +2964,9 @@
     }
   }
   @container (width >= 32rem) {
+    .\@lg\:columns-4 {
+      columns: 4;
+    }
     .\@lg\:grid-cols-3 {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
@@ -3017,6 +3044,10 @@
   }
   .rtl\:rotate-180:where(:dir(rtl), [dir="rtl"], [dir="rtl"] *) {
     rotate: 180deg;
+  }
+  .rtl\:rotate-y-180:where(:dir(rtl), [dir="rtl"], [dir="rtl"] *) {
+    --tw-rotate-y: rotateY(180deg);
+    transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);
   }
   .rtl\:transform-\[rotate\(-45deg\)\]:where(:dir(rtl), [dir="rtl"], [dir="rtl"] *) {
     transform: rotate(-45deg);

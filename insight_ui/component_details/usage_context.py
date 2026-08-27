@@ -37,11 +37,14 @@ def get_article_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
+        {# Responsive (default) - columns adapt to wrapping container width #}
+        {% article title="News" max_columns=3 content="<p>First paragraph...</p>" %}
+
+        {# Fixed mode - always use specified columns #}
+        {% article max_columns=2 fixed=True content="<p>Content...</p>" %}
+
+        {# With config object #}
         {% article config=article_config %}
-
-        <!-- or -->
-
-        {% article title="News" columns=3 content="<p>First paragraph...</p><p>Second paragraph...</p>" %}
         """
     }
 
