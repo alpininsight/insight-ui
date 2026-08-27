@@ -36,7 +36,7 @@ class ButtonConfig:
         icon: Icon config for an optional icon.
         icon_end: **True** if the icon should be shown after the label, otherwise the icon is shown in front of the label.
         icon_only: **True** if only the icon should be shown. In this case the `label` will be used for Screenreader.
-        type: Defines the color of the button.
+        type: Defines the color of the button (primary, secondary, danger, etc.).
         size: Defines the size of the button.
         outline: **True** to use the outline design of the button.
         subtle: **True** to use the subtle design of the button.
@@ -44,6 +44,7 @@ class ButtonConfig:
         tooltip: Optional text for a tooltip shown on hover.
         htmx_config: Configuration for asynchronous requests.
         hidden: **True** to render the button with CSS 'hidden' class for JS-controlled visibility.
+        disabled: **True** to disable the button.
         button_type: HTML type attribute: 'button', 'submit', or 'reset'.
         extra_classes: Additional CSS classes to append to the button element.
         data_attrs: List of custom data attributes to add to the button element.
@@ -102,7 +103,9 @@ class ButtonConfig:
             "doc": "**True** if only the icon should be shown. In this case the `label` will be used for Screenreader."
         },
     )
-    type: ButtonType = field(default="primary", metadata={"doc": "Defines the color of the button."})
+    type: ButtonType = field(
+        default="primary", metadata={"doc": "Defines the color of the button (primary, secondary, danger, etc.)."}
+    )
     size: Size = field(default="m", metadata={"doc": "Defines the size of the button."})
     outline: bool = field(default=False, metadata={"doc": "**True** to use the outline design of the button."})
     subtle: bool = field(default=False, metadata={"doc": "**True** to use the subtle design of the button."})
@@ -113,6 +116,7 @@ class ButtonConfig:
         default=False,
         metadata={"doc": "**True** to render the button with CSS 'hidden' class for JS-controlled visibility."},
     )
+    disabled: bool = field(default=False, metadata={"doc": "**True** to disable the button."})
     button_type: HtmlButtonType = field(
         default="button", metadata={"doc": _("HTML type attribute: 'button', 'submit', or 'reset'.")}
     )
@@ -137,7 +141,12 @@ class ButtonConfig:
 
     def __post_init__(self) -> None:
         """Validate type, size, and button_type after initialization."""
-        validate_button_type(self.type, "type")
+        # Override type when disabled=True
+        if self.disabled:
+            object.__setattr__(self, "type", "disabled")
+        else:
+            validate_button_type(self.type, "type")
+
         validate_size(self.size, "size")
         validate_html_button_type(self.button_type, "button_type")
 

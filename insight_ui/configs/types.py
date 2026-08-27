@@ -53,11 +53,11 @@ BADGE_TYPE_VALUES: tuple[str, ...] = (*COLOR_TYPE_VALUES, "disabled")
 # Type alias for badge types
 type BadgeType = Literal["primary", "secondary", "neutral", "info", "success", "warning", "danger", "disabled"]
 
-# Tuple of valid button type values (colors + disabled + link)
-BUTTON_TYPE_VALUES: tuple[str, ...] = (*COLOR_TYPE_VALUES, "disabled", "link")
+# Tuple of valid button type values (colors + link)
+BUTTON_TYPE_VALUES: tuple[str, ...] = (*COLOR_TYPE_VALUES, "link")
 
 # Type alias for button types
-type ButtonType = Literal["primary", "secondary", "neutral", "info", "success", "warning", "danger", "disabled", "link"]
+type ButtonType = Literal["primary", "secondary", "neutral", "info", "success", "warning", "danger", "link"]
 
 # =============================================================================
 # Status Types

@@ -12,7 +12,7 @@
                     {% endwith %}
                 {% endwith %}
             {% else %}
-                {% button label=_('To previous page (Deactivated because there are no more previous pages)') icon_name='chevron-left' icon_size='s' icon_only=True type='disabled' size='s' %}
+                {% button label=_('To previous page (Deactivated because there are no more previous pages)') icon_name='chevron-left' icon_size='s' icon_only=True disabled=True size='s' %}
             {% endif %}
 
             <!-- Neighbor Pages -->
@@ -40,7 +40,7 @@
                     {% endwith %}
                 {% endwith %}
             {% else %}
-                {% button label=_('To next page (Deactivated because there are no more next pages)') icon_name='chevron-right' icon_size='s' icon_only=True type='disabled' size='s' %}
+                {% button label=_('To next page (Deactivated because there are no more next pages)') icon_name='chevron-right' icon_size='s' icon_only=True disabled=True size='s' %}
             {% endif %}
         </div>
 

@@ -575,6 +575,7 @@ def button(
     tooltip: str | _Unset = UNSET,
     htmx_config: HtmxConfig | _Unset = UNSET,
     hidden: bool | _Unset = UNSET,
+    disabled: bool | _Unset = UNSET,
     button_type: HtmlButtonType | _Unset = UNSET,
     extra_classes: str | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
@@ -642,6 +643,7 @@ def button(
         tooltip=tooltip,
         htmx_config=htmx_config,
         hidden=hidden,
+        disabled=disabled,
         button_type=button_type,
         extra_classes=extra_classes,
         data_attrs=data_attrs,
