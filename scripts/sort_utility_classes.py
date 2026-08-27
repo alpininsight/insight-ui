@@ -334,8 +334,8 @@ def sort_classes(class_string: str) -> str:
     """Sort space-separated CSS classes according to Tailwind conventions.
 
     Classes are sorted with custom classes first, followed by Tailwind
-    utility classes in their recommended order. Django template tags
-    within the class string are preserved in their original position.
+    utility classes in their recommended order. Django template constructs
+    (tags, variables, and comments) are preserved in their original position.
 
     Whitespace is normalized: multiple spaces become one, leading/trailing
     whitespace is removed. However, the presence or absence of whitespace
@@ -344,7 +344,8 @@ def sort_classes(class_string: str) -> str:
 
     Args:
         class_string: Space-separated CSS class names, may include
-            Django template tags like {% if %} or {{ variable }}.
+            Django template tags like {% if %}, {{ variable }}, or
+            comments like {# tw-token-ok: reason #}.
 
     Returns:
         The sorted class string with normalized whitespace.
@@ -356,22 +357,24 @@ def sort_classes(class_string: str) -> str:
         'flex {% if x %}hidden{% endif %} mt-4'
         >>> sort_classes("flex  mt-4")  # double space normalized
         'flex mt-4'
+        >>> sort_classes("custom-token {# tw-token-ok: brand color #} flex mt-4")
+        'custom-token {# tw-token-ok: brand color #} flex mt-4'
 
     """
-    # Check if there are any Django template constructs
-    if "{%" not in class_string and "{{" not in class_string:
+    # Check if there are any Django template constructs (tags, variables, or comments)
+    if "{%" not in class_string and "{{" not in class_string and "{#" not in class_string:
         classes = class_string.split()
         sorted_classes = sorted(classes, key=get_class_priority)
         return " ".join(sorted_classes)
 
-    # Split into template tags/variables and static parts, preserving delimiters
-    # Match both {% ... %} and {{ ... }}
-    parts = re.split(r"(\{%.*?%\}|\{\{.*?\}\})", class_string)
+    # Split into template tags/variables/comments and static parts, preserving delimiters
+    # Match {% ... %}, {{ ... }}, and {# ... #}
+    parts = re.split(r"(\{%.*?%\}|\{\{.*?\}\}|\{#.*?#\})", class_string)
 
     result: list[str] = []
     for part in parts:
-        if part.startswith(("{%", "{{")):
-            # Template tag or variable - preserve as-is
+        if part.startswith(("{%", "{{", "{#")):
+            # Template tag, variable, or comment - preserve as-is
             result.append(part)
         elif part:
             # Static text - normalize whitespace while preserving boundary presence
