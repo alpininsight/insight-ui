@@ -1,9 +1,9 @@
 # Insight UI Contributor Licence Agreement
 
 > **Status: draft — not yet in force.**
-> Adapted from the Harmony Agreements. Governing law and the contracting party
-> are filled in; one register number is still open, marked `TODO`. The document
-> must be reviewed under German law before the CLA bot is switched on — the open
+> Adapted from the Harmony Agreements. Governing law, forum and the contracting
+> party are filled in and no placeholders remain. The document must still be
+> reviewed under German law before the CLA bot is switched on — the open
 > questions are collected in
 > [docs/cla-legal-review.md](docs/cla-legal-review.md). Do not present it to
 > contributors as binding until that review has happened.
@@ -237,18 +237,13 @@ Friedrichstrasse 171
 10117 Berlin
 Germany
 
-Commercial register: Amtsgericht Berlin-Charlottenburg, HRA 61945 B
+Commercial register: Amtsgericht Charlottenburg, HRA 61945 B
 
 Represented by its general partner Alpin Insight Industrial GmbH,
-Amtsgericht Berlin-Charlottenburg, HRB **TODO**, itself represented by its
-managing director Peter Rosemann.
+Friedrichstrasse 171, 10117 Berlin, Amtsgericht Charlottenburg, HRB 255826 B,
+itself represented by its managing director Peter Rosemann.
 
 contact@alpininsight.com
-
-> One field remains open: the HRB number of the general partner, Alpin Insight
-> Industrial GmbH. A GmbH & Co. KG is represented by its general partner, which
-> is in turn represented by its managing director — both registrations belong in
-> the signature block for the chain to be complete.
 
 ## Attribution
 
