@@ -960,17 +960,15 @@
         {% alert message=_("Error while loading data!") type="error" %}
     </div>
 {% elif component.value == "modal" %}
-    <div class="h-72">
-        <div class="flex flex-col gap-4 items-center">
-            <!-- Standard -->
-            {% button label=_("Standard modal") type="primary" data_insight_modal="demo-modal" %}
-            {% modal tag_id="demo-modal" title=_("Demo modal") description=_("This is an example of a standard modal.") %}
+    {% vbox gap="m" max_width="xs" class="h-80" %}
+        <!-- Info Modal -->
+        {% button label=_("About Insight UI") type="primary" data_insight_modal="about-modal" %}
+        {% modal tag_id="about-modal" title=_("About Insight UI") description=_("Insight UI is a Django component framework with 65+ reusable, accessible UI components. Built with Tailwind CSS and HTMX for modern, interactive web applications.") %}
 
-            <!-- Action-Buttons -->
-            {% button label=_("Modal with Action Buttons") type="danger" data_insight_modal=confirm_modal_config.tag_id %}
-            {% modal config=confirm_modal_config %}
-        </div>
-    </div>
+        <!-- Confirmation Modal with Actions -->
+        {% button label=_("Delete Project") type="danger" data_insight_modal=delete_project_modal_config.tag_id %}
+        {% modal config=delete_project_modal_config %}
+    {% endvbox %}
 {% elif component.value == "popover" %}
     <div class="flex gap-12 justify-center items-end h-64">
         {% button label="Hover me!" type="primary" data_insight_popover="demo-popover" data_show_arrow="true" %}

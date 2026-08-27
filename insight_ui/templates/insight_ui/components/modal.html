@@ -10,14 +10,14 @@
     class="hidden fixed inset-0 z-50 overflow-y-auto"
 >
     {# Modal Backdrop #}
-    <div class="fixed inset-0 bg-black/50 transition-opacity" data-insight-dismiss="modal"></div>
+    <div class="fixed inset-0 bg-black/50 transition-opacity dark:bg-gray-800/50 {# tw-token-ok: only needed for backdrop #}" data-insight-dismiss="modal"></div>
 
     {# Wrapper to centralize the modal on screen #}
     <div class="flex justify-center items-center p-4 min-h-screen">
         {# Modal #}
         <div class="relative mx-auto w-full bg-insight-bg-base rounded-insight-overlay shadow-insight-overlay transition-all transform", style="max-width: {{ modal_config.width|default:32 }}rem;">
             {# Modal Header #}
-            <div class="flex justify-between items-start p-6 h-fit border-b border-insight-border-surface">
+            <div class="flex justify-between items-start p-6 h-fit border-b border-insight-divider">
                 <h2 id="{{ modal_config.tag_id }}-title" class="pb-0">{{ modal_config.title }}</h2>
                 {% button label=_("Close") type="secondary" subtle=True icon_name="x-mark" icon_size="xs" icon_only=True data_insight_dismiss="modal" %}
             </div>
@@ -34,7 +34,7 @@
             </div>
 
             {# Modal Footer #}
-            <div class="flex gap-2 justify-end p-6 border-t border-insight-border-surface">
+            <div class="flex gap-2 justify-end p-6 border-t border-insight-divider">
                 {% if modal_config.actions %}
                     {% for action in modal_config.actions %}
                         {% button config=action %}

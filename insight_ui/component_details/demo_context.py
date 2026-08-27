@@ -635,14 +635,17 @@ def get_multiselect_context() -> dict:
 def get_modal_context() -> dict:
     """Serve data for the modal detailpage."""
     return {
-        "confirm_modal_config": ModalConfig(
-            "action-demo-modal",
-            _("Demo modal"),
-            _("This is an example of a standard modal."),
+        "delete_project_modal_config": ModalConfig(
+            "delete-project-modal",
+            _("Delete Project"),
+            _(
+                "Are you sure you want to delete 'My Awesome Project'? All files, settings, and "
+                "collaborator access will be permanently removed. This action cannot be undone."
+            ),
             [
-                ButtonConfig(label=_("Yes, confirm"), type="primary", on_click="alert('Confirmed!')"),
+                ButtonConfig(label=_("Delete Project"), type="danger", on_click="alert('Project deleted')"),
                 ButtonConfig(
-                    label=_("Abort"), type="secondary", data_attrs=[DataAttrConfig("insight-dismiss", "modal")]
+                    label=_("Cancel"), type="secondary", data_attrs=[DataAttrConfig("insight-dismiss", "modal")]
                 ),
             ],
         )

@@ -21,6 +21,7 @@
     --color-gray-400: oklch(70.7% 0.022 261.325);
     --color-gray-500: oklch(55.1% 0.027 264.364);
     --color-gray-700: oklch(37.3% 0.034 259.733);
+    --color-gray-800: oklch(27.8% 0.033 256.848);
     --color-gray-900: oklch(21% 0.034 264.665);
     --color-neutral-100: oklch(97% 0 none);
     --color-neutral-300: oklch(87% 0 none);
@@ -1661,9 +1662,6 @@
       background-color: color-mix(in oklab, var(--color-insight-bg-base) 75%, transparent);
     }
   }
-  .bg-insight-bg-overlay {
-    background-color: var(--color-insight-bg-overlay);
-  }
   .bg-insight-bg-raised {
     background-color: var(--color-insight-bg-raised);
   }
@@ -3098,6 +3096,12 @@
   }
   .dark\:bg-gray-700:where([data-theme=dark], [data-theme=dark] *) {
     background-color: var(--color-gray-700);
+  }
+  .dark\:bg-gray-800\/50:where([data-theme=dark], [data-theme=dark] *) {
+    background-color: color-mix(in srgb, oklch(27.8% 0.033 256.848) 50%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-gray-800) 50%, transparent);
+    }
   }
   .dark\:bg-insight-primary\/10:where([data-theme=dark], [data-theme=dark] *) {
     background-color: color-mix(in srgb, #4183EA 10%, transparent);
