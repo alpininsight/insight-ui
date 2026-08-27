@@ -338,5 +338,47 @@ describe('Floater Component', () => {
       expect(floater.trigger).toBeNull();
       expect(floater.target).toBeNull();
     });
+
+    it('should remove tooltip element from DOM on destroy', () => {
+      const container = TestUtils.createDOM(`
+        <div>
+          <button data-insight-tooltip="Test">Hover</button>
+        </div>
+      `);
+      const trigger = container.querySelector('[data-insight-tooltip]');
+      const parent = trigger.parentNode;
+
+      const floater = new InsightUI.Floater(trigger, 'tooltip');
+
+      // Tooltip element should exist in DOM
+      const tooltipBefore = parent.querySelector('span[role="tooltip"]');
+      expect(tooltipBefore).not.toBeNull();
+
+      floater.destroy();
+
+      // Tooltip element should be removed from DOM
+      const tooltipAfter = parent.querySelector('span[role="tooltip"]');
+      expect(tooltipAfter).toBeNull();
+    });
+
+    it('should remove popover element from DOM on destroy', () => {
+      const container = TestUtils.createDOM(`
+        <div>
+          <button data-insight-popover="my-popover" data-trigger="click">Click</button>
+          <div id="my-popover">Popover content</div>
+        </div>
+      `);
+      const trigger = container.querySelector('[data-insight-popover]');
+
+      const floater = new InsightUI.Floater(trigger, 'popover');
+
+      // Popover element should exist
+      expect(container.querySelector('#my-popover')).not.toBeNull();
+
+      floater.destroy();
+
+      // Popover element should be removed to prevent orphaned floaters
+      expect(container.querySelector('#my-popover')).toBeNull();
+    });
   });
 });
