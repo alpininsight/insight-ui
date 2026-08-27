@@ -37,6 +37,7 @@ export class Multiselect {
         this.element = element;
         this.name = element.dataset.name || "multiselect";
         this.max = parseInt(element.dataset.max) || Infinity;
+        this.disabled = element.dataset.disabled === "true";
         if (!element.dataset.selected || !element.dataset.selected.trim()) this.selectedValues = [];
         else this.selectedValues = JSON.parse(element.dataset.selected.replace(/'/g, '"'));
         this.focusedIndex = -1;
@@ -61,7 +62,10 @@ export class Multiselect {
             }
         });
 
-        this.bindEvents();
+        // Only bind interactive events if not disabled
+        if (!this.disabled) {
+            this.bindEvents();
+        }
         this.renderSelected();
 
         this.updateInfo();
@@ -246,11 +250,14 @@ export class Multiselect {
             const tag = document.createElement('span');
             tag.className = 'inline-tag me-1';
             tag.textContent = value;
-            const remove = document.createElement('button');
-            remove.innerHTML = '&times;';
-            remove.className = 'text-blue-500 hover:text-blue-700 ml-1';
-            remove.addEventListener('click', e => { e.stopPropagation(); this.deselectValue(value); });
-            tag.appendChild(remove);
+            // Only add remove button if not disabled
+            if (!this.disabled) {
+                const remove = document.createElement('button');
+                remove.innerHTML = '&times;';
+                remove.className = 'text-blue-500 hover:text-blue-700 ml-1';
+                remove.addEventListener('click', e => { e.stopPropagation(); this.deselectValue(value); });
+                tag.appendChild(remove);
+            }
             this.tags.appendChild(tag);
 
             const hidden = document.createElement('input');
@@ -371,25 +378,28 @@ export class Multiselect {
     destroy() {
         debugLog("Destroy multiselect: ", this.element, this.name);
 
-        // Remove search and selected listeners
-        this.search.removeEventListener('input', this.boundSearchInput);
-        this.search.removeEventListener('focus', this.boundSearchFocus);
-        this.search.removeEventListener('blur', this.boundSearchBlur);
-        this.selected.removeEventListener('click', this.boundSelectedClick);
-        this.search.removeEventListener('keydown', this.boundSearchKeydown);
+        // Only remove event listeners if they were bound (not disabled)
+        if (!this.disabled) {
+            // Remove search and selected listeners
+            this.search.removeEventListener('input', this.boundSearchInput);
+            this.search.removeEventListener('focus', this.boundSearchFocus);
+            this.search.removeEventListener('blur', this.boundSearchBlur);
+            this.selected.removeEventListener('click', this.boundSelectedClick);
+            this.search.removeEventListener('keydown', this.boundSearchKeydown);
 
-        // Remove option click handlers
-        this.boundOptionClicks.forEach(({ element, handler }) => {
-            element.removeEventListener('click', handler);
-        });
-        this.boundOptionClicks = [];
+            // Remove option click handlers
+            this.boundOptionClicks.forEach(({ element, handler }) => {
+                element.removeEventListener('click', handler);
+            });
+            this.boundOptionClicks = [];
 
-        // Remove document click handler
-        document.removeEventListener('click', this.boundDocumentClick);
+            // Remove document click handler
+            document.removeEventListener('click', this.boundDocumentClick);
 
-        // Remove button handlers
-        if (this.selectAllBtn) this.selectAllBtn.removeEventListener('click', this.boundSelectAll);
-        if (this.deselectAllBtn) this.deselectAllBtn.removeEventListener('click', this.boundDeselectAll);
+            // Remove button handlers
+            if (this.selectAllBtn) this.selectAllBtn.removeEventListener('click', this.boundSelectAll);
+            if (this.deselectAllBtn) this.deselectAllBtn.removeEventListener('click', this.boundDeselectAll);
+        }
 
         Multiselect.instances.delete(this.element);
         delete this.element.__insightInstance;
