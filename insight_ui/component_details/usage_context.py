@@ -401,7 +401,11 @@ def get_breadcrumb_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {% breadcrumbs items=breadcrumb_items %}
+        {% breadcrumbs config=breadcrumbs_config %}
+
+        <!-- or -->
+
+        {% breadcrumbs config=breadcrumbs_items %}
         """
     }
 
@@ -412,6 +416,10 @@ def get_stepper_usage_context() -> dict[str, str]:
     return {
         "usage": """
         {% load insight_tags %}
+
+        {% stepper config=stepper_config %}
+
+        <!-- or -->
 
         {% stepper items=stepper_items %}
         """
@@ -436,6 +444,10 @@ def get_bullet_point_list_usage_context() -> dict[str, str]:
     return {
         "usage": """
         {% load insight_tags %}
+
+        {% bullet_point_list config=bulletpoints_config %}
+
+        <!-- or -->
 
         {% bullet_point_list items=bulletpoints %}
         """

@@ -15,13 +15,20 @@ from insight_ui.component_details.components import Component
 
 @register_component(Component.PAGE_HEADER)
 def get_page_header_description_context() -> dict[str, list[str]]:
-    """Serve description documentation for the page hader component."""
+    """Serve description documentation for the page header component."""
     return {
         "description": [
             _(
-                "The `page_header` component can be used to display a header featuring geometric decorations, along with a title, an optional description, and buttons. The header is displayed in the selected primary color to stand out from the rest of the page."
+                "The `page_header` component displays a prominent header section with geometric decorations, "
+                "a title, optional description, and action buttons. The header uses the primary color to stand out from the page content."
             )
-        ]
+        ],
+        "features": [
+            _("**Geometric decorations**: Distinctive visual patterns for branding."),
+            _("**Title and description**: Headline with optional supporting text."),
+            _("**Action buttons**: Configurable buttons for primary actions."),
+            _("**Primary color theming**: Uses the brand's primary color for visual impact."),
+        ],
     }
 
 
@@ -31,9 +38,15 @@ def get_article_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `article` component renders text content in newspaper style with multi-column CSS columns. The text flows automatically from one column to the next."
+                "The `article` component renders text content in newspaper-style multi-column layout. "
+                "Text flows automatically from one column to the next using CSS columns."
             )
-        ]
+        ],
+        "features": [
+            _("**Multi-column layout**: Automatic text flow across columns."),
+            _("**Responsive columns**: Column count adjusts to available width."),
+            _("**Gap control**: Configurable spacing between columns."),
+        ],
     }
 
 
@@ -43,9 +56,16 @@ def get_hero_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `hero` component renders a prominent banner section with title, subtitle, description and Call-to-Action buttons."
+                "The `hero` component renders a prominent banner section for landing pages. "
+                "It combines a title, subtitle, description text, and call-to-action buttons."
             )
-        ]
+        ],
+        "features": [
+            _("**Title and subtitle**: Primary headline with optional secondary text."),
+            _("**Description**: Supporting paragraph text."),
+            _("**Call-to-action buttons**: Primary and secondary action buttons."),
+            _("**Badge**: Optional badge for highlighting features or announcements."),
+        ],
     }
 
 
@@ -55,10 +75,12 @@ def get_status_screen_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `status_screen` component renders a reusable full-page status view. It combines brand, surface, status icon, title, description, notice and actions for common application states."
+                "The `status_screen` component renders a reusable full-page status view. "
+                "It combines brand, surface, status icon, title, description, notice and actions for common application states."
             ),
             _(
-                "It is intentionally generic. Use it for authentication failures, expired sessions, access states, deployment states, empty starts or workflow results without coupling the component to auth logic."
+                "It is intentionally generic. Use it for authentication failures, expired sessions, "
+                "access states, deployment states, empty starts or workflow results without coupling the component to auth logic."
             ),
         ],
         "features": [
@@ -206,7 +228,6 @@ def get_section_description_context() -> dict[str, list[str]]:
             _("**Semantic HTML**: Renders a `<section>` element for proper document structure."),
             _("**id**: Anchor ID for navigation links (automatically adds `scroll-mt-24` for fixed navbar offset)."),
             _("**gap**: Consistent spacing between children using the spacing scale (xs/s/m/l/xl)."),
-            _("**Accessibility**: Supports `aria_label` and `aria_labelledby` for screen readers."),
         ],
     }
 
@@ -250,20 +271,17 @@ def get_navbar_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `navbar` component provides a customizable navigation bar with various components. The navigation is fixed to the top edge of the browser window and moves along when scrolling down."
+                "The `navbar` component provides a fixed navigation bar at the top of the page. "
+                "It stays visible while scrolling and supports various navigation elements."
             )
         ],
         "features": [
             _("**Brand**: Logo and title on the left edge."),
-            _("**Navigation links**: Main navigation, to the right of the logo and title."),
-            _("**Search bar**: An optional search bar, to the right of the main navigation."),
-            _(
-                "**Login/user menu**: An optional, customizable user menu or a login button when the user is not logged in."
-            ),
-            _(
-                "**Language selection**: An optional menu for selecting the language in which the website should be displayed."
-            ),
-            _("**Theme toggle button**: An optional button for switching between the light and dark theme."),
+            _("**Navigation links**: Main navigation items with optional icons and dropdowns."),
+            _("**Search bar**: Optional search functionality with HTMX or Fuse.js support."),
+            _("**User menu**: Optional dropdown menu for logged-in users or login button."),
+            _("**Language selector**: Optional menu for switching display language."),
+            _("**Theme toggle**: Optional button for switching between light and dark theme."),
         ],
     }
 
@@ -274,9 +292,17 @@ def get_sidebar_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `sidebar` component adds an area to the side of the window. The sidebar can be applied on the left or on the right side, as well as on both sides simultaneously. The sidebar can also be used as a drawer, in which case it can be closed."
+                "The `sidebar` component provides a navigation panel at the window edge. "
+                "It can be positioned left, right, or both sides and supports a collapsible drawer mode."
             )
-        ]
+        ],
+        "features": [
+            _("**Position**: Left, right, or both sides simultaneously."),
+            _("**Drawer mode**: Collapsible with open/close functionality."),
+            _("**Auto-close**: Optionally closes when the cursor leaves."),
+            _("**Mobile support**: Can be hidden on smaller viewports."),
+            _("**Categories**: Organizes navigation items into logical groups with icons and badges."),
+        ],
     }
 
 
@@ -286,10 +312,18 @@ def get_footer_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "A simple `footer` consisting of three columns with customizable content. The footer is an important part of every website; however, it does not only serve to visually close off the website. It typically contains at least a link to the imprint and the privacy policy. Often the footer also contains navigation to the most important pages of the website and a copyright notice."
+                "The `footer` component renders a three-column page footer with customizable content. "
+                "It typically contains navigation links, contact information, legal notices, and copyright information."
             ),
             _("The footer composes the reusable `legal_notice` component for its legal notice line."),
-        ]
+        ],
+        "features": [
+            _("**Description column**: Application summary with optional logo."),
+            _("**Navigation links**: Quick links to important pages."),
+            _("**Contact information**: Email, imprint, and privacy policy links."),
+            _("**Legal notice**: copyright, license and rights information."),
+            _("**Version display**: Optional application version."),
+        ],
     }
 
 
@@ -299,10 +333,19 @@ def get_breadcrumb_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "`Breadcrumbs` are a secondary navigation used to provide the user with clarity about the hierarchical structure of a website. This is especially useful for websites with a deep structure, i.e. with many subpages. Websites with a depth of no more than two levels (e.g. Overview -> Product Details) should refrain from using breadcrumbs."
+                "The `breadcrumbs` component provides secondary navigation showing the user's location "
+                "within the site hierarchy. It is especially useful for websites with deep structure."
             ),
-            _("For good consistency, breadcrumbs should ,when used, be used everywhere, not just sporadically."),
-        ]
+            _(
+                "Breadcrumbs should be used consistently across all pages when implemented. "
+                "Sites with only two levels (e.g., Overview → Details) typically don't need breadcrumbs."
+            ),
+        ],
+        "features": [
+            _("**Hierarchical navigation**: Shows path from home to current page."),
+            _("**Optional icons**: Icons can be added to items (typically home icon for first item)."),
+            _("**HTMX support**: Optional AJAX navigation for single-page application behavior."),
+        ],
     }
 
 
@@ -312,9 +355,16 @@ def get_stepper_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `stepper` component can be used to show the user the progress of a manual process. This refers, for example, to a typical checkout process. This typically consists of several steps, such as entering an address, selecting a payment method, and then reviewing the entries once more. The component shows the user where they currently are and which steps remain."
+                "The `stepper` component displays progress through a multi-step process. "
+                "Common use cases include checkout flows, registration wizards, or onboarding sequences."
             )
-        ]
+        ],
+        "features": [
+            _("**Step states**: Active, success, and failed states with visual indicators."),
+            _("**Descriptions**: Optional description text below each step title."),
+            _("**Clickable steps**: Steps can link to their respective pages."),
+            _("**Current step highlight**: Visual emphasis on the active step."),
+        ],
     }
 
 
@@ -324,9 +374,16 @@ def get_minimal_stepper_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `minimal_stepper` component can be used to graphically display progress in a multi-step process in a simple way."
+                "The `minimal_stepper` component displays a compact progress indicator for multi-step processes. "
+                "It provides a simpler alternative to the full stepper component."
             )
-        ]
+        ],
+        "features": [
+            _("**Compact design**: Icon-based indicator without text labels."),
+            _("**Step states**: Active, success, and failed states."),
+            _("**Configurable size**: Icon size can be adjusted (xs/s/m/l/xl)."),
+            _("**Two configuration modes**: Either provide step items or use step_count/current_step."),
+        ],
     }
 
 
@@ -336,9 +393,17 @@ def get_bullet_point_list_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `bullet_point_list` component can be used to display a sequence of tasks, process steps, or similar. The individual steps can contain a link, for example to link them to a specific page for each task."
+                "The `bullet_point_list` component displays a sequence of tasks, process steps, or similar items. "
+                "Individual items can include links, descriptions, and completion states."
             )
-        ]
+        ],
+        "features": [
+            _("**Completion states**: Checkmark indicator for completed items."),
+            _("**Current item highlight**: Visual emphasis on the active item."),
+            _("**Clickable items**: Items can link to specific pages."),
+            _("**Descriptions**: Optional description text below each title."),
+            _("**HTMX support**: Optional AJAX navigation."),
+        ],
     }
 
 
@@ -348,9 +413,16 @@ def get_accordion_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `accordion` component can be used to add expandable sections for additional information. An accordion can have either one or multiple sections open at the same time. When an accordion section is opened, a URL anchor is automatically set. This allows certain sections to be automatically expanded when the page is loaded via the URL, and the view automatically scrolls to the opened section."
+                "The `accordion` component displays expandable sections for organizing content. "
+                "When a section is opened, a URL anchor is automatically set for deep linking."
             )
-        ]
+        ],
+        "features": [
+            _("**Exclusive mode**: Optionally allow only one section open at a time."),
+            _("**URL anchors**: Sections can be expanded via URL hash on page load."),
+            _("**Auto-scroll**: Automatically scrolls to expanded section."),
+            _("**Initial state**: Sections can be configured as open by default."),
+        ],
     }
 
 
@@ -360,9 +432,16 @@ def get_tabs_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `tabs` component can be used to add tabs. This component consists of a series of buttons that swap the main content of the component via HTMX requests. This allows switching between individual tabs without reloading the page."
+                "The `tabs` component organizes content into switchable panels. "
+                "Tab content is loaded via HTMX requests, allowing page sections to switch without full page reloads."
             )
-        ]
+        ],
+        "features": [
+            _("**HTMX integration**: Content loaded asynchronously when tabs are clicked."),
+            _("**Active state**: Visual indication of the currently selected tab."),
+            _("**Keyboard navigation**: Tab switching via arrow keys."),
+            _("**URL-based tabs**: Each tab can load content from a different URL."),
+        ],
     }
 
 
@@ -379,22 +458,56 @@ def get_button_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "For a standard button, our UI framework provides a set of CSS classes. These allow buttons for different scenarios to be integrated with minimal effort using common CSS classes."
+                "The `button` component provides customizable buttons in various styles and sizes. "
+                "Buttons support icons, tooltips, and can function as links or form submit buttons."
             )
-        ]
+        ],
+        "features": [
+            _("**Types**: primary, secondary, neutral, info, success, warning, danger, disabled, and link."),
+            _("**Sizes**: Five sizes (xs, s, m, l, xl) for different contexts."),
+            _("**Design variants**: outline, subtle, and round for visual customization."),
+            _("**Icons**: Optionally placed before or after the label, or icon-only mode."),
+            _("**HTMX integration**: Native support for asynchronous requests."),
+            _("**External links**: Opens in new tab with proper security attributes."),
+        ],
     }
 
 
 @register_component(Component.INPUT_FIELD)
 def get_input_field_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the input field component."""
-    return {"description": [_("The `input_field` component can be used to integrate individual `<input>` elements.")]}
+    return {
+        "description": [
+            _(
+                "The `input_field` component provides form input fields with built-in validation styling. "
+                "It supports various HTML input types and integrates with Django forms."
+            )
+        ],
+        "features": [
+            _("**Input types**: text, email, password, number, tel, url, date, time, color, file, and more."),
+            _("**Validation constraints**: min/max values, min/max length attributes."),
+            _("**Placeholder**: Hint text displayed when field is empty."),
+            _("**States**: Disabled and required states."),
+        ],
+    }
 
 
 @register_component(Component.TEXTAREA)
 def get_textarea_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the textarea component."""
-    return {"description": [_("The `textarea` component can be used to integrate a text field for longer texts.")]}
+    return {
+        "description": [
+            _(
+                "The `textarea` component provides a multi-line text input field for longer content. "
+                "Use it for comments, descriptions, messages, or any free-form text entry."
+            )
+        ],
+        "features": [
+            _("**Configurable size**: Rows and columns can be adjusted."),
+            _("**Placeholder**: Hint text displayed when field is empty."),
+            _("**States**: Disabled and required states."),
+        ],
+    }
 
 
 @register_component(Component.CHECKBOX)
@@ -404,10 +517,16 @@ def get_checkbox_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `checkbox` component can be used to integrate individual checkbox elements. For a group of interconnected checkbox elements, see [Checkbox Group](%(url)s)."
+                "The `checkbox` component provides a single checkbox input with a label. "
+                "For groups of related checkboxes, see [Checkbox Group](%(url)s)."
             )
             % {"url": checkbox_group_url}
-        ]
+        ],
+        "features": [
+            _("**Checked state**: Can be pre-selected via configuration."),
+            _("**Custom value**: Configurable value attribute for form submission."),
+            _("**States**: Disabled and required states."),
+        ],
     }
 
 
@@ -417,9 +536,16 @@ def get_checkbox_group_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `checkbox_group` component can be used to integrate groups of checkbox elements that are linked to each other. This allows a restriction to be enabled that, for example, ensures that at least one checkbox element is selected."
+                "The `checkbox_group` component renders a group of related checkboxes with optional constraints. "
+                "Use it when users need to select multiple options from a set."
             )
-        ]
+        ],
+        "features": [
+            _("**Minimum/maximum selection**: Enforce selection constraints."),
+            _("**Layout options**: Display checkboxes in a row or column."),
+            _("**Group label**: Text label displayed above the checkbox elements."),
+            _("**Individual states**: Each checkbox can be disabled or pre-selected."),
+        ],
     }
 
 
@@ -429,12 +555,19 @@ def get_dropdown_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "A `dropdown` menu offers the possibility of housing a group of buttons in a collapsible menu. This is very useful whenever space is limited or the number of elements would otherwise be too large and confusing."
+                "The `dropdown` component displays a collapsible menu triggered by a button. "
+                "Use it when space is limited or when grouping multiple related actions."
             ),
             _(
-                "Dropdown menus should not be overloaded. As a rule, a menu should have no more than seven elements, and nested menus, i.e. a dropdown menu within a dropdown menu, should also be avoided."
+                "Dropdown menus should contain no more than seven elements. "
+                "Nested dropdown menus (dropdowns within dropdowns) should be avoided."
             ),
-        ]
+        ],
+        "features": [
+            _("**Trigger button**: Customizable button with optional arrow indicator."),
+            _("**Menu items**: Links with optional icons."),
+            _("**Click-outside close**: Menu closes when clicking outside."),
+        ],
     }
 
 
@@ -444,9 +577,16 @@ def get_radio_group_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `radio_group` component can be used to integrate groups of radio buttons. This variant of radio buttons uses standard radio buttons for e.g. a form or similar."
+                "The `radio_group` component renders a group of standard radio buttons. "
+                "Use it when users must select exactly one option from a set."
             )
-        ]
+        ],
+        "features": [
+            _("**Layout options**: Display radio buttons in a row or column."),
+            _("**Pre-selected option**: Set the initially selected value."),
+            _("**Optional icons**: Icons can be added to individual options."),
+            _("**Individual states**: Each radio button can be disabled."),
+        ],
     }
 
 
@@ -456,9 +596,16 @@ def get_radio_block_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `radio_block` component can be used to integrate groups of radio buttons. This variant of the radio buttons is displayed as a block of buttons and can be used to trigger a request when the selected value changes."
+                "The `radio_block` component renders radio buttons as a compact button group. "
+                "Unlike standard radio buttons, it can trigger requests when the selection changes."
             )
-        ]
+        ],
+        "features": [
+            _("**Button-style display**: Compact block of connected buttons."),
+            _("**HTMX integration**: Trigger requests on selection change."),
+            _("**JavaScript callback**: Optional method call on selection change."),
+            _("**Icon support**: Buttons can display icons instead of or with text."),
+        ],
     }
 
 
@@ -468,20 +615,17 @@ def get_rangle_slider_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `slider` component can be used to integrate a range slider into the frontend, allowing a value to be selected within a defined interval."
-            ),
-            _(
-                "The component supports a **dual-thumb mode** (`dual=True`) that allows users to select a range by setting both minimum and maximum values. "
-                "In dual mode, two form fields are submitted: `{name}_min` and `{name}_max`."
-            ),
-            _(
-                "The legend below the slider can be configured to respond to limited space using `legend_mode`: "
-                "**'skip'** progressively hides items, while **'rotate'** displays text vertically."
-            ),
-            _(
-                "The component fully supports **RTL (right-to-left)** layouts and adapts to **dark mode** automatically."
-            ),
-        ]
+                "The `slider` component provides a range input for selecting numeric values within a defined interval. "
+                "It supports both single-value and dual-thumb range selection."
+            )
+        ],
+        "features": [
+            _("**Dual-thumb mode**: Select a range with minimum and maximum values."),
+            _("**Custom legend**: Text labels displayed below the slider."),
+            _("**Legend modes**: `static`, `skip` (hides items when cramped), or `rotate` (vertical text)."),
+            _("**Step size**: Configurable increment value."),
+            _("**RTL support**: Adapts to right-to-left layouts."),
+        ],
     }
 
 
@@ -491,16 +635,36 @@ def get_toggle_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `toggle` component can be used to integrate a toggle button. It essentially functions like a single checkbox."
+                "The `toggle` component provides a toggle button or switch for binary choices. "
+                "It functions like a single checkbox but with a different visual appearance."
             )
-        ]
+        ],
+        "features": [
+            _("**Switch style**: Optional iOS-style switch appearance."),
+            _("**Icon support**: Optional icon displayed on the toggle."),
+            _("**JavaScript callback**: Optional method call on state change."),
+            _("**States**: Checked, disabled, and required states."),
+        ],
     }
 
 
 @register_component(Component.SELECT)
 def get_select_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the select component."""
-    return {"description": [_("The `select` component provides a simple selection box.")]}
+    return {
+        "description": [
+            _(
+                "The `select` component provides a dropdown selection box for choosing a single value. "
+                "It renders a native HTML select element with consistent styling."
+            )
+        ],
+        "features": [
+            _("**Options**: List or dictionary of selectable values."),
+            _("**Pre-selected option**: Set the initially selected value."),
+            _("**Tooltip**: Optional explanation text on hover."),
+            _("**States**: Disabled and required states."),
+        ],
+    }
 
 
 @register_component(Component.MULTISELECT)
@@ -509,9 +673,16 @@ def get_multiselect_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `multiselect` component provides a selection box that allows multiple values to be selected. Additionally, the multiselect has an integrated search bar to allow quick searches for specific values."
+                "The `multiselect` component provides a selection box that allows multiple values to be selected. "
+                "It includes an integrated search bar for filtering options."
             )
-        ]
+        ],
+        "features": [
+            _("**Multiple selection**: Select multiple values from the list."),
+            _("**Search filter**: Built-in search to find options quickly."),
+            _("**Maximum selection**: Optionally limit the number of selections."),
+            _("**Quick actions**: Optional 'Select All' and 'Deselect All' buttons."),
+        ],
     }
 
 
@@ -521,9 +692,15 @@ def get_chat_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `chat` component provides a simple frontend for a chat application. It consists of a text input and an area for messages. The content of the message area is extended via HTMX with each response, without the page needing to be reloaded."
+                "The `chat` component provides a simple chat interface with a text input and message area. "
+                "Messages are added via HTMX without requiring page reloads."
             )
-        ]
+        ],
+        "features": [
+            _("**Message input**: Text field with send button."),
+            _("**Message area**: Scrollable container for chat history."),
+            _("**HTMX integration**: Messages loaded asynchronously via POST requests."),
+        ],
     }
 
 
@@ -540,9 +717,15 @@ def get_alert_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `alert` component provides a way to display important information, warnings, or success messages to users."
+                "The `alert` component displays important messages, warnings, or notifications to users. "
+                "It is more prominent than an infobox and typically used for system messages."
             )
-        ]
+        ],
+        "features": [
+            _("**Types**: info, success, warning, and error with appropriate colors."),
+            _("**Dismissible**: Optional close button to dismiss the alert."),
+            _("**Icon**: Automatic icon based on alert type."),
+        ],
     }
 
 
@@ -552,9 +735,16 @@ def get_modal_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `modal` component can be used to integrate customizable dialogs. These can display additional information to the user or be used as confirmation dialogs for various actions."
+                "The `modal` component displays customizable dialogs above the page content. "
+                "Use it for confirmation prompts, forms, or displaying additional information."
             )
-        ]
+        ],
+        "features": [
+            _("**Configurable width**: Adjustable maximum width in rem units."),
+            _("**Action buttons**: Customizable buttons at the bottom of the dialog."),
+            _("**Title and description**: Header text with optional description."),
+            _("**Backdrop click**: Closes modal when clicking outside (configurable)."),
+        ],
     }
 
 
@@ -564,12 +754,16 @@ def get_popover_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `popover` is a useful component if it is necessary to display additional but rather optional information that would disrupt the overall appearance or for which there simply is not enough space. Similar to a tooltip, popovers are also displayed separately from the rest of the layout and therefore do not disrupt the flow of the layout. A popover is an area for additional information that is only displayed when the user hovers the mouse cursor over a specific element. Unlike the tooltip, popovers do not close automatically and therefor also allow to display interactive elements to the user."
+                "The `popover` component displays additional content in a floating panel. "
+                "Unlike tooltips, popovers remain open until explicitly closed and can contain interactive elements."
             ),
-            _(
-                "If only a short explanatory informational text with 1-2 words is to be displayed, the tooltip component is a better option."
-            ),
-        ]
+            _("For short explanatory text (1-2 words), use the tooltip component instead."),
+        ],
+        "features": [
+            _("**Persistent display**: Stays open until closed, unlike tooltips."),
+            _("**Interactive content**: Can contain buttons, links, and other elements."),
+            _("**Positioning**: Appears near the trigger element without disrupting layout."),
+        ],
     }
 
 
@@ -579,12 +773,19 @@ def get_tooltip_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `tooltip` is helpful and important for displaying additional information without disrupting the flow of the web interface. If the label or icon of a button or similar element is not clear enough, it leaves room for interpretation, which in the worst case can lead to confusion. Tooltips are only displayed when the user hovers the mouse cursor over the corresponding element. The tooltip is displayed separately from the rest of the layout above all other elements, is therefore always visible and does not disrupt the overall appearance."
+                "The `tooltip` component displays brief explanatory text when hovering over an element. "
+                "Use it to clarify button labels, icons, or other UI elements that might be ambiguous."
             ),
             _(
-                "A tooltip should only be used for short informational texts (usually just one word). If more information needs to be displayed, the popover component should be used instead."
+                "Tooltips should contain only short text (usually one word). "
+                "For longer content or interactive elements, use the popover component instead."
             ),
-        ]
+        ],
+        "features": [
+            _("**Hover-triggered**: Appears on mouse hover, disappears on mouse leave."),
+            _("**Non-blocking**: Floats above content without disrupting layout."),
+            _("**Auto-positioning**: Positions itself to remain visible within viewport."),
+        ],
     }
 
 
@@ -601,9 +802,14 @@ def get_infobox_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `infobox` component displays the text it contains in a bordered box, making it slightly more prominent, but not as conspicuous as an `alert`."
+                "The `infobox` component displays text in a bordered box with subtle emphasis. "
+                "It is less prominent than an alert but more visible than plain text."
             )
-        ]
+        ],
+        "features": [
+            _("**Types**: info, success, warning, and error with appropriate styling."),
+            _("**Bordered design**: Visual distinction without strong emphasis."),
+        ],
     }
 
 
@@ -613,9 +819,16 @@ def get_code_block_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `code_block` component displays source code with syntax highlighting and can copy the displayed source code to the clipboard via a button. The syntax highlighting covers virtually all common and most less common programming languages."
+                "The `code_block` component displays source code with syntax highlighting. "
+                "It supports virtually all common programming languages and includes a copy-to-clipboard button."
             )
-        ]
+        ],
+        "features": [
+            _("**Syntax highlighting**: Language-aware code coloring."),
+            _("**Copy button**: One-click copy to clipboard."),
+            _("**Language support**: Most common and many uncommon programming languages."),
+            _("**Line numbers**: Optional line number display."),
+        ],
     }
 
 
@@ -630,8 +843,9 @@ def get_legal_notice_description_context() -> dict[str, list[str]]:
             ),
         ],
         "features": [
-            _("Supports a holder name, source label, license text, optional license link, and rights text."),
-            _("Uses a dot-style separator by default instead of hyphens."),
+            _("**Configurable parts**: Year, holder, source label, license text, and rights statement."),
+            _("**License link**: Optional URL for the license."),
+            _("**Custom separator**: Configurable separator between parts (defaults to middle dot)."),
         ],
     }
 
@@ -642,9 +856,14 @@ def get_differentiator_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `differentiator` component can be used to graphically display differences between two texts, which can be very welcome help especially for longer texts with only small changes. For texts that differ more or less completely from each other, this component is probably less useful."
+                "The `differentiator` component displays a visual comparison between two text versions. "
+                "It is especially helpful for longer texts with only small changes."
             )
-        ]
+        ],
+        "features": [
+            _("**Visual diff**: Highlights additions, deletions, and changes."),
+            _("**Side-by-side view**: Compares original and modified text."),
+        ],
     }
 
 
@@ -654,15 +873,15 @@ def get_logo_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `logo` component renders a brand mark from one consistent API. It supports image assets, SVG assets, and Insight UI icons."
+                "The `logo` component renders a brand mark from a consistent API. "
+                "It supports image assets, SVG assets, and Insight UI icons."
             )
         ],
         "features": [
-            _(
-                "Image and SVG asset paths are resolved through Django static files unless an absolute, root-relative, or data URL is provided."
-            ),
-            _("Optional `url_dark` renders a dark-theme variant without custom JavaScript."),
-            _("Icon logos reuse the existing Insight UI icon component."),
+            _("**Multiple sources**: Image files, SVG files, or icon names."),
+            _("**Dark mode variant**: Optional separate image for dark theme."),
+            _("**Django static files**: Paths resolved through static file system."),
+            _("**Configurable size**: Height and width attributes."),
         ],
     }
 
@@ -673,14 +892,15 @@ def get_brand_mark_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `brand_mark` component renders a controlled brand unit made of a public Insight UI icon and a two-tone wordmark."
-            ),
-            _(
-                "Use it when an application needs a recognizable wordmark without embedding private assets in the open-source package."
-            ),
+                "The `brand_mark` component renders a logo combined with a two-tone wordmark. "
+                "Use it when an application needs a recognizable brand identity."
+            )
         ],
         "features": [
-            _("Uses Insight UI design tokens for the primary and secondary brand colors."),
+            _("**Two-tone wordmark**: Primary and secondary text with different colors."),
+            _("**Logo integration**: Combines with the logo component."),
+            _("**Logo position**: Logo can be placed at start or end."),
+            _("**Design tokens**: Uses Insight UI brand color tokens."),
         ],
     }
 
@@ -691,12 +911,16 @@ def get_corner_ribbon_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `corner_ribbon` component displays a decorative diagonal text ribbon positioned in any of the four browser corners. It's ideal for highlighting new features, displaying status indicators, or adding promotional badges."
+                "The `corner_ribbon` component displays a decorative diagonal text ribbon positioned in any of the four browser corners. "
+                "It's ideal for highlighting new features, displaying status indicators, or adding promotional badges."
             ),
-            _(
-                "The ribbon appears above most page content, but you can click on elements located behind the component. It supports RTL layouts and multiple color variants for different semantic meanings."
-            ),
-        ]
+        ],
+        "features": [
+            _("**Position**: Any of the four browser corners."),
+            _("**Color variants**: primary, secondary, info, success, warning, and danger."),
+            _("**Non-blocking**: Elements behind the ribbon remain clickable."),
+            _("**RTL support**: Adapts to right-to-left layouts."),
+        ],
     }
 
 
@@ -706,12 +930,18 @@ def get_progress_bar_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `progress_bar` component is used to visually display the progress of a background process to the user. A common scenario for such components is, for example, downloads."
-            ),
-            _(
-                "For a progress indicator where progress is made through active user interaction, our Step Bar component is suitable."
-            ),
-        ]
+                "The `progress_bar` component visualizes the progress of background processes. "
+                "It supports static values, polling updates, and server-sent events."
+            )
+        ],
+        "features": [
+            _("**Update modes**: Static, polling, or server-sent events (SSE)."),
+            _("**Value display**: Optional percentage text."),
+            _("**Auto-hide**: Optionally hide when complete."),
+            _("**Cancel button**: Optional button to abort the process."),
+            _("**Retry button**: Optional button shown on error."),
+            _("**Dynamic label**: Label can be updated via JSON response."),
+        ],
     }
 
 
@@ -721,9 +951,16 @@ def get_geo_map_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `geo_map` component displays a geographic map using leaflet on which geographic information can be easily displayed."
+                "The `geo_map` component displays an interactive geographic map using Leaflet. "
+                "It supports markers, circles, and multiple data layers."
             )
-        ]
+        ],
+        "features": [
+            _("**Marker types**: Standard markers or scaled circles."),
+            _("**Multiple datasets**: Display different data layers."),
+            _("**Configurable view**: Initial coordinates and zoom level."),
+            _("**Popup descriptions**: Optional descriptions on marker click."),
+        ],
     }
 
 
@@ -733,12 +970,16 @@ def get_charts_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `chart` component allows charts to be displayed without having to customize JavaScript. The component uses Apache ECharts internally."
-            ),
-            _(
-                "This component is currently available in the following variants: line_chart: A line chart. bar_chart: A stacked bar chart."
-            ),
-        ]
+                "The `chart` component displays data visualizations using Apache ECharts. "
+                "Charts are configured via Python without writing JavaScript."
+            )
+        ],
+        "features": [
+            _("**Chart types**: Line charts and stacked bar charts."),
+            _("**Multiple series**: Display multiple data series with legend."),
+            _("**Configurable height**: Chart height in rem units."),
+            _("**Decal patterns**: Optional patterns for colorblind accessibility."),
+        ],
     }
 
 
@@ -748,9 +989,15 @@ def get_live_content_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `live_content` component regularly updates a fragment using HTMX requests. It is ideal for dashboards or status views that need to be updated frequently without reloading the entire page."
+                "The `live_content` component displays content that refreshes automatically via HTMX polling. "
+                "Use it for dashboards, status views, or any content that needs periodic updates."
             )
-        ]
+        ],
+        "features": [
+            _("**Polling interval**: Configurable refresh interval in seconds."),
+            _("**Initial content**: Content displayed before first update."),
+            _("**HTMX integration**: Updates via asynchronous requests."),
+        ],
     }
 
 
@@ -760,12 +1007,19 @@ def get_web_socket_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `websocket` component is a thin wrapper around the HTMX WebSocket extension. It is designed for host applications that want HTMX-managed WebSocket updates without reloading the page."
+                "The `websocket` component provides real-time updates via WebSocket connections. "
+                "It wraps the HTMX WebSocket extension for HTMX-managed DOM updates."
             ),
             _(
-                "By default the component expects HTML fragments that HTMX can swap into the DOM. Non-HTML frames are surfaced as browser events so host adapters can decide how to render them."
+                "By default, the component expects HTML fragments that HTMX can swap into the DOM. "
+                "Non-HTML frames are surfaced as browser events for custom handling."
             ),
-        ]
+        ],
+        "features": [
+            _("**Real-time updates**: Live content via WebSocket connection."),
+            _("**HTMX integration**: DOM updates handled by HTMX swap mechanism."),
+            _("**Initial content**: Content displayed while connecting."),
+        ],
     }
 
 
@@ -775,9 +1029,16 @@ def get_badge_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The badge component displays a small pill-shaped icon with text and an optional icon. The badge can be displayed in various sizes and colors."
+                "The `badge` component displays compact status or category labels. "
+                "Badges are ideal for tags, counters, or short status indicators."
             )
-        ]
+        ],
+        "features": [
+            _("**Types**: primary, secondary, neutral, info, success, warning, danger, and disabled."),
+            _("**Sizes**: Five sizes (xs, s, m, l, xl) for different contexts."),
+            _("**Icons**: Optionally placed before or after the label."),
+            _("**Tooltips**: Optional hover text for additional context."),
+        ],
     }
 
 
@@ -794,12 +1055,16 @@ def get_infinite_scroll_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `infinite_scroll` component represents an alternative to pagination and can be used to display large amounts of data. Instead of switching from page to page, the infinite scroll loads more data from the backend once a certain scroll threshold is reached and appends it to the end using HTMX."
-            ),
-            _(
-                "The component is provided in two variants: one with automatic expansion and a second where a 'Load more' button must be actively clicked to load new elements."
-            ),
-        ]
+                "The `infinite_scroll` component loads additional content as the user scrolls. "
+                "It provides an alternative to traditional pagination for large data sets."
+            )
+        ],
+        "features": [
+            _("**Auto-fetch mode**: Automatically load more when scrolling near the bottom."),
+            _("**Button mode**: Show a 'Load more' button instead of auto-loading."),
+            _("**Scroll threshold**: Configurable pixel distance for triggering loads."),
+            _("**HTMX integration**: Content loaded asynchronously."),
+        ],
     }
 
 
@@ -809,9 +1074,16 @@ def get_pagination_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `pagination` component can be used to split a list across multiple pages, which can be switched using the pagination displayed at the end of the list by this component. This is practical for large amounts of data and offers an alternative to the infinite_scroll component."
+                "The `pagination` component displays navigation controls for paged data. "
+                "It integrates with Django's Paginator and supports items-per-page selection."
             )
-        ]
+        ],
+        "features": [
+            _("**Page navigation**: First, previous, next, and last page buttons."),
+            _("**Page numbers**: Direct access to surrounding pages with ellipsis for gaps."),
+            _("**Items per page**: Optional selector to change page size."),
+            _("**Django integration**: Works with Django Paginator's Page objects."),
+        ],
     }
 
 
@@ -821,9 +1093,16 @@ def get_table_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `table` component can be used to display a simple table for any data. The layout is designed to be responsive; if space is insufficient, a horizontal scrollbar is displayed."
+                "The `table` component displays data in a clear tabular structure. "
+                "It automatically shows a horizontal scrollbar when space is limited."
             )
-        ]
+        ],
+        "features": [
+            _("**Responsive**: Horizontal scrolling on narrow screens."),
+            _("**Caption**: Optional table caption."),
+            _("**Empty state**: Configurable message when no data is available."),
+            _("**Consistent styling**: Design tokens from the Insight UI theme."),
+        ],
     }
 
 
@@ -840,9 +1119,16 @@ def get_search_bar_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `search_bar` component provides a simple text input field with a large button on the right end. When submitted, a request is sent to the specified endpoint. The search_bar component also supports HTMX requests."
+                "The `search_bar` component provides a text input with a submit button for search queries. "
+                "It supports both traditional form submission and HTMX-based search."
             )
-        ]
+        ],
+        "features": [
+            _("**HTMX integration**: Search results loaded without page reload."),
+            _("**Client-side search**: Optional Fuse.js integration for documentation search."),
+            _("**Compact mode**: Simplified styling for tight spaces."),
+            _("**Pre-filled query**: Initial search term can be set."),
+        ],
     }
 
 
@@ -852,10 +1138,17 @@ def get_generic_filter_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `generic_filter` component can be used to build relatively simple standard filters consisting of &lt;select&gt; tags. The filter automatically makes a request to the corresponding endpoint when a change is made and updates the data area using HTMX."
+                "The `generic_filter` component renders a filter bar with multiple select dropdowns. "
+                "Filters automatically update results via HTMX when changed."
             ),
-            _("An alternative is the more flexible but also more complex Query Builder."),
-        ]
+            _("For more complex filtering needs, consider the Query Builder component."),
+        ],
+        "features": [
+            _("**Multiple filters**: Combine several select dropdowns."),
+            _("**HTMX integration**: Results update automatically on filter change."),
+            _("**Layout options**: Horizontal or vertical arrangement."),
+            _("**Tooltips**: Optional explanation text for each filter."),
+        ],
     }
 
 
@@ -864,15 +1157,21 @@ def get_query_builder_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the query builder component."""
     return {
         "description": [
-            _("The `query_builder` component represents an alternative to the `generic_filter` component."),
             _(
-                "The query builder is far more flexible but also more complex to use than conventional filter methods. It is essentially a kind of graphical representation of an SQL query. The query builder receives a list of model fields that can be searched and for each field a list of allowed operations."
+                "The `query_builder` component provides a visual interface for constructing database queries. "
+                "It offers more flexibility than simple filters but requires more configuration."
             ),
             _(
-                "In special cases, predefined values can also be specified as with the other variant. This aspect makes this type of filtering potentially much more flexible, as it does away with fixed defined values."
+                "The query builder receives a list of model fields with allowed operations for each field. "
+                "Users can build complex filters using field, operation, and value combinations."
             ),
-            _("Similar to the other filter variant, only a dictionary with the desired properties is needed here."),
-        ]
+        ],
+        "features": [
+            _("**Field types**: text, number, date, datetime, time, boolean, and choice."),
+            _("**Operations**: Configurable operators per field (equals, contains, greater than, etc.)."),
+            _("**Predefined values**: Optional dropdown values for choice fields."),
+            _("**Dynamic conditions**: Add and remove filter conditions."),
+        ],
     }
 
 
@@ -889,12 +1188,16 @@ def get_card_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `card` components are used to create information groups. Each card consists of a heading and its main content. There are also further options such as a background image or subtitle, and action buttons."
-            ),
-            _(
-                "For the card component there are several variants to choose from: Card: Standard card in 16:9 format. App Card: The layout of this card is vertically oriented making it taller. Flip Card: This card rotates 180° and holds additional content on its back side."
-            ),
-        ]
+                "The `card` component displays content in a 16:9 aspect ratio container. "
+                "It combines a title, content, optional image, and action buttons."
+            )
+        ],
+        "features": [
+            _("**16:9 aspect ratio**: Business card-style layout."),
+            _("**Optional subtitle**: Secondary heading below the title."),
+            _("**Background image**: Optional image display."),
+            _("**Action buttons**: Configurable buttons for card actions."),
+        ],
     }
 
 
@@ -904,9 +1207,16 @@ def get_app_card_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `app_card` component is designed for overview pages featuring multiple apps, demos, products, etc., and begins with a large image followed by the title and a description. Each card can include a set of tags (small buttons) as well as action buttons."
+                "The `app_card` component displays items in a vertically-oriented card layout. "
+                "It is designed for overview pages featuring apps, products, demos, or similar items."
             )
-        ]
+        ],
+        "features": [
+            _("**Square image**: Large image at the top of the card."),
+            _("**Tags**: Badge labels for categorization."),
+            _("**Clickable title**: Optional link on the title."),
+            _("**Action buttons**: Configurable buttons at the bottom."),
+        ],
     }
 
 
@@ -916,9 +1226,15 @@ def get_flip_card_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `flip_card` component is a variation of the `app_card` that rotates 180° when clicking the flip button. "
-                "This allows displaying additional information (title, content, actions) on the back without taking extra space."
+                "The `flip_card` component displays additional content on its back side. "
+                "When the flip button is clicked, the card rotates 180° to reveal more information."
             )
+        ],
+        "features": [
+            _("**3D flip animation**: Smooth rotation effect."),
+            _("**Front and back content**: Separate title, content, and actions for each side."),
+            _("**Tags**: Badge labels on the front side."),
+            _("**Space-efficient**: Shows more content without taking extra space."),
         ],
     }
 
@@ -929,9 +1245,16 @@ def get_card_carousel_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `carousel` component can be used to display images, but also all kinds of other things, in a compact and interactive way. With having one object always in focus it is especially suited for images."
+                "The `carousel` component displays a series of items in a swipeable carousel. "
+                "It can show multiple items per slide and supports autoplay."
             )
-        ]
+        ],
+        "features": [
+            _("**Autoplay**: Optional automatic slide advancement."),
+            _("**Navigation dots**: Pagination indicator dots."),
+            _("**Slide index**: Optional current/total counter."),
+            _("**Items per slide**: Configurable number of visible items."),
+        ],
     }
 
 
@@ -941,7 +1264,15 @@ def get_image_carousel_description_context() -> dict[str, list[str]]:
     carousel_url = reverse("component_detail_page_view", args=[Component.CARD_CAROUSEL.value])
     return {
         "description": [
-            _("The `image_carousel` component is a variant of the carousel component adapted for displaying images.")
+            _(
+                "The `image_carousel` component displays images in a swipeable gallery. "
+                "It is a variant of the card carousel optimized for image content."
+            )
+        ],
+        "features": [
+            _("**Image captions**: Optional description text for each image."),
+            _("**Autoplay**: Optional automatic slide advancement."),
+            _("**Navigation controls**: Dots, arrows, and optional index counter."),
         ],
         "description_notes_end": [
             {
@@ -961,9 +1292,16 @@ def get_3d_carousel_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `three_d_carousel` component can be used to display any content in a unique way: arranged in a circle."
+                "The `three_d_carousel` component displays items arranged in a 3D circular formation. "
+                "It provides a unique visual presentation for showcasing content."
             )
-        ]
+        ],
+        "features": [
+            _("**3D arrangement**: Items positioned on a circular path."),
+            _("**Rotation speed**: Configurable velocity."),
+            _("**Camera tilt**: Adjustable viewing angle."),
+            _("**Face camera**: Items can always face the viewer."),
+        ],
     }
 
 
@@ -973,9 +1311,15 @@ def get_toggle_view_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `toggle_view` component combines the table and card view as well as the carousel component. The component is used to display the same data in completely different ways."
+                "The `toggle_view` component allows users to switch between different data presentations. "
+                "The same data can be displayed as cards, a table, or a carousel."
             )
-        ]
+        ],
+        "features": [
+            _("**View modes**: Card, table, and carousel views."),
+            _("**View switcher**: Radio button block for switching views."),
+            _("**Consistent data**: Same data rendered in different formats."),
+        ],
     }
 
 
@@ -990,5 +1334,16 @@ def get_toggle_view_description_context() -> dict[str, list[str]]:
 def get_form_description_context() -> dict[str, list[str]]:
     """Serve description documentation for the form component."""
     return {
-        "description": [_("The `form` component can be used to build forms without having to edit HTML code yourself.")]
+        "description": [
+            _(
+                "The `form` component renders complete forms from configuration objects. "
+                "It supports various field types and HTMX-based submission without page reloads."
+            )
+        ],
+        "features": [
+            _("**Field types**: text, email, password, number, tel, url, date, textarea, and select."),
+            _("**Title and description**: Optional form header."),
+            _("**Reset button**: Optional button to clear the form."),
+            _("**HTMX integration**: Asynchronous form submission."),
+        ],
     }
