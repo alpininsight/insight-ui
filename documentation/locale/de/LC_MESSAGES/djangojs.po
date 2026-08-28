@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django-insight-ui 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-19 15:13+0200\n"
+"POT-Creation-Date: 2026-08-28 16:36+0200\n"
 "PO-Revision-Date: 2026-08-19 15:18+0200\n"
 "Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,12 +34,12 @@ msgstr "✔ Kopiert"
 msgid "✖ Copy failed!"
 msgstr "✖ Kopieren fehlgeschlagen!"
 
-#: .\insight_ui\static\insight_ui\js\insight-ui-multiselect.js:291
+#: .\insight_ui\static\insight_ui\js\insight-ui-multiselect.js:321
 #: .\insight_ui\static\insight_ui\js\insight-ui-multiselect.min.js:2
 msgid "%(count)s/%(max)s selected"
 msgstr "%(count)s/%(max)s ausgewählt"
 
-#: .\insight_ui\static\insight_ui\js\insight-ui-multiselect.js:305
+#: .\insight_ui\static\insight_ui\js\insight-ui-multiselect.js:335
 #: .\insight_ui\static\insight_ui\js\insight-ui-multiselect.min.js:2
 msgid "%(count)s option selected"
 msgid_plural "%(count)s options selected"
