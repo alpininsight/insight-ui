@@ -266,11 +266,14 @@ class Command(BaseCommand):
         self.stdout.write(f"  JavaScript: {'yes' if needs_js else 'no'}")
         self.stdout.write(f"  Author: {git_user}")
 
-        base_path = Path(__file__).resolve().parent.parent.parent  # insight_ui/
-        self._scaffold_component(base_path, names, category, needs_js, git_user)
+        # documentation/ - contains component_details/ and docs templates
+        doc_path = Path(__file__).resolve().parent.parent.parent
+        # insight_ui/ - contains configs/, templatetags/, templates/components/, static/
+        ui_path = doc_path.parent / "insight_ui"
+        self._scaffold_component(doc_path, ui_path, names, category, needs_js, git_user)
 
-    def _scaffold_component(
-        self, base_path: Path, names: ComponentNames, category: str, needs_js: bool, git_user: str
+    def _scaffold_component(  # noqa: PLR0913, PLR0917
+        self, doc_path: Path, ui_path: Path, names: ComponentNames, category: str, needs_js: bool, git_user: str
     ) -> None:
         """Create all component files and entries.
 
@@ -279,44 +282,43 @@ class Command(BaseCommand):
         inclusion tag, and optionally JavaScript.
 
         Args:
-            base_path: The base path of the insight_ui package.
+            doc_path: The base path of the documentation package.
+            ui_path: The base path of the insight_ui package.
             names: The derived name variants for the component.
             category: The component category (e.g., 'layout', 'input').
             needs_js: Whether to create a JavaScript file for the component.
             git_user: The Git username for TODO comments.
 
         """
-        # 1. Add to components.py
-        self._add_to_components_py(base_path, names.enum_name, names.slug, category, names.config_class_name)
+        # 1. Add to components.py (documentation app)
+        self._add_to_components_py(doc_path, names.enum_name, names.slug, category, names.config_class_name)
 
-        # 2. Add to context files
+        # 2. Add to context files (documentation app)
         context_configs = self._get_context_configs()
         for config in context_configs:
-            self._add_to_context_file(base_path, names.enum_name, names.func_name, category, config, git_user)
+            self._add_to_context_file(doc_path, names.enum_name, names.func_name, category, config, git_user)
 
-        # 3. Add to related_components_context.py
-        self._add_to_related_components(base_path, names.enum_name, category)
+        # 3. Add to related_components_context.py (documentation app)
+        self._add_to_related_components(doc_path, names.enum_name, category)
 
-        # 4. Create HTML template
-        self._create_template(base_path, names.slug, names.name, git_user)
+        # 4. Create HTML template (insight_ui app)
+        self._create_template(ui_path, names.slug, names.name, git_user)
 
-        # 5. Create config dataclass
-        self._create_config_dataclass(
-            base_path, names.config_class_name, names.func_name, category, names.name, git_user
-        )
+        # 5. Create config dataclass (insight_ui app)
+        self._create_config_dataclass(ui_path, names.config_class_name, names.func_name, category, names.name, git_user)
 
-        # 6. Add inclusion tag to insight_tags.py
-        self._add_inclusion_tag(base_path, names.func_name, names.slug, category, names.name, names.config_class_name)
+        # 6. Add inclusion tag to insight_tags.py (insight_ui app)
+        self._add_inclusion_tag(ui_path, names.func_name, names.slug, category, names.name, names.config_class_name)
 
-        # 7. Create JavaScript file if requested
+        # 7. Create JavaScript file if requested (insight_ui app)
         if needs_js:
-            self._create_javascript(base_path, names.js_slug, names.class_name, names.slug, git_user)
+            self._create_javascript(ui_path, names.js_slug, names.class_name, names.slug, git_user)
 
-        # 8. Add demo entry to component_demo.html
-        self._add_to_component_demo(base_path, names.slug, names.func_name)
+        # 8. Add demo entry to component_demo.html (documentation app)
+        self._add_to_component_demo(doc_path, names.slug, names.func_name)
 
-        # 9. Add GitHub source links for self-documentation
-        self._add_to_git_path_mapping(base_path, names.slug, names.js_slug, category, needs_js)
+        # 9. Add GitHub source links for self-documentation (documentation app)
+        self._add_to_git_path_mapping(doc_path, names.slug, names.js_slug, category, needs_js)
 
         self._print_success(names, category, needs_js)
 
@@ -501,12 +503,12 @@ class Command(BaseCommand):
         return "Unknown"
 
     def _add_to_context_file(  # noqa: PLR0913, PLR0917
-        self, base_path: Path, enum_name: str, func_name: str, category: str, config: ContextFileConfig, git_user: str
+        self, doc_path: Path, enum_name: str, func_name: str, category: str, config: ContextFileConfig, git_user: str
     ) -> None:
         """Add a function to a context file using the provided configuration.
 
         Args:
-            base_path: The base path of the insight_ui package.
+            doc_path: The base path of the documentation package.
             enum_name: The enum name of the component (e.g., 'MY_COMPONENT').
             func_name: The function name prefix (e.g., 'my_component').
             category: The component category (e.g., 'layout', 'input').
@@ -514,7 +516,7 @@ class Command(BaseCommand):
             git_user: The Git username for TODO comments.
 
         """
-        file_path = base_path / "component_details" / config.file_name
+        file_path = doc_path / "component_details" / config.file_name
         content = self._read_file(file_path)
         if content is None:
             return
@@ -559,19 +561,19 @@ def {full_func_name}() -> {config.return_type}:
             self.stdout.write(self.style.SUCCESS(f"  [OK] Added {full_func_name} to {config.file_name}"))
 
     def _add_to_components_py(
-        self, base_path: Path, enum_name: str, slug: str, category: str, config_class_name: str
+        self, doc_path: Path, enum_name: str, slug: str, category: str, config_class_name: str
     ) -> None:
         """Add enum entry to components.py.
 
         Args:
-            base_path: The base path of the insight_ui package.
+            doc_path: The base path of the documentation package.
             enum_name: The enum name of the component (e.g., 'MY_COMPONENT').
             slug: The component slug (e.g., 'my_component').
             category: The component category (e.g., 'layout', 'input').
             config_class_name: The generated config class name.
 
         """
-        file_path = base_path / "component_details" / "components.py"
+        file_path = doc_path / "component_details" / "components.py"
         content = self._read_file(file_path)
         if content is None:
             return
@@ -619,16 +621,16 @@ def {full_func_name}() -> {config.return_type}:
         replacement = match.group(1) + "\n".join(imports) + "\n"
         return content[: match.start()] + replacement + content[match.end() :]
 
-    def _add_to_related_components(self, base_path: Path, enum_name: str, category: str) -> None:
+    def _add_to_related_components(self, doc_path: Path, enum_name: str, category: str) -> None:
         """Add entry to related_components_context.py.
 
         Args:
-            base_path: The base path of the insight_ui package.
+            doc_path: The base path of the documentation package.
             enum_name: The enum name of the component (e.g., 'MY_COMPONENT').
             category: The component category (e.g., 'layout', 'input').
 
         """
-        file_path = base_path / "component_details" / "related_components_context.py"
+        file_path = doc_path / "component_details" / "related_components_context.py"
         content = self._read_file(file_path)
         if content is None:
             return
@@ -659,17 +661,17 @@ def {full_func_name}() -> {config.return_type}:
                 )
             )
 
-    def _create_template(self, base_path: Path, slug: str, name: str, git_user: str) -> None:
+    def _create_template(self, ui_path: Path, slug: str, name: str, git_user: str) -> None:
         """Create the HTML template file for the component.
 
         Args:
-            base_path: The base path of the insight_ui package.
+            ui_path: The base path of the insight_ui package.
             slug: The component slug used for the filename (e.g., 'my_component').
             name: The display name of the component (e.g., 'My Component').
             git_user: The Git username for TODO comments.
 
         """
-        template_dir = base_path / "templates" / "insight_ui" / "components"
+        template_dir = ui_path / "templates" / "insight_ui" / "components"
         template_path = template_dir / f"{slug}.html"
 
         if template_path.exists():
@@ -705,12 +707,12 @@ def {full_func_name}() -> {config.return_type}:
             self.stdout.write(self.style.SUCCESS(f"  [OK] Created template {slug}.html"))
 
     def _add_inclusion_tag(  # noqa: PLR0913, PLR0917
-        self, base_path: Path, func_name: str, slug: str, category: str, name: str, config_class_name: str
+        self, ui_path: Path, func_name: str, slug: str, category: str, name: str, config_class_name: str
     ) -> None:
         """Add inclusion tag to insight_tags.py.
 
         Args:
-            base_path: The base path of the insight_ui package.
+            ui_path: The base path of the insight_ui package.
             func_name: The function name for the tag (e.g., 'my_component').
             slug: The component slug for the template path (e.g., 'my_component').
             category: The component category (e.g., 'layout', 'input').
@@ -718,7 +720,7 @@ def {full_func_name}() -> {config.return_type}:
             config_class_name: The config dataclass name (e.g., 'MyComponentConfig').
 
         """
-        file_path = base_path / "templatetags" / "insight_tags.py"
+        file_path = ui_path / "templatetags" / "insight_tags.py"
         content = self._read_file(file_path)
         if content is None:
             return
@@ -751,9 +753,9 @@ def {func_name}(config: {config_class_name} | None = None, *, tag_id: str | _Uns
         if self._write_file(file_path, new_content):
             self.stdout.write(self.style.SUCCESS(f"  [OK] Added {func_name} inclusion tag to insight_tags.py"))
 
-    def _add_to_git_path_mapping(self, base_path: Path, slug: str, js_slug: str, category: str, needs_js: bool) -> None:
+    def _add_to_git_path_mapping(self, doc_path: Path, slug: str, js_slug: str, category: str, needs_js: bool) -> None:
         """Add template and optional script source links to git_path_mapping.py."""
-        file_path = base_path / "component_details" / "git_path_mapping.py"
+        file_path = doc_path / "component_details" / "git_path_mapping.py"
         content = self._read_file(file_path)
         if content is None:
             return
@@ -802,18 +804,18 @@ def {func_name}(config: {config_class_name} | None = None, *, tag_id: str | _Uns
         new_entry = f'    "{key}": {value},\n'
         return content[:insert_pos] + new_entry + content[insert_pos:]
 
-    def _create_javascript(self, base_path: Path, js_slug: str, class_name: str, slug: str, git_user: str) -> None:
+    def _create_javascript(self, ui_path: Path, js_slug: str, class_name: str, slug: str, git_user: str) -> None:
         """Create the JavaScript file with class boilerplate.
 
         Args:
-            base_path: The base path of the insight_ui package.
+            ui_path: The base path of the insight_ui package.
             js_slug: The slug for the JS filename (e.g., 'my-component').
             class_name: The JavaScript class name (e.g., 'MyComponent').
             slug: The component slug for logging (e.g., 'my_component').
             git_user: The Git username for TODO comments.
 
         """
-        js_dir = base_path / "static" / "insight_ui" / "js"
+        js_dir = ui_path / "static" / "insight_ui" / "js"
         js_path = js_dir / f"insight-ui-{js_slug}.js"
 
         if js_path.exists():
@@ -883,16 +885,16 @@ def {func_name}(config: {config_class_name} | None = None, *, tag_id: str | _Uns
         if self._write_file(js_path, js_content):
             self.stdout.write(self.style.SUCCESS(f"  [OK] Created JavaScript file insight-ui-{js_slug}.js"))
 
-    def _add_to_component_demo(self, base_path: Path, slug: str, func_name: str) -> None:
+    def _add_to_component_demo(self, doc_path: Path, slug: str, func_name: str) -> None:
         """Add demo entry to component_demo.html.
 
         Args:
-            base_path: The base path of the insight_ui package.
+            doc_path: The base path of the documentation package.
             slug: The component slug for the condition check (e.g., 'my_component').
             func_name: The template tag function name (e.g., 'my_component').
 
         """
-        file_path = base_path / "templates" / "insight_ui" / "docs" / "component_demo.html"
+        file_path = doc_path / "templates" / "documentation" / "docs" / "component_demo.html"
         content = self._read_file(file_path)
         if content is None:
             return
@@ -923,12 +925,12 @@ def {func_name}(config: {config_class_name} | None = None, *, tag_id: str | _Uns
             self.stdout.write(self.style.SUCCESS(f"  [OK] Added demo entry for {slug} to component_demo.html"))
 
     def _create_config_dataclass(  # noqa: PLR0913, PLR0917
-        self, base_path: Path, config_class_name: str, func_name: str, category: str, name: str, git_user: str
+        self, ui_path: Path, config_class_name: str, func_name: str, category: str, name: str, git_user: str
     ) -> None:
         """Create config dataclass in the appropriate config file and update __init__.py.
 
         Args:
-            base_path: The base path of the insight_ui package.
+            ui_path: The base path of the insight_ui package.
             config_class_name: The config dataclass name (e.g., 'MyComponentConfig').
             func_name: The function name for documentation (e.g., 'my_component').
             category: The component category determining the config file.
@@ -937,7 +939,7 @@ def {func_name}(config: {config_class_name} | None = None, *, tag_id: str | _Uns
 
         """
         config_file = CATEGORY_TO_CONFIG_FILE[category]
-        file_path = base_path / "configs" / config_file
+        file_path = ui_path / "configs" / config_file
         content = self._read_file(file_path)
         if content is None:
             return
@@ -977,19 +979,19 @@ class {config_class_name}:
             self.stdout.write(self.style.SUCCESS(f"  [OK] Added {config_class_name} to configs/{config_file}"))
 
         # Update configs/__init__.py
-        self._add_config_to_init(base_path, config_class_name, config_file, category)
+        self._add_config_to_init(ui_path, config_class_name, config_file, category)
 
-    def _add_config_to_init(self, base_path: Path, config_class_name: str, config_file: str, category: str) -> None:
+    def _add_config_to_init(self, ui_path: Path, config_class_name: str, config_file: str, category: str) -> None:
         """Add config class to configs/__init__.py imports and __all__.
 
         Args:
-            base_path: The base path of the insight_ui package.
+            ui_path: The base path of the insight_ui package.
             config_class_name: The config dataclass name to add (e.g., 'MyComponentConfig').
             config_file: The config module filename (e.g., 'layout.py').
             category: The component category for the __all__ section.
 
         """
-        init_path = base_path / "configs" / "__init__.py"
+        init_path = ui_path / "configs" / "__init__.py"
         content = self._read_file(init_path)
         if content is None:
             return
