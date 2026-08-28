@@ -47,6 +47,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add 'disabled' parameter to the 'button' component and remove 'disabled' from ButtonType
 - Make disabled inputs more decent and add 'disabled_reason' parameter to input components
 - Add dict support for 'options' of the 'FormFieldConfig' and move list to dict converting logic to corresponding configs
+- Add new component descriptions and lists with core features to each component
+- Update translations
+- Add config based usage examples to 'breadcrumbs', 'stepper' and 'bullet_point_list' components
 
 ### Miscellaneous
 
