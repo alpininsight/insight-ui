@@ -63,7 +63,7 @@ class Command(BaseCommand):
             "--output",
             type=str,
             default=None,
-            help="Output file path (default: insight_ui/static/insight_ui/data/search-index-{locale}.json)",
+            help="Output file path (default: documentation/static/documentation/data/search-index-{locale}.json)",
         )
         parser.add_argument(
             "--locale",
@@ -130,7 +130,7 @@ class Command(BaseCommand):
                 output_file = path.parent / f"{path.stem}-{locale}{path.suffix}"
             else:
                 base_path = Path(__file__).resolve().parent.parent.parent
-                output_file = base_path / "static" / "insight_ui" / "data" / f"search-index-{locale}.json"
+                output_file = base_path / "static" / "documentation" / "data" / f"search-index-{locale}.json"
 
             output_file.parent.mkdir(parents=True, exist_ok=True)
             output_file.write_text(json.dumps(index, ensure_ascii=False, indent=2), encoding="utf-8")

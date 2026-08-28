@@ -531,18 +531,18 @@
     "url": "/docs/components/code_block/"
   },
   {
-    "id": "component:copyright_notice",
-    "name": "Copyright Notice",
+    "id": "component:legal_notice",
+    "name": "Legal Notice",
     "category": "component",
     "group": "Utilities",
-    "description": "The `copyright_notice` component renders a compact, reusable copyright and legal notice line.",
+    "description": "The `legal_notice` component renders a compact, reusable copyright and legal notice line.",
     "keywords": [
-      "copyright_notice",
+      "legal_notice",
       "util",
-      "copyright",
+      "legal",
       "notice"
     ],
-    "url": "/docs/components/copyright_notice/"
+    "url": "/docs/components/legal_notice/"
   },
   {
     "id": "component:differentiator",
@@ -1571,21 +1571,6 @@
     "url": "/docs/configs#checkboxitemconfig"
   },
   {
-    "id": "config:CopyrightNoticeConfig",
-    "name": "CopyrightNoticeConfig",
-    "category": "config",
-    "group": "Configs",
-    "description": "Configuration for the copyright_notice component.",
-    "keywords": [
-      "copyrightnoticeconfig",
-      "config",
-      "copyright",
-      "notice",
-      "config"
-    ],
-    "url": "/docs/configs#copyrightnoticeconfig"
-  },
-  {
     "id": "config:CornerRibbonConfig",
     "name": "CornerRibbonConfig",
     "category": "config",
@@ -1966,6 +1951,21 @@
     "url": "/docs/configs#inputfieldconfig"
   },
   {
+    "id": "config:LegalNoticeConfig",
+    "name": "LegalNoticeConfig",
+    "category": "config",
+    "group": "Configs",
+    "description": "Configuration for the legal_notice component.",
+    "keywords": [
+      "legalnoticeconfig",
+      "config",
+      "legal",
+      "notice",
+      "config"
+    ],
+    "url": "/docs/configs#legalnoticeconfig"
+  },
+  {
     "id": "config:LiveContentConfig",
     "name": "LiveContentConfig",
     "category": "config",
@@ -1979,6 +1979,21 @@
       "config"
     ],
     "url": "/docs/configs#livecontentconfig"
+  },
+  {
+    "id": "config:LoginScreenConfig",
+    "name": "LoginScreenConfig",
+    "category": "config",
+    "group": "Configs",
+    "description": "Configuration for the login screen.",
+    "keywords": [
+      "loginscreenconfig",
+      "config",
+      "login",
+      "screen",
+      "config"
+    ],
+    "url": "/docs/configs#loginscreenconfig"
   },
   {
     "id": "config:LogoConfig",
@@ -2293,7 +2308,7 @@
     "name": "SidebarConfig",
     "category": "config",
     "group": "Configs",
-    "description": "Configuration for the sidebar component.",
+    "description": "Configuration for the sidebar layout tag.",
     "keywords": [
       "sidebarconfig",
       "config",
@@ -2517,6 +2532,37 @@
       "config"
     ],
     "url": "/docs/configs#toggleviewconfig"
+  },
+  {
+    "id": "config:UserMenuConfig",
+    "name": "UserMenuConfig",
+    "category": "config",
+    "group": "Configs",
+    "description": "Configuration for the user dropdown menu.",
+    "keywords": [
+      "usermenuconfig",
+      "config",
+      "user",
+      "menu",
+      "config"
+    ],
+    "url": "/docs/configs#usermenuconfig"
+  },
+  {
+    "id": "config:UserMenuLinkConfig",
+    "name": "UserMenuLinkConfig",
+    "category": "config",
+    "group": "Configs",
+    "description": "Configuration for a user menu link.",
+    "keywords": [
+      "usermenulinkconfig",
+      "config",
+      "user",
+      "menu",
+      "link",
+      "config"
+    ],
+    "url": "/docs/configs#usermenulinkconfig"
   },
   {
     "id": "config:VBoxConfig",
