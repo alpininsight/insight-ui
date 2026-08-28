@@ -69,7 +69,7 @@ Simple tags:
     {% spacer size="m" %}
         Fixed-size spacer element.
 
-    {% divider direction="horizontal" spacing="m" %}
+    {% divider direction="horizontal" spacing="m" weight="thin" style="solid" %}
         Visual divider line (horizontal or vertical).
 
 Parameter Reference
@@ -115,6 +115,16 @@ wrap : True | False
 
 direction : horizontal | vertical
     Divider orientation. Default: "horizontal"
+
+weight : thin | medium | thick
+    Divider line thickness. Default: "thin"
+
+style : solid | dashed | dotted
+    Divider line style. Default: "solid"
+
+label : str
+    Optional text label displayed in the center of the divider.
+    For vertical dividers, the text is rotated 90°.
 
 variant : surface | raised | outline
     Surface visual style. Default: "surface"
@@ -190,6 +200,7 @@ from typing import TYPE_CHECKING
 from django import template
 from django.template.base import Node, NodeList, TokenType, token_kwargs
 from django.template.loader import get_template
+from django.utils.html import escape
 from django.utils.safestring import mark_safe
 
 if TYPE_CHECKING:
@@ -215,6 +226,8 @@ VALID_RADIUS: frozenset[str] = frozenset({"xs", "s", "m", "l", "xl", "none"})
 VALID_SIDE: frozenset[str] = frozenset({"left", "right"})
 VALID_WIDTH: frozenset[str] = frozenset({"narrow", "normal", "wide"})
 VALID_MOBILE_BEHAVIOR: frozenset[str] = frozenset({"hidden", "drawer"})
+VALID_WEIGHT: frozenset[str] = frozenset({"thin", "medium", "thick"})
+VALID_LINE_STYLE: frozenset[str] = frozenset({"solid", "dashed", "dotted"})
 
 # Class mappings (classes are defined in input.css or are tailwind classes)
 # Note: l and xl are responsive - smaller on mobile, full size from md breakpoint
@@ -283,16 +296,6 @@ RADIUS_CLASSES: dict[str, str] = {
 # Link surface hover classes (added to base surface classes)
 LINK_SURFACE_HOVER_CLASSES: str = "hover:border-insight-primary transition-colors group"
 
-# Responsive grid column mappings: cols -> (mobile, sm, md, lg)
-# These provide sensible defaults so users don't need to think about breakpoints
-RESPONSIVE_GRID_CLASSES: dict[int, str] = {
-    2: "grid-cols-1 md:grid-cols-2",
-    3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
-    4: "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4",
-    5: "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5",
-    6: "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6",
-}
-
 # Fixed grid column classes (no responsive behavior)
 FIXED_GRID_CLASSES: dict[int, str] = {
     1: "grid-cols-1",
@@ -301,6 +304,16 @@ FIXED_GRID_CLASSES: dict[int, str] = {
     4: "grid-cols-4",
     5: "grid-cols-5",
     6: "grid-cols-6",
+}
+
+# Responsive grid column classes (breakpoints based on container width)
+# Uses @container queries for true component isolation - grid adapts to available space
+RESPONSIVE_GRID_CLASSES: dict[int, str] = {
+    2: "grid-cols-1 @md:grid-cols-2",
+    3: "grid-cols-1 @md:grid-cols-2 @lg:grid-cols-3",
+    4: "grid-cols-1 @sm:grid-cols-2 @md:grid-cols-3 @lg:grid-cols-4",
+    5: "grid-cols-1 @sm:grid-cols-2 @md:grid-cols-3 @lg:grid-cols-5",
+    6: "grid-cols-2 @sm:grid-cols-3 @md:grid-cols-4 @lg:grid-cols-6",
 }
 
 VALID_COLS: frozenset[int] = frozenset({1, 2, 3, 4, 5, 6})
@@ -638,9 +651,14 @@ class GridNode(LayoutNode):
 
     Modes:
         - Auto-fit (default): Items wrap based on available space.
-          Use `min` parameter to set minimum item width.
+          Use `min` parameter to set minimum item width (supports any CSS unit: px, rem, em, etc.).
         - Fixed columns: Set `cols` parameter for specific column count.
-          Automatically applies responsive breakpoints unless `fixed=True`.
+          Automatically applies responsive breakpoints based on container width
+          unless `fixed=True`.
+
+    The grid uses CSS Container Queries for responsive behavior, meaning breakpoints
+    are based on the grid's container width, not the viewport. This ensures the grid
+    adapts correctly regardless of where it's placed (sidebar, modal, card, etc.).
     """
 
     def build_classes(self, kwargs: dict[str, object]) -> list[str]:
@@ -665,6 +683,7 @@ class GridNode(LayoutNode):
         fixed = resolved.get("fixed", False)
 
         style = ""
+        needs_container_wrapper = False
 
         if cols is not None:
             # Fixed column mode
@@ -678,8 +697,9 @@ class GridNode(LayoutNode):
                 # No responsive behavior
                 classes.append(FIXED_GRID_CLASSES[cols_int])
             else:
-                # Responsive breakpoints
+                # Container query responsive breakpoints
                 classes.append(RESPONSIVE_GRID_CLASSES[cols_int])
+                needs_container_wrapper = True
         else:
             # Auto-fit mode: items wrap based on available space
             style = f"grid-template-columns: repeat(auto-fit, minmax({min_width}, 1fr));"
@@ -692,9 +712,18 @@ class GridNode(LayoutNode):
         content = self.nodelist.render(context)
         class_str = " ".join(classes)
 
+        # Build the grid HTML
         if style:
-            return f'<div class="{class_str}" style="{style}">{content}</div>'
-        return f'<div class="{class_str}">{content}</div>'
+            grid_html = f'<div class="{class_str}" style="{style}">{content}</div>'
+        else:
+            grid_html = f'<div class="{class_str}">{content}</div>'
+
+        # Wrap in container element for container query support
+        # Container queries require @container on a parent element
+        if needs_container_wrapper:
+            return f'<div class="@container w-full">{grid_html}</div>'
+
+        return grid_html
 
 
 class SurfaceNode(LayoutNode):
@@ -1169,13 +1198,22 @@ def spacer(size: str = "m") -> str:
 
 
 @register.simple_tag
-def divider(direction: str = "horizontal", spacing: str = "m") -> str:
+def divider(
+    direction: str = "horizontal",
+    spacing: str = "m",
+    weight: str = "thin",
+    style: str = "solid",
+    label: str = "",
+) -> str:
     """
     Insert a visual divider line.
 
     Args:
         direction: "horizontal" or "vertical". Default: "horizontal"
         spacing: Margin spacing (none, xs, s, m, l, xl). Default: "m"
+        weight: Line thickness (thin, medium, thick). Default: "thin"
+        style: Line style (solid, dashed, dotted). Default: "solid"
+        label: Optional text label displayed in the center of the divider.
 
     Returns:
         HTML div element styled as a divider.
@@ -1184,10 +1222,14 @@ def divider(direction: str = "horizontal", spacing: str = "m") -> str:
         {% divider %}
         {% divider direction="vertical" %}
         {% divider spacing="l" %}
+        {% divider weight="thick" style="dashed" %}
+        {% divider label="or" %}
 
     """
     _validate(spacing, VALID_SPACING_WITH_NONE, "spacing", "divider")
     _validate(direction, VALID_DIRECTION, "direction", "divider")
+    _validate(weight, VALID_WEIGHT, "weight", "divider")
+    _validate(style, VALID_LINE_STYLE, "style", "divider")
 
     # Margin classes based on direction
     margin_map = {
@@ -1205,7 +1247,48 @@ def divider(direction: str = "horizontal", spacing: str = "m") -> str:
         ("vertical", "xl"): "mx-8",
     }
     margin = margin_map[(direction, spacing)]
-    base_classes = "w-px self-stretch bg-gray-200" if direction == "vertical" else "h-px w-full bg-gray-200"
-    classes = f"{base_classes} {margin}".strip()
 
-    return mark_safe(f'<div class="{classes}"></div>')  # noqa: S308, # nosec B308, B703
+    # Build line classes based on style and weight
+    # Note: All class names must be written out fully for Tailwind to detect them
+    if style == "solid":
+        weight_h = {"thin": "h-px", "medium": "h-0.5", "thick": "h-1"}
+        weight_v = {"thin": "w-px", "medium": "w-0.5", "thick": "w-1"}
+        if direction == "vertical":
+            line_classes = f"{weight_v[weight]} flex-1 bg-insight-divider"
+        else:
+            line_classes = f"{weight_h[weight]} flex-1 bg-insight-divider"
+    else:
+        border_style = {"dashed": "border-dashed", "dotted": "border-dotted"}[style]
+        border_h = {"thin": "border-t", "medium": "border-t-2", "thick": "border-t-4"}
+        border_v = {"thin": "border-l", "medium": "border-l-2", "thick": "border-l-4"}
+        if direction == "vertical":
+            line_classes = f"flex-1 {border_v[weight]} {border_style} border-insight-divider"
+        else:
+            line_classes = f"flex-1 {border_h[weight]} {border_style} border-insight-divider"
+
+    # Without label: simple divider
+    if not label:
+        if direction == "vertical":
+            base_classes = line_classes.replace("flex-1", "self-stretch")
+        else:
+            base_classes = line_classes.replace("flex-1", "w-full")
+        classes = f"{base_classes} {margin}".strip()
+        return mark_safe(f'<div class="{classes}"></div>')  # noqa: S308, # nosec B308, B703
+
+    # With label: flex container with two lines and text
+    escaped_label = escape(label)
+
+    if direction == "vertical":
+        container_classes = f"flex flex-col items-center gap-2 self-stretch {margin}".strip()
+        label_classes = "text-sm text-insight-text-secondary -rotate-90"
+    else:
+        container_classes = f"flex items-center gap-4 {margin}".strip()
+        label_classes = "text-sm text-insight-text-secondary whitespace-nowrap"
+
+    return mark_safe(  # noqa: S308, # nosec B308, B703
+        f'<div class="{container_classes}">'
+        f'<div class="{line_classes}"></div>'
+        f'<span class="{label_classes}">{escaped_label}</span>'
+        f'<div class="{line_classes}"></div>'
+        f"</div>"
+    )

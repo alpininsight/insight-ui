@@ -29,8 +29,8 @@ CONFIG_DEFAULTS: dict[str, Any] = {
     "brand": {
         "home_url": "/",
         "mark": BrandMarkConfig(
-            "Insight",
-            "UI",
+            "Django",
+            "Insight UI",
             LogoConfig("insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="2rem"),
         ),
         "footer_text": "A modern, accessible, and responsive UI library for Django projects.",

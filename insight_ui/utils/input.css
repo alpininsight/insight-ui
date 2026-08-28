@@ -100,6 +100,10 @@
     --color-insight-tooltip: #F3F4F6;
     --color-insight-tooltip-dark: #242424;
 
+    /* Divider */
+    --color-insight-divider: #E5E7EB;
+    --color-insight-divider-dark: #1E2940;
+
     /* Text color */
     --color-insight-text-primary: #1C1C1E;
     --color-insight-text-primary-light: #1C1C1E;
@@ -258,6 +262,8 @@
         --color-insight-text-hint: var(--color-insight-text-hint-dark);
         /* Elevated / Tooltip */
         --color-insight-tooltip: var(--color-insight-tooltip-dark);
+        /* Divider */
+        --color-insight-divider: var(--color-insight-divider-dark);
         /* Card */
         --color-insight-card: var(--color-insight-card-dark);
     }
@@ -481,7 +487,7 @@
     */
 
     .btn {
-        @apply flex gap-2 items-center justify-center border-2 border-transparent rounded-insight-control px-5 py-1.5 text-white transition-colors;
+        @apply flex gap-2 items-center justify-center border-2 border-transparent rounded-insight-control px-5 py-1.5 text-white transition-colors h-fit;
     }
 
     /* Button-Size */
@@ -580,7 +586,7 @@
     * ========================================================
     */
 
-    .badge { @apply inline-flex items-center gap-2 px-4 py-1.5 rounded-insight-full shadow-insight-subtle; }
+    .badge { @apply inline-flex items-center gap-2 px-4 py-1.5 rounded-insight-full shadow-insight-subtle h-fit; }
 
     /* Badge-Size */
     .badge-xs { @apply text-xs px-2 py-1; }

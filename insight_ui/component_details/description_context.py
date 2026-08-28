@@ -38,8 +38,10 @@ def get_article_description_context() -> dict[str, list[str]]:
     return {
         "description": [
             _(
-                "The `article` component renders text content in newspaper-style multi-column layout. "
-                "Text flows automatically from one column to the next using CSS columns."
+                "The `article` component renders text content in newspaper style with multi-column CSS columns. "
+                "The text flows automatically from one column to the next. "
+                "Uses CSS Container Queries to adapt the column count based on available width, "
+                "ensuring readable text regardless of where the component is placed."
             )
         ],
         "features": [
@@ -163,18 +165,21 @@ def get_grid_description_context() -> dict[str, list[str]]:
             _(
                 "The `grid` block tag creates a CSS Grid container for arranging items in columns. "
                 "It supports two modes: **auto-fit** (items wrap automatically based on available space) "
-                "and **fixed columns** (specific number of columns with automatic responsive breakpoints)."
+                "and **fixed columns** (specific number of columns with responsive breakpoints)."
             ),
             _(
-                "The grid tag is designed for users without frontend knowledge - responsive behavior "
-                "is handled automatically when using fixed columns."
+                "The grid uses CSS Container Queries, so breakpoints are based on the container width "
+                "rather than the viewport. This means the grid adapts correctly regardless of where "
+                "it's placed (sidebar, modal, card, etc.)."
             ),
         ],
         "features": [
-            _("**Auto-fit mode**: Items wrap based on available space. Set `min` for minimum item width."),
-            _("**Fixed columns**: Set `cols` (1-6) for specific column count with automatic breakpoints."),
+            _(
+                "**Auto-fit mode**: Items wrap based on available space. Set `min` for minimum item width (any CSS unit: px, rem, em)."
+            ),
+            _("**Fixed columns**: Set `cols` (1-6) for specific column count with container-based breakpoints."),
             _("**gap**: Consistent spacing between items (xs/s/m/l/xl)."),
-            _("**fixed**: Disable automatic responsive breakpoints when needed."),
+            _("**fixed**: Disable responsive breakpoints to always use the exact column count."),
         ],
     }
 
@@ -206,6 +211,9 @@ def get_divider_description_context() -> dict[str, list[str]]:
         "features": [
             _("**direction**: Orientation of the divider (horizontal/vertical)."),
             _("**spacing**: Margin around the divider using the spacing scale (xs/s/m/l/xl)."),
+            _("**weight**: Line thickness (thin/medium/thick)."),
+            _("**style**: Line style (solid/dashed/dotted)."),
+            _("**label**: Optional text displayed in the center of the divider."),
         ],
     }
 

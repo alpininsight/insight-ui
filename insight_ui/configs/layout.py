@@ -48,13 +48,15 @@ class PageHeaderConfig:
 class ArticleConfig:
     """Configuration for the article component.
 
-    Renders text in newspaper-style multi-column layout.
+    Renders text in newspaper-style multi-column layout with responsive behavior.
+    Uses CSS Container Queries to adapt column count based on available width.
 
     Attributes:
         content: The text content of the article (can contain HTML).
-        columns: The number of columns for the CSS columns layout.
+        max_columns: Maximum number of columns (1-4). Fewer columns are shown on narrow containers.
         column_gap: The gap between the columns (CSS unit).
         title: An optional title above the article.
+        fixed: Disable responsive behavior and always use max_columns.
 
     """
 
@@ -62,15 +64,18 @@ class ArticleConfig:
         ArticleConfig(
             title="About Us",
             content="<p>Our company was founded in...</p>",
-            columns=2,
+            max_columns=3,
             column_gap="2rem",
         )
         """
 
     content: str = field(metadata={"doc": _("The text content of the article (can contain HTML).")})
-    columns: int = field(default=2, metadata={"doc": _("The number of columns for the CSS columns layout.")})
+    max_columns: int = field(
+        default=2, metadata={"doc": _("Maximum number of columns (1-4). Fewer columns are shown on narrow containers.")}
+    )
     column_gap: str = field(default="2rem", metadata={"doc": _("The gap between the columns (CSS unit).")})
     title: str = field(default="", metadata={"doc": _("An optional title above the article.")})
+    fixed: bool = field(default=False, metadata={"doc": _("Disable responsive behavior and always use max_columns.")})
 
 
 @dataclass
@@ -238,16 +243,23 @@ class DividerConfig:
     Attributes:
         direction: Orientation (horizontal|vertical).
         spacing: Spacing size (none|xs|s|m|l|xl).
+        weight: Line thickness (thin|medium|thick).
+        style: Line style (solid|dashed|dotted).
+        label: Optional text label displayed in the center.
 
     """
 
     __example__ = """
         {% load layout_tags %}
-        {% divider direction="horizontal" spacing="m" %}
+        {% divider direction="horizontal" spacing="m" weight="thin" style="solid" %}
+        {% divider label="or" %}
         """
 
     direction: str = field(default="horizontal", metadata={"doc": _("Orientation (horizontal|vertical).")})
     spacing: str = field(default="m", metadata={"doc": _("Spacing size (none|xs|s|m|l|xl).")})
+    weight: str = field(default="thin", metadata={"doc": _("Line thickness (thin|medium|thick).")})
+    style: str = field(default="solid", metadata={"doc": _("Line style (solid|dashed|dotted).")})
+    label: str = field(default="", metadata={"doc": _("Optional text label displayed in the center.")})
 
 
 @dataclass
@@ -340,26 +352,38 @@ class GridConfig:
     Configuration for the grid block tag.
 
     CSS Grid container with responsive or auto-fit columns.
+    Uses CSS Container Queries for responsive behavior, so breakpoints are based
+    on container width rather than viewport width.
 
     Attributes:
         cols: Number of columns (1-6). If not set, uses auto-fit mode.
         gap: Space between grid items (xs|s|m|l|xl).
-        min: Minimum item width for auto-fit mode.
-        fixed: Disable responsive breakpoints.
+        min: Minimum item width for auto-fit mode (any CSS unit: px, rem, em, etc.).
+        fixed: Disable responsive breakpoints (always use exact column count).
 
     """
 
     __example__ = """
         {% load layout_tags %}
 
-        {# Auto-fit mode #}
+        {# Auto-fit mode - items wrap based on available space #}
         {% grid gap="l" %}
             <div>Item 1</div>
             <div>Item 2</div>
         {% endgrid %}
 
-        {# Fixed columns with responsive breakpoints #}
+        {# Auto-fit with custom minimum width #}
+        {% grid min="15rem" gap="m" %}
+            ...
+        {% endgrid %}
+
+        {# Fixed columns with responsive breakpoints (adapts to container width) #}
         {% grid cols=3 gap="m" %}
+            ...
+        {% endgrid %}
+
+        {# Fixed columns without responsive behavior (always 4 columns) #}
+        {% grid cols=4 fixed=True %}
             ...
         {% endgrid %}
         """
@@ -368,8 +392,12 @@ class GridConfig:
         default=None, metadata={"doc": _("Number of columns (1-6). If not set, uses auto-fit mode.")}
     )
     gap: str = field(default="m", metadata={"doc": _("Space between grid items (xs|s|m|l|xl).")})
-    min: str = field(default="250px", metadata={"doc": _("Minimum item width for auto-fit mode.")})
-    fixed: bool = field(default=False, metadata={"doc": _("Disable responsive breakpoints.")})
+    min: str = field(
+        default="250px", metadata={"doc": _("Minimum item width for auto-fit mode (any CSS unit: px, rem, em, etc.).")}
+    )
+    fixed: bool = field(
+        default=False, metadata={"doc": _("Disable responsive breakpoints (always use exact column count).")}
+    )
 
 
 @dataclass

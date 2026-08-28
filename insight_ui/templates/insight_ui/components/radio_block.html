@@ -6,7 +6,7 @@
     {% endif %}
     {% if radio_block_config.integrated %}
         {# To use with other elements in a extern <form> #}
-        <div id="{{ radio_block_config.name }}" class="flex w-fit {% if radio_block_config.as_row == False %}flex-col{% endif %}">
+        <div id="{{ radio_block_config.name }}" class="flex w-fit h-fit {% if radio_block_config.as_row == False %}flex-col{% endif %}">
             {% for item in radio_block_config.items %}
                 <div{% if item.disabled and item.disabled_reason %} data-insight-tooltip="{{ item.disabled_reason }}"{% endif %}>
                     <input
@@ -34,7 +34,7 @@
             {% endfor %}
         </div>
     {% else %}
-        <form id="{{ radio_block_config.name }}" class="flex w-fit {% if radio_block_config.as_row == False %}flex-col{% endif %}">
+        <form id="{{ radio_block_config.name }}" class="flex w-fit h-fit {% if radio_block_config.as_row == False %}flex-col{% endif %}">
             {% for item in radio_block_config.items %}
                 <div{% if item.disabled and item.disabled_reason %} data-insight-tooltip="{{ item.disabled_reason }}"{% endif %}>
                     <input
