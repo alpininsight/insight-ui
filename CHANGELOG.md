@@ -27,6 +27,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **brand-mark:** Stop rendering template comment
 - Remove tooltip and popup instance on delete
 - Actually disable 'multiselect' and 'select' when disabled is 'True'
+- Remove mistyped 's' from 'range_slider' dual mode
+- Rotate the chevron icon of the 'breadcrumb' component by 180° in RTL mode
 
 ### CI/CD
 
@@ -50,6 +52,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add new component descriptions and lists with core features to each component
 - Update translations
 - Add config based usage examples to 'breadcrumbs', 'stepper' and 'bullet_point_list' components
+- Add more different examples to the 'button' and 'badge' usage examples
+- Add captions to the 'badge' demo and make the captions in the 'button' demo smaller
+- Add support for container queries to 'grid' component and add more demo examples
+- Add 'weight' and 'style' parameter to the 'divider' component and a dedicated color token
+- Add optional label to the 'divider' component
+- Add 'h-fit' to 'button', 'badge', 'radio_block' and 'toggle_button' component
+- Add responsive behavior to the 'article' component
+- Change app name to 'Django Insight UI' in the navbar
+- Use a more distinguishable background color for the 'modal' component in dark mode
+- Make the 'sort_utility_classes' script ignore comments
 
 ### Miscellaneous
 
@@ -63,6 +75,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Regenerate minified stylesheet
 - Regenerate minified stylesheet
 - Regenerate minified assets
+- Regenerate minified assets
+- Regenerate minified assets
+- Regenerate minified stylesheet
 
 ### Refactoring
 
