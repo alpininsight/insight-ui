@@ -1,0 +1,280 @@
+{% extends "insight_ui/base.html" %}
+{% load static i18n insight_tags layout_tags %}
+
+{% block title %}{% trans "Insight UI - Base Template" %}{% endblock title %}
+
+{% block navbar %}
+    {% navbar config=nav_config user_dropdown_links=user_dropdown_links search_query=search_query %}
+{% endblock navbar %}
+
+{% block sidebar_left %}
+    {% sidebar %}
+        {% include "insight_ui/components/sidebar_nav.html" with sidebar_data=left_sidebar %}
+    {% endsidebar %}
+{% endblock sidebar_left %}
+
+{% block sidebar_right %}
+    {% sidebar width="wide" mobile_behavior="drawer" %}
+        {% hbox h_align="between" v_align="center" class="pb-4 mb-4 border-b border-insight-border-surface" %}
+            <h2 class="pb-0 text-lg">{% trans "Page Structure" %}</h2>
+        {% endhbox %}
+        {% include "documentation/docs/base_template_mockup.html" %}
+    {% endsidebar %}
+{% endblock sidebar_right %}
+
+{% block heading %}
+    {% page_header chapter=_("Get started") title=_("Base Template") description=_("The base template provides a complete page structure with navbar, sidebars, content area, and footer. It handles JavaScript loading, theming, SEO meta tags, and favicon configuration.") %}
+{% endblock heading %}
+
+{% block content %}
+    {% vbox padding="xl" gap="xl" max_width="l" class="mx-auto" %}
+        {# Usage section #}
+        {% section gap="m" %}
+            <h2>{% trans "Usage" %}</h2>
+            <p>{% trans "Extend the base template to use Insight UI's page structure:" %}</p>
+
+            <div data-insight-code-block="Django">
+                &lcub;% extends "insight_ui/base.html" %&rcub;
+            </div>
+        {% endsection %}
+
+        {# Head section #}
+        {% section id="head" gap="m" %}
+            <h2 class="font-mono">&lt;head&gt;</h2>
+            <p>{% trans "The head section loads all required assets and defines page metadata. The head section serves some blocks the titel and additional scripts:" %}</p>
+
+            <ul class="list-disc ms-8 space-y-2">
+                <li><span class="inline-tag">title</span> - {% trans "Page title shown in browser tab" %}</li>
+                <li><span class="inline-tag">extra_head</span> - {% trans "Additional stylesheets or meta tags" %}</li>
+            </ul>
+
+            {% infobox message=_("Favicon, SEO settings, and other meta information are configured via **INSIGHT_UI** in `settings.py`.") %}
+        {% endsection %}
+
+        {# Body overview #}
+        {% section gap="m" %}
+            <h2 class="font-mono">&lt;body&gt;</h2>
+            <p>{% trans "The body contains all visible page elements, organized into blocks:" %}</p>
+
+            <ul class="list-disc ms-8 space-y-1">
+                <li><span class="inline-tag">background_image</span> - {% trans "Fixed background behind all content" %}</li>
+                <li><span class="inline-tag">navbar</span> - {% trans "Navigation bar at the top" %}</li>
+                <li><span class="inline-tag">drawers</span> - {% trans "Overlay sidebars (outside main layout)" %}</li>
+                <li><span class="inline-tag">sidebar_left</span> / <span class="inline-tag">sidebar_right</span> - {% trans "Static sidebars" %}</li>
+                <li><span class="inline-tag">heading</span> - {% trans "Page header with title" %}</li>
+                <li><span class="inline-tag">content</span> - {% trans "Main content area" %}</li>
+                <li><span class="inline-tag">footer</span> - {% trans "Page footer" %}</li>
+                <li><span class="inline-tag">extra_scripts</span> - {% trans "Additional JavaScript" %}</li>
+            </ul>
+        {% endsection %}
+
+        {# Background Image #}
+        {% section id="block-background" gap="m" %}
+            <h3 class="font-mono">&lcub;% block background_image %&rcub;</h3>
+            <p>{% trans "Add a fixed background image that stays in place while scrolling:" %}</p>
+
+            <div data-insight-code-block="Django">
+                {# fmt:off #}
+                &lcub;% block background_image %&rcub;
+                    &lt;img src="&lcub;% static 'img/background.png' %&rcub;"
+                         alt=""
+                         class="-z-10 object-cover fixed top-0 left-0 w-full h-dvh opacity-20"&gt;
+                &lcub;% endblock background_image %&rcub;
+                {# fmt:on #}
+            </div>
+        {% endsection %}
+
+        {# Navbar block #}
+        {% section id="block-navbar" gap="l" %}
+            {% vbox gap="m" %}
+                <h3 class="font-mono">&lcub;% block navbar %&rcub;</h3>
+                <p>{% trans "The navigation bar appears at the top of every page:" %}</p>
+
+                <div data-insight-code-block="Django">
+                    {# fmt:off #}
+                    &lcub;% load insight_tags %&rcub;
+
+                    &lcub;% block navbar %&rcub;
+                        &lcub;% navbar config=nav_config %&rcub;
+                    &lcub;% endblock navbar %&rcub;
+                    {# fmt:on #}
+                </div>
+
+                <p class="text-sm">
+                    {% blocktrans with link_open='<a href="/component/navbar" class="text-link">'|safe link_close='</a>'|safe %}
+                        See {{ link_open }}Navbar component{{ link_close }} for configuration options.
+                    {% endblocktrans %}
+                </p>
+            {% endvbox %}
+
+            {% vbox gap="m" %}
+                <h4 class="font-mono">navbar_fixed</h4>
+                <p>{% trans "Controls whether the navbar sticks to the top of the viewport. Set in" %} <code>settings.py</code>:</p>
+
+                <div data-insight-code-block="Python">
+                    {# fmt:off #}
+                    INSIGHT_UI = {
+                        "navbar_fixed": True,  # {% trans "default" %}
+                    }
+                    {# fmt:on #}
+                </div>
+
+                <p class="text-sm text-insight-text-secondary">
+                    {% trans "When enabled, static sidebars automatically adjust their position to start below the navbar. Drawers are not affected as they overlay the entire screen." %}
+                </p>
+            {% endvbox %}
+        {% endsection %}
+
+        {# Sidebar blocks #}
+        {% section id="block-sidebar" gap="l" %}
+            {% vbox gap="m" %}
+                <h3 class="font-mono">&lcub;% block sidebar_left %&rcub; / &lcub;% block sidebar_right %&rcub;</h3>
+                <p>{% trans "Sidebars for navigation or supplementary content. The side is automatically detected from the block context:" %}</p>
+
+                <div data-insight-code-block="Django">
+                    {# fmt:off #}
+                    &lcub;% load layout_tags %&rcub;
+
+                    &lcub;% block sidebar_left %&rcub;
+                        &lcub;% sidebar %&rcub;
+                            &lcub;% include "components/sidebar_nav.html" with sidebar_data=nav_data %&rcub;
+                        &lcub;% endsidebar %&rcub;
+                    &lcub;% endblock sidebar_left %&rcub;
+                    {# fmt:on #}
+                </div>
+            {% endvbox %}
+
+            {% vbox gap="m" %}
+                <h4>{% trans "Parameters" %}</h4>
+                <ul class="list-disc ms-8 space-y-2">
+                    <li>
+                        <span class="inline-tag">width</span> - {% trans "Sidebar width" %}
+                        <ul class="list-disc ms-6 mt-1 text-sm">
+                            <li><span class="inline-tag">"narrow"</span> - 224px</li>
+                            <li><span class="inline-tag">"normal"</span> - 288px ({% trans "default" %})</li>
+                            <li><span class="inline-tag">"wide"</span> - 384px</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <span class="inline-tag">static</span> - {% trans "Sidebar behavior" %}
+                        <ul class="list-disc ms-6 mt-1 text-sm">
+                            <li><span class="inline-tag">True</span> - {% trans "Sticky sidebar alongside content (default)" %}</li>
+                            <li><span class="inline-tag">False</span> - {% trans "Drawer that slides in as overlay" %}</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <span class="inline-tag">mobile_behavior</span> - {% trans "Behavior on small screens (only for static sidebars)" %}
+                        <ul class="list-disc ms-6 mt-1 text-sm">
+                            <li><span class="inline-tag">"hidden"</span> - {% trans "Hidden on mobile (default)" %}</li>
+                            <li><span class="inline-tag">"drawer"</span> - {% trans "Toggle button appears, opens as drawer" %}</li>
+                        </ul>
+                    </li>
+                </ul>
+            {% endvbox %}
+
+            {% vbox gap="m" %}
+                <h4>{% trans "Drawer Example" %}</h4>
+                <p>{% trans "Create an overlay sidebar that slides in from the side:" %}</p>
+
+                <div data-insight-code-block="Django">
+                    {# fmt:off #}
+                    &lcub;% block sidebar_left %&rcub;
+                        &lcub;% sidebar static=False %&rcub;
+                            &lcub;% include "components/sidebar_nav.html" with sidebar_data=nav_data %&rcub;
+                        &lcub;% endsidebar %&rcub;
+                    &lcub;% endblock sidebar_left %&rcub;
+                    {# fmt:on #}
+                </div>
+            {% endvbox %}
+        {% endsection %}
+
+        {# Heading block #}
+        {% section id="block-heading" gap="m" %}
+            <h3 class="font-mono">&lcub;% block heading %&rcub;</h3>
+            <p>{% trans "Display a page header with title and optional description:" %}</p>
+
+            <div data-insight-code-block="Django">
+                {# fmt:off #}
+                &lcub;% load insight_tags %&rcub;
+
+                &lcub;% block heading %&rcub;
+                    &lcub;% page_header title="My Page" description="A brief description." %&rcub;
+                &lcub;% endblock heading %&rcub;
+                {# fmt:on #}
+            </div>
+        {% endsection %}
+
+        {# Content block #}
+        {% section id="block-content" gap="l" %}
+            {% vbox gap="m" %}
+                <h3 class="font-mono">&lcub;% block content %&rcub;</h3>
+                <p>{% trans "The main content area of your page. This block expands to fill available space, keeping the footer at the bottom." %}</p>
+
+                <div data-insight-code-block="Django">
+                    {# fmt:off #}
+                    &lcub;% block content %&rcub;
+                        &lt;div class="prose"&gt;
+                            &lt;h1&gt;Welcome&lt;/h1&gt;
+                            &lt;p&gt;Your content here.&lt;/p&gt;
+                        &lt;/div&gt;
+                    &lcub;% endblock content %&rcub;
+                    {# fmt:on #}
+                </div>
+            {% endvbox %}
+
+            {% vbox gap="m" %}
+                <h4 class="font-mono">use_default_loading_indicator</h4>
+                <p>{% trans "The content block includes a default HTMX loading spinner that shows during requests. Disable it in your view when using components with their own loading indicators (e.g., pagination, tables):" %}</p>
+
+                <div data-insight-code-block="Python">
+                    {# fmt:off #}
+                    def my_view(request):
+                        context = get_base_context()
+                        context["use_default_loading_indicator"] = False
+                        return render(request, "my_template.html", context)
+                    {# fmt:on #}
+                </div>
+            {% endvbox %}
+        {% endsection %}
+
+        {# Footer block #}
+        {% section id="block-footer" gap="m" %}
+            <h3 class="font-mono">&lcub;% block footer %&rcub;</h3>
+            <p>{% trans "The footer appears at the bottom of every page:" %}</p>
+
+            <div data-insight-code-block="Django">
+                {# fmt:off #}
+                &lcub;% load insight_tags %&rcub;
+
+                &lcub;% block footer %&rcub;
+                    &lcub;% footer config=footer_config %&rcub;
+                &lcub;% endblock footer %&rcub;
+                {# fmt:on #}
+            </div>
+
+            <p class="text-sm">
+                {% blocktrans with link_open='<a href="/component/footer" class="text-link">'|safe link_close='</a>'|safe %}
+                    See {{ link_open }}Footer component{{ link_close }} for configuration options.
+                {% endblocktrans %}
+            </p>
+        {% endsection %}
+
+        {# Extra scripts block #}
+        {% section gap="m" %}
+            <h3 class="font-mono">&lcub;% block extra_scripts %&rcub;</h3>
+            <p>{% trans "Load additional JavaScript at the end of the page:" %}</p>
+
+            <div data-insight-code-block="Django">
+                {# fmt:off #}
+                &lcub;% block extra_scripts %&rcub;
+                    &lt;script src="&lcub;% static 'js/my-script.js' %&rcub;"&gt;&lt;/script&gt;
+                &lcub;% endblock extra_scripts %&rcub;
+                {# fmt:on #}
+            </div>
+        {% endsection %}
+    {% endvbox %}
+{% endblock content %}
+
+{% block footer %}
+    {% footer config=footer_config %}
+{% endblock footer %}

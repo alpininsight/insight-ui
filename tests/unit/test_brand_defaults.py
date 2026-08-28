@@ -1,10 +1,10 @@
 """Tests for central Insight UI brand defaults."""
 
 from django.test import override_settings
+from documentation.component_details.demo_context import get_login_screen_context
+from documentation.context import get_footer_context, get_navbar_context
 from insight_ui.brand import get_brand_logo_config, get_navbar_brand_defaults
-from insight_ui.component_details.demo_context import get_login_screen_context
 from insight_ui.configs import BrandMarkConfig, LogoConfig
-from insight_ui.context import get_footer_context, get_navbar_context
 
 
 def test_brand_logo_override_uses_configured_height() -> None:

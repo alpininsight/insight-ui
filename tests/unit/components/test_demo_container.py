@@ -1,7 +1,7 @@
 """Tests for the shared documentation demo container."""
 
 from django.template.loader import render_to_string
-from insight_ui.context import get_demo_container_context
+from documentation.context import get_demo_container_context
 
 
 def test_demo_container_wraps_controls_without_changing_control_contract() -> None:
@@ -16,7 +16,7 @@ def test_demo_container_wraps_controls_without_changing_control_contract() -> No
         }
     }
 
-    rendered = render_to_string("insight_ui/docs/demo_container.html", context)
+    rendered = render_to_string("documentation/docs/demo_container.html", context)
 
     assert "flex flex-wrap gap-1.5 justify-between items-center p-1.5 h-auto" in rendered
     assert 'name="width-toggle-responsive-demo"' in rendered

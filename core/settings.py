@@ -85,6 +85,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "documentation",
     "insight_ui",
     "core",
 ]
@@ -144,7 +145,7 @@ USE_TZ = True
 
 LANGUAGES = [("de", "Deutsch"), ("en", "English")]
 
-LOCALE_PATHS = [BASE_DIR / "insight_ui" / "locale"]
+LOCALE_PATHS = [BASE_DIR / "documentation" / "locale"]
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = "/static/"
