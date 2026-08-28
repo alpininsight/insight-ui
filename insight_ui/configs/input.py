@@ -36,7 +36,7 @@ class ButtonConfig:
         icon: Icon config for an optional icon.
         icon_end: **True** if the icon should be shown after the label, otherwise the icon is shown in front of the label.
         icon_only: **True** if only the icon should be shown. In this case the `label` will be used for Screenreader.
-        type: Defines the color of the button.
+        type: Defines the color of the button (primary, secondary, danger, etc.).
         size: Defines the size of the button.
         outline: **True** to use the outline design of the button.
         subtle: **True** to use the subtle design of the button.
@@ -44,6 +44,8 @@ class ButtonConfig:
         tooltip: Optional text for a tooltip shown on hover.
         htmx_config: Configuration for asynchronous requests.
         hidden: **True** to render the button with CSS 'hidden' class for JS-controlled visibility.
+        disabled: **True** to disable the button.
+        disabled_reason: Explanation why the button is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
         button_type: HTML type attribute: 'button', 'submit', or 'reset'.
         extra_classes: Additional CSS classes to append to the button element.
         data_attrs: List of custom data attributes to add to the button element.
@@ -102,7 +104,9 @@ class ButtonConfig:
             "doc": "**True** if only the icon should be shown. In this case the `label` will be used for Screenreader."
         },
     )
-    type: ButtonType = field(default="primary", metadata={"doc": "Defines the color of the button."})
+    type: ButtonType = field(
+        default="primary", metadata={"doc": "Defines the color of the button (primary, secondary, danger, etc.)."}
+    )
     size: Size = field(default="m", metadata={"doc": "Defines the size of the button."})
     outline: bool = field(default=False, metadata={"doc": "**True** to use the outline design of the button."})
     subtle: bool = field(default=False, metadata={"doc": "**True** to use the subtle design of the button."})
@@ -112,6 +116,13 @@ class ButtonConfig:
     hidden: bool = field(
         default=False,
         metadata={"doc": "**True** to render the button with CSS 'hidden' class for JS-controlled visibility."},
+    )
+    disabled: bool = field(default=False, metadata={"doc": "**True** to disable the button."})
+    disabled_reason: str | None = field(
+        default=None,
+        metadata={
+            "doc": "Explanation why the button is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip."
+        },
     )
     button_type: HtmlButtonType = field(
         default="button", metadata={"doc": _("HTML type attribute: 'button', 'submit', or 'reset'.")}
@@ -137,7 +148,18 @@ class ButtonConfig:
 
     def __post_init__(self) -> None:
         """Validate type, size, and button_type after initialization."""
-        validate_button_type(self.type, "type")
+        # Override type when disabled=True
+        if self.disabled:
+            object.__setattr__(self, "type", "disabled")
+            if self.disabled_reason is None:
+                warnings.warn(
+                    f"ButtonConfig {self.label} is disabled without a disabled_reason. "
+                    "Consider providing a reason to improve accessibility, or set disabled_reason='' to suppress this warning.",
+                    stacklevel=2,
+                )
+        else:
+            validate_button_type(self.type, "type")
+
         validate_size(self.size, "size")
         validate_html_button_type(self.button_type, "button_type")
 
@@ -163,6 +185,7 @@ class InputFieldConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
+        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
         input_type: The type of the input field, e.g.: 'text', 'password', 'date', etc.
         placeholder: Placeholder text, displayed in the field as long as it has not been selected.
@@ -204,6 +227,7 @@ class InputFieldConfig(BaseFormFieldConfig):
 
     def __post_init__(self) -> None:
         """Validate input_type after initialization."""
+        super().__post_init__()
         validate_html_input_type(self.input_type, "input_type")
 
 
@@ -218,6 +242,7 @@ class TextareaConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
+        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
         placeholder: Placeholder text, displayed in the field as long as it has not been selected.
         value: The value of the input field.
@@ -255,6 +280,7 @@ class CheckboxConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
+        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
         value: The value of the checkbox (this is not the state, see 'checked' for that).
         checked: **True** if the checkbox should be selected.
@@ -285,6 +311,7 @@ class CheckboxItemConfig:
         label: Label text.
         value: Value submitted when checked.
         disabled: **True** if the checkbox should be disabled.
+        disabled_reason: Explanation why the checkbox is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
         checked: **True** if the checkbox should be selected.
 
     """
@@ -297,7 +324,24 @@ class CheckboxItemConfig:
     label: str = field(metadata={"doc": _("Label text.")})
     value: str = field(metadata={"doc": _("Value submitted when checked.")})
     disabled: bool = field(default=False, metadata={"doc": _("**True** if the checkbox should be disabled.")})
+    disabled_reason: str | None = field(
+        default=None,
+        metadata={
+            "doc": _(
+                "Explanation why the checkbox is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip."
+            )
+        },
+    )
     checked: bool = field(default=False, metadata={"doc": _("**True** if the checkbox should be selected.")})
+
+    def __post_init__(self) -> None:
+        """Warn if disabled without a reason."""
+        if self.disabled and self.disabled_reason is None:
+            warnings.warn(
+                f"CheckboxItemConfig {self.value} is disabled without a disabled_reason. "
+                "Consider providing a reason to improve accessibility, or set disabled_reason='' to suppress this warning.",
+                stacklevel=2,
+            )
 
 
 @dataclass
@@ -409,6 +453,7 @@ class RadioItemConfig:
         label: Label of the respective radio button.
         icon: Optional icon displayed before the label.
         disabled: **True** if the radio button should be disabled.
+        disabled_reason: Explanation why the radio button is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
 
     """
 
@@ -421,6 +466,23 @@ class RadioItemConfig:
     label: str = field(default="", metadata={"doc": _("Label of the respective radio button.")})
     icon: IconConfig | None = field(default=None, metadata={"doc": _("Optional icon displayed before the label.")})
     disabled: bool = field(default=False, metadata={"doc": _("**True** if the radio button should be disabled.")})
+    disabled_reason: str | None = field(
+        default=None,
+        metadata={
+            "doc": _(
+                "Explanation why the radio button is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip."
+            )
+        },
+    )
+
+    def __post_init__(self) -> None:
+        """Warn if disabled without a reason."""
+        if self.disabled and self.disabled_reason is None:
+            warnings.warn(
+                f"RadioItemConfig {self.value} is disabled without a disabled_reason. "
+                "Consider providing a reason to improve accessibility, or set disabled_reason='' to suppress this warning.",
+                stacklevel=2,
+            )
 
 
 @dataclass
@@ -543,6 +605,7 @@ class SliderConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
+        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
         value: The value of the range slider (single-thumb mode only).
         minimum: Smallest configurable value of the range slider.
@@ -605,6 +668,7 @@ class SliderConfig(BaseFormFieldConfig):
 
     def __post_init__(self) -> None:
         """Validate slider configuration."""
+        super().__post_init__()
         validate_slider_legend_mode(self.legend_mode, "legend_mode")
         if self.minimum >= self.maximum:
             raise ValueError(f"minimum ({self.minimum}) must be less than maximum ({self.maximum})")  # noqa: TRY003
@@ -630,6 +694,7 @@ class ToggleConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
+        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
         value: The value of the toggle button.
         icon: Optional icon configuration.
@@ -671,6 +736,7 @@ class SelectConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
+        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
         explanation: A brief description of the filter that appears in a tooltip.
         options: List of values that can be selected.
@@ -703,6 +769,11 @@ class SelectConfig(BaseFormFieldConfig):
         },
     )
 
+    def __post_init__(self) -> None:
+        """Normalize options to dict format."""
+        if isinstance(self.options, list):
+            self.options = dict(zip(self.options, self.options, strict=True))
+
 
 @dataclass
 class MultiselectConfig(BaseFormFieldConfig):
@@ -715,6 +786,7 @@ class MultiselectConfig(BaseFormFieldConfig):
         name: Required for a `<form>`, as the name of the request parameter.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
+        disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
         maximum: Maximum number of selectable options.
         show_buttons: Show additional buttons for 'Select All' and 'Deselect All'.
@@ -747,6 +819,11 @@ class MultiselectConfig(BaseFormFieldConfig):
     selected_options: list[str] = field(
         default_factory=list, metadata={"doc": _("List of currently selected options.")}
     )
+
+    def __post_init__(self) -> None:
+        """Normalize options to dict format."""
+        if isinstance(self.options, list):
+            self.options = dict(zip(self.options, self.options, strict=True))
 
 
 @dataclass

@@ -624,6 +624,39 @@
 
     .input {
         @apply w-full bg-insight-bg-base border border-insight-border-surface rounded-insight-control shadow-insight-subtle px-3 py-2 text-sm text-insight-text-primary focus:ring-2 focus:ring-insight-primary focus:border-insight-primary transition-colors duration-200;
+
+        &::placeholder {
+            @apply text-insight-text-secondary;
+        }
+
+        &:disabled {
+            @apply bg-neutral-100 dark:bg-neutral-900 text-insight-text-hint cursor-not-allowed;
+
+            &::placeholder {
+                @apply text-insight-text-hint;
+            }
+        }
+    }
+
+    /* Multiselect disabled state */
+    [data-insight-multiselect][data-disabled="true"] .input {
+        @apply bg-neutral-100 dark:bg-neutral-900 cursor-not-allowed;
+    }
+
+    [data-insight-multiselect] .search {
+        @apply bg-transparent;
+
+        &::placeholder {
+            @apply text-insight-text-secondary;
+        }
+
+        &:disabled {
+            @apply cursor-not-allowed;
+
+            &::placeholder {
+                @apply text-insight-text-hint;
+            }
+        }
     }
 
     /* Range slider (single thumb) */

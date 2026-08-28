@@ -29,6 +29,9 @@ class FormFieldConfig:
         selected_option: Currently selected value.
         rows: Number of rows for textarea fields.
 
+    Note:
+        If `options` is a list, the value is also used as the name.
+
     """
 
     __example__ = """
@@ -51,13 +54,17 @@ class FormFieldConfig:
     explanation: str = field(default="", metadata={"doc": _("Tooltip explanation text.")})
     required: bool = field(default=False, metadata={"doc": _("Whether field is required.")})
     disabled: bool = field(default=False, metadata={"doc": _("Whether field is disabled.")})
-    options: list[str] = field(default_factory=list, metadata={"doc": _("List of options for select fields.")})
+    options: list[str] | dict[str, str] = field(
+        default_factory=list, metadata={"doc": _("List of options for select fields.")}
+    )
     selected_option: str = field(default="", metadata={"doc": _("Currently selected value.")})
     rows: int = field(default=3, metadata={"doc": _("Number of rows for textarea fields.")})
 
     def __post_init__(self) -> None:
-        """Validate input_type after initialization."""
+        """Validate input_type and normalize options to dict format."""
         validate_form_field_type(self.input_type, "input_type")
+        if isinstance(self.options, list):
+            self.options = dict(zip(self.options, self.options, strict=True))
 
 
 @dataclass

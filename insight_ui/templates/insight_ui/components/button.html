@@ -17,7 +17,7 @@
         {% endif %}
         {% if button_config.type == "disabled" %}disabled{% endif %}
         {% if button_config.icon_only %}aria-label="{{ button_config.label }}"{% endif %}
-        {% if button_config.tooltip %}data-insight-tooltip="{{ button_config.tooltip }}"{% endif %}
+        {% if button_config.type == "disabled" and button_config.disabled_reason %}data-insight-tooltip="{{ button_config.disabled_reason }}"{% elif button_config.tooltip %}data-insight-tooltip="{{ button_config.tooltip }}"{% endif %}
         {% for attr in button_config.data_attrs %}
             data-{{ attr.name }}="{{ attr.value }}"
         {% endfor %}
@@ -46,7 +46,7 @@
         {% endif %}
         {% if button_config.type == "disabled" %}disabled{% endif %}
         {% if button_config.icon_only %}aria-label="{{ button_config.label }}"{% endif %}
-        {% if button_config.tooltip %}data-insight-tooltip="{{ button_config.tooltip }}"{% endif %}
+        {% if button_config.type == "disabled" and button_config.disabled_reason %}data-insight-tooltip="{{ button_config.disabled_reason }}"{% elif button_config.tooltip %}data-insight-tooltip="{{ button_config.tooltip }}"{% endif %}
         {% for attr in button_config.data_attrs %}
             data-{{ attr.name }}="{{ attr.value }}"
         {% endfor %}

@@ -16,6 +16,8 @@
     <select
         {% if select_config.tag_id %}id="{{ select_config.tag_id }}"{% endif %}
         {% if select_config.name %}name="{{ select_config.name }}"{% endif %}
+        {% if select_config.disabled %}disabled{% endif %}
+        {% if select_config.disabled and select_config.disabled_reason %}data-insight-tooltip="{{ select_config.disabled_reason }}"{% endif %}
         class="input w-full"
     >
         {% for option, text in select_config.options.items %}

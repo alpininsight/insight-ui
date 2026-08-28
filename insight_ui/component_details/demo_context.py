@@ -459,7 +459,9 @@ def get_checkbox_group_context() -> dict:
                 CheckboxItemConfig("german", _("German"), "german"),
                 CheckboxItemConfig("french", _("French"), "french"),
                 CheckboxItemConfig("spanish", _("Spanish"), "spanish"),
-                CheckboxItemConfig("italian", _("Italian (currently not available)"), "italian", True),
+                CheckboxItemConfig(
+                    "italian", _("Italian (currently not available)"), "italian", True, _("Currently not available")
+                ),
             ],
             True,
             1,
@@ -503,7 +505,13 @@ def get_radio_group_context() -> dict:
             [
                 RadioItemConfig("model1", "BERT", _("BERT")),
                 RadioItemConfig("model2", "PaLM 2", _("PaLM 2")),
-                RadioItemConfig("model3", "LLaMA 2", _("LLaMA 2 (currently not available)"), disabled=True),
+                RadioItemConfig(
+                    "model3",
+                    "LLaMA 2",
+                    _("LLaMA 2 (currently not available)"),
+                    disabled=True,
+                    disabled_reason=_("Currently not available"),
+                ),
             ],
         )
     }
@@ -519,7 +527,13 @@ def get_radio_block_context() -> dict:
             items=[
                 RadioItemConfig("card-view", "card", icon=IconConfig("squares-2x2")),
                 RadioItemConfig("table", "table", icon=IconConfig("list-bullet")),
-                RadioItemConfig("card-carousel", "carousel", icon=IconConfig("square-3-stack-3d"), disabled=True),
+                RadioItemConfig(
+                    "card-carousel",
+                    "carousel",
+                    icon=IconConfig("square-3-stack-3d"),
+                    disabled=True,
+                    disabled_reason=_("Currently not available"),
+                ),
             ],
         ),
         "size_radio_config": RadioBlockConfig(
@@ -528,7 +542,9 @@ def get_radio_block_context() -> dict:
             items=[
                 RadioItemConfig("small-size", "small", "s"),
                 RadioItemConfig("medium-size", "medium", "m"),
-                RadioItemConfig("large-size", "large", "l", disabled=True),
+                RadioItemConfig(
+                    "large-size", "large", "l", disabled=True, disabled_reason=_("Currently not available")
+                ),
             ],
             as_row=True,
         ),
