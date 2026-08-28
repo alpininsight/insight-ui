@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: django-insight-ui 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-28 17:16+0200\n"
-"PO-Revision-Date: 2026-08-28 17:16+0200\n"
+"PO-Revision-Date: 2026-08-28 17:21+0200\n"
 "Last-Translator:   <>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -7267,7 +7267,7 @@ msgstr "Suche"
 
 #: .\insight_ui\templates\insight_ui\components\search_bar.html:29
 msgid "Search docs..."
-msgstr "Dokumentation durchsuchen..."
+msgstr "In Doku suchen..."
 
 #: .\insight_ui\templates\insight_ui\components\search_bar.html:29
 msgid "Browse..."
