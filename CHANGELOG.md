@@ -25,6 +25,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Use white text instead of base text color for the 'radio_block' component
 - Restore old active state design for sidebar navigation links
 - **brand-mark:** Stop rendering template comment
+- Remove tooltip and popup instance on delete
+- Actually disable 'multiselect' and 'select' when disabled is 'True'
 
 ### CI/CD
 
@@ -42,6 +44,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add 'UserMenuConfig', 'LoginScreenConfig' and add 'register_url' to 'navbar' component
 - Add 'content_fill' option for the base template
 - Add version information to 'copyright_notice' and rename component to 'legal_notice'
+- Add 'disabled' parameter to the 'button' component and remove 'disabled' from ButtonType
+- Make disabled inputs more decent and add 'disabled_reason' parameter to input components
+- Add dict support for 'options' of the 'FormFieldConfig' and move list to dict converting logic to corresponding configs
 
 ### Miscellaneous
 
@@ -53,6 +58,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Regenerate minified stylesheet
 - Update stylesheet
 - Regenerate minified stylesheet
+- Regenerate minified stylesheet
+- Regenerate minified assets
 
 ### Refactoring
 
