@@ -3,7 +3,7 @@
 import pytest
 from django.template.loader import render_to_string
 from django.utils.translation import activate
-from insight_ui.component_details.demo_context import get_login_screen_context
+from documentation.component_details.demo_context import get_login_screen_context
 from insight_ui.configs import LoginScreenConfig
 
 

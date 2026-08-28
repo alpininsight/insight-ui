@@ -1,7 +1,7 @@
 """Tests for the radio_group component."""
 
 from bs4 import BeautifulSoup
-from insight_ui.component_details.demo_context import get_radio_group_context
+from documentation.component_details.demo_context import get_radio_group_context
 
 from tests.unit.components.test_template_tags import TemplateTagsTestCase
 

@@ -1,7 +1,7 @@
 """Tests for the type registry module."""
 
 import pytest
-from insight_ui.utils.type_registry import TYPE_DEFINITIONS, get_all_type_definitions, get_type_info, is_known_type
+from documentation.type_registry import TYPE_DEFINITIONS, get_all_type_definitions, get_type_info, is_known_type
 
 # =============================================================================
 # get_type_info function

@@ -3,7 +3,7 @@
 import re
 from pathlib import Path
 
-from insight_ui.management.commands.create_component import Command
+from documentation.management.commands.create_component import Command
 
 
 def test_derive_names_preserves_pascal_case_for_multi_word_component() -> None:

@@ -3,7 +3,7 @@
 from dataclasses import dataclass, field
 
 from django.utils import translation
-from insight_ui.component_details.component_context import get_component_parameter_doc, resolve_parameter_path
+from documentation.component_details.component_context import get_component_parameter_doc, resolve_parameter_path
 from insight_ui.configs.navigation import NavbarConfig
 
 

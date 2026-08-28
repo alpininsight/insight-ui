@@ -1,0 +1,14 @@
+{% load i18n insight_tags layout_tags %}
+
+{% comment %} Titel and summarize (out of bands) {% endcomment %}
+<div id="heading" hx-swap-oob="true">
+    {% page_header chapter=category_name title=formatted_name description=description badges=header_badges %}
+</div>
+
+<div id="right-aside" hx-swap-oob="true" class="flex">
+    {% sidebar %}
+        {% include "insight_ui/components/toc_content.html" %}
+    {% endsidebar %}
+</div>
+
+{% include "documentation/docs/component_details_content.html" %}

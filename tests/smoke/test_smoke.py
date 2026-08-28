@@ -10,8 +10,8 @@ from http import HTTPStatus
 import pytest
 from django.test import Client
 from django.urls import reverse
-from insight_ui.component_details.component_context import COMPONENT_CONTEXT_BUILDERS
-from insight_ui.component_details.components import Component, ComponentCategory
+from documentation.component_details.component_context import COMPONENT_CONTEXT_BUILDERS
+from documentation.component_details.components import Component, ComponentCategory
 
 
 @pytest.mark.smoke

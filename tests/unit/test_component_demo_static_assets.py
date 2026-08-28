@@ -3,7 +3,11 @@
 from django.contrib.staticfiles import finders
 from django.core.management import call_command
 from django.test import override_settings
-from insight_ui.component_details.demo_context import DEMO_CARD_IMAGE_PATH, get_app_card_context, get_flip_card_context
+from documentation.component_details.demo_context import (
+    DEMO_CARD_IMAGE_PATH,
+    get_app_card_context,
+    get_flip_card_context,
+)
 
 MANIFEST_STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
