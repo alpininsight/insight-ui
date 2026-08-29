@@ -30,12 +30,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove mistyped 's' from 'range_slider' dual mode
 - Rotate the chevron icon of the 'breadcrumb' component by 180° in RTL mode
 - **cdn:** Support historical candidate asset builds
+- Update paths in commands to match the new documentation structure
+- **docs:** Wire localized search index
 
 ### CI/CD
 
 - **pypi:** Publish via Trusted Publishing instead of an API token
 - Rerun standard checks on PR title edits
 - **cdn:** Publish candidate assets from image source
+
+### Documentation
+
+- Align self-documentation app references
 
 ### Features
 
@@ -64,6 +70,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Change app name to 'Django Insight UI' in the navbar
 - Use a more distinguishable background color for the 'modal' component in dark mode
 - Make the 'sort_utility_classes' script ignore comments
+- Create app 'documentation' and move all related files to this new app
+- Update translations
+- Update translations
 
 ### Miscellaneous
 
