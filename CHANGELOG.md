@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Actually disable 'multiselect' and 'select' when disabled is 'True'
 - Remove mistyped 's' from 'range_slider' dual mode
 - Rotate the chevron icon of the 'breadcrumb' component by 180° in RTL mode
+- **cdn:** Support historical candidate asset builds
 
 ### CI/CD
 
