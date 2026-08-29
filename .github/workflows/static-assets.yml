@@ -70,7 +70,12 @@ jobs:
       mode: build
       setup_python: true
       setup_uv: true
-      build_command: npm run build:static-all
+      build_command: |
+        if node -e "const scripts = require('./package.json').scripts || {}; process.exit(scripts['build:static-all'] ? 0 : 1)"; then
+          npm run build:static-all
+        else
+          npm run build:static
+        fi
       upload_cdn: true
       cdn_upload_immutable: false
       update_latest: false
