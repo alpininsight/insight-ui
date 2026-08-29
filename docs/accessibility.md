@@ -59,7 +59,7 @@ All interactive components support keyboard navigation:
 
 ## Component Accessibility Documentation
 
-Each component has specific accessibility notes in `insight_ui/component_details/a11y_context.py`. These are displayed on component detail pages.
+Each component has specific accessibility notes in `documentation/component_details/a11y_context.py`. These are displayed on component detail pages.
 
 Examples from actual components:
 

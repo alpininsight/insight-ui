@@ -19,9 +19,10 @@ The reviewer should block the PR when a public template tag, component
 template, design token, semantic class, `data-insight-*` hook, or accessibility
 contract changes without the matching documentation and demo update.
 
-For `insight-ui`, the canonical self-documentation data lives in
-`insight_ui/component_details/*`. For sibling packages that do not yet have the
-same registry layout, use an equivalent package-local `component_details/`
+For `insight-ui`, reusable component implementation lives in `insight_ui/*`.
+The optional self-documentation app keeps its canonical documentation data in
+`documentation/component_details/*`. For sibling packages that do not yet have
+the same registry layout, use an equivalent package-local `component_details/`
 structure and document the package-specific source-of-truth boundary.
 
 ## Required files for `insight-ui`
@@ -30,19 +31,19 @@ Use this table as the PR file checklist for a new component.
 
 | Concern | Required file |
 |---|---|
-| Component enum and category | `insight_ui/component_details/components.py` |
+| Component enum and category | `documentation/component_details/components.py` |
 | Django template tag API | `insight_ui/templatetags/insight_tags.py` |
 | Component HTML | `insight_ui/templates/insight_ui/components/<component>.html` |
 | JavaScript behavior, if interactive | `insight_ui/static/insight_ui/js/insight-ui-<component>.js` |
 | Init registration, if interactive | `insight_ui/static/insight_ui/js/insight-ui-init.js` |
-| Public description | `insight_ui/component_details/description_context.py` |
-| Usage example | `insight_ui/component_details/usage_context.py` |
-| Parameter table | `insight_ui/component_details/parameter_context.py` |
-| Accessibility notes | `insight_ui/component_details/a11y_context.py` |
-| Related components | `insight_ui/component_details/related_components_context.py` |
-| GitHub source links | `insight_ui/component_details/git_path_mapping.py` |
-| Demo context | `insight_ui/component_details/demo_context.py` |
-| Demo presentation | `insight_ui/templates/insight_ui/docs/component_demo.html`, only when the generic demo renderer cannot display the component |
+| Public description | `documentation/component_details/description_context.py` |
+| Usage example | `documentation/component_details/usage_context.py` |
+| Parameter table | `documentation/component_details/parameter_context.py` |
+| Accessibility notes | `documentation/component_details/a11y_context.py` |
+| Related components | `documentation/component_details/related_components_context.py` |
+| GitHub source links | `documentation/component_details/git_path_mapping.py` |
+| Demo context | `documentation/component_details/demo_context.py` |
+| Demo presentation | `documentation/templates/documentation/docs/component_demo.html`, only when the generic demo renderer cannot display the component |
 | Template tag tests | `insight_ui/tests/test_template_tags.py` or a focused test module |
 | JavaScript tests, if behavior changes | Existing JS test suite or a new focused test |
 | Design contract, if a token/class changes | `docs/design-system.md` and `insight_ui/utils/input.css` |
@@ -55,7 +56,7 @@ points without prescribing a real component for the product.
 
 ### 1. Add the component enum
 
-File: `insight_ui/component_details/components.py`
+File: `documentation/component_details/components.py`
 
 ```python
 class Component(Enum):
@@ -157,7 +158,7 @@ double-bind behavior.
 
 ### 6. Add description context
 
-File: `insight_ui/component_details/description_context.py`
+File: `documentation/component_details/description_context.py`
 
 ```python
 @register_component(Component.STATUS_PILL)
@@ -174,7 +175,7 @@ Explain what the component is for, not just what it looks like.
 
 ### 7. Add usage context
 
-File: `insight_ui/component_details/usage_context.py`
+File: `documentation/component_details/usage_context.py`
 
 ```python
 @register_component(Component.STATUS_PILL)
@@ -189,7 +190,7 @@ The usage example should be copyable by a consumer application.
 
 ### 8. Add parameter context
 
-File: `insight_ui/component_details/parameter_context.py`
+File: `documentation/component_details/parameter_context.py`
 
 ```python
 @register_component(Component.STATUS_PILL)
@@ -218,7 +219,7 @@ changes, update this file in the same PR.
 
 ### 9. Add accessibility context
 
-File: `insight_ui/component_details/a11y_context.py`
+File: `documentation/component_details/a11y_context.py`
 
 ```python
 @register_component(Component.STATUS_PILL)
@@ -236,7 +237,7 @@ where relevant.
 
 ### 10. Add related components
 
-File: `insight_ui/component_details/related_components_context.py`
+File: `documentation/component_details/related_components_context.py`
 
 ```python
 RELATED_COMPONENTS[Component.STATUS_PILL] = [
@@ -249,7 +250,7 @@ Use related components to help users choose the right pattern.
 
 ### 11. Add GitHub source links
 
-File: `insight_ui/component_details/git_path_mapping.py`
+File: `documentation/component_details/git_path_mapping.py`
 
 ```python
 TEMPLATE_PATHS["status_pill"] = GIT_BASE_FILE + "status_pill.html"
@@ -260,7 +261,7 @@ Only add `SCRIPT_PATHS` when a JavaScript file exists.
 
 ### 12. Add demo context
 
-File: `insight_ui/component_details/demo_context.py`
+File: `documentation/component_details/demo_context.py`
 
 ```python
 @register_demo_context(Component.STATUS_PILL)
@@ -279,7 +280,7 @@ customer data.
 
 ### 13. Add demo presentation only when needed
 
-File: `insight_ui/templates/insight_ui/docs/component_demo.html`
+File: `documentation/templates/documentation/docs/component_demo.html`
 
 ```html
 {% if component_name == "status_pill" %}
@@ -331,7 +332,7 @@ component:
 
 ## Guidance for ecosystem packages
 
-Ecosystem packages do not have to copy the exact `insight_ui/component_details/*`
+Ecosystem packages do not have to copy the exact `documentation/component_details/*`
 implementation before they can comply with this checklist. They must still keep
 the same source-of-truth split:
 

@@ -25,14 +25,26 @@ INSTALLED_APPS = [
 ]
 ```
 
-### 2. Include URLs (for self-documentation)
+### 2. Include URLs (optional self-documentation)
+
+The reusable components live in `insight_ui`. The interactive component
+documentation is provided by the separate `documentation` app. Add it only when
+you want to run the self-documenting demo pages inside your project.
+
+```python
+INSTALLED_APPS = [
+    # ...
+    "insight_ui",
+    "documentation",
+]
+```
 
 ```python
 from django.urls import include, path
 
 urlpatterns = [
     # ...
-    path("docs/", include("insight_ui.urls")),
+    path("docs/", include("documentation.urls")),
 ]
 ```
 
