@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **pypi:** Publish via Trusted Publishing instead of an API token
 - Rerun standard checks on PR title edits
+- **cdn:** Publish candidate assets from image source
 
 ### Features
 
