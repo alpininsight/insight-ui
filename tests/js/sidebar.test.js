@@ -92,7 +92,7 @@ describe('Sidebar Component', () => {
   });
 
   describe('Open/Close Functionality', () => {
-    it('should open sidebar on openSidebar() call', () => {
+    it('should open sidebar on openSidebar() call', async () => {
       const container = createSidebarDOM();
       const wrapper = container.querySelector('[data-insight-sidebar]');
       const aside = wrapper.querySelector('aside');
@@ -100,6 +100,7 @@ describe('Sidebar Component', () => {
       const sidebar = new InsightUI.Sidebar(wrapper);
 
       sidebar.openSidebar();
+      await TestUtils.nextFrame();
 
       expect(aside.style.transform).toBe('translateX(0)');
       expect(wrapper.classList.contains('hidden')).toBe(false);
@@ -134,7 +135,7 @@ describe('Sidebar Component', () => {
   });
 
   describe('Open Button', () => {
-    it('should open sidebar when open button is clicked', () => {
+    it('should open sidebar when open button is clicked', async () => {
       const container = createSidebarDOM({ withOpenButton: true });
       const wrapper = container.querySelector('[data-insight-sidebar]');
       const aside = wrapper.querySelector('aside');
@@ -143,6 +144,7 @@ describe('Sidebar Component', () => {
       new InsightUI.Sidebar(wrapper);
 
       TestUtils.click(openBtn);
+      await TestUtils.nextFrame();
 
       expect(aside.style.transform).toBe('translateX(0)');
     });
