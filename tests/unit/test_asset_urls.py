@@ -30,9 +30,10 @@ def test_project_settings_do_not_enable_cdn_implicitly() -> None:
 
 
 @override_settings(INSIGHT_UI={"assets": {"use_minified": True, "cdn_enabled": False}})
-def test_insight_asset_url_can_use_local_minified_staticfiles() -> None:
-    """Minified assets should also work through Django staticfiles."""
-    assert insight_asset_url("insight_ui/css/tailwind.css") == "/static/insight_ui/css/tailwind.min.css"
+def test_insight_asset_url_keeps_local_staticfiles_readable() -> None:
+    """Local staticfiles must not depend on generated CDN artifacts."""
+    assert insight_asset_url("insight_ui/css/tailwind.css") == "/static/insight_ui/css/tailwind.css"
+    assert insight_asset_url("insight_ui/css/tailwind.css", minified=True) == "/static/insight_ui/css/tailwind.css"
 
 
 @override_settings(

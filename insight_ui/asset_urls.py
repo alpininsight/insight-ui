@@ -84,7 +84,8 @@ def insight_asset_url(asset_path: str, *, minified: bool | None = None) -> str:
 
     Args:
         asset_path: The relative path to the asset.
-        minified: Whether to use minified version. Defaults to CDN setting.
+        minified: Whether to use the minified CDN version. Local staticfiles
+            always use the readable package asset.
 
     Returns:
         The full URL to the asset (local static URL or CDN URL).
@@ -96,7 +97,9 @@ def insight_asset_url(asset_path: str, *, minified: bool | None = None) -> str:
     if minified is not None:
         use_minified = minified
 
-    resolved_path = to_minified_asset_path(asset_path) if use_minified else asset_path
+    # Generated minified files are CDN-only build artifacts. Local staticfiles
+    # deliberately keep serving the readable package sources.
+    resolved_path = to_minified_asset_path(asset_path) if use_cdn and use_minified else asset_path
     if not use_cdn:
         return static(resolved_path)
 

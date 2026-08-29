@@ -61,18 +61,22 @@ npx vitest
 
 ### Static Asset Checks
 
-Generated CSS and minified browser assets must be current:
+The tracked Tailwind stylesheet and generated CDN browser assets must build
+successfully:
 
 ```bash
-npm run check:static-build
+npm run verify:static-build
 ```
 
-When that check fails after changing `input.css` or browser assets, rebuild the
-generated files:
+When this command fails after changing `input.css` or browser assets, rebuild
+the generated CDN artifacts:
 
 ```bash
 npm run build:static-all
 ```
+
+Generated `*.min.css` and `*.min.js` files are ignored and published by CI;
+they must not be committed.
 
 ### All Tests
 
