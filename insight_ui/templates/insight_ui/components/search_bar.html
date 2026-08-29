@@ -1,6 +1,12 @@
 {% load i18n insight_tags %}
 
-<div class="relative{% if search_bar_config.enable_search %} h-full{% endif %}"{% if search_bar_config.enable_search %} data-insight-search{% endif %}>
+<div
+    class="relative{% if search_bar_config.enable_search %} h-full{% endif %}"
+    {% if search_bar_config.enable_search %}
+        data-insight-search
+        {% if search_bar_config.search_index_url %}data-search-index="{{ search_bar_config.search_index_url }}"{% endif %}
+    {% endif %}
+>
     <form
         role="search"
         {% if search_bar_config.htmx_config %}

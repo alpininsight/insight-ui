@@ -29,6 +29,7 @@ from insight_ui.configs import (
 from documentation.component_details.components import Component, ComponentCategory
 from documentation.component_details.demo_context import get_component_demo_context
 from documentation.component_details.parameter_context import ParameterDetails
+from documentation.search import get_search_index_url
 
 
 def get_main_page_links() -> list[dict[str, Any]]:
@@ -78,6 +79,7 @@ def get_navbar_context() -> dict:
             get_navbar_brand_defaults(),
             links,
             enable_doc_search=True,
+            search_index_url=get_search_index_url(),
             show_language_selector=True,
             show_theme_toggle=True,
         ),

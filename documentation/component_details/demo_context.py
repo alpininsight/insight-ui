@@ -76,6 +76,7 @@ from insight_ui.utils.pagination import get_page
 from documentation.component_details.component_context import get_demo_context, register_demo_context
 from documentation.component_details.components import Component
 from documentation.demo_utils import generate_payload, map_payload_to_cards
+from documentation.search import get_search_index_url
 
 # Some example filters for the filter example
 model_type_options = {
@@ -266,6 +267,7 @@ def get_navbar_context() -> dict:
             ],
             searchbar_request_url="/",
             enable_doc_search=True,
+            search_index_url=get_search_index_url(),
             usermenu=UserMenuConfig(
                 links=[
                     UserMenuLinkConfig(

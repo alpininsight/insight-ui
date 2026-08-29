@@ -1,6 +1,7 @@
 """Tests for central Insight UI brand defaults."""
 
 from django.test import override_settings
+from django.utils.translation import override
 from documentation.component_details.demo_context import get_login_screen_context
 from documentation.context import get_footer_context, get_navbar_context
 from insight_ui.brand import get_brand_logo_config, get_navbar_brand_defaults
@@ -82,3 +83,11 @@ def test_navbar_brand_defaults_can_use_configured_mark() -> None:
     assert navbar_brand.mark.primary_text == "Acme"
     assert navbar_brand.mark.secondary_text == "Develop"
     assert navbar_brand.mark.logo.alt == "Acme Login Logo"
+
+
+def test_documentation_navbar_uses_the_localized_search_index() -> None:
+    """The documentation navbar must not fall back to Insight UI package static files."""
+    with override("de"):
+        navbar_config = get_navbar_context()["nav_config"]
+
+    assert navbar_config.search_index_url == "/static/documentation/data/search-index-de.json"
