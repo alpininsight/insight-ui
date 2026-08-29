@@ -19,6 +19,7 @@ class SearchBarConfig:
         search_query: Initial search query value.
         htmx_config: HTMX configuration for AJAX requests.
         enable_search: If True, enable client-side documentation search with Fuse.js.
+        search_index_url: Optional URL for the client-side documentation search index.
 
     """
 
@@ -45,6 +46,10 @@ class SearchBarConfig:
     )
     enable_search: bool = dc_field(
         default=False, metadata={"doc": _("If True, enable client-side documentation search with Fuse.js.")}
+    )
+    search_index_url: str = dc_field(
+        default="",
+        metadata={"doc": _("Optional URL for the client-side documentation search index.")},
     )
 
     def __post_init__(self) -> None:

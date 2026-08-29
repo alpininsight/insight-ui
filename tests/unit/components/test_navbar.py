@@ -76,6 +76,33 @@ class TestNavbar(TemplateTagsTestCase):
         # State class: menu must be hidden initially (JS toggles this)
         assert "hidden" in menu.get("class", [])
 
+    def test_navbar_passes_documentation_search_index_url(self) -> None:
+        """Navbar documentation search keeps the host-owned static URL."""
+        nav_config = NavbarConfig(
+            brand=NavbarBrandConfig(request_url="/", mark=BrandMarkConfig(primary_text="Insight UI")),
+            enable_doc_search=True,
+            search_index_url="/static/documentation/data/search-index-en.json",
+        )
+
+        rendered = self.render_template(
+            "{% load insight_tags %}{% navbar config=nav_config %}", context={"nav_config": nav_config}
+        )
+        search_container = BeautifulSoup(rendered, "html.parser").select_one("[data-insight-search]")
+
+        assert search_container is not None
+        assert search_container["data-search-index"] == "/static/documentation/data/search-index-en.json"
+
+    def test_navbar_keeps_existing_positional_arguments(self) -> None:
+        """Appending search_index_url must not change the public positional API."""
+        usermenu = UserMenuConfig()
+        nav_config = NavbarConfig(None, [], "/search/", True, usermenu, True, True, True)
+
+        assert nav_config.usermenu is usermenu
+        assert nav_config.hide_login is True
+        assert nav_config.show_language_selector is True
+        assert nav_config.show_theme_toggle is True
+        assert nav_config.search_index_url == ""
+
     def test_navbar_user_menu_renders_avatar_image_when_configured(self) -> None:
         """Host apps can provide a user avatar URL via UserMenuConfig."""
         nav_config = NavbarConfig(

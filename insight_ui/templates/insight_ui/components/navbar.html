@@ -106,7 +106,7 @@
         <div class="flex flex-col gap-2 w-full lg:flex-row lg:w-fit">
           {% if navbar_config.searchbar_request_url or navbar_config.enable_doc_search %}
             <div class="flex-1 lg:max-w-72">
-              {% search_bar request_url=navbar_config.searchbar_request_url simple=True search_query=options.search_query enable_search=navbar_config.enable_doc_search %}
+              {% search_bar request_url=navbar_config.searchbar_request_url simple=True search_query=options.search_query enable_search=navbar_config.enable_doc_search search_index_url=navbar_config.search_index_url %}
             </div>
           {% endif%}
           <div class="flex gap-2 h-10">

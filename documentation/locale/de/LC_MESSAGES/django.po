@@ -5613,6 +5613,10 @@ msgstr "HTMX-Konfiguration für AJAX-Anfragen."
 msgid "If True, enable client-side documentation search with Fuse.js."
 msgstr "Wenn `True`, wird die clientseitige Suche in der Dokumentation mit Fuse.js aktiviert."
 
+#: .\insight_ui\configs\filter.py:52 .\insight_ui\configs\navigation.py:267
+msgid "Optional URL for the client-side documentation search index."
+msgstr "Optionale URL für den Suchindex der clientseitigen Dokumentationssuche."
+
 #: .\insight_ui\configs\filter.py:84
 msgid "Filter field name."
 msgstr "Name des Filterfelds."
@@ -6356,9 +6360,8 @@ msgid "The URL to be called when performing a search. If empty, no search bar wi
 msgstr "Die URL, welche bei der Suche aufgerufen werden soll. In dem Fall, dass keine angegeben ist, wird keine Suchzeile angezeigt."
 
 #: .\insight_ui\configs\navigation.py:244
-#, fuzzy
 msgid "If True, enable client-side documentation search with Fuse.js in the navbar."
-msgstr "-"
+msgstr "Wenn `True`, wird die clientseitige Dokumentationssuche mit Fuse.js in der Navbar aktiviert."
 
 #: .\insight_ui\configs\navigation.py:248
 msgid "Configuration for the user dropdown menu. None uses defaults (logout only)."

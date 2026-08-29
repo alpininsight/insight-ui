@@ -197,6 +197,7 @@ class NavbarConfig:
         links: Contains and describes the navigation items of the navbar.
         searchbar_request_url: The URL to be called when performing a search. If empty, no search bar will be displayed.
         enable_doc_search: If True, enable client-side documentation search with Fuse.js in the navbar.
+        search_index_url: Optional URL for the client-side documentation search index.
         usermenu: Configuration for the user dropdown menu. None uses defaults (logout only).
         hide_login: If True, hide the login button for unauthenticated users.
         show_language_selector: Displays a dropdown menu for selecting the display language (if defined).
@@ -256,6 +257,10 @@ class NavbarConfig:
     )
     show_theme_toggle: bool = field(
         default=False, metadata={"doc": _("Displays a button to switch between the light and dark theme of the page.")}
+    )
+    search_index_url: str = field(
+        default="",
+        metadata={"doc": _("Optional URL for the client-side documentation search index.")},
     )
 
 
