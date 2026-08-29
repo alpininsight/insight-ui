@@ -24,7 +24,7 @@ Use this document when you need to answer:
 | Page shell structure | `insight_ui/templates/insight_ui/base.html` | Header, navbar, sidebars, content, footer |
 | Template tag API | `insight_ui/templatetags/insight_tags.py` | Django-facing component APIs and context normalization |
 | JavaScript behavior | `insight_ui/static/insight_ui/js/` | Initialization, state, keyboard, `data-*` behavior |
-| Self-documentation | `insight_ui/component_details/` | Descriptions, usage, parameters, accessibility, demos |
+| Self-documentation | `documentation/component_details/` | Descriptions, usage, parameters, accessibility, demos |
 | Naming conventions | `docs/conventions.md` | Stable naming for Python, templates, CSS, hooks |
 | Design contract | This document | Public tokens, semantic classes, extension rules |
 
@@ -58,7 +58,7 @@ Use these placement rules when deciding where a design-system concept belongs:
 | Semantic HTML, ARIA, data hooks | Component templates |
 | JavaScript behavior | `insight_ui/static/insight_ui/js/` |
 | Django-facing API normalization | Template tags |
-| Component explanations and examples | `insight_ui/component_details/*` |
+| Component explanations and examples | `documentation/component_details/*` |
 
 Data attributes should stay behavior-oriented. They are part of the JavaScript contract and should not be introduced as purely decorative markers.
 
@@ -143,7 +143,7 @@ Use the answers to place the change in the appropriate location.
 
 The self-documenting application is built from three layers:
 
-1. **Component context data** in `insight_ui/component_details/`
+1. **Component context data** in `documentation/component_details/`
 2. **Django views** that assemble page context
 3. **Documentation templates** that render into pages or HTMX partials
 
@@ -157,8 +157,8 @@ The self-documenting application is built from three layers:
 | Component HTML | `templates/.../components/` | Semantic structure, ARIA, data hooks |
 | Design tokens | `input.css` | Theme tokens, base styles, classes |
 | JavaScript | `static/.../js/` | Initialization, lifecycle, events |
-| Self-doc data | `component_details/` | User-facing docs |
-| Rendered docs | `templates/.../docs/` | Layout and display |
+| Self-doc data | `documentation/component_details/` | User-facing docs |
+| Rendered docs | `documentation/templates/documentation/docs/` | Layout and display |
 
 ## Maintenance Expectations
 
