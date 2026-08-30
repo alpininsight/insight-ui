@@ -15,11 +15,58 @@ which defines the public package contract. As stated there, this repository
 does **not** document any organization's private CDN bucket layout, upload
 credentials, or cache-purge automation.
 
+## Two packages on one CDN: `insight-ui` and `insight-brand`
+
+Insight UI is not the only package delivered from this CDN. At least
+`insight-brand` also publishes assets there. The two share one CDN but play
+different roles, and the conventions below keep them from contradicting each
+other. `insight-brand` lives in its own repository; its concrete asset list,
+build, and release artifacts are defined there, not here — this section fixes
+only the shared boundary.
+
+| | `insight-ui` | `insight-brand` |
+|---|---|---|
+| Nature | The simple, **open-source** Django package | Separate package (brand assets) |
+| CDN access | **Public, unauthenticated** | Governed by the entitlement model below when licensed |
+| CDN prefix | `insight-ui` | its own distinct prefix (e.g. `insight-brand`) |
+
+Shared, and identical for both:
+
+- the same `cdn_base_url` (`https://cdn.alpininsight.ai`),
+- the same version scheme — immutable `vX.Y.Z` for production, mutable aliases
+  (`develop`, `main`, `latest`) for development only,
+- the same pre-flight verification gate (below).
+
+Kept distinct, so the two never collide or contradict:
+
+- **Separate `cdn_prefix` per package** — a path is always
+  `<base>/<prefix>/<version>/<asset>`, so `insight-ui` and `insight-brand`
+  never share an object path and each versions independently.
+- **Different auth posture that must stay consistent** — `insight-ui/*` stays
+  publicly readable even when `insight-brand/*` (or any licensed prefix) is
+  gated. The open base package must never be placed behind the licensed
+  packages' access control, and a licensed prefix must never be served openly
+  just because it sits next to `insight-ui` on the same CDN. A page may load
+  both prefixes at once; the gate applies per prefix, not per CDN.
+
+`insight-ui` therefore owns only the `insight-ui` prefix on this CDN. It does
+not define, publish to, or gate the `insight-brand` prefix; the entitlement
+model below describes how licensed prefixes like `insight-brand` are governed.
+
 ## Required CDN URLs
 
-The canonical, machine-readable list lives in
-[`insight_ui/cdn_manifest.json`](../insight_ui/cdn_manifest.json). Each full URL
-is assembled as:
+**Publish vs. verify — one source of truth each, no overlap.** What actually
+gets uploaded is decided by the **release rollout**: the `cdn_asset_globs` in
+`.github/workflows/*.yml` applied over `insight_ui/static/insight_ui`. That
+remains the single source of truth for *publishing*, and this document does not
+duplicate or override it. The manifest below is the complementary
+*verification* subset: the specific template-required URLs that must be checked
+before runtime CDN delivery is enabled (#314). It is a strict subset of what
+the rollout publishes, never a competing publish list.
+
+The canonical, machine-readable list of the required-for-verification subset
+lives in [`insight_ui/cdn_manifest.json`](../insight_ui/cdn_manifest.json). Each
+full URL is assembled as:
 
 ```text
 <cdn_base_url>/<cdn_prefix>/<version>/<path>
@@ -68,7 +115,9 @@ must not point runtime delivery at a mutable alias.
 
 > Status: **design proposal for #259.** The public `insight_ui` base package
 > stays open and unauthenticated. The model below governs the licensed
-> `insight-ui-*` extension packages only. Items marked _(open)_ need a decision.
+> extension packages only — any prefix other than `insight-ui`, such as
+> `insight-brand` (when licensed) and the `insight-ui-*` packages. Items marked
+> _(open)_ need a decision.
 
 ### Principle
 

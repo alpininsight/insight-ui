@@ -1,5 +1,5 @@
 {
-  "$comment": "Source of truth for Insight UI CDN assets that must be published and smoke-verified for a release version BEFORE runtime CDN delivery is enabled. See docs/cdn-delivery.md and issue #314. Full URL = <cdn_base_url>/<cdn_prefix>/<version>/<path>.",
+  "$comment": "Required-verification SUBSET, not the publish list. What gets published is decided by the release rollout (cdn_asset_globs in .github/workflows/*.yml over insight_ui/static/insight_ui) — that stays the single source of truth for publishing. This file lists only the template-required insight-ui assets that must be smoke-verified BEFORE runtime CDN delivery is enabled (issue #314). Full URL = <cdn_base_url>/<cdn_prefix>/<version>/<path>. See docs/cdn-delivery.md.",
   "cdn_base_url": "https://cdn.alpininsight.ai",
   "cdn_prefix": "insight-ui",
   "url_template": "https://cdn.alpininsight.ai/insight-ui/{version}/{path}",
