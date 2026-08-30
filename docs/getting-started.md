@@ -190,7 +190,7 @@ those static assets.
 
 | Setting | Type | Default | Description |
 |---------|------|---------|-------------|
-| `assets.use_minified` | bool | `False` | Use minified assets |
+| `assets.use_minified` | bool | `False` | Use minified assets when CDN delivery is enabled |
 | `assets.cdn_enabled` | bool | `False` | Serve assets from CDN |
 | `assets.cdn_base_url` | str | host-project setting | CDN base URL |
 | `assets.cdn_prefix` | str | `"insight-ui"` | CDN path prefix |

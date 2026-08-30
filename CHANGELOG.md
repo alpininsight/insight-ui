@@ -89,6 +89,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Regenerate minified assets
 - Regenerate minified assets
 - Regenerate minified stylesheet
+- **static:** Generate minified assets only in CI
 
 ### Refactoring
 
@@ -105,6 +106,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update navbar and login screen tests
 - Update tests
 - **brand-mark:** Assert rendered wordmark contract
+- **sidebar:** Await drawer opening animation
 
 ## [1.12.0] - 2026-08-20
 
