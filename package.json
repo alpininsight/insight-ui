@@ -6,12 +6,13 @@
   "type": "module",
   "scripts": {
     "build:js": "node scripts/build-static-assets.mjs",
-    "check:js-build": "node scripts/build-static-assets.mjs --check",
     "build:tailwind": "USE_TAILWIND_CLI=True uv run manage.py tailwind build --force --no-minify",
     "build:static": "node scripts/build-static-assets.mjs",
     "build:static-all": "npm run build:tailwind && npm run build:static",
+    "check:generated-assets": "node scripts/check-generated-static-assets.mjs",
     "check:tailwind-sync": "node scripts/check-tailwind-theme-sync.mjs",
-    "check:static-build": "npm run check:tailwind-sync && node scripts/build-static-assets.mjs --check",
+    "verify:static-build": "npm run check:generated-assets && npm run check:tailwind-sync && npm run build:static",
+    "check:static-build": "npm run verify:static-build",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage"

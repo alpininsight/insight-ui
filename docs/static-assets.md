@@ -22,10 +22,15 @@ Readable source assets live under:
 | SVGs | `insight_ui/static/insight_ui/svg/` |
 | Tailwind source | `insight_ui/utils/input.css` |
 
-Generated distributable files are committed next to their readable sources:
+Generated distributable files are deliberately not committed or packaged:
 
 - `*.min.css`
 - `*.min.js`
+
+The centralized static-assets workflow regenerates these files from the
+readable sources for CDN publication. Django staticfiles always use the
+readable package assets, so package consumers do not need a JavaScript build
+step or generated minified files.
 
 ## Local Staticfiles
 
@@ -70,7 +75,7 @@ When `insight_ui/utils/input.css` changes, rebuild the packaged stylesheet:
 npm run build:tailwind
 ```
 
-Then regenerate minified distributable assets:
+To validate the minified CDN build locally, generate the ignored artifacts:
 
 ```bash
 npm run build:static
@@ -82,11 +87,15 @@ For convenience, both steps can be run together:
 npm run build:static-all
 ```
 
-Before opening a pull request, verify that generated files are current:
+Before opening a pull request, validate the tracked Tailwind output and the
+CDN asset build:
 
 ```bash
-npm run check:static-build
+npm run verify:static-build
 ```
+
+This command leaves generated `*.min.css` and `*.min.js` files ignored. Do not
+add them to a commit.
 
 ## CDN Configuration
 
