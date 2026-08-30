@@ -89,6 +89,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Regenerate minified assets
 - Regenerate minified assets
 - Regenerate minified stylesheet
+- **static:** Generate minified assets only in CI
 
 ### Refactoring
 
