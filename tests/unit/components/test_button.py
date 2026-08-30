@@ -1,6 +1,10 @@
 """Tests for the button component."""
 
+import json
+import warnings
+
 from bs4 import BeautifulSoup
+from insight_ui.configs import ButtonConfig, HtmxConfig
 
 from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
@@ -26,3 +30,36 @@ class TestButton(TemplateTagsTestCase):
         assert button["aria-controls"] == "hub-login-dialog-panel"
         assert button["hx-get"] == "/dialog/"
         assert button["hx-target"] == "#hub-login-dialog-panel"
+
+    def test_button_serializes_htmx_vals_as_json(self) -> None:
+        """Button variant preserves typed additional HTMX values."""
+        vals = {"parleq_id": "de--1", "tracked": False}
+        htmx_config = HtmxConfig(request_url="/track/", target="#result", method="post", vals=vals)
+        config = ButtonConfig(label="Track", htmx_config=htmx_config)
+
+        rendered = self.render_template(
+            "{% load insight_tags %}{% button config=config %}",
+            {"config": config},
+        )
+        element = BeautifulSoup(rendered, "html.parser").find("button")
+
+        assert element is not None
+        assert json.loads(element["hx-vals"]) == vals
+
+    def test_anchor_serializes_htmx_vals_as_json(self) -> None:
+        """Anchor variant preserves typed additional HTMX values."""
+        vals = {"parleq_id": "de--1", "tracked": False}
+        htmx_config = HtmxConfig(request_url="/track/", target="#result", method="post", vals=vals)
+        # Intentionally sets both request_url and htmx_config.request_url to test anchor rendering
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", UserWarning)
+            config = ButtonConfig(label="Track", request_url="/track/", htmx_config=htmx_config)
+            rendered = self.render_template(
+                "{% load insight_tags %}{% button config=config %}",
+                {"config": config},
+            )
+
+        element = BeautifulSoup(rendered, "html.parser").find("a")
+
+        assert element is not None
+        assert json.loads(element["hx-vals"]) == vals

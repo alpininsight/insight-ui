@@ -8,7 +8,7 @@ from insight_ui.configs.base import HtmxConfig, IconConfig
 from insight_ui.configs.input import DropdownConfig
 from insight_ui.configs.popup import ModalConfig
 from insight_ui.configs.types import Size, StepStatus, validate_size, validate_step_status
-from insight_ui.configs.utils import BadgeConfig, BrandMarkConfig, CopyrightNoticeConfig, LogoConfig
+from insight_ui.configs.utils import BadgeConfig, BrandMarkConfig, LegalNoticeConfig, LogoConfig
 
 
 @dataclass
@@ -71,17 +71,135 @@ class NavbarLinkConfig:
 
 
 @dataclass
+class UserMenuLinkConfig:
+    """Configuration for a user menu link.
+
+    Attributes:
+        text: Label of the link.
+        request_url: The URL to navigate to when clicking on the link.
+        icon: An optional icon displayed before the text.
+        staff_only: The link is only displayed for administrators.
+
+    """
+
+    __example__ = """
+        UserMenuLinkConfig(text="Profile", request_url=reverse("profile"), icon="user")
+        """
+
+    text: str = field(metadata={"doc": _("Label of the link.")})
+    request_url: str = field(metadata={"doc": _("The URL to navigate to when clicking on the link.")})
+    icon: str = field(default="", metadata={"doc": _("An optional icon displayed before the text.")})
+    staff_only: bool = field(default=False, metadata={"doc": _("The link is only displayed for administrators.")})
+
+
+@dataclass
+class UserMenuConfig:
+    """Configuration for the user dropdown menu.
+
+    Configures the dropdown menu shown for authenticated users.
+    A logout button is always included automatically.
+
+    Attributes:
+        links: Additional links to display above the logout button.
+        avatar_url: URL to the user's avatar image.
+        avatar_alt: Alt text for the avatar image.
+
+    """
+
+    __example__ = """
+        UserMenuConfig(
+            links=[
+                UserMenuLinkConfig(text="Profile", request_url=reverse("profile"), icon="user"),
+                UserMenuLinkConfig(text="Settings", request_url=reverse("settings"), icon="cog-6-tooth"),
+            ],
+            avatar_url=user.profile.avatar_url,
+        )
+        """
+
+    links: list[UserMenuLinkConfig] = field(
+        default_factory=list,
+        metadata={"doc": _("Additional links to display above the logout button.")},
+    )
+    avatar_url: str = field(default="", metadata={"doc": _("URL to the user's avatar image.")})
+    avatar_alt: str = field(default="", metadata={"doc": _("Alt text for the avatar image.")})
+
+
+@dataclass
+class LoginScreenConfig:
+    """Configuration for the login screen.
+
+    Configures the appearance and available options on the login page.
+
+    Attributes:
+        logo: Logo configuration for branding at the top of the login form.
+        show_theme_toggle: Show theme toggle button in the corner.
+        show_labels: Show labels above input fields instead of just placeholders.
+        forgot_password_url: URL for password reset. Empty hides the link.
+        alt_login_url: URL for alternative login (e.g., OIDC/SSO). Empty hides the section.
+        alt_login_title: Title for the alternative login button.
+        sign_up_url: URL for registration. Empty hides the link.
+
+    """
+
+    __example__ = """
+        LoginScreenConfig(
+            logo=LogoConfig(url="img/logo.svg", height="8rem"),
+            show_theme_toggle=True,
+            forgot_password_url=reverse("password_reset"),
+            alt_login_url=reverse("oidc_login"),
+            alt_login_title="Login with SSO",
+            sign_up_url=reverse("register"),
+        )
+        """
+
+    logo: LogoConfig | None = field(
+        default=None,
+        metadata={"doc": _("Logo configuration for branding at the top of the login form.")},
+    )
+    show_theme_toggle: bool = field(
+        default=True,
+        metadata={"doc": _("Show theme toggle button in the corner.")},
+    )
+    show_labels: bool = field(
+        default=False,
+        metadata={"doc": _("Show labels above input fields instead of just placeholders.")},
+    )
+    forgot_password_url: str = field(
+        default="",
+        metadata={"doc": _("URL for password reset. Empty hides the link.")},
+    )
+    alt_login_url: str = field(
+        default="",
+        metadata={"doc": _("URL for alternative login (e.g., OIDC/SSO). Empty hides the section.")},
+    )
+    alt_login_title: str = field(
+        default="",
+        metadata={"doc": _("Title for the alternative login button.")},
+    )
+    sign_up_url: str = field(
+        default="",
+        metadata={"doc": _("URL for registration. Empty hides the link.")},
+    )
+
+
+@dataclass
 class NavbarConfig:
     """Configuration for the navbar component.
 
     Renders a full navigation bar with brand, links, and optional features.
+
+    The user menu behavior is controlled by LOGIN_URL and the usermenu config:
+    - If LOGIN_URL is set and user is not authenticated: show login button (unless hide_login=True)
+    - If user is authenticated: show user dropdown with logout (and custom links from usermenu)
 
     Attributes:
         brand: Describes the brand mark of the application in the navbar.
         links: Contains and describes the navigation items of the navbar.
         searchbar_request_url: The URL to be called when performing a search. If empty, no search bar will be displayed.
         enable_doc_search: If True, enable client-side documentation search with Fuse.js in the navbar.
-        show_usermenu: Displays a dropdown menu with at least a logout button.
+        search_index_url: Optional URL for the client-side documentation search index.
+        usermenu: Configuration for the user dropdown menu. None uses defaults (logout only).
+        hide_login: If True, hide the login button for unauthenticated users.
         show_language_selector: Displays a dropdown menu for selecting the display language (if defined).
         show_theme_toggle: Displays a button to switch between the light and dark theme of the page.
 
@@ -101,7 +219,11 @@ class NavbarConfig:
                 NavbarLinkConfig(text="About", url=reverse("about")),
                 NavbarLinkConfig(text="Admin", url=reverse("admin:index"), staff_only=True),
             ],
-            show_usermenu=True,
+            usermenu=UserMenuConfig(
+                links=[
+                    UserMenuLinkConfig(text="Profile", request_url=reverse("profile")),
+                ],
+            ),
             show_theme_toggle=True,
         )
         """
@@ -122,14 +244,23 @@ class NavbarConfig:
         default=False,
         metadata={"doc": _("If True, enable client-side documentation search with Fuse.js in the navbar.")},
     )
-    show_usermenu: bool = field(
-        default=False, metadata={"doc": _("Displays a dropdown menu with at least a logout button.")}
+    usermenu: UserMenuConfig | None = field(
+        default=None,
+        metadata={"doc": _("Configuration for the user dropdown menu. None uses defaults (logout only).")},
+    )
+    hide_login: bool = field(
+        default=False,
+        metadata={"doc": _("If True, hide the login button for unauthenticated users.")},
     )
     show_language_selector: bool = field(
         default=False, metadata={"doc": _("Displays a dropdown menu for selecting the display language (if defined).")}
     )
     show_theme_toggle: bool = field(
         default=False, metadata={"doc": _("Displays a button to switch between the light and dark theme of the page.")}
+    )
+    search_index_url: str = field(
+        default="",
+        metadata={"doc": _("Optional URL for the client-side documentation search index.")},
     )
 
 
@@ -218,45 +349,50 @@ class SidebarDataConfig:
 
 @dataclass
 class SidebarConfig:
-    """Configuration for the sidebar component.
+    """Configuration for the sidebar layout tag.
 
-    Renders a side navigation panel.
+    A flexible container for sidebar content that can be positioned on either side,
+    with configurable width and mobile behavior.
 
     Attributes:
-        sidebar_data: Content of the sidebar (title and navigation elements).
-        static: **True** if the sidebar should not be collapsible.
-        auto_close: If **True** the sidebar closes as soon as the cursor leaves it.
-        mobile_hidden: If **True** the static sidebar is hidden on a smaller viewport.
+        side: Position of the sidebar ("left" or "right"). Auto-detected from block context.
+        static: If **True**, the sidebar is sticky; if **False**, it's a drawer (collapsible).
+        width: Width of the sidebar ("narrow", "normal", "wide").
+        mobile_behavior: Behavior on mobile viewports ("hidden", "drawer").
+        sidebar_data: Content for the navigation variant (only used with ``sidebar_nav.html``).
 
     """
 
     __example__ = """
-        SidebarConfig(
-            sidebar_data=SidebarDataConfig(
-                title="Settings",
-                categories=[
-                    SidebarCategoryConfig(
-                        caption="Account",
-                        items=[
-                            SidebarItemConfig(text="Profile", request_url=reverse("profile")),
-                            SidebarItemConfig(text="Security", request_url=reverse("security")),
-                        ],
-                    ),
-                ],
-            ),
-            static=True,
-        )
+        {# Basic usage inside sidebar blocks #}
+        {% block sidebar_left %}
+            {% sidebar %}
+                {% include "components/sidebar_nav.html" with sidebar_data=nav_data %}
+            {% endsidebar %}
+        {% endblock %}
+
+        {# With explicit parameters #}
+        {% sidebar side="right" width="wide" mobile_behavior="drawer" %}
+            <h2>Table of Contents</h2>
+            <nav>...</nav>
+        {% endsidebar %}
         """
 
+    side: str = field(
+        default="right",
+        metadata={"doc": _('Position of the sidebar ("left" or "right"). Auto-detected from block context.')},
+    )
+    static: bool = field(
+        default=True,
+        metadata={"doc": _("If **True**, the sidebar is sticky; if **False**, it's a drawer (collapsible).")},
+    )
+    width: str = field(default="normal", metadata={"doc": _('Width of the sidebar ("narrow", "normal", "wide").')})
+    mobile_behavior: str = field(
+        default="hidden", metadata={"doc": _('Behavior on mobile viewports ("hidden", "drawer").')}
+    )
     sidebar_data: SidebarDataConfig | None = field(
-        default=None, metadata={"doc": _("Content of the sidebar (title and navigation elements).")}
-    )
-    static: bool = field(default=True, metadata={"doc": _("**True** if the sidebar should not be collapsible.")})
-    auto_close: bool = field(
-        default=False, metadata={"doc": _("If **True** the sidebar closes as soon as the cursor leaves it.")}
-    )
-    mobile_hidden: bool = field(
-        default=False, metadata={"doc": _("If **True** the static sidebar is hidden on a smaller viewport.")}
+        default=None,
+        metadata={"doc": _("Content for the navigation variant (only used with ``sidebar_nav.html``).")},
     )
 
 
@@ -323,7 +459,7 @@ class FooterConfig:
         description: Brief description of the application with optional image.
         links: List of the main navigation items of the application.
         contact: Contact information, link to the imprint, privacy policy and a contact email address.
-        copyright: Copyright information, such as the year, holder, source label, and license text.
+        legal: Legal notice with copyright, license, and version information.
         version: Information about the current version.
 
     """
@@ -343,7 +479,7 @@ class FooterConfig:
                 imprint="/imprint/",
                 privacy="/privacy/",
             ),
-            copyright=CopyrightNoticeConfig(
+            legal=LegalNoticeConfig(
                 year=2026,
                 holder="My Company",
             ),
@@ -361,9 +497,9 @@ class FooterConfig:
         default=None,
         metadata={"doc": _("Contact information, link to the imprint, privacy policy and a contact email address.")},
     )
-    copyright: CopyrightNoticeConfig | None = field(
+    legal: LegalNoticeConfig | None = field(
         default=None,
-        metadata={"doc": _("Copyright information, such as the year, holder, source label, and license text.")},
+        metadata={"doc": _("Legal notice with copyright, license, and version information.")},
     )
     version: str = field(default="", metadata={"doc": _("Information about the current version.")})
 

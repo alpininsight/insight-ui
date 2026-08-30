@@ -100,6 +100,10 @@
     --color-insight-tooltip: #F3F4F6;
     --color-insight-tooltip-dark: #242424;
 
+    /* Divider */
+    --color-insight-divider: #E5E7EB;
+    --color-insight-divider-dark: #1E2940;
+
     /* Text color */
     --color-insight-text-primary: #1C1C1E;
     --color-insight-text-primary-light: #1C1C1E;
@@ -258,6 +262,8 @@
         --color-insight-text-hint: var(--color-insight-text-hint-dark);
         /* Elevated / Tooltip */
         --color-insight-tooltip: var(--color-insight-tooltip-dark);
+        /* Divider */
+        --color-insight-divider: var(--color-insight-divider-dark);
         /* Card */
         --color-insight-card: var(--color-insight-card-dark);
     }
@@ -434,12 +440,54 @@
 
     /*
     * ========================================================
+    *   Navigation Active States
+    * ========================================================
+    *   Uses aria-current="page" as single source of truth.
+    *   JavaScript only toggles the attribute, CSS handles styling.
+    */
+
+    /* Navbar link */
+    .insight-nav-link {
+        @apply text-insight-text-secondary transition-colors duration-200;
+    }
+    .insight-nav-link:hover {
+        @apply text-insight-text-link;
+    }
+    .insight-nav-link[aria-current="page"],
+    .insight-nav-link[aria-current="true"] {
+        @apply text-insight-text-link transition-none;
+    }
+
+    /* Navbar dropdown item */
+    .insight-nav-dropdown-item {
+        @apply text-insight-text-primary transition-colors duration-200;
+    }
+    .insight-nav-dropdown-item:hover {
+        @apply bg-insight-bg-base;
+    }
+    .insight-nav-dropdown-item[aria-current="page"] {
+        @apply text-insight-text-link bg-insight-primary-soft;
+    }
+
+    /* Sidebar link*/
+    .insight-sidebar-link {
+        @apply border-s border-insight-border-surface transition-colors duration-200;
+    }
+    .insight-sidebar-link:hover {
+        @apply border-insight-text-secondary text-insight-text-secondary;
+    }
+    .insight-sidebar-link[aria-current="page"] {
+        @apply font-semibold border-s-4 border-insight-primary;
+    }
+
+    /*
+    * ========================================================
     *   Button
     * ========================================================
     */
 
     .btn {
-        @apply flex gap-2 items-center justify-center border-2 border-transparent rounded-insight-control px-5 py-1.5 text-white transition-colors;
+        @apply flex gap-2 items-center justify-center border-2 border-transparent rounded-insight-control px-5 py-1.5 text-white transition-colors h-fit;
     }
 
     /* Button-Size */
@@ -538,7 +586,7 @@
     * ========================================================
     */
 
-    .badge { @apply inline-flex items-center gap-2 px-4 py-1.5 rounded-insight-full shadow-insight-subtle; }
+    .badge { @apply inline-flex items-center gap-2 px-4 py-1.5 rounded-insight-full shadow-insight-subtle h-fit; }
 
     /* Badge-Size */
     .badge-xs { @apply text-xs px-2 py-1; }
@@ -582,6 +630,39 @@
 
     .input {
         @apply w-full bg-insight-bg-base border border-insight-border-surface rounded-insight-control shadow-insight-subtle px-3 py-2 text-sm text-insight-text-primary focus:ring-2 focus:ring-insight-primary focus:border-insight-primary transition-colors duration-200;
+
+        &::placeholder {
+            @apply text-insight-text-secondary;
+        }
+
+        &:disabled {
+            @apply bg-neutral-100 dark:bg-neutral-900 text-insight-text-hint cursor-not-allowed;
+
+            &::placeholder {
+                @apply text-insight-text-hint;
+            }
+        }
+    }
+
+    /* Multiselect disabled state */
+    [data-insight-multiselect][data-disabled="true"] .input {
+        @apply bg-neutral-100 dark:bg-neutral-900 cursor-not-allowed;
+    }
+
+    [data-insight-multiselect] .search {
+        @apply bg-transparent;
+
+        &::placeholder {
+            @apply text-insight-text-secondary;
+        }
+
+        &:disabled {
+            @apply cursor-not-allowed;
+
+            &::placeholder {
+                @apply text-insight-text-hint;
+            }
+        }
     }
 
     /* Range slider (single thumb) */

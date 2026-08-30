@@ -7,12 +7,17 @@ on:
   push:
     branches: [develop, main]
   workflow_dispatch:
+    inputs:
+      candidate_source_sha:
+        description: "Immutable 40-character source commit used by the candidate image."
+        required: true
+        type: string
 
 permissions:
   contents: read
 
 concurrency:
-  group: static-assets-${{ github.event.pull_request.number || github.ref || github.run_id }}
+  group: static-assets-${{ github.event.pull_request.number || github.event.inputs.candidate_source_sha || github.ref || github.run_id }}
   cancel-in-progress: true
 
 jobs:
@@ -27,22 +32,57 @@ jobs:
       build_command: npm run build:static-all
       upload_cdn: false
 
+  resolve-cdn-publish:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    outputs:
+      alias: ${{ steps.resolve.outputs.alias }}
+      checkout_ref: ${{ steps.resolve.outputs.checkout_ref }}
+    steps:
+      - name: Resolve immutable source and CDN alias
+        id: resolve
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          REF_NAME: ${{ github.ref_name }}
+          GIT_SHA: ${{ github.sha }}
+          CANDIDATE_SOURCE_SHA: ${{ inputs.candidate_source_sha }}
+        run: |
+          set -euo pipefail
+
+          if [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then
+            if [[ ! "$CANDIDATE_SOURCE_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+              echo "::error::candidate_source_sha must be an immutable 40-character lowercase Git commit SHA."
+              exit 1
+            fi
+
+            echo "alias=candidate" >> "$GITHUB_OUTPUT"
+            echo "checkout_ref=$CANDIDATE_SOURCE_SHA" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "alias=$REF_NAME" >> "$GITHUB_OUTPUT"
+          echo "checkout_ref=$GIT_SHA" >> "$GITHUB_OUTPUT"
+
   static-assets-cdn:
-    if: >-
-      (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
-      (github.ref_name == 'develop' || github.ref_name == 'main')
+    needs: resolve-cdn-publish
     uses: alpininsight/.github-private/.github/workflows/static-assets-reusable.yml@main
     with:
       mode: build
       setup_python: true
       setup_uv: true
-      build_command: npm run build:static-all
+      build_command: |
+        if node -e "const scripts = require('./package.json').scripts || {}; process.exit(scripts['build:static-all'] ? 0 : 1)"; then
+          npm run build:static-all
+        else
+          npm run build:static
+        fi
       upload_cdn: true
       cdn_upload_immutable: false
       update_latest: false
       asset_directory: insight_ui/static/insight_ui
       cdn_prefix: insight-ui
-      cdn_aliases: ${{ github.ref_name }}
+      cdn_aliases: ${{ needs.resolve-cdn-publish.outputs.alias }}
+      checkout_ref: ${{ needs.resolve-cdn-publish.outputs.checkout_ref }}
       cdn_base_url: https://cdn.alpininsight.ai
       cdn_asset_globs: "*.js,*.css,*.svg,*.png,*.ico,*.webmanifest,*.ttf,*.woff,*.woff2,*.jpg,*.jpeg,*.webp,*.gif"
     secrets:

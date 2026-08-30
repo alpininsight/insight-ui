@@ -58,7 +58,7 @@ If you change a token, semantic class, template tag signature, or `data-insight-
 | Change | Update |
 |--------|--------|
 | Token or semantic class | `input.css` and [Design System](design-system.md) |
-| Template tag signature | `insight_tags.py` and `component_details/parameter_context.py` |
+| Template tag signature | `insight_tags.py` and `documentation/component_details/parameter_context.py` |
 | `data-insight-*` hook | JS module, template, and [Conventions](conventions.md) |
 
 ## Testing

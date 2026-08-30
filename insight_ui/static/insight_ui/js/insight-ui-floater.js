@@ -488,6 +488,12 @@ export class Floater {
             Floater.currentOpen = null;
         }
 
+        // Remove the target element from DOM to prevent orphaned floaters
+        // when HTMX swaps out the trigger element.
+        if (this.target && this.target.parentNode) {
+            this.target.remove();
+        }
+
         Floater.instances.delete(this.trigger);
         delete this.trigger.__insightInstance;
 

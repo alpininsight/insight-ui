@@ -26,8 +26,8 @@ The documentation includes a client-side fuzzy search powered by [Fuse.js](https
 | File | Purpose |
 |------|---------|
 | `insight_ui/static/insight_ui/js/insight-ui-search.js` | Search JavaScript class |
-| `insight_ui/static/insight_ui/data/search-index-{locale}.json` | Pre-built search index per language |
-| `insight_ui/management/commands/build_search_index.py` | Management command to generate indexes |
+| `documentation/static/documentation/data/search-index-{locale}.json` | Pre-built search index per language |
+| `documentation/management/commands/build_search_index.py` | Management command to generate indexes |
 | `insight_ui/templates/insight_ui/components/search_bar.html` | Search bar template in navbar |
 
 ## Generating the Search Index
@@ -50,16 +50,13 @@ The command reads component descriptions from `component_details/description_con
 
 ## Multilingual Support
 
-The search automatically loads the correct index based on the page's language:
+The generic search component supports a host-provided index URL. The documentation app supplies the localized URL through `NavbarConfig.search_index_url`:
 
 ```javascript
-const locale = document.documentElement.lang || 'en';
-const indexUrl = `/static/insight_ui/data/search-index-${locale}.json`;
+const indexUrl = this.element.dataset.searchIndex;
 ```
 
-This means:
-- `<html lang="de">` → loads `search-index-de.json`
-- `<html lang="en">` → loads `search-index-en.json`
+This keeps `insight-ui` reusable: another host can provide a different static or absolute index URL without changing package JavaScript. The documentation app maps `<html lang="de">` to `/static/documentation/data/search-index-de.json` and `<html lang="en">` to `/static/documentation/data/search-index-en.json`.
 
 Descriptions and category names are translated via Django's `gettext`. To add a new language:
 

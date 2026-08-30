@@ -1,10 +1,8 @@
 """Tests for the navbar component."""
 
-# ruff: noqa: E501
-
 from bs4 import BeautifulSoup
 from insight_ui.configs.base import IconConfig
-from insight_ui.configs.navigation import NavbarBrandConfig, NavbarConfig, NavbarLinkConfig
+from insight_ui.configs.navigation import NavbarBrandConfig, NavbarConfig, NavbarLinkConfig, UserMenuConfig
 from insight_ui.configs.popup import ModalConfig
 from insight_ui.configs.utils import BrandMarkConfig, LogoConfig
 
@@ -58,19 +56,16 @@ class TestNavbar(TemplateTagsTestCase):
                 request_url="/",
                 mark=BrandMarkConfig(primary_text="Insight UI"),
             ),
-            show_usermenu=True,
             show_language_selector=True,
             show_theme_toggle=True,
         )
 
         template_string = """
         {% load insight_tags %}
-        {% navbar config=nav_config user_dropdown_links=user_dropdown_links %}
+        {% navbar config=nav_config %}
         """
 
-        rendered = self.render_template(
-            template_string, context={"nav_config": nav_config, "user_dropdown_links": [], "user": self.user}
-        )
+        rendered = self.render_template(template_string, context={"nav_config": nav_config, "user": self.user})
         soup = BeautifulSoup(rendered, "html.parser")
 
         trigger = soup.select_one('button[data-insight-dropdown="user-menu"]')
@@ -81,29 +76,56 @@ class TestNavbar(TemplateTagsTestCase):
         # State class: menu must be hidden initially (JS toggles this)
         assert "hidden" in menu.get("class", [])
 
+    def test_navbar_passes_documentation_search_index_url(self) -> None:
+        """Navbar documentation search keeps the host-owned static URL."""
+        nav_config = NavbarConfig(
+            brand=NavbarBrandConfig(request_url="/", mark=BrandMarkConfig(primary_text="Insight UI")),
+            enable_doc_search=True,
+            search_index_url="/static/documentation/data/search-index-en.json",
+        )
+
+        rendered = self.render_template(
+            "{% load insight_tags %}{% navbar config=nav_config %}", context={"nav_config": nav_config}
+        )
+        search_container = BeautifulSoup(rendered, "html.parser").select_one("[data-insight-search]")
+
+        assert search_container is not None
+        assert search_container["data-search-index"] == "/static/documentation/data/search-index-en.json"
+
+    def test_navbar_keeps_existing_positional_arguments(self) -> None:
+        """Appending search_index_url must not change the public positional API."""
+        usermenu = UserMenuConfig()
+        nav_config = NavbarConfig(None, [], "/search/", True, usermenu, True, True, True)
+
+        assert nav_config.usermenu is usermenu
+        assert nav_config.hide_login is True
+        assert nav_config.show_language_selector is True
+        assert nav_config.show_theme_toggle is True
+        assert nav_config.search_index_url == ""
+
     def test_navbar_user_menu_renders_avatar_image_when_configured(self) -> None:
-        """Host apps can provide a user avatar URL without replacing the dropdown."""
+        """Host apps can provide a user avatar URL via UserMenuConfig."""
         nav_config = NavbarConfig(
             NavbarBrandConfig(
                 request_url="/",
                 mark=BrandMarkConfig(primary_text="Insight UI"),
             ),
-            show_usermenu=True,
+            usermenu=UserMenuConfig(
+                avatar_url="/media/avatars/demo.webp",
+                avatar_alt="Demo user avatar",
+            ),
         )
 
         template_string = """
         {% load insight_tags %}
-        {% navbar config=nav_config user_dropdown_links=user_dropdown_links user_avatar_url=user_avatar_url user_avatar_alt=user_avatar_alt %}
+        {% navbar config=nav_config %}
         """
 
         rendered = self.render_template(
             template_string,
             context={
                 "nav_config": nav_config,
-                "user_dropdown_links": [],
                 "user": self.user,
-                "user_avatar_url": "/media/avatars/demo.webp",
-                "user_avatar_alt": "Demo user avatar",
             },
         )
         soup = BeautifulSoup(rendered, "html.parser")
@@ -124,12 +146,11 @@ class TestNavbar(TemplateTagsTestCase):
                 request_url="/",
                 mark=BrandMarkConfig(primary_text="Insight UI"),
             ),
-            show_usermenu=True,
         )
 
         rendered = self.render_template(
-            "{% load insight_tags %}{% navbar config=nav_config user_dropdown_links=user_dropdown_links %}",
-            context={"nav_config": nav_config, "user_dropdown_links": [], "user": self.user},
+            "{% load insight_tags %}{% navbar config=nav_config %}",
+            context={"nav_config": nav_config, "user": self.user},
         )
         soup = BeautifulSoup(rendered, "html.parser")
 

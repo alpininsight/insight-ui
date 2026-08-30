@@ -173,13 +173,20 @@ export class DemoIframeController {
      * @param {string} variant - The viewport variant: "mobile", "tablet", or "desktop"
      */
     setWidth(variant) {
-        this.iframe.classList.remove("max-w-sm", "max-w-lg");
+        // Reset height to auto before changing width to allow proper reflow
+        // This fixes Container Query recalculation issues when shrinking
+        this.iframe.style.height = "auto";
+
+        this.iframe.classList.remove("max-w-sm", "w-sm", "max-w-lg", "w-lg");
 
         if (variant === "mobile") {
-            this.iframe.classList.add("max-w-sm");
+            this.iframe.classList.add("max-w-sm", "w-sm");
         } else if (variant === "tablet") {
-            this.iframe.classList.add("max-w-lg");
+            this.iframe.classList.add("max-w-lg", "w-lg");
         }
+
+        // Recalculate height after layout settles
+        requestAnimationFrame(() => this.resizeIframe());
     }
 
     /**

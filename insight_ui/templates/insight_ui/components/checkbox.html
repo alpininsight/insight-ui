@@ -1,4 +1,4 @@
-<label class="flex gap-1 items-center">
+<label class="flex gap-1 items-center"{% if checkbox_config.disabled and checkbox_config.disabled_reason %} data-insight-tooltip="{{ checkbox_config.disabled_reason }}"{% endif %}>
     <input
         type="checkbox"
         {% if checkbox_config.tag_id %}id="{{ checkbox_config.tag_id }}"{% endif %}

@@ -25,11 +25,12 @@ CONFIG_DEFAULTS: dict[str, Any] = {
     "load_echarts": False,  # Turn to 'True' to use Chart-Components
     "JS_DEBUG": False,  # Turn to 'True' to enable build in browser console logging
     "use_tailwind_cli": False,  # Turn to 'True' to enable the tailwind cli, if you want to modify the styles
+    "register_url": "",  # URL or URL name for registration page (empty = no register button)
     "brand": {
         "home_url": "/",
         "mark": BrandMarkConfig(
-            "Insight",
-            "UI",
+            "Django",
+            "Insight UI",
             LogoConfig("insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="2rem"),
         ),
         "footer_text": "A modern, accessible, and responsive UI library for Django projects.",

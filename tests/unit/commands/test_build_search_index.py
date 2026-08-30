@@ -11,8 +11,8 @@ if TYPE_CHECKING:
 
 import pytest
 from django.core.management import call_command
-from insight_ui.component_details.components import Component, ComponentCategory
-from insight_ui.management.commands.build_search_index import DESCRIPTION_MAX_LENGTH
+from documentation.component_details.components import Component, ComponentCategory
+from documentation.management.commands.build_search_index import DESCRIPTION_MAX_LENGTH
 
 
 @pytest.fixture

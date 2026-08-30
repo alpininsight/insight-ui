@@ -20,6 +20,7 @@ name: Standard CI (Alpine Insight)
 on:
   pull_request:
     branches: [develop, main]
+    types: [opened, reopened, synchronize, ready_for_review, edited]
   push:
     branches: [develop, main]
 

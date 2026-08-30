@@ -50,7 +50,7 @@
                   {% if link.url %}
                     <a
                       href="{{ link.url }}"
-                      class="insight-nav-item-radius flex gap-2 px-4 py-2 h-full text-secondary text-sm whitespace-nowrap transition-colors duration-200 hover:text-insight-text-link {% if link.active %}text-insight-primary{% endif %}"
+                      class="insight-nav-link flex gap-2 px-4 py-2 h-full text-sm whitespace-nowrap"
                       {% if link.active %}aria-current="page"{% endif %}
                       {% if link.external %}target="_blank" rel="noopener"{% endif %}
                     >
@@ -61,7 +61,7 @@
                     </a>
                   {% elif link.dropdown %}
                     <div class="relative">
-                      <button data-insight-dropdown="{{ link.dropdown.tag_id }}" class="flex gap-2 h-full whitespace-nowrap {% if link.active %}text-insight-text-link{% else %}text-secondary hover:text-insight-text-link{% endif %} px-4 py-2 text-sm transition-colors duration-200">
+                      <button data-insight-dropdown="{{ link.dropdown.tag_id }}" class="insight-nav-link flex gap-2 px-4 py-2 h-full text-sm whitespace-nowrap">
                         {% if link.icon %}
                           {% icon link.icon %}
                         {% endif %}
@@ -81,7 +81,7 @@
                                 hx-push-url="true"
                               {% endif %}
                               href="{{ item.request_url|default:'' }}"
-                              class="block px-4 py-2 text-sm text-primary hover:bg-insight-bg-base"
+                              class="insight-nav-dropdown-item block px-4 py-2 text-sm"
                             >{{ item.text }}</a>
                           {% endfor %}
                         </div>
@@ -89,7 +89,7 @@
                     </div>
                   {% elif link.modal %}
                     <button
-                      class="px-4 py-2 text-secondary text-sm transition-colors duration-200 hover:text-insight-text-link"
+                      class="insight-nav-link px-4 py-2 text-sm"
                       data-insight-modal="{{ link.modal.tag_id }}"
                     >
                       {{ link.text }}
@@ -106,12 +106,12 @@
         <div class="flex flex-col gap-2 w-full lg:flex-row lg:w-fit">
           {% if navbar_config.searchbar_request_url or navbar_config.enable_doc_search %}
             <div class="flex-1 lg:max-w-72">
-              {% search_bar request_url=navbar_config.searchbar_request_url simple=True search_query=options.search_query enable_search=navbar_config.enable_doc_search %}
+              {% search_bar request_url=navbar_config.searchbar_request_url simple=True search_query=options.search_query enable_search=navbar_config.enable_doc_search search_index_url=navbar_config.search_index_url %}
             </div>
           {% endif%}
           <div class="flex gap-2 h-10">
-            {% if navbar_config.show_usermenu %}
-              {% include "insight_ui/components/user_dropdown.html" with user_dropdown_links=options.user_dropdown_links user_avatar_url=options.user_avatar_url user_avatar_alt=options.user_avatar_alt %}
+            {% if login_url or user.is_authenticated %}
+              {% include "insight_ui/components/user_dropdown.html" with usermenu=navbar_config.usermenu hide_login=navbar_config.hide_login login_url=login_url register_url=register_url %}
             {% endif %}
             {% if navbar_config.show_language_selector %}
               {% include "insight_ui/components/toggle_language.html" %}

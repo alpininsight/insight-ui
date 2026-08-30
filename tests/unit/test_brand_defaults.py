@@ -1,10 +1,11 @@
 """Tests for central Insight UI brand defaults."""
 
 from django.test import override_settings
+from django.utils.translation import override
+from documentation.component_details.demo_context import get_login_screen_context
+from documentation.context import get_footer_context, get_navbar_context
 from insight_ui.brand import get_brand_logo_config, get_navbar_brand_defaults
-from insight_ui.component_details.demo_context import get_login_screen_context
 from insight_ui.configs import BrandMarkConfig, LogoConfig
-from insight_ui.context import get_footer_context, get_navbar_context
 
 
 def test_brand_logo_override_uses_configured_height() -> None:
@@ -58,9 +59,9 @@ def test_login_context_uses_brand_logo_with_login_specific_height() -> None:
     """The login screen should share the brand logo while keeping its larger layout height."""
     login_context = get_login_screen_context()
 
-    assert login_context["logo_config"].alt == "Acme Login Logo"
-    assert login_context["logo_config"].url == "acme.svg"
-    assert login_context["logo_config"].height == "8rem"
+    assert login_context["login_config"].logo.alt == "Acme Login Logo"
+    assert login_context["login_config"].logo.url == "acme.svg"
+    assert login_context["login_config"].logo.height == "8rem"
 
 
 @override_settings(
@@ -82,3 +83,11 @@ def test_navbar_brand_defaults_can_use_configured_mark() -> None:
     assert navbar_brand.mark.primary_text == "Acme"
     assert navbar_brand.mark.secondary_text == "Develop"
     assert navbar_brand.mark.logo.alt == "Acme Login Logo"
+
+
+def test_documentation_navbar_uses_the_localized_search_index() -> None:
+    """The documentation navbar must not fall back to Insight UI package static files."""
+    with override("de"):
+        navbar_config = get_navbar_context()["nav_config"]
+
+    assert navbar_config.search_index_url == "/static/documentation/data/search-index-de.json"

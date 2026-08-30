@@ -26,6 +26,7 @@
         {% if input_config.checked %}checked{% endif %}
         {% if input_config.required %}required{% endif %}
         {% if input_config.disabled %}disabled{% endif %}
+        {% if input_config.disabled and input_config.disabled_reason %}data-insight-tooltip="{{ input_config.disabled_reason }}"{% endif %}
         class="input w-full"
     >
 </div>

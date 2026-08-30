@@ -37,6 +37,7 @@ export class Multiselect {
         this.element = element;
         this.name = element.dataset.name || "multiselect";
         this.max = parseInt(element.dataset.max) || Infinity;
+        this.disabled = element.dataset.disabled === "true";
         if (!element.dataset.selected || !element.dataset.selected.trim()) this.selectedValues = [];
         else this.selectedValues = JSON.parse(element.dataset.selected.replace(/'/g, '"'));
         this.focusedIndex = -1;
@@ -54,14 +55,17 @@ export class Multiselect {
 
         // Hide already selected options
         this.optionItems.forEach(opt => {
-            const value = opt.textContent.trim();
+            const value = opt.dataset.value ?? opt.textContent.trim();
             if (this.selectedValues.includes(value)) {
                 opt.setAttribute('aria-selected', 'true');
                 opt.hidden = true;
             }
         });
 
-        this.bindEvents();
+        // Only bind interactive events if not disabled
+        if (!this.disabled) {
+            this.bindEvents();
+        }
         this.renderSelected();
 
         this.updateInfo();
@@ -142,12 +146,29 @@ export class Multiselect {
     }
 
     /**
-     * Handles clicks outside the multiselect to close the dropdown.
+     * Handles clicks to close the dropdown when clicking outside the interactive area.
+     *
+     * Closes the dropdown when clicking outside the combobox area, except for
+     * the select/deselect all buttons which have their own handlers.
      *
      * @param {MouseEvent} e - The click event
      */
     handleDocumentClick(e) {
-        if (!this.element.contains(e.target)) this.toggleDropdown(false);
+        // Always close if click is outside the entire component
+        if (!this.element.contains(e.target)) {
+            this.toggleDropdown(false);
+            return;
+        }
+
+        // Keep open if clicking within the combobox (input area + options dropdown)
+        if (this.combobox.contains(e.target)) return;
+
+        // Keep open if clicking select/deselect all buttons
+        if (this.selectAllBtn?.contains(e.target)) return;
+        if (this.deselectAllBtn?.contains(e.target)) return;
+
+        // Close for clicks on other areas (label, info text, empty space)
+        this.toggleDropdown(false);
     }
 
     /**
@@ -190,7 +211,7 @@ export class Multiselect {
      * @returns null If the maximum amount of selected values is reached.
      */
     toggleSelect(opt) {
-        const value = opt.textContent.trim();
+        const value = opt.dataset.value ?? opt.textContent.trim();
         if (this.selectedValues.includes(value))
             this.deselectValue(value);
         else {
@@ -217,12 +238,13 @@ export class Multiselect {
      * set 'aria-selected' to 'false' and 'display' to 'block' for the option.
      * Update DOM and open search field.
      *
-     * @param {String} value Text of the option.
+     * @param {String} value Value of the option (from data-value or textContent).
      */
     deselectValue(value) {
         this.selectedValues = this.selectedValues.filter(v => v !== value);
         this.optionItems.forEach(opt => {
-            if (opt.textContent.trim() === value) {
+            const optValue = opt.dataset.value ?? opt.textContent.trim();
+            if (optValue === value) {
                 opt.setAttribute('aria-selected', 'false');
                 opt.hidden = false;
             }
@@ -235,7 +257,7 @@ export class Multiselect {
     /**
      * Create badges for the selected options.
      *
-     * Create a badge with the value of the option and a remove button for each selected option.
+     * Create a badge with the display text of the option and a remove button for each selected option.
      * The badges are placed at the begin of the search field.
      * Update information and 'aria-status' for each option.
      */
@@ -243,14 +265,21 @@ export class Multiselect {
         this.tags.innerHTML = '';
         this.element.querySelectorAll('input[type=hidden]').forEach(i => i.remove());
         this.selectedValues.forEach(value => {
+            // Find the option element to get its display text
+            const opt = this.optionItems.find(o => (o.dataset.value ?? o.textContent.trim()) === value);
+            const displayText = opt ? opt.textContent.trim() : value;
+
             const tag = document.createElement('span');
             tag.className = 'inline-tag me-1';
-            tag.textContent = value;
-            const remove = document.createElement('button');
-            remove.innerHTML = '&times;';
-            remove.className = 'text-blue-500 hover:text-blue-700 ml-1';
-            remove.addEventListener('click', e => { e.stopPropagation(); this.deselectValue(value); });
-            tag.appendChild(remove);
+            tag.textContent = displayText;
+            // Only add remove button if not disabled
+            if (!this.disabled) {
+                const remove = document.createElement('button');
+                remove.innerHTML = '&times;';
+                remove.className = 'text-blue-500 hover:text-blue-700 ml-1';
+                remove.addEventListener('click', e => { e.stopPropagation(); this.deselectValue(value); });
+                tag.appendChild(remove);
+            }
             this.tags.appendChild(tag);
 
             const hidden = document.createElement('input');
@@ -264,7 +293,7 @@ export class Multiselect {
     /**
      * Filter option in relation to the given term.
      *
-     * Hide all option whose value does not contain the given term (not case sensitive).
+     * Hide all option whose display text does not contain the given term (not case sensitive).
      * Set 'focusedIndex' to -1.
      *
      * @param {String} term Search input.
@@ -272,9 +301,10 @@ export class Multiselect {
     filterOptions(term) {
         const lower = term.toLowerCase();
         this.optionItems.forEach(opt => {
-            const value = opt.textContent.toLowerCase();
-            const hiddenBySelection = this.selectedValues.includes(opt.textContent.trim());
-            opt.hidden = (!hiddenBySelection && value.includes(lower)) ? false : true;
+            const displayText = opt.textContent.toLowerCase();
+            const optValue = opt.dataset.value ?? opt.textContent.trim();
+            const hiddenBySelection = this.selectedValues.includes(optValue);
+            opt.hidden = (!hiddenBySelection && displayText.includes(lower)) ? false : true;
         });
         this.focusedIndex = -1;
     }
@@ -320,7 +350,7 @@ export class Multiselect {
      */
     selectAll() {
         this.optionItems.forEach(opt => {
-            const value = opt.textContent.trim();
+            const value = opt.dataset.value ?? opt.textContent.trim();
             if (!this.selectedValues.includes(value)) {
                 // Respect max limit
                 if (this.selectedValues.length >= this.max) {
@@ -371,25 +401,28 @@ export class Multiselect {
     destroy() {
         debugLog("Destroy multiselect: ", this.element, this.name);
 
-        // Remove search and selected listeners
-        this.search.removeEventListener('input', this.boundSearchInput);
-        this.search.removeEventListener('focus', this.boundSearchFocus);
-        this.search.removeEventListener('blur', this.boundSearchBlur);
-        this.selected.removeEventListener('click', this.boundSelectedClick);
-        this.search.removeEventListener('keydown', this.boundSearchKeydown);
+        // Only remove event listeners if they were bound (not disabled)
+        if (!this.disabled) {
+            // Remove search and selected listeners
+            this.search.removeEventListener('input', this.boundSearchInput);
+            this.search.removeEventListener('focus', this.boundSearchFocus);
+            this.search.removeEventListener('blur', this.boundSearchBlur);
+            this.selected.removeEventListener('click', this.boundSelectedClick);
+            this.search.removeEventListener('keydown', this.boundSearchKeydown);
 
-        // Remove option click handlers
-        this.boundOptionClicks.forEach(({ element, handler }) => {
-            element.removeEventListener('click', handler);
-        });
-        this.boundOptionClicks = [];
+            // Remove option click handlers
+            this.boundOptionClicks.forEach(({ element, handler }) => {
+                element.removeEventListener('click', handler);
+            });
+            this.boundOptionClicks = [];
 
-        // Remove document click handler
-        document.removeEventListener('click', this.boundDocumentClick);
+            // Remove document click handler
+            document.removeEventListener('click', this.boundDocumentClick);
 
-        // Remove button handlers
-        if (this.selectAllBtn) this.selectAllBtn.removeEventListener('click', this.boundSelectAll);
-        if (this.deselectAllBtn) this.deselectAllBtn.removeEventListener('click', this.boundDeselectAll);
+            // Remove button handlers
+            if (this.selectAllBtn) this.selectAllBtn.removeEventListener('click', this.boundSelectAll);
+            if (this.deselectAllBtn) this.deselectAllBtn.removeEventListener('click', this.boundDeselectAll);
+        }
 
         Multiselect.instances.delete(this.element);
         delete this.element.__insightInstance;

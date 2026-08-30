@@ -9,6 +9,107 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug Fixes
 
+- **charts:** Correct accessible data table values
+- **docs:** Wrap demo controls on narrow screens
+- Correct polygon of 'minimal_stepper' for rtl mode
+- Correct animation and chevron direction of the sidebar component in RTL mode
+- Set 'navbar_fixed' for the toc sidebar to prevent the label from disappearing
+- Remove sidebar shift in mobile browsers
+- Remove the need to specify the 'request_url' twice for the 'search_bar' component
+- **htmx:** Serialize config values as JSON
+- Make radio item gray if disabled and set default cursor
+- Use 'parameter_table' on icon detailpage instead of include the template directly
+- Correct check method for the 'double request_url' warning
+- **brand-mark:** Render the wordmark accent in Signal Orange
+- Use correct url for login screen
+- Use white text instead of base text color for the 'radio_block' component
+- Restore old active state design for sidebar navigation links
+- **brand-mark:** Stop rendering template comment
+- Remove tooltip and popup instance on delete
+- Actually disable 'multiselect' and 'select' when disabled is 'True'
+- Remove mistyped 's' from 'range_slider' dual mode
+- Rotate the chevron icon of the 'breadcrumb' component by 180° in RTL mode
+- **cdn:** Support historical candidate asset builds
+- Update paths in commands to match the new documentation structure
+- **docs:** Wire localized search index
+
+### CI/CD
+
+- **pypi:** Publish via Trusted Publishing instead of an API token
+- Rerun standard checks on PR title edits
+- **cdn:** Publish candidate assets from image source
+
+### Documentation
+
+- Align self-documentation app references
+
+### Features
+
+- Update 'sidebar' parameter description and example code
+- Sync navbar and sidebar response behavior
+- Show a warning when the developer sets both, the component 'request_url' and HTMXConfig 'request_url'
+- Determine current page via aria attributes and add highlighting for navbar dropdown menus
+- Remove 'Home' from navbar
+- Use a more suitable icon for the language toggle
+- Add 'UserMenuConfig', 'LoginScreenConfig' and add 'register_url' to 'navbar' component
+- Add 'content_fill' option for the base template
+- Add version information to 'copyright_notice' and rename component to 'legal_notice'
+- Add 'disabled' parameter to the 'button' component and remove 'disabled' from ButtonType
+- Make disabled inputs more decent and add 'disabled_reason' parameter to input components
+- Add dict support for 'options' of the 'FormFieldConfig' and move list to dict converting logic to corresponding configs
+- Add new component descriptions and lists with core features to each component
+- Update translations
+- Add config based usage examples to 'breadcrumbs', 'stepper' and 'bullet_point_list' components
+- Add more different examples to the 'button' and 'badge' usage examples
+- Add captions to the 'badge' demo and make the captions in the 'button' demo smaller
+- Add support for container queries to 'grid' component and add more demo examples
+- Add 'weight' and 'style' parameter to the 'divider' component and a dedicated color token
+- Add optional label to the 'divider' component
+- Add 'h-fit' to 'button', 'badge', 'radio_block' and 'toggle_button' component
+- Add responsive behavior to the 'article' component
+- Change app name to 'Django Insight UI' in the navbar
+- Use a more distinguishable background color for the 'modal' component in dark mode
+- Make the 'sort_utility_classes' script ignore comments
+- Create app 'documentation' and move all related files to this new app
+- Update translations
+- Update translations
+
+### Miscellaneous
+
+- Regenerate minified assets
+- **pre-commit:** Autoupdate hooks
+- Regenerate minified stylesheet
+- Regenerate minified stylesheet
+- Regenerate minified assets
+- Regenerate minified stylesheet
+- Update stylesheet
+- Regenerate minified stylesheet
+- Regenerate minified stylesheet
+- Regenerate minified assets
+- Regenerate minified assets
+- Regenerate minified assets
+- Regenerate minified stylesheet
+
+### Refactoring
+
+- Return drawer context directly whitout creating temp variable
+
+### Reverted
+
+- **pypi:** Restore token-based publish until prerequisites exist
+
+### Testing
+
+- Add smoke tests for the docs pages
+- Change language to english for the component parameter context tests
+- Update navbar and login screen tests
+- Update tests
+- **brand-mark:** Assert rendered wordmark contract
+
+## [1.12.0] - 2026-08-20
+
+### Bug Fixes
+
 - Correct various issues in the JavaScript components
 - **static:** Preserve generated stylesheet newline
 - **static:** Build complete CDN assets

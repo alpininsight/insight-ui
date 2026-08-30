@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import math
 from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import MISSING, fields, is_dataclass, replace
@@ -10,7 +11,9 @@ from types import UnionType
 from typing import TYPE_CHECKING, Any, Final, Literal, TypeVar, get_args, get_origin, get_type_hints
 
 from django import template
+from django.conf import settings
 from django.templatetags.static import static
+from django.urls import NoReverseMatch, reverse
 
 if TYPE_CHECKING:
     from django.core.paginator import Page
@@ -44,7 +47,6 @@ from insight_ui.configs import (
     CheckboxConfig,
     CheckboxGroupConfig,
     ColorType,
-    CopyrightNoticeConfig,
     CornerPosition,
     CornerRibbonConfig,
     DataAttrConfig,
@@ -66,6 +68,7 @@ from insight_ui.configs import (
     InfiniteScrollConfig,
     InfoboxConfig,
     InputFieldConfig,
+    LegalNoticeConfig,
     LiveContentConfig,
     LogoConfig,
     MinimalStepperConfig,
@@ -321,6 +324,16 @@ def get_item(dictionary: dict, key: str) -> Any:  # noqa: ANN401
     return dictionary.get(key)
 
 
+@register.filter
+def json_attribute(value: object) -> str:
+    """Serialize a value as JSON for an HTML attribute.
+
+    The returned string deliberately remains unsafe so Django's normal template
+    auto-escaping protects the surrounding HTML attribute.
+    """
+    return json.dumps(value, separators=(",", ":"), ensure_ascii=False, allow_nan=False)
+
+
 @register.inclusion_tag("insight_ui/components/icons.html")
 def icon(
     config: IconConfig | None = None,
@@ -358,18 +371,55 @@ def page_header(
     return {"page_header_config": config}
 
 
+# Responsive column classes using container queries
+_ARTICLE_COLUMN_CLASSES: dict[int, str] = {
+    1: "columns-1",
+    2: "columns-1 @sm:columns-2",
+    3: "columns-1 @sm:columns-2 @md:columns-3",
+    4: "columns-1 @sm:columns-2 @md:columns-3 @lg:columns-4",
+}
+
+# Fixed column classes (no container queries)
+_ARTICLE_FIXED_CLASSES: dict[int, str] = {
+    1: "columns-1",
+    2: "columns-2",
+    3: "columns-3",
+    4: "columns-4",
+}
+
+
 @register.inclusion_tag("insight_ui/components/article.html")
 def article(
     config: ArticleConfig | None = None,
     *,
     content: str | _Unset = UNSET,
-    columns: int | _Unset = UNSET,
+    max_columns: int | _Unset = UNSET,
     column_gap: str | _Unset = UNSET,
     title: str | _Unset = UNSET,
+    fixed: bool | _Unset = UNSET,
 ) -> dict[str, Any]:
-    """Render an article in newspaper style with a multi-column layout."""
+    """Render an article in newspaper style with a multi-column layout.
+
+    Uses CSS Container Queries to adapt the column count based on available width.
+    """
     config = build_config(ArticleConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    return {"article_config": config}
+
+    # Clamp columns to valid range
+    cols = max(1, min(4, config.max_columns))
+
+    # Select column classes based on mode
+    if config.fixed:
+        column_classes = _ARTICLE_FIXED_CLASSES[cols]
+        needs_container = False
+    else:
+        column_classes = _ARTICLE_COLUMN_CLASSES[cols]
+        needs_container = cols > 1
+
+    return {
+        "article_config": config,
+        "column_classes": column_classes,
+        "needs_container": needs_container,
+    }
 
 
 @register.inclusion_tag("insight_ui/components/hero.html")
@@ -433,6 +483,26 @@ def status_screen(
 # =============================================================
 
 
+def _resolve_url(url_or_name: str) -> str:
+    """Resolve a URL name to a URL, or return the URL if already a path.
+
+    Args:
+        url_or_name: Either a URL path (starting with /) or a URL name.
+
+    Returns:
+        The resolved URL path, or empty string if resolution fails.
+
+    """
+    if not url_or_name:
+        return ""
+    if url_or_name.startswith(("/", "http")):
+        return url_or_name
+    try:
+        return reverse(url_or_name)
+    except NoReverseMatch:
+        return ""
+
+
 @register.inclusion_tag("insight_ui/components/navbar.html", takes_context=True)
 def navbar(context: dict[str, Any], config: NavbarConfig, **kwargs: JsonValue) -> dict[str, Any]:
     """Render a configurable navigation bar."""
@@ -440,13 +510,15 @@ def navbar(context: dict[str, Any], config: NavbarConfig, **kwargs: JsonValue) -
         "user": context.get("user"),
         "navbar_config": config,
         "fixed": get_config("navbar_fixed"),
+        "login_url": _resolve_url(getattr(settings, "LOGIN_URL", "login")),
+        "register_url": _resolve_url(str(get_config("register_url") or "")),
         "options": {**kwargs},
     }
 
 
 @register.inclusion_tag("insight_ui/components/footer.html")
 def footer(config: FooterConfig) -> dict[str, Any]:
-    """Render a footer with optional description, links, and a copyright line."""
+    """Render a footer with optional description, links, and a legal notice line."""
     return {"footer_config": config}
 
 
@@ -540,6 +612,8 @@ def button(
     tooltip: str | _Unset = UNSET,
     htmx_config: HtmxConfig | _Unset = UNSET,
     hidden: bool | _Unset = UNSET,
+    disabled: bool | _Unset = UNSET,
+    disabled_reason: str | _Unset = UNSET,
     button_type: HtmlButtonType | _Unset = UNSET,
     extra_classes: str | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
@@ -607,6 +681,8 @@ def button(
         tooltip=tooltip,
         htmx_config=htmx_config,
         hidden=hidden,
+        disabled=disabled,
+        disabled_reason=disabled_reason,
         button_type=button_type,
         extra_classes=extra_classes,
         data_attrs=data_attrs,
@@ -632,6 +708,7 @@ def input_field(
     checked: bool | _Unset = UNSET,
     required: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
+    disabled_reason: str | _Unset | None = UNSET,
     label: str | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render any <input> field."""
@@ -651,6 +728,7 @@ def textarea(
     cols: int | _Unset | None = UNSET,
     required: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
+    disabled_reason: str | _Unset | None = UNSET,
     label: str | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a <textarea> field."""
@@ -668,6 +746,7 @@ def checkbox(
     label: str | _Unset | None = UNSET,
     checked: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
+    disabled_reason: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a checkbox with label text."""
     config = build_config(CheckboxConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -733,6 +812,7 @@ def slider(
     step_size: int | _Unset = UNSET,
     label: str | _Unset | None = UNSET,
     disabled: bool | _Unset = UNSET,
+    disabled_reason: str | _Unset | None = UNSET,
     items: list[str] | _Unset | None = UNSET,
     legend_mode: str | _Unset = UNSET,
     dual: bool | _Unset = UNSET,
@@ -755,6 +835,7 @@ def toggle(
     icon: IconConfig | _Unset | None = UNSET,
     checked: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
+    disabled_reason: str | _Unset | None = UNSET,
     switch: bool | _Unset = UNSET,
     method: str | _Unset = UNSET,
 ) -> dict[str, Any]:
@@ -771,17 +852,13 @@ def select(
     name: str | _Unset | None = UNSET,
     label: str | _Unset | None = UNSET,
     required: bool | _Unset = UNSET,
+    disabled: bool | _Unset = UNSET,
+    disabled_reason: str | _Unset | None = UNSET,
     explanation: str | _Unset = UNSET,
     options: list[str] | dict[str, str] | _Unset | None = UNSET,
     selected_option: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a selection box."""
-    if config is None:
-        if isinstance(options, list):
-            options = dict(zip(options, options, strict=True))
-    elif isinstance(config.options, list):
-        config.options = dict(zip(config.options, config.options, strict=True))
-
     config = build_config(SelectConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"select_config": config}
 
@@ -794,16 +871,12 @@ def multiselect(
     label: str | _Unset | None = UNSET,
     maximum: int | _Unset | None = UNSET,
     show_buttons: bool | _Unset = UNSET,
+    disabled: bool | _Unset = UNSET,
+    disabled_reason: str | _Unset | None = UNSET,
     options: list[str] | dict[str, str] | _Unset | None = UNSET,
     selected_options: list[str] | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a selection box that allows multiple values."""
-    if config is None:
-        if isinstance(options, list):
-            options = dict(zip(options, options, strict=True))
-    elif isinstance(config.options, list):
-        config.options = dict(zip(config.options, config.options, strict=True))
-
     config = build_config(MultiselectConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"multiselect_config": config}
 
@@ -879,9 +952,9 @@ def infobox(
     return {"info_config": config}
 
 
-@register.inclusion_tag("insight_ui/components/copyright_notice.html")
-def copyright_notice(
-    config: CopyrightNoticeConfig | None = None,
+@register.inclusion_tag("insight_ui/components/legal_notice.html")
+def legal_notice(
+    config: LegalNoticeConfig | None = None,
     *,
     year: int | str | _Unset | None = UNSET,
     holder: str | _Unset | None = UNSET,
@@ -890,16 +963,18 @@ def copyright_notice(
     license_url: str | _Unset | None = UNSET,
     separator: str | _Unset | None = UNSET,
     rights_text: str | _Unset | None = UNSET,
+    version: str | _Unset | None = UNSET,
 ) -> dict[str, Any]:
-    """Render a reusable copyright and legal notice line."""
-    config = build_config(CopyrightNoticeConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    """Render a reusable legal notice line with copyright, license, and version."""
+    config = build_config(LegalNoticeConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     metadata = [
+        {"text": config.rights_text or _("All rights reserved."), "url": ""},
         {"text": config.source_label or "", "url": ""},
         {"text": config.license_text or "", "url": config.license_url or ""},
-        {"text": config.rights_text or _("All rights reserved."), "url": ""},
+        {"text": config.version or "", "url": ""},
     ]
 
-    return {"copyright_config": config, "metadata": [item for item in metadata if item["text"]]}
+    return {"legal_config": config, "metadata": [item for item in metadata if item["text"]]}
 
 
 @register.filter
@@ -1195,6 +1270,7 @@ def search_bar(
     search_query: str | _Unset = UNSET,
     htmx_config: HtmxConfig | _Unset | None = UNSET,
     enable_search: bool | _Unset = UNSET,
+    search_index_url: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render text input with a button for a search function."""
     config = build_config(SearchBarConfig, config, **{k: v for k, v in locals().items() if k != "config"})

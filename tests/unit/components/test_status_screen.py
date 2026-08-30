@@ -45,7 +45,7 @@ class TestStatusScreen(TemplateTagsTestCase):
                 "cfg": StatusScreenConfig(
                     title="Deployment running",
                     status="info",
-                    primary_action=ButtonConfig(label="Continue", request_url="/next/", type="disabled"),
+                    primary_action=ButtonConfig(label="Continue", request_url="/next/", disabled=True),
                 )
             },
         )
