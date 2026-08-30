@@ -73,3 +73,5 @@ docs/_build/
 Thumbs.db
 img/
 staticfiles/
+insight_ui/static/insight_ui/css/*.min.css
+insight_ui/static/insight_ui/js/*.min.js

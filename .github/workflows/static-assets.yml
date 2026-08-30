@@ -25,11 +25,10 @@ jobs:
     if: github.event_name == 'pull_request'
     uses: alpininsight/.github-private/.github/workflows/static-assets-reusable.yml@main
     with:
-      mode: check
+      mode: build
       setup_python: true
       setup_uv: true
-      check_command: npm run check:static-build
-      build_command: npm run build:static-all
+      build_command: npm run verify:static-build
       upload_cdn: false
 
   resolve-cdn-publish:

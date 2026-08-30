@@ -202,7 +202,7 @@ for (const group of assetGroups) {
 
 if (staleFiles.length > 0) {
     console.error(`Generated static assets are stale: ${staleFiles.join(", ")}`);
-    console.error("Run npm run build:js and commit the generated .min.js/.min.css files.");
+    console.error("Run npm run build:js to regenerate the local CDN build artifacts.");
     process.exit(1);
 }
 

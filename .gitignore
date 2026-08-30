@@ -219,5 +219,7 @@ misc/
 img/
 staticfiles/
 node_modules/
+/insight_ui/static/insight_ui/css/*.min.css
+/insight_ui/static/insight_ui/js/*.min.js
 .playwright-mcp/
 .playwright-cli/
