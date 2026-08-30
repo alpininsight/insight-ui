@@ -1,8 +1,7 @@
 {
-  "$comment": "Required-verification SUBSET, not the publish list. What gets published is decided by the release rollout (cdn_asset_globs in .github/workflows/*.yml over insight_ui/static/insight_ui) — that stays the single source of truth for publishing. This file lists only the template-required insight-ui assets that must be smoke-verified BEFORE runtime CDN delivery is enabled (issue #314). Full URL = <cdn_base_url>/<cdn_prefix>/<version>/<path>. See docs/cdn-delivery.md.",
-  "cdn_base_url": "https://cdn.alpininsight.ai",
+  "$comment": "Required-verification subset, not the publish list. Release automation determines which package assets are published. This manifest lists the template-required Insight UI assets that a deployer must smoke-verify before enabling CDN delivery (issue #314). The deployer supplies cdn_base_url; full URL = <cdn_base_url>/<cdn_prefix>/<version>/<path>. See docs/cdn-delivery.md.",
   "cdn_prefix": "insight-ui",
-  "url_template": "https://cdn.alpininsight.ai/insight-ui/{version}/{path}",
+  "url_template": "{cdn_base_url}/{cdn_prefix}/{version}/{path}",
   "required": [
     {
       "path": "css/tailwind.min.css",
