@@ -92,6 +92,11 @@ class LegalNoticeConfig:
     version: str = field(default="", metadata={"doc": _("Optional version string, for example v1.2.3.")})
 
 
+# Backward-compatible public name retained for consumers released before the
+# component was renamed from copyright_notice to legal_notice.
+CopyrightNoticeConfig = LegalNoticeConfig
+
+
 @dataclass
 class LogoConfig:
     """Configuration for the logo component.
