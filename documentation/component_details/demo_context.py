@@ -505,11 +505,11 @@ def get_radio_group_context() -> dict:
             "model",
             _("Select AI Model:"),
             [
-                RadioItemConfig("model1", "BERT", _("BERT")),
-                RadioItemConfig("model2", "PaLM 2", _("PaLM 2")),
+                RadioItemConfig("BERT", "model1", _("BERT")),
+                RadioItemConfig("PaLM 2", "model2", _("PaLM 2")),
                 RadioItemConfig(
-                    "model3",
                     "LLaMA 2",
+                    "model3",
                     _("LLaMA 2 (currently not available)"),
                     disabled=True,
                     disabled_reason=_("Currently not available"),
@@ -527,11 +527,11 @@ def get_radio_block_context() -> dict:
             "view",
             _("Select view mode:"),
             items=[
-                RadioItemConfig("card-view", "card", icon=IconConfig("squares-2x2")),
+                RadioItemConfig("card", "card-view", icon=IconConfig("squares-2x2")),
                 RadioItemConfig("table", "table", icon=IconConfig("list-bullet")),
                 RadioItemConfig(
-                    "card-carousel",
                     "carousel",
+                    "card-carousel",
                     icon=IconConfig("square-3-stack-3d"),
                     disabled=True,
                     disabled_reason=_("Currently not available"),
@@ -542,10 +542,14 @@ def get_radio_block_context() -> dict:
             "size",
             _("Select size:"),
             items=[
-                RadioItemConfig("small-size", "small", "s"),
-                RadioItemConfig("medium-size", "medium", "m"),
+                RadioItemConfig("small", "small-size", "s"),
+                RadioItemConfig("medium", "medium-size", "m"),
                 RadioItemConfig(
-                    "large-size", "large", "l", disabled=True, disabled_reason=_("Currently not available")
+                    "large",
+                    "large-size",
+                    "l",
+                    disabled=True,
+                    disabled_reason=_("Currently not available"),
                 ),
             ],
             as_row=True,
@@ -875,8 +879,8 @@ def get_infinite_scroll_context() -> dict:
     """Serve data for infinite scroll detailpage."""
     return {
         "infinite_scroll_config": InfiniteScrollConfig(
-            "news-feed",
             reverse("more_items"),
+            "news-feed",
             [
                 {"title": _("Element %(i)s") % {"i": i}, "content": _("Content for element %(i)s") % {"i": i}}
                 for i in range(1, 11)
@@ -1071,9 +1075,9 @@ def get_toggle_view_context() -> dict:
             view_radio_config=RadioBlockConfig(
                 "products-view-toggle",
                 items=[
-                    RadioItemConfig("card-view", "card", icon=IconConfig("squares-2x2")),
-                    RadioItemConfig("table-view", "table", icon=IconConfig("list-bullet")),
-                    RadioItemConfig("carousel-view", "carousel", icon=IconConfig("square-3-stack-3d")),
+                    RadioItemConfig("card", "card-view", icon=IconConfig("squares-2x2")),
+                    RadioItemConfig("table", "table-view", icon=IconConfig("list-bullet")),
+                    RadioItemConfig("carousel", "carousel-view", icon=IconConfig("square-3-stack-3d")),
                 ],
                 request_url=reverse("toggle_view"),
             ),

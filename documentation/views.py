@@ -756,9 +756,9 @@ def toggle_view(request: HttpRequest) -> HttpResponse:
     view_radio_config = RadioBlockConfig(
         "products-view-toggle",
         items=[
-            RadioItemConfig("card-view", "card", icon=IconConfig("squares-2x2")),
-            RadioItemConfig("table-view", "table", icon=IconConfig("list-bullet")),
-            RadioItemConfig("carousel-view", "carousel", icon=IconConfig("square-3-stack-3d")),
+            RadioItemConfig("card", "card-view", icon=IconConfig("squares-2x2")),
+            RadioItemConfig("table", "table-view", icon=IconConfig("list-bullet")),
+            RadioItemConfig("carousel", "carousel-view", icon=IconConfig("square-3-stack-3d")),
         ],
         request_url=reverse("toggle_view"),
         current_value=current_view,

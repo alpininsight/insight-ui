@@ -1,5 +1,6 @@
 """Configuration classes for form components."""
 
+import warnings
 from dataclasses import dataclass, field
 
 from django.utils.translation import gettext_lazy as _
@@ -108,3 +109,15 @@ class FormConfig:
     show_reset_button: bool = field(default=False, metadata={"doc": _("Whether to show a reset button.")})
     request_url: str = field(default="", metadata={"doc": _("Target URL for form submission.")})
     htmx_config: HtmxConfig | None = field(default=None, metadata={"doc": _("HTMX configuration for AJAX submission.")})
+
+    def __post_init__(self) -> None:
+        """Validate that request_url and htmx_config.request_url are not both set."""
+        if self.request_url and self.htmx_config and self.htmx_config.request_url:
+            identifier = self.tag_id or self.title or "(unnamed)"
+            warnings.warn(
+                f"FormConfig {identifier} has both 'request_url' and 'htmx_config.request_url' set. "
+                "This may cause conflicting behavior. Use 'request_url' for a plain form submission, or "
+                "'htmx_config.request_url' for HTMX requests, but not both.",
+                UserWarning,
+                stacklevel=2,
+            )

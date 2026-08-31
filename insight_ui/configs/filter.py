@@ -56,7 +56,7 @@ class SearchBarConfig:
         """Validate that request_url and htmx_config.request_url are not both set."""
         if self.request_url and self.htmx_config and self.htmx_config.request_url:
             warnings.warn(
-                "SearchBarConfig has both 'request_url' and 'htmx_config.request_url' set. "
+                f"SearchBarConfig ({self.request_url}) has both 'request_url' and 'htmx_config.request_url' set. "
                 "This may cause conflicting behavior. Use 'request_url' for form action, or "
                 "'htmx_config.request_url' for HTMX requests, but not both.",
                 UserWarning,
@@ -94,6 +94,11 @@ class FilterConfig:
     explanation: str = dc_field(default="", metadata={"doc": _("Tooltip explanation text.")})
     icon: IconConfig | None = dc_field(default=None, metadata={"doc": _("Optional filter icon.")})
     selected_option: str = dc_field(default="", metadata={"doc": _("Currently selected value.")})
+
+    def __post_init__(self) -> None:
+        """Validate that selected_option is included in options, if both are set."""
+        if self.selected_option and self.options and self.selected_option not in self.options:
+            raise ValueError(f"selected_option '{self.selected_option}' must be included in 'options'.")  # noqa: TRY003
 
 
 @dataclass
@@ -147,7 +152,7 @@ class GenericFilterConfig:
         """Validate that request_url and htmx_config.request_url are not both set."""
         if self.request_url and self.htmx_config and self.htmx_config.request_url:
             warnings.warn(
-                "GenericFilterConfig has both 'request_url' and 'htmx_config.request_url' set. "
+                f"GenericFilterConfig ({self.request_url}) has both 'request_url' and 'htmx_config.request_url' set. "
                 "This may cause conflicting behavior. Use 'request_url' for form action, or "
                 "'htmx_config.request_url' for HTMX requests, but not both.",
                 UserWarning,

@@ -179,8 +179,9 @@ class BaseFormFieldConfig:
     def __post_init__(self) -> None:
         """Warn if disabled without a reason."""
         if self.disabled and self.disabled_reason is None:
+            identifier = self.name or self.label or self.tag_id or "(unnamed)"
             warnings.warn(
-                f"{self.__class__.__name__} {self.name} is disabled without a disabled_reason. "
+                f"{self.__class__.__name__} {identifier} is disabled without a disabled_reason. "
                 "Consider providing a reason to improve accessibility, or set disabled_reason='' to suppress this warning.",
                 stacklevel=3,
             )

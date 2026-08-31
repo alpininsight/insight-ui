@@ -1,5 +1,6 @@
 """Configuration classes for navigation components."""
 
+import warnings
 from dataclasses import dataclass, field
 
 from django.utils.translation import gettext_lazy as _
@@ -68,6 +69,16 @@ class NavbarLinkConfig:
     staff_only: bool = field(default=False, metadata={"doc": _("The link is only displayed for administrators.")})
     modal: ModalConfig | None = field(default=None, metadata={"doc": _("Configuration of a modal dialog.")})
     dropdown: DropdownConfig | None = field(default=None, metadata={"doc": _("Configuration of a dropdown menu.")})
+
+    def __post_init__(self) -> None:
+        """Warn if the link has no request_url, modal, or dropdown and would render invisibly."""
+        if not self.request_url and not self.modal and not self.dropdown:
+            warnings.warn(
+                f"NavbarLinkConfig '{self.text}' has no request_url, modal, or dropdown set. "
+                "The link will not be rendered.",
+                UserWarning,
+                stacklevel=2,
+            )
 
 
 @dataclass
@@ -748,9 +759,7 @@ class AccordionConfig:
         )
         """
 
-    tag_id: str = field(
-        default="accordion", metadata={"doc": _("Unique tag ID for identifying the element in JavaScript.")}
-    )
+    tag_id: str = field(metadata={"doc": _("Unique tag ID for identifying the element in JavaScript.")})
     items: list[AccordionItemConfig] = field(default_factory=list, metadata={"doc": _("List of individual sections.")})
     exclusive: bool = field(default=True, metadata={"doc": _("If **True** only one section can be open at a time.")})
 
@@ -773,7 +782,7 @@ class TabConfig:
 
     tag_id: str = field(metadata={"doc": _("Unique tag ID for identifying the element in JavaScript.")})
     title: str = field(metadata={"doc": _("Label of the tab button.")})
-    request_url: str = field(default="", metadata={"doc": _("The URL to be called when the tab is clicked.")})
+    request_url: str = field(metadata={"doc": _("The URL to be called when the tab is clicked.")})
     active: bool = field(default=False, metadata={"doc": _("Whether this tab is initially active.")})
 
 
