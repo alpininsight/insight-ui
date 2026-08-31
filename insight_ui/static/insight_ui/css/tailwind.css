@@ -3453,7 +3453,6 @@
   }
   .btn {
     display: flex;
-    height: fit-content;
     align-items: center;
     justify-content: center;
     gap: calc(var(--spacing) * 2);

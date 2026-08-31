@@ -16,7 +16,7 @@
         <div class="after:content-[''] after:absolute after:-top-1.5 after:-start-0.75 after:bg-insight-bg-surface after:border-insight-border-surface after:border after:rounded-insight-full after:size-6 after:transition-all relative rtl:peer-checked:after:-translate-x-full w-10 h-3 bg-insight-bg-raised rounded-insight-full outline-insight-border-raised transition peer peer-focus:outline-2 peer-checked:after:translate-x-full peer-checked:bg-insight-primary"></div>
     </label>
 {% else %}
-    <div class="inline-block w-fit h-fit" {% if toggle_config.disabled and toggle_config.disabled_reason %} data-insight-tooltip="{{ toggle_config.disabled_reason }}"{% endif %}>
+    <div class="flex" {% if toggle_config.disabled and toggle_config.disabled_reason %} data-insight-tooltip="{{ toggle_config.disabled_reason }}"{% endif %}>
         <input
             type="checkbox"
             {% if toggle_config.tag_id %}id="{{ toggle_config.tag_id }}"{% endif %}
