@@ -277,7 +277,7 @@ exclude = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["insight_ui"]
+packages = ["insight_ui", "documentation"]
 exclude = [
     "/insight_ui/static/insight_ui/css/*.min.css",
     "/insight_ui/static/insight_ui/js/*.min.js",
