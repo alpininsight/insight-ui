@@ -572,7 +572,7 @@ def playground_view(request: HttpRequest) -> HttpResponse:
     """Render playground page."""
     context = get_base_context() | get_sidebar_context() | get_minimal_stepper_context()
 
-    return render(request, "insight_ui/playground.html", context)
+    return render(request, "documentation/playground.html", context)
 
 
 def _get_component_header_badges(component: Component, context: dict[str, Any]) -> list[BadgeConfig]:
