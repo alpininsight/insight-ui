@@ -50,6 +50,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Documentation
 
 - Align self-documentation app references
+- **cdn:** Add required CDN asset manifest and delivery/entitlement contract
+- **cdn:** Scope manifest as verify-subset and reconcile insight-ui vs insight-brand
+- **cdn:** Keep verification contract deployment-neutral
 
 ### Features
 
