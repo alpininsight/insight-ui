@@ -704,26 +704,34 @@ class GridNode(LayoutNode):
             # Auto-fit mode: items wrap based on available space
             style = f"grid-template-columns: repeat(auto-fit, minmax({min_width}, 1fr));"
 
-        # Append user-provided extra classes
-        extra_classes = resolved.get("class", "")
-        if extra_classes:
-            classes.append(str(extra_classes))
+        # Get user-provided extra classes
+        extra_classes = str(resolved.get("class", "")).strip()
 
         content = self.nodelist.render(context)
-        class_str = " ".join(classes)
-
-        # Build the grid HTML
-        if style:
-            grid_html = f'<div class="{class_str}" style="{style}">{content}</div>'
-        else:
-            grid_html = f'<div class="{class_str}">{content}</div>'
 
         # Wrap in container element for container query support
         # Container queries require @container on a parent element
         if needs_container_wrapper:
-            return f'<div class="@container w-full">{grid_html}</div>'
+            # Apply extra classes to the wrapper (for sizing/centering)
+            # The inner grid stays w-full to fill the container
+            grid_class_str = " ".join(classes)
+            wrapper_classes = "@container w-full"
+            if extra_classes:
+                wrapper_classes = f"@container w-full {extra_classes}"
+            if style:
+                grid_html = f'<div class="{grid_class_str}" style="{style}">{content}</div>'
+            else:
+                grid_html = f'<div class="{grid_class_str}">{content}</div>'
+            return f'<div class="{wrapper_classes}">{grid_html}</div>'
 
-        return grid_html
+        # No wrapper needed - apply extra classes directly to grid
+        if extra_classes:
+            classes.append(extra_classes)
+        class_str = " ".join(classes)
+
+        if style:
+            return f'<div class="{class_str}" style="{style}">{content}</div>'
+        return f'<div class="{class_str}">{content}</div>'
 
 
 class SurfaceNode(LayoutNode):
