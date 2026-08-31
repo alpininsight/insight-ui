@@ -1,6 +1,7 @@
 """Tests for the legal_notice component."""
 
 from bs4 import BeautifulSoup
+from insight_ui.configs import CopyrightNoticeConfig
 from insight_ui.configs.utils import LegalNoticeConfig
 
 from tests.unit.components.test_template_tags import TemplateTagsTestCase
@@ -8,6 +9,10 @@ from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
 class TestLegalNotice(TemplateTagsTestCase):
     """Test suite for the legal_notice component."""
+
+    def test_legacy_config_name_remains_an_alias(self) -> None:
+        """Keep released consumers compatible with the renamed component."""
+        assert CopyrightNoticeConfig is LegalNoticeConfig
 
     def test_legal_notice_renders_full_legal_line(self) -> None:
         """Check legal notice output with license metadata."""
