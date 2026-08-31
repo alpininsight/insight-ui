@@ -1,5 +1,8 @@
 """Tests for the navbar component."""
 
+import warnings
+
+import pytest
 from bs4 import BeautifulSoup
 from insight_ui.configs.base import IconConfig
 from insight_ui.configs.navigation import NavbarBrandConfig, NavbarConfig, NavbarLinkConfig, UserMenuConfig
@@ -187,3 +190,15 @@ class TestNavbar(TemplateTagsTestCase):
         assert "UI" in brand_link.get_text(" ", strip=True)
         assert brand_link.find("img") is not None
         assert brand_link.find("svg") is None
+
+    def test_navbar_link_config_warns_without_request_url_modal_or_dropdown(self) -> None:
+        """A NavbarLinkConfig with no request_url, modal, or dropdown would render invisibly."""
+        with pytest.warns(UserWarning, match="has no request_url, modal, or dropdown"):
+            NavbarLinkConfig(text="Home")
+
+    def test_navbar_link_config_no_warning_with_request_url(self) -> None:
+        """A NavbarLinkConfig with request_url set does not warn."""
+        with warnings.catch_warnings(record=True) as caught:
+            warnings.simplefilter("always")
+            NavbarLinkConfig(text="Home", request_url="/")
+        assert len(caught) == 0

@@ -1,7 +1,9 @@
 """Tests for the radio_group component."""
 
+import pytest
 from bs4 import BeautifulSoup
 from documentation.component_details.demo_context import get_radio_group_context
+from insight_ui.configs import RadioGroupConfig, RadioItemConfig
 
 from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
@@ -58,3 +60,22 @@ class TestRadioGroup(TemplateTagsTestCase):
         assert not inputs[2].has_attr("checked")
         assert inputs[2].has_attr("disabled")
         assert "LLaMA 2" in labels[2].get_text()
+
+    def test_radio_group_config_rejects_current_value_not_matching_items(self) -> None:
+        """RadioGroupConfig raises ValueError when current_value matches no item."""
+        with pytest.raises(ValueError, match="current_value"):
+            RadioGroupConfig(
+                name="model",
+                items=[RadioItemConfig(value="gpt-4")],
+                current_value="claude",
+            )
+
+    def test_radio_group_config_defaults_current_value_to_first_item(self) -> None:
+        """RadioGroupConfig fills current_value from the first item when unset."""
+        config = RadioGroupConfig(name="model", items=[RadioItemConfig(value="gpt-4")])
+        assert config.current_value == "gpt-4"
+
+    def test_radio_item_config_tag_id_is_optional(self) -> None:
+        """RadioItemConfig can be constructed without tag_id."""
+        item = RadioItemConfig(value="gpt-4")
+        assert item.tag_id == ""

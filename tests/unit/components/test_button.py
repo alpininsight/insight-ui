@@ -3,6 +3,7 @@
 import json
 import warnings
 
+import pytest
 from bs4 import BeautifulSoup
 from insight_ui.configs import ButtonConfig, HtmxConfig
 
@@ -63,3 +64,8 @@ class TestButton(TemplateTagsTestCase):
 
         assert element is not None
         assert json.loads(element["hx-vals"]) == vals
+
+    def test_button_config_requires_label(self) -> None:
+        """ButtonConfig requires label (used as visible text or screen-reader name)."""
+        with pytest.raises(TypeError):
+            ButtonConfig()  # type: ignore[call-arg]

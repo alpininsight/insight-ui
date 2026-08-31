@@ -1,5 +1,6 @@
 """Tests for the checkbox_group component."""
 
+import pytest
 from bs4 import BeautifulSoup
 from insight_ui.configs.input import CheckboxGroupConfig, CheckboxItemConfig
 
@@ -72,3 +73,18 @@ class TestCheckboxGroup(TemplateTagsTestCase):
         assert not inputs[4].has_attr("checked")
         assert inputs[4].has_attr("disabled")
         assert "Italian" in labels[4].get_text()
+
+    def test_checkbox_group_config_rejects_minimum_greater_than_maximum(self) -> None:
+        """CheckboxGroupConfig raises ValueError when minimum_checked exceeds maximum_checked."""
+        with pytest.raises(ValueError, match="minimum_checked"):
+            CheckboxGroupConfig(name="languages", minimum_checked=3, maximum_checked=1)
+
+    def test_checkbox_group_config_accepts_equal_minimum_and_maximum(self) -> None:
+        """CheckboxGroupConfig allows minimum_checked equal to maximum_checked."""
+        config = CheckboxGroupConfig(name="languages", minimum_checked=2, maximum_checked=2)
+        assert config.minimum_checked == config.maximum_checked == 2  # noqa: PLR2004
+
+    def test_checkbox_item_config_warns_on_disabled_without_reason(self) -> None:
+        """CheckboxItemConfig warns when disabled without a disabled_reason."""
+        with pytest.warns(UserWarning, match="disabled without a disabled_reason"):
+            CheckboxItemConfig(tag_id="en", value="english", label="English", disabled=True)

@@ -119,14 +119,14 @@ def test_icon_config_rejects_invalid_size() -> None:
 def test_button_config_accepts_valid_size() -> None:
     """Test ButtonConfig accepts valid size values."""
     for size in SIZE_VALUES:
-        config = ButtonConfig(size=size)
+        config = ButtonConfig(label="Test", size=size)
         assert config.size == size
 
 
 def test_button_config_rejects_invalid_size() -> None:
     """Test ButtonConfig raises ValueError for invalid size."""
     with pytest.raises(ValueError, match="Invalid size"):
-        ButtonConfig(size="tiny")
+        ButtonConfig(label="Test", size="tiny")
 
 
 def test_badge_config_accepts_valid_size() -> None:
@@ -166,7 +166,7 @@ def test_icon_config_default_size() -> None:
 
 def test_button_config_default_size() -> None:
     """Test ButtonConfig has correct default size."""
-    config = ButtonConfig()
+    config = ButtonConfig(label="Test")
     assert config.size == "m"
 
 
@@ -287,14 +287,14 @@ def test_validate_button_type_rejects_invalid_value() -> None:
 def test_button_config_accepts_valid_type() -> None:
     """Test ButtonConfig accepts valid type values."""
     for button_type in BUTTON_TYPE_VALUES:
-        config = ButtonConfig(type=button_type)
+        config = ButtonConfig(label="Test", type=button_type)
         assert config.type == button_type
 
 
 def test_button_config_rejects_invalid_type() -> None:
     """Test ButtonConfig raises ValueError for invalid type."""
     with pytest.raises(ValueError, match="Invalid type"):
-        ButtonConfig(type="invalid")
+        ButtonConfig(label="Test", type="invalid")
 
 
 def test_badge_config_accepts_valid_type() -> None:
@@ -321,7 +321,7 @@ def test_badge_config_rejects_link_type() -> None:
 
 def test_button_config_default_type() -> None:
     """Test ButtonConfig has correct default type."""
-    config = ButtonConfig()
+    config = ButtonConfig(label="Test")
     assert config.type == "primary"
 
 
@@ -607,19 +607,19 @@ def test_validate_html_button_type_custom_field_name() -> None:
 def test_button_config_accepts_valid_button_type() -> None:
     """Test ButtonConfig accepts valid button_type values."""
     for button_type in HTML_BUTTON_TYPE_VALUES:
-        config = ButtonConfig(button_type=button_type)
+        config = ButtonConfig(label="Test", button_type=button_type)
         assert config.button_type == button_type
 
 
 def test_button_config_rejects_invalid_button_type() -> None:
     """Test ButtonConfig raises ValueError for invalid button_type."""
     with pytest.raises(ValueError, match="Invalid button_type"):
-        ButtonConfig(button_type="invalid")
+        ButtonConfig(label="Test", button_type="invalid")
 
 
 def test_button_config_default_button_type() -> None:
     """Test ButtonConfig has correct default button_type."""
-    config = ButtonConfig()
+    config = ButtonConfig(label="Test")
     assert config.button_type == "button"
 
 
