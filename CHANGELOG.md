@@ -32,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **cdn:** Support historical candidate asset builds
 - Update paths in commands to match the new documentation structure
 - **docs:** Wire localized search index
+- **config:** Retain copyright notice compatibility alias
 
 ### CI/CD
 
