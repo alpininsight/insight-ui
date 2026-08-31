@@ -82,8 +82,7 @@ def get_navbar_context() -> dict:
             search_index_url=get_search_index_url(),
             show_language_selector=True,
             show_theme_toggle=True,
-        ),
-        "navbar_fixed": True,
+        )
     }
 
 

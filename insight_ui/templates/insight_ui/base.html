@@ -83,7 +83,7 @@
             {% endblock navbar %}
         </header>
 
-        <main id="main" class="flex grow {% if navbar_fixed %}pt-16{% endif %}">
+        <main id="main" class="flex grow {% if INSIGHT_UI.navbar_fixed %}pt-16{% endif %}">
             <div id="left-aside" class="flex">
                 {% with _sidebar_side="left" %}{% block sidebar_left %}{% endblock sidebar_left %}{% endwith %}
             </div>

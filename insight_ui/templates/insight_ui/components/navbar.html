@@ -8,7 +8,7 @@
 <nav
   role="navigation"
   aria-label="{% trans 'Main navigation' %}"
-  class="{% if fixed %}fixed{% else %}absolute{% endif %} z-50 px-4 w-full h-16 bg-insight-bg-base border-b border-insight-border-surface shadow-insight-surface md:px-6"
+  class="{% if fixed %}fixed z-50{% else %}relative{% endif %} px-4 w-full h-16 bg-insight-bg-base border-b border-insight-border-surface shadow-insight-surface md:px-6"
 >
   {# Desktop Navigation #}
   <div class="flex flex-wrap gap-1 justify-between items-center h-full lg:flex-nowrap">

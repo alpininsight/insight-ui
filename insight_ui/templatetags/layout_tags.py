@@ -929,8 +929,9 @@ class SidebarNode(LayoutNode):
         mobile_behavior = str(resolved.get("mobile_behavior", "hidden"))
         _validate(mobile_behavior, VALID_MOBILE_BEHAVIOR, "mobile_behavior", self.tag_name)
 
-        # Get navbar_fixed from context (set by context processor)
-        navbar_fixed = context.get("navbar_fixed", False)
+        # Get navbar_fixed from INSIGHT_UI config (set by context processor)
+        insight_ui_config = context.get("INSIGHT_UI", {})
+        navbar_fixed = insight_ui_config.get("navbar_fixed", False) if isinstance(insight_ui_config, dict) else False
 
         # Build template context
         template_context = {
