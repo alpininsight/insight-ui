@@ -1,0 +1,41 @@
+{
+  "$comment": "Required-verification subset, not the publish list. Release automation determines which package assets are published. This manifest lists the template-required Insight UI assets that a deployer must smoke-verify before enabling CDN delivery (issue #314). The deployer supplies cdn_base_url; full URL = <cdn_base_url>/<cdn_prefix>/<version>/<path>. See docs/cdn-delivery.md.",
+  "cdn_prefix": "insight-ui",
+  "url_template": "{cdn_base_url}/{cdn_prefix}/{version}/{path}",
+  "required": [
+    {
+      "path": "css/tailwind.min.css",
+      "loaded_by": "base.html (INSIGHT_UI.stylesheet)",
+      "condition": "always",
+      "must_contain_selectors": [
+        "lg:block",
+        "lg:hidden",
+        "lg:flex-row",
+        "lg:flex-nowrap",
+        "lg:w-fit",
+        "lg:py-3",
+        "lg:bg-transparent",
+        "lg:border-none",
+        "lg:shadow-none"
+      ]
+    },
+    { "path": "js/insight-ui-init.min.js", "loaded_by": "base.html", "condition": "always" },
+    { "path": "js/insight-ui-utils.min.js", "loaded_by": "base.html", "condition": "always" },
+    { "path": "js/insight-ui-state.min.js", "loaded_by": "base.html", "condition": "always" },
+    { "path": "js/insight-ui-websocket.min.js", "loaded_by": "base.html", "condition": "always" },
+    { "path": "js/insight-ui-debug.min.js", "loaded_by": "base.html", "condition": "always" },
+    { "path": "js/insight-ui-toc-generator.min.js", "loaded_by": "base.html", "condition": "always" }
+  ],
+  "conditional": [
+    {
+      "path": "css/prism.min.css",
+      "loaded_by": "base.html",
+      "condition": "INSIGHT_UI.load_prism = True"
+    },
+    {
+      "path": "js/insight-ui-demo-sandbox.min.js",
+      "loaded_by": "component demo templates",
+      "condition": "demo/sandbox pages only"
+    }
+  ]
+}
