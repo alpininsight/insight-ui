@@ -21,7 +21,7 @@
                 </div>
             {% endif %}
             <div class="flex-1">
-                <a {% if item.url %}href="{{ item.url }}"{% endif %}>
+                <a {% if item.request_url %}href="{{ item.request_url }}"{% endif %}>
                     {% if item.failed %}
                         <span class="block font-semibold text-insight-danger">{{ item.title }}</span>
                         <span class="block text-sm text-insight-danger-hover">{{ item.description }}</span>

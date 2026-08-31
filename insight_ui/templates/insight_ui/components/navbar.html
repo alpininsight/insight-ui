@@ -47,9 +47,9 @@
             {% for link in navbar_config.links %}
               {% if not link.need_auth or options.user.is_authenticated and not link.staff_only or options.user.is_staff %}
                 <li data-insight-nav>
-                  {% if link.url %}
+                  {% if link.request_url %}
                     <a
-                      href="{{ link.url }}"
+                      href="{{ link.request_url }}"
                       class="insight-nav-link flex gap-2 px-4 py-2 h-full text-sm whitespace-nowrap"
                       {% if link.active %}aria-current="page"{% endif %}
                       {% if link.external %}target="_blank" rel="noopener"{% endif %}

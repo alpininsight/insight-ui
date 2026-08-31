@@ -963,7 +963,7 @@ class TabNode(Node):
         tab_id: str,
         label: str,
         active: bool = False,
-        url: str = "",
+        request_url: str = "",
         icon: str = "",
     ) -> None:
         """Initialize the tab node."""
@@ -971,7 +971,7 @@ class TabNode(Node):
         self.tab_id = tab_id
         self.label = label
         self.active = active
-        self.url = url
+        self.request_url = request_url
         self.icon = icon
 
     def render(self, context: Context) -> str:
@@ -1003,8 +1003,8 @@ class TabsNode(Node):
     3. **HTMX mode** - Tabs with URLs load content via HTMX::
 
         {% tabs id="settings" label="Settings" %}
-            {% tab id="general" label="General" url="/settings/general" active=True %}{% endtab %}
-            {% tab id="security" label="Security" url="/settings/security" %}{% endtab %}
+            {% tab id="general" label="General" request_url="/settings/general" active=True %}{% endtab %}
+            {% tab id="security" label="Security" request_url="/settings/security" %}{% endtab %}
         {% endtabs %}
 
     """
@@ -1055,7 +1055,7 @@ class TabsNode(Node):
                     "id": tab.tag_id,
                     "label": tab.title,
                     "active": tab.active,
-                    "url": tab.url,
+                    "url": tab.request_url,
                     "icon": getattr(tab, "icon", ""),
                     "panel_id": f"{tag_id}-{tab.tag_id}",
                     "content": None,
@@ -1066,7 +1066,7 @@ class TabsNode(Node):
             # Block mode - data comes from inline {% tab %} blocks
             tag_id = str(resolved.get("id", f"tabs-{uuid.uuid4().hex[:8]}"))
             label = str(resolved.get("label", ""))
-            is_htmx = any(tab.url for tab in self.tab_nodes)
+            is_htmx = any(tab.request_url for tab in self.tab_nodes)
 
             # Ensure at least one tab is active
             has_active = any(tab.active for tab in self.tab_nodes)
@@ -1078,7 +1078,7 @@ class TabsNode(Node):
                     "id": tab.tab_id,
                     "label": tab.label,
                     "active": tab.active,
-                    "url": tab.url if is_htmx else "",
+                    "url": tab.request_url if is_htmx else "",
                     "icon": tab.icon,
                     "panel_id": f"{tag_id}-{tab.tab_id}",
                     # Content comes from internal template rendering, not user input
@@ -1160,7 +1160,7 @@ def do_tab(parser: Parser, token: Token) -> TabNode:
         tab_id=str(parsed_kwargs.get("id", f"tab-{uuid.uuid4().hex[:8]}")),
         label=str(parsed_kwargs.get("label", "Tab")),
         active=bool(parsed_kwargs.get("active", False)),
-        url=str(parsed_kwargs.get("url", "")),
+        request_url=str(parsed_kwargs.get("request_url", "")),
         icon=str(parsed_kwargs.get("icon", "")),
     )
 

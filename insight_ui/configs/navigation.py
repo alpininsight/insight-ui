@@ -45,7 +45,7 @@ class NavbarLinkConfig:
 
     Attributes:
         text: Label of the link.
-        url: The URL to be called when clicking on the link, if not opening a modal or dropdown menu.
+        request_url: The URL to be called when clicking on the link, if not opening a modal or dropdown menu.
         icon: An optional icon displayed before the text.
         need_auth: The link is only displayed for logged-in users.
         staff_only: The link is only displayed for administrators.
@@ -55,11 +55,11 @@ class NavbarLinkConfig:
     """
 
     __example__ = """
-        NavbarLinkConfig(text="Home", url=reverse("index"))
+        NavbarLinkConfig(text="Home", request_url=reverse("index"))
         """
 
     text: str = field(metadata={"doc": _("Label of the link.")})
-    url: str = field(
+    request_url: str = field(
         default="",
         metadata={"doc": _("The URL to be called when clicking on the link, if not opening a modal or dropdown menu.")},
     )
@@ -215,9 +215,9 @@ class NavbarConfig:
                 ),
             ),
             links=[
-                NavbarLinkConfig(text="Home", url=reverse("index")),
-                NavbarLinkConfig(text="About", url=reverse("about")),
-                NavbarLinkConfig(text="Admin", url=reverse("admin:index"), staff_only=True),
+                NavbarLinkConfig(text="Home", request_url=reverse("index")),
+                NavbarLinkConfig(text="About", request_url=reverse("about")),
+                NavbarLinkConfig(text="Admin", request_url=reverse("admin:index"), staff_only=True),
             ],
             usermenu=UserMenuConfig(
                 links=[
@@ -471,8 +471,8 @@ class FooterConfig:
                 text="A modern web application.",
             ),
             links=[
-                NavbarLinkConfig(text="Home", url=reverse("index")),
-                NavbarLinkConfig(text="Docs", url="https://docs.example.com"),
+                NavbarLinkConfig(text="Home", request_url=reverse("index")),
+                NavbarLinkConfig(text="Docs", request_url="https://docs.example.com"),
             ],
             contact=FooterContactConfig(
                 mail_url="support@example.com",
@@ -561,7 +561,7 @@ class StepperItemConfig:
     Attributes:
         title: Title of the step.
         description: Additional description of the step below the title.
-        url: URL called when the user clicks on the title of the step.
+        request_url: URL called when the user clicks on the title of the step.
         success: Displays a checkmark instead of the step number.
         failed: Displays an X instead of the step number.
         current: Highlights the title in color and makes the text pulse.
@@ -574,7 +574,9 @@ class StepperItemConfig:
 
     title: str = field(metadata={"doc": _("Title of the step.")})
     description: str = field(default="", metadata={"doc": _("Additional description of the step below the title.")})
-    url: str = field(default="", metadata={"doc": _("URL called when the user clicks on the title of the step.")})
+    request_url: str = field(
+        default="", metadata={"doc": _("URL called when the user clicks on the title of the step.")}
+    )
     success: bool = field(default=False, metadata={"doc": _("Displays a checkmark instead of the step number.")})
     failed: bool = field(default=False, metadata={"doc": _("Displays an X instead of the step number.")})
     current: bool = field(default=False, metadata={"doc": _("Highlights the title in color and makes the text pulse.")})
@@ -760,18 +762,18 @@ class TabConfig:
     Attributes:
         tag_id: Unique tag ID for identifying the element in JavaScript.
         title: Label of the tab button.
-        url: The URL to be called when the tab is clicked.
+        request_url: The URL to be called when the tab is clicked.
         active: Whether this tab is initially active.
 
     """
 
     __example__ = """
-        TabConfig(tag_id="general", title="General", url=reverse("conf_general"), active=True)
+        TabConfig(tag_id="general", title="General", request_url=reverse("conf_general"), active=True)
         """
 
     tag_id: str = field(metadata={"doc": _("Unique tag ID for identifying the element in JavaScript.")})
     title: str = field(metadata={"doc": _("Label of the tab button.")})
-    url: str = field(default="", metadata={"doc": _("The URL to be called when the tab is clicked.")})
+    request_url: str = field(default="", metadata={"doc": _("The URL to be called when the tab is clicked.")})
     active: bool = field(default=False, metadata={"doc": _("Whether this tab is initially active.")})
 
 
@@ -793,9 +795,9 @@ class TabsConfig:
             tag_id="settings-tabs",
             label="Settings",
             tabs=[
-                TabConfig(tag_id="general", title="General", url=reverse("conf_general"), active=True),
-                TabConfig(tag_id="security", title="Security", url=reverse("conf_security")),
-                TabConfig(tag_id="notifications", title="Notifications", url=reverse("conf_notifications")),
+                TabConfig(tag_id="general", title="General", request_url=reverse("conf_general"), active=True),
+                TabConfig(tag_id="security", title="Security", request_url=reverse("conf_security")),
+                TabConfig(tag_id="notifications", title="Notifications", request_url=reverse("conf_notifications")),
             ],
         )
         """

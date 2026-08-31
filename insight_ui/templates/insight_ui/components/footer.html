@@ -17,7 +17,7 @@
                 <ul>
                     {% for link in footer_config.links %}
                         <li>
-                            <a href="{{ link.url }}" class="inline-flex gap-1 text-secondary text-sm hover:text-insight-text-link-hover dark:hover:text-insight-text-link-hover">
+                            <a href="{{ link.request_url }}" class="inline-flex gap-1 text-secondary text-sm hover:text-insight-text-link-hover dark:hover:text-insight-text-link-hover">
                                 {% if link.icon %}
                                     {% icon link.icon %}
                                 {% endif %}
