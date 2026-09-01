@@ -81,6 +81,7 @@ class FormConfig:
         fields: List of form field configurations.
         show_reset_button: Whether to show a reset button.
         request_url: Target URL for form submission.
+        method: HTTP method for form submission (GET or POST).
         htmx_config: HTMX configuration for AJAX submission.
 
     """
@@ -108,6 +109,7 @@ class FormConfig:
     )
     show_reset_button: bool = field(default=False, metadata={"doc": _("Whether to show a reset button.")})
     request_url: str = field(default="", metadata={"doc": _("Target URL for form submission.")})
+    method: str = field(default="POST", metadata={"doc": _("HTTP method for form submission (GET or POST).")})
     htmx_config: HtmxConfig | None = field(default=None, metadata={"doc": _("HTMX configuration for AJAX submission.")})
 
     def __post_init__(self) -> None:

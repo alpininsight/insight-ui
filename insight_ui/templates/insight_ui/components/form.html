@@ -3,14 +3,14 @@
 <form
   {% if form_config.tag_id %}id="{{ form_config.tag_id }}"{% endif %}
   {% if form_config.htmx_config %}
-    hx-post="{{ form_config.request_url }}"
+    hx-{{ form_config.htmx_config.method }}="{{ form_config.htmx_config.request_url }}"
     hx-target="{{ form_config.htmx_config.target }}"
     hx-swap="{{ form_config.htmx_config.swap|default:'innerHTML' }}"
     hx-trigger="submit"
     hx-indicator=".htmx-indicator"
   {% else %}
     action="{{ form_config.request_url }}"
-    method="post"
+    method="{{ form_config.method }}"
   {% endif %}
   class="space-y-6"
 >
