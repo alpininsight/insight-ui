@@ -9,9 +9,11 @@ from django.utils.translation import gettext_lazy as _
 from insight_ui.configs.types import (
     HtmxMethod,
     HtmxSwapMethod,
+    IconColor,
     Size,
     validate_htmx_method,
     validate_htmx_swap_method,
+    validate_icon_color,
     validate_size,
 )
 
@@ -42,21 +44,24 @@ class IconConfig:
     Attributes:
         name: Name of the Insight UI icon.
         size: Icon size: 'xl', 'l', 'm', 's', or 'xs'.
-        color: Color Hex-Code of the icon.
+        color: Color token for the icon (e.g., 'primary', 'danger', 'text-secondary').
 
     """
 
     __example__ = """
-        IconConfig(name="home", size="s", color="#123456")
+        IconConfig(name="home", size="s", color="primary")
         """
 
     name: str = field(metadata={"doc": _("Name of the Insight UI icon.")})
     size: Size = field(default="m", metadata={"doc": _("Icon size: 'xl', 'l', 'm', 's', or 'xs'.")})
-    color: str = field(default="", metadata={"doc": _("Color Hex-Code of the icon.")})
+    color: IconColor = field(
+        default="", metadata={"doc": _("Color token for the icon (e.g., 'primary', 'danger', 'text-secondary').")}
+    )
 
     def __post_init__(self) -> None:
-        """Validate size after initialization."""
+        """Validate size and color after initialization."""
         validate_size(self.size, "size")
+        validate_icon_color(self.color, "color")
 
 
 @dataclass

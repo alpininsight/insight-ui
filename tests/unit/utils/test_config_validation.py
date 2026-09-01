@@ -14,6 +14,7 @@ from insight_ui.configs import (
     HTML_INPUT_TYPE_VALUES,
     HTMX_METHOD_VALUES,
     HTMX_SWAP_METHOD_VALUES,
+    ICON_COLOR_VALUES,
     INLINE_POSITION_VALUES,
     SIZE_VALUES,
     SLIDER_LEGEND_MODE_VALUES,
@@ -48,6 +49,7 @@ from insight_ui.configs import (
     validate_html_input_type,
     validate_htmx_method,
     validate_htmx_swap_method,
+    validate_icon_color,
     validate_inline_position,
     validate_size,
     validate_slider_legend_mode,
@@ -180,6 +182,97 @@ def test_minimal_stepper_config_default_icon_size() -> None:
     """Test MinimalStepperConfig has correct default icon_size."""
     config = MinimalStepperConfig()
     assert config.icon_size == "xs"
+
+
+# =============================================================================
+# Icon Color Validation
+# =============================================================================
+
+
+# --- ICON_COLOR_VALUES constant ----------------------------------------------
+
+
+def test_icon_color_values_contains_expected_values() -> None:
+    """Test that ICON_COLOR_VALUES contains all expected color values."""
+    expected = (
+        "",
+        "primary",
+        "secondary",
+        "success",
+        "warning",
+        "danger",
+        "info",
+        "text-primary",
+        "text-secondary",
+        "text-hint",
+        "text-link",
+    )
+    assert expected == ICON_COLOR_VALUES
+
+
+def test_icon_color_values_is_tuple() -> None:
+    """Test that ICON_COLOR_VALUES is immutable (tuple)."""
+    assert isinstance(ICON_COLOR_VALUES, tuple)
+
+
+def test_icon_color_values_includes_empty_string() -> None:
+    """Test that ICON_COLOR_VALUES includes empty string for inheritance."""
+    assert "" in ICON_COLOR_VALUES
+
+
+# --- validate_icon_color function --------------------------------------------
+
+
+def test_validate_icon_color_accepts_valid_values() -> None:
+    """Test that validate_icon_color accepts all valid icon color values."""
+    for color in ICON_COLOR_VALUES:
+        validate_icon_color(color)  # Should not raise
+
+
+def test_validate_icon_color_rejects_invalid_value() -> None:
+    """Test that validate_icon_color raises ValueError for invalid colors."""
+    with pytest.raises(ValueError, match="Invalid color 'invalid'"):
+        validate_icon_color("invalid")
+
+
+def test_validate_icon_color_rejects_hex_code() -> None:
+    """Test that validate_icon_color rejects hex color codes."""
+    with pytest.raises(ValueError, match="Invalid color '#FF0000'"):
+        validate_icon_color("#FF0000")
+
+
+def test_validate_icon_color_custom_field_name() -> None:
+    """Test that validate_icon_color uses the custom field name in error messages."""
+    with pytest.raises(ValueError, match="Invalid icon_color 'bad'"):
+        validate_icon_color("bad", field_name="icon_color")
+
+
+# --- IconConfig color validation ---------------------------------------------
+
+
+def test_icon_config_accepts_valid_color() -> None:
+    """Test IconConfig accepts valid color values."""
+    for color in ICON_COLOR_VALUES:
+        config = IconConfig(name="test", color=color)
+        assert config.color == color
+
+
+def test_icon_config_rejects_invalid_color() -> None:
+    """Test IconConfig raises ValueError for invalid color."""
+    with pytest.raises(ValueError, match="Invalid color"):
+        IconConfig(name="test", color="invalid")
+
+
+def test_icon_config_rejects_hex_color() -> None:
+    """Test IconConfig rejects hex color codes (use tokens instead)."""
+    with pytest.raises(ValueError, match="Invalid color"):
+        IconConfig(name="test", color="#4183EA")
+
+
+def test_icon_config_default_color() -> None:
+    """Test IconConfig has correct default color (empty = inherit)."""
+    config = IconConfig(name="test")
+    assert config.color == ""
 
 
 # =============================================================================

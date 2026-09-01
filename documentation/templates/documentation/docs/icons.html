@@ -36,6 +36,8 @@
                 &lcub;% load insight_tags %&rcub;
 
                 &lcub;% icon name="home" size="m" %&rcub;
+                &lcub;% icon name="check" color="success" %&rcub;
+                &lcub;% icon name="exclamation-triangle" color="warning" size="l" %&rcub;
             </div>
             {% section %}
                 <h3>{% trans "Parameter" %}</h3>
@@ -66,7 +68,7 @@
                         data-icon-name="{{ icon.name }}"
                         onclick="copyIconCode(this)"
                     >
-                        <div class="text-secondary">{{ icon.svg|safe }}</div>
+                        <div class="text-primary">{{ icon.svg|safe }}</div>
                         <span class="text-xs text-secondary text-center whitespace-normal transition-colors group-hover:text-primary">{{ icon.name }}</span>
                         <span class="flex absolute top-0 justify-center items-center size-full text-base text-insight-primary whitespace-nowrap bg-insight-bg-raised rounded-insight-control opacity-0 transition-opacity pointer-events-none" data-copied-tooltip>{% trans "Copied!" %}</span>
                     </button>
@@ -111,6 +113,14 @@
             <h2>{% trans "Sizes" %}</h2>
             <p>{% trans "All icons can be used in different sizes:" %}</p>
             {% table config=size_table %}
+        {% endsection %}
+        {% section gap="m" %}
+            <h2>{% trans "Colors" %}</h2>
+            <p>{% trans "Icons can be colored using design tokens. The color is applied via CSS classes, ensuring consistency with the design system." %}</p>
+            <h3>{% trans "Semantic Colors" %}</h3>
+            {% table config=color_table %}
+            <h3>{% trans "Text Colors" %}</h3>
+            {% table config=text_color_table %}
         {% endsection %}
         {% section gap="m" %}
             <h2>{% trans "Adding Custom Icons" %}</h2>

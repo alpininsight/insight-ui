@@ -157,12 +157,13 @@ def get_icon_context() -> dict:
     """Serve context for the icon detailpage.
 
     Returns:
-        Context dict with icon parameters, icons list, and size table.
+        Context dict with icon parameters, icons list, size table, and color table.
 
     """
     main_params = [
         ParameterDetails("name", "str", _("Name of the icon (see grid below)."), "question-mark"),
-        ParameterDetails("size", "str", _("Size of the icon. Possible values are: 'xl', 'l', 'm', 's' and 'xs'."), "m"),
+        ParameterDetails("size", "Size", _("Size of the icon."), "m"),
+        ParameterDetails("color", "IconColor", _("Color token for the icon. Empty string inherits from parent."), '""'),
     ]
 
     # Extract icon names from icons.html template
@@ -195,7 +196,37 @@ def get_icon_context() -> dict:
         ],
     )
 
-    return {"main_params": main_params, "icons": icons, "size_table": size_table}
+    # Color tokens for icons (excluding empty string which inherits)
+    color_tokens = ["primary", "secondary", "success", "warning", "danger", "info"]
+    text_color_tokens = ["text-primary", "text-secondary", "text-hint", "text-link"]
+
+    color_table = TableConfig(
+        color_tokens,
+        [
+            [
+                render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("home", "l", color)})
+                for color in color_tokens
+            ]
+        ],
+    )
+
+    text_color_table = TableConfig(
+        text_color_tokens,
+        [
+            [
+                render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("home", "l", color)})
+                for color in text_color_tokens
+            ]
+        ],
+    )
+
+    return {
+        "main_params": main_params,
+        "icons": icons,
+        "size_table": size_table,
+        "color_table": color_table,
+        "text_color_table": text_color_table,
+    }
 
 
 def get_demo_container_context() -> dict:

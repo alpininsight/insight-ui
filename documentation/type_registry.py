@@ -1,104 +1,21 @@
 """Type registry for component parameter documentation.
 
 This module provides a centralized registry of type definitions used in component
-parameters. It serves as the single source of truth for type information displayed
-in the parameter tables and the types documentation page.
+parameters. It imports the TYPE_REGISTRY from insight_ui.configs.types as the
+single source of truth.
 """
 
 from django.utils.translation import gettext_lazy as _
-from insight_ui.configs import types
+from insight_ui.configs.types import TYPE_REGISTRY as _TYPE_REGISTRY
 
-# Type definitions registry - single source of truth for documentation
-# Each entry contains:
-#   - anchor: URL fragment for linking to types page
-#   - values: Tuple of allowed values
-#   - description: Human-readable description
+# Build the documentation registry with translated descriptions and anchors
 TYPE_DEFINITIONS: dict[str, dict] = {
-    "Size": {
-        "anchor": "size",
-        "values": types.SIZE_VALUES,
-        "description": _("Standard size scale used for spacing, icons, and component dimensions."),
-    },
-    "ColorType": {
-        "anchor": "colortype",
-        "values": types.COLOR_TYPE_VALUES,
-        "description": _("Base color palette for semantic coloring of components."),
-    },
-    "BadgeType": {
-        "anchor": "badgetype",
-        "values": types.BADGE_TYPE_VALUES,
-        "description": _("Extended color palette for badges, includes 'disabled' state."),
-    },
-    "ButtonType": {
-        "anchor": "buttontype",
-        "values": types.BUTTON_TYPE_VALUES,
-        "description": _("Extended color palette for buttons, includes 'disabled' and 'link' variants."),
-    },
-    "AlertType": {
-        "anchor": "alerttype",
-        "values": types.ALERT_TYPE_VALUES,
-        "description": _("Semantic types for alerts and notifications."),
-    },
-    "StepStatus": {
-        "anchor": "stepstatus",
-        "values": types.STEP_STATUS_VALUES,
-        "description": _("Status values for stepper components indicating step progress."),
-    },
-    "HtmlButtonType": {
-        "anchor": "htmlbuttontype",
-        "values": types.HTML_BUTTON_TYPE_VALUES,
-        "description": _("Native HTML button type attribute values."),
-    },
-    "HtmlInputType": {
-        "anchor": "htmlinputtype",
-        "values": types.HTML_INPUT_TYPE_VALUES,
-        "description": _("Native HTML input type attribute values."),
-    },
-    "FormFieldType": {
-        "anchor": "formfieldtype",
-        "values": types.FORM_FIELD_TYPE_VALUES,
-        "description": _("High-level form field types for the form component."),
-    },
-    "CornerPosition": {
-        "anchor": "cornerposition",
-        "values": types.CORNER_POSITION_VALUES,
-        "description": _("Corner positions for ribbons, badges, and overlays."),
-    },
-    "InlinePosition": {
-        "anchor": "inlineposition",
-        "values": types.INLINE_POSITION_VALUES,
-        "description": _("Inline positions respecting text direction (RTL-aware)."),
-    },
-    "HtmxSwapMethod": {
-        "anchor": "htmxswapmethod",
-        "values": types.HTMX_SWAP_METHOD_VALUES,
-        "description": _("HTMX swap methods for content replacement."),
-    },
-    "HtmxMethod": {
-        "anchor": "htmxmethod",
-        "values": types.HTMX_METHOD_VALUES,
-        "description": _("HTTP methods for HTMX requests."),
-    },
-    "FilterFieldType": {
-        "anchor": "filterfieldtype",
-        "values": types.FILTER_FIELD_TYPE_VALUES,
-        "description": _("Field types for query builder and filter components."),
-    },
-    "GeoMapMarkerType": {
-        "anchor": "geomapmarkertype",
-        "values": types.GEO_MAP_MARKER_TYPE_VALUES,
-        "description": _("Marker types for the geo map component."),
-    },
-    "SliderLegendMode": {
-        "anchor": "sliderlegendmode",
-        "values": types.SLIDER_LEGEND_MODE_VALUES,
-        "description": _("Legend display modes for the range slider component."),
-    },
-    "ToggleViewType": {
-        "anchor": "toggleviewtype",
-        "values": types.TOGGLE_VIEW_TYPE_VALUES,
-        "description": _("View types for the toggle view component."),
-    },
+    name: {
+        "anchor": name.lower(),
+        "values": info["values"],
+        "description": _(info["description"]),
+    }
+    for name, info in _TYPE_REGISTRY.items()
 }
 
 
