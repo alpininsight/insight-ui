@@ -55,6 +55,17 @@
     --color-insight-secondary-soft-dark: #133A36;
     --color-insight-secondary-hover-dark: #51BCB0;
     --color-insight-secondary-active-dark: #75D1C5;
+    /*
+     * Components must not assume that every secondary surface carries white
+     * text. Product themes may use a light signal surface while keeping the
+     * same semantic ``secondary`` role. These aliases keep the component
+     * contract accessible without application-specific selector overrides.
+     */
+    --color-insight-secondary-foreground: #FFFFFF;
+    --color-insight-secondary-border: var(--color-insight-secondary);
+    --color-insight-secondary-border-hover: var(--color-insight-secondary-hover);
+    --color-insight-secondary-border-active: var(--color-insight-secondary-active);
+    --color-insight-secondary-text: var(--color-insight-secondary);
 
     /* Success color */
     --color-insight-success: #2EA55C;
@@ -504,7 +515,17 @@
         @apply bg-insight-primary border-insight-primary hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active;
     }
     .btn-secondary {
-        @apply bg-insight-secondary border-insight-secondary hover:bg-insight-secondary-hover active:bg-insight-secondary-active hover:border-insight-secondary-hover active:border-insight-secondary-active;
+        @apply bg-insight-secondary hover:bg-insight-secondary-hover active:bg-insight-secondary-active;
+        color: var(--color-insight-secondary-foreground);
+        border-color: var(--color-insight-secondary-border);
+    }
+    .btn-secondary:hover {
+        color: var(--color-insight-secondary-foreground);
+        border-color: var(--color-insight-secondary-border-hover);
+    }
+    .btn-secondary:active {
+        color: var(--color-insight-secondary-foreground);
+        border-color: var(--color-insight-secondary-border-active);
     }
     .btn-success {
         @apply bg-insight-success border-insight-success hover:bg-insight-success-hover active:bg-insight-success-active hover:border-insight-success-hover active:border-insight-success-active;
@@ -533,7 +554,17 @@
         @apply border-insight-primary text-insight-primary hover:text-white hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active;
     }
     .btn-outline-secondary {
-        @apply border-insight-secondary text-insight-secondary hover:text-white hover:bg-insight-secondary-hover active:bg-insight-secondary-active hover:border-insight-secondary-hover active:border-insight-secondary-active;
+        @apply hover:bg-insight-secondary-hover active:bg-insight-secondary-active;
+        color: var(--color-insight-secondary-text);
+        border-color: var(--color-insight-secondary-border);
+    }
+    .btn-outline-secondary:hover {
+        color: var(--color-insight-secondary-foreground);
+        border-color: var(--color-insight-secondary-border-hover);
+    }
+    .btn-outline-secondary:active {
+        color: var(--color-insight-secondary-foreground);
+        border-color: var(--color-insight-secondary-border-active);
     }
     .btn-outline-success {
         @apply border-insight-success text-insight-success hover:text-white hover:bg-insight-success-hover active:bg-insight-success-active hover:border-insight-success-hover active:border-insight-success-active;

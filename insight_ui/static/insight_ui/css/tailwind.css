@@ -116,6 +116,11 @@
     --color-insight-secondary-soft-dark: #133A36;
     --color-insight-secondary-hover-dark: #51BCB0;
     --color-insight-secondary-active-dark: #75D1C5;
+    --color-insight-secondary-foreground: #FFFFFF;
+    --color-insight-secondary-border: var(--color-insight-secondary);
+    --color-insight-secondary-border-hover: var(--color-insight-secondary-hover);
+    --color-insight-secondary-border-active: var(--color-insight-secondary-active);
+    --color-insight-secondary-text: var(--color-insight-secondary);
     --color-insight-success: #2EA55C;
     --color-insight-success-soft: #E0F5E5;
     --color-insight-success-hover: #009144;
@@ -837,9 +842,6 @@
   .h-64 {
     height: calc(var(--spacing) * 64);
   }
-  .h-72 {
-    height: calc(var(--spacing) * 72);
-  }
   .h-80 {
     height: calc(var(--spacing) * 80);
   }
@@ -1239,9 +1241,6 @@
   .justify-items-stretch {
     justify-items: stretch;
   }
-  .gap-0 {
-    gap: 0px;
-  }
   .gap-0\.5 {
     gap: calc(var(--spacing) * 0.5);
   }
@@ -1254,38 +1253,17 @@
   .gap-2 {
     gap: calc(var(--spacing) * 2);
   }
-  .gap-2\.5 {
-    gap: calc(var(--spacing) * 2.5);
-  }
   .gap-3 {
     gap: calc(var(--spacing) * 3);
-  }
-  .gap-3\.5 {
-    gap: calc(var(--spacing) * 3.5);
   }
   .gap-4 {
     gap: calc(var(--spacing) * 4);
   }
-  .gap-5 {
-    gap: calc(var(--spacing) * 5);
-  }
   .gap-6 {
     gap: calc(var(--spacing) * 6);
   }
-  .gap-7 {
-    gap: calc(var(--spacing) * 7);
-  }
   .gap-8 {
     gap: calc(var(--spacing) * 8);
-  }
-  .gap-9 {
-    gap: calc(var(--spacing) * 9);
-  }
-  .gap-10 {
-    gap: calc(var(--spacing) * 10);
-  }
-  .gap-11 {
-    gap: calc(var(--spacing) * 11);
   }
   .gap-12 {
     gap: calc(var(--spacing) * 12);
@@ -1298,9 +1276,6 @@
   }
   .gap-insight-s {
     gap: var(--spacing-insight-s);
-  }
-  .gap-insight-xl {
-    gap: var(--spacing-insight-xl);
   }
   .gap-insight-xs {
     gap: var(--spacing-insight-xs);
@@ -1446,10 +1421,6 @@
   }
   .rounded-xl {
     border-radius: var(--radius-xl);
-  }
-  .rounded-s {
-    border-start-start-radius: 0.25rem;
-    border-end-start-radius: 0.25rem;
   }
   .rounded-s-insight-control {
     border-start-start-radius: var(--radius-insight-control);
@@ -1917,9 +1888,6 @@
   }
   .p-insight-s {
     padding: var(--spacing-insight-s);
-  }
-  .p-insight-xl {
-    padding: var(--spacing-insight-xl);
   }
   .p-insight-xs {
     padding: var(--spacing-insight-xs);
@@ -3557,24 +3525,25 @@
     }
   }
   .btn-secondary {
-    border-color: var(--color-insight-secondary);
     background-color: var(--color-insight-secondary);
-    &:hover {
-      @media (hover: hover) {
-        border-color: var(--color-insight-secondary-hover);
-      }
-    }
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-insight-secondary-hover);
       }
     }
     &:active {
-      border-color: var(--color-insight-secondary-active);
-    }
-    &:active {
       background-color: var(--color-insight-secondary-active);
     }
+    color: var(--color-insight-secondary-foreground);
+    border-color: var(--color-insight-secondary-border);
+  }
+  .btn-secondary:hover {
+    color: var(--color-insight-secondary-foreground);
+    border-color: var(--color-insight-secondary-border-hover);
+  }
+  .btn-secondary:active {
+    color: var(--color-insight-secondary-foreground);
+    border-color: var(--color-insight-secondary-border-active);
   }
   .btn-success {
     border-color: var(--color-insight-success);
@@ -3732,29 +3701,24 @@
     }
   }
   .btn-outline-secondary {
-    border-color: var(--color-insight-secondary);
-    color: var(--color-insight-secondary);
-    &:hover {
-      @media (hover: hover) {
-        border-color: var(--color-insight-secondary-hover);
-      }
-    }
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-insight-secondary-hover);
       }
     }
-    &:hover {
-      @media (hover: hover) {
-        color: var(--color-white);
-      }
-    }
-    &:active {
-      border-color: var(--color-insight-secondary-active);
-    }
     &:active {
       background-color: var(--color-insight-secondary-active);
     }
+    color: var(--color-insight-secondary-text);
+    border-color: var(--color-insight-secondary-border);
+  }
+  .btn-outline-secondary:hover {
+    color: var(--color-insight-secondary-foreground);
+    border-color: var(--color-insight-secondary-border-hover);
+  }
+  .btn-outline-secondary:active {
+    color: var(--color-insight-secondary-foreground);
+    border-color: var(--color-insight-secondary-border-active);
   }
   .btn-outline-success {
     border-color: var(--color-insight-success);
