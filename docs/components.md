@@ -61,6 +61,20 @@ Self-contained UI elements with specific behavior:
 {% badge label="New" type="info" %}
 ```
 
+### Site-wide announcement
+
+Render a concise, non-dismissible message above an application's navigation.
+The component uses the semantic primary surface and its foreground token, so a
+consumer theme can change the palette without copying the component CSS.
+
+```django
+{% announcement
+    message="This service is in beta."
+    link_label="Contact us"
+    link_url="mailto:contact@example.com"
+%}
+```
+
 ### Layout Tags
 
 Structural primitives for page composition (require closing tags):

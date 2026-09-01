@@ -27,6 +27,7 @@ from insight_ui.configs import (
     AccordionConfig,
     AlertConfig,
     AlertType,
+    AnnouncementConfig,
     AppCardConfig,
     ArticleConfig,
     BadgeConfig,
@@ -893,6 +894,21 @@ def chat(config: ChatConfig | None = None, *, request_url: str | _Unset = UNSET)
 #   Popup Tags
 #
 # =============================================================
+
+
+@register.inclusion_tag("insight_ui/components/announcement.html")
+def announcement(
+    config: AnnouncementConfig | None = None,
+    *,
+    tag_id: str | _Unset = UNSET,
+    message: str | _Unset = UNSET,
+    link_label: str | _Unset = UNSET,
+    link_url: str | _Unset = UNSET,
+    aria_label: str | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a site-wide announcement bar above the navigation."""
+    config = build_config(AnnouncementConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    return {"announcement_config": config}
 
 
 @register.inclusion_tag("insight_ui/components/alert.html")

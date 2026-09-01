@@ -20,6 +20,7 @@ from insight_ui.configs import (
     STEP_STATUS_VALUES,
     TOGGLE_VIEW_TYPE_VALUES,
     AlertConfig,
+    AnnouncementConfig,
     BadgeConfig,
     BrandMarkConfig,
     ButtonConfig,
@@ -434,6 +435,18 @@ def test_minimal_stepper_config_default_current_step_status() -> None:
 
 
 # =============================================================================
+# Announcement configuration
+
+
+def test_announcement_config_defaults_to_empty_optional_values() -> None:
+    """Announcement configuration keeps optional metadata empty by default."""
+    config = AnnouncementConfig(message="Beta service")
+
+    assert config.message == "Beta service"
+    assert config.link_label == ""
+    assert config.link_url == ""
+
+
 # Alert Type Validation
 # =============================================================================
 

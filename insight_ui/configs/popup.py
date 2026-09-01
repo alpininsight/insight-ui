@@ -9,6 +9,38 @@ from insight_ui.configs.types import AlertType, validate_alert_type
 
 
 @dataclass
+class AnnouncementConfig:
+    """Configuration for a site-wide announcement bar.
+
+    Renders a concise, non-dismissible message above the application
+    navigation. An optional link lets each consumer provide its own call to
+    action while preserving a consistent semantic structure.
+
+    Attributes:
+        tag_id: Optional unique HTML ID for the announcement landmark.
+        message: The announcement message.
+        link_label: Visible label for the optional link.
+        link_url: Destination for the optional link.
+        aria_label: Accessible name for the announcement landmark.
+
+    """
+
+    __example__ = """
+        AnnouncementConfig(
+            message="This service is in beta.",
+            link_label="Contact us",
+            link_url="mailto:contact@example.com",
+        )
+    """
+
+    tag_id: str = field(default="", metadata={"doc": _("Optional unique HTML ID for the announcement landmark.")})
+    message: str = field(default="", metadata={"doc": _("The announcement message.")})
+    link_label: str = field(default="", metadata={"doc": _("Visible label for the optional link.")})
+    link_url: str = field(default="", metadata={"doc": _("Destination for the optional link.")})
+    aria_label: str = field(default="", metadata={"doc": _("Accessible name for the announcement landmark.")})
+
+
+@dataclass
 class AlertConfig:
     """Configuration for the alert component.
 

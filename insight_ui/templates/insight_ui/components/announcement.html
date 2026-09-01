@@ -1,0 +1,14 @@
+{% load i18n %}
+
+<aside
+  {% if announcement_config.tag_id %}id="{{ announcement_config.tag_id }}"{% endif %}
+  class="insight-announcement"
+  {% if announcement_config.aria_label %}aria-label="{{ announcement_config.aria_label }}"{% else %}aria-label="{% translate 'Announcement' %}"{% endif %}
+>
+  <p>
+    {{ announcement_config.message }}
+    {% if announcement_config.link_label and announcement_config.link_url %}
+      <a href="{{ announcement_config.link_url }}">{{ announcement_config.link_label }}</a>
+    {% endif %}
+  </p>
+</aside>
