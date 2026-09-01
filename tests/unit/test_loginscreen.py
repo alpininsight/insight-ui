@@ -46,7 +46,7 @@ def test_login_screen_with_logo(mock_form: dict) -> None:
     html = render_to_string("insight_ui/login.html", context)
 
     assert "<img" in html
-    assert 'src="/static/insight_ui/svg/ai-logo.svg"' in html
+    assert 'src="/static/insight_ui/svg/insight-ui-logo.svg"' in html
     assert 'alt="Insight UI Logo"' in html
     assert 'style="height: 8rem"' in html
 

@@ -24,7 +24,10 @@ class TestNavbar(TemplateTagsTestCase):
                 mark=BrandMarkConfig(
                     primary_text="Insight UI",
                     logo=LogoConfig(
-                        "insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="2rem"
+                        "insight_ui/svg/insight-ui-logo.svg",
+                        "insight_ui/svg/insight-ui-logo.svg",
+                        "Insight UI Logo",
+                        height="2rem",
                     ),
                 ),
             ),
@@ -184,7 +187,10 @@ class TestNavbar(TemplateTagsTestCase):
                     primary_text="Insight",
                     secondary_text="UI",
                     logo=LogoConfig(
-                        "insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="2rem"
+                        "insight_ui/svg/insight-ui-logo.svg",
+                        "insight_ui/svg/insight-ui-logo.svg",
+                        "Insight UI Logo",
+                        height="2rem",
                     ),
                 ),
             )

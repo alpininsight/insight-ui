@@ -14,7 +14,7 @@ class TestLogo(TemplateTagsTestCase):
         """SVG logo assets should render as static image tags."""
         template_string = """
         {% load insight_tags %}
-        {% logo url="insight_ui/svg/ai-logo.svg" alt="Insight UI Logo" height="3rem" %}
+        {% logo url="insight_ui/svg/insight-ui-logo.svg" alt="Insight UI Logo" height="3rem" %}
         """
         rendered = self.render_template(template_string)
         soup = BeautifulSoup(rendered, "html.parser")
@@ -22,7 +22,7 @@ class TestLogo(TemplateTagsTestCase):
         logo = soup.find("img")
         assert logo is not None
         assert logo.name == "img"
-        assert logo.get("src") == "/static/insight_ui/svg/ai-logo.svg"
+        assert logo.get("src") == "/static/insight_ui/svg/insight-ui-logo.svg"
         assert logo.get("alt") == "Insight UI Logo"
         assert "height: 3rem" in logo.get("style")
 

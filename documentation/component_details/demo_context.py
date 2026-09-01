@@ -213,7 +213,10 @@ def get_status_screen_context() -> dict:
                 "Insight",
                 "UI",
                 LogoConfig(
-                    "insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="3rem"
+                    "insight_ui/svg/insight-ui-logo.svg",
+                    "insight_ui/svg/insight-ui-logo.svg",
+                    "Insight UI Logo",
+                    height="3rem",
                 ),
             ),
             _("Session ready"),
@@ -229,7 +232,10 @@ def get_status_screen_context() -> dict:
                 "Insight",
                 "UI",
                 LogoConfig(
-                    "insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="3rem"
+                    "insight_ui/svg/insight-ui-logo.svg",
+                    "insight_ui/svg/insight-ui-logo.svg",
+                    "Insight UI Logo",
+                    height="3rem",
                 ),
             ),
             _("What happened?"),
@@ -689,7 +695,7 @@ def get_logo_context() -> dict:
     """Serve data for logo detailpage."""
     return {
         "logo_svg_config": LogoConfig(
-            "insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="3rem"
+            "insight_ui/svg/insight-ui-logo.svg", "insight_ui/svg/insight-ui-logo.svg", "Insight UI Logo", height="3rem"
         ),
         "logo_image_config": LogoConfig(
             "insight_ui/favicon/android-chrome-192x192.png", alt="Insight UI app icon", height="3rem"
@@ -705,12 +711,22 @@ def get_brand_mark_context() -> dict:
         "brand_mark_default": BrandMarkConfig(
             "Alpin Insight",
             "Solutions",
-            LogoConfig("insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="3rem"),
+            LogoConfig(
+                "insight_ui/svg/insight-ui-logo.svg",
+                "insight_ui/svg/insight-ui-logo.svg",
+                "Insight UI Logo",
+                height="3rem",
+            ),
         ),
         "brand_mark_end": BrandMarkConfig(
             "Alpin Insight",
             "Platform",
-            LogoConfig("insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="3rem"),
+            LogoConfig(
+                "insight_ui/svg/insight-ui-logo.svg",
+                "insight_ui/svg/insight-ui-logo.svg",
+                "Insight UI Logo",
+                height="3rem",
+            ),
             "end",
         ),
     }

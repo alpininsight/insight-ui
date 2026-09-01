@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320" role="img" aria-labelledby="title desc">
+  <title id="title">Insight UI adaptives Favicon</title>
+  <desc id="desc">Das Favicon passt Hintergrund und neutralen Baustein automatisch an das helle oder dunkle Farbschema an.</desc>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --background: #F7F6F2;
+      --green: #0B7459;
+      --blue: #2F73FF;
+      --neutral: #202020;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background: #071F1A;
+        --neutral: #BFD8D0;
+      }
+    }
+  </style>
+
+  <rect width="320" height="320" rx="24" fill="var(--background)"/>
+  <g transform="translate(32 32)">
+    <path d="M13 0h44q7 0 7 7v242q0 7-7 7H13c-7.18 0-13-5.82-13-13V13C0 5.82 5.82 0 13 0Z" fill="var(--green)"/>
+    <path d="M89 0h95c40 0 72 32 72 72v7q0 7-7 7H89q-7 0-7-7V7q0-7 7-7Z" fill="var(--blue)"/>
+    <rect x="82" y="104" width="66" height="66" rx="13" fill="none" stroke="var(--blue)" stroke-width="5"/>
+    <circle cx="129" cy="124" r="7" fill="var(--blue)"/>
+    <circle cx="101" cy="150" r="7" fill="var(--blue)"/>
+    <rect x="82" y="188" width="66" height="68" rx="7" fill="var(--neutral)"/>
+    <path d="M173 104h76q7 0 7 7v89c0 31-25 56-56 56h-27q-7 0-7-7V111q0-7 7-7Z" fill="var(--green)"/>
+  </g>
+</svg>

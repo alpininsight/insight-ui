@@ -12,10 +12,9 @@
 
         <!-- Favicon -->
         <link rel="manifest" href="{% static INSIGHT_UI.webmanifest %}">
-        <link rel="icon" href="{% static INSIGHT_UI.favicon %}" type="image/x-icon">
+        <link rel="icon" href="{% static INSIGHT_UI.favicon_svg  %}" type="image/svg+xml">
+        <link rel="icon" href="{% static INSIGHT_UI.favicon %}" sizes="any">
         <link rel="apple-touch-icon" sizes="180x180" href="{% static INSIGHT_UI.apple_touch_icon %}">
-        <link rel="icon" type="image/png" sizes="32x32" href="{% static INSIGHT_UI.favicon_32 %}">
-        <link rel="icon" type="image/png" sizes="16x16" href="{% static INSIGHT_UI.favicon_16 %}">
         <link rel="mask-icon" href="{% static INSIGHT_UI.safari_mask_icon %}" color="{{ INSIGHT_UI.safari_mask_icon_color }}">
         <meta name="msapplication-TileColor" content="{{ INSIGHT_UI.msapplication_TileColor }}">
         <meta name="theme-color" content="{{ INSIGHT_UI.theme_color }}">
