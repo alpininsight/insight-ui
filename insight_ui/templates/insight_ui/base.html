@@ -71,7 +71,7 @@
 
         {% block extra_head %}{% endblock %}
     </head>
-    <body class="flex flex-col min-h-screen size-full text-insight-text-primary bg-insight-bg-base" hx-indicator="#loading-indicator">
+    <body class="flex flex-col min-h-screen size-full text-insight-text-primary bg-insight-bg-base" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-indicator="#loading-indicator">
 
         {% block background_image %}
         {% endblock background_image %}
