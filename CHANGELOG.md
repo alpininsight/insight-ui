@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Features
+
+- **button:** Support theme-specific secondary foregrounds
+
 ### Miscellaneous
 
 - **pre-commit:** Autoupdate hooks
