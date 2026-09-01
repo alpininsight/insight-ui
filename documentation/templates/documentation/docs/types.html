@@ -70,7 +70,7 @@
                         <h4 data-toc-ignore="true" class="font-medium text-sm text-secondary tracking-wide uppercase">{% trans "Values" %}</h4>
                         {% hbox gap="s" wrap="wrap" %}
                             {% for value in type_def.values %}
-                                <code class="inline-tag px-4">{{ value }}</code>
+                                <code class="inline-tag px-4">{{ value|default:"&quot;&quot;" }}</code>
                             {% endfor %}
                         {% endhbox %}
                     {% endvbox %}
