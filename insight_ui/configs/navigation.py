@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 from django.utils.translation import gettext_lazy as _
 
 from insight_ui.configs.base import HtmxConfig, IconConfig
+from insight_ui.configs.filter import SearchBarConfig
 from insight_ui.configs.input import DropdownConfig
 from insight_ui.configs.popup import ModalConfig
 from insight_ui.configs.types import Size, StepStatus, validate_size, validate_step_status
@@ -223,9 +224,7 @@ class NavbarConfig:
     Attributes:
         brand: Describes the brand mark of the application in the navbar.
         links: Contains and describes the navigation items of the navbar.
-        searchbar_request_url: The URL to be called when performing a search. If empty, no search bar will be displayed.
-        enable_doc_search: If True, enable client-side documentation search with Fuse.js in the navbar.
-        search_index_url: Optional URL for the client-side documentation search index.
+        search_bar: Configuration for the search bar. If None, no search bar is displayed.
         usermenu: Configuration for the user dropdown menu. None uses defaults (logout only).
         hide_login: If True, hide the login button for unauthenticated users.
         show_language_selector: Displays a dropdown menu for selecting the display language (if defined).
@@ -247,6 +246,10 @@ class NavbarConfig:
                 NavbarLinkConfig(text="About", request_url=reverse("about")),
                 NavbarLinkConfig(text="Admin", request_url=reverse("admin:index"), staff_only=True),
             ],
+            search_bar=SearchBarConfig(
+                placeholder="Search...",
+                enable_search=True,
+            ),
             usermenu=UserMenuConfig(
                 links=[
                     UserMenuLinkConfig(text="Profile", request_url=reverse("profile")),
@@ -262,15 +265,9 @@ class NavbarConfig:
     links: list[NavbarLinkConfig] = field(
         default_factory=list, metadata={"doc": _("Contains and describes the navigation items of the navbar.")}
     )
-    searchbar_request_url: str = field(
-        default="",
-        metadata={
-            "doc": _("The URL to be called when performing a search. If empty, no search bar will be displayed.")
-        },
-    )
-    enable_doc_search: bool = field(
-        default=False,
-        metadata={"doc": _("If True, enable client-side documentation search with Fuse.js in the navbar.")},
+    search_bar: SearchBarConfig | None = field(
+        default=None,
+        metadata={"doc": _("Configuration for the search bar. If None, no search bar is displayed.")},
     )
     usermenu: UserMenuConfig | None = field(
         default=None,
@@ -285,10 +282,6 @@ class NavbarConfig:
     )
     show_theme_toggle: bool = field(
         default=False, metadata={"doc": _("Displays a button to switch between the light and dark theme of the page.")}
-    )
-    search_index_url: str = field(
-        default="",
-        metadata={"doc": _("Optional URL for the client-side documentation search index.")},
     )
 
 

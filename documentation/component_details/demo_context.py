@@ -55,6 +55,7 @@ from insight_ui.configs import (
     RadioBlockConfig,
     RadioGroupConfig,
     RadioItemConfig,
+    SearchBarConfig,
     SelectConfig,
     SidebarCategoryConfig,
     SidebarDataConfig,
@@ -265,9 +266,11 @@ def get_navbar_context() -> dict:
                 NavbarLinkConfig(_("Test"), "/", need_auth=True),
                 NavbarLinkConfig(_("Test2"), "/", need_auth=True, staff_only=True),
             ],
-            searchbar_request_url="/",
-            enable_doc_search=True,
-            search_index_url=get_search_index_url(),
+            search_bar=SearchBarConfig(
+                placeholder=_("Search docs... (Ctrl+K)"),
+                enable_search=True,
+                search_index_url=get_search_index_url(),
+            ),
             usermenu=UserMenuConfig(
                 links=[
                     UserMenuLinkConfig(

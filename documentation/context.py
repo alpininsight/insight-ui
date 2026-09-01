@@ -22,6 +22,7 @@ from insight_ui.configs import (
     NavbarConfig,
     NavbarLinkConfig,
     RadioItemConfig,
+    SearchBarConfig,
     SidebarItemConfig,
     TableConfig,
 )
@@ -86,8 +87,11 @@ def get_navbar_context() -> dict:
         "nav_config": NavbarConfig(
             get_navbar_brand_defaults(),
             links,
-            enable_doc_search=True,
-            search_index_url=get_search_index_url(),
+            search_bar=SearchBarConfig(
+                placeholder=_("Search docs... (Ctrl+K)"),
+                enable_search=True,
+                search_index_url=get_search_index_url(),
+            ),
             show_language_selector=True,
             show_theme_toggle=True,
         )
