@@ -183,6 +183,7 @@
     --shadow-insight-raised: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     --shadow-insight-overlay: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
     --shadow-insight-focus: 0 0 0 2px var(--color-insight-primary);
+    --animate-blink: blink 2s step-start infinite;
     --animate-shake: shake 0.3s;
   }
 }
@@ -856,9 +857,6 @@
   }
   .h-\[calc\(100dvh-4rem\)\] {
     height: calc(100dvh - 4rem);
-  }
-  .h-\[calc\(100vh-4rem\)\] {
-    height: calc(100vh - 4rem);
   }
   .h-auto {
     height: auto;
@@ -1632,6 +1630,9 @@
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-insight-bg-base) 75%, transparent);
     }
+  }
+  .bg-insight-bg-overlay {
+    background-color: var(--color-insight-bg-overlay);
   }
   .bg-insight-bg-raised {
     background-color: var(--color-insight-bg-raised);
@@ -2515,6 +2516,9 @@
       .hover\:border-insight-primary\/50:hover {
         border-color: color-mix(in oklab, var(--color-insight-primary) 50%, transparent);
       }
+    }
+    .hover\:bg-gray-300:hover {
+      background-color: var(--color-gray-300);
     }
     .hover\:bg-insight-bg-base:hover {
       background-color: var(--color-insight-bg-base);
@@ -4569,6 +4573,14 @@
 @keyframes pulse {
   50% {
     opacity: 0.5;
+  }
+}
+@keyframes blink {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 100;
   }
 }
 @keyframes shake {
