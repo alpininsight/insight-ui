@@ -4,7 +4,7 @@
     "name": "Page Header",
     "category": "component",
     "group": "Layout",
-    "description": "The `page_header` component can be used to display a header featuring geometric decorations, along with a title, an optional description, and butto...",
+    "description": "Die `page_header` Komponente zeigt einen auffälligen Kopfbereich mit geometrischen Verzierungen, einem Titel, einer optionalen Beschreibung und Akt...",
     "keywords": [
       "page_header",
       "layout",
@@ -18,7 +18,7 @@
     "name": "Article",
     "category": "component",
     "group": "Layout",
-    "description": "The `article` component renders text content in newspaper style with multi-column CSS columns. The text flows automatically from one column to the ...",
+    "description": "Die `article` Komponente stellt Textinhalte im Zeitungsstil mit mehrspaltigen CSS-Spalten dar. Der Text fließt automatisch von einer Spalte in die ...",
     "keywords": [
       "article",
       "layout",
@@ -31,7 +31,7 @@
     "name": "Hero",
     "category": "component",
     "group": "Layout",
-    "description": "The `hero` component renders a prominent banner section with title, subtitle, description and Call-to-Action buttons.",
+    "description": "Die `hero` Komponente rendert einen auffälligen Bannerbereich für Landingpages. Sie kombiniert einen Titel, einen Untertitel, einen Beschreibungste...",
     "keywords": [
       "hero",
       "layout",
@@ -162,7 +162,7 @@
     "name": "Navbar",
     "category": "component",
     "group": "Navigation",
-    "description": "The `navbar` component provides a customizable navigation bar with various components. The navigation is fixed to the top edge of the browser windo...",
+    "description": "The `navbar` component provides a fixed navigation bar at the top of the page. It stays visible while scrolling and supports various navigation ele...",
     "keywords": [
       "navbar",
       "navigation",
@@ -175,7 +175,7 @@
     "name": "Sidebar",
     "category": "component",
     "group": "Navigation",
-    "description": "The `sidebar` component adds an area to the side of the window. The sidebar can be applied on the left or on the right side, as well as on both sid...",
+    "description": "Die `sidebar` Komponente stellt ein Navigationsfeld am Fensterrand bereit. Sie kann links, rechts oder beidseitig positioniert werden und unterstüt...",
     "keywords": [
       "sidebar",
       "navigation",
@@ -188,7 +188,7 @@
     "name": "Footer",
     "category": "component",
     "group": "Navigation",
-    "description": "A simple `footer` consisting of three columns with customizable content. The footer is an important part of every website; however, it does not onl...",
+    "description": "Die `footer` Komponente rendert eine dreispaltige Fußzeile mit anpassbarem Inhalt. Sie enthält in der Regel Navigationslinks, Kontaktdaten, rechtli...",
     "keywords": [
       "footer",
       "navigation",
@@ -201,7 +201,7 @@
     "name": "Breadcrumbs",
     "category": "component",
     "group": "Navigation",
-    "description": "`Breadcrumbs` are a secondary navigation used to provide the user with clarity about the hierarchical structure of a website. This is especially us...",
+    "description": "Die `Breadcrumbs` Komponente bietet eine sekundäre Navigation, die dem Benutzer seine Position innerhalb der Website-Hierarchie anzeigt. Sie ist be...",
     "keywords": [
       "breadcrumbs",
       "navigation",
@@ -214,7 +214,7 @@
     "name": "Stepper",
     "category": "component",
     "group": "Navigation",
-    "description": "The `stepper` component can be used to show the user the progress of a manual process. This refers, for example, to a typical checkout process. Thi...",
+    "description": "Die `stepper` Komponente zeigt den Fortschritt eines mehrstufigen Prozesses an. Zu den gängigen Anwendungsfällen zählen Checkout-Abläufe, Registrie...",
     "keywords": [
       "stepper",
       "navigation",
@@ -227,7 +227,7 @@
     "name": "Minimal Stepper",
     "category": "component",
     "group": "Navigation",
-    "description": "The `minimal_stepper` component can be used to graphically display progress in a multi-step process in a simple way.",
+    "description": "Die `minimal_stepper` Komponente zeigt eine kompakte Fortschrittsanzeige für mehrstufige Prozesse an. Sie bietet eine einfachere Alternative zur vo...",
     "keywords": [
       "minimal_stepper",
       "navigation",
@@ -241,7 +241,7 @@
     "name": "Bullet Point List",
     "category": "component",
     "group": "Navigation",
-    "description": "The `bullet_point_list` component can be used to display a sequence of tasks, process steps, or similar. The individual steps can contain a link, f...",
+    "description": "Die `bullet_point_list` Komponente zeigt eine Liste von Aufgaben, Prozessschritten oder ähnlichen Elementen an. Die einzelnen Elemente können Links...",
     "keywords": [
       "bullet_point_list",
       "navigation",
@@ -256,7 +256,7 @@
     "name": "Accordion",
     "category": "component",
     "group": "Navigation",
-    "description": "The `accordion` component can be used to add expandable sections for additional information. An accordion can have either one or multiple sections ...",
+    "description": "Die `accordion` Komponente zeigt erweiterbare Abschnitte zur Gliederung von Inhalten an. Wenn ein Abschnitt geöffnet wird, wird automatisch ein URL...",
     "keywords": [
       "accordion",
       "navigation",
@@ -269,7 +269,7 @@
     "name": "Tabs",
     "category": "component",
     "group": "Navigation",
-    "description": "The `tabs` component can be used to add tabs. This component consists of a series of buttons that swap the main content of the component via HTMX r...",
+    "description": "Die `tabs` Komponente gliedert Inhalte in umschaltbare Bereiche. Der Inhalt der Registerkarten wird über HTMX-Anfragen geladen, sodass Seitenbereic...",
     "keywords": [
       "tabs",
       "navigation",
@@ -282,7 +282,7 @@
     "name": "Button",
     "category": "component",
     "group": "Eingabe",
-    "description": "For a standard button, our UI framework provides a set of CSS classes. These allow buttons for different scenarios to be integrated with minimal ef...",
+    "description": "Die `button` Komponente bietet anpassbare Schaltflächen in verschiedenen Stilen und Größen. Die Schaltflächen unterstützen Icons und Tooltips und k...",
     "keywords": [
       "button",
       "input",
@@ -295,7 +295,7 @@
     "name": "Input Field",
     "category": "component",
     "group": "Eingabe",
-    "description": "The `input_field` component can be used to integrate individual `<input>` elements.",
+    "description": "Die `input_field` Komponente  stellt Formular-Eingabefelder mit integrierten Validierungsstilen bereit. Sie unterstützt verschiedene HTML-Eingabety...",
     "keywords": [
       "input_field",
       "input",
@@ -309,7 +309,7 @@
     "name": "Textarea",
     "category": "component",
     "group": "Eingabe",
-    "description": "The `textarea` component can be used to integrate a text field for longer texts.",
+    "description": "Die `textarea` Komponente bietet ein mehrzeiliges Texteingabefeld für längere Inhalte. Die Komponente kann für Kommentare, Beschreibungen, Nachrich...",
     "keywords": [
       "textarea",
       "input",
@@ -322,7 +322,7 @@
     "name": "Checkbox",
     "category": "component",
     "group": "Eingabe",
-    "description": "The `checkbox` component can be used to integrate individual checkbox elements. For a group of interconnected checkbox elements, see [Checkbox Grou...",
+    "description": "Die `checkbox` Komponente stellt eine einzelne Checkbox mit einer Beschriftung bereit. Informationen zu Gruppen verwandter Kontrollkästchen befinde...",
     "keywords": [
       "checkbox",
       "input",
@@ -335,7 +335,7 @@
     "name": "Checkbox Group",
     "category": "component",
     "group": "Eingabe",
-    "description": "The `checkbox_group` component can be used to integrate groups of checkbox elements that are linked to each other. This allows a restriction to be ...",
+    "description": "Die `checkbox_group` Komponente stellt eine Gruppe miteinander verbundener Kontrollkästchen mit optionalen Einschränkungen dar. Sie kann verwendet ...",
     "keywords": [
       "checkbox_group",
       "input",
@@ -349,7 +349,7 @@
     "name": "Dropdown",
     "category": "component",
     "group": "Eingabe",
-    "description": "A `dropdown` menu offers the possibility of housing a group of buttons in a collapsible menu. This is very useful whenever space is limited or the ...",
+    "description": "Die `dropdown` Komponente zeigt ein ausklappbares Menü an, das über eine Schaltfläche ausgelöst wird. Die Komponente kann verwendet werden, wenn de...",
     "keywords": [
       "dropdown",
       "input",
@@ -362,7 +362,7 @@
     "name": "Radio Group",
     "category": "component",
     "group": "Eingabe",
-    "description": "The `radio_group` component can be used to integrate groups of radio buttons. This variant of radio buttons uses standard radio buttons for e.g. a ...",
+    "description": "Die `radio_group` Komponente stellt eine Gruppe von Standard-Optionsfeldern dar. Die Komponente kann verwendet werden, wenn Benutzer genau eine Opt...",
     "keywords": [
       "radio_group",
       "input",
@@ -376,7 +376,7 @@
     "name": "Radio Block",
     "category": "component",
     "group": "Eingabe",
-    "description": "The `radio_block` component can be used to integrate groups of radio buttons. This variant of the radio buttons is displayed as a block of buttons ...",
+    "description": "Die `radio_block` Komponente stellt Optionsfelder als kompakte Schaltflächengruppe dar. Im Gegensatz zu herkömmlichen Optionsfeldern kann die Kompo...",
     "keywords": [
       "radio_block",
       "input",
@@ -390,7 +390,7 @@
     "name": "Range Slider",
     "category": "component",
     "group": "Eingabe",
-    "description": "The `slider` component can be used to integrate a range slider into the frontend, allowing a value to be selected within a defined interval.",
+    "description": "Die `slider` Komponente bietet ein Eingabefeld zur Auswahl numerischer Werte innerhalb eines definierten Intervalls. Sie unterstützt sowohl die Aus...",
     "keywords": [
       "range_slider",
       "input",
@@ -404,7 +404,7 @@
     "name": "Toggle",
     "category": "component",
     "group": "Eingabe",
-    "description": "The `toggle` component can be used to integrate a toggle button. It essentially functions like a single checkbox.",
+    "description": "Die `toggle` Komponente stellt eine Umschaltfläche oder einen Schalter für binäre Auswahlmöglichkeiten bereit. Sie funktioniert wie eine einzelne C...",
     "keywords": [
       "toggle",
       "input",
@@ -417,7 +417,7 @@
     "name": "Select",
     "category": "component",
     "group": "Eingabe",
-    "description": "The `select` component provides a simple selection box.",
+    "description": "Die `select` Komponente stellt ein Dropdown-Menü zur Auswahl eines einzelnen Werts bereit. Sie rendert ein natives HTML-Select-Element mit einheitl...",
     "keywords": [
       "select",
       "input",
@@ -430,7 +430,7 @@
     "name": "Multiselect",
     "category": "component",
     "group": "Eingabe",
-    "description": "The `multiselect` component provides a selection box that allows multiple values to be selected. Additionally, the multiselect has an integrated se...",
+    "description": "Die `multiselect` Komponente stellt ein Auswahlfeld bereit, in dem mehrere Werte ausgewählt werden können. Sie verfügt über eine integrierte Suchle...",
     "keywords": [
       "multiselect",
       "input",
@@ -443,7 +443,7 @@
     "name": "Chat",
     "category": "component",
     "group": "Eingabe",
-    "description": "The `chat` component provides a simple frontend for a chat application. It consists of a text input and an area for messages. The content of the me...",
+    "description": "Die `chat` Komponente bietet eine einfache Chat-Oberfläche mit einem Texteingabefeld und einem Nachrichtenbereich. Nachrichten werden über HTMX hin...",
     "keywords": [
       "chat",
       "input",
@@ -456,7 +456,7 @@
     "name": "Alert",
     "category": "component",
     "group": "Popups",
-    "description": "The `alert` component provides a way to display important information, warnings, or success messages to users.",
+    "description": "Die `alert` Komponente zeigt den Benutzern wichtige Meldungen, Warnungen oder Benachrichtigungen an. Sie ist auffälliger als eine Infobox und wird ...",
     "keywords": [
       "alert",
       "popup",
@@ -469,7 +469,7 @@
     "name": "Modal",
     "category": "component",
     "group": "Popups",
-    "description": "The `modal` component can be used to integrate customizable dialogs. These can display additional information to the user or be used as confirmatio...",
+    "description": "Die `modal` Komponente zeigt anpassbare Dialogfenster über dem Seiteninhalt an. Diese können für Bestätigungsaufforderungen, Formulare oder zur Anz...",
     "keywords": [
       "modal",
       "popup",
@@ -482,7 +482,7 @@
     "name": "Popover",
     "category": "component",
     "group": "Popups",
-    "description": "The `popover` is a useful component if it is necessary to display additional but rather optional information that would disrupt the overall appeara...",
+    "description": "The `popover` component displays additional content in a floating panel. Unlike tooltips, popovers remain open until explicitly closed and can cont...",
     "keywords": [
       "popover",
       "popup",
@@ -495,7 +495,7 @@
     "name": "Tooltip",
     "category": "component",
     "group": "Popups",
-    "description": "The `tooltip` is helpful and important for displaying additional information without disrupting the flow of the web interface. If the label or icon...",
+    "description": "Die `tooltip` Komponente zeigt einen kurzen Erklärungstext an, wenn der Mauszeiger über ein Element geführt wird. Kann verwendet werden, um Beschri...",
     "keywords": [
       "tooltip",
       "popup",
@@ -508,7 +508,7 @@
     "name": "Infobox",
     "category": "component",
     "group": "Hilfsfunktionen",
-    "description": "The `infobox` component displays the text it contains in a bordered box, making it slightly more prominent, but not as conspicuous as an `alert`.",
+    "description": "Die `infobox` Komponente zeigt Text in einem umrandeten Kasten mit dezenter Hervorhebung an. Sie ist weniger auffällig als eine Warnmeldung, aber b...",
     "keywords": [
       "infobox",
       "util",
@@ -521,7 +521,7 @@
     "name": "Code Block",
     "category": "component",
     "group": "Hilfsfunktionen",
-    "description": "The `code_block` component displays source code with syntax highlighting and can copy the displayed source code to the clipboard via a button. The ...",
+    "description": "Die `code_block` Komponente zeigt Quellcode mit Syntaxhervorhebung an. Sie unterstützt nahezu alle gängigen Programmiersprachen und verfügt über ei...",
     "keywords": [
       "code_block",
       "util",
@@ -535,7 +535,7 @@
     "name": "Legal Notice",
     "category": "component",
     "group": "Hilfsfunktionen",
-    "description": "The `legal_notice` component renders a compact, reusable copyright and legal notice line.",
+    "description": "Die `legal_notice` Komponente stellt eine kompakte, wiederverwendbare Zeile mit Urheberrechts- und rechtlichen Hinweisen dar.",
     "keywords": [
       "legal_notice",
       "util",
@@ -549,7 +549,7 @@
     "name": "Differentiator",
     "category": "component",
     "group": "Hilfsfunktionen",
-    "description": "The `differentiator` component can be used to graphically display differences between two texts, which can be very welcome help especially for long...",
+    "description": "Die `differentiator` Komponente zeigt einen visuellen Vergleich zwischen zwei Textversionen an. Sie ist besonders hilfreich bei längeren Texten mit...",
     "keywords": [
       "differentiator",
       "util",
@@ -562,7 +562,7 @@
     "name": "Logo",
     "category": "component",
     "group": "Hilfsfunktionen",
-    "description": "The `logo` component renders a brand mark from one consistent API. It supports image assets, SVG assets, and Insight UI icons.",
+    "description": "The `logo` component renders a brand mark from a consistent API. It supports image assets, SVG assets, and Insight UI icons.",
     "keywords": [
       "logo",
       "util",
@@ -575,7 +575,7 @@
     "name": "Brand Mark",
     "category": "component",
     "group": "Hilfsfunktionen",
-    "description": "The `brand_mark` component renders a controlled brand unit made of a public Insight UI icon and a two-tone wordmark.",
+    "description": "The `brand_mark` component renders a logo combined with a two-tone wordmark. Use it when an application needs a recognizable brand identity.",
     "keywords": [
       "brand_mark",
       "util",
@@ -603,7 +603,7 @@
     "name": "Progress Bar",
     "category": "component",
     "group": "Hilfsfunktionen",
-    "description": "The `progress_bar` component is used to visually display the progress of a background process to the user. A common scenario for such components is...",
+    "description": "Die `progress_bar` Komponente visualisiert den Fortschritt von Hintergrundprozessen. Sie unterstützt statische Werte, Aktualisierungen durch Abfrag...",
     "keywords": [
       "progress_bar",
       "util",
@@ -617,7 +617,7 @@
     "name": "Geo Map",
     "category": "component",
     "group": "Hilfsfunktionen",
-    "description": "The `geo_map` component displays a geographic map using leaflet on which geographic information can be easily displayed.",
+    "description": "Die `geo_map` Komponente zeigt mithilfe von Leaflet eine interaktive Landkarte an. Sie unterstützt Markierungen, Kreise und mehrere Datenebenen.",
     "keywords": [
       "geo_map",
       "util",
@@ -631,7 +631,7 @@
     "name": "Chart",
     "category": "component",
     "group": "Hilfsfunktionen",
-    "description": "The `chart` component allows charts to be displayed without having to customize JavaScript. The component uses Apache ECharts internally.",
+    "description": "Die `chart` Komponente zeigt Datenvisualisierungen mithilfe von Apache ECharts an. Die Diagramme werden über Python konfiguriert, ohne dass JavaScr...",
     "keywords": [
       "chart",
       "util",
@@ -644,7 +644,7 @@
     "name": "Live Content",
     "category": "component",
     "group": "Hilfsfunktionen",
-    "description": "The `live_content` component regularly updates a fragment using HTMX requests. It is ideal for dashboards or status views that need to be updated f...",
+    "description": "Die `live_content` Komponente zeigt Inhalte an, die über HTMX-Polling automatisch aktualisiert werden. Diese kann verwendet werden, für Dashboards,...",
     "keywords": [
       "live_content",
       "util",
@@ -658,7 +658,7 @@
     "name": "Web Socket",
     "category": "component",
     "group": "Hilfsfunktionen",
-    "description": "The `websocket` component is a thin wrapper around the HTMX WebSocket extension. It is designed for host applications that want HTMX-managed WebSoc...",
+    "description": "Die `websocket` Komponente ermöglicht Echtzeit-Aktualisierungen über WebSocket-Verbindungen. Sie nutzt die HTMX-WebSocket-Erweiterung für von HTMX ...",
     "keywords": [
       "web_socket",
       "util",
@@ -672,7 +672,7 @@
     "name": "Badge",
     "category": "component",
     "group": "Hilfsfunktionen",
-    "description": "The badge component displays a small pill-shaped icon with text and an optional icon. The badge can be displayed in various sizes and colors.",
+    "description": "Die `badge` Komponente zeigt kompakte Status- oder Kategoriebezeichnungen an. Badges eignen sich ideal für Tags, Zähler oder kurze Statusanzeigen.",
     "keywords": [
       "badge",
       "util",
@@ -685,7 +685,7 @@
     "name": "Infinite Scroll",
     "category": "component",
     "group": "Listen",
-    "description": "The `infinite_scroll` component represents an alternative to pagination and can be used to display large amounts of data. Instead of switching from...",
+    "description": "Die `infinite_scroll` Komponente lädt zusätzliche Inhalte, während der Benutzer scrollt. Sie bietet eine Alternative zur herkömmlichen Paginierung ...",
     "keywords": [
       "infinite_scroll",
       "list",
@@ -699,7 +699,7 @@
     "name": "Pagination",
     "category": "component",
     "group": "Listen",
-    "description": "The `pagination` component can be used to split a list across multiple pages, which can be switched using the pagination displayed at the end of th...",
+    "description": "Die `pagination` Komponente zeigt Navigationselemente für paginierte Daten an. Sie lässt sich in den Paginator von Django integrieren und unterstüt...",
     "keywords": [
       "pagination",
       "list",
@@ -712,7 +712,7 @@
     "name": "Table",
     "category": "component",
     "group": "Listen",
-    "description": "The `table` component can be used to display a simple table for any data. The layout is designed to be responsive; if space is insufficient, a hori...",
+    "description": "Die `table` Komponente zeigt Daten in einer übersichtlichen tabellarischen Struktur an. Bei begrenztem Platz wird automatisch eine horizontale Scro...",
     "keywords": [
       "table",
       "list",
@@ -725,7 +725,7 @@
     "name": "Search Bar",
     "category": "component",
     "group": "Filter",
-    "description": "The `search_bar` component provides a simple text input field with a large button on the right end. When submitted, a request is sent to the specif...",
+    "description": "Die `search_bar` Komponente stellt ein Texteingabefeld mit einer Absenden-Schaltfläche für Suchanfragen bereit. Sie unterstützt sowohl eine herkömm...",
     "keywords": [
       "search_bar",
       "filter",
@@ -739,7 +739,7 @@
     "name": "Generic Filter",
     "category": "component",
     "group": "Filter",
-    "description": "The `generic_filter` component can be used to build relatively simple standard filters consisting of &lt;select&gt; tags. The filter automatically ...",
+    "description": "Die `generic_filter` Komponente zeigt eine Filterleiste mit mehreren Dropdown-Menüs an. Bei einer Änderung der Filter werden die Ergebnisse automat...",
     "keywords": [
       "generic_filter",
       "filter",
@@ -753,7 +753,7 @@
     "name": "Query Builder",
     "category": "component",
     "group": "Filter",
-    "description": "The `query_builder` component represents an alternative to the `generic_filter` component.",
+    "description": "Die `query_builder` Komponente bietet eine visuelle Oberfläche zum Erstellen von Datenbankabfragen. Sie bietet mehr Flexibilität als einfache Filte...",
     "keywords": [
       "query_builder",
       "filter",
@@ -767,7 +767,7 @@
     "name": "Card",
     "category": "component",
     "group": "Karten",
-    "description": "The `card` components are used to create information groups. Each card consists of a heading and its main content. There are also further options s...",
+    "description": "Die `card` Komponente zeigt Inhalte in einem Container im Seitenverhältnis 16:9 an. Sie besteht aus einem Titel, einem Inhalt, einem optionalen Bil...",
     "keywords": [
       "card",
       "card",
@@ -780,7 +780,7 @@
     "name": "App Card",
     "category": "component",
     "group": "Karten",
-    "description": "The `app_card` component is designed for overview pages featuring multiple apps, demos, products, etc., and begins with a large image followed by t...",
+    "description": "Die `app_card` Komponente zeigt Elemente in einem vertikal ausgerichteten Kartenlayout an. Sie ist für Übersichtsseiten konzipiert, auf denen Apps,...",
     "keywords": [
       "app_card",
       "card",
@@ -794,7 +794,7 @@
     "name": "Flip Card",
     "category": "component",
     "group": "Karten",
-    "description": "The `flip_card` component is a variation of the `app_card` that rotates 180° when clicking the flip button. This allows displaying additional infor...",
+    "description": "Die `flip_card` Komponente zeigt auf ihrer Rückseite zusätzliche Inhalte an. Beim Klick auf die Schaltfläche zum Umdrehen, dreht sich die Karte um ...",
     "keywords": [
       "flip_card",
       "card",
@@ -808,7 +808,7 @@
     "name": "Card Carousel",
     "category": "component",
     "group": "Karten",
-    "description": "The `carousel` component can be used to display images, but also all kinds of other things, in a compact and interactive way. With having one objec...",
+    "description": "Die `carousel` Komponente zeigt eine Reihe von Elementen in einem Karussell an, durch welche man wechseln kann. Sie kann mehrere Elemente pro Folie...",
     "keywords": [
       "card_carousel",
       "card",
@@ -822,7 +822,7 @@
     "name": "Image Carousel",
     "category": "component",
     "group": "Karten",
-    "description": "The `image_carousel` component is a variant of the carousel component adapted for displaying images.",
+    "description": "Die `image_carousel` Komponente zeigt Bilder in einer Karussell-Galerie an. Es handelt sich um eine für Bildinhalte optimierte Variante des Kartenk...",
     "keywords": [
       "image_carousel",
       "card",
@@ -836,7 +836,7 @@
     "name": "3D Carousel",
     "category": "component",
     "group": "Karten",
-    "description": "The `three_d_carousel` component can be used to display any content in a unique way: arranged in a circle.",
+    "description": "Die `three_d_carousel` Komponente zeigt Elemente in einer kreisförmigen 3D-Anordnung an. Sie bietet eine einzigartige visuelle Darstellung zur Präs...",
     "keywords": [
       "3d_carousel",
       "card",
@@ -850,7 +850,7 @@
     "name": "Toggle View",
     "category": "component",
     "group": "Karten",
-    "description": "The `toggle_view` component combines the table and card view as well as the carousel component. The component is used to display the same data in c...",
+    "description": "Mit der `toggle_view` Komponente können Benutzer zwischen verschiedenen Darstellungsformen der Daten wechseln. Dieselben Daten können als Karten, a...",
     "keywords": [
       "toggle_view",
       "card",
@@ -864,7 +864,7 @@
     "name": "Form",
     "category": "component",
     "group": "Formulare",
-    "description": "The `form` component can be used to build forms without having to edit HTML code yourself.",
+    "description": "Die `form` Komponente rendert vollständige Formulare anhand von Konfigurationsobjekten. Sie unterstützt verschiedene Feldtypen und die HTMX-basiert...",
     "keywords": [
       "form",
       "form",
@@ -930,7 +930,7 @@
     "name": "ButtonType",
     "category": "type",
     "group": "Types",
-    "description": "Values: primary, secondary, neutral, info, success, ... (9 total)",
+    "description": "Values: primary, secondary, neutral, info, success, ... (8 total)",
     "keywords": [
       "buttontype",
       "primary",
@@ -940,7 +940,6 @@
       "success",
       "warning",
       "danger",
-      "disabled",
       "link"
     ],
     "url": "/docs/types#buttontype"
@@ -1949,6 +1948,21 @@
       "config"
     ],
     "url": "/docs/configs#inputfieldconfig"
+  },
+  {
+    "id": "config:LegalNoticeConfig",
+    "name": "LegalNoticeConfig",
+    "category": "config",
+    "group": "Configs",
+    "description": "Configuration for the legal_notice component.",
+    "keywords": [
+      "legalnoticeconfig",
+      "config",
+      "legal",
+      "notice",
+      "config"
+    ],
+    "url": "/docs/configs#legalnoticeconfig"
   },
   {
     "id": "config:LegalNoticeConfig",
