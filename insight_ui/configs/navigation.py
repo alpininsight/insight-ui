@@ -48,6 +48,7 @@ class NavbarLinkConfig:
         text: Label of the link.
         request_url: The URL to be called when clicking on the link, if not opening a modal or dropdown menu.
         icon: An optional icon displayed before the text.
+        htmx: Optional HTMX configuration for dynamic content loading.
         need_auth: The link is only displayed for logged-in users.
         staff_only: The link is only displayed for administrators.
         modal: Configuration of a modal dialog.
@@ -57,6 +58,11 @@ class NavbarLinkConfig:
 
     __example__ = """
         NavbarLinkConfig(text="Home", request_url=reverse("index"))
+        NavbarLinkConfig(
+            text="Docs",
+            request_url=reverse("docs"),
+            htmx=HtmxConfig(target="#content"),
+        )
         """
 
     text: str = field(metadata={"doc": _("Label of the link.")})
@@ -65,17 +71,28 @@ class NavbarLinkConfig:
         metadata={"doc": _("The URL to be called when clicking on the link, if not opening a modal or dropdown menu.")},
     )
     icon: IconConfig | None = field(default=None, metadata={"doc": _("An optional icon displayed before the text.")})
+    htmx: HtmxConfig | None = field(
+        default=None, metadata={"doc": _("Optional HTMX configuration for dynamic content loading.")}
+    )
     need_auth: bool = field(default=False, metadata={"doc": _("The link is only displayed for logged-in users.")})
     staff_only: bool = field(default=False, metadata={"doc": _("The link is only displayed for administrators.")})
     modal: ModalConfig | None = field(default=None, metadata={"doc": _("Configuration of a modal dialog.")})
     dropdown: DropdownConfig | None = field(default=None, metadata={"doc": _("Configuration of a dropdown menu.")})
 
     def __post_init__(self) -> None:
-        """Warn if the link has no request_url, modal, or dropdown and would render invisibly."""
+        """Validate configuration and warn about potential issues."""
         if not self.request_url and not self.modal and not self.dropdown:
             warnings.warn(
                 f"NavbarLinkConfig '{self.text}' has no request_url, modal, or dropdown set. "
                 "The link will not be rendered.",
+                UserWarning,
+                stacklevel=2,
+            )
+        if self.request_url and self.htmx and self.htmx.request_url:
+            warnings.warn(
+                f"NavbarLinkConfig '{self.text}' has both 'request_url' and 'htmx.request_url' set. "
+                "This may cause conflicting behavior. Use 'request_url' for the href fallback, or "
+                "'htmx.request_url' for HTMX requests, but not both.",
                 UserWarning,
                 stacklevel=2,
             )
@@ -332,13 +349,20 @@ class SidebarDataConfig:
     Attributes:
         title: Sidebar title.
         icon: Optional title icon.
+        links: Top-level navigation links shown before categories.
+        categories_title: Optional heading above the categories section.
         categories: List of navigation categories.
 
     """
 
     __example__ = """
         SidebarDataConfig(
-            title="Settings",
+            title="Documentation",
+            links=[
+                SidebarItemConfig(text="Installation", request_url=reverse("install")),
+                SidebarItemConfig(text="Getting Started", request_url=reverse("start")),
+            ],
+            categories_title="Components",
             categories=[
                 SidebarCategoryConfig(
                     caption="Account",
@@ -353,6 +377,10 @@ class SidebarDataConfig:
 
     title: str = field(default="", metadata={"doc": _("Sidebar title.")})
     icon: IconConfig | None = field(default=None, metadata={"doc": _("Optional title icon.")})
+    links: list[SidebarItemConfig] = field(
+        default_factory=list, metadata={"doc": _("Top-level navigation links shown before categories.")}
+    )
+    categories_title: str = field(default="", metadata={"doc": _("Optional heading above the categories section.")})
     categories: list[SidebarCategoryConfig] = field(
         default_factory=list, metadata={"doc": _("List of navigation categories.")}
     )
