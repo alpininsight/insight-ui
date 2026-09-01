@@ -878,7 +878,7 @@
         {% endvbox %}
         {% vbox gap="s" %}
             <h3 class="text-xl">{% trans "Round (combinable)" %}</h3>
-            {% hbox gap="xs" wrap=True %}
+            {% hbox gap="xs" v_align="start" wrap=True %}
                 {% button label=_("Primary") type="primary" round=True size="l" %}
                 {% button label=_("Primary") type="secondary" outline=True round=True %}
                 {% button label=_("Primary") type="success" subtle=True round=True size="s" %}
@@ -886,7 +886,7 @@
         {% endvbox %}
         {% vbox gap="s" %}
             <h3 class="text-xl">{% trans "Icons" %}</h3>
-            {% hbox gap="xs" wrap=True %}
+            {% hbox gap="xs" v_align="start" wrap=True %}
                 {% button label=_("With Icon") type="primary" icon_name="rocket-launch" %}
                 {% button label=_("With Icon") type="primary" icon_name="rocket-launch" icon_end=True %}
                 {% button label=_("Icon only") type="primary" icon_name="rocket-launch" icon_only=True %}
@@ -1136,7 +1136,7 @@
     {% vbox gap="l" %}
         {% vbox gap="s" %}
             <h3 class="text-xl">{% trans "Standard / Filled" %}</h3>
-            {% hbox gap="xs" wrap=True %}
+            {% hbox gap="xs" v_align="start" wrap=True %}
                 {% badge label=_("Primary") type="primary" %}
                 {% badge label=_("Secondary") type="secondary" %}
                 {% badge label=_("Success") type="success" %}
@@ -1148,7 +1148,7 @@
         {% endvbox%}
         {% vbox gap="s" %}
             <h3 class="text-xl">{% trans "Sizes" %}</h3>
-            {% hbox gap="xs" wrap=True %}
+            {% hbox gap="xs" v_align="start" wrap=True %}
                 {% badge label=_("New!") type="primary" size="xl" %}
                 {% badge label=_("New!") type="primary" size="l" %}
                 {% badge label=_("New!") type="primary" size="m" %}
@@ -1158,7 +1158,7 @@
         {% endvbox%}
         {% vbox gap="s" %}
             <h3 class="text-xl">{% trans "Icons" %}</h3>
-            {% hbox gap="xs" wrap=True %}
+            {% hbox gap="xs" v_align="start" wrap=True %}
                 {% badge label=_("New!") icon_name="sparkles" %}
                 {% badge label=_("New!") icon_name="sparkles" icon_end=True %}
             {% endhbox %}
