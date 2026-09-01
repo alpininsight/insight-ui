@@ -791,7 +791,7 @@
             var container = document.currentScript.parentElement;
             var asides = container.querySelectorAll("aside");
             for (let aside of asides) {
-                aside.classList.remove("hidden", "xl:block", "top-16", "h-[calc(100vh-4rem)]");
+                aside.classList.remove("hidden", "xl:block", "top-16", "h-[calc(100dvh-4rem)]", "h-dvh");
                 aside.classList.add("block", "h-96");
             }
             // Adjust open button for drawer sidebar
