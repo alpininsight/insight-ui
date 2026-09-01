@@ -38,9 +38,9 @@
 
   <div class="flex gap-2 justify-end pt-4 border-t border-insight-border-surface">
     {% if form_config.show_reset_button %}
-      {% button label=_("Reset") type="secondary" button_type="reset" %}
+      {% button label=form_config.reset_label|default:_("Reset") type="secondary" button_type="reset" %}
     {% endif %}
-    {% button label=_("Submit") type="primary" button_type="submit" %}
+    {% button label=form_config.submit_label|default:_("Submit") type="primary" button_type="submit" %}
   </div>
 
   {% if form_config.htmx_config %}

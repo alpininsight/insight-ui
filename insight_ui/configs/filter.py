@@ -17,6 +17,8 @@ class SearchBarConfig:
         request_url: URL for form action. Do not use together with htmx_config; use htmx_config.request_url instead for HTMX requests.
         simple: If True, render compact/minimal style.
         search_query: Initial search query value.
+        placeholder: Placeholder text for the search input.
+        button_label: Label for the search button.
         htmx_config: HTMX configuration for AJAX requests.
         enable_search: If True, enable client-side documentation search with Fuse.js.
         search_index_url: Optional URL for the client-side documentation search index.
@@ -26,6 +28,8 @@ class SearchBarConfig:
     __example__ = """
         SearchBarConfig(
             request_url="/search_products/",
+            placeholder="Search products...",
+            button_label="Find",
             simple=False,
         )
         """
@@ -41,6 +45,8 @@ class SearchBarConfig:
     )
     simple: bool = dc_field(default=False, metadata={"doc": _("If True, render compact/minimal style.")})
     search_query: str = dc_field(default="", metadata={"doc": _("Initial search query value.")})
+    placeholder: str = dc_field(default="", metadata={"doc": _("Placeholder text for the search input.")})
+    button_label: str = dc_field(default="", metadata={"doc": _("Label for the search button.")})
     htmx_config: HtmxConfig | None = dc_field(
         default=None, metadata={"doc": _("HTMX configuration for AJAX requests.")}
     )
