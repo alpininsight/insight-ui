@@ -2,7 +2,7 @@
 
 {# OOB update for left sidebar #}
 <div id="left-aside" hx-swap-oob="true" class="flex">
-    {% sidebar %}
+    {% sidebar side="left" %}
         {% include "insight_ui/components/sidebar_nav.html" with sidebar_data=left_sidebar %}
     {% endsidebar %}
 </div>
