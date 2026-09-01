@@ -932,8 +932,8 @@ def get_corner_ribbon_usage_context() -> dict[str, str]:
         "usage": """
         {% load insight_tags %}
 
-        {# Basic usage with default top-right position #}
-        {% corner_ribbon text="New Feature" %}
+        {# Site-wide status: fixed diagonally across the top-right page edge #}
+        {% corner_ribbon text="This service is in beta." position="top-right" color="primary" %}
 
         {# Different positions #}
         {% corner_ribbon text="Beta" position="top-left" %}
@@ -945,9 +945,6 @@ def get_corner_ribbon_usage_context() -> dict[str, str]:
         {% corner_ribbon text="Warning" color="warning" %}
         {% corner_ribbon text="Error" color="danger" %}
         {% corner_ribbon text="Info" color="info" %}
-
-        {# With custom ID for JavaScript #}
-        {% corner_ribbon text="Click Me" tag_id="promo-ribbon" position="top-right" %}
 
         {# Using config dictionary from view context #}
         {% corner_ribbon config=ribbon_config %}

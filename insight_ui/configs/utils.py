@@ -233,10 +233,14 @@ class StatusScreenConfig:
 class CornerRibbonConfig:
     """Configuration for the corner_ribbon component.
 
-    Renders a decorative diagonal ribbon in a browser corner.
+    Renders a fixed diagonal ribbon across a browser corner.
+
+    Use the default ``top-right`` position for a concise, non-interactive
+    site-wide status such as a beta or maintenance notice. The ribbon does not
+    change page layout or block elements behind it.
 
     Attributes:
-        text: The text displayed in the ribbon.
+        text: The concise status text displayed in the ribbon.
         position: Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'.
         color: Color variant for the ribbon.
 

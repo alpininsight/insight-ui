@@ -1081,7 +1081,7 @@ def corner_ribbon(
     position: CornerPosition | _Unset = UNSET,
     color: ColorType | _Unset = UNSET,
 ) -> dict[str, Any]:
-    """Render a corner ribbon positioned in any browser corner."""
+    """Render a fixed corner ribbon for concise site-wide status text."""
     config = build_config(CornerRibbonConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"corner_ribbon_config": config}
 

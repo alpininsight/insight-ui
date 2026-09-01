@@ -61,6 +61,20 @@ Self-contained UI elements with specific behavior:
 {% badge label="New" type="info" %}
 ```
 
+### Site-wide status
+
+Use `corner_ribbon` for a short, non-interactive status that runs diagonally
+across a page corner without moving navigation or content. The default
+`top-right` position is the standard for a global beta, maintenance, or
+environment notice:
+
+```django
+{% corner_ribbon text="This service is in beta." position="top-right" color="primary" %}
+```
+
+Use an `alert` or `status_screen` when the message needs detail, actions, or a
+place in the document flow.
+
 ### Layout Tags
 
 Structural primitives for page composition (require closing tags):
