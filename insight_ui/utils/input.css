@@ -621,10 +621,10 @@
 
     /* Badge-Size */
     .badge-xs { @apply text-xs px-2 py-1; }
-    .badge-s { @apply text-sm px-4 py-1; }
-    .badge-m { @apply text-sm px-4 py-1.5; }
+    .badge-s { @apply text-sm px-3 py-1; }
+    .badge-m { @apply text-base px-4 py-1.5; }
     .badge-l { @apply text-lg px-6 py-2; }
-    .badge-xl { @apply text-lg px-8 py-3; }
+    .badge-xl { @apply text-xl px-8 py-3; }
 
     /* Badge-Color */
     .badge-primary {
