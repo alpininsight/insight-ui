@@ -523,48 +523,146 @@ def index_view(request: HttpRequest) -> HttpResponse:
     return render(request, "documentation/index.html", context)
 
 
-@require_GET
-def customization_view(request: HttpRequest) -> HttpResponse:
-    """Render customization page."""
-    context = get_base_context() | get_sidebar_context()
-    return render(request, "documentation/docs/customization.html", context)
+def _is_htmx_request(request: HttpRequest) -> bool:
+    """Check if this is an HTMX request (but not a history restore)."""
+    return bool(request.headers.get("HX-Request")) and not request.headers.get("HX-History-Restore-Request")
+
+
+def _render_docs_page(  # noqa: PLR0913
+    request: HttpRequest,
+    *,
+    chapter: str,
+    title: str,
+    description: str,
+    content_template: str,
+    context: dict | None = None,
+    sidebar_template: str | None = None,
+    sidebar_width: str = "normal",
+) -> HttpResponse:
+    """Render a documentation page with HTMX support.
+
+    Args:
+        request: The HTTP request.
+        chapter: Page chapter (shown above title).
+        title: Page title.
+        description: Page description.
+        content_template: Path to the content template.
+        context: Additional context data.
+        sidebar_template: Optional custom sidebar template.
+        sidebar_width: Sidebar width (narrow, normal, wide).
+
+    Returns:
+        Rendered HTTP response.
+
+    """
+    page_context = get_base_context() | get_sidebar_context()
+    page_context["page"] = {
+        "chapter": chapter,
+        "title": title,
+        "description": description,
+        "content_template": content_template,
+        "sidebar_template": sidebar_template,
+        "sidebar_width": sidebar_width,
+    }
+    if context:
+        page_context.update(context)
+
+    template = (
+        "documentation/docs/docs_partial.html" if _is_htmx_request(request) else "documentation/docs/docs_page.html"
+    )
+    return render(request, template, page_context)
 
 
 @require_GET
 def installation_view(request: HttpRequest) -> HttpResponse:
     """Render installation page."""
-    context = get_base_context() | get_sidebar_context()
-    return render(request, "documentation/docs/installation.html", context)
+    return _render_docs_page(
+        request,
+        chapter=_("Get started"),
+        title=_("Installation"),
+        description=_("How to integrate Insight UI into your project and make use of all the components."),
+        content_template="documentation/docs/installation_content.html",
+    )
 
 
 @require_GET
 def base_template_view(request: HttpRequest) -> HttpResponse:
     """Render base_template page."""
-    context = get_base_context() | get_sidebar_context()
-    return render(request, "documentation/docs/base_template.html", context)
+    return _render_docs_page(
+        request,
+        chapter=_("Get started"),
+        title=_("Base Template"),
+        description=_(
+            "The base template provides a complete page structure with navbar, sidebars, content area, and footer. "
+            "It handles JavaScript loading, theming, SEO meta tags, and favicon configuration."
+        ),
+        content_template="documentation/docs/base_template_content.html",
+        sidebar_template="documentation/docs/base_template_sidebar.html",
+        sidebar_width="wide",
+    )
+
+
+@require_GET
+def customization_view(request: HttpRequest) -> HttpResponse:
+    """Render customization page."""
+    return _render_docs_page(
+        request,
+        chapter=_("Get started"),
+        title=_("Customization"),
+        description=_("Adapt Insight UI to your brand with design tokens, component theming, and template overrides."),
+        content_template="documentation/docs/customization_content.html",
+    )
 
 
 @require_GET
 def icon_view(request: HttpRequest) -> HttpResponse:
     """Render icon page."""
-    context = get_icon_context() | get_base_context() | get_sidebar_context()
-    return render(request, "documentation/docs/icons.html", context)
+    return _render_docs_page(
+        request,
+        chapter=_("Components"),
+        title=_("Icons"),
+        description=_(
+            "Many of our components have the ability to display an optional icon. "
+            "Wherever a component expects an icon, one of the icons listed here can be specified. "
+            "More icons can be inserted anywhere using the `icon` component."
+        ),
+        content_template="documentation/docs/icons_content.html",
+        context=get_icon_context(),
+    )
 
 
 @require_GET
 def types_view(request: HttpRequest) -> HttpResponse:
     """Render types documentation page."""
-    context = get_base_context() | get_sidebar_context()
-    context["type_definitions"] = get_all_type_definitions()
-    return render(request, "documentation/docs/types.html", context)
+    return _render_docs_page(
+        request,
+        chapter=_("Components"),
+        title=_("Types"),
+        description=_(
+            "Insight UI uses type literals to ensure type safety and provide autocompletion in your IDE. "
+            "These types define the allowed values for component parameters like sizes, colors, and positions. "
+            "All types are defined in `insight_ui.configs.types` and can be imported for type annotations."
+        ),
+        content_template="documentation/docs/types_content.html",
+        context={"type_definitions": get_all_type_definitions()},
+    )
 
 
 @require_GET
 def config_reference_view(request: HttpRequest) -> HttpResponse:
     """Render the config dataclass reference page."""
-    context = get_base_context() | get_sidebar_context()
-    context["config_definitions"] = get_all_config_definitions()
-    return render(request, "documentation/docs/config_reference.html", context)
+    return _render_docs_page(
+        request,
+        chapter=_("Components"),
+        title=_("Configs"),
+        description=_(
+            "This is a flat reference of every config dataclass used across Insight UI components, "
+            "listed independently of where it is used. Use it to look up a nested parameter's own fields "
+            "and default values without drilling through a component's detail page."
+        ),
+        content_template="documentation/docs/config_reference_content.html",
+        context={"config_definitions": get_all_config_definitions()},
+    )
 
 
 @require_GET

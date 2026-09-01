@@ -39,13 +39,16 @@ def get_main_page_links() -> list[dict[str, Any]]:
         List of NavbarLinkConfig objects for main navigation.
 
     """
+    htmx = HtmxConfig(target="#content")
     return [
-        NavbarLinkConfig(_("Installation"), reverse("installation_view"), IconConfig("arrow-down-tray", "s")),
-        NavbarLinkConfig(_("Base Template"), reverse("base_template_view"), IconConfig("cube-transparent", "s")),
-        NavbarLinkConfig(_("Customization"), reverse("customization_view"), IconConfig("adjustments-horizontal", "s")),
-        NavbarLinkConfig(_("Icons"), reverse("icon_view"), IconConfig("sparkles", "s")),
-        NavbarLinkConfig(_("Types"), reverse("types_view"), IconConfig("code-bracket", "s")),
-        NavbarLinkConfig(_("Configs"), reverse("config_reference_view"), IconConfig("cube", "s")),
+        NavbarLinkConfig(_("Installation"), reverse("installation_view"), IconConfig("arrow-down-tray", "s"), htmx),
+        NavbarLinkConfig(_("Base Template"), reverse("base_template_view"), IconConfig("cube-transparent", "s"), htmx),
+        NavbarLinkConfig(
+            _("Customization"), reverse("customization_view"), IconConfig("adjustments-horizontal", "s"), htmx
+        ),
+        NavbarLinkConfig(_("Icons"), reverse("icon_view"), IconConfig("sparkles", "s"), htmx),
+        NavbarLinkConfig(_("Types"), reverse("types_view"), IconConfig("code-bracket", "s"), htmx),
+        NavbarLinkConfig(_("Configs"), reverse("config_reference_view"), IconConfig("cube", "s"), htmx),
     ]
 
 
@@ -56,8 +59,13 @@ def get_navbar_context() -> dict:
         Context dict with navbar configuration and display options.
 
     """
-    links = get_main_page_links()
-    links.append(
+    links = [
+        NavbarLinkConfig(
+            _("Docs"),
+            reverse("installation_view"),
+            IconConfig("book-open", "s"),
+            HtmxConfig(target="#content"),
+        ),
         NavbarLinkConfig(
             _("Components"),
             icon=IconConfig("squares-2x2", "s"),
@@ -71,8 +79,8 @@ def get_navbar_context() -> dict:
                     for category in ComponentCategory
                 ],
             ),
-        )
-    )
+        ),
+    ]
 
     return {
         "nav_config": NavbarConfig(
@@ -84,6 +92,26 @@ def get_navbar_context() -> dict:
             show_theme_toggle=True,
         )
     }
+
+
+def get_sidebar_links() -> list[SidebarItemConfig]:
+    """Serve a list of sidebar links to the main documentation pages.
+
+    Returns:
+        List of SidebarItemConfig objects for top-level documentation navigation.
+
+    """
+    htmx = HtmxConfig(target="#content")
+    return [
+        SidebarItemConfig(_("Installation"), reverse("installation_view"), IconConfig("arrow-down-tray", "s"), htmx),
+        SidebarItemConfig(_("Base Template"), reverse("base_template_view"), IconConfig("cube-transparent", "s"), htmx),
+        SidebarItemConfig(
+            _("Customization"), reverse("customization_view"), IconConfig("adjustments-horizontal", "s"), htmx
+        ),
+        SidebarItemConfig(_("Icons"), reverse("icon_view"), IconConfig("sparkles", "s"), htmx),
+        SidebarItemConfig(_("Types"), reverse("types_view"), IconConfig("code-bracket", "s"), htmx),
+        SidebarItemConfig(_("Configs"), reverse("config_reference_view"), IconConfig("cube", "s"), htmx),
+    ]
 
 
 def get_sidebar_context() -> dict:
@@ -116,7 +144,14 @@ def get_sidebar_context() -> dict:
                 )
                 break
 
-    return {"left_sidebar": {"title": _("Components"), "categories": categories}}
+    return {
+        "left_sidebar": {
+            "title": _("Documentation"),
+            "links": get_sidebar_links(),
+            "categories_title": _("Components"),
+            "categories": categories,
+        }
+    }
 
 
 def get_footer_context() -> dict:
