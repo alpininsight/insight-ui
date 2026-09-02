@@ -72,12 +72,12 @@
     </head>
     <body class="flex flex-col min-h-screen size-full text-insight-text-primary bg-insight-bg-base" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-indicator="#loading-indicator">
 
-        {% block background_image %}
-        {% endblock background_image %}
+        <div id="background-image">
+            {% block background_image %}
+            {% endblock background_image %}
+        </div>
 
-        <header>
-            {% block notification %}
-            {% endblock notification %}
+        <header id="header">
             {% block navbar %}
             {% endblock navbar %}
         </header>
