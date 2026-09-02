@@ -81,11 +81,12 @@
                         <div class="py-1">
                           {% for item in link.dropdown.items %}
                             <a
-                              {% if item.htmx and item.request_url %}
-                                hx-get="{{ item.request_url }}"
+                              {% if item.htmx %}
+                                hx-get="{{ item.htmx.request_url|default:item.request_url }}"
                                 hx-target="{{ item.htmx.target }}"
-                                hx-swap="{{ item.htmx.swap|default:'innerHTML' }} show:window:top"
-                                hx-push-url="true"
+                                hx-swap="{{ item.htmx.swap_method|default:'innerHTML' }} show:window:top"
+                                hx-push-url="{{ item.htmx.push_url|yesno:'true,false' }}"
+                                hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
                               {% endif %}
                               href="{{ item.request_url|default:'' }}"
                               class="insight-nav-dropdown-item block px-4 py-2 text-sm"

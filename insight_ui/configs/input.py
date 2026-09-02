@@ -408,16 +408,25 @@ class DropdownItemConfig:
         text: Label of the dropdown element.
         request_url: The URL to be called when clicking on the respective item.
         icon: An optional icon displayed before the label.
+        htmx: Optional HTMX configuration for dynamic content loading.
 
     """
 
     __example__ = """
         DropdownItemConfig(text="Profile", request_url="/profile/", icon=IconConfig(name="user"))
+        DropdownItemConfig(
+            text="Dashboard",
+            request_url="/dashboard/",
+            htmx=HtmxConfig(target="#content", push_url=True),
+        )
         """
 
     text: str = field(metadata={"doc": _("Label of the dropdown element.")})
     request_url: str = field(metadata={"doc": _("The URL to be called when clicking on the respective item.")})
     icon: IconConfig | None = field(default=None, metadata={"doc": _("An optional icon displayed before the label.")})
+    htmx: HtmxConfig | None = field(
+        default=None, metadata={"doc": _("Optional HTMX configuration for dynamic content loading.")}
+    )
 
 
 @dataclass
