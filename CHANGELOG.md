@@ -7,13 +7,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Bug Fixes
+
+- Correct template path for playground view
+- Use 'INSIGHT_UI' context settings for 'navbar_fixed' instead of a hidden variable
+- Correct layout of the 'badge' and 'button' demo on mobile devices
+- Remove gap below sidebar in the sidebar demo
+- Add 'side' to the oob swap sidebar on docs detailpages
+- 'parameter table' id is undefined error when navigating via browser history
+
 ### Features
 
 - **button:** Support theme-specific secondary foregrounds
+- Make 'grid' centrable
+- Reverse the change to make the 'button', 'radio_block' and 'toggle' container agnostic
+- Rename 'url' to 'request_url' for 'CarouselItemConfig', 'TabsConfig', StepperItemConfig' and the 'NavbarLinkConfig'
+- Improve general validation and default values of component configs
+- Hide the entire section in the footer if the corresponding config is not specified
+- Add CSRF token globally to hx headers
+- Add 'GET' support to 'form' component
+- Add color token support to 'icon' component
+- Show qoutes for an empty value in the types registry
+- Use a wider variety of values for the different badge sizes
+- Add documentation and explanations to the design tokens in the input.css
+- Add htmx support to navbar and footer links
+- Move docs links from the navbar to the sidebar
+- Make placeholder and button labels configurable for 'search_bar' and 'form'
+- Use the 'SearchBarConfig' for the search bar in the navbar
+- Update translations
+- Update search indices
+- Change favicon and logo
+- Add id's to 'background_image' and 'header' blocks
+- Add HTMX support to 'dropdown' component
+- New Logo and Favicon
+- Rename 'HTMXMethod' to 'HTTPMethod' and use it for 'form' component method parameter
 
 ### Miscellaneous
 
 - **pre-commit:** Autoupdate hooks
+
+### Testing
+
+- Add test accordingly to the new validation improvements
 
 ## [1.13.0] - 2026-08-30
 
