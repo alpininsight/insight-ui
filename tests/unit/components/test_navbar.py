@@ -88,13 +88,13 @@ class TestNavbar(TemplateTagsTestCase):
         # State class: menu must be hidden initially (JS toggles this)
         assert "hidden" in menu.get("class", [])
 
-    def test_navbar_passes_documentation_search_index_url(self) -> None:
-        """Navbar documentation search keeps the host-owned static URL."""
+    def test_navbar_passes_host_owned_search_index_url(self) -> None:
+        """Navbar search keeps a host-owned static URL unchanged."""
         nav_config = NavbarConfig(
             brand=NavbarBrandConfig(request_url="/", mark=BrandMarkConfig(primary_text="Insight UI")),
             search_bar=SearchBarConfig(
                 enable_search=True,
-                search_index_url="/static/documentation/data/search-index-en.json",
+                search_index_url="/static/host-search/search-index-en.json",
             ),
         )
 
@@ -104,7 +104,7 @@ class TestNavbar(TemplateTagsTestCase):
         search_container = BeautifulSoup(rendered, "html.parser").select_one("[data-insight-search]")
 
         assert search_container is not None
-        assert search_container["data-search-index"] == "/static/documentation/data/search-index-en.json"
+        assert search_container["data-search-index"] == "/static/host-search/search-index-en.json"
 
     def test_navbar_keeps_existing_positional_arguments(self) -> None:
         """Keyword arguments work as expected."""
