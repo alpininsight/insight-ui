@@ -452,6 +452,18 @@ def test_corner_ribbon_config_rejects_disabled_color() -> None:
         CornerRibbonConfig(text="Test", color="disabled")
 
 
+def test_corner_ribbon_config_accepts_an_optional_foreground_color() -> None:
+    """Test CornerRibbonConfig accepts an optional semantic text color."""
+    config = CornerRibbonConfig(text="Test", foreground_color="secondary")
+    assert config.foreground_color == "secondary"
+
+
+def test_corner_ribbon_config_rejects_an_invalid_foreground_color() -> None:
+    """Test CornerRibbonConfig rejects an invalid semantic text color."""
+    with pytest.raises(ValueError, match="Invalid foreground_color"):
+        CornerRibbonConfig(text="Test", foreground_color="invalid")
+
+
 # =============================================================================
 # Step Status Validation
 # =============================================================================

@@ -240,6 +240,9 @@ class CornerRibbonConfig:
         text: The text displayed in the ribbon.
         position: Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'.
         color: Color variant for the ribbon.
+        foreground_color: Optional semantic text color. Empty uses white.
+        request_url: Optional URL that turns the ribbon into a link.
+        aria_label: Optional accessible label for the linked ribbon.
 
     """
 
@@ -248,6 +251,8 @@ class CornerRibbonConfig:
             text="Beta",
             position="top-right",
             color="warning",
+            foreground_color="primary",
+            request_url="/beta",
         )
         """
 
@@ -260,11 +265,25 @@ class CornerRibbonConfig:
         default="primary",
         metadata={"doc": _("Color variant for the ribbon.")},
     )
+    foreground_color: ColorType | str = field(
+        default="",
+        metadata={"doc": _("Optional semantic text color. Empty uses white.")},
+    )
+    request_url: str = field(
+        default="",
+        metadata={"doc": _("Optional URL that turns the ribbon into a link.")},
+    )
+    aria_label: str = field(
+        default="",
+        metadata={"doc": _("Optional accessible label for the linked ribbon.")},
+    )
 
     def __post_init__(self) -> None:
         """Validate position and color after initialization."""
         validate_corner_position(self.position, "position")
         validate_color_type(self.color, "color")
+        if self.foreground_color:
+            validate_color_type(self.foreground_color, "foreground_color")
 
 
 @dataclass

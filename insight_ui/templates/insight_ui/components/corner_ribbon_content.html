@@ -1,0 +1,11 @@
+{% if corner_ribbon_config.request_url %}
+  <a
+      href="{{ corner_ribbon_config.request_url }}"
+      class="block py-4 text-center bg-insight-{{ corner_ribbon_config.color }} {{ rotation }} font-bold{% if corner_ribbon_config.foreground_color %} text-insight-{{ corner_ribbon_config.foreground_color }}{% else %} text-white{% endif %} shadow-insight-raised opacity-85 focus:outline-none focus:ring-2 focus:ring-insight-focus focus:ring-offset-2"
+      aria-label="{{ corner_ribbon_config.aria_label|default:corner_ribbon_config.text }}"
+  >{{ corner_ribbon_config.text }}</a>
+{% else %}
+  <div class="py-4 text-center bg-insight-{{ corner_ribbon_config.color }} {{ rotation }} font-bold{% if corner_ribbon_config.foreground_color %} text-insight-{{ corner_ribbon_config.foreground_color }}{% else %} text-white{% endif %} shadow-insight-raised opacity-85">
+    {{ corner_ribbon_config.text }}
+  </div>
+{% endif %}
