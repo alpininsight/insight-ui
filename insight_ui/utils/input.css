@@ -1,11 +1,42 @@
+/*
+* ============================================================================
+*   Insight UI - Design System Source
+* ============================================================================
+*
+*   This file is the single source of truth for all design tokens and
+*   component styles. Tailwind CSS v4 compiles this into the final CSS.
+*
+*   Structure:
+*   1. Tailwind Import & Configuration
+*   2. @theme - Design Tokens (colors, spacing, radii, shadows, animations)
+*   3. @layer base - Browser resets, dark mode switching, default typography
+*   4. @layer utilities - Shorthand utility classes
+*   5. @layer components - Reusable component classes (buttons, badges, inputs)
+*
+*/
+
 @import "tailwindcss";
 
+/*
+* Template scanning paths - Tailwind scans these for class usage.
+* Only classes found in these files will be included in the output.
+*/
 @source "../templates/insight_ui/";
 @source "../component_details/";
 @source "../templatetags/";
 
+/*
+* Dark mode variant using data-theme attribute instead of media query.
+* This allows programmatic theme switching via JavaScript.
+* Usage in templates: dark:bg-gray-900, dark:text-white
+*/
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
+/*
+* Custom font: Atkinson Hyperlegible Next
+* Designed for maximum legibility, especially for users with low vision.
+* Variable font supports weight range without multiple file loads.
+*/
 @font-face {
     font-family: "insight-ui";
     src: url("../font/AtkinsonHyperlegibleNext-VariableFont_wght.ttf");
@@ -18,36 +49,55 @@
     * ========================================================
     *   Colors
     * ========================================================
+    *
+    *   Elevation Model (low to high):
+    *   - base:    Page background, outermost layer
+    *   - surface: Cards, panels, containers on base
+    *   - raised:  Highlighted elements on surface (e.g., selected items)
+    *   - overlay: Modals, dropdowns, tooltips above everything
+    *
     */
 
-    /* Background colors */
-    --color-insight-bg-base: #FFFFFF;
+    /*
+    * Background colors
+    * Background colors for the four elevation levels.
+    */
+    --color-insight-bg-base: #FFFFFF;              /* Page background (body) */
     --color-insight-bg-base-dark: #030712;
-    --color-insight-bg-surface: #FFFFFF;
+    --color-insight-bg-surface: #FFFFFF;           /* Cards, panels, forms */
     --color-insight-bg-surface-dark: #0E1525;
-    --color-insight-bg-raised: #EEF0F3;
+    --color-insight-bg-raised: #EEF0F3;            /* Hover states, selected rows, code blocks */
     --color-insight-bg-raised-dark: #1A2336;
-    --color-insight-bg-overlay: #E9EAEB;
+    --color-insight-bg-overlay: #E9EAEB;           /* Modals, dropdowns, popovers */
     --color-insight-bg-overlay-dark: #202A3D;
 
-    /* Border colors */
-    --color-insight-border-surface: #E5E7EB;
+    /*
+    * Border colors
+    * Border colors matching the elevation levels.
+    */
+    --color-insight-border-surface: #E5E7EB;       /* Card borders, input borders */
     --color-insight-border-surface-dark: #1E2940;
-    --color-insight-border-raised: #E5E7EB;
+    --color-insight-border-raised: #E5E7EB;        /* Highlighted containers */
     --color-insight-border-raised-dark: #1E2940;
-    --color-insight-border-overlay: #E5E7EB;
+    --color-insight-border-overlay: #E5E7EB;       /* Modal borders, dropdown borders */
     --color-insight-border-overlay-dark: #2F3B54;
 
-    /* Primary color */
-    --color-insight-primary: #4183EA;
-    --color-insight-primary-soft: #E3EFFF;
-    --color-insight-primary-hover: #256CD8;
-    --color-insight-primary-active: #0856C0;
+    /*
+    * Primary color (brand color)
+    * Main action color for primary buttons, links, focus indicators.
+    */
+    --color-insight-primary: #4183EA;              /* Default state */
+    --color-insight-primary-soft: #E3EFFF;         /* Background for subtle highlights (active nav items, badges) */
+    --color-insight-primary-hover: #256CD8;        /* Hover state (darker in light mode) */
+    --color-insight-primary-active: #0856C0;       /* Active/pressed state */
     --color-insight-primary-soft-dark: #203351;
-    --color-insight-primary-hover-dark: #72AEFF;
+    --color-insight-primary-hover-dark: #72AEFF;   /* Hover state (lighter in dark mode) */
     --color-insight-primary-active-dark: #90C5FF;
 
-    /* Secondary color */
+    /*
+    * Secondary color (accent color)
+    * Alternative action color for secondary buttons, less prominent CTAs.
+    */
     --color-insight-secondary: #1B9388;
     --color-insight-secondary-soft: #DDF4F1;
     --color-insight-secondary-hover: #008074;
@@ -67,112 +117,168 @@
     --color-insight-secondary-border-active: var(--color-insight-secondary-active);
     --color-insight-secondary-text: var(--color-insight-secondary);
 
-    /* Success color */
-    --color-insight-success: #2EA55C;
-    --color-insight-success-soft: #E0F5E5;
+    /*
+    * Success color
+    * Positive actions, confirmations, successful operations.
+    */
+    --color-insight-success: #2EA55C;              /* Success icons, positive badges */
+    --color-insight-success-soft: #E0F5E5;         /* Success banner background */
     --color-insight-success-hover: #009144;
     --color-insight-success-active: #007B2F;
     --color-insight-success-soft-dark: #1E3A26;
     --color-insight-success-hover-dark: #67CD87;
     --color-insight-success-active-dark: #8CE1A4;
 
-    /* Warning color */
-    --color-insight-warning: #E8A127;
-    --color-insight-warning-soft: #FFF0D4;
+    /*
+    * Warning color
+    * Warning notices, potentially problematic actions.
+    */
+    --color-insight-warning: #E8A127;              /* Warning icons, attention badges */
+    --color-insight-warning-soft: #FFF0D4;         /* Warning banner background */
     --color-insight-warning-hover: #DC8900;
     --color-insight-warning-active: #CC7300;
     --color-insight-warning-soft-dark: #433215;
     --color-insight-warning-hover-dark: #FFBC5E;
     --color-insight-warning-active-dark: #FFCD86;
 
-    /* Danger color */
-    --color-insight-danger: #E6443D;
-    --color-insight-danger-soft: #FFE7E4;
+    /*
+    * Danger color (error/destructive)
+    * Error states, destructive actions (delete), validation errors.
+    */
+    --color-insight-danger: #E6443D;               /* Error icons, delete buttons */
+    --color-insight-danger-soft: #FFE7E4;          /* Error banner background, input error state */
     --color-insight-danger-hover: #D01D21;
     --color-insight-danger-active: #B70002;
     --color-insight-danger-soft-dark: #4D2622;
     --color-insight-danger-hover-dark: #FF7A6E;
     --color-insight-danger-active-dark: #FF988B;
 
-    /* Info color */
-    --color-insight-info: #00A3CB;
-    --color-insight-info-soft: #DAF4FD;
+    /*
+    * Info color
+    * Neutral hints, help text, informational badges.
+    */
+    --color-insight-info: #00A3CB;                 /* Info icons, tooltip triggers */
+    --color-insight-info-soft: #DAF4FD;            /* Info banner background */
     --color-insight-info-hover: #008EB8;
     --color-insight-info-active: #0078A2;
     --color-insight-info-soft-dark: #0F3845;
     --color-insight-info-hover-dark: #50CBF2;
     --color-insight-info-active-dark: #77E1FF;
 
-    /* Focus */
+    /*
+    * Focus
+    * Focus ring for keyboard navigation (accessibility).
+    */
     --color-insight-focus: #4183EA;
     --color-insight-focus-dark: #4183EA;
 
-    /* Elevated / Tooltip */
+    /*
+    * Tooltip
+    * Background for tooltips and small floating hints.
+    */
     --color-insight-tooltip: #F3F4F6;
     --color-insight-tooltip-dark: #242424;
 
-    /* Divider */
+    /*
+    * Divider
+    * Separator lines between sections, horizontal rules.
+    */
     --color-insight-divider: #E5E7EB;
     --color-insight-divider-dark: #1E2940;
 
-    /* Text color */
-    --color-insight-text-primary: #1C1C1E;
-    --color-insight-text-primary-light: #1C1C1E;
+    /*
+    * Text colors
+    * Hierarchy: primary > secondary > hint
+    */
+    --color-insight-text-primary: #1C1C1E;          /* Headings, important content */
+    --color-insight-text-primary-light: #1C1C1E;    /* For dark backgrounds in light mode (e.g., on primary buttons) */
     --color-insight-text-primary-dark: #F5F8FC;
-    --color-insight-text-secondary: #364153;
+    --color-insight-text-secondary: #364153;        /* Body text, descriptions */
     --color-insight-text-secondary-dark: #9BA3B4;
-    --color-insight-text-hint: #d1d5dc;
+    --color-insight-text-hint: #d1d5dc;             /* Placeholders, disabled labels, meta info */
     --color-insight-text-hint-dark: #364153;
-    --color-insight-text-link: #256CD8;
+    --color-insight-text-link: #256CD8;             /* Links, clickable text elements */
     --color-insight-text-link-hover: #72AEFF;
 
     /*
     * ========================================================
     *   Spacing
     * ========================================================
+    *
+    *   Consistent spacing for padding, margin, gap.
+    *   xs - Icon gaps, minimal separation
+    *   s  - Compact elements, button padding
+    *   m  - Standard spacing, card padding
+    *   l  - Section spacing
+    *   xl - Page sections, large separation
+    *
     */
 
-    --spacing-insight-xs: 0.25rem;
-    --spacing-insight-s: 0.5rem;
-    --spacing-insight-m: 1rem;
-    --spacing-insight-l: 2rem;
-    --spacing-insight-xl: 4rem;
+    --spacing-insight-xs: 0.25rem;                  /* 4px - Icons, compact lists */
+    --spacing-insight-s: 0.5rem;                    /* 8px - Buttons, form elements */
+    --spacing-insight-m: 1rem;                      /* 16px - Cards, standard containers */
+    --spacing-insight-l: 2rem;                      /* 32px - Sections within a page */
+    --spacing-insight-xl: 4rem;                     /* 64px - Main sections, hero areas */
 
     /*
     * ========================================================
     *   Radii
     * ========================================================
+    *
+    *   Absolute values (xs-xl): For free use
+    *   Semantic values: Consistent rounding per element type
+    *   - control: Buttons, inputs, small interactive elements
+    *   - surface: Cards, panels
+    *   - raised:  Highlighted containers
+    *   - overlay: Modals, dropdowns
+    *
     */
 
-    --radius-insight-xs: 0.125rem;
-    --radius-insight-s: 0.25rem;
-    --radius-insight-m: 0.375rem;
-    --radius-insight-l: 0.5rem;
-    --radius-insight-xl: 0.75rem;
-    --radius-insight-full: 9999px;
-    --radius-insight-control: var(--radius-insight-s);
-    --radius-insight-surface: var(--radius-insight-m);
-    --radius-insight-raised: var(--radius-insight-l);
-    --radius-insight-overlay: var(--radius-insight-s);
+    --radius-insight-xs: 0.125rem;                          /* 2px */
+    --radius-insight-s: 0.25rem;                            /* 4px */
+    --radius-insight-m: 0.375rem;                           /* 6px */
+    --radius-insight-l: 0.5rem;                             /* 8px */
+    --radius-insight-xl: 0.75rem;                           /* 12px */
+    --radius-insight-full: 9999px;                          /* Full rounding (badges, avatars) */
+    --radius-insight-control: var(--radius-insight-s);      /* Buttons, inputs */
+    --radius-insight-surface: var(--radius-insight-m);      /* Cards, panels */
+    --radius-insight-raised: var(--radius-insight-l);       /* Highlighted elements */
+    --radius-insight-overlay: var(--radius-insight-s);      /* Modals, tooltips */
 
     /*
     * ========================================================
     *   Shadows
     * ========================================================
+    *
+    *   Shadow depth correlates with elevation:
+    *   - subtle:  Minimal shadow for slight depth (inputs, badges)
+    *   - surface: Standard shadow for cards
+    *   - raised:  Stronger shadow for highlighted elements
+    *   - overlay: Maximum shadow for floating elements (modals)
+    *   - focus:   Ring for focus states (accessibility)
+    *
     */
 
-    --shadow-insight-subtle: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); /* shadow-sm */
-    --shadow-insight-surface: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); /* shadow-md */
-    --shadow-insight-raised: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); /* shadow-lg */
-    --shadow-insight-overlay: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); /* shadow-xl */
+    --shadow-insight-subtle: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --shadow-insight-surface: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-insight-raised: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-insight-overlay: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
     --shadow-insight-focus: 0 0 0 2px var(--color-insight-primary);
 
     /*
     * ========================================================
     *   Animations
     * ========================================================
+    *
+    *   Reusable animations as CSS custom properties.
+    *   Usage: animation: var(--animate-blink);
+    *
     */
 
+    /*
+    * Blink animation - cursor blink effect
+    * Used for: Text cursors, typing indicators
+    */
     --animate-blink: blink 2s step-start infinite;
 
     @keyframes blink {
@@ -184,6 +290,10 @@
         }
     }
 
+    /*
+    * Shake animation - error feedback
+    * Used for: Form validation errors, incorrect input
+    */
     --animate-shake: shake 0.3s;
 
     @keyframes shake {
@@ -192,6 +302,11 @@
         75% { transform: translateX(4px); }
     }
 
+    /*
+    * Blob float animations - decorative background elements
+    * Used for: Hero sections, landing pages, ambient decoration
+    * Apply to gradient blobs for organic floating motion
+    */
     @keyframes blob-float {
         0%, 100% {
             transform: translate(0, 0) scale(1);
@@ -223,12 +338,36 @@
     }
 }
 
+/*
+* ============================================================================
+*   @layer base - Browser Defaults & Dark Mode
+* ============================================================================
+*
+*   This layer contains:
+*   - Dark mode token switching (maps *-dark tokens to base tokens)
+*   - Default typography for headings
+*   - Browser element styling (scrollbars, buttons)
+*
+*   Dark mode is activated by setting data-theme="dark" on the <html> element.
+*   JavaScript in base.html handles theme persistence via localStorage.
+*
+*/
+
 @layer base {
-    /* Color scheme for native browser elements (scrollbars, date pickers, etc.) */
+    /*
+    * Color scheme declaration for native browser elements.
+    * Affects scrollbars, date pickers, form controls, etc.
+    */
     :root {
         color-scheme: light;
     }
 
+    /*
+    * Dark mode token mapping.
+    * When data-theme="dark" is set, all *-dark tokens are mapped to their
+    * base equivalents. This allows using bg-insight-primary without
+    * needing dark:bg-insight-primary-dark everywhere.
+    */
     [data-theme="dark"] {
         color-scheme: dark;
 
@@ -279,18 +418,32 @@
         --color-insight-card: var(--color-insight-card-dark);
     }
 
-    /* Use pointer cursor for buttons as default */
+    /*
+    * Interactive element defaults.
+    * Ensures buttons and button-role elements show pointer cursor.
+    */
     button:not(:disabled), [role="button"]:not(:disabled) { cursor: pointer; }
 
-    /* Default heading styling */
+    /*
+    * Default heading typography.
+    * Responsive sizing: smaller on mobile, larger on desktop (md:).
+    * Font weight decreases with heading level for visual hierarchy.
+    */
     h1 { @apply text-4xl md:text-5xl font-bold text-insight-text-primary; }
     h2 { @apply text-2xl md:text-3xl font-medium text-insight-text-primary; }
     h3 { @apply text-xl md:text-2xl font-medium text-insight-text-primary; }
     h4 { @apply text-lg md:text-xl font-normal text-insight-text-primary; }
     h5 { @apply text-base md:text-lg font-normal text-insight-text-primary; }
 
-    /* Default horizontale rule styling */
+    /* Horizontal rule uses hint color for subtle separation */
     hr { @apply text-insight-text-hint; }
+
+    /*
+    * Custom scrollbar styling.
+    * Two implementations for cross-browser support:
+    * - Firefox/Standard: scrollbar-color property
+    * - Chromium/WebKit: ::-webkit-scrollbar pseudo-elements
+    */
 
     /* Firefox / Standard (scrollbar-color) - only on elements with overflow */
     .overflow-auto,
@@ -350,16 +503,30 @@
     }
 }
 
+/*
+* ============================================================================
+*   @layer utilities - Shorthand Utility Classes
+* ============================================================================
+*
+*   Custom utility classes that simplify common patterns.
+*   These have higher specificity than Tailwind's generated utilities
+*   but lower than component classes.
+*
+*   Naming convention:
+*   - bg-insight-{elevation} instead of bg-insight-bg-{elevation}
+*   - border-insight-{elevation} instead of border-insight-border-{elevation}
+*
+*/
+
 @layer utilities {
     /*
-    * ========================================================
-    *   Simplified Surface Utilities
-    * ========================================================
-    *   Usage: bg-insight-surface (not bg-insight-bg-surface)
-    *          border-insight-surface (not border-insight-border-surface)
+    * Elevation-based background utilities.
+    * Shorthand for the verbose token names.
+    *
+    * Usage:
+    *   <div class="bg-insight-surface">Card content</div>
+    *   <div class="bg-insight-raised">Highlighted row</div>
     */
-
-    /* Background Utilities */
     .bg-insight-base {
         background-color: var(--color-insight-bg-base);
     }
@@ -373,7 +540,10 @@
         background-color: var(--color-insight-bg-overlay);
     }
 
-    /* Border Color Utilities */
+    /*
+    * Elevation-based border utilities.
+    * Match borders to the appropriate elevation level.
+    */
     .border-insight-surface {
         border-color: var(--color-insight-border-surface);
     }
@@ -384,19 +554,41 @@
         border-color: var(--color-insight-border-overlay);
     }
 
-    /* Text Color Utilities */
+    /*
+    * Semantic text utilities.
+    * Shorthand for common text hierarchy patterns.
+    */
     .text-primary { @apply text-insight-text-primary; }
     .text-secondary { @apply text-insight-text-secondary; }
 }
+
+/*
+* ============================================================================
+*   @layer components - Reusable Component Classes
+* ============================================================================
+*
+*   Pre-built component classes for common UI patterns.
+*   These combine multiple properties into semantic class names.
+*
+*   Component naming: .{component}-{variant} or .insight-{component}
+*   Examples: .btn-primary, .badge-success, .insight-surface
+*
+*/
 
 @layer components {
 
     /*
     * ========================================================
-    *   Combined Surface Classes
+    *   Surface Components
     * ========================================================
-    *   All-in-one classes that apply bg, border, shadow, and radius
-    *   for each elevation level.
+    *
+    *   All-in-one classes combining bg, border, shadow, and radius
+    *   for each elevation level. Use these for cards, panels, modals.
+    *
+    *   Usage:
+    *     <div class="insight-surface p-insight-xs">Card content</div>
+    *     <div class="insight-raised p-insight-xs">Highlighted panel</div>
+    *     <dialog class="insight-overlay p-insight-s">Modal content</dialog>
     */
 
     .insight-surface {
@@ -420,13 +612,24 @@
         border-radius: var(--radius-insight-overlay);
     }
 
-    /* Layout-Tags */
+    /*
+    * Layout tag support.
+    * page-peek: Shows a "peek" of the next section to encourage scrolling.
+    */
     .page-peek { @apply min-h-[calc(100vh-10rem)]; }
 
     /*
     * ========================================================
-    *   HTMX Indicator
+    *   HTMX Loading Indicator
     * ========================================================
+    *
+    *   Hidden by default, shown when HTMX request is in progress.
+    *   HTMX automatically adds .htmx-request to the triggering element.
+    *
+    *   Usage:
+    *     <button hx-get="/api/data">
+    *       Load <span class="htmx-indicator">...</span>
+    *     </button>
     */
 
     .htmx-indicator {
@@ -443,21 +646,28 @@
 
     /*
     * ========================================================
-    *   Text
+    *   Text Utilities
     * ========================================================
     */
 
+    /* Styled link with hover state */
     .text-link { @apply text-insight-text-link hover:text-insight-text-link-hover underline; }
 
     /*
     * ========================================================
     *   Navigation Active States
     * ========================================================
-    *   Uses aria-current="page" as single source of truth.
-    *   JavaScript only toggles the attribute, CSS handles styling.
+    *
+    *   Accessible navigation styling using aria-current as source of truth.
+    *   JavaScript toggles aria-current="page", CSS handles all visual states.
+    *
+    *   This pattern ensures:
+    *   - Screen readers announce the current page
+    *   - No duplicate state management (CSS follows ARIA)
+    *   - Consistent styling across navbar, dropdowns, sidebar
     */
 
-    /* Navbar link */
+    /* Navbar top-level link - horizontal navigation bar */
     .insight-nav-link {
         @apply text-insight-text-secondary transition-colors duration-200;
     }
@@ -469,7 +679,7 @@
         @apply text-insight-text-link transition-none;
     }
 
-    /* Navbar dropdown item */
+    /* Navbar dropdown item - items within a dropdown menu */
     .insight-nav-dropdown-item {
         @apply text-insight-text-primary transition-colors duration-200;
     }
@@ -480,7 +690,7 @@
         @apply text-insight-text-link bg-insight-primary-soft;
     }
 
-    /* Sidebar link*/
+    /* Sidebar link - vertical navigation with left border indicator */
     .insight-sidebar-link {
         @apply border-s border-insight-border-surface transition-colors duration-200;
     }
@@ -493,24 +703,38 @@
 
     /*
     * ========================================================
-    *   Button
+    *   Button Component
     * ========================================================
+    *
+    *   Button classes follow the pattern: .btn .btn-{color} .btn-{size}
+    *
+    *   Variants (visual style):
+    *   - Fill (default): Solid background, white text
+    *   - Outline: Transparent bg, colored border and text, fill on hover
+    *   - Subtle: No border, light hover background
+    *
+    *   Sizes: xs, s, m (default), l, xl, icon (square), round (pill shape)
+    *
+    *   Usage:
+    *     <button class="btn btn-primary">Submit</button>
+    *     <button class="btn btn-outline-danger btn-s">Delete</button>
+    *     <button class="btn btn-subtle-secondary btn-icon"><svg>...</svg></button>
     */
 
     .btn {
-        @apply flex gap-2 items-center justify-center border-2 border-transparent rounded-insight-control px-5 py-1.5 text-white transition-colors h-fit;
+        @apply flex gap-2 items-center justify-center border-2 border-transparent rounded-insight-control px-5 py-1.5 text-white transition-colors;
     }
 
-    /* Button-Size */
+    /* Size modifiers - combine with color variant */
     .btn-xs { @apply text-xs px-2 py-0.5; }
     .btn-s { @apply text-sm px-4 py-1; }
     .btn-m { @apply text-sm px-5 py-1.5; }
     .btn-l { @apply text-lg px-6 py-2; }
     .btn-xl { @apply text-lg px-8 py-3; }
-    .btn-icon { @apply p-1.5; }
-    .btn-round { @apply rounded-insight-full; }
+    .btn-icon { @apply p-1.5; }                     /* Square button for icons only */
+    .btn-round { @apply rounded-insight-full; }     /* Pill-shaped button */
 
-    /* Button-Fill */
+    /* Fill variant (solid background) - default button style */
     .btn-primary {
         @apply bg-insight-primary border-insight-primary hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active;
     }
@@ -549,7 +773,7 @@
         @apply bg-neutral-300 dark:bg-neutral-600 border-neutral-300 dark:border-neutral-600 text-neutral-400;
     }
 
-    /* Button-Outline */
+    /* Outline variant - transparent bg, colored border, fills on hover */
     .btn-outline-primary {
         @apply border-insight-primary text-insight-primary hover:text-white hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active;
     }
@@ -585,7 +809,7 @@
         @apply border-neutral-300 dark:border-neutral-600 text-neutral-400;
     }
 
-    /* Button-Subtle */
+    /* Subtle variant - no border, light background on hover, minimal visual weight */
     .btn-subtle-primary {
         @apply text-insight-primary hover:text-insight-primary-hover active:text-insight-primary-active hover:bg-insight-primary-hover/25 active:bg-insight-primary-active/25;
     }
@@ -613,20 +837,27 @@
 
     /*
     * ========================================================
-    *   Badge
+    *   Badge Component
     * ========================================================
+    *
+    *   Inline labels for status, counts, or categories.
+    *   Pattern: .badge .badge-{color} .badge-{size}
+    *
+    *   Usage:
+    *     <span class="badge badge-success">Active</span>
+    *     <span class="badge badge-warning badge-s">3 warnings</span>
     */
 
     .badge { @apply inline-flex items-center gap-2 px-4 py-1.5 rounded-insight-full shadow-insight-subtle h-fit; }
 
-    /* Badge-Size */
+    /* Size modifiers */
     .badge-xs { @apply text-xs px-2 py-1; }
-    .badge-s { @apply text-sm px-4 py-1; }
-    .badge-m { @apply text-sm px-4 py-1.5; }
+    .badge-s { @apply text-sm px-3 py-1; }
+    .badge-m { @apply text-base px-4 py-1.5; }
     .badge-l { @apply text-lg px-6 py-2; }
-    .badge-xl { @apply text-lg px-8 py-3; }
+    .badge-xl { @apply text-xl px-8 py-3; }
 
-    /* Badge-Color */
+    /* Color variants - subtle background with matching text */
     .badge-primary {
         @apply bg-insight-primary/10 text-insight-primary dark:text-insight-primary-hover;
     }
@@ -651,14 +882,24 @@
 
     /*
     * ========================================================
-    *   Utils
+    *   Form & Input Components
     * ========================================================
     */
 
+    /*
+    * Inline code/tag styling.
+    * Used for inline code snippets, keyboard shortcuts, tags in text.
+    * Usage: <code class="inline-tag">Ctrl+S</code>
+    */
     .inline-tag {
         @apply bg-gray-200 dark:bg-gray-700 font-mono text-insight-primary dark:text-insight-primary-active rounded-insight-control px-1 py-px text-nowrap;
     }
 
+    /*
+    * Base input styling.
+    * Applied to text inputs, textareas, selects.
+    * Includes focus ring, placeholder styling, disabled state.
+    */
     .input {
         @apply w-full bg-insight-bg-base border border-insight-border-surface rounded-insight-control shadow-insight-subtle px-3 py-2 text-sm text-insight-text-primary focus:ring-2 focus:ring-insight-primary focus:border-insight-primary transition-colors duration-200;
 
@@ -675,11 +916,12 @@
         }
     }
 
-    /* Multiselect disabled state */
+    /* Multiselect component disabled state */
     [data-insight-multiselect][data-disabled="true"] .input {
         @apply bg-neutral-100 dark:bg-neutral-900 cursor-not-allowed;
     }
 
+    /* Multiselect search input - transparent within the multiselect container */
     [data-insight-multiselect] .search {
         @apply bg-transparent;
 
@@ -696,7 +938,12 @@
         }
     }
 
-    /* Range slider (single thumb) */
+    /*
+    * Range slider styling.
+    * Custom track and thumb styling for <input type="range">.
+    * Uses CSS custom property --insight-control-range-progress for fill.
+    * Supports LTR and RTL layouts.
+    */
     .range-custom::-webkit-slider-runnable-track {
         @apply h-2 rounded-insight-control;
         background: linear-gradient(to right, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised) var(--insight-control-range-progress));
@@ -745,7 +992,12 @@
         @apply size-4 bg-insight-bg-base border-2 border-insight-primary rounded-insight-full cursor-pointer;
     }
 
-    /* Background pattern for the demo containers */
+    /*
+    * Demo container pattern.
+    * Diagonal stripe background for component demo containers.
+    * Helps distinguish the demo area from actual content.
+    * Used in documentation/storybook pages.
+    */
     .demo-pattern {
         background-color: #f8fafc;
         background-image: repeating-linear-gradient(

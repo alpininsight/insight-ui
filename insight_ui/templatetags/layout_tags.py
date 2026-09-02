@@ -704,26 +704,34 @@ class GridNode(LayoutNode):
             # Auto-fit mode: items wrap based on available space
             style = f"grid-template-columns: repeat(auto-fit, minmax({min_width}, 1fr));"
 
-        # Append user-provided extra classes
-        extra_classes = resolved.get("class", "")
-        if extra_classes:
-            classes.append(str(extra_classes))
+        # Get user-provided extra classes
+        extra_classes = str(resolved.get("class", "")).strip()
 
         content = self.nodelist.render(context)
-        class_str = " ".join(classes)
-
-        # Build the grid HTML
-        if style:
-            grid_html = f'<div class="{class_str}" style="{style}">{content}</div>'
-        else:
-            grid_html = f'<div class="{class_str}">{content}</div>'
 
         # Wrap in container element for container query support
         # Container queries require @container on a parent element
         if needs_container_wrapper:
-            return f'<div class="@container w-full">{grid_html}</div>'
+            # Apply extra classes to the wrapper (for sizing/centering)
+            # The inner grid stays w-full to fill the container
+            grid_class_str = " ".join(classes)
+            wrapper_classes = "@container w-full"
+            if extra_classes:
+                wrapper_classes = f"@container w-full {extra_classes}"
+            if style:
+                grid_html = f'<div class="{grid_class_str}" style="{style}">{content}</div>'
+            else:
+                grid_html = f'<div class="{grid_class_str}">{content}</div>'
+            return f'<div class="{wrapper_classes}">{grid_html}</div>'
 
-        return grid_html
+        # No wrapper needed - apply extra classes directly to grid
+        if extra_classes:
+            classes.append(extra_classes)
+        class_str = " ".join(classes)
+
+        if style:
+            return f'<div class="{class_str}" style="{style}">{content}</div>'
+        return f'<div class="{class_str}">{content}</div>'
 
 
 class SurfaceNode(LayoutNode):
@@ -921,8 +929,9 @@ class SidebarNode(LayoutNode):
         mobile_behavior = str(resolved.get("mobile_behavior", "hidden"))
         _validate(mobile_behavior, VALID_MOBILE_BEHAVIOR, "mobile_behavior", self.tag_name)
 
-        # Get navbar_fixed from context (set by context processor)
-        navbar_fixed = context.get("navbar_fixed", False)
+        # Get navbar_fixed from INSIGHT_UI config (set by context processor)
+        insight_ui_config = context.get("INSIGHT_UI", {})
+        navbar_fixed = insight_ui_config.get("navbar_fixed", False) if isinstance(insight_ui_config, dict) else False
 
         # Build template context
         template_context = {
@@ -954,7 +963,7 @@ class TabNode(Node):
         tab_id: str,
         label: str,
         active: bool = False,
-        url: str = "",
+        request_url: str = "",
         icon: str = "",
     ) -> None:
         """Initialize the tab node."""
@@ -962,7 +971,7 @@ class TabNode(Node):
         self.tab_id = tab_id
         self.label = label
         self.active = active
-        self.url = url
+        self.request_url = request_url
         self.icon = icon
 
     def render(self, context: Context) -> str:
@@ -994,8 +1003,8 @@ class TabsNode(Node):
     3. **HTMX mode** - Tabs with URLs load content via HTMX::
 
         {% tabs id="settings" label="Settings" %}
-            {% tab id="general" label="General" url="/settings/general" active=True %}{% endtab %}
-            {% tab id="security" label="Security" url="/settings/security" %}{% endtab %}
+            {% tab id="general" label="General" request_url="/settings/general" active=True %}{% endtab %}
+            {% tab id="security" label="Security" request_url="/settings/security" %}{% endtab %}
         {% endtabs %}
 
     """
@@ -1046,7 +1055,7 @@ class TabsNode(Node):
                     "id": tab.tag_id,
                     "label": tab.title,
                     "active": tab.active,
-                    "url": tab.url,
+                    "url": tab.request_url,
                     "icon": getattr(tab, "icon", ""),
                     "panel_id": f"{tag_id}-{tab.tag_id}",
                     "content": None,
@@ -1057,7 +1066,7 @@ class TabsNode(Node):
             # Block mode - data comes from inline {% tab %} blocks
             tag_id = str(resolved.get("id", f"tabs-{uuid.uuid4().hex[:8]}"))
             label = str(resolved.get("label", ""))
-            is_htmx = any(tab.url for tab in self.tab_nodes)
+            is_htmx = any(tab.request_url for tab in self.tab_nodes)
 
             # Ensure at least one tab is active
             has_active = any(tab.active for tab in self.tab_nodes)
@@ -1069,7 +1078,7 @@ class TabsNode(Node):
                     "id": tab.tab_id,
                     "label": tab.label,
                     "active": tab.active,
-                    "url": tab.url if is_htmx else "",
+                    "url": tab.request_url if is_htmx else "",
                     "icon": tab.icon,
                     "panel_id": f"{tag_id}-{tab.tab_id}",
                     # Content comes from internal template rendering, not user input
@@ -1151,7 +1160,7 @@ def do_tab(parser: Parser, token: Token) -> TabNode:
         tab_id=str(parsed_kwargs.get("id", f"tab-{uuid.uuid4().hex[:8]}")),
         label=str(parsed_kwargs.get("label", "Tab")),
         active=bool(parsed_kwargs.get("active", False)),
-        url=str(parsed_kwargs.get("url", "")),
+        request_url=str(parsed_kwargs.get("request_url", "")),
         icon=str(parsed_kwargs.get("icon", "")),
     )
 

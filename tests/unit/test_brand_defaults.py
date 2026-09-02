@@ -13,8 +13,8 @@ def test_brand_logo_override_uses_configured_height() -> None:
     logo = get_brand_logo_config()
 
     assert logo is not None
-    assert logo.url == "insight_ui/svg/ai-logo.svg"
-    assert logo.url_dark == "insight_ui/svg/ai-logo.svg"
+    assert logo.url == "insight_ui/svg/insight-ui-logo.svg"
+    assert logo.url_dark == "insight_ui/svg/insight-ui-logo.svg"
     assert logo.alt == "Insight UI Logo"
     assert logo.height == "2rem"
 
@@ -90,4 +90,4 @@ def test_documentation_navbar_uses_the_localized_search_index() -> None:
     with override("de"):
         navbar_config = get_navbar_context()["nav_config"]
 
-    assert navbar_config.search_index_url == "/static/documentation/data/search-index-de.json"
+    assert navbar_config.search_bar.search_index_url == "/static/documentation/data/search-index-de.json"

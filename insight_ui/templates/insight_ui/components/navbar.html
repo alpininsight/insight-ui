@@ -8,7 +8,7 @@
 <nav
   role="navigation"
   aria-label="{% trans 'Main navigation' %}"
-  class="{% if fixed %}fixed{% else %}absolute{% endif %} z-50 px-4 w-full h-16 bg-insight-bg-base border-b border-insight-border-surface shadow-insight-surface md:px-6"
+  class="{% if fixed %}fixed z-50{% else %}relative{% endif %} px-4 w-full h-16 bg-insight-bg-base border-b border-insight-border-surface shadow-insight-surface md:px-6"
 >
   {# Desktop Navigation #}
   <div class="flex flex-wrap gap-1 justify-between items-center h-full lg:flex-nowrap">
@@ -47,9 +47,16 @@
             {% for link in navbar_config.links %}
               {% if not link.need_auth or options.user.is_authenticated and not link.staff_only or options.user.is_staff %}
                 <li data-insight-nav>
-                  {% if link.url %}
+                  {% if link.request_url %}
                     <a
-                      href="{{ link.url }}"
+                      href="{{ link.request_url }}"
+                      {% if link.htmx %}
+                        hx-get="{{ link.htmx.request_url|default:link.request_url }}"
+                        hx-target="{{ link.htmx.target }}"
+                        hx-swap="{{ link.htmx.swap|default:'innerHTML' }} show:window:top"
+                        hx-push-url="true"
+                        hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
+                      {% endif %}
                       class="insight-nav-link flex gap-2 px-4 py-2 h-full text-sm whitespace-nowrap"
                       {% if link.active %}aria-current="page"{% endif %}
                       {% if link.external %}target="_blank" rel="noopener"{% endif %}
@@ -74,11 +81,12 @@
                         <div class="py-1">
                           {% for item in link.dropdown.items %}
                             <a
-                              {% if item.htmx and item.request_url %}
-                                hx-get="{{ item.request_url }}"
+                              {% if item.htmx %}
+                                hx-get="{{ item.htmx.request_url|default:item.request_url }}"
                                 hx-target="{{ item.htmx.target }}"
-                                hx-swap="{{ item.htmx.swap|default:'innerHTML' }} show:window:top"
-                                hx-push-url="true"
+                                hx-swap="{{ item.htmx.swap_method|default:'innerHTML' }} show:window:top"
+                                hx-push-url="{{ item.htmx.push_url|yesno:'true,false' }}"
+                                hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
                               {% endif %}
                               href="{{ item.request_url|default:'' }}"
                               class="insight-nav-dropdown-item block px-4 py-2 text-sm"
@@ -104,9 +112,9 @@
 
         {# Other Nav-Elements #}
         <div class="flex flex-col gap-2 w-full lg:flex-row lg:w-fit">
-          {% if navbar_config.searchbar_request_url or navbar_config.enable_doc_search %}
+          {% if navbar_config.search_bar %}
             <div class="flex-1 lg:max-w-72">
-              {% search_bar request_url=navbar_config.searchbar_request_url simple=True search_query=options.search_query enable_search=navbar_config.enable_doc_search search_index_url=navbar_config.search_index_url %}
+              {% search_bar config=navbar_config.search_bar simple=True search_query=options.search_query %}
             </div>
           {% endif%}
           <div class="flex gap-2 h-10">

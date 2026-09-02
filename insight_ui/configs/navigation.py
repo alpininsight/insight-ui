@@ -1,10 +1,12 @@
 """Configuration classes for navigation components."""
 
+import warnings
 from dataclasses import dataclass, field
 
 from django.utils.translation import gettext_lazy as _
 
 from insight_ui.configs.base import HtmxConfig, IconConfig
+from insight_ui.configs.filter import SearchBarConfig
 from insight_ui.configs.input import DropdownConfig
 from insight_ui.configs.popup import ModalConfig
 from insight_ui.configs.types import Size, StepStatus, validate_size, validate_step_status
@@ -45,8 +47,9 @@ class NavbarLinkConfig:
 
     Attributes:
         text: Label of the link.
-        url: The URL to be called when clicking on the link, if not opening a modal or dropdown menu.
+        request_url: The URL to be called when clicking on the link, if not opening a modal or dropdown menu.
         icon: An optional icon displayed before the text.
+        htmx: Optional HTMX configuration for dynamic content loading.
         need_auth: The link is only displayed for logged-in users.
         staff_only: The link is only displayed for administrators.
         modal: Configuration of a modal dialog.
@@ -55,19 +58,45 @@ class NavbarLinkConfig:
     """
 
     __example__ = """
-        NavbarLinkConfig(text="Home", url=reverse("index"))
+        NavbarLinkConfig(text="Home", request_url=reverse("index"))
+        NavbarLinkConfig(
+            text="Docs",
+            request_url=reverse("docs"),
+            htmx=HtmxConfig(target="#content"),
+        )
         """
 
     text: str = field(metadata={"doc": _("Label of the link.")})
-    url: str = field(
+    request_url: str = field(
         default="",
         metadata={"doc": _("The URL to be called when clicking on the link, if not opening a modal or dropdown menu.")},
     )
     icon: IconConfig | None = field(default=None, metadata={"doc": _("An optional icon displayed before the text.")})
+    htmx: HtmxConfig | None = field(
+        default=None, metadata={"doc": _("Optional HTMX configuration for dynamic content loading.")}
+    )
     need_auth: bool = field(default=False, metadata={"doc": _("The link is only displayed for logged-in users.")})
     staff_only: bool = field(default=False, metadata={"doc": _("The link is only displayed for administrators.")})
     modal: ModalConfig | None = field(default=None, metadata={"doc": _("Configuration of a modal dialog.")})
     dropdown: DropdownConfig | None = field(default=None, metadata={"doc": _("Configuration of a dropdown menu.")})
+
+    def __post_init__(self) -> None:
+        """Validate configuration and warn about potential issues."""
+        if not self.request_url and not self.modal and not self.dropdown:
+            warnings.warn(
+                f"NavbarLinkConfig '{self.text}' has no request_url, modal, or dropdown set. "
+                "The link will not be rendered.",
+                UserWarning,
+                stacklevel=2,
+            )
+        if self.request_url and self.htmx and self.htmx.request_url:
+            warnings.warn(
+                f"NavbarLinkConfig '{self.text}' has both 'request_url' and 'htmx.request_url' set. "
+                "This may cause conflicting behavior. Use 'request_url' for the href fallback, or "
+                "'htmx.request_url' for HTMX requests, but not both.",
+                UserWarning,
+                stacklevel=2,
+            )
 
 
 @dataclass
@@ -195,9 +224,7 @@ class NavbarConfig:
     Attributes:
         brand: Describes the brand mark of the application in the navbar.
         links: Contains and describes the navigation items of the navbar.
-        searchbar_request_url: The URL to be called when performing a search. If empty, no search bar will be displayed.
-        enable_doc_search: If True, enable client-side documentation search with Fuse.js in the navbar.
-        search_index_url: Optional URL for the client-side documentation search index.
+        search_bar: Configuration for the search bar. If None, no search bar is displayed.
         usermenu: Configuration for the user dropdown menu. None uses defaults (logout only).
         hide_login: If True, hide the login button for unauthenticated users.
         show_language_selector: Displays a dropdown menu for selecting the display language (if defined).
@@ -215,10 +242,14 @@ class NavbarConfig:
                 ),
             ),
             links=[
-                NavbarLinkConfig(text="Home", url=reverse("index")),
-                NavbarLinkConfig(text="About", url=reverse("about")),
-                NavbarLinkConfig(text="Admin", url=reverse("admin:index"), staff_only=True),
+                NavbarLinkConfig(text="Home", request_url=reverse("index")),
+                NavbarLinkConfig(text="About", request_url=reverse("about")),
+                NavbarLinkConfig(text="Admin", request_url=reverse("admin:index"), staff_only=True),
             ],
+            search_bar=SearchBarConfig(
+                placeholder="Search...",
+                enable_search=True,
+            ),
             usermenu=UserMenuConfig(
                 links=[
                     UserMenuLinkConfig(text="Profile", request_url=reverse("profile")),
@@ -234,15 +265,9 @@ class NavbarConfig:
     links: list[NavbarLinkConfig] = field(
         default_factory=list, metadata={"doc": _("Contains and describes the navigation items of the navbar.")}
     )
-    searchbar_request_url: str = field(
-        default="",
-        metadata={
-            "doc": _("The URL to be called when performing a search. If empty, no search bar will be displayed.")
-        },
-    )
-    enable_doc_search: bool = field(
-        default=False,
-        metadata={"doc": _("If True, enable client-side documentation search with Fuse.js in the navbar.")},
+    search_bar: SearchBarConfig | None = field(
+        default=None,
+        metadata={"doc": _("Configuration for the search bar. If None, no search bar is displayed.")},
     )
     usermenu: UserMenuConfig | None = field(
         default=None,
@@ -257,10 +282,6 @@ class NavbarConfig:
     )
     show_theme_toggle: bool = field(
         default=False, metadata={"doc": _("Displays a button to switch between the light and dark theme of the page.")}
-    )
-    search_index_url: str = field(
-        default="",
-        metadata={"doc": _("Optional URL for the client-side documentation search index.")},
     )
 
 
@@ -321,13 +342,20 @@ class SidebarDataConfig:
     Attributes:
         title: Sidebar title.
         icon: Optional title icon.
+        links: Top-level navigation links shown before categories.
+        categories_title: Optional heading above the categories section.
         categories: List of navigation categories.
 
     """
 
     __example__ = """
         SidebarDataConfig(
-            title="Settings",
+            title="Documentation",
+            links=[
+                SidebarItemConfig(text="Installation", request_url=reverse("install")),
+                SidebarItemConfig(text="Getting Started", request_url=reverse("start")),
+            ],
+            categories_title="Components",
             categories=[
                 SidebarCategoryConfig(
                     caption="Account",
@@ -342,6 +370,10 @@ class SidebarDataConfig:
 
     title: str = field(default="", metadata={"doc": _("Sidebar title.")})
     icon: IconConfig | None = field(default=None, metadata={"doc": _("Optional title icon.")})
+    links: list[SidebarItemConfig] = field(
+        default_factory=list, metadata={"doc": _("Top-level navigation links shown before categories.")}
+    )
+    categories_title: str = field(default="", metadata={"doc": _("Optional heading above the categories section.")})
     categories: list[SidebarCategoryConfig] = field(
         default_factory=list, metadata={"doc": _("List of navigation categories.")}
     )
@@ -471,8 +503,8 @@ class FooterConfig:
                 text="A modern web application.",
             ),
             links=[
-                NavbarLinkConfig(text="Home", url=reverse("index")),
-                NavbarLinkConfig(text="Docs", url="https://docs.example.com"),
+                NavbarLinkConfig(text="Home", request_url=reverse("index")),
+                NavbarLinkConfig(text="Docs", request_url="https://docs.example.com"),
             ],
             contact=FooterContactConfig(
                 mail_url="support@example.com",
@@ -561,7 +593,7 @@ class StepperItemConfig:
     Attributes:
         title: Title of the step.
         description: Additional description of the step below the title.
-        url: URL called when the user clicks on the title of the step.
+        request_url: URL called when the user clicks on the title of the step.
         success: Displays a checkmark instead of the step number.
         failed: Displays an X instead of the step number.
         current: Highlights the title in color and makes the text pulse.
@@ -574,7 +606,9 @@ class StepperItemConfig:
 
     title: str = field(metadata={"doc": _("Title of the step.")})
     description: str = field(default="", metadata={"doc": _("Additional description of the step below the title.")})
-    url: str = field(default="", metadata={"doc": _("URL called when the user clicks on the title of the step.")})
+    request_url: str = field(
+        default="", metadata={"doc": _("URL called when the user clicks on the title of the step.")}
+    )
     success: bool = field(default=False, metadata={"doc": _("Displays a checkmark instead of the step number.")})
     failed: bool = field(default=False, metadata={"doc": _("Displays an X instead of the step number.")})
     current: bool = field(default=False, metadata={"doc": _("Highlights the title in color and makes the text pulse.")})
@@ -746,9 +780,7 @@ class AccordionConfig:
         )
         """
 
-    tag_id: str = field(
-        default="accordion", metadata={"doc": _("Unique tag ID for identifying the element in JavaScript.")}
-    )
+    tag_id: str = field(metadata={"doc": _("Unique tag ID for identifying the element in JavaScript.")})
     items: list[AccordionItemConfig] = field(default_factory=list, metadata={"doc": _("List of individual sections.")})
     exclusive: bool = field(default=True, metadata={"doc": _("If **True** only one section can be open at a time.")})
 
@@ -760,18 +792,18 @@ class TabConfig:
     Attributes:
         tag_id: Unique tag ID for identifying the element in JavaScript.
         title: Label of the tab button.
-        url: The URL to be called when the tab is clicked.
+        request_url: The URL to be called when the tab is clicked.
         active: Whether this tab is initially active.
 
     """
 
     __example__ = """
-        TabConfig(tag_id="general", title="General", url=reverse("conf_general"), active=True)
+        TabConfig(tag_id="general", title="General", request_url=reverse("conf_general"), active=True)
         """
 
     tag_id: str = field(metadata={"doc": _("Unique tag ID for identifying the element in JavaScript.")})
     title: str = field(metadata={"doc": _("Label of the tab button.")})
-    url: str = field(default="", metadata={"doc": _("The URL to be called when the tab is clicked.")})
+    request_url: str = field(metadata={"doc": _("The URL to be called when the tab is clicked.")})
     active: bool = field(default=False, metadata={"doc": _("Whether this tab is initially active.")})
 
 
@@ -793,9 +825,9 @@ class TabsConfig:
             tag_id="settings-tabs",
             label="Settings",
             tabs=[
-                TabConfig(tag_id="general", title="General", url=reverse("conf_general"), active=True),
-                TabConfig(tag_id="security", title="Security", url=reverse("conf_security")),
-                TabConfig(tag_id="notifications", title="Notifications", url=reverse("conf_notifications")),
+                TabConfig(tag_id="general", title="General", request_url=reverse("conf_general"), active=True),
+                TabConfig(tag_id="security", title="Security", request_url=reverse("conf_security")),
+                TabConfig(tag_id="notifications", title="Notifications", request_url=reverse("conf_notifications")),
             ],
         )
         """

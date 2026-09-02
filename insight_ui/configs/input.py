@@ -29,8 +29,8 @@ class ButtonConfig:
     Renders a button element.
 
     Attributes:
-        tag_id: Unique ID for JavaScript/CSS targeting.
         label: The text on the button or for Screenreader if the button shows only an icon.
+        tag_id: Unique ID for JavaScript/CSS targeting.
         request_url: URL for navigation (renders as <a>). Do not use together with htmx_config; use htmx_config.request_url instead for HTMX requests.
         on_click: The name of the JavaScript method to be called when clicking on the button.
         icon: Icon config for an optional icon.
@@ -78,10 +78,8 @@ class ButtonConfig:
         )
         """
 
+    label: str = field(metadata={"doc": "The text on the button or for Screenreader if the button shows only an icon."})
     tag_id: str = field(default="", metadata={"doc": _("Unique ID for JavaScript/CSS targeting.")})
-    label: str = field(
-        default="", metadata={"doc": "The text on the button or for Screenreader if the button shows only an icon."}
-    )
     request_url: str = field(
         default="",
         metadata={
@@ -91,7 +89,7 @@ class ButtonConfig:
     on_click: str = field(
         default="", metadata={"doc": "The name of the JavaScript method to be called when clicking on the button."}
     )
-    icon: IconConfig = field(default=None, metadata={"doc": "Icon config for an optional icon."})
+    icon: IconConfig | None = field(default=None, metadata={"doc": "Icon config for an optional icon."})
     icon_end: bool = field(
         default=False,
         metadata={
@@ -112,7 +110,7 @@ class ButtonConfig:
     subtle: bool = field(default=False, metadata={"doc": "**True** to use the subtle design of the button."})
     round: bool = field(default=False, metadata={"doc": "**True** for full rounded corners."})
     tooltip: str = field(default="", metadata={"doc": "Optional text for a tooltip shown on hover."})
-    htmx_config: HtmxConfig = field(default=None, metadata={"doc": "Configuration for asynchronous requests."})
+    htmx_config: HtmxConfig | None = field(default=None, metadata={"doc": "Configuration for asynchronous requests."})
     hidden: bool = field(
         default=False,
         metadata={"doc": "**True** to render the button with CSS 'hidden' class for JS-controlled visibility."},
@@ -165,7 +163,7 @@ class ButtonConfig:
 
         if self.request_url and self.htmx_config and self.htmx_config.request_url:
             warnings.warn(
-                "ButtonConfig has both 'request_url' and 'htmx_config.request_url' set. "
+                f"ButtonConfig {self.label} has both 'request_url' and 'htmx_config.request_url' set. "
                 "This renders an <a> tag with both href and hx-* attributes, which may cause "
                 "conflicting behavior. Use 'request_url' for navigation links, or "
                 "'htmx_config.request_url' for HTMX requests, but not both.",
@@ -226,9 +224,15 @@ class InputFieldConfig(BaseFormFieldConfig):
     )
 
     def __post_init__(self) -> None:
-        """Validate input_type after initialization."""
+        """Validate input_type, minimum/maximum, and min_length/max_length after initialization."""
         super().__post_init__()
         validate_html_input_type(self.input_type, "input_type")
+        if self.minimum is not None and self.maximum is not None and self.minimum > self.maximum:
+            raise ValueError(f"minimum ({self.minimum}) cannot be greater than maximum ({self.maximum})")  # noqa: TRY003
+        if self.min_length is not None and self.max_length is not None and self.min_length > self.max_length:
+            raise ValueError(  # noqa: TRY003
+                f"min_length ({self.min_length}) cannot be greater than max_length ({self.max_length})"
+            )
 
 
 @dataclass
@@ -337,8 +341,9 @@ class CheckboxItemConfig:
     def __post_init__(self) -> None:
         """Warn if disabled without a reason."""
         if self.disabled and self.disabled_reason is None:
+            identifier = self.label or self.value
             warnings.warn(
-                f"CheckboxItemConfig {self.value} is disabled without a disabled_reason. "
+                f"CheckboxItemConfig {identifier} is disabled without a disabled_reason. "
                 "Consider providing a reason to improve accessibility, or set disabled_reason='' to suppress this warning.",
                 stacklevel=2,
             )
@@ -387,6 +392,13 @@ class CheckboxGroupConfig:
         default=None, metadata={"doc": _("Number of checkbox elements that may be selected at the same time.")}
     )
 
+    def __post_init__(self) -> None:
+        """Validate that minimum_checked does not exceed maximum_checked."""
+        if self.maximum_checked is not None and self.minimum_checked > self.maximum_checked:
+            raise ValueError(  # noqa: TRY003
+                f"minimum_checked ({self.minimum_checked}) cannot be greater than maximum_checked ({self.maximum_checked})"
+            )
+
 
 @dataclass
 class DropdownItemConfig:
@@ -396,18 +408,25 @@ class DropdownItemConfig:
         text: Label of the dropdown element.
         request_url: The URL to be called when clicking on the respective item.
         icon: An optional icon displayed before the label.
+        htmx: Optional HTMX configuration for dynamic content loading.
 
     """
 
     __example__ = """
         DropdownItemConfig(text="Profile", request_url="/profile/", icon=IconConfig(name="user"))
+        DropdownItemConfig(
+            text="Dashboard",
+            request_url="/dashboard/",
+            htmx=HtmxConfig(target="#content", push_url=True),
+        )
         """
 
     text: str = field(metadata={"doc": _("Label of the dropdown element.")})
-    request_url: str = field(
-        default="", metadata={"doc": _("The URL to be called when clicking on the respective item.")}
-    )
+    request_url: str = field(metadata={"doc": _("The URL to be called when clicking on the respective item.")})
     icon: IconConfig | None = field(default=None, metadata={"doc": _("An optional icon displayed before the label.")})
+    htmx: HtmxConfig | None = field(
+        default=None, metadata={"doc": _("Optional HTMX configuration for dynamic content loading.")}
+    )
 
 
 @dataclass
@@ -417,7 +436,7 @@ class DropdownConfig:
     Renders a dropdown menu with a trigger button.
 
     Attributes:
-        tag_id: Optional, unique tag ID for identifying the element in JavaScript.
+        tag_id: Unique tag ID for identifying the element in JavaScript. Required to open/close the dropdown.
         title: Label of the dropdown button.
         show_arrow: **True** displays an arrow behind the title.
         items: A list of the menu elements.
@@ -437,7 +456,11 @@ class DropdownConfig:
         )
         """
 
-    tag_id: str = field(metadata={"doc": _("Optional, unique tag ID for identifying the element in JavaScript.")})
+    tag_id: str = field(
+        metadata={
+            "doc": _("Unique tag ID for identifying the element in JavaScript. Required to open/close the dropdown.")
+        }
+    )
     title: str = field(metadata={"doc": _("Label of the dropdown button.")})
     show_arrow: bool = field(default=True, metadata={"doc": _("**True** displays an arrow behind the title.")})
     items: list[DropdownItemConfig] = field(default_factory=list, metadata={"doc": _("A list of the menu elements.")})
@@ -448,8 +471,8 @@ class RadioItemConfig:
     """Configuration for a single radio button within a group.
 
     Attributes:
-        tag_id: Optional, unique tag ID for identifying the element in JavaScript.
         value: Value of the respective radio button.
+        tag_id: Optional, unique tag ID for identifying the element in JavaScript.
         label: Label of the respective radio button.
         icon: Optional icon displayed before the label.
         disabled: **True** if the radio button should be disabled.
@@ -458,11 +481,13 @@ class RadioItemConfig:
     """
 
     __example__ = """
-        RadioItemConfig(tag_id="gpt4", value="gpt-4", label="GPT-4")
+        RadioItemConfig(value="gpt-4", tag_id="gpt4", label="GPT-4")
         """
 
-    tag_id: str = field(metadata={"doc": _("Optional, unique tag ID for identifying the element in JavaScript.")})
     value: str = field(metadata={"doc": _("Value of the respective radio button.")})
+    tag_id: str = field(
+        default="", metadata={"doc": _("Optional, unique tag ID for identifying the element in JavaScript.")}
+    )
     label: str = field(default="", metadata={"doc": _("Label of the respective radio button.")})
     icon: IconConfig | None = field(default=None, metadata={"doc": _("Optional icon displayed before the label.")})
     disabled: bool = field(default=False, metadata={"doc": _("**True** if the radio button should be disabled.")})
@@ -478,8 +503,9 @@ class RadioItemConfig:
     def __post_init__(self) -> None:
         """Warn if disabled without a reason."""
         if self.disabled and self.disabled_reason is None:
+            identifier = self.label or self.value
             warnings.warn(
-                f"RadioItemConfig {self.value} is disabled without a disabled_reason. "
+                f"RadioItemConfig {identifier} is disabled without a disabled_reason. "
                 "Consider providing a reason to improve accessibility, or set disabled_reason='' to suppress this warning.",
                 stacklevel=2,
             )
@@ -492,7 +518,7 @@ class RadioGroupConfig:
     Renders a group of standard radio buttons.
 
     Attributes:
-        name: Optional, unique tag ID for identifying the element in JavaScript.
+        name: The shared HTML `name` attribute for all radio buttons in this group.
         label: A text label displayed above the radio elements.
         items: A list of the radio elements.
         as_row: **True** if the radio elements should be displayed side by side.
@@ -513,7 +539,7 @@ class RadioGroupConfig:
         )
         """
 
-    name: str = field(metadata={"doc": _("Optional, unique tag ID for identifying the element in JavaScript.")})
+    name: str = field(metadata={"doc": _("The shared HTML `name` attribute for all radio buttons in this group.")})
     label: str = field(default="", metadata={"doc": _("A text label displayed above the radio elements.")})
     items: list[RadioItemConfig] = field(default_factory=list, metadata={"doc": _("A list of the radio elements.")})
     as_row: bool = field(
@@ -522,9 +548,11 @@ class RadioGroupConfig:
     current_value: str = field(default="", metadata={"doc": _("The value of the currently selected radio button.")})
 
     def __post_init__(self) -> None:
-        """Set first option for current_value if empty."""
+        """Set first option for current_value if empty, and validate it against items."""
         if not self.current_value and self.items:
             self.current_value = self.items[0].value
+        elif self.items and self.current_value not in (item.value for item in self.items):
+            raise ValueError(f"current_value '{self.current_value}' must match one of the items' values.")  # noqa: TRY003
 
 
 @dataclass
@@ -534,7 +562,7 @@ class RadioBlockConfig:
     Renders radio buttons as a compact block that can trigger requests.
 
     Attributes:
-        name: Optional, unique tag ID for identifying the element in JavaScript.
+        name: The shared HTML `name` attribute for all radio buttons in this group.
         label: A text label displayed above the radio elements.
         items: A list of the radio elements.
         integrated: **True** if the group is inside a `<form>`. If **False** the group gets its own `<form>`.
@@ -559,7 +587,7 @@ class RadioBlockConfig:
         )
         """
 
-    name: str = field(metadata={"doc": _("Optional, unique tag ID for identifying the element in JavaScript.")})
+    name: str = field(metadata={"doc": _("The shared HTML `name` attribute for all radio buttons in this group.")})
     label: str = field(default="", metadata={"doc": _("A text label displayed above the radio elements.")})
     items: list[RadioItemConfig] = field(default_factory=list, metadata={"doc": _("A list of the radio elements.")})
     integrated: bool = field(
@@ -588,10 +616,12 @@ class RadioBlockConfig:
     current_value: str = field(default="", metadata={"doc": _("The value of the currently selected radio button.")})
 
     def __post_init__(self) -> None:
-        """Validate hx_swap_method and set first option for current_value if empty."""
+        """Validate hx_swap_method and current_value."""
         validate_htmx_swap_method(self.hx_swap_method, "hx_swap_method")
         if not self.current_value and self.items:
             self.current_value = self.items[0].value
+        elif self.items and self.current_value not in (item.value for item in self.items):
+            raise ValueError(f"current_value '{self.current_value}' must match one of the items' values.")  # noqa: TRY003
 
 
 @dataclass
@@ -681,6 +711,10 @@ class SliderConfig(BaseFormFieldConfig):
                 raise ValueError(f"value_min ({self.value_min}) cannot be less than minimum ({self.minimum})")  # noqa: TRY003
             if self.value_max is not None and self.value_max > self.maximum:
                 raise ValueError(f"value_max ({self.value_max}) cannot be greater than maximum ({self.maximum})")  # noqa: TRY003
+            if self.value_min is not None and self.value_max is not None and self.value_min > self.value_max:
+                raise ValueError(  # noqa: TRY003
+                    f"value_min ({self.value_min}) cannot be greater than value_max ({self.value_max})"
+                )
 
 
 @dataclass
@@ -770,9 +804,12 @@ class SelectConfig(BaseFormFieldConfig):
     )
 
     def __post_init__(self) -> None:
-        """Normalize options to dict format."""
+        """Validate disabled/disabled_reason, normalize options, and validate selected_option."""
+        super().__post_init__()
         if isinstance(self.options, list):
             self.options = dict(zip(self.options, self.options, strict=True))
+        if self.selected_option and self.selected_option not in self.options:
+            raise ValueError(f"selected_option '{self.selected_option}' must be included in 'options'.")  # noqa: TRY003
 
 
 @dataclass
@@ -821,9 +858,17 @@ class MultiselectConfig(BaseFormFieldConfig):
     )
 
     def __post_init__(self) -> None:
-        """Normalize options to dict format."""
+        """Validate disabled/disabled_reason, normalize options, and validate selected_options against maximum."""
+        super().__post_init__()
         if isinstance(self.options, list):
             self.options = dict(zip(self.options, self.options, strict=True))
+        if self.maximum is not None and len(self.selected_options) > self.maximum:
+            raise ValueError(  # noqa: TRY003
+                f"selected_options has {len(self.selected_options)} entries, which exceeds maximum ({self.maximum})"
+            )
+        invalid = [option for option in self.selected_options if option not in self.options]
+        if invalid:
+            raise ValueError(f"selected_options {invalid} must be included in 'options'.")  # noqa: TRY003
 
 
 @dataclass

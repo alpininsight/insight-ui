@@ -12,10 +12,9 @@
 
         <!-- Favicon -->
         <link rel="manifest" href="{% static INSIGHT_UI.webmanifest %}">
-        <link rel="icon" href="{% static INSIGHT_UI.favicon %}" type="image/x-icon">
+        <link rel="icon" href="{% static INSIGHT_UI.favicon_svg  %}" type="image/svg+xml">
+        <link rel="icon" href="{% static INSIGHT_UI.favicon %}" sizes="any">
         <link rel="apple-touch-icon" sizes="180x180" href="{% static INSIGHT_UI.apple_touch_icon %}">
-        <link rel="icon" type="image/png" sizes="32x32" href="{% static INSIGHT_UI.favicon_32 %}">
-        <link rel="icon" type="image/png" sizes="16x16" href="{% static INSIGHT_UI.favicon_16 %}">
         <link rel="mask-icon" href="{% static INSIGHT_UI.safari_mask_icon %}" color="{{ INSIGHT_UI.safari_mask_icon_color }}">
         <meta name="msapplication-TileColor" content="{{ INSIGHT_UI.msapplication_TileColor }}">
         <meta name="theme-color" content="{{ INSIGHT_UI.theme_color }}">
@@ -71,19 +70,19 @@
 
         {% block extra_head %}{% endblock %}
     </head>
-    <body class="flex flex-col min-h-screen size-full text-insight-text-primary bg-insight-bg-base" hx-indicator="#loading-indicator">
+    <body class="flex flex-col min-h-screen size-full text-insight-text-primary bg-insight-bg-base" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-indicator="#loading-indicator">
 
-        {% block background_image %}
-        {% endblock background_image %}
+        <div id="background-image">
+            {% block background_image %}
+            {% endblock background_image %}
+        </div>
 
-        <header>
-            {% block notification %}
-            {% endblock notification %}
+        <header id="header">
             {% block navbar %}
             {% endblock navbar %}
         </header>
 
-        <main id="main" class="flex grow {% if navbar_fixed %}pt-16{% endif %}">
+        <main id="main" class="flex grow {% if INSIGHT_UI.navbar_fixed %}pt-16{% endif %}">
             <div id="left-aside" class="flex">
                 {% with _sidebar_side="left" %}{% block sidebar_left %}{% endblock sidebar_left %}{% endwith %}
             </div>

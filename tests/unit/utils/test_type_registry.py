@@ -124,22 +124,23 @@ def test_get_all_type_definitions_names_match_keys() -> None:
 def test_type_definitions_contains_expected_types() -> None:
     """Test that TYPE_DEFINITIONS contains expected type names."""
     expected_types = [
-        "Size",
-        "ColorType",
+        "AlertType",
         "BadgeType",
         "ButtonType",
-        "AlertType",
-        "StepStatus",
+        "ColorType",
+        "CornerPosition",
+        "FilterFieldType",
+        "FormFieldType",
+        "GeoMapMarkerType",
         "HtmlButtonType",
         "HtmlInputType",
-        "FormFieldType",
-        "CornerPosition",
-        "InlinePosition",
+        "HttpMethod",
         "HtmxSwapMethod",
-        "HtmxMethod",
-        "FilterFieldType",
-        "GeoMapMarkerType",
+        "IconColor",
+        "InlinePosition",
+        "Size",
         "SliderLegendMode",
+        "StepStatus",
         "ToggleViewType",
     ]
     for type_name in expected_types:

@@ -1,5 +1,8 @@
 """Tests for the live_content component."""
 
+import pytest
+from insight_ui.configs import LiveContentConfig
+
 from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
 
@@ -14,6 +17,11 @@ class TestLiveContent(TemplateTagsTestCase):
         """
         rendered = self.render_template(template_string)
         assert "/api/live-data/" in rendered
+
+    def test_live_content_config_requires_request_url(self) -> None:
+        """LiveContentConfig requires request_url."""
+        with pytest.raises(TypeError):
+            LiveContentConfig()  # type: ignore[call-arg]
 
     def test_live_content_with_interval(self) -> None:
         """Test für live_content mit Intervall."""

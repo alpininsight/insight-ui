@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">Insight UI Bildmarke</title>
+  <desc id="desc">Transparente Bildmarke ohne Punkte: linker und unterer rechter Block grün, oberer rechter Block und Fokusrahmen blau, unterer mittlerer Block orange.</desc>
+
+  <!-- Langer linker Block: Grün #1B9388 -->
+  <path d="M13 0h44q7 0 7 7v242q0 7-7 7H13c-7.18 0-13-5.82-13-13V13C0 5.82 5.82 0 13 0Z" fill="#1B9388"/>
+
+  <!-- Oberer rechter Block: Blau #4183EA -->
+  <path d="M89 0h95c40 0 72 32 72 72v7q0 7-7 7H89q-7 0-7-7V7q0-7 7-7Z" fill="#4183EA"/>
+
+  <!-- Fokusrahmen: Blau #4183EA, ohne Punkte -->
+  <rect x="82" y="104" width="66" height="66" rx="13" fill="none" stroke="#4183EA" stroke-width="5"/>
+
+  <!-- Unterer mittlerer Block: Orange #E8A127 -->
+  <rect x="82" y="188" width="66" height="68" rx="7" fill="#E8A127"/>
+
+  <!-- Unterer rechter Block: Grün #1B9388 -->
+  <path d="M173 104h76q7 0 7 7v89c0 31-25 56-56 56h-27q-7 0-7-7V111q0-7 7-7Z" fill="#1B9388"/>
+</svg>

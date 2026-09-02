@@ -130,7 +130,7 @@ class CarouselItemConfig:
         title: Item title.
         content: Item content/description.
         image: Optional image configuration.
-        url: Optional link URL.
+        request_url: Optional link URL.
 
     """
 
@@ -141,7 +141,7 @@ class CarouselItemConfig:
     title: str = field(default="", metadata={"doc": _("Item title.")})
     content: str = field(default="", metadata={"doc": _("Item content/description.")})
     image: ImageConfig | None = field(default=None, metadata={"doc": _("Optional image configuration.")})
-    url: str = field(default="", metadata={"doc": _("Optional link URL.")})
+    request_url: str = field(default="", metadata={"doc": _("Optional link URL.")})
 
 
 @dataclass

@@ -22,6 +22,7 @@ from insight_ui.configs import (
     NavbarConfig,
     NavbarLinkConfig,
     RadioItemConfig,
+    SearchBarConfig,
     SidebarItemConfig,
     TableConfig,
 )
@@ -39,13 +40,16 @@ def get_main_page_links() -> list[dict[str, Any]]:
         List of NavbarLinkConfig objects for main navigation.
 
     """
+    htmx = HtmxConfig(target="#content")
     return [
-        NavbarLinkConfig(_("Installation"), reverse("installation_view"), IconConfig("arrow-down-tray", "s")),
-        NavbarLinkConfig(_("Base Template"), reverse("base_template_view"), IconConfig("cube-transparent", "s")),
-        NavbarLinkConfig(_("Customization"), reverse("customization_view"), IconConfig("adjustments-horizontal", "s")),
-        NavbarLinkConfig(_("Icons"), reverse("icon_view"), IconConfig("sparkles", "s")),
-        NavbarLinkConfig(_("Types"), reverse("types_view"), IconConfig("code-bracket", "s")),
-        NavbarLinkConfig(_("Configs"), reverse("config_reference_view"), IconConfig("cube", "s")),
+        NavbarLinkConfig(_("Installation"), reverse("installation_view"), IconConfig("arrow-down-tray", "s"), htmx),
+        NavbarLinkConfig(_("Base Template"), reverse("base_template_view"), IconConfig("cube-transparent", "s"), htmx),
+        NavbarLinkConfig(
+            _("Customization"), reverse("customization_view"), IconConfig("adjustments-horizontal", "s"), htmx
+        ),
+        NavbarLinkConfig(_("Icons"), reverse("icon_view"), IconConfig("sparkles", "s"), htmx),
+        NavbarLinkConfig(_("Types"), reverse("types_view"), IconConfig("code-bracket", "s"), htmx),
+        NavbarLinkConfig(_("Configs"), reverse("config_reference_view"), IconConfig("cube", "s"), htmx),
     ]
 
 
@@ -56,8 +60,13 @@ def get_navbar_context() -> dict:
         Context dict with navbar configuration and display options.
 
     """
-    links = get_main_page_links()
-    links.append(
+    links = [
+        NavbarLinkConfig(
+            _("Docs"),
+            reverse("installation_view"),
+            IconConfig("book-open", "s"),
+            HtmxConfig(target="#content"),
+        ),
         NavbarLinkConfig(
             _("Components"),
             icon=IconConfig("squares-2x2", "s"),
@@ -71,20 +80,42 @@ def get_navbar_context() -> dict:
                     for category in ComponentCategory
                 ],
             ),
-        )
-    )
+        ),
+    ]
 
     return {
         "nav_config": NavbarConfig(
             get_navbar_brand_defaults(),
             links,
-            enable_doc_search=True,
-            search_index_url=get_search_index_url(),
+            search_bar=SearchBarConfig(
+                placeholder=_("Search docs... (Ctrl+K)"),
+                enable_search=True,
+                search_index_url=get_search_index_url(),
+            ),
             show_language_selector=True,
             show_theme_toggle=True,
-        ),
-        "navbar_fixed": True,
+        )
     }
+
+
+def get_sidebar_links() -> list[SidebarItemConfig]:
+    """Serve a list of sidebar links to the main documentation pages.
+
+    Returns:
+        List of SidebarItemConfig objects for top-level documentation navigation.
+
+    """
+    htmx = HtmxConfig(target="#content")
+    return [
+        SidebarItemConfig(_("Installation"), reverse("installation_view"), IconConfig("arrow-down-tray", "s"), htmx),
+        SidebarItemConfig(_("Base Template"), reverse("base_template_view"), IconConfig("cube-transparent", "s"), htmx),
+        SidebarItemConfig(
+            _("Customization"), reverse("customization_view"), IconConfig("adjustments-horizontal", "s"), htmx
+        ),
+        SidebarItemConfig(_("Icons"), reverse("icon_view"), IconConfig("sparkles", "s"), htmx),
+        SidebarItemConfig(_("Types"), reverse("types_view"), IconConfig("code-bracket", "s"), htmx),
+        SidebarItemConfig(_("Configs"), reverse("config_reference_view"), IconConfig("cube", "s"), htmx),
+    ]
 
 
 def get_sidebar_context() -> dict:
@@ -117,7 +148,14 @@ def get_sidebar_context() -> dict:
                 )
                 break
 
-    return {"left_sidebar": {"title": _("Components"), "categories": categories}}
+    return {
+        "left_sidebar": {
+            "title": _("Documentation"),
+            "links": get_sidebar_links(),
+            "categories_title": _("Components"),
+            "categories": categories,
+        }
+    }
 
 
 def get_footer_context() -> dict:
@@ -158,12 +196,13 @@ def get_icon_context() -> dict:
     """Serve context for the icon detailpage.
 
     Returns:
-        Context dict with icon parameters, icons list, and size table.
+        Context dict with icon parameters, icons list, size table, and color table.
 
     """
     main_params = [
         ParameterDetails("name", "str", _("Name of the icon (see grid below)."), "question-mark"),
-        ParameterDetails("size", "str", _("Size of the icon. Possible values are: 'xl', 'l', 'm', 's' and 'xs'."), "m"),
+        ParameterDetails("size", "Size", _("Size of the icon."), "m"),
+        ParameterDetails("color", "IconColor", _("Color token for the icon. Empty string inherits from parent."), '""'),
     ]
 
     # Extract icon names from icons.html template
@@ -196,7 +235,37 @@ def get_icon_context() -> dict:
         ],
     )
 
-    return {"main_params": main_params, "icons": icons, "size_table": size_table}
+    # Color tokens for icons (excluding empty string which inherits)
+    color_tokens = ["primary", "secondary", "success", "warning", "danger", "info"]
+    text_color_tokens = ["text-primary", "text-secondary", "text-hint", "text-link"]
+
+    color_table = TableConfig(
+        color_tokens,
+        [
+            [
+                render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("home", "l", color)})
+                for color in color_tokens
+            ]
+        ],
+    )
+
+    text_color_table = TableConfig(
+        text_color_tokens,
+        [
+            [
+                render_to_string("insight_ui/components/icons.html", {"icon_config": IconConfig("home", "l", color)})
+                for color in text_color_tokens
+            ]
+        ],
+    )
+
+    return {
+        "main_params": main_params,
+        "icons": icons,
+        "size_table": size_table,
+        "color_table": color_table,
+        "text_color_table": text_color_table,
+    }
 
 
 def get_demo_container_context() -> dict:

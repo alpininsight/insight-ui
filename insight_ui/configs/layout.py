@@ -29,7 +29,7 @@ class PageHeaderConfig:
             chapter="Insight UI",
             description="A header component for documentation pages.",
             badges=[BadgeConfig(label="New", type="success")],
-            buttons=[ButtonConfig(label="Get Started", href="/start")],
+            buttons=[ButtonConfig(label="Get Started", request_url="/start")],
         )
         """
 

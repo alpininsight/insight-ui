@@ -1,5 +1,6 @@
 """Tests for the radio_block component."""
 
+import pytest
 from bs4 import BeautifulSoup
 from insight_ui.configs import RadioBlockConfig, RadioItemConfig
 
@@ -16,9 +17,9 @@ class TestRadioBlock(TemplateTagsTestCase):
             "size",
             "Select size:",
             items=[
-                RadioItemConfig("small-size", "small", "s"),
-                RadioItemConfig("medium-size", "medium", "m"),
-                RadioItemConfig("large-size", "large", "l", disabled=True),
+                RadioItemConfig("small", "small-size", "s"),
+                RadioItemConfig("medium", "medium-size", "m"),
+                RadioItemConfig("large", "large-size", "l", disabled=True),
             ],
             as_row=True,
             request_url="/api/size/",
@@ -78,3 +79,12 @@ class TestRadioBlock(TemplateTagsTestCase):
         assert inputs[2].has_attr("disabled")
         assert labels[2]["for"] == "size-large-size"
         assert labels[2].get_text().strip() == "l"
+
+    def test_radio_block_config_rejects_current_value_not_matching_items(self) -> None:
+        """RadioBlockConfig raises ValueError when current_value matches no item."""
+        with pytest.raises(ValueError, match="current_value"):
+            RadioBlockConfig(
+                name="view",
+                items=[RadioItemConfig(value="card")],
+                current_value="table",
+            )

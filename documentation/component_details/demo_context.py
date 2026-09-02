@@ -55,6 +55,7 @@ from insight_ui.configs import (
     RadioBlockConfig,
     RadioGroupConfig,
     RadioItemConfig,
+    SearchBarConfig,
     SelectConfig,
     SidebarCategoryConfig,
     SidebarDataConfig,
@@ -212,7 +213,10 @@ def get_status_screen_context() -> dict:
                 "Insight",
                 "UI",
                 LogoConfig(
-                    "insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="3rem"
+                    "insight_ui/svg/insight-ui-logo.svg",
+                    "insight_ui/svg/insight-ui-logo.svg",
+                    "Insight UI Logo",
+                    height="3rem",
                 ),
             ),
             _("Session ready"),
@@ -228,7 +232,10 @@ def get_status_screen_context() -> dict:
                 "Insight",
                 "UI",
                 LogoConfig(
-                    "insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="3rem"
+                    "insight_ui/svg/insight-ui-logo.svg",
+                    "insight_ui/svg/insight-ui-logo.svg",
+                    "Insight UI Logo",
+                    height="3rem",
                 ),
             ),
             _("What happened?"),
@@ -265,9 +272,11 @@ def get_navbar_context() -> dict:
                 NavbarLinkConfig(_("Test"), "/", need_auth=True),
                 NavbarLinkConfig(_("Test2"), "/", need_auth=True, staff_only=True),
             ],
-            searchbar_request_url="/",
-            enable_doc_search=True,
-            search_index_url=get_search_index_url(),
+            search_bar=SearchBarConfig(
+                placeholder=_("Search docs... (Ctrl+K)"),
+                enable_search=True,
+                search_index_url=get_search_index_url(),
+            ),
             usermenu=UserMenuConfig(
                 links=[
                     UserMenuLinkConfig(
@@ -505,11 +514,11 @@ def get_radio_group_context() -> dict:
             "model",
             _("Select AI Model:"),
             [
-                RadioItemConfig("model1", "BERT", _("BERT")),
-                RadioItemConfig("model2", "PaLM 2", _("PaLM 2")),
+                RadioItemConfig("BERT", "model1", _("BERT")),
+                RadioItemConfig("PaLM 2", "model2", _("PaLM 2")),
                 RadioItemConfig(
-                    "model3",
                     "LLaMA 2",
+                    "model3",
                     _("LLaMA 2 (currently not available)"),
                     disabled=True,
                     disabled_reason=_("Currently not available"),
@@ -527,11 +536,11 @@ def get_radio_block_context() -> dict:
             "view",
             _("Select view mode:"),
             items=[
-                RadioItemConfig("card-view", "card", icon=IconConfig("squares-2x2")),
+                RadioItemConfig("card", "card-view", icon=IconConfig("squares-2x2")),
                 RadioItemConfig("table", "table", icon=IconConfig("list-bullet")),
                 RadioItemConfig(
-                    "card-carousel",
                     "carousel",
+                    "card-carousel",
                     icon=IconConfig("square-3-stack-3d"),
                     disabled=True,
                     disabled_reason=_("Currently not available"),
@@ -542,10 +551,14 @@ def get_radio_block_context() -> dict:
             "size",
             _("Select size:"),
             items=[
-                RadioItemConfig("small-size", "small", "s"),
-                RadioItemConfig("medium-size", "medium", "m"),
+                RadioItemConfig("small", "small-size", "s"),
+                RadioItemConfig("medium", "medium-size", "m"),
                 RadioItemConfig(
-                    "large-size", "large", "l", disabled=True, disabled_reason=_("Currently not available")
+                    "large",
+                    "large-size",
+                    "l",
+                    disabled=True,
+                    disabled_reason=_("Currently not available"),
                 ),
             ],
             as_row=True,
@@ -682,7 +695,7 @@ def get_logo_context() -> dict:
     """Serve data for logo detailpage."""
     return {
         "logo_svg_config": LogoConfig(
-            "insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="3rem"
+            "insight_ui/svg/insight-ui-logo.svg", "insight_ui/svg/insight-ui-logo.svg", "Insight UI Logo", height="3rem"
         ),
         "logo_image_config": LogoConfig(
             "insight_ui/favicon/android-chrome-192x192.png", alt="Insight UI app icon", height="3rem"
@@ -698,12 +711,22 @@ def get_brand_mark_context() -> dict:
         "brand_mark_default": BrandMarkConfig(
             "Alpin Insight",
             "Solutions",
-            LogoConfig("insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="3rem"),
+            LogoConfig(
+                "insight_ui/svg/insight-ui-logo.svg",
+                "insight_ui/svg/insight-ui-logo.svg",
+                "Insight UI Logo",
+                height="3rem",
+            ),
         ),
         "brand_mark_end": BrandMarkConfig(
             "Alpin Insight",
             "Platform",
-            LogoConfig("insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="3rem"),
+            LogoConfig(
+                "insight_ui/svg/insight-ui-logo.svg",
+                "insight_ui/svg/insight-ui-logo.svg",
+                "Insight UI Logo",
+                height="3rem",
+            ),
             "end",
         ),
     }
@@ -875,8 +898,8 @@ def get_infinite_scroll_context() -> dict:
     """Serve data for infinite scroll detailpage."""
     return {
         "infinite_scroll_config": InfiniteScrollConfig(
-            "news-feed",
             reverse("more_items"),
+            "news-feed",
             [
                 {"title": _("Element %(i)s") % {"i": i}, "content": _("Content for element %(i)s") % {"i": i}}
                 for i in range(1, 11)
@@ -1071,9 +1094,9 @@ def get_toggle_view_context() -> dict:
             view_radio_config=RadioBlockConfig(
                 "products-view-toggle",
                 items=[
-                    RadioItemConfig("card-view", "card", icon=IconConfig("squares-2x2")),
-                    RadioItemConfig("table-view", "table", icon=IconConfig("list-bullet")),
-                    RadioItemConfig("carousel-view", "carousel", icon=IconConfig("square-3-stack-3d")),
+                    RadioItemConfig("card", "card-view", icon=IconConfig("squares-2x2")),
+                    RadioItemConfig("table", "table-view", icon=IconConfig("list-bullet")),
+                    RadioItemConfig("carousel", "carousel-view", icon=IconConfig("square-3-stack-3d")),
                 ],
                 request_url=reverse("toggle_view"),
             ),

@@ -112,7 +112,8 @@ document.addEventListener('DOMContentLoaded', function () {
 		// swap - it never introduces new headings, so skip the (visibly
 		// disruptive - the TOC panel blanks out and rebuilds) TOC regeneration
 		// below and just move focus into the new content instead.
-		if (evt.detail.target.id === "parameter-section") {
+		// Note: evt.detail.target can be undefined during history navigation (back/forward)
+		if (evt.detail.target?.id === "parameter-section") {
 			// preventScroll avoids a visible jump: the button that triggered the
 			// swap is already in view, so the browser doesn't need to scroll to it.
 			document.getElementById("parameter-section-heading")?.focus({ preventScroll: true });

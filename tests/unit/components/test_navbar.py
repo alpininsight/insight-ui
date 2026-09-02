@@ -1,7 +1,11 @@
 """Tests for the navbar component."""
 
+import warnings
+
+import pytest
 from bs4 import BeautifulSoup
 from insight_ui.configs.base import IconConfig
+from insight_ui.configs.filter import SearchBarConfig
 from insight_ui.configs.navigation import NavbarBrandConfig, NavbarConfig, NavbarLinkConfig, UserMenuConfig
 from insight_ui.configs.popup import ModalConfig
 from insight_ui.configs.utils import BrandMarkConfig, LogoConfig
@@ -20,7 +24,10 @@ class TestNavbar(TemplateTagsTestCase):
                 mark=BrandMarkConfig(
                     primary_text="Insight UI",
                     logo=LogoConfig(
-                        "insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="2rem"
+                        "insight_ui/svg/insight-ui-logo.svg",
+                        "insight_ui/svg/insight-ui-logo.svg",
+                        "Insight UI Logo",
+                        height="2rem",
                     ),
                 ),
             ),
@@ -35,10 +42,9 @@ class TestNavbar(TemplateTagsTestCase):
                     ),
                 ),
             ],
-            "/",
-            True,
-            True,
-            True,
+            search_bar=SearchBarConfig(placeholder="Search..."),
+            show_language_selector=True,
+            show_theme_toggle=True,
         )
 
         template_string = """
@@ -80,8 +86,10 @@ class TestNavbar(TemplateTagsTestCase):
         """Navbar documentation search keeps the host-owned static URL."""
         nav_config = NavbarConfig(
             brand=NavbarBrandConfig(request_url="/", mark=BrandMarkConfig(primary_text="Insight UI")),
-            enable_doc_search=True,
-            search_index_url="/static/documentation/data/search-index-en.json",
+            search_bar=SearchBarConfig(
+                enable_search=True,
+                search_index_url="/static/documentation/data/search-index-en.json",
+            ),
         )
 
         rendered = self.render_template(
@@ -93,15 +101,24 @@ class TestNavbar(TemplateTagsTestCase):
         assert search_container["data-search-index"] == "/static/documentation/data/search-index-en.json"
 
     def test_navbar_keeps_existing_positional_arguments(self) -> None:
-        """Appending search_index_url must not change the public positional API."""
+        """Keyword arguments work as expected."""
         usermenu = UserMenuConfig()
-        nav_config = NavbarConfig(None, [], "/search/", True, usermenu, True, True, True)
+        search_bar = SearchBarConfig(placeholder="Search...")
+        nav_config = NavbarConfig(
+            brand=None,
+            links=[],
+            search_bar=search_bar,
+            usermenu=usermenu,
+            hide_login=True,
+            show_language_selector=True,
+            show_theme_toggle=True,
+        )
 
+        assert nav_config.search_bar is search_bar
         assert nav_config.usermenu is usermenu
         assert nav_config.hide_login is True
         assert nav_config.show_language_selector is True
         assert nav_config.show_theme_toggle is True
-        assert nav_config.search_index_url == ""
 
     def test_navbar_user_menu_renders_avatar_image_when_configured(self) -> None:
         """Host apps can provide a user avatar URL via UserMenuConfig."""
@@ -170,7 +187,10 @@ class TestNavbar(TemplateTagsTestCase):
                     primary_text="Insight",
                     secondary_text="UI",
                     logo=LogoConfig(
-                        "insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="2rem"
+                        "insight_ui/svg/insight-ui-logo.svg",
+                        "insight_ui/svg/insight-ui-logo.svg",
+                        "Insight UI Logo",
+                        height="2rem",
                     ),
                 ),
             )
@@ -187,3 +207,15 @@ class TestNavbar(TemplateTagsTestCase):
         assert "UI" in brand_link.get_text(" ", strip=True)
         assert brand_link.find("img") is not None
         assert brand_link.find("svg") is None
+
+    def test_navbar_link_config_warns_without_request_url_modal_or_dropdown(self) -> None:
+        """A NavbarLinkConfig with no request_url, modal, or dropdown would render invisibly."""
+        with pytest.warns(UserWarning, match="has no request_url, modal, or dropdown"):
+            NavbarLinkConfig(text="Home")
+
+    def test_navbar_link_config_no_warning_with_request_url(self) -> None:
+        """A NavbarLinkConfig with request_url set does not warn."""
+        with warnings.catch_warnings(record=True) as caught:
+            warnings.simplefilter("always")
+            NavbarLinkConfig(text="Home", request_url="/")
+        assert len(caught) == 0

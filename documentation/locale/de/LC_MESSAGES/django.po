@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django-insight-ui 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-28 17:16+0200\n"
-"PO-Revision-Date: 2026-08-28 17:21+0200\n"
+"POT-Creation-Date: 2026-09-02 11:58+0200\n"
+"PO-Revision-Date: 2026-09-02 11:58+0200\n"
 "Last-Translator:   <>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -1183,8 +1183,8 @@ msgid "or as kwargs or as combination of both"
 msgstr "oder als kwargs oder als Kombination aus beidem"
 
 #: .\documentation\component_details\components.py:75
-#: .\documentation\component_details\demo_context.py:986
-#: .\documentation\component_details\demo_context.py:1012
+#: .\documentation\component_details\demo_context.py:1011
+#: .\documentation\component_details\demo_context.py:1037
 msgid "Layout"
 msgstr "Layout"
 
@@ -1220,158 +1220,158 @@ msgstr "Karten"
 msgid "Forms"
 msgstr "Formulare"
 
-#: .\documentation\component_details\demo_context.py:82
+#: .\documentation\component_details\demo_context.py:84
 msgid "-- Select model --"
 msgstr "-- Modell auswählen --"
 
-#: .\documentation\component_details\demo_context.py:83
+#: .\documentation\component_details\demo_context.py:85
 msgid "Language Model"
 msgstr "Sprachmodell"
 
-#: .\documentation\component_details\demo_context.py:84
+#: .\documentation\component_details\demo_context.py:86
 msgid "Vision Model"
 msgstr "Bildmodell"
 
-#: .\documentation\component_details\demo_context.py:85
+#: .\documentation\component_details\demo_context.py:87
 msgid "Multimodal Model"
 msgstr "Mehrfachmodell"
 
-#: .\documentation\component_details\demo_context.py:86
+#: .\documentation\component_details\demo_context.py:88
 msgid "Audio / Speech Processing"
 msgstr "Audio / Sprachverarbeitung"
 
-#: .\documentation\component_details\demo_context.py:87
+#: .\documentation\component_details\demo_context.py:89
 msgid "Recommendation System"
 msgstr "Vorschlagsmodell"
 
-#: .\documentation\component_details\demo_context.py:88
+#: .\documentation\component_details\demo_context.py:90
 msgid "Generative Model"
 msgstr "Generatives Modell"
 
-#: .\documentation\component_details\demo_context.py:91
+#: .\documentation\component_details\demo_context.py:93
 msgid "-- Select runtime --"
 msgstr "-- Bereitstellungsart auswählen --"
 
-#: .\documentation\component_details\demo_context.py:92
+#: .\documentation\component_details\demo_context.py:94
 msgid "Cloud (API-based)"
 msgstr "Cloud (API-basiert)"
 
-#: .\documentation\component_details\demo_context.py:93
+#: .\documentation\component_details\demo_context.py:95
 msgid "Edge / On-Device"
 msgstr "Edge / On-Device"
 
-#: .\documentation\component_details\demo_context.py:94
+#: .\documentation\component_details\demo_context.py:96
 msgid "Local (Self-hosted)"
 msgstr "Lokal (selbst gehostet)"
 
-#: .\documentation\component_details\demo_context.py:95
+#: .\documentation\component_details\demo_context.py:97
 msgid "Hybrid (Cloud + Local)"
 msgstr "Hybrid (Cloud + Lokal)"
 
-#: .\documentation\component_details\demo_context.py:96
+#: .\documentation\component_details\demo_context.py:98
 msgid "Serverless Deployment"
 msgstr "Serverlose Bereitstellung"
 
-#: .\documentation\component_details\demo_context.py:99
+#: .\documentation\component_details\demo_context.py:101
 msgid "-- Select license --"
 msgstr "-- Lizenz auswählen --"
 
-#: .\documentation\component_details\demo_context.py:100
+#: .\documentation\component_details\demo_context.py:102
 msgid "Free / Open Source"
 msgstr "Frei / Quelloffen"
 
-#: .\documentation\component_details\demo_context.py:101
+#: .\documentation\component_details\demo_context.py:103
 msgid "Freemium"
 msgstr "Freemium"
 
-#: .\documentation\component_details\demo_context.py:102
+#: .\documentation\component_details\demo_context.py:104
 msgid "Subscription"
 msgstr "Abo"
 
-#: .\documentation\component_details\demo_context.py:103
+#: .\documentation\component_details\demo_context.py:105
 msgid "Pay per Use"
 msgstr "Bezahlung pro Benutzung"
 
-#: .\documentation\component_details\demo_context.py:104
+#: .\documentation\component_details\demo_context.py:106
 msgid "Enterprise License"
 msgstr "Enterprise Lizenz"
 
-#: .\documentation\component_details\demo_context.py:112
-#: .\documentation\component_details\demo_context.py:1102
+#: .\documentation\component_details\demo_context.py:114
+#: .\documentation\component_details\demo_context.py:1127
 #: .\documentation\demo_utils.py:58
 msgid "Title"
 msgstr "Titel"
 
-#: .\documentation\component_details\demo_context.py:115
-#: .\documentation\component_details\demo_context.py:132
-#: .\documentation\component_details\demo_context.py:139
+#: .\documentation\component_details\demo_context.py:117
+#: .\documentation\component_details\demo_context.py:134
+#: .\documentation\component_details\demo_context.py:141
 msgid "is exact"
 msgstr "ist exakt"
 
-#: .\documentation\component_details\demo_context.py:116
-#: .\documentation\component_details\demo_context.py:126
-#: .\documentation\component_details\demo_context.py:140
+#: .\documentation\component_details\demo_context.py:118
+#: .\documentation\component_details\demo_context.py:128
+#: .\documentation\component_details\demo_context.py:142
 msgid "contains"
 msgstr "beinhaltet"
 
-#: .\documentation\component_details\demo_context.py:117
-#: .\documentation\component_details\demo_context.py:126
+#: .\documentation\component_details\demo_context.py:119
+#: .\documentation\component_details\demo_context.py:128
 msgid "contains (case sensitive)"
 msgstr "beinhaltet (beachtet Groß-/Kleinschreibung)"
 
-#: .\documentation\component_details\demo_context.py:118
-#: .\documentation\component_details\demo_context.py:141
+#: .\documentation\component_details\demo_context.py:120
+#: .\documentation\component_details\demo_context.py:143
 msgid "starts with"
 msgstr "beginnt mit"
 
-#: .\documentation\component_details\demo_context.py:119
-#: .\documentation\component_details\demo_context.py:142
+#: .\documentation\component_details\demo_context.py:121
+#: .\documentation\component_details\demo_context.py:144
 msgid "ends with"
 msgstr "endet mit"
 
-#: .\documentation\component_details\demo_context.py:124
+#: .\documentation\component_details\demo_context.py:126
 #: .\documentation\templates\documentation\components\parameter_table.html:9
-#: .\documentation\templates\documentation\docs\customization.html:1017
+#: .\documentation\templates\documentation\docs\customization_content.html:989
 msgid "Description"
 msgstr "Beschreibung"
 
-#: .\documentation\component_details\demo_context.py:130
+#: .\documentation\component_details\demo_context.py:132
 msgid "Deadline"
 msgstr "Fristtermin"
 
-#: .\documentation\component_details\demo_context.py:132
+#: .\documentation\component_details\demo_context.py:134
 msgid "is not before"
 msgstr "nicht vor"
 
-#: .\documentation\component_details\demo_context.py:132
+#: .\documentation\component_details\demo_context.py:134
 msgid "is not after"
 msgstr "nicht nach"
 
-#: .\documentation\component_details\demo_context.py:136
+#: .\documentation\component_details\demo_context.py:138
 msgid "Client"
 msgstr "Kunde"
 
-#: .\documentation\component_details\demo_context.py:170
+#: .\documentation\component_details\demo_context.py:172
 msgid "Login with OIDC"
 msgstr "Mit OIDC anmelden"
 
-#: .\documentation\component_details\demo_context.py:190
+#: .\documentation\component_details\demo_context.py:192
 msgid "Front-end Design Made Easy"
 msgstr "Front-end Design Made Easy"
 
-#: .\documentation\component_details\demo_context.py:191
-#: .\documentation\component_details\demo_context.py:261
+#: .\documentation\component_details\demo_context.py:193
+#: .\documentation\component_details\demo_context.py:269
 msgid "A modern UI library for Django applications to get started quickly."
 msgstr "Eine moderne UI-Bibliothek für Django-Anwendungen, um schnell durchzustarten."
 
-#: .\documentation\component_details\demo_context.py:192
+#: .\documentation\component_details\demo_context.py:194
 msgid "Get Started"
 msgstr "Erste Schritte"
 
-#: .\documentation\component_details\demo_context.py:193
-#: .\documentation\component_details\demo_context.py:968
-#: .\documentation\component_details\demo_context.py:990
-#: .\documentation\component_details\demo_context.py:1016
+#: .\documentation\component_details\demo_context.py:195
+#: .\documentation\component_details\demo_context.py:993
+#: .\documentation\component_details\demo_context.py:1015
+#: .\documentation\component_details\demo_context.py:1041
 #: .\documentation\demo_utils.py:23
 #: .\documentation\templates\documentation\docs\component_demo.html:985
 #: .\documentation\templates\documentation\index.html:224
@@ -1379,313 +1379,317 @@ msgstr "Erste Schritte"
 msgid "Learn more"
 msgstr "Mehr erfahren"
 
-#: .\documentation\component_details\demo_context.py:204
+#: .\documentation\component_details\demo_context.py:206
 msgid "You're signed in"
 msgstr "Sie sind angemeldet"
 
-#: .\documentation\component_details\demo_context.py:206
+#: .\documentation\component_details\demo_context.py:208
 msgid "The authentication flow completed successfully."
 msgstr "Der Authentifizierungsvorgang wurde erfolgreich abgeschlossen."
 
-#: .\documentation\component_details\demo_context.py:207
+#: .\documentation\component_details\demo_context.py:209
 msgid "You can now continue to the application."
 msgstr "Sie können nun mit der Anwendung fortfahren."
 
-#: .\documentation\component_details\demo_context.py:217
+#: .\documentation\component_details\demo_context.py:222
 msgid "Session ready"
 msgstr "Sitzung bereit"
 
-#: .\documentation\component_details\demo_context.py:218
+#: .\documentation\component_details\demo_context.py:223
 msgid "This screen is generic and can be reused for auth, deployment, or workflow states."
 msgstr "Dieser Bildschirm ist allgemein gehalten und kann für Authentifizierungs-, Bereitstellungs- oder Workflow-Zustände wiederverwendet werden."
 
-#: .\documentation\component_details\demo_context.py:219
+#: .\documentation\component_details\demo_context.py:224
 msgid "Continue"
 msgstr "Fortfahren"
 
-#: .\documentation\component_details\demo_context.py:220
+#: .\documentation\component_details\demo_context.py:225
 msgid "Back to start"
 msgstr "Zurück zur Startseite"
 
-#: .\documentation\component_details\demo_context.py:223
+#: .\documentation\component_details\demo_context.py:228
 msgid "Sign-in failed"
 msgstr "Die Anmeldung ist fehlgeschlagen"
 
-#: .\documentation\component_details\demo_context.py:224
+#: .\documentation\component_details\demo_context.py:229
 msgid "The SSO process could not be completed."
 msgstr "Der SSO-Vorgang konnte nicht abgeschlossen werden."
 
-#: .\documentation\component_details\demo_context.py:233
+#: .\documentation\component_details\demo_context.py:241
 msgid "What happened?"
 msgstr "Was ist passiert?"
 
-#: .\documentation\component_details\demo_context.py:234
+#: .\documentation\component_details\demo_context.py:242
 msgid "Please try again or contact support if the issue persists."
 msgstr "Bitte versuchen Sie es erneut oder wenden Sie sich an den Support, falls das Problem weiterhin besteht."
 
-#: .\documentation\component_details\demo_context.py:235
+#: .\documentation\component_details\demo_context.py:243
 msgid "Try again"
 msgstr "Erneut versuchen"
 
-#: .\documentation\component_details\demo_context.py:236
+#: .\documentation\component_details\demo_context.py:244
 msgid "Contact support"
 msgstr "Support kontaktieren"
 
-#: .\documentation\component_details\demo_context.py:255
-#: .\documentation\component_details\demo_context.py:337
-#: .\documentation\component_details\demo_context.py:355
-#: .\documentation\component_details\demo_context.py:359
+#: .\documentation\component_details\demo_context.py:263
+#: .\documentation\component_details\demo_context.py:348
+#: .\documentation\component_details\demo_context.py:366
+#: .\documentation\component_details\demo_context.py:370
 msgid "Startpage"
 msgstr "Startseite"
 
-#: .\documentation\component_details\demo_context.py:257
+#: .\documentation\component_details\demo_context.py:265
 msgid "About"
 msgstr "Über"
 
-#: .\documentation\component_details\demo_context.py:260
+#: .\documentation\component_details\demo_context.py:268
 msgid "About Insight-UI"
 msgstr "Über Insight UI"
 
-#: .\documentation\component_details\demo_context.py:264
+#: .\documentation\component_details\demo_context.py:272
 msgid "Test"
 msgstr "Test"
 
-#: .\documentation\component_details\demo_context.py:265
+#: .\documentation\component_details\demo_context.py:273
 msgid "Test2"
 msgstr "Test2"
 
-#: .\documentation\component_details\demo_context.py:272
-#: .\documentation\component_details\demo_context.py:301
-#: .\documentation\component_details\demo_context.py:428
-#: .\documentation\component_details\demo_context.py:482
-#: .\documentation\component_details\demo_context.py:488
+#: .\documentation\component_details\demo_context.py:276
+#: .\documentation\context.py:91
+msgid "Search docs... (Ctrl+K)"
+msgstr "In Doku suchen... (Ctrl+K)"
+
+#: .\documentation\component_details\demo_context.py:283
+#: .\documentation\component_details\demo_context.py:312
+#: .\documentation\component_details\demo_context.py:439
+#: .\documentation\component_details\demo_context.py:493
+#: .\documentation\component_details\demo_context.py:499
 #: .\documentation\views.py:439
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: .\documentation\component_details\demo_context.py:277
+#: .\documentation\component_details\demo_context.py:288
 msgid "Administration"
 msgstr "Administration"
 
-#: .\documentation\component_details\demo_context.py:283
+#: .\documentation\component_details\demo_context.py:294
 msgid "Translation"
 msgstr "Übersetzung"
 
-#: .\documentation\component_details\demo_context.py:305
+#: .\documentation\component_details\demo_context.py:316
 msgid "Work"
 msgstr "Arbeit"
 
-#: .\documentation\component_details\demo_context.py:308
+#: .\documentation\component_details\demo_context.py:319
 msgid "Notifications"
 msgstr "Benachrichtigungen"
 
-#: .\documentation\component_details\demo_context.py:310
+#: .\documentation\component_details\demo_context.py:321
 msgid "Messages"
 msgstr "Nachrichten"
 
-#: .\documentation\component_details\demo_context.py:313
+#: .\documentation\component_details\demo_context.py:324
 msgid "Tasks"
 msgstr "Aufgaben"
 
-#: .\documentation\component_details\demo_context.py:318
+#: .\documentation\component_details\demo_context.py:329
 msgid "Management"
 msgstr "Management"
 
-#: .\documentation\component_details\demo_context.py:321
+#: .\documentation\component_details\demo_context.py:332
 msgid "Calendar"
 msgstr "Kalender"
 
-#: .\documentation\component_details\demo_context.py:322
-#: .\documentation\component_details\demo_context.py:481
+#: .\documentation\component_details\demo_context.py:333
+#: .\documentation\component_details\demo_context.py:492
 msgid "Profile"
 msgstr "Profil"
 
-#: .\documentation\component_details\demo_context.py:338
+#: .\documentation\component_details\demo_context.py:349
 msgid "Storybook"
 msgstr "Bilderbuch"
 
-#: .\documentation\component_details\demo_context.py:339
+#: .\documentation\component_details\demo_context.py:350
+#: .\documentation\context.py:153
 #: .\documentation\templates\documentation\docs\component_demo.html:750
 msgid "Documentation"
 msgstr "Dokumentation"
 
-#: .\documentation\component_details\demo_context.py:356
-#: .\documentation\context.py:61 .\documentation\context.py:118
-#: .\documentation\templates\documentation\docs\config_reference.html:27
-#: .\documentation\templates\documentation\docs\icons.html:23
+#: .\documentation\component_details\demo_context.py:367
+#: .\documentation\context.py:71 .\documentation\context.py:155
 #: .\documentation\templates\documentation\docs\storybook.html:23
-#: .\documentation\templates\documentation\docs\storybook_partial.html:8
-#: .\documentation\templates\documentation\docs\types.html:27
-#: .\documentation\views.py:417
+#: .\documentation\templates\documentation\docs\storybook_partial.html:11
+#: .\documentation\views.py:417 .\documentation\views.py:622
+#: .\documentation\views.py:639 .\documentation\views.py:656
 msgid "Components"
 msgstr "Komponenten"
 
-#: .\documentation\component_details\demo_context.py:357
+#: .\documentation\component_details\demo_context.py:368
 msgid "Breadcrumbs"
 msgstr "Breadcrumb-Navigation"
 
-#: .\documentation\component_details\demo_context.py:368
-#: .\documentation\component_details\demo_context.py:373
-#: .\documentation\component_details\demo_context.py:394
+#: .\documentation\component_details\demo_context.py:379
+#: .\documentation\component_details\demo_context.py:384
+#: .\documentation\component_details\demo_context.py:405
 msgid "Contact Details"
 msgstr "Kontaktdaten"
 
-#: .\documentation\component_details\demo_context.py:368
-#: .\documentation\component_details\demo_context.py:373
-#: .\documentation\component_details\demo_context.py:394
+#: .\documentation\component_details\demo_context.py:379
+#: .\documentation\component_details\demo_context.py:384
+#: .\documentation\component_details\demo_context.py:405
 msgid "Information about the person and address."
 msgstr "Informationen zur Person und Anschrift."
 
-#: .\documentation\component_details\demo_context.py:369
-#: .\documentation\component_details\demo_context.py:374
-#: .\documentation\component_details\demo_context.py:395
+#: .\documentation\component_details\demo_context.py:380
+#: .\documentation\component_details\demo_context.py:385
+#: .\documentation\component_details\demo_context.py:406
 msgid "Payment Method"
 msgstr "Zahlungsmethode"
 
-#: .\documentation\component_details\demo_context.py:369
-#: .\documentation\component_details\demo_context.py:374
-#: .\documentation\component_details\demo_context.py:395
+#: .\documentation\component_details\demo_context.py:380
+#: .\documentation\component_details\demo_context.py:385
+#: .\documentation\component_details\demo_context.py:406
 msgid "Select the payment method."
 msgstr "Art der Bezahlung auswählen."
 
-#: .\documentation\component_details\demo_context.py:370
-#: .\documentation\component_details\demo_context.py:375
-#: .\documentation\component_details\demo_context.py:396
+#: .\documentation\component_details\demo_context.py:381
+#: .\documentation\component_details\demo_context.py:386
+#: .\documentation\component_details\demo_context.py:407
 msgid "Review"
 msgstr "Überprüfen"
 
-#: .\documentation\component_details\demo_context.py:370
-#: .\documentation\component_details\demo_context.py:375
-#: .\documentation\component_details\demo_context.py:396
+#: .\documentation\component_details\demo_context.py:381
+#: .\documentation\component_details\demo_context.py:386
+#: .\documentation\component_details\demo_context.py:407
 msgid "Review the data and pay."
 msgstr "Prüfen der Angaben und Bezahlen."
 
-#: .\documentation\component_details\demo_context.py:408
+#: .\documentation\component_details\demo_context.py:419
 msgid "What is Django?"
 msgstr "Was ist Django?"
 
-#: .\documentation\component_details\demo_context.py:408
+#: .\documentation\component_details\demo_context.py:419
 msgid "Django is a web framework for Python."
 msgstr "Django ist ein Webframework für Python."
 
-#: .\documentation\component_details\demo_context.py:409
+#: .\documentation\component_details\demo_context.py:420
 msgid "What is Tailwind?"
 msgstr "Was ist Tailwind?"
 
-#: .\documentation\component_details\demo_context.py:409
+#: .\documentation\component_details\demo_context.py:420
 msgid "Tailwind is a CSS utility framework"
 msgstr "Tailwind ist ein CSS-Utility-Framework."
 
-#: .\documentation\component_details\demo_context.py:410
+#: .\documentation\component_details\demo_context.py:421
 msgid "What is ARIA?"
 msgstr "Was ist ARIA?"
 
-#: .\documentation\component_details\demo_context.py:410
+#: .\documentation\component_details\demo_context.py:421
 msgid "ARIA is short for Accessible Rich Internet Applications."
 msgstr "ARIA steht für Accessible Rich Internet Applications."
 
-#: .\documentation\component_details\demo_context.py:424
+#: .\documentation\component_details\demo_context.py:435
 msgid "General"
 msgstr "Allgemein"
 
-#: .\documentation\component_details\demo_context.py:425
+#: .\documentation\component_details\demo_context.py:436
 msgid "Security"
 msgstr "Sicherheit"
 
-#: .\documentation\component_details\demo_context.py:426
+#: .\documentation\component_details\demo_context.py:437
 msgid "Notification"
 msgstr "Benachrichtigung"
 
-#: .\documentation\component_details\demo_context.py:445
+#: .\documentation\component_details\demo_context.py:456
 msgid "I accept the terms and conditions"
 msgstr "Ich akzeptiere die Allgemeinen Geschäftsbedingungen"
 
-#: .\documentation\component_details\demo_context.py:456
+#: .\documentation\component_details\demo_context.py:467
 msgid "Choose languages: (max. 3)"
 msgstr "Sprachen auswählen: (max. 3)"
 
-#: .\documentation\component_details\demo_context.py:458
+#: .\documentation\component_details\demo_context.py:469
 msgid "English"
 msgstr "Englisch"
 
-#: .\documentation\component_details\demo_context.py:459
+#: .\documentation\component_details\demo_context.py:470
 msgid "German"
 msgstr "Deutsch"
 
-#: .\documentation\component_details\demo_context.py:460
+#: .\documentation\component_details\demo_context.py:471
 msgid "French"
 msgstr "Französisch"
 
-#: .\documentation\component_details\demo_context.py:461
+#: .\documentation\component_details\demo_context.py:472
 msgid "Spanish"
 msgstr "Spanisch"
 
-#: .\documentation\component_details\demo_context.py:463
+#: .\documentation\component_details\demo_context.py:474
 msgid "Italian (currently not available)"
 msgstr "Italienisch (gerade nicht verfügbar)"
 
-#: .\documentation\component_details\demo_context.py:463
-#: .\documentation\component_details\demo_context.py:513
-#: .\documentation\component_details\demo_context.py:535
+#: .\documentation\component_details\demo_context.py:474
+#: .\documentation\component_details\demo_context.py:524
 #: .\documentation\component_details\demo_context.py:546
+#: .\documentation\component_details\demo_context.py:561
 msgid "Currently not available"
 msgstr "Derzeit nicht verfügbar"
 
-#: .\documentation\component_details\demo_context.py:479
+#: .\documentation\component_details\demo_context.py:490
 msgid "User"
 msgstr "Benutzer"
 
-#: .\documentation\component_details\demo_context.py:483
+#: .\documentation\component_details\demo_context.py:494
 #: .\insight_ui\templates\insight_ui\components\user_dropdown.html:37
 msgid "Logout"
 msgstr "Abmelden"
 
-#: .\documentation\component_details\demo_context.py:491
+#: .\documentation\component_details\demo_context.py:502
 msgid "Personal Information"
 msgstr "Persönliche Informationen"
 
-#: .\documentation\component_details\demo_context.py:492
+#: .\documentation\component_details\demo_context.py:503
 msgid "Appearance"
 msgstr "Aussehen"
 
-#: .\documentation\component_details\demo_context.py:504
+#: .\documentation\component_details\demo_context.py:515
 msgid "Select AI Model:"
 msgstr "KI-Modell auswählen:"
 
-#: .\documentation\component_details\demo_context.py:506
+#: .\documentation\component_details\demo_context.py:517
 msgid "BERT"
 msgstr "BERT"
 
-#: .\documentation\component_details\demo_context.py:507
+#: .\documentation\component_details\demo_context.py:518
 msgid "PaLM 2"
 msgstr "PaLM 2"
 
-#: .\documentation\component_details\demo_context.py:511
+#: .\documentation\component_details\demo_context.py:522
 msgid "LLaMA 2 (currently not available)"
 msgstr "LLaMA 2 (gerade nicht verfügbar)"
 
-#: .\documentation\component_details\demo_context.py:526
+#: .\documentation\component_details\demo_context.py:537
 msgid "Select view mode:"
 msgstr "Anzeigemodus auswählen:"
 
-#: .\documentation\component_details\demo_context.py:541
+#: .\documentation\component_details\demo_context.py:552
 msgid "Select size:"
 msgstr "Größe auswählen:"
 
-#: .\documentation\component_details\demo_context.py:561
+#: .\documentation\component_details\demo_context.py:576
 msgid "Legend Mode: Skip"
 msgstr "Legendenmodus: Skip"
 
-#: .\documentation\component_details\demo_context.py:571
+#: .\documentation\component_details\demo_context.py:586
 msgid "Legend Mode: Rotate"
 msgstr "Legendenmodus: Rotate"
 
-#: .\documentation\component_details\demo_context.py:581
+#: .\documentation\component_details\demo_context.py:596
 msgid "Dual Range Slider"
 msgstr "Doppel-Regler"
 
-#: .\documentation\component_details\demo_context.py:596
-#: .\documentation\component_details\demo_context.py:597
+#: .\documentation\component_details\demo_context.py:611
+#: .\documentation\component_details\demo_context.py:612
 #: .\documentation\templates\documentation\docs\component_demo.html:872
 #: .\documentation\templates\documentation\docs\component_demo.html:873
 #: .\documentation\templates\documentation\docs\component_demo.html:874
@@ -1694,80 +1698,80 @@ msgstr "Doppel-Regler"
 msgid "Click me!"
 msgstr "Klick mich an!"
 
-#: .\documentation\component_details\demo_context.py:606
-#: .\documentation\component_details\demo_context.py:618
+#: .\documentation\component_details\demo_context.py:621
+#: .\documentation\component_details\demo_context.py:633
 msgid "Capitals:"
 msgstr "Hauptstädte:"
 
-#: .\documentation\component_details\demo_context.py:606
 #: .\documentation\component_details\demo_context.py:621
-#: .\documentation\component_details\demo_context.py:622
+#: .\documentation\component_details\demo_context.py:636
+#: .\documentation\component_details\demo_context.py:637
 msgid "Berlin"
 msgstr "Berlin"
 
-#: .\documentation\component_details\demo_context.py:606
 #: .\documentation\component_details\demo_context.py:621
-#: .\documentation\component_details\demo_context.py:622
+#: .\documentation\component_details\demo_context.py:636
+#: .\documentation\component_details\demo_context.py:637
 msgid "Rome"
 msgstr "Rom"
 
-#: .\documentation\component_details\demo_context.py:606
 #: .\documentation\component_details\demo_context.py:621
+#: .\documentation\component_details\demo_context.py:636
 msgid "London"
 msgstr "London"
 
-#: .\documentation\component_details\demo_context.py:621
+#: .\documentation\component_details\demo_context.py:636
 msgid "Brussels"
 msgstr "Brüssel"
 
-#: .\documentation\component_details\demo_context.py:621
+#: .\documentation\component_details\demo_context.py:636
 msgid "Paris"
 msgstr "Paris"
 
-#: .\documentation\component_details\demo_context.py:621
+#: .\documentation\component_details\demo_context.py:636
 msgid "Warsaw"
 msgstr "Warschau"
 
-#: .\documentation\component_details\demo_context.py:640
-#: .\documentation\component_details\demo_context.py:646
+#: .\documentation\component_details\demo_context.py:655
+#: .\documentation\component_details\demo_context.py:661
 #: .\documentation\templates\documentation\docs\component_demo.html:969
 msgid "Delete Project"
 msgstr "Projekt löschen"
 
-#: .\documentation\component_details\demo_context.py:642
+#: .\documentation\component_details\demo_context.py:657
 msgid "Are you sure you want to delete 'My Awesome Project'? All files, settings, and collaborator access will be permanently removed. This action cannot be undone."
 msgstr "Möchten Sie „Mein tolles Projekt“ wirklich löschen? Alle Dateien, Einstellungen und Zugriffsrechte der Mitwirkenden werden dauerhaft entfernt. Dieser Vorgang kann nicht rückgängig gemacht werden."
 
-#: .\documentation\component_details\demo_context.py:648
+#: .\documentation\component_details\demo_context.py:663
 #: .\insight_ui\templates\insight_ui\components\progress_bar.html:93
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: .\documentation\component_details\demo_context.py:675
+#: .\documentation\component_details\demo_context.py:690
 msgid "The cat is sleeping on the red sofa."
 msgstr "Die Katze schläft auf dem roten Sofa."
 
-#: .\documentation\component_details\demo_context.py:675
+#: .\documentation\component_details\demo_context.py:690
 msgid "This is a completely different sentence!"
 msgstr "Das ist ein komplett anderer Satz!"
 
-#: .\documentation\component_details\demo_context.py:714
+#: .\documentation\component_details\demo_context.py:739
 msgid "New Feature"
 msgstr "Neue Funktion"
 
-#: .\documentation\component_details\demo_context.py:715
+#: .\documentation\component_details\demo_context.py:740
 msgid "Verified"
 msgstr "Verifiziert"
 
-#: .\documentation\component_details\demo_context.py:716
+#: .\documentation\component_details\demo_context.py:741
 msgid "Beta"
 msgstr "Beta"
 
-#: .\documentation\component_details\demo_context.py:717
+#: .\documentation\component_details\demo_context.py:742
 msgid "Limited"
 msgstr "Limitiert"
 
-#: .\documentation\component_details\demo_context.py:718
+#: .\documentation\component_details\demo_context.py:743
 #: .\documentation\templates\documentation\docs\component_demo.html:838
 #: .\documentation\templates\documentation\docs\component_demo.html:851
 #: .\documentation\templates\documentation\docs\component_demo.html:852
@@ -1777,220 +1781,221 @@ msgstr "Limitiert"
 msgid "Info"
 msgstr "Info"
 
-#: .\documentation\component_details\demo_context.py:849
+#: .\documentation\component_details\demo_context.py:874
 msgid "Chart Example"
 msgstr "Diagrammbeispiel"
 
-#: .\documentation\component_details\demo_context.py:879
+#: .\documentation\component_details\demo_context.py:904
 #: .\documentation\demo_utils.py:19 .\documentation\views.py:333
 #, python-format
 msgid "Element %(i)s"
 msgstr "Element %(i)s"
 
-#: .\documentation\component_details\demo_context.py:879
+#: .\documentation\component_details\demo_context.py:904
 #: .\documentation\demo_utils.py:20
 #, python-format
 msgid "Content for element %(i)s"
 msgstr "Inhalt für Element %(i)s"
 
-#: .\documentation\component_details\demo_context.py:890
+#: .\documentation\component_details\demo_context.py:915
 #: .\documentation\views.py:239
 msgid "Items per page"
 msgstr "Einträge pro Seite"
 
-#: .\documentation\component_details\demo_context.py:900
+#: .\documentation\component_details\demo_context.py:925
 #: .\documentation\templates\documentation\components\parameter_table.html:7
 msgid "Name"
 msgstr "Name"
 
-#: .\documentation\component_details\demo_context.py:900
+#: .\documentation\component_details\demo_context.py:925
 msgid "E-Mail"
 msgstr "E-Mail"
 
-#: .\documentation\component_details\demo_context.py:900
+#: .\documentation\component_details\demo_context.py:925
 #: .\documentation\demo_utils.py:58
 #: .\documentation\templates\documentation\docs\component_details_content.html:90
 #: .\insight_ui\templates\insight_ui\components\live_content_partial.html:13
 msgid "Status"
 msgstr "Status"
 
-#: .\documentation\component_details\demo_context.py:900
+#: .\documentation\component_details\demo_context.py:925
 msgid "Actions"
 msgstr "Aktionen"
 
-#: .\documentation\component_details\demo_context.py:902
-#: .\documentation\component_details\demo_context.py:904
+#: .\documentation\component_details\demo_context.py:927
+#: .\documentation\component_details\demo_context.py:929
 #: .\documentation\demo_utils.py:21
 msgid "Active"
 msgstr "Aktiv"
 
-#: .\documentation\component_details\demo_context.py:903
+#: .\documentation\component_details\demo_context.py:928
 #: .\documentation\demo_utils.py:21
 msgid "Inactive"
 msgstr "Inaktiv"
 
-#: .\documentation\component_details\demo_context.py:906
+#: .\documentation\component_details\demo_context.py:931
 msgid "Example of a table component."
 msgstr "Beispiel einer Tabellenkomponente."
 
-#: .\documentation\component_details\demo_context.py:926
+#: .\documentation\component_details\demo_context.py:951
 msgid "AI model type"
 msgstr "KI-Modelltyp"
 
-#: .\documentation\component_details\demo_context.py:928
+#: .\documentation\component_details\demo_context.py:953
 msgid "To filter by the type of AI-Model."
 msgstr "Nach KI-Modelltyp filtern."
 
-#: .\documentation\component_details\demo_context.py:933
+#: .\documentation\component_details\demo_context.py:958
 msgid "Runtime"
 msgstr "Laufdauer"
 
-#: .\documentation\component_details\demo_context.py:935
+#: .\documentation\component_details\demo_context.py:960
 msgid "To filter by the runtime."
 msgstr "Nach Laufdauer filtern."
 
-#: .\documentation\component_details\demo_context.py:938
+#: .\documentation\component_details\demo_context.py:963
 msgid "License"
 msgstr "Lizenz"
 
-#: .\documentation\component_details\demo_context.py:963
+#: .\documentation\component_details\demo_context.py:988
 msgid "Example Card"
 msgstr "Beispielkarte"
 
-#: .\documentation\component_details\demo_context.py:963
+#: .\documentation\component_details\demo_context.py:988
 msgid "Subtitle"
 msgstr "Untertitel"
 
-#: .\documentation\component_details\demo_context.py:963
+#: .\documentation\component_details\demo_context.py:988
 msgid "This is the card content."
 msgstr "Das ist der Karteninhalt."
 
-#: .\documentation\component_details\demo_context.py:965
+#: .\documentation\component_details\demo_context.py:990
 msgid "Card with actions"
 msgstr "Karte mit Aktion"
 
-#: .\documentation\component_details\demo_context.py:966
+#: .\documentation\component_details\demo_context.py:991
 msgid "This card has some action buttons."
 msgstr "Diese Karte hat einige Aktions-Buttons."
 
-#: .\documentation\component_details\demo_context.py:969
-#: .\documentation\component_details\demo_context.py:991
-#: .\documentation\component_details\demo_context.py:1017
+#: .\documentation\component_details\demo_context.py:994
+#: .\documentation\component_details\demo_context.py:1016
+#: .\documentation\component_details\demo_context.py:1042
 #: .\documentation\demo_utils.py:24
 msgid "Share"
 msgstr "Teilen"
 
-#: .\documentation\component_details\demo_context.py:981
+#: .\documentation\component_details\demo_context.py:1006
 msgid "App Card"
 msgstr "Appkarte"
 
-#: .\documentation\component_details\demo_context.py:982
+#: .\documentation\component_details\demo_context.py:1007
 msgid "A card with its content arranged horizontally."
 msgstr "Eine Karte mit horizontal angeordnetem Inhalt."
 
-#: .\documentation\component_details\demo_context.py:983
-#: .\documentation\component_details\demo_context.py:1009
+#: .\documentation\component_details\demo_context.py:1008
+#: .\documentation\component_details\demo_context.py:1034
 msgid "Card-Image"
 msgstr "Kartenbild"
 
-#: .\documentation\component_details\demo_context.py:985
-#: .\documentation\component_details\demo_context.py:1011
+#: .\documentation\component_details\demo_context.py:1010
+#: .\documentation\component_details\demo_context.py:1036
+#: .\documentation\templates\documentation\docs\docs_page.html:4
 #: .\documentation\templates\documentation\index.html:4
 #: .\documentation\templates\documentation\playground.html:4
 msgid "Insight UI"
 msgstr "Insight UI"
 
-#: .\documentation\component_details\demo_context.py:987
-#: .\documentation\component_details\demo_context.py:1013
+#: .\documentation\component_details\demo_context.py:1012
+#: .\documentation\component_details\demo_context.py:1038
 msgid "Card"
 msgstr "Karte"
 
-#: .\documentation\component_details\demo_context.py:1002
+#: .\documentation\component_details\demo_context.py:1027
 msgid "Flip Card"
 msgstr "Drehkarte"
 
-#: .\documentation\component_details\demo_context.py:1003
+#: .\documentation\component_details\demo_context.py:1028
 #, fuzzy
 msgid "A card with additional details on the back. Click the arrow to flip."
 msgstr "-"
 
-#: .\documentation\component_details\demo_context.py:1004
+#: .\documentation\component_details\demo_context.py:1029
 msgid "More Details"
 msgstr "Weitere Details"
 
-#: .\documentation\component_details\demo_context.py:1005
+#: .\documentation\component_details\demo_context.py:1030
 msgid "Here you can add extended information without taking more space on the page."
 msgstr "Hier können zusätzliche Informationen hinzufügt werden, ohne dass diese auf der Seite mehr Platz einnehmen."
 
-#: .\documentation\component_details\demo_context.py:1007
-#: .\insight_ui\templates\insight_ui\components\footer.html:31
+#: .\documentation\component_details\demo_context.py:1032
+#: .\insight_ui\templates\insight_ui\components\footer.html:44
 msgid "Contact"
 msgstr "Kontakt"
 
-#: .\documentation\component_details\demo_context.py:1044
+#: .\documentation\component_details\demo_context.py:1069
 #, python-format
 msgid "Placeholder image %(index)s"
 msgstr "Platzhalterbild %(index)s"
 
-#: .\documentation\component_details\demo_context.py:1095
+#: .\documentation\component_details\demo_context.py:1120
 msgid "Registration"
 msgstr "Registrierung"
 
-#: .\documentation\component_details\demo_context.py:1096
+#: .\documentation\component_details\demo_context.py:1121
 msgid "Sign up to get access to our whole product portfolio."
 msgstr "Registrieren Sie sich, um Zugriff auf unser gesamtes Produktportfolio zu erhalten."
 
-#: .\documentation\component_details\demo_context.py:1103
+#: .\documentation\component_details\demo_context.py:1128
 msgid "Your title"
 msgstr "Dein Titel"
 
-#: .\documentation\component_details\demo_context.py:1104
+#: .\documentation\component_details\demo_context.py:1129
 msgid "No title"
 msgstr "Kein Titel"
 
-#: .\documentation\component_details\demo_context.py:1104
+#: .\documentation\component_details\demo_context.py:1129
 msgid "King"
 msgstr "König"
 
-#: .\documentation\component_details\demo_context.py:1107
+#: .\documentation\component_details\demo_context.py:1132
 msgid "First name"
 msgstr "Vorname"
 
-#: .\documentation\component_details\demo_context.py:1107
+#: .\documentation\component_details\demo_context.py:1132
 msgid "Type in your first name"
 msgstr "Gib deinen Vornamen ein"
 
-#: .\documentation\component_details\demo_context.py:1110
+#: .\documentation\component_details\demo_context.py:1135
 msgid "Last name"
 msgstr "Nachname"
 
-#: .\documentation\component_details\demo_context.py:1110
+#: .\documentation\component_details\demo_context.py:1135
 msgid "Type in your last name"
 msgstr "Gib deinen Nachnamen ein"
 
-#: .\documentation\component_details\demo_context.py:1113
+#: .\documentation\component_details\demo_context.py:1138
 msgid "E-mail"
 msgstr "E-Mail"
 
-#: .\documentation\component_details\demo_context.py:1113
+#: .\documentation\component_details\demo_context.py:1138
 msgid "Type in your.email@example.com"
 msgstr "Gib deine.email@ein.de"
 
-#: .\documentation\component_details\demo_context.py:1116
+#: .\documentation\component_details\demo_context.py:1141
 #: .\insight_ui\templates\insight_ui\login.html:67
 msgid "Password"
 msgstr "Passwort"
 
-#: .\documentation\component_details\demo_context.py:1116
+#: .\documentation\component_details\demo_context.py:1141
 msgid "Type in your password"
 msgstr "Gib dein Passwort ein"
 
-#: .\documentation\component_details\demo_context.py:1119
+#: .\documentation\component_details\demo_context.py:1144
 #: .\insight_ui\templates\insight_ui\components\chat.html:17
 msgid "Message"
 msgstr "Nachricht"
 
-#: .\documentation\component_details\demo_context.py:1119
+#: .\documentation\component_details\demo_context.py:1144
 msgid "Do you want to tell us something?..."
 msgstr "Willst Du uns etwas mitteilen? …"
 
@@ -3362,10 +3367,8 @@ msgid "Tooltip follows mouse position."
 msgstr "Der Tooltip folgt der Mausposition."
 
 #: .\documentation\component_details\parameter_context.py:90
-#: .\insight_ui\configs\base.py:162 .\insight_ui\configs\input.py:440
-#: .\insight_ui\configs\input.py:464 .\insight_ui\configs\input.py:516
-#: .\insight_ui\configs\input.py:562 .\insight_ui\configs\popup.py:34
-#: .\insight_ui\configs\popup.py:75
+#: .\insight_ui\configs\base.py:167 .\insight_ui\configs\input.py:489
+#: .\insight_ui\configs\popup.py:34
 msgid "Optional, unique tag ID for identifying the element in JavaScript."
 msgstr "Optionale, eindeutige Tag-ID für die Identifizierung des Elements im JavaScript."
 
@@ -3413,86 +3416,94 @@ msgstr "Um ein Tooltip zu einem Element hinzuzufügen, müssen diese lediglich d
 msgid "To use the component, simply insert an HTML tag—preferably a `<div>`. The element must include the `data-insight-code-block` attribute, whose value should be the desired programming language. The tag should contain only the source code to be displayed."
 msgstr "Um die Komponente zu verwenden, muss lediglich ein HTML-Tag vorzugsweise ein `<div>` eingefügt werden. Das Element muss das Attribute `data-insight-code-block` besitzen, dessen Wert die gewünschte Programmiersprache ist. Innerhalb des Tags befindet sich dann ausschließlich der darzustellende Quellcode."
 
-#: .\documentation\context.py:42
-#: .\documentation\templates\documentation\docs\installation.html:23
-#: .\documentation\templates\documentation\docs\installation.html:40
+#: .\documentation\context.py:45 .\documentation\context.py:110
+#: .\documentation\templates\documentation\docs\installation_content.html:16
+#: .\documentation\views.py:582
 msgid "Installation"
 msgstr "Installation"
 
-#: .\documentation\context.py:43
-#: .\documentation\templates\documentation\docs\base_template.html:26
+#: .\documentation\context.py:46 .\documentation\context.py:111
+#: .\documentation\views.py:594
 msgid "Base Template"
 msgstr "Basis-Template"
 
-#: .\documentation\context.py:44
-#: .\documentation\templates\documentation\docs\customization.html:27
-#: .\documentation\templates\documentation\docs\installation.html:187
+#: .\documentation\context.py:48 .\documentation\context.py:113
+#: .\documentation\templates\documentation\docs\installation_content.html:163
+#: .\documentation\views.py:611
 msgid "Customization"
 msgstr "Anpassung"
 
-#: .\documentation\context.py:45
+#: .\documentation\context.py:50 .\documentation\context.py:115
 #: .\documentation\templates\documentation\docs\component_demo.html:888
 #: .\documentation\templates\documentation\docs\component_demo.html:1160
-#: .\documentation\templates\documentation\docs\customization.html:72
-#: .\documentation\templates\documentation\docs\icons.html:23
+#: .\documentation\templates\documentation\docs\customization_content.html:44
+#: .\documentation\views.py:623
 msgid "Icons"
 msgstr "Icons"
 
-#: .\documentation\context.py:46
-#: .\documentation\templates\documentation\docs\types.html:27
+#: .\documentation\context.py:51 .\documentation\context.py:116
+#: .\documentation\views.py:640
 msgid "Types"
 msgstr "Typen"
 
-#: .\documentation\context.py:47
-#: .\documentation\templates\documentation\docs\config_reference.html:27
+#: .\documentation\context.py:52 .\documentation\context.py:117
+#: .\documentation\views.py:657
 msgid "Configs"
 msgstr "Konfigurationen"
 
-#: .\documentation\context.py:103 .\documentation\views.py:588
+#: .\documentation\context.py:65
+msgid "Docs"
+msgstr "Doku"
+
+#: .\documentation\context.py:136 .\documentation\views.py:686
 msgid "New"
 msgstr "Neu"
 
-#: .\documentation\context.py:163
+#: .\documentation\context.py:203
 msgid "Name of the icon (see grid below)."
 msgstr "Name des Icons (siehe Tabelle unten)."
 
-#: .\documentation\context.py:164
-msgid "Size of the icon. Possible values are: 'xl', 'l', 'm', 's' and 'xs'."
-msgstr "Größe des Icons. Mögliche Werte sind: 'xl', 'l', 'm', 's' und 'xs'."
+#: .\documentation\context.py:204
+msgid "Size of the icon."
+msgstr "Größe des Icons."
 
-#: .\documentation\context.py:238
+#: .\documentation\context.py:205
+msgid "Color token for the icon. Empty string inherits from parent."
+msgstr "Farb-Token für das Icon. Bei einer leeren Zeichenfolge wird der Wert vom übergeordneten Element übernommen."
+
+#: .\documentation\context.py:309
 msgid "Structural layout components."
 msgstr "Strukturelle Anordnungs-Komponenten."
 
-#: .\documentation\context.py:240
+#: .\documentation\context.py:311
 msgid "Main layout elements like navigation, footer and sidebars."
 msgstr "Hauptdarstellungselemente wie Navigation, Footer und Sidebars."
 
-#: .\documentation\context.py:243
+#: .\documentation\context.py:314
 msgid "Standard input elements like Buttons, Radio-Buttons, Toggle-Buttons, Dropdown Menus and more."
 msgstr "Standard Eingabeelemente wie Buttons, Radio-Buttons, Toggle-Buttons, Dropdown-Menüs und mehr."
 
-#: .\documentation\context.py:247
+#: .\documentation\context.py:318
 msgid "Popover, Tooltip, Modal and everything that pops up with additional information."
 msgstr "Popover, Tooltips, Modale und alles andere, das mit weiteren Informationen auftaucht."
 
-#: .\documentation\context.py:250
+#: .\documentation\context.py:321
 msgid "Utility components."
 msgstr "Unterstützende Komponenten."
 
-#: .\documentation\context.py:252
+#: .\documentation\context.py:323
 msgid "List and table components for big data."
 msgstr "Listen- und Tabellen-Komponenten für große Datenmengen."
 
-#: .\documentation\context.py:254
+#: .\documentation\context.py:325
 msgid "Filter and search components for big data."
 msgstr "Filter- und Such-Komponenten für große Datenmengen."
 
-#: .\documentation\context.py:256
+#: .\documentation\context.py:327
 msgid "Card components and different presentation types."
 msgstr "Karten-Komponenten und verschiedene Präsentationsarten."
 
-#: .\documentation\context.py:258
+#: .\documentation\context.py:329
 msgid "Form components with various input fields and different request methods."
 msgstr "Form-Komponenten mit diversen Eingabefeldern und verschiedenen Request-Methoden."
 
@@ -3535,193 +3546,173 @@ msgstr "Zeige Parameter von %(name)s"
 msgid "Types documentation"
 msgstr "Typen Dokumentation"
 
-#: .\documentation\templates\documentation\docs\base_template.html:4
-msgid "Insight UI - Base Template"
-msgstr "Insight UI – Basis-Template"
-
-#: .\documentation\templates\documentation\docs\base_template.html:19
-msgid "Page Structure"
-msgstr "Seitenstruktur"
-
-#: .\documentation\templates\documentation\docs\base_template.html:26
-#: .\documentation\templates\documentation\docs\customization.html:27
-#: .\documentation\templates\documentation\docs\installation.html:23
-#: .\documentation\templates\documentation\index.html:392
-#: .\documentation\views.py:372
-msgid "Get started"
-msgstr "Erste Schritte"
-
-#: .\documentation\templates\documentation\docs\base_template.html:26
-msgid "The base template provides a complete page structure with navbar, sidebars, content area, and footer. It handles JavaScript loading, theming, SEO meta tags, and favicon configuration."
-msgstr "Das Base-Template bietet eine vollständige Seitenstruktur mit Navigationsleiste, Seitenleisten, Inhaltsbereich und Fußzeile. Sie übernimmt das Laden von JavaScript, die Anpassung des Designs, SEO-Meta-Tags und die Konfiguration des Favicons."
-
-#: .\documentation\templates\documentation\docs\base_template.html:33
+#: .\documentation\templates\documentation\docs\base_template_content.html:6
 #: .\documentation\templates\documentation\docs\component_details_content.html:39
-#: .\documentation\templates\documentation\docs\icons.html:29
+#: .\documentation\templates\documentation\docs\icons_content.html:5
 msgid "Usage"
 msgstr "Verwendung"
 
-#: .\documentation\templates\documentation\docs\base_template.html:34
+#: .\documentation\templates\documentation\docs\base_template_content.html:7
 msgid "Extend the base template to use Insight UI's page structure:"
 msgstr "Erweitere die Basisvorlage, um die Seitenstruktur von Insight UI zu nutzen:"
 
-#: .\documentation\templates\documentation\docs\base_template.html:44
+#: .\documentation\templates\documentation\docs\base_template_content.html:17
 msgid "The head section loads all required assets and defines page metadata. The head section serves some blocks the titel and additional scripts:"
 msgstr "Im Head-Bereich werden alle erforderlichen Ressourcen geladen und die Metadaten der Seite definiert. Der Head-Bereich enthält einige Blöcke, den Titel und zusätzliche Skripte:"
 
-#: .\documentation\templates\documentation\docs\base_template.html:47
+#: .\documentation\templates\documentation\docs\base_template_content.html:20
 msgid "Page title shown in browser tab"
 msgstr "Seitentitel, welcher im Browser-Tab angezeigt wird"
 
-#: .\documentation\templates\documentation\docs\base_template.html:48
+#: .\documentation\templates\documentation\docs\base_template_content.html:21
 msgid "Additional stylesheets or meta tags"
 msgstr "Zusätzliche Stylesheets oder Meta-Tags"
 
-#: .\documentation\templates\documentation\docs\base_template.html:51
+#: .\documentation\templates\documentation\docs\base_template_content.html:24
 msgid "Favicon, SEO settings, and other meta information are configured via **INSIGHT_UI** in `settings.py`."
 msgstr "Das Favicon, die SEO Angaben, sowie weitere Meta-Information können über die **INSIGHT_UI** Einstellungen in der `settings.py` angepasst werden."
 
-#: .\documentation\templates\documentation\docs\base_template.html:57
+#: .\documentation\templates\documentation\docs\base_template_content.html:30
 msgid "The body contains all visible page elements, organized into blocks:"
 msgstr "Der Body enthält alle sichtbaren Seitenelemente, welche in Blöcken angeordnet sind:"
 
-#: .\documentation\templates\documentation\docs\base_template.html:60
+#: .\documentation\templates\documentation\docs\base_template_content.html:33
 msgid "Fixed background behind all content"
 msgstr "Fester Hintergrund hinter allen Inhalten"
 
-#: .\documentation\templates\documentation\docs\base_template.html:61
+#: .\documentation\templates\documentation\docs\base_template_content.html:34
 msgid "Navigation bar at the top"
 msgstr "Navigationsleiste am Beginn der Seite"
 
-#: .\documentation\templates\documentation\docs\base_template.html:62
+#: .\documentation\templates\documentation\docs\base_template_content.html:35
 msgid "Overlay sidebars (outside main layout)"
 msgstr "Überlagernde Seitenleisten (außerhalb des Hauptlayouts)"
 
-#: .\documentation\templates\documentation\docs\base_template.html:63
+#: .\documentation\templates\documentation\docs\base_template_content.html:36
 msgid "Static sidebars"
 msgstr "Statische Sidebars"
 
-#: .\documentation\templates\documentation\docs\base_template.html:64
+#: .\documentation\templates\documentation\docs\base_template_content.html:37
 msgid "Page header with title"
 msgstr "Seitenkopfzeile mit Titel"
 
-#: .\documentation\templates\documentation\docs\base_template.html:65
+#: .\documentation\templates\documentation\docs\base_template_content.html:38
 #: .\documentation\views.py:432
 msgid "Main content area"
 msgstr "Hauptinhaltsbereich"
 
-#: .\documentation\templates\documentation\docs\base_template.html:66
+#: .\documentation\templates\documentation\docs\base_template_content.html:39
 #: .\documentation\views.py:434
 msgid "Page footer"
 msgstr "Seitenfuß"
 
-#: .\documentation\templates\documentation\docs\base_template.html:67
+#: .\documentation\templates\documentation\docs\base_template_content.html:40
 msgid "Additional JavaScript"
 msgstr "Zusätzliches JavaScript"
 
-#: .\documentation\templates\documentation\docs\base_template.html:74
+#: .\documentation\templates\documentation\docs\base_template_content.html:47
 msgid "Add a fixed background image that stays in place while scrolling:"
 msgstr "Ein feststehendes Hintergrundbild, welches beim Scrollen an Ort und Stelle bleibt, hinzufügen:"
 
-#: .\documentation\templates\documentation\docs\base_template.html:91
+#: .\documentation\templates\documentation\docs\base_template_content.html:64
 msgid "The navigation bar appears at the top of every page:"
 msgstr "Die Navigationsleiste wird oben auf jeder Seite angezeigt:"
 
-#: .\documentation\templates\documentation\docs\base_template.html:104
+#: .\documentation\templates\documentation\docs\base_template_content.html:77
 #, python-format
 msgid ""
 "\n"
-"                        See %(link_open)sNavbar component%(link_close)s for configuration options.\n"
-"                    "
+"                    See %(link_open)sNavbar component%(link_close)s for configuration options.\n"
+"                "
 msgstr ""
 "\n"
 "Konfigurationsoptionen können unter %(link_open)sNavbar-Komponente%(link_close)s gefunden werden."
 
-#: .\documentation\templates\documentation\docs\base_template.html:112
+#: .\documentation\templates\documentation\docs\base_template_content.html:85
 #, fuzzy
 msgid "Controls whether the navbar sticks to the top of the viewport. Set in"
 msgstr "-"
 
-#: .\documentation\templates\documentation\docs\base_template.html:117
-#: .\documentation\templates\documentation\docs\base_template.html:154
+#: .\documentation\templates\documentation\docs\base_template_content.html:90
+#: .\documentation\templates\documentation\docs\base_template_content.html:127
 msgid "default"
 msgstr "Standard"
 
-#: .\documentation\templates\documentation\docs\base_template.html:123
+#: .\documentation\templates\documentation\docs\base_template_content.html:96
 msgid "When enabled, static sidebars automatically adjust their position to start below the navbar. Drawers are not affected as they overlay the entire screen."
 msgstr "Wenn diese Option aktiviert ist, passen statische Seitenleisten ihre Position automatisch so an, dass sie unterhalb der Navigationsleiste beginnen. Ausklappmenüs (Drawer) sind davon nicht betroffen, da sie den gesamten Bildschirm überlagern."
 
-#: .\documentation\templates\documentation\docs\base_template.html:132
+#: .\documentation\templates\documentation\docs\base_template_content.html:105
 msgid "Sidebars for navigation or supplementary content. The side is automatically detected from the block context:"
 msgstr "Seitenleisten für die Navigation oder ergänzende Inhalte. Die Seite wird automatisch anhand des Blockkontexts erkannt:"
 
-#: .\documentation\templates\documentation\docs\base_template.html:148
+#: .\documentation\templates\documentation\docs\base_template_content.html:121
 msgid "Parameters"
 msgstr "Parameter"
 
-#: .\documentation\templates\documentation\docs\base_template.html:151
+#: .\documentation\templates\documentation\docs\base_template_content.html:124
 msgid "Sidebar width"
 msgstr "Breite der Sidebar."
 
-#: .\documentation\templates\documentation\docs\base_template.html:159
+#: .\documentation\templates\documentation\docs\base_template_content.html:132
 msgid "Sidebar behavior"
 msgstr "Verhalten der Sidebar"
 
-#: .\documentation\templates\documentation\docs\base_template.html:161
+#: .\documentation\templates\documentation\docs\base_template_content.html:134
 msgid "Sticky sidebar alongside content (default)"
 msgstr "Feste Seitenleiste neben dem Inhalt (Standard)"
 
-#: .\documentation\templates\documentation\docs\base_template.html:162
+#: .\documentation\templates\documentation\docs\base_template_content.html:135
 msgid "Drawer that slides in as overlay"
 msgstr "Drawer, welcher über dem Inhalt eingeschoben wird"
 
-#: .\documentation\templates\documentation\docs\base_template.html:166
+#: .\documentation\templates\documentation\docs\base_template_content.html:139
 msgid "Behavior on small screens (only for static sidebars)"
 msgstr "Verhalten auf kleinen Bildschirmen (gilt nur für statische Seitenleisten)"
 
-#: .\documentation\templates\documentation\docs\base_template.html:168
+#: .\documentation\templates\documentation\docs\base_template_content.html:141
 msgid "Hidden on mobile (default)"
 msgstr "Auf Mobilgeräten ausgeblendet (Standard)"
 
-#: .\documentation\templates\documentation\docs\base_template.html:169
+#: .\documentation\templates\documentation\docs\base_template_content.html:142
 msgid "Toggle button appears, opens as drawer"
 msgstr "Es erscheint eine Umschaltfläche, die Seitenleiste öffnet sich als Drawer"
 
-#: .\documentation\templates\documentation\docs\base_template.html:176
+#: .\documentation\templates\documentation\docs\base_template_content.html:149
 msgid "Drawer Example"
 msgstr "Drawer Beispiel"
 
-#: .\documentation\templates\documentation\docs\base_template.html:177
+#: .\documentation\templates\documentation\docs\base_template_content.html:150
 msgid "Create an overlay sidebar that slides in from the side:"
 msgstr "Eine überlagernde Seitenleiste, welche von der Seite hereingeschoben wird, anzeigen:"
 
-#: .\documentation\templates\documentation\docs\base_template.html:194
+#: .\documentation\templates\documentation\docs\base_template_content.html:167
 msgid "Display a page header with title and optional description:"
 msgstr "Eine Seitenüberschrift mit Titel und optionaler Beschreibung anzeigen:"
 
-#: .\documentation\templates\documentation\docs\base_template.html:211
+#: .\documentation\templates\documentation\docs\base_template_content.html:184
 msgid "The main content area of your page. This block expands to fill available space, keeping the footer at the bottom."
 msgstr "Der Hauptinhaltsbereich der Webseite. Dieser Block wird so erweitert, dass er den verfügbaren Platz ausfüllt, wobei die Fußzeile am unteren Rand verbleibt."
 
-#: .\documentation\templates\documentation\docs\base_template.html:227
+#: .\documentation\templates\documentation\docs\base_template_content.html:200
 msgid "The content block includes a default HTMX loading spinner that shows during requests. Disable it in your view when using components with their own loading indicators (e.g., pagination, tables):"
 msgstr "Der Inhaltsblock enthält einen standardmäßigen HTMX-Ladeindikator, der während der Abfragen angezeigt wird. Dieser kann deaktiviert werden, für den Fall, dass eine Komponente einen eigenen Ladeindikatoren besitzt (z. B. Paginierung, Tabellen):"
 
-#: .\documentation\templates\documentation\docs\base_template.html:243
+#: .\documentation\templates\documentation\docs\base_template_content.html:216
 msgid "The footer appears at the bottom of every page:"
 msgstr "Die Fußzeile erscheint am Ende jeder Seite:"
 
-#: .\documentation\templates\documentation\docs\base_template.html:256
+#: .\documentation\templates\documentation\docs\base_template_content.html:229
 #, python-format
 msgid ""
 "\n"
-"                    See %(link_open)sFooter component%(link_close)s for configuration options.\n"
-"                "
+"                See %(link_open)sFooter component%(link_close)s for configuration options.\n"
+"            "
 msgstr ""
 "\n"
 "Konfigurationsoptionen können unter %(link_open)sFooter-Komponente%(link_close)s gefunden werden."
 
-#: .\documentation\templates\documentation\docs\base_template.html:265
+#: .\documentation\templates\documentation\docs\base_template_content.html:238
 #, fuzzy
 msgid "Load additional JavaScript at the end of the page:"
 msgstr "-"
@@ -3750,6 +3741,10 @@ msgstr "Überschrift"
 #: .\documentation\templates\documentation\docs\base_template_mockup.html:117
 msgid "Footer"
 msgstr "Footer"
+
+#: .\documentation\templates\documentation\docs\base_template_sidebar.html:4
+msgid "Page Structure"
+msgstr "Seitenstruktur"
 
 #: .\documentation\templates\documentation\docs\component_demo.html:4
 msgid "Example Page"
@@ -3995,7 +3990,7 @@ msgstr "Dezent"
 
 #: .\documentation\templates\documentation\docs\component_demo.html:870
 #: .\documentation\templates\documentation\docs\component_demo.html:1150
-#: .\documentation\templates\documentation\docs\icons.html:111
+#: .\documentation\templates\documentation\docs\icons_content.html:89
 msgid "Sizes"
 msgstr "Größen"
 
@@ -4184,510 +4179,499 @@ msgstr "Verwandte Themen"
 msgid "No related components available."
 msgstr "Keine verwandten Komponenten vorhanden."
 
-#: .\documentation\templates\documentation\docs\config_reference.html:4
-msgid "Insight UI - Configs"
-msgstr "Insight UI - Konfigurationen"
-
-#: .\documentation\templates\documentation\docs\config_reference.html:33
-#: .\documentation\templates\documentation\docs\types.html:49
+#: .\documentation\templates\documentation\docs\config_reference_content.html:5
+#: .\documentation\templates\documentation\docs\types_content.html:21
 msgid "Quick Navigation"
 msgstr "Schnellnavigation"
 
-#: .\documentation\templates\documentation\docs\config_reference.html:46
+#: .\documentation\templates\documentation\docs\config_reference_content.html:18
 msgid "Config Reference"
 msgstr "Konfigurationsübersicht"
 
-#: .\documentation\templates\documentation\docs\customization.html:4
-msgid "Insight UI - Customization"
-msgstr "Insight UI - Anpassung"
-
-#: .\documentation\templates\documentation\docs\customization.html:27
-msgid "Adapt Insight UI to your brand with design tokens, component theming, and template overrides."
-msgstr "Passe die Benutzeroberfläche von Insight mithilfe von Design-Tokens, Komponenten-Themes und Vorlagen-Überschreibungen an deine Marke an."
-
-#: .\documentation\templates\documentation\docs\customization.html:35
+#: .\documentation\templates\documentation\docs\customization_content.html:7
 msgid ""
 "\n"
-"                    Insight UI uses a token-based design system built on <b>Tailwind CSS</b>. Change colors, spacing, or typography in one place and the entire UI adapts.\n"
-"                    There are four levels of customization:\n"
-"                "
+"                Insight UI uses a token-based design system built on <b>Tailwind CSS</b>. Change colors, spacing, or typography in one place and the entire UI adapts.\n"
+"                There are four levels of customization:\n"
+"            "
 msgstr ""
 "\n"
 "Insight UI nutzt ein tokenbasiertes Designsystem, welches auf <b>Tailwind CSS</b> aufbaut. Farben, Abstände oder die Typografie können an einer Stelle angepasst werden, und die gesamte Benutzeroberfläche passt sich entsprechend an. Es gibt vier Ebenen der Anpassung:"
 
-#: .\documentation\templates\documentation\docs\customization.html:45
+#: .\documentation\templates\documentation\docs\customization_content.html:17
 msgid "Configuration"
 msgstr "Konfiguration"
 
-#: .\documentation\templates\documentation\docs\customization.html:47
+#: .\documentation\templates\documentation\docs\customization_content.html:19
 msgid "Favicons, meta tags, feature flags via settings.py"
 msgstr "Favicons, Meta-Tags, Feature-Flags über settings.py"
 
-#: .\documentation\templates\documentation\docs\customization.html:54
+#: .\documentation\templates\documentation\docs\customization_content.html:26
 msgid "Design Tokens"
 msgstr "Design-Tokens"
 
-#: .\documentation\templates\documentation\docs\customization.html:56
+#: .\documentation\templates\documentation\docs\customization_content.html:28
 msgid "Colors, spacing, radii, shadows via input.css"
 msgstr "Farben, Abstände, Radien, Schatten über input.css"
 
-#: .\documentation\templates\documentation\docs\customization.html:63
+#: .\documentation\templates\documentation\docs\customization_content.html:35
 #: .\documentation\views.py:451
 msgid "Templates"
 msgstr "Templates"
 
-#: .\documentation\templates\documentation\docs\customization.html:65
+#: .\documentation\templates\documentation\docs\customization_content.html:37
 msgid "Override component HTML for structural changes"
 msgstr "Überschreiben des HTML-Codes einer Komponente für strukturelle Änderungen"
 
-#: .\documentation\templates\documentation\docs\customization.html:74
+#: .\documentation\templates\documentation\docs\customization_content.html:46
 msgid "Add custom icons or replace existing ones"
 msgstr "Benutzerdefinierte Symbole hinzufügen oder vorhandene ersetzen"
 
-#: .\documentation\templates\documentation\docs\customization.html:84
+#: .\documentation\templates\documentation\docs\customization_content.html:56
 msgid "1. Configuration via settings.py"
 msgstr "1. Konfiguration über settings.py"
 
-#: .\documentation\templates\documentation\docs\customization.html:86
+#: .\documentation\templates\documentation\docs\customization_content.html:58
 #, python-format
 msgid ""
 "\n"
-"                    The %(settings)s dictionary in your Django settings controls app-level options like branding assets, SEO metadata, and feature flags.\n"
-"                "
+"                The %(settings)s dictionary in your Django settings controls app-level options like branding assets, SEO metadata, and feature flags.\n"
+"            "
 msgstr ""
 "\n"
 "Das %(settings)s-Dictionary in den Django-Einstellungen steuert Optionen auf App-Ebene wie Branding-Elemente, SEO-Metadaten und Feature-Flags."
 
-#: .\documentation\templates\documentation\docs\customization.html:130
+#: .\documentation\templates\documentation\docs\customization_content.html:102
 msgid "Loading the Config in Views"
 msgstr "Laden der Konfiguration in Views"
 
-#: .\documentation\templates\documentation\docs\customization.html:132
+#: .\documentation\templates\documentation\docs\customization_content.html:104
 msgid ""
 "\n"
-"                        To make the configuration available in your templates, import <code class=\"inline-tag\">get_config</code> from <code class=\"inline-tag\">insight_ui.config</code> and add it to your view context.\n"
-"                    "
+"                    To make the configuration available in your templates, import <code class=\"inline-tag\">get_config</code> from <code class=\"inline-tag\">insight_ui.config</code> and add it to your view context.\n"
+"                "
 msgstr ""
 "\n"
 "Um die Konfiguration in den Templates verfügbar zu machen, importiere <code class=\"inline-tag\">get_config</code> aus <code class=\"inline-tag\">insight_ui.config</code> und füge es diese View-Kontext hinzu."
 
-#: .\documentation\templates\documentation\docs\customization.html:151
+#: .\documentation\templates\documentation\docs\customization_content.html:123
 msgid ""
 "\n"
-"                        The <code class=\"inline-tag\">get_config()</code> function merges your <code class=\"inline-tag\">settings.INSIGHT_UI</code> with the library defaults and returns a dictionary with the key <code class=\"inline-tag\">INSIGHT_UI</code>.\n"
-"                    "
+"                    The <code class=\"inline-tag\">get_config()</code> function merges your <code class=\"inline-tag\">settings.INSIGHT_UI</code> with the library defaults and returns a dictionary with the key <code class=\"inline-tag\">INSIGHT_UI</code>.\n"
+"                "
 msgstr ""
 "\n"
 "Die Funktion <code class=\"inline-tag\">get_config()</code> führt deine <code class=\"inline-tag\">settings.INSIGHT_UI</code> mit den Standardwerten der Bibliothek zusammen und gibt ein Dictionary mit dem Schlüssel <code class=\"inline-tag\">INSIGHT_UI</code> zurück."
 
-#: .\documentation\templates\documentation\docs\customization.html:154
+#: .\documentation\templates\documentation\docs\customization_content.html:126
 msgid ""
 "\n"
-"                        Templates can then access the configuration via <code class=\"inline-tag\">&#123;&#123; INSIGHT_UI.title &#125;&#125;</code>, etc.\n"
-"                    "
+"                    Templates can then access the configuration via <code class=\"inline-tag\">&#123;&#123; INSIGHT_UI.title &#125;&#125;</code>, etc.\n"
+"                "
 msgstr ""
 "\n"
 "Die Templates können dann über <code class=\"inline-tag\">&#123;&#123; INSIGHT_UI.title &#125;&#125;</code> usw. auf die Konfiguration zugreifen."
 
-#: .\documentation\templates\documentation\docs\customization.html:165
+#: .\documentation\templates\documentation\docs\customization_content.html:137
 msgid "2. Design Tokens (input.css)"
 msgstr "2. Design-Tokens (input.css)"
 
-#: .\documentation\templates\documentation\docs\customization.html:167
+#: .\documentation\templates\documentation\docs\customization_content.html:139
 #, python-format
 msgid ""
 "\n"
-"                    The %(input)s file is the single source of truth for your visual design. All tokens are defined in the %(theme)s block and automatically apply to all components.\n"
-"                "
+"                The %(input)s file is the single source of truth for your visual design. All tokens are defined in the %(theme)s block and automatically apply to all components.\n"
+"            "
 msgstr ""
 "\n"
 "Die Datei %(input)s ist die einzige verlässliche Quelle für das visuelles Design. Alle Tokens werden im Block %(theme)s definiert und gelten automatisch für alle Komponenten."
 
-#: .\documentation\templates\documentation\docs\customization.html:174
+#: .\documentation\templates\documentation\docs\customization_content.html:146
 msgid "Setup: Tailwind CLI"
 msgstr "Einrichtung: Tailwind-CLI"
 
-#: .\documentation\templates\documentation\docs\customization.html:176
+#: .\documentation\templates\documentation\docs\customization_content.html:148
 msgid ""
 "\n"
-"                        To customize the theme, you need the Tailwind compiler. We recommend <b>django-tailwind-cli</b>.\n"
-"                    "
+"                    To customize the theme, you need the Tailwind compiler. We recommend <b>django-tailwind-cli</b>.\n"
+"                "
 msgstr ""
 "\n"
 "Um das Theme anzupassen, wird der Tailwind-Compiler benötigt. Wir empfehlen <b>django-tailwind-cli</b>."
 
-#: .\documentation\templates\documentation\docs\customization.html:185
+#: .\documentation\templates\documentation\docs\customization_content.html:157
 msgid "Quick Setup"
 msgstr "Schnellstart"
 
-#: .\documentation\templates\documentation\docs\customization.html:188
+#: .\documentation\templates\documentation\docs\customization_content.html:160
 msgid "Install the package:"
 msgstr "Paket installieren:"
 
-#: .\documentation\templates\documentation\docs\customization.html:189
+#: .\documentation\templates\documentation\docs\customization_content.html:161
 msgid "Add to INSTALLED_APPS:"
 msgstr "Zu INSTALLED_APPS hinzufügen:"
 
-#: .\documentation\templates\documentation\docs\customization.html:190
+#: .\documentation\templates\documentation\docs\customization_content.html:162
 msgid "Copy input.css to your project (see below)"
 msgstr "Die „input.css“ Datein in das Projekt kopieren (siehe unten)"
 
-#: .\documentation\templates\documentation\docs\customization.html:191
+#: .\documentation\templates\documentation\docs\customization_content.html:163
 msgid "Run setup:"
 msgstr "Setup ausführen:"
 
-#: .\documentation\templates\documentation\docs\customization.html:192
+#: .\documentation\templates\documentation\docs\customization_content.html:164
 msgid "Start dev server:"
 msgstr "Entwicklungsserver starten:"
 
-#: .\documentation\templates\documentation\docs\customization.html:213
+#: .\documentation\templates\documentation\docs\customization_content.html:185
 msgid "Copying input.css"
 msgstr "input.css kopieren"
 
-#: .\documentation\templates\documentation\docs\customization.html:215
+#: .\documentation\templates\documentation\docs\customization_content.html:187
 msgid ""
 "\n"
-"                            Copy the default <code class=\"inline-tag\">input.css</code> from the installed Insight UI package to your project's static directory.\n"
-"                        "
+"                        Copy the default <code class=\"inline-tag\">input.css</code> from the installed Insight UI package to your project's static directory.\n"
+"                    "
 msgstr ""
 "\n"
 "Kopiere die Standarddatei <code class=\"inline-tag\">input.css</code> aus dem installierten Insight-UI-Paket in das Verzeichnis „static“ deines Projekts."
 
-#: .\documentation\templates\documentation\docs\customization.html:234
+#: .\documentation\templates\documentation\docs\customization_content.html:206
 msgid ""
 "\n"
-"                            Then update the <code class=\"inline-tag\">@source</code> directive at the top of your copied file to include both your templates and the Insight UI templates:\n"
-"                        "
+"                        Then update the <code class=\"inline-tag\">@source</code> directive at the top of your copied file to include both your templates and the Insight UI templates:\n"
+"                    "
 msgstr ""
 "\n"
 "Passe anschließend die Anweisung <code class=\"inline-tag\">@source</code> am Anfang der kopierten Datei so an, dass sowohl deine Templates als auch die Insight-UI-Templates einbezogen werden:"
 
-#: .\documentation\templates\documentation\docs\customization.html:253
+#: .\documentation\templates\documentation\docs\customization_content.html:225
 msgid "The `@source` directive tells Tailwind which files to scan for utility classes. Without it, unused classes will be purged from the final CSS."
 msgstr "Die Anweisung `@source` teilt Tailwind mit, welche Dateien nach Hilfsklassen durchsucht werden sollen. Ohne diese Anweisung werden nicht verwendete Klassen aus dem endgültigen CSS entfernt."
 
-#: .\documentation\templates\documentation\docs\customization.html:259
+#: .\documentation\templates\documentation\docs\customization_content.html:231
 msgid "Color System"
 msgstr "Farbsystem"
 
-#: .\documentation\templates\documentation\docs\customization.html:261
+#: .\documentation\templates\documentation\docs\customization_content.html:233
 msgid "The color system includes brand colors, status colors, surface colors, and text colors. Each color has states for hover and active interactions."
 msgstr "Das Farbsystem umfasst Markenfarben, Statusfarben, Oberflächenfarben und Textfarben. Jede Farbe verfügt über Zustände für Hover- und aktive Interaktionen."
 
-#: .\documentation\templates\documentation\docs\customization.html:266
+#: .\documentation\templates\documentation\docs\customization_content.html:238
 msgid "Brand Colors"
 msgstr "Markenfarben"
 
-#: .\documentation\templates\documentation\docs\customization.html:295
+#: .\documentation\templates\documentation\docs\customization_content.html:267
 msgid "Status Colors"
 msgstr "Statusfarben"
 
-#: .\documentation\templates\documentation\docs\customization.html:346
+#: .\documentation\templates\documentation\docs\customization_content.html:318
 msgid "Surface & Border Colors"
 msgstr "Oberflächen- und Umrandungsfarben"
 
-#: .\documentation\templates\documentation\docs\customization.html:347
+#: .\documentation\templates\documentation\docs\customization_content.html:319
 msgid "Surfaces create visual hierarchy. Each level has a matching border color."
 msgstr "Flächen schaffen eine visuelle Hierarchie. Jede Ebene hat eine passende Umrandungsfarbe."
 
-#: .\documentation\templates\documentation\docs\customization.html:377
+#: .\documentation\templates\documentation\docs\customization_content.html:349
 msgid "You can use these utilities directly, or use our [combined surface classes](#surfaces) for quick container styling."
 msgstr "Diese Hilfsklassen können direkt verwendet werden oder du nutzt unsere [kombinierten Oberflächenklassen](#surfaces), um Container schnell zu gestalten."
 
-#: .\documentation\templates\documentation\docs\customization.html:382
+#: .\documentation\templates\documentation\docs\customization_content.html:354
+#: .\documentation\templates\documentation\docs\icons_content.html:98
 msgid "Text Colors"
 msgstr "Textfarben"
 
-#: .\documentation\templates\documentation\docs\customization.html:447
+#: .\documentation\templates\documentation\docs\customization_content.html:419
 msgid "Typography"
 msgstr "Typografie"
 
-#: .\documentation\templates\documentation\docs\customization.html:449
+#: .\documentation\templates\documentation\docs\customization_content.html:421
 msgid ""
 "\n"
-"                        Insight UI uses a custom font loaded via <code class=\"inline-tag\">@font-face</code>.\n"
-"                        To use your own font, replace the font file and update the references in <code class=\"inline-tag\">input.css</code>.\n"
-"                    "
+"                    Insight UI uses a custom font loaded via <code class=\"inline-tag\">@font-face</code>.\n"
+"                    To use your own font, replace the font file and update the references in <code class=\"inline-tag\">input.css</code>.\n"
+"                "
 msgstr ""
 "\n"
 "Insight UI verwendet eine benutzerdefinierte Schriftart, welche über <code class=\"inline-tag\">@font-face</code> geladen wird.\n"
 "Um eine eigene Schriftart zu verwenden, muss die Schriftartdatei ersetzt und die Verweise in <code class=\"inline-tag\">input.css</code> aktualisiert werden."
 
-#: .\documentation\templates\documentation\docs\customization.html:457
+#: .\documentation\templates\documentation\docs\customization_content.html:429
 msgid "Step 1: Load the font"
 msgstr "Schritt 1: Die Schriftart laden"
 
-#: .\documentation\templates\documentation\docs\customization.html:459
+#: .\documentation\templates\documentation\docs\customization_content.html:431
 msgid "Add a @font-face declaration with the path to your font file (relative to input.css)."
 msgstr "Füge eine @font-face-Deklaration mit dem Pfad zu deiner Schriftartdatei hinzu (relativ zu input.css)."
 
-#: .\documentation\templates\documentation\docs\customization.html:475
+#: .\documentation\templates\documentation\docs\customization_content.html:447
 msgid "Step 2: Set as default"
 msgstr "Schritt 2: Als Standard festlegen"
 
-#: .\documentation\templates\documentation\docs\customization.html:477
+#: .\documentation\templates\documentation\docs\customization_content.html:449
 msgid "Update the --font-sans variable in the @theme block to use your font."
 msgstr "Aktualisiere die Variable „--font-sans“ im @theme-Block, um deine Schriftart zu verwenden."
 
-#: .\documentation\templates\documentation\docs\customization.html:487
+#: .\documentation\templates\documentation\docs\customization_content.html:459
 msgid "The default font **Atkinson Hyperlegible Next** is optimized for readability and accessibility. When choosing a replacement, consider legibility at various sizes and weights."
 msgstr "Die Standardschriftart **Atkinson Hyperlegible Next** ist auf Lesbarkeit und Barrierefreiheit optimiert. Achte bei der Auswahl einer Ersatzschriftart auf die Lesbarkeit in verschiedenen Schriftgrößen und -stärken."
 
-#: .\documentation\templates\documentation\docs\customization.html:494
+#: .\documentation\templates\documentation\docs\customization_content.html:466
 msgid "Using Multiple Fonts"
 msgstr "Verwendung mehrerer Schriftarten"
 
-#: .\documentation\templates\documentation\docs\customization.html:496
+#: .\documentation\templates\documentation\docs\customization_content.html:468
 msgid ""
 "\n"
-"                            You can define multiple font families for different purposes. Tailwind provides built-in variables for sans-serif, serif, and monospace fonts. You can also define custom font families for specific use cases like headings.\n"
-"                        "
+"                        You can define multiple font families for different purposes. Tailwind provides built-in variables for sans-serif, serif, and monospace fonts. You can also define custom font families for specific use cases like headings.\n"
+"                    "
 msgstr ""
 "\n"
 "Es können mehrere Schriftfamilien für unterschiedliche Zwecke definiert werden. Tailwind bietet integrierte Variablen für serifenlose, serifenbehaftete und monospaced Schriftarten. Außerdem können benutzerdefinierte Schriftfamilien für bestimmte Anwendungsfälle wie Überschriften festlegen werden."
 
-#: .\documentation\templates\documentation\docs\customization.html:539
+#: .\documentation\templates\documentation\docs\customization_content.html:511
 msgid ""
 "\n"
-"                            Use the fonts in your templates with Tailwind classes:\n"
-"                        "
+"                        Use the fonts in your templates with Tailwind classes:\n"
+"                    "
 msgstr ""
 "\n"
 "Verwende die Schriftarten in den Templates mit Tailwind-Klassen:"
 
-#: .\documentation\templates\documentation\docs\customization.html:561
+#: .\documentation\templates\documentation\docs\customization_content.html:533
 msgid "Text Size & Line Height"
 msgstr "Textgröße und Zeilenabstand"
 
-#: .\documentation\templates\documentation\docs\customization.html:562
+#: .\documentation\templates\documentation\docs\customization_content.html:534
 msgid "Text size and line height tokens are planned but not yet available. Currently, use Tailwind's default text utilities (`text-sm`, `text-base`, `text-lg`, etc.)."
 msgstr "Tokens für Textgröße und Zeilenabstand sind geplant, aber noch nicht verfügbar. Verwende bis dahin die Standard-Text-Utilities von Tailwind (`text-sm`, `text-base`, `text-lg` usw.)."
 
-#: .\documentation\templates\documentation\docs\customization.html:568
+#: .\documentation\templates\documentation\docs\customization_content.html:540
 msgid "Spacing Scale"
 msgstr "Abstandsskala"
 
-#: .\documentation\templates\documentation\docs\customization.html:569
+#: .\documentation\templates\documentation\docs\customization_content.html:541
 msgid "A consistent spacing scale for margins, padding, and gaps."
 msgstr "Ein einheitliches Abstandsschema für Ränder, Innenabstände und Lücken."
 
-#: .\documentation\templates\documentation\docs\customization.html:614
+#: .\documentation\templates\documentation\docs\customization_content.html:586
 msgid "Border Radius"
 msgstr "Randradius"
 
-#: .\documentation\templates\documentation\docs\customization.html:615
+#: .\documentation\templates\documentation\docs\customization_content.html:587
 msgid "Radius tokens for corners, from subtle to fully rounded."
 msgstr "Radiuswerte für Ecken, von dezent bis vollständig abgerundet."
 
-#: .\documentation\templates\documentation\docs\customization.html:645
+#: .\documentation\templates\documentation\docs\customization_content.html:617
 msgid "Semantic radius tokens map to specific use cases:"
 msgstr "Semantische Radius-Token lassen sich bestimmten Anwendungsfällen zuordnen:"
 
-#: .\documentation\templates\documentation\docs\customization.html:648
+#: .\documentation\templates\documentation\docs\customization_content.html:620
 msgid "for buttons, inputs"
 msgstr "für Schaltflächen, Eingabefelder"
 
-#: .\documentation\templates\documentation\docs\customization.html:649
+#: .\documentation\templates\documentation\docs\customization_content.html:621
 msgid "for cards, panels"
 msgstr "für Karten, Panel"
 
-#: .\documentation\templates\documentation\docs\customization.html:650
+#: .\documentation\templates\documentation\docs\customization_content.html:622
 msgid "for elevated elements"
 msgstr "für erhöhte Elemente"
 
-#: .\documentation\templates\documentation\docs\customization.html:651
+#: .\documentation\templates\documentation\docs\customization_content.html:623
 msgid "for modals, dropdowns"
 msgstr "für Modalfenster, Dropdown-Menüs"
 
-#: .\documentation\templates\documentation\docs\customization.html:657
+#: .\documentation\templates\documentation\docs\customization_content.html:629
 msgid "Shadows"
 msgstr "Schatten"
 
-#: .\documentation\templates\documentation\docs\customization.html:658
+#: .\documentation\templates\documentation\docs\customization_content.html:630
 msgid "Elevation shadows create depth and visual hierarchy."
 msgstr "Schattierungen erzeugen Tiefe und eine visuelle Hierarchie."
 
-#: .\documentation\templates\documentation\docs\customization.html:682
+#: .\documentation\templates\documentation\docs\customization_content.html:654
 #: .\documentation\views.py:407
 msgid "Dark Mode"
 msgstr "Dunkelmodus"
 
-#: .\documentation\templates\documentation\docs\customization.html:684
+#: .\documentation\templates\documentation\docs\customization_content.html:656
 msgid ""
 "\n"
-"                        Every color token has a dark variant. The theme switches automatically based on the <code class=\"inline-tag\">data-theme=\"dark\"</code> attribute on the root element.\n"
-"                    "
+"                    Every color token has a dark variant. The theme switches automatically based on the <code class=\"inline-tag\">data-theme=\"dark\"</code> attribute on the root element.\n"
+"                "
 msgstr ""
 "\n"
 "Jedes Farb-Token verfügt über eine dunkle Variante. Das Design wechselt automatisch basierend auf dem Attribut <code class=\"inline-tag\">data-theme=„dark“</code> am Stammelement."
 
-#: .\documentation\templates\documentation\docs\customization.html:712
+#: .\documentation\templates\documentation\docs\customization_content.html:684
 msgid "Activating Dark Mode"
 msgstr "Dunkelmodus aktivieren"
 
-#: .\documentation\templates\documentation\docs\customization.html:714
+#: .\documentation\templates\documentation\docs\customization_content.html:686
 #, fuzzy
 msgid ""
 "\n"
-"                            Set the <code class=\"inline-tag\">data-theme</code> attribute on the <code class=\"inline-tag\">&lt;html&gt;</code> element. You can use JavaScript to toggle it or respect the user's system preference.\n"
-"                        "
+"                        Set the <code class=\"inline-tag\">data-theme</code> attribute on the <code class=\"inline-tag\">&lt;html&gt;</code> element. You can use JavaScript to toggle it or respect the user's system preference.\n"
+"                    "
 msgstr ""
 "\n"
 "-"
 
-#: .\documentation\templates\documentation\docs\customization.html:750
+#: .\documentation\templates\documentation\docs\customization_content.html:722
 #, fuzzy
 msgid ""
 "\n"
-"                            Insight UI includes a <code class=\"inline-tag\">theme_toggle</code> component that handles this automatically. See the component documentation for usage.\n"
-"                        "
+"                        Insight UI includes a <code class=\"inline-tag\">theme_toggle</code> component that handles this automatically. See the component documentation for usage.\n"
+"                    "
 msgstr ""
 "\n"
 "-"
 
-#: .\documentation\templates\documentation\docs\customization.html:759
+#: .\documentation\templates\documentation\docs\customization_content.html:731
 msgid "Component Classes"
 msgstr "Komponentenklassen"
 
-#: .\documentation\templates\documentation\docs\customization.html:761
+#: .\documentation\templates\documentation\docs\customization_content.html:733
 msgid ""
 "\n"
-"                        The <code class=\"inline-tag\">@layer components</code> block defines reusable CSS classes for buttons, badges, inputs, and more. These classes consume the design tokens.\n"
-"                    "
+"                    The <code class=\"inline-tag\">@layer components</code> block defines reusable CSS classes for buttons, badges, inputs, and more. These classes consume the design tokens.\n"
+"                "
 msgstr ""
 "\n"
 "Der Block <code class=\"inline-tag\">@layer components</code> definiert wiederverwendbare CSS-Klassen für Schaltflächen, Badges, Eingabefelder und mehr. Diese Klassen nutzen die Design-Tokens."
 
-#: .\documentation\templates\documentation\docs\customization.html:768
+#: .\documentation\templates\documentation\docs\customization_content.html:740
 msgid "Button Variants"
 msgstr "Button-Varianten"
 
-#: .\documentation\templates\documentation\docs\customization.html:779
+#: .\documentation\templates\documentation\docs\customization_content.html:751
 msgid "Badge Variants"
 msgstr "Badge-Varianten"
 
-#: .\documentation\templates\documentation\docs\customization.html:818
+#: .\documentation\templates\documentation\docs\customization_content.html:790
 msgid "Surface Classes"
 msgstr "Oberflächenklassen"
 
-#: .\documentation\templates\documentation\docs\customization.html:820
+#: .\documentation\templates\documentation\docs\customization_content.html:792
 msgid ""
 "\n"
-"                        Combined classes that apply background, border, shadow, and border-radius for each elevation level. Use these for quick, consistent container styling.\n"
-"                    "
+"                    Combined classes that apply background, border, shadow, and border-radius for each elevation level. Use these for quick, consistent container styling.\n"
+"                "
 msgstr ""
 "\n"
 "Kombinierte Klassen, welche für jede Höhenstufe Hintergrund, Rahmen, Schatten und Rahmenradius anwenden. Verwende diese für eine schnelle und einheitliche Gestaltung von Containern."
 
-#: .\documentation\templates\documentation\docs\customization.html:865
+#: .\documentation\templates\documentation\docs\customization_content.html:837
 msgid ""
 "\n"
-"                        You can override individual properties with utility classes:\n"
-"                    "
+"                    You can override individual properties with utility classes:\n"
+"                "
 msgstr ""
 "\n"
 "Du kannst einzelne Eigenschaften mithilfe von Utility-Klassen überschreiben:"
 
-#: .\documentation\templates\documentation\docs\customization.html:889
+#: .\documentation\templates\documentation\docs\customization_content.html:861
 msgid "3. Override Templates"
 msgstr "3. Vorlagen überschreiben"
 
-#: .\documentation\templates\documentation\docs\customization.html:891
+#: .\documentation\templates\documentation\docs\customization_content.html:863
 msgid ""
 "\n"
-"                    For structural changes that go beyond styling, override component templates in your project. Django's template loader prioritizes your templates over the package defaults.\n"
-"                "
+"                For structural changes that go beyond styling, override component templates in your project. Django's template loader prioritizes your templates over the package defaults.\n"
+"            "
 msgstr ""
 "\n"
 "Für strukturelle Änderungen, welche über das Styling hinausgehen, überschreibe die Komponentenvorlagen in deinem Projekt. Der Template-Loader von Django räumt deine Templates Vorrang vor den Standardvorlagen des Pakets ein."
 
-#: .\documentation\templates\documentation\docs\customization.html:896
+#: .\documentation\templates\documentation\docs\customization_content.html:868
 msgid "**Prefer tokens over template overrides.** Most branding needs can be met by adjusting input.css. Override templates only when you need to change HTML structure, add ARIA attributes, or modify component behavior."
 msgstr "**Verwende vorzugsweise Tokens statt Template-Überschreibungen.** Die meisten Anforderungen an das Branding lassen sich durch Anpassungen in der Datei „input.css“ erfüllen. Überschreibe die Templates nur, wenn sich die HTML-Struktur ändern soll, ARIA-Attribute hinzufügen werden oder das Verhalten von Komponenten anpassen werden muss."
 
-#: .\documentation\templates\documentation\docs\customization.html:909
+#: .\documentation\templates\documentation\docs\customization_content.html:881
 msgid ""
 "\n"
-"                    The template path must match exactly: <code class=\"inline-tag\">templates/insight_ui/components/&lt;component&gt;.html</code>\n"
-"                "
+"                The template path must match exactly: <code class=\"inline-tag\">templates/insight_ui/components/&lt;component&gt;.html</code>\n"
+"            "
 msgstr ""
 "\n"
 "Der Pfad zum Template muss genau übereinstimmen: <code class=\"inline-tag\">templates/insight_ui/components/&lt;component&gt;.html</code>"
 
-#: .\documentation\templates\documentation\docs\customization.html:919
+#: .\documentation\templates\documentation\docs\customization_content.html:891
 msgid "4. Custom Icons"
 msgstr "4. Benutzerdefinierte Icons"
 
-#: .\documentation\templates\documentation\docs\customization.html:921
+#: .\documentation\templates\documentation\docs\customization_content.html:893
 msgid ""
 "\n"
-"                    Insight UI includes 280+ icons from Heroicons. You can add your own icons or replace existing ones using the <code class=\"inline-tag\">compile_icons</code> management command.\n"
-"                "
+"                Insight UI includes 280+ icons from Heroicons. You can add your own icons or replace existing ones using the <code class=\"inline-tag\">compile_icons</code> management command.\n"
+"            "
 msgstr ""
 "\n"
 "Insight UI enthält über 280 Icons von Heroicons. Mit dem Verwaltungsbefehl <code class=\"inline-tag\">compile_icons</code> können eigene Symbole hinzufügt oder vorhandene ersetzt werden."
 
-#: .\documentation\templates\documentation\docs\customization.html:940
+#: .\documentation\templates\documentation\docs\customization_content.html:912
 msgid ""
 "\n"
-"                    Custom icons override bundled icons with the same name. Icon names are derived from filenames and normalized (lowercase, hyphens instead of underscores).\n"
-"                "
+"                Custom icons override bundled icons with the same name. Icon names are derived from filenames and normalized (lowercase, hyphens instead of underscores).\n"
+"            "
 msgstr ""
 "\n"
 "Benutzerdefinierte Icons überschreiben mitgelieferte Icons mit demselben Namen. Die Namen der Icons werden aus den Dateinamen abgeleitet und normalisiert (Kleinbuchstaben, Bindestriche statt Unterstriche)."
 
-#: .\documentation\templates\documentation\docs\customization.html:947
+#: .\documentation\templates\documentation\docs\customization_content.html:919
 msgid "View all available icons and detailed documentation"
 msgstr "Sie dir alle verfügbaren Icons und die ausführliche Dokumentation an"
 
-#: .\documentation\templates\documentation\docs\customization.html:956
+#: .\documentation\templates\documentation\docs\customization_content.html:928
 msgid "Quick Reference"
 msgstr "Kurzübersicht"
 
-#: .\documentation\templates\documentation\docs\customization.html:957
+#: .\documentation\templates\documentation\docs\customization_content.html:929
 msgid "All available design tokens at a glance."
 msgstr "Alle verfügbaren Design-Tokens auf einen Blick."
 
-#: .\documentation\templates\documentation\docs\customization.html:963
-#: .\documentation\templates\documentation\docs\customization.html:1015
+#: .\documentation\templates\documentation\docs\customization_content.html:935
+#: .\documentation\templates\documentation\docs\customization_content.html:987
 #: .\insight_ui\templates\insight_ui\components\charts\_data_table.html:8
 #: .\insight_ui\templates\insight_ui\components\search_bar_result_templates.html:40
 msgid "Category"
 msgstr "Kategorie"
 
-#: .\documentation\templates\documentation\docs\customization.html:964
+#: .\documentation\templates\documentation\docs\customization_content.html:936
 msgid "Tokens"
 msgstr "Tokens"
 
-#: .\documentation\templates\documentation\docs\customization.html:965
+#: .\documentation\templates\documentation\docs\customization_content.html:937
 msgid "CSS Variable Pattern"
 msgstr "Muster für CSS-Variablen"
 
-#: .\documentation\templates\documentation\docs\customization.html:1008
+#: .\documentation\templates\documentation\docs\customization_content.html:980
 msgid "Utility Classes"
 msgstr "Hilfsklassen"
 
-#: .\documentation\templates\documentation\docs\customization.html:1009
+#: .\documentation\templates\documentation\docs\customization_content.html:981
 msgid "Simplified utility classes for common styling tasks."
 msgstr "Vereinfachte Utility-Klassen für gängige Styling-Aufgaben."
 
-#: .\documentation\templates\documentation\docs\customization.html:1016
+#: .\documentation\templates\documentation\docs\customization_content.html:988
 msgid "Classes"
 msgstr "Klassen"
 
-#: .\documentation\templates\documentation\docs\customization.html:1024
+#: .\documentation\templates\documentation\docs\customization_content.html:996
 msgid "Surface background colors"
 msgstr "Hintergrundfarben der Oberflächen"
 
-#: .\documentation\templates\documentation\docs\customization.html:1029
+#: .\documentation\templates\documentation\docs\customization_content.html:1001
 msgid "Surface border colors"
 msgstr "Farben der Oberflächenränder"
 
-#: .\documentation\templates\documentation\docs\customization.html:1034
+#: .\documentation\templates\documentation\docs\customization_content.html:1006
 msgid "Shorthand for text colors"
 msgstr "Kurzschreibweise für Textfarben"
 
-#: .\documentation\templates\documentation\docs\customization.html:1039
+#: .\documentation\templates\documentation\docs\customization_content.html:1011
 msgid "All-in-one: bg + border + shadow + radius"
 msgstr "Alles in einem: Hintergrund + Rahmen + Schatten + Radius"
 
@@ -4695,214 +4679,210 @@ msgstr "Alles in einem: Hintergrund + Rahmen + Schatten + Radius"
 msgid "RTL"
 msgstr "RTL"
 
-#: .\documentation\templates\documentation\docs\icons.html:4
-msgid "Insight UI - Icons"
-msgstr "Insight UI - Icons"
-
-#: .\documentation\templates\documentation\docs\icons.html:23
-msgid "Many of our components have the ability to display an optional icon. Wherever a component expects an icon, one of the icons listed here can be specified. More icons can be inserted anywhere using the `icon` component."
-msgstr "Viele unserer Komponenten haben die Möglichkeit, ein optionales Icons anzuzeigen. Überall dort, wo die Komponente ein Icon erwartet, kann eines der hier aufgelisteten Icons angegeben werden. Mit der %(icon)s-Komponente können überall nach Belieben weitere Icons eingebaut werden."
-
-#: .\documentation\templates\documentation\docs\icons.html:31
+#: .\documentation\templates\documentation\docs\icons_content.html:7
 #, python-format
 msgid ""
 "\n"
-"                    The component is included via the %(icon)s tag.\n"
-"                "
+"                The component is included via the %(icon)s tag.\n"
+"            "
 msgstr ""
 "\n"
 "Die Komponente wird über das %(icon)s Tag eingebunden."
 
-#: .\documentation\templates\documentation\docs\icons.html:41
+#: .\documentation\templates\documentation\docs\icons_content.html:19
 #: .\documentation\templates\documentation\docs\parameter_section_content.html:9
 msgid "Parameter"
 msgstr "Parameter"
 
-#: .\documentation\templates\documentation\docs\icons.html:46
+#: .\documentation\templates\documentation\docs\icons_content.html:24
 msgid "Icon Portfolio"
 msgstr "Icon Portfolio"
 
-#: .\documentation\templates\documentation\docs\icons.html:48
+#: .\documentation\templates\documentation\docs\icons_content.html:26
 #, python-brace-format
 msgid "The icons shown here come from {heroicons}. Heroicons provides icons under the <b>MIT</b> license. Currently we only provide the outline variants."
 msgstr "Die hier gezeigten Icons stammen von {heroicons}. Heroicons stellt Icons unter der <b>MIT</b>-Lizenz zur Verfügung. Derzeit bieten wir nur die outline Varianten an. \t"
 
-#: .\documentation\templates\documentation\docs\icons.html:55
+#: .\documentation\templates\documentation\docs\icons_content.html:33
 msgid "Search icons..."
 msgstr "Icons durchsuchen..."
 
-#: .\documentation\templates\documentation\docs\icons.html:60
+#: .\documentation\templates\documentation\docs\icons_content.html:38
 msgid "Click on the Icon to copy the tag with corresponding icon name to clipboard."
 msgstr "Klicke auf das Symbol, um das Tag mit dem entsprechenden Icon-Namen in die Zwischenablage zu kopieren."
 
-#: .\documentation\templates\documentation\docs\icons.html:71
+#: .\documentation\templates\documentation\docs\icons_content.html:49
 msgid "Copied!"
 msgstr "Kopiert!"
 
-#: .\documentation\templates\documentation\docs\icons.html:75
+#: .\documentation\templates\documentation\docs\icons_content.html:53
 msgid "No icons found."
 msgstr "Keine Icons gefunden."
 
-#: .\documentation\templates\documentation\docs\icons.html:112
+#: .\documentation\templates\documentation\docs\icons_content.html:90
 msgid "All icons can be used in different sizes:"
 msgstr "Alles Icons können in unterschiedlichen Größen verwendet werden:"
 
-#: .\documentation\templates\documentation\docs\icons.html:116
+#: .\documentation\templates\documentation\docs\icons_content.html:94
+msgid "Colors"
+msgstr "Farben"
+
+#: .\documentation\templates\documentation\docs\icons_content.html:95
+msgid "Icons can be colored using design tokens. The color is applied via CSS classes, ensuring consistency with the design system."
+msgstr "Icons können mithilfe von Design-Tokens farblich gestaltet werden. Die Farbe wird über CSS-Klassen zugewiesen, wodurch die Konsistenz mit dem Designsystem gewährleistet wird."
+
+#: .\documentation\templates\documentation\docs\icons_content.html:96
+msgid "Semantic Colors"
+msgstr "Semantische Farben"
+
+#: .\documentation\templates\documentation\docs\icons_content.html:102
 msgid "Adding Custom Icons"
 msgstr "Benutzerdefinierte Icons hinzufügen"
 
-#: .\documentation\templates\documentation\docs\icons.html:118
+#: .\documentation\templates\documentation\docs\icons_content.html:104
 msgid "You can add your own icons using the <code>compile_icons</code> management command. This command generates a new <code>icons.html</code> template by merging your custom icons with the bundled icons. Custom icons override bundled icons with the same name."
 msgstr "Mit dem Django Command<code>compile_icons</code> können eigene Icons hinzugefügt werden. Dieser Befehl generiert eine neues <code>icons.html</code> Template, indem die benutzerdefinierten Icons mit den mitgelieferten Icons zusammenführt werden. Benutzerdefinierte Icons überschreiben mitgelieferte Icons mit demselben Namen."
 
-#: .\documentation\templates\documentation\docs\icons.html:124
+#: .\documentation\templates\documentation\docs\icons_content.html:110
 msgid "Basic Usage"
 msgstr "Verwendung"
 
-#: .\documentation\templates\documentation\docs\icons.html:135
+#: .\documentation\templates\documentation\docs\icons_content.html:121
 msgid "Options"
 msgstr "Optionen"
 
-#: .\documentation\templates\documentation\docs\icons.html:137
+#: .\documentation\templates\documentation\docs\icons_content.html:123
 msgid "Directory containing individual SVG files"
 msgstr "Verzeichnis mit einzelnen SVG-Dateien"
 
-#: .\documentation\templates\documentation\docs\icons.html:138
+#: .\documentation\templates\documentation\docs\icons_content.html:124
 msgid "Path to an SVG sprite sheet file (extracts &lt;symbol&gt; elements)"
 msgstr "Pfad zu einer SVG-Sprite-Sheet-Datei (extrahiert &lt;symbol&gt;-Elemente)"
 
-#: .\documentation\templates\documentation\docs\icons.html:139
+#: .\documentation\templates\documentation\docs\icons_content.html:125
 msgid "Custom output path (default: templates/insight_ui/components/icons.html)"
 msgstr "Benutzerdefinierter Ausgabepfad (Standard: templates/insight_ui/components/icons.html)"
 
-#: .\documentation\templates\documentation\docs\icons.html:140
+#: .\documentation\templates\documentation\docs\icons_content.html:126
 msgid "List all bundled icon names and exit"
 msgstr "Alle Namen der enthaltenen Icons auflisten und beenden"
 
-#: .\documentation\templates\documentation\docs\icons.html:142
+#: .\documentation\templates\documentation\docs\icons_content.html:128
 msgid "Icon Naming"
 msgstr "Icon Benennung"
 
-#: .\documentation\templates\documentation\docs\icons.html:144
+#: .\documentation\templates\documentation\docs\icons_content.html:130
 msgid "Icon names are derived from filenames (for directories) or symbol IDs (for sprites). Names are normalized: converted to lowercase, underscores become hyphens, and common prefixes like <code>icon-</code> or <code>ic_</code> are removed."
 msgstr "Die Namen der Icons werden aus den Dateinamen (bei Verzeichnissen) oder den Symbol-IDs (bei Sprites) abgeleitet. Die Namen werden normalisiert: Sie werden in Kleinbuchstaben umgewandelt, Unterstriche werden zu Bindestrichen, und gängige Präfixe wie <code>icon-</code> oder <code>ic_</code> werden entfernt."
 
-#: .\documentation\templates\documentation\docs\icons.html:155
+#: .\documentation\templates\documentation\docs\icons_content.html:141
 msgid "Example: Override a Bundled Icon"
 msgstr "Beispiel: Ein mitgeliefertes Icon überschreiben"
 
-#: .\documentation\templates\documentation\docs\icons.html:157
+#: .\documentation\templates\documentation\docs\icons_content.html:143
 msgid "To replace the bundled <code>home</code> icon with your own version, create a file named <code>home.svg</code> in your icons directory:"
 msgstr "Um das mitgelieferte Icon <code>home</code> durch eine eigene Version zu ersetzen, erstelle in deinem Icon-Verzeichnis eine Datei mit dem Namen <code>home.svg</code>:"
 
-#: .\documentation\templates\documentation\docs\installation.html:4
-msgid "Insight UI - Get Started"
-msgstr "Insight UI - Erste Schritte"
-
-#: .\documentation\templates\documentation\docs\installation.html:23
-msgid "How to integrate Insight UI into your project and make use of all the components."
-msgstr "So integrierst du Insight UI in dein Projekt und nutzt alle Komponenten."
-
-#: .\documentation\templates\documentation\docs\installation.html:30
+#: .\documentation\templates\documentation\docs\installation_content.html:6
 msgid "Requirements"
 msgstr "Anforderungen"
 
-#: .\documentation\templates\documentation\docs\installation.html:35
+#: .\documentation\templates\documentation\docs\installation_content.html:11
 #, fuzzy
 msgid "Insight UI includes Tailwind CSS and HTMX out of the box. No additional setup required."
 msgstr "-"
 
-#: .\documentation\templates\documentation\docs\installation.html:41
+#: .\documentation\templates\documentation\docs\installation_content.html:17
 msgid "Install Insight UI with your preferred package manager:"
 msgstr "Installiere Insight UI mit deinem bevorzugten Paketmanager:"
 
-#: .\documentation\templates\documentation\docs\installation.html:43
+#: .\documentation\templates\documentation\docs\installation_content.html:19
 msgid "Package Manager"
 msgstr "Paketmanager"
 
-#: .\documentation\templates\documentation\docs\installation.html:60
+#: .\documentation\templates\documentation\docs\installation_content.html:36
 msgid "Install from Git repository"
 msgstr "Aus dem Git-Repository installieren"
 
-#: .\documentation\templates\documentation\docs\installation.html:71
+#: .\documentation\templates\documentation\docs\installation_content.html:47
 msgid "Quick start"
 msgstr "Schnellstart"
 
-#: .\documentation\templates\documentation\docs\installation.html:77
+#: .\documentation\templates\documentation\docs\installation_content.html:53
 msgid "Add to INSTALLED_APPS"
 msgstr "Zu INSTALLED_APPS hinzufügen"
 
-#: .\documentation\templates\documentation\docs\installation.html:79
+#: .\documentation\templates\documentation\docs\installation_content.html:55
 #, python-format
 msgid ""
 "\n"
-"                            Add %(insight_ui)s to your Django settings:\n"
-"                        "
+"                        Add %(insight_ui)s to your Django settings:\n"
+"                    "
 msgstr ""
 "\n"
 "Füge %(insight_ui)s zu den Django-Einstellungen hinzu:"
 
-#: .\documentation\templates\documentation\docs\installation.html:99
+#: .\documentation\templates\documentation\docs\installation_content.html:75
 msgid "Extend the base template"
 msgstr "Base-Template erweitern"
 
-#: .\documentation\templates\documentation\docs\installation.html:101
+#: .\documentation\templates\documentation\docs\installation_content.html:77
 #, python-format
 msgid ""
 "\n"
-"                            Extend our %(link_open)sbase template%(link_close)s to get all features (navbar, sidebar, footer, theme switching):\n"
-"                        "
+"                        Extend our %(link_open)sbase template%(link_close)s to get all features (navbar, sidebar, footer, theme switching):\n"
+"                    "
 msgstr ""
 "\n"
-"Erweitere unsere %(link_open)s Basis Template %(link_close)s, um alle Funktionen (Navigationsleiste, Seitenleiste, Fußzeile, Themenwechsel) zu erhalten:"
+"Erweitere unser %(link_open)s Basis Template %(link_close)s, um alle Funktionen (Navigationsleiste, Seitenleiste, Fußzeile, Themenwechsel) zu erhalten:"
 
-#: .\documentation\templates\documentation\docs\installation.html:119
+#: .\documentation\templates\documentation\docs\installation_content.html:95
 msgid "Pass configuration to template"
 msgstr "Konfiguration an Vorlage übergeben"
 
-#: .\documentation\templates\documentation\docs\installation.html:121
+#: .\documentation\templates\documentation\docs\installation_content.html:97
 #, python-format
 msgid ""
 "\n"
-"                            Pass the Insight UI configuration in your view. See %(link_open)sCustomization%(link_close)s for all options.\n"
-"                        "
+"                        Pass the Insight UI configuration in your view. See %(link_open)sCustomization%(link_close)s for all options.\n"
+"                    "
 msgstr ""
 "\n"
 "Übergebe die Insight-UI-Konfiguration in die View. Alle Optionen können unter %(link_open)sAnpassung%(link_close)s gefunden werden."
 
-#: .\documentation\templates\documentation\docs\installation.html:144
+#: .\documentation\templates\documentation\docs\installation_content.html:120
 msgid "Use components"
 msgstr "Komponenten verwenden"
 
-#: .\documentation\templates\documentation\docs\installation.html:145
+#: .\documentation\templates\documentation\docs\installation_content.html:121
 msgid "Start using components in your templates:"
 msgstr "Beginne damit Komponenten in deinen Templates zu verwenden:"
 
-#: .\documentation\templates\documentation\docs\installation.html:163
+#: .\documentation\templates\documentation\docs\installation_content.html:139
 msgid "Live preview"
 msgstr "Live-Vorschau"
 
-#: .\documentation\templates\documentation\docs\installation.html:164
+#: .\documentation\templates\documentation\docs\installation_content.html:140
 msgid "Here's what the alert from the example above looks like:"
 msgstr "So sieht die Meldung aus dem obigen Beispiel aus:"
 
-#: .\documentation\templates\documentation\docs\installation.html:166
+#: .\documentation\templates\documentation\docs\installation_content.html:142
 msgid "It works!"
 msgstr "Es funktioniert!"
 
-#: .\documentation\templates\documentation\docs\installation.html:172
+#: .\documentation\templates\documentation\docs\installation_content.html:148
 msgid "Next steps"
 msgstr "Nächste Schritte"
 
-#: .\documentation\templates\documentation\docs\installation.html:178
+#: .\documentation\templates\documentation\docs\installation_content.html:154
 msgid "Browse Components"
 msgstr "Komponenten durchsuchen"
 
-#: .\documentation\templates\documentation\docs\installation.html:179
+#: .\documentation\templates\documentation\docs\installation_content.html:155
 msgid "Explore all 60+ components with examples"
 msgstr "Entdecke alle der über 60 Komponenten anhand von Beispielen"
 
-#: .\documentation\templates\documentation\docs\installation.html:188
+#: .\documentation\templates\documentation\docs\installation_content.html:164
 msgid "Configure themes, colors, and layouts"
 msgstr "Designs, Farben und Layouts konfigurieren"
 
@@ -4918,27 +4898,23 @@ msgstr "Parameter von %(name)s"
 msgid "Loading..."
 msgstr "Laden…"
 
-#: .\documentation\templates\documentation\docs\types.html:4
-msgid "Insight UI - Types"
-msgstr "Insight UI - Typen"
-
-#: .\documentation\templates\documentation\docs\types.html:33
+#: .\documentation\templates\documentation\docs\types_content.html:5
 msgid "Usage Example"
 msgstr "Anwendungsbeispiel"
 
-#: .\documentation\templates\documentation\docs\types.html:62
+#: .\documentation\templates\documentation\docs\types_content.html:34
 msgid "Type Reference"
 msgstr "Typenübersicht"
 
-#: .\documentation\templates\documentation\docs\types.html:70
+#: .\documentation\templates\documentation\docs\types_content.html:42
 msgid "Values"
 msgstr "Werte"
 
-#: .\documentation\templates\documentation\docs\types.html:82
+#: .\documentation\templates\documentation\docs\types_content.html:54
 msgid "Validation"
 msgstr "Validierung"
 
-#: .\documentation\templates\documentation\docs\types.html:84
+#: .\documentation\templates\documentation\docs\types_content.html:56
 msgid "Each type has a corresponding validation function that raises a <code>ValueError</code> if an invalid value is passed. These validators are automatically called in config dataclasses during initialization."
 msgstr "Jeder Typ verfügt über eine entsprechende Validierungsfunktion, welche einen <code>ValueError</code> auslöst, wenn ein ungültiger Wert übergeben wird. Diese Validatoren werden bei der Initialisierung automatisch in den Konfigurations-Dataklassen aufgerufen."
 
@@ -5059,6 +5035,12 @@ msgstr "Ist Insight UI das Richtige für dich?"
 msgid "Check if our framework matches your needs:"
 msgstr "Prüfe, ob unser Framework zu deinen Anforderungen passt:"
 
+#: .\documentation\templates\documentation\index.html:392
+#: .\documentation\views.py:372 .\documentation\views.py:581
+#: .\documentation\views.py:593 .\documentation\views.py:610
+msgid "Get started"
+msgstr "Erste Schritte"
+
 #: .\documentation\templates\documentation\index.html:393
 #: .\documentation\views.py:374
 msgid "Browse components"
@@ -5079,75 +5061,6 @@ msgstr "Kostenlos loslegen"
 #: .\documentation\templates\documentation\index.html:407
 msgid "View on GitHub"
 msgstr "Auf GitHub ansehen"
-
-#: .\documentation\type_registry.py:20
-msgid "Standard size scale used for spacing, icons, and component dimensions."
-msgstr "Standardmaßstab für Abstände, Icons und Komponenten-Größen."
-
-#: .\documentation\type_registry.py:25
-msgid "Base color palette for semantic coloring of components."
-msgstr "Grundfarbpalette für die semantische Farbgebung von Komponenten."
-
-#: .\documentation\type_registry.py:30
-msgid "Extended color palette for badges, includes 'disabled' state."
-msgstr "Erweiterte Farbpalette für Badges, einschließlich des Status „deaktiviert“."
-
-#: .\documentation\type_registry.py:35
-msgid "Extended color palette for buttons, includes 'disabled' and 'link' variants."
-msgstr "Erweiterte Farbpalette für Buttons, einschließlich der Varianten „deaktiviert“ und „Link“."
-
-#: .\documentation\type_registry.py:40
-msgid "Semantic types for alerts and notifications."
-msgstr "Semantische Typen für Warnmeldungen und Benachrichtigungen."
-
-#: .\documentation\type_registry.py:45
-msgid "Status values for stepper components indicating step progress."
-msgstr "Statuswerte für Stepper-Komponenten, welche den Fortschritt der eines Schrittprozesses anzeigen."
-
-#: .\documentation\type_registry.py:50
-msgid "Native HTML button type attribute values."
-msgstr "Werte für native HTML-Button-Typ-Attribute."
-
-#: .\documentation\type_registry.py:55
-msgid "Native HTML input type attribute values."
-msgstr "Native Werte für HTML-Eingabetyp-Attribute."
-
-#: .\documentation\type_registry.py:60
-msgid "High-level form field types for the form component."
-msgstr "Formularfeldtypen für die Formular-Komponente."
-
-#: .\documentation\type_registry.py:65
-#, fuzzy
-msgid "Corner positions for ribbons, badges, and overlays."
-msgstr "-"
-
-#: .\documentation\type_registry.py:70
-msgid "Inline positions respecting text direction (RTL-aware)."
-msgstr "Inline-Positionen unter Berücksichtigung der Textrichtung (RTL-fähig)."
-
-#: .\documentation\type_registry.py:75
-msgid "HTMX swap methods for content replacement."
-msgstr "HTMX-Swap-Methoden zum Ersetzen von Inhalten."
-
-#: .\documentation\type_registry.py:80
-msgid "HTTP methods for HTMX requests."
-msgstr "HTTP-Methoden für HTMX-Anfragen."
-
-#: .\documentation\type_registry.py:85
-msgid "Field types for query builder and filter components."
-msgstr "Feldtypen für den Query-Builder und Filterkomponenten."
-
-#: .\documentation\type_registry.py:90
-msgid "Marker types for the geo map component."
-msgstr "Markierungstypen für die `geo_map` Komponente."
-
-#: .\documentation\type_registry.py:95
-msgid "Legend display modes for the range slider component."
-msgstr "Anzeigemodi für die Legende der `range_slider` Komponente."
-
-#: .\documentation\type_registry.py:100
-msgid "View types for the toggle view component."
-msgstr "Ansichtstypen für die `toggle_view` Komponente."
 
 #: .\documentation\views.py:301
 #, python-format
@@ -5315,124 +5228,148 @@ msgstr "3D-Komponenten für Webanwendungen: Szenen-Viewer, Modell-Inspektoren un
 msgid "Diagram components — flowcharts, org charts, mind maps, and data visualizations."
 msgstr "Diagramm-Komponenten: Flowcharts, Organigramme, Mindmaps und Datenvisualisierungen."
 
-#: .\documentation\views.py:581
+#: .\documentation\views.py:583
+msgid "How to integrate Insight UI into your project and make use of all the components."
+msgstr "So integrierst du Insight UI in dein Projekt und nutzt alle Komponenten."
+
+#: .\documentation\views.py:596
+msgid "The base template provides a complete page structure with navbar, sidebars, content area, and footer. It handles JavaScript loading, theming, SEO meta tags, and favicon configuration."
+msgstr "Das Base-Template bietet eine vollständige Seitenstruktur mit Navigationsleiste, Seitenleisten, Inhaltsbereich und Fußzeile. Sie übernimmt das Laden von JavaScript, die Anpassung des Designs, SEO-Meta-Tags und die Konfiguration des Favicons."
+
+#: .\documentation\views.py:612
+msgid "Adapt Insight UI to your brand with design tokens, component theming, and template overrides."
+msgstr "Passe die Benutzeroberfläche von Insight mithilfe von Design-Tokens, Komponenten-Themes und Vorlagen-Überschreibungen an deine Marke an."
+
+#: .\documentation\views.py:625
+msgid "Many of our components have the ability to display an optional icon. Wherever a component expects an icon, one of the icons listed here can be specified. More icons can be inserted anywhere using the `icon` component."
+msgstr "Viele unserer Komponenten haben die Möglichkeit, ein optionales Icons anzuzeigen. Überall dort, wo die Komponente ein Icon erwartet, kann eines der hier aufgelisteten Icons angegeben werden. Mit der %(icon)s-Komponente können überall nach Belieben weitere Icons eingebaut werden."
+
+#: .\documentation\views.py:642
+msgid "Insight UI uses type literals to ensure type safety and provide autocompletion in your IDE. These types define the allowed values for component parameters like sizes, colors, and positions. All types are defined in `insight_ui.configs.types` and can be imported for type annotations."
+msgstr "Insight UI verwendet Typ-Literale, um die Typsicherheit zu gewährleisten und die Autovervollständigung in der IDE zu ermöglichen. Diese Typen definieren die zulässigen Werte für Komponentenparameter wie Größen, Farben und Positionen. Alle Typen sind in `insight_ui.configs.types` definiert und können für Typ-Annotationen importiert werden."
+
+#: .\documentation\views.py:659
+msgid "This is a flat reference of every config dataclass used across Insight UI components, listed independently of where it is used. Use it to look up a nested parameter's own fields and default values without drilling through a component's detail page."
+msgstr "-"
+
+#: .\documentation\views.py:679
 msgid "This is our own assessment based on manual review. It is not an official certification by an accredited testing authority."
 msgstr "Dies ist unsere eigene Einschätzung basierend auf manueller Prüfung. Es handelt sich nicht um eine offizielle Zertifizierung durch eine akkreditierte Prüfstelle."
 
-#: .\documentation\views.py:610
+#: .\documentation\views.py:708
 #, python-brace-format
 msgid "This component requires the external library {}."
 msgstr "Diese Komponente benötigt die externe Bibliothek {}."
 
-#: .\documentation\views.py:810
+#: .\documentation\views.py:908
 msgid "This is the content of the first tab!"
 msgstr "Das ist der Inhalt des ersten Reiters!"
 
-#: .\documentation\views.py:813
+#: .\documentation\views.py:911
 msgid "This is the content of the second tab!"
 msgstr "Das ist der Inhalt des zweiten Reiters!"
 
-#: .\documentation\views.py:815
+#: .\documentation\views.py:913
 msgid "This is the content of the third tab!"
 msgstr "Das ist der Inhalt des dritten Reiters!"
 
-#: .\insight_ui\configs\base.py:34
+#: .\insight_ui\configs\base.py:36
 msgid "Attribute name without 'data-' prefix."
 msgstr "Attributname ohne das „data-“ Präfix."
 
-#: .\insight_ui\configs\base.py:35
+#: .\insight_ui\configs\base.py:37
 msgid "Attribute value. Empty string for marker attributes."
 msgstr "Attributwert. Leere Zeichenfolge für Marker-Attribute."
 
-#: .\insight_ui\configs\base.py:53
+#: .\insight_ui\configs\base.py:55
 msgid "Name of the Insight UI icon."
 msgstr "Name des Insight UI Icons."
 
-#: .\insight_ui\configs\base.py:54
+#: .\insight_ui\configs\base.py:56
 msgid "Icon size: 'xl', 'l', 'm', 's', or 'xs'."
 msgstr "Größe des Icons. Mögliche Werte sind: 'xl', 'l', 'm', 's' oder 'xs'."
 
-#: .\insight_ui\configs\base.py:55
-msgid "Color Hex-Code of the icon."
-msgstr "Farb-Hex-Code des Icon."
+#: .\insight_ui\configs\base.py:58
+msgid "Color token for the icon (e.g., 'primary', 'danger', 'text-secondary')."
+msgstr "Farb-Tokens für das Icon (z. B.  'primary', 'danger', 'text-secondary')."
 
-#: .\insight_ui\configs\base.py:83
+#: .\insight_ui\configs\base.py:88
 msgid "Static, absolute, root-relative, or data URL for the image."
 msgstr "Statische, absolute, root-relative oder Daten-URL für das Bild."
 
-#: .\insight_ui\configs\base.py:84
+#: .\insight_ui\configs\base.py:89
 msgid "Accessible text. Empty values make the image decorative."
 msgstr "Barrierefreier Text. Leere Werte lassen das Bild als reines Dekorelement erscheinen."
 
-#: .\insight_ui\configs\base.py:85
+#: .\insight_ui\configs\base.py:90
 msgid "Optional dark-theme URL."
 msgstr "Optionale URL für das dunkle Design."
 
-#: .\insight_ui\configs\base.py:86
+#: .\insight_ui\configs\base.py:91
 msgid "CSS height value (e.g., '2rem', '100px')."
 msgstr "CSS-Höhenwert (z. B. „2rem“, „100px“)."
 
-#: .\insight_ui\configs\base.py:87
+#: .\insight_ui\configs\base.py:92
 msgid "Optional CSS width value."
 msgstr "Optionaler CSS `width` Wert."
 
-#: .\insight_ui\configs\base.py:117
+#: .\insight_ui\configs\base.py:122
 msgid "The URL for the HTMX request (hx-get/hx-post)."
 msgstr "Die URL für die HTMX-Anfrage (hx-get/hx-post)."
 
-#: .\insight_ui\configs\base.py:118
+#: .\insight_ui\configs\base.py:123
 msgid "CSS selector for the target element (hx-target)."
 msgstr "CSS-Selektor für das Zielelement (hx-target)."
 
-#: .\insight_ui\configs\base.py:120
+#: .\insight_ui\configs\base.py:125
 msgid "The way in which the target is to be replaced (hx-swap)."
 msgstr "Die Art und Weise, wie das Ziel ersetzt werden soll (hx-swap)."
 
-#: .\insight_ui\configs\base.py:124
+#: .\insight_ui\configs\base.py:129
 msgid "Settle delay appended to hx-swap, e.g. '300ms', so CSS transitions have time to run."
 msgstr "Fügt eine Verzögerung für „hx-swap“ hinzu, z. B. „300 ms“, damit CSS-Übergänge Zeit haben, ausgeführt zu werden."
 
-#: .\insight_ui\configs\base.py:126
+#: .\insight_ui\configs\base.py:131
 msgid "Event trigger (hx-trigger)."
 msgstr "Ereignisauslöser (hx-trigger)."
 
-#: .\insight_ui\configs\base.py:127
+#: .\insight_ui\configs\base.py:132
 msgid "HTTP method ('get' or 'post')."
 msgstr "HTTP-Methode („get“ oder „post“)."
 
-#: .\insight_ui\configs\base.py:129
+#: .\insight_ui\configs\base.py:134
 msgid "CSS selector for loading indicator (hx-indicator)."
 msgstr "CSS-Selektor für die Ladeanzeige (hx-indicator)."
 
-#: .\insight_ui\configs\base.py:131
+#: .\insight_ui\configs\base.py:136
 msgid "Whether to push URL to browser history (hx-push-url)."
 msgstr "Ob die URL in den Browserverlauf übernommen werden soll (hx-push-url)."
 
-#: .\insight_ui\configs\base.py:132
+#: .\insight_ui\configs\base.py:137
 msgid "Confirmation message before request (hx-confirm)."
 msgstr "Bestätigungsmeldung vor der Anfrage anzeigen (hx-confirm)."
 
-#: .\insight_ui\configs\base.py:134
+#: .\insight_ui\configs\base.py:139
 msgid "Additional JSON values to include in the request (hx-vals)."
 msgstr "Zusätzliche JSON-Werte, welche in die Anfrage aufgenommen werden sollen (hx-vals)."
 
-#: .\insight_ui\configs\base.py:165 .\insight_ui\configs\input.py:377
+#: .\insight_ui\configs\base.py:170 .\insight_ui\configs\input.py:382
 msgid "Required for a `<form>`, as the name of the request parameter."
 msgstr "Wird für eine `<form>` benötigt, als Name des Request-Parameters."
 
-#: .\insight_ui\configs\base.py:167
+#: .\insight_ui\configs\base.py:172
 msgid "A text label displayed above the field."
 msgstr "Ein beschreibender Text, welcher über dem Eingabefeld angezeigt wird."
 
-#: .\insight_ui\configs\base.py:168
+#: .\insight_ui\configs\base.py:173
 msgid "**True** if the field should be disabled."
 msgstr "**True**, wenn das Feld deaktiviert sein soll."
 
-#: .\insight_ui\configs\base.py:173
+#: .\insight_ui\configs\base.py:178
 msgid "Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip."
 msgstr "Erklärung, warum das Eingabefeld deaktiviert ist; wird beim drüberfahren mit der Maus als Tooltip angezeigt. Mit einem leeren String, kann bewusst kein Tooltip angezeigt und die Warnmeldung deaktiviert werden."
 
-#: .\insight_ui\configs\base.py:177
+#: .\insight_ui\configs\base.py:182
 msgid "**True** if the field must be filled in."
 msgstr "**True**, wenn das Feld ausgefüllt werden muss."
 
@@ -5593,414 +5530,446 @@ msgstr "Konfiguration des Radio-Blocks für den Ansichtswechsel."
 msgid "Currently active view ('card', 'table', 'carousel')."
 msgstr "Aktuell aktive Ansicht („Karte“, „Tabelle“, „Karussell“)."
 
-#: .\insight_ui\configs\filter.py:36 .\insight_ui\configs\filter.py:131
+#: .\insight_ui\configs\filter.py:41 .\insight_ui\configs\filter.py:147
 msgid "URL for form action. Do not use together with htmx_config; use htmx_config.request_url instead for HTMX requests."
 msgstr "URL für den Formular-Request. Nicht zusammen mit `htmx_config` verwenden; stattdessen `htmx_config.request_url` für HTMX-Anfragen verwenden."
 
-#: .\insight_ui\configs\filter.py:41
+#: .\insight_ui\configs\filter.py:46
 msgid "If True, render compact/minimal style."
 msgstr "Wenn „True“, wird ein kompakter/minimalistischer Stil dargestellt."
 
-#: .\insight_ui\configs\filter.py:42
+#: .\insight_ui\configs\filter.py:47
 msgid "Initial search query value."
 msgstr "Wert der ursprünglichen Suchanfrage."
 
-#: .\insight_ui\configs\filter.py:44 .\insight_ui\configs\filter.py:138
+#: .\insight_ui\configs\filter.py:48
+msgid "Placeholder text for the search input."
+msgstr "Platzhaltertext für das Sucheingabefeld."
+
+#: .\insight_ui\configs\filter.py:49
+msgid "Label for the search button."
+msgstr "Beschriftung für die Suchschaltfläche."
+
+#: .\insight_ui\configs\filter.py:51 .\insight_ui\configs\filter.py:154
 msgid "HTMX configuration for AJAX requests."
 msgstr "HTMX-Konfiguration für AJAX-Anfragen."
 
-#: .\insight_ui\configs\filter.py:47
+#: .\insight_ui\configs\filter.py:54
 msgid "If True, enable client-side documentation search with Fuse.js."
 msgstr "Wenn `True`, wird die clientseitige Suche in der Dokumentation mit Fuse.js aktiviert."
 
-#: .\insight_ui\configs\filter.py:52 .\insight_ui\configs\navigation.py:267
+#: .\insight_ui\configs\filter.py:58
 msgid "Optional URL for the client-side documentation search index."
 msgstr "Optionale URL für den Suchindex der clientseitigen Dokumentationssuche."
 
-#: .\insight_ui\configs\filter.py:84
+#: .\insight_ui\configs\filter.py:95
 msgid "Filter field name."
 msgstr "Name des Filterfelds."
 
-#: .\insight_ui\configs\filter.py:85
+#: .\insight_ui\configs\filter.py:96
 msgid "Filter label."
 msgstr "Beschriftung des Filters."
 
-#: .\insight_ui\configs\filter.py:87
+#: .\insight_ui\configs\filter.py:98
 msgid "Available filter options (dict maps value→label)."
 msgstr "Verfügbare Filteroptionen (Dictionary, welches Werte auf Bezeichnungen abbildet)."
 
-#: .\insight_ui\configs\filter.py:89 .\insight_ui\configs\forms.py:54
+#: .\insight_ui\configs\filter.py:100 .\insight_ui\configs\forms.py:55
 #: .\insight_ui\configs\list.py:73
 msgid "Tooltip explanation text."
 msgstr "Erläuterungstext für den Tooltip."
 
-#: .\insight_ui\configs\filter.py:90
+#: .\insight_ui\configs\filter.py:101
 msgid "Optional filter icon."
 msgstr "Optionales Icon des Filters."
 
-#: .\insight_ui\configs\filter.py:91 .\insight_ui\configs\forms.py:60
+#: .\insight_ui\configs\filter.py:102 .\insight_ui\configs\forms.py:61
 #: .\insight_ui\configs\list.py:77
 msgid "Currently selected value."
 msgstr "Derzeit ausgewählter Wert."
 
-#: .\insight_ui\configs\filter.py:126
+#: .\insight_ui\configs\filter.py:142
 msgid "List of filter configurations."
 msgstr "Liste der Filterkonfigurationen."
 
-#: .\insight_ui\configs\filter.py:136
+#: .\insight_ui\configs\filter.py:152
 msgid "If True, arrange filters vertically."
 msgstr "Wenn „True“, werden die Filter vertikal angeordnet."
 
-#: .\insight_ui\configs\filter.py:179
+#: .\insight_ui\configs\filter.py:195
 msgid "Database field name."
 msgstr "Name des Datenbankfelds."
 
-#: .\insight_ui\configs\filter.py:180
+#: .\insight_ui\configs\filter.py:196
 msgid "Display name."
 msgstr "Anzeigename."
 
-#: .\insight_ui\configs\filter.py:181
+#: .\insight_ui\configs\filter.py:197
 msgid "Field type for filtering."
 msgstr "Feldtyp für die Filterung."
 
-#: .\insight_ui\configs\filter.py:183
+#: .\insight_ui\configs\filter.py:199
 msgid "Available operations (maps operation→label)."
 msgstr "Verfügbare Operationen (Dictionary mit Operation → Label)."
 
-#: .\insight_ui\configs\filter.py:185
+#: .\insight_ui\configs\filter.py:201
 msgid "Predefined values (optional)."
 msgstr "Vordefinierte Werte (optional)."
 
-#: .\insight_ui\configs\filter.py:223
+#: .\insight_ui\configs\filter.py:239
 msgid "List of model fields with possible operators."
 msgstr "Liste der Modellfelder mit möglichen Operatoren."
 
-#: .\insight_ui\configs\forms.py:47
+#: .\insight_ui\configs\forms.py:48
 msgid "Type of form field (text, email, password, textarea, select)."
 msgstr "Art des Formularfelds (Text, E-Mail, Passwort, Textbereich, Auswahlliste)."
 
-#: .\insight_ui\configs\forms.py:49
+#: .\insight_ui\configs\forms.py:50
 msgid "Unique ID for the field."
 msgstr "Eindeutige ID für das Feld."
 
-#: .\insight_ui\configs\forms.py:50 .\insight_ui\configs\list.py:71
+#: .\insight_ui\configs\forms.py:51 .\insight_ui\configs\list.py:71
 msgid "Form field name."
 msgstr "Name des Formularfelds."
 
-#: .\insight_ui\configs\forms.py:51 .\insight_ui\configs\input.py:324
+#: .\insight_ui\configs\forms.py:52 .\insight_ui\configs\input.py:328
 msgid "Label text."
 msgstr "Beschriftungstext."
 
-#: .\insight_ui\configs\forms.py:52
+#: .\insight_ui\configs\forms.py:53
 msgid "Placeholder text."
 msgstr "Platzhaltertext."
 
-#: .\insight_ui\configs\forms.py:53
+#: .\insight_ui\configs\forms.py:54
 msgid "Default value."
 msgstr "Standardwert"
 
-#: .\insight_ui\configs\forms.py:55
+#: .\insight_ui\configs\forms.py:56
 msgid "Whether field is required."
 msgstr "Ob das Feld ein Pflichtfeld ist."
 
-#: .\insight_ui\configs\forms.py:56
+#: .\insight_ui\configs\forms.py:57
 msgid "Whether field is disabled."
 msgstr "Ob das Feld deaktiviert ist."
 
-#: .\insight_ui\configs\forms.py:58
+#: .\insight_ui\configs\forms.py:59
 msgid "List of options for select fields."
 msgstr "Liste der Optionen für Auswahlfelder."
 
-#: .\insight_ui\configs\forms.py:61
+#: .\insight_ui\configs\forms.py:62
 msgid "Number of rows for textarea fields."
 msgstr "Anzahl der Zeilen für Textarea-Felder."
 
-#: .\insight_ui\configs\forms.py:102
+#: .\insight_ui\configs\forms.py:106
 msgid "Unique ID for the form element."
 msgstr "Eindeutige ID für das Formularelement."
 
-#: .\insight_ui\configs\forms.py:103
+#: .\insight_ui\configs\forms.py:107
 msgid "Form title displayed at the top."
 msgstr "Der Titel des Formulars wird oben angezeigt."
 
-#: .\insight_ui\configs\forms.py:104
+#: .\insight_ui\configs\forms.py:108
 msgid "Optional description below the title."
 msgstr "Eine optionale Beschreibung unterhalb des Titels."
 
-#: .\insight_ui\configs\forms.py:106
+#: .\insight_ui\configs\forms.py:110
 msgid "List of form field configurations."
 msgstr "Liste der Formularfeldkonfigurationen."
 
-#: .\insight_ui\configs\forms.py:108
+#: .\insight_ui\configs\forms.py:112
 msgid "Whether to show a reset button."
 msgstr "Ob eine Reset-Button angezeigt werden soll."
 
-#: .\insight_ui\configs\forms.py:109
+#: .\insight_ui\configs\forms.py:113
+msgid "Label for the submit button."
+msgstr "Beschriftung für den „Absenden“ Button."
+
+#: .\insight_ui\configs\forms.py:114
+msgid "Label for the reset button."
+msgstr "Beschriftung für den „Zurücksetzen“ Button."
+
+#: .\insight_ui\configs\forms.py:115
 msgid "Target URL for form submission."
 msgstr "Ziel-URL für die Formularübermittlung."
 
-#: .\insight_ui\configs\forms.py:110
+#: .\insight_ui\configs\forms.py:116
+msgid "HTTP method for form submission (get or post)."
+msgstr "HTTP-Methode für die Formularübermittlung (GET oder POST)."
+
+#: .\insight_ui\configs\forms.py:117
 msgid "HTMX configuration for AJAX submission."
 msgstr "HTMX-Konfiguration für die AJAX-Übermittlung."
 
-#: .\insight_ui\configs\input.py:81 .\insight_ui\configs\list.py:39
-#: .\insight_ui\configs\utils.py:325 .\insight_ui\configs\utils.py:561
+#: .\insight_ui\configs\input.py:82 .\insight_ui\configs\list.py:40
+#: .\insight_ui\configs\utils.py:331 .\insight_ui\configs\utils.py:579
 msgid "Unique ID for JavaScript/CSS targeting."
 msgstr "Eindeutige ID für das Targeting mit JavaScript/CSS."
 
-#: .\insight_ui\configs\input.py:128
+#: .\insight_ui\configs\input.py:126
 msgid "HTML type attribute: 'button', 'submit', or 'reset'."
 msgstr "HTML-Typ-Attribut: „button“, „submit“ oder „reset“."
 
-#: .\insight_ui\configs\input.py:131
+#: .\insight_ui\configs\input.py:129
 msgid "Additional CSS classes to append to the button element."
 msgstr "Zusätzliche CSS-Klassen, welche dem Button-Element hinzugefügt werden sollen."
 
-#: .\insight_ui\configs\input.py:212
+#: .\insight_ui\configs\input.py:210
 msgid "The type of the input field, e.g.: 'text', 'password', 'date', etc."
 msgstr "Der Typ des Input-Feldes, bspw.: 'text', 'password', 'date', etc.."
 
-#: .\insight_ui\configs\input.py:215 .\insight_ui\configs\input.py:265
+#: .\insight_ui\configs\input.py:213 .\insight_ui\configs\input.py:269
 msgid "Placeholder text, displayed in the field as long as it has not been selected."
 msgstr "Platzhaltertext, wird im Feld angezeigt, solange es nicht ausgewählt wurde."
 
-#: .\insight_ui\configs\input.py:217 .\insight_ui\configs\input.py:267
+#: .\insight_ui\configs\input.py:215 .\insight_ui\configs\input.py:271
 msgid "The value of the input field."
 msgstr "Der Wert des Eingabefeldes."
 
-#: .\insight_ui\configs\input.py:219
+#: .\insight_ui\configs\input.py:217
 msgid "Smallest numeric value (for `input_type='number'`)."
 msgstr "Kleinster numerischer Wert (für `input_type='number'`)."
 
-#: .\insight_ui\configs\input.py:221
+#: .\insight_ui\configs\input.py:219
 msgid "Largest numeric value (for `input_type='number'`)."
 msgstr "Größter numerischer Wert (für `input_type='number'`)."
 
-#: .\insight_ui\configs\input.py:222
+#: .\insight_ui\configs\input.py:220
 msgid "Minimum number of characters in a text field."
 msgstr "Minimale Anzahl an Zeichen in einem Textfeld."
 
-#: .\insight_ui\configs\input.py:223
+#: .\insight_ui\configs\input.py:221
 msgid "Maximum number of characters in a text field."
 msgstr "Maximale Anzahl an Zeichen in einem Textfeld."
 
-#: .\insight_ui\configs\input.py:225
+#: .\insight_ui\configs\input.py:223
 msgid "**True** if `input_type='checkbox'` and the checkbox should be selected."
 msgstr "**True**, wenn `input_type='checkbox'` und die Checkbox ausgewählt sein soll."
 
-#: .\insight_ui\configs\input.py:268
+#: .\insight_ui\configs\input.py:272
 msgid "Determines the number of lines."
 msgstr "Bestimmt die Anzahl der Zeilen."
 
-#: .\insight_ui\configs\input.py:269
+#: .\insight_ui\configs\input.py:273
 msgid "Determines the number of characters in a line."
 msgstr "Bestimmt die Anzahl an Buchstaben in einer Zeile."
 
-#: .\insight_ui\configs\input.py:300
+#: .\insight_ui\configs\input.py:304
 msgid "The value of the checkbox (this is not the state, see 'checked' for that)."
 msgstr "Der Wert der Checkbox (Dabei handelt es sich nicht um den Zustand, siehe dafür 'checked')."
 
-#: .\insight_ui\configs\input.py:302 .\insight_ui\configs\input.py:335
+#: .\insight_ui\configs\input.py:306 .\insight_ui\configs\input.py:339
 msgid "**True** if the checkbox should be selected."
 msgstr "**True**, wenn die Checkbox ausgewählt sein soll."
 
-#: .\insight_ui\configs\input.py:323
+#: .\insight_ui\configs\input.py:327
 msgid "Unique ID for this checkbox."
 msgstr "Eindeutige ID für diese Checkbox."
 
-#: .\insight_ui\configs\input.py:325
+#: .\insight_ui\configs\input.py:329
 msgid "Value submitted when checked."
 msgstr "Der Wert, welcher bei Aktivierung der Checkbox eingegeben wird."
 
-#: .\insight_ui\configs\input.py:326
+#: .\insight_ui\configs\input.py:330
 msgid "**True** if the checkbox should be disabled."
 msgstr "**True**, wenn die Checkbox deaktiviert sein soll."
 
-#: .\insight_ui\configs\input.py:331
+#: .\insight_ui\configs\input.py:335
 msgid "Explanation why the checkbox is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip."
 msgstr "Erklärung, warum das Kontrollkästchen deaktiviert ist; wird beim drüberfahren mit der Maus als Tooltip angezeigt. Mit einem leeren String, kann bewusst kein Tooltip angezeigt und die Warnmeldung deaktiviert werden."
 
-#: .\insight_ui\configs\input.py:378
+#: .\insight_ui\configs\input.py:383
 msgid "Text label displayed above the checkbox elements."
 msgstr "Ein beschreibender Text, welcher über den Checkbox-Elementen angezeigt wird."
 
-#: .\insight_ui\configs\input.py:379
+#: .\insight_ui\configs\input.py:384
 msgid "List of the checkbox elements."
 msgstr "Liste der Checkbox-Elemente."
 
-#: .\insight_ui\configs\input.py:381
+#: .\insight_ui\configs\input.py:386
 msgid "**True** if the checkbox elements should be displayed side by side."
 msgstr "**True**, wenn die Checkbox-Elemente nebeneinander angezeigt werden sollen."
 
-#: .\insight_ui\configs\input.py:384
+#: .\insight_ui\configs\input.py:389
 msgid "Number of checkbox elements that must be selected at minimum."
 msgstr "Anzahl der Checkbox-Elemente, die mindestens ausgewählt sein müssen."
 
-#: .\insight_ui\configs\input.py:387
+#: .\insight_ui\configs\input.py:392
 msgid "Number of checkbox elements that may be selected at the same time."
 msgstr "Anzahl der Checkbox-Elemente, die gleichzeitig ausgewählt sein dürfen."
 
-#: .\insight_ui\configs\input.py:406
+#: .\insight_ui\configs\input.py:424
 msgid "Label of the dropdown element."
 msgstr "Beschriftung des Dropdown-Elements."
 
-#: .\insight_ui\configs\input.py:408 .\insight_ui\configs\navigation.py:666
+#: .\insight_ui\configs\input.py:425 .\insight_ui\configs\navigation.py:705
 msgid "The URL to be called when clicking on the respective item."
 msgstr "Die URL, die beim Klicken auf den jeweiligen Eintrag aufgerufen werden soll."
 
-#: .\insight_ui\configs\input.py:410
+#: .\insight_ui\configs\input.py:426
 msgid "An optional icon displayed before the label."
 msgstr "Ein optionales Icon, welches vor der Beschriftung angezeigt wird."
 
-#: .\insight_ui\configs\input.py:441
+#: .\insight_ui\configs\input.py:428 .\insight_ui\configs\navigation.py:76
+msgid "Optional HTMX configuration for dynamic content loading."
+msgstr "Optionale HTMX-Konfiguration zum dynamischen Laden von Inhalten."
+
+#: .\insight_ui\configs\input.py:461
+msgid "Unique tag ID for identifying the element in JavaScript. Required to open/close the dropdown."
+msgstr "Eindeutige Tag-ID für die Identifizierung des Elements im JavaScript. Erforderlich zum Öffnen/Schließen des Dropdown-Menüs."
+
+#: .\insight_ui\configs\input.py:464
 msgid "Label of the dropdown button."
 msgstr "Beschriftung des Dropdown-Buttons."
 
-#: .\insight_ui\configs\input.py:442
+#: .\insight_ui\configs\input.py:465
 msgid "**True** displays an arrow behind the title."
 msgstr "**True** zeigt einen Pfeil hinter dem Titel an."
 
-#: .\insight_ui\configs\input.py:443
+#: .\insight_ui\configs\input.py:466
 msgid "A list of the menu elements."
 msgstr "Eine Liste der Menüelemente."
 
-#: .\insight_ui\configs\input.py:465
+#: .\insight_ui\configs\input.py:487
 msgid "Value of the respective radio button."
 msgstr "Wert des jeweiligen Radio-Buttons."
 
-#: .\insight_ui\configs\input.py:466
+#: .\insight_ui\configs\input.py:491
 msgid "Label of the respective radio button."
 msgstr "Beschriftung des jeweiligen Radio-Buttons."
 
-#: .\insight_ui\configs\input.py:467
+#: .\insight_ui\configs\input.py:492
 msgid "Optional icon displayed before the label."
 msgstr "Optionales Icon, welches vor der Beschriftung angezeigt wird."
 
-#: .\insight_ui\configs\input.py:468
+#: .\insight_ui\configs\input.py:493
 msgid "**True** if the radio button should be disabled."
 msgstr "**True**, wenn der Radio-Button deaktiviert sein soll."
 
-#: .\insight_ui\configs\input.py:473
+#: .\insight_ui\configs\input.py:498
 msgid "Explanation why the radio button is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip."
 msgstr "Erklärung, warum der Radio-Button deaktiviert ist; wird beim drüberfahren mit der Maus als Tooltip angezeigt. Mit einem leeren String, kann bewusst kein Tooltip angezeigt und die Warnmeldung deaktiviert werden."
 
-#: .\insight_ui\configs\input.py:517 .\insight_ui\configs\input.py:563
+#: .\insight_ui\configs\input.py:542 .\insight_ui\configs\input.py:590
+msgid "The shared HTML `name` attribute for all radio buttons in this group."
+msgstr "Das gemeinsame HTML-Attribut „name“ für alle Radio-Buttons in dieser Gruppe."
+
+#: .\insight_ui\configs\input.py:543 .\insight_ui\configs\input.py:591
 msgid "A text label displayed above the radio elements."
 msgstr "Ein beschreibender Text, welcher über den Radio-Elementen angezeigt wird."
 
-#: .\insight_ui\configs\input.py:518 .\insight_ui\configs\input.py:564
+#: .\insight_ui\configs\input.py:544 .\insight_ui\configs\input.py:592
 msgid "A list of the radio elements."
 msgstr "Eine Liste der Radio-Elemente."
 
-#: .\insight_ui\configs\input.py:520 .\insight_ui\configs\input.py:572
+#: .\insight_ui\configs\input.py:546 .\insight_ui\configs\input.py:600
 msgid "**True** if the radio elements should be displayed side by side."
 msgstr "**True**, wenn die Radio-Elemente nebeneinander angezeigt werden sollen."
 
-#: .\insight_ui\configs\input.py:522 .\insight_ui\configs\input.py:588
+#: .\insight_ui\configs\input.py:548 .\insight_ui\configs\input.py:616
 msgid "The value of the currently selected radio button."
 msgstr "Der Wert des aktuell ausgewählten Radio-Buttons."
 
-#: .\insight_ui\configs\input.py:568
+#: .\insight_ui\configs\input.py:596
 msgid "**True** if the group is inside a `<form>`. If **False** the group gets its own `<form>`."
 msgstr "**True**, wenn sich die Gruppe in einer `<form>` befindet. Bei **False** bekommt die Gruppe ihre eigene &lt;form&gt;."
 
-#: .\insight_ui\configs\input.py:576
+#: .\insight_ui\configs\input.py:604
 msgid "The URL to which the request should be sent when clicking one of the radio buttons."
 msgstr "Die URL, an welche der Request beim Klick auf einen der Radio-Button gesendet werden soll."
 
-#: .\insight_ui\configs\input.py:579
+#: .\insight_ui\configs\input.py:607
 msgid "The ID of the HTML tag to be replaced when switching the radio button."
 msgstr "Die ID des HTML-Tags, welcher beim Wechseln des Radio-Buttons ausgetauscht werden soll."
 
-#: .\insight_ui\configs\input.py:582
+#: .\insight_ui\configs\input.py:610
 msgid "The way in which the target is to be replaced."
 msgstr "Die Art und Weise, wie das Ziel ersetzt werden soll."
 
-#: .\insight_ui\configs\input.py:586
+#: .\insight_ui\configs\input.py:614
 msgid "Name of the JavaScript method to be executed when clicking one of the radio buttons."
 msgstr "Name der JavaScript Methode, welche beim Anklicken auf einen der Radio-Button ausgeführt werden soll."
 
-#: .\insight_ui\configs\input.py:640
+#: .\insight_ui\configs\input.py:670
 msgid "The value of the range slider (single-thumb mode only)."
 msgstr "Der Wert des Range-Sliders (nur im Ein-Regler-Modus)."
 
-#: .\insight_ui\configs\input.py:642
+#: .\insight_ui\configs\input.py:672
 msgid "Smallest configurable value of the range slider."
 msgstr "Kleinster einzustellender Wert des Range-Sliders."
 
-#: .\insight_ui\configs\input.py:643
+#: .\insight_ui\configs\input.py:673
 msgid "Largest configurable value of the range slider."
 msgstr "Größter einzustellender Wert des Range-Sliders."
 
-#: .\insight_ui\configs\input.py:645
+#: .\insight_ui\configs\input.py:675
 msgid "The size of the steps by which the value changes when moving the range slider."
 msgstr "Die Größe der Schritte, um welche sich der Wert beim Bewegen des Range-Sliders verändert."
 
-#: .\insight_ui\configs\input.py:648
+#: .\insight_ui\configs\input.py:678
 msgid "A list of texts displayed as a legend below the slider."
 msgstr "Eine Liste von Texten, welche als Legende unter dem Slider angezeigt werden."
 
-#: .\insight_ui\configs\input.py:654
+#: .\insight_ui\configs\input.py:684
 msgid "Controls responsive legend behavior. Options: **'static'** (default) - no adjustment; **'skip'** - progressively hides legend items when space is limited; **'rotate'** - rotates legend text vertically when space is limited."
 msgstr "Steuert das Verhalten der Legende. Optionen: **'static'** (Standard) – keine Anpassung; **'skip'** – blendet Legendenelemente schrittweise aus, wenn der Platz begrenzt ist; **'rotate'** – dreht den Legendentext vertikal, wenn der Platz begrenzt ist."
 
-#: .\insight_ui\configs\input.py:660
+#: .\insight_ui\configs\input.py:690
 msgid "**True** to enable dual-thumb mode for selecting a range with min and max values."
 msgstr "**True**, um den Zwei-Regler-Modus zur Auswahl eines Bereichs mit Minimal- und Maximalwerten zu aktivieren."
 
-#: .\insight_ui\configs\input.py:663
+#: .\insight_ui\configs\input.py:693
 msgid "The minimum value in dual-thumb mode. Defaults to `minimum`."
 msgstr "Der Mindestwert im Zwei-Regler-Modus. Standardwert ist `minimum`."
 
-#: .\insight_ui\configs\input.py:666
+#: .\insight_ui\configs\input.py:696
 msgid "The maximum value in dual-thumb mode. Defaults to `maximum`."
 msgstr "Der Maximalwert im Zwei-Regler-Modus. Standardwert ist `maximum`."
 
-#: .\insight_ui\configs\input.py:716
+#: .\insight_ui\configs\input.py:750
 msgid "The value of the toggle button."
 msgstr "Der Wert des Toggle-Buttons."
 
-#: .\insight_ui\configs\input.py:717
+#: .\insight_ui\configs\input.py:751
 msgid "Optional icon configuration."
 msgstr "Optionale Icon Konfiguration."
 
-#: .\insight_ui\configs\input.py:718
+#: .\insight_ui\configs\input.py:752
 msgid "**True** if the toggle button should be selected."
 msgstr "**True**, wenn der Toggle-Button ausgewählt sein soll."
 
-#: .\insight_ui\configs\input.py:720
+#: .\insight_ui\configs\input.py:754
 msgid "**True** if the toggle button should look like a typical switch select."
 msgstr "**True**, wenn der Toggle-Button wie ein typischer Switch-Select aussehen soll."
 
-#: .\insight_ui\configs\input.py:724
+#: .\insight_ui\configs\input.py:758
 msgid "Name of the JavaScript method to be executed when the toggle button is clicked."
 msgstr "Name der JavaScript Methode, welche beim Anklicken auf den Toggle-Button ausgeführt werden soll."
 
-#: .\insight_ui\configs\input.py:760
+#: .\insight_ui\configs\input.py:794
 msgid "A brief description of the filter that appears in a tooltip."
 msgstr "Eine kurze Beschreibung des Filters, welche in einem Tooltip angezeigt wird."
 
-#: .\insight_ui\configs\input.py:763 .\insight_ui\configs\input.py:817
+#: .\insight_ui\configs\input.py:797 .\insight_ui\configs\input.py:854
 msgid "List of values that can be selected."
 msgstr "Liste von Werten, welche ausgewählt werden können."
 
-#: .\insight_ui\configs\input.py:768
+#: .\insight_ui\configs\input.py:802
 msgid "Value (the key value, if the options were passed as a dict) of the currently selected option."
 msgstr "Wert (Der Key-Wert, falls die Optionen als Dict übergeben wurden) der aktuell ausgewählten Option."
 
-#: .\insight_ui\configs\input.py:812
+#: .\insight_ui\configs\input.py:849
 msgid "Maximum number of selectable options."
 msgstr "Anzahl der maximal ausgewählten Optionen."
 
-#: .\insight_ui\configs\input.py:814
+#: .\insight_ui\configs\input.py:851
 msgid "Show additional buttons for 'Select All' and 'Deselect All'."
 msgstr "Zusätzliche Buttons für 'Alle Auswählen' und 'Alle Abwählen' Buttons anzeigen."
 
-#: .\insight_ui\configs\input.py:820
+#: .\insight_ui\configs\input.py:857
 msgid "List of currently selected options."
 msgstr "Liste der aktuell ausgewählten Optionen."
 
-#: .\insight_ui\configs\input.py:844
+#: .\insight_ui\configs\input.py:889
 msgid "URL for sending chat messages via HTMX POST."
 msgstr "URL zum Senden von Chat-Nachrichten per HTMX-POST."
 
@@ -6193,7 +6162,7 @@ msgstr "URL des Hintergrundbildes."
 msgid "A badge with icon and text."
 msgstr "Eine Plakette mit Icon und Text."
 
-#: .\insight_ui\configs\list.py:40
+#: .\insight_ui\configs\list.py:39
 msgid "URL for loading more items."
 msgstr "URL zum Laden weiterer Elemente."
 
@@ -6261,356 +6230,360 @@ msgstr "Liste der anzuzeigenden benachbarten Seitenzahlen. -1 für Auslassungspu
 msgid "Optional configuration for the items-per-page selector."
 msgstr "Optionale Konfiguration für die Auswahl der Anzahl der Einträge pro Seite."
 
-#: .\insight_ui\configs\navigation.py:37
+#: .\insight_ui\configs\navigation.py:39
 msgid "URL to navigate to when clicking on the brand."
 msgstr "URL, zu welcher der Nutzer gelangt, wenn dieser auf die Marke klickt."
 
-#: .\insight_ui\configs\navigation.py:38
+#: .\insight_ui\configs\navigation.py:40
 msgid "Optional accessible label for the brand link."
 msgstr "Optionales barrierefreies Label für den Link des Logo / der Wortmarke."
 
-#: .\insight_ui\configs\navigation.py:39
+#: .\insight_ui\configs\navigation.py:41
 msgid "Brand mark with logo and wordmark."
 msgstr "Markenzeichen mit Logo und Wortmarke."
 
-#: .\insight_ui\configs\navigation.py:61 .\insight_ui\configs\navigation.py:89
-#: .\insight_ui\configs\navigation.py:517
+#: .\insight_ui\configs\navigation.py:69 .\insight_ui\configs\navigation.py:118
+#: .\insight_ui\configs\navigation.py:554
 msgid "Label of the link."
 msgstr "Beschriftung des Links."
 
-#: .\insight_ui\configs\navigation.py:64
+#: .\insight_ui\configs\navigation.py:72
 msgid "The URL to be called when clicking on the link, if not opening a modal or dropdown menu."
 msgstr "Die URL, die beim Klicken auf den Link aufgerufen werden soll, sofern kein Dialogfenster oder Dropdown-Menü geöffnet wird."
 
-#: .\insight_ui\configs\navigation.py:66 .\insight_ui\configs\navigation.py:91
-#: .\insight_ui\configs\navigation.py:281 .\insight_ui\configs\utils.py:616
+#: .\insight_ui\configs\navigation.py:74 .\insight_ui\configs\navigation.py:120
+#: .\insight_ui\configs\navigation.py:307 .\insight_ui\configs\utils.py:640
 msgid "An optional icon displayed before the text."
 msgstr "Ein optionales Icon, das vor dem Text angezeigt wird."
 
-#: .\insight_ui\configs\navigation.py:67
+#: .\insight_ui\configs\navigation.py:78
 msgid "The link is only displayed for logged-in users."
 msgstr "Der Link wird nur für angemeldete Nutzer angezeigt."
 
-#: .\insight_ui\configs\navigation.py:68 .\insight_ui\configs\navigation.py:92
+#: .\insight_ui\configs\navigation.py:79 .\insight_ui\configs\navigation.py:121
 msgid "The link is only displayed for administrators."
 msgstr "Der Link wird nur für Administratoren angezeigt."
 
-#: .\insight_ui\configs\navigation.py:69
+#: .\insight_ui\configs\navigation.py:80
 msgid "Configuration of a modal dialog."
 msgstr "Konfiguration eines modalen Dialogfensters."
 
-#: .\insight_ui\configs\navigation.py:70
+#: .\insight_ui\configs\navigation.py:81
 msgid "Configuration of a dropdown menu."
 msgstr "Konfiguration der Stepper."
 
-#: .\insight_ui\configs\navigation.py:90
+#: .\insight_ui\configs\navigation.py:119
 msgid "The URL to navigate to when clicking on the link."
 msgstr "URL, zu welcher der Nutzer gelangt, wenn dieser auf den Link klickt."
 
-#: .\insight_ui\configs\navigation.py:121
+#: .\insight_ui\configs\navigation.py:150
 msgid "Additional links to display above the logout button."
 msgstr "Weitere Links, welche über dem Abmelde-Button angezeigt werden sollen."
 
-#: .\insight_ui\configs\navigation.py:123
+#: .\insight_ui\configs\navigation.py:152
 msgid "URL to the user's avatar image."
 msgstr "URL zum Avatarbild des Benutzers."
 
-#: .\insight_ui\configs\navigation.py:124
+#: .\insight_ui\configs\navigation.py:153
 msgid "Alt text for the avatar image."
 msgstr "Alternativtext für das Avatar-Bild."
 
-#: .\insight_ui\configs\navigation.py:157
+#: .\insight_ui\configs\navigation.py:186
 msgid "Logo configuration for branding at the top of the login form."
 msgstr "Logo-Konfiguration für das Branding im oberen Bereich des Anmeldeformulars."
 
-#: .\insight_ui\configs\navigation.py:161
+#: .\insight_ui\configs\navigation.py:190
 msgid "Show theme toggle button in the corner."
 msgstr "Zeige die Schaltfläche zum Umschalten des Designs in der Ecke an."
 
-#: .\insight_ui\configs\navigation.py:165
+#: .\insight_ui\configs\navigation.py:194
 msgid "Show labels above input fields instead of just placeholders."
 msgstr "Zeigt Beschriftungen über den Eingabefeldern an, statt nur Platzhalter."
 
-#: .\insight_ui\configs\navigation.py:169
+#: .\insight_ui\configs\navigation.py:198
 msgid "URL for password reset. Empty hides the link."
 msgstr "URL zum Zurücksetzen des Passworts. Wenn das Feld leer bleibt, wird der Link ausgeblendet."
 
-#: .\insight_ui\configs\navigation.py:173
+#: .\insight_ui\configs\navigation.py:202
 msgid "URL for alternative login (e.g., OIDC/SSO). Empty hides the section."
 msgstr "URL für alternative Anmeldung (z. B. OIDC/SSO). Wenn das Feld leer bleibt, wird der Abschnitt ausgeblendet."
 
-#: .\insight_ui\configs\navigation.py:177
+#: .\insight_ui\configs\navigation.py:206
 msgid "Title for the alternative login button."
 msgstr "Titel für den alternativen Anmelde-Button."
 
-#: .\insight_ui\configs\navigation.py:181
+#: .\insight_ui\configs\navigation.py:210
 msgid "URL for registration. Empty hides the link."
 msgstr "URL für die Registrierung. Wenn das Feld leer bleibt, wird der Link ausgeblendet."
 
-#: .\insight_ui\configs\navigation.py:231
+#: .\insight_ui\configs\navigation.py:263
 msgid "Describes the brand mark of the application in the navbar."
 msgstr "Beschreibt das Markenzeichen der Anwendung in der Navbar."
 
-#: .\insight_ui\configs\navigation.py:234
+#: .\insight_ui\configs\navigation.py:266
 msgid "Contains and describes the navigation items of the navbar."
 msgstr "Enthält und beschreibt die Navigationspunkte der Navbar."
 
-#: .\insight_ui\configs\navigation.py:239
-msgid "The URL to be called when performing a search. If empty, no search bar will be displayed."
-msgstr "Die URL, welche bei der Suche aufgerufen werden soll. In dem Fall, dass keine angegeben ist, wird keine Suchzeile angezeigt."
+#: .\insight_ui\configs\navigation.py:270
+msgid "Configuration for the search bar. If None, no search bar is displayed."
+msgstr "Konfiguration für die Suchleiste. Wenn „None“ angegeben ist, wird keine Suchleiste angezeigt."
 
-#: .\insight_ui\configs\navigation.py:244
-msgid "If True, enable client-side documentation search with Fuse.js in the navbar."
-msgstr "Wenn `True`, wird die clientseitige Dokumentationssuche mit Fuse.js in der Navbar aktiviert."
-
-#: .\insight_ui\configs\navigation.py:248
+#: .\insight_ui\configs\navigation.py:274
 msgid "Configuration for the user dropdown menu. None uses defaults (logout only)."
 msgstr "Konfiguration für das Benutzer-Dropdown-Menü. Bei `None` werden die Standardeinstellungen verwendet (nur Abmelden)."
 
-#: .\insight_ui\configs\navigation.py:252
+#: .\insight_ui\configs\navigation.py:278
 msgid "If True, hide the login button for unauthenticated users."
 msgstr "Wenn „True“, wird der Anmelde-Button für nicht authentifizierte Benutzer ausgeblendet."
 
-#: .\insight_ui\configs\navigation.py:255
+#: .\insight_ui\configs\navigation.py:281
 msgid "Displays a dropdown menu for selecting the display language (if defined)."
 msgstr "Zeigt ein Dropdown-Menü zum Auswählen der Anzeigesprache (sofern definiert)."
 
-#: .\insight_ui\configs\navigation.py:258
+#: .\insight_ui\configs\navigation.py:284
 msgid "Displays a button to switch between the light and dark theme of the page."
 msgstr "Zeigt ein Button zum Wechsel zwischen der hellen und der dunklen Darstellung der Seite."
 
-#: .\insight_ui\configs\navigation.py:279
+#: .\insight_ui\configs\navigation.py:305
 msgid "Label of the item."
 msgstr "Beschriftung des Elemente."
 
-#: .\insight_ui\configs\navigation.py:280
+#: .\insight_ui\configs\navigation.py:306
 msgid "The URL to be called when clicking on the item."
 msgstr "Die URL, die beim Klicken auf das Element aufgerufen werden soll."
 
-#: .\insight_ui\configs\navigation.py:282
+#: .\insight_ui\configs\navigation.py:308
 msgid "HTMX configuration for AJAX page changes."
 msgstr "HTMX-Konfiguration für AJAX-Seitenwechsel."
 
-#: .\insight_ui\configs\navigation.py:283
+#: .\insight_ui\configs\navigation.py:309
 msgid "An optional badge displayed after the text."
 msgstr "Ein optionales Badge, welches nach dem Text angezeigt wird."
 
-#: .\insight_ui\configs\navigation.py:307
+#: .\insight_ui\configs\navigation.py:333
 msgid "Category header text."
 msgstr "Text der Kategorieüberschrift."
 
-#: .\insight_ui\configs\navigation.py:308
+#: .\insight_ui\configs\navigation.py:334
 msgid "Optional category icon."
 msgstr "Optionales Kategorie-Icon."
 
-#: .\insight_ui\configs\navigation.py:309
+#: .\insight_ui\configs\navigation.py:335
 msgid "List of items in this category."
 msgstr "Liste der Elemente in dieser Kategorie."
 
-#: .\insight_ui\configs\navigation.py:338
+#: .\insight_ui\configs\navigation.py:371
 msgid "Sidebar title."
 msgstr "Titel der Sidebar."
 
-#: .\insight_ui\configs\navigation.py:339
+#: .\insight_ui\configs\navigation.py:372
 msgid "Optional title icon."
 msgstr "Optionales Titel-Icon."
 
-#: .\insight_ui\configs\navigation.py:341
+#: .\insight_ui\configs\navigation.py:374
+msgid "Top-level navigation links shown before categories."
+msgstr "Haupt-Navigationslinks werden vor den Kategorien angezeigt."
+
+#: .\insight_ui\configs\navigation.py:376
+msgid "Optional heading above the categories section."
+msgstr "Optionale Überschrift über dem Kategorien Bereich."
+
+#: .\insight_ui\configs\navigation.py:378
 msgid "List of navigation categories."
 msgstr "Liste der Navigationskategorien."
 
-#: .\insight_ui\configs\navigation.py:378
+#: .\insight_ui\configs\navigation.py:415
 msgid "Position of the sidebar (\"left\" or \"right\"). Auto-detected from block context."
 msgstr "Position der Sidebar („left“ oder „right“). Wird automatisch anhand des Blockkontexts ermittelt."
 
-#: .\insight_ui\configs\navigation.py:382
+#: .\insight_ui\configs\navigation.py:419
 msgid "If **True**, the sidebar is sticky; if **False**, it's a drawer (collapsible)."
 msgstr "Wenn **True**, ist die Sidebar fixiert; wenn **False**, wird diese als Drawer dargestellt (ein-/ausklappbar)."
 
-#: .\insight_ui\configs\navigation.py:384
+#: .\insight_ui\configs\navigation.py:421
 msgid "Width of the sidebar (\"narrow\", \"normal\", \"wide\")."
 msgstr "Breite der Sidebar („narrow“, „normal“, „wide“)."
 
-#: .\insight_ui\configs\navigation.py:386
+#: .\insight_ui\configs\navigation.py:423
 msgid "Behavior on mobile viewports (\"hidden\", \"drawer\")."
 msgstr "Verhalten auf mobilen Viewports („hidden“, „drawer“)."
 
-#: .\insight_ui\configs\navigation.py:390
+#: .\insight_ui\configs\navigation.py:427
 msgid "Content for the navigation variant (only used with ``sidebar_nav.html``)."
 msgstr "Inhalt für die Navigationsvariante (wird nur mit „sidebar_nav.html“ verwendet)."
 
-#: .\insight_ui\configs\navigation.py:414
+#: .\insight_ui\configs\navigation.py:451
 msgid "Heading of the description."
 msgstr "Überschrift der Beschreibung."
 
-#: .\insight_ui\configs\navigation.py:415
+#: .\insight_ui\configs\navigation.py:452
 msgid "Brief summary of the application."
 msgstr "Kurze Zusammenfassung der Anwendung."
 
-#: .\insight_ui\configs\navigation.py:417
+#: .\insight_ui\configs\navigation.py:454
 msgid "Optional image displayed below the description text."
 msgstr "Optionales Bild, welches unter dem Text der Beschreibung angezeigt wird."
 
-#: .\insight_ui\configs\navigation.py:442
+#: .\insight_ui\configs\navigation.py:479
 msgid "URL of a contact email address."
 msgstr "URL einer Kontaktmailadresse."
 
-#: .\insight_ui\configs\navigation.py:443
+#: .\insight_ui\configs\navigation.py:480
 msgid "Link to an imprint."
 msgstr "Verlinkung zu einem Impressum."
 
-#: .\insight_ui\configs\navigation.py:444
+#: .\insight_ui\configs\navigation.py:481
 msgid "Link to a privacy policy."
 msgstr "Verlinkung zu einer Datenschutzerklärung."
 
-#: .\insight_ui\configs\navigation.py:486
+#: .\insight_ui\configs\navigation.py:523
 msgid "Brief description of the application with optional image."
 msgstr "Kurzbeschreibung der Anwendung mit optionalen Bild."
 
-#: .\insight_ui\configs\navigation.py:489
+#: .\insight_ui\configs\navigation.py:526
 msgid "List of the main navigation items of the application."
 msgstr "Liste der Hauptnavigationspunkte der Anwendung."
 
-#: .\insight_ui\configs\navigation.py:493
+#: .\insight_ui\configs\navigation.py:530
 msgid "Contact information, link to the imprint, privacy policy and a contact email address."
 msgstr "Kontaktinformationen, Link zum Impressum, Datenschutz und eine Kontaktmailadresse."
 
-#: .\insight_ui\configs\navigation.py:497
+#: .\insight_ui\configs\navigation.py:534
 msgid "Legal notice with copyright, license, and version information."
 msgstr "Rechtliche Hinweise mit Angaben zu Urheberrecht, Lizenz und Version."
 
-#: .\insight_ui\configs\navigation.py:499
+#: .\insight_ui\configs\navigation.py:536
 msgid "Information about the current version."
 msgstr "Angabe zur aktuellen Version."
 
-#: .\insight_ui\configs\navigation.py:518
+#: .\insight_ui\configs\navigation.py:555
 msgid "The URL to be called when clicking on the link."
 msgstr "Die URL, die beim Klicken auf den Link aufgerufen werden soll."
 
-#: .\insight_ui\configs\navigation.py:519
+#: .\insight_ui\configs\navigation.py:556
 msgid "Optional icon (typically for home item)."
 msgstr "Optionales Symbol (in der Regel für das Startelement)."
 
-#: .\insight_ui\configs\navigation.py:545
+#: .\insight_ui\configs\navigation.py:582
 msgid "List of breadcrumb navigation items."
 msgstr "Liste der Elemente der Breadcrumb-Navigation."
 
-#: .\insight_ui\configs\navigation.py:548
-#: .\insight_ui\configs\navigation.py:696
+#: .\insight_ui\configs\navigation.py:585
+#: .\insight_ui\configs\navigation.py:735
 msgid "Optional HTMX configuration for AJAX navigation."
 msgstr "Optionale HTMX-Konfiguration für die AJAX-Navigation."
 
-#: .\insight_ui\configs\navigation.py:570
+#: .\insight_ui\configs\navigation.py:607
 msgid "Title of the step."
 msgstr "Titel des Schritts."
 
-#: .\insight_ui\configs\navigation.py:571
+#: .\insight_ui\configs\navigation.py:608
 msgid "Additional description of the step below the title."
 msgstr "Zusätzliche Beschreibung des Schritts unter dem Titel."
 
-#: .\insight_ui\configs\navigation.py:572
+#: .\insight_ui\configs\navigation.py:610
 msgid "URL called when the user clicks on the title of the step."
 msgstr "URL, welche aufgerufen wird, wenn der Nutzer auf den Titel des Schritts klickt."
 
-#: .\insight_ui\configs\navigation.py:573
+#: .\insight_ui\configs\navigation.py:612
 msgid "Displays a checkmark instead of the step number."
 msgstr "Zeigt statt der Schrittzahl einen Haken an."
 
-#: .\insight_ui\configs\navigation.py:574
+#: .\insight_ui\configs\navigation.py:613
 msgid "Displays an X instead of the step number."
 msgstr "Zeigt statt der Schrittzahl ein Kreuz (X) an."
 
-#: .\insight_ui\configs\navigation.py:575
+#: .\insight_ui\configs\navigation.py:614
 msgid "Highlights the title in color and makes the text pulse."
 msgstr "Hebt den Titel farblich hervor und lässt den Text pulsieren."
 
-#: .\insight_ui\configs\navigation.py:599
+#: .\insight_ui\configs\navigation.py:638
 msgid "List of step configurations."
 msgstr "Liste der Schrittkonfigurationen."
 
-#: .\insight_ui\configs\navigation.py:625
+#: .\insight_ui\configs\navigation.py:664
 msgid "List of states for the process steps. Possible values: 'success', 'failed', 'active' and '' for inactive."
 msgstr "Liste der Zustände der Prozessschritte. Mögliche Werte: 'success' (Erfolg), 'failed' (Fehlschlag), 'active' (Aktiv) und '' (Inaktiv)."
 
-#: .\insight_ui\configs\navigation.py:629
+#: .\insight_ui\configs\navigation.py:668
 msgid "Number of process steps. (Only if 'items' is not set!)"
 msgstr "Anzahl der Prozessschritte. (Nur wenn 'items' nicht gesetzt ist!)"
 
-#: .\insight_ui\configs\navigation.py:631
+#: .\insight_ui\configs\navigation.py:670
 msgid "Current step of the process. (Only if 'items' is not set!)"
 msgstr "Aktueller Schritt des Prozesses. (Nur wenn 'items' nicht gesetzt ist!)"
 
-#: .\insight_ui\configs\navigation.py:634
+#: .\insight_ui\configs\navigation.py:673
 msgid "Status of the current step. (Only if 'items' is not set!)"
 msgstr "Status des aktuellen Schritts. (Nur wenn 'items' nicht gesetzt ist!)"
 
-#: .\insight_ui\configs\navigation.py:636
+#: .\insight_ui\configs\navigation.py:675
 msgid "Size of the icons in the progress bar."
 msgstr "Größe der Icons auf der Fortschrittsanzeige."
 
-#: .\insight_ui\configs\navigation.py:663
+#: .\insight_ui\configs\navigation.py:702
 msgid "Title of the item."
 msgstr "Titel des Elements."
 
-#: .\insight_ui\configs\navigation.py:664
+#: .\insight_ui\configs\navigation.py:703
 msgid "Additional description of the item below the title."
 msgstr "Zusätzliche Beschreibung des Schritts unter dem Titel."
 
-#: .\insight_ui\configs\navigation.py:668
+#: .\insight_ui\configs\navigation.py:707
 msgid "Displays a checkmark instead of a bullet point."
 msgstr "Zeigt statt des Punktes einen Haken an."
 
-#: .\insight_ui\configs\navigation.py:669
+#: .\insight_ui\configs\navigation.py:708
 msgid "Highlights the title by color."
 msgstr "Hebt den Titel farblich hervor."
 
-#: .\insight_ui\configs\navigation.py:694
+#: .\insight_ui\configs\navigation.py:733
 msgid "List of bullet point items."
 msgstr "Liste der Bulletpoints."
 
-#: .\insight_ui\configs\navigation.py:715
+#: .\insight_ui\configs\navigation.py:754
 msgid "Section title."
 msgstr "Titel des Abschnitts."
 
-#: .\insight_ui\configs\navigation.py:716
+#: .\insight_ui\configs\navigation.py:755
 msgid "Section content."
 msgstr "Inhalt des Abschnitts."
 
-#: .\insight_ui\configs\navigation.py:717
+#: .\insight_ui\configs\navigation.py:756
 msgid "Whether section is initially open."
 msgstr "Ob der Abschnitt anfangs geöffnet ist."
 
-#: .\insight_ui\configs\navigation.py:745
-#: .\insight_ui\configs\navigation.py:767
-#: .\insight_ui\configs\navigation.py:798
+#: .\insight_ui\configs\navigation.py:783
+#: .\insight_ui\configs\navigation.py:804
+#: .\insight_ui\configs\navigation.py:835
 msgid "Unique tag ID for identifying the element in JavaScript."
 msgstr "Eindeutige Tag-ID für die Identifizierung des Elements im JavaScript."
 
-#: .\insight_ui\configs\navigation.py:747
+#: .\insight_ui\configs\navigation.py:784
 msgid "List of individual sections."
 msgstr "Liste der einzelnen Abschnitte."
 
-#: .\insight_ui\configs\navigation.py:748
+#: .\insight_ui\configs\navigation.py:785
 msgid "If **True** only one section can be open at a time."
 msgstr "Bei **True** kann immer nur ein Abschnitt gleichzeitig geöffnet sein."
 
-#: .\insight_ui\configs\navigation.py:768
+#: .\insight_ui\configs\navigation.py:805
 msgid "Label of the tab button."
 msgstr "Beschriftung des Tab-Buttons."
 
-#: .\insight_ui\configs\navigation.py:769
+#: .\insight_ui\configs\navigation.py:806
 msgid "The URL to be called when the tab is clicked."
 msgstr "Die URL, welche beim Anklicken auf den Reiter aufgerufen werden soll."
 
-#: .\insight_ui\configs\navigation.py:770
+#: .\insight_ui\configs\navigation.py:807
 msgid "Whether this tab is initially active."
 msgstr "Ob diese Registerkarte initial aktiv ist."
 
-#: .\insight_ui\configs\navigation.py:799
+#: .\insight_ui\configs\navigation.py:836
 msgid "List of tab buttons."
 msgstr "Liste der Tab-Buttons."
 
-#: .\insight_ui\configs\navigation.py:801
+#: .\insight_ui\configs\navigation.py:838
 msgid "Non-visible additional title that is to be read aloud by screen readers."
 msgstr "Nicht sichtbarer, zusätzlicher Titel, welcher nur von Screenreadern vorgelesen wird."
 
@@ -6626,371 +6599,375 @@ msgstr "Art des Alerts."
 msgid "Shows a button to close the alert at the end of the alert container."
 msgstr "Zeigt einen Button zum Schließen des Alerts am Ende des Alert-Containers an."
 
-#: .\insight_ui\configs\popup.py:76
+#: .\insight_ui\configs\popup.py:77
+msgid "Unique tag ID for identifying the element in JavaScript. Required to open/close the modal."
+msgstr "Eindeutige Tag-ID für die Identifizierung des Elements im JavaScript. Erforderlich zum Öffnen/Schließen des Modal-Dialogs."
+
+#: .\insight_ui\configs\popup.py:80
 msgid "Heading of the modal dialog."
 msgstr "Überschrift des Modal Dialogs."
 
-#: .\insight_ui\configs\popup.py:80
+#: .\insight_ui\configs\popup.py:84
 msgid "A text in the center of the modal dialog. This can be exchanged by extending the template."
 msgstr "Ein Text in der Mitte des modalen Dialogfelds. Dieser kann durch eine Erweiterung des Templates angepasst werden."
 
-#: .\insight_ui\configs\popup.py:84
+#: .\insight_ui\configs\popup.py:88
 msgid "List of buttons displayed at the bottom of the dialog."
 msgstr "Liste von Buttons, welche um unteren Ende des Dialogs angezeigt werden."
 
-#: .\insight_ui\configs\popup.py:87
+#: .\insight_ui\configs\popup.py:91
 msgid "The maximum width of the dialog box relative to the screen in 'rem'."
 msgstr "Die maximale Breite des Dialogfensters relativ zum Bildschirm in „rem“."
 
-#: .\insight_ui\configs\utils.py:46
+#: .\insight_ui\configs\utils.py:47
 msgid "Descriptive message."
 msgstr "Beschreibende Nachricht."
 
-#: .\insight_ui\configs\utils.py:47
+#: .\insight_ui\configs\utils.py:48
 msgid "Importance level of the message."
 msgstr "Wichtigkeit der Nachricht."
 
-#: .\insight_ui\configs\utils.py:83
+#: .\insight_ui\configs\utils.py:84
 msgid "Typically the current year (not strictly required)."
 msgstr "I.d.R das aktuelle Jahr (ist nicht zwingend erforderlich)."
 
-#: .\insight_ui\configs\utils.py:84
+#: .\insight_ui\configs\utils.py:85
 msgid "The copyright holder."
 msgstr "Der Urheberrechtsinhaber."
 
-#: .\insight_ui\configs\utils.py:85
+#: .\insight_ui\configs\utils.py:86
 msgid "Optional source model label, for example Open Source."
 msgstr "Optionale Bezeichnung des Quellmodells, zum Beispiel „Open Source“."
 
-#: .\insight_ui\configs\utils.py:86
+#: .\insight_ui\configs\utils.py:87
 msgid "Optional license label, for example AGPL-3.0."
 msgstr "Optionales Lizenzkennzeichen, zum Beispiel AGPL-3.0."
 
-#: .\insight_ui\configs\utils.py:87
+#: .\insight_ui\configs\utils.py:88
 msgid "Optional URL for the license label."
 msgstr "Optionale URL für das Lizenzlabel."
 
-#: .\insight_ui\configs\utils.py:89
+#: .\insight_ui\configs\utils.py:90
 msgid "Separator between legal metadata parts."
 msgstr "Trennzeichen zwischen den einzelnen Teilen der rechtlichen Metadaten."
 
-#: .\insight_ui\configs\utils.py:91
+#: .\insight_ui\configs\utils.py:92
 msgid "Optional rights statement."
 msgstr "Optionale Rechteerklärung."
 
-#: .\insight_ui\configs\utils.py:92
+#: .\insight_ui\configs\utils.py:93
 msgid "Optional version string, for example v1.2.3."
 msgstr "Optionaler Versionsstring, zum Beispiel v1.2.3."
 
-#: .\insight_ui\configs\utils.py:123
+#: .\insight_ui\configs\utils.py:129
 msgid "Static, absolute, root-relative, or data URL for image/svg logos."
 msgstr "Statische, absolute, root-relative oder Daten-URLs für Bild- oder SVG-Logos."
 
-#: .\insight_ui\configs\utils.py:125
+#: .\insight_ui\configs\utils.py:131
 msgid "Optional dark-theme URL for image/svg logos."
 msgstr "Optionale URL für Bild- und SVG-Logos im dunklen Design."
 
-#: .\insight_ui\configs\utils.py:126
+#: .\insight_ui\configs\utils.py:132
 msgid "Accessible text. Empty values make image/svg logos decorative."
 msgstr "Barrierefreier Text. Leere Werte lassen Bild- bzw. SVG-Logos als dekorative Elemente erscheinen."
 
-#: .\insight_ui\configs\utils.py:127
+#: .\insight_ui\configs\utils.py:133
 msgid "Icon configuration used when type is 'icon'."
 msgstr "Die Icon-Konfig, welche verwendet wird, wenn der Typ „icon“ ist."
 
-#: .\insight_ui\configs\utils.py:128
+#: .\insight_ui\configs\utils.py:134
 msgid "Icon name (alternative to icon config)."
 msgstr "Icon-Name (Alternative zur Icon-Konfig)."
 
-#: .\insight_ui\configs\utils.py:129
+#: .\insight_ui\configs\utils.py:135
 msgid "Icon size (alternative to icon config)."
 msgstr "Icon-Größe (Alternative zur Icon-Konfig)."
 
-#: .\insight_ui\configs\utils.py:130
+#: .\insight_ui\configs\utils.py:136
 msgid "CSS height for image/svg logos."
 msgstr "CSS-Höhe für Bild- und SVG-Logos."
 
-#: .\insight_ui\configs\utils.py:131
+#: .\insight_ui\configs\utils.py:137
 msgid "Optional CSS width for image/svg logos."
 msgstr "Optionale CSS-Breite für Bild- und SVG-Logos."
 
-#: .\insight_ui\configs\utils.py:162
+#: .\insight_ui\configs\utils.py:168
 msgid "First wordmark run."
 msgstr "Erster Teil der Wortmarke (Primäre Textfarbe)."
 
-#: .\insight_ui\configs\utils.py:163
+#: .\insight_ui\configs\utils.py:169
 msgid "Second wordmark run."
 msgstr "Zweiter Teil der Wortmarke (Primärfarbe)."
 
-#: .\insight_ui\configs\utils.py:164
+#: .\insight_ui\configs\utils.py:170
 msgid "Public logo configuration."
 msgstr "Logo-Konfiguration."
 
-#: .\insight_ui\configs\utils.py:166
+#: .\insight_ui\configs\utils.py:172
 msgid "Logo position, either 'start' or 'end'."
 msgstr "Position des Logos: entweder „Start“ oder „Ende“."
 
-#: .\insight_ui\configs\utils.py:168
+#: .\insight_ui\configs\utils.py:174
 msgid "Optional CSS classes for the root element."
 msgstr "Optionale CSS-Klassen für das Hauptelement."
 
-#: .\insight_ui\configs\utils.py:208
+#: .\insight_ui\configs\utils.py:214
 msgid "Main status title."
 msgstr "Hauptstatusbezeichnung."
 
-#: .\insight_ui\configs\utils.py:209
+#: .\insight_ui\configs\utils.py:215
 msgid "Supporting status description."
 msgstr "Beschreibung des Status."
 
-#: .\insight_ui\configs\utils.py:210
+#: .\insight_ui\configs\utils.py:216
 msgid "Visual status type."
 msgstr "Art des Status."
 
-#: .\insight_ui\configs\utils.py:212
+#: .\insight_ui\configs\utils.py:218
 msgid "Optional brand mark shown above the card."
 msgstr "Optionales Markenzeichen, welches über der Karte abgebildet ist."
 
-#: .\insight_ui\configs\utils.py:214
+#: .\insight_ui\configs\utils.py:220
 msgid "Optional notice heading."
 msgstr "Optionale Überschrift für den Hinweis."
 
-#: .\insight_ui\configs\utils.py:215
+#: .\insight_ui\configs\utils.py:221
 msgid "Optional notice text."
 msgstr "Optionaler Hinweis."
 
-#: .\insight_ui\configs\utils.py:216
+#: .\insight_ui\configs\utils.py:222
 msgid "Primary button action."
 msgstr "Primärer 'Call-to-Action'-Button."
 
-#: .\insight_ui\configs\utils.py:217
+#: .\insight_ui\configs\utils.py:223
 msgid "Secondary button action."
 msgstr "Sekundärer 'Call-to-Action'-Button."
 
-#: .\insight_ui\configs\utils.py:218
+#: .\insight_ui\configs\utils.py:224
 msgid "Additional button actions."
 msgstr "Zusätzliche Buttons."
 
-#: .\insight_ui\configs\utils.py:219
+#: .\insight_ui\configs\utils.py:225
 msgid "Optional CSS classes for the outer section."
 msgstr "Optionale CSS-Klassen für den äußeren Abschnitt."
 
-#: .\insight_ui\configs\utils.py:220
+#: .\insight_ui\configs\utils.py:226
 msgid "Optional CSS classes for the status card."
 msgstr "Optionale CSS-Klassen für die Statuskarte."
 
-#: .\insight_ui\configs\utils.py:248
+#: .\insight_ui\configs\utils.py:254
 msgid "The text displayed in the ribbon."
 msgstr "Der im Band angezeigte Text."
 
-#: .\insight_ui\configs\utils.py:251
+#: .\insight_ui\configs\utils.py:257
 msgid "Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'."
 msgstr "Eckposition: 'top-right', 'top-left', 'bottom-right', 'bottom-left'."
 
-#: .\insight_ui\configs\utils.py:255
+#: .\insight_ui\configs\utils.py:261
 msgid "Color variant for the ribbon."
 msgstr "Farbvariante für das Band."
 
-#: .\insight_ui\configs\utils.py:326
+#: .\insight_ui\configs\utils.py:332
 msgid "Optional heading/title for the progress bar."
 msgstr "Optionale Überschrift/Bezeichnung für den Fortschrittsbalken."
 
-#: .\insight_ui\configs\utils.py:328
+#: .\insight_ui\configs\utils.py:334
 msgid "URL to poll for progress updates. Expected JSON: {\"value\": 75}."
 msgstr "URL zur Abfrage von Fortschrittsmeldungen. Erwartetes JSON: {\"value\": 75}."
 
-#: .\insight_ui\configs\utils.py:330
+#: .\insight_ui\configs\utils.py:336
 msgid "Polling interval in milliseconds."
 msgstr "Abfrageintervall in Millisekunden."
 
-#: .\insight_ui\configs\utils.py:331
+#: .\insight_ui\configs\utils.py:337
 msgid "Server-Sent Events URL for real-time progress updates."
 msgstr "URL für Server-Sent Events zur Anzeige von Fortschrittsmeldungen in Echtzeit."
 
-#: .\insight_ui\configs\utils.py:332
+#: .\insight_ui\configs\utils.py:338
 msgid "Minimum value."
 msgstr "Mindestwert."
 
-#: .\insight_ui\configs\utils.py:333
+#: .\insight_ui\configs\utils.py:339
 msgid "Maximum value."
 msgstr "Maximalwert."
 
-#: .\insight_ui\configs\utils.py:334
+#: .\insight_ui\configs\utils.py:340
 msgid "Current progress in percent."
 msgstr "Aktueller Fortschritt in Prozent."
 
-#: .\insight_ui\configs\utils.py:335
+#: .\insight_ui\configs\utils.py:341
 msgid "Whether to display the value as text."
 msgstr "Ob der Wert als Text angezeigt werden soll."
 
-#: .\insight_ui\configs\utils.py:336
+#: .\insight_ui\configs\utils.py:342
 msgid "Hide progress bar when reaching max_value."
 msgstr "Fortschrittsbalken ausblenden, sobald der maximale Wert erreicht wurde."
 
-#: .\insight_ui\configs\utils.py:337
+#: .\insight_ui\configs\utils.py:343
 msgid "Delay in ms before hiding after completion."
 msgstr "Verzögerung in ms, bevor das Element nach Abschluss ausgeblendet wird."
 
-#: .\insight_ui\configs\utils.py:338
+#: .\insight_ui\configs\utils.py:344
 msgid "Stop polling/SSE when an error is received."
 msgstr "Beende den Polling-Vorgang/SSE, sobald ein Fehler auftritt."
 
-#: .\insight_ui\configs\utils.py:339
+#: .\insight_ui\configs\utils.py:345
 msgid "Show a cancel button during progress."
 msgstr "Zeige während des Vorgangs einen „Abbrechen“ Button an."
 
-#: .\insight_ui\configs\utils.py:340
+#: .\insight_ui\configs\utils.py:346
 msgid "Label for the cancel button."
 msgstr "Beschriftung für den „Abbrechen“ Button."
 
-#: .\insight_ui\configs\utils.py:341
+#: .\insight_ui\configs\utils.py:347
 msgid "Optional URL to call when cancelling (POST request)."
 msgstr "Optionale URL, die beim Abbrechen aufgerufen werden soll (POST-Request)."
 
-#: .\insight_ui\configs\utils.py:342
+#: .\insight_ui\configs\utils.py:348
 msgid "Show a retry button when an error occurs."
 msgstr "Zeige einen „Erneut versuchen“ Button an, wenn ein Fehler auftritt."
 
-#: .\insight_ui\configs\utils.py:343
+#: .\insight_ui\configs\utils.py:349
 msgid "Label for the retry button."
 msgstr "Beschriftung für den „Erneut versuchen“ Button."
 
-#: .\insight_ui\configs\utils.py:363
+#: .\insight_ui\configs\utils.py:380
 msgid "Marker title/label."
 msgstr "Titel/Bezeichnung des Markers."
 
-#: .\insight_ui\configs\utils.py:364
+#: .\insight_ui\configs\utils.py:381
 msgid "Latitude coordinate."
 msgstr "Breitengrad (Latitude) des Dateneintrags."
 
-#: .\insight_ui\configs\utils.py:365
+#: .\insight_ui\configs\utils.py:382
 msgid "Longitude coordinate."
 msgstr "Längengrad (Longitude) des Dateneintrags."
 
-#: .\insight_ui\configs\utils.py:366
+#: .\insight_ui\configs\utils.py:383
 msgid "Optional popup description."
 msgstr "Optionale Popup-Beschreibung."
 
-#: .\insight_ui\configs\utils.py:367
+#: .\insight_ui\configs\utils.py:384
 msgid "Optional numeric value (for circle markers)."
 msgstr "Optionaler numerischer Wert (für Kreismarkierungen)."
 
-#: .\insight_ui\configs\utils.py:396
+#: .\insight_ui\configs\utils.py:413
 msgid "Dataset name."
 msgstr "Name des Datensatzes."
 
-#: .\insight_ui\configs\utils.py:397
+#: .\insight_ui\configs\utils.py:414
 msgid "Marker type ('marker' or 'circle')."
 msgstr "Markierungstyp („Marker“ oder „Kreis“)."
 
-#: .\insight_ui\configs\utils.py:398
+#: .\insight_ui\configs\utils.py:415
 msgid "List of marker configurations."
 msgstr "Liste der Marker-Konfigurationen."
 
-#: .\insight_ui\configs\utils.py:399
+#: .\insight_ui\configs\utils.py:416
 msgid "Minimum value for circle scaling."
 msgstr "Mindestwert für die Skalierung des Kreises."
 
-#: .\insight_ui\configs\utils.py:400
+#: .\insight_ui\configs\utils.py:417
 msgid "Maximum value for circle scaling."
 msgstr "Maximalwert für die Skalierung des Kreises."
 
-#: .\insight_ui\configs\utils.py:440
+#: .\insight_ui\configs\utils.py:457
 msgid "Starting map center [lat, lon]."
 msgstr "Startpunkt auf der Karte [Breitengrad (Latitude), Längengrad (Longitude)]."
 
-#: .\insight_ui\configs\utils.py:442
+#: .\insight_ui\configs\utils.py:459
 msgid "Starting zoom level."
 msgstr "Anfangszoomstufe."
 
-#: .\insight_ui\configs\utils.py:443
+#: .\insight_ui\configs\utils.py:460
 msgid "The height of the map in 'rem'."
 msgstr "Höhe der Karte in 'rem'."
 
-#: .\insight_ui\configs\utils.py:445
+#: .\insight_ui\configs\utils.py:462
 msgid "List of data layers to display."
 msgstr "Liste der anzuzeigenden Datenebenen."
 
-#: .\insight_ui\configs\utils.py:448
+#: .\insight_ui\configs\utils.py:465
 msgid "Interactive map"
 msgstr "Interaktive Karte"
 
-#: .\insight_ui\configs\utils.py:448
+#: .\insight_ui\configs\utils.py:465
 msgid "Accessible label describing the map's purpose."
 msgstr "Barrierefreie Beschriftung, die den Zweck der Karte erläutert."
 
-#: .\insight_ui\configs\utils.py:464
+#: .\insight_ui\configs\utils.py:481
 msgid "Series name (shown in legend)."
 msgstr "Name der Reihe (in der Legende angegeben)."
 
-#: .\insight_ui\configs\utils.py:465
+#: .\insight_ui\configs\utils.py:482
 msgid "Data points for this series."
 msgstr "Datenpunkte für diese Reihe."
 
-#: .\insight_ui\configs\utils.py:492
+#: .\insight_ui\configs\utils.py:509
 msgid "Chart title."
 msgstr "Titel des Diagramms."
 
-#: .\insight_ui\configs\utils.py:493
+#: .\insight_ui\configs\utils.py:510
 msgid "Labels for X-axis categories."
 msgstr "Bezeichnungen für die Kategorien der X-Achse."
 
-#: .\insight_ui\configs\utils.py:494
+#: .\insight_ui\configs\utils.py:511
 msgid "Series names (for legend)."
 msgstr "Reihenbezeichnungen (für die Legende)."
 
-#: .\insight_ui\configs\utils.py:496
+#: .\insight_ui\configs\utils.py:513
 msgid "Data for each series (list of lists)."
 msgstr "Daten für jede Reihe (Liste von Listen)."
 
-#: .\insight_ui\configs\utils.py:529
+#: .\insight_ui\configs\utils.py:546
 msgid "Unique ID for the chart element."
 msgstr "Eindeutige ID für das Diagrammelement."
 
-#: .\insight_ui\configs\utils.py:531
+#: .\insight_ui\configs\utils.py:548
 msgid "Chart data and configuration."
 msgstr "Diagrammdaten und Konfiguration."
 
-#: .\insight_ui\configs\utils.py:533
+#: .\insight_ui\configs\utils.py:550
 msgid "Height of the chart in 'rem'."
 msgstr "Höhe des Diagramms in 'rem'."
 
-#: .\insight_ui\configs\utils.py:534
+#: .\insight_ui\configs\utils.py:551
 msgid "Accessible label describing the chart's purpose."
 msgstr "Barrierefreies Label, das den Zweck des Diagramms beschreibt."
 
-#: .\insight_ui\configs\utils.py:535
+#: .\insight_ui\configs\utils.py:552
 msgid "Show decal patterns for colorblind accessibility."
 msgstr "Muster für farbenblinde Nutzer anzeigen."
 
-#: .\insight_ui\configs\utils.py:562
+#: .\insight_ui\configs\utils.py:578
 msgid "URL for content updates."
 msgstr "URL für Inhaltsaktualisierungen."
 
-#: .\insight_ui\configs\utils.py:563
+#: .\insight_ui\configs\utils.py:580
 msgid "Update interval in seconds."
 msgstr "Aktualisierungsintervall in Sekunden."
 
-#: .\insight_ui\configs\utils.py:564
+#: .\insight_ui\configs\utils.py:581
 msgid "Initial content before first update."
 msgstr "Initialer Inhalt vor dem ersten Update."
 
-#: .\insight_ui\configs\utils.py:589
-msgid "Container ID. This ID must be included in the WebSocket's HTML message."
-msgstr "Container-ID. Diese ID muss in der HTML-Nachricht des WebSockets enthalten sein."
-
-#: .\insight_ui\configs\utils.py:591
+#: .\insight_ui\configs\utils.py:605
 msgid "WebSocket endpoint URL."
 msgstr "URL des Websocket-API Endpunkts."
 
-#: .\insight_ui\configs\utils.py:592
+#: .\insight_ui\configs\utils.py:610
+msgid "Container ID for targeting sub-elements by ID (e.g. via HTMX out-of-band swaps). Optional; without it the connection still works but the server cannot target specific sub-elements by ID."
+msgstr "Container-ID zum Ansprechen von Unterelementen anhand ihrer ID (z. B. über HTMX-Out-of-Band-Swaps). Optional; ohne diese ID funktioniert die Verbindung zwar weiterhin, der Server kann jedoch keine bestimmten Unterelemente anhand ihrer ID ansprechen."
+
+#: .\insight_ui\configs\utils.py:616
 msgid "Initial content."
 msgstr "Initialer Inhalt."
 
-#: .\insight_ui\configs\utils.py:615
+#: .\insight_ui\configs\utils.py:639
 msgid "Badge label."
 msgstr "Beschriftung der Plakette."
 
-#: .\insight_ui\configs\utils.py:625
+#: .\insight_ui\configs\utils.py:649
 msgid "Optional tooltip text displayed on hover."
 msgstr "Optionaler Tooltip-Text, welcher beim Darüberfahren mit der Maus angezeigt wird."
 
@@ -7086,19 +7063,19 @@ msgstr "Die maximale Anzahl an ausgewählten Optionen wurde erreicht. Wählen Si
 msgid "Site status"
 msgstr "Status der Website"
 
-#: .\insight_ui\templates\insight_ui\components\footer.html:16
+#: .\insight_ui\templates\insight_ui\components\footer.html:17
 msgid "Links"
 msgstr "Links"
 
-#: .\insight_ui\templates\insight_ui\components\footer.html:34
+#: .\insight_ui\templates\insight_ui\components\footer.html:47
 msgid "Imprint"
 msgstr "Impressum"
 
-#: .\insight_ui\templates\insight_ui\components\footer.html:37
+#: .\insight_ui\templates\insight_ui\components\footer.html:50
 msgid "Privacy"
 msgstr "Datenschutz"
 
-#: .\insight_ui\templates\insight_ui\components\footer.html:42
+#: .\insight_ui\templates\insight_ui\components\footer.html:55
 msgid "Do you have any questions or feedback?"
 msgstr "Gibt es Fragen oder Rückmeldungen?"
 
@@ -7263,20 +7240,16 @@ msgstr "%(label)s - Minimum"
 msgid "%(label)s - Maximum"
 msgstr "%(label)s - Maximum"
 
-#: .\insight_ui\templates\insight_ui\components\search_bar.html:20
-#: .\insight_ui\templates\insight_ui\components\search_bar.html:42
+#: .\insight_ui\templates\insight_ui\components\search_bar.html:26
+#: .\insight_ui\templates\insight_ui\components\search_bar.html:48
 msgid "Search"
 msgstr "Suche"
 
-#: .\insight_ui\templates\insight_ui\components\search_bar.html:29
-msgid "Search docs..."
-msgstr "In Doku suchen..."
+#: .\insight_ui\templates\insight_ui\components\search_bar.html:35
+msgid "Search..."
+msgstr "Suchen..."
 
-#: .\insight_ui\templates\insight_ui\components\search_bar.html:29
-msgid "Browse..."
-msgstr "Durchsuchen…"
-
-#: .\insight_ui\templates\insight_ui\components\search_bar.html:52
+#: .\insight_ui\templates\insight_ui\components\search_bar.html:58
 msgid "Search results"
 msgstr "Suchergebnisse"
 
@@ -7428,6 +7401,6 @@ msgstr "Du hast noch kein Konto?"
 msgid "Sign up here"
 msgstr "Hier registrieren"
 
-#: .\insight_ui\templatetags\insight_tags.py:971
+#: .\insight_ui\templatetags\insight_tags.py:972
 msgid "All rights reserved."
 msgstr "Alle Rechte vorbehalten."

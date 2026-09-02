@@ -39,7 +39,7 @@ TYPE_DEFINITIONS: dict[str, tuple[str, ...]] = {
     "CornerPosition": types.CORNER_POSITION_VALUES,
     "InlinePosition": types.INLINE_POSITION_VALUES,
     "HtmxSwapMethod": types.HTMX_SWAP_METHOD_VALUES,
-    "HtmxMethod": types.HTMX_METHOD_VALUES,
+    "HttpMethod": types.HTTP_METHOD_VALUES,
     "FilterFieldType": types.FILTER_FIELD_TYPE_VALUES,
     "GeoMapMarkerType": types.GEO_MAP_MARKER_TYPE_VALUES,
     "SliderLegendMode": types.SLIDER_LEGEND_MODE_VALUES,

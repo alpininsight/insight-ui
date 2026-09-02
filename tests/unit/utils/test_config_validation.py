@@ -12,8 +12,9 @@ from insight_ui.configs import (
     GEO_MAP_MARKER_TYPE_VALUES,
     HTML_BUTTON_TYPE_VALUES,
     HTML_INPUT_TYPE_VALUES,
-    HTMX_METHOD_VALUES,
     HTMX_SWAP_METHOD_VALUES,
+    HTTP_METHOD_VALUES,
+    ICON_COLOR_VALUES,
     INLINE_POSITION_VALUES,
     SIZE_VALUES,
     SLIDER_LEGEND_MODE_VALUES,
@@ -46,8 +47,9 @@ from insight_ui.configs import (
     validate_geo_map_marker_type,
     validate_html_button_type,
     validate_html_input_type,
-    validate_htmx_method,
     validate_htmx_swap_method,
+    validate_http_method,
+    validate_icon_color,
     validate_inline_position,
     validate_size,
     validate_slider_legend_mode,
@@ -119,14 +121,14 @@ def test_icon_config_rejects_invalid_size() -> None:
 def test_button_config_accepts_valid_size() -> None:
     """Test ButtonConfig accepts valid size values."""
     for size in SIZE_VALUES:
-        config = ButtonConfig(size=size)
+        config = ButtonConfig(label="Test", size=size)
         assert config.size == size
 
 
 def test_button_config_rejects_invalid_size() -> None:
     """Test ButtonConfig raises ValueError for invalid size."""
     with pytest.raises(ValueError, match="Invalid size"):
-        ButtonConfig(size="tiny")
+        ButtonConfig(label="Test", size="tiny")
 
 
 def test_badge_config_accepts_valid_size() -> None:
@@ -166,7 +168,7 @@ def test_icon_config_default_size() -> None:
 
 def test_button_config_default_size() -> None:
     """Test ButtonConfig has correct default size."""
-    config = ButtonConfig()
+    config = ButtonConfig(label="Test")
     assert config.size == "m"
 
 
@@ -180,6 +182,97 @@ def test_minimal_stepper_config_default_icon_size() -> None:
     """Test MinimalStepperConfig has correct default icon_size."""
     config = MinimalStepperConfig()
     assert config.icon_size == "xs"
+
+
+# =============================================================================
+# Icon Color Validation
+# =============================================================================
+
+
+# --- ICON_COLOR_VALUES constant ----------------------------------------------
+
+
+def test_icon_color_values_contains_expected_values() -> None:
+    """Test that ICON_COLOR_VALUES contains all expected color values."""
+    expected = (
+        "",
+        "primary",
+        "secondary",
+        "success",
+        "warning",
+        "danger",
+        "info",
+        "text-primary",
+        "text-secondary",
+        "text-hint",
+        "text-link",
+    )
+    assert expected == ICON_COLOR_VALUES
+
+
+def test_icon_color_values_is_tuple() -> None:
+    """Test that ICON_COLOR_VALUES is immutable (tuple)."""
+    assert isinstance(ICON_COLOR_VALUES, tuple)
+
+
+def test_icon_color_values_includes_empty_string() -> None:
+    """Test that ICON_COLOR_VALUES includes empty string for inheritance."""
+    assert "" in ICON_COLOR_VALUES
+
+
+# --- validate_icon_color function --------------------------------------------
+
+
+def test_validate_icon_color_accepts_valid_values() -> None:
+    """Test that validate_icon_color accepts all valid icon color values."""
+    for color in ICON_COLOR_VALUES:
+        validate_icon_color(color)  # Should not raise
+
+
+def test_validate_icon_color_rejects_invalid_value() -> None:
+    """Test that validate_icon_color raises ValueError for invalid colors."""
+    with pytest.raises(ValueError, match="Invalid color 'invalid'"):
+        validate_icon_color("invalid")
+
+
+def test_validate_icon_color_rejects_hex_code() -> None:
+    """Test that validate_icon_color rejects hex color codes."""
+    with pytest.raises(ValueError, match="Invalid color '#FF0000'"):
+        validate_icon_color("#FF0000")
+
+
+def test_validate_icon_color_custom_field_name() -> None:
+    """Test that validate_icon_color uses the custom field name in error messages."""
+    with pytest.raises(ValueError, match="Invalid icon_color 'bad'"):
+        validate_icon_color("bad", field_name="icon_color")
+
+
+# --- IconConfig color validation ---------------------------------------------
+
+
+def test_icon_config_accepts_valid_color() -> None:
+    """Test IconConfig accepts valid color values."""
+    for color in ICON_COLOR_VALUES:
+        config = IconConfig(name="test", color=color)
+        assert config.color == color
+
+
+def test_icon_config_rejects_invalid_color() -> None:
+    """Test IconConfig raises ValueError for invalid color."""
+    with pytest.raises(ValueError, match="Invalid color"):
+        IconConfig(name="test", color="invalid")
+
+
+def test_icon_config_rejects_hex_color() -> None:
+    """Test IconConfig rejects hex color codes (use tokens instead)."""
+    with pytest.raises(ValueError, match="Invalid color"):
+        IconConfig(name="test", color="#4183EA")
+
+
+def test_icon_config_default_color() -> None:
+    """Test IconConfig has correct default color (empty = inherit)."""
+    config = IconConfig(name="test")
+    assert config.color == ""
 
 
 # =============================================================================
@@ -287,14 +380,14 @@ def test_validate_button_type_rejects_invalid_value() -> None:
 def test_button_config_accepts_valid_type() -> None:
     """Test ButtonConfig accepts valid type values."""
     for button_type in BUTTON_TYPE_VALUES:
-        config = ButtonConfig(type=button_type)
+        config = ButtonConfig(label="Test", type=button_type)
         assert config.type == button_type
 
 
 def test_button_config_rejects_invalid_type() -> None:
     """Test ButtonConfig raises ValueError for invalid type."""
     with pytest.raises(ValueError, match="Invalid type"):
-        ButtonConfig(type="invalid")
+        ButtonConfig(label="Test", type="invalid")
 
 
 def test_badge_config_accepts_valid_type() -> None:
@@ -321,7 +414,7 @@ def test_badge_config_rejects_link_type() -> None:
 
 def test_button_config_default_type() -> None:
     """Test ButtonConfig has correct default type."""
-    config = ButtonConfig()
+    config = ButtonConfig(label="Test")
     assert config.type == "primary"
 
 
@@ -607,19 +700,19 @@ def test_validate_html_button_type_custom_field_name() -> None:
 def test_button_config_accepts_valid_button_type() -> None:
     """Test ButtonConfig accepts valid button_type values."""
     for button_type in HTML_BUTTON_TYPE_VALUES:
-        config = ButtonConfig(button_type=button_type)
+        config = ButtonConfig(label="Test", button_type=button_type)
         assert config.button_type == button_type
 
 
 def test_button_config_rejects_invalid_button_type() -> None:
     """Test ButtonConfig raises ValueError for invalid button_type."""
     with pytest.raises(ValueError, match="Invalid button_type"):
-        ButtonConfig(button_type="invalid")
+        ButtonConfig(label="Test", button_type="invalid")
 
 
 def test_button_config_default_button_type() -> None:
     """Test ButtonConfig has correct default button_type."""
-    config = ButtonConfig()
+    config = ButtonConfig(label="Test")
     assert config.button_type == "button"
 
 
@@ -1045,38 +1138,38 @@ def test_radio_block_config_default_hx_swap_method() -> None:
 # =============================================================================
 
 
-# --- HTMX_METHOD_VALUES constant ---------------------------------------------
+# --- HTTP_METHOD_VALUES constant ---------------------------------------------
 
 
-def test_htmx_method_values_contains_expected_values() -> None:
-    """Test that HTMX_METHOD_VALUES contains all expected values."""
-    assert HTMX_METHOD_VALUES == ("get", "post")
+def test_http_method_values_contains_expected_values() -> None:
+    """Test that HTTP_METHOD_VALUES contains all expected values."""
+    assert HTTP_METHOD_VALUES == ("get", "post")
 
 
-def test_htmx_method_values_is_tuple() -> None:
-    """Test that HTMX_METHOD_VALUES is immutable (tuple)."""
-    assert isinstance(HTMX_METHOD_VALUES, tuple)
+def test_http_method_values_is_tuple() -> None:
+    """Test that HTTP_METHOD_VALUES is immutable (tuple)."""
+    assert isinstance(HTTP_METHOD_VALUES, tuple)
 
 
-# --- validate_htmx_method function -------------------------------------------
+# --- validate_http_method function -------------------------------------------
 
 
-def test_validate_htmx_method_accepts_valid_values() -> None:
-    """Test that validate_htmx_method accepts all valid values."""
-    for method in HTMX_METHOD_VALUES:
-        validate_htmx_method(method)  # Should not raise
+def test_validate_http_method_accepts_valid_values() -> None:
+    """Test that validate_http_method accepts all valid values."""
+    for method in HTTP_METHOD_VALUES:
+        validate_http_method(method)  # Should not raise
 
 
-def test_validate_htmx_method_rejects_invalid_value() -> None:
-    """Test that validate_htmx_method raises ValueError for invalid values."""
+def test_validate_http_method_rejects_invalid_value() -> None:
+    """Test that validate_http_method raises ValueError for invalid values."""
     with pytest.raises(ValueError, match="Invalid method 'put'"):
-        validate_htmx_method("put")
+        validate_http_method("put")
 
 
-def test_validate_htmx_method_custom_field_name() -> None:
-    """Test that validate_htmx_method uses the custom field name in error messages."""
+def test_validate_http_method_custom_field_name() -> None:
+    """Test that validate_http_method uses the custom field name in error messages."""
     with pytest.raises(ValueError, match="Invalid http_method 'bad'"):
-        validate_htmx_method("bad", field_name="http_method")
+        validate_http_method("bad", field_name="http_method")
 
 
 # --- HtmxConfig method validation --------------------------------------------
@@ -1084,7 +1177,7 @@ def test_validate_htmx_method_custom_field_name() -> None:
 
 def test_htmx_config_accepts_valid_method() -> None:
     """Test HtmxConfig accepts valid method values."""
-    for method in HTMX_METHOD_VALUES:
+    for method in HTTP_METHOD_VALUES:
         config = HtmxConfig(method=method)
         assert config.method == method
 

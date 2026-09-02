@@ -18,7 +18,7 @@ class TestFooter(TemplateTagsTestCase):
             FooterDescriptionConfig(
                 "Insight UI",
                 "A modern UI library for Django applications to get started quickly.",
-                LogoConfig("insight_ui/svg/ai-logo.svg", alt="Insight UI Logo", height="6rem"),
+                LogoConfig("insight_ui/svg/insight-ui-logo.svg", alt="Insight UI Logo", height="6rem"),
             ),
             [
                 NavbarLinkConfig("Startpage", "/", IconConfig("home", "xs")),

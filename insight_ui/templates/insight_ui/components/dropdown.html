@@ -11,11 +11,12 @@
             <a
                 href="{{ item.request_url|default:'#' }}"
                 role="menuitem"
-                {% if htmx %}
-                    hx-get="{{ item.request_url }}"
-                    hx-target="{{ htmx.target }}"
-                    hx-swap="{{ htmx.swap|default:'innerHTML' }}"
-                    hx-trigger="submit"
+                {% if item.htmx %}
+                    hx-get="{{ item.htmx.request_url|default:item.request_url }}"
+                    hx-target="{{ item.htmx.target }}"
+                    hx-swap="{{ item.htmx.swap_method|default:'innerHTML' }} show:window:top"
+                    hx-push-url="{{ item.htmx.push_url|yesno:'true,false' }}"
+                    hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
                 {% endif %}
                 class="flex gap-1 items-center px-4 py-2 text-sm text-primary bg-insight-bg-surface hover:bg-insight-bg-base {% if forloop.first %}rounded-insight-control-top{% elif forloop.last %}rounded-insight-control-bottom{% endif %}"
             >

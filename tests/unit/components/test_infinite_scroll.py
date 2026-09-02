@@ -1,5 +1,8 @@
 """Tests for the infinite_scroll component."""
 
+import pytest
+from insight_ui.configs import InfiniteScrollConfig
+
 from tests.unit.components.test_template_tags import TemplateTagsTestCase
 
 
@@ -14,3 +17,8 @@ class TestInfiniteScroll(TemplateTagsTestCase):
         """
         rendered = self.render_template(template_string)
         assert "/api/more-items/" in rendered
+
+    def test_infinite_scroll_config_requires_request_url(self) -> None:
+        """InfiniteScrollConfig requires request_url."""
+        with pytest.raises(TypeError):
+            InfiniteScrollConfig()  # type: ignore[call-arg]

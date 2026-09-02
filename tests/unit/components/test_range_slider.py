@@ -3,6 +3,7 @@
 # ruff: noqa: E501
 
 import insight_ui.templatetags.insight_tags
+import pytest
 from bs4 import BeautifulSoup
 from insight_ui.configs.input import SliderConfig
 
@@ -51,3 +52,13 @@ class TestRangeSlider(TemplateTagsTestCase):
         assert input_element["max"] == "8"
         assert input_element["step"] == "2"
         assert not input_element.has_attr("disabled")
+
+    def test_slider_config_rejects_value_min_greater_than_value_max(self) -> None:
+        """SliderConfig raises ValueError when value_min exceeds value_max in dual mode."""
+        with pytest.raises(ValueError, match="value_min"):
+            SliderConfig(name="price", dual=True, minimum=0, maximum=1000, value_min=800, value_max=200)
+
+    def test_slider_config_accepts_valid_dual_range(self) -> None:
+        """SliderConfig allows a valid value_min/value_max pair in dual mode."""
+        config = SliderConfig(name="price", dual=True, minimum=0, maximum=1000, value_min=200, value_max=800)
+        assert (config.value_min, config.value_max) == (200, 800)

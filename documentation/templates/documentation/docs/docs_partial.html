@@ -1,0 +1,30 @@
+{% load i18n insight_tags layout_tags %}
+
+{# OOB update to clear background image (only shown on index page) #}
+<div id="background-image" hx-swap-oob="true"></div>
+
+{# OOB update for left sidebar #}
+<div id="left-aside" hx-swap-oob="true" class="flex">
+    {% sidebar side="left" %}
+        {% include "insight_ui/components/sidebar_nav.html" with sidebar_data=left_sidebar %}
+    {% endsidebar %}
+</div>
+
+{# OOB update for heading #}
+<div id="heading" hx-swap-oob="true">
+    {% page_header chapter=page.chapter title=page.title description=page.description %}
+</div>
+
+{# OOB update for right sidebar #}
+<div id="right-aside" hx-swap-oob="true" class="flex">
+    {% sidebar width=page.sidebar_width|default:"normal" mobile_behavior="drawer" %}
+        {% if page.sidebar_template %}
+            {% include page.sidebar_template %}
+        {% else %}
+            {% include "insight_ui/components/toc_content.html" %}
+        {% endif %}
+    {% endsidebar %}
+</div>
+
+{# Main content #}
+{% include page.content_template %}

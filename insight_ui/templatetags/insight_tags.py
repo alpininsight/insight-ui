@@ -61,6 +61,7 @@ from insight_ui.configs import (
     HeroConfig,
     HtmlButtonType,
     HtmxConfig,
+    IconColor,
     IconConfig,
     ImageCarouselConfig,
     ImageCarouselItemConfig,
@@ -339,10 +340,10 @@ def icon(
     config: IconConfig | None = None,
     *,
     name: str | _Unset = UNSET,
-    size: str | _Unset = UNSET,
-    color: str | _Unset = UNSET,
+    size: Size | _Unset = UNSET,
+    color: IconColor | _Unset = UNSET,
 ) -> dict[str, Any]:
-    """Render specified icon with given size."""
+    """Render specified icon with given size and color."""
     config = build_config(IconConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"icon_config": config}
 

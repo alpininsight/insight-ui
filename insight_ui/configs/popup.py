@@ -51,7 +51,7 @@ class ModalConfig:
     Renders an accessible modal dialog.
 
     Attributes:
-        tag_id: Optional, unique tag ID for identifying the element in JavaScript.
+        tag_id: Unique tag ID for identifying the element in JavaScript. Required to open/close the modal.
         title: Heading of the modal dialog.
         description: A text in the center of the modal dialog. This can be exchanged by extending the template.
         actions: List of buttons displayed at the bottom of the dialog.
@@ -72,7 +72,11 @@ class ModalConfig:
         )
         """
 
-    tag_id: str = field(metadata={"doc": _("Optional, unique tag ID for identifying the element in JavaScript.")})
+    tag_id: str = field(
+        metadata={
+            "doc": _("Unique tag ID for identifying the element in JavaScript. Required to open/close the modal.")
+        }
+    )
     title: str = field(metadata={"doc": _("Heading of the modal dialog.")})
     description: str | list[str] = field(
         default="",

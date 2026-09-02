@@ -9,9 +9,8 @@ from insight_ui.configs.utils import BrandMarkConfig, LogoConfig
 
 CONFIG_DEFAULTS: dict[str, Any] = {
     "webmanifest": "insight_ui/favicon/site.webmanifest",
+    "favicon_svg": "insight_ui/favicon/favicon.svg",
     "favicon": "insight_ui/favicon/favicon.ico",
-    "favicon_32": "insight_ui/favicon/favicon-32x32.png",
-    "favicon_16": "insight_ui/favicon/favicon-16x16.png",
     "apple_touch_icon": "insight_ui/favicon/apple-touch-icon.png",
     "safari_mask_icon": "insight_ui/svg/logo.svg",  # Used by Safari pinned tab
     "safari_mask_icon_color": "#5bbad5",
@@ -31,7 +30,12 @@ CONFIG_DEFAULTS: dict[str, Any] = {
         "mark": BrandMarkConfig(
             "Django",
             "Insight UI",
-            LogoConfig("insight_ui/svg/ai-logo.svg", "insight_ui/svg/ai-logo.svg", "Insight UI Logo", height="2rem"),
+            LogoConfig(
+                "insight_ui/svg/insight-ui-logo.svg",
+                "insight_ui/svg/insight-ui-logo.svg",
+                "Insight UI Logo",
+                height="2rem",
+            ),
         ),
         "footer_text": "A modern, accessible, and responsive UI library for Django projects.",
     },
