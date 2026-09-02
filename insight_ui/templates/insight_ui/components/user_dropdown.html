@@ -22,7 +22,7 @@
                             {% if not link.staff_only or user.is_staff %}
                                 <a href="{{ link.request_url }}" class="flex gap-2 items-center px-6 py-2 w-full text-sm hover:bg-insight-bg-base">
                                     {% if link.icon %}
-                                        {% icon link.icon %}
+                                        {% icon name=link.icon size="s" %}
                                     {% endif %}
                                     {{ link.text }}
                                 </a>

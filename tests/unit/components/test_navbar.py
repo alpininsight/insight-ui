@@ -6,7 +6,13 @@ import pytest
 from bs4 import BeautifulSoup
 from insight_ui.configs.base import IconConfig
 from insight_ui.configs.filter import SearchBarConfig
-from insight_ui.configs.navigation import NavbarBrandConfig, NavbarConfig, NavbarLinkConfig, UserMenuConfig
+from insight_ui.configs.navigation import (
+    NavbarBrandConfig,
+    NavbarConfig,
+    NavbarLinkConfig,
+    UserMenuConfig,
+    UserMenuLinkConfig,
+)
 from insight_ui.configs.popup import ModalConfig
 from insight_ui.configs.utils import BrandMarkConfig, LogoConfig
 
@@ -176,6 +182,24 @@ class TestNavbar(TemplateTagsTestCase):
         assert trigger is not None
         assert trigger.find("img") is None
         assert trigger.get_text(strip=True) == self.user.get_username()[:1].upper()
+
+    def test_navbar_user_menu_renders_string_icon(self) -> None:
+        """User menu icon names render through the documented string contract."""
+        nav_config = NavbarConfig(
+            NavbarBrandConfig(request_url="/", mark=BrandMarkConfig(primary_text="Insight UI")),
+            usermenu=UserMenuConfig(
+                links=[UserMenuLinkConfig(text="Profile", request_url="/profile", icon="user")],
+            ),
+        )
+
+        rendered = self.render_template(
+            "{% load insight_tags %}{% navbar config=nav_config %}",
+            context={"nav_config": nav_config, "user": self.user},
+        )
+        menu_link = BeautifulSoup(rendered, "html.parser").select_one('#user-menu a[href="/profile"]')
+
+        assert menu_link is not None
+        assert menu_link.find("svg") is not None
 
     def test_navbar_renders_brand_mark_when_configured(self) -> None:
         """Navbar can render a controlled brand mark."""
