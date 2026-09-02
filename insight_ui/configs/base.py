@@ -7,12 +7,12 @@ from typing import Any
 from django.utils.translation import gettext_lazy as _
 
 from insight_ui.configs.types import (
-    HtmxMethod,
     HtmxSwapMethod,
+    HttpMethod,
     IconColor,
     Size,
-    validate_htmx_method,
     validate_htmx_swap_method,
+    validate_http_method,
     validate_icon_color,
     validate_size,
 )
@@ -129,7 +129,7 @@ class HtmxConfig:
         metadata={"doc": _("Settle delay appended to hx-swap, e.g. '300ms', so CSS transitions have time to run.")},
     )
     trigger: str = field(default="submit", metadata={"doc": _("Event trigger (hx-trigger).")})
-    method: HtmxMethod = field(default="get", metadata={"doc": _("HTTP method ('get' or 'post').")})
+    method: HttpMethod = field(default="get", metadata={"doc": _("HTTP method ('get' or 'post').")})
     loading_indicator_id: str = field(
         default="", metadata={"doc": _("CSS selector for loading indicator (hx-indicator).")}
     )
@@ -142,7 +142,7 @@ class HtmxConfig:
     def __post_init__(self) -> None:
         """Validate swap_method and method after initialization."""
         validate_htmx_swap_method(self.swap_method, "swap_method")
-        validate_htmx_method(self.method, "method")
+        validate_http_method(self.method, "method")
 
 
 @dataclass

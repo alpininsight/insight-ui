@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django-insight-ui 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-01 18:27+0200\n"
-"PO-Revision-Date: 2026-09-01 18:26+0200\n"
+"POT-Creation-Date: 2026-09-02 11:58+0200\n"
+"PO-Revision-Date: 2026-09-02 11:58+0200\n"
 "Last-Translator:   <>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -1183,8 +1183,8 @@ msgid "or as kwargs or as combination of both"
 msgstr "oder als kwargs oder als Kombination aus beidem"
 
 #: .\documentation\component_details\components.py:75
-#: .\documentation\component_details\demo_context.py:995
-#: .\documentation\component_details\demo_context.py:1021
+#: .\documentation\component_details\demo_context.py:1011
+#: .\documentation\component_details\demo_context.py:1037
 msgid "Layout"
 msgstr "Layout"
 
@@ -1297,7 +1297,7 @@ msgid "Enterprise License"
 msgstr "Enterprise Lizenz"
 
 #: .\documentation\component_details\demo_context.py:114
-#: .\documentation\component_details\demo_context.py:1111
+#: .\documentation\component_details\demo_context.py:1127
 #: .\documentation\demo_utils.py:58
 msgid "Title"
 msgstr "Titel"
@@ -1360,7 +1360,7 @@ msgid "Front-end Design Made Easy"
 msgstr "Front-end Design Made Easy"
 
 #: .\documentation\component_details\demo_context.py:193
-#: .\documentation\component_details\demo_context.py:263
+#: .\documentation\component_details\demo_context.py:269
 msgid "A modern UI library for Django applications to get started quickly."
 msgstr "Eine moderne UI-Bibliothek für Django-Anwendungen, um schnell durchzustarten."
 
@@ -1369,9 +1369,9 @@ msgid "Get Started"
 msgstr "Erste Schritte"
 
 #: .\documentation\component_details\demo_context.py:195
-#: .\documentation\component_details\demo_context.py:977
-#: .\documentation\component_details\demo_context.py:999
-#: .\documentation\component_details\demo_context.py:1025
+#: .\documentation\component_details\demo_context.py:993
+#: .\documentation\component_details\demo_context.py:1015
+#: .\documentation\component_details\demo_context.py:1041
 #: .\documentation\demo_utils.py:23
 #: .\documentation\templates\documentation\docs\component_demo.html:985
 #: .\documentation\templates\documentation\index.html:224
@@ -1391,305 +1391,305 @@ msgstr "Der Authentifizierungsvorgang wurde erfolgreich abgeschlossen."
 msgid "You can now continue to the application."
 msgstr "Sie können nun mit der Anwendung fortfahren."
 
-#: .\documentation\component_details\demo_context.py:219
+#: .\documentation\component_details\demo_context.py:222
 msgid "Session ready"
 msgstr "Sitzung bereit"
 
-#: .\documentation\component_details\demo_context.py:220
+#: .\documentation\component_details\demo_context.py:223
 msgid "This screen is generic and can be reused for auth, deployment, or workflow states."
 msgstr "Dieser Bildschirm ist allgemein gehalten und kann für Authentifizierungs-, Bereitstellungs- oder Workflow-Zustände wiederverwendet werden."
 
-#: .\documentation\component_details\demo_context.py:221
+#: .\documentation\component_details\demo_context.py:224
 msgid "Continue"
 msgstr "Fortfahren"
 
-#: .\documentation\component_details\demo_context.py:222
+#: .\documentation\component_details\demo_context.py:225
 msgid "Back to start"
 msgstr "Zurück zur Startseite"
 
-#: .\documentation\component_details\demo_context.py:225
+#: .\documentation\component_details\demo_context.py:228
 msgid "Sign-in failed"
 msgstr "Die Anmeldung ist fehlgeschlagen"
 
-#: .\documentation\component_details\demo_context.py:226
+#: .\documentation\component_details\demo_context.py:229
 msgid "The SSO process could not be completed."
 msgstr "Der SSO-Vorgang konnte nicht abgeschlossen werden."
 
-#: .\documentation\component_details\demo_context.py:235
+#: .\documentation\component_details\demo_context.py:241
 msgid "What happened?"
 msgstr "Was ist passiert?"
 
-#: .\documentation\component_details\demo_context.py:236
+#: .\documentation\component_details\demo_context.py:242
 msgid "Please try again or contact support if the issue persists."
 msgstr "Bitte versuchen Sie es erneut oder wenden Sie sich an den Support, falls das Problem weiterhin besteht."
 
-#: .\documentation\component_details\demo_context.py:237
+#: .\documentation\component_details\demo_context.py:243
 msgid "Try again"
 msgstr "Erneut versuchen"
 
-#: .\documentation\component_details\demo_context.py:238
+#: .\documentation\component_details\demo_context.py:244
 msgid "Contact support"
 msgstr "Support kontaktieren"
 
-#: .\documentation\component_details\demo_context.py:257
-#: .\documentation\component_details\demo_context.py:342
-#: .\documentation\component_details\demo_context.py:360
-#: .\documentation\component_details\demo_context.py:364
+#: .\documentation\component_details\demo_context.py:263
+#: .\documentation\component_details\demo_context.py:348
+#: .\documentation\component_details\demo_context.py:366
+#: .\documentation\component_details\demo_context.py:370
 msgid "Startpage"
 msgstr "Startseite"
 
-#: .\documentation\component_details\demo_context.py:259
+#: .\documentation\component_details\demo_context.py:265
 msgid "About"
 msgstr "Über"
 
-#: .\documentation\component_details\demo_context.py:262
+#: .\documentation\component_details\demo_context.py:268
 msgid "About Insight-UI"
 msgstr "Über Insight UI"
 
-#: .\documentation\component_details\demo_context.py:266
+#: .\documentation\component_details\demo_context.py:272
 msgid "Test"
 msgstr "Test"
 
-#: .\documentation\component_details\demo_context.py:267
+#: .\documentation\component_details\demo_context.py:273
 msgid "Test2"
 msgstr "Test2"
 
-#: .\documentation\component_details\demo_context.py:270
+#: .\documentation\component_details\demo_context.py:276
 #: .\documentation\context.py:91
 msgid "Search docs... (Ctrl+K)"
 msgstr "In Doku suchen... (Ctrl+K)"
 
-#: .\documentation\component_details\demo_context.py:277
-#: .\documentation\component_details\demo_context.py:306
-#: .\documentation\component_details\demo_context.py:433
-#: .\documentation\component_details\demo_context.py:487
+#: .\documentation\component_details\demo_context.py:283
+#: .\documentation\component_details\demo_context.py:312
+#: .\documentation\component_details\demo_context.py:439
 #: .\documentation\component_details\demo_context.py:493
+#: .\documentation\component_details\demo_context.py:499
 #: .\documentation\views.py:439
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: .\documentation\component_details\demo_context.py:282
+#: .\documentation\component_details\demo_context.py:288
 msgid "Administration"
 msgstr "Administration"
 
-#: .\documentation\component_details\demo_context.py:288
+#: .\documentation\component_details\demo_context.py:294
 msgid "Translation"
 msgstr "Übersetzung"
 
-#: .\documentation\component_details\demo_context.py:310
+#: .\documentation\component_details\demo_context.py:316
 msgid "Work"
 msgstr "Arbeit"
 
-#: .\documentation\component_details\demo_context.py:313
+#: .\documentation\component_details\demo_context.py:319
 msgid "Notifications"
 msgstr "Benachrichtigungen"
 
-#: .\documentation\component_details\demo_context.py:315
+#: .\documentation\component_details\demo_context.py:321
 msgid "Messages"
 msgstr "Nachrichten"
 
-#: .\documentation\component_details\demo_context.py:318
+#: .\documentation\component_details\demo_context.py:324
 msgid "Tasks"
 msgstr "Aufgaben"
 
-#: .\documentation\component_details\demo_context.py:323
+#: .\documentation\component_details\demo_context.py:329
 msgid "Management"
 msgstr "Management"
 
-#: .\documentation\component_details\demo_context.py:326
+#: .\documentation\component_details\demo_context.py:332
 msgid "Calendar"
 msgstr "Kalender"
 
-#: .\documentation\component_details\demo_context.py:327
-#: .\documentation\component_details\demo_context.py:486
+#: .\documentation\component_details\demo_context.py:333
+#: .\documentation\component_details\demo_context.py:492
 msgid "Profile"
 msgstr "Profil"
 
-#: .\documentation\component_details\demo_context.py:343
+#: .\documentation\component_details\demo_context.py:349
 msgid "Storybook"
 msgstr "Bilderbuch"
 
-#: .\documentation\component_details\demo_context.py:344
+#: .\documentation\component_details\demo_context.py:350
 #: .\documentation\context.py:153
 #: .\documentation\templates\documentation\docs\component_demo.html:750
 msgid "Documentation"
 msgstr "Dokumentation"
 
-#: .\documentation\component_details\demo_context.py:361
+#: .\documentation\component_details\demo_context.py:367
 #: .\documentation\context.py:71 .\documentation\context.py:155
 #: .\documentation\templates\documentation\docs\storybook.html:23
-#: .\documentation\templates\documentation\docs\storybook_partial.html:8
+#: .\documentation\templates\documentation\docs\storybook_partial.html:11
 #: .\documentation\views.py:417 .\documentation\views.py:622
 #: .\documentation\views.py:639 .\documentation\views.py:656
 msgid "Components"
 msgstr "Komponenten"
 
-#: .\documentation\component_details\demo_context.py:362
+#: .\documentation\component_details\demo_context.py:368
 msgid "Breadcrumbs"
 msgstr "Breadcrumb-Navigation"
 
-#: .\documentation\component_details\demo_context.py:373
-#: .\documentation\component_details\demo_context.py:378
-#: .\documentation\component_details\demo_context.py:399
+#: .\documentation\component_details\demo_context.py:379
+#: .\documentation\component_details\demo_context.py:384
+#: .\documentation\component_details\demo_context.py:405
 msgid "Contact Details"
 msgstr "Kontaktdaten"
 
-#: .\documentation\component_details\demo_context.py:373
-#: .\documentation\component_details\demo_context.py:378
-#: .\documentation\component_details\demo_context.py:399
+#: .\documentation\component_details\demo_context.py:379
+#: .\documentation\component_details\demo_context.py:384
+#: .\documentation\component_details\demo_context.py:405
 msgid "Information about the person and address."
 msgstr "Informationen zur Person und Anschrift."
 
-#: .\documentation\component_details\demo_context.py:374
-#: .\documentation\component_details\demo_context.py:379
-#: .\documentation\component_details\demo_context.py:400
+#: .\documentation\component_details\demo_context.py:380
+#: .\documentation\component_details\demo_context.py:385
+#: .\documentation\component_details\demo_context.py:406
 msgid "Payment Method"
 msgstr "Zahlungsmethode"
 
-#: .\documentation\component_details\demo_context.py:374
-#: .\documentation\component_details\demo_context.py:379
-#: .\documentation\component_details\demo_context.py:400
+#: .\documentation\component_details\demo_context.py:380
+#: .\documentation\component_details\demo_context.py:385
+#: .\documentation\component_details\demo_context.py:406
 msgid "Select the payment method."
 msgstr "Art der Bezahlung auswählen."
 
-#: .\documentation\component_details\demo_context.py:375
-#: .\documentation\component_details\demo_context.py:380
-#: .\documentation\component_details\demo_context.py:401
+#: .\documentation\component_details\demo_context.py:381
+#: .\documentation\component_details\demo_context.py:386
+#: .\documentation\component_details\demo_context.py:407
 msgid "Review"
 msgstr "Überprüfen"
 
-#: .\documentation\component_details\demo_context.py:375
-#: .\documentation\component_details\demo_context.py:380
-#: .\documentation\component_details\demo_context.py:401
+#: .\documentation\component_details\demo_context.py:381
+#: .\documentation\component_details\demo_context.py:386
+#: .\documentation\component_details\demo_context.py:407
 msgid "Review the data and pay."
 msgstr "Prüfen der Angaben und Bezahlen."
 
-#: .\documentation\component_details\demo_context.py:413
+#: .\documentation\component_details\demo_context.py:419
 msgid "What is Django?"
 msgstr "Was ist Django?"
 
-#: .\documentation\component_details\demo_context.py:413
+#: .\documentation\component_details\demo_context.py:419
 msgid "Django is a web framework for Python."
 msgstr "Django ist ein Webframework für Python."
 
-#: .\documentation\component_details\demo_context.py:414
+#: .\documentation\component_details\demo_context.py:420
 msgid "What is Tailwind?"
 msgstr "Was ist Tailwind?"
 
-#: .\documentation\component_details\demo_context.py:414
+#: .\documentation\component_details\demo_context.py:420
 msgid "Tailwind is a CSS utility framework"
 msgstr "Tailwind ist ein CSS-Utility-Framework."
 
-#: .\documentation\component_details\demo_context.py:415
+#: .\documentation\component_details\demo_context.py:421
 msgid "What is ARIA?"
 msgstr "Was ist ARIA?"
 
-#: .\documentation\component_details\demo_context.py:415
+#: .\documentation\component_details\demo_context.py:421
 msgid "ARIA is short for Accessible Rich Internet Applications."
 msgstr "ARIA steht für Accessible Rich Internet Applications."
 
-#: .\documentation\component_details\demo_context.py:429
+#: .\documentation\component_details\demo_context.py:435
 msgid "General"
 msgstr "Allgemein"
 
-#: .\documentation\component_details\demo_context.py:430
+#: .\documentation\component_details\demo_context.py:436
 msgid "Security"
 msgstr "Sicherheit"
 
-#: .\documentation\component_details\demo_context.py:431
+#: .\documentation\component_details\demo_context.py:437
 msgid "Notification"
 msgstr "Benachrichtigung"
 
-#: .\documentation\component_details\demo_context.py:450
+#: .\documentation\component_details\demo_context.py:456
 msgid "I accept the terms and conditions"
 msgstr "Ich akzeptiere die Allgemeinen Geschäftsbedingungen"
 
-#: .\documentation\component_details\demo_context.py:461
+#: .\documentation\component_details\demo_context.py:467
 msgid "Choose languages: (max. 3)"
 msgstr "Sprachen auswählen: (max. 3)"
 
-#: .\documentation\component_details\demo_context.py:463
+#: .\documentation\component_details\demo_context.py:469
 msgid "English"
 msgstr "Englisch"
 
-#: .\documentation\component_details\demo_context.py:464
+#: .\documentation\component_details\demo_context.py:470
 msgid "German"
 msgstr "Deutsch"
 
-#: .\documentation\component_details\demo_context.py:465
+#: .\documentation\component_details\demo_context.py:471
 msgid "French"
 msgstr "Französisch"
 
-#: .\documentation\component_details\demo_context.py:466
+#: .\documentation\component_details\demo_context.py:472
 msgid "Spanish"
 msgstr "Spanisch"
 
-#: .\documentation\component_details\demo_context.py:468
+#: .\documentation\component_details\demo_context.py:474
 msgid "Italian (currently not available)"
 msgstr "Italienisch (gerade nicht verfügbar)"
 
-#: .\documentation\component_details\demo_context.py:468
-#: .\documentation\component_details\demo_context.py:518
-#: .\documentation\component_details\demo_context.py:540
-#: .\documentation\component_details\demo_context.py:555
+#: .\documentation\component_details\demo_context.py:474
+#: .\documentation\component_details\demo_context.py:524
+#: .\documentation\component_details\demo_context.py:546
+#: .\documentation\component_details\demo_context.py:561
 msgid "Currently not available"
 msgstr "Derzeit nicht verfügbar"
 
-#: .\documentation\component_details\demo_context.py:484
+#: .\documentation\component_details\demo_context.py:490
 msgid "User"
 msgstr "Benutzer"
 
-#: .\documentation\component_details\demo_context.py:488
+#: .\documentation\component_details\demo_context.py:494
 #: .\insight_ui\templates\insight_ui\components\user_dropdown.html:37
 msgid "Logout"
 msgstr "Abmelden"
 
-#: .\documentation\component_details\demo_context.py:496
+#: .\documentation\component_details\demo_context.py:502
 msgid "Personal Information"
 msgstr "Persönliche Informationen"
 
-#: .\documentation\component_details\demo_context.py:497
+#: .\documentation\component_details\demo_context.py:503
 msgid "Appearance"
 msgstr "Aussehen"
 
-#: .\documentation\component_details\demo_context.py:509
+#: .\documentation\component_details\demo_context.py:515
 msgid "Select AI Model:"
 msgstr "KI-Modell auswählen:"
 
-#: .\documentation\component_details\demo_context.py:511
+#: .\documentation\component_details\demo_context.py:517
 msgid "BERT"
 msgstr "BERT"
 
-#: .\documentation\component_details\demo_context.py:512
+#: .\documentation\component_details\demo_context.py:518
 msgid "PaLM 2"
 msgstr "PaLM 2"
 
-#: .\documentation\component_details\demo_context.py:516
+#: .\documentation\component_details\demo_context.py:522
 msgid "LLaMA 2 (currently not available)"
 msgstr "LLaMA 2 (gerade nicht verfügbar)"
 
-#: .\documentation\component_details\demo_context.py:531
+#: .\documentation\component_details\demo_context.py:537
 msgid "Select view mode:"
 msgstr "Anzeigemodus auswählen:"
 
-#: .\documentation\component_details\demo_context.py:546
+#: .\documentation\component_details\demo_context.py:552
 msgid "Select size:"
 msgstr "Größe auswählen:"
 
-#: .\documentation\component_details\demo_context.py:570
+#: .\documentation\component_details\demo_context.py:576
 msgid "Legend Mode: Skip"
 msgstr "Legendenmodus: Skip"
 
-#: .\documentation\component_details\demo_context.py:580
+#: .\documentation\component_details\demo_context.py:586
 msgid "Legend Mode: Rotate"
 msgstr "Legendenmodus: Rotate"
 
-#: .\documentation\component_details\demo_context.py:590
+#: .\documentation\component_details\demo_context.py:596
 msgid "Dual Range Slider"
 msgstr "Doppel-Regler"
 
-#: .\documentation\component_details\demo_context.py:605
-#: .\documentation\component_details\demo_context.py:606
+#: .\documentation\component_details\demo_context.py:611
+#: .\documentation\component_details\demo_context.py:612
 #: .\documentation\templates\documentation\docs\component_demo.html:872
 #: .\documentation\templates\documentation\docs\component_demo.html:873
 #: .\documentation\templates\documentation\docs\component_demo.html:874
@@ -1698,80 +1698,80 @@ msgstr "Doppel-Regler"
 msgid "Click me!"
 msgstr "Klick mich an!"
 
-#: .\documentation\component_details\demo_context.py:615
-#: .\documentation\component_details\demo_context.py:627
+#: .\documentation\component_details\demo_context.py:621
+#: .\documentation\component_details\demo_context.py:633
 msgid "Capitals:"
 msgstr "Hauptstädte:"
 
-#: .\documentation\component_details\demo_context.py:615
-#: .\documentation\component_details\demo_context.py:630
-#: .\documentation\component_details\demo_context.py:631
+#: .\documentation\component_details\demo_context.py:621
+#: .\documentation\component_details\demo_context.py:636
+#: .\documentation\component_details\demo_context.py:637
 msgid "Berlin"
 msgstr "Berlin"
 
-#: .\documentation\component_details\demo_context.py:615
-#: .\documentation\component_details\demo_context.py:630
-#: .\documentation\component_details\demo_context.py:631
+#: .\documentation\component_details\demo_context.py:621
+#: .\documentation\component_details\demo_context.py:636
+#: .\documentation\component_details\demo_context.py:637
 msgid "Rome"
 msgstr "Rom"
 
-#: .\documentation\component_details\demo_context.py:615
-#: .\documentation\component_details\demo_context.py:630
+#: .\documentation\component_details\demo_context.py:621
+#: .\documentation\component_details\demo_context.py:636
 msgid "London"
 msgstr "London"
 
-#: .\documentation\component_details\demo_context.py:630
+#: .\documentation\component_details\demo_context.py:636
 msgid "Brussels"
 msgstr "Brüssel"
 
-#: .\documentation\component_details\demo_context.py:630
+#: .\documentation\component_details\demo_context.py:636
 msgid "Paris"
 msgstr "Paris"
 
-#: .\documentation\component_details\demo_context.py:630
+#: .\documentation\component_details\demo_context.py:636
 msgid "Warsaw"
 msgstr "Warschau"
 
-#: .\documentation\component_details\demo_context.py:649
 #: .\documentation\component_details\demo_context.py:655
+#: .\documentation\component_details\demo_context.py:661
 #: .\documentation\templates\documentation\docs\component_demo.html:969
 msgid "Delete Project"
 msgstr "Projekt löschen"
 
-#: .\documentation\component_details\demo_context.py:651
+#: .\documentation\component_details\demo_context.py:657
 msgid "Are you sure you want to delete 'My Awesome Project'? All files, settings, and collaborator access will be permanently removed. This action cannot be undone."
 msgstr "Möchten Sie „Mein tolles Projekt“ wirklich löschen? Alle Dateien, Einstellungen und Zugriffsrechte der Mitwirkenden werden dauerhaft entfernt. Dieser Vorgang kann nicht rückgängig gemacht werden."
 
-#: .\documentation\component_details\demo_context.py:657
+#: .\documentation\component_details\demo_context.py:663
 #: .\insight_ui\templates\insight_ui\components\progress_bar.html:93
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: .\documentation\component_details\demo_context.py:684
+#: .\documentation\component_details\demo_context.py:690
 msgid "The cat is sleeping on the red sofa."
 msgstr "Die Katze schläft auf dem roten Sofa."
 
-#: .\documentation\component_details\demo_context.py:684
+#: .\documentation\component_details\demo_context.py:690
 msgid "This is a completely different sentence!"
 msgstr "Das ist ein komplett anderer Satz!"
 
-#: .\documentation\component_details\demo_context.py:723
+#: .\documentation\component_details\demo_context.py:739
 msgid "New Feature"
 msgstr "Neue Funktion"
 
-#: .\documentation\component_details\demo_context.py:724
+#: .\documentation\component_details\demo_context.py:740
 msgid "Verified"
 msgstr "Verifiziert"
 
-#: .\documentation\component_details\demo_context.py:725
+#: .\documentation\component_details\demo_context.py:741
 msgid "Beta"
 msgstr "Beta"
 
-#: .\documentation\component_details\demo_context.py:726
+#: .\documentation\component_details\demo_context.py:742
 msgid "Limited"
 msgstr "Limitiert"
 
-#: .\documentation\component_details\demo_context.py:727
+#: .\documentation\component_details\demo_context.py:743
 #: .\documentation\templates\documentation\docs\component_demo.html:838
 #: .\documentation\templates\documentation\docs\component_demo.html:851
 #: .\documentation\templates\documentation\docs\component_demo.html:852
@@ -1781,221 +1781,221 @@ msgstr "Limitiert"
 msgid "Info"
 msgstr "Info"
 
-#: .\documentation\component_details\demo_context.py:858
+#: .\documentation\component_details\demo_context.py:874
 msgid "Chart Example"
 msgstr "Diagrammbeispiel"
 
-#: .\documentation\component_details\demo_context.py:888
+#: .\documentation\component_details\demo_context.py:904
 #: .\documentation\demo_utils.py:19 .\documentation\views.py:333
 #, python-format
 msgid "Element %(i)s"
 msgstr "Element %(i)s"
 
-#: .\documentation\component_details\demo_context.py:888
+#: .\documentation\component_details\demo_context.py:904
 #: .\documentation\demo_utils.py:20
 #, python-format
 msgid "Content for element %(i)s"
 msgstr "Inhalt für Element %(i)s"
 
-#: .\documentation\component_details\demo_context.py:899
+#: .\documentation\component_details\demo_context.py:915
 #: .\documentation\views.py:239
 msgid "Items per page"
 msgstr "Einträge pro Seite"
 
-#: .\documentation\component_details\demo_context.py:909
+#: .\documentation\component_details\demo_context.py:925
 #: .\documentation\templates\documentation\components\parameter_table.html:7
 msgid "Name"
 msgstr "Name"
 
-#: .\documentation\component_details\demo_context.py:909
+#: .\documentation\component_details\demo_context.py:925
 msgid "E-Mail"
 msgstr "E-Mail"
 
-#: .\documentation\component_details\demo_context.py:909
+#: .\documentation\component_details\demo_context.py:925
 #: .\documentation\demo_utils.py:58
 #: .\documentation\templates\documentation\docs\component_details_content.html:90
 #: .\insight_ui\templates\insight_ui\components\live_content_partial.html:13
 msgid "Status"
 msgstr "Status"
 
-#: .\documentation\component_details\demo_context.py:909
+#: .\documentation\component_details\demo_context.py:925
 msgid "Actions"
 msgstr "Aktionen"
 
-#: .\documentation\component_details\demo_context.py:911
-#: .\documentation\component_details\demo_context.py:913
+#: .\documentation\component_details\demo_context.py:927
+#: .\documentation\component_details\demo_context.py:929
 #: .\documentation\demo_utils.py:21
 msgid "Active"
 msgstr "Aktiv"
 
-#: .\documentation\component_details\demo_context.py:912
+#: .\documentation\component_details\demo_context.py:928
 #: .\documentation\demo_utils.py:21
 msgid "Inactive"
 msgstr "Inaktiv"
 
-#: .\documentation\component_details\demo_context.py:915
+#: .\documentation\component_details\demo_context.py:931
 msgid "Example of a table component."
 msgstr "Beispiel einer Tabellenkomponente."
 
-#: .\documentation\component_details\demo_context.py:935
+#: .\documentation\component_details\demo_context.py:951
 msgid "AI model type"
 msgstr "KI-Modelltyp"
 
-#: .\documentation\component_details\demo_context.py:937
+#: .\documentation\component_details\demo_context.py:953
 msgid "To filter by the type of AI-Model."
 msgstr "Nach KI-Modelltyp filtern."
 
-#: .\documentation\component_details\demo_context.py:942
+#: .\documentation\component_details\demo_context.py:958
 msgid "Runtime"
 msgstr "Laufdauer"
 
-#: .\documentation\component_details\demo_context.py:944
+#: .\documentation\component_details\demo_context.py:960
 msgid "To filter by the runtime."
 msgstr "Nach Laufdauer filtern."
 
-#: .\documentation\component_details\demo_context.py:947
+#: .\documentation\component_details\demo_context.py:963
 msgid "License"
 msgstr "Lizenz"
 
-#: .\documentation\component_details\demo_context.py:972
+#: .\documentation\component_details\demo_context.py:988
 msgid "Example Card"
 msgstr "Beispielkarte"
 
-#: .\documentation\component_details\demo_context.py:972
+#: .\documentation\component_details\demo_context.py:988
 msgid "Subtitle"
 msgstr "Untertitel"
 
-#: .\documentation\component_details\demo_context.py:972
+#: .\documentation\component_details\demo_context.py:988
 msgid "This is the card content."
 msgstr "Das ist der Karteninhalt."
 
-#: .\documentation\component_details\demo_context.py:974
+#: .\documentation\component_details\demo_context.py:990
 msgid "Card with actions"
 msgstr "Karte mit Aktion"
 
-#: .\documentation\component_details\demo_context.py:975
+#: .\documentation\component_details\demo_context.py:991
 msgid "This card has some action buttons."
 msgstr "Diese Karte hat einige Aktions-Buttons."
 
-#: .\documentation\component_details\demo_context.py:978
-#: .\documentation\component_details\demo_context.py:1000
-#: .\documentation\component_details\demo_context.py:1026
+#: .\documentation\component_details\demo_context.py:994
+#: .\documentation\component_details\demo_context.py:1016
+#: .\documentation\component_details\demo_context.py:1042
 #: .\documentation\demo_utils.py:24
 msgid "Share"
 msgstr "Teilen"
 
-#: .\documentation\component_details\demo_context.py:990
+#: .\documentation\component_details\demo_context.py:1006
 msgid "App Card"
 msgstr "Appkarte"
 
-#: .\documentation\component_details\demo_context.py:991
+#: .\documentation\component_details\demo_context.py:1007
 msgid "A card with its content arranged horizontally."
 msgstr "Eine Karte mit horizontal angeordnetem Inhalt."
 
-#: .\documentation\component_details\demo_context.py:992
-#: .\documentation\component_details\demo_context.py:1018
+#: .\documentation\component_details\demo_context.py:1008
+#: .\documentation\component_details\demo_context.py:1034
 msgid "Card-Image"
 msgstr "Kartenbild"
 
-#: .\documentation\component_details\demo_context.py:994
-#: .\documentation\component_details\demo_context.py:1020
+#: .\documentation\component_details\demo_context.py:1010
+#: .\documentation\component_details\demo_context.py:1036
 #: .\documentation\templates\documentation\docs\docs_page.html:4
 #: .\documentation\templates\documentation\index.html:4
 #: .\documentation\templates\documentation\playground.html:4
 msgid "Insight UI"
 msgstr "Insight UI"
 
-#: .\documentation\component_details\demo_context.py:996
-#: .\documentation\component_details\demo_context.py:1022
+#: .\documentation\component_details\demo_context.py:1012
+#: .\documentation\component_details\demo_context.py:1038
 msgid "Card"
 msgstr "Karte"
 
-#: .\documentation\component_details\demo_context.py:1011
+#: .\documentation\component_details\demo_context.py:1027
 msgid "Flip Card"
 msgstr "Drehkarte"
 
-#: .\documentation\component_details\demo_context.py:1012
+#: .\documentation\component_details\demo_context.py:1028
 #, fuzzy
 msgid "A card with additional details on the back. Click the arrow to flip."
 msgstr "-"
 
-#: .\documentation\component_details\demo_context.py:1013
+#: .\documentation\component_details\demo_context.py:1029
 msgid "More Details"
 msgstr "Weitere Details"
 
-#: .\documentation\component_details\demo_context.py:1014
+#: .\documentation\component_details\demo_context.py:1030
 msgid "Here you can add extended information without taking more space on the page."
 msgstr "Hier können zusätzliche Informationen hinzufügt werden, ohne dass diese auf der Seite mehr Platz einnehmen."
 
-#: .\documentation\component_details\demo_context.py:1016
+#: .\documentation\component_details\demo_context.py:1032
 #: .\insight_ui\templates\insight_ui\components\footer.html:44
 msgid "Contact"
 msgstr "Kontakt"
 
-#: .\documentation\component_details\demo_context.py:1053
+#: .\documentation\component_details\demo_context.py:1069
 #, python-format
 msgid "Placeholder image %(index)s"
 msgstr "Platzhalterbild %(index)s"
 
-#: .\documentation\component_details\demo_context.py:1104
+#: .\documentation\component_details\demo_context.py:1120
 msgid "Registration"
 msgstr "Registrierung"
 
-#: .\documentation\component_details\demo_context.py:1105
+#: .\documentation\component_details\demo_context.py:1121
 msgid "Sign up to get access to our whole product portfolio."
 msgstr "Registrieren Sie sich, um Zugriff auf unser gesamtes Produktportfolio zu erhalten."
 
-#: .\documentation\component_details\demo_context.py:1112
+#: .\documentation\component_details\demo_context.py:1128
 msgid "Your title"
 msgstr "Dein Titel"
 
-#: .\documentation\component_details\demo_context.py:1113
+#: .\documentation\component_details\demo_context.py:1129
 msgid "No title"
 msgstr "Kein Titel"
 
-#: .\documentation\component_details\demo_context.py:1113
+#: .\documentation\component_details\demo_context.py:1129
 msgid "King"
 msgstr "König"
 
-#: .\documentation\component_details\demo_context.py:1116
+#: .\documentation\component_details\demo_context.py:1132
 msgid "First name"
 msgstr "Vorname"
 
-#: .\documentation\component_details\demo_context.py:1116
+#: .\documentation\component_details\demo_context.py:1132
 msgid "Type in your first name"
 msgstr "Gib deinen Vornamen ein"
 
-#: .\documentation\component_details\demo_context.py:1119
+#: .\documentation\component_details\demo_context.py:1135
 msgid "Last name"
 msgstr "Nachname"
 
-#: .\documentation\component_details\demo_context.py:1119
+#: .\documentation\component_details\demo_context.py:1135
 msgid "Type in your last name"
 msgstr "Gib deinen Nachnamen ein"
 
-#: .\documentation\component_details\demo_context.py:1122
+#: .\documentation\component_details\demo_context.py:1138
 msgid "E-mail"
 msgstr "E-Mail"
 
-#: .\documentation\component_details\demo_context.py:1122
+#: .\documentation\component_details\demo_context.py:1138
 msgid "Type in your.email@example.com"
 msgstr "Gib deine.email@ein.de"
 
-#: .\documentation\component_details\demo_context.py:1125
+#: .\documentation\component_details\demo_context.py:1141
 #: .\insight_ui\templates\insight_ui\login.html:67
 msgid "Password"
 msgstr "Passwort"
 
-#: .\documentation\component_details\demo_context.py:1125
+#: .\documentation\component_details\demo_context.py:1141
 msgid "Type in your password"
 msgstr "Gib dein Passwort ein"
 
-#: .\documentation\component_details\demo_context.py:1128
+#: .\documentation\component_details\demo_context.py:1144
 #: .\insight_ui\templates\insight_ui\components\chat.html:17
 msgid "Message"
 msgstr "Nachricht"
 
-#: .\documentation\component_details\demo_context.py:1128
+#: .\documentation\component_details\demo_context.py:1144
 msgid "Do you want to tell us something?..."
 msgstr "Willst Du uns etwas mitteilen? …"
 
@@ -3367,7 +3367,7 @@ msgid "Tooltip follows mouse position."
 msgstr "Der Tooltip folgt der Mausposition."
 
 #: .\documentation\component_details\parameter_context.py:90
-#: .\insight_ui\configs\base.py:167 .\insight_ui\configs\input.py:480
+#: .\insight_ui\configs\base.py:167 .\insight_ui\configs\input.py:489
 #: .\insight_ui\configs\popup.py:34
 msgid "Optional, unique tag ID for identifying the element in JavaScript."
 msgstr "Optionale, eindeutige Tag-ID für die Identifizierung des Elements im JavaScript."
@@ -5693,7 +5693,7 @@ msgid "Target URL for form submission."
 msgstr "Ziel-URL für die Formularübermittlung."
 
 #: .\insight_ui\configs\forms.py:116
-msgid "HTTP method for form submission (GET or POST)."
+msgid "HTTP method for form submission (get or post)."
 msgstr "HTTP-Methode für die Formularübermittlung (GET oder POST)."
 
 #: .\insight_ui\configs\forms.py:117
@@ -5797,175 +5797,179 @@ msgstr "Anzahl der Checkbox-Elemente, die mindestens ausgewählt sein müssen."
 msgid "Number of checkbox elements that may be selected at the same time."
 msgstr "Anzahl der Checkbox-Elemente, die gleichzeitig ausgewählt sein dürfen."
 
-#: .\insight_ui\configs\input.py:418
+#: .\insight_ui\configs\input.py:424
 msgid "Label of the dropdown element."
 msgstr "Beschriftung des Dropdown-Elements."
 
-#: .\insight_ui\configs\input.py:419 .\insight_ui\configs\navigation.py:705
+#: .\insight_ui\configs\input.py:425 .\insight_ui\configs\navigation.py:705
 msgid "The URL to be called when clicking on the respective item."
 msgstr "Die URL, die beim Klicken auf den jeweiligen Eintrag aufgerufen werden soll."
 
-#: .\insight_ui\configs\input.py:420
+#: .\insight_ui\configs\input.py:426
 msgid "An optional icon displayed before the label."
 msgstr "Ein optionales Icon, welches vor der Beschriftung angezeigt wird."
 
-#: .\insight_ui\configs\input.py:452
+#: .\insight_ui\configs\input.py:428 .\insight_ui\configs\navigation.py:76
+msgid "Optional HTMX configuration for dynamic content loading."
+msgstr "Optionale HTMX-Konfiguration zum dynamischen Laden von Inhalten."
+
+#: .\insight_ui\configs\input.py:461
 msgid "Unique tag ID for identifying the element in JavaScript. Required to open/close the dropdown."
 msgstr "Eindeutige Tag-ID für die Identifizierung des Elements im JavaScript. Erforderlich zum Öffnen/Schließen des Dropdown-Menüs."
 
-#: .\insight_ui\configs\input.py:455
+#: .\insight_ui\configs\input.py:464
 msgid "Label of the dropdown button."
 msgstr "Beschriftung des Dropdown-Buttons."
 
-#: .\insight_ui\configs\input.py:456
+#: .\insight_ui\configs\input.py:465
 msgid "**True** displays an arrow behind the title."
 msgstr "**True** zeigt einen Pfeil hinter dem Titel an."
 
-#: .\insight_ui\configs\input.py:457
+#: .\insight_ui\configs\input.py:466
 msgid "A list of the menu elements."
 msgstr "Eine Liste der Menüelemente."
 
-#: .\insight_ui\configs\input.py:478
+#: .\insight_ui\configs\input.py:487
 msgid "Value of the respective radio button."
 msgstr "Wert des jeweiligen Radio-Buttons."
 
-#: .\insight_ui\configs\input.py:482
+#: .\insight_ui\configs\input.py:491
 msgid "Label of the respective radio button."
 msgstr "Beschriftung des jeweiligen Radio-Buttons."
 
-#: .\insight_ui\configs\input.py:483
+#: .\insight_ui\configs\input.py:492
 msgid "Optional icon displayed before the label."
 msgstr "Optionales Icon, welches vor der Beschriftung angezeigt wird."
 
-#: .\insight_ui\configs\input.py:484
+#: .\insight_ui\configs\input.py:493
 msgid "**True** if the radio button should be disabled."
 msgstr "**True**, wenn der Radio-Button deaktiviert sein soll."
 
-#: .\insight_ui\configs\input.py:489
+#: .\insight_ui\configs\input.py:498
 msgid "Explanation why the radio button is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip."
 msgstr "Erklärung, warum der Radio-Button deaktiviert ist; wird beim drüberfahren mit der Maus als Tooltip angezeigt. Mit einem leeren String, kann bewusst kein Tooltip angezeigt und die Warnmeldung deaktiviert werden."
 
-#: .\insight_ui\configs\input.py:533 .\insight_ui\configs\input.py:581
+#: .\insight_ui\configs\input.py:542 .\insight_ui\configs\input.py:590
 msgid "The shared HTML `name` attribute for all radio buttons in this group."
 msgstr "Das gemeinsame HTML-Attribut „name“ für alle Radio-Buttons in dieser Gruppe."
 
-#: .\insight_ui\configs\input.py:534 .\insight_ui\configs\input.py:582
+#: .\insight_ui\configs\input.py:543 .\insight_ui\configs\input.py:591
 msgid "A text label displayed above the radio elements."
 msgstr "Ein beschreibender Text, welcher über den Radio-Elementen angezeigt wird."
 
-#: .\insight_ui\configs\input.py:535 .\insight_ui\configs\input.py:583
+#: .\insight_ui\configs\input.py:544 .\insight_ui\configs\input.py:592
 msgid "A list of the radio elements."
 msgstr "Eine Liste der Radio-Elemente."
 
-#: .\insight_ui\configs\input.py:537 .\insight_ui\configs\input.py:591
+#: .\insight_ui\configs\input.py:546 .\insight_ui\configs\input.py:600
 msgid "**True** if the radio elements should be displayed side by side."
 msgstr "**True**, wenn die Radio-Elemente nebeneinander angezeigt werden sollen."
 
-#: .\insight_ui\configs\input.py:539 .\insight_ui\configs\input.py:607
+#: .\insight_ui\configs\input.py:548 .\insight_ui\configs\input.py:616
 msgid "The value of the currently selected radio button."
 msgstr "Der Wert des aktuell ausgewählten Radio-Buttons."
 
-#: .\insight_ui\configs\input.py:587
+#: .\insight_ui\configs\input.py:596
 msgid "**True** if the group is inside a `<form>`. If **False** the group gets its own `<form>`."
 msgstr "**True**, wenn sich die Gruppe in einer `<form>` befindet. Bei **False** bekommt die Gruppe ihre eigene &lt;form&gt;."
 
-#: .\insight_ui\configs\input.py:595
+#: .\insight_ui\configs\input.py:604
 msgid "The URL to which the request should be sent when clicking one of the radio buttons."
 msgstr "Die URL, an welche der Request beim Klick auf einen der Radio-Button gesendet werden soll."
 
-#: .\insight_ui\configs\input.py:598
+#: .\insight_ui\configs\input.py:607
 msgid "The ID of the HTML tag to be replaced when switching the radio button."
 msgstr "Die ID des HTML-Tags, welcher beim Wechseln des Radio-Buttons ausgetauscht werden soll."
 
-#: .\insight_ui\configs\input.py:601
+#: .\insight_ui\configs\input.py:610
 msgid "The way in which the target is to be replaced."
 msgstr "Die Art und Weise, wie das Ziel ersetzt werden soll."
 
-#: .\insight_ui\configs\input.py:605
+#: .\insight_ui\configs\input.py:614
 msgid "Name of the JavaScript method to be executed when clicking one of the radio buttons."
 msgstr "Name der JavaScript Methode, welche beim Anklicken auf einen der Radio-Button ausgeführt werden soll."
 
-#: .\insight_ui\configs\input.py:661
+#: .\insight_ui\configs\input.py:670
 msgid "The value of the range slider (single-thumb mode only)."
 msgstr "Der Wert des Range-Sliders (nur im Ein-Regler-Modus)."
 
-#: .\insight_ui\configs\input.py:663
+#: .\insight_ui\configs\input.py:672
 msgid "Smallest configurable value of the range slider."
 msgstr "Kleinster einzustellender Wert des Range-Sliders."
 
-#: .\insight_ui\configs\input.py:664
+#: .\insight_ui\configs\input.py:673
 msgid "Largest configurable value of the range slider."
 msgstr "Größter einzustellender Wert des Range-Sliders."
 
-#: .\insight_ui\configs\input.py:666
+#: .\insight_ui\configs\input.py:675
 msgid "The size of the steps by which the value changes when moving the range slider."
 msgstr "Die Größe der Schritte, um welche sich der Wert beim Bewegen des Range-Sliders verändert."
 
-#: .\insight_ui\configs\input.py:669
+#: .\insight_ui\configs\input.py:678
 msgid "A list of texts displayed as a legend below the slider."
 msgstr "Eine Liste von Texten, welche als Legende unter dem Slider angezeigt werden."
 
-#: .\insight_ui\configs\input.py:675
+#: .\insight_ui\configs\input.py:684
 msgid "Controls responsive legend behavior. Options: **'static'** (default) - no adjustment; **'skip'** - progressively hides legend items when space is limited; **'rotate'** - rotates legend text vertically when space is limited."
 msgstr "Steuert das Verhalten der Legende. Optionen: **'static'** (Standard) – keine Anpassung; **'skip'** – blendet Legendenelemente schrittweise aus, wenn der Platz begrenzt ist; **'rotate'** – dreht den Legendentext vertikal, wenn der Platz begrenzt ist."
 
-#: .\insight_ui\configs\input.py:681
+#: .\insight_ui\configs\input.py:690
 msgid "**True** to enable dual-thumb mode for selecting a range with min and max values."
 msgstr "**True**, um den Zwei-Regler-Modus zur Auswahl eines Bereichs mit Minimal- und Maximalwerten zu aktivieren."
 
-#: .\insight_ui\configs\input.py:684
+#: .\insight_ui\configs\input.py:693
 msgid "The minimum value in dual-thumb mode. Defaults to `minimum`."
 msgstr "Der Mindestwert im Zwei-Regler-Modus. Standardwert ist `minimum`."
 
-#: .\insight_ui\configs\input.py:687
+#: .\insight_ui\configs\input.py:696
 msgid "The maximum value in dual-thumb mode. Defaults to `maximum`."
 msgstr "Der Maximalwert im Zwei-Regler-Modus. Standardwert ist `maximum`."
 
-#: .\insight_ui\configs\input.py:741
+#: .\insight_ui\configs\input.py:750
 msgid "The value of the toggle button."
 msgstr "Der Wert des Toggle-Buttons."
 
-#: .\insight_ui\configs\input.py:742
+#: .\insight_ui\configs\input.py:751
 msgid "Optional icon configuration."
 msgstr "Optionale Icon Konfiguration."
 
-#: .\insight_ui\configs\input.py:743
+#: .\insight_ui\configs\input.py:752
 msgid "**True** if the toggle button should be selected."
 msgstr "**True**, wenn der Toggle-Button ausgewählt sein soll."
 
-#: .\insight_ui\configs\input.py:745
+#: .\insight_ui\configs\input.py:754
 msgid "**True** if the toggle button should look like a typical switch select."
 msgstr "**True**, wenn der Toggle-Button wie ein typischer Switch-Select aussehen soll."
 
-#: .\insight_ui\configs\input.py:749
+#: .\insight_ui\configs\input.py:758
 msgid "Name of the JavaScript method to be executed when the toggle button is clicked."
 msgstr "Name der JavaScript Methode, welche beim Anklicken auf den Toggle-Button ausgeführt werden soll."
 
-#: .\insight_ui\configs\input.py:785
+#: .\insight_ui\configs\input.py:794
 msgid "A brief description of the filter that appears in a tooltip."
 msgstr "Eine kurze Beschreibung des Filters, welche in einem Tooltip angezeigt wird."
 
-#: .\insight_ui\configs\input.py:788 .\insight_ui\configs\input.py:845
+#: .\insight_ui\configs\input.py:797 .\insight_ui\configs\input.py:854
 msgid "List of values that can be selected."
 msgstr "Liste von Werten, welche ausgewählt werden können."
 
-#: .\insight_ui\configs\input.py:793
+#: .\insight_ui\configs\input.py:802
 msgid "Value (the key value, if the options were passed as a dict) of the currently selected option."
 msgstr "Wert (Der Key-Wert, falls die Optionen als Dict übergeben wurden) der aktuell ausgewählten Option."
 
-#: .\insight_ui\configs\input.py:840
+#: .\insight_ui\configs\input.py:849
 msgid "Maximum number of selectable options."
 msgstr "Anzahl der maximal ausgewählten Optionen."
 
-#: .\insight_ui\configs\input.py:842
+#: .\insight_ui\configs\input.py:851
 msgid "Show additional buttons for 'Select All' and 'Deselect All'."
 msgstr "Zusätzliche Buttons für 'Alle Auswählen' und 'Alle Abwählen' Buttons anzeigen."
 
-#: .\insight_ui\configs\input.py:848
+#: .\insight_ui\configs\input.py:857
 msgid "List of currently selected options."
 msgstr "Liste der aktuell ausgewählten Optionen."
 
-#: .\insight_ui\configs\input.py:880
+#: .\insight_ui\configs\input.py:889
 msgid "URL for sending chat messages via HTMX POST."
 msgstr "URL zum Senden von Chat-Nachrichten per HTMX-POST."
 
@@ -6251,10 +6255,6 @@ msgstr "Die URL, die beim Klicken auf den Link aufgerufen werden soll, sofern ke
 #: .\insight_ui\configs\navigation.py:307 .\insight_ui\configs\utils.py:640
 msgid "An optional icon displayed before the text."
 msgstr "Ein optionales Icon, das vor dem Text angezeigt wird."
-
-#: .\insight_ui\configs\navigation.py:76
-msgid "Optional HTMX configuration for dynamic content loading."
-msgstr "Optionale HTMX-Konfiguration zum dynamischen Laden von Inhalten."
 
 #: .\insight_ui\configs\navigation.py:78
 msgid "The link is only displayed for logged-in users."

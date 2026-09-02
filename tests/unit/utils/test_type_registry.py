@@ -134,7 +134,7 @@ def test_type_definitions_contains_expected_types() -> None:
         "GeoMapMarkerType",
         "HtmlButtonType",
         "HtmlInputType",
-        "HtmxMethod",
+        "HttpMethod",
         "HtmxSwapMethod",
         "IconColor",
         "InlinePosition",

@@ -12,8 +12,8 @@ from insight_ui.configs import (
     GEO_MAP_MARKER_TYPE_VALUES,
     HTML_BUTTON_TYPE_VALUES,
     HTML_INPUT_TYPE_VALUES,
-    HTMX_METHOD_VALUES,
     HTMX_SWAP_METHOD_VALUES,
+    HTTP_METHOD_VALUES,
     ICON_COLOR_VALUES,
     INLINE_POSITION_VALUES,
     SIZE_VALUES,
@@ -47,8 +47,8 @@ from insight_ui.configs import (
     validate_geo_map_marker_type,
     validate_html_button_type,
     validate_html_input_type,
-    validate_htmx_method,
     validate_htmx_swap_method,
+    validate_http_method,
     validate_icon_color,
     validate_inline_position,
     validate_size,
@@ -1138,38 +1138,38 @@ def test_radio_block_config_default_hx_swap_method() -> None:
 # =============================================================================
 
 
-# --- HTMX_METHOD_VALUES constant ---------------------------------------------
+# --- HTTP_METHOD_VALUES constant ---------------------------------------------
 
 
-def test_htmx_method_values_contains_expected_values() -> None:
-    """Test that HTMX_METHOD_VALUES contains all expected values."""
-    assert HTMX_METHOD_VALUES == ("get", "post")
+def test_http_method_values_contains_expected_values() -> None:
+    """Test that HTTP_METHOD_VALUES contains all expected values."""
+    assert HTTP_METHOD_VALUES == ("get", "post")
 
 
-def test_htmx_method_values_is_tuple() -> None:
-    """Test that HTMX_METHOD_VALUES is immutable (tuple)."""
-    assert isinstance(HTMX_METHOD_VALUES, tuple)
+def test_http_method_values_is_tuple() -> None:
+    """Test that HTTP_METHOD_VALUES is immutable (tuple)."""
+    assert isinstance(HTTP_METHOD_VALUES, tuple)
 
 
-# --- validate_htmx_method function -------------------------------------------
+# --- validate_http_method function -------------------------------------------
 
 
-def test_validate_htmx_method_accepts_valid_values() -> None:
-    """Test that validate_htmx_method accepts all valid values."""
-    for method in HTMX_METHOD_VALUES:
-        validate_htmx_method(method)  # Should not raise
+def test_validate_http_method_accepts_valid_values() -> None:
+    """Test that validate_http_method accepts all valid values."""
+    for method in HTTP_METHOD_VALUES:
+        validate_http_method(method)  # Should not raise
 
 
-def test_validate_htmx_method_rejects_invalid_value() -> None:
-    """Test that validate_htmx_method raises ValueError for invalid values."""
+def test_validate_http_method_rejects_invalid_value() -> None:
+    """Test that validate_http_method raises ValueError for invalid values."""
     with pytest.raises(ValueError, match="Invalid method 'put'"):
-        validate_htmx_method("put")
+        validate_http_method("put")
 
 
-def test_validate_htmx_method_custom_field_name() -> None:
-    """Test that validate_htmx_method uses the custom field name in error messages."""
+def test_validate_http_method_custom_field_name() -> None:
+    """Test that validate_http_method uses the custom field name in error messages."""
     with pytest.raises(ValueError, match="Invalid http_method 'bad'"):
-        validate_htmx_method("bad", field_name="http_method")
+        validate_http_method("bad", field_name="http_method")
 
 
 # --- HtmxConfig method validation --------------------------------------------
@@ -1177,7 +1177,7 @@ def test_validate_htmx_method_custom_field_name() -> None:
 
 def test_htmx_config_accepts_valid_method() -> None:
     """Test HtmxConfig accepts valid method values."""
-    for method in HTMX_METHOD_VALUES:
+    for method in HTTP_METHOD_VALUES:
         config = HtmxConfig(method=method)
         assert config.method == method
 

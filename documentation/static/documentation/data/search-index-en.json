@@ -1083,17 +1083,17 @@
     "url": "/docs/types#htmxswapmethod"
   },
   {
-    "id": "type:HtmxMethod",
-    "name": "HtmxMethod",
+    "id": "type:HttpMethod",
+    "name": "HttpMethod",
     "category": "type",
     "group": "Types",
     "description": "Values: get, post",
     "keywords": [
-      "htmxmethod",
+      "httpmethod",
       "get",
       "post"
     ],
-    "url": "/docs/types#htmxmethod"
+    "url": "/docs/types#httpmethod"
   },
   {
     "id": "type:FilterFieldType",
