@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add 'side' to the oob swap sidebar on docs detailpages
 - 'parameter table' id is undefined error when navigating via browser history
 - **navbar:** Render user menu icon names
+- Declare AGPL-3.0 in pyproject classifiers
 
 ### Features
 
