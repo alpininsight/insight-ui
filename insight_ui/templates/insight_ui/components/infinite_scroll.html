@@ -14,9 +14,9 @@
   {# Existing Content #}
   <div>
     {% for item in infinite_scroll_config.items %}
-      <div class="p-4 mb-4 bg-insight-bg-surface border border-insight-border-surface rounded-insight-surface">
+      <div class="p-4 mb-4 bg-insight-surface border border-insight-surface rounded-insight-surface">
         <h3>{{ item.title }}</h3>
-        <p class="text-secondary">{{ item.content }}</p>
+        <p class="text-insight-body">{{ item.content }}</p>
       </div>
     {% endfor %}
   </div>
@@ -33,7 +33,7 @@
   <div class="htmx-indicator" role="status">
     <div class="flex justify-center items-center py-4">
       <div class="animate-spin w-6 h-6 border-b-2 border-insight-primary rounded-insight-full" aria-hidden="true"></div>
-      <span class="ml-2 text-sm text-secondary">{% trans 'More content is loading...' %}</span>
+      <span class="ml-2 text-sm text-insight-body">{% trans 'More content is loading...' %}</span>
     </div>
   </div>
 </div>

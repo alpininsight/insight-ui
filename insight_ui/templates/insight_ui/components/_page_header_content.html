@@ -2,12 +2,12 @@
 
 {% if page_header_config.title %}
     <h1 class="text-4xl md:text-5xl">
-        <span class="font-bold text-insight-primary">{{ page_header_config.title }}</span>{% if page_header_config.chapter %} <span class="font-normal text-xl text-insight-text-secondary">{{ page_header_config.chapter }}</span>{% endif %}
+        <span class="font-bold text-insight-primary">{{ page_header_config.title }}</span>{% if page_header_config.chapter %} <span class="font-normal text-xl text-insight-body">{{ page_header_config.chapter }}</span>{% endif %}
     </h1>
 {% endif %}
 
 {% if page_header_config.description %}
-    <div class="{{ max_width|default:'max-w-4xl' }} space-y-4 text-insight-text-primary text-lg leading-loose">
+    <div class="{{ max_width|default:'max-w-4xl' }} space-y-4 text-insight-headline text-lg leading-loose">
         {% for paragraph in page_header_config.description %}
             {{ paragraph|markdownify }}
         {% endfor %}

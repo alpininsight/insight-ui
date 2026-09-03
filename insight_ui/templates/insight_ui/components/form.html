@@ -17,9 +17,9 @@
   {% csrf_token %}
   {% if form_config.title %}
     <div class="mb-6">
-      <h2 class="font-bold text-2xl text-primary">{{ form_config.title }}</h2>
+      <h2 class="font-bold text-2xl text-insight-headline">{{ form_config.title }}</h2>
       {% if form_config.description %}
-        <p class="mt-2 text-secondary">{{ form_config.description }}</p>
+        <p class="mt-2 text-insight-body">{{ form_config.description }}</p>
       {% endif %}
     </div>
   {% endif %}
@@ -36,7 +36,7 @@
     {% endfor %}
   </div>
 
-  <div class="flex gap-2 justify-end pt-4 border-t border-insight-border-surface">
+  <div class="flex gap-2 justify-end pt-4 border-t border-insight-surface">
     {% if form_config.show_reset_button %}
       {% button label=form_config.reset_label|default:_("Reset") type="secondary" button_type="reset" %}
     {% endif %}

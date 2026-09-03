@@ -68,9 +68,9 @@ ICON_COLOR_VALUES: tuple[str, ...] = (
     "warning",
     "danger",
     "info",
-    "text-primary",
-    "text-secondary",
-    "text-hint",
+    "text-headline",
+    "text-body",
+    "text-muted",
     "text-link",
 )
 
@@ -83,9 +83,9 @@ type IconColor = Literal[
     "warning",
     "danger",
     "info",
-    "text-primary",
-    "text-secondary",
-    "text-hint",
+    "text-headline",
+    "text-body",
+    "text-muted",
     "text-link",
 ]
 

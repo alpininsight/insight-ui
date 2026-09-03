@@ -1,14 +1,14 @@
 {% load i18n insight_tags %}
 
 <div class="flex flex-col w-full">
-    <label for="{{ select_config.tag_id }}" class="flex gap-1 mb-1 font-bold text-sm text-primary">
+    <label for="{{ select_config.tag_id }}" class="flex gap-1 mb-1 font-bold text-sm text-insight-headline">
         {% if select_config.icon %}
             {% icon select_config.icon %}
         {% endif %}
         <span class="self-end">{{ select_config.label }}</span>
         {% if select_config.required %}<span class="text-insight-danger" aria-label="{% trans 'Required' %}">*</span>{% endif %}
         {% if select_config.explanation %}
-            <div class="text-secondary" data-insight-tooltip="{{ select_config.explanation }}" data-position="top">
+            <div class="text-insight-body" data-insight-tooltip="{{ select_config.explanation }}" data-position="top">
                 {% icon name="question-mark" size="xs" %}
             </div>
         {% endif %}
@@ -23,7 +23,7 @@
         {% for option, text in select_config.options.items %}
             <option
                 value="{{ option }}" {% if option == select_config.selected_option %}selected{% endif %}
-                {% if option == "-" %}disabled{% elif option == "placeholder" %}class="text-secondary"{% endif %}
+                {% if option == "-" %}disabled{% elif option == "placeholder" %}class="text-insight-body"{% endif %}
             >
                 {{ text }}
             </option>

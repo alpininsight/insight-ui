@@ -8,7 +8,7 @@
     data-msg-max-reached="{% trans 'Maximum selection reached. Deselect an option first.' %}"
 >
     {% if checkbox_group_config.label %}
-        <legend class="flex gap-1 mb-1 font-bold text-sm text-primary">{{ checkbox_group_config.label }}</legend>
+        <legend class="flex gap-1 mb-1 font-bold text-sm text-insight-headline">{{ checkbox_group_config.label }}</legend>
     {% endif %}
     <div class="flex {% if not checkbox_group_config.as_row %}flex-col space-y-1{% else %}space-x-4{% endif %}">
         {% for item in checkbox_group_config.items %}

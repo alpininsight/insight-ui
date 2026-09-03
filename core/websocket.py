@@ -71,9 +71,7 @@ def build_ticker_html(prices: dict[str, dict]) -> str:
     <div id="demo-websocket-output" hx-swap-oob="innerHTML">
         <div class="space-y-1">
             {"".join(rows)}
-            <div class="text-xs text-insight-text-hint dark:text-insight-text-hint-dark
-                        text-right pt-2 border-t border-insight-border-surface
-                        dark:border-insight-border-surface-dark mt-2">
+            <div class="text-xs text-muted text-right pt-2 border-t border-insight-border-surface mt-2">
                 {timestamp}
             </div>
         </div>

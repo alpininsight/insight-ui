@@ -1,7 +1,5 @@
 {% load i18n insight_tags layout_tags docs_tags %}
 
-{% include "insight_ui/components/htmx_loading_indicator.html" %}
-
 {% vbox padding="xl" gap="xl" max_width="l" class="mx-auto" %}
     {# Component Demo and features #}
     {% section %}
@@ -80,15 +78,15 @@
         <table class="text-sm rounded-insight-surface overflow-hidden">
             <thead class="">
                 <tr>
-                    <td class="demo-pattern px-4 py-2 w-24 bg-insight-bg-base border-r border-insight-border-surface"></td>
+                    <td class="demo-pattern px-4 py-2 w-24 bg-insight-base border-r border-insight-surface"></td>
                     <th scope="col" class="px-4 py-2 font-medium text-center">WCAG AA</th>
                     <th scope="col" class="px-4 py-2 font-medium text-center">WCAG AAA</th>
                 </tr>
             </thead>
             <tbody>
-                <tr class="border-t border-insight-border-surface">
-                    <th scope="row" class="px-4 py-2 font-medium text-center border-r border-insight-border-surface">{% trans "Status" %}</th>
-                    <td class="px-4 py-2 bg-insight-bg-surface">
+                <tr class="border-t border-insight-surface">
+                    <th scope="row" class="px-4 py-2 font-medium text-center border-r border-insight-surface">{% trans "Status" %}</th>
+                    <td class="px-4 py-2 bg-insight-surface">
                         <div class="flex justify-center">
                             {% if wcag_aa_compliant %}
                                 <span class="text-insight-success">{% icon name="check" size="s" %}</span>
@@ -97,14 +95,14 @@
                             {% endif %}
                         </div>
                     </td>
-                    <td class="px-4 py-2 bg-insight-bg-surface">
+                    <td class="px-4 py-2 bg-insight-surface">
                         <div class="flex justify-center">
                             {% if wcag_aaa_compliant %}
                                 <span class="text-insight-success">{% icon name="check" size="s" %}</span>
                             {% elif a11y_aaa %}
                                 <span class="text-insight-danger">{% icon name="x-mark" size="s" %}</span>
                             {% else %}
-                                <span class="text-insight-text-hint">N/A</span>
+                                <span class="text-insight-muted">N/A</span>
                             {% endif %}
                         </div>
                     </td>
@@ -184,7 +182,7 @@
                         hx-target="#content"
                         hx-swap="innerHTML show:window:top"
                         hx-push-url="true"
-                        class="text-link"
+                        class="text-insight-link"
                     >
                         {{ topic.formatted_name }}
                     </a>

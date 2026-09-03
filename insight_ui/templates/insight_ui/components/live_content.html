@@ -13,7 +13,7 @@
     {# Loading Spinner #}
     <div class="htmx-indicator" role="status">
         <div class="animate-spin w-8 h-8 border-b-2 border-insight-primary rounded-insight-full" aria-hidden="true"></div>
-        <span class="ml-2 text-sm text-secondary">{% trans 'Loading...' %}</span>
+        <span class="ml-2 text-sm text-insight-body">{% trans 'Loading...' %}</span>
     </div>
 
     {# Content #}
@@ -21,7 +21,7 @@
         {{ live_content_config.initial_content|safe }}
     {% else %}
         <div>
-            <p class="text-secondary">{% trans 'Content is loading...' %}</p>
+            <p class="text-insight-body">{% trans 'Content is loading...' %}</p>
         </div>
     {% endif %}
 </div>

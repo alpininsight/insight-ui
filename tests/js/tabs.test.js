@@ -72,7 +72,7 @@ describe('Tabs Component', () => {
 
       // Inactive tab should have transparent/secondary styling
       expect(tabs[0].classList.contains('border-transparent')).toBe(true);
-      expect(tabs[0].classList.contains('text-secondary')).toBe(true);
+      expect(tabs[0].classList.contains('text-insight-body')).toBe(true);
     });
 
     it('should update tab content aria-label', () => {

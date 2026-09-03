@@ -17,11 +17,11 @@
       {% endfor %}
     </button>
     <!-- Language list -->
-    <div class="hidden absolute z-50 bg-insight-bg-surface border border-insight-border-surface rounded-insight-overlay shadow-insight-overlay overflow-hidden" id="language-menu">
+    <div class="hidden absolute z-50 bg-insight-surface border border-insight-surface rounded-insight-overlay shadow-insight-overlay overflow-hidden" id="language-menu">
       <ul class="list-none font-semibold">
         {% for lang_code, lang_name in LANGUAGES %}
           <li>
-            <button name="language" type="submit" value="{{ lang_code }}" class="px-6 py-2 w-full hover:bg-insight-bg-base">
+            <button name="language" type="submit" value="{{ lang_code }}" class="px-6 py-2 w-full hover:bg-insight-base">
               {{ lang_name }}
             </button>
           </li>

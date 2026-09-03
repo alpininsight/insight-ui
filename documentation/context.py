@@ -189,7 +189,7 @@ def get_base_context() -> dict:
         Combined context dict with config, navbar, and footer data.
 
     """
-    return config.get_config() | get_navbar_context() | get_footer_context() | {"use_default_loading_indicator": False}
+    return config.get_config() | get_navbar_context() | get_footer_context()
 
 
 def get_icon_context() -> dict:
@@ -237,7 +237,12 @@ def get_icon_context() -> dict:
 
     # Color tokens for icons (excluding empty string which inherits)
     color_tokens = ["primary", "secondary", "success", "warning", "danger", "info"]
-    text_color_tokens = ["text-primary", "text-secondary", "text-hint", "text-link"]
+    text_color_tokens = [
+        "text-headline",
+        "text-body",
+        "text-muted",
+        "text-link",
+    ]  # IconColor values (no insight- prefix)
 
     color_table = TableConfig(
         color_tokens,

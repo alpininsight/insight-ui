@@ -10,9 +10,9 @@
                 {{ user.get_username|default:''|slice:":1"|upper }}
             {% endif %}
         </button>
-        <div class="divide-y divide-insight-border-raised hidden absolute top-full ltr:right-0 rtl:left-0 z-50 mt-2 min-w-56 text-lg bg-insight-bg-surface border border-insight-border-raised rounded-insight-overlay shadow-insight-overlay" id="user-menu">
+        <div class="divide-y divide-insight-border-raised hidden absolute top-full ltr:right-0 rtl:left-0 z-50 mt-2 min-w-56 text-lg bg-insight-surface border border-insight-raised rounded-insight-overlay shadow-insight-overlay" id="user-menu">
             <span class="flex flex-col gap-1 px-6 py-1 text-xs">
-                <span class="text-secondary">{% trans "Logged in as" %}: </span>
+                <span class="text-insight-body">{% trans "Logged in as" %}: </span>
                 <span class="font-bold">{{ user.get_username }}</span>
             </span>
             {% if usermenu.links %}
@@ -20,9 +20,9 @@
                     {% for link in usermenu.links %}
                         <li>
                             {% if not link.staff_only or user.is_staff %}
-                                <a href="{{ link.request_url }}" class="flex gap-2 items-center px-6 py-2 w-full text-sm hover:bg-insight-bg-base">
+                                <a href="{{ link.request_url }}" class="flex gap-2 items-center px-6 py-2 w-full text-sm hover:bg-insight-base">
                                     {% if link.icon %}
-                                        {% icon name=link.icon size="s" %}
+                                        {% icon config=link.icon %}
                                     {% endif %}
                                     {{ link.text }}
                                 </a>
@@ -33,7 +33,7 @@
             {% endif %}
             <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}
-                <button type="submit" class="flex gap-2 items-center px-6 py-2 w-full text-sm text-insight-danger text-start rounded-insight-control-bottom hover:bg-insight-bg-base">
+                <button type="submit" class="flex gap-2 items-center px-6 py-2 w-full text-sm text-insight-danger text-start rounded-insight-control-bottom hover:bg-insight-base">
                     {% icon name="arrow-left-on-rectangle" size="s" %}{% trans "Logout" %}
                 </button>
             </form>

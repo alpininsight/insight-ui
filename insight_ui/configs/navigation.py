@@ -112,12 +112,12 @@ class UserMenuLinkConfig:
     """
 
     __example__ = """
-        UserMenuLinkConfig(text="Profile", request_url=reverse("profile"), icon="user")
+        UserMenuLinkConfig(text="Profile", request_url=reverse("profile"), icon=IconConfig("user", "s"))
         """
 
     text: str = field(metadata={"doc": _("Label of the link.")})
     request_url: str = field(metadata={"doc": _("The URL to navigate to when clicking on the link.")})
-    icon: str = field(default="", metadata={"doc": _("An optional icon displayed before the text.")})
+    icon: IconConfig | None = field(default=None, metadata={"doc": _("An optional icon displayed before the text.")})
     staff_only: bool = field(default=False, metadata={"doc": _("The link is only displayed for administrators.")})
 
 
@@ -138,8 +138,8 @@ class UserMenuConfig:
     __example__ = """
         UserMenuConfig(
             links=[
-                UserMenuLinkConfig(text="Profile", request_url=reverse("profile"), icon="user"),
-                UserMenuLinkConfig(text="Settings", request_url=reverse("settings"), icon="cog-6-tooth"),
+                UserMenuLinkConfig(text="Profile", request_url=reverse("profile"), icon=IconConfig("user", "s")),
+                UserMenuLinkConfig(text="Settings", request_url=reverse("settings"), icon=IconConfig("cog-6-tooth", "s")),
             ],
             avatar_url=user.profile.avatar_url,
         )
@@ -307,6 +307,23 @@ class SidebarItemConfig:
     icon: IconConfig | None = field(default=None, metadata={"doc": _("An optional icon displayed before the text.")})
     htmx: HtmxConfig | None = field(default=None, metadata={"doc": _("HTMX configuration for AJAX page changes.")})
     badge: BadgeConfig | None = field(default=None, metadata={"doc": _("An optional badge displayed after the text.")})
+
+    def __post_init__(self) -> None:
+        """Validate configuration and warn about potential issues."""
+        if not self.request_url:
+            warnings.warn(
+                f"SidebarItemConfig '{self.text}' has no request_url set. The link will not be rendered.",
+                UserWarning,
+                stacklevel=2,
+            )
+        if self.request_url and self.htmx and self.htmx.request_url:
+            warnings.warn(
+                f"SidebarItemConfig '{self.text}' has both 'request_url' and 'htmx.request_url' set. "
+                "This may cause conflicting behavior. Use 'request_url' for the href fallback, or "
+                "'htmx.request_url' for HTMX requests, but not both.",
+                UserWarning,
+                stacklevel=2,
+            )
 
 
 @dataclass

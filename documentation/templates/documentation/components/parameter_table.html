@@ -2,8 +2,8 @@
 
 <div class="overflow-auto">
     <table class="w-full table-auto">
-        <thead class="text-primary">
-            <tr class="border-b border-insight-border-surface">
+        <thead class="text-insight-headline">
+            <tr class="border-b border-insight-surface">
                 <th class="px-4 py-2 text-start text-nowrap text-sm" scope="col">{% trans "Name" %}</th>
                 <th class="px-4 py-2 text-start text-nowrap text-sm" scope="col">{% trans "Type" %}</th>
                 <th class="px-4 py-2 text-start text-nowrap text-sm" scope="col">{% trans "Description" %}</th>
@@ -11,9 +11,9 @@
                 <th class="px-4 py-2 text-start text-nowrap text-sm" scope="col">{% trans "Required" %}</th>
             </tr>
         </thead>
-        <tbody class="text-primary">
+        <tbody class="text-insight-headline">
             {% for row, child_path in rows %}
-                <tr class="odd:bg-insight-bg-raised/50 even:bg-insight-bg-base">
+                <tr class="odd:bg-insight-bg-raised/50 even:bg-insight-base">
                     <td class="px-4 py-3 text-start text-sm">
                         <span class="inline-tag">{{ row.name }}</span>
                     </td>

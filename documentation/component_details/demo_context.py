@@ -282,19 +282,19 @@ def get_navbar_context() -> dict:
                     UserMenuLinkConfig(
                         text=_("Settings"),
                         request_url=reverse("index_view"),
-                        icon="cog-8-tooth",
+                        icon=IconConfig("cog-8-tooth", "s"),
                     ),
                     UserMenuLinkConfig(
                         text=_("Administration"),
                         request_url=reverse("admin:index"),
                         staff_only=True,
-                        icon="home",
+                        icon=IconConfig("home", "s"),
                     ),
                     UserMenuLinkConfig(
                         text=_("Translation"),
                         request_url=reverse("index_view"),
                         staff_only=True,
-                        icon="globe-alt",
+                        icon=IconConfig("globe-alt", "s"),
                     ),
                 ],
             ),
@@ -311,17 +311,21 @@ def get_drawer_context() -> dict:
         "demo_sidebar_data": SidebarDataConfig(
             _("Settings"),
             IconConfig("wrench-screwdriver", "s"),
-            [
+            categories=[
                 SidebarCategoryConfig(
                     _("Work"),
                     IconConfig("building-office-2", "s"),
                     [
                         SidebarItemConfig(_("Notifications"), reverse("index_view"), IconConfig("bell", "s")),
                         SidebarItemConfig(
-                            _("Messages"), reverse("index_view"), IconConfig("chat-bubble-left-right", "s")
+                            _("Messages"),
+                            reverse("index_view"),
+                            IconConfig("chat-bubble-left-right", "s"),
                         ),
                         SidebarItemConfig(
-                            _("Tasks"), reverse("index_view"), IconConfig("clipboard-document-check", "s")
+                            _("Tasks"),
+                            reverse("index_view"),
+                            IconConfig("clipboard-document-check", "s"),
                         ),
                     ],
                 ),

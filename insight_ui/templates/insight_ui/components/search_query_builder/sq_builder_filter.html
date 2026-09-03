@@ -8,7 +8,7 @@
 >
     {% if index != 0 %}
         {# Logic #}
-        <div class="flex gap-1 items-center pe-2 text-primary">
+        <div class="flex gap-1 items-center pe-2 text-insight-headline">
             <input type="radio" id="optionAND-{{ index }}" name="logic-{{ index }}" value="AND" {% if not selected_logic or selected_logic == "AND" %}checked{% endif %}>
             <label for="optionAND-{{ index }}" class="pe-2">
                 AND

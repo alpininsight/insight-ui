@@ -70,7 +70,8 @@
 
         {% block extra_head %}{% endblock %}
     </head>
-    <body class="flex flex-col min-h-screen size-full text-insight-text-primary bg-insight-bg-base" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-indicator="#loading-indicator">
+    <body class="flex flex-col min-h-screen size-full text-insight-body bg-insight-base" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-indicator="#loading-indicator">
+        {% if use_default_loading_indicator is not False %}{% include "insight_ui/components/htmx_loading_indicator.html" %}{% endif %}
 
         <div id="background-image">
             {% block background_image %}
@@ -91,7 +92,6 @@
                     {% block heading %}{% endblock heading %}
                 </div>
                 <div id="content" class="w-full leading-loose {% if content_fill %}flex flex-col grow{% endif %}">
-                    {% if use_default_loading_indicator is not False %}{% include "insight_ui/components/htmx_loading_indicator.html" %}{% endif %}
                     {% block content %}{% endblock content %}
                 </div>
             </div>
@@ -105,7 +105,7 @@
 
         {% if INSIGHT_UI.show_current_media_breakpoint %}
             <!-- Helper to visualize media breakpoints -->
-            <div class="flex fixed bottom-2 left-2 z-30 items-center size-10 text-white text-xs bg-insight-bg-base-dark rounded-insight-full">
+            <div class="flex fixed bottom-2 left-2 z-30 items-center size-10 text-white text-xs bg-insight-base-dark rounded-insight-full">
                 <span class="w-full text-center sm:hidden">-</span>
                 <span class="hidden w-full text-center sm:block md:hidden">sm</span>
                 <span class="hidden w-full text-center md:block lg:hidden">md</span>

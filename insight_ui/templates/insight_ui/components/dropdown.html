@@ -6,7 +6,7 @@
     {% else %}
         {% button label=dropdown_config.title data_insight_dropdown=dropdown_config.tag_id aria_expanded="false" aria_haspopup="menu" aria_controls=dropdown_config.tag_id %}
     {% endif %}
-    <div id="{{ dropdown_config.tag_id }}" role="menu" class="hidden border border-insight-border-surface rounded-insight-overlay shadow-insight-overlay">
+    <div id="{{ dropdown_config.tag_id }}" role="menu" class="hidden border border-insight-surface rounded-insight-overlay shadow-insight-overlay">
         {% for item in dropdown_config.items %}
             <a
                 href="{{ item.request_url|default:'#' }}"
@@ -18,7 +18,7 @@
                     hx-push-url="{{ item.htmx.push_url|yesno:'true,false' }}"
                     hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
                 {% endif %}
-                class="flex gap-1 items-center px-4 py-2 text-sm text-primary bg-insight-bg-surface hover:bg-insight-bg-base {% if forloop.first %}rounded-insight-control-top{% elif forloop.last %}rounded-insight-control-bottom{% endif %}"
+                class="flex gap-1 items-center px-4 py-2 text-sm text-insight-headline bg-insight-surface hover:bg-insight-base {% if forloop.first %}rounded-insight-control-top{% elif forloop.last %}rounded-insight-control-bottom{% endif %}"
             >
                 {% if item.icon %}
                     <div>

@@ -1,6 +1,6 @@
 {% load static i18n insight_tags %}
 
-<article class="flex flex-col w-full max-w-96 min-h-56 bg-insight-bg-surface border border-insight-border-surface rounded-insight-surface shadow-insight-surface">
+<article class="flex flex-col w-full max-w-96 min-h-56 bg-insight-surface border border-insight-surface rounded-insight-surface shadow-insight-surface">
   {% if card_config.image %}
     <div class="w-full h-24 overflow-hidden">
       <img src="{% static card_config.image.url %}" alt="{{ card_config.image.alt|default:'' }}" class="object-cover w-full" />
@@ -10,15 +10,15 @@
   <div class="flex flex-1 flex-col p-6 min-h-0">
     {% if card_config.title %}
       <div>
-        <h3 class="text-xl text-primary">{{ card_config.title }}</h3>
+        <h3 class="text-xl text-insight-headline">{{ card_config.title }}</h3>
         {% if card_config.subtitle %}
-          <p class="text-secondary">{{ card_config.subtitle }}</p>
+          <p class="text-insight-body">{{ card_config.subtitle }}</p>
         {% endif %}
       </div>
     {% endif %}
 
     {% if card_config.content %}
-      <div class="grow my-4 min-h-0 text-primary overflow-auto">
+      <div class="grow my-4 min-h-0 text-insight-headline overflow-auto">
         {{ card_config.content|safe }}
       </div>
     {% endif %}

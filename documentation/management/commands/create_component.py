@@ -685,16 +685,10 @@ def {full_func_name}() -> {config.return_type}:
                 "rounded-[var(--insight-radius-md)]",
                 "border",
                 "p-4",
-                "text-insight-text-primary",
-                "dark:text-insight-text-primary-dark",
+                "text-insight-headline",
             )
         )
-        placeholder_classes = " ".join(
-            (
-                "text-insight-text-secondary",
-                "dark:text-insight-text-secondary-dark",
-            )
-        )
+        placeholder_classes = " ".join(("text-insight-body",))
         template_content = f"""{{% load insight_tags %}}
 
 <!-- {name} Component -->

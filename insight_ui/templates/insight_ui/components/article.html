@@ -4,7 +4,7 @@
         <h2>{{ article_config.title }}</h2>
     {% endif %}
 
-    <div class="{{ column_classes }} text-insight-text-secondary text-justify leading-loose"
+    <div class="{{ column_classes }} text-insight-body text-justify leading-loose"
          style="column-gap: {{ article_config.column_gap }}; column-rule: 1px solid var(--color-insight-border-surface);">
         {{ article_config.content|safe }}
     </div>

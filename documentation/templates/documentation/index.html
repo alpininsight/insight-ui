@@ -62,7 +62,7 @@
             {% for stat in stats %}
                 {% vbox gap="xs" h_align="center" %}
                     <span class="font-bold text-2xl text-insight-primary md:text-3xl">{{ stat.value }}</span>
-                    <span class="text-xs text-secondary md:text-sm">{{ stat.label }}</span>
+                    <span class="text-xs text-insight-body md:text-sm">{{ stat.label }}</span>
                 {% endvbox %}
             {% endfor %}
         {% endhbox %}
@@ -73,7 +73,7 @@
         {% vbox gap="xl" h_align="center" %}
             {% vbox h_align="center" %}
                 <h2>{% trans "Everything you need" %}</h2>
-                <p class="text-secondary text-base text-center md:text-lg">
+                <p class="text-insight-body text-base text-center md:text-lg">
                     {% trans "Build professional Django applications with a complete component library. No frontend expertise required." %}
                 </p>
             {% endvbox %}
@@ -86,7 +86,7 @@
                                 {% icon name=feature.icon size="l" %}
                             </div>
                             <h3 class="font-semibold text-xl">{{ feature.title }}</h3>
-                            <p class="text-secondary">{{ feature.description }}</p>
+                            <p class="text-insight-body">{{ feature.description }}</p>
                         {% endvbox %}
                     {% endsurface %}
                 {% endfor %}
@@ -104,7 +104,7 @@
             {% hbox gap="xl" v_align="start" %}
                 {% vbox gap="m" class="flex-1" %}
                     <h3 class="text-insight-primary">{% trans "Django-First Design" %}</h3>
-                    <p class="text-secondary">
+                    <p class="text-insight-body">
                         {% blocktrans %}
                             Insight UI is a CSS/JavaScript framework dedicated to Django applications. Unlike other frameworks,
                             you don't need solid frontend knowledge. It's designed for <b>Rapid Prototyping</b> and developers
@@ -115,7 +115,7 @@
 
                 {% vbox gap="m" class="flex-1" %}
                     <h3 class="text-insight-primary">{% trans "Template Tags, Not JavaScript" %}</h3>
-                    <p class="text-secondary">
+                    <p class="text-insight-body">
                         {% blocktrans %}
                             Insert components directly into your templates and populate them with data.
                             All components are implemented with <b>accessibility</b> in mind and support
@@ -153,7 +153,7 @@
         {% vbox gap="xl" max_width="l" %}
             {% vbox h_align="center" %}
                 <h2>{% trans "Ready-to-use page structure" %}</h2>
-                <p class="text-secondary text-base text-center md:text-lg">
+                <p class="text-insight-body text-base text-center md:text-lg">
                     {% trans "Extend our base template and focus on your content. Navigation, sidebars, dark mode — all included." %}
                 </p>
             {% endvbox %}
@@ -161,43 +161,43 @@
             {% hbox gap="xl" v_align="start" %}
                 {# Visual representation #}
                 {% vbox gap="m" class="flex-1 min-w-0 md:min-w-75" %}
-                    <div class="bg-insight-bg-base border-2 border-insight-border-surface rounded-insight-surface overflow-hidden">
+                    <div class="bg-insight-base border-2 border-insight-surface rounded-insight-surface overflow-hidden">
                         {# Navbar mockup #}
-                        <div class="flex gap-2 items-center px-3 h-10 bg-insight-primary/10 border-b border-insight-border-surface">
+                        <div class="flex gap-2 items-center px-3 h-10 bg-insight-primary/10 border-b border-insight-surface">
                             <div class="w-6 h-6 bg-insight-primary/30 rounded-insight-surface"></div>
                             <div class="flex-1"></div>
-                            <div class="w-16 h-4 bg-insight-bg-base rounded-insight-surface"></div>
-                            <div class="w-16 h-4 bg-insight-bg-base rounded-insight-surface"></div>
+                            <div class="w-16 h-4 bg-insight-base rounded-insight-surface"></div>
+                            <div class="w-16 h-4 bg-insight-base rounded-insight-surface"></div>
                         </div>
                         {# Main area #}
                         {% hbox inline=True class="min-h-45" %}
                             {# Sidebar left #}
-                            <div class="hidden p-2 w-24 border-e border-insight-border-surface sm:block">
+                            <div class="hidden p-2 w-24 border-e border-insight-surface sm:block">
                                 {% vbox gap="xs" %}
-                                    <div class="w-full h-3 bg-insight-bg-surface rounded-insight-surface"></div>
-                                    <div class="w-3/4 h-3 bg-insight-bg-surface rounded-insight-surface"></div>
-                                    <div class="w-full h-3 bg-insight-bg-surface rounded-insight-surface"></div>
+                                    <div class="w-full h-3 bg-insight-surface rounded-insight-surface"></div>
+                                    <div class="w-3/4 h-3 bg-insight-surface rounded-insight-surface"></div>
+                                    <div class="w-full h-3 bg-insight-surface rounded-insight-surface"></div>
                                 {% endvbox %}
                             </div>
                             {# Content #}
                             <div class="flex-1 p-3">
                                 {% vbox gap="s" %}
                                     <div class="w-1/2 h-4 bg-insight-primary/30 rounded-insight-surface"></div>
-                                    <div class="w-full h-3 bg-insight-bg-surface rounded-insight-surface"></div>
-                                    <div class="w-full h-3 bg-insight-bg-surface rounded-insight-surface"></div>
-                                    <div class="w-3/4 h-3 bg-insight-bg-surface rounded-insight-surface"></div>
+                                    <div class="w-full h-3 bg-insight-surface rounded-insight-surface"></div>
+                                    <div class="w-full h-3 bg-insight-surface rounded-insight-surface"></div>
+                                    <div class="w-3/4 h-3 bg-insight-surface rounded-insight-surface"></div>
                                 {% endvbox %}
                             </div>
                             {# Sidebar right #}
-                            <div class="hidden p-2 w-20 border-s border-insight-border-surface md:block">
+                            <div class="hidden p-2 w-20 border-s border-insight-surface md:block">
                                 {% vbox gap="xs" %}
-                                    <div class="w-full h-3 bg-insight-bg-surface rounded-insight-surface"></div>
-                                    <div class="w-2/3 h-3 bg-insight-bg-surface rounded-insight-surface"></div>
+                                    <div class="w-full h-3 bg-insight-surface rounded-insight-surface"></div>
+                                    <div class="w-2/3 h-3 bg-insight-surface rounded-insight-surface"></div>
                                 {% endvbox %}
                             </div>
                         {% endhbox %}
                         {# Footer mockup #}
-                        <div class="h-8 bg-insight-bg-surface border-t border-insight-border-surface"></div>
+                        <div class="h-8 bg-insight-surface border-t border-insight-surface"></div>
                     </div>
                 {% endvbox %}
 
@@ -211,7 +211,7 @@
                                 </div>
                                 {% vbox %}
                                     <span class="font-mono text-sm text-insight-primary">{{ block.name }}</span>
-                                    <span class="text-xs text-secondary">{{ block.description }}</span>
+                                    <span class="text-xs text-insight-body">{{ block.description }}</span>
                                 {% endvbox %}
                             {% endhbox %}
                         {% endsurface %}
@@ -231,7 +231,7 @@
         {% vbox gap="xl" max_width="l" %}
             {% vbox h_align="center" %}
                 <h2>{% trans "Make it yours" %}</h2>
-                <p class="text-secondary text-base text-center md:text-lg">
+                <p class="text-insight-body text-base text-center md:text-lg">
                     {% trans "Three ways to customize — from simple color changes to complete component overrides." %}
                 </p>
             {% endvbox %}
@@ -244,9 +244,9 @@
                                 {% icon name=option.icon size="l" %}
                             </div>
                             <h3 class="font-semibold text-lg">{{ option.title }}</h3>
-                            <p class="text-secondary text-sm">{{ option.description }}</p>
+                            <p class="text-insight-body text-sm">{{ option.description }}</p>
                             <div class="pt-2 mt-auto">
-                                <code class="px-2 py-1 text-xs bg-insight-bg-raised rounded-insight-control">{{ option.file }}</code>
+                                <code class="px-2 py-1 text-xs bg-insight-raised rounded-insight-control">{{ option.file }}</code>
                             </div>
                         {% endvbox %}
                     {% endsurface %}
@@ -271,7 +271,7 @@
                         </div>
                         <h2 class="pb-0">{% trans "Built for everyone" %}</h2>
                     {% endhbox %}
-                    <p class="text-secondary">
+                    <p class="text-insight-body">
                         {% trans "Accessibility isn't an afterthought. Every component is designed with WCAG 2.1 AA compliance from the start." %}
                     </p>
                 {% endvbox %}
@@ -281,7 +281,7 @@
                         {% for item in a11y_features %}
                             {% hbox gap="s" v_align="center" inline=True class="p-2" %}
                                 <span class="shrink-0 text-insight-success">{% icon name="check" size="s" %}</span>
-                                <span class="text-sm text-secondary">{{ item }}</span>
+                                <span class="text-sm text-insight-body">{{ item }}</span>
                             {% endhbox %}
                         {% endfor %}
                     {% endgrid %}
@@ -295,7 +295,7 @@
         {% vbox gap="xl" max_width="l" %}
             {% vbox h_align="center" %}
                 <h2>{% trans "Explore by category" %}</h2>
-                <p class="text-secondary text-base text-center md:text-lg">
+                <p class="text-insight-body text-base text-center md:text-lg">
                     {% trans "From layout primitives to complex data components — find what you need." %}
                 </p>
             {% endvbox %}
@@ -309,7 +309,7 @@
                             </div>
                             {% vbox %}
                                 <span class="font-semibold transition-colors group-hover:text-insight-primary">{{ category.name }}</span>
-                                <span class="text-xs text-secondary">
+                                <span class="text-xs text-insight-body">
                                     {% blocktrans count count=category.count %}{{ count }} component{% plural %}{{ count }} components{% endblocktrans %}
                                 </span>
                             {% endvbox %}
@@ -330,7 +330,7 @@
         {% vbox gap="xl" max_width="l" %}
             {% vbox h_align="center" %}
                 <h2>{% trans "Extend with add-ons" %}</h2>
-                <p class="text-secondary text-base text-center md:text-lg">
+                <p class="text-insight-body text-base text-center md:text-lg">
                     {% trans "Specialized packages for common application patterns — built on top of Insight UI." %}
                 </p>
             {% endvbox %}
@@ -354,9 +354,9 @@
                                             {% badge label=_("Planned") type="neutral" size="xs" %}
                                         {% endif %}
                                     {% endhbox %}
-                                    <p class="text-secondary text-sm">{{ addon.description }}</p>
+                                    <p class="text-insight-body text-sm">{{ addon.description }}</p>
                                     {% if addon.url %}
-                                        <a href="{{ addon.url }}" class="mt-1 text-link text-sm">{% trans "Learn more" %} →</a>
+                                        <a href="{{ addon.url }}" class="mt-1 text-insight-link text-sm">{% trans "Learn more" %} →</a>
                                     {% endif %}
                                 {% endvbox %}
                             {% endhbox %}
@@ -372,7 +372,7 @@
         {% vbox gap="xl" max_width="m" %}
             {% vbox h_align="center" %}
                 <h2>{% trans "Is Insight UI right for you?" %}</h2>
-                <p class="text-secondary text-base md:text-lg">{% trans "Check if our framework matches your needs:" %}</p>
+                <p class="text-insight-body text-base md:text-lg">{% trans "Check if our framework matches your needs:" %}</p>
             {% endvbox %}
             {% vbox gap="s" %}
                 {% for item in checklist %}
@@ -381,7 +381,7 @@
                             <div class="flex shrink-0 justify-center items-center w-8 h-8 bg-insight-success-soft rounded-insight-full">
                                 {% icon name="check" size="s" %}
                             </div>
-                            <span class="text-secondary">{{ item }}</span>
+                            <span class="text-insight-body">{{ item }}</span>
                         {% endhbox %}
                     {% endsurface %}
                 {% endfor %}

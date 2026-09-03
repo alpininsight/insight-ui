@@ -3,7 +3,7 @@
 
 {# Optional title #}
 {% if sidebar_data.title %}
-  <div class="flex justify-between items-center pb-4 mb-4 border-b border-insight-border-surface">
+  <div class="flex justify-between items-center pb-4 mb-4 border-b border-insight-surface">
     <h2 class="flex gap-2 items-center text-lg">
       {% if sidebar_data.icon %}
         <div>
@@ -30,7 +30,7 @@
               hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
             {% endif %}
             href="{{ item.request_url }}"
-            class="insight-sidebar-link flex gap-2 items-center px-4 py-1 text-sm text-primary tracking-wide"
+            class="insight-sidebar-link flex gap-2 items-center px-4 py-1 text-sm text-insight-headline tracking-wide"
           >
             {% if item.icon %}
               {% icon item.icon %}
@@ -47,7 +47,7 @@
 
   {# Optional categories section title #}
   {% if sidebar_data.categories_title %}
-    <h3 class="flex gap-1 pt-8 mt-4 font-semibold text-lg tracking-wide border-t border-insight-border-surface">
+    <h3 class="flex gap-1 pt-8 mt-4 font-semibold text-lg tracking-wide border-t border-insight-surface">
       {{ sidebar_data.categories_title }}
     </h3>
   {% endif %}
@@ -74,7 +74,7 @@
                   hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
                 {% endif %}
                 href="{{ item.request_url }}"
-                class="insight-sidebar-link flex gap-2 items-center px-4 py-1 text-sm text-primary tracking-wide"
+                class="insight-sidebar-link flex gap-2 items-center px-4 py-1 text-sm text-insight-headline tracking-wide"
               >
                 {% if item.icon %}
                   {% icon item.icon %}

@@ -188,7 +188,7 @@ class TestNavbar(TemplateTagsTestCase):
         nav_config = NavbarConfig(
             NavbarBrandConfig(request_url="/", mark=BrandMarkConfig(primary_text="Insight UI")),
             usermenu=UserMenuConfig(
-                links=[UserMenuLinkConfig(text="Profile", request_url="/profile", icon="user")],
+                links=[UserMenuLinkConfig(text="Profile", request_url="/profile", icon=IconConfig("user"))],
             ),
         )
 
