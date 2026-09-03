@@ -459,8 +459,6 @@ dependencies = [
     { name = "defusedxml" },
     { name = "django" },
     { name = "markdown" },
-    { name = "python-decouple" },
-    { name = "whitenoise" },
 ]
 
 [package.optional-dependencies]
@@ -479,8 +477,10 @@ dev = [
     { name = "django-tailwind-cli" },
     { name = "mypy" },
     { name = "pre-commit" },
+    { name = "python-decouple" },
     { name = "ruff" },
     { name = "uvicorn", extra = ["standard"] },
+    { name = "whitenoise" },
 ]
 pytest = [
     { name = "beautifulsoup4" },
@@ -500,8 +500,6 @@ requires-dist = [
     { name = "pytest", marker = "extra == 'test'", specifier = "==9.1.1" },
     { name = "pytest-cov", marker = "extra == 'test'", specifier = "==7.1.0" },
     { name = "pytest-django", marker = "extra == 'test'", specifier = "==4.14.0" },
-    { name = "python-decouple", specifier = "==3.8" },
-    { name = "whitenoise", specifier = ">=6.12.0" },
 ]
 provides-extras = ["test"]
 
@@ -512,8 +510,10 @@ dev = [
     { name = "django-tailwind-cli", specifier = ">=4.6.2" },
     { name = "mypy", specifier = ">=2.3.0" },
     { name = "pre-commit", specifier = ">=4.6.1" },
+    { name = "python-decouple", specifier = ">=3.8" },
     { name = "ruff", specifier = ">=0.16.1" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.52.1" },
+    { name = "whitenoise", specifier = ">=6.12.0" },
 ]
 pytest = [
     { name = "beautifulsoup4", specifier = ">=4.15.0" },

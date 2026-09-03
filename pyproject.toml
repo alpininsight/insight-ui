@@ -31,10 +31,17 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 
+keywords = [
+    "django",
+    "ui",
+    "components",
+    "tailwind",
+    "htmx",
+    "accessibility",
+    "wcag",
+]
 dependencies = [
     "django>=5.2.17,<7",
-    "whitenoise>=6.12.0",
-    "python-decouple==3.8",
     "markdown>=3.10.3",
     "defusedxml>=0.7.1",
 ]
@@ -45,6 +52,8 @@ default-groups = ["dev"]
 # For uv and poetry
 [dependency-groups]
 dev = [
+    "whitenoise>=6.12.0",
+    "python-decouple>=3.8",
     "mypy>=2.3.0",
     "django-stubs==6.1.0",
     "ruff>=0.16.1",
@@ -72,8 +81,9 @@ test = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/alpininsight/insight-ui"
-Documentation = "https://github.com/alpininsight/insight-ui#documentation"
+Homepage = "https://insight-ui.com"
+Documentation = "https://insight-ui.com"
+Repository = "https://github.com/alpininsight/insight-ui"
 Issues = "https://github.com/alpininsight/insight-ui/issues"
 
 
@@ -270,15 +280,5 @@ mark-parentheses  = false
 [tool.ruff.lint.pydocstyle]
 convention = "google"
 
-[tool.hatch.build.targets.sdist]
-exclude = [
-    "/insight_ui/static/insight_ui/css/*.min.css",
-    "/insight_ui/static/insight_ui/js/*.min.js",
-]
-
 [tool.hatch.build.targets.wheel]
-packages = ["insight_ui", "documentation"]
-exclude = [
-    "/insight_ui/static/insight_ui/css/*.min.css",
-    "/insight_ui/static/insight_ui/js/*.min.js",
-]
+packages = ["insight_ui"]
