@@ -50,6 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Rename 'HTMXMethod' to 'HTTPMethod' and use it for 'form' component method parameter
 - **corner-ribbon:** Support accessible link actions
 - Preparation for publishing on PyPI
+- Text tokens
 
 ### Miscellaneous
 
