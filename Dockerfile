@@ -12,7 +12,7 @@ WORKDIR /build
 
 COPY requirements.txt .
 
-RUN pip wheel --wheel-dir /wheels -r requirements.txt "uvicorn[standard]==0.52.1" gunicorn
+RUN pip wheel --wheel-dir /wheels -r requirements.txt "uvicorn[standard]" gunicorn
 
 FROM python:3.14-slim AS runtime
 
