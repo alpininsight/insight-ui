@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove gap below sidebar in the sidebar demo
 - Add 'side' to the oob swap sidebar on docs detailpages
 - 'parameter table' id is undefined error when navigating via browser history
+- **navbar:** Render user menu icon names
 
 ### Features
 
@@ -41,10 +42,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add HTMX support to 'dropdown' component
 - New Logo and Favicon
 - Rename 'HTMXMethod' to 'HTTPMethod' and use it for 'form' component method parameter
+- **corner-ribbon:** Support accessible link actions
 
 ### Miscellaneous
 
 - **pre-commit:** Autoupdate hooks
+
+### Styling
+
+- **corner-ribbon:** Format linked ribbon template
 
 ### Testing
 
