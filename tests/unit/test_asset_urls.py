@@ -1,7 +1,5 @@
 """Tests for asset URL resolution."""
 
-from http import HTTPStatus
-
 import pytest
 from django.conf import settings
 from django.template import Context, Template
@@ -81,25 +79,3 @@ def test_config_merges_nested_asset_defaults() -> None:
     assert assets["cdn_enabled"] is True
     assert assets["cdn_base_url"] == "https://cdn.alpininsight.ai"
     assert assets["cdn_prefix"] == "insight-ui"
-
-
-@pytest.mark.django_db
-@override_settings(
-    INSIGHT_UI={
-        "assets": {
-            "use_minified": True,
-            "cdn_enabled": True,
-            "cdn_base_url": "https://cdn.alpininsight.ai",
-            "cdn_prefix": "insight-ui",
-            "cdn_version": "1.2.3",
-        }
-    }
-)
-def test_base_template_uses_cdn_minified_assets(client) -> None:  # noqa: ANN001
-    """Rendered pages should use CDN-backed minified Insight UI assets."""
-    response = client.get("/")
-
-    assert response.status_code == HTTPStatus.OK
-    html = response.content.decode()
-    assert "https://cdn.alpininsight.ai/insight-ui/v1.2.3/js/insight-ui-utils.min.js" in html
-    assert "https://cdn.alpininsight.ai/insight-ui/v1.2.3/css/tailwind.min.css" in html

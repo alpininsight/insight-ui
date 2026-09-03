@@ -73,7 +73,7 @@ test = [
 
 [project.urls]
 Homepage = "https://github.com/alpininsight/insight-ui"
-Documentation = "https://github.com/alpininsight/insight-ui#documentation"
+Documentation = "https://insight-ui.com"
 Issues = "https://github.com/alpininsight/insight-ui/issues"
 
 
@@ -97,11 +97,6 @@ disallow_untyped_decorators = true
 no_implicit_optional = true
 strict_optional = true
 
-[[tool.mypy.overrides]]
-module = "core.*"
-disallow_untyped_defs = false
-disallow_incomplete_defs = false
-
 [tool.coverage.run]
 omit = [
     "*/migrations/*",
@@ -113,7 +108,7 @@ omit = [
 [tool.ruff]
 fix = true
 
-src = ["insight_ui", "documentation", "core", "tests"]
+src = ["insight_ui", "tests"]
 
 # Exclude a variety of commonly ignored directories.
 exclude = [
@@ -142,7 +137,9 @@ exclude = [
     "_wt",
     "buck-out",
     "build",
+    "core",
     "dist",
+    "documentation",
     "node_modules",
     "site-packages",
     "staticfiles",
@@ -223,8 +220,6 @@ unfixable = []
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 [tool.ruff.lint.per-file-ignores]
-# Ignore long lines in the component detail (docs) strings
-"documentation/component_details/**.py" = ["E501"]
 "insight_ui/configs/**.py" = ["E501"]
 "insight_ui/templatetags/insight_tags.py" = ["PLR0913", "PLR0917"]
 # Test-specific ignores
@@ -277,7 +272,7 @@ exclude = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["insight_ui", "documentation"]
+packages = ["insight_ui"]
 exclude = [
     "/insight_ui/static/insight_ui/css/*.min.css",
     "/insight_ui/static/insight_ui/js/*.min.js",

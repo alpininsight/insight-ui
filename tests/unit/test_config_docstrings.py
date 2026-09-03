@@ -1,9 +1,10 @@
+"""Verify the public dataclass configuration documentation contract."""
+
 from dataclasses import fields, is_dataclass
 
 import pytest
 from django.utils.translation import activate
 from docstring_parser import DocstringStyle, parse
-
 from insight_ui import configs
 
 
@@ -19,7 +20,9 @@ def validate_config_docs(cls) -> None:  # noqa: ANN001
         cls: The dataclass config class to validate.
     """
     parsed = parse(cls.__doc__ or "", style=DocstringStyle.GOOGLE)
-    doc_params = {attr.arg_name: (attr.description or "").strip() for attr in parsed.meta if attr.args[0] == "attribute"}
+    doc_params = {
+        attr.arg_name: (attr.description or "").strip() for attr in parsed.meta if attr.args[0] == "attribute"
+    }
     field_names = {field.name for field in fields(cls)}
 
     # Verify that every field is documented
