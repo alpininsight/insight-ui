@@ -2,7 +2,7 @@
 
 <br>
 
-<img src=".github/assets/hero-title.svg" alt="Insight UI" width="400">
+<img src="https://raw.githubusercontent.com/alpininsight/insight-ui/develop/.github/assets/hero-title.svg" alt="Insight UI" width="400">
 
 <br>
 
@@ -25,7 +25,7 @@ HTMX-powered · Tailwind-based · Self-documenting
 
 <br>
 
-<img src=".github/assets/hero-divider.svg" alt="" width="600">
+<img src="https://raw.githubusercontent.com/alpininsight/insight-ui/develop/.github/assets/hero-divider.svg" alt="" width="600">
 
 </div>
 
