@@ -760,10 +760,10 @@
         @apply bg-white dark:border-white hover:bg-gray-300 active:bg-gray-400 hover:border-gray-300 active:border-gray-400 text-insight-text-headline dark:text-insight-text-inverse;
     }
     .btn-link {
-        @apply border-0 text-insight-link px-6 py-2;
+        @apply border-0 text-insight-text-link hover:text-insight-text-link-hover underline px-6 py-2;
     }
     .btn-disabled {
-        @apply bg-neutral-300 dark:bg-neutral-600 border-neutral-300 dark:border-neutral-600 text-insight-disabled;
+        @apply bg-neutral-300 dark:bg-neutral-600 border-neutral-300 dark:border-neutral-600 text-insight-text-disabled;
     }
 
     /* Outline variant - transparent bg, colored border, fills on hover */
@@ -789,7 +789,7 @@
         @apply border-white hover:bg-gray-300 active:bg-gray-400 hover:border-gray-300 active:border-gray-400 text-insight-text-headline hover:text-insight-text-inverse;
     }
     .btn-outline-disabled {
-        @apply border-neutral-300 dark:border-neutral-600 text-insight-disabled;
+        @apply border-neutral-300 dark:border-neutral-600 text-insight-text-disabled;
     }
 
     /* Subtle variant - no border, light background on hover, minimal visual weight */
@@ -815,7 +815,7 @@
         @apply hover:bg-black/20 dark:hover:bg-white/20 active:bg-black/30 dark:active:bg-white/30 text-insight-text-headline dark:text-insight-text-headline-dark;
     }
     .btn-subtle-disabled {
-        @apply text-insight-disabled;
+        @apply text-insight-text-disabled;
     }
 
     /*

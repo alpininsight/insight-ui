@@ -2619,6 +2619,10 @@
   .focus\:ring-insight-primary:focus {
     --tw-ring-color: var(--color-insight-primary);
   }
+  .focus\:ring-offset-2:focus {
+    --tw-ring-offset-width: 2px;
+    --tw-ring-offset-shadow: var(--tw-ring-inset,) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  }
   .focus\:outline-2:focus {
     outline-style: var(--tw-outline-style);
     outline-width: 2px;
@@ -3689,7 +3693,7 @@
   .btn-disabled {
     border-color: var(--color-neutral-300);
     background-color: var(--color-neutral-300);
-    color: var(--color-neutral-400);
+    color: var(--color-insight-text-disabled);
     &:where([data-theme=dark], [data-theme=dark] *) {
       border-color: var(--color-neutral-600);
     }
@@ -3874,7 +3878,7 @@
   }
   .btn-outline-disabled {
     border-color: var(--color-neutral-300);
-    color: var(--color-neutral-400);
+    color: var(--color-insight-text-disabled);
     &:where([data-theme=dark], [data-theme=dark] *) {
       border-color: var(--color-neutral-600);
     }
@@ -4068,7 +4072,7 @@
     }
   }
   .btn-subtle-disabled {
-    color: var(--color-neutral-400);
+    color: var(--color-insight-text-disabled);
   }
   .badge {
     display: inline-flex;
