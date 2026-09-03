@@ -4,7 +4,6 @@ from django.templatetags.static import static
 from django.urls import reverse, reverse_lazy
 from django.utils.lorem_ipsum import paragraphs
 from django.utils.translation import gettext as _
-from insight_ui import config
 from insight_ui.brand import get_brand_logo_config, get_footer_description_defaults, get_navbar_brand_defaults
 from insight_ui.configs import (
     AccordionConfig,
@@ -78,6 +77,7 @@ from documentation.component_details.component_context import get_demo_context, 
 from documentation.component_details.components import Component
 from documentation.demo_utils import generate_payload, map_payload_to_cards
 from documentation.search import get_search_index_url
+from insight_ui import config
 
 # Some example filters for the filter example
 model_type_options = {

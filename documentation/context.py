@@ -8,7 +8,6 @@ from core.context_processor import get_app_version
 from django.template.loader import get_template, render_to_string
 from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext as _
-from insight_ui import config
 from insight_ui.brand import get_footer_description_defaults, get_navbar_brand_defaults
 from insight_ui.configs import (
     BadgeConfig,
@@ -31,6 +30,7 @@ from documentation.component_details.components import Component, ComponentCateg
 from documentation.component_details.demo_context import get_component_demo_context
 from documentation.component_details.parameter_context import ParameterDetails
 from documentation.search import get_search_index_url
+from insight_ui import config
 
 
 def get_main_page_links() -> list[dict[str, Any]]:
