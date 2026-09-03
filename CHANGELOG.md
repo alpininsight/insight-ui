@@ -67,6 +67,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Testing
 
 - Add test accordingly to the new validation improvements
+- Restructure tests
 
 ## [1.13.0] - 2026-08-30
 
