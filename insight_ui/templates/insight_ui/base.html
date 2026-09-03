@@ -71,6 +71,7 @@
         {% block extra_head %}{% endblock %}
     </head>
     <body class="flex flex-col min-h-screen size-full text-insight-body bg-insight-base" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-indicator="#loading-indicator">
+        {% if use_default_loading_indicator is not False %}{% include "insight_ui/components/htmx_loading_indicator.html" %}{% endif %}
 
         <div id="background-image">
             {% block background_image %}
@@ -91,7 +92,6 @@
                     {% block heading %}{% endblock heading %}
                 </div>
                 <div id="content" class="w-full leading-loose {% if content_fill %}flex flex-col grow{% endif %}">
-                    {% if use_default_loading_indicator is not False %}{% include "insight_ui/components/htmx_loading_indicator.html" %}{% endif %}
                     {% block content %}{% endblock content %}
                 </div>
             </div>

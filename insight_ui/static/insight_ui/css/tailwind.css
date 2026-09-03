@@ -3403,7 +3403,7 @@
     opacity: 1;
     position: static;
   }
-  .text-link {
+  .text-insight-link {
     color: var(--color-insight-text-link);
     text-decoration-line: underline;
     &:hover {

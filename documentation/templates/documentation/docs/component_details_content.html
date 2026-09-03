@@ -1,7 +1,5 @@
 {% load i18n insight_tags layout_tags docs_tags %}
 
-{% include "insight_ui/components/htmx_loading_indicator.html" %}
-
 {% vbox padding="xl" gap="xl" max_width="l" class="mx-auto" %}
     {# Component Demo and features #}
     {% section %}
@@ -184,7 +182,7 @@
                         hx-target="#content"
                         hx-swap="innerHTML show:window:top"
                         hx-push-url="true"
-                        class="text-link"
+                        class="text-insight-link"
                     >
                         {{ topic.formatted_name }}
                     </a>
