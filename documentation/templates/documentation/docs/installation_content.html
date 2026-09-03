@@ -74,7 +74,7 @@
             {% vbox gap="s" class="grow" %}
                 <h3 class="mt-0.5 text-lg">{% trans "Extend the base template" %}</h3>
                 <p>
-                    {% blocktrans with link_open='<a href="https://github.com/alpininsight/insight-ui/blob/develop/insight_ui/templates/insight_ui/base.html" class="text-link">'|safe link_close='</a>'|safe %}
+                    {% blocktrans with link_open='<a href="https://github.com/alpininsight/insight-ui/blob/develop/insight_ui/templates/insight_ui/base.html" class="text-insight-link">'|safe link_close='</a>'|safe %}
                         Extend our {{ link_open }}base template{{ link_close }} to get all features (navbar, sidebar, footer, theme switching):
                     {% endblocktrans %}
                 </p>
@@ -94,7 +94,7 @@
             {% vbox gap="s" class="grow" %}
                 <h3 class="mt-0.5 text-lg">{% trans "Pass configuration to template" %}</h3>
                 <p>
-                    {% blocktrans with link_open='<a href="/docs/customization#settings" class="text-link">'|safe link_close='</a>'|safe %}
+                    {% blocktrans with link_open='<a href="/docs/customization#settings" class="text-insight-link">'|safe link_close='</a>'|safe %}
                         Pass the Insight UI configuration in your view. See {{ link_open }}Customization{{ link_close }} for all options.
                     {% endblocktrans %}
                 </p>
@@ -151,8 +151,8 @@
                 {% hbox gap="m" v_align="center" %}
                     {% icon name="rectangle-group" size="l" color="primary" %}
                     {% vbox gap="xs" %}
-                        <span class="font-semibold text-primary group-hover:text-insight-primary">{% trans "Browse Components" %}</span>
-                        <p class="text-sm text-secondary">{% trans "Explore all 60+ components with examples" %}</p>
+                        <span class="font-semibold text-insight-headline group-hover:text-insight-primary">{% trans "Browse Components" %}</span>
+                        <p class="text-sm text-insight-body">{% trans "Explore all 60+ components with examples" %}</p>
                     {% endvbox %}
                 {% endhbox %}
             {% endsurface %}
@@ -160,8 +160,8 @@
                 {% hbox gap="m" v_align="center" %}
                     {% icon name="adjustments-horizontal" size="l" color="primary" %}
                     {% vbox gap="xs" %}
-                        <span class="font-semibold text-primary group-hover:text-insight-primary">{% trans "Customization" %}</span>
-                        <p class="text-sm text-secondary">{% trans "Configure themes, colors, and layouts" %}</p>
+                        <span class="font-semibold text-insight-headline group-hover:text-insight-primary">{% trans "Customization" %}</span>
+                        <p class="text-sm text-insight-body">{% trans "Configure themes, colors, and layouts" %}</p>
                     {% endvbox %}
                 {% endhbox %}
             {% endsurface %}

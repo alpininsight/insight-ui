@@ -74,7 +74,7 @@
             </div>
 
             <p class="text-sm">
-                {% blocktrans with link_open='<a href="/component/navbar" class="text-link">'|safe link_close='</a>'|safe %}
+                {% blocktrans with link_open='<a href="/component/navbar" class="text-insight-link">'|safe link_close='</a>'|safe %}
                     See {{ link_open }}Navbar component{{ link_close }} for configuration options.
                 {% endblocktrans %}
             </p>
@@ -92,7 +92,7 @@
                 {# fmt:on #}
             </div>
 
-            <p class="text-sm text-insight-text-secondary">
+            <p class="text-sm text-insight-body">
                 {% trans "When enabled, static sidebars automatically adjust their position to start below the navbar. Drawers are not affected as they overlay the entire screen." %}
             </p>
         {% endvbox %}
@@ -226,7 +226,7 @@
         </div>
 
         <p class="text-sm">
-            {% blocktrans with link_open='<a href="/component/footer" class="text-link">'|safe link_close='</a>'|safe %}
+            {% blocktrans with link_open='<a href="/component/footer" class="text-insight-link">'|safe link_close='</a>'|safe %}
                 See {{ link_open }}Footer component{{ link_close }} for configuration options.
             {% endblocktrans %}
         </p>

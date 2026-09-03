@@ -10,40 +10,40 @@
             {% endblocktrans %}
         </p>
         {% grid cols=2 gap="m" %}
-            <a href="#settings" class="p-4 border border-insight-border-surface rounded-insight-raised transition-colors group hover:border-insight-primary">
+            <a href="#settings" class="p-4 border border-insight-surface rounded-insight-raised transition-colors group hover:border-insight-primary">
                 {% vbox gap="s" %}
                     <div class="flex gap-2 items-center text-insight-primary">
                         {% icon name="cog-6-tooth" size="s" %}
-                        <span class="font-medium text-insight-text-primary group-hover:text-insight-primary">{% trans "Configuration" %}</span>
+                        <span class="font-medium text-insight-headline group-hover:text-insight-primary">{% trans "Configuration" %}</span>
                     </div>
-                    <p class="text-insight-text-secondary">{% trans "Favicons, meta tags, feature flags via settings.py" %}</p>
+                    <p class="text-insight-body">{% trans "Favicons, meta tags, feature flags via settings.py" %}</p>
                 {% endvbox %}
             </a>
-            <a href="#theming" class="p-4 border border-insight-border-surface rounded-insight-raised transition-colors group hover:border-insight-primary">
+            <a href="#theming" class="p-4 border border-insight-surface rounded-insight-raised transition-colors group hover:border-insight-primary">
                 {% vbox gap="s" %}
                     <div class="flex gap-2 items-center text-insight-primary">
                         {% icon name="swatch" size="s" %}
-                        <span class="font-medium text-insight-text-primary group-hover:text-insight-primary">{% trans "Design Tokens" %}</span>
+                        <span class="font-medium text-insight-headline group-hover:text-insight-primary">{% trans "Design Tokens" %}</span>
                     </div>
-                    <p class="text-insight-text-secondary">{% trans "Colors, spacing, radii, shadows via input.css" %}</p>
+                    <p class="text-insight-body">{% trans "Colors, spacing, radii, shadows via input.css" %}</p>
                 {% endvbox %}
             </a>
-            <a href="#templates" class="p-4 border border-insight-border-surface rounded-insight-raised transition-colors group hover:border-insight-primary">
+            <a href="#templates" class="p-4 border border-insight-surface rounded-insight-raised transition-colors group hover:border-insight-primary">
                 {% vbox gap="s" %}
                     <div class="flex gap-2 items-center text-insight-primary">
                         {% icon name="code-bracket" size="s" %}
-                        <span class="font-medium text-insight-text-primary group-hover:text-insight-primary">{% trans "Templates" %}</span>
+                        <span class="font-medium text-insight-headline group-hover:text-insight-primary">{% trans "Templates" %}</span>
                     </div>
-                    <p class="text-insight-text-secondary">{% trans "Override component HTML for structural changes" %}</p>
+                    <p class="text-insight-body">{% trans "Override component HTML for structural changes" %}</p>
                 {% endvbox %}
             </a>
-            <a href="#icons" class="p-4 border border-insight-border-surface rounded-insight-raised transition-colors group hover:border-insight-primary">
+            <a href="#icons" class="p-4 border border-insight-surface rounded-insight-raised transition-colors group hover:border-insight-primary">
                 {% vbox gap="s" %}
                     <div class="flex gap-2 items-center text-insight-primary">
                         {% icon name="sparkles" size="s" %}
-                        <span class="font-medium text-insight-text-primary group-hover:text-insight-primary">{% trans "Icons" %}</span>
+                        <span class="font-medium text-insight-headline group-hover:text-insight-primary">{% trans "Icons" %}</span>
                     </div>
-                    <p class="text-insight-text-secondary">{% trans "Add custom icons or replace existing ones" %}</p>
+                    <p class="text-insight-body">{% trans "Add custom icons or replace existing ones" %}</p>
                 {% endvbox %}
             </a>
         {% endgrid %}
@@ -154,7 +154,7 @@
                 {% vbox gap="m" %}
                     <div class="flex gap-2 items-center">
                         {% icon name="command-line" %}
-                        <span class="font-medium text-insight-text-primary">{% trans "Quick Setup" %}</span>
+                        <span class="font-medium text-insight-headline">{% trans "Quick Setup" %}</span>
                     </div>
                     <ol class="list-decimal list-inside space-y-2">
                         <li>{% trans "Install the package:" %} <code class="inline-tag">uv add django-tailwind-cli</code></li>
@@ -246,7 +246,7 @@
                             <div class="w-16 h-12 bg-insight-primary-soft"></div>
                         </div>
                         <span class="font-medium">Primary</span>
-                        <code class="text-secondary">--color-insight-primary</code>
+                        <code class="text-insight-body">--color-insight-primary</code>
                     {% endvbox %}
                         {# Secondary #}
                     {% vbox gap="xs" class="min-w-48" %}
@@ -257,7 +257,7 @@
                             <div class="w-16 h-12 bg-insight-secondary-soft"></div>
                         </div>
                         <span class="font-medium">Secondary</span>
-                        <code class="text-secondary">--color-insight-secondary</code>
+                        <code class="text-insight-body">--color-insight-secondary</code>
                     {% endvbox %}
                 {% endhbox %}
             {% endvbox %}
@@ -275,7 +275,7 @@
                             <div class="w-12 h-10 bg-insight-success-soft"></div>
                         </div>
                         <span class="font-medium">Success</span>
-                        <code class="text-secondary">--color-insight-success</code>
+                        <code class="text-insight-body">--color-insight-success</code>
                     {% endvbox %}
                         {# Warning #}
                     {% vbox gap="xs" %}
@@ -286,7 +286,7 @@
                             <div class="w-12 h-10 bg-insight-warning-soft"></div>
                         </div>
                         <span class="font-medium">Warning</span>
-                        <code class="text-secondary">--color-insight-warning</code>
+                        <code class="text-insight-body">--color-insight-warning</code>
                     {% endvbox %}
                         {# Danger #}
                     {% vbox gap="xs" %}
@@ -297,7 +297,7 @@
                             <div class="w-12 h-10 bg-insight-danger-soft"></div>
                         </div>
                         <span class="font-medium">Danger</span>
-                        <code class="text-secondary">--color-insight-danger</code>
+                        <code class="text-insight-body">--color-insight-danger</code>
                     {% endvbox %}
                         {# Info #}
                     {% vbox gap="xs" %}
@@ -308,7 +308,7 @@
                             <div class="w-12 h-10 bg-insight-info-soft"></div>
                         </div>
                         <span class="font-medium">Info</span>
-                        <code class="text-secondary">--color-insight-info</code>
+                        <code class="text-insight-body">--color-insight-info</code>
                     {% endvbox %}
                 {% endhbox %}
             {% endvbox %}
@@ -322,28 +322,28 @@
                         <div class="flex justify-center items-center w-24 h-16 bg-insight-base rounded-insight-raised">
                             <span>base</span>
                         </div>
-                        <code class="text-secondary leading-normal">bg-insight-base</code>
+                        <code class="text-insight-body leading-normal">bg-insight-base</code>
                     {% endvbox %}
                     {% vbox gap="xs" %}
                         <div class="flex justify-center items-center w-24 h-16 bg-insight-surface border border-insight-surface rounded-insight-raised">
                             <span>surface</span>
                         </div>
-                        <code class="text-secondary leading-normal">bg-insight-surface</code>
-                        <code class="text-secondary leading-normal">border-insight-surface</code>
+                        <code class="text-insight-body leading-normal">bg-insight-surface</code>
+                        <code class="text-insight-body leading-normal">border-insight-surface</code>
                     {% endvbox %}
                     {% vbox gap="xs" %}
                         <div class="flex justify-center items-center w-24 h-16 bg-insight-raised border border-insight-raised rounded-insight-raised">
                             <span>raised</span>
                         </div>
-                        <code class="text-secondary leading-normal">bg-insight-raised</code>
-                        <code class="text-secondary leading-normal">border-insight-raised</code>
+                        <code class="text-insight-body leading-normal">bg-insight-raised</code>
+                        <code class="text-insight-body leading-normal">border-insight-raised</code>
                     {% endvbox %}
                     {% vbox gap="xs" %}
                         <div class="flex justify-center items-center w-24 h-16 bg-insight-overlay border border-insight-overlay rounded-insight-raised">
                             <span>overlay</span>
                         </div>
-                        <code class="text-secondary leading-normal">bg-insight-overlay</code>
-                        <code class="text-secondary leading-normal">border-insight-overlay</code>
+                        <code class="text-insight-body leading-normal">bg-insight-overlay</code>
+                        <code class="text-insight-body leading-normal">border-insight-overlay</code>
                     {% endvbox %}
                 {% endhbox %}
                 {% infobox message=_("You can use these utilities directly, or use our [combined surface classes](#surfaces) for quick container styling.") %}
@@ -354,20 +354,24 @@
                 <h4 class="font-medium tracking-wide uppercase">{% trans "Text Colors" %}</h4>
                 {% hbox gap="l" wrap="wrap" %}
                     {% vbox gap="xs" %}
-                        <span class="text-insight-text-primary">Primary text</span>
-                        <code class="text-secondary leading-normal">text-insight-text-primary</code>
+                        <span class="text-insight-headline">Headline text</span>
+                        <code class="text-insight-body leading-normal">text-insight-headline</code>
                     {% endvbox %}
                     {% vbox gap="xs" %}
-                        <span class="text-insight-text-secondary">Secondary text</span>
-                        <code class="text-secondary leading-normal">text-insight-text-secondary</code>
+                        <span class="text-insight-body">Body text</span>
+                        <code class="text-insight-body leading-normal">text-insight-body</code>
                     {% endvbox %}
                     {% vbox gap="xs" %}
-                        <span class="text-insight-text-hint">Hint text</span>
-                        <code class="text-secondary leading-normal">text-insight-text-hint</code>
+                        <span class="text-insight-caption">Caption text</span>
+                        <code class="text-insight-body leading-normal">text-insight-caption</code>
                     {% endvbox %}
                     {% vbox gap="xs" %}
-                        <span class="text-link">Link text</span>
-                        <code class="text-secondary leading-normal">text-link</code>
+                        <span class="text-insight-disabled">Disabled text</span>
+                        <code class="text-insight-body leading-normal">text-insight-disabled</code>
+                    {% endvbox %}
+                    {% vbox gap="xs" %}
+                        <span class="text-insight-link">Link text</span>
+                        <code class="text-insight-body leading-normal">text-link</code>
                     {% endvbox %}
                 {% endhbox %}
             {% endvbox %}
@@ -405,9 +409,9 @@
                         --color-insight-border-overlay: #E5E7EB;
 
                         /* Text */
-                        --color-insight-text-primary: #1C1C1E;
-                        --color-insight-text-secondary: #364153;
-                        --color-insight-text-hint: #d1d5dc;
+                        --color-insight-text-headline: #1C1C1E;
+                        --color-insight-text-body: #364153;
+                        --color-insight-text-caption: #d1d5dc;
                         --color-insight-text-link: #256CD8;
                     }
                     {# fmt:on #}
@@ -542,27 +546,27 @@
 
             {% vbox gap="xs" %}
                 {% hbox gap="s" v_align="center" %}
-                    <code class="w-8 text-right text-secondary">xs</code>
+                    <code class="w-8 text-right text-insight-body">xs</code>
                     <div class="h-4 bg-insight-primary rounded-insight-surface" style="width: 0.25rem;"></div>
                     <span>0.25rem (4px)</span>
                 {% endhbox %}
                 {% hbox gap="s" v_align="center" %}
-                    <code class="w-8 text-right text-secondary">s</code>
+                    <code class="w-8 text-right text-insight-body">s</code>
                     <div class="h-4 bg-insight-primary rounded-insight-surface" style="width: 0.5rem;"></div>
                     <span>0.5rem (8px)</span>
                 {% endhbox %}
                 {% hbox gap="s" v_align="center" %}
-                    <code class="w-8 text-right text-secondary">m</code>
+                    <code class="w-8 text-right text-insight-body">m</code>
                     <div class="h-4 bg-insight-primary rounded-insight-surface" style="width: 1rem;"></div>
                     <span>1rem (16px)</span>
                 {% endhbox %}
                 {% hbox gap="s" v_align="center" %}
-                    <code class="w-8 text-right text-secondary">l</code>
+                    <code class="w-8 text-right text-insight-body">l</code>
                     <div class="h-4 bg-insight-primary rounded-insight-surface" style="width: 2rem;"></div>
                     <span>2rem (32px)</span>
                 {% endhbox %}
                 {% hbox gap="s" v_align="center" %}
-                    <code class="w-8 text-right text-secondary">xl</code>
+                    <code class="w-8 text-right text-insight-body">xl</code>
                     <div class="h-4 bg-insight-primary rounded-insight-surface" style="width: 4rem;"></div>
                     <span>4rem (64px)</span>
                 {% endhbox %}
@@ -589,27 +593,27 @@
             {% hbox gap="m" wrap="wrap" %}
                 {% vbox gap="xs" v_align="center" %}
                     <div class="size-16 bg-insight-primary rounded-insight-xs"></div>
-                    <code class="text-secondary">xs</code>
+                    <code class="text-insight-body">xs</code>
                 {% endvbox %}
                 {% vbox gap="xs" v_align="center" %}
                     <div class="size-16 bg-insight-primary rounded-insight-s"></div>
-                    <code class="text-secondary">s</code>
+                    <code class="text-insight-body">s</code>
                 {% endvbox %}
                 {% vbox gap="xs" v_align="center" %}
                     <div class="size-16 bg-insight-primary rounded-insight-m"></div>
-                    <code class="text-secondary">m</code>
+                    <code class="text-insight-body">m</code>
                 {% endvbox %}
                 {% vbox gap="xs" v_align="center" %}
                     <div class="size-16 bg-insight-primary rounded-insight-l"></div>
-                    <code class="text-secondary">l</code>
+                    <code class="text-insight-body">l</code>
                 {% endvbox %}
                 {% vbox gap="xs" v_align="center" %}
                     <div class="size-16 bg-insight-primary rounded-insight-xl"></div>
-                    <code class="text-secondary">xl</code>
+                    <code class="text-insight-body">xl</code>
                 {% endvbox %}
                 {% vbox gap="xs" v_align="center" %}
                     <div class="size-16 bg-insight-primary rounded-insight-full"></div>
-                    <code class="text-secondary">full</code>
+                    <code class="text-insight-body">full</code>
                 {% endvbox %}
             {% endhbox %}
 
@@ -631,20 +635,20 @@
 
             {% hbox gap="l" wrap="wrap" %}
                 {% vbox gap="xs" v_align="center" %}
-                    <div class="size-20 bg-insight-bg-surface rounded-insight-m shadow-insight-subtle"></div>
-                    <code class="text-secondary">subtle</code>
+                    <div class="size-20 bg-insight-surface rounded-insight-m shadow-insight-subtle"></div>
+                    <code class="text-insight-body">subtle</code>
                 {% endvbox %}
                 {% vbox gap="xs" v_align="center" %}
-                    <div class="size-20 bg-insight-bg-surface rounded-insight-m shadow-insight-surface"></div>
-                    <code class="text-secondary">surface</code>
+                    <div class="size-20 bg-insight-surface rounded-insight-m shadow-insight-surface"></div>
+                    <code class="text-insight-body">surface</code>
                 {% endvbox %}
                 {% vbox gap="xs" v_align="center" %}
-                    <div class="size-20 bg-insight-bg-surface rounded-insight-m shadow-insight-raised"></div>
-                    <code class="text-secondary">raised</code>
+                    <div class="size-20 bg-insight-surface rounded-insight-m shadow-insight-raised"></div>
+                    <code class="text-insight-body">raised</code>
                 {% endvbox %}
                 {% vbox gap="xs" v_align="center" %}
-                    <div class="size-20 bg-insight-bg-surface rounded-insight-m shadow-insight-overlay"></div>
-                    <code class="text-secondary">overlay</code>
+                    <div class="size-20 bg-insight-surface rounded-insight-m shadow-insight-overlay"></div>
+                    <code class="text-insight-body">overlay</code>
                 {% endvbox %}
             {% endhbox %}
         {% endsection %}
@@ -663,17 +667,17 @@
                     @theme {
                         /* Light mode (default) */
                         --color-insight-bg-base: #FFFFFF;
-                        --color-insight-text-primary: #1C1C1E;
+                        --color-insight-text-headline: #1C1C1E;
 
                         /* Dark mode variants (applied via @layer base) */
                         --color-insight-bg-base-dark: #030712;
-                        --color-insight-text-primary-dark: #F5F8FC;
+                        --color-insight-text-headline-dark: #F5F8FC;
                     }
 
                     @layer base {
                         [data-theme="dark"] {
                             --color-insight-bg-base: var(--color-insight-bg-base-dark);
-                            --color-insight-text-primary: var(--color-insight-text-primary-dark);
+                            --color-insight-text-headline: var(--color-insight-text-headline-dark);
                         }
                     }
                     {# fmt:on #}
@@ -795,13 +799,13 @@
             </p>
             {% hbox gap="m" wrap="wrap" %}
                 <div class="insight-surface p-4">
-                    <code class="text-secondary">.insight-surface</code>
+                    <code class="text-insight-body">.insight-surface</code>
                 </div>
                 <div class="insight-raised p-4">
-                    <code class="text-secondary">.insight-raised</code>
+                    <code class="text-insight-body">.insight-raised</code>
                 </div>
                 <div class="insight-overlay p-4">
-                    <code class="text-secondary">.insight-overlay</code>
+                    <code class="text-insight-body">.insight-overlay</code>
                 </div>
             {% endhbox %}
             <div data-insight-code-block="css" data-filename="input.css">
@@ -915,7 +919,7 @@
         </p>
 
         <p>
-            <a href="{% url 'icon_view' %}" class="text-link">
+            <a href="{% url 'icon_view' %}" class="text-insight-link">
                 {% trans "View all available icons and detailed documentation" %} &rarr;
             </a>
         </p>
@@ -931,7 +935,7 @@
         <div class="overflow-x-auto">
             <table class="w-full">
                 <thead>
-                    <tr class="border-b border-insight-border-surface">
+                    <tr class="border-b border-insight-surface">
                         <th class="py-2 pr-4 font-medium text-left">{% trans "Category" %}</th>
                         <th class="py-2 pr-4 font-medium text-left">{% trans "Tokens" %}</th>
                         <th class="py-2 font-medium text-left">{% trans "CSS Variable Pattern" %}</th>
@@ -955,7 +959,7 @@
                     </tr>
                     <tr>
                         <td class="py-2 pr-4">Text</td>
-                        <td class="py-2 pr-4">text-primary, text-secondary, text-hint, text-link</td>
+                        <td class="py-2 pr-4">text-insight-headline, text-insight-body, text-insight-caption, text-insight-link</td>
                         <td class="py-2"><code>--color-insight-text-{role}</code></td>
                     </tr>
                     <tr>
@@ -983,7 +987,7 @@
         <div class="overflow-x-auto">
             <table class="w-full">
                 <thead>
-                    <tr class="border-b border-insight-border-surface">
+                    <tr class="border-b border-insight-surface">
                         <th class="py-2 pr-4 font-medium text-left">{% trans "Category" %}</th>
                         <th class="py-2 pr-4 font-medium text-left">{% trans "Classes" %}</th>
                         <th class="py-2 font-medium text-left">{% trans "Description" %}</th>
@@ -1002,7 +1006,7 @@
                     </tr>
                     <tr>
                         <td class="py-2 pr-4">Text</td>
-                        <td class="py-2 pr-4"><code>text-primary</code>, <code>text-secondary</code></td>
+                        <td class="py-2 pr-4"><code>text-insight-headline</code>, <code>text-insight-body</code></td>
                         <td class="py-2">{% trans "Shorthand for text colors" %}</td>
                     </tr>
                     <tr>

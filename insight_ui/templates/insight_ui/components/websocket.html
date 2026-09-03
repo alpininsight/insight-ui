@@ -10,7 +10,7 @@
   <div
     {% if websocket_config.tag_id %}id="{{ websocket_config.tag_id }}-output"{% endif %}
     data-insight-websocket-output
-    class="px-4 py-2 mt-4 bg-insight-bg-surface rounded-insight-surface shadow-insight-surface"
+    class="px-4 py-2 mt-4 bg-insight-surface rounded-insight-surface shadow-insight-surface"
     role="log"
     aria-live="polite"
     aria-atomic="false"
@@ -18,10 +18,10 @@
     {% if websocket_config.initial_content %}
       {{ websocket_config.initial_content|safe }}
     {% else %}
-      <p class="text-secondary">{% trans "Wait for messages..." %}</p>
+      <p class="text-insight-body">{% trans "Wait for messages..." %}</p>
     {% endif %}
   </div>
-  <span class="block mt-4 text-sm text-primary">
+  <span class="block mt-4 text-sm text-insight-headline">
     {% trans "Status:" %}
     <span
       {% if websocket_config.tag_id %}id="{{ websocket_config.tag_id }}-status"{% endif %}
@@ -32,10 +32,10 @@
       <b>{% trans "Establishing connection..." %}</b>
     </span>
   </span>
-  <span class="block mt-2 text-xs text-secondary">
+  <span class="block mt-2 text-xs text-insight-body">
     {% trans "URL:" %} {{ websocket_config.request_url }}
   </span>
-  <span class="block text-xs text-secondary">
+  <span class="block text-xs text-insight-body">
     {% trans "Mode: HTMX WebSocket Extension (expects HTML)" %}
   </span>
 </div>

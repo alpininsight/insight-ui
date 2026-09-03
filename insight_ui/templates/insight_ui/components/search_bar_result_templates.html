@@ -4,14 +4,14 @@
 {# Search result item template #}
 <template data-search-template="result">
     <div role="option" class="search-result-item" aria-selected="false">
-        <a href="#" class="flex gap-3 items-start px-4 py-3 transition-colors hover:bg-insight-bg-base focus:bg-insight-bg-base focus:outline-none">
-            <span class="shrink-0 mt-0.5 w-5 h-5 text-insight-text-secondary" data-slot="icon"></span>
+        <a href="#" class="flex gap-3 items-start px-4 py-3 transition-colors hover:bg-insight-base focus:bg-insight-base focus:outline-none">
+            <span class="shrink-0 mt-0.5 w-5 h-5 text-insight-body" data-slot="icon"></span>
             <div class="flex-1 min-w-0">
                 <div class="flex gap-2 items-center">
-                    <span class="font-medium text-insight-text-primary truncate" data-slot="name"></span>
-                    <span class="shrink-0 px-1.5 py-0.5 text-xs text-insight-text-secondary bg-insight-bg-base rounded-insight-control" data-slot="category"></span>
+                    <span class="font-medium text-insight-headline truncate" data-slot="name"></span>
+                    <span class="shrink-0 px-1.5 py-0.5 text-xs text-insight-body bg-insight-base rounded-insight-control" data-slot="category"></span>
                 </div>
-                <div class="text-sm text-insight-text-secondary truncate" data-slot="description"></div>
+                <div class="text-sm text-insight-body truncate" data-slot="description"></div>
             </div>
         </a>
     </div>
@@ -19,7 +19,7 @@
 
 {# No results template #}
 <template data-search-template="no-results">
-    <div class="px-4 py-6 text-center text-insight-text-secondary">
+    <div class="px-4 py-6 text-center text-insight-body">
         <p class="text-sm">{% trans "No results found" %}</p>
         <p class="mt-1 text-xs">{% trans "Try a different search term" %}</p>
     </div>

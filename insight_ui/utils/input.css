@@ -188,15 +188,18 @@
 
     /*
     * Text colors
-    * Hierarchy: primary > secondary > hint
+    * Hierarchy: headline > body > caption > disabled
     */
-    --color-insight-text-primary: #1C1C1E;          /* Headings, important content */
-    --color-insight-text-primary-light: #1C1C1E;    /* For dark backgrounds in light mode (e.g., on primary buttons) */
-    --color-insight-text-primary-dark: #F5F8FC;
-    --color-insight-text-secondary: #364153;        /* Body text, descriptions */
-    --color-insight-text-secondary-dark: #9BA3B4;
-    --color-insight-text-hint: #d1d5dc;             /* Placeholders, disabled labels, meta info */
-    --color-insight-text-hint-dark: #364153;
+    --color-insight-text-headline: #1C1C1E;         /* Headings, important content */
+    --color-insight-text-headline-dark: #F5F8FC;
+    --color-insight-text-body: #364153;             /* Body text, descriptions, default prose */
+    --color-insight-text-body-dark: #d3d7de;
+    --color-insight-text-caption: #6B7280;          /* Meta info, timestamps, helper text */
+    --color-insight-text-caption-dark: #6B7280;
+    --color-insight-text-disabled: #d1d5dc;         /* Disabled labels, inactive elements */
+    --color-insight-text-disabled-dark: #364153;
+    --color-insight-text-inverse: #F5F8FC;          /* Text on dark/colored backgrounds (e.g., primary buttons) */
+    --color-insight-text-inverse-dark: #1C1C1E;
     --color-insight-text-link: #256CD8;             /* Links, clickable text elements */
     --color-insight-text-link-hover: #72AEFF;
 
@@ -407,9 +410,11 @@
         /* Focus */
         --color-insight-focus: var(--color-insight-focus-dark);
         /* Text */
-        --color-insight-text-primary: var(--color-insight-text-primary-dark);
-        --color-insight-text-secondary: var(--color-insight-text-secondary-dark);
-        --color-insight-text-hint: var(--color-insight-text-hint-dark);
+        --color-insight-text-headline: var(--color-insight-text-headline-dark);
+        --color-insight-text-body: var(--color-insight-text-body-dark);
+        --color-insight-text-caption: var(--color-insight-text-caption-dark);
+        --color-insight-text-disabled: var(--color-insight-text-disabled-dark);
+        --color-insight-text-inverse: var(--color-insight-text-inverse-dark);
         /* Elevated / Tooltip */
         --color-insight-tooltip: var(--color-insight-tooltip-dark);
         /* Divider */
@@ -429,14 +434,14 @@
     * Responsive sizing: smaller on mobile, larger on desktop (md:).
     * Font weight decreases with heading level for visual hierarchy.
     */
-    h1 { @apply text-4xl md:text-5xl font-bold text-insight-text-primary; }
-    h2 { @apply text-2xl md:text-3xl font-medium text-insight-text-primary; }
-    h3 { @apply text-xl md:text-2xl font-medium text-insight-text-primary; }
-    h4 { @apply text-lg md:text-xl font-normal text-insight-text-primary; }
-    h5 { @apply text-base md:text-lg font-normal text-insight-text-primary; }
+    h1 { @apply text-4xl md:text-5xl font-bold text-insight-text-headline; }
+    h2 { @apply text-2xl md:text-3xl font-medium text-insight-text-headline; }
+    h3 { @apply text-xl md:text-2xl font-medium text-insight-text-headline; }
+    h4 { @apply text-lg md:text-xl font-normal text-insight-text-headline; }
+    h5 { @apply text-base md:text-lg font-normal text-insight-text-headline; }
 
-    /* Horizontal rule uses hint color for subtle separation */
-    hr { @apply text-insight-text-hint; }
+    /* Horizontal rule uses caption color for subtle separation */
+    hr { @apply text-insight-text-caption; }
 
     /*
     * Custom scrollbar styling.
@@ -558,8 +563,11 @@
     * Semantic text utilities.
     * Shorthand for common text hierarchy patterns.
     */
-    .text-primary { @apply text-insight-text-primary; }
-    .text-secondary { @apply text-insight-text-secondary; }
+    .text-insight-headline { @apply text-insight-text-headline; }
+    .text-insight-body { @apply text-insight-text-body; }
+    .text-insight-caption { @apply text-insight-text-caption; }
+    .text-insight-disabled { @apply text-insight-text-disabled; }
+    .text-insight-inverse { @apply text-insight-text-inverse; }
 }
 
 /*
@@ -651,7 +659,7 @@
     */
 
     /* Styled link with hover state */
-    .text-link { @apply text-insight-text-link hover:text-insight-text-link-hover underline; }
+    .text-insight-link { @apply text-insight-text-link hover:text-insight-text-link-hover underline; }
 
     /*
     * ========================================================
@@ -669,7 +677,7 @@
 
     /* Navbar top-level link - horizontal navigation bar */
     .insight-nav-link {
-        @apply text-insight-text-secondary transition-colors duration-200;
+        @apply text-insight-text-body transition-colors duration-200;
     }
     .insight-nav-link:hover {
         @apply text-insight-text-link;
@@ -681,7 +689,7 @@
 
     /* Navbar dropdown item - items within a dropdown menu */
     .insight-nav-dropdown-item {
-        @apply text-insight-text-primary transition-colors duration-200;
+        @apply text-insight-text-headline transition-colors duration-200;
     }
     .insight-nav-dropdown-item:hover {
         @apply bg-insight-bg-base;
@@ -695,7 +703,7 @@
         @apply border-s border-insight-border-surface transition-colors duration-200;
     }
     .insight-sidebar-link:hover {
-        @apply border-insight-text-secondary text-insight-text-secondary;
+        @apply border-insight-text-body text-insight-text-body;
     }
     .insight-sidebar-link[aria-current="page"] {
         @apply font-semibold border-s-4 border-insight-primary;
@@ -739,17 +747,7 @@
         @apply bg-insight-primary border-insight-primary hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active;
     }
     .btn-secondary {
-        @apply bg-insight-secondary hover:bg-insight-secondary-hover active:bg-insight-secondary-active;
-        color: var(--color-insight-secondary-foreground);
-        border-color: var(--color-insight-secondary-border);
-    }
-    .btn-secondary:hover {
-        color: var(--color-insight-secondary-foreground);
-        border-color: var(--color-insight-secondary-border-hover);
-    }
-    .btn-secondary:active {
-        color: var(--color-insight-secondary-foreground);
-        border-color: var(--color-insight-secondary-border-active);
+        @apply bg-insight-secondary border-insight-secondary hover:bg-insight-secondary-hover active:bg-insight-secondary-active hover:border-insight-secondary-hover active:border-insight-secondary-active;
     }
     .btn-success {
         @apply bg-insight-success border-insight-success hover:bg-insight-success-hover active:bg-insight-success-active hover:border-insight-success-hover active:border-insight-success-active;
@@ -764,7 +762,7 @@
         @apply bg-insight-info border-insight-info hover:bg-insight-info-hover active:bg-insight-info-active hover:border-insight-info-hover active:border-insight-info-active;
     }
     .btn-neutral {
-        @apply bg-white dark:border-white hover:bg-gray-300 active:bg-gray-400 hover:border-gray-300 active:border-gray-400 text-insight-text-primary dark:text-insight-text-primary-light;
+        @apply bg-white dark:border-white hover:bg-gray-300 active:bg-gray-400 hover:border-gray-300 active:border-gray-400 text-insight-text-headline dark:text-insight-text-inverse;
     }
     .btn-link {
         @apply border-0 underline text-insight-text-link px-6 py-2 hover:text-insight-text-link-hover;
@@ -778,17 +776,7 @@
         @apply border-insight-primary text-insight-primary hover:text-white hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active;
     }
     .btn-outline-secondary {
-        @apply hover:bg-insight-secondary-hover active:bg-insight-secondary-active;
-        color: var(--color-insight-secondary-text);
-        border-color: var(--color-insight-secondary-border);
-    }
-    .btn-outline-secondary:hover {
-        color: var(--color-insight-secondary-foreground);
-        border-color: var(--color-insight-secondary-border-hover);
-    }
-    .btn-outline-secondary:active {
-        color: var(--color-insight-secondary-foreground);
-        border-color: var(--color-insight-secondary-border-active);
+        @apply border-insight-secondary text-insight-secondary hover:text-white hover:bg-insight-secondary-hover active:bg-insight-secondary-active hover:border-insight-secondary-hover active:border-insight-secondary-active;
     }
     .btn-outline-success {
         @apply border-insight-success text-insight-success hover:text-white hover:bg-insight-success-hover active:bg-insight-success-active hover:border-insight-success-hover active:border-insight-success-active;
@@ -803,7 +791,7 @@
         @apply border-insight-info text-insight-info hover:text-white hover:bg-insight-info-hover active:bg-insight-info-active hover:border-insight-info-hover active:border-insight-info-active;
     }
     .btn-outline-neutral {
-        @apply border-white hover:bg-gray-300 active:bg-gray-400 hover:border-gray-300 active:border-gray-400 text-insight-text-primary-dark hover:text-insight-text-primary-light;
+        @apply border-white hover:bg-gray-300 active:bg-gray-400 hover:border-gray-300 active:border-gray-400 text-insight-text-headline hover:text-insight-text-inverse;
     }
     .btn-outline-disabled {
         @apply border-neutral-300 dark:border-neutral-600 text-neutral-400;
@@ -829,7 +817,7 @@
         @apply text-insight-info hover:text-insight-info-hover active:text-insight-info-active hover:bg-insight-info-hover/25 active:bg-insight-info-active/25;
     }
     .btn-subtle-neutral {
-        @apply hover:bg-white/20 active:bg-white/30 text-insight-text-primary dark:text-insight-text-primary-dark;
+        @apply hover:bg-black/20 dark:hover:bg-white/20 active:bg-black/30 dark:active:bg-white/30 text-insight-text-headline dark:text-insight-text-headline-dark;
     }
     .btn-subtle-disabled {
         @apply text-neutral-400;
@@ -877,7 +865,7 @@
         @apply bg-insight-info/10 text-insight-info;
     }
     .badge-neutral {
-        @apply bg-white border border-gray-300 text-insight-secondary dark:bg-gray-900 dark:border-gray-700 dark:text-insight-text-secondary-dark;
+        @apply bg-white border border-gray-300 text-insight-text-body dark:bg-gray-900 dark:border-gray-700 dark:text-insight-text-body;
     }
 
     /*
@@ -901,17 +889,17 @@
     * Includes focus ring, placeholder styling, disabled state.
     */
     .input {
-        @apply w-full bg-insight-bg-base border border-insight-border-surface rounded-insight-control shadow-insight-subtle px-3 py-2 text-sm text-insight-text-primary focus:ring-2 focus:ring-insight-primary focus:border-insight-primary transition-colors duration-200;
+        @apply w-full bg-insight-bg-base border border-insight-border-surface rounded-insight-control shadow-insight-subtle px-3 py-2 text-sm text-insight-text-headline focus:ring-2 focus:ring-insight-primary focus:border-insight-primary transition-colors duration-200;
 
         &::placeholder {
-            @apply text-insight-text-secondary;
+            @apply text-insight-text-body;
         }
 
         &:disabled {
-            @apply bg-neutral-100 dark:bg-neutral-900 text-insight-text-hint cursor-not-allowed;
+            @apply bg-neutral-100 dark:bg-neutral-900 text-insight-text-disabled cursor-not-allowed;
 
             &::placeholder {
-                @apply text-insight-text-hint;
+                @apply text-insight-text-disabled;
             }
         }
     }
@@ -926,14 +914,14 @@
         @apply bg-transparent;
 
         &::placeholder {
-            @apply text-insight-text-secondary;
+            @apply text-insight-text-body;
         }
 
         &:disabled {
             @apply cursor-not-allowed;
 
             &::placeholder {
-                @apply text-insight-text-hint;
+                @apply text-insight-text-disabled;
             }
         }
     }

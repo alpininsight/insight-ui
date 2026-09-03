@@ -1,15 +1,15 @@
 {% load i18n insight_tags %}
 
-<div class="p-4 bg-insight-bg-surface border border-insight-border-surface rounded-insight-surface">
+<div class="p-4 bg-insight-surface border border-insight-surface rounded-insight-surface">
     <div class="flex items-center">
         <div class="shrink-0">
             {% icon name="clock" %}
         </div>
         <div class="ms-3">
-            <p class="text-sm text-insight-text-primary">
+            <p class="text-sm text-insight-headline">
                 {{ data.message }}
             </p>
-            <p class="mt-1 text-xs text-insight-text-secondary">
+            <p class="mt-1 text-xs text-insight-caption">
                 {% trans "Status" %}: {{ data.status }} | {% trans "Timestamp" %}: {{ timestamp }}
             </p>
         </div>

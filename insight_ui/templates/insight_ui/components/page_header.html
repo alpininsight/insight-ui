@@ -1,12 +1,12 @@
 {% if page_header_config.style == "easy" %}
-    <div class="px-4 space-y-4 bg-insight-bg-surface md:px-16">
+    <div class="px-4 space-y-4 bg-insight-surface md:px-16">
         <div class="pt-20 pb-12 mx-auto max-w-4xl">
             {% include "insight_ui/components/_page_header_content.html" %}
         </div>
     </div>
 {% elif page_header_config.style == "docs" %}
     <div class="px-4 border-t-8 border-insight-primary md:px-16">
-        <div class="pt-20 pb-12 mx-auto space-y-4 max-w-4xl border-b-2 border-insight-text-hint">
+        <div class="pt-20 pb-12 mx-auto space-y-4 max-w-4xl border-b-2 border-insight-text-caption">
             {% include "insight_ui/components/_page_header_content.html" %}
         </div>
     </div>
@@ -24,7 +24,7 @@
     </div>
 {% else %}
     <div class="px-4 border-t-8 border-insight-primary md:px-16">
-        <div class="pt-20 pb-12 mx-auto space-y-4 max-w-4xl border-b-2 border-insight-text-hint">
+        <div class="pt-20 pb-12 mx-auto space-y-4 max-w-4xl border-b-2 border-insight-text-caption">
             {% include "insight_ui/components/_page_header_content.html" %}
         </div>
     </div>

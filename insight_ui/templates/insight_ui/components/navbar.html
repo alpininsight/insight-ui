@@ -8,15 +8,15 @@
 <nav
   role="navigation"
   aria-label="{% trans 'Main navigation' %}"
-  class="{% if fixed %}fixed z-50{% else %}relative{% endif %} px-4 w-full h-16 bg-insight-bg-base border-b border-insight-border-surface shadow-insight-surface md:px-6"
+  class="{% if fixed %}fixed z-50{% else %}relative{% endif %} px-4 w-full h-16 bg-insight-base border-b border-insight-surface shadow-insight-surface md:px-6"
 >
   {# Desktop Navigation #}
-  <div class="flex flex-wrap gap-1 justify-between items-center h-full lg:flex-nowrap">
+  <div class="flex flex-wrap gap-2 justify-between items-center h-full lg:flex-nowrap">
     {# Brand Logo #}
     {% if navbar_config.brand %}
       <a
         href="{{ navbar_config.brand.request_url }}"
-        class="flex items-center font-bold text-xl text-primary"
+        class="flex items-center font-bold text-xl text-insight-headline"
         {% if navbar_config.brand.aria_label %}aria-label="{{ navbar_config.brand.aria_label }}"{% elif navbar_config.brand.mark.primary_text %}aria-label="{{ navbar_config.brand.mark.primary_text }}"{% endif %}
       >
         {% if navbar_config.brand.mark %}
@@ -29,7 +29,7 @@
     <div class="flex gap-2 items-center py-3 lg:hidden">
       {# Mobile Menu Toggle #}
       <button
-        class="inline-flex justify-center items-center p-2 text-insight-text-secondary rounded-insight-control transition-colors duration-200 hover:text-insight-text-link-hover focus:ring-insight-focus"
+        class="inline-flex justify-center items-center p-2 text-insight-body rounded-insight-control transition-colors duration-200 hover:text-insight-text-link-hover focus:ring-insight-focus"
         aria-expanded="false"
         aria-controls="navigation-menu"
         aria-label="{% trans 'Open menu' %}"
@@ -40,7 +40,7 @@
     </div>
 
     <div id="navigation-menu" class="hidden grow w-full h-full lg:block lg:w-fit lg:py-3">
-      <div class="flex flex-col gap-6 justify-end p-2 w-full bg-insight-bg-surface border border-insight-border-surface rounded-insight-surface shadow-insight-raised lg:flex-row lg:h-full lg:p-0 lg:shadow-none lg:bg-transparent lg:border-none">
+      <div class="insight-surface flex flex-col gap-6 justify-end p-2 w-full md:bg-insight-base lg:flex-row lg:h-full lg:p-0 lg:shadow-none lg:bg-transparent lg:border-none">
         {# Main-Navigation #}
         {% if navbar_config.links %}
           <ul class="flex flex-col justify-items-stretch w-full lg:flex-row lg:items-center lg:w-fit">
@@ -77,7 +77,7 @@
                           {% icon name="chevron-down" size="s" %}
                         {% endif %}
                       </button>
-                      <div id="{{ link.dropdown.tag_id }}" class="hidden bg-insight-bg-surface border border-insight-border-surface rounded-insight-overlay shadow-insight-overlay">
+                      <div id="{{ link.dropdown.tag_id }}" class="hidden bg-insight-surface border border-insight-surface rounded-insight-overlay shadow-insight-overlay">
                         <div class="py-1">
                           {% for item in link.dropdown.items %}
                             <a

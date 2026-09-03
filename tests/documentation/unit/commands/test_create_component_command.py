@@ -132,11 +132,10 @@ def test_create_template_uses_current_semantic_tokens(tmp_path: Path) -> None:
     content = (template_dir / "developer_access_card.html").read_text(encoding="utf-8")
     class_tokens = {token for class_attr in re.findall(r'class="([^"]+)"', content) for token in class_attr.split()}
 
-    assert "text-primary" not in class_tokens
     assert "insight-surface-base" in class_tokens
     assert "insight-border-default" in class_tokens
-    assert "text-insight-text-primary" in class_tokens
-    assert "text-insight-text-secondary" in class_tokens
+    assert "text-insight-headline" in class_tokens
+    assert "text-insight-body" in class_tokens
     assert "rounded-[var(--insight-radius-md)]" in class_tokens
 
 

@@ -44,7 +44,7 @@ class IconConfig:
     Attributes:
         name: Name of the Insight UI icon.
         size: Icon size: 'xl', 'l', 'm', 's', or 'xs'.
-        color: Color token for the icon (e.g., 'primary', 'danger', 'text-secondary').
+        color: Color token for the icon (e.g., 'primary', 'danger', 'text-body').
 
     """
 
@@ -55,7 +55,7 @@ class IconConfig:
     name: str = field(metadata={"doc": _("Name of the Insight UI icon.")})
     size: Size = field(default="m", metadata={"doc": _("Icon size: 'xl', 'l', 'm', 's', or 'xs'.")})
     color: IconColor = field(
-        default="", metadata={"doc": _("Color token for the icon (e.g., 'primary', 'danger', 'text-secondary').")}
+        default="", metadata={"doc": _("Color token for the icon (e.g., 'primary', 'danger', 'text-body').")}
     )
 
     def __post_init__(self) -> None:

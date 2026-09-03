@@ -36,10 +36,10 @@
         {% for type_def in type_definitions %}
             {% surface id=type_def.anchor padding="l" class="space-y-4 scroll-mt-8" %}
                 <h3>{{ type_def.name }}</h3>
-                <p class="text-secondary">{{ type_def.description }}</p>
+                <p class="text-insight-body">{{ type_def.description }}</p>
 
                 {% vbox gap="s" %}
-                    <h4 data-toc-ignore="true" class="font-medium text-sm text-secondary tracking-wide uppercase">{% trans "Values" %}</h4>
+                    <h4 data-toc-ignore="true" class="font-medium text-sm text-insight-body tracking-wide uppercase">{% trans "Values" %}</h4>
                     {% hbox gap="s" wrap="wrap" %}
                         {% for value in type_def.values %}
                             <code class="inline-tag px-4">{{ value|default:"&quot;&quot;" }}</code>

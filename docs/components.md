@@ -108,8 +108,8 @@ Insight UI uses semantic design tokens defined in `insight_ui/utils/input.css`. 
 ### Colors
 
 ```html
-<div class="bg-insight-primary text-insight-text-primary">
-    Primary background with primary text
+<div class="bg-insight-primary text-insight-headline">
+    Primary background with headline text
 </div>
 
 <span class="text-insight-success">Success message</span>
@@ -119,8 +119,9 @@ Insight UI uses semantic design tokens defined in `insight_ui/utils/input.css`. 
 | Token Pattern | Examples |
 |---------------|----------|
 | `bg-insight-{color}` | `bg-insight-primary`, `bg-insight-success` |
-| `text-insight-{role}` | `text-insight-text-primary`, `text-insight-text-secondary` |
-| `border-insight-{variant}` | `border-insight-border-surface` |
+| `bg-insight-{elevation}` | `bg-insight-base`, `bg-insight-surface`, `bg-insight-raised` |
+| `text-insight-{role}` | `text-insight-headline`, `text-insight-body`, `text-insight-caption` |
+| `border-insight-{elevation}` | `border-insight-surface`, `border-insight-raised` |
 
 ### Spacing
 

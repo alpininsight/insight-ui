@@ -202,9 +202,9 @@ def test_icon_color_values_contains_expected_values() -> None:
         "warning",
         "danger",
         "info",
-        "text-primary",
-        "text-secondary",
-        "text-hint",
+        "text-headline",
+        "text-body",
+        "text-caption",
         "text-link",
     )
     assert expected == ICON_COLOR_VALUES

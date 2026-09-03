@@ -237,7 +237,7 @@ def get_icon_context() -> dict:
 
     # Color tokens for icons (excluding empty string which inherits)
     color_tokens = ["primary", "secondary", "success", "warning", "danger", "info"]
-    text_color_tokens = ["text-primary", "text-secondary", "text-hint", "text-link"]
+    text_color_tokens = ["text-insight-headline", "text-insight-body", "text-insight-caption", "text-insight-link"]
 
     color_table = TableConfig(
         color_tokens,

@@ -12,7 +12,7 @@ class TestBrandMark(TemplateTagsTestCase):
         """Default brand mark renders without errors."""
         rendered = self.render_template("{% load insight_tags %}{% brand_mark %}")
         assert rendered.strip() != ""
-        assert '<span class="font-medium text-primary">' in rendered
+        assert '<span class="font-medium text-insight-headline">' in rendered
         assert '<span class="font-bold text-insight-secondary">' in rendered
 
     def test_brand_mark_custom_text(self) -> None:
@@ -20,7 +20,7 @@ class TestBrandMark(TemplateTagsTestCase):
         rendered = self.render_template(
             '{% load insight_tags %}{% brand_mark primary_text="Foo Bar" secondary_text="Cloud" %}'
         )
-        assert '<span class="font-medium text-primary">Foo Bar</span>' in rendered
+        assert '<span class="font-medium text-insight-headline">Foo Bar</span>' in rendered
         assert '<span class="font-bold text-insight-secondary">Cloud</span>' in rendered
 
     def test_brand_mark_config(self) -> None:

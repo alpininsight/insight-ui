@@ -39,7 +39,7 @@ class TestCheckbox(TemplateTagsTestCase):
         assert not checkboxes[0].has_attr("checked")
         assert not checkboxes[0].has_attr("disabled")
         assert label_spans[0].get_text() == "I accept the terms and conditions"
-        assert "text-primary" in label_spans[0]["class"]
+        assert "text-insight-headline" in label_spans[0]["class"]
 
         assert checkboxes[1]["id"] == "newsletter-box"
         assert checkboxes[1]["name"] == "newsletter"
@@ -47,4 +47,4 @@ class TestCheckbox(TemplateTagsTestCase):
         assert checkboxes[1].has_attr("checked")
         assert checkboxes[1].has_attr("disabled")
         assert label_spans[1].get_text() == "Subscribe for Newsletter"
-        assert "text-secondary" in label_spans[1]["class"]
+        assert "text-insight-body" in label_spans[1]["class"]

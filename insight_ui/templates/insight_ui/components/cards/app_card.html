@@ -1,18 +1,18 @@
 {% load static i18n insight_tags %}
 
-<div class="flex flex-col max-w-72 bg-insight-bg-surface border border-insight-border-surface rounded-insight-surface shadow-insight-surface transition-transform duration-500 overflow-hidden hover:scale-105 hover:shadow-insight-raised">
+<div class="flex flex-col max-w-72 bg-insight-surface border border-insight-surface rounded-insight-surface shadow-insight-surface transition-transform duration-500 overflow-hidden hover:scale-105 hover:shadow-insight-raised">
     <img class="w-full" src="{{ app_card_config.image.url }}" alt="{{ app_card_config.image.alt }}">
 
     {# Title and description #}
     <div class="flex flex-1 flex-col px-4 py-2">
         {% if app_card_config.request_url %}
             <a href="{{ app_card_config.request_url }}">
-                <h3 class="mb-2 font-bold text-primary text-xl hover:text-insight-text-link-hover">{{ app_card_config.title }}</h3>
+                <h3 class="mb-2 font-bold text-insight-headline text-xl hover:text-insight-text-link-hover">{{ app_card_config.title }}</h3>
             </a>
         {% else %}
-            <h3 class="mb-2 font-bold text-primary text-xl">{{ app_card_config.title }}</h3>
+            <h3 class="mb-2 font-bold text-insight-headline text-xl">{{ app_card_config.title }}</h3>
         {% endif %}
-        <p class="hyphens-auto text-secondary text-base text-justify" lang="de">{{ app_card_config.content|safe }}</p>
+        <p class="hyphens-auto text-insight-body text-base text-justify" lang="de">{{ app_card_config.content|safe }}</p>
     </div>
 
     {# Tags #}
@@ -25,7 +25,7 @@
     {% endif %}
 
     {# Start and more #}
-    <div class="flex flex-col gap-2 pt-4 m-4 border-t border-insight-border-surface">
+    <div class="flex flex-col gap-2 pt-4 m-4 border-t border-insight-surface">
         {% for action in app_card_config.actions %}
             {% button config=action %}
         {% endfor %}

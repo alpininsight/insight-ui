@@ -6,6 +6,7 @@ design tokens from input.css:
 - Colors: bg-gray-300 -> bg-insight-bg-base
 - Radii: rounded-lg -> rounded-insight-surface
 - Shadows: shadow-md -> shadow-insight-surface
+- Verbose tokens: text-insight-text-body -> text-body
 
 Exceptions can be marked with a Django template comment on the same line:
     <div class="rounded-lg {# tw-token-ok: special case #}">
@@ -182,7 +183,7 @@ def build_color_config() -> TokenConfig:
             "bg-green-": "bg-insight-success[-soft]",
             "bg-yellow-": "bg-insight-warning[-soft]",
             "bg-blue-": "bg-insight-primary[-soft] or bg-insight-info[-soft]",
-            "text-gray-": "text-insight-text-primary or text-insight-text-secondary",
+            "text-gray-": "text-insight-text-headline or text-insight-text-body",
             "text-red-": "text-insight-danger",
             "text-green-": "text-insight-success",
             "text-yellow-": "text-insight-warning",
@@ -332,6 +333,61 @@ def build_shadow_config() -> TokenConfig:
 
 
 # =============================================================================
+# Verbose Token Configuration
+# =============================================================================
+
+# Mapping of verbose token patterns to their shorthand equivalents
+# These are custom utilities defined in @layer utilities of input.css
+VERBOSE_TOKEN_MAPPINGS: dict[str, str] = {
+    # Text utilities - use semantic shorthand
+    "text-insight-text-headline": "text-insight-headline",
+    "text-insight-text-body": "text-insight-body",
+    "text-insight-text-caption": "text-insight-caption",
+    "text-insight-text-disabled": "text-insight-disabled",
+    # Background utilities - drop redundant "bg-" in token name
+    "bg-insight-bg-base": "bg-insight-base",
+    "bg-insight-bg-surface": "bg-insight-surface",
+    "bg-insight-bg-raised": "bg-insight-raised",
+    "bg-insight-bg-overlay": "bg-insight-overlay",
+    # Border utilities - drop redundant "border-" in token name
+    "border-insight-border-surface": "border-insight-surface",
+    "border-insight-border-raised": "border-insight-raised",
+    "border-insight-border-overlay": "border-insight-overlay",
+}
+
+
+def build_verbose_config() -> TokenConfig:
+    """Build configuration for verbose token checking.
+
+    Detects verbose token names that have shorter equivalents defined
+    in @layer utilities of input.css.
+
+    Note: Verbose tokens with opacity modifiers (e.g., bg-insight-bg-raised/50)
+    are intentionally allowed because shorthand utilities don't support
+    Tailwind's opacity modifier syntax.
+
+    Returns:
+        TokenConfig for detecting verbose token classes.
+
+    """
+    # Build pattern matching all verbose tokens with optional state prefixes
+    # Use negative lookahead to exclude tokens followed by /opacity modifier
+    verbose_tokens = list(VERBOSE_TOKEN_MAPPINGS.keys())
+    verbose_tokens.sort(key=len, reverse=True)  # Longer matches first
+    tokens_pattern = "(?:" + "|".join(re.escape(t) for t in verbose_tokens) + ")"
+
+    # Negative lookahead (?!/\d) ensures we don't match tokens with opacity modifiers
+    pattern = re.compile(rf"\b({STATE_PATTERN}{tokens_pattern})(?!/\d)\b")
+
+    return TokenConfig(
+        name="verbose",
+        pattern=pattern,
+        suggestions=VERBOSE_TOKEN_MAPPINGS,
+        whitelist=set(),
+    )
+
+
+# =============================================================================
 # Violation Detection
 # =============================================================================
 
@@ -404,15 +460,29 @@ def get_suggestion(class_name: str, config: TokenConfig) -> str | None:
     """Get a replacement suggestion for a hardcoded class.
 
     Args:
-        class_name: The hardcoded class (e.g., 'bg-gray-300').
+        class_name: The hardcoded class (e.g., 'bg-gray-300' or 'hover:bg-gray-300').
         config: Token configuration with suggestions.
 
     Returns:
         Suggested replacement or None if no suggestion available.
+        Preserves state prefixes (hover:, focus:, dark:, etc.) in the suggestion.
 
     """
-    for prefix, suggestion in config.suggestions.items():
-        if prefix in class_name:
+    # Extract state prefix if present (e.g., "hover:" from "hover:bg-gray-300")
+    state_prefix = ""
+    base_class = class_name
+    for prefix in STATE_PREFIXES:
+        if class_name.startswith(prefix):
+            state_prefix = prefix
+            base_class = class_name[len(prefix) :]
+            break
+
+    # Find suggestion for the base class
+    for pattern, suggestion in config.suggestions.items():
+        if pattern in base_class or pattern == base_class:
+            # Prepend state prefix to suggestion if present
+            if state_prefix:
+                return f"{state_prefix}{suggestion}"
             return suggestion
     return None
 
@@ -566,7 +636,8 @@ def print_usage() -> None:
         "Checks for hardcoded Tailwind utilities that should use design tokens:\n"
         "  - Colors: bg-gray-300 -> bg-insight-*\n"
         "  - Radii: rounded-lg -> rounded-insight-*\n"
-        "  - Shadows: shadow-md -> shadow-insight-*\n\n"
+        "  - Shadows: shadow-md -> shadow-insight-*\n"
+        "  - Verbose: text-insight-text-body -> text-body\n\n"
         "Options:\n"
         "  --all     Scan all template files in insight_ui/templates/\n"
         "  --staged  Scan only staged template files (for pre-commit)\n\n"
@@ -662,6 +733,7 @@ def main() -> int:
         build_color_config(),
         build_radius_config(),
         build_shadow_config(),
+        build_verbose_config(),
     ]
 
     files_to_check = collect_files_to_check(args, scan_all, scan_staged)

@@ -17,18 +17,18 @@
     {# Label #}
     {% if progress_bar_config.label %}
         <div class="flex justify-between items-center mb-1">
-            <span data-progress-label class="font-medium text-sm text-insight-text-primary">
+            <span data-progress-label class="font-medium text-sm text-insight-headline">
                 {{ progress_bar_config.label }}
             </span>
             {% if progress_bar_config.show_value %}
-                <span data-progress-value class="font-medium text-sm text-insight-text-primary" aria-hidden="true">
+                <span data-progress-value class="font-medium text-sm text-insight-headline" aria-hidden="true">
                     {{ progress_bar_config.value }}%
                 </span>
             {% endif %}
         </div>
     {% elif progress_bar_config.show_value %}
         <div class="flex justify-end mb-1">
-            <span data-progress-value class="font-medium text-sm text-insight-text-primary" aria-hidden="true">
+            <span data-progress-value class="font-medium text-sm text-insight-headline" aria-hidden="true">
                 {{ progress_bar_config.value }}%
             </span>
         </div>
@@ -50,7 +50,7 @@
         data-follow-mouse="true"
     >
         {# Track #}
-        <div class="w-full h-4 bg-insight-bg-raised rounded-insight-full overflow-hidden">
+        <div class="w-full h-4 bg-insight-raised rounded-insight-full overflow-hidden">
             <div
                 data-progress-fill
                 class="h-full bg-insight-info rounded-insight-full transition-all duration-500 ease-in-out"

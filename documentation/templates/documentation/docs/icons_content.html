@@ -22,7 +22,7 @@
     {% endsection %}
     {% section gap="m" %}
         <h2>{% trans "Icon Portfolio" %}</h2>
-        {% with heroicons='<a href="https://heroicons.com/" class="text-link">Heroicons</a>'|safe %}
+        {% with heroicons='<a href="https://heroicons.com/" class="text-insight-link">Heroicons</a>'|safe %}
             {% infobox message=_("The icons shown here come from {heroicons}. Heroicons provides icons under the <b>MIT</b> license. Currently we only provide the outline variants.") heroicons=heroicons %}
         {% endwith %}
         <div class="relative">
@@ -33,24 +33,24 @@
                 placeholder="{% trans 'Search icons...' %}"
                 oninput="filterIcons(this.value)"
             >
-            <span id="icon-count" class="absolute top-2.5 right-3 text-sm text-secondary">Icons: {{ icons|length }}</span>
+            <span id="icon-count" class="absolute top-2.5 right-3 text-sm text-insight-body">Icons: {{ icons|length }}</span>
         </div>
         <span><i>{% trans "Click on the Icon to copy the tag with corresponding icon name to clipboard." %}</i></span>
         <div id="icon-grid" class="grid grid-cols-2 gap-4 mt-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
             {% for icon in icons %}
                 <button
                     type="button"
-                    class="icon-item flex flex-col relative gap-2 items-center p-3 border border-insight-border-surface rounded-insight-control shadow-insight-surface transition-colors cursor-pointer group hover:bg-insight-bg-raised"
+                    class="icon-item flex flex-col relative gap-2 items-center p-3 border border-insight-surface rounded-insight-control shadow-insight-surface transition-colors cursor-pointer group hover:bg-insight-raised"
                     data-icon-name="{{ icon.name }}"
                     onclick="copyIconCode(this)"
                 >
-                    <div class="text-primary">{{ icon.svg|safe }}</div>
-                    <span class="text-xs text-secondary text-center whitespace-normal transition-colors group-hover:text-primary">{{ icon.name }}</span>
-                    <span class="flex absolute top-0 justify-center items-center size-full text-base text-insight-primary whitespace-nowrap bg-insight-bg-raised rounded-insight-control opacity-0 transition-opacity pointer-events-none" data-copied-tooltip>{% trans "Copied!" %}</span>
+                    <div class="text-insight-headline">{{ icon.svg|safe }}</div>
+                    <span class="text-xs text-insight-body text-center whitespace-normal transition-colors group-hover:text-insight-headline">{{ icon.name }}</span>
+                    <span class="flex absolute top-0 justify-center items-center size-full text-base text-insight-primary whitespace-nowrap bg-insight-raised rounded-insight-control opacity-0 transition-opacity pointer-events-none" data-copied-tooltip>{% trans "Copied!" %}</span>
                 </button>
             {% endfor %}
         </div>
-        <p id="no-results" class="hidden py-8 text-center text-secondary">{% trans "No icons found." %}</p>
+        <p id="no-results" class="hidden py-8 text-center text-insight-body">{% trans "No icons found." %}</p>
         <script>
             function filterIcons(query) {
                 const normalizedQuery = query.toLowerCase().trim();

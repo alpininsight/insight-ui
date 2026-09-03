@@ -15,50 +15,50 @@
     <div class="h-96">
         {% page padding="m" %}
             <h1>{% trans "Page One" %}</h1>
-            <p class="text-secondary">{% trans "A page container with consistent padding." %}</p>
+            <p class="text-insight-body">{% trans "A page container with consistent padding." %}</p>
         {% endpage %}
     </div>
 {% elif component.value == "hbox" %}
     {% vbox %}
         {# Gap sizes #}
         {% vbox %}
-            <p class="font-semibold text-sm text-secondary">{% trans "Gap sizes (xs, s, m, l, xl):" %}</p>
+            <p class="font-semibold text-sm text-insight-body">{% trans "Gap sizes (xs, s, m, l, xl):" %}</p>
             {% vbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">gap="xs"</p>
-                    {% hbox gap="xs" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">gap="xs"</p>
+                    {% hbox gap="xs" class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endhbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">gap="s"</p>
-                    {% hbox gap="s" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">gap="s"</p>
+                    {% hbox gap="s" class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endhbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">gap="m"</p>
-                    {% hbox gap="m" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">gap="m"</p>
+                    {% hbox gap="m" class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endhbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">gap="l"</p>
-                    {% hbox gap="l" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">gap="l"</p>
+                    {% hbox gap="l" class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endhbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">gap="xl"</p>
-                    {% hbox gap="xl" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">gap="xl"</p>
+                    {% hbox gap="xl" class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
@@ -69,51 +69,51 @@
 
         {# Horizontal alignment (h_align) #}
         {% vbox %}
-            <p class="font-semibold text-sm text-secondary">{% trans "Horizontal alignment (h_align):" %}</p>
+            <p class="font-semibold text-sm text-insight-body">{% trans "Horizontal alignment (h_align):" %}</p>
             {% vbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">h_align="start"</p>
-                    {% hbox gap="s" h_align="start" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">h_align="start"</p>
+                    {% hbox gap="s" h_align="start" class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endhbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">h_align="center"</p>
-                    {% hbox gap="s" h_align="center" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">h_align="center"</p>
+                    {% hbox gap="s" h_align="center" class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endhbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">h_align="end"</p>
-                    {% hbox gap="s" h_align="end" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">h_align="end"</p>
+                    {% hbox gap="s" h_align="end" class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endhbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">h_align="between"</p>
-                    {% hbox gap="s" h_align="between" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">h_align="between"</p>
+                    {% hbox gap="s" h_align="between" class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endhbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">h_align="around"</p>
-                    {% hbox gap="s" h_align="around" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">h_align="around"</p>
+                    {% hbox gap="s" h_align="around" class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endhbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">h_align="evenly"</p>
-                    {% hbox gap="s" h_align="evenly" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">h_align="evenly"</p>
+                    {% hbox gap="s" h_align="evenly" class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
@@ -124,39 +124,39 @@
 
         {# Vertical alignment (v_align) #}
         {% vbox %}
-            <p class="font-semibold text-sm text-secondary">{% trans "Vertical alignment (v_align):" %}</p>
+            <p class="font-semibold text-sm text-insight-body">{% trans "Vertical alignment (v_align):" %}</p>
             {% hbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">v_align="start"</p>
-                    {% hbox gap="s" v_align="start" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">v_align="start"</p>
+                    {% hbox gap="s" v_align="start" class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="px-6 py-2 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-6 py-6 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endhbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">v_align="center"</p>
-                    {% hbox gap="s" v_align="center" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">v_align="center"</p>
+                    {% hbox gap="s" v_align="center" class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="px-6 py-2 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-6 py-6 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endhbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">v_align="end"</p>
-                    {% hbox gap="s" v_align="end" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">v_align="end"</p>
+                    {% hbox gap="s" v_align="end" class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="px-6 py-2 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-6 py-6 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endhbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">v_align="stretch"</p>
-                    {% hbox gap="s" v_align="stretch" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">v_align="stretch"</p>
+                    {% hbox gap="s" v_align="stretch" class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="px-6 py-2 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-6 py-2 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endhbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">v_align="baseline"</p>
-                    {% hbox gap="s" v_align="baseline" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">v_align="baseline"</p>
+                    {% hbox gap="s" v_align="baseline" class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="px-6 py-2 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-6 py-6 text-lg text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endhbox %}
@@ -166,10 +166,10 @@
 
         {# Wrap #}
         {% vbox %}
-            <p class="font-semibold text-sm text-secondary">{% trans "Wrap (items wrap to next line):" %}</p>
+            <p class="font-semibold text-sm text-insight-body">{% trans "Wrap (items wrap to next line):" %}</p>
             {% vbox gap="xs" %}
-                <p class="text-xs text-secondary">wrap=True and max_width="xs"</p>
-                {% hbox gap="s" max_width="xs" wrap=True class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                <p class="text-xs text-insight-body">wrap=True and max_width="xs"</p>
+                {% hbox gap="s" max_width="xs" wrap=True class="border border-dashed border-insight-surface rounded-insight-surface" %}
                     <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
@@ -181,35 +181,35 @@
 
         {# Padding #}
         {% vbox %}
-            <p class="font-semibold text-sm text-secondary">{% trans "Padding (xs, s, m, l, xl):" %}</p>
+            <p class="font-semibold text-sm text-insight-body">{% trans "Padding (xs, s, m, l, xl):" %}</p>
             {% hbox gap="xs" %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">padding="xs"</p>
-                    {% hbox gap="s" padding="xs" class="h-fit border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">padding="xs"</p>
+                    {% hbox gap="s" padding="xs" class="h-fit border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endhbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">padding="s"</p>
-                    {% hbox gap="s" padding="s" class="h-fit border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">padding="s"</p>
+                    {% hbox gap="s" padding="s" class="h-fit border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endhbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">padding="m"</p>
-                    {% hbox gap="s" padding="m" class="h-fit border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">padding="m"</p>
+                    {% hbox gap="s" padding="m" class="h-fit border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endhbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">padding="l"</p>
-                    {% hbox gap="s" padding="l" class="h-fit border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">padding="l"</p>
+                    {% hbox gap="s" padding="l" class="h-fit border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endhbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">padding="xl"</p>
-                    {% hbox gap="s" padding="xl" class="h-fit border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">padding="xl"</p>
+                    {% hbox gap="s" padding="xl" class="h-fit border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endhbox %}
                 {% endvbox %}
@@ -220,43 +220,43 @@
     {% vbox %}
         {# Gap sizes #}
         {% vbox %}
-            <p class="font-semibold text-sm text-secondary">{% trans "Gap sizes (xs, s, m, l, xl):" %}</p>
+            <p class="font-semibold text-sm text-insight-body">{% trans "Gap sizes (xs, s, m, l, xl):" %}</p>
             {% hbox v_align="stretch" %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">gap="xs"</p>
-                    {% vbox gap="xs" class="h-full border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">gap="xs"</p>
+                    {% vbox gap="xs" class="h-full border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endvbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">gap="s"</p>
-                    {% vbox gap="s" class="h-full border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">gap="s"</p>
+                    {% vbox gap="s" class="h-full border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endvbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">gap="m"</p>
-                    {% vbox gap="m" class="h-full border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">gap="m"</p>
+                    {% vbox gap="m" class="h-full border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endvbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">gap="l"</p>
-                    {% vbox gap="l" class="h-full border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">gap="l"</p>
+                    {% vbox gap="l" class="h-full border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endvbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">gap="xl"</p>
-                    {% vbox gap="xl" class="h-full border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">gap="xl"</p>
+                    {% vbox gap="xl" class="h-full border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
@@ -267,32 +267,32 @@
 
         {# Horizontal alignment (h_align) #}
         {% vbox %}
-            <p class="font-semibold text-sm text-secondary">{% trans "Horizontal alignment (h_align):" %}</p>
+            <p class="font-semibold text-sm text-insight-body">{% trans "Horizontal alignment (h_align):" %}</p>
             {% hbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">h_align="start"</p>
-                    {% vbox gap="xs" h_align="start" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">h_align="start"</p>
+                    {% vbox gap="xs" h_align="start" class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-24 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endvbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">h_align="center"</p>
-                    {% vbox gap="xs" h_align="center" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">h_align="center"</p>
+                    {% vbox gap="xs" h_align="center" class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-24 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endvbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">h_align="end"</p>
-                    {% vbox gap="xs" h_align="end" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">h_align="end"</p>
+                    {% vbox gap="xs" h_align="end" class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-24 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endvbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">h_align="stretch"</p>
-                    {% vbox gap="xs" h_align="stretch" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">h_align="stretch"</p>
+                    {% vbox gap="xs" h_align="stretch" class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-24 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endvbox %}
@@ -302,51 +302,51 @@
 
         {# Vertical alignment (v_align) #}
         {% vbox %}
-            <p class="font-semibold text-sm text-secondary">{% trans "Vertical alignment (v_align):" %}</p>
+            <p class="font-semibold text-sm text-insight-body">{% trans "Vertical alignment (v_align):" %}</p>
             {% hbox v_align="stretch" class="h-96" %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">v_align="start"</p>
-                    {% vbox gap="xs" v_align="start" class="h-full border border-dashed border-insight-border-surface rounded-insight-surface"  %}
+                    <p class="text-xs text-insight-body">v_align="start"</p>
+                    {% vbox gap="xs" v_align="start" class="h-full border border-dashed border-insight-surface rounded-insight-surface"  %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endvbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">v_align="center"</p>
-                    {% vbox gap="xs" v_align="center" class="h-full border border-dashed border-insight-border-surface rounded-insight-surface"  %}
+                    <p class="text-xs text-insight-body">v_align="center"</p>
+                    {% vbox gap="xs" v_align="center" class="h-full border border-dashed border-insight-surface rounded-insight-surface"  %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endvbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">v_align="end"</p>
-                    {% vbox gap="xs" v_align="end" class="h-full border border-dashed border-insight-border-surface rounded-insight-surface"  %}
+                    <p class="text-xs text-insight-body">v_align="end"</p>
+                    {% vbox gap="xs" v_align="end" class="h-full border border-dashed border-insight-surface rounded-insight-surface"  %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endvbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">v_align="between"</p>
-                    {% vbox gap="xs" v_align="between" class="h-full border border-dashed border-insight-border-surface rounded-insight-surface"  %}
+                    <p class="text-xs text-insight-body">v_align="between"</p>
+                    {% vbox gap="xs" v_align="between" class="h-full border border-dashed border-insight-surface rounded-insight-surface"  %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endvbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">v_align="around"</p>
-                    {% vbox gap="xs" v_align="around" class="h-full border border-dashed border-insight-border-surface rounded-insight-surface"  %}
+                    <p class="text-xs text-insight-body">v_align="around"</p>
+                    {% vbox gap="xs" v_align="around" class="h-full border border-dashed border-insight-surface rounded-insight-surface"  %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endvbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">v_align="evenly"</p>
-                    {% vbox gap="xs" v_align="evenly" class="h-full border border-dashed border-insight-border-surface rounded-insight-surface"  %}
+                    <p class="text-xs text-insight-body">v_align="evenly"</p>
+                    {% vbox gap="xs" v_align="evenly" class="h-full border border-dashed border-insight-surface rounded-insight-surface"  %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
@@ -357,35 +357,35 @@
 
         {# Padding #}
         {% vbox %}
-            <p class="font-semibold text-sm text-secondary">{% trans "Padding (xs, s, m, l, xl):" %}</p>
+            <p class="font-semibold text-sm text-insight-body">{% trans "Padding (xs, s, m, l, xl):" %}</p>
             {% hbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">padding="xs"</p>
-                    {% vbox gap="xs" padding="xs" class="border border-dashed border-insight-border-surface rounded-insight-surface"  %}
+                    <p class="text-xs text-insight-body">padding="xs"</p>
+                    {% vbox gap="xs" padding="xs" class="border border-dashed border-insight-surface rounded-insight-surface"  %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endvbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">padding="s"</p>
-                    {% vbox gap="xs" padding="s" class="border border-dashed border-insight-border-surface rounded-insight-surface"  %}
+                    <p class="text-xs text-insight-body">padding="s"</p>
+                    {% vbox gap="xs" padding="s" class="border border-dashed border-insight-surface rounded-insight-surface"  %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endvbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">padding="m"</p>
-                    {% vbox gap="xs" padding="m" class="border border-dashed border-insight-border-surface rounded-insight-surface"  %}
+                    <p class="text-xs text-insight-body">padding="m"</p>
+                    {% vbox gap="xs" padding="m" class="border border-dashed border-insight-surface rounded-insight-surface"  %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endvbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">padding="l"</p>
-                    {% vbox gap="xs" padding="l" class="border border-dashed border-insight-border-surface rounded-insight-surface"  %}
+                    <p class="text-xs text-insight-body">padding="l"</p>
+                    {% vbox gap="xs" padding="l" class="border border-dashed border-insight-surface rounded-insight-surface"  %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endvbox %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">padding="xl"</p>
-                    {% vbox gap="xs" padding="xl" class="border border-dashed border-insight-border-surface rounded-insight-surface"  %}
+                    <p class="text-xs text-insight-body">padding="xl"</p>
+                    {% vbox gap="xs" padding="xl" class="border border-dashed border-insight-surface rounded-insight-surface"  %}
                         <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                     {% endvbox %}
                 {% endvbox %}
@@ -396,26 +396,26 @@
     {% vbox gap="l" %}
         {# Column counts #}
         {% vbox %}
-            <p class="font-semibold text-sm text-secondary">{% trans "Column counts (cols=2, 3, 4, 5, 6):" %}</p>
+            <p class="font-semibold text-sm text-insight-body">{% trans "Column counts (cols=2, 3, 4, 5, 6):" %}</p>
             {% vbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">cols=2</p>
-                    {% grid cols=2 gap="s" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">cols=2</p>
+                    {% grid cols=2 gap="s" class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
                     {% endgrid %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">cols=3</p>
-                    {% grid cols=3 gap="s" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">cols=3</p>
+                    {% grid cols=3 gap="s" class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">3</div>
                     {% endgrid %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">cols=4</p>
-                    {% grid cols=4 gap="s" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">cols=4</p>
+                    {% grid cols=4 gap="s" class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">3</div>
@@ -423,8 +423,8 @@
                     {% endgrid %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">cols=5</p>
-                    {% grid cols=5 gap="s" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">cols=5</p>
+                    {% grid cols=5 gap="s" class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">3</div>
@@ -433,8 +433,8 @@
                     {% endgrid %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">cols=6</p>
-                    {% grid cols=6 gap="s" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">cols=6</p>
+                    {% grid cols=6 gap="s" class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">3</div>
@@ -448,11 +448,11 @@
 
         {# Gap sizes #}
         {% vbox %}
-            <p class="font-semibold text-sm text-secondary">{% trans "Gap sizes (xs, s, m, l, xl):" %}</p>
+            <p class="font-semibold text-sm text-insight-body">{% trans "Gap sizes (xs, s, m, l, xl):" %}</p>
             {% hbox wrap=True %}
                 {% vbox gap="xs" class="flex-1 min-w-48" %}
-                    <p class="text-xs text-secondary">gap="xs"</p>
-                    {% grid cols=2 gap="xs" fixed=True class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">gap="xs"</p>
+                    {% grid cols=2 gap="xs" fixed=True class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">3</div>
@@ -460,8 +460,8 @@
                     {% endgrid %}
                 {% endvbox %}
                 {% vbox gap="xs" class="flex-1 min-w-48" %}
-                    <p class="text-xs text-secondary">gap="s"</p>
-                    {% grid cols=2 gap="s" fixed=True class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">gap="s"</p>
+                    {% grid cols=2 gap="s" fixed=True class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">3</div>
@@ -469,8 +469,8 @@
                     {% endgrid %}
                 {% endvbox %}
                 {% vbox gap="xs" class="flex-1 min-w-48" %}
-                    <p class="text-xs text-secondary">gap="m"</p>
-                    {% grid cols=2 gap="m" fixed=True class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">gap="m"</p>
+                    {% grid cols=2 gap="m" fixed=True class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">3</div>
@@ -478,8 +478,8 @@
                     {% endgrid %}
                 {% endvbox %}
                 {% vbox gap="xs" class="flex-1 min-w-48" %}
-                    <p class="text-xs text-secondary">gap="l"</p>
-                    {% grid cols=2 gap="l" fixed=True class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">gap="l"</p>
+                    {% grid cols=2 gap="l" fixed=True class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">3</div>
@@ -487,8 +487,8 @@
                     {% endgrid %}
                 {% endvbox %}
                 {% vbox gap="xs" class="flex-1 min-w-48" %}
-                    <p class="text-xs text-secondary">gap="xl"</p>
-                    {% grid cols=2 gap="xl" fixed=True class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">gap="xl"</p>
+                    {% grid cols=2 gap="xl" fixed=True class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">3</div>
@@ -500,11 +500,11 @@
 
         {# Auto-fit mode #}
         {% vbox %}
-            <p class="font-semibold text-sm text-secondary">{% trans "Auto-fit mode (items wrap based on available space):" %}</p>
+            <p class="font-semibold text-sm text-insight-body">{% trans "Auto-fit mode (items wrap based on available space):" %}</p>
             {% vbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">min="100px"</p>
-                    {% grid gap="s" min="100px" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">min="100px"</p>
+                    {% grid gap="s" min="100px" class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">3</div>
@@ -514,8 +514,8 @@
                     {% endgrid %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">min="200px"</p>
-                    {% grid gap="s" min="200px" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">min="200px"</p>
+                    {% grid gap="s" min="200px" class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">3</div>
@@ -525,8 +525,8 @@
                     {% endgrid %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">min="300px"</p>
-                    {% grid gap="s" min="300px" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">min="300px"</p>
+                    {% grid gap="s" min="300px" class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">3</div>
@@ -540,11 +540,11 @@
 
         {# Responsive behavior (container-based) #}
         {% vbox %}
-            <p class="font-semibold text-sm text-secondary">{% trans "Responsive behavior (adapts to container width):" %}</p>
+            <p class="font-semibold text-sm text-insight-body">{% trans "Responsive behavior (adapts to container width):" %}</p>
             {% vbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">{% trans "cols=4 in full width container" %}</p>
-                    {% grid cols=4 gap="s" class="border border-dashed border-insight-border-surface rounded-insight-surface" %}
+                    <p class="text-xs text-insight-body">{% trans "cols=4 in full width container" %}</p>
+                    {% grid cols=4 gap="s" class="border border-dashed border-insight-surface rounded-insight-surface" %}
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
                         <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">3</div>
@@ -552,8 +552,8 @@
                     {% endgrid %}
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">{% trans "cols=4 in 500px container (automatically reduces columns)" %}</p>
-                    <div class="p-4 max-w-125 border border-dashed border-insight-border-surface rounded-insight-surface">
+                    <p class="text-xs text-insight-body">{% trans "cols=4 in 500px container (automatically reduces columns)" %}</p>
+                    <div class="p-4 max-w-125 border border-dashed border-insight-surface rounded-insight-surface">
                         {% grid cols=4 gap="s" %}
                             <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
                             <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
@@ -563,8 +563,8 @@
                     </div>
                 {% endvbox %}
                 {% vbox gap="xs" %}
-                    <p class="text-xs text-secondary">{% trans "cols=4 fixed=True in 500px container (always 4 columns)" %}</p>
-                    <div class="p-4 max-w-125 border border-dashed border-insight-border-surface rounded-insight-surface">
+                    <p class="text-xs text-insight-body">{% trans "cols=4 fixed=True in 500px container (always 4 columns)" %}</p>
+                    <div class="p-4 max-w-125 border border-dashed border-insight-surface rounded-insight-surface">
                         {% grid cols=4 gap="s" fixed=True %}
                             <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">1</div>
                             <div class="py-3 text-sm text-center text-white bg-insight-primary rounded-insight-surface">2</div>
@@ -579,7 +579,7 @@
 {% elif component.value == "spacer" %}
     {% vbox %}
         {% vbox gap="xs" %}
-            <p class="text-xs text-secondary">size="xs"</p>
+            <p class="text-xs text-insight-body">size="xs"</p>
             {% hbox %}
                 {% hbox gap="xs" %}
                     <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
@@ -593,7 +593,7 @@
             {% endhbox %}
         {% endvbox %}
         {% vbox gap="xs" %}
-            <p class="text-xs text-secondary">size="s"</p>
+            <p class="text-xs text-insight-body">size="s"</p>
             {% hbox %}
                 {% hbox gap="xs" %}
                     <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
@@ -607,7 +607,7 @@
             {% endhbox %}
         {% endvbox %}
         {% vbox gap="xs" %}
-            <p class="text-xs text-secondary">size="m"</p>
+            <p class="text-xs text-insight-body">size="m"</p>
             {% hbox %}
                 {% hbox gap="xs" %}
                     <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
@@ -621,7 +621,7 @@
             {% endhbox %}
         {% endvbox %}
         {% vbox gap="xs" %}
-            <p class="text-xs text-secondary">size="l"</p>
+            <p class="text-xs text-insight-body">size="l"</p>
             {% hbox %}
                 {% hbox gap="xs" %}
                     <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
@@ -635,7 +635,7 @@
             {% endhbox %}
         {% endvbox %}
         {% vbox gap="xs" %}
-            <p class="text-xs text-secondary">size="xl"</p>
+            <p class="text-xs text-insight-body">size="xl"</p>
             {% hbox %}
                 {% hbox gap="xs" %}
                     <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
@@ -653,13 +653,13 @@
     {% vbox gap="xl" %}
         {# Direction #}
         {% vbox gap="s" %}
-            <p class="text-xs text-insight-text-secondary">{% trans "Horizontal (default)" %}</p>
+            <p class="text-xs text-insight-caption">{% trans "Horizontal (default)" %}</p>
             <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
             {% divider %}
             <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
         {% endvbox %}
         {% vbox gap="s" %}
-            <p class="text-xs text-insight-text-secondary">{% trans "Vertical" %}</p>
+            <p class="text-xs text-insight-caption">{% trans "Vertical" %}</p>
             {% hbox gap="s" %}
                 <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Item</div>
                 {% divider direction="vertical" %}
@@ -668,32 +668,32 @@
         {% endvbox %}
         {# Weight #}
         {% vbox gap="s" %}
-            <p class="text-xs text-insight-text-secondary">{% trans "Weight: thin / medium / thick" %}</p>
+            <p class="text-xs text-insight-caption">{% trans "Weight: thin / medium / thick" %}</p>
             {% divider weight="thin" %}
             {% divider weight="medium" %}
             {% divider weight="thick" %}
         {% endvbox %}
         {# Style #}
         {% vbox gap="s" %}
-            <p class="text-xs text-insight-text-secondary">{% trans "Style: solid / dashed / dotted" %}</p>
+            <p class="text-xs text-insight-caption">{% trans "Style: solid / dashed / dotted" %}</p>
             {% divider style="solid" %}
             {% divider style="dashed" %}
             {% divider style="dotted" %}
         {% endvbox %}
         {# Combined #}
         {% vbox gap="s" %}
-            <p class="text-xs text-insight-text-secondary">{% trans "Combined: thick + dashed" %}</p>
+            <p class="text-xs text-insight-caption">{% trans "Combined: thick + dashed" %}</p>
             {% divider weight="thick" style="dashed" %}
         {% endvbox %}
         {# Label #}
         {% vbox gap="s" %}
-            <p class="text-xs text-insight-text-secondary">{% trans "With label" %}</p>
+            <p class="text-xs text-insight-caption">{% trans "With label" %}</p>
             {% divider label="OR" %}
             {% divider label="Section" style="dashed" %}
         {% endvbox %}
         {# Vertical with label #}
         {% vbox gap="s" %}
-            <p class="text-xs text-insight-text-secondary">{% trans "Vertical with rotated label" %}</p>
+            <p class="text-xs text-insight-caption">{% trans "Vertical with rotated label" %}</p>
             {% hbox gap="s" width="full" class="h-32" %}
                 <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Left</div>
                 {% divider direction="vertical" label="OR" %}
@@ -703,7 +703,7 @@
     {% endvbox %}
 {% elif component.value == "section" %}
     {% vbox gap="l" %}
-        <p class="text-sm text-secondary">{% trans "Semantic sections with anchor IDs:" %}</p>
+        <p class="text-sm text-insight-body">{% trans "Semantic sections with anchor IDs:" %}</p>
         {% section id="intro" gap="s" %}
             <h3>{% trans "Introduction" %}</h3>
             <p>{% trans "This section has an anchor ID for navigation. Click the link below to scroll here." %}</p>
@@ -716,39 +716,39 @@
                 <li>{% trans "Feature two" %}</li>
             </ul>
         {% endsection %}
-        <p class="text-sm text-secondary">{% trans "Try clicking:" %} <a href="#intro" class="text-link">{% trans "Jump to Introduction" %}</a></p>
+        <p class="text-sm text-insight-body">{% trans "Try clicking:" %} <a href="#intro" class="text-insight-link">{% trans "Jump to Introduction" %}</a></p>
     {% endvbox %}
 {% elif component.value == "surface" %}
     {% vbox gap="l" %}
-        <p class="text-sm text-secondary">{% trans "Surface variants:" %}</p>
+        <p class="text-sm text-insight-body">{% trans "Surface variants:" %}</p>
         {% grid cols=3 gap="m" %}
             {% surface variant="surface" padding="m" %}
                 {% vbox gap="xs" %}
                     <span class="font-semibold">{% trans "Surface" %}</span>
-                    <span class="text-sm text-secondary">{% trans "Default style with border" %}</span>
+                    <span class="text-sm text-insight-body">{% trans "Default style with border" %}</span>
                 {% endvbox %}
             {% endsurface %}
             {% surface variant="raised" padding="m" %}
                 {% vbox gap="xs" %}
                     <span class="font-semibold">{% trans "Raised" %}</span>
-                    <span class="text-sm text-secondary">{% trans "With shadow" %}</span>
+                    <span class="text-sm text-insight-body">{% trans "With shadow" %}</span>
                 {% endvbox %}
             {% endsurface %}
             {% surface variant="outline" padding="m" %}
                 {% vbox gap="xs" %}
                     <span class="font-semibold">{% trans "Outline" %}</span>
-                    <span class="text-sm text-secondary">{% trans "Border only" %}</span>
+                    <span class="text-sm text-insight-body">{% trans "Border only" %}</span>
                 {% endvbox %}
             {% endsurface %}
         {% endgrid %}
-        <p class="text-sm text-secondary">{% trans "Clickable surfaces (with href):" %}</p>
+        <p class="text-sm text-insight-body">{% trans "Clickable surfaces (with href):" %}</p>
         {% grid cols=2 gap="m" %}
             {% surface href="#" padding="m" %}
                 {% hbox gap="m" v_align="center" %}
                     {% icon name="document-text" size="l" color="primary" %}
                     {% vbox gap="xs" %}
                         <span class="font-semibold group-hover:text-insight-primary">{% trans "Documentation" %}</span>
-                        <span class="text-sm text-secondary">{% trans "Hover to see effect" %}</span>
+                        <span class="text-sm text-insight-body">{% trans "Hover to see effect" %}</span>
                     {% endvbox %}
                 {% endhbox %}
             {% endsurface %}
@@ -757,14 +757,14 @@
                     {% icon name="arrow-top-right-on-square" size="l" color="primary" %}
                     {% vbox gap="xs" %}
                         <span class="font-semibold group-hover:text-insight-primary">{% trans "External Link" %}</span>
-                        <span class="text-sm text-secondary">{% trans "Opens in new tab" %}</span>
+                        <span class="text-sm text-insight-body">{% trans "Opens in new tab" %}</span>
                     {% endvbox %}
                 {% endhbox %}
             {% endsurface %}
         {% endgrid %}
     {% endvbox %}
 {% elif component.value == "navbar" %}
-    <div class="relative w-full h-80 bg-insight-bg-base">
+    <div class="relative w-full h-80 bg-insight-base">
         {% navbar config=demo_nav_config user_dropdown_links=user_dropdown_links %}
         <script>
             // Demo fix
@@ -774,7 +774,7 @@
         </script>
     </div>
 {% elif component.value == "sidebar" %}
-    <div class="flex relative grow h-96 bg-insight-bg-base">
+    <div class="flex relative grow h-96 bg-insight-base">
         <div class="flex">
             {% sidebar side="left" static=False %}
                 {% include "insight_ui/components/sidebar_nav.html" with sidebar_data=demo_sidebar_data %}
@@ -803,7 +803,7 @@
         </script>
     </div>
 {% elif component.value == "footer" %}
-    <div class="h-24 bg-insight-bg-base"></div>
+    <div class="h-24 bg-insight-base"></div>
     {% footer config=footer_config %}
 {% elif component.value == "breadcrumbs" %}
     <div class="space-y-4">
@@ -972,16 +972,16 @@
 {% elif component.value == "popover" %}
     <div class="flex gap-12 justify-center items-end h-64">
         {% button label="Hover me!" type="primary" data_insight_popover="demo-popover" data_show_arrow="true" %}
-        <div id="demo-popover" class="w-64 bg-insight-bg-surface border border-insight-border-surface rounded-insight-raised shadow-insight-raised">
+        <div id="demo-popover" class="w-64 bg-insight-surface border border-insight-surface rounded-insight-raised shadow-insight-raised">
             <div class="p-4">
-                <span class="block pb-2 w-full font-semibold text-primary border-b-2 border-insight-border-surface">
+                <span class="block pb-2 w-full font-semibold text-insight-headline border-b-2 border-insight-surface">
                     {% trans "This is a popover." %}
                 </span>
-                <p class="mt-4 text-secondary text-sm">
+                <p class="mt-4 text-insight-body text-sm">
                     {% trans "A popover can have more content than a tooltip, e.g. interactive elements like buttons." %}
                 </p>
             </div>
-            <div class="p-4 bg-insight-bg-base rounded-b-insight-raised">
+            <div class="p-4 bg-insight-base rounded-b-insight-raised">
                 {% button label=_("Learn more") type="primary" size="s" %}
             </div>
         </div>
@@ -1012,26 +1012,26 @@
 {% elif component.value == "logo" %}
     {% grid cols=3 responsive="container" %}
         {% vbox gap="s" h_align="start" %}
-            <p class="font-semibold text-secondary">SVG asset</p>
+            <p class="font-semibold text-insight-body">SVG asset</p>
             {% logo config=logo_svg_config %}
         {% endvbox %}
         {% vbox gap="s" h_align="start" %}
-            <p class="font-semibold text-secondary">Image asset</p>
+            <p class="font-semibold text-insight-body">Image asset</p>
             {% logo config=logo_image_config %}
         {% endvbox %}
         {% vbox gap="s" h_align="start" %}
-            <p class="font-semibold text-secondary">Icon</p>
+            <p class="font-semibold text-insight-body">Icon</p>
             {% logo config=logo_icon_config %}
         {% endvbox %}
     {% endgrid %}
 {% elif component.value == "brand_mark" %}
     {% hbox gap="xl" wrap=True %}
         {% vbox gap="s" %}
-            <span class="font-semibold text-secondary">Logo position start</span>
+            <span class="font-semibold text-insight-body">Logo position start</span>
             {% brand_mark config=brand_mark_default %}
         {% endvbox %}
         {% vbox gap="s" %}
-            <span class="font-semibold text-secondary">Logo position end</span>
+            <span class="font-semibold text-insight-body">Logo position end</span>
             {% brand_mark config=brand_mark_end %}
         {% endvbox %}
     {% endhbox %}
@@ -1131,7 +1131,7 @@
 {% elif component.value == "live_content" %}
     {% live_content tag_id="live-content" request_url="/api/live-data/" interval=10 %}
 {% elif component.value == "web_socket" %}
-    {% websocket tag_id="demo-websocket" request_url="/ws/ticker/" initial_content="<p class='text-insight-text-hint'>Connecting to stock ticker...</p><p class='mt-2 text-xs'>Requires ASGI server: <code>uvicorn core.asgi:application --port 10800</code></p>" %}
+    {% websocket tag_id="demo-websocket" request_url="/ws/ticker/" initial_content="<p class='text-insight-disabled'>Connecting to stock ticker...</p><p class='mt-2 text-xs'>Requires ASGI server: <code>uvicorn core.asgi:application --port 10800</code></p>" %}
 {% elif component.value == "badge" %}
     {% vbox gap="l" %}
         {% vbox gap="s" %}

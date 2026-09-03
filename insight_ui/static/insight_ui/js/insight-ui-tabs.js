@@ -129,11 +129,11 @@ export class Tabs {
 
             // Update styling
             if (isSelected) {
-                tab.classList.remove('border-transparent', 'text-secondary');
+                tab.classList.remove('border-transparent', 'text-insight-body');
                 tab.classList.add('border-insight-primary', 'text-insight-primary');
             } else {
                 tab.classList.remove('border-insight-primary', 'text-insight-primary');
-                tab.classList.add('border-transparent', 'text-secondary');
+                tab.classList.add('border-transparent', 'text-insight-body');
             }
 
             // Static mode: show/hide panels

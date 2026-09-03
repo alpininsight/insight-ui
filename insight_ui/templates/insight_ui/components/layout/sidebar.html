@@ -40,7 +40,7 @@
   <aside
     role="complementary"
     aria-label="{% trans 'Side navigation' %}"
-    class="{{ width_class }} {% if static %} {% if mobile_behavior == 'hidden' %}hidden lg:block {% elif mobile_behavior == 'drawer' %}hidden lg:block {% endif %} sticky {% if navbar_fixed %}top-16 h-[calc(100dvh-4rem)]{% else %}top-0 h-dvh{% endif %} {% else %} fixed h-dvh {% endif %} {% if side == 'right' %}ltr:right-0 ltr:border-l rtl:left-0 rtl:border-r{% else %}ltr:left-0 ltr:border-r rtl:right-0 rtl:border-l{% endif %} [scrollbar-gutter:stable] bg-insight-bg-surface border-insight-border-surface shadow-insight-surface transition overflow-y-auto"
+    class="{{ width_class }} {% if static %} {% if mobile_behavior == 'hidden' %}hidden lg:block {% elif mobile_behavior == 'drawer' %}hidden lg:block {% endif %} sticky {% if navbar_fixed %}top-16 h-[calc(100dvh-4rem)]{% else %}top-0 h-dvh{% endif %} {% else %} fixed h-dvh {% endif %} {% if side == 'right' %}ltr:right-0 ltr:border-l rtl:left-0 rtl:border-r{% else %}ltr:left-0 ltr:border-r rtl:right-0 rtl:border-l{% endif %} [scrollbar-gutter:stable] bg-insight-surface border-insight-surface shadow-insight-surface transition overflow-y-auto"
   >
     <div class="flex flex-col {% if side == 'right' %}ps-4 pe-4 md:pe-6{% else %}ps-4 pe-4 md:ps-6{% endif %} {% if static %}py-8{% else %}pb-8{% endif %}">
       {# Close button (only for drawers) #}
@@ -68,7 +68,7 @@
     <aside
       role="complementary"
       aria-label="{% trans 'Side navigation' %}"
-      class="{{ width_class }} fixed h-dvh {% if side == 'right' %}ltr:right-0 ltr:border-l rtl:left-0 rtl:border-r{% else %}ltr:left-0 ltr:border-r rtl:right-0 rtl:border-l{% endif %} [scrollbar-gutter:stable] bg-insight-bg-base border-insight-border-surface shadow-insight-surface transition overflow-y-auto"
+      class="{{ width_class }} fixed h-dvh {% if side == 'right' %}ltr:right-0 ltr:border-l rtl:left-0 rtl:border-r{% else %}ltr:left-0 ltr:border-r rtl:right-0 rtl:border-l{% endif %} [scrollbar-gutter:stable] bg-insight-base border-insight-surface shadow-insight-surface transition overflow-y-auto"
     >
       <div class="flex flex-col {% if side == 'right' %}ps-4 pe-4 md:pe-6{% else %}ps-4 pe-4 md:ps-6{% endif %} pb-8">
         <div class="flex justify-end pt-4">

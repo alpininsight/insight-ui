@@ -1,7 +1,7 @@
 {% load i18n insight_tags %}
 
 <div data-insight-multiselect data-name="{{ multiselect_config.name }}" data-max="{{ multiselect_config.maximum }}" data-selected="{{ multiselect_config.selected_options|default:"" }}"{% if multiselect_config.disabled %} data-disabled="true"{% endif %}{% if multiselect_config.disabled and multiselect_config.disabled_reason %} data-insight-tooltip="{{ multiselect_config.disabled_reason }}"{% endif %}>
-    <label id="{{ multiselect_config.name }}-label" class="block mb-1 font-bold text-sm text-primary">{{ multiselect_config.label }}</label>
+    <label id="{{ multiselect_config.name }}-label" class="block mb-1 font-bold text-sm text-insight-headline">{{ multiselect_config.label }}</label>
     {% if multiselect_config.show_buttons %}
         <div class="flex gap-2 mb-1">
             {% button label=_("Select all") type="primary" size="s" button_type="button" extra_classes="select-all" disabled=multiselect_config.disabled %}
@@ -13,10 +13,10 @@
             <span class="tags flex flex-wrap gap-1"></span>
             <input id="{{ multiselect_config.name }}-search" type="text" class="search flex-1 min-w-15 text-sm outline-none" placeholder={% trans "Type to search..." %} aria-label={% trans "Search {{ multiselect_config.label }}" %}{% if multiselect_config.disabled %} disabled{% endif %} />
         </div>
-        <span class="info ml-auto text-insight-text-secondary text-xs"></span>
-        <div id="{{ multiselect_config.name }}-listbox" role="listbox" class="options hidden absolute z-10 mt-1 w-full max-h-48 bg-insight-bg-surface border border-insight-border-surface rounded-insight-control shadow-insight-overlay overflow-y-auto">
+        <span class="info ml-auto text-insight-caption text-xs"></span>
+        <div id="{{ multiselect_config.name }}-listbox" role="listbox" class="options hidden absolute z-10 mt-1 w-full max-h-48 bg-insight-surface border border-insight-surface rounded-insight-control shadow-insight-overlay overflow-y-auto">
             {% for value, text in multiselect_config.options.items %}
-                <div id="{{ multiselect_config.name }}-opt-{{ forloop.counter }}" role="option" aria-selected="false" tabindex="-1" data-value="{{ value }}" class="option px-3 py-2 text-primary bg-insight-bg-surface cursor-pointer hover:bg-insight-bg-base">{{ text }}</div>
+                <div id="{{ multiselect_config.name }}-opt-{{ forloop.counter }}" role="option" aria-selected="false" tabindex="-1" data-value="{{ value }}" class="option px-3 py-2 text-insight-headline bg-insight-surface cursor-pointer hover:bg-insight-base">{{ text }}</div>
             {% endfor %}
         </div>
     </div>

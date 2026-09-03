@@ -314,7 +314,7 @@ def markdownify(value: str) -> SafeString:
     html = html.replace("</code>", "</span>")
 
     # Assign text style to <a> elements
-    html = html.replace("<a", '<a class="text-link"')
+    html = html.replace("<a", '<a class="text-insight-link"')
 
     return mark_safe(html)  # nosec  # noqa: S308
 
@@ -1014,7 +1014,7 @@ def diff(a: str, b: str, simple: bool = True) -> str:
             .del {{ background-color: #ffbbbb; color: #721c24; text-decoration: line-through; }}
             .ins {{ background-color: #bbffbb; color: #155724; }}
         </style>
-        <p class='text-primary'>{html}</p>
+        <p class='text-insight-headline'>{html}</p>
     """
 
 
