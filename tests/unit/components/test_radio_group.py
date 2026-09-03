@@ -2,6 +2,7 @@
 
 import pytest
 from bs4 import BeautifulSoup
+from documentation.component_details.demo_context import get_radio_group_context
 from insight_ui.configs import RadioGroupConfig, RadioItemConfig
 
 from tests.unit.components.test_template_tags import TemplateTagsTestCase
@@ -12,17 +13,7 @@ class TestRadioGroup(TemplateTagsTestCase):
 
     def test_radio_group(self) -> None:
         """Test the {% radio_group %} tag."""
-        context = {
-            "model_radio_config": RadioGroupConfig(
-                name="model",
-                label="Select AI Model:",
-                items=[
-                    RadioItemConfig(value="BERT", tag_id="model1", label="BERT"),
-                    RadioItemConfig(value="PaLM 2", tag_id="model2", label="PaLM 2"),
-                    RadioItemConfig(value="LLaMA 2", tag_id="model3", label="LLaMA 2", disabled=True),
-                ],
-            )
-        }
+        context = get_radio_group_context()
 
         template_string = """
         {% load insight_tags %}
