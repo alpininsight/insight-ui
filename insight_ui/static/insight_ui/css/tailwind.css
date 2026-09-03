@@ -109,6 +109,7 @@
     --color-insight-primary-soft-dark: #203351;
     --color-insight-primary-hover-dark: #72AEFF;
     --color-insight-primary-active-dark: #90C5FF;
+    --color-insight-primary-text: #FFFFFF;
     --color-insight-secondary: #1B9388;
     --color-insight-secondary-soft: #DDF4F1;
     --color-insight-secondary-hover: #008074;
@@ -116,6 +117,7 @@
     --color-insight-secondary-soft-dark: #133A36;
     --color-insight-secondary-hover-dark: #51BCB0;
     --color-insight-secondary-active-dark: #75D1C5;
+    --color-insight-secondary-text: #FFFFFF;
     --color-insight-success: #2EA55C;
     --color-insight-success-soft: #E0F5E5;
     --color-insight-success-hover: #009144;
@@ -123,6 +125,7 @@
     --color-insight-success-soft-dark: #1E3A26;
     --color-insight-success-hover-dark: #67CD87;
     --color-insight-success-active-dark: #8CE1A4;
+    --color-insight-success-text: #FFFFFF;
     --color-insight-warning: #E8A127;
     --color-insight-warning-soft: #FFF0D4;
     --color-insight-warning-hover: #DC8900;
@@ -130,6 +133,7 @@
     --color-insight-warning-soft-dark: #433215;
     --color-insight-warning-hover-dark: #FFBC5E;
     --color-insight-warning-active-dark: #FFCD86;
+    --color-insight-warning-text: #1C1C1E;
     --color-insight-danger: #E6443D;
     --color-insight-danger-soft: #FFE7E4;
     --color-insight-danger-hover: #D01D21;
@@ -137,6 +141,7 @@
     --color-insight-danger-soft-dark: #4D2622;
     --color-insight-danger-hover-dark: #FF7A6E;
     --color-insight-danger-active-dark: #FF988B;
+    --color-insight-danger-text: #FFFFFF;
     --color-insight-info: #00A3CB;
     --color-insight-info-soft: #DAF4FD;
     --color-insight-info-hover: #008EB8;
@@ -144,6 +149,7 @@
     --color-insight-info-soft-dark: #0F3845;
     --color-insight-info-hover-dark: #50CBF2;
     --color-insight-info-active-dark: #77E1FF;
+    --color-insight-info-text: #FFFFFF;
     --color-insight-focus: #4183EA;
     --color-insight-focus-dark: #4183EA;
     --color-insight-tooltip-dark: #242424;
@@ -3518,6 +3524,7 @@
   .btn-primary {
     border-color: var(--color-insight-primary);
     background-color: var(--color-insight-primary);
+    color: var(--color-insight-primary-text);
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-primary-hover);
@@ -3538,6 +3545,7 @@
   .btn-secondary {
     border-color: var(--color-insight-secondary);
     background-color: var(--color-insight-secondary);
+    color: var(--color-insight-secondary-text);
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-secondary-hover);
@@ -3558,6 +3566,7 @@
   .btn-success {
     border-color: var(--color-insight-success);
     background-color: var(--color-insight-success);
+    color: var(--color-insight-success-text);
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-success-hover);
@@ -3578,6 +3587,7 @@
   .btn-warning {
     border-color: var(--color-insight-warning);
     background-color: var(--color-insight-warning);
+    color: var(--color-insight-warning-text);
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-warning-hover);
@@ -3598,6 +3608,7 @@
   .btn-danger {
     border-color: var(--color-insight-danger);
     background-color: var(--color-insight-danger);
+    color: var(--color-insight-danger-text);
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-danger-hover);
@@ -3618,6 +3629,7 @@
   .btn-info {
     border-color: var(--color-insight-info);
     background-color: var(--color-insight-info);
+    color: var(--color-insight-info-text);
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-info-hover);
@@ -4207,9 +4219,6 @@
     &:focus {
       --tw-ring-color: var(--color-insight-primary);
     }
-    &::placeholder {
-      color: var(--color-insight-text-body);
-    }
     &:disabled {
       cursor: not-allowed;
       background-color: var(--color-neutral-100);
@@ -4231,9 +4240,6 @@
   }
   [data-insight-multiselect] .search {
     background-color: transparent;
-    &::placeholder {
-      color: var(--color-insight-text-body);
-    }
     &:disabled {
       cursor: not-allowed;
       &::placeholder {
