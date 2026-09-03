@@ -13,7 +13,7 @@
             <span class="tags flex flex-wrap gap-1"></span>
             <input id="{{ multiselect_config.name }}-search" type="text" class="search flex-1 min-w-15 text-sm outline-none" placeholder={% trans "Type to search..." %} aria-label={% trans "Search {{ multiselect_config.label }}" %}{% if multiselect_config.disabled %} disabled{% endif %} />
         </div>
-        <span class="info ml-auto text-insight-caption text-xs"></span>
+        <span class="info ml-auto text-insight-muted text-xs"></span>
         <div id="{{ multiselect_config.name }}-listbox" role="listbox" class="options hidden absolute z-10 mt-1 w-full max-h-48 bg-insight-surface border border-insight-surface rounded-insight-control shadow-insight-overlay overflow-y-auto">
             {% for value, text in multiselect_config.options.items %}
                 <div id="{{ multiselect_config.name }}-opt-{{ forloop.counter }}" role="option" aria-selected="false" tabindex="-1" data-value="{{ value }}" class="option px-3 py-2 text-insight-headline bg-insight-surface cursor-pointer hover:bg-insight-base">{{ text }}</div>

@@ -240,7 +240,7 @@ def get_icon_context() -> dict:
     text_color_tokens = [
         "text-headline",
         "text-body",
-        "text-caption",
+        "text-muted",
         "text-link",
     ]  # IconColor values (no insight- prefix)
 

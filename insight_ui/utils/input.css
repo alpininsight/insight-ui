@@ -183,14 +183,14 @@
 
     /*
     * Text colors
-    * Hierarchy: headline > body > caption > disabled
+    * Hierarchy: headline > body > muted > disabled
     */
     --color-insight-text-headline: #1C1C1E;         /* Headings, important content */
     --color-insight-text-headline-dark: #F5F8FC;
     --color-insight-text-body: #364153;             /* Body text, descriptions, default prose */
     --color-insight-text-body-dark: #d3d7de;
-    --color-insight-text-caption: #6B7280;          /* Meta info, timestamps, helper text */
-    --color-insight-text-caption-dark: #6B7280;
+    --color-insight-text-muted: #828997;            /* Meta info, timestamps, helper text */
+    --color-insight-text-muted-dark: #828997;
     --color-insight-text-disabled: #d1d5dc;         /* Disabled labels, inactive elements */
     --color-insight-text-disabled-dark: #364153;
     --color-insight-text-inverse: #F5F8FC;          /* Text on dark/colored backgrounds (e.g., primary buttons) */
@@ -407,7 +407,7 @@
         /* Text */
         --color-insight-text-headline: var(--color-insight-text-headline-dark);
         --color-insight-text-body: var(--color-insight-text-body-dark);
-        --color-insight-text-caption: var(--color-insight-text-caption-dark);
+        --color-insight-text-muted: var(--color-insight-text-muted-dark);
         --color-insight-text-disabled: var(--color-insight-text-disabled-dark);
         --color-insight-text-inverse: var(--color-insight-text-inverse-dark);
         /* Elevated / Tooltip */
@@ -436,7 +436,7 @@
     h5 { @apply text-base md:text-lg font-normal text-insight-text-headline; }
 
     /* Horizontal rule uses caption color for subtle separation */
-    hr { @apply text-insight-text-caption; }
+    hr { @apply text-insight-text-muted; }
 
     /*
     * Custom scrollbar styling.
@@ -560,7 +560,7 @@
     */
     .text-insight-headline { @apply text-insight-text-headline; }
     .text-insight-body { @apply text-insight-text-body; }
-    .text-insight-caption { @apply text-insight-text-caption; }
+    .text-insight-muted { @apply text-insight-text-muted; }
     .text-insight-disabled { @apply text-insight-text-disabled; }
     .text-insight-inverse { @apply text-insight-text-inverse; }
 }

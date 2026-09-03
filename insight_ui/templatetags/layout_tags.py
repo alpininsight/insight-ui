@@ -1289,10 +1289,10 @@ def divider(
 
     if direction == "vertical":
         container_classes = f"flex flex-col items-center gap-2 self-stretch {margin}".strip()
-        label_classes = "text-sm text-insight-text-caption -rotate-90"
+        label_classes = "text-sm text-insight-text-muted -rotate-90"
     else:
         container_classes = f"flex items-center gap-4 {margin}".strip()
-        label_classes = "text-sm text-insight-text-caption whitespace-nowrap"
+        label_classes = "text-sm text-insight-text-muted whitespace-nowrap"
 
     return mark_safe(  # noqa: S308, # nosec B308, B703
         f'<div class="{container_classes}">'

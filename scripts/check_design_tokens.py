@@ -342,7 +342,7 @@ VERBOSE_TOKEN_MAPPINGS: dict[str, str] = {
     # Text utilities - use semantic shorthand
     "text-insight-text-headline": "text-insight-headline",
     "text-insight-text-body": "text-insight-body",
-    "text-insight-text-caption": "text-insight-caption",
+    "text-insight-text-muted": "text-insight-muted",
     "text-insight-text-disabled": "text-insight-disabled",
     # Background utilities - drop redundant "bg-" in token name
     "bg-insight-bg-base": "bg-insight-base",

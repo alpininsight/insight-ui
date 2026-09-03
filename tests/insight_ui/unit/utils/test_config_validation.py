@@ -204,7 +204,7 @@ def test_icon_color_values_contains_expected_values() -> None:
         "info",
         "text-headline",
         "text-body",
-        "text-caption",
+        "text-muted",
         "text-link",
     )
     assert expected == ICON_COLOR_VALUES

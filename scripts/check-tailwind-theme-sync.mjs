@@ -15,7 +15,7 @@ const REQUIRED_COMPILED_TOKENS = [
     "--color-insight-secondary",
     "--color-insight-text-headline",
     "--color-insight-text-body",
-    "--color-insight-text-caption",
+    "--color-insight-text-muted",
     "--color-insight-text-disabled",
     "--color-insight-text-inverse",
     "--radius-insight-control",

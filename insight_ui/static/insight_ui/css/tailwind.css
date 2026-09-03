@@ -25,7 +25,6 @@
     --color-gray-900: oklch(21% 0.034 264.665);
     --color-neutral-100: oklch(97% 0 none);
     --color-neutral-300: oklch(87% 0 none);
-    --color-neutral-400: oklch(70.8% 0 none);
     --color-neutral-600: oklch(43.9% 0 none);
     --color-neutral-900: oklch(20.5% 0 none);
     --color-black: #000;
@@ -159,8 +158,8 @@
     --color-insight-text-headline-dark: #F5F8FC;
     --color-insight-text-body: #364153;
     --color-insight-text-body-dark: #d3d7de;
-    --color-insight-text-caption: #6B7280;
-    --color-insight-text-caption-dark: #6B7280;
+    --color-insight-text-muted: #828997;
+    --color-insight-text-muted-dark: #828997;
     --color-insight-text-disabled: #d1d5dc;
     --color-insight-text-disabled-dark: #364153;
     --color-insight-text-inverse: #F5F8FC;
@@ -1609,9 +1608,6 @@
   .border-insight-success {
     border-color: var(--color-insight-success);
   }
-  .border-insight-text-caption {
-    border-color: var(--color-insight-text-caption);
-  }
   .border-insight-text-disabled {
     border-color: var(--color-insight-text-disabled);
   }
@@ -1798,11 +1794,11 @@
       background-color: color-mix(in oklab, var(--color-insight-success) 15%, transparent);
     }
   }
-  .bg-insight-text-caption {
-    background-color: var(--color-insight-text-caption);
-  }
   .bg-insight-text-disabled {
     background-color: var(--color-insight-text-disabled);
+  }
+  .bg-insight-text-muted {
+    background-color: var(--color-insight-text-muted);
   }
   .bg-insight-warning {
     background-color: var(--color-insight-warning);
@@ -2193,9 +2189,6 @@
   .text-insight-text-body {
     color: var(--color-insight-text-body);
   }
-  .text-insight-text-caption {
-    color: var(--color-insight-text-caption);
-  }
   .text-insight-text-disabled {
     color: var(--color-insight-text-disabled);
   }
@@ -2204,6 +2197,9 @@
   }
   .text-insight-text-link {
     color: var(--color-insight-text-link);
+  }
+  .text-insight-text-muted {
+    color: var(--color-insight-text-muted);
   }
   .text-insight-warning {
     color: var(--color-insight-warning);
@@ -3242,7 +3238,7 @@
     --color-insight-focus: var(--color-insight-focus-dark);
     --color-insight-text-headline: var(--color-insight-text-headline-dark);
     --color-insight-text-body: var(--color-insight-text-body-dark);
-    --color-insight-text-caption: var(--color-insight-text-caption-dark);
+    --color-insight-text-muted: var(--color-insight-text-muted-dark);
     --color-insight-text-disabled: var(--color-insight-text-disabled-dark);
     --color-insight-text-inverse: var(--color-insight-text-inverse-dark);
     --color-insight-tooltip: var(--color-insight-tooltip-dark);
@@ -3308,7 +3304,7 @@
     }
   }
   hr {
-    color: var(--color-insight-text-caption);
+    color: var(--color-insight-text-muted);
   }
   .overflow-auto, .overflow-scroll, .overflow-x-auto, .overflow-x-scroll, .overflow-y-auto, .overflow-y-scroll {
     scrollbar-width: auto;
@@ -3372,8 +3368,8 @@
   .text-insight-body {
     color: var(--color-insight-text-body);
   }
-  .text-insight-caption {
-    color: var(--color-insight-text-caption);
+  .text-insight-muted {
+    color: var(--color-insight-text-muted);
   }
   .text-insight-disabled {
     color: var(--color-insight-text-disabled);
