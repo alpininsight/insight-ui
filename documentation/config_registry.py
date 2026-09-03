@@ -3,9 +3,8 @@
 from dataclasses import is_dataclass
 from functools import lru_cache
 
-from insight_ui import configs
-
 from documentation.component_details.component_context import get_dataclass_docs
+from insight_ui import configs
 
 
 @lru_cache(maxsize=1)
