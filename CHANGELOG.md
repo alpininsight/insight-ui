@@ -17,6 +17,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 'parameter table' id is undefined error when navigating via browser history
 - **navbar:** Render user menu icon names
 - Declare AGPL-3.0 in pyproject classifiers
+- **container:** Pin Uvicorn wheel dependency
+
+### CI/CD
+
+- **package:** Exclude legacy application sources
 
 ### Features
 
@@ -48,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Miscellaneous
 
 - **pre-commit:** Autoupdate hooks
+- **package:** Separate documentation test suite
 
 ### Styling
 
