@@ -191,6 +191,7 @@ LOGIN_REDIRECT_URL_FAILURE = "/login/failure"
 
 # Insight UI configuration (see insight_ui/config.py for available settings)
 INSIGHT_UI = {
+    "navbar_fixed": True,  # Should the navigation stick at the top of the window (has impact on the sidebars as well)
     "load_prism": True,  # Turn to 'True' to use syntax highlighting
     "load_leaflet": True,  # Turn to 'True' to use geo-maps
     "load_echarts": True,  # Turn to 'True' to use Chart-Components

@@ -18,7 +18,7 @@ CONFIG_DEFAULTS: dict[str, Any] = {
     "theme_color": "#ffffff",  # For the search bar on mobile devices
     "meta": {"seo": {"description": "My indispensable app", "keywords": "Django, Insight UI", "author": "It's me"}},
     "stylesheet": "insight_ui/css/tailwind.css",  # Only change in case of using alternative stylesheet name
-    "navbar_fixed": True,  # Should the navigation stick at the top of the window (has impact on the sidebars as well)
+    "navbar_fixed": False,  # Should the navigation stick at the top of the window (has impact on the sidebars as well)
     "load_prism": False,  # Turn to 'True' to use syntax highlighting
     "load_leaflet": False,  # Turn to 'True' to use geo-maps
     "load_echarts": False,  # Turn to 'True' to use Chart-Components
