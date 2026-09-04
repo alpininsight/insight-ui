@@ -74,11 +74,11 @@ Simple tags:
 
 Parameter Reference
 -------------------
-gap : xs | s | m | l | xl
-    Space between children. Default: "m"
+gap : none | xs | s | m | l | xl
+    Space between children. Default: "m". Use "none" for zero gap.
 
-padding : xs | s | m | l | xl
-    Inner padding. Default: "m" for page, optional for hbox/vbox
+padding : none | xs | s | m | l | xl
+    Inner padding. Default: "m" for page, optional for hbox/vbox. Use "none" for zero padding.
 
 height : auto | full | peek
     Page height behavior (page only). Default: "auto"
@@ -232,6 +232,7 @@ VALID_LINE_STYLE: frozenset[str] = frozenset({"solid", "dashed", "dotted"})
 # Class mappings (classes are defined in input.css or are tailwind classes)
 # Note: l and xl are responsive - smaller on mobile, full size from md breakpoint
 GAP_CLASSES: dict[str, str] = {
+    "none": "gap-0",
     "xs": "gap-insight-xs",
     "s": "gap-insight-s",
     "m": "gap-insight-m",
@@ -239,6 +240,7 @@ GAP_CLASSES: dict[str, str] = {
     "xl": "gap-insight-l md:gap-insight-xl",
 }
 PADDING_CLASSES: dict[str, str] = {
+    "none": "p-0",
     "xs": "p-insight-xs",
     "s": "p-insight-s",
     "m": "p-insight-m",
@@ -355,6 +357,42 @@ def _validate(value: str, valid_values: frozenset[str], param_name: str, tag_nam
     return value
 
 
+def _validate_unknown_params(
+    kwargs: dict[str, object],
+    valid_params: frozenset[str],
+    tag_name: str,
+) -> None:
+    """
+    Validate that no unknown parameters were passed to a layout tag.
+
+    Args:
+        kwargs: The resolved keyword arguments.
+        valid_params: Set of valid parameter names for this tag.
+        tag_name: Name of the template tag (for error message).
+
+    Raises:
+        ValueError: If unknown parameters are found, with suggestions for typos.
+
+    """
+    from difflib import get_close_matches  # noqa: PLC0415
+
+    unknown = set(kwargs) - valid_params
+    if not unknown:
+        return
+
+    unknown_param = next(iter(unknown))
+    suggestions = get_close_matches(unknown_param, list(valid_params), n=3, cutoff=0.5)
+
+    if suggestions:
+        suggestion_text = ", ".join(f"'{s}'" for s in suggestions)
+        msg = f"Unknown parameter '{unknown_param}' in {{% {tag_name} %}}. Did you mean: {suggestion_text}?"
+    else:
+        valid_str = ", ".join(sorted(valid_params))
+        msg = f"Unknown parameter '{unknown_param}' in {{% {tag_name} %}}. Valid parameters: {valid_str}"
+
+    raise ValueError(msg)
+
+
 def _parse_kwargs(kwargs: dict[str, FilterExpression]) -> dict[str, object]:
     """
     Convert token_kwargs FilterExpressions to usable values.
@@ -414,8 +452,12 @@ class LayoutNode(Node):
         nodelist: The template nodes contained within the block.
         tag_name: The name of the tag (for error messages).
         kwargs: Parsed keyword arguments from the template tag.
+        valid_params: Frozenset of valid parameter names for this tag.
 
     """
+
+    # Override in subclasses with the set of valid parameters
+    valid_params: frozenset[str] = frozenset({"class"})
 
     def __init__(self, nodelist: NodeList, *, tag_name: str = "layout", **kwargs: object) -> None:
         """Initialize the layout node with content and parameters."""
@@ -440,6 +482,10 @@ class LayoutNode(Node):
     def render(self, context: Context) -> str:
         """Render the layout node to HTML."""
         resolved = self.resolve_kwargs(context)
+
+        # Validate no unknown parameters
+        _validate_unknown_params(resolved, self.valid_params, self.tag_name)
+
         classes = self.build_classes(resolved)
 
         # Append user-provided extra classes
@@ -476,6 +522,19 @@ class FlexNode(LayoutNode):
 
     flex_direction: str = "row"  # Override in subclass
     responsive_stack: bool = False  # If True, stack on mobile (flex-col md:flex-row)
+    valid_params: frozenset[str] = frozenset(
+        {
+            "gap",
+            "padding",
+            "h_align",
+            "v_align",
+            "max_width",
+            "full_height",
+            "inline",
+            "wrap",
+            "class",
+        }
+    )
 
     def build_classes(self, kwargs: dict[str, object]) -> list[str]:
         """Build flex container CSS classes with gap, padding, max_width, h_align, and v_align."""
@@ -501,12 +560,12 @@ class FlexNode(LayoutNode):
         # Optional padding
         padding = kwargs.get("padding")
         if padding:
-            _validate(str(padding), VALID_SPACING, "padding", self.tag_name)
+            _validate(str(padding), VALID_SPACING_WITH_NONE, "padding", self.tag_name)
             classes.append(PADDING_CLASSES[str(padding)])
 
         gap = kwargs.get("gap", "m")
         if gap:
-            _validate(str(gap), VALID_SPACING, "gap", self.tag_name)
+            _validate(str(gap), VALID_SPACING_WITH_NONE, "gap", self.tag_name)
             classes.append(GAP_CLASSES[str(gap)])
 
         h_align = str(kwargs.get("h_align", "stretch" if self.flex_direction == "col" else "start"))
@@ -559,6 +618,8 @@ class SectionNode(LayoutNode):
 
     """
 
+    valid_params: frozenset[str] = frozenset({"id", "gap", "aria_label", "aria_labelledby", "class"})
+
     def build_classes(self, kwargs: dict[str, object]) -> list[str]:
         """Build section container CSS classes."""
         classes = ["flex", "flex-col"]
@@ -569,7 +630,7 @@ class SectionNode(LayoutNode):
 
         # Gap between children
         gap = str(kwargs.get("gap", "m"))
-        _validate(gap, VALID_SPACING, "gap", self.tag_name)
+        _validate(gap, VALID_SPACING_WITH_NONE, "gap", self.tag_name)
         classes.append(GAP_CLASSES[gap])
 
         return classes
@@ -577,6 +638,10 @@ class SectionNode(LayoutNode):
     def render(self, context: Context) -> str:
         """Render the section element with semantic HTML."""
         resolved = self.resolve_kwargs(context)
+
+        # Validate no unknown parameters
+        _validate_unknown_params(resolved, self.valid_params, self.tag_name)
+
         classes = self.build_classes(resolved)
 
         # Append user-provided extra classes
@@ -609,12 +674,14 @@ class SectionNode(LayoutNode):
 class PageNode(LayoutNode):
     """Page container with full width, consistent padding, and optional height control."""
 
+    valid_params: frozenset[str] = frozenset({"padding", "height", "class"})
+
     def build_classes(self, kwargs: dict[str, object]) -> list[str]:
         """Build page container CSS classes."""
         classes = ["w-full"]
 
         padding = str(kwargs.get("padding", "m"))
-        _validate(padding, VALID_SPACING, "padding", self.tag_name)
+        _validate(padding, VALID_SPACING_WITH_NONE, "padding", self.tag_name)
         classes.append(PADDING_CLASSES[padding])
 
         height = str(kwargs.get("height", "auto"))
@@ -661,6 +728,8 @@ class GridNode(LayoutNode):
     adapts correctly regardless of where it's placed (sidebar, modal, card, etc.).
     """
 
+    valid_params: frozenset[str] = frozenset({"cols", "gap", "min", "fixed", "class"})
+
     def build_classes(self, kwargs: dict[str, object]) -> list[str]:
         """Build grid container CSS classes."""
         classes = ["grid", "w-full"]
@@ -668,7 +737,7 @@ class GridNode(LayoutNode):
         # Gap
         gap = kwargs.get("gap", "m")
         if gap:
-            _validate(str(gap), VALID_SPACING, "gap", self.tag_name)
+            _validate(str(gap), VALID_SPACING_WITH_NONE, "gap", self.tag_name)
             classes.append(GAP_CLASSES[str(gap)])
 
         return classes
@@ -676,6 +745,10 @@ class GridNode(LayoutNode):
     def render(self, context: Context) -> str:
         """Render the grid node to HTML."""
         resolved = self.resolve_kwargs(context)
+
+        # Validate no unknown parameters
+        _validate_unknown_params(resolved, self.valid_params, self.tag_name)
+
         classes = self.build_classes(resolved)
 
         cols = resolved.get("cols")
@@ -771,6 +844,8 @@ class SurfaceNode(LayoutNode):
 
     """
 
+    valid_params: frozenset[str] = frozenset({"variant", "padding", "radius", "id", "href", "external", "class"})
+
     def build_classes(self, kwargs: dict[str, object], is_link: bool = False) -> list[str]:
         """Build surface container CSS classes."""
         variant = str(kwargs.get("variant", "surface"))
@@ -779,7 +854,7 @@ class SurfaceNode(LayoutNode):
 
         # Padding
         padding = str(kwargs.get("padding", "m"))
-        _validate(padding, VALID_SPACING, "padding", self.tag_name)
+        _validate(padding, VALID_SPACING_WITH_NONE, "padding", self.tag_name)
         classes.append(PADDING_CLASSES[padding])
 
         # Border radius (only add if explicitly set, otherwise use variant's default)
@@ -798,6 +873,9 @@ class SurfaceNode(LayoutNode):
     def render(self, context: Context) -> str:
         """Render the surface as either <div> or <a> based on href."""
         resolved = self.resolve_kwargs(context)
+
+        # Validate no unknown parameters
+        _validate_unknown_params(resolved, self.valid_params, self.tag_name)
 
         href = resolved.get("href", "")
         is_link = bool(href)
@@ -848,9 +926,14 @@ class CollapsibleNode(LayoutNode):
 
     """
 
+    valid_params: frozenset[str] = frozenset({"summary", "open", "icon", "class"})
+
     def render(self, context: Context) -> str:
         """Render the collapsible container."""
         resolved = self.resolve_kwargs(context)
+
+        # Validate no unknown parameters
+        _validate_unknown_params(resolved, self.valid_params, self.tag_name)
 
         template_context = {
             "summary": resolved.get("summary", "Details"),
@@ -909,9 +992,14 @@ class SidebarNode(LayoutNode):
 
     """
 
+    valid_params: frozenset[str] = frozenset({"side", "static", "width", "mobile_behavior", "class"})
+
     def render(self, context: Context) -> str:
         """Render the sidebar container."""
         resolved = self.resolve_kwargs(context)
+
+        # Validate no unknown parameters
+        _validate_unknown_params(resolved, self.valid_params, self.tag_name)
 
         # Get side from explicit parameter, context variable, or default
         # Context variable _sidebar_side is set by base.html when using sidebar blocks
