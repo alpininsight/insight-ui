@@ -17,6 +17,8 @@ Example usage:
 
 """
 
+from difflib import get_close_matches
+from functools import lru_cache
 from typing import Literal
 
 # =============================================================================
@@ -534,6 +536,73 @@ def validate_icon_color(value: str, field_name: str = "color") -> None:
 
     """
     _validate_literal(value, ICON_COLOR_VALUES, field_name)
+
+
+@lru_cache(maxsize=1)
+def _get_available_icon_names() -> tuple[str, ...] | None:
+    """Get all available icon names from the compiled icons.html template.
+
+    Parses the icons.html template to extract all icon names that are
+    actually available, including any custom icons added via compile_icons.
+
+    Returns:
+        Tuple of available icon names, or None if Django is not configured.
+
+    """
+    import re  # noqa: PLC0415
+    from pathlib import Path  # noqa: PLC0415
+
+    import django  # noqa: PLC0415
+
+    if not django.apps.apps.ready:
+        return None
+
+    from django.template.loader import get_template  # noqa: PLC0415
+
+    try:
+        template = get_template("insight_ui/components/icons.html")
+        template_path = Path(template.origin.name)
+        template_content = template_path.read_text(encoding="utf-8")
+
+        # Match icon names from: icon_config.name == "name"
+        icon_names = re.findall(r'icon_config\.name == "([^"]+)"', template_content)
+        return tuple(sorted(set(icon_names)))
+    except (OSError, AttributeError, django.template.TemplateDoesNotExist):
+        return None
+
+
+def validate_icon_name(value: str) -> None:
+    """Validate that an icon name exists in the available icons.
+
+    Parses the compiled icons.html template to check if the icon exists.
+    If Django is not configured yet, validation is skipped.
+
+    Args:
+        value: The icon name to validate.
+
+    Raises:
+        ValueError: If the icon name is not found, with suggestions for similar names.
+
+    """
+    available_icons = _get_available_icon_names()
+
+    # Skip validation if Django is not configured (e.g., during import)
+    if available_icons is None:
+        return
+
+    if value in available_icons:
+        return
+
+    # Find similar icon names for helpful error message
+    suggestions = get_close_matches(value, available_icons, n=3, cutoff=0.5)
+
+    if suggestions:
+        suggestion_text = ", ".join(f"'{s}'" for s in suggestions)
+        msg = f"Unknown icon '{value}'. Did you mean: {suggestion_text}?"
+    else:
+        msg = f"Unknown icon '{value}'. Use `python manage.py compile_icons --list-bundled` to see available icons."
+
+    raise ValueError(msg)
 
 
 # =============================================================================

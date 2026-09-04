@@ -108,14 +108,35 @@ def test_size_values_is_tuple() -> None:
 def test_icon_config_accepts_valid_size() -> None:
     """Test IconConfig accepts valid size values."""
     for size in SIZE_VALUES:
-        config = IconConfig(name="test", size=size)
+        config = IconConfig(name="home", size=size)
         assert config.size == size
 
 
 def test_icon_config_rejects_invalid_size() -> None:
     """Test IconConfig raises ValueError for invalid size."""
     with pytest.raises(ValueError, match="Invalid size"):
-        IconConfig(name="test", size="huge")
+        IconConfig(name="home", size="huge")
+
+
+def test_icon_config_accepts_valid_icon_name() -> None:
+    """Test IconConfig accepts valid icon names."""
+    config = IconConfig(name="home")
+    assert config.name == "home"
+
+    config = IconConfig(name="chevron-down")
+    assert config.name == "chevron-down"
+
+
+def test_icon_config_rejects_invalid_icon_name_with_suggestions() -> None:
+    """Test IconConfig raises ValueError with suggestions for typos."""
+    with pytest.raises(ValueError, match=r"Unknown icon 'hme'\. Did you mean:.*'home'"):
+        IconConfig(name="hme")
+
+
+def test_icon_config_rejects_unknown_icon_name() -> None:
+    """Test IconConfig raises ValueError for completely unknown icons."""
+    with pytest.raises(ValueError, match=r"Unknown icon.*compile_icons"):
+        IconConfig(name="xyz123nonexistent")
 
 
 def test_button_config_accepts_valid_size() -> None:
@@ -162,7 +183,7 @@ def test_minimal_stepper_config_rejects_invalid_icon_size() -> None:
 
 def test_icon_config_default_size() -> None:
     """Test IconConfig has correct default size."""
-    config = IconConfig(name="test")
+    config = IconConfig(name="home")
     assert config.size == "m"
 
 
@@ -253,25 +274,25 @@ def test_validate_icon_color_custom_field_name() -> None:
 def test_icon_config_accepts_valid_color() -> None:
     """Test IconConfig accepts valid color values."""
     for color in ICON_COLOR_VALUES:
-        config = IconConfig(name="test", color=color)
+        config = IconConfig(name="home", color=color)
         assert config.color == color
 
 
 def test_icon_config_rejects_invalid_color() -> None:
     """Test IconConfig raises ValueError for invalid color."""
     with pytest.raises(ValueError, match="Invalid color"):
-        IconConfig(name="test", color="invalid")
+        IconConfig(name="home", color="invalid")
 
 
 def test_icon_config_rejects_hex_color() -> None:
     """Test IconConfig rejects hex color codes (use tokens instead)."""
     with pytest.raises(ValueError, match="Invalid color"):
-        IconConfig(name="test", color="#4183EA")
+        IconConfig(name="home", color="#4183EA")
 
 
 def test_icon_config_default_color() -> None:
     """Test IconConfig has correct default color (empty = inherit)."""
-    config = IconConfig(name="test")
+    config = IconConfig(name="home")
     assert config.color == ""
 
 

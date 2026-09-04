@@ -14,6 +14,7 @@ from insight_ui.configs.types import (
     validate_htmx_swap_method,
     validate_http_method,
     validate_icon_color,
+    validate_icon_name,
     validate_size,
 )
 
@@ -59,7 +60,8 @@ class IconConfig:
     )
 
     def __post_init__(self) -> None:
-        """Validate size and color after initialization."""
+        """Validate name, size and color after initialization."""
+        validate_icon_name(self.name)
         validate_size(self.size, "size")
         validate_icon_color(self.color, "color")
 
