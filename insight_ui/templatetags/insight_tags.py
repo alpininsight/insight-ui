@@ -664,6 +664,14 @@ def button(
             DataAttrConfig(name=key[3:].replace("_", "-"), value=str(value)) for key, value in hx_kwargs.items()
         ]
 
+    # Validate no unknown kwargs remain (must start with data_, aria_, or hx_)
+    invalid_kwargs = [k for k in kwargs if not k.startswith(("data_", "aria_", "hx_"))]
+    if invalid_kwargs:
+        raise ValueError(  # noqa: TRY003
+            f"Unknown parameter '{invalid_kwargs[0]}' in {{% button %}}. "
+            "Only data_*, aria_*, hx_* dynamic attributes are allowed in **kwargs."
+        )
+
     config = build_config(
         ButtonConfig,
         config,

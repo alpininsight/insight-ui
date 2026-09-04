@@ -69,3 +69,25 @@ class TestButton(TemplateTagsTestCase):
         """ButtonConfig requires label (used as visible text or screen-reader name)."""
         with pytest.raises(TypeError):
             ButtonConfig()  # type: ignore[call-arg]
+
+    def test_button_rejects_unknown_parameter_with_invalid_prefix(self) -> None:
+        """Button tag raises ValueError for kwargs without valid dynamic prefix."""
+        with pytest.raises(ValueError, match=r"Unknown parameter 'lable'.*Only data_\*, aria_\*, hx_\*"):
+            self.render_template('{% load insight_tags %}{% button lable="Test" %}')
+
+    def test_button_rejects_unknown_parameter_without_prefix(self) -> None:
+        """Button tag raises ValueError for unknown parameters without dynamic prefix."""
+        with pytest.raises(ValueError, match=r"Unknown parameter 'foobar'"):
+            self.render_template('{% load insight_tags %}{% button label="Test" foobar="xyz" %}')
+
+    def test_button_accepts_valid_dynamic_attributes(self) -> None:
+        """Button tag accepts data_*, aria_*, and hx_* dynamic attributes."""
+        rendered = self.render_template(
+            '{% load insight_tags %}{% button label="Test" data_foo="bar" aria_label="Test" hx_get="/api" %}'
+        )
+        soup = BeautifulSoup(rendered, "html.parser")
+        button = soup.find("button")
+        assert button is not None
+        assert button.get("data-foo") == "bar"
+        assert button.get("aria-label") == "Test"
+        assert button.get("hx-get") == "/api"
