@@ -537,9 +537,6 @@
   .z-\[60\] {
     z-index: 60;
   }
-  .order-2 {
-    order: 2;
-  }
   .container {
     width: 100%;
     @media (width >= 40rem) {
