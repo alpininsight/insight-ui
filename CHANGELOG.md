@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **navbar:** Render user menu icon names
 - Declare AGPL-3.0 in pyproject classifiers
 - **container:** Pin Uvicorn wheel dependency
+- **a11y:** Separate semantic action and foreground tokens
 
 ### CI/CD
 
