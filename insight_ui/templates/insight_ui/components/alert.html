@@ -5,7 +5,7 @@
   role="alert"
   class="flex justify-between p-4 w-full h-fit rounded-insight-surface shadow-insight-subtle {% if alert_config.type == 'success' %}bg-insight-success-soft{% elif alert_config.type == 'warning' %}bg-insight-warning-soft{% elif alert_config.type == 'error' %}bg-insight-danger-soft{% else %}bg-insight-info-soft{% endif %}"
 >
-  <div class="flex gap-2 items-center {% if alert_config.type == 'success' %}text-insight-success{% elif alert_config.type == 'warning' %}text-insight-warning{% elif alert_config.type == 'error' %}text-insight-danger{% else %}text-insight-info{% endif %}">
+  <div class="flex gap-2 items-center {% if alert_config.type == 'success' %}text-insight-success-foreground{% elif alert_config.type == 'warning' %}text-insight-warning-foreground{% elif alert_config.type == 'error' %}text-insight-danger-foreground{% else %}text-insight-info-foreground{% endif %}">
     {% if alert_config.type == 'success' %}
       {% icon name="check" %}
     {% elif alert_config.type == 'warning' %}

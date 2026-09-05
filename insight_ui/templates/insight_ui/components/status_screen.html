@@ -9,7 +9,7 @@
         {% endif %}
 
         <div
-            class="flex justify-center items-center mx-auto mb-4 size-12 rounded-insight-full {% if status_screen_config.status == 'success' %}text-insight-success bg-insight-success/15{% elif status_screen_config.status == 'warning' %}text-insight-warning bg-insight-warning/15{% elif status_screen_config.status == 'error' %}text-insight-danger bg-insight-danger/15{% else %}text-insight-info bg-insight-info/15{% endif %}"
+            class="flex justify-center items-center mx-auto mb-4 size-12 rounded-insight-full {% if status_screen_config.status == 'success' %}text-insight-success-foreground bg-insight-success-soft{% elif status_screen_config.status == 'warning' %}text-insight-warning-foreground bg-insight-warning-soft{% elif status_screen_config.status == 'error' %}text-insight-danger-foreground bg-insight-danger-soft{% else %}text-insight-info-foreground bg-insight-info-soft{% endif %}"
             aria-hidden="true"
         >
             {% icon name=status_screen_icon size="l" %}

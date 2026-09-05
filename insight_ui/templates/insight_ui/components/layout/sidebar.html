@@ -3,7 +3,7 @@
 {# Open button for drawers (static=False) or mobile toggle (static + mobile_behavior="drawer") #}
 {% if not static or mobile_behavior == "drawer" %}
   <button
-    class="fixed top-20 {% if side == 'right' %}ltr:right-4 rtl:left-4{% else %}ltr:left-4 rtl:right-4{% endif %} z-40 p-2 text-white bg-insight-primary rounded-insight-full shadow-insight-subtle hover:bg-insight-primary-hover active:bg-insight-primary-active{% if static %} lg:hidden{% endif %}"
+    class="fixed top-20 {% if side == 'right' %}ltr:right-4 rtl:left-4{% else %}ltr:left-4 rtl:right-4{% endif %} z-40 p-2 text-white bg-insight-primary-action rounded-insight-full shadow-insight-subtle hover:bg-insight-primary-action-hover active:bg-insight-primary-action-active{% if static %} lg:hidden{% endif %}"
     {% if static %}data-sidebar-toggle="{{ side }}"{% else %}data-sidebar-target="{{ side }}"{% endif %}
     aria-label="{% trans 'Open sidebar' %}"
     aria-expanded="false"
