@@ -88,3 +88,16 @@ class TestRadioBlock(TemplateTagsTestCase):
                 items=[RadioItemConfig(value="card")],
                 current_value="table",
             )
+
+    def test_radio_block_uses_value_as_accessible_name_for_icon_only_items(self) -> None:
+        """Icon-only controls retain a stable label and input ID."""
+        config = RadioBlockConfig(name="view", items=[RadioItemConfig(value="card")])
+
+        rendered = self.render_template("{% load insight_tags %}{% radio_block config %}", {"config": config})
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        radio = soup.find("input", {"type": "radio"})
+        label = soup.find("label")
+        assert radio["id"] == "view-card"
+        assert radio["aria-label"] == "card"
+        assert label["for"] == "view-card"

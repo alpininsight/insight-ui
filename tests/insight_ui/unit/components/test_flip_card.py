@@ -22,3 +22,4 @@ class TestFlipCard(TemplateTagsTestCase):
         rendered = self.render_template(template_string, context={"card": card})
         assert "Front <strong>content</strong>." in rendered
         assert "<p>Lorem ipsum</p>" in rendered
+        assert 'data-flip-back aria-hidden="true" inert' in rendered

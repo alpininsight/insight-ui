@@ -62,3 +62,16 @@ class TestRangeSlider(TemplateTagsTestCase):
         """SliderConfig allows a valid value_min/value_max pair in dual mode."""
         config = SliderConfig(name="price", dual=True, minimum=0, maximum=1000, value_min=200, value_max=800)
         assert (config.value_min, config.value_max) == (200, 800)
+
+    def test_slider_uses_a_24_pixel_interaction_target(self) -> None:
+        """Range controls keep a minimum WCAG 2.2 target size."""
+        config = SliderConfig(name="price", label="Price", dual=True, minimum=0, maximum=1000)
+
+        rendered = self.render_template("{% load insight_tags %}{% slider config %}", {"config": config})
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        container = soup.find("div", {"class": lambda value: value and "slider-dual-container" in value})
+        inputs = soup.find_all("input", {"type": "range"})
+        assert "h-6" in container["class"]
+        assert inputs
+        assert all("h-full" in input_["class"] for input_ in inputs)

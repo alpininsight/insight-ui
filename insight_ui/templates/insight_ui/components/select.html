@@ -1,7 +1,7 @@
 {% load i18n insight_tags %}
 
 <div class="flex flex-col w-full">
-    <label for="{{ select_config.tag_id }}" class="flex gap-1 mb-1 font-bold text-sm text-insight-headline">
+    <label{% if select_config.tag_id or select_config.name %} for="{{ select_config.tag_id|default:select_config.name }}"{% endif %} class="flex gap-1 mb-1 font-bold text-sm text-insight-headline">
         {% if select_config.icon %}
             {% icon select_config.icon %}
         {% endif %}
@@ -14,8 +14,9 @@
         {% endif %}
     </label>
     <select
-        {% if select_config.tag_id %}id="{{ select_config.tag_id }}"{% endif %}
+        {% if select_config.tag_id or select_config.name %}id="{{ select_config.tag_id|default:select_config.name }}"{% endif %}
         {% if select_config.name %}name="{{ select_config.name }}"{% endif %}
+        {% if not select_config.tag_id and not select_config.name %}aria-label="{% if select_config.label %}{{ select_config.label }}{% else %}{% trans 'Select option' %}{% endif %}"{% endif %}
         {% if select_config.disabled %}disabled{% endif %}
         {% if select_config.disabled and select_config.disabled_reason %}data-insight-tooltip="{{ select_config.disabled_reason }}"{% endif %}
         class="input w-full"
