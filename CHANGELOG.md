@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### CI/CD
 
 - **package:** Exclude legacy application sources
+- Thin caller for central package SBOM workflow
 
 ### Features
 
