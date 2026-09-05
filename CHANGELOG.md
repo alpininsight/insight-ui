@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **package:** Exclude legacy application sources
 - Thin caller for central package SBOM workflow
+- Send package SBOM to insight-ui-docs
 
 ### Features
 
