@@ -28,3 +28,9 @@ class TestCornerRibbon(TemplateTagsTestCase):
         assert 'aria-label="Request a beta test by email"' in rendered
         assert "text-insight-secondary" in rendered
         assert "pointer-events-none" not in rendered
+
+    def test_does_not_lower_ribbon_text_contrast_with_opacity(self) -> None:
+        """The ribbon keeps its configured foreground color at full opacity."""
+        rendered = self.render_template("{% load insight_tags %}{% corner_ribbon text='Beta' %}")
+
+        assert "opacity-85" not in rendered

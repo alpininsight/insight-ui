@@ -1,6 +1,7 @@
 """Tests for the select component."""
 
 import pytest
+from bs4 import BeautifulSoup
 from insight_ui.configs import SelectConfig
 
 from tests.insight_ui.unit.components.test_template_tags import TemplateTagsTestCase
@@ -30,3 +31,15 @@ class TestSelect(TemplateTagsTestCase):
         """SelectConfig inherits the disabled/disabled_reason warning from BaseFormFieldConfig."""
         with pytest.warns(UserWarning, match="disabled without a disabled_reason"):
             SelectConfig(name="country", disabled=True)
+
+    def test_select_uses_name_as_fallback_id_for_its_visible_label(self) -> None:
+        """A select without an explicit tag ID still has an accessible label."""
+        config = SelectConfig(name="country", label="Country", options={"de": "Germany"})
+
+        rendered = self.render_template("{% load insight_tags %}{% select config %}", {"config": config})
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        select = soup.find("select")
+        label = soup.find("label")
+        assert select["id"] == "country"
+        assert label["for"] == "country"

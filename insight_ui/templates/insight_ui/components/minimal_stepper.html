@@ -1,12 +1,11 @@
 {% load i18n insight_tags %}
 
-<div
+<ol
     class="flex gap-0.5 items-stretch min-w-fit rounded-insight-control overflow-hidden"
-    role="group"
     aria-label="{% trans 'Progress indicator' %}"
 >
     {% for item in items %}
-        <div
+        <li
             class="flex-1 flex justify-center items-center {% if item == 'success' %}bg-insight-success-action{% elif item == 'failed' %}bg-insight-danger-action{% elif item == 'active' %}bg-insight-primary-action{% else %}bg-insight-text-muted{% endif %} {% if icon_size == 'xl' %}px-4{% elif icon_size == 'l' %}px-3{% elif icon_size == 'm' %}px-2{% elif icon_size == 's' %}px-1.5{% elif icon_size == 'xs' %}px-1.5{% endif %} py-0.5 text-white {% if forloop.first %}chevron-start{% elif forloop.last %}chevron-end{% else %}chevron-mid{% endif %} group"
             aria-label="{% blocktrans with step=forloop.counter %}Step {{ step }}{% endblocktrans %}: {% if item == 'success' %}{% trans 'Completed' %}{% elif item == 'failed' %}{% trans 'Failed' %}{% elif item == 'active' %}{% trans 'In progress' %}{% else %}{% trans 'Pending' %}{% endif %}"
             {% if item == 'active' %}aria-current="step"{% endif %}
@@ -20,7 +19,7 @@
             {% else %}
                 <div>{% icon name="minus" size=icon_size %}</div>
             {% endif %}
-        </div>
+        </li>
     {% endfor %}
     <style>
         :root {
@@ -58,4 +57,4 @@
             margin-right: calc(-1 * var(--chevron-offset));
         }
     </style>
-</div>
+</ol>

@@ -206,8 +206,8 @@
     --color-insight-text-headline-dark: #F5F8FC;
     --color-insight-text-body: #364153;
     --color-insight-text-body-dark: #d3d7de;
-    --color-insight-text-muted: #828997;
-    --color-insight-text-muted-dark: #828997;
+    --color-insight-text-muted: #687386;
+    --color-insight-text-muted-dark: #A5B0C0;
     --color-insight-text-disabled: #d1d5dc;
     --color-insight-text-disabled-dark: #364153;
     --color-insight-text-inverse: #F5F8FC;
@@ -2275,9 +2275,6 @@
   .opacity-75 {
     opacity: 75%;
   }
-  .opacity-85 {
-    opacity: 85%;
-  }
   .opacity-100 {
     opacity: 100%;
   }
@@ -3153,11 +3150,11 @@
   .\[\&\:\:-moz-range-thumb\]\:pointer-events-auto::-moz-range-thumb {
     pointer-events: auto;
   }
-  .\[\&\:\:-moz-range-thumb\]\:h-4::-moz-range-thumb {
-    height: calc(var(--spacing) * 4);
+  .\[\&\:\:-moz-range-thumb\]\:h-6::-moz-range-thumb {
+    height: calc(var(--spacing) * 6);
   }
-  .\[\&\:\:-moz-range-thumb\]\:w-4::-moz-range-thumb {
-    width: calc(var(--spacing) * 4);
+  .\[\&\:\:-moz-range-thumb\]\:w-6::-moz-range-thumb {
+    width: calc(var(--spacing) * 6);
   }
   .\[\&\:\:-moz-range-thumb\]\:cursor-pointer::-moz-range-thumb {
     cursor: pointer;
@@ -3175,14 +3172,14 @@
   .\[\&\:\:-webkit-slider-thumb\]\:pointer-events-auto::-webkit-slider-thumb {
     pointer-events: auto;
   }
-  .\[\&\:\:-webkit-slider-thumb\]\:-mt-1::-webkit-slider-thumb {
-    margin-top: calc(var(--spacing) * -1);
+  .\[\&\:\:-webkit-slider-thumb\]\:-mt-2::-webkit-slider-thumb {
+    margin-top: calc(var(--spacing) * -2);
   }
-  .\[\&\:\:-webkit-slider-thumb\]\:h-4::-webkit-slider-thumb {
-    height: calc(var(--spacing) * 4);
+  .\[\&\:\:-webkit-slider-thumb\]\:h-6::-webkit-slider-thumb {
+    height: calc(var(--spacing) * 6);
   }
-  .\[\&\:\:-webkit-slider-thumb\]\:w-4::-webkit-slider-thumb {
-    width: calc(var(--spacing) * 4);
+  .\[\&\:\:-webkit-slider-thumb\]\:w-6::-webkit-slider-thumb {
+    width: calc(var(--spacing) * 6);
   }
   .\[\&\:\:-webkit-slider-thumb\]\:cursor-pointer::-webkit-slider-thumb {
     cursor: pointer;
@@ -4296,9 +4293,9 @@
     background: linear-gradient(to left, var(--color-insight-primary) var(--insight-control-range-progress), var(--color-insight-bg-raised-dark) var(--insight-control-range-progress));
   }
   .range-custom::-webkit-slider-thumb {
-    margin-top: calc(var(--spacing) * -1);
-    width: calc(var(--spacing) * 4);
-    height: calc(var(--spacing) * 4);
+    margin-top: calc(var(--spacing) * -2);
+    width: calc(var(--spacing) * 6);
+    height: calc(var(--spacing) * 6);
     cursor: pointer;
     border-radius: var(--radius-insight-full);
     border-style: var(--tw-border-style);
@@ -4307,8 +4304,8 @@
     background-color: var(--color-insight-bg-base);
   }
   .range-custom::-moz-range-thumb {
-    width: calc(var(--spacing) * 4);
-    height: calc(var(--spacing) * 4);
+    width: calc(var(--spacing) * 6);
+    height: calc(var(--spacing) * 6);
     cursor: pointer;
     border-radius: var(--radius-insight-full);
     border-style: var(--tw-border-style);

@@ -1,6 +1,7 @@
 """Tests for the multiselect component."""
 
 import pytest
+from bs4 import BeautifulSoup
 from insight_ui.configs import MultiselectConfig
 
 from tests.insight_ui.unit.components.test_template_tags import TemplateTagsTestCase
@@ -32,3 +33,16 @@ class TestMultiselect(TemplateTagsTestCase):
         """MultiselectConfig inherits the disabled/disabled_reason warning from BaseFormFieldConfig."""
         with pytest.warns(UserWarning, match="disabled without a disabled_reason"):
             MultiselectConfig(name="tags", disabled=True)
+
+    def test_multiselect_applies_combobox_attributes_to_the_text_input(self) -> None:
+        """The editable input, rather than a wrapper, owns combobox semantics."""
+        config = MultiselectConfig(name="tags", label="Tags", options=["Python"])
+
+        rendered = self.render_template("{% load insight_tags %}{% multiselect config %}", {"config": config})
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        search = soup.find("input", {"type": "text"})
+        listbox = soup.find("div", {"role": "listbox"})
+        assert search["role"] == "combobox"
+        assert search["aria-controls"] == "tags-listbox"
+        assert listbox["aria-multiselectable"] == "true"

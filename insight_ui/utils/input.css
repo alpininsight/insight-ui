@@ -237,8 +237,8 @@
     --color-insight-text-headline-dark: #F5F8FC;
     --color-insight-text-body: #364153;             /* Body text, descriptions, default prose */
     --color-insight-text-body-dark: #d3d7de;
-    --color-insight-text-muted: #828997;            /* Meta info, timestamps, helper text */
-    --color-insight-text-muted-dark: #828997;
+    --color-insight-text-muted: #687386;            /* Meta info, timestamps, helper text */
+    --color-insight-text-muted-dark: #A5B0C0;
     --color-insight-text-disabled: #d1d5dc;         /* Disabled labels, inactive elements */
     --color-insight-text-disabled-dark: #364153;
     --color-insight-text-inverse: #F5F8FC;          /* Text on dark/colored backgrounds (e.g., primary buttons) */
@@ -1032,11 +1032,11 @@
     }
 
     .range-custom::-webkit-slider-thumb {
-        @apply size-4 bg-insight-bg-base border-2 border-insight-primary rounded-insight-full cursor-pointer -mt-1;
+        @apply size-6 bg-insight-bg-base border-2 border-insight-primary rounded-insight-full cursor-pointer -mt-2;
     }
 
     .range-custom::-moz-range-thumb {
-        @apply size-4 bg-insight-bg-base border-2 border-insight-primary rounded-insight-full cursor-pointer;
+        @apply size-6 bg-insight-bg-base border-2 border-insight-primary rounded-insight-full cursor-pointer;
     }
 
     /*

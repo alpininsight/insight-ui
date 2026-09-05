@@ -1,6 +1,7 @@
 """Tests for the infinite_scroll component."""
 
 import pytest
+from bs4 import BeautifulSoup
 from insight_ui.configs import InfiniteScrollConfig
 
 from tests.insight_ui.unit.components.test_template_tags import TemplateTagsTestCase
@@ -22,3 +23,18 @@ class TestInfiniteScroll(TemplateTagsTestCase):
         """InfiniteScrollConfig requires request_url."""
         with pytest.raises(TypeError):
             InfiniteScrollConfig()  # type: ignore[call-arg]
+
+    def test_infinite_scroll_renders_feed_items_as_direct_articles(self) -> None:
+        """A feed exposes its entries with the child role required by ARIA."""
+        config = InfiniteScrollConfig(
+            request_url="/api/more-items/",
+            items=[{"title": "First", "content": "Content"}],
+        )
+
+        rendered = self.render_template("{% load insight_tags %}{% infinite_scroll config %}", {"config": config})
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        feed = soup.find("div", {"role": "feed"})
+        articles = feed.find_all("article", recursive=False)
+        assert len(articles) == 1
+        assert articles[0].get_text(strip=True) == "FirstContent"

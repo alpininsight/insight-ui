@@ -11,15 +11,13 @@
   aria-live="polite"
   aria-busy="false"
 >
-  {# Existing Content #}
-  <div>
-    {% for item in infinite_scroll_config.items %}
-      <div class="p-4 mb-4 bg-insight-surface border border-insight-surface rounded-insight-surface">
-        <h3>{{ item.title }}</h3>
-        <p class="text-insight-body">{{ item.content }}</p>
-      </div>
-    {% endfor %}
-  </div>
+  {# Feed items must be direct article children of the feed landmark. #}
+  {% for item in infinite_scroll_config.items %}
+    <article class="p-4 mb-4 bg-insight-surface border border-insight-surface rounded-insight-surface">
+      <h3>{{ item.title }}</h3>
+      <p class="text-insight-body">{{ item.content }}</p>
+    </article>
+  {% endfor %}
 
   {% if not infinite_scroll_config.auto_fetch %}
     {% with page_num=infinite_scroll_config.page|stringformat:"s" %}

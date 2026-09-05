@@ -37,8 +37,8 @@
                 </span>
                 <!-- Information -->
                 <div class="flex flex-col ms-4 min-w-0">
-                    <span class="font-medium text-sm {% if not item.completed and not item.current %}text-insight-disabled{% elif item.current %}text-insight-primary{% else %}text-insight-headline{% endif %}">{{ item.title}}</span>
-                    <span class="text-sm {% if not item.completed and not item.current %}text-insight-disabled{% else %}text-insight-body{% endif %}">{{ item.description }}</span>
+                    <span class="font-medium text-sm {% if not item.completed and not item.current %}text-insight-muted{% elif item.current %}text-insight-primary{% else %}text-insight-headline{% endif %}">{{ item.title}}</span>
+                    <span class="text-sm {% if not item.completed and not item.current %}text-insight-muted{% else %}text-insight-body{% endif %}">{{ item.description }}</span>
                 </div>
             </a>
         </li>
