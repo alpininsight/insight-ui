@@ -4,15 +4,15 @@
     {% for item in items %}
         <li class="flex gap-4 items-center px-6 w-full h-20"{% if item.current %} aria-current="step"{% endif %}>
             {% if item.success %}
-                <div class="flex justify-center items-center size-12 text-white bg-insight-primary rounded-insight-full">
+                <div class="flex justify-center items-center size-12 text-white bg-insight-primary-action rounded-insight-full">
                     {% icon name="check" size="xl" %}
                 </div>
             {% elif item.failed %}
-                <div class="flex justify-center items-center size-12 text-white bg-insight-danger rounded-insight-full">
+                <div class="flex justify-center items-center size-12 text-white bg-insight-danger-action rounded-insight-full">
                     {% icon name="x-mark" size="xl" %}
                 </div>
             {% else %}
-                <div class="flex justify-center items-center size-12 border-2 rounded-insight-full {% if not item.current %}text-insight-disabled border-insight-surface{% elif item.current %}animate-pulse text-insight-primary{% else %}border-insight-primary{% endif %}">
+                <div class="flex justify-center items-center size-12 border-2 rounded-insight-full {% if not item.current %}text-insight-disabled border-insight-surface{% elif item.current %}animate-pulse text-insight-primary-foreground{% else %}border-insight-primary-foreground{% endif %}">
                     {% if item.icon %}
                         {% icon item.icon %}
                     {% else %}
@@ -23,10 +23,10 @@
             <div class="flex-1">
                 <a {% if item.request_url %}href="{{ item.request_url }}"{% endif %}>
                     {% if item.failed %}
-                        <span class="block font-semibold text-insight-danger">{{ item.title }}</span>
-                        <span class="block text-sm text-insight-danger-hover">{{ item.description }}</span>
+                        <span class="block font-semibold text-insight-danger-foreground">{{ item.title }}</span>
+                        <span class="block text-sm text-insight-danger-foreground">{{ item.description }}</span>
                     {% else %}
-                        <span class="block font-semibold {% if not item.success and not item.current %}text-insight-disabled{% elif item.current %}text-insight-primary{% else %}text-insight-headline{% endif %}">{{ item.title }}</span>
+                        <span class="block font-semibold {% if not item.success and not item.current %}text-insight-disabled{% elif item.current %}text-insight-primary-foreground{% else %}text-insight-headline{% endif %}">{{ item.title }}</span>
                         <span class="block text-sm {% if not item.success and not item.current %}text-insight-disabled{% else %}text-insight-body{% endif %}">{{ item.description }}</span>
                     {% endif %}
                 </a>

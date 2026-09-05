@@ -20,27 +20,29 @@
   {% if sidebar_data.links %}
     <ul>
       {% for item in sidebar_data.links %}
-        <li data-insight-side-nav>
-          <a
-            {% if item.htmx %}
-              hx-get="{{ item.htmx.request_url|default:item.request_url }}"
-              hx-target="{{ item.htmx.target }}"
-              hx-swap="{{ item.htmx.swap|default:'innerHTML' }} show:window:top"
-              hx-push-url="true"
-              hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
-            {% endif %}
-            href="{{ item.request_url }}"
-            class="insight-sidebar-link flex gap-2 items-center px-4 py-1 text-sm text-insight-headline tracking-wide"
-          >
-            {% if item.icon %}
-              {% icon item.icon %}
-            {% endif %}
-            <span class="flex-1">{{ item.text }}</span>
-            {% if item.badge %}
-              {% badge config=item.badge %}
-            {% endif %}
-          </a>
-        </li>
+        {% if item.request_url %}
+          <li data-insight-side-nav>
+            <a
+              {% if item.htmx %}
+                hx-get="{{ item.htmx.request_url|default:item.request_url }}"
+                hx-target="{{ item.htmx.target }}"
+                hx-swap="{{ item.htmx.swap|default:'innerHTML' }} show:window:top"
+                hx-push-url="true"
+                hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
+              {% endif %}
+              href="{{ item.request_url }}"
+              class="insight-sidebar-link flex gap-2 items-center px-4 py-1 text-sm text-insight-headline tracking-wide"
+            >
+              {% if item.icon %}
+                {% icon item.icon %}
+              {% endif %}
+              <span class="flex-1">{{ item.text }}</span>
+              {% if item.badge %}
+                {% badge config=item.badge %}
+              {% endif %}
+            </a>
+          </li>
+        {% endif %}
       {% endfor %}
     </ul>
   {% endif %}
@@ -64,27 +66,29 @@
         </h4>
         <ul>
           {% for item in category.items %}
-            <li data-insight-side-nav>
-              <a
-                {% if item.htmx %}
-                  hx-get="{{ item.htmx.request_url|default:item.request_url }}"
-                  hx-target="{{ item.htmx.target }}"
-                  hx-swap="{{ item.htmx.swap|default:'innerHTML' }} show:window:top"
-                  hx-push-url="true"
-                  hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
-                {% endif %}
-                href="{{ item.request_url }}"
-                class="insight-sidebar-link flex gap-2 items-center px-4 py-1 text-sm text-insight-headline tracking-wide"
-              >
-                {% if item.icon %}
-                  {% icon item.icon %}
-                {% endif %}
-                <span class="flex-1">{{ item.text }}</span>
-                {% if item.badge %}
-                  {% badge config=item.badge %}
-                {% endif %}
-              </a>
-            </li>
+            {% if item.request_url %}
+              <li data-insight-side-nav>
+                <a
+                  {% if item.htmx %}
+                    hx-get="{{ item.htmx.request_url|default:item.request_url }}"
+                    hx-target="{{ item.htmx.target }}"
+                    hx-swap="{{ item.htmx.swap|default:'innerHTML' }} show:window:top"
+                    hx-push-url="true"
+                    hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
+                  {% endif %}
+                  href="{{ item.request_url }}"
+                  class="insight-sidebar-link flex gap-2 items-center px-4 py-1 text-sm text-insight-headline tracking-wide"
+                >
+                  {% if item.icon %}
+                    {% icon item.icon %}
+                  {% endif %}
+                  <span class="flex-1">{{ item.text }}</span>
+                  {% if item.badge %}
+                    {% badge config=item.badge %}
+                  {% endif %}
+                </a>
+              </li>
+            {% endif %}
           {% endfor %}
         </ul>
       </li>

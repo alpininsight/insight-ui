@@ -6,7 +6,7 @@
             {% icon input_config.icon %}
         {% endif %}
         <span class="self-end">{{ input_config.label }}</span>
-        {% if input_config.required %}<span class="text-insight-danger" aria-label="{% trans 'Required' %}">*</span>{% endif %}
+        {% if input_config.required %}<span class="text-insight-danger-foreground" aria-label="{% trans 'Required' %}">*</span>{% endif %}
         {% if input_config.explanation %}
             <div class="text-insight-body" data-insight-tooltip="{{ input_config.explanation }}" data-position="top">
                 {% icon name="question-mark" size="xs" %}

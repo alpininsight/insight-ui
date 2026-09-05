@@ -1,8 +1,12 @@
 {% load static i18n insight_assets %}
+{% get_current_language as LANGUAGE_CODE %}
 
 <!DOCTYPE html>
-<html>
+<html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}">
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% trans "Insight UI component demo" %}</title>
         {% url 'javascript-catalog' as javascript_catalog_url %}
         {% if javascript_catalog_url %}
             <script src="{{ javascript_catalog_url }}"></script>
