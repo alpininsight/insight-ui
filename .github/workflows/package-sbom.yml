@@ -1,0 +1,24 @@
+---
+# Thin caller only. Package SBOM logic lives in alpininsight/.github-private.
+# Tracks: alpininsight/insight-ui-docs#13
+name: Package SBOM
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  package-sbom:
+    permissions:
+      contents: write
+    uses: alpininsight/.github-private/.github/workflows/reusable-package-sbom.yml@main
+    with:
+      setup_uv: true
+      build_command: uv build
+      working_directory: "."
+      scan_glob: dist/*.whl
+      release_tag: ${{ github.event.release.tag_name }}
+      upload_release_assets: true
