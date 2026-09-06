@@ -24,6 +24,7 @@ jobs:
       - name: Build dev wheel
         run: |
           uv build
+          uv run python scripts/check_distribution.py
           ls -lah dist/
 
       - name: Upload artifact

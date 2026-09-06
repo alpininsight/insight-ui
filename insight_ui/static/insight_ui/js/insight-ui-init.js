@@ -13,12 +13,10 @@ import { Carousel } from "./insight-ui-carousel.js";
 import { Checkbox } from "./insight-ui-checkbox.js";
 import { CodeBlock } from "./insight-ui-code-block.js";
 import { Collapsible } from "./insight-ui-collapsible.js";
-import { DemoIframeController } from "./insight-ui-demo-container.js";
 import { Dropdown } from "./insight-ui-dropdown.js";
 import { FlipCard } from "./insight-ui-flip-card.js";
 import { Floater } from "./insight-ui-floater.js";
 import { Modal } from "./insight-ui-modal.js";
-import { MockupTOC } from "./insight-ui-mockup-toc.js";
 import { Multiselect } from "./insight-ui-multiselect.js";
 import { ProgressBar } from "./insight-ui-progress-bar.js";
 import { RangeSlider } from "./insight-ui-range-slider.js";
@@ -36,12 +34,10 @@ Object.assign(window.InsightUI, {
 	Checkbox,
 	CodeBlock,
 	Collapsible,
-	DemoIframeController,
 	Dropdown,
 	FlipCard,
 	Floater,
 	Modal,
-	MockupTOC,
 	Multiselect,
 	ProgressBar,
 	RangeSlider,
@@ -62,12 +58,10 @@ function initAll() {
 	Checkbox.initAll();
 	CodeBlock.initAll();
 	Collapsible.initAll();
-	DemoIframeController.initAll();
 	Dropdown.initAll();
 	FlipCard.initAll();
 	Floater.initAll();
 	Modal.initAll();
-	MockupTOC.initAll();
 	Multiselect.initAll();
 	ProgressBar.initAll();
 	RangeSlider.initAll();
@@ -108,16 +102,8 @@ document.addEventListener('DOMContentLoaded', function () {
 		debugLog("Initialize new instances...")
 		initAll();
 
-		// The parameter drill-down section is a narrow, self-contained fragment
-		// swap - it never introduces new headings, so skip the (visibly
-		// disruptive - the TOC panel blanks out and rebuilds) TOC regeneration
-		// below and just move focus into the new content instead.
-		// Note: evt.detail.target can be undefined during history navigation (back/forward)
-		if (evt.detail.target?.id === "parameter-section") {
-			// preventScroll avoids a visible jump: the button that triggered the
-			// swap is already in view, so the browser doesn't need to scroll to it.
-			document.getElementById("parameter-section-heading")?.focus({ preventScroll: true });
-			debugLog("New instances initialized!")
+		// Hosts can mark fragments that do not change the table of contents.
+		if (evt.detail.target?.dataset.insightTocRefresh === "false") {
 			return;
 		}
 

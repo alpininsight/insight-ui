@@ -94,7 +94,7 @@ repos:
         files: '(^|/)templates/.*\.html$'
         require_serial: true
 
-  # Optional: pytest, migrations, and system checks for the demo Django project
+  # Package tests and minimal Django host checks (no deployed documentation app).
   - repo: local
     hooks:
       - id: pytest
@@ -108,14 +108,14 @@ repos:
       - id: django-migrations-check
         name: Check for missing migrations
         entry: bash
-        args: ["-lc", "PYTHONPATH=. uv run python manage.py makemigrations --check --dry-run"]
+        args: ["-lc", "PYTHONPATH=. uv run python -m django makemigrations --settings=tests.settings --check --dry-run"]
         language: system
         pass_filenames: false
 
       - id: django-system-check
         name: Django system check (pre-push)
         entry: bash
-        args: ["-lc", "PYTHONPATH=. uv run python manage.py check --deploy --fail-level ERROR"]
+        args: ["-lc", "PYTHONPATH=. uv run python -m django check --settings=tests.settings --fail-level ERROR"]
         language: system
         pass_filenames: false
         stages: [pre-push]
