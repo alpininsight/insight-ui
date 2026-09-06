@@ -1369,6 +1369,12 @@
       background-color: color-mix(in oklab, var(--color-insight-bg-base) 75%, transparent);
     }
   }
+  .bg-insight-bg-raised {
+    background-color: var(--color-insight-bg-raised);
+  }
+  .bg-insight-danger {
+    background-color: var(--color-insight-danger);
+  }
   .bg-insight-danger-action {
     background-color: var(--color-insight-danger-action);
   }
@@ -1399,6 +1405,9 @@
       background-color: color-mix(in oklab, var(--color-insight-primary) 20%, transparent);
     }
   }
+  .bg-insight-secondary {
+    background-color: var(--color-insight-secondary);
+  }
   .bg-insight-success {
     background-color: var(--color-insight-success);
   }
@@ -1413,6 +1422,9 @@
   }
   .bg-insight-text-muted {
     background-color: var(--color-insight-text-muted);
+  }
+  .bg-insight-warning {
+    background-color: var(--color-insight-warning);
   }
   .bg-insight-warning-soft {
     background-color: var(--color-insight-warning-soft);
@@ -1736,6 +1748,15 @@
   }
   .text-insight-success-foreground {
     color: var(--color-insight-success-foreground);
+  }
+  .text-insight-text-body {
+    color: var(--color-insight-text-body);
+  }
+  .text-insight-text-headline {
+    color: var(--color-insight-text-headline);
+  }
+  .text-insight-text-link {
+    color: var(--color-insight-text-link);
   }
   .text-insight-text-muted {
     color: var(--color-insight-text-muted);
