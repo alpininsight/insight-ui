@@ -25,8 +25,9 @@
 @source "../configs/";
 @source "../static/insight_ui/js/";
 @source "../templatetags/";
-/* Public SVG color options are assembled dynamically, not by the docs catalog. */
-@source inline("fill-insight-{primary,secondary,success,warning,danger,info}");
+/* Public icon and ribbon colors must not depend on host or docs templates. */
+@source inline("{bg,fill,text}-insight-{primary,secondary,success,warning,danger,info}");
+@source inline("text-insight-text-{headline,body,muted,link}");
 
 /*
 * Dark mode variant using data-theme attribute instead of media query.

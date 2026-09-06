@@ -113,10 +113,18 @@ function validateCssOutput(sourceFile, source, output) {
         return;
     }
 
+    const semanticColors = ["primary", "secondary", "success", "warning", "danger", "info"];
+    const colorFamilies = [
+        ["bg", "background-color", [...semanticColors, "bg-raised"]],
+        ["fill", "fill", semanticColors],
+        ["text", "color", [...semanticColors, "text-headline", "text-body", "text-muted", "text-link"]],
+    ];
     const requiredPatterns = [
-        [".bg-insight-primary", /\.bg-insight-primary\{[^}]*background-color:\s*var\(--color-insight-primary\)/],
-        [".fill-insight-primary", /\.fill-insight-primary\{[^}]*fill:\s*var\(--color-insight-primary\)/],
-        [".text-insight-primary", /\.text-insight-primary\{[^}]*color:\s*var\(--color-insight-primary\)/],
+        ...colorFamilies.flatMap(([prefix, property, colors]) => colors.map((color) => [
+            `.${prefix}-insight-${color}`,
+            new RegExp(`\\.${prefix}-insight-${color}\\{[^}]*${property}:\\s*var\\(--color-insight-${color}\\)`),
+        ])),
+        [".text-white", /\.text-white\{[^}]*color:\s*var\(--color-white\)/],
         [".btn-primary", /\.btn-primary\{/],
         [".btn-neutral", /\.btn-neutral\{/],
         [".lg:flex-row", /\.lg\\:flex-row\{/],

@@ -240,7 +240,7 @@ class CornerRibbonConfig:
         text: The text displayed in the ribbon.
         position: Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'.
         color: Color variant for the ribbon.
-        foreground_color: Optional semantic text color. Empty uses white.
+        foreground_color: Optional semantic text color. Empty uses white, or body text for neutral.
         request_url: Optional URL that turns the ribbon into a link.
         aria_label: Optional accessible label for the linked ribbon.
 
@@ -267,7 +267,7 @@ class CornerRibbonConfig:
     )
     foreground_color: ColorType | str = field(
         default="",
-        metadata={"doc": _("Optional semantic text color. Empty uses white.")},
+        metadata={"doc": _("Optional semantic text color. Empty uses white, or body text for neutral.")},
     )
     request_url: str = field(
         default="",
@@ -284,6 +284,24 @@ class CornerRibbonConfig:
         validate_color_type(self.color, "color")
         if self.foreground_color:
             validate_color_type(self.foreground_color, "foreground_color")
+
+    @property
+    def background_class(self) -> str:
+        """Map neutral to an existing elevation token, not an undefined color."""
+        if self.color == "neutral":
+            return "bg-insight-bg-raised"
+        return f"bg-insight-{self.color}"
+
+    @property
+    def foreground_class(self) -> str:
+        """Use the neutral body text role and preserve semantic color overrides."""
+        if self.foreground_color == "neutral":
+            return "text-insight-text-body"
+        if self.foreground_color:
+            return f"text-insight-{self.foreground_color}"
+        if self.color == "neutral":
+            return "text-insight-text-body"
+        return "text-white"
 
 
 @dataclass
