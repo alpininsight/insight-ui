@@ -42,8 +42,6 @@ keywords = [
 ]
 dependencies = [
     "django>=5.2.17,<7",
-    "whitenoise>=6.12.0",
-    "python-decouple>=3.8",
     "markdown>=3.10.3",
     "defusedxml>=0.7.1",
 ]
@@ -58,9 +56,7 @@ dev = [
     "django-stubs==6.1.0",
     "ruff>=0.16.1",
     "pre-commit>=4.6.1",
-    "django-rosetta>=0.10.3",
     "django-tailwind-cli>=4.6.2",
-    "uvicorn[standard]>=0.52.1",
 ]
 pytest = [
     "pytest==9.1.1",
@@ -107,23 +103,17 @@ disallow_untyped_decorators = true
 no_implicit_optional = true
 strict_optional = true
 
-[[tool.mypy.overrides]]
-module = "core.*"
-disallow_untyped_defs = false
-disallow_incomplete_defs = false
-
 [tool.coverage.run]
 omit = [
     "*/migrations/*",
     "*/tests/*",
     "insight_ui/_version.py",
-    "manage.py",
 ]
 
 [tool.ruff]
 fix = true
 
-src = ["insight_ui", "documentation", "core", "tests"]
+src = ["insight_ui", "tests"]
 
 # Exclude a variety of commonly ignored directories.
 exclude = [
@@ -233,8 +223,6 @@ unfixable = []
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 [tool.ruff.lint.per-file-ignores]
-# Ignore long lines in the component detail (docs) strings
-"documentation/component_details/**.py" = ["E501"]
 "insight_ui/configs/**.py" = ["E501"]
 "insight_ui/templatetags/insight_tags.py" = ["PLR0913", "PLR0917"]
 # Test-specific ignores
@@ -282,3 +270,10 @@ convention = "google"
 
 [tool.hatch.build.targets.wheel]
 packages = ["insight_ui"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/insight_ui", "/tests", "/scripts", "/package.json", "/package-lock.json",
+    "/pyproject.toml", "/pytest.ini", "/vitest.config.js", "/README.md", "/LICENSE",
+]
+exclude = ["*.min.js", "*.min.css", "__pycache__", "*.pyc"]

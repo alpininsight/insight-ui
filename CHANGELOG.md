@@ -20,12 +20,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **container:** Pin Uvicorn wheel dependency
 - **a11y:** Separate semantic action and foreground tokens
 - **a11y:** Repair catalog component semantics
+- **a11y:** Use the primary foreground token for the page header title
 
 ### CI/CD
 
 - **package:** Exclude legacy application sources
 - Thin caller for central package SBOM workflow
 - Send package SBOM to insight-ui-docs
+
+### Documentation
+
+- Fix outdated test paths in testing.md
+- **license:** Clarify AGPL or Commercial spurwahl in stub
 
 ### Features
 
@@ -60,6 +66,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **pre-commit:** Autoupdate hooks
 - **package:** Separate documentation test suite
+
+### Refactoring
+
+- **package:** Move documentation ownership to insight-ui-docs
 
 ### Reverted
 

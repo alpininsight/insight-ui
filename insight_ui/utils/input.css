@@ -15,15 +15,18 @@
 *
 */
 
-@import "tailwindcss";
+@import "tailwindcss" source(none);
 
 /*
 * Template scanning paths - Tailwind scans these for class usage.
 * Only classes found in these files will be included in the output.
 */
 @source "../templates/insight_ui/";
-@source "../component_details/";
+@source "../configs/";
+@source "../static/insight_ui/js/";
 @source "../templatetags/";
+/* Public SVG color options are assembled dynamically, not by the docs catalog. */
+@source inline("fill-insight-{primary,secondary,success,warning,danger,info}");
 
 /*
 * Dark mode variant using data-theme attribute instead of media query.
@@ -42,7 +45,8 @@
     src: url("../font/AtkinsonHyperlegibleNext-VariableFont_wght.ttf");
 }
 
-@theme {
+/* Export the complete public token API, even when only a host uses a role. */
+@theme static {
     --font-sans: "insight-ui", sans-serif;
 
     /*
@@ -1039,31 +1043,4 @@
         @apply size-6 bg-insight-bg-base border-2 border-insight-primary rounded-insight-full cursor-pointer;
     }
 
-    /*
-    * Demo container pattern.
-    * Diagonal stripe background for component demo containers.
-    * Helps distinguish the demo area from actual content.
-    * Used in documentation/storybook pages.
-    */
-    .demo-pattern {
-        background-color: #f8fafc;
-        background-image: repeating-linear-gradient(
-            -45deg,
-            transparent,
-            transparent 8px,
-            #e2e8f0 8px,
-            #e2e8f0 9px
-        );
-    }
-
-    [data-theme="dark"] .demo-pattern {
-        background-color: #0f172a;
-        background-image: repeating-linear-gradient(
-            -45deg,
-            transparent,
-            transparent 8px,
-            #1e293b 8px,
-            #1e293b 9px
-        );
-    }
 }

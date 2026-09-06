@@ -1,7 +1,6 @@
 """Tests for the footer component."""
 
 from bs4 import BeautifulSoup
-from django.urls import reverse_lazy
 from insight_ui.configs.base import IconConfig
 from insight_ui.configs.navigation import FooterConfig, FooterContactConfig, FooterDescriptionConfig, NavbarLinkConfig
 from insight_ui.configs.utils import LegalNoticeConfig, LogoConfig
@@ -28,9 +27,7 @@ class TestFooter(TemplateTagsTestCase):
             FooterContactConfig(
                 "support@alpininsight.com", "https://alpininsight.com/imprint/", "https://alpininsight.com/privacy/"
             ),
-            LegalNoticeConfig(
-                2026, "Alpin Insight Solutions GmbH & Co. KG", "Open Source", "AGPL-3.0", reverse_lazy("license_view")
-            ),
+            LegalNoticeConfig(2026, "Alpin Insight Solutions GmbH & Co. KG", "Open Source", "AGPL-3.0", "/license/"),
             "v1.0.0",
         )
 
@@ -75,6 +72,6 @@ class TestFooter(TemplateTagsTestCase):
         assert "Open Source" in copyright_p.text
         assert "AGPL-3.0" in copyright_p.text
         assert "All rights reserved." in copyright_p.text
-        license_el = copyright_p.find("a", href="/docs/license/")
+        license_el = copyright_p.find("a", href="/license/")
         assert license_el is not None
         assert license_el.get_text(strip=True) == "AGPL-3.0"
