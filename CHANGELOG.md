@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **a11y:** Separate semantic action and foreground tokens
 - **a11y:** Repair catalog component semantics
 - **a11y:** Use the primary foreground token for the page header title
+- **docs:** Replace conformance claims with designed-to-conform wording
 
 ### CI/CD
 
