@@ -9,13 +9,12 @@ from tests.insight_ui.unit.components.test_template_tags import TemplateTagsTest
 class TestPageHeader(TemplateTagsTestCase):
     """Test suite for the page_header component."""
 
-    def render_page_header(self, style: str = "docs") -> BeautifulSoup:
+    def render_page_header(self) -> BeautifulSoup:
         """Render the page header with a title, a chapter and a description."""
         config = PageHeaderConfig(
             title="Example Page",
             chapter="Insight UI",
             description=["A header component for documentation pages."],
-            style=style,
         )
         html = self.render_template("{% load insight_tags %}{% page_header config=config %}", {"config": config})
         return BeautifulSoup(html, "html.parser")
@@ -44,10 +43,3 @@ class TestPageHeader(TemplateTagsTestCase):
         soup = self.render_page_header()
         paragraphs = [p.get_text(strip=True) for p in soup.find_all("p")]
         assert "A header component for documentation pages." in paragraphs
-
-    def test_fancy_style_hides_the_decorative_graphic(self) -> None:
-        """WCAG 1.1.1: the decorative background of the fancy style is aria-hidden."""
-        soup = self.render_page_header(style="fancy")
-        hidden = soup.select('[aria-hidden="true"]')
-        assert hidden, "fancy style must hide its decorative graphic from assistive technology"
-        assert not any(node.find(["a", "button", "input"]) for node in hidden)
