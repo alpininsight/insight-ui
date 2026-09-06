@@ -67,6 +67,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **pre-commit:** Autoupdate hooks
 - **package:** Separate documentation test suite
 
+### Refactoring
+
+- **package:** Move documentation ownership to insight-ui-docs
+
 ### Reverted
 
 - Chore(package): seperate documentation test suit
