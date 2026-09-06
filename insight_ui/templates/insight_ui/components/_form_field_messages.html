@@ -1,0 +1,12 @@
+{% comment %}
+Shared help text and error message paragraphs for form fields (WCAG 3.3.1, 3.3.3).
+Field errors are plain text linked via aria-describedby / aria-errormessage; only the form-level
+#form-error container is a live region (WAI Forms tutorial, Notifications).
+Expects: field_id, help_text, error. Ids are only emitted when field_id is set.
+{% endcomment %}
+{% if help_text %}
+    <p{% if field_id %} id="{{ field_id }}-help"{% endif %} class="mt-1 text-sm text-insight-body">{{ help_text }}</p>
+{% endif %}
+{% if error %}
+    <p{% if field_id %} id="{{ field_id }}-error"{% endif %} class="mt-1 text-sm text-insight-danger-foreground">{{ error }}</p>
+{% endif %}

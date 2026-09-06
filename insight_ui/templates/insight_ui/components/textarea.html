@@ -1,28 +1,32 @@
 {% load i18n insight_tags %}
 
-<div class="flex flex-col w-full">
-    <label for={{ textarea_config.name }} class="flex gap-1 mb-1 font-bold text-sm text-insight-headline">
-        {% if textarea_config.icon %}
-            {% icon textarea_config.icon %}
-        {% endif %}
-        <span class="self-end">{{ textarea_config.label }}</span>
-        {% if textarea_config.required %}<span class="text-insight-danger" aria-label="{% trans 'Required' %}">*</span>{% endif %}
-        {% if textarea_config.explanation %}
-            <div class="text-insight-body" data-insight-tooltip="{{ textarea_config.explanation }}" data-position="top">
-                {% icon name="question-mark" size="xs" %}
-            </div>
-        {% endif %}
-    </label>
-    <textarea
-        type="textarea"
-        {% if textarea_config.tag_id %}id="{{ textarea_config.tag_id }}"{% endif %}
-        {% if textarea_config.name %}name="{{ textarea_config.name }}"{% endif %}
-        {% if textarea_config.placeholder %}placeholder="{{ textarea_config.placeholder }}"{% endif %}
-        {% if textarea_config.rows %}rows="{{ textarea_config.rows }}"{% endif %}
-        {% if textarea_config.cols %}cols="{{ textarea_config.cols }}"{% endif %}
-        {% if textarea_config.required %}required{% endif %}
-        {% if textarea_config.disabled %}disabled{% endif %}
-        {% if textarea_config.disabled and textarea_config.disabled_reason %}data-insight-tooltip="{{ textarea_config.disabled_reason }}"{% endif %}
-        class="input w-full"
-    >{{ textarea_config.value|default:"" }}</textarea>
-</div>
+{% with field_id=textarea_config.tag_id|default:textarea_config.name %}
+    <div class="flex flex-col w-full">
+        <label{% if field_id %} for="{{ field_id }}"{% endif %} class="flex gap-1 mb-1 font-bold text-sm text-insight-headline">
+            {% if textarea_config.icon %}
+                {% icon textarea_config.icon %}
+            {% endif %}
+            <span class="self-end">{{ textarea_config.label }}</span>
+            {% if textarea_config.required %}<span class="text-insight-danger-foreground" aria-label="{% trans 'Required' %}">*</span>{% endif %}
+            {% if textarea_config.explanation %}
+                <div class="text-insight-body" data-insight-tooltip="{{ textarea_config.explanation }}" data-position="top">
+                    {% icon name="question-mark" size="xs" %}
+                </div>
+            {% endif %}
+        </label>
+        <textarea
+            type="textarea"
+            {% if field_id %}id="{{ field_id }}"{% endif %}
+            {% if textarea_config.name %}name="{{ textarea_config.name }}"{% endif %}
+            {% if textarea_config.placeholder %}placeholder="{{ textarea_config.placeholder }}"{% endif %}
+            {% if textarea_config.rows %}rows="{{ textarea_config.rows }}"{% endif %}
+            {% if textarea_config.cols %}cols="{{ textarea_config.cols }}"{% endif %}
+            {% if textarea_config.required %}required{% endif %}
+            {% if textarea_config.disabled %}disabled{% endif %}
+            {% if textarea_config.disabled and textarea_config.disabled_reason %}data-insight-tooltip="{{ textarea_config.disabled_reason }}"{% endif %}
+            {% include "insight_ui/components/_form_field_aria_attrs.html" with field_id=field_id required=textarea_config.required help_text=textarea_config.help_text error=textarea_config.error %}
+            class="input w-full"
+        >{{ textarea_config.value|default:"" }}</textarea>
+        {% include "insight_ui/components/_form_field_messages.html" with field_id=field_id help_text=textarea_config.help_text error=textarea_config.error %}
+    </div>
+{% endwith %}

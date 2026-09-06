@@ -31,6 +31,8 @@ class FormFieldConfig:
         options: List of options for select fields.
         selected_option: Currently selected value.
         rows: Number of rows for textarea fields.
+        help_text: Persistent hint shown below the control and linked via `aria-describedby`.
+        error: Validation error shown as text below the control and linked via `aria-describedby`; sets `aria-invalid` and `aria-errormessage`.
 
     Note:
         If `options` is a list, the value is also used as the name.
@@ -62,6 +64,18 @@ class FormFieldConfig:
     )
     selected_option: str = field(default="", metadata={"doc": _("Currently selected value.")})
     rows: int = field(default=3, metadata={"doc": _("Number of rows for textarea fields.")})
+    help_text: str = field(
+        default="",
+        metadata={"doc": _("Persistent hint shown below the control and linked via `aria-describedby`.")},
+    )
+    error: str = field(
+        default="",
+        metadata={
+            "doc": _(
+                "Validation error shown as text below the control and linked via `aria-describedby`; sets `aria-invalid` and `aria-errormessage`."
+            )
+        },
+    )
 
     def __post_init__(self) -> None:
         """Validate input_type and normalize options to dict format."""

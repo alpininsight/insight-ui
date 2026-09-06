@@ -1,0 +1,11 @@
+{% comment %}
+Shared ARIA attributes for native form controls (WCAG 3.3.1, 3.3.2, 4.1.2).
+Rendered inside the opening tag of the control. Expects: field_id, required, help_text, error.
+When field_id is empty no aria-describedby / aria-errormessage is emitted (no dangling ids).
+{% endcomment %}
+{% if required %}aria-required="true"{% endif %}
+{% if error %}aria-invalid="true"{% endif %}
+{% if field_id %}
+    {% if help_text or error %}aria-describedby="{% if help_text %}{{ field_id }}-help{% endif %}{% if help_text and error %} {% endif %}{% if error %}{{ field_id }}-error{% endif %}"{% endif %}
+    {% if error %}aria-errormessage="{{ field_id }}-error"{% endif %}
+{% endif %}

@@ -345,6 +345,38 @@ describe('InsightUI.handlers', () => {
 
       expect(formResult.innerHTML).toBe('');
     });
+
+    it('should clear the #form-error alert container rendered by form.html', () => {
+      const container = TestUtils.createDOM(`
+        <form>
+          <div id="form-error" role="alert" aria-live="assertive" aria-atomic="true">
+            <p>Server-side error</p>
+            <button data-insight-dismiss="form-errors">Close</button>
+          </div>
+        </form>
+      `);
+      const formError = container.querySelector('#form-error');
+      const dismissBtn = container.querySelector('[data-insight-dismiss="form-errors"]');
+
+      TestUtils.click(dismissBtn);
+
+      expect(formError.innerHTML).toBe('');
+      expect(container.querySelector('#form-error')).not.toBeNull();
+    });
+
+    it('should fall back to the closest role=alert container', () => {
+      const container = TestUtils.createDOM(`
+        <div id="custom-target" role="alert">
+          <p>Error</p>
+          <button data-insight-dismiss="form-errors">Close</button>
+        </div>
+      `);
+      const alert = container.querySelector('#custom-target');
+
+      TestUtils.click(container.querySelector('[data-insight-dismiss="form-errors"]'));
+
+      expect(alert.innerHTML).toBe('');
+    });
   });
 
   describe('Radio callback', () => {

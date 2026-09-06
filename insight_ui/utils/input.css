@@ -413,6 +413,15 @@
     */
     :root {
         color-scheme: light;
+
+        /*
+        * Minimum pointer target size (WCAG 2.2 SC 2.5.8 Target Size (Minimum)).
+        * Interactive controls that can render smaller than 24 x 24 CSS px
+        * (native checkboxes/radios, small and icon-only buttons, pagination
+        * and dismiss buttons) use this token for min-width / min-height.
+        * Inline text links are exempt by the success criterion and stay untouched.
+        */
+        --insight-target-min: 1.5rem; /* 24px */
     }
 
     /*
@@ -808,12 +817,13 @@
     }
 
     /* Size modifiers - combine with color variant */
-    .btn-xs { @apply text-xs px-2 py-0.5; }
-    .btn-s { @apply text-sm px-4 py-1; }
+    /* Small and icon-only sizes enforce the 24px minimum target (WCAG 2.2 SC 2.5.8) */
+    .btn-xs { @apply text-xs px-2 py-0.5; min-height: var(--insight-target-min); min-width: var(--insight-target-min); }
+    .btn-s { @apply text-sm px-4 py-1; min-height: var(--insight-target-min); min-width: var(--insight-target-min); }
     .btn-m { @apply text-sm px-5 py-1.5; }
     .btn-l { @apply text-lg px-6 py-2; }
     .btn-xl { @apply text-lg px-8 py-3; }
-    .btn-icon { @apply p-1.5; }                     /* Square button for icons only */
+    .btn-icon { @apply p-1.5; min-height: var(--insight-target-min); min-width: var(--insight-target-min); }  /* Square button for icons only */
     .btn-round { @apply rounded-insight-full; }     /* Pill-shaped button */
 
     /* Fill variant (solid background) - default button style */
@@ -972,6 +982,17 @@
                 @apply text-insight-text-disabled;
             }
         }
+    }
+
+    /*
+    * Native checkbox and radio controls keep their browser size (about 13px);
+    * the wrapping <label> is the pointer target and reserves the 24px minimum
+    * (WCAG 2.2 SC 2.5.8) via --insight-target-min. Visually hidden controls
+    * (.sr-only, e.g. toggle and radio_block) already use their label as target.
+    */
+    label:has(> input[type="checkbox"]:not(.sr-only)),
+    label:has(> input[type="radio"]:not(.sr-only)) {
+        min-height: var(--insight-target-min);
     }
 
     /* Multiselect component disabled state */

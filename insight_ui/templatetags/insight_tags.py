@@ -713,6 +713,8 @@ def input_field(
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset | None = UNSET,
     label: str | _Unset | None = UNSET,
+    help_text: str | _Unset = UNSET,
+    error: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render any <input> field."""
     config = build_config(InputFieldConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -733,6 +735,8 @@ def textarea(
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset | None = UNSET,
     label: str | _Unset | None = UNSET,
+    help_text: str | _Unset = UNSET,
+    error: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a <textarea> field."""
     config = build_config(TextareaConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -748,8 +752,11 @@ def checkbox(
     value: str | _Unset = UNSET,
     label: str | _Unset | None = UNSET,
     checked: bool | _Unset = UNSET,
+    required: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset = UNSET,
+    help_text: str | _Unset = UNSET,
+    error: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a checkbox with label text."""
     config = build_config(CheckboxConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -777,6 +784,8 @@ def radio_group(
     items: list[RadioItemConfig] | _Unset | None = UNSET,
     as_row: bool | _Unset = UNSET,
     current_value: str | _Unset = UNSET,
+    help_text: str | _Unset = UNSET,
+    error: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a group of radio buttons."""
     config = build_config(RadioGroupConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -860,6 +869,8 @@ def select(
     explanation: str | _Unset = UNSET,
     options: list[str] | dict[str, str] | _Unset | None = UNSET,
     selected_option: str | _Unset = UNSET,
+    help_text: str | _Unset = UNSET,
+    error: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a selection box."""
     config = build_config(SelectConfig, config, **{k: v for k, v in locals().items() if k != "config"})
