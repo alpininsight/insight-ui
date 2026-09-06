@@ -51,7 +51,9 @@ jobs:
       django_check_command: |
         uv export --no-emit-project --no-hashes --no-dev --format requirements.txt -o requirements.txt
         git diff --exit-code -- requirements.txt
-        uv run python manage.py check
+        uv run python -m django check --settings=tests.settings
+        uv build
+        uv run python scripts/check_distribution.py
       test_command: |
         uv pip install "django~=5.2.0"
         uv run --no-sync pytest

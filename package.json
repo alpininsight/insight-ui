@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build:js": "node scripts/build-static-assets.mjs",
-    "build:tailwind": "USE_TAILWIND_CLI=True uv run manage.py tailwind build --force --no-minify",
+    "build:tailwind": "DJANGO_SETTINGS_MODULE=tests.tailwind_settings uv run python -m django tailwind build --force --no-minify",
     "build:static": "node scripts/build-static-assets.mjs",
     "build:static-all": "npm run build:tailwind && npm run build:static",
     "check:generated-assets": "node scripts/check-generated-static-assets.mjs",
