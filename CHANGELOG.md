@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Documentation
 
 - Fix outdated test paths in testing.md
+- **license:** Clarify AGPL or Commercial spurwahl in stub
 
 ### Features
 
