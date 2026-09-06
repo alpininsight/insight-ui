@@ -127,7 +127,18 @@ Developer references in `docs/`:
 
 ## Contributing
 
-We welcome contributions! Please read the [Contributing Guide](docs/contributing.md) and [Conventions](docs/conventions.md) before opening a pull request.
+> **The Contributor Licence Agreement is still being finalised.**
+> We are looking forward to contributions and would rather not make you wait for
+> a legal review. Open your pull request now — we will review it and discuss it
+> with you as usual. The only thing that has to wait is the merge: once the CLA
+> is in force, a bot will ask you to sign it in your pull request, and we can
+> merge from there. Nothing you do now is wasted, and nothing is expected of you
+> in the meantime.
+
+We welcome contributions! Start with [CONTRIBUTING.md](CONTRIBUTING.md) — it covers the
+Contributor Licence Agreement every contributor signs once. The developer guide is
+[docs/contributing.md](docs/contributing.md), the code-level rules are in
+[Conventions](docs/conventions.md).
 
 ## Support
 
