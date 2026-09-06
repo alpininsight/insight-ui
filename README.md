@@ -16,8 +16,11 @@ contain or deploy a documentation website.
 The documentation application, component catalog, examples, documentation tests,
 and Enterprise deliverables are maintained separately in `insight-ui-docs`.
 API docstrings and configuration metadata remain in the library because they
-describe its public API. Accessibility is tested, but this is not a blanket
-WCAG certification of the library or an application built with it.
+describe its public API. Components are built to WCAG 2.1 AA and are WCAG 2.2 ready, with a
+self-assessment and known limitations documented per component on the
+documentation site. WCAG conformance is defined for complete web pages, so
+this is not a certification of the library or of an application built with
+it; conformance evidence is produced through the Enterprise Service.
 
 ## Installation
 
