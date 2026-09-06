@@ -10,6 +10,8 @@ repos:
     hooks:
       - id: check-case-conflict
       - id: trailing-whitespace
+        # Licence texts are kept verbatim (REUSE LICENSES/ and the OFL shipped with the font).
+        exclude: ^(LICENSES/|insight_ui/static/insight_ui/font/OFL\.txt$)
       - id: end-of-file-fixer
       - id: check-yaml
         args: ["--allow-multiple-documents"]
@@ -79,6 +81,12 @@ repos:
         files: '(^|/)templates/.*\.html$'
 
   # Sort Tailwind CSS classes, check used design tokens
+  - repo: https://github.com/fsfe/reuse-tool
+    rev: v6.2.0
+    hooks:
+      - id: reuse
+        additional_dependencies: ["charset-normalizer"]
+
   - repo: local
     hooks:
       - id: utility-sort

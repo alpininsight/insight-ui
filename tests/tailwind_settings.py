@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+# SPDX-License-Identifier: AGPL-3.0-only
 """Build-only Django settings; no documentation project or runtime server."""
 
 from tests.settings import BASE_DIR, INSTALLED_APPS

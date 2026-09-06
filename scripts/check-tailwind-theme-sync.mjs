@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+// SPDX-License-Identifier: AGPL-3.0-only
 import { readFile } from "node:fs/promises";
 
 const sourceUrl = new URL("../insight_ui/utils/input.css", import.meta.url);

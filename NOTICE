@@ -1,0 +1,38 @@
+Insight UI
+Copyright 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+
+This product is licensed under the GNU Affero General Public License v3.0
+(SPDX: AGPL-3.0-only, see LICENSE). Alternative commercial licensing is
+available, see COMMERCIAL_LICENSE.md.
+
+Licensing metadata follows the REUSE specification (https://reuse.software):
+every file is covered either by an SPDX header or by REUSE.toml, and the full
+text of every licence used is stored under LICENSES/.
+
+Third-party components distributed with this package
+-----------------------------------------------------
+
+Atkinson Hyperlegible Next (variable font)
+  Files:     insight_ui/static/insight_ui/font/AtkinsonHyperlegibleNext-VariableFont_wght.ttf
+  Copyright: 2020-2024 The Atkinson Hyperlegible Next Project Authors
+             (https://github.com/googlefonts/atkinson-hyperlegible-next)
+  Licence:   SIL Open Font License 1.1 (LICENSES/OFL-1.1.txt); the licence text
+             also ships next to the font as insight_ui/static/insight_ui/font/OFL.txt
+
+Heroicons (outline icon set, embedded as SVG strings)
+  Files:     insight_ui/icons.py
+  Copyright: Tailwind Labs, Inc.
+  Licence:   MIT (LICENSES/MIT.txt, notice in insight_ui/THIRD_PARTY_NOTICES.md)
+
+Tailwind CSS (preflight and utilities contained in the generated stylesheet)
+  Files:     insight_ui/static/insight_ui/css/tailwind.css
+  Copyright: Tailwind Labs, Inc.
+  Licence:   MIT (LICENSES/MIT.txt)
+
+Components loaded at runtime from a CDN and not distributed with this package
+------------------------------------------------------------------------------
+
+htmx and htmx-ext-ws (Zero-Clause BSD), Prism (MIT), Leaflet (BSD-2-Clause) and
+Apache ECharts (Apache-2.0) are referenced by the templates and fetched by the
+browser from their public CDNs when the corresponding features are enabled. Their
+licences apply to those downloads; none of their code is contained in this package.

@@ -275,5 +275,6 @@ packages = ["insight_ui"]
 include = [
     "/insight_ui", "/tests", "/scripts", "/package.json", "/package-lock.json",
     "/pyproject.toml", "/pytest.ini", "/vitest.config.js", "/README.md", "/LICENSE",
+    "/NOTICE", "/REUSE.toml", "/LICENSES",
 ]
 exclude = ["*.min.js", "*.min.css", "__pycache__", "*.pyc"]
