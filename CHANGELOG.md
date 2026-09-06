@@ -27,6 +27,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Thin caller for central package SBOM workflow
 - Send package SBOM to insight-ui-docs
 
+### Documentation
+
+- Fix outdated test paths in testing.md
+
 ### Features
 
 - **button:** Support theme-specific secondary foregrounds
