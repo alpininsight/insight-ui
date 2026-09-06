@@ -68,6 +68,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **pre-commit:** Autoupdate hooks
 - **package:** Separate documentation test suite
+- **license:** Add SPDX headers, REUSE metadata and third-party notices
 
 ### Refactoring
 
