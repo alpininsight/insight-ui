@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+# SPDX-License-Identifier: AGPL-3.0-only
 """Dataclass configurations for Insight UI components.
 
 This module provides type-safe configuration classes for all Insight UI template tags.

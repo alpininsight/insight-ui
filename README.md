@@ -78,3 +78,9 @@ minified files are ignored. The wheel and sdist contain the readable assets.
 
 [GNU Affero General Public License v3.0](LICENSE).
 For alternative licensing inquiries see [COMMERCIAL_LICENSE.md](COMMERCIAL_LICENSE.md).
+
+Licensing metadata follows the [REUSE specification](https://reuse.software): every
+file carries an SPDX header or is covered by `REUSE.toml`, licence texts live in
+`LICENSES/`, and bundled third-party components (Atkinson Hyperlegible Next under
+OFL-1.1, Heroicons and Tailwind CSS under MIT) are listed in `NOTICE` and in
+`insight_ui/THIRD_PARTY_NOTICES.md`, which ships inside the package.

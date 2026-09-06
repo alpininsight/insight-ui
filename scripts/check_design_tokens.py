@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+# SPDX-License-Identifier: AGPL-3.0-only
 """Check for hardcoded Tailwind utilities that should use design tokens.
 
 This script detects direct Tailwind utilities that should be replaced with

@@ -79,6 +79,12 @@ repos:
         files: '(^|/)templates/.*\.html$'
 
   # Sort Tailwind CSS classes, check used design tokens
+  - repo: https://github.com/fsfe/reuse-tool
+    rev: v6.2.0
+    hooks:
+      - id: reuse
+        additional_dependencies: ["charset-normalizer"]
+
   - repo: local
     hooks:
       - id: utility-sort
