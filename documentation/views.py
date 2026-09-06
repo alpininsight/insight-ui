@@ -364,9 +364,9 @@ def index_view(request: HttpRequest) -> HttpResponse:
     context = get_base_context() | get_sidebar_context()
     context["hero"] = HeroConfig(
         title="Django Insight UI",
-        subtitle=_("A completely accessible Django Component Framework"),
+        subtitle=_("An accessibility-first Django Component Framework"),
         description=_(
-            "60+ production-ready, WCAG 2.1 AA-compliant components. "
+            "60+ production-ready components, built to WCAG 2.1 AA and WCAG 2.2 ready. "
             "Build accessible Django applications without frontend expertise."
         ),
         cta_primary=ButtonConfig(label=_("Get started"), request_url=reverse("installation_view"), type="primary"),
@@ -385,9 +385,10 @@ def index_view(request: HttpRequest) -> HttpResponse:
         },
         {
             "icon": "check",
-            "title": _("WCAG 2.1 AA"),
+            "title": _("Built to WCAG 2.1 AA"),
             "description": _(
-                "Full accessibility compliance built-in. Screen reader support, keyboard navigation, ARIA."
+                "Accessibility built in: semantic HTML, WAI-ARIA patterns, keyboard navigation and screen reader "
+                "support. Each component documents its self-assessed conformance and known limitations."
             ),
         },
         {
@@ -415,7 +416,7 @@ def index_view(request: HttpRequest) -> HttpResponse:
     ]
     context["stats"] = [
         {"value": "60+", "label": _("Components")},
-        {"value": "WCAG 2.1", "label": _("Accessibility")},
+        {"value": "WCAG 2.1 AA", "label": _("Built to")},
         {"value": "RTL", "label": _("Layout Support")},
         {"value": "0", "label": _("JavaScript Required")},
     ]

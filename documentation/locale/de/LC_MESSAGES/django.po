@@ -4985,8 +4985,8 @@ msgid "Built for everyone"
 msgstr "Für alle gebaut"
 
 #: .\documentation\templates\documentation\index.html:275
-msgid "Accessibility isn't an afterthought. Every component is designed with WCAG 2.1 AA compliance from the start."
-msgstr "Barrierefreiheit ist kein nachträglicher Gedanke. Jede Komponente ist von Anfang an auf WCAG-2.1-AA-Konformität ausgelegt."
+msgid "Accessibility isn't an afterthought. Every component is built to WCAG 2.1 AA from the start and documents its own conformance assessment, including known limitations. Conformance evidence against EN 301 549 (Accessibility Conformance Report, per-component matrix) is produced through our Enterprise Service."
+msgstr "Barrierefreiheit ist kein nachträglicher Gedanke. Jede Komponente wird von Anfang an nach WCAG 2.1 AA entwickelt und dokumentiert ihre Selbstbewertung einschließlich bekannter Einschränkungen. Konformitätsnachweise nach EN 301 549 (Accessibility Conformance Report, Matrix je Komponente) erstellen wir im Rahmen unseres Enterprise Service."
 
 #: .\documentation\templates\documentation\index.html:297
 msgid "Explore by category"
@@ -5073,12 +5073,12 @@ msgid "Dynamically loaded content for element %(i)s"
 msgstr "Dynamisch geladener Inhalt für Element %(i)s"
 
 #: .\documentation\views.py:367
-msgid "A completely accessible Django Component Framework"
-msgstr "Ein vollständig barrierefreies Django-Komponenten-Framework"
+msgid "An accessibility-first Django Component Framework"
+msgstr "Ein auf Barrierefreiheit ausgelegtes Django-Komponenten-Framework"
 
 #: .\documentation\views.py:369
-msgid "60+ production-ready, WCAG 2.1 AA-compliant components. Build accessible Django applications without frontend expertise."
-msgstr "Über 60 produktionsreife, WCAG-2.1-AA-konforme Komponenten. Erstelle barrierefreie Django-Anwendungen ohne Frontend-Expertise."
+msgid "60+ production-ready components, built to WCAG 2.1 AA and WCAG 2.2 ready. Build accessible Django applications without frontend expertise."
+msgstr "Über 60 produktionsreife Komponenten, entwickelt nach WCAG 2.1 AA und auf WCAG 2.2 ausgerichtet. Erstelle barrierefreie Django-Anwendungen ohne Frontend-Expertise."
 
 #: .\documentation\views.py:378
 msgid "Open Source"
@@ -5093,12 +5093,16 @@ msgid "Pre-built, production-ready components from buttons to charts and data ta
 msgstr "Vorgefertigte, produktionsreife Komponenten von Buttons bis zu Diagrammen und Datentabellen."
 
 #: .\documentation\views.py:388
-msgid "WCAG 2.1 AA"
-msgstr "WCAG 2.1 AA"
+msgid "Built to WCAG 2.1 AA"
+msgstr "Entwickelt nach WCAG 2.1 AA"
 
 #: .\documentation\views.py:390
-msgid "Full accessibility compliance built-in. Screen reader support, keyboard navigation, ARIA."
-msgstr "Vollständige Barrierefreiheit ist integriert: Screenreader-Unterstützung, Tastaturnavigation und ARIA."
+msgid "Accessibility built in: semantic HTML, WAI-ARIA patterns, keyboard navigation and screen reader support. Each component documents its self-assessed conformance and known limitations."
+msgstr "Barrierefreiheit ist eingebaut: semantisches HTML, WAI-ARIA-Muster, Tastaturnavigation und Screenreader-Unterstützung. Jede Komponente dokumentiert ihre Selbstbewertung und bekannte Einschränkungen."
+
+#: .\documentation\views.py:418
+msgid "Built to"
+msgstr "Entwickelt nach"
 
 #: .\documentation\views.py:395
 msgid "HTMX-Powered"

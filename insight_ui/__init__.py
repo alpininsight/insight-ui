@@ -1,4 +1,4 @@
-"""Django Insight UI - Ein barrierefreies UI-Framework für Django."""
+"""Django Insight UI - Ein auf Barrierefreiheit ausgelegtes UI-Framework für Django."""
 
 from __future__ import annotations
 

@@ -1,6 +1,12 @@
 # Accessibility
 
-Insight UI components are designed to comply with WCAG 2.1 AA guidelines. This document explains accessibility features and how to maintain them when contributing.
+Insight UI components are built to WCAG 2.1 AA and are WCAG 2.2 ready. This document explains accessibility features and how to maintain them when contributing.
+
+## Conformance Status
+
+- WCAG conformance is defined for complete web pages and processes only (WCAG 2.2, section 5). A component library cannot claim conformance by itself; it can be built to conform and document evidence per component. There is no official W3C certification.
+- Every component carries a self-assessment (`documentation/component_details/a11y_context.py`) based on manual review, including known limitations. It is not a certification by an accredited testing body.
+- Conformance evidence for a page or product built with Insight UI (Accessibility Conformance Report against EN 301 549 and WCAG, BITV-Test preparation, audit support) is produced through the Enterprise Service on a per-release basis and is not part of the open-source package. Contact: kontakt@alpininsight.com
 
 ## Built-in Accessibility Features
 

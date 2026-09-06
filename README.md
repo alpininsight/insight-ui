@@ -8,7 +8,7 @@
 
 **Modern Django Component Framework**
 
-65+ accessible, WCAG 2.1 AA-compliant UI components<br>
+65+ accessibility-first UI components, built to WCAG 2.1 AA<br>
 HTMX-powered · Tailwind-based · Self-documenting
 
 <br>
@@ -33,7 +33,7 @@ HTMX-powered · Tailwind-based · Self-documenting
 
 ## Features
 
-- **Accessible by default** — Navigation, forms, tables, modals, and more, all WCAG 2.1 AA-compliant
+- **Accessible by default** — Navigation, forms, tables, modals, and more, built to WCAG 2.1 AA and WCAG 2.2 ready, with a documented self-assessment and known limitations per component
 - **HTMX integration** — Partial updates without full page reloads
 - **Tailwind design system** — Customizable tokens for fast brand alignment
 - **RTL & i18n ready** — Right-to-left layouts and localization helpers included
@@ -120,7 +120,7 @@ Developer references in `docs/`:
 | [Using Components](docs/components.md) | Template tag API and patterns |
 | [Design System](docs/design-system.md) | Tokens, theming, and extension |
 | [Static Assets](docs/static-assets.md) | Staticfiles, CDN configuration, and asset build commands |
-| [Accessibility](docs/accessibility.md) | WCAG compliance guidelines |
+| [Accessibility](docs/accessibility.md) | Accessibility guidelines and conformance status |
 | [Internationalization](docs/i18n.md) | i18n and RTL support |
 | [Testing](docs/testing.md) | Test structure and commands |
 | [Contributing](docs/contributing.md) | Workflow and guidelines |
