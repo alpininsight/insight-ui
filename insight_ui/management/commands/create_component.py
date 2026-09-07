@@ -57,5 +57,6 @@ class Command(BaseCommand):
             self.stdout.write(
                 self.style.SUCCESS(f"Created {spec.slug} ({spec.level}). This is a scaffold, not finished behavior.")
             )
-            self.stdout.write("Next: npm run build:static-all; uv run pytest; then preview the component.")
+            self.stdout.write("Format the edited source: uv run ruff check --fix; uv run ruff format")
+            self.stdout.write("Then: npm run build:static-all; uv run pytest; preview the component.")
             self.stdout.write(f"Preview: uv run python -m devtools preview {spec.slug} --port 8010")

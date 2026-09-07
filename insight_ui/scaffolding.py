@@ -230,14 +230,18 @@ def _template(spec: ComponentScaffold) -> str:
         body = f'<span {identifier} {marker} class="text-insight-body">{{{{ {variable}.label }}}}</span>\n'
     else:
         element = "section" if spec.level == "organism" else "div"
-        label = f'    <h2 class="font-semibold text-insight-headline">{{{{ {variable}.label }}}}</h2>\n'
+        label_element = "h2" if spec.level == "organism" else "p"
+        label = (
+            f'    <{label_element} class="font-semibold text-insight-headline">'
+            f"{{{{ {variable}.label }}}}</{label_element}>\n"
+        )
         children = "".join(
             f"        {{% if {variable}.{child} %}}{{% {child} config={variable}.{child} %}}{{% endif %}}\n"
             for child in spec.compose
         )
         body = (
             f'<{element} {identifier} {marker} class="space-y-4">\n'
-            + (label if spec.level == "organism" else "")
+            + label
             + '    <div class="flex flex-wrap gap-4 items-end">\n'
             + children
             + f"    </div>\n</{element}>\n"
@@ -329,9 +333,51 @@ def _manifest_source(
     return json.dumps(manifest, indent=2) + "\n"
 
 
+def _config_dependencies(root: Path) -> dict[str, set[str]]:
+    """Read category import edges without loading or modifying generated sources."""
+    prefix = "insight_ui.configs."
+    dependencies = {}
+    for path in (root / "insight_ui/configs").glob("*.py"):
+        imports = set()
+        for node in ast.parse(path.read_text(encoding="utf-8")).body:
+            if isinstance(node, ast.ImportFrom) and node.module:
+                name = prefix + node.module if node.level == 1 else node.module
+                if name.startswith(prefix):
+                    imports.add(name)
+            elif isinstance(node, ast.Import):
+                imports.update(alias.name for alias in node.names if alias.name.startswith(prefix))
+        dependencies[prefix + path.stem] = imports
+    return dependencies
+
+
+def _validate_composition_imports(root: Path, module: str, children: dict[str, type]) -> None:
+    """Reject new Config edges that would make a category import itself."""
+    prefix = "insight_ui.configs."
+    target = prefix + module
+    dependencies = _config_dependencies(root)
+    for cls in children.values():
+        if cls.__module__ == target:
+            continue
+        pending = [(cls.__module__, [target, cls.__module__])]
+        visited = set()
+        while pending:
+            current, chain = pending.pop()
+            if current == target:
+                message = (
+                    "Composition would create a Config import cycle: "
+                    + " -> ".join(name.removeprefix(prefix) for name in chain)
+                    + ". Choose a higher-level category or refactor the Config dependencies. Nothing was written."
+                )
+                raise ValueError(message)
+            if current not in visited:
+                visited.add(current)
+                pending.extend((dependency, [*chain, dependency]) for dependency in dependencies.get(current, ()))
+
+
 def _config_module(root: Path, spec: ComponentScaffold, children: dict[str, type]) -> str:
     """Extend one category module without assuming the name of its field import."""
     module = CATEGORIES[spec.category]
+    _validate_composition_imports(root, module, children)
     source = (root / "insight_ui" / "configs" / f"{module}.py").read_text(encoding="utf-8")
     if any(isinstance(node, ast.ClassDef) and node.name == spec.class_name for node in ast.parse(source).body):
         message = f"Config {spec.class_name} already exists."

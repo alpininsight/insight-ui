@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import re
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -26,6 +27,12 @@ def javascript_changes(root: Path, spec: ComponentScaffold) -> list[tuple[str, s
     module = f"insight-ui-{slug}.js"
     entry_path = "insight_ui/static/insight_ui/js/insight-ui-init.js"
     entry = (root / entry_path).read_text(encoding="utf-8")
+    if class_name in {"WeakMap", "AbortController"} or re.search(rf"\b{re.escape(class_name)}\b", entry):
+        message = (
+            f"JavaScript name {class_name} is already used by the initializer or lifecycle globals. "
+            "Choose a distinct component name. Nothing was written."
+        )
+        raise ValueError(message)
     replacements = {
         "import { Accordion }": f'import {{ {class_name} }} from "./{module}";\n\nimport {{ Accordion }}',
         "Object.assign(window.InsightUI, {": f"Object.assign(window.InsightUI, {{\n\t{class_name},",

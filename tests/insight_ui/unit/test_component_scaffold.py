@@ -117,6 +117,7 @@ assert isinstance(config.input_field, InputFieldConfig)
 html = Template("{% load insight_tags %}{% sample_panel config=config %}").render(Context({"config":config}))
 assert '<button' in html and '<input' in html
 assert 'Input Field' in html and 'Button' in html
+assert 'Sample Panel' in html
 """,
     )
     assert rendered.returncode == 0, rendered.stdout + rendered.stderr
@@ -218,6 +219,38 @@ def test_atomic_level_does_not_change_category() -> None:
     atom.validate()
     organism.validate()
     assert atom.category == organism.category
+
+
+@pytest.mark.parametrize(
+    "name", ["ThemeToggle", "Object", "WeakMap", "AbortController", "TableOfContents", "InsightUI"]
+)
+def test_js_name_collision_never_modifies_sources(source_checkout: Path, name: str) -> None:
+    """A new tag must not shadow initializer bindings or its own lifecycle globals."""
+    before = source_snapshot(source_checkout)
+    result = generate(source_checkout, "--name", name, "--category", "util", "--js")
+    assert result.returncode != 0
+    assert "JavaScript name" in result.stderr
+    assert source_snapshot(source_checkout) == before
+
+
+@pytest.mark.parametrize("compose", ["modal,button", "navbar,button"])
+def test_config_import_cycle_never_modifies_sources(source_checkout: Path, compose: str) -> None:
+    """Both direct and transitive Config cycles are rejected before registration."""
+    before = source_snapshot(source_checkout)
+    result = generate(
+        source_checkout,
+        "--name",
+        "Sample Panel",
+        "--category",
+        "input",
+        "--level",
+        "molecule",
+        "--compose",
+        compose,
+    )
+    assert result.returncode != 0
+    assert "Config import cycle" in result.stderr
+    assert source_snapshot(source_checkout) == before
 
 
 def test_apply_refuses_concurrent_edits(tmp_path: Path) -> None:

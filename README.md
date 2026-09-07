@@ -95,6 +95,8 @@ uv run python -m devtools create_component --name "Example Panel" \
   --category form --level molecule --compose input_field,button --dry-run
 uv run python -m devtools create_component --name "Example Panel" \
   --category form --level molecule --compose input_field,button
+uv run ruff check --fix
+uv run ruff format
 npm run build:static-all
 uv run python -m devtools preview example_panel --port 8010
 ```
