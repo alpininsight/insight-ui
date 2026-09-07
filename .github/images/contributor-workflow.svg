@@ -1,0 +1,70 @@
+<!-- SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG -->
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 1180" width="680" height="1180" role="img" aria-labelledby="workflow-title workflow-desc">
+  <title id="workflow-title">Insight UI contributor workflow</title>
+  <desc id="workflow-desc">Start a feature worktree from develop. Dry-run and generate an atom, molecule, or organism. Complete the Config, tag, template, tests, and example manifest, with optional JavaScript. Format and build local assets, then preview one component on localhost. Run behavior and distribution checks. Open a pull request to develop. After acceptance, documentation maintainers reuse the manifest.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M1 1 L6 4 L1 7" fill="none" stroke="#577083" stroke-width="1.5"/>
+    </marker>
+  </defs>
+  <rect width="680" height="1180" rx="16" fill="#f5f8fb"/>
+  <g font-family="Verdana, sans-serif" fill="#172d40">
+    <text x="36" y="42" font-size="13" font-weight="700" letter-spacing="1.5" fill="#006b60">INSIGHT UI / CONTRIBUTING</text>
+    <text x="36" y="81" font-size="28" font-weight="700">From an idea to a component PR</text>
+    <text x="36" y="110" font-size="15" fill="#42586a">One source checkout. One component preview. No docs server.</text>
+
+    <g stroke="#577083" stroke-width="2" fill="none" marker-end="url(#arrow)">
+      <path d="M66 270 V294"/>
+      <path d="M66 434 V458"/>
+      <path d="M66 598 V622"/>
+      <path d="M66 762 V786"/>
+      <path d="M66 926 V950"/>
+    </g>
+
+    <rect x="28" y="146" width="624" height="124" rx="12" fill="#ffffff" stroke="#c7d5e1"/>
+    <circle cx="66" cy="188" r="21" fill="#0856c0"/>
+    <text x="66" y="194" font-size="17" font-weight="700" text-anchor="middle" fill="#ffffff">1</text>
+    <text x="104" y="188" font-size="21" font-weight="700">Start from develop</text>
+    <text x="104" y="219" font-size="16">Feature branch in a fresh Git worktree</text>
+    <text x="104" y="245" font-size="14" fill="#42586a">Install the source development dependencies.</text>
+
+    <rect x="28" y="310" width="624" height="124" rx="12" fill="#ffffff" stroke="#c7d5e1"/>
+    <circle cx="66" cy="352" r="21" fill="#0856c0"/>
+    <text x="66" y="358" font-size="17" font-weight="700" text-anchor="middle" fill="#ffffff">2</text>
+    <text x="104" y="352" font-size="21" font-weight="700">Choose and generate</text>
+    <text x="104" y="383" font-size="16">Choose: atom / molecule / organism</text>
+    <text x="104" y="409" font-size="14" fill="#42586a">Dry-run first, then create_component.</text>
+
+    <rect x="28" y="474" width="624" height="124" rx="12" fill="#ffffff" stroke="#c7d5e1"/>
+    <circle cx="66" cy="516" r="21" fill="#0856c0"/>
+    <text x="66" y="522" font-size="17" font-weight="700" text-anchor="middle" fill="#ffffff">3</text>
+    <text x="104" y="516" font-size="21" font-weight="700">Complete the scaffold</text>
+    <text x="104" y="547" font-size="16">Config + tag + template + behavior tests</text>
+    <text x="104" y="573" font-size="14" fill="#42586a">Named example manifest; optional JavaScript.</text>
+
+    <rect x="28" y="638" width="624" height="124" rx="12" fill="#ffffff" stroke="#c7d5e1"/>
+    <circle cx="66" cy="680" r="21" fill="#0856c0"/>
+    <text x="66" y="686" font-size="17" font-weight="700" text-anchor="middle" fill="#ffffff">4</text>
+    <text x="104" y="680" font-size="21" font-weight="700">Build and inspect locally</text>
+    <text x="104" y="711" font-size="16">Ruff, static build, then 127.0.0.1</text>
+    <text x="104" y="737" font-size="14" fill="#42586a">Preview one component, its examples, light and dark.</text>
+
+    <rect x="28" y="802" width="624" height="124" rx="12" fill="#ffffff" stroke="#c7d5e1"/>
+    <circle cx="66" cy="844" r="21" fill="#0856c0"/>
+    <text x="66" y="850" font-size="17" font-weight="700" text-anchor="middle" fill="#ffffff">5</text>
+    <text x="104" y="844" font-size="21" font-weight="700">Check behavior and package</text>
+    <text x="104" y="875" font-size="16">Python + JS tests + distribution checks</text>
+    <text x="104" y="901" font-size="14" fill="#42586a">Keyboard, escaping and layout, not just appearance.</text>
+
+    <rect x="28" y="966" width="624" height="124" rx="12" fill="#eaf6f2" stroke="#80b8ab"/>
+    <circle cx="66" cy="1008" r="21" fill="#006b60"/>
+    <text x="66" y="1014" font-size="17" font-weight="700" text-anchor="middle" fill="#ffffff">6</text>
+    <text x="104" y="1008" font-size="21" font-weight="700">Open a PR to develop</text>
+    <text x="104" y="1039" font-size="16">Review source, examples and tests together</text>
+    <text x="104" y="1065" font-size="14" fill="#42586a">Describe the use case and any remaining limits.</text>
+
+    <text x="36" y="1130" font-size="14" font-weight="700" fill="#006b60">MAINTAINER HANDOFF</text>
+    <text x="36" y="1157" font-size="14" fill="#42586a">After acceptance, the separate reference site reuses the manifest.</text>
+  </g>
+</svg>
