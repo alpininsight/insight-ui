@@ -24,11 +24,11 @@
     footer_config   - FooterConfig instance for page footer
 {% endcomment %}
 
-{% if navbar_config %}
-  {% block navbar %}
+{% block navbar %}
+  {% if navbar_config %}
     {% navbar config=navbar_config %}
-  {% endblock %}
-{% endif %}
+  {% endif %}
+{% endblock %}
 
 {% block content %}
   <div class="flex flex-1 justify-center items-center py-8 bg-linear-to-br from-insight-primary/25 via-transparent to-insight-secondary/25 dark:from-insight-primary/10 dark:to-insight-secondary/10">
@@ -118,8 +118,8 @@
   </div>
 {% endblock %}
 
-{% if footer_config %}
-  {% block footer %}
+{% block footer %}
+  {% if footer_config %}
     {% footer config=footer_config %}
-  {% endblock footer %}
-{% endif %}
+  {% endif %}
+{% endblock %}
