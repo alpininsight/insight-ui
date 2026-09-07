@@ -1575,6 +1575,9 @@
   .ps-4 {
     padding-inline-start: calc(var(--spacing) * 4);
   }
+  .ps-6 {
+    padding-inline-start: calc(var(--spacing) * 6);
+  }
   .ps-10 {
     padding-inline-start: calc(var(--spacing) * 10);
   }
