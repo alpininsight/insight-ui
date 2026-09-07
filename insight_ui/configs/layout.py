@@ -496,7 +496,7 @@ class ListConfig:
     Use with ``{% listitem %}`` tags for each list entry.
 
     Attributes:
-        direction: Layout direction (vertical|horizontal).
+        horizontal: Use horizontal layout instead of vertical (default).
         gap: Spacing between items (xs|s|m|l|xl).
         ordered: Use ``<ol>`` instead of ``<ul>``.
         marker: List marker style (none|disc|circle|square|decimal|decimal-leading-zero).
@@ -508,21 +508,21 @@ class ListConfig:
     __example__ = """
         {% load layout_tags %}
 
-        {# Basic vertical list #}
-        {% list direction="vertical" gap="m" %}
+        {# Basic vertical list (default) #}
+        {% list gap="m" %}
             {% listitem %}First item{% endlistitem %}
             {% listitem %}Second item{% endlistitem %}
         {% endlist %}
 
         {# Horizontal list with disc markers #}
-        {% list direction="horizontal" gap="s" marker="disc" %}
+        {% list horizontal gap="s" marker="disc" %}
             {% listitem %}One{% endlistitem %}
             {% listitem %}Two{% endlistitem %}
             {% listitem %}Three{% endlistitem %}
         {% endlist %}
 
         {# Ordered list with decimal markers #}
-        {% list ordered=True marker="decimal" marker_position="outside" %}
+        {% list ordered marker="decimal" marker_position="outside" %}
             {% listitem %}Step one{% endlistitem %}
             {% listitem %}Step two{% endlistitem %}
         {% endlist %}
@@ -534,7 +534,7 @@ class ListConfig:
         {% endlist %}
         """
 
-    direction: str = field(default="vertical", metadata={"doc": _("Layout direction (vertical|horizontal).")})
+    horizontal: bool = field(default=False, metadata={"doc": _("Use horizontal layout instead of vertical (default).")})
     gap: str = field(default="m", metadata={"doc": _("Spacing between items (xs|s|m|l|xl).")})
     ordered: bool = field(default=False, metadata={"doc": _("Use ``<ol>`` instead of ``<ul>``.")})
     marker: str = field(

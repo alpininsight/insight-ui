@@ -369,7 +369,7 @@ def get_list_usage_context() -> dict[str, str]:
         {% endlist %}
 
         {# Horizontal list #}
-        {% list direction="horizontal" gap="s" %}
+        {% list horizontal gap="s" %}
             {% listitem %}{% button label="Option A" %}{% endlistitem %}
             {% listitem %}{% button label="Option B" %}{% endlistitem %}
         {% endlist %}

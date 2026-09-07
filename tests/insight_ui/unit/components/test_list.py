@@ -28,7 +28,7 @@ class TestList(TemplateTagsTestCase):
         """Test horizontal list layout."""
         template_string = """
         {% load layout_tags %}
-        {% list direction="horizontal" %}
+        {% list horizontal %}
             {% listitem %}A{% endlistitem %}
             {% listitem %}B{% endlistitem %}
         {% endlist %}
@@ -107,15 +107,15 @@ class TestList(TemplateTagsTestCase):
         rendered = self.render_template(template_string)
         assert 'class="font-bold text-red-500"' in rendered
 
-    def test_list_invalid_direction(self) -> None:
-        """Test list raises error for invalid direction."""
+    def test_list_invalid_param(self) -> None:
+        """Test list raises error for unknown parameter."""
         template_string = """
         {% load layout_tags %}
-        {% list direction="diagonal" %}
+        {% list unknown_param="value" %}
             {% listitem %}Item{% endlistitem %}
         {% endlist %}
         """
-        with pytest.raises(ValueError, match="direction"):
+        with pytest.raises(ValueError, match="Unknown parameter"):
             self.render_template(template_string)
 
     def test_list_invalid_marker(self) -> None:

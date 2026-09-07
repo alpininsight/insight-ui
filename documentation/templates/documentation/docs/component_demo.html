@@ -766,7 +766,7 @@
 {% elif component.value == "list" %}
     {% vbox gap="l" %}
         <p class="text-sm text-insight-body">{% trans "Vertical list with surfaces:" %}</p>
-        {% list direction="vertical" gap="m" aria_label=_("Example items") %}
+        {% list gap="m" aria_label=_("Example items") %}
             {% listitem %}
                 {% surface padding="m" %}
                     {% hbox gap="m" v_align="center" %}
@@ -794,7 +794,7 @@
         {% endlist %}
 
         <p class="text-sm text-insight-body">{% trans "Horizontal list with buttons:" %}</p>
-        {% list direction="horizontal" gap="s" %}
+        {% list horizontal gap="s" %}
             {% listitem %}{% button label=_("Option A") type="secondary" %}{% endlistitem %}
             {% listitem %}{% button label=_("Option B") type="secondary" %}{% endlistitem %}
             {% listitem %}{% button label=_("Option C") type="secondary" %}{% endlistitem %}

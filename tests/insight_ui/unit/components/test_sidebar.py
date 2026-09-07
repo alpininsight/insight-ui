@@ -50,7 +50,7 @@ class TestSidebarLayoutTag(TemplateTagsTestCase):
         {% endsidebar %}
         """
         rendered = self.render_template(template_string)
-        assert "w-156" in rendered
+        assert "w-96" in rendered
 
     def test_sidebar_drawer_mode(self) -> None:
         """Test non-static (drawer) sidebar."""
