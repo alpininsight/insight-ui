@@ -3,9 +3,10 @@
 /**
  * Navigation state management for Insight UI.
  *
- * Automatically highlights active navigation links based on the current URL path.
+ * Automatically highlights active navigation links based on the current URL.
  * Works with both standard navigation and side navigation components.
- * Updates state on DOMContentLoaded, HTMX content swaps, and browser history navigation.
+ * Updates state on DOMContentLoaded, HTMX content swaps, browser history navigation,
+ * and fragment changes.
  *
  * @module insight-ui-state
  */
@@ -21,17 +22,28 @@
     }
 
     /**
-     * Checks if a link href matches the current page URL.
+     * Returns the ARIA current value for a link, or null when it is inactive.
      *
-     * @param {string} href - The normalized href to check
-     * @param {string} current - The normalized current path
-     * @returns {boolean} True if the link is active
+     * @param {URL} url - The resolved link URL
+     * @param {URL} current - The current browser URL
+     * @returns {"page"|"location"|null} The matching ARIA current value
      */
-    function isLinkActive(href, current) {
-        if (href === "/") {
-            return current === "/";
+    function getCurrentValue(url, current) {
+        if (url.origin !== current.origin) {
+            return null;
         }
-        return current === href || current.startsWith(href + "/");
+
+        const hrefPath = normalize(url.pathname);
+        const currentPath = normalize(current.pathname);
+
+        if (url.hash) {
+            return hrefPath === currentPath && url.hash === current.hash ? "location" : null;
+        }
+
+        if (hrefPath === "/") {
+            return currentPath === "/" ? "page" : null;
+        }
+        return currentPath === hrefPath || currentPath.startsWith(hrefPath + "/") ? "page" : null;
     }
 
     /**
@@ -40,15 +52,14 @@
      * dropdown buttons that contain an active link. CSS handles the visual styling.
      */
     function updateActiveNav() {
-        const current = normalize(window.location.pathname);
+        const current = new URL(window.location.href);
 
         // Process navbar and sidebar navigation links
         document.querySelectorAll("[data-insight-nav] a[href], [data-insight-side-nav] a[href]").forEach(el => {
-            const href = normalize(new URL(el.href, window.location.origin).pathname);
-            const isActive = isLinkActive(href, current);
+            const currentValue = getCurrentValue(new URL(el.href, window.location.origin), current);
 
-            if (isActive) {
-                el.setAttribute("aria-current", "page");
+            if (currentValue) {
+                el.setAttribute("aria-current", currentValue);
             } else {
                 el.removeAttribute("aria-current");
             }
@@ -62,8 +73,7 @@
 
             // Check if any link in this dropdown is active
             const hasActiveChild = Array.from(dropdown.querySelectorAll("a[href]")).some(link => {
-                const href = normalize(new URL(link.href, window.location.origin).pathname);
-                return isLinkActive(href, current);
+                return Boolean(getCurrentValue(new URL(link.href, window.location.origin), current));
             });
 
             if (hasActiveChild) {
@@ -77,4 +87,5 @@
     document.addEventListener("DOMContentLoaded", updateActiveNav);
     document.body.addEventListener("htmx:afterOnLoad", updateActiveNav);
     window.addEventListener("popstate", updateActiveNav);
+    window.addEventListener("hashchange", updateActiveNav);
 })();
