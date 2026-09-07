@@ -69,11 +69,12 @@ Block tags (require closing tag):
     {% modal id="my-modal" title="Dialog Title" width=32 %}...{% endmodal %}
         Modal dialog container with customizable content.
 
-    {% list direction="vertical" gap="m" ordered=False marker="none" %}
+    {% list gap="m" %}
         {% listitem %}First item{% endlistitem %}
         {% listitem %}Second item{% endlistitem %}
     {% endlist %}
         Semantic list container (<ul> or <ol>) with flexible layout.
+        Use `horizontal` flag for horizontal layout: {% list horizontal %}...{% endlist %}
 
 Simple tags:
 
@@ -335,7 +336,7 @@ VALID_COLS: frozenset[int] = frozenset({1, 2, 3, 4, 5, 6})
 SIDEBAR_WIDTH_CLASSES: dict[str, str] = {
     "narrow": "w-56",  # 14rem (224px)
     "normal": "w-72",  # 18rem (288px) - default
-    "wide": "w-156",  # 24rem (384px)
+    "wide": "w-96",  # 24rem (384px)
 }
 
 
@@ -439,6 +440,13 @@ def _make_block_tag(node_class: type[LayoutNode]) -> callable:
         remaining_bits = bits[1:]
 
         kwargs = token_kwargs(remaining_bits, parser) if remaining_bits else {}
+
+        # Handle boolean flags (single words without =value)
+        # remaining_bits is modified by token_kwargs, leftover items are flags
+        for bit in remaining_bits:
+            if "=" not in bit and not bit.startswith(('"', "'")):
+                kwargs[bit] = True
+
         nodelist = parser.parse((f"end{tag_name}",))
         parser.delete_first_token()
 
@@ -1145,7 +1153,7 @@ class ListNode(LayoutNode):
     Use with `{% listitem %}` tags for each list entry.
 
     Parameters:
-        direction: "vertical" (default) or "horizontal" layout.
+        horizontal: Use horizontal layout instead of vertical (default).
         gap: Spacing between items (xs, s, m, l, xl). Default: "m"
         ordered: Use `<ol>` instead of `<ul>`. Default: False
         marker: List marker style (none, disc, circle, square, decimal). Default: "none"
@@ -1155,7 +1163,7 @@ class ListNode(LayoutNode):
 
     Example::
 
-        {% list direction="vertical" gap="m" %}
+        {% list gap="m" %}
             {% for item in items %}
                 {% listitem %}
                     {% surface %}{{ item.name }}{% endsurface %}
@@ -1164,13 +1172,13 @@ class ListNode(LayoutNode):
         {% endlist %}
 
         {# Horizontal list with markers #}
-        {% list direction="horizontal" gap="s" marker="disc" %}
+        {% list horizontal gap="s" marker="disc" %}
             {% listitem %}First{% endlistitem %}
             {% listitem %}Second{% endlistitem %}
         {% endlist %}
 
         {# Ordered list #}
-        {% list ordered=True marker="decimal" marker_position="outside" %}
+        {% list ordered marker="decimal" marker_position="outside" %}
             {% listitem %}Step one{% endlistitem %}
             {% listitem %}Step two{% endlistitem %}
         {% endlist %}
@@ -1178,7 +1186,7 @@ class ListNode(LayoutNode):
     """
 
     valid_params: frozenset[str] = frozenset(
-        {"direction", "gap", "ordered", "marker", "marker_position", "aria_label", "class"}
+        {"horizontal", "gap", "ordered", "marker", "marker_position", "aria_label", "class"}
     )
 
     def render(self, context: Context) -> str:
@@ -1188,9 +1196,8 @@ class ListNode(LayoutNode):
         # Validate no unknown parameters
         _validate_unknown_params(resolved, self.valid_params, self.tag_name)
 
-        # Direction
-        direction = str(resolved.get("direction", "vertical"))
-        _validate(direction, VALID_DIRECTION, "direction", self.tag_name)
+        # Horizontal flag (default: vertical)
+        horizontal = resolved.get("horizontal", False)
 
         # Gap
         gap = str(resolved.get("gap", "m"))
@@ -1207,7 +1214,7 @@ class ListNode(LayoutNode):
         # Build classes
         classes = ["flex"]
 
-        if direction == "horizontal":
+        if horizontal:
             classes.append("flex-row")
             classes.append("flex-wrap")
         else:
