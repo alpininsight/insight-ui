@@ -11,10 +11,12 @@ if TYPE_CHECKING:
 
     from insight_ui.scaffolding import ComponentScaffold
 
+# REUSE-IgnoreStart
 HEADER = (
     "// SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG\n"
     "// SPDX-License-Identifier: AGPL-3.0-only\n"
 )
+# REUSE-IgnoreEnd
 
 
 def javascript_changes(root: Path, spec: ComponentScaffold) -> list[tuple[str, str, bool]]:

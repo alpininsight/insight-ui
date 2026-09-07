@@ -156,6 +156,7 @@ def test_dry_run_and_duplicate_do_not_modify_sources(source_checkout: Path) -> N
     [
         ("../Bad", "atom", ""),
         ("class", "atom", ""),
+        ("Build Config", "atom", ""),
         ("Sample Unit", "atom", "button"),
         ("Sample Unit", "molecule", ""),
         ("Sample Unit", "organism", "button,does_not_exist"),

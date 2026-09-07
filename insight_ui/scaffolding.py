@@ -12,6 +12,7 @@ import ast
 import json
 import keyword
 import re
+import shutil
 import subprocess  # nosec B404
 import tomllib
 from dataclasses import MISSING, dataclass, fields, is_dataclass
@@ -20,10 +21,12 @@ from typing import Any, Literal, get_args, get_origin, get_type_hints
 
 from insight_ui.component_manifest import CATEGORIES, LEVELS, parse_manifest, validate_slug
 
+# REUSE-IgnoreStart
 HEADER = (
     "# SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG\n"
     "# SPDX-License-Identifier: AGPL-3.0-only\n"
 )
+# REUSE-IgnoreEnd
 
 
 @dataclass(frozen=True)
@@ -87,13 +90,22 @@ def validate_package_root(root: Path) -> Path:
     if project.get("project", {}).get("name") != "insight-ui" or not (root / ".git").exists():
         message = "The target must be an insight-ui Git checkout or worktree."
         raise ValueError(message)
-    result = subprocess.run(  # noqa: S603 - local Git inspection, no shell interpolation
-        ["git", "-C", str(root), "rev-parse", "--show-toplevel"],  # noqa: S607
-        check=True,
-        capture_output=True,
-        text=True,
-        timeout=10,
-    )
+    git = shutil.which("git")
+    if git is None:
+        message = "Git must be installed to validate the contributor checkout."
+        raise ValueError(message)
+    # Fixed read-only operation, resolved executable, no shell or interpolated command.
+    try:
+        result = subprocess.run(  # noqa: S603  # nosec B603
+            [str(Path(git).resolve()), "-C", str(root), "rev-parse", "--show-toplevel"],
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=10,
+        )
+    except subprocess.SubprocessError as error:
+        message = "Git could not validate the contributor checkout. Nothing was changed."
+        raise ValueError(message) from error
     if Path(result.stdout.strip()).resolve() != root or Path(__file__).resolve().parents[1] != root:
         message = (
             "The imported insight_ui must be the target checkout. Run from that worktree with "
@@ -215,10 +227,10 @@ def _template(spec: ComponentScaffold) -> str:
     marker = f"data-insight-{spec.slug.replace('_', '-')}"
     identifier = f'{{% if {variable}.tag_id %}}id="{{{{ {variable}.tag_id }}}}"{{% endif %}}'
     if spec.level == "atom":
-        body = f'<span {identifier} {marker} class="text-insight-text-body">{{{{ {variable}.label }}}}</span>\n'
+        body = f'<span {identifier} {marker} class="text-insight-body">{{{{ {variable}.label }}}}</span>\n'
     else:
         element = "section" if spec.level == "organism" else "div"
-        label = f'    <h2 class="font-semibold text-insight-text-headline">{{{{ {variable}.label }}}}</h2>\n'
+        label = f'    <h2 class="font-semibold text-insight-headline">{{{{ {variable}.label }}}}</h2>\n'
         children = "".join(
             f"        {{% if {variable}.{child} %}}{{% {child} config={variable}.{child} %}}{{% endif %}}\n"
             for child in spec.compose
@@ -336,11 +348,11 @@ def plan_component(
     root: Path, spec: ComponentScaffold, example_config: dict[str, Any] | None = None
 ) -> list[FileChange]:
     """Validate and prepare all registration, source, example and test changes."""
-    from insight_ui.templatetags.insight_tags import register  # noqa: PLC0415
+    from insight_ui.templatetags import insight_tags  # noqa: PLC0415
 
     root = validate_package_root(root)
     spec.validate()
-    if spec.slug in register.tags:
+    if spec.slug in insight_tags.register.tags or hasattr(insight_tags, spec.slug):
         message = f"Component {spec.slug} already exists; nothing was changed."
         raise ValueError(message)
     children = {child: _child_config(child) for child in spec.compose}
