@@ -13,7 +13,6 @@ from insight_ui.configs.navigation import (
     UserMenuConfig,
     UserMenuLinkConfig,
 )
-from insight_ui.configs.popup import ModalConfig
 from insight_ui.configs.utils import BrandMarkConfig, LogoConfig
 
 from tests.insight_ui.unit.components.test_template_tags import TemplateTagsTestCase
@@ -39,14 +38,7 @@ class TestNavbar(TemplateTagsTestCase):
             ),
             [
                 NavbarLinkConfig("Startpage", "/", IconConfig("home", "s")),
-                NavbarLinkConfig(
-                    "About",
-                    modal=ModalConfig(
-                        "about-modal",
-                        "About Insight-UI",
-                        "A modern UI library for Django applications to get started quickly.",
-                    ),
-                ),
+                NavbarLinkConfig("About", modal_id="about-modal"),
             ],
             search_bar=SearchBarConfig(placeholder="Search..."),
             show_language_selector=True,
@@ -232,9 +224,9 @@ class TestNavbar(TemplateTagsTestCase):
         assert brand_link.find("img") is not None
         assert brand_link.find("svg") is None
 
-    def test_navbar_link_config_warns_without_request_url_modal_or_dropdown(self) -> None:
-        """A NavbarLinkConfig with no request_url, modal, or dropdown would render invisibly."""
-        with pytest.warns(UserWarning, match="has no request_url, modal, or dropdown"):
+    def test_navbar_link_config_warns_without_request_url_modal_id_or_dropdown(self) -> None:
+        """A NavbarLinkConfig with no request_url, modal_id, or dropdown would render invisibly."""
+        with pytest.warns(UserWarning, match="has no request_url, modal_id, or dropdown"):
             NavbarLinkConfig(text="Home")
 
     def test_navbar_link_config_no_warning_with_request_url(self) -> None:

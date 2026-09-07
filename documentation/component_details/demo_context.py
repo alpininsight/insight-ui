@@ -22,7 +22,6 @@ from insight_ui.configs import (
     CheckboxGroupConfig,
     CheckboxItemConfig,
     CornerRibbonConfig,
-    DataAttrConfig,
     DropdownConfig,
     DropdownItemConfig,
     FilterConfig,
@@ -44,7 +43,6 @@ from insight_ui.configs import (
     LoginScreenConfig,
     LogoConfig,
     MinimalStepperConfig,
-    ModalConfig,
     MultiselectConfig,
     NavbarConfig,
     NavbarLinkConfig,
@@ -261,14 +259,7 @@ def get_navbar_context() -> dict:
             brand=get_navbar_brand_defaults(),
             links=[
                 NavbarLinkConfig(_("Startpage"), "/", IconConfig("home", "s")),
-                NavbarLinkConfig(
-                    _("About"),
-                    modal=ModalConfig(
-                        "about-modal",
-                        _("About Insight-UI"),
-                        _("A modern UI library for Django applications to get started quickly."),
-                    ),
-                ),
+                NavbarLinkConfig(_("About"), modal_id="about-modal"),
                 NavbarLinkConfig(_("Test"), "/", need_auth=True),
                 NavbarLinkConfig(_("Test2"), "/", need_auth=True, staff_only=True),
             ],
@@ -653,22 +644,8 @@ def get_multiselect_context() -> dict:
 @register_demo_context(Component.MODAL)
 def get_modal_context() -> dict:
     """Serve data for the modal detailpage."""
-    return {
-        "delete_project_modal_config": ModalConfig(
-            "delete-project-modal",
-            _("Delete Project"),
-            _(
-                "Are you sure you want to delete 'My Awesome Project'? All files, settings, and "
-                "collaborator access will be permanently removed. This action cannot be undone."
-            ),
-            [
-                ButtonConfig(label=_("Delete Project"), type="danger", on_click="alert('Project deleted')"),
-                ButtonConfig(
-                    label=_("Cancel"), type="secondary", data_attrs=[DataAttrConfig("insight-dismiss", "modal")]
-                ),
-            ],
-        )
-    }
+    # Modal is now a block tag - no config needed, content is defined in template
+    return {}
 
 
 # =============================================================

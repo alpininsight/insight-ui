@@ -1,0 +1,38 @@
+{% load static i18n insight_tags %}
+
+<div
+    id="{{ modal_id }}"
+    role="dialog"
+    aria-modal="true"
+    {% if title %}aria-labelledby="{{ modal_id }}-title"{% endif %}
+    tabindex="-1"
+    class="hidden fixed inset-0 z-50 overflow-y-auto {{ wrapper_class }}"
+>
+    {# Modal Backdrop #}
+    <div class="fixed inset-0 bg-black/50 transition-opacity dark:bg-gray-800/50 {# tw-token-ok: only needed for backdrop #}" data-insight-dismiss="modal"></div>
+
+    {# Wrapper to centralize the modal on screen #}
+    <div class="flex justify-center items-center p-4 min-h-screen">
+        {# Modal #}
+        <div class="relative mx-auto w-full bg-insight-base rounded-insight-overlay shadow-insight-overlay transition-all transform" style="max-width: {{ width }}rem;">
+            {# Modal Header (only if title is provided or show_close is true) #}
+            {% if title or show_close %}
+                <div class="flex justify-between items-start p-6 h-fit {% if title %}border-b border-insight-divider{% endif %}">
+                    {% if title %}
+                        <h2 id="{{ modal_id }}-title" class="pb-0">{{ title }}</h2>
+                    {% else %}
+                        <div></div>
+                    {% endif %}
+                    {% if show_close %}
+                        {% button label=_("Close") type="secondary" subtle=True icon_name="x-mark" icon_size="xs" icon_only=True data_insight_dismiss="modal" %}
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            {# Modal Body - User Content #}
+            <div class="p-6">
+                {{ content }}
+            </div>
+        </div>
+    </div>
+</div>

@@ -64,6 +64,9 @@ Block tags (require closing tag):
     {% tabs config=tabs_config %}{% endtabs %}
         Tabbed interface using a TabsConfig object (HTMX mode).
 
+    {% modal id="my-modal" title="Dialog Title" width=32 %}...{% endmodal %}
+        Modal dialog container with customizable content.
+
 Simple tags:
 
     {% spacer size="m" %}
@@ -1037,6 +1040,78 @@ class SidebarNode(LayoutNode):
         return tpl.render(template_context)
 
 
+class ModalNode(LayoutNode):
+    """
+    Modal dialog container with customizable content.
+
+    A flexible modal that allows arbitrary content inside. The modal structure
+    (backdrop, centering, close button) is handled automatically while the user
+    provides the actual content.
+
+    Parameters:
+        id: Required. Unique ID for JavaScript targeting (data-insight-modal).
+        title: Optional heading displayed in the modal header.
+        width: Maximum width in rem units. Default: 32
+        show_close: Show the close button in the header. Default: True
+        class: Additional CSS classes to append.
+
+    Example::
+
+        {# Basic modal with title #}
+        {% modal id="confirm-delete" title="Confirm Deletion" %}
+            <p>Are you sure you want to delete this item?</p>
+            {% hbox gap="s" h_align="end" %}
+                {% button label="Cancel" type="secondary" data_insight_dismiss="modal" %}
+                {% button label="Delete" type="danger" on_click="deleteItem()" %}
+            {% endhbox %}
+        {% endmodal %}
+
+        {# Modal without title (custom header) #}
+        {% modal id="custom-modal" width=48 %}
+            <div class="text-center">
+                <h2>Custom Header</h2>
+                <p>Full control over content</p>
+            </div>
+        {% endmodal %}
+
+        {# Trigger button elsewhere in page #}
+        {% button label="Open Modal" data_insight_modal="confirm-delete" %}
+
+    Note:
+        The modal is initially hidden and must be triggered using a button with
+        ``data-insight-modal="modal-id"`` attribute. Close buttons inside the
+        modal should have ``data-insight-dismiss="modal"`` attribute.
+
+    """
+
+    valid_params: frozenset[str] = frozenset({"id", "title", "width", "show_close", "class"})
+
+    def render(self, context: Context) -> str:
+        """Render the modal container."""
+        resolved = self.resolve_kwargs(context)
+
+        # Validate no unknown parameters
+        _validate_unknown_params(resolved, self.valid_params, self.tag_name)
+
+        # ID is required
+        modal_id = resolved.get("id")
+        if not modal_id:
+            msg = "{% modal %} requires an 'id' parameter"
+            raise ValueError(msg)
+
+        template_context = {
+            "modal_id": str(modal_id),
+            "title": str(resolved.get("title", "")),
+            "width": int(resolved.get("width", 32)),
+            "show_close": resolved.get("show_close", True),
+            "wrapper_class": str(resolved.get("class", "")),
+            "content": self.nodelist.render(context),
+        }
+
+        tpl = get_template("insight_ui/components/layout/modal.html")
+        return tpl.render(template_context)
+
+
 class TabNode(Node):
     """
     Single tab within a tabs container.
@@ -1266,6 +1341,7 @@ register.tag("grid", _make_block_tag(GridNode))
 register.tag("surface", _make_block_tag(SurfaceNode))
 register.tag("collapsible", _make_block_tag(CollapsibleNode))
 register.tag("sidebar", _make_block_tag(SidebarNode))
+register.tag("modal", _make_block_tag(ModalNode))
 register.tag("tabs", do_tabs)
 
 

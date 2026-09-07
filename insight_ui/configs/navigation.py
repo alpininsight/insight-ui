@@ -8,7 +8,6 @@ from django.utils.translation import gettext_lazy as _
 from insight_ui.configs.base import HtmxConfig, IconConfig
 from insight_ui.configs.filter import SearchBarConfig
 from insight_ui.configs.input import DropdownConfig
-from insight_ui.configs.popup import ModalConfig
 from insight_ui.configs.types import Size, StepStatus, validate_size, validate_step_status
 from insight_ui.configs.utils import BadgeConfig, BrandMarkConfig, LegalNoticeConfig, LogoConfig
 
@@ -52,7 +51,7 @@ class NavbarLinkConfig:
         htmx: Optional HTMX configuration for dynamic content loading.
         need_auth: The link is only displayed for logged-in users.
         staff_only: The link is only displayed for administrators.
-        modal: Configuration of a modal dialog.
+        modal_id: ID of a modal dialog to open. The modal must be defined elsewhere in the template.
         dropdown: Configuration of a dropdown menu.
 
     """
@@ -64,6 +63,7 @@ class NavbarLinkConfig:
             request_url=reverse("docs"),
             htmx=HtmxConfig(target="#content"),
         )
+        NavbarLinkConfig(text="About", modal_id="about-modal")
         """
 
     text: str = field(metadata={"doc": _("Label of the link.")})
@@ -77,14 +77,17 @@ class NavbarLinkConfig:
     )
     need_auth: bool = field(default=False, metadata={"doc": _("The link is only displayed for logged-in users.")})
     staff_only: bool = field(default=False, metadata={"doc": _("The link is only displayed for administrators.")})
-    modal: ModalConfig | None = field(default=None, metadata={"doc": _("Configuration of a modal dialog.")})
+    modal_id: str = field(
+        default="",
+        metadata={"doc": _("ID of a modal dialog to open. The modal must be defined elsewhere in the template.")},
+    )
     dropdown: DropdownConfig | None = field(default=None, metadata={"doc": _("Configuration of a dropdown menu.")})
 
     def __post_init__(self) -> None:
         """Validate configuration and warn about potential issues."""
-        if not self.request_url and not self.modal and not self.dropdown:
+        if not self.request_url and not self.modal_id and not self.dropdown:
             warnings.warn(
-                f"NavbarLinkConfig '{self.text}' has no request_url, modal, or dropdown set. "
+                f"NavbarLinkConfig '{self.text}' has no request_url, modal_id, or dropdown set. "
                 "The link will not be rendered.",
                 UserWarning,
                 stacklevel=2,

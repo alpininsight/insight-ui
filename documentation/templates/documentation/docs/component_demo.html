@@ -773,6 +773,12 @@
             nav.classList.add("absolute");
         </script>
     </div>
+    {# Modal referenced by navbar link with modal_id="about-modal" #}
+    {% modal id="about-modal" title=_("About Insight-UI") %}
+        <p class="text-insight-body">
+            {% trans "A modern UI library for Django applications to get started quickly." %}
+        </p>
+    {% endmodal %}
 {% elif component.value == "sidebar" %}
     <div class="flex relative grow h-96 bg-insight-base">
         <div class="flex">
@@ -961,13 +967,25 @@
     </div>
 {% elif component.value == "modal" %}
     {% vbox gap="m" max_width="xs" class="h-80" %}
-        <!-- Info Modal -->
+        {# Info Modal #}
         {% button label=_("About Insight UI") type="primary" data_insight_modal="about-modal" %}
-        {% modal tag_id="about-modal" title=_("About Insight UI") description=_("Insight UI is a Django component framework with 65+ reusable, accessible UI components. Built with Tailwind CSS and HTMX for modern, interactive web applications.") %}
+        {% modal id="about-modal" title=_("About Insight UI") %}
+            <p class="text-insight-body">
+                {% trans "Insight UI is a Django component framework with 65+ reusable, accessible UI components. Built with Tailwind CSS and HTMX for modern, interactive web applications." %}
+            </p>
+        {% endmodal %}
 
-        <!-- Confirmation Modal with Actions -->
-        {% button label=_("Delete Project") type="danger" data_insight_modal=delete_project_modal_config.tag_id %}
-        {% modal config=delete_project_modal_config %}
+        {# Confirmation Modal with Actions #}
+        {% button label=_("Delete Project") type="danger" data_insight_modal="delete-project-modal" %}
+        {% modal id="delete-project-modal" title=_("Delete Project") %}
+            <p class="text-insight-body">
+                {% trans "Are you sure you want to delete 'My Awesome Project'? All files, settings, and collaborator access will be permanently removed. This action cannot be undone." %}
+            </p>
+            <div class="flex gap-2 justify-end pt-6 mt-6 border-t border-insight-divider">
+                {% button label=_("Cancel") type="secondary" data_insight_dismiss="modal" %}
+                {% button label=_("Delete Project") type="danger" on_click="alert('Project deleted')" %}
+            </div>
+        {% endmodal %}
     {% endvbox %}
 {% elif component.value == "popover" %}
     <div class="flex gap-12 justify-center items-end h-64">

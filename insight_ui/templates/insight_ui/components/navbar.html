@@ -95,14 +95,13 @@
                         </div>
                       </div>
                     </div>
-                  {% elif link.modal %}
+                  {% elif link.modal_id %}
                     <button
                       class="insight-nav-link px-4 py-2 text-sm"
-                      data-insight-modal="{{ link.modal.tag_id }}"
+                      data-insight-modal="{{ link.modal_id }}"
                     >
                       {{ link.text }}
                     </button>
-                    {% modal config=link.modal %}
                   {% endif %}
                 </li>
               {% endif %}

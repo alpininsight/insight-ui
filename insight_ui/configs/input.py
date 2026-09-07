@@ -32,6 +32,7 @@ class ButtonConfig:
         label: The text on the button or for Screenreader if the button shows only an icon.
         tag_id: Unique ID for JavaScript/CSS targeting.
         request_url: URL for navigation (renders as <a>). Do not use together with htmx_config; use htmx_config.request_url instead for HTMX requests.
+        external: **True** to open link in new tab (adds target='_blank' and rel='noopener'). Only applies when request_url is set.
         on_click: The name of the JavaScript method to be called when clicking on the button.
         icon: Icon config for an optional icon.
         icon_end: **True** if the icon should be shown after the label, otherwise the icon is shown in front of the label.
@@ -49,7 +50,6 @@ class ButtonConfig:
         button_type: HTML type attribute: 'button', 'submit', or 'reset'.
         extra_classes: Additional CSS classes to append to the button element.
         data_attrs: List of custom data attributes to add to the button element.
-        external: **True** to open link in new tab (adds target='_blank' and rel='noopener'). Only applies when request_url is set.
         aria_attrs: List of ARIA attributes to add to the button element.
         hx_attrs: List of HTMX attributes to add to the button element.
 
@@ -84,6 +84,12 @@ class ButtonConfig:
         default="",
         metadata={
             "doc": "URL for navigation (renders as <a>). Do not use together with htmx_config; use htmx_config.request_url instead for HTMX requests."
+        },
+    )
+    external: bool = field(
+        default=False,
+        metadata={
+            "doc": "**True** to open link in new tab (adds target='_blank' and rel='noopener'). Only applies when request_url is set."
         },
     )
     on_click: str = field(
@@ -130,12 +136,6 @@ class ButtonConfig:
     )
     data_attrs: list[DataAttrConfig] = field(
         default_factory=list, metadata={"doc": "List of custom data attributes to add to the button element."}
-    )
-    external: bool = field(
-        default=False,
-        metadata={
-            "doc": "**True** to open link in new tab (adds target='_blank' and rel='noopener'). Only applies when request_url is set."
-        },
     )
     aria_attrs: list[DataAttrConfig] = field(
         default_factory=list, metadata={"doc": "List of ARIA attributes to add to the button element."}

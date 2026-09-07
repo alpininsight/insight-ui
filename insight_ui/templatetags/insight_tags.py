@@ -73,7 +73,6 @@ from insight_ui.configs import (
     LiveContentConfig,
     LogoConfig,
     MinimalStepperConfig,
-    ModalConfig,
     MultiselectConfig,
     NavbarConfig,
     PageHeaderConfig,
@@ -600,6 +599,7 @@ def button(
     tag_id: str | _Unset = UNSET,
     label: str | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
+    external: bool | _Unset = UNSET,
     on_click: str | _Unset = UNSET,
     icon_name: str | _Unset = UNSET,
     icon_size: str | _Unset = UNSET,
@@ -678,6 +678,7 @@ def button(
         tag_id=tag_id,
         label=label,
         request_url=request_url,
+        external=external,
         on_click=on_click,
         icon=icon,
         icon_end=icon_end,
@@ -916,22 +917,6 @@ def alert(
     """Render a closable notification."""
     config = build_config(AlertConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"alert_config": config}
-
-
-@register.inclusion_tag("insight_ui/components/modal.html")
-def modal(
-    config: ModalConfig | None = None,
-    *,
-    tag_id: str | _Unset = UNSET,
-    title: str | _Unset = UNSET,
-    description: str | list[str] | _Unset = UNSET,
-    actions: Sequence[ButtonConfig] | _Unset | None = UNSET,
-    width: int | _Unset = UNSET,
-) -> dict[str, Any]:
-    """Render an accessible modal dialog."""
-    config = build_config(ModalConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    config.description = ensure_list(config.description)
-    return {"modal_config": config}
 
 
 # =============================================================

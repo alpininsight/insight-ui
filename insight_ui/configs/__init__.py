@@ -107,7 +107,7 @@ from insight_ui.configs.navigation import (
     UserMenuConfig,
     UserMenuLinkConfig,
 )
-from insight_ui.configs.popup import AlertConfig, ModalConfig
+from insight_ui.configs.popup import AlertConfig
 from insight_ui.configs.types import (
     ALERT_TYPE_VALUES,
     BADGE_TYPE_VALUES,
@@ -268,7 +268,6 @@ __all__ = [
     "LoginScreenConfig",
     "LogoConfig",
     "MinimalStepperConfig",
-    "ModalConfig",
     "MultiselectConfig",
     "NavbarBrandConfig",
     "NavbarConfig",

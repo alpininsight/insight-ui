@@ -4,7 +4,6 @@ from dataclasses import dataclass, field
 
 from django.utils.translation import gettext_lazy as _
 
-from insight_ui.configs.input import ButtonConfig
 from insight_ui.configs.types import AlertType, validate_alert_type
 
 
@@ -42,51 +41,3 @@ class AlertConfig:
     def __post_init__(self) -> None:
         """Validate type after initialization."""
         validate_alert_type(self.type, "type")
-
-
-@dataclass
-class ModalConfig:
-    """Configuration for the modal component.
-
-    Renders an accessible modal dialog.
-
-    Attributes:
-        tag_id: Unique tag ID for identifying the element in JavaScript. Required to open/close the modal.
-        title: Heading of the modal dialog.
-        description: A text in the center of the modal dialog. This can be exchanged by extending the template.
-        actions: List of buttons displayed at the bottom of the dialog.
-        width: The maximum width of the dialog box relative to the screen in 'rem'.
-
-    """
-
-    __example__ = """
-        ModalConfig(
-            tag_id="delete-confirm",
-            title="Confirm Deletion",
-            description="Are you sure you want to delete this item? This action cannot be undone.",
-            actions=[
-                ButtonConfig(label="Delete", type="danger", on_click="deleteItem()"),
-                ButtonConfig(label="Cancel", type="secondary", data_attrs=[DataAttrConfig("insight-dismiss", "modal")]),
-            ],
-            width=24,
-        )
-        """
-
-    tag_id: str = field(
-        metadata={
-            "doc": _("Unique tag ID for identifying the element in JavaScript. Required to open/close the modal.")
-        }
-    )
-    title: str = field(metadata={"doc": _("Heading of the modal dialog.")})
-    description: str | list[str] = field(
-        default="",
-        metadata={
-            "doc": _("A text in the center of the modal dialog. This can be exchanged by extending the template.")
-        },
-    )
-    actions: list[ButtonConfig] = field(
-        default_factory=list, metadata={"doc": _("List of buttons displayed at the bottom of the dialog.")}
-    )
-    width: int = field(
-        default=32, metadata={"doc": _("The maximum width of the dialog box relative to the screen in 'rem'.")}
-    )

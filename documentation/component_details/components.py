@@ -39,7 +39,6 @@ from insight_ui.configs import (
     LiveContentConfig,
     LogoConfig,
     MinimalStepperConfig,
-    ModalConfig,
     MultiselectConfig,
     NavbarConfig,
     PageConfig,
@@ -133,7 +132,7 @@ class Component(Enum):
     CHAT = ("chat", ComponentCategory.INPUT, ChatConfig)
     # Popup Components
     ALERT = ("alert", ComponentCategory.POPUP, AlertConfig)
-    MODAL = ("modal", ComponentCategory.POPUP, ModalConfig)
+    MODAL = ("modal", ComponentCategory.POPUP)
     POPOVER = ("popover", ComponentCategory.POPUP)
     TOOLTIP = ("tooltip", ComponentCategory.POPUP)
     # Utility Components
@@ -281,6 +280,7 @@ _IS_BLOCK_TAG: set[Component] = {
     Component.SECTION,
     Component.SURFACE,
     Component.SIDEBAR,
+    Component.MODAL,
     Component.TABS,
 }
 
