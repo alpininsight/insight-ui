@@ -437,3 +437,132 @@ class HeroConfig:
     cta_secondary: ButtonConfig | None = field(default=None, metadata={"doc": _("Secondary 'Call-to-Action' button.")})
     background_image_url: str = field(default="", metadata={"doc": _("URL of the background image.")})
     badge_config: BadgeConfig | None = field(default=None, metadata={"doc": _("A badge with icon and text.")})
+
+
+@dataclass
+class ModalConfig:
+    """
+    Configuration for the modal block tag.
+
+    Modal dialog container with customizable content. The modal structure
+    (backdrop, centering, close button) is handled automatically while the user
+    provides the actual content.
+
+    Attributes:
+        id: Unique ID for JavaScript targeting (data-insight-modal).
+        title: Optional heading displayed in the modal header.
+        width: Maximum width in rem units.
+        show_close: Show the close button in the header.
+
+    """
+
+    __example__ = """
+        {% load layout_tags %}
+
+        {# Basic modal with title #}
+        {% modal id="confirm-delete" title="Confirm Deletion" %}
+            <p>Are you sure you want to delete this item?</p>
+            {% hbox gap="s" h_align="end" %}
+                {% button label="Cancel" type="secondary" data_insight_dismiss="modal" %}
+                {% button label="Delete" type="danger" %}
+            {% endhbox %}
+        {% endmodal %}
+
+        {# Modal without title (custom header) #}
+        {% modal id="custom-modal" width=48 %}
+            <div class="text-center">
+                <h2>Custom Header</h2>
+                <p>Full control over content</p>
+            </div>
+        {% endmodal %}
+
+        {# Trigger modal from a button #}
+        {% button label="Open Modal" data_insight_modal="confirm-delete" %}
+        """
+
+    id: str = field(metadata={"doc": _("Unique ID for JavaScript targeting (data-insight-modal).")})
+    title: str = field(default="", metadata={"doc": _("Optional heading displayed in the modal header.")})
+    width: int = field(default=32, metadata={"doc": _("Maximum width in rem units.")})
+    show_close: bool = field(default=True, metadata={"doc": _("Show the close button in the header.")})
+
+
+@dataclass
+class ListConfig:
+    """
+    Configuration for the list block tag.
+
+    Semantic list container with flexible layout options.
+    Creates accessible ``<ul>`` or ``<ol>`` elements with consistent styling.
+    Use with ``{% listitem %}`` tags for each list entry.
+
+    Attributes:
+        direction: Layout direction (vertical|horizontal).
+        gap: Spacing between items (xs|s|m|l|xl).
+        ordered: Use ``<ol>`` instead of ``<ul>``.
+        marker: List marker style (none|disc|circle|square|decimal|decimal-leading-zero).
+        marker_position: Marker position (inside|outside).
+        aria_label: Accessible label for the list.
+
+    """
+
+    __example__ = """
+        {% load layout_tags %}
+
+        {# Basic vertical list #}
+        {% list direction="vertical" gap="m" %}
+            {% listitem %}First item{% endlistitem %}
+            {% listitem %}Second item{% endlistitem %}
+        {% endlist %}
+
+        {# Horizontal list with disc markers #}
+        {% list direction="horizontal" gap="s" marker="disc" %}
+            {% listitem %}One{% endlistitem %}
+            {% listitem %}Two{% endlistitem %}
+            {% listitem %}Three{% endlistitem %}
+        {% endlist %}
+
+        {# Ordered list with decimal markers #}
+        {% list ordered=True marker="decimal" marker_position="outside" %}
+            {% listitem %}Step one{% endlistitem %}
+            {% listitem %}Step two{% endlistitem %}
+        {% endlist %}
+
+        {# Accessible list with aria-label #}
+        {% list aria_label="Navigation options" %}
+            {% listitem %}{% surface %}Dashboard{% endsurface %}{% endlistitem %}
+            {% listitem %}{% surface %}Settings{% endsurface %}{% endlistitem %}
+        {% endlist %}
+        """
+
+    direction: str = field(default="vertical", metadata={"doc": _("Layout direction (vertical|horizontal).")})
+    gap: str = field(default="m", metadata={"doc": _("Spacing between items (xs|s|m|l|xl).")})
+    ordered: bool = field(default=False, metadata={"doc": _("Use ``<ol>`` instead of ``<ul>``.")})
+    marker: str = field(
+        default="none", metadata={"doc": _("List marker style (none|disc|circle|square|decimal|decimal-leading-zero).")}
+    )
+    marker_position: str = field(default="inside", metadata={"doc": _("Marker position (inside|outside).")})
+    aria_label: str = field(default="", metadata={"doc": _("Accessible label for the list.")})
+
+
+@dataclass
+class ListItemConfig:
+    """
+    Configuration for the listitem block tag.
+
+    Single item within a list container. Wraps content in a semantic ``<li>`` element.
+
+    Attributes:
+        css_class: Additional CSS classes for the list item.
+
+    """
+
+    __example__ = """
+        {% load layout_tags %}
+
+        {% list %}
+            {% listitem %}First item{% endlistitem %}
+            {% listitem class="font-bold" %}Highlighted item{% endlistitem %}
+        {% endlist %}
+        """
+
+    css_class: str = field(default="", metadata={"doc": _("Additional CSS classes for the list item.")})

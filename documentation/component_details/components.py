@@ -36,9 +36,11 @@ from insight_ui.configs import (
     InfoboxConfig,
     InputFieldConfig,
     LegalNoticeConfig,
+    ListConfig,
     LiveContentConfig,
     LogoConfig,
     MinimalStepperConfig,
+    ModalConfig,
     MultiselectConfig,
     NavbarConfig,
     PageConfig,
@@ -106,7 +108,7 @@ class Component(Enum):
     DIVIDER = ("divider", ComponentCategory.LAYOUT, DividerConfig)
     SECTION = ("section", ComponentCategory.LAYOUT, SectionConfig)
     SURFACE = ("surface", ComponentCategory.LAYOUT, SurfaceConfig)
-    LIST = ("list", ComponentCategory.LAYOUT)
+    LIST = ("list", ComponentCategory.LAYOUT, ListConfig)
     # Navigation Components
     NAVBAR = ("navbar", ComponentCategory.NAVIGATION, NavbarConfig)
     SIDEBAR = ("sidebar", ComponentCategory.NAVIGATION, SidebarConfig)
@@ -133,7 +135,7 @@ class Component(Enum):
     CHAT = ("chat", ComponentCategory.INPUT, ChatConfig)
     # Popup Components
     ALERT = ("alert", ComponentCategory.POPUP, AlertConfig)
-    MODAL = ("modal", ComponentCategory.POPUP)
+    MODAL = ("modal", ComponentCategory.POPUP, ModalConfig)
     POPOVER = ("popover", ComponentCategory.POPUP)
     TOOLTIP = ("tooltip", ComponentCategory.POPUP)
     # Utility Components
