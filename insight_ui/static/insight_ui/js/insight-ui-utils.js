@@ -28,6 +28,19 @@ window.InsightUI.lifecycle = {
 
         htmx.on('htmx:beforeCleanupElement', (evt) => {
             const el = evt.detail.elt;
+
+            // Close open modal if it's being removed (before cleanup)
+            // Import is async, so we check window.InsightUI.Modal directly
+            const Modal = window.InsightUI?.Modal;
+            if (Modal?.currentOpen) {
+                const modal = Modal.currentOpen.getModal();
+                if (modal && (modal === el || el.contains(modal))) {
+                    debugLog("HTMX removing open modal, closing first");
+                    Modal.currentOpen.close();
+                }
+            }
+
+            // Destroy component instance if present
             if (el.__insightInstance?.destroy) {
                 el.__insightInstance.destroy();
             }

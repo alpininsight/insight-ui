@@ -32,13 +32,12 @@ export class Modal {
 
         this.trigger = trigger;
         this.targetId = trigger.getAttribute('data-insight-modal');
-        this.modal = document.getElementById(this.targetId);
 
-        if (!this.modal) return;
+        // Don't store modal reference - look it up dynamically to support HTMX swaps
+        if (!document.getElementById(this.targetId)) return;
 
         // Store bound handlers for cleanup
         this.boundButtonClick = null;
-        this.boundCloseButtons = [];
         this.boundModalClick = null;
         this.boundKeyDown = null;
         this.releaseFocusTrap = null;
@@ -49,11 +48,21 @@ export class Modal {
         this.trigger.__insightInstance = this;
         Modal.instances.set(trigger, this);
 
-        debugLog("New modal created: ", this.trigger, this.modal);
+        debugLog("New modal created: ", this.trigger, this.targetId);
     }
 
     /**
-     * Binds event listeners to the trigger, close buttons, and modal backdrop.
+     * Gets the current modal element (looked up dynamically to support HTMX swaps).
+     *
+     * @returns {HTMLElement|null} The modal element or null if not found
+     */
+    getModal() {
+        return document.getElementById(this.targetId);
+    }
+
+    /**
+     * Binds event listeners to the trigger button.
+     * Modal and close button listeners are bound dynamically in open().
      */
     bindEvents() {
         this.boundButtonClick = (e) => {
@@ -61,8 +70,29 @@ export class Modal {
             this.open();
         };
         this.trigger.addEventListener('click', this.boundButtonClick);
+    }
 
-        this.modal.querySelectorAll('[data-insight-dismiss="modal"]').forEach(closeBtn => {
+    /**
+     * Opens the modal dialog.
+     * Closes any other open modal, blocks scroll, and traps focus.
+     */
+    open() {
+        const modal = this.getModal();
+        if (!modal) {
+            debugLog("Modal not found: ", this.targetId);
+            return;
+        }
+
+        if (Modal.currentOpen && Modal.currentOpen !== this) {
+            Modal.currentOpen.close();
+        }
+
+        // Store trigger for focus return
+        this.triggerElement = document.activeElement;
+
+        // Bind close button handlers (dynamic - supports HTMX swaps)
+        this.boundCloseButtons = [];
+        modal.querySelectorAll('[data-insight-dismiss="modal"]').forEach(closeBtn => {
             const handler = (e) => {
                 e.preventDefault();
                 this.close();
@@ -71,29 +101,17 @@ export class Modal {
             closeBtn.addEventListener('click', handler);
         });
 
+        // Bind backdrop click handler
         this.boundModalClick = (e) => {
-            if (e.target === this.modal) this.close();
+            if (e.target === modal) this.close();
         };
-        this.modal.addEventListener('click', this.boundModalClick);
-    }
+        modal.addEventListener('click', this.boundModalClick);
 
-    /**
-     * Opens the modal dialog.
-     * Closes any other open modal, blocks scroll, and traps focus.
-     */
-    open() {
-        if (Modal.currentOpen && Modal.currentOpen !== this) {
-            Modal.currentOpen.close();
-        }
-
-        // Store trigger for focus return
-        this.triggerElement = document.activeElement;
-
-        this.modal.style.display = 'block';
+        modal.style.display = 'block';
         Modal.currentOpen = this;
 
         InsightUI.utils.blockScroll();
-        this.releaseFocusTrap = InsightUI.utils.trapFocus(this.modal);
+        this.releaseFocusTrap = InsightUI.utils.trapFocus(modal);
 
         // Add Escape key handler
         this.boundKeyDown = (e) => {
@@ -109,13 +127,32 @@ export class Modal {
      * Closes the modal dialog and restores scroll.
      */
     close() {
+        const modal = this.getModal();
+
         // Remove Escape key handler
         if (this.boundKeyDown) {
             document.removeEventListener('keydown', this.boundKeyDown);
             this.boundKeyDown = null;
         }
 
-        this.modal.style.display = 'none';
+        // Remove close button handlers
+        if (this.boundCloseButtons) {
+            this.boundCloseButtons.forEach(({ element, handler }) => {
+                element.removeEventListener('click', handler);
+            });
+            this.boundCloseButtons = [];
+        }
+
+        // Remove modal backdrop click handler
+        if (modal && this.boundModalClick) {
+            modal.removeEventListener('click', this.boundModalClick);
+            this.boundModalClick = null;
+        }
+
+        if (modal) {
+            modal.style.display = 'none';
+        }
+
         if (Modal.currentOpen === this) {
             Modal.currentOpen = null;
         }
@@ -140,9 +177,9 @@ export class Modal {
      * Call this before removing the element from DOM.
      */
     destroy() {
-        debugLog("Destroy modal: ", this.trigger, this.modal);
+        debugLog("Destroy modal: ", this.trigger, this.targetId);
 
-        // Close modal if open
+        // Close modal if open (this also cleans up close button and backdrop handlers)
         if (Modal.currentOpen === this) {
             this.close();
         }
@@ -150,17 +187,6 @@ export class Modal {
         // Remove button click handler
         if (this.boundButtonClick) {
             this.trigger.removeEventListener('click', this.boundButtonClick);
-        }
-
-        // Remove close button handlers
-        this.boundCloseButtons.forEach(({ element, handler }) => {
-            element.removeEventListener('click', handler);
-        });
-        this.boundCloseButtons = [];
-
-        // Remove modal backdrop click handler
-        if (this.boundModalClick) {
-            this.modal.removeEventListener('click', this.boundModalClick);
         }
 
         // Remove keydown handler
@@ -172,7 +198,7 @@ export class Modal {
         delete this.trigger.__insightInstance;
 
         this.trigger = null;
-        this.modal = null;
+        this.targetId = null;
     }
 
     /**
