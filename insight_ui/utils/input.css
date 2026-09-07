@@ -716,12 +716,14 @@
     *   - Outline: Transparent bg, colored border and text, fill on hover
     *   - Subtle: No border, light hover background
     *
-    *   Sizes: xs, s, m (default), l, xl, icon (square), round (pill shape)
+    *   Sizes: xs, s, m (default), l, xl
+    *   Icon-only sizes: btn-icon-xs, btn-icon-s, btn-icon-m, btn-icon-l, btn-icon-xl (square)
+    *   Modifiers: btn-round (pill shape)
     *
     *   Usage:
     *     <button class="btn btn-primary">Submit</button>
     *     <button class="btn btn-outline-danger btn-s">Delete</button>
-    *     <button class="btn btn-subtle-secondary btn-icon"><svg>...</svg></button>
+    *     <button class="btn btn-subtle-secondary btn-icon-m"><svg>...</svg></button>
     */
 
     .btn {
@@ -734,7 +736,14 @@
     .btn-m { @apply text-sm px-5 py-1.5; }
     .btn-l { @apply text-lg px-6 py-2; }
     .btn-xl { @apply text-lg px-8 py-3; }
-    .btn-icon { @apply p-1.5; }                     /* Square button for icons only */
+
+    /* Icon-only button sizes (square padding, no text size needed) */
+    .btn-icon-xs { @apply p-1; }
+    .btn-icon-s { @apply p-1.5; }
+    .btn-icon-m { @apply p-2; }
+    .btn-icon-l { @apply p-2.5; }
+    .btn-icon-xl { @apply p-3; }
+
     .btn-round { @apply rounded-insight-full; }     /* Pill-shaped button */
 
     /* Fill variant (solid background) - default button style */
