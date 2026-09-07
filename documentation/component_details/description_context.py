@@ -266,6 +266,32 @@ def get_surface_description_context() -> dict[str, list[str]]:
     }
 
 
+@register_component(Component.LIST)
+def get_list_description_context() -> dict[str, list[str]]:
+    """Serve description documentation for the list layout tag."""
+    return {
+        "description": [
+            _(
+                "The `list` block tag creates semantic `<ul>` or `<ol>` elements with flexible layout options. "
+                "Unlike using `vbox` or raw HTML, this ensures proper accessibility as screen readers "
+                "announce the list structure (e.g., 'List with 5 items')."
+            ),
+            _(
+                "Use `{% listitem %}` tags for each entry. The list supports both vertical and horizontal layouts, "
+                "various marker styles, and consistent spacing from the design system."
+            ),
+        ],
+        "features": [
+            _("**direction**: `vertical` (column) or `horizontal` (row with wrapping)."),
+            _("**gap**: Spacing between items using the spacing scale (xs/s/m/l/xl)."),
+            _("**ordered**: Use `<ol>` for numbered lists, `<ul>` for unordered (default)."),
+            _("**marker**: List marker style - `none`, `disc`, `circle`, `square`, `decimal`, `decimal-leading-zero`."),
+            _("**marker_position**: `inside` or `outside` - controls marker indentation."),
+            _("**aria_label**: Accessible label for screen readers."),
+        ],
+    }
+
+
 # =============================================================
 #
 #   Navigation Tags

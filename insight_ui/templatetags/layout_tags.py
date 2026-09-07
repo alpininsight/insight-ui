@@ -67,6 +67,12 @@ Block tags (require closing tag):
     {% modal id="my-modal" title="Dialog Title" width=32 %}...{% endmodal %}
         Modal dialog container with customizable content.
 
+    {% list direction="vertical" gap="m" ordered=False marker="none" %}
+        {% listitem %}First item{% endlistitem %}
+        {% listitem %}Second item{% endlistitem %}
+    {% endlist %}
+        Semantic list container (<ul> or <ol>) with flexible layout.
+
 Simple tags:
 
     {% spacer size="m" %}
@@ -1112,6 +1118,160 @@ class ModalNode(LayoutNode):
         return tpl.render(template_context)
 
 
+# =============================================================================
+# List Components
+# =============================================================================
+
+VALID_MARKER: frozenset[str] = frozenset({"none", "disc", "circle", "square", "decimal", "decimal-leading-zero"})
+VALID_MARKER_POSITION: frozenset[str] = frozenset({"inside", "outside"})
+
+MARKER_CLASSES: dict[str, str] = {
+    "none": "list-none",
+    "disc": "list-disc",
+    "circle": "list-[circle]",
+    "square": "list-[square]",
+    "decimal": "list-decimal",
+    "decimal-leading-zero": "list-[decimal-leading-zero]",
+}
+
+
+class ListNode(LayoutNode):
+    """
+    Semantic list container with flexible layout options.
+
+    Creates accessible `<ul>` or `<ol>` elements with consistent styling.
+    Use with `{% listitem %}` tags for each list entry.
+
+    Parameters:
+        direction: "vertical" (default) or "horizontal" layout.
+        gap: Spacing between items (xs, s, m, l, xl). Default: "m"
+        ordered: Use `<ol>` instead of `<ul>`. Default: False
+        marker: List marker style (none, disc, circle, square, decimal). Default: "none"
+        marker_position: Marker position (inside, outside). Default: "inside"
+        aria_label: Accessible label for the list.
+        class: Additional CSS classes.
+
+    Example::
+
+        {% list direction="vertical" gap="m" %}
+            {% for item in items %}
+                {% listitem %}
+                    {% surface %}{{ item.name }}{% endsurface %}
+                {% endlistitem %}
+            {% endfor %}
+        {% endlist %}
+
+        {# Horizontal list with markers #}
+        {% list direction="horizontal" gap="s" marker="disc" %}
+            {% listitem %}First{% endlistitem %}
+            {% listitem %}Second{% endlistitem %}
+        {% endlist %}
+
+        {# Ordered list #}
+        {% list ordered=True marker="decimal" marker_position="outside" %}
+            {% listitem %}Step one{% endlistitem %}
+            {% listitem %}Step two{% endlistitem %}
+        {% endlist %}
+
+    """
+
+    valid_params: frozenset[str] = frozenset(
+        {"direction", "gap", "ordered", "marker", "marker_position", "aria_label", "class"}
+    )
+
+    def render(self, context: Context) -> str:
+        """Render the list container."""
+        resolved = self.resolve_kwargs(context)
+
+        # Validate no unknown parameters
+        _validate_unknown_params(resolved, self.valid_params, self.tag_name)
+
+        # Direction
+        direction = str(resolved.get("direction", "vertical"))
+        _validate(direction, VALID_DIRECTION, "direction", self.tag_name)
+
+        # Gap
+        gap = str(resolved.get("gap", "m"))
+        _validate(gap, VALID_SPACING, "gap", self.tag_name)
+
+        # Marker
+        marker = str(resolved.get("marker", "none"))
+        _validate(marker, VALID_MARKER, "marker", self.tag_name)
+
+        # Marker position
+        marker_position = str(resolved.get("marker_position", "inside"))
+        _validate(marker_position, VALID_MARKER_POSITION, "marker_position", self.tag_name)
+
+        # Build classes
+        classes = ["flex"]
+
+        if direction == "horizontal":
+            classes.append("flex-row")
+            classes.append("flex-wrap")
+        else:
+            classes.append("flex-col")
+
+        classes.append(GAP_CLASSES[gap])
+        classes.append(MARKER_CLASSES[marker])
+
+        if marker != "none":
+            classes.append(f"list-{marker_position}")
+
+        # Extra classes
+        extra_classes = resolved.get("class", "")
+        if extra_classes:
+            classes.append(str(extra_classes))
+
+        class_str = " ".join(classes)
+
+        # Element type
+        tag = "ol" if resolved.get("ordered", False) else "ul"
+
+        # Aria label
+        aria_label = resolved.get("aria_label", "")
+        aria_attr = f' aria-label="{aria_label}"' if aria_label else ""
+
+        content = self.nodelist.render(context)
+
+        return f'<{tag} class="{class_str}"{aria_attr}>{content}</{tag}>'
+
+
+class ListItemNode(LayoutNode):
+    """
+    Single item within a list container.
+
+    Wraps content in a semantic `<li>` element.
+
+    Parameters:
+        class: Additional CSS classes for the list item.
+
+    Example::
+
+        {% list %}
+            {% listitem %}First item{% endlistitem %}
+            {% listitem class="font-bold" %}Highlighted item{% endlistitem %}
+        {% endlist %}
+
+    """
+
+    valid_params: frozenset[str] = frozenset({"class"})
+
+    def render(self, context: Context) -> str:
+        """Render the list item."""
+        resolved = self.resolve_kwargs(context)
+
+        # Validate no unknown parameters
+        _validate_unknown_params(resolved, self.valid_params, self.tag_name)
+
+        content = self.nodelist.render(context)
+
+        extra_classes = resolved.get("class", "")
+        if extra_classes:
+            return f'<li class="{extra_classes}">{content}</li>'
+
+        return f"<li>{content}</li>"
+
+
 class TabNode(Node):
     """
     Single tab within a tabs container.
@@ -1342,6 +1502,8 @@ register.tag("surface", _make_block_tag(SurfaceNode))
 register.tag("collapsible", _make_block_tag(CollapsibleNode))
 register.tag("sidebar", _make_block_tag(SidebarNode))
 register.tag("modal", _make_block_tag(ModalNode))
+register.tag("list", _make_block_tag(ListNode))
+register.tag("listitem", _make_block_tag(ListItemNode))
 register.tag("tabs", do_tabs)
 
 

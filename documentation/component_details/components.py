@@ -106,6 +106,7 @@ class Component(Enum):
     DIVIDER = ("divider", ComponentCategory.LAYOUT, DividerConfig)
     SECTION = ("section", ComponentCategory.LAYOUT, SectionConfig)
     SURFACE = ("surface", ComponentCategory.LAYOUT, SurfaceConfig)
+    LIST = ("list", ComponentCategory.LAYOUT)
     # Navigation Components
     NAVBAR = ("navbar", ComponentCategory.NAVIGATION, NavbarConfig)
     SIDEBAR = ("sidebar", ComponentCategory.NAVIGATION, SidebarConfig)
@@ -269,6 +270,7 @@ _IS_NEW: set[Component] = {
     Component.FLIP_CARD,
     Component.SECTION,
     Component.SURFACE,
+    Component.LIST,
 }
 
 # Shows a badge on the detail page
@@ -279,6 +281,7 @@ _IS_BLOCK_TAG: set[Component] = {
     Component.GRID,
     Component.SECTION,
     Component.SURFACE,
+    Component.LIST,
     Component.SIDEBAR,
     Component.MODAL,
     Component.TABS,

@@ -350,6 +350,48 @@ def get_surface_usage_context() -> dict[str, str]:
     }
 
 
+@register_component(Component.LIST)
+def get_list_usage_context() -> dict[str, str]:
+    """Serve usage documentation for the list layout tag."""
+    return {
+        "usage_summary": _(
+            "The list tag creates semantic `<ul>` or `<ol>` elements with flexible layout options. "
+            "Use with `{% listitem %}` tags for each list entry. This ensures proper accessibility "
+            "as screen readers announce the list structure."
+        ),
+        "usage": """
+        {% load layout_tags %}
+
+        {# Basic vertical list #}
+        {% list gap="m" aria_label="Features" %}
+            {% listitem %}First item{% endlistitem %}
+            {% listitem %}Second item{% endlistitem %}
+        {% endlist %}
+
+        {# Horizontal list #}
+        {% list direction="horizontal" gap="s" %}
+            {% listitem %}{% button label="Option A" %}{% endlistitem %}
+            {% listitem %}{% button label="Option B" %}{% endlistitem %}
+        {% endlist %}
+
+        {# Ordered list with markers #}
+        {% list ordered=True marker="decimal" marker_position="outside" %}
+            {% listitem %}Step one{% endlistitem %}
+            {% listitem %}Step two{% endlistitem %}
+        {% endlist %}
+
+        {# List with surface items #}
+        {% list gap="m" %}
+            {% for item in items %}
+                {% listitem %}
+                    {% surface padding="m" %}{{ item.name }}{% endsurface %}
+                {% endlistitem %}
+            {% endfor %}
+        {% endlist %}
+        """,
+    }
+
+
 # =============================================================
 #
 #   Navigation Tags
@@ -771,15 +813,23 @@ def get_modal_usage_context() -> dict[str, str]:
     """Serve usage documentation for the modal component."""
     return {
         "usage_summary": _(
-            "The component is included via the `modal` tag. Additionally you need a trigger that causes the dialog to appear when the user clicks on it. This trigger can be any HTML tag and must include the `data-insight-modal` attribute, whose value is the ID of the target element (the dialog)."
+            'The modal is a block tag that wraps custom content. You need a trigger button with the `data-insight-modal` attribute pointing to the modal\'s ID. Inside the modal block, you can place any content including buttons with `data-insight-dismiss="modal"` to close the dialog.'
         ),
         "usage": """
-        {% load insight_tags %}
+        {% load layout_tags insight_tags %}
 
-        <button class="btn btn-primary" data-insight-modal="demo-modal">
-            {% trans "Open Modal" %}
-        </button>
-        {% modal tag_id="demo-modal" title=_("Demo Modal") description=_("Dies ist ein Beispiel-Modal mit Standard-Styling!") %}
+        {# Trigger button #}
+        {% button label=_("Open Modal") data_insight_modal="demo-modal" %}
+
+        {# Modal dialog #}
+        {% modal id="demo-modal" title=_("Demo Modal") %}
+            <p>This is a demo modal with custom content!</p>
+
+            <div class="flex gap-2 justify-end mt-6 pt-6 border-t border-insight-divider">
+                {% button label=_("Cancel") type="secondary" data_insight_dismiss="modal" %}
+                {% button label=_("Confirm") type="primary" %}
+            </div>
+        {% endmodal %}
         """,
     }
 

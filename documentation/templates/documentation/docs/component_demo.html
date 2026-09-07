@@ -763,6 +763,57 @@
             {% endsurface %}
         {% endgrid %}
     {% endvbox %}
+{% elif component.value == "list" %}
+    {% vbox gap="l" %}
+        <p class="text-sm text-insight-body">{% trans "Vertical list with surfaces:" %}</p>
+        {% list direction="vertical" gap="m" aria_label=_("Example items") %}
+            {% listitem %}
+                {% surface padding="m" %}
+                    {% hbox gap="m" v_align="center" %}
+                        {% icon name="check-circle" color="success" %}
+                        <span>{% trans "First item with surface wrapper" %}</span>
+                    {% endhbox %}
+                {% endsurface %}
+            {% endlistitem %}
+            {% listitem %}
+                {% surface padding="m" %}
+                    {% hbox gap="m" v_align="center" %}
+                        {% icon name="check-circle" color="success" %}
+                        <span>{% trans "Second item with surface wrapper" %}</span>
+                    {% endhbox %}
+                {% endsurface %}
+            {% endlistitem %}
+            {% listitem %}
+                {% surface padding="m" %}
+                    {% hbox gap="m" v_align="center" %}
+                        {% icon name="clock" color="warning" %}
+                        <span>{% trans "Third item (pending)" %}</span>
+                    {% endhbox %}
+                {% endsurface %}
+            {% endlistitem %}
+        {% endlist %}
+
+        <p class="text-sm text-insight-body">{% trans "Horizontal list with buttons:" %}</p>
+        {% list direction="horizontal" gap="s" %}
+            {% listitem %}{% button label=_("Option A") type="secondary" %}{% endlistitem %}
+            {% listitem %}{% button label=_("Option B") type="secondary" %}{% endlistitem %}
+            {% listitem %}{% button label=_("Option C") type="secondary" %}{% endlistitem %}
+        {% endlist %}
+
+        <p class="text-sm text-insight-body">{% trans "Ordered list with visible markers:" %}</p>
+        {% list ordered=True marker="decimal" marker_position="outside" gap="s" class="ps-6" %}
+            {% listitem %}{% trans "First step" %}{% endlistitem %}
+            {% listitem %}{% trans "Second step" %}{% endlistitem %}
+            {% listitem %}{% trans "Third step" %}{% endlistitem %}
+        {% endlist %}
+
+        <p class="text-sm text-insight-body">{% trans "Unordered list with disc markers:" %}</p>
+        {% list marker="disc" marker_position="inside" gap="xs" %}
+            {% listitem %}{% trans "Feature one" %}{% endlistitem %}
+            {% listitem %}{% trans "Feature two" %}{% endlistitem %}
+            {% listitem %}{% trans "Feature three" %}{% endlistitem %}
+        {% endlist %}
+    {% endvbox %}
 {% elif component.value == "navbar" %}
     <div class="relative w-full h-80 bg-insight-base">
         {% navbar config=demo_nav_config user_dropdown_links=user_dropdown_links %}
