@@ -28,16 +28,17 @@ class TestPageHeader(TemplateTagsTestCase):
         assert len(headings) == 1
         assert "Example Page" in headings[0].get_text(" ", strip=True)
 
-    def test_title_uses_the_primary_foreground_token(self) -> None:
-        """WCAG 1.4.3: the title colour is the foreground token that keeps 3:1 on dark surfaces.
+    def test_title_uses_the_semantic_heading_token(self) -> None:
+        """The title remains readable for every configured light or dark theme.
 
-        ``text-insight-primary`` is the decoration accent (#0856C0) and only reaches 2.97:1 on the
-        dark background, so the title must use ``text-insight-primary-foreground``.
+        ``primary-foreground`` belongs to text rendered on a primary-coloured surface. Page
+        headers are rendered on the page surface and therefore use the theme's heading token.
         """
         soup = self.render_page_header()
         title = soup.find("h1").find("span")
         classes = title.get("class", [])
-        assert "text-insight-primary-foreground" in classes
+        assert "text-insight-headline" in classes
+        assert "text-insight-primary-foreground" not in classes
         assert "text-insight-primary" not in classes
 
     def test_description_is_a_paragraph(self) -> None:

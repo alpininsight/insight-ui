@@ -34,6 +34,14 @@ class TestBrandMark(TemplateTagsTestCase):
         assert "Custom" in rendered
         assert "Brand" in rendered
 
+    def test_brand_mark_keeps_long_product_names_compact_on_mobile(self) -> None:
+        """Long wordmarks leave room for the navbar disclosure control."""
+        rendered = self.render_template(
+            '{% load insight_tags %}{% brand_mark primary_text="Alpin Insight" secondary_text="OIDC Provider" %}'
+        )
+        assert "items-center min-w-0" in rendered
+        assert "text-sm tracking-tight whitespace-nowrap sm:text-xl" in rendered
+
     def test_brand_mark_secondary_text_uses_the_accent_token(self) -> None:
         """The wordmark's second half is the accent, not the primary.
 
