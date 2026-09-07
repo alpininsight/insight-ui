@@ -694,7 +694,7 @@
         {# Vertical with label #}
         {% vbox gap="s" %}
             <p class="text-xs text-insight-muted">{% trans "Vertical with rotated label" %}</p>
-            {% hbox gap="s" width="full" class="h-32" %}
+            {% hbox gap="s" class="h-32" %}
                 <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Left</div>
                 {% divider direction="vertical" label="OR" %}
                 <div class="px-10 py-4 text-sm text-white bg-insight-primary rounded-insight-surface">Right</div>
@@ -1028,7 +1028,7 @@
 {% elif component.value == "differentiator" %}
     {{ textA|diff:textB|safe }}
 {% elif component.value == "logo" %}
-    {% grid cols=3 responsive="container" %}
+    {% grid cols=3 %}
         {% vbox gap="s" h_align="start" %}
             <p class="font-semibold text-insight-body">SVG asset</p>
             {% logo config=logo_svg_config %}

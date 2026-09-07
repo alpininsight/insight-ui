@@ -133,7 +133,7 @@
                 {% load insight_tags %}
 
                 {# A button with icon #}
-                {% button label="Save" type="primary" icon="save" %}
+                {% button label="Save" type="primary" icon_name="save" %}
 
                 {# A data table with pagination #}
                 {% table config=table_config %}
@@ -221,7 +221,7 @@
 
             {% hbox h_align="center" class="mt-4" %}
                 {% url 'base_template_view' as base_template_url %}
-                {% button label=_("Learn more") request_url=base_template_url type="secondary" size="m" icon_name="arrow-right" icon_position="right" %}
+                {% button label=_("Learn more") request_url=base_template_url type="secondary" size="m" icon_name="arrow-right" icon_end=True %}
             {% endhbox %}
         {% endvbox %}
     {% endpage %}
@@ -255,7 +255,7 @@
 
             {% hbox h_align="center" class="mt-4" %}
                 {% url 'customization_view' as customization_url %}
-                {% button label=_("Customization guide") request_url=customization_url type="secondary" size="m" icon_name="arrow-right" icon_position="right" %}
+                {% button label=_("Customization guide") request_url=customization_url type="secondary" size="m" icon_name="arrow-right" icon_end=True %}
             {% endhbox %}
         {% endvbox %}
     {% endpage %}
