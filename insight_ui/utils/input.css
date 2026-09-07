@@ -741,10 +741,10 @@
     * ========================================================
     *
     *   Accessible navigation styling using aria-current as source of truth.
-    *   JavaScript toggles aria-current="page", CSS handles all visual states.
+    *   JavaScript sets aria-current="page" or "location"; CSS handles visual states.
     *
     *   This pattern ensures:
-    *   - Screen readers announce the current page
+    *   - Screen readers announce the current page or location
     *   - No duplicate state management (CSS follows ARIA)
     *   - Consistent styling across navbar, dropdowns, sidebar
     */
@@ -757,6 +757,7 @@
         @apply text-insight-text-link;
     }
     .insight-nav-link[aria-current="page"],
+    .insight-nav-link[aria-current="location"],
     .insight-nav-link[aria-current="true"] {
         @apply text-insight-text-link transition-none;
     }
@@ -768,7 +769,8 @@
     .insight-nav-dropdown-item:hover {
         @apply bg-insight-bg-base;
     }
-    .insight-nav-dropdown-item[aria-current="page"] {
+    .insight-nav-dropdown-item[aria-current="page"],
+    .insight-nav-dropdown-item[aria-current="location"] {
         @apply text-insight-text-link bg-insight-primary-soft;
     }
 
@@ -779,7 +781,8 @@
     .insight-sidebar-link:hover {
         @apply border-insight-text-body text-insight-text-body;
     }
-    .insight-sidebar-link[aria-current="page"] {
+    .insight-sidebar-link[aria-current="page"],
+    .insight-sidebar-link[aria-current="location"] {
         @apply font-semibold border-s-4 border-insight-primary;
     }
 

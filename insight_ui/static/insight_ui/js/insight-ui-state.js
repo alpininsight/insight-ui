@@ -21,6 +21,20 @@
         return path.replace(/\/+$/, "") || "/";
     }
 
+    function normalizeFragment(hash) {
+        const fragment = hash.slice(1);
+        // HTML resolves literal IDs and named anchors before percent-decoding.
+        if (document.getElementById(fragment) ||
+            Array.from(document.getElementsByName(fragment)).some(el => el.tagName === "A")) {
+            return fragment;
+        }
+        try {
+            return decodeURIComponent(fragment);
+        } catch {
+            return fragment;
+        }
+    }
+
     /**
      * Returns the ARIA current value for a link, or null when it is inactive.
      *
@@ -37,7 +51,8 @@
         const currentPath = normalize(current.pathname);
 
         if (url.hash) {
-            return hrefPath === currentPath && url.hash === current.hash ? "location" : null;
+            return hrefPath === currentPath && normalizeFragment(url.hash) === normalizeFragment(current.hash)
+                ? "location" : null;
         }
 
         if (hrefPath === "/") {
@@ -48,7 +63,7 @@
 
     /**
      * Updates the active state of navigation links based on the current URL.
-     * Sets aria-current="page" on active links and aria-current="true" on
+     * Sets aria-current="page" or "location" on active links and aria-current="true" on
      * dropdown buttons that contain an active link. CSS handles the visual styling.
      */
     function updateActiveNav() {

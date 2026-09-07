@@ -2789,7 +2789,7 @@
   .insight-nav-link:hover {
     color: var(--color-insight-text-link);
   }
-  .insight-nav-link[aria-current="page"], .insight-nav-link[aria-current="true"] {
+  .insight-nav-link[aria-current="page"], .insight-nav-link[aria-current="location"], .insight-nav-link[aria-current="true"] {
     color: var(--color-insight-text-link);
     transition-property: none;
   }
@@ -2804,7 +2804,7 @@
   .insight-nav-dropdown-item:hover {
     background-color: var(--color-insight-bg-base);
   }
-  .insight-nav-dropdown-item[aria-current="page"] {
+  .insight-nav-dropdown-item[aria-current="page"], .insight-nav-dropdown-item[aria-current="location"] {
     background-color: var(--color-insight-primary-soft);
     color: var(--color-insight-text-link);
   }
@@ -2822,7 +2822,7 @@
     border-color: var(--color-insight-text-body);
     color: var(--color-insight-text-body);
   }
-  .insight-sidebar-link[aria-current="page"] {
+  .insight-sidebar-link[aria-current="page"], .insight-sidebar-link[aria-current="location"] {
     border-inline-start-style: var(--tw-border-style);
     border-inline-start-width: 4px;
     border-color: var(--color-insight-primary);
