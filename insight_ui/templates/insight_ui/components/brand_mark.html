@@ -5,8 +5,8 @@
         {% logo config=brand_mark_config.logo %}
     {% endif %}
     <div class="text-xl tracking-tight whitespace-nowrap">
-        <span class="font-medium text-insight-headline {{ brand_mark_config.primary_text_color|default:'text-headline' }}">{{ brand_mark_config.primary_text }}</span>
-        <span class="font-bold {{ brand_mark_config.secondary_text_color|default:'text-insight-secondary' }}">{{ brand_mark_config.secondary_text }}</span>
+        <span class="font-medium {{ brand_mark_config.primary_text_color }}">{{ brand_mark_config.primary_text }}</span>
+        <span class="font-bold {{ brand_mark_config.secondary_text_color }}">{{ brand_mark_config.secondary_text }}</span>
     </div>
     {% if brand_mark_config.logo_position == 'end' %}
         {% logo config=brand_mark_config.logo %}

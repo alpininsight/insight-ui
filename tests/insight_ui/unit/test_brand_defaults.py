@@ -48,9 +48,9 @@ def test_navbar_and_footer_defaults_use_central_brand_settings() -> None:
     INSIGHT_UI={
         "brand": {
             "mark": BrandMarkConfig(
-                "Acme",
-                "",
-                LogoConfig(url="acme.svg", url_dark="acme.svg", alt="Acme Login Logo", height="3rem"),
+                primary_text="Acme",
+                secondary_text="",
+                logo=LogoConfig(url="acme.svg", url_dark="acme.svg", alt="Acme Login Logo", height="3rem"),
             ),
         }
     }

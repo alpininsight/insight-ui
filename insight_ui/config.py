@@ -28,12 +28,12 @@ CONFIG_DEFAULTS: dict[str, Any] = {
     "brand": {
         "home_url": "/",
         "mark": BrandMarkConfig(
-            "Django",
-            "Insight UI",
-            LogoConfig(
-                "insight_ui/svg/insight-ui-logo.svg",
-                "insight_ui/svg/insight-ui-logo.svg",
-                "Insight UI Logo",
+            primary_text="Django",
+            secondary_text="Insight UI",
+            logo=LogoConfig(
+                url="insight_ui/svg/insight-ui-logo.svg",
+                url_dark="insight_ui/svg/insight-ui-logo.svg",
+                alt="Insight UI Logo",
                 height="2rem",
             ),
         ),
