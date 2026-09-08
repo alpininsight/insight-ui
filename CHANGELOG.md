@@ -44,6 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **contributors:** Explain component workflow with a diagram
 - Correct contact email for commercial licensing inquiries
 - **contributors:** Restore package guides and verify README examples
+- **readme:** Point to the prepared Enterprise documentation next to the scope limit
 
 ### Features
 
