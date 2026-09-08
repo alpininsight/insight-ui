@@ -23,10 +23,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **a11y:** Use the primary foreground token for the page header title
 - **docs:** Replace conformance claims with designed-to-conform wording
 - **css:** Cover dynamic package color variants
-- **ci:** Stop manual CDN deploys from rolling back the latest alias
 - **navigation:** Distinguish fragment targets
 - **ui:** Keep branded headings and wordmarks readable
 - **ui:** Package responsive brand mark styles
+- **ci:** Stop manual CDN deploys from rolling back the latest alias
 
 ### CI/CD
 
@@ -38,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fix outdated test paths in testing.md
 - **license:** Clarify AGPL or Commercial spurwahl in stub
+- Correct contact email for commercial licensing inquiries
 
 ### Features
 
