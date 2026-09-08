@@ -55,3 +55,16 @@ class TestTextarea(TemplateTagsTestCase):
 
         assert soup.find("label")["for"] == "msg-id"
         assert soup.find("textarea")["id"] == "msg-id"
+
+    def test_required_marker_is_decorative_so_required_is_announced_once(self) -> None:
+        """The asterisk carries no text alternative; aria-required conveys the state."""
+        config = TextareaConfig(tag_id="notes", name="notes", label="Label", required=True)
+        rendered = self.render_template("{% load insight_tags %}{% textarea config %}", {"config": config})
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        marker = soup.select_one("label span[aria-hidden='true']")
+        assert marker is not None, "required asterisk must be hidden from the accessibility tree"
+        assert marker.get_text(strip=True) == "*"
+        assert not marker.has_attr("aria-label")
+        assert soup.find("textarea")["aria-required"] == "true"
+        assert "Required" not in soup.find("label").get_text()
