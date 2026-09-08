@@ -191,8 +191,8 @@
     --color-insight-text-body-dark: #d3d7de;
     --color-insight-text-muted: #828997;            /* Meta info, timestamps, helper text */
     --color-insight-text-muted-dark: #828997;
-    --color-insight-text-disabled: #d1d5dc;         /* Disabled labels, inactive elements */
-    --color-insight-text-disabled-dark: #364153;
+    --color-insight-text-disabled: #c5cad3;         /* Disabled labels, inactive elements */
+    --color-insight-text-disabled-dark: #4e525a;
     --color-insight-text-inverse: #F5F8FC;          /* Text on dark/colored backgrounds (e.g., primary buttons) */
     --color-insight-text-inverse-dark: #1C1C1E;
     --color-insight-text-link: #256CD8;             /* Links, clickable text elements */
@@ -727,7 +727,7 @@
     */
 
     .btn {
-        @apply flex gap-2 items-center justify-center border-2 border-transparent rounded-insight-control px-5 py-1.5 text-white transition-colors;
+        @apply flex gap-2 items-center justify-center border-2 border-transparent rounded-insight-control text-white transition-colors;
     }
 
     /* Size modifiers - combine with color variant */
@@ -772,7 +772,7 @@
         @apply border-0 text-insight-text-link hover:text-insight-text-link-hover underline px-6 py-2;
     }
     .btn-disabled {
-        @apply bg-neutral-300 dark:bg-neutral-600 border-neutral-300 dark:border-neutral-600 text-insight-text-disabled;
+        @apply bg-insight-text-disabled border-insight-text-disabled text-white dark:text-gray-400;
     }
 
     /* Outline variant - transparent bg, colored border, fills on hover */
@@ -798,7 +798,7 @@
         @apply border-white hover:bg-gray-300 active:bg-gray-400 hover:border-gray-300 active:border-gray-400 text-insight-text-headline hover:text-insight-text-inverse;
     }
     .btn-outline-disabled {
-        @apply border-neutral-300 dark:border-neutral-600 text-insight-text-disabled;
+        @apply border-insight-text-disabled text-insight-text-disabled;
     }
 
     /* Subtle variant - no border, light background on hover, minimal visual weight */
