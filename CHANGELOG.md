@@ -23,6 +23,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **a11y:** Use the primary foreground token for the page header title
 - **docs:** Replace conformance claims with designed-to-conform wording
 - **css:** Cover dynamic package color variants
+- **navigation:** Distinguish fragment targets
+- **ui:** Keep branded headings and wordmarks readable
+- **ui:** Package responsive brand mark styles
 
 ### CI/CD
 
@@ -69,6 +72,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **pre-commit:** Autoupdate hooks
 - **package:** Separate documentation test suite
 - **license:** Add SPDX headers, REUSE metadata and third-party notices
+- **pre-commit:** Autoupdate hooks
 
 ### Refactoring
 
