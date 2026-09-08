@@ -1199,7 +1199,7 @@ class ListNode(LayoutNode):
 
         # Gap
         gap = str(resolved.get("gap", "m"))
-        _validate(gap, VALID_SPACING, "gap", self.tag_name)
+        _validate(gap, VALID_SPACING_WITH_NONE, "gap", self.tag_name)
 
         # Marker
         marker = str(resolved.get("marker", "none"))
