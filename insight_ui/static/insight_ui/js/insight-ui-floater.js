@@ -41,13 +41,22 @@ export class Floater {
         }
 
         if (type === "tooltip") {
+            const tooltipText = this.trigger.getAttribute("data-insight-tooltip");
+
+            // Visual tooltip element (hidden by default)
             this.target = document.createElement('span');
             this.target.classList.add("text-insight-headline", "bg-insight-surface", "px-3", "py-2", "border", "border-insight-surface", "rounded-insight-overlay", "shadow-insight-overlay", "max-w-xs", "text-sm");
-            this.target.textContent = this.trigger.getAttribute("data-insight-tooltip");
-            // Generate unique ID for tooltip and set ARIA attributes
-            this.targetId = `tooltip-${Math.random().toString(36).substring(2, 9)}`;
-            this.target.id = this.targetId;
+            this.target.textContent = tooltipText;
             this.target.setAttribute("role", "tooltip");
+            this.target.setAttribute("aria-hidden", "true");  // Visual tooltip is decorative
+
+            // Screen-reader accessible description (always available via sr-only)
+            this.srDescription = document.createElement('span');
+            this.srDescription.classList.add("sr-only");
+            this.srDescription.textContent = tooltipText;
+            this.targetId = `tooltip-${Math.random().toString(36).substring(2, 9)}`;
+            this.srDescription.id = this.targetId;
+            this.trigger.appendChild(this.srDescription);
             this.trigger.setAttribute("aria-describedby", this.targetId);
         }
         else {
@@ -68,8 +77,8 @@ export class Floater {
         }
         if (this.arrow) { this.target.appendChild(this.arrow); }
 
-        this.target.classList.add("absolute", "hidden", "z-50");
-        this.trigger.parentNode.appendChild(this.target);
+        this.target.classList.add("fixed", "hidden", "z-50");
+        document.body.appendChild(this.target);
 
         this.triggerType = trigger.dataset.trigger || 'hover'; // hover or click
         this.autoClose = trigger.dataset.autoClose === "true";  // optional for click
@@ -166,6 +175,10 @@ export class Floater {
             if (this.arrow) {
                 this.target.appendChild(this.arrow);
             }
+            // Also update the screen-reader description
+            if (this.srDescription) {
+                this.srDescription.textContent = newText;
+            }
         }
     }
     /**
@@ -194,8 +207,14 @@ export class Floater {
 
     /**
      * Handles focus on the trigger element (for keyboard accessibility).
+     * Only shows tooltip if focus is keyboard-initiated (not programmatic).
      */
-    handleTriggerFocus() { this.show(); }
+    handleTriggerFocus() {
+        // Only show if focus is visible (keyboard navigation, not programmatic)
+        if (this.trigger.matches(':focus-visible')) {
+            this.show();
+        }
+    }
 
     /**
      * Handles blur from the trigger element.
@@ -293,9 +312,14 @@ export class Floater {
 
         // Re-read tooltip text from attribute to support dynamic updates
         if (this.type === "tooltip") {
-            this.target.textContent = this.trigger.getAttribute("data-insight-tooltip");
+            const tooltipText = this.trigger.getAttribute("data-insight-tooltip");
+            this.target.textContent = tooltipText;
             if (this.arrow) {
                 this.target.appendChild(this.arrow);
+            }
+            // Also update the screen-reader description
+            if (this.srDescription) {
+                this.srDescription.textContent = tooltipText;
             }
         }
 
@@ -339,22 +363,67 @@ export class Floater {
     }
 
     /**
+     * Calculates available space around the trigger element.
+     * @param {DOMRect} rect - Trigger element bounding rect
+     * @param {number} tooltipWidth - Tooltip width
+     * @param {number} tooltipHeight - Tooltip height
+     * @param {number} distance - Distance from trigger
+     * @returns {Object} Available space in each direction
+     */
+    getAvailableSpace(rect, tooltipWidth, tooltipHeight, distance) {
+        return {
+            top: rect.top - distance - tooltipHeight,
+            bottom: window.innerHeight - rect.bottom - distance - tooltipHeight,
+            left: rect.left - distance - tooltipWidth,
+            right: window.innerWidth - rect.right - distance - tooltipWidth
+        };
+    }
+
+    /**
+     * Determines the best position for the tooltip based on available space.
+     * Tries the preferred position first, then flips to opposite, then tries other axis.
+     * @param {string} preferred - Preferred position (top, bottom, left, right)
+     * @param {Object} space - Available space in each direction
+     * @returns {string} Best position to use
+     */
+    getBestPosition(preferred, space) {
+        const opposite = { top: 'bottom', bottom: 'top', left: 'right', right: 'left' };
+        const otherAxis = { top: ['left', 'right'], bottom: ['left', 'right'], left: ['top', 'bottom'], right: ['top', 'bottom'] };
+
+        // Try preferred position
+        if (space[preferred] >= 0) return preferred;
+
+        // Try opposite position
+        const opp = opposite[preferred];
+        if (space[opp] >= 0) return opp;
+
+        // Try other axis
+        for (const alt of otherAxis[preferred]) {
+            if (space[alt] >= 0) return alt;
+        }
+
+        // Fallback: position with most space
+        return Object.entries(space).reduce((best, [pos, val]) => val > space[best] ? pos : best, preferred);
+    }
+
+    /**
      * Updates the floater position based on trigger location and configured position.
-     * Handles top, bottom, left, and right positions with arrow placement.
+     * Automatically flips to alternative position if preferred position doesn't fit.
+     * Uses fixed positioning relative to viewport.
      */
     updatePosition() {
-        const position = this.trigger.getAttribute('data-position') || "top";
+        const preferredPosition = this.trigger.getAttribute('data-position') || "top";
         const rect = this.trigger.getBoundingClientRect();
-        const scrollY = window.scrollY || document.documentElement.scrollTop;
-        const scrollX = window.scrollX || document.documentElement.scrollLeft;
-
-        // Get the offset parent's position to account for containing blocks with position: relative
-        const offsetParent = this.target.offsetParent || document.body;
-        const offsetRect = offsetParent.getBoundingClientRect();
-        const offsetTop = offsetRect.top + scrollY;
-        const offsetLeft = offsetRect.left + scrollX;
         const distanceToTarget = 12;
         const arrowSize = 8;
+
+        // Calculate tooltip dimensions
+        const tooltipWidth = this.target.offsetWidth;
+        const tooltipHeight = this.target.offsetHeight;
+
+        // Determine best position based on available space
+        const space = this.getAvailableSpace(rect, tooltipWidth, tooltipHeight, distanceToTarget);
+        const position = this.getBestPosition(preferredPosition, space);
 
         // Reset arrow position and rotation classes before applying new ones
         if (this.arrow) {
@@ -363,32 +432,41 @@ export class Floater {
             this.arrow.style.left = '';
         }
 
-        // Some directions need slight adjustments, like + or - 1px.
+        let top, left;
+
+        // Position relative to trigger (getBoundingClientRect gives viewport coords)
         switch (position) {
             case 'top':
-                this.target.style.top = `${rect.top + scrollY - this.target.offsetHeight - distanceToTarget - offsetTop}px`;
-                this.target.style.left = `${rect.left + scrollX + rect.width / 2 - this.target.offsetWidth / 2 - offsetLeft}px`;
-                if (this.arrow) { this.arrow.style.top = `${this.target.offsetHeight - (arrowSize + 1)}px`; }
+                top = rect.top - tooltipHeight - distanceToTarget;
+                left = rect.left + rect.width / 2 - tooltipWidth / 2;
+                if (this.arrow) { this.arrow.style.top = `${tooltipHeight - (arrowSize + 1)}px`; }
                 break;
 
             case 'bottom':
-                this.target.style.top = `${rect.bottom + scrollY + distanceToTarget - offsetTop}px`;
-                this.target.style.left = `${rect.left + scrollX + rect.width / 2 - this.target.offsetWidth / 2 - offsetLeft}px`;
+                top = rect.bottom + distanceToTarget;
+                left = rect.left + rect.width / 2 - tooltipWidth / 2;
                 if (this.arrow) { this.arrow.classList.add('rotate-225'); this.arrow.style.top = `${-(arrowSize + 1)}px`; }
                 break;
 
             case 'left':
-                this.target.style.top = `${rect.top + rect.height / 2 - this.target.offsetHeight / 2 + scrollY - offsetTop}px`;
-                this.target.style.left = `${rect.left + scrollX - this.target.offsetWidth - distanceToTarget - offsetLeft}px`;
-                if (this.arrow) { this.arrow.classList.add('rotate-315'); this.arrow.style.top = `${this.target.offsetHeight / 2 - arrowSize}px`; this.arrow.style.left = `${this.target.offsetWidth - 1}px`; }
+                top = rect.top + rect.height / 2 - tooltipHeight / 2;
+                left = rect.left - tooltipWidth - distanceToTarget;
+                if (this.arrow) { this.arrow.classList.add('rotate-315'); this.arrow.style.top = `${tooltipHeight / 2 - arrowSize}px`; this.arrow.style.left = `${tooltipWidth - 1}px`; }
                 break;
 
             case 'right':
-                this.target.style.top = `${rect.top + rect.height / 2 - this.target.offsetHeight / 2 + scrollY - offsetTop}px`;
-                this.target.style.left = `${rect.right + scrollX + distanceToTarget - offsetLeft}px`;
-                if (this.arrow) { this.arrow.classList.add('rotate-135'); this.arrow.style.top = `${this.target.offsetHeight / 2 - arrowSize}px`; this.arrow.style.left = `-1px`; }
+                top = rect.top + rect.height / 2 - tooltipHeight / 2;
+                left = rect.right + distanceToTarget;
+                if (this.arrow) { this.arrow.classList.add('rotate-135'); this.arrow.style.top = `${tooltipHeight / 2 - arrowSize}px`; this.arrow.style.left = `-1px`; }
                 break;
         }
+
+        // Clamp to viewport bounds (for horizontal/vertical centering edge cases)
+        left = Math.max(0, Math.min(left, window.innerWidth - tooltipWidth));
+        top = Math.max(0, Math.min(top, window.innerHeight - tooltipHeight));
+
+        this.target.style.top = `${top}px`;
+        this.target.style.left = `${left}px`;
     }
 
     /**
@@ -396,47 +474,57 @@ export class Floater {
      * Vertical position remains relative to the trigger element.
      * Tooltip stays within viewport bounds and "sticks" to edges until
      * the cursor moves far enough for the tooltip to be centered again.
+     * Uses fixed positioning relative to viewport.
      * @param {MouseEvent} event - The mousemove event
      */
     updatePositionFollowMouse(event) {
-        const position = this.trigger.getAttribute('data-position') || "top";
+        const preferredPosition = this.trigger.getAttribute('data-position') || "top";
         const triggerRect = this.trigger.getBoundingClientRect();
-        const parentRect = this.target.parentNode.getBoundingClientRect();
+        const distanceToTarget = 8;
         const tooltipWidth = this.target.offsetWidth;
         const tooltipHalfWidth = tooltipWidth / 2;
 
-        // Calculate horizontal position relative to parent, following mouse
+        // Calculate horizontal position following mouse (clamped to trigger bounds)
         const mouseX = Math.max(triggerRect.left, Math.min(event.clientX, triggerRect.right));
-        let left = mouseX - parentRect.left - tooltipHalfWidth;
+        let left = mouseX - tooltipHalfWidth;
 
-        // Clamp to viewport bounds (tooltip sticks to edge until cursor is far enough for centering)
-        const minLeft = -parentRect.left;  // Left edge of viewport relative to parent
-        const maxLeft = window.innerWidth - parentRect.left - tooltipWidth;  // Right edge
-        left = Math.max(minLeft, Math.min(left, maxLeft));
+        // Clamp to viewport bounds
+        left = Math.max(0, Math.min(left, window.innerWidth - tooltipWidth));
 
         this.target.style.left = `${left}px`;
 
+        // Re-measure height AFTER horizontal position is set (wrapping may have changed it)
+        const tooltipHeight = this.target.offsetHeight;
+
+        // Determine best vertical position (auto-flip if needed)
+        const spaceTop = triggerRect.top - distanceToTarget - tooltipHeight;
+        const spaceBottom = window.innerHeight - triggerRect.bottom - distanceToTarget - tooltipHeight;
+        const position = (preferredPosition === 'top' && spaceTop >= 0) ? 'top' :
+                         (preferredPosition === 'bottom' && spaceBottom >= 0) ? 'bottom' :
+                         (spaceTop >= spaceBottom) ? 'top' : 'bottom';
+
         // Reset arrow classes before applying new ones
         if (this.arrow) {
-            this.arrow.classList.remove('rotate-180');
+            this.arrow.classList.remove('rotate-180', 'rotate-225');
             this.arrow.style.top = '';
             this.arrow.style.left = '';
         }
 
-        // Vertical position relative to parent
+        // Vertical position (fixed positioning, so directly use viewport coords)
         switch (position) {
             case 'top':
-                this.target.style.top = `${triggerRect.top - parentRect.top - this.target.offsetHeight - 8}px`;
+                this.target.style.top = `${triggerRect.top - tooltipHeight - distanceToTarget}px`;
                 if (this.arrow) {
-                    this.arrow.classList.add('rotate-180');
-                    this.arrow.style.top = `${this.target.offsetHeight - 2}px`;
+                    this.arrow.style.top = `${tooltipHeight - 2}px`;
                     this.arrow.style.left = '50%';
                 }
                 break;
 
             case 'bottom':
-                this.target.style.top = `${triggerRect.bottom - parentRect.top + 8}px`;
+                this.target.style.top = `${triggerRect.bottom + distanceToTarget}px`;
                 if (this.arrow) {
+                    this.arrow.classList.add('rotate-225');
+                    this.arrow.style.top = '-7px';
                     this.arrow.style.left = '50%';
                 }
                 break;
@@ -494,11 +582,17 @@ export class Floater {
             this.target.remove();
         }
 
+        // Remove the screen-reader description element
+        if (this.srDescription && this.srDescription.parentNode) {
+            this.srDescription.remove();
+        }
+
         Floater.instances.delete(this.trigger);
         delete this.trigger.__insightInstance;
 
         this.trigger = null;
         this.target = null;
+        this.srDescription = null;
     }
 
     /**
