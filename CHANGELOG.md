@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **navigation:** Distinguish fragment targets
 - **ui:** Keep branded headings and wordmarks readable
 - **ui:** Package responsive brand mark styles
+- **scaffold:** Reject conflicting imports and render composition labels
 - **ci:** Stop manual CDN deploys from rolling back the latest alias
 
 ### CI/CD
@@ -68,6 +69,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **corner-ribbon:** Support accessible link actions
 - Preparation for publishing on PyPI
 - Text tokens
+- **contributors:** Scaffold atomic component compositions
+- **contributors:** Add loopback-only component preview
 
 ### Miscellaneous
 
