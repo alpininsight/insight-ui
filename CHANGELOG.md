@@ -26,8 +26,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **navigation:** Distinguish fragment targets
 - **ui:** Keep branded headings and wordmarks readable
 - **ui:** Package responsive brand mark styles
-- **scaffold:** Reject conflicting imports and render composition labels
 - **ci:** Stop manual CDN deploys from rolling back the latest alias
+- **scaffold:** Reject conflicting imports and render composition labels
 
 ### CI/CD
 
@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fix outdated test paths in testing.md
 - **license:** Clarify AGPL or Commercial spurwahl in stub
+- **contributors:** Explain component workflow with a diagram
 - Correct contact email for commercial licensing inquiries
 
 ### Features
