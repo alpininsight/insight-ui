@@ -1,21 +1,4 @@
----
-# =============================================================================
-# Alpine Insight workflow contract
-# Source:
-#   - public template: alpininsight/.github/.github/workflow-templates/feature-ci.yml
-#   - repository policy backend:
-#     - alpininsight/.github-private/.github/workflows/repository-policy-reusable.yml@main
-#   - quality backend:
-#     - alpininsight/.github-private/.github/workflows/python-django-quality-reusable.yml@main
-# Purpose:
-#   - keeps repository policy centralized
-#   - keeps Python/Django quality centralized
-#   - preserves insight-ui's Django 5.2/6.1 compatibility checks inside the
-#     central quality reusable because the reusable currently only matrices
-#     Python versions, not Django versions.
-# =============================================================================
-
-name: Standard CI (Alpine Insight)
+name: Contributor CI
 
 on:
   pull_request:
@@ -23,42 +6,164 @@ on:
     types: [opened, reopened, synchronize, ready_for_review, edited]
   push:
     branches: [develop, main]
+  workflow_dispatch:
 
 permissions:
   contents: read
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 concurrency:
-  group: ci-${{ github.event.pull_request.number || github.ref }}
+  group: contributor-ci-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
-  repository-policy:
-    if: ${{ github.event_name == 'pull_request' }}
-    permissions:
-      contents: read
-      pull-requests: read
-    uses: alpininsight/.github-private/.github/workflows/repository-policy-reusable.yml@main
-
   quality:
-    name: Python/Django Quality
-    uses: alpininsight/.github-private/.github/workflows/python-django-quality-reusable.yml@main
-    with:
-      python_versions: '["3.12", "3.13", "3.14"]'
-      uv_sync_args: --frozen --all-groups
-      django_check_command: |
-        uv export --no-emit-project --no-hashes --no-dev --format requirements.txt -o requirements.txt
-        git diff --exit-code -- requirements.txt
-        uv run python -m django check --settings=tests.settings
-        uv build
-        uv run python scripts/check_distribution.py
-      test_command: |
-        uv pip install "django~=5.2.0"
-        uv run --no-sync pytest
-        uv pip install "django~=6.1.0"
-        uv run --no-sync pytest
-    secrets:
-      github_read_token: ${{ secrets.INSIGHT_TOKEN_RO }}
-      ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+    # Preserve the required status names without private workflow calls.
+    name: Python/Django Quality / Quality (Python ${{ matrix.python }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.12', '3.13', '3.14']
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          python-version: ${{ matrix.python }}
+          enable-cache: false
+      - name: Install locked public dependencies
+        run: uv sync --locked --all-groups
+      - name: Check exported requirements
+        run: |
+          uv export --no-emit-project --no-hashes --no-dev --format requirements.txt -o requirements.txt
+          git diff --exit-code -- requirements.txt
+      - name: Lint and format
+        run: |
+          uv run --no-sync ruff check --no-fix .
+          uv run --no-sync ruff format --check .
+      - name: Test supported Django series
+        run: |
+          for django in 'django~=5.2.0' 'django~=6.1.0'; do
+            uv pip install "$django"
+            uv run --no-sync python -m django check --settings=tests.settings
+            uv run --no-sync pytest
+          done
+
+  hygiene:
+    name: Contributor hygiene
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          python-version: '3.14'
+          enable-cache: false
+      - run: uv sync --locked --all-groups
+      - name: Run public pre-commit hooks
+        # Scan secrets once as a binary, not as a Go hook in every matrix leg.
+        env:
+          PRE_COMMIT_HOME: ${{ runner.temp }}/pre-commit
+          SKIP: no-commit-to-branch
+        run: |
+          uv run --no-sync python - <<'PY'
+          import os
+          from pathlib import Path
+          import yaml
+          config = yaml.safe_load(Path('.pre-commit-config.yaml').read_text())
+          config['repos'] = [repo for repo in config['repos'] if repo['repo'] != 'https://github.com/gitleaks/gitleaks']
+          Path(os.environ['RUNNER_TEMP'], 'pre-commit.yaml').write_text(yaml.safe_dump(config))
+          PY
+          uv run --no-sync pre-commit run --all-files --config "$RUNNER_TEMP/pre-commit.yaml"
+
+  javascript:
+    name: JavaScript and static assets
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+      - run: npm ci
+      - run: npm test
+      - run: npm run verify:static-build
+
+  distribution:
+    name: Wheel and sdist installation
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          python-version: '3.14'
+          enable-cache: false
+      - name: Build and inspect both distributions
+        run: |
+          uv build
+          uv run --no-project python scripts/check_distribution.py
+      - name: Test installed distributions outside the checkout
+        run: uv run --no-project python scripts/smoke_distribution.py
+      - name: Upload the tested package files
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: package-dist-${{ github.sha }}
+          path: |
+            dist/*.whl
+            dist/*.tar.gz
+          if-no-files-found: error
+          retention-days: 7
+
+  gitleaks:
+    name: Secret scanning
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Install checksum-verified Gitleaks
+        run: |
+          curl --fail --location --retry 3 \
+            https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz \
+            --output "$RUNNER_TEMP/gitleaks.tar.gz"
+          echo "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  $RUNNER_TEMP/gitleaks.tar.gz" | sha256sum --check
+          mkdir -p "$RUNNER_TEMP/gitleaks-bin"
+          tar -xzf "$RUNNER_TEMP/gitleaks.tar.gz" -C "$RUNNER_TEMP/gitleaks-bin" gitleaks
+          echo "$RUNNER_TEMP/gitleaks-bin" >> "$GITHUB_PATH"
+      - name: Scan changes and working tree
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          if [[ -n "$PR_BASE_SHA" ]]; then
+            gitleaks git --redact --log-opts="$PR_BASE_SHA..$PR_HEAD_SHA" .
+          else
+            gitleaks git --redact .
+          fi
+          gitleaks dir --redact .
+
+  quality_gate:
+    name: Python/Django Quality / Quality Gate
+    needs: [quality, hygiene, javascript, distribution, gitleaks]
+    if: ${{ always() && !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Require every contributor check
+        env:
+          RESULTS: ${{ toJSON(needs) }}
+        run: |
+          echo "$RESULTS" | jq -e 'all(.[]; .result == "success")'

@@ -317,6 +317,7 @@ test = [
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "pytest-django" },
+    { name = "pyyaml" },
 ]
 
 [package.dev-dependencies]
@@ -333,6 +334,7 @@ pytest = [
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "pytest-django" },
+    { name = "pyyaml" },
 ]
 
 [package.metadata]
@@ -345,6 +347,7 @@ requires-dist = [
     { name = "pytest", marker = "extra == 'test'", specifier = "==9.1.1" },
     { name = "pytest-cov", marker = "extra == 'test'", specifier = "==7.1.0" },
     { name = "pytest-django", marker = "extra == 'test'", specifier = "==4.14.0" },
+    { name = "pyyaml", marker = "extra == 'test'", specifier = ">=6.0.3" },
 ]
 provides-extras = ["test"]
 
@@ -362,6 +365,7 @@ pytest = [
     { name = "pytest", specifier = "==9.1.1" },
     { name = "pytest-cov", specifier = "==7.1.0" },
     { name = "pytest-django", specifier = "==4.14.0" },
+    { name = "pyyaml", specifier = ">=6.0.3" },
 ]
 
 [[package]]

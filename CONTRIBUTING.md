@@ -218,6 +218,7 @@ npm test
 npm run verify:static-build
 uv build
 uv run python scripts/check_distribution.py
+uv run --no-project python scripts/smoke_distribution.py
 git diff --check
 ```
 
@@ -225,6 +226,12 @@ The tests use the package's minimal Django host, not the documentation app.
 Keep Keyboard, ARIA, focus, and lifecycle behavior tests in the library when
 they protect the component contract. Those tests and a local preview are not
 a complete WCAG conformance audit of an application.
+
+Pull requests run [credential-free Contributor CI](docs/testing.md#contributor-ci),
+including separate installation tests for the built wheel and source archive.
+The resulting CI artifacts follow the repository's visibility; they are not
+an automatic PyPI or CDN publication. No private accounts are needed to submit
+or test a component.
 
 Check long text, missing optional values, escaping of untrusted text, repeated
 instances, light/dark mode, and narrow screens. For interactive components, test

@@ -1,26 +1,34 @@
----
-# =============================================================================
-# Alpine Insight workflow template
-# Source:
-#   - public template: alpininsight/.github/.github/workflow-templates/pr-branch-guard.yml
-#   - private backend: alpininsight/.github-private/.github/workflows/repository-policy-reusable.yml@main
-# Purpose:
-#   - copies a thin branch-routing caller into the target repository
-#   - keeps org branch policy logic private and centrally maintained
-# =============================================================================
-
-name: PR Branch Guard (Alpine Insight)
+name: Contributor PR policy
 
 on:
   pull_request:
-    types: [opened, reopened, synchronize, edited]
+    types: [opened, reopened, synchronize, edited, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: read
 
 jobs:
   branch-policy:
-    permissions:
-      contents: read
-      pull-requests: read
-    uses: alpininsight/.github-private/.github/workflows/repository-policy-reusable.yml@main
-    with:
-      require_conventional_title: false
-      require_conventional_commits: false
+    name: branch-policy / Repository Policy
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      # Inspect metadata only, without checking out untrusted PR code.
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            const {data: pr} = await github.rest.pulls.get({
+              ...context.repo, pull_number: context.issue.number
+            });
+            if (!['develop', 'main'].includes(pr.base.ref)) {
+              core.setFailed('Contributions must target develop; releases target main.');
+            }
+            if (pr.base.ref === 'main' &&
+                (pr.head.ref !== 'develop' || pr.head.repo?.full_name !== pr.base.repo.full_name)) {
+              core.setFailed('Production releases must come from this repository\'s develop branch.');
+            }
+            const conventional = /^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([^()\r\n]+\))?!?: \S[^\r\n]*$/;
+            if (!conventional.test(pr.title)) {
+              core.setFailed('Use a Conventional Commit PR title, for example feat(components): add a button.');
+            }
