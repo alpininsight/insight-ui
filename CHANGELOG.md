@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **ui:** Package responsive brand mark styles
 - **ci:** Stop manual CDN deploys from rolling back the latest alias
 - **scaffold:** Reject conflicting imports and render composition labels
+- **license:** Keep LICENSE verbatim and pin the licence text hashes
 
 ### CI/CD
 
