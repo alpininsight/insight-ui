@@ -54,6 +54,9 @@ the package does not install a documentation app, server, or Enterprise service.
 
 ## Contributing And Tests
 
+Start with the [contributor guide](CONTRIBUTING.md) for an illustrated workflow:
+scaffold a component, preview it locally, test it, and submit a pull request.
+
 Work on a feature branch based on `develop`, then open a pull request. Keep
 reusable changes here; coordinate reference examples and application tests in
 the documentation repository instead of copying its application back here.
