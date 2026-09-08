@@ -22,6 +22,13 @@ claim. Consumers must evaluate their complete rendered pages and processes;
 package tests do not certify an application. See the
 [accessibility guide](docs/accessibility.md) for contributor checks and limits.
 
+That evaluation is work, and teams facing a tender questionnaire or an audit
+rarely want to start from scratch. We keep the groundwork prepared as a product:
+an accessibility test catalogue, per-component evidence from the automated runs,
+and the regulatory documentation such reviews ask for. It is offered with the
+Enterprise licence and services described on [insight-ui.com](https://insight-ui.com/).
+None of it is needed to use this package.
+
 ## Installation
 
 Python 3.12+ and Django 5.2 or 6.x are supported. Initial public PyPI publication
