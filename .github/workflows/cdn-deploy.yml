@@ -8,6 +8,11 @@ on:
         description: "Version to deploy, for example 1.2.3."
         required: true
         type: string
+      update_latest:
+        description: "Recovery only: update latest when version is the newest GitHub Release."
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -25,7 +30,9 @@ jobs:
       - name: Resolve CDN version
         id: version
         env:
+          GH_TOKEN: ${{ github.token }}
           INPUT_VERSION: ${{ inputs.version }}
+          UPDATE_LATEST: ${{ inputs.update_latest }}
         run: |
           set -euo pipefail
 
@@ -35,6 +42,17 @@ jobs:
           if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "::error::Invalid or missing CDN version '$version'. Expected X.Y.Z."
             exit 1
+          fi
+
+          # An alias recovery is only safe for the newest release; anything
+          # older would roll the floating latest/ alias backwards.
+          if [[ "$UPDATE_LATEST" == "true" ]]; then
+            latest_tag="$(gh api "repos/${GITHUB_REPOSITORY}/releases/latest" --jq .tag_name)"
+            latest_version="${latest_tag#v}"
+            if [[ "$version" != "$latest_version" ]]; then
+              echo "::error::Refusing to move latest to ${version}; newest GitHub Release is ${latest_version}."
+              exit 1
+            fi
           fi
 
           echo "version=$version" >> "$GITHUB_OUTPUT"
@@ -51,6 +69,11 @@ jobs:
       asset_directory: insight_ui/static/insight_ui
       cdn_prefix: insight-ui
       cdn_version: ${{ needs.resolve-cdn-version.outputs.version }}
+      # The reusable defaults update_latest to true for release publishes.
+      # This workflow is the manual dispatch / backfill path, so latest stays
+      # unchanged by default. The opt-in recovery above is accepted only when
+      # the requested version is the newest GitHub Release.
+      update_latest: ${{ inputs.update_latest }}
       cdn_base_url: https://cdn.alpininsight.ai
       cdn_asset_globs: "*.js,*.css,*.svg,*.png,*.ico,*.webmanifest,*.ttf,*.woff,*.woff2,*.jpg,*.jpeg,*.webp,*.gif"
     secrets:
