@@ -42,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **license:** Clarify AGPL or Commercial spurwahl in stub
 - **contributors:** Explain component workflow with a diagram
 - Correct contact email for commercial licensing inquiries
+- **contributors:** Restore package guides and verify README examples
 
 ### Features
 
