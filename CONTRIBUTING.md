@@ -9,10 +9,24 @@ Build reusable Django components here: their typed configuration, templates,
 JavaScript when needed, source assets, and behavior tests. You do not need the
 separate documentation application or access to private services to contribute.
 
-> The scaffold and preview commands below require the tools introduced in
-> [PR #618](https://github.com/alpininsight/insight-ui/pull/618). Until it is
-> merged, these commands are not available on `develop`. This guide does not
-> copy that implementation; after the merge, update your source checkout first.
+The scaffold and preview commands are available on `develop`. Start from an
+updated source checkout; an older installed wheel is not the contributor host.
+
+## Package Reference
+
+The [package guides](docs/README.md) are available in this repository without
+access to the separate documentation application. Read the relevant guide when
+changing a component rather than treating the generated skeleton as finished:
+
+| Task | Guide |
+| --- | --- |
+| Use the package in a Django application | [Getting started](docs/getting-started.md) |
+| Change Configs, tags or composition | [Components](docs/components.md) and [conventions](docs/conventions.md) |
+| Change colors, surfaces, radii or shadows | [Design system](docs/design-system.md) |
+| Build CSS/JS or serve package assets | [Static assets](docs/static-assets.md) |
+| Add translated strings or RTL behavior | [Internationalization](docs/i18n.md) |
+| Check keyboard, focus and ARIA behavior | [Accessibility](docs/accessibility.md) |
+| Validate and submit a component | [Testing](docs/testing.md) and [component checklist](docs/new-component-checklist.md) |
 
 ## The Workflow
 

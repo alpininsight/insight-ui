@@ -10,17 +10,17 @@ keyboard-accessible components, localization, and light/dark themes.
 ## Package Scope
 
 This repository contains the `insight_ui` Python package, its generic component
-tests, and the source assets used to build its CDN distribution. It does not
+tests, public contributor guides, and the source assets used to build its CDN distribution. It does not
 contain or deploy a documentation website.
 
 The documentation application, component catalog, examples, documentation tests,
 and Enterprise deliverables are maintained separately in `insight-ui-docs`.
 API docstrings and configuration metadata remain in the library because they
-describe its public API. Components are built to WCAG 2.1 AA and are WCAG 2.2 ready, with a
-self-assessment and known limitations documented per component on the
-documentation site. WCAG conformance is defined for complete web pages, so
-this is not a certification of the library or of an application built with
-it; conformance evidence is produced through the Enterprise Service.
+describe its public API. Keyboard, focus and ARIA behavior tests also remain
+here. WCAG 2.2 AA is a design target, not a verified package-wide conformance
+claim. Consumers must evaluate their complete rendered pages and processes;
+package tests do not certify an application. See the
+[accessibility guide](docs/accessibility.md) for contributor checks and limits.
 
 ## Installation
 
@@ -32,27 +32,51 @@ decision. Once a release is available:
 uv add insight-ui
 ```
 
-Add `insight_ui` to your existing Django project's `INSTALLED_APPS`:
+Add `insight_ui` to your existing Django project's `INSTALLED_APPS` and ensure
+Django staticfiles is enabled. Keep your other applications and settings:
 
 ```python
 INSTALLED_APPS = [
     # Your Django applications...
+    "django.contrib.staticfiles",
     "insight_ui",
 ]
+STATIC_URL = "/static/"
 ```
 
-Use the template tags in your own templates:
+Complete the [host setup](docs/getting-started.md#configure-the-host), including
+the base-template context processor and static assets. Then use the real
+component tags in your own template:
 
 ```django
+{% extends "insight_ui/base.html" %}
 {% load insight_tags %}
-{% button label="Get started" type="primary" %}
+
+{% block title %}My application{% endblock %}
+{% block content %}
+    {% button label="Get started" type="primary" %}
+    {% card title="Welcome" subtitle="Your first card" content="Card content goes here." %}
+    {% alert type="success" message="Component rendered successfully." dismissible=False %}
+{% endblock %}
 ```
 
-See the [installation guide](https://insight-ui.com/docs/installation) for host
-settings, base templates, staticfiles, and optional CDN configuration. Installing
+The base template loads CSS/JS; individual component tags do not. `card` takes
+`content` or a `CardConfig`, not an `endcard` closing tag. `alert` uses `message`,
+not a `title` argument. Labels supplied by the host should be translated there;
+see [internationalization](docs/i18n.md).
+
+See [Getting started](docs/getting-started.md) for a complete first page and
+[Static assets](docs/static-assets.md) for optional CDN configuration. Installing
 the package does not install a documentation app, server, or Enterprise service.
 
 ## Contributing And Tests
+
+Public package guides are kept here: [getting started](docs/getting-started.md),
+[components](docs/components.md), [design tokens](docs/design-system.md),
+[static assets](docs/static-assets.md), [translations](docs/i18n.md), and
+[accessibility](docs/accessibility.md). See the [guide index](docs/README.md)
+for conventions, tests and the component checklist. These Markdown guides are
+not a documentation application and do not require access to private services.
 
 Start with the [contributor guide](CONTRIBUTING.md) for an illustrated workflow:
 scaffold a component, preview it locally, test it, and submit a pull request.
