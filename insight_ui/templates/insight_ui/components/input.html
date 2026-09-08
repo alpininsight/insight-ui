@@ -1,32 +1,36 @@
 {% load i18n insight_tags %}
 
-<div class="flex flex-col w-full">
-    <label for={{ input_config.tag_id }} class="flex gap-1 mb-1 font-bold text-sm text-insight-headline">
-        {% if input_config.icon %}
-            {% icon input_config.icon %}
-        {% endif %}
-        <span class="self-end">{{ input_config.label }}</span>
-        {% if input_config.required %}<span class="text-insight-danger-foreground" aria-label="{% trans 'Required' %}">*</span>{% endif %}
-        {% if input_config.explanation %}
-            <div class="text-insight-body" data-insight-tooltip="{{ input_config.explanation }}" data-position="top">
-                {% icon name="question-mark" size="xs" %}
-            </div>
-        {% endif %}
-    </label>
-    <input
-        type="{{ input_config.input_type }}"
-        {% if input_config.tag_id %}id="{{ input_config.tag_id }}"{% endif %}
-        {% if input_config.name %}name="{{ input_config.name }}"{% endif %}
-        {% if input_config.placeholder %}placeholder="{{ input_config.placeholder }}"{% endif %}
-        {% if input_config.value %}value="{{ input_config.value }}"{% endif %}
-        {% if input_config.minimum %}min="{{ input_config.minimum }}"{% endif %}
-        {% if input_config.maximum %}max="{{ input_config.maximum }}"{% endif %}
-        {% if input_config.min_length %}minlength="{{ input_config.min_length }}"{% endif %}
-        {% if input_config.max_length %}maxlength="{{ input_config.max_length }}"{% endif %}
-        {% if input_config.checked %}checked{% endif %}
-        {% if input_config.required %}required{% endif %}
-        {% if input_config.disabled %}disabled{% endif %}
-        {% if input_config.disabled and input_config.disabled_reason %}data-insight-tooltip="{{ input_config.disabled_reason }}"{% endif %}
-        class="input w-full"
-    >
-</div>
+{% with field_id=input_config.tag_id|default:input_config.name %}
+    <div class="flex flex-col w-full">
+        <label{% if field_id %} for="{{ field_id }}"{% endif %} class="flex gap-1 mb-1 font-bold text-sm text-insight-headline">
+            {% if input_config.icon %}
+                {% icon input_config.icon %}
+            {% endif %}
+            <span class="self-end">{{ input_config.label }}</span>
+            {% if input_config.required %}<span class="text-insight-danger-foreground" aria-hidden="true">*</span>{% endif %}
+            {% if input_config.explanation %}
+                <div class="text-insight-body" data-insight-tooltip="{{ input_config.explanation }}" data-position="top">
+                    {% icon name="question-mark" size="xs" %}
+                </div>
+            {% endif %}
+        </label>
+        <input
+            type="{{ input_config.input_type }}"
+            {% if field_id %}id="{{ field_id }}"{% endif %}
+            {% if input_config.name %}name="{{ input_config.name }}"{% endif %}
+            {% if input_config.placeholder %}placeholder="{{ input_config.placeholder }}"{% endif %}
+            {% if input_config.value %}value="{{ input_config.value }}"{% endif %}
+            {% if input_config.minimum %}min="{{ input_config.minimum }}"{% endif %}
+            {% if input_config.maximum %}max="{{ input_config.maximum }}"{% endif %}
+            {% if input_config.min_length %}minlength="{{ input_config.min_length }}"{% endif %}
+            {% if input_config.max_length %}maxlength="{{ input_config.max_length }}"{% endif %}
+            {% if input_config.checked %}checked{% endif %}
+            {% if input_config.required %}required{% endif %}
+            {% if input_config.disabled %}disabled{% endif %}
+            {% if input_config.disabled and input_config.disabled_reason %}data-insight-tooltip="{{ input_config.disabled_reason }}"{% endif %}
+            {% include "insight_ui/components/_form_field_aria_attrs.html" with field_id=field_id required=input_config.required help_text=input_config.help_text error=input_config.error %}
+            class="input w-full"
+        >
+        {% include "insight_ui/components/_form_field_messages.html" with field_id=field_id help_text=input_config.help_text error=input_config.error %}
+    </div>
+{% endwith %}

@@ -90,3 +90,45 @@ class TestRadioGroup(TemplateTagsTestCase):
         """RadioItemConfig can be constructed without tag_id."""
         item = RadioItemConfig(value="gpt-4")
         assert item.tag_id == ""
+
+    def test_radio_group_renders_help_text_and_error_on_fieldset(self) -> None:
+        """The group error belongs to the fieldset and follows the legend."""
+        config = RadioGroupConfig(
+            name="model",
+            label="Model",
+            items=[RadioItemConfig(tag_id="m1", value="gpt-4", label="GPT-4")],
+            help_text="Choose the model used for inference",
+            error="Please choose a model",
+        )
+        rendered = self.render_template("{% load insight_tags %}{% radio_group config %}", {"config": config})
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        fieldset = soup.find("fieldset")
+        assert fieldset["role"] == "radiogroup"  # ARIA 1.2: aria-invalid is not allowed on a plain group
+        assert fieldset["aria-invalid"] == "true"
+        assert fieldset["aria-errormessage"] == "model-error"
+        assert fieldset["aria-describedby"] == "model-help model-error"
+        assert soup.find("p", id="model-help").get_text(strip=True) == "Choose the model used for inference"
+        error = soup.find("p", id="model-error")
+        assert not error.has_attr("role")  # field errors are linked text, not live regions
+        assert error.get_text(strip=True) == "Please choose a model"
+
+        # Error paragraph comes right after the legend, before the radio inputs
+        children = [child for child in fieldset.children if getattr(child, "name", None)]
+        assert [child.name for child in children[:3]] == ["legend", "p", "p"]
+
+        # Radios themselves stay untouched
+        for radio in fieldset.find_all("input"):
+            assert not radio.has_attr("aria-invalid")
+            assert not radio.has_attr("aria-describedby")
+
+    def test_radio_group_emits_nothing_when_messages_are_empty(self) -> None:
+        """A plain radio group carries no error semantics and no message paragraphs."""
+        config = RadioGroupConfig(name="model", label="Model", items=[RadioItemConfig(value="gpt-4", label="GPT-4")])
+        rendered = self.render_template("{% load insight_tags %}{% radio_group config %}", {"config": config})
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        fieldset = soup.find("fieldset")
+        assert not fieldset.has_attr("aria-invalid")
+        assert not fieldset.has_attr("aria-describedby")
+        assert soup.find("p") is None

@@ -45,3 +45,51 @@ class TestSelect(TemplateTagsTestCase):
         label = soup.find("label")
         assert select["id"] == "country"
         assert label["for"] == "country"
+
+    def test_select_renders_help_text_and_error_semantics(self) -> None:
+        """help_text and error are linked via aria-describedby, aria-invalid and aria-errormessage."""
+        config = SelectConfig(
+            name="country",
+            label="Country",
+            options={"de": "Germany"},
+            required=True,
+            help_text="Pick your residence",
+            error="Country is required",
+        )
+        rendered = self.render_template("{% load insight_tags %}{% select config %}", {"config": config})
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        select = soup.find("select")
+        assert select.has_attr("required")
+        assert select["aria-required"] == "true"
+        assert select["aria-invalid"] == "true"
+        assert select["aria-describedby"] == "country-help country-error"
+        assert select["aria-errormessage"] == "country-error"
+        assert soup.find("p", id="country-help").get_text(strip=True) == "Pick your residence"
+        error = soup.find("p", id="country-error")
+        assert not error.has_attr("role")  # field errors are linked text, not live regions
+        assert error.get_text(strip=True) == "Country is required"
+
+    def test_select_emits_nothing_when_messages_are_empty(self) -> None:
+        """Plain optional select carries no error semantics and no message paragraphs."""
+        config = SelectConfig(name="country", label="Country", options={"de": "Germany"})
+        rendered = self.render_template("{% load insight_tags %}{% select config %}", {"config": config})
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        select = soup.find("select")
+        for attr in ("aria-required", "aria-invalid", "aria-describedby", "aria-errormessage"):
+            assert not select.has_attr(attr)
+        assert soup.find("p") is None
+
+    def test_required_marker_is_decorative_so_required_is_announced_once(self) -> None:
+        """The asterisk carries no text alternative; aria-required conveys the state."""
+        config = SelectConfig(options=["Germany"], tag_id="country", name="country", label="Label", required=True)
+        rendered = self.render_template("{% load insight_tags %}{% select config %}", {"config": config})
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        marker = soup.select_one("label span[aria-hidden='true']")
+        assert marker is not None, "required asterisk must be hidden from the accessibility tree"
+        assert marker.get_text(strip=True) == "*"
+        assert not marker.has_attr("aria-label")
+        assert soup.find("select")["aria-required"] == "true"
+        assert "Required" not in soup.find("label").get_text()

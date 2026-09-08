@@ -50,3 +50,40 @@ class TestCheckbox(TemplateTagsTestCase):
         assert checkboxes[1].has_attr("disabled")
         assert label_spans[1].get_text() == "Subscribe for Newsletter"
         assert "text-insight-body" in label_spans[1]["class"]
+
+    def test_checkbox_renders_help_text_and_error_semantics(self) -> None:
+        """help_text and error are linked via aria-describedby, aria-invalid and aria-errormessage."""
+        template_string = """
+        {% load insight_tags %}
+        {% checkbox tag_id="accept-terms" name="accept_terms" value="accepted" label="I accept" required=True help_text="Please read the terms first" error="You must accept the terms" %}
+        """
+        soup = BeautifulSoup(self.render_template(template_string), "html.parser")
+
+        checkbox = soup.find("input")
+        assert checkbox.has_attr("required")
+        assert checkbox["aria-required"] == "true"
+        assert checkbox["aria-invalid"] == "true"
+        assert checkbox["aria-describedby"] == "accept-terms-help accept-terms-error"
+        assert checkbox["aria-errormessage"] == "accept-terms-error"
+
+        # Messages live outside the wrapping <label> so the label text stays clean
+        label = soup.find("label")
+        assert label.find("p") is None
+        assert soup.find("p", id="accept-terms-help").get_text(strip=True) == "Please read the terms first"
+        error = soup.find("p", id="accept-terms-error")
+        assert not error.has_attr("role")  # field errors are linked text, not live regions
+        assert error.get_text(strip=True) == "You must accept the terms"
+
+    def test_checkbox_emits_nothing_when_messages_are_empty(self) -> None:
+        """Plain optional checkbox carries no error semantics and no message paragraphs."""
+        template_string = """
+        {% load insight_tags %}
+        {% checkbox tag_id="newsletter" name="newsletter" value="yes" label="Newsletter" %}
+        """
+        soup = BeautifulSoup(self.render_template(template_string), "html.parser")
+
+        checkbox = soup.find("input")
+        for attr in ("required", "aria-required", "aria-invalid", "aria-describedby", "aria-errormessage"):
+            assert not checkbox.has_attr(attr)
+        assert soup.find("p") is None
+        assert soup.find("div") is None

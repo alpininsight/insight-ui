@@ -195,6 +195,8 @@ class InputFieldConfig(BaseFormFieldConfig):
         min_length: Minimum number of characters in a text field.
         max_length: Maximum number of characters in a text field.
         checked: **True** if `input_type='checkbox'` and the checkbox should be selected.
+        help_text: Persistent hint shown below the control and linked via `aria-describedby`.
+        error: Validation error shown as text below the control and linked via `aria-describedby`; sets `aria-invalid` and `aria-errormessage`.
 
     """
 
@@ -205,6 +207,8 @@ class InputFieldConfig(BaseFormFieldConfig):
             label="E-Mail Address",
             placeholder="you@example.com",
             required=True,
+            help_text="We only use your address to send the confirmation link.",
+            error="Please enter a valid e-mail address.",
         )
         """
 
@@ -223,6 +227,18 @@ class InputFieldConfig(BaseFormFieldConfig):
     max_length: int | None = field(default=None, metadata={"doc": _("Maximum number of characters in a text field.")})
     checked: bool = field(
         default=False, metadata={"doc": _("**True** if `input_type='checkbox'` and the checkbox should be selected.")}
+    )
+    help_text: str = field(
+        default="",
+        metadata={"doc": _("Persistent hint shown below the control and linked via `aria-describedby`.")},
+    )
+    error: str = field(
+        default="",
+        metadata={
+            "doc": _(
+                "Validation error shown as text below the control and linked via `aria-describedby`; sets `aria-invalid` and `aria-errormessage`."
+            )
+        },
     )
 
     def __post_init__(self) -> None:
@@ -254,6 +270,8 @@ class TextareaConfig(BaseFormFieldConfig):
         value: The value of the input field.
         rows: Determines the number of lines.
         cols: Determines the number of characters in a line.
+        help_text: Persistent hint shown below the control and linked via `aria-describedby`.
+        error: Validation error shown as text below the control and linked via `aria-describedby`; sets `aria-invalid` and `aria-errormessage`.
 
     """
 
@@ -264,6 +282,7 @@ class TextareaConfig(BaseFormFieldConfig):
             placeholder="Enter your message here...",
             rows=5,
             required=True,
+            help_text="Maximum 500 characters.",
         )
         """
 
@@ -273,6 +292,18 @@ class TextareaConfig(BaseFormFieldConfig):
     value: str = field(default="", metadata={"doc": _("The value of the input field.")})
     rows: int = field(default=3, metadata={"doc": _("Determines the number of lines.")})
     cols: int | None = field(default=None, metadata={"doc": _("Determines the number of characters in a line.")})
+    help_text: str = field(
+        default="",
+        metadata={"doc": _("Persistent hint shown below the control and linked via `aria-describedby`.")},
+    )
+    error: str = field(
+        default="",
+        metadata={
+            "doc": _(
+                "Validation error shown as text below the control and linked via `aria-describedby`; sets `aria-invalid` and `aria-errormessage`."
+            )
+        },
+    )
 
 
 @dataclass
@@ -290,6 +321,8 @@ class CheckboxConfig(BaseFormFieldConfig):
         required: **True** if the field must be filled in.
         value: The value of the checkbox (this is not the state, see 'checked' for that).
         checked: **True** if the checkbox should be selected.
+        help_text: Persistent hint shown below the control and linked via `aria-describedby`.
+        error: Validation error shown as text below the control and linked via `aria-describedby`; sets `aria-invalid` and `aria-errormessage`.
 
     """
 
@@ -306,6 +339,18 @@ class CheckboxConfig(BaseFormFieldConfig):
         default="", metadata={"doc": _("The value of the checkbox (this is not the state, see 'checked' for that).")}
     )
     checked: bool = field(default=False, metadata={"doc": _("**True** if the checkbox should be selected.")})
+    help_text: str = field(
+        default="",
+        metadata={"doc": _("Persistent hint shown below the control and linked via `aria-describedby`.")},
+    )
+    error: str = field(
+        default="",
+        metadata={
+            "doc": _(
+                "Validation error shown as text below the control and linked via `aria-describedby`; sets `aria-invalid` and `aria-errormessage`."
+            )
+        },
+    )
 
 
 @dataclass
@@ -525,6 +570,8 @@ class RadioGroupConfig:
         items: A list of the radio elements.
         as_row: **True** if the radio elements should be displayed side by side.
         current_value: The value of the currently selected radio button.
+        help_text: Persistent hint shown below the control and linked via `aria-describedby`.
+        error: Validation error shown as text below the control and linked via `aria-describedby`; sets `aria-invalid` and `aria-errormessage`.
 
     """
 
@@ -548,6 +595,18 @@ class RadioGroupConfig:
         default=True, metadata={"doc": _("**True** if the radio elements should be displayed side by side.")}
     )
     current_value: str = field(default="", metadata={"doc": _("The value of the currently selected radio button.")})
+    help_text: str = field(
+        default="",
+        metadata={"doc": _("Persistent hint shown below the control and linked via `aria-describedby`.")},
+    )
+    error: str = field(
+        default="",
+        metadata={
+            "doc": _(
+                "Validation error shown as text below the control and linked via `aria-describedby`; sets `aria-invalid` and `aria-errormessage`."
+            )
+        },
+    )
 
     def __post_init__(self) -> None:
         """Set first option for current_value if empty, and validate it against items."""
@@ -777,6 +836,8 @@ class SelectConfig(BaseFormFieldConfig):
         explanation: A brief description of the filter that appears in a tooltip.
         options: List of values that can be selected.
         selected_option: Value (the key value, if the options were passed as a dict) of the currently selected option.
+        help_text: Persistent hint shown below the control and linked via `aria-describedby`.
+        error: Validation error shown as text below the control and linked via `aria-describedby`; sets `aria-invalid` and `aria-errormessage`.
 
     Note:
         If `options` is a list, the value is also used as the name.
@@ -802,6 +863,18 @@ class SelectConfig(BaseFormFieldConfig):
         default="",
         metadata={
             "doc": _("Value (the key value, if the options were passed as a dict) of the currently selected option.")
+        },
+    )
+    help_text: str = field(
+        default="",
+        metadata={"doc": _("Persistent hint shown below the control and linked via `aria-describedby`.")},
+    )
+    error: str = field(
+        default="",
+        metadata={
+            "doc": _(
+                "Validation error shown as text below the control and linked via `aria-describedby`; sets `aria-invalid` and `aria-errormessage`."
+            )
         },
     )
 

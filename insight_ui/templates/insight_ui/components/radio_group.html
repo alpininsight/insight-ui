@@ -1,20 +1,28 @@
-<fieldset>
-    {% if radio_group_config.label %}
-        <legend class="flex gap-1 mb-1 font-bold text-sm text-insight-headline">{{ radio_group_config.label }}</legend>
-    {% endif %}
-    <div class="flex {% if not as_row %}flex-col space-y-1{% else %}space-x-4{% endif %}">
-        {% for item in radio_group_config.items %}
-            <label class="flex gap-1 items-center"{% if item.disabled and item.disabled_reason %} data-insight-tooltip="{{ item.disabled_reason }}"{% endif %}>
-                <input
-                    type="radio"
-                    {% if item.tag_id %}id="{{ item.tag_id }}"{% endif %}
-                    name="{{ radio_group_config.name }}"
-                    value="{{ item.value }}"
-                    {% if item.disabled %}disabled{% endif %}
-                    {% if radio_group_config.current_value == item.value %}checked{% endif %}
-                >
-                <span class="{% if item.disabled %}text-insight-body{% else %}text-insight-headline{% endif %} text-sm">{{ item.label }}</span>
-            </label>
-        {% endfor %}
-    </div>
-</fieldset>
+{% with field_id=radio_group_config.name %}
+    <fieldset
+        role="radiogroup"
+        {% if radio_group_config.error %}aria-invalid="true"{% endif %}
+        {% if field_id and radio_group_config.error %}aria-errormessage="{{ field_id }}-error"{% endif %}
+        {% if field_id and radio_group_config.help_text or field_id and radio_group_config.error %}aria-describedby="{% if radio_group_config.help_text %}{{ field_id }}-help{% endif %}{% if radio_group_config.help_text and radio_group_config.error %} {% endif %}{% if radio_group_config.error %}{{ field_id }}-error{% endif %}"{% endif %}
+    >
+        {% if radio_group_config.label %}
+            <legend class="flex gap-1 mb-1 font-bold text-sm text-insight-headline">{{ radio_group_config.label }}</legend>
+        {% endif %}
+        {% include "insight_ui/components/_form_field_messages.html" with field_id=field_id help_text=radio_group_config.help_text error=radio_group_config.error %}
+        <div class="flex {% if not as_row %}flex-col space-y-1{% else %}space-x-4{% endif %}">
+            {% for item in radio_group_config.items %}
+                <label class="flex gap-1 items-center"{% if item.disabled and item.disabled_reason %} data-insight-tooltip="{{ item.disabled_reason }}"{% endif %}>
+                    <input
+                        type="radio"
+                        {% if item.tag_id %}id="{{ item.tag_id }}"{% endif %}
+                        name="{{ radio_group_config.name }}"
+                        value="{{ item.value }}"
+                        {% if item.disabled %}disabled{% endif %}
+                        {% if radio_group_config.current_value == item.value %}checked{% endif %}
+                    >
+                    <span class="{% if item.disabled %}text-insight-body{% else %}text-insight-headline{% endif %} text-sm">{{ item.label }}</span>
+                </label>
+            {% endfor %}
+        </div>
+    </fieldset>
+{% endwith %}

@@ -1,12 +1,19 @@
-<label class="flex gap-1 items-center"{% if checkbox_config.disabled and checkbox_config.disabled_reason %} data-insight-tooltip="{{ checkbox_config.disabled_reason }}"{% endif %}>
-    <input
-        type="checkbox"
-        {% if checkbox_config.tag_id %}id="{{ checkbox_config.tag_id }}"{% endif %}
-        name="{{ checkbox_config.name }}"
-        value="{{ checkbox_config.value }}"
-        {% if checkbox_config.checked %}checked{% endif %}
-        {% if checkbox_config.disabled %}disabled{% endif %}
-        class="accent-insight-primary"
-    >
-    <span class="{% if checkbox_config.disabled %}text-insight-body{% else %}text-insight-headline{% endif %} text-sm">{{ checkbox_config.label }}</span>
-</label>
+{% with field_id=checkbox_config.tag_id|default:checkbox_config.name %}
+    {% if checkbox_config.help_text or checkbox_config.error %}<div class="flex flex-col">{% endif %}
+    <label class="flex gap-1 items-center"{% if checkbox_config.disabled and checkbox_config.disabled_reason %} data-insight-tooltip="{{ checkbox_config.disabled_reason }}"{% endif %}>
+        <input
+            type="checkbox"
+            {% if checkbox_config.tag_id %}id="{{ checkbox_config.tag_id }}"{% endif %}
+            name="{{ checkbox_config.name }}"
+            value="{{ checkbox_config.value }}"
+            {% if checkbox_config.checked %}checked{% endif %}
+            {% if checkbox_config.required %}required{% endif %}
+            {% if checkbox_config.disabled %}disabled{% endif %}
+            {% include "insight_ui/components/_form_field_aria_attrs.html" with field_id=field_id required=checkbox_config.required help_text=checkbox_config.help_text error=checkbox_config.error %}
+            class="accent-insight-primary"
+        >
+        <span class="{% if checkbox_config.disabled %}text-insight-body{% else %}text-insight-headline{% endif %} text-sm">{{ checkbox_config.label }}</span>
+    </label>
+    {% include "insight_ui/components/_form_field_messages.html" with field_id=field_id help_text=checkbox_config.help_text error=checkbox_config.error %}
+    {% if checkbox_config.help_text or checkbox_config.error %}</div>{% endif %}
+{% endwith %}

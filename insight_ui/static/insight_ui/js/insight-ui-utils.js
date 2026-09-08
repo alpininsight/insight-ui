@@ -81,10 +81,12 @@ window.InsightUI.handlers = {
         });
 
         // Form errors dismiss handler
+        // The form component renders its HTMX error container as #form-error
+        // (role="alert"); #form-result is kept for existing integrations.
         document.addEventListener('click', function(e) {
             const dismissBtn = e.target.closest('[data-insight-dismiss="form-errors"]');
             if (dismissBtn) {
-                const formResult = dismissBtn.closest('#form-result');
+                const formResult = dismissBtn.closest('#form-error, #form-result') || dismissBtn.closest('[role="alert"]');
                 if (formResult) {
                     formResult.innerHTML = '';
                 }
