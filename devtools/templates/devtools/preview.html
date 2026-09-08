@@ -1,0 +1,45 @@
+{% load static insight_tags %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ manifest.name }} | Local component preview</title>
+    <link rel="icon" href="{% static 'insight_ui/favicon/favicon.svg' %}" type="image/svg+xml">
+    <link rel="stylesheet" href="{% static 'insight_ui/css/tailwind.css' %}">
+    <link rel="stylesheet" href="{% static 'devtools/preview.css' %}">
+    <script src="{% url 'javascript-catalog' %}" defer></script>
+    <script src="{% static 'insight_ui/js/insight-ui-debug.js' %}" defer></script>
+    <script src="{% static 'insight_ui/js/insight-ui-utils.js' %}" defer></script>
+    <script src="{% static 'devtools/preview.js' %}" type="module"></script>
+  </head>
+  <body class="text-insight-body bg-insight-base">
+    <header class="preview-toolbar">
+      <div>
+        <p class="preview-eyebrow">Insight UI / Local contributor preview</p>
+        <h1>{{ manifest.name }}</h1>
+        <p>{{ manifest.level|capfirst }} &middot; {{ manifest.category }} &middot; <code>{{ manifest.slug }}</code></p>
+      </div>
+      <div class="preview-controls">
+        <nav aria-label="Component examples">
+          {% for example in manifest.examples %}
+            <a href="?example={{ example.name|urlencode }}" {% if example.name == example_name %}aria-current="page"{% endif %}>{{ example.name }}</a>
+          {% endfor %}
+        </nav>
+        <button type="button" class="btn btn-secondary" data-insight-theme-toggle>Light / dark</button>
+      </div>
+    </header>
+    <main class="preview-main">
+      <section class="preview-stage" aria-label="{{ manifest.name }} component preview">
+        {{ component_html }}
+      </section>
+      <p class="preview-error" id="preview-error" role="alert" hidden></p>
+      <aside class="preview-note" aria-label="Preview boundaries">
+        <p>Local CSS, fonts and JavaScript. No CDN, documentation catalog or application backend.</p>
+        <p>This is a component scaffold, not an accessibility audit. HTMX requests and external integrations require your own test host.</p>
+        <p>Edit the component and its manifest example, then reload this page. After changing CSS utilities, run <code>npm run build:static-all</code>.</p>
+      </aside>
+    </main>
+    {{ component_modules|json_script:"preview-component-modules" }}
+  </body>
+</html>

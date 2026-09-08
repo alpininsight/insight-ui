@@ -273,7 +273,7 @@ packages = ["insight_ui"]
 
 [tool.hatch.build.targets.sdist]
 include = [
-    "/insight_ui", "/tests", "/scripts", "/package.json", "/package-lock.json",
+    "/insight_ui", "/tests", "/scripts", "/devtools", "/package.json", "/package-lock.json",
     "/pyproject.toml", "/pytest.ini", "/vitest.config.js", "/README.md", "/LICENSE",
     "/NOTICE", "/REUSE.toml", "/LICENSES",
 ]

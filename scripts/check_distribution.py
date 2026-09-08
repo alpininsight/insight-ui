@@ -16,11 +16,25 @@ REQUIRED = {
     "insight_ui/static/insight_ui/css/tailwind.css",
     "insight_ui/static/insight_ui/js/insight-ui-init.js",
 }
+SOURCE_ONLY = {
+    "devtools/__init__.py",
+    "devtools/__main__.py",
+    "devtools/settings.py",
+    "devtools/preview.py",
+    "devtools/urls.py",
+    "devtools/templates/devtools/preview.html",
+    "devtools/static/devtools/preview.css",
+    "devtools/static/devtools/preview.js",
+    "tests/__init__.py",
+    "tests/settings.py",
+    "tests/context.py",
+}
 
 
 def check_archive(archive: Path) -> None:
     """Fail if app/enterprise files leaked or required public assets are absent."""
-    if archive.suffix == ".whl":
+    is_wheel = archive.suffix == ".whl"
+    if is_wheel:
         with zipfile.ZipFile(archive) as wheel:
             names = {PurePosixPath(name) for name in wheel.namelist()}
     else:
@@ -29,9 +43,12 @@ def check_archive(archive: Path) -> None:
     leaked = sorted(
         str(name)
         for name in names
-        if FORBIDDEN.intersection(name.parts) or any(name.name.startswith(asset) for asset in DOC_ASSETS)
+        if FORBIDDEN.intersection(name.parts)
+        or (is_wheel and "devtools" in name.parts)
+        or any(name.name.startswith(asset) for asset in DOC_ASSETS)
     )
-    missing = sorted(REQUIRED - {str(name) for name in names})
+    required = REQUIRED if is_wheel else REQUIRED | SOURCE_ONLY
+    missing = sorted(required - {str(name) for name in names})
     if leaked or missing:
         message = f"{archive.name}: unexpected={leaked}; missing={missing}"
         raise SystemExit(message)
