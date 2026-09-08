@@ -39,7 +39,7 @@
         </div>
       {% endif %}
       {% if login_config.logo %}
-        <div class="flex {% if login_config.logo.position == 'start' %}justify-start{% elif login_config.logo.position == 'end' %}justify-end{% else %}justify-center{% endif %}">
+        <div class="flex {% if login_config.logo.position == 'start' %}justify-start{% elif login_config.logo.position == 'end' %}justify-end{% else %}justify-center{% endif %} pb-4">
           {% logo config=login_config.logo %}
         </div>
       {% endif %}
