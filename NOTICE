@@ -7,7 +7,10 @@ available, see COMMERCIAL_LICENSE.md.
 
 Licensing metadata follows the REUSE specification (https://reuse.software):
 every file is covered either by an SPDX header or by REUSE.toml, and the full
-text of every licence used is stored under LICENSES/.
+text of every licence used is stored under LICENSES/. LICENSE and the files in
+LICENSES/ are verbatim copies of the published licence texts; project-specific
+terms are stated in this file and in COMMERCIAL_LICENSE.md, never inside a
+licence text.
 
 Third-party components distributed with this package
 -----------------------------------------------------
