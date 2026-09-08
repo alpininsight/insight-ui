@@ -476,7 +476,7 @@ class LayoutNode(Node):
     """
 
     # Override in subclasses with the set of valid parameters
-    valid_params: frozenset[str] = frozenset({"class"})
+    valid_params: frozenset[str] = frozenset({"id", "class"})
 
     def __init__(self, nodelist: NodeList, *, tag_name: str = "layout", **kwargs: object) -> None:
         """Initialize the layout node with content and parameters."""
@@ -515,7 +515,11 @@ class LayoutNode(Node):
         content = self.nodelist.render(context)
         class_str = " ".join(classes)
 
-        return f'<div class="{class_str}">{content}</div>'
+        # Optional id attribute
+        element_id = resolved.get("id", "")
+        id_attr = f' id="{element_id}"' if element_id else ""
+
+        return f'<div{id_attr} class="{class_str}">{content}</div>'
 
 
 # =============================================================================
@@ -543,6 +547,7 @@ class FlexNode(LayoutNode):
     responsive_stack: bool = False  # If True, stack on mobile (flex-col md:flex-row)
     valid_params: frozenset[str] = frozenset(
         {
+            "id",
             "gap",
             "padding",
             "h_align",
@@ -693,7 +698,7 @@ class SectionNode(LayoutNode):
 class PageNode(LayoutNode):
     """Page container with full width, consistent padding, and optional height control."""
 
-    valid_params: frozenset[str] = frozenset({"padding", "height", "class"})
+    valid_params: frozenset[str] = frozenset({"id", "padding", "height", "class"})
 
     def build_classes(self, kwargs: dict[str, object]) -> list[str]:
         """Build page container CSS classes."""
@@ -747,7 +752,7 @@ class GridNode(LayoutNode):
     adapts correctly regardless of where it's placed (sidebar, modal, card, etc.).
     """
 
-    valid_params: frozenset[str] = frozenset({"cols", "gap", "min", "fixed", "class"})
+    valid_params: frozenset[str] = frozenset({"id", "cols", "gap", "min", "fixed", "class"})
 
     def build_classes(self, kwargs: dict[str, object]) -> list[str]:
         """Build grid container CSS classes."""
@@ -799,6 +804,10 @@ class GridNode(LayoutNode):
         # Get user-provided extra classes
         extra_classes = str(resolved.get("class", "")).strip()
 
+        # Optional id attribute
+        element_id = resolved.get("id", "")
+        id_attr = f' id="{element_id}"' if element_id else ""
+
         content = self.nodelist.render(context)
 
         # Wrap in container element for container query support
@@ -814,7 +823,7 @@ class GridNode(LayoutNode):
                 grid_html = f'<div class="{grid_class_str}" style="{style}">{content}</div>'
             else:
                 grid_html = f'<div class="{grid_class_str}">{content}</div>'
-            return f'<div class="{wrapper_classes}">{grid_html}</div>'
+            return f'<div{id_attr} class="{wrapper_classes}">{grid_html}</div>'
 
         # No wrapper needed - apply extra classes directly to grid
         if extra_classes:
@@ -822,8 +831,8 @@ class GridNode(LayoutNode):
         class_str = " ".join(classes)
 
         if style:
-            return f'<div class="{class_str}" style="{style}">{content}</div>'
-        return f'<div class="{class_str}">{content}</div>'
+            return f'<div{id_attr} class="{class_str}" style="{style}">{content}</div>'
+        return f'<div{id_attr} class="{class_str}">{content}</div>'
 
 
 class SurfaceNode(LayoutNode):
@@ -945,7 +954,7 @@ class CollapsibleNode(LayoutNode):
 
     """
 
-    valid_params: frozenset[str] = frozenset({"summary", "open", "icon", "class"})
+    valid_params: frozenset[str] = frozenset({"id", "summary", "open", "icon", "class"})
 
     def render(self, context: Context) -> str:
         """Render the collapsible container."""
@@ -955,6 +964,7 @@ class CollapsibleNode(LayoutNode):
         _validate_unknown_params(resolved, self.valid_params, self.tag_name)
 
         template_context = {
+            "element_id": resolved.get("id", ""),
             "summary": resolved.get("summary", "Details"),
             "is_open": resolved.get("open", False),
             "show_icon": resolved.get("icon", True),
@@ -1186,7 +1196,7 @@ class ListNode(LayoutNode):
     """
 
     valid_params: frozenset[str] = frozenset(
-        {"horizontal", "gap", "ordered", "marker", "marker_position", "aria_label", "class"}
+        {"id", "horizontal", "gap", "ordered", "marker", "marker_position", "aria_label", "class"}
     )
 
     def render(self, context: Context) -> str:
@@ -1236,13 +1246,17 @@ class ListNode(LayoutNode):
         # Element type
         tag = "ol" if resolved.get("ordered", False) else "ul"
 
+        # Optional id attribute
+        element_id = resolved.get("id", "")
+        id_attr = f' id="{element_id}"' if element_id else ""
+
         # Aria label
         aria_label = resolved.get("aria_label", "")
         aria_attr = f' aria-label="{aria_label}"' if aria_label else ""
 
         content = self.nodelist.render(context)
 
-        return f'<{tag} class="{class_str}"{aria_attr}>{content}</{tag}>'
+        return f'<{tag}{id_attr} class="{class_str}"{aria_attr}>{content}</{tag}>'
 
 
 class ListItemNode(LayoutNode):
@@ -1263,7 +1277,7 @@ class ListItemNode(LayoutNode):
 
     """
 
-    valid_params: frozenset[str] = frozenset({"class"})
+    valid_params: frozenset[str] = frozenset({"id", "class"})
 
     def render(self, context: Context) -> str:
         """Render the list item."""
@@ -1274,9 +1288,19 @@ class ListItemNode(LayoutNode):
 
         content = self.nodelist.render(context)
 
+        # Build attributes
+        element_id = resolved.get("id", "")
         extra_classes = resolved.get("class", "")
+
+        attrs = []
+        if element_id:
+            attrs.append(f'id="{element_id}"')
         if extra_classes:
-            return f'<li class="{extra_classes}">{content}</li>'
+            attrs.append(f'class="{extra_classes}"')
+
+        if attrs:
+            attrs_str = " ".join(attrs)
+            return f"<li {attrs_str}>{content}</li>"
 
         return f"<li>{content}</li>"
 
