@@ -15,5 +15,7 @@ def test_readme_describes_package_installation_and_external_documentation() -> N
     assert "does not\ncontain or deploy a documentation website" in readme
     assert "manage.py setup_dev" not in readme
     assert "tailwind runserver" not in readme
-    assert "](docs/" not in readme
+    assert "](docs/getting-started.md)" in readme
+    assert "](docs/static-assets.md)" in readme
+    assert "](docs/README.md)" in readme
     assert "AA-compliant" not in readme

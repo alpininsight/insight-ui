@@ -1,4 +1,4 @@
-exclude: '^docs/|/migrations/|staticfiles|bin|.data|.venv|htmlcov|site|node_modules'
+exclude: '/migrations/|staticfiles|bin|.data|.venv|htmlcov|site|node_modules'
 
 default_language_version:
   python: python3

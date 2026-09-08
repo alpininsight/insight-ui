@@ -15,6 +15,7 @@ from scripts.check_distribution import REQUIRED, check_archive
         "documentation/views.py",
         "core/settings.py",
         "enterprise/offer.md",
+        "docs/getting-started.md",
         "insight_ui/static/insight_ui/js/insight-ui-demo-container.js",
     ],
 )

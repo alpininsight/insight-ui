@@ -16,5 +16,5 @@ def test_insight_ui_is_included_in_wheel() -> None:
 
 def test_source_tree_has_no_documentation_application() -> None:
     """A green package test must not hide a duplicated app in the Git source."""
-    for path in ("documentation", "core", "enterprise", "docs", "manage.py", "Dockerfile"):
+    for path in ("documentation", "core", "enterprise", "manage.py", "Dockerfile"):
         assert not Path(path).exists(), path
