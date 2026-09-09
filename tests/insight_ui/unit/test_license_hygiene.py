@@ -10,6 +10,7 @@ licence texts (REUSE specification 3.3, OpenChain ISO/IEC 5230).
 from __future__ import annotations
 
 import hashlib
+import re
 import subprocess
 from pathlib import Path
 
@@ -35,6 +36,7 @@ CANONICAL_LICENCE_SHA256 = {
     "LICENSES/OFL-1.1.txt": "8eea8287e5876b539670cadb82e99f9a7afddec6f6730811be1daf25d2e9bcfd",
 }
 AGPL_CLOSING_LINE = "<https://www.gnu.org/licenses/>."
+COMMERCIAL_CONTACT = "contact@alpininsight.ai"
 GENERATED = {"insight_ui/static/insight_ui/css/tailwind.css"}
 
 
@@ -120,3 +122,15 @@ def test_dual_licensing_offer_is_documented_outside_the_licence_text() -> None:
     """The commercial track stays discoverable in NOTICE and COMMERCIAL_LICENSE.md."""
     assert "COMMERCIAL_LICENSE.md" in (ROOT / "NOTICE").read_text(encoding="utf-8")
     assert "Commercial License" in (ROOT / "COMMERCIAL_LICENSE.md").read_text(encoding="utf-8")
+
+
+def test_commercial_licence_states_one_contact_address() -> None:
+    """The stub names a single address for commercial enquiries, spelled identically.
+
+    A wrong or misspelled address silently costs enquiries, and the address has
+    diverged from the rest of the repository before.
+    """
+    text = (ROOT / "COMMERCIAL_LICENSE.md").read_text(encoding="utf-8")
+    assert COMMERCIAL_CONTACT in text
+    found = set(re.findall(r"[A-Za-z][A-Za-z._-]*@alpininsight\.[a-z]+", text))
+    assert found == {COMMERCIAL_CONTACT}, f"conflicting contact addresses: {sorted(found)}"
