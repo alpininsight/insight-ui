@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+// SPDX-License-Identifier: AGPL-3.0-only
 /**
  * Tests for Tabs component functionality
  */
@@ -72,7 +74,7 @@ describe('Tabs Component', () => {
 
       // Inactive tab should have transparent/secondary styling
       expect(tabs[0].classList.contains('border-transparent')).toBe(true);
-      expect(tabs[0].classList.contains('text-secondary')).toBe(true);
+      expect(tabs[0].classList.contains('text-insight-body')).toBe(true);
     });
 
     it('should update tab content aria-label', () => {

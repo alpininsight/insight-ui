@@ -9,9 +9,9 @@
     {% with forloop.counter0|stringformat:"s" as idx %}
       {% with accordion_config.tag_id|add:"-panel-"|add:idx as panel_id %}
         <div>
-          <h3 class="mb-1 text-primary">
+          <h3 class="mb-1 text-insight-headline">
             <button
-              class="flex justify-between items-center px-4 py-3 w-full border-b border-insight-border-surface ring-insight-focus scroll-mt-24 focus:outline-none focus-visible:ring-2"
+              class="flex justify-between items-center px-4 py-3 w-full border-b border-insight-surface ring-insight-focus scroll-mt-24 focus:outline-none focus-visible:ring-2"
               aria-expanded="false"
               aria-controls="{{ panel_id }}"
               id="{{ panel_id }}-header"
@@ -30,7 +30,7 @@
             style="height: 0; opacity: 0;"
           >
             <div class="py-4">
-              <p class="text-secondary">{{ item.content }}</p>
+              <p class="text-insight-body">{{ item.content }}</p>
             </div>
           </div>
         </div>

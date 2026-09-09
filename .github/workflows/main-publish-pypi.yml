@@ -4,6 +4,8 @@ on:
     types: [published]
 jobs:
   build-and-publish:
+    # Publication is a separate owner decision; a release must not opt in implicitly.
+    if: vars.INSIGHT_UI_PYPI_PUBLISH_ENABLED == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -19,6 +21,7 @@ jobs:
       - name: Build wheel & sdist
         run: |
           uv build
+          uv run python scripts/check_distribution.py
           ls -lah dist/
       - name: Publish to PyPI
         if: success()

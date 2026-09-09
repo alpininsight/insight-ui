@@ -1,210 +1,156 @@
+<!--
+SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 # Getting Started
 
-This guide helps you integrate Insight UI into your Django project.
+This guide integrates the reusable package into **your existing Django project**.
+For a source checkout and a one-component preview, use
+[the contributor workflow](../CONTRIBUTING.md) instead. Neither path needs the
+separate documentation application.
 
-## Installation
+## Install The Package
+
+Use the supported Python/Django versions in [README.md](../README.md).
+Public PyPI publication requires an explicit release decision. Once an approved
+release is available, install it in the host project's environment:
 
 ```bash
 uv add insight-ui
 ```
 
-Or with pip:
+For local integration before publication, use your reviewed source checkout:
 
 ```bash
-pip install insight-ui
+uv add --editable /absolute/path/to/insight-ui
 ```
 
-## Django Configuration
+That path is local development configuration, not a production dependency pin.
+For editable source, first build package assets as described in
+[Static assets](static-assets.md). A released wheel provides readable assets.
 
-### 1. Add to Installed Apps
+## Configure The Host
+
+The examples assume an existing app named `myapp`, already registered in the
+host, with DjangoTemplates and `APP_DIRS=True`. Keep your other installed apps
+and middleware. Add `insight_ui` and ensure staticfiles is enabled:
 
 ```python
 INSTALLED_APPS = [
-    # ...
+    # Keep your existing project apps here, including myapp.
+    "django.contrib.staticfiles",
     "insight_ui",
 ]
-```
-
-### 2. Include URLs (optional self-documentation)
-
-The reusable components live in `insight_ui`. The interactive component
-documentation is provided by the separate `documentation` app. Add it only when
-you want to run the self-documenting demo pages inside your project.
-
-```python
-INSTALLED_APPS = [
-    # ...
-    "insight_ui",
-    "documentation",
-]
-```
-
-```python
-from django.urls import include, path
-
-urlpatterns = [
-    # ...
-    path("docs/", include("documentation.urls")),
-]
-```
-
-### 3. Configure Static Files
-
-Ensure Django can serve static files:
-
-```python
 STATIC_URL = "/static/"
+INSIGHT_UI = {
+    "navbar_fixed": False,  # This first page has no navbar.
+    "assets": {"cdn_enabled": False, "use_minified": False},
+    "safari_mask_icon": "insight_ui/svg/insight-ui-logo.svg",
+}
 ```
 
-Run collectstatic for production:
+Do not add a `documentation` app or documentation URL routes. A package install
+does not supply them. The explicit mask icon selects a shipped asset; the
+current default `insight_ui/svg/logo.svg` is absent. Keep production manifest
+validation strict rather than disabling it to hide missing files.
 
-```bash
-uv run python manage.py collectstatic
+The base template needs the resolved `INSIGHT_UI` context. In
+`myapp/context_processors.py`, wrap the package config helper:
+
+```python
+from insight_ui.config import get_config
+
+
+def insight_ui_settings(request):
+    return get_config()
 ```
 
-## First Component
+Append `"myapp.context_processors.insight_ui_settings"` to the existing
+`TEMPLATES[0]["OPTIONS"]["context_processors"]`. Keep Django's `request`,
+`i18n` and, when used, authentication context processors. Do not register
+`get_config` itself as a context processor: its argument is a config key,
+not an HTTP request.
 
-Use Insight UI components in your templates:
+## Render A First Page
 
-```django
-{% load insight_tags %}
-
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" href="{% static 'insight_ui/css/tailwind.css' %}">
-</head>
-<body>
-    {% button label="Click me" type="primary" %}
-
-    {% alert message="Welcome!" type="info" dismissible=True %}
-</body>
-</html>
-```
-
-Or extend the base template:
+Create `myapp/templates/myapp/home.html`:
 
 ```django
 {% extends "insight_ui/base.html" %}
+{% load insight_tags i18n %}
 
-{% load insight_tags %}
-
+{% block title %}My application{% endblock %}
 {% block content %}
-    {% button label="Click me" type="primary" %}
+    {% translate "Get started" as action_label %}
+    {% button label=action_label type="primary" %}
 {% endblock %}
 ```
 
-## Configuration Reference
+In your host URL configuration, add a route using Django's `TemplateView`:
 
-Insight UI is configured via `settings.INSIGHT_UI`. All settings are optional and have sensible defaults.
+```python
+from django.urls import path
+from django.views.generic import TemplateView
+
+urlpatterns = [
+    # Keep your existing routes.
+    path("", TemplateView.as_view(template_name="myapp/home.html"), name="home"),
+]
+```
+
+Run the host's `uv run python manage.py runserver` and visit `/`. The base
+template loads package CSS/JS; an individual `{% button %}` tag does not insert
+stylesheets. This host base template also loads external HTMX scripts. The
+source-only `devtools` preview is the separate local-assets-only option.
+
+## Brand Defaults And Explicit Composition
+
+Add brand settings to the same `INSIGHT_UI` mapping, using the current Config
+classes rather than obsolete top-level `brand.logo` / `brand.title` keys:
 
 ```python
 from insight_ui.configs import BrandMarkConfig, LogoConfig
 
-INSIGHT_UI = {
-    # Your configuration here
+INSIGHT_UI["brand"] = {
+    "home_url": "/",
+    "mark": BrandMarkConfig(
+        primary_text="Example",
+        secondary_text="App",
+        logo=LogoConfig(
+            url="insight_ui/svg/insight-ui-logo.svg",
+            url_dark="insight_ui/svg/insight-ui-logo.svg",
+            alt="Example app",
+            height="2rem",
+        ),
+    ),
+    "footer_text": "An application built with Insight UI.",
 }
 ```
 
-### Brand Settings
-
-| Setting | Type | Default | Description |
-|---------|------|---------|-------------|
-| `brand.home_url` | str | `"/"` | URL for the brand logo link |
-| `brand.mark` | BrandMarkConfig | Insight UI defaults | Brand mark with logo and text |
-| `brand.footer_text` | str | Library description | Footer description text |
-
-Example:
+For your brand, replace those example asset paths with files supplied by the
+host. Set the page title through the `title` block, as above.
+The helpers in [brand.py](../insight_ui/brand.py) turn settings into brand or
+footer-description Configs. They do not automatically build your navigation:
 
 ```python
-INSIGHT_UI = {
-    "brand": {
-        "home_url": "/",
-        "mark": BrandMarkConfig(
-            primary_text="My",
-            secondary_text="App",
-            logo=LogoConfig(
-                url="myapp/logo.svg",
-                url_dark="myapp/logo-dark.svg",
-                alt="My App Logo",
-                height="2rem",
-            ),
-        ),
-        "footer_text": "My awesome application.",
-    }
-}
+from insight_ui.brand import get_navbar_brand_defaults
+from insight_ui.configs import NavbarConfig
+
+navbar_config = NavbarConfig(brand=get_navbar_brand_defaults(), links=[])
 ```
 
-### Favicon and Meta
-
-| Setting | Type | Default | Description |
-|---------|------|---------|-------------|
-| `webmanifest` | str | `"insight_ui/favicon/site.webmanifest"` | Web app manifest path for Android/PWA metadata and install icons |
-| `favicon` | str | `"insight_ui/favicon/favicon.ico"` | Main favicon path |
-| `favicon_32` | str | `"insight_ui/favicon/favicon-32x32.png"` | 32x32 favicon |
-| `favicon_16` | str | `"insight_ui/favicon/favicon-16x16.png"` | 16x16 favicon |
-| `apple_touch_icon` | str | `"insight_ui/favicon/apple-touch-icon.png"` | Apple touch icon |
-| `safari_mask_icon` | str | `"insight_ui/svg/logo.svg"` | Safari pinned tab icon |
-| `safari_mask_icon_color` | str | `"#5bbad5"` | Safari pinned tab icon color |
-| `msapplication_TileColor` | str | `"#da532c"` | MS Edge live tile background |
-| `theme_color` | str | `"#ffffff"` | Mobile browser search bar color |
-
-`apple_touch_icon` is the home-screen icon used by iOS and iPadOS. Android and
-installable PWAs discover their icons through the configured `webmanifest`.
-Insight UI's default manifest includes separate `purpose: "maskable"` icons so
-launchers can crop them safely. A branded consumer should provide its own
-manifest and icon files, then point `webmanifest` and `apple_touch_icon` at
-those static assets.
-
-### SEO Meta Tags
-
-| Setting | Type | Default | Description |
-|---------|------|---------|-------------|
-| `meta.seo.description` | str | `"My indispensable app"` | Meta description |
-| `meta.seo.keywords` | str | `"Django, Insight UI"` | Meta keywords |
-| `meta.seo.author` | str | `"It's me"` | Meta author |
-
-### Layout
-
-| Setting | Type | Default | Description |
-|---------|------|---------|-------------|
-| `navbar_fixed` | bool | `True` | Sticky navbar at top of window |
-| `stylesheet` | str | `"insight_ui/css/tailwind.css"` | Main stylesheet path |
-
-### Optional Libraries
-
-| Setting | Type | Default | Description |
-|---------|------|---------|-------------|
-| `load_prism` | bool | `False` | Enable Prism.js syntax highlighting |
-| `load_leaflet` | bool | `False` | Enable Leaflet.js geo-maps |
-| `load_echarts` | bool | `False` | Enable ECharts for charts |
-
-### Development
-
-| Setting | Type | Default | Description |
-|---------|------|---------|-------------|
-| `JS_DEBUG` | bool | `False` | Enable browser console logging |
-| `use_tailwind_cli` | bool | `False` | Enable Tailwind CLI for style customization |
-
-### Assets and CDN
-
-| Setting | Type | Default | Description |
-|---------|------|---------|-------------|
-| `assets.use_minified` | bool | `False` | Use minified assets when CDN delivery is enabled |
-| `assets.cdn_enabled` | bool | `False` | Serve assets from CDN |
-| `assets.cdn_base_url` | str | host-project setting | CDN base URL |
-| `assets.cdn_prefix` | str | `"insight-ui"` | CDN path prefix |
-| `assets.cdn_version` | str | `"latest"` | CDN version |
-
-For CDN examples and the static asset build contract, see
-[Static Assets](static-assets.md). Use your own CDN base URL in host
-applications; this public package documentation intentionally does not describe
-any organization's private CDN upload or deployment process.
+Pass that Config to `{% navbar config=navbar_config %}` in the `navbar` block
+and enable `navbar_fixed` if your layout uses a fixed navbar. Provide your own
+links and authentication routes. **Explicit component Configs win:** the navbar
+and footer tags render the supplied Config; they do not overwrite it from
+settings. Use the default helpers only where defaults are wanted.
 
 ## Next Steps
 
-- [Using Components](components.md) - Learn how to use components effectively
-- [Design System](design-system.md) - Understand tokens and styling
-- [Static Assets](static-assets.md) - Configure local staticfiles or host-owned CDN delivery
-- [Contributing](contributing.md) - Add new components
-- [Testing](testing.md) - Write tests for your changes
+- [Components and configuration](components.md)
+- [Staticfiles, fonts, favicons and CDN options](static-assets.md)
+- [Translations and RTL](i18n.md)
+- [Keyboard, focus and accessible markup](accessibility.md)
+
+[All package guides](README.md)

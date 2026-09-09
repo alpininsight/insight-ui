@@ -1,5 +1,8 @@
+# SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+# SPDX-License-Identifier: AGPL-3.0-only
 """Configuration classes for utility components (differentiator, charts, maps, etc.)."""
 
+import warnings
 from dataclasses import dataclass, field
 
 from django.utils.translation import gettext_lazy as _
@@ -166,7 +169,7 @@ class BrandMarkConfig:
 
     primary_text: str = field(default="", metadata={"doc": _("First wordmark run.")})
     secondary_text: str = field(default="", metadata={"doc": _("Second wordmark run.")})
-    logo: LogoConfig = field(default=None, metadata={"doc": _("Public logo configuration.")})
+    logo: LogoConfig | None = field(default=None, metadata={"doc": _("Public logo configuration.")})
     logo_position: InlinePosition = field(
         default="start", metadata={"doc": _("Logo position, either 'start' or 'end'.")}
     )
@@ -239,6 +242,9 @@ class CornerRibbonConfig:
         text: The text displayed in the ribbon.
         position: Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'.
         color: Color variant for the ribbon.
+        foreground_color: Optional semantic text color. Empty uses white, or body text for neutral.
+        request_url: Optional URL that turns the ribbon into a link.
+        aria_label: Optional accessible label for the linked ribbon.
 
     """
 
@@ -247,6 +253,8 @@ class CornerRibbonConfig:
             text="Beta",
             position="top-right",
             color="warning",
+            foreground_color="primary",
+            request_url="/beta",
         )
         """
 
@@ -259,11 +267,43 @@ class CornerRibbonConfig:
         default="primary",
         metadata={"doc": _("Color variant for the ribbon.")},
     )
+    foreground_color: ColorType | str = field(
+        default="",
+        metadata={"doc": _("Optional semantic text color. Empty uses white, or body text for neutral.")},
+    )
+    request_url: str = field(
+        default="",
+        metadata={"doc": _("Optional URL that turns the ribbon into a link.")},
+    )
+    aria_label: str = field(
+        default="",
+        metadata={"doc": _("Optional accessible label for the linked ribbon.")},
+    )
 
     def __post_init__(self) -> None:
         """Validate position and color after initialization."""
         validate_corner_position(self.position, "position")
         validate_color_type(self.color, "color")
+        if self.foreground_color:
+            validate_color_type(self.foreground_color, "foreground_color")
+
+    @property
+    def background_class(self) -> str:
+        """Map neutral to an existing elevation token, not an undefined color."""
+        if self.color == "neutral":
+            return "bg-insight-bg-raised"
+        return f"bg-insight-{self.color}"
+
+    @property
+    def foreground_class(self) -> str:
+        """Use the neutral body text role and preserve semantic color overrides."""
+        if self.foreground_color == "neutral":
+            return "text-insight-text-body"
+        if self.foreground_color:
+            return f"text-insight-{self.foreground_color}"
+        if self.color == "neutral":
+            return "text-insight-text-body"
+        return "text-white"
 
 
 @dataclass
@@ -346,6 +386,17 @@ class ProgressBarConfig:
     cancel_url: str = field(default="", metadata={"doc": _("Optional URL to call when cancelling (POST request).")})
     show_retry: bool = field(default=False, metadata={"doc": _("Show a retry button when an error occurs.")})
     retry_label: str = field(default="", metadata={"doc": _("Label for the retry button.")})
+
+    def __post_init__(self) -> None:
+        """Warn if both request_url and sse_url are set, since sse_url silently takes priority."""
+        if self.request_url and self.sse_url:
+            identifier = self.tag_id or self.label or "(unnamed)"
+            warnings.warn(
+                f"ProgressBarConfig {identifier} has both 'request_url' and 'sse_url' set. "
+                "'sse_url' takes priority and 'request_url' will be ignored. Use only one.",
+                UserWarning,
+                stacklevel=2,
+            )
 
 
 @dataclass
@@ -547,8 +598,8 @@ class LiveContentConfig:
     Renders a container that auto-refreshes via HTMX polling.
 
     Attributes:
-        tag_id: Unique ID for JavaScript/CSS targeting.
         request_url: URL for content updates.
+        tag_id: Unique ID for JavaScript/CSS targeting.
         interval: Update interval in seconds.
         initial_content: Initial content before first update.
 
@@ -556,15 +607,15 @@ class LiveContentConfig:
 
     __example__ = """
         LiveContentConfig(
-            tag_id="live-stats",
             request_url="/api/stats/",
+            tag_id="live-stats",
             interval=30,
             initial_content="Loading...",
         )
         """
 
+    request_url: str = field(metadata={"doc": _("URL for content updates.")})
     tag_id: str = field(default="", metadata={"doc": _("Unique ID for JavaScript/CSS targeting.")})
-    request_url: str = field(default="", metadata={"doc": _("URL for content updates.")})
     interval: int = field(default=10, metadata={"doc": _("Update interval in seconds.")})
     initial_content: str = field(default="", metadata={"doc": _("Initial content before first update.")})
 
@@ -576,24 +627,31 @@ class WebSocketConfig:
     Renders a WebSocket-connected container using HTMX ws extension.
 
     Attributes:
-        tag_id: Container ID. This ID must be included in the WebSocket's HTML message.
         request_url: WebSocket endpoint URL.
+        tag_id: Container ID for targeting sub-elements by ID (e.g. via HTMX out-of-band swaps). Optional; without it the connection still works but the server cannot target specific sub-elements by ID.
         initial_content: Initial content.
 
     """
 
     __example__ = """
         WebSocketConfig(
-            tag_id="chat-stream",
             request_url="/ws/chat/",
+            tag_id="chat-stream",
             initial_content="Connecting...",
         )
         """
 
+    request_url: str = field(metadata={"doc": _("WebSocket endpoint URL.")})
     tag_id: str = field(
-        default="", metadata={"doc": _("Container ID. This ID must be included in the WebSocket's HTML message.")}
+        default="",
+        metadata={
+            "doc": _(
+                "Container ID for targeting sub-elements by ID (e.g. via HTMX out-of-band swaps). "
+                "Optional; without it the connection still works but the server cannot target specific "
+                "sub-elements by ID."
+            )
+        },
     )
-    request_url: str = field(default="", metadata={"doc": _("WebSocket endpoint URL.")})
     initial_content: str = field(default="", metadata={"doc": _("Initial content.")})
 
 

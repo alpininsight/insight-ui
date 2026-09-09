@@ -1,178 +1,125 @@
+<!--
+SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 # Accessibility
 
-Insight UI components are designed to comply with WCAG 2.1 AA guidelines. This document explains accessibility features and how to maintain them when contributing.
+WCAG 2.2 AA is a design target, not a certification or a verified package-wide
+conformance claim. This guide defines contributor expectations and known limits.
+Conformance concerns full pages and complete processes, including all applicable
+A/AA criteria and the other [W3C conformance requirements](https://www.w3.org/TR/WCAG22/#conformance-reqs).
+A component, passing unit suite or clean scanner result cannot establish that.
 
-## Built-in Accessibility Features
+## Component Contract
 
-### Semantic HTML
+- Prefer native buttons, links and form controls with meaningful visible labels.
+  Use headings and landmarks appropriate to the composed page, not its styling.
+- Give icon-only actions an accessible name. Hide purely decorative icons from
+  assistive technology; provide useful alternatives for informative images.
+- Add ARIA only where needed. Referenced IDs must exist and be unique; keep
+  expanded, selected, checked and value states synchronized with the interaction.
+- Support Tab/Shift+Tab and native activation. Define arrow/Home/End behavior for
+  composite widgets according to their pattern, not one universal key mapping.
+- Keep keyboard focus visible and in a logical order, including after HTMX
+  replacements. Remove event handlers and focus traps when components close or
+  are destroyed; repeated initialization must not duplicate behavior.
 
-Components use appropriate HTML elements:
+For modal interactions, move focus inside on opening, contain Tab/Shift+Tab,
+provide a visible close control and Escape dismissal, then restore focus to the
+invoker or a logical successor. Background content must actually be unavailable
+to interaction; `aria-modal="true"` alone does not implement this. Choose initial
+focus for the content, not always the first button. See the
+[W3C modal dialog pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/).
+A persistent navigation sidebar is not automatically a modal dialog.
 
-- Buttons use `<button>`, not `<div>` with click handlers
-- Navigation uses `<nav>` with proper list structure
-- Headings use `<h1>`-`<h6>` in logical order
-- Articles use `<article>`, sections use `<section>`
+## Current Implementation Boundaries
 
-### ARIA Attributes
+Check source and rendered output rather than relying on descriptive comments:
 
-Components include ARIA attributes where needed:
+- The [modal template](../insight_ui/templates/insight_ui/components/modal.html)
+  declares a dialog with `aria-modal` and a title reference. Supply a unique
+  `tag_id` and meaningful title; these attributes do not prove background isolation.
+- The [modal](../insight_ui/static/insight_ui/js/insight-ui-modal.js) and
+  [sidebar](../insight_ui/static/insight_ui/js/insight-ui-sidebar.js) implement
+  Escape handling and attempt focus restoration. Sidebar close cleanup waits for
+  `transitionend`; verify focus return when transitions are absent or interrupted.
+- The shared [focus helper](../insight_ui/static/insight_ui/js/insight-ui-utils.js)
+  captures candidates once and does not filter hidden or disabled controls.
+  Test empty content, changing content and removed triggers explicitly.
 
-```html
-<!-- Modal with proper ARIA -->
-<div role="dialog" aria-modal="true" aria-labelledby="modal-title">
-    <h2 id="modal-title">Modal Title</h2>
-</div>
+For `input_field`, provide a visible `label` and non-empty unique `tag_id`.
+The [input template](../insight_ui/templates/insight_ui/components/input.html)
+uses that ID for label association; `name` is not an automatic ID fallback.
+At this revision, [base fields](../insight_ui/configs/base.py) and
+[InputFieldConfig](../insight_ui/configs/input.py) have no `help_text` or `error`
+parameters. The template does not emit linked help/error paragraphs,
+`aria-invalid` or `aria-errormessage`. The
+[form template](../insight_ui/templates/insight_ui/components/form.html)'s
+`#form-error` is a plain container, not an implemented alert region.
 
-<!-- Status notifications -->
-<div role="status">Operation successful</div>
-<div role="alert">Error: Something went wrong</div>
+Do not document automatic error announcements or pass unsupported Config fields.
+When adding reusable error support, link instructions/errors to the control,
+explain the correction in text, and test focus and announcement behavior without
+announcing every invalid field at once. Follow the
+[W3C form notification guidance](https://www.w3.org/WAI/tutorials/forms/notifications/).
+Generic fixes and their regression tests belong here; app-specific validation
+and page composition remain with the consumer.
 
-<!-- Decorative elements hidden -->
-<svg aria-hidden="true">...</svg>
-```
+## Themes And Contrast
 
-### Keyboard Navigation
+Use semantic roles from [input.css](../insight_ui/utils/input.css), such as
+`text-insight-headline`, `text-insight-body`, `*-action` for filled controls and
+`*-foreground` on matching `*-soft` surfaces. Do not substitute a brand/accent
+color for readable text just because it shares the same hue.
 
-All interactive components support keyboard navigation:
+Recheck both default light/dark themes and every new theme or override against
+the actual rendered backgrounds, including hover, active, selected, focus and
+error states. Gradients, transparency and consumer styles change effective pairs.
+Never communicate an error or selection through color alone.
 
-| Component | Keyboard Support |
-|-----------|-----------------|
-| Modal | `Escape` to close, focus trap |
-| Dropdown | `Escape` to close, arrow keys to navigate |
-| Tabs | Arrow keys to switch tabs |
-| Accordion | `Enter`/`Space` to expand/collapse |
-| Carousel | Arrow keys for navigation |
+- Text normally needs 4.5:1 contrast, or 3:1 for large text as defined by W3C
+  (18 pt regular or 14 pt bold). Apply the criterion's stated exceptions, not
+  blanket theme exemptions: [SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html).
+- Necessary visual cues for controls/states and meaningful graphics need 3:1
+  against adjacent colors, subject to the criterion's exceptions:
+  [SC 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html).
 
-### Focus Management
+[Token tests](../tests/insight_ui/unit/test_design_tokens.py) check selected
+action/text and foreground/soft pairs in source CSS for both themes. They do
+not measure every rendered state or prove a new theme accessible.
 
-- Visible focus indicators on all interactive elements
-- Focus trap in modals and overlays
-- Focus restoration when modals close
-- Skip links for navigation blocks
+## Verification And Ownership
 
-### Color and Contrast
-
-- Text meets WCAG AA contrast ratios (4.5:1 normal, 3:1 large)
-- Information is not conveyed by color alone
-- Support for high contrast mode
-- Dark mode with appropriate contrast
-
-## Component Accessibility Documentation
-
-Each component has specific accessibility notes in `documentation/component_details/a11y_context.py`. These are displayed on component detail pages.
-
-Examples from actual components:
-
-**Modal:**
-- Uses `role="dialog"` and `aria-modal="true"`
-- Focus is trapped within the modal
-- `Escape` key closes the modal
-- Focus returns to trigger element on close
-
-**Status Screen:**
-- Title rendered as semantic `<h1>`
-- Decorative icons use `aria-hidden`
-- Error notices use `role="alert"`
-- Other notices use `role="status"`
-
-**Tabs:**
-- Tab list uses `role="tablist"`
-- Tabs use `role="tab"` with `aria-selected`
-- Panels use `role="tabpanel"` with `aria-labelledby`
-- Arrow keys navigate between tabs
-
-## Accessibility Checklist for Contributors
-
-When adding or modifying components:
-
-- [ ] Use semantic HTML elements (`<button>`, `<nav>`, `<main>`, etc.)
-- [ ] Add ARIA attributes where HTML semantics are insufficient
-- [ ] Ensure keyboard navigation works (Tab, Enter, Escape, arrows)
-- [ ] Maintain visible focus indicators
-- [ ] Hide decorative elements with `aria-hidden="true"`
-- [ ] Test color contrast (4.5:1 for normal text, 3:1 for large text)
-- [ ] Ensure information is not conveyed by color alone
-- [ ] Update `a11y_context.py` with accessibility notes
-- [ ] Test with keyboard-only navigation
-
-## Testing Accessibility
-
-### Manual Testing
-
-1. **Keyboard navigation**: Tab through the page, interact without a mouse
-2. **Screen reader**: Test with NVDA (Windows), VoiceOver (macOS), or Orca (Linux)
-3. **Zoom**: Verify functionality at 200% and 400% zoom
-4. **Color contrast**: Use browser DevTools or [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)
-5. **High contrast mode**: Test in Windows High Contrast mode
-
-### Browser Tools
-
-- Chrome DevTools Accessibility panel
-- Firefox Accessibility Inspector
-- [WAVE Browser Extension](https://wave.webaim.org/extension/)
-- [axe DevTools](https://www.deque.com/axe/devtools/)
-
-### Quick Checks
+After [contributor setup](../CONTRIBUTING.md), run focused package checks:
 
 ```bash
-# Check for missing alt text
-grep -r "<img" insight_ui/templates | grep -v "alt="
-
-# Check for clickable divs (should be buttons)
-grep -r "onclick" insight_ui/templates | grep "<div"
+uv run pytest tests/insight_ui/unit/components/test_input_field.py tests/insight_ui/unit/test_design_tokens.py
+npm test -- tests/js/utils.test.js tests/js/modal.test.js tests/js/sidebar.test.js
 ```
 
-## Common Patterns
+[Vitest is configured for jsdom](../vitest.config.js), not a real browser.
+[Utility tests](../tests/js/utils.test.js) exercise initial focus, Tab wrapping
+and cleanup in that environment. The [modal](../tests/js/modal.test.js) and
+[sidebar](../tests/js/sidebar.test.js) trap-focus checks spy on helper calls;
+they do not demonstrate a complete browser focus trap. Current
+[input-field tests](../tests/insight_ui/unit/components/test_input_field.py)
+cover Config bounds, not accessible error rendering. Add regressions for fixes.
 
-### Interactive Elements
+Keep reusable keyboard, ARIA, focus and lifecycle tests in this package's
+[Python](../tests/insight_ui/unit/) and [JavaScript](../tests/js/) suites.
+The separate Docs application owns its rendered catalog and its browser checks
+(for example Playwright/axe) plus manual keyboard and screen-reader evidence;
+it should reference package test results, not copy the unit suite.
+Consumers likewise test their complete pages, content and authentication flows.
 
-```html
-<!-- Correct: Button for actions -->
-<button type="button" onclick="doSomething()">Click me</button>
+Use the local component preview for isolated smoke checks, not application
+authentication or language-selection proof; see [i18n limits](i18n.md).
+Manually check keyboard-only operation, screen-reader names/states, narrow and
+zoomed layouts, forced colors and reduced motion in the actual host and theme.
+Record the package revision, commands/results, tested states, browser and
+assistive technology versions, artifacts and remaining gaps in the PR.
+[W3C evaluation guidance](https://www.w3.org/WAI/test-evaluate/tools/selecting/)
+explains why automation must be supplemented by human evaluation.
 
-<!-- Incorrect: Div with click handler -->
-<div onclick="doSomething()">Click me</div>
-```
-
-### Images
-
-```html
-<!-- Informative image -->
-<img src="chart.png" alt="Sales increased 25% in Q4">
-
-<!-- Decorative image -->
-<img src="decoration.png" alt="" role="presentation">
-
-<!-- Icon with visible label -->
-<button>
-    <svg aria-hidden="true">...</svg>
-    Save
-</button>
-
-<!-- Icon-only button -->
-<button aria-label="Close">
-    <svg aria-hidden="true">...</svg>
-</button>
-```
-
-### Dynamic Content
-
-```html
-<!-- Status message -->
-<div role="status" aria-live="polite">
-    File uploaded successfully
-</div>
-
-<!-- Error message (more urgent) -->
-<div role="alert" aria-live="assertive">
-    Upload failed: File too large
-</div>
-```
-
-## Resources
-
-- [WCAG 2.1 Guidelines](https://www.w3.org/TR/WCAG21/)
-- [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)
-- [The A11Y Project](https://www.a11yproject.com/)
-- [MDN Accessibility Guide](https://developer.mozilla.org/en-US/docs/Web/Accessibility)
-- [ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/)
+[Back to docs](README.md) | [Contributing](../CONTRIBUTING.md)

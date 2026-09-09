@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+// SPDX-License-Identifier: AGPL-3.0-only
 /**
  * Unified Tabs component supporting both HTMX and static content modes.
  *
@@ -129,11 +131,11 @@ export class Tabs {
 
             // Update styling
             if (isSelected) {
-                tab.classList.remove('border-transparent', 'text-secondary');
+                tab.classList.remove('border-transparent', 'text-insight-body');
                 tab.classList.add('border-insight-primary', 'text-insight-primary');
             } else {
                 tab.classList.remove('border-insight-primary', 'text-insight-primary');
-                tab.classList.add('border-transparent', 'text-secondary');
+                tab.classList.add('border-transparent', 'text-insight-body');
             }
 
             // Static mode: show/hide panels

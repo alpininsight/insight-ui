@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+// SPDX-License-Identifier: AGPL-3.0-only
 /**
  * Code block component for Insight UI.
  *
@@ -92,19 +94,19 @@ export class CodeBlock {
      */
     #createToolbar(lang, filename) {
         const toolbar = document.createElement('div');
-        toolbar.classList.add('flex', 'justify-between', 'bg-insight-bg-raised', 'rounded-t-insight-surface', 'p-2');
+        toolbar.classList.add('flex', 'justify-between', 'bg-insight-raised', 'rounded-t-insight-surface', 'p-2');
 
         const infobox = document.createElement('div');
         infobox.classList.add('flex');
 
         const langSpan = document.createElement('span');
-        langSpan.classList.add('text-secondary', 'leading-loose', 'bg-insight-bg-base', 'rounded-insight-control', 'px-2');
+        langSpan.classList.add('text-insight-body', 'leading-loose', 'bg-insight-base', 'rounded-insight-control', 'px-2');
         langSpan.textContent = lang;
         infobox.appendChild(langSpan);
 
         if (filename) {
             const fileSpan = document.createElement('span');
-            fileSpan.classList.add('text-secondary', 'leading-loose', 'bg-insight-bg-base', 'rounded-insight-control', 'px-2', 'ms-2');
+            fileSpan.classList.add('text-insight-body', 'leading-loose', 'bg-insight-base', 'rounded-insight-control', 'px-2', 'ms-2');
             fileSpan.textContent = filename;
             infobox.appendChild(fileSpan);
         }
@@ -222,7 +224,7 @@ export class CodeBlock {
      */
     generateCodeBlock(id, lang, filename, code) {
         const wrapper = document.createElement('div');
-        wrapper.classList.add('flex', 'flex-col', 'bg-insight-bg-surface', 'rounded-insight-surface', 'border', 'border-insight-border-surface');
+        wrapper.classList.add('flex', 'flex-col', 'bg-insight-surface', 'rounded-insight-surface', 'border', 'border-insight-surface');
         wrapper.id = id;
 
         const toolbar = this.#createToolbar(lang, filename);

@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+# SPDX-License-Identifier: AGPL-3.0-only
 """Type definitions and validation functions for Insight UI components.
 
 This module provides centralized type aliases, value constants, and validation
@@ -58,6 +60,37 @@ BUTTON_TYPE_VALUES: tuple[str, ...] = (*COLOR_TYPE_VALUES, "link")
 
 # Type alias for button types
 type ButtonType = Literal["primary", "secondary", "neutral", "info", "success", "warning", "danger", "link"]
+
+# Icon color values: semantic colors + text colors
+ICON_COLOR_VALUES: tuple[str, ...] = (
+    "",
+    "primary",
+    "secondary",
+    "success",
+    "warning",
+    "danger",
+    "info",
+    "text-headline",
+    "text-body",
+    "text-muted",
+    "text-link",
+)
+
+# Type alias for icon colors
+type IconColor = Literal[
+    "",
+    "primary",
+    "secondary",
+    "success",
+    "warning",
+    "danger",
+    "info",
+    "text-headline",
+    "text-body",
+    "text-muted",
+    "text-link",
+]
+
 
 # =============================================================================
 # Status Types
@@ -195,11 +228,11 @@ type HtmxSwapMethod = Literal[
     "none",
 ]
 
-# Tuple of valid HTMX HTTP method values
-HTMX_METHOD_VALUES: tuple[str, ...] = ("get", "post")
+# Tuple of valid HTTP method values
+HTTP_METHOD_VALUES: tuple[str, ...] = ("get", "post")
 
-# Type alias for HTMX HTTP methods
-type HtmxMethod = Literal["get", "post"]
+# Type alias for HTTP methods
+type HttpMethod = Literal["get", "post"]
 
 # =============================================================================
 # Component-Specific Types
@@ -435,18 +468,18 @@ def validate_htmx_swap_method(value: str, field_name: str = "swap_method") -> No
     _validate_literal(value, HTMX_SWAP_METHOD_VALUES, field_name)
 
 
-def validate_htmx_method(value: str, field_name: str = "method") -> None:
-    """Validate that an HTMX HTTP method value is one of the allowed values.
+def validate_http_method(value: str, field_name: str = "method") -> None:
+    """Validate that an HTTP method value is one of the allowed values.
 
     Args:
-        value: The HTMX HTTP method value to validate.
+        value: The HTTP method value to validate.
         field_name: Name of the field for error messages.
 
     Raises:
-        ValueError: If the value is not a valid HTMX HTTP method.
+        ValueError: If the value is not a valid HTTP method.
 
     """
-    _validate_literal(value, HTMX_METHOD_VALUES, field_name)
+    _validate_literal(value, HTTP_METHOD_VALUES, field_name)
 
 
 def validate_geo_map_marker_type(value: str, field_name: str = "type") -> None:
@@ -489,3 +522,103 @@ def validate_toggle_view_type(value: str, field_name: str = "current_view") -> N
 
     """
     _validate_literal(value, TOGGLE_VIEW_TYPE_VALUES, field_name)
+
+
+def validate_icon_color(value: str, field_name: str = "color") -> None:
+    """Validate that an icon color value is one of the allowed values.
+
+    Args:
+        value: The icon color value to validate.
+        field_name: Name of the field for error messages.
+
+    Raises:
+        ValueError: If the value is not a valid icon color.
+
+    """
+    _validate_literal(value, ICON_COLOR_VALUES, field_name)
+
+
+# =============================================================================
+# Type Registry for Documentation
+# =============================================================================
+# Single source of truth for type documentation. The documentation app imports
+# this directly instead of maintaining a separate registry.
+#
+# Each entry contains:
+#   - values: Tuple of allowed values (references the *_VALUES constant)
+#   - description: Human-readable description for documentation
+
+TYPE_REGISTRY: dict[str, dict] = {
+    "AlertType": {
+        "values": ALERT_TYPE_VALUES,
+        "description": "Semantic types for alerts and notifications.",
+    },
+    "BadgeType": {
+        "values": BADGE_TYPE_VALUES,
+        "description": "Extended color palette for badges, includes 'disabled' state.",
+    },
+    "ButtonType": {
+        "values": BUTTON_TYPE_VALUES,
+        "description": "Extended color palette for buttons, includes 'link' variant.",
+    },
+    "ColorType": {
+        "values": COLOR_TYPE_VALUES,
+        "description": "Base color palette for semantic coloring of components.",
+    },
+    "CornerPosition": {
+        "values": CORNER_POSITION_VALUES,
+        "description": "Corner positions for ribbons, badges, and overlays.",
+    },
+    "FilterFieldType": {
+        "values": FILTER_FIELD_TYPE_VALUES,
+        "description": "Field types for query builder and filter components.",
+    },
+    "FormFieldType": {
+        "values": FORM_FIELD_TYPE_VALUES,
+        "description": "High-level form field types for the form component.",
+    },
+    "GeoMapMarkerType": {
+        "values": GEO_MAP_MARKER_TYPE_VALUES,
+        "description": "Marker types for the geo map component.",
+    },
+    "HtmlButtonType": {
+        "values": HTML_BUTTON_TYPE_VALUES,
+        "description": "Native HTML button type attribute values.",
+    },
+    "HtmlInputType": {
+        "values": HTML_INPUT_TYPE_VALUES,
+        "description": "Native HTML input type attribute values.",
+    },
+    "HttpMethod": {
+        "values": HTTP_METHOD_VALUES,
+        "description": "HTTP methods for requests.",
+    },
+    "HtmxSwapMethod": {
+        "values": HTMX_SWAP_METHOD_VALUES,
+        "description": "HTMX swap methods for content replacement.",
+    },
+    "IconColor": {
+        "values": ICON_COLOR_VALUES,
+        "description": "Color tokens for icons (semantic colors and text colors).",
+    },
+    "InlinePosition": {
+        "values": INLINE_POSITION_VALUES,
+        "description": "Inline positions respecting text direction (RTL-aware).",
+    },
+    "Size": {
+        "values": SIZE_VALUES,
+        "description": "Standard size scale used for spacing, icons, and component dimensions.",
+    },
+    "SliderLegendMode": {
+        "values": SLIDER_LEGEND_MODE_VALUES,
+        "description": "Legend display modes for the range slider component.",
+    },
+    "StepStatus": {
+        "values": STEP_STATUS_VALUES,
+        "description": "Status values for stepper components indicating step progress.",
+    },
+    "ToggleViewType": {
+        "values": TOGGLE_VIEW_TYPE_VALUES,
+        "description": "View types for the toggle view component.",
+    },
+}

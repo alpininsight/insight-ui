@@ -14,8 +14,6 @@ name: GitVersion (Alpine Insight)
 on:
   push:
     branches: [main, develop]
-  pull_request:
-    branches: [main, develop]
 
 concurrency:
   group: gitversion-${{ github.event.pull_request.number || github.ref }}

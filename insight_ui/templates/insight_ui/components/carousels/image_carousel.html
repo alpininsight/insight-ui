@@ -8,11 +8,11 @@
             {# Description overlay #}
             <div class="flex absolute top-4 z-30 justify-center px-2 w-full">
                 <div class="px-4 py-1 w-fit max-w-3/4 bg-insight-bg-base/75 rounded-insight-overlay">
-                    <p class="text-insight-text-primary text-xs md:text-lg md:font-semibold">{{ item.description }}</p>
+                    <p class="text-insight-headline text-xs md:text-lg md:font-semibold">{{ item.description }}</p>
                 </div>
             </div>
         {% endif %}
-        <div class="flex justify-center h-full bg-insight-bg-surface rounded-insight-surface">
+        <div class="flex justify-center h-full bg-insight-surface rounded-insight-surface">
             <img src="{{ item.url }}" alt="{{ item.alt }}" class="p-2 m-auto max-h-full">
         </div>
     </div>

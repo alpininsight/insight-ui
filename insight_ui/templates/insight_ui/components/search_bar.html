@@ -25,14 +25,14 @@
     >
         <label for="search" class="sr-only">{% trans "Search" %}</label>
         <div class="relative h-full">
-            <div class="start-0 flex absolute inset-y-0 items-center ps-3 text-secondary pointer-events-none">
+            <div class="start-0 flex absolute inset-y-0 items-center ps-3 text-insight-body pointer-events-none">
                 {% icon name="magnifying-glass" size="s" %}
             </div>
             <input
                 type="search"
                 id="search"
                 name="search"
-                placeholder="{% if search_bar_config.enable_search %}{% trans 'Search docs...' %} (Ctrl+K){% else %}{% trans 'Browse...' %}{% endif %}"
+                placeholder="{{ search_bar_config.placeholder|default:_('Search...') }}"
                 value="{{ search_bar_config.search_query }}"
                 autocomplete="off"
                 {% if search_bar_config.enable_search %}
@@ -42,10 +42,10 @@
                     aria-autocomplete="list"
                     aria-haspopup="listbox"
                 {% endif %}
-                class="block px-3 size-full {% if search_bar_config.simple %}py-2 text-sm{% else %}py-3 pe-32{% endif %} ps-10 text-primary bg-insight-bg-surface border border-insight-border-surface rounded-insight-control ring-insight-focus focus:outline-none focus:ring-2"
+                class="block px-3 size-full {% if search_bar_config.simple %}py-2 text-sm{% else %}py-3 pe-32{% endif %} ps-10 text-insight-headline bg-insight-surface border border-insight-surface rounded-insight-control ring-insight-focus focus:outline-none focus:ring-2"
             />
             {% if not search_bar_config.simple and not search_bar_config.enable_search %}
-                {% button label=_("Search") type="primary" size="l" button_type="submit" extra_classes="absolute inset-y-0 end-0 rounded-s-none" %}
+                {% button label=search_bar_config.button_label|default:_("Search") type="primary" size="l" button_type="submit" extra_classes="absolute inset-y-0 end-0 rounded-s-none" %}
             {% endif %}
         </div>
     </form>
@@ -56,7 +56,7 @@
             data-search-results
             role="listbox"
             aria-label="{% trans 'Search results' %}"
-            class="hidden absolute z-50 mt-1 w-full max-h-96 bg-insight-bg-raised border border-insight-border-raised rounded-insight-raised shadow-insight-raised overflow-y-auto"
+            class="hidden absolute z-50 mt-1 w-full max-h-96 bg-insight-raised border border-insight-raised rounded-insight-raised shadow-insight-raised overflow-y-auto"
         ></div>
 
         {% include "insight_ui/components/search_bar_result_templates.html" %}

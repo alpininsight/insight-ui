@@ -2,8 +2,6 @@
 name: Static Assets
 
 on:
-  pull_request:
-    branches: [develop, main]
   push:
     branches: [develop, main]
   workflow_dispatch:
@@ -21,16 +19,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  static-assets-check:
-    if: github.event_name == 'pull_request'
-    uses: alpininsight/.github-private/.github/workflows/static-assets-reusable.yml@main
-    with:
-      mode: build
-      setup_python: true
-      setup_uv: true
-      build_command: npm run verify:static-build
-      upload_cdn: false
-
   resolve-cdn-publish:
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest

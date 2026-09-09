@@ -15,7 +15,7 @@
     {# Wrapper to centralize the modal on screen #}
     <div class="flex justify-center items-center p-4 min-h-screen">
         {# Modal #}
-        <div class="relative mx-auto w-full bg-insight-bg-base rounded-insight-overlay shadow-insight-overlay transition-all transform", style="max-width: {{ modal_config.width|default:32 }}rem;">
+        <div class="relative mx-auto w-full bg-insight-base rounded-insight-overlay shadow-insight-overlay transition-all transform", style="max-width: {{ modal_config.width|default:32 }}rem;">
             {# Modal Header #}
             <div class="flex justify-between items-start p-6 h-fit border-b border-insight-divider">
                 <h2 id="{{ modal_config.tag_id }}-title" class="pb-0">{{ modal_config.title }}</h2>
@@ -27,7 +27,7 @@
                 {% block modal_content %}
                     <div class="space-y-4">
                         {% for paragraph in modal_config.description %}
-                            <p class="flex items-center text-secondary">{{ paragraph }}</p>
+                            <p class="flex items-center text-insight-body">{{ paragraph }}</p>
                         {% endfor %}
                     </div>
                 {% endblock %}

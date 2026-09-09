@@ -3,12 +3,12 @@
 <div class="overflow-auto">
     <table class="w-full table-auto">
         {% if table_config.caption %}
-            <caption class="text-sm text-secondary">{{ table_config.caption }}</caption>
+            <caption class="text-sm text-insight-body">{{ table_config.caption }}</caption>
         {% endif %}
 
         {% if table_config.headers %}
-            <thead class="text-primary">
-                <tr class="border-b border-insight-border-surface">
+            <thead class="text-insight-headline">
+                <tr class="border-b border-insight-surface">
                     {% for header in table_config.headers %}
                         <th class="px-4 py-2 text-start text-sm" scope="col"{% if sortable %} aria-sort="none"{% endif %}>
                             {% if sortable %}
@@ -26,9 +26,9 @@
             </thead>
         {% endif %}
 
-        <tbody class="text-primary">
+        <tbody class="text-insight-headline">
             {% for row in table_config.rows %}
-                <tr class="odd:bg-insight-bg-raised/50 even:bg-insight-bg-base">
+                <tr class="odd:bg-insight-bg-raised/50 even:bg-insight-base">
                     {% for cell in row %}
                         <td class="px-4 py-3 text-start text-sm">{{ cell|safe }}</td>
                     {% endfor %}
@@ -36,7 +36,7 @@
             {% empty %}
                 <tfoot>
                     <tr>
-                        <td colspan="{{ table_config.headers|length }}" class="pt-16 w-full text-secondary text-center border-t border-insight-border-surface">
+                        <td colspan="{{ table_config.headers|length }}" class="pt-16 w-full text-insight-body text-center border-t border-insight-surface">
                             {{ table_config.empty_msg }}
                         </td>
                     </tr>

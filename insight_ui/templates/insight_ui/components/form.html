@@ -3,23 +3,23 @@
 <form
   {% if form_config.tag_id %}id="{{ form_config.tag_id }}"{% endif %}
   {% if form_config.htmx_config %}
-    hx-post="{{ form_config.request_url }}"
+    hx-{{ form_config.htmx_config.method }}="{{ form_config.htmx_config.request_url }}"
     hx-target="{{ form_config.htmx_config.target }}"
     hx-swap="{{ form_config.htmx_config.swap|default:'innerHTML' }}"
     hx-trigger="submit"
     hx-indicator=".htmx-indicator"
   {% else %}
     action="{{ form_config.request_url }}"
-    method="post"
+    method="{{ form_config.method }}"
   {% endif %}
   class="space-y-6"
 >
   {% csrf_token %}
   {% if form_config.title %}
     <div class="mb-6">
-      <h2 class="font-bold text-2xl text-primary">{{ form_config.title }}</h2>
+      <h2 class="font-bold text-2xl text-insight-headline">{{ form_config.title }}</h2>
       {% if form_config.description %}
-        <p class="mt-2 text-secondary">{{ form_config.description }}</p>
+        <p class="mt-2 text-insight-body">{{ form_config.description }}</p>
       {% endif %}
     </div>
   {% endif %}
@@ -36,16 +36,16 @@
     {% endfor %}
   </div>
 
-  <div class="flex gap-2 justify-end pt-4 border-t border-insight-border-surface">
+  <div class="flex gap-2 justify-end pt-4 border-t border-insight-surface">
     {% if form_config.show_reset_button %}
-      {% button label=_("Reset") type="secondary" button_type="reset" %}
+      {% button label=form_config.reset_label|default:_("Reset") type="secondary" button_type="reset" %}
     {% endif %}
-    {% button label=_("Submit") type="primary" button_type="submit" %}
+    {% button label=form_config.submit_label|default:_("Submit") type="primary" button_type="submit" %}
   </div>
 
   {% if form_config.htmx_config %}
     <!-- HTMX Loading Indicator -->
-    <div class="htmx-indicator fixed top-4 right-4 px-4 py-2 text-white bg-insight-primary rounded-insight-overlay shadow-insight-overlay" role="status" aria-live="polite">
+    <div class="htmx-indicator fixed top-4 right-4 px-4 py-2 text-white bg-insight-primary-action rounded-insight-overlay shadow-insight-overlay" role="status" aria-live="polite">
       <svg class="animate-spin inline mr-3 -ml-1 w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>

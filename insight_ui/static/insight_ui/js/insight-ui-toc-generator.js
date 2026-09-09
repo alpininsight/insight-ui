@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+// SPDX-License-Identifier: AGPL-3.0-only
 /**
  * Table of Contents with scroll-aware highlighting.
  *
@@ -93,7 +95,7 @@ class TableOfContents {
             a.href = `#${heading.id}`;
             a.textContent = heading.textContent;
             a.className = `
-        pe-2 py-1 text-sm text-primary line-clamp-1
+        pe-2 py-1 text-sm text-insight-headline line-clamp-1
         border-s border-gray-200 dark:border-gray-700
         hover:border-gray-400 hover:text-gray-400
         aria-[current=location]:font-bold

@@ -9,6 +9,102 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug Fixes
 
+- Correct template path for playground view
+- Use 'INSIGHT_UI' context settings for 'navbar_fixed' instead of a hidden variable
+- Correct layout of the 'badge' and 'button' demo on mobile devices
+- Remove gap below sidebar in the sidebar demo
+- Add 'side' to the oob swap sidebar on docs detailpages
+- 'parameter table' id is undefined error when navigating via browser history
+- **navbar:** Render user menu icon names
+- Declare AGPL-3.0 in pyproject classifiers
+- **container:** Pin Uvicorn wheel dependency
+- **a11y:** Separate semantic action and foreground tokens
+- **a11y:** Repair catalog component semantics
+- **a11y:** Use the primary foreground token for the page header title
+- **docs:** Replace conformance claims with designed-to-conform wording
+- **css:** Cover dynamic package color variants
+- **navigation:** Distinguish fragment targets
+- **ui:** Keep branded headings and wordmarks readable
+- **ui:** Package responsive brand mark styles
+- **ci:** Stop manual CDN deploys from rolling back the latest alias
+- **scaffold:** Reject conflicting imports and render composition labels
+- **license:** Keep LICENSE verbatim and pin the licence text hashes
+
+### CI/CD
+
+- **package:** Exclude legacy application sources
+- Thin caller for central package SBOM workflow
+- Send package SBOM to insight-ui-docs
+- **contributors:** Isolate public package checks
+
+### Documentation
+
+- Fix outdated test paths in testing.md
+- **license:** Clarify AGPL or Commercial spurwahl in stub
+- **contributors:** Explain component workflow with a diagram
+- Correct contact email for commercial licensing inquiries
+- **contributors:** Restore package guides and verify README examples
+- **readme:** Point to the prepared Enterprise documentation next to the scope limit
+
+### Features
+
+- **button:** Support theme-specific secondary foregrounds
+- Make 'grid' centrable
+- Reverse the change to make the 'button', 'radio_block' and 'toggle' container agnostic
+- Rename 'url' to 'request_url' for 'CarouselItemConfig', 'TabsConfig', StepperItemConfig' and the 'NavbarLinkConfig'
+- Improve general validation and default values of component configs
+- Hide the entire section in the footer if the corresponding config is not specified
+- Add CSRF token globally to hx headers
+- Add 'GET' support to 'form' component
+- Add color token support to 'icon' component
+- Show qoutes for an empty value in the types registry
+- Use a wider variety of values for the different badge sizes
+- Add documentation and explanations to the design tokens in the input.css
+- Add htmx support to navbar and footer links
+- Move docs links from the navbar to the sidebar
+- Make placeholder and button labels configurable for 'search_bar' and 'form'
+- Use the 'SearchBarConfig' for the search bar in the navbar
+- Update translations
+- Update search indices
+- Change favicon and logo
+- Add id's to 'background_image' and 'header' blocks
+- Add HTMX support to 'dropdown' component
+- New Logo and Favicon
+- Rename 'HTMXMethod' to 'HTTPMethod' and use it for 'form' component method parameter
+- **corner-ribbon:** Support accessible link actions
+- Preparation for publishing on PyPI
+- Text tokens
+- **contributors:** Scaffold atomic component compositions
+- **contributors:** Add loopback-only component preview
+
+### Miscellaneous
+
+- **pre-commit:** Autoupdate hooks
+- **package:** Separate documentation test suite
+- **license:** Add SPDX headers, REUSE metadata and third-party notices
+- **pre-commit:** Autoupdate hooks
+
+### Refactoring
+
+- **package:** Move documentation ownership to insight-ui-docs
+
+### Reverted
+
+- Chore(package): seperate documentation test suit
+
+### Styling
+
+- **corner-ribbon:** Format linked ribbon template
+
+### Testing
+
+- Add test accordingly to the new validation improvements
+- Restructure tests
+
+## [1.13.0] - 2026-08-30
+
+### Bug Fixes
+
 - **charts:** Correct accessible data table values
 - **docs:** Wrap demo controls on narrow screens
 - Correct polygon of 'minimal_stepper' for rtl mode
@@ -44,6 +140,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Documentation
 
 - Align self-documentation app references
+- **cdn:** Add required CDN asset manifest and delivery/entitlement contract
+- **cdn:** Scope manifest as verify-subset and reconcile insight-ui vs insight-brand
+- **cdn:** Keep verification contract deployment-neutral
 
 ### Features
 

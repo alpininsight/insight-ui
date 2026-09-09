@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+# SPDX-License-Identifier: AGPL-3.0-only
 """Configuration classes for layout components."""
 
 from dataclasses import dataclass, field
@@ -29,7 +31,7 @@ class PageHeaderConfig:
             chapter="Insight UI",
             description="A header component for documentation pages.",
             badges=[BadgeConfig(label="New", type="success")],
-            buttons=[ButtonConfig(label="Get Started", href="/start")],
+            buttons=[ButtonConfig(label="Get Started", request_url="/start")],
         )
         """
 

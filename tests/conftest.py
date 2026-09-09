@@ -1,27 +1,9 @@
+# SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+# SPDX-License-Identifier: AGPL-3.0-only
 """Pytest configuration and fixtures for Insight UI tests."""
 
-import os
-
-import django
 import pytest
-from _pytest.config import Config
-from django.conf import settings
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-
-
-def pytest_configure(config: Config) -> None:
-    """Configure Django settings for pytest."""
-    if not settings.configured:
-        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")
-        django.setup()
-
-    # Override staticfiles storage for tests to avoid manifest requirement
-    # Tests don't run collectstatic, so we use the simple storage backend
-    # Django 4.2+ uses STORAGES dict instead of STATICFILES_STORAGE
-    settings.STORAGES = {
-        "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
-        "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
-    }
 
 
 @pytest.fixture(scope="session")

@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+// SPDX-License-Identifier: AGPL-3.0-only
 import { readFile } from "node:fs/promises";
 
 const sourceUrl = new URL("../insight_ui/utils/input.css", import.meta.url);
@@ -13,8 +15,11 @@ const REQUIRED_COMPILED_TOKENS = [
     "--color-insight-border-overlay",
     "--color-insight-primary",
     "--color-insight-secondary",
-    "--color-insight-text-primary",
-    "--color-insight-text-secondary",
+    "--color-insight-text-headline",
+    "--color-insight-text-body",
+    "--color-insight-text-muted",
+    "--color-insight-text-disabled",
+    "--color-insight-text-inverse",
     "--radius-insight-control",
     "--radius-insight-surface",
     "--radius-insight-raised",
@@ -143,7 +148,7 @@ if (missingRequiredTokens.length > 0 || mismatches.length > 0) {
         console.error(mismatches.map(formatMismatch).join("\n"));
     }
 
-    console.error("Run `USE_TAILWIND_CLI=True uv run manage.py tailwind build --force --no-minify` and then `npm run build:static`.");
+    console.error("Run `npm run build:static-all`.");
     process.exit(1);
 }
 

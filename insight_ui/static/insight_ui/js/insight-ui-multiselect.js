@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+// SPDX-License-Identifier: AGPL-3.0-only
 /**
  * Multiselect component for Insight UI.
  *
@@ -160,8 +162,8 @@ export class Multiselect {
             return;
         }
 
-        // Keep open if clicking within the combobox (input area + options dropdown)
-        if (this.combobox.contains(e.target)) return;
+        // Keep open if clicking within the input area or options dropdown.
+        if (this.selected.contains(e.target) || this.options.contains(e.target)) return;
 
         // Keep open if clicking select/deselect all buttons
         if (this.selectAllBtn?.contains(e.target)) return;

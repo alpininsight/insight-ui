@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+# SPDX-License-Identifier: AGPL-3.0-only
 """Template-Tags for Insight UI-Components."""
 
 from __future__ import annotations
@@ -61,6 +63,7 @@ from insight_ui.configs import (
     HeroConfig,
     HtmlButtonType,
     HtmxConfig,
+    IconColor,
     IconConfig,
     ImageCarouselConfig,
     ImageCarouselItemConfig,
@@ -313,7 +316,7 @@ def markdownify(value: str) -> SafeString:
     html = html.replace("</code>", "</span>")
 
     # Assign text style to <a> elements
-    html = html.replace("<a", '<a class="text-link"')
+    html = html.replace("<a", '<a class="text-insight-link"')
 
     return mark_safe(html)  # nosec  # noqa: S308
 
@@ -339,10 +342,10 @@ def icon(
     config: IconConfig | None = None,
     *,
     name: str | _Unset = UNSET,
-    size: str | _Unset = UNSET,
-    color: str | _Unset = UNSET,
+    size: Size | _Unset = UNSET,
+    color: IconColor | _Unset = UNSET,
 ) -> dict[str, Any]:
-    """Render specified icon with given size."""
+    """Render specified icon with given size and color."""
     config = build_config(IconConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"icon_config": config}
 
@@ -1013,7 +1016,7 @@ def diff(a: str, b: str, simple: bool = True) -> str:
             .del {{ background-color: #ffbbbb; color: #721c24; text-decoration: line-through; }}
             .ins {{ background-color: #bbffbb; color: #155724; }}
         </style>
-        <p class='text-primary'>{html}</p>
+        <p class='text-insight-headline'>{html}</p>
     """
 
 
@@ -1080,6 +1083,9 @@ def corner_ribbon(
     text: str | _Unset = UNSET,
     position: CornerPosition | _Unset = UNSET,
     color: ColorType | _Unset = UNSET,
+    foreground_color: ColorType | _Unset = UNSET,
+    request_url: str | _Unset = UNSET,
+    aria_label: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a corner ribbon positioned in any browser corner."""
     config = build_config(CornerRibbonConfig, config, **{k: v for k, v in locals().items() if k != "config"})

@@ -1,52 +1,66 @@
 {% load i18n insight_tags %}
 
-<footer role="contentinfo" class="z-10 px-4 mt-auto bg-insight-bg-base border-t border-insight-border-surface md:px-16">
+<footer role="contentinfo" class="z-10 px-4 mt-auto bg-insight-base border-t border-insight-surface md:px-6">
     <div class="py-6 mx-auto">
         <div class="flex flex-col gap-6 justify-stretch md:flex-row">
             {% if footer_config.description %}
-                <div class="flex-1">
+                <div class="flex-1 space-y-2">
                     <h4>{{ footer_config.description.title }}</h4>
-                    <p class="text-secondary text-sm">{{ footer_config.description.text }}</p>
+                    <p class="text-insight-body text-sm">{{ footer_config.description.text }}</p>
                     {% if footer_config.description.logo %}
                         {% logo config=footer_config.description.logo %}
                     {% endif %}
                 </div>
             {% endif %}
-            <div class="flex-1">
-                <h4>{% trans 'Links' %}</h4>
-                <ul>
-                    {% for link in footer_config.links %}
-                        <li>
-                            <a href="{{ link.url }}" class="inline-flex gap-1 text-secondary text-sm hover:text-insight-text-link-hover dark:hover:text-insight-text-link-hover">
-                                {% if link.icon %}
-                                    {% icon link.icon %}
-                                {% endif %}
-                                {{ link.text }}
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <div class="flex-1">
-                <h4>{% trans 'Contact' %}</h4>
-                <div class="space-x-4">
-                    {% if footer_config.contact.imprint %}
-                        <a href="{{ footer_config.contact.imprint }}" class="text-secondary text-sm hover:text-insight-text-link-hover">{% trans "Imprint" %}</a>
-                    {% endif %}
-                    {% if footer_config.contact.privacy %}
-                        <a href="{{ footer_config.contact.privacy }}" class="text-secondary text-sm hover:text-insight-text-link-hover">{% trans "Privacy" %}</a>
+            {% if footer_config.links %}
+                <div class="flex-1 space-y-2">
+                    <h4>{% trans 'Links' %}</h4>
+                    <ul>
+                        {% for link in footer_config.links %}
+                            <li>
+                                <a
+                                    href="{{ link.request_url }}"
+                                    {% if link.htmx %}
+                                        hx-get="{{ link.htmx.request_url|default:link.request_url }}"
+                                        hx-target="{{ link.htmx.target }}"
+                                        hx-swap="{{ link.htmx.swap|default:'innerHTML' }} show:window:top"
+                                        hx-push-url="true"
+                                        hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
+                                    {% endif %}
+                                    class="inline-flex gap-1 text-insight-body text-sm hover:text-insight-text-link-hover dark:hover:text-insight-text-link-hover"
+                                >
+                                    {% if link.icon %}
+                                        {% icon link.icon %}
+                                    {% endif %}
+                                    {{ link.text }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            {% if footer_config.contact %}
+                <div class="flex-1 space-y-2">
+                    <h4>{% trans 'Contact' %}</h4>
+                    <div class="space-x-4">
+                        {% if footer_config.contact.imprint %}
+                            <a href="{{ footer_config.contact.imprint }}" class="text-insight-body text-sm hover:text-insight-text-link-hover">{% trans "Imprint" %}</a>
+                        {% endif %}
+                        {% if footer_config.contact.privacy %}
+                            <a href="{{ footer_config.contact.privacy }}" class="text-insight-body text-sm hover:text-insight-text-link-hover">{% trans "Privacy" %}</a>
+                        {% endif %}
+                    </div>
+                    {% if footer_config.contact.mail_url %}
+                        <p class="mt-2 text-insight-body text-sm">
+                            {% trans 'Do you have any questions or feedback?' %}<br>
+                            <a href="mailto:{{ footer_config.contact.mail_url }}" class="text-insight-primary hover:underline">{{ footer_config.contact.mail_url }}</a>
+                        </p>
                     {% endif %}
                 </div>
-                {% if footer_config.contact.mail_url %}
-                    <p class="mt-2 text-secondary text-sm">
-                        {% trans 'Do you have any questions or feedback?' %}<br>
-                        <a href="mailto:{{ footer_config.contact.mail_url }}" class="text-insight-primary hover:underline">{{ footer_config.contact.mail_url }}</a>
-                    </p>
-                {% endif %}
-            </div>
+            {% endif %}
         </div>
         {% if footer_config.legal or footer_config.version %}
-            <div class="flex justify-center pt-4 mt-6 border-t border-insight-border-surface">
+            <div class="flex justify-center pt-4 mt-6 border-t border-insight-surface">
                 {% legal_notice config=footer_config.legal version=footer_config.version %}
             </div>
         {% endif %}

@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+# SPDX-License-Identifier: AGPL-3.0-only
 """Configuration classes for data display components."""
 
 from dataclasses import dataclass, field
@@ -14,8 +16,8 @@ class InfiniteScrollConfig:
     Renders a container that loads more content on scroll.
 
     Attributes:
-        tag_id: Unique ID for JavaScript/CSS targeting.
         request_url: URL for loading more items.
+        tag_id: Unique ID for JavaScript/CSS targeting.
         items: Initial items to display.
         page: Current page number.
         has_next: Whether more items are available.
@@ -26,8 +28,8 @@ class InfiniteScrollConfig:
 
     __example__ = """
         InfiniteScrollConfig(
-            tag_id="news-feed",
             request_url=reverse("news_list"),
+            tag_id="news-feed",
             items=initial_items,
             page=1,
             has_next=True,
@@ -36,8 +38,8 @@ class InfiniteScrollConfig:
         )
         """
 
+    request_url: str = field(metadata={"doc": _("URL for loading more items.")})
     tag_id: str = field(default="", metadata={"doc": _("Unique ID for JavaScript/CSS targeting.")})
-    request_url: str = field(default="", metadata={"doc": _("URL for loading more items.")})
     items: list[Any] = field(default_factory=list, metadata={"doc": _("Initial items to display.")})
     page: int = field(default=1, metadata={"doc": _("Current page number.")})
     has_next: bool = field(default=True, metadata={"doc": _("Whether more items are available.")})

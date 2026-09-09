@@ -2,7 +2,7 @@
   <div
     role="tablist"
     aria-label="{{ label }}"
-    class="flex border-b border-insight-border-surface"
+    class="flex border-b border-insight-surface"
   >
     {% for tab in tabs %}
       <button
@@ -18,7 +18,7 @@
         {% elif not is_htmx %}
           data-tab-panel="{{ tab.panel_id }}"
         {% endif %}
-        class="px-4 py-2 -mb-px font-semibold border-b-2 transition-colors hover:text-insight-primary focus:outline-none focus:text-insight-primary {% if tab.active %}text-insight-primary border-insight-primary{% else %}text-secondary border-transparent{% endif %}"
+        class="px-4 py-2 -mb-px font-semibold border-b-2 transition-colors hover:text-insight-primary-foreground focus:outline-none focus:text-insight-primary-foreground {% if tab.active %}text-insight-primary-foreground border-insight-primary-foreground{% else %}text-insight-body border-transparent{% endif %}"
       >
         {% if tab.icon %}<span class="mr-2">{{ tab.icon }}</span>{% endif %}
         {{ tab.label }}

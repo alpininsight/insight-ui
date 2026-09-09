@@ -3,8 +3,8 @@
 
 {# Optional title #}
 {% if sidebar_data.title %}
-  <div class="flex justify-between items-center pb-4 mb-4 border-b border-insight-border-surface">
-    <h2 class="flex gap-2 items-center pb-0 text-lg">
+  <div class="flex justify-between items-center pb-4 mb-4 border-b border-insight-surface">
+    <h2 class="flex gap-2 items-center text-lg">
       {% if sidebar_data.icon %}
         <div>
           {% icon sidebar_data.icon %}
@@ -15,40 +15,80 @@
   </div>
 {% endif %}
 
-{# Navigation categories #}
 <nav class="space-y-2">
+  {# Top-level links (before categories) #}
+  {% if sidebar_data.links %}
+    <ul>
+      {% for item in sidebar_data.links %}
+        {% if item.request_url %}
+          <li data-insight-side-nav>
+            <a
+              {% if item.htmx %}
+                hx-get="{{ item.htmx.request_url|default:item.request_url }}"
+                hx-target="{{ item.htmx.target }}"
+                hx-swap="{{ item.htmx.swap|default:'innerHTML' }} show:window:top"
+                hx-push-url="true"
+                hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
+              {% endif %}
+              href="{{ item.request_url }}"
+              class="insight-sidebar-link flex gap-2 items-center px-4 py-1 text-sm text-insight-headline tracking-wide"
+            >
+              {% if item.icon %}
+                {% icon item.icon %}
+              {% endif %}
+              <span class="flex-1">{{ item.text }}</span>
+              {% if item.badge %}
+                {% badge config=item.badge %}
+              {% endif %}
+            </a>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {# Optional categories section title #}
+  {% if sidebar_data.categories_title %}
+    <h3 class="flex gap-1 pt-8 mt-4 font-semibold text-lg tracking-wide border-t border-insight-surface">
+      {{ sidebar_data.categories_title }}
+    </h3>
+  {% endif %}
+
+  {# Navigation categories #}
   <ul>
     {% for category in sidebar_data.categories %}
       <li>
-        <div class="flex gap-1 pt-4 pb-2 text-insight-primary-hover">
+        <h4 class="flex gap-1 pt-4 pb-2 font-semibold text-base text-insight-primary-hover tracking-wide">
           {% if category.icon %}
             {% icon category.icon %}
           {% endif %}
-          <span class="font-semibold tracking-wide">{{ category.caption }}</span>
-        </div>
+          {{ category.caption }}
+        </h4>
         <ul>
           {% for item in category.items %}
-            <li data-insight-side-nav>
-              <a
-                {% if item.htmx %}
-                  hx-get="{{ item.htmx.request_url|default:item.request_url }}"
-                  hx-target="{{ item.htmx.target }}"
-                  hx-swap="{{ item.htmx.swap|default:'innerHTML' }} show:window:top"
-                  hx-push-url="true"
-                  hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
-                {% endif %}
-                href="{{ item.request_url }}"
-                class="insight-sidebar-link flex gap-2 items-center px-4 py-1 text-sm text-primary tracking-wide"
-              >
-                {% if item.icon %}
-                  {% icon item.icon %}
-                {% endif %}
-                <span class="flex-1">{{ item.text }}</span>
-                {% if item.badge %}
-                  {% badge config=item.badge %}
-                {% endif %}
-              </a>
-            </li>
+            {% if item.request_url %}
+              <li data-insight-side-nav>
+                <a
+                  {% if item.htmx %}
+                    hx-get="{{ item.htmx.request_url|default:item.request_url }}"
+                    hx-target="{{ item.htmx.target }}"
+                    hx-swap="{{ item.htmx.swap|default:'innerHTML' }} show:window:top"
+                    hx-push-url="true"
+                    hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
+                  {% endif %}
+                  href="{{ item.request_url }}"
+                  class="insight-sidebar-link flex gap-2 items-center px-4 py-1 text-sm text-insight-headline tracking-wide"
+                >
+                  {% if item.icon %}
+                    {% icon item.icon %}
+                  {% endif %}
+                  <span class="flex-1">{{ item.text }}</span>
+                  {% if item.badge %}
+                    {% badge config=item.badge %}
+                  {% endif %}
+                </a>
+              </li>
+            {% endif %}
           {% endfor %}
         </ul>
       </li>

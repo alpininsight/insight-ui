@@ -4,7 +4,7 @@
     {% for item in items %}
         <li class="relative {% if not forloop.first %}pt-10{% endif %}">
             {% if not forloop.first %}
-                <div aria-hidden="true" class="-top-1 start-4 absolute {% if not item.completed and not item.current %}bg-insight-text-hint{% else %}bg-insight-success{% endif %} mt-0.5 -ms-px w-0.5 h-1/2"></div>
+                <div aria-hidden="true" class="-top-1 start-4 absolute {% if not item.completed and not item.current %}bg-insight-text-disabled{% else %}bg-insight-success{% endif %} mt-0.5 -ms-px w-0.5 h-1/2"></div>
             {% endif %}
             <a
                 {% if item.request_url and not item.current %}
@@ -21,7 +21,7 @@
             >
                 <!-- Bullet -->
                 <span class="flex items-center h-9">
-                    <span class="flex relative z-10 justify-center items-center size-8 border-2 {% if item.completed %}border-insight-success{% elif item.current %}border-insight-primary{% else %}border-insight-text-hint{% endif %} text-primary rounded-insight-full">
+                    <span class="flex relative z-10 justify-center items-center size-8 border-2 {% if item.completed %}border-insight-success{% elif item.current %}border-insight-primary{% else %}border-insight-text-disabled{% endif %} text-insight-headline rounded-insight-full">
                         {% if item.completed %}
                             <span class="text-insight-success">
                                 {% icon name="check" size="s" %}
@@ -31,14 +31,14 @@
                         {% elif item.bullet_text %}
                             <span>{{ item.bullet_text }}</span>
                         {% else %}
-                            <span class="{% if item.current %}bg-insight-primary{% else %}bg-insight-text-hint{% endif %} size-2.5 rounded-insight-full"></span>
+                            <span class="{% if item.current %}bg-insight-primary{% else %}bg-insight-text-disabled{% endif %} size-2.5 rounded-insight-full"></span>
                         {% endif %}
                     </span>
                 </span>
                 <!-- Information -->
                 <div class="flex flex-col ms-4 min-w-0">
-                    <span class="font-medium text-sm {% if not item.completed and not item.current %}text-insight-text-hint{% elif item.current %}text-insight-primary{% else %}text-insight-text-primary{% endif %}">{{ item.title}}</span>
-                    <span class="text-sm {% if not item.completed and not item.current %}text-insight-text-hint{% else %}text-insight-text-secondary{% endif %}">{{ item.description }}</span>
+                    <span class="font-medium text-sm {% if not item.completed and not item.current %}text-insight-muted{% elif item.current %}text-insight-primary{% else %}text-insight-headline{% endif %}">{{ item.title}}</span>
+                    <span class="text-sm {% if not item.completed and not item.current %}text-insight-muted{% else %}text-insight-body{% endif %}">{{ item.description }}</span>
                 </div>
             </a>
         </li>

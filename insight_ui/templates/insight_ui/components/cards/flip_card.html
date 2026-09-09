@@ -3,19 +3,19 @@
 <div class="perspective-distant relative w-72" data-insight-flip-card>
     <div class="relative size-full transition-transform duration-500 transform-3d" data-flip-inner>
         {# Front side #}
-        <div class="backface-hidden flex flex-col size-full bg-insight-bg-surface border border-insight-border-surface rounded-insight-surface shadow-insight-surface overflow-hidden" data-flip-front>
+        <div class="backface-hidden flex flex-col size-full bg-insight-surface border border-insight-surface rounded-insight-surface shadow-insight-surface overflow-hidden" data-flip-front>
             <img class="backface-hidden w-full" src="{{ flip_card_config.image.url }}" alt="{{ flip_card_config.image.alt }}">
 
             {# Title and description #}
             <div class="flex flex-1 flex-col px-4 py-2">
                 {% if flip_card_config.request_url %}
                     <a href="{{ flip_card_config.request_url }}">
-                        <h3 class="mb-2 font-bold text-primary text-xl hover:text-insight-text-link-hover">{{ flip_card_config.title }}</h3>
+                        <h3 class="mb-2 font-bold text-insight-headline text-xl hover:text-insight-text-link-hover">{{ flip_card_config.title }}</h3>
                     </a>
                 {% else %}
-                    <h3 class="mb-2 font-bold text-primary text-xl">{{ flip_card_config.title }}</h3>
+                    <h3 class="mb-2 font-bold text-insight-headline text-xl">{{ flip_card_config.title }}</h3>
                 {% endif %}
-                <p class="hyphens-auto text-secondary text-base text-justify" lang="de">{{ flip_card_config.content|safe }}</p>
+                <p class="hyphens-auto text-insight-body text-base text-justify" lang="de">{{ flip_card_config.content|safe }}</p>
             </div>
 
             {# Tags #}
@@ -29,7 +29,7 @@
 
             {# Actions #}
             {% if flip_card_config.actions %}
-                <div class="flex flex-col gap-2 pt-4 mx-4 mt-4 border-t border-insight-border-surface">
+                <div class="flex flex-col gap-2 pt-4 mx-4 mt-4 border-t border-insight-surface">
                     {% for action in flip_card_config.actions %}
                         {% button config=action %}
                     {% endfor %}
@@ -39,7 +39,7 @@
             {# Flip button #}
             <button
                 type="button"
-                class="flex gap-2 justify-center items-center py-2 mt-4 w-full text-secondary text-sm border-t border-insight-border-surface transition-colors hover:text-primary hover:bg-insight-bg-raised"
+                class="flex gap-2 justify-center items-center py-2 mt-4 w-full text-insight-body text-sm border-t border-insight-surface transition-colors hover:text-insight-headline hover:bg-insight-raised"
                 aria-label="{% trans 'Show details' %}"
                 data-flip-trigger
             >
@@ -49,19 +49,19 @@
         </div>
 
         {# Back side #}
-        <div class="backface-hidden flex flex-col absolute inset-0 size-full bg-insight-bg-surface border border-insight-border-surface rounded-insight-surface shadow-insight-surface rotate-y-180 overflow-hidden" data-flip-back aria-hidden="true">
+        <div class="backface-hidden flex flex-col absolute inset-0 size-full bg-insight-surface border border-insight-surface rounded-insight-surface shadow-insight-surface rotate-y-180 overflow-hidden" data-flip-back aria-hidden="true" inert>
             <div class="flex flex-1 flex-col p-4">
                 {% if flip_card_config.back_title %}
-                    <h3 class="mb-2 font-bold text-primary text-xl">{{ flip_card_config.back_title }}</h3>
+                    <h3 class="mb-2 font-bold text-insight-headline text-xl">{{ flip_card_config.back_title }}</h3>
                 {% endif %}
                 {% if flip_card_config.back_content %}
-                    <div class="flex-1 text-secondary text-base overflow-auto">{{ flip_card_config.back_content|safe }}</div>
+                    <div class="flex-1 text-insight-body text-base overflow-auto">{{ flip_card_config.back_content|safe }}</div>
                 {% endif %}
             </div>
 
             {# Back actions #}
             {% if flip_card_config.back_actions %}
-                <div class="flex flex-col gap-2 pt-4 mx-4 border-t border-insight-border-surface">
+                <div class="flex flex-col gap-2 pt-4 mx-4 border-t border-insight-surface">
                     {% for action in flip_card_config.back_actions %}
                         {% button config=action %}
                     {% endfor %}
@@ -71,7 +71,7 @@
             {# Flip-back button #}
             <button
                 type="button"
-                class="flex gap-2 justify-center items-center py-2 mt-4 w-full text-secondary text-sm border-t border-insight-border-surface transition-colors hover:text-primary hover:bg-insight-bg-raised"
+                class="flex gap-2 justify-center items-center py-2 mt-4 w-full text-insight-body text-sm border-t border-insight-surface transition-colors hover:text-insight-headline hover:bg-insight-raised"
                 aria-label="{% trans 'Back to front' %}"
                 data-flip-trigger
             >

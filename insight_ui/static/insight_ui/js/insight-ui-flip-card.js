@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+// SPDX-License-Identifier: AGPL-3.0-only
 /**
  * FlipCard component for Insight UI.
  *
@@ -50,6 +52,9 @@ export class FlipCard {
      * Initializes the flip card by binding event handlers.
      */
     init() {
+        this.front.inert = false;
+        this.back.inert = true;
+
         this.triggers.forEach(trigger => {
             trigger.addEventListener('click', this.clickHandler);
             trigger.addEventListener('keydown', this.keyHandler);
@@ -81,16 +86,15 @@ export class FlipCard {
             this.inner.classList.add('rotate-y-180');
             this.front.setAttribute('aria-hidden', 'true');
             this.back.setAttribute('aria-hidden', 'false');
+            this.front.inert = true;
+            this.back.inert = false;
         } else {
             this.inner.classList.remove('rotate-y-180');
             this.front.setAttribute('aria-hidden', 'false');
             this.back.setAttribute('aria-hidden', 'true');
+            this.front.inert = false;
+            this.back.inert = true;
         }
-
-        // Move focus to the new side's trigger button
-        const newSide = this.isFlipped ? this.back : this.front;
-        const newTrigger = newSide.closest('[data-flip-front], [data-flip-back]')
-            ?.parentElement?.querySelector('[data-flip-trigger]');
 
         // Focus the trigger on the now-visible side after animation
         setTimeout(() => {

@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+# SPDX-License-Identifier: AGPL-3.0-only
 """Base configuration classes shared across multiple components."""
 
 import warnings
@@ -7,11 +9,13 @@ from typing import Any
 from django.utils.translation import gettext_lazy as _
 
 from insight_ui.configs.types import (
-    HtmxMethod,
     HtmxSwapMethod,
+    HttpMethod,
+    IconColor,
     Size,
-    validate_htmx_method,
     validate_htmx_swap_method,
+    validate_http_method,
+    validate_icon_color,
     validate_size,
 )
 
@@ -42,21 +46,24 @@ class IconConfig:
     Attributes:
         name: Name of the Insight UI icon.
         size: Icon size: 'xl', 'l', 'm', 's', or 'xs'.
-        color: Color Hex-Code of the icon.
+        color: Color token for the icon (e.g., 'primary', 'danger', 'text-body').
 
     """
 
     __example__ = """
-        IconConfig(name="home", size="s", color="#123456")
+        IconConfig(name="home", size="s", color="primary")
         """
 
     name: str = field(metadata={"doc": _("Name of the Insight UI icon.")})
     size: Size = field(default="m", metadata={"doc": _("Icon size: 'xl', 'l', 'm', 's', or 'xs'.")})
-    color: str = field(default="", metadata={"doc": _("Color Hex-Code of the icon.")})
+    color: IconColor = field(
+        default="", metadata={"doc": _("Color token for the icon (e.g., 'primary', 'danger', 'text-body').")}
+    )
 
     def __post_init__(self) -> None:
-        """Validate size after initialization."""
+        """Validate size and color after initialization."""
         validate_size(self.size, "size")
+        validate_icon_color(self.color, "color")
 
 
 @dataclass
@@ -124,7 +131,7 @@ class HtmxConfig:
         metadata={"doc": _("Settle delay appended to hx-swap, e.g. '300ms', so CSS transitions have time to run.")},
     )
     trigger: str = field(default="submit", metadata={"doc": _("Event trigger (hx-trigger).")})
-    method: HtmxMethod = field(default="get", metadata={"doc": _("HTTP method ('get' or 'post').")})
+    method: HttpMethod = field(default="get", metadata={"doc": _("HTTP method ('get' or 'post').")})
     loading_indicator_id: str = field(
         default="", metadata={"doc": _("CSS selector for loading indicator (hx-indicator).")}
     )
@@ -137,7 +144,7 @@ class HtmxConfig:
     def __post_init__(self) -> None:
         """Validate swap_method and method after initialization."""
         validate_htmx_swap_method(self.swap_method, "swap_method")
-        validate_htmx_method(self.method, "method")
+        validate_http_method(self.method, "method")
 
 
 @dataclass
@@ -179,8 +186,9 @@ class BaseFormFieldConfig:
     def __post_init__(self) -> None:
         """Warn if disabled without a reason."""
         if self.disabled and self.disabled_reason is None:
+            identifier = self.name or self.label or self.tag_id or "(unnamed)"
             warnings.warn(
-                f"{self.__class__.__name__} {self.name} is disabled without a disabled_reason. "
+                f"{self.__class__.__name__} {identifier} is disabled without a disabled_reason. "
                 "Consider providing a reason to improve accessibility, or set disabled_reason='' to suppress this warning.",
                 stacklevel=3,
             )

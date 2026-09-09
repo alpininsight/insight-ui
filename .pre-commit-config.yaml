@@ -1,4 +1,4 @@
-exclude: '^docs/|/migrations/|staticfiles|bin|.data|.venv|htmlcov|site|node_modules'
+exclude: '/migrations/|staticfiles|bin|.data|.venv|htmlcov|site|node_modules'
 
 default_language_version:
   python: python3
@@ -10,6 +10,8 @@ repos:
     hooks:
       - id: check-case-conflict
       - id: trailing-whitespace
+        # Licence texts are kept verbatim (REUSE LICENSES/ and the OFL shipped with the font).
+        exclude: ^(LICENSE$|LICENSES/|insight_ui/static/insight_ui/font/OFL\.txt$)
       - id: end-of-file-fixer
       - id: check-yaml
         args: ["--allow-multiple-documents"]
@@ -28,7 +30,7 @@ repos:
 
   # Ruff lint + format
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.16.4
+    rev: v0.16.6
     hooks:
       - id: ruff
         args: ["--fix"]
@@ -79,6 +81,12 @@ repos:
         files: '(^|/)templates/.*\.html$'
 
   # Sort Tailwind CSS classes, check used design tokens
+  - repo: https://github.com/fsfe/reuse-tool
+    rev: v6.2.0
+    hooks:
+      - id: reuse
+        additional_dependencies: ["charset-normalizer"]
+
   - repo: local
     hooks:
       - id: utility-sort
@@ -94,7 +102,7 @@ repos:
         files: '(^|/)templates/.*\.html$'
         require_serial: true
 
-  # Optional: pytest, migrations, and system checks for the demo Django project
+  # Package tests and minimal Django host checks (no deployed documentation app).
   - repo: local
     hooks:
       - id: pytest
@@ -108,14 +116,14 @@ repos:
       - id: django-migrations-check
         name: Check for missing migrations
         entry: bash
-        args: ["-lc", "PYTHONPATH=. uv run python manage.py makemigrations --check --dry-run"]
+        args: ["-lc", "PYTHONPATH=. uv run python -m django makemigrations --settings=tests.settings --check --dry-run"]
         language: system
         pass_filenames: false
 
       - id: django-system-check
         name: Django system check (pre-push)
         entry: bash
-        args: ["-lc", "PYTHONPATH=. uv run python manage.py check --deploy --fail-level ERROR"]
+        args: ["-lc", "PYTHONPATH=. uv run python -m django check --settings=tests.settings --fail-level ERROR"]
         language: system
         pass_filenames: false
         stages: [pre-push]

@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+# SPDX-FileCopyrightText: Tailwind Labs, Inc. (Heroicons)
+# SPDX-License-Identifier: AGPL-3.0-only AND MIT
 """
 Bundled icons for insight-ui.
 

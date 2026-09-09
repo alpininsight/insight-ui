@@ -1,102 +1,82 @@
-# Conventions
+<!--
+SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+SPDX-License-Identifier: AGPL-3.0-only
+-->
 
-This guide documents the naming conventions that keep Insight UI consistent across Python, templates, and assets.
+# Contributor Conventions
 
-## Python
+Use the current neighboring implementation and generator as the reference.
+This guide describes public development rules, not internal team operations.
 
-- Follow standard Python naming conventions (PEP 8)
-- Components and template tags use concise names: `navbar`, `sidebar`, `accordion`
-- Test files are in `tests/` and start with `test_`, e.g., `test_template_tags.py`
+## Names And Ownership
 
-## Templates
+These are conventions for new scaffolds, not a claim that every older component
+has the same layout. Use `--name "Example Panel"` for these names and `--js` to
+include the browser module and its tests:
 
-- Component templates are in `templates/insight_ui/components/` using `snake_case`:
-  - `image_carousel.html`
-  - `navbar.html`
-- Variants go in subdirectories:
-  - `components/cards/card.html`
-  - `components/cards/app_card.html`
-- Context dictionaries match component names: `carousel_items`, `sidebar_data`
+| Concern | Convention | Example |
+| --- | --- | --- |
+| Python fields, functions, tags and component slug | `snake_case` | `example_panel` |
+| Config class | `PascalCase` + `Config` | `ExamplePanelConfig` |
+| Component template | Existing components directory; slug filename | `example_panel.html` |
+| Browser module | `insight-ui-` prefix and kebab-case | `insight-ui-example-panel.js` |
+| Tests | Python `test_*.py`; Vitest `*.test.js` | `test_example_panel.py`, `example-panel.test.js` |
+| Config metadata | Typed fields and `metadata["doc"]` | Describe required fields, behavior and defaults. |
+| Mutable Config defaults | A dataclass `default_factory` | Never share a list between instances. |
 
-## Static Assets
+Config modules are organized by category. Use [configs/](../insight_ui/configs/)
+and its public exports, not one new configuration system per atomic level.
+See [component anatomy](components.md) for the source map.
 
-- CSS/JS files use `kebab-case`: `insight-ui-sidebar.js`
-- Images and SVGs also use `kebab-case`: `favicon-16x16.png`
+## HTML And Data Hooks
 
-## CSS Classes
+- Prefer native controls and semantic elements over clickable generic elements.
+- Preserve Django's escaping. Do not make untrusted content safe to simplify a demo.
+- IDs and `aria-controls` / `aria-labelledby` references must remain unique when
+  a component is repeated. Boolean HTML attributes are present or absent, not
+  strings such as `disabled="false"`.
+- Use existing semantic classes and [design roles](design-system.md). Data
+  attributes identify behavior or pass parameters, not purely decorative styles.
+- Follow the relevant module's exact `data-insight-*` spelling. Existing hooks
+  are public compatibility surfaces; do not rename them as incidental cleanup.
 
-Tailwind CSS is the default styling implementation, but public component markup should prefer stable Insight UI class names.
+For example, [Dropdown](../insight_ui/static/insight_ui/js/insight-ui-dropdown.js)
+reads a target element ID from `data-insight-dropdown`. Options are component
+specific; do not invent a global option naming scheme that existing modules
+do not understand.
 
-Use the `insight-*` prefix for stable classes:
+## JavaScript Lifecycle
 
-| Pattern | Use For | Example |
-|---------|---------|---------|
-| `insight-surface-*` | Reusable surfaces and containers | `insight-surface-card` |
-| `insight-layout-*` | Shared layout regions | `insight-layout-content` |
-| `insight-component-*` | Component-specific structure | `insight-component-sidebar` |
-| `insight-state-*` | Semantic state styling | `insight-state-disabled` |
-| `insight-doc-*` | Documentation surfaces | `insight-doc-demo` |
+Use the ES module and initialization patterns in
+[insight-ui-init.js](../insight_ui/static/insight_ui/js/insight-ui-init.js).
+The optional `--js` output from [scaffolding_js.py](../insight_ui/scaffolding_js.py)
+registers the class in `window.InsightUI` and the shared initializer. It is a
+lifecycle skeleton, not finished behavior.
 
-### When to Create a Semantic Class
+- The scaffold's `initAll(root = document)` scans descendants of the supplied
+  root. The shared initializer currently calls `initAll()` document-wide on
+  `DOMContentLoaded` and `htmx:afterSwap`, not with a swap-scoped root.
+- Avoid duplicate listeners or duplicate instances on the same element.
+- Retain bound listener references or register listeners with the scaffold's
+  `this.controller.signal` so `destroy()` can release them.
+- Attach the instance as `element.__insightInstance`: the cleanup hook in
+  [insight-ui-utils.js](../insight_ui/static/insight_ui/js/insight-ui-utils.js)
+  calls its `destroy()` on `htmx:beforeCleanupElement`. Removal outside that hook
+  needs explicit cleanup, including timers, observers and global listeners.
+- Preserve keyboard behavior and focus, not just click handling.
+- Add Vitest regression tests for initialization, reinitialization and cleanup.
 
-| Tailwind Pattern | Create Semantic Class When |
-|-----------------|---------------------------|
-| `bg-*`, `border`, `rounded`, `shadow` together | Reusable container (cards, panels, modals) |
-| `flex`, `grid`, `gap-*` as repeated pattern | Shared layout primitive |
-| `hover:*`, `active:*`, `focus:*`, `disabled:*` | Semantic public behavior (selected, disabled, open) |
-| Documentation chrome | Self-documentation structures |
+Do not introduce a new global constructor namespace or a second initializer
+for a single component. Use [existing JS tests](../tests/js/) as working examples.
 
-Do not add a semantic class for every Tailwind utility. Add one only when it names a reusable design concept.
+## Text, Licensing And Review
 
-## Data Attributes
+Follow [i18n](i18n.md) for user-facing strings, interpolation and RTL. Technical
+identifiers are not translated. Preserve the repository's SPDX/REUSE conventions;
+do not add internal brand assets or third-party assets without provenance.
 
-### Component Identification
+New public fields, hooks and tokens require compatible defaults and tests.
+Document breaking changes explicitly. Temporary screenshots, browser profiles,
+credentials, local paths and debugging output are not package source.
 
-Each JavaScript component is identified by `data-insight-{component_name}`:
-
-```html
-<div data-insight-accordion="accordion-container-id">
-<button data-insight-dropdown="menu-container-id">
-<button data-insight-modal="modal-container-id">
-```
-
-### Component Options
-
-Additional options use `data-{option}` without repeating the component name:
-
-```html
-<!-- Accordion with exclusive mode -->
-<div data-insight-accordion="faq" data-exclusive="true">
-
-<!-- 3D carousel with options -->
-<div data-insight-3D-carousel="gallery" data-face-camera="true" data-velocity="500">
-```
-
-### Action Attributes
-
-| Action | Attribute | Example |
-|--------|-----------|---------|
-| Close/Dismiss | `data-insight-dismiss="{type}"` | `data-insight-dismiss="modal"` |
-| Callback | `data-radio-callback="{fn}"` | `data-radio-callback="onSelect"` |
-
-### Boolean Attributes
-
-Write HTML boolean attributes without a value:
-
-```html
-<!-- Correct -->
-<input type="checkbox" checked disabled>
-
-<!-- Wrong -->
-<input type="checkbox" checked="true" disabled="true">
-```
-
-## Demo Data and Context Helpers
-
-- Demo context functions follow `get_{component}_context` pattern
-- Helper functions for data preparation are in `insight_ui/demo_utils.py`
-
-## Translations
-
-- User-relevant texts use `gettext` (`_()`) in Python or `{% trans %}` in templates
-- Explicit keys use dot notation: `_("insight_ui.components.carousel.caption")`
+[All package guides](README.md) | [Contribution workflow](../CONTRIBUTING.md)

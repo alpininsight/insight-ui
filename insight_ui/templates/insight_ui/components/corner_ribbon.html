@@ -1,27 +1,19 @@
 {% load i18n %}
 
 {% if corner_ribbon_config.position == "top-left" %}
-  <div class="fixed top-16 ltr:-left-24 rtl:-right-24 z-50 w-96 pointer-events-none" role="status" aria-label="{% trans 'Site status' %}">
-    <div class="py-4 text-center bg-insight-{{ corner_ribbon_config.color }} ltr:transform-[rotate(-45deg)] rtl:transform-[rotate(45deg)] font-bold text-white shadow-insight-raised opacity-85">
-      {{ corner_ribbon_config.text }}
-    </div>
+  <div class="fixed top-16 ltr:-left-24 rtl:-right-24 z-50 w-96{% if not corner_ribbon_config.request_url %} pointer-events-none{% endif %}"{% if not corner_ribbon_config.request_url %} role="status" aria-label="{% trans 'Site status' %}"{% endif %}>
+    {% include "insight_ui/components/corner_ribbon_content.html" with rotation="ltr:transform-[rotate(-45deg)] rtl:transform-[rotate(45deg)]" %}
   </div>
 {% elif corner_ribbon_config.position == "bottom-right" %}
-  <div class="fixed bottom-16 ltr:-right-24 rtl:-left-24 z-50 w-96 pointer-events-none" role="status" aria-label="{% trans 'Site status' %}">
-    <div class="py-4 text-center bg-insight-{{ corner_ribbon_config.color }} ltr:transform-[rotate(-45deg)] rtl:transform-[rotate(45deg)] font-bold text-white shadow-insight-raised opacity-85">
-      {{ corner_ribbon_config.text }}
-    </div>
+  <div class="fixed bottom-16 ltr:-right-24 rtl:-left-24 z-50 w-96{% if not corner_ribbon_config.request_url %} pointer-events-none{% endif %}"{% if not corner_ribbon_config.request_url %} role="status" aria-label="{% trans 'Site status' %}"{% endif %}>
+    {% include "insight_ui/components/corner_ribbon_content.html" with rotation="ltr:transform-[rotate(-45deg)] rtl:transform-[rotate(45deg)]" %}
   </div>
 {% elif corner_ribbon_config.position == "bottom-left" %}
-  <div class="fixed bottom-16 ltr:-left-24 rtl:-right-24 z-50 w-96 pointer-events-none" role="status" aria-label="{% trans 'Site status' %}">
-    <div class="py-4 text-center bg-insight-{{ corner_ribbon_config.color }} ltr:transform-[rotate(45deg)] rtl:transform-[rotate(-45deg)] font-bold text-white shadow-insight-raised opacity-85">
-      {{ corner_ribbon_config.text }}
-    </div>
+  <div class="fixed bottom-16 ltr:-left-24 rtl:-right-24 z-50 w-96{% if not corner_ribbon_config.request_url %} pointer-events-none{% endif %}"{% if not corner_ribbon_config.request_url %} role="status" aria-label="{% trans 'Site status' %}"{% endif %}>
+    {% include "insight_ui/components/corner_ribbon_content.html" with rotation="ltr:transform-[rotate(45deg)] rtl:transform-[rotate(-45deg)]" %}
   </div>
 {% else %}
-  <div class="fixed top-16 ltr:-right-24 rtl:-left-24 z-50 w-96 pointer-events-none" role="status" aria-label="{% trans 'Site status' %}">
-    <div class="py-4 text-center bg-insight-{{ corner_ribbon_config.color }} ltr:transform-[rotate(45deg)] rtl:transform-[rotate(-45deg)] font-bold text-white shadow-insight-raised opacity-85">
-      {{ corner_ribbon_config.text }}
-    </div>
+  <div class="fixed top-16 ltr:-right-24 rtl:-left-24 z-50 w-96{% if not corner_ribbon_config.request_url %} pointer-events-none{% endif %}"{% if not corner_ribbon_config.request_url %} role="status" aria-label="{% trans 'Site status' %}"{% endif %}>
+    {% include "insight_ui/components/corner_ribbon_content.html" with rotation="ltr:transform-[rotate(45deg)] rtl:transform-[rotate(-45deg)]" %}
   </div>
 {% endif %}

@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+# SPDX-License-Identifier: AGPL-3.0-only
 """Configuration classes for data filter components."""
 
 import warnings
@@ -17,6 +19,8 @@ class SearchBarConfig:
         request_url: URL for form action. Do not use together with htmx_config; use htmx_config.request_url instead for HTMX requests.
         simple: If True, render compact/minimal style.
         search_query: Initial search query value.
+        placeholder: Placeholder text for the search input.
+        button_label: Label for the search button.
         htmx_config: HTMX configuration for AJAX requests.
         enable_search: If True, enable client-side documentation search with Fuse.js.
         search_index_url: Optional URL for the client-side documentation search index.
@@ -26,6 +30,8 @@ class SearchBarConfig:
     __example__ = """
         SearchBarConfig(
             request_url="/search_products/",
+            placeholder="Search products...",
+            button_label="Find",
             simple=False,
         )
         """
@@ -41,6 +47,8 @@ class SearchBarConfig:
     )
     simple: bool = dc_field(default=False, metadata={"doc": _("If True, render compact/minimal style.")})
     search_query: str = dc_field(default="", metadata={"doc": _("Initial search query value.")})
+    placeholder: str = dc_field(default="", metadata={"doc": _("Placeholder text for the search input.")})
+    button_label: str = dc_field(default="", metadata={"doc": _("Label for the search button.")})
     htmx_config: HtmxConfig | None = dc_field(
         default=None, metadata={"doc": _("HTMX configuration for AJAX requests.")}
     )
@@ -56,7 +64,7 @@ class SearchBarConfig:
         """Validate that request_url and htmx_config.request_url are not both set."""
         if self.request_url and self.htmx_config and self.htmx_config.request_url:
             warnings.warn(
-                "SearchBarConfig has both 'request_url' and 'htmx_config.request_url' set. "
+                f"SearchBarConfig ({self.request_url}) has both 'request_url' and 'htmx_config.request_url' set. "
                 "This may cause conflicting behavior. Use 'request_url' for form action, or "
                 "'htmx_config.request_url' for HTMX requests, but not both.",
                 UserWarning,
@@ -94,6 +102,11 @@ class FilterConfig:
     explanation: str = dc_field(default="", metadata={"doc": _("Tooltip explanation text.")})
     icon: IconConfig | None = dc_field(default=None, metadata={"doc": _("Optional filter icon.")})
     selected_option: str = dc_field(default="", metadata={"doc": _("Currently selected value.")})
+
+    def __post_init__(self) -> None:
+        """Validate that selected_option is included in options, if both are set."""
+        if self.selected_option and self.options and self.selected_option not in self.options:
+            raise ValueError(f"selected_option '{self.selected_option}' must be included in 'options'.")  # noqa: TRY003
 
 
 @dataclass
@@ -147,7 +160,7 @@ class GenericFilterConfig:
         """Validate that request_url and htmx_config.request_url are not both set."""
         if self.request_url and self.htmx_config and self.htmx_config.request_url:
             warnings.warn(
-                "GenericFilterConfig has both 'request_url' and 'htmx_config.request_url' set. "
+                f"GenericFilterConfig ({self.request_url}) has both 'request_url' and 'htmx_config.request_url' set. "
                 "This may cause conflicting behavior. Use 'request_url' for form action, or "
                 "'htmx_config.request_url' for HTMX requests, but not both.",
                 UserWarning,

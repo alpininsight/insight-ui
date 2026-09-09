@@ -1,169 +1,117 @@
-# Design System
+<!--
+SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+SPDX-License-Identifier: AGPL-3.0-only
+-->
 
-This document defines the stable public design language of Insight UI and the rules for extending it across the core package, sibling packages, and host projects.
+# Public Design System Contract
 
-## What This Document Covers
+[input.css](../insight_ui/utils/input.css) is the source for shared design tokens
+and component styles. Generated
+[tailwind.css](../insight_ui/static/insight_ui/css/tailwind.css) is output, not the
+place to fix a design value. Tailwind implements the current styling system;
+Insight UI's roles describe the design purpose.
 
-A design-system contract is an agreement about which visual and behavioral concepts are public and stable, where they belong in the codebase, and how new packages should reuse them.
+## Existing Roles
 
-Use this document when you need to answer:
+Use the current names, not earlier token names from old examples:
 
-- Should this visual value be a public token or a local implementation detail?
-- Does this belong in `input.css`, a component template, JavaScript, or an extension package?
-- Is this a shared Insight UI concept or only a domain-specific detail?
-- Can a host application override this globally without copying templates?
+| Purpose | Token source | Preferred class / use |
+| --- | --- | --- |
+| Page background | `--color-insight-bg-base` | `bg-insight-base` |
+| Card/panel background | `--color-insight-bg-surface` | `bg-insight-surface` |
+| Emphasized surface | `--color-insight-bg-raised` | `bg-insight-raised` |
+| Overlay background | `--color-insight-bg-overlay` | `bg-insight-overlay` |
+| Surface border | `--color-insight-border-surface` | `border-insight-surface` |
+| Main content text | `--color-insight-text-body` | `text-insight-body` |
+| Heading text | `--color-insight-text-headline` | `text-insight-headline` |
+| Secondary content | `--color-insight-text-muted` | `text-insight-muted` |
+| Semantic text/icon color | `--color-insight-primary-foreground` | `text-insight-primary-foreground` |
+| Filled action background | `--color-insight-primary-action` | Prefer the existing primary button. |
+| Text on the filled action | `--color-insight-primary-text` | Used together with its action background. |
+| Reusable spacing | `--spacing-insight-m` | `p-insight-m`, `gap-insight-m` |
+| Control radius | `--radius-insight-control` | `rounded-insight-control` |
+| Surface radius | `--radius-insight-surface` | `rounded-insight-surface` |
+| Surface shadow | `--shadow-insight-surface` | `shadow-insight-surface` |
+| Overlay shadow | `--shadow-insight-overlay` | `shadow-insight-overlay` |
 
-## Source of Truth
+The background, border and text shorthands are explicit `@layer utilities`
+classes, not interchangeable with generated Tailwind utilities. Prefer them for
+plain classes, but do not assume state or opacity variants exist. For example,
+the [table template](../insight_ui/templates/insight_ui/components/table.html)
+uses `odd:bg-insight-bg-raised/50`, which is present in the generated CSS.
 
-| Concern | Location | Rule |
-|---------|----------|------|
-| Theme tokens | `insight_ui/utils/input.css` `@theme` | Stable brand, semantic, text, surface, and state tokens |
-| Base element styles | `insight_ui/utils/input.css` `@layer base` | Generic HTML behavior (headings, rules, cursors) |
-| Reusable component classes | `insight_ui/utils/input.css` `@layer components` | Classes like `.btn`, `.input`, `.component-container` |
-| Component structure | `insight_ui/templates/insight_ui/components/` | Semantic HTML, ARIA, layout, data hooks |
-| Page shell structure | `insight_ui/templates/insight_ui/base.html` | Header, navbar, sidebars, content, footer |
-| Template tag API | `insight_ui/templatetags/insight_tags.py` | Django-facing component APIs and context normalization |
-| JavaScript behavior | `insight_ui/static/insight_ui/js/` | Initialization, state, keyboard, `data-*` behavior |
-| Self-documentation | `documentation/component_details/` | Descriptions, usage, parameters, accessibility, demos |
-| Naming conventions | `docs/conventions.md` | Stable naming for Python, templates, CSS, hooks |
-| Design contract | This document | Public tokens, semantic classes, extension rules |
+The [token checker](../scripts/check_design_tokens.py) flags selected raw color,
+radius, shadow and verbose utility patterns. Some replacement suggestions are
+older names; verify them against `input.css`, not as a separate token contract.
+This table is a starting point, not an inventory of every value.
 
-**Important:** Never use generated CSS (`static/insight_ui/css/`) as the design-system source. The built stylesheet is output, not the contract.
+## Host Assets And Contributor Builds
 
-## Stable Public Contract
+Hosts can use the packaged stylesheet without a contributor build;
+`INSIGHT_UI["use_tailwind_cli"]` defaults to `False` in
+[config.py](../insight_ui/config.py). Do not copy `tests.tailwind_settings` or
+`devtools` into a host. Host-only styles belong in its own stylesheet/build.
 
-These concepts form the baseline that extensions and host applications should inherit:
+For package changes, `build:static-all` in [package.json](../package.json) builds
+Tailwind with [tests/tailwind_settings.py](../tests/tailwind_settings.py), then
+generates minified assets. `input.css` explicitly scans package templates,
+Configs, JavaScript and template tags, not host templates, Markdown or manifest
+JSON. Exporting a token does not include every possible utility or variant.
 
-| Concept | Representation | Design Meaning |
-|---------|----------------|----------------|
-| Brand colors | `--color-insight-primary`, `--color-insight-secondary` | Main actions and secondary accents |
-| Interaction variants | `*-hover`, `*-active` tokens | Pointer and pressed states |
-| Status colors | `success`, `warning`, `danger`, `info` | Semantic user feedback |
-| Text hierarchy | `text-primary`, `text-secondary`, `text-link` | Content hierarchy |
-| Dark mode | `@custom-variant dark` | Theme-aware via `data-theme=dark` |
-| Surfaces | `.component-container`, cards, panels | Visual containers |
-| Layout hierarchy | Navbar, sidebars, heading, content, footer | Page shell structure |
-| Overlay hierarchy | Modal backdrop, sidebar backdrop, z-index | Temporary UI layering |
-| Data hooks | `data-insight-*` attributes | JavaScript behavior contracts |
-| Accessibility | ARIA attributes, semantic HTML, focus | WCAG-aligned behavior |
+## Color Is A Role, Not A Palette Copy
 
-## Implementation Rules
+Choose an existing shared role before adding a component-specific token. A table,
+menu and card should not each define their own unrelated gray palette for the
+same surface purpose. Geometry utilities may remain technical where they are
+layout details; reusable visual decisions should have a stable semantic role.
 
-Use these placement rules when deciding where a design-system concept belongs:
+Distinguish an accent from readable foreground text and a filled action. The
+`primary`, `secondary`, `success`, `warning`, `danger` and `info` families provide
+different values for these purposes. Reusing an arbitrary accent as a button
+background does not guarantee readable text in both themes.
 
-| Change Type | Location |
-|-------------|----------|
-| Stable theme tokens | `insight_ui/utils/input.css` |
-| Shared semantic component classes | `@layer components` |
-| Semantic HTML, ARIA, data hooks | Component templates |
-| JavaScript behavior | `insight_ui/static/insight_ui/js/` |
-| Django-facing API normalization | Template tags |
-| Component explanations and examples | `documentation/component_details/*` |
+For a reusable panel, prefer composing existing components or a shared surface:
 
-Data attributes should stay behavior-oriented. They are part of the JavaScript contract and should not be introduced as purely decorative markers.
-
-## Semantic Non-Color Roles
-
-Color, radius, shadow, and surface tokens already use semantic roles. Motion, blur, and density should follow the same pattern:
-
-| Area | Semantic Role | Technical Implementation |
-|------|---------------|-------------------------|
-| Motion duration | `--insight-motion-duration-fast` | `--duration-fast` |
-| Motion easing | `--insight-motion-ease-standard` | `--ease-out`, cubic-bezier |
-| Backdrop blur | `--insight-backdrop-blur` | `--blur-sm`, `backdrop-filter` |
-| Density | `--insight-density-control-x` | Tailwind spacing scale |
-
-This keeps the public contract independent from Tailwind's token names.
-
-## Extension Contract
-
-Extensions should inherit the core design language first and add only domain concepts that cannot be expressed with existing core tokens.
-
-### What Extensions Inherit
-
-- Brand and status colors
-- Text hierarchy
-- Reusable surfaces
-- Focus, hover, disabled, and selected states
-- Layout and overlay hierarchy
-- Accessibility expectations
-- JavaScript hook conventions
-
-### What Stays in an Extension
-
-Keep a token, class, or behavior in the extension when:
-
-- It is used by one domain or component family only
-- It depends on renderer, runtime, or extension internals
-- It is likely to change while the extension matures
-- It is not meaningful for general Insight UI consumers
-- It can safely use a local fallback
-
-### What Belongs in Core
-
-Promote an extension concept into core when:
-
-- It is useful across multiple components or packages
-- It describes a stable design concept, not an implementation detail
-- Host applications should be able to override it globally
-- The name and meaning are expected to remain stable
-
-### Extension Token Naming
-
-Core token pattern:
-```css
---color-insight-primary
---color-insight-danger
+```html
+<section class="insight-surface p-insight-m">
+    <h2 class="text-insight-headline">Panel title</h2>
+    <p class="text-insight-body">Panel content</p>
+</section>
 ```
 
-Extension token pattern:
-```css
---color-insight-<domain>-<semantic-purpose>
-```
+## Light And Dark
 
-Examples:
-```css
---color-insight-flow-edge-selected
---color-insight-webgl-grid-line
-```
+Set `data-theme="light"` or `data-theme="dark"` on `<html>`. Dark mappings in
+`input.css` explicitly select the corresponding `*-dark` values; not every token
+has a dark counterpart or mapping. Use the existing
+[ThemeToggle](../insight_ui/static/insight_ui/js/insight-ui-theme-toggle.js) for
+interactive switching. Legacy `dark:` utilities also remain. When changing a
+role, inspect its mapping and affected consumers.
 
-## Decision Checklist
+Use the local preview's theme toggle to inspect text, borders, surfaces, hover,
+focus and disabled states. Verify contrast for the actual color pair. A token
+name, successful build or light-theme screenshot is not accessibility evidence.
 
-Before adding a new design value:
+## Adding Or Changing A Token
 
-1. Is this a stable design concept or a local implementation detail?
-2. Should downstream apps override it globally?
-3. Will more than one component or extension use it?
-4. Does it need a documented public API name?
-5. Does it belong to styling only, or does it require JavaScript behavior?
+1. Search `input.css` and existing component consumers for an equivalent role.
+2. Reuse that role, or explain why a new shared purpose is necessary.
+3. Define the role centrally; prefer references to existing roles over duplicate
+   literals when the purposes are related.
+4. Update affected templates/JS and include complete dynamic class variants in
+   scanned sources or `@source inline(...)`. Check the generated CSS; do not rely
+   on classes seen only in host templates, manifests or Markdown examples.
+5. Run the [asset build and token checks](testing.md), then test both themes and
+   relevant interaction states.
 
-Use the answers to place the change in the appropriate location.
+Motion, blur and density should also use semantic names when exposed as public
+behavior, but **a proposed name is not an implemented token**. Only document a
+specific token as available when it exists in the current source and has tested
+consumers. Do not reintroduce legacy names to make an old guide appear correct.
 
-## Documentation Pipeline
+Fonts and generic icons are reusable package assets; product brand configuration
+belongs to the host. Follow existing icon APIs and licensing, not private logo
+copies. The extension rule is composition first: domain-only concepts stay in the
+extension; broadly reusable, stable concepts may become package roles.
 
-The self-documenting application is built from three layers:
-
-1. **Component context data** in `documentation/component_details/`
-2. **Django views** that assemble page context
-3. **Documentation templates** that render into pages or HTMX partials
-
-`component_context.py` is the registry for per-component documentation. Context builders use `@register_component(Component.X)` and contribute dictionaries for description, usage, parameters, accessibility, and related topics.
-
-### Runtime Layers
-
-| Layer | Location | Responsibility |
-|-------|----------|----------------|
-| Template tag API | `insight_tags.py` | Public signature, defaults, context |
-| Component HTML | `templates/.../components/` | Semantic structure, ARIA, data hooks |
-| Design tokens | `input.css` | Theme tokens, base styles, classes |
-| JavaScript | `static/.../js/` | Initialization, lifecycle, events |
-| Self-doc data | `documentation/component_details/` | User-facing docs |
-| Rendered docs | `documentation/templates/documentation/docs/` | Layout and display |
-
-## Maintenance Expectations
-
-- Adding a core token is a public API addition
-- Renaming or removing a core token is a breaking change
-- Changing a token default may be visually significant (mention in release notes)
-- New components must update self-documenting demo and parameter documentation
-- Extensions should document which core tokens they consume and which local tokens they own
+[All package guides](README.md) | [Contribution workflow](../CONTRIBUTING.md)

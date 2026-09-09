@@ -1,141 +1,180 @@
-<div align="center">
+# Insight UI
 
-<br>
+A reusable Django + HTMX component library with semantic design tokens,
+keyboard-accessible components, localization, and light/dark themes.
 
-<img src=".github/assets/hero-title.svg" alt="Insight UI" width="400">
+[Documentation and examples](https://insight-ui.com/) ·
+[Component reference](https://insight-ui.com/docs/configs) ·
+[Issues](https://github.com/alpininsight/insight-ui/issues)
 
-<br>
+## Package Scope
 
-**Modern Django Component Framework**
+This repository contains the `insight_ui` Python package, its generic component
+tests, public contributor guides, and the source assets used to build its CDN distribution. It does not
+contain or deploy a documentation website.
 
-65+ accessible, WCAG 2.1 AA-compliant UI components<br>
-HTMX-powered · Tailwind-based · Self-documenting
+The documentation application, component catalog, examples, documentation tests,
+and Enterprise deliverables are maintained separately in `insight-ui-docs`.
+API docstrings and configuration metadata remain in the library because they
+describe its public API. Keyboard, focus and ARIA behavior tests also remain
+here. WCAG 2.2 AA is a design target, not a verified package-wide conformance
+claim. Consumers must evaluate their complete rendered pages and processes;
+package tests do not certify an application. See the
+[accessibility guide](docs/accessibility.md) for contributor checks and limits.
 
-<br>
+That evaluation is work, and teams facing a tender questionnaire or an audit
+rarely want to start from scratch. We keep the groundwork prepared as a product:
+an accessibility test catalogue, per-component evidence from the automated runs,
+and the regulatory documentation such reviews ask for. It is offered with the
+Enterprise licence and services described on [insight-ui.com](https://insight-ui.com/).
+None of it is needed to use this package.
 
-[Live Demo](https://insight-ui.com) · [Get Started](docs/getting-started.md) · [Components](docs/components.md)
+## Installation
 
-<br>
-
-[![PyPI](https://img.shields.io/pypi/v/insight-ui.svg)](https://pypi.org/project/insight-ui/)
-[![Python](https://img.shields.io/badge/python-3.12%2B-blue?logo=python&logoColor=white)](pyproject.toml)
-[![Django](https://img.shields.io/badge/django-5.2%20to%206.x-092E20?logo=django&logoColor=white)](pyproject.toml)
-[![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
-[![Ruff](https://img.shields.io/badge/code%20style-ruff-5D3FD3?logo=ruff&logoColor=white)](https://github.com/astral-sh/ruff)
-
-<br>
-
-<img src=".github/assets/hero-divider.svg" alt="" width="600">
-
-</div>
-
-<br>
-
-## Features
-
-- **Accessible by default** — Navigation, forms, tables, modals, and more, all WCAG 2.1 AA-compliant
-- **HTMX integration** — Partial updates without full page reloads
-- **Tailwind design system** — Customizable tokens for fast brand alignment
-- **RTL & i18n ready** — Right-to-left layouts and localization helpers included
-- **Self-documenting** — Run locally to browse interactive component docs
-
-## Quick Start
-
-Install the package:
+Python 3.12+ and Django 5.2 or 6.x are supported. Initial public PyPI publication
+is being prepared; availability is subject to the repository owner's release
+decision. Once a release is available:
 
 ```bash
 uv add insight-ui
 ```
 
-Add to your Django settings:
+Add `insight_ui` to your existing Django project's `INSTALLED_APPS` and ensure
+Django staticfiles is enabled. Keep your other applications and settings:
 
 ```python
 INSTALLED_APPS = [
-    # ...
+    # Your Django applications...
+    "django.contrib.staticfiles",
     "insight_ui",
 ]
+STATIC_URL = "/static/"
 ```
 
-Use components in your templates:
+Complete the [host setup](docs/getting-started.md#configure-the-host), including
+the base-template context processor and static assets. Then use the real
+component tags in your own template:
 
 ```django
+{% extends "insight_ui/base.html" %}
 {% load insight_tags %}
 
-{% button label="Get Started" type="primary" size="m" %}
-
-{% card title="Welcome" subtitle="Your first card" %}
-    <p>Card content goes here.</p>
-{% endcard %}
-
-{% alert type="success" title="Done!" message="Component rendered successfully." %}
+{% block title %}My application{% endblock %}
+{% block content %}
+    {% button label="Get started" type="primary" %}
+    {% card title="Welcome" subtitle="Your first card" content="Card content goes here." %}
+    {% alert type="success" message="Component rendered successfully." dismissible=False %}
+{% endblock %}
 ```
 
-Visit the [Getting Started Guide](docs/getting-started.md) for Tailwind configuration and advanced setup.
+The base template loads CSS/JS; individual component tags do not. `card` takes
+`content` or a `CardConfig`, not an `endcard` closing tag. `alert` uses `message`,
+not a `title` argument. Labels supplied by the host should be translated there;
+see [internationalization](docs/i18n.md).
 
-## Installation Options
+See [Getting started](docs/getting-started.md) for a complete first page and
+[Static assets](docs/static-assets.md) for optional CDN configuration. Installing
+the package does not install a documentation app, server, or Enterprise service.
+
+## Contributing And Tests
+
+Public package guides are kept here: [getting started](docs/getting-started.md),
+[components](docs/components.md), [design tokens](docs/design-system.md),
+[static assets](docs/static-assets.md), [translations](docs/i18n.md), and
+[accessibility](docs/accessibility.md). See the [guide index](docs/README.md)
+for conventions, tests and the component checklist. These Markdown guides are
+not a documentation application and do not require access to private services.
+
+Start with the [contributor guide](CONTRIBUTING.md) for an illustrated workflow:
+scaffold a component, preview it locally, test it, and submit a pull request.
+
+Work on a feature branch based on `develop`, then open a pull request. Keep
+reusable changes here; coordinate reference examples and application tests in
+the documentation repository instead of copying its application back here.
 
 ```bash
-# From PyPI (recommended)
-uv add insight-ui
-
-# From Git (latest development)
-uv add "git+https://github.com/alpininsight/insight-ui@develop"
-```
-
-## Local Development
-
-```bash
-git clone https://github.com/alpininsight/insight-ui.git
-cd insight-ui
 uv sync --all-groups
-cp .env.example .env
-uv run python manage.py setup_dev
-uv run python manage.py tailwind runserver  # Starts dev server with Tailwind compiler
+uv run pytest
+npm ci
+npm test
+npm run build:static-all
+npm run verify:static-build
+uv build
+uv run python scripts/check_distribution.py
 ```
 
-Open [http://localhost:8000](http://localhost:8000) to browse the component documentation.
+Package tests use `tests.settings`, a minimal Django host, not the documentation
+server. `input.css` remains the design-token source; the static build compiles
+package-only sources and creates minified CSS/JS for CDN delivery. Generated
+minified files are ignored. The wheel and sdist contain the readable assets.
 
-## Testing
+### Scaffold And Preview One Component
+
+Contributors do not need the separate documentation application. From this
+repository's source checkout, install the development dependencies and build
+the local assets:
 
 ```bash
-# Python tests
-uv run pytest
-
-# JavaScript tests
-npm install && npx vitest run
-
-# JavaScript tests alternative (no local Node.js required, but Docker)
-docker run --rm -v ${PWD}:/app -w /app node:25-alpine sh -c "npm install && npx vitest run"
+uv sync --all-groups
+npm ci
+npm run build:static-all
 ```
 
-## Documentation
+Use the existing Django management-command interface through the small
+source-only `devtools` host. Inspect the proposed changes first with `--dry-run`,
+then run the same command without that flag:
 
-The application is self-documenting — run it locally to explore components with live examples.
+```bash
+uv run python -m devtools create_component --name "Example Panel" \
+  --category form --level molecule --compose input_field,button --dry-run
+uv run python -m devtools create_component --name "Example Panel" \
+  --category form --level molecule --compose input_field,button
+uv run ruff check --fix
+uv run ruff format
+npm run build:static-all
+uv run python -m devtools preview example_panel --port 8010
+```
 
-Developer references in `docs/`:
+Open **http://127.0.0.1:8010/**. Only the selected component is rendered, using
+the `default` example from `insight_ui/component_manifests/example_panel.json`.
+Choose another declared example with `?example=example_name`. Editing example
+values requires a page reload; rebuild the CSS when you introduce new utility
+classes. `create_component --help` lists the generator options; `--js` requests a
+JavaScript scaffold. The output is a starting point, not finished behavior.
 
-| Guide | Description |
-|-------|-------------|
-| [Getting Started](docs/getting-started.md) | Installation and configuration |
-| [Using Components](docs/components.md) | Template tag API and patterns |
-| [Design System](docs/design-system.md) | Tokens, theming, and extension |
-| [Static Assets](docs/static-assets.md) | Staticfiles, CDN configuration, and asset build commands |
-| [Accessibility](docs/accessibility.md) | WCAG compliance guidelines |
-| [Internationalization](docs/i18n.md) | i18n and RTL support |
-| [Testing](docs/testing.md) | Test structure and commands |
-| [Contributing](docs/contributing.md) | Workflow and guidelines |
+| Level | Starting point | Composition rule |
+| --- | --- | --- |
+| `atom` | One small reusable primitive | Use the existing semantic design tokens. |
+| `molecule` | A focused combination of primitives | Reuse their Config dataclasses and template tags. |
+| `organism` | A larger reusable interface section | Compose existing components; keep application logic outside the library. |
 
-## Contributing
+The atomic level describes composition; the category describes purpose. They
+do not introduce parallel `AtomConfig` or `MoleculeConfig` inheritance trees.
+Include your component code, Config metadata, declarative example manifest and
+behavior tests in the contributor PR. The documentation application can consume
+that same contract separately; do not copy its catalog, editorial pages or
+audit reports back into this package.
 
-We welcome contributions! Please read the [Contributing Guide](docs/contributing.md) and [Conventions](docs/conventions.md) before opening a pull request.
+The preview binds **only to `127.0.0.1`**, with local readable CSS, fonts and
+JavaScript. It ignores CDN settings from the environment. It has no login,
+catalog, component-writing web endpoint, database setup requirement, or public
+deployment mode. HTTP-triggered HTMX features, WebSocket backends and external
+chart/map libraries are intentionally not supplied: test those integrations in
+your own application host. Keyboard and ARIA behavior tests remain package tests;
+this preview is not a WCAG-conformance claim.
 
-## Support
-
-- [GitHub Issues](https://github.com/alpininsight/insight-ui/issues) — Bug reports and feature requests
-- [GitHub Discussions](https://github.com/alpininsight/insight-ui/discussions) — Questions and ideas
+`devtools` ships in the source archive so source contributors can use it, but
+**never in the runtime wheel**. `scripts/check_distribution.py` verifies both
+boundaries. Nothing here adds the full self-documentation application to an
+installed Insight UI package.
 
 ## License
 
-Insight UI is released under the [GNU Affero General Public License v3.0](LICENSE).
+[GNU Affero General Public License v3.0](LICENSE).
+For alternative licensing inquiries see [COMMERCIAL_LICENSE.md](COMMERCIAL_LICENSE.md).
 
-For commercial licensing options, see [COMMERCIAL_LICENSE.md](COMMERCIAL_LICENSE.md).
+Licensing metadata follows the [REUSE specification](https://reuse.software): every
+file carries an SPDX header or is covered by `REUSE.toml`, licence texts live in
+`LICENSES/`, and bundled third-party components (Atkinson Hyperlegible Next under
+OFL-1.1, Heroicons and Tailwind CSS under MIT) are listed in `NOTICE` and in
+`insight_ui/THIRD_PARTY_NOTICES.md`, which ships inside the package.

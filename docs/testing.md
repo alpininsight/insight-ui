@@ -1,241 +1,121 @@
-# Testing Guide
+<!--
+SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+SPDX-License-Identifier: AGPL-3.0-only
+-->
 
-This document describes the test structure, tools, and conventions for Insight UI.
+# Testing The Package
 
-## Directory Structure
+Run these commands from an Insight UI source checkout. Use
+[CONTRIBUTING.md](../CONTRIBUTING.md) for setup and generation. No private
+documentation application, credentials or running deployment is needed.
 
-All tests are located in the `tests/` directory:
+## Focused Checks
 
-```text
-tests/
-├── js/                  # JavaScript tests (Vitest + jsdom)
-│   ├── setup.js         # Global test setup and utilities
-│   └── *.test.js        # Component tests
-├── unit/                # Python unit tests (pytest)
-├── integration/         # Python integration tests
-├── smoke/               # Smoke tests for critical paths
-├── docs/                # Documentation tests
-└── conftest.py          # Shared pytest fixtures
-```
-
-## Running Tests
-
-### Python Tests
+| Change | Check |
+| --- | --- |
+| Config/tag/template | Python tests under [tests/insight_ui/](../tests/insight_ui/); render real tags. |
+| Browser behavior | [Vitest/jsdom](../tests/js/); events, focus, state, repeated initialization and cleanup. |
+| Generated component | Its generated Python test; optional JS stub must be expanded. |
+| Tokens/assets | Tailwind build, semantic-token check, readable and minified asset checks. |
+| Public guides | Link, token, example-rendering and package-boundary regression tests. |
+| Packaging | Build wheel/sdist and run the archive boundary checker. |
 
 ```bash
-# Run all Python tests
+uv run pytest tests/insight_ui/unit/components/test_button.py
+npm test -- tests/js/tabs.test.js
+uv run pytest tests/insight_ui/unit/test_contributor_docs.py
+```
+
+The [existing button tests](../tests/insight_ui/unit/components/test_button.py)
+and [tabs tests](../tests/js/tabs.test.js) are working examples. Test the public
+contract rather than copying assertions from a different component blindly.
+
+## Before Opening A PR
+
+```bash
+uv sync --frozen --all-groups
+npm ci
+uv run ruff check --no-fix
+uv run ruff format --check
+uv run python -m django check --settings=tests.settings
 uv run pytest
-
-# Run specific test file
-uv run pytest tests/unit/test_components.py
-
-# Run with coverage
-uv run pytest --cov
-
-# Run specific test by name
-uv run pytest -k "test_button"
-
-# Verbose output with print statements
-uv run pytest -vvs
-```
-
-### JavaScript Tests
-
-```bash
-# Run all JS tests with local Node.js dependencies
-npm install
 npm test
-
-# Run all JS tests in Docker
-docker run --rm -v "$(pwd):/app" -w /app node:25-alpine sh -c "npm install && npx vitest run"
-
-# Run with coverage
-docker run --rm -v "$(pwd):/app" -w /app node:25-alpine sh -c "npm install && npx vitest run --coverage"
-
-# Run specific test file
-docker run --rm -v "$(pwd):/app" -w /app node:25-alpine sh -c "npm install && npx vitest run carousel"
-
-# Watch mode
-npx vitest
-```
-
-### Static Asset Checks
-
-The tracked Tailwind stylesheet and generated CDN browser assets must build
-successfully:
-
-```bash
-npm run verify:static-build
-```
-
-When this command fails after changing `input.css` or browser assets, rebuild
-the generated CDN artifacts:
-
-```bash
 npm run build:static-all
+npm run verify:static-build
+uv build
+uv run python scripts/check_distribution.py
+uv run --no-project python scripts/smoke_distribution.py
+git diff --check
 ```
 
-Generated `*.min.css` and `*.min.js` files are ignored and published by CI;
-they must not be committed.
+The minimal host is [tests/settings.py](../tests/settings.py), not a removed
+Docs `core.settings`. Package Python tests and all Vitest behavior tests stay
+here. Do not replace a failing required check with a skipped test or an ignored
+shell exit code. Report commands, versions and known limits in the PR.
 
-### All Tests
+Use `uv run pytest --cov=insight_ui --cov-report=term-missing` and
+`npm run test:coverage` to inspect coverage; a percentage is not proof that the
+important behavior is tested. Do not introduce an arbitrary coverage promise.
 
-```bash
-# Run both Python and JS tests
-make test
-```
+## Contributor CI
 
-## Test Categories
+Pull requests run the same public package checks on disposable GitHub-hosted
+runners. Fork contributors need no organization token, SSH key, private
+documentation checkout, CDN account or running cluster.
 
-### Python Tests
+| Check | Evidence |
+| --- | --- |
+| Python 3.12, 3.13 and 3.14 | Locked dependencies, exported requirements, lint, formatting, Django system checks and package tests against Django 5.2 and 6.1. |
+| JavaScript and static assets | Vitest/jsdom behavior tests and the package's existing static-build verification. No CDN upload. |
+| Contributor hygiene | The repository's public pre-commit hooks, with secret scanning performed once separately. |
+| Wheel and sdist | Both archives are inspected, installed separately outside the checkout, then checked for Django rendering and staticfiles. |
+| PR metadata | Conventional Commit title and branch routing, using read-only GitHub access and no source checkout. |
 
-| Category | Location | Purpose |
-|----------|----------|---------|
-| Unit | `tests/unit/` | Individual components, template tags, configs |
-| Integration | `tests/integration/` | Component interactions, form handling |
-| Smoke | `tests/smoke/` | Critical package paths |
-| Docs | `tests/docs/` | Documentation accuracy, example validation |
+The required quality gate fails if any package check fails or is skipped. It
+retains the existing protected status names. PR title validation reads the
+current title from GitHub, including when an older run is retried.
 
-### JavaScript Tests
+The tested wheel and sdist are downloadable from the run as
+`package-dist-<commit SHA>` for seven days. These are CI artifacts, not a PyPI
+release or an internal storage boundary: artifacts follow the repository's
+visibility. A private reference application must keep its own integration-test
+results in its private repository; these package artifacts contain no such
+evidence.
 
-| Component | File | Coverage |
-|-----------|------|----------|
-| Accordion | `accordion.test.js` | Navigation, animation, URL state |
-| Carousel | `carousel.test.js` | Navigation, autoplay, touch, RTL |
-| Checkbox | `checkbox.test.js` | Min/max constraints, validation |
-| Dropdown | `dropdown.test.js` | Toggle, outside click |
-| Floater | `floater.test.js` | Tooltip/popover, positioning |
-| Modal | `modal.test.js` | Focus trap, scroll blocking |
-| Multiselect | `multiselect.test.js` | Selection, search, keyboard nav |
-| Progress Bar | `progress-bar.test.js` | Polling, SSE, error handling |
-| Range Slider | `range-slider.test.js` | Value updates, constraints |
-| Sidebar | `sidebar.test.js` | Mobile drawer, auto-close |
-| Tabs | `tabs.test.js` | Tab switching, ARIA |
-| Theme Toggle | `theme-toggle.test.js` | Dark mode, persistence |
-| Utils | `utils.test.js` | Focus trap, scroll blocking |
+The [contributor workflow](../.github/workflows/feature-ci.yml) is deliberately
+self-contained so it also works in public forks. Organization-specific release,
+CDN publication and application evidence are separate from contributor tests.
+The existing maintainer-only publication workflows are not converted by this
+change; moving their execution to a private repository is a remaining
+maintainer gate before changing repository visibility. Passing Contributor CI
+does not authorize that visibility change or a package publication.
 
-## Writing Tests
+## Behavior And Visual Checks
 
-### Python Test Conventions
+- Test defaults, supported overrides and nested Configs through the actual tag.
+- Test missing optional values, long text, escaping and repeated component IDs.
+- Cover keyboard/focus/ARIA states as well as pointer interaction.
+- Exercise both light and dark, RTL where relevant, and narrow layouts in the
+  local component preview after rebuilding assets.
+- Compare component-specific runtime behavior before and after your change.
+  Vitest/jsdom does not implement browser layout or replace rendered checks.
 
-```python
-from django.template import Context, Template
+The separate reference application owns its Playwright/axe and application-level
+audit evidence. Package tests protect reusable behavior; neither they nor a
+successful screenshot establish WCAG conformance. See [accessibility](accessibility.md).
+Commit screenshots only when a guide references them or an actual visual
+regression test uses them as a baseline. Keep debugging captures outside Git.
 
+## Documentation And Distribution Boundaries
 
-class TestButtonComponent:
-    """Tests for the button component."""
+Public Markdown under `docs/` is allowed in the Git repository. The current wheel
+and sdist omit it; the [archive checker](../scripts/check_distribution.py) still
+rejects Docs application, enterprise and host-project payloads. It also keeps
+`devtools` out of the runtime wheel. Do not weaken those gates to restore the
+old self-documentation application.
 
-    def test_renders_with_default_props(self):
-        """Button renders with default styling."""
-        template = Template("{% load insight_tags %}{% button label='Click' %}")
-        result = template.render(Context())
+Guide changes should keep relative links, example Configs and token names valid.
+Update implementation-linked examples when an API changes rather than preserving
+an obsolete command because it once passed CI.
 
-        assert "Click" in result
-        assert "btn-" in result
-
-    def test_accepts_config_object(self, button_config):
-        """Button accepts a config dataclass."""
-        template = Template("{% load insight_tags %}{% button config=cfg %}")
-        result = template.render(Context({"cfg": button_config}))
-
-        assert button_config.label in result
-```
-
-### JavaScript Test Conventions
-
-```javascript
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-
-describe('ComponentName', () => {
-  beforeEach(() => {
-    globalThis.InsightUI = {};
-    globalThis.window.InsightUI = globalThis.InsightUI;
-    loadComponent('insight-ui-component.js');
-  });
-
-  describe('Feature Group', () => {
-    it('should do something specific', () => {
-      const container = createComponentDOM();
-      const element = container.querySelector('[data-insight-component]');
-
-      const instance = new InsightUI.Component(element);
-
-      expect(instance.someProperty).toBe(expectedValue);
-    });
-  });
-
-  describe('destroy() method', () => {
-    it('should remove event listeners', () => {
-      // Test cleanup
-    });
-
-    it('should remove instance from WeakMap', () => {
-      // Test singleton cleanup
-    });
-  });
-});
-```
-
-## Test Utilities
-
-### Python (`tests/conftest.py`)
-
-- `@pytest.fixture` for common test data
-- Django test client setup
-- template rendering helpers
-
-### JavaScript (`tests/js/setup.js`)
-
-- `TestUtils.createDOM(html)` - create DOM elements
-- `TestUtils.click(element)` - simulate click events
-- `TestUtils.createCarousel()` - component-specific helpers
-- `TestUtils.createAlert(type)` - alert component helper
-- mock for `debugLog()` function
-
-## What To Test
-
-| Change type | Expected test coverage |
-|-------------|------------------------|
-| Template tag or Python config | Unit tests under `tests/` |
-| Component rendering | Template output tests and self-documentation demo update |
-| JavaScript behavior | Vitest test under the JavaScript test suite |
-| Static asset build behavior | Static asset check or script-level test |
-| Accessibility-sensitive markup | Semantic HTML, ARIA, and keyboard behavior checks where applicable |
-
-Keep tests focused on the public package contract. Private deployment behavior
-belongs in the operating organization's private platform tests and runbooks.
-
-## Coverage
-
-### Python Coverage
-
-```bash
-# Generate coverage report
-uv run pytest --cov --cov-report=html
-
-# View report
-open htmlcov/index.html
-```
-
-### JavaScript Coverage
-
-```bash
-# Generate coverage report
-npx vitest run --coverage
-
-# Coverage is output to coverage/ directory
-```
-
-Coverage targets:
-
-- Python: 80% minimum
-- JavaScript: 70% minimum for browser-facing components
-
-## CI Integration
-
-Tests run automatically on every pull request:
-
-1. Python tests with pytest.
-2. JavaScript tests with Vitest.
-3. Linting and quality checks.
-4. Static asset freshness checks when relevant.
+[All package guides](README.md)

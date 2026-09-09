@@ -1,21 +1,22 @@
 {% load i18n insight_tags %}
 
 <div class="flex flex-col w-full">
-    <label for="{{ select_config.tag_id }}" class="flex gap-1 mb-1 font-bold text-sm text-primary">
+    <label{% if select_config.tag_id or select_config.name %} for="{{ select_config.tag_id|default:select_config.name }}"{% endif %} class="flex gap-1 mb-1 font-bold text-sm text-insight-headline">
         {% if select_config.icon %}
             {% icon select_config.icon %}
         {% endif %}
         <span class="self-end">{{ select_config.label }}</span>
         {% if select_config.required %}<span class="text-insight-danger" aria-label="{% trans 'Required' %}">*</span>{% endif %}
         {% if select_config.explanation %}
-            <div class="text-secondary" data-insight-tooltip="{{ select_config.explanation }}" data-position="top">
+            <div class="text-insight-body" data-insight-tooltip="{{ select_config.explanation }}" data-position="top">
                 {% icon name="question-mark" size="xs" %}
             </div>
         {% endif %}
     </label>
     <select
-        {% if select_config.tag_id %}id="{{ select_config.tag_id }}"{% endif %}
+        {% if select_config.tag_id or select_config.name %}id="{{ select_config.tag_id|default:select_config.name }}"{% endif %}
         {% if select_config.name %}name="{{ select_config.name }}"{% endif %}
+        {% if not select_config.tag_id and not select_config.name %}aria-label="{% if select_config.label %}{{ select_config.label }}{% else %}{% trans 'Select option' %}{% endif %}"{% endif %}
         {% if select_config.disabled %}disabled{% endif %}
         {% if select_config.disabled and select_config.disabled_reason %}data-insight-tooltip="{{ select_config.disabled_reason }}"{% endif %}
         class="input w-full"
@@ -23,7 +24,7 @@
         {% for option, text in select_config.options.items %}
             <option
                 value="{{ option }}" {% if option == select_config.selected_option %}selected{% endif %}
-                {% if option == "-" %}disabled{% elif option == "placeholder" %}class="text-secondary"{% endif %}
+                {% if option == "-" %}disabled{% elif option == "placeholder" %}class="text-insight-body"{% endif %}
             >
                 {{ text }}
             </option>

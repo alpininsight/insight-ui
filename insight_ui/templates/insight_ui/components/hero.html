@@ -12,14 +12,14 @@
             </div>
         {% endif %}
 
-        <h1 class="pb-0 font-bold text-4xl text-primary md:text-5xl lg:text-6xl xl:text-8xl xl:pb-4">{{ hero_config.title }}</h1>
+        <h1 class="pb-0 font-bold text-4xl text-insight-headline md:text-5xl lg:text-6xl xl:text-8xl xl:pb-4">{{ hero_config.title }}</h1>
 
         {% if hero_config.subtitle %}
-            <p class="font-medium text-xl text-insight-primary md:text-2xl xl:text-3xl">{{ hero_config.subtitle }}</p>
+            <p class="font-medium text-xl text-insight-headline md:text-2xl xl:text-3xl">{{ hero_config.subtitle }}</p>
         {% endif %}
 
         {% if hero_config.description %}
-            <p class="max-w-2xl text-lg text-secondary leading-relaxed xl:text-xl{% if not hero_config.background_image_url %} mx-auto{% endif %}">{{ hero_config.description }}</p>
+            <p class="max-w-2xl text-lg text-insight-body leading-relaxed xl:text-xl{% if not hero_config.background_image_url %} mx-auto{% endif %}">{{ hero_config.description }}</p>
         {% endif %}
 
         {% if hero_config.cta_primary or hero_config.cta_secondary %}

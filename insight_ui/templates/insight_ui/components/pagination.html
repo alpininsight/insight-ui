@@ -19,9 +19,9 @@
             <div class="hidden gap-1 justify-center md:flex">
                 {% for num in pagination_config.surrounding_pages %}
                     {% if num == pagination_config.current_page.number %}
-                        <span class="btn btn-s bg-insight-primary-active" aria-current="page">{{ num }}</span>
+                        <span class="btn btn-s bg-insight-primary-action-active" aria-current="page">{{ num }}</span>
                     {% elif num == -1 %}
-                        <span class="px-4 py-1 text-insight-text-secondary">...</span>
+                        <span class="px-4 py-1 text-insight-body">...</span>
                     {% else %}
                         {% with page_num=num|stringformat:"s" %}
                             {% with url=pagination_config.request_url|add:"?page="|add:page_num %}
@@ -59,7 +59,7 @@
     </div>
 
     <!-- Current Page -->
-    <span class="block mt-2 text-secondary md:hidden">
+    <span class="block mt-2 text-insight-body md:hidden">
         {% trans "Page" %} {{ pagination_config.current_page.number }} {% trans "of" %} {{ pagination_config.current_page.paginator.num_pages }}.
     </span>
 </nav>
