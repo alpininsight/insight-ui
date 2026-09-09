@@ -1,7 +1,8 @@
-# Insight UI
+# Django-Insight-UI
 
-A reusable Django + HTMX component library with semantic design tokens,
-keyboard-accessible components, localization, and light/dark themes.
+Django-Insight-UI (short `insight-ui`) is a reusable Django and HTMX component
+library with semantic design tokens, keyboard-accessible components,
+localization, and light and dark themes.
 
 [Documentation and examples](https://insight-ui.com/) ·
 [Component reference](https://insight-ui.com/docs/configs) ·
@@ -166,7 +167,7 @@ this preview is not a WCAG-conformance claim.
 `devtools` ships in the source archive so source contributors can use it, but
 **never in the runtime wheel**. `scripts/check_distribution.py` verifies both
 boundaries. Nothing here adds the full self-documentation application to an
-installed Insight UI package.
+installed `insight-ui` package.
 
 ## License
 
