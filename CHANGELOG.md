@@ -29,6 +29,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **ci:** Stop manual CDN deploys from rolling back the latest alias
 - **scaffold:** Reject conflicting imports and render composition labels
 - **license:** Keep LICENSE verbatim and pin the licence text hashes
+- **license:** Use contact@alpininsight.ai for commercial licensing enquiries
+- **a11y:** Hide the idle HTMX loading indicator from the accessibility tree
 
 ### CI/CD
 
