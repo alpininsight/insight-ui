@@ -1,0 +1,29 @@
+---
+# =============================================================================
+# Alpin Insight workflow template
+# Source:
+#   - public template: alpininsight/.github/.github/workflow-templates/pr-title-lint.yml
+# yamllint disable-line rule:line-length
+#   - private backend: alpininsight/.github-private/.github/workflows/reusable-pr-title.yml@ebb61f771e31cd42670875a5faaa58dfef64842a  # v0.3.0
+# Purpose:
+#   - copies a thin PR-title caller into the target repository
+#   - keeps org title validation logic private and centrally maintained
+# When copied:
+#   - keep this header so the source remains visible in downstream repos
+#   - this template uses the current Alpin Insight pull-request semantics
+# =============================================================================
+
+name: PR Title Lint (Alpin Insight)
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, edited]
+
+jobs:
+  lint:
+    permissions:
+      pull-requests: write
+      statuses: write
+      checks: write
+    # yamllint disable-line rule:line-length
+    uses: alpininsight/.github-private/.github/workflows/reusable-pr-title.yml@ebb61f771e31cd42670875a5faaa58dfef64842a  # v0.3.0
