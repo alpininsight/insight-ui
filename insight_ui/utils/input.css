@@ -708,6 +708,15 @@
     *   Hidden by default, shown when HTMX request is in progress.
     *   HTMX automatically adds .htmx-request to the triggering element.
     *
+    *   visibility: hidden is required alongside opacity: 0. Opacity alone keeps
+    *   the indicator in the accessibility tree, so screen readers announce its
+    *   "Loading..." text while nothing is loading. visibility removes it, and
+    *   restoring it counts as a change inside the polite live region, so the
+    *   announcement still happens once HTMX adds .htmx-request.
+    *
+    *   The visibility transition is delayed by the fade duration when hiding and
+    *   applied instantly when showing, so the opacity fade stays visible.
+    *
     *   Usage:
     *     <button hx-get="/api/data">
     *       Load <span class="htmx-indicator">...</span>
@@ -717,13 +726,20 @@
     .htmx-indicator {
         opacity: 0;
         position: absolute;
-        transition: opacity 200ms ease-in;
+        visibility: hidden;
+        transition:
+            opacity 200ms ease-in,
+            visibility 0s linear 200ms;
     }
 
     .htmx-request .htmx-indicator,
     .htmx-request.htmx-indicator {
         opacity: 1;
         position: static;
+        visibility: visible;
+        transition:
+            opacity 200ms ease-in,
+            visibility 0s linear 0s;
     }
 
     /*
