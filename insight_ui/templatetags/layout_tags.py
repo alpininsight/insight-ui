@@ -437,13 +437,20 @@ def _make_block_tag(node_class: type[LayoutNode]) -> callable:
         tag_name = bits[0]
         remaining_bits = bits[1:]
 
-        kwargs = token_kwargs(remaining_bits, parser) if remaining_bits else {}
-
-        # Handle boolean flags (single words without =value)
-        # remaining_bits is modified by token_kwargs, leftover items are flags
+        # Separate boolean flags from key=value pairs BEFORE calling token_kwargs
+        flags = []
+        kwarg_bits = []
         for bit in remaining_bits:
             if "=" not in bit and not bit.startswith(('"', "'")):
-                kwargs[bit] = True
+                flags.append(bit)
+            else:
+                kwarg_bits.append(bit)
+
+        kwargs = token_kwargs(kwarg_bits, parser) if kwarg_bits else {}
+
+        # Add boolean flags
+        for flag in flags:
+            kwargs[flag] = True
 
         nodelist = parser.parse((f"end{tag_name}",))
         parser.delete_first_token()
