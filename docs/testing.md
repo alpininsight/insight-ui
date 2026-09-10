@@ -75,6 +75,14 @@ The required quality gate fails if any package check fails or is skipped. It
 retains the existing protected status names. PR title validation reads the
 current title from GitHub, including when an older run is retried.
 
+The [local PR policy](../.github/workflows/pr-branch-guard.yml) already owns
+title validation. Do not add the private organization PR-title caller alongside
+it: that would duplicate the check and require private workflow access and write
+permissions from contributors. A failure of
+`test_pull_request_workflows_have_no_private_access` in every Python matrix leg
+is a workflow-boundary failure, not evidence of a Python/Django runtime defect.
+Keep that guard enabled and fix the caller, not the supported Python versions.
+
 The tested wheel and sdist are downloadable from the run as
 `package-dist-<commit SHA>` for seven days. These are CI artifacts, not a PyPI
 release or an internal storage boundary: artifacts follow the repository's

@@ -33,7 +33,10 @@ def test_pull_request_workflows_have_no_private_access() -> None:
         for name, workflow in _workflows().items()
         if any(event.startswith("pull_request") for event in workflow.get("on", {}))
     }
-    assert set(pull_requests) == {"feature-ci.yml", "pr-branch-guard.yml"}
+    assert set(pull_requests) == {"feature-ci.yml", "pr-branch-guard.yml"}, (
+        "Contributor CI and the local metadata-only PR policy own these checks. "
+        "Do not add private organization callers to public contributor workflows."
+    )
     for name, workflow in pull_requests.items():
         source = (WORKFLOWS / name).read_text()
         assert "pull_request_target" not in workflow["on"]
@@ -50,6 +53,20 @@ def test_pull_request_workflows_have_no_private_access() -> None:
                     assert re.fullmatch(r"(?:actions|astral-sh)/[a-z-]+@[a-f0-9]{40}", step["uses"])
                 if step.get("uses", "").startswith("actions/checkout@"):
                     assert step["with"]["persist-credentials"] is False
+
+
+def test_title_policy_is_already_local_and_metadata_only() -> None:
+    """Removing a duplicate private title caller must not remove title validation."""
+    workflow = _workflows()["pr-branch-guard.yml"]
+    assert workflow["permissions"] == {"contents": "read", "pull-requests": "read"}
+    assert "edited" in workflow["on"]["pull_request"]["types"]
+    steps = workflow["jobs"]["branch-policy"]["steps"]
+    assert len(steps) == 1
+    assert re.fullmatch(r"actions/github-script@[a-f0-9]{40}", steps[0]["uses"])
+    script = steps[0]["with"]["script"]
+    assert "github.rest.pulls.get(" in script
+    assert "if (!conventional.test(pr.title))" in script
+    assert "core.setFailed('Use a Conventional Commit PR title" in script
 
 
 def test_quality_gate_preserves_required_checks() -> None:
