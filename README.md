@@ -32,13 +32,16 @@ None of it is needed to use this package.
 
 ## Installation
 
-Python 3.12+ and Django 5.2 or 6.x are supported. Initial public PyPI publication
-is being prepared; availability is subject to the repository owner's release
-decision. Once a release is available:
+Python 3.12+ and Django 5.2, 6.0 and 6.1 are supported. Stable releases are
+available on [PyPI](https://pypi.org/project/insight-ui/):
 
 ```bash
 uv add insight-ui
 ```
+
+This is a production-supported MVP with a defined feature scope, not a promise
+that every planned feature is complete. Keep the application's dependency lock
+under version control and test upgrades before deploying them.
 
 Add `insight_ui` to your existing Django project's `INSTALLED_APPS` and ensure
 Django staticfiles is enabled. Keep your other applications and settings:

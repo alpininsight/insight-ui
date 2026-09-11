@@ -172,6 +172,13 @@ def test_component_rejects_incomplete_markup(monkeypatch: pytest.MonkeyPatch) ->
         smoke.check_component()
 
 
+def test_base_page_rejects_an_empty_title(monkeypatch: pytest.MonkeyPatch) -> None:
+    """A successful component smoke must not hide an invalid page shell."""
+    monkeypatch.setattr("django.template.loader.render_to_string", Mock(return_value="<!DOCTYPE html><title></title>"))
+    with pytest.raises(RuntimeError, match="Default base page"):
+        smoke.check_base_page()
+
+
 @pytest.fixture
 def static_fixture(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> tuple[Path, Path]:
     """Use tiny local assets and mock only Django discovery and collection."""
@@ -233,7 +240,7 @@ def test_probe_configures_only_public_local_host(tmp_path: Path, monkeypatch: py
     runtime = SimpleNamespace(
         flags=SimpleNamespace(isolated=1), prefix=str(tmp_path), base_prefix="/base-python", stdout=Mock()
     )
-    settings, setup, command, component, assets = Mock(), Mock(), Mock(), Mock(), Mock()
+    settings, setup, command, component, assets, page = Mock(), Mock(), Mock(), Mock(), Mock(), Mock()
     imports = Mock(return_value=tmp_path / "insight_ui")
     monkeypatch.chdir(tmp_path)
     monkeypatch.setattr(smoke, "sys", runtime)
@@ -243,18 +250,24 @@ def test_probe_configures_only_public_local_host(tmp_path: Path, monkeypatch: py
     monkeypatch.setattr(smoke, "check_imports", imports)
     monkeypatch.setattr(smoke, "check_component", component)
     monkeypatch.setattr(smoke, "check_assets", assets)
+    monkeypatch.setattr(smoke, "check_base_page", page)
     smoke.probe(tmp_path)
     config = settings.configure.call_args.kwargs
     assert config["INSTALLED_APPS"] == ["django.contrib.staticfiles", "insight_ui"]
     assert config["DATABASES"]["default"]["NAME"] == ":memory:"
     assert config["INSIGHT_UI"]["assets"] == {"cdn_enabled": False, "use_minified": False}
     assert config["TEMPLATES"][0]["APP_DIRS"] is True
+    assert config["DEBUG"] is False
+    assert config["STORAGES"]["staticfiles"]["BACKEND"] == (
+        "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
+    )
     assert config["STATIC_ROOT"] == tmp_path / "collected-static"
     assert smoke.urlpatterns == []
     setup.assert_called_once_with()
     command.assert_called_once_with("check", verbosity=0, fail_level="WARNING")
     component.assert_called_once_with()
     assets.assert_called_once_with(tmp_path / "insight_ui", tmp_path / "collected-static")
+    page.assert_called_once_with()
     assert imports.call_count == 2  # noqa: PLR2004
     imports.assert_called_with(tmp_path)
 

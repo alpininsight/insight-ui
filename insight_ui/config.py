@@ -14,7 +14,7 @@ CONFIG_DEFAULTS: dict[str, Any] = {
     "favicon_svg": "insight_ui/favicon/favicon.svg",
     "favicon": "insight_ui/favicon/favicon.ico",
     "apple_touch_icon": "insight_ui/favicon/apple-touch-icon.png",
-    "safari_mask_icon": "insight_ui/svg/logo.svg",  # Used by Safari pinned tab
+    "safari_mask_icon": "insight_ui/svg/insight-ui-logo.svg",  # Used by Safari pinned tab
     "safari_mask_icon_color": "#5bbad5",
     "msapplication_TileColor": "#da532c",  # Sets the background color for a live tile (MS Edge only)
     "theme_color": "#ffffff",  # For the search bar on mobile devices

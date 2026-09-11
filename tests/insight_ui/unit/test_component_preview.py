@@ -8,6 +8,7 @@ import tarfile
 import zipfile
 from collections.abc import Iterator
 from dataclasses import replace
+from email.message import EmailMessage
 from http import HTTPStatus
 from pathlib import Path
 from unittest.mock import Mock
@@ -254,12 +255,14 @@ def test_preview_command_rejects_invalid_ports(monkeypatch: pytest.MonkeyPatch, 
         main(["preview", "example_panel", "--port", port])
 
 
-def _archive(path: Path, names: set[str]) -> None:
+def _archive(path: Path, names: set[str], metadata: bytes = b"") -> None:
     """Make tiny deterministic archives to verify the public package boundary."""
     if path.suffix == ".whl":
         with zipfile.ZipFile(path, "w") as archive:
             for name in sorted(names):
                 archive.writestr(name, "test fixture")
+            if metadata:
+                archive.writestr("insight_ui-0.0.0.dist-info/METADATA", metadata)
     else:
         with tarfile.open(path, "w:gz") as archive:
             for name in sorted(names):
@@ -267,14 +270,18 @@ def _archive(path: Path, names: set[str]) -> None:
                 data = b"test fixture"
                 member.size = len(data)
                 archive.addfile(member, io.BytesIO(data))
+            if metadata:
+                member = tarfile.TarInfo("insight_ui-0.0.0/PKG-INFO")
+                member.size = len(metadata)
+                archive.addfile(member, io.BytesIO(metadata))
 
 
-def test_preview_is_source_only_in_distributions(tmp_path: Path) -> None:
+def test_preview_is_source_only_in_distributions(tmp_path: Path, distribution_metadata: EmailMessage) -> None:
     """A valid source archive includes the helper; a wheel must exclude all of it."""
     wheel = tmp_path / "insight_ui-0.0.0-py3-none-any.whl"
     sdist = tmp_path / "insight_ui-0.0.0.tar.gz"
-    _archive(wheel, REQUIRED)
-    _archive(sdist, REQUIRED | SOURCE_ONLY)
+    _archive(wheel, REQUIRED, distribution_metadata.as_bytes())
+    _archive(sdist, REQUIRED | SOURCE_ONLY, distribution_metadata.as_bytes())
     check_archive(wheel)
     check_archive(sdist)
     _archive(wheel, REQUIRED | {"devtools/__main__.py"})

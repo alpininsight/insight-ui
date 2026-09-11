@@ -18,7 +18,7 @@ documentation application, credentials or running deployment is needed.
 | Generated component | Its generated Python test; optional JS stub must be expanded. |
 | Tokens/assets | Tailwind build, semantic-token check, readable and minified asset checks. |
 | Public guides | Link, token, example-rendering and package-boundary regression tests. |
-| Packaging | Build wheel/sdist and run the archive boundary checker. |
+| Packaging | Build wheel/sdist, check their metadata against `pyproject.toml`, and inspect archive boundaries. |
 
 ```bash
 uv run pytest tests/insight_ui/unit/components/test_button.py
@@ -65,10 +65,10 @@ documentation checkout, CDN account or running cluster.
 
 | Check | Evidence |
 | --- | --- |
-| Python 3.12, 3.13 and 3.14 | Locked dependencies, exported requirements, lint, formatting, Django system checks and package tests against Django 5.2 and 6.1. |
+| Python 3.12, 3.13 and 3.14 | Locked dependencies, exported requirements, lint, formatting, Django system checks and package tests against Django 5.2, 6.0 and 6.1. |
 | JavaScript and static assets | Vitest/jsdom behavior tests and the package's existing static-build verification. No CDN upload. |
 | Contributor hygiene | The repository's public pre-commit hooks, with secret scanning performed once separately. |
-| Wheel and sdist | Both archives are inspected, installed separately outside the checkout, then checked for Django rendering and staticfiles. |
+| Wheel and sdist | Both archives are inspected, installed separately outside the checkout, then checked for button and full-page rendering with strict manifest staticfiles. |
 | PR metadata | Conventional Commit title and branch routing, using read-only GitHub access and no source checkout. |
 
 The required quality gate fails if any package check fails or is skipped. It
@@ -93,10 +93,24 @@ evidence.
 The [contributor workflow](../.github/workflows/feature-ci.yml) is deliberately
 self-contained so it also works in public forks. Organization-specific release,
 CDN publication and application evidence are separate from contributor tests.
-The existing maintainer-only publication workflows are not converted by this
-change; moving their execution to a private repository is a remaining
-maintainer gate before changing repository visibility. Passing Contributor CI
-does not authorize that visibility change or a package publication.
+Python uploads use only the central, approval-gated publisher. The old
+source-repository token publisher has been retired; release/tag and CDN
+workflows are separate and remain in place. Passing Contributor CI does not
+authorize a package publication or a repository visibility change. See
+[Releases and consumer upgrades](releases.md).
+
+### Release Regression Lessons
+
+A component-only smoke and copying static files can pass while a complete page
+fails in production. The installed-package probe therefore renders the default
+base page after `collectstatic`, with `DEBUG=False` and strict
+`ManifestStaticFilesStorage`, without an icon-path workaround. Preserve the
+tests for a nonempty fallback title, escaped host titles and template overrides.
+
+Likewise, successful installation does not prove accurate package metadata.
+Check the actual wheel `METADATA` and sdist `PKG-INFO` against the reviewed
+project name, Python requirement, classifiers and project URLs. Keep maturity
+and supported Django-series tests aligned with the public claims and CI matrix.
 
 ## Behavior And Visual Checks
 

@@ -223,3 +223,4 @@ node_modules/
 /insight_ui/static/insight_ui/js/*.min.js
 .playwright-mcp/
 .playwright-cli/
+/_wt/
