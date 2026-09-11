@@ -19,3 +19,6 @@ def test_readme_describes_package_installation_and_external_documentation() -> N
     assert "](docs/static-assets.md)" in readme
     assert "](docs/README.md)" in readme
     assert "AA-compliant" not in readme
+    assert "https://pypi.org/project/insight-ui/" in readme
+    assert "Initial public PyPI publication" not in readme
+    assert "Once a release is available" not in readme

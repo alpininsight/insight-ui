@@ -13,14 +13,14 @@ separate documentation application.
 ## Install The Package
 
 Use the supported Python/Django versions in [README.md](../README.md).
-Public PyPI publication requires an explicit release decision. Once an approved
-release is available, install it in the host project's environment:
+Stable releases are available on [PyPI](https://pypi.org/project/insight-ui/).
+Install the package in the host project's environment:
 
 ```bash
 uv add insight-ui
 ```
 
-For local integration before publication, use your reviewed source checkout:
+For local development against an unpublished change, use your reviewed source checkout:
 
 ```bash
 uv add --editable /absolute/path/to/insight-ui
@@ -46,14 +46,13 @@ STATIC_URL = "/static/"
 INSIGHT_UI = {
     "navbar_fixed": False,  # This first page has no navbar.
     "assets": {"cdn_enabled": False, "use_minified": False},
-    "safari_mask_icon": "insight_ui/svg/insight-ui-logo.svg",
 }
 ```
 
 Do not add a `documentation` app or documentation URL routes. A package install
-does not supply them. The explicit mask icon selects a shipped asset; the
-current default `insight_ui/svg/logo.svg` is absent. Keep production manifest
-validation strict rather than disabling it to hide missing files.
+does not supply them. Default icons are shipped with the package. Keep
+production manifest validation strict rather than disabling it to hide missing
+files. Override icon settings only with assets supplied by your host.
 
 The base template needs the resolved `INSIGHT_UI` context. In
 `myapp/context_processors.py`, wrap the package config helper:

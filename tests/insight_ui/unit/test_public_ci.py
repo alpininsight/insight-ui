@@ -109,3 +109,25 @@ def test_locked_dependencies_require_only_public_indexes() -> None:
     lock = tomllib.loads((ROOT / "uv.lock").read_text())
     for package in lock["package"]:
         assert package["source"] in ({"registry": "https://pypi.org/simple"}, {"editable": "."})
+
+
+def test_declared_django_series_are_exercised_by_ci() -> None:
+    """The public support metadata and tested Django series must stay aligned."""
+    project = tomllib.loads((ROOT / "pyproject.toml").read_text())["project"]
+    declared = {
+        value.removeprefix("Framework :: Django :: ")
+        for value in project["classifiers"]
+        if value.startswith("Framework :: Django :: ")
+    }
+    source = (WORKFLOWS / "feature-ci.yml").read_text()
+    assert declared == set(re.findall(r"'django~=([0-9]+\.[0-9]+)\.0'", source))
+
+
+def test_python_publication_has_only_the_central_owner() -> None:
+    """The retired token publisher must not compete with the approval-gated one."""
+    assert not (WORKFLOWS / "main-publish-pypi.yml").exists()
+    for path in WORKFLOWS.glob("*.yml"):
+        source = path.read_text()
+        assert "PYPI_API_TOKEN" not in source
+        assert "pypa/gh-action-pypi-publish@" not in source
+        assert re.search(r"\b(?:uv|twine)\s+(?:publish|upload)\b", source) is None

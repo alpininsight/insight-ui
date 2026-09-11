@@ -46,7 +46,7 @@ jobs:
           uv run --no-sync ruff format --check .
       - name: Test supported Django series
         run: |
-          for django in 'django~=5.2.0' 'django~=6.1.0'; do
+          for django in 'django~=5.2.0' 'django~=6.0.0' 'django~=6.1.0'; do
             uv pip install "$django"
             uv run --no-sync python -m django check --settings=tests.settings
             uv run --no-sync pytest
