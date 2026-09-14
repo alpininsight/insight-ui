@@ -30,11 +30,11 @@ changing a component rather than treating the generated skeleton as finished:
 
 ## The Workflow
 
-![Six steps: start a feature worktree from develop; dry-run and generate an atom, molecule, or organism; complete Config, tag, template, tests, and manifest; format, build assets, and preview on localhost; run behavior and distribution checks; open a pull request to develop. Documentation maintainers subsequently reuse the manifest.](.github/images/contributor-workflow.svg)
+![Six steps: start a feature worktree from develop; dry-run and generate an atom, molecule, or organism; complete Config, tag, template, and tests; format, build assets, and preview on localhost; run behavior and distribution checks; open a pull request to develop.](.github/images/contributor-workflow.svg)
 
 1. Create a feature branch and worktree from the latest `develop`.
 2. Choose a category and atomic level; inspect a dry-run before generating files.
-3. Implement the component and its examples using existing Insight UI patterns.
+3. Implement the component using existing Insight UI patterns.
 4. Format the source, build local assets, and preview one component.
 5. Test behavior and the package boundary, not only the screenshot.
 6. Open a pull request to `develop`; maintainers handle the separate reference site.
@@ -84,14 +84,14 @@ Categories are `layout`, `navigation`, `input`, `popup`, `util`, `list`, `filter
 These are alternative dry-runs for the three levels:
 
 ```bash
-uv run python -m devtools create_component \
+uv run python manage.py create_component \
   --name "Example Status" --category util --level atom --dry-run
 
-uv run python -m devtools create_component \
+uv run python manage.py create_component \
   --name "Example Panel" --category form --level molecule \
   --compose input_field,button --dry-run
 
-uv run python -m devtools create_component \
+uv run python manage.py create_component \
   --name "Example Toolbar" --category form --level organism \
   --compose input_field,button --dry-run
 ```
@@ -105,7 +105,7 @@ The rest of this guide uses **Example Panel**. Generate it once by removing
 `--dry-run`:
 
 ```bash
-uv run python -m devtools create_component \
+uv run python manage.py create_component \
   --name "Example Panel" --category form --level molecule \
   --compose input_field,button
 ```
@@ -125,7 +125,6 @@ For the example above, generation creates or updates these source files:
 | `insight_ui/templatetags/insight_tags.py` | Register the real `example_panel` inclusion tag. |
 | `insight_ui/templates/insight_ui/components/example_panel.html` | Implement accessible markup; compose children through their existing tags. |
 | `tests/insight_ui/unit/components/test_example_panel.py` | Extend the generated render checks with meaningful behavior, escaping, and edge cases. |
-| `insight_ui/component_manifests/example_panel.json` | Keep component metadata and named example inputs consistent with the Config. |
 
 With `--js`, the generator also creates
 `insight_ui/static/insight_ui/js/insight-ui-example-panel.js` and
@@ -138,30 +137,6 @@ tokens. Keep colors, borders, radii, and shadows consistent with existing
 components. Do not add private brand assets or a separate component-specific
 palette to this public package.
 
-### Example Inputs Are Not A Second Implementation
-
-The manifest names the public Config class, template, composition, and examples.
-Its `examples` entries contain a `name` and a `config` object. Keep a `default`
-example and give additional examples unique names. The preview constructs the
-real Config dataclass and renders the real template tag from these inputs.
-
-Edit the generated manifest to make the example useful. For example, the
-`default` entry's **`config` object** for Example Panel can be:
-
-```json
-{
-  "label": "Find an item",
-  "tag_id": "example-panel",
-  "input_field": {"name": "query", "label": "Query"},
-  "button": {"label": "Search"}
-}
-```
-
-This is not a complete manifest. The same object can be supplied in a JSON file
-with `--example-config <path>` during the initial dry-run and generation. Keep
-values declarative; the manifest does not execute arbitrary Python or replace
-the field documentation in the Config dataclass.
-
 ## 4. Build And Preview Locally
 
 Normalize generated imports and formatting, then compile and minify the assets:
@@ -170,22 +145,21 @@ Normalize generated imports and formatting, then compile and minify the assets:
 uv run ruff check --fix
 uv run ruff format
 npm run build:static-all
-uv run python -m devtools preview example_panel --port 8010
+uv run python manage.py runserver
 ```
 
-Open **[http://127.0.0.1:8010/](http://127.0.0.1:8010/)**. Stop the server with
-`Ctrl+C`. If the port is occupied, choose another port with `--port`.
+Open **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)**. Stop the server with
+`Ctrl+C`.
 
-The server binds only to `127.0.0.1` and previews the selected component, not a
-catalog. `/?example=default` selects the default input; another declared example
-can be selected with `?example=<name>`. Unknown examples return 404. Use the
-preview's light/dark switch and narrow the viewport to check both appearance
-and layout.
+The playground renders components configured in `devtools/views.py`. Edit the
+`context` dictionary to test your component with different configurations. Use
+the playground's light/dark switch and narrow the viewport to check both
+appearance and layout.
 
-The preview uses local package CSS, fonts, and JavaScript, with CDN delivery
-disabled. Its initial page does not need external assets or private credentials.
-It is not an application backend: submission endpoints, WebSocket services, or
-remote chart/map data need an appropriate integration test host.
+The playground uses local package CSS, fonts, and JavaScript, with CDN delivery
+disabled. It does not need external assets or private credentials. It is not an
+application backend: submission endpoints, WebSocket services, or remote
+chart/map data need an appropriate integration test host.
 
 `build:static-all` compiles Tailwind from `input.css` and package sources, then
 creates minified CSS/JS. **`build:static` alone only minifies existing assets.**
@@ -241,8 +215,8 @@ The generated test stubs are a starting point, not an acceptance checklist.
 ## 6. Open A Pull Request
 
 Review `git diff` and `git status` before staging. Include only the intended
-source, tests, manifest, and tracked generated assets. Preserve the existing
-SPDX/REUSE licensing conventions; see [LICENSE](LICENSE) and [NOTICE](NOTICE).
+source, tests, and tracked generated assets. Preserve the existing SPDX/REUSE
+licensing conventions; see [LICENSE](LICENSE) and [NOTICE](NOTICE).
 
 Push your feature branch and open a PR targeting **`develop`**, with a
 Conventional Commit title such as `feat(components): add example panel`.
@@ -256,9 +230,9 @@ actual visual-regression test uses it as a baseline.
 
 ### Maintainer Handoff
 
-The separate reference site can consume the reviewed component manifest and
-Config metadata instead of duplicating the component implementation. Maintainers
-coordinate that import and any editorial examples after the package change is
-accepted. Contributors do not need private documentation access: keep the
-manifest and behavior tests here; the full catalog, documentation application,
-and application-level audit evidence stay outside the public package.
+The separate reference site can consume the reviewed Config metadata instead of
+duplicating the component implementation. Maintainers coordinate any editorial
+examples after the package change is accepted. Contributors do not need private
+documentation access: keep behavior tests here; the full catalog, documentation
+application, and application-level audit evidence stay outside the public
+package.
