@@ -33,7 +33,6 @@ REQUIRED = {
 SOURCE_ONLY = {
     "tests/__init__.py",
     "tests/settings.py",
-    "tests/context.py",
 }
 
 
