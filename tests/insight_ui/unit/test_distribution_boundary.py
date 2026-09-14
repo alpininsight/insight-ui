@@ -19,7 +19,7 @@ from scripts.check_distribution import REQUIRED, SOURCE_ONLY, check_archive, che
         "core/settings.py",
         "enterprise/offer.md",
         "docs/getting-started.md",
-        "insight_ui/static/insight_ui/js/insight-ui-demo-container.js",
+        "devtools/views.py",
     ],
 )
 def test_archive_check_rejects_non_package_payload(tmp_path: Path, path: str) -> None:

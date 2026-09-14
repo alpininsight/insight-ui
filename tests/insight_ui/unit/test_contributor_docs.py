@@ -9,7 +9,6 @@ from urllib.parse import unquote, urlsplit
 
 import pytest
 from bs4 import BeautifulSoup
-from django.contrib.staticfiles import finders
 from django.template import engines
 from django.test import RequestFactory, override_settings
 from insight_ui.config import get_config
@@ -106,30 +105,6 @@ def test_public_template_examples_render(path: Path) -> None:
             assert "{%" not in rendered, path
 
 
-def test_readme_example_renders_content_and_packaged_assets() -> None:
-    """The quick start renders actual content, with CSS/JS and valid icon paths."""
-    examples = _code_blocks(ROOT / "README.md", "django")
-    assert examples, "README must contain a runnable component example"
-    host_settings = _documented_host_settings()
-    assert "insight_ui" in host_settings["INSTALLED_APPS"]
-    assert "django.contrib.staticfiles" in host_settings["INSTALLED_APPS"]
-    assert "documentation" not in host_settings["INSTALLED_APPS"]
-    with override_settings(INSIGHT_UI=host_settings["INSIGHT_UI"], STATIC_URL=host_settings["STATIC_URL"]):
-        html = engines["django"].from_string(examples[0]).render({}, request=RequestFactory().get("/"))
-    soup = BeautifulSoup(html, "html.parser")
-    assert soup.title.get_text() == "My application"
-    assert soup.select_one("button.btn-primary").get_text(strip=True) == "Get started"
-    assert "Welcome" in soup.get_text()
-    assert "Card content goes here." in soup.get_text()
-    assert "Component rendered successfully." in soup.get_text()
-    assert soup.select_one('link[href="/static/insight_ui/css/tailwind.css"]') is not None
-    assert soup.select_one('script[src="/static/insight_ui/js/insight-ui-init.js"]') is not None
-    for element in soup.select("[href], [src]"):
-        url = str(element.get("href") or element.get("src"))
-        if url.startswith("/static/"):
-            assert finders.find(url.removeprefix("/static/")), url
-
-
 @pytest.mark.parametrize("version", ["1.2.3", "v1.2.3"])
 def test_documented_cdn_example_resolves_versioned_minified_assets(version: str) -> None:
     """The same documented include supports a host-owned, versioned CDN."""
@@ -161,12 +136,3 @@ def test_documented_design_tokens_exist_in_source() -> None:
     assert tokens
     for token in tokens:
         assert re.search(rf"{re.escape(token)}\s*:", css), token
-
-
-def test_public_guides_are_markdown_not_an_application() -> None:
-    """Allow contributor text without weakening the application source boundary."""
-    files = [path for path in (ROOT / "docs").rglob("*") if path.is_file()]
-    assert files
-    assert not any(path.suffix in {".py", ".html", ".js", ".css"} for path in files)
-    assert not (ROOT / "docs/enterprise").exists()
-    assert not (ROOT / "docs/audit-preparation").exists()

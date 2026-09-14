@@ -1,0 +1,68 @@
+{% extends "insight_ui/base.html" %}
+{% load insight_tags %}
+
+{% block title %}Component Playground | Insight UI Devtools{% endblock %}
+
+{% block content %}
+    <div class="p-6">
+        <header class="mb-6">
+            <h1 class="font-semibold text-2xl text-insight-headline">Component Playground</h1>
+            <p class="mt-1 text-sm text-insight-caption">
+                Edit <code class="px-1 bg-insight-raised rounded-insight-surface">devtools/views.py</code> to add your component configs, then reload.
+            </p>
+        </header>
+
+        <div class="flex flex-wrap gap-4 items-center p-4 mb-6 bg-insight-surface border border-insight-surface rounded-insight-surface">
+            <label class="flex gap-2 items-center text-sm text-insight-body cursor-pointer">
+                <span>Viewport:</span>
+                <select id="viewport-select" class="px-2 py-1 text-insight-body bg-insight-base border border-insight-surface rounded-insight-control">
+                    <option value="full">Full Width</option>
+                    <option value="desktop" selected>Desktop (1024px)</option>
+                    <option value="tablet">Tablet (768px)</option>
+                    <option value="mobile">Mobile (375px)</option>
+                </select>
+            </label>
+
+            <label class="flex gap-2 items-center text-sm text-insight-body cursor-pointer">
+                <input type="checkbox" id="rtl-toggle" class="accent-insight-primary">
+                <span>RTL</span>
+            </label>
+
+            <button type="button" class="btn btn-secondary btn-s" data-insight-theme-toggle>
+                Toggle Theme
+            </button>
+        </div>
+
+        <div class="p-8 mx-auto bg-insight-surface border border-insight-surface rounded-insight-surface transition-all duration-200" id="demo-container" style="max-width: 1024px;">
+        {# ============================================================= #}
+        {# ADD YOUR COMPONENT TAGS HERE                                  #}
+        {# The configs come from devtools/views.py                       #}
+        {# ============================================================= #}
+
+            {% button config=button %}
+
+        {# Examples:                                                     #}
+        {# {% my_component config=my_config %}                           #}
+        {# {% another_component label="Test" size="l" %}                 #}
+        </div>
+    </div>
+
+    <script>
+        const container = document.getElementById('demo-container');
+        const viewportSelect = document.getElementById('viewport-select');
+        const rtlToggle = document.getElementById('rtl-toggle');
+
+        viewportSelect.addEventListener('change', (e) => {
+            container.style.maxWidth = {
+                'full': '100%',
+                'desktop': '1024px',
+                'tablet': '768px',
+                'mobile': '375px'
+            }[e.target.value];
+        });
+
+        rtlToggle.addEventListener('change', (e) => {
+            document.documentElement.dir = e.target.checked ? 'rtl' : 'ltr';
+        });
+    </script>
+{% endblock %}

@@ -10,7 +10,17 @@ from email import policy
 from email.parser import BytesParser
 from pathlib import Path, PurePosixPath
 
-FORBIDDEN = {"core", "documentation", "enterprise", "docs", ".github", "Dockerfile", "docker", "manage.py"}
+FORBIDDEN = {
+    "core",
+    "documentation",
+    "enterprise",
+    "docs",
+    "devtools",
+    ".github",
+    "Dockerfile",
+    "docker",
+    "manage.py",
+}
 DOC_ASSETS = {"insight-ui-demo-container", "insight-ui-demo-sandbox", "insight-ui-mockup-toc"}
 METADATA_PATH_DEPTH = 2
 REQUIRED = {
@@ -21,14 +31,6 @@ REQUIRED = {
     "insight_ui/static/insight_ui/js/insight-ui-init.js",
 }
 SOURCE_ONLY = {
-    "devtools/__init__.py",
-    "devtools/__main__.py",
-    "devtools/settings.py",
-    "devtools/preview.py",
-    "devtools/urls.py",
-    "devtools/templates/devtools/preview.html",
-    "devtools/static/devtools/preview.css",
-    "devtools/static/devtools/preview.js",
     "tests/__init__.py",
     "tests/settings.py",
     "tests/context.py",
@@ -81,9 +83,7 @@ def check_archive(archive: Path) -> None:
     leaked = sorted(
         str(name)
         for name in names
-        if FORBIDDEN.intersection(name.parts)
-        or (is_wheel and "devtools" in name.parts)
-        or any(name.name.startswith(asset) for asset in DOC_ASSETS)
+        if FORBIDDEN.intersection(name.parts) or any(name.name.startswith(asset) for asset in DOC_ASSETS)
     )
     required = REQUIRED if is_wheel else REQUIRED | SOURCE_ONLY
     missing = sorted(required - {str(name) for name in names})
