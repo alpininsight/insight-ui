@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
 # SPDX-License-Identifier: AGPL-3.0-only
-"""Licence hygiene: SPDX headers, REUSE metadata and third-party notices.
+"""License compliance: SPDX headers, REUSE metadata and third-party notices.
 
 Customers run software-composition scans against the package; every source file
 must carry an SPDX header and the bundled third-party components must ship their
@@ -29,11 +29,11 @@ HEADER_SUFFIXES = {".py", ".js", ".mjs"}
 # LICENSE:        https://www.gnu.org/licenses/agpl-3.0.txt
 # LICENSES/*.txt: https://github.com/spdx/license-list-data (text/<identifier>.txt)
 CANONICAL_LICENCE_SHA256 = {
-    "LICENSE": "0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0",
-    "LICENSES/AGPL-3.0-only.txt": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee",
-    "LICENSES/CC0-1.0.txt": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
-    "LICENSES/MIT.txt": "b05785f9f18e6716bab63424b11454513b9943a222595b70411009202fc592b5",
-    "LICENSES/OFL-1.1.txt": "8eea8287e5876b539670cadb82e99f9a7afddec6f6730811be1daf25d2e9bcfd",
+    "LICENSE": "e0eedba615d5cd1b986afb6c5b3a4b1ae33713e7e9dc74d19daec5e3221f9d2e",
+    "LICENSES/AGPL-3.0-only.txt": "79735a75d0274d2a5dcc240d11a0f81e34cfc3533939b7fce8e84e35a150a238",
+    "LICENSES/CC0-1.0.txt": "f4e7f373b9b996950337e8d41a4a2939c2d90b7725e9baf3d5084a22717ad328",
+    "LICENSES/MIT.txt": "32303ab887b8c90b6e6fe49e2f031ca01b23b5190e236447d94e1944684dc769",
+    "LICENSES/OFL-1.1.txt": "8387c2114e6f02d7005664fd01c18c7c4e238885bbc0b1cf6c79242ac17576b1",
 }
 AGPL_CLOSING_LINE = "<https://www.gnu.org/licenses/>."
 COMMERCIAL_CONTACT = "contact@alpininsight.ai"
