@@ -13,11 +13,12 @@ authors = [
     {name = "Insight UI Team"},
 ]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 5 - Production/Stable",
     "Environment :: Web Environment",
     "Framework :: Django",
     "Framework :: Django :: 5.2",
     "Framework :: Django :: 6.0",
+    "Framework :: Django :: 6.1",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: GNU Affero General Public License v3",
     "Operating System :: OS Independent",
@@ -53,7 +54,7 @@ default-groups = ["dev"]
 [dependency-groups]
 dev = [
     "mypy>=2.3.0",
-    "django-stubs==6.1.0",
+    "django-stubs==6.1.1",
     "ruff>=0.16.1",
     "pre-commit>=4.6.1",
     "django-tailwind-cli>=4.6.2",

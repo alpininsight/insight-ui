@@ -19,6 +19,7 @@ not a second documentation application or a deployment system.
 | [Internationalization](i18n.md) | Package translations, gettext and RTL checks. |
 | [Accessibility](accessibility.md) | Component requirements and behavior-test responsibilities. |
 | [Testing](testing.md) | Local quality, regression, asset and distribution checks. |
+| [Releases](releases.md) | Stable versions, the central publisher and separately tested consumer upgrades. |
 | [New component checklist](new-component-checklist.md) | Review criteria for the public contributor PR. |
 
 ## Ownership

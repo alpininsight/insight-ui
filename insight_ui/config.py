@@ -14,13 +14,13 @@ CONFIG_DEFAULTS: dict[str, Any] = {
     "favicon_svg": "insight_ui/favicon/favicon.svg",
     "favicon": "insight_ui/favicon/favicon.ico",
     "apple_touch_icon": "insight_ui/favicon/apple-touch-icon.png",
-    "safari_mask_icon": "insight_ui/svg/logo.svg",  # Used by Safari pinned tab
+    "safari_mask_icon": "insight_ui/svg/insight-ui-logo.svg",  # Used by Safari pinned tab
     "safari_mask_icon_color": "#5bbad5",
     "msapplication_TileColor": "#da532c",  # Sets the background color for a live tile (MS Edge only)
     "theme_color": "#ffffff",  # For the search bar on mobile devices
     "meta": {"seo": {"description": "My indispensable app", "keywords": "Django, Insight UI", "author": "It's me"}},
     "stylesheet": "insight_ui/css/tailwind.css",  # Only change in case of using alternative stylesheet name
-    "navbar_fixed": True,  # Should the navigation stick at the top of the window (has impact on the sidebars as well)
+    "navbar_fixed": False,  # Should the navigation stick at the top of the window (has impact on the sidebars as well)
     "load_prism": False,  # Turn to 'True' to use syntax highlighting
     "load_leaflet": False,  # Turn to 'True' to use geo-maps
     "load_echarts": False,  # Turn to 'True' to use Chart-Components
@@ -30,12 +30,12 @@ CONFIG_DEFAULTS: dict[str, Any] = {
     "brand": {
         "home_url": "/",
         "mark": BrandMarkConfig(
-            "Django",
-            "Insight UI",
-            LogoConfig(
-                "insight_ui/svg/insight-ui-logo.svg",
-                "insight_ui/svg/insight-ui-logo.svg",
-                "Insight UI Logo",
+            primary_text="Django",
+            secondary_text="Insight UI",
+            logo=LogoConfig(
+                url="insight_ui/svg/insight-ui-logo.svg",
+                url_dark="insight_ui/svg/insight-ui-logo.svg",
+                alt="Insight UI Logo",
                 height="2rem",
             ),
         ),

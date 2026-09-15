@@ -246,8 +246,8 @@
     --color-insight-text-body-dark: #d3d7de;
     --color-insight-text-muted: #687386;            /* Meta info, timestamps, helper text */
     --color-insight-text-muted-dark: #A5B0C0;
-    --color-insight-text-disabled: #d1d5dc;         /* Disabled labels, inactive elements */
-    --color-insight-text-disabled-dark: #364153;
+    --color-insight-text-disabled: #c5cad3;         /* Disabled labels, inactive elements */
+    --color-insight-text-disabled-dark: #4e525a;
     --color-insight-text-inverse: #F5F8FC;          /* Text on dark/colored backgrounds (e.g., primary buttons) */
     --color-insight-text-inverse-dark: #1C1C1E;
     --color-insight-text-link: #256CD8;             /* Links, clickable text elements */
@@ -708,6 +708,15 @@
     *   Hidden by default, shown when HTMX request is in progress.
     *   HTMX automatically adds .htmx-request to the triggering element.
     *
+    *   visibility: hidden is required alongside opacity: 0. Opacity alone keeps
+    *   the indicator in the accessibility tree, so screen readers announce its
+    *   "Loading..." text while nothing is loading. visibility removes it, and
+    *   restoring it counts as a change inside the polite live region, so the
+    *   announcement still happens once HTMX adds .htmx-request.
+    *
+    *   The visibility transition is delayed by the fade duration when hiding and
+    *   applied instantly when showing, so the opacity fade stays visible.
+    *
     *   Usage:
     *     <button hx-get="/api/data">
     *       Load <span class="htmx-indicator">...</span>
@@ -717,13 +726,20 @@
     .htmx-indicator {
         opacity: 0;
         position: absolute;
-        transition: opacity 200ms ease-in;
+        visibility: hidden;
+        transition:
+            opacity 200ms ease-in,
+            visibility 0s linear 200ms;
     }
 
     .htmx-request .htmx-indicator,
     .htmx-request.htmx-indicator {
         opacity: 1;
         position: static;
+        visibility: visible;
+        transition:
+            opacity 200ms ease-in,
+            visibility 0s linear 0s;
     }
 
     /*
@@ -798,16 +814,18 @@
     *   - Outline: Transparent bg, colored border and text, fill on hover
     *   - Subtle: No border, light hover background
     *
-    *   Sizes: xs, s, m (default), l, xl, icon (square), round (pill shape)
+    *   Sizes: xs, s, m (default), l, xl
+    *   Icon-only sizes: btn-icon-xs, btn-icon-s, btn-icon-m, btn-icon-l, btn-icon-xl (square)
+    *   Modifiers: btn-round (pill shape)
     *
     *   Usage:
     *     <button class="btn btn-primary">Submit</button>
     *     <button class="btn btn-outline-danger btn-s">Delete</button>
-    *     <button class="btn btn-subtle-secondary btn-icon"><svg>...</svg></button>
+    *     <button class="btn btn-subtle-secondary btn-icon-m"><svg>...</svg></button>
     */
 
     .btn {
-        @apply flex gap-2 items-center justify-center border-2 border-transparent rounded-insight-control px-5 py-1.5 text-white transition-colors;
+        @apply flex gap-2 items-center justify-center border-2 border-transparent rounded-insight-control text-white transition-colors;
     }
 
     /* Size modifiers - combine with color variant */
@@ -816,7 +834,14 @@
     .btn-m { @apply text-sm px-5 py-1.5; }
     .btn-l { @apply text-lg px-6 py-2; }
     .btn-xl { @apply text-lg px-8 py-3; }
-    .btn-icon { @apply p-1.5; }                     /* Square button for icons only */
+
+    /* Icon-only button sizes (square padding, no text size needed) */
+    .btn-icon-xs { @apply p-1; }
+    .btn-icon-s { @apply p-1.5; }
+    .btn-icon-m { @apply p-2; }
+    .btn-icon-l { @apply p-2.5; }
+    .btn-icon-xl { @apply p-3; }
+
     .btn-round { @apply rounded-insight-full; }     /* Pill-shaped button */
 
     /* Fill variant (solid background) - default button style */
@@ -845,7 +870,7 @@
         @apply border-0 text-insight-text-link hover:text-insight-text-link-hover underline px-6 py-2;
     }
     .btn-disabled {
-        @apply bg-neutral-300 dark:bg-neutral-600 border-neutral-300 dark:border-neutral-600 text-insight-text-disabled;
+        @apply bg-insight-text-disabled border-insight-text-disabled text-white dark:text-gray-400;
     }
 
     /* Outline variant - transparent bg, colored border, fills on hover */
@@ -871,7 +896,7 @@
         @apply border-white hover:bg-gray-300 active:bg-gray-400 hover:border-gray-300 active:border-gray-400 text-insight-text-headline hover:text-insight-text-inverse;
     }
     .btn-outline-disabled {
-        @apply border-neutral-300 dark:border-neutral-600 text-insight-text-disabled;
+        @apply border-insight-text-disabled text-insight-text-disabled;
     }
 
     /* Subtle variant - no border, light background on hover, minimal visual weight */

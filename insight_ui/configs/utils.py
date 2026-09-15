@@ -95,11 +95,6 @@ class LegalNoticeConfig:
     version: str = field(default="", metadata={"doc": _("Optional version string, for example v1.2.3.")})
 
 
-# Backward-compatible public name retained for consumers released before the
-# component was renamed from copyright_notice to legal_notice.
-CopyrightNoticeConfig = LegalNoticeConfig
-
-
 @dataclass
 class LogoConfig:
     """Configuration for the logo component.
@@ -148,6 +143,8 @@ class BrandMarkConfig:
     Attributes:
         primary_text: First wordmark run.
         secondary_text: Second wordmark run.
+        primary_text_color: CSS class for primary text color.
+        secondary_text_color: CSS class for secondary text color.
         logo: Public logo configuration.
         logo_position: Logo position, either 'start' or 'end'.
         css_class: Optional CSS classes for the root element.
@@ -158,6 +155,8 @@ class BrandMarkConfig:
         BrandMarkConfig(
             primary_text="Insight",
             secondary_text="UI",
+            primary_text_color="text-insight-headline",
+            secondary_text_color="text-insight-secondary",
             logo=LogoConfig(
                 url="img/logo.svg",
                 url_dark="img/logo-dark.svg",
@@ -169,6 +168,12 @@ class BrandMarkConfig:
 
     primary_text: str = field(default="", metadata={"doc": _("First wordmark run.")})
     secondary_text: str = field(default="", metadata={"doc": _("Second wordmark run.")})
+    primary_text_color: str = field(
+        default="text-insight-headline", metadata={"doc": _("CSS class for primary text color.")}
+    )
+    secondary_text_color: str = field(
+        default="text-insight-secondary", metadata={"doc": _("CSS class for secondary text color.")}
+    )
     logo: LogoConfig | None = field(default=None, metadata={"doc": _("Public logo configuration.")})
     logo_position: InlinePosition = field(
         default="start", metadata={"doc": _("Logo position, either 'start' or 'end'.")}

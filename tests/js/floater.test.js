@@ -57,7 +57,7 @@ describe('Floater Component', () => {
 
       const floater = new InsightUI.Floater(trigger, 'tooltip');
 
-      expect(floater.target.classList.contains('absolute')).toBe(true);
+      expect(floater.target.classList.contains('fixed')).toBe(true);
       expect(floater.target.classList.contains('hidden')).toBe(true);
       expect(floater.target.classList.contains('z-50')).toBe(true);
     });
@@ -352,14 +352,14 @@ describe('Floater Component', () => {
 
       const floater = new InsightUI.Floater(trigger, 'tooltip');
 
-      // Tooltip element should exist in DOM
-      const tooltipBefore = parent.querySelector('span[role="tooltip"]');
+      // Tooltip element should exist in DOM (appended to document.body)
+      const tooltipBefore = document.body.querySelector('span[role="tooltip"]');
       expect(tooltipBefore).not.toBeNull();
 
       floater.destroy();
 
       // Tooltip element should be removed from DOM
-      const tooltipAfter = parent.querySelector('span[role="tooltip"]');
+      const tooltipAfter = document.body.querySelector('span[role="tooltip"]');
       expect(tooltipAfter).toBeNull();
     });
 
@@ -374,13 +374,13 @@ describe('Floater Component', () => {
 
       const floater = new InsightUI.Floater(trigger, 'popover');
 
-      // Popover element should exist
-      expect(container.querySelector('#my-popover')).not.toBeNull();
+      // Popover element should exist (moved to document.body)
+      expect(document.body.querySelector('#my-popover')).not.toBeNull();
 
       floater.destroy();
 
       // Popover element should be removed to prevent orphaned floaters
-      expect(container.querySelector('#my-popover')).toBeNull();
+      expect(document.body.querySelector('#my-popover')).toBeNull();
     });
   });
 });

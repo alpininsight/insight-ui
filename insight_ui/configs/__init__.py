@@ -75,6 +75,9 @@ from insight_ui.configs.layout import (
     GridConfig,
     HBoxConfig,
     HeroConfig,
+    ListConfig,
+    ListItemConfig,
+    ModalConfig,
     PageConfig,
     PageHeaderConfig,
     SectionConfig,
@@ -109,7 +112,7 @@ from insight_ui.configs.navigation import (
     UserMenuConfig,
     UserMenuLinkConfig,
 )
-from insight_ui.configs.popup import AlertConfig, ModalConfig
+from insight_ui.configs.popup import AlertConfig
 from insight_ui.configs.types import (
     ALERT_TYPE_VALUES,
     BADGE_TYPE_VALUES,
@@ -171,7 +174,6 @@ from insight_ui.configs.utils import (
     BrandMarkConfig,
     ChartConfig,
     ChartDatasetConfig,
-    CopyrightNoticeConfig,
     CornerRibbonConfig,
     GeoMapConfig,
     GeoMapDatasetConfig,
@@ -228,7 +230,6 @@ __all__ = [
     "CheckboxGroupConfig",
     "CheckboxItemConfig",
     "ColorType",
-    "CopyrightNoticeConfig",
     "CornerPosition",
     "CornerRibbonConfig",
     "DataAttrConfig",
@@ -266,6 +267,8 @@ __all__ = [
     "InlinePosition",
     "InputFieldConfig",
     "LegalNoticeConfig",
+    "ListConfig",
+    "ListItemConfig",
     "LiveContentConfig",
     "LoginScreenConfig",
     "LogoConfig",

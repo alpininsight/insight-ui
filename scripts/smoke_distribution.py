@@ -107,6 +107,17 @@ def check_assets(package: Path, destination: Path) -> None:
             raise RuntimeError(message)
 
 
+def check_base_page() -> None:
+    """Render the complete default page after strict manifest collection."""
+    from django.template.loader import render_to_string  # noqa: PLC0415
+    from insight_ui.config import get_config  # noqa: PLC0415
+
+    rendered = render_to_string("insight_ui/base.html", get_config())
+    if "<!DOCTYPE html>" not in rendered or "<title>Django-Insight-UI</title>" not in rendered:
+        message = "Default base page did not render its document and title."
+        raise RuntimeError(message)
+
+
 def probe(environment: Path) -> None:
     """Run a minimal, local-only Django host inside the artifact's environment."""
     if not sys.flags.isolated or Path(sys.prefix).resolve() != environment.resolve() or sys.prefix == sys.base_prefix:
@@ -124,6 +135,7 @@ def probe(environment: Path) -> None:
     static_root = Path.cwd() / "collected-static"
     settings.configure(
         SECRET_KEY=secrets.token_urlsafe(32),
+        DEBUG=False,
         INSTALLED_APPS=["django.contrib.staticfiles", "insight_ui"],
         ROOT_URLCONF=__name__,
         DATABASES={"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memory:"}},
@@ -133,7 +145,7 @@ def probe(environment: Path) -> None:
         STATICFILES_FINDERS=["django.contrib.staticfiles.finders.AppDirectoriesFinder"],
         STORAGES={
             "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
-            "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+            "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"},
         },
         INSIGHT_UI={"assets": {"cdn_enabled": False, "use_minified": False}, "use_tailwind_cli": False},
         DEFAULT_AUTO_FIELD="django.db.models.BigAutoField",
@@ -142,8 +154,9 @@ def probe(environment: Path) -> None:
     call_command("check", verbosity=0, fail_level="WARNING")
     check_component()
     check_assets(package, static_root)
+    check_base_page()
     check_imports(environment)
-    sys.stdout.write(f"Imports, Django check, button render and collectstatic passed: {package}\n")
+    sys.stdout.write(f"Imports, Django check, button, strict collectstatic and base-page render passed: {package}\n")
 
 
 def smoke_archive(archive: Path, uv: str) -> None:

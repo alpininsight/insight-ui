@@ -8,7 +8,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}{{ INSIGHT_UI.brand.title }}{% endblock %}</title>
+        <title>{% block title %}{{ INSIGHT_UI.brand.title|default:"Django-Insight-UI" }}{% endblock %}</title>
 
         <!-- Favicon -->
         <link rel="manifest" href="{% static INSIGHT_UI.webmanifest %}">

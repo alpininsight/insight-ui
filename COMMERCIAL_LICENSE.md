@@ -11,7 +11,7 @@ If AGPL-3.0 does not meet your needs (for example embedding in proprietary produ
 Full commercial terms and the Order Form template live in the private Enterprise docs (not in this repository):
 
 - Package overview and website wording are maintained with the Enterprise licensing pack
-- Contact for commercial licensing: **kontakt@alpininsight.com**
+- Contact for commercial licensing: **contact@alpininsight.ai**
 
 ## Suitable when you
 
@@ -21,6 +21,6 @@ Full commercial terms and the Order Form template live in the private Enterprise
 
 ## Contact
 
-**Email:** kontakt@alpininsight.com
+**Email:** contact@alpininsight.ai
 
 Alpin Insight Solutions GmbH & Co. KG, Friedrichstraße 171, 10117 Berlin

@@ -45,7 +45,7 @@
         {% if navbar_config.links %}
           <ul class="flex flex-col justify-items-stretch w-full lg:flex-row lg:items-center lg:w-fit">
             {% for link in navbar_config.links %}
-              {% if not link.need_auth or options.user.is_authenticated and not link.staff_only or options.user.is_staff %}
+              {% if not link.need_auth or user.is_authenticated and not link.staff_only or user.is_staff %}
                 <li data-insight-nav>
                   {% if link.request_url %}
                     <a
@@ -95,14 +95,13 @@
                         </div>
                       </div>
                     </div>
-                  {% elif link.modal %}
+                  {% elif link.modal_id %}
                     <button
                       class="insight-nav-link px-4 py-2 text-sm"
-                      data-insight-modal="{{ link.modal.tag_id }}"
+                      data-insight-modal="{{ link.modal_id }}"
                     >
                       {{ link.text }}
                     </button>
-                    {% modal config=link.modal %}
                   {% endif %}
                 </li>
               {% endif %}

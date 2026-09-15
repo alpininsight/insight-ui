@@ -4,11 +4,15 @@
 
 import sys
 import tarfile
+import tomllib
 import zipfile
+from email import policy
+from email.parser import BytesParser
 from pathlib import Path, PurePosixPath
 
 FORBIDDEN = {"core", "documentation", "enterprise", "docs", ".github", "Dockerfile", "docker", "manage.py"}
 DOC_ASSETS = {"insight-ui-demo-container", "insight-ui-demo-sandbox", "insight-ui-mockup-toc"}
+METADATA_PATH_DEPTH = 2
 REQUIRED = {
     "insight_ui/__init__.py",
     "insight_ui/templates/insight_ui/base.html",
@@ -31,15 +35,49 @@ SOURCE_ONLY = {
 }
 
 
+def check_metadata(raw: bytes) -> None:
+    """Require built metadata to match the reviewed public project contract."""
+    project = tomllib.loads((Path(__file__).resolve().parents[1] / "pyproject.toml").read_text())["project"]
+    metadata = BytesParser(policy=policy.default).parsebytes(raw)
+    expected = {
+        "Name": [project["name"]],
+        "Requires-Python": [project["requires-python"]],
+        "Classifier": project["classifiers"],
+        "Project-URL": [f"{name}, {url}" for name, url in project["urls"].items()],
+    }
+    for field, values in expected.items():
+        if sorted(metadata.get_all(field, [])) != sorted(values):
+            message = f"Built metadata differs from pyproject.toml: {field}"
+            raise SystemExit(message)
+
+
 def check_archive(archive: Path) -> None:
     """Fail if app/enterprise files leaked or required public assets are absent."""
     is_wheel = archive.suffix == ".whl"
     if is_wheel:
         with zipfile.ZipFile(archive) as wheel:
-            names = {PurePosixPath(name) for name in wheel.namelist()}
+            members = [PurePosixPath(name) for name in wheel.namelist()]
+            names = set(members)
+            metadata_files = [
+                name
+                for name in members
+                if len(name.parts) == METADATA_PATH_DEPTH
+                and name.parts[0].endswith(".dist-info")
+                and name.name == "METADATA"
+            ]
+            metadata = wheel.read(str(metadata_files[0])) if len(metadata_files) == 1 else None
     else:
         with tarfile.open(archive) as sdist:
             names = {PurePosixPath(*PurePosixPath(name).parts[1:]) for name in sdist.getnames()}
+            metadata_files = [
+                member
+                for member in sdist.getmembers()
+                if member.isfile()
+                and len(PurePosixPath(member.name).parts) == METADATA_PATH_DEPTH
+                and PurePosixPath(member.name).name == "PKG-INFO"
+            ]
+            stream = sdist.extractfile(metadata_files[0]) if len(metadata_files) == 1 else None
+            metadata = stream.read() if stream is not None else None
     leaked = sorted(
         str(name)
         for name in names
@@ -52,6 +90,10 @@ def check_archive(archive: Path) -> None:
     if leaked or missing:
         message = f"{archive.name}: unexpected={leaked}; missing={missing}"
         raise SystemExit(message)
+    if metadata is None:
+        message = f"{archive.name}: require exactly one distribution metadata file"
+        raise SystemExit(message)
+    check_metadata(metadata)
 
 
 if __name__ == "__main__":
