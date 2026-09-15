@@ -28,11 +28,16 @@ export class Sidebar {
         this.mobileBehavior = wrapper.getAttribute("data-mobile-behavior") || "hidden";
         this.isMobileDrawer = wrapper.getAttribute("data-mobile-drawer") === "true";
 
-        // Find toggle button for mobile drawer mode
-        this.toggleBtn = document.querySelector(`[data-sidebar-toggle="${this.side}"]`);
+        // The mobile wrapper owns the pair's interaction lifecycle. Its static
+        // sibling must never bind the same external toggle or acquire a trap.
+        this.toggleBtn = this.isMobileDrawer
+            ? document.querySelector(`[data-sidebar-toggle="${this.side}"]`)
+            : null;
 
         // Find open button for drawer sidebars
-        this.openBtn = document.querySelector(`[data-sidebar-target="${this.side}"]`);
+        this.openBtn = !this.isStatic && !this.isMobileDrawer
+            ? document.querySelector(`[data-sidebar-target="${this.side}"]`)
+            : null;
 
         this.autoClose = this.sidebar?.getAttribute("data-auto-close") === "true";
 
@@ -46,6 +51,10 @@ export class Sidebar {
         this.boundKeyDown = null;
         this.releaseFocusTrap = null;
         this.triggerElement = null;
+        this.state = "closed";
+        this.openFrame = null;
+        this.closeTimer = null;
+        this.boundTransitionEnd = null;
 
         this.init();
 
@@ -61,9 +70,8 @@ export class Sidebar {
     init() {
         if (!this.wrapper || !this.sidebar) return;
 
-        // Skip initialization for static sidebars (they don't need JS behavior)
-        // unless they have mobile drawer behavior
-        if (this.isStatic && this.mobileBehavior === "hidden" && !this.isMobileDrawer) {
+        // Static content stays inert even when it has a separate mobile drawer.
+        if (this.isStatic) {
             return;
         }
 
@@ -92,10 +100,7 @@ export class Sidebar {
 
         // Legacy: support old open button
         if (this.openBtn) {
-            this.boundOpenBtnClick = () => {
-                this.openSidebar();
-                this.openBtn.classList.toggle("hidden", true);
-            };
+            this.boundOpenBtnClick = () => this.openSidebar(this.openBtn);
             this.openBtn.addEventListener('click', this.boundOpenBtnClick);
         }
     }
@@ -112,45 +117,11 @@ export class Sidebar {
      * Used for static sidebars with mobile_behavior="drawer".
      */
     toggleMobileDrawer() {
-        // Find the mobile drawer wrapper
-        const mobileDrawer = document.getElementById(`${this.side}-sidebar-mobile`);
-        if (!mobileDrawer) return;
-
-        const isHidden = mobileDrawer.classList.contains("hidden");
-        if (isHidden) {
-            // Store trigger for focus return
-            this.triggerElement = document.activeElement;
-
-            // Ensure sidebar starts off-screen before becoming visible
-            const aside = mobileDrawer.getElementsByTagName("aside")[0];
-            if (aside) {
-                aside.style.transform = this.getOffscreenTransform();
-            }
-
-            // Open the mobile drawer
-            mobileDrawer.classList.remove("hidden");
-
-            // Animate to visible position in next frame
-            if (aside) {
-                requestAnimationFrame(() => {
-                    aside.style.transform = 'translateX(0)';
-                });
-            }
-
-            this.releaseFocusTrap = InsightUI.utils.trapFocus(mobileDrawer);
-            this.toggleBtn?.setAttribute("aria-expanded", "true");
-
-            // Add Escape key handler
-            this.boundKeyDown = (e) => {
-                if (e.key === 'Escape') {
-                    e.preventDefault();
-                    this.closeMobileDrawer(mobileDrawer);
-                }
-            };
-            document.addEventListener('keydown', this.boundKeyDown);
+        if (!this.isMobileDrawer || !this.wrapper) return;
+        if (this.state === "open") {
+            this.closeSidebar();
         } else {
-            // Close the mobile drawer
-            this.closeMobileDrawer(mobileDrawer);
+            this.openSidebar(this.toggleBtn);
         }
     }
 
@@ -159,36 +130,8 @@ export class Sidebar {
      *
      * @param {HTMLElement} mobileDrawer - The mobile drawer element to close
      */
-    closeMobileDrawer(mobileDrawer) {
-        // Remove Escape key handler
-        if (this.boundKeyDown) {
-            document.removeEventListener('keydown', this.boundKeyDown);
-            this.boundKeyDown = null;
-        }
-
-        const aside = mobileDrawer.getElementsByTagName("aside")[0];
-        if (aside) {
-            aside.style.transform = this.getOffscreenTransform();
-        }
-
-        // Store trigger reference for focus return after transition
-        const triggerToFocus = this.triggerElement;
-
-        aside?.addEventListener('transitionend', () => {
-            mobileDrawer.classList.add("hidden");
-            this.toggleBtn?.setAttribute("aria-expanded", "false");
-            // Release focus trap
-            if (this.releaseFocusTrap) {
-                this.releaseFocusTrap();
-                this.releaseFocusTrap = null;
-            }
-            // Return focus to trigger element
-            if (triggerToFocus && typeof triggerToFocus.focus === 'function') {
-                triggerToFocus.focus();
-            }
-        }, { once: true });
-
-        this.triggerElement = null;
+    closeMobileDrawer(mobileDrawer = this.wrapper) {
+        if (this.isMobileDrawer && mobileDrawer === this.wrapper) this.closeSidebar();
     }
 
     /**
@@ -207,67 +150,111 @@ export class Sidebar {
     /**
      * Opens the sidebar with focus trapping and keyboard support.
      */
-    openSidebar() {
-        // Store trigger for focus return
-        this.triggerElement = document.activeElement;
+    openSidebar(trigger = document.activeElement) {
+        if (!this.wrapper || !this.sidebar || this.isStatic || this.state === "open") return;
+        this.cancelAnimation();
+        // Keep the original invoker if a closing drawer is reopened.
+        this.triggerElement ||= trigger;
+        this.state = "open";
 
         // Ensure sidebar starts off-screen before becoming visible
         this.sidebar.style.transform = this.getOffscreenTransform();
         this.wrapper.classList.remove("hidden");
 
         // Animate to visible position in next frame
-        requestAnimationFrame(() => {
+        this.openFrame = requestAnimationFrame(() => {
+            this.openFrame = null;
             this.sidebar.style.transform = 'translateX(0)';
         });
 
-        this.releaseFocusTrap = InsightUI.utils.trapFocus(this.wrapper);
+        this.releaseFocusTrap ||= InsightUI.utils.trapFocus(this.wrapper);
+        this.toggleBtn?.setAttribute("aria-expanded", "true");
+        this.openBtn?.setAttribute("aria-expanded", "true");
+        this.openBtn?.classList.add("hidden");
 
         // Add Escape key handler
-        this.boundKeyDown = (e) => {
-            if (e.key === 'Escape') {
-                e.preventDefault();
-                this.closeSidebar();
-            }
-        };
-        document.addEventListener('keydown', this.boundKeyDown);
+        if (!this.boundKeyDown) {
+            this.boundKeyDown = (e) => {
+                if (e.key === 'Escape') {
+                    e.preventDefault();
+                    this.closeSidebar();
+                }
+            };
+            document.addEventListener('keydown', this.boundKeyDown);
+        }
     }
 
     /**
      * Closes the sidebar with animation.
      */
     closeSidebar() {
-        // Check if this is a mobile drawer
-        if (this.isMobileDrawer) {
-            this.closeMobileDrawer(this.wrapper);
+        if (!this.wrapper || !this.sidebar || this.isStatic || this.state !== "open") return;
+        this.cancelAnimation();
+        this.state = "closing";
+        this.sidebar.style.transform = this.getOffscreenTransform();
+        this.toggleBtn?.setAttribute("aria-expanded", "false");
+        this.openBtn?.setAttribute("aria-expanded", "false");
+
+        const duration = this.getTransitionDuration();
+        if (!duration) {
+            this.finishClose();
             return;
         }
+        this.boundTransitionEnd = (event) => {
+            if (event.target === this.sidebar && event.propertyName === "transform") {
+                this.finishClose();
+            }
+        };
+        this.sidebar.addEventListener('transitionend', this.boundTransitionEnd);
+        // Interrupted/absent transitions may never dispatch transitionend.
+        this.closeTimer = setTimeout(() => this.finishClose(), duration + 50);
+    }
 
-        // Remove Escape key handler
+    /** Returns the transform transition's maximum duration including its delay. */
+    getTransitionDuration() {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return 0;
+        const style = getComputedStyle(this.sidebar);
+        const milliseconds = (value) => (parseFloat(value) || 0) * (value.trim().endsWith('ms') ? 1 : 1000);
+        const durations = style.transitionDuration.split(',').map(milliseconds);
+        const delays = style.transitionDelay.split(',').map(milliseconds);
+        return Math.max(0, ...style.transitionProperty.split(',').map((property, index) => {
+            if (!["all", "transform"].includes(property.trim())) return 0;
+            return durations[index % durations.length] + delays[index % delays.length];
+        }));
+    }
+
+    /** Cancel pending work before reversing direction or removing the element. */
+    cancelAnimation() {
+        if (this.openFrame !== null) cancelAnimationFrame(this.openFrame);
+        if (this.closeTimer !== null) clearTimeout(this.closeTimer);
+        if (this.boundTransitionEnd) {
+            this.sidebar.removeEventListener('transitionend', this.boundTransitionEnd);
+        }
+        this.openFrame = null;
+        this.closeTimer = null;
+        this.boundTransitionEnd = null;
+    }
+
+    /** Finish closing exactly once, including focus and document-level cleanup. */
+    finishClose() {
+        this.cancelAnimation();
+        this.state = "closed";
+        this.wrapper.classList.add("hidden");
+        this.sidebar.style.transform = this.getOffscreenTransform();
+        this.toggleBtn?.setAttribute("aria-expanded", "false");
+        this.openBtn?.setAttribute("aria-expanded", "false");
+        this.openBtn?.classList.remove("hidden");
         if (this.boundKeyDown) {
             document.removeEventListener('keydown', this.boundKeyDown);
             this.boundKeyDown = null;
         }
-
-        this.sidebar.style.transform = this.getOffscreenTransform();
-
-        // Store trigger reference for focus return after transition
+        this.releaseFocusTrap?.();
+        this.releaseFocusTrap = null;
         const triggerToFocus = this.triggerElement;
-
-        this.sidebar.addEventListener('transitionend', () => {
-            this.wrapper.classList.add("hidden");
-            if (this.openBtn) this.openBtn.classList.toggle("hidden", false);
-            // Release focus trap
-            if (this.releaseFocusTrap) {
-                this.releaseFocusTrap();
-                this.releaseFocusTrap = null;
-            }
-            // Return focus to trigger element
-            if (triggerToFocus && typeof triggerToFocus.focus === 'function') {
-                triggerToFocus.focus();
-            }
-        }, { once: true });
-
         this.triggerElement = null;
+        if (triggerToFocus?.isConnected && typeof triggerToFocus.focus === 'function') {
+            triggerToFocus.focus();
+        }
     }
 
     /**
@@ -308,7 +295,10 @@ export class Sidebar {
      * Call this before removing the element from DOM.
      */
     destroy() {
+        if (!this.wrapper) return;
         debugLog("Destroy sidebar: ", this.sidebar, this.side);
+        if (!this.isStatic && this.sidebar) this.finishClose();
+        else this.cancelAnimation();
 
         // Remove close button handlers
         this.boundCloseButtons.forEach(({ element, handler }) => {
