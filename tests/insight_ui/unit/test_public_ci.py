@@ -15,15 +15,57 @@ ARTIFACT_RETENTION_DAYS = 7
 pytestmark = pytest.mark.skipif(not (ROOT / ".git").exists(), reason="Workflow policy applies to source checkouts.")
 
 
-def _workflows() -> dict[str, dict]:
+def _workflows(directory: Path = WORKFLOWS) -> dict[str, dict]:
     """Read safe YAML and normalize the YAML 1.1 interpretation of 'on'."""
     workflows = {}
-    for path in WORKFLOWS.glob("*.yml"):
+    for path in sorted((*directory.glob("*.yml"), *directory.glob("*.yaml"))):
         workflow = yaml.safe_load(path.read_text())
         if True in workflow:
             workflow["on"] = workflow.pop(True)
         workflows[path.name] = workflow
     return workflows
+
+
+def _assert_public_workflows(directory: Path) -> None:
+    """Publication-only files must obey the same boundary as PR workflows."""
+    for name, workflow in _workflows(directory).items():
+        source = (directory / name).read_text()
+        assert ".github-private/" not in source, f"{name}: private workflows cannot be called from a public repo"
+        assert "secrets." not in source, f"{name}: keep publication credentials private"
+        assert "secrets:" not in source, f"{name}: keep publication credentials private"
+        assert "pull_request_target" not in workflow["on"], f"{name}: do not run contributor code with write access"
+
+
+def test_all_workflows_have_no_private_access() -> None:
+    """Check every workflow even when GitHub would only parse it after merge."""
+    _assert_public_workflows(WORKFLOWS)
+
+
+@pytest.mark.parametrize("event", ["push", "workflow_dispatch", "schedule", "workflow_call"])
+@pytest.mark.parametrize("suffix", ["yml", "yaml"])
+def test_private_workflow_guard_covers_non_pr_triggers(tmp_path: Path, event: str, suffix: str) -> None:
+    """Reproduce the main-only startup failure that used to escape green PR CI."""
+    path = tmp_path / f"release.{suffix}"
+    path.write_text(
+        yaml.safe_dump(
+            {
+                "on": {event: {}},
+                "jobs": {
+                    "release": {
+                        "uses": "alpininsight/.github-private/.github/workflows/reusable-release.yml@main",
+                    }
+                },
+            }
+        )
+    )
+    with pytest.raises(AssertionError, match="private workflows cannot be called"):
+        _assert_public_workflows(tmp_path)
+
+
+def test_private_workflow_guard_accepts_public_builds(tmp_path: Path) -> None:
+    """Public-only push and manual checks remain supported."""
+    (tmp_path / "build.yml").write_text('"on": {push: {}, workflow_dispatch: {}}\njobs: {}\n')
+    _assert_public_workflows(tmp_path)
 
 
 def test_pull_request_workflows_have_no_private_access() -> None:
@@ -126,7 +168,7 @@ def test_declared_django_series_are_exercised_by_ci() -> None:
 def test_python_publication_has_only_the_central_owner() -> None:
     """The retired token publisher must not compete with the approval-gated one."""
     assert not (WORKFLOWS / "main-publish-pypi.yml").exists()
-    for path in WORKFLOWS.glob("*.yml"):
+    for path in (*WORKFLOWS.glob("*.yml"), *WORKFLOWS.glob("*.yaml")):
         source = path.read_text()
         assert "PYPI_API_TOKEN" not in source
         assert "pypa/gh-action-pypi-publish@" not in source
