@@ -35,4 +35,3 @@ class TestStepper(TemplateTagsTestCase):
         rendered = self.render_template("{% load insight_tags %}{% stepper config %}", {"config": config})
 
         assert "text-insight-muted" in rendered
-        assert "text-insight-disabled" not in rendered

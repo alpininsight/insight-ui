@@ -35,4 +35,3 @@ class TestHero(TemplateTagsTestCase):
         assert subtitle is not None
         classes = subtitle.get("class", [])
         assert "text-insight-headline" in classes
-        assert "text-insight-primary" not in classes

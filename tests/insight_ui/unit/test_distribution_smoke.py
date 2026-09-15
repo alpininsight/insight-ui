@@ -3,6 +3,7 @@
 """Test the distribution smoke gate without network resolution or package builds."""
 
 import subprocess
+import sys
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock
@@ -146,6 +147,7 @@ def test_import_origins_include_submodules(tmp_path: Path, monkeypatch: pytest.M
         smoke.check_imports(venv)
 
 
+@pytest.mark.skipif(sys.platform == "win32", reason="Windows requires admin for symlinks")
 def test_origins_resolve_symlinks(tmp_path: Path) -> None:
     """Symlinks to source files cannot masquerade as installed assets or modules."""
     outside = tmp_path / "checkout.py"

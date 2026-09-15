@@ -57,6 +57,7 @@ dev = [
     "django-stubs==6.1.1",
     "ruff>=0.16.1",
     "pre-commit>=4.6.1",
+    "whitenoise>=6.12.0",
     "django-tailwind-cli>=4.6.2",
 ]
 pytest = [
@@ -93,6 +94,26 @@ source = "vcs"
 # Match tags like "v1.2.3" and write a version file for runtime
 tag-pattern = "v(?P<version>.*)"
 version-file = "insight_ui/_version.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["insight_ui"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/insight_ui",
+    "/tests",
+    "/scripts",
+    "/package.json",
+    "/vitest.config.js",
+    "/pyproject.toml",
+    "/pytest.ini",
+    "/README.md",
+    "/LICENSE",
+    "/NOTICE",
+    "/REUSE.toml",
+    "/LICENSES",
+]
+exclude = ["__pycache__", "*.pyc"]
 
 
 [tool.mypy]
@@ -270,14 +291,3 @@ mark-parentheses  = false
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
-
-[tool.hatch.build.targets.wheel]
-packages = ["insight_ui"]
-
-[tool.hatch.build.targets.sdist]
-include = [
-    "/insight_ui", "/tests", "/scripts", "/devtools", "/package.json", "/package-lock.json",
-    "/pyproject.toml", "/pytest.ini", "/vitest.config.js", "/README.md", "/LICENSE",
-    "/NOTICE", "/REUSE.toml", "/LICENSES",
-]
-exclude = ["*.min.js", "*.min.css", "__pycache__", "*.pyc"]
