@@ -95,6 +95,26 @@ source = "vcs"
 tag-pattern = "v(?P<version>.*)"
 version-file = "insight_ui/_version.py"
 
+[tool.hatch.build.targets.wheel]
+packages = ["insight_ui"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/insight_ui",
+    "/tests",
+    "/scripts",
+    "/package.json",
+    "/vitest.config.js",
+    "/pyproject.toml",
+    "/pytest.ini",
+    "/README.md",
+    "/LICENSE",
+    "/NOTICE",
+    "/REUSE.toml",
+    "/LICENSES",
+]
+exclude = ["__pycache__", "*.pyc"]
+
 
 [tool.mypy]
 python_version = "3.12"
@@ -271,23 +291,3 @@ mark-parentheses  = false
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
-
-[tool.hatch.build.targets.wheel]
-packages = ["insight_ui"]
-
-[tool.hatch.build.targets.sdist]
-include = [
-    "/insight_ui",
-    "/tests",
-    "/scripts",
-    "/package.json",
-    "/vitest.config.js",
-    "/pyproject.toml",
-    "/pytest.ini",
-    "/README.md",
-    "/LICENSE",
-    "/NOTICE",
-    "/REUSE.toml",
-    "/LICENSES",
-]
-exclude = ["__pycache__", "*.pyc"]
