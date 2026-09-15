@@ -37,7 +37,7 @@ A persistent navigation sidebar is not automatically a modal dialog.
 
 Check source and rendered output rather than relying on descriptive comments:
 
-- The [modal template](../insight_ui/templates/insight_ui/components/modal.html)
+- The [modal template](../insight_ui/templates/insight_ui/components/layout/modal.html)
   declares a dialog with `aria-modal` and a title reference. Supply a unique
   `tag_id` and meaningful title; these attributes do not prove background isolation.
 - The [modal](../insight_ui/static/insight_ui/js/insight-ui-modal.js) and

@@ -254,7 +254,7 @@ describe('Modal Component', () => {
       modal.destroy();
 
       expect(modal.trigger).toBeNull();
-      expect(modal.modal).toBeNull();
+      expect(modal.targetId).toBeNull();
     });
   });
 

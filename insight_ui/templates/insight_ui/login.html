@@ -20,8 +20,15 @@
                       - alt_login_url: str for alternative login (e.g., SSO)
                       - alt_login_title: str for alternative login button text
                       - sign_up_url: str for registration link
+    navbar_config   - NavbarConfig instance for page navbar
     footer_config   - FooterConfig instance for page footer
 {% endcomment %}
+
+{% block navbar %}
+  {% if navbar_config %}
+    {% navbar config=navbar_config %}
+  {% endif %}
+{% endblock %}
 
 {% block content %}
   <div class="flex flex-1 justify-center items-center py-8 bg-linear-to-br from-insight-primary/25 via-transparent to-insight-secondary/25 dark:from-insight-primary/10 dark:to-insight-secondary/10">
@@ -32,7 +39,7 @@
         </div>
       {% endif %}
       {% if login_config.logo %}
-        <div class="flex {% if login_config.logo.position == 'start' %}justify-start{% elif login_config.logo.position == 'end' %}justify-end{% else %}justify-center{% endif %}">
+        <div class="flex {% if login_config.logo.position == 'start' %}justify-start{% elif login_config.logo.position == 'end' %}justify-end{% else %}justify-center{% endif %} pb-4">
           {% logo config=login_config.logo %}
         </div>
       {% endif %}
@@ -112,5 +119,7 @@
 {% endblock %}
 
 {% block footer %}
-  {% footer config=footer_config %}
-{% endblock footer %}
+  {% if footer_config %}
+    {% footer config=footer_config %}
+  {% endif %}
+{% endblock %}

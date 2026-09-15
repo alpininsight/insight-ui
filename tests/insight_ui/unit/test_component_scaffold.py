@@ -186,6 +186,7 @@ def test_cross_checkout_import_mismatch_is_rejected(source_checkout: Path) -> No
     assert source_snapshot(source_checkout) == before
 
 
+@pytest.mark.skipif(sys.platform == "win32", reason="Symlinks require admin privileges on Windows")
 def test_symlink_target_is_rejected(source_checkout: Path, tmp_path: Path) -> None:
     """A new template must not overwrite a file outside the repository."""
     outside = tmp_path / "outside.html"
@@ -233,7 +234,7 @@ def test_js_name_collision_never_modifies_sources(source_checkout: Path, name: s
     assert source_snapshot(source_checkout) == before
 
 
-@pytest.mark.parametrize("compose", ["modal,button", "navbar,button"])
+@pytest.mark.parametrize("compose", ["card,button", "navbar,button"])
 def test_config_import_cycle_never_modifies_sources(source_checkout: Path, compose: str) -> None:
     """Both direct and transitive Config cycles are rejected before registration."""
     before = source_snapshot(source_checkout)
