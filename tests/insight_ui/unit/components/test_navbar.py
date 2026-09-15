@@ -82,6 +82,31 @@ class TestNavbar(TemplateTagsTestCase):
         # State class: menu must be hidden initially (JS toggles this)
         assert "hidden" in menu.get("class", [])
 
+    def test_navbar_language_form_preserves_return_url(self) -> None:
+        """The nested language form receives the host's canonical GET URL."""
+        return_url = '/cases/42/?queue=mine&page=2&q="quoted"#conversation'
+        rendered = self.render_template(
+            "{% load insight_tags %}{% navbar config=nav_config %}",
+            context={"nav_config": NavbarConfig(show_language_selector=True), "redirect_to": return_url},
+        )
+        next_input = BeautifulSoup(rendered, "html.parser").select_one('form input[name="next"]')
+
+        assert next_input is not None
+        assert next_input["value"] == return_url
+        assert "&amp;page=2" in rendered
+        assert "&quot;quoted&quot;" in rendered
+
+    def test_navbar_language_form_without_return_url_keeps_empty_default(self) -> None:
+        """Hosts without an explicit return URL retain Django's fallback behavior."""
+        rendered = self.render_template(
+            "{% load insight_tags %}{% navbar config=nav_config %}",
+            context={"nav_config": NavbarConfig(show_language_selector=True)},
+        )
+        next_input = BeautifulSoup(rendered, "html.parser").select_one('form input[name="next"]')
+
+        assert next_input is not None
+        assert next_input["value"] == ""
+
     def test_navbar_passes_documentation_search_index_url(self) -> None:
         """Navbar documentation search keeps the host-owned static URL."""
         nav_config = NavbarConfig(
