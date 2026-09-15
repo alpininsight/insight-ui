@@ -1,4 +1,4 @@
-<div{% if wrapper_class %} class="{{ wrapper_class }}"{% endif %}>
+<div{% if element_id %} id="{{ element_id }}"{% endif %}{% if wrapper_class %} class="{{ wrapper_class }}"{% endif %}>
   <button
     type="button"
     class="flex gap-2 items-center font-medium text-insight-headline transition-colors cursor-pointer hover:text-insight-primary"

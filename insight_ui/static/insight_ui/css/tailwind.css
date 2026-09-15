@@ -23,8 +23,6 @@
     --color-gray-800: oklch(27.8% 0.033 256.848);
     --color-gray-900: oklch(21% 0.034 264.665);
     --color-neutral-100: oklch(97% 0 none);
-    --color-neutral-300: oklch(87% 0 none);
-    --color-neutral-600: oklch(43.9% 0 none);
     --color-neutral-900: oklch(20.5% 0 none);
     --color-black: #000;
     --color-white: #fff;
@@ -204,8 +202,8 @@
     --color-insight-text-body-dark: #d3d7de;
     --color-insight-text-muted: #687386;
     --color-insight-text-muted-dark: #A5B0C0;
-    --color-insight-text-disabled: #d1d5dc;
-    --color-insight-text-disabled-dark: #364153;
+    --color-insight-text-disabled: #c5cad3;
+    --color-insight-text-disabled-dark: #4e525a;
     --color-insight-text-inverse: #F5F8FC;
     --color-insight-text-inverse-dark: #1C1C1E;
     --color-insight-text-link: #256CD8;
@@ -513,9 +511,6 @@
   }
   .z-\[60\] {
     z-index: 60;
-  }
-  .order-2 {
-    order: 2;
   }
   .container {
     width: 100%;
@@ -849,9 +844,6 @@
   }
   .w-96 {
     width: calc(var(--spacing) * 96);
-  }
-  .w-156 {
-    width: calc(var(--spacing) * 156);
   }
   .w-400 {
     width: calc(var(--spacing) * 400);
@@ -1503,6 +1495,9 @@
   .object-cover {
     object-fit: cover;
   }
+  .p-0 {
+    padding: 0px;
+  }
   .p-1 {
     padding: var(--spacing);
   }
@@ -1574,6 +1569,9 @@
   }
   .ps-4 {
     padding-inline-start: calc(var(--spacing) * 4);
+  }
+  .ps-6 {
+    padding-inline-start: calc(var(--spacing) * 6);
   }
   .ps-10 {
     padding-inline-start: calc(var(--spacing) * 10);
@@ -1840,6 +1838,11 @@
   }
   .transition {
     transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to, opacity, box-shadow, transform, translate, scale, rotate, filter, -webkit-backdrop-filter, backdrop-filter, display, content-visibility, overlay, pointer-events;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+  }
+  .transition-\[top\] {
+    transition-property: top;
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
     transition-duration: var(--tw-duration, var(--default-transition-duration));
   }
@@ -2848,8 +2851,6 @@
     border-style: var(--tw-border-style);
     border-width: 2px;
     border-color: transparent;
-    padding-inline: calc(var(--spacing) * 5);
-    padding-block: calc(var(--spacing) * 1.5);
     color: var(--color-white);
     transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
@@ -2885,8 +2886,20 @@
     font-size: var(--text-lg);
     line-height: var(--tw-leading, var(--text-lg--line-height));
   }
-  .btn-icon {
+  .btn-icon-xs {
+    padding: var(--spacing);
+  }
+  .btn-icon-s {
     padding: calc(var(--spacing) * 1.5);
+  }
+  .btn-icon-m {
+    padding: calc(var(--spacing) * 2);
+  }
+  .btn-icon-l {
+    padding: calc(var(--spacing) * 2.5);
+  }
+  .btn-icon-xl {
+    padding: calc(var(--spacing) * 3);
   }
   .btn-round {
     border-radius: var(--radius-insight-full);
@@ -3057,14 +3070,11 @@
     }
   }
   .btn-disabled {
-    border-color: var(--color-neutral-300);
-    background-color: var(--color-neutral-300);
-    color: var(--color-insight-text-disabled);
+    border-color: var(--color-insight-text-disabled);
+    background-color: var(--color-insight-text-disabled);
+    color: var(--color-white);
     &:where([data-theme=dark], [data-theme=dark] *) {
-      border-color: var(--color-neutral-600);
-    }
-    &:where([data-theme=dark], [data-theme=dark] *) {
-      background-color: var(--color-neutral-600);
+      color: var(--color-gray-400);
     }
   }
   .btn-outline-primary {
@@ -3243,11 +3253,8 @@
     }
   }
   .btn-outline-disabled {
-    border-color: var(--color-neutral-300);
+    border-color: var(--color-insight-text-disabled);
     color: var(--color-insight-text-disabled);
-    &:where([data-theme=dark], [data-theme=dark] *) {
-      border-color: var(--color-neutral-600);
-    }
   }
   .btn-subtle-primary {
     color: var(--color-insight-primary-foreground);

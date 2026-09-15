@@ -1,0 +1,3 @@
+# Ensure license files keep LF line endings on all platforms
+LICENSE text eol=lf
+LICENSES/*.txt text eol=lf

@@ -66,6 +66,16 @@ Block tags (require closing tag):
     {% tabs config=tabs_config %}{% endtabs %}
         Tabbed interface using a TabsConfig object (HTMX mode).
 
+    {% modal id="my-modal" title="Dialog Title" width=32 %}...{% endmodal %}
+        Modal dialog container with customizable content.
+
+    {% list gap="m" %}
+        {% listitem %}First item{% endlistitem %}
+        {% listitem %}Second item{% endlistitem %}
+    {% endlist %}
+        Semantic list container (<ul> or <ol>) with flexible layout.
+        Use `horizontal` flag for horizontal layout: {% list horizontal %}...{% endlist %}
+
 Simple tags:
 
     {% spacer size="m" %}
@@ -76,11 +86,11 @@ Simple tags:
 
 Parameter Reference
 -------------------
-gap : xs | s | m | l | xl
-    Space between children. Default: "m"
+gap : none | xs | s | m | l | xl
+    Space between children. Default: "m". Use "none" for zero gap.
 
-padding : xs | s | m | l | xl
-    Inner padding. Default: "m" for page, optional for hbox/vbox
+padding : none | xs | s | m | l | xl
+    Inner padding. Default: "m" for page, optional for hbox/vbox. Use "none" for zero padding.
 
 height : auto | full | peek
     Page height behavior (page only). Default: "auto"
@@ -234,6 +244,7 @@ VALID_LINE_STYLE: frozenset[str] = frozenset({"solid", "dashed", "dotted"})
 # Class mappings (classes are defined in input.css or are tailwind classes)
 # Note: l and xl are responsive - smaller on mobile, full size from md breakpoint
 GAP_CLASSES: dict[str, str] = {
+    "none": "gap-0",
     "xs": "gap-insight-xs",
     "s": "gap-insight-s",
     "m": "gap-insight-m",
@@ -241,6 +252,7 @@ GAP_CLASSES: dict[str, str] = {
     "xl": "gap-insight-l md:gap-insight-xl",
 }
 PADDING_CLASSES: dict[str, str] = {
+    "none": "p-0",
     "xs": "p-insight-xs",
     "s": "p-insight-s",
     "m": "p-insight-m",
@@ -324,7 +336,7 @@ VALID_COLS: frozenset[int] = frozenset({1, 2, 3, 4, 5, 6})
 SIDEBAR_WIDTH_CLASSES: dict[str, str] = {
     "narrow": "w-56",  # 14rem (224px)
     "normal": "w-72",  # 18rem (288px) - default
-    "wide": "w-156",  # 24rem (384px)
+    "wide": "w-96",  # 24rem (384px)
 }
 
 
@@ -355,6 +367,42 @@ def _validate(value: str, valid_values: frozenset[str], param_name: str, tag_nam
         msg = f"Invalid {param_name} '{value}' in {{% {tag_name} %}}. Must be one of: {valid_str}"
         raise ValueError(msg)
     return value
+
+
+def _validate_unknown_params(
+    kwargs: dict[str, object],
+    valid_params: frozenset[str],
+    tag_name: str,
+) -> None:
+    """
+    Validate that no unknown parameters were passed to a layout tag.
+
+    Args:
+        kwargs: The resolved keyword arguments.
+        valid_params: Set of valid parameter names for this tag.
+        tag_name: Name of the template tag (for error message).
+
+    Raises:
+        ValueError: If unknown parameters are found, with suggestions for typos.
+
+    """
+    from difflib import get_close_matches  # noqa: PLC0415
+
+    unknown = set(kwargs) - valid_params
+    if not unknown:
+        return
+
+    unknown_param = next(iter(unknown))
+    suggestions = get_close_matches(unknown_param, list(valid_params), n=3, cutoff=0.5)
+
+    if suggestions:
+        suggestion_text = ", ".join(f"'{s}'" for s in suggestions)
+        msg = f"Unknown parameter '{unknown_param}' in {{% {tag_name} %}}. Did you mean: {suggestion_text}?"
+    else:
+        valid_str = ", ".join(sorted(valid_params))
+        msg = f"Unknown parameter '{unknown_param}' in {{% {tag_name} %}}. Valid parameters: {valid_str}"
+
+    raise ValueError(msg)
 
 
 def _parse_kwargs(kwargs: dict[str, FilterExpression]) -> dict[str, object]:
@@ -391,7 +439,21 @@ def _make_block_tag(node_class: type[LayoutNode]) -> callable:
         tag_name = bits[0]
         remaining_bits = bits[1:]
 
-        kwargs = token_kwargs(remaining_bits, parser) if remaining_bits else {}
+        # Separate boolean flags from key=value pairs BEFORE calling token_kwargs
+        flags = []
+        kwarg_bits = []
+        for bit in remaining_bits:
+            if "=" not in bit and not bit.startswith(('"', "'")):
+                flags.append(bit)
+            else:
+                kwarg_bits.append(bit)
+
+        kwargs = token_kwargs(kwarg_bits, parser) if kwarg_bits else {}
+
+        # Add boolean flags
+        for flag in flags:
+            kwargs[flag] = True
+
         nodelist = parser.parse((f"end{tag_name}",))
         parser.delete_first_token()
 
@@ -416,8 +478,12 @@ class LayoutNode(Node):
         nodelist: The template nodes contained within the block.
         tag_name: The name of the tag (for error messages).
         kwargs: Parsed keyword arguments from the template tag.
+        valid_params: Frozenset of valid parameter names for this tag.
 
     """
+
+    # Override in subclasses with the set of valid parameters
+    valid_params: frozenset[str] = frozenset({"id", "class"})
 
     def __init__(self, nodelist: NodeList, *, tag_name: str = "layout", **kwargs: object) -> None:
         """Initialize the layout node with content and parameters."""
@@ -442,6 +508,10 @@ class LayoutNode(Node):
     def render(self, context: Context) -> str:
         """Render the layout node to HTML."""
         resolved = self.resolve_kwargs(context)
+
+        # Validate no unknown parameters
+        _validate_unknown_params(resolved, self.valid_params, self.tag_name)
+
         classes = self.build_classes(resolved)
 
         # Append user-provided extra classes
@@ -452,7 +522,11 @@ class LayoutNode(Node):
         content = self.nodelist.render(context)
         class_str = " ".join(classes)
 
-        return f'<div class="{class_str}">{content}</div>'
+        # Optional id attribute
+        element_id = resolved.get("id", "")
+        id_attr = f' id="{element_id}"' if element_id else ""
+
+        return f'<div{id_attr} class="{class_str}">{content}</div>'
 
 
 # =============================================================================
@@ -478,6 +552,20 @@ class FlexNode(LayoutNode):
 
     flex_direction: str = "row"  # Override in subclass
     responsive_stack: bool = False  # If True, stack on mobile (flex-col md:flex-row)
+    valid_params: frozenset[str] = frozenset(
+        {
+            "id",
+            "gap",
+            "padding",
+            "h_align",
+            "v_align",
+            "max_width",
+            "full_height",
+            "inline",
+            "wrap",
+            "class",
+        }
+    )
 
     def build_classes(self, kwargs: dict[str, object]) -> list[str]:
         """Build flex container CSS classes with gap, padding, max_width, h_align, and v_align."""
@@ -503,12 +591,12 @@ class FlexNode(LayoutNode):
         # Optional padding
         padding = kwargs.get("padding")
         if padding:
-            _validate(str(padding), VALID_SPACING, "padding", self.tag_name)
+            _validate(str(padding), VALID_SPACING_WITH_NONE, "padding", self.tag_name)
             classes.append(PADDING_CLASSES[str(padding)])
 
         gap = kwargs.get("gap", "m")
         if gap:
-            _validate(str(gap), VALID_SPACING, "gap", self.tag_name)
+            _validate(str(gap), VALID_SPACING_WITH_NONE, "gap", self.tag_name)
             classes.append(GAP_CLASSES[str(gap)])
 
         h_align = str(kwargs.get("h_align", "stretch" if self.flex_direction == "col" else "start"))
@@ -561,6 +649,8 @@ class SectionNode(LayoutNode):
 
     """
 
+    valid_params: frozenset[str] = frozenset({"id", "gap", "aria_label", "aria_labelledby", "class"})
+
     def build_classes(self, kwargs: dict[str, object]) -> list[str]:
         """Build section container CSS classes."""
         classes = ["flex", "flex-col"]
@@ -571,7 +661,7 @@ class SectionNode(LayoutNode):
 
         # Gap between children
         gap = str(kwargs.get("gap", "m"))
-        _validate(gap, VALID_SPACING, "gap", self.tag_name)
+        _validate(gap, VALID_SPACING_WITH_NONE, "gap", self.tag_name)
         classes.append(GAP_CLASSES[gap])
 
         return classes
@@ -579,6 +669,10 @@ class SectionNode(LayoutNode):
     def render(self, context: Context) -> str:
         """Render the section element with semantic HTML."""
         resolved = self.resolve_kwargs(context)
+
+        # Validate no unknown parameters
+        _validate_unknown_params(resolved, self.valid_params, self.tag_name)
+
         classes = self.build_classes(resolved)
 
         # Append user-provided extra classes
@@ -611,12 +705,14 @@ class SectionNode(LayoutNode):
 class PageNode(LayoutNode):
     """Page container with full width, consistent padding, and optional height control."""
 
+    valid_params: frozenset[str] = frozenset({"id", "padding", "height", "class"})
+
     def build_classes(self, kwargs: dict[str, object]) -> list[str]:
         """Build page container CSS classes."""
         classes = ["w-full"]
 
         padding = str(kwargs.get("padding", "m"))
-        _validate(padding, VALID_SPACING, "padding", self.tag_name)
+        _validate(padding, VALID_SPACING_WITH_NONE, "padding", self.tag_name)
         classes.append(PADDING_CLASSES[padding])
 
         height = str(kwargs.get("height", "auto"))
@@ -663,6 +759,8 @@ class GridNode(LayoutNode):
     adapts correctly regardless of where it's placed (sidebar, modal, card, etc.).
     """
 
+    valid_params: frozenset[str] = frozenset({"id", "cols", "gap", "min", "fixed", "class"})
+
     def build_classes(self, kwargs: dict[str, object]) -> list[str]:
         """Build grid container CSS classes."""
         classes = ["grid", "w-full"]
@@ -670,7 +768,7 @@ class GridNode(LayoutNode):
         # Gap
         gap = kwargs.get("gap", "m")
         if gap:
-            _validate(str(gap), VALID_SPACING, "gap", self.tag_name)
+            _validate(str(gap), VALID_SPACING_WITH_NONE, "gap", self.tag_name)
             classes.append(GAP_CLASSES[str(gap)])
 
         return classes
@@ -678,6 +776,10 @@ class GridNode(LayoutNode):
     def render(self, context: Context) -> str:
         """Render the grid node to HTML."""
         resolved = self.resolve_kwargs(context)
+
+        # Validate no unknown parameters
+        _validate_unknown_params(resolved, self.valid_params, self.tag_name)
+
         classes = self.build_classes(resolved)
 
         cols = resolved.get("cols")
@@ -709,6 +811,10 @@ class GridNode(LayoutNode):
         # Get user-provided extra classes
         extra_classes = str(resolved.get("class", "")).strip()
 
+        # Optional id attribute
+        element_id = resolved.get("id", "")
+        id_attr = f' id="{element_id}"' if element_id else ""
+
         content = self.nodelist.render(context)
 
         # Wrap in container element for container query support
@@ -724,7 +830,7 @@ class GridNode(LayoutNode):
                 grid_html = f'<div class="{grid_class_str}" style="{style}">{content}</div>'
             else:
                 grid_html = f'<div class="{grid_class_str}">{content}</div>'
-            return f'<div class="{wrapper_classes}">{grid_html}</div>'
+            return f'<div{id_attr} class="{wrapper_classes}">{grid_html}</div>'
 
         # No wrapper needed - apply extra classes directly to grid
         if extra_classes:
@@ -732,8 +838,8 @@ class GridNode(LayoutNode):
         class_str = " ".join(classes)
 
         if style:
-            return f'<div class="{class_str}" style="{style}">{content}</div>'
-        return f'<div class="{class_str}">{content}</div>'
+            return f'<div{id_attr} class="{class_str}" style="{style}">{content}</div>'
+        return f'<div{id_attr} class="{class_str}">{content}</div>'
 
 
 class SurfaceNode(LayoutNode):
@@ -773,6 +879,8 @@ class SurfaceNode(LayoutNode):
 
     """
 
+    valid_params: frozenset[str] = frozenset({"variant", "padding", "radius", "id", "href", "external", "class"})
+
     def build_classes(self, kwargs: dict[str, object], is_link: bool = False) -> list[str]:
         """Build surface container CSS classes."""
         variant = str(kwargs.get("variant", "surface"))
@@ -781,7 +889,7 @@ class SurfaceNode(LayoutNode):
 
         # Padding
         padding = str(kwargs.get("padding", "m"))
-        _validate(padding, VALID_SPACING, "padding", self.tag_name)
+        _validate(padding, VALID_SPACING_WITH_NONE, "padding", self.tag_name)
         classes.append(PADDING_CLASSES[padding])
 
         # Border radius (only add if explicitly set, otherwise use variant's default)
@@ -800,6 +908,9 @@ class SurfaceNode(LayoutNode):
     def render(self, context: Context) -> str:
         """Render the surface as either <div> or <a> based on href."""
         resolved = self.resolve_kwargs(context)
+
+        # Validate no unknown parameters
+        _validate_unknown_params(resolved, self.valid_params, self.tag_name)
 
         href = resolved.get("href", "")
         is_link = bool(href)
@@ -850,11 +961,17 @@ class CollapsibleNode(LayoutNode):
 
     """
 
+    valid_params: frozenset[str] = frozenset({"id", "summary", "open", "icon", "class"})
+
     def render(self, context: Context) -> str:
         """Render the collapsible container."""
         resolved = self.resolve_kwargs(context)
 
+        # Validate no unknown parameters
+        _validate_unknown_params(resolved, self.valid_params, self.tag_name)
+
         template_context = {
+            "element_id": resolved.get("id", ""),
             "summary": resolved.get("summary", "Details"),
             "is_open": resolved.get("open", False),
             "show_icon": resolved.get("icon", True),
@@ -911,9 +1028,14 @@ class SidebarNode(LayoutNode):
 
     """
 
+    valid_params: frozenset[str] = frozenset({"side", "static", "width", "mobile_behavior", "class"})
+
     def render(self, context: Context) -> str:
         """Render the sidebar container."""
         resolved = self.resolve_kwargs(context)
+
+        # Validate no unknown parameters
+        _validate_unknown_params(resolved, self.valid_params, self.tag_name)
 
         # Get side from explicit parameter, context variable, or default
         # Context variable _sidebar_side is set by base.html when using sidebar blocks
@@ -949,6 +1071,245 @@ class SidebarNode(LayoutNode):
 
         tpl = get_template("insight_ui/components/layout/sidebar.html")
         return tpl.render(template_context)
+
+
+class ModalNode(LayoutNode):
+    """
+    Modal dialog container with customizable content.
+
+    A flexible modal that allows arbitrary content inside. The modal structure
+    (backdrop, centering, close button) is handled automatically while the user
+    provides the actual content.
+
+    Parameters:
+        id: Required. Unique ID for JavaScript targeting (data-insight-modal).
+        title: Optional heading displayed in the modal header.
+        width: Maximum width in rem units. Default: 32
+        show_close: Show the close button in the header. Default: True
+        class: Additional CSS classes to append.
+
+    Example::
+
+        {# Basic modal with title #}
+        {% modal id="confirm-delete" title="Confirm Deletion" %}
+            <p>Are you sure you want to delete this item?</p>
+            {% hbox gap="s" h_align="end" %}
+                {% button label="Cancel" type="secondary" data_insight_dismiss="modal" %}
+                {% button label="Delete" type="danger" on_click="deleteItem()" %}
+            {% endhbox %}
+        {% endmodal %}
+
+        {# Modal without title (custom header) #}
+        {% modal id="custom-modal" width=48 %}
+            <div class="text-center">
+                <h2>Custom Header</h2>
+                <p>Full control over content</p>
+            </div>
+        {% endmodal %}
+
+        {# Trigger button elsewhere in page #}
+        {% button label="Open Modal" data_insight_modal="confirm-delete" %}
+
+    Note:
+        The modal is initially hidden and must be triggered using a button with
+        ``data-insight-modal="modal-id"`` attribute. Close buttons inside the
+        modal should have ``data-insight-dismiss="modal"`` attribute.
+
+    """
+
+    valid_params: frozenset[str] = frozenset({"id", "title", "width", "show_close", "class"})
+
+    def render(self, context: Context) -> str:
+        """Render the modal container."""
+        resolved = self.resolve_kwargs(context)
+
+        # Validate no unknown parameters
+        _validate_unknown_params(resolved, self.valid_params, self.tag_name)
+
+        # ID is required
+        modal_id = resolved.get("id")
+        if not modal_id:
+            msg = "{% modal %} requires an 'id' parameter"
+            raise ValueError(msg)
+
+        template_context = {
+            "modal_id": str(modal_id),
+            "title": str(resolved.get("title", "")),
+            "width": int(resolved.get("width", 32)),
+            "show_close": resolved.get("show_close", True),
+            "wrapper_class": str(resolved.get("class", "")),
+            "content": self.nodelist.render(context),
+        }
+
+        tpl = get_template("insight_ui/components/layout/modal.html")
+        return tpl.render(template_context)
+
+
+# =============================================================================
+# List Components
+# =============================================================================
+
+VALID_MARKER: frozenset[str] = frozenset({"none", "disc", "circle", "square", "decimal", "decimal-leading-zero"})
+VALID_MARKER_POSITION: frozenset[str] = frozenset({"inside", "outside"})
+
+MARKER_CLASSES: dict[str, str] = {
+    "none": "list-none",
+    "disc": "list-disc",
+    "circle": "list-[circle]",
+    "square": "list-[square]",
+    "decimal": "list-decimal",
+    "decimal-leading-zero": "list-[decimal-leading-zero]",
+}
+
+
+class ListNode(LayoutNode):
+    """
+    Semantic list container with flexible layout options.
+
+    Creates accessible `<ul>` or `<ol>` elements with consistent styling.
+    Use with `{% listitem %}` tags for each list entry.
+
+    Parameters:
+        horizontal: Use horizontal layout instead of vertical (default).
+        gap: Spacing between items (xs, s, m, l, xl). Default: "m"
+        ordered: Use `<ol>` instead of `<ul>`. Default: False
+        marker: List marker style (none, disc, circle, square, decimal). Default: "none"
+        marker_position: Marker position (inside, outside). Default: "inside"
+        aria_label: Accessible label for the list.
+        class: Additional CSS classes.
+
+    Example::
+
+        {% list gap="m" %}
+            {% for item in items %}
+                {% listitem %}
+                    {% surface %}{{ item.name }}{% endsurface %}
+                {% endlistitem %}
+            {% endfor %}
+        {% endlist %}
+
+        {# Horizontal list with markers #}
+        {% list horizontal gap="s" marker="disc" %}
+            {% listitem %}First{% endlistitem %}
+            {% listitem %}Second{% endlistitem %}
+        {% endlist %}
+
+        {# Ordered list #}
+        {% list ordered marker="decimal" marker_position="outside" %}
+            {% listitem %}Step one{% endlistitem %}
+            {% listitem %}Step two{% endlistitem %}
+        {% endlist %}
+
+    """
+
+    valid_params: frozenset[str] = frozenset(
+        {"id", "horizontal", "gap", "ordered", "marker", "marker_position", "aria_label", "class"}
+    )
+
+    def render(self, context: Context) -> str:
+        """Render the list container."""
+        resolved = self.resolve_kwargs(context)
+
+        # Validate no unknown parameters
+        _validate_unknown_params(resolved, self.valid_params, self.tag_name)
+
+        # Horizontal flag (default: vertical)
+        horizontal = resolved.get("horizontal", False)
+
+        # Gap
+        gap = str(resolved.get("gap", "m"))
+        _validate(gap, VALID_SPACING_WITH_NONE, "gap", self.tag_name)
+
+        # Marker
+        marker = str(resolved.get("marker", "none"))
+        _validate(marker, VALID_MARKER, "marker", self.tag_name)
+
+        # Marker position
+        marker_position = str(resolved.get("marker_position", "inside"))
+        _validate(marker_position, VALID_MARKER_POSITION, "marker_position", self.tag_name)
+
+        # Build classes
+        classes = ["flex"]
+
+        if horizontal:
+            classes.append("flex-row")
+            classes.append("flex-wrap")
+        else:
+            classes.append("flex-col")
+
+        classes.append(GAP_CLASSES[gap])
+        classes.append(MARKER_CLASSES[marker])
+
+        if marker != "none":
+            classes.append(f"list-{marker_position}")
+
+        # Extra classes
+        extra_classes = resolved.get("class", "")
+        if extra_classes:
+            classes.append(str(extra_classes))
+
+        class_str = " ".join(classes)
+
+        # Element type
+        tag = "ol" if resolved.get("ordered", False) else "ul"
+
+        # Optional id attribute
+        element_id = resolved.get("id", "")
+        id_attr = f' id="{element_id}"' if element_id else ""
+
+        # Aria label
+        aria_label = resolved.get("aria_label", "")
+        aria_attr = f' aria-label="{aria_label}"' if aria_label else ""
+
+        content = self.nodelist.render(context)
+
+        return f'<{tag}{id_attr} class="{class_str}"{aria_attr}>{content}</{tag}>'
+
+
+class ListItemNode(LayoutNode):
+    """
+    Single item within a list container.
+
+    Wraps content in a semantic `<li>` element.
+
+    Parameters:
+        class: Additional CSS classes for the list item.
+
+    Example::
+
+        {% list %}
+            {% listitem %}First item{% endlistitem %}
+            {% listitem class="font-bold" %}Highlighted item{% endlistitem %}
+        {% endlist %}
+
+    """
+
+    valid_params: frozenset[str] = frozenset({"id", "class"})
+
+    def render(self, context: Context) -> str:
+        """Render the list item."""
+        resolved = self.resolve_kwargs(context)
+
+        # Validate no unknown parameters
+        _validate_unknown_params(resolved, self.valid_params, self.tag_name)
+
+        content = self.nodelist.render(context)
+
+        # Build attributes
+        element_id = resolved.get("id", "")
+        extra_classes = resolved.get("class", "")
+
+        attrs = []
+        if element_id:
+            attrs.append(f'id="{element_id}"')
+        if extra_classes:
+            attrs.append(f'class="{extra_classes}"')
+
+        if attrs:
+            attrs_str = " ".join(attrs)
+            return f"<li {attrs_str}>{content}</li>"
+
+        return f"<li>{content}</li>"
 
 
 class TabNode(Node):
@@ -1180,6 +1541,9 @@ register.tag("grid", _make_block_tag(GridNode))
 register.tag("surface", _make_block_tag(SurfaceNode))
 register.tag("collapsible", _make_block_tag(CollapsibleNode))
 register.tag("sidebar", _make_block_tag(SidebarNode))
+register.tag("modal", _make_block_tag(ModalNode))
+register.tag("list", _make_block_tag(ListNode))
+register.tag("listitem", _make_block_tag(ListItemNode))
 register.tag("tabs", do_tabs)
 
 
