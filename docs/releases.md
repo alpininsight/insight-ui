@@ -25,8 +25,18 @@ for either destination. Its source-channel input selects the package branch;
 do not confuse executor branch and source branch. Neither a green CI run nor a
 merge uploads a Python package automatically. The retired source-repository
 `main-publish-pypi.yml` must not be restored as a second token-based publisher.
-The existing GitHub release/tag and CDN workflows are not Python uploads and
-remain separate.
+GitHub release/tag and CDN publication are separate private maintainer operations,
+not Python uploads. Public workflows only validate contributions and produce
+short-lived CI artifacts; they must not call private reusable workflows, even
+when they run only on `main`, manually, or on a schedule. Contributor tests check
+every workflow file, including those without a pull-request trigger.
+
+The former source-repository release, version, CDN, changelog and scheduled
+pre-commit callers are retired. Changelog changes and pre-commit hook updates
+remain ordinary reviewed contributor PRs; neither needs a publishing credential.
+Maintainers perform release and CDN operations from the protected control
+repository using the exact source commit that passed Contributor CI. This does
+not automatically update consumer dependencies or redeploy the reference website.
 
 ## Five Release Gates
 
