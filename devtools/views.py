@@ -20,4 +20,4 @@ def playground(request: HttpRequest) -> HttpResponse:
     context = {
         "button": ButtonConfig(label="Example Button"),
     }
-    return render(request, "devtools/playground.html", context)
+    return render(request, "devtools/demo_container.html", context)
