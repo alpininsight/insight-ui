@@ -1,21 +1,21 @@
 {% extends "insight_ui/base.html" %}
-{% load insight_tags %}
+{% load static %}
 
 {% block title %}Component Playground | Insight UI Devtools{% endblock %}
 
-{% block content %}
-    <div class="p-6">
-        <header class="mb-6">
-            <h1 class="font-semibold text-2xl text-insight-headline">Component Playground</h1>
-            <p class="mt-1 text-sm text-insight-caption">
-                Edit <code class="px-1 bg-insight-raised rounded-insight-surface">devtools/views.py</code> to add your component configs, then reload.
-            </p>
-        </header>
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'devtools/playground.css' %}">
+{% endblock %}
 
-        <div class="flex flex-wrap gap-4 items-center p-4 mb-6 bg-insight-surface border border-insight-surface rounded-insight-surface">
-            <label class="flex gap-2 items-center text-sm text-insight-body cursor-pointer">
-                <span>Viewport:</span>
-                <select id="viewport-select" class="px-2 py-1 text-insight-body bg-insight-base border border-insight-surface rounded-insight-control">
+{% block content %}
+    <section class="playground-shell">
+        <header>
+            <h1>Component Playground</h1>
+            <p>Edit <code>devtools/views.py</code> and <code>devtools/templates/devtools/playground.html</code>, then reload.</p>
+        </header>
+        <div class="playground-controls">
+            <label for="viewport-select">Viewport:
+                <select id="viewport-select">
                     <option value="full">Full Width</option>
                     <option value="desktop" selected>Desktop (1024px)</option>
                     <option value="tablet">Tablet (768px)</option>
@@ -23,48 +23,17 @@
                 </select>
             </label>
 
-            <label class="flex gap-2 items-center text-sm text-insight-body cursor-pointer">
-                <input type="checkbox" id="rtl-toggle" class="accent-insight-primary">
-                <span>RTL</span>
-            </label>
-
-            <button type="button" class="btn btn-secondary btn-s" data-insight-theme-toggle>
-                Toggle Theme
-            </button>
+            <label><input type="checkbox" id="rtl-toggle"> RTL</label>
+            <button type="button" class="btn btn-secondary btn-s" data-insight-theme-toggle>Toggle Theme</button>
+            <a href="{% url 'component-preview' %}" target="_blank" rel="noopener">Open preview separately</a>
         </div>
-
-        <div class="flex justify-center p-8 bg-insight-surface border border-insight-surface rounded-insight-surface overflow-auto" id="demo-container" style="width: 1024px; max-width: 100%; min-width: 200px; resize: horizontal;">
-            <div>
-                {% include "devtools/playground.html" %}
-            </div>
+        <p id="viewport-help">The frame has its own viewport. This checks CSS breakpoints, not device or touch emulation.</p>
+        <div class="playground-stage">
+            <iframe id="component-preview" src="{% url 'component-preview' %}" title="Component preview" aria-describedby="viewport-help"></iframe>
         </div>
-    </div>
+    </section>
+{% endblock %}
 
-    <script>
-        const container = document.getElementById('demo-container');
-        const viewportSelect = document.getElementById('viewport-select');
-        const rtlToggle = document.getElementById('rtl-toggle');
-
-        const viewportWidths = {
-            'full': '100%',
-            'desktop': '1024px',
-            'tablet': '768px',
-            'mobile': '375px'
-        };
-
-        function applyViewport() {
-            container.style.width = viewportWidths[viewportSelect.value] || '1024px';
-        }
-
-        function applyRtl() {
-            container.dir = rtlToggle.checked ? 'rtl' : 'ltr';
-        }
-
-        // Initialize state from inputs (handles browser form restoration)
-        applyViewport();
-        applyRtl();
-
-        viewportSelect.addEventListener('change', applyViewport);
-        rtlToggle.addEventListener('change', applyRtl);
-    </script>
+{% block extra_scripts %}
+    <script src="{% static 'devtools/playground.js' %}" defer></script>
 {% endblock %}

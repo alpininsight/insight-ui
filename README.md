@@ -8,7 +8,7 @@
 
 **The Modern Django Component Framework with built-in Accessibility**
 
-65+ accessible, WCAG 2.2 AA-compliant UI components<br>
+65+ UI components designed with WCAG 2.2 AA as an accessibility target<br>
 HTMX-powered · Tailwind-based · RTL & i18n ready
 
 <br>
@@ -33,11 +33,15 @@ interactivity — no JavaScript framework required.
 
 ## Features
 
-- **Accessible by default** — Navigation, forms, tables, modals, and more, all WCAG 2.2 AA-compliant
+- **Accessibility-focused** — Keyboard, focus and ARIA behavior in navigation, forms, tables and modals
 - **HTMX integration** — Partial updates without full page reloads
 - **Tailwind design system** — Customizable semantic tokens for fast brand alignment
 - **RTL & i18n ready** — Right-to-left layouts and localization included
 - **Light & dark themes** — Automatic theme switching with CSS custom properties
+
+WCAG 2.2 AA is a design target, not a verified package-wide conformance claim.
+Conformance must be assessed for complete pages and processes in the consuming
+application. See [Accessibility](docs/accessibility.md) for scope and limitations.
 
 ## Quick Start
 
@@ -105,7 +109,7 @@ Full component reference and live examples at [insight-ui.com](https://insight-u
 git clone https://github.com/alpininsight/insight-ui.git
 cd insight-ui
 uv sync --all-groups
-npm install
+npm ci
 npm run build:static-all
 uv run pytest
 ```
@@ -113,15 +117,16 @@ uv run pytest
 The `devtools` app provides a local playground for component development:
 
 ```bash
-uv run python manage.py runserver
+uv run python manage.py runserver 127.0.0.1:8000
 ```
 
-Edit `devtools/views.py` to add component configs, then open http://127.0.0.1:8000/.
+Edit `devtools/views.py` for Configs and `devtools/templates/devtools/playground.html`
+for their template tags, then open http://127.0.0.1:8000/.
 
 To scaffold a new component:
 
 ```bash
-uv run python manage.py create_component --name "My Widget" --category input
+uv run python manage.py create_component --name "My Widget" --category input --no-js --dry-run
 ```
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow.
@@ -130,6 +135,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow.
 
 This repository contains the `insight_ui` Python package. The documentation website,
 component catalog, and examples are maintained in a separate repository.
+The local `devtools` playground and contributor guides stay in the Git checkout,
+not the wheel or sdist. Contributors need no private repository or credentials.
 
 ## License
 

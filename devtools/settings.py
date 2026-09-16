@@ -8,6 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEBUG = True
 SECRET_KEY = "django-insecure-test-key-not-for-production"  # noqa: S105  # nosec B105
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "[::1]"]
 
 
 # Application definition
@@ -94,9 +95,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Insight UI configuration (see insight_ui/config.py for available settings)
 INSIGHT_UI = {
-    "load_prism": True,  # Turn to 'True' to use syntax highlighting
-    "load_leaflet": True,  # Turn to 'True' to use geo-maps
-    "load_echarts": True,  # Turn to 'True' to use Chart-Components
+    "load_prism": False,  # Enable only when previewing code blocks.
+    "load_leaflet": False,  # Enable only when previewing maps.
+    "load_echarts": False,  # Enable only when previewing charts.
     "JS_DEBUG": True,  # Turn to 'True' to enable build in browser console logging
-    "use_tailwind_cli": True,  # Turn to 'True' to enable the tailwind cli, if you want to modify the styles
+    "use_tailwind_cli": False,  # Use npm run build:static-all after changing styles.
+    "navbar_fixed": False,
+    "assets": {"cdn_enabled": False, "use_minified": False},
 }

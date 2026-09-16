@@ -30,10 +30,10 @@ changing a component rather than treating the generated skeleton as finished:
 
 ## The Workflow
 
-![Six steps: start a feature worktree from develop; dry-run and generate an atom, molecule, or organism; complete Config, tag, template, and tests; format, build assets, and preview on localhost; run behavior and distribution checks; open a pull request to develop.](.github/images/contributor-workflow.svg)
+![Six steps: fresh develop worktree, choose and generate a component, implement and test, build and preview, check the package, open a PR.](.github/images/contributor-workflow.svg)
 
 1. Create a feature branch and worktree from the latest `develop`.
-2. Choose a category and atomic level; inspect a dry-run before generating files.
+2. Choose a category and inspect a dry-run before generating files.
 3. Implement the component using existing Insight UI patterns.
 4. Format the source, build local assets, and preview one component.
 5. Test behavior and the package boundary, not only the screenshot.
@@ -51,7 +51,7 @@ From a clone of this repository:
 git fetch origin develop
 git worktree add -b feat/example-panel ../insight-ui-example-panel origin/develop
 cd ../insight-ui-example-panel
-uv sync --all-groups
+uv sync --locked --all-groups
 npm ci
 ```
 
@@ -60,9 +60,10 @@ a fork, fetch the upstream remote and use its `develop` ref as the starting
 point instead. Push your feature branch to your fork, not to upstream `develop`.
 
 Run contributor commands from this worktree's root. The `devtools` preview host
-is source-only: it is included in the source distribution, not the installed
-wheel. Installing the library into an unrelated app is not a substitute for
-this checkout. No documentation app or database setup is needed for the preview.
+is Git-checkout-only: neither the source distribution nor the installed wheel
+includes it. Installing the library into an unrelated app is not a substitute
+for this checkout. The basic preview needs no documentation app or database
+migration; authentication and application endpoints need a separate test host.
 
 ## 2. Choose The Component Shape
 
@@ -70,48 +71,39 @@ Check the [component reference](https://insight-ui.com/docs/configs) and existin
 source before adding a new component. Prefer composing existing components over
 copying their markup or behavior.
 
-| Level | Starting point | Generator requirement |
+| Level | Starting point | Implementation |
 | --- | --- | --- |
-| `atom` | One small primitive with its own configuration and template. | No `--compose`. |
-| `molecule` | A focused combination, such as a field and an action. | `--compose` names existing component tags with Config dataclasses. |
-| `organism` | A larger functional section assembled from components. | The same explicit composition contract; you implement the layout and behavior. |
+| `atom` | One small primitive with its own configuration and template. | Implement its reusable contract. |
+| `molecule` | A focused combination, such as a field and an action. | Compose existing Configs and tags explicitly. |
+| `organism` | A larger functional section assembled from components. | Compose children and implement the layout and behavior. |
 
-The level describes composition. The category describes purpose and selects
-the existing configuration module; neither creates a new Config class hierarchy.
+The level describes composition, not a generator option. The category describes
+purpose and selects the existing configuration module. Neither creates a new
+Config class hierarchy. `--level`, `--compose` and `--package-root` are not supported.
 Categories are `layout`, `navigation`, `input`, `popup`, `util`, `list`, `filter`,
 `card`, and `form`.
 
-These are alternative dry-runs for the three levels:
+Preview the files for **Example Panel** without changing them:
 
 ```bash
 uv run python manage.py create_component \
-  --name "Example Status" --category util --level atom --dry-run
-
-uv run python manage.py create_component \
-  --name "Example Panel" --category form --level molecule \
-  --compose input_field,button --dry-run
-
-uv run python manage.py create_component \
-  --name "Example Toolbar" --category form --level organism \
-  --compose input_field,button --dry-run
+  --name "Example Panel" --category form --no-js --dry-run
 ```
 
 `--dry-run` validates the request and lists paths without writing files. The
-generator rejects existing names, incompatible composition, and unsafe import
-or JavaScript name collisions. Resolve the reported cause rather than bypassing
-validation or overwriting another component.
+generator rejects existing component names and invalid source bindings. Resolve
+the reported cause rather than overwriting another component.
 
 The rest of this guide uses **Example Panel**. Generate it once by removing
 `--dry-run`:
 
 ```bash
 uv run python manage.py create_component \
-  --name "Example Panel" --category form --level molecule \
-  --compose input_field,button
+  --name "Example Panel" --category form --no-js
 ```
 
-If your component needs JavaScript, add `--js` to both its dry-run and its initial
-generation command. It creates lifecycle wiring and a test stub, not finished
+Use `--js` instead of `--no-js` if your component needs a JavaScript skeleton.
+Without either flag the command asks interactively. The skeleton is not finished
 interaction logic. Do not run the generator a second time over an existing name.
 
 ## 3. Complete The Scaffold
@@ -124,13 +116,19 @@ For the example above, generation creates or updates these source files:
 | `insight_ui/configs/__init__.py` | Export the Config using the existing package API. |
 | `insight_ui/templatetags/insight_tags.py` | Register the real `example_panel` inclusion tag. |
 | `insight_ui/templates/insight_ui/components/example_panel.html` | Implement accessible markup; compose children through their existing tags. |
-| `tests/insight_ui/unit/components/test_example_panel.py` | Extend the generated render checks with meaningful behavior, escaping, and edge cases. |
 
 With `--js`, the generator also creates
-`insight_ui/static/insight_ui/js/insight-ui-example-panel.js` and
-`tests/js/example-panel.test.js`, and registers the module in the existing
-`insight-ui-init.js`. Follow the package's initialization and cleanup patterns,
-including repeated HTMX initialization where applicable.
+`insight_ui/static/insight_ui/js/insight-ui-example-panel.js`; its selector matches
+the generated template's `data-insight-*` attribute. Register it explicitly in
+`insight-ui-init.js`: add its import, class in `window.InsightUI` and `initAll()`
+call alongside the existing components. Follow their initialization and cleanup
+patterns, including repeated HTMX initialization.
+
+**Tests are not generated.** Add
+`tests/insight_ui/unit/components/test_example_panel.py` following the
+[button tests](tests/insight_ui/unit/components/test_button.py). Check defaults,
+explicit Configs, `tag_id`, escaping and edge cases. Add
+`tests/js/example-panel.test.js` for JS lifecycle and interaction behavior.
 
 Use semantic design roles from `insight_ui/utils/input.css` before adding new
 tokens. Keep colors, borders, radii, and shadows consistent with existing
@@ -145,21 +143,27 @@ Normalize generated imports and formatting, then compile and minify the assets:
 uv run ruff check --fix
 uv run ruff format
 npm run build:static-all
-uv run python manage.py runserver
+uv run python manage.py runserver 127.0.0.1:8000
 ```
 
 Open **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)**. Stop the server with
 `Ctrl+C`.
 
-The playground renders components configured in `devtools/views.py`. Edit the
-`context` dictionary to test your component with different configurations. Use
-the playground's light/dark switch and narrow the viewport to check both
-appearance and layout.
+The playground renders Configs from `component_preview()` in `devtools/views.py`.
+Import `ExamplePanelConfig` and add `"example_panel": ExamplePanelConfig(tag_id="example-panel-1")`
+to its context. Replace the example tag in `devtools/templates/devtools/playground.html`
+with `{% example_panel config=example_panel %}`.
+
+The iframe renders the real base template with its own viewport: 375 pixels
+also activates mobile CSS breakpoints. Check light/dark and RTL. This is not
+device, touch or assistive-technology emulation. Open `/preview/` separately
+for additional checks with your browser's developer tools.
 
 The playground uses local package CSS, fonts, and JavaScript, with CDN delivery
-disabled. It does not need external assets or private credentials. It is not an
-application backend: submission endpoints, WebSocket services, or remote
-chart/map data need an appropriate integration test host.
+disabled. No private credentials are needed, but this is not an offline
+guarantee: the base template loads third-party HTMX. Optional chart/map/syntax
+libraries are disabled until enabled in `devtools/settings.py`. Submission
+endpoints, WebSocket services and remote data need an appropriate test host.
 
 `build:static-all` compiles Tailwind from `input.css` and package sources, then
 creates minified CSS/JS. **`build:static` alone only minifies existing assets.**
@@ -169,13 +173,13 @@ tracked readable asset changes, but do not force-add ignored `.min.css` or
 
 ## 5. Check Behavior And Distribution
 
-Start with the generated component test:
+Start with the component test you added:
 
 ```bash
 uv run pytest tests/insight_ui/unit/components/test_example_panel.py
 ```
 
-If you generated JavaScript, run its focused test too:
+If you added JavaScript, run its focused test too:
 
 ```bash
 npm test -- tests/js/example-panel.test.js
@@ -210,7 +214,8 @@ or test a component.
 Check long text, missing optional values, escaping of untrusted text, repeated
 instances, light/dark mode, and narrow screens. For interactive components, test
 keyboard operation, accessible names, and focus behavior as well as mouse use.
-The generated test stubs are a starting point, not an acceptance checklist.
+The generator's own tests cover all categories in disposable package copies;
+they do not replace tests of your new component's intended behavior.
 
 ## 6. Open A Pull Request
 
@@ -230,9 +235,10 @@ actual visual-regression test uses it as a baseline.
 
 ### Maintainer Handoff
 
-The separate reference site can consume the reviewed Config metadata instead of
-duplicating the component implementation. Maintainers coordinate any editorial
-examples after the package change is accepted. Contributors do not need private
+The separate reference site registers reviewed public Configs, tags and templates
+without duplicating their implementation. It owns its catalog examples and
+editorial metadata. The generator creates no documentation manifest or catalog.
+Maintainers coordinate that downstream change after acceptance. Contributors do not need private
 documentation access: keep behavior tests here; the full catalog, documentation
 application, and application-level audit evidence stay outside the public
 package.

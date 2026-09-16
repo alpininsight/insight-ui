@@ -7,10 +7,17 @@ Edit the context dict below to test your component with different configurations
 
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
+from django.views.decorators.clickjacking import xframe_options_sameorigin
 from insight_ui.configs import ButtonConfig
 
 
 def playground(request: HttpRequest) -> HttpResponse:
+    """Render the source-only preview controls, not the documentation catalog."""
+    return render(request, "devtools/demo_container.html")
+
+
+@xframe_options_sameorigin
+def component_preview(request: HttpRequest) -> HttpResponse:
     """Render the component playground.
 
     Add your component configs here to preview them in the browser.
@@ -20,4 +27,4 @@ def playground(request: HttpRequest) -> HttpResponse:
     context = {
         "button": ButtonConfig(label="Example Button"),
     }
-    return render(request, "devtools/demo_container.html", context)
+    return render(request, "devtools/component_preview.html", context)

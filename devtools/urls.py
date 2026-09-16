@@ -5,9 +5,10 @@
 from django.urls import path
 from django.views.i18n import JavaScriptCatalog
 
-from devtools.views import playground
+from devtools.views import component_preview, playground
 
 urlpatterns = [
     path("", playground, name="playground"),
+    path("preview/", component_preview, name="component-preview"),
     path("jsi18n/", JavaScriptCatalog.as_view(packages=["insight_ui"]), name="javascript-catalog"),
 ]

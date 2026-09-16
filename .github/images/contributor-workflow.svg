@@ -2,7 +2,7 @@
 <!-- SPDX-License-Identifier: CC0-1.0 -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 1180" width="680" height="1180" role="img" aria-labelledby="workflow-title workflow-desc">
   <title id="workflow-title">Insight UI contributor workflow</title>
-  <desc id="workflow-desc">Start a feature worktree from develop. Dry-run and generate an atom, molecule, or organism. Complete the Config, tag, template, tests, and example manifest, with optional JavaScript. Format and build local assets, then preview one component on localhost. Run behavior and distribution checks. Open a pull request to develop. After acceptance, documentation maintainers reuse the manifest.</desc>
+  <desc id="workflow-desc">Start a feature worktree from develop. Choose a category, dry-run and generate a component. Complete the Config, tag, template and behavior tests, with optional JavaScript. Build assets and preview in a real local viewport. Run package checks and open a pull request. Reference-site maintainers register the accepted component separately.</desc>
   <defs>
     <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
       <path d="M1 1 L6 4 L1 7" fill="none" stroke="#577083" stroke-width="1.5"/>
@@ -33,7 +33,7 @@
     <circle cx="66" cy="352" r="21" fill="#0856c0"/>
     <text x="66" y="358" font-size="17" font-weight="700" text-anchor="middle" fill="#ffffff">2</text>
     <text x="104" y="352" font-size="21" font-weight="700">Choose and generate</text>
-    <text x="104" y="383" font-size="16">Choose: atom / molecule / organism</text>
+    <text x="104" y="383" font-size="16">Choose a category; compose existing components</text>
     <text x="104" y="409" font-size="14" fill="#42586a">Dry-run first, then create_component.</text>
 
     <rect x="28" y="474" width="624" height="124" rx="12" fill="#ffffff" stroke="#c7d5e1"/>
@@ -41,7 +41,7 @@
     <text x="66" y="522" font-size="17" font-weight="700" text-anchor="middle" fill="#ffffff">3</text>
     <text x="104" y="516" font-size="21" font-weight="700">Complete the scaffold</text>
     <text x="104" y="547" font-size="16">Config + tag + template + behavior tests</text>
-    <text x="104" y="573" font-size="14" fill="#42586a">Named example manifest; optional JavaScript.</text>
+    <text x="104" y="573" font-size="14" fill="#42586a">Add render tests; wire optional JavaScript explicitly.</text>
 
     <rect x="28" y="638" width="624" height="124" rx="12" fill="#ffffff" stroke="#c7d5e1"/>
     <circle cx="66" cy="680" r="21" fill="#0856c0"/>
@@ -65,6 +65,6 @@
     <text x="104" y="1065" font-size="14" fill="#42586a">Describe the use case and any remaining limits.</text>
 
     <text x="36" y="1130" font-size="14" font-weight="700" fill="#006b60">MAINTAINER HANDOFF</text>
-    <text x="36" y="1157" font-size="14" fill="#42586a">After acceptance, the separate reference site reuses the manifest.</text>
+    <text x="36" y="1157" font-size="14" fill="#42586a">After acceptance, the reference site registers reviewed Configs.</text>
   </g>
 </svg>

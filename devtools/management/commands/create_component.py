@@ -4,13 +4,15 @@
 
 from __future__ import annotations
 
+import ast
+import keyword
 import re
 import subprocess  # nosec B404
 from dataclasses import dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandError
 
 if TYPE_CHECKING:
     from argparse import ArgumentParser
@@ -76,12 +78,16 @@ class Command(BaseCommand):
     help = (
         "Creates boilerplate for a new component: config dataclass, template, inclusion tag, and optional JavaScript."
     )
+    requires_system_checks = ()
 
     def add_arguments(self, parser: ArgumentParser) -> None:
         """Add command arguments."""
         parser.add_argument("--name", type=str, help="Component name in Title Case (e.g., 'My Component')")
         parser.add_argument("--category", type=str, choices=CATEGORIES, help="Component category")
-        parser.add_argument("--js", action="store_true", default=None, help="Create JavaScript file for the component")
+        javascript = parser.add_mutually_exclusive_group()
+        javascript.add_argument("--js", action="store_true", default=None, help="Create a JavaScript skeleton")
+        javascript.add_argument("--no-js", action="store_false", dest="js", help="Generate without JavaScript")
+        parser.add_argument("--dry-run", action="store_true", help="Validate and list changes without writing")
 
     def _get_validated_name(self, name: str | None) -> str | None:
         """Get and validate component name from option or user input."""
@@ -89,16 +95,12 @@ class Command(BaseCommand):
             name = input("Enter component name (Title Case, e.g., 'My Component'): ").strip()
 
         if not name:
-            self.stderr.write(self.style.ERROR("Component name is required."))
-            return None
+            message = "Component name is required."
+            raise CommandError(message)
 
         if not COMPONENT_NAME_PATTERN.match(name):
-            self.stderr.write(
-                self.style.ERROR(
-                    "Component name must start with a letter and contain only letters, numbers, and spaces."
-                )
-            )
-            return None
+            message = "Component name must start with a letter and contain only letters, numbers, and spaces."
+            raise CommandError(message)
 
         return name
 
@@ -116,14 +118,14 @@ class Command(BaseCommand):
             idx = int(choice) - 1
             if 0 <= idx < len(CATEGORIES):
                 return CATEGORIES[idx]
-            self.stderr.write(self.style.ERROR("Invalid category number."))
-            return None
+            message = "Invalid category number."
+            raise CommandError(message)
 
         if choice.lower() in CATEGORIES:
             return choice.lower()
 
-        self.stderr.write(self.style.ERROR(f"Invalid category: {choice}"))
-        return None
+        message = f"Invalid category: {choice}"
+        raise CommandError(message)
 
     def _should_create_js(self, js_option: bool | None) -> bool:
         """Determine if JavaScript file should be created."""
@@ -167,14 +169,23 @@ class Command(BaseCommand):
 
         # insight_ui/ package path
         ui_path = Path(__file__).resolve().parent.parent.parent.parent / "insight_ui"
-        self._scaffold_component(ui_path, names, category, needs_js, git_user)
+        self._scaffold_component(ui_path, names, category, needs_js, git_user, dry_run=options["dry_run"])
 
-    def _scaffold_component(
-        self, ui_path: Path, names: ComponentNames, category: str, needs_js: bool, git_user: str
+    def _scaffold_component(  # noqa: PLR0913 - one explicit generation request
+        self,
+        ui_path: Path,
+        names: ComponentNames,
+        category: str,
+        needs_js: bool,
+        git_user: str,
+        *,
+        dry_run: bool = False,
     ) -> None:
-        """Create all component files in insight_ui/."""
+        """Validate the complete scaffold before writing any package files."""
+        self._validate_new_component(ui_path, names, category)
+        self._pending_writes: dict[Path, str] = {}
         # 1. Create HTML template
-        self._create_template(ui_path, names.slug, names.name, git_user)
+        self._create_template(ui_path, names.slug, names.name, needs_js=needs_js)
 
         # 2. Create config dataclass
         self._create_config_dataclass(ui_path, names.config_class_name, names.slug, category, names.name, git_user)
@@ -186,7 +197,71 @@ class Command(BaseCommand):
         if needs_js:
             self._create_javascript(ui_path, names.js_slug, names.class_name, names.slug, git_user)
 
+        for path, content in self._pending_writes.items():
+            if path.suffix == ".py":
+                try:
+                    ast.parse(content, filename=str(path))
+                except SyntaxError as exc:
+                    message = f"Invalid generated Python; no files written: {exc}"
+                    raise CommandError(message) from exc
+        if dry_run:
+            for path in self._pending_writes:
+                self.stdout.write(str(path.relative_to(ui_path.parent)))
+            self.stdout.write("Dry-run complete; no files written.")
+            return
+        self._apply_scaffold()
         self._print_success(names, category, needs_js)
+
+    def _apply_scaffold(self) -> None:
+        """Restore previous contents on reported write failures, including truncation."""
+        originals = {path: path.read_bytes() if path.exists() else None for path in self._pending_writes}
+        written = []
+        try:
+            for path, content in self._pending_writes.items():
+                written.append(path)
+                path.write_text(content, encoding="utf-8")
+        except OSError as exc:
+            failed = []
+            for path in reversed(written):
+                original = originals[path]
+                try:
+                    if original is None:
+                        path.unlink(missing_ok=True)
+                    else:
+                        path.write_bytes(original)
+                except OSError:
+                    failed.append(str(path))
+            detail = f"Manual recovery required: {', '.join(failed)}" if failed else "Changes rolled back"
+            message = f"Scaffold write failed. {detail}: {exc}"
+            raise CommandError(message) from exc
+
+    def _validate_new_component(self, ui_path: Path, names: ComponentNames, category: str) -> None:
+        """Reject collisions and incomplete source checkouts before planning."""
+        if category not in CATEGORY_TO_CONFIG_FILE or keyword.iskeyword(names.slug):
+            message = "Choose a supported category and a non-keyword component name."
+            raise CommandError(message)
+        paths = (
+            ui_path / "templates/insight_ui/components" / f"{names.slug}.html",
+            ui_path / "static/insight_ui/js" / f"insight-ui-{names.js_slug}.js",
+        )
+        if any(path.exists() for path in paths):
+            message = f"Component {names.slug!r} already exists; no files written."
+            raise CommandError(message)
+        tags = ui_path / "templatetags/insight_tags.py"
+        try:
+            source = tags.read_text(encoding="utf-8")
+            configs = (ui_path / "configs/__init__.py").read_text(encoding="utf-8")
+        except OSError as exc:
+            message = f"Incomplete source checkout: {exc}"
+            raise CommandError(message) from exc
+        if re.search(rf"\bdef {re.escape(names.slug)}\s*\(", source) or re.search(
+            rf"\b{re.escape(names.config_class_name)}\b", configs
+        ):
+            message = f"Component {names.slug!r} already exists; no files written."
+            raise CommandError(message)
+        if self._find_category_section_end(source, category) is None:
+            message = f"Cannot find the {category} tag section; no files written."
+            raise CommandError(message)
 
     def _print_success(self, names: ComponentNames, category: str, needs_js: bool) -> None:
         """Print success message and next steps."""
@@ -199,8 +274,12 @@ class Command(BaseCommand):
                 f"  3. Edit the JavaScript: insight_ui/static/insight_ui/js/insight-ui-{names.js_slug}.js"
             )
             self.stdout.write("  4. Register the class in insight-ui-init.js")
-        self.stdout.write("\n  5. Test in playground: uv run python manage.py runserver --settings=devtools.settings")
-        self.stdout.write(f"     Then edit devtools/views.py to add your {names.config_class_name}")
+        self.stdout.write("  Add component render/behavior tests before opening a PR.")
+        self.stdout.write("\n  Preview: uv run python manage.py runserver 127.0.0.1:8000")
+        self.stdout.write(
+            f"  Add {names.config_class_name} to devtools/views.py and its tag to "
+            "devtools/templates/devtools/playground.html."
+        )
 
     def _find_category_section_end(self, content: str, category: str) -> int | None:
         """Find the end position of a category section in insight_tags.py."""
@@ -221,24 +300,18 @@ class Command(BaseCommand):
 
     def _read_file(self, file_path: Path) -> str | None:
         """Read file contents with error handling."""
+        if file_path in self._pending_writes:
+            return self._pending_writes[file_path]
         try:
             return file_path.read_text(encoding="utf-8")
-        except FileNotFoundError:
-            self.stderr.write(self.style.ERROR(f"File not found: {file_path}"))
-            return None
-        except PermissionError:
-            self.stderr.write(self.style.ERROR(f"Permission denied: {file_path}"))
-            return None
+        except OSError as exc:
+            message = f"Cannot read {file_path}; no files written: {exc}"
+            raise CommandError(message) from exc
 
     def _write_file(self, file_path: Path, content: str) -> bool:
-        """Write file contents with error handling."""
-        try:
-            file_path.write_text(content, encoding="utf-8")
-        except PermissionError:
-            self.stderr.write(self.style.ERROR(f"Permission denied: {file_path}"))
-            return False
-        else:
-            return True
+        """Stage content until every generated Python file has been validated."""
+        self._pending_writes[file_path] = content
+        return True
 
     def _get_git_username(self) -> str:
         """Get the Git username from the local or global config."""
@@ -263,7 +336,8 @@ class Command(BaseCommand):
         import_pattern = r"(from insight_ui\.configs import \(\n)((?:\s+\w+,\n)+)"
         match = re.search(import_pattern, content)
         if not match:
-            return content
+            message = "Cannot find the Config imports in insight_tags.py; no files written."
+            raise CommandError(message)
 
         imports = match.group(2).splitlines()
         imports.append(f"    {config_class_name},")
@@ -271,7 +345,7 @@ class Command(BaseCommand):
         replacement = match.group(1) + "\n".join(imports) + "\n"
         return content[: match.start()] + replacement + content[match.end() :]
 
-    def _create_template(self, ui_path: Path, slug: str, name: str, git_user: str) -> None:
+    def _create_template(self, ui_path: Path, slug: str, name: str, *, needs_js: bool) -> None:
         """Create the HTML template file for the component."""
         template_dir = ui_path / "templates" / "insight_ui" / "components"
         template_path = template_dir / f"{slug}.html"
@@ -282,24 +356,25 @@ class Command(BaseCommand):
 
         container_classes = " ".join(
             (
-                "insight-surface-base",
-                "insight-border-default",
-                "rounded-[var(--insight-radius-md)]",
+                "bg-insight-surface",
+                "border-insight-surface",
+                "rounded-insight-surface",
                 "border",
                 "p-4",
                 "text-insight-headline",
             )
         )
-        template_content = f"""{{% load insight_tags %}}
+        js_attribute = f" data-insight-{slug.replace('_', '-')}" if needs_js else ""
+        template_content = f"""{{% load insight_tags i18n %}}
 
-<!-- {name} Component -->
-<div class="{container_classes}">
-    <!-- TODO({git_user}): Implement {name} component -->
-    <p class="text-insight-body">{name} component placeholder</p>
+{{# {name}: replace the placeholder and add behavior tests. #}}
+<div{{% if {slug}_config.tag_id %}} id="{{{{ {slug}_config.tag_id }}}}"{{% endif %}}
+     class="{container_classes}"{js_attribute}>
+    <p class="text-insight-body">{{% translate "{name} component placeholder" %}}</p>
 </div>
 """
         if self._write_file(template_path, template_content):
-            self.stdout.write(self.style.SUCCESS(f"  [OK] Created template {slug}.html"))
+            self.stdout.write(f"  [PLAN] Create template {slug}.html")
 
     def _add_inclusion_tag(self, ui_path: Path, slug: str, category: str, name: str, config_class_name: str) -> None:
         """Add inclusion tag to insight_tags.py."""
@@ -331,7 +406,7 @@ def {slug}(config: {config_class_name} | None = None, *, tag_id: str | _Unset = 
 '''
         new_content = content[:section_end] + new_tag + content[section_end:]
         if self._write_file(file_path, new_content):
-            self.stdout.write(self.style.SUCCESS(f"  [OK] Added {slug} inclusion tag to insight_tags.py"))
+            self.stdout.write(f"  [PLAN] Add {slug} inclusion tag to insight_tags.py")
 
     def _create_javascript(self, ui_path: Path, js_slug: str, class_name: str, slug: str, git_user: str) -> None:
         """Create the JavaScript file with class boilerplate."""
@@ -389,7 +464,7 @@ def {slug}(config: {config_class_name} | None = None, *, tag_id: str | _Unset = 
 }}
 """
         if self._write_file(js_path, js_content):
-            self.stdout.write(self.style.SUCCESS(f"  [OK] Created JavaScript file insight-ui-{js_slug}.js"))
+            self.stdout.write(f"  [PLAN] Create JavaScript file insight-ui-{js_slug}.js")
 
     def _create_config_dataclass(  # noqa: PLR0913, PLR0917
         self, ui_path: Path, config_class_name: str, slug: str, category: str, name: str, git_user: str
@@ -405,6 +480,19 @@ def {slug}(config: {config_class_name} | None = None, *, tag_id: str | _Unset = 
             self.stdout.write(f"  [SKIP] Config class {config_class_name} already exists in {config_file}")
             return
 
+        field_name = next(
+            (
+                alias.asname or alias.name
+                for node in ast.parse(content).body
+                if isinstance(node, ast.ImportFrom) and node.module == "dataclasses"
+                for alias in node.names
+                if alias.name == "field"
+            ),
+            None,
+        )
+        if field_name is None:
+            message = f"Missing dataclasses.field import in {config_file}; no files written."
+            raise CommandError(message)
         new_class = f'''
 
 @dataclass
@@ -425,11 +513,11 @@ class {config_class_name}:
         """
 
     # TODO({git_user}): Add component-specific configuration fields
-    tag_id: str = field(default="", metadata={{"doc": _("Unique ID for JavaScript/CSS targeting.")}})
+    tag_id: str = {field_name}(default="", metadata={{"doc": _("Unique ID for JavaScript/CSS targeting.")}})
 '''
         new_content = content.rstrip() + new_class + "\n"
         if self._write_file(file_path, new_content):
-            self.stdout.write(self.style.SUCCESS(f"  [OK] Added {config_class_name} to configs/{config_file}"))
+            self.stdout.write(f"  [PLAN] Add {config_class_name} to configs/{config_file}")
 
         self._add_config_to_init(ui_path, config_class_name, config_file, category)
 
@@ -468,6 +556,9 @@ class {config_class_name}:
                     new_import += f"    {imp},\n"
                 new_import += ")"
                 content = content.replace(old_import, new_import)
+            else:
+                message = f"Cannot find public Config imports for {module_name}; no files written."
+                raise CommandError(message)
 
         # Add to __all__ list
         section_comment = CATEGORY_TO_INIT_SECTION.get(category, f"# {category.title()}")
@@ -487,4 +578,4 @@ class {config_class_name}:
                 content = content[:insert_pos] + new_all_entry + content[insert_pos:]
 
         if self._write_file(init_path, content):
-            self.stdout.write(self.style.SUCCESS(f"  [OK] Added {config_class_name} to configs/__init__.py"))
+            self.stdout.write(f"  [PLAN] Add {config_class_name} to configs/__init__.py")

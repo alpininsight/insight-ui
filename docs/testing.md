@@ -15,7 +15,7 @@ documentation application, credentials or running deployment is needed.
 | --- | --- |
 | Config/tag/template | Python tests under [tests/insight_ui/](../tests/insight_ui/); render real tags. |
 | Browser behavior | [Vitest/jsdom](../tests/js/); events, focus, state, repeated initialization and cleanup. |
-| Generated component | Its generated Python test; optional JS stub must be expanded. |
+| Generated component | Add a Python render test and, for JavaScript, lifecycle/interaction tests. |
 | Tokens/assets | Tailwind build, semantic-token check, readable and minified asset checks. |
 | Public guides | Link, token, example-rendering and package-boundary regression tests. |
 | Packaging | Build wheel/sdist, check their metadata against `pyproject.toml`, and inspect archive boundaries. |
@@ -133,7 +133,8 @@ regression test uses them as a baseline. Keep debugging captures outside Git.
 Public Markdown under `docs/` is allowed in the Git repository. The current wheel
 and sdist omit it; the [archive checker](../scripts/check_distribution.py) still
 rejects Docs application, enterprise and host-project payloads. It also keeps
-`devtools` out of the runtime wheel. Do not weaken those gates to restore the
+`devtools` out of both archives. Contributor-tool tests run in the Git checkout,
+not an installed distribution. Do not weaken those gates to restore the
 old self-documentation application.
 
 Guide changes should keep relative links, example Configs and token names valid.
