@@ -42,8 +42,12 @@ Check source and rendered output rather than relying on descriptive comments:
   `tag_id` and meaningful title; these attributes do not prove background isolation.
 - The [modal](../insight_ui/static/insight_ui/js/insight-ui-modal.js) and
   [sidebar](../insight_ui/static/insight_ui/js/insight-ui-sidebar.js) implement
-  Escape handling and attempt focus restoration. Sidebar close cleanup waits for
-  `transitionend`; verify focus return when transitions are absent or interrupted.
+  Escape handling and attempt focus restoration. A paired Sidebar's mobile
+  wrapper owns its toggle, dismiss controls and focus trap; the static sibling
+  remains inert. Sidebar close cleanup has a bounded transition fallback and
+  completes immediately for reduced motion or zero-duration transitions.
+  Reopening and destruction cancel pending animation work. Verify these states
+  in the consumer's actual CSS and browser, including a removed focus trigger.
 - The shared [focus helper](../insight_ui/static/insight_ui/js/insight-ui-utils.js)
   captures candidates once and does not filter hidden or disabled controls.
   Test empty content, changing content and removed triggers explicitly.
