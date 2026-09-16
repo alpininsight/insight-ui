@@ -1,13 +1,13 @@
 # SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
 # SPDX-License-Identifier: AGPL-3.0-only
-"""One preview page and local JavaScript translations, not a component catalog."""
+"""Simple playground URL for component development."""
 
 from django.urls import path
 from django.views.i18n import JavaScriptCatalog
 
-from devtools.preview import preview
+from devtools.views import playground
 
 urlpatterns = [
-    path("", preview, name="component-preview"),
+    path("", playground, name="playground"),
     path("jsi18n/", JavaScriptCatalog.as_view(packages=["insight_ui"]), name="javascript-catalog"),
 ]

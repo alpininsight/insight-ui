@@ -49,8 +49,8 @@ do not understand.
 
 Use the ES module and initialization patterns in
 [insight-ui-init.js](../insight_ui/static/insight_ui/js/insight-ui-init.js).
-The optional `--js` output from [scaffolding_js.py](../insight_ui/scaffolding_js.py)
-registers the class in `window.InsightUI` and the shared initializer. It is a
+The optional `--js` flag of `create_component` generates a JavaScript module
+that registers the class in `window.InsightUI` and the shared initializer. It is a
 lifecycle skeleton, not finished behavior.
 
 - The scaffold's `initAll(root = document)` scans descendants of the supplied
