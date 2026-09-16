@@ -514,6 +514,7 @@ def navbar(context: dict[str, Any], config: NavbarConfig, **kwargs: JsonValue) -
         "fixed": get_config("navbar_fixed"),
         "login_url": _resolve_url(getattr(settings, "LOGIN_URL", "login")),
         "register_url": _resolve_url(str(get_config("register_url") or "")),
+        "redirect_to": context.get("redirect_to", ""),
         "options": {**kwargs},
     }
 
