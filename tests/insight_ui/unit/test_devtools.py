@@ -127,6 +127,17 @@ def test_missing_config_import_fails_without_partial_writes(scaffold: tuple[Comm
     assert source_snapshot(public) == before
 
 
+def test_unexported_config_never_leaves_a_partial_scaffold(scaffold: tuple[Command, Path, io.StringIO]) -> None:
+    """Protect work in progress even before its Config appears in __all__."""
+    command, public, _ = scaffold
+    config = public / "insight_ui/configs/utils.py"
+    config.write_text(config.read_text() + "\n\nclass ExamplePanelConfig:\n    pass\n")
+    before = source_snapshot(public)
+    with pytest.raises(CommandError, match="already exists"):
+        call_command(command, name="Example Panel", category="util", js=False)
+    assert source_snapshot(public) == before
+
+
 def test_optional_js_selector_matches_template(scaffold: tuple[Command, Path, io.StringIO]) -> None:
     """JS remains an explicit skeleton, with a usable template hook and handoff."""
     command, public, output = scaffold

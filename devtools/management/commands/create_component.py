@@ -476,9 +476,9 @@ def {slug}(config: {config_class_name} | None = None, *, tag_id: str | _Unset = 
         if content is None:
             return
 
-        if f"class {config_class_name}" in content:
-            self.stdout.write(f"  [SKIP] Config class {config_class_name} already exists in {config_file}")
-            return
+        if any(isinstance(node, ast.ClassDef) and node.name == config_class_name for node in ast.parse(content).body):
+            message = f"Config class {config_class_name} already exists in {config_file}; no files written."
+            raise CommandError(message)
 
         field_name = next(
             (
