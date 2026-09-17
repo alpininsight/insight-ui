@@ -19,7 +19,7 @@ from scripts.check_distribution import REQUIRED, SOURCE_ONLY, check_archive, che
         "core/settings.py",
         "enterprise/offer.md",
         "docs/getting-started.md",
-        "insight_ui/static/insight_ui/js/insight-ui-demo-container.js",
+        "devtools/views.py",
     ],
 )
 def test_archive_check_rejects_non_package_payload(tmp_path: Path, path: str) -> None:
@@ -64,6 +64,24 @@ def test_built_metadata_must_match_source(field: str, distribution_metadata: Ema
         metadata[field] = "Development Status :: 3 - Alpha"
     with pytest.raises(SystemExit, match=field):
         check_metadata(metadata.as_bytes())
+
+
+@pytest.mark.parametrize("missing", ["package.json", "package-lock.json"])
+def test_sdist_requires_reproducible_javascript_dependencies(
+    tmp_path: Path, missing: str, distribution_metadata: EmailMessage
+) -> None:
+    """The bundled JS suite must retain the inputs needed for npm ci."""
+    path = tmp_path / "example.tar.gz"
+    contents = dict.fromkeys((REQUIRED | SOURCE_ONLY) - {missing}, b"fixture")
+    contents["PKG-INFO"] = distribution_metadata.as_bytes()
+    with tarfile.open(path, "w:gz") as archive:
+        for name, data in contents.items():
+            member = tarfile.TarInfo(f"insight_ui-1.0.0/{name}")
+            member.size = len(data)
+            archive.addfile(member, io.BytesIO(data))
+    with pytest.raises(SystemExit, match="missing=") as error:
+        check_archive(path)
+    assert missing in str(error.value)
 
 
 def test_distribution_requires_metadata(tmp_path: Path) -> None:

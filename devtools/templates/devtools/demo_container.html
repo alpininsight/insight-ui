@@ -1,0 +1,39 @@
+{% extends "insight_ui/base.html" %}
+{% load static %}
+
+{% block title %}Component Playground | Insight UI Devtools{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'devtools/playground.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section class="playground-shell">
+        <header>
+            <h1>Component Playground</h1>
+            <p>Edit <code>devtools/views.py</code> and <code>devtools/templates/devtools/playground.html</code>, then reload.</p>
+        </header>
+        <div class="playground-controls">
+            <label for="viewport-select">Viewport:
+                <select id="viewport-select">
+                    <option value="full">Full Width</option>
+                    <option value="desktop" selected>Desktop (1024px)</option>
+                    <option value="tablet">Tablet (768px)</option>
+                    <option value="mobile">Mobile (375px)</option>
+                </select>
+            </label>
+
+            <label><input type="checkbox" id="rtl-toggle"> RTL</label>
+            <button type="button" class="btn btn-secondary btn-s" data-insight-theme-toggle>Toggle Theme</button>
+            <a href="{% url 'component-preview' %}" target="_blank" rel="noopener">Open preview separately</a>
+        </div>
+        <p id="viewport-help">The frame has its own viewport. This checks CSS breakpoints, not device or touch emulation.</p>
+        <div class="playground-stage">
+            <iframe id="component-preview" src="{% url 'component-preview' %}" title="Component preview" aria-describedby="viewport-help"></iframe>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_scripts %}
+    <script src="{% static 'devtools/playground.js' %}" defer></script>
+{% endblock %}

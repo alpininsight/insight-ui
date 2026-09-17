@@ -4,7 +4,7 @@ default_language_version:
   python: python3
 
 repos:
-  # Lightweight general hygiene
+  # Lightweight general linting
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
@@ -80,21 +80,24 @@ repos:
       - id: djhtml
         files: '(^|/)templates/.*\.html$'
 
-  # Sort Tailwind CSS classes, check used design tokens
+  # Check for copyright notices in every file
   - repo: https://github.com/fsfe/reuse-tool
     rev: v6.2.0
     hooks:
       - id: reuse
         additional_dependencies: ["charset-normalizer"]
 
+  # Package tests and minimal Django host checks (no deployed documentation app).
   - repo: local
     hooks:
+      # Sort Tailwind CSS classes
       - id: utility-sort
         name: Sort utility CSS classes
         entry: uv run python scripts/sort_utility_classes.py
         language: system
         files: '(^|/)templates/.*\.html$'
 
+      # Check used design tokens
       - id: design-tokens
         name: Check design token usage
         entry: uv run python scripts/check_design_tokens.py
@@ -102,9 +105,7 @@ repos:
         files: '(^|/)templates/.*\.html$'
         require_serial: true
 
-  # Package tests and minimal Django host checks (no deployed documentation app).
-  - repo: local
-    hooks:
+      # Run pytest
       - id: pytest
         name: Run pytest (pre-push)
         entry: bash
@@ -113,6 +114,7 @@ repos:
         pass_filenames: false
         stages: [pre-push]
 
+      # Check for missing migrations
       - id: django-migrations-check
         name: Check for missing migrations
         entry: bash
@@ -120,6 +122,7 @@ repos:
         language: system
         pass_filenames: false
 
+      # Check django settings
       - id: django-system-check
         name: Django system check (pre-push)
         entry: bash

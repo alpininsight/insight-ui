@@ -19,7 +19,6 @@ Follow [CONTRIBUTING.md](../CONTRIBUTING.md) for the generator and local preview
 - [ ] HTML is semantic, untrusted values stay escaped and repeated IDs are safe.
 - [ ] CSS uses the [existing semantic roles](design-system.md); no duplicate
   component-specific gray palette or obsolete token names were introduced.
-- [ ] A useful default example and edge cases are represented in the manifest.
 
 ## Behavior And Verification
 
@@ -35,10 +34,10 @@ Follow [CONTRIBUTING.md](../CONTRIBUTING.md) for the generator and local preview
 
 ## Maintainer Handoff
 
-Maintainers can use the reviewed Config metadata and manifest to update the
-separate reference application. Catalog registration, translations of editorial
-pages, search indexing and application-level evidence belong to that downstream
-change. Do not require contributors to modify private files to finish this PR.
+Maintainers can use the reviewed Config metadata to update the separate
+reference application. Catalog registration, translations of editorial pages,
+search indexing and application-level evidence belong to that downstream change.
+Do not require contributors to modify private files to finish this PR.
 
 When a change alters the package contract, update the relevant public guide here.
 Keep full parameter tables generated from Config metadata rather than maintaining

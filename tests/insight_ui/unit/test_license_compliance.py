@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
 # SPDX-License-Identifier: AGPL-3.0-only
-"""Licence hygiene: SPDX headers, REUSE metadata and third-party notices.
+"""License compliance: SPDX headers, REUSE metadata and third-party notices.
 
 Customers run software-composition scans against the package; every source file
 must carry an SPDX header and the bundled third-party components must ship their

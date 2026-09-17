@@ -25,9 +25,8 @@ not a second documentation application or a deployment system.
 ## Ownership
 
 The implementation and these public development rules live in `insight-ui`.
-Dataclass field metadata, source code and example manifests remain the API
-source of truth; Markdown does not duplicate every parameter table or component
-demo. [The reference website](https://insight-ui.com/) is maintained separately
+Dataclass field metadata and source code remain the API source of truth;
+Markdown does not duplicate every parameter table or component demo. [The reference website](https://insight-ui.com/) is maintained separately
 and can refer to these guides instead of maintaining another copy of the rules.
 
 The website's catalog, search, editorial examples and application-level audit
