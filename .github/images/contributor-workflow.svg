@@ -1,14 +1,14 @@
 <!-- SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG -->
 <!-- SPDX-License-Identifier: CC0-1.0 -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 1180" width="680" height="1180" role="img" aria-labelledby="workflow-title workflow-desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 1330" width="680" height="1330" role="img" aria-labelledby="workflow-title workflow-desc">
   <title id="workflow-title">Insight UI contributor workflow</title>
-  <desc id="workflow-desc">Start a feature worktree from develop. Choose a category, dry-run and generate a component. Complete the Config, tag, template and behavior tests, with optional JavaScript. Build assets and preview in a real local viewport. Run package checks and open a pull request. Reference-site maintainers register the accepted component separately.</desc>
+  <desc id="workflow-desc">Six public steps: start a feature worktree from develop; choose a category, dry-run and generate; prepare typed Config fields, docstrings, metadata, example source text, a real tag and template, and behavior tests; build and preview locally; test examples, behavior and distribution; open a pull request. After review, maintainers consume the exact package artifact, identified by version and source revision, and verify the separate reference site. Contributors need no private edits, credentials or JSON manifest.</desc>
   <defs>
     <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
       <path d="M1 1 L6 4 L1 7" fill="none" stroke="#577083" stroke-width="1.5"/>
     </marker>
   </defs>
-  <rect width="680" height="1180" rx="16" fill="#f5f8fb"/>
+  <rect width="680" height="1330" rx="16" fill="#f5f8fb"/>
   <g font-family="Verdana, sans-serif" fill="#172d40">
     <text x="36" y="42" font-size="13" font-weight="700" letter-spacing="1.5" fill="#006b60">INSIGHT UI / CONTRIBUTING</text>
     <text x="36" y="81" font-size="28" font-weight="700">From an idea to a component PR</text>
@@ -20,6 +20,7 @@
       <path d="M66 598 V622"/>
       <path d="M66 762 V786"/>
       <path d="M66 926 V950"/>
+      <path d="M66 1090 V1117"/>
     </g>
 
     <rect x="28" y="146" width="624" height="124" rx="12" fill="#ffffff" stroke="#c7d5e1"/>
@@ -39,9 +40,9 @@
     <rect x="28" y="474" width="624" height="124" rx="12" fill="#ffffff" stroke="#c7d5e1"/>
     <circle cx="66" cy="516" r="21" fill="#0856c0"/>
     <text x="66" y="522" font-size="17" font-weight="700" text-anchor="middle" fill="#ffffff">3</text>
-    <text x="104" y="516" font-size="21" font-weight="700">Complete the scaffold</text>
-    <text x="104" y="547" font-size="16">Config + tag + template + behavior tests</text>
-    <text x="104" y="573" font-size="14" fill="#42586a">Add render tests; wire optional JavaScript explicitly.</text>
+    <text x="104" y="516" font-size="21" font-weight="700">Prepare component + docs inputs</text>
+    <text x="104" y="547" font-size="14">Typed Config + docstrings + metadata + __example__</text>
+    <text x="104" y="573" font-size="14" fill="#42586a">Real tag/template + behavior tests; wire optional JS.</text>
 
     <rect x="28" y="638" width="624" height="124" rx="12" fill="#ffffff" stroke="#c7d5e1"/>
     <circle cx="66" cy="680" r="21" fill="#0856c0"/>
@@ -53,18 +54,22 @@
     <rect x="28" y="802" width="624" height="124" rx="12" fill="#ffffff" stroke="#c7d5e1"/>
     <circle cx="66" cy="844" r="21" fill="#0856c0"/>
     <text x="66" y="850" font-size="17" font-weight="700" text-anchor="middle" fill="#ffffff">5</text>
-    <text x="104" y="844" font-size="21" font-weight="700">Check behavior and package</text>
-    <text x="104" y="875" font-size="16">Python + JS tests + distribution checks</text>
-    <text x="104" y="901" font-size="14" fill="#42586a">Keyboard, escaping and layout, not just appearance.</text>
+    <text x="104" y="844" font-size="21" font-weight="700">Test examples, behavior and package</text>
+    <text x="104" y="875" font-size="15">Render Config examples through their actual tags</text>
+    <text x="104" y="901" font-size="14" fill="#42586a">Python + JS + distribution checks; no docs credentials.</text>
 
     <rect x="28" y="966" width="624" height="124" rx="12" fill="#eaf6f2" stroke="#80b8ab"/>
     <circle cx="66" cy="1008" r="21" fill="#006b60"/>
     <text x="66" y="1014" font-size="17" font-weight="700" text-anchor="middle" fill="#ffffff">6</text>
     <text x="104" y="1008" font-size="21" font-weight="700">Open a PR to develop</text>
     <text x="104" y="1039" font-size="16">Review source, examples and tests together</text>
-    <text x="104" y="1065" font-size="14" fill="#42586a">Describe the use case and any remaining limits.</text>
+    <text x="104" y="1065" font-size="14" fill="#42586a">Include the docs inputs, tested examples and limits.</text>
 
-    <text x="36" y="1130" font-size="14" font-weight="700" fill="#006b60">MAINTAINER HANDOFF</text>
-    <text x="36" y="1157" font-size="14" fill="#42586a">After acceptance, the reference site registers reviewed Configs.</text>
+    <rect x="28" y="1130" width="624" height="140" rx="12" fill="#eaf6f2" stroke="#80b8ab"/>
+    <text x="48" y="1160" font-size="14" font-weight="700" fill="#006b60">MAINTAINER HANDOFF / AFTER REVIEW</text>
+    <text x="48" y="1188" font-size="15">Consume the exact reviewed package artifact.</text>
+    <text x="48" y="1213" font-size="14" fill="#42586a">Use its version + source revision to check the reference site.</text>
+    <text x="48" y="1241" font-size="14" fill="#42586a">Catalog pages and application checks stay separate.</text>
+    <text x="36" y="1305" font-size="13" fill="#42586a">Public contribution: no private edits, credentials or JSON manifest.</text>
   </g>
 </svg>

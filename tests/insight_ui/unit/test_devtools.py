@@ -45,31 +45,10 @@ def source_snapshot(root: Path) -> dict[str, bytes]:
     return {str(path.relative_to(root)): path.read_bytes() for path in root.rglob("*") if path.is_file()}
 
 
-@pytest.mark.parametrize("category", CATEGORIES)
-def test_each_category_generates_importable_renderable_component(
-    scaffold: tuple[Command, Path, io.StringIO], category: str
-) -> None:
-    """Include filter.py's dc_field alias and render the actual generated tag."""
-    command, public, _ = scaffold
-    call_command(command, name="Example Panel", category=category, js=False)
-    result = subprocess.run(
-        [
-            sys.executable,
-            "-c",
-            """
-import django
-django.setup()
-from django.template import Context, Template
-from insight_ui.configs import ExamplePanelConfig
-config = ExamplePanelConfig(tag_id='example-"quoted')
-html = Template('{% load insight_tags %}{% example_panel config=config %}').render(Context({'config': config}))
-assert 'id="example-&quot;quoted"' in html, html
-assert 'bg-insight-surface' in html
-assert 'rounded-insight-surface' in html
-assert 'data-insight-example-panel' not in html
-assert 'Example Panel component placeholder' in html
-""",
-        ],
+def assert_scaffold_script(public: Path, script: str) -> None:
+    """Import the generated package in a fresh process without loading a docs app."""
+    result = subprocess.run(  # noqa: S603 - literal test scripts below, no shell or user input
+        [sys.executable, "-c", script],
         cwd=public,
         env={
             **os.environ,
@@ -83,7 +62,85 @@ assert 'Example Panel component placeholder' in html
         timeout=30,
     )
     assert result.returncode == 0, result.stdout + result.stderr
+
+
+@pytest.mark.parametrize("category", CATEGORIES)
+def test_each_category_generates_importable_renderable_component(
+    scaffold: tuple[Command, Path, io.StringIO], category: str
+) -> None:
+    """Include filter.py's dc_field alias and render the actual generated tag."""
+    command, public, _ = scaffold
+    call_command(command, name="Example Panel", category=category, js=False)
+    assert_scaffold_script(
+        public,
+        """
+import django
+django.setup()
+from django.template import Context, Template
+from insight_ui.configs import ExamplePanelConfig
+config = ExamplePanelConfig(tag_id='example-"quoted')
+html = Template('{% load insight_tags %}{% example_panel config=config %}').render(Context({'config': config}))
+assert 'id="example-&quot;quoted"' in html, html
+assert 'bg-insight-surface' in html
+assert 'rounded-insight-surface' in html
+assert 'data-insight-example-panel' not in html
+assert 'Example Panel component placeholder' in html
+""",
+    )
     assert not (public / "insight_ui/component_manifests").exists()
+
+
+@pytest.mark.parametrize("category", CATEGORIES)
+def test_each_category_exposes_documentation_ready_config_and_example(
+    scaffold: tuple[Command, Path, io.StringIO], category: str
+) -> None:
+    """Consume public metadata and the real example, not a parallel docs schema."""
+    command, public, _ = scaffold
+    call_command(command, name="Example Panel", category=category, js=False)
+    assert_scaffold_script(
+        public,
+        """
+import ast
+from dataclasses import fields, is_dataclass
+from textwrap import dedent
+from typing import get_type_hints
+
+import django
+django.setup()
+from django.template import Context, Template
+from django.utils.translation import override
+from insight_ui import configs
+from insight_ui.configs import ExamplePanelConfig
+from insight_ui.templatetags import insight_tags
+from tests.insight_ui.unit.configs.test_docstring_integrity import validate_config_docs
+
+assert 'ExamplePanelConfig' in configs.__all__
+assert is_dataclass(ExamplePanelConfig)
+assert get_type_hints(ExamplePanelConfig) == {'tag_id': str}
+config_fields = {field.name: field for field in fields(ExamplePanelConfig)}
+assert config_fields['tag_id'].default == ''
+with override('en'):
+    validate_config_docs(ExamplePanelConfig)
+    assert str(config_fields['tag_id'].metadata['doc']).strip()
+
+# __example__ is indented source text. Only consume the scaffold's literal arguments;
+# do not evaluate arbitrary example code as part of discovery or documentation rendering.
+assert isinstance(ExamplePanelConfig.__example__, str)
+example = ast.parse(dedent(ExamplePanelConfig.__example__).strip(), mode='eval').body
+assert isinstance(example, ast.Call)
+assert isinstance(example.func, ast.Name)
+assert example.func.id == 'ExamplePanelConfig'
+assert not example.args
+assert [keyword.arg for keyword in example.keywords] == ['tag_id']
+config = ExamplePanelConfig(**{keyword.arg: ast.literal_eval(keyword.value) for keyword in example.keywords})
+assert config.tag_id == 'example_panel-1'
+assert 'example_panel' in insight_tags.register.tags
+assert get_type_hints(insight_tags.example_panel)['config'] == ExamplePanelConfig | None
+html = Template('{% load insight_tags %}{% example_panel config=config %}').render(Context({'config': config}))
+assert f'id="{config.tag_id}"' in html, html
+assert 'Example Panel component placeholder' in html, html
+""",
+    )
 
 
 def test_dry_run_does_not_write(scaffold: tuple[Command, Path, io.StringIO]) -> None:

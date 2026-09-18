@@ -30,14 +30,15 @@ changing a component rather than treating the generated skeleton as finished:
 
 ## The Workflow
 
-![Six steps: fresh develop worktree, choose and generate a component, implement and test, build and preview, check the package, open a PR.](.github/images/contributor-workflow.svg)
+![Six public steps: fresh develop worktree, generate a component, prepare implementation and documentation inputs, preview, test, open a PR. After review, maintainers verify the exact package artifact in the separate reference site.](.github/images/contributor-workflow.svg)
 
 1. Create a feature branch and worktree from the latest `develop`.
 2. Choose a category and inspect a dry-run before generating files.
-3. Implement the component using existing Insight UI patterns.
+3. Implement the component and its documentation-ready public inputs.
 4. Format the source, build local assets, and preview one component.
-5. Test behavior and the package boundary, not only the screenshot.
-6. Open a pull request to `develop`; maintainers handle the separate reference site.
+5. Test the example, behavior and package boundary, not only the screenshot.
+6. Open a pull request to `develop` with those inputs; maintainers handle the
+   separate reference site after review.
 
 ## 1. Prepare A Source Worktree
 
@@ -135,6 +136,39 @@ tokens. Keep colors, borders, radii, and shadows consistent with existing
 components. Do not add private brand assets or a separate component-specific
 palette to this public package.
 
+### Documentation-Ready Inputs
+
+Prepare these inputs **in the package**, alongside the implementation. They let
+maintainers document the reviewed public API without inventing a second schema:
+
+| Public input | What to provide |
+| --- | --- |
+| Exported Config | Typed dataclass fields with usable defaults, optional values and validation matching the tag's actual API. |
+| Field descriptions | A class docstring with an `Attributes` section and translatable `field(metadata={"doc": ...})` text for each field. Keep their English descriptions consistent. |
+| `__example__` | A Python constructor example as a string on the Config class, using real fields and realistic, non-secret values. Keep it current when the Config changes. |
+| Tag and template | A registered public tag that renders the real template with the example Config, not a mock or a documentation-only copy. |
+| Behavior tests | Assertions for the example's rendered content, defaults, overrides, escaping and relevant interaction states. Add keyboard/focus and JS lifecycle tests where applicable. |
+
+The generator starts `ExamplePanelConfig` with this class attribute:
+
+```python
+__example__ = """
+    ExamplePanelConfig(
+        tag_id="example_panel-1",
+    )
+    """
+```
+
+This is **example source text**, not a Config instance, a JSON manifest or an
+automatic runtime factory. Instantiate the same public constructor in your
+rendering test and local preview. Replace the scaffold's placeholder markup and
+extend the example when you add fields; generating it is not a finished component.
+
+Use the [component checklist](docs/new-component-checklist.md) before submission.
+Contributors do not edit the private documentation application, add catalog
+entries there or obtain credentials. Editorial pages and application-level audit
+evidence are separate maintainer work, not prerequisites for a public contribution.
+
 ## 4. Build And Preview Locally
 
 Normalize generated imports and formatting, then compile and minify the assets:
@@ -215,7 +249,16 @@ Check long text, missing optional values, escaping of untrusted text, repeated
 instances, light/dark mode, and narrow screens. For interactive components, test
 keyboard operation, accessible names, and focus behavior as well as mouse use.
 The generator's own tests cover all categories in disposable package copies;
-they do not replace tests of your new component's intended behavior.
+they validate field documentation and render the generated `__example__` through
+the real tag. The Config integrity tests compare field metadata with docstrings:
+
+```bash
+uv run pytest tests/insight_ui/unit/test_devtools.py \
+  tests/insight_ui/unit/configs/test_docstring_integrity.py
+```
+
+These checks do not replace rendering tests for your completed component and its
+examples, or prove that a separate reference application already supports it.
 
 ## 6. Open A Pull Request
 
@@ -226,7 +269,8 @@ licensing conventions; see [LICENSE](LICENSE) and [NOTICE](NOTICE).
 Push your feature branch and open a PR targeting **`develop`**, with a
 Conventional Commit title such as `feat(components): add example panel`.
 Explain the use case, why existing components are not enough, how composition
-works, and which checks you ran. Mention any missing tests or known limits.
+works, and which checks you ran. Point to the Config, its `__example__`, the real
+tag/template and their tests. Mention any missing tests or known limits.
 
 Include a useful preview image in the PR when appearance changes. Temporary
 debugging screenshots, browser profiles, caches, and credentials do not belong
@@ -235,10 +279,18 @@ actual visual-regression test uses it as a baseline.
 
 ### Maintainer Handoff
 
-The separate reference site registers reviewed public Configs, tags and templates
-without duplicating their implementation. It owns its catalog examples and
-editorial metadata. The generator creates no documentation manifest or catalog.
-Maintainers coordinate that downstream change after acceptance. Contributors do not need private
-documentation access: keep behavior tests here; the full catalog, documentation
-application, and application-level audit evidence stay outside the public
-package.
+The public PR delivers the implementation, documentation-ready inputs and
+behavior tests together. It does not change the separate reference application,
+and the generator creates no mandatory JSON manifest or catalog.
+
+After review, maintainers consume the **exact reviewed package artifact** in the
+reference application, recording its version and source revision. An older pin
+or an unverified moving branch is not evidence that the new component works
+there. Maintainers register the public Config, tag and template without copying
+their implementation, then verify parameter descriptions, real demos, source
+views and search against that artifact. They own catalog examples, editorial
+translations and application-level checks and audit evidence separately.
+
+A green public package test run proves only its tested package behavior, not a
+completed reference-site update or full WCAG conformance. No private credentials
+or private documentation edits are required from contributors for this handoff.
