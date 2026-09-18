@@ -12,7 +12,7 @@ This guide describes public development rules, not internal team operations.
 
 These are conventions for new scaffolds, not a claim that every older component
 has the same layout. Use `--name "Example Panel"` for these names and `--js` to
-include the browser module and its tests:
+generate the browser module skeleton. Add its behavior tests yourself:
 
 | Concern | Convention | Example |
 | --- | --- | --- |
@@ -49,16 +49,19 @@ do not understand.
 
 Use the ES module and initialization patterns in
 [insight-ui-init.js](../insight_ui/static/insight_ui/js/insight-ui-init.js).
-The optional `--js` output from [scaffolding_js.py](../insight_ui/scaffolding_js.py)
-registers the class in `window.InsightUI` and the shared initializer. It is a
-lifecycle skeleton, not finished behavior.
+The optional `--js` flag of `create_component` generates a JavaScript module
+skeleton only. Register it manually in the shared initializer: add the import,
+the class in `window.InsightUI`, and its `initAll()` call alongside the existing
+components. Tests are not generated; add lifecycle and interaction coverage.
+The skeleton is not finished behavior.
 
-- The scaffold's `initAll(root = document)` scans descendants of the supplied
-  root. The shared initializer currently calls `initAll()` document-wide on
-  `DOMContentLoaded` and `htmx:afterSwap`, not with a swap-scoped root.
+- The scaffold's `initAll()` scans the document for its `data-insight-*` selector.
+  The shared initializer calls `initAll()` document-wide on `DOMContentLoaded`
+  and `htmx:afterSwap`, not with a swap-scoped root.
 - Avoid duplicate listeners or duplicate instances on the same element.
-- Retain bound listener references or register listeners with the scaffold's
-  `this.controller.signal` so `destroy()` can release them.
+- Retain each listener's `{ element, type, handler }` in the scaffold's
+  `boundHandlers` array so `destroy()` can remove it. The skeleton does not create
+  an `AbortController`; add explicit cleanup for any additional resources.
 - Attach the instance as `element.__insightInstance`: the cleanup hook in
   [insight-ui-utils.js](../insight_ui/static/insight_ui/js/insight-ui-utils.js)
   calls its `destroy()` on `htmx:beforeCleanupElement`. Removal outside that hook

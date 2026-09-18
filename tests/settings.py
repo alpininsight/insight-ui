@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
 # SPDX-License-Identifier: AGPL-3.0-only
-"""Minimal host for testing the public package without the documentation app."""
+"""Minimal host for testing the public package without the devtools app."""
 
 from pathlib import Path
 
@@ -35,7 +35,7 @@ TEMPLATES = [
                 "django.template.context_processors.i18n",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "tests.context.package_config",
+                "insight_ui.context_processors.insight_ui_context",
             ]
         },
     }

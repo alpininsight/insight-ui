@@ -19,8 +19,6 @@ catalog. Start with [getting started](getting-started.md) for host setup or
 | HTML | [component templates](../insight_ui/templates/insight_ui/components/) | Semantics, composition, ARIA and behavior hooks. |
 | Design roles | [input.css](../insight_ui/utils/input.css) | Shared colors, surfaces, typography, radii and shadows. |
 | Optional behavior | [JavaScript modules](../insight_ui/static/insight_ui/js/) | Events, state, initialization and cleanup. |
-| Contributor examples | [component_manifest.py](../insight_ui/component_manifest.py) | Schema/loader for generated `insight_ui/component_manifests/<slug>.json` files. |
-| Generator | [scaffolding.py](../insight_ui/scaffolding.py) | Source-checkout generation, exports, tags, composition and tests. |
 | Regression tests | [Python tests](../tests/insight_ui/) and [Vitest tests](../tests/js/) | Public behavior, escaping, edge cases and lifecycle. |
 
 Use the Config's real fields and tag signature. Not every tag accepts arbitrary
@@ -81,16 +79,12 @@ trees. Molecules/organisms should call existing child tags with child Configs;
 do not copy their HTML, event handling or token definitions. Authentication,
 database queries and product-specific catalog state belong in the host.
 
-## Manifest And Preview
+## Scaffolding And Preview
 
-The generator creates declarative examples and source references alongside the
-component. Each example must have a unique name, and a `default` example is
-required. Validate examples with `build_example_config()` from
-`component_manifest.py`, which constructs Configs through the shared builder,
-including nested Config mappings. Examples are JSON data, not Python to evaluate.
-
-The local preview and downstream hosts can consume the same manifest and Config
-metadata. Keep host catalogs and editorial content outside the package. See the
+The `create_component` management command scaffolds new components with minimal
+boilerplate. Run `uv run python manage.py create_component --name "My Widget"`
+to generate a template, config dataclass, and tag registration. Keep host
+catalogs and editorial content outside the package. See the
 [new component checklist](new-component-checklist.md).
 
 [All package guides](README.md)
