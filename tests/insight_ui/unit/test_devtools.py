@@ -1,0 +1,421 @@
+# SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+# SPDX-License-Identifier: AGPL-3.0-only
+"""Test contributor tooling without a documentation app or a private checkout."""
+
+from __future__ import annotations
+
+import importlib
+import io
+import os
+import shutil
+import subprocess  # nosec B404
+import sys
+from http import HTTPStatus
+from pathlib import Path
+from typing import TYPE_CHECKING
+
+import pytest
+from django.core.management import call_command
+from django.core.management.base import CommandError
+from django.test import Client, override_settings
+
+if TYPE_CHECKING:
+    from devtools.management.commands.create_component import Command
+
+ROOT = Path(__file__).resolve().parents[3]
+pytestmark = pytest.mark.skipif(
+    not (ROOT / ".git").exists(), reason="Contributor tools are Git-checkout-only, not distribution payload."
+)
+CATEGORIES = ("layout", "navigation", "input", "popup", "util", "list", "filter", "card", "form")
+
+
+@pytest.fixture
+def scaffold(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> tuple[Command, Path, io.StringIO]:
+    """Run the real command against a disposable copy, never the worktree."""
+    module = importlib.import_module("devtools.management.commands.create_component")
+    public = tmp_path / "public"
+    shutil.copytree(ROOT / "insight_ui", public / "insight_ui", ignore=shutil.ignore_patterns("__pycache__"))
+    monkeypatch.setattr(module, "__file__", str(public / "devtools/management/commands/create_component.py"))
+    output = io.StringIO()
+    return module.Command(stdout=output), public, output
+
+
+def source_snapshot(root: Path) -> dict[str, bytes]:
+    """Detect even partial or accidental writes by the generator."""
+    return {str(path.relative_to(root)): path.read_bytes() for path in root.rglob("*") if path.is_file()}
+
+
+def assert_scaffold_script(public: Path, script: str) -> None:
+    """Import the generated package in a fresh process without loading a docs app."""
+    result = subprocess.run(  # noqa: S603 - literal test scripts below, no shell or user input
+        [sys.executable, "-c", script],
+        cwd=public,
+        env={
+            **os.environ,
+            "PYTHONPATH": os.pathsep.join((str(public), str(ROOT))),
+            "DJANGO_SETTINGS_MODULE": "tests.settings",
+            "PYTHONDONTWRITEBYTECODE": "1",
+        },
+        capture_output=True,
+        check=False,
+        text=True,
+        timeout=30,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+
+
+@pytest.mark.parametrize("category", CATEGORIES)
+def test_each_category_generates_importable_renderable_component(
+    scaffold: tuple[Command, Path, io.StringIO], category: str
+) -> None:
+    """Include filter.py's dc_field alias and render the actual generated tag."""
+    command, public, _ = scaffold
+    call_command(command, name="Example Panel", category=category, js=False)
+    assert_scaffold_script(
+        public,
+        """
+import django
+django.setup()
+from django.template import Context, Template
+from insight_ui.configs import ExamplePanelConfig
+config = ExamplePanelConfig(tag_id='example-"quoted')
+html = Template('{% load insight_tags %}{% example_panel config=config %}').render(Context({'config': config}))
+assert 'id="example-&quot;quoted"' in html, html
+assert 'bg-insight-surface' in html
+assert 'rounded-insight-surface' in html
+assert 'data-insight-example-panel' not in html
+assert 'Example Panel component placeholder' in html
+""",
+    )
+    assert not (public / "insight_ui/component_manifests").exists()
+
+
+@pytest.mark.parametrize("category", CATEGORIES)
+def test_each_category_exposes_documentation_ready_config_and_example(
+    scaffold: tuple[Command, Path, io.StringIO], category: str
+) -> None:
+    """Consume public metadata and the real example, not a parallel docs schema."""
+    command, public, _ = scaffold
+    call_command(command, name="Example Panel", category=category, js=False)
+    assert_scaffold_script(
+        public,
+        """
+import ast
+from dataclasses import fields, is_dataclass
+from textwrap import dedent
+from typing import get_type_hints
+
+import django
+django.setup()
+from django.template import Context, Template
+from django.utils.translation import override
+from insight_ui import configs
+from insight_ui.configs import ExamplePanelConfig
+from insight_ui.templatetags import insight_tags
+from tests.insight_ui.unit.configs.test_docstring_integrity import validate_config_docs
+
+assert 'ExamplePanelConfig' in configs.__all__
+assert is_dataclass(ExamplePanelConfig)
+assert get_type_hints(ExamplePanelConfig) == {'tag_id': str}
+config_fields = {field.name: field for field in fields(ExamplePanelConfig)}
+assert config_fields['tag_id'].default == ''
+with override('en'):
+    validate_config_docs(ExamplePanelConfig)
+    assert str(config_fields['tag_id'].metadata['doc']).strip()
+
+# __example__ is indented source text. Only consume the scaffold's literal arguments;
+# do not evaluate arbitrary example code as part of discovery or documentation rendering.
+assert isinstance(ExamplePanelConfig.__example__, str)
+example = ast.parse(dedent(ExamplePanelConfig.__example__).strip(), mode='eval').body
+assert isinstance(example, ast.Call)
+assert isinstance(example.func, ast.Name)
+assert example.func.id == 'ExamplePanelConfig'
+assert not example.args
+assert [keyword.arg for keyword in example.keywords] == ['tag_id']
+config = ExamplePanelConfig(**{keyword.arg: ast.literal_eval(keyword.value) for keyword in example.keywords})
+assert config.tag_id == 'example_panel-1'
+assert 'example_panel' in insight_tags.register.tags
+assert get_type_hints(insight_tags.example_panel)['config'] == ExamplePanelConfig | None
+html = Template('{% load insight_tags %}{% example_panel config=config %}').render(Context({'config': config}))
+assert f'id="{config.tag_id}"' in html, html
+assert 'Example Panel component placeholder' in html, html
+""",
+    )
+
+
+def test_dry_run_does_not_write(scaffold: tuple[Command, Path, io.StringIO]) -> None:
+    """The guide's preview command validates all files but changes none."""
+    command, public, output = scaffold
+    before = source_snapshot(public)
+    call_command(command, "--name", "Example Panel", "--category", "form", "--no-js", "--dry-run")
+    assert source_snapshot(public) == before
+    assert "no files written" in output.getvalue()
+    assert "insight_ui/configs/forms.py" in output.getvalue()
+
+
+@pytest.mark.parametrize("name", ["Button", "Register", "class", "../Outside"])
+def test_invalid_or_existing_name_never_writes(scaffold: tuple[Command, Path, io.StringIO], name: str) -> None:
+    """Existing components and Python-invalid slugs cannot leave partial output."""
+    command, public, _ = scaffold
+    before = source_snapshot(public)
+    with pytest.raises(CommandError):
+        call_command(command, name=name, category="util", js=False)
+    assert source_snapshot(public) == before
+
+
+@pytest.mark.parametrize("binding", ["reserved = object()", "from pathlib import Path as reserved"])
+def test_existing_module_bindings_never_get_shadowed(scaffold: tuple[Command, Path, io.StringIO], binding: str) -> None:
+    """Imports and assignments must survive just like existing tag functions."""
+    command, public, _ = scaffold
+    tags = public / "insight_ui/templatetags/insight_tags.py"
+    tags.write_text(tags.read_text() + f"\n{binding}\n")
+    before = source_snapshot(public)
+    with pytest.raises(CommandError, match="already exists"):
+        call_command(command, name="Reserved", category="util", js=False)
+    assert source_snapshot(public) == before
+
+
+def test_javascript_dependency_name_never_writes(scaffold: tuple[Command, Path, io.StringIO]) -> None:
+    """A class named WeakMap would shadow its own static initializer dependency."""
+    command, public, _ = scaffold
+    before = source_snapshot(public)
+    with pytest.raises(CommandError, match="WeakMap dependency"):
+        call_command(command, name="WeakMap", category="util", js=True)
+    assert source_snapshot(public) == before
+
+
+def test_changes_after_planning_are_preserved(
+    scaffold: tuple[Command, Path, io.StringIO], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A stale plan must not overwrite another editor's saved source changes."""
+    command, public, _ = scaffold
+    target = public / "insight_ui/configs/utils.py"
+    changed = target.read_bytes() + b"\n# Concurrent contributor edit\n"
+    before = source_snapshot(public)
+    before[str(target.relative_to(public))] = changed
+    apply = command._apply_scaffold
+
+    def edit_then_apply() -> None:
+        target.write_bytes(changed)
+        apply()
+
+    monkeypatch.setattr(command, "_apply_scaffold", edit_then_apply)
+    with pytest.raises(CommandError, match="changed after planning"):
+        call_command(command, name="Example Panel", category="util", js=False)
+    assert source_snapshot(public) == before
+
+
+def test_changes_during_apply_are_preserved(
+    scaffold: tuple[Command, Path, io.StringIO], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Recheck each write and roll back our earlier file without clobbering new input."""
+    command, public, _ = scaffold
+    target = public / "insight_ui/configs/utils.py"
+    changed = target.read_bytes() + b"\n# Concurrent contributor edit\n"
+    before = source_snapshot(public)
+    before[str(target.relative_to(public))] = changed
+    original_write = Path.write_text
+
+    def edit_after_first_write(path: Path, content: str, *args, **kwargs) -> int:
+        result = original_write(path, content, *args, **kwargs)
+        if path.name == "example_panel.html":
+            target.write_bytes(changed)
+        return result
+
+    monkeypatch.setattr(Path, "write_text", edit_after_first_write)
+    with pytest.raises(CommandError, match="changed after planning"):
+        call_command(command, name="Example Panel", category="util", js=False)
+    assert source_snapshot(public) == before
+
+
+@pytest.mark.parametrize("kind", ["file", "parent", "dangling"])
+def test_redirected_targets_never_write_outside_checkout(
+    scaffold: tuple[Command, Path, io.StringIO], tmp_path: Path, kind: str
+) -> None:
+    """Protect both existing files and new targets redirected through symlinks."""
+    command, public, _ = scaffold
+    outside = tmp_path / "outside"
+    outside.mkdir()
+    if kind == "parent":
+        target = public / "insight_ui/configs"
+        shutil.move(str(target), outside / "configs")
+        target.symlink_to(outside / "configs", target_is_directory=True)
+    elif kind == "file":
+        target = public / "insight_ui/configs/utils.py"
+        shutil.move(str(target), outside / "utils.py")
+        target.symlink_to(outside / "utils.py")
+    else:
+        target = public / "insight_ui/templates/insight_ui/components/example_panel.html"
+        target.symlink_to(outside / "not-created.html")
+    before = source_snapshot(outside)
+    tags = public / "insight_ui/templatetags/insight_tags.py"
+    tags_before = tags.read_bytes()
+    with pytest.raises(CommandError, match=r"escapes|symlinks"):
+        call_command(command, name="Example Panel", category="util", js=False)
+    assert source_snapshot(outside) == before
+    assert tags.read_bytes() == tags_before
+    assert target.is_symlink()
+
+
+def test_redirect_after_planning_is_rejected(
+    scaffold: tuple[Command, Path, io.StringIO], tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Check path ownership again before applying an already validated plan."""
+    command, public, _ = scaffold
+    target = public / "insight_ui/configs/utils.py"
+    outside = tmp_path / "outside.py"
+    outside.write_bytes(b"# Must remain untouched\n")
+    apply = command._apply_scaffold
+
+    def redirect_then_apply() -> None:
+        target.unlink()
+        target.symlink_to(outside)
+        apply()
+
+    monkeypatch.setattr(command, "_apply_scaffold", redirect_then_apply)
+    with pytest.raises(CommandError, match=r"escapes|symlinks"):
+        call_command(command, name="Example Panel", category="util", js=False)
+    assert outside.read_bytes() == b"# Must remain untouched\n"
+    assert not (public / "insight_ui/templates/insight_ui/components/example_panel.html").exists()
+
+
+def test_repeated_generation_preserves_first_result(scaffold: tuple[Command, Path, io.StringIO]) -> None:
+    """A retry must not silently overwrite a contributor's existing work."""
+    command, public, _ = scaffold
+    call_command(command, name="Example Panel", category="filter", js=False)
+    before = source_snapshot(public)
+    with pytest.raises(CommandError, match="already exists"):
+        call_command(command, name="Example Panel", category="filter", js=False)
+    assert source_snapshot(public) == before
+
+
+def test_missing_config_import_fails_without_partial_writes(scaffold: tuple[Command, Path, io.StringIO]) -> None:
+    """Do not print success when a changed source layout cannot be handled."""
+    command, public, _ = scaffold
+    config = public / "insight_ui/configs/filter.py"
+    config.write_text(config.read_text().replace("field as dc_field", "fields as dc_field"))
+    before = source_snapshot(public)
+    with pytest.raises(CommandError, match=r"Missing dataclasses\.field"):
+        call_command(command, name="Example Panel", category="filter", js=False)
+    assert source_snapshot(public) == before
+
+
+def test_unexported_config_never_leaves_a_partial_scaffold(scaffold: tuple[Command, Path, io.StringIO]) -> None:
+    """Protect work in progress even before its Config appears in __all__."""
+    command, public, _ = scaffold
+    config = public / "insight_ui/configs/utils.py"
+    config.write_text(config.read_text() + "\n\nclass ExamplePanelConfig:\n    pass\n")
+    before = source_snapshot(public)
+    with pytest.raises(CommandError, match="already exists"):
+        call_command(command, name="Example Panel", category="util", js=False)
+    assert source_snapshot(public) == before
+
+
+def test_optional_js_selector_matches_template(scaffold: tuple[Command, Path, io.StringIO]) -> None:
+    """JS remains an explicit skeleton, with a usable template hook and handoff."""
+    command, public, output = scaffold
+    call_command(command, name="Example Panel", category="util", js=True)
+    package = public / "insight_ui"
+    template = (package / "templates/insight_ui/components/example_panel.html").read_text()
+    script = (package / "static/insight_ui/js/insight-ui-example-panel.js").read_text()
+    assert "data-insight-example-panel" in template
+    assert 'querySelectorAll("[data-insight-example-panel]")' in script
+    assert "Register the class in insight-ui-init.js" in output.getvalue()
+    assert "Add component render/behavior tests" in output.getvalue()
+
+
+def test_write_failure_restores_all_files(
+    scaffold: tuple[Command, Path, io.StringIO], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A mid-write failure must not leave a new template or truncated Config."""
+    command, public, _ = scaffold
+    before = source_snapshot(public)
+    target = public / "insight_ui/configs/utils.py"
+    original_write = Path.write_text
+
+    def fail_after_truncation(path: Path, content: str, *args, **kwargs) -> int:
+        if path == target:
+            path.write_bytes(b"")
+            message = "Simulated disk error"
+            raise OSError(message)
+        return original_write(path, content, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "write_text", fail_after_truncation)
+    with pytest.raises(CommandError, match="Changes rolled back"):
+        call_command(command, name="Example Panel", category="util", js=False)
+    assert source_snapshot(public) == before
+
+
+def test_rollback_preserves_edits_to_previously_written_file(
+    scaffold: tuple[Command, Path, io.StringIO], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Recovery must leave a contributor's newer content and report its path."""
+    command, public, _ = scaffold
+    template = public / "insight_ui/templates/insight_ui/components/example_panel.html"
+    target = public / "insight_ui/configs/utils.py"
+    original_write = Path.write_text
+    before = source_snapshot(public)
+    changed = b"Newer contributor template content\n"
+
+    def edit_then_fail(path: Path, content: str, *args, **kwargs) -> int:
+        if path == target:
+            template.write_bytes(changed)
+            path.write_bytes(b"")
+            message = "Simulated disk error"
+            raise OSError(message)
+        return original_write(path, content, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "write_text", edit_then_fail)
+    with pytest.raises(CommandError, match=r"Manual recovery required:.*example_panel"):
+        call_command(command, name="Example Panel", category="util", js=False)
+    before[str(template.relative_to(public))] = changed
+    assert source_snapshot(public) == before
+
+
+def test_documented_generator_commands_match_parser(scaffold: tuple[Command, Path, io.StringIO]) -> None:
+    """Read the guide's real commands so removed CLI options cannot survive unnoticed."""
+    import re  # noqa: PLC0415 - local to source-only documentation validation
+    import shlex  # noqa: PLC0415
+
+    command, _, _ = scaffold
+    guide = (ROOT / "CONTRIBUTING.md").read_text().replace("\\\n", " ")
+    calls = re.findall(r"^uv run python manage.py create_component (.+)$", guide, re.MULTILINE)
+    assert calls
+    parser = command.create_parser("manage.py", "create_component")
+    for call in calls:
+        options = parser.parse_args(shlex.split(call))
+        assert options.name == "Example Panel"
+        assert options.category == "form"
+        assert options.js is False
+
+
+def test_preview_renders_real_base_in_same_origin_frame() -> None:
+    """The preview has real package assets and is frameable only on its own origin."""
+    settings = importlib.import_module("devtools.settings")
+    with override_settings(
+        INSTALLED_APPS=settings.INSTALLED_APPS,
+        ROOT_URLCONF="devtools.urls",
+        TEMPLATES=settings.TEMPLATES,
+        MIDDLEWARE=settings.MIDDLEWARE,
+        INSIGHT_UI=settings.INSIGHT_UI,
+        ALLOWED_HOSTS=["testserver"],
+    ):
+        client = Client()
+        controls = client.get("/")
+        preview = client.get("/preview/")
+    assert controls.status_code == HTTPStatus.OK
+    assert b'<iframe id="component-preview"' in controls.content
+    assert b'src="/preview/"' in controls.content
+    assert preview.status_code == HTTPStatus.OK
+    assert preview.headers["X-Frame-Options"] == "SAMEORIGIN"
+    assert controls.headers["X-Frame-Options"] == "DENY"
+    assert b"Example Button" in preview.content
+    assert b"insight_ui/css/tailwind.css" in preview.content
+    assert b"insight-ui-init.js" in preview.content
+
+
+def test_readme_does_not_claim_component_conformance() -> None:
+    """Keep the public promise aligned with the accessibility guide."""
+    readme = (ROOT / "README.md").read_text()
+    assert "design target, not a verified package-wide conformance claim" in readme
+    assert "WCAG 2.2 AA-compliant UI components" not in readme
