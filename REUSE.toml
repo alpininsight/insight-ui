@@ -1,6 +1,6 @@
 version = 1
 SPDX-PackageName = "insight-ui"
-SPDX-PackageSupplier = "Alpin Insight Solutions GmbH & Co. KG <kontakt@alpininsight.com>"
+SPDX-PackageSupplier = "Alpin Insight Solutions GmbH & Co. KG <contact@alpininsight.ai>"
 SPDX-PackageDownloadLocation = "https://github.com/alpininsight/insight-ui"
 
 # Default for every file in the repository. Source files additionally carry SPDX
@@ -34,6 +34,18 @@ path = [
 precedence = "override"
 SPDX-FileCopyrightText = "2025-2026 Alpin Insight Solutions GmbH & Co. KG"
 SPDX-License-Identifier = "CC0-1.0"
+
+# Contributor licence agreement: adapted from the Harmony Agreements v1.0
+# (HA-CLA-I and HA-CLA-E), which are published under CC BY 3.0. The default
+# AGPL rule above would be wrong for this file.
+[[annotations]]
+path = "CLA.md"
+precedence = "override"
+SPDX-FileCopyrightText = [
+    "2025-2026 Alpin Insight Solutions GmbH & Co. KG",
+    "2011 The Harmony Agreements Project (https://www.harmonyagreements.org)",
+]
+SPDX-License-Identifier = "CC-BY-3.0"
 
 # Bundled font: Atkinson Hyperlegible Next, SIL Open Font License 1.1.
 # The OFL text ships next to the font file as required by the licence.
