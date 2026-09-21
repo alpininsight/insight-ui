@@ -40,18 +40,25 @@ SOURCE_ONLY = {
 
 def check_metadata(raw: bytes) -> None:
     """Require built metadata to match the reviewed public project contract."""
-    project = tomllib.loads((Path(__file__).resolve().parents[1] / "pyproject.toml").read_text())["project"]
+    root = Path(__file__).resolve().parents[1]
+    project = tomllib.loads((root / "pyproject.toml").read_text())["project"]
     metadata = BytesParser(policy=policy.default).parsebytes(raw)
     expected = {
         "Name": [project["name"]],
         "Requires-Python": [project["requires-python"]],
         "Classifier": project["classifiers"],
         "Project-URL": [f"{name}, {url}" for name, url in project["urls"].items()],
+        "Description-Content-Type": ["text/markdown"],
     }
     for field, values in expected.items():
         if sorted(metadata.get_all(field, [])) != sorted(values):
             message = f"Built metadata differs from pyproject.toml: {field}"
             raise SystemExit(message)
+    description = metadata.get_payload(decode=True)
+    readme = (root / project["readme"]).read_text(encoding="utf-8")
+    if description is None or description.decode("utf-8").strip() != readme.strip():
+        message = "Built metadata Description differs from the reviewed README."
+        raise SystemExit(message)
 
 
 def check_archive(archive: Path) -> None:

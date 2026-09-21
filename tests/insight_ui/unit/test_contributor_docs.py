@@ -4,6 +4,7 @@
 
 import ast
 import re
+import tomllib
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
@@ -57,7 +58,36 @@ def test_public_guide_index_covers_contributor_tasks() -> None:
     for name in GUIDES:
         assert (ROOT / "docs" / name).is_file(), name
         assert f"]({name})" in index, name
-    assert "](CONTRIBUTING.md)" in (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "](https://github.com/alpininsight/insight-ui/blob/main/CONTRIBUTING.md)" in (ROOT / "README.md").read_text(
+        encoding="utf-8"
+    )
+
+
+def test_readme_links_work_outside_github() -> None:
+    """PyPI cannot resolve repository-relative README links or image sources."""
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    # Include Markdown inside the raw HTML hero, which Python-Markdown skips.
+    links = re.findall(r"\]\(([^\s)]+)\)", readme)
+    links.extend(re.findall(r"^\[[^\]]+\]:\s*<?([^\s>]+)>?", readme, re.MULTILINE))
+    soup = BeautifulSoup(readme, "html.parser")
+    links.extend(str(element.get("href") or element.get("src")) for element in soup.select("[href], [src]"))
+    assert links
+    for link in links:
+        target = urlsplit(link)
+        assert target.scheme == "https", link
+        assert target.netloc, link
+
+
+def test_public_site_links_use_the_documented_routes() -> None:
+    """The package entry points use the public host and exact no-slash docs routes."""
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    project = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))["project"]
+    assert project["urls"]["Homepage"] == "https://django-insight-ui.com/"
+    assert project["urls"]["Documentation"] == "https://django-insight-ui.com/docs/installation"
+    assert "](https://django-insight-ui.com/)" in readme
+    assert "](https://django-insight-ui.com/docs/installation)" in readme
+    assert "](https://django-insight-ui.com/docs/configs)" in readme
+    assert "https://insight-ui.com" not in readme
 
 
 @pytest.mark.parametrize("path", DOCUMENTS, ids=lambda path: str(path.relative_to(ROOT)))
@@ -67,9 +97,13 @@ def test_public_document_links_resolve(path: Path) -> None:
     soup = BeautifulSoup(html, "html.parser")
     for element in soup.select("[href], [src]"):
         target = urlsplit(str(element.get("href") or element.get("src")))
-        if target.scheme or target.netloc:
+        repository_prefix = "/alpininsight/insight-ui/blob/main/"
+        if target.netloc == "github.com" and target.path.startswith(repository_prefix):
+            linked_path = (ROOT / unquote(target.path.removeprefix(repository_prefix))).resolve()
+        elif target.scheme or target.netloc:
             continue
-        linked_path = (path.parent / unquote(target.path)).resolve() if target.path else path
+        else:
+            linked_path = (path.parent / unquote(target.path)).resolve() if target.path else path
         assert linked_path.is_relative_to(ROOT), (path, target.path)
         assert linked_path.exists(), (path, target.path)
         if target.fragment and linked_path.suffix == ".md":
