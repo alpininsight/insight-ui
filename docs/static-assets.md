@@ -95,6 +95,25 @@ Commit intended changes to tracked readable output, but do not force-add ignored
 minified files. Publication automation can rebuild the artifacts; local tests
 must still inspect the CSS that the package will actually ship.
 
+### Reproducible Tailwind CLI builds
+
+The source build intentionally pins `django-tailwind-cli==4.6.2` in
+`pyproject.toml` and Tailwind CLI `4.3.3` in
+`tests/tailwind_settings.py`. Keep both pins exact: the installed
+`django-tailwind-cli` 4.6.2 code uses `TAILWIND_CLI_VERSION="latest"` to follow
+the GitHub release redirect and falls back to `4.1.3` when that lookup fails.
+See the [official 4.6.2 resolver code](https://github.com/django-commons/django-tailwind-cli/blob/v4.6.2/src/django_tailwind_cli/config.py#L412-L455).
+
+`npm run build:tailwind` is the only package entry point that compiles Tailwind;
+`npm run build:static-all` includes it. `build:static`, `build:js` and
+`verify:static-build` operate on existing generated sources and do not select a
+CLI version. Update the compiler pin in the build settings and its regression
+test together. When updating the Python wrapper, also change its exact
+`pyproject.toml` requirement and run `uv lock --upgrade-package django-tailwind-cli`.
+For either update, run the focused reproducibility tests and
+`npm run build:static-all`. Inspect the diff of
+`insight_ui/static/insight_ui/css/tailwind.css` before committing.
+
 The Tailwind source explicitly scans package templates, configs, JS and tags.
 It does not scan this Markdown or the separate documentation application's
 templates. Dynamically assembled classes need explicit build coverage.
