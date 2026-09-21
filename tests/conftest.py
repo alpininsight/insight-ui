@@ -13,7 +13,8 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 @pytest.fixture
 def distribution_metadata() -> EmailMessage:
     """Create package metadata for the small archive fixtures from the source contract."""
-    project = tomllib.loads((Path(__file__).resolve().parents[1] / "pyproject.toml").read_text())["project"]
+    root = Path(__file__).resolve().parents[1]
+    project = tomllib.loads((root / "pyproject.toml").read_text())["project"]
     metadata = EmailMessage()
     metadata["Metadata-Version"] = "2.4"
     metadata["Name"] = project["name"]
@@ -23,6 +24,8 @@ def distribution_metadata() -> EmailMessage:
         metadata["Classifier"] = classifier
     for name, url in project["urls"].items():
         metadata["Project-URL"] = f"{name}, {url}"
+    metadata["Description-Content-Type"] = "text/markdown"
+    metadata.set_content((root / project["readme"]).read_text(encoding="utf-8"))
     return metadata
 
 

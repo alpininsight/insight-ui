@@ -2,7 +2,7 @@
 
 <br>
 
-<img src="https://raw.githubusercontent.com/alpininsight/insight-ui/develop/.github/assets/hero-title.svg" alt="Insight UI" width="400">
+<img src="https://raw.githubusercontent.com/alpininsight/insight-ui/main/.github/assets/hero-title.svg" alt="Django-Insight-UI" width="600">
 
 <br>
 
@@ -13,14 +13,14 @@ HTMX-powered · Tailwind-based · RTL & i18n ready
 
 <br>
 
-[Live Demo](https://insight-ui.com) · [Get Started](docs/getting-started.md) · [Components](https://insight-ui.com/docs/configs)
+[Live Demo](https://django-insight-ui.com/) · [Get Started](https://django-insight-ui.com/docs/installation) · [Components](https://django-insight-ui.com/docs/configs)
 
 <br>
 
 [![PyPI](https://img.shields.io/pypi/v/insight-ui.svg)](https://pypi.org/project/insight-ui/)
-[![Python](https://img.shields.io/badge/python-3.12%2B-blue?logo=python&logoColor=white)](pyproject.toml)
-[![Django](https://img.shields.io/badge/django-5.2%20to%206.x-092E20?logo=django&logoColor=white)](pyproject.toml)
-[![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.12%2B-blue?logo=python&logoColor=white)](https://github.com/alpininsight/insight-ui/blob/main/pyproject.toml)
+[![Django](https://img.shields.io/badge/django-5.2%20to%206.x-092E20?logo=django&logoColor=white)](https://github.com/alpininsight/insight-ui/blob/main/pyproject.toml)
+[![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](https://github.com/alpininsight/insight-ui/blob/main/LICENSE)
 
 </div>
 
@@ -41,7 +41,7 @@ interactivity — no JavaScript framework required.
 
 WCAG 2.2 AA is a design target, not a verified package-wide conformance claim.
 Conformance must be assessed for complete pages and processes in the consuming
-application. See [Accessibility](docs/accessibility.md) for scope and limitations.
+application. See [Accessibility](https://github.com/alpininsight/insight-ui/blob/main/docs/accessibility.md) for scope and limitations.
 
 ## Quick Start
 
@@ -88,20 +88,22 @@ Use components in your templates:
 {% endblock %}
 ```
 
-See [Getting Started](docs/getting-started.md) for complete setup including static assets.
+See [Getting Started](https://github.com/alpininsight/insight-ui/blob/main/docs/getting-started.md) for complete setup including static assets.
 
 ## Documentation
 
+The following guides describe the public package and contributor workflow on GitHub.
+
 | Guide | Description |
 |-------|-------------|
-| [Getting Started](docs/getting-started.md) | Installation and configuration |
-| [Components](docs/components.md) | Template tag API and patterns |
-| [Design System](docs/design-system.md) | Tokens, theming, and customization |
-| [Static Assets](docs/static-assets.md) | Staticfiles and CDN configuration |
-| [Accessibility](docs/accessibility.md) | WCAG compliance guidelines |
-| [Internationalization](docs/i18n.md) | i18n and RTL support |
+| [Getting Started](https://github.com/alpininsight/insight-ui/blob/main/docs/getting-started.md) | Installation and configuration |
+| [Components](https://github.com/alpininsight/insight-ui/blob/main/docs/components.md) | Template tag API and patterns |
+| [Design System](https://github.com/alpininsight/insight-ui/blob/main/docs/design-system.md) | Tokens, theming, and customization |
+| [Static Assets](https://github.com/alpininsight/insight-ui/blob/main/docs/static-assets.md) | Staticfiles and CDN configuration |
+| [Accessibility](https://github.com/alpininsight/insight-ui/blob/main/docs/accessibility.md) | WCAG scope, testing, and limitations |
+| [Internationalization](https://github.com/alpininsight/insight-ui/blob/main/docs/i18n.md) | i18n and RTL support |
 
-Full component reference and live examples at [insight-ui.com](https://insight-ui.com).
+Full component reference and live examples at [django-insight-ui.com](https://django-insight-ui.com/).
 
 ## Contributing
 
@@ -129,7 +131,7 @@ To scaffold a new component:
 uv run python manage.py create_component --name "My Widget" --category input --no-js --dry-run
 ```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow.
+See [CONTRIBUTING.md](https://github.com/alpininsight/insight-ui/blob/main/CONTRIBUTING.md) for the full workflow.
 
 ## Package Scope
 
@@ -140,8 +142,8 @@ not the wheel or sdist. Contributors need no private repository or credentials.
 
 ## License
 
-[GNU Affero General Public License v3.0](LICENSE).
-For commercial licensing see [COMMERCIAL_LICENSE.md](COMMERCIAL_LICENSE.md).
+[GNU Affero General Public License v3.0](https://github.com/alpininsight/insight-ui/blob/main/LICENSE).
+For commercial licensing see [COMMERCIAL_LICENSE.md](https://github.com/alpininsight/insight-ui/blob/main/COMMERCIAL_LICENSE.md).
 
 Licensing metadata follows [REUSE](https://reuse.software). Third-party notices
-are in [NOTICE](NOTICE) and [insight_ui/THIRD_PARTY_NOTICES.md](insight_ui/THIRD_PARTY_NOTICES.md).
+are in [NOTICE](https://github.com/alpininsight/insight-ui/blob/main/NOTICE) and [insight_ui/THIRD_PARTY_NOTICES.md](https://github.com/alpininsight/insight-ui/blob/main/insight_ui/THIRD_PARTY_NOTICES.md).
