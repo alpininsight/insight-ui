@@ -58,7 +58,7 @@ dev = [
     "ruff>=0.16.1",
     "pre-commit>=4.6.1",
     "whitenoise>=6.12.0",
-    "django-tailwind-cli>=4.6.2",
+    "django-tailwind-cli==4.6.2",
 ]
 pytest = [
     "pytest==9.1.1",
@@ -81,8 +81,8 @@ test = [
 ]
 
 [project.urls]
-Homepage = "https://insight-ui.com"
-Documentation = "https://insight-ui.com"
+Homepage = "https://django-insight-ui.com/"
+Documentation = "https://django-insight-ui.com/docs/installation"
 Repository = "https://github.com/alpininsight/insight-ui"
 Issues = "https://github.com/alpininsight/insight-ui/issues"
 

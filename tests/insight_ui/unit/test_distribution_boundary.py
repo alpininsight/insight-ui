@@ -55,7 +55,7 @@ def test_archive_check_accepts_public_package_payload(
     check_archive(path)
 
 
-@pytest.mark.parametrize("field", ["Name", "Requires-Python", "Classifier", "Project-URL"])
+@pytest.mark.parametrize("field", ["Name", "Requires-Python", "Classifier", "Project-URL", "Description-Content-Type"])
 def test_built_metadata_must_match_source(field: str, distribution_metadata: EmailMessage) -> None:
     """Stale maturity, Python support and project links must fail before upload."""
     metadata = distribution_metadata
@@ -64,6 +64,14 @@ def test_built_metadata_must_match_source(field: str, distribution_metadata: Ema
         metadata[field] = "Development Status :: 3 - Alpha"
     with pytest.raises(SystemExit, match=field):
         check_metadata(metadata.as_bytes())
+
+
+@pytest.mark.parametrize("description", ["", "[Get started](docs/getting-started.md)"])
+def test_built_description_must_match_readme(description: str, distribution_metadata: EmailMessage) -> None:
+    """Both archive formats must carry the reviewed README, not stale PyPI links."""
+    distribution_metadata.set_content(description)
+    with pytest.raises(SystemExit, match="Description differs"):
+        check_metadata(distribution_metadata.as_bytes())
 
 
 @pytest.mark.parametrize("missing", ["package.json", "package-lock.json"])
