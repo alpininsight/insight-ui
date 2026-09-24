@@ -14,7 +14,7 @@ from tests import tailwind_settings
 
 ROOT = Path(__file__).resolve().parents[3]
 TAILWIND_CLI_VERSION = "4.3.3"
-DJANGO_TAILWIND_CLI_VERSION = "4.6.2"
+DJANGO_TAILWIND_CLI_VERSION = "4.8.1"
 
 
 def test_tailwind_dependency_and_build_settings_are_exactly_pinned() -> None:
