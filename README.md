@@ -2,7 +2,7 @@
 
 <br>
 
-<img src="https://raw.githubusercontent.com/alpininsight/insight-ui/main/.github/assets/hero-title.svg" alt="Django-Insight-UI" width="600">
+<img src="https://raw.githubusercontent.com/alpininsight/insight-ui/main/.github/assets/hero-title.svg?v=django-insight-ui" alt="Django-Insight-UI" width="600">
 
 <br>
 
