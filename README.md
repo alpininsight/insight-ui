@@ -18,6 +18,7 @@ HTMX-powered · Tailwind-based · RTL & i18n ready
 <br>
 
 [![PyPI](https://img.shields.io/pypi/v/insight-ui.svg)](https://pypi.org/project/insight-ui/)
+[![Latest on Django Packages](https://img.shields.io/badge/PyPI-insight-ui-tags-8c3c26.svg)](https://djangopackages.org/packages/p/insight-ui/)
 [![Python](https://img.shields.io/badge/python-3.12%2B-blue?logo=python&logoColor=white)](https://github.com/alpininsight/insight-ui/blob/main/pyproject.toml)
 [![Django](https://img.shields.io/badge/django-5.2%20to%206.x-092E20?logo=django&logoColor=white)](https://github.com/alpininsight/insight-ui/blob/main/pyproject.toml)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](https://github.com/alpininsight/insight-ui/blob/main/LICENSE)
