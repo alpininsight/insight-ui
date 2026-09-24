@@ -1,0 +1,51 @@
+name: CDN Verification
+
+# The package pins no CDN host: a deployer supplies the base URL and the
+# immutable version to check before switching runtime asset delivery over.
+# Manual only, so this never competes with contributor CI on pull requests.
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'CDN base URL, for example https://cdn.example.com'
+        required: true
+        type: string
+      version:
+        description: 'Immutable version to verify, for example v1.14.0'
+        required: true
+        type: string
+      all_conditional:
+        description: 'Also verify conditional assets such as the Prism stylesheet'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verify published CDN assets
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          python-version: '3.14'
+          enable-cache: false
+      - name: Verify every required asset of the published version
+        env:
+          BASE_URL: ${{ inputs.base_url }}
+          VERSION: ${{ inputs.version }}
+          ALL_CONDITIONAL: ${{ inputs.all_conditional }}
+        run: |
+          set -euo pipefail
+          conditional=()
+          if [[ "$ALL_CONDITIONAL" == "true" ]]; then
+            conditional+=(--all-conditional)
+          fi
+          uv run --no-project python scripts/verify_cdn_assets.py \
+            --base-url "$BASE_URL" --version "$VERSION" "${conditional[@]}"
