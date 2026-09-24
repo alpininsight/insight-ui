@@ -12,6 +12,24 @@ separate documentation application or access to private services to contribute.
 The scaffold and preview commands are available on `develop`. Start from an
 updated source checkout; an older installed wheel is not the contributor host.
 
+## Licensing And The CLA
+
+Insight UI is dual-licensed: AGPL-3.0 for everyone, and a commercial Enterprise
+licence for organisations that cannot meet the AGPL's network-copyleft
+obligation. See [COMMERCIAL_LICENSE.md](COMMERCIAL_LICENSE.md).
+
+Because of that, every contributor signs the
+[Contributor Licence Agreement](CLA.md) once, before their first pull request is
+merged. You keep the copyright in your work; what you grant is the additional
+right to license it commercially, and in exchange we stay bound to keep
+licensing it under the open source licence too. A contribution cannot be taken
+closed-source-only.
+
+If part of what you submit was written by someone else -- vendored code, a
+snippet from elsewhere, output you are unsure about -- say so in the pull
+request before it is reviewed, naming the source and its licence. That is much
+cheaper to resolve before a merge than after one.
+
 ## Package Reference
 
 The [package guides](docs/README.md) are available in this repository without
@@ -276,6 +294,12 @@ Include a useful preview image in the PR when appearance changes. Temporary
 debugging screenshots, browser profiles, caches, and credentials do not belong
 in the repository. Commit an image only when documentation references it or an
 actual visual-regression test uses it as a baseline.
+
+On your first pull request a bot asks you to sign the
+[CLA](CLA.md). Reply in that thread with the sentence it gives you; the
+signature is recorded once and applies to every later pull request. If you
+contribute on behalf of an employer, ask them to sign Part B of the agreement
+instead and write to contact@alpininsight.ai.
 
 ### Maintainer Handoff
 
