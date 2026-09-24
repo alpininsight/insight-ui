@@ -95,8 +95,12 @@ def test_readme_hero_uses_the_public_display_name() -> None:
     """The README bubble and its accessible label must name the same product."""
     label = "Django-Insight-UI"
     soup = BeautifulSoup((ROOT / "README.md").read_text(encoding="utf-8"), "html.parser")
-    image = soup.find("img", src=lambda value: value and value.endswith("/.github/assets/hero-title.svg"))
+    image = soup.find(
+        "img",
+        src=lambda value: value and urlsplit(value).path.endswith("/.github/assets/hero-title.svg"),
+    )
     assert image is not None
+    assert urlsplit(image["src"]).query == "v=django-insight-ui"
     assert image["alt"] == label
     assert image["width"] == "600"
 
