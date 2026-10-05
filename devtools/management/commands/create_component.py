@@ -46,19 +46,6 @@ CATEGORY_TO_CONFIG_FILE = {
     "form": "forms.py",
 }
 
-# Category mapping to __all__ section comments in configs/__init__.py
-CATEGORY_TO_INIT_SECTION = {
-    "layout": "# Layout",
-    "navigation": "# Navigation",
-    "input": "# Inputs",
-    "popup": "# Popups",
-    "util": "# Utils",
-    "list": "# Lists",
-    "filter": "# Filters",
-    "card": "# Cards",
-    "form": "# Forms",
-}
-
 COMPONENT_NAME_PATTERN = re.compile(r"^[a-zA-Z][a-zA-Z0-9 ]*$")
 
 
@@ -183,7 +170,6 @@ class Command(BaseCommand):
         dry_run: bool = False,
     ) -> None:
         """Validate the complete scaffold before writing any package files."""
-        self._source_root = ui_path.parent.resolve()
         self._originals: dict[Path, bytes | None] = {}
         self._pending_writes: dict[Path, str] = {}
         self._validate_new_component(ui_path, names, category)
@@ -211,12 +197,18 @@ class Command(BaseCommand):
                     message = f"Invalid generated Python; no files written: {exc}"
                     raise CommandError(message) from exc
         if dry_run:
-            for path in self._pending_writes:
-                self.stdout.write(str(path.relative_to(ui_path.parent)))
+            self._print_changes(ui_path, "Would create", "Would update")
             self.stdout.write("Dry-run complete; no files written.")
             return
         self._apply_scaffold()
+        self._print_changes(ui_path, "Created", "Updated")
         self._print_success(names, category, needs_js)
+
+    def _print_changes(self, ui_path: Path, created: str, updated: str) -> None:
+        """List each staged file, distinguishing new files from updated ones."""
+        for path in self._pending_writes:
+            verb = created if self._originals[path] is None else updated
+            self.stdout.write(f"  {verb} {path.relative_to(ui_path.parent).as_posix()}")
 
     def _apply_scaffold(self) -> None:
         """Restore previous contents on reported write failures, including truncation."""
@@ -229,15 +221,14 @@ class Command(BaseCommand):
                 self._assert_unchanged(path)
                 written.append(path)
                 writing = path
-                path.write_text(content, encoding="utf-8")
+                path.write_text(content, encoding="utf-8", newline=self._newline(path))
                 writing = None
         except (OSError, CommandError) as exc:
             failed = []
             for path in reversed(written):
                 original = self._originals[path]
                 try:
-                    self._validate_path(path)
-                    if path != writing and path.read_bytes() != self._pending_writes[path].encode("utf-8"):
+                    if path != writing and path.read_bytes() != self._encode(path, self._pending_writes[path]):
                         failed.append(str(path))
                         continue
                     if original is None:
@@ -250,28 +241,23 @@ class Command(BaseCommand):
             message = f"Scaffold write failed. {detail}: {exc}"
             raise CommandError(message) from exc
 
-    def _validate_path(self, path: Path) -> None:
-        """Reject redirected source files and targets outside this checkout."""
-        if not path.is_relative_to(self._source_root) or not path.resolve().is_relative_to(self._source_root):
-            message = f"Scaffold path escapes the source checkout: {path}"
-            raise CommandError(message)
-        for part in (path, *path.parents):
-            if part == self._source_root:
-                break
-            if part.is_symlink():
-                message = f"Scaffold path must not use symlinks: {path}"
-                raise CommandError(message)
-
     def _snapshot(self, path: Path) -> bytes | None:
         """Capture each planning input once, before deriving replacement content."""
-        self._validate_path(path)
         if path not in self._originals:
             self._originals[path] = path.read_bytes() if path.exists() else None
         return self._originals[path]
 
+    def _newline(self, path: Path) -> str:
+        """Line ending of the file being replaced; staged content itself is always LF."""
+        original = self._originals.get(path)
+        return "\r\n" if original is not None and b"\r\n" in original else "\n"
+
+    def _encode(self, path: Path, content: str) -> bytes:
+        """Bytes that writing the staged content to path produces."""
+        return content.replace("\n", self._newline(path)).encode("utf-8")
+
     def _assert_unchanged(self, path: Path) -> None:
         """Do not overwrite changes made after the plan was prepared."""
-        self._validate_path(path)
         current = path.read_bytes() if path.exists() else None
         if current != self._originals[path]:
             message = f"{path} changed after planning; refusing to overwrite it."
@@ -354,7 +340,7 @@ class Command(BaseCommand):
             original = self._snapshot(file_path)
             if original is None:
                 raise FileNotFoundError(file_path)
-            return original.decode("utf-8")
+            return original.decode("utf-8").replace("\r\n", "\n")
         except OSError as exc:
             message = f"Cannot read {file_path}; no files written: {exc}"
             raise CommandError(message) from exc
@@ -420,13 +406,11 @@ class Command(BaseCommand):
         template_content = f"""{{% load insight_tags i18n %}}
 
 {{# {name}: replace the placeholder and add behavior tests. #}}
-<div{{% if {slug}_config.tag_id %}} id="{{{{ {slug}_config.tag_id }}}}"{{% endif %}}
-     class="{container_classes}"{js_attribute}>
+<div class="{container_classes}"{js_attribute}>
     <p class="text-insight-body">{{% translate "{name} component placeholder" %}}</p>
 </div>
 """
-        if self._write_file(template_path, template_content):
-            self.stdout.write(f"  [PLAN] Create template {slug}.html")
+        self._write_file(template_path, template_content)
 
     def _add_inclusion_tag(self, ui_path: Path, slug: str, category: str, name: str, config_class_name: str) -> None:
         """Add inclusion tag to insight_tags.py."""
@@ -456,9 +440,11 @@ def {slug}(config: {config_class_name} | None = None, *, tag_id: str | _Unset = 
 
 
 '''
-        new_content = content[:section_end] + new_tag + content[section_end:]
-        if self._write_file(file_path, new_content):
-            self.stdout.write(f"  [PLAN] Add {slug} inclusion tag to insight_tags.py")
+        before = content[:section_end].rstrip("\n") + "\n\n\n"
+        after = content[section_end:]
+        new_tag = new_tag.rstrip("\n") + "\n"
+        new_content = before + new_tag + ("\n\n" + after if after.strip() else "")
+        self._write_file(file_path, new_content)
 
     def _create_javascript(self, ui_path: Path, js_slug: str, class_name: str, slug: str, git_user: str) -> None:
         """Create the JavaScript file with class boilerplate."""
@@ -515,8 +501,7 @@ def {slug}(config: {config_class_name} | None = None, *, tag_id: str | _Unset = 
     }}
 }}
 """
-        if self._write_file(js_path, js_content):
-            self.stdout.write(f"  [PLAN] Create JavaScript file insight-ui-{js_slug}.js")
+        self._write_file(js_path, js_content)
 
     def _create_config_dataclass(  # noqa: PLR0913, PLR0917
         self, ui_path: Path, config_class_name: str, slug: str, category: str, name: str, git_user: str
@@ -547,6 +532,7 @@ def {slug}(config: {config_class_name} | None = None, *, tag_id: str | _Unset = 
             raise CommandError(message)
         new_class = f'''
 
+
 @dataclass
 class {config_class_name}:
     """Configuration for the {slug.replace("_", " ")} component.
@@ -568,12 +554,11 @@ class {config_class_name}:
     tag_id: str = {field_name}(default="", metadata={{"doc": _("Unique ID for JavaScript/CSS targeting.")}})
 '''
         new_content = content.rstrip() + new_class + "\n"
-        if self._write_file(file_path, new_content):
-            self.stdout.write(f"  [PLAN] Add {config_class_name} to configs/{config_file}")
+        self._write_file(file_path, new_content)
 
-        self._add_config_to_init(ui_path, config_class_name, config_file, category)
+        self._add_config_to_init(ui_path, config_class_name, config_file)
 
-    def _add_config_to_init(self, ui_path: Path, config_class_name: str, config_file: str, category: str) -> None:
+    def _add_config_to_init(self, ui_path: Path, config_class_name: str, config_file: str) -> None:
         """Add config class to configs/__init__.py imports and __all__."""
         init_path = ui_path / "configs" / "__init__.py"
         content = self._read_file(init_path)
@@ -612,22 +597,21 @@ class {config_class_name}:
                 message = f"Cannot find public Config imports for {module_name}; no files written."
                 raise CommandError(message)
 
-        # Add to __all__ list
-        section_comment = CATEGORY_TO_INIT_SECTION.get(category, f"# {category.title()}")
-        all_section_pattern = rf'({re.escape(section_comment)}\n)((?:\s+"[^"]+",\n)*)'
-        all_match = re.search(all_section_pattern, content)
+        content = self._add_to_all(content, config_class_name)
 
-        if all_match:
-            section_end = all_match.end()
-            new_all_entry = f'    "{config_class_name}",\n'
-            content = content[:section_end] + new_all_entry + content[section_end:]
-        else:
-            all_end_pattern = r"(\])\s*$"
-            all_end_match = re.search(all_end_pattern, content)
-            if all_end_match:
-                insert_pos = all_end_match.start()
-                new_all_entry = f'    # {category.title()}\n    "{config_class_name}",\n'
-                content = content[:insert_pos] + new_all_entry + content[insert_pos:]
+        self._write_file(init_path, content)
 
-        if self._write_file(init_path, content):
-            self.stdout.write(f"  [PLAN] Add {config_class_name} to configs/__init__.py")
+    def _add_to_all(self, content: str, config_class_name: str) -> str:
+        """Insert the class alphabetically into the CamelCase group of __all__."""
+        match = re.search(r"^__all__ = \[\n(?P<body>(?:    \"[^\"\n]+\",\n)+)\]", content, re.MULTILINE)
+        if not match:
+            message = "Cannot find __all__ in configs/__init__.py; no files written."
+            raise CommandError(message)
+
+        lines = match.group("body").splitlines(keepends=True)
+        names = [line.strip().strip('",') for line in lines]
+        camel = [i for i, name in enumerate(names) if name[0].isupper() and not name.isupper()]
+        entry = f'    "{config_class_name}",\n'
+        position = next((i for i in camel if lines[i] > entry), camel[-1] + 1 if camel else len(lines))
+        lines.insert(position, entry)
+        return content[: match.start("body")] + "".join(lines) + content[match.end("body") :]
