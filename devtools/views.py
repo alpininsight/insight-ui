@@ -10,10 +10,17 @@ from django.shortcuts import render
 from django.views.decorators.clickjacking import xframe_options_sameorigin
 from insight_ui.configs import ButtonConfig
 
+VIEWPORT_OPTIONS = {
+    "full": "Full Width",
+    "desktop": "Desktop (1024px)",
+    "tablet": "Tablet (768px)",
+    "mobile": "Mobile (375px)",
+}
+
 
 def playground(request: HttpRequest) -> HttpResponse:
     """Render the source-only preview controls, not the documentation catalog."""
-    return render(request, "devtools/demo_container.html")
+    return render(request, "devtools/demo_container.html", {"viewport_options": VIEWPORT_OPTIONS})
 
 
 @xframe_options_sameorigin
