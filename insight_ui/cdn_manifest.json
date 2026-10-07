@@ -16,7 +16,11 @@
         "lg:py-3",
         "lg:bg-transparent",
         "lg:border-none",
-        "lg:shadow-none"
+        "lg:shadow-none",
+        "max-w-full",
+        "align-middle",
+        "break-words",
+        "dark:text-insight-text-link-hover"
       ]
     },
     { "path": "js/insight-ui-init.min.js", "loaded_by": "base.html", "condition": "always" },
