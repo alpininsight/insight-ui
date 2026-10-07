@@ -4,7 +4,7 @@
     &copy;{% if legal_config.year %} {{ legal_config.year }}{% endif %}
     {% if legal_config.holder %}
         {% if legal_config.holder_url %}
-            <a href="{{ legal_config.holder_url }}" class="align-middle inline-flex gap-2 items-center max-w-full text-insight-link">
+            <a href="{{ legal_config.holder_url }}" class="align-middle inline-flex gap-2 items-center max-w-full text-insight-link dark:text-insight-text-link-hover">
                 {% if legal_config.holder_logo %}
                     <span class="shrink-0">{% logo config=legal_config.holder_logo %}</span>
                 {% endif %}
@@ -19,5 +19,5 @@
             <span>{{ legal_config.holder }}</span>
         {% endif %}
     {% endif %}
-    {% for item in metadata %} <span aria-hidden="true">{{ legal_config.separator }}</span> {% if item.url %}<a href="{{ item.url }}" class="text-insight-link">{{ item.text }}</a>{% else %}{{ item.text }}{% endif %}{% endfor %}
+    {% for item in metadata %} <span aria-hidden="true">{{ legal_config.separator }}</span> {% if item.url %}<a href="{{ item.url }}" class="text-insight-link dark:text-insight-text-link-hover">{{ item.text }}</a>{% else %}{{ item.text }}{% endif %}{% endfor %}
 </p>

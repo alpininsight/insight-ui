@@ -36,6 +36,7 @@ class TestLegalNotice(TemplateTagsTestCase):
         assert "· AGPL-3.0" in text
         assert "· All rights reserved." in text
         assert notice.find("a", href="https://example.com/license").get_text(strip=True) == "AGPL-3.0"
+        assert "dark:text-insight-text-link-hover" in notice.find("a")["class"]
         assert len(notice.select("span[aria-hidden='true']")) == 3  # noqa: PLR2004
 
     def test_holder_link_composes_a_decorative_theme_aware_logo(self) -> None:
@@ -56,6 +57,7 @@ class TestLegalNotice(TemplateTagsTestCase):
         link = soup.find("a", href="https://company.example/")
 
         assert link.get_text(strip=True) == "Example Company"
+        assert "dark:text-insight-text-link-hover" in link["class"]
         images = link.find_all("img")
         assert [image["src"] for image in images] == [
             "https://assets.example/logo-light.svg",
