@@ -3,6 +3,7 @@
 """Smoke-test every built wheel and sdist: python -I scripts/smoke_distribution.py [dist]."""
 
 import argparse
+import gettext
 import importlib
 import os
 import secrets
@@ -15,6 +16,8 @@ from pathlib import Path
 SOURCE_ROOT = Path(__file__).resolve().parent.parent
 REQUIRED_ASSETS = {"insight_ui/css/tailwind.css", "insight_ui/js/insight-ui-init.js"}
 PUBLIC_MODULES = ("insight_ui", "django", "markdown", "defusedxml")
+CATALOG_LANGUAGES = ("en", "de")
+CATALOG_DOMAINS = ("django", "djangojs")
 STEP_TIMEOUT = 600
 urlpatterns = []
 
@@ -107,6 +110,23 @@ def check_assets(package: Path, destination: Path) -> None:
             raise RuntimeError(message)
 
 
+def check_catalogs(package: Path) -> None:
+    """Load each installed compiled catalog that Django's translation loader needs."""
+    locale = package / "locale"
+    for language in CATALOG_LANGUAGES:
+        for domain in CATALOG_DOMAINS:
+            compiled = locale / language / "LC_MESSAGES" / f"{domain}.mo"
+            if not compiled.is_file():
+                message = f"Installed package is missing compiled catalog: {compiled.relative_to(package)}"
+                raise RuntimeError(message)
+            require_origin(compiled, package)
+            try:
+                gettext.translation(domain, localedir=locale, languages=[language])
+            except OSError as error:
+                message = f"Installed compiled catalog is unreadable: {compiled.relative_to(package)}"
+                raise RuntimeError(message) from error
+
+
 def check_base_page() -> None:
     """Render the complete default page after strict manifest collection."""
     from django.template.loader import render_to_string  # noqa: PLC0415
@@ -154,9 +174,12 @@ def probe(environment: Path) -> None:
     call_command("check", verbosity=0, fail_level="WARNING")
     check_component()
     check_assets(package, static_root)
+    check_catalogs(package)
     check_base_page()
     check_imports(environment)
-    sys.stdout.write(f"Imports, Django check, button, strict collectstatic and base-page render passed: {package}\n")
+    sys.stdout.write(
+        f"Imports, Django check, button, strict collectstatic, catalogs and base-page render passed: {package}\n"
+    )
 
 
 def smoke_archive(archive: Path, uv: str) -> None:
