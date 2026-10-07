@@ -292,3 +292,33 @@ mark-parentheses  = false
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
+
+[tool.commitizen]
+name = "cz_customize"
+tag_format = "v$version"
+version_scheme = "semver"
+
+[tool.commitizen.customize]
+# Validation pattern: type(scope): description (min 10 chars after colon)
+schema_pattern = "^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\\(\\S+\\))?!?:\\s.{10,}$"
+schema = """
+<type>(<scope>): <description>
+
+Types: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert
+Scope: component or area affected (optional but recommended)
+Description: at least 10 characters, imperative mood
+
+Examples:
+  feat(button): add hover animation for primary variant
+  fix(navbar): prevent dropdown from overlapping modal
+  docs: update installation instructions for uv
+"""
+# Template for generating commit messages
+message_template = "{{change_type}}{% if scope %}({{scope}}){% endif %}{% if breaking %}!{% endif %}: {{subject}}"
+# Bump pattern for version detection
+bump_pattern = "^(feat|fix|refactor|perf)"
+bump_map = {"feat" = "MINOR", "fix" = "PATCH", "refactor" = "PATCH", "perf" = "PATCH"}
+# Changelog integration
+commit_parser = "^(?P<change_type>feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(?:\\((?P<scope>[^)]+)\\))?!?:\\s(?P<message>.+)$"
+changelog_pattern = "^(feat|fix|docs|refactor|perf).*$"
+change_type_map = {"feat" = "Features", "fix" = "Bug Fixes", "docs" = "Documentation", "refactor" = "Refactoring", "perf" = "Performance"}
