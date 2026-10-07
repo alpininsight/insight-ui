@@ -66,9 +66,9 @@ repos:
     hooks:
       - id: gitleaks
 
-  # Conventional Commits (commit-msg validation)
+  # Conventional Commits validation with custom schema
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.18.0
+    rev: v4.8.3
     hooks:
       - id: commitizen
         stages: [commit-msg]
