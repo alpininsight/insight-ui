@@ -1,0 +1,18 @@
+# Transifex GitHub integration for insight-ui package catalogs.
+# Source language is English; translations land under locale/<lang>/.
+# Create/link the Transifex project after OSS eligibility is confirmed, then
+# point the GitHub integration at this file (no org/project slug required here).
+git:
+  filters:
+    - filter_type: file
+      file_format: PO
+      source_language: en
+      source_file: insight_ui/locale/en/LC_MESSAGES/django.po
+      translation_files_expression: 'insight_ui/locale/<lang>/LC_MESSAGES/django.po'
+    - filter_type: file
+      file_format: PO
+      source_language: en
+      source_file: insight_ui/locale/en/LC_MESSAGES/djangojs.po
+      translation_files_expression: 'insight_ui/locale/<lang>/LC_MESSAGES/djangojs.po'
+  settings:
+    pr_branch_name: chore/transifex-<br_unique_id>

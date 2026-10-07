@@ -1,0 +1,2284 @@
+# Insight UI gettext catalog (django).
+# Copyright (C) 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+# This file is distributed under the same license as the insight-ui package.
+# SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+# SPDX-License-Identifier: AGPL-3.0-only
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: insight-ui\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-07 15:21+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: en\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: configs/base.py:39
+msgid "Attribute name without 'data-' prefix."
+msgstr ""
+
+#: configs/base.py:40
+msgid "Attribute value. Empty string for marker attributes."
+msgstr ""
+
+#: configs/base.py:58
+msgid "Name of the Insight UI icon."
+msgstr ""
+
+#: configs/base.py:59
+msgid "Icon size: 'xl', 'l', 'm', 's', or 'xs'."
+msgstr ""
+
+#: configs/base.py:61
+msgid "Color token for the icon (e.g., 'primary', 'danger', 'text-body')."
+msgstr ""
+
+#: configs/base.py:92
+msgid "Static, absolute, root-relative, or data URL for the image."
+msgstr ""
+
+#: configs/base.py:93
+msgid "Accessible text. Empty values make the image decorative."
+msgstr ""
+
+#: configs/base.py:94
+msgid "Optional dark-theme URL."
+msgstr ""
+
+#: configs/base.py:95
+msgid "CSS height value (e.g., '2rem', '100px')."
+msgstr ""
+
+#: configs/base.py:96
+msgid "Optional CSS width value."
+msgstr ""
+
+#: configs/base.py:126
+msgid "The URL for the HTMX request (hx-get/hx-post)."
+msgstr ""
+
+#: configs/base.py:127
+msgid "CSS selector for the target element (hx-target)."
+msgstr ""
+
+#: configs/base.py:129
+msgid "The way in which the target is to be replaced (hx-swap)."
+msgstr ""
+
+#: configs/base.py:133
+msgid ""
+"Settle delay appended to hx-swap, e.g. '300ms', so CSS transitions have time "
+"to run."
+msgstr ""
+
+#: configs/base.py:135
+msgid "Event trigger (hx-trigger)."
+msgstr ""
+
+#: configs/base.py:136
+msgid "HTTP method ('get' or 'post')."
+msgstr ""
+
+#: configs/base.py:138
+msgid "CSS selector for loading indicator (hx-indicator)."
+msgstr ""
+
+#: configs/base.py:140
+msgid "Whether to push URL to browser history (hx-push-url)."
+msgstr ""
+
+#: configs/base.py:141
+msgid "Confirmation message before request (hx-confirm)."
+msgstr ""
+
+#: configs/base.py:143
+msgid "Additional JSON values to include in the request (hx-vals)."
+msgstr ""
+
+#: configs/base.py:171 configs/input.py:491 configs/popup.py:35
+msgid "Optional, unique tag ID for identifying the element in JavaScript."
+msgstr ""
+
+#: configs/base.py:174 configs/input.py:384
+msgid "Required for a `<form>`, as the name of the request parameter."
+msgstr ""
+
+#: configs/base.py:176
+msgid "A text label displayed above the field."
+msgstr ""
+
+#: configs/base.py:177
+msgid "**True** if the field should be disabled."
+msgstr ""
+
+#: configs/base.py:182
+msgid ""
+"Explanation why the field is disabled, shown as tooltip when hovering. Set "
+"to empty string to explicitly skip."
+msgstr ""
+
+#: configs/base.py:186
+msgid "**True** if the field must be filled in."
+msgstr ""
+
+#: configs/card.py:42 configs/card.py:76 configs/card.py:116
+msgid "Card title."
+msgstr ""
+
+#: configs/card.py:43
+msgid "Main card content."
+msgstr ""
+
+#: configs/card.py:44
+msgid "Optional subtitle."
+msgstr ""
+
+#: configs/card.py:45
+msgid "Optional card image."
+msgstr ""
+
+#: configs/card.py:46 configs/card.py:81
+msgid "List of action buttons."
+msgstr ""
+
+#: configs/card.py:77
+msgid "Card description."
+msgstr ""
+
+#: configs/card.py:78 configs/card.py:121
+msgid "The URL to be called when title is clicked."
+msgstr ""
+
+#: configs/card.py:79
+msgid "Card image (displayed as square at top)."
+msgstr ""
+
+#: configs/card.py:80 configs/card.py:123
+msgid "List of badge configurations for tags."
+msgstr ""
+
+#: configs/card.py:117
+msgid "Front side content."
+msgstr ""
+
+#: configs/card.py:118
+msgid "Back side title."
+msgstr ""
+
+#: configs/card.py:119
+msgid "Back side content."
+msgstr ""
+
+#: configs/card.py:120
+msgid "Back side action buttons."
+msgstr ""
+
+#: configs/card.py:122
+msgid "Front side image."
+msgstr ""
+
+#: configs/card.py:124
+msgid "Front side action buttons."
+msgstr ""
+
+#: configs/card.py:143
+msgid "Item title."
+msgstr ""
+
+#: configs/card.py:144
+msgid "Item content/description."
+msgstr ""
+
+#: configs/card.py:145
+msgid "Optional image configuration."
+msgstr ""
+
+#: configs/card.py:146
+msgid "Optional link URL."
+msgstr ""
+
+#: configs/card.py:176 configs/card.py:264
+msgid "List of items to display."
+msgstr ""
+
+#: configs/card.py:177
+msgid "Auto-advance slides every 5 seconds."
+msgstr ""
+
+#: configs/card.py:178 configs/card.py:232
+msgid "Show pagination dots."
+msgstr ""
+
+#: configs/card.py:179 configs/card.py:233
+msgid "Show current/total index."
+msgstr ""
+
+#: configs/card.py:180
+msgid "Number of items visible per slide."
+msgstr ""
+
+#: configs/card.py:198
+msgid "Image URL."
+msgstr ""
+
+#: configs/card.py:199
+msgid "Image alt text."
+msgstr ""
+
+#: configs/card.py:200
+msgid "Optional caption/description."
+msgstr ""
+
+#: configs/card.py:229
+msgid "List of image configurations."
+msgstr ""
+
+#: configs/card.py:231
+msgid "Auto-advance slides."
+msgstr ""
+
+#: configs/card.py:234
+msgid "Images visible per slide."
+msgstr ""
+
+#: configs/card.py:262
+msgid "Unique ID for the carousel."
+msgstr ""
+
+#: configs/card.py:266
+msgid "Rotation speed."
+msgstr ""
+
+#: configs/card.py:267
+msgid "Camera tilt angle."
+msgstr ""
+
+#: configs/card.py:268
+msgid "If True, items always face the camera."
+msgstr ""
+
+#: configs/card.py:302
+msgid "Unique ID for the component."
+msgstr ""
+
+#: configs/card.py:303
+msgid "The cards to be displayed."
+msgstr ""
+
+#: configs/card.py:304
+msgid "Configuration of the table view."
+msgstr ""
+
+#: configs/card.py:306
+msgid "Radio block config for view switching."
+msgstr ""
+
+#: configs/card.py:309
+msgid "Currently active view ('card', 'table', 'carousel')."
+msgstr ""
+
+#: configs/filter.py:43 configs/filter.py:149
+msgid ""
+"URL for form action. Do not use together with htmx_config; use "
+"htmx_config.request_url instead for HTMX requests."
+msgstr ""
+
+#: configs/filter.py:48
+msgid "If True, render compact/minimal style."
+msgstr ""
+
+#: configs/filter.py:49
+msgid "Initial search query value."
+msgstr ""
+
+#: configs/filter.py:50
+msgid "Placeholder text for the search input."
+msgstr ""
+
+#: configs/filter.py:51
+msgid "Label for the search button."
+msgstr ""
+
+#: configs/filter.py:53 configs/filter.py:156
+msgid "HTMX configuration for AJAX requests."
+msgstr ""
+
+#: configs/filter.py:56
+msgid "If True, enable client-side documentation search with Fuse.js."
+msgstr ""
+
+#: configs/filter.py:60
+msgid "Optional URL for the client-side documentation search index."
+msgstr ""
+
+#: configs/filter.py:97
+msgid "Filter field name."
+msgstr ""
+
+#: configs/filter.py:98
+msgid "Filter label."
+msgstr ""
+
+#: configs/filter.py:100
+msgid "Available filter options (dict maps value→label)."
+msgstr ""
+
+#: configs/filter.py:102 configs/forms.py:57 configs/list.py:75
+msgid "Tooltip explanation text."
+msgstr ""
+
+#: configs/filter.py:103
+msgid "Optional filter icon."
+msgstr ""
+
+#: configs/filter.py:104 configs/forms.py:63 configs/list.py:79
+msgid "Currently selected value."
+msgstr ""
+
+#: configs/filter.py:144
+msgid "List of filter configurations."
+msgstr ""
+
+#: configs/filter.py:154
+msgid "If True, arrange filters vertically."
+msgstr ""
+
+#: configs/filter.py:197
+msgid "Database field name."
+msgstr ""
+
+#: configs/filter.py:198
+msgid "Display name."
+msgstr ""
+
+#: configs/filter.py:199
+msgid "Field type for filtering."
+msgstr ""
+
+#: configs/filter.py:201
+msgid "Available operations (maps operation→label)."
+msgstr ""
+
+#: configs/filter.py:203
+msgid "Predefined values (optional)."
+msgstr ""
+
+#: configs/filter.py:241
+msgid "List of model fields with possible operators."
+msgstr ""
+
+#: configs/forms.py:50
+msgid "Type of form field (text, email, password, textarea, select)."
+msgstr ""
+
+#: configs/forms.py:52
+msgid "Unique ID for the field."
+msgstr ""
+
+#: configs/forms.py:53 configs/list.py:73
+msgid "Form field name."
+msgstr ""
+
+#: configs/forms.py:54 configs/input.py:330
+msgid "Label text."
+msgstr ""
+
+#: configs/forms.py:55
+msgid "Placeholder text."
+msgstr ""
+
+#: configs/forms.py:56
+msgid "Default value."
+msgstr ""
+
+#: configs/forms.py:58
+msgid "Whether field is required."
+msgstr ""
+
+#: configs/forms.py:59
+msgid "Whether field is disabled."
+msgstr ""
+
+#: configs/forms.py:61
+msgid "List of options for select fields."
+msgstr ""
+
+#: configs/forms.py:64
+msgid "Number of rows for textarea fields."
+msgstr ""
+
+#: configs/forms.py:108
+msgid "Unique ID for the form element."
+msgstr ""
+
+#: configs/forms.py:109
+msgid "Form title displayed at the top."
+msgstr ""
+
+#: configs/forms.py:110
+msgid "Optional description below the title."
+msgstr ""
+
+#: configs/forms.py:112
+msgid "List of form field configurations."
+msgstr ""
+
+#: configs/forms.py:114
+msgid "Whether to show a reset button."
+msgstr ""
+
+#: configs/forms.py:115
+msgid "Label for the submit button."
+msgstr ""
+
+#: configs/forms.py:116
+msgid "Label for the reset button."
+msgstr ""
+
+#: configs/forms.py:117
+msgid "Target URL for form submission."
+msgstr ""
+
+#: configs/forms.py:118
+msgid "HTTP method for form submission (get or post)."
+msgstr ""
+
+#: configs/forms.py:119
+msgid "HTMX configuration for AJAX submission."
+msgstr ""
+
+#: configs/input.py:84 configs/list.py:42 configs/utils.py:375
+#: configs/utils.py:623
+msgid "Unique ID for JavaScript/CSS targeting."
+msgstr ""
+
+#: configs/input.py:134
+msgid "HTML type attribute: 'button', 'submit', or 'reset'."
+msgstr ""
+
+#: configs/input.py:137
+msgid "Additional CSS classes to append to the button element."
+msgstr ""
+
+#: configs/input.py:212
+msgid "The type of the input field, e.g.: 'text', 'password', 'date', etc."
+msgstr ""
+
+#: configs/input.py:215 configs/input.py:271
+msgid ""
+"Placeholder text, displayed in the field as long as it has not been selected."
+msgstr ""
+
+#: configs/input.py:217 configs/input.py:273
+msgid "The value of the input field."
+msgstr ""
+
+#: configs/input.py:219
+msgid "Smallest numeric value (for `input_type='number'`)."
+msgstr ""
+
+#: configs/input.py:221
+msgid "Largest numeric value (for `input_type='number'`)."
+msgstr ""
+
+#: configs/input.py:222
+msgid "Minimum number of characters in a text field."
+msgstr ""
+
+#: configs/input.py:223
+msgid "Maximum number of characters in a text field."
+msgstr ""
+
+#: configs/input.py:225
+msgid ""
+"**True** if `input_type='checkbox'` and the checkbox should be selected."
+msgstr ""
+
+#: configs/input.py:274
+msgid "Determines the number of lines."
+msgstr ""
+
+#: configs/input.py:275
+msgid "Determines the number of characters in a line."
+msgstr ""
+
+#: configs/input.py:306
+msgid ""
+"The value of the checkbox (this is not the state, see 'checked' for that)."
+msgstr ""
+
+#: configs/input.py:308 configs/input.py:341
+msgid "**True** if the checkbox should be selected."
+msgstr ""
+
+#: configs/input.py:329
+msgid "Unique ID for this checkbox."
+msgstr ""
+
+#: configs/input.py:331
+msgid "Value submitted when checked."
+msgstr ""
+
+#: configs/input.py:332
+msgid "**True** if the checkbox should be disabled."
+msgstr ""
+
+#: configs/input.py:337
+msgid ""
+"Explanation why the checkbox is disabled, shown as tooltip when hovering. "
+"Set to empty string to explicitly skip."
+msgstr ""
+
+#: configs/input.py:385
+msgid "Text label displayed above the checkbox elements."
+msgstr ""
+
+#: configs/input.py:386
+msgid "List of the checkbox elements."
+msgstr ""
+
+#: configs/input.py:388
+msgid "**True** if the checkbox elements should be displayed side by side."
+msgstr ""
+
+#: configs/input.py:391
+msgid "Number of checkbox elements that must be selected at minimum."
+msgstr ""
+
+#: configs/input.py:394
+msgid "Number of checkbox elements that may be selected at the same time."
+msgstr ""
+
+#: configs/input.py:426
+msgid "Label of the dropdown element."
+msgstr ""
+
+#: configs/input.py:427 configs/navigation.py:727
+msgid "The URL to be called when clicking on the respective item."
+msgstr ""
+
+#: configs/input.py:428
+msgid "An optional icon displayed before the label."
+msgstr ""
+
+#: configs/input.py:430 configs/navigation.py:78
+msgid "Optional HTMX configuration for dynamic content loading."
+msgstr ""
+
+#: configs/input.py:463
+msgid ""
+"Unique tag ID for identifying the element in JavaScript. Required to open/"
+"close the dropdown."
+msgstr ""
+
+#: configs/input.py:466
+msgid "Label of the dropdown button."
+msgstr ""
+
+#: configs/input.py:467
+msgid "**True** displays an arrow behind the title."
+msgstr ""
+
+#: configs/input.py:468
+msgid "A list of the menu elements."
+msgstr ""
+
+#: configs/input.py:489
+msgid "Value of the respective radio button."
+msgstr ""
+
+#: configs/input.py:493
+msgid "Label of the respective radio button."
+msgstr ""
+
+#: configs/input.py:494
+msgid "Optional icon displayed before the label."
+msgstr ""
+
+#: configs/input.py:495
+msgid "**True** if the radio button should be disabled."
+msgstr ""
+
+#: configs/input.py:500
+msgid ""
+"Explanation why the radio button is disabled, shown as tooltip when "
+"hovering. Set to empty string to explicitly skip."
+msgstr ""
+
+#: configs/input.py:544 configs/input.py:592
+msgid "The shared HTML `name` attribute for all radio buttons in this group."
+msgstr ""
+
+#: configs/input.py:545 configs/input.py:593
+msgid "A text label displayed above the radio elements."
+msgstr ""
+
+#: configs/input.py:546 configs/input.py:594
+msgid "A list of the radio elements."
+msgstr ""
+
+#: configs/input.py:548 configs/input.py:602
+msgid "**True** if the radio elements should be displayed side by side."
+msgstr ""
+
+#: configs/input.py:550 configs/input.py:618
+msgid "The value of the currently selected radio button."
+msgstr ""
+
+#: configs/input.py:598
+msgid ""
+"**True** if the group is inside a `<form>`. If **False** the group gets its "
+"own `<form>`."
+msgstr ""
+
+#: configs/input.py:606
+msgid ""
+"The URL to which the request should be sent when clicking one of the radio "
+"buttons."
+msgstr ""
+
+#: configs/input.py:609
+msgid "The ID of the HTML tag to be replaced when switching the radio button."
+msgstr ""
+
+#: configs/input.py:612
+msgid "The way in which the target is to be replaced."
+msgstr ""
+
+#: configs/input.py:616
+msgid ""
+"Name of the JavaScript method to be executed when clicking one of the radio "
+"buttons."
+msgstr ""
+
+#: configs/input.py:672
+msgid "The value of the range slider (single-thumb mode only)."
+msgstr ""
+
+#: configs/input.py:674
+msgid "Smallest configurable value of the range slider."
+msgstr ""
+
+#: configs/input.py:675
+msgid "Largest configurable value of the range slider."
+msgstr ""
+
+#: configs/input.py:677
+msgid ""
+"The size of the steps by which the value changes when moving the range "
+"slider."
+msgstr ""
+
+#: configs/input.py:680
+msgid "A list of texts displayed as a legend below the slider."
+msgstr ""
+
+#: configs/input.py:686
+msgid ""
+"Controls responsive legend behavior. Options: **'static'** (default) - no "
+"adjustment; **'skip'** - progressively hides legend items when space is "
+"limited; **'rotate'** - rotates legend text vertically when space is limited."
+msgstr ""
+
+#: configs/input.py:692
+msgid ""
+"**True** to enable dual-thumb mode for selecting a range with min and max "
+"values."
+msgstr ""
+
+#: configs/input.py:695
+msgid "The minimum value in dual-thumb mode. Defaults to `minimum`."
+msgstr ""
+
+#: configs/input.py:698
+msgid "The maximum value in dual-thumb mode. Defaults to `maximum`."
+msgstr ""
+
+#: configs/input.py:752
+msgid "The value of the toggle button."
+msgstr ""
+
+#: configs/input.py:753
+msgid "Optional icon configuration."
+msgstr ""
+
+#: configs/input.py:754
+msgid "**True** if the toggle button should be selected."
+msgstr ""
+
+#: configs/input.py:756
+msgid "**True** if the toggle button should look like a typical switch select."
+msgstr ""
+
+#: configs/input.py:760
+msgid ""
+"Name of the JavaScript method to be executed when the toggle button is "
+"clicked."
+msgstr ""
+
+#: configs/input.py:796
+msgid "A brief description of the filter that appears in a tooltip."
+msgstr ""
+
+#: configs/input.py:799 configs/input.py:856
+msgid "List of values that can be selected."
+msgstr ""
+
+#: configs/input.py:804
+msgid ""
+"Value (the key value, if the options were passed as a dict) of the currently "
+"selected option."
+msgstr ""
+
+#: configs/input.py:851
+msgid "Maximum number of selectable options."
+msgstr ""
+
+#: configs/input.py:853
+msgid "Show additional buttons for 'Select All' and 'Deselect All'."
+msgstr ""
+
+#: configs/input.py:859
+msgid "List of currently selected options."
+msgstr ""
+
+#: configs/input.py:891
+msgid "URL for sending chat messages via HTMX POST."
+msgstr ""
+
+#: configs/layout.py:38
+msgid "The main page title, displayed prominently in primary color."
+msgstr ""
+
+#: configs/layout.py:39
+msgid "Optional chapter displayed before the title in muted style."
+msgstr ""
+
+#: configs/layout.py:40
+msgid "An optional description below the title."
+msgstr ""
+
+#: configs/layout.py:42
+msgid "Optional list of badges displayed below the description."
+msgstr ""
+
+#: configs/layout.py:45
+msgid "Optional list of action buttons displayed below the badges."
+msgstr ""
+
+#: configs/layout.py:74
+msgid "The text content of the article (can contain HTML)."
+msgstr ""
+
+#: configs/layout.py:76
+msgid ""
+"Maximum number of columns (1-4). Fewer columns are shown on narrow "
+"containers."
+msgstr ""
+
+#: configs/layout.py:78
+msgid "The gap between the columns (CSS unit)."
+msgstr ""
+
+#: configs/layout.py:79
+msgid "An optional title above the article."
+msgstr ""
+
+#: configs/layout.py:80
+msgid "Disable responsive behavior and always use max_columns."
+msgstr ""
+
+#: configs/layout.py:117
+msgid "Inner padding size (xs|s|m|l|xl)."
+msgstr ""
+
+#: configs/layout.py:118
+msgid "Height behavior (auto|full|peek)."
+msgstr ""
+
+#: configs/layout.py:158 configs/layout.py:206 configs/layout.py:300
+msgid "Space between children (xs|s|m|l|xl)."
+msgstr ""
+
+#: configs/layout.py:159 configs/layout.py:207
+msgid "Inner padding (xs|s|m|l|xl). Optional."
+msgstr ""
+
+#: configs/layout.py:160 configs/layout.py:208
+msgid "Maximum width (xs|s|m|l|xl|fit|full)."
+msgstr ""
+
+#: configs/layout.py:161 configs/layout.py:209
+msgid "Fill available height in parent container."
+msgstr ""
+
+#: configs/layout.py:163
+msgid "Horizontal alignment (start|center|end|between|around|evenly)."
+msgstr ""
+
+#: configs/layout.py:166
+msgid "Vertical alignment (start|center|end|stretch|baseline)."
+msgstr ""
+
+#: configs/layout.py:168
+msgid "Allow flex items to wrap."
+msgstr ""
+
+#: configs/layout.py:211
+msgid "Horizontal alignment (start|center|end|stretch|baseline)."
+msgstr ""
+
+#: configs/layout.py:214
+msgid "Vertical alignment (start|center|end|between|around|evenly)."
+msgstr ""
+
+#: configs/layout.py:235
+msgid "Spacer size (xs|s|m|l|xl)."
+msgstr ""
+
+#: configs/layout.py:260
+msgid "Orientation (horizontal|vertical)."
+msgstr ""
+
+#: configs/layout.py:261
+msgid "Spacing size (none|xs|s|m|l|xl)."
+msgstr ""
+
+#: configs/layout.py:262
+msgid "Line thickness (thin|medium|thick)."
+msgstr ""
+
+#: configs/layout.py:263
+msgid "Line style (solid|dashed|dotted)."
+msgstr ""
+
+#: configs/layout.py:264
+msgid "Optional text label displayed in the center."
+msgstr ""
+
+#: configs/layout.py:298
+msgid "Anchor ID for navigation (adds scroll-mt-24 for fixed navbar offset)."
+msgstr ""
+
+#: configs/layout.py:301
+msgid "Accessible label for the section."
+msgstr ""
+
+#: configs/layout.py:302
+msgid "ID of element that labels this section."
+msgstr ""
+
+#: configs/layout.py:343
+msgid "Visual style (surface|raised|outline)."
+msgstr ""
+
+#: configs/layout.py:344
+msgid "Inner padding (xs|s|m|l|xl)."
+msgstr ""
+
+#: configs/layout.py:345
+msgid "Border radius (xs|s|m|l|xl|none)."
+msgstr ""
+
+#: configs/layout.py:346
+msgid "HTML id attribute for anchor links and JavaScript targeting."
+msgstr ""
+
+#: configs/layout.py:347
+msgid "URL for clickable surface (renders as <a> instead of <div>)."
+msgstr ""
+
+#: configs/layout.py:348
+msgid "Open link in new tab (only when href is set)."
+msgstr ""
+
+#: configs/layout.py:394
+msgid "Number of columns (1-6). If not set, uses auto-fit mode."
+msgstr ""
+
+#: configs/layout.py:396
+msgid "Space between grid items (xs|s|m|l|xl)."
+msgstr ""
+
+#: configs/layout.py:398
+msgid "Minimum item width for auto-fit mode (any CSS unit: px, rem, em, etc.)."
+msgstr ""
+
+#: configs/layout.py:401
+msgid "Disable responsive breakpoints (always use exact column count)."
+msgstr ""
+
+#: configs/layout.py:433
+msgid "Title of the Hero section."
+msgstr ""
+
+#: configs/layout.py:434
+msgid "Subtitle of the Hero section, displayed below the title."
+msgstr ""
+
+#: configs/layout.py:436
+msgid ""
+"Description of the Hero section, displayed below the title and subtitle."
+msgstr ""
+
+#: configs/layout.py:438
+msgid "Primary 'Call-to-Action' button."
+msgstr ""
+
+#: configs/layout.py:439
+msgid "Secondary 'Call-to-Action' button."
+msgstr ""
+
+#: configs/layout.py:440
+msgid "URL of the background image."
+msgstr ""
+
+#: configs/layout.py:441
+msgid "A badge with icon and text."
+msgstr ""
+
+#: configs/layout.py:485
+msgid "Unique ID for JavaScript targeting (data-insight-modal)."
+msgstr ""
+
+#: configs/layout.py:486
+msgid "Optional heading displayed in the modal header."
+msgstr ""
+
+#: configs/layout.py:487
+msgid "Maximum width in rem units."
+msgstr ""
+
+#: configs/layout.py:488
+msgid "Show the close button in the header."
+msgstr ""
+
+#: configs/layout.py:539
+msgid "Use horizontal layout instead of vertical (default)."
+msgstr ""
+
+#: configs/layout.py:540
+msgid "Spacing between items (xs|s|m|l|xl)."
+msgstr ""
+
+#: configs/layout.py:541
+msgid "Use ``<ol>`` instead of ``<ul>``."
+msgstr ""
+
+#: configs/layout.py:543
+msgid ""
+"List marker style (none|disc|circle|square|decimal|decimal-leading-zero)."
+msgstr ""
+
+#: configs/layout.py:545
+msgid "Marker position (inside|outside)."
+msgstr ""
+
+#: configs/layout.py:546
+msgid "Accessible label for the list."
+msgstr ""
+
+#: configs/layout.py:570
+msgid "Additional CSS classes for the list item."
+msgstr ""
+
+#: configs/list.py:41
+msgid "URL for loading more items."
+msgstr ""
+
+#: configs/list.py:43
+msgid "Initial items to display."
+msgstr ""
+
+#: configs/list.py:44
+msgid "Current page number."
+msgstr ""
+
+#: configs/list.py:45
+msgid "Whether more items are available."
+msgstr ""
+
+#: configs/list.py:46
+msgid "If True, auto-load on scroll. If False, show button."
+msgstr ""
+
+#: configs/list.py:47
+msgid "Pixel threshold before loading more."
+msgstr ""
+
+#: configs/list.py:74
+msgid "Selector label."
+msgstr ""
+
+#: configs/list.py:77
+msgid "Available page size options."
+msgstr ""
+
+#: configs/list.py:116
+msgid "List of column header texts."
+msgstr ""
+
+#: configs/list.py:118
+msgid "List of row data (each row is a list of cell values)."
+msgstr ""
+
+#: configs/list.py:120
+msgid "Optional table caption."
+msgstr ""
+
+#: configs/list.py:122
+msgid "No data available."
+msgstr ""
+
+#: configs/list.py:122
+msgid "Message shown when no data available."
+msgstr ""
+
+#: configs/list.py:149
+msgid "URL for changing page."
+msgstr ""
+
+#: configs/list.py:150
+msgid "Django pagination Page object for the current page."
+msgstr ""
+
+#: configs/list.py:152
+msgid "List of neighboring page numbers to display. Use -1 for ellipsis."
+msgstr ""
+
+#: configs/list.py:155
+msgid "Optional configuration for the items-per-page selector."
+msgstr ""
+
+#: configs/navigation.py:40
+msgid "URL to navigate to when clicking on the brand."
+msgstr ""
+
+#: configs/navigation.py:41
+msgid "Optional accessible label for the brand link."
+msgstr ""
+
+#: configs/navigation.py:42
+msgid "Brand mark with logo and wordmark."
+msgstr ""
+
+#: configs/navigation.py:71 configs/navigation.py:123 configs/navigation.py:576
+msgid "Label of the link."
+msgstr ""
+
+#: configs/navigation.py:74
+msgid ""
+"The URL to be called when clicking on the link, if not opening a modal or "
+"dropdown menu."
+msgstr ""
+
+#: configs/navigation.py:76 configs/navigation.py:125 configs/navigation.py:312
+#: configs/utils.py:684
+msgid "An optional icon displayed before the text."
+msgstr ""
+
+#: configs/navigation.py:80
+msgid "The link is only displayed for logged-in users."
+msgstr ""
+
+#: configs/navigation.py:81 configs/navigation.py:126
+msgid "The link is only displayed for administrators."
+msgstr ""
+
+#: configs/navigation.py:84
+msgid ""
+"ID of a modal dialog to open. The modal must be defined elsewhere in the "
+"template."
+msgstr ""
+
+#: configs/navigation.py:86
+msgid "Configuration of a dropdown menu."
+msgstr ""
+
+#: configs/navigation.py:124
+msgid "The URL to navigate to when clicking on the link."
+msgstr ""
+
+#: configs/navigation.py:155
+msgid "Additional links to display above the logout button."
+msgstr ""
+
+#: configs/navigation.py:157
+msgid "URL to the user's avatar image."
+msgstr ""
+
+#: configs/navigation.py:158
+msgid "Alt text for the avatar image."
+msgstr ""
+
+#: configs/navigation.py:191
+msgid "Logo configuration for branding at the top of the login form."
+msgstr ""
+
+#: configs/navigation.py:195
+msgid "Show theme toggle button in the corner."
+msgstr ""
+
+#: configs/navigation.py:199
+msgid "Show labels above input fields instead of just placeholders."
+msgstr ""
+
+#: configs/navigation.py:203
+msgid "URL for password reset. Empty hides the link."
+msgstr ""
+
+#: configs/navigation.py:207
+msgid "URL for alternative login (e.g., OIDC/SSO). Empty hides the section."
+msgstr ""
+
+#: configs/navigation.py:211
+msgid "Title for the alternative login button."
+msgstr ""
+
+#: configs/navigation.py:215
+msgid "URL for registration. Empty hides the link."
+msgstr ""
+
+#: configs/navigation.py:268
+msgid "Describes the brand mark of the application in the navbar."
+msgstr ""
+
+#: configs/navigation.py:271
+msgid "Contains and describes the navigation items of the navbar."
+msgstr ""
+
+#: configs/navigation.py:275
+msgid "Configuration for the search bar. If None, no search bar is displayed."
+msgstr ""
+
+#: configs/navigation.py:279
+msgid ""
+"Configuration for the user dropdown menu. None uses defaults (logout only)."
+msgstr ""
+
+#: configs/navigation.py:283
+msgid "If True, hide the login button for unauthenticated users."
+msgstr ""
+
+#: configs/navigation.py:286
+msgid ""
+"Displays a dropdown menu for selecting the display language (if defined)."
+msgstr ""
+
+#: configs/navigation.py:289
+msgid ""
+"Displays a button to switch between the light and dark theme of the page."
+msgstr ""
+
+#: configs/navigation.py:310
+msgid "Label of the item."
+msgstr ""
+
+#: configs/navigation.py:311
+msgid "The URL to be called when clicking on the item."
+msgstr ""
+
+#: configs/navigation.py:313
+msgid "HTMX configuration for AJAX page changes."
+msgstr ""
+
+#: configs/navigation.py:314
+msgid "An optional badge displayed after the text."
+msgstr ""
+
+#: configs/navigation.py:355
+msgid "Category header text."
+msgstr ""
+
+#: configs/navigation.py:356
+msgid "Optional category icon."
+msgstr ""
+
+#: configs/navigation.py:357
+msgid "List of items in this category."
+msgstr ""
+
+#: configs/navigation.py:393
+msgid "Sidebar title."
+msgstr ""
+
+#: configs/navigation.py:394
+msgid "Optional title icon."
+msgstr ""
+
+#: configs/navigation.py:396
+msgid "Top-level navigation links shown before categories."
+msgstr ""
+
+#: configs/navigation.py:398
+msgid "Optional heading above the categories section."
+msgstr ""
+
+#: configs/navigation.py:400
+msgid "List of navigation categories."
+msgstr ""
+
+#: configs/navigation.py:437
+msgid ""
+"Position of the sidebar (\"left\" or \"right\"). Auto-detected from block "
+"context."
+msgstr ""
+
+#: configs/navigation.py:441
+msgid ""
+"If **True**, the sidebar is sticky; if **False**, it's a drawer "
+"(collapsible)."
+msgstr ""
+
+#: configs/navigation.py:443
+msgid "Width of the sidebar (\"narrow\", \"normal\", \"wide\")."
+msgstr ""
+
+#: configs/navigation.py:445
+msgid "Behavior on mobile viewports (\"hidden\", \"drawer\")."
+msgstr ""
+
+#: configs/navigation.py:449
+msgid ""
+"Content for the navigation variant (only used with ``sidebar_nav.html``)."
+msgstr ""
+
+#: configs/navigation.py:473
+msgid "Heading of the description."
+msgstr ""
+
+#: configs/navigation.py:474
+msgid "Brief summary of the application."
+msgstr ""
+
+#: configs/navigation.py:476
+msgid "Optional image displayed below the description text."
+msgstr ""
+
+#: configs/navigation.py:501
+msgid "URL of a contact email address."
+msgstr ""
+
+#: configs/navigation.py:502
+msgid "Link to an imprint."
+msgstr ""
+
+#: configs/navigation.py:503
+msgid "Link to a privacy policy."
+msgstr ""
+
+#: configs/navigation.py:545
+msgid "Brief description of the application with optional image."
+msgstr ""
+
+#: configs/navigation.py:548
+msgid "List of the main navigation items of the application."
+msgstr ""
+
+#: configs/navigation.py:552
+msgid ""
+"Contact information, link to the imprint, privacy policy and a contact email "
+"address."
+msgstr ""
+
+#: configs/navigation.py:556
+msgid "Legal notice with copyright, license, and version information."
+msgstr ""
+
+#: configs/navigation.py:558
+msgid "Information about the current version."
+msgstr ""
+
+#: configs/navigation.py:577
+msgid "The URL to be called when clicking on the link."
+msgstr ""
+
+#: configs/navigation.py:578
+msgid "Optional icon (typically for home item)."
+msgstr ""
+
+#: configs/navigation.py:604
+msgid "List of breadcrumb navigation items."
+msgstr ""
+
+#: configs/navigation.py:607 configs/navigation.py:757
+msgid "Optional HTMX configuration for AJAX navigation."
+msgstr ""
+
+#: configs/navigation.py:629
+msgid "Title of the step."
+msgstr ""
+
+#: configs/navigation.py:630
+msgid "Additional description of the step below the title."
+msgstr ""
+
+#: configs/navigation.py:632
+msgid "URL called when the user clicks on the title of the step."
+msgstr ""
+
+#: configs/navigation.py:634
+msgid "Displays a checkmark instead of the step number."
+msgstr ""
+
+#: configs/navigation.py:635
+msgid "Displays an X instead of the step number."
+msgstr ""
+
+#: configs/navigation.py:636
+msgid "Highlights the title in color and makes the text pulse."
+msgstr ""
+
+#: configs/navigation.py:660
+msgid "List of step configurations."
+msgstr ""
+
+#: configs/navigation.py:686
+msgid ""
+"List of states for the process steps. Possible values: 'success', 'failed', "
+"'active' and '' for inactive."
+msgstr ""
+
+#: configs/navigation.py:690
+msgid "Number of process steps. (Only if 'items' is not set!)"
+msgstr ""
+
+#: configs/navigation.py:692
+msgid "Current step of the process. (Only if 'items' is not set!)"
+msgstr ""
+
+#: configs/navigation.py:695
+msgid "Status of the current step. (Only if 'items' is not set!)"
+msgstr ""
+
+#: configs/navigation.py:697
+msgid "Size of the icons in the progress bar."
+msgstr ""
+
+#: configs/navigation.py:724
+msgid "Title of the item."
+msgstr ""
+
+#: configs/navigation.py:725
+msgid "Additional description of the item below the title."
+msgstr ""
+
+#: configs/navigation.py:729
+msgid "Displays a checkmark instead of a bullet point."
+msgstr ""
+
+#: configs/navigation.py:730
+msgid "Highlights the title by color."
+msgstr ""
+
+#: configs/navigation.py:755
+msgid "List of bullet point items."
+msgstr ""
+
+#: configs/navigation.py:776
+msgid "Section title."
+msgstr ""
+
+#: configs/navigation.py:777
+msgid "Section content."
+msgstr ""
+
+#: configs/navigation.py:778
+msgid "Whether section is initially open."
+msgstr ""
+
+#: configs/navigation.py:805 configs/navigation.py:826
+#: configs/navigation.py:857
+msgid "Unique tag ID for identifying the element in JavaScript."
+msgstr ""
+
+#: configs/navigation.py:806
+msgid "List of individual sections."
+msgstr ""
+
+#: configs/navigation.py:807
+msgid "If **True** only one section can be open at a time."
+msgstr ""
+
+#: configs/navigation.py:827
+msgid "Label of the tab button."
+msgstr ""
+
+#: configs/navigation.py:828
+msgid "The URL to be called when the tab is clicked."
+msgstr ""
+
+#: configs/navigation.py:829
+msgid "Whether this tab is initially active."
+msgstr ""
+
+#: configs/navigation.py:858
+msgid "List of tab buttons."
+msgstr ""
+
+#: configs/navigation.py:860
+msgid ""
+"Non-visible additional title that is to be read aloud by screen readers."
+msgstr ""
+
+#: configs/popup.py:37
+msgid "Message displayed in the alert."
+msgstr ""
+
+#: configs/popup.py:38
+msgid "Type of the alert."
+msgstr ""
+
+#: configs/popup.py:40
+msgid "Shows a button to close the alert at the end of the alert container."
+msgstr ""
+
+#: configs/utils.py:49
+msgid "Descriptive message."
+msgstr ""
+
+#: configs/utils.py:50
+msgid "Importance level of the message."
+msgstr ""
+
+#: configs/utils.py:86
+msgid "Typically the current year (not strictly required)."
+msgstr ""
+
+#: configs/utils.py:87
+msgid "The copyright holder."
+msgstr ""
+
+#: configs/utils.py:88
+msgid "Optional source model label, for example Open Source."
+msgstr ""
+
+#: configs/utils.py:89
+msgid "Optional license label, for example AGPL-3.0."
+msgstr ""
+
+#: configs/utils.py:90
+msgid "Optional URL for the license label."
+msgstr ""
+
+#: configs/utils.py:92
+msgid "Separator between legal metadata parts."
+msgstr ""
+
+#: configs/utils.py:94
+msgid "Optional rights statement."
+msgstr ""
+
+#: configs/utils.py:95
+msgid "Optional version string, for example v1.2.3."
+msgstr ""
+
+#: configs/utils.py:126
+msgid "Static, absolute, root-relative, or data URL for image/svg logos."
+msgstr ""
+
+#: configs/utils.py:128
+msgid "Optional dark-theme URL for image/svg logos."
+msgstr ""
+
+#: configs/utils.py:129
+msgid "Accessible text. Empty values make image/svg logos decorative."
+msgstr ""
+
+#: configs/utils.py:130
+msgid "Icon configuration used when type is 'icon'."
+msgstr ""
+
+#: configs/utils.py:131
+msgid "Icon name (alternative to icon config)."
+msgstr ""
+
+#: configs/utils.py:132
+msgid "Icon size (alternative to icon config)."
+msgstr ""
+
+#: configs/utils.py:133
+msgid "CSS height for image/svg logos."
+msgstr ""
+
+#: configs/utils.py:134
+msgid "Optional CSS width for image/svg logos."
+msgstr ""
+
+#: configs/utils.py:169
+msgid "First wordmark run."
+msgstr ""
+
+#: configs/utils.py:170
+msgid "Second wordmark run."
+msgstr ""
+
+#: configs/utils.py:172
+msgid "CSS class for primary text color."
+msgstr ""
+
+#: configs/utils.py:175
+msgid "CSS class for secondary text color."
+msgstr ""
+
+#: configs/utils.py:177
+msgid "Public logo configuration."
+msgstr ""
+
+#: configs/utils.py:179
+msgid "Logo position, either 'start' or 'end'."
+msgstr ""
+
+#: configs/utils.py:181
+msgid "Optional CSS classes for the root element."
+msgstr ""
+
+#: configs/utils.py:221
+msgid "Main status title."
+msgstr ""
+
+#: configs/utils.py:222
+msgid "Supporting status description."
+msgstr ""
+
+#: configs/utils.py:223
+msgid "Visual status type."
+msgstr ""
+
+#: configs/utils.py:225
+msgid "Optional brand mark shown above the card."
+msgstr ""
+
+#: configs/utils.py:227
+msgid "Optional notice heading."
+msgstr ""
+
+#: configs/utils.py:228
+msgid "Optional notice text."
+msgstr ""
+
+#: configs/utils.py:229
+msgid "Primary button action."
+msgstr ""
+
+#: configs/utils.py:230
+msgid "Secondary button action."
+msgstr ""
+
+#: configs/utils.py:231
+msgid "Additional button actions."
+msgstr ""
+
+#: configs/utils.py:232
+msgid "Optional CSS classes for the outer section."
+msgstr ""
+
+#: configs/utils.py:233
+msgid "Optional CSS classes for the status card."
+msgstr ""
+
+#: configs/utils.py:266
+msgid "The text displayed in the ribbon."
+msgstr ""
+
+#: configs/utils.py:269
+msgid ""
+"Corner position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'."
+msgstr ""
+
+#: configs/utils.py:273
+msgid "Color variant for the ribbon."
+msgstr ""
+
+#: configs/utils.py:277
+msgid ""
+"Optional semantic text color. Empty uses white, or body text for neutral."
+msgstr ""
+
+#: configs/utils.py:281
+msgid "Optional URL that turns the ribbon into a link."
+msgstr ""
+
+#: configs/utils.py:285
+msgid "Optional accessible label for the linked ribbon."
+msgstr ""
+
+#: configs/utils.py:376
+msgid "Optional heading/title for the progress bar."
+msgstr ""
+
+#: configs/utils.py:378
+msgid "URL to poll for progress updates. Expected JSON: {\"value\": 75}."
+msgstr ""
+
+#: configs/utils.py:380
+msgid "Polling interval in milliseconds."
+msgstr ""
+
+#: configs/utils.py:381
+msgid "Server-Sent Events URL for real-time progress updates."
+msgstr ""
+
+#: configs/utils.py:382
+msgid "Minimum value."
+msgstr ""
+
+#: configs/utils.py:383
+msgid "Maximum value."
+msgstr ""
+
+#: configs/utils.py:384
+msgid "Current progress in percent."
+msgstr ""
+
+#: configs/utils.py:385
+msgid "Whether to display the value as text."
+msgstr ""
+
+#: configs/utils.py:386
+msgid "Hide progress bar when reaching max_value."
+msgstr ""
+
+#: configs/utils.py:387
+msgid "Delay in ms before hiding after completion."
+msgstr ""
+
+#: configs/utils.py:388
+msgid "Stop polling/SSE when an error is received."
+msgstr ""
+
+#: configs/utils.py:389
+msgid "Show a cancel button during progress."
+msgstr ""
+
+#: configs/utils.py:390
+msgid "Label for the cancel button."
+msgstr ""
+
+#: configs/utils.py:391
+msgid "Optional URL to call when cancelling (POST request)."
+msgstr ""
+
+#: configs/utils.py:392
+msgid "Show a retry button when an error occurs."
+msgstr ""
+
+#: configs/utils.py:393
+msgid "Label for the retry button."
+msgstr ""
+
+#: configs/utils.py:424
+msgid "Marker title/label."
+msgstr ""
+
+#: configs/utils.py:425
+msgid "Latitude coordinate."
+msgstr ""
+
+#: configs/utils.py:426
+msgid "Longitude coordinate."
+msgstr ""
+
+#: configs/utils.py:427
+msgid "Optional popup description."
+msgstr ""
+
+#: configs/utils.py:428
+msgid "Optional numeric value (for circle markers)."
+msgstr ""
+
+#: configs/utils.py:457
+msgid "Dataset name."
+msgstr ""
+
+#: configs/utils.py:458
+msgid "Marker type ('marker' or 'circle')."
+msgstr ""
+
+#: configs/utils.py:459
+msgid "List of marker configurations."
+msgstr ""
+
+#: configs/utils.py:460
+msgid "Minimum value for circle scaling."
+msgstr ""
+
+#: configs/utils.py:461
+msgid "Maximum value for circle scaling."
+msgstr ""
+
+#: configs/utils.py:501
+msgid "Starting map center [lat, lon]."
+msgstr ""
+
+#: configs/utils.py:503
+msgid "Starting zoom level."
+msgstr ""
+
+#: configs/utils.py:504
+msgid "The height of the map in 'rem'."
+msgstr ""
+
+#: configs/utils.py:506
+msgid "List of data layers to display."
+msgstr ""
+
+#: configs/utils.py:509
+msgid "Interactive map"
+msgstr ""
+
+#: configs/utils.py:509
+msgid "Accessible label describing the map's purpose."
+msgstr ""
+
+#: configs/utils.py:525
+msgid "Series name (shown in legend)."
+msgstr ""
+
+#: configs/utils.py:526
+msgid "Data points for this series."
+msgstr ""
+
+#: configs/utils.py:553
+msgid "Chart title."
+msgstr ""
+
+#: configs/utils.py:554
+msgid "Labels for X-axis categories."
+msgstr ""
+
+#: configs/utils.py:555
+msgid "Series names (for legend)."
+msgstr ""
+
+#: configs/utils.py:557
+msgid "Data for each series (list of lists)."
+msgstr ""
+
+#: configs/utils.py:590
+msgid "Unique ID for the chart element."
+msgstr ""
+
+#: configs/utils.py:592
+msgid "Chart data and configuration."
+msgstr ""
+
+#: configs/utils.py:594
+msgid "Height of the chart in 'rem'."
+msgstr ""
+
+#: configs/utils.py:595
+msgid "Accessible label describing the chart's purpose."
+msgstr ""
+
+#: configs/utils.py:596
+msgid "Show decal patterns for colorblind accessibility."
+msgstr ""
+
+#: configs/utils.py:622
+msgid "URL for content updates."
+msgstr ""
+
+#: configs/utils.py:624
+msgid "Update interval in seconds."
+msgstr ""
+
+#: configs/utils.py:625
+msgid "Initial content before first update."
+msgstr ""
+
+#: configs/utils.py:649
+msgid "WebSocket endpoint URL."
+msgstr ""
+
+#: configs/utils.py:654
+msgid ""
+"Container ID for targeting sub-elements by ID (e.g. via HTMX out-of-band "
+"swaps). Optional; without it the connection still works but the server "
+"cannot target specific sub-elements by ID."
+msgstr ""
+
+#: configs/utils.py:660
+msgid "Initial content."
+msgstr ""
+
+#: configs/utils.py:683
+msgid "Badge label."
+msgstr ""
+
+#: configs/utils.py:693
+msgid "Optional tooltip text displayed on hover."
+msgstr ""
+
+#: templates/insight_ui/components/alert.html:22
+#: templates/insight_ui/components/layout/modal.html:27
+msgid "Close"
+msgstr ""
+
+#: templates/insight_ui/components/breadcrumbs.html:3
+msgid "Breadcrumb-Navigation"
+msgstr ""
+
+#: templates/insight_ui/components/cards/flip_card.html:43
+msgid "Show details"
+msgstr ""
+
+#: templates/insight_ui/components/cards/flip_card.html:46
+msgid "More information"
+msgstr ""
+
+#: templates/insight_ui/components/cards/flip_card.html:75
+msgid "Back to front"
+msgstr ""
+
+#: templates/insight_ui/components/cards/flip_card.html:79
+#: templates/insight_ui/components/carousels/3D_carousel.html:23
+msgid "Back"
+msgstr ""
+
+#: templates/insight_ui/components/carousel.html:10
+#: templates/insight_ui/components/carousels/3D_carousel.html:8
+msgid "carousel"
+msgstr ""
+
+#: templates/insight_ui/components/carousel.html:11
+msgid "Content carousel"
+msgstr ""
+
+#: templates/insight_ui/components/carousel.html:25
+#: templates/insight_ui/components/pagination.html:11
+msgid "To previous page"
+msgstr ""
+
+#: templates/insight_ui/components/carousel.html:26
+#: templates/insight_ui/components/pagination.html:39
+msgid "To next page"
+msgstr ""
+
+#: templates/insight_ui/components/carousel.html:33
+msgid "Go to page:"
+msgstr ""
+
+#: templates/insight_ui/components/carousels/3D_carousel.html:9
+msgid "3D carousel"
+msgstr ""
+
+#: templates/insight_ui/components/carousels/3D_carousel.html:24
+msgid "Next"
+msgstr ""
+
+#: templates/insight_ui/components/charts/_data_table.html:8
+#: templates/insight_ui/components/search_bar_result_templates.html:40
+msgid "Category"
+msgstr ""
+
+#: templates/insight_ui/components/charts/bar_chart.html:9
+#, python-format
+msgid "Bar chart: %(title)s"
+msgstr ""
+
+#: templates/insight_ui/components/charts/line_chart.html:9
+#, python-format
+msgid "Line chart: %(title)s"
+msgstr ""
+
+#: templates/insight_ui/components/chat.html:17
+msgid "Message"
+msgstr ""
+
+#: templates/insight_ui/components/chat.html:20
+msgid "Write something..."
+msgstr ""
+
+#: templates/insight_ui/components/chat.html:21
+msgid "Send"
+msgstr ""
+
+#: templates/insight_ui/components/checkbox_group.html:7
+msgid "Minimum selection reached. At least one option must remain selected."
+msgstr ""
+
+#: templates/insight_ui/components/checkbox_group.html:8
+msgid "Maximum selection reached. Deselect an option first."
+msgstr ""
+
+#: templates/insight_ui/components/corner_ribbon.html:4
+#: templates/insight_ui/components/corner_ribbon.html:8
+#: templates/insight_ui/components/corner_ribbon.html:12
+#: templates/insight_ui/components/corner_ribbon.html:16
+msgid "Site status"
+msgstr ""
+
+#: templates/insight_ui/components/footer.html:17
+msgid "Links"
+msgstr ""
+
+#: templates/insight_ui/components/footer.html:44
+msgid "Contact"
+msgstr ""
+
+#: templates/insight_ui/components/footer.html:47
+msgid "Imprint"
+msgstr ""
+
+#: templates/insight_ui/components/footer.html:50
+msgid "Privacy"
+msgstr ""
+
+#: templates/insight_ui/components/footer.html:55
+msgid "Do you have any questions or feedback?"
+msgstr ""
+
+#: templates/insight_ui/components/form.html:41
+msgid "Reset"
+msgstr ""
+
+#: templates/insight_ui/components/form.html:43
+msgid "Submit"
+msgstr ""
+
+#: templates/insight_ui/components/form.html:57
+#: templates/insight_ui/components/htmx_loading_indicator.html:27
+#: templates/insight_ui/components/live_content.html:16
+msgid "Loading..."
+msgstr ""
+
+#: templates/insight_ui/components/geo_map.html:5
+msgid "Map locations"
+msgstr ""
+
+#: templates/insight_ui/components/geo_map.html:100
+#: templates/insight_ui/components/geo_map.html:101
+msgid "Zoom in"
+msgstr ""
+
+#: templates/insight_ui/components/geo_map.html:104
+#: templates/insight_ui/components/geo_map.html:105
+msgid "Zoom out"
+msgstr ""
+
+#: templates/insight_ui/components/geo_map.html:108
+msgid "Map layers"
+msgstr ""
+
+#: templates/insight_ui/components/infinite_scroll.html:25
+#: templates/insight_ui/components/infinite_scroll_items.html:14
+msgid "Load more"
+msgstr ""
+
+#: templates/insight_ui/components/infinite_scroll.html:34
+msgid "More content is loading..."
+msgstr ""
+
+#: templates/insight_ui/components/infinite_scroll_items.html:29
+msgid "Load more content..."
+msgstr ""
+
+#: templates/insight_ui/components/infinite_scroll_items.html:35
+msgid "All content loaded."
+msgstr ""
+
+#: templates/insight_ui/components/input.html:9
+#: templates/insight_ui/components/select.html:9
+#: templates/insight_ui/components/textarea.html:9
+msgid "Required"
+msgstr ""
+
+#: templates/insight_ui/components/layout/sidebar.html:8
+msgid "Open sidebar"
+msgstr ""
+
+#: templates/insight_ui/components/layout/sidebar.html:42
+#: templates/insight_ui/components/layout/sidebar.html:70
+msgid "Side navigation"
+msgstr ""
+
+#: templates/insight_ui/components/layout/sidebar.html:49
+#: templates/insight_ui/components/layout/sidebar.html:75
+msgid "Close sidebar"
+msgstr ""
+
+#: templates/insight_ui/components/live_content.html:24
+msgid "Content is loading..."
+msgstr ""
+
+#: templates/insight_ui/components/live_content_partial.html:13
+msgid "Status"
+msgstr ""
+
+#: templates/insight_ui/components/live_content_partial.html:13
+msgid "Timestamp"
+msgstr ""
+
+#: templates/insight_ui/components/minimal_stepper.html:5
+msgid "Progress indicator"
+msgstr ""
+
+#: templates/insight_ui/components/minimal_stepper.html:10
+#, python-format
+msgid "Step %(step)s"
+msgstr ""
+
+#: templates/insight_ui/components/minimal_stepper.html:10
+msgid "Completed"
+msgstr ""
+
+#: templates/insight_ui/components/minimal_stepper.html:10
+msgid "Failed"
+msgstr ""
+
+#: templates/insight_ui/components/minimal_stepper.html:10
+msgid "In progress"
+msgstr ""
+
+#: templates/insight_ui/components/minimal_stepper.html:10
+msgid "Pending"
+msgstr ""
+
+#: templates/insight_ui/components/multiselect.html:7
+msgid "Select all"
+msgstr ""
+
+#: templates/insight_ui/components/multiselect.html:8
+msgid "Deselect all"
+msgstr ""
+
+#: templates/insight_ui/components/multiselect.html:14
+msgid "Type to search..."
+msgstr ""
+
+#: templates/insight_ui/components/navbar.html:5
+msgid "Jump to main content"
+msgstr ""
+
+#: templates/insight_ui/components/navbar.html:10
+msgid "Main navigation"
+msgstr ""
+
+#: templates/insight_ui/components/navbar.html:35
+msgid "Open menu"
+msgstr ""
+
+#: templates/insight_ui/components/pagination.html:4
+msgid "Pagination"
+msgstr ""
+
+#: templates/insight_ui/components/pagination.html:15
+msgid "To previous page (Deactivated because there are no more previous pages)"
+msgstr ""
+
+#: templates/insight_ui/components/pagination.html:43
+msgid "To next page (Deactivated because there are no more next pages)"
+msgstr ""
+
+#: templates/insight_ui/components/pagination.html:63
+msgid "Page"
+msgstr ""
+
+#: templates/insight_ui/components/pagination.html:63
+msgid "of"
+msgstr ""
+
+#: templates/insight_ui/components/progress_bar.html:93
+msgid "Cancel"
+msgstr ""
+
+#: templates/insight_ui/components/progress_bar.html:96
+msgid "Retry"
+msgstr ""
+
+#: templates/insight_ui/components/range_slider.html:23
+#, python-format
+msgid "%(label)s - Minimum"
+msgstr ""
+
+#: templates/insight_ui/components/range_slider.html:39
+#, python-format
+msgid "%(label)s - Maximum"
+msgstr ""
+
+#: templates/insight_ui/components/search_bar.html:26
+#: templates/insight_ui/components/search_bar.html:48
+msgid "Search"
+msgstr ""
+
+#: templates/insight_ui/components/search_bar.html:35
+msgid "Search..."
+msgstr ""
+
+#: templates/insight_ui/components/search_bar.html:58
+msgid "Search results"
+msgstr ""
+
+#: templates/insight_ui/components/search_bar_result_templates.html:23
+msgid "No results found"
+msgstr ""
+
+#: templates/insight_ui/components/search_bar_result_templates.html:24
+msgid "Try a different search term"
+msgstr ""
+
+#: templates/insight_ui/components/search_bar_result_templates.html:38
+msgid "Component"
+msgstr ""
+
+#: templates/insight_ui/components/search_bar_result_templates.html:39
+msgid "Type"
+msgstr ""
+
+#: templates/insight_ui/components/search_query_builder/sq_builder.html:5
+msgid "Query Builder"
+msgstr ""
+
+#: templates/insight_ui/components/search_query_builder/sq_builder.html:6
+msgid "The following conditions must be met:"
+msgstr ""
+
+#: templates/insight_ui/components/search_query_builder/sq_builder.html:21
+msgid "Add another filter"
+msgstr ""
+
+#: templates/insight_ui/components/search_query_builder/sq_builder.html:22
+msgid "Apply"
+msgstr ""
+
+#: templates/insight_ui/components/search_query_builder/sq_builder.html:93
+#: templates/insight_ui/components/search_query_builder/sq_builder_filter.html:45
+msgid "Value"
+msgstr ""
+
+#: templates/insight_ui/components/search_query_builder/sq_builder.html:159
+#: templates/insight_ui/components/search_query_builder/sq_builder.html:192
+msgid "Filter"
+msgstr ""
+
+#: templates/insight_ui/components/search_query_builder/sq_builder.html:184
+msgid "Filter added"
+msgstr ""
+
+#: templates/insight_ui/components/search_query_builder/sq_builder.html:195
+msgid "removed"
+msgstr ""
+
+#: templates/insight_ui/components/search_query_builder/sq_builder_filter.html:6
+#, python-format
+msgid "Filter %(num)s"
+msgstr ""
+
+#: templates/insight_ui/components/search_query_builder/sq_builder_filter.html:24
+msgid "Select the field of the filter"
+msgstr ""
+
+#: templates/insight_ui/components/search_query_builder/sq_builder_filter.html:26
+msgid "-- Attribute --"
+msgstr ""
+
+#: templates/insight_ui/components/search_query_builder/sq_builder_filter.html:34
+msgid "Select the operator of the filter"
+msgstr ""
+
+#: templates/insight_ui/components/search_query_builder/sq_builder_filter.html:43
+msgid "Specify the value of the filter"
+msgstr ""
+
+#: templates/insight_ui/components/search_query_builder/sq_builder_filter.html:51
+msgid "Remove filter"
+msgstr ""
+
+#: templates/insight_ui/components/select.html:19
+msgid "Select option"
+msgstr ""
+
+#: templates/insight_ui/components/toc_content.html:5
+msgid "Table of Contents"
+msgstr ""
+
+#: templates/insight_ui/components/toggle_theme.html:4
+msgid "Toggle theme"
+msgstr ""
+
+#: templates/insight_ui/components/user_dropdown.html:15
+msgid "Logged in as"
+msgstr ""
+
+#: templates/insight_ui/components/user_dropdown.html:37
+msgid "Logout"
+msgstr ""
+
+#: templates/insight_ui/components/user_dropdown.html:46
+msgid "Register"
+msgstr ""
+
+#: templates/insight_ui/components/user_dropdown.html:49
+#: templates/insight_ui/login.html:46
+msgid "Login"
+msgstr ""
+
+#: templates/insight_ui/components/websocket.html:21
+msgid "Wait for messages..."
+msgstr ""
+
+#: templates/insight_ui/components/websocket.html:25
+msgid "Status:"
+msgstr ""
+
+#: templates/insight_ui/components/websocket.html:32
+msgid "Establishing connection..."
+msgstr ""
+
+#: templates/insight_ui/components/websocket.html:36
+msgid "URL:"
+msgstr ""
+
+#: templates/insight_ui/components/websocket.html:39
+msgid "Mode: HTMX WebSocket Extension (expects HTML)"
+msgstr ""
+
+#: templates/insight_ui/login.html:56
+msgid "Username"
+msgstr ""
+
+#: templates/insight_ui/login.html:63
+msgid "Enter username or email"
+msgstr ""
+
+#: templates/insight_ui/login.html:63
+msgid "Enter username"
+msgstr ""
+
+#: templates/insight_ui/login.html:74
+msgid "Password"
+msgstr ""
+
+#: templates/insight_ui/login.html:81
+msgid "Enter password"
+msgstr ""
+
+#: templates/insight_ui/login.html:88
+msgid "Forgot password?"
+msgstr ""
+
+#: templates/insight_ui/login.html:94
+msgid "Sign in"
+msgstr ""
+
+#: templates/insight_ui/login.html:101
+msgid "Or"
+msgstr ""
+
+#: templates/insight_ui/login.html:113
+msgid "You do not have an account yet?"
+msgstr ""
+
+#: templates/insight_ui/login.html:114
+msgid "Sign up here"
+msgstr ""
+
+#: templatetags/insight_tags.py:968
+msgid "All rights reserved."
+msgstr ""
