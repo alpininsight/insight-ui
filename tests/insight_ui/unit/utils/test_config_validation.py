@@ -994,19 +994,19 @@ def test_validate_html_input_type_custom_field_name() -> None:
 def test_input_field_config_accepts_valid_input_type() -> None:
     """Test InputFieldConfig accepts valid input_type values."""
     for input_type in HTML_INPUT_TYPE_VALUES:
-        config = InputFieldConfig(input_type=input_type)
+        config = InputFieldConfig(name="test_field", input_type=input_type)
         assert config.input_type == input_type
 
 
 def test_input_field_config_rejects_invalid_input_type() -> None:
     """Test InputFieldConfig raises ValueError for invalid input_type."""
     with pytest.raises(ValueError, match="Invalid input_type"):
-        InputFieldConfig(input_type="invalid")
+        InputFieldConfig(name="test_field", input_type="invalid")
 
 
 def test_input_field_config_default_input_type() -> None:
     """Test InputFieldConfig has correct default input_type."""
-    config = InputFieldConfig()
+    config = InputFieldConfig(name="test_field")
     assert config.input_type == "text"
 
 
@@ -1270,19 +1270,19 @@ def test_validate_slider_legend_mode_custom_field_name() -> None:
 def test_slider_config_accepts_valid_legend_mode() -> None:
     """Test SliderConfig accepts valid legend_mode values."""
     for mode in SLIDER_LEGEND_MODE_VALUES:
-        config = SliderConfig(legend_mode=mode)
+        config = SliderConfig(name="test_slider", legend_mode=mode)
         assert config.legend_mode == mode
 
 
 def test_slider_config_rejects_invalid_legend_mode() -> None:
     """Test SliderConfig raises ValueError for invalid legend_mode."""
     with pytest.raises(ValueError, match="Invalid legend_mode"):
-        SliderConfig(legend_mode="hide")
+        SliderConfig(name="test_slider", legend_mode="hide")
 
 
 def test_slider_config_default_legend_mode() -> None:
     """Test SliderConfig has correct default legend_mode."""
-    config = SliderConfig()
+    config = SliderConfig(name="test_slider")
     assert config.legend_mode == "static"
 
 

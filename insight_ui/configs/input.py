@@ -7,7 +7,13 @@ from dataclasses import dataclass, field
 
 from django.utils.translation import gettext_lazy as _
 
-from insight_ui.configs.base import BaseFormFieldConfig, DataAttrConfig, HtmxConfig, IconConfig
+from insight_ui.configs.base import (
+    BaseFormFieldConfig,
+    DataAttrConfig,
+    HtmxConfig,
+    IconConfig,
+    validate_form_field_name,
+)
 from insight_ui.configs.types import (
     ButtonType,
     HtmlButtonType,
@@ -403,7 +409,8 @@ class CheckboxGroupConfig:
     )
 
     def __post_init__(self) -> None:
-        """Validate that minimum_checked does not exceed maximum_checked."""
+        """Require a non-empty name and validate that minimum_checked does not exceed maximum_checked."""
+        validate_form_field_name(self)
         if self.maximum_checked is not None and self.minimum_checked > self.maximum_checked:
             raise ValueError(  # noqa: TRY003
                 f"minimum_checked ({self.minimum_checked}) cannot be greater than maximum_checked ({self.maximum_checked})"
@@ -558,7 +565,8 @@ class RadioGroupConfig:
     current_value: str = field(default="", metadata={"doc": _("The value of the currently selected radio button.")})
 
     def __post_init__(self) -> None:
-        """Set first option for current_value if empty, and validate it against items."""
+        """Require a non-empty name, set first option for current_value if empty, and validate it against items."""
+        validate_form_field_name(self)
         if not self.current_value and self.items:
             self.current_value = self.items[0].value
         elif self.items and self.current_value not in (item.value for item in self.items):
@@ -626,7 +634,8 @@ class RadioBlockConfig:
     current_value: str = field(default="", metadata={"doc": _("The value of the currently selected radio button.")})
 
     def __post_init__(self) -> None:
-        """Validate hx_swap_method and current_value."""
+        """Require a non-empty name and validate hx_swap_method and current_value."""
+        validate_form_field_name(self)
         validate_htmx_swap_method(self.hx_swap_method, "hx_swap_method")
         if not self.current_value and self.items:
             self.current_value = self.items[0].value
