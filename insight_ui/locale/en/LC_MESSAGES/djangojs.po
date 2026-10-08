@@ -1,0 +1,43 @@
+# Insight UI gettext catalog (djangojs).
+# Copyright (C) 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+# This file is distributed under the same license as the insight-ui package.
+# SPDX-FileCopyrightText: 2025-2026 Alpin Insight Solutions GmbH & Co. KG
+# SPDX-License-Identifier: AGPL-3.0-only
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: insight-ui\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-07 15:21+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: en\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: static/insight_ui/js/insight-ui-carousel.js:285
+msgid "Page %(current)s / %(total)s"
+msgstr ""
+
+#: static/insight_ui/js/insight-ui-code-block.js:187
+#: static/insight_ui/js/insight-ui-code-block.js:199
+msgid "✔ copied"
+msgstr ""
+
+#: static/insight_ui/js/insight-ui-code-block.js:202
+msgid "✖ Copy failed!"
+msgstr ""
+
+#: static/insight_ui/js/insight-ui-multiselect.js:323
+msgid "%(count)s/%(max)s selected"
+msgstr ""
+
+#: static/insight_ui/js/insight-ui-multiselect.js:337
+msgid "%(count)s option selected"
+msgid_plural "%(count)s options selected"
+msgstr[0] ""
+msgstr[1] ""

@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 """Test the distribution smoke gate without network resolution or package builds."""
 
+import struct
 import subprocess
 import sys
 from pathlib import Path
@@ -220,6 +221,37 @@ def test_assets_rejects_missing_or_wrong_content(
         smoke.check_assets(package, destination)
 
 
+@pytest.fixture
+def catalog_package(tmp_path: Path) -> Path:
+    """Create an installed-package layout with minimal valid compiled catalogs."""
+    package = tmp_path / "insight_ui"
+    # GNU MO header for an empty catalog: magic, revision, counts and table offsets.
+    empty_catalog = struct.pack("<7I", 0x950412DE, 0, 0, 28, 28, 0, 28)
+    for language in smoke.CATALOG_LANGUAGES:
+        for domain in smoke.CATALOG_DOMAINS:
+            path = package / "locale" / language / "LC_MESSAGES" / f"{domain}.mo"
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(empty_catalog)
+    return package
+
+
+def test_catalogs_load_every_compiled_domain(catalog_package: Path) -> None:
+    """Both Django domains must be installed as readable compiled catalogs."""
+    smoke.check_catalogs(catalog_package)
+
+
+@pytest.mark.parametrize("failure", ["missing", "corrupt"])
+def test_catalogs_reject_missing_or_unreadable_files(catalog_package: Path, failure: str) -> None:
+    """Shipping only .po sources or a broken .mo must fail the installed-package smoke."""
+    compiled = catalog_package / "locale" / "de" / "LC_MESSAGES" / "djangojs.mo"
+    if failure == "missing":
+        compiled.unlink()
+    else:
+        compiled.write_bytes(b"not a catalog")
+    with pytest.raises(RuntimeError, match=r"missing compiled catalog|unreadable"):
+        smoke.check_catalogs(catalog_package)
+
+
 @pytest.mark.parametrize("failure", ["not-isolated", "wrong-venv", "base-python", "inside-checkout"])
 def test_probe_rejects_non_isolated_runtime(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, failure: str) -> None:
     """The internal probe cannot report success from the contributor's interpreter."""
@@ -243,6 +275,7 @@ def test_probe_configures_only_public_local_host(tmp_path: Path, monkeypatch: py
         flags=SimpleNamespace(isolated=1), prefix=str(tmp_path), base_prefix="/base-python", stdout=Mock()
     )
     settings, setup, command, component, assets, page = Mock(), Mock(), Mock(), Mock(), Mock(), Mock()
+    catalogs = Mock()
     imports = Mock(return_value=tmp_path / "insight_ui")
     monkeypatch.chdir(tmp_path)
     monkeypatch.setattr(smoke, "sys", runtime)
@@ -252,6 +285,7 @@ def test_probe_configures_only_public_local_host(tmp_path: Path, monkeypatch: py
     monkeypatch.setattr(smoke, "check_imports", imports)
     monkeypatch.setattr(smoke, "check_component", component)
     monkeypatch.setattr(smoke, "check_assets", assets)
+    monkeypatch.setattr(smoke, "check_catalogs", catalogs)
     monkeypatch.setattr(smoke, "check_base_page", page)
     smoke.probe(tmp_path)
     config = settings.configure.call_args.kwargs
@@ -269,6 +303,7 @@ def test_probe_configures_only_public_local_host(tmp_path: Path, monkeypatch: py
     command.assert_called_once_with("check", verbosity=0, fail_level="WARNING")
     component.assert_called_once_with()
     assets.assert_called_once_with(tmp_path / "insight_ui", tmp_path / "collected-static")
+    catalogs.assert_called_once_with(tmp_path / "insight_ui")
     page.assert_called_once_with()
     assert imports.call_count == 2  # noqa: PLR2004
     imports.assert_called_with(tmp_path)
