@@ -16,6 +16,8 @@ SPDX-License-Identifier = "AGPL-3.0-only"
 path = [
     ".github/**",
     ".gitignore",
+    ".gitattributes",
+    ".editorconfig",
     ".dockerignore",
     ".python-version",
     ".pre-commit-config.yaml",

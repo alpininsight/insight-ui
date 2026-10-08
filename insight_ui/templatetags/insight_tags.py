@@ -6,11 +6,9 @@ from __future__ import annotations
 
 import json
 import math
-from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import MISSING, fields, is_dataclass, replace
 from difflib import HtmlDiff, ndiff, unified_diff
-from types import UnionType
-from typing import TYPE_CHECKING, Any, Final, Literal, TypeVar, get_args, get_origin, get_type_hints
+from typing import TYPE_CHECKING, Any, Final, Literal, TypeVar
 
 from django import template
 from django.conf import settings
@@ -18,6 +16,8 @@ from django.templatetags.static import static
 from django.urls import NoReverseMatch, reverse
 
 if TYPE_CHECKING:
+    from collections.abc import Iterable, Sequence
+
     from django.core.paginator import Page
 from django.utils.functional import Promise
 from django.utils.safestring import SafeString, mark_safe
@@ -159,113 +159,6 @@ def ensure_list(value: str | Iterable[str] | None) -> list[str]:
     return list(value)
 
 
-def _is_dataclass_type(annotation: object) -> bool:
-    """Return whether a type annotation directly describes a dataclass config.
-
-    Args:
-        annotation: The type annotation to check.
-
-    Returns:
-        True if annotation is a dataclass type, False otherwise.
-
-    """
-    return isinstance(annotation, type) and is_dataclass(annotation)
-
-
-def _coerce_mapping_to_config[T](cls: type[T], value: Mapping[str, Any]) -> T:
-    """Create a dataclass config from a mapping, including nested config values.
-
-    Args:
-        cls: The dataclass type to instantiate.
-        value: The mapping of field names to values.
-
-    Returns:
-        An instance of the dataclass with coerced values.
-
-    """
-    type_hints = get_type_hints(cls)
-    coerced_values = {key: _coerce_config_value(item, type_hints.get(key, Any)) for key, item in value.items()}
-    return cls(**coerced_values)
-
-
-def _coerce_sequence_to_config(value: Sequence[Any], annotation: object) -> list[Any]:
-    """Convert list-like config values according to their annotated item type.
-
-    Args:
-        value: The sequence to convert.
-        annotation: The type annotation describing the expected item type.
-
-    Returns:
-        A list with items coerced to the annotated type.
-
-    """
-    origin = get_origin(annotation)
-    if origin in (list, Sequence):
-        args = get_args(annotation)
-        item_annotation = args[0] if args else Any
-        return [_coerce_config_value(item, item_annotation) for item in value]
-
-    if origin is UnionType:
-        for option in get_args(annotation):
-            option_origin = get_origin(option)
-            if option_origin in (list, Sequence):
-                return _coerce_sequence_to_config(value, option)
-
-    return list(value)
-
-
-def _expects_sequence_config(annotation: object) -> bool:
-    """Return whether an annotation expects a list-like config value.
-
-    Args:
-        annotation: The type annotation to check.
-
-    Returns:
-        True if annotation expects a sequence, False otherwise.
-
-    """
-    origin = get_origin(annotation)
-    if origin in (list, Sequence):
-        return True
-
-    if origin is UnionType:
-        return any(_expects_sequence_config(option) for option in get_args(annotation))
-
-    return False
-
-
-def _coerce_config_value(value: Any, annotation: object) -> Any:  # noqa: ANN401
-    """Coerce mapping and sequence values into annotated dataclass config types.
-
-    Args:
-        value: The value to coerce.
-        annotation: The target type annotation.
-
-    Returns:
-        The coerced value, or unchanged if no coercion applies.
-
-    """
-    origin = get_origin(annotation)
-
-    if isinstance(value, Mapping):
-        if _is_dataclass_type(annotation):
-            return _coerce_mapping_to_config(annotation, value)
-
-        if origin is UnionType:
-            for option in get_args(annotation):
-                if _is_dataclass_type(option):
-                    return _coerce_mapping_to_config(option, value)
-
-    if (
-        isinstance(value, Sequence)
-        and not isinstance(value, (str, bytes, bytearray))
-        and _expects_sequence_config(annotation)
-    ):
-        return _coerce_sequence_to_config(value, annotation)
-
-    return value
-
-
 def build_config[T](cls: type[T], config: T | None = None, **kwargs: Any) -> T:  # noqa: ANN401
     """Create or update a dataclass instance.
 
@@ -282,15 +175,17 @@ def build_config[T](cls: type[T], config: T | None = None, **kwargs: Any) -> T: 
         A new or updated dataclass instance.
 
     Raises:
+        TypeError: If config is neither None nor a dataclass instance.
         ValueError: If required fields are missing when creating a new instance.
 
     """
     overrides = {key: value for key, value in kwargs.items() if value is not UNSET}
 
-    if isinstance(config, Mapping):
-        return _coerce_mapping_to_config(cls, dict(config) | overrides)
-
-    if config is not None and is_dataclass(config):
+    if config is not None:
+        if not is_dataclass(config) or isinstance(config, type):
+            raise TypeError(  # noqa: TRY003
+                f"config for {cls.__name__} must be a dataclass instance, got {type(config).__name__}."
+            )
         return replace(config, **overrides)
 
     required_fields = [
@@ -508,6 +403,7 @@ def _resolve_url(url_or_name: str) -> str:
 @register.inclusion_tag("insight_ui/components/navbar.html", takes_context=True)
 def navbar(context: dict[str, Any], config: NavbarConfig, **kwargs: JsonValue) -> dict[str, Any]:
     """Render a configurable navigation bar."""
+    config = build_config(NavbarConfig, config)
     return {
         "user": context.get("user"),
         "navbar_config": config,
@@ -522,6 +418,7 @@ def navbar(context: dict[str, Any], config: NavbarConfig, **kwargs: JsonValue) -
 @register.inclusion_tag("insight_ui/components/footer.html")
 def footer(config: FooterConfig) -> dict[str, Any]:
     """Render a footer with optional description, links, and a legal notice line."""
+    config = build_config(FooterConfig, config)
     return {"footer_config": config}
 
 
@@ -585,6 +482,7 @@ def bullet_point_list(
 @register.inclusion_tag("insight_ui/components/accordion.html")
 def accordion(config: AccordionConfig) -> dict[str, Any]:
     """Render an accordion that can have one or more sections open."""
+    config = build_config(AccordionConfig, config)
     return {"accordion_config": config}
 
 
@@ -769,12 +667,14 @@ def checkbox(
 @register.inclusion_tag("insight_ui/components/checkbox_group.html")
 def checkbox_group(config: CheckboxGroupConfig) -> dict[str, Any]:
     """Render a group of checkbox elements."""
+    config = build_config(CheckboxGroupConfig, config)
     return {"checkbox_group_config": config}
 
 
 @register.inclusion_tag("insight_ui/components/dropdown.html")
 def dropdown(config: DropdownConfig) -> dict[str, Any]:
     """Render a dropdown menu."""
+    config = build_config(DropdownConfig, config)
     return {"dropdown_config": config}
 
 
@@ -961,6 +861,8 @@ def legal_notice(
     separator: str | _Unset | None = UNSET,
     rights_text: str | _Unset | None = UNSET,
     version: str | _Unset | None = UNSET,
+    holder_url: str | _Unset | None = UNSET,
+    holder_logo: LogoConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a reusable legal notice line with copyright, license, and version."""
     config = build_config(LegalNoticeConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -1251,6 +1153,7 @@ def pagination(
 @register.inclusion_tag("insight_ui/components/table.html")
 def table(config: TableConfig) -> dict[str, Any]:
     """Render a simple table."""
+    config = build_config(TableConfig, config)
     return {"table_config": config}
 
 
