@@ -5,6 +5,8 @@
 import re
 from pathlib import Path
 
+import pytest
+
 INPUT_CSS = Path("insight_ui/utils/input.css")
 SRGB_LINEAR_THRESHOLD = 0.04045
 WCAG_AA_CONTRAST_RATIO = 4.5
@@ -77,36 +79,28 @@ def test_insight_tokens_are_not_defined_twice() -> None:
     assert duplicates == []
 
 
-def test_semantic_action_and_foreground_tokens_meet_wcag_aa() -> None:
-    """Keep semantic control and soft-surface pairs readable in both themes."""
+@pytest.mark.parametrize("role", ["primary", "secondary", "success", "warning", "danger", "info"])
+@pytest.mark.parametrize(
+    ("foreground", "background"),
+    [
+        ("on-fill", "action"),
+        ("on-fill", "action-dark"),
+        ("text", "soft"),
+        ("text-dark", "soft-dark"),
+    ],
+    ids=lambda suffix: suffix,
+)
+def test_semantic_color_pairs_meet_wcag_aa(role: str, foreground: str, background: str) -> None:
+    """Keep filled controls and text on soft surfaces readable in both themes."""
     css = INPUT_CSS.read_text()
+    foreground_token = f"--color-insight-{role}-{foreground}"
+    background_token = f"--color-insight-{role}-{background}"
+    foreground_color = _hex_token(css, foreground_token)
+    background_color = _hex_token(css, background_token)
 
-    for role in ("primary", "secondary", "success", "warning", "danger", "info"):
-        assert (
-            _contrast_ratio(
-                _hex_token(css, f"--color-insight-{role}-action"),
-                _hex_token(css, f"--color-insight-{role}-text"),
-            )
-            >= WCAG_AA_CONTRAST_RATIO
-        )
-        assert (
-            _contrast_ratio(
-                _hex_token(css, f"--color-insight-{role}-action-dark"),
-                _hex_token(css, f"--color-insight-{role}-text"),
-            )
-            >= WCAG_AA_CONTRAST_RATIO
-        )
-        assert (
-            _contrast_ratio(
-                _hex_token(css, f"--color-insight-{role}-foreground"),
-                _hex_token(css, f"--color-insight-{role}-soft"),
-            )
-            >= WCAG_AA_CONTRAST_RATIO
-        )
-        assert (
-            _contrast_ratio(
-                _hex_token(css, f"--color-insight-{role}-foreground-dark"),
-                _hex_token(css, f"--color-insight-{role}-soft-dark"),
-            )
-            >= WCAG_AA_CONTRAST_RATIO
-        )
+    ratio = _contrast_ratio(foreground_color, background_color)
+
+    assert ratio >= WCAG_AA_CONTRAST_RATIO, (
+        f"{foreground_token} ({foreground_color}) on {background_token} ({background_color}) "
+        f"has contrast {ratio:.2f}, needs {WCAG_AA_CONTRAST_RATIO}"
+    )
