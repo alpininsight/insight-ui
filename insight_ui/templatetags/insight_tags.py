@@ -12,11 +12,12 @@ from typing import TYPE_CHECKING, Any, Final, Literal, TypeVar
 
 from django import template
 from django.conf import settings
+from django.template.loader import render_to_string
 from django.templatetags.static import static
 from django.urls import NoReverseMatch, reverse
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable, Sequence
+    from collections.abc import Callable, Iterable, Sequence
 
     from django.core.paginator import Page
 from django.utils.functional import Promise
@@ -56,7 +57,7 @@ from insight_ui.configs import (
     FlipCardConfig,
     FooterConfig,
     FormConfig,
-    FormFieldConfig,
+    FormField,
     GenericFilterConfig,
     GeoMapConfig,
     GeoMapDatasetConfig,
@@ -621,6 +622,7 @@ def input_field(
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset | None = UNSET,
     label: str | _Unset | None = UNSET,
+    explanation: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render any <input> field."""
     config = build_config(InputFieldConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -641,6 +643,7 @@ def textarea(
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset | None = UNSET,
     label: str | _Unset | None = UNSET,
+    explanation: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a <textarea> field."""
     config = build_config(TextareaConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -1335,6 +1338,38 @@ def toggle_view(
 # =============================================================
 
 
+# Tag and template that render each field config supported by the form component.
+_FORM_FIELD_RENDERERS: dict[type, tuple[Callable[..., dict[str, Any]], str]] = {
+    InputFieldConfig: (input_field, "insight_ui/components/input.html"),
+    TextareaConfig: (textarea, "insight_ui/components/textarea.html"),
+    SelectConfig: (select, "insight_ui/components/select.html"),
+    MultiselectConfig: (multiselect, "insight_ui/components/multiselect.html"),
+    CheckboxConfig: (checkbox, "insight_ui/components/checkbox.html"),
+    CheckboxGroupConfig: (checkbox_group, "insight_ui/components/checkbox_group.html"),
+    RadioGroupConfig: (radio_group, "insight_ui/components/radio_group.html"),
+    RadioBlockConfig: (radio_block, "insight_ui/components/radio_block.html"),
+    SliderConfig: (slider, "insight_ui/components/range_slider.html"),
+    ToggleConfig: (toggle, "insight_ui/components/toggle_button.html"),
+}
+
+
+def _render_form_field(form_field: FormField) -> SafeString:
+    """Render a single form field with the template tag of its config type.
+
+    Args:
+        form_field: The field config to render.
+
+    Returns:
+        The rendered field HTML.
+
+    """
+    if isinstance(form_field, RadioBlockConfig):
+        # A standalone radio block renders its own <form>, which must not be nested.
+        form_field = replace(form_field, integrated=True)
+    tag, template_name = _FORM_FIELD_RENDERERS[type(form_field)]
+    return render_to_string(template_name, tag(form_field))
+
+
 @register.inclusion_tag("insight_ui/components/form.html")
 def form(
     config: FormConfig | None = None,
@@ -1342,11 +1377,11 @@ def form(
     tag_id: str | _Unset = UNSET,
     title: str | _Unset = UNSET,
     description: str | _Unset = UNSET,
-    fields: Sequence[FormFieldConfig] | _Unset | None = UNSET,
+    fields: Sequence[FormField] | _Unset = UNSET,
     show_reset_button: bool | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
     htmx_config: HtmxConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a form with HTMX support."""
     config = build_config(FormConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    return {"form_config": config}
+    return {"form_config": config, "rendered_fields": [_render_form_field(field) for field in config.fields]}

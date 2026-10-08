@@ -4,7 +4,7 @@
  * Tests for Checkbox group component functionality
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -294,6 +294,31 @@ describe('Checkbox Group Component', () => {
       checkbox.destroy();
 
       expect(InsightUI.Checkbox.instances.has(element)).toBe(false);
+    });
+  });
+
+  describe('Form reset', () => {
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it('should re-apply the minimum after the form is reset', () => {
+      vi.useFakeTimers();
+      const container = createCheckboxGroup({ min: 1, max: 3, initialChecked: [] });
+      const form = document.createElement('form');
+      form.append(...container.childNodes);
+      container.appendChild(form);
+      const element = form.querySelector('[data-insight-checkbox-group]');
+      const checkboxes = element.querySelectorAll('input');
+      new InsightUI.Checkbox(element);
+      expect(checkboxes[0].checked).toBe(true);
+
+      // The auto-checked box is not checked in the markup, so a native reset unchecks it.
+      form.reset();
+      vi.runAllTimers();
+
+      expect([...checkboxes].filter(box => box.checked)).toHaveLength(1);
+      expect(checkboxes[0].checked).toBe(true);
     });
   });
 });

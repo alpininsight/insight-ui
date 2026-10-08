@@ -160,32 +160,6 @@ type HtmlInputType = Literal[
     "radio",
 ]
 
-# Tuple of valid form field type values (high-level form abstraction)
-FORM_FIELD_TYPE_VALUES: tuple[str, ...] = (
-    "text",
-    "password",
-    "email",
-    "number",
-    "tel",
-    "url",
-    "date",
-    "textarea",
-    "select",
-)
-
-# Type alias for form field types
-type FormFieldType = Literal[
-    "text",
-    "password",
-    "email",
-    "number",
-    "tel",
-    "url",
-    "date",
-    "textarea",
-    "select",
-]
-
 # =============================================================================
 # Position Types
 # =============================================================================
@@ -442,20 +416,6 @@ def validate_html_input_type(value: str, field_name: str = "input_type") -> None
     _validate_literal(value, HTML_INPUT_TYPE_VALUES, field_name)
 
 
-def validate_form_field_type(value: str, field_name: str = "input_type") -> None:
-    """Validate that a form field type value is one of the allowed values.
-
-    Args:
-        value: The form field type value to validate.
-        field_name: Name of the field for error messages.
-
-    Raises:
-        ValueError: If the value is not a valid form field type.
-
-    """
-    _validate_literal(value, FORM_FIELD_TYPE_VALUES, field_name)
-
-
 def validate_htmx_swap_method(value: str, field_name: str = "swap_method") -> None:
     """Validate that an HTMX swap method value is one of the allowed values.
 
@@ -641,10 +601,6 @@ TYPE_REGISTRY: dict[str, dict] = {
     "FilterFieldType": {
         "values": FILTER_FIELD_TYPE_VALUES,
         "description": "Field types for query builder and filter components.",
-    },
-    "FormFieldType": {
-        "values": FORM_FIELD_TYPE_VALUES,
-        "description": "High-level form field types for the form component.",
     },
     "GeoMapMarkerType": {
         "values": GEO_MAP_MARKER_TYPE_VALUES,

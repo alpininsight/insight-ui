@@ -195,6 +195,7 @@ class InputFieldConfig(BaseFormFieldConfig):
         min_length: Minimum number of characters in a text field.
         max_length: Maximum number of characters in a text field.
         checked: **True** if `input_type='checkbox'` and the checkbox should be selected.
+        explanation: A brief description of the field that appears in a tooltip.
 
     """
 
@@ -223,6 +224,9 @@ class InputFieldConfig(BaseFormFieldConfig):
     max_length: int | None = field(default=None, metadata={"doc": _("Maximum number of characters in a text field.")})
     checked: bool = field(
         default=False, metadata={"doc": _("**True** if `input_type='checkbox'` and the checkbox should be selected.")}
+    )
+    explanation: str = field(
+        default="", metadata={"doc": _("A brief description of the field that appears in a tooltip.")}
     )
 
     def __post_init__(self) -> None:
@@ -254,6 +258,7 @@ class TextareaConfig(BaseFormFieldConfig):
         value: The value of the input field.
         rows: Determines the number of lines.
         cols: Determines the number of characters in a line.
+        explanation: A brief description of the field that appears in a tooltip.
 
     """
 
@@ -273,6 +278,9 @@ class TextareaConfig(BaseFormFieldConfig):
     value: str = field(default="", metadata={"doc": _("The value of the input field.")})
     rows: int = field(default=3, metadata={"doc": _("Determines the number of lines.")})
     cols: int | None = field(default=None, metadata={"doc": _("Determines the number of characters in a line.")})
+    explanation: str = field(
+        default="", metadata={"doc": _("A brief description of the field that appears in a tooltip.")}
+    )
 
 
 @dataclass
