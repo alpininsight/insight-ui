@@ -95,8 +95,8 @@
     --color-insight-border-overlay: #E5E7EB;
     --color-insight-border-overlay-dark: #2F3B54;
     --color-insight-primary: #0856C0;
-    --color-insight-primary-foreground: #0856C0;
-    --color-insight-primary-foreground-dark: #90C5FF;
+    --color-insight-primary-text: #0856C0;
+    --color-insight-primary-text-dark: #90C5FF;
     --color-insight-primary-action: #0856C0;
     --color-insight-primary-action-hover: #1555B0;
     --color-insight-primary-action-active: #124A9E;
@@ -109,10 +109,10 @@
     --color-insight-primary-soft-dark: #203351;
     --color-insight-primary-hover-dark: #72AEFF;
     --color-insight-primary-active-dark: #90C5FF;
-    --color-insight-primary-text: #FFFFFF;
+    --color-insight-primary-on-fill: #FFFFFF;
     --color-insight-secondary: #006B60;
-    --color-insight-secondary-foreground: #006B60;
-    --color-insight-secondary-foreground-dark: #75D1C5;
+    --color-insight-secondary-text: #006B60;
+    --color-insight-secondary-text-dark: #75D1C5;
     --color-insight-secondary-action: #006B60;
     --color-insight-secondary-action-hover: #005A52;
     --color-insight-secondary-action-active: #004C45;
@@ -125,10 +125,10 @@
     --color-insight-secondary-soft-dark: #133A36;
     --color-insight-secondary-hover-dark: #51BCB0;
     --color-insight-secondary-active-dark: #75D1C5;
-    --color-insight-secondary-text: #FFFFFF;
+    --color-insight-secondary-on-fill: #FFFFFF;
     --color-insight-success: #007B2F;
-    --color-insight-success-foreground: #007B2F;
-    --color-insight-success-foreground-dark: #8CE1A4;
+    --color-insight-success-text: #007B2F;
+    --color-insight-success-text-dark: #8CE1A4;
     --color-insight-success-action: #007B2F;
     --color-insight-success-action-hover: #006824;
     --color-insight-success-action-active: #00521D;
@@ -141,10 +141,10 @@
     --color-insight-success-soft-dark: #1E3A26;
     --color-insight-success-hover-dark: #67CD87;
     --color-insight-success-active-dark: #8CE1A4;
-    --color-insight-success-text: #FFFFFF;
+    --color-insight-success-on-fill: #FFFFFF;
     --color-insight-warning: #8A4B00;
-    --color-insight-warning-foreground: #8A4B00;
-    --color-insight-warning-foreground-dark: #FFCD86;
+    --color-insight-warning-text: #8A4B00;
+    --color-insight-warning-text-dark: #FFCD86;
     --color-insight-warning-action: #8A4B00;
     --color-insight-warning-action-hover: #744000;
     --color-insight-warning-action-active: #5E3400;
@@ -157,10 +157,10 @@
     --color-insight-warning-soft-dark: #433215;
     --color-insight-warning-hover-dark: #FFBC5E;
     --color-insight-warning-active-dark: #FFCD86;
-    --color-insight-warning-text: #FFFFFF;
+    --color-insight-warning-on-fill: #FFFFFF;
     --color-insight-danger: #B70002;
-    --color-insight-danger-foreground: #B70002;
-    --color-insight-danger-foreground-dark: #FF988B;
+    --color-insight-danger-text: #B70002;
+    --color-insight-danger-text-dark: #FF988B;
     --color-insight-danger-action: #B70002;
     --color-insight-danger-action-hover: #990001;
     --color-insight-danger-action-active: #7A0001;
@@ -173,10 +173,10 @@
     --color-insight-danger-soft-dark: #4D2622;
     --color-insight-danger-hover-dark: #FF7A6E;
     --color-insight-danger-active-dark: #FF988B;
-    --color-insight-danger-text: #FFFFFF;
+    --color-insight-danger-on-fill: #FFFFFF;
     --color-insight-info: #006580;
-    --color-insight-info-foreground: #006580;
-    --color-insight-info-foreground-dark: #77E1FF;
+    --color-insight-info-text: #006580;
+    --color-insight-info-text-dark: #77E1FF;
     --color-insight-info-action: #006580;
     --color-insight-info-action-hover: #00546C;
     --color-insight-info-action-active: #00455A;
@@ -189,7 +189,7 @@
     --color-insight-info-soft-dark: #0F3845;
     --color-insight-info-hover-dark: #50CBF2;
     --color-insight-info-active-dark: #77E1FF;
-    --color-insight-info-text: #FFFFFF;
+    --color-insight-info-on-fill: #FFFFFF;
     --color-insight-focus: #4183EA;
     --color-insight-focus-dark: #4183EA;
     --color-insight-tooltip: #F3F4F6;
@@ -1334,8 +1334,8 @@
   .border-insight-primary {
     border-color: var(--color-insight-primary);
   }
-  .border-insight-primary-foreground {
-    border-color: var(--color-insight-primary-foreground);
+  .border-insight-primary-text {
+    border-color: var(--color-insight-primary-text);
   }
   .border-insight-success {
     border-color: var(--color-insight-success);
@@ -1744,23 +1744,23 @@
   .text-insight-danger {
     color: var(--color-insight-danger);
   }
-  .text-insight-danger-foreground {
-    color: var(--color-insight-danger-foreground);
+  .text-insight-danger-text {
+    color: var(--color-insight-danger-text);
   }
   .text-insight-info {
     color: var(--color-insight-info);
   }
-  .text-insight-info-foreground {
-    color: var(--color-insight-info-foreground);
+  .text-insight-info-text {
+    color: var(--color-insight-info-text);
   }
   .text-insight-primary {
     color: var(--color-insight-primary);
   }
-  .text-insight-primary-foreground {
-    color: var(--color-insight-primary-foreground);
-  }
   .text-insight-primary-hover {
     color: var(--color-insight-primary-hover);
+  }
+  .text-insight-primary-text {
+    color: var(--color-insight-primary-text);
   }
   .text-insight-secondary {
     color: var(--color-insight-secondary);
@@ -1768,8 +1768,8 @@
   .text-insight-success {
     color: var(--color-insight-success);
   }
-  .text-insight-success-foreground {
-    color: var(--color-insight-success-foreground);
+  .text-insight-success-text {
+    color: var(--color-insight-success-text);
   }
   .text-insight-text-body {
     color: var(--color-insight-text-body);
@@ -1786,8 +1786,8 @@
   .text-insight-warning {
     color: var(--color-insight-warning);
   }
-  .text-insight-warning-foreground {
-    color: var(--color-insight-warning-foreground);
+  .text-insight-warning-text {
+    color: var(--color-insight-warning-text);
   }
   .text-red-600 {
     color: var(--color-red-600);
@@ -2022,8 +2022,8 @@
     .hover\:text-insight-primary:hover {
       color: var(--color-insight-primary);
     }
-    .hover\:text-insight-primary-foreground:hover {
-      color: var(--color-insight-primary-foreground);
+    .hover\:text-insight-primary-text:hover {
+      color: var(--color-insight-primary-text);
     }
     .hover\:text-insight-text-link-hover:hover {
       color: var(--color-insight-text-link-hover);
@@ -2058,8 +2058,8 @@
   .focus\:left-0:focus {
     left: 0px;
   }
-  .focus\:text-insight-primary-foreground:focus {
-    color: var(--color-insight-primary-foreground);
+  .focus\:text-insight-primary-text:focus {
+    color: var(--color-insight-primary-text);
   }
   .focus\:ring-2:focus {
     --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
@@ -2585,42 +2585,42 @@
     --color-insight-border-surface: var(--color-insight-border-surface-dark);
     --color-insight-border-raised: var(--color-insight-border-raised-dark);
     --color-insight-border-overlay: var(--color-insight-border-overlay-dark);
-    --color-insight-primary-foreground: var(--color-insight-primary-foreground-dark);
+    --color-insight-primary-text: var(--color-insight-primary-text-dark);
     --color-insight-primary-action: var(--color-insight-primary-action-dark);
     --color-insight-primary-action-hover: var(--color-insight-primary-action-hover-dark);
     --color-insight-primary-action-active: var(--color-insight-primary-action-active-dark);
     --color-insight-primary-soft: var(--color-insight-primary-soft-dark);
     --color-insight-primary-hover: var(--color-insight-primary-hover-dark);
     --color-insight-primary-active: var(--color-insight-primary-active-dark);
-    --color-insight-secondary-foreground: var(--color-insight-secondary-foreground-dark);
+    --color-insight-secondary-text: var(--color-insight-secondary-text-dark);
     --color-insight-secondary-action: var(--color-insight-secondary-action-dark);
     --color-insight-secondary-action-hover: var(--color-insight-secondary-action-hover-dark);
     --color-insight-secondary-action-active: var(--color-insight-secondary-action-active-dark);
     --color-insight-secondary-soft: var(--color-insight-secondary-soft-dark);
     --color-insight-secondary-hover: var(--color-insight-secondary-hover-dark);
     --color-insight-secondary-active: var(--color-insight-secondary-active-dark);
-    --color-insight-success-foreground: var(--color-insight-success-foreground-dark);
+    --color-insight-success-text: var(--color-insight-success-text-dark);
     --color-insight-success-action: var(--color-insight-success-action-dark);
     --color-insight-success-action-hover: var(--color-insight-success-action-hover-dark);
     --color-insight-success-action-active: var(--color-insight-success-action-active-dark);
     --color-insight-success-soft: var(--color-insight-success-soft-dark);
     --color-insight-success-hover: var(--color-insight-success-hover-dark);
     --color-insight-success-active: var(--color-insight-success-active-dark);
-    --color-insight-warning-foreground: var(--color-insight-warning-foreground-dark);
+    --color-insight-warning-text: var(--color-insight-warning-text-dark);
     --color-insight-warning-action: var(--color-insight-warning-action-dark);
     --color-insight-warning-action-hover: var(--color-insight-warning-action-hover-dark);
     --color-insight-warning-action-active: var(--color-insight-warning-action-active-dark);
     --color-insight-warning-soft: var(--color-insight-warning-soft-dark);
     --color-insight-warning-hover: var(--color-insight-warning-hover-dark);
     --color-insight-warning-active: var(--color-insight-warning-active-dark);
-    --color-insight-danger-foreground: var(--color-insight-danger-foreground-dark);
+    --color-insight-danger-text: var(--color-insight-danger-text-dark);
     --color-insight-danger-action: var(--color-insight-danger-action-dark);
     --color-insight-danger-action-hover: var(--color-insight-danger-action-hover-dark);
     --color-insight-danger-action-active: var(--color-insight-danger-action-active-dark);
     --color-insight-danger-soft: var(--color-insight-danger-soft-dark);
     --color-insight-danger-hover: var(--color-insight-danger-hover-dark);
     --color-insight-danger-active: var(--color-insight-danger-active-dark);
-    --color-insight-info-foreground: var(--color-insight-info-foreground-dark);
+    --color-insight-info-text: var(--color-insight-info-text-dark);
     --color-insight-info-action: var(--color-insight-info-action-dark);
     --color-insight-info-action-hover: var(--color-insight-info-action-hover-dark);
     --color-insight-info-action-active: var(--color-insight-info-action-active-dark);
@@ -2929,7 +2929,7 @@
   .btn-primary {
     border-color: var(--color-insight-primary-action);
     background-color: var(--color-insight-primary-action);
-    color: var(--color-insight-primary-text);
+    color: var(--color-insight-primary-on-fill);
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-primary-action-hover);
@@ -2950,7 +2950,7 @@
   .btn-secondary {
     border-color: var(--color-insight-secondary-action);
     background-color: var(--color-insight-secondary-action);
-    color: var(--color-insight-secondary-text);
+    color: var(--color-insight-secondary-on-fill);
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-secondary-action-hover);
@@ -2971,7 +2971,7 @@
   .btn-success {
     border-color: var(--color-insight-success-action);
     background-color: var(--color-insight-success-action);
-    color: var(--color-insight-success-text);
+    color: var(--color-insight-success-on-fill);
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-success-action-hover);
@@ -2992,7 +2992,7 @@
   .btn-warning {
     border-color: var(--color-insight-warning-action);
     background-color: var(--color-insight-warning-action);
-    color: var(--color-insight-warning-text);
+    color: var(--color-insight-warning-on-fill);
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-warning-action-hover);
@@ -3013,7 +3013,7 @@
   .btn-danger {
     border-color: var(--color-insight-danger-action);
     background-color: var(--color-insight-danger-action);
-    color: var(--color-insight-danger-text);
+    color: var(--color-insight-danger-on-fill);
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-danger-action-hover);
@@ -3034,7 +3034,7 @@
   .btn-info {
     border-color: var(--color-insight-info-action);
     background-color: var(--color-insight-info-action);
-    color: var(--color-insight-info-text);
+    color: var(--color-insight-info-on-fill);
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-info-action-hover);
@@ -3101,7 +3101,7 @@
   }
   .btn-outline-primary {
     border-color: var(--color-insight-primary-action);
-    color: var(--color-insight-primary-foreground);
+    color: var(--color-insight-primary-text);
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-primary-action-hover);
@@ -3126,7 +3126,7 @@
   }
   .btn-outline-secondary {
     border-color: var(--color-insight-secondary-action);
-    color: var(--color-insight-secondary-foreground);
+    color: var(--color-insight-secondary-text);
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-secondary-action-hover);
@@ -3151,7 +3151,7 @@
   }
   .btn-outline-success {
     border-color: var(--color-insight-success-action);
-    color: var(--color-insight-success-foreground);
+    color: var(--color-insight-success-text);
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-success-action-hover);
@@ -3176,7 +3176,7 @@
   }
   .btn-outline-warning {
     border-color: var(--color-insight-warning-action);
-    color: var(--color-insight-warning-foreground);
+    color: var(--color-insight-warning-text);
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-warning-action-hover);
@@ -3201,7 +3201,7 @@
   }
   .btn-outline-danger {
     border-color: var(--color-insight-danger-action);
-    color: var(--color-insight-danger-foreground);
+    color: var(--color-insight-danger-text);
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-danger-action-hover);
@@ -3226,7 +3226,7 @@
   }
   .btn-outline-info {
     border-color: var(--color-insight-info-action);
-    color: var(--color-insight-info-foreground);
+    color: var(--color-insight-info-text);
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-insight-info-action-hover);
@@ -3279,153 +3279,153 @@
     color: var(--color-insight-text-disabled);
   }
   .btn-subtle-primary {
-    color: var(--color-insight-primary-foreground);
+    color: var(--color-insight-primary-text);
     &:hover {
       @media (hover: hover) {
         background-color: color-mix(in srgb, #0856C0 10%, transparent);
         @supports (color: color-mix(in lab, red, red)) {
-          background-color: color-mix(in oklab, var(--color-insight-primary-foreground) 10%, transparent);
+          background-color: color-mix(in oklab, var(--color-insight-primary-text) 10%, transparent);
         }
       }
     }
     &:hover {
       @media (hover: hover) {
-        color: var(--color-insight-primary-foreground);
+        color: var(--color-insight-primary-text);
       }
     }
     &:active {
       background-color: color-mix(in srgb, #0856C0 20%, transparent);
       @supports (color: color-mix(in lab, red, red)) {
-        background-color: color-mix(in oklab, var(--color-insight-primary-foreground) 20%, transparent);
+        background-color: color-mix(in oklab, var(--color-insight-primary-text) 20%, transparent);
       }
     }
     &:active {
-      color: var(--color-insight-primary-foreground);
+      color: var(--color-insight-primary-text);
     }
   }
   .btn-subtle-secondary {
-    color: var(--color-insight-secondary-foreground);
+    color: var(--color-insight-secondary-text);
     &:hover {
       @media (hover: hover) {
         background-color: color-mix(in srgb, #006B60 10%, transparent);
         @supports (color: color-mix(in lab, red, red)) {
-          background-color: color-mix(in oklab, var(--color-insight-secondary-foreground) 10%, transparent);
+          background-color: color-mix(in oklab, var(--color-insight-secondary-text) 10%, transparent);
         }
       }
     }
     &:hover {
       @media (hover: hover) {
-        color: var(--color-insight-secondary-foreground);
+        color: var(--color-insight-secondary-text);
       }
     }
     &:active {
       background-color: color-mix(in srgb, #006B60 20%, transparent);
       @supports (color: color-mix(in lab, red, red)) {
-        background-color: color-mix(in oklab, var(--color-insight-secondary-foreground) 20%, transparent);
+        background-color: color-mix(in oklab, var(--color-insight-secondary-text) 20%, transparent);
       }
     }
     &:active {
-      color: var(--color-insight-secondary-foreground);
+      color: var(--color-insight-secondary-text);
     }
   }
   .btn-subtle-success {
-    color: var(--color-insight-success-foreground);
+    color: var(--color-insight-success-text);
     &:hover {
       @media (hover: hover) {
         background-color: color-mix(in srgb, #007B2F 10%, transparent);
         @supports (color: color-mix(in lab, red, red)) {
-          background-color: color-mix(in oklab, var(--color-insight-success-foreground) 10%, transparent);
+          background-color: color-mix(in oklab, var(--color-insight-success-text) 10%, transparent);
         }
       }
     }
     &:hover {
       @media (hover: hover) {
-        color: var(--color-insight-success-foreground);
+        color: var(--color-insight-success-text);
       }
     }
     &:active {
       background-color: color-mix(in srgb, #007B2F 20%, transparent);
       @supports (color: color-mix(in lab, red, red)) {
-        background-color: color-mix(in oklab, var(--color-insight-success-foreground) 20%, transparent);
+        background-color: color-mix(in oklab, var(--color-insight-success-text) 20%, transparent);
       }
     }
     &:active {
-      color: var(--color-insight-success-foreground);
+      color: var(--color-insight-success-text);
     }
   }
   .btn-subtle-warning {
-    color: var(--color-insight-warning-foreground);
+    color: var(--color-insight-warning-text);
     &:hover {
       @media (hover: hover) {
         background-color: color-mix(in srgb, #8A4B00 10%, transparent);
         @supports (color: color-mix(in lab, red, red)) {
-          background-color: color-mix(in oklab, var(--color-insight-warning-foreground) 10%, transparent);
+          background-color: color-mix(in oklab, var(--color-insight-warning-text) 10%, transparent);
         }
       }
     }
     &:hover {
       @media (hover: hover) {
-        color: var(--color-insight-warning-foreground);
+        color: var(--color-insight-warning-text);
       }
     }
     &:active {
       background-color: color-mix(in srgb, #8A4B00 20%, transparent);
       @supports (color: color-mix(in lab, red, red)) {
-        background-color: color-mix(in oklab, var(--color-insight-warning-foreground) 20%, transparent);
+        background-color: color-mix(in oklab, var(--color-insight-warning-text) 20%, transparent);
       }
     }
     &:active {
-      color: var(--color-insight-warning-foreground);
+      color: var(--color-insight-warning-text);
     }
   }
   .btn-subtle-danger {
-    color: var(--color-insight-danger-foreground);
+    color: var(--color-insight-danger-text);
     &:hover {
       @media (hover: hover) {
         background-color: color-mix(in srgb, #B70002 10%, transparent);
         @supports (color: color-mix(in lab, red, red)) {
-          background-color: color-mix(in oklab, var(--color-insight-danger-foreground) 10%, transparent);
+          background-color: color-mix(in oklab, var(--color-insight-danger-text) 10%, transparent);
         }
       }
     }
     &:hover {
       @media (hover: hover) {
-        color: var(--color-insight-danger-foreground);
+        color: var(--color-insight-danger-text);
       }
     }
     &:active {
       background-color: color-mix(in srgb, #B70002 20%, transparent);
       @supports (color: color-mix(in lab, red, red)) {
-        background-color: color-mix(in oklab, var(--color-insight-danger-foreground) 20%, transparent);
+        background-color: color-mix(in oklab, var(--color-insight-danger-text) 20%, transparent);
       }
     }
     &:active {
-      color: var(--color-insight-danger-foreground);
+      color: var(--color-insight-danger-text);
     }
   }
   .btn-subtle-info {
-    color: var(--color-insight-info-foreground);
+    color: var(--color-insight-info-text);
     &:hover {
       @media (hover: hover) {
         background-color: color-mix(in srgb, #006580 10%, transparent);
         @supports (color: color-mix(in lab, red, red)) {
-          background-color: color-mix(in oklab, var(--color-insight-info-foreground) 10%, transparent);
+          background-color: color-mix(in oklab, var(--color-insight-info-text) 10%, transparent);
         }
       }
     }
     &:hover {
       @media (hover: hover) {
-        color: var(--color-insight-info-foreground);
+        color: var(--color-insight-info-text);
       }
     }
     &:active {
       background-color: color-mix(in srgb, #006580 20%, transparent);
       @supports (color: color-mix(in lab, red, red)) {
-        background-color: color-mix(in oklab, var(--color-insight-info-foreground) 20%, transparent);
+        background-color: color-mix(in oklab, var(--color-insight-info-text) 20%, transparent);
       }
     }
     &:active {
-      color: var(--color-insight-info-foreground);
+      color: var(--color-insight-info-text);
     }
   }
   .btn-subtle-neutral {
@@ -3512,27 +3512,27 @@
   }
   .badge-primary {
     background-color: var(--color-insight-primary-soft);
-    color: var(--color-insight-primary-foreground);
+    color: var(--color-insight-primary-text);
   }
   .badge-secondary {
     background-color: var(--color-insight-secondary-soft);
-    color: var(--color-insight-secondary-foreground);
+    color: var(--color-insight-secondary-text);
   }
   .badge-success {
     background-color: var(--color-insight-success-soft);
-    color: var(--color-insight-success-foreground);
+    color: var(--color-insight-success-text);
   }
   .badge-warning {
     background-color: var(--color-insight-warning-soft);
-    color: var(--color-insight-warning-foreground);
+    color: var(--color-insight-warning-text);
   }
   .badge-danger {
     background-color: var(--color-insight-danger-soft);
-    color: var(--color-insight-danger-foreground);
+    color: var(--color-insight-danger-text);
   }
   .badge-info {
     background-color: var(--color-insight-info-soft);
-    color: var(--color-insight-info-foreground);
+    color: var(--color-insight-info-text);
   }
   .badge-neutral {
     border-style: var(--tw-border-style);
@@ -3557,7 +3557,7 @@
     padding-block: 1px;
     font-family: var(--font-mono);
     text-wrap: nowrap;
-    color: var(--color-insight-primary-foreground);
+    color: var(--color-insight-primary-text);
     &:where([data-theme=dark], [data-theme=dark] *) {
       background-color: var(--color-gray-700);
     }
