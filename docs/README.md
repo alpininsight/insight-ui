@@ -16,6 +16,7 @@ not a second documentation application or a deployment system.
 | [Conventions](conventions.md) | Naming, HTML, JavaScript lifecycle and source ownership. |
 | [Design system](design-system.md) | Existing semantic tokens and safe changes to the styling contract. |
 | [Static assets](static-assets.md) | Local files, Tailwind compilation, minification and generic CDN settings. |
+| [Turnstile](turnstile.md) | Optional form challenge and required host-side verification. |
 | [Internationalization](i18n.md) | Package translations, gettext and RTL checks. |
 | [Accessibility](accessibility.md) | Component requirements and behavior-test responsibilities. |
 | [Testing](testing.md) | Local quality, regression, asset and distribution checks. |
