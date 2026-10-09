@@ -9,7 +9,7 @@ from django.utils.translation import gettext_lazy as _
 from insight_ui.configs.base import ImageConfig
 from insight_ui.configs.input import ButtonConfig, RadioBlockConfig
 from insight_ui.configs.list import TableConfig
-from insight_ui.configs.types import ToggleViewType, validate_toggle_view_type
+from insight_ui.configs.types import ToggleViewType, validate_not_empty, validate_toggle_view_type
 from insight_ui.configs.utils import BadgeConfig
 
 
@@ -199,6 +199,10 @@ class ImageCarouselItemConfig:
     alt: str = field(metadata={"doc": _("Image alt text.")})
     description: str = field(default="", metadata={"doc": _("Optional caption/description.")})
 
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_not_empty(self, "url")
+
 
 @dataclass
 class ImageCarouselConfig:
@@ -267,6 +271,10 @@ class ThreeDCarouselConfig:
     tilt: int = field(default=0, metadata={"doc": _("Camera tilt angle.")})
     face_camera: bool = field(default=False, metadata={"doc": _("If True, items always face the camera.")})
 
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_not_empty(self, "tag_id")
+
 
 @dataclass
 class ToggleViewConfig:
@@ -310,5 +318,6 @@ class ToggleViewConfig:
     )
 
     def __post_init__(self) -> None:
-        """Validate current_view after initialization."""
+        """Require a tag_id and validate current_view after initialization."""
+        validate_not_empty(self, "tag_id")
         validate_toggle_view_type(self.current_view, "current_view")
