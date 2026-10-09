@@ -41,6 +41,8 @@ export class Checkbox {
 
         // Store bound handlers for cleanup
         this.boundChangeHandlers = [];
+        this.boundResetHandler = this.handleFormReset.bind(this);
+        this.resetTimer = null;
 
         this.init();
         this.bindEvents();
@@ -94,6 +96,19 @@ export class Checkbox {
             this.boundChangeHandlers.push({ element: box, handler });
             box.addEventListener('change', handler);
         }
+
+        // Native form reset restores the initial checked states, which may violate the constraints.
+        this.form = this.element.closest('form');
+        this.form?.addEventListener('reset', this.boundResetHandler);
+    }
+
+    /**
+     * Re-applies the min/max constraints after the surrounding form was reset.
+     * The reset event fires before the browser restores the states, so the check is deferred.
+     */
+    handleFormReset() {
+        clearTimeout(this.resetTimer);
+        this.resetTimer = setTimeout(() => this.init());
     }
 
     /**
@@ -122,6 +137,10 @@ export class Checkbox {
             element.removeEventListener('change', handler);
         });
         this.boundChangeHandlers = [];
+        this.form?.removeEventListener('reset', this.boundResetHandler);
+
+        // A reset scheduled just before destroy would otherwise still change the checkboxes.
+        clearTimeout(this.resetTimer);
 
         Checkbox.instances.delete(this.element);
         delete this.element.__insightInstance;

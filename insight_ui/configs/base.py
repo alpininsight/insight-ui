@@ -149,6 +149,21 @@ class HtmxConfig:
         validate_http_method(self.method, "method")
 
 
+def validate_form_field_name(config: object) -> None:
+    """Require a non-empty name, because browsers never submit fields without one.
+
+    Args:
+        config: A form field config with a name and optionally a label or tag_id.
+
+    Raises:
+        ValueError: If the name is empty or None.
+
+    """
+    if not getattr(config, "name", None):
+        identifier = getattr(config, "label", None) or getattr(config, "tag_id", None) or "(unnamed)"
+        raise ValueError(f"{config.__class__.__name__} {identifier} requires a non-empty name.")  # noqa: TRY003
+
+
 @dataclass
 class BaseFormFieldConfig:
     """Base configuration for form field components.
@@ -158,8 +173,8 @@ class BaseFormFieldConfig:
     form fields.
 
     Attributes:
-        tag_id: Optional, unique tag ID for identifying the element in JavaScript.
         name: Required for a `<form>`, as the name of the request parameter.
+        tag_id: Optional, unique tag ID for identifying the element in JavaScript.
         label: A text label displayed above the field.
         disabled: **True** if the field should be disabled.
         disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
@@ -167,11 +182,9 @@ class BaseFormFieldConfig:
 
     """
 
+    name: str = field(metadata={"doc": _("Required for a `<form>`, as the name of the request parameter.")})
     tag_id: str | None = field(
         default=None, metadata={"doc": _("Optional, unique tag ID for identifying the element in JavaScript.")}
-    )
-    name: str | None = field(
-        default=None, metadata={"doc": _("Required for a `<form>`, as the name of the request parameter.")}
     )
     label: str | None = field(default=None, metadata={"doc": _("A text label displayed above the field.")})
     disabled: bool = field(default=False, metadata={"doc": _("**True** if the field should be disabled.")})
@@ -186,11 +199,16 @@ class BaseFormFieldConfig:
     required: bool = field(default=False, metadata={"doc": _("**True** if the field must be filled in.")})
 
     def __post_init__(self) -> None:
-        """Warn if disabled without a reason."""
+        """Require a non-empty name and warn if disabled without a reason.
+
+        Raises:
+            ValueError: If name is empty or None.
+
+        """
+        validate_form_field_name(self)
         if self.disabled and self.disabled_reason is None:
-            identifier = self.name or self.label or self.tag_id or "(unnamed)"
             warnings.warn(
-                f"{self.__class__.__name__} {identifier} is disabled without a disabled_reason. "
+                f"{self.__class__.__name__} {self.name} is disabled without a disabled_reason. "
                 "Consider providing a reason to improve accessibility, or set disabled_reason='' to suppress this warning.",
                 stacklevel=3,
             )

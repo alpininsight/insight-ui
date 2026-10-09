@@ -535,4 +535,52 @@ describe('Multiselect Component', () => {
       expect(multiselect.element).toBeNull();
     });
   });
+
+  describe('Form reset', () => {
+    function createMultiselectInForm(options) {
+      const container = createMultiselectDOM(options);
+      const form = document.createElement('form');
+      form.append(...container.childNodes);
+      container.appendChild(form);
+      return form;
+    }
+
+    function submittedValues(form, name) {
+      return [...form.querySelectorAll(`input[type=hidden][name="${name}"]`)].map(input => input.value);
+    }
+
+    it('should restore the initial selection when the form is reset', () => {
+      const form = createMultiselectInForm({ name: 'tags', selected: "['Option A']" });
+      const element = form.querySelector('[data-insight-multiselect]');
+      const instance = new InsightUI.Multiselect(element);
+      const optionA = element.querySelector('#opt-0');
+      const optionB = element.querySelector('#opt-1');
+
+      instance.toggleSelect(optionB);
+      instance.toggleSelect(optionA);
+      expect(submittedValues(form, 'tags')).toEqual(['Option B']);
+
+      form.reset();
+
+      expect(submittedValues(form, 'tags')).toEqual(['Option A']);
+      expect(optionA.hidden).toBe(true);
+      expect(optionA.getAttribute('aria-selected')).toBe('true');
+      expect(optionB.hidden).toBe(false);
+      expect(optionB.getAttribute('aria-selected')).toBe('false');
+      expect(element.querySelectorAll('.tags .inline-tag')).toHaveLength(1);
+    });
+
+    it('should not submit the form when a selected value is removed', () => {
+      const form = createMultiselectInForm({ name: 'tags', selected: "['Option A']" });
+      const element = form.querySelector('[data-insight-multiselect]');
+      new InsightUI.Multiselect(element);
+      const submit = vi.fn(event => event.preventDefault());
+      form.addEventListener('submit', submit);
+
+      element.querySelector('.tags button').click();
+
+      expect(submit).not.toHaveBeenCalled();
+      expect(submittedValues(form, 'tags')).toEqual([]);
+    });
+  });
 });

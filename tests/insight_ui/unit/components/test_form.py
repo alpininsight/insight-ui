@@ -4,11 +4,30 @@
 
 import re
 import warnings
+from dataclasses import dataclass
 from pathlib import Path
 
 import pytest
 from bs4 import BeautifulSoup
-from insight_ui.configs import FormConfig, HtmxConfig
+from django.template import Context, Template
+from insight_ui.configs import (
+    ButtonConfig,
+    CheckboxConfig,
+    CheckboxGroupConfig,
+    CheckboxItemConfig,
+    FormConfig,
+    FormField,
+    HtmxConfig,
+    InputFieldConfig,
+    MultiselectConfig,
+    RadioBlockConfig,
+    RadioGroupConfig,
+    RadioItemConfig,
+    SelectConfig,
+    SliderConfig,
+    TextareaConfig,
+    ToggleConfig,
+)
 
 import insight_ui
 from tests.insight_ui.unit.components.test_template_tags import TemplateTagsTestCase
@@ -65,6 +84,88 @@ class TestForm(TemplateTagsTestCase):
             warnings.simplefilter("always")
             FormConfig(request_url="/submit/")
         assert len(caught) == 0
+
+
+def render_form(*fields: FormField) -> BeautifulSoup:
+    """Render a form with the given fields and parse the result."""
+    rendered = Template("{% load insight_tags %}{% form config=config %}").render(
+        Context({"config": FormConfig(tag_id="test-form", fields=list(fields))})
+    )
+    return BeautifulSoup(rendered, "html.parser")
+
+
+@pytest.mark.parametrize(
+    ("form_field", "selector"),
+    [
+        pytest.param(InputFieldConfig(name="email", input_type="email"), "input[type=email][name=email]", id="input"),
+        pytest.param(TextareaConfig(name="message"), "textarea[name=message]", id="textarea"),
+        pytest.param(SelectConfig(name="topic", options=["Support", "Sales"]), "select[name=topic]", id="select"),
+        pytest.param(
+            MultiselectConfig(name="tags", options=["Django", "HTMX"]),
+            "[data-insight-multiselect][data-name=tags]",
+            id="multiselect",
+        ),
+        pytest.param(CheckboxConfig(name="terms", value="accepted"), "input[type=checkbox][name=terms]", id="checkbox"),
+        pytest.param(
+            CheckboxGroupConfig(
+                name="contact_via", items=[CheckboxItemConfig(tag_id="via-email", value="email", label="E-Mail")]
+            ),
+            "[data-insight-checkbox-group] input[type=checkbox][name=contact_via]",
+            id="checkbox-group",
+        ),
+        pytest.param(
+            RadioGroupConfig(name="size", items=[RadioItemConfig(tag_id="size-s", value="s", label="S")]),
+            "input[type=radio][name=size]",
+            id="radio-group",
+        ),
+        pytest.param(
+            RadioBlockConfig(name="view", items=[RadioItemConfig(tag_id="table", value="table", label="Table")]),
+            "input[type=radio][name=view]",
+            id="radio-block",
+        ),
+        pytest.param(SliderConfig(name="budget", value=40), "input[type=range][name=budget]", id="slider"),
+        pytest.param(ToggleConfig(name="newsletter", value="yes"), "input[name=newsletter]", id="toggle"),
+    ],
+)
+def test_form_renders_each_supported_field_inside_one_form(form_field: FormField, selector: str) -> None:
+    """Every supported field config renders its control inside the form, without nesting another form."""
+    soup = render_form(form_field)
+
+    forms = soup.find_all("form")
+    assert len(forms) == 1
+    assert forms[0].select_one(selector) is not None
+
+
+def test_form_renders_fields_in_given_order() -> None:
+    """Fields appear in the order of the config list."""
+    soup = render_form(
+        SliderConfig(name="budget"),
+        InputFieldConfig(name="name"),
+        TextareaConfig(name="message"),
+    )
+
+    names = [control["name"] for control in soup.select("form [name]") if control["name"] != "csrfmiddlewaretoken"]
+    assert names == ["budget", "name", "message"]
+
+
+@dataclass
+class EmailFieldConfig(InputFieldConfig):
+    """Project-specific field config derived from a supported one."""
+
+    input_type: str = "email"
+
+
+def test_form_renders_subclass_of_supported_field_config() -> None:
+    """A config derived from a supported field config is accepted and rendered with the parent's template."""
+    soup = render_form(EmailFieldConfig(name="email"))
+
+    assert soup.select_one("form input[type=email][name=email]") is not None
+
+
+def test_form_config_rejects_unsupported_field_config() -> None:
+    """Configs that are not form fields are rejected with the list of supported types."""
+    with pytest.raises(TypeError, match=r"FormConfig fields must be one of InputFieldConfig, .*; got ButtonConfig\."):
+        FormConfig(fields=[ButtonConfig(label="Send")])
 
 
 def test_css_source_hides_idle_htmx_indicator_from_accessibility_tree() -> None:

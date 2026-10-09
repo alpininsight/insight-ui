@@ -73,6 +73,8 @@ export class RangeSlider {
         } else {
             this.boundInputHandler = this.updateProgress.bind(this);
         }
+        this.boundResetHandler = this.handleFormReset.bind(this);
+        this.resetTimer = null;
 
         this.init();
 
@@ -104,6 +106,10 @@ export class RangeSlider {
             this.input.addEventListener("input", this.boundInputHandler);
             this.updateProgress();
         }
+
+        // Native form reset restores the input values but not the progress visuals.
+        this.form = this.element.closest("form");
+        this.form?.addEventListener("reset", this.boundResetHandler);
 
         if (this.legendMode !== "static" && this.legendItems.length >= 2) {
             window.addEventListener("resize", this.boundResizeHandler);
@@ -215,6 +221,21 @@ export class RangeSlider {
 
         // Update ARIA attribute for screen readers
         this.input.setAttribute("aria-valuenow", val);
+    }
+
+    /**
+     * Update the progress visuals after the surrounding form was reset.
+     * The reset event fires before the browser restores the values, so the update is deferred.
+     */
+    handleFormReset() {
+        clearTimeout(this.resetTimer);
+        this.resetTimer = setTimeout(() => {
+            if (this.isDualRange) {
+                this.updateDualProgress();
+            } else if (this.input) {
+                this.updateProgress();
+            }
+        });
     }
 
     /**
@@ -344,6 +365,10 @@ export class RangeSlider {
         }
 
         window.removeEventListener("resize", this.boundResizeHandler);
+        this.form?.removeEventListener("reset", this.boundResetHandler);
+
+        // A reset scheduled just before destroy would otherwise access the removed element.
+        clearTimeout(this.resetTimer);
 
         // Disconnect RTL observer
         if (this.dirObserver) {

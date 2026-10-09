@@ -3,6 +3,7 @@
 """Tests for the input_field component."""
 
 import pytest
+from bs4 import BeautifulSoup
 from insight_ui.configs import InputFieldConfig
 
 from tests.insight_ui.unit.components.test_template_tags import TemplateTagsTestCase
@@ -29,3 +30,14 @@ class TestInputField(TemplateTagsTestCase):
             name="amount", input_type="number", minimum=0, maximum=100, min_length=1, max_length=3
         )
         assert (config.minimum, config.maximum) == (0, 100)
+
+    def test_input_field_shows_explanation_as_tooltip(self) -> None:
+        """The explanation is rendered as a tooltip next to the label."""
+        rendered = self.render_template(
+            "{% load insight_tags %}{% input_field name='email' label='E-Mail' explanation='We never share it.' %}"
+        )
+        soup = BeautifulSoup(rendered, "html.parser")
+
+        tooltip = soup.select_one("label [data-insight-tooltip]")
+        assert tooltip is not None
+        assert tooltip["data-insight-tooltip"] == "We never share it."
