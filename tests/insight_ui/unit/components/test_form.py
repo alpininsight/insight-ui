@@ -4,6 +4,7 @@
 
 import re
 import warnings
+from dataclasses import dataclass
 from pathlib import Path
 
 import pytest
@@ -145,6 +146,20 @@ def test_form_renders_fields_in_given_order() -> None:
 
     names = [control["name"] for control in soup.select("form [name]") if control["name"] != "csrfmiddlewaretoken"]
     assert names == ["budget", "name", "message"]
+
+
+@dataclass
+class EmailFieldConfig(InputFieldConfig):
+    """Project-specific field config derived from a supported one."""
+
+    input_type: str = "email"
+
+
+def test_form_renders_subclass_of_supported_field_config() -> None:
+    """A config derived from a supported field config is accepted and rendered with the parent's template."""
+    soup = render_form(EmailFieldConfig(name="email"))
+
+    assert soup.select_one("form input[type=email][name=email]") is not None
 
 
 def test_form_config_rejects_unsupported_field_config() -> None:

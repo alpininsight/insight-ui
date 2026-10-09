@@ -1362,12 +1362,18 @@ def _render_form_field(form_field: FormField) -> SafeString:
     Returns:
         The rendered field HTML.
 
+    Raises:
+        TypeError: If the config is not one of the supported field configs or a subclass of one.
+
     """
     if isinstance(form_field, RadioBlockConfig):
         # A standalone radio block renders its own <form>, which must not be nested.
         form_field = replace(form_field, integrated=True)
-    tag, template_name = _FORM_FIELD_RENDERERS[type(form_field)]
-    return render_to_string(template_name, tag(form_field))
+    # isinstance, like FormConfig's validation, so subclasses of supported configs render too.
+    for config_type, (tag, template_name) in _FORM_FIELD_RENDERERS.items():
+        if isinstance(form_field, config_type):
+            return render_to_string(template_name, tag(form_field))
+    raise TypeError(f"Unsupported form field: {type(form_field).__name__}")  # noqa: TRY003
 
 
 @register.inclusion_tag("insight_ui/components/form.html")
