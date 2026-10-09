@@ -50,7 +50,7 @@ from insight_ui.configs.filter import (
     QueryBuilderFieldConfig,
     SearchBarConfig,
 )
-from insight_ui.configs.forms import FormConfig, FormFieldConfig
+from insight_ui.configs.forms import FormConfig, FormFieldConfig, TurnstileConfig
 from insight_ui.configs.input import (
     ButtonConfig,
     ChatConfig,
@@ -312,6 +312,7 @@ __all__ = [
     "ToggleConfig",
     "ToggleViewConfig",
     "ToggleViewType",
+    "TurnstileConfig",
     "UserMenuConfig",
     "UserMenuLinkConfig",
     "VBoxConfig",

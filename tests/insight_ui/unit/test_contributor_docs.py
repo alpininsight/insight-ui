@@ -14,7 +14,7 @@ from defusedxml import ElementTree
 from django.template import engines
 from django.test import RequestFactory, override_settings
 from insight_ui.config import get_config
-from insight_ui.configs import ButtonConfig
+from insight_ui.configs import ButtonConfig, FormConfig, TurnstileConfig
 from markdown import markdown
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -24,6 +24,7 @@ GUIDES = (
     "conventions.md",
     "design-system.md",
     "static-assets.md",
+    "turnstile.md",
     "i18n.md",
     "accessibility.md",
     "testing.md",
@@ -155,6 +156,7 @@ def test_public_template_examples_render(path: Path) -> None:
                 {
                     **get_config(),
                     "save_button": ButtonConfig(label="Save", button_type="submit"),
+                    "form_config": FormConfig(turnstile=TurnstileConfig(site_key="public-test")),
                     "display_name": "Contributor",
                     "items": ["one", "two"],
                 },

@@ -98,6 +98,7 @@ from insight_ui.configs import (
     ThreeDCarouselConfig,
     ToggleConfig,
     ToggleViewConfig,
+    TurnstileConfig,
     WebSocketConfig,
 )
 from insight_ui.configs.utils import ProgressBarConfig
@@ -1335,6 +1336,14 @@ def toggle_view(
 # =============================================================
 
 
+@register.inclusion_tag("insight_ui/components/turnstile.html")
+def turnstile(config: TurnstileConfig) -> dict[str, TurnstileConfig]:
+    """Render the public Turnstile widget; the host must verify its token."""
+    if not isinstance(config, TurnstileConfig):
+        raise TypeError("turnstile config must be a dataclass instance of TurnstileConfig.")  # noqa: TRY003
+    return {"turnstile_config": config}
+
+
 @register.inclusion_tag("insight_ui/components/form.html")
 def form(
     config: FormConfig | None = None,
@@ -1346,6 +1355,7 @@ def form(
     show_reset_button: bool | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
     htmx_config: HtmxConfig | _Unset | None = UNSET,
+    turnstile: TurnstileConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a form with HTMX support."""
     config = build_config(FormConfig, config, **{k: v for k, v in locals().items() if k != "config"})
