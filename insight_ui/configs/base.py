@@ -17,6 +17,7 @@ from insight_ui.configs.types import (
     validate_http_method,
     validate_icon_color,
     validate_icon_name,
+    validate_not_empty,
     validate_size,
 )
 
@@ -94,6 +95,10 @@ class ImageConfig:
     url_dark: str | None = field(default=None, metadata={"doc": _("Optional dark-theme URL.")})
     height: str | None = field(default=None, metadata={"doc": _("CSS height value (e.g., '2rem', '100px').")})
     width: str | None = field(default=None, metadata={"doc": _("Optional CSS width value.")})
+
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_not_empty(self, "url")
 
 
 @dataclass

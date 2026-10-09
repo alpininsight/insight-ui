@@ -7,6 +7,7 @@ from dataclasses import dataclass, field
 from django.utils.translation import gettext_lazy as _
 
 from insight_ui.configs.input import ButtonConfig
+from insight_ui.configs.types import validate_not_empty
 from insight_ui.configs.utils import BadgeConfig
 
 
@@ -486,6 +487,10 @@ class ModalConfig:
     title: str = field(default="", metadata={"doc": _("Optional heading displayed in the modal header.")})
     width: int = field(default=32, metadata={"doc": _("Maximum width in rem units.")})
     show_close: bool = field(default=True, metadata={"doc": _("Show the close button in the header.")})
+
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_not_empty(self, "id")
 
 
 @dataclass

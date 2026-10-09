@@ -8,7 +8,7 @@ from dataclasses import dataclass, field as dc_field
 from django.utils.translation import gettext_lazy as _
 
 from insight_ui.configs.base import HtmxConfig, IconConfig
-from insight_ui.configs.types import FilterFieldType, validate_filter_field_type
+from insight_ui.configs.types import FilterFieldType, validate_filter_field_type, validate_not_empty
 
 
 @dataclass
@@ -104,7 +104,8 @@ class FilterConfig:
     selected_option: str = dc_field(default="", metadata={"doc": _("Currently selected value.")})
 
     def __post_init__(self) -> None:
-        """Validate that selected_option is included in options, if both are set."""
+        """Require a name and validate that selected_option is included in options, if both are set."""
+        validate_not_empty(self, "name")
         if self.selected_option and self.options and self.selected_option not in self.options:
             raise ValueError(f"selected_option '{self.selected_option}' must be included in 'options'.")  # noqa: TRY003
 
@@ -203,7 +204,8 @@ class QueryBuilderFieldConfig:
     values: dict[str, str] = dc_field(default_factory=dict, metadata={"doc": _("Predefined values (optional).")})
 
     def __post_init__(self) -> None:
-        """Validate type after initialization."""
+        """Require a field name and validate type after initialization."""
+        validate_not_empty(self, "field")
         validate_filter_field_type(self.type, "type")
 
 

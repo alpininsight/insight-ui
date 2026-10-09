@@ -23,6 +23,7 @@ from insight_ui.configs.types import (
     validate_corner_position,
     validate_geo_map_marker_type,
     validate_inline_position,
+    validate_not_empty,
     validate_size,
 )
 
@@ -603,6 +604,10 @@ class ChartConfig:
     aria_label: str = field(default="", metadata={"doc": _("Accessible label describing the chart's purpose.")})
     show_decal: bool = field(default=True, metadata={"doc": _("Show decal patterns for colorblind accessibility.")})
 
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_not_empty(self, "tag_id")
+
 
 @dataclass
 class LiveContentConfig:
@@ -631,6 +636,10 @@ class LiveContentConfig:
     tag_id: str = field(default="", metadata={"doc": _("Unique ID for JavaScript/CSS targeting.")})
     interval: int = field(default=10, metadata={"doc": _("Update interval in seconds.")})
     initial_content: str = field(default="", metadata={"doc": _("Initial content before first update.")})
+
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_not_empty(self, "request_url")
 
 
 @dataclass
@@ -666,6 +675,10 @@ class WebSocketConfig:
         },
     )
     initial_content: str = field(default="", metadata={"doc": _("Initial content.")})
+
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_not_empty(self, "request_url")
 
 
 @dataclass
