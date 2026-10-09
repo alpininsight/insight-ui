@@ -74,6 +74,7 @@ export class RangeSlider {
             this.boundInputHandler = this.updateProgress.bind(this);
         }
         this.boundResetHandler = this.handleFormReset.bind(this);
+        this.resetTimer = null;
 
         this.init();
 
@@ -227,7 +228,8 @@ export class RangeSlider {
      * The reset event fires before the browser restores the values, so the update is deferred.
      */
     handleFormReset() {
-        setTimeout(() => {
+        clearTimeout(this.resetTimer);
+        this.resetTimer = setTimeout(() => {
             if (this.isDualRange) {
                 this.updateDualProgress();
             } else if (this.input) {
@@ -364,6 +366,9 @@ export class RangeSlider {
 
         window.removeEventListener("resize", this.boundResizeHandler);
         this.form?.removeEventListener("reset", this.boundResetHandler);
+
+        // A reset scheduled just before destroy would otherwise access the removed element.
+        clearTimeout(this.resetTimer);
 
         // Disconnect RTL observer
         if (this.dirObserver) {

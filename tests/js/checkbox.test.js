@@ -320,5 +320,23 @@ describe('Checkbox Group Component', () => {
       expect([...checkboxes].filter(box => box.checked)).toHaveLength(1);
       expect(checkboxes[0].checked).toBe(true);
     });
+
+    it('should not touch the checkboxes when destroyed right after the reset', () => {
+      vi.useFakeTimers();
+      const container = createCheckboxGroup({ min: 1, max: 3, initialChecked: [] });
+      const form = document.createElement('form');
+      form.append(...container.childNodes);
+      container.appendChild(form);
+      const element = form.querySelector('[data-insight-checkbox-group]');
+      const checkboxes = element.querySelectorAll('input');
+      const instance = new InsightUI.Checkbox(element);
+
+      form.reset();
+      instance.destroy();
+      vi.runAllTimers();
+
+      // The pending constraint check was cancelled, so the native reset state remains.
+      expect([...checkboxes].filter(box => box.checked)).toHaveLength(0);
+    });
   });
 });

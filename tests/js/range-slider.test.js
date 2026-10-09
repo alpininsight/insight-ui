@@ -455,5 +455,29 @@ describe('RangeSlider Component', () => {
 
       expect(updateSpy).not.toHaveBeenCalled();
     });
+
+    it('should cancel a pending reset update when destroyed right after the reset', () => {
+      vi.useFakeTimers();
+      const form = wrapInForm(createSingleRangeSlider({ value: 50 }));
+      const element = form.querySelector('[data-insight-range-slider]');
+      const instance = new InsightUI.RangeSlider(element);
+
+      form.reset();
+      instance.destroy();
+
+      expect(() => vi.runAllTimers()).not.toThrow();
+    });
+
+    it('should cancel a pending dual-range reset update when destroyed right after the reset', () => {
+      vi.useFakeTimers();
+      const form = wrapInForm(createDualRangeSlider());
+      const element = form.querySelector('[data-insight-range-slider]');
+      const instance = new InsightUI.RangeSlider(element);
+
+      form.reset();
+      instance.destroy();
+
+      expect(() => vi.runAllTimers()).not.toThrow();
+    });
   });
 });

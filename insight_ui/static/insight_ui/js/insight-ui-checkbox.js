@@ -42,6 +42,7 @@ export class Checkbox {
         // Store bound handlers for cleanup
         this.boundChangeHandlers = [];
         this.boundResetHandler = this.handleFormReset.bind(this);
+        this.resetTimer = null;
 
         this.init();
         this.bindEvents();
@@ -106,7 +107,8 @@ export class Checkbox {
      * The reset event fires before the browser restores the states, so the check is deferred.
      */
     handleFormReset() {
-        setTimeout(() => this.init());
+        clearTimeout(this.resetTimer);
+        this.resetTimer = setTimeout(() => this.init());
     }
 
     /**
@@ -136,6 +138,9 @@ export class Checkbox {
         });
         this.boundChangeHandlers = [];
         this.form?.removeEventListener('reset', this.boundResetHandler);
+
+        // A reset scheduled just before destroy would otherwise still change the checkboxes.
+        clearTimeout(this.resetTimer);
 
         Checkbox.instances.delete(this.element);
         delete this.element.__insightInstance;
