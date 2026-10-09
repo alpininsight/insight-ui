@@ -168,6 +168,7 @@ from insight_ui.configs.types import (
 )
 from insight_ui.configs.utils import (
     BadgeConfig,
+    BadgeListConfig,
     BrandMarkConfig,
     ChartConfig,
     ChartDatasetConfig,
@@ -209,6 +210,7 @@ __all__ = [
     "AppCardConfig",
     "ArticleConfig",
     "BadgeConfig",
+    "BadgeListConfig",
     "BadgeType",
     "BrandMarkConfig",
     "BreadcrumbItemConfig",
