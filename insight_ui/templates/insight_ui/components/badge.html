@@ -8,4 +8,7 @@
     {% if badge_config.icon and badge_config.icon_end %}
         {% icon config=badge_config.icon %}
     {% endif %}
+    {% if remove_button %}
+        {% button config=remove_button %}
+    {% endif %}
 </div>

@@ -26,12 +26,14 @@ from markdown import markdown
 
 from insight_ui.config import get_config
 from insight_ui.configs import (
+    BUTTON_TYPE_VALUES,
     AccordionConfig,
     AlertConfig,
     AlertType,
     AppCardConfig,
     ArticleConfig,
     BadgeConfig,
+    BadgeListConfig,
     BadgeType,
     BrandMarkConfig,
     BreadcrumbItemConfig,
@@ -1100,6 +1102,8 @@ def badge(
     type: BadgeType | _Unset = UNSET,  # noqa: A002
     size: Size | _Unset = UNSET,
     tooltip: str | _Unset = UNSET,
+    remove_htmx: HtmxConfig | _Unset | None = UNSET,
+    remove_label: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render the badge component."""
     icon: IconConfig | _Unset | None = UNSET
@@ -1107,9 +1111,63 @@ def badge(
         icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "m") if icon_name else None
 
     config = build_config(
-        BadgeConfig, config, label=label, icon=icon, icon_end=icon_end, type=type, size=size, tooltip=tooltip
+        BadgeConfig,
+        config,
+        label=label,
+        icon=icon,
+        icon_end=icon_end,
+        type=type,
+        size=size,
+        tooltip=tooltip,
+        remove_htmx=remove_htmx,
+        remove_label=remove_label,
     )
-    return {"badge_config": config}
+    remove_button = None
+    if config.remove_htmx:
+        remove_button = ButtonConfig(
+            label=f"{config.remove_label or _('Remove')}: {config.label}",
+            icon=IconConfig("x-mark", "xs"),
+            icon_only=True,
+            # Same color as the badge; badge-only types like "disabled" fall back to secondary.
+            type=config.type if config.type in BUTTON_TYPE_VALUES else "secondary",
+            subtle=True,
+            round=True,
+            size="xs",
+            button_type="button",
+            # HtmxConfig defaults to trigger="submit", which never fires on a button.
+            htmx_config=replace(config.remove_htmx, trigger="click"),
+            data_attrs=[DataAttrConfig(name="insight-badge-remove")],
+            # Compensate the button padding and border, so the badge keeps its height.
+            extra_classes="-my-1.5 -me-2",
+        )
+    return {"badge_config": config, "remove_button": remove_button}
+
+
+@register.inclusion_tag("insight_ui/components/badge_list.html")
+def badge_list(
+    config: BadgeListConfig | None = None,
+    *,
+    tag_id: str | _Unset = UNSET,
+    label: str | _Unset = UNSET,
+    items: list[BadgeConfig] | _Unset = UNSET,
+    clear_all_htmx: HtmxConfig | _Unset | None = UNSET,
+    clear_all_label: str | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render badges as a labelled list that keeps the keyboard focus when a badge is removed."""
+    config = build_config(BadgeListConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    clear_all_button = None
+    if config.clear_all_htmx and config.items:
+        clear_all_button = ButtonConfig(
+            label=config.clear_all_label or _("Remove all"),
+            type="secondary",
+            subtle=True,
+            size="s",
+            button_type="button",
+            # HtmxConfig defaults to trigger="submit", which never fires on a button.
+            htmx_config=replace(config.clear_all_htmx, trigger="click"),
+            data_attrs=[DataAttrConfig(name="insight-badge-clear-all")],
+        )
+    return {"badge_list_config": config, "clear_all_button": clear_all_button}
 
 
 # =============================================================
