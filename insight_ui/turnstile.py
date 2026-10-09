@@ -71,7 +71,8 @@ def verify_turnstile(
         method="POST",
     )
     try:
-        with urlopen(siteverify_request, timeout=timeout) as response:  # noqa: S310
+        # The endpoint is a fixed HTTPS constant, never a URL from the request.
+        with urlopen(siteverify_request, timeout=timeout) as response:  # noqa: S310  # nosec B310
             raw = response.read(_MAX_RESPONSE_BYTES + 1)
         if len(raw) > _MAX_RESPONSE_BYTES:
             return TurnstileResult(False, ("invalid-response",))
