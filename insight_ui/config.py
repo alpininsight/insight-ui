@@ -41,6 +41,15 @@ CONFIG_DEFAULTS: dict[str, Any] = {
         ),
         "footer_text": "A modern, accessible, and responsive UI library for Django projects.",
     },
+    # HTMX and its WebSocket extension, loaded by insight_ui/base.html. Point these at
+    # self-hosted copies (and update or clear the SRI hashes) for offline or strict-CSP
+    # hosts; an empty src omits the script tag, e.g. when the host loads HTMX itself.
+    "htmx": {
+        "src": "https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js",
+        "integrity": "sha384-/TgkGk7p307TH7EXJDuUlgG3Ce1UVolAOFopFekQkkXihi5u/6OCvVKyz1W+idaz",
+        "ws_src": "https://cdn.jsdelivr.net/npm/htmx-ext-ws@2.0.4",
+        "ws_integrity": "sha384-1RwI/nvUSrMRuNj7hX1+27J8XDdCoSLf0EjEyF69nacuWyiJYoQ/j39RT1mSnd2G",
+    },
     "assets": {
         "use_minified": False,
         "cdn_enabled": False,
