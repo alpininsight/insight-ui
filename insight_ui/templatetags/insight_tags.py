@@ -24,6 +24,7 @@ from django.utils.safestring import SafeString, mark_safe
 from django.utils.translation import gettext as _
 from markdown import markdown
 
+from insight_ui.brand import get_navbar_brand_defaults
 from insight_ui.config import get_config
 from insight_ui.configs import (
     BUTTON_TYPE_VALUES,
@@ -404,8 +405,15 @@ def _resolve_url(url_or_name: str) -> str:
 
 
 @register.inclusion_tag("insight_ui/components/navbar.html", takes_context=True)
-def navbar(context: dict[str, Any], config: NavbarConfig, **kwargs: JsonValue) -> dict[str, Any]:
-    """Render a configurable navigation bar."""
+def navbar(context: dict[str, Any], config: NavbarConfig | None = None, **kwargs: JsonValue) -> dict[str, Any]:
+    """Render a configurable navigation bar.
+
+    Without a ``config``, the navbar shows the brand from ``INSIGHT_UI["brand"]``
+    (see :func:`insight_ui.brand.get_navbar_brand_defaults`) and no links. An
+    explicit Config is rendered as supplied.
+    """
+    if config is None:
+        config = NavbarConfig(brand=get_navbar_brand_defaults())
     config = build_config(NavbarConfig, config)
     return {
         "user": context.get("user"),
@@ -416,6 +424,16 @@ def navbar(context: dict[str, Any], config: NavbarConfig, **kwargs: JsonValue) -
         "redirect_to": context.get("redirect_to", ""),
         "options": {**kwargs},
     }
+
+
+@register.inclusion_tag("insight_ui/components/toggle_theme.html")
+def theme_toggle() -> dict[str, Any]:
+    """Render the light/dark theme toggle button outside the navbar.
+
+    Uses the same template and ``data-insight-theme-toggle`` behavior as
+    ``NavbarConfig(show_theme_toggle=True)``.
+    """
+    return {}
 
 
 @register.inclusion_tag("insight_ui/components/footer.html")
@@ -1401,7 +1419,10 @@ def form(
     description: str | _Unset = UNSET,
     fields: Sequence[FormFieldConfig] | _Unset | None = UNSET,
     show_reset_button: bool | _Unset = UNSET,
+    submit_label: str | _Unset = UNSET,
+    reset_label: str | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
+    method: str | _Unset = UNSET,
     htmx_config: HtmxConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a form with HTMX support."""
