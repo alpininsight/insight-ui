@@ -11,6 +11,7 @@
  */
 
 import { Accordion } from "./insight-ui-accordion.js";
+import { BadgeList } from "./insight-ui-badge-list.js";
 import { Carousel } from "./insight-ui-carousel.js";
 import { Checkbox } from "./insight-ui-checkbox.js";
 import { CodeBlock } from "./insight-ui-code-block.js";
@@ -33,6 +34,7 @@ import { Turnstile } from "./insight-ui-turnstile.js";
 window.InsightUI = window.InsightUI || {};
 Object.assign(window.InsightUI, {
 	Accordion,
+	BadgeList,
 	Carousel,
 	Checkbox,
 	CodeBlock,
@@ -58,6 +60,7 @@ Object.assign(window.InsightUI, {
  */
 function initAll() {
 	Accordion.initAll();
+	BadgeList.initAll();
 	Carousel.initAll();
 	Checkbox.initAll();
 	CodeBlock.initAll();

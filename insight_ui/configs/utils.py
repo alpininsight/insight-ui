@@ -7,7 +7,7 @@ from dataclasses import dataclass, field
 
 from django.utils.translation import gettext_lazy as _
 
-from insight_ui.configs.base import IconConfig
+from insight_ui.configs.base import HtmxConfig, IconConfig
 from insight_ui.configs.input import ButtonConfig
 from insight_ui.configs.types import (
     AlertType,
@@ -681,6 +681,8 @@ class BadgeConfig:
         type: Defines the color of the badge.
         size: Defines the size of the badge.
         tooltip: Optional tooltip text displayed on hover.
+        remove_htmx: Request sent by a remove button next to the label. The button is only shown if this is set.
+        remove_label: Accessible name of the remove button, followed by the badge label. Defaults to "Remove".
 
     """
 
@@ -699,8 +701,94 @@ class BadgeConfig:
     type: BadgeType = field(default="primary", metadata={"doc": "Defines the color of the badge."})
     size: Size = field(default="m", metadata={"doc": "Defines the size of the badge."})
     tooltip: str = field(default="", metadata={"doc": _("Optional tooltip text displayed on hover.")})
+    remove_htmx: HtmxConfig | None = field(
+        default=None,
+        metadata={
+            "doc": _("Request sent by a remove button next to the label. The button is only shown if this is set.")
+        },
+    )
+    remove_label: str = field(
+        default="",
+        metadata={"doc": _('Accessible name of the remove button, followed by the badge label. Defaults to "Remove".')},
+    )
 
     def __post_init__(self) -> None:
-        """Validate type and size after initialization."""
+        """Validate type, size and the target of the remove request after initialization."""
         validate_badge_type(self.type, "type")
         validate_size(self.size, "size")
+        _require_htmx_target(self, "remove_htmx")
+
+
+def _require_htmx_target(config: object, field_name: str) -> None:
+    """Require a target for a button request, because HTMX would otherwise swap the response into the button.
+
+    Args:
+        config: The config holding the HtmxConfig.
+        field_name: Name of the HtmxConfig field to check.
+
+    Raises:
+        ValueError: If the HtmxConfig is set but has no target.
+
+    """
+    htmx = getattr(config, field_name)
+    if htmx is not None and not htmx.target:
+        raise ValueError(  # noqa: TRY003
+            f"{config.__class__.__name__}.{field_name} needs a target, e.g. the element that contains the list "
+            "and the badges, so the response does not replace the button itself."
+        )
+
+
+@dataclass
+class BadgeListConfig:
+    """Configuration for the badge list component.
+
+    Renders badges as a labelled list, e.g. the active filters above a table. After a badge is removed
+    and the list is swapped by HTMX, the focus moves to the next remove button, so keyboard users can
+    remove several badges in a row.
+
+    Attributes:
+        tag_id: Unique ID of the list, used to restore the focus after an HTMX swap.
+        label: Accessible name of the list, e.g. "Active filters".
+        items: Badges shown in the list.
+        clear_all_htmx: Request sent by a "Remove all" button after the badges. The button is only shown if this is set.
+        clear_all_label: Text of the "Remove all" button. Defaults to "Remove all".
+
+    """
+
+    __example__ = """
+        BadgeListConfig(
+            tag_id="active-filters",
+            label="Active filters",
+            items=[
+                BadgeConfig(
+                    "Country: Germany",
+                    remove_htmx=HtmxConfig(request_url="?status=open", target="#results"),
+                ),
+                BadgeConfig(
+                    "Status: Open",
+                    remove_htmx=HtmxConfig(request_url="?country=de", target="#results"),
+                ),
+            ],
+            clear_all_htmx=HtmxConfig(request_url="?", target="#results"),
+        )
+        """
+
+    tag_id: str = field(metadata={"doc": _("Unique ID of the list, used to restore the focus after an HTMX swap.")})
+    label: str = field(metadata={"doc": _('Accessible name of the list, e.g. "Active filters".')})
+    items: list[BadgeConfig] = field(default_factory=list, metadata={"doc": _("Badges shown in the list.")})
+    clear_all_htmx: HtmxConfig | None = field(
+        default=None,
+        metadata={
+            "doc": _('Request sent by a "Remove all" button after the badges. The button is only shown if this is set.')
+        },
+    )
+    clear_all_label: str = field(
+        default="", metadata={"doc": _('Text of the "Remove all" button. Defaults to "Remove all".')}
+    )
+
+    def __post_init__(self) -> None:
+        """Require an ID and an accessible name, and a target for the remove-all request."""
+        for field_name in ("tag_id", "label"):
+            if not getattr(self, field_name):
+                raise ValueError(f"BadgeListConfig requires a non-empty {field_name}.")  # noqa: TRY003
+        _require_htmx_target(self, "clear_all_htmx")

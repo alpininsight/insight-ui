@@ -26,12 +26,14 @@ from markdown import markdown
 
 from insight_ui.config import get_config
 from insight_ui.configs import (
+    BUTTON_TYPE_VALUES,
     AccordionConfig,
     AlertConfig,
     AlertType,
     AppCardConfig,
     ArticleConfig,
     BadgeConfig,
+    BadgeListConfig,
     BadgeType,
     BrandMarkConfig,
     BreadcrumbItemConfig,
@@ -53,6 +55,7 @@ from insight_ui.configs import (
     CornerRibbonConfig,
     DataAttrConfig,
     DropdownConfig,
+    FilterConfig,
     FlipCardConfig,
     FooterConfig,
     FormConfig,
@@ -427,7 +430,7 @@ def footer(config: FooterConfig) -> dict[str, Any]:
 def breadcrumbs(
     config: BreadcrumbsConfig | None = None,
     *,
-    items: list[BreadcrumbItemConfig] | _Unset | None = UNSET,
+    items: list[BreadcrumbItemConfig] | _Unset = UNSET,
     htmx: HtmxConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render breadcrumb navigation."""
@@ -436,9 +439,7 @@ def breadcrumbs(
 
 
 @register.inclusion_tag("insight_ui/components/stepper.html")
-def stepper(
-    config: StepperConfig | None = None, *, items: list[StepperItemConfig] | _Unset | None = UNSET
-) -> dict[str, Any]:
+def stepper(config: StepperConfig | None = None, *, items: list[StepperItemConfig] | _Unset = UNSET) -> dict[str, Any]:
     """Render a graphical representation of process steps."""
     config = build_config(StepperConfig, config, **{k: v for k, v in locals().items() if k != "config"})
     return {"items": config.items}
@@ -473,7 +474,7 @@ def minimal_stepper(
 
 @register.inclusion_tag("insight_ui/components/bullet_point_list.html")
 def bullet_point_list(
-    config: BulletPointListConfig | None = None, *, items: list[BulletPointItemConfig] | _Unset | None = UNSET
+    config: BulletPointListConfig | None = None, *, items: list[BulletPointItemConfig] | _Unset = UNSET
 ) -> dict[str, Any]:
     """Render a graphical representation of a bullet point list."""
     config = build_config(BulletPointListConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -685,7 +686,7 @@ def radio_group(
     *,
     name: str | _Unset = UNSET,
     label: str | _Unset = UNSET,
-    items: list[RadioItemConfig] | _Unset | None = UNSET,
+    items: list[RadioItemConfig] | _Unset = UNSET,
     as_row: bool | _Unset = UNSET,
     current_value: str | _Unset = UNSET,
 ) -> dict[str, Any]:
@@ -700,7 +701,7 @@ def radio_block(
     *,
     name: str | _Unset = UNSET,
     label: str | _Unset = UNSET,
-    items: list[RadioItemConfig] | _Unset | None = UNSET,
+    items: list[RadioItemConfig] | _Unset = UNSET,
     integrated: bool | _Unset = UNSET,
     as_row: bool | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
@@ -727,7 +728,7 @@ def slider(
     label: str | _Unset | None = UNSET,
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset | None = UNSET,
-    items: list[str] | _Unset | None = UNSET,
+    items: list[str] | _Unset = UNSET,
     legend_mode: str | _Unset = UNSET,
     dual: bool | _Unset = UNSET,
     value_min: int | _Unset | None = UNSET,
@@ -769,7 +770,7 @@ def select(
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset | None = UNSET,
     explanation: str | _Unset = UNSET,
-    options: list[str] | dict[str, str] | _Unset | None = UNSET,
+    options: list[str] | dict[str, str] | _Unset = UNSET,
     selected_option: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a selection box."""
@@ -787,8 +788,8 @@ def multiselect(
     show_buttons: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset | None = UNSET,
-    options: list[str] | dict[str, str] | _Unset | None = UNSET,
-    selected_options: list[str] | _Unset | None = UNSET,
+    options: list[str] | dict[str, str] | _Unset = UNSET,
+    selected_options: list[str] | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a selection box that allows multiple values."""
     config = build_config(MultiselectConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -854,15 +855,15 @@ def infobox(
 def legal_notice(
     config: LegalNoticeConfig | None = None,
     *,
-    year: int | str | _Unset | None = UNSET,
-    holder: str | _Unset | None = UNSET,
-    source_label: str | _Unset | None = UNSET,
-    license_text: str | _Unset | None = UNSET,
-    license_url: str | _Unset | None = UNSET,
-    separator: str | _Unset | None = UNSET,
-    rights_text: str | _Unset | None = UNSET,
-    version: str | _Unset | None = UNSET,
-    holder_url: str | _Unset | None = UNSET,
+    year: int | str | _Unset = UNSET,
+    holder: str | _Unset = UNSET,
+    source_label: str | _Unset = UNSET,
+    license_text: str | _Unset = UNSET,
+    license_url: str | _Unset = UNSET,
+    separator: str | _Unset = UNSET,
+    rights_text: str | _Unset = UNSET,
+    version: str | _Unset = UNSET,
+    holder_url: str | _Unset = UNSET,
     holder_logo: LogoConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a reusable legal notice line with copyright, license, and version."""
@@ -980,7 +981,7 @@ def corner_ribbon(
     text: str | _Unset = UNSET,
     position: CornerPosition | _Unset = UNSET,
     color: ColorType | _Unset = UNSET,
-    foreground_color: ColorType | _Unset = UNSET,
+    foreground_color: ColorType | str | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
     aria_label: str | _Unset = UNSET,
 ) -> dict[str, Any]:
@@ -1036,7 +1037,7 @@ def bar_chart(
     config: ChartConfig | None = None,
     *,
     tag_id: str | _Unset = UNSET,
-    dataset: ChartDatasetConfig | _Unset | None = UNSET,
+    dataset: ChartDatasetConfig | _Unset = UNSET,
     chart_height: int | _Unset = UNSET,
     aria_label: str | _Unset = UNSET,
     show_decal: bool | _Unset = UNSET,
@@ -1051,7 +1052,7 @@ def line_chart(
     config: ChartConfig | None = None,
     *,
     tag_id: str | _Unset = UNSET,
-    dataset: ChartDatasetConfig | _Unset | None = UNSET,
+    dataset: ChartDatasetConfig | _Unset = UNSET,
     chart_height: int | _Unset = UNSET,
     aria_label: str | _Unset = UNSET,
     show_decal: bool | _Unset = UNSET,
@@ -1101,6 +1102,8 @@ def badge(
     type: BadgeType | _Unset = UNSET,  # noqa: A002
     size: Size | _Unset = UNSET,
     tooltip: str | _Unset = UNSET,
+    remove_htmx: HtmxConfig | _Unset | None = UNSET,
+    remove_label: str | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render the badge component."""
     icon: IconConfig | _Unset | None = UNSET
@@ -1108,9 +1111,63 @@ def badge(
         icon = IconConfig(icon_name, icon_size if icon_size is not UNSET else "m") if icon_name else None
 
     config = build_config(
-        BadgeConfig, config, label=label, icon=icon, icon_end=icon_end, type=type, size=size, tooltip=tooltip
+        BadgeConfig,
+        config,
+        label=label,
+        icon=icon,
+        icon_end=icon_end,
+        type=type,
+        size=size,
+        tooltip=tooltip,
+        remove_htmx=remove_htmx,
+        remove_label=remove_label,
     )
-    return {"badge_config": config}
+    remove_button = None
+    if config.remove_htmx:
+        remove_button = ButtonConfig(
+            label=f"{config.remove_label or _('Remove')}: {config.label}",
+            icon=IconConfig("x-mark", "xs"),
+            icon_only=True,
+            # Same color as the badge; badge-only types like "disabled" fall back to secondary.
+            type=config.type if config.type in BUTTON_TYPE_VALUES else "secondary",
+            subtle=True,
+            round=True,
+            size="xs",
+            button_type="button",
+            # HtmxConfig defaults to trigger="submit", which never fires on a button.
+            htmx_config=replace(config.remove_htmx, trigger="click"),
+            data_attrs=[DataAttrConfig(name="insight-badge-remove")],
+            # Compensate the button padding and border, so the badge keeps its height.
+            extra_classes="-my-1.5 -me-2",
+        )
+    return {"badge_config": config, "remove_button": remove_button}
+
+
+@register.inclusion_tag("insight_ui/components/badge_list.html")
+def badge_list(
+    config: BadgeListConfig | None = None,
+    *,
+    tag_id: str | _Unset = UNSET,
+    label: str | _Unset = UNSET,
+    items: list[BadgeConfig] | _Unset = UNSET,
+    clear_all_htmx: HtmxConfig | _Unset | None = UNSET,
+    clear_all_label: str | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render badges as a labelled list that keeps the keyboard focus when a badge is removed."""
+    config = build_config(BadgeListConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    clear_all_button = None
+    if config.clear_all_htmx and config.items:
+        clear_all_button = ButtonConfig(
+            label=config.clear_all_label or _("Remove all"),
+            type="secondary",
+            subtle=True,
+            size="s",
+            button_type="button",
+            # HtmxConfig defaults to trigger="submit", which never fires on a button.
+            htmx_config=replace(config.clear_all_htmx, trigger="click"),
+            data_attrs=[DataAttrConfig(name="insight-badge-clear-all")],
+        )
+    return {"badge_list_config": config, "clear_all_button": clear_all_button}
 
 
 # =============================================================
@@ -1126,7 +1183,7 @@ def infinite_scroll(
     *,
     tag_id: str | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
-    items: Sequence[Any] | _Unset | None = UNSET,
+    items: Sequence[Any] | _Unset = UNSET,
     page: int | _Unset = UNSET,
     has_next: bool | _Unset = UNSET,
     auto_fetch: bool | _Unset = UNSET,
@@ -1185,7 +1242,7 @@ def search_bar(
 def generic_filter(
     config: GenericFilterConfig | None = None,
     *,
-    filters: list | _Unset | None = UNSET,
+    filters: list[FilterConfig] | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
     vertical: bool | _Unset = UNSET,
     htmx_config: HtmxConfig | _Unset | None = UNSET,
@@ -1197,7 +1254,7 @@ def generic_filter(
 
 @register.inclusion_tag("insight_ui/components/search_query_builder/sq_builder.html")
 def query_builder(
-    config: QueryBuilderConfig | None = None, *, model_fields: list[QueryBuilderFieldConfig] | _Unset | None = UNSET
+    config: QueryBuilderConfig | None = None, *, model_fields: list[QueryBuilderFieldConfig] | _Unset = UNSET
 ) -> dict[str, Any]:
     """Render a filter for constructing custom search queries."""
     config = build_config(QueryBuilderConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -1219,7 +1276,7 @@ def card(
     content: str | _Unset = UNSET,
     subtitle: str | _Unset = UNSET,
     image: ImageConfig | _Unset | None = UNSET,
-    actions: list[ButtonConfig] | _Unset | None = UNSET,
+    actions: list[ButtonConfig] | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a card with an aspect ratio of 16:9."""
     config = build_config(CardConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -1232,10 +1289,10 @@ def app_card(
     *,
     title: str | _Unset = UNSET,
     content: str | _Unset = UNSET,
-    tags: list[str] | _Unset | None = UNSET,
+    tags: list[BadgeConfig] | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
     image: ImageConfig | _Unset | None = UNSET,
-    actions: list[ButtonConfig] | _Unset | None = UNSET,
+    actions: list[ButtonConfig] | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a vertically aligned card."""
     config = build_config(AppCardConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -1248,11 +1305,11 @@ def flip_card(
     *,
     title: str | _Unset = UNSET,
     content: str | _Unset = UNSET,
-    tags: list[str] | _Unset | None = UNSET,
+    tags: list[BadgeConfig] | _Unset = UNSET,
     request_url: str | _Unset = UNSET,
     image: ImageConfig | _Unset | None = UNSET,
-    actions: list[ButtonConfig] | _Unset | None = UNSET,
-    back_content: str | _Unset | None = UNSET,
+    actions: list[ButtonConfig] | _Unset = UNSET,
+    back_content: str | _Unset = UNSET,
     back_style: str | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render a card that can be rotated 180°."""
@@ -1264,7 +1321,7 @@ def flip_card(
 def carousel(
     config: CardCarouselConfig | None = None,
     *,
-    carousel_items: Sequence[CardConfig] | _Unset | None = UNSET,
+    carousel_items: Sequence[CardConfig] | _Unset = UNSET,
     autoplay: bool | _Unset = UNSET,
     show_dots: bool | _Unset = UNSET,
     show_index: bool | _Unset = UNSET,
@@ -1284,7 +1341,7 @@ def carousel(
 def image_carousel(
     config: ImageCarouselConfig | None = None,
     *,
-    carousel_items: Sequence[ImageCarouselItemConfig] | _Unset | None = UNSET,
+    carousel_items: Sequence[ImageCarouselItemConfig] | _Unset = UNSET,
     autoplay: bool | _Unset = UNSET,
     show_dots: bool | _Unset = UNSET,
     show_index: bool | _Unset = UNSET,
@@ -1308,7 +1365,7 @@ def three_d_carousel(
     velocity: int | _Unset = UNSET,
     tilt: int | _Unset = UNSET,
     face_camera: bool | _Unset = UNSET,
-    carousel_items: Sequence[CarouselItemConfig] | _Unset | None = UNSET,
+    carousel_items: Sequence[CarouselItemConfig] | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a 3D version of the carousel component."""
     config = build_config(ThreeDCarouselConfig, config, **{k: v for k, v in locals().items() if k != "config"})
