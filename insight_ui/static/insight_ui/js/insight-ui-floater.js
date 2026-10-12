@@ -11,7 +11,8 @@
  * // Tooltip
  * <span data-insight-tooltip="Help text" data-position="top">Hover me</span>
  *
- * // Tooltip that appears without the hover delay
+ * // Tooltip that appears without the hover delay. data-tooltip-delay also works on a container,
+ * // base.html sets the global value from the "tooltip_show_delay" setting on <html>.
  * <span data-insight-tooltip="Help text" data-tooltip-delay="0">Hover me</span>
  *
  * // Popover
@@ -26,13 +27,12 @@ export class Floater {
     static currentOpen = null;
 
     /**
-     * Delay in milliseconds before a tooltip appears on hover. One value for all tooltips keeps the
-     * timing consistent; a page can change it via InsightUI.Floater.tooltipShowDelay, a single tooltip
-     * via data-tooltip-delay. Keyboard focus shows tooltips immediately.
+     * Hover delay in milliseconds for pages without a data-tooltip-delay on the trigger or an ancestor.
+     * Pages based on base.html get the value of the "tooltip_show_delay" setting instead.
      *
      * @type {number}
      */
-    static tooltipShowDelay = 400;
+    static DEFAULT_TOOLTIP_SHOW_DELAY = 400;
 
     /**
      * Creates a new Floater instance (tooltip or popover).
@@ -380,13 +380,14 @@ export class Floater {
     }
 
     /**
-     * Returns the hover delay of this tooltip: data-tooltip-delay if set, otherwise the global default.
+     * Returns the hover delay of this tooltip from the closest data-tooltip-delay: the tooltip itself,
+     * a container, or <html> with the global setting.
      *
      * @returns {number} Delay in milliseconds
      */
     getShowDelay() {
-        const ownDelay = parseInt(this.trigger.dataset.tooltipDelay, 10);
-        return Number.isNaN(ownDelay) ? Floater.tooltipShowDelay : ownDelay;
+        const delay = parseInt(this.trigger.closest("[data-tooltip-delay]")?.dataset.tooltipDelay, 10);
+        return Number.isNaN(delay) ? Floater.DEFAULT_TOOLTIP_SHOW_DELAY : delay;
     }
 
     /**

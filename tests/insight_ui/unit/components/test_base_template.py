@@ -110,6 +110,19 @@ class TestBaseTemplateThemeAndHtmx(TestCase):
         rendered = Template("{% load insight_assets %}{% insight_htmx_scripts %}").render(Context({}))
         assert CONFIG_DEFAULTS["htmx"]["src"] in rendered
 
+    def test_tooltip_delay_defaults_to_the_library_setting(self) -> None:
+        """All tooltips share one hover delay, set on <html> for the floater script."""
+        html = BeautifulSoup(self.render_base(), "html.parser").find("html")
+
+        assert html["data-tooltip-delay"] == str(CONFIG_DEFAULTS["tooltip_show_delay"])
+
+    @override_settings(INSIGHT_UI={"tooltip_show_delay": 250})
+    def test_tooltip_delay_follows_the_host_setting(self) -> None:
+        """Hosts change the hover delay for all tooltips in one place."""
+        html = BeautifulSoup(self.render_base(), "html.parser").find("html")
+
+        assert html["data-tooltip-delay"] == "250"
+
     @override_settings(INSIGHT_UI={"htmx": {"src": 'x" onload="alert(1)'}})
     def test_htmx_src_is_escaped(self) -> None:
         """Configured URLs are HTML-escaped."""

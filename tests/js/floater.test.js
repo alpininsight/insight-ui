@@ -94,7 +94,7 @@ describe('Floater Component', () => {
       expect(floater.target.classList.contains('hidden')).toBe(true);
 
       trigger.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
-      vi.advanceTimersByTime(InsightUI.Floater.tooltipShowDelay);
+      vi.advanceTimersByTime(InsightUI.Floater.DEFAULT_TOOLTIP_SHOW_DELAY);
 
       expect(floater.target.classList.contains('hidden')).toBe(false);
     });
@@ -111,7 +111,7 @@ describe('Floater Component', () => {
 
       // Show
       trigger.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
-      vi.advanceTimersByTime(InsightUI.Floater.tooltipShowDelay);
+      vi.advanceTimersByTime(InsightUI.Floater.DEFAULT_TOOLTIP_SHOW_DELAY);
       expect(floater.target.classList.contains('hidden')).toBe(false);
 
       // Mouseout starts hide timer
@@ -138,7 +138,7 @@ describe('Floater Component', () => {
 
       // Show via trigger
       trigger.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
-      vi.advanceTimersByTime(InsightUI.Floater.tooltipShowDelay);
+      vi.advanceTimersByTime(InsightUI.Floater.DEFAULT_TOOLTIP_SHOW_DELAY);
 
       // Start hide timer
       trigger.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }));
@@ -171,7 +171,7 @@ describe('Floater Component', () => {
       const { trigger, floater } = createTooltip();
 
       trigger.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
-      vi.advanceTimersByTime(InsightUI.Floater.tooltipShowDelay - 1);
+      vi.advanceTimersByTime(InsightUI.Floater.DEFAULT_TOOLTIP_SHOW_DELAY - 1);
       expect(isVisible(floater)).toBe(false);
 
       vi.advanceTimersByTime(1);
@@ -192,7 +192,7 @@ describe('Floater Component', () => {
     it('should not restart the delay when moving between child elements of the trigger', () => {
       const { trigger, floater } = createTooltip();
       const child = trigger.querySelector('.label');
-      const delay = InsightUI.Floater.tooltipShowDelay;
+      const delay = InsightUI.Floater.DEFAULT_TOOLTIP_SHOW_DELAY;
 
       trigger.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
       vi.advanceTimersByTime(delay / 2);
@@ -211,16 +211,32 @@ describe('Floater Component', () => {
       expect(isVisible(floater)).toBe(true);
     });
 
-    it('should use a changed global delay for all tooltips', () => {
-      const original = InsightUI.Floater.tooltipShowDelay;
-      InsightUI.Floater.tooltipShowDelay = 100;
-      const { trigger, floater } = createTooltip();
+    it('should use the global delay that base.html sets on <html>', () => {
+      document.documentElement.dataset.tooltipDelay = '100';
+      try {
+        const { trigger, floater } = createTooltip();
+
+        trigger.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+        vi.advanceTimersByTime(100);
+
+        expect(isVisible(floater)).toBe(true);
+      } finally {
+        delete document.documentElement.dataset.tooltipDelay;
+      }
+    });
+
+    it('should use the delay of a surrounding container', () => {
+      const container = TestUtils.createDOM(`
+        <div data-tooltip-delay="0">
+          <button data-insight-tooltip="Help">Hover</button>
+        </div>
+      `);
+      const trigger = container.querySelector('[data-insight-tooltip]');
+      const floater = new InsightUI.Floater(trigger, 'tooltip');
 
       trigger.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
-      vi.advanceTimersByTime(100);
 
       expect(isVisible(floater)).toBe(true);
-      InsightUI.Floater.tooltipShowDelay = original;
     });
 
     it('should show immediately on keyboard focus', () => {

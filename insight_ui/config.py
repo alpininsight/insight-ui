@@ -27,6 +27,7 @@ CONFIG_DEFAULTS: dict[str, Any] = {
     "JS_DEBUG": False,  # Turn to 'True' to enable build in browser console logging
     "use_tailwind_cli": False,  # Turn to 'True' to enable the tailwind cli, if you want to modify the styles
     "register_url": "",  # URL or URL name for registration page (empty = no register button)
+    "tooltip_show_delay": 400,  # Milliseconds before a tooltip appears on hover; keyboard focus shows it at once
     "brand": {
         "home_url": "/",
         "mark": BrandMarkConfig(
