@@ -12,7 +12,7 @@
                     {% icon name="x-mark" size="xl" %}
                 </div>
             {% else %}
-                <div class="flex justify-center items-center size-12 border-2 rounded-insight-full {% if not item.current %}text-insight-muted border-insight-surface{% elif item.current %}animate-pulse text-insight-primary-foreground{% else %}border-insight-primary-foreground{% endif %}">
+                <div class="flex justify-center items-center size-12 border-2 rounded-insight-full {% if not item.current %}text-insight-muted border-insight-surface{% elif item.current %}animate-pulse text-insight-primary-text{% else %}border-insight-primary-text{% endif %}">
                     {% if item.icon %}
                         {% icon item.icon %}
                     {% else %}
@@ -23,10 +23,10 @@
             <div class="flex-1">
                 <a {% if item.request_url %}href="{{ item.request_url }}"{% endif %}>
                     {% if item.failed %}
-                        <span class="block font-semibold text-insight-danger-foreground">{{ item.title }}</span>
-                        <span class="block text-sm text-insight-danger-foreground">{{ item.description }}</span>
+                        <span class="block font-semibold text-insight-danger-text">{{ item.title }}</span>
+                        <span class="block text-sm text-insight-danger-text">{{ item.description }}</span>
                     {% else %}
-                        <span class="block font-semibold {% if not item.success and not item.current %}text-insight-muted{% elif item.current %}text-insight-primary-foreground{% else %}text-insight-headline{% endif %}">{{ item.title }}</span>
+                        <span class="block font-semibold {% if not item.success and not item.current %}text-insight-muted{% elif item.current %}text-insight-primary-text{% else %}text-insight-headline{% endif %}">{{ item.title }}</span>
                         <span class="block text-sm {% if not item.success and not item.current %}text-insight-muted{% else %}text-insight-body{% endif %}">{{ item.description }}</span>
                     {% endif %}
                 </a>
