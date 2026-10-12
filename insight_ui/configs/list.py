@@ -8,6 +8,8 @@ from typing import Any
 from django.core.paginator import Page
 from django.utils.translation import gettext_lazy as _
 
+from insight_ui.configs.types import validate_not_empty
+
 
 @dataclass
 class InfiniteScrollConfig:
@@ -45,6 +47,10 @@ class InfiniteScrollConfig:
     has_next: bool = field(default=True, metadata={"doc": _("Whether more items are available.")})
     auto_fetch: bool = field(default=True, metadata={"doc": _("If True, auto-load on scroll. If False, show button.")})
     threshold: int = field(default=100, metadata={"doc": _("Pixel threshold before loading more.")})
+
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_not_empty(self, "request_url")
 
 
 @dataclass
@@ -154,3 +160,7 @@ class PaginationConfig:
     ipp_config: PaginationIppConfig | None = field(
         default=None, metadata={"doc": _("Optional configuration for the items-per-page selector.")}
     )
+
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_not_empty(self, "request_url")

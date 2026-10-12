@@ -262,6 +262,25 @@ def _validate_literal(value: str, allowed: tuple[str, ...], field_name: str) -> 
         )
 
 
+def validate_not_empty(config: object, *field_names: str) -> None:
+    """Validate that fields which identify or locate a component are not empty.
+
+    An empty ID, name or URL renders without error but breaks the component, e.g. duplicate
+    element IDs, form values that are never submitted or HTMX requests to the current page.
+
+    Args:
+        config: The config instance to check.
+        *field_names: Names of the fields that must not be empty or None.
+
+    Raises:
+        ValueError: If one of the fields is empty or None.
+
+    """
+    for field_name in field_names:
+        if not getattr(config, field_name):
+            raise ValueError(f"{config.__class__.__name__} requires a non-empty {field_name}.")  # noqa: TRY003
+
+
 def validate_size(value: str, field_name: str = "size") -> None:
     """Validate that a size value is one of the allowed sizes.
 
@@ -343,6 +362,12 @@ def validate_alert_type(value: str, field_name: str = "type") -> None:
         ValueError: If the value is not a valid alert type.
 
     """
+    if value == "danger":
+        raise ValueError(  # noqa: TRY003
+            f"Invalid {field_name} 'danger'. Allowed values are: "
+            f"{', '.join(repr(s) for s in ALERT_TYPE_VALUES)}. Use 'error': alert types are semantic, "
+            "'danger' is the button/badge color name."
+        )
     _validate_literal(value, ALERT_TYPE_VALUES, field_name)
 
 

@@ -85,6 +85,20 @@ class TestForm(TemplateTagsTestCase):
             FormConfig(request_url="/submit/")
         assert len(caught) == 0
 
+    def test_submit_reset_label_and_method_as_tag_arguments(self) -> None:
+        """submit_label, reset_label and method work directly on the tag."""
+        rendered = self.render_template(
+            '{% load insight_tags %}{% form title="Contact" submit_label="Send" reset_label="Clear" '
+            'show_reset_button=True method="get" request_url="/search/" %}'
+        )
+        soup = BeautifulSoup(rendered, "html.parser")
+        form = soup.find("form")
+        assert form is not None
+        assert form["method"] == "get"
+        labels = [button.get_text(strip=True) for button in soup.find_all("button")]
+        assert "Send" in labels
+        assert "Clear" in labels
+
 
 def render_form(*fields: FormField) -> BeautifulSoup:
     """Render a form with the given fields and parse the result."""

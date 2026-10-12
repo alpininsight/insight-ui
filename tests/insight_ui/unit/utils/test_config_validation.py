@@ -627,7 +627,7 @@ def test_alert_config_rejects_invalid_type() -> None:
 
 def test_alert_config_rejects_danger_type() -> None:
     """Test AlertConfig rejects 'danger' type (use 'error' instead)."""
-    with pytest.raises(ValueError, match="Invalid type 'danger'"):
+    with pytest.raises(ValueError, match=r"Invalid type 'danger'.*Use 'error'"):
         AlertConfig(type="danger")
 
 
@@ -651,6 +651,12 @@ def test_infobox_config_rejects_invalid_info_type() -> None:
     """Test InfoboxConfig raises ValueError for invalid info_type."""
     with pytest.raises(ValueError, match="Invalid info_type"):
         InfoboxConfig(message="Test", info_type="invalid")
+
+
+def test_infobox_config_rejects_danger_info_type() -> None:
+    """Test InfoboxConfig rejects 'danger' info_type (use 'error' instead)."""
+    with pytest.raises(ValueError, match=r"Invalid info_type 'danger'.*Use 'error'"):
+        InfoboxConfig(message="Test", info_type="danger")
 
 
 def test_infobox_config_default_info_type() -> None:
@@ -677,7 +683,7 @@ def test_status_screen_config_rejects_invalid_status() -> None:
 
 def test_status_screen_config_rejects_danger_status() -> None:
     """Test StatusScreenConfig rejects 'danger' status (use 'error' instead)."""
-    with pytest.raises(ValueError, match="Invalid status 'danger'"):
+    with pytest.raises(ValueError, match=r"Invalid status 'danger'.*Use 'error'"):
         StatusScreenConfig(title="Test", status="danger")
 
 
