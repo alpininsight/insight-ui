@@ -16,8 +16,9 @@ const templatePath = path.join(
 );
 
 function loadIndicatorScript() {
+  // Parse the template as HTML instead of matching tags with a regular expression.
   const template = fs.readFileSync(templatePath, 'utf-8');
-  const script = template.match(/<script>([\s\S]*?)<\/script>/)[1];
+  const script = new DOMParser().parseFromString(template, 'text/html').querySelector('script').textContent;
   eval(script);
 }
 
