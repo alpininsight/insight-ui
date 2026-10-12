@@ -25,14 +25,8 @@
   {% endif %}
 
   <div class="space-y-4">
-    {% for field in form_config.fields %}
-      {% if field.input_type == "textarea" %}
-        {% textarea config=field %}
-      {% elif field.input_type == "select" %}
-        {% select config=field %}
-      {% else %}
-        {% input_field config=field %}
-      {% endif %}
+    {% for field_html in rendered_fields %}
+      {{ field_html }}
     {% endfor %}
   </div>
 
