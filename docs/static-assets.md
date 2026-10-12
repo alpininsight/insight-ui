@@ -71,6 +71,44 @@ icon entries and use paths relative to that manifest. Keep meaningful artwork
 inside the maskable safe area. These assets describe application identity, not
 the navbar's BrandMark Config; see [host branding](getting-started.md#brand-defaults-and-explicit-composition).
 
+## Host Layout Utilities
+
+`css/tailwind.css` is compiled from `input.css`, which scans only the package's
+templates, Configs, scripts and template tags (`@source`). Utilities that
+appear only in **host** templates are not generated. For example,
+`@md:grid-cols-3` exists because a package template uses it, but `md:grid-cols-3`
+does not. Hosts own their layout CSS:
+
+- For a few rules, add a host stylesheet in the base template's `extra_head` block.
+- For Tailwind in host templates, run a host Tailwind build that scans your
+  templates *and* the installed `insight_ui` package. Then point
+  `INSIGHT_UI["stylesheet"]` at its output, or set `use_tailwind_cli` when you
+  use `django-tailwind-cli`.
+
+Do not edit the generated package CSS in `site-packages`.
+
+## Self-Hosted HTMX
+
+The base template loads HTMX and `htmx-ext-ws` from `INSIGHT_UI["htmx"]`. By
+default these are jsdelivr URLs with SRI hashes, and `assets.cdn_enabled` does
+not affect them. For offline demos or a `script-src 'self'` policy, serve your
+own copies and point the settings at them. Keep or update the integrity hashes,
+or set them to `""` to omit SRI:
+
+```python
+INSIGHT_UI = {
+    "htmx": {
+        "src": "/static/vendor/htmx/htmx.min.js",
+        "integrity": "",
+        "ws_src": "/static/vendor/htmx/ws.js",
+        "ws_integrity": "",
+    },
+}
+```
+
+An empty `src` or `ws_src` omits that script, for hosts that already load HTMX
+themselves. Insight UI does not ship HTMX in the wheel.
+
 ## Build In An Insight UI Source Checkout
 
 Install the development groups with uv, then Node dependencies using `npm ci`.
