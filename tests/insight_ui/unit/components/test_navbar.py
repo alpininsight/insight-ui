@@ -6,6 +6,7 @@ import warnings
 
 import pytest
 from bs4 import BeautifulSoup
+from django.test import override_settings
 from insight_ui.configs.base import IconConfig
 from insight_ui.configs.filter import SearchBarConfig
 from insight_ui.configs.navigation import (
@@ -262,3 +263,20 @@ class TestNavbar(TemplateTagsTestCase):
             warnings.simplefilter("always")
             NavbarLinkConfig(text="Home", request_url="/")
         assert len(caught) == 0
+
+    @override_settings(INSIGHT_UI={"brand": {"mark": BrandMarkConfig(primary_text="Acme", secondary_text="Prototype")}})
+    def test_navbar_without_config_uses_brand_defaults(self) -> None:
+        """Without a Config the navbar shows the configured brand."""
+        rendered = self.render_template("{% load insight_tags %}{% navbar %}")
+        soup = BeautifulSoup(rendered, "html.parser")
+        assert soup.find("nav") is not None
+        assert "Acme" in soup.get_text()
+        assert "Prototype" in soup.get_text()
+
+    def test_navbar_renders_explicit_config(self) -> None:
+        """An explicit NavbarConfig is rendered as supplied."""
+        rendered = self.render_template(
+            "{% load insight_tags %}{% navbar config=navbar_config %}",
+            {"navbar_config": NavbarConfig(show_theme_toggle=True)},
+        )
+        assert "data-insight-theme-toggle" in rendered
