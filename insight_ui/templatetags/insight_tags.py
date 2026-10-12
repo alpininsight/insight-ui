@@ -1090,6 +1090,7 @@ def live_content(
     request_url: str | _Unset = UNSET,
     interval: int | _Unset = UNSET,
     initial_content: str | _Unset = UNSET,
+    show_global_loading_indicator: bool | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a container for live updates via HTMX."""
     config = build_config(LiveContentConfig, config, **{k: v for k, v in locals().items() if k != "config"})
@@ -1466,6 +1467,7 @@ def form(
     request_url: str | _Unset = UNSET,
     method: str | _Unset = UNSET,
     htmx_config: HtmxConfig | _Unset | None = UNSET,
+    show_loading_indicator: bool | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a form with HTMX support."""
     config = build_config(FormConfig, config, **{k: v for k, v in locals().items() if k != "config"})

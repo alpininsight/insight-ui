@@ -12,35 +12,44 @@
             transform: translateX(100%);
         }
     }
-    #loading-indicator {
+    #insight-global-loading-indicator {
         opacity: 0;
         transition: opacity 150ms ease-out;
         pointer-events: none;
     }
-    #loading-indicator.visible {
+    #insight-global-loading-indicator.visible {
         opacity: 1;
     }
-    #loading-indicator .loading-bar {
+    #insight-global-loading-indicator .loading-bar {
         animation: insight-loading-progress 1.2s ease-in-out infinite;
     }
 </style>
-<div id="loading-indicator" class="fixed top-0 right-0 left-0 z-[60] h-0.5 bg-insight-primary/20 overflow-hidden" role="progressbar" aria-label="{% trans 'Loading...' %}">
+<div id="insight-global-loading-indicator" class="fixed top-0 right-0 left-0 z-60 h-0.5 bg-insight-primary/20 overflow-hidden" role="progressbar" aria-label="{% trans 'Loading...' %}">
     <div class="loading-bar absolute inset-0 bg-insight-primary"></div>
 </div>
 <script>
     (function() {
         const DELAY_MS = 150;
         let showTimeout = null;
-        const indicator = document.getElementById('loading-indicator');
+        const indicator = document.getElementById('insight-global-loading-indicator');
 
-        document.body.addEventListener('htmx:beforeRequest', function() {
+        // Requests from elements inside [data-insight-global-indicator="false"] (e.g. background polling)
+        // neither show nor hide the bar, so they do not cut short the bar of a parallel user request.
+        function isIgnored(evt) {
+            const elt = evt.detail && evt.detail.elt;
+            return Boolean(elt && elt.closest && elt.closest('[data-insight-global-indicator="false"]'));
+        }
+
+        document.body.addEventListener('htmx:beforeRequest', function(evt) {
+            if (isIgnored(evt)) return;
             clearTimeout(showTimeout);
             showTimeout = setTimeout(function() {
                 indicator.classList.add('visible');
             }, DELAY_MS);
         });
 
-        document.body.addEventListener('htmx:afterRequest', function() {
+        document.body.addEventListener('htmx:afterRequest', function(evt) {
+            if (isIgnored(evt)) return;
             clearTimeout(showTimeout);
             indicator.classList.remove('visible');
         });
