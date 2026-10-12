@@ -19,6 +19,7 @@ from insight_ui.configs.types import (
     validate_html_button_type,
     validate_html_input_type,
     validate_htmx_swap_method,
+    validate_not_empty,
     validate_size,
     validate_slider_legend_mode,
 )
@@ -147,7 +148,9 @@ class ButtonConfig:
     )
 
     def __post_init__(self) -> None:
-        """Validate type, size, and button_type after initialization."""
+        """Require a label and validate type, size, and button_type after initialization."""
+        # The label is the accessible name, also for icon-only buttons (aria-label).
+        validate_not_empty(self, "label")
         # Override type when disabled=True
         if self.disabled:
             object.__setattr__(self, "type", "disabled")
@@ -341,7 +344,8 @@ class CheckboxItemConfig:
     checked: bool = field(default=False, metadata={"doc": _("**True** if the checkbox should be selected.")})
 
     def __post_init__(self) -> None:
-        """Warn if disabled without a reason."""
+        """Require a tag_id and warn if disabled without a reason."""
+        validate_not_empty(self, "tag_id")
         if self.disabled and self.disabled_reason is None:
             identifier = self.label or self.value
             warnings.warn(
@@ -430,6 +434,10 @@ class DropdownItemConfig:
         default=None, metadata={"doc": _("Optional HTMX configuration for dynamic content loading.")}
     )
 
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_not_empty(self, "request_url")
+
 
 @dataclass
 class DropdownConfig:
@@ -466,6 +474,10 @@ class DropdownConfig:
     title: str = field(metadata={"doc": _("Label of the dropdown button.")})
     show_arrow: bool = field(default=True, metadata={"doc": _("**True** displays an arrow behind the title.")})
     items: list[DropdownItemConfig] = field(default_factory=list, metadata={"doc": _("A list of the menu elements.")})
+
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_not_empty(self, "tag_id")
 
 
 @dataclass
@@ -889,3 +901,7 @@ class ChatConfig:
         """
 
     request_url: str = field(metadata={"doc": _("URL for sending chat messages via HTMX POST.")})
+
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_not_empty(self, "request_url")
