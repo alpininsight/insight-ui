@@ -66,6 +66,31 @@ it. This example supplies only a trigger; the host must supply the target elemen
 and required JavaScript. An attribute alone does not implement an interaction.
 Do not assume these extra arguments exist on every other template tag.
 
+## Find A Component's Arguments
+
+This guide is not a catalog. The full per-component reference with live examples
+is at [django-insight-ui.com](https://django-insight-ui.com/docs/configs). In an
+installed package the same information comes from the source of truth above:
+
+- the tag signature in [insight_tags.py](../insight_ui/templatetags/insight_tags.py),
+- the Config's docstring `Attributes`, each field's `metadata["doc"]`, its default
+  and the `__example__` constructor.
+
+```python
+from dataclasses import MISSING, fields
+
+from insight_ui.configs import FormConfig
+
+for config_field in fields(FormConfig):
+    default = "required" if config_field.default is MISSING else repr(config_field.default)
+    print(config_field.name, default, config_field.metadata.get("doc", ""))
+print(FormConfig.__example__)
+```
+
+Common options can also be passed directly to the tag. For example,
+`{% form title="Contact" fields=fields submit_label="Send" method="get" %}`
+works without building a `FormConfig` in Python.
+
 ## Atomic Composition
 
 | Level | Responsibility |

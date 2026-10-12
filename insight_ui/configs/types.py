@@ -369,6 +369,12 @@ def validate_alert_type(value: str, field_name: str = "type") -> None:
         ValueError: If the value is not a valid alert type.
 
     """
+    if value == "danger":
+        raise ValueError(  # noqa: TRY003
+            f"Invalid {field_name} 'danger'. Allowed values are: "
+            f"{', '.join(repr(s) for s in ALERT_TYPE_VALUES)}. Use 'error': alert types are semantic, "
+            "'danger' is the button/badge color name."
+        )
     _validate_literal(value, ALERT_TYPE_VALUES, field_name)
 
 
