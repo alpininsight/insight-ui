@@ -11,6 +11,9 @@
  * // Tooltip
  * <span data-insight-tooltip="Help text" data-position="top">Hover me</span>
  *
+ * // Tooltip that appears without the hover delay
+ * <span data-insight-tooltip="Help text" data-tooltip-delay="0">Hover me</span>
+ *
  * // Popover
  * <button data-insight-popover="popover1" data-trigger="click">Click me</button>
  * <div id="popover1">Popover content</div>
@@ -21,6 +24,15 @@ export class Floater {
 
     /** @type {Floater|null} Currently open floater instance */
     static currentOpen = null;
+
+    /**
+     * Delay in milliseconds before a tooltip appears on hover. One value for all tooltips keeps the
+     * timing consistent; a page can change it via InsightUI.Floater.tooltipShowDelay, a single tooltip
+     * via data-tooltip-delay. Keyboard focus shows tooltips immediately.
+     *
+     * @type {number}
+     */
+    static tooltipShowDelay = 400;
 
     /**
      * Creates a new Floater instance (tooltip or popover).
@@ -86,6 +98,7 @@ export class Floater {
         this.autoClose = trigger.dataset.autoClose === "true";  // optional for click
         this.followMouse = trigger.dataset.followMouse === "true";  // follow mouse position horizontally
         this.hideTimeout = null;
+        this.showTimeout = null;
         this.attributeObserver = null;
 
         // Bind handlers for proper cleanup
@@ -117,14 +130,21 @@ export class Floater {
      *
      * @param {MouseEvent} e - The mouseover event
      */
-    handleTriggerMouseover(e) { e.stopPropagation(); this.show(); }
+    handleTriggerMouseover(e) { e.stopPropagation(); this.type === "tooltip" ? this.showWithDelay() : this.show(); }
 
     /**
      * Handles mouseout from the trigger element.
      *
      * @param {MouseEvent} e - The mouseout event
      */
-    handleTriggerMouseout(e) { e.stopPropagation(); this.hideWithDelay(); }
+    handleTriggerMouseout(e) {
+        e.stopPropagation();
+        // Moving between child elements of the trigger keeps the hover alive.
+        if (e.relatedTarget && this.trigger.contains(e.relatedTarget)) return;
+        clearTimeout(this.showTimeout);
+        this.showTimeout = null;
+        this.hideWithDelay();
+    }
 
     /**
      * Handles mouseover on the target element.
@@ -342,6 +362,34 @@ export class Floater {
     }
 
     /**
+     * Shows the tooltip after the hover delay, so it does not flash up when the pointer only passes by.
+     */
+    showWithDelay() {
+        clearTimeout(this.hideTimeout);
+        const delay = this.getShowDelay();
+        if (delay <= 0 || !this.target.classList.contains("hidden")) {
+            this.show();
+            return;
+        }
+        // Keep a pending timer instead of restarting it on every mouseover of a child element.
+        if (this.showTimeout) return;
+        this.showTimeout = setTimeout(() => {
+            this.showTimeout = null;
+            this.show();
+        }, delay);
+    }
+
+    /**
+     * Returns the hover delay of this tooltip: data-tooltip-delay if set, otherwise the global default.
+     *
+     * @returns {number} Delay in milliseconds
+     */
+    getShowDelay() {
+        const ownDelay = parseInt(this.trigger.dataset.tooltipDelay, 10);
+        return Number.isNaN(ownDelay) ? Floater.tooltipShowDelay : ownDelay;
+    }
+
+    /**
      * Hides the floater after a short delay (for hover mode).
      */
     hideWithDelay() {
@@ -352,6 +400,8 @@ export class Floater {
      * Immediately hides the floater.
      */
     hide() {
+        clearTimeout(this.showTimeout);
+        this.showTimeout = null;
         this.target.classList.add("hidden");
 
         // Update aria-expanded for popovers
@@ -541,6 +591,8 @@ export class Floater {
         debugLog("Destroy floater: ", this.trigger, this.target);
 
         // Clear any pending timeout
+        clearTimeout(this.showTimeout);
+        this.showTimeout = null;
         if (this.hideTimeout) {
             clearTimeout(this.hideTimeout);
             this.hideTimeout = null;
