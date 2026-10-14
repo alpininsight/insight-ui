@@ -79,6 +79,7 @@ from insight_ui.configs import (
     LegalNoticeConfig,
     LiveContentConfig,
     LogoConfig,
+    MessageDialogConfig,
     MinimalStepperConfig,
     MultiselectConfig,
     NavbarConfig,
@@ -828,6 +829,33 @@ def chat(config: ChatConfig | None = None, *, request_url: str | _Unset = UNSET)
 #   Popup Tags
 #
 # =============================================================
+
+
+@register.inclusion_tag("insight_ui/components/message_dialog.html")
+def message_dialog(
+    config: MessageDialogConfig | None = None,
+    *,
+    id: str | _Unset = UNSET,  # noqa: A002 - matches the modal block tag
+    title: str | _Unset = UNSET,
+    width: int | _Unset = UNSET,
+    show_close: bool | _Unset = UNSET,
+    message: str | list[str] | _Unset = UNSET,
+    actions: list[ButtonConfig] | _Unset = UNSET,
+    alert: bool | _Unset = UNSET,
+) -> dict[str, Any]:
+    """Render a modal dialog with a predefined message and action buttons."""
+    config = build_config(MessageDialogConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    return {
+        # Context of the shared modal shell (layout/modal.html), which message_dialog.html extends.
+        "modal_id": config.id,
+        "title": config.title,
+        "width": config.width,
+        "show_close": config.show_close,
+        "role": "alertdialog" if config.alert else "dialog",
+        "describedby": f"{config.id}-message",
+        "paragraphs": [config.message] if isinstance(config.message, str) else config.message,
+        "actions": config.actions,
+    }
 
 
 @register.inclusion_tag("insight_ui/components/alert.html")
