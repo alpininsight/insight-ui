@@ -620,6 +620,7 @@ class LiveContentConfig:
         tag_id: Unique ID for JavaScript/CSS targeting.
         interval: Update interval in seconds.
         initial_content: Initial content before first update.
+        show_global_loading_indicator: Whether the updates also show the global loading bar.
 
     """
 
@@ -636,6 +637,9 @@ class LiveContentConfig:
     tag_id: str = field(default="", metadata={"doc": _("Unique ID for JavaScript/CSS targeting.")})
     interval: int = field(default=10, metadata={"doc": _("Update interval in seconds.")})
     initial_content: str = field(default="", metadata={"doc": _("Initial content before first update.")})
+    show_global_loading_indicator: bool = field(
+        default=False, metadata={"doc": _("Whether the updates also show the global loading bar.")}
+    )
 
     def __post_init__(self) -> None:
         """Reject empty values for fields that identify or locate the component."""
@@ -801,7 +805,5 @@ class BadgeListConfig:
 
     def __post_init__(self) -> None:
         """Require an ID and an accessible name, and a target for the remove-all request."""
-        for field_name in ("tag_id", "label"):
-            if not getattr(self, field_name):
-                raise ValueError(f"BadgeListConfig requires a non-empty {field_name}.")  # noqa: TRY003
+        validate_not_empty(self, "tag_id", "label")
         _require_htmx_target(self, "clear_all_htmx")
