@@ -22,10 +22,7 @@
           <li data-insight-side-nav>
             <a
               {% if item.htmx %}
-                hx-get="{{ item.htmx.request_url|default:item.request_url }}"
-                hx-target="{{ item.htmx.target }}"
-                hx-swap="{{ item.htmx.swap|default:'innerHTML' }} show:window:top"
-                hx-push-url="true"
+                {% htmx_attributes item.htmx request_url=item.htmx.request_url|default:item.request_url push_url=True swap_modifiers="show:window:top" %}
                 hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
               {% endif %}
               href="{{ item.request_url }}"
@@ -68,10 +65,7 @@
               <li data-insight-side-nav>
                 <a
                   {% if item.htmx %}
-                    hx-get="{{ item.htmx.request_url|default:item.request_url }}"
-                    hx-target="{{ item.htmx.target }}"
-                    hx-swap="{{ item.htmx.swap|default:'innerHTML' }} show:window:top"
-                    hx-push-url="true"
+                    {% htmx_attributes item.htmx request_url=item.htmx.request_url|default:item.request_url push_url=True swap_modifiers="show:window:top" %}
                     hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
                   {% endif %}
                   href="{{ item.request_url }}"

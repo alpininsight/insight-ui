@@ -29,12 +29,13 @@ from insight_ui.configs.types import (
 class ButtonConfig:
     """Configuration for the button component.
 
-    Renders a button element.
+    Renders a <button>, or an <a> if request_url is set. An htmx_config without its own request_url
+    requests the link URL, so the link also works without JavaScript.
 
     Attributes:
         label: The text on the button or for Screenreader if the button shows only an icon.
         tag_id: Unique ID for JavaScript/CSS targeting.
-        request_url: URL for navigation (renders as <a>). Do not use together with htmx_config; use htmx_config.request_url instead for HTMX requests.
+        request_url: URL of the link (renders as <a>).
         external: **True** to open link in new tab (adds target='_blank' and rel='noopener'). Only applies when request_url is set.
         on_click: The name of the JavaScript method to be called when clicking on the button.
         icon: Icon config for an optional icon.
@@ -83,12 +84,7 @@ class ButtonConfig:
 
     label: str = field(metadata={"doc": "The text on the button or for Screenreader if the button shows only an icon."})
     tag_id: str = field(default="", metadata={"doc": _("Unique ID for JavaScript/CSS targeting.")})
-    request_url: str = field(
-        default="",
-        metadata={
-            "doc": "URL for navigation (renders as <a>). Do not use together with htmx_config; use htmx_config.request_url instead for HTMX requests."
-        },
-    )
+    request_url: str = field(default="", metadata={"doc": "URL of the link (renders as <a>)."})
     external: bool = field(
         default=False,
         metadata={
@@ -165,16 +161,6 @@ class ButtonConfig:
 
         validate_size(self.size, "size")
         validate_html_button_type(self.button_type, "button_type")
-
-        if self.request_url and self.htmx_config and self.htmx_config.request_url:
-            warnings.warn(
-                f"ButtonConfig {self.label} has both 'request_url' and 'htmx_config.request_url' set. "
-                "This renders an <a> tag with both href and hx-* attributes, which may cause "
-                "conflicting behavior. Use 'request_url' for navigation links, or "
-                "'htmx_config.request_url' for HTMX requests, but not both.",
-                UserWarning,
-                stacklevel=2,
-            )
 
 
 @dataclass
