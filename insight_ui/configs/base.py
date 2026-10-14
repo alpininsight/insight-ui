@@ -154,21 +154,6 @@ class HtmxConfig:
         validate_http_method(self.method, "method")
 
 
-def validate_form_field_name(config: object) -> None:
-    """Require a non-empty name, because browsers never submit fields without one.
-
-    Args:
-        config: A form field config with a name and optionally a label or tag_id.
-
-    Raises:
-        ValueError: If the name is empty or None.
-
-    """
-    if not getattr(config, "name", None):
-        identifier = getattr(config, "label", None) or getattr(config, "tag_id", None) or "(unnamed)"
-        raise ValueError(f"{config.__class__.__name__} {identifier} requires a non-empty name.")  # noqa: TRY003
-
-
 @dataclass
 class BaseFormFieldConfig:
     """Base configuration for form field components.
@@ -210,7 +195,8 @@ class BaseFormFieldConfig:
             ValueError: If name is empty or None.
 
         """
-        validate_form_field_name(self)
+        # Browsers never submit fields without a name.
+        validate_not_empty(self, "name")
         if self.disabled and self.disabled_reason is None:
             warnings.warn(
                 f"{self.__class__.__name__} {self.name} is disabled without a disabled_reason. "

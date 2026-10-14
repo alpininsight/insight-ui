@@ -60,7 +60,8 @@ At this revision, [base fields](../insight_ui/configs/base.py) and
 parameters. The template does not emit linked help/error paragraphs,
 `aria-invalid` or `aria-errormessage`. The
 [form template](../insight_ui/templates/insight_ui/components/form.html)'s
-`#form-error` is a plain container, not an implemented alert region.
+error container (`#<tag_id>-error`, or `#form-error` without a `tag_id`) is a
+plain container, not an implemented alert region.
 
 Do not document automatic error announcements or pass unsupported Config fields.
 When adding reusable error support, link instructions/errors to the control,
