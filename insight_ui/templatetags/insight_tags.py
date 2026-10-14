@@ -31,7 +31,6 @@ from insight_ui.configs import (
     BUTTON_TYPE_VALUES,
     AccordionConfig,
     AlertConfig,
-    AlertType,
     AppCardConfig,
     ArticleConfig,
     BadgeConfig,
@@ -92,6 +91,7 @@ from insight_ui.configs import (
     RadioItemConfig,
     SearchBarConfig,
     SelectConfig,
+    Severity,
     Size,
     SliderConfig,
     StatusScreenConfig,
@@ -341,7 +341,7 @@ def hero(
     return {"hero_config": config}
 
 
-STATUS_SCREEN_ICON_BY_STATUS = {
+STATUS_SCREEN_ICON_BY_SEVERITY = {
     "info": "information-circle",
     "success": "check",
     "warning": "exclamation-triangle",
@@ -355,7 +355,7 @@ def status_screen(
     *,
     title: str | _Unset = UNSET,
     description: str | list[str] | _Unset = UNSET,
-    status: AlertType | _Unset = UNSET,
+    severity: Severity | _Unset = UNSET,
     brand: BrandMarkConfig | _Unset | None = UNSET,
     notice_title: str | _Unset = UNSET,
     notice: str | _Unset = UNSET,
@@ -374,7 +374,7 @@ def status_screen(
 
     return {
         "status_screen_config": config,
-        "status_screen_icon": STATUS_SCREEN_ICON_BY_STATUS[config.status],
+        "status_screen_icon": STATUS_SCREEN_ICON_BY_SEVERITY[config.severity],
     }
 
 
@@ -836,7 +836,7 @@ def alert(
     *,
     tag_id: str | _Unset = UNSET,
     message: str | _Unset = UNSET,
-    type: AlertType | _Unset = UNSET,  # noqa: A002
+    severity: Severity | _Unset = UNSET,
     dismissible: bool | _Unset = UNSET,
 ) -> dict[str, Any]:
     """Render a closable notification."""
@@ -855,12 +855,12 @@ def alert(
 def infobox(
     config: InfoboxConfig | None = None,
     *,
-    info_type: AlertType | _Unset = UNSET,
+    severity: Severity | _Unset = UNSET,
     message: str | _Unset = UNSET,
     **kwargs: str,
 ) -> dict[str, Any]:
     """Render a small box of information."""
-    config = build_config(InfoboxConfig, config, info_type=info_type, message=message)
+    config = build_config(InfoboxConfig, config, severity=severity, message=message)
 
     if kwargs:
         try:

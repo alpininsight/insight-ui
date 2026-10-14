@@ -4,7 +4,6 @@
 
 import pytest
 from insight_ui.configs import (
-    ALERT_TYPE_VALUES,
     BADGE_TYPE_VALUES,
     BUTTON_TYPE_VALUES,
     COLOR_TYPE_VALUES,
@@ -17,6 +16,7 @@ from insight_ui.configs import (
     HTTP_METHOD_VALUES,
     ICON_COLOR_VALUES,
     INLINE_POSITION_VALUES,
+    SEVERITY_VALUES,
     SIZE_VALUES,
     SLIDER_LEGEND_MODE_VALUES,
     STEP_STATUS_VALUES,
@@ -37,7 +37,6 @@ from insight_ui.configs import (
     SliderConfig,
     StatusScreenConfig,
     ToggleViewConfig,
-    validate_alert_type,
     validate_badge_type,
     validate_button_type,
     validate_color_type,
@@ -50,6 +49,7 @@ from insight_ui.configs import (
     validate_http_method,
     validate_icon_color,
     validate_inline_position,
+    validate_severity,
     validate_size,
     validate_slider_legend_mode,
     validate_step_status,
@@ -559,138 +559,58 @@ def test_minimal_stepper_config_default_current_step_status() -> None:
 
 
 # =============================================================================
-# Alert Type Validation
+# Severity Validation (alert, infobox, status screen)
 # =============================================================================
 
 
-# --- ALERT_TYPE_VALUES constant ---------------------------------------------
+SEVERITY_CONFIGS = [
+    pytest.param(lambda severity: AlertConfig(severity=severity), id="alert"),
+    pytest.param(lambda severity: InfoboxConfig(message="Test", severity=severity), id="infobox"),
+    pytest.param(lambda severity: StatusScreenConfig(title="Test", severity=severity), id="status-screen"),
+]
 
 
-def test_alert_type_values_contains_expected_values() -> None:
-    """Test that ALERT_TYPE_VALUES contains all expected values."""
-    assert ALERT_TYPE_VALUES == ("info", "success", "warning", "error")
+def test_severity_values_use_error_not_danger() -> None:
+    """Severity says what happened ('error'); 'danger' is the color role."""
+    assert SEVERITY_VALUES == ("info", "success", "warning", "error")
 
 
-def test_alert_type_values_is_tuple() -> None:
-    """Test that ALERT_TYPE_VALUES is immutable (tuple)."""
-    assert isinstance(ALERT_TYPE_VALUES, tuple)
+def test_validate_severity_accepts_valid_values() -> None:
+    """Every severity value is accepted."""
+    for severity in SEVERITY_VALUES:
+        validate_severity(severity)  # Should not raise
 
 
-def test_alert_type_values_uses_error_not_danger() -> None:
-    """Test that ALERT_TYPE_VALUES uses 'error' (semantic) not 'danger' (color token)."""
-    assert "error" in ALERT_TYPE_VALUES
-    assert "danger" not in ALERT_TYPE_VALUES
+def test_validate_severity_rejects_invalid_value() -> None:
+    """Unknown values name the field and the allowed values."""
+    with pytest.raises(ValueError, match="Invalid severity 'invalid'"):
+        validate_severity("invalid")
 
 
-# --- validate_alert_type function -------------------------------------------
+def test_validate_severity_points_from_danger_to_error() -> None:
+    """The color name 'danger' gets a hint to use 'error'."""
+    with pytest.raises(ValueError, match=r"Invalid severity 'danger'.*Use 'error'"):
+        validate_severity("danger")
 
 
-def test_validate_alert_type_accepts_valid_values() -> None:
-    """Test that validate_alert_type accepts all valid alert type values."""
-    for alert_type in ALERT_TYPE_VALUES:
-        validate_alert_type(alert_type)  # Should not raise
+@pytest.mark.parametrize("build", SEVERITY_CONFIGS)
+def test_configs_accept_every_severity(build) -> None:  # noqa: ANN001
+    """Alert, infobox and status screen share one severity vocabulary."""
+    for severity in SEVERITY_VALUES:
+        assert build(severity).severity == severity
 
 
-def test_validate_alert_type_rejects_invalid_value() -> None:
-    """Test that validate_alert_type raises ValueError for invalid types."""
-    with pytest.raises(ValueError, match="Invalid type 'invalid'"):
-        validate_alert_type("invalid")
+@pytest.mark.parametrize("build", SEVERITY_CONFIGS)
+def test_configs_default_to_info(build) -> None:  # noqa: ANN001
+    """Without a severity, the message is informational."""
+    assert build("info").severity == "info"
 
 
-def test_validate_alert_type_rejects_danger() -> None:
-    """Test that validate_alert_type rejects 'danger' (use 'error' instead)."""
-    with pytest.raises(ValueError, match="Invalid type 'danger'"):
-        validate_alert_type("danger")
-
-
-def test_validate_alert_type_custom_field_name() -> None:
-    """Test that validate_alert_type uses the custom field name in error messages."""
-    with pytest.raises(ValueError, match="Invalid status 'bad'"):
-        validate_alert_type("bad", field_name="status")
-
-
-# --- AlertConfig type validation --------------------------------------------
-
-
-def test_alert_config_accepts_valid_type() -> None:
-    """Test AlertConfig accepts valid type values."""
-    for alert_type in ALERT_TYPE_VALUES:
-        config = AlertConfig(type=alert_type)
-        assert config.type == alert_type
-
-
-def test_alert_config_rejects_invalid_type() -> None:
-    """Test AlertConfig raises ValueError for invalid type."""
-    with pytest.raises(ValueError, match="Invalid type"):
-        AlertConfig(type="invalid")
-
-
-def test_alert_config_rejects_danger_type() -> None:
-    """Test AlertConfig rejects 'danger' type (use 'error' instead)."""
-    with pytest.raises(ValueError, match=r"Invalid type 'danger'.*Use 'error'"):
-        AlertConfig(type="danger")
-
-
-def test_alert_config_default_type() -> None:
-    """Test AlertConfig has correct default type."""
-    config = AlertConfig()
-    assert config.type == "info"
-
-
-# --- InfoboxConfig info_type validation -------------------------------------
-
-
-def test_infobox_config_accepts_valid_info_type() -> None:
-    """Test InfoboxConfig accepts valid info_type values."""
-    for alert_type in ALERT_TYPE_VALUES:
-        config = InfoboxConfig(message="Test", info_type=alert_type)
-        assert config.info_type == alert_type
-
-
-def test_infobox_config_rejects_invalid_info_type() -> None:
-    """Test InfoboxConfig raises ValueError for invalid info_type."""
-    with pytest.raises(ValueError, match="Invalid info_type"):
-        InfoboxConfig(message="Test", info_type="invalid")
-
-
-def test_infobox_config_rejects_danger_info_type() -> None:
-    """Test InfoboxConfig rejects 'danger' info_type (use 'error' instead)."""
-    with pytest.raises(ValueError, match=r"Invalid info_type 'danger'.*Use 'error'"):
-        InfoboxConfig(message="Test", info_type="danger")
-
-
-def test_infobox_config_default_info_type() -> None:
-    """Test InfoboxConfig has correct default info_type."""
-    config = InfoboxConfig(message="Test")
-    assert config.info_type == "info"
-
-
-# --- StatusScreenConfig status validation -----------------------------------
-
-
-def test_status_screen_config_accepts_valid_status() -> None:
-    """Test StatusScreenConfig accepts valid status values."""
-    for alert_type in ALERT_TYPE_VALUES:
-        config = StatusScreenConfig(title="Test", status=alert_type)
-        assert config.status == alert_type
-
-
-def test_status_screen_config_rejects_invalid_status() -> None:
-    """Test StatusScreenConfig raises ValueError for invalid status."""
-    with pytest.raises(ValueError, match="Invalid status"):
-        StatusScreenConfig(title="Test", status="invalid")
-
-
-def test_status_screen_config_rejects_danger_status() -> None:
-    """Test StatusScreenConfig rejects 'danger' status (use 'error' instead)."""
-    with pytest.raises(ValueError, match=r"Invalid status 'danger'.*Use 'error'"):
-        StatusScreenConfig(title="Test", status="danger")
-
-
-def test_status_screen_config_default_status() -> None:
-    """Test StatusScreenConfig has correct default status."""
-    config = StatusScreenConfig(title="Test")
-    assert config.status == "info"
+@pytest.mark.parametrize("build", SEVERITY_CONFIGS)
+def test_configs_reject_danger_with_hint(build) -> None:  # noqa: ANN001
+    """Passing the color name fails with a pointer to 'error'."""
+    with pytest.raises(ValueError, match=r"Invalid severity 'danger'.*Use 'error'"):
+        build("danger")
 
 
 # =============================================================================
