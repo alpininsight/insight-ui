@@ -29,7 +29,7 @@ def assert_color_rule(css: str, class_name: str, property_name: str, token: str)
 def test_icon_colors_have_built_css(color: str, built_css: str) -> None:
     """Cover every public icon color, including inheritance and text roles."""
     rendered = Template("{% load insight_tags %}{% icon name='check' color=color %}").render(Context({"color": color}))
-    classes = BeautifulSoup(rendered, "html.parser").div["class"]
+    classes = BeautifulSoup(rendered, "html.parser").span["class"]
     if not color:
         assert not any(name.startswith("text-insight-") for name in classes)
         return

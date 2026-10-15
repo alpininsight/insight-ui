@@ -13,7 +13,7 @@
             {% if toggle_config.method %}onclick="{{ toggle_config.method }}()"{% endif %}
             class="sr-only peer"
         >
-        <div class="after:content-[''] after:absolute after:-top-1.5 after:-start-0.75 after:bg-insight-surface after:border-insight-surface after:border after:rounded-insight-full after:size-6 after:transition-all relative rtl:peer-checked:after:-translate-x-full w-10 h-3 bg-insight-raised rounded-insight-full outline-insight-border-raised transition peer peer-focus:outline-2 peer-checked:after:translate-x-full peer-checked:bg-insight-primary-action"></div>
+        <span class="after:content-[''] after:absolute after:-top-1.5 after:-start-0.75 after:bg-insight-surface after:border-insight-surface after:border after:rounded-insight-full after:size-6 after:transition-all relative rtl:peer-checked:after:-translate-x-full w-10 h-3 bg-insight-raised rounded-insight-full outline-insight-border-raised transition peer peer-focus:outline-2 peer-checked:after:translate-x-full peer-checked:bg-insight-primary-action"></span>
     </label>
 {% else %}
     <div class="flex" {% if toggle_config.disabled and toggle_config.disabled_reason %} data-insight-tooltip="{{ toggle_config.disabled_reason }}"{% endif %}>

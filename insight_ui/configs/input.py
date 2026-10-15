@@ -19,6 +19,7 @@ from insight_ui.configs.types import (
     validate_html_button_type,
     validate_html_input_type,
     validate_htmx_swap_method,
+    validate_not_empty,
     validate_size,
     validate_slider_legend_mode,
 )
@@ -147,7 +148,9 @@ class ButtonConfig:
     )
 
     def __post_init__(self) -> None:
-        """Validate type, size, and button_type after initialization."""
+        """Require a label and validate type, size, and button_type after initialization."""
+        # The label is the accessible name, also for icon-only buttons (aria-label).
+        validate_not_empty(self, "label")
         # Override type when disabled=True
         if self.disabled:
             object.__setattr__(self, "type", "disabled")
@@ -195,6 +198,7 @@ class InputFieldConfig(BaseFormFieldConfig):
         min_length: Minimum number of characters in a text field.
         max_length: Maximum number of characters in a text field.
         checked: **True** if `input_type='checkbox'` and the checkbox should be selected.
+        explanation: A brief description of the field that appears in a tooltip.
 
     """
 
@@ -223,6 +227,9 @@ class InputFieldConfig(BaseFormFieldConfig):
     max_length: int | None = field(default=None, metadata={"doc": _("Maximum number of characters in a text field.")})
     checked: bool = field(
         default=False, metadata={"doc": _("**True** if `input_type='checkbox'` and the checkbox should be selected.")}
+    )
+    explanation: str = field(
+        default="", metadata={"doc": _("A brief description of the field that appears in a tooltip.")}
     )
 
     def __post_init__(self) -> None:
@@ -254,6 +261,7 @@ class TextareaConfig(BaseFormFieldConfig):
         value: The value of the input field.
         rows: Determines the number of lines.
         cols: Determines the number of characters in a line.
+        explanation: A brief description of the field that appears in a tooltip.
 
     """
 
@@ -273,6 +281,9 @@ class TextareaConfig(BaseFormFieldConfig):
     value: str = field(default="", metadata={"doc": _("The value of the input field.")})
     rows: int = field(default=3, metadata={"doc": _("Determines the number of lines.")})
     cols: int | None = field(default=None, metadata={"doc": _("Determines the number of characters in a line.")})
+    explanation: str = field(
+        default="", metadata={"doc": _("A brief description of the field that appears in a tooltip.")}
+    )
 
 
 @dataclass
@@ -341,7 +352,8 @@ class CheckboxItemConfig:
     checked: bool = field(default=False, metadata={"doc": _("**True** if the checkbox should be selected.")})
 
     def __post_init__(self) -> None:
-        """Warn if disabled without a reason."""
+        """Require a tag_id and warn if disabled without a reason."""
+        validate_not_empty(self, "tag_id")
         if self.disabled and self.disabled_reason is None:
             identifier = self.label or self.value
             warnings.warn(
@@ -395,7 +407,8 @@ class CheckboxGroupConfig:
     )
 
     def __post_init__(self) -> None:
-        """Validate that minimum_checked does not exceed maximum_checked."""
+        """Require a non-empty name and validate that minimum_checked does not exceed maximum_checked."""
+        validate_not_empty(self, "name")
         if self.maximum_checked is not None and self.minimum_checked > self.maximum_checked:
             raise ValueError(  # noqa: TRY003
                 f"minimum_checked ({self.minimum_checked}) cannot be greater than maximum_checked ({self.maximum_checked})"
@@ -429,6 +442,10 @@ class DropdownItemConfig:
     htmx: HtmxConfig | None = field(
         default=None, metadata={"doc": _("Optional HTMX configuration for dynamic content loading.")}
     )
+
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_not_empty(self, "request_url")
 
 
 @dataclass
@@ -466,6 +483,10 @@ class DropdownConfig:
     title: str = field(metadata={"doc": _("Label of the dropdown button.")})
     show_arrow: bool = field(default=True, metadata={"doc": _("**True** displays an arrow behind the title.")})
     items: list[DropdownItemConfig] = field(default_factory=list, metadata={"doc": _("A list of the menu elements.")})
+
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_not_empty(self, "tag_id")
 
 
 @dataclass
@@ -550,7 +571,8 @@ class RadioGroupConfig:
     current_value: str = field(default="", metadata={"doc": _("The value of the currently selected radio button.")})
 
     def __post_init__(self) -> None:
-        """Set first option for current_value if empty, and validate it against items."""
+        """Require a non-empty name, set first option for current_value if empty, and validate it against items."""
+        validate_not_empty(self, "name")
         if not self.current_value and self.items:
             self.current_value = self.items[0].value
         elif self.items and self.current_value not in (item.value for item in self.items):
@@ -618,7 +640,8 @@ class RadioBlockConfig:
     current_value: str = field(default="", metadata={"doc": _("The value of the currently selected radio button.")})
 
     def __post_init__(self) -> None:
-        """Validate hx_swap_method and current_value."""
+        """Require a non-empty name and validate hx_swap_method and current_value."""
+        validate_not_empty(self, "name")
         validate_htmx_swap_method(self.hx_swap_method, "hx_swap_method")
         if not self.current_value and self.items:
             self.current_value = self.items[0].value
@@ -889,3 +912,7 @@ class ChatConfig:
         """
 
     request_url: str = field(metadata={"doc": _("URL for sending chat messages via HTMX POST.")})
+
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_not_empty(self, "request_url")

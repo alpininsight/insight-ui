@@ -390,4 +390,94 @@ describe('RangeSlider Component', () => {
       });
     });
   });
+
+  describe('Form reset', () => {
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    function wrapInForm(container) {
+      const form = document.createElement('form');
+      form.append(...container.childNodes);
+      container.appendChild(form);
+      return form;
+    }
+
+    it('should restore the single-range progress after the form is reset', () => {
+      vi.useFakeTimers();
+      const form = wrapInForm(createSingleRangeSlider({ value: 50 }));
+      const element = form.querySelector('[data-insight-range-slider]');
+      const input = element.querySelector('input');
+      new InsightUI.RangeSlider(element);
+
+      input.value = 90;
+      input.dispatchEvent(new Event('input'));
+      expect(element.style.getPropertyValue('--insight-control-range-progress')).toBe('90%');
+
+      form.reset();
+      vi.runAllTimers();
+
+      expect(input.value).toBe('50');
+      expect(element.style.getPropertyValue('--insight-control-range-progress')).toBe('50%');
+      expect(input.getAttribute('aria-valuenow')).toBe('50');
+    });
+
+    it('should restore the dual-range track after the form is reset', () => {
+      vi.useFakeTimers();
+      const form = wrapInForm(createDualRangeSlider({ minValue: 25, maxValue: 75 }));
+      const element = form.querySelector('[data-insight-range-slider]');
+      const inputMin = element.querySelector('.slider-input-min');
+      const track = element.querySelector('.slider-track');
+      new InsightUI.RangeSlider(element);
+
+      inputMin.value = 60;
+      inputMin.dispatchEvent(new Event('input'));
+      expect(track.style.left).toBe('60%');
+
+      form.reset();
+      vi.runAllTimers();
+
+      expect(track.style.left).toBe('25%');
+      expect(track.style.width).toBe('50%');
+      expect(inputMin.getAttribute('aria-valuenow')).toBe('25');
+    });
+
+    it('should stop listening for form resets after destroy', () => {
+      vi.useFakeTimers();
+      const form = wrapInForm(createSingleRangeSlider({ value: 50 }));
+      const element = form.querySelector('[data-insight-range-slider]');
+      const instance = new InsightUI.RangeSlider(element);
+      const updateSpy = vi.spyOn(instance, 'updateProgress');
+
+      instance.destroy();
+      form.reset();
+      vi.runAllTimers();
+
+      expect(updateSpy).not.toHaveBeenCalled();
+    });
+
+    it('should cancel a pending reset update when destroyed right after the reset', () => {
+      vi.useFakeTimers();
+      const form = wrapInForm(createSingleRangeSlider({ value: 50 }));
+      const element = form.querySelector('[data-insight-range-slider]');
+      const instance = new InsightUI.RangeSlider(element);
+
+      form.reset();
+      instance.destroy();
+
+      expect(() => vi.runAllTimers()).not.toThrow();
+    });
+
+    it('should cancel a pending dual-range reset update when destroyed right after the reset', () => {
+      vi.useFakeTimers();
+      const form = wrapInForm(createDualRangeSlider());
+      const element = form.querySelector('[data-insight-range-slider]');
+      const instance = new InsightUI.RangeSlider(element);
+
+      form.reset();
+      instance.destroy();
+
+      expect(() => vi.runAllTimers()).not.toThrow();
+    });
+  });
 });

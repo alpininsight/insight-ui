@@ -10,7 +10,7 @@ from django.utils.translation import gettext_lazy as _
 from insight_ui.configs.base import HtmxConfig, IconConfig
 from insight_ui.configs.filter import SearchBarConfig
 from insight_ui.configs.input import DropdownConfig
-from insight_ui.configs.types import Size, StepStatus, validate_size, validate_step_status
+from insight_ui.configs.types import Size, StepStatus, validate_not_empty, validate_size, validate_step_status
 from insight_ui.configs.utils import BadgeConfig, BrandMarkConfig, LegalNoticeConfig, LogoConfig
 
 
@@ -124,6 +124,10 @@ class UserMenuLinkConfig:
     request_url: str = field(metadata={"doc": _("The URL to navigate to when clicking on the link.")})
     icon: IconConfig | None = field(default=None, metadata={"doc": _("An optional icon displayed before the text.")})
     staff_only: bool = field(default=False, metadata={"doc": _("The link is only displayed for administrators.")})
+
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_not_empty(self, "request_url")
 
 
 @dataclass
@@ -806,6 +810,10 @@ class AccordionConfig:
     items: list[AccordionItemConfig] = field(default_factory=list, metadata={"doc": _("List of individual sections.")})
     exclusive: bool = field(default=True, metadata={"doc": _("If **True** only one section can be open at a time.")})
 
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_not_empty(self, "tag_id")
+
 
 @dataclass
 class TabConfig:
@@ -827,6 +835,10 @@ class TabConfig:
     title: str = field(metadata={"doc": _("Label of the tab button.")})
     request_url: str = field(metadata={"doc": _("The URL to be called when the tab is clicked.")})
     active: bool = field(default=False, metadata={"doc": _("Whether this tab is initially active.")})
+
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_not_empty(self, "tag_id", "request_url")
 
 
 @dataclass

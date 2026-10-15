@@ -7,7 +7,7 @@
         hx-target="{{ generic_filter_config.htmx_config.target }}"
         hx-swap="{{ generic_filter_config.htmx_config.swap|default:'innerHTML' }}"
         hx-push-url="{{ generic_filter_config.htmx_config.push_url|default:"true" }}"
-        hx-indicator="{{ generic_filter_config.htmx_config.loading_indicator_id|default:'#loading-indicator' }}"
+        hx-indicator="{{ generic_filter_config.htmx_config.loading_indicator_id|default:'#insight-global-loading-indicator' }}"
         hx-trigger="submit, change"
     {% else %}
         action="{{ generic_filter_config.request_url }}"

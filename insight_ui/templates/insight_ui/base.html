@@ -4,7 +4,7 @@
 {% endif %}
 
 <!DOCTYPE html>
-<html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" class="scroll-pt-24">
+<html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" class="scroll-pt-24" data-tooltip-delay="{{ INSIGHT_UI.tooltip_show_delay }}">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,11 +25,14 @@
         <meta name="keywords" content="{% block meta_keywords %}{{ INSIGHT_UI.meta.seo.keywords }}{% endblock meta_keywords %}">
         <meta name="author" content="{% block meta_author %}{{ INSIGHT_UI.meta.seo.author }}{% endblock meta_author %}">
 
-        <!-- Set theme before loading any stylesheets -->
+        <!-- Set theme before loading any stylesheets: saved choice, else the system preference -->
         <script>
             (function() {
-                const theme = localStorage.getItem('insight-ui-theme') || 'light';
+                const saved = localStorage.getItem('insight-ui-theme');
+                const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const theme = (saved === 'dark' || saved === 'light') ? saved : (prefersDark ? 'dark' : 'light');
                 document.documentElement.setAttribute('data-theme', theme);
+                document.documentElement.classList.toggle('dark', theme === 'dark');
                 document.cookie = "theme=" + theme + "; path=/";
             })();
         </script>
@@ -39,9 +42,8 @@
             <script src="{{ javascript_catalog_url }}"></script>
         {% endif %}
 
-        <!-- HTMX CDN -->
-        <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js" integrity="sha384-/TgkGk7p307TH7EXJDuUlgG3Ce1UVolAOFopFekQkkXihi5u/6OCvVKyz1W+idaz" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <script src="https://cdn.jsdelivr.net/npm/htmx-ext-ws@2.0.4" integrity="sha384-1RwI/nvUSrMRuNj7hX1+27J8XDdCoSLf0EjEyF69nacuWyiJYoQ/j39RT1mSnd2G" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <!-- HTMX: INSIGHT_UI["htmx"] (default jsdelivr); an empty src omits the script -->
+        {% insight_htmx_scripts %}
 
         {% if INSIGHT_UI.load_prism %}
             <!-- prism (Syntax-Highlighting) CDN -->
@@ -70,7 +72,7 @@
 
         {% block extra_head %}{% endblock %}
     </head>
-    <body class="flex flex-col min-h-screen size-full text-insight-body bg-insight-base" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-indicator="#loading-indicator">
+    <body class="flex flex-col min-h-screen size-full text-insight-body bg-insight-base" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-indicator="#insight-global-loading-indicator">
         {% if use_default_loading_indicator is not False %}{% include "insight_ui/components/htmx_loading_indicator.html" %}{% endif %}
 
         <div id="background-image">

@@ -41,6 +41,21 @@ describe('Accordion Component', () => {
       expect(button.getAttribute('aria-expanded')).toBe('true');
     });
 
+    it('should rotate the chevron while the panel is open', () => {
+      const container = TestUtils.createAccordion();
+      const element = container.querySelector('[data-insight-accordion]');
+      const button = element.querySelector('button[aria-controls]');
+      const chevron = button.querySelector('[data-accordion-chevron]');
+
+      new InsightUI.Accordion(element);
+
+      TestUtils.click(button); // open
+      expect(chevron.classList.contains('rotate-180')).toBe(true);
+
+      TestUtils.click(button); // close
+      expect(chevron.classList.contains('rotate-180')).toBe(false);
+    });
+
     it('should close panel on second button click', () => {
       const container = TestUtils.createAccordion();
       const element = container.querySelector('[data-insight-accordion]');
