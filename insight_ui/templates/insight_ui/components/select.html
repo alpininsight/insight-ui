@@ -19,6 +19,7 @@
         {% if not select_config.tag_id and not select_config.name %}aria-label="{% if select_config.label %}{{ select_config.label }}{% else %}{% trans 'Select option' %}{% endif %}"{% endif %}
         {% if select_config.disabled %}disabled{% endif %}
         {% if select_config.disabled and select_config.disabled_reason %}data-insight-tooltip="{{ select_config.disabled_reason }}"{% endif %}
+        {% data_attributes select_config.data_attrs %}
         class="input w-full"
     >
         {% for option, text in select_config.options.items %}
