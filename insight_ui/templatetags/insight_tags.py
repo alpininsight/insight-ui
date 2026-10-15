@@ -238,6 +238,45 @@ def json_attribute(value: object) -> str:
 
 
 @register.simple_tag
+def data_attributes(attrs: Iterable[DataAttrConfig]) -> SafeString:
+    """Render DataAttrConfig entries as data-* HTML attributes.
+
+    Usage: ``<input {% data_attributes config.data_attrs %}>``
+    """
+    return format_html_join(" ", 'data-{}="{}"', ((attr.name, attr.value) for attr in attrs))
+
+
+def _collect_data_attrs(
+    tag_name: str,
+    config: object,
+    data_attrs: list[DataAttrConfig] | _Unset,
+    kwargs: dict[str, Any],
+) -> list[DataAttrConfig] | _Unset:
+    """Append the data_* keyword arguments of a tag to its data attributes.
+
+    ``{% input_field name="title" data_inspector_label="" %}`` renders ``data-inspector-label=""``.
+    Attributes from ``data_attrs`` (or else from the config) are kept.
+
+    Raises:
+        ValueError: If a keyword argument does not start with ``data_``.
+
+    """
+    unknown = [key for key in kwargs if not key.startswith("data_")]
+    if unknown:
+        raise ValueError(  # noqa: TRY003
+            f"Unknown parameter '{unknown[0]}' in {{% {tag_name} %}}. "
+            "Only data_* attributes are allowed as extra arguments."
+        )
+    if not kwargs:
+        return data_attrs
+    existing = data_attrs if isinstance(data_attrs, list) else getattr(config, "data_attrs", [])
+    return [
+        *existing,
+        *(DataAttrConfig(name=key[5:].replace("_", "-"), value=str(value)) for key, value in kwargs.items()),
+    ]
+
+
+@register.simple_tag
 def htmx_attributes(
     htmx: HtmxConfig | None,
     *,
@@ -695,9 +734,14 @@ def input_field(
     disabled_reason: str | _Unset | None = UNSET,
     label: str | _Unset | None = UNSET,
     explanation: str | _Unset = UNSET,
+    data_attrs: list[DataAttrConfig] | _Unset = UNSET,
+    **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
     """Render any <input> field."""
-    config = build_config(InputFieldConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    data_attrs = _collect_data_attrs("input_field", config, data_attrs, kwargs)
+    config = build_config(
+        InputFieldConfig, config, **{k: v for k, v in locals().items() if k not in ("config", "kwargs")}
+    )
     return {"input_config": config}
 
 
@@ -716,9 +760,14 @@ def textarea(
     disabled_reason: str | _Unset | None = UNSET,
     label: str | _Unset | None = UNSET,
     explanation: str | _Unset = UNSET,
+    data_attrs: list[DataAttrConfig] | _Unset = UNSET,
+    **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
     """Render a <textarea> field."""
-    config = build_config(TextareaConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    data_attrs = _collect_data_attrs("textarea", config, data_attrs, kwargs)
+    config = build_config(
+        TextareaConfig, config, **{k: v for k, v in locals().items() if k not in ("config", "kwargs")}
+    )
     return {"textarea_config": config}
 
 
@@ -734,9 +783,14 @@ def checkbox(
     required: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset = UNSET,
+    data_attrs: list[DataAttrConfig] | _Unset = UNSET,
+    **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
     """Render a checkbox with label text."""
-    config = build_config(CheckboxConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    data_attrs = _collect_data_attrs("checkbox", config, data_attrs, kwargs)
+    config = build_config(
+        CheckboxConfig, config, **{k: v for k, v in locals().items() if k not in ("config", "kwargs")}
+    )
     return {"checkbox_config": config}
 
 
@@ -763,9 +817,14 @@ def radio_group(
     items: list[RadioItemConfig] | _Unset = UNSET,
     as_row: bool | _Unset = UNSET,
     current_value: str | _Unset = UNSET,
+    data_attrs: list[DataAttrConfig] | _Unset = UNSET,
+    **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
     """Render a group of radio buttons."""
-    config = build_config(RadioGroupConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    data_attrs = _collect_data_attrs("radio_group", config, data_attrs, kwargs)
+    config = build_config(
+        RadioGroupConfig, config, **{k: v for k, v in locals().items() if k not in ("config", "kwargs")}
+    )
     return {"radio_group_config": config}
 
 
@@ -783,9 +842,14 @@ def radio_block(
     hx_swap_method: str | _Unset = UNSET,
     method: str | _Unset = UNSET,
     current_value: str | _Unset = UNSET,
+    data_attrs: list[DataAttrConfig] | _Unset = UNSET,
+    **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
     """Render a group of radio buttons as a block."""
-    config = build_config(RadioBlockConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    data_attrs = _collect_data_attrs("radio_block", config, data_attrs, kwargs)
+    config = build_config(
+        RadioBlockConfig, config, **{k: v for k, v in locals().items() if k not in ("config", "kwargs")}
+    )
     return {"radio_block_config": config}
 
 
@@ -807,9 +871,12 @@ def slider(
     dual: bool | _Unset = UNSET,
     value_min: int | _Unset | None = UNSET,
     value_max: int | _Unset | None = UNSET,
+    data_attrs: list[DataAttrConfig] | _Unset = UNSET,
+    **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
     """Render a range slider."""
-    config = build_config(SliderConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    data_attrs = _collect_data_attrs("slider", config, data_attrs, kwargs)
+    config = build_config(SliderConfig, config, **{k: v for k, v in locals().items() if k not in ("config", "kwargs")})
     return {"slider_config": config}
 
 
@@ -828,9 +895,12 @@ def toggle(
     disabled_reason: str | _Unset | None = UNSET,
     switch: bool | _Unset = UNSET,
     method: str | _Unset = UNSET,
+    data_attrs: list[DataAttrConfig] | _Unset = UNSET,
+    **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
     """Render a toggle button."""
-    config = build_config(ToggleConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    data_attrs = _collect_data_attrs("toggle", config, data_attrs, kwargs)
+    config = build_config(ToggleConfig, config, **{k: v for k, v in locals().items() if k not in ("config", "kwargs")})
     return {"toggle_config": config}
 
 
@@ -847,9 +917,12 @@ def select(
     explanation: str | _Unset = UNSET,
     options: list[str] | dict[str, str] | _Unset = UNSET,
     selected_option: str | _Unset = UNSET,
+    data_attrs: list[DataAttrConfig] | _Unset = UNSET,
+    **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
     """Render a selection box."""
-    config = build_config(SelectConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    data_attrs = _collect_data_attrs("select", config, data_attrs, kwargs)
+    config = build_config(SelectConfig, config, **{k: v for k, v in locals().items() if k not in ("config", "kwargs")})
     return {"select_config": config}
 
 
@@ -865,9 +938,14 @@ def multiselect(
     disabled_reason: str | _Unset | None = UNSET,
     options: list[str] | dict[str, str] | _Unset = UNSET,
     selected_options: list[str] | _Unset = UNSET,
+    data_attrs: list[DataAttrConfig] | _Unset = UNSET,
+    **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
     """Render a selection box that allows multiple values."""
-    config = build_config(MultiselectConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    data_attrs = _collect_data_attrs("multiselect", config, data_attrs, kwargs)
+    config = build_config(
+        MultiselectConfig, config, **{k: v for k, v in locals().items() if k not in ("config", "kwargs")}
+    )
     return {"multiselect_config": config}
 
 

@@ -172,6 +172,7 @@ class BaseFormFieldConfig:
         disabled: **True** if the field should be disabled.
         disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
+        data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     """
 
@@ -190,6 +191,9 @@ class BaseFormFieldConfig:
         },
     )
     required: bool = field(default=False, metadata={"doc": _("**True** if the field must be filled in.")})
+    data_attrs: list[DataAttrConfig] = field(
+        default_factory=list, metadata={"doc": _("Custom data attributes for JavaScript hooks or tests.")}
+    )
 
     def __post_init__(self) -> None:
         """Require a non-empty name and warn if disabled without a reason.
