@@ -36,6 +36,7 @@ from insight_ui.configs import (
     RadioBlockConfig,
     SliderConfig,
     StatusScreenConfig,
+    StepperItemConfig,
     ToggleViewConfig,
     validate_alert_type,
     validate_badge_type,
@@ -494,7 +495,7 @@ def test_corner_ribbon_config_rejects_an_invalid_foreground_color() -> None:
 
 def test_step_status_values_contains_expected_values() -> None:
     """Test that STEP_STATUS_VALUES contains all expected values."""
-    assert STEP_STATUS_VALUES == ("active", "success", "failed", "")
+    assert STEP_STATUS_VALUES == ("pending", "current", "completed", "failed")
 
 
 def test_step_status_values_is_tuple() -> None:
@@ -528,7 +529,7 @@ def test_validate_step_status_custom_field_name() -> None:
 
 def test_minimal_stepper_config_accepts_valid_current_step_status() -> None:
     """Test MinimalStepperConfig accepts valid current_step_status values."""
-    for status in ("active", "success", "failed", ""):
+    for status in STEP_STATUS_VALUES:
         config = MinimalStepperConfig(current_step_status=status)
         assert config.current_step_status == status
 
@@ -536,26 +537,40 @@ def test_minimal_stepper_config_accepts_valid_current_step_status() -> None:
 def test_minimal_stepper_config_rejects_invalid_current_step_status() -> None:
     """Test MinimalStepperConfig raises ValueError for invalid current_step_status."""
     with pytest.raises(ValueError, match="Invalid current_step_status"):
-        MinimalStepperConfig(current_step_status="pending")
+        MinimalStepperConfig(current_step_status="active")
 
 
-def test_minimal_stepper_config_accepts_valid_items() -> None:
-    """Test MinimalStepperConfig accepts valid items list."""
-    items = ["success", "success", "active", "", ""]
-    config = MinimalStepperConfig(items=items)
-    assert config.items == items
+def test_minimal_stepper_config_accepts_valid_steps() -> None:
+    """Test MinimalStepperConfig accepts valid steps list."""
+    steps = ["completed", "completed", "current", "pending", "pending"]
+    config = MinimalStepperConfig(steps=steps)
+    assert config.steps == steps
 
 
-def test_minimal_stepper_config_rejects_invalid_items() -> None:
-    """Test MinimalStepperConfig raises ValueError for invalid items."""
-    with pytest.raises(ValueError, match=r"Invalid items\[2\]"):
-        MinimalStepperConfig(items=["success", "active", "invalid", ""])
+def test_minimal_stepper_config_rejects_invalid_steps() -> None:
+    """Test MinimalStepperConfig raises ValueError for invalid steps."""
+    with pytest.raises(ValueError, match=r"Invalid steps\[2\]"):
+        MinimalStepperConfig(steps=["completed", "current", "invalid", "pending"])
 
 
 def test_minimal_stepper_config_default_current_step_status() -> None:
     """Test MinimalStepperConfig has correct default current_step_status."""
     config = MinimalStepperConfig()
-    assert config.current_step_status == "active"
+    assert config.current_step_status == "current"
+
+
+# --- StepperItemConfig status validation -----------------------------------
+
+
+def test_stepper_item_config_defaults_to_pending() -> None:
+    """A step without status has not been reached yet."""
+    assert StepperItemConfig(title="Review").status == "pending"
+
+
+def test_stepper_item_config_rejects_invalid_status() -> None:
+    """Unknown step states fail with the field name."""
+    with pytest.raises(ValueError, match="Invalid status 'error'"):
+        StepperItemConfig(title="Review", status="error")
 
 
 # =============================================================================
