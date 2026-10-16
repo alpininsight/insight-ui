@@ -1,7 +1,7 @@
 {% load i18n insight_tags %}
 
 <!-- Pagination -->
-<nav role="navigation" aria-label="{% trans 'Pagination' %}" class="pagination" hx-indicator="#loading-indicator">
+<nav role="navigation" aria-label="{% trans 'Pagination' %}" class="pagination" hx-indicator="#insight-global-loading-indicator">
     <div class="flex gap-4 items-end w-full">
         <div class="flex flex-1 gap-1 justify-between w-full h-fit">
             <!-- Previous and first -->
@@ -12,7 +12,7 @@
                     {% endwith %}
                 {% endwith %}
             {% else %}
-                {% button label=_('To previous page (Deactivated because there are no more previous pages)') icon_name='chevron-left' icon_size='s' icon_only=True disabled=True size='s' %}
+                {% button label=_('To previous page (Deactivated because there are no more previous pages)') icon_name='chevron-left' icon_size='s' icon_only=True disabled=True disabled_reason='' size='s' %}
             {% endif %}
 
             <!-- Neighbor Pages -->
@@ -40,7 +40,7 @@
                     {% endwith %}
                 {% endwith %}
             {% else %}
-                {% button label=_('To next page (Deactivated because there are no more next pages)') icon_name='chevron-right' icon_size='s' icon_only=True disabled=True size='s' %}
+                {% button label=_('To next page (Deactivated because there are no more next pages)') icon_name='chevron-right' icon_size='s' icon_only=True disabled=True disabled_reason='' size='s' %}
             {% endif %}
         </div>
 

@@ -7,7 +7,7 @@ from dataclasses import dataclass, field
 
 from django.utils.translation import gettext_lazy as _
 
-from insight_ui.configs.base import IconConfig
+from insight_ui.configs.base import HtmxConfig, IconConfig
 from insight_ui.configs.input import ButtonConfig
 from insight_ui.configs.types import (
     AlertType,
@@ -23,6 +23,7 @@ from insight_ui.configs.types import (
     validate_corner_position,
     validate_geo_map_marker_type,
     validate_inline_position,
+    validate_not_empty,
     validate_size,
 )
 
@@ -69,6 +70,8 @@ class LegalNoticeConfig:
         separator: Separator between legal metadata parts.
         rights_text: Optional rights statement.
         version: Optional version string, for example v1.2.3.
+        holder_url: Optional destination for the copyright holder's name.
+        holder_logo: Optional logo before the holder's name; use empty alt text when decorative.
 
     """
 
@@ -80,6 +83,7 @@ class LegalNoticeConfig:
             license_text="AGPL-3.0",
             license_url="https://github.com/org/repo/blob/main/LICENSE",
             version="v1.0.0",
+            holder_url="https://company.example/",
         )
         """
 
@@ -93,6 +97,11 @@ class LegalNoticeConfig:
     )  # Middle dot
     rights_text: str = field(default="", metadata={"doc": _("Optional rights statement.")})
     version: str = field(default="", metadata={"doc": _("Optional version string, for example v1.2.3.")})
+    holder_url: str = field(default="", metadata={"doc": _("Optional destination for the copyright holder's name.")})
+    holder_logo: "LogoConfig | None" = field(
+        default=None,
+        metadata={"doc": _("Optional logo before the holder's name; use empty alt text when decorative.")},
+    )
 
 
 @dataclass
@@ -595,6 +604,10 @@ class ChartConfig:
     aria_label: str = field(default="", metadata={"doc": _("Accessible label describing the chart's purpose.")})
     show_decal: bool = field(default=True, metadata={"doc": _("Show decal patterns for colorblind accessibility.")})
 
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_not_empty(self, "tag_id")
+
 
 @dataclass
 class LiveContentConfig:
@@ -607,6 +620,7 @@ class LiveContentConfig:
         tag_id: Unique ID for JavaScript/CSS targeting.
         interval: Update interval in seconds.
         initial_content: Initial content before first update.
+        show_global_loading_indicator: Whether the updates also show the global loading bar.
 
     """
 
@@ -623,6 +637,13 @@ class LiveContentConfig:
     tag_id: str = field(default="", metadata={"doc": _("Unique ID for JavaScript/CSS targeting.")})
     interval: int = field(default=10, metadata={"doc": _("Update interval in seconds.")})
     initial_content: str = field(default="", metadata={"doc": _("Initial content before first update.")})
+    show_global_loading_indicator: bool = field(
+        default=False, metadata={"doc": _("Whether the updates also show the global loading bar.")}
+    )
+
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_not_empty(self, "request_url")
 
 
 @dataclass
@@ -659,6 +680,10 @@ class WebSocketConfig:
     )
     initial_content: str = field(default="", metadata={"doc": _("Initial content.")})
 
+    def __post_init__(self) -> None:
+        """Reject empty values for fields that identify or locate the component."""
+        validate_not_empty(self, "request_url")
+
 
 @dataclass
 class BadgeConfig:
@@ -673,6 +698,8 @@ class BadgeConfig:
         type: Defines the color of the badge.
         size: Defines the size of the badge.
         tooltip: Optional tooltip text displayed on hover.
+        remove_htmx: Request sent by a remove button next to the label. The button is only shown if this is set.
+        remove_label: Accessible name of the remove button, followed by the badge label. Defaults to "Remove".
 
     """
 
@@ -691,8 +718,92 @@ class BadgeConfig:
     type: BadgeType = field(default="primary", metadata={"doc": "Defines the color of the badge."})
     size: Size = field(default="m", metadata={"doc": "Defines the size of the badge."})
     tooltip: str = field(default="", metadata={"doc": _("Optional tooltip text displayed on hover.")})
+    remove_htmx: HtmxConfig | None = field(
+        default=None,
+        metadata={
+            "doc": _("Request sent by a remove button next to the label. The button is only shown if this is set.")
+        },
+    )
+    remove_label: str = field(
+        default="",
+        metadata={"doc": _('Accessible name of the remove button, followed by the badge label. Defaults to "Remove".')},
+    )
 
     def __post_init__(self) -> None:
-        """Validate type and size after initialization."""
+        """Validate type, size and the target of the remove request after initialization."""
         validate_badge_type(self.type, "type")
         validate_size(self.size, "size")
+        _require_htmx_target(self, "remove_htmx")
+
+
+def _require_htmx_target(config: object, field_name: str) -> None:
+    """Require a target for a button request, because HTMX would otherwise swap the response into the button.
+
+    Args:
+        config: The config holding the HtmxConfig.
+        field_name: Name of the HtmxConfig field to check.
+
+    Raises:
+        ValueError: If the HtmxConfig is set but has no target.
+
+    """
+    htmx = getattr(config, field_name)
+    if htmx is not None and not htmx.target:
+        raise ValueError(  # noqa: TRY003
+            f"{config.__class__.__name__}.{field_name} needs a target, e.g. the element that contains the list "
+            "and the badges, so the response does not replace the button itself."
+        )
+
+
+@dataclass
+class BadgeListConfig:
+    """Configuration for the badge list component.
+
+    Renders badges as a labelled list, e.g. the active filters above a table. After a badge is removed
+    and the list is swapped by HTMX, the focus moves to the next remove button, so keyboard users can
+    remove several badges in a row.
+
+    Attributes:
+        tag_id: Unique ID of the list, used to restore the focus after an HTMX swap.
+        label: Accessible name of the list, e.g. "Active filters".
+        items: Badges shown in the list.
+        clear_all_htmx: Request sent by a "Remove all" button after the badges. The button is only shown if this is set.
+        clear_all_label: Text of the "Remove all" button. Defaults to "Remove all".
+
+    """
+
+    __example__ = """
+        BadgeListConfig(
+            tag_id="active-filters",
+            label="Active filters",
+            items=[
+                BadgeConfig(
+                    "Country: Germany",
+                    remove_htmx=HtmxConfig(request_url="?status=open", target="#results"),
+                ),
+                BadgeConfig(
+                    "Status: Open",
+                    remove_htmx=HtmxConfig(request_url="?country=de", target="#results"),
+                ),
+            ],
+            clear_all_htmx=HtmxConfig(request_url="?", target="#results"),
+        )
+        """
+
+    tag_id: str = field(metadata={"doc": _("Unique ID of the list, used to restore the focus after an HTMX swap.")})
+    label: str = field(metadata={"doc": _('Accessible name of the list, e.g. "Active filters".')})
+    items: list[BadgeConfig] = field(default_factory=list, metadata={"doc": _("Badges shown in the list.")})
+    clear_all_htmx: HtmxConfig | None = field(
+        default=None,
+        metadata={
+            "doc": _('Request sent by a "Remove all" button after the badges. The button is only shown if this is set.')
+        },
+    )
+    clear_all_label: str = field(
+        default="", metadata={"doc": _('Text of the "Remove all" button. Defaults to "Remove all".')}
+    )
+
+    def __post_init__(self) -> None:
+        """Require an ID and an accessible name, and a target for the remove-all request."""
+        validate_not_empty(self, "tag_id", "label")
+        _require_htmx_target(self, "clear_all_htmx")

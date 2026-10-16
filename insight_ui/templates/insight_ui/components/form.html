@@ -5,9 +5,10 @@
   {% if form_config.htmx_config %}
     hx-{{ form_config.htmx_config.method }}="{{ form_config.htmx_config.request_url }}"
     hx-target="{{ form_config.htmx_config.target }}"
-    hx-swap="{{ form_config.htmx_config.swap|default:'innerHTML' }}"
+    hx-swap="{{ form_config.htmx_config.swap_method }}{% if form_config.htmx_config.swap_settle %} settle:{{ form_config.htmx_config.swap_settle }}{% endif %}"
     hx-trigger="submit"
-    hx-indicator=".htmx-indicator"
+    {# "find" keeps the indicator to this form; a plain class selector would show every indicator on the page. #}
+    {% if form_config.show_loading_indicator %}hx-indicator="find .htmx-indicator"{% endif %}
   {% else %}
     action="{{ form_config.request_url }}"
     method="{{ form_config.method }}"
@@ -25,14 +26,8 @@
   {% endif %}
 
   <div class="space-y-4">
-    {% for field in form_config.fields %}
-      {% if field.input_type == "textarea" %}
-        {% textarea config=field %}
-      {% elif field.input_type == "select" %}
-        {% select config=field %}
-      {% else %}
-        {% input_field config=field %}
-      {% endif %}
+    {% for field_html in rendered_fields %}
+      {{ field_html }}
     {% endfor %}
   </div>
 
@@ -43,7 +38,7 @@
     {% button label=form_config.submit_label|default:_("Submit") type="primary" button_type="submit" %}
   </div>
 
-  {% if form_config.htmx_config %}
+  {% if form_config.htmx_config and form_config.show_loading_indicator %}
     {# HTMX Loading Indicator. The live region wrapper stays in the accessibility #}
     {# tree; only the indicator inside it is revealed while a request is running, #}
     {# so idle pages expose no stray loading text and the reveal is announced as  #}
@@ -57,6 +52,9 @@
         {% trans 'Loading...' %}
       </div>
     </div>
-    <div id="form-error" class="mt-4"></div>
+  {% endif %}
+  {% if form_config.htmx_config %}
+    {# Container for server-side errors, e.g. via HX-Retarget. Derived from tag_id, so several forms can share a page. #}
+    <div id="{% if form_config.tag_id %}{{ form_config.tag_id }}-error{% else %}form-error{% endif %}" class="mt-4"></div>
   {% endif %}
 </form>

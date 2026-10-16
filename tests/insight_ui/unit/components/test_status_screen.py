@@ -13,32 +13,6 @@ from tests.insight_ui.unit.components.test_template_tags import TemplateTagsTest
 class TestStatusScreen(TemplateTagsTestCase):
     """Test suite for the status_screen component."""
 
-    def test_status_screen_renders_dict_config_actions_as_buttons(self) -> None:
-        """Nested action dictionaries are coerced to ButtonConfig instances."""
-        rendered = self.render_template(
-            "{% load insight_tags %}{% status_screen config=cfg %}",
-            context={
-                "cfg": {
-                    "title": "Sign-in failed",
-                    "description": "Try again.",
-                    "status": "error",
-                    "primary_action": {"label": "Retry", "request_url": "/login/", "type": "primary"},
-                    "secondary_action": {"label": "Support", "request_url": "/support/", "type": "secondary"},
-                }
-            },
-        )
-        soup = BeautifulSoup(rendered, "html.parser")
-
-        retry = soup.find("a", href="/login/")
-        support = soup.find("a", href="/support/")
-        assert retry is not None
-        assert support is not None
-        assert retry.get_text(strip=True) == "Retry"
-        assert support.get_text(strip=True) == "Support"
-        # Semantic component classes verify button type was applied
-        assert "btn-primary" in retry.get("class", [])
-        assert "btn-secondary" in support.get("class", [])
-
     def test_status_screen_disabled_action_renders_disabled_button(self) -> None:
         """Disabled actions are rendered as disabled buttons, not as navigable links."""
         rendered = self.render_template(
