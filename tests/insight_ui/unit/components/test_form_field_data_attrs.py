@@ -136,3 +136,34 @@ def test_groups_render_group_and_option_data_attrs(tag: str, config: object) -> 
     option = soup.select_one("input[data-option]")
     assert option["data-option"] == "a"
     assert option["type"] in {"radio", "checkbox"}
+
+
+@pytest.mark.parametrize("name", ["testid", "progress-retry", "insight-modal", "x1", "2fa-code"])
+def test_plain_attribute_names_are_accepted(name: str) -> None:
+    """Lowercase words joined by single hyphens are valid, including the library's own insight-* hooks."""
+    assert DataAttrConfig(name=name).name == name
+
+
+@pytest.mark.parametrize(
+    "name",
+    [
+        pytest.param("x onfocus=alert(1) autofocus x", id="attribute-injection"),
+        pytest.param("x y", id="space"),
+        pytest.param("x=1", id="equals"),
+        pytest.param("OnFocus", id="uppercase"),
+        pytest.param('x"', id="quote"),
+        pytest.param("-x", id="leading-hyphen"),
+        pytest.param("x--y", id="double-hyphen"),
+        pytest.param("", id="empty"),
+    ],
+)
+def test_names_that_could_break_out_of_the_attribute_are_rejected(name: str) -> None:
+    """Names are rendered unescaped after data-, aria- or hx-, so only plain names are allowed."""
+    with pytest.raises(ValueError, match="Invalid attribute name"):
+        DataAttrConfig(name=name)
+
+
+def test_injected_name_from_a_tag_argument_is_rejected() -> None:
+    """Template values cannot smuggle an attribute name in either: the name comes from the argument."""
+    with pytest.raises(ValueError, match="Invalid attribute name"):
+        render('{% input_field name="f" data_X="1" %}')
