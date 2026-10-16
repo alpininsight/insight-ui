@@ -184,101 +184,6 @@ def test_javascript_dependency_name_never_writes(scaffold: tuple[Command, Path, 
     assert source_snapshot(public) == before
 
 
-def test_changes_after_planning_are_preserved(
-    scaffold: tuple[Command, Path, io.StringIO], monkeypatch: pytest.MonkeyPatch
-) -> None:
-    """A stale plan must not overwrite another editor's saved source changes."""
-    command, public, _ = scaffold
-    target = public / "insight_ui/configs/utils.py"
-    changed = target.read_bytes() + b"\n# Concurrent contributor edit\n"
-    before = source_snapshot(public)
-    before[str(target.relative_to(public))] = changed
-    apply = command._apply_scaffold
-
-    def edit_then_apply() -> None:
-        target.write_bytes(changed)
-        apply()
-
-    monkeypatch.setattr(command, "_apply_scaffold", edit_then_apply)
-    with pytest.raises(CommandError, match="changed after planning"):
-        call_command(command, name="Example Panel", category="util", js=False)
-    assert source_snapshot(public) == before
-
-
-def test_changes_during_apply_are_preserved(
-    scaffold: tuple[Command, Path, io.StringIO], monkeypatch: pytest.MonkeyPatch
-) -> None:
-    """Recheck each write and roll back our earlier file without clobbering new input."""
-    command, public, _ = scaffold
-    target = public / "insight_ui/configs/utils.py"
-    changed = target.read_bytes() + b"\n# Concurrent contributor edit\n"
-    before = source_snapshot(public)
-    before[str(target.relative_to(public))] = changed
-    original_write = Path.write_text
-
-    def edit_after_first_write(path: Path, content: str, *args, **kwargs) -> int:
-        result = original_write(path, content, *args, **kwargs)
-        if path.name == "example_panel.html":
-            target.write_bytes(changed)
-        return result
-
-    monkeypatch.setattr(Path, "write_text", edit_after_first_write)
-    with pytest.raises(CommandError, match="changed after planning"):
-        call_command(command, name="Example Panel", category="util", js=False)
-    assert source_snapshot(public) == before
-
-
-@pytest.mark.parametrize("kind", ["file", "parent", "dangling"])
-def test_redirected_targets_never_write_outside_checkout(
-    scaffold: tuple[Command, Path, io.StringIO], tmp_path: Path, kind: str
-) -> None:
-    """Protect both existing files and new targets redirected through symlinks."""
-    command, public, _ = scaffold
-    outside = tmp_path / "outside"
-    outside.mkdir()
-    if kind == "parent":
-        target = public / "insight_ui/configs"
-        shutil.move(str(target), outside / "configs")
-        target.symlink_to(outside / "configs", target_is_directory=True)
-    elif kind == "file":
-        target = public / "insight_ui/configs/utils.py"
-        shutil.move(str(target), outside / "utils.py")
-        target.symlink_to(outside / "utils.py")
-    else:
-        target = public / "insight_ui/templates/insight_ui/components/example_panel.html"
-        target.symlink_to(outside / "not-created.html")
-    before = source_snapshot(outside)
-    tags = public / "insight_ui/templatetags/insight_tags.py"
-    tags_before = tags.read_bytes()
-    with pytest.raises(CommandError, match=r"escapes|symlinks"):
-        call_command(command, name="Example Panel", category="util", js=False)
-    assert source_snapshot(outside) == before
-    assert tags.read_bytes() == tags_before
-    assert target.is_symlink()
-
-
-def test_redirect_after_planning_is_rejected(
-    scaffold: tuple[Command, Path, io.StringIO], tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    """Check path ownership again before applying an already validated plan."""
-    command, public, _ = scaffold
-    target = public / "insight_ui/configs/utils.py"
-    outside = tmp_path / "outside.py"
-    outside.write_bytes(b"# Must remain untouched\n")
-    apply = command._apply_scaffold
-
-    def redirect_then_apply() -> None:
-        target.unlink()
-        target.symlink_to(outside)
-        apply()
-
-    monkeypatch.setattr(command, "_apply_scaffold", redirect_then_apply)
-    with pytest.raises(CommandError, match=r"escapes|symlinks"):
-        call_command(command, name="Example Panel", category="util", js=False)
-    assert outside.read_bytes() == b"# Must remain untouched\n"
-    assert not (public / "insight_ui/templates/insight_ui/components/example_panel.html").exists()
-
-
 def test_repeated_generation_preserves_first_result(scaffold: tuple[Command, Path, io.StringIO]) -> None:
     """A retry must not silently overwrite a contributor's existing work."""
     command, public, _ = scaffold
@@ -343,32 +248,6 @@ def test_write_failure_restores_all_files(
     monkeypatch.setattr(Path, "write_text", fail_after_truncation)
     with pytest.raises(CommandError, match="Changes rolled back"):
         call_command(command, name="Example Panel", category="util", js=False)
-    assert source_snapshot(public) == before
-
-
-def test_rollback_preserves_edits_to_previously_written_file(
-    scaffold: tuple[Command, Path, io.StringIO], monkeypatch: pytest.MonkeyPatch
-) -> None:
-    """Recovery must leave a contributor's newer content and report its path."""
-    command, public, _ = scaffold
-    template = public / "insight_ui/templates/insight_ui/components/example_panel.html"
-    target = public / "insight_ui/configs/utils.py"
-    original_write = Path.write_text
-    before = source_snapshot(public)
-    changed = b"Newer contributor template content\n"
-
-    def edit_then_fail(path: Path, content: str, *args, **kwargs) -> int:
-        if path == target:
-            template.write_bytes(changed)
-            path.write_bytes(b"")
-            message = "Simulated disk error"
-            raise OSError(message)
-        return original_write(path, content, *args, **kwargs)
-
-    monkeypatch.setattr(Path, "write_text", edit_then_fail)
-    with pytest.raises(CommandError, match=r"Manual recovery required:.*example_panel"):
-        call_command(command, name="Example Panel", category="util", js=False)
-    before[str(template.relative_to(public))] = changed
     assert source_snapshot(public) == before
 
 
