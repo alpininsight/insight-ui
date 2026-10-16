@@ -87,12 +87,10 @@ FIELDS_WITHOUT_TAG_ARGUMENT: dict[str, set[str]] = {
     "brand_mark": {"primary_text_color", "secondary_text_color"},
     "bullet_point_list": {"htmx"},
     "button": {"icon", "aria_attrs", "data_attrs", "hx_attrs"},
-    "checkbox": {"required"},
     "logo": {"icon"},
     "multiselect": {"required", "tag_id"},
     "search_bar": {"button_label", "placeholder"},
     "slider": {"required"},
-    "toggle": {"required"},
     "toggle_view": {"current_view"},
 }
 
