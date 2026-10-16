@@ -731,6 +731,7 @@ def checkbox(
     value: str | _Unset = UNSET,
     label: str | _Unset | None = UNSET,
     checked: bool | _Unset = UNSET,
+    required: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset = UNSET,
 ) -> dict[str, Any]:
@@ -822,6 +823,7 @@ def toggle(
     label: str | _Unset | None = UNSET,
     icon: IconConfig | _Unset | None = UNSET,
     checked: bool | _Unset = UNSET,
+    required: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset | None = UNSET,
     switch: bool | _Unset = UNSET,
