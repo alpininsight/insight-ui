@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 """Base configuration classes shared across multiple components."""
 
+import re
 import warnings
 from dataclasses import dataclass, field
 from typing import Any
@@ -21,6 +22,9 @@ from insight_ui.configs.types import (
     validate_size,
 )
 
+# Lowercase words joined by single hyphens; anything else could break out of the attribute name.
+_ATTRIBUTE_NAME = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*")
+
 
 @dataclass
 class DataAttrConfig:
@@ -37,8 +41,24 @@ class DataAttrConfig:
         DataAttrConfig(name="progress-retry", value="")
         """
 
-    name: str = field(default="", metadata={"doc": _("Attribute name without 'data-' prefix.")})
+    name: str = field(metadata={"doc": _("Attribute name without 'data-' prefix.")})
     value: str = field(default="", metadata={"doc": _("Attribute value. Empty string for marker attributes.")})
+
+    def __post_init__(self) -> None:
+        """Reject names that are not a plain attribute name.
+
+        Templates render the name unescaped after ``data-``, ``aria-`` or ``hx-``; a space or ``=`` would
+        start a second attribute (e.g. an event handler).
+
+        Raises:
+            ValueError: If the name is not lowercase letters and digits joined by single hyphens.
+
+        """
+        if not _ATTRIBUTE_NAME.fullmatch(self.name):
+            raise ValueError(  # noqa: TRY003
+                f"Invalid attribute name {self.name!r}: use lowercase letters and digits joined by single hyphens, "
+                "e.g. 'testid' or 'progress-retry'."
+            )
 
 
 @dataclass
@@ -169,6 +189,7 @@ class BaseFormFieldConfig:
         disabled: **True** if the field should be disabled.
         disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
+        data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     """
 
@@ -187,6 +208,9 @@ class BaseFormFieldConfig:
         },
     )
     required: bool = field(default=False, metadata={"doc": _("**True** if the field must be filled in.")})
+    data_attrs: list[DataAttrConfig] = field(
+        default_factory=list, metadata={"doc": _("Custom data attributes for JavaScript hooks or tests.")}
+    )
 
     def __post_init__(self) -> None:
         """Require a non-empty name and warn if disabled without a reason.
