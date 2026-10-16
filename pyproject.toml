@@ -95,6 +95,10 @@ source = "vcs"
 tag-pattern = "v(?P<version>.*)"
 version-file = "insight_ui/_version.py"
 
+[tool.hatch.build.hooks.custom]
+# hatch_build.py compiles insight_ui/locale/*/LC_MESSAGES/*.po into the wheel.
+dependencies = ["babel>=2.16"]
+
 [tool.hatch.build.targets.wheel]
 packages = ["insight_ui"]
 
@@ -107,6 +111,7 @@ include = [
     "/package-lock.json",
     "/vitest.config.js",
     "/pyproject.toml",
+    "/hatch_build.py",
     "/pytest.ini",
     "/README.md",
     "/LICENSE",
