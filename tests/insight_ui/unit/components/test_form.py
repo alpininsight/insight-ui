@@ -182,6 +182,60 @@ def test_form_config_rejects_unsupported_field_config() -> None:
         FormConfig(fields=[ButtonConfig(label="Send")])
 
 
+def render_htmx_forms(*configs: FormConfig) -> BeautifulSoup:
+    """Render several HTMX forms on one page and parse the result."""
+    template = "{% load insight_tags %}" + "".join(f"{{% form config=form_{i} %}}" for i in range(len(configs)))
+    rendered = Template(template).render(Context({f"form_{i}": config for i, config in enumerate(configs)}))
+    return BeautifulSoup(rendered, "html.parser")
+
+
+def htmx_form(tag_id: str = "", **kwargs: object) -> FormConfig:
+    """Create a form that submits via HTMX."""
+    return FormConfig(tag_id=tag_id, htmx_config=HtmxConfig(request_url="/submit/", target="#result"), **kwargs)
+
+
+def test_form_loading_indicator_is_scoped_to_its_form() -> None:
+    """Each form shows only its own indicator, not every indicator on the page."""
+    soup = render_htmx_forms(htmx_form("contact"), htmx_form("newsletter"))
+
+    for form in soup.find_all("form"):
+        assert form["hx-indicator"] == "find .htmx-indicator"
+        assert form.select_one(".htmx-indicator") is not None
+
+
+def test_form_loading_indicator_can_be_switched_off() -> None:
+    """Without its own indicator the form relies on the global loading bar."""
+    form = render_htmx_forms(htmx_form("contact", show_loading_indicator=False)).find("form")
+
+    assert not form.has_attr("hx-indicator")
+    assert form.select_one(".htmx-indicator") is None
+
+
+def test_form_error_containers_are_unique_per_form() -> None:
+    """The error container is derived from tag_id, so several forms do not share an ID."""
+    soup = render_htmx_forms(htmx_form("contact"), htmx_form("newsletter"))
+
+    assert soup.select_one("#contact-error") is not None
+    assert soup.select_one("#newsletter-error") is not None
+    assert soup.select_one("#form-error") is None
+
+
+def test_form_error_container_without_tag_id_keeps_default_id() -> None:
+    """A single form without tag_id still offers a known error target."""
+    form = render_htmx_forms(htmx_form()).find("form")
+
+    assert form.select_one("#form-error") is not None
+
+
+def test_form_uses_configured_swap_method() -> None:
+    """The swap method of the HtmxConfig is applied instead of always swapping innerHTML."""
+    config = FormConfig(
+        tag_id="contact", htmx_config=HtmxConfig(request_url="/submit/", target="#result", swap_method="outerHTML")
+    )
+
+    assert render_htmx_forms(config).find("form")["hx-swap"] == "outerHTML"
+
+
 def test_css_source_hides_idle_htmx_indicator_from_accessibility_tree() -> None:
     """Opacity alone leaves the indicator in the accessibility tree; visibility removes it."""
     css = INPUT_CSS.read_text()

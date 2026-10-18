@@ -12,10 +12,7 @@
                 href="{{ item.request_url|default:'#' }}"
                 role="menuitem"
                 {% if item.htmx %}
-                    hx-get="{{ item.htmx.request_url|default:item.request_url }}"
-                    hx-target="{{ item.htmx.target }}"
-                    hx-swap="{{ item.htmx.swap_method|default:'innerHTML' }} show:window:top"
-                    hx-push-url="{{ item.htmx.push_url|yesno:'true,false' }}"
+                    {% htmx_attributes item.htmx request_url=item.htmx.request_url|default:item.request_url swap_modifiers="show:window:top" %}
                     hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
                 {% endif %}
                 class="flex gap-1 items-center px-4 py-2 text-sm text-insight-headline bg-insight-surface hover:bg-insight-base {% if forloop.first %}rounded-insight-control-top{% elif forloop.last %}rounded-insight-control-bottom{% endif %}"

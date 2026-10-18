@@ -49,13 +49,14 @@ class FormConfig:
         tag_id: Unique ID for the form element.
         title: Form title displayed at the top.
         description: Optional description below the title.
-        fields: Field configs rendered in order. Supported: InputFieldConfig, TextareaConfig, SelectConfig, MultiselectConfig, CheckboxConfig, CheckboxGroupConfig, RadioGroupConfig, RadioBlockConfig (always rendered integrated), SliderConfig and ToggleConfig.
+        fields: Field configs rendered in order.
         show_reset_button: Whether to show a reset button.
         submit_label: Label for the submit button.
         reset_label: Label for the reset button.
         request_url: Target URL for form submission.
         method: HTTP method for form submission (get or post).
         htmx_config: HTMX configuration for AJAX submission.
+        show_loading_indicator: Whether to show the loading indicator of the form during HTMX requests.
 
     """
 
@@ -88,20 +89,17 @@ class FormConfig:
     tag_id: str = field(default="", metadata={"doc": _("Unique ID for the form element.")})
     title: str = field(default="", metadata={"doc": _("Form title displayed at the top.")})
     description: str = field(default="", metadata={"doc": _("Optional description below the title.")})
-    fields: list[FormField] = field(
-        default_factory=list,
-        metadata={
-            "doc": _(
-                "Field configs rendered in order. Supported: InputFieldConfig, TextareaConfig, SelectConfig, MultiselectConfig, CheckboxConfig, CheckboxGroupConfig, RadioGroupConfig, RadioBlockConfig (always rendered integrated), SliderConfig and ToggleConfig."
-            )
-        },
-    )
+    fields: list[FormField] = field(default_factory=list, metadata={"doc": _("Field configs rendered in order.")})
     show_reset_button: bool = field(default=False, metadata={"doc": _("Whether to show a reset button.")})
     submit_label: str = field(default="", metadata={"doc": _("Label for the submit button.")})
     reset_label: str = field(default="", metadata={"doc": _("Label for the reset button.")})
     request_url: str = field(default="", metadata={"doc": _("Target URL for form submission.")})
     method: str = field(default="post", metadata={"doc": _("HTTP method for form submission (get or post).")})
     htmx_config: HtmxConfig | None = field(default=None, metadata={"doc": _("HTMX configuration for AJAX submission.")})
+    show_loading_indicator: bool = field(
+        default=True,
+        metadata={"doc": _("Whether to show the loading indicator of the form during HTMX requests.")},
+    )
 
     def __post_init__(self) -> None:
         """Validate the field configs and warn if request_url and htmx_config.request_url are both set."""

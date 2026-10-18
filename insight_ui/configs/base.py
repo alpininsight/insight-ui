@@ -103,19 +103,21 @@ class ImageConfig:
 
 @dataclass
 class HtmxConfig:
-    """Configuration for HTMX attributes.
+    """Request options shared by all components that send HTMX requests.
+
+    How a request is triggered depends on the component, so the trigger is set by the component itself.
 
     Attributes:
         request_url: The URL for the HTMX request (hx-get/hx-post).
         target: CSS selector for the target element (hx-target).
         swap_method: The way in which the target is to be replaced (hx-swap).
         swap_settle: Settle delay appended to hx-swap, e.g. '300ms', so CSS transitions have time to run.
-        trigger: Event trigger (hx-trigger).
         method: HTTP method ('get' or 'post').
         loading_indicator_id: CSS selector for loading indicator (hx-indicator).
         push_url: Whether to push URL to browser history (hx-push-url).
         confirm: Confirmation message before request (hx-confirm).
         vals: Additional JSON values to include in the request (hx-vals).
+        show_global_loading_indicator: Whether the request shows the global loading bar.
 
     """
 
@@ -124,7 +126,6 @@ class HtmxConfig:
             request_url="/api/search/",
             target="#results",
             swap_method="innerHTML",
-            trigger="keyup changed delay:300ms",
         )
         """
 
@@ -137,7 +138,6 @@ class HtmxConfig:
         default="",
         metadata={"doc": _("Settle delay appended to hx-swap, e.g. '300ms', so CSS transitions have time to run.")},
     )
-    trigger: str = field(default="submit", metadata={"doc": _("Event trigger (hx-trigger).")})
     method: HttpMethod = field(default="get", metadata={"doc": _("HTTP method ('get' or 'post').")})
     loading_indicator_id: str = field(
         default="", metadata={"doc": _("CSS selector for loading indicator (hx-indicator).")}
@@ -147,26 +147,14 @@ class HtmxConfig:
     vals: dict[str, Any] = field(
         default_factory=dict, metadata={"doc": _("Additional JSON values to include in the request (hx-vals).")}
     )
+    show_global_loading_indicator: bool = field(
+        default=True, metadata={"doc": _("Whether the request shows the global loading bar.")}
+    )
 
     def __post_init__(self) -> None:
         """Validate swap_method and method after initialization."""
         validate_htmx_swap_method(self.swap_method, "swap_method")
         validate_http_method(self.method, "method")
-
-
-def validate_form_field_name(config: object) -> None:
-    """Require a non-empty name, because browsers never submit fields without one.
-
-    Args:
-        config: A form field config with a name and optionally a label or tag_id.
-
-    Raises:
-        ValueError: If the name is empty or None.
-
-    """
-    if not getattr(config, "name", None):
-        identifier = getattr(config, "label", None) or getattr(config, "tag_id", None) or "(unnamed)"
-        raise ValueError(f"{config.__class__.__name__} {identifier} requires a non-empty name.")  # noqa: TRY003
 
 
 @dataclass
@@ -210,7 +198,8 @@ class BaseFormFieldConfig:
             ValueError: If name is empty or None.
 
         """
-        validate_form_field_name(self)
+        # Browsers never submit fields without a name.
+        validate_not_empty(self, "name")
         if self.disabled and self.disabled_reason is None:
             warnings.warn(
                 f"{self.__class__.__name__} {self.name} is disabled without a disabled_reason. "

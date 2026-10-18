@@ -4,7 +4,7 @@
 {% endif %}
 
 <!DOCTYPE html>
-<html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" class="scroll-pt-24">
+<html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" class="scroll-pt-24" data-tooltip-delay="{{ INSIGHT_UI.tooltip_show_delay }}">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -72,7 +72,7 @@
 
         {% block extra_head %}{% endblock %}
     </head>
-    <body class="flex flex-col min-h-screen size-full text-insight-body bg-insight-base" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-indicator="#loading-indicator">
+    <body class="flex flex-col min-h-screen size-full text-insight-body bg-insight-base" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
         {% if use_default_loading_indicator is not False %}{% include "insight_ui/components/htmx_loading_indicator.html" %}{% endif %}
 
         <div id="background-image">

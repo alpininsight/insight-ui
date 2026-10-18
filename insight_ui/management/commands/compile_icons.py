@@ -264,14 +264,16 @@ class Command(BaseCommand):
             Complete icons.html template as string.
 
         """
+        # A <span>, not a <div>: icons are used inside <button>, <label> and <p>, which only allow phrasing content.
         lines = [
-            '<div class="{% if icon_config.size == "xl" %}size-10'
-            '{% elif icon_config.size == "l" %}size-8'
-            '{% elif icon_config.size == "m" %}size-6'
-            '{% elif icon_config.size == "s" %}size-5'
-            '{% elif icon_config.size == "xs" %}size-4'
-            '{% else %}size-6{% endif %}"'
-            ' {% if color %}style="color: {{ color }};"{% endif %}>'
+            '<span class="inline-flex shrink-0 '
+            "{% if icon_config.size == 'xl' %}size-10"
+            "{% elif icon_config.size == 'l' %}size-8"
+            "{% elif icon_config.size == 'm' %}size-6"
+            "{% elif icon_config.size == 's' %}size-5"
+            "{% elif icon_config.size == 'xs' %}size-4"
+            "{% else %}size-6{% endif %}"
+            '{% if icon_config.color %} text-insight-{{ icon_config.color }}{% endif %}">'
         ]
 
         sorted_icons = sorted(icons.items())
@@ -295,7 +297,7 @@ class Command(BaseCommand):
         lines.append("    {% else %}")
         lines.append(self._indent_svg(fallback_svg, spaces=8))
         lines.append("    {% endif %}")
-        lines.append("</div>")
+        lines.append("</span>")
         lines.append("")  # Trailing newline
 
         return "\n".join(lines)
