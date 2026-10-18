@@ -6,7 +6,7 @@ import json
 import warnings
 
 import pytest
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Tag
 from insight_ui.configs import ButtonConfig, HtmxConfig
 
 from tests.insight_ui.unit.components.test_template_tags import TemplateTagsTestCase
@@ -53,19 +53,64 @@ class TestButton(TemplateTagsTestCase):
         """Anchor variant preserves typed additional HTMX values."""
         vals = {"parleq_id": "de--1", "tracked": False}
         htmx_config = HtmxConfig(request_url="/track/", target="#result", method="post", vals=vals)
-        # Intentionally sets both request_url and htmx_config.request_url to test anchor rendering
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", UserWarning)
-            config = ButtonConfig(label="Track", request_url="/track/", htmx_config=htmx_config)
-            rendered = self.render_template(
-                "{% load insight_tags %}{% button config=config %}",
-                {"config": config},
-            )
+        config = ButtonConfig(label="Track", request_url="/track/", htmx_config=htmx_config)
+        rendered = self.render_template("{% load insight_tags %}{% button config=config %}", {"config": config})
 
         element = BeautifulSoup(rendered, "html.parser").find("a")
 
         assert element is not None
         assert json.loads(element["hx-vals"]) == vals
+
+    def render_button(self, config: ButtonConfig) -> Tag:
+        """Render a button config and return the <a> or <button> element."""
+        rendered = self.render_template("{% load insight_tags %}{% button config=config %}", {"config": config})
+        return BeautifulSoup(rendered, "html.parser").find(["a", "button"])
+
+    def test_htmx_url_without_link_renders_an_action_button(self) -> None:
+        """Only an HTMX URL renders a <button> that sends the request."""
+        element = self.render_button(ButtonConfig(label="Save", htmx_config=HtmxConfig(request_url="/save/")))
+
+        assert element.name == "button"
+        assert element["hx-get"] == "/save/"
+
+    def test_link_with_htmx_config_requests_the_link_url(self) -> None:
+        """A link with an HtmxConfig without URL works without JavaScript and loads the same URL via HTMX."""
+        config = ButtonConfig(label="Orders", request_url="/orders/", htmx_config=HtmxConfig(target="#main"))
+        element = self.render_button(config)
+
+        assert element.name == "a"
+        assert element["href"] == "/orders/"
+        assert element["hx-get"] == "/orders/"
+
+    def test_link_can_load_a_separate_htmx_url(self) -> None:
+        """A dedicated partial URL is a valid choice: the link opens the full page, HTMX loads the partial."""
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            config = ButtonConfig(
+                label="Orders",
+                request_url="/orders/",
+                htmx_config=HtmxConfig(request_url="/orders/partial/", target="#main"),
+            )
+        element = self.render_button(config)
+
+        assert element["href"] == "/orders/"
+        assert element["hx-get"] == "/orders/partial/"
+
+    def test_disabled_link_sends_no_request(self) -> None:
+        """Browsers do not block clicks on links, so a disabled link has neither href nor HTMX attributes."""
+        config = ButtonConfig(
+            label="Orders",
+            request_url="/orders/",
+            disabled=True,
+            disabled_reason="",
+            htmx_config=HtmxConfig(target="#main"),
+        )
+        element = self.render_button(config)
+
+        assert element.name == "a"
+        assert element["aria-disabled"] == "true"
+        assert not element.has_attr("href")
+        assert not any(name.startswith("hx-") for name in element.attrs)
 
     def test_button_config_requires_label(self) -> None:
         """ButtonConfig requires label (used as visible text or screen-reader name)."""
