@@ -8,13 +8,9 @@
             {% endif %}
             <a
                 {% if item.request_url and not item.current %}
-                    href="{% url item.request_url %}"
-                    {% if htmx %}
-                        hx-get="{{ item.request_url }}"
-                        hx-target="{{ htmx.target }}"
-                        hx-swap="{{ htmx.swap|default:'innerHTML' }}"
-                        hx-trigger="submit"
-                    {% endif %}
+                    {% url item.request_url as item_url %}
+                    href="{{ item_url }}"
+                    {% htmx_attributes htmx request_url=item_url %}
                 {% endif %}
                 {% if item.current %}aria-current="step"{% endif %}
                 class="flex relative items-start {% if not item.request_url %}pointer-events-none{% endif %}"

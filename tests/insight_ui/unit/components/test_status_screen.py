@@ -27,11 +27,12 @@ class TestStatusScreen(TemplateTagsTestCase):
         )
         soup = BeautifulSoup(rendered, "html.parser")
 
-        href = soup.find("a", disabled=True)
-        assert href is not None
-        assert href.get_text(strip=True) == "Continue"
+        link = soup.find("a", attrs={"aria-disabled": "true"})
+        assert link is not None
+        assert link.get_text(strip=True) == "Continue"
+        assert not link.has_attr("href")
         # Semantic component class verifies disabled state
-        assert "btn-disabled" in href.get("class", [])
+        assert "btn-disabled" in link.get("class", [])
 
     def test_status_screen_error_notice_uses_alert_role(self) -> None:
         """Error notices use alert semantics for accessibility."""

@@ -6,7 +6,7 @@
             {% icon textarea_config.icon %}
         {% endif %}
         <span class="self-end">{{ textarea_config.label }}</span>
-        {% if textarea_config.required %}<span class="text-insight-danger" aria-label="{% trans 'Required' %}">*</span>{% endif %}
+        {% if textarea_config.required %}<span class="text-insight-danger-text" aria-hidden="true">*</span>{% endif %}
         {% if textarea_config.explanation %}
             <span class="text-insight-body" data-insight-tooltip="{{ textarea_config.explanation }}" data-position="top">
                 {% icon name="question-mark-circle" size="xs" %}
@@ -23,6 +23,7 @@
         {% if textarea_config.required %}required{% endif %}
         {% if textarea_config.disabled %}disabled{% endif %}
         {% if textarea_config.disabled and textarea_config.disabled_reason %}data-insight-tooltip="{{ textarea_config.disabled_reason }}"{% endif %}
+        {% data_attributes textarea_config.data_attrs %}
         class="input w-full"
     >{{ textarea_config.value|default:"" }}</textarea>
 </div>

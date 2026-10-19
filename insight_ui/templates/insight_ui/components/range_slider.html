@@ -1,9 +1,9 @@
-{% load i18n %}
+{% load i18n insight_tags %}
 
 <div class="slider-wrapper relative" data-insight-range-slider data-legend-mode="{{ slider_config.legend_mode|default:'static' }}">
     {% if slider_config.dual %}
         {# Dual-range mode with two thumbs #}
-        <div role="group" aria-labelledby="{{ slider_config.tag_id }}_label" class="slider-dual-group">
+        <div role="group" aria-labelledby="{{ slider_config.tag_id }}_label" {% data_attributes slider_config.data_attrs %} class="slider-dual-group">
             <span id="{{ slider_config.tag_id }}_label" class="flex gap-1 font-bold text-sm text-insight-headline">{{ slider_config.label }}</span>
             <div class="slider-dual-container relative mt-1 h-6">
                 {# Background track #}
@@ -59,6 +59,7 @@
             aria-valuemin="{{ slider_config.minimum }}"
             aria-valuemax="{{ slider_config.maximum }}"
             aria-valuenow="{{ slider_config.value }}"
+            {% data_attributes slider_config.data_attrs %}
             class="range-custom accent-insight-primary appearance-none w-full h-6 bg-transparent cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-insight-primary focus-visible:ring-offset-2"
         >
     {% endif %}

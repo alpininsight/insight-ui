@@ -162,3 +162,24 @@ def test_default_base_page_renders_with_strict_staticfiles(tmp_path: Path) -> No
         rendered = render_to_string("insight_ui/base.html", get_config())
         assert "<title>Django-Insight-UI</title>" in rendered
         assert 'rel="mask-icon" href="/static/insight_ui/svg/insight-ui-logo.' in rendered
+
+
+def test_global_loading_bar_is_hidden_from_assistive_technology() -> None:
+    """The bar is decorative; a permanent progressbar role would be announced as busy all the time."""
+    soup = BeautifulSoup(render_to_string("insight_ui/components/htmx_loading_indicator.html"), "html.parser")
+
+    bar = soup.find(id="insight-global-loading-indicator")
+    assert bar["aria-hidden"] == "true"
+    assert not bar.has_attr("role")
+    assert soup.find(attrs={"role": "progressbar"}) is None
+
+
+def test_slow_requests_are_announced_through_a_polite_status_region() -> None:
+    """Screen reader users get feedback for slow requests of components without their own indicator."""
+    soup = BeautifulSoup(render_to_string("insight_ui/components/htmx_loading_indicator.html"), "html.parser")
+
+    region = soup.find(id="insight-global-loading-status")
+    assert region["role"] == "status"
+    assert region["aria-live"] == "polite"
+    assert region["data-message"] == "Loading..."
+    assert region.get_text(strip=True) == ""
