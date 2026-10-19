@@ -27,7 +27,7 @@
                             >
                             <label
                                 for="{{ item_id }}"
-                                class="flex items-center {% if item.disabled %}btn-disabled{% else %}btn-primary text-white cursor-pointer{% endif %} outline-insight-primary-action-hover peer-focus:outline-2 peer-checked:bg-insight-primary-action-active peer-checked:border-insight-primary-action-active {% if forloop.first %}border-2 {% if radio_block_config.as_row == False %}rounded-t-insight-control{% else %}rounded-s-insight-control{% endif %}{% elif forloop.last %}border-2 {% if radio_block_config.as_row == False %}rounded-b-insight-control{% else %}rounded-e-insight-control{% endif %}{% else %}border-y-2{% endif %} px-4 py-1 transition"
+                                class="btn-solid btn-primary flex items-center {% if item.disabled %}btn-disabled cursor-not-allowed{% else %}cursor-pointer{% endif %} outline-insight-primary-action-hover peer-focus:outline-2 peer-checked:bg-insight-primary-action-active peer-checked:border-insight-primary-action-active {% if forloop.first %}border-2 {% if radio_block_config.as_row == False %}rounded-t-insight-control{% else %}rounded-s-insight-control{% endif %}{% elif forloop.last %}border-2 {% if radio_block_config.as_row == False %}rounded-b-insight-control{% else %}rounded-e-insight-control{% endif %}{% else %}border-y-2{% endif %} px-4 py-1 transition"
                             >
                                 {% if item.icon %}
                                     {% icon item.icon %}
@@ -66,7 +66,7 @@
                             >
                             <label
                                 for="{{ item_id }}"
-                                class="flex items-center {% if item.disabled %}btn-disabled{% else %}btn-primary text-white cursor-pointer{% endif %} outline-insight-primary-action-hover peer-focus:outline-2 peer-checked:bg-insight-primary-action-active peer-checked:border-insight-primary-action-active {% if forloop.first %}border-2 {% if radio_block_config.as_row == False %}rounded-t-insight-control{% else %}rounded-s-insight-control{% endif %}{% elif forloop.last %}border-2 {% if radio_block_config.as_row == False %}rounded-b-insight-control{% else %}rounded-e-insight-control{% endif %}{% else %}border-y-2{% endif %} px-4 py-1 transition"
+                                class="btn-solid btn-primary flex items-center {% if item.disabled %}btn-disabled cursor-not-allowed{% else %}cursor-pointer{% endif %} outline-insight-primary-action-hover peer-focus:outline-2 peer-checked:bg-insight-primary-action-active peer-checked:border-insight-primary-action-active {% if forloop.first %}border-2 {% if radio_block_config.as_row == False %}rounded-t-insight-control{% else %}rounded-s-insight-control{% endif %}{% elif forloop.last %}border-2 {% if radio_block_config.as_row == False %}rounded-b-insight-control{% else %}rounded-e-insight-control{% endif %}{% else %}border-y-2{% endif %} px-4 py-1 transition"
                             >
                                 {% if item.icon %}
                                     {% icon item.icon %}

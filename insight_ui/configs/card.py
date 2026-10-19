@@ -34,7 +34,7 @@ class CardConfig:
             subtitle="Getting Started",
             content="Learn how to use our platform.",
             actions=[
-                ButtonConfig(label="Learn More", request_url="/docs/", type="primary"),
+                ButtonConfig(label="Learn More", request_url="/docs/", color="primary"),
             ],
         )
         """
@@ -68,8 +68,8 @@ class AppCardConfig:
             content="Real-time metrics and insights.",
             request_url="/apps/analytics/",
             image=ImageConfig(url="img/analytics.png", alt="Analytics"),
-            tags=[BadgeConfig(label="New", type="success"), BadgeConfig(label="Featured", type="primary")],
-            actions=[ButtonConfig(label="Open", request_url="/apps/analytics/", type="primary")],
+            tags=[BadgeConfig(label="New", color="success"), BadgeConfig(label="Featured", color="primary")],
+            actions=[ButtonConfig(label="Open", request_url="/apps/analytics/", color="primary")],
         )
         """
 
@@ -106,10 +106,10 @@ class FlipCardConfig:
             content="Short description on the front.",
             back_title="Details",
             back_content="Extended product information and specs.",
-            back_actions=[ButtonConfig(label="Contact", request_url="/contact/", type="outline-primary")],
+            back_actions=[ButtonConfig(label="Contact", request_url="/contact/", variant="outline")],
             image=ImageConfig(url="img/product.png", alt="Product"),
-            tags=[BadgeConfig(label="Sale", type="danger"), BadgeConfig(label="-20%", type="warning")],
-            actions=[ButtonConfig(label="Buy", request_url="/buy/", type="primary")],
+            tags=[BadgeConfig(label="Sale", color="danger"), BadgeConfig(label="-20%", color="warning")],
+            actions=[ButtonConfig(label="Buy", request_url="/buy/", color="primary")],
         )
         """
 
