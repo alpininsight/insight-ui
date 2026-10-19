@@ -85,7 +85,7 @@ Use components in your templates:
 {% block content %}
     {% button label="Get started" type="primary" %}
     {% card title="Welcome" subtitle="Your first card" content="Card content goes here." %}
-    {% alert type="success" message="Component rendered successfully." %}
+    {% alert severity="success" message="Component rendered successfully." %}
 {% endblock %}
 ```
 

@@ -15,19 +15,19 @@ class TestMinimalStepBar(TemplateTagsTestCase):
 
     def test_minimal_stepper_uses_list_items_for_progress_steps(self) -> None:
         """Progress state is exposed with list semantics, not ARIA on generic divs."""
-        config = MinimalStepperConfig(items=["success", "active", ""])
+        config = MinimalStepperConfig(steps=["completed", "current", "pending"])
 
         rendered = self.render_template("{% load insight_tags %}{% minimal_stepper config %}", {"config": config})
         soup = BeautifulSoup(rendered, "html.parser")
 
         progress = soup.find("ol", {"aria-label": "Progress indicator"})
         items = progress.find_all("li", recursive=False)
-        assert len(items) == len(config.items)
+        assert len(items) == len(config.steps)
         assert items[1]["aria-current"] == "step"
 
     def test_minimal_stepper_renders_an_icon_for_every_step_status(self) -> None:
         """Every status renders its icon, so an unknown icon name for any status fails here."""
-        config = MinimalStepperConfig(items=list(STEP_STATUS_VALUES))
+        config = MinimalStepperConfig(steps=list(STEP_STATUS_VALUES))
 
         rendered = self.render_template("{% load insight_tags %}{% minimal_stepper config %}", {"config": config})
         soup = BeautifulSoup(rendered, "html.parser")
