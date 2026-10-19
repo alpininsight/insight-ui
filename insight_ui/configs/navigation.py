@@ -10,7 +10,15 @@ from django.utils.translation import gettext_lazy as _
 from insight_ui.configs.base import HtmxConfig, IconConfig
 from insight_ui.configs.filter import SearchBarConfig
 from insight_ui.configs.input import DropdownConfig
-from insight_ui.configs.types import Size, StepStatus, validate_not_empty, validate_size, validate_step_status
+from insight_ui.configs.types import (
+    HeadingLevel,
+    Size,
+    StepStatus,
+    validate_heading_level,
+    validate_not_empty,
+    validate_size,
+    validate_step_status,
+)
 from insight_ui.configs.utils import BadgeConfig, BrandMarkConfig, LegalNoticeConfig, LogoConfig
 
 
@@ -785,6 +793,7 @@ class AccordionConfig:
         tag_id: Unique tag ID for identifying the element in JavaScript.
         items: List of individual sections.
         exclusive: If **True** only one section can be open at a time.
+        heading_level: Heading level of the section titles.
 
     """
 
@@ -802,10 +811,12 @@ class AccordionConfig:
     tag_id: str = field(metadata={"doc": _("Unique tag ID for identifying the element in JavaScript.")})
     items: list[AccordionItemConfig] = field(default_factory=list, metadata={"doc": _("List of individual sections.")})
     exclusive: bool = field(default=True, metadata={"doc": _("If **True** only one section can be open at a time.")})
+    heading_level: HeadingLevel = field(default=3, metadata={"doc": _("Heading level of the section titles.")})
 
     def __post_init__(self) -> None:
-        """Reject empty values for fields that identify or locate the component."""
+        """Reject an empty tag_id and validate heading_level."""
         validate_not_empty(self, "tag_id")
+        validate_heading_level(self.heading_level)
 
 
 @dataclass

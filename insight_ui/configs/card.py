@@ -9,7 +9,13 @@ from django.utils.translation import gettext_lazy as _
 from insight_ui.configs.base import ImageConfig
 from insight_ui.configs.input import ButtonConfig, RadioBlockConfig
 from insight_ui.configs.list import TableConfig
-from insight_ui.configs.types import ToggleViewType, validate_not_empty, validate_toggle_view_type
+from insight_ui.configs.types import (
+    HeadingLevel,
+    ToggleViewType,
+    validate_heading_level,
+    validate_not_empty,
+    validate_toggle_view_type,
+)
 from insight_ui.configs.utils import BadgeConfig
 
 
@@ -25,6 +31,7 @@ class CardConfig:
         subtitle: Optional subtitle.
         image: Optional card image.
         actions: List of action buttons.
+        heading_level: Heading level of the title.
 
     """
 
@@ -44,6 +51,11 @@ class CardConfig:
     subtitle: str = field(default="", metadata={"doc": _("Optional subtitle.")})
     image: ImageConfig | None = field(default=None, metadata={"doc": _("Optional card image.")})
     actions: list[ButtonConfig] = field(default_factory=list, metadata={"doc": _("List of action buttons.")})
+    heading_level: HeadingLevel = field(default=3, metadata={"doc": _("Heading level of the title.")})
+
+    def __post_init__(self) -> None:
+        """Validate heading_level after initialization."""
+        validate_heading_level(self.heading_level)
 
 
 @dataclass
@@ -59,6 +71,7 @@ class AppCardConfig:
         image: Card image (displayed as square at top).
         tags: List of badge configurations for tags.
         actions: List of action buttons.
+        heading_level: Heading level of the title.
 
     """
 
@@ -79,6 +92,11 @@ class AppCardConfig:
     image: ImageConfig | None = field(default=None, metadata={"doc": _("Card image (displayed as square at top).")})
     tags: list[BadgeConfig] = field(default_factory=list, metadata={"doc": _("List of badge configurations for tags.")})
     actions: list[ButtonConfig] = field(default_factory=list, metadata={"doc": _("List of action buttons.")})
+    heading_level: HeadingLevel = field(default=3, metadata={"doc": _("Heading level of the title.")})
+
+    def __post_init__(self) -> None:
+        """Validate heading_level after initialization."""
+        validate_heading_level(self.heading_level)
 
 
 @dataclass
@@ -97,6 +115,7 @@ class FlipCardConfig:
         image: Front side image.
         tags: List of badge configurations for tags.
         actions: Front side action buttons.
+        heading_level: Heading level of the front and back titles.
 
     """
 
@@ -122,6 +141,11 @@ class FlipCardConfig:
     image: ImageConfig | None = field(default=None, metadata={"doc": _("Front side image.")})
     tags: list[BadgeConfig] = field(default_factory=list, metadata={"doc": _("List of badge configurations for tags.")})
     actions: list[ButtonConfig] = field(default_factory=list, metadata={"doc": _("Front side action buttons.")})
+    heading_level: HeadingLevel = field(default=3, metadata={"doc": _("Heading level of the front and back titles.")})
+
+    def __post_init__(self) -> None:
+        """Validate heading_level after initialization."""
+        validate_heading_level(self.heading_level)
 
 
 @dataclass
