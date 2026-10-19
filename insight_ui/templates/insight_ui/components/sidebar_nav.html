@@ -6,9 +6,7 @@
   <div class="flex justify-between items-center pb-4 mb-4 border-b border-insight-surface">
     <h2 class="flex gap-2 items-center text-lg">
       {% if sidebar_data.icon %}
-        <div>
-          {% icon sidebar_data.icon %}
-        </div>
+        {% icon sidebar_data.icon %}
       {% endif %}
       {{ sidebar_data.title }}
     </h2>
@@ -24,10 +22,7 @@
           <li data-insight-side-nav>
             <a
               {% if item.htmx %}
-                hx-get="{{ item.htmx.request_url|default:item.request_url }}"
-                hx-target="{{ item.htmx.target }}"
-                hx-swap="{{ item.htmx.swap|default:'innerHTML' }} show:window:top"
-                hx-push-url="true"
+                {% htmx_attributes item.htmx request_url=item.htmx.request_url|default:item.request_url push_url=True swap_modifiers="show:window:top" %}
                 hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
               {% endif %}
               href="{{ item.request_url }}"
@@ -70,10 +65,7 @@
               <li data-insight-side-nav>
                 <a
                   {% if item.htmx %}
-                    hx-get="{{ item.htmx.request_url|default:item.request_url }}"
-                    hx-target="{{ item.htmx.target }}"
-                    hx-swap="{{ item.htmx.swap|default:'innerHTML' }} show:window:top"
-                    hx-push-url="true"
+                    {% htmx_attributes item.htmx request_url=item.htmx.request_url|default:item.request_url push_url=True swap_modifiers="show:window:top" %}
                     hx-on::after-request="document.body.dispatchEvent(new Event('PageChanged'))"
                   {% endif %}
                   href="{{ item.request_url }}"

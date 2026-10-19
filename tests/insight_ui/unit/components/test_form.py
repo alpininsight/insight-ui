@@ -4,11 +4,30 @@
 
 import re
 import warnings
+from dataclasses import dataclass
 from pathlib import Path
 
 import pytest
 from bs4 import BeautifulSoup
-from insight_ui.configs import FormConfig, HtmxConfig
+from django.template import Context, Template
+from insight_ui.configs import (
+    ButtonConfig,
+    CheckboxConfig,
+    CheckboxGroupConfig,
+    CheckboxItemConfig,
+    FormConfig,
+    FormField,
+    HtmxConfig,
+    InputFieldConfig,
+    MultiselectConfig,
+    RadioBlockConfig,
+    RadioGroupConfig,
+    RadioItemConfig,
+    SelectConfig,
+    SliderConfig,
+    TextareaConfig,
+    ToggleConfig,
+)
 
 import insight_ui
 from tests.insight_ui.unit.components.test_template_tags import TemplateTagsTestCase
@@ -65,6 +84,156 @@ class TestForm(TemplateTagsTestCase):
             warnings.simplefilter("always")
             FormConfig(request_url="/submit/")
         assert len(caught) == 0
+
+    def test_submit_reset_label_and_method_as_tag_arguments(self) -> None:
+        """submit_label, reset_label and method work directly on the tag."""
+        rendered = self.render_template(
+            '{% load insight_tags %}{% form title="Contact" submit_label="Send" reset_label="Clear" '
+            'show_reset_button=True method="get" request_url="/search/" %}'
+        )
+        soup = BeautifulSoup(rendered, "html.parser")
+        form = soup.find("form")
+        assert form is not None
+        assert form["method"] == "get"
+        labels = [button.get_text(strip=True) for button in soup.find_all("button")]
+        assert "Send" in labels
+        assert "Clear" in labels
+
+
+def render_form(*fields: FormField) -> BeautifulSoup:
+    """Render a form with the given fields and parse the result."""
+    rendered = Template("{% load insight_tags %}{% form config=config %}").render(
+        Context({"config": FormConfig(tag_id="test-form", fields=list(fields))})
+    )
+    return BeautifulSoup(rendered, "html.parser")
+
+
+@pytest.mark.parametrize(
+    ("form_field", "selector"),
+    [
+        pytest.param(InputFieldConfig(name="email", input_type="email"), "input[type=email][name=email]", id="input"),
+        pytest.param(TextareaConfig(name="message"), "textarea[name=message]", id="textarea"),
+        pytest.param(SelectConfig(name="topic", options=["Support", "Sales"]), "select[name=topic]", id="select"),
+        pytest.param(
+            MultiselectConfig(name="tags", options=["Django", "HTMX"]),
+            "[data-insight-multiselect][data-name=tags]",
+            id="multiselect",
+        ),
+        pytest.param(CheckboxConfig(name="terms", value="accepted"), "input[type=checkbox][name=terms]", id="checkbox"),
+        pytest.param(
+            CheckboxGroupConfig(
+                name="contact_via", items=[CheckboxItemConfig(tag_id="via-email", value="email", label="E-Mail")]
+            ),
+            "[data-insight-checkbox-group] input[type=checkbox][name=contact_via]",
+            id="checkbox-group",
+        ),
+        pytest.param(
+            RadioGroupConfig(name="size", items=[RadioItemConfig(tag_id="size-s", value="s", label="S")]),
+            "input[type=radio][name=size]",
+            id="radio-group",
+        ),
+        pytest.param(
+            RadioBlockConfig(name="view", items=[RadioItemConfig(tag_id="table", value="table", label="Table")]),
+            "input[type=radio][name=view]",
+            id="radio-block",
+        ),
+        pytest.param(SliderConfig(name="budget", value=40), "input[type=range][name=budget]", id="slider"),
+        pytest.param(ToggleConfig(name="newsletter", value="yes"), "input[name=newsletter]", id="toggle"),
+    ],
+)
+def test_form_renders_each_supported_field_inside_one_form(form_field: FormField, selector: str) -> None:
+    """Every supported field config renders its control inside the form, without nesting another form."""
+    soup = render_form(form_field)
+
+    forms = soup.find_all("form")
+    assert len(forms) == 1
+    assert forms[0].select_one(selector) is not None
+
+
+def test_form_renders_fields_in_given_order() -> None:
+    """Fields appear in the order of the config list."""
+    soup = render_form(
+        SliderConfig(name="budget"),
+        InputFieldConfig(name="name"),
+        TextareaConfig(name="message"),
+    )
+
+    names = [control["name"] for control in soup.select("form [name]") if control["name"] != "csrfmiddlewaretoken"]
+    assert names == ["budget", "name", "message"]
+
+
+@dataclass
+class EmailFieldConfig(InputFieldConfig):
+    """Project-specific field config derived from a supported one."""
+
+    input_type: str = "email"
+
+
+def test_form_renders_subclass_of_supported_field_config() -> None:
+    """A config derived from a supported field config is accepted and rendered with the parent's template."""
+    soup = render_form(EmailFieldConfig(name="email"))
+
+    assert soup.select_one("form input[type=email][name=email]") is not None
+
+
+def test_form_config_rejects_unsupported_field_config() -> None:
+    """Configs that are not form fields are rejected with the list of supported types."""
+    with pytest.raises(TypeError, match=r"FormConfig fields must be one of InputFieldConfig, .*; got ButtonConfig\."):
+        FormConfig(fields=[ButtonConfig(label="Send")])
+
+
+def render_htmx_forms(*configs: FormConfig) -> BeautifulSoup:
+    """Render several HTMX forms on one page and parse the result."""
+    template = "{% load insight_tags %}" + "".join(f"{{% form config=form_{i} %}}" for i in range(len(configs)))
+    rendered = Template(template).render(Context({f"form_{i}": config for i, config in enumerate(configs)}))
+    return BeautifulSoup(rendered, "html.parser")
+
+
+def htmx_form(tag_id: str = "", **kwargs: object) -> FormConfig:
+    """Create a form that submits via HTMX."""
+    return FormConfig(tag_id=tag_id, htmx_config=HtmxConfig(request_url="/submit/", target="#result"), **kwargs)
+
+
+def test_form_loading_indicator_is_scoped_to_its_form() -> None:
+    """Each form shows only its own indicator, not every indicator on the page."""
+    soup = render_htmx_forms(htmx_form("contact"), htmx_form("newsletter"))
+
+    for form in soup.find_all("form"):
+        assert form["hx-indicator"] == "find .htmx-indicator"
+        assert form.select_one(".htmx-indicator") is not None
+
+
+def test_form_loading_indicator_can_be_switched_off() -> None:
+    """Without its own indicator the form relies on the global loading bar."""
+    form = render_htmx_forms(htmx_form("contact", show_loading_indicator=False)).find("form")
+
+    assert not form.has_attr("hx-indicator")
+    assert form.select_one(".htmx-indicator") is None
+
+
+def test_form_error_containers_are_unique_per_form() -> None:
+    """The error container is derived from tag_id, so several forms do not share an ID."""
+    soup = render_htmx_forms(htmx_form("contact"), htmx_form("newsletter"))
+
+    assert soup.select_one("#contact-error") is not None
+    assert soup.select_one("#newsletter-error") is not None
+    assert soup.select_one("#form-error") is None
+
+
+def test_form_error_container_without_tag_id_keeps_default_id() -> None:
+    """A single form without tag_id still offers a known error target."""
+    form = render_htmx_forms(htmx_form()).find("form")
+
+    assert form.select_one("#form-error") is not None
+
+
+def test_form_uses_configured_swap_method() -> None:
+    """The swap method of the HtmxConfig is applied instead of always swapping innerHTML."""
+    config = FormConfig(
+        tag_id="contact", htmx_config=HtmxConfig(request_url="/submit/", target="#result", swap_method="outerHTML")
+    )
+
+    assert render_htmx_forms(config).find("form")["hx-swap"] == "outerHTML"
 
 
 def test_css_source_hides_idle_htmx_indicator_from_accessibility_tree() -> None:

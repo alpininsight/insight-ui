@@ -6,11 +6,11 @@
             {% icon input_config.icon %}
         {% endif %}
         <span class="self-end">{{ input_config.label }}</span>
-        {% if input_config.required %}<span class="text-insight-danger-foreground" aria-label="{% trans 'Required' %}">*</span>{% endif %}
+        {% if input_config.required %}<span class="text-insight-danger-text" aria-hidden="true">*</span>{% endif %}
         {% if input_config.explanation %}
-            <div class="text-insight-body" data-insight-tooltip="{{ input_config.explanation }}" data-position="top">
+            <span class="text-insight-body" data-insight-tooltip="{{ input_config.explanation }}" data-position="top">
                 {% icon name="question-mark-circle" size="xs" %}
-            </div>
+            </span>
         {% endif %}
     </label>
     <input
@@ -27,6 +27,7 @@
         {% if input_config.required %}required{% endif %}
         {% if input_config.disabled %}disabled{% endif %}
         {% if input_config.disabled and input_config.disabled_reason %}data-insight-tooltip="{{ input_config.disabled_reason }}"{% endif %}
+        {% data_attributes input_config.data_attrs %}
         class="input w-full"
     >
 </div>
