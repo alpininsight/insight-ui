@@ -8,7 +8,7 @@ import json
 import math
 from dataclasses import MISSING, fields, is_dataclass, replace
 from difflib import HtmlDiff, ndiff, unified_diff
-from typing import TYPE_CHECKING, Any, Final, Literal, TypeVar
+from typing import TYPE_CHECKING, Any, Final, Literal, TypeVar, cast
 
 from django import template
 from django.conf import settings
@@ -21,6 +21,7 @@ if TYPE_CHECKING:
 
     from django.core.paginator import Page
 from django.utils.functional import Promise
+from django.utils.html import format_html_join
 from django.utils.safestring import SafeString, mark_safe
 from django.utils.translation import gettext as _
 from markdown import markdown
@@ -235,6 +236,97 @@ def json_attribute(value: object) -> str:
     auto-escaping protects the surrounding HTML attribute.
     """
     return json.dumps(value, separators=(",", ":"), ensure_ascii=False, allow_nan=False)
+
+
+@register.simple_tag
+def data_attributes(attrs: Iterable[DataAttrConfig]) -> SafeString:
+    """Render DataAttrConfig entries as data-* HTML attributes.
+
+    Usage: ``<input {% data_attributes config.data_attrs %}>``
+    """
+    return format_html_join(" ", 'data-{}="{}"', ((attr.name, attr.value) for attr in attrs))
+
+
+def _collect_data_attrs(
+    tag_name: str,
+    config: object,
+    data_attrs: list[DataAttrConfig] | _Unset,
+    kwargs: dict[str, Any],
+) -> list[DataAttrConfig] | _Unset:
+    """Append the data_* keyword arguments of a tag to its data attributes.
+
+    ``{% input_field name="title" data_inspector_label="" %}`` renders ``data-inspector-label=""``.
+    Attributes from ``data_attrs`` (or else from the config) are kept.
+
+    Raises:
+        ValueError: If a keyword argument does not start with ``data_``.
+
+    """
+    unknown = [key for key in kwargs if not key.startswith("data_")]
+    if unknown:
+        raise ValueError(  # noqa: TRY003
+            f"Unknown parameter '{unknown[0]}' in {{% {tag_name} %}}. "
+            "Only data_* attributes are allowed as extra arguments."
+        )
+    if not kwargs:
+        return data_attrs
+    existing = data_attrs if isinstance(data_attrs, list) else getattr(config, "data_attrs", [])
+    return [
+        *existing,
+        *(DataAttrConfig(name=key[5:].replace("_", "-"), value=str(value)) for key, value in kwargs.items()),
+    ]
+
+
+@register.simple_tag
+def htmx_attributes(
+    htmx: HtmxConfig | None,
+    *,
+    request_url: str = "",
+    trigger: str = "",
+    indicator: str = "",
+    push_url: bool | None = None,
+    swap_modifiers: str = "",
+) -> SafeString:
+    """Render the HTMX attributes of an HtmxConfig in one consistent way.
+
+    Components pass values they fix or derive themselves; these take precedence over the config.
+    Attributes without a value are left out.
+
+    Args:
+        htmx: The request options. Renders nothing if None.
+        request_url: URL of the component, e.g. of a breadcrumb item, used instead of htmx.request_url.
+        trigger: hx-trigger of the component. Empty keeps the HTMX default of the element.
+        indicator: hx-indicator of the component, used instead of htmx.loading_indicator_id.
+        push_url: Forces hx-push-url on or off. None uses htmx.push_url.
+        swap_modifiers: Appended to hx-swap, e.g. "show:window:top".
+
+    Returns:
+        The attributes, separated by spaces.
+
+    """
+    attributes: list[tuple[str, str]] = []
+    if htmx is None:
+        return format_html_join(" ", '{}="{}"', attributes)
+    url = request_url or htmx.request_url
+    if url:
+        attributes.append((f"hx-{htmx.method}", url))
+    if htmx.target:
+        attributes.append(("hx-target", htmx.target))
+    settle = f"settle:{htmx.swap_settle}" if htmx.swap_settle else ""
+    attributes.append(("hx-swap", " ".join(part for part in (htmx.swap_method, settle, swap_modifiers) if part)))
+    if trigger:
+        attributes.append(("hx-trigger", trigger))
+    if htmx.push_url if push_url is None else push_url:
+        attributes.append(("hx-push-url", "true"))
+    if indicator or htmx.loading_indicator_id:
+        attributes.append(("hx-indicator", indicator or htmx.loading_indicator_id))
+    if htmx.confirm:
+        attributes.append(("hx-confirm", htmx.confirm))
+    if htmx.vals:
+        attributes.append(("hx-vals", json_attribute(htmx.vals)))
+    if not htmx.show_global_loading_indicator:
+        attributes.append(("data-insight-global-indicator", "false"))
+    return format_html_join(" ", '{}="{}"', attributes)
 
 
 @register.inclusion_tag("insight_ui/components/icons.html")
@@ -643,9 +735,14 @@ def input_field(
     disabled_reason: str | _Unset | None = UNSET,
     label: str | _Unset | None = UNSET,
     explanation: str | _Unset = UNSET,
+    data_attrs: list[DataAttrConfig] | _Unset = UNSET,
+    **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
     """Render any <input> field."""
-    config = build_config(InputFieldConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    data_attrs = _collect_data_attrs("input_field", config, data_attrs, kwargs)
+    config = build_config(
+        InputFieldConfig, config, **{k: v for k, v in locals().items() if k not in ("config", "kwargs")}
+    )
     return {"input_config": config}
 
 
@@ -664,9 +761,14 @@ def textarea(
     disabled_reason: str | _Unset | None = UNSET,
     label: str | _Unset | None = UNSET,
     explanation: str | _Unset = UNSET,
+    data_attrs: list[DataAttrConfig] | _Unset = UNSET,
+    **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
     """Render a <textarea> field."""
-    config = build_config(TextareaConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    data_attrs = _collect_data_attrs("textarea", config, data_attrs, kwargs)
+    config = build_config(
+        TextareaConfig, config, **{k: v for k, v in locals().items() if k not in ("config", "kwargs")}
+    )
     return {"textarea_config": config}
 
 
@@ -679,11 +781,17 @@ def checkbox(
     value: str | _Unset = UNSET,
     label: str | _Unset | None = UNSET,
     checked: bool | _Unset = UNSET,
+    required: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset = UNSET,
+    data_attrs: list[DataAttrConfig] | _Unset = UNSET,
+    **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
     """Render a checkbox with label text."""
-    config = build_config(CheckboxConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    data_attrs = _collect_data_attrs("checkbox", config, data_attrs, kwargs)
+    config = build_config(
+        CheckboxConfig, config, **{k: v for k, v in locals().items() if k not in ("config", "kwargs")}
+    )
     return {"checkbox_config": config}
 
 
@@ -710,9 +818,14 @@ def radio_group(
     items: list[RadioItemConfig] | _Unset = UNSET,
     as_row: bool | _Unset = UNSET,
     current_value: str | _Unset = UNSET,
+    data_attrs: list[DataAttrConfig] | _Unset = UNSET,
+    **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
     """Render a group of radio buttons."""
-    config = build_config(RadioGroupConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    data_attrs = _collect_data_attrs("radio_group", config, data_attrs, kwargs)
+    config = build_config(
+        RadioGroupConfig, config, **{k: v for k, v in locals().items() if k not in ("config", "kwargs")}
+    )
     return {"radio_group_config": config}
 
 
@@ -730,9 +843,14 @@ def radio_block(
     hx_swap_method: str | _Unset = UNSET,
     method: str | _Unset = UNSET,
     current_value: str | _Unset = UNSET,
+    data_attrs: list[DataAttrConfig] | _Unset = UNSET,
+    **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
     """Render a group of radio buttons as a block."""
-    config = build_config(RadioBlockConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    data_attrs = _collect_data_attrs("radio_block", config, data_attrs, kwargs)
+    config = build_config(
+        RadioBlockConfig, config, **{k: v for k, v in locals().items() if k not in ("config", "kwargs")}
+    )
     return {"radio_block_config": config}
 
 
@@ -754,9 +872,12 @@ def slider(
     dual: bool | _Unset = UNSET,
     value_min: int | _Unset | None = UNSET,
     value_max: int | _Unset | None = UNSET,
+    data_attrs: list[DataAttrConfig] | _Unset = UNSET,
+    **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
     """Render a range slider."""
-    config = build_config(SliderConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    data_attrs = _collect_data_attrs("slider", config, data_attrs, kwargs)
+    config = build_config(SliderConfig, config, **{k: v for k, v in locals().items() if k not in ("config", "kwargs")})
     return {"slider_config": config}
 
 
@@ -770,13 +891,17 @@ def toggle(
     label: str | _Unset | None = UNSET,
     icon: IconConfig | _Unset | None = UNSET,
     checked: bool | _Unset = UNSET,
+    required: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset | None = UNSET,
     switch: bool | _Unset = UNSET,
     method: str | _Unset = UNSET,
+    data_attrs: list[DataAttrConfig] | _Unset = UNSET,
+    **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
     """Render a toggle button."""
-    config = build_config(ToggleConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    data_attrs = _collect_data_attrs("toggle", config, data_attrs, kwargs)
+    config = build_config(ToggleConfig, config, **{k: v for k, v in locals().items() if k not in ("config", "kwargs")})
     return {"toggle_config": config}
 
 
@@ -793,9 +918,12 @@ def select(
     explanation: str | _Unset = UNSET,
     options: list[str] | dict[str, str] | _Unset = UNSET,
     selected_option: str | _Unset = UNSET,
+    data_attrs: list[DataAttrConfig] | _Unset = UNSET,
+    **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
     """Render a selection box."""
-    config = build_config(SelectConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    data_attrs = _collect_data_attrs("select", config, data_attrs, kwargs)
+    config = build_config(SelectConfig, config, **{k: v for k, v in locals().items() if k not in ("config", "kwargs")})
     return {"select_config": config}
 
 
@@ -811,9 +939,14 @@ def multiselect(
     disabled_reason: str | _Unset | None = UNSET,
     options: list[str] | dict[str, str] | _Unset = UNSET,
     selected_options: list[str] | _Unset = UNSET,
+    data_attrs: list[DataAttrConfig] | _Unset = UNSET,
+    **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
     """Render a selection box that allows multiple values."""
-    config = build_config(MultiselectConfig, config, **{k: v for k, v in locals().items() if k != "config"})
+    data_attrs = _collect_data_attrs("multiselect", config, data_attrs, kwargs)
+    config = build_config(
+        MultiselectConfig, config, **{k: v for k, v in locals().items() if k not in ("config", "kwargs")}
+    )
     return {"multiselect_config": config}
 
 
@@ -1122,9 +1255,13 @@ def live_content(
 ) -> dict[str, Any]:
     """Render a container for live updates via HTMX."""
     config = build_config(LiveContentConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    htmx_config = {"request_url": config.request_url, "trigger": f"load, every {config.interval}s", "swap": "innerHTML"}
+    live_request = {
+        "request_url": config.request_url,
+        "trigger": f"load, every {config.interval}s",
+        "swap": "innerHTML",
+    }
 
-    return {"live_content_config": config, "htmx_config": htmx_config}
+    return {"live_content_config": config, "live_request": live_request}
 
 
 @register.inclusion_tag("insight_ui/components/websocket.html")
@@ -1178,13 +1315,12 @@ def badge(
             icon=IconConfig("x-mark", "xs"),
             icon_only=True,
             # Same color as the badge; badge-only types like "disabled" fall back to secondary.
-            type=config.type if config.type in BUTTON_TYPE_VALUES else "secondary",
+            type=cast("ButtonType", config.type) if config.type in BUTTON_TYPE_VALUES else "secondary",
             subtle=True,
             round=True,
             size="xs",
             button_type="button",
-            # HtmxConfig defaults to trigger="submit", which never fires on a button.
-            htmx_config=replace(config.remove_htmx, trigger="click"),
+            htmx_config=config.remove_htmx,
             data_attrs=[DataAttrConfig(name="insight-badge-remove")],
             # Compensate the button padding and border, so the badge keeps its height.
             extra_classes="-my-1.5 -me-2",
@@ -1212,8 +1348,7 @@ def badge_list(
             subtle=True,
             size="s",
             button_type="button",
-            # HtmxConfig defaults to trigger="submit", which never fires on a button.
-            htmx_config=replace(config.clear_all_htmx, trigger="click"),
+            htmx_config=config.clear_all_htmx,
             data_attrs=[DataAttrConfig(name="insight-badge-clear-all")],
         )
     return {"badge_list_config": config, "clear_all_button": clear_all_button}
@@ -1499,4 +1634,9 @@ def form(
 ) -> dict[str, Any]:
     """Render a form with HTMX support."""
     config = build_config(FormConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    return {"form_config": config, "rendered_fields": [_render_form_field(field) for field in config.fields]}
+    return {
+        "form_config": config,
+        "rendered_fields": [_render_form_field(field) for field in config.fields],
+        # "find" keeps the indicator to this form; a plain class selector would show every indicator on the page.
+        "form_indicator": "find .htmx-indicator" if config.show_loading_indicator else "",
+    }

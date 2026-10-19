@@ -96,6 +96,31 @@ jobs:
       - run: npm test
       - run: npm run verify:static-build
 
+  stylesheet:
+    # The packaged tailwind.css is committed; a template change without a rebuild ships stale CSS.
+    name: Compiled stylesheet
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          python-version: '3.14'
+          enable-cache: false
+      - run: uv sync --locked --all-groups
+      - name: Rebuild tailwind.css with the pinned Tailwind CLI
+        env:
+          DJANGO_SETTINGS_MODULE: tests.tailwind_settings
+        run: uv run --no-sync python -m django tailwind build --force --no-minify
+      - name: Require the committed tailwind.css to match the rebuild
+        run: |
+          if ! git diff --exit-code --stat -- insight_ui/static/insight_ui/css/tailwind.css; then
+            echo "::error file=insight_ui/static/insight_ui/css/tailwind.css::tailwind.css is out of date. Run 'npm run build:tailwind' and commit the result."
+            exit 1
+          fi
+
   distribution:
     name: Wheel and sdist installation
     runs-on: ubuntu-latest
@@ -157,7 +182,7 @@ jobs:
 
   quality_gate:
     name: Python/Django Quality / Quality Gate
-    needs: [quality, hygiene, javascript, distribution, gitleaks]
+    needs: [quality, hygiene, javascript, stylesheet, distribution, gitleaks]
     if: ${{ always() && !cancelled() }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
