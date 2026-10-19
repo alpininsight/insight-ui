@@ -20,25 +20,26 @@ class TestStatusScreen(TemplateTagsTestCase):
             context={
                 "cfg": StatusScreenConfig(
                     title="Deployment running",
-                    status="info",
+                    severity="info",
                     primary_action=ButtonConfig(label="Continue", request_url="/next/", disabled=True),
                 )
             },
         )
         soup = BeautifulSoup(rendered, "html.parser")
 
-        href = soup.find("a", disabled=True)
-        assert href is not None
-        assert href.get_text(strip=True) == "Continue"
+        link = soup.find("a", attrs={"aria-disabled": "true"})
+        assert link is not None
+        assert link.get_text(strip=True) == "Continue"
+        assert not link.has_attr("href")
         # Semantic component class verifies disabled state
-        assert "btn-disabled" in href.get("class", [])
+        assert "btn-disabled" in link.get("class", [])
 
     def test_status_screen_error_notice_uses_alert_role(self) -> None:
         """Error notices use alert semantics for accessibility."""
         rendered = self.render_template(
             """
             {% load insight_tags %}
-            {% status_screen title="Failed" status="error" notice_title="Reason" notice="OIDC failed." %}
+            {% status_screen title="Failed" severity="error" notice_title="Reason" notice="OIDC failed." %}
             """
         )
         soup = BeautifulSoup(rendered, "html.parser")
@@ -48,10 +49,10 @@ class TestStatusScreen(TemplateTagsTestCase):
 
     def test_status_screen_rejects_unknown_status(self) -> None:
         """Unknown status values fail early instead of rendering broken classes."""
-        with pytest.raises(ValueError, match=r"Invalid status 'unknown'\. Allowed values are:"):
+        with pytest.raises(ValueError, match=r"Invalid severity 'unknown'\. Allowed values are:"):
             self.render_template(
                 """
                 {% load insight_tags %}
-                {% status_screen title="Unknown" status="unknown" %}
+                {% status_screen title="Unknown" severity="unknown" %}
                 """
             )

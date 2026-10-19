@@ -43,8 +43,8 @@ def test_badge_remove_button_sends_request_on_click() -> None:
     assert button["hx-get"] == "?status=open"
     assert button["hx-target"] == "#results"
     assert button["hx-push-url"] == "true"
-    # HtmxConfig defaults to trigger="submit", which would never fire on a button.
-    assert button["hx-trigger"] == "click"
+    # Buttons keep the HTMX default trigger (click).
+    assert not button.has_attr("hx-trigger")
     assert button.has_attr("data-insight-badge-remove")
 
 
@@ -113,8 +113,8 @@ def test_remove_all_button_is_opt_in_and_hidden_without_badges(has_items: bool) 
         assert button["type"] == "button"
         assert button.get_text(strip=True) == "Remove all filters"
         assert button["hx-get"] == "?"
-        # HtmxConfig defaults to trigger="submit", which would never fire on a button.
-        assert button["hx-trigger"] == "click"
+        # Buttons keep the HTMX default trigger (click).
+        assert not button.has_attr("hx-trigger")
     else:
         assert button is None
 

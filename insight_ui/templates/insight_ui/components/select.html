@@ -20,6 +20,7 @@
         {% if select_config.required %}required{% endif %}
         {% if select_config.disabled %}disabled{% endif %}
         {% if select_config.disabled and select_config.disabled_reason %}data-insight-tooltip="{{ select_config.disabled_reason }}"{% endif %}
+        {% data_attributes select_config.data_attrs %}
         class="input w-full"
     >
         {% for option, text in select_config.options.items %}

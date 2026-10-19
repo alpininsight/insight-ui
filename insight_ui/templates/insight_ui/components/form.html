@@ -3,12 +3,7 @@
 <form
   {% if form_config.tag_id %}id="{{ form_config.tag_id }}"{% endif %}
   {% if form_config.htmx_config %}
-    hx-{{ form_config.htmx_config.method }}="{{ form_config.htmx_config.request_url }}"
-    hx-target="{{ form_config.htmx_config.target }}"
-    hx-swap="{{ form_config.htmx_config.swap_method }}{% if form_config.htmx_config.swap_settle %} settle:{{ form_config.htmx_config.swap_settle }}{% endif %}"
-    hx-trigger="submit"
-    {# "find" keeps the indicator to this form; a plain class selector would show every indicator on the page. #}
-    {% if form_config.show_loading_indicator %}hx-indicator="find .htmx-indicator"{% endif %}
+    {% htmx_attributes form_config.htmx_config trigger="submit" indicator=form_indicator %}
   {% else %}
     action="{{ form_config.request_url }}"
     method="{{ form_config.method }}"

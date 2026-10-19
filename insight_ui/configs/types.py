@@ -99,16 +99,16 @@ type IconColor = Literal[
 # =============================================================================
 
 # Tuple of valid step status values (for stepper components)
-STEP_STATUS_VALUES: tuple[str, ...] = ("active", "success", "failed", "")
+STEP_STATUS_VALUES: tuple[str, ...] = ("pending", "current", "completed", "failed")
 
 # Type alias for step status
-type StepStatus = Literal["active", "success", "failed", ""]
+type StepStatus = Literal["pending", "current", "completed", "failed"]
 
-# Tuple of valid alert/notification type values
-ALERT_TYPE_VALUES: tuple[str, ...] = ("info", "success", "warning", "error")
+# Tuple of valid message severity values (alert, infobox, status screen)
+SEVERITY_VALUES: tuple[str, ...] = ("info", "success", "warning", "error")
 
-# Type alias for alert/notification types
-type AlertType = Literal["info", "success", "warning", "error"]
+# Type alias for message severity: what happened, as opposed to the color role (ColorType)
+type Severity = Literal["info", "success", "warning", "error"]
 
 # =============================================================================
 # HTML Element Types
@@ -351,24 +351,24 @@ def validate_step_status(value: str, field_name: str = "status") -> None:
     _validate_literal(value, STEP_STATUS_VALUES, field_name)
 
 
-def validate_alert_type(value: str, field_name: str = "type") -> None:
-    """Validate that an alert type value is one of the allowed values.
+def validate_severity(value: str, field_name: str = "severity") -> None:
+    """Validate that a severity value is one of the allowed values.
 
     Args:
-        value: The alert type value to validate.
+        value: The severity value to validate.
         field_name: Name of the field for error messages.
 
     Raises:
-        ValueError: If the value is not a valid alert type.
+        ValueError: If the value is not a valid severity.
 
     """
     if value == "danger":
         raise ValueError(  # noqa: TRY003
             f"Invalid {field_name} 'danger'. Allowed values are: "
-            f"{', '.join(repr(s) for s in ALERT_TYPE_VALUES)}. Use 'error': alert types are semantic, "
-            "'danger' is the button/badge color name."
+            f"{', '.join(repr(s) for s in SEVERITY_VALUES)}. Use 'error': the severity says what happened, "
+            "'danger' is the color name."
         )
-    _validate_literal(value, ALERT_TYPE_VALUES, field_name)
+    _validate_literal(value, SEVERITY_VALUES, field_name)
 
 
 def validate_html_button_type(value: str, field_name: str = "button_type") -> None:
@@ -603,9 +603,9 @@ def validate_icon_name(value: str) -> None:
 #   - description: Human-readable description for documentation
 
 TYPE_REGISTRY: dict[str, dict] = {
-    "AlertType": {
-        "values": ALERT_TYPE_VALUES,
-        "description": "Semantic types for alerts and notifications.",
+    "Severity": {
+        "values": SEVERITY_VALUES,
+        "description": "Message severity of alerts, infoboxes and status screens.",
     },
     "BadgeType": {
         "values": BADGE_TYPE_VALUES,
