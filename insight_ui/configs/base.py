@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 """Base configuration classes shared across multiple components."""
 
+import re
 import warnings
 from dataclasses import dataclass, field
 from typing import Any
@@ -21,6 +22,9 @@ from insight_ui.configs.types import (
     validate_size,
 )
 
+# Lowercase words joined by single hyphens; anything else could break out of the attribute name.
+_ATTRIBUTE_NAME = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*")
+
 
 @dataclass
 class DataAttrConfig:
@@ -37,8 +41,24 @@ class DataAttrConfig:
         DataAttrConfig(name="progress-retry", value="")
         """
 
-    name: str = field(default="", metadata={"doc": _("Attribute name without 'data-' prefix.")})
+    name: str = field(metadata={"doc": _("Attribute name without 'data-' prefix.")})
     value: str = field(default="", metadata={"doc": _("Attribute value. Empty string for marker attributes.")})
+
+    def __post_init__(self) -> None:
+        """Reject names that are not a plain attribute name.
+
+        Templates render the name unescaped after ``data-``, ``aria-`` or ``hx-``; a space or ``=`` would
+        start a second attribute (e.g. an event handler).
+
+        Raises:
+            ValueError: If the name is not lowercase letters and digits joined by single hyphens.
+
+        """
+        if not _ATTRIBUTE_NAME.fullmatch(self.name):
+            raise ValueError(  # noqa: TRY003
+                f"Invalid attribute name {self.name!r}: use lowercase letters and digits joined by single hyphens, "
+                "e.g. 'testid' or 'progress-retry'."
+            )
 
 
 @dataclass
@@ -103,19 +123,21 @@ class ImageConfig:
 
 @dataclass
 class HtmxConfig:
-    """Configuration for HTMX attributes.
+    """Request options shared by all components that send HTMX requests.
+
+    How a request is triggered depends on the component, so the trigger is set by the component itself.
 
     Attributes:
         request_url: The URL for the HTMX request (hx-get/hx-post).
         target: CSS selector for the target element (hx-target).
         swap_method: The way in which the target is to be replaced (hx-swap).
         swap_settle: Settle delay appended to hx-swap, e.g. '300ms', so CSS transitions have time to run.
-        trigger: Event trigger (hx-trigger).
         method: HTTP method ('get' or 'post').
         loading_indicator_id: CSS selector for loading indicator (hx-indicator).
         push_url: Whether to push URL to browser history (hx-push-url).
         confirm: Confirmation message before request (hx-confirm).
         vals: Additional JSON values to include in the request (hx-vals).
+        show_global_loading_indicator: Whether the request shows the global loading bar.
 
     """
 
@@ -124,7 +146,6 @@ class HtmxConfig:
             request_url="/api/search/",
             target="#results",
             swap_method="innerHTML",
-            trigger="keyup changed delay:300ms",
         )
         """
 
@@ -137,7 +158,6 @@ class HtmxConfig:
         default="",
         metadata={"doc": _("Settle delay appended to hx-swap, e.g. '300ms', so CSS transitions have time to run.")},
     )
-    trigger: str = field(default="submit", metadata={"doc": _("Event trigger (hx-trigger).")})
     method: HttpMethod = field(default="get", metadata={"doc": _("HTTP method ('get' or 'post').")})
     loading_indicator_id: str = field(
         default="", metadata={"doc": _("CSS selector for loading indicator (hx-indicator).")}
@@ -146,6 +166,9 @@ class HtmxConfig:
     confirm: str = field(default="", metadata={"doc": _("Confirmation message before request (hx-confirm).")})
     vals: dict[str, Any] = field(
         default_factory=dict, metadata={"doc": _("Additional JSON values to include in the request (hx-vals).")}
+    )
+    show_global_loading_indicator: bool = field(
+        default=True, metadata={"doc": _("Whether the request shows the global loading bar.")}
     )
 
     def __post_init__(self) -> None:
@@ -169,6 +192,7 @@ class BaseFormFieldConfig:
         disabled: **True** if the field should be disabled.
         disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
+        data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     """
 
@@ -187,6 +211,9 @@ class BaseFormFieldConfig:
         },
     )
     required: bool = field(default=False, metadata={"doc": _("**True** if the field must be filled in.")})
+    data_attrs: list[DataAttrConfig] = field(
+        default_factory=list, metadata={"doc": _("Custom data attributes for JavaScript hooks or tests.")}
+    )
 
     def __post_init__(self) -> None:
         """Require a non-empty name and warn if disabled without a reason.

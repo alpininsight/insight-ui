@@ -1,6 +1,6 @@
 {% load insight_tags %}
 
-<fieldset>
+<fieldset {% data_attributes radio_block_config.data_attrs %}>
     {% if radio_block_config.label %}
         <legend class="flex gap-1 mb-1 font-bold text-sm text-insight-headline">{{ radio_block_config.label }}</legend>
     {% endif %}
@@ -22,6 +22,7 @@
                                 {% if radio_block_config.method %}
                                     data-radio-callback="{{ radio_block_config.method }}"
                                 {% endif %}
+                                {% data_attributes item.data_attrs %}
                                 class="sr-only peer"
                             >
                             <label
@@ -60,6 +61,7 @@
                                 {% if radio_block_config.method %}
                                     data-radio-callback="{{ radio_block_config.method }}"
                                 {% endif %}
+                                {% data_attributes item.data_attrs %}
                                 class="sr-only peer"
                             >
                             <label

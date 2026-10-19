@@ -29,12 +29,13 @@ from insight_ui.configs.types import (
 class ButtonConfig:
     """Configuration for the button component.
 
-    Renders a button element.
+    Renders a <button>, or an <a> if request_url is set. An htmx_config without its own request_url
+    requests the link URL, so the link also works without JavaScript.
 
     Attributes:
         label: The text on the button or for Screenreader if the button shows only an icon.
         tag_id: Unique ID for JavaScript/CSS targeting.
-        request_url: URL for navigation (renders as <a>). Do not use together with htmx_config; use htmx_config.request_url instead for HTMX requests.
+        request_url: URL of the link (renders as <a>).
         external: **True** to open link in new tab (adds target='_blank' and rel='noopener'). Only applies when request_url is set.
         on_click: The name of the JavaScript method to be called when clicking on the button.
         icon: Icon config for an optional icon.
@@ -83,12 +84,7 @@ class ButtonConfig:
 
     label: str = field(metadata={"doc": "The text on the button or for Screenreader if the button shows only an icon."})
     tag_id: str = field(default="", metadata={"doc": _("Unique ID for JavaScript/CSS targeting.")})
-    request_url: str = field(
-        default="",
-        metadata={
-            "doc": "URL for navigation (renders as <a>). Do not use together with htmx_config; use htmx_config.request_url instead for HTMX requests."
-        },
-    )
+    request_url: str = field(default="", metadata={"doc": "URL of the link (renders as <a>)."})
     external: bool = field(
         default=False,
         metadata={
@@ -166,16 +162,6 @@ class ButtonConfig:
         validate_size(self.size, "size")
         validate_html_button_type(self.button_type, "button_type")
 
-        if self.request_url and self.htmx_config and self.htmx_config.request_url:
-            warnings.warn(
-                f"ButtonConfig {self.label} has both 'request_url' and 'htmx_config.request_url' set. "
-                "This renders an <a> tag with both href and hx-* attributes, which may cause "
-                "conflicting behavior. Use 'request_url' for navigation links, or "
-                "'htmx_config.request_url' for HTMX requests, but not both.",
-                UserWarning,
-                stacklevel=2,
-            )
-
 
 @dataclass
 class InputFieldConfig(BaseFormFieldConfig):
@@ -199,6 +185,7 @@ class InputFieldConfig(BaseFormFieldConfig):
         max_length: Maximum number of characters in a text field.
         checked: **True** if `input_type='checkbox'` and the checkbox should be selected.
         explanation: A brief description of the field that appears in a tooltip.
+        data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     """
 
@@ -262,6 +249,7 @@ class TextareaConfig(BaseFormFieldConfig):
         rows: Determines the number of lines.
         cols: Determines the number of characters in a line.
         explanation: A brief description of the field that appears in a tooltip.
+        data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     """
 
@@ -301,6 +289,7 @@ class CheckboxConfig(BaseFormFieldConfig):
         required: **True** if the field must be filled in.
         value: The value of the checkbox (this is not the state, see 'checked' for that).
         checked: **True** if the checkbox should be selected.
+        data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     """
 
@@ -330,6 +319,7 @@ class CheckboxItemConfig:
         disabled: **True** if the checkbox should be disabled.
         disabled_reason: Explanation why the checkbox is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
         checked: **True** if the checkbox should be selected.
+        data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     """
 
@@ -350,6 +340,9 @@ class CheckboxItemConfig:
         },
     )
     checked: bool = field(default=False, metadata={"doc": _("**True** if the checkbox should be selected.")})
+    data_attrs: list[DataAttrConfig] = field(
+        default_factory=list, metadata={"doc": _("Custom data attributes for JavaScript hooks or tests.")}
+    )
 
     def __post_init__(self) -> None:
         """Require a tag_id and warn if disabled without a reason."""
@@ -376,6 +369,7 @@ class CheckboxGroupConfig:
         as_row: **True** if the checkbox elements should be displayed side by side.
         minimum_checked: Number of checkbox elements that must be selected at minimum.
         maximum_checked: Number of checkbox elements that may be selected at the same time.
+        data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     """
 
@@ -404,6 +398,9 @@ class CheckboxGroupConfig:
     )
     maximum_checked: int | None = field(
         default=None, metadata={"doc": _("Number of checkbox elements that may be selected at the same time.")}
+    )
+    data_attrs: list[DataAttrConfig] = field(
+        default_factory=list, metadata={"doc": _("Custom data attributes for JavaScript hooks or tests.")}
     )
 
     def __post_init__(self) -> None:
@@ -500,6 +497,7 @@ class RadioItemConfig:
         icon: Optional icon displayed before the label.
         disabled: **True** if the radio button should be disabled.
         disabled_reason: Explanation why the radio button is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     """
 
@@ -521,6 +519,9 @@ class RadioItemConfig:
                 "Explanation why the radio button is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip."
             )
         },
+    )
+    data_attrs: list[DataAttrConfig] = field(
+        default_factory=list, metadata={"doc": _("Custom data attributes for JavaScript hooks or tests.")}
     )
 
     def __post_init__(self) -> None:
@@ -546,6 +547,7 @@ class RadioGroupConfig:
         items: A list of the radio elements.
         as_row: **True** if the radio elements should be displayed side by side.
         current_value: The value of the currently selected radio button.
+        data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     """
 
@@ -569,6 +571,9 @@ class RadioGroupConfig:
         default=True, metadata={"doc": _("**True** if the radio elements should be displayed side by side.")}
     )
     current_value: str = field(default="", metadata={"doc": _("The value of the currently selected radio button.")})
+    data_attrs: list[DataAttrConfig] = field(
+        default_factory=list, metadata={"doc": _("Custom data attributes for JavaScript hooks or tests.")}
+    )
 
     def __post_init__(self) -> None:
         """Require a non-empty name, set first option for current_value if empty, and validate it against items."""
@@ -596,6 +601,7 @@ class RadioBlockConfig:
         hx_swap_method: The way in which the target is to be replaced.
         method: Name of the JavaScript method to be executed when clicking one of the radio buttons.
         current_value: The value of the currently selected radio button.
+        data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     """
 
@@ -638,6 +644,9 @@ class RadioBlockConfig:
         metadata={"doc": _("Name of the JavaScript method to be executed when clicking one of the radio buttons.")},
     )
     current_value: str = field(default="", metadata={"doc": _("The value of the currently selected radio button.")})
+    data_attrs: list[DataAttrConfig] = field(
+        default_factory=list, metadata={"doc": _("Custom data attributes for JavaScript hooks or tests.")}
+    )
 
     def __post_init__(self) -> None:
         """Require a non-empty name and validate hx_swap_method and current_value."""
@@ -671,6 +680,7 @@ class SliderConfig(BaseFormFieldConfig):
         dual: **True** to enable dual-thumb mode for selecting a range with min and max values.
         value_min: The minimum value in dual-thumb mode. Defaults to `minimum`.
         value_max: The maximum value in dual-thumb mode. Defaults to `maximum`.
+        data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     Note:
         In dual-thumb mode, two form fields are submitted:
@@ -760,6 +770,7 @@ class ToggleConfig(BaseFormFieldConfig):
         checked: **True** if the toggle button should be selected.
         switch: **True** if the toggle button should look like a typical switch select.
         method: Name of the JavaScript method to be executed when the toggle button is clicked.
+        data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     """
 
@@ -800,6 +811,7 @@ class SelectConfig(BaseFormFieldConfig):
         explanation: A brief description of the filter that appears in a tooltip.
         options: List of values that can be selected.
         selected_option: Value (the key value, if the options were passed as a dict) of the currently selected option.
+        data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     Note:
         If `options` is a list, the value is also used as the name.
@@ -854,6 +866,7 @@ class MultiselectConfig(BaseFormFieldConfig):
         show_buttons: Show additional buttons for 'Select All' and 'Deselect All'.
         options: List of values that can be selected.
         selected_options: List of currently selected options.
+        data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     Note:
         If `options` is a list, the value is also used as the name.
