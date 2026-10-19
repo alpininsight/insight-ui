@@ -185,6 +185,7 @@ class InputFieldConfig(BaseFormFieldConfig):
         max_length: Maximum number of characters in a text field.
         checked: **True** if `input_type='checkbox'` and the checkbox should be selected.
         explanation: A brief description of the field that appears in a tooltip.
+        data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     """
 
@@ -248,6 +249,7 @@ class TextareaConfig(BaseFormFieldConfig):
         rows: Determines the number of lines.
         cols: Determines the number of characters in a line.
         explanation: A brief description of the field that appears in a tooltip.
+        data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     """
 
@@ -287,6 +289,7 @@ class CheckboxConfig(BaseFormFieldConfig):
         required: **True** if the field must be filled in.
         value: The value of the checkbox (this is not the state, see 'checked' for that).
         checked: **True** if the checkbox should be selected.
+        data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     """
 
@@ -316,6 +319,7 @@ class CheckboxItemConfig:
         disabled: **True** if the checkbox should be disabled.
         disabled_reason: Explanation why the checkbox is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
         checked: **True** if the checkbox should be selected.
+        data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     """
 
@@ -336,6 +340,9 @@ class CheckboxItemConfig:
         },
     )
     checked: bool = field(default=False, metadata={"doc": _("**True** if the checkbox should be selected.")})
+    data_attrs: list[DataAttrConfig] = field(
+        default_factory=list, metadata={"doc": _("Custom data attributes for JavaScript hooks or tests.")}
+    )
 
     def __post_init__(self) -> None:
         """Require a tag_id and warn if disabled without a reason."""
@@ -362,6 +369,7 @@ class CheckboxGroupConfig:
         as_row: **True** if the checkbox elements should be displayed side by side.
         minimum_checked: Number of checkbox elements that must be selected at minimum.
         maximum_checked: Number of checkbox elements that may be selected at the same time.
+        data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     """
 
@@ -390,6 +398,9 @@ class CheckboxGroupConfig:
     )
     maximum_checked: int | None = field(
         default=None, metadata={"doc": _("Number of checkbox elements that may be selected at the same time.")}
+    )
+    data_attrs: list[DataAttrConfig] = field(
+        default_factory=list, metadata={"doc": _("Custom data attributes for JavaScript hooks or tests.")}
     )
 
     def __post_init__(self) -> None:
@@ -486,6 +497,7 @@ class RadioItemConfig:
         icon: Optional icon displayed before the label.
         disabled: **True** if the radio button should be disabled.
         disabled_reason: Explanation why the radio button is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
+        data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     """
 
@@ -507,6 +519,9 @@ class RadioItemConfig:
                 "Explanation why the radio button is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip."
             )
         },
+    )
+    data_attrs: list[DataAttrConfig] = field(
+        default_factory=list, metadata={"doc": _("Custom data attributes for JavaScript hooks or tests.")}
     )
 
     def __post_init__(self) -> None:
@@ -532,6 +547,7 @@ class RadioGroupConfig:
         items: A list of the radio elements.
         as_row: **True** if the radio elements should be displayed side by side.
         current_value: The value of the currently selected radio button.
+        data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     """
 
@@ -555,6 +571,9 @@ class RadioGroupConfig:
         default=True, metadata={"doc": _("**True** if the radio elements should be displayed side by side.")}
     )
     current_value: str = field(default="", metadata={"doc": _("The value of the currently selected radio button.")})
+    data_attrs: list[DataAttrConfig] = field(
+        default_factory=list, metadata={"doc": _("Custom data attributes for JavaScript hooks or tests.")}
+    )
 
     def __post_init__(self) -> None:
         """Require a non-empty name, set first option for current_value if empty, and validate it against items."""
@@ -582,6 +601,7 @@ class RadioBlockConfig:
         hx_swap_method: The way in which the target is to be replaced.
         method: Name of the JavaScript method to be executed when clicking one of the radio buttons.
         current_value: The value of the currently selected radio button.
+        data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     """
 
@@ -624,6 +644,9 @@ class RadioBlockConfig:
         metadata={"doc": _("Name of the JavaScript method to be executed when clicking one of the radio buttons.")},
     )
     current_value: str = field(default="", metadata={"doc": _("The value of the currently selected radio button.")})
+    data_attrs: list[DataAttrConfig] = field(
+        default_factory=list, metadata={"doc": _("Custom data attributes for JavaScript hooks or tests.")}
+    )
 
     def __post_init__(self) -> None:
         """Require a non-empty name and validate hx_swap_method and current_value."""
@@ -657,6 +680,7 @@ class SliderConfig(BaseFormFieldConfig):
         dual: **True** to enable dual-thumb mode for selecting a range with min and max values.
         value_min: The minimum value in dual-thumb mode. Defaults to `minimum`.
         value_max: The maximum value in dual-thumb mode. Defaults to `maximum`.
+        data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     Note:
         In dual-thumb mode, two form fields are submitted:
@@ -746,6 +770,7 @@ class ToggleConfig(BaseFormFieldConfig):
         checked: **True** if the toggle button should be selected.
         switch: **True** if the toggle button should look like a typical switch select.
         method: Name of the JavaScript method to be executed when the toggle button is clicked.
+        data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     """
 
@@ -786,6 +811,7 @@ class SelectConfig(BaseFormFieldConfig):
         explanation: A brief description of the filter that appears in a tooltip.
         options: List of values that can be selected.
         selected_option: Value (the key value, if the options were passed as a dict) of the currently selected option.
+        data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     Note:
         If `options` is a list, the value is also used as the name.
@@ -840,6 +866,7 @@ class MultiselectConfig(BaseFormFieldConfig):
         show_buttons: Show additional buttons for 'Select All' and 'Deselect All'.
         options: List of values that can be selected.
         selected_options: List of currently selected options.
+        data_attrs: Custom data attributes for JavaScript hooks or tests.
 
     Note:
         If `options` is a list, the value is also used as the name.
