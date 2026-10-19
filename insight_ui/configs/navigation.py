@@ -866,7 +866,14 @@ class TabsConfig:
     )
 
     def __post_init__(self) -> None:
-        """Set the first tab as active if no tab is currently active."""
+        """Require at least one tab and set the first tab as active if no tab is currently active.
+
+        Raises:
+            ValueError: If tabs is empty.
+
+        """
+        if not self.tabs:
+            raise ValueError(f"TabsConfig {self.tag_id} needs at least one tab.")  # noqa: TRY003
         if any(tab.active for tab in self.tabs):
             return
 
