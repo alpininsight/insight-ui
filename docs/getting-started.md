@@ -129,7 +129,7 @@ toggle anywhere else:
 {% block navbar %}{% navbar %}{% endblock navbar %}
 {% block content %}
     {% theme_toggle %}
-    {% alert type="error" message="Saving failed." dismissible=False %}
+    {% alert severity="error" message="Saving failed." dismissible=False %}
 {% endblock %}
 ```
 
