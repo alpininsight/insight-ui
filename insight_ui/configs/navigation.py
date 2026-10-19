@@ -620,14 +620,12 @@ class StepperItemConfig:
         title: Title of the step.
         description: Additional description of the step below the title.
         request_url: URL called when the user clicks on the title of the step.
-        success: Displays a checkmark instead of the step number.
-        failed: Displays an X instead of the step number.
-        current: Highlights the title in color and makes the text pulse.
+        status: Status of the step.
 
     """
 
     __example__ = """
-        StepperItemConfig(title="Address", description="Enter shipping address", success=True)
+        StepperItemConfig(title="Address", description="Enter shipping address", status="completed")
         """
 
     title: str = field(metadata={"doc": _("Title of the step.")})
@@ -635,9 +633,11 @@ class StepperItemConfig:
     request_url: str = field(
         default="", metadata={"doc": _("URL called when the user clicks on the title of the step.")}
     )
-    success: bool = field(default=False, metadata={"doc": _("Displays a checkmark instead of the step number.")})
-    failed: bool = field(default=False, metadata={"doc": _("Displays an X instead of the step number.")})
-    current: bool = field(default=False, metadata={"doc": _("Highlights the title in color and makes the text pulse.")})
+    status: StepStatus = field(default="pending", metadata={"doc": _("Status of the step.")})
+
+    def __post_init__(self) -> None:
+        """Validate status after initialization."""
+        validate_step_status(self.status)
 
 
 @dataclass
@@ -654,8 +654,8 @@ class StepperConfig:
     __example__ = """
         StepperConfig(
             items=[
-                StepperItemConfig(title="Address", description="Enter shipping address", success=True),
-                StepperItemConfig(title="Payment", description="Select payment method", current=True),
+                StepperItemConfig(title="Address", description="Enter shipping address", status="completed"),
+                StepperItemConfig(title="Payment", description="Select payment method", status="current"),
                 StepperItemConfig(title="Review", description="Review and confirm"),
             ],
         )
@@ -671,10 +671,10 @@ class MinimalStepperConfig:
     Renders a compact progress indicator.
 
     Attributes:
-        items: List of states for the process steps. Possible values: 'success', 'failed', 'active' and '' for inactive.
-        step_count: Number of process steps. (Only if 'items' is not set!)
-        current_step: Current step of the process. (Only if 'items' is not set!)
-        current_step_status: Status of the current step. (Only if 'items' is not set!)
+        steps: Status of each process step.
+        step_count: Number of process steps. (Only if 'steps' is not set!)
+        current_step: Current step of the process. (Only if 'steps' is not set!)
+        current_step_status: Status of the current step. (Only if 'steps' is not set!)
         icon_size: Size of the icons in the progress bar.
 
     """
@@ -683,20 +683,13 @@ class MinimalStepperConfig:
         MinimalStepperConfig(step_count=5, current_step=3)
         """
 
-    items: list[StepStatus] = field(
-        default_factory=list,
-        metadata={
-            "doc": _(
-                "List of states for the process steps. Possible values: 'success', 'failed', 'active' and '' for inactive."
-            )
-        },
-    )
-    step_count: int = field(default=0, metadata={"doc": _("Number of process steps. (Only if 'items' is not set!)")})
+    steps: list[StepStatus] = field(default_factory=list, metadata={"doc": _("Status of each process step.")})
+    step_count: int = field(default=0, metadata={"doc": _("Number of process steps. (Only if 'steps' is not set!)")})
     current_step: int = field(
-        default=0, metadata={"doc": _("Current step of the process. (Only if 'items' is not set!)")}
+        default=0, metadata={"doc": _("Current step of the process. (Only if 'steps' is not set!)")}
     )
     current_step_status: StepStatus = field(
-        default="active", metadata={"doc": _("Status of the current step. (Only if 'items' is not set!)")}
+        default="current", metadata={"doc": _("Status of the current step. (Only if 'steps' is not set!)")}
     )
     icon_size: Size = field(default="xs", metadata={"doc": _("Size of the icons in the progress bar.")})
 
@@ -704,8 +697,8 @@ class MinimalStepperConfig:
         """Validate icon_size and step status values after initialization."""
         validate_size(self.icon_size, "icon_size")
         validate_step_status(self.current_step_status, "current_step_status")
-        for i, status in enumerate(self.items):
-            validate_step_status(status, f"items[{i}]")
+        for i, status in enumerate(self.steps):
+            validate_step_status(status, f"steps[{i}]")
 
 
 @dataclass

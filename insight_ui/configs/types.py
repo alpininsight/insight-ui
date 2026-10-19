@@ -99,10 +99,10 @@ type IconColor = Literal[
 # =============================================================================
 
 # Tuple of valid step status values (for stepper components)
-STEP_STATUS_VALUES: tuple[str, ...] = ("active", "success", "failed", "")
+STEP_STATUS_VALUES: tuple[str, ...] = ("pending", "current", "completed", "failed")
 
 # Type alias for step status
-type StepStatus = Literal["active", "success", "failed", ""]
+type StepStatus = Literal["pending", "current", "completed", "failed"]
 
 # Tuple of valid alert/notification type values
 ALERT_TYPE_VALUES: tuple[str, ...] = ("info", "success", "warning", "error")
