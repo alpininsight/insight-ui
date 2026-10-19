@@ -9,6 +9,7 @@ import math
 from dataclasses import MISSING, fields, is_dataclass, replace
 from difflib import HtmlDiff, ndiff, unified_diff
 from typing import TYPE_CHECKING, Any, Final, Literal, TypeVar, cast
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 from django import template
 from django.conf import settings
@@ -1399,18 +1400,83 @@ def infinite_scroll(
     return {"infinite_scroll_config": config}
 
 
+def _url_with_query(url: str, query: list[tuple[str, str]]) -> str:
+    """Return the URL with its query string replaced by the given parameters."""
+    return urlunsplit(urlsplit(url)._replace(query=urlencode(query)))
+
+
 @register.inclusion_tag("insight_ui/components/pagination.html")
 def pagination(
     config: PaginationConfig | None = None,
     *,
     request_url: str | _Unset = UNSET,
     current_page: Page | _Unset = UNSET,
-    surrounding_pages: list[int] | _Unset = UNSET,
-    ipp_config: PaginationIppConfig | _Unset | None = UNSET,
+    tag_id: str | _Unset = UNSET,
+    htmx: HtmxConfig | _Unset | None = UNSET,
+    include: str | _Unset = UNSET,
+    page_param: str | _Unset = UNSET,
+    on_each_side: int | _Unset = UNSET,
+    on_ends: int | _Unset = UNSET,
+    items_per_page: PaginationIppConfig | _Unset | None = UNSET,
 ) -> dict[str, Any]:
     """Render pagination with items per page selection."""
     config = build_config(PaginationConfig, config, **{k: v for k, v in locals().items() if k != "config"})
-    return {"pagination_config": config}
+    page = config.current_page
+    paginator = page.paginator
+
+    # Keep the other query parameters of request_url (filters, search) and only set the page number.
+    query = parse_qsl(urlsplit(config.request_url).query, keep_blank_values=True)
+    base_params = [(key, value) for key, value in query if key != config.page_param]
+
+    def page_url(number: int) -> str:
+        return _url_with_query(config.request_url, [*base_params, (config.page_param, str(number))])
+
+    pages = [
+        {"ellipsis": True}
+        if number == paginator.ELLIPSIS
+        else {
+            "number": number,
+            "url": page_url(int(number)),
+            "current": number == page.number,
+            "label": _("Page %(number)s") % {"number": number},
+            # Stable ids let HTMX put the focus back after the swap: the link of page 3 and,
+            # after navigating, the current-page marker of page 3 share the same id.
+            "id": f"{config.tag_id}-page-{number}",
+        }
+        for number in paginator.get_elided_page_range(
+            page.number, on_each_side=config.on_each_side, on_ends=config.on_ends
+        )
+    ]
+
+    ipp_select = None
+    ipp_hidden_params: list[tuple[str, str]] = []
+    if config.items_per_page:
+        ipp = config.items_per_page
+        ipp_select = SelectConfig(
+            name=ipp.name,
+            tag_id=f"{config.tag_id}-ipp-select",
+            label=str(ipp.label),
+            explanation=ipp.explanation,
+            options={str(option): str(option) for option in ipp.options},
+            selected_option=str(ipp.selected_option),
+        )
+        # A GET form drops the query string of its action, so the other parameters travel as hidden fields.
+        # The page number is left out: a new page size starts at page 1.
+        ipp_hidden_params = [(key, value) for key, value in base_params if key != ipp.name]
+
+    include = ", ".join(
+        selector for selector in (f"#{config.tag_id}-ipp" if config.items_per_page else "", config.include) if selector
+    )
+    return {
+        "pagination_config": config,
+        "pages": pages,
+        "previous_url": page_url(page.previous_page_number()) if page.has_previous() else "",
+        "next_url": page_url(page.next_page_number()) if page.has_next() else "",
+        "include": include,
+        "ipp_select": ipp_select,
+        "ipp_action": _url_with_query(config.request_url, []),
+        "ipp_hidden_params": ipp_hidden_params,
+    }
 
 
 @register.inclusion_tag("insight_ui/components/table.html")
