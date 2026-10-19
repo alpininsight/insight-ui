@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 
 from insight_ui.configs.input import ButtonConfig
 from insight_ui.configs.layout import ModalConfig
-from insight_ui.configs.types import Severity, validate_severity, validate_not_empty
+from insight_ui.configs.types import Severity, validate_not_empty, validate_severity
 
 
 @dataclass
