@@ -61,3 +61,41 @@ def test_attribute_values_from_variables_are_escaped(body: str) -> None:
     soup = render(body, {"value": EVIL})
 
     assert not soup.find(attrs={"onmouseover": True})
+
+
+@pytest.mark.parametrize(
+    "href",
+    [
+        "/docs/",
+        "docs/",
+        "#section",
+        "?page=2",
+        "//cdn.example.com/x",
+        "https://example.com",
+        "HTTP://example.com",
+        "mailto:a@b.c",
+    ],
+)
+def test_surface_accepts_relative_and_allowed_urls(href: str) -> None:
+    """Relative URLs and http, https and mailto render as links."""
+    link = render("{% surface href=href %}x{% endsurface %}", {"href": href}).find("a")
+
+    assert link["href"] == href
+
+
+@pytest.mark.parametrize(
+    "href",
+    [
+        pytest.param("javascript:alert(1)", id="javascript"),
+        pytest.param("JavaScript:alert(1)", id="uppercase"),
+        pytest.param("  javascript:alert(1)", id="leading-space"),
+        pytest.param("java\tscript:alert(1)", id="tab-inside-scheme"),
+        pytest.param("java\nscript:alert(1)", id="newline-inside-scheme"),
+        pytest.param("data:text/html,<script>alert(1)</script>", id="data"),
+        pytest.param("vbscript:msgbox(1)", id="vbscript"),
+    ],
+)
+def test_surface_rejects_schemes_that_can_run_code(href: str) -> None:
+    """Escaping does not neutralise javascript: and friends, so the scheme is checked against an allowlist."""
+    with pytest.raises(ValueError, match="is not allowed"):
+        render("{% surface href=href %}x{% endsurface %}", {"href": href})

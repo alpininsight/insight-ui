@@ -206,8 +206,10 @@ Grid Examples
 
 from __future__ import annotations
 
+import re
 import uuid
 from typing import TYPE_CHECKING, cast
+from urllib.parse import urlsplit
 
 from django import template
 from django.template.base import Node, NodeList, token_kwargs
@@ -409,6 +411,31 @@ def _validate_unknown_params(
         msg = f"Unknown parameter '{unknown_param}' in {{% {tag_name} %}}. Valid parameters: {valid_str}"
 
     raise ValueError(msg)
+
+
+# URL schemes a layout tag may link to; anything else (javascript:, data:, vbscript: …) could run code on click.
+_ALLOWED_URL_SCHEMES = frozenset({"http", "https", "mailto"})
+
+
+def _validate_href(href: str, tag_name: str) -> str:
+    """Reject links whose scheme could run code; relative URLs and http, https and mailto pass.
+
+    Escaping keeps a value inside its attribute but does not make ``javascript:`` harmless.
+
+    Raises:
+        ValueError: If the URL uses a scheme outside the allowlist.
+
+    """
+    # Browsers ignore ASCII whitespace and control characters inside the scheme, e.g. "java<TAB>script:".
+    scheme = urlsplit(re.sub(r"[\x00-\x20]", "", href)).scheme.lower()
+    if scheme and scheme not in _ALLOWED_URL_SCHEMES:
+        allowed = ", ".join(sorted(_ALLOWED_URL_SCHEMES))
+        msg = (
+            f"Invalid href in {{% {tag_name} %}}: the scheme '{scheme}:' is not allowed. "
+            f"Use a relative URL or {allowed}."
+        )
+        raise ValueError(msg)
+    return href
 
 
 # Context key under which {% tab %} nodes register with the surrounding {% tabs %}.
@@ -900,7 +927,7 @@ class SurfaceNode(LayoutNode):
         # Validate no unknown parameters
         _validate_unknown_params(resolved, self.valid_params, self.tag_name)
 
-        href = resolved.get("href", "")
+        href = _validate_href(str(resolved.get("href") or ""), self.tag_name)
         is_link = bool(href)
 
         classes = self.build_classes(resolved, is_link=is_link)
