@@ -890,22 +890,22 @@
 
     /* Outline variant - transparent bg, colored border, fills on hover */
     .btn-outline-primary {
-        @apply border-insight-primary-action text-insight-primary-text hover:text-white hover:bg-insight-primary-action-hover active:bg-insight-primary-action-active hover:border-insight-primary-action-hover active:border-insight-primary-action-active;
+        @apply border-insight-primary-action text-insight-primary-text hover:text-insight-primary-on-fill active:text-insight-primary-on-fill hover:bg-insight-primary-action-hover active:bg-insight-primary-action-active hover:border-insight-primary-action-hover active:border-insight-primary-action-active;
     }
     .btn-outline-secondary {
-        @apply border-insight-secondary-action text-insight-secondary-text hover:text-white hover:bg-insight-secondary-action-hover active:bg-insight-secondary-action-active hover:border-insight-secondary-action-hover active:border-insight-secondary-action-active;
+        @apply border-insight-secondary-action text-insight-secondary-text hover:text-insight-secondary-on-fill active:text-insight-secondary-on-fill hover:bg-insight-secondary-action-hover active:bg-insight-secondary-action-active hover:border-insight-secondary-action-hover active:border-insight-secondary-action-active;
     }
     .btn-outline-success {
-        @apply border-insight-success-action text-insight-success-text hover:text-white hover:bg-insight-success-action-hover active:bg-insight-success-action-active hover:border-insight-success-action-hover active:border-insight-success-action-active;
+        @apply border-insight-success-action text-insight-success-text hover:text-insight-success-on-fill active:text-insight-success-on-fill hover:bg-insight-success-action-hover active:bg-insight-success-action-active hover:border-insight-success-action-hover active:border-insight-success-action-active;
     }
     .btn-outline-warning {
-        @apply border-insight-warning-action text-insight-warning-text hover:text-white hover:bg-insight-warning-action-hover active:bg-insight-warning-action-active hover:border-insight-warning-action-hover active:border-insight-warning-action-active;
+        @apply border-insight-warning-action text-insight-warning-text hover:text-insight-warning-on-fill active:text-insight-warning-on-fill hover:bg-insight-warning-action-hover active:bg-insight-warning-action-active hover:border-insight-warning-action-hover active:border-insight-warning-action-active;
     }
     .btn-outline-danger {
-        @apply border-insight-danger-action text-insight-danger-text hover:text-white hover:bg-insight-danger-action-hover active:bg-insight-danger-action-active hover:border-insight-danger-action-hover active:border-insight-danger-action-active;
+        @apply border-insight-danger-action text-insight-danger-text hover:text-insight-danger-on-fill active:text-insight-danger-on-fill hover:bg-insight-danger-action-hover active:bg-insight-danger-action-active hover:border-insight-danger-action-hover active:border-insight-danger-action-active;
     }
     .btn-outline-info {
-        @apply border-insight-info-action text-insight-info-text hover:text-white hover:bg-insight-info-action-hover active:bg-insight-info-action-active hover:border-insight-info-action-hover active:border-insight-info-action-active;
+        @apply border-insight-info-action text-insight-info-text hover:text-insight-info-on-fill active:text-insight-info-on-fill hover:bg-insight-info-action-hover active:bg-insight-info-action-active hover:border-insight-info-action-hover active:border-insight-info-action-active;
     }
     .btn-outline-neutral {
         @apply border-white hover:bg-gray-300 active:bg-gray-400 hover:border-gray-300 active:border-gray-400 text-insight-text-headline hover:text-insight-text-inverse;

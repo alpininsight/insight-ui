@@ -121,6 +121,11 @@ jobs:
             exit 1
           fi
 
+      - name: Install the pinned browser for outline interaction acceptance
+        run: uv run --no-sync --with playwright==1.64.0 python -m playwright install --with-deps chromium
+      - name: Verify compiled outline ink in both themes
+        run: uv run --no-sync --with playwright==1.64.0 python -m tests.browser.outline_ink_smoke
+
   distribution:
     name: Wheel and sdist installation
     runs-on: ubuntu-latest

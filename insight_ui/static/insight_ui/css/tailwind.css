@@ -3126,7 +3126,7 @@
     }
     &:hover {
       @media (hover: hover) {
-        color: var(--color-white);
+        color: var(--color-insight-primary-on-fill);
       }
     }
     &:active {
@@ -3134,6 +3134,9 @@
     }
     &:active {
       background-color: var(--color-insight-primary-action-active);
+    }
+    &:active {
+      color: var(--color-insight-primary-on-fill);
     }
   }
   .btn-outline-secondary {
@@ -3151,7 +3154,7 @@
     }
     &:hover {
       @media (hover: hover) {
-        color: var(--color-white);
+        color: var(--color-insight-secondary-on-fill);
       }
     }
     &:active {
@@ -3159,6 +3162,9 @@
     }
     &:active {
       background-color: var(--color-insight-secondary-action-active);
+    }
+    &:active {
+      color: var(--color-insight-secondary-on-fill);
     }
   }
   .btn-outline-success {
@@ -3176,7 +3182,7 @@
     }
     &:hover {
       @media (hover: hover) {
-        color: var(--color-white);
+        color: var(--color-insight-success-on-fill);
       }
     }
     &:active {
@@ -3184,6 +3190,9 @@
     }
     &:active {
       background-color: var(--color-insight-success-action-active);
+    }
+    &:active {
+      color: var(--color-insight-success-on-fill);
     }
   }
   .btn-outline-warning {
@@ -3201,7 +3210,7 @@
     }
     &:hover {
       @media (hover: hover) {
-        color: var(--color-white);
+        color: var(--color-insight-warning-on-fill);
       }
     }
     &:active {
@@ -3209,6 +3218,9 @@
     }
     &:active {
       background-color: var(--color-insight-warning-action-active);
+    }
+    &:active {
+      color: var(--color-insight-warning-on-fill);
     }
   }
   .btn-outline-danger {
@@ -3226,7 +3238,7 @@
     }
     &:hover {
       @media (hover: hover) {
-        color: var(--color-white);
+        color: var(--color-insight-danger-on-fill);
       }
     }
     &:active {
@@ -3234,6 +3246,9 @@
     }
     &:active {
       background-color: var(--color-insight-danger-action-active);
+    }
+    &:active {
+      color: var(--color-insight-danger-on-fill);
     }
   }
   .btn-outline-info {
@@ -3251,7 +3266,7 @@
     }
     &:hover {
       @media (hover: hover) {
-        color: var(--color-white);
+        color: var(--color-insight-info-on-fill);
       }
     }
     &:active {
@@ -3259,6 +3274,9 @@
     }
     &:active {
       background-color: var(--color-insight-info-action-active);
+    }
+    &:active {
+      color: var(--color-insight-info-on-fill);
     }
   }
   .btn-outline-neutral {
