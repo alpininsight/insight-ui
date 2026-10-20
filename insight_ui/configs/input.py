@@ -4,6 +4,7 @@
 
 import warnings
 from dataclasses import dataclass, field
+from unicodedata import category
 
 from django.utils.translation import gettext_lazy as _
 
@@ -56,6 +57,7 @@ class ButtonConfig:
         data_attrs: List of custom data attributes to add to the button element.
         aria_attrs: List of ARIA attributes to add to the button element.
         hx_attrs: List of HTMX attributes to add to the button element.
+        download: Native link download: False omits, True or empty string keeps the default filename, a string suggests a filename.
 
     """
 
@@ -142,11 +144,31 @@ class ButtonConfig:
     hx_attrs: list[DataAttrConfig] = field(
         default_factory=list, metadata={"doc": "List of HTMX attributes to add to the button element."}
     )
+    # Append to preserve positional construction of all existing fields.
+    download: bool | str = field(
+        default=False,
+        metadata={
+            "doc": "Native link download: False omits, True or empty string keeps the default filename, a string suggests a filename."
+        },
+    )
+
+    @property
+    def download_enabled(self) -> bool:
+        """An empty filename still requests native download behavior."""
+        return self.download is not False
 
     def __post_init__(self) -> None:
         """Require a label and validate type, size, and button_type after initialization."""
         # The label is the accessible name, also for icon-only buttons (aria-label).
         validate_not_empty(self, "label")
+        if not isinstance(self.download, (bool, str)):
+            raise TypeError("ButtonConfig.download must be a bool or a filename string.")  # noqa: TRY003
+        if self.download_enabled:
+            validate_not_empty(self, "request_url")
+            if self.htmx_config is not None or self.hx_attrs:
+                raise ValueError("Native downloads cannot be combined with HTMX request attributes.")  # noqa: TRY003
+            if isinstance(self.download, str) and any(category(char) == "Cc" for char in self.download):
+                raise ValueError("Download filenames must not contain control characters.")  # noqa: TRY003
         # Override type when disabled=True
         if self.disabled:
             object.__setattr__(self, "type", "disabled")
