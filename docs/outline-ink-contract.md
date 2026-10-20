@@ -5,7 +5,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 # Outline Interaction Ink
 
-The current `develop` API has six semantic outline families. An outline starts
+The stacked button API uses `color=<family>, variant="outline"` for six semantic
+families. An outline starts
 with the family's `--color-insight-<family>-text` role on an unfilled surface.
 When hover or active fills the control, the text must read
 `--color-insight-<family>-on-fill`, not a hardcoded white utility.
@@ -34,12 +35,16 @@ required stylesheet CI job also runs the browser program.
 
 ## Integration and release
 
-Open refactor [#733](https://github.com/alpininsight/insight-ui/pull/733) already
-uses `--btn-on-fill` for its new outline API. This PR does not mutate that
-owner's branch. If the refactor integrates first, rebase and adapt these
-regressions to its actual classes/configuration, retaining its implementation
-instead of restoring obsolete class names. Do not merge competing branches
-blindly or claim a stable consumer API from an open PR.
+This branch integrates the unchanged refactor
+[#733](https://github.com/alpininsight/insight-ui/pull/733) through the native
+download branch [#743](https://github.com/alpininsight/insight-ui/pull/743).
+Merge in the order **#733 -> #743 -> #744**, rechecking the exact heads after
+each integration. No integration into `develop` or `main` is performed here.
+The refactor's canonical `--btn-on-fill` implementation is retained, without
+restoring the obsolete `.btn-outline-<family>` rules. The source, packaged-CSS
+and 96 browser observations now exercise the actual new API. The required CI
+job keeps both the native-download and outline-interaction browser programs.
+Do not claim a stable consumer API from these open PRs.
 
 Stable v1.15.1 predates both the `on-fill` rename and this correction.
 Consumers must choose a tested stable package and matching token contract;

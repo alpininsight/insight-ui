@@ -76,7 +76,7 @@ def main() -> None:
     django.setup()
     from insight_ui.configs import ButtonConfig  # noqa: PLC0415
 
-    buttons = [ButtonConfig(label=family, type=family, outline=True, tag_id=family) for family in FAMILIES]
+    buttons = [ButtonConfig(label=family, color=family, variant="outline", tag_id=family) for family in FAMILIES]
     markup = Template("{% load insight_tags %}{% for item in buttons %}{% button config=item %}{% endfor %}").render(
         Context({"buttons": buttons})
     )

@@ -4,8 +4,8 @@
 
 import pytest
 from insight_ui.configs import (
-    BADGE_TYPE_VALUES,
-    BUTTON_TYPE_VALUES,
+    BUTTON_COLOR_VALUES,
+    BUTTON_VARIANT_VALUES,
     COLOR_TYPE_VALUES,
     CORNER_POSITION_VALUES,
     FILTER_FIELD_TYPE_VALUES,
@@ -38,8 +38,8 @@ from insight_ui.configs import (
     StatusScreenConfig,
     StepperItemConfig,
     ToggleViewConfig,
-    validate_badge_type,
-    validate_button_type,
+    validate_button_color,
+    validate_button_variant,
     validate_color_type,
     validate_corner_position,
     validate_filter_field_type,
@@ -317,25 +317,21 @@ def test_color_type_values_contains_expected_values() -> None:
     )
 
 
-def test_badge_type_values_extends_color_types() -> None:
-    """Test that BADGE_TYPE_VALUES includes all color types plus 'disabled'."""
-    for color in COLOR_TYPE_VALUES:
-        assert color in BADGE_TYPE_VALUES
-    assert "disabled" in BADGE_TYPE_VALUES
+def test_button_colors_have_light_but_no_grey() -> None:
+    """Buttons offer light for dark surfaces instead of a grey neutral button."""
+    assert BUTTON_COLOR_VALUES == ("primary", "secondary", "light", "info", "success", "warning", "danger")
 
 
-def test_button_type_values_extends_color_types() -> None:
-    """Test that BUTTON_TYPE_VALUES includes all color types plus 'link'."""
-    for color in COLOR_TYPE_VALUES:
-        assert color in BUTTON_TYPE_VALUES
-    assert "link" in BUTTON_TYPE_VALUES
+def test_button_variants() -> None:
+    """The visual style is a variant of its own, independent of the color."""
+    assert BUTTON_VARIANT_VALUES == ("solid", "outline", "subtle", "link", "plain")
 
 
 def test_type_values_are_tuples() -> None:
     """Test that all type value constants are immutable (tuples)."""
     assert isinstance(COLOR_TYPE_VALUES, tuple)
-    assert isinstance(BADGE_TYPE_VALUES, tuple)
-    assert isinstance(BUTTON_TYPE_VALUES, tuple)
+    assert isinstance(BUTTON_COLOR_VALUES, tuple)
+    assert isinstance(BUTTON_VARIANT_VALUES, tuple)
 
 
 # --- validate_color_type function ------------------------------------------
@@ -348,101 +344,113 @@ def test_validate_color_type_accepts_valid_values() -> None:
 
 
 def test_validate_color_type_rejects_invalid_value() -> None:
-    """Test that validate_color_type raises ValueError for invalid types."""
-    with pytest.raises(ValueError, match="Invalid type 'invalid'"):
+    """Test that validate_color_type raises ValueError for invalid colors."""
+    with pytest.raises(ValueError, match="Invalid color 'invalid'"):
         validate_color_type("invalid")
 
 
 def test_validate_color_type_rejects_disabled() -> None:
-    """Test that validate_color_type rejects 'disabled' (not a color)."""
-    with pytest.raises(ValueError, match="Invalid type 'disabled'"):
+    """Disabled is a state, not a color."""
+    with pytest.raises(ValueError, match="Invalid color 'disabled'"):
         validate_color_type("disabled")
 
 
-# --- validate_badge_type function ------------------------------------------
+# --- validate_button_color / validate_button_variant -----------------------
 
 
-def test_validate_badge_type_accepts_valid_values() -> None:
-    """Test that validate_badge_type accepts all valid badge type values."""
-    for badge_type in BADGE_TYPE_VALUES:
-        validate_badge_type(badge_type)  # Should not raise
+def test_validate_button_color_accepts_valid_values() -> None:
+    """Every button color is accepted."""
+    for color in BUTTON_COLOR_VALUES:
+        validate_button_color(color)
 
 
-def test_validate_badge_type_rejects_invalid_value() -> None:
-    """Test that validate_badge_type raises ValueError for invalid types."""
-    with pytest.raises(ValueError, match="Invalid type 'invalid'"):
-        validate_badge_type("invalid")
+@pytest.mark.parametrize("color", ["invalid", "link", "disabled"])
+def test_validate_button_color_rejects_invalid_values(color: str) -> None:
+    """Link is a variant and disabled a state, neither is a color."""
+    with pytest.raises(ValueError, match=f"Invalid color '{color}'"):
+        validate_button_color(color)
 
 
-def test_validate_badge_type_rejects_link() -> None:
-    """Test that validate_badge_type rejects 'link' (button-only type)."""
-    with pytest.raises(ValueError, match="Invalid type 'link'"):
-        validate_badge_type("link")
+def test_validate_button_color_points_from_neutral_to_light_and_plain() -> None:
+    """The former neutral button splits into light (dark surfaces) and the plain variant."""
+    with pytest.raises(ValueError, match=r"color='light'.*variant='plain'"):
+        validate_button_color("neutral")
 
 
-# --- validate_button_type function -----------------------------------------
+def test_validate_button_variant_accepts_valid_values() -> None:
+    """Every button variant is accepted."""
+    for variant in BUTTON_VARIANT_VALUES:
+        validate_button_variant(variant)
 
 
-def test_validate_button_type_accepts_valid_values() -> None:
-    """Test that validate_button_type accepts all valid button type values."""
-    for button_type in BUTTON_TYPE_VALUES:
-        validate_button_type(button_type)  # Should not raise
+def test_validate_button_variant_rejects_invalid_value() -> None:
+    """Unknown variants name the field and the allowed values."""
+    with pytest.raises(ValueError, match="Invalid variant 'ghost'"):
+        validate_button_variant("ghost")
 
 
-def test_validate_button_type_rejects_invalid_value() -> None:
-    """Test that validate_button_type raises ValueError for invalid types."""
-    with pytest.raises(ValueError, match="Invalid type 'invalid'"):
-        validate_button_type("invalid")
+# --- ButtonConfig ----------------------------------------------------------
 
 
-# --- Config type validation via __post_init__ ------------------------------
-
-
-def test_button_config_accepts_valid_type() -> None:
-    """Test ButtonConfig accepts valid type values."""
-    for button_type in BUTTON_TYPE_VALUES:
-        config = ButtonConfig(label="Test", type=button_type)
-        assert config.type == button_type
-
-
-def test_button_config_rejects_invalid_type() -> None:
-    """Test ButtonConfig raises ValueError for invalid type."""
-    with pytest.raises(ValueError, match="Invalid type"):
-        ButtonConfig(label="Test", type="invalid")
-
-
-def test_badge_config_accepts_valid_type() -> None:
-    """Test BadgeConfig accepts valid type values."""
-    for badge_type in BADGE_TYPE_VALUES:
-        config = BadgeConfig(label="Test", type=badge_type)
-        assert config.type == badge_type
-
-
-def test_badge_config_rejects_invalid_type() -> None:
-    """Test BadgeConfig raises ValueError for invalid type."""
-    with pytest.raises(ValueError, match="Invalid type"):
-        BadgeConfig(label="Test", type="invalid")
-
-
-def test_badge_config_rejects_link_type() -> None:
-    """Test BadgeConfig raises ValueError for 'link' type (button-only)."""
-    with pytest.raises(ValueError, match="Invalid type 'link'"):
-        BadgeConfig(label="Test", type="link")
-
-
-# --- Default type values ---------------------------------------------------
-
-
-def test_button_config_default_type() -> None:
-    """Test ButtonConfig has correct default type."""
+def test_button_config_defaults_to_solid_primary() -> None:
+    """Without options a button is a filled primary button."""
     config = ButtonConfig(label="Test")
-    assert config.type == "primary"
+    assert (config.color, config.variant) == ("primary", "solid")
 
 
-def test_badge_config_default_type() -> None:
-    """Test BadgeConfig has correct default type."""
+@pytest.mark.parametrize("color", BUTTON_COLOR_VALUES)
+@pytest.mark.parametrize("variant", BUTTON_VARIANT_VALUES)
+def test_button_config_combines_every_color_and_variant(color: str, variant: str) -> None:
+    """Color and variant are independent."""
+    config = ButtonConfig(label="Test", color=color, variant=variant)
+    assert (config.color, config.variant) == (color, variant)
+
+
+def test_button_config_keeps_its_color_when_disabled() -> None:
+    """Disabled is a state; re-enabling the button in the browser restores its color."""
+    config = ButtonConfig(label="Test", color="danger", disabled=True, disabled_reason="")
+    assert (config.color, config.disabled) == ("danger", True)
+
+
+def test_button_config_rejects_external_without_link() -> None:
+    """External only affects links; without request_url it would be ignored silently."""
+    with pytest.raises(ValueError, match="external only applies together with request_url"):
+        ButtonConfig(label="Docs", external=True)
+
+
+@pytest.mark.parametrize(
+    "options",
+    [
+        pytest.param({"on_click": "save()"}, id="on_click"),
+        pytest.param({"button_type": "submit"}, id="button_type"),
+    ],
+)
+def test_button_config_rejects_button_options_on_links(options: dict) -> None:
+    """A request_url renders an <a>, which has neither onclick handler of the config nor a button type."""
+    with pytest.raises(ValueError, match="only apply to buttons without request_url"):
+        ButtonConfig(label="Docs", request_url="/docs/", **options)
+
+
+# --- BadgeConfig -----------------------------------------------------------
+
+
+def test_badge_config_defaults() -> None:
+    """A badge is primary and enabled by default."""
     config = BadgeConfig(label="Test")
-    assert config.type == "primary"
+    assert (config.color, config.disabled) == ("primary", False)
+
+
+def test_badge_config_accepts_every_color_including_neutral() -> None:
+    """Badges keep the grey neutral color."""
+    for color in COLOR_TYPE_VALUES:
+        assert BadgeConfig(label="Test", color=color).color == color
+
+
+@pytest.mark.parametrize("color", ["invalid", "link", "disabled", "light"])
+def test_badge_config_rejects_invalid_colors(color: str) -> None:
+    """Link and light are button-only, disabled is the separate disabled field."""
+    with pytest.raises(ValueError, match=f"Invalid color '{color}'"):
+        BadgeConfig(label="Test", color=color)
 
 
 def test_corner_ribbon_config_default_color() -> None:

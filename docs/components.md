@@ -28,23 +28,52 @@ not validate every value; check the Config constructor and rendering tests.
 
 ## Configs And Supported Overrides
 
+### Native link downloads
+
+```django
+{% load insight_tags %}
+{% button label="Download" request_url="/files/report.svg" download=True %}
+{% button label="Download report" request_url="/files/report.svg" download="report.svg" %}
+```
+
+The Config has the same `download: bool | str = False` field. `False` omits
+the attribute; `True` or an empty string asks the browser to use the default
+filename; a non-empty string suggests a filename. Existing links and action
+buttons are unchanged when the option is omitted. Downloads require a link URL.
+Disabled links expose neither `href` nor `download`. Filename values are escaped,
+and control characters are rejected.
+
+This is a native browser action, not an HTMX partial request. The Config rejects
+explicit HTMX request settings, and the link uses `hx-disable` to avoid inherited
+HTMX processing ([HTMX contract](https://htmx.org/attributes/hx-disable/)).
+No JavaScript is needed. The filename is advisory: browsers may normalize it;
+cross-origin downloads can require server `Content-Disposition` and remain
+subject to browser/security policies ([HTML download contract](https://html.spec.whatwg.org/multipage/links.html#downloading-resources)).
+This option does not grant access to protected files or bypass authentication.
+
+This additive API is prepared against the current `develop` button contract.
+Open refactor [#733](https://github.com/alpininsight/insight-ui/pull/733) touches
+the same Config/tag/template; if it integrates first, rebase and repeat all
+rendering/download checks. Consumers adopt only a verified stable package
+containing the option, not the current unmodified v1.15.1.
+
 The button supports both inline arguments and Config objects:
 
 ```python
 from insight_ui.configs import ButtonConfig
 
-save_button = ButtonConfig(label="Save", type="primary", button_type="submit")
+save_button = ButtonConfig(label="Save", color="primary", button_type="submit")
 ```
 
 ```django
 {% load insight_tags %}
-{% button label="Save" type="primary" button_type="submit" %}
+{% button label="Save" color="primary" button_type="submit" %}
 {% button config=save_button %}
 {% button config=save_button label="Save changes" %}
 ```
 
-Pass `save_button` in the host view's template context. `type` selects the visual
-variant; `button_type` selects the HTML button type.
+Pass `save_button` in the host view's template context. `color` and `variant`
+(solid, outline, subtle, link, plain) select the look; `button_type` selects the HTML button type.
 
 With an existing Config, `build_config()` returns a copy with supplied overrides.
 Generated tags forward only supplied `**kwargs`; they do not declare `UNSET`
