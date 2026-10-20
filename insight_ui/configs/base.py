@@ -194,7 +194,7 @@ class BaseFormFieldConfig:
         required: **True** if the field must be filled in.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
         help_text: Hint shown below the field.
-        error: Error message shown below the field; marks the field as invalid.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     """
 
@@ -217,7 +217,7 @@ class BaseFormFieldConfig:
         default_factory=list, metadata={"doc": _("Custom data attributes for JavaScript hooks or tests.")}
     )
     help_text: str = field(default="", metadata={"doc": _("Hint shown below the field.")})
-    error: str = field(
+    error_text: str = field(
         default="", metadata={"doc": _("Error message shown below the field; marks the field as invalid.")}
     )
 

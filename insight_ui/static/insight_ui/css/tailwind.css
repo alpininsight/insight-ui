@@ -590,6 +590,9 @@
   .ms-4 {
     margin-inline-start: calc(var(--spacing) * 4);
   }
+  .ms-5 {
+    margin-inline-start: calc(var(--spacing) * 5);
+  }
   .-me-2 {
     margin-inline-end: calc(var(--spacing) * -2);
   }

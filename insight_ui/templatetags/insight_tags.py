@@ -734,9 +734,8 @@ def input_field(
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset | None = UNSET,
     label: str | _Unset | None = UNSET,
-    explanation: str | _Unset = UNSET,
     help_text: str | _Unset = UNSET,
-    error: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -762,9 +761,8 @@ def textarea(
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset | None = UNSET,
     label: str | _Unset | None = UNSET,
-    explanation: str | _Unset = UNSET,
     help_text: str | _Unset = UNSET,
-    error: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -789,7 +787,7 @@ def checkbox(
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset = UNSET,
     help_text: str | _Unset = UNSET,
-    error: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -825,7 +823,7 @@ def radio_group(
     as_row: bool | _Unset = UNSET,
     current_value: str | _Unset = UNSET,
     help_text: str | _Unset = UNSET,
-    error: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -852,7 +850,7 @@ def radio_block(
     method: str | _Unset = UNSET,
     current_value: str | _Unset = UNSET,
     help_text: str | _Unset = UNSET,
-    error: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -883,7 +881,7 @@ def slider(
     value_min: int | _Unset | None = UNSET,
     value_max: int | _Unset | None = UNSET,
     help_text: str | _Unset = UNSET,
-    error: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -909,7 +907,7 @@ def toggle(
     switch: bool | _Unset = UNSET,
     method: str | _Unset = UNSET,
     help_text: str | _Unset = UNSET,
-    error: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -929,11 +927,10 @@ def select(
     required: bool | _Unset = UNSET,
     disabled: bool | _Unset = UNSET,
     disabled_reason: str | _Unset | None = UNSET,
-    explanation: str | _Unset = UNSET,
     options: list[str] | dict[str, str] | _Unset = UNSET,
     selected_option: str | _Unset = UNSET,
     help_text: str | _Unset = UNSET,
-    error: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:
@@ -956,7 +953,7 @@ def multiselect(
     options: list[str] | dict[str, str] | _Unset = UNSET,
     selected_options: list[str] | _Unset = UNSET,
     help_text: str | _Unset = UNSET,
-    error: str | _Unset = UNSET,
+    error_text: str | _Unset = UNSET,
     data_attrs: list[DataAttrConfig] | _Unset = UNSET,
     **kwargs: Any,  # noqa: ANN401
 ) -> dict[str, Any]:

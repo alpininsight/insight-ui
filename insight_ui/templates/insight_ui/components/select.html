@@ -7,11 +7,6 @@
         {% endif %}
         <span class="self-end">{{ select_config.label }}</span>
         {% if select_config.required %}<span class="text-insight-danger-text" aria-hidden="true">*</span>{% endif %}
-        {% if select_config.explanation %}
-            <span class="text-insight-body" data-insight-tooltip="{{ select_config.explanation }}" data-position="top">
-                {% icon name="question-mark-circle" size="xs" %}
-            </span>
-        {% endif %}
     </label>
     <select
         {% if select_config.tag_id or select_config.name %}id="{{ select_config.tag_id|default:select_config.name }}"{% endif %}
@@ -19,9 +14,8 @@
         {% if not select_config.tag_id and not select_config.name %}aria-label="{% if select_config.label %}{{ select_config.label }}{% else %}{% trans 'Select option' %}{% endif %}"{% endif %}
         {% if select_config.required %}required{% endif %}
         {% if select_config.disabled %}disabled{% endif %}
-        {% if select_config.disabled and select_config.disabled_reason %}data-insight-tooltip="{{ select_config.disabled_reason }}"{% endif %}
         {% data_attributes select_config.data_attrs %}
-        {% include "insight_ui/components/_form_field_aria.html" with field_id=select_config.message_id help_text=select_config.help_text error=select_config.error %}
+        {% include "insight_ui/components/_form_field_aria.html" with field_id=select_config.message_id help_text=select_config.help_text error_text=select_config.error_text disabled=select_config.disabled disabled_reason=select_config.disabled_reason %}
         class="input w-full"
     >
         {% for option, text in select_config.options.items %}
@@ -34,5 +28,5 @@
             </option>
         {% endfor %}
     </select>
-    {% include "insight_ui/components/_form_field_messages.html" with field_id=select_config.message_id help_text=select_config.help_text error=select_config.error %}
+    {% include "insight_ui/components/_form_field_messages.html" with field_id=select_config.message_id help_text=select_config.help_text error_text=select_config.error_text disabled=select_config.disabled disabled_reason=select_config.disabled_reason %}
 </div>

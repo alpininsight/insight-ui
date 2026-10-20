@@ -1,7 +1,9 @@
 {% comment %}
-    Help and error texts below a form field. They are plain text linked via aria-describedby and
-    aria-errormessage; only the form-level error container is a live region (WAI forms tutorial).
-    Expects field_id, help_text and error.
+    Help, disabled-reason and error texts below a form field. They are plain text linked via aria-describedby
+    and aria-errormessage; only the form-level error container is a live region (WAI forms tutorial).
+    The disabled reason is visible text, because a disabled control can neither be focused nor show a tooltip.
+    Expects field_id, help_text, error_text, disabled and disabled_reason.
 {% endcomment %}
 {% if help_text %}<p id="{{ field_id }}-help" class="mt-1 text-sm text-insight-body">{{ help_text }}</p>{% endif %}
-{% if error %}<p id="{{ field_id }}-error" class="mt-1 text-sm text-insight-danger-text">{{ error }}</p>{% endif %}
+{% if disabled and disabled_reason %}<p id="{{ field_id }}-disabled" class="mt-1 text-sm text-insight-muted">{{ disabled_reason }}</p>{% endif %}
+{% if error_text %}<p id="{{ field_id }}-error" class="mt-1 text-sm text-insight-danger-text">{{ error_text }}</p>{% endif %}

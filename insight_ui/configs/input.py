@@ -184,10 +184,9 @@ class InputFieldConfig(BaseFormFieldConfig):
         min_length: Minimum number of characters in a text field.
         max_length: Maximum number of characters in a text field.
         checked: **True** if `input_type='checkbox'` and the checkbox should be selected.
-        explanation: A brief description of the field that appears in a tooltip.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
         help_text: Hint shown below the field.
-        error: Error message shown below the field; marks the field as invalid.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     """
 
@@ -216,9 +215,6 @@ class InputFieldConfig(BaseFormFieldConfig):
     max_length: int | None = field(default=None, metadata={"doc": _("Maximum number of characters in a text field.")})
     checked: bool = field(
         default=False, metadata={"doc": _("**True** if `input_type='checkbox'` and the checkbox should be selected.")}
-    )
-    explanation: str = field(
-        default="", metadata={"doc": _("A brief description of the field that appears in a tooltip.")}
     )
 
     def __post_init__(self) -> None:
@@ -250,10 +246,9 @@ class TextareaConfig(BaseFormFieldConfig):
         value: The value of the input field.
         rows: Determines the number of lines.
         cols: Determines the number of characters in a line.
-        explanation: A brief description of the field that appears in a tooltip.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
         help_text: Hint shown below the field.
-        error: Error message shown below the field; marks the field as invalid.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     """
 
@@ -273,9 +268,6 @@ class TextareaConfig(BaseFormFieldConfig):
     value: str = field(default="", metadata={"doc": _("The value of the input field.")})
     rows: int = field(default=3, metadata={"doc": _("Determines the number of lines.")})
     cols: int | None = field(default=None, metadata={"doc": _("Determines the number of characters in a line.")})
-    explanation: str = field(
-        default="", metadata={"doc": _("A brief description of the field that appears in a tooltip.")}
-    )
 
 
 @dataclass
@@ -295,7 +287,7 @@ class CheckboxConfig(BaseFormFieldConfig):
         checked: **True** if the checkbox should be selected.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
         help_text: Hint shown below the field.
-        error: Error message shown below the field; marks the field as invalid.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     """
 
@@ -377,7 +369,7 @@ class CheckboxGroupConfig:
         maximum_checked: Number of checkbox elements that may be selected at the same time.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
         help_text: Hint shown below the field.
-        error: Error message shown below the field; marks the field as invalid.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     """
 
@@ -411,7 +403,7 @@ class CheckboxGroupConfig:
         default_factory=list, metadata={"doc": _("Custom data attributes for JavaScript hooks or tests.")}
     )
     help_text: str = field(default="", metadata={"doc": _("Hint shown below the field.")})
-    error: str = field(
+    error_text: str = field(
         default="", metadata={"doc": _("Error message shown below the field; marks the field as invalid.")}
     )
 
@@ -561,7 +553,7 @@ class RadioGroupConfig:
         current_value: The value of the currently selected radio button.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
         help_text: Hint shown below the field.
-        error: Error message shown below the field; marks the field as invalid.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     """
 
@@ -589,7 +581,7 @@ class RadioGroupConfig:
         default_factory=list, metadata={"doc": _("Custom data attributes for JavaScript hooks or tests.")}
     )
     help_text: str = field(default="", metadata={"doc": _("Hint shown below the field.")})
-    error: str = field(
+    error_text: str = field(
         default="", metadata={"doc": _("Error message shown below the field; marks the field as invalid.")}
     )
 
@@ -621,7 +613,7 @@ class RadioBlockConfig:
         current_value: The value of the currently selected radio button.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
         help_text: Hint shown below the field.
-        error: Error message shown below the field; marks the field as invalid.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     """
 
@@ -668,7 +660,7 @@ class RadioBlockConfig:
         default_factory=list, metadata={"doc": _("Custom data attributes for JavaScript hooks or tests.")}
     )
     help_text: str = field(default="", metadata={"doc": _("Hint shown below the field.")})
-    error: str = field(
+    error_text: str = field(
         default="", metadata={"doc": _("Error message shown below the field; marks the field as invalid.")}
     )
 
@@ -706,7 +698,7 @@ class SliderConfig(BaseFormFieldConfig):
         value_max: The maximum value in dual-thumb mode. Defaults to `maximum`.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
         help_text: Hint shown below the field.
-        error: Error message shown below the field; marks the field as invalid.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     Note:
         In dual-thumb mode, two form fields are submitted:
@@ -798,7 +790,7 @@ class ToggleConfig(BaseFormFieldConfig):
         method: Name of the JavaScript method to be executed when the toggle button is clicked.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
         help_text: Hint shown below the field.
-        error: Error message shown below the field; marks the field as invalid.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     """
 
@@ -836,12 +828,11 @@ class SelectConfig(BaseFormFieldConfig):
         disabled: **True** if the field should be disabled.
         disabled_reason: Explanation why the field is disabled, shown as tooltip when hovering. Set to empty string to explicitly skip.
         required: **True** if the field must be filled in.
-        explanation: A brief description of the filter that appears in a tooltip.
         options: List of values that can be selected.
         selected_option: Value (the key value, if the options were passed as a dict) of the currently selected option.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
         help_text: Hint shown below the field.
-        error: Error message shown below the field; marks the field as invalid.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     Note:
         If `options` is a list, the value is also used as the name.
@@ -857,9 +848,6 @@ class SelectConfig(BaseFormFieldConfig):
         )
         """
 
-    explanation: str = field(
-        default="", metadata={"doc": _("A brief description of the filter that appears in a tooltip.")}
-    )
     options: list[str] | dict[str, str] = field(
         default_factory=list, metadata={"doc": _("List of values that can be selected.")}
     )
@@ -898,7 +886,7 @@ class MultiselectConfig(BaseFormFieldConfig):
         selected_options: List of currently selected options.
         data_attrs: Custom data attributes for JavaScript hooks or tests.
         help_text: Hint shown below the field.
-        error: Error message shown below the field; marks the field as invalid.
+        error_text: Error message shown below the field; marks the field as invalid.
 
     Note:
         If `options` is a list, the value is also used as the name.
