@@ -70,7 +70,7 @@ Create `myapp/templates/myapp/home.html`:
 {% block title %}My application{% endblock %}
 {% block content %}
     {% translate "Get started" as action_label %}
-    {% button label=action_label type="primary" %}
+    {% button label=action_label color="primary" %}
 {% endblock %}
 ```
 
